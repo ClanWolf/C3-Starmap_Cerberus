@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="SettingsPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.settings.SettingsPaneController">
+  <children>
+    <Label fx:id="panelHeadline" alignment="BASELINE_RIGHT" contentDisplay="CENTER" layoutX="14.0" layoutY="375.0" mouseTransparent="true" opacity="0.12" prefWidth="794.0" text="SETTINGS">
+      <font>
+        <Font name="Arial Bold" size="80.0" />
+      </font>
+      <stylesheets>
+        <URL value="@../styles/MainFrameStyle.css" />
+      </stylesheets>
+      <textFill>
+        <Color blue="0.804" green="0.620" red="0.412" fx:id="x1" />
+      </textFill>
+    </Label>
+    <TabPane layoutX="62.0" layoutY="14.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="426.0" prefWidth="777.0" tabClosingPolicy="UNAVAILABLE">
+      <stylesheets>
+        <URL value="@../styles/MainFrameStyle.css" />
+      </stylesheets>
+      <tabs>
+        <Tab fx:id="tab1" text="Tab1_Server">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="contentTabAnchorPane">
+              <children>
+                <Label alignment="BOTTOM_LEFT" mouseTransparent="true" opacity="0.2" prefHeight="382.0" prefWidth="252.0" styleClass="contentLabelSideImage">
+                  <stylesheets>
+                    <URL value="@../styles/MainFrameStyle.css" />
+                  </stylesheets>
+                </Label>
+                <Label fx:id="serverURL" layoutX="118.0" layoutY="34.0" styleClass="contentLabel" text="Server_URL">
+                  <stylesheets>
+                    <URL value="@../styles/MainFrameStyle.css" />
+                  </stylesheets>
+                </Label>
+                <Label fx:id="databaseName" layoutX="118.0" layoutY="74.0" styleClass="contentLabel" text="Database_Name">
+                  <stylesheets>
+                    <URL value="@../styles/MainFrameStyle.css" />
+                  </stylesheets>
+                </Label>
+                <Label fx:id="resultIcon" layoutX="465.0" layoutY="122.0" maxHeight="20.0" maxWidth="20.0" prefHeight="20.0" prefWidth="20.0" styleClass="resultIconLabel_Undetermined" text="">
+                  <stylesheets>
+                    <URL value="@../styles/MainFrameStyle.css" />
+                  </stylesheets>
+                </Label>
+                <TextField fx:id="edit_ServerURL" layoutX="252.0" layoutY="31.0" prefWidth="498.0">
+                  <stylesheets>
+                    <URL value="@../styles/MainFrameStyle.css" />
+                  </stylesheets>
+                </TextField>
+                <TextField fx:id="edit_DatabaseName" layoutX="252.0" layoutY="71.0" prefWidth="498.0">
+                  <stylesheets>
+                    <URL value="@../styles/MainFrameStyle.css" />
+                  </stylesheets>
+                </TextField>
+                <Button id="testConnectioButton" fx:id="testConnectionButton" layoutX="252.0" layoutY="114.0" mnemonicParsing="false" onAction="#checkDatabaseConnection" prefWidth="203.0" styleClass="contentButton" text="testConnection">
+                  <stylesheets>
+                    <URL value="@../styles/MainFrameStyle.css" />
+                  </stylesheets>
+                </Button>
+              </children>
+              <stylesheets>
+                <URL value="@../styles/MainFrameStyle.css" />
+              </stylesheets>
+            </AnchorPane>
+          </content>
+        </Tab>
+        <Tab fx:id="tab2" text="Tab2_Proxy">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="contentTabAnchorPane">
+              <children>
+                <Label alignment="BOTTOM_LEFT" mouseTransparent="true" opacity="0.2" prefHeight="382.0" prefWidth="252.0" styleClass="contentLabelSideImage">
+                  <stylesheets>
+                    <URL value="@../styles/MainFrameStyle.css" />
+                  </stylesheets>
+                </Label>
+                <Label id="labelProxyURL" fx:id="label_ProxyURL" layoutX="142.0" layoutY="77.0" styleClass="contentLabel" text="ProxyURL">
+                  <stylesheets>
+                    <URL value="@../styles/MainFrameStyle.css" />
+                  </stylesheets>
+                </Label>
+                <Label fx:id="label_ProxyPort" layoutX="142.0" layoutY="116.0" styleClass="contentLabel" text="ProxyPort">
+                  <stylesheets>
+                    <URL value="@../styles/MainFrameStyle.css" />
+                  </stylesheets>
+                </Label>
+                <Label id="label_ProxyAuthServer" fx:id="label_ProxyAuthUser" layoutX="240.0" layoutY="194.0" styleClass="contentLabel" text="ProxyUser">
+                  <stylesheets>
+                    <URL value="@../styles/MainFrameStyle.css" />
+                  </stylesheets>
+                </Label>
+                <Label fx:id="label_ProxyAuthPassword" layoutX="240.0" layoutY="233.0" styleClass="contentLabel" text="ProxyPassword">
+                  <stylesheets>
+                    <URL value="@../styles/MainFrameStyle.css" />
+                  </stylesheets>
+                </Label>
+                <Label fx:id="label_ProxyAuthDomain" layoutX="240.0" layoutY="272.0" styleClass="contentLabel" text="ProxyDomain">
+                  <stylesheets>
+                    <URL value="@../styles/MainFrameStyle.css" />
+                  </stylesheets>
+                </Label>
+                <RadioButton fx:id="rb_NoProxy" layoutX="118.0" layoutY="34.0" mnemonicParsing="false" text="noProxy_Radio">
+                  <stylesheets>
+                    <URL value="@../styles/MainFrameStyle.css" />
+                  </stylesheets>
+                  <textFill>
+                    <Color blue="0.937" green="0.831" red="0.639" fx:id="x3" />
+                  </textFill>
+                </RadioButton>
+                <RadioButton fx:id="rb_SystemProxy" layoutX="316.0" layoutY="34.0" mnemonicParsing="false" text="SystemProxy" textFill="$x3">
+                  <stylesheets>
+                    <URL value="@../styles/MainFrameStyle.css" />
+                  </stylesheets>
+                </RadioButton>
+                <RadioButton fx:id="rb_Proxy" layoutX="514.0" layoutY="34.0" mnemonicParsing="false" text="Proxy_Radio" textFill="$x3">
+                  <stylesheets>
+                    <URL value="@../styles/MainFrameStyle.css" />
+                  </stylesheets>
+                </RadioButton>
+                <TextField fx:id="edit_ProxyServerURL" layoutX="238.0" layoutY="74.0" prefWidth="514.0">
+                  <stylesheets>
+                    <URL value="@../styles/MainFrameStyle.css" />
+                  </stylesheets>
+                </TextField>
+                <TextField fx:id="edit_ProxyServerPort" layoutX="238.0" layoutY="113.0" prefWidth="70.0">
+                  <stylesheets>
+                    <URL value="@../styles/MainFrameStyle.css" />
+                  </stylesheets>
+                </TextField>
+                <CheckBox fx:id="cb_Authentication" layoutX="238.0" layoutY="156.0" mnemonicParsing="false" onAction="#disableProxyAuthentication" text="Authentication_Checkbox" textFill="#a3d4ef">
+                  <stylesheets>
+                    <URL value="@../styles/MainFrameStyle.css" />
+                  </stylesheets>
+                </CheckBox>
+                <TextField fx:id="edit_ProxyServerUserName" layoutX="348.0" layoutY="191.0" prefWidth="404.0">
+                  <stylesheets>
+                    <URL value="@../styles/MainFrameStyle.css" />
+                  </stylesheets>
+                </TextField>
+                <PasswordField id="edit_ProxyServerUserName" fx:id="edit_ProxyServerPassword" layoutX="348.0" layoutY="230.0" prefWidth="404.0">
+                  <stylesheets>
+                    <URL value="@../styles/MainFrameStyle.css" />
+                  </stylesheets>
+                </PasswordField>
+                <TextField id="edit_ProxyServerPassword" fx:id="edit_ProxyServerDomain" layoutX="348.0" layoutY="269.0" prefWidth="404.0">
+                  <stylesheets>
+                    <URL value="@../styles/MainFrameStyle.css" />
+                  </stylesheets>
+                </TextField>
+                <CheckBox fx:id="cb_SaveProxyPassword" layoutX="348.0" layoutY="310.0" mnemonicParsing="false" prefWidth="404.0" text="CheckBox" textFill="$x3">
+                  <stylesheets>
+                    <URL value="@../styles/MainFrameStyle.css" />
+                  </stylesheets>
+                </CheckBox>
+              </children>
+              <stylesheets>
+                <URL value="@../styles/MainFrameStyle.css" />
+              </stylesheets>
+            </AnchorPane>
+          </content>
+        </Tab>
+        <Tab fx:id="tab3" text="Tab3_Application">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <children>
+                <Label alignment="BOTTOM_LEFT" mouseTransparent="true" opacity="0.2" prefHeight="382.0" prefWidth="252.0" styleClass="contentLabelSideImage">
+                  <stylesheets>
+                    <URL value="@../styles/MainFrameStyle.css" />
+                  </stylesheets>
+                </Label>
+                <Label id="playMusic" fx:id="mediaLabel" layoutX="118.0" layoutY="34.0" styleClass="contentLabel" text="Media_Label">
+                  <stylesheets>
+                    <URL value="@../styles/MainFrameStyle.css" />
+                  </stylesheets>
+                </Label>
+                <Label fx:id="volumeLabel" layoutX="483.0" layoutY="34.0" styleClass="contentLabel" text="Volume_Label" textFill="$x3">
+                  <stylesheets>
+                    <URL value="@../styles/MainFrameStyle.css" />
+                  </stylesheets>
+                </Label>
+                <Label fx:id="musicLabel" layoutX="118.0" layoutY="171.0" styleClass="contentLabel" text="Music_Label">
+                  <stylesheets>
+                    <URL value="@../styles/MainFrameStyle.css" />
+                  </stylesheets>
+                </Label>
+                <CheckBox id="check_Speak" fx:id="checkbox_Speech" layoutX="253.0" layoutY="64.0" mnemonicParsing="false" onAction="#handleSpeechSelectButton" text="Speech_CheckBox" textFill="$x3">
+                  <stylesheets>
+                    <URL value="@../styles/MainFrameStyle.css" />
+                  </stylesheets>
+                </CheckBox>
+                <Slider fx:id="slider_SpeechVolume" layoutX="476.0" layoutY="64.0" majorTickUnit="10.0" minorTickCount="1" prefWidth="272.0" snapToTicks="true">
+                  <stylesheets>
+                    <URL value="@../styles/MainFrameStyle.css" />
+                  </stylesheets>
+                </Slider>
+                <CheckBox fx:id="checkbox_Sound" layoutX="253.0" layoutY="102.0" mnemonicParsing="false" onAction="#handleEffectsSelectButton" text="Sound_CheckBox" textFill="$x3">
+                  <stylesheets>
+                    <URL value="@../styles/MainFrameStyle.css" />
+                  </stylesheets>
+                </CheckBox>
+                <Slider fx:id="slider_SoundVolume" layoutX="476.0" layoutY="102.0" majorTickUnit="10.0" minorTickCount="1" prefWidth="272.0" snapToTicks="true">
+                  <stylesheets>
+                    <URL value="@../styles/MainFrameStyle.css" />
+                  </stylesheets>
+                </Slider>
+                <CheckBox fx:id="checkbox_Music" layoutX="253.0" layoutY="170.0" mnemonicParsing="false" onAction="#handleMusicSelectButton" text="Music_CheckBox" textFill="$x3">
+                  <stylesheets>
+                    <URL value="@../styles/MainFrameStyle.css" />
+                  </stylesheets>
+                </CheckBox>
+                <Slider fx:id="slider_MusicVolume" layoutX="476.0" layoutY="170.0" majorTickUnit="10.0" minorTickCount="1" prefWidth="272.0" snapToTicks="true">
+                  <stylesheets>
+                    <URL value="@../styles/MainFrameStyle.css" />
+                  </stylesheets>
+                </Slider>
+              </children>
+            </AnchorPane>
+          </content>
+        </Tab>
+      </tabs>
+    </TabPane>
+    <Button fx:id="buttonYes" layoutX="547.0" layoutY="449.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#handleConfirmButtonClick" prefWidth="140.0" styleClass="contentButton" text="Button">
+      <stylesheets>
+        <URL value="@../styles/MainFrameStyle.css" />
+      </stylesheets>
+    </Button>
+    <Button fx:id="buttonNo" layoutX="698.0" layoutY="449.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#handleCancelButtonClick" onMouseEntered="#handleCancelButtonHoverEnter" onMouseExited="#handleCancelButtonHoverExit" prefWidth="140.0" styleClass="contentButton" text="Button">
+      <stylesheets>
+        <URL value="@../styles/MainFrameStyle.css" />
+      </stylesheets>
+    </Button>
+  </children>
+  <stylesheets>
+    <URL value="@../styles/MainFrameStyle.css" />
+  </stylesheets>
+</AnchorPane>

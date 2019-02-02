@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="UserInfoPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.userinfo.UserInfoPaneController">
+  <children>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2c506d" height="104.0" layoutX="76.0" layoutY="31.0" opacity="0.75" stroke="#779fc3" strokeType="INSIDE" strokeWidth="2.0" width="533.0" />
+    <Label fx:id="panelHeadline" alignment="BASELINE_RIGHT" contentDisplay="CENTER" layoutX="14.0" layoutY="375.0" opacity="0.12" prefWidth="794.0" text="USERINFO">
+      <font>
+        <Font name="Arial Bold" size="80.0" />
+      </font>
+      <textFill>
+        <Color blue="0.804" green="0.620" red="0.412" fx:id="x1" />
+      </textFill>
+    </Label>
+    <Label fx:id="labelUsername" layoutX="89.0" layoutY="45.0" prefHeight="16.0" prefWidth="76.0" styleClass="contentLabel" text="Username:">
+      <stylesheets>
+        <URL value="@../styles/MainFrameStyle.css" />
+      </stylesheets>
+    </Label>
+    <Label id="labelUsername" fx:id="labelCreated" layoutX="89.0" layoutY="73.0" styleClass="contentLabel" text="Created:">
+      <stylesheets>
+        <URL value="@../styles/MainFrameStyle.css" />
+      </stylesheets>
+    </Label>
+    <Button id="buttonYes" fx:id="buttonLogout" layoutX="540.0" layoutY="439.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleLogoutButtonClick" onMouseEntered="#handleLogoutButtonHoverEnter" onMouseExited="#handleLogoutButtonHoverExit" prefWidth="140.0" styleClass="contentButton" text="Logout">
+      <stylesheets>
+        <URL value="@../styles/MainFrameStyle.css" />
+      </stylesheets>
+    </Button>
+    <Button id="buttonNo" fx:id="buttonCancel" layoutX="689.0" layoutY="439.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleCancelButtonClick" onMouseEntered="#handleCancelButtonHoverEnter" onMouseExited="#handleCancelButtonHoverExit" prefWidth="140.0" styleClass="contentButton" text="Cancel">
+      <stylesheets>
+        <URL value="@../styles/MainFrameStyle.css" />
+      </stylesheets>
+    </Button>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2c506d" height="282.0" layoutX="76.0" layoutY="147.0" opacity="0.75" stroke="#779fc3" strokeType="INSIDE" strokeWidth="2.0" width="533.0" AnchorPane.topAnchor="147.0" />
+      <Label id="labelUsername" fx:id="labelCharacterChooser" layoutX="89.0" layoutY="165.0" styleClass="contentLabel" text="Charakter:">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Label>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2c506d" height="397.0" layoutX="617.0" layoutY="31.0" opacity="0.75" stroke="#779fc3" strokeType="INSIDE" strokeWidth="2.0" width="212.0" />
+      <Label id="labelThingsToChange" fx:id="labelAvatar" layoutX="515.0" layoutY="41.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="84.0" prefWidth="84.0" styleClass="userImageLabel">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Label>
+      <Label id="labelThingsToChange" fx:id="labelCharacterPortrait" layoutX="89.0" layoutY="208.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="72.0" prefWidth="71.0" styleClass="saveLabel">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Label>
+      <Label id="labelThingsToChange" fx:id="labelFactionLogo" layoutX="628.0" layoutY="37.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0" prefWidth="182.0" styleClass="saveLabel">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Label>
+      <Label fx:id="labelBalance" layoutX="635.0" layoutY="226.0" styleClass="contentLabel" text="Balance:">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Label>
+      <Label fx:id="labelIncome" layoutX="635.0" layoutY="252.0" styleClass="contentLabel" text="Income:">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Label>
+      <Label fx:id="labelSystems" layoutX="635.0" layoutY="278.0" styleClass="contentLabel" text="Systems:">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Label>
+      <Label fx:id="labelAtWar" layoutX="635.0" layoutY="305.0" styleClass="contentLabel" text="Contested:">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Label>
+      <Label id="labelUsername" fx:id="labelLastLogin" layoutX="88.0" layoutY="452.0" prefHeight="16.0" prefWidth="150.0" styleClass="contentLabel" text="Last Login:">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Label>
+      <Label fx:id="valueUsername" layoutX="206.0" layoutY="45.0" prefHeight="16.0" prefWidth="295.0" styleClass="contentLabel" text="Username">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Label>
+      <Label fx:id="valueCreated" layoutX="206.0" layoutY="73.0" prefHeight="16.0" prefWidth="295.0" styleClass="contentLabel" text="Created">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Label>
+      <Label fx:id="valueLastLogin" layoutX="235.0" layoutY="452.0" prefHeight="16.0" prefWidth="251.0" styleClass="contentLabel" text="yesterday">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Label>
+      <Label fx:id="valueBalance" layoutX="723.0" layoutY="226.0" prefHeight="16.0" prefWidth="84.0" styleClass="contentLabel" text="Balance">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Label>
+      <Label fx:id="valueIncome" layoutX="723.0" layoutY="252.0" prefHeight="16.0" prefWidth="84.0" styleClass="contentLabel" text="Income">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Label>
+      <Label fx:id="valueSystems" layoutX="723.0" layoutY="278.0" prefHeight="16.0" prefWidth="84.0" styleClass="contentLabel" text="Systems">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Label>
+      <Label fx:id="valueAtWar" layoutX="723.0" layoutY="305.0" prefHeight="16.0" prefWidth="84.0" styleClass="contentLabel" text="Contested">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Label>
+      <Label fx:id="labelCharName" layoutX="209.0" layoutY="211.0" styleClass="contentLabel" text="Name:">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Label>
+      <Label fx:id="labelCharAge" layoutX="209.0" layoutY="238.0" styleClass="contentLabel" text="Age:">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Label>
+      <Label fx:id="labelCharRank" layoutX="209.0" layoutY="297.0" styleClass="contentLabel" text="Rank:">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Label>
+      <Label fx:id="labelCharLocation" layoutX="209.0" layoutY="325.0" styleClass="contentLabel" text="Location:">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Label>
+      <Label fx:id="valueCharName" layoutX="305.0" layoutY="211.0" prefHeight="16.0" prefWidth="286.0" styleClass="contentLabel" text="CharName">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Label>
+      <Label fx:id="valueCharAge" layoutX="305.0" layoutY="238.0" prefHeight="16.0" prefWidth="286.0" styleClass="contentLabel" text="CharAge">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Label>
+      <Label fx:id="valueCharRank" layoutX="305.0" layoutY="297.0" prefHeight="16.0" prefWidth="286.0" styleClass="contentLabel" text="CharRank">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Label>
+      <Label fx:id="valueCharLocation" layoutX="305.0" layoutY="325.0" prefHeight="16.0" prefWidth="286.0" styleClass="contentLabel" text="CharLocation">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Label>
+      <Label fx:id="labelCharXP" layoutX="210.0" layoutY="352.0" styleClass="contentLabel" text="XP:">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Label>
+      <Label fx:id="valueCharXP" layoutX="306.0" layoutY="352.0" prefHeight="16.0" prefWidth="286.0" styleClass="contentLabel" text="CharXP">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Label>
+    <Label fx:id="labelFaction" layoutX="209.0" layoutY="267.0" prefHeight="16.0" prefWidth="76.0" styleClass="contentLabel" text="Faction:">
+      <stylesheets>
+        <URL value="@../styles/MainFrameStyle.css" />
+      </stylesheets>
+    </Label>
+      <Label fx:id="valueFaction" layoutX="305.0" layoutY="267.0" prefHeight="16.0" prefWidth="295.0" styleClass="contentLabel" text="Faction">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Label>
+      <ComboBox fx:id="cbCharChooser" layoutX="203.0" layoutY="162.0" onAction="#handleCharSelection" onShowing="#handleOpenCharList" prefHeight="23.0" prefWidth="396.0" />
+  </children>
+  <stylesheets>
+    <URL value="@../styles/MainFrameStyle.css" />
+  </stylesheets>
+</AnchorPane>

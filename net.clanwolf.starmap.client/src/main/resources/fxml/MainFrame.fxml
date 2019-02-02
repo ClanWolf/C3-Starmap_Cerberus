@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" fx:id="rootAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="630.0" prefWidth="1030.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.MainFrameController">
+    <children>
+        <Pane fx:id="mouseStopper" layoutX="-17.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="1.0" prefHeight="630.0" prefWidth="1030.0" styleClass="AnchorPane" visible="true">
+            <stylesheets>
+                <URL value="@../styles/MainFrameStyle.css" />
+            </stylesheets>
+        </Pane>
+        <ImageView fx:id="noiseImage" fitHeight="523.0" fitWidth="859.0" layoutX="123.0" layoutY="37.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="false">
+            <image>
+                <Image url="@../images/noise/noisemap.png" />
+            </image>
+        </ImageView>
+        <ImageView fx:id="spectrumImage" fitHeight="57.72469711303711" fitWidth="430.0" layoutX="-57.0" layoutY="318.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="false" rotate="90.0">
+            <image>
+                <Image url="@../images/spectrum/spectrum.png" />
+            </image>
+        </ImageView>
+      <Label id="onlineIndicatorLabelHoverHelper" fx:id="exitLabelTopRight" layoutX="982.0" layoutY="28.0" maxHeight="20.0" maxWidth="22.0" minHeight="20.0" minWidth="22.0" onMouseClicked="#handleTopRightExitLabel" onMouseEntered="#handleExitLabelTopRightMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="20.0" prefWidth="22.0" />
+      <Label id="statuslabel" fx:id="copyrightLabel" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="740.0" layoutY="584.0" minHeight="16.0" minWidth="69.0" prefHeight="16.0" prefWidth="181.0" styleClass="toplabel">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Label>
+        <Label fx:id="systemConsoleCurrentLine" alignment="BOTTOM_RIGHT" contentDisplay="RIGHT" disable="true" layoutX="358.0" layoutY="470.0" maxHeight="16.0" maxWidth="593.0" minHeight="16.0" minWidth="593.0" prefHeight="16.0" prefWidth="593.0" stylesheets="@../styles/MainFrameStyle.css" textAlignment="RIGHT" textFill="#f2f5f2" />
+        <Label fx:id="systemConsole" alignment="BOTTOM_RIGHT" contentDisplay="RIGHT" disable="true" layoutX="358.0" layoutY="82.0" maxHeight="404.0" maxWidth="593.0" minHeight="404.0" minWidth="593.0" mouseTransparent="true" prefHeight="404.0" prefWidth="593.0" textAlignment="RIGHT" textFill="#5a5e5b">
+            <font>
+                <Font size="12.0" />
+            </font>
+            <stylesheets>
+                <URL value="@../styles/MainFrameStyle.css" />
+            </stylesheets>
+        </Label>
+      <Label fx:id="systemConsoleCursor" alignment="BOTTOM_RIGHT" contentDisplay="RIGHT" disable="true" layoutX="948.0" layoutY="470.0" maxHeight="16.0" maxWidth="593.0" minHeight="16.0" minWidth="12.0" prefHeight="16.0" prefWidth="12.0" stylesheets="@../styles/MainFrameStyle.css" text="_" textAlignment="RIGHT" textFill="#f2f5f2" />
+        <Label id="" fx:id="versionLabel" layoutX="124.0" layoutY="584.0" prefWidth="212.0" styleClass="versionlabel" text="Version">
+            <font>
+                <Font name="System Italic" size="10.0" />
+            </font>
+            <stylesheets>
+                <URL value="@../styles/MainFrameStyle.css" />
+            </stylesheets>
+        </Label>
+        <Label fx:id="statuslabel" layoutX="130.0" layoutY="556.0" minHeight="16.0" minWidth="69.0" prefHeight="16.0" prefWidth="821.0" styleClass="statuslabel">
+            <stylesheets>
+                <URL value="@../styles/MainFrameStyle.css" />
+            </stylesheets>
+        </Label>
+        <Label id="statuslabel" fx:id="toplabel" contentDisplay="RIGHT" layoutX="791.0" layoutY="30.0" minHeight="16.0" minWidth="69.0" prefHeight="16.0" prefWidth="173.0" styleClass="toplabel">
+            <stylesheets>
+                <URL value="@../styles/MainFrameStyle.css" />
+            </stylesheets>
+        </Label>
+        <Label fx:id="onlineIndicatorLabel" layoutX="374.0" layoutY="590.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="3.0" minWidth="-Infinity" onMouseEntered="#handleOnlineIndicatorLabelMouseEventEnter" onMouseExited="#handleOnlineIndicatorLabelMouseEventExit" prefHeight="3.0" prefWidth="12.0">
+            <stylesheets>
+                <URL value="@../styles/MainFrameStyle.css" />
+            </stylesheets>
+        </Label>
+        <Label fx:id="onlineIndicatorLabelHoverHelper" layoutX="366.0" layoutY="577.0" onMouseClicked="#handleOnlineIndicatorLabelMouseEventClick" onMouseEntered="#handleOnlineIndicatorLabelMouseEventEnter" onMouseExited="#handleOnlineIndicatorLabelMouseEventExit" prefHeight="31.0" prefWidth="25.0" />
+        <Label id="onlineIndicatorLabel" fx:id="loginIndicatorLabel" layoutX="420.0" layoutY="590.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="2.9998779296875" minWidth="-Infinity" onMouseEntered="#handleLoginIndicatorLabelMouseEventEnter" onMouseExited="#handleLoginIndicatorLabelMouseEventExit" prefHeight="2.9998779296875" prefWidth="12.0">
+            <stylesheets>
+                <URL value="@../styles/MainFrameStyle.css" />
+            </stylesheets>
+        </Label>
+        <Label id="onlineIndicatorLabelHoverHelper" fx:id="loginIndicatorLabelHoverHelper" layoutX="413.0" layoutY="577.0" onMouseEntered="#handleLoginIndicatorLabelMouseEventEnter" onMouseExited="#handleLoginIndicatorLabelMouseEventExit" prefHeight="31.0" prefWidth="24.9998779296875" />
+      <Button fx:id="adminButton" layoutX="68.0" layoutY="265.0" maxHeight="20.0" maxWidth="40.0" minHeight="20.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleAdminButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="20.0" prefWidth="40.0" textAlignment="CENTER">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Button>
+        <Button fx:id="languageButton" focusTraversable="false" layoutX="498.0" layoutY="581.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="17.0" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#handleLanguageButtonMouseEventClick" onMouseEntered="#handleLanguageButtonMouseEventEnter" onMouseExited="#handleLanguageButtonMouseEventExit" prefHeight="17.0" prefWidth="33.0">
+            <stylesheets>
+                <URL value="@../styles/MainFrameStyle.css" />
+            </stylesheets>
+        </Button>
+        <Button id="btn_dark-blue" fx:id="userButton" layoutX="68.0" layoutY="160.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleLoginButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" styleClass="loginButton" text="" textAlignment="CENTER">
+            <stylesheets>
+                <URL value="@../styles/MainFrameStyle.css" />
+            </stylesheets>
+        </Button>
+        <Button id="btn_dark-blue" fx:id="mapButton" layoutX="68.0" layoutY="349.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleMapButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" styleClass="mapButton" text="" textAlignment="CENTER">
+            <stylesheets>
+                <URL value="@../styles/MainFrameStyle.css" />
+            </stylesheets>
+        </Button>
+        <Button id="btn_dark-blue" fx:id="characterButton" layoutX="68.0" layoutY="392.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onMouseEntered="#handleCharacterButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" styleClass="charButton" text="" textAlignment="CENTER">
+            <stylesheets>
+                <URL value="@../styles/MainFrameStyle.css" />
+            </stylesheets>
+        </Button>
+        <Button id="btn_dark-blue" fx:id="industryButton" layoutX="68.0" layoutY="435.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onMouseEntered="#handleIndustryButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" styleClass="industryButton" text="" textAlignment="CENTER">
+            <stylesheets>
+                <URL value="@../styles/MainFrameStyle.css" />
+            </stylesheets>
+        </Button>
+        <Button id="btn_dark-blue" fx:id="pluginsButton" layoutX="68.0" layoutY="478.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onMouseEntered="#handlePluginsButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" styleClass="pluginsButton" text="" textAlignment="CENTER">
+            <stylesheets>
+                <URL value="@../styles/MainFrameStyle.css" />
+            </stylesheets>
+        </Button>
+        <Button id="btn_dark-blue" fx:id="settingsButton" layoutX="68.0" layoutY="205.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleSettingsButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" styleClass="settingsButton" textAlignment="CENTER">
+            <stylesheets>
+                <URL value="@../styles/MainFrameStyle.css" />
+            </stylesheets>
+        </Button>
+        <Button id="btn_dark-red" fx:id="exitButton" layoutX="68.0" layoutY="535.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleExitButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" styleClass="exitButton" textAlignment="CENTER">
+            <stylesheets>
+                <URL value="@../styles/MainFrameStyle.css" />
+            </stylesheets>
+        </Button>
+        <Label id="onlineIndicatorLabel" fx:id="databaseAccessibleIndicatorLabel" layoutX="397.0" layoutY="590.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="2.9998779296875" minWidth="-Infinity" onMouseEntered="#handleDatabaseAccessibleIndicatorLabelMouseEventEnter" onMouseExited="#handleDatabaseAccessibleIndicatorLabelMouseEventExit" prefHeight="2.9998779296875" prefWidth="12.0">
+            <stylesheets>
+                <URL value="@../styles/MainFrameStyle.css" />
+            </stylesheets>
+        </Label>
+        <Label id="onlineIndicatorLabelHoverHelper" fx:id="databaseAccessibleIndicatorLabelHoverHelper" layoutX="390.0" layoutY="576.0" onMouseEntered="#handleDatabaseAccessibleIndicatorLabelMouseEventEnter" onMouseExited="#handleDatabaseAccessibleIndicatorLabelMouseEventExit" prefHeight="31.0" prefWidth="24.9998779296875" />
+      <Label id="ResizerControl" fx:id="labelResizerControl" layoutX="968.0" layoutY="573.0" prefHeight="31.0" prefWidth="33.0" styleClass="statuslabel" stylesheets="@../styles/MainFrameStyle.css">
+         <cursor>
+            <Cursor fx:constant="NW_RESIZE" />
+         </cursor>
+      </Label>
+      <Button id="btn_dark-blue" fx:id="renameMeButton3" layoutX="114.0" layoutY="392.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" prefHeight="40.0" prefWidth="40.0" text="" textAlignment="CENTER">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Button>
+      <Button id="btn_dark-blue" fx:id="renameMeButton2" layoutX="114.0" layoutY="349.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" prefHeight="40.0" prefWidth="40.0" text="" textAlignment="CENTER">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Button>
+      <Button id="btn_dark-blue" fx:id="renameMeButton4" layoutX="114.0" layoutY="435.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" prefHeight="40.0" prefWidth="40.0" text="" textAlignment="CENTER">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Button>
+      <Button id="btn_dark-blue" fx:id="renameMeButton5" layoutX="114.0" layoutY="478.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" prefHeight="40.0" prefWidth="40.0" text="" textAlignment="CENTER">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Button>
+      <Button id="btn_dark-blue" fx:id="storyEditorButton" layoutX="114.0" layoutY="306.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleStoryEditorButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" styleClass="charButton" text="" textAlignment="CENTER">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Button>
+      <Button id="btn_dark-blue" fx:id="rolePlayButton" layoutX="68.0" layoutY="306.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" prefHeight="40.0" prefWidth="40.0" styleClass="roleplayButton" text="" textAlignment="CENTER">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Button>
+      <ImageView fx:id="hudinfo1" fitHeight="34.0" fitWidth="66.0" layoutX="55.0" layoutY="162.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/gui/menuindicator.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="hudinfo" fitHeight="250.0" fitWidth="280.0" layoutX="685.0" layoutY="60.0" mouseTransparent="true" opacity="0.15" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/gui/hud.gif" />
+         </image>
+      </ImageView>
+    </children>
+    <stylesheets>
+        <URL value="@../styles/MainFrameStyle.css" />
+    </stylesheets>
+</AnchorPane>

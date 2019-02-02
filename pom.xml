@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<name>C3-Starmap Cerberus</name>
+	<description>Starsystem map of the Inner Sphere, Periphery and Clan space (BattleTech).</description>
+	<url>http://c3.clanwolf.net</url>
+	<organization>
+		<name>ClanWolf W-7</name>
+		<url>http://www.clanwolf.net</url>
+	</organization>
+
+	<groupId>net.clanwolf.starmap</groupId>
+	<artifactId>C3-Starmap_Cerberus</artifactId>
+	<version>4.2.3</version>
+
+	<packaging>pom</packaging>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<mainClass>net.clanwolf.starmap.client.gui.MainFrame</mainClass>
+
+		<!-- Versions -->
+		<version.javafx>12-ea+10</version.javafx>
+		<version.maven-compiler-plugin>3.8.0</version.maven-compiler-plugin>
+		<version.asm>7.0</version.asm>
+	</properties>
+
+	<modules>
+		<module>net.clanwolf.starmap.server</module>
+		<module>net.clanwolf.starmap.client</module>
+		<module>net.clanwolf.starmap.transfer</module>
+	</modules>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${version.maven-compiler-plugin}</version>
+				<configuration>
+					<release>11</release>
+					<showWarnings>true</showWarnings>
+					<showDeprecation>true</showDeprecation>
+				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.ow2.asm</groupId>
+						<artifactId>asm</artifactId>
+						<version>${version.asm}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>

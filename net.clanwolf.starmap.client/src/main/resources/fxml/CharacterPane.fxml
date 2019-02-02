@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import java.net.URL?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Point3D?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="CharacterPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.character.CharacterPaneController">
+  <children>
+    <Label fx:id="panelHeadline" alignment="BASELINE_RIGHT" contentDisplay="CENTER" layoutX="14.0" layoutY="375.0" mouseTransparent="true" opacity="0.12" prefWidth="794.0" text="[[[___]]]">
+      <font>
+        <Font name="Arial Bold" size="80.0" />
+      </font>
+      <stylesheets>
+        <URL value="@../styles/MainFrameStyle.css" />
+      </stylesheets>
+      <textFill>
+        <Color blue="0.804" green="0.620" red="0.412" fx:id="x1" />
+      </textFill>
+    </Label>
+    <Button id="buttonYes" fx:id="buttonNew" layoutX="670.0" layoutY="18.0" maxWidth="-Infinity" minWidth="-1.0" mnemonicParsing="false" onMouseClicked="#handleNewButtonClick" prefWidth="88.0" styleClass="contentButton" text="new">
+      <stylesheets>
+        <URL value="@../styles/MainFrameStyle.css" />
+      </stylesheets>
+    </Button>
+    <TabPane layoutX="63.0" layoutY="58.0" prefHeight="382.0" prefWidth="776.0" tabClosingPolicy="UNAVAILABLE">
+      <stylesheets>
+        <URL value="@../styles/MainFrameStyle.css" />
+      </stylesheets>
+      <tabs>
+        <Tab fx:id="char_tab1" text="Untitled Tab 1">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="318.0" prefWidth="634.0">
+              <children>
+                <ImageView fitHeight="150.0" fitWidth="199.99999462718696" layoutX="549.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
+                  <rotationAxis>
+                    <Point3D z="1.0" />
+                  </rotationAxis>
+                </ImageView>
+                <Label fx:id="lab_charname" layoutX="14.0" layoutY="14.0" prefWidth="72.0" styleClass="contentLabel" text="Name">
+                  <stylesheets>
+                    <URL value="@../styles/MainFrameStyle.css" />
+                  </stylesheets>
+                </Label>
+                <TextField fx:id="char_name" layoutX="96.0" layoutY="11.0" prefWidth="425.0" text="" />
+                <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="150.0" layoutX="549.0" layoutY="11.0" stroke="BLACK" strokeType="INSIDE" width="200.0" />
+                <Label id="lab_charname" layoutX="14.0" layoutY="45.0" prefWidth="72.0" styleClass="contentLabel" text="Birthdate">
+                  <stylesheets>
+                    <URL value="@../styles/MainFrameStyle.css" />
+                  </stylesheets>
+                </Label>
+                <TextField id="char_name" fx:id="char_birthdate" layoutX="96.0" layoutY="39.0" prefWidth="147.0" text="" />
+                <Label id="lab_charname" layoutX="14.0" layoutY="74.0" prefWidth="72.0" styleClass="contentLabel" text="Fraktion">
+                  <stylesheets>
+                    <URL value="@../styles/MainFrameStyle.css" />
+                  </stylesheets>
+                </Label>
+                <ComboBox fx:id="char_owner" layoutX="96.0" layoutY="71.0" prefWidth="424.9998779296875" />
+                <Label id="lab_charname" layoutX="14.0" layoutY="134.0" prefWidth="72.0" styleClass="contentLabel" text="Aufenthalt" visible="false">
+                  <stylesheets>
+                    <URL value="@../styles/MainFrameStyle.css" />
+                  </stylesheets>
+                </Label>
+                <ComboBox fx:id="char_system" layoutX="96.0" layoutY="130.0" prefWidth="424.9998779296875" visible="false">
+                  <items>
+                    <FXCollections fx:factory="observableArrayList">
+                      <String fx:value="Item 1" />
+                      <String fx:value="Item 2" />
+                      <String fx:value="Item 3" />
+                    </FXCollections>
+                  </items>
+                </ComboBox>
+                <Label id="lab_charname" layoutX="14.0" layoutY="102.0" prefWidth="72.0" styleClass="contentLabel" text="User">
+                  <stylesheets>
+                    <URL value="@../styles/MainFrameStyle.css" />
+                  </stylesheets>
+                </Label>
+                <ComboBox fx:id="char_user" disable="false" focusTraversable="true" layoutX="96.0" layoutY="98.0" prefWidth="424.9998779296875" />
+                <Label id="lab_charname" layoutX="14.0" layoutY="131.0" prefWidth="72.0" styleClass="contentLabel" text="NPC">
+                  <stylesheets>
+                    <URL value="@../styles/MainFrameStyle.css" />
+                  </stylesheets>
+                </Label>
+                <CheckBox fx:id="char_NPC" layoutX="96.0" layoutY="131.0" mnemonicParsing="false" text="" />
+              </children>
+            </AnchorPane>
+          </content>
+        </Tab>
+        <Tab fx:id="char_tab2" text="Untitled Tab 2">
+          <content>
+            <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+              <children>
+                <TextArea fx:id="char_background" layoutX="14.0" layoutY="7.0" prefHeight="319.0" prefWidth="744.0" wrapText="true" />
+              </children>
+            </AnchorPane>
+          </content>
+        </Tab>
+      </tabs>
+    </TabPane>
+    <Label fx:id="labelThingsToChange" layoutX="795.0" layoutY="14.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="44.0" styleClass="saveLabel" text="" visible="true">
+      <stylesheets>
+        <URL value="@../styles/MainFrameStyle.css" />
+      </stylesheets>
+    </Label>
+    <Button id="buttonYes" fx:id="buttonSave" disable="true" layoutX="547.0" layoutY="449.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#handleSaveButtonClick" prefWidth="140.0" styleClass="contentButton" text="save" visible="true">
+      <stylesheets>
+        <URL value="@../styles/MainFrameStyle.css" />
+      </stylesheets>
+    </Button>
+    <Button id="buttonYes" fx:id="buttonCancel" disable="false" layoutX="699.0" layoutY="450.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#handleCancelButtonClick" prefWidth="140.0" styleClass="contentButton" text="cancel" visible="true">
+      <stylesheets>
+        <URL value="@../styles/MainFrameStyle.css" />
+      </stylesheets>
+    </Button>
+    <ComboBox fx:id="char_selection" layoutX="78.0" layoutY="22.0" prefHeight="27.800003051757812" prefWidth="588.0">
+      <items>
+        <FXCollections fx:factory="observableArrayList">
+          <String fx:value="Item 1" />
+          <String fx:value="Item 2" />
+          <String fx:value="Item 3" />
+        </FXCollections>
+      </items>
+    </ComboBox>
+  </children>
+  <stylesheets>
+    <URL value="@../styles/MainFrameStyle.css" />
+  </stylesheets>
+</AnchorPane>

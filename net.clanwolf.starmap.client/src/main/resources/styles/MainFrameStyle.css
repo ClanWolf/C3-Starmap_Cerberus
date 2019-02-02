@@ -1,0 +1,692 @@
+/* ---------------------------------------------------------------- |
+ *    ____ _____                                                    |
+ *   / ___|___ /                   Communicate - Command - Control  |
+ *  | |     |_ \                   MkIV "Phoenix"                   |
+ *  | |___ ___) |                                                   |
+ *   \____|____/                                                    |
+ *                                                                  |
+ * ---------------------------------------------------------------- |
+ * Info        : http://www.clanwolf.net                            |
+ * GitHub      : https://github.com/ClanWolf                        |
+ * ---------------------------------------------------------------- |
+ * Licensed under the Apache License, Version 2.0 (the "License");  |
+ * you may not use this file except in compliance with the License. |
+ * You may obtain a copy of the License at                          |
+ * http://www.apache.org/licenses/LICENSE-2.0                       |
+ *                                                                  |
+ * Unless required by applicable law or agreed to in writing,       |
+ * software distributed under the License is distributed on an "AS  |
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either  |
+ * express or implied. See the License for the specific language    |
+ * governing permissions and limitations under the License.         |
+ *                                                                  |
+ * C3 includes libraries and source code by various authors.        |
+ * Copyright (c) 2018, ClanWolf.net                                 |
+ * ---------------------------------------------------------------- |
+ */
+.root {
+    -fx-accent: #427aa2;
+    -fx-focus-color: #427aa2;
+    -fx-font-family: "Arial";
+    -fx-base: #427aa2;
+    -fx-background: #427aa2;
+}
+
+#MainContentPane {
+    /* -fx-background-color: #ff0000; */
+}
+
+#AnchorPane {
+    -fx-background-color: transparent;
+    -fx-background-image: url("../images/gui/C3_Stage_Background.png");
+    -fx-background-repeat: stretch;
+    -fx-background-size: 1000 600;
+    -fx-background-position: center center;
+    -fx-effect: dropshadow(gaussian, black, 14, 0.5, 0, 0);
+}
+
+.mouseStopper {
+    -fx-background-color: transparent;
+}
+
+#label {
+    -fx-font-family: "Arial";
+    -fx-font-size: 10px;
+}
+
+.saveLabel {
+    -fx-background-image: url("../icons/alert.png");
+    -fx-background-repeat: stretch;
+    -fx-background-size: 44 44;
+    -fx-background-position: center center;
+}
+
+.userImageLabel {
+    -fx-background-image: url("../icons/alert.png");
+    -fx-background-repeat: stretch;
+    -fx-background-size: 44 44;
+    -fx-background-position: center center;
+}
+
+.resultIconLabel_Undetermined {
+    -fx-background-image: url("../icons/open.png");
+    -fx-background-repeat: stretch;
+    -fx-background-size: 20 20;
+    -fx-background-position: center center;
+}
+
+.resultIconLabel_Success {
+    -fx-background-image: url("../icons/success.png");
+    -fx-background-repeat: stretch;
+    -fx-background-size: 20 20;
+    -fx-background-position: center center;
+}
+
+.resultIconLabel_Failure {
+    -fx-background-image: url("../icons/failure.png");
+    -fx-background-repeat: stretch;
+    -fx-background-size: 20 20;
+    -fx-background-position: center center;
+}
+
+.contentLabel {
+    -fx-text-fill: #a3d4ef;
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.contentLabelSideImage {
+    -fx-background-image: url("../images/bg_units/bp_mech_front.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: left bottom;
+}
+
+.contentLabelSideImageJumpShip {
+    -fx-background-image: url("../images/bg_units/bp_jumpship_side.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: right top;
+}
+
+.contentLabelSideImageSatelite {
+    -fx-background-image: url("../images/bg_units/satelite.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: right top;
+}
+
+.contentLabelSideImageFingerprint {
+    -fx-background-image: url("../images/gui/fingerprint.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: left top;
+}
+
+.check-box .text {
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.check-box .box {
+    -fx-background-color: -fx-shadow-highlight-color, -fx-outer-border, -fx-inner-border, -fx-body-color;
+    -fx-background-insets: 0, 0, 1, 2;
+    -fx-background-radius: 2, 2, 1, 1;
+    -fx-padding: 0.25em;
+}
+
+.check-box:focused .box {
+    -fx-background-color: -fx-focus-color, -fx-outer-border, -fx-inner-border, -fx-body-color;
+    -fx-background-insets: 0, 0, 1, 2;
+    -fx-background-radius: 2, 2, 1, 1;
+}
+
+.check-box:hover .box {
+    -fx-color: -fx-hover-base;
+}
+
+.check-box:armed .box {
+    -fx-color: -fx-pressed-base;
+}
+
+.check-box .mark {
+    -fx-background-color: transparent;
+    -fx-background-insets: 1 0 -1 0, 0;
+    -fx-padding: 0.333333em; /* 4 -- this is half the size of the mark */
+    -fx-shape: "M0,4H2L3,6L6,0H8L4,8H2Z";
+}
+
+.check-box:selected .mark {
+    -fx-background-color: -fx-mark-highlight-color, -fx-mark-color;
+}
+
+.check-box:disabled {
+    /* Values of the disabled checkbox */
+}
+
+.check-box:focused *.box {
+    -fx-background-color: -fx-focus-color, -fx-outer-border, -fx-inner-border, -fx-body-color;
+    -fx-background-radius: 3.4, 2, 1, 1;
+    -fx-background-insets: -1.4, 0, 1, 2;
+}
+
+.slider .track {
+    -fx-background-color:
+        -fx-shadow-highlight-color,
+        derive(-fx-color,-22%),
+        linear-gradient(to bottom, derive(-fx-color,-15.5%), derive(-fx-color,34%) 30%, derive(-fx-color,68%));
+    -fx-background-insets: 1 1 1 1, 0, 1;
+    -fx-background-radius: 1, 1, 1;
+    -fx-padding: 0.208333em; /* 2.5 */
+}
+
+.toplabel {
+    -fx-font-size: 8pt;
+    -fx-text-fill: #da9f00;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.8), 0, 2, 2, 2);
+}
+
+.versionlabel {
+    -fx-font-size: 8pt;
+    -fx-text-fill: #da9f00;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.8), 0, 2, 2, 2);
+}
+
+.statuslabel {
+    -fx-font-size: 8pt;
+    -fx-text-fill: #667288;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.8), 0, 2, 2, 2);
+}
+
+.exitButton {
+    -fx-background-image: url("../images/buttons/exit.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 32, 32;
+    -fx-background-position: center;
+}
+
+.exitButton:hover {
+    -fx-background-image: url("../images/buttons/exit_hover.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 32, 32;
+    -fx-background-insets: -20, -20;
+    -fx-background-position: center;
+}
+
+.roleplayButton {
+    -fx-background-image: url("../images/buttons/roleplay.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 32, 32;
+    -fx-background-position: center;
+}
+
+.roleplayButton:hover {
+    -fx-background-image: url("../images/buttons/roleplay_hover.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 32, 32;
+    -fx-background-insets: -20, -20;
+    -fx-background-position: center;
+}
+
+.loginButton {
+    -fx-background-image: url("../images/buttons/login.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 32, 32;
+    -fx-background-position: center;
+}
+
+.loginButton:hover {
+    -fx-background-image: url("../images/buttons/login_hover.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 32, 32;
+    -fx-background-position: center;
+}
+
+.charButton {
+    -fx-background-image: url("../images/buttons/char.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 32, 32;
+    -fx-background-position: center;
+}
+
+.charButton:hover {
+    -fx-background-image: url("../images/buttons/char_hover.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 32, 32;
+    -fx-background-position: center;
+}
+
+.industryButton {
+    -fx-background-image: url("../images/buttons/industry.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 32, 32;
+    -fx-background-position: center;
+}
+
+.industryButton:hover {
+    -fx-background-image: url("../images/buttons/industry_hover.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 32, 32;
+    -fx-background-position: center;
+}
+
+.mapButton {
+    -fx-background-image: url("../images/buttons/map.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 32, 32;
+    -fx-background-position: center;
+}
+
+.mapButton:hover {
+    -fx-background-image: url("../images/buttons/map_hover.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 32, 32;
+    -fx-background-position: center;
+}
+
+.endroundButton {
+    -fx-background-image: url("../images/buttons/endround.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 32, 32;
+    -fx-background-position: center;
+}
+
+.endroundButton:hover {
+    -fx-background-image: url("../images/buttons/endround_hover.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 32, 32;
+    -fx-background-position: center;
+}
+
+.settingsButton {
+    -fx-background-image: url("../images/buttons/settings.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 32, 32;
+    -fx-background-position: center;
+}
+
+.settingsButton:hover {
+    -fx-background-image: url("../images/buttons/settings_hover.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 32, 32;
+    -fx-background-position: center;
+}
+
+.pluginsButton {
+    -fx-background-image: url("../images/buttons/plugins.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 32, 32;
+    -fx-background-position: center;
+}
+
+.pluginsButton:hover {
+    -fx-background-image: url("../images/buttons/plugins_hover.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 32, 32;
+    -fx-background-position: center;
+}
+
+.languageButton_en {
+    -fx-background-image: url("../images/buttons/lang_en.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 33, 17;
+    -fx-background-position: center;
+    -fx-font-family: "Arial";
+    -fx-background-insets: 0,1,2,0;
+    -fx-padding: 0 0 0 0;
+}
+
+.languageButton_de {
+    -fx-background-image: url("../images/buttons/lang_de.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 33, 17;
+    -fx-background-position: center;
+    -fx-font-family: "Arial";
+    -fx-background-insets: 0,1,2,0;
+    -fx-padding: 0 0 0 0;
+}
+
+.languageButton_hover {
+    -fx-background-image: url("../images/buttons/lang_hover.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 33, 17;
+    -fx-background-position: center;
+    -fx-font-family: "Arial";
+    -fx-background-insets: 0,1,2,0;
+    -fx-padding: 0 0 0 0;
+}
+
+.RPStoriesButton {
+    -fx-background-image: url("../icons/rpstories.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 16, 16;
+    -fx-background-position: center;
+}
+
+.RPChapterButton {
+    -fx-background-image: url("../icons/rpchapter.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 16, 16;
+    -fx-background-position: center;
+}
+
+.RPStepButton {
+    -fx-background-image: url("../icons/rpstep.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 16, 16;
+    -fx-background-position: center;
+}
+
+.RPEditButton {
+    -fx-background-image: url("../icons/rpedit.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 16, 16;
+    -fx-background-position: center;
+}
+
+.RPDeleteButton {
+    -fx-background-image: url("../icons/rpdelete.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 16, 16;
+    -fx-background-position: center;
+}
+
+.RPDeleteButton2 {
+    -fx-background-image: url("../icons/rpdelete2.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 16, 16;
+    -fx-background-position: center;
+}
+
+.RPEmptyButton {
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 16, 16;
+    -fx-background-position: center;
+}
+
+.RPPlusButton {
+	-fx-background-image: url("../icons/rpplus.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 8, 8;
+    -fx-background-position: center;
+}
+
+.RPMinusButton {
+	-fx-background-image: url("../icons/rpminus.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 8, 8;
+    -fx-background-position: center;
+}
+
+.tab-pane *.tab-header-background {
+    -fx-background-color: rgba(0,0,0,0.0);
+    -fx-effect: null;
+}
+
+.tab-pane *.tab-header-area {
+    -fx-background-color: rgba(0,0,0,0.0);
+    -fx-effect: null;
+}
+
+.tab-pane {
+    -fx-border-color: rgba(53,89,119,0.6);
+    -fx-border-width: 2;
+    -fx-background-color: rgba(48,82,112,0.0);
+    -fx-background-insets: 0,0,0,0;
+    -fx-background-radius: 0,0,0,0;
+    -fx-padding: 0 0 0 0;
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #a3d4ef;
+}
+
+.tab {
+    -fx-border-color: rgba(53,89,119,0.6);
+    -fx-border-width: 0;
+    -fx-background-color: rgba(48,82,112,0.4);
+    -fx-background-insets: 0,0,0,0;
+    -fx-background-radius: 0,0,0,0;
+    -fx-padding: 3 10 3 10;
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #a3d4ef;
+}
+
+.tab:selected {
+    -fx-border-color: rgba(60,104,140,0.8);
+    -fx-border-width: 0;
+    -fx-background-color: rgba(60,104,140,0.8);
+}
+
+.tab-content-area {
+    -fx-background-color: rgba(48,82,112,0.3);
+}
+
+.tab *.tab-label {
+    -fx-text-fill: #a3d4ef;
+}
+
+.text-field {
+    -fx-border-color: #779fc3;
+    -fx-border-width: 1;
+    -fx-background-color: rgba(48,82,112,0.5);
+    -fx-padding: 2 2 2 2;
+    -fx-text-fill: #a3d4ef;
+}
+
+.text-field:focused {
+    -fx-border-color: #a3d4ef;
+}
+
+.text-area {
+    -fx-border-color: rgba(53,89,119,0.6);
+    -fx-background-color: rgba(53,89,119,0.2);
+    -fx-background-radius: 0, 0, 0, 0;
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #a3d4ef;
+}
+
+.text-area .scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.text-area .scroll-pane .viewport{
+    -fx-background-color: transparent;
+}
+
+.text-area .scroll-pane .content{
+    -fx-background-color: transparent;
+}
+
+/* Web View Area
+
+.web-view-area .scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.web-view-area .scroll-pane .viewport{
+    -fx-background-color: transparent;
+}
+
+.web-view-area .scroll-pane .content{
+    -fx-background-color: transparent;
+}*/
+
+.scroll-bar:vertical {
+    -fx-background-color: #102532;
+}
+
+.scroll-bar:vertical:focused {
+    -fx-background-color: #102532;
+    -fx-background-insets: -1.4, 0, 1;
+}
+
+.contentTextArea {
+    -fx-border-color: rgba(53,89,119,0.6);
+    -fx-border-width: 2;
+    -fx-background-color: rgba(48,82,112,0.3);
+    -fx-background-insets: 1,1,1,1;
+    -fx-background-radius: 0,0,0,0;
+    -fx-padding: 8 8 8 8;
+}
+
+.contentTextAreaEmpty {
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-background-color: transparent;
+    -fx-background-insets: 1,1,1,1;
+    -fx-background-radius: 0,0,0,0;
+    -fx-padding: 8 8 8 8;
+}
+
+.contentTextAreaHelpField {
+    -fx-border-color: #bedcbe;
+    -fx-border-width: 1;
+    -fx-background-color: rgba(255,255,192,0.3);
+    -fx-background-insets: 1,1,1,1;
+    -fx-background-radius: 0,0,0,0;
+    -fx-padding: 2 2 2 2;
+    -fx-text-fill: #bedcbe;
+}
+
+.contentTextAreaBlock {
+    -fx-background-color: rgba(53,89,119,0.6);
+    -fx-background-insets: 0,0,0,0;
+    -fx-background-radius: 0,0,0,0;
+    -fx-padding: 8 8 8 8;
+}
+
+.contentButton {
+    -fx-border-color: #538b53;
+    -fx-background-color: rgba(70,118,70,0.4);
+    -fx-background-image: url("../images/buttons/ContentButton_BG.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-insets: 1,1,1,1;
+    -fx-background-radius: 0,0,0,0;
+    -fx-padding: 10 10 8 10;
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #bedcbe;
+}
+
+.contentButton:hover {
+    -fx-background-color: rgba(70,118,70,0.8);
+    -fx-text-fill: #fff;
+    -fx-background-image: url("../images/buttons/ContentButton_BG_hover.png");
+}
+
+.contentButton:focused {
+    -fx-background-color: rgba(70,118,70,0.8);
+    -fx-text-fill: #fff;
+    -fx-background-image: url("../images/buttons/ContentButton_BG_focus.png");
+}
+
+.contentButton:armed {
+    -fx-background-color: rgba(255,255,132,0.5);
+    -fx-border-color: #ffd42a;
+    -fx-text-fill: #fff;
+    -fx-background-image: url("../images/buttons/ContentButton_BG_armed.png");
+}
+
+.contentButtonRed {
+    -fx-border-color: #fe2f00;
+    -fx-background-color: rgba(200,36,0,0.4);
+    -fx-background-image: url("../images/buttons/ContentButton_BG.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-insets: 1,1,1,1;
+    -fx-background-radius: 0,0,0,0;
+    -fx-padding: 10 10 8 10;
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #bedcbe;
+}
+
+.contentButtonRed:hover {
+    -fx-background-color: rgba(200,36,0,0.8);
+    -fx-text-fill: #fff;
+    -fx-background-image: url("../images/buttons/ContentButton_BG_hover.png");
+}
+
+.contentButtonRed:focused {
+    -fx-background-color: rgba(200,36,0,0.8);
+    -fx-text-fill: #fff;
+    -fx-background-image: url("../images/buttons/ContentButton_BG_focus.png");
+}
+
+.contentButtonRed:armed {
+    -fx-background-color: rgba(200,36,0,0.5);
+    -fx-border-color: #fe2f00;
+    -fx-text-fill: #fff;
+    -fx-background-image: url("../images/buttons/ContentButton_BG_armed.png");
+}
+
+.contentButtonRed:pressed {
+    -fx-background-color: rgba(200,36,0,0.5);
+    -fx-border-color: #fe2f00;
+    -fx-text-fill: #fff;
+    -fx-background-image: url("../images/buttons/ContentButton_BG_armed.png");
+}
+
+/* Toolbar button normal */
+#btn_dark-blue {
+    -fx-border-color: null;
+    -fx-border-width: 0;
+    -fx-background-color:
+        #090a0c,
+        linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
+        linear-gradient(#20262b, #191d22),
+        radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));
+    -fx-background-insets: 0,1,2,0;
+    -fx-effect: dropshadow(three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1);
+    -fx-padding: 8 8 8 8;
+}
+
+/* Toolbar button hover */
+#btn_dark-blue:hover {
+
+}
+
+/* Toolbar button disabled */
+#btn_dark-blue:disabled {
+
+}
+
+/* Toolbar button focused */
+#btn_dark-blue:focused {
+    -fx-border-color: #808080;
+    -fx-border-width: 1;
+}
+
+/* Toolbar button normal */
+#btn_dark-red {
+    -fx-border-color: null;
+    -fx-border-width: 0;
+    -fx-background-color:
+        #1c0000,
+        linear-gradient(#850000 0%, #4e0000 20%, #410000 100%),
+        linear-gradient(#520000, #410000),
+        radial-gradient(center 50% 0%, radius 100%, rgba(255,59,63,0.9), rgba(255,255,255,0));
+    -fx-background-insets: 0,1,2,0;
+    -fx-effect: dropshadow(three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1);
+    -fx-padding: 8 8 8 8;
+}
+
+/* Toolbar button hover */
+#btn_dark-red:hover {
+
+}
+
+/* Toolbar button disabled */
+#btn_dark-red:disabled {
+
+}
+
+/* Toolbar button focused */
+#btn_dark-red:focused {
+    -fx-border-color: #808080;
+    -fx-border-width: 1;
+}

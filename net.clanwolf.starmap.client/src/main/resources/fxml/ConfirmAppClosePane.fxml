@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="confirmAppClosePane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.confirmAppClose.ConfirmAppClosePaneController">
+  <children>
+    <Label alignment="BOTTOM_LEFT" layoutX="62.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true" opacity="0.2" prefHeight="426.0" prefWidth="450.0" styleClass="contentLabelSideImageJumpShip">
+      <stylesheets>
+        <URL value="@../styles/MainFrameStyle.css" />
+      </stylesheets>
+    </Label>
+    <Label fx:id="panelHeadline" alignment="BASELINE_RIGHT" contentDisplay="CENTER" layoutX="14.0" layoutY="375.0" mouseTransparent="true" opacity="0.12" prefWidth="794.0" text="SHUTDOWN">
+      <font>
+        <Font name="Arial Bold" size="80.0" />
+      </font>
+      <stylesheets>
+        <URL value="@../styles/MainFrameStyle.css" />
+      </stylesheets>
+      <textFill>
+        <Color blue="0.804" green="0.620" red="0.412" fx:id="x1" />
+      </textFill>
+    </Label>
+    <Button fx:id="buttonYes" layoutX="540.0" layoutY="439.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#handleConfirmButtonClick" prefWidth="140.0" styleClass="contentButton" text="Button">
+      <stylesheets>
+        <URL value="@../styles/MainFrameStyle.css" />
+      </stylesheets>
+    </Button>
+    <Button fx:id="buttonNo" layoutX="689.0" layoutY="439.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#handleCancelButtonClick" prefWidth="140.0" styleClass="contentButton" text="Button">
+      <stylesheets>
+        <URL value="@../styles/MainFrameStyle.css" />
+      </stylesheets>
+    </Button>
+      <TextArea fx:id="shutdownMessageArea" editable="false" focusTraversable="false" layoutX="65.0" layoutY="25.0" mouseTransparent="true" pickOnBounds="false" prefHeight="397.0" prefWidth="769.0" styleClass="contentTextAreaEmpty" stylesheets="@../styles/MainFrameStyle.css">
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </TextArea>
+  </children>
+  <stylesheets>
+    <URL value="@../styles/MainFrameStyle.css" />
+  </stylesheets>
+</AnchorPane>

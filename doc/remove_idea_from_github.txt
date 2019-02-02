@@ -1,0 +1,6 @@
+Remove .idea from github in case it was accidently added:
+
+git rm -r --cached .idea
+git add .gitignore
+git commit -m 'Removed'
+git push
