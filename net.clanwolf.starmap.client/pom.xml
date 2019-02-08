@@ -12,6 +12,19 @@
 
 	<artifactId>net.clanwolf.starmap.client</artifactId>
 
+
+<!-- Check -->
+<name>net.clanwolf.starmap.client</name>
+<packaging>jar</packaging>
+
+<properties>
+<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+<mainClass>md.test33.MainApp</mainClass>
+<moduleName>md</moduleName>
+</properties>
+<!-- Check -->
+
+
 	<dependencies>
 		<dependency>
 			<groupId>net.clanwolf.starmap</groupId>
@@ -80,6 +93,126 @@
 		</dependency>
 	</dependencies>
 
+	
+	
+	
+	
+	
+	
+	   <build>
+        <plugins>
+            <!-- sets up the version of Java you are running and complines the Code -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
+                <configuration>
+                    <release>11</release>  <!-- or <release>10</release>-->
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.ow2.asm</groupId>
+                        <artifactId>asm</artifactId>
+                        <version>6.2.1</version> <!-- Use newer version of ASM -->
+                    </dependency>
+                </dependencies>
+            </plugin>
+            <!-- used to make the program run -->            
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.6.0</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <configuration>
+                            <executable>${java.home}/bin/java</executable>
+                            <arguments>
+                                <argument>--module-path</argument>
+                                <argument>
+                                    ${project.build.directory}/modules
+                                </argument> 
+                                <argument>--module</argument>
+                                <argument>${moduleName}/${mainClass}</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+
+            </plugin>     
+
+            <plugin>
+              <artifactId>maven-jar-plugin</artifactId>
+              <version>3.1.0</version>
+              <configuration>
+                 <outputDirectory>
+                     ${project.build.directory}/modules
+                 </outputDirectory>
+              </configuration>
+           </plugin>
+
+
+            <plugin>
+                <groupId>org.moditect</groupId>
+                <artifactId>moditect-maven-plugin</artifactId>
+                <version>1.0.0.Beta1</version>
+                <executions>
+                    <execution>
+                        <id>create-runtime-image</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>create-runtime-image</goal>
+                        </goals>
+                        <configuration>
+                            <modulePath>
+                                <path>${project.build.directory}/modules</path>
+                            </modulePath>
+                            <modules>
+                                <module>${moduleName}</module>
+                                <!--   <module>javafx.controls</module>
+                                <module>javafx.graphics</module> -->
+                            </modules>
+                            <launcher>
+                                <name>test33</name>
+                                <module>${moduleName}/${mainClass}</module>
+                            </launcher>
+                            <compression>2</compression>
+                            <stripDebug>true</stripDebug>
+                            <outputDirectory>${project.build.directory}/jlink-image</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.1.1</version>
+                <executions>
+                    <execution>
+                        <id>copy-dependencies</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/modules</outputDirectory>
+                            <includeScope>runtime</includeScope>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin> 
+        </plugins>
+    </build>
+	
+	
+	
+	
+	
+	
+	
+	
 	<build>
 		<plugins>
 			<plugin>
