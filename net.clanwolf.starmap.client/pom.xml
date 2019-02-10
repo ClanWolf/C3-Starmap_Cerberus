@@ -12,18 +12,14 @@
 
 	<artifactId>net.clanwolf.starmap.client</artifactId>
 
+	<name>net.clanwolf.starmap.client</name>
+	<packaging>jar</packaging>
 
-<!-- Check -->
-<name>net.clanwolf.starmap.client</name>
-<packaging>jar</packaging>
-
-<properties>
-<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-<mainClass>md.test33.MainApp</mainClass>
-<moduleName>md</moduleName>
-</properties>
-<!-- Check -->
-
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<mainClass>net.clanwolf.starmap.client.MainFrame</mainClass>
+		<moduleName>net.clanwolf.starmap.client</moduleName>
+	</properties>
 
 	<dependencies>
 		<dependency>
@@ -42,9 +38,9 @@
 			<version>1.0.0</version>
 		</dependency>
 		<dependency>
-			<groupId>com.github.menacher</groupId>
-			<artifactId>nadclient</artifactId>
-			<version>0.8-SNAPSHOT</version>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-all</artifactId>
+			<version>4.1.33.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>org.kynosarges</groupId>
@@ -93,229 +89,435 @@
 		</dependency>
 	</dependencies>
 
-	
-	
-	
-	
-	
-	
-	   <build>
-        <plugins>
-            <!-- sets up the version of Java you are running and complines the Code -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.0</version>
-                <configuration>
-                    <release>11</release>  <!-- or <release>10</release>-->
-                </configuration>
-                <dependencies>
-                    <dependency>
-                        <groupId>org.ow2.asm</groupId>
-                        <artifactId>asm</artifactId>
-                        <version>6.2.1</version> <!-- Use newer version of ASM -->
-                    </dependency>
-                </dependencies>
-            </plugin>
-            <!-- used to make the program run -->            
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>exec-maven-plugin</artifactId>
-                <version>1.6.0</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>exec</goal>
-                        </goals>
-                        <configuration>
-                            <executable>${java.home}/bin/java</executable>
-                            <arguments>
-                                <argument>--module-path</argument>
-                                <argument>
-                                    ${project.build.directory}/modules
-                                </argument> 
-                                <argument>--module</argument>
-                                <argument>${moduleName}/${mainClass}</argument>
-                            </arguments>
-                        </configuration>
-                    </execution>
-                </executions>
+	<!-- https://github.com/moditect/moditect#adding-module-descriptors-to-existing-jar-files -->
 
-            </plugin>     
-
-            <plugin>
-              <artifactId>maven-jar-plugin</artifactId>
-              <version>3.1.0</version>
-              <configuration>
-                 <outputDirectory>
-                     ${project.build.directory}/modules
-                 </outputDirectory>
-              </configuration>
-           </plugin>
-
-
-            <plugin>
-                <groupId>org.moditect</groupId>
-                <artifactId>moditect-maven-plugin</artifactId>
-                <version>1.0.0.Beta1</version>
-                <executions>
-                    <execution>
-                        <id>create-runtime-image</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>create-runtime-image</goal>
-                        </goals>
-                        <configuration>
-                            <modulePath>
-                                <path>${project.build.directory}/modules</path>
-                            </modulePath>
-                            <modules>
-                                <module>${moduleName}</module>
-                                <!--   <module>javafx.controls</module>
-                                <module>javafx.graphics</module> -->
-                            </modules>
-                            <launcher>
-                                <name>test33</name>
-                                <module>${moduleName}/${mainClass}</module>
-                            </launcher>
-                            <compression>2</compression>
-                            <stripDebug>true</stripDebug>
-                            <outputDirectory>${project.build.directory}/jlink-image</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.1.1</version>
-                <executions>
-                    <execution>
-                        <id>copy-dependencies</id>
-                        <phase>prepare-package</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${project.build.directory}/modules</outputDirectory>
-                            <includeScope>runtime</includeScope>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin> 
-        </plugins>
-    </build>
-	
-	
-	
-	
-	
-	
-	
-	
 	<build>
 		<plugins>
 			<plugin>
-				<artifactId>maven-assembly-plugin</artifactId>
-				<version>3.1.1</version>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${version.maven-compiler-plugin}</version>
 				<configuration>
-					<finalName>C3-Starmap_Cerberus</finalName>
-					<appendAssemblyId>false</appendAssemblyId>
-					<descriptorRefs>
-						<descriptorRef>jar-with-dependencies</descriptorRef>
-					</descriptorRefs>
-					<archive>
-						<manifest>
-							<mainClass>net.clanwolf.starmap.client.gui.MainFrame</mainClass>
-							<packageName>C3-Starmap_Cerberus</packageName>
-						</manifest>
-					</archive>
+					<release>${version.java}</release>
 				</configuration>
+				<dependencies>
+					<dependency>
+						<groupId>org.ow2.asm</groupId>
+						<artifactId>asm</artifactId>
+						<version>${version.asm}</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>${version.exec-maven-plugin}</version>
 				<executions>
 					<execution>
-						<id>make-assembly</id>
-						<phase>package</phase>
 						<goals>
-							<goal>single</goal>
+							<goal>exec</goal>
 						</goals>
+						<configuration>
+							<executable>${java.home}/bin/java</executable>
+							<arguments>
+								<argument>--module-path</argument>
+								<argument>${project.build.directory}/modules</argument>
+								<argument>--module</argument>
+								<argument>${moduleName}/${mainClass}</argument>
+							</arguments>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>
+			<plugin>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.1.0</version>
+				<configuration>
+					<outputDirectory>${project.build.directory}/modules</outputDirectory>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.moditect</groupId>
+				<artifactId>moditect-maven-plugin</artifactId>
+				<version>1.0.0.Beta2</version>
+				<executions>
 
-			<!--<plugin>-->
-				<!--<groupId>com.zenjava</groupId>-->
-				<!--<artifactId>javafx-maven-plugin</artifactId>-->
-				<!--<version>8.9.0-SNAPSHOT</version>-->
-				<!--<configuration>-->
-					<!--<mainClass>net.clanwolf.starmap.client.MainFrame</mainClass>-->
-					<!--<preLoader>c3_preloader.C3_Preloader</preLoader>-->
-					<!--<verbose>true</verbose>-->
-					<!--<bundleArguments>-->
-						<!--&lt;!&ndash; MSI installer Options &ndash;&gt;-->
-						<!--&lt;!&ndash; https://docs.oracle.com/javase/9/tools/javapackager.htm#GUID-E51F9601-E121-4A50-BCA7-C7F8730078B2__WINDOWSEXEBUNDLERARGUMENTS-26C9A39C &ndash;&gt;-->
-						<!--&lt;!&ndash; Custonmize MSI installer &ndash;&gt;-->
-						<!--&lt;!&ndash; http://wixtoolset.org/documentation/manual/v3/wixui/wixui_customizations.html &ndash;&gt;-->
-						<!--<icon>target/classes/icon.ico</icon>-->
-						<!--<installdirChooser>true</installdirChooser>-->
-						<!--<module-path>target/classes;C:/Program Files/Java/jdk-11.0.2/jmods</module-path>-->
-						<!--<module>net.clanwolf.starmap.client/net.clanwolf.starmap.client.MainFrame</module>-->
-						<!--<add-modules>java.base,java.datatransfer,java.desktop,java.scripting,java.xml,jdk.jsobject,jdk.unsupported,jdk.unsupported.desktop,jdk.xml.dom,javafx.controls,javafx.fxml,java.naming,java.sql,jdk.charsets</add-modules>-->
-						<!--&lt;!&ndash;<limit-modules>module1,module2,module3</limit-modules>&ndash;&gt;-->
-						<!--&lt;!&ndash;<runtime /> Not working together with the above commands &ndash;&gt;-->
-					<!--</bundleArguments>-->
-					<!--&lt;!&ndash;<jfxMainAppJarName>${project.build.finalName}.jar</jfxMainAppJarName>&ndash;&gt;-->
-					<!--<identifier>${project.artifactId}</identifier>-->
-					<!--<vendor>ClanWolf.net</vendor>-->
-					<!--&lt;!&ndash; win.app | linux.app | mac.app | exe | msi | rpm | deb &ndash;&gt;-->
-					<!--<bundler>msi</bundler>-->
-					<!--<nativeReleaseVersion>${project.version}</nativeReleaseVersion>-->
-					<!--<needShortcut>true</needShortcut>-->
-					<!--<needMenu>true</needMenu>-->
-					<!--<appName>${project.artifactId}</appName>-->
-					<!--<jvmArgs>-->
-						<!--<jvmArg>-Xmx2g</jvmArg>-->
-						<!--<jvmArg>-Djavafx.verbose=true</jvmArg>-->
-						<!--<jvmArg>&#45;&#45;add-opens javafx.base/com.sun.javafx.reflect=ALL-UNNAMED</jvmArg>-->
-					<!--</jvmArgs>-->
-					<!--&lt;!&ndash;<jvmProperties>&ndash;&gt;-->
-						<!--&lt;!&ndash;<UserProperty>foo</UserProperty>&ndash;&gt;-->
-					<!--&lt;!&ndash;</jvmProperties>&ndash;&gt;-->
-					<!--&lt;!&ndash;<userJvmArgs>&ndash;&gt;-->
-						<!--&lt;!&ndash;<Argument3>...</Argument3>&ndash;&gt;-->
-					<!--&lt;!&ndash;</userJvmArgs>&ndash;&gt;-->
-					<!--&lt;!&ndash;<keyStoreAlias>example-user</keyStoreAlias>&ndash;&gt;-->
-					<!--&lt;!&ndash;<keyStorePassword>example-password</keyStorePassword>&ndash;&gt;-->
-					<!--<allPermissions>false</allPermissions>-->
-					<!--<manifestAttributes>-->
-						<!--<Specification-Title>${project.name}</Specification-Title>-->
-						<!--<Specification-Version>${project.version}</Specification-Version>-->
-						<!--<Specification-Vendor>${project.organization.name}</Specification-Vendor>-->
-						<!--<Implementation-Title>${project.name}</Implementation-Title>-->
-						<!--<Implementation-Version>${project.version}</Implementation-Version>-->
-						<!--<Implementation-Vendor-Id>${project.groupId}</Implementation-Vendor-Id>-->
-						<!--<Implementation-Vendor>${project.organization.name}</Implementation-Vendor>-->
-					<!--</manifestAttributes>-->
-					<!--&lt;!&ndash;<additionalAppResources>env</additionalAppResources>&ndash;&gt;-->
-					<!--&lt;!&ndash;<additionalBundlerResources>automatic</additionalBundlerResources>&ndash;&gt;-->
-				<!--</configuration>-->
-				<!--<executions>-->
-					<!--<execution>-->
-						<!--<id>create-jfxjar</id>-->
-						<!--<phase>package</phase>-->
-						<!--<goals>-->
-							<!--<goal>build-jar</goal>-->
-						<!--</goals>-->
-					<!--</execution>-->
-					<!--&lt;!&ndash;<execution>&ndash;&gt;-->
-						<!--&lt;!&ndash;<id>create-native</id>&ndash;&gt;-->
-						<!--&lt;!&ndash;<phase>package</phase>&ndash;&gt;-->
-						<!--&lt;!&ndash;<goals>&ndash;&gt;-->
-							<!--&lt;!&ndash;<goal>build-native</goal>&ndash;&gt;-->
-						<!--&lt;!&ndash;</goals>&ndash;&gt;-->
-					<!--&lt;!&ndash;</execution>&ndash;&gt;-->
-				<!--</executions>-->
-			<!--</plugin>-->
+					<!-- BEGIN: Generate module info for legacy jars -->
+
+					<execution>
+						<id>generate-module-info</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>generate-module-info</goal>
+						</goals>
+						<configuration>
+							<modules>
+								<module>
+									<artifact>
+										<groupId>net.clanwolf</groupId>
+										<artifactId>C3-Preloader</artifactId>
+										<version>1.0.0</version>
+									</artifact>
+									<!--<additionalDependencies>-->
+										<!--<dependency>-->
+											<!--<groupId>io.netty</groupId>-->
+											<!--<artifactId>netty-all</artifactId>-->
+											<!--<version>4.0.10.Final</version>-->
+										<!--</dependency>-->
+									<!--</additionalDependencies>-->
+								</module>
+							</modules>
+						</configuration>
+					</execution>
+
+					<!-- END: Generate module info for legacy jars -->
+
+					<execution>
+						<id>add-module-infos</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>add-module-info</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/modules</outputDirectory>
+							<modules>
+								<module>
+									<artifact>
+										<groupId>javax.activation</groupId>
+										<artifactId>activation</artifactId>
+										<version>1.1</version>
+									</artifact>
+									<moduleInfoSource>
+										module activation {
+											requires java.logging;
+											requires transitive java.datatransfer;
+											requires transitive java.desktop;
+											exports com.sun.activation.registries;
+											exports com.sun.activation.viewers;
+											exports javax.activation;
+										}
+									</moduleInfoSource>
+								</module>
+								<module>
+									<artifact>
+										<groupId>commons-net</groupId>
+										<artifactId>commons-net</artifactId>
+										<version>3.6</version>
+									</artifact>
+									<moduleInfoSource>
+										module commons.net {
+											exports org.apache.commons.net;
+											exports org.apache.commons.net.bsd;
+											exports org.apache.commons.net.chargen;
+											exports org.apache.commons.net.daytime;
+											exports org.apache.commons.net.discard;
+											exports org.apache.commons.net.echo;
+											exports org.apache.commons.net.finger;
+											exports org.apache.commons.net.ftp;
+											exports org.apache.commons.net.ftp.parser;
+											exports org.apache.commons.net.imap;
+											exports org.apache.commons.net.io;
+											exports org.apache.commons.net.nntp;
+											exports org.apache.commons.net.ntp;
+											exports org.apache.commons.net.pop3;
+											exports org.apache.commons.net.smtp;
+											exports org.apache.commons.net.telnet;
+											exports org.apache.commons.net.tftp;
+											exports org.apache.commons.net.time;
+											exports org.apache.commons.net.util;
+											exports org.apache.commons.net.whois;
+										}
+									</moduleInfoSource>
+								</module>
+								<module>
+									<artifact>
+										<groupId>com.fasterxml.jackson.core</groupId>
+										<artifactId>jackson-databind</artifactId>
+										<version>2.9.8</version>
+									</artifact>
+									<moduleInfoSource>
+										module com.fasterxml.jackson.databind {
+											requires java.desktop;
+											requires java.logging;
+											requires transitive com.fasterxml.jackson.core;
+											requires transitive jackson.annotations;
+											requires transitive java.sql;
+											requires transitive java.xml;
+											exports com.fasterxml.jackson.databind;
+											exports com.fasterxml.jackson.databind.annotation;
+											exports com.fasterxml.jackson.databind.cfg;
+											exports com.fasterxml.jackson.databind.deser;
+											exports com.fasterxml.jackson.databind.deser.impl;
+											exports com.fasterxml.jackson.databind.deser.std;
+											exports com.fasterxml.jackson.databind.exc;
+											exports com.fasterxml.jackson.databind.ext;
+											exports com.fasterxml.jackson.databind.introspect;
+											exports com.fasterxml.jackson.databind.jsonFormatVisitors;
+											exports com.fasterxml.jackson.databind.jsonschema;
+											exports com.fasterxml.jackson.databind.jsontype;
+											exports com.fasterxml.jackson.databind.jsontype.impl;
+											exports com.fasterxml.jackson.databind.module;
+											exports com.fasterxml.jackson.databind.node;
+											exports com.fasterxml.jackson.databind.ser;
+											exports com.fasterxml.jackson.databind.ser.impl;
+											exports com.fasterxml.jackson.databind.ser.std;
+											exports com.fasterxml.jackson.databind.type;
+											exports com.fasterxml.jackson.databind.util;
+											provides com.fasterxml.jackson.core.ObjectCodec with
+											com.fasterxml.jackson.databind.ObjectMapper;
+										}
+									</moduleInfoSource>
+								</module>
+								<module>
+									<artifact>
+										<groupId>com.fasterxml.jackson.core</groupId>
+										<artifactId>jackson-core</artifactId>
+										<version>2.9.8</version>
+									</artifact>
+									<moduleInfoSource>
+										module com.fasterxml.jackson.core {
+											exports com.fasterxml.jackson.core;
+											exports com.fasterxml.jackson.core.async;
+											exports com.fasterxml.jackson.core.base;
+											exports com.fasterxml.jackson.core.filter;
+											exports com.fasterxml.jackson.core.format;
+											exports com.fasterxml.jackson.core.io;
+											exports com.fasterxml.jackson.core.json;
+											exports com.fasterxml.jackson.core.json.async;
+											exports com.fasterxml.jackson.core.sym;
+											exports com.fasterxml.jackson.core.type;
+											exports com.fasterxml.jackson.core.util;
+											provides com.fasterxml.jackson.core.JsonFactory with com.fasterxml.jackson.core.JsonFactory;
+										}
+									</moduleInfoSource>
+								</module>
+								<module>
+									<artifact>
+										<groupId>com.sun.mail</groupId>
+										<artifactId>javax.mail</artifactId>
+										<version>1.6.2</version>
+									</artifact>
+									<moduleInfoSource>
+										module java.mail {
+											requires java.desktop;
+											requires java.xml;
+											requires activation;
+											requires java.datatransfer;
+											requires java.logging;
+											requires java.security.sasl;
+											exports com.sun.mail.auth;
+											exports com.sun.mail.handlers;
+											exports com.sun.mail.iap;
+											exports com.sun.mail.imap;
+											exports com.sun.mail.imap.protocol;
+											exports com.sun.mail.pop3;
+											exports com.sun.mail.smtp;
+											exports com.sun.mail.util;
+											exports com.sun.mail.util.logging;
+											exports javax.mail;
+											exports javax.mail.event;
+											exports javax.mail.internet;
+											exports javax.mail.search;
+											exports javax.mail.util;
+											provides javax.mail.Provider with com.sun.mail.imap.IMAPProvider,
+													com.sun.mail.imap.IMAPSSLProvider,
+													com.sun.mail.smtp.SMTPProvider,
+													com.sun.mail.smtp.SMTPSSLProvider,
+													com.sun.mail.pop3.POP3Provider,
+													com.sun.mail.pop3.POP3SSLProvider;
+										}
+									</moduleInfoSource>
+								</module>
+								<module>
+									<artifact>
+										<groupId>org.openjfx</groupId>
+										<artifactId>javafx-fxml</artifactId>
+										<version>${version.javafx}</version>
+									</artifact>
+									<moduleInfoSource>
+										module javafx.fxmlEmpty {
+										}
+									</moduleInfoSource>
+								</module>
+								<module>
+									<artifact>
+										<groupId>org.openjfx</groupId>
+										<artifactId>javafx-web</artifactId>
+										<version>${version.javafx}</version>
+									</artifact>
+									<moduleInfoSource>
+										module javafx.webEmpty {
+										}
+									</moduleInfoSource>
+								</module>
+								<module>
+									<artifact>
+										<groupId>org.openjfx</groupId>
+										<artifactId>javafx-graphics</artifactId>
+										<version>${version.javafx}</version>
+									</artifact>
+									<moduleInfoSource>
+										module javafx.graphicsEmpty {
+										}
+									</moduleInfoSource>
+								</module>
+							</modules>
+						</configuration>
+					</execution>
+					<execution>
+						<id>create-runtime-image</id>
+						<phase>package</phase>
+						<goals>
+							<goal>create-runtime-image</goal>
+						</goals>
+						<configuration>
+							<modulePath>
+								<path>${project.build.directory}/modules</path>
+							</modulePath>
+							<modules>
+								<module>${moduleName}</module>
+								<module>javafx.base</module>
+								<module>javafx.controls</module>
+								<module>javafx.graphics</module>
+								<module>javafx.web</module>
+								<module>javafx.media</module>
+							</modules>
+							<launcher>
+								<name>C3-Starmap_Cerberus</name>
+								<module>${moduleName}/${mainClass}</module>
+							</launcher>
+							<compression>2</compression>
+							<stripDebug>true</stripDebug>
+							<outputDirectory>${project.build.directory}/jlink-image</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>3.1.1</version>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/modules</outputDirectory>
+							<includeScope>runtime</includeScope>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 		</plugins>
 	</build>
+
+
+	<!--<build>-->
+	<!--<plugins>-->
+	<!--<plugin>-->
+	<!--<artifactId>maven-assembly-plugin</artifactId>-->
+	<!--<version>3.1.1</version>-->
+	<!--<configuration>-->
+	<!--<finalName>C3-Starmap_Cerberus</finalName>-->
+	<!--<appendAssemblyId>false</appendAssemblyId>-->
+	<!--<descriptorRefs>-->
+	<!--<descriptorRef>jar-with-dependencies</descriptorRef>-->
+	<!--</descriptorRefs>-->
+	<!--<archive>-->
+	<!--<manifest>-->
+	<!--<mainClass>net.clanwolf.starmap.client.gui.MainFrame</mainClass>-->
+	<!--<packageName>C3-Starmap_Cerberus</packageName>-->
+	<!--</manifest>-->
+	<!--</archive>-->
+	<!--</configuration>-->
+	<!--<executions>-->
+	<!--<execution>-->
+	<!--<id>make-assembly</id>-->
+	<!--<phase>package</phase>-->
+	<!--<goals>-->
+	<!--<goal>single</goal>-->
+	<!--</goals>-->
+	<!--</execution>-->
+	<!--</executions>-->
+	<!--</plugin>-->
+
+	<!--<plugin>-->
+	<!--<groupId>com.zenjava</groupId>-->
+	<!--<artifactId>javafx-maven-plugin</artifactId>-->
+	<!--<version>8.9.0-SNAPSHOT</version>-->
+	<!--<configuration>-->
+	<!--<mainClass>net.clanwolf.starmap.client.MainFrame</mainClass>-->
+	<!--<preLoader>c3_preloader.C3_Preloader</preLoader>-->
+	<!--<verbose>true</verbose>-->
+	<!--<bundleArguments>-->
+	<!--&lt;!&ndash; MSI installer Options &ndash;&gt;-->
+	<!--&lt;!&ndash; https://docs.oracle.com/javase/9/tools/javapackager.htm#GUID-E51F9601-E121-4A50-BCA7-C7F8730078B2__WINDOWSEXEBUNDLERARGUMENTS-26C9A39C &ndash;&gt;-->
+	<!--&lt;!&ndash; Custonmize MSI installer &ndash;&gt;-->
+	<!--&lt;!&ndash; http://wixtoolset.org/documentation/manual/v3/wixui/wixui_customizations.html &ndash;&gt;-->
+	<!--<icon>target/classes/icon.ico</icon>-->
+	<!--<installdirChooser>true</installdirChooser>-->
+	<!--<module-path>target/classes;C:/Program Files/Java/jdk-11.0.2/jmods</module-path>-->
+	<!--<module>net.clanwolf.starmap.client/net.clanwolf.starmap.client.MainFrame</module>-->
+	<!--<add-modules>java.base,java.datatransfer,java.desktop,java.scripting,java.xml,jdk.jsobject,jdk.unsupported,jdk.unsupported.desktop,jdk.xml.dom,javafx.controls,javafx.fxml,java.naming,java.sql,jdk.charsets</add-modules>-->
+	<!--&lt;!&ndash;<limit-modules>module1,module2,module3</limit-modules>&ndash;&gt;-->
+	<!--&lt;!&ndash;<runtime /> Not working together with the above commands &ndash;&gt;-->
+	<!--</bundleArguments>-->
+	<!--&lt;!&ndash;<jfxMainAppJarName>${project.build.finalName}.jar</jfxMainAppJarName>&ndash;&gt;-->
+	<!--<identifier>${project.artifactId}</identifier>-->
+	<!--<vendor>ClanWolf.net</vendor>-->
+	<!--&lt;!&ndash; win.app | linux.app | mac.app | exe | msi | rpm | deb &ndash;&gt;-->
+	<!--<bundler>msi</bundler>-->
+	<!--<nativeReleaseVersion>${project.version}</nativeReleaseVersion>-->
+	<!--<needShortcut>true</needShortcut>-->
+	<!--<needMenu>true</needMenu>-->
+	<!--<appName>${project.artifactId}</appName>-->
+	<!--<jvmArgs>-->
+	<!--<jvmArg>-Xmx2g</jvmArg>-->
+	<!--<jvmArg>-Djavafx.verbose=true</jvmArg>-->
+	<!--<jvmArg>&#45;&#45;add-opens javafx.base/com.sun.javafx.reflect=ALL-UNNAMED</jvmArg>-->
+	<!--</jvmArgs>-->
+	<!--&lt;!&ndash;<jvmProperties>&ndash;&gt;-->
+	<!--&lt;!&ndash;<UserProperty>foo</UserProperty>&ndash;&gt;-->
+	<!--&lt;!&ndash;</jvmProperties>&ndash;&gt;-->
+	<!--&lt;!&ndash;<userJvmArgs>&ndash;&gt;-->
+	<!--&lt;!&ndash;<Argument3>...</Argument3>&ndash;&gt;-->
+	<!--&lt;!&ndash;</userJvmArgs>&ndash;&gt;-->
+	<!--&lt;!&ndash;<keyStoreAlias>example-user</keyStoreAlias>&ndash;&gt;-->
+	<!--&lt;!&ndash;<keyStorePassword>example-password</keyStorePassword>&ndash;&gt;-->
+	<!--<allPermissions>false</allPermissions>-->
+	<!--<manifestAttributes>-->
+	<!--<Specification-Title>${project.name}</Specification-Title>-->
+	<!--<Specification-Version>${project.version}</Specification-Version>-->
+	<!--<Specification-Vendor>${project.organization.name}</Specification-Vendor>-->
+	<!--<Implementation-Title>${project.name}</Implementation-Title>-->
+	<!--<Implementation-Version>${project.version}</Implementation-Version>-->
+	<!--<Implementation-Vendor-Id>${project.groupId}</Implementation-Vendor-Id>-->
+	<!--<Implementation-Vendor>${project.organization.name}</Implementation-Vendor>-->
+	<!--</manifestAttributes>-->
+	<!--&lt;!&ndash;<additionalAppResources>env</additionalAppResources>&ndash;&gt;-->
+	<!--&lt;!&ndash;<additionalBundlerResources>automatic</additionalBundlerResources>&ndash;&gt;-->
+	<!--</configuration>-->
+	<!--<executions>-->
+	<!--<execution>-->
+	<!--<id>create-jfxjar</id>-->
+	<!--<phase>package</phase>-->
+	<!--<goals>-->
+	<!--<goal>build-jar</goal>-->
+	<!--</goals>-->
+	<!--</execution>-->
+	<!--&lt;!&ndash;<execution>&ndash;&gt;-->
+	<!--&lt;!&ndash;<id>create-native</id>&ndash;&gt;-->
+	<!--&lt;!&ndash;<phase>package</phase>&ndash;&gt;-->
+	<!--&lt;!&ndash;<goals>&ndash;&gt;-->
+	<!--&lt;!&ndash;<goal>build-native</goal>&ndash;&gt;-->
+	<!--&lt;!&ndash;</goals>&ndash;&gt;-->
+	<!--&lt;!&ndash;</execution>&ndash;&gt;-->
+	<!--</executions>-->
+	<!--</plugin>-->
+	<!--</plugins>-->
+	<!--</build>-->
 
 </project>

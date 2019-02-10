@@ -1,8 +1,7 @@
 module net.clanwolf.starmap.client {
 	requires net.clanwolf.starmap.transfer;
 
-	requires nadclient;
-	requires netty.all;
+	requires io.netty.all;
 
 	requires tektosyne;
 	requires commons.net;
