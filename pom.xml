@@ -31,8 +31,9 @@
 	</properties>
 
 	<modules>
-		<module>net.clanwolf.starmap.server</module>
 		<module>net.clanwolf.starmap.client</module>
+		<module>net.clanwolf.starmap.preloader</module>
+		<module>net.clanwolf.starmap.server</module>
 		<module>net.clanwolf.starmap.transfer</module>
 	</modules>
 

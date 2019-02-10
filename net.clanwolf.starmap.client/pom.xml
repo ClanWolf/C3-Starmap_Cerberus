@@ -160,9 +160,9 @@
 									</artifact>
 									<!--<additionalDependencies>-->
 										<!--<dependency>-->
-											<!--<groupId>io.netty</groupId>-->
-											<!--<artifactId>netty-all</artifactId>-->
-											<!--<version>4.0.10.Final</version>-->
+											<!--<groupId>...</groupId>-->
+											<!--<artifactId>...</artifactId>-->
+											<!--<version>...</version>-->
 										<!--</dependency>-->
 									<!--</additionalDependencies>-->
 								</module>
