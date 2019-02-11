@@ -28,13 +28,15 @@
 		<version.maven-compiler-plugin>3.8.0</version.maven-compiler-plugin>
 		<version.exec-maven-plugin>1.6.0</version.exec-maven-plugin>
 		<version.asm>7.0</version.asm>
+		<version.netty>4.1.33.Final</version.netty>
 	</properties>
 
 	<modules>
 		<module>net.clanwolf.starmap.client</module>
-		<module>net.clanwolf.starmap.preloader</module>
+		<module>net.clanwolf.starmap.client.preloader</module>
 		<module>net.clanwolf.starmap.server</module>
 		<module>net.clanwolf.starmap.transfer</module>
+		<module>io.nadron</module>
 	</modules>
 
 	<build>

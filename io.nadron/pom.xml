@@ -10,13 +10,13 @@
 		<version>4.2.3</version>
 	</parent>
 
-	<artifactId>preloader</artifactId>
+	<artifactId>io.nadron</artifactId>
 
 	<dependencies>
 		<dependency>
-			<groupId>org.openjfx</groupId>
-			<artifactId>javafx-graphics</artifactId>
-			<version>${version.javafx}</version>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-all</artifactId>
+			<version>${version.netty}</version>
 		</dependency>
 	</dependencies>
 

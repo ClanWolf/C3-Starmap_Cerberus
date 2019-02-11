@@ -2,7 +2,6 @@ package io.nadron.client;
 
 import io.nadron.client.event.Event;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.bootstrap.ChannelFactory;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.*;
 import io.netty.channel.group.ChannelGroup;

@@ -33,14 +33,14 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>net.clanwolf</groupId>
-			<artifactId>C3-Preloader</artifactId>
-			<version>1.0.0</version>
+			<groupId>net.clanwolf.starmap</groupId>
+			<artifactId>io.nadron</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>io.netty</groupId>
-			<artifactId>netty-all</artifactId>
-			<version>4.1.33.Final</version>
+			<groupId>net.clanwolf.starmap</groupId>
+			<artifactId>net.clanwolf.starmap.client.preloader</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.kynosarges</groupId>
@@ -55,7 +55,7 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-collections4</artifactId>
-			<version>4.2</version>
+			<version>4.3</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-net</groupId>
@@ -144,20 +144,20 @@
 
 					<!-- BEGIN: Generate module info for legacy jars -->
 
-					<execution>
-						<id>generate-module-info</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>generate-module-info</goal>
-						</goals>
-						<configuration>
-							<modules>
-								<module>
-									<artifact>
-										<groupId>net.clanwolf</groupId>
-										<artifactId>C3-Preloader</artifactId>
-										<version>1.0.0</version>
-									</artifact>
+					<!--<execution>-->
+						<!--<id>generate-module-info</id>-->
+						<!--<phase>generate-sources</phase>-->
+						<!--<goals>-->
+							<!--<goal>generate-module-info</goal>-->
+						<!--</goals>-->
+						<!--<configuration>-->
+							<!--<modules>-->
+								<!--<module>-->
+									<!--<artifact>-->
+										<!--<groupId>io.netty</groupId>-->
+										<!--<artifactId>netty-all</artifactId>-->
+										<!--<version>4.1.33.Final</version>-->
+									<!--</artifact>-->
 									<!--<additionalDependencies>-->
 										<!--<dependency>-->
 											<!--<groupId>...</groupId>-->
@@ -165,10 +165,10 @@
 											<!--<version>...</version>-->
 										<!--</dependency>-->
 									<!--</additionalDependencies>-->
-								</module>
-							</modules>
-						</configuration>
-					</execution>
+								<!--</module>-->
+							<!--</modules>-->
+						<!--</configuration>-->
+					<!--</execution>-->
 
 					<!-- END: Generate module info for legacy jars -->
 
@@ -271,6 +271,44 @@
 								<module>
 									<artifact>
 										<groupId>com.fasterxml.jackson.core</groupId>
+										<artifactId>jackson-databind</artifactId>
+										<version>2.9.0</version>
+									</artifact>
+									<moduleInfoSource>
+										module jackson.databind {
+											requires java.desktop;
+											requires java.logging;
+											requires jackson.annotations;
+											requires jackson.core;
+											requires java.sql;
+											requires java.xml;
+											exports com.fasterxml.jackson.databind;
+											exports com.fasterxml.jackson.databind.annotation;
+											exports com.fasterxml.jackson.databind.cfg;
+											exports com.fasterxml.jackson.databind.deser;
+											exports com.fasterxml.jackson.databind.deser.impl;
+											exports com.fasterxml.jackson.databind.deser.std;
+											exports com.fasterxml.jackson.databind.exc;
+											exports com.fasterxml.jackson.databind.ext;
+											exports com.fasterxml.jackson.databind.introspect;
+											exports com.fasterxml.jackson.databind.jsonFormatVisitors;
+											exports com.fasterxml.jackson.databind.jsonschema;
+											exports com.fasterxml.jackson.databind.jsontype;
+											exports com.fasterxml.jackson.databind.jsontype.impl;
+											exports com.fasterxml.jackson.databind.module;
+											exports com.fasterxml.jackson.databind.node;
+											exports com.fasterxml.jackson.databind.ser;
+											exports com.fasterxml.jackson.databind.ser.impl;
+											exports com.fasterxml.jackson.databind.ser.std;
+											exports com.fasterxml.jackson.databind.type;
+											exports com.fasterxml.jackson.databind.util;
+											provides com.fasterxml.jackson.core.ObjectCodec with com.fasterxml.jackson.databind.ObjectMapper;
+										}
+									</moduleInfoSource>
+								</module>
+								<module>
+									<artifact>
+										<groupId>com.fasterxml.jackson.core</groupId>
 										<artifactId>jackson-core</artifactId>
 										<version>2.9.8</version>
 									</artifact>
@@ -288,6 +326,21 @@
 											exports com.fasterxml.jackson.core.type;
 											exports com.fasterxml.jackson.core.util;
 											provides com.fasterxml.jackson.core.JsonFactory with com.fasterxml.jackson.core.JsonFactory;
+										}
+									</moduleInfoSource>
+								</module>
+								<module>
+									<artifact>
+										<groupId>com.voodoodyne.jackson.jsog</groupId>
+										<artifactId>jackson-jsog</artifactId>
+										<version>1.1.1</version>
+									</artifact>
+									<moduleInfoSource>
+										module jackson.jsog {
+											requires static jackson.annotations;
+											requires static jackson.core;
+											requires static jackson.databind;
+											exports com.voodoodyne.jackson.jsog;
 										}
 									</moduleInfoSource>
 								</module>
@@ -336,6 +389,39 @@
 									</artifact>
 									<moduleInfoSource>
 										module javafx.fxmlEmpty {
+										}
+									</moduleInfoSource>
+								</module>
+								<module>
+									<artifact>
+										<groupId>org.openjfx</groupId>
+										<artifactId>javafx-base</artifactId>
+										<version>${version.javafx}</version>
+									</artifact>
+									<moduleInfoSource>
+										module javafx.baseEmpty {
+										}
+									</moduleInfoSource>
+								</module>
+								<module>
+									<artifact>
+										<groupId>org.openjfx</groupId>
+										<artifactId>javafx-media</artifactId>
+										<version>${version.javafx}</version>
+									</artifact>
+									<moduleInfoSource>
+										module javafx.mediaEmpty {
+										}
+									</moduleInfoSource>
+								</module>
+								<module>
+									<artifact>
+										<groupId>org.openjfx</groupId>
+										<artifactId>javafx-controls</artifactId>
+										<version>${version.javafx}</version>
+									</artifact>
+									<moduleInfoSource>
+										module javafx.controlsEmpty {
 										}
 									</moduleInfoSource>
 								</module>
@@ -450,7 +536,7 @@
 	<!--<version>8.9.0-SNAPSHOT</version>-->
 	<!--<configuration>-->
 	<!--<mainClass>net.clanwolf.starmap.client.MainFrame</mainClass>-->
-	<!--<preLoader>c3_preloader.C3_Preloader</preLoader>-->
+	<!--<preLoader>c3_preloader.net.clanwolf.starmap.client.preloader.C3_Preloader</preLoader>-->
 	<!--<verbose>true</verbose>-->
 	<!--<bundleArguments>-->
 	<!--&lt;!&ndash; MSI installer Options &ndash;&gt;-->

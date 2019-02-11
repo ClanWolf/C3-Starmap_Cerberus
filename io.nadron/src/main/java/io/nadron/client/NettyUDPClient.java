@@ -5,7 +5,6 @@ import io.nadron.client.event.Event;
 import io.nadron.client.event.Events;
 import io.nadron.client.handlers.netty.UDPUpstreamHandler;
 import io.netty.bootstrap.Bootstrap;
-import io.netty.bootstrap.ChannelFactory;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.DatagramChannel;

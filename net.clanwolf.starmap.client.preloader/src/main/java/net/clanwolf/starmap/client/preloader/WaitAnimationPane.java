@@ -24,6 +24,8 @@
  * Copyright (c) 2001-2019, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
+package net.clanwolf.starmap.client.preloader;
+
 import javafx.animation.Animation;
 import javafx.animation.FadeTransition;
 import javafx.animation.KeyFrame;
