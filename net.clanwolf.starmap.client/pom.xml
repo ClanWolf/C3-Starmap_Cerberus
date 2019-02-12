@@ -92,6 +92,13 @@
 	<!-- https://github.com/moditect/moditect#adding-module-descriptors-to-existing-jar-files -->
 
 	<build>
+		<extensions>
+			<extension>
+				<groupId>kr.motd.maven</groupId>
+				<artifactId>os-maven-plugin</artifactId>
+				<version>1.6.1</version>
+			</extension>
+		</extensions>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -155,14 +162,14 @@
 								<!--<module>-->
 									<!--<artifact>-->
 										<!--<groupId>io.netty</groupId>-->
-										<!--<artifactId>netty-all</artifactId>-->
+										<!--<artifactId>netty-codec</artifactId>-->
 										<!--<version>4.1.33.Final</version>-->
 									<!--</artifact>-->
 									<!--<additionalDependencies>-->
 										<!--<dependency>-->
-											<!--<groupId>...</groupId>-->
-											<!--<artifactId>...</artifactId>-->
-											<!--<version>...</version>-->
+											<!--<groupId>org.jboss.marshalling</groupId>-->
+											<!--<artifactId>jboss-marshalling</artifactId>-->
+											<!--<version>2.0.5.Final</version>-->
 										<!--</dependency>-->
 									<!--</additionalDependencies>-->
 								<!--</module>-->
@@ -179,7 +186,11 @@
 							<goal>add-module-info</goal>
 						</goals>
 						<configuration>
+							<jvmVersion>9</jvmVersion>
+							<overwriteExistingFiles>true</overwriteExistingFiles>
+
 							<outputDirectory>${project.build.directory}/modules</outputDirectory>
+
 							<modules>
 								<module>
 									<artifact>
@@ -346,6 +357,18 @@
 								</module>
 								<module>
 									<artifact>
+										<groupId>com.fasterxml.jackson.core</groupId>
+										<artifactId>jackson-annotations</artifactId>
+										<version>2.9.0</version>
+									</artifact>
+									<moduleInfoSource>
+										module jackson.annotations {
+											exports com.fasterxml.jackson.annotation;
+										}
+									</moduleInfoSource>
+								</module>
+								<module>
+									<artifact>
 										<groupId>com.sun.mail</groupId>
 										<artifactId>javax.mail</artifactId>
 										<version>1.6.2</version>
@@ -378,6 +401,127 @@
 													com.sun.mail.smtp.SMTPSSLProvider,
 													com.sun.mail.pop3.POP3Provider,
 													com.sun.mail.pop3.POP3SSLProvider;
+										}
+									</moduleInfoSource>
+								</module>
+								<module>
+									<artifact>
+										<groupId>io.netty</groupId>
+										<artifactId>netty-common</artifactId>
+										<version>${version.netty}</version>
+									</artifact>
+									<moduleInfoSource>
+										module io.netty.common {
+											requires static commons.logging;
+											requires java.logging;
+											requires static log4j;
+											requires static log4j.api;
+											requires static slf4j.api;
+											requires jdk.unsupported;
+											exports io.netty.util;
+											exports io.netty.util.collection;
+											exports io.netty.util.concurrent;
+											exports io.netty.util.internal;
+											exports io.netty.util.internal.logging;
+											exports io.netty.util.internal.shaded.org.jctools.queues;
+											exports io.netty.util.internal.shaded.org.jctools.queues.atomic;
+											exports io.netty.util.internal.shaded.org.jctools.util;
+										}
+									</moduleInfoSource>
+								</module>
+								<module>
+									<artifact>
+										<groupId>io.netty</groupId>
+										<artifactId>netty-transport</artifactId>
+										<version>${version.netty}</version>
+									</artifact>
+									<moduleInfo>
+										<name>io.netty.transport</name>
+									</moduleInfo>
+									<!--<moduleInfoSource>-->
+										<!--module io.netty.transport {-->
+											<!--requires io.netty.buffer;-->
+											<!--requires io.netty.common;-->
+											<!--requires io.netty.resolver;-->
+											<!--exports io.netty.bootstrap;-->
+											<!--exports io.netty.channel;-->
+											<!--exports io.netty.channel.embedded;-->
+											<!--exports io.netty.channel.group;-->
+											<!--exports io.netty.channel.internal;-->
+											<!--exports io.netty.channel.local;-->
+											<!--exports io.netty.channel.nio;-->
+											<!--exports io.netty.channel.oio;-->
+											<!--exports io.netty.channel.pool;-->
+											<!--exports io.netty.channel.socket;-->
+											<!--exports io.netty.channel.socket.nio;-->
+											<!--exports io.netty.channel.socket.oio;-->
+										<!--}-->
+									<!--</moduleInfoSource>-->
+								</module>
+								<module>
+									<artifact>
+										<groupId>io.netty</groupId>
+										<artifactId>netty-buffer</artifactId>
+										<version>${version.netty}</version>
+									</artifact>
+									<moduleInfoSource>
+										module io.netty.buffer {
+											requires io.netty.common;
+											exports io.netty.buffer;
+										}
+									</moduleInfoSource>
+								</module>
+								<module>
+									<artifact>
+										<groupId>io.netty</groupId>
+										<artifactId>netty-codec</artifactId>
+										<version>${version.netty}</version>
+									</artifact>
+									<moduleInfo>
+										<name>io.netty.codec</name>
+									</moduleInfo>
+								</module>
+								<module>
+									<artifact>
+										<groupId>io.netty</groupId>
+										<artifactId>netty-resolver</artifactId>
+										<version>4.1.33.Final</version>
+									</artifact>
+									<moduleInfoSource>
+										module io.netty.resolver {
+											requires io.netty.common;
+											exports io.netty.resolver;
+										}
+									</moduleInfoSource>
+								</module>
+								<module>
+									<artifact>
+										<groupId>io.netty</groupId>
+										<artifactId>netty-handler</artifactId>
+										<version>${version.netty}</version>
+									</artifact>
+									<moduleInfoSource>
+										module io.netty.handler {
+											requires static alpn.api;
+											requires static bcpkix.jdk15on;
+											requires static bcprov.jdk15on;
+											requires static conscrypt.openjdk.uber;
+											requires static netty.tcnative;
+											requires static npn.api;
+											requires io.netty.buffer;
+											requires io.netty.codec;
+											requires io.netty.common;
+											requires io.netty.transport;
+											exports io.netty.handler.flow;
+											exports io.netty.handler.flush;
+											exports io.netty.handler.ipfilter;
+											exports io.netty.handler.logging;
+											exports io.netty.handler.ssl;
+											exports io.netty.handler.ssl.ocsp;
+											exports io.netty.handler.ssl.util;
+											exports io.netty.handler.stream;
+											exports io.netty.handler.timeout;
+											exports io.netty.handler.traffic;
 										}
 									</moduleInfoSource>
 								</module>
