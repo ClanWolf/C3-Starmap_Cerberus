@@ -26,7 +26,7 @@
  */
 package net.clanwolf.starmap.client.action;
 
-import net.clanwolf.starmap.client.logging.C3Logger;
+import net.clanwolf.starmap.logging.C3Logger;
 
 import java.awt.event.ActionEvent;
 

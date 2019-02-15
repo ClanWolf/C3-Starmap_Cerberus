@@ -29,7 +29,7 @@ package net.clanwolf.starmap.client.util;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.DialogPane;
-import net.clanwolf.starmap.client.logging.C3Logger;
+import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.client.net.FTP;
 import net.clanwolf.starmap.client.net.IFileTransfer;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;

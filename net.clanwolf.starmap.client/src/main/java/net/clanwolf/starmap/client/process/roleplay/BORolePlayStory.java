@@ -30,7 +30,7 @@ import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
-import net.clanwolf.starmap.client.logging.C3Logger;
+import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.client.net.IFileTransfer;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.client.util.Tools;

@@ -1,14 +1,14 @@
 module net.clanwolf.starmap.client {
 	requires net.clanwolf.starmap.transfer;
+	requires net.clanwolf.starmap.logging;
 
-	requires io.nadron;
+	requires io.nadron.client;
 
 	requires tektosyne;
 	requires commons.net;
 	requires org.apache.commons.collections4;
 
 	requires java.desktop;
-	requires java.logging;
 	requires java.mail;
 
 	requires javafx.graphics;
@@ -16,6 +16,7 @@ module net.clanwolf.starmap.client {
 	requires javafx.media;
 	requires javafx.fxml;
 	requires io.netty.common;
+	requires java.logging;
 
 	opens net.clanwolf.starmap.client.gui to javafx.fxml;
 	opens net.clanwolf.starmap.client.gui.panes to javafx.fxml;

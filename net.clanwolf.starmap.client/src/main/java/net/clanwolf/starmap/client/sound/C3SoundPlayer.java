@@ -37,7 +37,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionManager;
-import net.clanwolf.starmap.client.logging.C3Logger;
+import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.client.net.HTTP;
 import net.clanwolf.starmap.client.util.C3PROPS;
 import net.clanwolf.starmap.client.util.C3Properties;

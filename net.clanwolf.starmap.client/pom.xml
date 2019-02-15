@@ -24,22 +24,22 @@
 	<dependencies>
 		<dependency>
 			<groupId>net.clanwolf.starmap</groupId>
-			<artifactId>enums</artifactId>
+			<artifactId>net.clanwolf.starmap.transfer</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>net.clanwolf.starmap</groupId>
-			<artifactId>transfer</artifactId>
-			<version>${project.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>net.clanwolf.starmap</groupId>
-			<artifactId>io.nadron</artifactId>
+			<artifactId>net.clanwolf.starmap.logging</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>net.clanwolf.starmap</groupId>
 			<artifactId>net.clanwolf.starmap.client.preloader</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.clanwolf.starmap</groupId>
+			<artifactId>io.nadron.client</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
@@ -87,6 +87,12 @@
 			<artifactId>javafx-web</artifactId>
 			<version>${version.javafx}</version>
 		</dependency>
+		<dependency>
+			<groupId>net.clanwolf.starmap</groupId>
+			<artifactId>net.clanwolf.starmap.logging</artifactId>
+			<version>4.2.3</version>
+			<scope>compile</scope>
+		</dependency>
 	</dependencies>
 
 	<!-- https://github.com/moditect/moditect#adding-module-descriptors-to-existing-jar-files -->
@@ -106,6 +112,10 @@
 				<version>${version.maven-compiler-plugin}</version>
 				<configuration>
 					<release>${version.java}</release>
+					<!--<compilerArgs>-->
+						<!--<compilerArg>&#45;&#45;module-path</compilerArg>-->
+						<!--<compilerArg>${project.build.directory}/modules</compilerArg>-->
+					<!--</compilerArgs>-->
 				</configuration>
 				<dependencies>
 					<dependency>
@@ -186,7 +196,7 @@
 							<goal>add-module-info</goal>
 						</goals>
 						<configuration>
-							<jvmVersion>9</jvmVersion>
+							<jvmVersion>${version.java}</jvmVersion>
 							<overwriteExistingFiles>true</overwriteExistingFiles>
 
 							<outputDirectory>${project.build.directory}/modules</outputDirectory>
@@ -410,24 +420,27 @@
 										<artifactId>netty-common</artifactId>
 										<version>${version.netty}</version>
 									</artifact>
-									<moduleInfoSource>
-										module io.netty.common {
-											requires static commons.logging;
-											requires java.logging;
-											requires static log4j;
-											requires static log4j.api;
-											requires static slf4j.api;
-											requires jdk.unsupported;
-											exports io.netty.util;
-											exports io.netty.util.collection;
-											exports io.netty.util.concurrent;
-											exports io.netty.util.internal;
-											exports io.netty.util.internal.logging;
-											exports io.netty.util.internal.shaded.org.jctools.queues;
-											exports io.netty.util.internal.shaded.org.jctools.queues.atomic;
-											exports io.netty.util.internal.shaded.org.jctools.util;
-										}
-									</moduleInfoSource>
+									<moduleInfo>
+										<name>io.netty.common</name>
+									</moduleInfo>
+									<!--<moduleInfoSource>-->
+										<!--module io.netty.common {-->
+											<!--requires static commons.logging;-->
+											<!--requires java.logging;-->
+											<!--requires static log4j;-->
+											<!--requires static log4j.api;-->
+											<!--requires static slf4j.api;-->
+											<!--requires jdk.unsupported;-->
+											<!--exports io.netty.util;-->
+											<!--exports io.netty.util.collection;-->
+											<!--exports io.netty.util.concurrent;-->
+											<!--exports io.netty.util.internal;-->
+											<!--exports io.netty.util.internal.logging;-->
+											<!--exports io.netty.util.internal.shaded.org.jctools.queues;-->
+											<!--exports io.netty.util.internal.shaded.org.jctools.queues.atomic;-->
+											<!--exports io.netty.util.internal.shaded.org.jctools.util;-->
+										<!--}-->
+									<!--</moduleInfoSource>-->
 								</module>
 								<module>
 									<artifact>

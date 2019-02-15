@@ -37,7 +37,7 @@ import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
-import net.clanwolf.starmap.client.logging.C3Logger;
+import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.client.util.Internationalization;
 
 import java.net.URL;

@@ -34,9 +34,11 @@
 	<modules>
 		<module>net.clanwolf.starmap.client</module>
 		<module>net.clanwolf.starmap.client.preloader</module>
-		<module>net.clanwolf.starmap.server</module>
+		<!--<module>net.clanwolf.starmap.server</module>-->
 		<module>net.clanwolf.starmap.transfer</module>
-		<module>io.nadron</module>
+		<module>net.clanwolf.starmap.logging</module>
+		<module>io.nadron.client</module>
+		<module>io.nadron.server</module>
 	</modules>
 
 	<build>

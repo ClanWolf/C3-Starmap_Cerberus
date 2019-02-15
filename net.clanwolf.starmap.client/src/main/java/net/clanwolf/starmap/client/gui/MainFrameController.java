@@ -58,7 +58,7 @@ import net.clanwolf.starmap.client.gui.panes.rp.RolePlayBasicPane;
 import net.clanwolf.starmap.client.gui.panes.rp.StoryEditorPane;
 import net.clanwolf.starmap.client.gui.panes.settings.SettingsPane;
 import net.clanwolf.starmap.client.gui.panes.userinfo.UserInfoPane;
-import net.clanwolf.starmap.client.logging.C3Logger;
+import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.client.net.Server;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.security.Security;
