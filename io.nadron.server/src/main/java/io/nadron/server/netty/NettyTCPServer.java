@@ -5,12 +5,10 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import net.clanwolf.starmap.logging.C3Logger;
 
 import java.util.Map;
 import java.util.Set;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * This class is used for TCP IP communications with client. It uses Netty tcp
@@ -20,9 +18,6 @@ import org.slf4j.LoggerFactory;
  * 
  */
 public class NettyTCPServer extends AbstractNettyServer {
-	private static final Logger LOG = LoggerFactory
-			.getLogger(NettyTCPServer.class);
-
 	private ServerBootstrap serverBootstrap;
 
 	public NettyTCPServer(NettyConfig nettyConfig,
@@ -51,7 +46,7 @@ public class NettyTCPServer extends AbstractNettyServer {
 					.channel();
 			ALL_CHANNELS.add(serverChannel);
 		} catch(Exception e) {
-			LOG.error("TCP Server start error {}, going to shut down", e);
+			C3Logger.warning("TCP Server start error {}, going to shut down " + e);
 			super.stopServer();
 			throw e;
 		}

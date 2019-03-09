@@ -7,10 +7,7 @@ import io.nadron.event.Events;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.timeout.IdleStateEvent;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import net.clanwolf.starmap.logging.C3Logger;
 
 /**
  * This class will handle on the {@link GameEvent}s by forwarding message
@@ -19,10 +16,7 @@ import org.slf4j.LoggerFactory;
  * @author Abraham Menacherry
  * 
  */
-public class DefaultToServerHandler extends SimpleChannelInboundHandler<Event>
-{
-	private static final Logger LOG = LoggerFactory.getLogger(DefaultToServerHandler.class);
-	
+public class DefaultToServerHandler extends SimpleChannelInboundHandler<Event> {
 	/**
 	 * The player session associated with this stateful business handler.
 	 */
@@ -45,7 +39,7 @@ public class DefaultToServerHandler extends SimpleChannelInboundHandler<Event>
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
 			throws Exception
 	{
-		LOG.error("Exception during network communication: {}.", cause);
+		C3Logger.warning("Exception during network communication: " + cause + ".");
 		Event event = Events.event(cause, Events.EXCEPTION);
 		playerSession.onEvent(event);
 	}
@@ -54,7 +48,7 @@ public class DefaultToServerHandler extends SimpleChannelInboundHandler<Event>
 	public void channelInactive(ChannelHandlerContext ctx)
 			throws Exception
 	{
-		LOG.debug("Netty Channel {} is closed.", ctx.channel());
+		C3Logger.debug("Netty Channel " + ctx.channel() + " is closed.");
 		if (!playerSession.isShuttingDown())
 		{
 			// Should not send close to session, since reconnection/other
@@ -69,9 +63,8 @@ public class DefaultToServerHandler extends SimpleChannelInboundHandler<Event>
 	{
 		if (evt instanceof IdleStateEvent) 
 		{
-			LOG.warn(
-					"Channel {} has been idle, exception event will be raised now: ",
-					ctx.channel());
+			C3Logger.warning(
+					"Channel " + ctx.channel() + " has been idle, exception event will be raised now: ");
 			// TODO check if setting payload as non-throwable cause issue?
 			Event event = Events.event(evt, Events.EXCEPTION);
 			playerSession.onEvent(event);

@@ -6,13 +6,10 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.MessageToByteEncoder;
+import net.clanwolf.starmap.logging.C3Logger;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 
 /**
  * This class will convert the incoming java object to Flex AMF3 byte format and
@@ -25,8 +22,6 @@ import org.slf4j.LoggerFactory;
 @Sharable
 public class JavaObjectToAMF3Encoder extends MessageToByteEncoder<Object>
 {
-	private static final Logger LOG = LoggerFactory.getLogger(JavaObjectToAMF3Encoder.class);
-	
 	@Override
 	protected void encode(ChannelHandlerContext ctx,
 			Object msg, ByteBuf out) throws Exception {
@@ -41,7 +36,7 @@ public class JavaObjectToAMF3Encoder extends MessageToByteEncoder<Object>
 		} 
 		catch (IOException e) 
 		{
-			LOG.error("IO Error: {}",e);
+			C3Logger.warning("IO Error: " + e);
 			throw e;
 		}
 		

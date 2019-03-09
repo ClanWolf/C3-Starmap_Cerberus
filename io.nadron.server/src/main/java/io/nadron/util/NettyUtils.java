@@ -14,19 +14,14 @@ import java.net.InetSocketAddress;
 import java.nio.charset.Charset;
 import java.util.NoSuchElementException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import net.clanwolf.starmap.logging.C3Logger;
 
 /**
  * This class would be an assortment of netty related utility methods.
  * @author Abraham Menacherry
  *
  */
-public class NettyUtils
-{
-	private static final Logger LOG = LoggerFactory.getLogger(NettyUtils.class);
-	
+public class NettyUtils {
 	public static final String NETTY_CHANNEL = "NETTY_CHANNEL";
 	
 	public static ChannelPipeline getPipeLineOfConnection(
@@ -65,7 +60,7 @@ public class NettyUtils
 				pipeline.removeFirst();
 				counter++;
 			}
-			LOG.trace("Removed {} handlers from pipeline",counter);
+			C3Logger.warning("Removed " + counter + " handlers from pipeline");
 		}
 		catch (NoSuchElementException e)
 		{
@@ -220,9 +215,7 @@ public class NettyUtils
 		}
 		catch (Exception e)
 		{
-			LOG.error(
-					"Error occurred while trying to read string from buffer: {}",
-					e);
+			C3Logger.warning("Error occurred while trying to read string from buffer: " + e);
 		}
 		return str;
 	}
@@ -324,10 +317,8 @@ public class NettyUtils
 			lengthBuffer.writeShort(length);
 			buffer = Unpooled.wrappedBuffer(lengthBuffer, stringBuffer);
 		}
-		catch (Exception e)
-		{
-			LOG.error("Error occurred while trying to write string buffer: {}",
-					e);
+		catch (Exception e) {
+			C3Logger.warning("Error occurred while trying to write string buffer: " + e);
 		}
 		return buffer;
 	}
@@ -348,7 +339,7 @@ public class NettyUtils
 		try{
 			obj = decoder.convert(objBuffer);
 		}catch(Exception e){
-			LOG.error("Error occurred while trying to read object from buffer: {}",e);
+			C3Logger.warning("Error occurred while trying to read object from buffer: " + e);
 		}
 		return obj;
 	}
@@ -366,7 +357,7 @@ public class NettyUtils
 			buffer = Unpooled.wrappedBuffer(lengthBuffer,
 					objectBuffer);
 		} catch (Exception e) {
-			LOG.error("Error occurred while writing object to buffer: {}", e);
+			C3Logger.warning("Error occurred while writing object to buffer: " + e);
 		}
 		return buffer;
 	}

@@ -1,4 +1,12 @@
 module io.nadron.server {
+	exports io.nadron.server;
+	exports io.nadron.app;
+	exports io.nadron.app.impl;
+	exports io.nadron.handlers.netty;
+	exports io.nadron.protocols;
+	exports io.nadron.protocols.impl;
+	exports io.nadron.service;
+	exports io.nadron.util;
 	requires com.fasterxml.jackson.core;
 	requires com.fasterxml.jackson.databind;
 
@@ -12,4 +20,7 @@ module io.nadron.server {
 	requires jackson.mapper.asl;
 	requires jetlang;
 	requires io.netty.buffer;
+	requires spring.beans;
+	requires spring.context;
+	requires blazeds.core;
 }

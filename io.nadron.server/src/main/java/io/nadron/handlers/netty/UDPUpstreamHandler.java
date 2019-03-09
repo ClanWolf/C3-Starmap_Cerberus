@@ -11,15 +11,11 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.DatagramChannel;
 import io.netty.channel.socket.DatagramPacket;
+import net.clanwolf.starmap.logging.C3Logger;
 
 import java.net.SocketAddress;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-public class UDPUpstreamHandler extends SimpleChannelInboundHandler<DatagramPacket>
-{
-	private static final Logger LOG = LoggerFactory.getLogger(UDPUpstreamHandler.class);
+public class UDPUpstreamHandler extends SimpleChannelInboundHandler<DatagramPacket> {
 	private static final String UDP_CONNECTING = "UDP_CONNECTING";
 	private SessionRegistryService<SocketAddress> udpSessionRegistry;
 	private MessageBufferEventDecoder messageBufferEventDecoder;
@@ -57,16 +53,15 @@ public class UDPUpstreamHandler extends SimpleChannelInboundHandler<DatagramPack
 				}
 				else
 				{
-					LOG.info("Going to discard UDP Message Event with type {} "
-							+ "the UDP MessageSender is not initialized fully",
-							event.getType());
+					C3Logger.info("Going to discard UDP Message Event with type " + event.getType()
+							+ "the UDP MessageSender is not initialized fully");
 				}
 			} 
 			else if (event.getType() == Events.CONNECT) 
 			{
 				// Duplicate connect just discard.
-				LOG.trace("Duplicate CONNECT {} received in UDP channel, "
-						+ "for session: {} going to discard", event, session);
+				C3Logger.warning("Duplicate CONNECT " + event + " received in UDP channel, "
+						+ "for session: " + session + " going to discard");
 			} 
 			else 
 			{
@@ -76,23 +71,20 @@ public class UDPUpstreamHandler extends SimpleChannelInboundHandler<DatagramPack
 		} 
 		else 
 		{
-			LOG.trace(
-					"Packet received from unknown source address: {}, going to discard",
-					remoteAddress);
+			C3Logger.warning(
+					"Packet received from unknown source address: " + remoteAddress + ", going to discard");
 		}
 	}
 
 	public Event getUDPConnectEvent(Event event, SocketAddress remoteAddress,
 			DatagramChannel udpChannel)
 	{
-		LOG.debug("Incoming udp connection remote address : {}",
-				remoteAddress);
+		C3Logger.warning("Incoming udp connection remote address : " + remoteAddress);
 		
 		if (event.getType() != Events.CONNECT)
 		{
-			LOG.info("UDP Event with type {} will get converted to a CONNECT "
-					+ "event since the UDP MessageSender is not initialized till now",
-					event.getType());
+			C3Logger.info("UDP Event with type " + event.getType() + " will get converted to a CONNECT "
+					+ "event since the UDP MessageSender is not initialized till now");
 		}
 		Fast messageSender = new NettyUDPMessageSender(remoteAddress, udpChannel, udpSessionRegistry);
 		Event connectEvent = Events.connectEvent(messageSender);

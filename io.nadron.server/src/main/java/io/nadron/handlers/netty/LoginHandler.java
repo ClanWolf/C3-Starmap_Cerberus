@@ -25,21 +25,14 @@ import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
+import net.clanwolf.starmap.logging.C3Logger;
 
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-
 @Sharable
-public class LoginHandler extends SimpleChannelInboundHandler<Event>
-{
-	private static final Logger LOG = LoggerFactory
-			.getLogger(LoginHandler.class);
-
+public class LoginHandler extends SimpleChannelInboundHandler<Event> {
 	protected LookupService lookupService;
 	protected SessionRegistryService<SocketAddress> udpSessionRegistry;
 	protected ReconnectSessionRegistry reconnectRegistry;
@@ -60,23 +53,21 @@ public class LoginHandler extends SimpleChannelInboundHandler<Event>
 		int type = event.getType();
 		if (Events.LOG_IN == type)
 		{
-			LOG.debug("Login attempt from {}", channel.remoteAddress());
+			C3Logger.warning("Login attempt from " + channel.remoteAddress());
 			Player player = lookupPlayer(buffer, channel);
 			handleLogin(player, ctx, buffer);
 		}
 		else if (Events.RECONNECT == type)
 		{
-			LOG.debug("Reconnect attempt from {}", channel.remoteAddress());
+			C3Logger.warning("Reconnect attempt from " + channel.remoteAddress());
 			String reconnectKey = NettyUtils.readString(buffer);
 			PlayerSession playerSession = lookupSession(reconnectKey);
 			handleReconnect(playerSession, ctx, buffer);
 		}
 		else
 		{
-			LOG.error("Invalid event {} sent from remote address {}. "
-					+ "Going to close channel {}",
-					new Object[] { event.getType(), channel.remoteAddress(),
-							channel});
+			C3Logger.warning("Invalid event {} sent from remote address " + new Object[] { event.getType(), channel.remoteAddress(),
+					channel} + "Going to close channel ");
 			closeChannelWithLoginFailure(channel);
 		}
 	}
@@ -86,9 +77,7 @@ public class LoginHandler extends SimpleChannelInboundHandler<Event>
 			throws Exception
 	{
 		Channel channel = ctx.channel();
-		LOG.error(
-				"Exception {} occurred during log in process, going to close channel {}",
-				cause, channel);
+		C3Logger.warning("Exception " + cause + " occurred during log in process, going to close channel " +  channel);
 		channel.close();
 	}
 	
@@ -97,8 +86,8 @@ public class LoginHandler extends SimpleChannelInboundHandler<Event>
 	public void channelActive(ChannelHandlerContext ctx) throws Exception 
 	{
 		AbstractNettyServer.ALL_CHANNELS.add(ctx.channel());
-		LOG.debug("Added Channel {} as the {}th open channel", ctx
-				.channel(), CHANNEL_COUNTER.incrementAndGet());
+		C3Logger.warning("Added Channel " + ctx
+				.channel() + " as the " + CHANNEL_COUNTER.incrementAndGet() + "th open channel");
 	}
 	
 	public Player lookupPlayer(final ByteBuf buffer, final Channel channel)
@@ -106,7 +95,7 @@ public class LoginHandler extends SimpleChannelInboundHandler<Event>
 		Credentials credentials = new SimpleCredentials(buffer);
 		Player player = lookupService.playerLookup(credentials);
 		if(null == player){
-			LOG.error("Invalid credentials provided by user: {}",credentials);
+			C3Logger.warning("Invalid credentials provided by user: " + credentials);
 		}
 		return player;
 	}
@@ -197,7 +186,7 @@ public class LoginHandler extends SimpleChannelInboundHandler<Event>
 					.generateFor(playerSession.getClass());
 			playerSession.setAttribute(NadronConfig.RECONNECT_KEY, reconnectKey);
 			playerSession.setAttribute(NadronConfig.RECONNECT_REGISTRY, reconnectRegistry);
-			LOG.trace("Sending GAME_ROOM_JOIN_SUCCESS to channel {}", channel);
+			C3Logger.warning("Sending GAME_ROOM_JOIN_SUCCESS to channel " + channel);
 			ByteBuf reconnectKeyBuffer = Unpooled.wrappedBuffer(NettyUtils.createBufferForOpcode(Events.GAME_ROOM_JOIN_SUCCESS),
 							NettyUtils.writeString(reconnectKey));
 			ChannelFuture future = channel.writeAndFlush(reconnectKeyBuffer);
@@ -209,14 +198,14 @@ public class LoginHandler extends SimpleChannelInboundHandler<Event>
 			// Write failure and close channel.
 			ChannelFuture future = channel.writeAndFlush(NettyUtils.createBufferForOpcode(Events.GAME_ROOM_JOIN_FAILURE));
 			future.addListener(ChannelFutureListener.CLOSE);
-			LOG.error("Invalid ref key provided by client: {}. Channel {} will be closed",refKey,channel);
+			C3Logger.warning("Invalid ref key provided by client: " + refKey + ". Channel " + channel + " will be closed");
 		}
 	}
 	
 	protected void handleReJoin(PlayerSession playerSession, GameRoom gameRoom, Channel channel,
 			ByteBuf buffer)
 	{
-		LOG.trace("Going to clear pipeline");
+		C3Logger.warning("Going to clear pipeline");
 		// Clear the existing pipeline
 		NettyUtils.clearPipeline(channel.pipeline());
 		// Set the tcp channel on the session. 
@@ -239,10 +228,10 @@ public class LoginHandler extends SimpleChannelInboundHandler<Event>
 					throws Exception
 			{
 				Channel channel = future.channel();
-				LOG.trace("Sending GAME_ROOM_JOIN_SUCCESS to channel {} completed", channel);
+				C3Logger.warning("Sending GAME_ROOM_JOIN_SUCCESS to channel " + channel + " completed");
 				if (future.isSuccess())
 				{
-					LOG.trace("Going to clear pipeline");
+					C3Logger.warning("Going to clear pipeline");
 					// Clear the existing pipeline
 					NettyUtils.clearPipeline(channel.pipeline());
 					// Set the tcp channel on the session. 
@@ -256,7 +245,7 @@ public class LoginHandler extends SimpleChannelInboundHandler<Event>
 				}
 				else
 				{
-					LOG.error("GAME_ROOM_JOIN_SUCCESS message sending to client was failure, channel will be closed");
+					C3Logger.warning("GAME_ROOM_JOIN_SUCCESS message sending to client was failure, channel will be closed");
 					channel.close();
 				}
 			}

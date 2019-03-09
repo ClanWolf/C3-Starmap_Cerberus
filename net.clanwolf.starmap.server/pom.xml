@@ -32,35 +32,40 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<!-- <version>5.1.33</version> -->
 			<version>6.0.6</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>5.1.0.Final</version>
+			<version>5.4.1.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
-			<version>5.1.0.Final</version>
-			<!-- <version>5.0.3.Final</version> -->
+			<version>5.4.1.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-ehcache</artifactId>
-			<version>5.1.0.Final</version>
+			<version>5.4.1.Final</version>
 		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>com.zaxxer</groupId>-->
+			<!--<artifactId>HikariCP</artifactId>-->
+			<!--<version>2.6.1</version>-->
+			<!--<type>jar</type>-->
+		<!--</dependency>-->
 		<dependency>
 			<groupId>com.zaxxer</groupId>
 			<artifactId>HikariCP</artifactId>
-			<version>2.6.1</version>
+			<version>3.3.1</version>
 			<type>jar</type>
 		</dependency>
+
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-hikaricp</artifactId>
-			<version>5.2.7.Final</version>
+			<version>5.4.1.Final</version>
 			<type>jar</type>
 		</dependency>
 		<dependency>
@@ -74,47 +79,46 @@
 			<artifactId>mchange-commons-java</artifactId>
 			<version>0.2.3.4</version>
 		</dependency>
-		<!-- Spring -->
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
-			<version>4.2.2.RELEASE</version>
+			<version>5.1.5.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>4.2.2.RELEASE</version>
+			<version>5.1.5.RELEASE</version>
 		</dependency>
-		<!--@Transactional -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
-			<version>4.2.2.RELEASE</version>
+			<version>5.1.5.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
-			<version>4.2.1.RELEASE</version>
+			<version>5.1.4.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
-			<version>1.7.13</version>
+			<version>1.8.0-beta4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.7.13</version>
+			<version>1.8.0-beta4</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate.common</groupId>
 			<artifactId>hibernate-commons-annotations</artifactId>
-			<version>5.0.0.Final</version>
+			<version>5.1.0.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate.javax.persistence</groupId>
 			<artifactId>hibernate-jpa-2.1-api</artifactId>
-			<version>1.0.0.Final</version>
+			<version>1.0.2.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>dom4j</groupId>
@@ -129,17 +133,22 @@
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
-			<version>2.4</version>
+			<version>2.8.5</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jboss.spec.javax.transaction</groupId>
 			<artifactId>jboss-transaction-api_1.2_spec</artifactId>
-			<version>1.0.0.Final</version>
+			<version>2.0.0.Alpha1</version>
 		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>org.jboss.spec.javax.transaction</groupId>-->
+			<!--<artifactId>jboss-transaction-api_1.2_spec</artifactId>-->
+			<!--<version>1.0.0.Final</version>-->
+		<!--</dependency>-->
 		<dependency>
 			<groupId>javax.el</groupId>
 			<artifactId>javax.el-api</artifactId>
-			<version>3.0.0</version>
+			<version>3.0.1-b06</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.mail</groupId>
@@ -155,6 +164,36 @@
 			<groupId>com.voodoodyne.jackson.jsog</groupId>
 			<artifactId>jackson-jsog</artifactId>
 			<version>1.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>net.clanwolf.starmap</groupId>
+			<artifactId>io.nadron.server</artifactId>
+			<version>4.2.3</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.clanwolf.starmap</groupId>
+			<artifactId>net.clanwolf.starmap.transfer</artifactId>
+			<version>4.2.3</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.clanwolf.starmap</groupId>
+			<artifactId>net.clanwolf.starmap.transfer</artifactId>
+			<version>4.2.3</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.clanwolf.starmap</groupId>
+			<artifactId>net.clanwolf.starmap.transfer</artifactId>
+			<version>4.2.3</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.clanwolf.starmap</groupId>
+			<artifactId>net.clanwolf.starmap.transfer</artifactId>
+			<version>4.2.3</version>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 

@@ -9,20 +9,15 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.timeout.ReadTimeoutException;
 import io.netty.util.CharsetUtil;
+import net.clanwolf.starmap.logging.C3Logger;
 
 import java.io.IOException;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 
 /**
  * @author <a href="http://www.waywardmonkeys.com/">Bruce Mitchener</a>
  */
 public class FlashPolicyServerHandler extends SimpleChannelInboundHandler<Object> {
 
-	private static final Logger LOG = LoggerFactory.getLogger(FlashPolicyServerHandler.class);
-	
 	private static ByteBuf policyFile;
 	private final String portNumber;
 	private static final String NEWLINE = "\r\n";
@@ -46,7 +41,7 @@ public class FlashPolicyServerHandler extends SimpleChannelInboundHandler<Object
 			}
 			catch (IOException e)
 			{
-				LOG.error("Unable to open flash policy file", e);
+				C3Logger.warning("Unable to open flash policy file " + e);
 			}
 		}
 	}
@@ -99,11 +94,11 @@ public class FlashPolicyServerHandler extends SimpleChannelInboundHandler<Object
 	{
 		if (cause instanceof ReadTimeoutException)
 		{
-			LOG.error("Connection timed out. Going to close channel");
+			C3Logger.warning("Connection timed out. Going to close channel");
 		}
 		else
 		{
-			LOG.error("Exception in FlashPolicyFileHanlder", cause);
+			C3Logger.warning("Exception in FlashPolicyFileHanlder " + cause);
 		}
 		ctx.channel().close();
     }

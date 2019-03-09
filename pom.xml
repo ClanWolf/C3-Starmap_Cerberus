@@ -31,10 +31,23 @@
 		<version.netty>4.1.33.Final</version.netty>
 	</properties>
 
+	<repositories>
+		<repository>
+			<id>central</id>
+			<name>central</name>
+			<url>http://central.maven.org/maven2/</url>
+		</repository>
+		<repository>
+			<id>sonatype</id>
+			<name>sonatype</name>
+			<url>https://oss.sonatype.org/content/repositories/releases/</url>
+		</repository>
+	</repositories>
+
 	<modules>
 		<module>net.clanwolf.starmap.client</module>
 		<module>net.clanwolf.starmap.client.preloader</module>
-		<!--<module>net.clanwolf.starmap.server</module>-->
+		<module>net.clanwolf.starmap.server</module>
 		<module>net.clanwolf.starmap.transfer</module>
 		<module>net.clanwolf.starmap.logging</module>
 		<module>io.nadron.client</module>

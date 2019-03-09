@@ -5,12 +5,10 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.socket.nio.NioDatagramChannel;
+import net.clanwolf.starmap.logging.C3Logger;
 
 import java.util.Map;
 import java.util.Set;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * This server does UDP connection less broadcast. Since it does not store the
@@ -24,10 +22,7 @@ import org.slf4j.LoggerFactory;
  * @author Abraham Menacherry
  * 
  */
-public class NettyUDPServer extends AbstractNettyServer 
-{
-	private static final Logger LOG = LoggerFactory
-			.getLogger(NettyUDPServer.class);
+public class NettyUDPServer extends AbstractNettyServer {
 	private Bootstrap bootstrap;
 	
 	public NettyUDPServer(NettyConfig nettyConfig, ChannelInitializer<? extends Channel> channelInitializer) 
@@ -60,7 +55,7 @@ public class NettyUDPServer extends AbstractNettyServer
 		} 
 		catch (Exception e) 
 		{
-			LOG.error("UDP Server start error {}, going to shut down", e);
+			C3Logger.warning("UDP Server start error {}, going to shut down" + e);
 			super.stopServer();
 			throw e;
 		}

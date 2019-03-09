@@ -6,11 +6,9 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.ByteToMessageDecoder;
+import net.clanwolf.starmap.logging.C3Logger;
 
 import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * This class can be used to switch login-protocol based on the incoming bytes
@@ -25,12 +23,7 @@ import org.slf4j.LoggerFactory;
  * @author Abraham Menacherry
  * 
  */
-public class ProtocolMultiplexerDecoder extends ByteToMessageDecoder
-{
-
-	private static final Logger LOG = LoggerFactory
-			.getLogger(ProtocolMultiplexerDecoder.class);
-
+public class ProtocolMultiplexerDecoder extends ByteToMessageDecoder {
 	private final LoginProtocol loginProtocol;
 	private final int bytesForProtocolCheck;
 
@@ -58,10 +51,8 @@ public class ProtocolMultiplexerDecoder extends ByteToMessageDecoder
 			byte[] headerBytes = new byte[bytesForProtocolCheck];
 			in.getBytes(in.readerIndex(), headerBytes, 0,
 					bytesForProtocolCheck);
-			LOG.error(
-					"Unknown protocol, discard everything and close the connection {}. Incoming Bytes {}",
-					ctx.channel(),
-					BinaryUtils.getHexString(headerBytes));
+			C3Logger.warning(
+					"Unknown protocol, discard everything and close the connection " + ctx.channel() + ". Incoming Bytes " + BinaryUtils.getHexString(headerBytes));
 			close(in, ctx);
 		}
 		else
