@@ -6,13 +6,11 @@ import io.nadron.convert.flex.AMFDeSerializer;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.codec.ByteToMessageDecoder;
+import net.clanwolf.starmap.logging.C3Logger;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * This class takes a {@link ByteBuf} containing AMF3 object as input and
@@ -23,8 +21,6 @@ import org.slf4j.LoggerFactory;
  */
 public class AMF3ToJavaObjectDecoder extends ByteToMessageDecoder implements Transform<ByteBuf, Object>
 {
-	private static final Logger LOG = LoggerFactory.getLogger(AMF3ToJavaObjectDecoder.class);
-	
 	@Override
 	protected void decode(ChannelHandlerContext ctx, ByteBuf in,
 			List<Object> out) throws Exception
@@ -48,25 +44,24 @@ public class AMF3ToJavaObjectDecoder extends ByteToMessageDecoder implements Tra
 	
 	protected Object deSerializeObjectFromStream(ByteArrayInputStream bis) throws Exception
 	{
-		AMFDeSerializer serializer = new AMFDeSerializer(SerializationContext
-				.getSerializationContext());
+		AMFDeSerializer serializer = new AMFDeSerializer(SerializationContext.getSerializationContext());
 		Object o = null;
 		try
 		{
 			// do the deserialization.
 			o = serializer.fromAmf(bis);
-			LOG.trace("Serialized object: {}",o);
+			C3Logger.info("Serialized object: " + o);
 			bis.close();
 		}
 		catch (IOException e)
 		{
-			LOG.error("IO error in AMF3ToJavaObjectDecoder: {}",e);
+			C3Logger.warning("IO error in AMF3ToJavaObjectDecoder: " + e);
 			throw e;
 		}
 		catch (ClassNotFoundException e)
 		{
-			LOG.error("Error in AMF3ToJavaObjectDecoder: {}.\n " +
-					"Check if flash class has corresponding java class",e);
+			C3Logger.warning("Error in AMF3ToJavaObjectDecoder: " + e + ".\n " +
+					"Check if flash class has corresponding java class");
 			throw e;
 		}
 		return o;
