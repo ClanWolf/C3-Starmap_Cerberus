@@ -80,27 +80,28 @@
 package net.clanwolf.starmap.server;
 
 import io.nadron.server.ServerManager;
+import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.server.util.HeartBeatTimer;
-import net.clanwolf.starmap.server.util.Log;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 
-import java.net.URL;
-import java.net.URLClassLoader;
+import java.io.File;
 import java.util.Timer;
+import java.util.logging.Level;
 
 public class GameServer {
 	private static AbstractApplicationContext ctx;
 
 	public static void main(String[] args) {
+		// Logging
+		File dir = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3");
+		boolean res = dir.mkdirs();
+		if (res || dir.exists()) {
+			String logFileName = dir + File.separator + "server.log";
 
-		ClassLoader cl = ClassLoader.getSystemClassLoader();
-		Log.print("Classpath: ");
-		URL[] urls = ((URLClassLoader) cl).getURLs();
-		for (URL url : urls) {
-			Log.print(url.getFile());
+			C3Logger.setC3Logfile(logFileName);
+			C3Logger.setC3LogLevel(Level.FINEST);
 		}
-
 		// PropertyConfigurator.configure(System.getProperty("log4j.configuration"));
 		ctx = new AnnotationConfigApplicationContext(SpringConfig.class);
 		// For the destroy method to work.
@@ -113,9 +114,9 @@ public class GameServer {
 			serverManager.startServers();
 			// serverManager.startServers(18090,843,8081);
 		} catch (Exception e) {
-			Log.exception(GameServer.class, e, "Unable to start servers cleanly: {}");
+			C3Logger.exception("Unable to start servers cleanly.", e);
 		}
-		Log.print("Started servers");
+		C3Logger.print("Started servers");
 		startGames(ctx);
 	}
 
@@ -126,7 +127,7 @@ public class GameServer {
 	public static void startGames(AbstractApplicationContext ctx) {
 		// EntityManagerHelper.getEntityManager();
 		// Log.print("EntityManager initialized");
-		Log.print("Server ready");
+		C3Logger.print("Server ready");
 
 		// write heartbeat file every 5 minutes
 		Timer serverHeartBeat = new Timer();

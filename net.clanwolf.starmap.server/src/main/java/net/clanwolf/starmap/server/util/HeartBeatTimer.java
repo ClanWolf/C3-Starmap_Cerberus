@@ -79,6 +79,7 @@
  */
 package net.clanwolf.starmap.server.util;
 
+import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.server.enums.SystemListTypes;
 
 import java.io.BufferedWriter;
@@ -103,7 +104,7 @@ public class HeartBeatTimer extends TimerTask {
 
 	@Override
 	public void run() {
-		Log.print("Writing heartbeat ping to " + tempDir);
+		C3Logger.print("Writing heartbeat ping to " + tempDir);
 
 		Calendar calendar = Calendar.getInstance();
 		java.util.Date now = calendar.getTime();
@@ -113,18 +114,18 @@ public class HeartBeatTimer extends TimerTask {
 		try (BufferedWriter br = new BufferedWriter(new FileWriter(heartbeatfile))) {
 			br.write("" + currentTimestamp.getTime());
 		} catch (IOException ioe) {
-			Log.exception(this, ioe);
+			C3Logger.exception("Error writing heartbeat file", ioe);
 		}
 
-		Log.print("Calling list creation (Factions)...");
+		C3Logger.print("Calling list creation (Factions)...");
 		WebDataInterface.createSystemList(SystemListTypes.Factions);
-		Log.print("Calling list creation (HH_StarSystems)...");
+		C3Logger.print("Calling list creation (HH_StarSystems)...");
 		WebDataInterface.createSystemList(SystemListTypes.HH_StarSystems);
-		Log.print("Calling list creation (HH_Attacks)...");
+		C3Logger.print("Calling list creation (HH_Attacks)...");
 		WebDataInterface.createSystemList(SystemListTypes.HH_Attacks);
-		Log.print("Calling list creation (HH_Jumpships)...");
+		C3Logger.print("Calling list creation (HH_Jumpships)...");
 		WebDataInterface.createSystemList(SystemListTypes.HH_Jumpships);
-		Log.print("Calling list creation (CM_StarSystems)...");
+		C3Logger.print("Calling list creation (CM_StarSystems)...");
 		WebDataInterface.createSystemList(SystemListTypes.CM_StarSystems);
 	}
 }

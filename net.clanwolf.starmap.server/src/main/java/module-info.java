@@ -8,6 +8,13 @@ module net.clanwolf.starmap.server {
 	requires java.sql;
 	requires java.persistence;
 	requires net.clanwolf.starmap.transfer;
+	requires net.clanwolf.starmap.logging;
 	requires jackson.mapper.asl;
 	requires json.simple;
+	requires mail;
+	requires slf4j.simple;
+
+	opens net.clanwolf.starmap.server to spring.core;
+
+	exports net.clanwolf.starmap.server to spring.beans, spring.context;
 }

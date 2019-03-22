@@ -79,7 +79,7 @@
  */
 package net.clanwolf.starmap.server.mail;
 
-import net.clanwolf.starmap.server.util.Log;
+import net.clanwolf.starmap.logging.C3Logger;
 
 import javax.mail.Address;
 import javax.mail.Message;
@@ -134,7 +134,8 @@ public class MailManager {
 			internetAddress.validate();
 			valid = true;
 		} catch (AddressException e) {
-			Log.error("Invalid Email Adress " + emailadress, e);
+			e.printStackTrace();
+			C3Logger.warning("Invalid Email Adress " + emailadress + " " + e.getMessage());
 		}
 		return valid;
 	}
@@ -189,17 +190,17 @@ public class MailManager {
 			transport.sendMessage(msg, msg.getAllRecipients());
 
 			result = true;
-			Log.info("Successfully sent email from " + mail.sender() + " to " + mail.recipients());
+			C3Logger.info("Successfully sent email from " + mail.sender() + " to " + mail.recipients());
 		} catch (Exception e) {
-			Log.error("Failed to send email " + e.getMessage(), e);
+			C3Logger.error("Failed to send email " + e.getMessage(), e);
 		} catch (Throwable t) {
-			Log.error("Failed to send email " + t.getMessage(), t);
+			C3Logger.error("Failed to send email " + t.getMessage(), t);
 		} finally {
 			if (transport != null) {
 				try {
 					transport.close();
 				} catch (MessagingException e) {
-					Log.error("Failed to close Mail smtp Transport: ", e);
+					C3Logger.error("Failed to close Mail smtp Transport: ", e);
 				}
 			}
 		}
@@ -227,7 +228,7 @@ public class MailManager {
 				String pw = mProperties.getProperty("mail_pw");
 				MailManager.setMailCredentials(server, user, pw);
 			} catch (IOException e) {
-				Log.error("Failed to read mail properties", e);
+				C3Logger.error("Failed to read mail properties", e);
 				return false;
 			}
 		}
@@ -236,7 +237,7 @@ public class MailManager {
 		if (MailManager.validEmailAdress(sender)) {
 			mail.setSender(sender);
 		} else {
-			Log.warn("Email Adress of Sender is not valid: " + sender);
+			C3Logger.warning("Email Adress of Sender is not valid: " + sender);
 			if (breakOnError) {
 				throw new RuntimeException("Email Adress of Sender is not valid: " + sender);
 			}
@@ -245,7 +246,7 @@ public class MailManager {
 			if (MailManager.validEmailAdress(receiver)) {
 				mail.addRecipient(receiver);
 			} else {
-				Log.warn("Email Adress of Receiver is not valid: " + receiver);
+				C3Logger.warning("Email Adress of Receiver is not valid: " + receiver);
 				if (breakOnError) {
 					throw new RuntimeException("Email Adress of Receiver is not valid: " + receiver);
 				}

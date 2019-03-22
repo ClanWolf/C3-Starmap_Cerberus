@@ -15,6 +15,18 @@
 	<dependencies>
 		<dependency>
 			<groupId>net.clanwolf.starmap</groupId>
+			<artifactId>io.nadron.server</artifactId>
+			<version>4.2.3</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.clanwolf.starmap</groupId>
+			<artifactId>net.clanwolf.starmap.transfer</artifactId>
+			<version>4.2.3</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>net.clanwolf.starmap</groupId>
 			<artifactId>net.clanwolf.starmap.logging</artifactId>
 			<version>${project.version}</version>
 		</dependency>
@@ -38,6 +50,12 @@
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 			<version>5.4.1.Final</version>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.activation</groupId>
+					<artifactId>activation</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -107,23 +125,34 @@
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-api</artifactId>
-			<version>1.8.0-beta4</version>
+			<artifactId>slf4j-simple</artifactId>
+			<version>1.7.26</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate.common</groupId>
 			<artifactId>hibernate-commons-annotations</artifactId>
 			<version>5.1.0.Final</version>
 		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>org.hibernate.javax.persistence</groupId>-->
+			<!--<artifactId>hibernate-jpa-2.1-api</artifactId>-->
+			<!--<version>1.0.2.Final</version>-->
+		<!--</dependency>-->
 		<dependency>
-			<groupId>org.hibernate.javax.persistence</groupId>
-			<artifactId>hibernate-jpa-2.1-api</artifactId>
-			<version>1.0.2.Final</version>
+			<groupId>javax.persistence</groupId>
+			<artifactId>javax.persistence-api</artifactId>
+			<version>2.2</version>
 		</dependency>
 		<dependency>
 			<groupId>dom4j</groupId>
 			<artifactId>dom4j</artifactId>
 			<version>1.6.1</version>
+			<exclusions>
+				<exclusion>
+					<groupId>xml-apis</groupId>
+					<artifactId>xml-apis</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>net.sourceforge.collections</groupId>
@@ -154,6 +183,12 @@
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
 			<version>1.4.7</version>
+			<exclusions>
+				<exclusion>
+					<groupId>javax.activation</groupId>
+					<artifactId>activation</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
@@ -164,36 +199,6 @@
 			<groupId>com.voodoodyne.jackson.jsog</groupId>
 			<artifactId>jackson-jsog</artifactId>
 			<version>1.1.1</version>
-		</dependency>
-		<dependency>
-			<groupId>net.clanwolf.starmap</groupId>
-			<artifactId>io.nadron.server</artifactId>
-			<version>4.2.3</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>net.clanwolf.starmap</groupId>
-			<artifactId>net.clanwolf.starmap.transfer</artifactId>
-			<version>4.2.3</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>net.clanwolf.starmap</groupId>
-			<artifactId>net.clanwolf.starmap.transfer</artifactId>
-			<version>4.2.3</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>net.clanwolf.starmap</groupId>
-			<artifactId>net.clanwolf.starmap.transfer</artifactId>
-			<version>4.2.3</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>net.clanwolf.starmap</groupId>
-			<artifactId>net.clanwolf.starmap.transfer</artifactId>
-			<version>4.2.3</version>
-			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 

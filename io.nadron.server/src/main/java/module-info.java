@@ -7,8 +7,12 @@ module io.nadron.server {
 	exports io.nadron.protocols.impl;
 	exports io.nadron.service;
 	exports io.nadron.util;
+	exports io.nadron.event;
+	exports io.nadron.event.impl;
+	exports io.nadron.service.impl;
 	requires com.fasterxml.jackson.core;
 	requires com.fasterxml.jackson.databind;
+	requires jackson.core.asl;
 
 	requires net.clanwolf.starmap.logging;
 
@@ -23,4 +27,5 @@ module io.nadron.server {
 	requires spring.beans;
 	requires spring.context;
 	requires blazeds.core;
+	requires msgpack;
 }

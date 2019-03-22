@@ -86,11 +86,11 @@ import io.nadron.event.Event;
 import io.nadron.event.Events;
 import io.nadron.event.impl.SessionMessageHandler;
 import io.nadron.service.GameStateManagerService;
+import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.server.persistence.EntityConverter;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.UserDAO;
 import net.clanwolf.starmap.server.persistence.pojos.UserPOJO;
-import net.clanwolf.starmap.server.util.Log;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 
@@ -119,7 +119,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 	@Override
 	public void onEvent(Event event) {
-		Log.debug("C3GameSessionHandler.onEvent");
+		C3Logger.debug("C3GameSessionHandler.onEvent");
 		GameState state = null;
 
 		if (event.getSource() instanceof GameState) {
@@ -132,7 +132,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 	}
 
 	private void executeCommand(PlayerSession session, GameState state) {
-		Log.debug("C3GameSessionHandler.executeCommand: " + state.getMode().toString());
+		C3Logger.debug("C3GameSessionHandler.executeCommand: " + state.getMode().toString());
 		EntityConverter.convertGameStateToPOJO(state);
 
 		switch (state.getMode()) {
@@ -199,12 +199,12 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 	}
 
 	private void checkDoubleLogin(PlayerSession session, GameRoom gm) {
-		Log.debug("C3Room.afterSessionConnect");
+		C3Logger.debug("C3Room.afterSessionConnect");
 
 		// get the actual user
 		UserPOJO newUser = ((C3Player) session.getPlayer()).getUser();
 
-		Log.debug("C3Room.afterSessionConnect -> search wrong session");
+		C3Logger.debug("C3Room.afterSessionConnect -> search wrong session");
 		if (newUser != null) {
 			for (PlayerSession plSession : gm.getSessions()) {
 
@@ -212,7 +212,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 				// find a other session from the user of the actual player session and send an USER_LOGOUT_AFTER_DOUBLE_LOGIN event
 				if (userID.equals(newUser.getUserId()) && session != plSession) {
-					Log.debug("C3Room.afterSessionConnect -> find wrong session");
+					C3Logger.debug("C3Room.afterSessionConnect -> find wrong session");
 
 					GameState state_broadcast_login = new GameState(GAMESTATEMODES.USER_LOGOUT_AFTER_DOUBLE_LOGIN);
 					state_broadcast_login.setReceiver(plSession.getId());
@@ -227,8 +227,8 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 	}
 
 	private void getLoggedInUserData(PlayerSession session) {
-		Log.debug("C3GameSessionHandler.getLoggedInUserData");
-		Log.debug("C3GameSessionHandler.getLoggedInUserData.seesionID: -> " + session.getId());
+		C3Logger.debug("C3GameSessionHandler.getLoggedInUserData");
+		C3Logger.debug("C3GameSessionHandler.getLoggedInUserData.seesionID: -> " + session.getId());
 
 		// Create a new GameState with the UserPOJO for the client, if login was successful
 		GameState state_userdata = new GameState(GAMESTATEMODES.USER_LOGGED_IN_DATA);

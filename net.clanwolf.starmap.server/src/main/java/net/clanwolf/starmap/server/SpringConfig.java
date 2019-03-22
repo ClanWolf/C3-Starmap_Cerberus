@@ -109,7 +109,7 @@ import java.util.Map;
  *
  */
 @Configuration
-@ImportResource("classpath:/beans/beans.xml")
+@ImportResource("classpath*:/beans/beans.xml")
 public class SpringConfig {
 
     @Autowired

@@ -79,6 +79,7 @@
  */
 package net.clanwolf.starmap.server.util;
 
+import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.server.enums.SystemListTypes;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
 import net.clanwolf.starmap.transfer.dtos.*;
@@ -259,7 +260,7 @@ public class WebDataInterface {
 	// CALLED FROM HEARTBEATTIMER
 	public static void createSystemList(SystemListTypes type) {
 		initialize();
-		Log.print("Starting with the creation of the system list: " + type.name());
+		C3Logger.print("Starting with the creation of the system list: " + type.name());
 
 		EntityManager manager = EntityManagerHelper.getEntityManager();
 		manager.getTransaction().begin();
@@ -274,7 +275,7 @@ public class WebDataInterface {
 				String systemsList = null;
 				try (PreparedStatement stmt = conn.prepareStatement(selects.get(type.name()))) {
 					rs = stmt.executeQuery();
-					Log.print("Select done...");
+					C3Logger.print("Select done...");
 
 					if (universe == null) {
 						universe = new UniverseDTO();
@@ -291,7 +292,7 @@ public class WebDataInterface {
 
 							universe.factions.put(f.getShortName(), f);
 						}
-						Log.print("Created universe classes (Factions)...");
+						C3Logger.print("Created universe classes (Factions)...");
 					}
 
 					if (type == SystemListTypes.HH_StarSystems) {
@@ -325,7 +326,7 @@ public class WebDataInterface {
 
 							universe.starSystems.put(ss.getId(), ss);
 						}
-						Log.print("Created universe classes (StarSystems)...");
+						C3Logger.print("Created universe classes (StarSystems)...");
 					}
 
 					if (type == SystemListTypes.HH_Attacks) {
@@ -345,7 +346,7 @@ public class WebDataInterface {
 
 							universe.attacks.add(a);
 						}
-						Log.print("Created universe classes (Attacks)...");
+						C3Logger.print("Created universe classes (Attacks)...");
 					}
 
 					if (type == SystemListTypes.HH_Jumpships) {
@@ -361,7 +362,7 @@ public class WebDataInterface {
 
 							universe.jumpships.put(js.getShipName(), js);
 						}
-						Log.print("Created universe classes (Jumpships)...");
+						C3Logger.print("Created universe classes (Jumpships)...");
 					}
 					universe.currentSeason = 1;
 					universe.currentRound = 6;
@@ -370,7 +371,7 @@ public class WebDataInterface {
 					rs.beforeFirst();
 					systemsList = getJSONFromResultSet(rs, type.name(), true);
 				} catch (Exception e) {
-					Log.exception(WebDataInterface.class, e);
+					C3Logger.exception("Error creating mapdata file", e);
 				}
 				resultObject.setResultList(systemsList);
 				return resultObject;
@@ -403,22 +404,22 @@ public class WebDataInterface {
 			mapDataFileHH = new File(filenameHH);
 			mapDataFileCM = new File(filenameCM);
 
-			Log.print("Wrote file: " + filename);
-			Log.print("Wrote file: " + filenameHH);
-			Log.print("Wrote file: " + filenameCM);
+			C3Logger.print("Wrote file: " + filename);
+			C3Logger.print("Wrote file: " + filenameHH);
+			C3Logger.print("Wrote file: " + filenameCM);
 		} catch (UnsupportedEncodingException usee) {
-			Log.exception(WebDataInterface.class, usee);
+			C3Logger.exception("Error creating mapdata file", usee);
 		}
 
 		if (mapDataFile != null) {
 			try (BufferedWriter br = new BufferedWriter(new FileWriter(mapDataFile))) {
 				br.write(systemsList);
 			} catch (IOException ioe) {
-				Log.exception(WebDataInterface.class, ioe);
+				C3Logger.exception("Error creating mapdata file", ioe);
 			}
 		} else {
 			RuntimeException rte = new RuntimeException("Could not write file: " + filename);
-			Log.exception(WebDataInterface.class, rte);
+			C3Logger.exception("Error creating mapdata file", rte);
 			throw rte;
 		}
 
@@ -426,11 +427,11 @@ public class WebDataInterface {
 			try (BufferedWriter br = new BufferedWriter(new FileWriter(mapDataFileHH))) {
 				br.write(systemsList);
 			} catch (IOException ioe) {
-				Log.exception(WebDataInterface.class, ioe);
+				C3Logger.exception("Error creating mapdata file", ioe);
 			}
 		} else {
 			RuntimeException rte = new RuntimeException("Could not write file: " + mapDataFileHH);
-			Log.exception(WebDataInterface.class, rte);
+			C3Logger.exception("Error creating mapdata file", rte);
 			throw rte;
 		}
 
@@ -438,11 +439,11 @@ public class WebDataInterface {
 			try (BufferedWriter br = new BufferedWriter(new FileWriter(mapDataFileCM))) {
 				br.write(systemsList);
 			} catch (IOException ioe) {
-				Log.exception(WebDataInterface.class, ioe);
+				C3Logger.exception("Error creating mapdata file", ioe);
 			}
 		} else {
 			RuntimeException rte = new RuntimeException("Could not write file: " + mapDataFileCM);
-			Log.exception(WebDataInterface.class, rte);
+			C3Logger.exception("Error creating mapdata file", rte);
 			throw rte;
 		}
 
@@ -491,11 +492,11 @@ public class WebDataInterface {
 					list.add(columnMap);
 				}
 			} catch (SQLException e) {
-				Log.error("Selecting systems...", e);
+				C3Logger.error("Selecting systems...", e);
 			}
 			json.put(keyName, list);
 		} else {
-			Log.print("Resultset was empty!");
+			C3Logger.print("Resultset was empty!");
 		}
 
 		String result = JSONValue.toJSONString(json);

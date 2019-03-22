@@ -32,12 +32,17 @@ import java.util.logging.*;
 public class C3Logger {
 
 	private static boolean initialized = false;
+	private static boolean initializing = false;
 	private static Logger logger = Logger.getLogger(C3Logger.class.getName());
 	private static FileHandler fileHandler;
 	private static ConsoleHandler consoleHandler;
 	private static String c3LogFileName = "";
 	private static File c3LogFile;
 	private static Level c3Loglevel = Level.FINE;
+
+	public static void print(String message) {
+		info(message);
+	}
 
 	public static void info(String message) {
 		logprint(Level.INFO, message, null);
@@ -50,6 +55,8 @@ public class C3Logger {
 	public static void warning(String message) {
 		logprint(Level.WARNING, message, null);
 	}
+
+	public static void error(String message, Throwable th) { logprint(Level.SEVERE, message, th); }
 
 	public static void exception(String message, Throwable throwable) {
 		if (message == null) {
@@ -83,7 +90,7 @@ public class C3Logger {
 		String callerClassName = stackTraceElements[3].getClassName();
 		String callerMethodName = stackTraceElements[3].getMethodName();
 
-		if (!initialized) {
+		if (!initialized && !initializing) {
 			prepare();
 		}
 
@@ -103,6 +110,7 @@ public class C3Logger {
 	}
 
 	private static void prepare() {
+		initializing = true;
 		// Logger setup
 		try {
 			LogManager.getLogManager().readConfiguration(C3Logger.class.getClassLoader().getResourceAsStream("log.properties"));

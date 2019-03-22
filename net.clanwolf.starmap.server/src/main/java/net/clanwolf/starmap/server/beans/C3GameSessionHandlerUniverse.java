@@ -2,7 +2,7 @@ package net.clanwolf.starmap.server.beans;
 
 import io.nadron.app.GameRoom;
 import io.nadron.app.PlayerSession;
-import net.clanwolf.starmap.server.util.Log;
+import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.server.util.WebDataInterface;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
@@ -13,7 +13,7 @@ import java.util.Iterator;
 class C3GameSessionHandlerUniverse {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	static void getUniverseData(PlayerSession session, GameRoom gm) {
-		Log.print("Getting universe data on request of a client.");
+		C3Logger.print("Getting universe data on request of a client.");
 		UniverseDTO universe = WebDataInterface.getUniverse();
 
 		// TODO: Broadcast new UniverseDTO to logged in (HH) clients
