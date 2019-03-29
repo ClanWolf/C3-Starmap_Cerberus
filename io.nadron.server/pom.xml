@@ -55,6 +55,13 @@
 		</dependency>
 		<dependency>
 			<groupId>io.netty</groupId>
+			<artifactId>netty-all</artifactId>
+			<version>${version.netty}</version>
+		</dependency>
+
+<!--
+		<dependency>
+			<groupId>io.netty</groupId>
 			<artifactId>netty-buffer</artifactId>
 			<version>${version.netty}</version>
 		</dependency>
@@ -73,6 +80,7 @@
 			<artifactId>netty-codec-http</artifactId>
 			<version>${version.netty}</version>
 		</dependency>
+-->
 
 		<dependency>
 			<groupId>org.msgpack</groupId>
