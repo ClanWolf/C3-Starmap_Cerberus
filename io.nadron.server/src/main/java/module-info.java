@@ -10,22 +10,21 @@ module io.nadron.server {
 	exports io.nadron.event;
 	exports io.nadron.event.impl;
 	exports io.nadron.service.impl;
+
 	requires com.fasterxml.jackson.core;
 	requires com.fasterxml.jackson.databind;
 	requires jackson.core.asl;
 
 	requires net.clanwolf.starmap.logging;
 
-	requires io.netty.transport;
-	requires io.netty.codec;
-	requires io.netty.codec.http;
-	requires io.netty.handler;
-	requires io.netty.common;
 	requires jackson.mapper.asl;
 	requires jetlang;
-	requires io.netty.buffer;
 	requires spring.beans;
 	requires spring.context;
 	requires blazeds.core;
 	requires msgpack;
+	requires io.netty.transport;
+	requires io.netty.codec;
+	requires io.netty.codec.http;
+	requires io.netty.common;
 }

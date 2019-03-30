@@ -15,7 +15,6 @@ module net.clanwolf.starmap.client {
 	requires javafx.controls;
 	requires javafx.media;
 	requires javafx.fxml;
-	requires io.netty.common;
 	requires java.logging;
 
 	opens net.clanwolf.starmap.client.gui to javafx.fxml;

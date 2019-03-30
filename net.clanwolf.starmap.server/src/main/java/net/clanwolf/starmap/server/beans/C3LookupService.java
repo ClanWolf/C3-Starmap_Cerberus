@@ -83,10 +83,9 @@ import io.nadron.app.GameRoom;
 import io.nadron.app.Player;
 import io.nadron.service.impl.SimpleLookupService;
 import io.nadron.util.Credentials;
+import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
 import net.clanwolf.starmap.server.persistence.pojos.UserPOJO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
 import java.util.HashMap;
@@ -98,7 +97,6 @@ import java.util.Map;
  */
 public class C3LookupService extends SimpleLookupService {
 
-	private static final Logger LOG = LoggerFactory.getLogger(C3LookupService.class);
 	private final Map<String, GameRoom> refKeyGameRoomMap;
 
 	public C3LookupService() {
@@ -118,7 +116,7 @@ public class C3LookupService extends SimpleLookupService {
 	@Override
 	public Player playerLookup(Credentials c) {
 
-		LOG.debug("C3LookupService.playerLookup");
+		C3Logger.debug("C3LookupService.playerLookup");
 		C3Player player = new C3Player();
 		EntityManager em = EntityManagerHelper.getEntityManager();
 
@@ -130,7 +128,7 @@ public class C3LookupService extends SimpleLookupService {
 		if (user != null) {
 			player.setUser(user);
 			EntityManagerHelper.getEntityManager((Long)player.getId());
-			LOG.info("C3LookupService.playerLookup->LOG_IN_SUCCESSFUL->user: " + c.getUsername());
+			C3Logger.info("C3LookupService.playerLookup->LOG_IN_SUCCESSFUL->user: " + c.getUsername());
 
 		} else {
 			player.setUser(null);

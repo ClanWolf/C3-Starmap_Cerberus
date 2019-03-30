@@ -13,13 +13,17 @@
 	<artifactId>io.nadron.client</artifactId>
 
 	<dependencies>
-		<dependency>
-			<groupId>io.netty</groupId>
-			<artifactId>netty-all</artifactId>
-			<version>${version.netty}</version>
-		</dependency>
-
-<!--
+<!--		<dependency>-->
+<!--			<groupId>io.netty</groupId>-->
+<!--			<artifactId>netty-all</artifactId>-->
+<!--			<version>${version.netty}</version>-->
+<!--			<exclusions>-->
+<!--				<exclusion>-->
+<!--					<groupId>io.netty</groupId>-->
+<!--					<artifactId>netty-example</artifactId>-->
+<!--				</exclusion>-->
+<!--			</exclusions>-->
+<!--		</dependency>-->
 		<dependency>
 			<groupId>io.netty</groupId>
 			<artifactId>netty-common</artifactId>
@@ -45,8 +49,6 @@
 			<artifactId>netty-handler</artifactId>
 			<version>${version.netty}</version>
 		</dependency>
--->
-
 	</dependencies>
 
 </project>

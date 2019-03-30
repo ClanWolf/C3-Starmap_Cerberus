@@ -42,6 +42,7 @@
 			<artifactId>io.nadron.client</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.kynosarges</groupId>
 			<artifactId>tektosyne</artifactId>
@@ -86,12 +87,6 @@
 			<groupId>org.openjfx</groupId>
 			<artifactId>javafx-web</artifactId>
 			<version>${version.javafx}</version>
-		</dependency>
-		<dependency>
-			<groupId>net.clanwolf.starmap</groupId>
-			<artifactId>net.clanwolf.starmap.logging</artifactId>
-			<version>4.2.3</version>
-			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 
@@ -414,6 +409,16 @@
 										}
 									</moduleInfoSource>
 								</module>
+<!--								<module>-->
+<!--									<artifact>-->
+<!--										<groupId>io.netty</groupId>-->
+<!--										<artifactId>netty-all</artifactId>-->
+<!--										<version>${version.netty}</version>-->
+<!--									</artifact>-->
+<!--									<moduleInfo>-->
+<!--										<name>io.netty.all</name>-->
+<!--									</moduleInfo>-->
+<!--								</module>-->
 								<module>
 									<artifact>
 										<groupId>io.netty</groupId>
