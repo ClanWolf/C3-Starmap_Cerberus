@@ -1,0 +1,87 @@
+; ClanWolf.net [CWG]
+; C3 Client Installer script
+; c3-client.nsi
+;--------------------------------
+
+Name "C3-Client_Installer"
+Caption "C3 Client Installer"
+Icon "c3.ico"
+OutFile "C3-Client-###VERSION###_install.exe"
+BrandingText /TRIMRIGHT "ClanWolf.net"
+
+InstallDir $PROGRAMFILES64\C3-Client
+InstallDirRegKey HKLM "Software\C3-Client" "Install_Dir"
+RequestExecutionLevel admin
+
+;--------------------------------
+
+LoadLanguageFile "${NSISDIR}\Contrib\Language files\English.nlf"
+VIProductVersion "###VERSION###.0"
+VIAddVersionKey /LANG=0 "ProductName" "C3 Client"
+VIAddVersionKey /LANG=0 "Comments" "StarMap"
+VIAddVersionKey /LANG=0 "CompanyName" "ClanWolf.net [CWG]"
+VIAddVersionKey /LANG=0 "LegalTrademarks" "StarMap of the Inner Sphere and Clan Space."
+VIAddVersionKey /LANG=0 "LegalCopyright" "© ClanWolf.net"
+VIAddVersionKey /LANG=0 "FileDescription" "StarMap"
+VIAddVersionKey /LANG=0 "FileVersion" "###VERSION###"
+
+;--------------------------------
+
+Page components
+Page directory
+Page instfiles
+
+UninstPage uninstConfirm
+UninstPage instfiles
+
+;--------------------------------
+
+; The files to install
+Section "C3-Client (required)"
+    SectionIn RO
+	SetShellVarContext all
+	SetOutPath $INSTDIR
+###FILELIST###
+
+	; Write the installation path into the registry
+	WriteRegStr HKLM SOFTWARE\C3-Client "Install_Dir" "$INSTDIR"
+
+	; Write the uninstall keys for Windows
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayName" "C3-Client"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayIcon" "$INSTDIR\run.exe"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayVersion" "###VERSION###"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "Publisher" "ClanWolf.net [CWG]"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "InstallSource" "$EXEDIR\"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "UninstallString" '"$INSTDIR\uninstall.exe"'
+	WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "NoModify" 1
+	WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "NoRepair" 1
+	WriteUninstaller "uninstall.exe"
+SectionEnd
+
+; Optional section (can be disabled by the user)
+Section "Start Menu Shortcuts"
+	SetShellVarContext all
+
+	SetOutpath $INSTDIR ; this folder is used as working directory for the following links
+	CreateDirectory "$SMPROGRAMS\C3-Client"
+	CreateShortcut "$SMPROGRAMS\C3-Client\C3-Client.lnk" "$INSTDIR\run.exe" "" "$INSTDIR\run.exe" 0
+	CreateShortcut "$SMPROGRAMS\C3-Client\C3-Client (Debug).lnk" "$INSTDIR\run_debug.exe" "" "$INSTDIR\run_debug.exe" 0
+SectionEnd
+
+;--------------------------------
+; Uninstaller
+
+Section "Uninstall"
+	SetShellVarContext all
+
+	; Remove registry keys
+	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client"
+	DeleteRegKey HKLM SOFTWARE\C3-Client
+
+###FILELISTTOREMOVE###
+	Delete $INSTDIR\uninstall.exe
+
+###DIRECTORYLISTTOREMOVE###
+	RMDir "$INSTDIR"
+	RMDir "$SMPROGRAMS\C3-Client"
+SectionEnd

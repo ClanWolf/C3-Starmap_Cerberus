@@ -52,6 +52,7 @@
 		<module>net.clanwolf.starmap.logging</module>
 		<module>io.nadron.client</module>
 		<module>io.nadron.server</module>
+		<module>net.clanwolf.starmap.client.packager</module>
 	</modules>
 
 	<build>
