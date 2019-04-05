@@ -85,6 +85,10 @@
 						<phase>generate-resources</phase>
 						<goals>
 							<goal>add-module-info</goal>
+							<jdepsExtraArgs>
+								<arg>--multi-release</arg>
+								<arg>9</arg>
+							</jdepsExtraArgs>
 						</goals>
 						<configuration>
 							<jvmVersion>${version.java}</jvmVersion>
