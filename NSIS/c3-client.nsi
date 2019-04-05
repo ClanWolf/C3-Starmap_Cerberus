@@ -6,7 +6,7 @@
 Name "C3-Client_Installer"
 Caption "C3 Client Installer"
 Icon "c3.ico"
-OutFile "C3-Client-4.2.3_install.exe"                                                                                   ; --- replace version ---
+OutFile "C3-Client-5.1.7_install.exe"                                                                                   ; --- replace version ---
 BrandingText /TRIMRIGHT "ClanWolf.net"
 
 InstallDir $PROGRAMFILES64\C3-Client
@@ -16,14 +16,14 @@ RequestExecutionLevel admin
 ;--------------------------------
 
 LoadLanguageFile "${NSISDIR}\Contrib\Language files\English.nlf"
-VIProductVersion "4.2.3.0"                                                                                              ; --- replace version ---
+VIProductVersion "5.1.7.0"                                                                                              ; --- replace version ---
 VIAddVersionKey /LANG=0 "ProductName" "C3 Client"
 VIAddVersionKey /LANG=0 "Comments" "StarMap"
-VIAddVersionKey /LANG=0 "CompanyName" "ClanWolf.net W-7 [CWG]"
+VIAddVersionKey /LANG=0 "CompanyName" "ClanWolf.net [CWG]"
 VIAddVersionKey /LANG=0 "LegalTrademarks" "StarMap of the Inner Sphere and Clan Space."
-VIAddVersionKey /LANG=0 "LegalCopyright" "© ClanWolf.net W-7"
+VIAddVersionKey /LANG=0 "LegalCopyright" "© ClanWolf.net"
 VIAddVersionKey /LANG=0 "FileDescription" "StarMap"
-VIAddVersionKey /LANG=0 "FileVersion" "4.2.3"                                                                           ; --- replace version ---
+VIAddVersionKey /LANG=0 "FileVersion" "5.1.7"                                                                           ; --- replace version ---
 
 ;--------------------------------
 
@@ -42,29 +42,12 @@ Section "C3-Client (required)"
     SectionIn RO
 	SetShellVarContext all
 
-	; Set output path to the installation directory.
 	SetOutPath $INSTDIR
 
-	; Put file there
-	File "C3-Client_Phoenix-4.2.3-jfx.jar"                                                                              ; --- replace version ---
-	File "run.exe"
-	File "run_debug.exe"
-
-	CreateDirectory $INSTDIR\lib
-	SetOutpath $INSTDIR\lib
-	File /r "lib\activation-1.1.jar"
-	File /r "lib\C3-Preloader-1.0.0.jar"
-	File /r "lib\commons-codec-1.11.jar"
-	File /r "lib\commons-collections4-4.1.jar"
-	File /r "lib\commons-net-3.6.jar"
-	File /r "lib\jackson-annotations-2.9.0.jar"
-	File /r "lib\jackson-core-2.9.6.jar"
-	File /r "lib\jackson-databind-2.9.6.jar"
-	File /r "lib\jackson-jsog-1.1.1.jar"
-	File /r "lib\mail-1.4.7.jar"
-	File /r "lib\nadclient-0.8-SNAPSHOT.jar"
-	File /r "lib\netty-all-4.0.10.Final.jar"
-	File /r "lib\tektosyne-6.2.0.jar"
+	!tempfile filelist
+	!system '"list_contents.cmd" "C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\target\jlink-image" "${filelist}"'
+	!include "${filelist}"
+	!delfile "${filelist}"
 
 	; Write the installation path into the registry
 	WriteRegStr HKLM SOFTWARE\C3-Client "Install_Dir" "$INSTDIR"
@@ -72,8 +55,8 @@ Section "C3-Client (required)"
 	; Write the uninstall keys for Windows
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayName" "C3-Client"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayIcon" "$INSTDIR\run.exe"
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayVersion" "4.2.3"           ; --- replace version ---
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "Publisher" "ClanWolf.net W-7 [CWG]"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayVersion" "5.1.7"           ; --- replace version ---
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "Publisher" "ClanWolf.net [CWG]"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "InstallSource" "$EXEDIR\"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "UninstallString" '"$INSTDIR\uninstall.exe"'
 	WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "NoModify" 1

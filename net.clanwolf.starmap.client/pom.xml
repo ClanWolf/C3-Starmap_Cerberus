@@ -17,7 +17,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<mainClass>net.clanwolf.starmap.client.MainFrame</mainClass>
+		<mainClass>net.clanwolf.starmap.client.gui.MainFrame</mainClass>
 		<moduleName>net.clanwolf.starmap.client</moduleName>
 	</properties>
 
@@ -156,31 +156,35 @@
 
 					<!-- BEGIN: Generate module info for legacy jars -->
 
-					<!--<execution>-->
-						<!--<id>generate-module-info</id>-->
-						<!--<phase>generate-sources</phase>-->
-						<!--<goals>-->
-							<!--<goal>generate-module-info</goal>-->
-						<!--</goals>-->
-						<!--<configuration>-->
-							<!--<modules>-->
-								<!--<module>-->
-									<!--<artifact>-->
-										<!--<groupId>io.netty</groupId>-->
-										<!--<artifactId>netty-codec</artifactId>-->
-										<!--<version>4.1.33.Final</version>-->
-									<!--</artifact>-->
-									<!--<additionalDependencies>-->
-										<!--<dependency>-->
-											<!--<groupId>org.jboss.marshalling</groupId>-->
-											<!--<artifactId>jboss-marshalling</artifactId>-->
-											<!--<version>2.0.5.Final</version>-->
-										<!--</dependency>-->
-									<!--</additionalDependencies>-->
-								<!--</module>-->
-							<!--</modules>-->
-						<!--</configuration>-->
-					<!--</execution>-->
+<!--					<execution>-->
+<!--						<id>generate-module-info</id>-->
+<!--						<phase>generate-sources</phase>-->
+<!--						<goals>-->
+<!--							<goal>generate-module-info</goal>-->
+<!--						</goals>-->
+<!--						<configuration>-->
+<!--							<jdepsExtraArgs>-->
+<!--								<arg>&#45;&#45;multi-release</arg>-->
+<!--								<arg>9</arg>-->
+<!--							</jdepsExtraArgs>-->
+<!--							<modules>-->
+<!--								<module>-->
+<!--									<artifact>-->
+<!--										<groupId>org.kynosarges</groupId>-->
+<!--										<artifactId>tektosyne</artifactId>-->
+<!--										<version>6.2.0</version>-->
+<!--									</artifact>-->
+<!--&lt;!&ndash;									<additionalDependencies>&ndash;&gt;-->
+<!--&lt;!&ndash;										<dependency>&ndash;&gt;-->
+<!--&lt;!&ndash;											<groupId>org.jboss.marshalling</groupId>&ndash;&gt;-->
+<!--&lt;!&ndash;											<artifactId>jboss-marshalling</artifactId>&ndash;&gt;-->
+<!--&lt;!&ndash;											<version>2.0.6.Final</version>&ndash;&gt;-->
+<!--&lt;!&ndash;										</dependency>&ndash;&gt;-->
+<!--&lt;!&ndash;									</additionalDependencies>&ndash;&gt;-->
+<!--								</module>-->
+<!--							</modules>-->
+<!--						</configuration>-->
+<!--					</execution>-->
 
 					<!-- END: Generate module info for legacy jars -->
 
@@ -191,6 +195,10 @@
 							<goal>add-module-info</goal>
 						</goals>
 						<configuration>
+							<jdepsExtraArgs>
+								<arg>--multi-release</arg>
+								<arg>9</arg>
+							</jdepsExtraArgs>
 							<jvmVersion>${version.java}</jvmVersion>
 							<overwriteExistingFiles>true</overwriteExistingFiles>
 
@@ -211,6 +219,21 @@
 											exports com.sun.activation.registries;
 											exports com.sun.activation.viewers;
 											exports javax.activation;
+										}
+									</moduleInfoSource>
+								</module>
+								<module>
+									<artifact>
+										<groupId>org.kynosarges</groupId>
+										<artifactId>tektosyne</artifactId>
+										<version>6.2.0</version>
+									</artifact>
+									<moduleInfoSource>
+										module tektosyne {
+											exports org.kynosarges.tektosyne;
+											exports org.kynosarges.tektosyne.geometry;
+											exports org.kynosarges.tektosyne.graph;
+											exports org.kynosarges.tektosyne.subdivision;
 										}
 									</moduleInfoSource>
 								</module>
@@ -242,6 +265,37 @@
 											exports org.apache.commons.net.time;
 											exports org.apache.commons.net.util;
 											exports org.apache.commons.net.whois;
+										}
+									</moduleInfoSource>
+								</module>
+								<module>
+									<artifact>
+										<groupId>org.apache.commons</groupId>
+										<artifactId>commons-collections4</artifactId>
+										<version>4.3</version>
+									</artifact>
+									<moduleInfoSource>
+										module org.apache.commons.collections4 {
+											requires java.xml;
+											exports org.apache.commons.collections4;
+											exports org.apache.commons.collections4.bag;
+											exports org.apache.commons.collections4.bidimap;
+											exports org.apache.commons.collections4.collection;
+											exports org.apache.commons.collections4.comparators;
+											exports org.apache.commons.collections4.functors;
+											exports org.apache.commons.collections4.iterators;
+											exports org.apache.commons.collections4.keyvalue;
+											exports org.apache.commons.collections4.list;
+											exports org.apache.commons.collections4.map;
+											exports org.apache.commons.collections4.multimap;
+											exports org.apache.commons.collections4.multiset;
+											exports org.apache.commons.collections4.properties;
+											exports org.apache.commons.collections4.queue;
+											exports org.apache.commons.collections4.sequence;
+											exports org.apache.commons.collections4.set;
+											exports org.apache.commons.collections4.splitmap;
+											exports org.apache.commons.collections4.trie;
+											exports org.apache.commons.collections4.trie.analyzer;
 										}
 									</moduleInfoSource>
 								</module>
@@ -409,140 +463,130 @@
 										}
 									</moduleInfoSource>
 								</module>
-<!--								<module>-->
-<!--									<artifact>-->
-<!--										<groupId>io.netty</groupId>-->
-<!--										<artifactId>netty-all</artifactId>-->
-<!--										<version>${version.netty}</version>-->
-<!--									</artifact>-->
-<!--									<moduleInfo>-->
-<!--										<name>io.netty.all</name>-->
-<!--									</moduleInfo>-->
-<!--								</module>-->
-<!--								<module>-->
-<!--									<artifact>-->
-<!--										<groupId>io.netty</groupId>-->
-<!--										<artifactId>netty-common</artifactId>-->
-<!--										<version>${version.netty}</version>-->
-<!--									</artifact>-->
-<!--									<moduleInfo>-->
-<!--										<name>io.netty.common</name>-->
-<!--									</moduleInfo>-->
-<!--									&lt;!&ndash;<moduleInfoSource>&ndash;&gt;-->
-<!--										&lt;!&ndash;module io.netty.common {&ndash;&gt;-->
-<!--											&lt;!&ndash;requires static commons.logging;&ndash;&gt;-->
-<!--											&lt;!&ndash;requires java.logging;&ndash;&gt;-->
-<!--											&lt;!&ndash;requires static log4j;&ndash;&gt;-->
-<!--											&lt;!&ndash;requires static log4j.api;&ndash;&gt;-->
-<!--											&lt;!&ndash;requires static slf4j.api;&ndash;&gt;-->
-<!--											&lt;!&ndash;requires jdk.unsupported;&ndash;&gt;-->
-<!--											&lt;!&ndash;exports io.netty.util;&ndash;&gt;-->
-<!--											&lt;!&ndash;exports io.netty.util.collection;&ndash;&gt;-->
-<!--											&lt;!&ndash;exports io.netty.util.concurrent;&ndash;&gt;-->
-<!--											&lt;!&ndash;exports io.netty.util.internal;&ndash;&gt;-->
-<!--											&lt;!&ndash;exports io.netty.util.internal.logging;&ndash;&gt;-->
-<!--											&lt;!&ndash;exports io.netty.util.internal.shaded.org.jctools.queues;&ndash;&gt;-->
-<!--											&lt;!&ndash;exports io.netty.util.internal.shaded.org.jctools.queues.atomic;&ndash;&gt;-->
-<!--											&lt;!&ndash;exports io.netty.util.internal.shaded.org.jctools.util;&ndash;&gt;-->
-<!--										&lt;!&ndash;}&ndash;&gt;-->
-<!--									&lt;!&ndash;</moduleInfoSource>&ndash;&gt;-->
-<!--								</module>-->
-<!--								<module>-->
-<!--									<artifact>-->
-<!--										<groupId>io.netty</groupId>-->
-<!--										<artifactId>netty-transport</artifactId>-->
-<!--										<version>${version.netty}</version>-->
-<!--									</artifact>-->
-<!--									<moduleInfo>-->
-<!--										<name>io.netty.transport</name>-->
-<!--									</moduleInfo>-->
-<!--									&lt;!&ndash;<moduleInfoSource>&ndash;&gt;-->
-<!--										&lt;!&ndash;module io.netty.transport {&ndash;&gt;-->
-<!--											&lt;!&ndash;requires io.netty.buffer;&ndash;&gt;-->
-<!--											&lt;!&ndash;requires io.netty.common;&ndash;&gt;-->
-<!--											&lt;!&ndash;requires io.netty.resolver;&ndash;&gt;-->
-<!--											&lt;!&ndash;exports io.netty.bootstrap;&ndash;&gt;-->
-<!--											&lt;!&ndash;exports io.netty.channel;&ndash;&gt;-->
-<!--											&lt;!&ndash;exports io.netty.channel.embedded;&ndash;&gt;-->
-<!--											&lt;!&ndash;exports io.netty.channel.group;&ndash;&gt;-->
-<!--											&lt;!&ndash;exports io.netty.channel.internal;&ndash;&gt;-->
-<!--											&lt;!&ndash;exports io.netty.channel.local;&ndash;&gt;-->
-<!--											&lt;!&ndash;exports io.netty.channel.nio;&ndash;&gt;-->
-<!--											&lt;!&ndash;exports io.netty.channel.oio;&ndash;&gt;-->
-<!--											&lt;!&ndash;exports io.netty.channel.pool;&ndash;&gt;-->
-<!--											&lt;!&ndash;exports io.netty.channel.socket;&ndash;&gt;-->
-<!--											&lt;!&ndash;exports io.netty.channel.socket.nio;&ndash;&gt;-->
-<!--											&lt;!&ndash;exports io.netty.channel.socket.oio;&ndash;&gt;-->
-<!--										&lt;!&ndash;}&ndash;&gt;-->
-<!--									&lt;!&ndash;</moduleInfoSource>&ndash;&gt;-->
-<!--								</module>-->
-<!--								<module>-->
-<!--									<artifact>-->
-<!--										<groupId>io.netty</groupId>-->
-<!--										<artifactId>netty-buffer</artifactId>-->
-<!--										<version>${version.netty}</version>-->
-<!--									</artifact>-->
-<!--									<moduleInfoSource>-->
-<!--										module io.netty.buffer {-->
-<!--											requires io.netty.common;-->
-<!--											exports io.netty.buffer;-->
-<!--										}-->
-<!--									</moduleInfoSource>-->
-<!--								</module>-->
-<!--								<module>-->
-<!--									<artifact>-->
-<!--										<groupId>io.netty</groupId>-->
-<!--										<artifactId>netty-codec</artifactId>-->
-<!--										<version>${version.netty}</version>-->
-<!--									</artifact>-->
-<!--									<moduleInfo>-->
-<!--										<name>io.netty.codec</name>-->
-<!--									</moduleInfo>-->
-<!--								</module>-->
-<!--								<module>-->
-<!--									<artifact>-->
-<!--										<groupId>io.netty</groupId>-->
-<!--										<artifactId>netty-resolver</artifactId>-->
-<!--										<version>4.1.33.Final</version>-->
-<!--									</artifact>-->
-<!--									<moduleInfoSource>-->
-<!--										module io.netty.resolver {-->
-<!--											requires io.netty.common;-->
-<!--											exports io.netty.resolver;-->
-<!--										}-->
-<!--									</moduleInfoSource>-->
-<!--								</module>-->
-<!--								<module>-->
-<!--									<artifact>-->
-<!--										<groupId>io.netty</groupId>-->
-<!--										<artifactId>netty-handler</artifactId>-->
-<!--										<version>${version.netty}</version>-->
-<!--									</artifact>-->
-<!--									<moduleInfoSource>-->
-<!--										module io.netty.handler {-->
-<!--											requires static alpn.api;-->
-<!--											requires static bcpkix.jdk15on;-->
-<!--											requires static bcprov.jdk15on;-->
-<!--											requires static conscrypt.openjdk.uber;-->
-<!--											requires static netty.tcnative;-->
-<!--											requires static npn.api;-->
-<!--											requires io.netty.buffer;-->
-<!--											requires io.netty.codec;-->
-<!--											requires io.netty.common;-->
-<!--											requires io.netty.transport;-->
-<!--											exports io.netty.handler.flow;-->
-<!--											exports io.netty.handler.flush;-->
-<!--											exports io.netty.handler.ipfilter;-->
-<!--											exports io.netty.handler.logging;-->
-<!--											exports io.netty.handler.ssl;-->
-<!--											exports io.netty.handler.ssl.ocsp;-->
-<!--											exports io.netty.handler.ssl.util;-->
-<!--											exports io.netty.handler.stream;-->
-<!--											exports io.netty.handler.timeout;-->
-<!--											exports io.netty.handler.traffic;-->
-<!--										}-->
-<!--									</moduleInfoSource>-->
-<!--								</module>-->
+								<module>
+									<artifact>
+										<groupId>io.netty</groupId>
+										<artifactId>netty-common</artifactId>
+										<version>${version.netty}</version>
+									</artifact>
+									<moduleInfo>
+										<name>io.netty.common</name>
+									</moduleInfo>
+									<!--<moduleInfoSource>-->
+										<!--module io.netty.common {-->
+											<!--requires static commons.logging;-->
+											<!--requires java.logging;-->
+											<!--requires static log4j;-->
+											<!--requires static log4j.api;-->
+											<!--requires static slf4j.api;-->
+											<!--requires jdk.unsupported;-->
+											<!--exports io.netty.util;-->
+											<!--exports io.netty.util.collection;-->
+											<!--exports io.netty.util.concurrent;-->
+											<!--exports io.netty.util.internal;-->
+											<!--exports io.netty.util.internal.logging;-->
+											<!--exports io.netty.util.internal.shaded.org.jctools.queues;-->
+											<!--exports io.netty.util.internal.shaded.org.jctools.queues.atomic;-->
+											<!--exports io.netty.util.internal.shaded.org.jctools.util;-->
+										<!--}-->
+									<!--</moduleInfoSource>-->
+								</module>
+								<module>
+									<artifact>
+										<groupId>io.netty</groupId>
+										<artifactId>netty-transport</artifactId>
+										<version>${version.netty}</version>
+									</artifact>
+									<moduleInfo>
+										<name>io.netty.transport</name>
+									</moduleInfo>
+									<!--<moduleInfoSource>-->
+										<!--module io.netty.transport {-->
+											<!--requires io.netty.buffer;-->
+											<!--requires io.netty.common;-->
+											<!--requires io.netty.resolver;-->
+											<!--exports io.netty.bootstrap;-->
+											<!--exports io.netty.channel;-->
+											<!--exports io.netty.channel.embedded;-->
+											<!--exports io.netty.channel.group;-->
+											<!--exports io.netty.channel.internal;-->
+											<!--exports io.netty.channel.local;-->
+											<!--exports io.netty.channel.nio;-->
+											<!--exports io.netty.channel.oio;-->
+											<!--exports io.netty.channel.pool;-->
+											<!--exports io.netty.channel.socket;-->
+											<!--exports io.netty.channel.socket.nio;-->
+											<!--exports io.netty.channel.socket.oio;-->
+										<!--}-->
+									<!--</moduleInfoSource>-->
+								</module>
+								<module>
+									<artifact>
+										<groupId>io.netty</groupId>
+										<artifactId>netty-buffer</artifactId>
+										<version>${version.netty}</version>
+									</artifact>
+									<moduleInfoSource>
+										module io.netty.buffer {
+											requires io.netty.common;
+											exports io.netty.buffer;
+										}
+									</moduleInfoSource>
+								</module>
+								<module>
+									<artifact>
+										<groupId>io.netty</groupId>
+										<artifactId>netty-codec</artifactId>
+										<version>${version.netty}</version>
+									</artifact>
+									<moduleInfo>
+										<name>io.netty.codec</name>
+									</moduleInfo>
+								</module>
+								<module>
+									<artifact>
+										<groupId>io.netty</groupId>
+										<artifactId>netty-resolver</artifactId>
+										<version>${version.netty}</version>
+									</artifact>
+									<moduleInfoSource>
+										module io.netty.resolver {
+											requires io.netty.common;
+											exports io.netty.resolver;
+										}
+									</moduleInfoSource>
+								</module>
+								<module>
+									<artifact>
+										<groupId>io.netty</groupId>
+										<artifactId>netty-handler</artifactId>
+										<version>${version.netty}</version>
+									</artifact>
+									<moduleInfoSource>
+										module io.netty.handler {
+											requires static alpn.api;
+											requires static bcpkix.jdk15on;
+											requires static bcprov.jdk15on;
+											requires static conscrypt.openjdk.uber;
+											requires static netty.tcnative;
+											requires static npn.api;
+											requires io.netty.buffer;
+											requires io.netty.codec;
+											requires io.netty.common;
+											requires io.netty.transport;
+											exports io.netty.handler.flow;
+											exports io.netty.handler.flush;
+											exports io.netty.handler.ipfilter;
+											exports io.netty.handler.logging;
+											exports io.netty.handler.ssl;
+											exports io.netty.handler.ssl.ocsp;
+											exports io.netty.handler.ssl.util;
+											exports io.netty.handler.stream;
+											exports io.netty.handler.timeout;
+											exports io.netty.handler.traffic;
+										}
+									</moduleInfoSource>
+								</module>
 								<module>
 									<artifact>
 										<groupId>org.openjfx</groupId>
