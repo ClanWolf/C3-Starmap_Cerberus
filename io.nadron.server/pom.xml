@@ -84,6 +84,7 @@
 			<artifactId>netty-codec-http</artifactId>
 			<version>${version.netty}</version>
 		</dependency>
+
 		<dependency>
 			<groupId>org.msgpack</groupId>
 			<artifactId>msgpack</artifactId>
