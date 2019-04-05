@@ -419,130 +419,130 @@
 <!--										<name>io.netty.all</name>-->
 <!--									</moduleInfo>-->
 <!--								</module>-->
-								<module>
-									<artifact>
-										<groupId>io.netty</groupId>
-										<artifactId>netty-common</artifactId>
-										<version>${version.netty}</version>
-									</artifact>
-									<moduleInfo>
-										<name>io.netty.common</name>
-									</moduleInfo>
-									<!--<moduleInfoSource>-->
-										<!--module io.netty.common {-->
-											<!--requires static commons.logging;-->
-											<!--requires java.logging;-->
-											<!--requires static log4j;-->
-											<!--requires static log4j.api;-->
-											<!--requires static slf4j.api;-->
-											<!--requires jdk.unsupported;-->
-											<!--exports io.netty.util;-->
-											<!--exports io.netty.util.collection;-->
-											<!--exports io.netty.util.concurrent;-->
-											<!--exports io.netty.util.internal;-->
-											<!--exports io.netty.util.internal.logging;-->
-											<!--exports io.netty.util.internal.shaded.org.jctools.queues;-->
-											<!--exports io.netty.util.internal.shaded.org.jctools.queues.atomic;-->
-											<!--exports io.netty.util.internal.shaded.org.jctools.util;-->
-										<!--}-->
-									<!--</moduleInfoSource>-->
-								</module>
-								<module>
-									<artifact>
-										<groupId>io.netty</groupId>
-										<artifactId>netty-transport</artifactId>
-										<version>${version.netty}</version>
-									</artifact>
-									<moduleInfo>
-										<name>io.netty.transport</name>
-									</moduleInfo>
-									<!--<moduleInfoSource>-->
-										<!--module io.netty.transport {-->
-											<!--requires io.netty.buffer;-->
-											<!--requires io.netty.common;-->
-											<!--requires io.netty.resolver;-->
-											<!--exports io.netty.bootstrap;-->
-											<!--exports io.netty.channel;-->
-											<!--exports io.netty.channel.embedded;-->
-											<!--exports io.netty.channel.group;-->
-											<!--exports io.netty.channel.internal;-->
-											<!--exports io.netty.channel.local;-->
-											<!--exports io.netty.channel.nio;-->
-											<!--exports io.netty.channel.oio;-->
-											<!--exports io.netty.channel.pool;-->
-											<!--exports io.netty.channel.socket;-->
-											<!--exports io.netty.channel.socket.nio;-->
-											<!--exports io.netty.channel.socket.oio;-->
-										<!--}-->
-									<!--</moduleInfoSource>-->
-								</module>
-								<module>
-									<artifact>
-										<groupId>io.netty</groupId>
-										<artifactId>netty-buffer</artifactId>
-										<version>${version.netty}</version>
-									</artifact>
-									<moduleInfoSource>
-										module io.netty.buffer {
-											requires io.netty.common;
-											exports io.netty.buffer;
-										}
-									</moduleInfoSource>
-								</module>
-								<module>
-									<artifact>
-										<groupId>io.netty</groupId>
-										<artifactId>netty-codec</artifactId>
-										<version>${version.netty}</version>
-									</artifact>
-									<moduleInfo>
-										<name>io.netty.codec</name>
-									</moduleInfo>
-								</module>
-								<module>
-									<artifact>
-										<groupId>io.netty</groupId>
-										<artifactId>netty-resolver</artifactId>
-										<version>4.1.33.Final</version>
-									</artifact>
-									<moduleInfoSource>
-										module io.netty.resolver {
-											requires io.netty.common;
-											exports io.netty.resolver;
-										}
-									</moduleInfoSource>
-								</module>
-								<module>
-									<artifact>
-										<groupId>io.netty</groupId>
-										<artifactId>netty-handler</artifactId>
-										<version>${version.netty}</version>
-									</artifact>
-									<moduleInfoSource>
-										module io.netty.handler {
-											requires static alpn.api;
-											requires static bcpkix.jdk15on;
-											requires static bcprov.jdk15on;
-											requires static conscrypt.openjdk.uber;
-											requires static netty.tcnative;
-											requires static npn.api;
-											requires io.netty.buffer;
-											requires io.netty.codec;
-											requires io.netty.common;
-											requires io.netty.transport;
-											exports io.netty.handler.flow;
-											exports io.netty.handler.flush;
-											exports io.netty.handler.ipfilter;
-											exports io.netty.handler.logging;
-											exports io.netty.handler.ssl;
-											exports io.netty.handler.ssl.ocsp;
-											exports io.netty.handler.ssl.util;
-											exports io.netty.handler.stream;
-											exports io.netty.handler.timeout;
-											exports io.netty.handler.traffic;
-										}
-									</moduleInfoSource>
-								</module>
+<!--								<module>-->
+<!--									<artifact>-->
+<!--										<groupId>io.netty</groupId>-->
+<!--										<artifactId>netty-common</artifactId>-->
+<!--										<version>${version.netty}</version>-->
+<!--									</artifact>-->
+<!--									<moduleInfo>-->
+<!--										<name>io.netty.common</name>-->
+<!--									</moduleInfo>-->
+<!--									&lt;!&ndash;<moduleInfoSource>&ndash;&gt;-->
+<!--										&lt;!&ndash;module io.netty.common {&ndash;&gt;-->
+<!--											&lt;!&ndash;requires static commons.logging;&ndash;&gt;-->
+<!--											&lt;!&ndash;requires java.logging;&ndash;&gt;-->
+<!--											&lt;!&ndash;requires static log4j;&ndash;&gt;-->
+<!--											&lt;!&ndash;requires static log4j.api;&ndash;&gt;-->
+<!--											&lt;!&ndash;requires static slf4j.api;&ndash;&gt;-->
+<!--											&lt;!&ndash;requires jdk.unsupported;&ndash;&gt;-->
+<!--											&lt;!&ndash;exports io.netty.util;&ndash;&gt;-->
+<!--											&lt;!&ndash;exports io.netty.util.collection;&ndash;&gt;-->
+<!--											&lt;!&ndash;exports io.netty.util.concurrent;&ndash;&gt;-->
+<!--											&lt;!&ndash;exports io.netty.util.internal;&ndash;&gt;-->
+<!--											&lt;!&ndash;exports io.netty.util.internal.logging;&ndash;&gt;-->
+<!--											&lt;!&ndash;exports io.netty.util.internal.shaded.org.jctools.queues;&ndash;&gt;-->
+<!--											&lt;!&ndash;exports io.netty.util.internal.shaded.org.jctools.queues.atomic;&ndash;&gt;-->
+<!--											&lt;!&ndash;exports io.netty.util.internal.shaded.org.jctools.util;&ndash;&gt;-->
+<!--										&lt;!&ndash;}&ndash;&gt;-->
+<!--									&lt;!&ndash;</moduleInfoSource>&ndash;&gt;-->
+<!--								</module>-->
+<!--								<module>-->
+<!--									<artifact>-->
+<!--										<groupId>io.netty</groupId>-->
+<!--										<artifactId>netty-transport</artifactId>-->
+<!--										<version>${version.netty}</version>-->
+<!--									</artifact>-->
+<!--									<moduleInfo>-->
+<!--										<name>io.netty.transport</name>-->
+<!--									</moduleInfo>-->
+<!--									&lt;!&ndash;<moduleInfoSource>&ndash;&gt;-->
+<!--										&lt;!&ndash;module io.netty.transport {&ndash;&gt;-->
+<!--											&lt;!&ndash;requires io.netty.buffer;&ndash;&gt;-->
+<!--											&lt;!&ndash;requires io.netty.common;&ndash;&gt;-->
+<!--											&lt;!&ndash;requires io.netty.resolver;&ndash;&gt;-->
+<!--											&lt;!&ndash;exports io.netty.bootstrap;&ndash;&gt;-->
+<!--											&lt;!&ndash;exports io.netty.channel;&ndash;&gt;-->
+<!--											&lt;!&ndash;exports io.netty.channel.embedded;&ndash;&gt;-->
+<!--											&lt;!&ndash;exports io.netty.channel.group;&ndash;&gt;-->
+<!--											&lt;!&ndash;exports io.netty.channel.internal;&ndash;&gt;-->
+<!--											&lt;!&ndash;exports io.netty.channel.local;&ndash;&gt;-->
+<!--											&lt;!&ndash;exports io.netty.channel.nio;&ndash;&gt;-->
+<!--											&lt;!&ndash;exports io.netty.channel.oio;&ndash;&gt;-->
+<!--											&lt;!&ndash;exports io.netty.channel.pool;&ndash;&gt;-->
+<!--											&lt;!&ndash;exports io.netty.channel.socket;&ndash;&gt;-->
+<!--											&lt;!&ndash;exports io.netty.channel.socket.nio;&ndash;&gt;-->
+<!--											&lt;!&ndash;exports io.netty.channel.socket.oio;&ndash;&gt;-->
+<!--										&lt;!&ndash;}&ndash;&gt;-->
+<!--									&lt;!&ndash;</moduleInfoSource>&ndash;&gt;-->
+<!--								</module>-->
+<!--								<module>-->
+<!--									<artifact>-->
+<!--										<groupId>io.netty</groupId>-->
+<!--										<artifactId>netty-buffer</artifactId>-->
+<!--										<version>${version.netty}</version>-->
+<!--									</artifact>-->
+<!--									<moduleInfoSource>-->
+<!--										module io.netty.buffer {-->
+<!--											requires io.netty.common;-->
+<!--											exports io.netty.buffer;-->
+<!--										}-->
+<!--									</moduleInfoSource>-->
+<!--								</module>-->
+<!--								<module>-->
+<!--									<artifact>-->
+<!--										<groupId>io.netty</groupId>-->
+<!--										<artifactId>netty-codec</artifactId>-->
+<!--										<version>${version.netty}</version>-->
+<!--									</artifact>-->
+<!--									<moduleInfo>-->
+<!--										<name>io.netty.codec</name>-->
+<!--									</moduleInfo>-->
+<!--								</module>-->
+<!--								<module>-->
+<!--									<artifact>-->
+<!--										<groupId>io.netty</groupId>-->
+<!--										<artifactId>netty-resolver</artifactId>-->
+<!--										<version>4.1.33.Final</version>-->
+<!--									</artifact>-->
+<!--									<moduleInfoSource>-->
+<!--										module io.netty.resolver {-->
+<!--											requires io.netty.common;-->
+<!--											exports io.netty.resolver;-->
+<!--										}-->
+<!--									</moduleInfoSource>-->
+<!--								</module>-->
+<!--								<module>-->
+<!--									<artifact>-->
+<!--										<groupId>io.netty</groupId>-->
+<!--										<artifactId>netty-handler</artifactId>-->
+<!--										<version>${version.netty}</version>-->
+<!--									</artifact>-->
+<!--									<moduleInfoSource>-->
+<!--										module io.netty.handler {-->
+<!--											requires static alpn.api;-->
+<!--											requires static bcpkix.jdk15on;-->
+<!--											requires static bcprov.jdk15on;-->
+<!--											requires static conscrypt.openjdk.uber;-->
+<!--											requires static netty.tcnative;-->
+<!--											requires static npn.api;-->
+<!--											requires io.netty.buffer;-->
+<!--											requires io.netty.codec;-->
+<!--											requires io.netty.common;-->
+<!--											requires io.netty.transport;-->
+<!--											exports io.netty.handler.flow;-->
+<!--											exports io.netty.handler.flush;-->
+<!--											exports io.netty.handler.ipfilter;-->
+<!--											exports io.netty.handler.logging;-->
+<!--											exports io.netty.handler.ssl;-->
+<!--											exports io.netty.handler.ssl.ocsp;-->
+<!--											exports io.netty.handler.ssl.util;-->
+<!--											exports io.netty.handler.stream;-->
+<!--											exports io.netty.handler.timeout;-->
+<!--											exports io.netty.handler.traffic;-->
+<!--										}-->
+<!--									</moduleInfoSource>-->
+<!--								</module>-->
 								<module>
 									<artifact>
 										<groupId>org.openjfx</groupId>
