@@ -7,7 +7,7 @@
 	<parent>
 		<artifactId>C3-Starmap_Cerberus</artifactId>
 		<groupId>net.clanwolf.starmap</groupId>
-		<version>4.2.3</version>
+		<version>5.1.7</version>
 	</parent>
 
 	<artifactId>net.clanwolf.starmap.server</artifactId>
@@ -15,14 +15,8 @@
 	<dependencies>
 		<dependency>
 			<groupId>net.clanwolf.starmap</groupId>
-			<artifactId>io.nadron.server</artifactId>
-			<version>4.2.3</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>net.clanwolf.starmap</groupId>
 			<artifactId>net.clanwolf.starmap.transfer</artifactId>
-			<version>4.2.3</version>
+			<version>${project.version}</version>
 			<scope>compile</scope>
 		</dependency>
 		<dependency>
@@ -32,8 +26,9 @@
 		</dependency>
 		<dependency>
 			<groupId>net.clanwolf.starmap</groupId>
-			<artifactId>io.nadron</artifactId>
+			<artifactId>io.nadron.server</artifactId>
 			<version>${project.version}</version>
+			<scope>compile</scope>
 			<exclusions>
 				<exclusion>
 					<groupId>io.netty</groupId>

@@ -55,7 +55,6 @@ import java.util.HashMap;
  */
 public class C3SoundPlayer {
 
-	private static final Class<C3SoundPlayer> c = C3SoundPlayer.class;
 	private static Media media = null;
 	private static MediaPlayer mediaPlayer = null;
 	private static MediaPlayer speechPlayer = null;
@@ -77,7 +76,7 @@ public class C3SoundPlayer {
 	public static void startMusic() {
 		if (mediaPlayer == null) {
 			String fn = "/music/DireWolf.mp3";
-			URL u = c.getResource(fn);
+			URL u = C3SoundPlayer.class.getClass().getResource(fn);
 			playBackgroundMusic(u);
 		} else {
 			mediaPlayer.play();
@@ -229,7 +228,9 @@ public class C3SoundPlayer {
 		if (!soundPath.startsWith("/")) {
 			soundPath = "/" + soundPath;
 		}
-		URL u = c.getResource(soundPath);
+
+		URL u = C3SoundPlayer.class.getClass().getResource(soundPath);
+
 		if (u == null) {
 			StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
 			String callerClassName = stackTraceElements[3].getClassName();
@@ -290,7 +291,7 @@ public class C3SoundPlayer {
 			media = new Media(mediaFile.toString());
 			mediaPlayer = new MediaPlayer(media);
 			mediaPlayer.setVolume(musicVolume / 4);
-			// Log.info("Playing background music.");
+			C3Logger.info("Playing background music.");
 			mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
 			mediaPlayer.play();
 		}

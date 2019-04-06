@@ -8,7 +8,7 @@
 	<description>Starsystem map of the Inner Sphere, Periphery and Clan space (BattleTech).</description>
 	<url>http://c3.clanwolf.net</url>
 	<organization>
-		<name>ClanWolf W-7</name>
+		<name>ClanWolf</name>
 		<url>http://www.clanwolf.net</url>
 	</organization>
 
@@ -47,12 +47,12 @@
 	<modules>
 		<module>net.clanwolf.starmap.client</module>
 		<module>net.clanwolf.starmap.client.preloader</module>
+		<module>net.clanwolf.starmap.client.packager</module>
 		<module>net.clanwolf.starmap.server</module>
 		<module>net.clanwolf.starmap.transfer</module>
 		<module>net.clanwolf.starmap.logging</module>
 		<module>io.nadron.client</module>
 		<module>io.nadron.server</module>
-		<module>net.clanwolf.starmap.client.packager</module>
 	</modules>
 
 	<build>

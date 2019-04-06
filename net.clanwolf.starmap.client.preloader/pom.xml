@@ -7,7 +7,7 @@
 	<parent>
 		<artifactId>C3-Starmap_Cerberus</artifactId>
 		<groupId>net.clanwolf.starmap</groupId>
-		<version>4.2.3</version>
+		<version>5.1.7</version>
 	</parent>
 
 	<artifactId>net.clanwolf.starmap.client.preloader</artifactId>
