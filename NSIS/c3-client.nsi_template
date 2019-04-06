@@ -84,4 +84,5 @@ Section "Uninstall"
 ###DIRECTORYLISTTOREMOVE###
 	RMDir "$INSTDIR"
 	RMDir "$SMPROGRAMS\C3-Client"
+
 SectionEnd

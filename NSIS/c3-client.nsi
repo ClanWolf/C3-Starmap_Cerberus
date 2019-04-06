@@ -41,248 +41,248 @@ Section "C3-Client (required)"
     SectionIn RO
 	SetShellVarContext all
 	SetOutPath $INSTDIR
-
-	CreateDirectory $INSTDIR\bin
-	SetOutpath $INSTDIR\bin
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-console-l1-1-0.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-datetime-l1-1-0.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-debug-l1-1-0.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-errorhandling-l1-1-0.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-file-l1-1-0.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-file-l1-2-0.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-file-l2-1-0.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-handle-l1-1-0.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-heap-l1-1-0.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-interlocked-l1-1-0.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-libraryloader-l1-1-0.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-localization-l1-2-0.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-memory-l1-1-0.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-namedpipe-l1-1-0.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-processenvironment-l1-1-0.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-processthreads-l1-1-0.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-processthreads-l1-1-1.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-profile-l1-1-0.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-rtlsupport-l1-1-0.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-string-l1-1-0.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-synch-l1-1-0.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-synch-l1-2-0.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-sysinfo-l1-1-0.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-timezone-l1-1-0.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-util-l1-1-0.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-crt-conio-l1-1-0.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-crt-convert-l1-1-0.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-crt-environment-l1-1-0.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-crt-filesystem-l1-1-0.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-crt-heap-l1-1-0.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-crt-locale-l1-1-0.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-crt-math-l1-1-0.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-crt-multibyte-l1-1-0.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-crt-private-l1-1-0.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-crt-process-l1-1-0.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-crt-runtime-l1-1-0.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-crt-stdio-l1-1-0.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-crt-string-l1-1-0.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-crt-time-l1-1-0.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-crt-utility-l1-1-0.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\awt.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\C3-Starmap_Cerberus"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\C3-Starmap_Cerberus.bat"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\fontmanager.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\freetype.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\java.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\java.exe"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\javajpeg.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\javaw.exe"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\jawt.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\jimage.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\jli.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\jrunscript.exe"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\jsound.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\keytool.exe"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\lcms.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\mlib_image.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\msvcp140.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\net.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\nio.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\prefs.dll"
-
-	CreateDirectory $INSTDIR\bin\server
-	SetOutpath $INSTDIR\bin\server
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\server\jvm.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\splashscreen.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\ucrtbase.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\vcruntime140.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\verify.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\zip.dll"
-
-	CreateDirectory $INSTDIR\conf
-	SetOutpath $INSTDIR\conf
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\conf\logging.properties"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\conf\net.properties"
-
-	CreateDirectory $INSTDIR\conf\security
-	SetOutpath $INSTDIR\conf\security
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\conf\security\java.policy"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\conf\security\java.security"
-
-	CreateDirectory $INSTDIR\conf\security\policy
-	SetOutpath $INSTDIR\conf\security\policy
-
-	CreateDirectory $INSTDIR\conf\security\policy\limited
-	SetOutpath $INSTDIR\conf\security\policy\limited
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\conf\security\policy\limited\default_local.policy"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\conf\security\policy\limited\default_US_export.policy"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\conf\security\policy\limited\exempt_local.policy"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\conf\security\policy\README.txt"
-
-	CreateDirectory $INSTDIR\conf\security\policy\unlimited
-	SetOutpath $INSTDIR\conf\security\policy\unlimited
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\conf\security\policy\unlimited\default_local.policy"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\conf\security\policy\unlimited\default_US_export.policy"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\conf\sound.properties"
-
-	CreateDirectory $INSTDIR\include
-	SetOutpath $INSTDIR\include
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\include\classfile_constants.h"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\include\jawt.h"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\include\jni.h"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\include\jvmti.h"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\include\jvmticmlr.h"
-
-	CreateDirectory $INSTDIR\include\win32
-	SetOutpath $INSTDIR\include\win32
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\include\win32\jawt_md.h"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\include\win32\jni_md.h"
-
-	CreateDirectory $INSTDIR\legal
-	SetOutpath $INSTDIR\legal
-
-	CreateDirectory $INSTDIR\legal\java.base
-	SetOutpath $INSTDIR\legal\java.base
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\ADDITIONAL_LICENSE_INFO"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\aes.md"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\asm.md"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\ASSEMBLY_EXCEPTION"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\c-libutl.md"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\cldr.md"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\icu.md"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\LICENSE"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\public_suffix.md"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\unicode.md"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\zlib.md"
-
-	CreateDirectory $INSTDIR\legal\java.datatransfer
-	SetOutpath $INSTDIR\legal\java.datatransfer
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.datatransfer\ADDITIONAL_LICENSE_INFO"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.datatransfer\ASSEMBLY_EXCEPTION"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.datatransfer\LICENSE"
-
-	CreateDirectory $INSTDIR\legal\java.desktop
-	SetOutpath $INSTDIR\legal\java.desktop
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.desktop\ADDITIONAL_LICENSE_INFO"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.desktop\ASSEMBLY_EXCEPTION"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.desktop\colorimaging.md"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.desktop\freetype.md"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.desktop\giflib.md"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.desktop\harfbuzz.md"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.desktop\jpeg.md"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.desktop\lcms.md"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.desktop\libpng.md"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.desktop\LICENSE"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.desktop\mesa3d.md"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.desktop\opengl.md"
-
-	CreateDirectory $INSTDIR\legal\java.logging
-	SetOutpath $INSTDIR\legal\java.logging
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.logging\ADDITIONAL_LICENSE_INFO"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.logging\ASSEMBLY_EXCEPTION"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.logging\LICENSE"
-
-	CreateDirectory $INSTDIR\legal\java.prefs
-	SetOutpath $INSTDIR\legal\java.prefs
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.prefs\ADDITIONAL_LICENSE_INFO"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.prefs\ASSEMBLY_EXCEPTION"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.prefs\LICENSE"
-
-	CreateDirectory $INSTDIR\legal\java.scripting
-	SetOutpath $INSTDIR\legal\java.scripting
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.scripting\ADDITIONAL_LICENSE_INFO"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.scripting\ASSEMBLY_EXCEPTION"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.scripting\LICENSE"
-
-	CreateDirectory $INSTDIR\legal\java.security.sasl
-	SetOutpath $INSTDIR\legal\java.security.sasl
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.security.sasl\ADDITIONAL_LICENSE_INFO"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.security.sasl\ASSEMBLY_EXCEPTION"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.security.sasl\LICENSE"
-
-	CreateDirectory $INSTDIR\legal\java.sql
-	SetOutpath $INSTDIR\legal\java.sql
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.sql\ADDITIONAL_LICENSE_INFO"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.sql\ASSEMBLY_EXCEPTION"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.sql\LICENSE"
-
-	CreateDirectory $INSTDIR\legal\java.transaction.xa
-	SetOutpath $INSTDIR\legal\java.transaction.xa
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.transaction.xa\ADDITIONAL_LICENSE_INFO"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.transaction.xa\ASSEMBLY_EXCEPTION"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.transaction.xa\LICENSE"
-
-	CreateDirectory $INSTDIR\legal\java.xml
-	SetOutpath $INSTDIR\legal\java.xml
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.xml\ADDITIONAL_LICENSE_INFO"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.xml\ASSEMBLY_EXCEPTION"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.xml\bcel.md"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.xml\dom.md"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.xml\jcup.md"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.xml\LICENSE"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.xml\xalan.md"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.xml\xerces.md"
-
-	CreateDirectory $INSTDIR\legal\jdk.jsobject
-	SetOutpath $INSTDIR\legal\jdk.jsobject
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\jdk.jsobject\ADDITIONAL_LICENSE_INFO"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\jdk.jsobject\ASSEMBLY_EXCEPTION"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\jdk.jsobject\LICENSE"
-
-	CreateDirectory $INSTDIR\legal\jdk.unsupported
-	SetOutpath $INSTDIR\legal\jdk.unsupported
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\jdk.unsupported\ADDITIONAL_LICENSE_INFO"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\jdk.unsupported\ASSEMBLY_EXCEPTION"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\jdk.unsupported\LICENSE"
-
-	CreateDirectory $INSTDIR\legal\jdk.xml.dom
-	SetOutpath $INSTDIR\legal\jdk.xml.dom
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\jdk.xml.dom\ADDITIONAL_LICENSE_INFO"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\jdk.xml.dom\ASSEMBLY_EXCEPTION"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\jdk.xml.dom\LICENSE"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\release"
 
 	CreateDirectory $INSTDIR\lib
 	SetOutpath $INSTDIR\lib
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\classlist"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\fontconfig.bfc"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\fontconfig.properties.src"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\jawt.lib"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\jrt-fs.jar"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\jvm.cfg"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\jvm.lib"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\modules"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\psfont.properties.ja"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\tzmappings"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\tzdb.dat"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\psfontj2d.properties"
-
-	CreateDirectory $INSTDIR\lib\security
-	SetOutpath $INSTDIR\lib\security
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\security\blacklisted.certs"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\security\cacerts"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\security\default.policy"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\security\public_suffix_list.dat"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\psfont.properties.ja"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\modules"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\jvm.lib"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\jvm.cfg"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\jrt-fs.jar"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\jawt.lib"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\fontconfig.properties.src"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\fontconfig.bfc"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\classlist"
 
 	CreateDirectory $INSTDIR\lib\server
 	SetOutpath $INSTDIR\lib\server
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\server\Xusage.txt"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\tzdb.dat"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\tzmappings"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\release"
+
+	CreateDirectory $INSTDIR\lib\security
+	SetOutpath $INSTDIR\lib\security
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\security\public_suffix_list.dat"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\security\default.policy"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\security\cacerts"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\security\blacklisted.certs"
+
+	CreateDirectory $INSTDIR\legal
+	SetOutpath $INSTDIR\legal
+
+	CreateDirectory $INSTDIR\legal\jdk.xml.dom
+	SetOutpath $INSTDIR\legal\jdk.xml.dom
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\jdk.xml.dom\LICENSE"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\jdk.xml.dom\ASSEMBLY_EXCEPTION"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\jdk.xml.dom\ADDITIONAL_LICENSE_INFO"
+
+	CreateDirectory $INSTDIR\legal\jdk.unsupported
+	SetOutpath $INSTDIR\legal\jdk.unsupported
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\jdk.unsupported\LICENSE"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\jdk.unsupported\ASSEMBLY_EXCEPTION"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\jdk.unsupported\ADDITIONAL_LICENSE_INFO"
+
+	CreateDirectory $INSTDIR\legal\jdk.jsobject
+	SetOutpath $INSTDIR\legal\jdk.jsobject
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\jdk.jsobject\LICENSE"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\jdk.jsobject\ASSEMBLY_EXCEPTION"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\jdk.jsobject\ADDITIONAL_LICENSE_INFO"
+
+	CreateDirectory $INSTDIR\legal\java.xml
+	SetOutpath $INSTDIR\legal\java.xml
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.xml\xerces.md"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.xml\xalan.md"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.xml\LICENSE"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.xml\jcup.md"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.xml\dom.md"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.xml\bcel.md"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.xml\ASSEMBLY_EXCEPTION"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.xml\ADDITIONAL_LICENSE_INFO"
+
+	CreateDirectory $INSTDIR\legal\java.transaction.xa
+	SetOutpath $INSTDIR\legal\java.transaction.xa
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.transaction.xa\LICENSE"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.transaction.xa\ASSEMBLY_EXCEPTION"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.transaction.xa\ADDITIONAL_LICENSE_INFO"
+
+	CreateDirectory $INSTDIR\legal\java.sql
+	SetOutpath $INSTDIR\legal\java.sql
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.sql\LICENSE"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.sql\ASSEMBLY_EXCEPTION"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.sql\ADDITIONAL_LICENSE_INFO"
+
+	CreateDirectory $INSTDIR\legal\java.security.sasl
+	SetOutpath $INSTDIR\legal\java.security.sasl
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.security.sasl\LICENSE"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.security.sasl\ASSEMBLY_EXCEPTION"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.security.sasl\ADDITIONAL_LICENSE_INFO"
+
+	CreateDirectory $INSTDIR\legal\java.scripting
+	SetOutpath $INSTDIR\legal\java.scripting
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.scripting\LICENSE"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.scripting\ASSEMBLY_EXCEPTION"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.scripting\ADDITIONAL_LICENSE_INFO"
+
+	CreateDirectory $INSTDIR\legal\java.prefs
+	SetOutpath $INSTDIR\legal\java.prefs
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.prefs\LICENSE"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.prefs\ASSEMBLY_EXCEPTION"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.prefs\ADDITIONAL_LICENSE_INFO"
+
+	CreateDirectory $INSTDIR\legal\java.logging
+	SetOutpath $INSTDIR\legal\java.logging
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.logging\LICENSE"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.logging\ASSEMBLY_EXCEPTION"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.logging\ADDITIONAL_LICENSE_INFO"
+
+	CreateDirectory $INSTDIR\legal\java.desktop
+	SetOutpath $INSTDIR\legal\java.desktop
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.desktop\opengl.md"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.desktop\mesa3d.md"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.desktop\LICENSE"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.desktop\libpng.md"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.desktop\lcms.md"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.desktop\jpeg.md"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.desktop\harfbuzz.md"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.desktop\giflib.md"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.desktop\freetype.md"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.desktop\colorimaging.md"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.desktop\ASSEMBLY_EXCEPTION"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.desktop\ADDITIONAL_LICENSE_INFO"
+
+	CreateDirectory $INSTDIR\legal\java.datatransfer
+	SetOutpath $INSTDIR\legal\java.datatransfer
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.datatransfer\LICENSE"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.datatransfer\ASSEMBLY_EXCEPTION"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.datatransfer\ADDITIONAL_LICENSE_INFO"
+
+	CreateDirectory $INSTDIR\legal\java.base
+	SetOutpath $INSTDIR\legal\java.base
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\zlib.md"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\unicode.md"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\public_suffix.md"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\LICENSE"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\icu.md"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\cldr.md"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\c-libutl.md"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\ASSEMBLY_EXCEPTION"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\asm.md"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\aes.md"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\ADDITIONAL_LICENSE_INFO"
+
+	CreateDirectory $INSTDIR\include
+	SetOutpath $INSTDIR\include
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\include\jvmticmlr.h"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\include\jvmti.h"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\include\jni.h"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\include\jawt.h"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\include\classfile_constants.h"
+
+	CreateDirectory $INSTDIR\include\win32
+	SetOutpath $INSTDIR\include\win32
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\include\win32\jni_md.h"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\include\win32\jawt_md.h"
+
+	CreateDirectory $INSTDIR\conf
+	SetOutpath $INSTDIR\conf
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\conf\sound.properties"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\conf\net.properties"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\conf\logging.properties"
+
+	CreateDirectory $INSTDIR\conf\security
+	SetOutpath $INSTDIR\conf\security
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\conf\security\java.security"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\conf\security\java.policy"
+
+	CreateDirectory $INSTDIR\conf\security\policy
+	SetOutpath $INSTDIR\conf\security\policy
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\conf\security\policy\README.txt"
+
+	CreateDirectory $INSTDIR\conf\security\policy\unlimited
+	SetOutpath $INSTDIR\conf\security\policy\unlimited
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\conf\security\policy\unlimited\default_US_export.policy"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\conf\security\policy\unlimited\default_local.policy"
+
+	CreateDirectory $INSTDIR\conf\security\policy\limited
+	SetOutpath $INSTDIR\conf\security\policy\limited
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\conf\security\policy\limited\exempt_local.policy"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\conf\security\policy\limited\default_US_export.policy"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\conf\security\policy\limited\default_local.policy"
+
+	CreateDirectory $INSTDIR\bin
+	SetOutpath $INSTDIR\bin
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\zip.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\verify.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\vcruntime140.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\ucrtbase.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\splashscreen.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\prefs.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\nio.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\net.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\msvcp140.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\mlib_image.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\lcms.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\keytool.exe"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\jsound.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\jrunscript.exe"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\jli.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\jimage.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\jawt.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\javaw.exe"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\javajpeg.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\java.exe"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\java.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\freetype.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\fontmanager.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\C3-Starmap_Cerberus.bat"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\C3-Starmap_Cerberus"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\awt.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-crt-utility-l1-1-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-crt-time-l1-1-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-crt-string-l1-1-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-crt-stdio-l1-1-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-crt-runtime-l1-1-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-crt-process-l1-1-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-crt-private-l1-1-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-crt-multibyte-l1-1-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-crt-math-l1-1-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-crt-locale-l1-1-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-crt-heap-l1-1-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-crt-filesystem-l1-1-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-crt-environment-l1-1-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-crt-convert-l1-1-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-crt-conio-l1-1-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-util-l1-1-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-timezone-l1-1-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-sysinfo-l1-1-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-synch-l1-2-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-synch-l1-1-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-string-l1-1-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-rtlsupport-l1-1-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-profile-l1-1-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-processthreads-l1-1-1.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-processthreads-l1-1-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-processenvironment-l1-1-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-namedpipe-l1-1-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-memory-l1-1-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-localization-l1-2-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-libraryloader-l1-1-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-interlocked-l1-1-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-heap-l1-1-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-handle-l1-1-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-file-l2-1-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-file-l1-2-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-file-l1-1-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-errorhandling-l1-1-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-debug-l1-1-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-datetime-l1-1-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-console-l1-1-0.dll"
+
+	CreateDirectory $INSTDIR\bin\server
+	SetOutpath $INSTDIR\bin\server
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\server\jvm.dll"
 
 	; Write the installation path into the registry
 	WriteRegStr HKLM SOFTWARE\C3-Client "Install_Dir" "$INSTDIR"
@@ -319,183 +319,182 @@ Section "Uninstall"
 	DeleteRegKey HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client"
 	DeleteRegKey HKLM SOFTWARE\C3-Client
 
-	Delete $INSTDIR\bin\api-ms-win-core-console-l1-1-0.dll
-	Delete $INSTDIR\bin\api-ms-win-core-datetime-l1-1-0.dll
-	Delete $INSTDIR\bin\api-ms-win-core-debug-l1-1-0.dll
-	Delete $INSTDIR\bin\api-ms-win-core-errorhandling-l1-1-0.dll
-	Delete $INSTDIR\bin\api-ms-win-core-file-l1-1-0.dll
-	Delete $INSTDIR\bin\api-ms-win-core-file-l1-2-0.dll
-	Delete $INSTDIR\bin\api-ms-win-core-file-l2-1-0.dll
-	Delete $INSTDIR\bin\api-ms-win-core-handle-l1-1-0.dll
-	Delete $INSTDIR\bin\api-ms-win-core-heap-l1-1-0.dll
-	Delete $INSTDIR\bin\api-ms-win-core-interlocked-l1-1-0.dll
-	Delete $INSTDIR\bin\api-ms-win-core-libraryloader-l1-1-0.dll
-	Delete $INSTDIR\bin\api-ms-win-core-localization-l1-2-0.dll
-	Delete $INSTDIR\bin\api-ms-win-core-memory-l1-1-0.dll
-	Delete $INSTDIR\bin\api-ms-win-core-namedpipe-l1-1-0.dll
-	Delete $INSTDIR\bin\api-ms-win-core-processenvironment-l1-1-0.dll
-	Delete $INSTDIR\bin\api-ms-win-core-processthreads-l1-1-0.dll
-	Delete $INSTDIR\bin\api-ms-win-core-processthreads-l1-1-1.dll
-	Delete $INSTDIR\bin\api-ms-win-core-profile-l1-1-0.dll
-	Delete $INSTDIR\bin\api-ms-win-core-rtlsupport-l1-1-0.dll
-	Delete $INSTDIR\bin\api-ms-win-core-string-l1-1-0.dll
-	Delete $INSTDIR\bin\api-ms-win-core-synch-l1-1-0.dll
-	Delete $INSTDIR\bin\api-ms-win-core-synch-l1-2-0.dll
-	Delete $INSTDIR\bin\api-ms-win-core-sysinfo-l1-1-0.dll
-	Delete $INSTDIR\bin\api-ms-win-core-timezone-l1-1-0.dll
-	Delete $INSTDIR\bin\api-ms-win-core-util-l1-1-0.dll
-	Delete $INSTDIR\bin\api-ms-win-crt-conio-l1-1-0.dll
-	Delete $INSTDIR\bin\api-ms-win-crt-convert-l1-1-0.dll
-	Delete $INSTDIR\bin\api-ms-win-crt-environment-l1-1-0.dll
-	Delete $INSTDIR\bin\api-ms-win-crt-filesystem-l1-1-0.dll
-	Delete $INSTDIR\bin\api-ms-win-crt-heap-l1-1-0.dll
-	Delete $INSTDIR\bin\api-ms-win-crt-locale-l1-1-0.dll
-	Delete $INSTDIR\bin\api-ms-win-crt-math-l1-1-0.dll
-	Delete $INSTDIR\bin\api-ms-win-crt-multibyte-l1-1-0.dll
-	Delete $INSTDIR\bin\api-ms-win-crt-private-l1-1-0.dll
-	Delete $INSTDIR\bin\api-ms-win-crt-process-l1-1-0.dll
-	Delete $INSTDIR\bin\api-ms-win-crt-runtime-l1-1-0.dll
-	Delete $INSTDIR\bin\api-ms-win-crt-stdio-l1-1-0.dll
-	Delete $INSTDIR\bin\api-ms-win-crt-string-l1-1-0.dll
-	Delete $INSTDIR\bin\api-ms-win-crt-time-l1-1-0.dll
-	Delete $INSTDIR\bin\api-ms-win-crt-utility-l1-1-0.dll
-	Delete $INSTDIR\bin\awt.dll
-	Delete $INSTDIR\bin\C3-Starmap_Cerberus
-	Delete $INSTDIR\bin\C3-Starmap_Cerberus.bat
-	Delete $INSTDIR\bin\fontmanager.dll
-	Delete $INSTDIR\bin\freetype.dll
-	Delete $INSTDIR\bin\java.dll
-	Delete $INSTDIR\bin\java.exe
-	Delete $INSTDIR\bin\javajpeg.dll
-	Delete $INSTDIR\bin\javaw.exe
-	Delete $INSTDIR\bin\jawt.dll
-	Delete $INSTDIR\bin\jimage.dll
-	Delete $INSTDIR\bin\jli.dll
-	Delete $INSTDIR\bin\jrunscript.exe
-	Delete $INSTDIR\bin\jsound.dll
-	Delete $INSTDIR\bin\keytool.exe
-	Delete $INSTDIR\bin\lcms.dll
-	Delete $INSTDIR\bin\mlib_image.dll
-	Delete $INSTDIR\bin\msvcp140.dll
-	Delete $INSTDIR\bin\net.dll
-	Delete $INSTDIR\bin\nio.dll
-	Delete $INSTDIR\bin\prefs.dll
-	Delete $INSTDIR\bin\server\jvm.dll
-	Delete $INSTDIR\bin\splashscreen.dll
-	Delete $INSTDIR\bin\ucrtbase.dll
-	Delete $INSTDIR\bin\vcruntime140.dll
-	Delete $INSTDIR\bin\verify.dll
-	Delete $INSTDIR\bin\zip.dll
-	Delete $INSTDIR\conf\logging.properties
-	Delete $INSTDIR\conf\net.properties
-	Delete $INSTDIR\conf\security\java.policy
-	Delete $INSTDIR\conf\security\java.security
-	Delete $INSTDIR\conf\security\policy\limited\default_local.policy
-	Delete $INSTDIR\conf\security\policy\limited\default_US_export.policy
-	Delete $INSTDIR\conf\security\policy\limited\exempt_local.policy
-	Delete $INSTDIR\conf\security\policy\README.txt
-	Delete $INSTDIR\conf\security\policy\unlimited\default_local.policy
-	Delete $INSTDIR\conf\security\policy\unlimited\default_US_export.policy
-	Delete $INSTDIR\conf\sound.properties
-	Delete $INSTDIR\include\classfile_constants.h
-	Delete $INSTDIR\include\jawt.h
-	Delete $INSTDIR\include\jni.h
-	Delete $INSTDIR\include\jvmti.h
-	Delete $INSTDIR\include\jvmticmlr.h
-	Delete $INSTDIR\include\win32\jawt_md.h
-	Delete $INSTDIR\include\win32\jni_md.h
-	Delete $INSTDIR\legal\java.base\ADDITIONAL_LICENSE_INFO
-	Delete $INSTDIR\legal\java.base\aes.md
-	Delete $INSTDIR\legal\java.base\asm.md
-	Delete $INSTDIR\legal\java.base\ASSEMBLY_EXCEPTION
-	Delete $INSTDIR\legal\java.base\c-libutl.md
-	Delete $INSTDIR\legal\java.base\cldr.md
-	Delete $INSTDIR\legal\java.base\icu.md
-	Delete $INSTDIR\legal\java.base\LICENSE
-	Delete $INSTDIR\legal\java.base\public_suffix.md
-	Delete $INSTDIR\legal\java.base\unicode.md
-	Delete $INSTDIR\legal\java.base\zlib.md
-	Delete $INSTDIR\legal\java.datatransfer\ADDITIONAL_LICENSE_INFO
-	Delete $INSTDIR\legal\java.datatransfer\ASSEMBLY_EXCEPTION
-	Delete $INSTDIR\legal\java.datatransfer\LICENSE
-	Delete $INSTDIR\legal\java.desktop\ADDITIONAL_LICENSE_INFO
-	Delete $INSTDIR\legal\java.desktop\ASSEMBLY_EXCEPTION
-	Delete $INSTDIR\legal\java.desktop\colorimaging.md
-	Delete $INSTDIR\legal\java.desktop\freetype.md
-	Delete $INSTDIR\legal\java.desktop\giflib.md
-	Delete $INSTDIR\legal\java.desktop\harfbuzz.md
-	Delete $INSTDIR\legal\java.desktop\jpeg.md
-	Delete $INSTDIR\legal\java.desktop\lcms.md
-	Delete $INSTDIR\legal\java.desktop\libpng.md
-	Delete $INSTDIR\legal\java.desktop\LICENSE
-	Delete $INSTDIR\legal\java.desktop\mesa3d.md
-	Delete $INSTDIR\legal\java.desktop\opengl.md
-	Delete $INSTDIR\legal\java.logging\ADDITIONAL_LICENSE_INFO
-	Delete $INSTDIR\legal\java.logging\ASSEMBLY_EXCEPTION
-	Delete $INSTDIR\legal\java.logging\LICENSE
-	Delete $INSTDIR\legal\java.prefs\ADDITIONAL_LICENSE_INFO
-	Delete $INSTDIR\legal\java.prefs\ASSEMBLY_EXCEPTION
-	Delete $INSTDIR\legal\java.prefs\LICENSE
-	Delete $INSTDIR\legal\java.scripting\ADDITIONAL_LICENSE_INFO
-	Delete $INSTDIR\legal\java.scripting\ASSEMBLY_EXCEPTION
-	Delete $INSTDIR\legal\java.scripting\LICENSE
-	Delete $INSTDIR\legal\java.security.sasl\ADDITIONAL_LICENSE_INFO
-	Delete $INSTDIR\legal\java.security.sasl\ASSEMBLY_EXCEPTION
-	Delete $INSTDIR\legal\java.security.sasl\LICENSE
-	Delete $INSTDIR\legal\java.sql\ADDITIONAL_LICENSE_INFO
-	Delete $INSTDIR\legal\java.sql\ASSEMBLY_EXCEPTION
-	Delete $INSTDIR\legal\java.sql\LICENSE
-	Delete $INSTDIR\legal\java.transaction.xa\ADDITIONAL_LICENSE_INFO
-	Delete $INSTDIR\legal\java.transaction.xa\ASSEMBLY_EXCEPTION
-	Delete $INSTDIR\legal\java.transaction.xa\LICENSE
-	Delete $INSTDIR\legal\java.xml\ADDITIONAL_LICENSE_INFO
-	Delete $INSTDIR\legal\java.xml\ASSEMBLY_EXCEPTION
-	Delete $INSTDIR\legal\java.xml\bcel.md
-	Delete $INSTDIR\legal\java.xml\dom.md
-	Delete $INSTDIR\legal\java.xml\jcup.md
-	Delete $INSTDIR\legal\java.xml\LICENSE
-	Delete $INSTDIR\legal\java.xml\xalan.md
-	Delete $INSTDIR\legal\java.xml\xerces.md
-	Delete $INSTDIR\legal\jdk.jsobject\ADDITIONAL_LICENSE_INFO
-	Delete $INSTDIR\legal\jdk.jsobject\ASSEMBLY_EXCEPTION
-	Delete $INSTDIR\legal\jdk.jsobject\LICENSE
-	Delete $INSTDIR\legal\jdk.unsupported\ADDITIONAL_LICENSE_INFO
-	Delete $INSTDIR\legal\jdk.unsupported\ASSEMBLY_EXCEPTION
-	Delete $INSTDIR\legal\jdk.unsupported\LICENSE
-	Delete $INSTDIR\legal\jdk.xml.dom\ADDITIONAL_LICENSE_INFO
-	Delete $INSTDIR\legal\jdk.xml.dom\ASSEMBLY_EXCEPTION
-	Delete $INSTDIR\legal\jdk.xml.dom\LICENSE
-	Delete $INSTDIR\lib\classlist
-	Delete $INSTDIR\lib\fontconfig.bfc
-	Delete $INSTDIR\lib\fontconfig.properties.src
-	Delete $INSTDIR\lib\jawt.lib
-	Delete $INSTDIR\lib\jrt-fs.jar
-	Delete $INSTDIR\lib\jvm.cfg
-	Delete $INSTDIR\lib\jvm.lib
-	Delete $INSTDIR\lib\modules
-	Delete $INSTDIR\lib\psfont.properties.ja
-	Delete $INSTDIR\lib\psfontj2d.properties
-	Delete $INSTDIR\lib\security\blacklisted.certs
-	Delete $INSTDIR\lib\security\cacerts
-	Delete $INSTDIR\lib\security\default.policy
-	Delete $INSTDIR\lib\security\public_suffix_list.dat
-	Delete $INSTDIR\lib\server\Xusage.txt
-	Delete $INSTDIR\lib\tzdb.dat
-	Delete $INSTDIR\lib\tzmappings
 	Delete $INSTDIR\release
+	Delete $INSTDIR\lib\tzmappings
+	Delete $INSTDIR\lib\tzdb.dat
+	Delete $INSTDIR\lib\psfontj2d.properties
+	Delete $INSTDIR\lib\psfont.properties.ja
+	Delete $INSTDIR\lib\modules
+	Delete $INSTDIR\lib\jvm.lib
+	Delete $INSTDIR\lib\jvm.cfg
+	Delete $INSTDIR\lib\jrt-fs.jar
+	Delete $INSTDIR\lib\jawt.lib
+	Delete $INSTDIR\lib\fontconfig.properties.src
+	Delete $INSTDIR\lib\fontconfig.bfc
+	Delete $INSTDIR\lib\classlist
+	Delete $INSTDIR\lib\server\Xusage.txt
+	Delete $INSTDIR\lib\security\public_suffix_list.dat
+	Delete $INSTDIR\lib\security\default.policy
+	Delete $INSTDIR\lib\security\cacerts
+	Delete $INSTDIR\lib\security\blacklisted.certs
+	Delete $INSTDIR\legal\jdk.xml.dom\LICENSE
+	Delete $INSTDIR\legal\jdk.xml.dom\ASSEMBLY_EXCEPTION
+	Delete $INSTDIR\legal\jdk.xml.dom\ADDITIONAL_LICENSE_INFO
+	Delete $INSTDIR\legal\jdk.unsupported\LICENSE
+	Delete $INSTDIR\legal\jdk.unsupported\ASSEMBLY_EXCEPTION
+	Delete $INSTDIR\legal\jdk.unsupported\ADDITIONAL_LICENSE_INFO
+	Delete $INSTDIR\legal\jdk.jsobject\LICENSE
+	Delete $INSTDIR\legal\jdk.jsobject\ASSEMBLY_EXCEPTION
+	Delete $INSTDIR\legal\jdk.jsobject\ADDITIONAL_LICENSE_INFO
+	Delete $INSTDIR\legal\java.xml\xerces.md
+	Delete $INSTDIR\legal\java.xml\xalan.md
+	Delete $INSTDIR\legal\java.xml\LICENSE
+	Delete $INSTDIR\legal\java.xml\jcup.md
+	Delete $INSTDIR\legal\java.xml\dom.md
+	Delete $INSTDIR\legal\java.xml\bcel.md
+	Delete $INSTDIR\legal\java.xml\ASSEMBLY_EXCEPTION
+	Delete $INSTDIR\legal\java.xml\ADDITIONAL_LICENSE_INFO
+	Delete $INSTDIR\legal\java.transaction.xa\LICENSE
+	Delete $INSTDIR\legal\java.transaction.xa\ASSEMBLY_EXCEPTION
+	Delete $INSTDIR\legal\java.transaction.xa\ADDITIONAL_LICENSE_INFO
+	Delete $INSTDIR\legal\java.sql\LICENSE
+	Delete $INSTDIR\legal\java.sql\ASSEMBLY_EXCEPTION
+	Delete $INSTDIR\legal\java.sql\ADDITIONAL_LICENSE_INFO
+	Delete $INSTDIR\legal\java.security.sasl\LICENSE
+	Delete $INSTDIR\legal\java.security.sasl\ASSEMBLY_EXCEPTION
+	Delete $INSTDIR\legal\java.security.sasl\ADDITIONAL_LICENSE_INFO
+	Delete $INSTDIR\legal\java.scripting\LICENSE
+	Delete $INSTDIR\legal\java.scripting\ASSEMBLY_EXCEPTION
+	Delete $INSTDIR\legal\java.scripting\ADDITIONAL_LICENSE_INFO
+	Delete $INSTDIR\legal\java.prefs\LICENSE
+	Delete $INSTDIR\legal\java.prefs\ASSEMBLY_EXCEPTION
+	Delete $INSTDIR\legal\java.prefs\ADDITIONAL_LICENSE_INFO
+	Delete $INSTDIR\legal\java.logging\LICENSE
+	Delete $INSTDIR\legal\java.logging\ASSEMBLY_EXCEPTION
+	Delete $INSTDIR\legal\java.logging\ADDITIONAL_LICENSE_INFO
+	Delete $INSTDIR\legal\java.desktop\opengl.md
+	Delete $INSTDIR\legal\java.desktop\mesa3d.md
+	Delete $INSTDIR\legal\java.desktop\LICENSE
+	Delete $INSTDIR\legal\java.desktop\libpng.md
+	Delete $INSTDIR\legal\java.desktop\lcms.md
+	Delete $INSTDIR\legal\java.desktop\jpeg.md
+	Delete $INSTDIR\legal\java.desktop\harfbuzz.md
+	Delete $INSTDIR\legal\java.desktop\giflib.md
+	Delete $INSTDIR\legal\java.desktop\freetype.md
+	Delete $INSTDIR\legal\java.desktop\colorimaging.md
+	Delete $INSTDIR\legal\java.desktop\ASSEMBLY_EXCEPTION
+	Delete $INSTDIR\legal\java.desktop\ADDITIONAL_LICENSE_INFO
+	Delete $INSTDIR\legal\java.datatransfer\LICENSE
+	Delete $INSTDIR\legal\java.datatransfer\ASSEMBLY_EXCEPTION
+	Delete $INSTDIR\legal\java.datatransfer\ADDITIONAL_LICENSE_INFO
+	Delete $INSTDIR\legal\java.base\zlib.md
+	Delete $INSTDIR\legal\java.base\unicode.md
+	Delete $INSTDIR\legal\java.base\public_suffix.md
+	Delete $INSTDIR\legal\java.base\LICENSE
+	Delete $INSTDIR\legal\java.base\icu.md
+	Delete $INSTDIR\legal\java.base\cldr.md
+	Delete $INSTDIR\legal\java.base\c-libutl.md
+	Delete $INSTDIR\legal\java.base\ASSEMBLY_EXCEPTION
+	Delete $INSTDIR\legal\java.base\asm.md
+	Delete $INSTDIR\legal\java.base\aes.md
+	Delete $INSTDIR\legal\java.base\ADDITIONAL_LICENSE_INFO
+	Delete $INSTDIR\include\jvmticmlr.h
+	Delete $INSTDIR\include\jvmti.h
+	Delete $INSTDIR\include\jni.h
+	Delete $INSTDIR\include\jawt.h
+	Delete $INSTDIR\include\classfile_constants.h
+	Delete $INSTDIR\include\win32\jni_md.h
+	Delete $INSTDIR\include\win32\jawt_md.h
+	Delete $INSTDIR\conf\sound.properties
+	Delete $INSTDIR\conf\net.properties
+	Delete $INSTDIR\conf\logging.properties
+	Delete $INSTDIR\conf\security\java.security
+	Delete $INSTDIR\conf\security\java.policy
+	Delete $INSTDIR\conf\security\policy\README.txt
+	Delete $INSTDIR\conf\security\policy\unlimited\default_US_export.policy
+	Delete $INSTDIR\conf\security\policy\unlimited\default_local.policy
+	Delete $INSTDIR\conf\security\policy\limited\exempt_local.policy
+	Delete $INSTDIR\conf\security\policy\limited\default_US_export.policy
+	Delete $INSTDIR\conf\security\policy\limited\default_local.policy
+	Delete $INSTDIR\bin\zip.dll
+	Delete $INSTDIR\bin\verify.dll
+	Delete $INSTDIR\bin\vcruntime140.dll
+	Delete $INSTDIR\bin\ucrtbase.dll
+	Delete $INSTDIR\bin\splashscreen.dll
+	Delete $INSTDIR\bin\prefs.dll
+	Delete $INSTDIR\bin\nio.dll
+	Delete $INSTDIR\bin\net.dll
+	Delete $INSTDIR\bin\msvcp140.dll
+	Delete $INSTDIR\bin\mlib_image.dll
+	Delete $INSTDIR\bin\lcms.dll
+	Delete $INSTDIR\bin\keytool.exe
+	Delete $INSTDIR\bin\jsound.dll
+	Delete $INSTDIR\bin\jrunscript.exe
+	Delete $INSTDIR\bin\jli.dll
+	Delete $INSTDIR\bin\jimage.dll
+	Delete $INSTDIR\bin\jawt.dll
+	Delete $INSTDIR\bin\javaw.exe
+	Delete $INSTDIR\bin\javajpeg.dll
+	Delete $INSTDIR\bin\java.exe
+	Delete $INSTDIR\bin\java.dll
+	Delete $INSTDIR\bin\freetype.dll
+	Delete $INSTDIR\bin\fontmanager.dll
+	Delete $INSTDIR\bin\C3-Starmap_Cerberus.bat
+	Delete $INSTDIR\bin\C3-Starmap_Cerberus
+	Delete $INSTDIR\bin\awt.dll
+	Delete $INSTDIR\bin\api-ms-win-crt-utility-l1-1-0.dll
+	Delete $INSTDIR\bin\api-ms-win-crt-time-l1-1-0.dll
+	Delete $INSTDIR\bin\api-ms-win-crt-string-l1-1-0.dll
+	Delete $INSTDIR\bin\api-ms-win-crt-stdio-l1-1-0.dll
+	Delete $INSTDIR\bin\api-ms-win-crt-runtime-l1-1-0.dll
+	Delete $INSTDIR\bin\api-ms-win-crt-process-l1-1-0.dll
+	Delete $INSTDIR\bin\api-ms-win-crt-private-l1-1-0.dll
+	Delete $INSTDIR\bin\api-ms-win-crt-multibyte-l1-1-0.dll
+	Delete $INSTDIR\bin\api-ms-win-crt-math-l1-1-0.dll
+	Delete $INSTDIR\bin\api-ms-win-crt-locale-l1-1-0.dll
+	Delete $INSTDIR\bin\api-ms-win-crt-heap-l1-1-0.dll
+	Delete $INSTDIR\bin\api-ms-win-crt-filesystem-l1-1-0.dll
+	Delete $INSTDIR\bin\api-ms-win-crt-environment-l1-1-0.dll
+	Delete $INSTDIR\bin\api-ms-win-crt-convert-l1-1-0.dll
+	Delete $INSTDIR\bin\api-ms-win-crt-conio-l1-1-0.dll
+	Delete $INSTDIR\bin\api-ms-win-core-util-l1-1-0.dll
+	Delete $INSTDIR\bin\api-ms-win-core-timezone-l1-1-0.dll
+	Delete $INSTDIR\bin\api-ms-win-core-sysinfo-l1-1-0.dll
+	Delete $INSTDIR\bin\api-ms-win-core-synch-l1-2-0.dll
+	Delete $INSTDIR\bin\api-ms-win-core-synch-l1-1-0.dll
+	Delete $INSTDIR\bin\api-ms-win-core-string-l1-1-0.dll
+	Delete $INSTDIR\bin\api-ms-win-core-rtlsupport-l1-1-0.dll
+	Delete $INSTDIR\bin\api-ms-win-core-profile-l1-1-0.dll
+	Delete $INSTDIR\bin\api-ms-win-core-processthreads-l1-1-1.dll
+	Delete $INSTDIR\bin\api-ms-win-core-processthreads-l1-1-0.dll
+	Delete $INSTDIR\bin\api-ms-win-core-processenvironment-l1-1-0.dll
+	Delete $INSTDIR\bin\api-ms-win-core-namedpipe-l1-1-0.dll
+	Delete $INSTDIR\bin\api-ms-win-core-memory-l1-1-0.dll
+	Delete $INSTDIR\bin\api-ms-win-core-localization-l1-2-0.dll
+	Delete $INSTDIR\bin\api-ms-win-core-libraryloader-l1-1-0.dll
+	Delete $INSTDIR\bin\api-ms-win-core-interlocked-l1-1-0.dll
+	Delete $INSTDIR\bin\api-ms-win-core-heap-l1-1-0.dll
+	Delete $INSTDIR\bin\api-ms-win-core-handle-l1-1-0.dll
+	Delete $INSTDIR\bin\api-ms-win-core-file-l2-1-0.dll
+	Delete $INSTDIR\bin\api-ms-win-core-file-l1-2-0.dll
+	Delete $INSTDIR\bin\api-ms-win-core-file-l1-1-0.dll
+	Delete $INSTDIR\bin\api-ms-win-core-errorhandling-l1-1-0.dll
+	Delete $INSTDIR\bin\api-ms-win-core-debug-l1-1-0.dll
+	Delete $INSTDIR\bin\api-ms-win-core-datetime-l1-1-0.dll
+	Delete $INSTDIR\bin\api-ms-win-core-console-l1-1-0.dll
+	Delete $INSTDIR\bin\server\jvm.dll
 
 	Delete $INSTDIR\uninstall.exe
 
-	RMDir "$INSTDIR\bin"
 	RMDir "$INSTDIR\bin\server"
-	RMDir "$INSTDIR\conf"
-	RMDir "$INSTDIR\conf\security"
-	RMDir "$INSTDIR\conf\security\policy"
+	RMDir "$INSTDIR\bin"
 	RMDir "$INSTDIR\conf\security\policy\limited"
 	RMDir "$INSTDIR\conf\security\policy\unlimited"
-	RMDir "$INSTDIR\include"
+	RMDir "$INSTDIR\conf\security\policy"
+	RMDir "$INSTDIR\conf\security"
+	RMDir "$INSTDIR\conf"
 	RMDir "$INSTDIR\include\win32"
-	RMDir "$INSTDIR\legal"
+	RMDir "$INSTDIR\include"
 	RMDir "$INSTDIR\legal\java.base"
 	RMDir "$INSTDIR\legal\java.datatransfer"
 	RMDir "$INSTDIR\legal\java.desktop"
@@ -509,10 +508,12 @@ Section "Uninstall"
 	RMDir "$INSTDIR\legal\jdk.jsobject"
 	RMDir "$INSTDIR\legal\jdk.unsupported"
 	RMDir "$INSTDIR\legal\jdk.xml.dom"
-	RMDir "$INSTDIR\lib"
+	RMDir "$INSTDIR\legal"
 	RMDir "$INSTDIR\lib\security"
 	RMDir "$INSTDIR\lib\server"
+	RMDir "$INSTDIR\lib"
 
 	RMDir "$INSTDIR"
 	RMDir "$SMPROGRAMS\C3-Client"
+
 SectionEnd

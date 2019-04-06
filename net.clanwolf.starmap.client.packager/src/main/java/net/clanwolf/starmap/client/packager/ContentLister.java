@@ -1,6 +1,7 @@
 package net.clanwolf.starmap.client.packager;
 
 import java.io.*;
+import java.util.Arrays;
 
 public class ContentLister {
 
@@ -34,6 +35,15 @@ public class ContentLister {
 	void walk(BufferedWriter bw, String path) throws Exception {
 		File root = new File(path);
 		File[] list = root.listFiles();
+		Arrays.sort(list, (f1, f2) -> {
+			if (f1.isDirectory() && !f2.isDirectory()) {
+				return 1;
+			} else if (!f1.isDirectory() && f2.isDirectory()) {
+				return -1;
+			} else {
+				return f2.compareTo(f1);
+			}
+		});
 
 		if (list == null) return;
 
@@ -45,7 +55,7 @@ public class ContentLister {
 				writeLine(bw,"\tCreateDirectory $INSTDIR\\" + cPath);
 				writeLine(bw,"\tSetOutpath $INSTDIR\\" + cPath);
 
-				listDeleteFoldersDuringUninstall = listDeleteFoldersDuringUninstall + "\tRMDir \"$INSTDIR\\" + stripPath(f.getAbsoluteFile().getAbsolutePath()) + "\"\n";
+				listDeleteFoldersDuringUninstall = "\tRMDir \"$INSTDIR\\" + stripPath(f.getAbsoluteFile().getAbsolutePath()) + "\"\n" + listDeleteFoldersDuringUninstall;
 
 				walk(bw, f.getAbsolutePath());
 			} else {
