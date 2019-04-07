@@ -44,6 +44,7 @@ import net.clanwolf.starmap.client.util.C3Properties;
 import net.clanwolf.starmap.client.util.Internationalization;
 
 import java.io.File;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -55,6 +56,7 @@ import java.util.HashMap;
  */
 public class C3SoundPlayer {
 
+	private static C3SoundPlayer instance = null;
 	private static Media media = null;
 	private static MediaPlayer mediaPlayer = null;
 	private static MediaPlayer speechPlayer = null;
@@ -70,13 +72,21 @@ public class C3SoundPlayer {
 	public C3SoundPlayer() {
 	}
 
+	public static C3SoundPlayer getInstance() {
+		if (instance == null) {
+			instance = new C3SoundPlayer();
+		}
+		return instance;
+	}
 	/**
 	 * Start the music.
 	 */
 	public static void startMusic() {
 		if (mediaPlayer == null) {
 			String fn = "/music/DireWolf.mp3";
-			URL u = C3SoundPlayer.class.getClass().getResource(fn);
+
+			URL u = ((C3SoundPlayer)getInstance()).getClass().getResource(fn);
+
 			playBackgroundMusic(u);
 		} else {
 			mediaPlayer.play();
@@ -229,7 +239,7 @@ public class C3SoundPlayer {
 			soundPath = "/" + soundPath;
 		}
 
-		URL u = C3SoundPlayer.class.getClass().getResource(soundPath);
+		URL u = ((C3SoundPlayer)getInstance()).getClass().getResource(soundPath);
 
 		if (u == null) {
 			StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
