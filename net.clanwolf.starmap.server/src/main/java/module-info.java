@@ -14,7 +14,7 @@ module net.clanwolf.starmap.server {
 	requires mail;
 	requires slf4j.simple;
 
-	// opens net.clanwolf.starmap.server to spring.core;
+	opens net.clanwolf.starmap.server to spring.core;
 
 	exports net.clanwolf.starmap.server to spring.beans, spring.context;
 }
