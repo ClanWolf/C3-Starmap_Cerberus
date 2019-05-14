@@ -95,6 +95,7 @@ public class GameServer {
 	public static void main(String[] args) {
 		// Logging
 		File dir = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3");
+
 		boolean res = dir.mkdirs();
 		if (res || dir.exists()) {
 			String logFileName = dir + File.separator + "server.log";

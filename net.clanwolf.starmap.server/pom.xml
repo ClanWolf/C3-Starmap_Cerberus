@@ -28,7 +28,7 @@
 			<groupId>net.clanwolf.starmap</groupId>
 			<artifactId>io.nadron.server</artifactId>
 			<version>${project.version}</version>
-			<scope>compile</scope>
+<!--			<scope>compile</scope>-->
 <!--			<exclusions>-->
 <!--				<exclusion>-->
 <!--					<groupId>io.netty</groupId>-->
@@ -106,7 +106,7 @@
 		<dependency>
 			<groupId>org.javassist</groupId>
 			<artifactId>javassist</artifactId>
-			<version>3.21.0-GA</version>
+			<version>3.25.0-GA</version>
 		</dependency>
 
 		<dependency>
@@ -116,19 +116,36 @@
 		</dependency>
 
 		<dependency>
+			<groupId>javax.transaction</groupId>
+			<artifactId>javax.transaction-api</artifactId>
+			<version>1.3</version>
+		</dependency>
+		<dependency>
+			<groupId>net.bytebuddy</groupId>
+			<artifactId>byte-buddy</artifactId>
+			<version>1.9.12</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.xml.bind</groupId>
+			<artifactId>jaxb-api</artifactId>
+			<version>2.3.1</version>
+		</dependency>
+
+
+		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
-			<version>5.1.5.RELEASE</version>
+			<version>5.1.7.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>5.1.5.RELEASE</version>
+			<version>5.1.7.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
-			<version>5.1.5.RELEASE</version>
+			<version>5.1.7.RELEASE</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>

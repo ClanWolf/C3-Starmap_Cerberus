@@ -1,5 +1,6 @@
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"     xmlns:util="http://www.springframework.org/schema/util" xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
-    <import resource="service-beans.xml" />
+<!--    <import resource="classpath:nadron/beans/service-beans.xml" />-->
+	<import resource="file:net.clanwolf.starmap.server/src/main/resources/nadron/beans/service-beans.xml"></import>
 
     <!-- Netty and decoders encoders and handlers -->
     <bean id="stringDecoder" class="io.netty.handler.codec.string.StringDecoder" />
