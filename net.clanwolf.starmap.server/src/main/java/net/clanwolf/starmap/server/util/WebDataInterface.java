@@ -390,23 +390,44 @@ public class WebDataInterface {
 
 		try {
 			String path = WebDataInterface.class.getProtectionDomain().getCodeSource().getLocation().getPath();
-			String pathHH = "/var/www/vhosts/clanwolf.net/httpdocs/starmap_CM";
-			String pathCM = "/var/www/vhosts/clanwolf.net/httpdocs/starmap_HH";
 
-			decodedPath = URLDecoder.decode(path, "UTF-8");
-			File f = new File(decodedPath);
-			String parent = f.getParent();
-			filename = parent + File.separator + "mapdata_" + type.name() + ".json";
-			filenameHH = pathHH + File.separator + "mapdata_" + type.name() + ".json";
-			filenameCM = pathCM + File.separator + "mapdata_" + type.name() + ".json";
+			String pathHH = null;
+			String pathCM = null;
 
-			mapDataFile = new File(filename);
-			mapDataFileHH = new File(filenameHH);
-			mapDataFileCM = new File(filenameCM);
+			OSCheck.OSType ostype=OSCheck.getOperatingSystemType();
+			switch (ostype) {
+				case Windows:
+					// The server seems to be running on a local windows computer, so this is likely to be a
+					// debugging environment!
+					File dir = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3");
+					String dirpath = dir.getAbsolutePath();
+					pathHH = dirpath + File.separator + "httpdocs" + File.separator + "starmap_CM";
+					pathCM = dirpath + File.separator + "httpdocs" + File.separator + "starmap_HH";
+					break;
+				case Linux:
+					pathHH = "/var/www/vhosts/clanwolf.net/httpdocs/starmap_CM";
+					pathCM = "/var/www/vhosts/clanwolf.net/httpdocs/starmap_HH";
+					break;
+				case MacOS: break;
+				case Other: break;
+			}
 
-			C3Logger.print("Wrote file: " + filename);
-			C3Logger.print("Wrote file: " + filenameHH);
-			C3Logger.print("Wrote file: " + filenameCM);
+			if (!(pathHH == null || pathCM == null)) {
+				decodedPath = URLDecoder.decode(path, "UTF-8");
+				File f = new File(decodedPath);
+				String parent = f.getParent();
+				filename = parent + File.separator + "mapdata_" + type.name() + ".json";
+				filenameHH = pathHH + File.separator + "mapdata_" + type.name() + ".json";
+				filenameCM = pathCM + File.separator + "mapdata_" + type.name() + ".json";
+
+				mapDataFile = new File(filename);
+				mapDataFileHH = new File(filenameHH);
+				mapDataFileCM = new File(filenameCM);
+
+				C3Logger.print("Wrote file: " + filename);
+				C3Logger.print("Wrote file: " + filenameHH);
+				C3Logger.print("Wrote file: " + filenameCM);
+			}
 		} catch (UnsupportedEncodingException usee) {
 			C3Logger.exception("Error creating mapdata file", usee);
 		}

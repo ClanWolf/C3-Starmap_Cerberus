@@ -14,7 +14,6 @@ module net.clanwolf.starmap.server {
 	requires mail;
 	requires slf4j.simple;
 	requires net.bytebuddy;
-//	requires java.xml;
 	requires java.xml.bind;
 
 	opens net.clanwolf.starmap.server to spring.core;

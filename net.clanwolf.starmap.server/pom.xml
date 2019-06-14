@@ -84,19 +84,12 @@
 			<artifactId>hibernate-ehcache</artifactId>
 			<version>5.4.1.Final</version>
 		</dependency>
-		<!--<dependency>-->
-			<!--<groupId>com.zaxxer</groupId>-->
-			<!--<artifactId>HikariCP</artifactId>-->
-			<!--<version>2.6.1</version>-->
-			<!--<type>jar</type>-->
-		<!--</dependency>-->
 		<dependency>
 			<groupId>com.zaxxer</groupId>
 			<artifactId>HikariCP</artifactId>
 			<version>3.3.1</version>
 			<type>jar</type>
 		</dependency>
-
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-hikaricp</artifactId>
@@ -108,13 +101,11 @@
 			<artifactId>javassist</artifactId>
 			<version>3.25.0-GA</version>
 		</dependency>
-
 		<dependency>
 			<groupId>com.mchange</groupId>
 			<artifactId>mchange-commons-java</artifactId>
 			<version>0.2.3.4</version>
 		</dependency>
-
 		<dependency>
 			<groupId>javax.transaction</groupId>
 			<artifactId>javax.transaction-api</artifactId>
@@ -130,8 +121,6 @@
 			<artifactId>jaxb-api</artifactId>
 			<version>2.3.1</version>
 		</dependency>
-
-
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
