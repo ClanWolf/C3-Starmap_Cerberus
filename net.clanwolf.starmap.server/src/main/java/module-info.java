@@ -17,6 +17,8 @@ module net.clanwolf.starmap.server {
 	requires java.xml.bind;
 
 	opens net.clanwolf.starmap.server to spring.core;
+	opens net.clanwolf.starmap.server.persistence.pojos to org.hibernate.orm.core, com.fasterxml.jackson.databind;
 
 	exports net.clanwolf.starmap.server to spring.beans, spring.context;
+	exports net.clanwolf.starmap.server.persistence.pojos to com.fasterxml.jackson.databind;
 }

@@ -117,7 +117,7 @@ public class UserPOJO extends Pojo {
 	@Column(name = "UserEMail", nullable = false, length = 45)
 	private String userEMail;
 
-	@Column(name = "UserAvatar", nullable = false, length = 45)
+	@Column(name = "UserAvatar", nullable = true, length = 45)
 	private String userAvatar;
 
 	@Column(name = "FirstName", nullable = true, length = 45)

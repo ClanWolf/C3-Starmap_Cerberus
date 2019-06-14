@@ -267,9 +267,10 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 		super.initialize(url, rb);
 
 		buttonLogout.setDisable(true);
-
-		Image imageAvatar = new Image(Nexus.getCurrentUser().getAvatar(), 84, 84, false, false);
-		labelAvatar.setGraphic(new ImageView(imageAvatar));
+		if(Nexus.getCurrentUser().getAvatar() != null) {
+			Image imageAvatar = new Image(Nexus.getCurrentUser().getAvatar(), 84, 84, false, false);
+			labelAvatar.setGraphic(new ImageView(imageAvatar));
+		}
 
 		cbCharChooser.setEditable(false);
 //		if (Nexus.getCurrentUser().getCharacterList() != null) {
