@@ -378,13 +378,13 @@ public class WebDataInterface {
 			}
 		});
 
-		File mapDataFile = null;
+//		File mapDataFile = null;
 		File mapDataFileHH = null;
 		File mapDataFileCM = null;
 
 		String decodedPath = "";
 		String systemsList = result.getResultList();
-		String filename = "";
+//		String filename = "";
 		String filenameHH = "";
 		String filenameCM = "";
 
@@ -399,7 +399,7 @@ public class WebDataInterface {
 				case Windows:
 					// The server seems to be running on a local windows computer, so this is likely to be a
 					// debugging environment!
-					File dir = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "httpdocs");
+					File dir = new File(System.getProperty("java.io.tmpdir") + File.separator + ".ClanWolf.net_C3" + File.separator + "httpdocs");
 					String dirpath = dir.getAbsolutePath();
 					pathHH = dirpath + File.separator + "starmap_CM";
 					pathCM = dirpath + File.separator + "starmap_HH";
@@ -420,15 +420,15 @@ public class WebDataInterface {
 				filenameHH = pathHH + File.separator + "mapdata_" + type.name() + ".json";
 				filenameCM = pathCM + File.separator + "mapdata_" + type.name() + ".json";
 
-				mapDataFile = new File(filename);
+//				mapDataFile = new File(filename);
 				mapDataFileHH = new File(filenameHH);
 				mapDataFileCM = new File(filenameCM);
 
-				mapDataFile.mkdirs();
+//				mapDataFile.mkdirs();
 				mapDataFileHH.mkdirs();
 				mapDataFileCM.mkdirs();
 
-				C3Logger.print("Wrote file: " + filename);
+//				C3Logger.print("Wrote file: " + filename);
 				C3Logger.print("Wrote file: " + filenameHH);
 				C3Logger.print("Wrote file: " + filenameCM);
 			}
@@ -436,19 +436,19 @@ public class WebDataInterface {
 			C3Logger.exception("Error creating mapdata file", e);
 		}
 
-		if (mapDataFile != null) {
-			try (BufferedWriter br = new BufferedWriter(new FileWriter(mapDataFile))) {
-				br.write(systemsList);
-			} catch (IOException ioe) {
-				C3Logger.exception("Error creating mapdata file", ioe);
-			}
-		} else {
-			RuntimeException rte = new RuntimeException("Could not write file: " + filename);
-			C3Logger.exception("Error creating mapdata file", rte);
-			throw rte;
-		}
+//		if (mapDataFile != null) {
+//			try (BufferedWriter br = new BufferedWriter(new FileWriter(mapDataFile))) {
+//				br.write(systemsList);
+//			} catch (IOException ioe) {
+//				C3Logger.exception("Error creating mapdata file", ioe);
+//			}
+//		} else {
+//			RuntimeException rte = new RuntimeException("Could not write file: " + filename);
+//			C3Logger.exception("Error creating mapdata file", rte);
+//			throw rte;
+//		}
 
-		if (mapDataFileHH != null) {
+		if (mapDataFileHH != null && !"".equals(mapDataFileHH)) {
 			try (BufferedWriter br = new BufferedWriter(new FileWriter(mapDataFileHH))) {
 				br.write(systemsList);
 			} catch (IOException ioe) {
@@ -460,7 +460,7 @@ public class WebDataInterface {
 			throw rte;
 		}
 
-		if (mapDataFileCM != null) {
+		if (mapDataFileCM != null && !"".equals(mapDataFileCM)) {
 			try (BufferedWriter br = new BufferedWriter(new FileWriter(mapDataFileCM))) {
 				br.write(systemsList);
 			} catch (IOException ioe) {
