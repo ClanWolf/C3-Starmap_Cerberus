@@ -399,11 +399,10 @@ public class WebDataInterface {
 				case Windows:
 					// The server seems to be running on a local windows computer, so this is likely to be a
 					// debugging environment!
-					File dir = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3");
-					dir.mkdirs();
+					File dir = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "httpdocs");
 					String dirpath = dir.getAbsolutePath();
-					pathHH = dirpath + File.separator + "httpdocs" + File.separator + "starmap_CM";
-					pathCM = dirpath + File.separator + "httpdocs" + File.separator + "starmap_HH";
+					pathHH = dirpath + File.separator + "starmap_CM";
+					pathCM = dirpath + File.separator + "starmap_HH";
 					break;
 				case Linux:
 					pathHH = "/var/www/vhosts/clanwolf.net/httpdocs/starmap_CM";
@@ -424,6 +423,10 @@ public class WebDataInterface {
 				mapDataFile = new File(filename);
 				mapDataFileHH = new File(filenameHH);
 				mapDataFileCM = new File(filenameCM);
+
+				mapDataFile.mkdirs();
+				mapDataFileHH.mkdirs();
+				mapDataFileCM.mkdirs();
 
 				C3Logger.print("Wrote file: " + filename);
 				C3Logger.print("Wrote file: " + filenameHH);
