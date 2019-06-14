@@ -389,7 +389,7 @@ public class WebDataInterface {
 		String filenameCM = "";
 
 		try {
-			String path = WebDataInterface.class.getProtectionDomain().getCodeSource().getLocation().getPath();
+//			String path = WebDataInterface.class.getProtectionDomain().getCodeSource().getLocation().getPath();
 
 			String pathHH = null;
 			String pathCM = null;
@@ -413,10 +413,10 @@ public class WebDataInterface {
 			}
 
 			if (!(pathHH == null || pathCM == null)) {
-				decodedPath = URLDecoder.decode(path, "UTF-8");
-				File f = new File(decodedPath);
-				String parent = f.getParent();
-				filename = parent + File.separator + "mapdata_" + type.name() + ".json";
+//				decodedPath = URLDecoder.decode(path, "UTF-8");
+//				File f = new File(decodedPath);
+//				String parent = f.getParent();
+//				filename = parent + File.separator + "mapdata_" + type.name() + ".json";
 				filenameHH = pathHH + File.separator + "mapdata_" + type.name() + ".json";
 				filenameCM = pathCM + File.separator + "mapdata_" + type.name() + ".json";
 
@@ -432,8 +432,8 @@ public class WebDataInterface {
 				C3Logger.print("Wrote file: " + filenameHH);
 				C3Logger.print("Wrote file: " + filenameCM);
 			}
-		} catch (UnsupportedEncodingException usee) {
-			C3Logger.exception("Error creating mapdata file", usee);
+		} catch (Exception e) {
+			C3Logger.exception("Error creating mapdata file", e);
 		}
 
 		if (mapDataFile != null) {
