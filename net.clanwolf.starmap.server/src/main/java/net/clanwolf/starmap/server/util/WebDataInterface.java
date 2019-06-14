@@ -400,6 +400,7 @@ public class WebDataInterface {
 					// The server seems to be running on a local windows computer, so this is likely to be a
 					// debugging environment!
 					File dir = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3");
+					dir.mkdirs();
 					String dirpath = dir.getAbsolutePath();
 					pathHH = dirpath + File.separator + "httpdocs" + File.separator + "starmap_CM";
 					pathCM = dirpath + File.separator + "httpdocs" + File.separator + "starmap_HH";
