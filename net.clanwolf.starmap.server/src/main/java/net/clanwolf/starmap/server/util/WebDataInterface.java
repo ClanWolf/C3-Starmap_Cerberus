@@ -425,8 +425,8 @@ public class WebDataInterface {
 				mapDataFileCM = new File(filenameCM);
 
 //				mapDataFile.mkdirs();
-				mapDataFileHH.mkdirs();
-				mapDataFileCM.mkdirs();
+				mapDataFileHH.getParentFile().mkdirs();
+				mapDataFileCM.getParentFile().mkdirs();
 
 //				C3Logger.print("Wrote file: " + filename);
 				C3Logger.print("Wrote file: " + filenameHH);
