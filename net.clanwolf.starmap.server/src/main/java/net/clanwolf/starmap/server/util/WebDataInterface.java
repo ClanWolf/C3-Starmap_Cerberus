@@ -401,18 +401,22 @@ public class WebDataInterface {
 					// debugging environment!
 					File dir = new File(System.getProperty("java.io.tmpdir") + File.separator + ".ClanWolf.net_C3" + File.separator + "httpdocs");
 					String dirpath = dir.getAbsolutePath();
-					pathHH = dirpath + File.separator + "starmap_CM";
-					pathCM = dirpath + File.separator + "starmap_HH";
+					pathHH = dirpath + File.separator + "starmap_HH";
+					pathCM = dirpath + File.separator + "starmap_CM";
 					break;
 				case Linux:
-					pathHH = "/var/www/vhosts/clanwolf.net/httpdocs/starmap_CM";
-					pathCM = "/var/www/vhosts/clanwolf.net/httpdocs/starmap_HH";
+					pathHH = "/var/www/vhosts/clanwolf.net/httpdocs/starmap_HH";
+					pathCM = "/var/www/vhosts/clanwolf.net/httpdocs/starmap_CM";
 					break;
 				case MacOS: break;
 				case Other: break;
 			}
 
 			if (!(pathHH == null || pathCM == null)) {
+
+				C3Logger.print("Writing json files for ChaosMarch to: " + pathCM);
+				C3Logger.print("Writing json files for HammerHead to: " + pathHH);
+
 //				decodedPath = URLDecoder.decode(path, "UTF-8");
 //				File f = new File(decodedPath);
 //				String parent = f.getParent();
