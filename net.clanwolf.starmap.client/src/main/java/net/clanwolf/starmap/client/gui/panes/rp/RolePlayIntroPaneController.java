@@ -143,7 +143,7 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 		}
 		if(currentChar.getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1 ){
 //			RolePlayStoryDTO rp = Nexus.getCurrentChar().getStory().getNextStepID();
-			Long rp = Nexus.getCurrentChar().getStory().getNextStepID().getId();
+			Long rp = Nexus.getCurrentChar().getStory().getNextStepID();
 			saveNextStep(rp);
 		}
 

@@ -72,7 +72,7 @@ public class RolePlayStoryDTO extends Dto {
 	// @JoinColumn(name = "Var4ID")
     private RolePlayStoryVar4DTO var4ID;
 	//@JoinColumn(name = "NextStepID")
-	private RolePlayStoryDTO nextStepID;
+	private Long nextStepID;
 	// @Column(name = "URL")
     private String url;
 
@@ -374,11 +374,11 @@ public class RolePlayStoryDTO extends Dto {
 		var4ID = var4id;
 	}
 
-	public RolePlayStoryDTO getNextStepID() {
+	public Long getNextStepID() {
 		return nextStepID;
 	}
 
-	public void setNextStepID(RolePlayStoryDTO nextStepID) {
+	public void setNextStepID(Long nextStepID) {
 		this.nextStepID = nextStepID;
 	}
 

@@ -1159,7 +1159,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 
 			// set data for story variante 1
 			if (selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1 && selected.getValue().getNextStepID() != null) {
-				cbNextStep_V1.getSelectionModel().select(selected.getValue().getNextStepID());
+				cbNextStep_V1.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getNextStepID()));
 			} else {
 				cbNextStep_V1.setValue(null);
 			}
@@ -1301,7 +1301,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 
 		// set data for variante 1
 		if (rp.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1) {
-			rp.setNextStepID(cbNextStep_V1.getValue());
+			rp.setNextStepID(cbNextStep_V1.getValue().getId());
 		}
 
 		// set data for variante 2
@@ -1310,7 +1310,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 			RolePlayStoryVar2DTO rpVar2 = rp.getVar2ID();
 			if (rpVar2 == null) {
 				rpVar2 = new RolePlayStoryVar2DTO();
-				rpVar2.setStory(rp);
+				rpVar2.setStory(rp.getId());
 			}
 
 			rpVar2.setOption1StoryID(cbStoryPath1.getValue().getId());
@@ -1333,7 +1333,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 			RolePlayStoryVar3DTO rpVar3 = rp.getVar3ID();
 			if (rpVar3 == null) {
 				rpVar3 = new RolePlayStoryVar3DTO();
-				rpVar3.setStory(rp);
+				rpVar3.setStory(rp.getId());
 			}
 
 			rpVar3.setFormName(tfFormName.getText());

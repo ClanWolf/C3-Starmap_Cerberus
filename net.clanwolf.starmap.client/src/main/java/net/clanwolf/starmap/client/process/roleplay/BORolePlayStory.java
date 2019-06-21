@@ -501,7 +501,7 @@ public class BORolePlayStory {
 
 		// Check next step for ROLEPLAYENTRYTYPES C3_RP_STEP_V1
 		if (activeStory != null && activeStory.getNextStepID() != null) {
-			if(activeStory.getNextStepID() != null && activeStory.getNextStepID().getId().equals(nextStep.getId())){
+			if(activeStory.getNextStepID() != null && activeStory.getNextStepID().equals(nextStep.getId())){
 				ret = true;
 			}
 		}

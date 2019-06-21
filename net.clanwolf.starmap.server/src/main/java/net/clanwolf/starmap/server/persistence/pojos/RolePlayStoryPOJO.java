@@ -155,9 +155,10 @@ public class RolePlayStoryPOJO extends Pojo {
     @JoinColumn(name = "Var4ID")
     private RolePlayStoryVar4POJO var4ID;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "NextStepID")
-	private RolePlayStoryPOJO nextStepID;
+//	@ManyToOne(fetch = FetchType.EAGER)
+//	@JoinColumn(name = "NextStepID")
+//	private RolePlayStoryPOJO nextStepID;
+	private Long nextStepID;
     
     @Column(name = "URL")
     private String url;
@@ -466,11 +467,11 @@ public class RolePlayStoryPOJO extends Pojo {
 		var4ID = var4id;
 	}
 
-	public RolePlayStoryPOJO getNextStepID() {
+	public Long getNextStepID() {
 		return nextStepID;
 	}
 
-	public void setNextStepID(RolePlayStoryPOJO nextStepID) {
+	public void setNextStepID(Long nextStepID) {
 		this.nextStepID = nextStepID;
 	}
 

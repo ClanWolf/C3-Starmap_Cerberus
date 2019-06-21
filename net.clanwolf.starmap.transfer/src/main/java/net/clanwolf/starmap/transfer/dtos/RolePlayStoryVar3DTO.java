@@ -39,7 +39,8 @@ public class RolePlayStoryVar3DTO extends Dto {
 	//@Column(name = "ID")
 	private Long id;
 	//@JoinColumn(name = "StoryID")
-	private RolePlayStoryDTO story;
+	//private RolePlayStoryDTO story;
+	private Long story;
 	//@Column(name = "FormName")
 	private String formName;
 	//@JoinColumn(name = "NextStoryID")
@@ -76,14 +77,14 @@ public class RolePlayStoryVar3DTO extends Dto {
 	/**
 	 * @return the story
 	 */
-	public RolePlayStoryDTO getStory() {
+	public Long getStory() {
 		return story;
 	}
 
 	/**
 	 * @param story the story to set
 	 */
-	public void setStory(RolePlayStoryDTO story) {
+	public void setStory(Long story) {
 		this.story = story;
 	}
 
