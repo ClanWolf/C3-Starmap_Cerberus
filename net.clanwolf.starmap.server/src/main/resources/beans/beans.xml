@@ -7,8 +7,8 @@
         http://www.springframework.org/schema/context 
         http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
-<!--    <import resource="classpath:nadron/beans/server-beans.xml"></import>-->
-	<import resource="file:net.clanwolf.starmap.server/src/main/resources/nadron/beans/server-beans.xml"></import>
+    <import resource="../nadron/beans/server-beans.xml"></import>
+<!--	<import resource="file:net.clanwolf.starmap.server/src/main/resources/nadron/beans/server-beans.xml"></import>-->
 <!--	<import resource="classpath*:server-beans.xml"></import>-->
 
     <!--<import resource="classpath:/beans/database.xml"></import>-->
