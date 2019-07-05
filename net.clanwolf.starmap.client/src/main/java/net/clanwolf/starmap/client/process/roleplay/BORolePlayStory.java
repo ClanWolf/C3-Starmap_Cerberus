@@ -60,8 +60,8 @@ public class BORolePlayStory {
 	private ArrayList<RolePlayCharacterDTO> allCharacters;
 
 	// Constants
-	public static final String URL_RPG_BASIC = "https://c3.clanwolf.net/rpg";
-	public static final String URL_RPG_RESOURSES = "https://c3.clanwolf.net/rpg/resources";
+	public static final String URL_RPG_BASIC = "https://www.clanwolf.net/apps/C3/rpg";
+	public static final String URL_RPG_RESOURSES = "https://www.clanwolf.net/apps/C3/rpg/resources";
 
 	public BORolePlayStory() {
 		allStories = new ArrayList<>();
