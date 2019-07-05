@@ -9,7 +9,7 @@
 
     <import resource="../nadron/beans/server-beans.xml"></import>
 
-    <!--<import resource="classpath:/beans/database.xml"></import>-->
+    <!-- <import resource="classpath:/beans/database.xml"></import> -->
 
     <context:annotation-config />
 </beans>
