@@ -3,6 +3,7 @@ module net.clanwolf.starmap.server {
 	requires java.logging;
 	requires spring.context;
 	requires spring.beans;
+	requires spring.core;
 	requires io.nadron.server;
 	requires jackson.annotations;
 	requires java.sql;
@@ -15,6 +16,8 @@ module net.clanwolf.starmap.server {
 	requires slf4j.simple;
 	requires net.bytebuddy;
 	requires java.xml.bind;
+	requires com.fasterxml.jackson.core;
+	requires com.fasterxml.jackson.databind;
 
 	opens net.clanwolf.starmap.server to spring.core;
 	opens net.clanwolf.starmap.server.persistence.pojos to org.hibernate.orm.core, com.fasterxml.jackson.databind;
