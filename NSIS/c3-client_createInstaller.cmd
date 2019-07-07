@@ -18,8 +18,11 @@ ECHO ###############################################
 ECHO .
 ECHO .
 
+SET PATH=%PATH%;C:\Program Files (x86)\NSIS\Bin;
+ECHO %PATH%
+ECHO .
+ECHO Will run command: makensis.exe c3-client.nsi
+ECHO .
 PAUSE
-
 makensis.exe c3-client.nsi
-
 PAUSE
