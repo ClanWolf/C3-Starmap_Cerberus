@@ -1,6 +1,15 @@
 # IntelliJ Idea project files
 .idea/*
 
+io.nadron.client/target/*
+io.nadron.server/target/*
+net.clanwolf.starmap.client/target/*
+net.clanwolf.starmap.client.packager/target/*
+net.clanwolf.starmap.client.preloader/target/*
+net.clanwolf.starmap.logging/target/*
+net.clanwolf.starmap.server/target/*
+net.clanwolf.starmap.transfer/target/*
+
 # Compiled class file
 *.class
 
