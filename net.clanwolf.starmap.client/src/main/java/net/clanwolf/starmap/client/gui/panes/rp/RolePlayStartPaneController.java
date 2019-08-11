@@ -6,7 +6,7 @@
  *   \____|____/                                                    |
  *                                                                  |
  * ---------------------------------------------------------------- |
- * Info        : http://www.clanwolf.net                            |
+ * Info        : https://www.clanwolf.net                           |
  * GitHub      : https://github.com/ClanWolf                        |
  * ---------------------------------------------------------------- |
  * Licensed under the Apache License, Version 2.0 (the "License");  |
@@ -107,14 +107,14 @@ public class RolePlayStartPaneController extends AbstractC3Controller implements
 			break;
 
 		case PANE_CREATION_FINISHED:
-			//loadPage("http://c3.clanwolf.net/rpg/generichtml.php?storyname=Test%20im%20Client");
+			//loadPage("http://www.clanwolf.net/apps/C3/rpg/generichtml.php?storyname=Test%20im%20Client");
 			break;
 
 		case START_ROLEPLAY:
 			// loadPage("http://localhost/test/generichtml.php?storyname=Test im Client");
 			//String url = rp.getURLForStoryCall(Nexus.getCurrentUser().getCurrentCharacter().getStory());
 			//loadPage(url);
-			//loadPage("http://c3.clanwolf.net/rpg/generichtml.php?storyname=Test%20im%20Client");
+			//loadPage("http://www.clanwolf.net/apps/C3/rpg/generichtml.php?storyname=Test%20im%20Client");
 			break;
 
 		default:

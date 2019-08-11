@@ -6,7 +6,7 @@
  *   \____|____/                                                    |
  *                                                                  |
  * ---------------------------------------------------------------- |
- * Info        : http://www.clanwolf.net                            |
+ * Info        : https://www.clanwolf.net                           |
  * GitHub      : https://github.com/ClanWolf                        |
  * ---------------------------------------------------------------- |
  * Licensed under the Apache License, Version 2.0 (the "License");  |
@@ -338,7 +338,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	// setStatusText(Internationalization.getString("C3_Speech_HelpPage").replace("%20", " ") + ".", false);
 	// openTargetPane(infoPane, spokenMessage);
 	//
-	// // Tools.startBrowser("http://c3.clanwolf.net/help/index.php");
+	// // Tools.startBrowser("http://www.clanwolf.net/apps/C3/help/index.php");
 	// }
 
 	// @FXML

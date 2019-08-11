@@ -6,7 +6,7 @@
  *   \____|____/                                                    |
  *                                                                  |
  * ---------------------------------------------------------------- |
- * Info        : http://www.clanwolf.net                            |
+ * Info        : https://www.clanwolf.net                           |
  * GitHub      : https://github.com/ClanWolf                        |
  * ---------------------------------------------------------------- |
  * Licensed under the Apache License, Version 2.0 (the "License");  |
@@ -82,7 +82,7 @@ public class C3_Preloader extends Preloader {
 		p.getChildren().add(bar);
 		Scene preloaderScene = new Scene(p, SceneWidth, SceneHeight);
 		preloaderScene.setFill(null);
-		preloaderScene.getStylesheets().add(this.getClass().getResource("C3_Preloader.css").toExternalForm());
+		preloaderScene.getStylesheets().add(this.getClass().getResource("/C3_Preloader.css").toExternalForm());
 
 		return preloaderScene;
 	}
@@ -104,7 +104,7 @@ public class C3_Preloader extends Preloader {
 		isEmbedded = (stage.getWidth() > 0);
 		this.stage = stage;
 		stage.setTitle("Loading...");
-		stage.getIcons().add(new Image("c3_preloader/C3_Icon2.png"));
+		stage.getIcons().add(new Image("C3_Icon2.png"));
 		stage.initStyle(StageStyle.TRANSPARENT);
 		stage.setResizable(false);
 		stage.setScene(createPreloaderScene());

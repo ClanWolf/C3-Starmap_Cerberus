@@ -6,7 +6,7 @@
  *   \____|____/                                                    |
  *                                                                  |
  * ---------------------------------------------------------------- |
- * Info        : http://www.clanwolf.net                            |
+ * Info        : https://www.clanwolf.net                           |
  * GitHub      : https://github.com/ClanWolf                        |
  * ---------------------------------------------------------------- |
  * Licensed under the Apache License, Version 2.0 (the "License");  |
@@ -58,6 +58,7 @@ import net.clanwolf.starmap.client.util.C3PROPS;
 import net.clanwolf.starmap.client.util.C3Properties;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.client.util.Tools;
+import net.clanwolf.starmap.client.preloader.C3_Preloader;
 
 import java.io.File;
 import java.io.IOException;
@@ -275,11 +276,12 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 	}
 
 	public static void main(String[] args) {
+		System.setProperty("javafx.preloader", C3_Preloader.class.getCanonicalName());
 		launch(MainFrame.class, args);
 	}
 
 	// Records relative x and y coordinates.
-	class Delta {
+	static class Delta {
 		double x, y;
 	}
 

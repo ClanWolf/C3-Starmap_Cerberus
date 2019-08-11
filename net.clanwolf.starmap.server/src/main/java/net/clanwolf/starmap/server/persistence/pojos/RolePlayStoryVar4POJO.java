@@ -1,12 +1,12 @@
 /* ---------------------------------------------------------------- |
  *    ____ _____                                                    |
  *   / ___|___ /                   Communicate - Command - Control  |
- *  | |     |_ \                   MkIV "Phoenix"                   |
+ *  | |     |_ \                   MK V "Cerberus"                  |
  *  | |___ ___) |                                                   |
  *   \____|____/                                                    |
  *                                                                  |
  * ---------------------------------------------------------------- |
- * Info        : http://www.clanwolf.net                            |
+ * Info        : https://www.clanwolf.net                           |
  * GitHub      : https://github.com/ClanWolf                        |
  * ---------------------------------------------------------------- |
  * Licensed under the Apache License, Version 2.0 (the "License");  |
@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2018, ClanWolf.net                                 |
+ * Copyright (c) 2001-2019, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.server.persistence.pojos;

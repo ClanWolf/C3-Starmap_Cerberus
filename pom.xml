@@ -6,10 +6,10 @@
 
 	<name>C3-Starmap Cerberus</name>
 	<description>Starsystem map of the Inner Sphere, Periphery and Clan space (BattleTech).</description>
-	<url>http://c3.clanwolf.net</url>
+	<url>https://www.clanwolf.net/apps/C3</url>
 	<organization>
 		<name>ClanWolf</name>
-		<url>http://www.clanwolf.net</url>
+		<url>https://www.clanwolf.net</url>
 	</organization>
 
 	<groupId>net.clanwolf.starmap</groupId>

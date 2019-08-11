@@ -1,6 +1,7 @@
 module net.clanwolf.starmap.client {
 	requires net.clanwolf.starmap.transfer;
 	requires net.clanwolf.starmap.logging;
+	requires net.clanwolf.starmap.client.preloader;
 
 	requires io.nadron.client;
 
@@ -35,4 +36,5 @@ module net.clanwolf.starmap.client {
 	exports net.clanwolf.starmap.client.gui.panes.map;
 	exports net.clanwolf.starmap.client.gui.panes.userinfo;
 	exports net.clanwolf.starmap.client.process.universe;
+	exports net.clanwolf.starmap.client.action;
 }
