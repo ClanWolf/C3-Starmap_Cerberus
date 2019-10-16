@@ -5,7 +5,7 @@ module net.clanwolf.starmap.server {
 	requires spring.beans;
 	requires spring.core;
 	requires io.nadron.server;
-	requires jackson.annotations;
+	requires com.fasterxml.jackson.annotation;
 	requires java.sql;
 	requires java.persistence;
 	requires net.clanwolf.starmap.transfer;

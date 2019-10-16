@@ -309,14 +309,14 @@
 									<artifact>
 										<groupId>com.fasterxml.jackson.core</groupId>
 										<artifactId>jackson-databind</artifactId>
-										<version>2.9.9.1</version>
+										<version>2.9.10</version>
 									</artifact>
 									<moduleInfoSource>
 										module com.fasterxml.jackson.databind {
 											requires java.desktop;
 											requires java.logging;
 											requires transitive com.fasterxml.jackson.core;
-											requires transitive jackson.annotations;
+											requires transitive com.fasterxml.jackson.annotation;
 											requires transitive java.sql;
 											requires transitive java.xml;
 											exports com.fasterxml.jackson.databind;
@@ -348,7 +348,7 @@
 									<artifact>
 										<groupId>com.fasterxml.jackson.core</groupId>
 										<artifactId>jackson-core</artifactId>
-										<version>2.9.9</version>
+										<version>2.9.10</version>
 									</artifact>
 									<moduleInfoSource>
 										module com.fasterxml.jackson.core {
@@ -375,9 +375,9 @@
 									</artifact>
 									<moduleInfoSource>
 										module jackson.jsog {
-											requires static jackson.annotations;
-											requires static jackson.core;
-											requires static jackson.databind;
+											requires com.fasterxml.jackson.core;
+											requires com.fasterxml.jackson.databind;
+											requires com.fasterxml.jackson.annotation;
 											exports com.voodoodyne.jackson.jsog;
 										}
 									</moduleInfoSource>
@@ -386,10 +386,10 @@
 									<artifact>
 										<groupId>com.fasterxml.jackson.core</groupId>
 										<artifactId>jackson-annotations</artifactId>
-										<version>2.9.0</version>
+										<version>2.9.10</version>
 									</artifact>
 									<moduleInfoSource>
-										module jackson.annotations {
+										module com.fasterxml.jackson.annotation {
 											exports com.fasterxml.jackson.annotation;
 										}
 									</moduleInfoSource>
