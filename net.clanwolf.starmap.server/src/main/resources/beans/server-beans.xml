@@ -6,8 +6,6 @@
                            http://www.springframework.org/schema/context
                            http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
-	<import resource="server-protocols.xml"/>
-
 	<context:annotation-config/>
 
 	<context:property-placeholder location="classpath:nadron.properties"/>

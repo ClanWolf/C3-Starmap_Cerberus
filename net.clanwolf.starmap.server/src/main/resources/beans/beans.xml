@@ -7,9 +7,5 @@
                            http://www.springframework.org/schema/context
                            http://www.springframework.org/schema/context/spring-context-3.2.xsd">
 
-	<import resource="server-beans.xml"></import>
-
-	<!-- <import resource="classpath:/beans/database.xml"></import> -->
-
 	<context:annotation-config/>
 </beans>

@@ -9,8 +9,6 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.2.xsd">
 
-    <import resource="netty-handlers.xml" />
-
     <context:annotation-config />
 	
     <bean id="amf3Protocol"  class="io.nadron.protocols.impl.AMF3Protocol">

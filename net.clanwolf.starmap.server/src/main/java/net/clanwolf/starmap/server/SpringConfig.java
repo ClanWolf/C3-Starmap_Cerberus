@@ -56,8 +56,14 @@ import java.util.Map;
  *
  */
 @Configuration
-@ImportResource("file:net.clanwolf.starmap.server/src/main/resources/beans/beans.xml")
-//@ImportResource("classpath:beans/beans.xml")
+//@ImportResource("file:net.clanwolf.starmap.server/src/main/resources/beans/beans.xml") // local database, IDE, no jar
+@ImportResource( {
+		"classpath:/beans/beans.xml",
+		"classpath:/beans/server-beans.xml",
+		"classpath:/beans/server-protocols.xml",
+		"classpath:/beans/netty-handlers.xml",
+		"classpath:/beans/service-beans.xml"
+} )
 public class SpringConfig {
 
     @Autowired

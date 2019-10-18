@@ -9,8 +9,6 @@
                            http://www.springframework.org/schema/util
                            http://www.springframework.org/schema/util/spring-util-3.2.xsd">
 
-    <import resource="service-beans.xml" />
-
     <!-- Netty and decoders encoders and handlers -->
     <bean id="stringDecoder" class="io.netty.handler.codec.string.StringDecoder" />
     <bean id="stringMessageEncoder" class="io.netty.handler.codec.string.StringEncoder" />
