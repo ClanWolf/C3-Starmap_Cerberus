@@ -41,11 +41,11 @@ public class GameServer {
 
 	public static void main(String[] args) {
 		// Logging
-		File dir = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3");
-
+		// File dir = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3");
+		File dir = new File("/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/server");
 		boolean res = dir.mkdirs();
 		if (res || dir.exists()) {
-			String logFileName = dir + File.separator + "server.log";
+			String logFileName = dir + File.separator + "C3_Server.log";
 
 			C3Logger.setC3Logfile(logFileName);
 			C3Logger.setC3LogLevel(Level.FINEST);
