@@ -118,9 +118,14 @@ public class Login {
 		String tcphostname = C3Properties.getProperty(C3PROPS.TCP_HOSTNAME);
 		int tcpPort = Integer.parseInt(C3Properties.getProperty(C3PROPS.TCP_PORT));
 
-		LoginBuilder builder = new LoginHelper.LoginBuilder().username(used_username).password(used_password).connectionKey("C3GameRoomForNettyClient").nadronTcpHostName(tcphostname).tcpPort(tcpPort);
-		//LoginBuilder builder = new LoginHelper.LoginBuilder().username(used_username).password(used_password).connectionKey("C3GameRoomForNettyClient").nadronTcpHostName("212.227.253.80").tcpPort(18090);
-		//LoginBuilder builder = new LoginHelper.LoginBuilder().username(used_username).password(used_password).connectionKey("C3GameRoomForNettyClient").nadronTcpHostName("localhost").tcpPort(18090);
+		LoginBuilder builder;
+		if(Nexus.isDevelopmentPC()){
+			builder = new LoginHelper.LoginBuilder().username(used_username).password(used_password).connectionKey("C3GameRoomForNettyClient").nadronTcpHostName("localhost").tcpPort(18090);
+		} else {
+			//212.227.253.80
+			builder = new LoginHelper.LoginBuilder().username(used_username).password(used_password).connectionKey("C3GameRoomForNettyClient").nadronTcpHostName(tcphostname).tcpPort(tcpPort);
+		}
+
 		LoginHelper loginHelper = builder.build();
 
 		SessionFactory sessionFactory = new SessionFactory(loginHelper);

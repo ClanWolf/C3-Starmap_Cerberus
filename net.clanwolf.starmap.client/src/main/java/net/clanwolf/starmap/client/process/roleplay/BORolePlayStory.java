@@ -60,8 +60,11 @@ public class BORolePlayStory {
 	private ArrayList<RolePlayCharacterDTO> allCharacters;
 
 	// Constants
-	public static final String URL_RPG_BASIC = "https://www.clanwolf.net/apps/C3/rpg";
-	public static final String URL_RPG_RESOURSES = "https://www.clanwolf.net/apps/C3/rpg/resources";
+	private static final String URL_RPG_BASIC = "https://www.clanwolf.net/apps/C3/rpg";
+	private static final String URL_RPG_RESOURSES = "https://www.clanwolf.net/apps/C3/rpg/resources";
+
+	private static final String URL_RPG_BASIC_DEV = "https://www.clanwolf.net/apps/C3/rpg/dev";
+	private static final String URL_RPG_RESOURSES_DEV = "https://www.clanwolf.net/apps/C3/rpg/dev/resources";
 
 	public BORolePlayStory() {
 		allStories = new ArrayList<>();
@@ -79,6 +82,20 @@ public class BORolePlayStory {
 		ActionManager.addActionCallbackListener(ACTIONS.DELETE_ROLEPLAY_STORY_OK, callBackListener);
 		ActionManager.addActionCallbackListener(ACTIONS.DELETE_ROLEPLAY_STORY_ERR, callBackListener);
 		ActionManager.addActionCallbackListener(ACTIONS.GET_ROLEPLAY_ALLCHARACTER, callBackListener);
+	}
+
+	public static String getRPG_BasicURL(){
+		if(Nexus.isDevelopmentPC()){
+			return BORolePlayStory.URL_RPG_BASIC_DEV;
+		}
+		return BORolePlayStory.URL_RPG_BASIC;
+	}
+
+	public static String getRPG_ResourceURL(){
+		if(Nexus.isDevelopmentPC()){
+			return BORolePlayStory.URL_RPG_RESOURSES_DEV;
+		}
+		return BORolePlayStory.URL_RPG_RESOURSES;
 	}
 
 	/**

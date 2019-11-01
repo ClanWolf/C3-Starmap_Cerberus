@@ -181,10 +181,10 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 
 			// Check step for own image. If now own image availabale use default image
 			if (rpChar.getStory().getStoryImage() != null) {
-				imURL = BORolePlayStory.URL_RPG_RESOURSES + "/" + rpChar.getStory().getId().toString() + "/" + rpChar.getStory().getStoryImage();
+				imURL = BORolePlayStory.getRPG_ResourceURL() + "/" + rpChar.getStory().getId().toString() + "/" + rpChar.getStory().getStoryImage();
 
 			} else {
-				imURL = BORolePlayStory.URL_RPG_BASIC + "/defaultImage.png";
+				imURL = BORolePlayStory.getRPG_BasicURL() + "/defaultImage.png";
 
 			}
 
@@ -193,7 +193,7 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 
 			if (rpChar.getStory().getStoryMP3() != null) {
 				try {
-					URL url = new URL(BORolePlayStory.URL_RPG_RESOURSES + "/" + rpChar.getStory().getId().toString() + "/" + rpChar.getStory().getStoryMP3());
+					URL url = new URL(BORolePlayStory.getRPG_ResourceURL() + "/" + rpChar.getStory().getId().toString() + "/" + rpChar.getStory().getStoryMP3());
 					//C3SoundPlayer.play(url, false);
 				} catch (MalformedURLException e) {
 					e.printStackTrace();

@@ -57,6 +57,13 @@ import java.util.Map;
  */
 @Configuration
 //@ImportResource("file:net.clanwolf.starmap.server/src/main/resources/beans/beans.xml") // local database, IDE, no jar
+/*@ImportResource({
+        "file:net.clanwolf.starmap.server/src/main/resources/beans/beans.xml",
+        "file:net.clanwolf.starmap.server/src/main/resources/beans/server-beans.xml",
+        "file:net.clanwolf.starmap.server/src/main/resources/beans/server-protocols.xml",
+        "file:net.clanwolf.starmap.server/src/main/resources/beans/netty-handlers.xml",
+        "file:net.clanwolf.starmap.server/src/main/resources/beans/service-beans.xml"
+})*/ // local database, IDE, no jar
 @ImportResource( {
 		"classpath:/beans/beans.xml",
 		"classpath:/beans/server-beans.xml",

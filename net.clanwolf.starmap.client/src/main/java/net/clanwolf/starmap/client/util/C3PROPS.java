@@ -78,6 +78,7 @@ public enum C3PROPS {
 	BROWSER,
 	DOC_DIR,
 	LOGFILE,
+	DEV_PC,
 
 	// Gui
 	COUNTRY,

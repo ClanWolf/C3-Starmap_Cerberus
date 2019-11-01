@@ -182,10 +182,10 @@ public class RolePlayChoicePaneController extends AbstractC3RolePlayController i
 
 			// Check step for own image. If now own image availabale use default image
 			if (rpChar.getStory().getStoryImage() != null) {
-				imURL = BORolePlayStory.URL_RPG_RESOURSES + "/" + rpChar.getStory().getId().toString() + "/" + rpChar.getStory().getStoryImage();
+				imURL = BORolePlayStory.getRPG_ResourceURL() + "/" + rpChar.getStory().getId().toString() + "/" + rpChar.getStory().getStoryImage();
 
 			} else {
-				imURL = BORolePlayStory.URL_RPG_BASIC + "/defaultImage.png";
+				imURL = BORolePlayStory.getRPG_BasicURL() + "/defaultImage.png";
 
 			}
 
