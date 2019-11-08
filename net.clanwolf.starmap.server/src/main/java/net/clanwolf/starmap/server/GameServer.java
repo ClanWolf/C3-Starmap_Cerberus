@@ -39,6 +39,7 @@ import java.util.logging.Level;
 public class GameServer {
 	private static AbstractApplicationContext ctx;
 
+
 	public static void main(String[] args) {
 		// Logging
 		// File dir = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3");
@@ -50,8 +51,12 @@ public class GameServer {
 			C3Logger.setC3Logfile(logFileName);
 			C3Logger.setC3LogLevel(Level.FINEST);
 		}
-		// PropertyConfigurator.configure(System.getProperty("log4j.configuration"));
-		ctx = new AnnotationConfigApplicationContext(SpringConfig.class);
+
+		if(args[0].equals("IDE")){
+			ctx = new AnnotationConfigApplicationContext(SpringConfigIDE.class);
+		} else {
+			ctx = new AnnotationConfigApplicationContext(SpringConfig.class);
+		}
 		// For the destroy method to work.
 		ctx.registerShutdownHook();
 
