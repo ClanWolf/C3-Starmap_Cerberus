@@ -56,6 +56,7 @@ public class Nexus {
 	private static boolean loggedIn = false;
 
 	private static AbstractC3Pane currentlyOpenedPane = null;
+	private static boolean isDevelopmentPC = false;
 
 	/**
 	 * Private constructor to prevent instantiation
@@ -196,6 +197,10 @@ public class Nexus {
 	}
 
 	public static boolean isDevelopmentPC(){
-		return Boolean.parseBoolean(C3Properties.getProperty(C3PROPS.DEV_PC));
+		return isDevelopmentPC;
+	}
+
+	public static void setIsDevelopmentPC(boolean devPC){
+		isDevelopmentPC = devPC;
 	}
 }
