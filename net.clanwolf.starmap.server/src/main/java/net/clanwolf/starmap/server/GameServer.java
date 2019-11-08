@@ -39,7 +39,6 @@ import java.util.logging.Level;
 public class GameServer {
 	private static AbstractApplicationContext ctx;
 
-
 	public static void main(String[] args) {
 		// Logging
 		// File dir = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3");
@@ -78,22 +77,26 @@ public class GameServer {
 	}
 
 	public static void startGames(AbstractApplicationContext ctx) {
-		// EntityManagerHelper.getEntityManager();
-		// Log.print("EntityManager initialized");
-		C3Logger.print("Server ready");
+		try {
+			// EntityManagerHelper.getEntityManager();
+			// Log.print("EntityManager initialized");
+			C3Logger.print("Server ready");
 
-		// write heartbeat file every 5 minutes
-		Timer serverHeartBeat = new Timer();
-		serverHeartBeat.schedule(new HeartBeatTimer(), 1000, 1000 * 60 * 5);
+			// write heartbeat file every 5 minutes
+			Timer serverHeartBeat = new Timer();
+			serverHeartBeat.schedule(new HeartBeatTimer(), 1000, 1000 * 60 * 5);
 
-		// World world = ctx.getBean(World.class);
-		// GameRoom room1 = (GameRoom)ctx.getBean("Zombie_ROOM_1");
-		// GameRoom room2 = (GameRoom)ctx.getBean("Zombie_ROOM_2");
-		// Task monitor1 = new WorldMonitor(world,room1);
-		// Task monitor2 = new WorldMonitor(world,room2);
-		// TaskManagerService taskManager = ctx.getBean(TaskManagerService.class);
-		// taskManager.scheduleWithFixedDelay(monitor1, 1000, 5000, TimeUnit.MILLISECONDS);
-		// taskManager.scheduleWithFixedDelay(monitor2, 2000, 5000, TimeUnit.MILLISECONDS);
+			// World world = ctx.getBean(World.class);
+			// GameRoom room1 = (GameRoom)ctx.getBean("Zombie_ROOM_1");
+			// GameRoom room2 = (GameRoom)ctx.getBean("Zombie_ROOM_2");
+			// Task monitor1 = new WorldMonitor(world,room1);
+			// Task monitor2 = new WorldMonitor(world,room2);
+			// TaskManagerService taskManager = ctx.getBean(TaskManagerService.class);
+			// taskManager.scheduleWithFixedDelay(monitor1, 1000, 5000, TimeUnit.MILLISECONDS);
+			// taskManager.scheduleWithFixedDelay(monitor2, 2000, 5000, TimeUnit.MILLISECONDS);
+		} catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }
