@@ -33,16 +33,16 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3RolePlayController;
-import net.clanwolf.starmap.logging.C3Logger;
+import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
+import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
-import net.clanwolf.starmap.transfer.dtos.RolePlayStoryVar2DTO;
+import net.clanwolf.starmap.transfer.dtos.RolePlayStoryVar3DTO;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
 import java.io.InputStream;
@@ -52,13 +52,13 @@ import java.util.ResourceBundle;
 /**
  * @author Undertaker
  */
-public class RolePlayChoicePaneController extends AbstractC3RolePlayController implements ActionCallBackListener {
+public class RolePlayChoice2PaneController extends AbstractC3RolePlayController implements ActionCallBackListener {
 
 	@FXML
 	private AnchorPane anchorPane;
 
-	//@FXML
-	//private ImageView rpIBackgroundImage;
+	@FXML
+	private ImageView rpIBackgroundImage;
 
 	@FXML
 	private ImageView rpImage;
@@ -81,7 +81,7 @@ public class RolePlayChoicePaneController extends AbstractC3RolePlayController i
 	@FXML
 	private Button buttonClose;
 
-	public RolePlayChoicePaneController() {
+	public RolePlayChoice2PaneController() {
 	}
 
 	@Override
@@ -123,8 +123,8 @@ public class RolePlayChoicePaneController extends AbstractC3RolePlayController i
 		if(anchorPane != null && !anchorPane.isVisible()) return true;
 		switch (action) {
 		case START_ROLEPLAY:
-			if(ROLEPLAYENTRYTYPES.C3_RP_STEP_V2 == o.getObject()) {
-				C3Logger.debug("RolePlayChoicePaneController -> START_ROLEPLAY");
+			if(ROLEPLAYENTRYTYPES.C3_RP_STEP_V3 == o.getObject()) {
+				C3Logger.debug("RolePlayChoice2PaneController -> START_ROLEPLAY");
 
 				init();
 
@@ -150,26 +150,27 @@ public class RolePlayChoicePaneController extends AbstractC3RolePlayController i
 
 	@FXML
 	private void handleOnActionbtChoice1(){
-		Long rp = Nexus.getCurrentChar().getStory().getVar2ID().getOption1StoryID();
+
+		Long rp = Nexus.getCurrentChar().getStory().getVar3ID().getNextStoryID();
 		saveNextStep(rp);
 
 	}
 
 	@FXML
 	private void handleOnActionbtChoice2(){
-		Long rp = Nexus.getCurrentChar().getStory().getVar2ID().getOption2StoryID();
+		Long rp = Nexus.getCurrentChar().getStory().getVar3ID().getNextStory2ID();
 		saveNextStep(rp);
 	}
 
 	@FXML
 	private void handleOnActionbtChoice3(){
-		Long rp = Nexus.getCurrentChar().getStory().getVar2ID().getOption3StoryID();
+		Long rp = Nexus.getCurrentChar().getStory().getVar3ID().getNextStory3ID();
 		saveNextStep(rp);
 	}
 
 	@FXML
 	private void handleOnActionbtChoice4(){
-		Long rp = Nexus.getCurrentChar().getStory().getVar2ID().getOption4StoryID();
+		Long rp = Nexus.getCurrentChar().getStory().getVar3ID().getNextStory4ID();
 		saveNextStep(rp);
 	}
 
@@ -179,31 +180,36 @@ public class RolePlayChoicePaneController extends AbstractC3RolePlayController i
 		if (rpChar.getStory().getStoryIntro() == null) {
 			String imURL;
 
+			if(rpIBackgroundImage != null) {
+				InputStream isBackground = this.getClass().getResourceAsStream("/images/gui/default_Step.png");
+				rpIBackgroundImage.setImage(new Image(isBackground));
+			}
+
 			// Check step for own image. If now own image availabale use default image
 			if (rpChar.getStory().getStoryImage() != null) {
 				imURL = BORolePlayStory.getRPG_ResourceURL() + "/" + rpChar.getStory().getId().toString() + "/" + rpChar.getStory().getStoryImage();
 				Image im = new Image(imURL);
 				rpImage.setImage(im);
+
 			} else {
-				InputStream isBackground = this.getClass().getResourceAsStream("/images/gui/default_Step.png");
-				rpImage.setImage(new Image(isBackground));
+
+
 			}
 		}
 
 		//TODO: append single chars step by step until the whole text is displaying
 		taRpText.setText(rpChar.getStory().getStoryText());
 
-
-		if(rpChar.getStory().getVar2ID() != null) {
-
-			RolePlayStoryVar2DTO rpVar2 = rpChar.getStory().getVar2ID();
+		if(rpChar.getStory().getVar3ID() != null){
 
 			double x = 59;
 			double y = 455;
 			double offset = 40;
 
-			// rpVar2
-			if (rpVar2.getOption4StoryID() != null) {
+			RolePlayStoryVar3DTO rpVar3 = rpChar.getStory().getVar3ID();
+
+			// rpVar3
+			if(rpVar3.getNextStory4ID() != null){
 				btChoice4.setVisible(true);
 
 				btChoice4.setLayoutX(x);
@@ -211,10 +217,10 @@ public class RolePlayChoicePaneController extends AbstractC3RolePlayController i
 
 				y = y - offset;
 
-				btChoice4.setText(rpVar2.getOption4Text());
+				btChoice4.setText(rpVar3.getLabelText4());
 			}
 
-			if (rpVar2.getOption3StoryID() != null) {
+			if(rpVar3.getNextStory3ID() != null){
 				btChoice3.setVisible(true);
 
 				btChoice3.setLayoutX(x);
@@ -222,10 +228,10 @@ public class RolePlayChoicePaneController extends AbstractC3RolePlayController i
 
 				y = y - offset;
 
-				btChoice3.setText(rpVar2.getOption3Text());
+				btChoice3.setText(rpVar3.getLabelText3());
 			}
 
-			if (rpVar2.getOption2StoryID() != null) {
+			if(rpVar3.getNextStory2ID() != null){
 				btChoice2.setVisible(true);
 
 				btChoice2.setLayoutX(x);
@@ -233,17 +239,21 @@ public class RolePlayChoicePaneController extends AbstractC3RolePlayController i
 
 				y = y - offset;
 
-				btChoice2.setText(rpVar2.getOption2Text());
+				btChoice2.setText(rpVar3.getLabelText2());
 			}
 
-			if (rpVar2.getOption1StoryID() != null) {
+			if(rpVar3.getNextStoryID() != null){
 				btChoice1.setVisible(true);
 
 				btChoice1.setLayoutX(x);
 				btChoice1.setLayoutY(y);
 
-				btChoice1.setText(rpVar2.getOption1Text());
+				btChoice1.setText(rpVar3.getLabelText());
 			}
 		}
+		/*btChoice1.setVisible(false);
+		btChoice2.setVisible(false);
+		btChoice3.setVisible(false);
+		btChoice4.setVisible(false);*/
 	}
 }

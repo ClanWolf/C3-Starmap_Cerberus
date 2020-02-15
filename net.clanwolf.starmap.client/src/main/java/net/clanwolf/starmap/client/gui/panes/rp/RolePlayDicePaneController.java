@@ -45,6 +45,7 @@ import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
+import java.io.InputStream;
 import java.net.URL;
 import java.util.Random;
 import java.util.ResourceBundle;
@@ -206,14 +207,12 @@ public class RolePlayDicePaneController extends AbstractC3RolePlayController imp
 			// Check step for own image. If now own image available use default image
 			if (rpChar.getStory().getStoryImage() != null) {
 				imURL = BORolePlayStory.getRPG_ResourceURL() + "/" + rpChar.getStory().getId().toString() + "/" + rpChar.getStory().getStoryImage();
-
+				Image im = new Image(imURL);
+				rpImage.setImage(im);
 			} else {
-				imURL = BORolePlayStory.getRPG_BasicURL() + "/defaultImage.png";
-
+				InputStream isBackground = this.getClass().getResourceAsStream("/images/gui/default_Step.png");
+				rpImage.setImage(new Image(isBackground));
 			}
-
-			Image im = new Image(imURL);
-			rpImage.setImage(im);
 		}
 
 		taRpText.setText(rpChar.getStory().getStoryText());

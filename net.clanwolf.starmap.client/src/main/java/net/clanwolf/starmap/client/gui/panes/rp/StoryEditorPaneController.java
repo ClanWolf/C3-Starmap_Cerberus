@@ -1313,9 +1313,19 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 				rpVar2.setStory(rp.getId());
 			}
 
-			rpVar2.setOption1StoryID(cbStoryPath1.getValue().getId());
-			rpVar2.setOption2StoryID(cbStoryPath2.getValue().getId());
-			rpVar2.setOption3StoryID(cbStoryPath3.getValue().getId());
+			//rpVar2.setOption1StoryID(cbStoryPath1.getValue().getId());
+			//rpVar2.setOption2StoryID(cbStoryPath2.getValue().getId());
+			//rpVar2.setOption3StoryID(cbStoryPath3.getValue().getId());
+
+			if(cbStoryPath1.getValue() != null) {
+				rpVar2.setOption1StoryID(cbStoryPath1.getValue().getId());
+			}
+			if(cbStoryPath2.getValue() != null) {
+				rpVar2.setOption2StoryID(cbStoryPath2.getValue().getId());
+			}
+			if(cbStoryPath3.getValue() != null) {
+				rpVar2.setOption3StoryID(cbStoryPath3.getValue().getId());
+			}
 
 			rpVar2.setOption1Text(tfStoryPath1.getText());
 			rpVar2.setOption2Text(tfStoryPath2.getText());
@@ -1337,10 +1347,23 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 			}
 
 			rpVar3.setFormName(tfFormName.getText());
-			rpVar3.setNextStoryID(cbNextStep1_V3.getValue().getId());
-			rpVar3.setNextStory2ID(cbNextStep2_V3.getValue().getId());
-			rpVar3.setNextStory3ID(cbNextStep3_V3.getValue().getId());
-			rpVar3.setNextStory4ID(cbNextStep4_V3.getValue().getId());
+			//rpVar3.setNextStoryID(cbNextStep1_V3.getValue().getId());
+			//rpVar3.setNextStory2ID(cbNextStep2_V3.getValue().getId());
+			//rpVar3.setNextStory3ID(cbNextStep3_V3.getValue().getId());
+			//rpVar3.setNextStory4ID(cbNextStep4_V3.getValue().getId());
+
+			if(cbNextStep1_V3.getValue() != null) {
+				rpVar3.setNextStoryID(cbNextStep1_V3.getValue().getId());
+			}
+			if(cbNextStep2_V3.getValue() != null) {
+				rpVar3.setNextStory2ID(cbNextStep2_V3.getValue().getId());
+			}
+			if(cbNextStep3_V3.getValue() != null) {
+				rpVar3.setNextStory3ID(cbNextStep3_V3.getValue().getId());
+			}
+			if(cbNextStep4_V3.getValue() != null) {
+				rpVar3.setNextStory4ID(cbNextStep4_V3.getValue().getId());
+			}
 
 			rpVar3.setLabelText(tfLabelText1_V3.getText());
 			rpVar3.setLabelText2(tfLabelText2_V3.getText());

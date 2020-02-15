@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.net.URL?>
+<?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
@@ -17,13 +18,16 @@
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>
       </Button>
-      <ImageView fx:id="ivIntro" fitHeight="490.0" fitWidth="785.0" layoutX="58.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" />
-      <TextArea fx:id="taStoryText" layoutX="58.0" layoutY="6.0" prefHeight="490.0" prefWidth="785.0" wrapText="true" />
-      <Button fx:id="btPreview" layoutX="58.0" layoutY="449.0" mnemonicParsing="false" onAction="#handleOnActionBtPreview" onMouseEntered="#handleOnMouseEnteredOnBtPreview" onMouseExited="#handleOnMouseExitOnBtPreview" opacity="0.2" prefHeight="44.0" prefWidth="785.0" text="&gt;&gt; SKIP &gt;&gt;">
+      <ImageView fx:id="ivIntro" fitHeight="485.0" fitWidth="785.0" layoutX="58.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+         <viewport>
+            <Rectangle2D height="485.0" width="785.0" />
+         </viewport></ImageView>
+      <TextArea fx:id="taStoryText" layoutX="58.0" layoutY="8.0" prefHeight="440.0" prefWidth="785.0" wrapText="true" />
+      <Button fx:id="btPreview" layoutX="58.0" layoutY="452.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#handleOnActionBtPreview" onMouseEntered="#handleOnMouseEnteredOnBtPreview" onMouseExited="#handleOnMouseExitOnBtPreview" opacity="0.2" prefHeight="40.0" prefWidth="785.0" text="&gt;&gt; SKIP &gt;&gt;">
          <font>
             <Font size="20.0" />
          </font></Button>
-      <Label fx:id="labHeader" alignment="CENTER" layoutX="65.0" layoutY="87.0" prefHeight="54.0" prefWidth="785.0" textAlignment="CENTER" textFill="#fffbfb" visible="false">
+      <Label fx:id="labHeader" alignment="CENTER" layoutX="58.0" layoutY="87.0" prefHeight="54.0" prefWidth="785.0" textAlignment="CENTER" textFill="#fffbfb" visible="false">
          <font>
             <Font size="24.0" />
          </font>

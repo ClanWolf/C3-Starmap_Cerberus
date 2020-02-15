@@ -26,6 +26,7 @@
  */
 package net.clanwolf.starmap.client.net;
 
+import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.client.util.C3PROPS;
 import net.clanwolf.starmap.client.util.C3Properties;
@@ -59,6 +60,14 @@ public class FTP implements IFileTransfer {
 		ftpClient.setFileTransferMode(FTPClient.BINARY_FILE_TYPE);
 	}
 
+	private String getFTPSubPath(){
+		String subPath = "resources/";
+		if(Nexus.isDevelopmentPC()) {
+			subPath = "dev/resources/";
+		}
+		return subPath;
+	}
+
 	@Override
 	public boolean upload(String localSourceFile, String remoteResultFile) {
 
@@ -71,7 +80,11 @@ public class FTP implements IFileTransfer {
 			}
 
 			fis = new FileInputStream(localSourceFile);
-			ftpClient.storeFile("resources/" + remoteResultFile, fis);
+			/*String subPath = "resources/";
+			if(Nexus.isDevelopmentPC()) {
+				subPath = "dev/resources/";
+			}*/
+			ftpClient.storeFile(getFTPSubPath() + remoteResultFile, fis);
 			C3Logger.info(ftpClient.getReplyString());
 			ret = true;
 
@@ -141,7 +154,7 @@ public class FTP implements IFileTransfer {
 				connect();
 			}
 
-			ftpClient.makeDirectory("resources/" + pathname);
+			ftpClient.makeDirectory(getFTPSubPath() + pathname);
 			ret = true;
 		} catch (IOException ioe) {
 			C3Logger.exception(null, ioe);
@@ -158,7 +171,7 @@ public class FTP implements IFileTransfer {
 				connect();
 			}
 
-			String[] filenameList = ftpClient.listNames("resources/" + subDir);
+			String[] filenameList = ftpClient.listNames(getFTPSubPath() + subDir);
 
 			for (int i = 0; i < filenameList.length; i++) {
 				C3Logger.info(filenameList[i]);
