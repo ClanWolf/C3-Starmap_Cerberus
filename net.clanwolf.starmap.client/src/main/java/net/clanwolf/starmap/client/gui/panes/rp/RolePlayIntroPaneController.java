@@ -132,6 +132,11 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 	}
 
 	@FXML
+	private void handleOnMouseClicked(){
+		handleOnActionBtPreview();
+	}
+
+	@FXML
 	private void handleOnActionBtPreview(){
 		//TODO: Get and save next step of the story
 		RolePlayCharacterDTO currentChar = Nexus.getCurrentChar();
@@ -157,12 +162,14 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 		if(rpChar.getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1){
 			taStoryText.setVisible(true);
 			labHeader.setVisible(false);
+			btPreview.setVisible(true);
 
 			taStoryText.setText(rpChar.getStory().getStoryText());
 
 		} else {
 
 			taStoryText.setVisible(false);
+			btPreview.setVisible(false);
 
 			if(rpChar.getStory().getStoryImage() == null || rpChar.getStory().getStoryImage().isEmpty()) {
 				labHeader.setVisible(true);
