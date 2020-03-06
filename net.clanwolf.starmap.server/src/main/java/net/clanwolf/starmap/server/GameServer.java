@@ -51,7 +51,7 @@ public class GameServer {
 			C3Logger.setC3LogLevel(Level.FINEST);
 		}
 
-		if(args[0].equals("IDE")){
+		if(args.length > 0 && args[0].equals("IDE")) {
 			ctx = new AnnotationConfigApplicationContext(SpringConfigIDE.class);
 		} else {
 			ctx = new AnnotationConfigApplicationContext(SpringConfig.class);
