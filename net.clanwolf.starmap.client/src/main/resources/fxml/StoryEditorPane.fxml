@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.net.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.paint.*?>
-<?import javafx.scene.text.*?>
 <?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
 <?import javafx.scene.control.TextArea?>
@@ -21,19 +16,8 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="StoryEditorPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.StoryEditorPaneController">
+<AnchorPane id="StoryEditorPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.StoryEditorPaneController">
   <children>
-    <Label fx:id="panelHeadline" alignment="BASELINE_RIGHT" contentDisplay="CENTER" layoutX="14.0" layoutY="375.0" mouseTransparent="true" opacity="0.12" prefWidth="794.0" text="[[[___]]]">
-      <font>
-        <Font name="Arial Bold" size="80.0" />
-      </font>
-      <stylesheets>
-        <URL value="@../styles/MainFrameStyle.css" />
-      </stylesheets>
-      <textFill>
-        <Color blue="0.804" green="0.620" red="0.412" fx:id="x1" />
-      </textFill>
-    </Label>
     <Button id="buttonYes" fx:id="buttonSave" disable="true" layoutX="547.0" layoutY="449.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#handleSaveButtonClick" prefWidth="140.0" styleClass="contentButton" text="save" visible="true">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
@@ -65,7 +49,11 @@
                         <TextField fx:id="tfMovie" layoutX="130.0" layoutY="169.0" onKeyTyped="#handleMovieKeyTyped" prefHeight="22.0" prefWidth="348.0" />
                         <Button id="btn_dark-blue" fx:id="btSelectMovieFile" layoutX="486.0" layoutY="165.0" mnemonicParsing="false" onAction="#handleSelectMovieFile" prefHeight="26.0" prefWidth="22.0" styleClass="RPEmptyButton" text="Button" textFill="WHITE" />
                         <Label fx:id="labDescription" layoutX="16.0" layoutY="240.0" text="Description" />
-                        <TextArea id="Description" fx:id="taDescription" layoutX="132.0" layoutY="240.0" prefHeight="136.0" prefWidth="420.0" />
+                        <ScrollPane hbarPolicy="NEVER" layoutX="132.0" layoutY="240.0">
+                           <content>
+                              <TextArea id="Description" fx:id="taDescription" prefHeight="136.0" prefWidth="420.0" wrapText="true" />
+                           </content>
+                        </ScrollPane>
                         <Button id="btn_dark-blue" fx:id="btDeleteImageFile" ellipsisString="" layoutX="520.0" layoutY="91.0" mnemonicParsing="false" onAction="#handleDeleteImageFile" prefHeight="22.0" prefWidth="30.0" styleClass="RPDeleteButton2" />
                         <Button id="btn_dark-blue" fx:id="btDeleteVoiceFile" ellipsisString="" layoutX="519.0" layoutY="128.0" mnemonicParsing="false" onAction="#handleDeleteVoiceFile" prefHeight="26.0" prefWidth="30.0" styleClass="RPDeleteButton2" />
                         <Button id="btn_dark-blue" fx:id="btDeleteMovieFile" ellipsisString="" layoutX="519.0" layoutY="165.0" mnemonicParsing="false" onAction="#handleDeleteMovieFile" prefHeight="26.0" prefWidth="30.0" styleClass="RPDeleteButton2" />
@@ -87,7 +75,7 @@
           <Tab fx:id="tabBasic2" text="Storytext">
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-<children><Label fx:id="labStorytext" layoutX="16.0" layoutY="12.0" prefHeight="16.0" prefWidth="528.0" text="Storytext" textAlignment="CENTER" /><TextArea fx:id="taStorytext" layoutX="16.0" layoutY="32.0" prefHeight="197.0" prefWidth="534.0" /><Label fx:id="labRolePlayOff" layoutX="16.0" layoutY="240.0" text="RolePlayOff" /><TextArea fx:id="taRolePlayOff" layoutX="16.0" layoutY="260.0" prefHeight="100.0" prefWidth="534.0" />
+<children><Label fx:id="labStorytext" layoutX="16.0" layoutY="12.0" prefHeight="16.0" prefWidth="528.0" text="Storytext" textAlignment="CENTER" /><TextArea fx:id="taStorytext" layoutX="16.0" layoutY="32.0" prefHeight="197.0" prefWidth="534.0" wrapText="true" /><Label fx:id="labRolePlayOff" layoutX="16.0" layoutY="240.0" text="RolePlayOff" /><TextArea fx:id="taRolePlayOff" layoutX="16.0" layoutY="260.0" prefHeight="100.0" prefWidth="534.0" wrapText="true" />
 </children></AnchorPane>
             </content>
           </Tab>
@@ -176,6 +164,17 @@
             <Button id="btn_dark-blue" fx:id="btEdit" mnemonicParsing="false" onAction="#handleEditStoryButtonClick" prefHeight="36.0" prefWidth="30.0" styleClass="RPEditButton" /><Button id="btn_dark-blue" fx:id="btRemove" mnemonicParsing="false" onAction="#handleDeleteSeletedTreeItem" prefHeight="36.0" prefWidth="30.0" styleClass="RPDeleteButton" />
         </items>
       </ToolBar>
+    <Label fx:id="panelHeadline" alignment="BASELINE_RIGHT" contentDisplay="CENTER" layoutX="14.0" layoutY="375.0" mouseTransparent="true" opacity="0.12" prefWidth="794.0" text="[[[___]]]">
+      <font>
+        <Font name="Arial Bold" size="80.0" />
+      </font>
+      <stylesheets>
+        <URL value="@../styles/MainFrameStyle.css" />
+      </stylesheets>
+      <textFill>
+        <Color blue="0.804" green="0.620" red="0.412" fx:id="x1" />
+      </textFill>
+    </Label>
   </children>
   <stylesheets>
     <URL value="@../styles/MainFrameStyle.css" />

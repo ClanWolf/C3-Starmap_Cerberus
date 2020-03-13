@@ -39,6 +39,7 @@ public class C3Logger {
 	private static String c3LogFileName = "";
 	private static File c3LogFile;
 	private static Level c3Loglevel = Level.FINE;
+	private static final int FILE_SIZE = 15*1024*1024;
 
 	public static void print(String message) {
 		info(message);
@@ -117,11 +118,14 @@ public class C3Logger {
 			C3Formatter c3formatter = new C3Formatter();
 
 			if (prepareLogfile()) {
-				fileHandler = new FileHandler(c3LogFileName);
+				//fileHandler = new FileHandler(c3LogFileName);
+				fileHandler = new FileHandler(c3LogFileName, FILE_SIZE, 5, true);
 				fileHandler.setFormatter(c3formatter);
 				fileHandler.setEncoding("UTF-8");
 				fileHandler.setLevel(Level.FINE);
+
 				logger.addHandler(fileHandler);
+				logger.setUseParentHandlers(false); // ?
 			}
 
 			consoleHandler = new ConsoleHandler();
