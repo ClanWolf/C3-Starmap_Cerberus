@@ -27,6 +27,7 @@
 package net.clanwolf.starmap.server.beans;
 
 import io.nadron.app.PlayerSession;
+import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.RolePlayCharacterDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.RolePlayStoryDAO;
@@ -110,8 +111,10 @@ public class C3GameSessionHandlerRoleplay {
 			/* if a error occurs, we must do a rollback */
 			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
 
-			response.addObject("Speichern nicht erfolgreich!");
+			response.addObject(re.getMessage());
 			response.setAction_successfully(Boolean.FALSE);
+
+			C3Logger.error("saveRolePlayStory",re);
 			// throw re;
 		} finally {
 			/* and now we send a message to the client */
@@ -159,8 +162,10 @@ public class C3GameSessionHandlerRoleplay {
 			/* if a error occurs, we must do a rollback */
 			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
 
-			response.addObject("Löschen nicht erfolgreich!");
+			response.addObject(re.getMessage());
 			response.setAction_successfully(Boolean.FALSE);
+
+			C3Logger.error("saveRolePlayStory",re);
 		} finally {
 
 			/* and now we send a message to the client */
@@ -246,8 +251,10 @@ public class C3GameSessionHandlerRoleplay {
 			response.setAction_successfully(Boolean.TRUE);
 
 		} catch (RuntimeException re){
+			response.addObject(re.getMessage());
 			response.setAction_successfully(Boolean.FALSE);
 
+			C3Logger.error("saveRolePlayStory",re);
 		} finally {
 			/* and now we send a message to the client */
 //			Event e = Events.networkEvent(response);
@@ -287,8 +294,10 @@ public class C3GameSessionHandlerRoleplay {
 			response.setAction_successfully(Boolean.TRUE);
 
 		} catch (RuntimeException re){
+			response.addObject(re.getMessage());
 			response.setAction_successfully(Boolean.FALSE);
 
+			C3Logger.error("saveRolePlayStory",re);
 		} finally {
 			/* and now we send a message to the client */
 //			Event e = Events.networkEvent(response);
@@ -332,8 +341,10 @@ public class C3GameSessionHandlerRoleplay {
 			/* if a error occurs, we must do a rollback */
 			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
 
+			response.addObject(re.getMessage());
 			response.setAction_successfully(Boolean.FALSE);
 
+			C3Logger.error("saveRolePlayStory",re);
 		} finally {
 			/* and now we send a message to the client */
 //			Event e = Events.networkEvent(response);
