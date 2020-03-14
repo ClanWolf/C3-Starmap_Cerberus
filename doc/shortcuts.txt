@@ -1,0 +1,6 @@
+Set status text (from anywhere):
+ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject("", false));
+(boolean is flashing)
+
+Play sound:
+C3SoundPlayer.play("sound/fx/beep_02.wav", false);

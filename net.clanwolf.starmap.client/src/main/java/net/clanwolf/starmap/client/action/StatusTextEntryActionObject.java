@@ -36,6 +36,7 @@ public class StatusTextEntryActionObject {
 
 	private boolean flash = false;
 	private String message = "";
+	private String color = "";
 
 	/**
 	 * An object to encapsulate Message and flash status for the status line.
@@ -49,6 +50,11 @@ public class StatusTextEntryActionObject {
 		this.flash = flash;
 	}
 
+	public StatusTextEntryActionObject(String message, boolean flash, String color) {
+		this.message = message;
+		this.flash = flash;
+		this.color = color;
+	}
 	/**
 	 * Get the flashing status.
 	 *
@@ -64,9 +70,10 @@ public class StatusTextEntryActionObject {
 	 * @return
 	 */
 	public String getMessage() {
-		return message;
+		return this.message;
 	}
 
+	public String getColor() { return this.color; }
 	/**
 	 * Set flashing status.
 	 *

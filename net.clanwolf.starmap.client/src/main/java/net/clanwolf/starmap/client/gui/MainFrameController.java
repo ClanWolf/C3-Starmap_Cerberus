@@ -710,6 +710,10 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	}
 
 	private void setStatusText(String t, boolean flash) {
+		setStatusText(t, flash, "");
+	}
+
+	private void setStatusText(String t, boolean flash, String color) {
 		if (fadeTransition_flash == null) {
 			fadeTransition_flash = new FadeTransition(Duration.millis(200), statuslabel);
 			fadeTransition_flash.setFromValue(1.0);
@@ -727,11 +731,19 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		}
 
 		statuslabel.setText(t);
+		if (!"".equals(color)) {
+			statuslabel.setTextFill(Color.web(color));
+		}
+
 		if (flash) {
+			if ("".equals(color)) {
+				statuslabel.setTextFill(Color.web("#ff8080"));
+			}
 			fadeTransition_flash.play();
-			statuslabel.setTextFill(Color.web("#ff8080"));
 		} else {
-			statuslabel.setTextFill(Color.web("#667288"));
+			if ("".equals(color)) {
+				statuslabel.setTextFill(Color.web("#667288"));
+			}
 			fadeTransition_flash.stop();
 			fadeTransition_fadein.play();
 		}
@@ -1178,8 +1190,23 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				break;
 
 			case SET_STATUS_TEXT:
+				String color = "";
 				StatusTextEntryActionObject ste = (StatusTextEntryActionObject) o.getObject();
-				setStatusText(ste.getMessage(), ste.isFlash());
+				if (ste.getColor() != null && !"".equals(ste.getColor())) {
+					switch (ste.getColor()) {
+						case "GREEN":
+							color = "#00ff00";
+							break;
+						case "BLUE":
+							color = "#0000ff";
+							break;
+						case "YELLOW":
+							color = "#ffff00";
+							break;
+					}
+				}
+				setStatusText(ste.getMessage(), ste.isFlash(), color);
+
 				break;
 
 			case ONLINECHECK_STARTED:

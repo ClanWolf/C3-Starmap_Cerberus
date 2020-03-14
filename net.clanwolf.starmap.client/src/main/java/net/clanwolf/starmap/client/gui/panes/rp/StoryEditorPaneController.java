@@ -1301,7 +1301,9 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 
 		// set data for variante 1
 		if (rp.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1) {
-			rp.setNextStepID(cbNextStep_V1.getValue().getId());
+			if (cbNextStep_V1.getValue() != null) {
+				rp.setNextStepID(cbNextStep_V1.getValue().getId());
+			}
 		}
 
 		// set data for variante 2
