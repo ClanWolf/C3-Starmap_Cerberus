@@ -39,7 +39,7 @@ public class C3Logger {
 	private static String c3LogFileName = "";
 	private static File c3LogFile;
 	private static Level c3Loglevel = Level.FINE;
-	private static final int FILE_SIZE = 15*1024*1024;
+	private static final int FILE_SIZE = 3*1024*1024;
 
 	public static void print(String message) {
 		info(message);
