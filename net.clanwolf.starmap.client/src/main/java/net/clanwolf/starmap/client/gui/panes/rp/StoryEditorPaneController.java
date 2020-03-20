@@ -212,6 +212,14 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 				// Request all character from server
 				boRP.getAllCharacter();
 
+				//handleTabs();
+				tabPaneStory.getTabs().remove(tabBasic2);
+				tabPaneStory.getTabs().remove(tabBasic3);
+				tabPaneStory.getTabs().remove(tabBasic4);
+				tabPaneStory.getTabs().remove(tabBasic5);
+				tabPaneStory.getTabs().remove(tabBasic6);
+				tabPaneStory.getTabs().remove(tabBasic7);
+
 			}
 			break;
 		case SAVE_ROLEPLAY_STORY_OK:
@@ -299,11 +307,13 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 				boRP.setCharacterList(hlpLstChar);
 
 				lvAllCharacters.getItems().clear();
+				lvAssignedChar.getItems().clear();
 				for (RolePlayCharacterDTO rpc : hlpLstChar) {
 					if (rpc.getStory() == null) {
 						lvAllCharacters.getItems().add(rpc);
 					}
 				}
+
 			});
 
 			break;
@@ -809,6 +819,14 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	}
 
 	private void handleTabs() {
+
+		tabPaneStory.getTabs().remove(tabBasic2);
+		tabPaneStory.getTabs().remove(tabBasic3);
+		tabPaneStory.getTabs().remove(tabBasic4);
+		tabPaneStory.getTabs().remove(tabBasic5);
+		tabPaneStory.getTabs().remove(tabBasic6);
+		tabPaneStory.getTabs().remove(tabBasic7);
+
 		// Tab for character assignment
 		if (selected != null && selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STORY) {
 			if (!tabPaneStory.getTabs().contains(tabBasic3)) {
@@ -817,6 +835,24 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 		} else {
 			if (tabPaneStory.getTabs().contains(tabBasic3)) {
 				tabPaneStory.getTabs().remove(tabBasic3);
+			}
+		}
+
+		if (selected != null && selected.getValue().getVariante() != ROLEPLAYENTRYTYPES.C3_RP_STORY &&
+		    selected != null && selected.getValue().getVariante() != ROLEPLAYENTRYTYPES.C3_RP_CHAPTER) {
+			if (!tabPaneStory.getTabs().contains(tabBasic2)) {
+				tabPaneStory.getTabs().add(tabBasic2);
+			}
+		}
+
+		// Tab for simple step
+		if (selected != null && cbStoryVarianten.getSelectionModel().getSelectedItem() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1) {
+			if (!tabPaneStory.getTabs().contains(tabBasic7)) {
+				tabPaneStory.getTabs().add(tabBasic7);
+			}
+		} else {
+			if (tabPaneStory.getTabs().contains(tabBasic7)) {
+				tabPaneStory.getTabs().remove(tabBasic7);
 			}
 		}
 
@@ -850,17 +886,6 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 		} else {
 			if (tabPaneStory.getTabs().contains(tabBasic6)) {
 				tabPaneStory.getTabs().remove(tabBasic6);
-			}
-		}
-
-		// Tab for simple step
-		if (selected != null && cbStoryVarianten.getSelectionModel().getSelectedItem() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1) {
-			if (!tabPaneStory.getTabs().contains(tabBasic7)) {
-				tabPaneStory.getTabs().add(tabBasic7);
-			}
-		} else {
-			if (tabPaneStory.getTabs().contains(tabBasic7)) {
-				tabPaneStory.getTabs().remove(tabBasic7);
 			}
 		}
 	}
@@ -1145,7 +1170,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 
 			lvAssignedChar.getItems().clear();
 			for (RolePlayCharacterDTO rpc : boRP.getCharacterList()) {
-				if (rpc.getStory() != null && rpc.getStory().getId().equals(selected.getValue().getId())) {
+				if (rpc.getStory() != null && rpc.getStory().getStory().getId().equals(selected.getValue().getId())) {
 					lvAssignedChar.getItems().add(rpc);
 				}
 			}
