@@ -400,7 +400,7 @@ public class RolePlayStoryDTO extends Dto {
 
 	@Override
 	public String toString() {
-		return this.getStoryName();
+		return this.getStoryName() + " (" + this.getSortOrder() + ")";
 	}
    
  }

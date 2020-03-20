@@ -155,9 +155,11 @@ public class EntityConverter {
 			while(iter.hasNext()){
 				Object o2 = iter.next();
 				if(o2 instanceof Dto) {
-					hlpAl.add(getPojo((Dto) iter.next()));
+					//hlpAl.add(getPojo((Dto) iter.next()));
+					hlpAl.add(getPojo((Dto) o2));
 				} else {
-					hlpAl.add(iter.next());
+					//hlpAl.add(iter.next());
+					hlpAl.add(o2);
 				}
 			}
 			state.addObject(hlpAl);
@@ -171,9 +173,11 @@ public class EntityConverter {
 			while(iter.hasNext()){
 				Object o2 = iter.next();
 				if(o2 instanceof Dto) {
-					hlpAl.add(getPojo((Dto) iter.next()));
+					//hlpAl.add(getPojo((Dto) iter.next()));
+					hlpAl.add(getPojo((Dto) o2));
 				} else {
-					hlpAl.add(iter.next());
+					//hlpAl.add(iter.next());
+					hlpAl.add(o2);
 				}
 			}
 			state.addObject2(hlpAl);

@@ -50,6 +50,7 @@ import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.*;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
+import javax.mail.Message;
 import java.io.File;
 import java.net.URL;
 import java.nio.file.Paths;
@@ -102,13 +103,13 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	@FXML
 	ComboBox<ROLEPLAYENTRYTYPES> cbStoryVarianten;
 	@FXML
-	ComboBox<RolePlayStoryDTO> cbStoryPath1, cbStoryPath2, cbStoryPath3, cbNextStep1_V3,cbNextStep2_V3,cbNextStep3_V3,cbNextStep4_V3;
+	ComboBox<RolePlayStoryDTO> cbStoryPath1, cbStoryPath2, cbStoryPath3, cbNextStep1_V3, cbNextStep2_V3, cbNextStep3_V3, cbNextStep4_V3;
 	@FXML
 	ComboBox<RolePlayStoryDTO> cbDiceScoreLess, cbDiceScoreEqual, cbDiceScoreMore;
 	@FXML
 	ComboBox<RolePlayStoryDTO> cbNextStep_V1;
 	@FXML
-	TextField tfStoryPath1, tfStoryPath2, tfStoryPath3, tfLabelText1_V3,tfLabelText2_V3,tfLabelText3_V3,tfLabelText4_V3, tfDiceScore;
+	TextField tfStoryPath1, tfStoryPath2, tfStoryPath3, tfLabelText1_V3, tfLabelText2_V3, tfLabelText3_V3, tfLabelText4_V3, tfDiceScore;
 	@FXML
 	TextArea taDescription, taStorytext, taRolePlayOff;
 	@FXML
@@ -154,7 +155,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 
 	/**
 	 * Initializes the controller class.
-	 * 
+	 *
 	 * @param url
 	 * @param rb
 	 */
@@ -192,50 +193,50 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	@Override
 	public boolean handleAction(ACTIONS action, ActionObject object) {
 		switch (action) {
-		case CHANGE_LANGUAGE:
-			setStrings();
-			break;
-		case PANE_CREATION_FINISHED:
-			if (object.getObject().getClass() == StoryEditorPane.class) {
-				C3Logger.info(object.getObject().toString());
-				C3Logger.info("PANE_CREATION_FINISHED: fillComboBox");
+			case CHANGE_LANGUAGE:
+				setStrings();
+				break;
+			case PANE_CREATION_FINISHED:
+				if (object.getObject().getClass() == StoryEditorPane.class) {
+					C3Logger.info(object.getObject().toString());
+					C3Logger.info("PANE_CREATION_FINISHED: fillComboBox");
 
-				ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute();
+					ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute();
 
-				//
-				treeStory.setRoot(null);
-				initTreeView();
+					//
+					treeStory.setRoot(null);
+					initTreeView();
 
-				// Request all stories of the current user from server
-				boRP.getAllStories();
+					// Request all stories of the current user from server
+					boRP.getAllStories();
 
-				// Request all character from server
-				boRP.getAllCharacter();
+					// Request all character from server
+					boRP.getAllCharacter();
 
-				//handleTabs();
-				tabPaneStory.getTabs().remove(tabBasic2);
-				tabPaneStory.getTabs().remove(tabBasic3);
-				tabPaneStory.getTabs().remove(tabBasic4);
-				tabPaneStory.getTabs().remove(tabBasic5);
-				tabPaneStory.getTabs().remove(tabBasic6);
-				tabPaneStory.getTabs().remove(tabBasic7);
+					//handleTabs();
+					tabPaneStory.getTabs().remove(tabBasic2);
+					tabPaneStory.getTabs().remove(tabBasic3);
+					tabPaneStory.getTabs().remove(tabBasic4);
+					tabPaneStory.getTabs().remove(tabBasic5);
+					tabPaneStory.getTabs().remove(tabBasic6);
+					tabPaneStory.getTabs().remove(tabBasic7);
 
-			}
-			break;
-		case SAVE_ROLEPLAY_STORY_OK:
-			C3Logger.info("SAVE_ROLEPLAY_STORY_OK");
+				}
+				break;
+			case SAVE_ROLEPLAY_STORY_OK:
+				C3Logger.info("SAVE_ROLEPLAY_STORY_OK");
 
-			GameState gs = (GameState)object.getObject();
+				GameState gs = (GameState) object.getObject();
 
-			RolePlayStoryDTO rps = (RolePlayStoryDTO)gs.getObject();
-			ArrayList<RolePlayCharacterDTO> rpcList = (ArrayList<RolePlayCharacterDTO>)gs.getObject2();
+				RolePlayStoryDTO rps = (RolePlayStoryDTO) gs.getObject();
+				ArrayList<RolePlayCharacterDTO> rpcList = (ArrayList<RolePlayCharacterDTO>) gs.getObject2();
 
-			// Only need after an insert. It is not necessary after an update
-			// If the RolePlayStoryDTO is new, we need this to get the object with ID from the database.
+				// Only need after an insert. It is not necessary after an update
+				// If the RolePlayStoryDTO is new, we need this to get the object with ID from the database.
 //			selected.setValue((RolePlayStoryDTO) object.getObject());
-			selected.setValue(rps);
-			boRP.addStoryToList(selected.getValue());
-			boRP.chsngeCharacterList(rpcList);
+				selected.setValue(rps);
+				boRP.addStoryToList(selected.getValue());
+				boRP.chsngeCharacterList(rpcList);
 
 			/*lvAssignedChar.getItems().clear();
 			for (RolePlayCharacterDTO rpc : boRP.getCharacterList()) {
@@ -251,111 +252,111 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 				}
 			}*/
 
-			// Upload image, sound and video
-			fileTransfer();
+				// Upload image, sound and video
+				fileTransfer();
 
-			enabledFields(false);
-			enableButtons();
-			setStrings();
+				enabledFields(false);
+				enableButtons();
+				setStrings();
 
-			// refresh TreeItem label
-			Event.fireEvent(root, new TreeItem.TreeModificationEvent<>(TreeItem.valueChangedEvent(), selected, selected.getValue()));
+				// refresh TreeItem label
+				Event.fireEvent(root, new TreeItem.TreeModificationEvent<>(TreeItem.valueChangedEvent(), selected, selected.getValue()));
 
-			buttonSave.setDisable(true);
+				buttonSave.setDisable(true);
 
-			break;
-		case SAVE_ROLEPLAY_STORY_ERR:
-			C3Logger.info("SAVE_ROLEPLAY_STORY_ERR");
+				break;
+			case SAVE_ROLEPLAY_STORY_ERR:
+				C3Logger.info("SAVE_ROLEPLAY_STORY_ERR");
 
-			Platform.runLater(new Runnable() {
-				@Override
-				public void run() {
+				Platform.runLater(new Runnable() {
+					@Override
+					public void run() {
 
-					Alert alert = Tools.C3Dialog(AlertType.ERROR, Internationalization.getString("general_failure"), Internationalization.getString("general_failure"), Internationalization.getString("app_rp_storyeditor_story_error_save"));
+						Alert alert = Tools.C3Dialog(AlertType.ERROR, Internationalization.getString("general_failure"), Internationalization.getString("general_failure"), Internationalization.getString("app_rp_storyeditor_story_error_save"));
+						Optional<ButtonType> result = alert.showAndWait();
+						if (result.get() == ButtonType.OK) {
+							setWarningOff();
+						}
+					}
+				});
+
+				break;
+			case DELETE_ROLEPLAY_STORY_OK:
+				boRP.removeStoryFromList(selected.getValue());
+				selected.getParent().getChildren().remove(selected);
+
+				enableButtons();
+				break;
+			case DELETE_ROLEPLAY_STORY_ERR:
+				C3Logger.info("DELETE_ROLEPLAY_STORY_ERR");
+				Platform.runLater(() -> {
+
+					Alert alert = Tools.C3Dialog(AlertType.ERROR, Internationalization.getString("general_failure"), Internationalization.getString("general_failure"), Internationalization.getString("app_rp_storyeditor_story_error_delete"));
 					Optional<ButtonType> result = alert.showAndWait();
 					if (result.get() == ButtonType.OK) {
 						setWarningOff();
 					}
-				}
-			});
+				});
 
-			break;
-		case DELETE_ROLEPLAY_STORY_OK:
-			boRP.removeStoryFromList(selected.getValue());
-			selected.getParent().getChildren().remove(selected);
+				break;
+			case GET_ROLEPLAY_ALLCHARACTER:
+				Platform.runLater(() -> {
+					C3Logger.info("GET_ROLEPLAY_ALLCHARACTER");
 
-			enableButtons();
-			break;
-		case DELETE_ROLEPLAY_STORY_ERR:
-			C3Logger.info("DELETE_ROLEPLAY_STORY_ERR");
-			Platform.runLater(() -> {
+					@SuppressWarnings("unchecked")
+					ArrayList<RolePlayCharacterDTO> hlpLstChar = (ArrayList<RolePlayCharacterDTO>) object.getObject();
+					boRP.setCharacterList(hlpLstChar);
 
-				Alert alert = Tools.C3Dialog(AlertType.ERROR, Internationalization.getString("general_failure"), Internationalization.getString("general_failure"), Internationalization.getString("app_rp_storyeditor_story_error_delete"));
-				Optional<ButtonType> result = alert.showAndWait();
-				if (result.get() == ButtonType.OK) {
-					setWarningOff();
-				}
-			});
+					lvAllCharacters.getItems().clear();
+					lvAssignedChar.getItems().clear();
+					for (RolePlayCharacterDTO rpc : hlpLstChar) {
+						if (rpc.getStory() == null) {
+							lvAllCharacters.getItems().add(rpc);
+						}
+					}
 
-			break;
-		case GET_ROLEPLAY_ALLCHARACTER:
-			Platform.runLater(() -> {
-				C3Logger.info("GET_ROLEPLAY_ALLCHARACTER");
+				});
+
+				break;
+			case GET_ROLEPLAY_ALLSTORIES:
+				C3Logger.info("GET_ROLEPLAY_STORYANDCHAPTER");
 
 				@SuppressWarnings("unchecked")
-				ArrayList<RolePlayCharacterDTO> hlpLstChar = (ArrayList<RolePlayCharacterDTO>) object.getObject();
-				boRP.setCharacterList(hlpLstChar);
+				ArrayList<RolePlayStoryDTO> hlpLst = (ArrayList<RolePlayStoryDTO>) object.getObject();
+				boRP.setStoryList(hlpLst);
 
-				lvAllCharacters.getItems().clear();
-				lvAssignedChar.getItems().clear();
-				for (RolePlayCharacterDTO rpc : hlpLstChar) {
-					if (rpc.getStory() == null) {
-						lvAllCharacters.getItems().add(rpc);
+				// Get story
+				ArrayList<RolePlayStoryDTO> liRP = boRP.getStoriesFromList();
+				Iterator<RolePlayStoryDTO> iter = liRP.iterator();
+				root.getChildren().clear();
+				while (iter.hasNext()) {
+					TreeItem<RolePlayStoryDTO> rpTreeItem = new TreeItem<>(iter.next());
+					rpTreeItem.setExpanded(false);
+					root.getChildren().add(rpTreeItem);
+
+					// Get chapter
+					ArrayList<RolePlayStoryDTO> liRPChapter = boRP.getChildsFromStory(rpTreeItem.getValue());
+					for (RolePlayStoryDTO aLiRPChapter : liRPChapter) {
+						TreeItem<RolePlayStoryDTO> rpTreeItemChapter = new TreeItem<>(aLiRPChapter);
+						rpTreeItemChapter.setExpanded(false);
+						rpTreeItem.getChildren().add(rpTreeItemChapter);
+
+						// Get step
+						ArrayList<RolePlayStoryDTO> liRPStep = boRP.getChildsFromStory(rpTreeItemChapter.getValue());
+						for (RolePlayStoryDTO aLiRPStep : liRPStep) {
+							TreeItem<RolePlayStoryDTO> rpTreeItemStep = new TreeItem<>(aLiRPStep);
+							rpTreeItemStep.setExpanded(false);
+							rpTreeItemChapter.getChildren().add(rpTreeItemStep);
+						}
 					}
 				}
 
-			});
+				mode = StoryEditorPaneController.MODE_IS_DEFAULT;
+				enableButtons();
+				ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute();
 
-			break;
-		case GET_ROLEPLAY_ALLSTORIES:
-			C3Logger.info("GET_ROLEPLAY_STORYANDCHAPTER");
-
-			@SuppressWarnings("unchecked")
-			ArrayList<RolePlayStoryDTO> hlpLst = (ArrayList<RolePlayStoryDTO>) object.getObject();
-			boRP.setStoryList(hlpLst);
-
-			// Get story
-			ArrayList<RolePlayStoryDTO> liRP = boRP.getStoriesFromList();
-			Iterator<RolePlayStoryDTO> iter = liRP.iterator();
-			root.getChildren().clear();
-			while (iter.hasNext()) {
-				TreeItem<RolePlayStoryDTO> rpTreeItem = new TreeItem<>(iter.next());
-				rpTreeItem.setExpanded(false);
-				root.getChildren().add(rpTreeItem);
-
-				// Get chapter
-				ArrayList<RolePlayStoryDTO> liRPChapter = boRP.getChildsFromStory(rpTreeItem.getValue());
-				for (RolePlayStoryDTO aLiRPChapter : liRPChapter) {
-					TreeItem<RolePlayStoryDTO> rpTreeItemChapter = new TreeItem<>(aLiRPChapter);
-					rpTreeItemChapter.setExpanded(false);
-					rpTreeItem.getChildren().add(rpTreeItemChapter);
-
-					// Get step
-					ArrayList<RolePlayStoryDTO> liRPStep = boRP.getChildsFromStory(rpTreeItemChapter.getValue());
-					for (RolePlayStoryDTO aLiRPStep : liRPStep) {
-						TreeItem<RolePlayStoryDTO> rpTreeItemStep = new TreeItem<>(aLiRPStep);
-						rpTreeItemStep.setExpanded(false);
-						rpTreeItemChapter.getChildren().add(rpTreeItemStep);
-					}
-				}
-			}
-
-			mode = StoryEditorPaneController.MODE_IS_DEFAULT;
-			enableButtons();
-			ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute();
-
-		default:
-			break;
+			default:
+				break;
 		}
 		return true;
 	}
@@ -839,7 +840,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 		}
 
 		if (selected != null && selected.getValue().getVariante() != ROLEPLAYENTRYTYPES.C3_RP_STORY &&
-		    selected != null && selected.getValue().getVariante() != ROLEPLAYENTRYTYPES.C3_RP_CHAPTER) {
+				selected != null && selected.getValue().getVariante() != ROLEPLAYENTRYTYPES.C3_RP_CHAPTER) {
 			if (!tabPaneStory.getTabs().contains(tabBasic2)) {
 				tabPaneStory.getTabs().add(tabBasic2);
 			}
@@ -920,7 +921,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 							setText(null);
 							setGraphic(null);
 						} else {
-							setText(item.getStoryName());
+							setText(item.getSortOrder().toString() + " " + item.getStoryName());
 							C3Logger.info("setCellFactory: updateItem: " + item.getStoryName());
 
 							// Set marking, if it is a next step
@@ -954,6 +955,15 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	 * Initalisation of combobox cbStoryVarianten
 	 */
 	private void initCombobox() {
+		cbNextStep_V1.setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
+		cbStoryPath1.setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
+		cbStoryPath2.setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
+		cbStoryPath3 .setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
+		cbNextStep1_V3.setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
+		cbNextStep2_V3.setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
+		cbNextStep3_V3.setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
+		cbNextStep4_V3.setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
+
 		cbStoryVarianten.getItems().setAll(ROLEPLAYENTRYTYPES.values());
 
 	}
@@ -1344,13 +1354,13 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 			//rpVar2.setOption2StoryID(cbStoryPath2.getValue().getId());
 			//rpVar2.setOption3StoryID(cbStoryPath3.getValue().getId());
 
-			if(cbStoryPath1.getValue() != null) {
+			if (cbStoryPath1.getValue() != null) {
 				rpVar2.setOption1StoryID(cbStoryPath1.getValue().getId());
 			}
-			if(cbStoryPath2.getValue() != null) {
+			if (cbStoryPath2.getValue() != null) {
 				rpVar2.setOption2StoryID(cbStoryPath2.getValue().getId());
 			}
-			if(cbStoryPath3.getValue() != null) {
+			if (cbStoryPath3.getValue() != null) {
 				rpVar2.setOption3StoryID(cbStoryPath3.getValue().getId());
 			}
 
@@ -1379,16 +1389,16 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 			//rpVar3.setNextStory3ID(cbNextStep3_V3.getValue().getId());
 			//rpVar3.setNextStory4ID(cbNextStep4_V3.getValue().getId());
 
-			if(cbNextStep1_V3.getValue() != null) {
+			if (cbNextStep1_V3.getValue() != null) {
 				rpVar3.setNextStoryID(cbNextStep1_V3.getValue().getId());
 			}
-			if(cbNextStep2_V3.getValue() != null) {
+			if (cbNextStep2_V3.getValue() != null) {
 				rpVar3.setNextStory2ID(cbNextStep2_V3.getValue().getId());
 			}
-			if(cbNextStep3_V3.getValue() != null) {
+			if (cbNextStep3_V3.getValue() != null) {
 				rpVar3.setNextStory3ID(cbNextStep3_V3.getValue().getId());
 			}
-			if(cbNextStep4_V3.getValue() != null) {
+			if (cbNextStep4_V3.getValue() != null) {
 				rpVar3.setNextStory4ID(cbNextStep4_V3.getValue().getId());
 			}
 
@@ -1599,7 +1609,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	@Override
 	public void warningOnAction() {
@@ -1616,69 +1626,24 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	@Override
 	public void warningOffAction() {
 	}
-}
+//}
 
-/**
- * Creating a pane with a list of several icons for the story treeview All treeItem get icons for the rp-Type or if there is a warning or it is a next step of an other step
- * 
- * @author Undertaker
- *
- */
-/*public class IconList extends Pane {
+	private final class RPCellFactory<RolePlayStoryDTO> extends ListCell<net.clanwolf.starmap.transfer.dtos.RolePlayStoryDTO> {
 
-	private ImageView isNextImage;
-	private ImageView hasWarningImage;
-	private ImageView rpTypeImage;
-	private HBox pane;
-	private static final Class<IconList> c = IconList.class;
-
-	public IconList(ROLEPLAYENTRYTYPES rpTyp, boolean isNext, boolean hasWarning) {
-		try {
-
-			pane = new HBox(5.0);
-
-			if (isNext) {
-				// this.isNextImage = new ImageView(new Image(new FileInputStream(new File("D:/temp/icons/ok/RPNextStepIcon.png"))));
-				this.isNextImage = new ImageView(new Image(new FileInputStream(new File(c.getClassLoader().getResource("icons/RPNextStepIcon.png").getFile()))));
-				pane.getChildren().add(this.isNextImage);
+		@Override
+		protected void updateItem(net.clanwolf.starmap.transfer.dtos.RolePlayStoryDTO item, boolean empty) {
+			super.updateItem(item, empty);
+			if (empty) {
+				setText(null);
+			} else {
+				setText(item.getStoryName() + " (" + item.getSortOrder().toString() + ")");
 			}
-
-			if (hasWarning) {
-				// this.hasWarningImage = new ImageView(new Image(new FileInputStream(new File("D:/temp/icons/ok/RPWarningIcon.png"))));
-				this.hasWarningImage = new ImageView(new Image(new FileInputStream(new File(c.getClassLoader().getResource("icons/RPWarningIcon.png").getFile()))));
-				pane.getChildren().add(this.hasWarningImage);
-			}
-
-			if (rpTyp == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1) {
-				// this.rpTypeImage = new ImageView(new Image(new FileInputStream(new File("D:/temp/icons/ok/RPEditIcon.png"))));
-				this.rpTypeImage = new ImageView(new Image(new FileInputStream(new File(c.getClassLoader().getResource("icons/RPEditIcon.png").getFile()))));
-				pane.getChildren().add(this.rpTypeImage);
-
-			} else if (rpTyp == ROLEPLAYENTRYTYPES.C3_RP_STEP_V2) {
-				// this.rpTypeImage = new ImageView(new Image(new FileInputStream(new File("D:/temp/icons/ok/RPTreeIcon.png"))));
-				this.rpTypeImage = new ImageView(new Image(new FileInputStream(new File(c.getClassLoader().getResource("icons/RPTreeIcon.png").getFile()))));
-				pane.getChildren().add(this.rpTypeImage);
-
-			} else if (rpTyp == ROLEPLAYENTRYTYPES.C3_RP_STEP_V3) {
-				// this.rpTypeImage = new ImageView(new Image(new FileInputStream(new File("D:/temp/icons/ok/RPInputIcon.png"))));
-				this.rpTypeImage = new ImageView(new Image(new FileInputStream(new File(c.getClassLoader().getResource("icons/RPInputIcon.png").getFile()))));
-				pane.getChildren().add(this.rpTypeImage);
-
-			} else if (rpTyp == ROLEPLAYENTRYTYPES.C3_RP_STEP_V4) {
-				// this.rpTypeImage = new ImageView(new Image(new FileInputStream(new File("D:/temp/icons/ok/RPDiceIcon.png"))));
-				this.rpTypeImage = new ImageView(new Image(new FileInputStream(new File(c.getClassLoader().getResource("icons/RPDiceIcon.png").getFile()))));
-				pane.getChildren().add(this.rpTypeImage);
-
-			}
-
-			this.getChildren().add(pane);
-		} catch (FileNotFoundException ex) {
-			C3Logger.info("Iconlist Image nicht gefunden");
 		}
+
 	}
-}*/
+}
