@@ -113,6 +113,8 @@
 				<version>${version.maven-compiler-plugin}</version>
 				<configuration>
 					<release>${version.java}</release>
+					<source>${version.java}</source>
+					<target>${version.java}</target>
 					<!--<compilerArgs>-->
 						<!--<compilerArg>&#45;&#45;module-path</compilerArg>-->
 						<!--<compilerArg>${project.build.directory}/modules</compilerArg>-->
@@ -440,24 +442,24 @@
 									<moduleInfo>
 										<name>io.netty.common</name>
 									</moduleInfo>
-									<!--<moduleInfoSource>-->
-										<!--module io.netty.common {-->
-											<!--requires static commons.logging;-->
-											<!--requires java.logging;-->
-											<!--requires static log4j;-->
-											<!--requires static log4j.api;-->
-											<!--requires static slf4j.api;-->
-											<!--requires jdk.unsupported;-->
-											<!--exports io.netty.util;-->
-											<!--exports io.netty.util.collection;-->
-											<!--exports io.netty.util.concurrent;-->
-											<!--exports io.netty.util.internal;-->
-											<!--exports io.netty.util.internal.logging;-->
-											<!--exports io.netty.util.internal.shaded.org.jctools.queues;-->
-											<!--exports io.netty.util.internal.shaded.org.jctools.queues.atomic;-->
-											<!--exports io.netty.util.internal.shaded.org.jctools.util;-->
-										<!--}-->
-									<!--</moduleInfoSource>-->
+<!--									<moduleInfoSource>-->
+<!--										module io.netty.common {-->
+<!--											requires static commons.logging;-->
+<!--											requires java.logging;-->
+<!--											requires static log4j;-->
+<!--											requires static log4j.api;-->
+<!--											requires static slf4j.api;-->
+<!--											requires jdk.unsupported;-->
+<!--											exports io.netty.util;-->
+<!--											exports io.netty.util.collection;-->
+<!--											exports io.netty.util.concurrent;-->
+<!--											exports io.netty.util.internal;-->
+<!--											exports io.netty.util.internal.logging;-->
+<!--											exports io.netty.util.internal.shaded.org.jctools.queues;-->
+<!--											exports io.netty.util.internal.shaded.org.jctools.queues.atomic;-->
+<!--											exports io.netty.util.internal.shaded.org.jctools.util;-->
+<!--										}-->
+<!--									</moduleInfoSource>-->
 								</module>
 								<module>
 									<artifact>
