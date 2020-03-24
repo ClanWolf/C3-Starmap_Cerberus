@@ -3,6 +3,8 @@
 ; c3-client.nsi
 ;--------------------------------
 
+Unicode true
+
 Name "C3-Client_Installer"
 Caption "C3 Client Installer"
 Icon "c3.ico"
