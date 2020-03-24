@@ -3,6 +3,8 @@
 ; c3-client.nsi
 ;--------------------------------
 
+Unicode true
+
 Name "C3-Client_Installer"
 Caption "C3 Client Installer"
 Icon "c3.ico"
@@ -41,6 +43,7 @@ Section "C3-Client (required)"
     SectionIn RO
 	SetShellVarContext all
 	SetOutPath $INSTDIR
+	File /r "c3.ico"
 ###FILELIST###
 
 	; Write the installation path into the registry
@@ -64,8 +67,7 @@ Section "Start Menu Shortcuts"
 
 	SetOutpath $INSTDIR ; this folder is used as working directory for the following links
 	CreateDirectory "$SMPROGRAMS\C3-Client"
-	CreateShortcut "$SMPROGRAMS\C3-Client\C3-Client.lnk" "$INSTDIR\run.exe" "" "$INSTDIR\run.exe" 0
-	CreateShortcut "$SMPROGRAMS\C3-Client\C3-Client (Debug).lnk" "$INSTDIR\run_debug.exe" "" "$INSTDIR\run_debug.exe" 0
+	CreateShortcut "$SMPROGRAMS\C3-Client\C3-Client.lnk" "$INSTDIR\bin\C3-Starmap_Cerberus.bat" "" "$INSTDIR\c3.ico" 0
 SectionEnd
 
 ;--------------------------------
@@ -80,6 +82,7 @@ Section "Uninstall"
 
 ###FILELISTTOREMOVE###
 	Delete $INSTDIR\uninstall.exe
+	Delete $SMPROGRAMS\C3-Client\C3-Client.lnk
 
 ###DIRECTORYLISTTOREMOVE###
 	RMDir "$INSTDIR"

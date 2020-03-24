@@ -43,6 +43,7 @@ Section "C3-Client (required)"
     SectionIn RO
 	SetShellVarContext all
 	SetOutPath $INSTDIR
+	File /r "c3.ico"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\release"
 
 	CreateDirectory $INSTDIR\lib
@@ -307,8 +308,7 @@ Section "Start Menu Shortcuts"
 
 	SetOutpath $INSTDIR ; this folder is used as working directory for the following links
 	CreateDirectory "$SMPROGRAMS\C3-Client"
-	CreateShortcut "$SMPROGRAMS\C3-Client\C3-Client.lnk" "$INSTDIR\run.exe" "" "$INSTDIR\run.exe" 0
-	CreateShortcut "$SMPROGRAMS\C3-Client\C3-Client (Debug).lnk" "$INSTDIR\run_debug.exe" "" "$INSTDIR\run_debug.exe" 0
+	CreateShortcut "$SMPROGRAMS\C3-Client\C3-Client.lnk" "$INSTDIR\bin\C3-Starmap_Cerberus.bat" "" "$INSTDIR\c3.ico" 0
 SectionEnd
 
 ;--------------------------------
@@ -487,6 +487,7 @@ Section "Uninstall"
 	Delete $INSTDIR\bin\server\jvm.dll
 
 	Delete $INSTDIR\uninstall.exe
+	Delete $SMPROGRAMS\C3-Client\C3-Client.lnk
 
 	RMDir "$INSTDIR\bin\server"
 	RMDir "$INSTDIR\bin"

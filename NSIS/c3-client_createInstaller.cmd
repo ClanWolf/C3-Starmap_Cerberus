@@ -23,6 +23,9 @@ ECHO %PATH%
 ECHO .
 ECHO Will run command: makensis.exe /V4 /INPUTCHARSET utf8 /OUTPUTCHARSET utf8 c3-client.nsi
 ECHO .
-PAUSE
+
+REM PAUSE
+
 makensis.exe /V4 /INPUTCHARSET utf8 /OUTPUTCHARSET utf8 c3-client.nsi
-PAUSE
+
+REM PAUSE

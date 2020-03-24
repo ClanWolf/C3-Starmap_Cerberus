@@ -37,16 +37,21 @@ import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionManager;
-import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.client.net.HTTP;
 import net.clanwolf.starmap.client.util.C3PROPS;
 import net.clanwolf.starmap.client.util.C3Properties;
 import net.clanwolf.starmap.client.util.Internationalization;
+import net.clanwolf.starmap.logging.C3Logger;
 
 import java.io.File;
-import java.io.InputStream;
+import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 
 /**
@@ -216,8 +221,10 @@ public class C3SoundPlayer {
 						soundClip = audioClipCache.get(url.toString());
 						soundClip.stop();
 					} else {
-						// Log.info("Caching sound...");
-						soundClip = new AudioClip(url.toString());
+						C3Logger.info("Caching sound...");
+						String u = url.toString();
+						C3Logger.info("Url: " + u);
+						soundClip = new AudioClip(u);
 						audioClipCache.put(url.toString(), soundClip);
 					}
 					Platform.runLater(() -> soundClip.play(soundVolume));
@@ -239,7 +246,68 @@ public class C3SoundPlayer {
 			soundPath = "/" + soundPath;
 		}
 
-		URL u = ((C3SoundPlayer)getInstance()).getClass().getResource(soundPath);
+		URL u = null;
+
+//		try {
+//			Path p = Paths.get(URI.create("jrt:/modules/net.clanwolf.starmap.client"));
+//			System.out.println("My own JRE's modules:");
+//			Files.list(p).forEach(System.out::println);
+//		} catch(Exception ex) {
+//			System.out.println("Could not read my modules (perhaps not Java 9?).");
+//		}
+
+//		try {
+//			C3Logger.info("Getting url for sound:");
+//			FileSystem fs = FileSystems.getFileSystem(URI.create("jrt:/"));
+//			Path path = fs.getPath(soundPath);
+//
+//			Path targetFile = Paths.get("c:\\temp\\test.me");
+//
+//			try {
+//				Files.copy(path, targetFile, StandardCopyOption.REPLACE_EXISTING);
+//			} catch (IOException ex) {
+//				ex.printStackTrace();
+//				System.err.format("I/O Error when copying file");
+//			}
+//
+//
+//			u = path.toUri().toURL();
+//			C3Logger.info("URL: " + u);
+//			File f = new File(u.toString());
+//			if (f.isFile() && f.canRead()) {
+//				C3Logger.info("File can be accessed!");
+//			} else {
+//				C3Logger.info("File could NOT be accessed!");
+//				u = null;
+//			}
+//
+//
+//		} catch(MalformedURLException mfue) {
+//			C3Logger.info("Could not get the soundfile from JRT (Runtime image), checking other ways...");
+//		}
+
+		if (u == null) {
+			C3Logger.info("Loading sound: " + soundPath);
+			C3SoundPlayer inst = new C3SoundPlayer();
+			u = inst.getClass().getResource(soundPath);
+			C3Logger.info("URL: " + u);
+
+			Path path = null;
+			try {
+				path = Paths.get(u.toURI());
+			} catch(URISyntaxException e) {
+				e.printStackTrace();
+			}
+			Path targetFile = Paths.get("c:\\temp\\test.me");
+
+			try {
+				Files.copy(path, targetFile, StandardCopyOption.REPLACE_EXISTING);
+			} catch (IOException ex) {
+				ex.printStackTrace();
+				System.err.format("I/O Error when copying file");
+			}
+
+		}
 
 		if (u == null) {
 			StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
