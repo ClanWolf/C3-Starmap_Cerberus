@@ -20,13 +20,8 @@
 			<version>${project.version}</version>
 		</dependency>
 
-
-
-<!--		<dependency>-->
-<!--			<groupId>com.fasterxml.jackson.core</groupId>-->
-<!--			<artifactId>jackson-core</artifactId>-->
-<!--			<version>2.10.1</version>-->
-<!--		</dependency>-->
+		<!-- Jackson +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+<!--		This is in jackson-core now -->
 <!--		<dependency>-->
 <!--			<groupId>org.codehaus.jackson</groupId>-->
 <!--			<artifactId>jackson-core-asl</artifactId>-->
@@ -42,10 +37,6 @@
 			<artifactId>jackson-databind</artifactId>
 			<version>2.10.3</version>
 		</dependency>
-
-
-
-
 		<dependency>
 			<groupId>org.jetlang</groupId>
 			<artifactId>jetlang</artifactId>
@@ -56,11 +47,12 @@
 			<artifactId>blazeds-core</artifactId>
 			<version>3.2.0.3978</version>
 		</dependency>
-		<!--<dependency>-->
-			<!--<groupId>com.adobe.blazeds</groupId>-->
-			<!--<artifactId>blazeds-common</artifactId>-->
-			<!--<version>3.2.0.3978</version>-->
-		<!--</dependency>-->
+<!--		Not needed (?) -->
+<!--		<dependency>-->
+<!--			<groupId>com.adobe.blazeds</groupId>-->
+<!--			<artifactId>blazeds-common</artifactId>-->
+<!--			<version>3.2.0.3978</version>-->
+<!--		</dependency>-->
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>
@@ -71,7 +63,7 @@
 
 
 
-
+		<!-- Netty +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 <!--		<dependency>-->
 <!--			<groupId>io.netty</groupId>-->
 <!--			<artifactId>netty-all</artifactId>-->
@@ -110,6 +102,7 @@
 			<version>0.6.12</version>
 		</dependency>
 
+		<!-- Spring ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
