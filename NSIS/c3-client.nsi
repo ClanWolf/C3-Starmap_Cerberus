@@ -309,7 +309,9 @@ Section "Start Menu Shortcuts"
 
 	SetOutpath $INSTDIR ; this folder is used as working directory for the following links
 	CreateDirectory "$SMPROGRAMS\C3-Client"
+
 	CreateShortcut "$SMPROGRAMS\C3-Client\C3-Client.lnk" "$INSTDIR\bin\C3-Starmap_Cerberus.bat" "" "$INSTDIR\c3.ico" 0
+	CreateShortCut "$SMPROGRAMS\C3-Client\Remove.lnk" "$INSTDIR\Uninstall.exe" "" "$INSTDIR\c3.ico" 0
 SectionEnd
 
 ;--------------------------------
@@ -487,8 +489,10 @@ Section "Uninstall"
 	Delete $INSTDIR\bin\api-ms-win-core-console-l1-1-0.dll
 	Delete $INSTDIR\bin\server\jvm.dll
 
+	Delete $INSTDIR\c3.ico
 	Delete $INSTDIR\uninstall.exe
 	Delete $SMPROGRAMS\C3-Client\C3-Client.lnk
+	Delete $SMPROGRAMS\C3-Client\Remove.lnk
 
 	RMDir "$INSTDIR\bin\server"
 	RMDir "$INSTDIR\bin"

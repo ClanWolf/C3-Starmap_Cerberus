@@ -219,9 +219,8 @@ public class C3SoundPlayer {
 						soundClip = audioClipCache.get(url.toString());
 						soundClip.stop();
 					} else {
-						C3Logger.info("Caching sound...");
 						String u = url.toString();
-						C3Logger.info("Url: " + u);
+						C3Logger.info("Caching sound. Url: " + u);
 						soundClip = new AudioClip(u);
 						audioClipCache.put(url.toString(), soundClip);
 					}
@@ -244,18 +243,8 @@ public class C3SoundPlayer {
 			soundPath = "/" + soundPath;
 		}
 
-
-
-
-
 		// JavaFX 13 fixes error with JRT:/ url from getResource
-		//TODO: Test runtime image for sound loading
-
-
-
-
-
-		URL u = null;
+		URL u = ((C3SoundPlayer)getInstance()).getClass().getResource(soundPath);
 
 		if (u == null) {
 			StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
