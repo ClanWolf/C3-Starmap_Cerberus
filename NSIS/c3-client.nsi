@@ -8,6 +8,7 @@ Unicode true
 Name "C3-Client_Installer"
 Caption "C3 Client Installer"
 Icon "c3.ico"
+UninstallIcon "c3.ico"
 OutFile "C3-Client-5.1.7_install.exe"
 BrandingText /TRIMRIGHT "ClanWolf.net"
 

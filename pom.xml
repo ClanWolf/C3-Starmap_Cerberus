@@ -24,7 +24,7 @@
 
 		<!-- Versions -->
 		<version.java>12</version.java>
-		<version.javafx>${version.java}</version.javafx>
+		<version.javafx>13</version.javafx>
 		<version.maven-compiler-plugin>3.8.0</version.maven-compiler-plugin>
 		<version.exec-maven-plugin>1.6.0</version.exec-maven-plugin>
 		<version.asm>7.3.1</version.asm>

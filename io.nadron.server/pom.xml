@@ -22,11 +22,11 @@
 
 		<!-- Jackson +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 <!--		This is in jackson-core now -->
-<!--		<dependency>-->
-<!--			<groupId>org.codehaus.jackson</groupId>-->
-<!--			<artifactId>jackson-core-asl</artifactId>-->
-<!--			<version>1.9.14</version>-->
-<!--		</dependency>-->
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-core-asl</artifactId>
+			<version>1.9.13</version>
+		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-core</artifactId>

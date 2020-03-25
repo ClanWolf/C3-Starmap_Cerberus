@@ -244,94 +244,18 @@ public class C3SoundPlayer {
 			soundPath = "/" + soundPath;
 		}
 
+
+
+
+
+		// JavaFX 13 fixes error with JRT:/ url from getResource
+		//TODO: Test runtime image for sound loading
+
+
+
+
+
 		URL u = null;
-
-//		try {
-//			Path p = Paths.get(URI.create("jrt:/modules/net.clanwolf.starmap.client"));
-//			System.out.println("My own JRE's modules:");
-//			Files.list(p).forEach(System.out::println);
-//		} catch(Exception ex) {
-//			System.out.println("Could not read my modules (perhaps not Java 9?).");
-//		}
-
-//		try {
-//			C3Logger.info("Getting url for sound:");
-//			FileSystem fs = FileSystems.getFileSystem(URI.create("jrt:/"));
-//			Path path = fs.getPath(soundPath);
-//
-//			Path targetFile = Paths.get("c:\\temp\\test.me");
-//
-//			try {
-//				Files.copy(path, targetFile, StandardCopyOption.REPLACE_EXISTING);
-//			} catch (IOException ex) {
-//				ex.printStackTrace();
-//				System.err.format("I/O Error when copying file");
-//			}
-//
-//
-//			u = path.toUri().toURL();
-//			C3Logger.info("URL: " + u);
-//			File f = new File(u.toString());
-//			if (f.isFile() && f.canRead()) {
-//				C3Logger.info("File can be accessed!");
-//			} else {
-//				C3Logger.info("File could NOT be accessed!");
-//				u = null;
-//			}
-//
-//
-//		} catch(MalformedURLException mfue) {
-//			C3Logger.info("Could not get the soundfile from JRT (Runtime image), checking other ways...");
-//		}
-
-		try {
-			Path p = Paths.get(URI.create("jrt:/modules"));
-			System.out.println("My own JRE's modules:");
-			Files.list(p).forEach(System.out::println);
-			System.out.println();
-
-			FileSystem fs = FileSystems.getFileSystem(URI.create("jrt:/"));
-			byte[] jlo = Files.readAllBytes(fs.getPath("modules", "net.clanwolf.starmap.client",
-					"sound/fx/beep_02.wav"));
-
-		} catch(Exception ex) {
-			ex.printStackTrace();
-			System.out.println("Could not read my modules (perhaps not Java 9?).");
-		}
-
-
-
-
-
-
-
-
-
-
-
-
-		if (u == null) {
-			C3Logger.info("Loading sound: " + soundPath);
-			C3SoundPlayer inst = new C3SoundPlayer();
-			u = inst.getClass().getResource(soundPath);
-			C3Logger.info("URL: " + u);
-
-			Path path = null;
-			try {
-				path = Paths.get(u.toURI());
-			} catch(URISyntaxException e) {
-				e.printStackTrace();
-			}
-			Path targetFile = Paths.get("c:\\temp\\test.me");
-
-			try {
-				Files.copy(path, targetFile, StandardCopyOption.REPLACE_EXISTING);
-			} catch (IOException ex) {
-				ex.printStackTrace();
-				System.err.format("I/O Error when copying file");
-			}
-
-		}
 
 		if (u == null) {
 			StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
