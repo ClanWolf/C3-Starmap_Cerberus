@@ -46,12 +46,10 @@ import net.clanwolf.starmap.logging.C3Logger;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.nio.file.*;
 import java.util.HashMap;
 
 /**
@@ -285,6 +283,32 @@ public class C3SoundPlayer {
 //		} catch(MalformedURLException mfue) {
 //			C3Logger.info("Could not get the soundfile from JRT (Runtime image), checking other ways...");
 //		}
+
+		try {
+			Path p = Paths.get(URI.create("jrt:/modules"));
+			System.out.println("My own JRE's modules:");
+			Files.list(p).forEach(System.out::println);
+			System.out.println();
+
+			FileSystem fs = FileSystems.getFileSystem(URI.create("jrt:/"));
+			byte[] jlo = Files.readAllBytes(fs.getPath("modules", "net.clanwolf.starmap.client",
+					"sound/fx/beep_02.wav"));
+
+		} catch(Exception ex) {
+			ex.printStackTrace();
+			System.out.println("Could not read my modules (perhaps not Java 9?).");
+		}
+
+
+
+
+
+
+
+
+
+
+
 
 		if (u == null) {
 			C3Logger.info("Loading sound: " + soundPath);
