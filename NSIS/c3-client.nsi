@@ -3,9 +3,12 @@
 ; c3-client.nsi
 ;--------------------------------
 
+Unicode true
+
 Name "C3-Client_Installer"
 Caption "C3 Client Installer"
 Icon "c3.ico"
+UninstallIcon "c3.ico"
 OutFile "C3-Client-5.1.7_install.exe"
 BrandingText /TRIMRIGHT "ClanWolf.net"
 
@@ -41,6 +44,7 @@ Section "C3-Client (required)"
     SectionIn RO
 	SetShellVarContext all
 	SetOutPath $INSTDIR
+	File /r "c3.ico"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\release"
 
 	CreateDirectory $INSTDIR\lib
@@ -289,7 +293,7 @@ Section "C3-Client (required)"
 
 	; Write the uninstall keys for Windows
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayName" "C3-Client"
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayIcon" "$INSTDIR\run.exe"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayIcon" "$INSTDIR\c3.ico"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayVersion" "5.1.7"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "Publisher" "ClanWolf.net [CWG]"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "InstallSource" "$EXEDIR\"
@@ -305,8 +309,9 @@ Section "Start Menu Shortcuts"
 
 	SetOutpath $INSTDIR ; this folder is used as working directory for the following links
 	CreateDirectory "$SMPROGRAMS\C3-Client"
-	CreateShortcut "$SMPROGRAMS\C3-Client\C3-Client.lnk" "$INSTDIR\run.exe" "" "$INSTDIR\run.exe" 0
-	CreateShortcut "$SMPROGRAMS\C3-Client\C3-Client (Debug).lnk" "$INSTDIR\run_debug.exe" "" "$INSTDIR\run_debug.exe" 0
+
+	CreateShortcut "$SMPROGRAMS\C3-Client\C3-Client.lnk" "$INSTDIR\bin\C3-Starmap_Cerberus.bat" "" "$INSTDIR\c3.ico" 0
+	CreateShortCut "$SMPROGRAMS\C3-Client\Remove.lnk" "$INSTDIR\Uninstall.exe" "" "$INSTDIR\c3.ico" 0
 SectionEnd
 
 ;--------------------------------
@@ -484,7 +489,10 @@ Section "Uninstall"
 	Delete $INSTDIR\bin\api-ms-win-core-console-l1-1-0.dll
 	Delete $INSTDIR\bin\server\jvm.dll
 
+	Delete $INSTDIR\c3.ico
 	Delete $INSTDIR\uninstall.exe
+	Delete $SMPROGRAMS\C3-Client\C3-Client.lnk
+	Delete $SMPROGRAMS\C3-Client\Remove.lnk
 
 	RMDir "$INSTDIR\bin\server"
 	RMDir "$INSTDIR\bin"

@@ -1,5 +1,6 @@
 # IntelliJ Idea project files
 .idea/*
+!.idea/runConfigurations/*
 
 io.nadron.client/target/*
 io.nadron.server/target/*

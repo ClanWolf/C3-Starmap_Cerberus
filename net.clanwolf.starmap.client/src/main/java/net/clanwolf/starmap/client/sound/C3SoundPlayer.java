@@ -37,16 +37,19 @@ import javafx.scene.media.MediaPlayer;
 import javafx.util.Duration;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionManager;
-import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.client.net.HTTP;
 import net.clanwolf.starmap.client.util.C3PROPS;
 import net.clanwolf.starmap.client.util.C3Properties;
 import net.clanwolf.starmap.client.util.Internationalization;
+import net.clanwolf.starmap.logging.C3Logger;
 
 import java.io.File;
-import java.io.InputStream;
+import java.io.IOException;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.*;
 import java.util.HashMap;
 
 /**
@@ -216,8 +219,9 @@ public class C3SoundPlayer {
 						soundClip = audioClipCache.get(url.toString());
 						soundClip.stop();
 					} else {
-						// Log.info("Caching sound...");
-						soundClip = new AudioClip(url.toString());
+						String u = url.toString();
+						C3Logger.info("Caching sound. Url: " + u);
+						soundClip = new AudioClip(u);
 						audioClipCache.put(url.toString(), soundClip);
 					}
 					Platform.runLater(() -> soundClip.play(soundVolume));
@@ -239,6 +243,7 @@ public class C3SoundPlayer {
 			soundPath = "/" + soundPath;
 		}
 
+		// JavaFX 13 fixes error with JRT:/ url from getResource
 		URL u = ((C3SoundPlayer)getInstance()).getClass().getResource(soundPath);
 
 		if (u == null) {
