@@ -16,7 +16,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="StoryEditorPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.StoryEditorPaneController">
+<AnchorPane id="StoryEditorPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.StoryEditorPaneController">
   <children>
     <Button id="buttonYes" fx:id="buttonSave" disable="true" layoutX="547.0" layoutY="449.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#handleSaveButtonClick" prefWidth="140.0" styleClass="contentButton" text="save" visible="true">
       <stylesheets>
@@ -83,18 +83,22 @@
               <content>
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Label fx:id="labPathOption1" layoutX="14.0" layoutY="14.0" prefHeight="16.0" prefWidth="146.0" text="Weg 1" />
+                        <Label fx:id="labPathOption1" layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="496.0" text="Weg 1" />
                         <TextField fx:id="tfStoryPath1" layoutX="15.0" layoutY="38.0" prefHeight="22.0" prefWidth="504.0" />
                         <ComboBox fx:id="cbStoryPath1" layoutX="14.0" layoutY="67.0" prefHeight="26.0" prefWidth="507.0" />
-                        <Label fx:id="labPathOption2" layoutX="13.0" layoutY="116.0" prefHeight="16.0" prefWidth="146.0" text="Weg 2" />
-                        <TextField fx:id="tfStoryPath2" layoutX="14.0" layoutY="140.0" prefHeight="22.0" prefWidth="506.0" />
-                        <ComboBox fx:id="cbStoryPath2" layoutX="13.0" layoutY="168.0" prefHeight="26.0" prefWidth="508.0" />
-                        <Label fx:id="labPathOption3" layoutX="13.0" layoutY="214.0" prefHeight="16.0" prefWidth="162.0" text="Weg 3" />
-                        <TextField fx:id="tfStoryPath3" layoutX="14.0" layoutY="238.0" prefHeight="22.0" prefWidth="506.0" />
-                        <ComboBox fx:id="cbStoryPath3" layoutX="13.0" layoutY="267.0" prefHeight="26.0" prefWidth="508.0" />
-                        <Button id="btn_dark-blue" fx:id="btDeleteStoryOption1" ellipsisString="" layoutX="516.0" layoutY="6.0" mnemonicParsing="false" onAction="#handleDeleteStoryOption1" prefHeight="22.0" prefWidth="30.0" styleClass="RPDeleteButton2" />
-                        <Button id="btn_dark-blue" fx:id="btDeleteStoryOption2" ellipsisString="" layoutX="516.0" layoutY="108.0" mnemonicParsing="false" onAction="#handleDeleteStoryOption2" prefHeight="22.0" prefWidth="30.0" styleClass="RPDeleteButton2" />
-                        <Button id="btn_dark-blue" fx:id="btDeleteStoryOption3" ellipsisString="" layoutX="516.0" layoutY="206.0" mnemonicParsing="false" onAction="#handleDeleteStoryOption3" prefHeight="22.0" prefWidth="30.0" styleClass="RPDeleteButton2" />
+                        <Label fx:id="labPathOption2" layoutX="13.0" layoutY="101.0" prefHeight="17.0" prefWidth="496.0" text="Weg 2" />
+                        <TextField fx:id="tfStoryPath2" layoutX="14.0" layoutY="125.0" prefHeight="22.0" prefWidth="506.0" />
+                        <ComboBox fx:id="cbStoryPath2" layoutX="13.0" layoutY="153.0" prefHeight="26.0" prefWidth="508.0" />
+                        <Label fx:id="labPathOption3" layoutX="13.0" layoutY="188.0" prefHeight="17.0" prefWidth="504.0" text="Weg 3" />
+                        <TextField fx:id="tfStoryPath3" layoutX="14.0" layoutY="212.0" prefHeight="22.0" prefWidth="506.0" />
+                        <ComboBox fx:id="cbStoryPath3" layoutX="13.0" layoutY="241.0" prefHeight="26.0" prefWidth="508.0" />
+                        <Button id="btn_dark-blue" fx:id="btDeleteStoryOption1" ellipsisString="" layoutX="522.0" layoutY="33.0" mnemonicParsing="false" onAction="#handleDeleteStoryOption1" prefHeight="22.0" prefWidth="30.0" styleClass="RPDeleteButton2" />
+                        <Button id="btn_dark-blue" fx:id="btDeleteStoryOption2" ellipsisString="" layoutX="521.0" layoutY="120.0" mnemonicParsing="false" onAction="#handleDeleteStoryOption2" prefHeight="22.0" prefWidth="31.0" styleClass="RPDeleteButton2" />
+                        <Button id="btn_dark-blue" fx:id="btDeleteStoryOption3" ellipsisString="" layoutX="522.0" layoutY="207.0" mnemonicParsing="false" onAction="#handleDeleteStoryOption3" prefHeight="22.0" prefWidth="30.0" styleClass="RPDeleteButton2" />
+                        <Label fx:id="labPathOption4" layoutX="13.0" layoutY="275.0" prefHeight="17.0" prefWidth="506.0" text="Weg 4" />
+                        <TextField fx:id="tfStoryPath4" layoutX="14.0" layoutY="298.0" prefHeight="22.0" prefWidth="506.0" />
+                        <ComboBox fx:id="cbStoryPath4" layoutX="13.0" layoutY="325.0" prefHeight="26.0" prefWidth="508.0" />
+                        <Button id="btn_dark-blue" fx:id="btDeleteStoryOption4" ellipsisString="" layoutX="522.0" layoutY="293.0" mnemonicParsing="false" onAction="#handleDeleteStoryOption4" prefHeight="22.0" prefWidth="30.0" styleClass="RPDeleteButton2" />
                      </children>
                   </AnchorPane>
               </content>

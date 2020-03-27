@@ -89,13 +89,13 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	@FXML
 	Button btSortOrderUp, btSortOrderDown;
 	@FXML
-	Button btDeleteStoryOption1, btDeleteStoryOption2, btDeleteStoryOption3;
+	Button btDeleteStoryOption1, btDeleteStoryOption2, btDeleteStoryOption3, btDeleteStoryOption4;
 	@FXML
 	Button btDeleteStoryOptionNextStep;
 	@FXML
 	Label labStoryName, labDescription, labStorytext, labRolePlayOff, labStoryVariante, labImage, labVoice, labMovie, labURL;
 	@FXML
-	Label labPathOption1, labPathOption2, labPathOption3, labDataInputText, labDataInputDataset;
+	Label labPathOption1, labPathOption2, labPathOption3,labPathOption4, labDataInputText, labDataInputDataset;
 	@FXML
 	Label labDiceLabel, labDiceScore, labDiceScoreLess, labDiceScoreEqual, labDiceScoreMore, labAssignedChar, labAllCharacters;
 	@FXML
@@ -103,13 +103,13 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	@FXML
 	ComboBox<ROLEPLAYENTRYTYPES> cbStoryVarianten;
 	@FXML
-	ComboBox<RolePlayStoryDTO> cbStoryPath1, cbStoryPath2, cbStoryPath3, cbNextStep1_V3, cbNextStep2_V3, cbNextStep3_V3, cbNextStep4_V3;
+	ComboBox<RolePlayStoryDTO> cbStoryPath1, cbStoryPath2, cbStoryPath3, cbStoryPath4, cbNextStep1_V3, cbNextStep2_V3, cbNextStep3_V3, cbNextStep4_V3;
 	@FXML
 	ComboBox<RolePlayStoryDTO> cbDiceScoreLess, cbDiceScoreEqual, cbDiceScoreMore;
 	@FXML
 	ComboBox<RolePlayStoryDTO> cbNextStep_V1;
 	@FXML
-	TextField tfStoryPath1, tfStoryPath2, tfStoryPath3, tfLabelText1_V3, tfLabelText2_V3, tfLabelText3_V3, tfLabelText4_V3, tfDiceScore;
+	TextField tfStoryPath1, tfStoryPath2, tfStoryPath3, tfStoryPath4, tfLabelText1_V3, tfLabelText2_V3, tfLabelText3_V3, tfLabelText4_V3, tfDiceScore;
 	@FXML
 	TextArea taDescription, taStorytext, taRolePlayOff;
 	@FXML
@@ -769,8 +769,12 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 		tfStoryPath2.setText(tfStoryPath3.getText());
 		cbStoryPath2.getSelectionModel().select(cbStoryPath3.getValue());
 
-		tfStoryPath3.clear();
-		cbStoryPath3.setValue(null);
+		tfStoryPath3.setText(tfStoryPath4.getText());
+		cbStoryPath3.getSelectionModel().select(cbStoryPath4.getValue());
+
+
+		tfStoryPath4.clear();
+		cbStoryPath4.setValue(null);
 	}
 
 	@FXML
@@ -778,14 +782,27 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 		tfStoryPath2.setText(tfStoryPath3.getText());
 		cbStoryPath2.getSelectionModel().select(cbStoryPath3.getValue());
 
-		tfStoryPath3.clear();
-		cbStoryPath3.setValue(null);
+		tfStoryPath3.setText(tfStoryPath4.getText());
+		cbStoryPath3.getSelectionModel().select(cbStoryPath4.getValue());
+
+		tfStoryPath4.clear();
+		cbStoryPath4.setValue(null);
 	}
 
 	@FXML
 	private void handleDeleteStoryOption3() {
-		tfStoryPath3.clear();
-		cbStoryPath3.setValue(null);
+		tfStoryPath3.setText(tfStoryPath4.getText());
+		cbStoryPath3.getSelectionModel().select(cbStoryPath4.getValue());
+
+		tfStoryPath4.clear();
+		cbStoryPath4.setValue(null);
+
+	}
+
+	@FXML
+	private void handleDeleteStoryOption4() {
+		tfStoryPath4.clear();
+		cbStoryPath4.setValue(null);
 
 	}
 
@@ -959,6 +976,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 		cbStoryPath1.setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
 		cbStoryPath2.setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
 		cbStoryPath3 .setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
+		cbStoryPath4 .setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
 		cbNextStep1_V3.setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
 		cbNextStep2_V3.setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
 		cbNextStep3_V3.setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
@@ -974,6 +992,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 			cbStoryPath1.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
 			cbStoryPath2.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
 			cbStoryPath3.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
+			cbStoryPath4.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
 
 			cbNextStep1_V3.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
 			cbNextStep2_V3.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
@@ -1081,9 +1100,11 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 			tfStoryPath1.setDisable(false);
 			tfStoryPath2.setDisable(false);
 			tfStoryPath3.setDisable(false);
+			tfStoryPath4.setDisable(false);
 			cbStoryPath1.setDisable(false);
 			cbStoryPath2.setDisable(false);
 			cbStoryPath3.setDisable(false);
+			cbStoryPath4.setDisable(false);
 			btDeleteStoryOption1.setDisable(false);
 			btDeleteStoryOption2.setDisable(false);
 			btDeleteStoryOption3.setDisable(false);
@@ -1126,9 +1147,11 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 			tfStoryPath1.setDisable(true);
 			tfStoryPath2.setDisable(true);
 			tfStoryPath3.setDisable(true);
+			tfStoryPath4.setDisable(true);
 			cbStoryPath1.setDisable(true);
 			cbStoryPath2.setDisable(true);
 			cbStoryPath3.setDisable(true);
+			cbStoryPath4.setDisable(true);
 			btDeleteStoryOption1.setDisable(true);
 			btDeleteStoryOption2.setDisable(true);
 			btDeleteStoryOption3.setDisable(true);
@@ -1204,18 +1227,22 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 				tfStoryPath1.setText(selected.getValue().getVar2ID().getOption1Text());
 				tfStoryPath2.setText(selected.getValue().getVar2ID().getOption2Text());
 				tfStoryPath3.setText(selected.getValue().getVar2ID().getOption3Text());
+				tfStoryPath4.setText(selected.getValue().getVar2ID().getOption4Text());
 
 				cbStoryPath1.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getVar2ID().getOption1StoryID()));
 				cbStoryPath2.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getVar2ID().getOption2StoryID()));
 				cbStoryPath3.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getVar2ID().getOption3StoryID()));
+				cbStoryPath4.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getVar2ID().getOption4StoryID()));
 
 			} else {
 				cbStoryPath1.setValue(null);
 				cbStoryPath2.setValue(null);
 				cbStoryPath3.setValue(null);
+				cbStoryPath4.setValue(null);
 				tfStoryPath1.clear();
 				tfStoryPath2.clear();
 				tfStoryPath3.clear();
+				tfStoryPath4.clear();
 			}
 
 			// set data for story variante 3
@@ -1363,10 +1390,14 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 			if (cbStoryPath3.getValue() != null) {
 				rpVar2.setOption3StoryID(cbStoryPath3.getValue().getId());
 			}
+			if (cbStoryPath4.getValue() != null) {
+				rpVar2.setOption4StoryID(cbStoryPath4.getValue().getId());
+			}
 
 			rpVar2.setOption1Text(tfStoryPath1.getText());
 			rpVar2.setOption2Text(tfStoryPath2.getText());
 			rpVar2.setOption3Text(tfStoryPath3.getText());
+			rpVar2.setOption4Text(tfStoryPath4.getText());
 
 			rp.setVar2ID(rpVar2);
 
@@ -1512,6 +1543,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 					labPathOption1.setText(Internationalization.getString("app_rp_storyeditor_story_path_option1"));
 					labPathOption2.setText(Internationalization.getString("app_rp_storyeditor_story_path_option2"));
 					labPathOption3.setText(Internationalization.getString("app_rp_storyeditor_story_path_option3"));
+					labPathOption4.setText(Internationalization.getString("app_rp_storyeditor_story_path_option4"));
 
 					labDataInputText.setText(Internationalization.getString("app_rp_storyeditor_story_datainput_text"));
 					labDataInputDataset.setText(Internationalization.getString("app_rp_storyeditor_story_datainput_dataset"));
@@ -1544,9 +1576,11 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 		tfStoryPath1.clear();
 		tfStoryPath2.clear();
 		tfStoryPath3.clear();
+		tfStoryPath4.clear();
 		cbStoryPath1.setValue(null);
 		cbStoryPath2.setValue(null);
 		cbStoryPath3.setValue(null);
+		cbStoryPath4.setValue(null);
 		tfDiceScore.clear();
 		cbDiceScoreEqual.setValue(null);
 		cbDiceScoreLess.setValue(null);
