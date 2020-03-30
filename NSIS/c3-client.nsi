@@ -15,6 +15,14 @@ BrandingText /TRIMRIGHT "ClanWolf.net"
 InstallDir $PROGRAMFILES64\C3-Client
 InstallDirRegKey HKLM "Software\C3-Client" "Install_Dir"
 RequestExecutionLevel admin
+AddBrandingImage left 130
+SetFont /LANG=${LANG_ENGLISH} "Arial" 9
+
+Function .onGuiInit
+	InitPluginsDir
+	File "/oname=$PluginsDir\inst.bmp" "inst.bmp"
+	SetBrandingImage /resizetofit "$PluginsDir\inst.bmp"
+FunctionEnd
 
 ;--------------------------------
 
@@ -61,10 +69,6 @@ Section "C3-Client (required)"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\fontconfig.properties.src"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\fontconfig.bfc"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\classlist"
-
-	CreateDirectory $INSTDIR\lib\server
-	SetOutpath $INSTDIR\lib\server
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\server\Xusage.txt"
 
 	CreateDirectory $INSTDIR\lib\security
 	SetOutpath $INSTDIR\lib\security
@@ -134,6 +138,12 @@ Section "C3-Client (required)"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.prefs\LICENSE"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.prefs\ASSEMBLY_EXCEPTION"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.prefs\ADDITIONAL_LICENSE_INFO"
+
+	CreateDirectory $INSTDIR\legal\java.net.http
+	SetOutpath $INSTDIR\legal\java.net.http
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.net.http\LICENSE"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.net.http\ASSEMBLY_EXCEPTION"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.net.http\ADDITIONAL_LICENSE_INFO"
 
 	CreateDirectory $INSTDIR\legal\java.logging
 	SetOutpath $INSTDIR\legal\java.logging
@@ -282,6 +292,7 @@ Section "C3-Client (required)"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-errorhandling-l1-1-0.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-debug-l1-1-0.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-datetime-l1-1-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-console-l1-2-0.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-console-l1-1-0.dll"
 
 	CreateDirectory $INSTDIR\bin\server
@@ -337,7 +348,6 @@ Section "Uninstall"
 	Delete $INSTDIR\lib\fontconfig.properties.src
 	Delete $INSTDIR\lib\fontconfig.bfc
 	Delete $INSTDIR\lib\classlist
-	Delete $INSTDIR\lib\server\Xusage.txt
 	Delete $INSTDIR\lib\security\public_suffix_list.dat
 	Delete $INSTDIR\lib\security\default.policy
 	Delete $INSTDIR\lib\security\cacerts
@@ -374,6 +384,9 @@ Section "Uninstall"
 	Delete $INSTDIR\legal\java.prefs\LICENSE
 	Delete $INSTDIR\legal\java.prefs\ASSEMBLY_EXCEPTION
 	Delete $INSTDIR\legal\java.prefs\ADDITIONAL_LICENSE_INFO
+	Delete $INSTDIR\legal\java.net.http\LICENSE
+	Delete $INSTDIR\legal\java.net.http\ASSEMBLY_EXCEPTION
+	Delete $INSTDIR\legal\java.net.http\ADDITIONAL_LICENSE_INFO
 	Delete $INSTDIR\legal\java.logging\LICENSE
 	Delete $INSTDIR\legal\java.logging\ASSEMBLY_EXCEPTION
 	Delete $INSTDIR\legal\java.logging\ADDITIONAL_LICENSE_INFO
@@ -486,6 +499,7 @@ Section "Uninstall"
 	Delete $INSTDIR\bin\api-ms-win-core-errorhandling-l1-1-0.dll
 	Delete $INSTDIR\bin\api-ms-win-core-debug-l1-1-0.dll
 	Delete $INSTDIR\bin\api-ms-win-core-datetime-l1-1-0.dll
+	Delete $INSTDIR\bin\api-ms-win-core-console-l1-2-0.dll
 	Delete $INSTDIR\bin\api-ms-win-core-console-l1-1-0.dll
 	Delete $INSTDIR\bin\server\jvm.dll
 
@@ -507,6 +521,7 @@ Section "Uninstall"
 	RMDir "$INSTDIR\legal\java.datatransfer"
 	RMDir "$INSTDIR\legal\java.desktop"
 	RMDir "$INSTDIR\legal\java.logging"
+	RMDir "$INSTDIR\legal\java.net.http"
 	RMDir "$INSTDIR\legal\java.prefs"
 	RMDir "$INSTDIR\legal\java.scripting"
 	RMDir "$INSTDIR\legal\java.security.sasl"
@@ -518,7 +533,6 @@ Section "Uninstall"
 	RMDir "$INSTDIR\legal\jdk.xml.dom"
 	RMDir "$INSTDIR\legal"
 	RMDir "$INSTDIR\lib\security"
-	RMDir "$INSTDIR\lib\server"
 	RMDir "$INSTDIR\lib"
 
 	RMDir "$INSTDIR"

@@ -15,6 +15,14 @@ BrandingText /TRIMRIGHT "ClanWolf.net"
 InstallDir $PROGRAMFILES64\C3-Client
 InstallDirRegKey HKLM "Software\C3-Client" "Install_Dir"
 RequestExecutionLevel admin
+AddBrandingImage left 130
+SetFont /LANG=${LANG_ENGLISH} "Arial" 9
+
+Function .onGuiInit
+	InitPluginsDir
+	File "/oname=$PluginsDir\inst.bmp" "inst.bmp"
+	SetBrandingImage /resizetofit "$PluginsDir\inst.bmp"
+FunctionEnd
 
 ;--------------------------------
 
