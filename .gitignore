@@ -37,4 +37,11 @@ net.clanwolf.starmap.transfer/target/*
 hs_err_pid*
 
 # javadoc
+/io.nadron.client/doc/javadoc
+/io.nadron.server/doc/javadoc
 /net.clanwolf.starmap.client/doc/javadoc/
+/net.clanwolf.starmap.client.packager/doc/javadoc/
+/net.clanwolf.starmap.client.preloader/doc/javadoc/
+/net.clanwolf.starmap.logging/doc/javadoc/
+/net.clanwolf.starmap.server/doc/javadoc/
+/net.clanwolf.starmap.transfer/doc/javadoc/
