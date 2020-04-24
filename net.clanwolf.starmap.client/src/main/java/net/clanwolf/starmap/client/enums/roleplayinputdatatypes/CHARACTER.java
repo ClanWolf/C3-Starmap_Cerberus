@@ -24,33 +24,21 @@
  * Copyright (c) 2001-2019, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.transfer.enums;
+package net.clanwolf.starmap.client.enums.roleplayinputdatatypes;
 
-/**
- * @author Undertaker
- */
-public enum ROLEPLAYENTRYTYPES {
-	C3_RP_STORY("Story"),
+import net.clanwolf.starmap.client.enums.DATATYPES;
+import net.clanwolf.starmap.client.util.Internationalization;
 
-	C3_RP_CHAPTER("Chapter"),
+public enum CHARACTER {
+	name("charactername", DATATYPES.String),
+	birthyear("birthyear", DATATYPES.Date);
 
-	C3_RP_STEP_V1("Step (Normal Story step)"),
+	private final String labelkey;
+	private final DATATYPES type;
 
-	C3_RP_STEP_V2("Step (Path selection)"),
-
-	C3_RP_STEP_V3("Step (Data input)"),
-
-	C3_RP_STEP_V4("Step (Dice)");
-
-	private final String label;
-
-	ROLEPLAYENTRYTYPES(String label) {
-		this.label = label;
+	CHARACTER(String labelkey, DATATYPES type) {
+		this.labelkey = Internationalization.getString(labelkey);
+		this.type = type;
 	}
-
-	@Override
-	public String toString() {
-		return label;
-	}
-
 }
+

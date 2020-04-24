@@ -103,13 +103,13 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	@FXML
 	ComboBox<ROLEPLAYENTRYTYPES> cbStoryVarianten;
 	@FXML
-	ComboBox<RolePlayStoryDTO> cbStoryPath1, cbStoryPath2, cbStoryPath3, cbStoryPath4, cbNextStep1_V3, cbNextStep2_V3, cbNextStep3_V3, cbNextStep4_V3;
+	ComboBox<RolePlayStoryDTO> cbStoryPath1, cbStoryPath2, cbStoryPath3, cbStoryPath4, cbDatafield1, cbDatafield2, cbDatafield3, cbDatafield4, cbNextStep_V3;
 	@FXML
 	ComboBox<RolePlayStoryDTO> cbDiceScoreLess, cbDiceScoreEqual, cbDiceScoreMore;
 	@FXML
 	ComboBox<RolePlayStoryDTO> cbNextStep_V1;
 	@FXML
-	TextField tfStoryPath1, tfStoryPath2, tfStoryPath3, tfStoryPath4, tfLabelText1_V3, tfLabelText2_V3, tfLabelText3_V3, tfLabelText4_V3, tfDiceScore;
+	TextField tfStoryPath1, tfStoryPath2, tfStoryPath3, tfStoryPath4, tfDiceScore;
 	@FXML
 	TextArea taDescription, taStorytext, taRolePlayOff;
 	@FXML
@@ -125,7 +125,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	@FXML
 	private TextField tfSortOrder;
 	@FXML
-	private TextField tfFormName;
+	private ComboBox cbroleplayinputdatatypes;
 
 	private TreeItem<RolePlayStoryDTO> root;
 	private TreeItem<RolePlayStoryDTO> selected;
@@ -975,12 +975,12 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 		cbNextStep_V1.setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
 		cbStoryPath1.setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
 		cbStoryPath2.setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
-		cbStoryPath3 .setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
-		cbStoryPath4 .setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
-		cbNextStep1_V3.setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
-		cbNextStep2_V3.setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
-		cbNextStep3_V3.setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
-		cbNextStep4_V3.setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
+		cbStoryPath3.setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
+		cbStoryPath4.setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
+		cbDatafield1.setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
+		cbDatafield2.setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
+		cbDatafield3.setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
+		cbDatafield4.setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
 
 		cbStoryVarianten.getItems().setAll(ROLEPLAYENTRYTYPES.values());
 
@@ -994,10 +994,10 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 			cbStoryPath3.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
 			cbStoryPath4.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
 
-			cbNextStep1_V3.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
-			cbNextStep2_V3.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
-			cbNextStep3_V3.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
-			cbNextStep4_V3.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
+			cbDatafield1.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
+			cbDatafield2.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
+			cbDatafield3.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
+			cbDatafield4.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
 
 			cbDiceScoreEqual.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
 			cbDiceScoreLess.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
@@ -1109,11 +1109,10 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 			btDeleteStoryOption2.setDisable(false);
 			btDeleteStoryOption3.setDisable(false);
 
-			tfFormName.setDisable(false);
-			cbNextStep1_V3.setDisable(false);
-			cbNextStep2_V3.setDisable(false);
-			cbNextStep3_V3.setDisable(false);
-			cbNextStep4_V3.setDisable(false);
+			cbDatafield1.setDisable(false);
+			cbDatafield2.setDisable(false);
+			cbDatafield3.setDisable(false);
+			cbDatafield4.setDisable(false);
 
 			tfDiceScore.setDisable(false);
 			cbDiceScoreEqual.setDisable(false);
@@ -1156,11 +1155,10 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 			btDeleteStoryOption2.setDisable(true);
 			btDeleteStoryOption3.setDisable(true);
 
-			tfFormName.setDisable(true);
-			cbNextStep1_V3.setDisable(true);
-			cbNextStep2_V3.setDisable(true);
-			cbNextStep3_V3.setDisable(true);
-			cbNextStep4_V3.setDisable(true);
+			cbDatafield1.setDisable(true);
+			cbDatafield2.setDisable(true);
+			cbDatafield3.setDisable(true);
+			cbDatafield4.setDisable(true);
 
 			tfDiceScore.setDisable(true);
 			cbDiceScoreEqual.setDisable(true);
@@ -1248,28 +1246,8 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 			// set data for story variante 3
 			if (selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V3 && selected.getValue().getVar3ID() != null) {
 
-				tfFormName.setText(selected.getValue().getVar3ID().getFormName());
-				cbNextStep1_V3.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getVar3ID().getNextStoryID()));
-				cbNextStep2_V3.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getVar3ID().getNextStory2ID()));
-				cbNextStep3_V3.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getVar3ID().getNextStory3ID()));
-				cbNextStep4_V3.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getVar3ID().getNextStory4ID()));
-
-				tfLabelText1_V3.setText(selected.getValue().getVar3ID().getLabelText());
-				tfLabelText2_V3.setText(selected.getValue().getVar3ID().getLabelText2());
-				tfLabelText3_V3.setText(selected.getValue().getVar3ID().getLabelText3());
-				tfLabelText4_V3.setText(selected.getValue().getVar3ID().getLabelText4());
-
 			} else {
 
-				tfFormName.clear();
-				cbNextStep1_V3.setValue(null);
-				cbNextStep2_V3.setValue(null);
-				cbNextStep3_V3.setValue(null);
-				cbNextStep4_V3.setValue(null);
-				tfLabelText1_V3.clear();
-				tfLabelText2_V3.clear();
-				tfLabelText3_V3.clear();
-				tfLabelText4_V3.clear();
 			}
 
 			// set data for story variante 4
@@ -1408,40 +1386,17 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 		// set data for variante 3
 		if (rp.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V3) {
 
-			RolePlayStoryVar3DTO rpVar3 = rp.getVar3ID();
-			if (rpVar3 == null) {
-				rpVar3 = new RolePlayStoryVar3DTO();
-				rpVar3.setStory(rp.getId());
-			}
 
-			rpVar3.setFormName(tfFormName.getText());
-			//rpVar3.setNextStoryID(cbNextStep1_V3.getValue().getId());
-			//rpVar3.setNextStory2ID(cbNextStep2_V3.getValue().getId());
-			//rpVar3.setNextStory3ID(cbNextStep3_V3.getValue().getId());
-			//rpVar3.setNextStory4ID(cbNextStep4_V3.getValue().getId());
 
-			if (cbNextStep1_V3.getValue() != null) {
-				rpVar3.setNextStoryID(cbNextStep1_V3.getValue().getId());
-			}
-			if (cbNextStep2_V3.getValue() != null) {
-				rpVar3.setNextStory2ID(cbNextStep2_V3.getValue().getId());
-			}
-			if (cbNextStep3_V3.getValue() != null) {
-				rpVar3.setNextStory3ID(cbNextStep3_V3.getValue().getId());
-			}
-			if (cbNextStep4_V3.getValue() != null) {
-				rpVar3.setNextStory4ID(cbNextStep4_V3.getValue().getId());
-			}
 
-			rpVar3.setLabelText(tfLabelText1_V3.getText());
-			rpVar3.setLabelText2(tfLabelText2_V3.getText());
-			rpVar3.setLabelText3(tfLabelText3_V3.getText());
-			rpVar3.setLabelText4(tfLabelText4_V3.getText());
 
-			rp.setVar3ID(rpVar3);
 
 		} else {
-			rp.setVar3ID(null);
+
+
+
+
+
 		}
 
 		// set data for variante 4
@@ -1588,15 +1543,10 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 
 		cbNextStep_V1.setValue(null);
 
-		tfFormName.clear();
-		tfLabelText1_V3.clear();
-		tfLabelText2_V3.clear();
-		tfLabelText3_V3.clear();
-		tfLabelText4_V3.clear();
-		cbNextStep1_V3.setValue(null);
-		cbNextStep2_V3.setValue(null);
-		cbNextStep3_V3.setValue(null);
-		cbNextStep4_V3.setValue(null);
+		cbDatafield1.setValue(null);
+		cbDatafield2.setValue(null);
+		cbDatafield3.setValue(null);
+		cbDatafield4.setValue(null);
 	}
 
 	private void createListeners() {
@@ -1625,7 +1575,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 			tfImage.textProperty().addListener(editFieldChangeListener);
 			tfVoice.textProperty().addListener(editFieldChangeListener);
 			tfMovie.textProperty().addListener(editFieldChangeListener);
-			tfFormName.textProperty().addListener(editFieldChangeListener);
+			cbroleplayinputdatatypes.valueProperty().addListener(editComboBoxChangeListener);
 			// lvAllCharacters.getSelectionModel().selectedItemProperty().addListener(editComboBoxChangeListener);
 
 		} else {
@@ -1637,7 +1587,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 			tfImage.textProperty().removeListener(editFieldChangeListener);
 			tfVoice.textProperty().removeListener(editFieldChangeListener);
 			tfMovie.textProperty().removeListener(editFieldChangeListener);
-			tfFormName.textProperty().removeListener(editFieldChangeListener);
+			cbroleplayinputdatatypes.valueProperty().removeListener(editComboBoxChangeListener);
 			// lvAllCharacters.getSelectionModel().selectedItemProperty().removeListener(editComboBoxChangeListener);
 		}
 	}
