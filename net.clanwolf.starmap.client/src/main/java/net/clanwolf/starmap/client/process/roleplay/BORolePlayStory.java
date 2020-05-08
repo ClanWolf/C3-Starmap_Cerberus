@@ -534,14 +534,14 @@ public class BORolePlayStory {
 		}
 
 		// Check next step for ROLEPLAYENTRYTYPE C3_RP_STEP_V3
-		if (activeStory != null && activeStory.getVar3ID() != null) {
-			if (activeStory.getVar3ID().getNextStoryID() != null && activeStory.getVar3ID().getNextStoryID().equals(nextStep.getId())
-					|| activeStory.getVar3ID().getNextStory2ID() != null && activeStory.getVar3ID().getNextStory2ID().equals(nextStep.getId())
-					|| activeStory.getVar3ID().getNextStory3ID() != null && activeStory.getVar3ID().getNextStory3ID().equals(nextStep.getId())
-					||activeStory.getVar3ID().getNextStory4ID() != null && activeStory.getVar3ID().getNextStory4ID().equals(nextStep.getId())) {
-				ret = true;
-			}
-		}
+//		if (activeStory != null && activeStory.getVar3ID() != null) {
+//			if (activeStory.getVar3ID().getNextStoryID() != null && activeStory.getVar3ID().getNextStoryID().equals(nextStep.getId())
+//					|| activeStory.getVar3ID().getNextStory2ID() != null && activeStory.getVar3ID().getNextStory2ID().equals(nextStep.getId())
+//					|| activeStory.getVar3ID().getNextStory3ID() != null && activeStory.getVar3ID().getNextStory3ID().equals(nextStep.getId())
+//					||activeStory.getVar3ID().getNextStory4ID() != null && activeStory.getVar3ID().getNextStory4ID().equals(nextStep.getId())) {
+//				ret = true;
+//			}
+//		}
 
 		// Check next step for ROLEPLAYENTRYTYPE C3_RP_STEP_V4
 		if (activeStory != null && activeStory.getVar4ID() != null) {

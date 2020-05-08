@@ -156,23 +156,23 @@ public class RolePlayChoice2PaneController extends AbstractC3RolePlayController 
 
 	}
 
-	@FXML
-	private void handleOnActionbtChoice2(){
-		Long rp = Nexus.getCurrentChar().getStory().getVar3ID().getNextStory2ID();
-		saveNextStep(rp);
-	}
-
-	@FXML
-	private void handleOnActionbtChoice3(){
-		Long rp = Nexus.getCurrentChar().getStory().getVar3ID().getNextStory3ID();
-		saveNextStep(rp);
-	}
-
-	@FXML
-	private void handleOnActionbtChoice4(){
-		Long rp = Nexus.getCurrentChar().getStory().getVar3ID().getNextStory4ID();
-		saveNextStep(rp);
-	}
+//	@FXML
+//	private void handleOnActionbtChoice2(){
+//		Long rp = Nexus.getCurrentChar().getStory().getVar3ID().getNextStory2ID();
+//		saveNextStep(rp);
+//	}
+//
+//	@FXML
+//	private void handleOnActionbtChoice3(){
+//		Long rp = Nexus.getCurrentChar().getStory().getVar3ID().getNextStory3ID();
+//		saveNextStep(rp);
+//	}
+//
+//	@FXML
+//	private void handleOnActionbtChoice4(){
+//		Long rp = Nexus.getCurrentChar().getStory().getVar3ID().getNextStory4ID();
+//		saveNextStep(rp);
+//	}
 
 	/******************************** THIS ********************************/
 	@Override
@@ -208,48 +208,48 @@ public class RolePlayChoice2PaneController extends AbstractC3RolePlayController 
 
 			RolePlayStoryVar3DTO rpVar3 = rpChar.getStory().getVar3ID();
 
-			// rpVar3
-			if(rpVar3.getNextStory4ID() != null){
-				btChoice4.setVisible(true);
-
-				btChoice4.setLayoutX(x);
-				btChoice4.setLayoutY(y);
-
-				y = y - offset;
-
-				btChoice4.setText(rpVar3.getLabelText4());
-			}
-
-			if(rpVar3.getNextStory3ID() != null){
-				btChoice3.setVisible(true);
-
-				btChoice3.setLayoutX(x);
-				btChoice3.setLayoutY(y);
-
-				y = y - offset;
-
-				btChoice3.setText(rpVar3.getLabelText3());
-			}
-
-			if(rpVar3.getNextStory2ID() != null){
-				btChoice2.setVisible(true);
-
-				btChoice2.setLayoutX(x);
-				btChoice2.setLayoutY(y);
-
-				y = y - offset;
-
-				btChoice2.setText(rpVar3.getLabelText2());
-			}
-
-			if(rpVar3.getNextStoryID() != null){
-				btChoice1.setVisible(true);
-
-				btChoice1.setLayoutX(x);
-				btChoice1.setLayoutY(y);
-
-				btChoice1.setText(rpVar3.getLabelText());
-			}
+//			// rpVar3
+//			if(rpVar3.getNextStory4ID() != null){
+//				btChoice4.setVisible(true);
+//
+//				btChoice4.setLayoutX(x);
+//				btChoice4.setLayoutY(y);
+//
+//				y = y - offset;
+//
+//				btChoice4.setText(rpVar3.getLabelText4());
+//			}
+//
+//			if(rpVar3.getNextStory3ID() != null){
+//				btChoice3.setVisible(true);
+//
+//				btChoice3.setLayoutX(x);
+//				btChoice3.setLayoutY(y);
+//
+//				y = y - offset;
+//
+//				btChoice3.setText(rpVar3.getLabelText3());
+//			}
+//
+//			if(rpVar3.getNextStory2ID() != null){
+//				btChoice2.setVisible(true);
+//
+//				btChoice2.setLayoutX(x);
+//				btChoice2.setLayoutY(y);
+//
+//				y = y - offset;
+//
+//				btChoice2.setText(rpVar3.getLabelText2());
+//			}
+//
+//			if(rpVar3.getNextStoryID() != null){
+//				btChoice1.setVisible(true);
+//
+//				btChoice1.setLayoutX(x);
+//				btChoice1.setLayoutY(y);
+//
+//				btChoice1.setText(rpVar3.getLabelText());
+//			}
 		}
 		/*btChoice1.setVisible(false);
 		btChoice2.setVisible(false);

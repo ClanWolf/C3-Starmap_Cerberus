@@ -7,4 +7,5 @@ module net.clanwolf.starmap.transfer {
 	exports net.clanwolf.starmap.transfer;
 	exports net.clanwolf.starmap.transfer.enums;
 	exports net.clanwolf.starmap.transfer.dtos;
+	exports net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes;
 }

@@ -29,6 +29,7 @@ package net.clanwolf.starmap.transfer.dtos;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import net.clanwolf.starmap.transfer.Dto;
+import net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes.CHARACTER;
 
 @JsonIdentityInfo(
 		scope= RolePlayStoryVar3DTO.class,
@@ -39,26 +40,20 @@ public class RolePlayStoryVar3DTO extends Dto {
 	//@Column(name = "ID")
 	private Long id;
 	//@JoinColumn(name = "StoryID")
-	//private RolePlayStoryDTO story;
 	private Long story;
-	//@Column(name = "FormName")
-	private String formName;
 	//@JoinColumn(name = "NextStoryID")
 	private Long nextStoryID;
-	//@Column(name = "LabelText")
-	private String labelText;
-	//@JoinColumn(name = "NextStory2ID")
-	private Long nextStory2ID;
-	//@Column(name = "LabelText2")
-	private String labelText2;
-	//@JoinColumn(name = "NextStory3ID")
-	private Long nextStory3ID;
-	//@Column(name = "LabelText3")
-	private String labelText3;
-	//@JoinColumn(name = "NextStory4ID")
-	private Long nextStory4ID;
-	//@Column(name = "LabelText4")
-	private String labelText4;
+
+	//@Column(name = "DataSet1")
+	private Enum<CHARACTER> DataSet1;
+	//@Column(name = "DataSet2")
+	private Enum<CHARACTER> DataSet2;
+	//@Column(name = "DataSet3")
+	private Enum<CHARACTER> DataSet3;
+	//@Column(name = "DataSet4")
+	private Enum<CHARACTER> DataSet4;
+	//@Column(name = "DataSet5")
+	private Enum<CHARACTER> DataSet5;
 
 	/**
 	 * @return the id
@@ -102,73 +97,43 @@ public class RolePlayStoryVar3DTO extends Dto {
 		this.nextStoryID = nextStoryID;
 	}
 
-	/**
-	 * @return the labelText
-	 */
-	public String getLabelText() {
-		return labelText;
+	public Enum<CHARACTER> getDataSet1() {
+		return DataSet1;
 	}
 
-	/**
-	 * @param labelText the labelText1 to set
-	 */
-	public void setLabelText(String labelText) {
-		this.labelText = labelText;
+	public void setDataSet1(Enum<CHARACTER> dataSet1) {
+		DataSet1 = dataSet1;
 	}
 
-	public Long getNextStory2ID() {
-		return nextStory2ID;
+	public Enum<CHARACTER> getDataSet2() {
+		return DataSet2;
 	}
 
-	public void setNextStory2ID(Long nextStory2ID) {
-		this.nextStory2ID = nextStory2ID;
+	public void setDataSet2(Enum<CHARACTER> dataSet2) {
+		DataSet2 = dataSet2;
 	}
 
-	public String getLabelText2() {
-		return labelText2;
+	public Enum<CHARACTER> getDataSet3() {
+		return DataSet3;
 	}
 
-	public void setLabelText2(String labelText2) {
-		this.labelText2 = labelText2;
+	public void setDataSet3(Enum<CHARACTER> dataSet3) {
+		DataSet3 = dataSet3;
 	}
 
-	public Long getNextStory3ID() {
-		return nextStory3ID;
+	public Enum<CHARACTER> getDataSet4() {
+		return DataSet4;
 	}
 
-	public void setNextStory3ID(Long nextStory3ID) {
-		this.nextStory3ID = nextStory3ID;
+	public void setDataSet4(Enum<CHARACTER> dataSet4) {
+		DataSet4 = dataSet4;
 	}
 
-	public String getLabelText3() {
-		return labelText3;
+	public Enum<CHARACTER> getDataSet5() {
+		return DataSet5;
 	}
 
-	public void setLabelText3(String labelText3) {
-		this.labelText3 = labelText3;
-	}
-
-	public Long getNextStory4ID() {
-		return nextStory4ID;
-	}
-
-	public void setNextStory4ID(Long nextStory4ID) {
-		this.nextStory4ID = nextStory4ID;
-	}
-
-	public String getLabelText4() {
-		return labelText4;
-	}
-
-	public void setLabelText4(String labelText4) {
-		this.labelText4 = labelText4;
-	}
-
-	public String getFormName() {
-		return formName;
-	}
-
-	public void setFormName(String formName) {
-		this.formName = formName;
+	public void setDataSet5(Enum<CHARACTER> dataSet5) {
+		DataSet5 = dataSet5;
 	}
 }

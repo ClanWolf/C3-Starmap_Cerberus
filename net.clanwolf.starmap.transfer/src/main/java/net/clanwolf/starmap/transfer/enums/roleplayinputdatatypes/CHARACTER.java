@@ -24,21 +24,22 @@
  * Copyright (c) 2001-2019, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.client.enums.roleplayinputdatatypes;
+package net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes;
 
-import net.clanwolf.starmap.client.enums.DATATYPES;
-import net.clanwolf.starmap.client.util.Internationalization;
+import net.clanwolf.starmap.transfer.enums.DATATYPES;
+
+//	System.out.println(Internationalization.getString(CHARACTER.CHARNAME.labelkey));
 
 public enum CHARACTER {
-	name("charactername", DATATYPES.String),
-	birthyear("birthyear", DATATYPES.Date);
+	CHARNAME( "charname", DATATYPES.String),
+	LASTNAME( "lastname", DATATYPES.String),
+	BIRTHDATE("birthdate", DATATYPES.Date);
 
-	private final String labelkey;
-	private final DATATYPES type;
+	public final String labelkey;
+	public final DATATYPES type;
 
 	CHARACTER(String labelkey, DATATYPES type) {
-		this.labelkey = Internationalization.getString(labelkey);
+		this.labelkey = labelkey;
 		this.type = type;
 	}
 }
-

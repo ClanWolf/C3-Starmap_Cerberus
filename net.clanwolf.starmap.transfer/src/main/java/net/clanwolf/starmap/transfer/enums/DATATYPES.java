@@ -1,4 +1,4 @@
-package net.clanwolf.starmap.client.enums;
+package net.clanwolf.starmap.transfer.enums;
 
 public enum DATATYPES {
 	String,
