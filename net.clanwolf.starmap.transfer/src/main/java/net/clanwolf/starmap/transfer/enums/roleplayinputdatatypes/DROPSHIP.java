@@ -30,24 +30,20 @@ import net.clanwolf.starmap.transfer.enums.DATATYPES;
 
 //	System.out.println(Internationalization.getString(CHARACTER.CHARNAME.labelkey));
 
-public enum CHARACTER {
-	CHARNAME( "charname", DATATYPES.String),
-	LASTNAME( "lastname", DATATYPES.String),
-	BIRTHDATE("birthdate", DATATYPES.Date);
-
-	private String name = "character";
+public enum DROPSHIP {
+	SHIPNAME( "shipname", DATATYPES.String),
+	SIZE( "size", DATATYPES.String);
 
 	public final String labelkey;
 	public final DATATYPES type;
 
-	CHARACTER(String labelkey, DATATYPES type) {
+	DROPSHIP(String labelkey, DATATYPES type) {
 		this.labelkey = labelkey;
 		this.type = type;
 	}
 
 	@Override
 	public String toString() {
-		return "app_rp_storyeditor_roleplayinputdatatypes_CHARACTER_" + labelkey;
+		return "roleplayinputdatatypes.dropship." + labelkey;
 	}
-
 }

@@ -117,7 +117,7 @@
                         <Label fx:id="labDataInputText4" layoutX="14.0" layoutY="222.0" prefHeight="16.0" prefWidth="88.0" text="Datenfeld 4" />
                         <Label fx:id="labNextStep" layoutX="14.0" layoutY="308.0" prefHeight="16.0" prefWidth="88.0" text="Next Step" />
                         <ComboBox fx:id="cbDatafield4" layoutX="101.0" layoutY="217.0" prefHeight="26.0" prefWidth="427.0" />
-                        <ComboBox fx:id="cbroleplayinputdatatypes" layoutX="128.0" layoutY="9.0" prefHeight="26.0" prefWidth="401.0" />
+                        <ComboBox fx:id="cbroleplayinputdatatypes" layoutX="128.0" layoutY="9.0" onAction="#handleActionInputDatatTypes" prefHeight="26.0" prefWidth="401.0" />
                         <ComboBox fx:id="cbNextStep_V3" layoutX="104.0" layoutY="303.0" prefHeight="26.0" prefWidth="422.0" />
                         <Label fx:id="labDataInputText5" layoutX="14.0" layoutY="265.0" prefHeight="16.0" prefWidth="88.0" text="Datenfeld 5" />
                         <ComboBox fx:id="cbDatafield5" layoutX="100.0" layoutY="260.0" prefHeight="26.0" prefWidth="427.0" />

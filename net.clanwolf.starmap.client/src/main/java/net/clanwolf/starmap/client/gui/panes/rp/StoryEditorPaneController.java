@@ -49,6 +49,9 @@ import net.clanwolf.starmap.client.util.Tools;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.*;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
+import net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes.CHARACTER;
+import net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes.DROPSHIP;
+import net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes.TYPELIST;
 
 import javax.mail.Message;
 import java.io.File;
@@ -103,7 +106,9 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	@FXML
 	ComboBox<ROLEPLAYENTRYTYPES> cbStoryVarianten;
 	@FXML
-	ComboBox<RolePlayStoryDTO> cbStoryPath1, cbStoryPath2, cbStoryPath3, cbStoryPath4, cbDatafield1, cbDatafield2, cbDatafield3, cbDatafield4, cbNextStep_V3;
+	ComboBox<RolePlayStoryDTO> cbStoryPath1, cbStoryPath2, cbStoryPath3, cbStoryPath4, cbNextStep_V3;
+	@FXML
+	ComboBox<Enum> cbDatafield1, cbDatafield2, cbDatafield3, cbDatafield4, cbDatafield5,cbroleplayinputdatatypes;
 	@FXML
 	ComboBox<RolePlayStoryDTO> cbDiceScoreLess, cbDiceScoreEqual, cbDiceScoreMore;
 	@FXML
@@ -124,8 +129,6 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	private Label labImageAction, labVoiceAction, labMovieAction;
 	@FXML
 	private TextField tfSortOrder;
-	@FXML
-	private ComboBox cbroleplayinputdatatypes;
 
 	private TreeItem<RolePlayStoryDTO> root;
 	private TreeItem<RolePlayStoryDTO> selected;
@@ -824,6 +827,25 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 
 	}
 
+	@FXML
+	private void handleActionInputDatatTypes(){
+		if(cbroleplayinputdatatypes.getSelectionModel().getSelectedItem() == TYPELIST.CHARACTER) {
+			cbDatafield1.getItems().setAll(CHARACTER.values());
+			cbDatafield2.getItems().setAll(CHARACTER.values());
+			cbDatafield3.getItems().setAll(CHARACTER.values());
+			cbDatafield4.getItems().setAll(CHARACTER.values());
+			cbDatafield5.getItems().setAll(CHARACTER.values());
+
+		} else if(cbroleplayinputdatatypes.getSelectionModel().getSelectedItem() == TYPELIST.DROPSHIP) {
+			cbDatafield1.getItems().setAll(DROPSHIP.values());
+			cbDatafield2.getItems().setAll(DROPSHIP.values());
+			cbDatafield3.getItems().setAll(DROPSHIP.values());
+			cbDatafield4.getItems().setAll(DROPSHIP.values());
+			cbDatafield5.getItems().setAll(DROPSHIP.values());
+		}
+
+	}
+
 	/* ----------------- FXML end ----------------- */
 
 	private File callFileChooser(String filterName, String filter) {
@@ -973,16 +995,31 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	 */
 	private void initCombobox() {
 		cbNextStep_V1.setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
+
 		cbStoryPath1.setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
 		cbStoryPath2.setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
 		cbStoryPath3.setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
 		cbStoryPath4.setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
-		cbDatafield1.setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
-		cbDatafield2.setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
-		cbDatafield3.setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
-		cbDatafield4.setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
 
-		cbStoryVarianten.getItems().setAll(ROLEPLAYENTRYTYPES.values());
+		// Variante 3
+		cbroleplayinputdatatypes.setCellFactory(rpDataInputListView -> new RPCellFactoryDataInput<>());
+		cbDatafield1.setCellFactory(rpDataInputListView -> new RPCellFactoryDataInput<>());
+		cbDatafield2.setCellFactory(rpDataInputListView -> new RPCellFactoryDataInput<>());
+		cbDatafield3.setCellFactory(rpDataInputListView -> new RPCellFactoryDataInput<>());
+		cbDatafield4.setCellFactory(rpDataInputListView -> new RPCellFactoryDataInput<>());
+		cbDatafield5.setCellFactory(rpDataInputListView -> new RPCellFactoryDataInput<>());
+
+		/*cbDatafield1.setButtonCell(new ListCell<>(){
+			@Override
+			protected void updateItem(Enum item, boolean empty) {
+				super.updateItem(item, empty);
+				if (!empty) {
+					setText(null);
+				} else {
+					setText(Internationalization.getString(item.toString()));
+				}
+			}
+		});*/
 
 	}
 
@@ -994,16 +1031,17 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 			cbStoryPath3.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
 			cbStoryPath4.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
 
-			cbDatafield1.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
-			cbDatafield2.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
-			cbDatafield3.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
-			cbDatafield4.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
-
 			cbDiceScoreEqual.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
 			cbDiceScoreLess.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
 			cbDiceScoreMore.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
 
 			cbNextStep_V1.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
+
+			cbStoryVarianten.getItems().setAll(ROLEPLAYENTRYTYPES.values());
+
+			cbroleplayinputdatatypes.getItems().setAll(TYPELIST.values());
+
+			cbNextStep_V3.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
 
 		}
 	}
@@ -1500,7 +1538,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 					labPathOption3.setText(Internationalization.getString("app_rp_storyeditor_story_path_option3"));
 					labPathOption4.setText(Internationalization.getString("app_rp_storyeditor_story_path_option4"));
 
-					labDataInputText.setText(Internationalization.getString("app_rp_storyeditor_story_datainput_text"));
+//					labDataInputText.setText(Internationalization.getString("app_rp_storyeditor_story_datainput_text"));
 					labDataInputDataset.setText(Internationalization.getString("app_rp_storyeditor_story_datainput_dataset"));
 					//labDataInputStep.setText(Internationalization.getString("app_rp_storyeditor_story_datainput_step"));
 
@@ -1626,6 +1664,21 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 				setText(null);
 			} else {
 				setText(item.getStoryName() + " (" + item.getSortOrder().toString() + ")");
+			}
+		}
+
+	}
+
+	private final class RPCellFactoryDataInput<Enum> extends ListCell<Enum> {
+
+		@Override
+		protected void updateItem(Enum item, boolean empty) {
+			super.updateItem(item, empty);
+			if (empty) {
+				setText(null);
+			} else {
+				setText(Internationalization.getString(item.toString()));
+
 			}
 		}
 
