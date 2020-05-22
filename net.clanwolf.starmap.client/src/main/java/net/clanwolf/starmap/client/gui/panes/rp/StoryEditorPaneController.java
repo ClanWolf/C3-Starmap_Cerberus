@@ -35,6 +35,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
 import javafx.util.Callback;
+import javafx.util.StringConverter;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
@@ -1009,17 +1010,12 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 		cbDatafield4.setCellFactory(rpDataInputListView -> new RPCellFactoryDataInput<>());
 		cbDatafield5.setCellFactory(rpDataInputListView -> new RPCellFactoryDataInput<>());
 
-		/*cbDatafield1.setButtonCell(new ListCell<>(){
-			@Override
-			protected void updateItem(Enum item, boolean empty) {
-				super.updateItem(item, empty);
-				if (!empty) {
-					setText(null);
-				} else {
-					setText(Internationalization.getString(item.toString()));
-				}
-			}
-		});*/
+		cbroleplayinputdatatypes.setConverter(new EnumStringConverter());
+		cbDatafield1.setConverter(new EnumStringConverter());
+		cbDatafield2.setConverter(new EnumStringConverter());
+		cbDatafield3.setConverter(new EnumStringConverter());
+		cbDatafield4.setConverter(new EnumStringConverter());
+		cbDatafield5.setConverter(new EnumStringConverter());
 
 	}
 
@@ -1040,6 +1036,12 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 			cbStoryVarianten.getItems().setAll(ROLEPLAYENTRYTYPES.values());
 
 			cbroleplayinputdatatypes.getItems().setAll(TYPELIST.values());
+
+			cbDatafield1.getItems().setAll(CHARACTER.values());
+			cbDatafield2.getItems().setAll(CHARACTER.values());
+			cbDatafield3.getItems().setAll(CHARACTER.values());
+			cbDatafield4.getItems().setAll(CHARACTER.values());
+			cbDatafield5.getItems().setAll(CHARACTER.values());
 
 			cbNextStep_V3.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
 
@@ -1683,4 +1685,20 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 		}
 
 	}
+	public class EnumStringConverter extends StringConverter<Enum> {
+
+		@Override
+		public String toString(Enum object) {
+			if(object != null){
+				return Internationalization.getString(object.toString());
+			}
+			return null;
+		}
+
+		@Override
+		public Enum fromString(String string) {
+			return null;
+		}
+	}
+
 }
