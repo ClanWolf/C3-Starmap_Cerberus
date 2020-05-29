@@ -26,28 +26,18 @@
  */
 package net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes;
 
-import net.clanwolf.starmap.transfer.enums.DATATYPES;
+public enum ROLEPLAYOBJECTTYPES {
+	CHARACTER ("CHARACTER"),
+	DROPSHIP ("DROPSHIP");
 
-//	System.out.println(Internationalization.getString(CHARACTER.CHARNAME.labelkey));
+	private String labelkey;
 
-public enum CHARACTER {
-	CHARNAME( "charname", DATATYPES.String),
-	LASTNAME( "lastname", DATATYPES.String),
-	BIRTHDATE("birthdate", DATATYPES.Date);
-
-	private String name = "character";
-
-	public final String labelkey;
-	public final DATATYPES type;
-
-	CHARACTER(String labelkey, DATATYPES type) {
+	ROLEPLAYOBJECTTYPES(String labelkey){
 		this.labelkey = labelkey;
-		this.type = type;
 	}
 
 	@Override
 	public String toString() {
-		return "app_rp_storyeditor_roleplayinputdatatypes_CHARACTER_" + labelkey;
+		return "app_rp_storyeditor_roleplayobjecttypes_" + labelkey;
 	}
-
 }

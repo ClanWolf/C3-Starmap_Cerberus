@@ -50,11 +50,9 @@ import net.clanwolf.starmap.client.util.Tools;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.*;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
-import net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes.CHARACTER;
-import net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes.DROPSHIP;
-import net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes.TYPELIST;
+import net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes.ROLEPLAYINPUTDATATYPES;
+import net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes.ROLEPLAYOBJECTTYPES;
 
-import javax.mail.Message;
 import java.io.File;
 import java.net.URL;
 import java.nio.file.Paths;
@@ -830,20 +828,52 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 
 	@FXML
 	private void handleActionInputDatatTypes(){
-		if(cbroleplayinputdatatypes.getSelectionModel().getSelectedItem() == TYPELIST.CHARACTER) {
-			cbDatafield1.getItems().setAll(CHARACTER.values());
-			cbDatafield2.getItems().setAll(CHARACTER.values());
-			cbDatafield3.getItems().setAll(CHARACTER.values());
-			cbDatafield4.getItems().setAll(CHARACTER.values());
-			cbDatafield5.getItems().setAll(CHARACTER.values());
 
-		} else if(cbroleplayinputdatatypes.getSelectionModel().getSelectedItem() == TYPELIST.DROPSHIP) {
-			cbDatafield1.getItems().setAll(DROPSHIP.values());
-			cbDatafield2.getItems().setAll(DROPSHIP.values());
-			cbDatafield3.getItems().setAll(DROPSHIP.values());
-			cbDatafield4.getItems().setAll(DROPSHIP.values());
-			cbDatafield5.getItems().setAll(DROPSHIP.values());
+		ArrayList<ROLEPLAYINPUTDATATYPES> dataList = new ArrayList<>();
+
+		for(ROLEPLAYINPUTDATATYPES t : ROLEPLAYINPUTDATATYPES.values()) {
+			if(t.types == cbroleplayinputdatatypes.getSelectionModel().getSelectedItem()){
+				dataList.add(t);
+			}
 		}
+
+		cbDatafield1.getItems().setAll(dataList);
+		cbDatafield2.getItems().setAll(dataList);
+		cbDatafield3.getItems().setAll(dataList);
+		cbDatafield4.getItems().setAll(dataList);
+		cbDatafield5.getItems().setAll(dataList);
+
+		/*if(cbroleplayinputdatatypes.getSelectionModel().getSelectedItem() == ROLEPLAYOBJECTTYPES.CHARACTER) {
+
+			ArrayList<ROLEPLAYINPUTDATATYPES> dataList = new ArrayList<>();
+
+			for(ROLEPLAYINPUTDATATYPES t : ROLEPLAYINPUTDATATYPES.values()) {
+				if(t.types == cbroleplayinputdatatypes.getSelectionModel().getSelectedItem()){
+					dataList.add(t);
+				}
+			}
+
+			cbDatafield1.getItems().setAll(dataList);
+			cbDatafield2.getItems().setAll(dataList);
+			cbDatafield3.getItems().setAll(dataList);
+			cbDatafield4.getItems().setAll(dataList);
+			cbDatafield5.getItems().setAll(dataList);
+
+		} else if(cbroleplayinputdatatypes.getSelectionModel().getSelectedItem() == ROLEPLAYOBJECTTYPES.DROPSHIP) {
+			ArrayList<ROLEPLAYINPUTDATATYPES> dataList = new ArrayList<>();
+
+			for(ROLEPLAYINPUTDATATYPES t : ROLEPLAYINPUTDATATYPES.values()) {
+				if(t.types == ROLEPLAYOBJECTTYPES.DROPSHIP){
+					dataList.add(t);
+				}
+			}
+
+			cbDatafield1.getItems().setAll(dataList);
+			cbDatafield2.getItems().setAll(dataList);
+			cbDatafield3.getItems().setAll(dataList);
+			cbDatafield4.getItems().setAll(dataList);
+			cbDatafield5.getItems().setAll(dataList);
+		}*/
 
 	}
 
@@ -1035,13 +1065,13 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 
 			cbStoryVarianten.getItems().setAll(ROLEPLAYENTRYTYPES.values());
 
-			cbroleplayinputdatatypes.getItems().setAll(TYPELIST.values());
+			cbroleplayinputdatatypes.getItems().setAll(ROLEPLAYOBJECTTYPES.values());
 
-			cbDatafield1.getItems().setAll(CHARACTER.values());
-			cbDatafield2.getItems().setAll(CHARACTER.values());
-			cbDatafield3.getItems().setAll(CHARACTER.values());
-			cbDatafield4.getItems().setAll(CHARACTER.values());
-			cbDatafield5.getItems().setAll(CHARACTER.values());
+			cbDatafield1.getItems().setAll(ROLEPLAYINPUTDATATYPES.values());
+			cbDatafield2.getItems().setAll(ROLEPLAYINPUTDATATYPES.values());
+			cbDatafield3.getItems().setAll(ROLEPLAYINPUTDATATYPES.values());
+			cbDatafield4.getItems().setAll(ROLEPLAYINPUTDATATYPES.values());
+			cbDatafield5.getItems().setAll(ROLEPLAYINPUTDATATYPES.values());
 
 			cbNextStep_V3.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
 

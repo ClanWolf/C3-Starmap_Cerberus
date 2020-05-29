@@ -29,7 +29,7 @@ package net.clanwolf.starmap.server.persistence.pojos;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import net.clanwolf.starmap.server.persistence.Pojo;
-import net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes.CHARACTER;
+import net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes.ROLEPLAYINPUTDATATYPES;
 
 import javax.persistence.*;
 
@@ -56,19 +56,19 @@ public class RolePlayStoryVar3POJO extends Pojo {
 	private Long nextStoryID;
 
 	@Column(name = "DataSet1")
-	private Enum<CHARACTER> dataSet1;
+	private Enum<ROLEPLAYINPUTDATATYPES> dataSet1;
 
 	@Column(name = "DataSet2")
-	private Enum<CHARACTER> dataSet2;
+	private Enum<ROLEPLAYINPUTDATATYPES> dataSet2;
 
 	@Column(name = "DataSet3")
-	private Enum<CHARACTER> dataSet3;
+	private Enum<ROLEPLAYINPUTDATATYPES> dataSet3;
 
 	@Column(name = "DataSet4")
-	private Enum<CHARACTER> dataSet4;
+	private Enum<ROLEPLAYINPUTDATATYPES> dataSet4;
 
 	@Column(name = "DataSet5")
-	private Enum<CHARACTER> dataSet5;
+	private Enum<ROLEPLAYINPUTDATATYPES> dataSet5;
 
 	/**
 	 * @return the id
@@ -112,43 +112,43 @@ public class RolePlayStoryVar3POJO extends Pojo {
 		this.nextStoryID = nextStoryID;
 	}
 
-	public Enum<CHARACTER> getDataSet1() {
+	public Enum<ROLEPLAYINPUTDATATYPES> getDataSet1() {
 		return dataSet1;
 	}
 
-	public void setDataSet1(Enum<CHARACTER> dataSet1) {
+	public void setDataSet1(Enum<ROLEPLAYINPUTDATATYPES> dataSet1) {
 		this.dataSet1 = dataSet1;
 	}
 
-	public Enum<CHARACTER> getDataSet2() {
+	public Enum<ROLEPLAYINPUTDATATYPES> getDataSet2() {
 		return dataSet2;
 	}
 
-	public void setDataSet2(Enum<CHARACTER> dataSet2) {
+	public void setDataSet2(Enum<ROLEPLAYINPUTDATATYPES> dataSet2) {
 		this.dataSet2 = dataSet2;
 	}
 
-	public Enum<CHARACTER> getDataSet3() {
+	public Enum<ROLEPLAYINPUTDATATYPES> getDataSet3() {
 		return dataSet3;
 	}
 
-	public void setDataSet3(Enum<CHARACTER> dataSet3) {
+	public void setDataSet3(Enum<ROLEPLAYINPUTDATATYPES> dataSet3) {
 		this.dataSet3 = dataSet3;
 	}
 
-	public Enum<CHARACTER> getDataSet4() {
+	public Enum<ROLEPLAYINPUTDATATYPES> getDataSet4() {
 		return dataSet4;
 	}
 
-	public void setDataSet4(Enum<CHARACTER> dataSet4) {
+	public void setDataSet4(Enum<ROLEPLAYINPUTDATATYPES> dataSet4) {
 		this.dataSet4 = dataSet4;
 	}
 
-	public Enum<CHARACTER> getDataSet5() {
+	public Enum<ROLEPLAYINPUTDATATYPES> getDataSet5() {
 		return dataSet5;
 	}
 
-	public void setDataSet5(Enum<CHARACTER> dataSet5) {
+	public void setDataSet5(Enum<ROLEPLAYINPUTDATATYPES> dataSet5) {
 		this.dataSet5 = dataSet5;
 	}
 }

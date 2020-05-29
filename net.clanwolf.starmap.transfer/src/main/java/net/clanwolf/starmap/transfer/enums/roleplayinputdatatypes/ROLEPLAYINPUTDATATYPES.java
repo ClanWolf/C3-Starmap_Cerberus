@@ -30,20 +30,29 @@ import net.clanwolf.starmap.transfer.enums.DATATYPES;
 
 //	System.out.println(Internationalization.getString(CHARACTER.CHARNAME.labelkey));
 
-public enum DROPSHIP {
-	SHIPNAME( "shipname", DATATYPES.String),
-	SIZE( "size", DATATYPES.String);
+public enum ROLEPLAYINPUTDATATYPES {
+	// CHARACTER
+	CHARNAME( "charname", DATATYPES.String, ROLEPLAYOBJECTTYPES.CHARACTER),
+	LASTNAME( "lastname", DATATYPES.String, ROLEPLAYOBJECTTYPES.CHARACTER),
+	BIRTHDATE("birthdate", DATATYPES.Date, ROLEPLAYOBJECTTYPES.CHARACTER),
+
+	// DROPSHIP
+	SHIPNAME( "shipname", DATATYPES.String, ROLEPLAYOBJECTTYPES.DROPSHIP),
+	SIZE( "size", DATATYPES.String, ROLEPLAYOBJECTTYPES.DROPSHIP);
 
 	public final String labelkey;
-	public final DATATYPES type;
+	public final DATATYPES datatype;
+	public final ROLEPLAYOBJECTTYPES types;
 
-	DROPSHIP(String labelkey, DATATYPES type) {
+	ROLEPLAYINPUTDATATYPES(String labelkey, DATATYPES datatype, ROLEPLAYOBJECTTYPES types) {
 		this.labelkey = labelkey;
-		this.type = type;
+		this.datatype = datatype;
+		this.types = types;
 	}
 
 	@Override
 	public String toString() {
-		return "roleplayinputdatatypes.dropship." + labelkey;
+		return "app_rp_storyeditor_roleplayinputdatatypes_" + ROLEPLAYOBJECTTYPES.CHARACTER + "_" + labelkey;
 	}
+
 }
