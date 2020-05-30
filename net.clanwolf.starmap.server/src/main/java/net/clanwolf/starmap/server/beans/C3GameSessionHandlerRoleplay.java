@@ -85,13 +85,6 @@ public class C3GameSessionHandlerRoleplay {
 				}
 			}
 
-			// Test
-			/*RolePlayStoryVar3POJO t1 = rp.getVar3ID();
-			t1.setDataSet1(ROLEPLAYINPUTDATATYPES.CHARNAME);
-			t1.setDataSet2(null);
-			t1.setDataSet3(null);
-			t1.setDataSet4(null);
-			t1.setDataSet5(null);*/
 			/* Save RolePlayStoryPOJO */
 			if (rp.getId() == null) {
 				dao.save(C3GameSessionHandler.getC3UserID(session), rp);
