@@ -45,15 +45,15 @@ public class RolePlayStoryVar3DTO extends Dto {
 	private Long nextStoryID;
 
 	//@Column(name = "DataSet1")
-	private Enum<ROLEPLAYINPUTDATATYPES> DataSet1;
+	private ROLEPLAYINPUTDATATYPES DataSet1;
 	//@Column(name = "DataSet2")
-	private Enum<ROLEPLAYINPUTDATATYPES> DataSet2;
+	private ROLEPLAYINPUTDATATYPES DataSet2;
 	//@Column(name = "DataSet3")
-	private Enum<ROLEPLAYINPUTDATATYPES> DataSet3;
+	private ROLEPLAYINPUTDATATYPES DataSet3;
 	//@Column(name = "DataSet4")
-	private Enum<ROLEPLAYINPUTDATATYPES> DataSet4;
+	private ROLEPLAYINPUTDATATYPES DataSet4;
 	//@Column(name = "DataSet5")
-	private Enum<ROLEPLAYINPUTDATATYPES> DataSet5;
+	private ROLEPLAYINPUTDATATYPES DataSet5;
 
 	/**
 	 * @return the id
@@ -97,43 +97,43 @@ public class RolePlayStoryVar3DTO extends Dto {
 		this.nextStoryID = nextStoryID;
 	}
 
-	public Enum<ROLEPLAYINPUTDATATYPES> getDataSet1() {
+	public ROLEPLAYINPUTDATATYPES getDataSet1() {
 		return DataSet1;
 	}
 
-	public void setDataSet1(Enum<ROLEPLAYINPUTDATATYPES> dataSet1) {
+	public void setDataSet1(ROLEPLAYINPUTDATATYPES dataSet1) {
 		DataSet1 = dataSet1;
 	}
 
-	public Enum<ROLEPLAYINPUTDATATYPES> getDataSet2() {
+	public ROLEPLAYINPUTDATATYPES getDataSet2() {
 		return DataSet2;
 	}
 
-	public void setDataSet2(Enum<ROLEPLAYINPUTDATATYPES> dataSet2) {
+	public void setDataSet2(ROLEPLAYINPUTDATATYPES dataSet2) {
 		DataSet2 = dataSet2;
 	}
 
-	public Enum<ROLEPLAYINPUTDATATYPES> getDataSet3() {
+	public ROLEPLAYINPUTDATATYPES getDataSet3() {
 		return DataSet3;
 	}
 
-	public void setDataSet3(Enum<ROLEPLAYINPUTDATATYPES> dataSet3) {
+	public void setDataSet3(ROLEPLAYINPUTDATATYPES dataSet3) {
 		DataSet3 = dataSet3;
 	}
 
-	public Enum<ROLEPLAYINPUTDATATYPES> getDataSet4() {
+	public ROLEPLAYINPUTDATATYPES getDataSet4() {
 		return DataSet4;
 	}
 
-	public void setDataSet4(Enum<ROLEPLAYINPUTDATATYPES> dataSet4) {
+	public void setDataSet4(ROLEPLAYINPUTDATATYPES dataSet4) {
 		DataSet4 = dataSet4;
 	}
 
-	public Enum<ROLEPLAYINPUTDATATYPES> getDataSet5() {
+	public ROLEPLAYINPUTDATATYPES getDataSet5() {
 		return DataSet5;
 	}
 
-	public void setDataSet5(Enum<ROLEPLAYINPUTDATATYPES> dataSet5) {
+	public void setDataSet5(ROLEPLAYINPUTDATATYPES dataSet5) {
 		DataSet5 = dataSet5;
 	}
 }

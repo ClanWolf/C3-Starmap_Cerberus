@@ -33,10 +33,12 @@ import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.RolePlayCharacter
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.RolePlayStoryDAO;
 import net.clanwolf.starmap.server.persistence.pojos.RolePlayCharacterPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.RolePlayStoryPOJO;
+import net.clanwolf.starmap.server.persistence.pojos.RolePlayStoryVar3POJO;
 import net.clanwolf.starmap.server.persistence.pojos.UserPOJO;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
+import net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes.ROLEPLAYINPUTDATATYPES;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -83,6 +85,13 @@ public class C3GameSessionHandlerRoleplay {
 				}
 			}
 
+			// Test
+			/*RolePlayStoryVar3POJO t1 = rp.getVar3ID();
+			t1.setDataSet1(ROLEPLAYINPUTDATATYPES.CHARNAME);
+			t1.setDataSet2(null);
+			t1.setDataSet3(null);
+			t1.setDataSet4(null);
+			t1.setDataSet5(null);*/
 			/* Save RolePlayStoryPOJO */
 			if (rp.getId() == null) {
 				dao.save(C3GameSessionHandler.getC3UserID(session), rp);

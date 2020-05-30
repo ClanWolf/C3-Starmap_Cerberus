@@ -108,19 +108,19 @@
                 <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
                         <Label fx:id="labDataInputText1" layoutX="14.0" layoutY="82.0" prefHeight="16.0" prefWidth="88.0" text="Datenfeld 1" />
-                        <ComboBox fx:id="cbDatafield1" layoutX="101.0" layoutY="77.0" prefHeight="26.0" prefWidth="427.0" />
-                        <Label fx:id="labDataInputDataset" layoutX="14.0" layoutY="14.0" prefHeight="16.0" prefWidth="102.0" text="Datenfeldliste" />
-                        <Label fx:id="labDataInputText2" layoutX="14.0" layoutY="126.0" prefHeight="16.0" prefWidth="88.0" text="Datenfeld 2" />
-                        <ComboBox fx:id="cbDatafield2" layoutX="101.0" layoutY="121.0" prefHeight="26.0" prefWidth="427.0" />
-                        <ComboBox fx:id="cbDatafield3" layoutX="101.0" layoutY="170.0" prefHeight="26.0" prefWidth="425.0" />
-                        <Label fx:id="labDataInputText3" layoutX="14.0" layoutY="175.0" prefHeight="16.0" prefWidth="88.0" text="Datenfeld 3" />
-                        <Label fx:id="labDataInputText4" layoutX="14.0" layoutY="222.0" prefHeight="16.0" prefWidth="88.0" text="Datenfeld 4" />
-                        <Label fx:id="labNextStep" layoutX="14.0" layoutY="308.0" prefHeight="16.0" prefWidth="88.0" text="Next Step" />
-                        <ComboBox fx:id="cbDatafield4" layoutX="101.0" layoutY="217.0" prefHeight="26.0" prefWidth="427.0" />
-                        <ComboBox fx:id="cbroleplayinputdatatypes" layoutX="128.0" layoutY="9.0" onAction="#handleActionInputDatatTypes" prefHeight="26.0" prefWidth="401.0" />
-                        <ComboBox fx:id="cbNextStep_V3" layoutX="104.0" layoutY="303.0" prefHeight="26.0" prefWidth="422.0" />
-                        <Label fx:id="labDataInputText5" layoutX="14.0" layoutY="265.0" prefHeight="16.0" prefWidth="88.0" text="Datenfeld 5" />
-                        <ComboBox fx:id="cbDatafield5" layoutX="100.0" layoutY="260.0" prefHeight="26.0" prefWidth="427.0" />
+                        <ComboBox fx:id="cbDatafield1" layoutX="120.0" layoutY="75.0" prefHeight="26.0" prefWidth="425.0" />
+                        <Label fx:id="labDataInputDataset" layoutX="14.0" layoutY="14.0" prefHeight="16.0" prefWidth="102.0" text="Objekt" />
+                        <Label fx:id="labDataInputText2" layoutX="15.0" layoutY="115.0" prefHeight="16.0" prefWidth="88.0" text="Datenfeld 2" />
+                        <ComboBox fx:id="cbDatafield2" layoutX="120.0" layoutY="108.0" prefHeight="26.0" prefWidth="425.0" />
+                        <ComboBox fx:id="cbDatafield3" layoutX="120.0" layoutY="142.0" prefHeight="26.0" prefWidth="425.0" />
+                        <Label fx:id="labDataInputText3" layoutX="15.0" layoutY="149.0" prefHeight="16.0" prefWidth="88.0" text="Datenfeld 3" />
+                        <Label fx:id="labDataInputText4" layoutX="15.0" layoutY="181.0" prefHeight="16.0" prefWidth="88.0" text="Datenfeld 4" />
+                        <Label fx:id="labNextStep" layoutX="15.0" layoutY="278.0" prefHeight="16.0" prefWidth="88.0" text="Next Step" />
+                        <ComboBox fx:id="cbDatafield4" layoutX="120.0" layoutY="174.0" prefHeight="26.0" prefWidth="425.0" />
+                        <ComboBox fx:id="cbroleplayinputdatatypes" layoutX="120.0" layoutY="7.0" onAction="#handleActionInputDataTypes" prefHeight="26.0" prefWidth="425.0" />
+                        <ComboBox fx:id="cbNextStep_V3" layoutX="120.0" layoutY="271.0" prefHeight="26.0" prefWidth="425.0" />
+                        <Label fx:id="labDataInputText5" layoutX="15.0" layoutY="216.0" prefHeight="16.0" prefWidth="88.0" text="Datenfeld 5" />
+                        <ComboBox fx:id="cbDatafield5" layoutX="120.0" layoutY="209.0" prefHeight="26.0" prefWidth="425.0" />
                      </children>
                   </AnchorPane>
               </content>

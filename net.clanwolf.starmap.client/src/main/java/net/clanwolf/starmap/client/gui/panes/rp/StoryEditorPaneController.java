@@ -107,7 +107,9 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	@FXML
 	ComboBox<RolePlayStoryDTO> cbStoryPath1, cbStoryPath2, cbStoryPath3, cbStoryPath4, cbNextStep_V3;
 	@FXML
-	ComboBox<Enum> cbDatafield1, cbDatafield2, cbDatafield3, cbDatafield4, cbDatafield5,cbroleplayinputdatatypes;
+	ComboBox<ROLEPLAYINPUTDATATYPES> cbDatafield1, cbDatafield2, cbDatafield3, cbDatafield4, cbDatafield5;
+	@FXML
+	ComboBox<ROLEPLAYOBJECTTYPES> cbroleplayinputdatatypes;
 	@FXML
 	ComboBox<RolePlayStoryDTO> cbDiceScoreLess, cbDiceScoreEqual, cbDiceScoreMore;
 	@FXML
@@ -827,9 +829,11 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	}
 
 	@FXML
-	private void handleActionInputDatatTypes(){
+	private void handleActionInputDataTypes(){
 
-		ArrayList<ROLEPLAYINPUTDATATYPES> dataList = new ArrayList<>();
+		fillComboBoxWithDataInputTypes();
+
+		/*ArrayList<ROLEPLAYINPUTDATATYPES> dataList = new ArrayList<>();
 
 		for(ROLEPLAYINPUTDATATYPES t : ROLEPLAYINPUTDATATYPES.values()) {
 			if(t.types == cbroleplayinputdatatypes.getSelectionModel().getSelectedItem()){
@@ -841,39 +845,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 		cbDatafield2.getItems().setAll(dataList);
 		cbDatafield3.getItems().setAll(dataList);
 		cbDatafield4.getItems().setAll(dataList);
-		cbDatafield5.getItems().setAll(dataList);
-
-		/*if(cbroleplayinputdatatypes.getSelectionModel().getSelectedItem() == ROLEPLAYOBJECTTYPES.CHARACTER) {
-
-			ArrayList<ROLEPLAYINPUTDATATYPES> dataList = new ArrayList<>();
-
-			for(ROLEPLAYINPUTDATATYPES t : ROLEPLAYINPUTDATATYPES.values()) {
-				if(t.types == cbroleplayinputdatatypes.getSelectionModel().getSelectedItem()){
-					dataList.add(t);
-				}
-			}
-
-			cbDatafield1.getItems().setAll(dataList);
-			cbDatafield2.getItems().setAll(dataList);
-			cbDatafield3.getItems().setAll(dataList);
-			cbDatafield4.getItems().setAll(dataList);
-			cbDatafield5.getItems().setAll(dataList);
-
-		} else if(cbroleplayinputdatatypes.getSelectionModel().getSelectedItem() == ROLEPLAYOBJECTTYPES.DROPSHIP) {
-			ArrayList<ROLEPLAYINPUTDATATYPES> dataList = new ArrayList<>();
-
-			for(ROLEPLAYINPUTDATATYPES t : ROLEPLAYINPUTDATATYPES.values()) {
-				if(t.types == ROLEPLAYOBJECTTYPES.DROPSHIP){
-					dataList.add(t);
-				}
-			}
-
-			cbDatafield1.getItems().setAll(dataList);
-			cbDatafield2.getItems().setAll(dataList);
-			cbDatafield3.getItems().setAll(dataList);
-			cbDatafield4.getItems().setAll(dataList);
-			cbDatafield5.getItems().setAll(dataList);
-		}*/
+		cbDatafield5.getItems().setAll(dataList);*/
 
 	}
 
@@ -943,6 +915,8 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 			if (!tabPaneStory.getTabs().contains(tabBasic5)) {
 				tabPaneStory.getTabs().add(tabBasic5);
 			}
+
+			fillComboBoxWithDataInputTypes();
 		} else {
 			if (tabPaneStory.getTabs().contains(tabBasic5)) {
 				tabPaneStory.getTabs().remove(tabBasic5);
@@ -1034,19 +1008,38 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 
 		// Variante 3
 		cbroleplayinputdatatypes.setCellFactory(rpDataInputListView -> new RPCellFactoryDataInput<>());
+		cbroleplayinputdatatypes.getSelectionModel().select(ROLEPLAYOBJECTTYPES.CHARACTER);
+		handleActionInputDataTypes();
+
 		cbDatafield1.setCellFactory(rpDataInputListView -> new RPCellFactoryDataInput<>());
 		cbDatafield2.setCellFactory(rpDataInputListView -> new RPCellFactoryDataInput<>());
 		cbDatafield3.setCellFactory(rpDataInputListView -> new RPCellFactoryDataInput<>());
 		cbDatafield4.setCellFactory(rpDataInputListView -> new RPCellFactoryDataInput<>());
 		cbDatafield5.setCellFactory(rpDataInputListView -> new RPCellFactoryDataInput<>());
 
-		cbroleplayinputdatatypes.setConverter(new EnumStringConverter());
-		cbDatafield1.setConverter(new EnumStringConverter());
-		cbDatafield2.setConverter(new EnumStringConverter());
-		cbDatafield3.setConverter(new EnumStringConverter());
-		cbDatafield4.setConverter(new EnumStringConverter());
-		cbDatafield5.setConverter(new EnumStringConverter());
+		cbroleplayinputdatatypes.setConverter(new RPObjectTypesStringConverter());
+		cbDatafield1.setConverter(new RPInputDataTypesStringConverter());
+		cbDatafield2.setConverter(new RPInputDataTypesStringConverter());
+		cbDatafield3.setConverter(new RPInputDataTypesStringConverter());
+		cbDatafield4.setConverter(new RPInputDataTypesStringConverter());
+		cbDatafield5.setConverter(new RPInputDataTypesStringConverter());
 
+	}
+
+	private void fillComboBoxWithDataInputTypes(){
+		ArrayList<ROLEPLAYINPUTDATATYPES> dataList = new ArrayList<>();
+
+		for(ROLEPLAYINPUTDATATYPES t : ROLEPLAYINPUTDATATYPES.values()) {
+			if(t.types == cbroleplayinputdatatypes.getSelectionModel().getSelectedItem()){
+				dataList.add(t);
+			}
+		}
+
+		cbDatafield1.getItems().setAll(dataList);
+		cbDatafield2.getItems().setAll(dataList);
+		cbDatafield3.getItems().setAll(dataList);
+		cbDatafield4.getItems().setAll(dataList);
+		cbDatafield5.getItems().setAll(dataList);
 	}
 
 	private void fillComboboxWithStories() {
@@ -1425,10 +1418,6 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 				rpVar2.setStory(rp.getId());
 			}
 
-			//rpVar2.setOption1StoryID(cbStoryPath1.getValue().getId());
-			//rpVar2.setOption2StoryID(cbStoryPath2.getValue().getId());
-			//rpVar2.setOption3StoryID(cbStoryPath3.getValue().getId());
-
 			if (cbStoryPath1.getValue() != null) {
 				rpVar2.setOption1StoryID(cbStoryPath1.getValue().getId());
 			}
@@ -1456,17 +1445,35 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 		// set data for variante 3
 		if (rp.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V3) {
 
+			RolePlayStoryVar3DTO rpVar3 = rp.getVar3ID();
+			if (rpVar3 == null) {
+				rpVar3 = new RolePlayStoryVar3DTO();
+				rpVar3.setStory(rp.getId());
+			}
 
+			if(cbDatafield1.getValue() != null){
+				rpVar3.setDataSet1(cbDatafield1.getValue());
+			}
+			if(cbDatafield2.getValue() != null){
+				rpVar3.setDataSet2(cbDatafield2.getValue());
+			}
+			if(cbDatafield3.getValue() != null){
+				rpVar3.setDataSet3(cbDatafield3.getValue());
+			}
+			if(cbDatafield4.getValue() != null){
+				rpVar3.setDataSet4(cbDatafield4.getValue());
+			}
+			if(cbDatafield5.getValue() != null){
+				rpVar3.setDataSet5(cbDatafield5.getValue());
+			}
+			if (cbNextStep_V3.getValue() != null) {
+				rpVar3.setNextStoryID(cbNextStep_V3.getValue().getId());
+			}
 
-
-
+			rp.setVar3ID(rpVar3);
 
 		} else {
-
-
-
-
-
+			rp.setVar3ID(null);
 		}
 
 		// set data for variante 4
@@ -1701,10 +1708,10 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 
 	}
 
-	private final class RPCellFactoryDataInput<Enum> extends ListCell<Enum> {
+	private final class RPCellFactoryDataInput<ROLEPLAYINPUTDATATYPES> extends ListCell<ROLEPLAYINPUTDATATYPES> {
 
 		@Override
-		protected void updateItem(Enum item, boolean empty) {
+		protected void updateItem(ROLEPLAYINPUTDATATYPES item, boolean empty) {
 			super.updateItem(item, empty);
 			if (empty) {
 				setText(null);
@@ -1715,10 +1722,10 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 		}
 
 	}
-	public class EnumStringConverter extends StringConverter<Enum> {
+	public class RPInputDataTypesStringConverter extends StringConverter<ROLEPLAYINPUTDATATYPES> {
 
 		@Override
-		public String toString(Enum object) {
+		public String toString(ROLEPLAYINPUTDATATYPES object) {
 			if(object != null){
 				return Internationalization.getString(object.toString());
 			}
@@ -1726,7 +1733,23 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 		}
 
 		@Override
-		public Enum fromString(String string) {
+		public ROLEPLAYINPUTDATATYPES fromString(String string) {
+			return null;
+		}
+	}
+
+	public class RPObjectTypesStringConverter extends StringConverter<ROLEPLAYOBJECTTYPES> {
+
+		@Override
+		public String toString(ROLEPLAYOBJECTTYPES object) {
+			if(object != null){
+				return Internationalization.getString(object.toString());
+			}
+			return null;
+		}
+
+		@Override
+		public ROLEPLAYOBJECTTYPES fromString(String string) {
 			return null;
 		}
 	}
