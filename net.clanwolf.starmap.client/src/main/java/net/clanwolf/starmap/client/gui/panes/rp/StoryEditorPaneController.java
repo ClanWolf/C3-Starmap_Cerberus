@@ -833,20 +833,6 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 
 		fillComboBoxWithDataInputTypes();
 
-		/*ArrayList<ROLEPLAYINPUTDATATYPES> dataList = new ArrayList<>();
-
-		for(ROLEPLAYINPUTDATATYPES t : ROLEPLAYINPUTDATATYPES.values()) {
-			if(t.types == cbroleplayinputdatatypes.getSelectionModel().getSelectedItem()){
-				dataList.add(t);
-			}
-		}
-
-		cbDatafield1.getItems().setAll(dataList);
-		cbDatafield2.getItems().setAll(dataList);
-		cbDatafield3.getItems().setAll(dataList);
-		cbDatafield4.getItems().setAll(dataList);
-		cbDatafield5.getItems().setAll(dataList);*/
-
 	}
 
 	/* ----------------- FXML end ----------------- */
@@ -1027,6 +1013,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	}
 
 	private void fillComboBoxWithDataInputTypes(){
+		C3Logger.debug("fillComboBoxWithDataInputTypes");
 		ArrayList<ROLEPLAYINPUTDATATYPES> dataList = new ArrayList<>();
 
 		for(ROLEPLAYINPUTDATATYPES t : ROLEPLAYINPUTDATATYPES.values()) {
@@ -1040,10 +1027,18 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 		cbDatafield3.getItems().setAll(dataList);
 		cbDatafield4.getItems().setAll(dataList);
 		cbDatafield5.getItems().setAll(dataList);
+
+		if (selected != null && selected.getValue() != null && selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V3 && selected.getValue().getVar3ID() != null) {
+			cbDatafield1.getSelectionModel().select(selected.getValue().getVar3ID().getDataSet1());
+			cbDatafield2.getSelectionModel().select(selected.getValue().getVar3ID().getDataSet2());
+			cbDatafield3.getSelectionModel().select(selected.getValue().getVar3ID().getDataSet3());
+			cbDatafield4.getSelectionModel().select(selected.getValue().getVar3ID().getDataSet4());
+			cbDatafield5.getSelectionModel().select(selected.getValue().getVar3ID().getDataSet5());
+		}
 	}
 
 	private void fillComboboxWithStories() {
-
+		C3Logger.debug("fillComboboxWithStories");
 		if (selected != null) {
 			cbStoryPath1.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
 			cbStoryPath2.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
@@ -1172,10 +1167,14 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 			btDeleteStoryOption2.setDisable(false);
 			btDeleteStoryOption3.setDisable(false);
 
+			cbroleplayinputdatatypes.setDisable(false);
 			cbDatafield1.setDisable(false);
 			cbDatafield2.setDisable(false);
 			cbDatafield3.setDisable(false);
 			cbDatafield4.setDisable(false);
+			cbDatafield5.setDisable(false);
+
+			cbNextStep_V3.setDisable(false);
 
 			tfDiceScore.setDisable(false);
 			cbDiceScoreEqual.setDisable(false);
@@ -1218,10 +1217,14 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 			btDeleteStoryOption2.setDisable(true);
 			btDeleteStoryOption3.setDisable(true);
 
+			cbroleplayinputdatatypes.setDisable(true);
 			cbDatafield1.setDisable(true);
 			cbDatafield2.setDisable(true);
 			cbDatafield3.setDisable(true);
 			cbDatafield4.setDisable(true);
+			cbDatafield5.setDisable(true);
+
+			cbNextStep_V3.setDisable(true);
 
 			tfDiceScore.setDisable(true);
 			cbDiceScoreEqual.setDisable(true);
@@ -1308,9 +1311,29 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 
 			// set data for story variante 3
 			if (selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V3 && selected.getValue().getVar3ID() != null) {
+				C3Logger.debug("setData");
 
+				if(selected.getValue().getVar3ID().getDataSet1() != null) {
+					cbroleplayinputdatatypes.getSelectionModel().select(selected.getValue().getVar3ID().getDataSet1().types);
+				} else if(selected.getValue().getVar3ID().getDataSet2() != null) {
+					cbroleplayinputdatatypes.getSelectionModel().select(selected.getValue().getVar3ID().getDataSet2().types);
+				} else if(selected.getValue().getVar3ID().getDataSet3() != null) {
+					cbroleplayinputdatatypes.getSelectionModel().select(selected.getValue().getVar3ID().getDataSet3().types);
+				} else if(selected.getValue().getVar3ID().getDataSet4() != null) {
+					cbroleplayinputdatatypes.getSelectionModel().select(selected.getValue().getVar3ID().getDataSet4().types);
+				} else if(selected.getValue().getVar3ID().getDataSet5() != null) {
+					cbroleplayinputdatatypes.getSelectionModel().select(selected.getValue().getVar3ID().getDataSet5().types);
+				}
+
+				cbNextStep_V3.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getVar3ID().getNextStoryID()));
 			} else {
+				cbDatafield1.setValue(null);
+				cbDatafield2.setValue(null);
+				cbDatafield3.setValue(null);
+				cbDatafield4.setValue(null);
+				cbDatafield5.setValue(null);
 
+				cbNextStep_V3.setValue(null);
 			}
 
 			// set data for story variante 4
@@ -1624,6 +1647,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 		cbDatafield2.setValue(null);
 		cbDatafield3.setValue(null);
 		cbDatafield4.setValue(null);
+		cbDatafield5.setValue(null);
 	}
 
 	private void createListeners() {

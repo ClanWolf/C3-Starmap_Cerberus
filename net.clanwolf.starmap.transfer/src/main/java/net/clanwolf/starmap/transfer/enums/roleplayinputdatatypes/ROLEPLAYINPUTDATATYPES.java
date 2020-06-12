@@ -28,26 +28,56 @@ package net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes;
 
 import net.clanwolf.starmap.transfer.enums.DATATYPES;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
+
 //	System.out.println(Internationalization.getString(CHARACTER.CHARNAME.labelkey));
 
 public enum ROLEPLAYINPUTDATATYPES {
 	// CHARACTER
-	CHARNAME( "charname", DATATYPES.String, ROLEPLAYOBJECTTYPES.CHARACTER),
-	LASTNAME( "lastname", DATATYPES.String, ROLEPLAYOBJECTTYPES.CHARACTER),
-	BIRTHDATE("birthdate", DATATYPES.Date, ROLEPLAYOBJECTTYPES.CHARACTER),
+	CHARNAME( "charname", DATATYPES.String, ROLEPLAYOBJECTTYPES.CHARACTER,null),
+	LASTNAME( "lastname", DATATYPES.String, ROLEPLAYOBJECTTYPES.CHARACTER, null),
+	BIRTHDATE("birthdate", DATATYPES.Date, ROLEPLAYOBJECTTYPES.CHARACTER, null),
+	BLOODHOUSE_SINGLE("bloodhouse", DATATYPES.Class, ROLEPLAYOBJECTTYPES.CHARACTER, "CHAR_Bloodhouse"),
+	BLOODHOUSE_MULTI("bloodhouse", DATATYPES.Class, ROLEPLAYOBJECTTYPES.CHARACTER, "CHAR_Bloodhouse"),
 
 	// DROPSHIP
-	SHIPNAME( "shipname", DATATYPES.String, ROLEPLAYOBJECTTYPES.DROPSHIP),
-	SIZE( "size", DATATYPES.String, ROLEPLAYOBJECTTYPES.DROPSHIP);
+	SHIPNAME( "shipname", DATATYPES.String, ROLEPLAYOBJECTTYPES.DROPSHIP, null),
+	SIZE( "size", DATATYPES.String, ROLEPLAYOBJECTTYPES.DROPSHIP, null);
 
 	public final String labelkey;
 	public final DATATYPES datatype;
 	public final ROLEPLAYOBJECTTYPES types;
+	public final String classname;
 
-	ROLEPLAYINPUTDATATYPES(String labelkey, DATATYPES datatype, ROLEPLAYOBJECTTYPES types) {
+	ROLEPLAYINPUTDATATYPES(String labelkey, DATATYPES datatype, ROLEPLAYOBJECTTYPES types, String classname) {
 		this.labelkey = labelkey;
 		this.datatype = datatype;
 		this.types = types;
+		this.classname = classname;
+	}
+
+	public ArrayList<Object> getList(){
+		ArrayList list = new ArrayList<Object>();
+
+		try {
+			Class<?> clazz = null;
+			clazz = Class.forName(classname);
+
+//			Constructor<?> constructor = clazz.getConstructor(String.class, Integer.class);
+//			Object instance = constructor.newInstance("stringparam", 42);
+
+			// TODO: Datei bloodhouses.json auslesen und Objekte und daraus die Arraylist erzeugen
+			// Diese Arrayliste ist die Grundlage für eine Auswahl-Combobox
+
+
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+
+
+		return list;
 	}
 
 	@Override
