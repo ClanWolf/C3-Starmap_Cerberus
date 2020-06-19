@@ -1,10 +1,10 @@
-{
-  "Bloodhouse": {
+[
+  {
     "id": "1",
     "name": "Kerensky"
   },
-  "Bloodhouse": {
+  {
     "id": "2",
     "name": "Ward"
   }
-}
+]

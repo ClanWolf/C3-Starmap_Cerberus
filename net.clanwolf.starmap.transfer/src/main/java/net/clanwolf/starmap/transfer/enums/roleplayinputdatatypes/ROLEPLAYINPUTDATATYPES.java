@@ -21,30 +21,36 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2019, ClanWolf.net                            |
+ * Copyright (c) 2001-2020, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import net.clanwolf.starmap.transfer.enums.catalogObjects.CHAR_Bloodhouse;
 import net.clanwolf.starmap.transfer.enums.DATATYPES;
+import net.clanwolf.starmap.transfer.enums.catalogObjects.ICatalogObject;
+import net.clanwolf.starmap.transfer.util.CatalogLoader;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 //	System.out.println(Internationalization.getString(CHARACTER.CHARNAME.labelkey));
 
 public enum ROLEPLAYINPUTDATATYPES {
 	// CHARACTER
-	CHARNAME( "charname", DATATYPES.String, ROLEPLAYOBJECTTYPES.CHARACTER,null),
-	LASTNAME( "lastname", DATATYPES.String, ROLEPLAYOBJECTTYPES.CHARACTER, null),
+	CHARNAME("charname", DATATYPES.String, ROLEPLAYOBJECTTYPES.CHARACTER, null),
+	LASTNAME("lastname", DATATYPES.String, ROLEPLAYOBJECTTYPES.CHARACTER, null),
 	BIRTHDATE("birthdate", DATATYPES.Date, ROLEPLAYOBJECTTYPES.CHARACTER, null),
 	BLOODHOUSE_SINGLE("bloodhouse", DATATYPES.Class, ROLEPLAYOBJECTTYPES.CHARACTER, "CHAR_Bloodhouse"),
 	BLOODHOUSE_MULTI("bloodhouse", DATATYPES.Class, ROLEPLAYOBJECTTYPES.CHARACTER, "CHAR_Bloodhouse"),
 
 	// DROPSHIP
-	SHIPNAME( "shipname", DATATYPES.String, ROLEPLAYOBJECTTYPES.DROPSHIP, null),
-	SIZE( "size", DATATYPES.String, ROLEPLAYOBJECTTYPES.DROPSHIP, null);
+	SHIPNAME("shipname", DATATYPES.String, ROLEPLAYOBJECTTYPES.DROPSHIP, null),
+	SIZE("size", DATATYPES.String, ROLEPLAYOBJECTTYPES.DROPSHIP, null);
 
 	public final String labelkey;
 	public final DATATYPES datatype;
@@ -58,26 +64,11 @@ public enum ROLEPLAYINPUTDATATYPES {
 		this.classname = classname;
 	}
 
-	public ArrayList<Object> getList(){
-		ArrayList list = new ArrayList<Object>();
-
-		try {
-			Class<?> clazz = null;
-			clazz = Class.forName(classname);
-
-//			Constructor<?> constructor = clazz.getConstructor(String.class, Integer.class);
-//			Object instance = constructor.newInstance("stringparam", 42);
-
-			// TODO: Datei bloodhouses.json auslesen und Objekte und daraus die Arraylist erzeugen
-			// Diese Arrayliste ist die Grundlage für eine Auswahl-Combobox
-
-
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+	public ICatalogObject[] getList() throws Exception {
+		if (classname != null) {
+			return CatalogLoader.getList(classname);
 		}
-
-
-		return list;
+		return null;
 	}
 
 	@Override
