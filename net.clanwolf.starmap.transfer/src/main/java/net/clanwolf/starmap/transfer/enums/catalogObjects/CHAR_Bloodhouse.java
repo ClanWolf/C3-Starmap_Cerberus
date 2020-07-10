@@ -33,9 +33,7 @@ public class CHAR_Bloodhouse implements ICatalogObject, Serializable {
 	public Integer id = null;
 	public String name = "";
 
-	public CHAR_Bloodhouse() {
-
-	}
+	public CHAR_Bloodhouse() {	}
 
 	@Override
 	public String getName() {
