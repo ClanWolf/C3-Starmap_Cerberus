@@ -220,7 +220,7 @@ public class WebDataInterface {
 				ResultSet rs = null;
 				ResultObject resultObject = new ResultObject();
 				String systemsList = null;
-				try (PreparedStatement stmt = conn.prepareStatement(selects.get(type.name()))) {
+				try (PreparedStatement stmt = conn.prepareStatement(selects.get(type.name()), ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
 					rs = stmt.executeQuery();
 					C3Logger.print("Select done...");
 
