@@ -401,7 +401,9 @@ public class BORolePlayStory {
 		if (rpStory.getStoryName() == null || rpStory.getStoryName().isEmpty()) {
 			setErrorText(Internationalization.getString("app_rp_storyeditor_story_check_message1"));
 
-		} else if (rpStory.getStoryText() == null || rpStory.getStoryText().isEmpty()) {
+		} else if (rpStory.getVariante() != ROLEPLAYENTRYTYPES.C3_RP_STORY  &&
+				rpStory.getVariante() != ROLEPLAYENTRYTYPES.C3_RP_CHAPTER &&
+				(rpStory.getStoryText() == null || rpStory.getStoryText().isEmpty())) {
 			setErrorText(Internationalization.getString("app_rp_storyeditor_story_check_message2"));
 
 		} else if (rpStory.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_CHAPTER && rpStory.getParentStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_CHAPTER) {
