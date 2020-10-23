@@ -51,13 +51,14 @@ public class HeartBeatTimer extends TimerTask {
 
 	@Override
 	public void run() {
-		C3Logger.print("Writing heartbeat ping to " + tempDir);
+		//C3Logger.print("Writing heartbeat ping to " + tempDir);
+		C3Logger.print("Writing heartbeat ping to " + "/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/c3.heartbeat");
 
 		Calendar calendar = Calendar.getInstance();
 		java.util.Date now = calendar.getTime();
 		java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(now.getTime());
 
-		File heartbeatfile = new File(tempDir + File.separator + "c3.heartbeat");
+		File heartbeatfile = new File("/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/c3.heartbeat");
 		try (BufferedWriter br = new BufferedWriter(new FileWriter(heartbeatfile))) {
 			br.write("" + currentTimestamp.getTime());
 		} catch (IOException ioe) {

@@ -9,4 +9,4 @@ For the first time, server and client reside in the same project as different mo
 Also the transfer classes do exist in their own separate module only one time now and a lot of copy&paste errors might not happen anymore.
 
 If you want to support C3, consider donating at the following link:  
-https://www.paypal.com/pools/c/8253IxQmxN
+https://www.paypal.com/pools/c/8ri2Y8lrl7
