@@ -895,7 +895,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		adminButton.setDisable(true);
 
 		hudinfo1.setOpacity(0.7);
-		copyrightLabel.setText("©2000-2018 // starmap.clanwolf.net");
+		copyrightLabel.setText("©2000-2020 -- https://www.clanwolf.net");
 		spectrumImage.setOpacity(0.1);
 		spectrumImage.setVisible(false);
 		noiseImage.setOpacity(0.0);
@@ -1517,7 +1517,15 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 	private void closeMessage(C3Message message) {
 		C3MESSAGERESULTS userReactionResult = message.getResult();
-		System.out.println(userReactionResult);
+
+
+
+
+
+
+
+		System.err.println("ERROR: " + userReactionResult);
+		System.out.println("OUT: " + userReactionResult);
 
 		Platform.runLater(() -> mouseStopper.getChildren().remove(messagePane));
 

@@ -6,11 +6,9 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.shape.Line?>
 
-<AnchorPane id="RolePlayStartPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.RolePlayDicePaneController">
+<AnchorPane id="RolePlayStartPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.RolePlayDicePaneController">
     <children>
-      <Line endX="-107.0" endY="411.0" layoutX="160.0" layoutY="81.0" opacity="0.3" startX="-106.0" startY="-73.0" stroke="#76b2e6" strokeLineCap="BUTT" strokeWidth="3.6" />
       <ImageView fx:id="rpImage" fitHeight="490.0" fitWidth="785.0" layoutX="58.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" />
       <TextArea fx:id="taRpText" layoutX="60.0" layoutY="9.0" prefHeight="369.0" prefWidth="602.0" styleClass="contentTextAreaBlock" wrapText="true" />
       <ImageView fitHeight="369.0" fitWidth="162.0" layoutX="680.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">

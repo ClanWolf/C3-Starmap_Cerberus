@@ -52,6 +52,7 @@ import java.io.IOException;
 public abstract class AbstractC3Pane extends Pane {
 	private final Polygon backgroundPolygon;
 	private final Polygon borderPolygon;
+	//	private final Line separatorLine;
 	//	private final MouseFollowPane mouseFollowPane;
 	private boolean isDisplayed = false;
 	private boolean showsPlanetRotation;
@@ -142,6 +143,19 @@ public abstract class AbstractC3Pane extends Pane {
 		borderPolygon.setMouseTransparent(true);
 		borderPolygon.setCache(true);
 		borderPolygon.setCacheHint(CacheHint.SPEED);
+
+//		separatorLine = new Line();
+//		separatorLine.setStartX();
+//		separatorLine.setStartY();
+//		separatorLine.setEndX();
+//		separatorLine.setEndY();
+//		separatorLine.setStroke(Color.web("#699ecd"));
+//		separatorLine.setFill(Color.TRANSPARENT);
+//		separatorLine.setStrokeWidth(1);
+//		separatorLine.setOpacity(0.0);
+//		separatorLine.setMouseTransparent(true);
+//		separatorLine.setCache(true);
+//		separatorLine.setCacheHint(CacheHint.SPEED);
 
 		Line leftBorderLine = new Line();
 		leftBorderLine.setStrokeWidth(3.6);

@@ -27,6 +27,7 @@
 package net.clanwolf.starmap.logging;
 
 import java.io.File;
+import java.io.PrintStream;
 import java.util.logging.*;
 
 public class C3Logger {
@@ -38,7 +39,7 @@ public class C3Logger {
 	private static ConsoleHandler consoleHandler;
 	private static String c3LogFileName = "";
 	private static File c3LogFile;
-	private static Level c3Loglevel = Level.FINE;
+	private static Level c3Loglevel = Level.FINEST;
 	private static final int FILE_SIZE = 3*1024*1024;
 
 	public static void print(String message) {
@@ -117,23 +118,25 @@ public class C3Logger {
 			LogManager.getLogManager().readConfiguration(C3Logger.class.getClassLoader().getResourceAsStream("log.properties"));
 			C3Formatter c3formatter = new C3Formatter();
 
+			logger.setLevel(c3Loglevel);
+			logger.setUseParentHandlers(false);
+
+			consoleHandler = new ConsoleHandler();
+			consoleHandler.setFormatter(c3formatter);
+			consoleHandler.setLevel(Level.FINEST);
+			logger.addHandler(consoleHandler);
+
 			if (prepareLogfile()) {
 				//fileHandler = new FileHandler(c3LogFileName);
 				fileHandler = new FileHandler(c3LogFileName, FILE_SIZE, 5, true);
 				fileHandler.setFormatter(c3formatter);
 				fileHandler.setEncoding("UTF-8");
-				fileHandler.setLevel(Level.FINE);
-
+				fileHandler.setLevel(Level.FINEST);
 				logger.addHandler(fileHandler);
-				logger.setUseParentHandlers(false); // ?
 			}
 
-			consoleHandler = new ConsoleHandler();
-			consoleHandler.setFormatter(c3formatter);
-			consoleHandler.setLevel(Level.INFO);
-			logger.addHandler(consoleHandler);
-
-			logger.setLevel(c3Loglevel);
+			System.setErr(new PrintStream(new C3OutputStream(logger, Level.FINEST)));
+			System.setOut(new PrintStream(new C3OutputStream(logger, Level.FINEST)));
 
 			initialized = true;
 		} catch (Exception e) {

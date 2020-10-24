@@ -7,12 +7,10 @@
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="RolePlayStartPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.RolePlayIntroPaneController">
+<AnchorPane id="RolePlayStartPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.RolePlayIntroPaneController">
     <children>
-      <Line endX="-107.0" endY="411.0" layoutX="160.0" layoutY="81.0" opacity="0.3" startX="-106.0" startY="-73.0" stroke="#76b2e6" strokeLineCap="BUTT" strokeWidth="3.6" />
       <Label fx:id="labHeader" alignment="CENTER" layoutX="58.0" layoutY="87.0" prefHeight="54.0" prefWidth="785.0" textAlignment="CENTER" textFill="#fffbfb" visible="false">
          <font>
             <Font size="24.0" />
