@@ -49,6 +49,7 @@ public class FTP implements IFileTransfer {
 
 	private void connect() throws IOException {
 		ftpClient = new FTPClient();
+		ftpClient.setControlEncoding("UTF-8");
 
 		ftpClient.connect(C3Properties.getProperty(C3PROPS.FTP_SERVER), Integer.parseInt(C3Properties.getProperty(C3PROPS.FTP_PORT)));
 		C3Logger.info(ftpClient.getReplyString());
