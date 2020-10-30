@@ -127,7 +127,6 @@ public class C3Logger {
 			logger.addHandler(consoleHandler);
 
 			if (prepareLogfile()) {
-				//fileHandler = new FileHandler(c3LogFileName);
 				fileHandler = new FileHandler(c3LogFileName, FILE_SIZE, 5, true);
 				fileHandler.setFormatter(c3formatter);
 				fileHandler.setEncoding("UTF-8");
@@ -135,7 +134,7 @@ public class C3Logger {
 				logger.addHandler(fileHandler);
 			}
 
-			System.setErr(new PrintStream(new C3OutputStream(logger, Level.FINEST)));
+			//System.setErr(new PrintStream(new C3OutputStream(logger, Level.FINEST)));
 			System.setOut(new PrintStream(new C3OutputStream(logger, Level.FINEST)));
 
 			initialized = true;

@@ -104,7 +104,7 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 					changePaneAndController(Nexus.getCurrentChar().getStory().getVariante(),"/fxml/RolePlayDicePane.fxml");
 
 				} else if(Nexus.getCurrentChar().getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V3){
-					changePaneAndController(Nexus.getCurrentChar().getStory().getVariante(),"/fxml/RolePlayChoicePane2.fxml");
+					changePaneAndController(Nexus.getCurrentChar().getStory().getVariante(),"/fxml/RolePlayDataInputPane.fxml");
 
 				}
 			}
@@ -122,7 +122,7 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 			} else if(Nexus.getCurrentChar().getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V3){
 				//TODO: Test this variante of step with a speciale fxml-file
 				//changePaneAndController(Nexus.getCurrentChar().getStory().getVariante(),Nexus.getCurrentChar().getStory().getVar3ID().getFormName());
-				changePaneAndController(Nexus.getCurrentChar().getStory().getVariante(),"/fxml/RolePlayChoicePane2.fxml");
+				changePaneAndController(Nexus.getCurrentChar().getStory().getVariante(),"/fxml/RolePlayDataInputPane.fxml");
 
 			} else if(Nexus.getCurrentChar().getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V4){
 				changePaneAndController(Nexus.getCurrentChar().getStory().getVariante(),"/fxml/RolePlayDicePane.fxml");

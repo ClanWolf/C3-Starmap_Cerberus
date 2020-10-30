@@ -156,23 +156,23 @@ public class RolePlayChoice2PaneController extends AbstractC3RolePlayController 
 
 	}
 
-//	@FXML
-//	private void handleOnActionbtChoice2(){
+	@FXML
+	private void handleOnActionbtChoice2(){
 //		Long rp = Nexus.getCurrentChar().getStory().getVar3ID().getNextStory2ID();
 //		saveNextStep(rp);
-//	}
-//
-//	@FXML
-//	private void handleOnActionbtChoice3(){
+	}
+
+	@FXML
+	private void handleOnActionbtChoice3(){
 //		Long rp = Nexus.getCurrentChar().getStory().getVar3ID().getNextStory3ID();
 //		saveNextStep(rp);
-//	}
-//
-//	@FXML
-//	private void handleOnActionbtChoice4(){
+	}
+
+	@FXML
+	private void handleOnActionbtChoice4(){
 //		Long rp = Nexus.getCurrentChar().getStory().getVar3ID().getNextStory4ID();
 //		saveNextStep(rp);
-//	}
+	}
 
 	/******************************** THIS ********************************/
 	@Override
