@@ -53,6 +53,7 @@ import net.clanwolf.starmap.transfer.dtos.RolePlayStoryVar3DTO;
 import net.clanwolf.starmap.transfer.enums.DATATYPES;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 import net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes.ROLEPLAYINPUTDATATYPES;
+import net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes.ROLEPLAYOBJECTTYPES;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -190,15 +191,7 @@ public class RolePlayDataInputController extends AbstractC3RolePlayController im
 		//TODO: append single chars step by step until the whole text is displaying
 		taStoryText.setText(rpChar.getStory().getStoryText());
 
-
 		if(rpChar.getStory().getVar3ID() != null) {
-
-
-
-
-
-
-
 			RolePlayStoryVar3DTO rpVar3 = rpChar.getStory().getVar3ID();
 
 			setField(rpVar3.getDataSet1());
@@ -206,53 +199,6 @@ public class RolePlayDataInputController extends AbstractC3RolePlayController im
 			setField(rpVar3.getDataSet3());
 			setField(rpVar3.getDataSet4());
 			setField(rpVar3.getDataSet5());
-
-			double x = 59;
-			double y = 455;
-			double offset = 40;
-
-//			// rpVar3
-//			if (rpVar3.getOption4StoryID() != null) {
-//				btChoice4.setVisible(true);
-//
-//				btChoice4.setLayoutX(x);
-//				btChoice4.setLayoutY(y);
-//
-//				y = y - offset;
-//
-//				btChoice4.setText(rpVar3.getOption4Text());
-//			}
-//
-//			if (rpVar3.getOption3StoryID() != null) {
-//				btChoice3.setVisible(true);
-//
-//				btChoice3.setLayoutX(x);
-//				btChoice3.setLayoutY(y);
-//
-//				y = y - offset;
-//
-//				btChoice3.setText(rpVar3.getOption3Text());
-//			}
-//
-//			if (rpVar3.getOption2StoryID() != null) {
-//				btChoice2.setVisible(true);
-//
-//				btChoice2.setLayoutX(x);
-//				btChoice2.setLayoutY(y);
-//
-//				y = y - offset;
-//
-//				btChoice2.setText(rpVar3.getOption2Text());
-//			}
-//
-//			if (rpVar3.getOption1StoryID() != null) {
-//				btChoice1.setVisible(true);
-//
-//				btChoice1.setLayoutX(x);
-//				btChoice1.setLayoutY(y);
-//
-//				btChoice1.setText(rpVar3.getOption1Text());
-//			}
 		}
 	}
 }
