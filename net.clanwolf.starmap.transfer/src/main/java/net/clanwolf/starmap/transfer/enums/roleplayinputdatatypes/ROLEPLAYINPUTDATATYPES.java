@@ -42,26 +42,28 @@ import java.nio.file.Paths;
 
 public enum ROLEPLAYINPUTDATATYPES {
 	// CHARACTER
-	CHARNAME("charname", DATATYPES.String, ROLEPLAYOBJECTTYPES.CHARACTER, null),
-	LASTNAME("lastname", DATATYPES.String, ROLEPLAYOBJECTTYPES.CHARACTER, null),
-	BIRTHDATE("birthdate", DATATYPES.Date, ROLEPLAYOBJECTTYPES.CHARACTER, null),
-	BLOODHOUSE_SINGLE("bloodhouse", DATATYPES.Class, ROLEPLAYOBJECTTYPES.CHARACTER, "CHAR_Bloodhouse"),
-	BLOODHOUSE_MULTI("bloodhouse", DATATYPES.Class, ROLEPLAYOBJECTTYPES.CHARACTER, "CHAR_Bloodhouse"),
+	CHARNAME("charname", DATATYPES.String, ROLEPLAYOBJECTTYPES.CHARACTER, null, false),
+	LASTNAME("lastname", DATATYPES.String, ROLEPLAYOBJECTTYPES.CHARACTER, null, false),
+	BIRTHDATE("birthdate", DATATYPES.Date, ROLEPLAYOBJECTTYPES.CHARACTER, null, false),
+	BLOODHOUSE_SINGLE("bloodhouse", DATATYPES.SelectionSingle, ROLEPLAYOBJECTTYPES.CHARACTER, "CHAR_Bloodhouse", false),
+	BLOODHOUSE_MULTI("bloodhouse", DATATYPES.SelectionMulti, ROLEPLAYOBJECTTYPES.CHARACTER, "CHAR_Bloodhouse", false),
 
 	// DROPSHIP
-	SHIPNAME("shipname", DATATYPES.String, ROLEPLAYOBJECTTYPES.DROPSHIP, null),
-	SIZE("size", DATATYPES.String, ROLEPLAYOBJECTTYPES.DROPSHIP, null);
+	SHIPNAME("shipname", DATATYPES.String, ROLEPLAYOBJECTTYPES.DROPSHIP, null, false),
+	SIZE("size", DATATYPES.String, ROLEPLAYOBJECTTYPES.DROPSHIP, null, false);
 
 	public final String labelkey;
 	public final DATATYPES datatype;
 	public final ROLEPLAYOBJECTTYPES types;
 	public final String classname;
+	public final boolean mandatory;
 
-	ROLEPLAYINPUTDATATYPES(String labelkey, DATATYPES datatype, ROLEPLAYOBJECTTYPES types, String classname) {
+	ROLEPLAYINPUTDATATYPES(String labelkey, DATATYPES datatype, ROLEPLAYOBJECTTYPES types, String classname, boolean mandatory) {
 		this.labelkey = labelkey;
 		this.datatype = datatype;
 		this.types = types;
 		this.classname = classname;
+		this.mandatory = mandatory;
 	}
 
 	public ICatalogObject[] getList() throws Exception {

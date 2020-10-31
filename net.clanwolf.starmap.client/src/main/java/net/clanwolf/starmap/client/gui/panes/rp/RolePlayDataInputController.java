@@ -1,0 +1,258 @@
+/* ---------------------------------------------------------------- |
+ *    ____ _____                                                    |
+ *   / ___|___ /                   Communicate - Command - Control  |
+ *  | |     |_ \                   MK V "Cerberus"                  |
+ *  | |___ ___) |                                                   |
+ *   \____|____/                                                    |
+ *                                                                  |
+ * ---------------------------------------------------------------- |
+ * Info        : https://www.clanwolf.net                           |
+ * GitHub      : https://github.com/ClanWolf                        |
+ * ---------------------------------------------------------------- |
+ * Licensed under the Apache License, Version 2.0 (the "License");  |
+ * you may not use this file except in compliance with the License. |
+ * You may obtain a copy of the License at                          |
+ * http://www.apache.org/licenses/LICENSE-2.0                       |
+ *                                                                  |
+ * Unless required by applicable law or agreed to in writing,       |
+ * software distributed under the License is distributed on an "AS  |
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either  |
+ * express or implied. See the License for the specific language    |
+ * governing permissions and limitations under the License.         |
+ *                                                                  |
+ * C3 includes libraries and source code by various authors.        |
+ * Copyright (c) 2001-2020, ClanWolf.net                            |
+ * ---------------------------------------------------------------- |
+ */
+package net.clanwolf.starmap.client.gui.panes.rp;
+
+import javafx.application.Platform;
+import javafx.fxml.FXML;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
+import net.clanwolf.starmap.client.action.ACTIONS;
+import net.clanwolf.starmap.client.action.ActionCallBackListener;
+import net.clanwolf.starmap.client.action.ActionManager;
+import net.clanwolf.starmap.client.action.ActionObject;
+import net.clanwolf.starmap.client.gui.panes.AbstractC3RolePlayController;
+import net.clanwolf.starmap.client.nexus.Nexus;
+import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
+import net.clanwolf.starmap.client.util.Internationalization;
+import net.clanwolf.starmap.logging.C3Logger;
+import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
+import net.clanwolf.starmap.transfer.dtos.RolePlayStoryVar2DTO;
+import net.clanwolf.starmap.transfer.dtos.RolePlayStoryVar3DTO;
+import net.clanwolf.starmap.transfer.enums.DATATYPES;
+import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
+import net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes.ROLEPLAYINPUTDATATYPES;
+
+import java.io.InputStream;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.ResourceBundle;
+
+/**
+ * @author Undertaker
+ */
+public class RolePlayDataInputController extends AbstractC3RolePlayController implements ActionCallBackListener {
+
+	@FXML
+	private AnchorPane anchorPane;
+
+	//@FXML
+	//private ImageView rpIBackgroundImage;
+
+	@FXML
+	private ImageView rpImage;
+
+	@FXML
+	private TextArea taStoryText;
+
+	@FXML
+	private Button btContinue;
+
+	@FXML
+	private VBox buttonArea;
+
+	public RolePlayDataInputController() {
+	}
+
+	@Override
+	public void addActionCallBackListeners() {
+		ActionManager.addActionCallbackListener(ACTIONS.START_ROLEPLAY, this);
+	}
+
+	@Override
+	public void initialize(URL url, ResourceBundle rb) {
+		super.initialize(url, rb);
+
+		init();
+
+	}
+
+	private void init(){
+		taStoryText.setStyle("-fx-opacity: 1");
+		taStoryText.setEditable(false);
+
+
+
+		btContinue.setVisible(false);
+	}
+
+	/**
+	 * Handle Actions
+	 *
+	 * @param action
+	 *            Action
+	 * @param o
+	 *            Action object
+	 * @return true
+	 */
+	@Override
+	public boolean handleAction(ACTIONS action, ActionObject o) {
+		if(anchorPane != null && !anchorPane.isVisible()) return true;
+		switch (action) {
+		case START_ROLEPLAY:
+			if(ROLEPLAYENTRYTYPES.C3_RP_STEP_V3 == o.getObject()) {
+				C3Logger.debug("RolePlayChoicePaneController -> START_ROLEPLAY");
+
+				init();
+
+				// set current step of story
+				getStoryValues(Nexus.getCurrentChar());
+			}
+			break;
+		default:
+			break;
+
+		}
+		return true;
+	}
+
+	@Override
+	public void setStrings() {
+		Platform.runLater(() -> {
+			// set strings
+		});
+	}
+
+	/******************************** FXML ********************************/
+
+	@FXML
+	private void handleOnActionBtContinue(){
+		Long rp = Nexus.getCurrentChar().getStory().getVar3ID().getNextStoryID();
+		saveNextStep(rp);
+
+	}
+
+	/******************************** THIS ********************************/
+	private void setField(ROLEPLAYINPUTDATATYPES t) {
+		if (t != null) {
+			HBox p = new HBox();
+			Label l = new Label();
+			p.getChildren().add(l);
+			buttonArea.getChildren().add(p);
+
+			l.setText(Internationalization.getString(t.toString()));
+			switch (t.datatype) {
+				case String:
+					TextField tf = new TextField();
+					p.getChildren().add(tf);
+					break;
+			}
+		}
+	}
+
+	@Override
+	public void getStoryValues(RolePlayCharacterDTO rpChar) {
+		if (rpChar.getStory().getStoryIntro() == null) {
+			String imURL;
+
+			// Check step for own image. If now own image availabale use default image
+			if (rpChar.getStory().getStoryImage() != null) {
+				imURL = BORolePlayStory.getRPG_ResourceURL() + "/" + rpChar.getStory().getId().toString() + "/" + rpChar.getStory().getStoryImage();
+				Image im = new Image(imURL);
+				rpImage.setImage(im);
+			} else {
+				InputStream isBackground = this.getClass().getResourceAsStream("/images/gui/default_Step.png");
+				rpImage.setImage(new Image(isBackground));
+			}
+		}
+
+		//TODO: append single chars step by step until the whole text is displaying
+		taStoryText.setText(rpChar.getStory().getStoryText());
+
+
+		if(rpChar.getStory().getVar3ID() != null) {
+
+
+
+
+
+
+
+			RolePlayStoryVar3DTO rpVar3 = rpChar.getStory().getVar3ID();
+
+			setField(rpVar3.getDataSet1());
+			setField(rpVar3.getDataSet2());
+			setField(rpVar3.getDataSet3());
+			setField(rpVar3.getDataSet4());
+			setField(rpVar3.getDataSet5());
+
+			double x = 59;
+			double y = 455;
+			double offset = 40;
+
+//			// rpVar3
+//			if (rpVar3.getOption4StoryID() != null) {
+//				btChoice4.setVisible(true);
+//
+//				btChoice4.setLayoutX(x);
+//				btChoice4.setLayoutY(y);
+//
+//				y = y - offset;
+//
+//				btChoice4.setText(rpVar3.getOption4Text());
+//			}
+//
+//			if (rpVar3.getOption3StoryID() != null) {
+//				btChoice3.setVisible(true);
+//
+//				btChoice3.setLayoutX(x);
+//				btChoice3.setLayoutY(y);
+//
+//				y = y - offset;
+//
+//				btChoice3.setText(rpVar3.getOption3Text());
+//			}
+//
+//			if (rpVar3.getOption2StoryID() != null) {
+//				btChoice2.setVisible(true);
+//
+//				btChoice2.setLayoutX(x);
+//				btChoice2.setLayoutY(y);
+//
+//				y = y - offset;
+//
+//				btChoice2.setText(rpVar3.getOption2Text());
+//			}
+//
+//			if (rpVar3.getOption1StoryID() != null) {
+//				btChoice1.setVisible(true);
+//
+//				btChoice1.setLayoutX(x);
+//				btChoice1.setLayoutY(y);
+//
+//				btChoice1.setText(rpVar3.getOption1Text());
+//			}
+		}
+	}
+}
