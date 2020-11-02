@@ -134,7 +134,7 @@ public class C3Logger {
 				logger.addHandler(fileHandler);
 			}
 
-			//System.setErr(new PrintStream(new C3OutputStream(logger, Level.FINEST)));
+			System.setErr(new PrintStream(new C3OutputStream(logger, Level.FINEST)));
 			System.setOut(new PrintStream(new C3OutputStream(logger, Level.FINEST)));
 
 			initialized = true;

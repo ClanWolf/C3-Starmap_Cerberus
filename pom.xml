@@ -23,7 +23,7 @@
 		<mainClass>net.clanwolf.starmap.client.gui.MainFrame</mainClass>
 
 		<!-- Versions -->
-		<version.java>13</version.java>
+		<version.java>15</version.java>
 		<version.javafx>15</version.javafx>
 		<version.maven-compiler-plugin>3.8.1</version.maven-compiler-plugin>
 		<version.exec-maven-plugin>1.6.0</version.exec-maven-plugin>

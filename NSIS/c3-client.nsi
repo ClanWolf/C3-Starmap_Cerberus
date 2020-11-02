@@ -145,15 +145,26 @@ Section "C3-Client (required)"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.net.http\ASSEMBLY_EXCEPTION"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.net.http\ADDITIONAL_LICENSE_INFO"
 
+	CreateDirectory $INSTDIR\legal\java.management
+	SetOutpath $INSTDIR\legal\java.management
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.management\LICENSE"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.management\ASSEMBLY_EXCEPTION"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.management\ADDITIONAL_LICENSE_INFO"
+
 	CreateDirectory $INSTDIR\legal\java.logging
 	SetOutpath $INSTDIR\legal\java.logging
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.logging\LICENSE"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.logging\ASSEMBLY_EXCEPTION"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.logging\ADDITIONAL_LICENSE_INFO"
 
+	CreateDirectory $INSTDIR\legal\java.instrument
+	SetOutpath $INSTDIR\legal\java.instrument
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.instrument\LICENSE"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.instrument\ASSEMBLY_EXCEPTION"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.instrument\ADDITIONAL_LICENSE_INFO"
+
 	CreateDirectory $INSTDIR\legal\java.desktop
 	SetOutpath $INSTDIR\legal\java.desktop
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.desktop\opengl.md"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.desktop\mesa3d.md"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.desktop\LICENSE"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.desktop\libpng.md"
@@ -229,6 +240,7 @@ Section "C3-Client (required)"
 	SetOutpath $INSTDIR\bin
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\zip.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\verify.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\vcruntime140_1.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\vcruntime140.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\ucrtbase.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\splashscreen.dll"
@@ -237,6 +249,7 @@ Section "C3-Client (required)"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\net.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\msvcp140.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\mlib_image.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\management.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\lcms.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\keytool.exe"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\jsound.dll"
@@ -248,6 +261,7 @@ Section "C3-Client (required)"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\javajpeg.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\java.exe"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\java.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\instrument.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\freetype.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\fontmanager.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\C3-Starmap_Cerberus.bat"
@@ -387,10 +401,15 @@ Section "Uninstall"
 	Delete $INSTDIR\legal\java.net.http\LICENSE
 	Delete $INSTDIR\legal\java.net.http\ASSEMBLY_EXCEPTION
 	Delete $INSTDIR\legal\java.net.http\ADDITIONAL_LICENSE_INFO
+	Delete $INSTDIR\legal\java.management\LICENSE
+	Delete $INSTDIR\legal\java.management\ASSEMBLY_EXCEPTION
+	Delete $INSTDIR\legal\java.management\ADDITIONAL_LICENSE_INFO
 	Delete $INSTDIR\legal\java.logging\LICENSE
 	Delete $INSTDIR\legal\java.logging\ASSEMBLY_EXCEPTION
 	Delete $INSTDIR\legal\java.logging\ADDITIONAL_LICENSE_INFO
-	Delete $INSTDIR\legal\java.desktop\opengl.md
+	Delete $INSTDIR\legal\java.instrument\LICENSE
+	Delete $INSTDIR\legal\java.instrument\ASSEMBLY_EXCEPTION
+	Delete $INSTDIR\legal\java.instrument\ADDITIONAL_LICENSE_INFO
 	Delete $INSTDIR\legal\java.desktop\mesa3d.md
 	Delete $INSTDIR\legal\java.desktop\LICENSE
 	Delete $INSTDIR\legal\java.desktop\libpng.md
@@ -436,6 +455,7 @@ Section "Uninstall"
 	Delete $INSTDIR\conf\security\policy\limited\default_local.policy
 	Delete $INSTDIR\bin\zip.dll
 	Delete $INSTDIR\bin\verify.dll
+	Delete $INSTDIR\bin\vcruntime140_1.dll
 	Delete $INSTDIR\bin\vcruntime140.dll
 	Delete $INSTDIR\bin\ucrtbase.dll
 	Delete $INSTDIR\bin\splashscreen.dll
@@ -444,6 +464,7 @@ Section "Uninstall"
 	Delete $INSTDIR\bin\net.dll
 	Delete $INSTDIR\bin\msvcp140.dll
 	Delete $INSTDIR\bin\mlib_image.dll
+	Delete $INSTDIR\bin\management.dll
 	Delete $INSTDIR\bin\lcms.dll
 	Delete $INSTDIR\bin\keytool.exe
 	Delete $INSTDIR\bin\jsound.dll
@@ -455,6 +476,7 @@ Section "Uninstall"
 	Delete $INSTDIR\bin\javajpeg.dll
 	Delete $INSTDIR\bin\java.exe
 	Delete $INSTDIR\bin\java.dll
+	Delete $INSTDIR\bin\instrument.dll
 	Delete $INSTDIR\bin\freetype.dll
 	Delete $INSTDIR\bin\fontmanager.dll
 	Delete $INSTDIR\bin\C3-Starmap_Cerberus.bat
@@ -520,7 +542,9 @@ Section "Uninstall"
 	RMDir "$INSTDIR\legal\java.base"
 	RMDir "$INSTDIR\legal\java.datatransfer"
 	RMDir "$INSTDIR\legal\java.desktop"
+	RMDir "$INSTDIR\legal\java.instrument"
 	RMDir "$INSTDIR\legal\java.logging"
+	RMDir "$INSTDIR\legal\java.management"
 	RMDir "$INSTDIR\legal\java.net.http"
 	RMDir "$INSTDIR\legal\java.prefs"
 	RMDir "$INSTDIR\legal\java.scripting"

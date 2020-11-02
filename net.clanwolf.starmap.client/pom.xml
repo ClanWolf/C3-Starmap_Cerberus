@@ -162,7 +162,7 @@
 				<version>1.0.0.Beta2</version>
 				<executions>
 
-					<!-- BEGIN: Generate module info for legacy jars -->
+				<!-- BEGIN: Generate module info for legacy jars-->
 
 <!--					<execution>-->
 <!--						<id>generate-module-info</id>-->
@@ -178,9 +178,9 @@
 <!--							<modules>-->
 <!--								<module>-->
 <!--									<artifact>-->
-<!--										<groupId>org.kynosarges</groupId>-->
-<!--										<artifactId>tektosyne</artifactId>-->
-<!--										<version>6.2.0</version>-->
+<!--										<groupId>org.jboss.modules</groupId>-->
+<!--										<artifactId>jboss-modules</artifactId>-->
+<!--										<version>1.10.2.Final</version>-->
 <!--									</artifact>-->
 <!--&lt;!&ndash;									<additionalDependencies>&ndash;&gt;-->
 <!--&lt;!&ndash;										<dependency>&ndash;&gt;-->
@@ -194,7 +194,7 @@
 <!--						</configuration>-->
 <!--					</execution>-->
 
-					<!-- END: Generate module info for legacy jars -->
+					<!-- END: Generate module info for legacy jars-->
 
 					<execution>
 						<id>add-module-infos</id>
@@ -213,6 +213,138 @@
 							<outputDirectory>${project.build.directory}/modules</outputDirectory>
 
 							<modules>
+								<module>
+									<artifact>
+										<groupId>com.ning</groupId>
+										<artifactId>compress-lzf</artifactId>
+										<version>1.0.4</version>
+									</artifact>
+									<moduleInfoSource>
+										module compress.lzf {
+											requires java.management;
+											requires transitive jdk.unsupported;
+											exports com.ning.compress;
+											exports com.ning.compress.gzip;
+											exports com.ning.compress.lzf;
+											exports com.ning.compress.lzf.impl;
+											exports com.ning.compress.lzf.parallel;
+											exports com.ning.compress.lzf.util;
+										}
+									</moduleInfoSource>
+								</module>
+								<module>
+									<artifact>
+										<groupId>org.jboss.modules</groupId>
+										<artifactId>jboss-modules</artifactId>
+										<version>1.10.2.Final</version>
+									</artifact>
+									<moduleInfoSource>
+										module jboss.modules {
+											requires java.management;
+											requires java.prefs;
+											requires transitive java.desktop;
+											requires transitive java.instrument;
+											requires transitive java.logging;
+											requires transitive java.xml;
+											exports __redirected;
+											exports org.jboss.modules;
+											exports org.jboss.modules._private;
+											exports org.jboss.modules.filter;
+											exports org.jboss.modules.log;
+											exports org.jboss.modules.management;
+											exports org.jboss.modules.maven;
+											exports org.jboss.modules.ref;
+											exports org.jboss.modules.security;
+											exports org.jboss.modules.xml;
+										}
+									</moduleInfoSource>
+								</module>
+								<module>
+									<artifact>
+										<groupId>org.spark-project.protobuf</groupId>
+										<artifactId>protobuf-java</artifactId>
+										<version>2.5.0-spark</version>
+									</artifact>
+									<moduleInfoSource>
+										module protobuf.java {
+											exports org.spark_project.protobuf;
+										}
+									</moduleInfoSource>
+								</module>
+								<module>
+									<artifact>
+										<groupId>org.jboss.marshalling</groupId>
+										<artifactId>jboss-marshalling</artifactId>
+										<version>2.0.10.Final</version>
+									</artifact>
+									<moduleInfoSource>
+										module jboss.marshalling {
+											requires transitive jboss.modules;
+											requires transitive jdk.unsupported;
+											exports org.jboss.marshalling;
+											exports org.jboss.marshalling._private;
+											exports org.jboss.marshalling.cloner;
+											exports org.jboss.marshalling.reflect;
+											exports org.jboss.marshalling.util;
+										}
+									</moduleInfoSource>
+								</module>
+								<module>
+									<artifact>
+										<groupId>com.google.protobuf.nano</groupId>
+										<artifactId>protobuf-javanano</artifactId>
+										<version>3.1.0</version>
+									</artifact>
+									<moduleInfoSource>
+										module protobuf.javanano {
+											exports com.google.protobuf.nano;
+										}
+									</moduleInfoSource>
+								</module>
+								<module>
+									<artifact>
+										<groupId>net.jpountz.lz4</groupId>
+										<artifactId>lz4</artifactId>
+										<version>1.3.0</version>
+									</artifact>
+									<moduleInfoSource>
+										module lz4 {
+											requires jdk.unsupported;
+											exports net.jpountz.lz4;
+											exports net.jpountz.util;
+											exports net.jpountz.xxhash;
+										}
+									</moduleInfoSource>
+								</module>
+								<module>
+									<artifact>
+										<groupId>com.github.jponge</groupId>
+										<artifactId>lzma-java</artifactId>
+										<version>1.3</version>
+									</artifact>
+									<moduleInfoSource>
+										module lzma.java {
+											exports lzma.sdk;
+											exports lzma.sdk.lz;
+											exports lzma.sdk.lzma;
+											exports lzma.sdk.rangecoder;
+											exports lzma.streams;
+											exports org.cservenak.streams;
+										}
+									</moduleInfoSource>
+								</module>
+								<module>
+									<artifact>
+										<groupId>com.jcraft</groupId>
+										<artifactId>jzlib</artifactId>
+										<version>1.1.3</version>
+									</artifact>
+									<moduleInfoSource>
+										module jzlib {
+											exports com.jcraft.jzlib;
+										}
+									</moduleInfoSource>
+								</module>
 								<module>
 									<artifact>
 										<groupId>javax.activation</groupId>
@@ -439,27 +571,27 @@
 										<artifactId>netty-common</artifactId>
 										<version>${version.netty}</version>
 									</artifact>
-									<moduleInfo>
-										<name>io.netty.common</name>
-									</moduleInfo>
-<!--									<moduleInfoSource>-->
-<!--										module io.netty.common {-->
-<!--											requires static commons.logging;-->
-<!--											requires java.logging;-->
-<!--											requires static log4j;-->
-<!--											requires static log4j.api;-->
-<!--											requires static slf4j.api;-->
-<!--											requires jdk.unsupported;-->
-<!--											exports io.netty.util;-->
-<!--											exports io.netty.util.collection;-->
-<!--											exports io.netty.util.concurrent;-->
-<!--											exports io.netty.util.internal;-->
-<!--											exports io.netty.util.internal.logging;-->
-<!--											exports io.netty.util.internal.shaded.org.jctools.queues;-->
-<!--											exports io.netty.util.internal.shaded.org.jctools.queues.atomic;-->
-<!--											exports io.netty.util.internal.shaded.org.jctools.util;-->
-<!--										}-->
-<!--									</moduleInfoSource>-->
+<!--									<moduleInfo>-->
+<!--										<name>io.netty.common</name>-->
+<!--									</moduleInfo>-->
+									<moduleInfoSource>
+										module io.netty.common {
+											requires static commons.logging;
+											requires java.logging;
+											requires static log4j;
+											requires static log4j.api;
+											requires static slf4j.api;
+											requires jdk.unsupported;
+											exports io.netty.util;
+											exports io.netty.util.collection;
+											exports io.netty.util.concurrent;
+											exports io.netty.util.internal;
+											exports io.netty.util.internal.logging;
+											exports io.netty.util.internal.shaded.org.jctools.queues;
+											exports io.netty.util.internal.shaded.org.jctools.queues.atomic;
+											exports io.netty.util.internal.shaded.org.jctools.util;
+										}
+									</moduleInfoSource>
 								</module>
 								<module>
 									<artifact>
@@ -467,28 +599,28 @@
 										<artifactId>netty-transport</artifactId>
 										<version>${version.netty}</version>
 									</artifact>
-									<moduleInfo>
-										<name>io.netty.transport</name>
-									</moduleInfo>
-									<!--<moduleInfoSource>-->
-										<!--module io.netty.transport {-->
-											<!--requires io.netty.buffer;-->
-											<!--requires io.netty.common;-->
-											<!--requires io.netty.resolver;-->
-											<!--exports io.netty.bootstrap;-->
-											<!--exports io.netty.channel;-->
-											<!--exports io.netty.channel.embedded;-->
-											<!--exports io.netty.channel.group;-->
-											<!--exports io.netty.channel.internal;-->
-											<!--exports io.netty.channel.local;-->
-											<!--exports io.netty.channel.nio;-->
-											<!--exports io.netty.channel.oio;-->
-											<!--exports io.netty.channel.pool;-->
-											<!--exports io.netty.channel.socket;-->
-											<!--exports io.netty.channel.socket.nio;-->
-											<!--exports io.netty.channel.socket.oio;-->
-										<!--}-->
-									<!--</moduleInfoSource>-->
+<!--									<moduleInfo>-->
+<!--										<name>io.netty.transport</name>-->
+<!--									</moduleInfo>-->
+									<moduleInfoSource>
+										module io.netty.transport {
+											requires io.netty.buffer;
+											requires io.netty.common;
+											requires io.netty.resolver;
+											exports io.netty.bootstrap;
+											exports io.netty.channel;
+											exports io.netty.channel.embedded;
+											exports io.netty.channel.group;
+											exports io.netty.channel.internal;
+											exports io.netty.channel.local;
+											exports io.netty.channel.nio;
+											exports io.netty.channel.oio;
+											exports io.netty.channel.pool;
+											exports io.netty.channel.socket;
+											exports io.netty.channel.socket.nio;
+											exports io.netty.channel.socket.oio;
+										}
+									</moduleInfoSource>
 								</module>
 								<module>
 									<artifact>
@@ -509,9 +641,33 @@
 										<artifactId>netty-codec</artifactId>
 										<version>${version.netty}</version>
 									</artifact>
-									<moduleInfo>
-										<name>io.netty.codec</name>
-									</moduleInfo>
+<!--									<moduleInfo>-->
+<!--										<name>io.netty.codec</name>-->
+<!--									</moduleInfo>-->
+									<moduleInfoSource>
+										module io.netty.codec {
+											requires compress.lzf;
+											requires jzlib;
+											requires lzma.java;
+											requires transitive io.netty.buffer;
+											requires transitive io.netty.common;
+											requires transitive io.netty.transport;
+											requires transitive jboss.marshalling;
+											requires transitive lz4;
+											requires transitive protobuf.java;
+											requires transitive protobuf.javanano;
+											exports io.netty.handler.codec;
+											exports io.netty.handler.codec.base64;
+											exports io.netty.handler.codec.bytes;
+											exports io.netty.handler.codec.compression;
+											exports io.netty.handler.codec.json;
+											exports io.netty.handler.codec.marshalling;
+											exports io.netty.handler.codec.protobuf;
+											exports io.netty.handler.codec.serialization;
+											exports io.netty.handler.codec.string;
+											exports io.netty.handler.codec.xml;
+										}
+									</moduleInfoSource>
 								</module>
 								<module>
 									<artifact>
