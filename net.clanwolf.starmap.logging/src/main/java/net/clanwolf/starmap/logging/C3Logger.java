@@ -34,11 +34,10 @@ public class C3Logger {
 
 	private static boolean initialized = false;
 	private static boolean initializing = false;
-	private static Logger logger = Logger.getLogger(C3Logger.class.getName());
+	private static final Logger logger = Logger.getLogger(C3Logger.class.getName());
 	private static FileHandler fileHandler;
 	private static ConsoleHandler consoleHandler;
 	private static String c3LogFileName = "";
-	private static File c3LogFile;
 	private static Level c3Loglevel = Level.FINEST;
 	private static final int FILE_SIZE = 3*1024*1024;
 
@@ -73,13 +72,18 @@ public class C3Logger {
 	}
 
 	private static boolean prepareLogfile() {
+		File c3LogFile;
 		c3LogFile = new File(c3LogFileName);
 		if (c3LogFile.isFile()) {
 			return true;
 		} else {
 			try {
-				c3LogFile.createNewFile();
-				return true;
+				boolean result = c3LogFile.createNewFile();
+				if (result) {
+					return true;
+				} else {
+					throw new Exception("Could not create log file!");
+				}
 			} catch(Exception e) {
 				C3Logger.exception("Log file could not be created.", e);
 			}
