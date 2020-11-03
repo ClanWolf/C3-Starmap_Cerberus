@@ -31,8 +31,6 @@ import io.nadron.client.event.Events;
 import io.nadron.client.event.NetworkEvent;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
-import net.clanwolf.starmap.client.util.C3PROPS;
-import net.clanwolf.starmap.client.util.C3Properties;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
 import net.clanwolf.starmap.transfer.dtos.UniverseDTO;

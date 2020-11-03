@@ -1418,8 +1418,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				spectrumAnimation.stop();
 				break;
 
-			case APPLICATION_EXIT:
-				break;
+//			case APPLICATION_EXIT:
+//				break;
+
 			case APPLICATION_STARTUP:
 				startup();
 				break;
@@ -1461,43 +1462,42 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				}
 				break;
 
-			case START_ROLEPLAY:
-				break;
-
-			case LOGINCHECK_STARTED:
-				break;
-			case LOGINCHECK_FINISHED:
-				break;
-			case LOGON_FINISHED_WITH_ERROR:
-				break;
-			case MOUSE_MOVED:
-				break;
-			case MUSIC_SELECTION_CHANGED:
-				break;
-			case SAVE_ROLEPLAY_STORY_OK:
-				break;
-			case SAVE_ROLEPLAY_STORY_ERR:
-				break;
-			case DELETE_ROLEPLAY_STORY_OK:
-				break;
-			case DELETE_ROLEPLAY_STORY_ERR:
-				break;
-			case GET_ROLEPLAY_ALLSTORIES:
-				break;
-			case GET_ROLEPLAY_ALLCHARACTER:
-				break;
-			case ROLEPLAY_NEXT_STEP:
-				break;
-			case ROLEPLAY_NEXT_STEP_CHANGE_PANE:
-				break;
-			case ACTION_SUCCESSFULLY_EXECUTED:
-				break;
-			case CURSOR_REQUEST_NORMAL_MESSAGE:
-				break;
-			case CURSOR_REQUEST_WAIT_MESSAGE:
-				break;
-			case NEW_UNIVERSE_RECEIVED:
-				break;
+//			case START_ROLEPLAY:
+//				break;
+//			case LOGINCHECK_STARTED:
+//				break;
+//			case LOGINCHECK_FINISHED:
+//				break;
+//			case LOGON_FINISHED_WITH_ERROR:
+//				break;
+//			case MOUSE_MOVED:
+//				break;
+//			case MUSIC_SELECTION_CHANGED:
+//				break;
+//			case SAVE_ROLEPLAY_STORY_OK:
+//				break;
+//			case SAVE_ROLEPLAY_STORY_ERR:
+//				break;
+//			case DELETE_ROLEPLAY_STORY_OK:
+//				break;
+//			case DELETE_ROLEPLAY_STORY_ERR:
+//				break;
+//			case GET_ROLEPLAY_ALLSTORIES:
+//				break;
+//			case GET_ROLEPLAY_ALLCHARACTER:
+//				break;
+//			case ROLEPLAY_NEXT_STEP:
+//				break;
+//			case ROLEPLAY_NEXT_STEP_CHANGE_PANE:
+//				break;
+//			case ACTION_SUCCESSFULLY_EXECUTED:
+//				break;
+//			case CURSOR_REQUEST_NORMAL_MESSAGE:
+//				break;
+//			case CURSOR_REQUEST_WAIT_MESSAGE:
+//				break;
+//			case NEW_UNIVERSE_RECEIVED:
+//				break;
 			default:
 				break;
 		}

@@ -32,5 +32,5 @@ public enum DATATYPES {
 	Date,
 	Boolean,
 	SelectionSingle,
-	SelectionMulti;
+	SelectionMulti
 }
