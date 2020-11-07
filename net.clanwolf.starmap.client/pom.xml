@@ -94,7 +94,19 @@
 			<artifactId>javafx-media</artifactId>
 			<version>${version.javafx}</version>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>net.clanwolf.starmap</groupId>
+            <artifactId>net.clanwolf.starmap.server</artifactId>
+            <version>5.1.7</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.jboss.spec.javax.transaction</groupId>
+					<artifactId>jboss-transaction-api_1.2_spec</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+    </dependencies>
 
 	<!-- https://github.com/moditect/moditect#adding-module-descriptors-to-existing-jar-files -->
 

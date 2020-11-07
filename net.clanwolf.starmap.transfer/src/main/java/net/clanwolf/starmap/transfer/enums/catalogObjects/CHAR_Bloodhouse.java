@@ -52,4 +52,9 @@ public class CHAR_Bloodhouse implements ICatalogObject, Serializable {
 	public void setId(Integer id) {
 		this.id = id;
 	}
+
+	@Override
+	public String toString(){
+		return name;
+	}
 }

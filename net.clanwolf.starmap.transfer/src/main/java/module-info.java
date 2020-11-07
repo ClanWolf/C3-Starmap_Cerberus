@@ -11,4 +11,5 @@ module net.clanwolf.starmap.transfer {
 	exports net.clanwolf.starmap.transfer.enums.catalogObjects to com.fasterxml.jackson.databind;
 
 	opens net.clanwolf.starmap.transfer.enums.catalogObjects to com.fasterxml.jackson.databind;
+	exports net.clanwolf.starmap.transfer.util;
 }

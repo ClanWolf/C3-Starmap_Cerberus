@@ -28,10 +28,8 @@ package net.clanwolf.starmap.client.gui.panes.rp;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.geometry.Insets;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -54,6 +52,7 @@ import net.clanwolf.starmap.transfer.enums.DATATYPES;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 import net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes.ROLEPLAYINPUTDATATYPES;
 import net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes.ROLEPLAYOBJECTTYPES;
+import net.clanwolf.starmap.transfer.util.CatalogLoader;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -82,6 +81,8 @@ public class RolePlayDataInputController extends AbstractC3RolePlayController im
 
 	@FXML
 	private VBox buttonArea;
+
+	private boolean bInit = false;
 
 	public RolePlayDataInputController() {
 	}
@@ -158,7 +159,10 @@ public class RolePlayDataInputController extends AbstractC3RolePlayController im
 	private void setField(ROLEPLAYINPUTDATATYPES t) {
 		if (t != null) {
 			HBox p = new HBox();
+			p.setPadding(new Insets(5, 2, 5, 2));
+			p.setSpacing(5);
 			Label l = new Label();
+			l.setPrefWidth(400);
 			p.getChildren().add(l);
 			buttonArea.getChildren().add(p);
 
@@ -166,7 +170,20 @@ public class RolePlayDataInputController extends AbstractC3RolePlayController im
 			switch (t.datatype) {
 				case String:
 					TextField tf = new TextField();
+					tf.setPrefWidth(400);
 					p.getChildren().add(tf);
+					break;
+				case SelectionSingle:
+				case SelectionMulti:
+					try {
+						ComboBox cb = new ComboBox();
+						cb.getItems().addAll(CatalogLoader.getList(t.classname));
+
+						cb.setPrefWidth(400);
+						p.getChildren().add(cb);
+					} catch (Exception e){
+						//nop
+					}
 					break;
 			}
 		}
@@ -191,7 +208,7 @@ public class RolePlayDataInputController extends AbstractC3RolePlayController im
 		//TODO: append single chars step by step until the whole text is displaying
 		taStoryText.setText(rpChar.getStory().getStoryText());
 
-		if(rpChar.getStory().getVar3ID() != null) {
+		if(!bInit && rpChar.getStory().getVar3ID() != null) {
 			RolePlayStoryVar3DTO rpVar3 = rpChar.getStory().getVar3ID();
 
 			setField(rpVar3.getDataSet1());
@@ -199,6 +216,8 @@ public class RolePlayDataInputController extends AbstractC3RolePlayController im
 			setField(rpVar3.getDataSet3());
 			setField(rpVar3.getDataSet4());
 			setField(rpVar3.getDataSet5());
+
+			bInit = true;
 		}
 	}
 }
