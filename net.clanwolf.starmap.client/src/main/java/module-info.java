@@ -10,7 +10,6 @@ module net.clanwolf.starmap.client {
 	requires org.apache.commons.collections4;
 
 	requires java.desktop;
-	requires java.mail;
 
 	requires javafx.graphics;
 	requires javafx.controls;
