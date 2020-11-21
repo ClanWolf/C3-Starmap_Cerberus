@@ -2,3 +2,7 @@
 - Error Handling
 - RP DataInput Felder Layout
 - RP Schriftart
+- RP Step zwei Sounddateien (Ambiente, Effekt)
+- RP Step zwei Bilddateien (Bild links und/oder rechts eventuell nur auf einer Seite dann aber übereinander.
+  Nach bedarf ein bwz ausblendbar)
+- RP Step pro Variante nur ein Controller, aber mehrere FXML möglich (Bild links/rechts)
