@@ -106,6 +106,9 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 				} else if(Nexus.getCurrentChar().getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V3){
 					changePaneAndController(Nexus.getCurrentChar().getStory().getVariante(),"/fxml/RolePlayDataInputPane.fxml");
 
+				}else if(Nexus.getCurrentChar().getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V5){
+					changePaneAndController(Nexus.getCurrentChar().getStory().getVariante(),"/fxml/RolePlayChoicePane2.fxml");
+
 				}
 			}
 			break;

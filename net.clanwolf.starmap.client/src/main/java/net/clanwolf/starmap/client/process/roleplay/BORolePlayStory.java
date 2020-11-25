@@ -208,7 +208,7 @@ public class BORolePlayStory {
 		allCharacters = li;
 	}
 
-	public void chsngeCharacterList(ArrayList<RolePlayCharacterDTO> li){
+	public void changeCharacterList(ArrayList<RolePlayCharacterDTO> li){
 
 		for (RolePlayCharacterDTO rpc : li) {
 
@@ -329,11 +329,13 @@ public class BORolePlayStory {
 			RolePlayStoryDTO rpIter = iter.next();
 			C3Logger.info("Story: " + rpIter.getStoryName() + " SortOrder: " + rpIter.getSortOrder());
 
-			if (rpIter.getParentStory().getId().longValue() == rp.getParentStory().getId().longValue() && rpIter.getId() != rp.getId() && rpIter.getSortOrder() >= minSortOrder && rpIter.getSortOrder() <= maxSortOrder) {
+			//if (rpIter.getParentStory().getId().longValue() == rp.getParentStory().getId().longValue() && rpIter.getId() != rp.getId() && rpIter.getSortOrder() >= minSortOrder && rpIter.getSortOrder() <= maxSortOrder) {
+
+			if (rpIter.getParentStory().getId().longValue() == rp.getParentStory().getId().longValue() && !rpIter.getId().equals(rp.getId()) && rpIter.getSortOrder() >= minSortOrder && rpIter.getSortOrder() <= maxSortOrder) {
 				// change sortorder
 				int old = rpIter.getSortOrder();
 				int t = rpIter.getSortOrder() + index;
-				C3Logger.info("Move: " + rpIter.getStoryName() + " / old Order: " + String.valueOf(old) + " -> new Order: " + String.valueOf(t));
+				C3Logger.info("Move: " + rpIter.getStoryName() + " / old Order: " + old + " -> new Order: " + t);
 
 				rpIter.setSortOrder(rpIter.getSortOrder() + index);
 				changedSortOrder.add(rpIter);
@@ -525,7 +527,7 @@ public class BORolePlayStory {
 			}
 		}
 
-		// Check next step for ROLEPLAYENTRYTYPES C3_RP_STEP_V2
+		/* Check next step for ROLEPLAYENTRYTYPES C3_RP_STEP_V2 and C3_RP_STEP_V5 */
 		if (activeStory != null && activeStory.getVar2ID() != null) {
 
 			if ((activeStory.getVar2ID().getOption1StoryID() != null && activeStory.getVar2ID().getOption1StoryID().equals(nextStep.getId()))
@@ -537,8 +539,7 @@ public class BORolePlayStory {
 
 		// Check next step for ROLEPLAYENTRYTYPE C3_RP_STEP_V3
 		if (activeStory != null && activeStory.getVar3ID() != null) {
-			if (activeStory.getVar3ID().getNextStoryID() != null && activeStory.getVar3ID().getNextStoryID().equals(nextStep.getId())
-					|| activeStory.getVar3ID().getNextStoryID() != null && activeStory.getVar3ID().getNextStoryID().equals(nextStep.getId())) {
+			if (activeStory.getVar3ID().getNextStoryID() != null && activeStory.getVar3ID().getNextStoryID().equals(nextStep.getId())) {
 				ret = true;
 			}
 		}
@@ -583,6 +584,11 @@ public class BORolePlayStory {
 						|| story.getVar4ID().getStoryIDScoreLess() == null
 						|| story.getVar4ID().getStoryIDScoreMore() == null)) {
 			nextStepFound = true;
+
+		} else if(story != null  && story.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V5
+				&& story.getVar2ID().getOption1StoryID() == null ) {
+			nextStepFound = true;
+
 		}
 		
 		return nextStepFound;

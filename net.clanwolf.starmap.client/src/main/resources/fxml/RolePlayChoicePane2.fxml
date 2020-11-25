@@ -6,20 +6,15 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane id="RolePlayStartPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.RolePlayChoice2PaneController">
+<AnchorPane id="RolePlayStartPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.RolePlayChoicePaneController">
     <children>
       <ImageView fx:id="rpIBackgroundImage" fitHeight="490.0" fitWidth="785.0" layoutX="58.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="rpImage" fitHeight="302.0" fitWidth="255.0" layoutX="59.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
-      <Button id="buttonYes" fx:id="buttonClose" layoutX="65.0" layoutY="457.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="34.0" prefWidth="773.0" styleClass="contentButton" text="Button" visible="false">
-         <stylesheets>
-            <URL value="@../styles/MainFrameStyle.css" />
-         </stylesheets>
-      </Button>
-      <TextArea fx:id="taRpText" layoutX="325.0" layoutY="10.0" prefHeight="302.0" prefWidth="517.0" styleClass="contentTextAreaBlock" wrapText="true" />
-      <Button fx:id="btChoice1" layoutX="59.0" layoutY="331.0" mnemonicParsing="false" onAction="#handleOnActionbtChoice1" opacity="0.8" prefHeight="36.0" prefWidth="784.0" text="Button" wrapText="true" />
-      <Button fx:id="btChoice2" layoutX="59.0" layoutY="373.0" mnemonicParsing="false" onAction="#handleOnActionbtChoice2" opacity="0.8" prefHeight="36.0" prefWidth="784.0" text="Button" wrapText="true" />
-      <Button fx:id="btChoice3" layoutX="59.0" layoutY="416.0" mnemonicParsing="false" onAction="#handleOnActionbtChoice3" opacity="0.8" prefHeight="36.0" prefWidth="784.0" text="Button" wrapText="true" />
-      <Button fx:id="btChoice4" layoutX="59.0" layoutY="458.0" mnemonicParsing="false" onAction="#handleOnActionbtChoice4" opacity="0.8" prefHeight="36.0" prefWidth="784.0" text="Button" wrapText="true" />
+      <ImageView fx:id="rpImage" fitHeight="314.0" fitWidth="216.0" layoutX="58.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
+      <TextArea fx:id="taRpText" layoutX="279.0" layoutY="10.0" prefHeight="314.0" prefWidth="564.0" styleClass="contentTextAreaBlock" wrapText="true" />
+      <Button fx:id="btChoice1" layoutX="59.0" layoutY="331.0" mnemonicParsing="false" onAction="#handleOnActionbtChoice1" opacity="0.8" prefHeight="36.0" prefWidth="784.0" text="btChoice1" wrapText="true" />
+      <Button fx:id="btChoice2" layoutX="59.0" layoutY="373.0" mnemonicParsing="false" onAction="#handleOnActionbtChoice2" opacity="0.8" prefHeight="36.0" prefWidth="784.0" text="btChoice2" wrapText="true" />
+      <Button fx:id="btChoice3" layoutX="59.0" layoutY="416.0" mnemonicParsing="false" onAction="#handleOnActionbtChoice3" opacity="0.8" prefHeight="36.0" prefWidth="784.0" text="btChoice3" wrapText="true" />
+      <Button fx:id="btChoice4" layoutX="59.0" layoutY="458.0" mnemonicParsing="false" onAction="#handleOnActionbtChoice4" opacity="0.8" prefHeight="36.0" prefWidth="784.0" text="btChoice4" wrapText="true" />
     </children>
     <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />

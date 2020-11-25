@@ -57,8 +57,8 @@ public class RolePlayChoicePaneController extends AbstractC3RolePlayController i
 	@FXML
 	private AnchorPane anchorPane;
 
-	//@FXML
-	//private ImageView rpIBackgroundImage;
+	@FXML
+	private ImageView rpIBackgroundImage;
 
 	@FXML
 	private ImageView rpImage;
@@ -77,9 +77,6 @@ public class RolePlayChoicePaneController extends AbstractC3RolePlayController i
 
 	@FXML
 	private Button btChoice4;
-
-	@FXML
-	private Button buttonClose;
 
 	public RolePlayChoicePaneController() {
 	}
@@ -106,7 +103,6 @@ public class RolePlayChoicePaneController extends AbstractC3RolePlayController i
 		btChoice3.setVisible(false);
 		btChoice4.setVisible(false);
 
-		buttonClose.setVisible(false);
 	}
 
 	/**
@@ -123,7 +119,8 @@ public class RolePlayChoicePaneController extends AbstractC3RolePlayController i
 		if(anchorPane != null && !anchorPane.isVisible()) return true;
 		switch (action) {
 		case START_ROLEPLAY:
-			if(ROLEPLAYENTRYTYPES.C3_RP_STEP_V2 == o.getObject()) {
+			if(ROLEPLAYENTRYTYPES.C3_RP_STEP_V2 == o.getObject() ||
+					ROLEPLAYENTRYTYPES.C3_RP_STEP_V5 == o.getObject()) {
 				C3Logger.debug("RolePlayChoicePaneController -> START_ROLEPLAY");
 
 				init();
@@ -178,15 +175,14 @@ public class RolePlayChoicePaneController extends AbstractC3RolePlayController i
 	public void getStoryValues(RolePlayCharacterDTO rpChar) {
 		if (rpChar.getStory().getStoryIntro() == null) {
 			String imURL;
+			InputStream isBackground = this.getClass().getResourceAsStream("/images/gui/default_Step.png");
+			rpIBackgroundImage.setImage(new Image(isBackground));
 
 			// Check step for own image. If now own image availabale use default image
 			if (rpChar.getStory().getStoryImage() != null) {
 				imURL = BORolePlayStory.getRPG_ResourceURL() + "/" + rpChar.getStory().getId().toString() + "/" + rpChar.getStory().getStoryImage();
 				Image im = new Image(imURL);
 				rpImage.setImage(im);
-			} else {
-				InputStream isBackground = this.getClass().getResourceAsStream("/images/gui/default_Step.png");
-				rpImage.setImage(new Image(isBackground));
 			}
 		}
 

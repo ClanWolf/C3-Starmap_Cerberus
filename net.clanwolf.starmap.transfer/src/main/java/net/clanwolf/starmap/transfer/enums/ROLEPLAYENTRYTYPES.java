@@ -36,11 +36,13 @@ public enum ROLEPLAYENTRYTYPES {
 
 	C3_RP_STEP_V1("Step (Normal Story step)"),
 
-	C3_RP_STEP_V2("Step (Path selection)"),
+	C3_RP_STEP_V2("Step (Path selection) without Image"),
 
 	C3_RP_STEP_V3("Step (Data input)"),
 
-	C3_RP_STEP_V4("Step (Dice)");
+	C3_RP_STEP_V4("Step (Dice)"),
+
+	C3_RP_STEP_V5("Step (Path selection) Image left");
 
 	private final String label;
 

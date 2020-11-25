@@ -97,7 +97,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	@FXML
 	Label labStoryName, labDescription, labStorytext, labRolePlayOff, labStoryVariante, labImage, labVoice, labMovie, labURL;
 	@FXML
-	Label labPathOption1, labPathOption2, labPathOption3,labPathOption4, labDataInputText, labDataInputDataset;
+	Label labPathOption1, labPathOption2, labPathOption3,labPathOption4, labDataInputDataset;
 	@FXML
 	Label labDiceLabel, labDiceScore, labDiceScoreLess, labDiceScoreEqual, labDiceScoreMore, labAssignedChar, labAllCharacters;
 	@FXML
@@ -134,7 +134,6 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	private TreeItem<RolePlayStoryDTO> root;
 	private TreeItem<RolePlayStoryDTO> selected;
 	private BORolePlayStory boRP;
-	private RolePlayStoryDTO rpCopyForSaving;
 
 	private ChangeListener<? super String> editFieldChangeListener;
 	private ChangeListener<? super Object> editComboBoxChangeListener;
@@ -160,8 +159,8 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	/**
 	 * Initializes the controller class.
 	 *
-	 * @param url
-	 * @param rb
+	 * @param url needs an URL
+	 * @param rb needs an resourcebaundel
 	 */
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
@@ -240,7 +239,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 //			selected.setValue((RolePlayStoryDTO) object.getObject());
 				selected.setValue(rps);
 				boRP.addStoryToList(selected.getValue());
-				boRP.chsngeCharacterList(rpcList);
+				boRP.changeCharacterList(rpcList);
 
 			/*lvAssignedChar.getItems().clear();
 			for (RolePlayCharacterDTO rpc : boRP.getCharacterList()) {
@@ -272,15 +271,12 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 			case SAVE_ROLEPLAY_STORY_ERR:
 				C3Logger.info("SAVE_ROLEPLAY_STORY_ERR");
 
-				Platform.runLater(new Runnable() {
-					@Override
-					public void run() {
+				Platform.runLater(() -> {
 
-						Alert alert = Tools.C3Dialog(AlertType.ERROR, Internationalization.getString("general_failure"), Internationalization.getString("general_failure"), Internationalization.getString("app_rp_storyeditor_story_error_save"));
-						Optional<ButtonType> result = alert.showAndWait();
-						if (result.get() == ButtonType.OK) {
-							setWarningOff();
-						}
+					Alert alert = Tools.C3Dialog(AlertType.ERROR, Internationalization.getString("general_failure"), Internationalization.getString("general_failure"), Internationalization.getString("app_rp_storyeditor_story_error_save"));
+					Optional<ButtonType> result = alert.showAndWait();
+					if (result.get() == ButtonType.OK) {
+						setWarningOff();
 					}
 				});
 
@@ -503,6 +499,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	private void handleSaveButtonClick() {
 
 		// RolePlayStoryDTO copy = boRP.getCopy(selected.getValue());
+		RolePlayStoryDTO rpCopyForSaving;
 		rpCopyForSaving = boRP.getCopy(selected.getValue());
 
 		// if (boRP.checkBeforeSave(getData(boRP.getCopy(copy)))) {
@@ -722,10 +719,10 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	@FXML
 	private void handleSortOrderUp() {
 		C3Logger.info("handleSortOrderUp");
-		Integer sortOrder = Integer.valueOf(tfSortOrder.getText());
+		int sortOrder = Integer.parseInt(tfSortOrder.getText());
 		if (sortOrder < selected.getParent().getChildren().size()) {
 			sortOrder++;
-			tfSortOrder.setText(sortOrder.toString());
+			tfSortOrder.setText(Integer.toString(sortOrder));
 
 			TreeItem<RolePlayStoryDTO> parent = selected.getParent();
 
@@ -741,10 +738,10 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	@FXML
 	private void handleSortOrderDown() {
 		C3Logger.info("handleSortOrderDown");
-		Integer sortOrder = Integer.valueOf(tfSortOrder.getText());
+		int sortOrder = Integer.parseInt(tfSortOrder.getText());
 		if (sortOrder > 1) {
 			sortOrder--;
-			tfSortOrder.setText(sortOrder.toString());
+			tfSortOrder.setText(Integer.toString(sortOrder));
 
 			TreeItem<RolePlayStoryDTO> parent = selected.getParent();
 
@@ -879,14 +876,13 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 			if (!tabPaneStory.getTabs().contains(tabBasic7)) {
 				tabPaneStory.getTabs().add(tabBasic7);
 			}
-		} else {
-			if (tabPaneStory.getTabs().contains(tabBasic7)) {
-				tabPaneStory.getTabs().remove(tabBasic7);
-			}
+		} else if (tabPaneStory.getTabs().contains(tabBasic7)) {
+			tabPaneStory.getTabs().remove(tabBasic7);
 		}
 
 		// Tab for story path selection
-		if (selected != null && cbStoryVarianten.getSelectionModel().getSelectedItem() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V2) {
+		if (selected != null && ( cbStoryVarianten.getSelectionModel().getSelectedItem() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V2 ||
+				cbStoryVarianten.getSelectionModel().getSelectedItem() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V5)) {
 			if (!tabPaneStory.getTabs().contains(tabBasic4)) {
 				tabPaneStory.getTabs().add(tabBasic4);
 			}
@@ -936,10 +932,10 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 		treeStory.setShowRoot(false);
 		treeStory.setRoot(root);
 
-		treeStory.setCellFactory(new Callback<TreeView<RolePlayStoryDTO>, TreeCell<RolePlayStoryDTO>>() {
+		treeStory.setCellFactory(new Callback<>() {
 			@Override
 			public TreeCell<RolePlayStoryDTO> call(TreeView<RolePlayStoryDTO> p) {
-				return new TreeCell<RolePlayStoryDTO>() {
+				return new TreeCell<>() {
 
 					@Override
 					protected void updateItem(RolePlayStoryDTO item, boolean empty) {
@@ -1286,8 +1282,9 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 				cbNextStep_V1.setValue(null);
 			}
 
-			// set data for story variante 2
-			if (selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V2 && selected.getValue().getVar2ID() != null) {
+			// set data for story variante 2 / variante 5
+			if ((selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V2 ||
+					selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V5 ) && selected.getValue().getVar2ID() != null) {
 				tfStoryPath1.setText(selected.getValue().getVar2ID().getOption1Text());
 				tfStoryPath2.setText(selected.getValue().getVar2ID().getOption2Text());
 				tfStoryPath3.setText(selected.getValue().getVar2ID().getOption3Text());
@@ -1433,7 +1430,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 		}
 
 		// set data for variante 2
-		if (rp.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V2) {
+		if (rp.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V2 || rp.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V5) {
 
 			RolePlayStoryVar2DTO rpVar2 = rp.getVar2ID();
 			if (rpVar2 == null) {
@@ -1443,15 +1440,23 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 
 			if (cbStoryPath1.getValue() != null) {
 				rpVar2.setOption1StoryID(cbStoryPath1.getValue().getId());
+			} else {
+				rpVar2.setOption1StoryID(null);
 			}
 			if (cbStoryPath2.getValue() != null) {
 				rpVar2.setOption2StoryID(cbStoryPath2.getValue().getId());
+			} else {
+				rpVar2.setOption2StoryID(null);
 			}
 			if (cbStoryPath3.getValue() != null) {
 				rpVar2.setOption3StoryID(cbStoryPath3.getValue().getId());
+			} else {
+				rpVar2.setOption3StoryID(null);
 			}
 			if (cbStoryPath4.getValue() != null) {
 				rpVar2.setOption4StoryID(cbStoryPath4.getValue().getId());
+			} else {
+				rpVar2.setOption4StoryID(null);
 			}
 
 			rpVar2.setOption1Text(tfStoryPath1.getText());
@@ -1572,48 +1577,45 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 			// Platform.runLater(() -> buttonCancel.setText("Close"));
 
 			// buttonCancel.setText("Close");
-			Platform.runLater(new Runnable() {
-				@Override
-				public void run() {
-					buttonCancel.setText(Internationalization.getString("general_close"));
-					buttonSave.setText(Internationalization.getString("general_save"));
+			Platform.runLater(() -> {
+				buttonCancel.setText(Internationalization.getString("general_close"));
+				buttonSave.setText(Internationalization.getString("general_save"));
 
-					labStoryName.setText(Internationalization.getString("app_rp_storyeditor_storyname"));
-					labDescription.setText(Internationalization.getString("app_rp_storyeditor_storydescription"));
-					labStorytext.setText(Internationalization.getString("app_rp_storyeditor_storytext"));
-					labRolePlayOff.setText(Internationalization.getString("app_rp_storyeditor_roleplay_off"));
-					labStoryVariante.setText(Internationalization.getString("app_rp_storyeditor_story_variante"));
-					labImage.setText(Internationalization.getString("app_rp_storyeditor_story_image"));
-					labVoice.setText(Internationalization.getString("app_rp_storyeditor_story_voice"));
-					labMovie.setText(Internationalization.getString("app_rp_storyeditor_story_movie"));
-					labURL.setText(Internationalization.getString("app_rp_storyeditor_story_url"));
+				labStoryName.setText(Internationalization.getString("app_rp_storyeditor_storyname"));
+				labDescription.setText(Internationalization.getString("app_rp_storyeditor_storydescription"));
+				labStorytext.setText(Internationalization.getString("app_rp_storyeditor_storytext"));
+				labRolePlayOff.setText(Internationalization.getString("app_rp_storyeditor_roleplay_off"));
+				labStoryVariante.setText(Internationalization.getString("app_rp_storyeditor_story_variante"));
+				labImage.setText(Internationalization.getString("app_rp_storyeditor_story_image"));
+				labVoice.setText(Internationalization.getString("app_rp_storyeditor_story_voice"));
+				labMovie.setText(Internationalization.getString("app_rp_storyeditor_story_movie"));
+				labURL.setText(Internationalization.getString("app_rp_storyeditor_story_url"));
 
-					tabBasic.setText(Internationalization.getString("app_rp_storyeditor_tab_basic1"));
-					tabBasic2.setText(Internationalization.getString("app_rp_storyeditor_tab_basic2"));
-					tabBasic3.setText(Internationalization.getString("app_rp_storyeditor_tab_character_assignment"));
-					tabBasic4.setText(Internationalization.getString("app_rp_storyeditor_tab_path"));
-					tabBasic5.setText(Internationalization.getString("app_rp_storyeditor_tab_input"));
-					tabBasic6.setText(Internationalization.getString("app_rp_storyeditor_tab_dice"));
+				tabBasic.setText(Internationalization.getString("app_rp_storyeditor_tab_basic1"));
+				tabBasic2.setText(Internationalization.getString("app_rp_storyeditor_tab_basic2"));
+				tabBasic3.setText(Internationalization.getString("app_rp_storyeditor_tab_character_assignment"));
+				tabBasic4.setText(Internationalization.getString("app_rp_storyeditor_tab_path"));
+				tabBasic5.setText(Internationalization.getString("app_rp_storyeditor_tab_input"));
+				tabBasic6.setText(Internationalization.getString("app_rp_storyeditor_tab_dice"));
 
-					labPathOption1.setText(Internationalization.getString("app_rp_storyeditor_story_path_option1"));
-					labPathOption2.setText(Internationalization.getString("app_rp_storyeditor_story_path_option2"));
-					labPathOption3.setText(Internationalization.getString("app_rp_storyeditor_story_path_option3"));
-					labPathOption4.setText(Internationalization.getString("app_rp_storyeditor_story_path_option4"));
+				labPathOption1.setText(Internationalization.getString("app_rp_storyeditor_story_path_option1"));
+				labPathOption2.setText(Internationalization.getString("app_rp_storyeditor_story_path_option2"));
+				labPathOption3.setText(Internationalization.getString("app_rp_storyeditor_story_path_option3"));
+				labPathOption4.setText(Internationalization.getString("app_rp_storyeditor_story_path_option4"));
 
 //					labDataInputText.setText(Internationalization.getString("app_rp_storyeditor_story_datainput_text"));
-					labDataInputDataset.setText(Internationalization.getString("app_rp_storyeditor_story_datainput_dataset"));
-					//labDataInputStep.setText(Internationalization.getString("app_rp_storyeditor_story_datainput_step"));
+				labDataInputDataset.setText(Internationalization.getString("app_rp_storyeditor_story_datainput_dataset"));
+				//labDataInputStep.setText(Internationalization.getString("app_rp_storyeditor_story_datainput_step"));
 
-					labDiceLabel.setText(Internationalization.getString("app_rp_storyeditor_story_dice_label"));
-					labDiceScore.setText(Internationalization.getString("app_rp_storyeditor_story_dice_score"));
-					labDiceScoreLess.setText(Internationalization.getString("app_rp_storyeditor_story_dice_score_less"));
-					labDiceScoreEqual.setText(Internationalization.getString("app_rp_storyeditor_story_dice_score_equal"));
-					labDiceScoreMore.setText(Internationalization.getString("app_rp_storyeditor_story_dice_score_more"));
+				labDiceLabel.setText(Internationalization.getString("app_rp_storyeditor_story_dice_label"));
+				labDiceScore.setText(Internationalization.getString("app_rp_storyeditor_story_dice_score"));
+				labDiceScoreLess.setText(Internationalization.getString("app_rp_storyeditor_story_dice_score_less"));
+				labDiceScoreEqual.setText(Internationalization.getString("app_rp_storyeditor_story_dice_score_equal"));
+				labDiceScoreMore.setText(Internationalization.getString("app_rp_storyeditor_story_dice_score_more"));
 
-					labAllCharacters.setText(Internationalization.getString("app_rp_storyeditor_story_character_all"));
-					labAssignedChar.setText(Internationalization.getString("app_rp_storyeditor_story_character_assigned"));
+				labAllCharacters.setText(Internationalization.getString("app_rp_storyeditor_story_character_all"));
+				labAssignedChar.setText(Internationalization.getString("app_rp_storyeditor_story_character_assigned"));
 
-				}
 			});
 		}
 	}
@@ -1660,7 +1662,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 
 		editComboBoxChangeListener = new ChangeListener<Object>() {
 			@Override
-			public void changed(ObservableValue<? extends Object> ov, Object old_val, Object new_val) {
+			public void changed(ObservableValue<?> ov, Object old_val, Object new_val) {
 				setWarningOn(true);
 			}
 		};
