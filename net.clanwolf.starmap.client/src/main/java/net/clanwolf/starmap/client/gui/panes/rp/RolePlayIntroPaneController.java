@@ -100,6 +100,7 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 			if(ROLEPLAYENTRYTYPES.C3_RP_STORY == o.getObject() ||
 					ROLEPLAYENTRYTYPES.C3_RP_CHAPTER == o.getObject()) {
 				C3Logger.debug("RolePlayIntroPaneController -> START_ROLEPLAY");
+				btPreview.setStyle("-fx-opacity: 1");
 				// set current step of story
 				getStoryValues(Nexus.getCurrentChar());
 			}
@@ -122,13 +123,13 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 	@FXML
 	public void handleOnMouseEnteredOnBtPreview(){
 		C3Logger.debug("handleOnMouseEnteredOnBtPreview");
-		btPreview.setStyle("-fx-opacity: 1");
+		//btPreview.setStyle("-fx-opacity: 1");
 	}
 
 	@FXML
 	public void handleOnMouseExitOnBtPreview(){
 		C3Logger.debug("handleOnMouseExitOnBtPreview");
-		btPreview.setStyle("-fx-opacity: 0.2");
+		//btPreview.setStyle("-fx-opacity: 0.2");
 	}
 
 	@FXML
@@ -162,14 +163,14 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 		if(rpChar.getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1){
 			taStoryText.setVisible(true);
 			labHeader.setVisible(false);
-			btPreview.setVisible(true);
+			//btPreview.setVisible(true);
 
 			taStoryText.setText(rpChar.getStory().getStoryText());
 
 		} else {
 
 			taStoryText.setVisible(false);
-			btPreview.setVisible(false);
+			//.setVisible(false);
 
 			if(rpChar.getStory().getStoryImage() == null || rpChar.getStory().getStoryImage().isEmpty()) {
 				labHeader.setVisible(true);

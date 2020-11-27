@@ -10,24 +10,24 @@
 <AnchorPane id="RolePlayStartPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.RolePlayDicePaneController">
     <children>
       <ImageView fx:id="rpImage" fitHeight="490.0" fitWidth="785.0" layoutX="58.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" />
-      <TextArea fx:id="taRpText" layoutX="60.0" layoutY="9.0" prefHeight="369.0" prefWidth="602.0" styleClass="contentTextAreaBlock" wrapText="true" />
-      <ImageView fitHeight="369.0" fitWidth="162.0" layoutX="680.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+      <TextArea fx:id="taRpText" layoutX="59.0" layoutY="8.0" prefHeight="442.0" prefWidth="586.0" styleClass="contentTextAreaBlock" wrapText="true" />
+      <ImageView fitHeight="450.0" fitWidth="190.0" layoutX="654.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/dice/Dice_Background.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="ivDice1" fitHeight="100.0" fitWidth="140.0" layoutX="709.0" layoutY="59.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="ivDice1" fitHeight="100.0" fitWidth="140.0" layoutX="699.0" layoutY="98.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/dice/d6_1.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="ivDice2" fitHeight="100.0" fitWidth="140.0" layoutX="709.0" layoutY="221.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="ivDice2" fitHeight="100.0" fitWidth="140.0" layoutX="699.0" layoutY="260.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/dice/d6_2.png" />
          </image>
       </ImageView>
-      <Button fx:id="btRollDice" layoutX="60.0" layoutY="409.0" mnemonicParsing="false" onAction="#handleOnActionRollDice" prefHeight="50.0" prefWidth="780.0" text="Würfeln" />
-      <Button fx:id="btNextStep" layoutX="60.0" layoutY="409.0" mnemonicParsing="false" onAction="#handleOnActionNextStep" prefHeight="50.0" prefWidth="780.0" text="Weiter" visible="false" />
+      <Button fx:id="btRollDice" layoutX="59.0" layoutY="458.0" mnemonicParsing="false" onAction="#handleOnActionRollDice" prefHeight="36.0" prefWidth="784.0" text="Würfeln" />
+      <Button fx:id="btNextStep" layoutX="59.0" layoutY="458.0" mnemonicParsing="false" onAction="#handleOnActionNextStep" prefHeight="36.0" prefWidth="784.0" text="Weiter" visible="false" />
     </children>
     <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />

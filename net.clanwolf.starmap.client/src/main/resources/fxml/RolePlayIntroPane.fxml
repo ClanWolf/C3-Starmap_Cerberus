@@ -16,17 +16,12 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <Button id="buttonYes" fx:id="buttonClose" layoutX="65.0" layoutY="457.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="34.0" prefWidth="773.0" styleClass="contentButton" text="Button" visible="false">
-         <stylesheets>
-            <URL value="@../styles/MainFrameStyle.css" />
-         </stylesheets>
-      </Button>
-      <ImageView fx:id="ivIntro" fitHeight="485.0" fitWidth="785.0" layoutX="58.0" layoutY="8.0" onMouseClicked="#handleOnMouseClicked" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="ivIntro" fitHeight="442.0" fitWidth="786.0" layoutX="58.0" layoutY="7.0" onMouseClicked="#handleOnMouseClicked" pickOnBounds="true" preserveRatio="true">
          <viewport>
-            <Rectangle2D height="485.0" width="785.0" />
+            <Rectangle2D height="442.0" width="786.0" />
          </viewport></ImageView>
-      <TextArea fx:id="taStoryText" layoutX="58.0" layoutY="8.0" prefHeight="450.0" prefWidth="785.0" wrapText="true" />
-      <Button fx:id="btPreview" layoutX="58.0" layoutY="465.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#handleOnActionBtPreview" onMouseEntered="#handleOnMouseEnteredOnBtPreview" onMouseExited="#handleOnMouseExitOnBtPreview" opacity="0.2" prefHeight="25.0" prefWidth="785.0" text="&gt;&gt; weiter &gt;&gt;">
+      <TextArea fx:id="taStoryText" layoutX="58.0" layoutY="8.0" prefHeight="442.0" prefWidth="784.0" styleClass="contentTextAreaBlock" wrapText="true" />
+      <Button fx:id="btPreview" layoutX="59.0" layoutY="457.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#handleOnActionBtPreview" onMouseEntered="#handleOnMouseEnteredOnBtPreview" onMouseExited="#handleOnMouseExitOnBtPreview" opacity="0.2" prefHeight="36.0" prefWidth="784.0" text="&gt;&gt; weiter &gt;&gt;">
          <font>
             <Font size="12.0" />
          </font></Button>
