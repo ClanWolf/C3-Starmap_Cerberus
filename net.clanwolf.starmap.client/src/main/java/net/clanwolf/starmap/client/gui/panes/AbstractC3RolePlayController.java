@@ -26,7 +26,10 @@
  */
 package net.clanwolf.starmap.client.gui.panes;
 
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.AnchorPane;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
@@ -48,6 +51,9 @@ public abstract class AbstractC3RolePlayController implements Initializable, Act
 	protected BORolePlayStory boRp;
 	protected RolePlayStoryDTO rp;
 
+	@FXML
+	private ImageView templateBackground;
+
 	/**
 	 * Set strings
 	 */
@@ -61,6 +67,9 @@ public abstract class AbstractC3RolePlayController implements Initializable, Act
 	public void initialize(URL url, ResourceBundle rb) {
 
 		boRp = new BORolePlayStory();
+
+		// This is a template helper for layouting the panes in scenebuilder. It should not be visible in the running client.
+		templateBackground.setVisible(false);
 	}
 
 	/**

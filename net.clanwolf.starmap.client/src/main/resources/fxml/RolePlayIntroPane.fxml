@@ -5,12 +5,18 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane id="RolePlayStartPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.RolePlayIntroPaneController">
     <children>
+      <ImageView fx:id="templateBackground" fitHeight="567.0" fitWidth="944.0" layoutX="-70.0" layoutY="-22.0" mouseTransparent="true" opacity="0.74" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/template_bg.png" />
+         </image>
+      </ImageView>
       <Label fx:id="labHeader" alignment="CENTER" layoutX="58.0" layoutY="87.0" prefHeight="54.0" prefWidth="785.0" textAlignment="CENTER" textFill="#fffbfb" visible="false">
          <font>
             <Font size="24.0" />

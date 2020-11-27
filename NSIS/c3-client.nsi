@@ -121,12 +121,6 @@ Section "C3-Client (required)"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.sql\ASSEMBLY_EXCEPTION"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.sql\ADDITIONAL_LICENSE_INFO"
 
-	CreateDirectory $INSTDIR\legal\java.security.sasl
-	SetOutpath $INSTDIR\legal\java.security.sasl
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.security.sasl\LICENSE"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.security.sasl\ASSEMBLY_EXCEPTION"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.security.sasl\ADDITIONAL_LICENSE_INFO"
-
 	CreateDirectory $INSTDIR\legal\java.scripting
 	SetOutpath $INSTDIR\legal\java.scripting
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.scripting\LICENSE"
@@ -389,9 +383,6 @@ Section "Uninstall"
 	Delete $INSTDIR\legal\java.sql\LICENSE
 	Delete $INSTDIR\legal\java.sql\ASSEMBLY_EXCEPTION
 	Delete $INSTDIR\legal\java.sql\ADDITIONAL_LICENSE_INFO
-	Delete $INSTDIR\legal\java.security.sasl\LICENSE
-	Delete $INSTDIR\legal\java.security.sasl\ASSEMBLY_EXCEPTION
-	Delete $INSTDIR\legal\java.security.sasl\ADDITIONAL_LICENSE_INFO
 	Delete $INSTDIR\legal\java.scripting\LICENSE
 	Delete $INSTDIR\legal\java.scripting\ASSEMBLY_EXCEPTION
 	Delete $INSTDIR\legal\java.scripting\ADDITIONAL_LICENSE_INFO
@@ -548,7 +539,6 @@ Section "Uninstall"
 	RMDir "$INSTDIR\legal\java.net.http"
 	RMDir "$INSTDIR\legal\java.prefs"
 	RMDir "$INSTDIR\legal\java.scripting"
-	RMDir "$INSTDIR\legal\java.security.sasl"
 	RMDir "$INSTDIR\legal\java.sql"
 	RMDir "$INSTDIR\legal\java.transaction.xa"
 	RMDir "$INSTDIR\legal\java.xml"
