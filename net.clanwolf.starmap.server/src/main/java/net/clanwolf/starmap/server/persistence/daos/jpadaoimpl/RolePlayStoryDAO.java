@@ -122,7 +122,8 @@ public class RolePlayStoryDAO extends GenericDAO {
 		crit.addCriteriaOR(crit.createPredicate("type", ROLEPLAYENTRYTYPES.C3_RP_STEP_V1),
 				crit.createPredicate("type", ROLEPLAYENTRYTYPES.C3_RP_STEP_V2),
 				crit.createPredicate("type", ROLEPLAYENTRYTYPES.C3_RP_STEP_V3),
-				crit.createPredicate("type", ROLEPLAYENTRYTYPES.C3_RP_STEP_V4));
+				crit.createPredicate("type", ROLEPLAYENTRYTYPES.C3_RP_STEP_V4),
+				crit.createPredicate("type", ROLEPLAYENTRYTYPES.C3_RP_STEP_V5));
 
 		return (RolePlayStoryPOJO)crit.getSingleResult();
 	}
