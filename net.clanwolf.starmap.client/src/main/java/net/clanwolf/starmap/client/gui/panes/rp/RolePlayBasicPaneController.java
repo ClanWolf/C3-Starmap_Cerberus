@@ -91,49 +91,13 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 		case PANE_CREATION_FINISHED:
 			C3Logger.debug(o.getObject().toString());
 			if(o.getObject() instanceof RolePlayBasicPane){
-
-				if(Nexus.getCurrentChar().getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STORY ||
-						Nexus.getCurrentChar().getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_CHAPTER ||
-						Nexus.getCurrentChar().getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1){
-					changePaneAndController(ROLEPLAYENTRYTYPES.C3_RP_STORY,"/fxml/RolePlayIntroPane.fxml");
-
-				} else if(Nexus.getCurrentChar().getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V2){
-					changePaneAndController(Nexus.getCurrentChar().getStory().getVariante(),"/fxml/RolePlayChoicePane.fxml");
-
-				} else if(Nexus.getCurrentChar().getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V4){
-					changePaneAndController(Nexus.getCurrentChar().getStory().getVariante(),"/fxml/RolePlayDicePane.fxml");
-
-				} else if(Nexus.getCurrentChar().getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V3){
-					changePaneAndController(Nexus.getCurrentChar().getStory().getVariante(),"/fxml/RolePlayDataInputPane.fxml");
-
-				} else if(Nexus.getCurrentChar().getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V5){
-					changePaneAndController(Nexus.getCurrentChar().getStory().getVariante(), "/fxml/RolePlayChoicePaneImageLeft.fxml");
-
-				}
+				loadScreen();
 			}
 			break;
 
 		case ROLEPLAY_NEXT_STEP_CHANGE_PANE:
 			C3Logger.debug("Choose now the next step of story!");
-			if(Nexus.getCurrentChar().getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_CHAPTER||
-					Nexus.getCurrentChar().getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1){
-				changePaneAndController(ROLEPLAYENTRYTYPES.C3_RP_STORY,"/fxml/RolePlayIntroPane.fxml");
-
-			} else if(Nexus.getCurrentChar().getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V2){
-				changePaneAndController(Nexus.getCurrentChar().getStory().getVariante(),"/fxml/RolePlayChoicePane.fxml");
-
-			} else if(Nexus.getCurrentChar().getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V3){
-				//TODO: Test this variante of step with a speciale fxml-file
-				//changePaneAndController(Nexus.getCurrentChar().getStory().getVariante(),Nexus.getCurrentChar().getStory().getVar3ID().getFormName());
-				changePaneAndController(Nexus.getCurrentChar().getStory().getVariante(),"/fxml/RolePlayDataInputPane.fxml");
-
-			} else if(Nexus.getCurrentChar().getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V4){
-				changePaneAndController(Nexus.getCurrentChar().getStory().getVariante(), "/fxml/RolePlayDicePane.fxml");
-
-			} else if(Nexus.getCurrentChar().getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V5){
-				changePaneAndController(Nexus.getCurrentChar().getStory().getVariante(), "/fxml/RolePlayChoicePaneImageLeft.fxml");
-
-			}
+			loadScreen();
 			break;
 
 		default:
@@ -170,6 +134,51 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 
 
 	//******************************** THIS ********************************/
+
+	private void loadScreen(){
+
+		switch(Nexus.getCurrentChar().getStory().getVariante()){
+			case C3_RP_STORY:
+			case C3_RP_CHAPTER:
+			case C3_RP_STEP_V1:
+				changePaneAndController(ROLEPLAYENTRYTYPES.C3_RP_STORY,"/fxml/RolePlayIntroPane.fxml");
+				break;
+			case C3_RP_STEP_V2:
+				changePaneAndController(Nexus.getCurrentChar().getStory().getVariante(),"/fxml/RolePlayChoicePane.fxml");
+				break;
+			case C3_RP_STEP_V3:
+				changePaneAndController(Nexus.getCurrentChar().getStory().getVariante(),"/fxml/RolePlayDataInputPane.fxml");
+				break;
+			case C3_RP_STEP_V4:
+				changePaneAndController(Nexus.getCurrentChar().getStory().getVariante(),"/fxml/RolePlayDicePane.fxml");
+				break;
+			case C3_RP_STEP_V5:
+				changePaneAndController(Nexus.getCurrentChar().getStory().getVariante(), "/fxml/RolePlayChoicePaneImageLeft.fxml");
+				break;
+
+			default:
+				break;
+		}
+
+		/*if(Nexus.getCurrentChar().getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STORY ||
+				Nexus.getCurrentChar().getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_CHAPTER ||
+				Nexus.getCurrentChar().getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1){
+			changePaneAndController(ROLEPLAYENTRYTYPES.C3_RP_STORY,"/fxml/RolePlayIntroPane.fxml");
+
+		} else if(Nexus.getCurrentChar().getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V2){
+			changePaneAndController(Nexus.getCurrentChar().getStory().getVariante(),"/fxml/RolePlayChoicePane.fxml");
+
+		} else if(Nexus.getCurrentChar().getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V4){
+			changePaneAndController(Nexus.getCurrentChar().getStory().getVariante(),"/fxml/RolePlayDicePane.fxml");
+
+		} else if(Nexus.getCurrentChar().getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V3){
+			changePaneAndController(Nexus.getCurrentChar().getStory().getVariante(),"/fxml/RolePlayDataInputPane.fxml");
+
+		} else if(Nexus.getCurrentChar().getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V5){
+			changePaneAndController(Nexus.getCurrentChar().getStory().getVariante(), "/fxml/RolePlayChoicePaneImageLeft.fxml");
+
+		}*/
+	}
 
 	private void changePaneAndController(ROLEPLAYENTRYTYPES type, String fxmlPane){
 
