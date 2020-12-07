@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="RolePlayStartPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.RolePlayKeypadPaneController">
+    <children>
+      <ImageView fx:id="templateBackground" fitHeight="567.0" fitWidth="944.0" layoutX="-70.0" layoutY="-22.0" mouseTransparent="true" opacity="0.74" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/template_bg.png" />
+         </image>
+      </ImageView>
+      <Label fx:id="labHeader" alignment="CENTER" layoutX="58.0" layoutY="87.0" prefHeight="54.0" prefWidth="785.0" textAlignment="CENTER" textFill="#fffbfb" visible="false">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="rpIBackgroundImage" fitHeight="480.0" fitWidth="786.0" layoutX="58.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
+         <viewport>
+            <Rectangle2D height="480.0" width="786.0" />
+         </viewport>
+         <image>
+            <Image url="@../images/door1_1.jpg" />
+         </image></ImageView>
+      <TextArea fx:id="taStoryText" layoutX="58.0" layoutY="8.0" prefHeight="442.0" prefWidth="784.0" styleClass="contentTextAreaBlock" visible="false" wrapText="true" />
+      <ImageView fitHeight="280.0" fitWidth="500.0" layoutX="352.0" layoutY="141.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/rpKeypad.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="ivDigit1" fitHeight="34.0" fitWidth="50.0" layoutX="730.0" layoutY="179.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/digi/Digit0.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="ivDigit2" fitHeight="34.0" fitWidth="50.0" layoutX="700.0" layoutY="179.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/digi/Digit0.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="ivDigit3" fitHeight="34.0" fitWidth="50.0" layoutX="670.0" layoutY="179.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/digi/Digit0.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="ivDigit4" fitHeight="34.0" fitWidth="50.0" layoutX="640.0" layoutY="179.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/digi/Digit0.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="ivDigit5" fitHeight="34.0" fitWidth="50.0" layoutX="610.0" layoutY="179.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/digi/Digit0.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="ivDigit6" fitHeight="34.0" fitWidth="50.0" layoutX="580.0" layoutY="179.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/digi/Digit0.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="ivDigit7" fitHeight="34.0" fitWidth="50.0" layoutX="550.0" layoutY="179.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/digi/Digit0.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="ivDigit8" fitHeight="34.0" fitWidth="50.0" layoutX="520.0" layoutY="179.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/digi/Digit8.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="btPreview" layoutX="502.0" layoutY="307.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" opacity="0.49" prefHeight="26.0" prefWidth="36.0">
+         <font>
+            <Font size="12.0" />
+         </font></Button>
+      <Button fx:id="btKey0" layoutX="559.0" layoutY="261.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#handlePressKey0" opacity="0.49" prefHeight="26.0" prefWidth="36.0">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Button>
+      <Button fx:id="btKey1" layoutX="615.0" layoutY="261.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#handlePressKey1" opacity="0.49" prefHeight="26.0" prefWidth="36.0">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Button>
+      <Button fx:id="btKey2" layoutX="671.0" layoutY="261.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#handlePressKey2" opacity="0.49" prefHeight="26.0" prefWidth="36.0">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Button>
+      <Button fx:id="btKey3" layoutX="727.0" layoutY="261.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#handlePressKey3" opacity="0.49" prefHeight="26.0" prefWidth="36.0">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Button>
+      <Button fx:id="btKey4" layoutX="615.0" layoutY="307.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#handlePressKey4" opacity="0.49" prefHeight="26.0" prefWidth="36.0">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Button>
+      <Button fx:id="btKey5" layoutX="671.0" layoutY="307.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#handlePressKey5" opacity="0.49" prefHeight="26.0" prefWidth="36.0">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Button>
+      <Button fx:id="btKey6" layoutX="727.0" layoutY="307.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#handlePressKey6" opacity="0.49" prefHeight="26.0" prefWidth="36.0">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Button>
+      <Button fx:id="btKey7" layoutX="615.0" layoutY="355.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#handlePressKey7" opacity="0.49" prefHeight="26.0" prefWidth="36.0">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Button>
+      <Button fx:id="btKey8" layoutX="671.0" layoutY="355.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#handlePressKey8" opacity="0.49" prefHeight="26.0" prefWidth="36.0">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Button>
+      <Button fx:id="btKey9" layoutX="727.0" layoutY="355.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#handlePressKey9" opacity="0.49" prefHeight="26.0" prefWidth="36.0">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Button>
+      <Button fx:id="btReset" layoutX="448.0" layoutY="261.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#handlebtReset" opacity="0.49" prefHeight="26.0" prefWidth="36.0">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Button>
+    </children>
+    <stylesheets>
+        <URL value="@../styles/MainFrameStyle.css" />
+    </stylesheets>
+</AnchorPane>
