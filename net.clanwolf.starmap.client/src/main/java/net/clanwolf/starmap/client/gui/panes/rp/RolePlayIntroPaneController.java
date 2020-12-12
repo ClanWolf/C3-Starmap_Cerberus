@@ -100,7 +100,6 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 			if(ROLEPLAYENTRYTYPES.C3_RP_STORY == o.getObject() ||
 					ROLEPLAYENTRYTYPES.C3_RP_CHAPTER == o.getObject()) {
 				C3Logger.debug("RolePlayIntroPaneController -> START_ROLEPLAY");
-				btPreview.setStyle("-fx-opacity: 1");
 				// set current step of story
 				getStoryValues(Nexus.getCurrentChar());
 			}
@@ -120,17 +119,17 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 	}
 
 	/******************************** FXML ********************************/
-	@FXML
-	public void handleOnMouseEnteredOnBtPreview(){
-		C3Logger.debug("handleOnMouseEnteredOnBtPreview");
-		//btPreview.setStyle("-fx-opacity: 1");
-	}
-
-	@FXML
-	public void handleOnMouseExitOnBtPreview(){
-		C3Logger.debug("handleOnMouseExitOnBtPreview");
-		//btPreview.setStyle("-fx-opacity: 0.2");
-	}
+//	@FXML
+//	public void handleOnMouseEnteredOnBtPreview(){
+//		C3Logger.debug("handleOnMouseEnteredOnBtPreview");
+//		//btPreview.setStyle("-fx-opacity: 1");
+//	}
+//
+//	@FXML
+//	public void handleOnMouseExitOnBtPreview(){
+//		C3Logger.debug("handleOnMouseExitOnBtPreview");
+//		//btPreview.setStyle("-fx-opacity: 0.2");
+//	}
 
 	@FXML
 	private void handleOnMouseClicked(){
@@ -198,6 +197,7 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 
 			Image im = new Image(imURL);
 			ivIntro.setImage(im);
+			//ivIntro.setFitHeight(450);
 
 			if (rpChar.getStory().getStoryMP3() != null) {
 				try {
