@@ -26,14 +26,19 @@
  */
 package net.clanwolf.starmap.client.gui.panes.rp;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.SequentialTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
+import javafx.util.Duration;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
@@ -53,6 +58,8 @@ import java.util.ResourceBundle;
  * @author Undertaker
  */
 public class RolePlayIntroPaneController extends AbstractC3RolePlayController implements ActionCallBackListener {
+
+	private boolean animationPlayed = false;
 
 	@FXML
 	private AnchorPane anchorPane;
@@ -100,8 +107,33 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 			if(ROLEPLAYENTRYTYPES.C3_RP_STORY == o.getObject() ||
 					ROLEPLAYENTRYTYPES.C3_RP_CHAPTER == o.getObject()) {
 				C3Logger.debug("RolePlayIntroPaneController -> START_ROLEPLAY");
+
 				// set current step of story
 				getStoryValues(Nexus.getCurrentChar());
+
+				if (!animationPlayed) {
+					FadeTransition fadeInTransition_01 = new FadeTransition(Duration.millis(800), ivIntro);
+					fadeInTransition_01.setFromValue(0.0);
+					fadeInTransition_01.setToValue(1.0);
+					fadeInTransition_01.setCycleCount(1);
+
+//				FadeTransition fadeInTransition_02 = new FadeTransition(Duration.millis(120), ivIntro);
+//				fadeInTransition_02.setFromValue(0.0);
+//				fadeInTransition_02.setToValue(1.0);
+//				fadeInTransition_02.setCycleCount(2);
+
+					FadeTransition fadeInTransition_03 = new FadeTransition(Duration.millis(1500), labHeader);
+					fadeInTransition_03.setFromValue(0.0);
+					fadeInTransition_03.setToValue(1.0);
+					fadeInTransition_03.setCycleCount(1);
+
+					SequentialTransition sequentialTransition = new SequentialTransition();
+					sequentialTransition.getChildren().addAll(fadeInTransition_01, fadeInTransition_03);
+					sequentialTransition.setCycleCount(1);
+					sequentialTransition.play();
+
+					animationPlayed = true;
+				}
 			}
 			break;
 		default:
@@ -167,18 +199,18 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 			taStoryText.setText(rpChar.getStory().getStoryText());
 
 		} else {
-
 			taStoryText.setVisible(false);
-			//.setVisible(false);
 
-			if(rpChar.getStory().getStoryImage() == null || rpChar.getStory().getStoryImage().isEmpty()) {
-				labHeader.setVisible(true);
-
-				labHeader.setText(rpChar.getStory().getStoryName());
-			} else {
-				labHeader.setVisible(false);
-
+//			if(rpChar.getStory().getStoryImage() == null || rpChar.getStory().getStoryImage().isEmpty()) {
+			labHeader.setEffect(new DropShadow(20, Color.BLACK));
+			if (!animationPlayed) {
+				labHeader.setOpacity(0.0);
 			}
+			labHeader.setVisible(true);
+			labHeader.setText(rpChar.getStory().getStoryName());
+//			} else {
+//				labHeader.setVisible(false);
+//			}
 		}
 
 		if (rpChar.getStory().getStoryIntro() == null) {
@@ -197,6 +229,9 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 
 			Image im = new Image(imURL);
 			ivIntro.setImage(im);
+			if (!animationPlayed) {
+				ivIntro.setOpacity(0.0);
+			}
 			//ivIntro.setFitHeight(450);
 
 			if (rpChar.getStory().getStoryMP3() != null) {
@@ -206,8 +241,6 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 				} catch (MalformedURLException e) {
 					e.printStackTrace();
 				}
-
-
 			}
 
 		} else {
