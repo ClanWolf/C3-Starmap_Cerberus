@@ -117,10 +117,10 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 					fadeInTransition_01.setToValue(1.0);
 					fadeInTransition_01.setCycleCount(1);
 
-//				FadeTransition fadeInTransition_02 = new FadeTransition(Duration.millis(120), ivIntro);
-//				fadeInTransition_02.setFromValue(0.0);
-//				fadeInTransition_02.setToValue(1.0);
-//				fadeInTransition_02.setCycleCount(2);
+					FadeTransition fadeInTransition_02 = new FadeTransition(Duration.millis(120), ivIntro);
+					fadeInTransition_02.setFromValue(0.0);
+					fadeInTransition_02.setToValue(1.0);
+					fadeInTransition_02.setCycleCount(2);
 
 					FadeTransition fadeInTransition_03 = new FadeTransition(Duration.millis(1500), labHeader);
 					fadeInTransition_03.setFromValue(0.0);

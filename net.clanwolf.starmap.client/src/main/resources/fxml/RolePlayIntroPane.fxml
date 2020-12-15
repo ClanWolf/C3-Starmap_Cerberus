@@ -22,9 +22,9 @@
             <Font size="12.0" />
          </font></Button>
       <TextArea fx:id="taStoryText" layoutX="62.0" layoutY="14.0" prefHeight="438.0" prefWidth="778.0" styleClass="contentTextAreaBlock" wrapText="true" />
-      <Label fx:id="labHeader" alignment="CENTER" layoutX="65.0" layoutY="87.0" prefHeight="54.0" prefWidth="769.0" textAlignment="CENTER" textFill="#fffbfb" visible="false">
+      <Label fx:id="labHeader" alignment="CENTER" layoutX="63.0" layoutY="87.0" prefHeight="54.0" prefWidth="776.0" textAlignment="CENTER" textFill="#fffbfb" visible="false">
          <font>
-            <Font size="24.0" />
+            <Font size="32.0" />
          </font>
       </Label>
     </children>

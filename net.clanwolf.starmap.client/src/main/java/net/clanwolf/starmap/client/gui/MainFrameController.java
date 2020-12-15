@@ -895,7 +895,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		adminButton.setDisable(true);
 
 		hudinfo1.setOpacity(0.7);
-		copyrightLabel.setText("©2000-2020 -- https://www.clanwolf.net");
+		copyrightLabel.setText("©2000-2021 - clanwolf.net");
 		spectrumImage.setOpacity(0.1);
 		spectrumImage.setVisible(false);
 		noiseImage.setOpacity(0.0);

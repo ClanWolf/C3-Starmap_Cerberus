@@ -4,9 +4,13 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
@@ -22,16 +26,38 @@
         <Color blue="0.804" green="0.620" red="0.412" fx:id="x1" />
       </textFill>
     </Label>
-    <Label fx:id="labelUsername" layoutX="89.0" layoutY="45.0" prefHeight="16.0" prefWidth="76.0" styleClass="contentLabel" text="Username:">
-      <stylesheets>
-        <URL value="@../styles/MainFrameStyle.css" />
-      </stylesheets>
-    </Label>
-    <Label id="labelUsername" fx:id="labelCreated" layoutX="89.0" layoutY="73.0" styleClass="contentLabel" text="Created:">
-      <stylesheets>
-        <URL value="@../styles/MainFrameStyle.css" />
-      </stylesheets>
-    </Label>
+      <GridPane layoutX="89.0" layoutY="45.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+          <Label fx:id="labelUsername" prefHeight="17.0" prefWidth="96.0" styleClass="contentLabel" text="Username:">
+            <stylesheets>
+              <URL value="@../styles/MainFrameStyle.css" />
+            </stylesheets>
+          </Label>
+          <Label id="labelUsername" fx:id="labelCreated" prefHeight="17.0" prefWidth="97.0" styleClass="contentLabel" text="Created:" GridPane.rowIndex="1">
+            <stylesheets>
+              <URL value="@../styles/MainFrameStyle.css" />
+            </stylesheets>
+          </Label>
+            <Label fx:id="valueUsername" prefHeight="16.0" prefWidth="295.0" styleClass="contentLabel" text="Username" GridPane.columnIndex="1">
+               <stylesheets>
+                  <URL value="@../styles/MainFrameStyle.css" />
+               </stylesheets>
+            </Label>
+            <Label fx:id="valueCreated" prefHeight="16.0" prefWidth="295.0" styleClass="contentLabel" text="Created" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <stylesheets>
+                  <URL value="@../styles/MainFrameStyle.css" />
+               </stylesheets>
+            </Label>
+         </children>
+      </GridPane>
     <Button id="buttonYes" fx:id="buttonLogout" layoutX="540.0" layoutY="439.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleLogoutButtonClick" onMouseEntered="#handleLogoutButtonHoverEnter" onMouseExited="#handleLogoutButtonHoverExit" prefWidth="140.0" styleClass="contentButton" text="Logout">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
@@ -43,7 +69,7 @@
       </stylesheets>
     </Button>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2c506d" height="282.0" layoutX="76.0" layoutY="147.0" opacity="0.75" stroke="#779fc3" strokeType="INSIDE" strokeWidth="2.0" width="533.0" AnchorPane.topAnchor="147.0" />
-      <Label id="labelUsername" fx:id="labelCharacterChooser" layoutX="89.0" layoutY="165.0" styleClass="contentLabel" text="Charakter:">
+      <Label id="labelUsername" fx:id="labelCharacterChooser" layoutX="89.0" layoutY="166.0" prefHeight="17.0" prefWidth="108.0" styleClass="contentLabel" text="Charakter:">
          <stylesheets>
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>
@@ -54,137 +80,165 @@
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>
       </Label>
-      <ImageView fx:id="ivChar" fitHeight="84.0" fitWidth="84.0" layoutX="87.0" layoutY="212.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="ivChar" fitHeight="104.0" fitWidth="103.0" layoutX="90.0" layoutY="212.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/chars/male/1022.png" />
          </image>
+         <effect>
+            <DropShadow blurType="TWO_PASS_BOX" color="#8dc6d3" spread="0.51" />
+         </effect>
       </ImageView>
-      <Label id="labelThingsToChange" fx:id="labelFactionLogo" layoutX="628.0" layoutY="37.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="175.0" prefWidth="182.0" styleClass="saveLabel">
+      <ImageView fx:id="ivFactionLogo" fitHeight="222.0" fitWidth="194.0" layoutX="626.0" layoutY="43.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/logos/factions/CW.png" />
+         </image>
+      </ImageView>
+      <GridPane layoutX="634.0" layoutY="346.0" prefHeight="68.0" prefWidth="168.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="95.5" minWidth="10.0" prefWidth="86.5" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="86.5" minWidth="10.0" prefWidth="81.5" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Label fx:id="labelBalance" styleClass="contentLabel" text="Balance:">
+               <stylesheets>
+                  <URL value="@../styles/MainFrameStyle.css" />
+               </stylesheets>
+            </Label>
+            <Label fx:id="labelIncome" styleClass="contentLabel" text="Income:" GridPane.rowIndex="1">
+               <stylesheets>
+                  <URL value="@../styles/MainFrameStyle.css" />
+               </stylesheets>
+            </Label>
+            <Label fx:id="labelSystems" styleClass="contentLabel" text="Systems:" GridPane.rowIndex="2">
+               <stylesheets>
+                  <URL value="@../styles/MainFrameStyle.css" />
+               </stylesheets>
+            </Label>
+            <Label fx:id="labelAtWar" styleClass="contentLabel" text="Contested:" GridPane.rowIndex="3">
+               <stylesheets>
+                  <URL value="@../styles/MainFrameStyle.css" />
+               </stylesheets>
+            </Label>
+            <Label fx:id="valueBalance" prefHeight="16.0" prefWidth="84.0" styleClass="contentLabel" text="Balance" GridPane.columnIndex="1">
+               <stylesheets>
+                  <URL value="@../styles/MainFrameStyle.css" />
+               </stylesheets>
+            </Label>
+            <Label fx:id="valueIncome" prefHeight="16.0" prefWidth="84.0" styleClass="contentLabel" text="Income" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <stylesheets>
+                  <URL value="@../styles/MainFrameStyle.css" />
+               </stylesheets>
+            </Label>
+            <Label fx:id="valueSystems" prefHeight="16.0" prefWidth="84.0" styleClass="contentLabel" text="Systems" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <stylesheets>
+                  <URL value="@../styles/MainFrameStyle.css" />
+               </stylesheets>
+            </Label>
+            <Label fx:id="valueAtWar" prefHeight="16.0" prefWidth="84.0" styleClass="contentLabel" text="Contested" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <stylesheets>
+                  <URL value="@../styles/MainFrameStyle.css" />
+               </stylesheets>
+            </Label>
+         </children>
+      </GridPane>
+      <Label id="labelUsername" fx:id="labelLastLogin" layoutX="88.0" layoutY="452.0" prefHeight="17.0" prefWidth="154.0" styleClass="contentLabel" text="Last Login:">
          <stylesheets>
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>
       </Label>
-      <Label fx:id="labelBalance" layoutX="635.0" layoutY="226.0" styleClass="contentLabel" text="Balance:">
+      <Label fx:id="valueLastLogin" layoutX="253.0" layoutY="452.0" prefHeight="17.0" prefWidth="280.0" styleClass="contentLabel" text="yesterday">
          <stylesheets>
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>
       </Label>
-      <Label fx:id="labelIncome" layoutX="635.0" layoutY="252.0" styleClass="contentLabel" text="Income:">
+      <GridPane layoutX="209.0" layoutY="205.0" prefHeight="103.0" prefWidth="374.0">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="90.0" minWidth="10.0" prefWidth="84.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="283.5" minWidth="10.0" prefWidth="278.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <Label fx:id="labelCharName" styleClass="contentLabel" text="Name:">
+               <stylesheets>
+                  <URL value="@../styles/MainFrameStyle.css" />
+               </stylesheets>
+            </Label>
+            <Label fx:id="labelCharAge" styleClass="contentLabel" text="Age:" GridPane.rowIndex="1">
+               <stylesheets>
+                  <URL value="@../styles/MainFrameStyle.css" />
+               </stylesheets>
+            </Label>
+            <Label fx:id="labelCharRank" styleClass="contentLabel" text="Rank:" GridPane.rowIndex="3">
+               <stylesheets>
+                  <URL value="@../styles/MainFrameStyle.css" />
+               </stylesheets>
+            </Label>
+            <Label fx:id="labelCharLocation" styleClass="contentLabel" text="Location:" GridPane.rowIndex="4">
+               <stylesheets>
+                  <URL value="@../styles/MainFrameStyle.css" />
+               </stylesheets>
+            </Label>
+            <Label fx:id="valueCharName" prefHeight="16.0" prefWidth="286.0" styleClass="contentLabel" text="CharName" GridPane.columnIndex="1">
+               <stylesheets>
+                  <URL value="@../styles/MainFrameStyle.css" />
+               </stylesheets>
+            </Label>
+            <Label fx:id="valueCharAge" prefHeight="16.0" prefWidth="286.0" styleClass="contentLabel" text="CharAge" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <stylesheets>
+                  <URL value="@../styles/MainFrameStyle.css" />
+               </stylesheets>
+            </Label>
+            <Label fx:id="valueCharRank" prefHeight="16.0" prefWidth="286.0" styleClass="contentLabel" text="CharRank" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <stylesheets>
+                  <URL value="@../styles/MainFrameStyle.css" />
+               </stylesheets>
+            </Label>
+            <Label fx:id="valueCharLocation" prefHeight="17.0" prefWidth="286.0" styleClass="contentLabel" text="CharLocation" GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <stylesheets>
+                  <URL value="@../styles/MainFrameStyle.css" />
+               </stylesheets>
+            </Label>
+            <Label fx:id="labelCharXP" styleClass="contentLabel" text="XP:" GridPane.rowIndex="5">
+               <stylesheets>
+                  <URL value="@../styles/MainFrameStyle.css" />
+               </stylesheets>
+            </Label>
+            <Label fx:id="valueCharXP" prefHeight="17.0" prefWidth="286.0" styleClass="contentLabel" text="CharXP" GridPane.columnIndex="1" GridPane.rowIndex="5">
+               <stylesheets>
+                  <URL value="@../styles/MainFrameStyle.css" />
+               </stylesheets>
+            </Label>
+          <Label fx:id="labelFaction" prefHeight="16.0" prefWidth="76.0" styleClass="contentLabel" text="Faction:" GridPane.rowIndex="2">
+            <stylesheets>
+              <URL value="@../styles/MainFrameStyle.css" />
+            </stylesheets>
+          </Label>
+            <Label fx:id="valueFaction" prefHeight="17.0" prefWidth="286.0" styleClass="contentLabel" text="Faction" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <stylesheets>
+                  <URL value="@../styles/MainFrameStyle.css" />
+               </stylesheets>
+            </Label>
+         </children>
+      </GridPane>
+      <ComboBox fx:id="cbCharChooser" layoutX="203.0" layoutY="162.0" onAction="#handleCharSelection" onShowing="#handleOpenCharList" prefHeight="23.0" prefWidth="392.0" />
+      <Label fx:id="labelBalance1" layoutX="633.0" layoutY="301.0" prefHeight="17.0" prefWidth="181.0" styleClass="contentLabel" text="Clan Wolf">
          <stylesheets>
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>
       </Label>
-      <Label fx:id="labelSystems" layoutX="635.0" layoutY="278.0" styleClass="contentLabel" text="Systems:">
-         <stylesheets>
-            <URL value="@../styles/MainFrameStyle.css" />
-         </stylesheets>
-      </Label>
-      <Label fx:id="labelAtWar" layoutX="635.0" layoutY="305.0" styleClass="contentLabel" text="Contested:">
-         <stylesheets>
-            <URL value="@../styles/MainFrameStyle.css" />
-         </stylesheets>
-      </Label>
-      <Label id="labelUsername" fx:id="labelLastLogin" layoutX="88.0" layoutY="452.0" prefHeight="16.0" prefWidth="150.0" styleClass="contentLabel" text="Last Login:">
-         <stylesheets>
-            <URL value="@../styles/MainFrameStyle.css" />
-         </stylesheets>
-      </Label>
-      <Label fx:id="valueUsername" layoutX="206.0" layoutY="45.0" prefHeight="16.0" prefWidth="295.0" styleClass="contentLabel" text="Username">
-         <stylesheets>
-            <URL value="@../styles/MainFrameStyle.css" />
-         </stylesheets>
-      </Label>
-      <Label fx:id="valueCreated" layoutX="206.0" layoutY="73.0" prefHeight="16.0" prefWidth="295.0" styleClass="contentLabel" text="Created">
-         <stylesheets>
-            <URL value="@../styles/MainFrameStyle.css" />
-         </stylesheets>
-      </Label>
-      <Label fx:id="valueLastLogin" layoutX="235.0" layoutY="452.0" prefHeight="16.0" prefWidth="251.0" styleClass="contentLabel" text="yesterday">
-         <stylesheets>
-            <URL value="@../styles/MainFrameStyle.css" />
-         </stylesheets>
-      </Label>
-      <Label fx:id="valueBalance" layoutX="723.0" layoutY="226.0" prefHeight="16.0" prefWidth="84.0" styleClass="contentLabel" text="Balance">
-         <stylesheets>
-            <URL value="@../styles/MainFrameStyle.css" />
-         </stylesheets>
-      </Label>
-      <Label fx:id="valueIncome" layoutX="723.0" layoutY="252.0" prefHeight="16.0" prefWidth="84.0" styleClass="contentLabel" text="Income">
-         <stylesheets>
-            <URL value="@../styles/MainFrameStyle.css" />
-         </stylesheets>
-      </Label>
-      <Label fx:id="valueSystems" layoutX="723.0" layoutY="278.0" prefHeight="16.0" prefWidth="84.0" styleClass="contentLabel" text="Systems">
-         <stylesheets>
-            <URL value="@../styles/MainFrameStyle.css" />
-         </stylesheets>
-      </Label>
-      <Label fx:id="valueAtWar" layoutX="723.0" layoutY="305.0" prefHeight="16.0" prefWidth="84.0" styleClass="contentLabel" text="Contested">
-         <stylesheets>
-            <URL value="@../styles/MainFrameStyle.css" />
-         </stylesheets>
-      </Label>
-      <Label fx:id="labelCharName" layoutX="209.0" layoutY="211.0" styleClass="contentLabel" text="Name:">
-         <stylesheets>
-            <URL value="@../styles/MainFrameStyle.css" />
-         </stylesheets>
-      </Label>
-      <Label fx:id="labelCharAge" layoutX="209.0" layoutY="238.0" styleClass="contentLabel" text="Age:">
-         <stylesheets>
-            <URL value="@../styles/MainFrameStyle.css" />
-         </stylesheets>
-      </Label>
-      <Label fx:id="labelCharRank" layoutX="209.0" layoutY="297.0" styleClass="contentLabel" text="Rank:">
-         <stylesheets>
-            <URL value="@../styles/MainFrameStyle.css" />
-         </stylesheets>
-      </Label>
-      <Label fx:id="labelCharLocation" layoutX="209.0" layoutY="325.0" styleClass="contentLabel" text="Location:">
-         <stylesheets>
-            <URL value="@../styles/MainFrameStyle.css" />
-         </stylesheets>
-      </Label>
-      <Label fx:id="valueCharName" layoutX="305.0" layoutY="211.0" prefHeight="16.0" prefWidth="286.0" styleClass="contentLabel" text="CharName">
-         <stylesheets>
-            <URL value="@../styles/MainFrameStyle.css" />
-         </stylesheets>
-      </Label>
-      <Label fx:id="valueCharAge" layoutX="305.0" layoutY="238.0" prefHeight="16.0" prefWidth="286.0" styleClass="contentLabel" text="CharAge">
-         <stylesheets>
-            <URL value="@../styles/MainFrameStyle.css" />
-         </stylesheets>
-      </Label>
-      <Label fx:id="valueCharRank" layoutX="305.0" layoutY="297.0" prefHeight="16.0" prefWidth="286.0" styleClass="contentLabel" text="CharRank">
-         <stylesheets>
-            <URL value="@../styles/MainFrameStyle.css" />
-         </stylesheets>
-      </Label>
-      <Label fx:id="valueCharLocation" layoutX="305.0" layoutY="325.0" prefHeight="16.0" prefWidth="286.0" styleClass="contentLabel" text="CharLocation">
-         <stylesheets>
-            <URL value="@../styles/MainFrameStyle.css" />
-         </stylesheets>
-      </Label>
-      <Label fx:id="labelCharXP" layoutX="210.0" layoutY="352.0" styleClass="contentLabel" text="XP:">
-         <stylesheets>
-            <URL value="@../styles/MainFrameStyle.css" />
-         </stylesheets>
-      </Label>
-      <Label fx:id="valueCharXP" layoutX="306.0" layoutY="352.0" prefHeight="16.0" prefWidth="286.0" styleClass="contentLabel" text="CharXP">
-         <stylesheets>
-            <URL value="@../styles/MainFrameStyle.css" />
-         </stylesheets>
-      </Label>
-    <Label fx:id="labelFaction" layoutX="209.0" layoutY="267.0" prefHeight="16.0" prefWidth="76.0" styleClass="contentLabel" text="Faction:">
-      <stylesheets>
-        <URL value="@../styles/MainFrameStyle.css" />
-      </stylesheets>
-    </Label>
-      <Label fx:id="valueFaction" layoutX="305.0" layoutY="267.0" prefHeight="16.0" prefWidth="295.0" styleClass="contentLabel" text="Faction">
-         <stylesheets>
-            <URL value="@../styles/MainFrameStyle.css" />
-         </stylesheets>
-      </Label>
-      <ComboBox fx:id="cbCharChooser" layoutX="203.0" layoutY="162.0" onAction="#handleCharSelection" onShowing="#handleOpenCharList" prefHeight="23.0" prefWidth="396.0" />
   </children>
   <stylesheets>
     <URL value="@../styles/MainFrameStyle.css" />

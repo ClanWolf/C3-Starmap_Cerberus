@@ -65,9 +65,9 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 	@FXML
 	private Label labelAvatar;
 	@FXML
-	private Label labelFactionLogo;
+	private ImageView ivFactionLogo;
 	@FXML
-	private ImageView labelCharacterPortrait;
+	private ImageView ivCharacterPortrait;
 
 	@FXML
 	private Label labelUsername;
@@ -232,11 +232,15 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 
 	private void setCharValues(RolePlayCharacterDTO character) {
 		// set logos
-		labelFactionLogo.setText("");
-//		labelCharacterPortrait.setText("");
+
+		// TODO: Save image for every character in database
+//		Image charImage = new Image(character.getImage());
+//		ivCharacterPortrait.setImage(charImage);
 
 		// set values
-		valueFaction.setText("");
+//		Image img = new Image("UIControls/logo.png");
+//		ivFactionLogo.setImage();
+
 		valueCharName.setText(character.getName());
 		valueCharAge.setText("");
 		valueCharRank.setText("");
@@ -259,8 +263,8 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 	/**
 	 * Initializes the controller class.
 	 *
-	 * @param url
-	 * @param rb
+	 * @param url Link
+	 * @param rb ResourceBundle
 	 */
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {

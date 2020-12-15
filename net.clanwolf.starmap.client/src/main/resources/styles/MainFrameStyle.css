@@ -27,7 +27,8 @@
 .root {
     -fx-accent: #427aa2;
     -fx-focus-color: #427aa2;
-    -fx-font-family: "Arial";
+    -fx-font-family: "Consolas";
+    -fx-font-size: 12px;
     -fx-base: #427aa2;
     -fx-background: #427aa2;
 }
@@ -50,7 +51,7 @@
 }
 
 #label {
-    -fx-font-family: "Arial";
+    -fx-font-family: "Consolas";
     -fx-font-size: 10px;
 }
 
@@ -91,9 +92,9 @@
 
 .contentLabel {
     -fx-text-fill: #a3d4ef;
-    -fx-font-family: "Arial";
+    -fx-font-family: "Consolas";
     -fx-font-size: 14px;
-    -fx-font-weight: bold;
+    -fx-font-weight: normal;
 }
 
 .contentLabelSideImage {
@@ -121,9 +122,9 @@
 }
 
 .check-box .text {
-    -fx-font-family: "Arial";
+    -fx-font-family: "Consolas";
     -fx-font-size: 14px;
-    -fx-font-weight: bold;
+    -fx-font-weight: normal;
 }
 
 .check-box .box {
@@ -433,7 +434,7 @@
     -fx-background-insets: 0,0,0,0;
     -fx-background-radius: 0,0,0,0;
     -fx-padding: 0 0 0 0;
-    -fx-font-family: "Arial";
+    -fx-font-family: "Consolas";
     -fx-font-size: 14px;
     -fx-font-weight: bold;
     -fx-text-fill: #a3d4ef;
@@ -446,7 +447,7 @@
     -fx-background-insets: 0,0,0,0;
     -fx-background-radius: 0,0,0,0;
     -fx-padding: 3 10 3 10;
-    -fx-font-family: "Arial";
+    -fx-font-family: "Consolas";
     -fx-font-size: 14px;
     -fx-font-weight: bold;
     -fx-text-fill: #a3d4ef;
@@ -482,7 +483,7 @@
     -fx-border-color: rgba(53,89,119,0.6);
     -fx-background-color: rgba(53,89,119,0.2);
     -fx-background-radius: 0, 0, 0, 0;
-    -fx-font-family: "Arial";
+    -fx-font-family: "Consolas";
     -fx-font-size: 14px;
     -fx-font-weight: bold;
     -fx-text-fill: #a3d4ef;
@@ -566,7 +567,7 @@
     -fx-background-insets: 1,1,1,1;
     -fx-background-radius: 0,0,0,0;
     -fx-padding: 10 10 8 10;
-    -fx-font-family: "Arial";
+    -fx-font-family: "Consolas";
     -fx-font-size: 14px;
     -fx-font-weight: bold;
     -fx-text-fill: #bedcbe;
@@ -599,7 +600,7 @@
     -fx-background-insets: 1,1,1,1;
     -fx-background-radius: 0,0,0,0;
     -fx-padding: 10 10 8 10;
-    -fx-font-family: "Arial";
+    -fx-font-family: "Consolas";
     -fx-font-size: 14px;
     -fx-font-weight: bold;
     -fx-text-fill: #bedcbe;
