@@ -67,7 +67,7 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 	@FXML
 	private Label labelFactionLogo;
 	@FXML
-	private Label labelCharacterPortrait;
+	private ImageView labelCharacterPortrait;
 
 	@FXML
 	private Label labelUsername;
@@ -233,7 +233,7 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 	private void setCharValues(RolePlayCharacterDTO character) {
 		// set logos
 		labelFactionLogo.setText("");
-		labelCharacterPortrait.setText("");
+//		labelCharacterPortrait.setText("");
 
 		// set values
 		valueFaction.setText("");
