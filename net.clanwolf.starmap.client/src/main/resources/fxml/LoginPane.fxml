@@ -12,7 +12,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="LoginPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.login.LoginPaneController">
+<AnchorPane id="LoginPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.login.LoginPaneController">
   <children>
     <Label alignment="BOTTOM_LEFT" layoutX="62.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true" opacity="0.2" prefHeight="426.0" prefWidth="500.0" styleClass="contentLabelSideImageSatelite" visible="true">
       <stylesheets>
@@ -24,27 +24,27 @@
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
     </Label>
-    <Label fx:id="labelPassword" layoutX="397.0" layoutY="154.0" styleClass="contentLabel" text="Password">
+    <Label fx:id="labelPassword" layoutX="397.0" layoutY="146.0" styleClass="contentLabel" text="Password">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
     </Label>
-    <Label id="labelUsername" fx:id="labelFactionKey" layoutX="398.0" layoutY="324.0" styleClass="contentLabel" text="FactionKey">
+    <Label id="labelUsername" fx:id="labelFactionKey" layoutX="398.0" layoutY="334.0" styleClass="contentLabel" text="FactionKey">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
     </Label>
-    <TextField fx:id="tfUserName" layoutX="517.0" layoutY="114.0" prefWidth="200.0">
+    <TextField fx:id="tfUserName" layoutX="510.0" layoutY="114.0" prefWidth="200.0">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
     </TextField>
-    <PasswordField fx:id="tfPassword" disable="false" layoutX="517.0" layoutY="151.0" prefWidth="200.0">
+    <PasswordField fx:id="tfPassword" disable="false" layoutX="510.0" layoutY="143.0" prefWidth="200.0">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
     </PasswordField>
-    <CheckBox id="GuestAccount" fx:id="cbGuestAccount" layoutX="517.0" layoutY="191.0" mnemonicParsing="false" onAction="#handleUseGuestLoginCheckboxClick" text="CheckBox">
+    <CheckBox id="GuestAccount" fx:id="cbGuestAccount" layoutX="510.0" layoutY="180.0" mnemonicParsing="false" onAction="#handleUseGuestLoginCheckboxClick" text="CheckBox">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
@@ -52,17 +52,17 @@
         <Color blue="0.937" green="0.831" red="0.639" fx:id="x2" />
       </textFill>
     </CheckBox>
-    <CheckBox id="GuestAccount" fx:id="cbStorePassword" layoutX="517.0" layoutY="211.0" mnemonicParsing="false" onAction="#handleStorePasswordCheckboxClick" text="CheckBox" textFill="$x2">
+    <CheckBox id="GuestAccount" fx:id="cbStorePassword" layoutX="510.0" layoutY="200.0" mnemonicParsing="false" onAction="#handleStorePasswordCheckboxClick" text="CheckBox" textFill="$x2">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
     </CheckBox>
-    <CheckBox id="GuestAccount" fx:id="cbDoAutoLogin" layoutX="517.0" layoutY="231.0" mnemonicParsing="false" onAction="#handleDoAutoLoginCheckboxClick" text="CheckBox" textFill="$x2">
+    <CheckBox id="GuestAccount" fx:id="cbDoAutoLogin" layoutX="510.0" layoutY="220.0" mnemonicParsing="false" onAction="#handleDoAutoLoginCheckboxClick" text="CheckBox" textFill="$x2">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
     </CheckBox>
-    <TextField fx:id="tfFactionKey" layoutX="517.0" layoutY="321.0" prefWidth="200.0" />
+    <TextField fx:id="tfFactionKey" layoutX="510.0" layoutY="331.0" prefWidth="200.0" />
     <Button id="buttonYes" fx:id="buttonLogin" layoutX="540.0" layoutY="439.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleLoginButtonClick" prefWidth="140.0" styleClass="contentButton" text="Button">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
