@@ -112,9 +112,11 @@ public class C3Room extends GameRoomSession {
 			C3Logger.debug("C3Room.onLogin: -> " + playerSession.getId());
 
 			// send event LOG_IN_SUCCESS to client
-			C3Logger.debug("C3Room.onLogin: -> send LOG_IN_SUCCESS Event");
+			C3Logger.debug("C3Room.onLogin: -> sending LOG_IN_SUCCESS Event");
 			Event e = Events.event(null, Events.LOG_IN_SUCCESS);
+			C3Logger.debug("C3Room.onLogin: -> adding Event to PlayerSession");
 			playerSession.onEvent(e);
+			C3Logger.debug("C3Room.onLogin: -> LOG_IN_SUCCESS Event sent");
 
 			// check for wrong sessions from this player
 
