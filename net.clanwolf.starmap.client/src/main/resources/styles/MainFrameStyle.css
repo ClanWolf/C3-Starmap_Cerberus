@@ -632,6 +632,18 @@
     -fx-background-image: url("../images/buttons/ContentButton_BG_armed.png");
 }
 
+.numpadButton {
+    -fx-background-color: rgba(70,118,70,0.4);
+    -fx-background-repeat: no-repeat;
+    -fx-padding: 10 10 8 10;
+    -fx-font-family: "Consolas";
+    -fx-font-size: 14px;
+}
+
+.numpadButton:hover {
+    -fx-background-color: rgba(190,118,190,0.4);
+}
+
 /* Toolbar button normal */
 #btn_dark-blue {
     -fx-border-color: null;

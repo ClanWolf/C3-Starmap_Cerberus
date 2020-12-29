@@ -27,6 +27,9 @@
 package net.clanwolf.starmap.client.gui.panes.rp;
 
 import javafx.application.Platform;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
@@ -78,6 +81,7 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 	private int attempts;
 	private int currentAttempt;
 	private String sSecretCode;
+	private boolean codeOK;
 
 	public RolePlayKeypadPaneController() {
 	}
@@ -97,6 +101,10 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 
 	private void init(){
 		currentAttempt = 0;
+		codeOK = false;
+		btPreview.setVisible(false);
+		btEnterKey.setVisible(true);
+		btReset.setVisible(true);
 
 		// Reset display
 		setDigit("-1", false);
@@ -193,19 +201,35 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 
 	@FXML
 	private void handlePressEnterKey(){
-		if(currentAttempt <= attempts) {
-			checkSecretCode();
-			currentAttempt++;
-		} else {
+
+		if( attempts > 0 ) {
+			if(!codeOK && currentAttempt <= attempts) {
+				codeOK = checkSecretCode();
+				currentAttempt++;
+			}
+
+		} else if(!codeOK){
+			codeOK = checkSecretCode();
+		}
+
+		if (codeOK || ( currentAttempt == attempts && attempts > 0)) {
 			btEnterKey.setVisible(false);
 			btReset.setVisible(false);
 			btPreview.setVisible(true);
 		}
 	}
 
-	/*@FXML
-	private void handleOnActionbtChoice1(){
-		Long rp = Nexus.getCurrentChar().getStory().getVar2ID().getOption1StoryID();
+	@FXML
+	private void handleOnActionbtPreview(){
+
+		Long rp = null;
+
+		if(!codeOK && Nexus.getCurrentChar().getStory().getVar6ID().getStoryIDFailure() != null){
+			rp = Nexus.getCurrentChar().getStory().getVar6ID().getStoryIDFailure();
+		} else {
+			rp = Nexus.getCurrentChar().getStory().getVar6ID().getStoryIDSuccess();
+		}
+
 		saveNextStep(rp);
 
 	}
@@ -268,6 +292,25 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 	private void setDigit(String digit, boolean playSound){
 		// Play sound
 		if(playSound) C3SoundPlayer.play("sound/fx/beep_02.wav", false);
+
+		/*Task<Void> sleeper = new Task<Void>() {
+			@Override
+			protected Void call() throws Exception {
+				try {
+					Thread.sleep(5000);
+				} catch (InterruptedException e) {
+				}
+				return null;
+			}
+		};
+
+		sleeper.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+			@Override
+			public void handle(WorkerStateEvent event) {
+				//label.setText("Hello World");
+			}
+		});
+		new Thread(sleeper).start();*/
 
 		if(sDisplay != null && sDisplay.length() >= 0 && sDisplay.length() < maxDigits){
 			sDisplay = sDisplay + digit;
@@ -350,18 +393,20 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 	/**
 	 *
 	 */
-	private void checkSecretCode(){
+	private boolean checkSecretCode(){
 		String sStatusString = "";
 
 		int digitsOK = 0;
 		int digitsOK2 = 0;
 
 		if(sDisplay.equals(sSecretCode)){
-			sStatusString = taStoryText.getText() + "Der eingegebene Code ist korrekt!\n";
+			sStatusString = taStoryText.getText() + "Der eingegebene Code ist korrekt! \n";
 			//TODO: set next step
+			taStoryText.setText(sStatusString);
+			return true;
 
 		} else if (sDisplay.length() != sSecretCode.length()) {
-			sStatusString = taStoryText.getText() + "Der eingegebene Code hat zu wenige Stellen\n";
+			sStatusString = taStoryText.getText() + "Der eingegebene Code hat zu wenige Stellen \n";
 
 		} else {
 			String sHlpDisplay="";
@@ -396,10 +441,11 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 					if(breakFor) break;
 				}
 			}
-			sStatusString = sStatusString + "\n" + digitsOK2 + " Zahlen sind korrekt aber an der falschen Stelle!";
+			sStatusString = sStatusString + "\n" + digitsOK2 + " Zahlen sind korrekt aber an der falschen Stelle! \n";
 		}
 
 		taStoryText.setText(sStatusString);
+		return false;
 	}
 
 	@Override

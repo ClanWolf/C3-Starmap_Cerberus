@@ -1269,7 +1269,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 
 			lvAssignedChar.getItems().clear();
 			for (RolePlayCharacterDTO rpc : boRP.getCharacterList()) {
-				if (rpc.getStory() != null && rpc.getStory().getStory().getId().equals(selected.getValue().getId())) {
+				if (rpc.getStory() != null && selected.getValue() != null && rpc.getStory().getStory().getId().equals(selected.getValue().getId())) {
 					lvAssignedChar.getItems().add(rpc);
 				}
 			}
