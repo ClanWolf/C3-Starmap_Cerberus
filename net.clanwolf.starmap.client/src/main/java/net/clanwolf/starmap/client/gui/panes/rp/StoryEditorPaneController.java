@@ -99,9 +99,9 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	@FXML
 	Label labPathOption1, labPathOption2, labPathOption3,labPathOption4, labDataInputDataset;
 	@FXML
-	Label labDiceLabel, labDiceScore, labDiceScoreLess, labDiceScoreEqual, labDiceScoreMore, labAssignedChar, labAllCharacters;
+	Label labDiceLabel, labDiceScore, labDiceScoreLess, labDiceScoreEqual, labDiceScoreMore, labAssignedChar, labAllCharacters, labCode,labAttempt,labAttemptSuccsess,labAttemptFailure;
 	@FXML
-	TextField tfStoryName, tfImage, tfVoice, tfMovie, tfURL;
+	TextField tfStoryName, tfImage, tfVoice, tfMovie, tfURL, tfCode, tfAttempt;
 	@FXML
 	ComboBox<ROLEPLAYENTRYTYPES> cbStoryVarianten;
 	@FXML
@@ -115,6 +115,8 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	@FXML
 	ComboBox<RolePlayStoryDTO> cbNextStep_V1;
 	@FXML
+	ComboBox<RolePlayStoryDTO> cbNextStep_AttemptSuccess, cbNextStep_AttemptFailure;
+	@FXML
 	TextField tfStoryPath1, tfStoryPath2, tfStoryPath3, tfStoryPath4, tfDiceScore;
 	@FXML
 	TextArea taDescription, taStorytext, taRolePlayOff;
@@ -123,7 +125,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	@FXML
 	TabPane tabPaneStory;
 	@FXML
-	private Tab tabBasic, tabBasic2, tabBasic3, tabBasic4, tabBasic5, tabBasic6, tabBasic7;
+	private Tab tabBasic, tabBasic2, tabBasic3, tabBasic4, tabBasic5, tabBasic6, tabBasic7,tabBasic8;
 	@FXML
 	private ListView<RolePlayCharacterDTO> lvAllCharacters, lvAssignedChar;
 	@FXML
@@ -175,7 +177,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 		initTreeView();
 		initCombobox();
 
-		tfDiceScore.textProperty().addListener(new ChangeListener<String>() {
+		tfDiceScore.textProperty().addListener(new ChangeListener<>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 				if (!newValue.matches("\\d*")) {
@@ -223,6 +225,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 					tabPaneStory.getTabs().remove(tabBasic5);
 					tabPaneStory.getTabs().remove(tabBasic6);
 					tabPaneStory.getTabs().remove(tabBasic7);
+					tabPaneStory.getTabs().remove(tabBasic8);
 
 				}
 				break;
@@ -236,24 +239,9 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 
 				// Only need after an insert. It is not necessary after an update
 				// If the RolePlayStoryDTO is new, we need this to get the object with ID from the database.
-//			selected.setValue((RolePlayStoryDTO) object.getObject());
 				selected.setValue(rps);
 				boRP.addStoryToList(selected.getValue());
 				boRP.changeCharacterList(rpcList);
-
-			/*lvAssignedChar.getItems().clear();
-			for (RolePlayCharacterDTO rpc : boRP.getCharacterList()) {
-				if (rpc.getStory() != null && rpc.getStory().getId().equals(selected.getValue().getId())) {
-					lvAssignedChar.getItems().add(rpc);
-				}
-			}
-
-			lvAllCharacters.getItems().clear();
-			for (RolePlayCharacterDTO rpc : boRP.getCharacterList()) {
-				if (rpc.getStory() == null) {
-					lvAllCharacters.getItems().add(rpc);
-				}
-			}*/
 
 				// Upload image, sound and video
 				fileTransfer();
@@ -275,7 +263,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 
 					Alert alert = Tools.C3Dialog(AlertType.ERROR, Internationalization.getString("general_failure"), Internationalization.getString("general_failure"), Internationalization.getString("app_rp_storyeditor_story_error_save"));
 					Optional<ButtonType> result = alert.showAndWait();
-					if (result.get() == ButtonType.OK) {
+					if (result.isPresent() && result.get() == ButtonType.OK) {
 						setWarningOff();
 					}
 				});
@@ -293,7 +281,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 
 					Alert alert = Tools.C3Dialog(AlertType.ERROR, Internationalization.getString("general_failure"), Internationalization.getString("general_failure"), Internationalization.getString("app_rp_storyeditor_story_error_delete"));
 					Optional<ButtonType> result = alert.showAndWait();
-					if (result.get() == ButtonType.OK) {
+					if (result.isPresent() && result.get() == ButtonType.OK) {
 						setWarningOff();
 					}
 				});
@@ -442,7 +430,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 				Internationalization.getString("app_rp_storyeditor_story_delete_question_text"));
 
 		Optional<ButtonType> result = alert.showAndWait();
-		if (result.get() == ButtonType.OK) {
+		if (result.isPresent() && result.get() == ButtonType.OK) {
 
 			if (boRP.checkBeforeDelete(selected.getValue())) {
 
@@ -539,7 +527,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 		Alert alert = Tools.C3Dialog(AlertType.CONFIRMATION, title, header, content);
 
 		Optional<ButtonType> result = alert.showAndWait();
-		if (result.get() == ButtonType.OK) {
+		if (result.isPresent() && result.get() == ButtonType.OK) {
 			enabledFields(false);
 
 			if (mode == StoryEditorPaneController.MODE_IS_NEW) {
@@ -818,11 +806,6 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	@FXML
 	private void handleDiceScoreTextChanged() {
 		C3Logger.info("handleDiceScoreTextChanged");
-
-		// if (!tfDiceScore.getText().matches("\\d*")) {
-		// tfDiceScore.setText(tfDiceScore.getText().replaceAll("[^\\d]", ""));
-		// }
-
 	}
 
 	@FXML
@@ -852,6 +835,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 		tabPaneStory.getTabs().remove(tabBasic5);
 		tabPaneStory.getTabs().remove(tabBasic6);
 		tabPaneStory.getTabs().remove(tabBasic7);
+		tabPaneStory.getTabs().remove(tabBasic8);
 
 		// Tab for character assignment
 		if (selected != null && selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STORY) {
@@ -905,7 +889,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 			}
 		}
 
-		// Tab for datainput
+		// Tab for keypad
 		if (selected != null && cbStoryVarianten.getSelectionModel().getSelectedItem() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V4) {
 			if (!tabPaneStory.getTabs().contains(tabBasic6)) {
 				tabPaneStory.getTabs().add(tabBasic6);
@@ -913,6 +897,17 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 		} else {
 			if (tabPaneStory.getTabs().contains(tabBasic6)) {
 				tabPaneStory.getTabs().remove(tabBasic6);
+			}
+		}
+
+		// Tab for keypad
+		if (selected != null && cbStoryVarianten.getSelectionModel().getSelectedItem() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V6) {
+			if (!tabPaneStory.getTabs().contains(tabBasic8)) {
+				tabPaneStory.getTabs().add(tabBasic8);
+			}
+		} else {
+			if (tabPaneStory.getTabs().contains(tabBasic8)) {
+				tabPaneStory.getTabs().remove(tabBasic8);
 			}
 		}
 	}
@@ -1047,6 +1042,9 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 
 			cbNextStep_V1.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
 
+			cbNextStep_AttemptSuccess.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
+			cbNextStep_AttemptFailure.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
+
 			cbStoryVarianten.getItems().setAll(ROLEPLAYENTRYTYPES.values());
 
 			cbroleplayinputdatatypes.getItems().setAll(ROLEPLAYOBJECTTYPES.values());
@@ -1178,6 +1176,10 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 			cbDiceScoreMore.setDisable(false);
 
 			cbNextStep_V1.setDisable(false);
+
+			cbNextStep_AttemptSuccess.setDisable(false);
+			cbNextStep_AttemptFailure.setDisable(false);
+
 			btDeleteStoryOptionNextStep.setDisable(false);
 
 		} else {
@@ -1228,6 +1230,10 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 			cbDiceScoreMore.setDisable(true);
 
 			cbNextStep_V1.setDisable(true);
+
+			cbNextStep_AttemptSuccess.setDisable(true);
+			cbNextStep_AttemptFailure.setDisable(true);
+
 			btDeleteStoryOptionNextStep.setDisable(true);
 
 		}
@@ -1284,7 +1290,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 
 			// set data for story variante 2 / variante 5
 			if ((selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V2 ||
-					selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V5 ) && selected.getValue().getVar2ID() != null) {
+					selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V5) && selected.getValue().getVar2ID() != null) {
 				tfStoryPath1.setText(selected.getValue().getVar2ID().getOption1Text());
 				tfStoryPath2.setText(selected.getValue().getVar2ID().getOption2Text());
 				tfStoryPath3.setText(selected.getValue().getVar2ID().getOption3Text());
@@ -1310,15 +1316,15 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 			if (selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V3 && selected.getValue().getVar3ID() != null) {
 				C3Logger.debug("setData");
 
-				if(selected.getValue().getVar3ID().getDataSet1() != null) {
+				if (selected.getValue().getVar3ID().getDataSet1() != null) {
 					cbroleplayinputdatatypes.getSelectionModel().select(selected.getValue().getVar3ID().getDataSet1().types);
-				} else if(selected.getValue().getVar3ID().getDataSet2() != null) {
+				} else if (selected.getValue().getVar3ID().getDataSet2() != null) {
 					cbroleplayinputdatatypes.getSelectionModel().select(selected.getValue().getVar3ID().getDataSet2().types);
-				} else if(selected.getValue().getVar3ID().getDataSet3() != null) {
+				} else if (selected.getValue().getVar3ID().getDataSet3() != null) {
 					cbroleplayinputdatatypes.getSelectionModel().select(selected.getValue().getVar3ID().getDataSet3().types);
-				} else if(selected.getValue().getVar3ID().getDataSet4() != null) {
+				} else if (selected.getValue().getVar3ID().getDataSet4() != null) {
 					cbroleplayinputdatatypes.getSelectionModel().select(selected.getValue().getVar3ID().getDataSet4().types);
-				} else if(selected.getValue().getVar3ID().getDataSet5() != null) {
+				} else if (selected.getValue().getVar3ID().getDataSet5() != null) {
 					cbroleplayinputdatatypes.getSelectionModel().select(selected.getValue().getVar3ID().getDataSet5().types);
 				}
 
@@ -1349,10 +1355,22 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 				cbDiceScoreMore.setValue(null);
 			}
 
+			// set data for story variante 6
+			if (selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V6 && selected.getValue().getVar6ID() != null) {
+				tfCode.setText(selected.getValue().getVar6ID().getSecretCode());
+				tfAttempt.setText(selected.getValue().getVar6ID().getAttempts().toString());
+				cbNextStep_AttemptSuccess.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getVar6ID().getStoryIDSuccess()));
+				cbNextStep_AttemptFailure.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getVar6ID().getStoryIDFailure()));
+			} else {
+				tfCode.clear();
+				tfAttempt.clear();
+				cbNextStep_AttemptSuccess.setValue(null);
+				cbNextStep_AttemptFailure.setValue(null);
+			}
 		}
 	}
 
-	private RolePlayStoryDTO getData(RolePlayStoryDTO rp) {
+	private RolePlayStoryDTO getData (RolePlayStoryDTO rp){
 		rp.setStoryName(tfStoryName.getText());
 		rp.setVariante(cbStoryVarianten.getValue());
 		rp.setStoryDescription(taDescription.getText());
@@ -1479,19 +1497,19 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 				rpVar3.setStory(rp.getId());
 			}
 
-			if(cbDatafield1.getValue() != null){
+			if (cbDatafield1.getValue() != null) {
 				rpVar3.setDataSet1(cbDatafield1.getValue());
 			}
-			if(cbDatafield2.getValue() != null){
+			if (cbDatafield2.getValue() != null) {
 				rpVar3.setDataSet2(cbDatafield2.getValue());
 			}
-			if(cbDatafield3.getValue() != null){
+			if (cbDatafield3.getValue() != null) {
 				rpVar3.setDataSet3(cbDatafield3.getValue());
 			}
-			if(cbDatafield4.getValue() != null){
+			if (cbDatafield4.getValue() != null) {
 				rpVar3.setDataSet4(cbDatafield4.getValue());
 			}
-			if(cbDatafield5.getValue() != null){
+			if (cbDatafield5.getValue() != null) {
 				rpVar3.setDataSet5(cbDatafield5.getValue());
 			}
 			if (cbNextStep_V3.getValue() != null) {
@@ -1528,11 +1546,38 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 			rp.setVar4ID(null);
 		}
 
+		// set data for variante 6
+		if (rp.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V6) {
+			RolePlayStoryVar6DTO rpVar6 = rp.getVar6ID();
+			if (rpVar6 == null) {
+				rpVar6 = new RolePlayStoryVar6DTO();
+				rpVar6.setStory(rp);
+			}
+			rpVar6.setSecretCode(tfCode.getText());
+			rpVar6.setAttempts(Integer.valueOf(tfAttempt.getText()));
+
+			if(cbNextStep_AttemptSuccess.getValue() != null) {
+				rpVar6.setStoryIDSuccess(cbNextStep_AttemptSuccess.getValue().getId());
+			} else {
+				rpVar6.setStoryIDSuccess(null);
+			}
+
+			if(cbNextStep_AttemptFailure.getValue() != null) {
+				rpVar6.setStoryIDFailure(cbNextStep_AttemptFailure.getValue().getId());
+			} else {
+				rpVar6.setStoryIDFailure(null);
+			}
+
+			rp.setVar6ID(rpVar6);
+		} else {
+			rp.setVar6ID(null);
+		}
+
 		return rp;
 
 	}
 
-	private void fileTransfer() {
+	private void fileTransfer () {
 		boolean bOK = false;
 		if (doUploadImage) {
 			bOK = boRP.uploadImage(selected.getValue());
@@ -1565,18 +1610,13 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	 *
 	 */
 	@Override
-	public void setStrings() {
+	public void setStrings () {
 		/*
 		 * Example... buttonNew.setText(Internationalization.getString("general_new"));
 		 */
 		if (mode == StoryEditorPaneController.MODE_IS_EDIT || mode == StoryEditorPaneController.MODE_IS_NEW) {
 			buttonCancel.setText("Cancel");
 		} else {
-			// if setStrings() is called by methode handleAction() it throws an "not on fx application thread currentthread"
-			// this is the solution
-			// Platform.runLater(() -> buttonCancel.setText("Close"));
-
-			// buttonCancel.setText("Close");
 			Platform.runLater(() -> {
 				buttonCancel.setText(Internationalization.getString("general_close"));
 				buttonSave.setText(Internationalization.getString("general_save"));
@@ -1620,7 +1660,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 		}
 	}
 
-	private void resetFields() {
+	private void resetFields () {
 
 		tfStoryName.clear();
 		cbStoryVarianten.getSelectionModel().clearSelection();
@@ -1645,6 +1685,11 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 
 		cbNextStep_V1.setValue(null);
 
+		cbNextStep_AttemptSuccess.setValue(null);
+		cbNextStep_AttemptFailure.setValue(null);
+		tfCode.clear();
+		tfAttempt.clear();
+
 		cbDatafield1.setValue(null);
 		cbDatafield2.setValue(null);
 		cbDatafield3.setValue(null);
@@ -1652,23 +1697,23 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 		cbDatafield5.setValue(null);
 	}
 
-	private void createListeners() {
-		editFieldChangeListener = new ChangeListener<String>() {
+	private void createListeners () {
+		editFieldChangeListener = new ChangeListener<>() {
 			@Override
 			public void changed(ObservableValue<? extends String> ov, String old_val, String new_val) {
 				setWarningOn(true);
 			}
 		};
 
-		editComboBoxChangeListener = new ChangeListener<Object>() {
+		editComboBoxChangeListener = new ChangeListener<>() {
 			@Override
-			public void changed(ObservableValue<?> ov, Object old_val, Object new_val) {
-				setWarningOn(true);
+		public void changed(ObservableValue<?> ov, Object old_val, Object new_val) {
+			setWarningOn(true);
 			}
 		};
 	}
 
-	private void enableListeners(boolean enableListerners) {
+	private void enableListeners ( boolean enableListerners){
 		if (enableListerners) {
 			tfStoryName.textProperty().addListener(editFieldChangeListener);
 			cbStoryVarianten.valueProperty().addListener(editComboBoxChangeListener);
@@ -1699,7 +1744,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	 *
 	 */
 	@Override
-	public void warningOnAction() {
+	public void warningOnAction () {
 		buttonSave.setDisable(false);
 		buttonCancel.setDisable(false);
 
@@ -1716,9 +1761,8 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	 *
 	 */
 	@Override
-	public void warningOffAction() {
+	public void warningOffAction () {
 	}
-//}
 
 	private final class RPCellFactory<RolePlayStoryDTO> extends ListCell<net.clanwolf.starmap.transfer.dtos.RolePlayStoryDTO> {
 
@@ -1748,7 +1792,8 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 		}
 
 	}
-	public class RPInputDataTypesStringConverter extends StringConverter<ROLEPLAYINPUTDATATYPES> {
+
+	private final class RPInputDataTypesStringConverter extends StringConverter<ROLEPLAYINPUTDATATYPES> {
 
 		@Override
 		public String toString(ROLEPLAYINPUTDATATYPES object) {
@@ -1764,7 +1809,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 		}
 	}
 
-	public class RPObjectTypesStringConverter extends StringConverter<ROLEPLAYOBJECTTYPES> {
+	private final class RPObjectTypesStringConverter extends StringConverter<ROLEPLAYOBJECTTYPES> {
 
 		@Override
 		public String toString(ROLEPLAYOBJECTTYPES object) {

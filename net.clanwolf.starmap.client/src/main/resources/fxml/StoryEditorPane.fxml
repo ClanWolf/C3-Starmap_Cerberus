@@ -159,6 +159,22 @@
                   </AnchorPane>
               </content>
             </Tab>
+            <Tab fx:id="tabBasic8" text="Keypad">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Label fx:id="labCode" layoutX="23.0" layoutY="14.0" prefHeight="17.0" prefWidth="218.0" text="Code der erraten werden soll" />
+                        <TextField fx:id="tfCode" layoutX="251.0" layoutY="11.0" prefHeight="24.0" prefWidth="163.0" />
+                        <Label fx:id="labAttempt" layoutX="24.0" layoutY="35.0" prefHeight="47.0" prefWidth="216.0" text="Anzahl Versuche zum erraten des Codes" wrapText="true" />
+                        <TextField fx:id="tfAttempt" layoutX="251.0" layoutY="46.0" prefHeight="24.0" prefWidth="163.0" />
+                        <Label fx:id="labAttemptSuccsess" layoutX="24.0" layoutY="82.0" prefHeight="24.0" prefWidth="216.0" text="Schritt im Erfolgsfall" wrapText="true" />
+                        <ComboBox fx:id="cbNextStep_AttemptSuccess" layoutX="251.0" layoutY="80.0" prefHeight="27.0" prefWidth="270.0" />
+                        <Label fx:id="labAttemptFailure" layoutX="24.0" layoutY="116.0" prefHeight="24.0" prefWidth="216.0" text="Schritt bei Fehlschlag" wrapText="true" />
+                        <ComboBox fx:id="cbNextStep_AttemptFailure" layoutX="251.0" layoutY="114.0" prefHeight="27.0" prefWidth="270.0" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </Tab>
         </tabs>
       </TabPane>
       <ToolBar layoutX="62.0" layoutY="18.0" prefHeight="44.0" prefWidth="200.0">

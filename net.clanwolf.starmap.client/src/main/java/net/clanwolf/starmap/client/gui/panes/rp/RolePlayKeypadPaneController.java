@@ -40,6 +40,7 @@ import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3RolePlayController;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
+import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
@@ -66,12 +67,17 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 	private ImageView ivDigit1, ivDigit2, ivDigit3, ivDigit4, ivDigit5, ivDigit6, ivDigit7, ivDigit8;
 
 	@FXML
-	private Button btKey0,btKey1,btKey2,btKey3,btKey4,btKey5,btKey6,btKey7,btKey8,btKey9,btReset;
+	private Button btKey0,btKey1,btKey2,btKey3,btKey4,btKey5,btKey6,btKey7,btKey8,btKey9,btReset, btEnterKey;
 
 	@FXML
 	private Button btPreview;
 
 	private String sDisplay;
+
+	private int maxDigits;
+	private int attempts;
+	private int currentAttempt;
+	private String sSecretCode;
 
 	public RolePlayKeypadPaneController() {
 	}
@@ -85,21 +91,15 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 	public void initialize(URL url, ResourceBundle rb) {
 		super.initialize(url, rb);
 
-		init();
+		//init();
 
 	}
 
 	private void init(){
-		/*taRpText.setStyle("-fx-opacity: 1");
-		taRpText.setEditable(false);
+		currentAttempt = 0;
 
-		btChoice1.setVisible(false);
-		btChoice2.setVisible(false);
-		btChoice3.setVisible(false);
-		btChoice4.setVisible(false);*/
-
-		//sDisplay = "";
-		setDigit("-1");
+		// Reset display
+		setDigit("-1", false);
 	}
 
 	/**
@@ -116,8 +116,7 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 		if(anchorPane != null && !anchorPane.isVisible()) return true;
 		switch (action) {
 		case START_ROLEPLAY:
-			if(ROLEPLAYENTRYTYPES.C3_RP_STEP_V2 == o.getObject() ||
-					ROLEPLAYENTRYTYPES.C3_RP_STEP_V5 == o.getObject()) {
+			if(ROLEPLAYENTRYTYPES.C3_RP_STEP_V6 == o.getObject()) {
 				C3Logger.debug("RolePlayChoicePaneController -> START_ROLEPLAY");
 
 				init();
@@ -141,60 +140,67 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 	}
 
 	/******************************** FXML ********************************/
-
 	@FXML
-	private void handlePressKey0(){
-		setDigit("0");
-	}
+	private void handlePressKey0(){	setDigit("0", true); }
 
 	@FXML
 	private void handlePressKey1(){
-		setDigit("1");
+		setDigit("1", true);
 	}
 
 	@FXML
 	private void handlePressKey2(){
-		setDigit("2");
+		setDigit("2", true);
 	}
 
 	@FXML
 	private void handlePressKey3(){
-		setDigit("3");
+		setDigit("3", true);
 	}
 
 	@FXML
 	private void handlePressKey4(){
-		setDigit("4");
+		setDigit("4", true);
 	}
 
 	@FXML
 	private void handlePressKey5(){
-		setDigit("5");
+		setDigit("5", true);
 	}
 
 	@FXML
 	private void handlePressKey6(){
-		setDigit("6");
+		setDigit("6", true);
 	}
 
 	@FXML
 	private void handlePressKey7(){
-		setDigit("7");
+		setDigit("7", true);
 	}
 
 	@FXML
 	private void handlePressKey8(){
-		setDigit("8");
+		setDigit("8", true);
 	}
 
 	@FXML
 	private void handlePressKey9(){
-		setDigit("9");
+		setDigit("9", true);
 	}
 
 	@FXML
-	private void handlebtReset(){
-		setDigit("-1");
+	private void handlebtReset(){ setDigit("-1", true);	}
+
+	@FXML
+	private void handlePressEnterKey(){
+		if(currentAttempt <= attempts) {
+			checkSecretCode();
+			currentAttempt++;
+		} else {
+			btEnterKey.setVisible(false);
+			btReset.setVisible(false);
+			btPreview.setVisible(true);
+		}
 	}
 
 	/*@FXML
@@ -258,10 +264,12 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 
 		return new Image(this.getClass().getResourceAsStream(imagePath));
 	}
-	private void setDigit(String digit){
 
-		//sDisplay = "01234567";
-		if(sDisplay != null && sDisplay.length() >= 0 && sDisplay.length() < 8){
+	private void setDigit(String digit, boolean playSound){
+		// Play sound
+		if(playSound) C3SoundPlayer.play("sound/fx/beep_02.wav", false);
+
+		if(sDisplay != null && sDisplay.length() >= 0 && sDisplay.length() < maxDigits){
 			sDisplay = sDisplay + digit;
 		}
 
@@ -339,19 +347,76 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 		//ivDigit1.setImage(loadDigit(digit));
 	}
 
+	/**
+	 *
+	 */
+	private void checkSecretCode(){
+		String sStatusString = "";
+
+		int digitsOK = 0;
+		int digitsOK2 = 0;
+
+		if(sDisplay.equals(sSecretCode)){
+			sStatusString = taStoryText.getText() + "Der eingegebene Code ist korrekt!\n";
+			//TODO: set next step
+
+		} else if (sDisplay.length() != sSecretCode.length()) {
+			sStatusString = taStoryText.getText() + "Der eingegebene Code hat zu wenige Stellen\n";
+
+		} else {
+			String sHlpDisplay="";
+			String sHlpSecretCode="";
+			// digit is in the right place
+			for(int i = 0; i<sDisplay.length(); i++) {
+				String sCheckedDigit = sDisplay.substring(i,i+ 1);
+
+				if (sCheckedDigit.equals(sSecretCode.substring(i, i+1))) {
+					//sStatusString = sStatusString + "Stelle " + i + " ok! \n";
+					digitsOK = digitsOK + 1;
+				}  else {
+					sHlpDisplay = sHlpDisplay + sCheckedDigit;
+					sHlpSecretCode = sHlpSecretCode + sSecretCode.substring(i, i+1);
+				}
+			}
+			sStatusString = "Es sind " + digitsOK + " Zahlen an der richtigen Stelle!";
+
+			// digit is in the false place
+			for(int i = 0; i<sHlpDisplay.length(); i++) {
+				String sCheckedDigit = sHlpDisplay.substring(i,i+ 1);
+				boolean breakFor = false;
+				for(int j=0;j<sHlpSecretCode.length();j++){
+					if (sCheckedDigit.equals(sHlpSecretCode.substring(j, j+1))) {
+						digitsOK2 = digitsOK2 + 1;
+						// remove found digit
+						sHlpSecretCode = sHlpSecretCode.replaceFirst(sCheckedDigit,"");
+						C3Logger.debug(sHlpSecretCode);
+						breakFor = true;
+					}
+					// stop for if digit was found
+					if(breakFor) break;
+				}
+			}
+			sStatusString = sStatusString + "\n" + digitsOK2 + " Zahlen sind korrekt aber an der falschen Stelle!";
+		}
+
+		taStoryText.setText(sStatusString);
+	}
+
 	@Override
 	public void getStoryValues(RolePlayCharacterDTO rpChar) {
-		/*if (rpChar.getStory().getStoryIntro() == null) {
+		sSecretCode = rpChar.getStory().getVar6ID().getSecretCode();
+		attempts = rpChar.getStory().getVar6ID().getAttempts();
+		maxDigits = sSecretCode.length();
+
+		if (rpChar.getStory().getStoryImage() != null) {
 			String imURL;
+			imURL = BORolePlayStory.getRPG_ResourceURL() + "/" + rpChar.getStory().getId().toString() + "/" + rpChar.getStory().getStoryImage();
+			Image im = new Image(imURL);
+			rpIBackgroundImage.setImage(im);
+		} else {
 			InputStream isBackground = this.getClass().getResourceAsStream("/images/gui/default_Step.png");
 			rpIBackgroundImage.setImage(new Image(isBackground));
+		}
 
-			// Check step for own image. If now own image availabale use default image
-			if (rpChar.getStory().getStoryImage() != null) {
-				imURL = BORolePlayStory.getRPG_ResourceURL() + "/" + rpChar.getStory().getId().toString() + "/" + rpChar.getStory().getStoryImage();
-				Image im = new Image(imURL);
-				rpImage.setImage(im);
-			}
-		}*/
 	}
 }

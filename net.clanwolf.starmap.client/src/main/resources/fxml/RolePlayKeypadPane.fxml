@@ -29,7 +29,7 @@
          <image>
             <Image url="@../images/door1_1.jpg" />
          </image></ImageView>
-      <TextArea fx:id="taStoryText" layoutX="58.0" layoutY="8.0" prefHeight="442.0" prefWidth="784.0" styleClass="contentTextAreaBlock" visible="false" wrapText="true" />
+      <TextArea fx:id="taStoryText" layoutX="73.0" layoutY="22.0" prefHeight="106.0" prefWidth="748.0" styleClass="contentTextAreaBlock" wrapText="true" />
       <ImageView fitHeight="280.0" fitWidth="500.0" layoutX="352.0" layoutY="141.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/rpKeypad.png" />
@@ -75,61 +75,66 @@
             <Image url="@../images/digi/Digit8.png" />
          </image>
       </ImageView>
-      <Button fx:id="btPreview" layoutX="502.0" layoutY="307.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" opacity="0.49" prefHeight="26.0" prefWidth="36.0">
+      <Button fx:id="btPreview" layoutX="384.0" layoutY="440.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" opacity="0.49" prefHeight="26.0" prefWidth="36.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css">
          <font>
             <Font size="12.0" />
          </font></Button>
-      <Button fx:id="btKey0" layoutX="559.0" layoutY="261.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#handlePressKey0" opacity="0.49" prefHeight="26.0" prefWidth="36.0">
+      <Button fx:id="btKey0" layoutX="559.0" layoutY="261.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#handlePressKey0" opacity="0.49" prefHeight="26.0" prefWidth="36.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css">
          <font>
             <Font size="12.0" />
          </font>
       </Button>
-      <Button fx:id="btKey1" layoutX="615.0" layoutY="261.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#handlePressKey1" opacity="0.49" prefHeight="26.0" prefWidth="36.0">
+      <Button fx:id="btKey1" layoutX="615.0" layoutY="261.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#handlePressKey1" opacity="0.49" prefHeight="26.0" prefWidth="36.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css">
          <font>
             <Font size="12.0" />
          </font>
       </Button>
-      <Button fx:id="btKey2" layoutX="671.0" layoutY="261.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#handlePressKey2" opacity="0.49" prefHeight="26.0" prefWidth="36.0">
+      <Button fx:id="btKey2" layoutX="671.0" layoutY="261.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#handlePressKey2" opacity="0.49" prefHeight="26.0" prefWidth="36.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css">
          <font>
             <Font size="12.0" />
          </font>
       </Button>
-      <Button fx:id="btKey3" layoutX="727.0" layoutY="261.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#handlePressKey3" opacity="0.49" prefHeight="26.0" prefWidth="36.0">
+      <Button fx:id="btKey3" layoutX="727.0" layoutY="261.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#handlePressKey3" opacity="0.49" prefHeight="26.0" prefWidth="36.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css">
          <font>
             <Font size="12.0" />
          </font>
       </Button>
-      <Button fx:id="btKey4" layoutX="615.0" layoutY="307.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#handlePressKey4" opacity="0.49" prefHeight="26.0" prefWidth="36.0">
+      <Button fx:id="btKey4" layoutX="615.0" layoutY="307.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#handlePressKey4" opacity="0.49" prefHeight="26.0" prefWidth="36.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css">
          <font>
             <Font size="12.0" />
          </font>
       </Button>
-      <Button fx:id="btKey5" layoutX="671.0" layoutY="307.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#handlePressKey5" opacity="0.49" prefHeight="26.0" prefWidth="36.0">
+      <Button fx:id="btKey5" layoutX="671.0" layoutY="307.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#handlePressKey5" opacity="0.49" prefHeight="26.0" prefWidth="36.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css">
          <font>
             <Font size="12.0" />
          </font>
       </Button>
-      <Button fx:id="btKey6" layoutX="727.0" layoutY="307.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#handlePressKey6" opacity="0.49" prefHeight="26.0" prefWidth="36.0">
+      <Button fx:id="btKey6" layoutX="727.0" layoutY="307.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#handlePressKey6" opacity="0.49" prefHeight="26.0" prefWidth="36.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css">
          <font>
             <Font size="12.0" />
          </font>
       </Button>
-      <Button fx:id="btKey7" layoutX="615.0" layoutY="355.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#handlePressKey7" opacity="0.49" prefHeight="26.0" prefWidth="36.0">
+      <Button fx:id="btKey7" layoutX="615.0" layoutY="355.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#handlePressKey7" opacity="0.49" prefHeight="26.0" prefWidth="36.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css">
          <font>
             <Font size="12.0" />
          </font>
       </Button>
-      <Button fx:id="btKey8" layoutX="671.0" layoutY="355.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#handlePressKey8" opacity="0.49" prefHeight="26.0" prefWidth="36.0">
+      <Button fx:id="btKey8" layoutX="671.0" layoutY="355.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#handlePressKey8" opacity="0.49" prefHeight="26.0" prefWidth="36.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css">
          <font>
             <Font size="12.0" />
          </font>
       </Button>
-      <Button fx:id="btKey9" layoutX="727.0" layoutY="355.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#handlePressKey9" opacity="0.49" prefHeight="26.0" prefWidth="36.0">
+      <Button fx:id="btKey9" layoutX="727.0" layoutY="355.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#handlePressKey9" opacity="0.49" prefHeight="26.0" prefWidth="36.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css">
          <font>
             <Font size="12.0" />
          </font>
       </Button>
-      <Button fx:id="btReset" layoutX="448.0" layoutY="261.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#handlebtReset" opacity="0.49" prefHeight="26.0" prefWidth="36.0">
+      <Button fx:id="btReset" layoutX="448.0" layoutY="261.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#handlebtReset" opacity="0.49" prefHeight="26.0" prefWidth="36.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css">
+         <font>
+            <Font size="12.0" />
+         </font>
+      </Button>
+      <Button fx:id="btEnterKey" layoutX="502.0" layoutY="307.0" maxHeight="-Infinity" minHeight="-Infinity" mnemonicParsing="false" onAction="#handlePressEnterKey" opacity="0.49" prefHeight="26.0" prefWidth="36.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css">
          <font>
             <Font size="12.0" />
          </font>
