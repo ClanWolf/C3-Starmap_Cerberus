@@ -52,6 +52,7 @@ import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.ResourceBundle;
 
 /**
@@ -59,7 +60,7 @@ import java.util.ResourceBundle;
  */
 public class RolePlayIntroPaneController extends AbstractC3RolePlayController implements ActionCallBackListener {
 
-	private boolean animationPlayed = false;
+	private HashMap<Long, Boolean> animationPlayedMap = new HashMap<>();
 
 	@FXML
 	private AnchorPane anchorPane;
@@ -111,7 +112,8 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 				// set current step of story
 				getStoryValues(Nexus.getCurrentChar());
 
-				if (!animationPlayed) {
+				Boolean animationPlayed = animationPlayedMap.get(Nexus.getCurrentChar().getStory().getId());
+				if (animationPlayed == null || !animationPlayed) {
 					FadeTransition fadeInTransition_01 = new FadeTransition(Duration.millis(800), ivIntro);
 					fadeInTransition_01.setFromValue(0.0);
 					fadeInTransition_01.setToValue(1.0);
@@ -132,7 +134,7 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 					sequentialTransition.setCycleCount(1);
 					sequentialTransition.play();
 
-					animationPlayed = true;
+					animationPlayedMap.put(Nexus.getCurrentChar().getStory().getId(), true);
 				}
 			}
 			break;
@@ -203,7 +205,8 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 
 //			if(rpChar.getStory().getStoryImage() == null || rpChar.getStory().getStoryImage().isEmpty()) {
 			labHeader.setEffect(new DropShadow(20, Color.BLACK));
-			if (!animationPlayed) {
+			Boolean animationPlayed = animationPlayedMap.get(Nexus.getCurrentChar().getStory().getId());
+			if (animationPlayed == null || !animationPlayed) {
 				labHeader.setOpacity(0.0);
 			}
 			labHeader.setVisible(true);
@@ -229,7 +232,8 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 
 			Image im = new Image(imURL);
 			ivIntro.setImage(im);
-			if (!animationPlayed) {
+			Boolean animationPlayed = animationPlayedMap.get(Nexus.getCurrentChar().getStory().getId());
+			if (animationPlayed == null || !animationPlayed) {
 				ivIntro.setOpacity(0.0);
 			}
 			//ivIntro.setFitHeight(450);
