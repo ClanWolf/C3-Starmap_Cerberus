@@ -51,6 +51,7 @@ import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Undertaker
@@ -281,6 +282,18 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 				imagePath = "/images/digi/Digit9.png";
 				break;
 
+			case "g":
+				imagePath = "/images/digi/Digit green.png";
+				break;
+
+			case "r":
+				imagePath = "/images/digi/Digit red.png";
+				break;
+
+			case "o":
+				imagePath = "/images/digi/Digit orange.png";
+				break;
+
 			default:
 				imagePath = "/images/digi/Digit_empty.png";
 				break;
@@ -289,9 +302,9 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 		return new Image(this.getClass().getResourceAsStream(imagePath));
 	}
 
-	private void setDigit(String digit, boolean playSound){
+	private void setDigit(String digit, boolean playSound) {
 		// Play sound
-		if(playSound) C3SoundPlayer.play("sound/fx/beep_02.wav", false);
+		if (playSound) C3SoundPlayer.play("sound/fx/beep_02.wav", false);
 
 		/*Task<Void> sleeper = new Task<Void>() {
 			@Override
@@ -303,7 +316,6 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 				return null;
 			}
 		};
-
 		sleeper.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
 			@Override
 			public void handle(WorkerStateEvent event) {
@@ -312,68 +324,71 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 		});
 		new Thread(sleeper).start();*/
 
-		if(sDisplay != null && sDisplay.length() >= 0 && sDisplay.length() < maxDigits){
+		if (sDisplay != null && sDisplay.length() >= 0 && sDisplay.length() < maxDigits) {
 			sDisplay = sDisplay + digit;
 		}
 
-		if(digit.equals("-1")){
+		if (digit.equals("-1")) {
 			sDisplay = "";
 		}
 
-		//C3Logger.info(sDisplay.substring(1,2));
+		addDigitToDisplay(sDisplay);
+	}
 
-		switch (sDisplay.length()){
+	private void addDigitToDisplay(String code){
+
+		switch (code.length()){
 			case 1:
-				ivDigit1.setImage(loadDigit(sDisplay.substring(0,1)));
+				ivDigit1.setImage(loadDigit(code.substring(0,1)));
 				break;
 			case 2:
-				ivDigit1.setImage(loadDigit(sDisplay.substring(1,2)));
-				ivDigit2.setImage(loadDigit(sDisplay.substring(0,1)));
+				ivDigit1.setImage(loadDigit(code.substring(1,2)));
+				ivDigit2.setImage(loadDigit(code.substring(0,1)));
 				break;
 			case 3:
-				ivDigit1.setImage(loadDigit(sDisplay.substring(2,3)));
-				ivDigit2.setImage(loadDigit(sDisplay.substring(1,2)));
-				ivDigit3.setImage(loadDigit(sDisplay.substring(0,1)));
+				ivDigit1.setImage(loadDigit(code.substring(2,3)));
+				ivDigit2.setImage(loadDigit(code.substring(1,2)));
+				ivDigit3.setImage(loadDigit(code.substring(0,1)));
 				break;
 			case 4:
-				ivDigit1.setImage(loadDigit(sDisplay.substring(3,4)));
-				ivDigit2.setImage(loadDigit(sDisplay.substring(2,3)));
-				ivDigit3.setImage(loadDigit(sDisplay.substring(1,2)));
-				ivDigit4.setImage(loadDigit(sDisplay.substring(0,1)));
+				ivDigit1.setImage(loadDigit(code.substring(3,4)));
+				ivDigit2.setImage(loadDigit(code.substring(2,3)));
+				ivDigit3.setImage(loadDigit(code.substring(1,2)));
+				ivDigit4.setImage(loadDigit(code.substring(0,1)));
 				break;
 			case 5:
-				ivDigit1.setImage(loadDigit(sDisplay.substring(4,5)));
-				ivDigit2.setImage(loadDigit(sDisplay.substring(3,4)));
-				ivDigit3.setImage(loadDigit(sDisplay.substring(2,3)));
-				ivDigit4.setImage(loadDigit(sDisplay.substring(1,2)));
-				ivDigit5.setImage(loadDigit(sDisplay.substring(0,1)));
+				ivDigit1.setImage(loadDigit(code.substring(4,5)));
+				ivDigit2.setImage(loadDigit(code.substring(3,4)));
+				ivDigit3.setImage(loadDigit(code.substring(2,3)));
+				ivDigit4.setImage(loadDigit(code.substring(1,2)));
+				ivDigit5.setImage(loadDigit(code.substring(0,1)));
 				break;
 			case 6:
-				ivDigit1.setImage(loadDigit(sDisplay.substring(5,6)));
-				ivDigit2.setImage(loadDigit(sDisplay.substring(4,5)));
-				ivDigit3.setImage(loadDigit(sDisplay.substring(3,4)));
-				ivDigit4.setImage(loadDigit(sDisplay.substring(2,3)));
-				ivDigit5.setImage(loadDigit(sDisplay.substring(1,2)));
-				ivDigit6.setImage(loadDigit(sDisplay.substring(0,1)));
+				ivDigit1.setImage(loadDigit(code.substring(5,6)));
+				ivDigit2.setImage(loadDigit(code.substring(4,5)));
+				ivDigit3.setImage(loadDigit(code.substring(3,4)));
+				ivDigit4.setImage(loadDigit(code.substring(2,3)));
+				ivDigit5.setImage(loadDigit(code.substring(1,2)));
+				ivDigit6.setImage(loadDigit(code.substring(0,1)));
 				break;
 			case 7:
-				ivDigit1.setImage(loadDigit(sDisplay.substring(6,7)));
-				ivDigit2.setImage(loadDigit(sDisplay.substring(5,6)));
-				ivDigit3.setImage(loadDigit(sDisplay.substring(4,5)));
-				ivDigit4.setImage(loadDigit(sDisplay.substring(3,4)));
-				ivDigit5.setImage(loadDigit(sDisplay.substring(2,3)));
-				ivDigit6.setImage(loadDigit(sDisplay.substring(1,2)));
-				ivDigit7.setImage(loadDigit(sDisplay.substring(0,1)));
+				ivDigit1.setImage(loadDigit(code.substring(6,7)));
+				ivDigit2.setImage(loadDigit(code.substring(5,6)));
+				ivDigit3.setImage(loadDigit(code.substring(4,5)));
+				ivDigit4.setImage(loadDigit(code.substring(3,4)));
+				ivDigit5.setImage(loadDigit(code.substring(2,3)));
+				ivDigit6.setImage(loadDigit(code.substring(1,2)));
+				ivDigit7.setImage(loadDigit(code.substring(0,1)));
 				break;
 			case 8:
-				ivDigit1.setImage(loadDigit(sDisplay.substring(7,8)));
-				ivDigit2.setImage(loadDigit(sDisplay.substring(6,7)));
-				ivDigit3.setImage(loadDigit(sDisplay.substring(5,6)));
-				ivDigit4.setImage(loadDigit(sDisplay.substring(4,5)));
-				ivDigit5.setImage(loadDigit(sDisplay.substring(3,4)));
-				ivDigit6.setImage(loadDigit(sDisplay.substring(2,3)));
-				ivDigit7.setImage(loadDigit(sDisplay.substring(1,2)));
-				ivDigit8.setImage(loadDigit(sDisplay.substring(0,1)));
+				ivDigit1.setImage(loadDigit(code.substring(7,8)));
+				ivDigit2.setImage(loadDigit(code.substring(6,7)));
+				ivDigit3.setImage(loadDigit(code.substring(5,6)));
+				ivDigit4.setImage(loadDigit(code.substring(4,5)));
+				ivDigit5.setImage(loadDigit(code.substring(3,4)));
+				ivDigit6.setImage(loadDigit(code.substring(2,3)));
+				ivDigit7.setImage(loadDigit(code.substring(1,2)));
+				ivDigit8.setImage(loadDigit(code.substring(0,1)));
 				break;
 			default:
 				ivDigit1.setImage(loadDigit("-1"));
@@ -386,8 +401,6 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 				ivDigit8.setImage(loadDigit("-1"));
 				break;
 		}
-
-		//ivDigit1.setImage(loadDigit(digit));
 	}
 
 	/**
@@ -396,56 +409,90 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 	private boolean checkSecretCode(){
 		String sStatusString = "";
 
-		int digitsOK = 0;
-		int digitsOK2 = 0;
+		int digitsInTheRightPlace = 0;
+		int digitsAvailable = 0;
+
+		if(currentAttempt > 0) sStatusString = sStatusString + "------------------------------------------------------------- \n";
+
 
 		if(sDisplay.equals(sSecretCode)){
-			sStatusString = taStoryText.getText() + "Der eingegebene Code ist korrekt! \n";
-			//TODO: set next step
-			taStoryText.setText(sStatusString);
+			// secretCode is correkt
+			taStoryText.appendText("Der eingegebene Code ist korrekt! \n");
+
+			setResultDigit(maxDigits,0);
 			return true;
 
 		} else if (sDisplay.length() != sSecretCode.length()) {
-			sStatusString = taStoryText.getText() + "Der eingegebene Code hat zu wenige Stellen \n";
+			// secretCode has not enough digits
+			taStoryText.appendText("Der eingegebene Code hat zu wenige Stellen \n");
 
 		} else {
+			// Check if the digits are in the right place
+			int hlpCurrentAttemp = currentAttempt + 1;
+			sStatusString = sStatusString + "Versuch Nummer " + hlpCurrentAttemp + ". Der eingegebene Code lautet: " + sSecretCode + "\n";
 			String sHlpDisplay="";
 			String sHlpSecretCode="";
-			// digit is in the right place
+			// check digits in the right place
 			for(int i = 0; i<sDisplay.length(); i++) {
 				String sCheckedDigit = sDisplay.substring(i,i+ 1);
 
 				if (sCheckedDigit.equals(sSecretCode.substring(i, i+1))) {
-					//sStatusString = sStatusString + "Stelle " + i + " ok! \n";
-					digitsOK = digitsOK + 1;
+					digitsInTheRightPlace = digitsInTheRightPlace + 1;
 				}  else {
+					// Digit is not in the right place
+					// note digit on the display
 					sHlpDisplay = sHlpDisplay + sCheckedDigit;
+					// note the digit in the secret code
 					sHlpSecretCode = sHlpSecretCode + sSecretCode.substring(i, i+1);
 				}
 			}
-			sStatusString = "Es sind " + digitsOK + " Zahlen an der richtigen Stelle!";
+			sStatusString = sStatusString + "Es sind " + digitsInTheRightPlace + " Zahlen an der richtigen Stelle!\n";
 
-			// digit is in the false place
+			// check if the digits are available
 			for(int i = 0; i<sHlpDisplay.length(); i++) {
 				String sCheckedDigit = sHlpDisplay.substring(i,i+ 1);
 				boolean breakFor = false;
 				for(int j=0;j<sHlpSecretCode.length();j++){
 					if (sCheckedDigit.equals(sHlpSecretCode.substring(j, j+1))) {
-						digitsOK2 = digitsOK2 + 1;
-						// remove found digit
+						digitsAvailable = digitsAvailable + 1;
+						// remove the found digit
 						sHlpSecretCode = sHlpSecretCode.replaceFirst(sCheckedDigit,"");
-						C3Logger.debug(sHlpSecretCode);
+
 						breakFor = true;
 					}
 					// stop for if digit was found
 					if(breakFor) break;
 				}
 			}
-			sStatusString = sStatusString + "\n" + digitsOK2 + " Zahlen sind korrekt aber an der falschen Stelle! \n";
+			sStatusString = sStatusString + digitsAvailable + " Zahlen sind korrekt aber an der falschen Stelle! \n";
 		}
 
-		taStoryText.setText(sStatusString);
+		taStoryText.appendText(sStatusString);
+
+		setResultDigit(digitsInTheRightPlace, digitsAvailable);
+
 		return false;
+	}
+
+	private void setResultDigit(int placeOK, int placeNotOk) {
+		String sResultCode = "";
+		String sEmptyFields = "";
+		for(int i=0;i<placeOK;i++){
+			sResultCode = sResultCode + "g";
+			addDigitToDisplay(sResultCode);
+		}
+
+		for(int j=0;j<placeNotOk;j++){
+			sResultCode = sResultCode + "o";
+			addDigitToDisplay(sResultCode);
+		}
+
+		for(int k = sResultCode.length();k<maxDigits;k++){
+			sResultCode = "r" + sResultCode;
+			addDigitToDisplay(sResultCode);
+		}
+
+		//addDigitToDisplay(sEmptyFields + sResultCode);
 	}
 
 	@Override

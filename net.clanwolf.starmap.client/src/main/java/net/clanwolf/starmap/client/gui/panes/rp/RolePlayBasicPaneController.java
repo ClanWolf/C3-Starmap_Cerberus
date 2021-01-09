@@ -162,25 +162,6 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 			default:
 				break;
 		}
-
-		/*if(Nexus.getCurrentChar().getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STORY ||
-				Nexus.getCurrentChar().getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_CHAPTER ||
-				Nexus.getCurrentChar().getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1){
-			changePaneAndController(ROLEPLAYENTRYTYPES.C3_RP_STORY,"/fxml/RolePlayIntroPane.fxml");
-
-		} else if(Nexus.getCurrentChar().getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V2){
-			changePaneAndController(Nexus.getCurrentChar().getStory().getVariante(),"/fxml/RolePlayChoicePane.fxml");
-
-		} else if(Nexus.getCurrentChar().getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V4){
-			changePaneAndController(Nexus.getCurrentChar().getStory().getVariante(),"/fxml/RolePlayDicePane.fxml");
-
-		} else if(Nexus.getCurrentChar().getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V3){
-			changePaneAndController(Nexus.getCurrentChar().getStory().getVariante(),"/fxml/RolePlayDataInputPane.fxml");
-
-		} else if(Nexus.getCurrentChar().getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V5){
-			changePaneAndController(Nexus.getCurrentChar().getStory().getVariante(), "/fxml/RolePlayChoicePaneImageLeft.fxml");
-
-		}*/
 	}
 
 	private void changePaneAndController(ROLEPLAYENTRYTYPES type, String fxmlPane){
