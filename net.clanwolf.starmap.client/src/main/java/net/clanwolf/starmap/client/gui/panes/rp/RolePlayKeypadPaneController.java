@@ -26,9 +26,14 @@
  */
 package net.clanwolf.starmap.client.gui.panes.rp;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.SequentialTransition;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -36,6 +41,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.util.Duration;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
@@ -306,24 +312,6 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 		// Play sound
 		if (playSound) C3SoundPlayer.play("sound/fx/beep_02.wav", false);
 
-		/*Task<Void> sleeper = new Task<Void>() {
-			@Override
-			protected Void call() throws Exception {
-				try {
-					Thread.sleep(5000);
-				} catch (InterruptedException e) {
-				}
-				return null;
-			}
-		};
-		sleeper.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
-			@Override
-			public void handle(WorkerStateEvent event) {
-				//label.setText("Hello World");
-			}
-		});
-		new Thread(sleeper).start();*/
-
 		if (sDisplay != null && sDisplay.length() >= 0 && sDisplay.length() < maxDigits) {
 			sDisplay = sDisplay + digit;
 		}
@@ -477,6 +465,12 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 	private void setResultDigit(int placeOK, int placeNotOk) {
 		String sResultCode = "";
 		String sEmptyFields = "";
+
+		ImageView[] digitViews = new ImageView[] { ivDigit1, ivDigit2, ivDigit3, ivDigit4, ivDigit5,ivDigit6,ivDigit7,ivDigit8 };
+		for (ImageView iv : digitViews) {
+			iv.setOpacity(0.0f);
+		}
+
 		for(int i=0;i<placeOK;i++){
 			sResultCode = sResultCode + "g";
 			addDigitToDisplay(sResultCode);
@@ -492,7 +486,21 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 			addDigitToDisplay(sResultCode);
 		}
 
-		//addDigitToDisplay(sEmptyFields + sResultCode);
+		SequentialTransition sequentialTransition = new SequentialTransition();
+		int h=1;
+		for (ImageView iv : digitViews) {
+			if(h<=sResultCode.length()) {
+				FadeTransition ft = new FadeTransition(Duration.millis(200), iv);
+				ft.setFromValue(0.0f);
+				ft.setToValue(1.0f);
+				ft.setCycleCount(1);
+				sequentialTransition.getChildren().add(ft);
+			}
+			h++;
+		}
+
+		sequentialTransition.setCycleCount(1);
+		sequentialTransition.play();
 	}
 
 	@Override
