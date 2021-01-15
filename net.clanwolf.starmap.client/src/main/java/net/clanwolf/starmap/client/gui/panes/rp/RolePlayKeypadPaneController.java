@@ -486,19 +486,20 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 			addDigitToDisplay(sResultCode);
 		}
 
+		C3SoundPlayer.play("sound/fx/PremiumBeat_0045_alarm_system_keypad.wav", false);
+
 		SequentialTransition sequentialTransition = new SequentialTransition();
-		int h=1;
+		int resultDigits = 1;
 		for (ImageView iv : digitViews) {
-			if(h<=sResultCode.length()) {
+			if(resultDigits <= sResultCode.length()) {
 				FadeTransition ft = new FadeTransition(Duration.millis(200), iv);
 				ft.setFromValue(0.0f);
 				ft.setToValue(1.0f);
 				ft.setCycleCount(1);
 				sequentialTransition.getChildren().add(ft);
 			}
-			h++;
+			resultDigits++;
 		}
-
 		sequentialTransition.setCycleCount(1);
 		sequentialTransition.play();
 	}
