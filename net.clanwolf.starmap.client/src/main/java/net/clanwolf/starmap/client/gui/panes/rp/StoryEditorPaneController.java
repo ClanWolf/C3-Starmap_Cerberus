@@ -1528,7 +1528,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 			RolePlayStoryVar4DTO rpVar4 = rp.getVar4ID();
 			if (rpVar4 == null) {
 				rpVar4 = new RolePlayStoryVar4DTO();
-				rpVar4.setStory(rp);
+				rpVar4.setStory(rp.getId());
 			}
 
 			if (tfDiceScore.getText().isEmpty()) {
@@ -1551,7 +1551,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 			RolePlayStoryVar6DTO rpVar6 = rp.getVar6ID();
 			if (rpVar6 == null) {
 				rpVar6 = new RolePlayStoryVar6DTO();
-				rpVar6.setStory(rp);
+				rpVar6.setStory(rp.getId());
 			}
 			rpVar6.setSecretCode(tfCode.getText());
 			rpVar6.setAttempts(Integer.valueOf(tfAttempt.getText()));

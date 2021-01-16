@@ -39,7 +39,7 @@ public class RolePlayStoryVar4DTO extends Dto {
 	//@Column(name = "ID")
 	private Long id;
 	//@JoinColumn(name = "StoryID")
-	private RolePlayStoryDTO story;
+	private Long story;
 	//@Column(name = "Score")
 	private Integer score;
 	//@JoinColumn(name = "StoryIDScoreLess")
@@ -66,14 +66,14 @@ public class RolePlayStoryVar4DTO extends Dto {
 	/**
 	 * @return the story
 	 */
-	public RolePlayStoryDTO getStory() {
+	public Long getStory() {
 		return story;
 	}
 
 	/**
 	 * @param story the story to set
 	 */
-	public void setStory(RolePlayStoryDTO story) {
+	public void setStory(Long story) {
 		this.story = story;
 	}
 
