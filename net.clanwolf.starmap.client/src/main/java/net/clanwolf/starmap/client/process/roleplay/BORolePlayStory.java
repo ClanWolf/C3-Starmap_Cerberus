@@ -245,6 +245,10 @@ public class BORolePlayStory {
 
 			for (RolePlayStoryDTO rp : allStories) {
 				if (rp.getParentStory() != null && rp.getVariante() != ROLEPLAYENTRYTYPES.C3_RP_CHAPTER && rp.getVariante() != ROLEPLAYENTRYTYPES.C3_RP_STORY && rp.getParentStory().getId().equals(chapter.getId())) {
+				//if (rp.getParentStory() != null && rp.getVariante() != ROLEPLAYENTRYTYPES.C3_RP_STORY && rp.getParentStory().getId().equals(chapter.getId())) {
+					stories.add(rp);
+				}
+				if(rp.getParentStory() != null && rp.getParentStory().getId().equals(chapter.getStory().getId())){
 					stories.add(rp);
 				}
 			}

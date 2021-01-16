@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.net.URL?>
-<?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
@@ -10,7 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="RolePlayStartPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.RolePlayKeypadPaneController">
+<AnchorPane id="RolePlayStartPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.RolePlayKeypadPaneController">
     <children>
       <ImageView fx:id="templateBackground" fitHeight="567.0" fitWidth="944.0" layoutX="-70.0" layoutY="-22.0" mouseTransparent="true" opacity="0.74" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -22,10 +21,7 @@
             <Font size="24.0" />
          </font>
       </Label>
-      <ImageView fx:id="rpIBackgroundImage" fitHeight="480.0" fitWidth="786.0" layoutX="58.0" layoutY="7.0" pickOnBounds="true" preserveRatio="true">
-         <viewport>
-            <Rectangle2D height="480.0" width="786.0" />
-         </viewport>
+      <ImageView fx:id="rpIBackgroundImage" fitHeight="480.0" fitWidth="786.0" layoutX="58.0" layoutY="7.0" pickOnBounds="true">
          <image>
             <Image url="@../images/door1_1.jpg" />
          </image></ImageView>
