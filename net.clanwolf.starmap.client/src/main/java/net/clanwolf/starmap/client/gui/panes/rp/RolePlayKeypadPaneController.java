@@ -87,6 +87,8 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 	private int maxDigits;
 	private int attempts;
 	private int currentAttempt;
+	private boolean noAttemptsFree;
+	private boolean needReset;
 	private String sSecretCode;
 	private boolean codeOK;
 
@@ -204,12 +206,15 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 	}
 
 	@FXML
-	private void handlebtReset(){ setDigit("-1", true);	}
+	private void handlebtReset(){
+		needReset = false;
+		setDigit("-1", true);
+	}
 
 	@FXML
 	private void handlePressEnterKey(){
 
-		if( attempts > 0 ) {
+		if( attempts > 0) {
 			if(!codeOK && currentAttempt <= attempts) {
 				codeOK = checkSecretCode();
 				currentAttempt++;
@@ -223,6 +228,7 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 			btEnterKey.setVisible(false);
 			btReset.setVisible(false);
 			btPreview.setVisible(true);
+			noAttemptsFree = true;
 		}
 	}
 
@@ -309,18 +315,20 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 	}
 
 	private void setDigit(String digit, boolean playSound) {
-		// Play sound
-		if (playSound) C3SoundPlayer.play("sound/fx/beep_02.wav", false);
+		if (!noAttemptsFree && !needReset) {
+			// Play sound
+			if (playSound) C3SoundPlayer.play("sound/fx/beep_02.wav", false);
 
-		if (sDisplay != null && sDisplay.length() >= 0 && sDisplay.length() < maxDigits) {
-			sDisplay = sDisplay + digit;
+			if (sDisplay != null && sDisplay.length() >= 0 && sDisplay.length() < maxDigits) {
+				sDisplay = sDisplay + digit;
+			}
+
+			if (digit.equals("-1")) {
+				sDisplay = "";
+			}
+
+			addDigitToDisplay(sDisplay);
 		}
-
-		if (digit.equals("-1")) {
-			sDisplay = "";
-		}
-
-		addDigitToDisplay(sDisplay);
 	}
 
 	private void addDigitToDisplay(String code){
@@ -417,7 +425,7 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 		} else {
 			// Check if the digits are in the right place
 			int hlpCurrentAttemp = currentAttempt + 1;
-			sStatusString = sStatusString + "Versuch Nummer " + hlpCurrentAttemp + ". Der eingegebene Code lautet: " + sSecretCode + "\n";
+			sStatusString = sStatusString + "Versuch Nummer " + hlpCurrentAttemp + ". Der eingegebene Code lautet: " + sDisplay + "\n";
 			String sHlpDisplay="";
 			String sHlpSecretCode="";
 			// check digits in the right place
@@ -458,34 +466,41 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 		taStoryText.appendText(sStatusString);
 
 		setResultDigit(digitsInTheRightPlace, digitsAvailable);
-
+		needReset = true;
 		return false;
 	}
 
+	/**
+	display the result of the check
+	 */
 	private void setResultDigit(int placeOK, int placeNotOk) {
 		String sResultCode = "";
-		String sEmptyFields = "";
 
+		// hide all digits
 		ImageView[] digitViews = new ImageView[] { ivDigit1, ivDigit2, ivDigit3, ivDigit4, ivDigit5,ivDigit6,ivDigit7,ivDigit8 };
 		for (ImageView iv : digitViews) {
 			iv.setOpacity(0.0f);
 		}
 
+		// build result string, digits are right
 		for(int i=0;i<placeOK;i++){
 			sResultCode = sResultCode + "g";
 			addDigitToDisplay(sResultCode);
 		}
 
+		// build result string, digits are right but on false place
 		for(int j=0;j<placeNotOk;j++){
 			sResultCode = sResultCode + "o";
 			addDigitToDisplay(sResultCode);
 		}
 
+		// build result string, digits are false
 		for(int k = sResultCode.length();k<maxDigits;k++){
 			sResultCode = "r" + sResultCode;
 			addDigitToDisplay(sResultCode);
 		}
 
+		// fade digits on display
 		C3SoundPlayer.play("sound/fx/PremiumBeat_0045_alarm_system_keypad.wav", false);
 
 		SequentialTransition sequentialTransition = new SequentialTransition();
