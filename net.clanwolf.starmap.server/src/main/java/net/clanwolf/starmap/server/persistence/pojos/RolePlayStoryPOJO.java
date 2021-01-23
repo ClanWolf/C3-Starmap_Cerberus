@@ -89,7 +89,19 @@ public class RolePlayStoryPOJO extends Pojo {
     
     @Column(name = "RolePlayOff")
     private String rolePlayOff;
-    
+
+	@Column(name = "xPosText")
+	private Integer xPosText;
+
+	@Column(name = "yPosText")
+	private Integer yPosText;
+
+	@Column(name = "heightText")
+	private Integer heightText;
+
+	@Column(name = "widthText")
+	private Integer widthText;
+
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "Var2ID")
     private RolePlayStoryVar2POJO var2ID;
@@ -448,6 +460,38 @@ public class RolePlayStoryPOJO extends Pojo {
 
 	public void setVar6ID(RolePlayStoryVar6POJO var6ID) {
 		this.var6ID = var6ID;
+	}
+
+	public Integer getxPosText() {
+		return xPosText;
+	}
+
+	public void setxPosText(Integer xPosText) {
+		this.xPosText = xPosText;
+	}
+
+	public Integer getyPosText() {
+		return yPosText;
+	}
+
+	public void setyPosText(Integer yPosText) {
+		this.yPosText = yPosText;
+	}
+
+	public Integer getHeightText() {
+		return heightText;
+	}
+
+	public void setHeightText(Integer heightText) {
+		this.heightText = heightText;
+	}
+
+	public Integer getWidthText() {
+		return widthText;
+	}
+
+	public void setWidthText(Integer widthText) {
+		this.widthText = widthText;
 	}
 
 	@Override

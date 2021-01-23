@@ -101,7 +101,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	@FXML
 	Label labDiceLabel, labDiceScore, labDiceScoreLess, labDiceScoreEqual, labDiceScoreMore, labAssignedChar, labAllCharacters, labCode,labAttempt,labAttemptSuccsess,labAttemptFailure;
 	@FXML
-	TextField tfStoryName, tfImage, tfVoice, tfMovie, tfURL, tfCode, tfAttempt;
+	TextField tfStoryName, tfImage, tfVoice, tfMovie, tfURL, tfCode, tfAttempt, tfXPosText, tfYPosText, tfHeightText, tfWidthText;
 	@FXML
 	ComboBox<ROLEPLAYENTRYTYPES> cbStoryVarianten;
 	@FXML
@@ -1182,6 +1182,11 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 
 			btDeleteStoryOptionNextStep.setDisable(false);
 
+			tfXPosText.setDisable(false);
+			tfYPosText.setDisable(false);
+			tfWidthText.setDisable(false);
+			tfHeightText.setDisable(false);
+
 		} else {
 			tfStoryName.setDisable(true);
 			cbStoryVarianten.setDisable(true);
@@ -1236,6 +1241,11 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 
 			btDeleteStoryOptionNextStep.setDisable(true);
 
+			tfXPosText.setDisable(true);
+			tfYPosText.setDisable(true);
+			tfWidthText.setDisable(true);
+			tfHeightText.setDisable(true);
+
 		}
 
 		// Always disabled. The only way to change the fields is to use the buttons btImage, btVoice, btMovie
@@ -1282,10 +1292,42 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 			doDeleteMovie = false;
 
 			// set data for story variante 1
-			if (selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1 && selected.getValue().getNextStepID() != null) {
-				cbNextStep_V1.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getNextStepID()));
+			if (selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1 ) {
+				if(selected.getValue().getNextStepID() != null){
+					cbNextStep_V1.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getNextStepID()));
+				}
+
+				if(selected.getValue().getxPosText() != null){
+					tfXPosText.setText(selected.getValue().getxPosText().toString());
+				} else {
+					tfXPosText.clear();
+				}
+
+				if(selected.getValue().getyPosText() != null){
+					tfYPosText.setText(selected.getValue().getyPosText().toString());
+				} else {
+					tfYPosText.clear();
+				}
+
+				if(selected.getValue().getHeightText() != null){
+					tfHeightText.setText(selected.getValue().getHeightText().toString());
+				} else {
+					tfHeightText.clear();
+				}
+
+				if(selected.getValue().getWidthText() != null){
+					tfWidthText.setText(selected.getValue().getWidthText().toString());
+				} else {
+					tfWidthText.clear();
+				}
+
 			} else {
 				cbNextStep_V1.setValue(null);
+
+				tfXPosText.clear();
+				tfYPosText.clear();
+				tfHeightText.clear();
+				tfWidthText.clear();
 			}
 
 			// set data for story variante 2 / variante 5
@@ -1444,6 +1486,30 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 		if (rp.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1) {
 			if (cbNextStep_V1.getValue() != null) {
 				rp.setNextStepID(cbNextStep_V1.getValue().getId());
+			}
+
+			if(tfXPosText.getText() != null && !tfXPosText.getText().equals("")){
+				rp.setxPosText(Integer.valueOf(tfXPosText.getText()));
+			} else {
+				rp.setxPosText(null);
+			}
+
+			if(tfYPosText.getText() != null && !tfYPosText.getText().equals("")){
+				rp.setyPosText(Integer.valueOf(tfYPosText.getText()));
+			} else {
+				rp.setyPosText(null);
+			}
+
+			if(tfHeightText.getText() != null && !tfHeightText.getText().equals("")){
+				rp.setHeightText(Integer.valueOf(tfHeightText.getText()));
+			} else {
+				rp.setHeightText(null);
+			}
+
+			if(tfWidthText.getText() != null && !tfWidthText.getText().equals("")){
+				rp.setWidthText(Integer.valueOf(tfWidthText.getText()));
+			} else {
+				rp.setWidthText(null);
 			}
 		}
 
@@ -1689,6 +1755,11 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 		cbNextStep_AttemptFailure.setValue(null);
 		tfCode.clear();
 		tfAttempt.clear();
+
+		tfXPosText.clear();
+		tfYPosText.clear();
+		tfHeightText.clear();
+		tfWidthText.clear();
 
 		cbDatafield1.setValue(null);
 		cbDatafield2.setValue(null);

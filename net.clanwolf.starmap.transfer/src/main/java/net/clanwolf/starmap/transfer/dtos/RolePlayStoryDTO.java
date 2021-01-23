@@ -65,6 +65,14 @@ public class RolePlayStoryDTO extends Dto {
     private String storyDescription;
 	//@Column(name = "RolePlayOff")
     private String rolePlayOff;
+	//@Column(name = "xPosText")
+	private Integer xPosText;
+	//@Column(name = "yPosText")
+	private Integer yPosText;
+	//@Column(name = "heightText")
+	private Integer heightText;
+	//@Column(name = "widthText")
+	private Integer widthText;
 	//@JoinColumn(name = "Var2ID")
     private RolePlayStoryVar2DTO var2ID;
 	//@JoinColumn(name = "Var3ID")
@@ -406,6 +414,38 @@ public class RolePlayStoryDTO extends Dto {
 
 	public void setVar6ID(RolePlayStoryVar6DTO var6ID) {
 		this.var6ID = var6ID;
+	}
+
+	public Integer getxPosText() {
+		return xPosText;
+	}
+
+	public void setxPosText(Integer xPosText) {
+		this.xPosText = xPosText;
+	}
+
+	public Integer getyPosText() {
+		return yPosText;
+	}
+
+	public void setyPosText(Integer yPosText) {
+		this.yPosText = yPosText;
+	}
+
+	public Integer getHeightText() {
+		return heightText;
+	}
+
+	public void setHeightText(Integer heightText) {
+		this.heightText = heightText;
+	}
+
+	public Integer getWidthText() {
+		return widthText;
+	}
+
+	public void setWidthText(Integer widthText) {
+		this.widthText = widthText;
 	}
 
 	@Override

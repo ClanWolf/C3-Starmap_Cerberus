@@ -193,6 +193,25 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 	@Override
 	public void getStoryValues(RolePlayCharacterDTO rpChar){
 
+		double xOffset = 62;
+		double yOffset = 14;
+
+		if(rpChar.getStory().getxPosText() != null &&
+				rpChar.getStory().getyPosText() != null &&
+				rpChar.getStory().getWidthText() != null &&
+				rpChar.getStory().getHeightText() != null){
+
+			taStoryText.setLayoutX(rpChar.getStory().getxPosText().doubleValue() + xOffset);
+			taStoryText.setLayoutY(rpChar.getStory().getyPosText().doubleValue() + yOffset);
+			taStoryText.setPrefSize(rpChar.getStory().getWidthText().doubleValue(),rpChar.getStory().getHeightText().doubleValue());
+
+		} else {
+
+			taStoryText.setLayoutX(xOffset);
+			taStoryText.setLayoutY(yOffset);
+			taStoryText.setPrefSize(778,438);
+		}
+
 		if(rpChar.getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1){
 			taStoryText.setVisible(true);
 			labHeader.setVisible(false);
