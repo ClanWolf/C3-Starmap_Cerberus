@@ -55,6 +55,7 @@ public class Nexus {
 
 	private static AbstractC3Pane currentlyOpenedPane = null;
 	private static boolean isDevelopmentPC = false;
+	private static boolean clearCacheOnStart = false;
 
 	/**
 	 * Private constructor to prevent instantiation
@@ -200,5 +201,11 @@ public class Nexus {
 
 	public static void setIsDevelopmentPC(boolean devPC){
 		isDevelopmentPC = devPC;
+	}
+	public static void setClearCacheOnStart(boolean v) {
+		clearCacheOnStart = v;
+	}
+	public static boolean isClearCacheOnStart() {
+		return clearCacheOnStart;
 	}
 }

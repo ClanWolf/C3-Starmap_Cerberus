@@ -101,6 +101,16 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 	 */
 	public static double mouseY = 0;
 
+	public void clearCache() {
+		C3Logger.info("Clearing cache!");
+		String cacheFolderName = System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "cache";
+		Tools.purgeDirectory(new File(cacheFolderName));
+		C3Logger.info("The following files were left over (could not be deleted):");
+		C3Logger.info("---[start]");
+		Tools.listDirectory(new File(cacheFolderName));
+		C3Logger.info("---[end]");
+	}
+
 	/**
 	 * The start method for the application.
 	 *
@@ -252,6 +262,10 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 			C3Logger.info("Preparing user properties...");
 			prepareUserProperties();
 
+			if (Nexus.isClearCacheOnStart()) {
+				clearCache();
+			};
+
 			notifyPreloader(new Preloader.ProgressNotification(100.0));
 		} else {
 			C3Logger.info("Could not create: " + dir.getAbsolutePath());
@@ -279,10 +293,30 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 		System.setProperty("javafx.preloader", C3_Preloader.class.getCanonicalName());
 
 		boolean isDevelopmentPC = false;
-		if(args.length > 0 && args[0].equals("IDE")){
-			isDevelopmentPC = true;
+		boolean clearCache = false;
+		if(args.length > 0) {
+			for (String arg : args) {
+				arg = arg.replaceAll("-", "");
+				arg = arg.replaceAll("/", "");
+
+				System.out.println("Detected commandline arg: " + arg);
+
+				if (arg.toUpperCase().equals("IDE")) {
+					isDevelopmentPC = true;
+				}
+				if (arg.toUpperCase().equals("CLEARCACHE")) {
+					clearCache = true;
+				}
+				if (arg.toUpperCase().equals("HELP")) {
+					System.out.println("Command line help:");
+					System.out.println("- /IDE        : Running in the development environment.");
+					System.out.println("- /CLEARCACHE : Clear all cached files on startup.");
+					System.out.println("- /HELP       : This help list.");
+				}
+			}
 		}
 		Nexus.setIsDevelopmentPC(isDevelopmentPC);
+		Nexus.setClearCacheOnStart(clearCache);
 
 		launch(MainFrame.class, args);
 	}

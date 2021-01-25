@@ -35,6 +35,7 @@ import net.clanwolf.starmap.client.net.IFileTransfer;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -185,5 +186,22 @@ public final class Tools {
 
 	public static IFileTransfer getFileTransfer() {
 		return new FTP();
+	}
+
+	public static void purgeDirectory(File dir) {
+		for (File file: dir.listFiles()) {
+			if (file.isDirectory()) {
+				purgeDirectory(file);
+			}
+			file.delete();
+		}
+	}
+	public static void listDirectory(File dir) {
+		for (File file: dir.listFiles()) {
+			if (file.isDirectory()) {
+				listDirectory(file);
+			}
+			C3Logger.info(file.getAbsolutePath());
+		}
 	}
 }
