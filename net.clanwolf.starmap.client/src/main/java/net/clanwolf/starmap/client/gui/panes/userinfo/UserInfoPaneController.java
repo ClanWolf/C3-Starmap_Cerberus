@@ -172,7 +172,7 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 				Platform.runLater(() -> {
 					ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute();
 
-					FadeTransition FadeInTransition = new FadeTransition(Duration.millis(300), buttonLogout);
+					FadeTransition FadeInTransition = new FadeTransition(Duration.millis(200), buttonLogout);
 					FadeInTransition.setFromValue(0.0);
 					FadeInTransition.setToValue(1.0);
 					FadeInTransition.setCycleCount(3);
