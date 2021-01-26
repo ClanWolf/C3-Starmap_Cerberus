@@ -51,6 +51,8 @@ import java.util.ResourceBundle;
  */
 public class MapPaneController extends AbstractC3Controller implements ActionCallBackListener {
 
+	private BOUniverse boUniverse = null;
+
 	@FXML
 	AnchorPane anchorPane;
 
@@ -66,6 +68,10 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		super.initialize(url, rb);
 	}
 
+	private void initializeMap() {
+		//boUniverse;
+	}
+
 	/**
 	 * Handle Actions
 	 *
@@ -78,30 +84,29 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	@Override
 	public boolean handleAction(ACTIONS action, ActionObject o) {
 		switch (action) {
+			case NEW_UNIVERSE_RECEIVED:
+				// A new universeDTO has been broadcasted by the server
+				UniverseDTO universeDTO = Nexus.getUniverseDTO();
+				boUniverse = new BOUniverse(universeDTO);
+				Nexus.setBOUniverse(boUniverse);
 
-		case NEW_UNIVERSE_RECEIVED:
-			// A new universeDTO has been broadcasted by the server
-//			UniverseDTO universeDTO = Nexus.getUniverseDTO();
-//			BOUniverse boUniverse = new BOUniverse(universeDTO);
-//			Nexus.setBOUniverse(boUniverse);
+				initializeMap();
 
-			// TODO: Close "creating" message
-			break;
+				break;
 
-		case CHANGE_LANGUAGE:
-			setStrings();
-			break;
+			case CHANGE_LANGUAGE:
+				setStrings();
+				break;
 
-		case PANE_CREATION_FINISHED:
-			// TODO: Show "creating" message
-//			GameState state = new GameState();
-//			state.setMode(GAMESTATEMODES.GET_UNIVERSE_DATA);
-//			state.addObject(UNIVERSECONTEXT.HH);
-//			Nexus.fireNetworkEvent(state);
-			break;
+			case PANE_CREATION_FINISHED:
+				GameState state = new GameState();
+				state.setMode(GAMESTATEMODES.GET_UNIVERSE_DATA);
+				state.addObject(UNIVERSECONTEXT.HH);
+				Nexus.fireNetworkEvent(state);
+				break;
 
-		default:
-			break;
+			default:
+				break;
 		}
 		return true;
 	}
