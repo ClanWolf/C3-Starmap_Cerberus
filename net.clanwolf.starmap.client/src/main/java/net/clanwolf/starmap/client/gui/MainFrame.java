@@ -50,6 +50,7 @@ import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
+import net.clanwolf.starmap.client.net.Server;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.logout.Logout;
@@ -235,7 +236,7 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 		C3Logger.info("Mail dispatch disabled in source code.");
 //		String[] receivers = {"warwolfen@gmail.com", "werner.kewenig@arcor.de"};
 //		boolean sent = false;
-//		sent = MailManager.sendMail("starmap@clanwolf.net", receivers, "C3 Client Phoenix", "C3 Client 'Phoenix' was successfully started.", false, false);
+//		sent = MailManager.sendMail("starmap@clanwolf.net", receivers, "C3 Client (" + Tools.getVersionNumber() + ")", "C3 Client (" + Tools.getVersionNumber() + ") was successfully started.", false, false);
 //		if (sent) {
 //			// sent
 //			C3Logger.info("Mail sent.");
@@ -280,6 +281,26 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 			}
 
 			notifyPreloader(new Preloader.ProgressNotification(100.0));
+
+			try {
+				String availableClientVersion = Server.checkLastAvailableClientVersion();
+				C3Logger.info("Latest available client version online: " + availableClientVersion);
+
+				if ("${project.version}".equals(Tools.getVersionNumber())) {
+					C3Logger.info("Currently used client version: *** Running in local debugger! *** (no version check online).");
+				} else {
+					C3Logger.info("Currently used client version: " + Tools.getVersionNumber());
+
+					if (availableClientVersion.equals(Tools.getVersionNumber())) {
+						C3Logger.info("Currently used client version is the latest.");
+					} else {
+						C3Logger.info("Difference detected: Prompt to download new version.");
+						// TODO: Generate prompt to download latest version
+					}
+				}
+			} catch(IOException ioe) {
+				C3Logger.warning("Could not check latest available client version online!");
+			}
 		} else {
 			C3Logger.info("Could not create: " + dir.getAbsolutePath());
 		}
@@ -312,6 +333,7 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 				arg = arg.replaceAll("-", "");
 				arg = arg.replaceAll("/", "");
 
+				System.out.println("Starting C3 Client: " + arg);
 				System.out.println("Detected commandline arg: " + arg);
 
 				if (arg.toUpperCase().equals("IDE")) {

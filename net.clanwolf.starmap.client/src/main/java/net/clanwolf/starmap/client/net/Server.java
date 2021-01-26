@@ -31,6 +31,7 @@ import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionManager;
+import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.client.util.C3PROPS;
 import net.clanwolf.starmap.client.util.C3Properties;
@@ -56,6 +57,27 @@ public class Server {
 	 */
 	public Server() {
 		// Constructor
+	}
+
+	public static String checkLastAvailableClientVersion() throws IOException {
+		serverURL = C3Properties.getProperty(C3PROPS.SERVER_URL);
+		// Add a trailing slash if not present
+		if (!serverURL.endsWith("/")) {
+			serverURL = serverURL + "/";
+		}
+		String value = "not found";
+		try {
+			URL url = new URL(serverURL + "server" + "/" + "C3_LatestClientVersion.php");
+			value = new String(HTTP.get(url));
+//			C3Logger.debug("Connection URL: " + url);
+//			C3Logger.debug("Connection Result: " + value);
+		} catch (MalformedURLException e) {
+			C3Logger.exception(null, e);
+		}
+		C3Logger.info("Client version check done.");
+//		C3Logger.info("Client version available: " + value);
+		Nexus.setLastAvailableClientVersion(value);
+		return value;
 	}
 
 	/**

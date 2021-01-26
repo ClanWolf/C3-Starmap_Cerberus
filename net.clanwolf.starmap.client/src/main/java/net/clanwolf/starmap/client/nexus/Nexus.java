@@ -53,6 +53,8 @@ public class Nexus {
 	private static BOUniverse boUniverse;
 	private static boolean loggedIn = false;
 
+	private static String lastAvailableClientVersion = "not checked yet";
+
 	private static AbstractC3Pane currentlyOpenedPane = null;
 	private static boolean isDevelopmentPC = false;
 	private static boolean clearCacheOnStart = false;
@@ -207,5 +209,11 @@ public class Nexus {
 	}
 	public static boolean isClearCacheOnStart() {
 		return clearCacheOnStart;
+	}
+	public static void setLastAvailableClientVersion(String v) {
+		lastAvailableClientVersion = v;
+	}
+	public static String getLastAvailableClientVersion() {
+		return lastAvailableClientVersion;
 	}
 }
