@@ -26,6 +26,8 @@
  */
 package net.clanwolf.starmap.client.net;
 
+import javafx.scene.image.Image;
+import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.client.util.C3PROPS;
 import net.clanwolf.starmap.client.util.C3Properties;
@@ -190,6 +192,9 @@ public abstract class HTTP {
 			int numRead;
 			// long numWritten = 0;
 
+			File f = new File(localFileName);
+			f.getParentFile().mkdirs();
+
 			out = new BufferedOutputStream(new FileOutputStream(localFileName));
 			while ((numRead = in.read(buffer)) != -1) {
 				out.write(buffer, 0, numRead);
@@ -229,4 +234,42 @@ public abstract class HTTP {
 			System.err.println("Could not figure out local file name for " + address);
 		}
 	}
+
+	public static Image getCachedImage(String s) throws Exception {
+		C3Logger.info("Looking for image for string: " + s);
+
+		String cacheFolderName = System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "cache" + File.separator + "image";
+		File cacheFolder = new File(cacheFolderName);
+		if (!cacheFolder.isDirectory()) {
+			boolean success = cacheFolder.mkdirs();
+			C3Logger.info("Creating cache folder for image files: " + success);
+		}
+
+		String imageFileName = cacheFolderName + File.separator + s;
+		File f1 = new File(imageFileName);
+
+		if (!f1.isFile()) {
+			String serverUrl = C3Properties.getProperty(C3PROPS.SERVER_URL);
+			if (!s.startsWith("/")) {
+				s = "/" + s;
+			}
+			HTTP.download(serverUrl + s, imageFileName);
+		}
+
+		String url = f1.getAbsolutePath();
+		File f = new File(f1.toURI());
+
+		Image i = new Image(String.valueOf(f1.toURI()));
+		return i;
+	}
+
+//	public static void main(String[] args) {
+//		try {
+//			//download("https://www.clanwolf.net/images/wolf/clanwolf_logo.png", "c:\\temp\\test.png");
+//			Image i = getCachedImage("rpg/resources/1/CWG_Rekrutierung_Titel_01.png");
+//			System.out.println(i.toString());
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 }
