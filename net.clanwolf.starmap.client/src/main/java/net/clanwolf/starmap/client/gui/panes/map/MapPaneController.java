@@ -45,6 +45,8 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
+ * FXML Controller class
+ *
  * @author Meldric
  */
 public class MapPaneController extends AbstractC3Controller implements ActionCallBackListener {
@@ -79,9 +81,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 		case NEW_UNIVERSE_RECEIVED:
 			// A new universeDTO has been broadcasted by the server
-			UniverseDTO universeDTO = Nexus.getUniverseDTO();
-			BOUniverse boUniverse = new BOUniverse(universeDTO);
-			Nexus.setBOUniverse(boUniverse);
+//			UniverseDTO universeDTO = Nexus.getUniverseDTO();
+//			BOUniverse boUniverse = new BOUniverse(universeDTO);
+//			Nexus.setBOUniverse(boUniverse);
 
 			// TODO: Close "creating" message
 			break;
@@ -92,10 +94,10 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 		case PANE_CREATION_FINISHED:
 			// TODO: Show "creating" message
-			GameState state = new GameState();
-			state.setMode(GAMESTATEMODES.GET_UNIVERSE_DATA);
-			state.addObject(UNIVERSECONTEXT.HH);
-			Nexus.fireNetworkEvent(state);
+//			GameState state = new GameState();
+//			state.setMode(GAMESTATEMODES.GET_UNIVERSE_DATA);
+//			state.addObject(UNIVERSECONTEXT.HH);
+//			Nexus.fireNetworkEvent(state);
 			break;
 
 		default:
@@ -106,9 +108,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 	@Override
 	public void setStrings() {
-		Platform.runLater(() -> {
-			//
-		});
+//		Platform.runLater(() -> {
+//			//
+//		});
 	}
 
 	@Override
