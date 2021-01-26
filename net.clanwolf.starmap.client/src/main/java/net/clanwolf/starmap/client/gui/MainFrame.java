@@ -106,9 +106,20 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 		String cacheFolderName = System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "cache";
 		Tools.purgeDirectory(new File(cacheFolderName));
 		C3Logger.info("The following files were left over (could not be deleted):");
-		C3Logger.info("---[start]");
+		C3Logger.info("--- [start]");
 		Tools.listDirectory(new File(cacheFolderName));
-		C3Logger.info("---[end]");
+		C3Logger.info("--- [end]");
+	}
+
+	public void cleanCache() {
+		long numberOfDays = 90;
+		C3Logger.info("Cleaning cache (cleaning files older than " + numberOfDays + " days)!");
+		String cacheFolderName = System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "cache";
+		Tools.cleanDirectory(new File(cacheFolderName), numberOfDays);
+		C3Logger.info("The following files were left over (could not be deleted or were younger than " + numberOfDays + " days):");
+		C3Logger.info("--- [start]");
+		Tools.listDirectory(new File(cacheFolderName));
+		C3Logger.info("--- [end]");
 	}
 
 	/**
@@ -264,7 +275,9 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 
 			if (Nexus.isClearCacheOnStart()) {
 				clearCache();
-			};
+			} else {
+				cleanCache();
+			}
 
 			notifyPreloader(new Preloader.ProgressNotification(100.0));
 		} else {

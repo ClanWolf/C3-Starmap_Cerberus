@@ -44,6 +44,7 @@ import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
@@ -188,6 +189,26 @@ public final class Tools {
 		return new FTP();
 	}
 
+	public static void cleanDirectory(File dir, long numberOfDays) {
+		for (File file: dir.listFiles()) {
+			if (file.isDirectory()) {
+				cleanDirectory(file, numberOfDays);
+			}
+
+			long diff = new Date().getTime() - file.lastModified();
+
+//			System.out.println("Age: " + new Date().getTime());
+//			System.out.println("Last modified: " + file.lastModified());
+//			System.out.println(numberOfDays + " days in milliseconds: " + numberOfDays * 24 * 60 *60 * 1000);
+//			System.out.println("diff: " + diff);
+
+			if (numberOfDays * 24 * 60 * 60 * 1000 < diff) {
+				file.delete();
+			} else {
+				// file will be left
+			}
+		}
+	}
 	public static void purgeDirectory(File dir) {
 		for (File file: dir.listFiles()) {
 			if (file.isDirectory()) {

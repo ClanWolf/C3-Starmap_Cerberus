@@ -65,6 +65,8 @@ public class C3SoundPlayer {
 	private static HashMap<String, AudioClip> audioClipCache = new HashMap<>();
 	private static HashMap<String, Media> speechClipCache = new HashMap<>();
 
+	private static final String voiceRSSUrl = "https://api.voicerss.org/";
+
 	/**
 	 * Constructor
 	 */
@@ -139,6 +141,8 @@ public class C3SoundPlayer {
 	 */
 	public static void getTTSFile(String s) {
 		if ("true".equals(C3Properties.getProperty(C3PROPS.PLAY_VOICE))) {
+			C3Logger.info("Looking for voice sample file for string: " + s);
+
 			String lang = Internationalization.getLanguage();
 			String cacheFolderName = System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "cache" + File.separator + "voice" + File.separator + lang;
 			File cacheFolder = new File(cacheFolderName);
@@ -155,20 +159,23 @@ public class C3SoundPlayer {
 				C3Logger.info("TTS sound file was found in cache: " + f1.getAbsolutePath() + ".");
 				play(f1, true);
 			} else {
-				C3Logger.info("Looking for TTS sound file in packaged resources... ");
-				URL u = null;
+				//getSpeechFromMary(fn); // the old way with MaryTTS
+				boolean gotSpeechFile = getSpeechFromVoiceRSS(fn); // the new way with VoiceRSS
 
-				String voicePath = "/sound/voice/" + lang + "/" + fn + ".wav";
-				//TODO: Enable this to use the voice files from the resources of the project rather than online or cached files
-//				u = ((C3SoundPlayer)getInstance()).getClass().getResource(voicePath);
-
-				if (u != null) {
-					play(voicePath, true);
-					C3Logger.info("TTS sound file was found in resources.");
+				if (!gotSpeechFile) {
+					C3Logger.info("TTS sound file missing, VoiceTTS failed.");
+					C3Logger.info("Looking for TTS sound file in packaged resources... ");
+					URL u = null;
+					String voicePath = "/sound/voice/" + lang + "/" + fn + ".wav";
+					u = ((C3SoundPlayer)getInstance()).getClass().getResource(voicePath);
+					if (u != null) {
+						play(voicePath, true);
+						C3Logger.info("TTS sound file was found in resources.");
+					} else {
+						C3Logger.info("TTS sound file was NOT found in resources.");
+					}
 				} else {
-					getSpeechFromVoiceRSS(fn);
-					//getSpeechFromMary(fn);
-					C3Logger.info("TTS sound file missing: " + f1.getAbsolutePath() + ".");
+					C3Logger.info("Got file from VoiceTTS.");
 				}
 			}
 			play("/sound/fx/beep_02.wav", false);
@@ -325,7 +332,7 @@ public class C3SoundPlayer {
 	 * Retrieves a speech file from a string from online mary tts service
 	 * @param s The sentence to be spoken by mary online service
 	 */
-	public static void getSpeechFromVoiceRSS(String s) {
+	public static boolean getSpeechFromVoiceRSS(String s) {
 		if ("true".equals(C3Properties.getProperty(C3PROPS.PLAY_VOICE))) {
 
 			// API-Doc: http://www.voicerss.org/api/
@@ -336,7 +343,9 @@ public class C3SoundPlayer {
 
 			if ("".equals(apikey)) {
 				C3Logger.warning("Error getting voice file from VoiceRSS! VoiceRSS API-Key is missing! Check property file and make sure a key is specified!");
-				return;
+				return false;
+			} else {
+				apikey = "?key=" + apikey;
 			}
 
 			String lang = Internationalization.getLanguage();
@@ -358,23 +367,31 @@ public class C3SoundPlayer {
 				s = s.replace(" ", "%20");
 				s = s.replace("_", "%20");
 
-				String la = "";
+				String language = "";
 				String voice = "";
 				String quality = "&f=44khz_16bit_stereo";
 
 				if ("de".equals(lang)) {
-					la = "de-de";
+					language = "&hl=de-de";
 					voice = "&v=Hanna"; // Hanna, Lina, Jonas
 				} else if ("en".equals(lang)) {
-					la = "en-gb";
+					language = "&hl=en-gb";
 					voice = "&v=Alice"; // Alice,	Nancy, Lily, Harry
 				}
 
-				String u = "https://api.voicerss.org/?key=" + apikey + quality + voice + "&hl=" + la + "&src=" + s;
+				C3Logger.info("VoiceRSS API call: " + voiceRSSUrl + " *** API-Key *** " + quality + voice + language + "&src=" + s);
+				String u = voiceRSSUrl + apikey + quality + voice + language + "&src=" + s;
 
 				try {
 					HTTP.download(u, f);
-					play(new File(f), true);
+					File t = new File(f);
+					if (t.isFile() && t.canRead()) {
+						play(new File(f), true);
+						play("sound/fx/beep_02.wav", false);
+						return true;
+					}
+					play("sound/fx/beep_03.wav", false);
+					return false;
 				} catch (Exception e) {
 					// Speech could not be retrieved
 					C3Logger.info("Error getting speech data: " + e.toString());
@@ -382,9 +399,11 @@ public class C3SoundPlayer {
 			} else {
 				C3Logger.info("TTS sound file was found in cache: " + f1.getAbsolutePath() + ".");
 				play(f1, true);
+				play("sound/fx/beep_02.wav", false);
 			}
-			play("sound/fx/beep_02.wav", false);
+			return false;
 		}
+		return false;
 	}
 
 	/**
