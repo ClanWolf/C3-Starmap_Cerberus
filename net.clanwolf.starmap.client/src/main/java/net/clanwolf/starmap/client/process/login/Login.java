@@ -40,11 +40,9 @@ import io.nadron.client.util.LoginHelper.LoginBuilder;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionManager;
+import net.clanwolf.starmap.client.util.*;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.client.process.network.EventCommunications;
-import net.clanwolf.starmap.client.util.C3PROPS;
-import net.clanwolf.starmap.client.util.C3Properties;
-import net.clanwolf.starmap.client.util.JCrypt;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 
@@ -95,6 +93,9 @@ public class Login {
 		C3Logger.info("Login");
 		String used_username;
 		String used_password;
+
+		// TODO: Use website password as secondary password with synchronized users
+		String passwordWS2 = Encryptor.hash(Encryptor.hash(password));
 
 		if ("true".equals(C3Properties.getProperty(C3PROPS.USE_GUEST_ACCOUNT))) {
 			used_username = guest_user;

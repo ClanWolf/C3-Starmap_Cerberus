@@ -26,7 +26,10 @@
  */
 package net.clanwolf.starmap.client.util;
 
+import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
 import javax.crypto.Cipher;
@@ -65,6 +68,25 @@ public class Encryptor {
 			ex.printStackTrace();
 		}
 		return null;
+	}
+
+	public static String hash(String s) {
+		StringBuffer myHash = new StringBuffer();
+		try {
+			MessageDigest md = MessageDigest.getInstance("MD5");
+			md.update(s.getBytes());
+			byte[] digest = md.digest();
+			for (int i = 0; i < digest.length; i++) {
+				if ((0xff & digest[i]) < 0x10) {
+					myHash.append("0" + Integer.toHexString((0xFF & digest[i])));
+				} else {
+					myHash.append(Integer.toHexString(0xFF & digest[i]));
+				}
+			}
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		return myHash.toString();
 	}
 
 	public static void main(String[] args) throws Exception {
