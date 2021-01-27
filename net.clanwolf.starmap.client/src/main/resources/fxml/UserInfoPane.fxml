@@ -15,7 +15,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="UserInfoPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.userinfo.UserInfoPaneController">
+<AnchorPane id="UserInfoPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.userinfo.UserInfoPaneController">
   <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2c506d" height="104.0" layoutX="76.0" layoutY="31.0" opacity="0.75" stroke="#779fc3" strokeType="INSIDE" strokeWidth="2.0" width="533.0" />
     <Label fx:id="panelHeadline" alignment="BASELINE_RIGHT" contentDisplay="CENTER" layoutX="14.0" layoutY="375.0" opacity="0.12" prefWidth="794.0" text="USERINFO">
@@ -23,7 +23,7 @@
         <Font name="Arial Bold" size="80.0" />
       </font>
       <textFill>
-        <Color blue="0.804" green="0.620" red="0.412" fx:id="x1" />
+        <Color red="0.412" green="0.620" blue="0.804" fx:id="x1" />
       </textFill>
     </Label>
       <GridPane layoutX="89.0" layoutY="45.0">
@@ -85,7 +85,10 @@
             <Image url="@../images/chars/male/1022.png" />
          </image>
          <effect>
-            <DropShadow blurType="TWO_PASS_BOX" color="#8dc6d3" height="60.0" radius="29.5" spread="0.51" width="60.0" />
+            <DropShadow blurType="TWO_PASS_BOX" height="35.0" radius="17.0" spread="0.51" width="35.0">
+               <color>
+                  <Color red="0.5529412031173706" green="0.7764706015586853" blue="0.8274509906768799" />
+               </color></DropShadow>
          </effect>
       </ImageView>
       <ImageView fx:id="ivFactionLogo" fitHeight="222.0" fitWidth="194.0" layoutX="626.0" layoutY="43.0" pickOnBounds="true" preserveRatio="true">
@@ -238,6 +241,9 @@
          <stylesheets>
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
       </Label>
   </children>
   <stylesheets>

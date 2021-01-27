@@ -26,7 +26,6 @@
  */
 package net.clanwolf.starmap.client.gui.panes.map;
 
-import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.layout.AnchorPane;
 import net.clanwolf.starmap.client.nexus.Nexus;
@@ -36,6 +35,7 @@ import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
+import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
@@ -45,7 +45,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * FXML Controller class
+ * The controller for the starmap panel.
  *
  * @author Meldric
  */
@@ -56,6 +56,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	@FXML
 	AnchorPane anchorPane;
 
+	/**
+	 * Adds action callback listeners.
+	 */
 	@Override
 	public void addActionCallBackListeners() {
 		ActionManager.addActionCallbackListener(ACTIONS.CHANGE_LANGUAGE, this);
@@ -63,23 +66,41 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		ActionManager.addActionCallbackListener(ACTIONS.NEW_UNIVERSE_RECEIVED, this);
 	}
 
+	/**
+	 * Initializes the pane controller.
+	 *
+	 * @param url
+	 *          the url.
+	 * @param rb
+	 *          the resource bundle containing the language strings.
+	 */
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		super.initialize(url, rb);
 	}
 
+	/**
+	 * Initializes the universe star map from the universe business object.
+	 */
 	private void initializeMap() {
-		//boUniverse;
+		if (boUniverse != null) {
+			C3Logger.info("Beginning to build the star map from received universe data.");
+
+			// TODO: Build the starmap
+
+			C3Logger.info("Finished to build the star map.");
+		}
 	}
 
 	/**
-	 * Handle Actions
+	 * Handles actions.
 	 *
 	 * @param action
-	 *            Action
+	 *            incoming action to be handled
 	 * @param o
-	 *            Action object
-	 * @return true
+	 *            the action object passed along with the action
+	 * @return
+	 *            wether the handling should continue (this should be true in general)
 	 */
 	@Override
 	public boolean handleAction(ACTIONS action, ActionObject o) {
@@ -111,6 +132,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		return true;
 	}
 
+	/**
+	 * Sets strings for the current gui panel. This is done when the user switches languages.
+	 */
 	@Override
 	public void setStrings() {
 //		Platform.runLater(() -> {
@@ -118,11 +142,19 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 //		});
 	}
 
+	/**
+	 * If a warning is active, this is what happens if the warning is on.
+	 */
 	@Override
 	public void warningOnAction() {
+		//
 	}
 
+	/**
+	 * If a warning is active, this is what happens if the warning is off.
+	 */
 	@Override
 	public void warningOffAction() {
+		//
 	}
 }

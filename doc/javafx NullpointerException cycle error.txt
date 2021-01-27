@@ -1,0 +1,8 @@
+If the application becomes unresponsive and throwing nullpointer exceptions from a renderer instance, it needs more
+memory allocated.
+
+To do that workaround, add a JVM parameter:
+-Dprism.maxvram=4G (or higher)
+
+This is to work around a javafx bug that might become solved eventually.
+So, maybe this can be removed some day.
