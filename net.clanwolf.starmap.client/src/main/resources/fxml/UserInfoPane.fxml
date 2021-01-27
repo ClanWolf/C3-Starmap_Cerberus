@@ -96,7 +96,7 @@
             <Image url="@../images/logos/factions/CW.png" />
          </image>
       </ImageView>
-      <GridPane layoutX="634.0" layoutY="346.0" prefHeight="68.0" prefWidth="168.0">
+      <GridPane layoutX="634.0" layoutY="326.0" prefHeight="68.0" prefWidth="168.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="95.5" minWidth="10.0" prefWidth="86.5" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="86.5" minWidth="10.0" prefWidth="81.5" />
@@ -237,7 +237,7 @@
          </children>
       </GridPane>
       <ComboBox fx:id="cbCharChooser" layoutX="203.0" layoutY="162.0" onAction="#handleCharSelection" onShowing="#handleOpenCharList" prefHeight="23.0" prefWidth="392.0" styleClass="text-field" stylesheets="@../styles/MainFrameStyle.css" />
-      <Label fx:id="labelBalance1" layoutX="633.0" layoutY="301.0" prefHeight="17.0" prefWidth="181.0" styleClass="contentLabel" text="Clan Wolf">
+      <Label fx:id="labelBalance1" layoutX="633.0" layoutY="288.0" prefHeight="17.0" prefWidth="181.0" styleClass="contentLabel" text="Clan Wolf">
          <stylesheets>
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>
