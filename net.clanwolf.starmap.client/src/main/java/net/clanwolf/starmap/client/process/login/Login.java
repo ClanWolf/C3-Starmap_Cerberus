@@ -46,6 +46,8 @@ import net.clanwolf.starmap.client.process.network.EventCommunications;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 
+import java.util.Base64;
+
 /**
  * @author Meldric
  */
@@ -72,7 +74,7 @@ public class Login {
 				if (passwordEncrypted) {
 					C3Properties.setProperty(C3PROPS.LOGIN_PASSWORD, password, true);
 				} else {
-					String encrypted_pass = JCrypt.crypt(C3Properties.getProperty("s"), password);
+					String encrypted_pass = Encryptor.createPasswordPair(password);
 					C3Properties.setProperty(C3PROPS.LOGIN_PASSWORD, encrypted_pass, true);
 				}
 			} else {
@@ -94,24 +96,23 @@ public class Login {
 		String used_username;
 		String used_password;
 
-		// TODO: Use website password as secondary password with synchronized users
-		String passwordWS2 = Encryptor.hash(Encryptor.hash(password));
-
 		if ("true".equals(C3Properties.getProperty(C3PROPS.USE_GUEST_ACCOUNT))) {
 			used_username = guest_user;
-			used_password = JCrypt.crypt(C3Properties.getProperty("s"), guest_pass);
+			used_password = Encryptor.createPasswordPair(guest_pass);
 		} else {
 			used_username = username;
 			if (passwordEncrypted) {
 				used_password = password;
 			} else {
-				used_password = JCrypt.crypt(C3Properties.getProperty("s"), password);
+				used_password = Encryptor.createPasswordPair(password);
 			}
 		}
 
-		C3Logger.info("Used username: " + used_username + " (enable output in source to debug credentials).");
-//		C3Logger.debug("Used (encrypted) password: " + used_password);
-//		C3Logger.debug("Used password: " + password);
+		C3Logger.debug("Used username: " + used_username + " (enable output in source to debug credentials).");
+		C3Logger.debug("Used password: " + password);
+		C3Logger.debug("Used (encrypted) password: " + used_password);
+		C3Logger.debug("PW1: " + Encryptor.getPasswordFromPair("first", used_password));
+		C3Logger.debug("PW2: " + Encryptor.getPasswordFromPair("second", used_password));
 
 		/*
 		 * BEGIN Server Login
@@ -139,8 +140,7 @@ public class Login {
 
 		// addDefaultHandlerToSession(session);
 
-		// add handler for start event, and continue rest of game logic from
-		// there.
+		// add handler for start event and continue rest of game logic from there
 		session.addHandler(new StartEventHandler(session) {
 			@Override
 			public void onEvent(Event event) {

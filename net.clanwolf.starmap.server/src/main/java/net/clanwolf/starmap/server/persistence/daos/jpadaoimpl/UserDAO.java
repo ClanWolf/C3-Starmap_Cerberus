@@ -27,11 +27,14 @@
 package net.clanwolf.starmap.server.persistence.daos.jpadaoimpl;
 
 import io.nadron.util.Credentials;
+import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.server.persistence.CriteriaHelper;
 import net.clanwolf.starmap.server.persistence.daos.GenericDAO;
 import net.clanwolf.starmap.server.persistence.pojos.UserPOJO;
+import net.clanwolf.starmap.server.util.Encryptor;
 
 import javax.persistence.EntityManager;
+import java.util.Base64;
 
 /**
  * A data access object (DAO) providing persistence and search support for UserPOJO entities. Transaction control of the save(), update() and delete() operations must be handled externally by senders of these methods or must be manually added to each of
@@ -69,13 +72,25 @@ public class UserDAO extends GenericDAO {
 	}
 
 	public UserPOJO findByCredentials(EntityManager em, Credentials c) {
-		CriteriaHelper crit = new CriteriaHelper(UserPOJO.class);
-		crit.addCriteria("userName", c.getUsername());
-		crit.addCriteria("userPassword", c.getPassword());
+		String pw1 = Encryptor.getPasswordFromPair("first", c.getPassword());
+		String pw2 = Encryptor.getPasswordFromPair("second", c.getPassword());
 
-		Object o = crit.getSingleResult();
+		C3Logger.debug("PW1: " + pw1);
+		C3Logger.debug("PW2: " + pw2);
 
+		CriteriaHelper crit1 = new CriteriaHelper(UserPOJO.class);
+		crit1.addCriteria("userName", c.getUsername());
+		crit1.addCriteria("userPassword", pw1);
+
+		Object o = crit1.getSingleResult();
+
+		if (o == null) {
+			CriteriaHelper crit2 = new CriteriaHelper(UserPOJO.class);
+			crit1.addCriteria("userName", c.getUsername());
+			crit1.addCriteria("userPasswordWebsite", pw2);
+
+			o = crit2.getSingleResult();
+		}
 		return (UserPOJO) o;
 	}
-
 }

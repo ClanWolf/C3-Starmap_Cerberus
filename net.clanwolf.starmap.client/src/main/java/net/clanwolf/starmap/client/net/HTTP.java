@@ -263,13 +263,13 @@ public abstract class HTTP {
 		return i;
 	}
 
-//	public static void main(String[] args) {
-//		try {
-//			//download("https://www.clanwolf.net/images/wolf/clanwolf_logo.png", "c:\\temp\\test.png");
-//			Image i = getCachedImage("rpg/resources/1/CWG_Rekrutierung_Titel_01.png");
-//			System.out.println(i.toString());
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
+	public static void main(String[] args) {
+		try {
+			download("https://www.clanwolf.net/images/wolf/clanwolf_logo.png", "c:\\temp\\test.png");
+			//Image i = getCachedImage("rpg/resources/1/CWG_Rekrutierung_Titel_01.png");
+			//System.out.println(i.toString());
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 }

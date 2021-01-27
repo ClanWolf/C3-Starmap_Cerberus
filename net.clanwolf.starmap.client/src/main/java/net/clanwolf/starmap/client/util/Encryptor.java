@@ -89,6 +89,41 @@ public class Encryptor {
 		return myHash.toString();
 	}
 
+	public static String createPasswordPair(String pw) {
+		String used_password = "";
+		String p1 = JCrypt.crypt(C3Properties.getProperty("s"), pw);
+		String p2 = Encryptor.hash(Encryptor.hash(pw));
+
+		used_password = used_password + "p1:" + Base64.getEncoder().encodeToString(p1.getBytes());
+		used_password = used_password + "#";
+		used_password = used_password + "p2:" + Base64.getEncoder().encodeToString(p2.getBytes());
+
+		return used_password;
+	}
+
+	public static String getPasswordFromPair(String indicator, String passwordPair) {
+		String pw = "";
+		String[] pws = passwordPair.split("#");
+		String pw1 = pws[0].replaceFirst("p1:", "");
+		String pw2 = pws[1].replaceFirst("p2:", "");;
+
+		try {
+			byte[] decodedBytes1 = Base64.getDecoder().decode(pw1);
+			pw1 = new String(decodedBytes1);
+			byte[] decodedBytes2 = Base64.getDecoder().decode(pw2);
+			pw2 = new String(decodedBytes2);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		if ("first".equals(indicator)) {
+			pw = pw1;
+		} else if ("second".equals(indicator)) {
+			pw = pw2;
+		}
+		return pw;
+	}
+
 	public static void main(String[] args) throws Exception {
 		String key = "201ACC3548C74444";
 		String message = "TestTextToEncrypt";

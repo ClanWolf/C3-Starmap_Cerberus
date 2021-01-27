@@ -232,6 +232,7 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 		ActionManager.addActionCallbackListener(ACTIONS.PANE_DESTRUCTION_FINISHED, this);
 		ActionManager.addActionCallbackListener(ACTIONS.LOGON_FINISHED_SUCCESSFULL, this);
 		ActionManager.addActionCallbackListener(ACTIONS.LOGON_FINISHED_WITH_ERROR, this);
+		ActionManager.addActionCallbackListener(ACTIONS.CLEAR_PASSWORD_FIELD, this);
 	}
 
 	/**
@@ -405,16 +406,18 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 			public void changed(ObservableValue<? extends String> ov, String old_val, String new_val) {
 				buttonLogin.setDisable(!checkTextFieldsForContent());
 				if (!cbGuestAccount.isSelected()) {
-					if (!"".equals(tfPassword.getText())) {
+					if (!"".equals(old_val)) {
 						if (password_encrypted) {
-							tfPassword.setText("");
-							pass = "";
-							password_encrypted = false;
-							// Log.debug("Reseting encryption / setting back [encrypted pw cannot be edited in field]");
+//							C3Logger.debug(old_val);
+//							C3Logger.debug(new_val);
+
+							if (!"".equals(new_val)) {
+								ActionManager.getAction(ACTIONS.CLEAR_PASSWORD_FIELD).execute();
+							}
 						} else {
 							pass = tfPassword.getText();
 							password_encrypted = false;
-							// Log.debug("Reseting encryption / taking new pw");
+							// C3Logger.debug("Reseting encryption / taking new pw");
 						}
 					}
 				}
@@ -493,6 +496,22 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 
 				// int result = showMessage("Login ERROR!", 1);
 				// System.out.println("Result of message (user interaction): " + result);
+				break;
+
+			case CLEAR_PASSWORD_FIELD:
+				C3Message m1 = new C3Message();
+				m1.setText("Stored password cannot be edited. Reseting.");
+				m1.setType(C3MESSAGETYPES.CLOSE);
+				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(m1);
+
+				enableListeners(false);
+				Platform.runLater(() -> {
+					tfPassword.clear();
+				});
+				enableListeners(true);
+				pass = "";
+				password_encrypted = false;
+				// C3Logger.debug("Reseting encryption / setting back [encrypted pw cannot be edited in field]");
 				break;
 
 			default:
