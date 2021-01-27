@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2020, ClanWolf.net                            |
+ * Copyright (c) 2001-2021, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.client.process.roleplay;
@@ -47,15 +47,15 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
- * @author Undertaker
+ * Business object for a roleplay story.
  *
+ * @author Undertaker
+ * @author Meldric
  */
 public class BORolePlayStory {
 
-	// Contains all selected stories
-	private ArrayList<RolePlayStoryDTO> allStories;
-	// Contains error text after an action (checkBeforeSave, checkBeforeDelete,...
-	private String errorText;
+	private ArrayList<RolePlayStoryDTO> allStories; // Contains all selected stories
+	private String errorText; // Contains error text after an action (checkBeforeSave, checkBeforeDelete,...
 
 	private ArrayList<RolePlayCharacterDTO> allCharacters;
 
@@ -66,14 +66,18 @@ public class BORolePlayStory {
 	private static final String URL_RPG_BASIC_DEV = "https://www.clanwolf.net/apps/C3/rpg/dev";
 	private static final String URL_RPG_RESOURSES_DEV = "https://www.clanwolf.net/apps/C3/rpg/dev/resources";
 
+	/**
+	 * Creates a new business object for roleplay story.
+	 */
 	public BORolePlayStory() {
 		allStories = new ArrayList<>();
 	}
 
 	/**
-	 * Register needed Actions to a ActionCallBackListener
+	 * Registers needed Actions to a ActionCallBackListener.
 	 * 
-	 * @param callBackListener ActionCallBackListener
+	 * @param callBackListener
+	 *          the listener to be added
 	 */
 	public void registerActions(ActionCallBackListener callBackListener) {
 		ActionManager.addActionCallbackListener(ACTIONS.SAVE_ROLEPLAY_STORY_OK, callBackListener);
@@ -84,6 +88,12 @@ public class BORolePlayStory {
 		ActionManager.addActionCallbackListener(ACTIONS.GET_ROLEPLAY_ALLCHARACTER, callBackListener);
 	}
 
+	/**
+	 * Gets the basic url for rpg. The result depends on if the client is running on a dev system or not.
+	 *
+	 * @return
+	 *          the base url string for rpg
+	 */
 	public static String getRPG_BasicURL(){
 		if(Nexus.isDevelopmentPC()){
 			return BORolePlayStory.URL_RPG_BASIC_DEV;
@@ -91,6 +101,12 @@ public class BORolePlayStory {
 		return BORolePlayStory.URL_RPG_BASIC;
 	}
 
+	/**
+	 * Gets the basic url for resources. The result depends on if the client is running on a dev system or not.
+	 *
+	 * @return
+	 *          the base url string for resources
+	 */
 	public static String getRPG_ResourceURL(){
 		if(Nexus.isDevelopmentPC()){
 			return BORolePlayStory.URL_RPG_RESOURSES_DEV;
@@ -99,9 +115,10 @@ public class BORolePlayStory {
 	}
 
 	/**
-	 * Add a new story
+	 * Adds a new story.
 	 * 
-	 * @return RolePlayStoryDTO
+	 * @return
+	 *          the new story
 	 */
 	public RolePlayStoryDTO addNewStory() {
 		RolePlayStoryDTO story = new RolePlayStoryDTO();
@@ -115,10 +132,12 @@ public class BORolePlayStory {
 	}
 
 	/**
-	 * Add a new chapter for a given story
+	 * Adds a new chapter for a given story.
 	 * 
-	 * @param parentStory RolePlayStoryDTO
-	 * @return RolePlayStoryDTO
+	 * @param parentStory
+	 *          the parent to add a chapter to
+	 * @return
+	 *          the new chapter
 	 */
 	public RolePlayStoryDTO addNewChapter(RolePlayStoryDTO parentStory) {
 		RolePlayStoryDTO chapter = new RolePlayStoryDTO();
@@ -134,10 +153,12 @@ public class BORolePlayStory {
 	}
 
 	/**
-	 * Add a new step for a given chapter
+	 * Adds a new step for a given chapter.
 	 * 
-	 * @param parentChapter RolePlayStoryDTO
-	 * @return RolePlayStoryDTO
+	 * @param parentChapter
+	 *          the chapter to add a step to
+	 * @return
+	 *          the new step
 	 */
 	public RolePlayStoryDTO addNewStoryStep(RolePlayStoryDTO parentChapter) {
 		RolePlayStoryDTO story = new RolePlayStoryDTO();
@@ -153,16 +174,16 @@ public class BORolePlayStory {
 	}
 
 	/**
-	 * Add a new part of the story to the internal list with all selected stories from database
+	 * Adds a new part of the story to the internal list with all selected stories from database.
 	 * 
-	 * @param story RolePlayStoryDTO
+	 * @param story
+	 *          the story transfer object to be added
 	 */
 	public void addStoryToList(RolePlayStoryDTO story) {
-
 		for (RolePlayStoryDTO rp : allStories) {
 			C3Logger.info("Story: " + rp.getStoryName() + " ChangedStory: " + story.getStoryName());
 
-			//if exist an object with the same id, we remove it first
+			// if there is an object with the same id we remove it first
 			if (rp.getId().equals(story.getId())) {
 				allStories.remove(rp);
 				break;
@@ -173,24 +194,34 @@ public class BORolePlayStory {
 	}
 
 	/**
+	 * Removes a story from the list of all stories.
 	 *
-	 * @param story RolePlayStoryDTO
+	 * @param story
+	 *          the story transfer object to be removed
 	 */
 	public void removeStoryFromList(RolePlayStoryDTO story) {
 		allStories.remove(story);
 	}
 
 	/**
-	 * Set a list with selected stories
+	 * Sets a list with selected stories.
 	 * 
-	 * @param li ArrayList<RolePlayCharacterDTO>
+	 * @param li
+	 *          a list of story transfer objects
 	 */
 	public void setStoryList(ArrayList<RolePlayStoryDTO> li) {
 		allStories = li;
 	}
 
+	/**
+	 * Gets a story by id.
+	 * @param id
+	 *          the given id
+	 * @return
+	 *          the story transfer object with the given id
+	 */
 	public RolePlayStoryDTO getStoryByID(Long id){
-		for(RolePlayStoryDTO rp: allStories) {
+		for(RolePlayStoryDTO rp : allStories) {
 			if (rp.getId().equals(id)) {
 				C3Logger.info(String.valueOf(rp.getId()));
 				return rp;
@@ -200,18 +231,16 @@ public class BORolePlayStory {
 	}
 
 	/**
-	 * Set a list with characters
+	 * Sets a list with characters.
 	 * 
-	 * @param li ArrayList<RolePlayCharacterDTO>
+	 * @param li the list of character transfer objects
 	 */
 	public void setCharacterList(ArrayList<RolePlayCharacterDTO> li) {
 		allCharacters = li;
 	}
 
 	public void changeCharacterList(ArrayList<RolePlayCharacterDTO> li){
-
 		for (RolePlayCharacterDTO rpc : li) {
-
 			for (RolePlayCharacterDTO rpcAll : allCharacters){
 				if(rpc.getId().equals(rpcAll.getId())){
 					int idx = allCharacters.indexOf(rpcAll);
@@ -224,25 +253,23 @@ public class BORolePlayStory {
 	}
 
 	/*
-	 * Get a list with all characters
-	 *
+	 * Gets a list with all characters.
 	 */
 	public ArrayList<RolePlayCharacterDTO> getCharacterList() {
 		return allCharacters;
 	}
 
 	/**
-	 * Get a list with stories from a special chapter
+	 * Gets a list with stories from a chapter.
 	 * 
-	 * @param chapter RolePlayStoryDTO
-	 * @return ArrayList<RolePlayStoryDTO>
+	 * @param chapter
+	 *          the chapter as a story transfer object
+	 * @return
+	 *          an Arraylist of stories for the given chapter
 	 */
 	public ArrayList<RolePlayStoryDTO> getStoriesFromChapter(RolePlayStoryDTO chapter) {
-
 		ArrayList<RolePlayStoryDTO> stories = new ArrayList<>();
-
 		if (chapter != null && chapter.getVariante() != ROLEPLAYENTRYTYPES.C3_RP_STORY && chapter.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_CHAPTER) {
-
 			for (RolePlayStoryDTO rp : allStories) {
 				if (rp.getParentStory() != null && rp.getVariante() != ROLEPLAYENTRYTYPES.C3_RP_CHAPTER && rp.getVariante() != ROLEPLAYENTRYTYPES.C3_RP_STORY && rp.getParentStory().getId().equals(chapter.getId())) {
 				//if (rp.getParentStory() != null && rp.getVariante() != ROLEPLAYENTRYTYPES.C3_RP_STORY && rp.getParentStory().getId().equals(chapter.getId())) {
@@ -253,16 +280,16 @@ public class BORolePlayStory {
 				}
 			}
 		}
-
 		return stories;
-
 	}
 
 	/**
-	 * Return a clone of a RolePlayStoryDTO
+	 * Returns a clone of a story DTO.
 	 * 
-	 * @param original RolePlayStoryDTO
-	 * @return RolePlayStoryDTO
+	 * @param original
+	 *          the original story transfer object
+	 * @return
+	 *          a clone of the roleplay story transfer object (DTO)
 	 */
 	public RolePlayStoryDTO getCopy(RolePlayStoryDTO original) {
 		RolePlayStoryDTO copy = new RolePlayStoryDTO();
@@ -293,9 +320,12 @@ public class BORolePlayStory {
 	}
 
 	/**
+	 * Finds and sets a new sort order.
 	 *
-	 * @param rp RolePlayStoryDTO
-	 * @return ArrayList<RolePlayStoryDTO>
+	 * @param rp
+	 *          the roleplay story transfer object
+	 * @return
+	 *          the sorted list
 	 */
 	private ArrayList<RolePlayStoryDTO> findAndSetChangedSortOrder(RolePlayStoryDTO rp) {
 
@@ -329,7 +359,6 @@ public class BORolePlayStory {
 		}
 
 		while (iter.hasNext()) {
-
 			RolePlayStoryDTO rpIter = iter.next();
 			C3Logger.info("Story: " + rpIter.getStoryName() + " SortOrder: " + rpIter.getSortOrder());
 
@@ -346,13 +375,15 @@ public class BORolePlayStory {
 			}
 		}
 		return changedSortOrder;
-
 	}
 
 	/**
+	 * Checks if an image exists
 	 *
-	 * @param image String
-	 * @return boolean
+	 * @param image
+	 *          the path to the image to be checked
+	 * @return
+	 *          if the image exists
 	 */
 	private boolean checkImage(String image) {
 
