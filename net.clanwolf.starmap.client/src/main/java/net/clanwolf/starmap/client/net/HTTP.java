@@ -27,7 +27,6 @@
 package net.clanwolf.starmap.client.net;
 
 import javafx.scene.image.Image;
-import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.client.util.C3PROPS;
 import net.clanwolf.starmap.client.util.C3Properties;
@@ -36,36 +35,30 @@ import java.io.*;
 import java.net.*;
 
 /**
- * <p>
- * Title: <b>HTTPReader</b><br>
- * Description: <i>Provides a connection to the net and handles it</i><br>
- * Copyright: Copyright (c) 2004<br>
- * Company: BattleForge<br>
- * </p>
+ * Provides http functionality
  *
  * @author Meldric
- * @version 1.0
  */
 public abstract class HTTP {
 
-	/**
-	 * set the hostadress of the http-server
-	 *
-	 * @param hostaddress
-	 *            adress
-	 * @throws BFException
-	 * @throws MalformedURLException
-	 *             exception
-	 */
-	// public final void setHost(String hostaddress) throws BFException {
-	// try {
-	// host = new URL(hostaddress);
-	//
-	// } catch (MalformedURLException e) {
-	// throw new BFException(10000, e);
-	//
-	// } // try
-	// }
+//	/**
+//	 * set the hostadress of the http-server
+//	 *
+//	 * @param hostaddress
+//	 *            adress
+//	 * @throws BFException
+//	 * @throws MalformedURLException
+//	 *             exception
+//	 */
+//	 public final void setHost(String hostaddress) throws BFException {
+//	 try {
+//	 host = new URL(hostaddress);
+//
+//	 } catch (MalformedURLException e) {
+//	 throw new BFException(10000, e);
+//
+//	 } // try
+//	 }
 
 	/**
 	 * Get

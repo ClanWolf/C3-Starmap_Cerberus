@@ -124,11 +124,11 @@ public class Encryptor {
 		return pw;
 	}
 
-	public static void main(String[] args) throws Exception {
-		String key = "201ACC3548C74444";
-		String message = "TestTextToEncrypt";
-		String initVector = "4AFFBD22D04CABDB";
-		String encryptedMessage = encrypt(key, initVector, message);
-		System.out.println(encryptedMessage);
-	}
+//	public static void main(String[] args) throws Exception {
+//		String key = "201ACC3548C74444";
+//		String message = "TestTextToEncrypt";
+//		String initVector = "4AFFBD22D04CABDB";
+//		String encryptedMessage = encrypt(key, initVector, message);
+//		System.out.println(encryptedMessage);
+//	}
 }

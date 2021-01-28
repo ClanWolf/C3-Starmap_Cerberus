@@ -75,8 +75,8 @@ public class UserDAO extends GenericDAO {
 		String pw1 = Encryptor.getPasswordFromPair("first", c.getPassword());
 		String pw2 = Encryptor.getPasswordFromPair("second", c.getPassword());
 
-		C3Logger.debug("PW1: " + pw1);
-		C3Logger.debug("PW2: " + pw2);
+//		C3Logger.debug("PW1: " + pw1);
+//		C3Logger.debug("PW2: " + pw2);
 
 		CriteriaHelper crit1 = new CriteriaHelper(UserPOJO.class);
 		crit1.addCriteria("userName", c.getUsername());
@@ -91,6 +91,7 @@ public class UserDAO extends GenericDAO {
 
 			o = crit2.getSingleResult();
 		}
+
 		return (UserPOJO) o;
 	}
 }

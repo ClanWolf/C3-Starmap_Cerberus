@@ -46,8 +46,6 @@ import net.clanwolf.starmap.client.process.network.EventCommunications;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 
-import java.util.Base64;
-
 /**
  * @author Meldric
  */
@@ -86,7 +84,7 @@ public class Login {
 	/**
 	 * Do the login itself.
 	 *
-	 * @throws java.net.UnknownHostException
+	 * @throws Exception
 	 */
 	public static void doLogin() throws Exception {
 		// Upon login, get the values from the textfields and set the
@@ -109,10 +107,10 @@ public class Login {
 		}
 
 		C3Logger.debug("Used username: " + used_username + " (enable output in source to debug credentials).");
-		C3Logger.debug("Used password: " + password);
-		C3Logger.debug("Used (encrypted) password: " + used_password);
-		C3Logger.debug("PW1: " + Encryptor.getPasswordFromPair("first", used_password));
-		C3Logger.debug("PW2: " + Encryptor.getPasswordFromPair("second", used_password));
+//		C3Logger.debug("Used password: " + password);
+//		C3Logger.debug("Used (encrypted) password: " + used_password);
+//		C3Logger.debug("PW1: " + Encryptor.getPasswordFromPair("first", used_password));
+//		C3Logger.debug("PW2: " + Encryptor.getPasswordFromPair("second", used_password));
 
 		/*
 		 * BEGIN Server Login
