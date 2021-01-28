@@ -61,6 +61,8 @@ public class Login {
 	private static final String guest_user = "Guest";
 	private static final String guest_pass = "waV9WKWtHnRmU2c9g6SLqhh";
 
+	private static Session session = null;
+
 	private Login() {
 		// Prevent Instantiation
 	}
@@ -125,43 +127,39 @@ public class Login {
 			//212.227.253.80
 			builder = new LoginHelper.LoginBuilder().username(used_username).password(used_password).connectionKey("C3GameRoomForNettyClient").nadronTcpHostName(tcphostname).tcpPort(tcpPort);
 		}
-
 		LoginHelper loginHelper = builder.build();
-
 		SessionFactory sessionFactory = new SessionFactory(loginHelper);
 		sessionFactory.setLoginHelper(loginHelper);
-		final Session session = sessionFactory.createSession();
-		session.setReconnectPolicy(new ReconnectPolicy.ReconnectNTimes(2, 2000, loginHelper));
 
-		// It is needed to send an Event to the server
-		Nexus.setSession(session);
+		if (session != null) {
+			session.close();
+			session = null;
+		}
 
-		// addDefaultHandlerToSession(session);
+		session = sessionFactory.createSession();
 
-		// add handler for start event and continue rest of game logic from there
-		session.addHandler(new StartEventHandler(session) {
+		StartEventHandler startEventHandler = new StartEventHandler(session) {
 			@Override
 			public void onEvent(Event event) {
 				C3Logger.info("Going to Change to Object Protocol");
+				C3Logger.info(event.toString());
 				session.resetProtocol(NettyObjectProtocol.INSTANCE);
 
 				// create C3State objects send it to server.
 
-				// C3GameState state = new C3GameState(1);
-				// NetworkEvent networkEvent = Events.networkEvent(state);
+//				 C3GameState state = new C3GameState(1);
+//				 NetworkEvent networkEvent = Events.networkEvent(state);
 				session.removeHandler(this);
 				addDefaultHandlerToSession(session);
 				// session.onEvent(networkEvent);
 			}
-		});
+		};
 
-		// Connect the session, so that the above start event will be sent by
-		// server.
+		session.addHandler(startEventHandler);
+		session.setReconnectPolicy(new ReconnectPolicy.ReconnectNTimes(50, 5000, loginHelper));
+		Nexus.setSession(session);
+
 		sessionFactory.connectSession(session);
-
-		/*
-		 * END Server Login
-		 */
 	}
 
 	/*
@@ -176,7 +174,6 @@ public class Login {
 				// TODO: Implement a new Action for disconnect from server
 				C3Logger.info("onDisconnect");
 				super.onDisconnect(event);
-
 			}
 
 			@Override
@@ -207,9 +204,7 @@ public class Login {
 			public void onDataIn(Event event) {
 				EventCommunications.onDataIn(session, event);
 			}
-
 		};
-
 		session.addHandler(handler);
 	}
 

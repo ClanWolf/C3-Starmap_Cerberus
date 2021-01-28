@@ -51,6 +51,7 @@ import java.util.ResourceBundle;
  */
 public class MapPaneController extends AbstractC3Controller implements ActionCallBackListener {
 
+	private boolean universeMapGenerationStarted = false;
 	private BOUniverse boUniverse = null;
 
 	@FXML
@@ -64,6 +65,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		ActionManager.addActionCallbackListener(ACTIONS.CHANGE_LANGUAGE, this);
 		ActionManager.addActionCallbackListener(ACTIONS.PANE_CREATION_FINISHED, this);
 		ActionManager.addActionCallbackListener(ACTIONS.NEW_UNIVERSE_RECEIVED, this);
+		ActionManager.addActionCallbackListener(ACTIONS.LOGON_FINISHED_SUCCESSFULL, this);
 	}
 
 	/**
@@ -82,7 +84,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	/**
 	 * Initializes the universe star map from the universe business object.
 	 */
-	private void initializeMap() {
+	private void initializeUniverseMap() {
 		if (boUniverse != null) {
 			C3Logger.info("Beginning to build the star map from received universe data.");
 
@@ -106,13 +108,18 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	public boolean handleAction(ACTIONS action, ActionObject o) {
 		switch (action) {
 			case NEW_UNIVERSE_RECEIVED:
-				// A new universeDTO has been broadcasted by the server
-				UniverseDTO universeDTO = Nexus.getUniverseDTO();
-				boUniverse = new BOUniverse(universeDTO);
-				Nexus.setBOUniverse(boUniverse);
+				if (!universeMapGenerationStarted) {
+					universeMapGenerationStarted = true;
+					// A new universeDTO has been broadcasted by the server
+					UniverseDTO universeDTO = Nexus.getUniverseDTO();
+					boUniverse = new BOUniverse(universeDTO);
+					Nexus.setBOUniverse(boUniverse);
 
-				initializeMap();
+					initializeUniverseMap();
+				}
+				break;
 
+			case UPDATE_UNIVERSE:
 				break;
 
 			case CHANGE_LANGUAGE:
@@ -120,6 +127,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				break;
 
 			case PANE_CREATION_FINISHED:
+				break;
+
+			case LOGON_FINISHED_SUCCESSFULL:
 				GameState state = new GameState();
 				state.setMode(GAMESTATEMODES.GET_UNIVERSE_DATA);
 				state.addObject(UNIVERSECONTEXT.HH);

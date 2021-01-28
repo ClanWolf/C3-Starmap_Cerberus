@@ -5,3 +5,10 @@ https://stackoverflow.com/questions/47727869/creating-module-info-for-automatic-
 https://stackoverflow.com/questions/52215353/javafx-maven-with-moditect-and-java-11
 https://github.com/javafxports/openjdk-jfx/issues/238
 https://medium.com/@adam_carroll/java-packager-with-jdk11-31b3d620f4a8
+
+
+
+
+https://github.com/taluks/nadron-game-server
+https://github.com/menacher/java-game-server
+https://github.com/menacher/java-game-server/tree/netty4
