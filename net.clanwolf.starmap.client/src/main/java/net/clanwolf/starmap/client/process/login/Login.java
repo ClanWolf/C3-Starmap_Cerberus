@@ -181,11 +181,11 @@ public class Login {
 
 			@Override
 			public void onLoginFailure(Event event) {
-				// String result = "";
 				super.onLoginFailure(event); // To change body of generated
 				// methods, choose Tools |
 				// Templates.
 
+				C3Logger.info("Login failed!");
 				C3Logger.info("onLoginFailure: " + "Check UserDTO or Password!");
 				ActionManager.getAction(ACTIONS.LOGON_FINISHED_WITH_ERROR).execute();
 			}
@@ -193,6 +193,7 @@ public class Login {
 			@Override
 			public void onLoginSuccess(Event event) {
 				super.onLoginSuccess(event);
+				C3Logger.info("Successfully logged in.");
 				C3Logger.info("onLoginSuccess: USER_REQUEST_LOGGED_IN_DATA");
 				GameState state = new GameState(GAMESTATEMODES.USER_REQUEST_LOGGED_IN_DATA);
 
