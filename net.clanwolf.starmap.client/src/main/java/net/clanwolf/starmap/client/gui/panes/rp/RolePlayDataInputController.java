@@ -70,8 +70,8 @@ public class RolePlayDataInputController extends AbstractC3RolePlayController im
 	//@FXML
 	//private ImageView rpIBackgroundImage;
 
-	@FXML
-	private ImageView rpImage;
+	//@FXML
+	//private ImageView rpImage;
 
 	@FXML
 	private TextArea taStoryText;
@@ -191,7 +191,13 @@ public class RolePlayDataInputController extends AbstractC3RolePlayController im
 
 	@Override
 	public void getStoryValues(RolePlayCharacterDTO rpChar) {
-		if (rpChar.getStory().getStoryIntro() == null) {
+
+
+		// set story image
+		Image im = BORolePlayStory.getRPG_Image(rpChar.getStory());
+		backgroundImage.setImage(im);
+
+		/*if (rpChar.getStory().getStoryIntro() == null) {
 			String imURL;
 
 			// Check step for own image. If now own image availabale use default image
@@ -203,7 +209,7 @@ public class RolePlayDataInputController extends AbstractC3RolePlayController im
 				InputStream isBackground = this.getClass().getResourceAsStream("/images/gui/default_Step.png");
 				rpImage.setImage(new Image(isBackground));
 			}
-		}
+		}*/
 
 		//TODO: append single chars step by step until the whole text is displaying
 		taStoryText.setText(rpChar.getStory().getStoryText());

@@ -265,10 +265,10 @@ public abstract class HTTP {
 		}
 	}
 
-	public static Image getCachedImage(String s) throws Exception {
+	public static Image getCachedImage(String s, String subPath) throws Exception {
 		C3Logger.info("Looking for image for string: " + s);
 
-		String cacheFolderName = System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "cache" + File.separator + "image";
+		String cacheFolderName = System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "cache" + File.separator + "image" + File.separator + subPath;
 		File cacheFolder = new File(cacheFolderName);
 		if (!cacheFolder.isDirectory()) {
 			boolean success = cacheFolder.mkdirs();
@@ -283,7 +283,11 @@ public abstract class HTTP {
 			if (!s.startsWith("/")) {
 				s = "/" + s;
 			}
-			HTTP.download(serverUrl + s, imageFileName);
+			if (!subPath.startsWith("/")) {
+				subPath = "/" + subPath;
+			}
+
+			HTTP.download(serverUrl + subPath + s, imageFileName);
 		}
 
 		String url = f1.getAbsolutePath();

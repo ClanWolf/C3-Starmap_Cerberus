@@ -26,10 +26,15 @@
  */
 package net.clanwolf.starmap.client.process.roleplay;
 
+import javafx.scene.image.Image;
+import net.clanwolf.starmap.client.net.HTTP;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
+import net.clanwolf.starmap.client.sound.C3SoundPlayer;
+import net.clanwolf.starmap.client.util.C3PROPS;
+import net.clanwolf.starmap.client.util.C3Properties;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.client.net.IFileTransfer;
 import net.clanwolf.starmap.client.util.Internationalization;
@@ -40,6 +45,8 @@ import net.clanwolf.starmap.transfer.dtos.RolePlayStoryDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
+import java.io.File;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -60,11 +67,20 @@ public class BORolePlayStory {
 	private ArrayList<RolePlayCharacterDTO> allCharacters;
 
 	// Constants
-	private static final String URL_RPG_BASIC = "https://www.clanwolf.net/apps/C3/rpg";
-	private static final String URL_RPG_RESOURSES = "https://www.clanwolf.net/apps/C3/rpg/resources";
+	private static final String URL_RPG_BASIC = "rpg";
+	private static final String URL_RPG_RESOURSES = "rpg/resources";
 
-	private static final String URL_RPG_BASIC_DEV = "https://www.clanwolf.net/apps/C3/rpg/dev";
-	private static final String URL_RPG_RESOURSES_DEV = "https://www.clanwolf.net/apps/C3/rpg/dev/resources";
+	private static final String URL_RPG_BASIC_DEV = "rpg/dev";
+	private static final String URL_RPG_RESOURSES_DEV = "rpg/dev/resources";
+
+	private static BORolePlayStory instance = null;
+
+	public static BORolePlayStory getInstance() {
+		if (instance == null) {
+			instance = new BORolePlayStory();
+		}
+		return instance;
+	}
 
 	/**
 	 * Creates a new business object for roleplay story.
@@ -89,29 +105,52 @@ public class BORolePlayStory {
 	}
 
 	/**
-	 * Gets the basic url for rpg. The result depends on if the client is running on a dev system or not.
+	 * Get the basic url for rpg. The result depends on if the client is running on a dev system or not.
 	 *
 	 * @return
 	 *          the base url string for rpg
 	 */
 	public static String getRPG_BasicURL(){
 		if(Nexus.isDevelopmentPC()){
-			return BORolePlayStory.URL_RPG_BASIC_DEV;
+			return C3Properties.getProperty(C3PROPS.SERVER_URL) + "/" + BORolePlayStory.URL_RPG_BASIC_DEV;
 		}
-		return BORolePlayStory.URL_RPG_BASIC;
+		return C3Properties.getProperty(C3PROPS.SERVER_URL) + "/" + BORolePlayStory.URL_RPG_BASIC;
 	}
 
 	/**
-	 * Gets the basic url for resources. The result depends on if the client is running on a dev system or not.
+	 * Get the basic url for resources. The result depends on if the client is running on a dev system or not.
 	 *
 	 * @return
 	 *          the base url string for resources
 	 */
 	public static String getRPG_ResourceURL(){
 		if(Nexus.isDevelopmentPC()){
+			//return C3Properties.getProperty(C3PROPS.SERVER_URL) + "/" + BORolePlayStory.URL_RPG_RESOURSES_DEV;
 			return BORolePlayStory.URL_RPG_RESOURSES_DEV;
 		}
+		//return C3Properties.getProperty(C3PROPS.SERVER_URL) + "/" + BORolePlayStory.URL_RPG_RESOURSES;
 		return BORolePlayStory.URL_RPG_RESOURSES;
+	}
+
+	/**
+	 * get story image, if now story image exist return default image
+	 * @param rp
+	 * @return
+	 */
+	public static Image getRPG_Image(RolePlayStoryDTO rp){
+	    try {
+			    if(rp == null || rp.getStoryImage() == null || "".equals(rp.getStoryImage())){
+				    InputStream defaultImageStream = BORolePlayStory.getInstance().getClass().getResourceAsStream("/images/gui/default_Step.png");
+				    return new Image(defaultImageStream);
+			    }
+
+		        String imagePath = getRPG_ResourceURL() + "/" + rp.getId();
+				return  HTTP.getCachedImage(rp.getStoryImage(),imagePath);
+			} catch (Exception e) {
+	    	    //TODO: throw exception
+				e.printStackTrace();
+			}
+        return null;
 	}
 
 	/**
@@ -314,6 +353,7 @@ public class BORolePlayStory {
 		copy.setVar2ID(original.getVar2ID());
 		copy.setVar3ID(original.getVar3ID());
 		copy.setVar4ID(original.getVar4ID());
+		copy.setVar6ID(original.getVar6ID());
 		copy.setNextStepID(original.getNextStepID());
 
 		return copy;

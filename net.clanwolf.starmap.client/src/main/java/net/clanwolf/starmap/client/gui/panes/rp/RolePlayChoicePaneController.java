@@ -57,8 +57,8 @@ public class RolePlayChoicePaneController extends AbstractC3RolePlayController i
 	@FXML
 	private AnchorPane anchorPane;
 
-	@FXML
-	private ImageView rpIBackgroundImage;
+	//@FXML
+	//private ImageView rpIBackgroundImage;
 
 	@FXML
 	private ImageView rpImage;
@@ -174,16 +174,13 @@ public class RolePlayChoicePaneController extends AbstractC3RolePlayController i
 	@Override
 	public void getStoryValues(RolePlayCharacterDTO rpChar) {
 		if (rpChar.getStory().getStoryIntro() == null) {
-			String imURL;
-			InputStream isBackground = this.getClass().getResourceAsStream("/images/gui/default_Step.png");
-			rpIBackgroundImage.setImage(new Image(isBackground));
+			//set background image
+			Image im = BORolePlayStory.getRPG_Image(null);
+			backgroundImage.setImage(im);
 
-			// Check step for own image. If now own image availabale use default image
-			if (rpChar.getStory().getStoryImage() != null) {
-				imURL = BORolePlayStory.getRPG_ResourceURL() + "/" + rpChar.getStory().getId().toString() + "/" + rpChar.getStory().getStoryImage();
-				Image im = new Image(imURL);
-				rpImage.setImage(im);
-			}
+			//set story image
+			Image im2 = BORolePlayStory.getRPG_Image(rpChar.getStory());
+			rpImage.setImage(im2);
 		}
 
 		//TODO: append single chars step by step until the whole text is displaying

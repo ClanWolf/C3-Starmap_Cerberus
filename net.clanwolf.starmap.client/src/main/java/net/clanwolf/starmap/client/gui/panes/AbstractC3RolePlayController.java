@@ -54,6 +54,9 @@ public abstract class AbstractC3RolePlayController implements Initializable, Act
 	@FXML
 	private ImageView templateBackground;
 
+	@FXML
+	protected ImageView backgroundImage;
+
 	/**
 	 * Set strings
 	 */

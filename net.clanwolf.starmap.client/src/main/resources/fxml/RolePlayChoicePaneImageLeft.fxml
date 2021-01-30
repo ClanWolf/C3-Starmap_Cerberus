@@ -14,7 +14,7 @@
             <Image url="@../images/template_bg.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="rpIBackgroundImage" fitHeight="490.0" fitWidth="785.0" layoutX="58.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="backgroundImage" fitHeight="490.0" fitWidth="785.0" layoutX="58.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="rpImage" fitHeight="314.0" fitWidth="216.0" layoutX="58.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
       <TextArea fx:id="taRpText" layoutX="279.0" layoutY="10.0" prefHeight="314.0" prefWidth="564.0" styleClass="contentTextAreaBlock" wrapText="true" />
       <Button fx:id="btChoice1" layoutX="59.0" layoutY="331.0" mnemonicParsing="false" onAction="#handleOnActionbtChoice1" opacity="0.8" prefHeight="36.0" prefWidth="784.0" text="btChoice1" wrapText="true" />

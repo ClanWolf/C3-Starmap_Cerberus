@@ -35,7 +35,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
@@ -70,9 +69,6 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 
 	@FXML
 	private Button btPreview;
-
-	@FXML
-	private ImageView ivIntro;
 
 	@FXML
 	private TextArea taStoryText;
@@ -114,15 +110,10 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 
 				Boolean animationPlayed = animationPlayedMap.get(Nexus.getCurrentChar().getStory().getId());
 				if (animationPlayed == null || !animationPlayed) {
-					FadeTransition fadeInTransition_01 = new FadeTransition(Duration.millis(800), ivIntro);
+					FadeTransition fadeInTransition_01 = new FadeTransition(Duration.millis(800), backgroundImage);
 					fadeInTransition_01.setFromValue(0.0);
 					fadeInTransition_01.setToValue(1.0);
 					fadeInTransition_01.setCycleCount(1);
-
-//					FadeTransition fadeInTransition_02 = new FadeTransition(Duration.millis(120), ivIntro);
-//					fadeInTransition_02.setFromValue(0.0);
-//					fadeInTransition_02.setToValue(1.0);
-//					fadeInTransition_02.setCycleCount(2);
 
 					FadeTransition fadeInTransition_03 = new FadeTransition(Duration.millis(1500), labHeader);
 					fadeInTransition_03.setFromValue(0.0);
@@ -153,18 +144,6 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 	}
 
 	/******************************** FXML ********************************/
-//	@FXML
-//	public void handleOnMouseEnteredOnBtPreview(){
-//		C3Logger.debug("handleOnMouseEnteredOnBtPreview");
-//		//btPreview.setStyle("-fx-opacity: 1");
-//	}
-//
-//	@FXML
-//	public void handleOnMouseExitOnBtPreview(){
-//		C3Logger.debug("handleOnMouseExitOnBtPreview");
-//		//btPreview.setStyle("-fx-opacity: 0.2");
-//	}
-
 	@FXML
 	private void handleOnMouseClicked(){
 		handleOnActionBtPreview();
@@ -181,11 +160,9 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 			boRp.getNextStepBySortOrder(currentChar, 1);
 		}
 		if(currentChar.getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1 ){
-//			RolePlayStoryDTO rp = Nexus.getCurrentChar().getStory().getNextStepID();
 			Long rp = Nexus.getCurrentChar().getStory().getNextStepID();
 			saveNextStep(rp);
 		}
-
 	}
 
 	/******************************** THIS ********************************/
@@ -196,6 +173,7 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 		double xOffset = 62;
 		double yOffset = 14;
 
+		// set postion and size from textarea
 		if(rpChar.getStory().getxPosText() != null &&
 				rpChar.getStory().getyPosText() != null &&
 				rpChar.getStory().getWidthText() != null &&
@@ -212,17 +190,16 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 			taStoryText.setPrefSize(778,438);
 		}
 
+		// fade text from labHeader if step is story or chapter
 		if(rpChar.getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1){
 			taStoryText.setVisible(true);
 			labHeader.setVisible(false);
-			//btPreview.setVisible(true);
 
 			taStoryText.setText(rpChar.getStory().getStoryText());
 
 		} else {
 			taStoryText.setVisible(false);
 
-//			if(rpChar.getStory().getStoryImage() == null || rpChar.getStory().getStoryImage().isEmpty()) {
 			labHeader.setEffect(new DropShadow(20, Color.BLACK));
 			Boolean animationPlayed = animationPlayedMap.get(Nexus.getCurrentChar().getStory().getId());
 			if (animationPlayed == null || !animationPlayed) {
@@ -230,44 +207,25 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 			}
 			labHeader.setVisible(true);
 			labHeader.setText(rpChar.getStory().getStoryName());
-//			} else {
-//				labHeader.setVisible(false);
-//			}
 		}
 
-		if (rpChar.getStory().getStoryIntro() == null) {
+		// set story image
+		Image im = BORolePlayStory.getRPG_Image(rpChar.getStory());
+		backgroundImage.setImage(im);
 
-
-			String imURL;
-
-			// Check step for own image. If now own image availabale use default image
-			if (rpChar.getStory().getStoryImage() != null) {
-				imURL = BORolePlayStory.getRPG_ResourceURL() + "/" + rpChar.getStory().getId().toString() + "/" + rpChar.getStory().getStoryImage();
-
-			} else {
-				imURL = BORolePlayStory.getRPG_BasicURL() + "/defaultImage.png";
-
-			}
-
-			Image im = new Image(imURL);
-			ivIntro.setImage(im);
-			Boolean animationPlayed = animationPlayedMap.get(Nexus.getCurrentChar().getStory().getId());
-			if (animationPlayed == null || !animationPlayed) {
-				ivIntro.setOpacity(0.0);
-			}
-			//ivIntro.setFitHeight(450);
-
-			if (rpChar.getStory().getStoryMP3() != null) {
-				try {
-					URL url = new URL(BORolePlayStory.getRPG_ResourceURL() + "/" + rpChar.getStory().getId().toString() + "/" + rpChar.getStory().getStoryMP3());
-					//C3SoundPlayer.play(url, false);
-				} catch (MalformedURLException e) {
-					e.printStackTrace();
-				}
-			}
-
-		} else {
-			//TODO: show and play intro
+		Boolean animationPlayed = animationPlayedMap.get(Nexus.getCurrentChar().getStory().getId());
+		if (animationPlayed == null || !animationPlayed) {
+			backgroundImage.setOpacity(0.0);
 		}
-	}
+
+		// play sound
+		if (rpChar.getStory().getStoryMP3() != null) {
+			try {
+				URL url = new URL(BORolePlayStory.getRPG_ResourceURL() + "/" + rpChar.getStory().getId().toString() + "/" + rpChar.getStory().getStoryMP3());
+				//C3SoundPlayer.play(url, false);
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			}
+		}
+	} //getStoryValues
 }

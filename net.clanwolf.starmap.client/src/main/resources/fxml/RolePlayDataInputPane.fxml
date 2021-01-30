@@ -28,7 +28,7 @@
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>
       </Button>
-      <ImageView fx:id="rpImage" fitHeight="485.0" fitWidth="785.0" layoutX="58.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="backgroundImage" fitHeight="485.0" fitWidth="785.0" layoutX="58.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true">
          <viewport>
             <Rectangle2D height="485.0" width="785.0" />
          </viewport></ImageView>

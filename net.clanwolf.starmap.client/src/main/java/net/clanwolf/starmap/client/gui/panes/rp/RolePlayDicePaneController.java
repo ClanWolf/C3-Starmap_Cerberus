@@ -58,8 +58,8 @@ public class RolePlayDicePaneController extends AbstractC3RolePlayController imp
 	@FXML
 	private AnchorPane anchorPane;
 
-	@FXML
-	private ImageView rpImage;
+	//@FXML
+	//private ImageView rpImage;
 
 	@FXML
 	private ImageView ivDice1;
@@ -110,10 +110,6 @@ public class RolePlayDicePaneController extends AbstractC3RolePlayController imp
 
 		Class<IconList> c = IconList.class;
 		allDice = new Image[6];
-
-//
-
-
 
 		allDice[0] = new Image(this.getClass().getResourceAsStream("/images/dice/d6_1.png"));
 		allDice[1] = new Image(this.getClass().getResourceAsStream("/images/dice/d6_2.png"));
@@ -182,7 +178,6 @@ public class RolePlayDicePaneController extends AbstractC3RolePlayController imp
 	@FXML
 	private void handleOnActionNextStep(){
 
-//		RolePlayStoryDTO rp = null;
 		Long rp = null;
 
 		if(Nexus.getCurrentChar().getStory().getVar4ID().getScore() == diceResult){
@@ -201,20 +196,9 @@ public class RolePlayDicePaneController extends AbstractC3RolePlayController imp
 	/******************************** THIS ********************************/
 	@Override
 	public void getStoryValues(RolePlayCharacterDTO rpChar) {
-		if (rpChar.getStory().getStoryIntro() == null) {
-			String imURL;
-
-			// Check step for own image. If now own image available use default image
-			if (rpChar.getStory().getStoryImage() != null) {
-				imURL = BORolePlayStory.getRPG_ResourceURL() + "/" + rpChar.getStory().getId().toString() + "/" + rpChar.getStory().getStoryImage();
-				Image im = new Image(imURL);
-				rpImage.setImage(im);
-			} else {
-				InputStream isBackground = this.getClass().getResourceAsStream("/images/gui/default_Step.png");
-				rpImage.setImage(new Image(isBackground));
-			}
-		}
-
+		// set story image
+		Image im = BORolePlayStory.getRPG_Image(rpChar.getStory());
+		backgroundImage.setImage(im);
 		taRpText.setText(rpChar.getStory().getStoryText());
 	}
 }

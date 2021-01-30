@@ -67,8 +67,8 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 	@FXML
 	private AnchorPane anchorPane;
 
-	@FXML
-	private ImageView rpIBackgroundImage;
+	//@FXML
+	//private ImageView rpIBackgroundImage;
 
 	@FXML
 	private TextArea taStoryText;
@@ -525,7 +525,10 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 		attempts = rpChar.getStory().getVar6ID().getAttempts();
 		maxDigits = sSecretCode.length();
 
-		if (rpChar.getStory().getStoryImage() != null) {
+		Image im = BORolePlayStory.getRPG_Image(rpChar.getStory());
+		backgroundImage.setImage(im);
+
+		/*if (rpChar.getStory().getStoryImage() != null) {
 			String imURL;
 			imURL = BORolePlayStory.getRPG_ResourceURL() + "/" + rpChar.getStory().getId().toString() + "/" + rpChar.getStory().getStoryImage();
 			Image im = new Image(imURL);
@@ -533,7 +536,7 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 		} else {
 			InputStream isBackground = this.getClass().getResourceAsStream("/images/gui/default_Step.png");
 			rpIBackgroundImage.setImage(new Image(isBackground));
-		}
+		}*/
 
 	}
 }
