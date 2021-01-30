@@ -105,10 +105,12 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 	public void clearCache() {
 		C3Logger.info("Clearing cache!");
 		String cacheFolderName = System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "cache";
-		Tools.purgeDirectory(new File(cacheFolderName));
+		File f = new File(cacheFolderName);
+		f.mkdirs();
+		Tools.purgeDirectory(f);
 		C3Logger.info("The following files were left over (could not be deleted):");
 		C3Logger.info("--- [start]");
-		Tools.listDirectory(new File(cacheFolderName));
+		Tools.listDirectory(f);
 		C3Logger.info("--- [end]");
 	}
 
@@ -116,10 +118,12 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 		long numberOfDays = 90;
 		C3Logger.info("Cleaning cache (cleaning files older than " + numberOfDays + " days)!");
 		String cacheFolderName = System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "cache";
-		Tools.cleanDirectory(new File(cacheFolderName), numberOfDays);
+		File f = new File(cacheFolderName);
+		f.mkdirs();
+		Tools.cleanDirectory(f, numberOfDays);
 		C3Logger.info("The following files were left over (could not be deleted or were younger than " + numberOfDays + " days):");
 		C3Logger.info("--- [start]");
-		Tools.listDirectory(new File(cacheFolderName));
+		Tools.listDirectory(f);
 		C3Logger.info("--- [end]");
 	}
 

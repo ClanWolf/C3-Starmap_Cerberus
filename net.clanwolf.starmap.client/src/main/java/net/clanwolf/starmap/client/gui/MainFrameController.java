@@ -839,7 +839,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	}
 
 	private void setToLevelLoggedOutText() {
-		final String[] topTexts = {"1// Communicate", "", "2// Command", "", "3// Conrol", ""};
+		final String[] topTexts = {"1// Communicate", "", "2// Command", "", "3// Control", ""};
 		Runnable r = () -> {
 			int i = 0;
 			while (!Nexus.isLoggedIn()) {

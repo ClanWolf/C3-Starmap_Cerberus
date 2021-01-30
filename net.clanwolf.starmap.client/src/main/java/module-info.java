@@ -3,6 +3,9 @@ module net.clanwolf.starmap.client {
 	requires net.clanwolf.starmap.logging;
 	requires net.clanwolf.starmap.client.preloader;
 
+	requires jdk.crypto.ec;
+	requires jdk.crypto.cryptoki;
+
 	requires io.nadron.client;
 
 	requires tektosyne;

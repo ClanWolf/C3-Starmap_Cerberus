@@ -31,8 +31,13 @@ import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.client.util.C3PROPS;
 import net.clanwolf.starmap.client.util.C3Properties;
 
+import javax.net.ssl.*;
 import java.io.*;
 import java.net.*;
+import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
+import java.util.Properties;
 
 /**
  * Provides http functionality
@@ -94,37 +99,63 @@ public abstract class HTTP {
 
 	/**
 	 * Get
-	 *
-	 * @param host     The host
-	 * @param encoding Encoding string
-	 * @return byte[] The result
 	 */
-	public static byte[] get(URL host, String encoding) throws IOException {
-		HttpURLConnection connection = null;
+	public static byte[] get(URL url, String encoding) throws IOException {
+		HttpsURLConnection conn = null;
 
+		// ERROR: java 11 ssl handshake failure
+		// https://stackoverflow.com/questions/57601284/java-11-and-12-ssl-sockets-fail-on-a-handshake-failure-error-with-tlsv1-3-enable
+		// Solution:
+		//      had to add
+		//      requires jdk.crypto.ec;
+		//      requires jdk.crypto.cryptoki;
+		//      into module-info.java
+
+		// Solution:
+		//      https://stackoverflow.com/questions/54770538/received-fatal-alert-handshake-failure-in-jlinked-jre
+
+		// Install the all-trusting trust manager
 		try {
+
+			// configure the SSLContext with a TrustManager
+			SSLContext ctx = SSLContext.getInstance("TLS");
+			ctx.init(new KeyManager[0], new TrustManager[] {new DefaultTrustManager()}, new SecureRandom());
+			SSLContext.setDefault(ctx);
+
+			Properties props = System.getProperties();
+			props.setProperty("jdk.internal.httpclient.disableHostnameVerification", "true");
+
 			if (C3Properties.getBoolean(C3PROPS.USE_PROXY)) {
+				//C3Logger.warning("Using proxy.");
 				String proxyHost = C3Properties.getProperty(C3PROPS.PROXY_SERVER);
 				int proxyPort = C3Properties.getInt(C3PROPS.PROXY_PORT);
 				Proxy p = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost, proxyPort));
-				connection = (HttpURLConnection) host.openConnection(p);
-				// Log.info("Using proxy");
+				conn = (HttpsURLConnection) url.openConnection(p);
 			} else {
-				connection = (HttpURLConnection) host.openConnection();
-				// Log.info("Using NO proxy");
+				//C3Logger.warning("Using NO proxy.");
+				conn = (HttpsURLConnection) url.openConnection();
 			}
 
-			connection.setDoOutput(true);
-			connection.setDoInput(true);
-			connection.setUseCaches(false); // get info fresh from server
-			connection.setRequestProperty("Content-type", "text/plain");
+			conn.setHostnameVerifier(new HostnameVerifier() {
+				@Override
+				public boolean verify(String arg0, SSLSession arg1) {
+					return true;
+				}
+			});
+
+			conn.setDoOutput(true);
+			conn.setDoInput(true);
+			conn.setUseCaches(false); // get info fresh from server
+			conn.setRequestProperty("Content-type", "text/plain");
 
 			// connect to Server
-			connection.connect();
+			//C3Logger.warning("Connecting.");
+			conn.connect();
 
-			checkResponseCode(connection);
+			checkResponseCode(conn);
+
 			ByteArrayOutputStream baos;
-			try (InputStream is = connection.getInputStream()) {
+			try (InputStream is = conn.getInputStream()) {
 				byte[] buffer = new byte[10 * 1024];
 				int read = is.read(buffer);
 				baos = new ByteArrayOutputStream();
@@ -134,21 +165,27 @@ public abstract class HTTP {
 				}
 			}
 
-			checkResponseCode(connection);
+			checkResponseCode(conn);
 			return baos.toByteArray();
 
 		} catch (IOException e) {
+			e.printStackTrace();
 			throw e;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
 		} finally {
-			if (connection != null) {
-				connection.disconnect();
-			} // if
-		} // try
+			if (conn != null) {
+				conn.disconnect();
+			}
+		}
 	}
 
 	private static void checkResponseCode(HttpURLConnection connection) throws IOException {
 		if (connection.getResponseCode() / 100 != 2) {
 			C3Logger.warning("WARNING: " + connection.getResponseCode());
+		} else {
+			//C3Logger.warning("Connection response: " + connection.getResponseCode());
 		}
 	}
 
@@ -263,6 +300,19 @@ public abstract class HTTP {
 			//System.out.println(i.toString());
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	private static class DefaultTrustManager implements X509TrustManager {
+		@Override
+		public void checkClientTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {}
+
+		@Override
+		public void checkServerTrusted(X509Certificate[] arg0, String arg1) throws CertificateException {}
+
+		@Override
+		public X509Certificate[] getAcceptedIssuers() {
+			return null;
 		}
 	}
 }

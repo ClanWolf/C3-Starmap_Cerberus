@@ -98,6 +98,21 @@ Section "C3-Client (required)"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\jdk.jsobject\ASSEMBLY_EXCEPTION"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\jdk.jsobject\ADDITIONAL_LICENSE_INFO"
 
+	CreateDirectory $INSTDIR\legal\jdk.crypto.ec
+	SetOutpath $INSTDIR\legal\jdk.crypto.ec
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\jdk.crypto.ec\LICENSE"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\jdk.crypto.ec\ecc.md"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\jdk.crypto.ec\ASSEMBLY_EXCEPTION"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\jdk.crypto.ec\ADDITIONAL_LICENSE_INFO"
+
+	CreateDirectory $INSTDIR\legal\jdk.crypto.cryptoki
+	SetOutpath $INSTDIR\legal\jdk.crypto.cryptoki
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\jdk.crypto.cryptoki\pkcs11wrapper.md"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\jdk.crypto.cryptoki\pkcs11cryptotoken.md"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\jdk.crypto.cryptoki\LICENSE"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\jdk.crypto.cryptoki\ASSEMBLY_EXCEPTION"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\jdk.crypto.cryptoki\ADDITIONAL_LICENSE_INFO"
+
 	CreateDirectory $INSTDIR\legal\java.xml
 	SetOutpath $INSTDIR\legal\java.xml
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.xml\xerces.md"
@@ -237,6 +252,7 @@ Section "C3-Client (required)"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\vcruntime140_1.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\vcruntime140.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\ucrtbase.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\sunec.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\splashscreen.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\prefs.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\nio.dll"
@@ -255,6 +271,7 @@ Section "C3-Client (required)"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\javajpeg.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\java.exe"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\java.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\j2pkcs11.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\instrument.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\freetype.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\fontmanager.dll"
@@ -369,6 +386,15 @@ Section "Uninstall"
 	Delete $INSTDIR\legal\jdk.jsobject\LICENSE
 	Delete $INSTDIR\legal\jdk.jsobject\ASSEMBLY_EXCEPTION
 	Delete $INSTDIR\legal\jdk.jsobject\ADDITIONAL_LICENSE_INFO
+	Delete $INSTDIR\legal\jdk.crypto.ec\LICENSE
+	Delete $INSTDIR\legal\jdk.crypto.ec\ecc.md
+	Delete $INSTDIR\legal\jdk.crypto.ec\ASSEMBLY_EXCEPTION
+	Delete $INSTDIR\legal\jdk.crypto.ec\ADDITIONAL_LICENSE_INFO
+	Delete $INSTDIR\legal\jdk.crypto.cryptoki\pkcs11wrapper.md
+	Delete $INSTDIR\legal\jdk.crypto.cryptoki\pkcs11cryptotoken.md
+	Delete $INSTDIR\legal\jdk.crypto.cryptoki\LICENSE
+	Delete $INSTDIR\legal\jdk.crypto.cryptoki\ASSEMBLY_EXCEPTION
+	Delete $INSTDIR\legal\jdk.crypto.cryptoki\ADDITIONAL_LICENSE_INFO
 	Delete $INSTDIR\legal\java.xml\xerces.md
 	Delete $INSTDIR\legal\java.xml\xalan.md
 	Delete $INSTDIR\legal\java.xml\LICENSE
@@ -449,6 +475,7 @@ Section "Uninstall"
 	Delete $INSTDIR\bin\vcruntime140_1.dll
 	Delete $INSTDIR\bin\vcruntime140.dll
 	Delete $INSTDIR\bin\ucrtbase.dll
+	Delete $INSTDIR\bin\sunec.dll
 	Delete $INSTDIR\bin\splashscreen.dll
 	Delete $INSTDIR\bin\prefs.dll
 	Delete $INSTDIR\bin\nio.dll
@@ -467,6 +494,7 @@ Section "Uninstall"
 	Delete $INSTDIR\bin\javajpeg.dll
 	Delete $INSTDIR\bin\java.exe
 	Delete $INSTDIR\bin\java.dll
+	Delete $INSTDIR\bin\j2pkcs11.dll
 	Delete $INSTDIR\bin\instrument.dll
 	Delete $INSTDIR\bin\freetype.dll
 	Delete $INSTDIR\bin\fontmanager.dll
@@ -542,6 +570,8 @@ Section "Uninstall"
 	RMDir "$INSTDIR\legal\java.sql"
 	RMDir "$INSTDIR\legal\java.transaction.xa"
 	RMDir "$INSTDIR\legal\java.xml"
+	RMDir "$INSTDIR\legal\jdk.crypto.cryptoki"
+	RMDir "$INSTDIR\legal\jdk.crypto.ec"
 	RMDir "$INSTDIR\legal\jdk.jsobject"
 	RMDir "$INSTDIR\legal\jdk.unsupported"
 	RMDir "$INSTDIR\legal\jdk.xml.dom"
