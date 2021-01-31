@@ -39,6 +39,7 @@ import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3RolePlayController;
+import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
 import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
@@ -183,9 +184,13 @@ public class RolePlayChoicePaneController extends AbstractC3RolePlayController i
 			rpImage.setImage(im2);
 		}
 
+		// play sound
+		if (rpChar.getStory().getStoryMP3() != null) {
+			C3SoundPlayer.play(BORolePlayStory.getRPG_Soundfile(rpChar.getStory()), false);
+		}
+
 		//TODO: append single chars step by step until the whole text is displaying
 		taRpText.setText(rpChar.getStory().getStoryText());
-
 
 		if(rpChar.getStory().getVar2ID() != null) {
 

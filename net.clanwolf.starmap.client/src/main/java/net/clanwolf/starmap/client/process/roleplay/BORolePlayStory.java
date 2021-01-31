@@ -47,6 +47,8 @@ import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
 import java.io.File;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -139,18 +141,41 @@ public class BORolePlayStory {
 	 */
 	public static Image getRPG_Image(RolePlayStoryDTO rp){
 	    try {
-			    if(rp == null || rp.getStoryImage() == null || "".equals(rp.getStoryImage())){
-				    InputStream defaultImageStream = BORolePlayStory.getInstance().getClass().getResourceAsStream("/images/gui/default_Step.png");
-				    return new Image(defaultImageStream);
-			    }
+	    	 // if no image exists return the default image
+			 if(rp == null || rp.getStoryImage() == null || "".equals(rp.getStoryImage())){
+			    return getRPG_DefaultImage();
+		     }
+			 // load rpg image
+	         String imagePath = getRPG_ResourceURL() + "/" + rp.getId();
+			 return  HTTP.getCachedImage(rp.getStoryImage(),imagePath);
 
-		        String imagePath = getRPG_ResourceURL() + "/" + rp.getId();
-				return  HTTP.getCachedImage(rp.getStoryImage(),imagePath);
-			} catch (Exception e) {
-	    	    //TODO: throw exception
-				e.printStackTrace();
-			}
-        return null;
+	    } catch (Exception e) {
+	    	// if an error occurs return the default image
+	    	C3Logger.info("Error by loading RPG image! " + e.getMessage());
+		    e.printStackTrace();
+		    return getRPG_DefaultImage();
+	    }
+	}
+
+	/**
+	 * Give the default image back
+	 * @return
+	 */
+	private static Image getRPG_DefaultImage(){
+		InputStream defaultImageStream = BORolePlayStory.getInstance().getClass().getResourceAsStream("/images/gui/default_Step.png");
+		return new Image(defaultImageStream);
+	}
+
+	public static URL getRPG_Soundfile(RolePlayStoryDTO rp){
+		String serverUrl = C3Properties.getProperty(C3PROPS.SERVER_URL);
+		String soundPath = getRPG_ResourceURL() + "/" + rp.getId();
+		try {
+			return new URL(serverUrl + "/" + soundPath + "/" + rp.getStoryMP3());
+		} catch (MalformedURLException e) {
+			C3Logger.info("Error by loading RPG image! " + e.getMessage());
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	/**

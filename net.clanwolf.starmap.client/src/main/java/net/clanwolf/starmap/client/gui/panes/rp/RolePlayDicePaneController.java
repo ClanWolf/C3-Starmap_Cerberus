@@ -199,6 +199,12 @@ public class RolePlayDicePaneController extends AbstractC3RolePlayController imp
 		// set story image
 		Image im = BORolePlayStory.getRPG_Image(rpChar.getStory());
 		backgroundImage.setImage(im);
+
+		// play sound
+		if (rpChar.getStory().getStoryMP3() != null) {
+			C3SoundPlayer.play(BORolePlayStory.getRPG_Soundfile(rpChar.getStory()), false);
+		}
+
 		taRpText.setText(rpChar.getStory().getStoryText());
 	}
 }

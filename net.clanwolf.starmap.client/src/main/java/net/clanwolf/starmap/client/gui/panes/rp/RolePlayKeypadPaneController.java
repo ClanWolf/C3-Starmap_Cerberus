@@ -525,18 +525,13 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 		attempts = rpChar.getStory().getVar6ID().getAttempts();
 		maxDigits = sSecretCode.length();
 
+		// set story image
 		Image im = BORolePlayStory.getRPG_Image(rpChar.getStory());
 		backgroundImage.setImage(im);
 
-		/*if (rpChar.getStory().getStoryImage() != null) {
-			String imURL;
-			imURL = BORolePlayStory.getRPG_ResourceURL() + "/" + rpChar.getStory().getId().toString() + "/" + rpChar.getStory().getStoryImage();
-			Image im = new Image(imURL);
-			rpIBackgroundImage.setImage(im);
-		} else {
-			InputStream isBackground = this.getClass().getResourceAsStream("/images/gui/default_Step.png");
-			rpIBackgroundImage.setImage(new Image(isBackground));
-		}*/
-
+		// play sound
+		if (rpChar.getStory().getStoryMP3() != null) {
+			C3SoundPlayer.play(BORolePlayStory.getRPG_Soundfile(rpChar.getStory()), false);
+		}
 	}
 }

@@ -1669,7 +1669,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 			bOK = boRP.deleteVideo(selected.getValue());
 		}
 
-		if (bOK) C3Logger.debug("Error while upload!");
+		if (!bOK) C3Logger.debug("Error while upload!");
 	}
 
 	/**

@@ -43,6 +43,7 @@ import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3RolePlayController;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
+import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
@@ -191,25 +192,14 @@ public class RolePlayDataInputController extends AbstractC3RolePlayController im
 
 	@Override
 	public void getStoryValues(RolePlayCharacterDTO rpChar) {
-
-
 		// set story image
 		Image im = BORolePlayStory.getRPG_Image(rpChar.getStory());
 		backgroundImage.setImage(im);
 
-		/*if (rpChar.getStory().getStoryIntro() == null) {
-			String imURL;
-
-			// Check step for own image. If now own image availabale use default image
-			if (rpChar.getStory().getStoryImage() != null) {
-				imURL = BORolePlayStory.getRPG_ResourceURL() + "/" + rpChar.getStory().getId().toString() + "/" + rpChar.getStory().getStoryImage();
-				Image im = new Image(imURL);
-				rpImage.setImage(im);
-			} else {
-				InputStream isBackground = this.getClass().getResourceAsStream("/images/gui/default_Step.png");
-				rpImage.setImage(new Image(isBackground));
-			}
-		}*/
+		// play sound
+		if (rpChar.getStory().getStoryMP3() != null) {
+			C3SoundPlayer.play(BORolePlayStory.getRPG_Soundfile(rpChar.getStory()), false);
+		}
 
 		//TODO: append single chars step by step until the whole text is displaying
 		taStoryText.setText(rpChar.getStory().getStoryText());
