@@ -948,7 +948,6 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		mapPane = new MapPane();
 		mapPane.setShowsMouseFollow(false);
 		mapPane.setShowsPlanetRotation(false);
-		mapPane.setCache(true);
 		mapPane.setCacheHint(CacheHint.SPEED);
 		mapPane.getController().addActionCallBackListeners();
 

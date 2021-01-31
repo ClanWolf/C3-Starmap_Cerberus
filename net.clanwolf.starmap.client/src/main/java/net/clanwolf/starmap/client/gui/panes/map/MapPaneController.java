@@ -31,6 +31,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.CacheHint;
 import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
@@ -257,15 +258,20 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 //				style = style + "-fx-background-image:url('";
 //				style = style + image;
 //				style = style + "');-fx-background-position:center center;-fx-background-repeat:repeat;";
-//
 //				mapPane.setStyle(style);
+
 				mapPane.getChildren().add(canvas);
 
-//				SceneGestures sceneGestures = new SceneGestures(canvas);
-//				scene.addEventFilter(MouseEvent.MOUSE_PRESSED, sceneGestures.getOnMousePressedEventHandler());
-//				scene.addEventFilter(MouseEvent.MOUSE_DRAGGED, sceneGestures.getOnMouseDraggedEventHandler());
-//				scene.addEventFilter(ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
-//				canvas.addEventFilter(MouseEvent.MOUSE_MOVED, sceneGestures.getOnMouseMovedEventHandler());
+				Rectangle clip = new Rectangle(600, 300);
+				clip.setLayoutX(0);
+				clip.setLayoutY(0);
+				mapPane.setClip(clip);
+
+				SceneGestures sceneGestures = new SceneGestures(canvas);
+				canvas.addEventFilter(MouseEvent.MOUSE_PRESSED, sceneGestures.getOnMousePressedEventHandler());
+				canvas.addEventFilter(MouseEvent.MOUSE_DRAGGED, sceneGestures.getOnMouseDraggedEventHandler());
+				canvas.addEventFilter(ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
+				canvas.addEventFilter(MouseEvent.MOUSE_MOVED, sceneGestures.getOnMouseMovedEventHandler());
 //
 //				// do this after stage.show in order for the stackpane to have an actual size!
 //				for (BOStarSystem ss : boUniverse.starSystemBOs.values()) {
@@ -275,6 +281,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 //					g.setLayoutY(-sp.getHeight() / 2);
 //				}
 
+				mapPane.toFront();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

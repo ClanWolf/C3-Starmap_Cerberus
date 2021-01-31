@@ -20,7 +20,7 @@
 				<Color red="0.412" green="0.620" blue="0.804" fx:id="x1" />
 			</textFill>
 		</Label>
-      <Pane fx:id="mapPane" layoutX="31.0" layoutY="30.0" prefHeight="381.0" prefWidth="783.0" />
+      <Pane fx:id="mapPane" layoutX="31.0" layoutY="30.0" prefHeight="300.0" prefWidth="600.0" />
 	</children>
 	<stylesheets>
 		<URL value="@../styles/MainFrameStyle.css" />
