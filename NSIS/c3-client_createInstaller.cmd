@@ -18,7 +18,14 @@ ECHO .
 C:
 CD \
 CD C:\C3\projects\C3-Starmap_Cerberus
-"C:\Program Files\Java\jdk-13.0.2\bin\java.exe" -jar C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client.packager\target\net.clanwolf.starmap.client.packager-5.1.7.jar
+
+IF EXIST "C:\Program Files\Java\jdk-15\bin\java.exe" (
+  ECHO Java found
+  "C:\Program Files\Java\jdk-15\bin\java.exe" -jar C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client.packager\target\net.clanwolf.starmap.client.packager-5.2.0.jar
+) ELSE (
+  ECHO Java NOT found
+  GOTO END
+)
 
 REM ###############################################
 REM PAUSE
@@ -37,3 +44,5 @@ makensis.exe /V4 /INPUTCHARSET utf8 /OUTPUTCHARSET utf8 c3-client.nsi
 REM ###############################################
 REM PAUSE
 REM ###############################################
+
+:END

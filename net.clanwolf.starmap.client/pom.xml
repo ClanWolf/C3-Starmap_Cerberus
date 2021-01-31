@@ -8,7 +8,7 @@
 	<parent>
 		<artifactId>C3-Starmap_Cerberus</artifactId>
 		<groupId>net.clanwolf.starmap</groupId>
-		<version>5.1.7</version>
+		<version>5.2.0</version>
 	</parent>
 
 	<artifactId>net.clanwolf.starmap.client</artifactId>
@@ -91,7 +91,7 @@
         <dependency>
             <groupId>net.clanwolf.starmap</groupId>
             <artifactId>net.clanwolf.starmap.server</artifactId>
-            <version>5.1.7</version>
+            <version>5.2.0</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.jboss.spec.javax.transaction</groupId>
@@ -146,6 +146,22 @@
 	<!-- https://github.com/moditect/moditect#adding-module-descriptors-to-existing-jar-files -->
 
 	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>**/version.number</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+				<excludes>
+					<exclude>**/version.number</exclude>
+				</excludes>
+			</resource>
+		</resources>
 		<extensions>
 			<extension>
 				<groupId>kr.motd.maven</groupId>

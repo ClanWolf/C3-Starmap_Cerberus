@@ -4,7 +4,7 @@ import java.io.*;
 
 public class NSICreator {
 
-	private static String version = "5.1.7";
+	private static String version = "5.2.0";
 
 	private void writeLine(BufferedWriter bw, String text) throws Exception {
 		bw.write(text);
