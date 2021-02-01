@@ -60,6 +60,10 @@ public abstract class AbstractC3Controller implements Initializable, ActionCallB
 	@FXML
 	private AnchorPane anchorPane;
 
+	// TODO: Make this abstract!
+//	@FXML
+//	private ImageView templateBackground;
+
 	private void createGeneralControls() {
 
 		InputStream is = this.getClass().getResourceAsStream("/icons/alert.png");
@@ -124,6 +128,8 @@ public abstract class AbstractC3Controller implements Initializable, ActionCallB
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		createGeneralControls();
+		// TODO: Make this abstract!
+//		templateBackground.setVisible(false);
 	}
 
 	/**

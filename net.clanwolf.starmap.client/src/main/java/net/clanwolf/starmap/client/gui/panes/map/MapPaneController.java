@@ -32,7 +32,9 @@ import javafx.geometry.Insets;
 import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -78,6 +80,15 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	@FXML
 	Pane starMapPane;
 
+	@FXML
+	private ImageView templateBackground;
+
+	@FXML
+	private Button MapButton01;
+
+	@FXML
+	private Button MapButton02;
+
 	/**
 	 * Adds action callback listeners.
 	 */
@@ -100,6 +111,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		super.initialize(url, rb);
+		templateBackground.setVisible(false);
 	}
 
 	/**
@@ -255,8 +267,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 				starMapPane.getChildren().add(canvas);
 
-				Rectangle clip = new Rectangle(776, 441);
-				//Rectangle clip = new Rectangle(376, 251);
+//				Rectangle clip = new Rectangle(776, 441);
+				Rectangle clip = new Rectangle(776, 471);
 				clip.setLayoutX(0);
 				clip.setLayoutY(0);
 				starMapPane.setClip(clip);
@@ -276,7 +288,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					g.setLayoutY(-sp.getHeight() / 2);
 				}
 
-//				mapPane.toFront();
+				MapButton01.toFront();
+				MapButton02.toFront();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

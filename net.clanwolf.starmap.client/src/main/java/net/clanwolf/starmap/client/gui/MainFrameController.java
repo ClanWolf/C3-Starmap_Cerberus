@@ -471,6 +471,12 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		String spokenMessage = Internationalization.getString("C3_Speech_close_warning");
 		setStatusText(Internationalization.getString("C3_Speech_close_warning").replace("%20", " ") + ".", false);
 		targetPane = confirmAppClosePane;
+		if (!adminMenuActive) {
+			showMenuIndicator(true);
+		}
+		menuIndicatorPos = 376;
+		moveMenuIndicator(menuIndicatorPos);
+		adminPaneOpen = false;
 		openTargetPane(targetPane, spokenMessage);
 	}
 
