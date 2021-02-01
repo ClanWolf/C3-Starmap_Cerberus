@@ -355,6 +355,12 @@
     -fx-padding: 0 0 0 0;
 }
 
+.mapPane {
+	-fx-background-image: url('../images/map/background.jpg');
+	-fx-background-position: center center;
+	-fx-background-repeat: repeat;
+}
+
 .RPStoriesButton {
     -fx-background-image: url("../icons/rpstories.png");
     -fx-background-repeat: no-repeat;

@@ -137,7 +137,8 @@ public class PannableCanvas extends Pane {
 
 				Circle c = new Circle(x, y, size);
 				c.setStrokeWidth(0);
-				c.setFill(Color.WHITESMOKE.deriveColor(1, 1, 1, 0.4));
+				//c.setFill(Color.WHITESMOKE.deriveColor(1, 1, 1, 0.4));
+				c.setFill(Color.WHITESMOKE.deriveColor(1, 1, 1, 0.8));
 				l.add(c);
 				starPane.getChildren().add(c);
 			}

@@ -55,7 +55,7 @@ public class Config {
 
 	// Background stars
 	public static final int BACKGROUND_STARS_MAX_SIZE = 4;
-	public static final int BACKGROUND_STARS_LAYERS[][] = {{1, 300, 1}, {2, 200, 2}, {3, 100, 4}}; // level, number of stars, moving factor
+	public static final int BACKGROUND_STARS_LAYERS[][] = {{1, 200, 1}, {2, 300, 2}, {3, 300, 4}}; // level, number of stars, moving factor
 
 	private Config() {
 		// private constructor

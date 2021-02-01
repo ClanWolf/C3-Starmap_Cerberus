@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.net.URL?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.paint.Color?>
@@ -9,6 +12,11 @@
 
 <AnchorPane id="LoginPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.map.MapPaneController">
 	<children>
+      <ImageView fx:id="templateBackground" fitHeight="567.0" fitWidth="944.0" layoutX="-70.0" layoutY="-22.0" mouseTransparent="true" opacity="0.74" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/template_bg.png" />
+         </image>
+      </ImageView>
 		<Label fx:id="panelHeadline" alignment="BASELINE_RIGHT" contentDisplay="CENTER" layoutX="14.0" layoutY="375.0" mouseTransparent="true" opacity="0.12" prefWidth="794.0" text="STARMAP">
 			<font>
 				<Font name="Arial Bold" size="80.0" />
@@ -20,7 +28,8 @@
 				<Color red="0.412" green="0.620" blue="0.804" fx:id="x1" />
 			</textFill>
 		</Label>
-      <Pane fx:id="mapPane" layoutX="31.0" layoutY="30.0" prefHeight="300.0" prefWidth="600.0" />
+      <Pane fx:id="mapPane" cache="true" cacheHint="SPEED" depthTest="DISABLE" layoutX="63.0" layoutY="15.0" prefHeight="441.0" prefWidth="776.0" styleClass="mapPane" stylesheets="@../styles/MainFrameStyle.css" />
+      <Button layoutX="72.0" layoutY="462.0" mnemonicParsing="false" text="Button" />
 	</children>
 	<stylesheets>
 		<URL value="@../styles/MainFrameStyle.css" />

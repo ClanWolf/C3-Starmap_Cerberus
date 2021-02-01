@@ -253,35 +253,30 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				canvas.getChildren().add(attacksPane);
 				attacksPane.toBack();
 
-//				String image = "images/map/background.jpg";
-//				String style = "";
-//				style = style + "-fx-background-image:url('";
-//				style = style + image;
-//				style = style + "');-fx-background-position:center center;-fx-background-repeat:repeat;";
-//				mapPane.setStyle(style);
-
 				mapPane.getChildren().add(canvas);
 
-				Rectangle clip = new Rectangle(600, 300);
+				Rectangle clip = new Rectangle(776, 441);
+				//Rectangle clip = new Rectangle(376, 251);
 				clip.setLayoutX(0);
 				clip.setLayoutY(0);
 				mapPane.setClip(clip);
+				mapPane.setPickOnBounds(false);
 
 				SceneGestures sceneGestures = new SceneGestures(canvas);
-				canvas.addEventFilter(MouseEvent.MOUSE_PRESSED, sceneGestures.getOnMousePressedEventHandler());
-				canvas.addEventFilter(MouseEvent.MOUSE_DRAGGED, sceneGestures.getOnMouseDraggedEventHandler());
-				canvas.addEventFilter(ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
-				canvas.addEventFilter(MouseEvent.MOUSE_MOVED, sceneGestures.getOnMouseMovedEventHandler());
-//
-//				// do this after stage.show in order for the stackpane to have an actual size!
-//				for (BOStarSystem ss : boUniverse.starSystemBOs.values()) {
-//					StackPane sp = ss.getStarSystemStackPane();
-//					Group g = ss.getStarSystemGroup();
-//					g.setLayoutX(-sp.getWidth() / 2);
-//					g.setLayoutY(-sp.getHeight() / 2);
-//				}
+				mapPane.addEventFilter(MouseEvent.MOUSE_PRESSED, sceneGestures.getOnMousePressedEventHandler());
+				mapPane.addEventFilter(MouseEvent.MOUSE_DRAGGED, sceneGestures.getOnMouseDraggedEventHandler());
+				mapPane.addEventFilter(ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
+				mapPane.addEventFilter(MouseEvent.MOUSE_MOVED, sceneGestures.getOnMouseMovedEventHandler());
 
-				mapPane.toFront();
+				// do this after stage.show in order for the stackpane to have an actual size!
+				for (BOStarSystem ss : boUniverse.starSystemBOs.values()) {
+					StackPane sp = ss.getStarSystemStackPane();
+					Group g = ss.getStarSystemGroup();
+					g.setLayoutX(-sp.getWidth() / 2);
+					g.setLayoutY(-sp.getHeight() / 2);
+				}
+
+//				mapPane.toFront();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
