@@ -28,7 +28,7 @@
 				<Color red="0.412" green="0.620" blue="0.804" fx:id="x1" />
 			</textFill>
 		</Label>
-      <Pane fx:id="mapPane" cache="true" cacheHint="SPEED" depthTest="DISABLE" layoutX="63.0" layoutY="15.0" prefHeight="441.0" prefWidth="776.0" styleClass="mapPane" stylesheets="@../styles/MainFrameStyle.css" />
+      <Pane fx:id="starMapPane" cache="true" cacheHint="SPEED" depthTest="DISABLE" layoutX="63.0" layoutY="15.0" prefHeight="441.0" prefWidth="776.0" styleClass="mapPane" stylesheets="@../styles/MainFrameStyle.css" />
       <Button layoutX="72.0" layoutY="462.0" mnemonicParsing="false" text="Button" />
 	</children>
 	<stylesheets>

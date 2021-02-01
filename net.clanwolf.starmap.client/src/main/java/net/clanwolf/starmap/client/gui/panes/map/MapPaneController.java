@@ -76,7 +76,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	AnchorPane anchorPane;
 
 	@FXML
-	Pane mapPane;
+	Pane starMapPane;
 
 	/**
 	 * Adds action callback listeners.
@@ -253,20 +253,20 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				canvas.getChildren().add(attacksPane);
 				attacksPane.toBack();
 
-				mapPane.getChildren().add(canvas);
+				starMapPane.getChildren().add(canvas);
 
 				Rectangle clip = new Rectangle(776, 441);
 				//Rectangle clip = new Rectangle(376, 251);
 				clip.setLayoutX(0);
 				clip.setLayoutY(0);
-				mapPane.setClip(clip);
-				mapPane.setPickOnBounds(false);
+				starMapPane.setClip(clip);
+				starMapPane.setPickOnBounds(false);
 
 				SceneGestures sceneGestures = new SceneGestures(canvas);
-				mapPane.addEventFilter(MouseEvent.MOUSE_PRESSED, sceneGestures.getOnMousePressedEventHandler());
-				mapPane.addEventFilter(MouseEvent.MOUSE_DRAGGED, sceneGestures.getOnMouseDraggedEventHandler());
-				mapPane.addEventFilter(ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
-				mapPane.addEventFilter(MouseEvent.MOUSE_MOVED, sceneGestures.getOnMouseMovedEventHandler());
+				starMapPane.addEventFilter(MouseEvent.MOUSE_PRESSED, sceneGestures.getOnMousePressedEventHandler());
+				starMapPane.addEventFilter(MouseEvent.MOUSE_DRAGGED, sceneGestures.getOnMouseDraggedEventHandler());
+				starMapPane.addEventFilter(ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
+				starMapPane.addEventFilter(MouseEvent.MOUSE_MOVED, sceneGestures.getOnMouseMovedEventHandler());
 
 				// do this after stage.show in order for the stackpane to have an actual size!
 				for (BOStarSystem ss : boUniverse.starSystemBOs.values()) {
