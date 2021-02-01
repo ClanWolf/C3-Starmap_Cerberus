@@ -35,7 +35,7 @@ public class C3Formatter extends Formatter {
 	@Override
 	public String format(LogRecord record) {
 		// String id = String.format("%04d", record.getThreadID());
-		SimpleDateFormat dt1 = new SimpleDateFormat("MM/d*HH:mm:ss");
+		SimpleDateFormat dt1 = new SimpleDateFormat("MM/dd*HH:mm:ss");
 		return ""
 				// + "[" + id + "] "
 				+ dt1.format(new Date(record.getMillis()))
