@@ -326,14 +326,6 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				starMapPane.addEventFilter(ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
 				starMapPane.addEventFilter(MouseEvent.MOUSE_MOVED, sceneGestures.getOnMouseMovedEventHandler());
 
-				// do this after stage.show in order for the stackpane to have an actual size!
-				for (BOStarSystem ss : boUniverse.starSystemBOs.values()) {
-					StackPane sp = ss.getStarSystemStackPane();
-					Group g = ss.getStarSystemGroup();
-					g.setLayoutX(-sp.getWidth() / 2);
-					g.setLayoutY(-sp.getHeight() / 2);
-				}
-
 				mapButton01.toFront();
 				mapButton02.toFront();
 			} catch (Exception e) {
@@ -377,6 +369,20 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 		C3SoundPlayer.play("sound/fx/PremiumBeat_0013_cursor_click_11.wav", false);
 	}
+
+	private void centerStarSystemGroups() {
+		// this needs to be done after the stage is actually visible (stage.show)
+		// in order for the stackpane to have an actual size.
+		// Otherwise StarSystemGroups appear of from their real coordinates.
+		// Moved slightly to right and to the bottom
+		for (BOStarSystem ss : boUniverse.starSystemBOs.values()) {
+			StackPane sp = ss.getStarSystemStackPane();
+			Group g = ss.getStarSystemGroup();
+			g.setLayoutX(-sp.getWidth() / 2);
+			g.setLayoutY(-sp.getHeight() / 2);
+		}
+	}
+
 	/**
 	 * Handles actions.
 	 *
@@ -430,6 +436,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					AbstractC3Pane p = (AbstractC3Pane) o.getObject();
 					if ("MapPane".equals(p.getPaneName())) {
 						buildGuiEffect();
+						centerStarSystemGroups();
 					}
 				}
 				break;

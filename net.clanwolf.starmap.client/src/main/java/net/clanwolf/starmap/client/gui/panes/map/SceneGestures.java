@@ -29,6 +29,7 @@ package net.clanwolf.starmap.client.gui.panes.map;
 import javafx.event.EventHandler;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import net.clanwolf.starmap.logging.C3Logger;
 
 class SceneGestures {
 	private double previousX;
@@ -60,9 +61,9 @@ class SceneGestures {
 	private EventHandler<MouseEvent> onMouseMovedEventHandler = event -> {
 		// TODO: Do something with hovered coordinates
 		// Fire an action to inform the surrounding frame about the currently hovered universe coordinates
-		// double universeX = getUniverseX(event.getX());
-		// double universeY = getUniverseX(event.getY());
-		// System.out.println("[" + universeX + ", " + universeY + "]");
+		//		double universeX = getUniverseX(event.getX());
+		//		double universeY = getUniverseX(event.getY());
+		//		C3Logger.info("[" + universeX + ", " + universeY + "]");
 	};
 
 	private EventHandler<MouseEvent> onMousePressedEventHandler = new EventHandler<MouseEvent>() {
@@ -71,6 +72,13 @@ class SceneGestures {
 
 			if (event.isPrimaryButtonDown()) {
 				canvas.hideStarSystemMarker();
+
+//				double universeX = getUniverseX(event.getX());
+//				double universeY = getUniverseY(event.getY());
+//				C3Logger.info("Calc universe coords by click: "
+//						+ " (x: " + universeX
+//						+ " | y: " + universeY
+//						+ ")");
 			}
 
 			// right mouse button => panning

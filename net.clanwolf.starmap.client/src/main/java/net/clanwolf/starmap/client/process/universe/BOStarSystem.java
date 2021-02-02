@@ -32,6 +32,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import net.clanwolf.starmap.client.gui.panes.map.Config;
+import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.transfer.dtos.StarSystemDTO;
 import org.kynosarges.tektosyne.geometry.PointD;
 
@@ -61,13 +62,13 @@ public class BOStarSystem {
 	}
 
 	public double getScreenX() {
-		double screenX = starSystemDTO.getX() * Config.MAP_COORDINATES_MULTIPLICATOR;
+		double screenX = (starSystemDTO.getX()) * Config.MAP_COORDINATES_MULTIPLICATOR;
 		screenX = (Config.MAP_WIDTH / 2) + screenX;
 		return screenX;
 	}
 
 	public double getScreenY() {
-		double screenY = starSystemDTO.getY() * Config.MAP_COORDINATES_MULTIPLICATOR;
+		double screenY = (starSystemDTO.getY()) * Config.MAP_COORDINATES_MULTIPLICATOR;
 		screenY = Config.MAP_HEIGHT - ((Config.MAP_HEIGHT /2) + screenY);
 		return screenY;
 	}

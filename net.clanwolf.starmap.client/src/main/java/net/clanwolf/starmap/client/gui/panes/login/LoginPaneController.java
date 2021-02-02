@@ -495,7 +495,7 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(m);
 
 				// int result = showMessage("Login ERROR!", 1);
-				// System.out.println("Result of message (user interaction): " + result);
+				// C3Logger.info("Result of message (user interaction): " + result);
 				break;
 
 			case CLEAR_PASSWORD_FIELD:

@@ -41,6 +41,7 @@ import net.clanwolf.starmap.client.gui.panes.map.tools.Route;
 import net.clanwolf.starmap.client.process.universe.BOJumpship;
 import net.clanwolf.starmap.client.process.universe.BOStarSystem;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
+import net.clanwolf.starmap.logging.C3Logger;
 
 import java.util.List;
 
@@ -118,7 +119,7 @@ public class NodeGestures {
 		BOStarSystem startSystem = boUniverse.starSystemBOs.get(boUniverse.currentlyDraggedJumpship.getCurrentSystemID());
 		BOStarSystem hovered = boUniverse.starSystemBOs.get(Integer.parseInt(c.getId()));
 
-		System.out.println(boUniverse.currentlyDraggedJumpship.getShipName() + " : " + startSystem.getName() + " : " + hovered.getName());
+		C3Logger.info(boUniverse.currentlyDraggedJumpship.getShipName() + " : " + startSystem.getName() + " : " + hovered.getName());
 		List<BOStarSystem> route = Route.getRoute(startSystem, hovered);
 
 		if (canvas.getChildren().contains(boUniverse.currentlyDraggedJumpship.routeLines)) {
@@ -195,7 +196,7 @@ public class NodeGestures {
 	private EventHandler<MouseEvent> getOnMouseClickedEventHandler = new EventHandler<MouseEvent>() {
 		public void handle(MouseEvent event) {
 			if (event.isSecondaryButtonDown()) {
-				System.out.println("RIGHTCLICK");
+				C3Logger.info("RIGHTCLICK");
 			}
 
 			// left mouse button click
@@ -204,14 +205,17 @@ public class NodeGestures {
 			}
 			Node node = (Node) event.getSource();
 			BOStarSystem clickedStarSystem = boUniverse.starSystemBOs.get(Integer.parseInt(node.getId()));
-			System.out.println("System: "
+
+			C3Logger.info("System: "
 					+ clickedStarSystem.getName()
 					+ " (x: " + clickedStarSystem.getX()
 					+ " | y: " + clickedStarSystem.getY()
 					+ ") - "
-					+ "["
+					+ "[id:"
 					+ clickedStarSystem.getId()
 					+ "]");
+//			C3Logger.info("ScreenX: " + clickedStarSystem.getScreenX());
+//			C3Logger.info("ScreenY: " + clickedStarSystem.getScreenY());
 
 			canvas.showStarSystemMarker(clickedStarSystem);
 		}
