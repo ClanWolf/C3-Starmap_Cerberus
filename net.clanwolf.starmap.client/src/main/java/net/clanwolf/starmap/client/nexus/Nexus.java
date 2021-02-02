@@ -53,6 +53,10 @@ public class Nexus {
 	private static BOUniverse boUniverse;
 	private static boolean loggedIn = false;
 
+	private static int currentSeason;
+	private static int currentRound;
+	private static String currentDate;
+
 	private static String lastAvailableClientVersion = "not checked yet";
 
 	private static AbstractC3Pane currentlyOpenedPane = null;
@@ -65,6 +69,20 @@ public class Nexus {
 	private Nexus() {
 
 	}
+
+	public static void setCurrentSeason(int v) {
+		currentSeason = v;
+	}
+	public static void setCurrentRound(int v) {
+		currentRound = v;
+	}
+	public static void setCurrentDate(String v) {
+		currentDate = v;
+	}
+
+	public static int getCurrentSeason() { return currentSeason; }
+	public static int getCurrentRound() { return currentRound; }
+	public static String getCurrentDate() { return currentDate; }
 
 	public static BOUniverse getBoUniverse() {
 		return boUniverse;
@@ -200,7 +218,6 @@ public class Nexus {
 	public static boolean isDevelopmentPC(){
 		return isDevelopmentPC;
 	}
-
 	public static void setIsDevelopmentPC(boolean devPC){
 		isDevelopmentPC = devPC;
 	}

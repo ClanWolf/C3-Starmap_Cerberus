@@ -34,6 +34,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
@@ -44,6 +45,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.util.Duration;
+import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
 import net.clanwolf.starmap.client.gui.panes.map.tools.VoronoiDelaunay;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.action.ACTIONS;
@@ -52,8 +54,10 @@ import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
 import net.clanwolf.starmap.client.process.universe.BOAttack;
+import net.clanwolf.starmap.client.process.universe.BOJumpship;
 import net.clanwolf.starmap.client.process.universe.BOStarSystem;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
+import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
@@ -62,6 +66,7 @@ import net.clanwolf.starmap.transfer.enums.UNIVERSECONTEXT;
 import org.kynosarges.tektosyne.geometry.PointD;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 /**
@@ -84,10 +89,10 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	private ImageView templateBackground;
 
 	@FXML
-	private Button MapButton01;
+	private Button mapButton01;
 
 	@FXML
-	private Button MapButton02;
+	private Button mapButton02;
 
 	/**
 	 * Adds action callback listeners.
@@ -95,7 +100,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	@Override
 	public void addActionCallBackListeners() {
 		ActionManager.addActionCallbackListener(ACTIONS.CHANGE_LANGUAGE, this);
+		ActionManager.addActionCallbackListener(ACTIONS.PANE_CREATION_BEGINS, this);
 		ActionManager.addActionCallbackListener(ACTIONS.PANE_CREATION_FINISHED, this);
+		ActionManager.addActionCallbackListener(ACTIONS.PANE_DESTROY_CURRENT, this);
 		ActionManager.addActionCallbackListener(ACTIONS.NEW_UNIVERSE_RECEIVED, this);
 		ActionManager.addActionCallbackListener(ACTIONS.LOGON_FINISHED_SUCCESSFULL, this);
 	}
@@ -120,6 +127,14 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	private void initializeUniverseMap() {
 		if (boUniverse != null) {
 			C3Logger.info("Beginning to build the star map from received universe data.");
+
+			Nexus.setCurrentSeason(boUniverse.currentSeason);
+			Nexus.setCurrentRound(boUniverse.currentSeason);
+			Nexus.setCurrentDate(boUniverse.currentDate);
+
+			starMapPane.setOpacity(0.0);
+			mapButton01.setOpacity(0.0);
+			mapButton02.setOpacity(0.0);
 
 			try {
 				PannableCanvas canvas = new PannableCanvas();
@@ -265,9 +280,40 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				canvas.getChildren().add(attacksPane);
 				attacksPane.toBack();
 
+				for (BOJumpship js : boUniverse.jumpshipBOs.values()) {
+					// TODO: Jumpships
+					Integer currentSystemID = js.getCurrentSystemID();
+					ArrayList<Integer> hist = js.getStarSystemHistoryArray();
+
+					if (currentSystemID != null) {
+						ImageView jumpshipImage;
+						if (js.isCombatReady()) {
+							jumpshipImage = new ImageView(new Image(getClass().getResourceAsStream("/images/map/jumpship_left_blue.png")));
+							jumpshipImage.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
+							jumpshipImage.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
+							jumpshipImage.addEventFilter(MouseEvent.DRAG_DETECTED, nodeGestures.getOnMouseDragDetectedEventHandler());
+							jumpshipImage.addEventFilter(MouseEvent.MOUSE_RELEASED, nodeGestures.getOnMouseReleasedEventHandler());
+						} else {
+							jumpshipImage = new ImageView(new Image(getClass().getResourceAsStream("/images/map/jumpship_left_red.png")));
+						}
+						jumpshipImage.setId(js.getShipName());
+						jumpshipImage.setPreserveRatio(true);
+						jumpshipImage.setFitWidth(30);
+						jumpshipImage.setCacheHint(CacheHint.QUALITY);
+						jumpshipImage.setSmooth(false);
+						jumpshipImage.setTranslateX(boUniverse.starSystemBOs.get(currentSystemID).getScreenX() - 35);
+						jumpshipImage.setTranslateY(boUniverse.starSystemBOs.get(currentSystemID).getScreenY() - 8);
+						jumpshipImage.setMouseTransparent(false);
+						jumpshipImage.toFront();
+						jumpshipImage.setVisible(false);
+						canvas.getChildren().add(jumpshipImage);
+
+						js.setJumpshipImage(jumpshipImage);
+					}
+				}
+
 				starMapPane.getChildren().add(canvas);
 
-//				Rectangle clip = new Rectangle(776, 441);
 				Rectangle clip = new Rectangle(776, 471);
 				clip.setLayoutX(0);
 				clip.setLayoutY(0);
@@ -288,8 +334,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					g.setLayoutY(-sp.getHeight() / 2);
 				}
 
-				MapButton01.toFront();
-				MapButton02.toFront();
+				mapButton01.toFront();
+				mapButton02.toFront();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -298,6 +344,39 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		}
 	}
 
+	private void buildGuiEffect() {
+		// Fade in transition 01 (Background)
+		FadeTransition fadeInTransition_01 = new FadeTransition(Duration.millis(80), starMapPane);
+		fadeInTransition_01.setFromValue(0.0);
+		fadeInTransition_01.setToValue(1.0);
+		fadeInTransition_01.setCycleCount(3);
+
+		// Fade in transition 01 (Background)
+		FadeTransition fadeInTransition_01a = new FadeTransition(Duration.millis(500), starMapPane);
+		fadeInTransition_01a.setFromValue(0.0);
+		fadeInTransition_01a.setToValue(1.0);
+		fadeInTransition_01a.setCycleCount(1);
+
+		// Fade in transition 02 (Button)
+		FadeTransition fadeInTransition_02 = new FadeTransition(Duration.millis(70), mapButton01);
+		fadeInTransition_02.setFromValue(0.0);
+		fadeInTransition_02.setToValue(1.0);
+		fadeInTransition_02.setCycleCount(4);
+
+		// Fade in transition 03 (Button)
+		FadeTransition fadeInTransition_03 = new FadeTransition(Duration.millis(70), mapButton02);
+		fadeInTransition_03.setFromValue(0.0);
+		fadeInTransition_03.setToValue(1.0);
+		fadeInTransition_03.setCycleCount(4);
+
+		// Transition sequence
+		SequentialTransition sequentialTransition = new SequentialTransition();
+		sequentialTransition.getChildren().addAll(fadeInTransition_01, fadeInTransition_02, fadeInTransition_03);
+		sequentialTransition.setCycleCount(1);
+		sequentialTransition.play();
+
+		C3SoundPlayer.play("sound/fx/PremiumBeat_0013_cursor_click_11.wav", false);
+	}
 	/**
 	 * Handles actions.
 	 *
@@ -319,6 +398,10 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					boUniverse = new BOUniverse(universeDTO);
 					Nexus.setBOUniverse(boUniverse);
 
+					int season = boUniverse.currentSeason;
+					int round = boUniverse.currentRound;
+					String date = boUniverse.currentDate;
+
 					initializeUniverseMap();
 				}
 				break;
@@ -330,7 +413,25 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				setStrings();
 				break;
 
+			case PANE_DESTROY_CURRENT:
+				starMapPane.setOpacity(0.0);
+				mapButton01.setOpacity(0.0);
+				mapButton02.setOpacity(0.0);
+				break;
+
+			case PANE_CREATION_BEGINS:
+				starMapPane.setOpacity(0.0);
+				mapButton01.setOpacity(0.0);
+				mapButton02.setOpacity(0.0);
+				break;
+
 			case PANE_CREATION_FINISHED:
+				if (o.getObject() instanceof AbstractC3Pane) {
+					AbstractC3Pane p = (AbstractC3Pane) o.getObject();
+					if ("MapPane".equals(p.getPaneName())) {
+						buildGuiEffect();
+					}
+				}
 				break;
 
 			case LOGON_FINISHED_SUCCESSFULL:

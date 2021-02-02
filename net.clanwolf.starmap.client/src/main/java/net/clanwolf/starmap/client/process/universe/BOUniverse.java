@@ -48,6 +48,7 @@ public class BOUniverse {
 
 	public Integer currentSeason;
 	public Integer currentRound;
+	public String currentDate;
 
 	public VoronoiResults voronoiResults = null;
 	public Subdivision delaunaySubdivision = null;
@@ -95,5 +96,9 @@ public class BOUniverse {
 			BOJumpship boJumpship = new BOJumpship(jumpshipDTO);
 			jumpshipBOs.put(jumpshipDTO.getShipName(), boJumpship);
 		}
+
+		currentSeason = universeDTO.currentSeason;
+		currentRound = universeDTO.currentRound;
+		currentDate = universeDTO.currentDate;
 	}
 }

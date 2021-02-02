@@ -39,4 +39,5 @@ public class UniverseDTO extends Dto {
 
 	public Integer currentSeason;
 	public Integer currentRound;
+	public String currentDate;
 }

@@ -62,7 +62,7 @@ public class PannableCanvas extends Pane {
 	PannableCanvas() {
 		boUniverse = Nexus.getBoUniverse();
 		setPrefSize(Config.MAP_WIDTH, Config.MAP_HEIGHT);
-		setStyle("-fx-background-color:transparent;-fx-border-width:5px;-fx-border-color:gray;");
+		// setStyle("-fx-background-color:transparent;-fx-border-width:5px;-fx-border-color:gray;");
 
 		// add scale transform
 		scaleXProperty().bind(myScale);

@@ -30,8 +30,8 @@
 		</Label>
       <Pane fx:id="starMapPane" cache="true" cacheHint="SPEED" depthTest="DISABLE" layoutX="63.0" layoutY="15.0" prefHeight="470.0" prefWidth="776.0" styleClass="mapPane" stylesheets="@../styles/MainFrameStyle.css">
          <children>
-            <Button fx:id="MapButton01" layoutX="5.0" layoutY="411.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="56.0" text="Button" />
-            <Button fx:id="MapButton02" layoutX="66.0" layoutY="411.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="56.0" text="Button" />
+            <Button fx:id="mapButton01" layoutX="5.0" layoutY="411.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="56.0" text="Button" />
+            <Button fx:id="mapButton02" layoutX="66.0" layoutY="411.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="56.0" text="Button" />
          </children></Pane>
 	</children>
 	<stylesheets>

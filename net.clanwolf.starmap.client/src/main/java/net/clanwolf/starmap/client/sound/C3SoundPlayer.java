@@ -259,7 +259,6 @@ public class C3SoundPlayer {
 			soundPath = "/" + soundPath;
 		}
 
-		// JavaFX 13 fixes error with JRT:/ url from getResource
 		URL u = ((C3SoundPlayer)getInstance()).getClass().getResource(soundPath);
 
 		if (u == null) {
