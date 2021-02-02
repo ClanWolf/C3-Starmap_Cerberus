@@ -94,6 +94,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	@FXML
 	private Button mapButton02;
 
+	@FXML
+	private Button mapButton03;
+
 	/**
 	 * Adds action callback listeners.
 	 */
@@ -328,6 +331,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 				mapButton01.toFront();
 				mapButton02.toFront();
+				mapButton03.toFront();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

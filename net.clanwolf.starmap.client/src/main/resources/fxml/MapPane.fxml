@@ -30,9 +30,15 @@
 		</Label>
       <Pane fx:id="starMapPane" cache="true" cacheHint="SPEED" depthTest="DISABLE" layoutX="63.0" layoutY="15.0" prefHeight="470.0" prefWidth="776.0" styleClass="mapPane" stylesheets="@../styles/MainFrameStyle.css">
          <children>
-            <Button fx:id="mapButton01" layoutX="5.0" layoutY="411.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="56.0" text="Button" />
-            <Button fx:id="mapButton02" layoutX="66.0" layoutY="411.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="56.0" text="Button" />
+            <Button fx:id="mapButton01" layoutX="5.0" layoutY="411.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="56.0" text="Jump" />
+            <Button fx:id="mapButton02" layoutX="66.0" layoutY="411.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="56.0" text="Attack" />
+            <Button fx:id="mapButton03" layoutX="715.0" layoutY="411.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="56.0" text="Center" />
          </children></Pane>
+      <Pane layoutX="633.0" layoutY="22.0" mouseTransparent="true" prefHeight="337.0" prefWidth="199.0">
+         <children>
+            <Label prefHeight="71.0" prefWidth="181.0" text="Label" />
+         </children>
+      </Pane>
 	</children>
 	<stylesheets>
 		<URL value="@../styles/MainFrameStyle.css" />
