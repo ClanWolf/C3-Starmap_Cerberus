@@ -27,6 +27,7 @@
 package net.clanwolf.starmap.client.gui.panes.map;
 
 import javafx.animation.*;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.CacheHint;
@@ -86,6 +87,15 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	Pane starMapPane;
 
 	@FXML
+	Pane paneSystemDetail;
+
+	@FXML
+	Label labelSystemName;
+
+	@FXML
+	ImageView labelSystemImage;
+
+	@FXML
 	private ImageView templateBackground;
 
 	@FXML
@@ -108,6 +118,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		ActionManager.addActionCallbackListener(ACTIONS.PANE_DESTROY_CURRENT, this);
 		ActionManager.addActionCallbackListener(ACTIONS.NEW_UNIVERSE_RECEIVED, this);
 		ActionManager.addActionCallbackListener(ACTIONS.LOGON_FINISHED_SUCCESSFULL, this);
+		ActionManager.addActionCallbackListener(ACTIONS.SHOW_SYSTEM_DETAIL, this);
+		ActionManager.addActionCallbackListener(ACTIONS.HIDE_SYSTEM_DETAIL, this);
 	}
 
 	/**
@@ -138,6 +150,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			starMapPane.setOpacity(0.0);
 			mapButton01.setOpacity(0.0);
 			mapButton02.setOpacity(0.0);
+			mapButton03.setOpacity(0.0);
+			paneSystemDetail.setOpacity(0.0);
 
 			try {
 				PannableCanvas canvas = new PannableCanvas();
@@ -328,10 +342,14 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				starMapPane.addEventFilter(MouseEvent.MOUSE_DRAGGED, sceneGestures.getOnMouseDraggedEventHandler());
 				starMapPane.addEventFilter(ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
 				starMapPane.addEventFilter(MouseEvent.MOUSE_MOVED, sceneGestures.getOnMouseMovedEventHandler());
+				starMapPane.addEventFilter(MouseEvent.MOUSE_CLICKED, sceneGestures.getOnMouseClickedEventHandler());
+
+				canvas.setPaneSystemDetail(paneSystemDetail);
 
 				mapButton01.toFront();
 				mapButton02.toFront();
 				mapButton03.toFront();
+				paneSystemDetail.toFront();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -365,9 +383,27 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		fadeInTransition_03.setToValue(1.0);
 		fadeInTransition_03.setCycleCount(4);
 
+		// Fade in transition 04 (Button)
+		FadeTransition fadeInTransition_04 = new FadeTransition(Duration.millis(70), mapButton03);
+		fadeInTransition_04.setFromValue(0.0);
+		fadeInTransition_04.setToValue(1.0);
+		fadeInTransition_04.setCycleCount(4);
+
+		// Fade in transition 05 (DetailPane)
+		FadeTransition fadeInTransition_05 = new FadeTransition(Duration.millis(60), paneSystemDetail);
+		fadeInTransition_05.setFromValue(0.0);
+		fadeInTransition_05.setToValue(1.0);
+		fadeInTransition_05.setCycleCount(4);
+
+		// Fade in transition 06 (DetailPane)
+		FadeTransition fadeInTransition_06 = new FadeTransition(Duration.millis(570), paneSystemDetail);
+		fadeInTransition_06.setFromValue(1.0);
+		fadeInTransition_06.setToValue(0.0);
+		fadeInTransition_06.setCycleCount(1);
+
 		// Transition sequence
 		SequentialTransition sequentialTransition = new SequentialTransition();
-		sequentialTransition.getChildren().addAll(fadeInTransition_01, fadeInTransition_02, fadeInTransition_03);
+		sequentialTransition.getChildren().addAll(fadeInTransition_01, fadeInTransition_02, fadeInTransition_03, fadeInTransition_04, fadeInTransition_05, fadeInTransition_06);
 		sequentialTransition.setCycleCount(1);
 		sequentialTransition.play();
 
@@ -452,10 +488,68 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				Nexus.fireNetworkEvent(state);
 				break;
 
+			case SHOW_SYSTEM_DETAIL:
+				if (o.getObject() instanceof BOStarSystem) {
+					BOStarSystem ss = (BOStarSystem) o.getObject();
+					showSystemDetail(ss);
+				} else {
+					hideSystemDetail();
+				}
+				break;
+
+			case HIDE_SYSTEM_DETAIL:
+				hideSystemDetail();
+				break;
+
 			default:
 				break;
 		}
 		return true;
+	}
+
+	public void hideSystemDetail() {
+		if (paneSystemDetail != null) {
+			if (paneSystemDetail.getOpacity() != 0.0) {
+				// Fade in transition 06 (DetailPane)
+				FadeTransition fadeInTransition_06 = new FadeTransition(Duration.millis(570), paneSystemDetail);
+				fadeInTransition_06.setFromValue(1.0);
+				fadeInTransition_06.setToValue(0.0);
+				fadeInTransition_06.setCycleCount(1);
+
+				// Transition sequence
+				SequentialTransition sequentialTransition = new SequentialTransition();
+				sequentialTransition.getChildren().addAll(fadeInTransition_06);
+				sequentialTransition.setCycleCount(1);
+				sequentialTransition.play();
+			}
+		}
+	}
+
+	public void showSystemDetail(BOStarSystem sys) {
+		if (paneSystemDetail != null) {
+			// Set system information
+			Nexus.setSelectedStarSystem(sys);
+			C3SoundPlayer.play("sound/fx/PremiumBeat_0046_sci_fi_beep_electric.wav", false);
+
+			int n = (int)((Math.random()) * 25 + 1);
+			String fn = String.format("%03d", n);
+			Image imagePlanet = new Image(getClass().getResourceAsStream("/images/planets/" + fn + ".png"));
+			C3Logger.debug("Planet image: /images/planets/" + fn + ".png");
+			Platform.runLater(() -> labelSystemImage.setImage(imagePlanet));
+			Platform.runLater(() -> labelSystemName.setText(sys.getName()));
+
+			// Fade in transition 06 (DetailPane)
+			FadeTransition fadeInTransition_06 = new FadeTransition(Duration.millis(450), paneSystemDetail);
+			fadeInTransition_06.setFromValue(0.0);
+			fadeInTransition_06.setToValue(1.0);
+			fadeInTransition_06.setCycleCount(1);
+
+			// Transition sequence
+			SequentialTransition sequentialTransition = new SequentialTransition();
+			sequentialTransition.getChildren().addAll(fadeInTransition_06);
+			sequentialTransition.setCycleCount(1);
+			sequentialTransition.play();
+		}
 	}
 
 	/**

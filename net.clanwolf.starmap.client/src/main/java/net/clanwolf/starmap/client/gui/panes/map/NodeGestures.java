@@ -36,6 +36,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
+import net.clanwolf.starmap.client.action.ACTIONS;
+import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.gui.panes.map.tools.Route;
 import net.clanwolf.starmap.client.process.universe.BOJumpship;
@@ -214,10 +216,11 @@ public class NodeGestures {
 					+ "[id:"
 					+ clickedStarSystem.getId()
 					+ "]");
-//			C3Logger.info("ScreenX: " + clickedStarSystem.getScreenX());
-//			C3Logger.info("ScreenY: " + clickedStarSystem.getScreenY());
 
-			canvas.showStarSystemMarker(clickedStarSystem);
+			if (clickedStarSystem != null) {
+				canvas.showStarSystemMarker(clickedStarSystem);
+				ActionManager.getAction(ACTIONS.SHOW_SYSTEM_DETAIL).execute(clickedStarSystem);
+			}
 		}
 	};
 

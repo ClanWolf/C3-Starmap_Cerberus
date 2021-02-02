@@ -530,6 +530,15 @@
     -fx-background-insets: -1.4, 0, 1;
 }
 
+.systemDetailPanel {
+    -fx-border-color: rgba(53,89,119,0.9);
+    -fx-border-width: 2;
+    -fx-background-color: rgba(48,82,112,0.8);
+    -fx-background-insets: 1,1,1,1;
+    -fx-background-radius: 0,0,0,0;
+    -fx-padding: 8 8 8 8;
+}
+
 .contentTextArea {
     -fx-border-color: rgba(53,89,119,0.6);
     -fx-border-width: 2;

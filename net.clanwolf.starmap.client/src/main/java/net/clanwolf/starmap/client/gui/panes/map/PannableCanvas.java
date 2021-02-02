@@ -26,6 +26,8 @@
  */
 package net.clanwolf.starmap.client.gui.panes.map;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.SequentialTransition;
 import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -35,6 +37,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.util.Duration;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.universe.BOJumpship;
 import net.clanwolf.starmap.client.process.universe.BOStarSystem;
@@ -50,6 +53,7 @@ public class PannableCanvas extends Pane {
 	private Canvas grid_center = null;
 	private Pane starPane = null;
 	private Pane attacksPane = null;
+	private Pane paneSystemDetail = null;
 	private HashMap<Integer, ArrayList<Circle>> starPanelsStarLists = new HashMap<>();
 
 	private boolean starSystemLabelsVisible = true;
@@ -92,6 +96,9 @@ public class PannableCanvas extends Pane {
 		this.attacksPane = attacksPane;
 	}
 
+	public void setPaneSystemDetail(Pane psd) {
+		this.paneSystemDetail = psd;
+	}
 	public void hideStarSystemMarker() {
 		starSystemMarkerCircle60ly.setVisible(false);
 		starSystemMarkerCircle30ly.setVisible(false);

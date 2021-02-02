@@ -34,9 +34,10 @@
             <Button fx:id="mapButton02" layoutX="66.0" layoutY="411.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="56.0" text="Attack" />
             <Button fx:id="mapButton03" layoutX="715.0" layoutY="411.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="56.0" text="Center" />
          </children></Pane>
-      <Pane layoutX="633.0" layoutY="22.0" mouseTransparent="true" prefHeight="337.0" prefWidth="199.0">
+      <Pane fx:id="paneSystemDetail" layoutX="683.0" layoutY="22.0" mouseTransparent="true" prefHeight="178.0" prefWidth="149.0" styleClass="systemDetailPanel" stylesheets="@../styles/MainFrameStyle.css">
          <children>
-            <Label prefHeight="71.0" prefWidth="181.0" text="Label" />
+            <Label fx:id="labelSystemName" alignment="CENTER" layoutX="15.0" layoutY="14.0" prefHeight="32.0" prefWidth="120.0" text="..." />
+            <ImageView fx:id="labelSystemImage" fitHeight="114.0" fitWidth="114.0" layoutX="18.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </Pane>
 	</children>

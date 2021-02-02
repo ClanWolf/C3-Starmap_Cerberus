@@ -27,8 +27,15 @@
 package net.clanwolf.starmap.client.gui.panes.map;
 
 import javafx.event.EventHandler;
+import javafx.scene.Node;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
+import javafx.scene.layout.Pane;
+import javafx.scene.shape.Circle;
+import net.clanwolf.starmap.client.action.ACTIONS;
+import net.clanwolf.starmap.client.action.ActionManager;
+import net.clanwolf.starmap.client.process.universe.BOStarSystem;
 import net.clanwolf.starmap.logging.C3Logger;
 
 class SceneGestures {
@@ -58,6 +65,10 @@ class SceneGestures {
 		return onMouseMovedEventHandler;
 	}
 
+	EventHandler<MouseEvent> getOnMouseClickedEventHandler() {
+		return onMouseClickedEventHandler;
+	}
+
 	private EventHandler<MouseEvent> onMouseMovedEventHandler = event -> {
 		// TODO: Do something with hovered coordinates
 		// Fire an action to inform the surrounding frame about the currently hovered universe coordinates
@@ -66,19 +77,25 @@ class SceneGestures {
 		//		C3Logger.info("[" + universeX + ", " + universeY + "]");
 	};
 
+	private EventHandler<MouseEvent> onMouseClickedEventHandler = new EventHandler<MouseEvent>() {
+		@Override
+		public void handle(MouseEvent event) {
+			if (event.getTarget() instanceof Circle) {
+				// nothing
+			} else {
+				if (event.getButton() == MouseButton.PRIMARY) {
+					ActionManager.getAction(ACTIONS.HIDE_SYSTEM_DETAIL).execute();
+				}
+			}
+		}
+	};
+
 	private EventHandler<MouseEvent> onMousePressedEventHandler = new EventHandler<MouseEvent>() {
 		@Override
 		public void handle(MouseEvent event) {
 
 			if (event.isPrimaryButtonDown()) {
 				canvas.hideStarSystemMarker();
-
-//				double universeX = getUniverseX(event.getX());
-//				double universeY = getUniverseY(event.getY());
-//				C3Logger.info("Calc universe coords by click: "
-//						+ " (x: " + universeX
-//						+ " | y: " + universeY
-//						+ ")");
 			}
 
 			// right mouse button => panning

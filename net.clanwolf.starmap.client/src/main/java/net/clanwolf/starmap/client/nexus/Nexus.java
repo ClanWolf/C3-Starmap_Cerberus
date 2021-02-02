@@ -30,6 +30,7 @@ import io.nadron.client.app.Session;
 import io.nadron.client.event.Events;
 import io.nadron.client.event.NetworkEvent;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
+import net.clanwolf.starmap.client.process.universe.BOStarSystem;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
@@ -51,6 +52,7 @@ public class Nexus {
 	private static boolean mainFrameEnabled;
 	private static UniverseDTO universeDTO;
 	private static BOUniverse boUniverse;
+	private static BOStarSystem boSelectedStarSystem;
 	private static boolean loggedIn = false;
 
 	private static int currentSeason;
@@ -68,6 +70,13 @@ public class Nexus {
 	 */
 	private Nexus() {
 
+	}
+
+	public static void setSelectedStarSystem(BOStarSystem s) {
+		boSelectedStarSystem = s;
+	}
+	public BOStarSystem getSelectedStarSystem() {
+		return boSelectedStarSystem;
 	}
 
 	public static void setCurrentSeason(int v) {
