@@ -119,4 +119,7 @@ public class BOStarSystem {
 	public Double getY() { return starSystemDTO.getY(); }
 
 	public String getAffiliation() { return starSystemDTO.getAffiliation(); }
+
+	// TODO: Put SystemImageName column into DTO!
+//	public String getSystemImageName() { return starSystemDTO.get}
 }

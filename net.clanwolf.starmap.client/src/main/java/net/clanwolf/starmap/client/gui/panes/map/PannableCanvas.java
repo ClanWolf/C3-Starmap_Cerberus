@@ -34,6 +34,8 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -55,6 +57,8 @@ public class PannableCanvas extends Pane {
 	private Pane attacksPane = null;
 	private Pane paneSystemDetail = null;
 	private HashMap<Integer, ArrayList<Circle>> starPanelsStarLists = new HashMap<>();
+	private Image imageNebula = null;
+	private ImageView ivNebula = null;
 
 	private boolean starSystemLabelsVisible = true;
 
@@ -124,12 +128,25 @@ public class PannableCanvas extends Pane {
 		double w = Config.MAP_WIDTH;
 		double h = Config.MAP_HEIGHT;
 
+		if (imageNebula == null) {
+			imageNebula = new Image(getClass().getResourceAsStream("/images/map/nebula6.png"));
+			ivNebula = new ImageView(imageNebula);
+			ivNebula.setTranslateX((w / 2) - (w / 4));
+			ivNebula.setTranslateY((h / 2) - (h / 4));
+			ivNebula.setFitWidth(w / 2);
+			ivNebula.setFitHeight(h / 2);
+			ivNebula.setOpacity(0.3);
+			ivNebula.setMouseTransparent(true);
+		}
+
 		if (starPane == null) {
 			starPane = new Pane();
 			starPane.setMaxWidth(w);
 			starPane.setMaxHeight(h);
 			starPane.setMouseTransparent(true);
 		}
+
+		boolean addNebula = true;
 
 		for (int[] layer : Config.BACKGROUND_STARS_LAYERS) {
 			int level = layer[0];
@@ -149,6 +166,12 @@ public class PannableCanvas extends Pane {
 				l.add(c);
 				starPane.getChildren().add(c);
 			}
+
+			if (addNebula) {
+				starPane.getChildren().add(ivNebula);
+				addNebula = false;
+			}
+
 			starPanelsStarLists.put(level, l);
 			if (!getChildren().contains(starPane)) {
 				getChildren().add(starPane);

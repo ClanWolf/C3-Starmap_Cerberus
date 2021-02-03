@@ -74,6 +74,7 @@ public abstract class AbstractC3Controller implements Initializable, ActionCallB
 		labelWarningIcon.setLayoutX(505);
 		labelWarningIcon.setLayoutY(455);
 		labelWarningIcon.setVisible(false);
+		labelWarningIcon.setMouseTransparent(true);
 
 		labelWarningText = new Label("");
 		labelWarningText.setLayoutX(548);
@@ -81,6 +82,7 @@ public abstract class AbstractC3Controller implements Initializable, ActionCallB
 		labelWarningText.setPrefWidth(300);
 		labelWarningText.setPrefHeight(56);
 		labelWarningText.setVisible(true);
+		labelWarningText.setMouseTransparent(true);
 
 		FadeTransition fadeTransition = new FadeTransition(Duration.millis(300), labelWarningText);
 		fadeTransition.setFromValue(1.0);

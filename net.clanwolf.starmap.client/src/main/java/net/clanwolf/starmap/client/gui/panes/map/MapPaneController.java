@@ -35,6 +35,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseDragEvent;
@@ -463,12 +464,16 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				starMapPane.setOpacity(0.0);
 				mapButton01.setOpacity(0.0);
 				mapButton02.setOpacity(0.0);
+				mapButton03.setOpacity(0.0);
+				paneSystemDetail.setOpacity(0.0);
 				break;
 
 			case PANE_CREATION_BEGINS:
 				starMapPane.setOpacity(0.0);
 				mapButton01.setOpacity(0.0);
 				mapButton02.setOpacity(0.0);
+				mapButton03.setOpacity(0.0);
+				paneSystemDetail.setOpacity(0.0);
 				break;
 
 			case PANE_CREATION_FINISHED:
@@ -511,7 +516,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		if (paneSystemDetail != null) {
 			if (paneSystemDetail.getOpacity() != 0.0) {
 				// Fade in transition 06 (DetailPane)
-				FadeTransition fadeInTransition_06 = new FadeTransition(Duration.millis(570), paneSystemDetail);
+				FadeTransition fadeInTransition_06 = new FadeTransition(Duration.millis(650), paneSystemDetail);
 				fadeInTransition_06.setFromValue(1.0);
 				fadeInTransition_06.setToValue(0.0);
 				fadeInTransition_06.setCycleCount(1);
@@ -531,10 +536,12 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			Nexus.setSelectedStarSystem(sys);
 			C3SoundPlayer.play("sound/fx/PremiumBeat_0046_sci_fi_beep_electric.wav", false);
 
+			// TODO: Put SystemImageName column into DTO!
 			int n = (int)((Math.random()) * 25 + 1);
 			String fn = String.format("%03d", n);
 			Image imagePlanet = new Image(getClass().getResourceAsStream("/images/planets/" + fn + ".png"));
 			C3Logger.debug("Planet image: /images/planets/" + fn + ".png");
+			C3Logger.debug("SystemImageName from DB: " + sys.getAffiliation());
 			Platform.runLater(() -> labelSystemImage.setImage(imagePlanet));
 			Platform.runLater(() -> labelSystemName.setText(sys.getName()));
 

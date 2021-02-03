@@ -7,8 +7,6 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
-<?import javafx.scene.paint.Color?>
-<?import javafx.scene.text.Font?>
 
 <AnchorPane id="LoginPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.map.MapPaneController">
 	<children>
@@ -17,17 +15,6 @@
             <Image url="@../images/template_bg.png" />
          </image>
       </ImageView>
-		<Label fx:id="panelHeadline" alignment="BASELINE_RIGHT" contentDisplay="CENTER" layoutX="14.0" layoutY="375.0" mouseTransparent="true" opacity="0.12" prefWidth="794.0" text="STARMAP">
-			<font>
-				<Font name="Arial Bold" size="80.0" />
-			</font>
-			<stylesheets>
-				<URL value="@../styles/MainFrameStyle.css" />
-			</stylesheets>
-			<textFill>
-				<Color red="0.412" green="0.620" blue="0.804" fx:id="x1" />
-			</textFill>
-		</Label>
       <Pane fx:id="starMapPane" cache="true" cacheHint="SPEED" depthTest="DISABLE" layoutX="63.0" layoutY="15.0" prefHeight="470.0" prefWidth="776.0" styleClass="mapPane" stylesheets="@../styles/MainFrameStyle.css">
          <children>
             <Button fx:id="mapButton01" layoutX="5.0" layoutY="411.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="56.0" text="Jump" />
