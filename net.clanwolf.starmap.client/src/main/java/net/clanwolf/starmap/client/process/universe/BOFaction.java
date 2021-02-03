@@ -63,4 +63,10 @@ public class BOFaction {
 	}
 
 	public String getColor() { return factionDTO.getColor(); }
+
+	public String getLogo() { return factionDTO.getLogo(); }
+
+	public String getShortName() { return factionDTO.getShortName(); }
+
+	public String getName() { return factionDTO.getName(); }
 }

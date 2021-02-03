@@ -17,14 +17,16 @@
       </ImageView>
       <Pane fx:id="starMapPane" cache="true" cacheHint="SPEED" depthTest="DISABLE" layoutX="63.0" layoutY="15.0" prefHeight="470.0" prefWidth="776.0" styleClass="mapPane" stylesheets="@../styles/MainFrameStyle.css">
          <children>
-            <Button fx:id="mapButton01" layoutX="5.0" layoutY="411.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="56.0" text="Jump" />
-            <Button fx:id="mapButton02" layoutX="66.0" layoutY="411.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="56.0" text="Attack" />
-            <Button fx:id="mapButton03" layoutX="715.0" layoutY="411.0" mnemonicParsing="false" prefHeight="54.0" prefWidth="56.0" text="Center" />
+            <Pane fx:id="buttonBackground" layoutX="-1.0" layoutY="421.0" mouseTransparent="true" prefHeight="51.0" prefWidth="778.0" styleClass="systemDetailPanel" stylesheets="@../styles/MainFrameStyle.css" />
+            <Button fx:id="mapButton01" layoutX="5.0" layoutY="428.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="100.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css" text="Jump" />
+            <Button fx:id="mapButton02" layoutX="110.0" layoutY="428.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="100.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css" text="Attack" />
+            <Button fx:id="mapButton03" layoutX="671.0" layoutY="428.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="100.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css" text="Center" />
          </children></Pane>
-      <Pane fx:id="paneSystemDetail" layoutX="683.0" layoutY="22.0" mouseTransparent="true" prefHeight="178.0" prefWidth="149.0" styleClass="systemDetailPanel" stylesheets="@../styles/MainFrameStyle.css">
+      <Pane fx:id="paneSystemDetail" layoutX="683.0" layoutY="22.0" mouseTransparent="true" prefHeight="253.0" prefWidth="149.0" styleClass="systemDetailPanel" stylesheets="@../styles/MainFrameStyle.css">
          <children>
-            <Label fx:id="labelSystemName" alignment="CENTER" layoutX="15.0" layoutY="14.0" prefHeight="32.0" prefWidth="120.0" text="..." />
+            <Label fx:id="labelSystemName" alignment="CENTER" layoutX="15.0" layoutY="6.0" prefHeight="32.0" prefWidth="120.0" text="..." />
             <ImageView fx:id="labelSystemImage" fitHeight="114.0" fitWidth="114.0" layoutX="18.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="labelFactionImage" fitHeight="68.0" fitWidth="68.0" layoutX="41.0" layoutY="172.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </Pane>
 	</children>

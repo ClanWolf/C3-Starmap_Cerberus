@@ -88,6 +88,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	Pane starMapPane;
 
 	@FXML
+	Pane buttonBackground;
+
+	@FXML
 	Pane paneSystemDetail;
 
 	@FXML
@@ -95,6 +98,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 	@FXML
 	ImageView labelSystemImage;
+
+	@FXML
+	ImageView labelFactionImage;
 
 	@FXML
 	private ImageView templateBackground;
@@ -153,6 +159,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			mapButton02.setOpacity(0.0);
 			mapButton03.setOpacity(0.0);
 			paneSystemDetail.setOpacity(0.0);
+			buttonBackground.setOpacity(0.0);
 
 			try {
 				PannableCanvas canvas = new PannableCanvas();
@@ -347,6 +354,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 				canvas.setPaneSystemDetail(paneSystemDetail);
 
+				buttonBackground.toFront();
 				mapButton01.toFront();
 				mapButton02.toFront();
 				mapButton03.toFront();
@@ -366,11 +374,17 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		fadeInTransition_01.setToValue(1.0);
 		fadeInTransition_01.setCycleCount(3);
 
-		// Fade in transition 01 (Background)
-		FadeTransition fadeInTransition_01a = new FadeTransition(Duration.millis(500), starMapPane);
-		fadeInTransition_01a.setFromValue(0.0);
-		fadeInTransition_01a.setToValue(1.0);
-		fadeInTransition_01a.setCycleCount(1);
+//		// Fade in transition 01a (Background)
+//		FadeTransition fadeInTransition_01a = new FadeTransition(Duration.millis(500), starMapPane);
+//		fadeInTransition_01a.setFromValue(0.0);
+//		fadeInTransition_01a.setToValue(1.0);
+//		fadeInTransition_01a.setCycleCount(1);
+
+		// Fade in transition 01b (Background)
+		FadeTransition fadeInTransition_01b = new FadeTransition(Duration.millis(70), buttonBackground);
+		fadeInTransition_01b.setFromValue(0.0);
+		fadeInTransition_01b.setToValue(1.0);
+		fadeInTransition_01b.setCycleCount(3);
 
 		// Fade in transition 02 (Button)
 		FadeTransition fadeInTransition_02 = new FadeTransition(Duration.millis(70), mapButton01);
@@ -404,7 +418,15 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 		// Transition sequence
 		SequentialTransition sequentialTransition = new SequentialTransition();
-		sequentialTransition.getChildren().addAll(fadeInTransition_01, fadeInTransition_02, fadeInTransition_03, fadeInTransition_04, fadeInTransition_05, fadeInTransition_06);
+		sequentialTransition.getChildren().addAll(  fadeInTransition_01,
+//													fadeInTransition_01a,
+													fadeInTransition_01b,
+													fadeInTransition_02,
+													fadeInTransition_03,
+													fadeInTransition_04,
+													fadeInTransition_05,
+													fadeInTransition_06
+												);
 		sequentialTransition.setCycleCount(1);
 		sequentialTransition.play();
 
@@ -462,6 +484,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 			case PANE_DESTROY_CURRENT:
 				starMapPane.setOpacity(0.0);
+				buttonBackground.setOpacity(0.0);
 				mapButton01.setOpacity(0.0);
 				mapButton02.setOpacity(0.0);
 				mapButton03.setOpacity(0.0);
@@ -470,6 +493,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 			case PANE_CREATION_BEGINS:
 				starMapPane.setOpacity(0.0);
+				buttonBackground.setOpacity(0.0);
 				mapButton01.setOpacity(0.0);
 				mapButton02.setOpacity(0.0);
 				mapButton03.setOpacity(0.0);
@@ -536,14 +560,26 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			Nexus.setSelectedStarSystem(sys);
 			C3SoundPlayer.play("sound/fx/PremiumBeat_0046_sci_fi_beep_electric.wav", false);
 
+			String name = boUniverse.factionBOs.get(sys.getAffiliation()).getName();
+			String shortName = boUniverse.factionBOs.get(sys.getAffiliation()).getShortName();
+			String color = boUniverse.factionBOs.get(sys.getAffiliation()).getColor();
+			String logo = boUniverse.factionBOs.get(sys.getAffiliation()).getLogo();
+
 			// TODO: Put SystemImageName column into DTO!
 			int n = (int)((Math.random()) * 25 + 1);
 			String fn = String.format("%03d", n);
 			Image imagePlanet = new Image(getClass().getResourceAsStream("/images/planets/" + fn + ".png"));
 			C3Logger.debug("Planet image: /images/planets/" + fn + ".png");
 			C3Logger.debug("SystemImageName from DB: " + sys.getAffiliation());
-			Platform.runLater(() -> labelSystemImage.setImage(imagePlanet));
-			Platform.runLater(() -> labelSystemName.setText(sys.getName()));
+
+//			C3Logger.debug("Logo from DB: " + logo);
+			Image imageFaction = new Image(getClass().getResourceAsStream("/images/logos/factions/" + logo));
+
+			Platform.runLater(() -> {
+				labelSystemImage.setImage(imagePlanet);
+				labelSystemName.setText(sys.getName());
+				labelFactionImage.setImage(imageFaction);
+			});
 
 			// Fade in transition 06 (DetailPane)
 			FadeTransition fadeInTransition_06 = new FadeTransition(Duration.millis(450), paneSystemDetail);
