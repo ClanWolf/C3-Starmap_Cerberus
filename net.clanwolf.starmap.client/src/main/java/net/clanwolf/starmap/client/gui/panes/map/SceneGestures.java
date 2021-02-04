@@ -70,11 +70,10 @@ class SceneGestures {
 	}
 
 	private EventHandler<MouseEvent> onMouseMovedEventHandler = event -> {
-		// TODO: Do something with hovered coordinates
-		// Fire an action to inform the surrounding frame about the currently hovered universe coordinates
-		//		double universeX = getUniverseX(event.getX());
-		//		double universeY = getUniverseX(event.getY());
-		//		C3Logger.info("[" + universeX + ", " + universeY + "]");
+//		double universeX = getUniverseX(event.getSceneX());
+//		double universeY = getUniverseY(event.getSceneY());
+//		C3Logger.info("[" + universeX + ", " + universeY + "]");
+//		ActionManager.getAction(ACTIONS.UPDATE_COORD_INFO).execute("[" + String.format("%.2f", universeX) + ", " + String.format("%.2f", universeY) + "]");
 	};
 
 	private EventHandler<MouseEvent> onMouseClickedEventHandler = new EventHandler<MouseEvent>() {
@@ -222,17 +221,20 @@ class SceneGestures {
 		return value;
 	}
 
-	@SuppressWarnings("unused")
-	private double getUniverseX(double screenX) {
-		double universeX = screenX - (Config.MAP_WIDTH / 2);
-		universeX = universeX / Config.MAP_COORDINATES_MULTIPLICATOR;
-		return universeX;
-	}
+	// These methods did not calculate correct data. If needed, they need to be re-implemented to give
+	// correct results!
 
-	@SuppressWarnings("unused")
-	private double getUniverseY(double screenY) {
-		double universeY = screenY - (Config.MAP_HEIGHT / 2);
-		universeY = universeY / Config.MAP_COORDINATES_MULTIPLICATOR;
-		return universeY;
-	}
+//	@SuppressWarnings("unused")
+//	private double getUniverseX(double screenX) {
+//		double universeX = screenX - (Config.MAP_WIDTH / 2);
+//		universeX = universeX / Config.MAP_COORDINATES_MULTIPLICATOR;
+//		return universeX;
+//	}
+//
+//	@SuppressWarnings("unused")
+//	private double getUniverseY(double screenY) {
+//		double universeY = screenY - (Config.MAP_HEIGHT / 2);
+//		universeY = universeY / Config.MAP_COORDINATES_MULTIPLICATOR;
+//		return universeY;
+//	}
 }

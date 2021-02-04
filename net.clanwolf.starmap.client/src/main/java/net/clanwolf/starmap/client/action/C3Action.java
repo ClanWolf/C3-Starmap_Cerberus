@@ -90,6 +90,10 @@ public class C3Action extends AbstractC3Action implements ActionCallBackListener
 		execute(new ActionObject(this, o));
 	}
 
+	public void execute(String s) {
+		execute(new ActionObject(this, s));
+	}
+
 	/**
 	 * Execute
 	 *

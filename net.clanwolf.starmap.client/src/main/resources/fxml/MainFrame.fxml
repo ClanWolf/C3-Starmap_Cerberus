@@ -10,12 +10,15 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="rootAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="630.0" prefWidth="1030.0" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.MainFrameController">
+<AnchorPane id="AnchorPane" fx:id="rootAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="630.0" prefWidth="1030.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.MainFrameController">
     <children>
         <Pane fx:id="mouseStopper" layoutX="-17.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="1.0" prefHeight="630.0" prefWidth="1030.0" styleClass="AnchorPane" visible="true">
             <stylesheets>
                 <URL value="@../styles/MainFrameStyle.css" />
             </stylesheets>
+         <children>
+            <Label fx:id="gameInfoLabel" layoutX="451.0" layoutY="30.0" prefHeight="20.0" prefWidth="195.0" />
+         </children>
         </Pane>
         <ImageView fx:id="noiseImage" fitHeight="523.0" fitWidth="859.0" layoutX="123.0" layoutY="37.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="false">
             <image>

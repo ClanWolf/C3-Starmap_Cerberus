@@ -35,6 +35,7 @@ public class ActionObject {
 
 	private Object mObject;
 	private final C3Action mAction;
+	private String mText = "";
 
 	/**
 	 * ActionObject constructor
@@ -56,6 +57,12 @@ public class ActionObject {
 		mAction = action;
 	}
 
+	public ActionObject(C3Action action, String s) {
+		mObject = null;
+		mText = s;
+		mAction = action;
+	}
+
 	/**
 	 * Get object
 	 *
@@ -73,4 +80,6 @@ public class ActionObject {
 	public C3Action getSource() {
 		return mAction;
 	}
+
+	public String getText() { return mText; }
 }

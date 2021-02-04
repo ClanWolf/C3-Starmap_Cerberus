@@ -58,6 +58,7 @@ import net.clanwolf.starmap.client.gui.panes.rp.RolePlayBasicPane;
 import net.clanwolf.starmap.client.gui.panes.rp.StoryEditorPane;
 import net.clanwolf.starmap.client.gui.panes.settings.SettingsPane;
 import net.clanwolf.starmap.client.gui.panes.userinfo.UserInfoPane;
+import net.clanwolf.starmap.client.process.universe.BOUniverse;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.client.net.Server;
 import net.clanwolf.starmap.client.nexus.Nexus;
@@ -200,6 +201,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 	@FXML
 	private ImageView hudinfo1;
+
+	@FXML
+	private Label gameInfoLabel;
 
 	// -------------------------------------------------------------------------
 	//
@@ -842,6 +846,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		ActionManager.addActionCallbackListener(ACTIONS.SHOW_MESSAGE, this);
 		ActionManager.addActionCallbackListener(ACTIONS.SHOW_MESSAGE_WAS_ANSWERED, this);
 		ActionManager.addActionCallbackListener(ACTIONS.START_ROLEPLAY, this);
+		ActionManager.addActionCallbackListener(ACTIONS.UPDATE_GAME_INFO, this);
 	}
 
 	private void setToLevelLoggedOutText() {
@@ -1465,6 +1470,13 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					C3Message message = (C3Message) o.getObject();
 					closeMessage(message);
 				}
+				break;
+
+			case UPDATE_GAME_INFO:
+				Platform.runLater(() -> {
+					BOUniverse boUniverse = Nexus.getBoUniverse();
+					gameInfoLabel.setText(boUniverse.currentSeason + " / " + boUniverse.currentRound + " / " + boUniverse.currentDate);
+				});
 				break;
 
 //			case START_ROLEPLAY:

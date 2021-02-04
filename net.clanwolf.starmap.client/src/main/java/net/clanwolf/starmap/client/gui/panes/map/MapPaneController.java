@@ -103,6 +103,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	ImageView labelFactionImage;
 
 	@FXML
+	Label labelMouseCoords;
+
+	@FXML
 	private ImageView templateBackground;
 
 	@FXML
@@ -127,6 +130,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		ActionManager.addActionCallbackListener(ACTIONS.LOGON_FINISHED_SUCCESSFULL, this);
 		ActionManager.addActionCallbackListener(ACTIONS.SHOW_SYSTEM_DETAIL, this);
 		ActionManager.addActionCallbackListener(ACTIONS.HIDE_SYSTEM_DETAIL, this);
+		ActionManager.addActionCallbackListener(ACTIONS.UPDATE_COORD_INFO, this);
 	}
 
 	/**
@@ -473,6 +477,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 					initializeUniverseMap();
 				}
+
+				ActionManager.getAction(ACTIONS.UPDATE_GAME_INFO).execute();
+
 				break;
 
 			case UPDATE_UNIVERSE:
@@ -530,6 +537,13 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				hideSystemDetail();
 				break;
 
+			case UPDATE_COORD_INFO:
+				String v = o.getText();
+				Platform.runLater(() -> {
+					labelMouseCoords.setText("Pos.: " + v);
+				});
+				break;
+
 			default:
 				break;
 		}
@@ -579,6 +593,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				labelSystemImage.setImage(imagePlanet);
 				labelSystemName.setText(sys.getName());
 				labelFactionImage.setImage(imageFaction);
+				Double x = sys.getX();
+				Double y = sys.getY();
+				ActionManager.getAction(ACTIONS.UPDATE_COORD_INFO).execute("[X:" + String.format("%.2f", x) + "] - [Y:" + String.format("%.2f", y) + "]");
 			});
 
 			// Fade in transition 06 (DetailPane)

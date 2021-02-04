@@ -184,6 +184,11 @@ public class NodeGestures {
 			Node node = (Node) event.getSource();
 			Circle c = (Circle) node;
 			c.setRadius(8);
+
+			BOStarSystem hoveredStarSystem = boUniverse.starSystemBOs.get(Integer.parseInt(node.getId()));
+			Double x = hoveredStarSystem.getX();
+			Double y = hoveredStarSystem.getY();
+			ActionManager.getAction(ACTIONS.UPDATE_COORD_INFO).execute("[X:" + String.format("%.2f", x) + "] - [Y:" + String.format("%.2f", y) + "]");
 		}
 	};
 
@@ -192,6 +197,11 @@ public class NodeGestures {
 			Node node = (Node) event.getSource();
 			Circle c = (Circle) node;
 			c.setRadius(5);
+
+			BOStarSystem hoveredStarSystem = boUniverse.starSystemBOs.get(Integer.parseInt(node.getId()));
+			Double x = hoveredStarSystem.getX();
+			Double y = hoveredStarSystem.getY();
+			ActionManager.getAction(ACTIONS.UPDATE_COORD_INFO).execute("[X:" + String.format("%.2f", x) + "] - [Y:" + String.format("%.2f", y) + "]");
 		}
 	};
 
