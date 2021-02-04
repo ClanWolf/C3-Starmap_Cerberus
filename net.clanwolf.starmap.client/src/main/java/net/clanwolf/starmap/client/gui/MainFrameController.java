@@ -1475,7 +1475,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			case UPDATE_GAME_INFO:
 				Platform.runLater(() -> {
 					BOUniverse boUniverse = Nexus.getBoUniverse();
-					gameInfoLabel.setText(boUniverse.currentSeason + " / " + boUniverse.currentRound + " / " + boUniverse.currentDate);
+					gameInfoLabel.setText("S" + boUniverse.currentSeason + "/R" + boUniverse.currentRound + " - " + boUniverse.currentDate);
 				});
 				break;
 
