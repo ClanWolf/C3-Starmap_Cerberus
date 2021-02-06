@@ -31,6 +31,7 @@ package net.clanwolf.starmap.transfer.enums;
  */
 public enum GAMESTATEMODES {
 	NO_MODE,                                    /* Default mode */
+	CLIENT_READY_FOR_EVENTS,
 
 	ERROR_MESSAGE,                              /* Send a error message string (Object: String with the error message) */
 

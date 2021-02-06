@@ -23,7 +23,7 @@
                </children></Pane>
             <Button fx:id="mapButton01" layoutX="5.0" layoutY="428.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="100.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css" text="Jump" />
             <Button fx:id="mapButton02" layoutX="110.0" layoutY="428.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="100.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css" text="Attack" />
-            <Button fx:id="mapButton03" layoutX="671.0" layoutY="428.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="100.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css" text="Center" />
+            <Button fx:id="mapButton03" layoutX="671.0" layoutY="428.0" mnemonicParsing="false" onAction="#handleCenterButtonClick" prefHeight="37.0" prefWidth="100.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css" text="Center" />
          </children></Pane>
       <Pane fx:id="paneSystemDetail" layoutX="683.0" layoutY="22.0" mouseTransparent="true" prefHeight="253.0" prefWidth="149.0" styleClass="systemDetailPanel" stylesheets="@../styles/MainFrameStyle.css">
          <children>

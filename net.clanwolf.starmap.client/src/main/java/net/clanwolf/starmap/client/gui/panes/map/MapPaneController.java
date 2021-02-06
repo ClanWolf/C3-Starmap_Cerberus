@@ -55,11 +55,14 @@ import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
+import net.clanwolf.starmap.client.process.login.Login;
 import net.clanwolf.starmap.client.process.universe.BOAttack;
 import net.clanwolf.starmap.client.process.universe.BOJumpship;
 import net.clanwolf.starmap.client.process.universe.BOStarSystem;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
+import net.clanwolf.starmap.client.util.C3PROPS;
+import net.clanwolf.starmap.client.util.C3Properties;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
@@ -80,6 +83,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 	private boolean universeMapGenerationStarted = false;
 	private BOUniverse boUniverse = null;
+	private PannableCanvas canvas;
+	private boolean firstCreationDone = false;
 
 	@FXML
 	AnchorPane anchorPane;
@@ -116,6 +121,11 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 	@FXML
 	private Button mapButton03;
+
+	@FXML
+	private void handleCenterButtonClick() throws Exception {
+		moveMapToPosition(Config.MAP_INITIAL_TRANSLATE_X, Config.MAP_INITIAL_TRANSLATE_Y);
+	}
 
 	/**
 	 * Adds action callback listeners.
@@ -166,7 +176,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			buttonBackground.setOpacity(0.0);
 
 			try {
-				PannableCanvas canvas = new PannableCanvas();
+				canvas = new PannableCanvas();
 				canvas.setTranslateX(Config.MAP_INITIAL_TRANSLATE_X);
 				canvas.setTranslateY(Config.MAP_INITIAL_TRANSLATE_Y);
 
@@ -224,7 +234,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				canvas.addGrid_250();
 				canvas.setVisibility();
 
-				Circle circle1 = new Circle(3000, 3000, 40);
+				Circle circle1 = new Circle(Config.MAP_WIDTH / 2, Config.MAP_HEIGHT / 2, 40);
 				circle1.setStroke(Color.ORANGE);
 				circle1.setFill(Color.ORANGE.deriveColor(1, 1, 1, 0.5));
 				circle1.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
@@ -343,7 +353,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 				starMapPane.getChildren().add(canvas);
 
-				Rectangle clip = new Rectangle(776, 471);
+				Rectangle clip = new Rectangle(Config.CLIP_X, Config.CLIP_Y);
 				clip.setLayoutX(0);
 				clip.setLayoutY(0);
 				starMapPane.setClip(clip);
@@ -415,10 +425,22 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		fadeInTransition_05.setCycleCount(4);
 
 		// Fade in transition 06 (DetailPane)
-		FadeTransition fadeInTransition_06 = new FadeTransition(Duration.millis(570), paneSystemDetail);
+		FadeTransition fadeInTransition_06 = new FadeTransition(Duration.millis(470), paneSystemDetail);
 		fadeInTransition_06.setFromValue(1.0);
 		fadeInTransition_06.setToValue(0.0);
 		fadeInTransition_06.setCycleCount(1);
+
+		TranslateTransition move = new TranslateTransition(Duration.millis(600), canvas);
+		move.setCycleCount(1);
+		if (!firstCreationDone) {
+			// TODO: Get the right Planet to move the map to
+			move.setByX(-2.34f * Config.MAP_COORDINATES_MULTIPLICATOR);
+			move.setByY(230.53f * Config.MAP_COORDINATES_MULTIPLICATOR);
+			firstCreationDone = true;
+		} else {
+			move.setByX(0.0f * Config.MAP_COORDINATES_MULTIPLICATOR);
+			move.setByY(0.0f * Config.MAP_COORDINATES_MULTIPLICATOR);
+		}
 
 		// Transition sequence
 		SequentialTransition sequentialTransition = new SequentialTransition();
@@ -429,12 +451,21 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 													fadeInTransition_03,
 													fadeInTransition_04,
 													fadeInTransition_05,
-													fadeInTransition_06
+													fadeInTransition_06,
+													move
 												);
 		sequentialTransition.setCycleCount(1);
 		sequentialTransition.play();
 
 		C3SoundPlayer.play("sound/fx/PremiumBeat_0013_cursor_click_11.wav", false);
+	}
+
+	private void moveMapToPosition(double x, double y) {
+		TranslateTransition move = new TranslateTransition(Duration.millis(500), canvas);
+		move.setCycleCount(1);
+		move.setToX(x);
+		move.setToY(y);
+		move.play();
 	}
 
 	private void centerStarSystemGroups() {

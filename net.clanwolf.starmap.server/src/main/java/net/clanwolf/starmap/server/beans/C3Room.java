@@ -36,6 +36,7 @@ import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
 
 import java.util.ArrayList;
+import java.util.concurrent.TimeUnit;
 
 /**
  * The onLogin method is overriden so that incoming player sessions can be initialzied with event handlers to do user logic. In this scenario, the only thing the handler does is to patch incoming messages to the GameRoom which in turn has the game
@@ -72,7 +73,6 @@ public class C3Room extends GameRoomSession {
 
 					// pass the event to the game room
 					playerSession.getGameRoom().send(event);
-
 				}
 			}
 
@@ -115,7 +115,19 @@ public class C3Room extends GameRoomSession {
 			C3Logger.debug("C3Room.onLogin: -> sending LOG_IN_SUCCESS Event");
 			Event e = Events.event(null, Events.LOG_IN_SUCCESS);
 			C3Logger.debug("C3Room.onLogin: -> adding Event to PlayerSession");
+
+			// TODO: Only send the onEvent(e) if the session is ready to receive events!
+			// See C3GameRoomHandler L.123
+
+			try {
+				C3Logger.debug("Waiting a moment to send the login success event...");
+				TimeUnit.SECONDS.sleep(1);
+			} catch (InterruptedException interruptedException) {
+				interruptedException.printStackTrace();
+			}
+
 			playerSession.onEvent(e);
+
 			C3Logger.debug("C3Room.onLogin: -> LOG_IN_SUCCESS Event sent");
 
 			// check for wrong sessions from this player

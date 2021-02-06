@@ -63,6 +63,8 @@ public class Login {
 
 	private static Session session = null;
 
+	private static boolean loginInProgress = false;
+
 	private Login() {
 		// Prevent Instantiation
 	}
@@ -91,6 +93,12 @@ public class Login {
 	public static void doLogin() throws Exception {
 		// Upon login, get the values from the textfields and set the
 		// properties. The database comes from the settings!
+
+		if (loginInProgress) {
+			return;
+		} else {
+			loginInProgress = true;
+		}
 
 		C3Logger.info("Login");
 		String used_username;
@@ -124,7 +132,7 @@ public class Login {
 		if(Nexus.isDevelopmentPC()){
 			builder = new LoginHelper.LoginBuilder().username(used_username).password(used_password).connectionKey("C3GameRoomForNettyClient").nadronTcpHostName("localhost").tcpPort(18090);
 		} else {
-			//212.227.253.80
+			// 217.160.60.129
 			builder = new LoginHelper.LoginBuilder().username(used_username).password(used_password).connectionKey("C3GameRoomForNettyClient").nadronTcpHostName(tcphostname).tcpPort(tcpPort);
 		}
 		LoginHelper loginHelper = builder.build();
@@ -144,18 +152,13 @@ public class Login {
 				C3Logger.info("Going to Change to Object Protocol");
 				C3Logger.info(event.toString());
 				session.resetProtocol(NettyObjectProtocol.INSTANCE);
-
-				// create C3State objects send it to server.
-
-//				 C3GameState state = new C3GameState(1);
-//				 NetworkEvent networkEvent = Events.networkEvent(state);
 				session.removeHandler(this);
 				addDefaultHandlerToSession(session);
-				// session.onEvent(networkEvent);
 			}
 		};
 
 		session.addHandler(startEventHandler);
+
 		session.setReconnectPolicy(new ReconnectPolicy.ReconnectNTimes(50, 5000, loginHelper));
 		Nexus.setSession(session);
 
@@ -173,7 +176,10 @@ public class Login {
 			public void onDisconnect(Event event) {
 				// TODO: Implement a new Action for disconnect from server
 				C3Logger.info("onDisconnect");
+				loginInProgress = false;
 				super.onDisconnect(event);
+
+
 			}
 
 			@Override
@@ -181,7 +187,7 @@ public class Login {
 				super.onLoginFailure(event); // To change body of generated
 				// methods, choose Tools |
 				// Templates.
-
+				loginInProgress = false;
 				C3Logger.info("Login failed!");
 				C3Logger.info("onLoginFailure: " + "Check UserDTO or Password!");
 				ActionManager.getAction(ACTIONS.LOGON_FINISHED_WITH_ERROR).execute();
@@ -198,6 +204,8 @@ public class Login {
 				session.onEvent(networkEvent);
 
 				ActionManager.getAction(ACTIONS.LOGGED_ON).execute();
+
+				loginInProgress = false;
 			}
 
 			@Override
@@ -206,6 +214,9 @@ public class Login {
 			}
 		};
 		session.addHandler(handler);
+
+		GameState s = new GameState(GAMESTATEMODES.CLIENT_READY_FOR_EVENTS);
+		Nexus.fireNetworkEvent(s);
 	}
 
 	public static void login(String username, String password, String factionKey, boolean passwordEncrypted) throws Exception {

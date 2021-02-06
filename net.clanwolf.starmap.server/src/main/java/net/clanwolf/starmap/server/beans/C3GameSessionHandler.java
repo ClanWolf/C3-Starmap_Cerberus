@@ -123,6 +123,10 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		case ROLEPLAY_SAVE_NEXT_STEP:
 			C3GameSessionHandlerRoleplay.saveRolePlayCharacterNextStep(session, state);
 			break;
+		case CLIENT_READY_FOR_EVENTS:
+			// TODO: Make this event appear in server log, then
+			C3Logger.info("sjkdjslkdajösldkjsdlkj HURRRRRRAAAAAAAAAAAAAAAAAAAA");
+			break;
 		default:
 			break;
 		}

@@ -27,21 +27,25 @@
 package net.clanwolf.starmap.client.gui.panes.map;
 
 import javafx.scene.paint.Color;
+import net.clanwolf.starmap.client.util.C3PROPS;
+import net.clanwolf.starmap.client.util.C3Properties;
 
 public class Config {
+	public static final double MAP_DIM = 6000;
+	public static final double CLIP_X = 776;
+	public static final double CLIP_Y = 471;
 
-	// Map
 	public static final int MAP_COORDINATES_MULTIPLICATOR = 5;
 	public static final Color MAP_BACKGROUND_AREA_BORDER_COLOR = Color.DARKORANGE;
 	public static final Color MAP_RANGE_CIRCLE_COLOR = Color.LIGHTBLUE;
 	public static final boolean MAP_HIGHLIGHT_HOVERED_STARSYSTEM = true;
 	public static final boolean MAP_FLASH_ATTACKED_SYSTEMS = true;
-	public static final double MAP_WIDTH = 6000;
-	public static final double MAP_HEIGHT = 6000;
+	public static final double MAP_WIDTH = MAP_DIM;
+	public static final double MAP_HEIGHT = MAP_DIM;
 	public static final double MAP_MAX_SCALE = 3.0d;
 	public static final double MAP_MIN_SCALE = .2d;
-	public static final double MAP_INITIAL_TRANSLATE_X = -2500;
-	public static final double MAP_INITIAL_TRANSLATE_Y = -1620;
+	public static final double MAP_INITIAL_TRANSLATE_X = -(MAP_WIDTH / 2) + (CLIP_X / 2);   // X: 0 Center = Terra
+	public static final double MAP_INITIAL_TRANSLATE_Y = -(MAP_HEIGHT / 2) + (CLIP_Y / 2);  // Y: 0 Center = Terra
 	public static final double MAP_BACKGROUND_AREA_RADIUS = 90;
 	public static final double MAP_BACKGROUND_AREA_RADIUS_BORDER_WIDTH = 3;
 

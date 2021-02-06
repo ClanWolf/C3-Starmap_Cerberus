@@ -183,15 +183,13 @@ public abstract class AbstractSessionEventHandler implements
 			}
 			else
 			{
-				System.err.println("Received exception event in session. "
-						+ "Going to close session");
+				System.err.println("Received exception event in session. Going to close session [001]");
 				onClose(event);
 			}
 		}
 		else
 		{
-			System.err.println("Received exception event in session. "
-					+ "Going to close session");
+			System.err.println("Received exception event in session. Going to close session [002]");
 			onClose(event);
 		}
 	}
