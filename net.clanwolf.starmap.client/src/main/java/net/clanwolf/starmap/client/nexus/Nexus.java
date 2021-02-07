@@ -65,11 +65,30 @@ public class Nexus {
 	private static boolean isDevelopmentPC = false;
 	private static boolean clearCacheOnStart = false;
 
+	private static BOStarSystem terra = null;
+	private static BOStarSystem currentlySelectedStarSystem = null;
+
 	/**
 	 * Private constructor to prevent instantiation
 	 */
 	private Nexus() {
 
+	}
+
+	public static void setTerra(BOStarSystem s) {
+		terra = s;
+	}
+
+	public static BOStarSystem getTerra() {
+		return terra;
+	}
+
+	public static void setCurrentlySelectedStarSystem(BOStarSystem s) {
+		currentlySelectedStarSystem = s;
+	}
+
+	public static BOStarSystem getCurrentlySelectedStarSystem() {
+		return currentlySelectedStarSystem;
 	}
 
 	public static void setSelectedStarSystem(BOStarSystem s) {

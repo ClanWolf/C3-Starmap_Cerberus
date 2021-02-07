@@ -31,6 +31,7 @@ import javafx.animation.SequentialTransition;
 import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.geometry.Point2D;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
@@ -47,6 +48,7 @@ import net.clanwolf.starmap.client.process.universe.BOUniverse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 public class PannableCanvas extends Pane {
 	private DoubleProperty myScale = new SimpleDoubleProperty(1.0);
@@ -57,6 +59,7 @@ public class PannableCanvas extends Pane {
 	private Pane attacksPane = null;
 	private Pane paneSystemDetail = null;
 	private HashMap<Integer, ArrayList<Circle>> starPanelsStarLists = new HashMap<>();
+	private HashMap<Integer, ArrayList<Point2D>> stars3dStartPositions = new HashMap<>();
 	private Image imageNebula = null;
 	private ImageView ivNebula = null;
 
@@ -154,6 +157,7 @@ public class PannableCanvas extends Pane {
 			int number = layer[1];
 
 			ArrayList<Circle> l = new ArrayList<>();
+			ArrayList<Point2D> l2 = new ArrayList<>();
 
 			for (int i = 0; i < number; i++) {
 				double x = (((Math.random()) * w + 1));
@@ -162,9 +166,9 @@ public class PannableCanvas extends Pane {
 
 				Circle c = new Circle(x, y, size);
 				c.setStrokeWidth(0);
-				//c.setFill(Color.WHITESMOKE.deriveColor(1, 1, 1, 0.4));
-				c.setFill(Color.WHITESMOKE.deriveColor(1, 1, 1, 0.8));
+				c.setFill(Color.WHITESMOKE.deriveColor(1, 1, 1, 0.6));
 				l.add(c);
+				l2.add(new Point2D(x,y));
 				starPane.getChildren().add(c);
 			}
 
@@ -174,6 +178,8 @@ public class PannableCanvas extends Pane {
 			}
 
 			starPanelsStarLists.put(level, l);
+			stars3dStartPositions.put(level, l2);
+
 			if (!getChildren().contains(starPane)) {
 				getChildren().add(starPane);
 				starPane.toBack();
@@ -187,6 +193,42 @@ public class PannableCanvas extends Pane {
 			for (Circle c : l) {
 				c.setCenterX(c.getCenterX() + x);
 				c.setCenterY(c.getCenterY() + y);
+			}
+		});
+	}
+
+	public void fadeoutStars(int level) {
+		Platform.runLater(() -> {
+			ArrayList<Circle> l = starPanelsStarLists.get(level);
+			for (Circle c : l) {
+				FadeTransition fot = new FadeTransition(Duration.millis(5), c);
+				fot.setFromValue(1.0);
+				fot.setToValue(0.0);
+				fot.setCycleCount(1);
+				fot.play();
+			}
+		});
+	}
+
+	public void resetBackgroundStarPane(int level) {
+		Platform.runLater(() -> {
+			ArrayList<Circle> listStars = starPanelsStarLists.get(level);
+			ArrayList<Point2D> listPositions = stars3dStartPositions.get(level);
+
+			Iterator<Circle> it1 = listStars.iterator();
+			Iterator<Point2D> it2 = listPositions.iterator();
+
+			while (it1.hasNext() && it2.hasNext()) {
+				Circle c = (Circle) it1.next();
+				Point2D p = (Point2D) it2.next();
+				c.setCenterX(p.getX());
+				c.setCenterY(p.getY());
+
+				FadeTransition fit = new FadeTransition(Duration.millis(3000), c);
+				fit.setFromValue(0.0);
+				fit.setToValue(1.0);
+				fit.setCycleCount(1);
+				fit.play();
 			}
 		});
 	}

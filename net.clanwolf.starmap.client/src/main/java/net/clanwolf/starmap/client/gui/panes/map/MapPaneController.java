@@ -28,6 +28,8 @@ package net.clanwolf.starmap.client.gui.panes.map;
 
 import javafx.animation.*;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.CacheHint;
@@ -70,6 +72,7 @@ import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.enums.UNIVERSECONTEXT;
 import org.kynosarges.tektosyne.geometry.PointD;
 
+import javax.swing.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -85,6 +88,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	private BOUniverse boUniverse = null;
 	private PannableCanvas canvas;
 	private boolean firstCreationDone = false;
+	private SceneGestures sceneGestures;
 
 	@FXML
 	AnchorPane anchorPane;
@@ -124,7 +128,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 	@FXML
 	private void handleCenterButtonClick() throws Exception {
-		moveMapToPosition(Config.MAP_INITIAL_TRANSLATE_X, Config.MAP_INITIAL_TRANSLATE_Y);
+		reCenterMap();
 	}
 
 	/**
@@ -188,6 +192,13 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					Integer id = starSystem.getId();
 					double x = starSystem.getScreenX();
 					double y = starSystem.getScreenY();
+
+					if ("Terra".equals(name)) {
+						Nexus.setTerra(starSystem);
+					}
+					if ("Diosd".equals(name)) {
+						Nexus.setCurrentlySelectedStarSystem(starSystem);
+					}
 
 					Group starSystemGroup = new Group();
 					starSystemGroup.setId(id.toString());
@@ -359,12 +370,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				starMapPane.setClip(clip);
 				starMapPane.setPickOnBounds(false);
 
-				SceneGestures sceneGestures = new SceneGestures(canvas);
-				starMapPane.addEventFilter(MouseEvent.MOUSE_PRESSED, sceneGestures.getOnMousePressedEventHandler());
-				starMapPane.addEventFilter(MouseEvent.MOUSE_DRAGGED, sceneGestures.getOnMouseDraggedEventHandler());
-				starMapPane.addEventFilter(ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
-				starMapPane.addEventFilter(MouseEvent.MOUSE_MOVED, sceneGestures.getOnMouseMovedEventHandler());
-				starMapPane.addEventFilter(MouseEvent.MOUSE_CLICKED, sceneGestures.getOnMouseClickedEventHandler());
+				sceneGestures = new SceneGestures(canvas);
+				addMouseFilters();
 
 				canvas.setPaneSystemDetail(paneSystemDetail);
 
@@ -378,6 +385,26 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			}
 
 			C3Logger.info("Finished to build the star map.");
+		}
+	}
+
+	private void addMouseFilters() {
+		if (sceneGestures != null) {
+			starMapPane.addEventFilter(MouseEvent.MOUSE_PRESSED, sceneGestures.getOnMousePressedEventHandler());
+			starMapPane.addEventFilter(MouseEvent.MOUSE_DRAGGED, sceneGestures.getOnMouseDraggedEventHandler());
+			starMapPane.addEventFilter(ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
+			starMapPane.addEventFilter(MouseEvent.MOUSE_MOVED, sceneGestures.getOnMouseMovedEventHandler());
+			starMapPane.addEventFilter(MouseEvent.MOUSE_CLICKED, sceneGestures.getOnMouseClickedEventHandler());
+		}
+	}
+
+	private void removeMouseFilters() {
+		if (sceneGestures != null) {
+			starMapPane.removeEventFilter(MouseEvent.MOUSE_PRESSED, sceneGestures.getOnMousePressedEventHandler());
+			starMapPane.removeEventFilter(MouseEvent.MOUSE_DRAGGED, sceneGestures.getOnMouseDraggedEventHandler());
+			starMapPane.removeEventFilter(ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
+			starMapPane.removeEventFilter(MouseEvent.MOUSE_MOVED, sceneGestures.getOnMouseMovedEventHandler());
+			starMapPane.removeEventFilter(MouseEvent.MOUSE_CLICKED, sceneGestures.getOnMouseClickedEventHandler());
 		}
 	}
 
@@ -430,18 +457,6 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		fadeInTransition_06.setToValue(0.0);
 		fadeInTransition_06.setCycleCount(1);
 
-		TranslateTransition move = new TranslateTransition(Duration.millis(600), canvas);
-		move.setCycleCount(1);
-		if (!firstCreationDone) {
-			// TODO: Get the right Planet to move the map to
-			move.setByX(-2.34f * Config.MAP_COORDINATES_MULTIPLICATOR);
-			move.setByY(230.53f * Config.MAP_COORDINATES_MULTIPLICATOR);
-			firstCreationDone = true;
-		} else {
-			move.setByX(0.0f * Config.MAP_COORDINATES_MULTIPLICATOR);
-			move.setByY(0.0f * Config.MAP_COORDINATES_MULTIPLICATOR);
-		}
-
 		// Transition sequence
 		SequentialTransition sequentialTransition = new SequentialTransition();
 		sequentialTransition.getChildren().addAll(  fadeInTransition_01,
@@ -451,20 +466,88 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 													fadeInTransition_03,
 													fadeInTransition_04,
 													fadeInTransition_05,
-													fadeInTransition_06,
-													move
+													fadeInTransition_06
 												);
 		sequentialTransition.setCycleCount(1);
+		sequentialTransition.setOnFinished(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				if (!firstCreationDone) {
+					moveMapToPosition(Nexus.getCurrentlySelectedStarSystem());
+					firstCreationDone = true;
+				}
+			}
+		});
 		sequentialTransition.play();
 
 		C3SoundPlayer.play("sound/fx/PremiumBeat_0013_cursor_click_11.wav", false);
 	}
 
-	private void moveMapToPosition(double x, double y) {
-		TranslateTransition move = new TranslateTransition(Duration.millis(500), canvas);
+	private void reCenterMap() {
+
+		// TODO: Take care of the 3d star panels
+
+		removeMouseFilters();
+		mapButton03.setDisable(true);
+
+		C3Logger.info("Travel to Terra");
+		C3Logger.info("X: " + Config.MAP_INITIAL_TRANSLATE_X);
+		C3Logger.info("Y: " + Config.MAP_INITIAL_TRANSLATE_Y);
+
+		for (int[] layer : Config.BACKGROUND_STARS_LAYERS) {
+			int level = layer[0];
+			canvas.fadeoutStars(level);
+		}
+
+		TranslateTransition move = new TranslateTransition(Duration.millis(400), canvas);
 		move.setCycleCount(1);
-		move.setToX(x);
-		move.setToY(y);
+		move.setToX(Config.MAP_INITIAL_TRANSLATE_X);
+		move.setToY(Config.MAP_INITIAL_TRANSLATE_Y);
+		move.setOnFinished(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				addMouseFilters();
+				mapButton03.setDisable(false);
+				for (int[] layer : Config.BACKGROUND_STARS_LAYERS) {
+					int level = layer[0];
+					canvas.resetBackgroundStarPane(level);
+				}
+			}
+		});
+		move.play();
+	}
+
+	private void moveMapToPosition(BOStarSystem sys) {
+
+		// TODO: Take care of the 3d star panels
+
+		removeMouseFilters();
+		mapButton03.setDisable(true);
+
+		C3Logger.info("Travel to " + sys.getName());
+		C3Logger.info("X: " + sys.getX());
+		C3Logger.info("Y: " + sys.getY());
+
+		for (int[] layer : Config.BACKGROUND_STARS_LAYERS) {
+			int level = layer[0];
+			canvas.fadeoutStars(level);
+		}
+
+		TranslateTransition move = new TranslateTransition(Duration.millis(400), canvas);
+		move.setCycleCount(1);
+		move.setByX(sys.getX() * Config.MAP_COORDINATES_MULTIPLICATOR);
+		move.setByY(sys.getY() * Config.MAP_COORDINATES_MULTIPLICATOR);
+		move.setOnFinished(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				addMouseFilters();
+				mapButton03.setDisable(false);
+				for (int[] layer : Config.BACKGROUND_STARS_LAYERS) {
+					int level = layer[0];
+					canvas.resetBackgroundStarPane(level);
+				}
+			}
+		});
 		move.play();
 	}
 
@@ -617,7 +700,6 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			C3Logger.debug("Planet image: /images/planets/" + fn + ".png");
 			C3Logger.debug("SystemImageName from DB: " + sys.getAffiliation());
 
-//			C3Logger.debug("Logo from DB: " + logo);
 			Image imageFaction = new Image(getClass().getResourceAsStream("/images/logos/factions/" + logo));
 
 			Platform.runLater(() -> {

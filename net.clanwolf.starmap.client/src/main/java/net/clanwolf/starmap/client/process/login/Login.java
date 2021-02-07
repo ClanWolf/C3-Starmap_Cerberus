@@ -178,8 +178,6 @@ public class Login {
 				C3Logger.info("onDisconnect");
 				loginInProgress = false;
 				super.onDisconnect(event);
-
-
 			}
 
 			@Override

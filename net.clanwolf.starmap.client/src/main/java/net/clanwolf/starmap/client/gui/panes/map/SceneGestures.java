@@ -26,6 +26,7 @@
  */
 package net.clanwolf.starmap.client.gui.panes.map;
 
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.input.MouseButton;
@@ -34,9 +35,18 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import net.clanwolf.starmap.client.action.ACTIONS;
+import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
+import net.clanwolf.starmap.client.action.ActionObject;
+import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
+import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.universe.BOStarSystem;
+import net.clanwolf.starmap.client.process.universe.BOUniverse;
 import net.clanwolf.starmap.logging.C3Logger;
+import net.clanwolf.starmap.transfer.GameState;
+import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
+import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
+import net.clanwolf.starmap.transfer.enums.UNIVERSECONTEXT;
 
 class SceneGestures {
 	private double previousX;
