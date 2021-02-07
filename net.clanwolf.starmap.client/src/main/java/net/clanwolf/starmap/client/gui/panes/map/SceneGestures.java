@@ -113,6 +113,39 @@ class SceneGestures {
 		}
 	};
 
+	public void moveMapByDiff(double x, double y, double diffX, double diffY) {
+//		String directionH = "";
+//		String directionV = "";
+		double multix = 0;
+		double multiy = 0;
+
+		if (x < previousX) {
+//			directionH = "right";
+			multix = -1;
+		} else if (x > previousX) {
+//			directionH = "left";
+			multix = 1;
+		}
+		if (y < previousY) {
+//			directionV = "up";
+			multiy = -1;
+		} else if (y > previousY) {
+//			directionV = "down";
+			multiy = 1;
+		}
+		for (int[] layer : Config.BACKGROUND_STARS_LAYERS) {
+			int level = layer[0];
+			int factor = layer[2];
+			canvas.moveBackgroundStarPane(level, factor * multix, factor * multiy);
+		}
+
+		previousX = x;
+		previousY = y;
+
+		canvas.setTranslateX(diffX);
+		canvas.setTranslateY(diffY);
+	}
+
 	private EventHandler<MouseEvent> onMouseDraggedEventHandler = new EventHandler<MouseEvent>() {
 		public void handle(MouseEvent event) {
 
@@ -121,40 +154,12 @@ class SceneGestures {
 				return;
 			}
 
+			double x = event.getX();
+			double y = event.getY();
 			double diffX = sceneDragContext.translateAnchorX + event.getSceneX() - sceneDragContext.mouseAnchorX;
 			double diffY = sceneDragContext.translateAnchorY + event.getSceneY() - sceneDragContext.mouseAnchorY;
 
-//			String directionH = "";
-//			String directionV = "";
-			double multix = 0;
-			double multiy = 0;
-			double x = event.getX();
-			double y = event.getY();
-			if (x < previousX) {
-//				directionH = "right";
-				multix = -1;
-			} else if (x > previousX) {
-//				directionH = "left";
-				multix = 1;
-			}
-			if (y < previousY) {
-//				directionV = "up";
-				multiy = -1;
-			} else if (y > previousY) {
-//				directionV = "down";
-				multiy = 1;
-			}
-			for (int[] layer : Config.BACKGROUND_STARS_LAYERS) {
-				int level = layer[0];
-				int factor = layer[2];
-				canvas.moveBackgroundStarPane(level, factor * multix, factor * multiy);
-			}
-
-			previousX = x;
-			previousY = y;
-
-			canvas.setTranslateX(diffX);
-			canvas.setTranslateY(diffY);
+			moveMapByDiff(x, y, diffX, diffY);
 
 			event.consume();
 		}

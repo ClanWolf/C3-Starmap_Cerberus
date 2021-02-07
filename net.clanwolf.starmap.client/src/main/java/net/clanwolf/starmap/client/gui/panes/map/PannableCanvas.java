@@ -103,6 +103,7 @@ public class PannableCanvas extends Pane {
 	public void setPaneSystemDetail(Pane psd) {
 		this.paneSystemDetail = psd;
 	}
+
 	public void hideStarSystemMarker() {
 		starSystemMarkerCircle60ly.setVisible(false);
 		starSystemMarkerCircle30ly.setVisible(false);
