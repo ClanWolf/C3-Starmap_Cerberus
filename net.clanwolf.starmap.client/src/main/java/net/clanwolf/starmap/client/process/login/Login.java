@@ -94,12 +94,6 @@ public class Login {
 		// Upon login, get the values from the textfields and set the
 		// properties. The database comes from the settings!
 
-		if (loginInProgress) {
-			return;
-		} else {
-			loginInProgress = true;
-		}
-
 		C3Logger.info("Login");
 		String used_username;
 		String used_password;
@@ -194,6 +188,7 @@ public class Login {
 			@Override
 			public void onLoginSuccess(Event event) {
 				super.onLoginSuccess(event);
+				loginInProgress = false;
 				C3Logger.info("Successfully logged in.");
 				C3Logger.info("onLoginSuccess: USER_REQUEST_LOGGED_IN_DATA");
 				GameState state = new GameState(GAMESTATEMODES.USER_REQUEST_LOGGED_IN_DATA);
@@ -202,8 +197,6 @@ public class Login {
 				session.onEvent(networkEvent);
 
 				ActionManager.getAction(ACTIONS.LOGGED_ON).execute();
-
-				loginInProgress = false;
 			}
 
 			@Override
@@ -218,6 +211,14 @@ public class Login {
 	}
 
 	public static void login(String username, String password, String factionKey, boolean passwordEncrypted) throws Exception {
+
+		if (loginInProgress) {
+			C3Logger.info("Login rejected, already logging in...");
+			return;
+		} else {
+			C3Logger.info("Login initiated.");
+			loginInProgress = true;
+		}
 
 		Login.username = username;
 		Login.password = password;
