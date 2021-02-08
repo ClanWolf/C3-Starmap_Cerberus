@@ -163,7 +163,6 @@ public class Login {
 	 * Handle Server Events
 	 */
 	private static void addDefaultHandlerToSession(Session session) {
-		// we are only interested in data in, so override only that method.
 		AbstractSessionEventHandler handler = new AbstractSessionEventHandler(session) {
 
 			@Override

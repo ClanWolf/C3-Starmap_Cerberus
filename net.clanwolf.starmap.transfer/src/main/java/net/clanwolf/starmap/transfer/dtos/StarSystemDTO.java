@@ -45,7 +45,16 @@ public class StarSystemDTO extends Dto {
 	private String wealth;
 	private String veternacy;
 	private String type;
+	private String systemImageName;
 	private HashMap<String, String> maps;
+
+	public void setSystemImageName(String n) {
+		systemImageName = n;
+	}
+
+	public String getSystemImageName() {
+		return systemImageName;
+	}
 
 	public String getSarnaLink() {
 		return sarnaLink;

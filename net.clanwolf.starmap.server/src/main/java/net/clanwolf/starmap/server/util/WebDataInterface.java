@@ -83,6 +83,7 @@ public class WebDataInterface {
 			sb.append("         STS.StarType2       AS startype2,        \r\n");
 			sb.append("         STS.StarType3       AS startype3,        \r\n");
 			sb.append("         STS.SarnaLinkSystem AS link,             \r\n");
+			sb.append("         STS.SystemImageName AS systemImageName,  \r\n");
 			sb.append("         F.ShortName         AS affiliation,      \r\n");
 			//sb.append("         F.Name_en           AS faction_en,       \r\n");
 			//sb.append("         F.Name_de           AS faction_de,       \r\n");
@@ -142,6 +143,7 @@ public class WebDataInterface {
 			//sb.append("         STS.StarType2       AS startype2,        \r\n");
 			//sb.append("         STS.StarType3       AS startype3,        \r\n");
 			sb.append("         STS.SarnaLinkSystem AS link,             \r\n");
+			sb.append("         STS.SystemImageName AS systemImageName,  \r\n");
 			sb.append("         F.ShortName         AS affiliation,      \r\n");
 			//sb.append("         F.Name_en           AS faction_en,       \r\n");
 			//sb.append("         F.Name_de           AS faction_de,       \r\n");
@@ -258,6 +260,7 @@ public class WebDataInterface {
 							ss.setWealth(rs.getString("wealth"));
 							ss.setVeternacy(rs.getString("veternacy"));
 							ss.setType(rs.getString("type"));
+							ss.setSystemImageName(rs.getString("systemImageName"));
 
 							HashMap<String, String> maps = new HashMap<>();
 							maps.put("s1map1", rs.getString("s1map1"));

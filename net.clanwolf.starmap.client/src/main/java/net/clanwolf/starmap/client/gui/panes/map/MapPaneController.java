@@ -511,6 +511,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				for (int[] layer : Config.BACKGROUND_STARS_LAYERS) {
 					int level = layer[0];
 					canvas.resetBackgroundStarPane(level);
+					canvas.showStarSystemMarker(Nexus.getTerra());
+					ActionManager.getAction(ACTIONS.SHOW_SYSTEM_DETAIL).execute(Nexus.getTerra());
 				}
 			}
 		});
@@ -545,6 +547,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				for (int[] layer : Config.BACKGROUND_STARS_LAYERS) {
 					int level = layer[0];
 					canvas.resetBackgroundStarPane(level);
+					canvas.showStarSystemMarker(sys);
+					ActionManager.getAction(ACTIONS.SHOW_SYSTEM_DETAIL).execute(sys);
 				}
 			}
 		});
@@ -688,27 +692,32 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			Nexus.setSelectedStarSystem(sys);
 			C3SoundPlayer.play("sound/fx/PremiumBeat_0046_sci_fi_beep_electric.wav", false);
 
-			String name = boUniverse.factionBOs.get(sys.getAffiliation()).getName();
-			String shortName = boUniverse.factionBOs.get(sys.getAffiliation()).getShortName();
-			String color = boUniverse.factionBOs.get(sys.getAffiliation()).getColor();
-			String logo = boUniverse.factionBOs.get(sys.getAffiliation()).getLogo();
-
-			// TODO: Put SystemImageName column into DTO!
-			int n = (int)((Math.random()) * 25 + 1);
-			String fn = String.format("%03d", n);
-			Image imagePlanet = new Image(getClass().getResourceAsStream("/images/planets/" + fn + ".png"));
-			C3Logger.debug("Planet image: /images/planets/" + fn + ".png");
-			C3Logger.debug("SystemImageName from DB: " + sys.getAffiliation());
-
-			Image imageFaction = new Image(getClass().getResourceAsStream("/images/logos/factions/" + logo));
-
 			Platform.runLater(() -> {
+				String name = boUniverse.factionBOs.get(sys.getAffiliation()).getName();
+				String shortName = boUniverse.factionBOs.get(sys.getAffiliation()).getShortName();
+				String color = boUniverse.factionBOs.get(sys.getAffiliation()).getColor();
+				String logo = boUniverse.factionBOs.get(sys.getAffiliation()).getLogo();
+				Image imagePlanet = null;
+				try {
+					String systemImageName = String.format("%03d", Integer.parseInt(sys.getSystemImageName()));
+					C3Logger.debug("Planet image: /images/planets/" + systemImageName + ".png");
+					C3Logger.debug("SystemImageName from DB: " + systemImageName);
+					imagePlanet = new Image(getClass().getResourceAsStream("/images/planets/" + systemImageName + ".png"));
+				} catch (Exception e) {
+					e.printStackTrace();
+					imagePlanet = new Image(getClass().getResourceAsStream("/images/planets/000_default.png"));
+				}
+				if (imagePlanet == null) {
+					imagePlanet = new Image(getClass().getResourceAsStream("/images/planets/000_default.png"));
+				}
+				Image imageFaction = new Image(getClass().getResourceAsStream("/images/logos/factions/" + logo));
+
 				labelSystemImage.setImage(imagePlanet);
 				labelSystemName.setText(sys.getName());
 				labelFactionImage.setImage(imageFaction);
 				Double x = sys.getX();
 				Double y = sys.getY();
-				ActionManager.getAction(ACTIONS.UPDATE_COORD_INFO).execute("[X:" + String.format("%.2f", x) + "] - [Y:" + String.format("%.2f", y) + "]");
+				ActionManager.getAction(ACTIONS.UPDATE_COORD_INFO).execute(sys.getName() + " [X:" + String.format("%.2f", x) + "] - [Y:" + String.format("%.2f", y) + "]");
 			});
 
 			// Fade in transition 06 (DetailPane)
