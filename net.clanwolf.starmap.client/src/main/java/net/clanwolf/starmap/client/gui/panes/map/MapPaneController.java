@@ -245,12 +245,12 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				canvas.addGrid_250();
 				canvas.setVisibility();
 
-				Circle circle1 = new Circle(Config.MAP_WIDTH / 2, Config.MAP_HEIGHT / 2, 40);
-				circle1.setStroke(Color.ORANGE);
-				circle1.setFill(Color.ORANGE.deriveColor(1, 1, 1, 0.5));
-				circle1.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
-				circle1.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
-				canvas.getChildren().add(circle1);
+//				Circle circle1 = new Circle(Config.MAP_WIDTH / 2, Config.MAP_HEIGHT / 2, 40);
+//				circle1.setStroke(Color.ORANGE);
+//				circle1.setFill(Color.ORANGE.deriveColor(1, 1, 1, 0.5));
+//				circle1.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
+//				circle1.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
+//				canvas.getChildren().add(circle1);
 
 				Pane borders = VoronoiDelaunay.getAreas();
 				canvas.getChildren().add(borders);
