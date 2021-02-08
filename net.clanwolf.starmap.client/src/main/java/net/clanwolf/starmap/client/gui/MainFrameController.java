@@ -796,12 +796,16 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		} else {
 			// there is no pane open yet
 			// nothing there, fade in
-			rootAnchorPane.getChildren().add(targetPane);
-			targetPane.paneCreation();
-			changedPane.set(true);
-			if (!"".equals(sm)) {
-				C3SoundPlayer.getTTSFile(sm);
-			}
+			Platform.runLater(() -> {
+				if (!rootAnchorPane.getChildren().contains(targetPane)) {
+					rootAnchorPane.getChildren().add(targetPane);
+					targetPane.paneCreation();
+					changedPane.set(true);
+					if (!"".equals(sm)) {
+						C3SoundPlayer.getTTSFile(sm);
+					}
+				}
+			});
 		}
 
 		return changedPane.get();

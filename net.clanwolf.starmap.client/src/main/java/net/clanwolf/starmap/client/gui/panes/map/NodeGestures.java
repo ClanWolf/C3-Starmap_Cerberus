@@ -27,11 +27,13 @@
 package net.clanwolf.starmap.client.gui.panes.map;
 
 import javafx.event.EventHandler;
+import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
@@ -45,6 +47,7 @@ import net.clanwolf.starmap.client.process.universe.BOStarSystem;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
 import net.clanwolf.starmap.logging.C3Logger;
 
+import java.util.Iterator;
 import java.util.List;
 
 public class NodeGestures {
@@ -201,7 +204,6 @@ public class NodeGestures {
 			BOStarSystem hoveredStarSystem = boUniverse.starSystemBOs.get(Integer.parseInt(node.getId()));
 			Double x = hoveredStarSystem.getX();
 			Double y = hoveredStarSystem.getY();
-
 		}
 	};
 
@@ -215,6 +217,7 @@ public class NodeGestures {
 			if (!event.isPrimaryButtonDown()) {
 				return;
 			}
+
 			Node node = (Node) event.getSource();
 			BOStarSystem clickedStarSystem = boUniverse.starSystemBOs.get(Integer.parseInt(node.getId()));
 
@@ -227,7 +230,7 @@ public class NodeGestures {
 					+ clickedStarSystem.getId()
 					+ "]");
 
-			if (clickedStarSystem != null) {
+			if (clickedStarSystem != null && event.getTarget() instanceof Circle) {
 				canvas.showStarSystemMarker(clickedStarSystem);
 				Nexus.setCurrentlySelectedStarSystem(clickedStarSystem);
 				ActionManager.getAction(ACTIONS.SHOW_SYSTEM_DETAIL).execute(clickedStarSystem);
