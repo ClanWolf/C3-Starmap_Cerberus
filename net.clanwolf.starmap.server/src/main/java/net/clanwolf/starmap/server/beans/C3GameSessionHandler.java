@@ -125,7 +125,8 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			break;
 		case CLIENT_READY_FOR_EVENTS:
 			// TODO: Make this event appear in server log, then
-			C3Logger.info("sjkdjslkdajösldkjsdlkj HURRRRRRAAAAAAAAAAAAAAAAAAAA");
+			C3Logger.info("HURRA!");
+//			session.setLoggedOnAndReady(true);
 			break;
 		default:
 			break;

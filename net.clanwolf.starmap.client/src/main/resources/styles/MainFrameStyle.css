@@ -588,6 +588,12 @@
     -fx-text-fill: #bedcbe;
 }
 
+.contentButton:disabled {
+    -fx-background-color: rgba(12,22,32,0.8);
+    -fx-text-fill: #fff;
+    -fx-background-image: url("../images/buttons/ContentButton_BG_disabled.png");
+}
+
 .contentButton:hover {
     -fx-background-color: rgba(70,118,70,0.8);
     -fx-text-fill: #fff;

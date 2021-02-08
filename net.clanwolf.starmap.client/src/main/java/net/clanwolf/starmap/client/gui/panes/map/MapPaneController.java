@@ -512,6 +512,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					int level = layer[0];
 					canvas.resetBackgroundStarPane(level);
 					canvas.showStarSystemMarker(Nexus.getTerra());
+					Nexus.setCurrentlySelectedStarSystem(Nexus.getTerra());
 					ActionManager.getAction(ACTIONS.SHOW_SYSTEM_DETAIL).execute(Nexus.getTerra());
 				}
 			}
@@ -548,6 +549,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					int level = layer[0];
 					canvas.resetBackgroundStarPane(level);
 					canvas.showStarSystemMarker(sys);
+					Nexus.setCurrentlySelectedStarSystem(sys);
 					ActionManager.getAction(ACTIONS.SHOW_SYSTEM_DETAIL).execute(sys);
 				}
 			}
@@ -658,7 +660,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			case UPDATE_COORD_INFO:
 				String v = o.getText();
 				Platform.runLater(() -> {
-					labelMouseCoords.setText("Pos.: " + v);
+					labelMouseCoords.setText(v);
 				});
 				break;
 
@@ -698,13 +700,14 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				String color = boUniverse.factionBOs.get(sys.getAffiliation()).getColor();
 				String logo = boUniverse.factionBOs.get(sys.getAffiliation()).getLogo();
 				Image imagePlanet = null;
+				String systemImageName = String.format("%03d", Integer.parseInt(sys.getSystemImageName()));
 				try {
-					String systemImageName = String.format("%03d", Integer.parseInt(sys.getSystemImageName()));
 					C3Logger.debug("Planet image: /images/planets/" + systemImageName + ".png");
 					C3Logger.debug("SystemImageName from DB: " + systemImageName);
 					imagePlanet = new Image(getClass().getResourceAsStream("/images/planets/" + systemImageName + ".png"));
 				} catch (Exception e) {
-					e.printStackTrace();
+					//e.printStackTrace();
+					C3Logger.info("Planet picture not found! Consider adding a fiting image for id: " + systemImageName);
 					imagePlanet = new Image(getClass().getResourceAsStream("/images/planets/000_default.png"));
 				}
 				if (imagePlanet == null) {

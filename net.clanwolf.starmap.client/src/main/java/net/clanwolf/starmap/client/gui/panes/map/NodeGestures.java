@@ -188,7 +188,7 @@ public class NodeGestures {
 			BOStarSystem hoveredStarSystem = boUniverse.starSystemBOs.get(Integer.parseInt(node.getId()));
 			Double x = hoveredStarSystem.getX();
 			Double y = hoveredStarSystem.getY();
-			ActionManager.getAction(ACTIONS.UPDATE_COORD_INFO).execute("[X:" + String.format("%.2f", x) + "] - [Y:" + String.format("%.2f", y) + "]");
+			ActionManager.getAction(ACTIONS.UPDATE_COORD_INFO).execute(hoveredStarSystem.getName() + " [X:" + String.format("%.2f", x) + "] - [Y:" + String.format("%.2f", y) + "]");
 		}
 	};
 
@@ -201,7 +201,7 @@ public class NodeGestures {
 			BOStarSystem hoveredStarSystem = boUniverse.starSystemBOs.get(Integer.parseInt(node.getId()));
 			Double x = hoveredStarSystem.getX();
 			Double y = hoveredStarSystem.getY();
-			ActionManager.getAction(ACTIONS.UPDATE_COORD_INFO).execute("[X:" + String.format("%.2f", x) + "] - [Y:" + String.format("%.2f", y) + "]");
+
 		}
 	};
 
@@ -229,6 +229,7 @@ public class NodeGestures {
 
 			if (clickedStarSystem != null) {
 				canvas.showStarSystemMarker(clickedStarSystem);
+				Nexus.setCurrentlySelectedStarSystem(clickedStarSystem);
 				ActionManager.getAction(ACTIONS.SHOW_SYSTEM_DETAIL).execute(clickedStarSystem);
 			}
 		}
