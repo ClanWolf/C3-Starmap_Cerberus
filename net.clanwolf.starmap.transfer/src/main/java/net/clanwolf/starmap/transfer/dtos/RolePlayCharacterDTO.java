@@ -48,7 +48,11 @@ public class RolePlayCharacterDTO extends Dto {
     private UserDTO user;
     //@JoinColumn(name = "StoryID")
     private RolePlayStoryDTO story;
-	 
+	//@Column(name = "FactionID")
+	private Integer factionId;
+	//@Column(name = "StarsystemID")
+	private Integer starSystemId;
+
 	public RolePlayCharacterDTO(){
 		 
 	}
@@ -112,5 +116,21 @@ public class RolePlayCharacterDTO extends Dto {
 	@Override
 	public String toString() {
 		return this.getName();
+	}
+
+	public Integer getFactionId() {
+		return factionId;
+	}
+
+	public void setFactionId(Integer factionId) {
+		this.factionId = factionId;
+	}
+
+	public Integer getStarSystemId() {
+		return starSystemId;
+	}
+
+	public void setStarSystemId(Integer starSystemId) {
+		this.starSystemId = starSystemId;
 	}
 }

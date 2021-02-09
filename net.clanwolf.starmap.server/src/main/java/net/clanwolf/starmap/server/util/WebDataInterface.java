@@ -92,7 +92,7 @@ public class WebDataInterface {
 			//sb.append("         FT.Name_de          AS factiontype_de,   \r\n");
 			//sb.append("         SSD.ID              AS starsystemdataid, \r\n");
 			//sb.append("         SSD.StarSystemID    AS starsystemID,     \r\n");
-			//sb.append("         SSD.FactionID       AS factionid,        \r\n");
+			sb.append("         SSD.FactionID       AS factionid,        \r\n");
 			sb.append("         SSD.Infrastructure  AS infrastructure,   \r\n");
 			sb.append("         SSD.Wealth          AS wealth,           \r\n");
 			sb.append("         SSD.Veternacy       AS veternacy,        \r\n");
@@ -152,7 +152,7 @@ public class WebDataInterface {
 			//sb.append("         FT.Name_de          AS factiontype_de,   \r\n");
 			//sb.append("         SSD.ID              AS starsystemdataid, \r\n");
 			//sb.append("         SSD.StarSystemID    AS starsystemID,     \r\n");
-			//sb.append("         SSD.FactionID       AS factionid,        \r\n");
+			sb.append("         SSD.FactionID       AS factionid,        \r\n");
 			sb.append("         SSD.Infrastructure  AS infrastructure,   \r\n");
 			sb.append("         SSD.Wealth          AS wealth,           \r\n");
 			sb.append("         SSD.Veternacy       AS veternacy,        \r\n");
@@ -253,6 +253,7 @@ public class WebDataInterface {
 							ss.setX(rs.getBigDecimal("x"));
 							ss.setY(rs.getBigDecimal("y"));
 							ss.setAffiliation(rs.getString("affiliation"));
+							ss.setFactionId(rs.getInt("factionid"));
 							ss.setStarType1(rs.getString("startype1"));
 							ss.setStarClass(rs.getString("class"));
 							ss.setSarnaLink(rs.getString("link"));

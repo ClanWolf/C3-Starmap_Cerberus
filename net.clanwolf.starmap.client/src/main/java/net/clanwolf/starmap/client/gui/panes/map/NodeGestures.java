@@ -55,6 +55,8 @@ public class NodeGestures {
 	private DragContext nodeDragContext = new DragContext();
 	private PannableCanvas canvas;
 	private Image selectionMarker;
+	private Image attackMarker;
+	private Image travelMarker;
 	private BOStarSystem previousSelectedSystem;
 	private BOUniverse boUniverse = Nexus.getBoUniverse();
 
@@ -64,6 +66,14 @@ public class NodeGestures {
 
 	public void setSelectionMarker(Image im) {
 		selectionMarker = im;
+	}
+
+	public void setAttackMarker(Image im) {
+		attackMarker = im;
+	}
+
+	public void setTravelMarker(Image im) {
+		travelMarker = im;
 	}
 
 	@SuppressWarnings("unused")
@@ -244,10 +254,22 @@ public class NodeGestures {
 				Nexus.setCurrentlySelectedStarSystem(clickedStarSystem);
 				ActionManager.getAction(ACTIONS.SHOW_SYSTEM_DETAIL).execute(clickedStarSystem);
 				if (group != null) {
-					ImageView marker;marker = new ImageView();
+					ImageView marker;
+					marker = new ImageView();
 					marker.setFitWidth(20.0f);
 					marker.setFitHeight(20.0f);
-					marker.setImage(selectionMarker);
+
+//					C3Logger.info("" + Nexus.getCurrentUser().getCurrentCharacter().getFactionId());
+//					C3Logger.info("" + clickedStarSystem.getFactionId());
+					if (("" + Nexus.getCurrentUser().getCurrentCharacter().getFactionId()).equals("" + clickedStarSystem.getFactionId())) {
+						// This is one of my own systems
+						marker.setImage(travelMarker);
+					} else {
+						// This is an enemy system
+						marker.setImage(attackMarker);
+					}
+//					marker.setImage(selectionMarker);
+
 					marker.setTranslateX(sp.getWidth() / 2 - 10.0f);
 					marker.setTranslateY(sp.getHeight() / 2 - 10.0f);
 					if (previousSelectedSystem != null) {
@@ -256,6 +278,8 @@ public class NodeGestures {
 							previousgroup.getChildren().remove(previousSelectedSystem.getStarSystemSelectionMarker());
 							previousSelectedSystem = clickedStarSystem;
 							previousSelectedSystem.setStarSystemSelectionMarker(marker);
+						} else {
+							// Marker is null. Probably this is the first system to be marked.
 						}
 					} else {
 						previousSelectedSystem = clickedStarSystem;

@@ -130,5 +130,7 @@ public class BOStarSystem {
 
 	public String getAffiliation() { return starSystemDTO.getAffiliation(); }
 
+	public Integer getFactionId() { return starSystemDTO.getFactionId(); }
+
 	public String getSystemImageName() { return starSystemDTO.getSystemImageName(); }
 }

@@ -45,25 +45,47 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Entity
 @Table(name = "ROLEPLAY_CHARACTER", catalog = "C3")
 public class RolePlayCharacterPOJO extends Pojo {
-	 
-    @Id
-    @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "ID")
-    public Long id;
-    
-    @Column(name = "CharName")
-    private String name;
-    
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "UserID")
-    private UserPOJO user;
-    
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "StoryID")
-    private RolePlayStoryPOJO story;
-	 
+
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "ID")
+	public Long id;
+
+	@Column(name = "CharName")
+	private String name;
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "UserID")
+	private UserPOJO user;
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "StoryID")
+	private RolePlayStoryPOJO story;
+
+	@Column(name = "FactionID")
+	private Integer factionId;
+
+	@Column(name = "StarsystemID")
+	private Integer starSystemId;
+
 	public RolePlayCharacterPOJO(){
-		 
+		//
+	}
+
+	public Integer getFactionId() {
+		return factionId;
+	}
+
+	public void setFactionId(Integer factionId) {
+		this.factionId = factionId;
+	}
+
+	public Integer getStarSystemId() {
+		return starSystemId;
+	}
+
+	public void setStarSystemId(Integer starSystemId) {
+		this.starSystemId = starSystemId;
 	}
 
 	/**
@@ -121,6 +143,7 @@ public class RolePlayCharacterPOJO extends Pojo {
 	public void setStory(RolePlayStoryPOJO story) {
 		this.story = story;
 	}
+
 	@Override
 	public String toString() {
 		return this.getName();

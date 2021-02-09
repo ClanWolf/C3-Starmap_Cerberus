@@ -90,6 +90,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	private boolean firstCreationDone = false;
 	private SceneGestures sceneGestures;
 	private Image selectionMarker;
+	private Image attackMarker;
+	private Image travelMarker;
 
 	@FXML
 	AnchorPane anchorPane;
@@ -174,6 +176,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			Nexus.setCurrentDate(boUniverse.currentDate);
 
 			selectionMarker = new Image(getClass().getResourceAsStream("/images/map/selectionIndicator.png"));
+			attackMarker = new Image(getClass().getResourceAsStream("/images/map/attackIndicator.png"));;
+			travelMarker = new Image(getClass().getResourceAsStream("/images/map/travelIndicator.png"));;
 
 			starMapPane.setOpacity(0.0);
 			mapButton01.setOpacity(0.0);
@@ -190,6 +194,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				// create sample nodes which can be dragged
 				NodeGestures nodeGestures = new NodeGestures(canvas);
 				nodeGestures.setSelectionMarker(selectionMarker);
+				nodeGestures.setAttackMarker(attackMarker);
+				nodeGestures.setTravelMarker(travelMarker);
 
 				for (BOStarSystem starSystem : boUniverse.starSystemBOs.values()) {
 					String name = starSystem.getName();
@@ -488,9 +494,6 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	}
 
 	private void reCenterMap() {
-
-		// TODO: Take care of the 3d star panels
-
 		removeMouseFilters();
 		mapButton03.setDisable(true);
 
@@ -525,9 +528,6 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	}
 
 	private void moveMapToPosition(BOStarSystem sys) {
-
-		// TODO: Take care of the 3d star panels
-
 		removeMouseFilters();
 		mapButton03.setDisable(true);
 

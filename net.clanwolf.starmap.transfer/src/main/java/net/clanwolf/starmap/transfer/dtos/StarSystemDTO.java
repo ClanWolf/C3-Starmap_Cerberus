@@ -37,6 +37,7 @@ public class StarSystemDTO extends Dto {
 	private String name;
 	protected BigDecimal x;
 	protected BigDecimal y;
+	private Integer factionId;
 	private String affiliation;
 	private String starType1;
 	private String starClass;
@@ -158,6 +159,14 @@ public class StarSystemDTO extends Dto {
 
 	public void setAffiliation(String affiliation) {
 		this.affiliation = affiliation;
+	}
+
+	public Integer getFactionId() {
+		return factionId;
+	}
+
+	public void setFactionId(Integer factionId) {
+		this.factionId = factionId;
 	}
 
 	@Override
