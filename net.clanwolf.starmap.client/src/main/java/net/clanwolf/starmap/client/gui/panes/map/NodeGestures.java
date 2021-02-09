@@ -254,6 +254,8 @@ public class NodeGestures {
 						if (previousSelectedSystem.getStarSystemSelectionMarker() != null) {
 							Group previousgroup = previousSelectedSystem.getStarSystemGroup();
 							previousgroup.getChildren().remove(previousSelectedSystem.getStarSystemSelectionMarker());
+							previousSelectedSystem = clickedStarSystem;
+							previousSelectedSystem.setStarSystemSelectionMarker(marker);
 						}
 					} else {
 						previousSelectedSystem = clickedStarSystem;
