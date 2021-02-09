@@ -29,6 +29,7 @@ package net.clanwolf.starmap.client.process.universe;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import net.clanwolf.starmap.client.gui.panes.map.Config;
@@ -45,6 +46,7 @@ public class BOStarSystem {
 	private Group starSystemGroup;
 	private PointD[] voronoiRegion;
 	private Point2D coord;
+	private ImageView marker = null;
 
 	public Point2D getCoordinates() {
 		if (coord == null) {
@@ -104,6 +106,14 @@ public class BOStarSystem {
 
 	public void setStarSystemStackPane(StackPane starSystemStackPane) {
 		this.starSystemStackPane = starSystemStackPane;
+	}
+
+	public void setStarSystemSelectionMarker(ImageView m) {
+		this.marker = m;
+	}
+
+	public ImageView getStarSystemSelectionMarker() {
+		return marker;
 	}
 
 	public BOStarSystem(StarSystemDTO starSystemDTO) {

@@ -89,6 +89,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	private PannableCanvas canvas;
 	private boolean firstCreationDone = false;
 	private SceneGestures sceneGestures;
+	private Image selectionMarker;
 
 	@FXML
 	AnchorPane anchorPane;
@@ -172,6 +173,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			Nexus.setCurrentRound(boUniverse.currentSeason);
 			Nexus.setCurrentDate(boUniverse.currentDate);
 
+			selectionMarker = new Image(getClass().getResourceAsStream("/images/map/selectionIndicator.png"));
+
 			starMapPane.setOpacity(0.0);
 			mapButton01.setOpacity(0.0);
 			mapButton02.setOpacity(0.0);
@@ -186,6 +189,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 				// create sample nodes which can be dragged
 				NodeGestures nodeGestures = new NodeGestures(canvas);
+				nodeGestures.setSelectionMarker(selectionMarker);
 
 				for (BOStarSystem starSystem : boUniverse.starSystemBOs.values()) {
 					String name = starSystem.getName();

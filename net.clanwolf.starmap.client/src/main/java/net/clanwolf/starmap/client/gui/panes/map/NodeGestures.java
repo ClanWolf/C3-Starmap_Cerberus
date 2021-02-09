@@ -30,6 +30,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
@@ -53,11 +54,16 @@ import java.util.List;
 public class NodeGestures {
 	private DragContext nodeDragContext = new DragContext();
 	private PannableCanvas canvas;
-
+	private Image selectionMarker;
+	private BOStarSystem previousSelectedSystem;
 	private BOUniverse boUniverse = Nexus.getBoUniverse();
 
 	NodeGestures(PannableCanvas canvas) {
 		this.canvas = canvas;
+	}
+
+	public void setSelectionMarker(Image im) {
+		selectionMarker = im;
 	}
 
 	@SuppressWarnings("unused")
@@ -201,9 +207,10 @@ public class NodeGestures {
 			Circle c = (Circle) node;
 			c.setRadius(5);
 
-			BOStarSystem hoveredStarSystem = boUniverse.starSystemBOs.get(Integer.parseInt(node.getId()));
-			Double x = hoveredStarSystem.getX();
-			Double y = hoveredStarSystem.getY();
+//			BOStarSystem hoveredStarSystem = boUniverse.starSystemBOs.get(Integer.parseInt(node.getId()));
+			Double x = Nexus.getCurrentlySelectedStarSystem().getX();
+			Double y = Nexus.getCurrentlySelectedStarSystem().getY();
+			ActionManager.getAction(ACTIONS.UPDATE_COORD_INFO).execute(Nexus.getCurrentlySelectedStarSystem().getName() + " [X:" + String.format("%.2f", x) + "] - [Y:" + String.format("%.2f", y) + "]");
 		}
 	};
 
@@ -220,6 +227,8 @@ public class NodeGestures {
 
 			Node node = (Node) event.getSource();
 			BOStarSystem clickedStarSystem = boUniverse.starSystemBOs.get(Integer.parseInt(node.getId()));
+			StackPane sp = clickedStarSystem.getStarSystemStackPane();
+			Group group = clickedStarSystem.getStarSystemGroup();
 
 			C3Logger.info("System: "
 					+ clickedStarSystem.getName()
@@ -234,6 +243,24 @@ public class NodeGestures {
 				canvas.showStarSystemMarker(clickedStarSystem);
 				Nexus.setCurrentlySelectedStarSystem(clickedStarSystem);
 				ActionManager.getAction(ACTIONS.SHOW_SYSTEM_DETAIL).execute(clickedStarSystem);
+				if (group != null) {
+					ImageView marker;marker = new ImageView();
+					marker.setFitWidth(20.0f);
+					marker.setFitHeight(20.0f);
+					marker.setImage(selectionMarker);
+					marker.setTranslateX(sp.getWidth() / 2 - 10.0f);
+					marker.setTranslateY(sp.getHeight() / 2 - 10.0f);
+					if (previousSelectedSystem != null) {
+						if (previousSelectedSystem.getStarSystemSelectionMarker() != null) {
+							Group previousgroup = previousSelectedSystem.getStarSystemGroup();
+							previousgroup.getChildren().remove(previousSelectedSystem.getStarSystemSelectionMarker());
+						}
+					} else {
+						previousSelectedSystem = clickedStarSystem;
+						previousSelectedSystem.setStarSystemSelectionMarker(marker);
+					}
+					group.getChildren().add(marker);
+				}
 			}
 		}
 	};
