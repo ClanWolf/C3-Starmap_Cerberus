@@ -41,11 +41,16 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionManager;
+import net.clanwolf.starmap.client.action.StatusTextEntryActionObject;
+import net.clanwolf.starmap.client.enums.PRIVILEGES;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.gui.panes.map.tools.Route;
 import net.clanwolf.starmap.client.process.universe.BOJumpship;
 import net.clanwolf.starmap.client.process.universe.BOStarSystem;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
+import net.clanwolf.starmap.client.security.Security;
+import net.clanwolf.starmap.client.sound.C3SoundPlayer;
+import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.logging.C3Logger;
 
 import java.util.Iterator;
@@ -254,10 +259,11 @@ public class NodeGestures {
 				Nexus.setCurrentlySelectedStarSystem(clickedStarSystem);
 				ActionManager.getAction(ACTIONS.SHOW_SYSTEM_DETAIL).execute(clickedStarSystem);
 				if (group != null) {
+					Double markerDim = 38.0d;
 					ImageView marker;
 					marker = new ImageView();
-					marker.setFitWidth(20.0f);
-					marker.setFitHeight(20.0f);
+					marker.setFitWidth(markerDim);
+					marker.setFitHeight(markerDim);
 
 //					C3Logger.info("" + Nexus.getCurrentUser().getCurrentCharacter().getFactionId());
 //					C3Logger.info("" + clickedStarSystem.getFactionId());
@@ -270,8 +276,13 @@ public class NodeGestures {
 					}
 //					marker.setImage(selectionMarker);
 
-					marker.setTranslateX(sp.getWidth() / 2 - 10.0f);
-					marker.setTranslateY(sp.getHeight() / 2 - 10.0f);
+
+					Image med = new Image(getClass().getResourceAsStream("/images/gui/rewards/base.png"));
+					ActionManager.getAction(ACTIONS.SHOW_MEDAL).execute(med);
+
+
+					marker.setTranslateX((sp.getWidth() / 2) - (markerDim / 2));
+					marker.setTranslateY((sp.getHeight() / 2) - (markerDim / 2));
 					if (previousSelectedSystem != null) {
 						if (previousSelectedSystem.getStarSystemSelectionMarker() != null) {
 							Group previousgroup = previousSelectedSystem.getStarSystemGroup();
@@ -319,24 +330,32 @@ public class NodeGestures {
 
 			Node node = (Node) event.getSource();
 			if (node instanceof ImageView) { // must be a jumpship
-				boUniverse.currentlyDraggedJumpship = boUniverse.jumpshipBOs.get(node.getId());
-				node.toBack();
-				String name = node.getId();
-				BOJumpship ship = boUniverse.jumpshipBOs.get(name);
-				canvas.showStarSystemMarker(boUniverse.starSystemBOs.get(ship.getCurrentSystemID()));
-				Line routeLine = ship.getPredictedRouteLine();
-				double startX = boUniverse.starSystemBOs.get(ship.getCurrentSystemID()).getScreenX();
-				double startY = boUniverse.starSystemBOs.get(ship.getCurrentSystemID()).getScreenY();
+				if (Security.hasPrivilege(PRIVILEGES.FACTIONLEAD_HAS_ROLE) && Security.hasPrivilege(PRIVILEGES.FACTIONLEAD_MOVE_JUMPSHIP)) {
+					boUniverse.currentlyDraggedJumpship = boUniverse.jumpshipBOs.get(node.getId());
+					node.toBack();
+					String name = node.getId();
+					BOJumpship ship = boUniverse.jumpshipBOs.get(name);
+					canvas.showStarSystemMarker(boUniverse.starSystemBOs.get(ship.getCurrentSystemID()));
+					Line routeLine = ship.getPredictedRouteLine();
+					double startX = boUniverse.starSystemBOs.get(ship.getCurrentSystemID()).getScreenX();
+					double startY = boUniverse.starSystemBOs.get(ship.getCurrentSystemID()).getScreenY();
 
-				routeLine.setStartX(startX);
-				routeLine.setStartY(startY);
-				routeLine.setEndX(newTranslateX + 20);
-				routeLine.setEndY(newTranslateY + 10);
-				routeLine.toBack();
-				routeLine.setVisible(true);
-				routeLine.setOpacity(0.1);
-				if (!canvas.getChildren().contains(routeLine)) {
-					canvas.getChildren().add(routeLine);
+					routeLine.setStartX(startX);
+					routeLine.setStartY(startY);
+					routeLine.setEndX(newTranslateX + 20);
+					routeLine.setEndY(newTranslateY + 10);
+					routeLine.toBack();
+					routeLine.setVisible(true);
+					routeLine.setOpacity(0.1);
+					if (!canvas.getChildren().contains(routeLine)) {
+						canvas.getChildren().add(routeLine);
+					}
+				} else {
+					// No privileges to move the jumpship
+					String mes = Internationalization.getString("app_starmap_moving_jumpship_not_allowed");
+					StatusTextEntryActionObject o = new StatusTextEntryActionObject(mes, true, "YELLOW");
+					ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(o);
+					C3SoundPlayer.getTTSFile(mes);
 				}
 			}
 

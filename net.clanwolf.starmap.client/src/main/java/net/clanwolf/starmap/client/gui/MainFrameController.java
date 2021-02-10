@@ -46,6 +46,7 @@ import javafx.util.Duration;
 import net.clanwolf.starmap.client.action.*;
 import net.clanwolf.starmap.client.enums.C3MESSAGERESULTS;
 import net.clanwolf.starmap.client.enums.PRIVILEGES;
+import net.clanwolf.starmap.client.gui.medalpanes.C3MedalPane;
 import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
 import net.clanwolf.starmap.client.gui.messagepanes.C3MessagePane;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
@@ -109,6 +110,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private Animation noiseAnimation = null;
 	private ExecutorService exec = null;
 	private C3MessagePane messagePane = null;
+	private C3MedalPane medalPane = null;
 	private int menuIndicatorPos = 0;
 	private boolean adminPaneOpen = false;
 
@@ -812,7 +814,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	}
 
 	private void createNextPane() {
-		rootAnchorPane.getChildren().add(nextToDisplayPane);
+		if (!rootAnchorPane.getChildren().contains(nextToDisplayPane)) {
+			rootAnchorPane.getChildren().add(nextToDisplayPane);
+		}
 		nextToDisplayPane.paneCreation();
 		nextToDisplayPane = null;
 	}
@@ -851,6 +855,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		ActionManager.addActionCallbackListener(ACTIONS.SHOW_MESSAGE_WAS_ANSWERED, this);
 		ActionManager.addActionCallbackListener(ACTIONS.START_ROLEPLAY, this);
 		ActionManager.addActionCallbackListener(ACTIONS.UPDATE_GAME_INFO, this);
+		ActionManager.addActionCallbackListener(ACTIONS.SHOW_MEDAL, this);
 	}
 
 	private void setToLevelLoggedOutText() {
@@ -1469,6 +1474,13 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				}
 				break;
 
+			case SHOW_MEDAL:
+				if ((o != null) && (o.getObject() instanceof Image)) {
+					Image medal = (Image) o.getObject();
+					showMedal(medal);
+				}
+				break;
+
 			case SHOW_MESSAGE_WAS_ANSWERED:
 				if ((o != null) && (o.getObject() instanceof C3Message)) {
 					C3Message message = (C3Message) o.getObject();
@@ -1536,6 +1548,16 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		});
 	}
 
+	private void showMedal(Image image) {
+		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute();
+
+		medalPane = new C3MedalPane(image);
+		Platform.runLater(() -> {
+			Tools.playGUICreationSound();
+			mouseStopper.getChildren().add(medalPane);
+			medalPane.fadeIn();
+		});
+	}
 	private void closeMessage(C3Message message) {
 		C3MESSAGERESULTS userReactionResult = message.getResult();
 

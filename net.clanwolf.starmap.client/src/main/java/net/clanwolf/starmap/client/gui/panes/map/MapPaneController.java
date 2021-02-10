@@ -176,8 +176,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			Nexus.setCurrentDate(boUniverse.currentDate);
 
 			selectionMarker = new Image(getClass().getResourceAsStream("/images/map/selectionIndicator.png"));
-			attackMarker = new Image(getClass().getResourceAsStream("/images/map/attackIndicator.png"));;
-			travelMarker = new Image(getClass().getResourceAsStream("/images/map/travelIndicator.png"));;
+			attackMarker = new Image(getClass().getResourceAsStream("/images/map/attackIndicator.png"));
+			travelMarker = new Image(getClass().getResourceAsStream("/images/map/travelIndicator.png"));
 
 			starMapPane.setOpacity(0.0);
 			mapButton01.setOpacity(0.0);
