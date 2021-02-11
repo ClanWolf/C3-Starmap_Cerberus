@@ -65,7 +65,7 @@ public class C3MedalPane extends Pane {
 
 		rectBorder = new Rectangle(600, 400);
 		rectBorder.setStroke(Color.rgb(190, 56, 243, 1.0));
-		rectBorder.setStrokeWidth(1.0);
+		rectBorder.setStrokeWidth(3.0);
 		rectBorder.setFill(Color.TRANSPARENT);
 		rectBorder.setOpacity(1.0);
 		rectBorder.setLayoutX(-190);
