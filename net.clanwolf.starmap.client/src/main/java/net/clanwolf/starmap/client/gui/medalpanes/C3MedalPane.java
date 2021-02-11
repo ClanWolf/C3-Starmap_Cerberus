@@ -54,12 +54,14 @@ import net.clanwolf.starmap.client.util.Tools;
 public class C3MedalPane extends Pane {
 
 	private Image medal = null;
+	private String desc = null;
 	private Rectangle rect;
 	private Rectangle rectBorder;
 	private ImageView view;
 
-	public C3MedalPane(Image image) {
+	public C3MedalPane(Image image, String desc) {
 		this.medal = image;
+		this.desc = desc;
 
 		rectBorder = new Rectangle(600, 400);
 		rectBorder.setStroke(Color.rgb(190, 56, 243, 1.0));
@@ -84,16 +86,18 @@ public class C3MedalPane extends Pane {
 		view.setOpacity(0.0);
 
 		TextField textField = new TextField();
-		textField.setMaxWidth(200);
-		textField.setMinWidth(200);
+		textField.setMaxWidth(60);
+		textField.setPrefWidth(600);
+		textField.setMinWidth(600);
 		textField.setMaxHeight(50);
+		textField.setPrefHeight(50);
 		textField.setMinHeight(50);
-		textField.setTranslateX(10);
+		textField.setTranslateX(-190);
 		textField.setTranslateY(120);
 		textField.setStyle("-fx-font-alignment:center;-fx-background-color:transparent;-fx-border-color:transparent;");
 		textField.setAlignment(Pos.BASELINE_CENTER);
 		textField.setFont(Font.font("Verdana", FontWeight.NORMAL, 16));
-		textField.setText("Medal granted!");
+		textField.setText(desc);
 
 		this.getChildren().add(rect);
 		this.getChildren().add(view);
@@ -120,23 +124,22 @@ public class C3MedalPane extends Pane {
 
 		C3SoundPlayer.play("sound/fx/PremiumBeat_0013_cursor_selection_02.wav", false);
 
+		FadeTransition fadeInTransition = new FadeTransition(Duration.millis(10), this);
+		fadeInTransition.setFromValue(0.0);
+		fadeInTransition.setToValue(1.0);
+		fadeInTransition.setCycleCount(1);
+
 		// Fade in transition 01 (Background)
-		FadeTransition fadeInTransition_01 = new FadeTransition(Duration.millis(140), this);
+		FadeTransition fadeInTransition_01 = new FadeTransition(Duration.millis(80), rect);
 		fadeInTransition_01.setFromValue(0.0);
-		fadeInTransition_01.setToValue(0.2);
-		fadeInTransition_01.setCycleCount(4);
+		fadeInTransition_01.setToValue(1.0);
+		fadeInTransition_01.setCycleCount(2);
 
 		// Fade in transition 02 (Border)
-		FadeTransition fadeInTransition_02 = new FadeTransition(Duration.millis(240), this);
+		FadeTransition fadeInTransition_02 = new FadeTransition(Duration.millis(250), rectBorder);
 		fadeInTransition_02.setFromValue(0.0);
 		fadeInTransition_02.setToValue(1.0);
-		fadeInTransition_02.setCycleCount(2);
-
-		// Fade in transition 03 (Medal)
-		FadeTransition fadeInTransition_03 = new FadeTransition(Duration.millis(100), view);
-		fadeInTransition_03.setFromValue(0.0);
-		fadeInTransition_03.setToValue(1.0);
-		fadeInTransition_03.setCycleCount(1);
+		fadeInTransition_02.setCycleCount(4);
 
 		Timeline timeline = new Timeline();
 		KeyValue key1 = new KeyValue(rect.translateXProperty(), 60);
@@ -144,7 +147,7 @@ public class C3MedalPane extends Pane {
 		KeyValue key3 = new KeyValue(rect.scaleXProperty(), 6);
 		KeyValue key4 = new KeyValue(rect.scaleYProperty(), 4);
 		final C3MedalPane mp = this;
-		KeyFrame frame1 = new KeyFrame(Duration.seconds(.3), key1, key2, key3, key4);
+		KeyFrame frame1 = new KeyFrame(Duration.seconds(.15), key1, key2, key3, key4);
 		timeline.getKeyFrames().addAll(frame1);
 		timeline.setOnFinished(new EventHandler<ActionEvent>() {
 			@Override
@@ -160,26 +163,33 @@ public class C3MedalPane extends Pane {
 				rectBorder.setHeight(h);
 				rectBorder.setX(x);
 				rectBorder.setY(y);
+
+				// Fade in transition 03 (Medal)
+				FadeTransition fadeInTransition_03 = new FadeTransition(Duration.millis(10), view);
+				fadeInTransition_03.setFromValue(0.0);
+				fadeInTransition_03.setToValue(1.0);
+				fadeInTransition_03.setCycleCount(1);
+
+				fadeInTransition_03.play();
 			}
 		});
-		timeline.play();
 
 		ScaleTransition st = new ScaleTransition(Duration.millis(4000), view);
 		st.setToX(1.2f);
 		st.setToY(1.2f);
 		st.setCycleCount(1);
 
+		ActionManager.getAction(ACTIONS.NOISE).execute(600);
+
 		// Transition sequence
 		SequentialTransition sequentialTransition = new SequentialTransition();
-
-		ActionManager.getAction(ACTIONS.NOISE).execute(600);
 		sequentialTransition.setOnFinished(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				fadeOut();
 			}
 		});
-		sequentialTransition.getChildren().addAll(fadeInTransition_01, fadeInTransition_02, fadeInTransition_03, timeline, st);
+		sequentialTransition.getChildren().addAll(fadeInTransition, fadeInTransition_01, timeline, fadeInTransition_02, st);
 		sequentialTransition.setCycleCount(1);
 		sequentialTransition.play();
 	}

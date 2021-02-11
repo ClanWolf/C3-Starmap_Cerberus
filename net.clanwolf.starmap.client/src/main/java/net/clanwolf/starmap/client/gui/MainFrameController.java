@@ -68,6 +68,7 @@ import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.*;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
+import net.clanwolf.starmap.transfer.enums.MEDALS;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -1475,9 +1476,12 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				break;
 
 			case SHOW_MEDAL:
-				if ((o != null) && (o.getObject() instanceof Image)) {
-					Image medal = (Image) o.getObject();
-					showMedal(medal);
+				if ((o != null) && (o.getObject() instanceof MEDALS)) {
+					Integer id = ((MEDALS)o.getObject()).getId();
+					String imageName = ((MEDALS)o.getObject()).toString();
+					String desc = Internationalization.getString("MEDALS_" + imageName + "_desc");
+					Image med = new Image(getClass().getResourceAsStream("/images/gui/rewards/" + imageName + ".png"));
+					showMedal(med, desc);
 				}
 				break;
 
@@ -1548,16 +1552,17 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		});
 	}
 
-	private void showMedal(Image image) {
+	private void showMedal(Image image, String desc) {
 		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute();
 
-		medalPane = new C3MedalPane(image);
+		medalPane = new C3MedalPane(image, desc);
 		Platform.runLater(() -> {
 			Tools.playGUICreationSound();
 			mouseStopper.getChildren().add(medalPane);
 			medalPane.fadeIn();
 		});
 	}
+
 	private void closeMessage(C3Message message) {
 		C3MESSAGERESULTS userReactionResult = message.getResult();
 

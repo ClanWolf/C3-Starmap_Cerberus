@@ -52,6 +52,7 @@ import net.clanwolf.starmap.client.security.Security;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.logging.C3Logger;
+import net.clanwolf.starmap.transfer.enums.MEDALS;
 
 import java.util.Iterator;
 import java.util.List;
@@ -265,8 +266,6 @@ public class NodeGestures {
 					marker.setFitWidth(markerDim);
 					marker.setFitHeight(markerDim);
 
-//					C3Logger.info("" + Nexus.getCurrentUser().getCurrentCharacter().getFactionId());
-//					C3Logger.info("" + clickedStarSystem.getFactionId());
 					if (("" + Nexus.getCurrentUser().getCurrentCharacter().getFactionId()).equals("" + clickedStarSystem.getFactionId())) {
 						// This is one of my own systems
 						marker.setImage(travelMarker);
@@ -277,8 +276,17 @@ public class NodeGestures {
 //					marker.setImage(selectionMarker);
 
 
-					Image med = new Image(getClass().getResourceAsStream("/images/gui/rewards/base.png"));
-					ActionManager.getAction(ACTIONS.SHOW_MEDAL).execute(med);
+
+
+					ActionManager.getAction(ACTIONS.SHOW_MEDAL).execute(MEDALS.First_Blood);
+
+
+
+
+
+
+
+
 
 
 					marker.setTranslateX((sp.getWidth() / 2) - (markerDim / 2));
@@ -352,7 +360,7 @@ public class NodeGestures {
 					}
 				} else {
 					// No privileges to move the jumpship
-					String mes = Internationalization.getString("app_starmap_moving_jumpship_not_allowed");
+					String mes = Internationalization.getString("C3_Speech_app_starmap_moving_jumpship_not_allowed");
 					StatusTextEntryActionObject o = new StatusTextEntryActionObject(mes, true, "YELLOW");
 					ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(o);
 					C3SoundPlayer.getTTSFile(mes);
