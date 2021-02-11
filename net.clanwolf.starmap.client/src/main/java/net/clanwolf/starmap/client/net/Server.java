@@ -31,6 +31,9 @@ import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionManager;
+import net.clanwolf.starmap.client.enums.C3MESSAGERESULTS;
+import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
+import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.client.util.C3PROPS;
@@ -59,7 +62,7 @@ public class Server {
 		// Constructor
 	}
 
-	public static String checkLastAvailableClientVersion() throws IOException {
+	public static String checkLastAvailableClientVersion() {
 		serverURL = C3Properties.getProperty(C3PROPS.SERVER_URL);
 		// Add a trailing slash if not present
 		if (!serverURL.endsWith("/")) {
@@ -73,6 +76,8 @@ public class Server {
 //			C3Logger.debug("Connection Result: " + value);
 		} catch (MalformedURLException e) {
 			C3Logger.exception(null, e);
+		} catch (IOException ioe) {
+			C3Logger.exception( null,ioe);
 		}
 		C3Logger.info("Client version check done.");
 //		C3Logger.info("Client version available: " + value);
@@ -86,7 +91,7 @@ public class Server {
 	 * @return boolean result
 	 * @author Meldric
 	 */
-	public static boolean checkDatabaseConnection() throws IOException {
+	public static boolean checkDatabaseConnection() {
 		serverURL = C3Properties.getProperty(C3PROPS.SERVER_URL);
 		// Add a trailing slash if not present
 		if (!serverURL.endsWith("/")) {
@@ -94,24 +99,41 @@ public class Server {
 		}
 		String value;
 		boolean r = false;
-		try {
-			C3Logger.debug(serverURL + "server" + "/" + "C3_OnlineStatus_Database.php?p1=" + C3Properties.getProperty(C3PROPS.LOGIN_DATABASE));
-			URL url = new URL(serverURL + "server" + "/" + "C3_OnlineStatus_Database.php?p1=" + C3Properties.getProperty(C3PROPS.LOGIN_DATABASE));
-			value = new String(HTTP.get(url));
-			C3Logger.debug("Connection URL: " + url);
-			C3Logger.debug("Connection Result: " + value);
-			// use "endswith" here, in case debugging in PHP is enabled!
-			r = value.equals("online");
-		} catch (MalformedURLException e) {
-			C3Logger.exception(null, e);
-		}
-		C3Logger.info("Database connection check done.");
-		if (r) {
-			C3Logger.info("Database connection check: database accessible!");
-			C3Properties.setProperty(C3PROPS.CHECK_CONNECTION_STATUS, "ONLINE");
-		} else {
-			C3Logger.info("Database connection check: database in-accessible, check values!");
-			C3Properties.setProperty(C3PROPS.CHECK_CONNECTION_STATUS, "OFFLINE");
+		boolean online = false;
+
+		while(!online) {
+			if (C3Properties.getProperty(C3PROPS.CHECK_ONLINE_STATUS) == "OFFLINE") {
+
+			} else if (C3Properties.getProperty(C3PROPS.CHECK_ONLINE_STATUS) == "ONLINE") {
+				online = true;
+				// Server online check ok, testing db
+				try {
+					C3Logger.debug(serverURL + "server" + "/" + "C3_OnlineStatus_Database.php?p1=" + C3Properties.getProperty(C3PROPS.LOGIN_DATABASE));
+					URL url = new URL(serverURL + "server" + "/" + "C3_OnlineStatus_Database.php?p1=" + C3Properties.getProperty(C3PROPS.LOGIN_DATABASE));
+					value = new String(HTTP.get(url));
+					C3Logger.debug("Connection URL: " + url);
+					C3Logger.debug("Connection Result: " + value);
+					// use "endswith" here, in case debugging in PHP is enabled!
+					r = value.equals("online");
+				} catch (MalformedURLException e) {
+					C3Logger.exception(null, e);
+				} catch (IOException ioe) {
+					C3Logger.exception(null, ioe);
+				}
+				C3Logger.info("Database connection check done.");
+				if (r) {
+					C3Logger.info("Database connection check: database accessible!");
+					C3Properties.setProperty(C3PROPS.CHECK_CONNECTION_STATUS, "ONLINE");
+				} else {
+					C3Logger.info("Database connection check: database in-accessible, check values!");
+					C3Properties.setProperty(C3PROPS.CHECK_CONNECTION_STATUS, "OFFLINE");
+				}
+			}
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				//
+			}
 		}
 		return r;
 	}
@@ -151,7 +173,7 @@ public class Server {
 	 * @return int
 	 * @author Meldric
 	 */
-	public static int doCheckLogin(String user, String pass) throws IOException {
+	public static int doCheckLogin(String user, String pass) {
 		// 0 : Everything is fine, user found
 		// -101 : Database not accessible / valid
 		// -102 : Username / Password wrong
@@ -177,6 +199,8 @@ public class Server {
 			checkresult = new String(HTTP.get(url));
 		} catch (MalformedURLException e) {
 			C3Logger.exception(null, e);
+		} catch (IOException ioe) {
+			C3Logger.exception( null,ioe);
 		}
 		checkresult = checkresult.replaceAll("\\n", "");
 		checkresult = checkresult.replaceAll("\\r", "");
@@ -226,12 +250,13 @@ public class Server {
 	 * @return boolean server status
 	 * @author Meldric
 	 */
-	public static boolean checkServerStatus() throws IOException {
+	public static boolean checkServerStatus() {
 		serverURL = C3Properties.getProperty(C3PROPS.SERVER_URL);
 		// Add a trailing slash if not present
 		if (!serverURL.endsWith("/")) {
 			serverURL = serverURL + "/";
 		}
+
 		String value;
 		boolean r = false;
 		try {
@@ -240,6 +265,8 @@ public class Server {
 			r = "online".equals(value);
 		} catch (MalformedURLException e) {
 			C3Logger.exception(null, e);
+		} catch (IOException ioe) {
+			C3Logger.exception( null,ioe);
 		}
 		if (r) {
 			C3Logger.info("Onlinestatus: online");

@@ -29,11 +29,17 @@ package net.clanwolf.starmap.client.gui.messagepanes;
 import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.CacheHint;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import net.clanwolf.starmap.client.action.ACTIONS;
@@ -48,6 +54,9 @@ public class C3MessagePane extends Pane {
 	private String text = null;
 	private C3MESSAGETYPES type = null;
 
+	private Image icon = null;
+	private ImageView view;
+
 	private Button yesButton = new Button("Yes");
 	private Button noButton = new Button("No");
 	private Button okButton = new Button("OK");
@@ -56,7 +65,7 @@ public class C3MessagePane extends Pane {
 
 	private Rectangle rect;
 	private Rectangle rectBorder;
-	private Text messageText;
+	private TextField messageText;
 
 	public C3MessagePane(C3Message m) {
 		this.message = m;
@@ -155,7 +164,7 @@ public class C3MessagePane extends Pane {
 
 		rectBorder = new Rectangle(600, 400);
 		rectBorder.setStroke(Color.rgb(254, 47, 0, 1.0));
-		rectBorder.setStrokeWidth(1.0);
+		rectBorder.setStrokeWidth(3.0);
 		rectBorder.setFill(Color.TRANSPARENT);
 		rectBorder.setOpacity(1.0);
 		rectBorder.setLayoutX(-190);
@@ -166,11 +175,35 @@ public class C3MessagePane extends Pane {
 
 		rect = new Rectangle(100, 100);
 		rect.setFill(Color.rgb(97, 9, 9, 0.95));
-		messageText = new Text();
-		messageText.setFill(Color.rgb(240, 240, 240, 1.0));
+
+		icon  = new Image(getClass().getResourceAsStream("/images/planets/000_default.png"));
+
+		view = new ImageView();
+		view.setImage(icon);
+		view.setFitWidth(200);
+		view.setFitHeight(200);
+		view.setTranslateX(10);
+		view.setTranslateY(-120);
+		view.setOpacity(1.0);
+
+		messageText = new TextField();
+//		messageText.setFill(Color.rgb(240, 240, 240, 1.0));
 		messageText.setText(text);
+		messageText.setMaxWidth(600);
+		messageText.setPrefWidth(600);
+		messageText.setMinWidth(600);
+		messageText.setMaxHeight(50);
+		messageText.setPrefHeight(50);
+		messageText.setMinHeight(50);
+		messageText.setTranslateX(-190);
+		messageText.setTranslateY(10);
+		messageText.setStyle("-fx-font-alignment:center;-fx-background-color:transparent;-fx-border-color:transparent;");
+		messageText.setAlignment(Pos.BASELINE_CENTER);
+		messageText.setFont(Font.font("Verdana", FontWeight.NORMAL, 16));
 
 		this.getChildren().add(rect);
+		this.getChildren().add(view);
+
 		this.setWidth(600);
 		this.setHeight(400);
 		this.setPrefWidth(600);
@@ -188,7 +221,7 @@ public class C3MessagePane extends Pane {
 
 	public void fadeIn() {
 		// Fade in transition 01 (Background)
-		FadeTransition fadeInTransition_01 = new FadeTransition(Duration.millis(140), this);
+		FadeTransition fadeInTransition_01 = new FadeTransition(Duration.millis(80), this);
 		fadeInTransition_01.setFromValue(0.0);
 		fadeInTransition_01.setToValue(0.2);
 		fadeInTransition_01.setCycleCount(4);
@@ -199,60 +232,61 @@ public class C3MessagePane extends Pane {
 		fadeInTransition_02.setToValue(1.0);
 		fadeInTransition_02.setCycleCount(2);
 
+		Timeline timeline = new Timeline();
+		KeyValue key1 = new KeyValue(rect.translateXProperty(), 60);
+		KeyValue key2 = new KeyValue(rect.translateYProperty(), -35);
+		KeyValue key3 = new KeyValue(rect.scaleXProperty(), 6);
+		KeyValue key4 = new KeyValue(rect.scaleYProperty(), 4);
+		final C3MessagePane mp = this;
+		KeyFrame frame1 = new KeyFrame(Duration.seconds(.15), key1, key2, key3, key4);
+		timeline.getKeyFrames().addAll(frame1);
+		timeline.setOnFinished(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				mp.getChildren().add(rectBorder);
+
+				double w = rect.getWidth() * 6;
+				double h = rect.getHeight() * 4;
+				double x = rect.getX();
+				double y = rect.getY();
+				rectBorder.setWidth(w);
+				rectBorder.setHeight(h);
+				rectBorder.setX(x);
+				rectBorder.setY(y);
+
+				mp.getChildren().add(messageText);
+
+				switch (type) {
+					case OK_CANCEL:
+						mp.getChildren().add(okButton);
+						mp.getChildren().add(cancelButton);
+						break;
+					case YES_NO:
+						mp.getChildren().add(yesButton);
+						mp.getChildren().add(noButton);
+						break;
+					case CLOSE:
+						mp.getChildren().add(closeButton);
+						closeButton.toFront();
+						break;
+					default:
+						break;
+				}
+			}
+		});
+
+		ActionManager.getAction(ACTIONS.NOISE).execute(600);
+
 		// Transition sequence
 		SequentialTransition sequentialTransition = new SequentialTransition();
-		final C3MessagePane mp = this;
-		ActionManager.getAction(ACTIONS.NOISE).execute(800);
 		sequentialTransition.setOnFinished(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
 				rectBorder.toFront();
-				Timeline timeline = new Timeline();
 
-				KeyValue key1 = new KeyValue(rect.translateXProperty(), 60);
-				KeyValue key2 = new KeyValue(rect.translateYProperty(), -35);
-				KeyValue key3 = new KeyValue(rect.scaleXProperty(), 6);
-				KeyValue key4 = new KeyValue(rect.scaleYProperty(), 4);
-
-				KeyFrame frame1 = new KeyFrame(Duration.seconds(.2), key1, key2, key3, key4);
-				timeline.getKeyFrames().addAll(frame1);
-				timeline.play();
-				timeline.setOnFinished(new EventHandler<ActionEvent>() {
-					@Override
-					public void handle(ActionEvent event) {
-						mp.getChildren().add(rectBorder);
-
-						double w = rect.getWidth() * 6;
-						double h = rect.getHeight() * 4;
-						double x = rect.getX();
-						double y = rect.getY();
-						rectBorder.setWidth(w);
-						rectBorder.setHeight(h);
-						rectBorder.setX(x);
-						rectBorder.setY(y);
-
-						mp.getChildren().add(messageText);
-
-						switch (type) {
-						case OK_CANCEL:
-							mp.getChildren().add(okButton);
-							mp.getChildren().add(cancelButton);
-							break;
-						case YES_NO:
-							mp.getChildren().add(yesButton);
-							mp.getChildren().add(noButton);
-							break;
-						case CLOSE:
-							mp.getChildren().add(closeButton);
-							break;
-						default:
-							break;
-						}
-					}
-				});
 			}
 		});
-		sequentialTransition.getChildren().addAll(fadeInTransition_01, fadeInTransition_02);
+		sequentialTransition.getChildren().addAll(fadeInTransition_01, fadeInTransition_02, timeline);
 		sequentialTransition.setCycleCount(1);
 		sequentialTransition.play();
 	}

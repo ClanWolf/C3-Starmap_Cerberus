@@ -58,8 +58,11 @@ public class UserPOJO extends Pojo {
 	@Column(name = "UserName", nullable = false, length = 45)
 	private String userName;
 
-	@Column(name = "UserPassword", nullable = false, length = 45)
+	@Column(name = "UserPassword", nullable = true, length = 45)
 	private String userPassword;
+
+	@Column(name = "UserPasswordWebsite", nullable = true, length = 45)
+	private String userPasswordWebsite;
 
 	@Column(name = "UserEMail", nullable = false, length = 45)
 	private String userEMail;
@@ -105,6 +108,9 @@ public class UserPOJO extends Pojo {
 
 	@Column(name = "LastModified", nullable = true, length = 19)
 	private Timestamp lastModified;
+
+	@Column(name = "active", nullable = true, length = 11)
+	private int active;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "CurrentCharacterID")

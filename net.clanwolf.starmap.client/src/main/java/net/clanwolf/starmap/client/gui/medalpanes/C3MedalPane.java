@@ -86,7 +86,7 @@ public class C3MedalPane extends Pane {
 		view.setOpacity(0.0);
 
 		TextField textField = new TextField();
-		textField.setMaxWidth(60);
+		textField.setMaxWidth(600);
 		textField.setPrefWidth(600);
 		textField.setMinWidth(600);
 		textField.setMaxHeight(50);

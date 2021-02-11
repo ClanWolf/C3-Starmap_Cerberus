@@ -45,6 +45,7 @@ import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import net.clanwolf.starmap.client.action.*;
 import net.clanwolf.starmap.client.enums.C3MESSAGERESULTS;
+import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
 import net.clanwolf.starmap.client.enums.PRIVILEGES;
 import net.clanwolf.starmap.client.gui.medalpanes.C3MedalPane;
 import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
@@ -1238,22 +1239,31 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 			case ONLINECHECK_FINISHED:
 				boolean result = (boolean) o.getObject();
-				// Log.debug("ACTIONS.ONLINE_STATUS_CHECK_FINISHED catched. Online: " + result);
 				if (result) {
 					onlineIndicatorLabel.setStyle("-fx-background-color: #008000;");
 					C3Properties.setProperty(C3PROPS.CHECK_ONLINE_STATUS, "ONLINE", false);
+					ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute();
 				} else {
 					onlineIndicatorLabel.setStyle("-fx-background-color: #c00000;");
 					C3Properties.setProperty(C3PROPS.CHECK_ONLINE_STATUS, "OFFLINE", false);
+					C3Message message = new C3Message();
+					message.setType(C3MESSAGETYPES.CLOSE);
+					message.setText("Server seems to be offline.");
+					C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
+					ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("app_online_indicator_message_OFFLINE"), true));
+					ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
 				}
-				ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute();
 				break;
 
 			case DATABASECONNECTIONCHECK_STARTED:
-				ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute();
-				// Log.debug("ACTIONS.DATABASECONNECTIONCHECK_STARTED catched.");
-				databaseAccessibleIndicatorLabel.setStyle("-fx-background-color: #808000;");
-				C3Properties.setProperty(C3PROPS.CHECK_CONNECTION_STATUS, "RUNNING_CHECK", false);
+				if (C3Properties.getProperty(C3PROPS.CHECK_ONLINE_STATUS) == "OFFLINE") {
+					// server is not online, do not try to check the database
+					C3Logger.info("Server is offline, DB is not checked!");
+				} else {
+					ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute();
+					databaseAccessibleIndicatorLabel.setStyle("-fx-background-color: #808000;");
+					C3Properties.setProperty(C3PROPS.CHECK_CONNECTION_STATUS, "RUNNING_CHECK", false);
+				}
 				break;
 
 			case DATABASECONNECTIONCHECK_FINISHED:
@@ -1262,11 +1272,17 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				if (result3) {
 					databaseAccessibleIndicatorLabel.setStyle("-fx-background-color: #008000;");
 					C3Properties.setProperty(C3PROPS.CHECK_CONNECTION_STATUS, "ONLINE", false);
+					ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute();
 				} else {
 					databaseAccessibleIndicatorLabel.setStyle("-fx-background-color: #c00000;");
 					C3Properties.setProperty(C3PROPS.CHECK_CONNECTION_STATUS, "OFFLINE", false);
+					C3Message message = new C3Message();
+					message.setType(C3MESSAGETYPES.CLOSE);
+					message.setText(Internationalization.getString("app_database_indicator_message_OFFLINE"));
+					C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
+					ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("app_database_indicator_message_OFFLINE"), true));
+					ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
 				}
-				ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute();
 				break;
 
 			case LOGGING_OFF:

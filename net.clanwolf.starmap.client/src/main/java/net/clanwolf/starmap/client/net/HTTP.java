@@ -89,11 +89,11 @@ public abstract class HTTP {
 	/**
 	 * Get
 	 *
-	 * @param host The host
+	 * @param url The host
 	 * @return byte[] The result
 	 */
-	public static byte[] get(URL host) throws IOException, MalformedURLException {
-		return get(host, null);
+	public static byte[] get(URL url) throws IOException, MalformedURLException {
+		return get(url, null);
 
 	}
 

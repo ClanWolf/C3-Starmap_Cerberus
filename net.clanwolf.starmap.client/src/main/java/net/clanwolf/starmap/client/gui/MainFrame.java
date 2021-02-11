@@ -302,7 +302,7 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 						// TODO: Generate prompt to download latest version
 					}
 				}
-			} catch(IOException ioe) {
+			} catch(Exception e) {
 				C3Logger.warning("Could not check latest available client version online!");
 			}
 		} else {
