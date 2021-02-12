@@ -52,10 +52,12 @@ import java.util.Iterator;
 public class C3GameSessionHandler extends SessionMessageHandler {
 	private GameRoom room;// not really required. It can be accessed as getSession() also.
 	private GameState state;
+	private GameRoomSession roomSession;
 
 	public C3GameSessionHandler(GameRoomSession session) {
 		super(session);
 		this.room = session;
+		this.roomSession = session;
 		GameStateManagerService manager = room.getStateManager();
 		state = (GameState) manager.getState();
 
@@ -126,7 +128,8 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		case CLIENT_READY_FOR_EVENTS:
 			// TODO: Make this event appear in server log, then
 			C3Logger.info("HURRA!");
-//			session.setLoggedOnAndReady(true);
+			roomSession.getSessionReadyMap().put(session, true);
+
 			break;
 		default:
 			break;

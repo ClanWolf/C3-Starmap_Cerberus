@@ -26,6 +26,14 @@ import java.util.concurrent.ExecutorService;
 
 public abstract class GameRoomSession extends DefaultSession implements GameRoom
 {
+
+
+	private HashMap<PlayerSession, Boolean> sessionReadyMap = new HashMap<PlayerSession, Boolean>();
+
+	public HashMap<PlayerSession, Boolean> getSessionReadyMap() {
+		return sessionReadyMap;
+	}
+
 	/**
 	 * The name of the game room, preferably unique across multiple games.
 	 */

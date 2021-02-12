@@ -67,8 +67,6 @@
                         </Button>
                         <Button id="btn_dark-blue" fx:id="btSortOrderDown" layoutX="541.0" layoutY="33.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleSortOrderDown" prefHeight="12.0" prefWidth="12.0" styleClass="RPMinusButton" text="-" />
                         <TextField fx:id="tfSortOrder" alignment="CENTER_RIGHT" editable="false" layoutX="496.0" layoutY="20.0" prefHeight="22.0" prefWidth="41.0" />
-                        <TextField fx:id="tfURL" layoutX="130.0" layoutY="202.0" onKeyTyped="#handleMovieKeyTyped" prefHeight="22.0" prefWidth="422.0" />
-                        <Label fx:id="labURL" layoutX="16.0" layoutY="205.0" text="URL" />
                      </children></AnchorPane>
             </content>
           </Tab>

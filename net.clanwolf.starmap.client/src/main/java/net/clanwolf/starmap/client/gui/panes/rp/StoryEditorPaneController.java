@@ -95,13 +95,13 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	@FXML
 	Button btDeleteStoryOptionNextStep;
 	@FXML
-	Label labStoryName, labDescription, labStorytext, labRolePlayOff, labStoryVariante, labImage, labVoice, labMovie, labURL;
+	Label labStoryName, labDescription, labStorytext, labRolePlayOff, labStoryVariante, labImage, labVoice, labMovie;
 	@FXML
 	Label labPathOption1, labPathOption2, labPathOption3,labPathOption4, labDataInputDataset;
 	@FXML
 	Label labDiceLabel, labDiceScore, labDiceScoreLess, labDiceScoreEqual, labDiceScoreMore, labAssignedChar, labAllCharacters, labCode,labAttempt,labAttemptSuccsess,labAttemptFailure;
 	@FXML
-	TextField tfStoryName, tfImage, tfVoice, tfMovie, tfURL, tfCode, tfAttempt, tfXPosText, tfYPosText, tfHeightText, tfWidthText;
+	TextField tfStoryName, tfImage, tfVoice, tfMovie, tfCode, tfAttempt, tfXPosText, tfYPosText, tfHeightText, tfWidthText;
 	@FXML
 	ComboBox<ROLEPLAYENTRYTYPES> cbStoryVarianten;
 	@FXML
@@ -1137,7 +1137,6 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 			tfImage.setDisable(false);
 			tfVoice.setDisable(false);
 			tfMovie.setDisable(false);
-			tfURL.setDisable(false);
 
 			if (selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STORY || selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_CHAPTER) {
 				cbStoryVarianten.setDisable(true);
@@ -1202,7 +1201,6 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 			tfImage.setDisable(true);
 			tfVoice.setDisable(true);
 			tfMovie.setDisable(true);
-			tfURL.setDisable(true);
 
 			btSortOrderUp.setDisable(true);
 			btSortOrderDown.setDisable(true);
@@ -1265,7 +1263,6 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 			tfVoice.setText(selected.getValue().getStoryMP3());
 			tfMovie.setText(selected.getValue().getStoryIntro());
 			taRolePlayOff.setText(selected.getValue().getRolePlayOff());
-			tfURL.setText(selected.getValue().getUrl());
 
 			if (selected.getValue().getId() != null) {
 				tfSortOrder.setText(selected.getValue().getSortOrder().toString());
@@ -1418,7 +1415,6 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 		rp.setStoryDescription(taDescription.getText());
 		rp.setStoryText(taStorytext.getText());
 		rp.setRolePlayOff(taRolePlayOff.getText());
-		rp.setUrl(tfURL.getText());
 
 		// keep the actual sort number
 		rp.setSortOrderOld(rp.getSortOrder());
@@ -1695,7 +1691,6 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 				labImage.setText(Internationalization.getString("app_rp_storyeditor_story_image"));
 				labVoice.setText(Internationalization.getString("app_rp_storyeditor_story_voice"));
 				labMovie.setText(Internationalization.getString("app_rp_storyeditor_story_movie"));
-				labURL.setText(Internationalization.getString("app_rp_storyeditor_story_url"));
 
 				tabBasic.setText(Internationalization.getString("app_rp_storyeditor_tab_basic1"));
 				tabBasic2.setText(Internationalization.getString("app_rp_storyeditor_tab_basic2"));

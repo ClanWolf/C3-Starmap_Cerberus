@@ -304,6 +304,22 @@ public class UserPOJO extends Pojo {
 		this.currentCharacter = character;
 	}
 
+	public String getUserPasswordWebsite() {
+		return userPasswordWebsite;
+	}
+
+	public void setUserPasswordWebsite(String userPasswordWebsite) {
+		this.userPasswordWebsite = userPasswordWebsite;
+	}
+
+	public int getActive() {
+		return active;
+	}
+
+	public void setActive(int active) {
+		this.active = active;
+	}
+
 	@Override
 	public String toString() {
 		return userName + " (" + lastName + ", " + firstName + ") | " + privileges;

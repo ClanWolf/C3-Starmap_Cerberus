@@ -26,6 +26,7 @@
  */
 package net.clanwolf.starmap.server.beans;
 
+import io.nadron.app.Player;
 import io.nadron.app.PlayerSession;
 import io.nadron.app.impl.GameRoomSession;
 import io.nadron.event.Event;
@@ -36,6 +37,7 @@ import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -47,6 +49,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class C3Room extends GameRoomSession {
 	private static ArrayList<Object> wrongPlayerSessions;
+
+
 
 	public C3Room(GameRoomSessionBuilder builder) {
 		super(builder);
@@ -119,19 +123,27 @@ public class C3Room extends GameRoomSession {
 			// TODO: Only send the onEvent(e) if the session is ready to receive events!
 			// See C3GameRoomHandler L.123
 
-			try {
+			( new Thread() { public void run() {
+				boolean ready;
+				int counter = 10;
+				do {
+					ready = getSessionReadyMap().containsKey(playerSession) && getSessionReadyMap().get(playerSession);
+					if (ready || counter == 0) {
+						break;
+					} else {
+						try {
+							TimeUnit.MILLISECONDS.sleep(250);
+							counter--;
+						} catch (InterruptedException interruptedException) {
+							interruptedException.printStackTrace();
+						}
+					}
+				} while(!ready);
 				C3Logger.debug("Waiting a moment to send the login success event...");
-				TimeUnit.SECONDS.sleep(1);
-			} catch (InterruptedException interruptedException) {
-				interruptedException.printStackTrace();
-			}
-
-			playerSession.onEvent(e);
-
-			C3Logger.debug("C3Room.onLogin: -> LOG_IN_SUCCESS Event sent");
-
-			// check for wrong sessions from this player
-
+				playerSession.onEvent(e);
+				C3Logger.debug("C3Room.onLogin: -> LOG_IN_SUCCESS Event sent");
+				getSessionReadyMap().remove(playerSession);
+			} } ).start();
 		} // end if
 
 	}

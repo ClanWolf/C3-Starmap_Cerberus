@@ -22,8 +22,7 @@ import org.jetlang.channels.MemoryChannel;
  * @author Abraham Menacherry
  * 
  */
-public class DefaultPlayerSession extends DefaultSession implements
-		PlayerSession
+public class DefaultPlayerSession extends DefaultSession implements PlayerSession
 {
 
 	/**

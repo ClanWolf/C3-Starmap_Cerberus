@@ -16,5 +16,4 @@ public interface PlayerSession extends Session
 	 *         associated yet.
 	 */
 	public abstract Player getPlayer();
-
 }

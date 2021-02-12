@@ -64,4 +64,6 @@ public interface PlayerSession extends Session
 	 * @param event The event to send to the {@link GameRoom}
 	 */
 	public void sendToGameRoom(Event event);
+
+
 }

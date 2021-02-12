@@ -64,6 +64,8 @@ public class UserDTO extends Dto {
 	private Timestamp created;
 	private Timestamp lastModified;
 	private RolePlayCharacterDTO currentCharacter;
+	private int active;
+	private String userPasswordWebsite;
 
 	// Constructors
 
@@ -222,6 +224,22 @@ public class UserDTO extends Dto {
 
 	public void setCurrentCharacter(RolePlayCharacterDTO character) {
 		this.currentCharacter = character;
+	}
+
+	public int getActive() {
+		return active;
+	}
+
+	public void setActive(int active) {
+		this.active = active;
+	}
+
+	public String getUserPasswordWebsite() {
+		return userPasswordWebsite;
+	}
+
+	public void setUserPasswordWebsite(String userPasswordWebsite) {
+		this.userPasswordWebsite = userPasswordWebsite;
 	}
 
 	@Override
