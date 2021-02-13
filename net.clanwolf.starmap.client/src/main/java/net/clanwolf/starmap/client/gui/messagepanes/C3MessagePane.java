@@ -176,18 +176,17 @@ public class C3MessagePane extends Pane {
 		rect = new Rectangle(100, 100);
 		rect.setFill(Color.rgb(97, 9, 9, 0.95));
 
-		icon  = new Image(getClass().getResourceAsStream("/images/planets/000_default.png"));
+		icon  = new Image(getClass().getResourceAsStream("/icons/message_error_red.png"));
 
 		view = new ImageView();
 		view.setImage(icon);
-		view.setFitWidth(200);
-		view.setFitHeight(200);
-		view.setTranslateX(10);
-		view.setTranslateY(-120);
+		view.setFitWidth(100);
+		view.setFitHeight(100);
+		view.setTranslateX(55);
+		view.setTranslateY(-170);
 		view.setOpacity(1.0);
 
 		messageText = new TextField();
-//		messageText.setFill(Color.rgb(240, 240, 240, 1.0));
 		messageText.setText(text);
 		messageText.setMaxWidth(600);
 		messageText.setPrefWidth(600);

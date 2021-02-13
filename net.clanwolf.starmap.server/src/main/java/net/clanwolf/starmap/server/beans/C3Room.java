@@ -103,49 +103,40 @@ public class C3Room extends GameRoomSession {
 			}
 		});
 
+		Event e;
 		if (((C3Player) playerSession.getPlayer()).getUser() == null) {
-
-			// Send error message if user is null			
+			// Send error message if user is null
 			C3Logger.debug("C3Room.onLogin: no user found -> send Events.LOG_IN_FAILURE");
-			Event e = Events.event(null, Events.LOG_IN_FAILURE);
-			playerSession.onEvent(e);
-
+			e = Events.event(null, Events.LOG_IN_FAILURE);
 		} else {
-
 			// Create a new GameState with the UserPOJO for the client, if login was successful
-			C3Logger.debug("C3Room.onLogin: -> " + playerSession.getId());
+			C3Logger.debug("C3Room.onLogin: -> sending LOG_IN_SUCCESS Event. Session: " + playerSession.getId());
+			e = Events.event(null, Events.LOG_IN_SUCCESS);
+		}
 
-			// send event LOG_IN_SUCCESS to client
-			C3Logger.debug("C3Room.onLogin: -> sending LOG_IN_SUCCESS Event");
-			Event e = Events.event(null, Events.LOG_IN_SUCCESS);
-			C3Logger.debug("C3Room.onLogin: -> adding Event to PlayerSession");
-
-			// TODO: Only send the onEvent(e) if the session is ready to receive events!
-			// See C3GameRoomHandler L.123
-
-			( new Thread() { public void run() {
-				boolean ready;
-				int counter = 10;
-				do {
-					ready = getSessionReadyMap().containsKey(playerSession) && getSessionReadyMap().get(playerSession);
-					if (ready || counter == 0) {
-						break;
-					} else {
-						try {
-							TimeUnit.MILLISECONDS.sleep(250);
-							counter--;
-						} catch (InterruptedException interruptedException) {
-							interruptedException.printStackTrace();
-						}
+		( new Thread() { public void run() {
+			boolean ready;
+			int counter = 10;
+			do {
+				ready = getSessionReadyMap().containsKey(playerSession) && getSessionReadyMap().get(playerSession);
+				if (ready || counter == 0) {
+					break;
+				} else {
+					try {
+						C3Logger.debug("Waiting a moment before send the login result event...");
+						TimeUnit.MILLISECONDS.sleep(250);
+						counter--;
+					} catch (InterruptedException interruptedException) {
+						interruptedException.printStackTrace();
 					}
-				} while(!ready);
-				C3Logger.debug("Waiting a moment to send the login success event...");
-				playerSession.onEvent(e);
-				C3Logger.debug("C3Room.onLogin: -> LOG_IN_SUCCESS Event sent");
-				getSessionReadyMap().remove(playerSession);
-			} } ).start();
-		} // end if
+				}
+			} while(!ready);
 
+			C3Logger.debug("C3Room.onLogin: -> adding Event to PlayerSession");
+			playerSession.onEvent(e);
+			C3Logger.debug("C3Room.onLogin: -> LOG_IN_SUCCESS Event sent");
+			getSessionReadyMap().remove(playerSession);
+		} } ).start();
 	}
 
 	@Override
