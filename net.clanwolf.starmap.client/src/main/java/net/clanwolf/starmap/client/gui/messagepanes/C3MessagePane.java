@@ -220,9 +220,9 @@ public class C3MessagePane extends Pane {
 
 	public void fadeIn() {
 		// Fade in transition 01 (Background)
-		FadeTransition fadeInTransition_01 = new FadeTransition(Duration.millis(80), this);
+		FadeTransition fadeInTransition_01 = new FadeTransition(Duration.millis(80), view);
 		fadeInTransition_01.setFromValue(0.0);
-		fadeInTransition_01.setToValue(0.2);
+		fadeInTransition_01.setToValue(1.0);
 		fadeInTransition_01.setCycleCount(4);
 
 		// Fade in transition 02 (Border)
@@ -285,7 +285,7 @@ public class C3MessagePane extends Pane {
 
 			}
 		});
-		sequentialTransition.getChildren().addAll(fadeInTransition_01, fadeInTransition_02, timeline);
+		sequentialTransition.getChildren().addAll(fadeInTransition_02, timeline, fadeInTransition_01);
 		sequentialTransition.setCycleCount(1);
 		sequentialTransition.play();
 	}
