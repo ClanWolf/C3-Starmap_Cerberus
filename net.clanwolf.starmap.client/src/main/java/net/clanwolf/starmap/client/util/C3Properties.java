@@ -57,7 +57,7 @@ public class C3Properties {
 	private static Cipher c;
 	private static final String UNKNOWN = "unknown";
 	private static final String S = "s";
-	private static final String REGENERATION_WARNING = "DO NOT EDIT!!! File will be regenerated!";
+	private static final String REGENERATION_WARNING = "File will be regenerated regularly!";
 	private static final Properties sProperties = new Properties();
 
 	/**
@@ -129,7 +129,7 @@ public class C3Properties {
 		userProperties.entrySet().stream().forEach((userProperty) -> {
 			String key = (String) userProperty.getKey();
 			if (sProperties.containsKey(key) && !C3PROPS.VERSION.name().toLowerCase().equals(key)) {
-				setProperty(C3PROPS.valueOf((String) userProperty.getKey()), (String) userProperty.getValue(), true);
+				setProperty(C3PROPS.valueOf((String) ((String) userProperty.getKey()).toUpperCase()), (String) userProperty.getValue(), true);
 			}
 		});
 		return true;

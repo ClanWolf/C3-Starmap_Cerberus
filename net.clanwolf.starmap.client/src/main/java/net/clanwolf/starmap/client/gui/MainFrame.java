@@ -85,6 +85,7 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 	private Scene scene = null;
 	private boolean waitcursor = false;
 	private boolean messageactive = false;
+	private static boolean isDevelopmentPC = false;
 
 	/**
 	 * Horizontal position of the main window.
@@ -289,6 +290,13 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 				cleanCache();
 			}
 
+			if (isDevelopmentPC) {
+				C3Logger.warning("--------------------------------------------------------------");
+				C3Logger.warning("--------------- THIS IS A DEVELOPMENT MACHINE! ---------------");
+				C3Logger.warning("--------------------------------------------------------------");
+				C3Properties.setProperty(C3PROPS.DEV_PC, "true", false);
+			}
+
 			notifyPreloader(new Preloader.ProgressNotification(100.0));
 
 			try {
@@ -350,7 +358,7 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 	public static void main(String[] args) {
 		System.setProperty("javafx.preloader", C3_Preloader.class.getCanonicalName());
 
-		boolean isDevelopmentPC = false;
+		isDevelopmentPC = false;
 		boolean clearCache = false;
 		if(args.length > 0) {
 			for (String arg : args) {

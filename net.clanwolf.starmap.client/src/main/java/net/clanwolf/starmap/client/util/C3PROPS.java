@@ -28,20 +28,24 @@ package net.clanwolf.starmap.client.util;
 
 public enum C3PROPS {
 
-	// Server
+	// Values must be in upper case here, or the re-creation of the user property file will result
+	// in exceptions (during the put, the key needs to be uppercase).
+
+	// SERVER
 	TCP_HOSTNAME,
 	TCP_PORT,
-
-	// Login
 	SERVER_URL,
-	LOGIN_DATABASE,
+
+	// LOGIN
 	LOGIN_USER,
 	LOGIN_PASSWORD,
+	LOGIN_DATABASE,
 	AUTO_LOGIN,
 	STORE_LOGIN_PASSWORD,
 	USE_GUEST_ACCOUNT,
+	FACTION_KEY,
 
-	// Proxy
+	// PROXY
 	USE_PROXY,
 	USE_SYSTEM_PROXY,
 	PROXY_SERVER,
@@ -52,40 +56,44 @@ public enum C3PROPS {
 	PROXY_NEEDS_AUTHENTICATION,
 	PROXY_SAVE_PASSWORD,
 
-	//FTP
+	// FTP
 	FTP_SERVER,
 	FTP_PORT,
 	FTP_USER,
 	FTP_PASSWORD,
 
-	// Game
+	// GUI
+	LANGUAGE,
+	MAP_DIMENSIONS,
+
+	// SOUND
+	PLAY_VOICE,
+	PLAY_MUSIC,
+	PLAY_SOUND,
+	SOUNDVOLUME,
+	SPEECHVOLUME,
+	MUSICVOLUME,
+	MUSICTRACK,
+	VOICERSSAPIKEY,
+
+	// SYSTEM
 	VERSION,
+	BROWSER,
+
+	// Whenever the version changes, the user properties file is regenerated, containing only the
+	// properties that are contained in this file (with their previously given values by the user).
+	// This helps to clean the property file and keep it free from old entries.
+
+	// RUNTIME - Not stored!
+
+	// GAME
 	CHECK_CONNECTION_STATUS,
 	CHECK_ONLINE_STATUS,
 	CHECK_LOGIN_STATUS,
 	CONNECTED_SUCCESSFULLY_ONCE,
 	LOGGED_IN_SUCCESSFULLY_ONCE,
 
-	// Media
-	PLAY_VOICE,
-	PLAY_SOUND,
-	PLAY_MUSIC,
-	SOUNDVOLUME,
-	SPEECHVOLUME,
-	MUSICVOLUME,
-	VOICERSSAPIKEY,
-
-	// Environment
-	BROWSER,
-	DOC_DIR,
+	// ENV
 	LOGFILE,
-	DEV_PC,
-
-	// Gui
-	COUNTRY,
-	LANGUAGE,
-	CONFIRM_EXIT,
-
-	// Starmap
-	MAP_DIMENSIONS
+	DEV_PC
 }

@@ -178,7 +178,7 @@ public class RolePlayDataInputController extends AbstractC3RolePlayController im
 				case SelectionMulti:
 					try {
 						ComboBox cb = new ComboBox();
-						cb.getItems().addAll(CatalogLoader.getList(t.classname));
+						cb.getItems().add(CatalogLoader.getList(t.classname));
 
 						cb.setPrefWidth(400);
 						p.getChildren().add(cb);
