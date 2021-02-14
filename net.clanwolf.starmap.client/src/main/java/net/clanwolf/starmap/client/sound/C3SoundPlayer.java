@@ -340,7 +340,7 @@ public class C3SoundPlayer {
 
 			String apikey = C3Properties.getProperty(C3PROPS.VOICERSSAPIKEY);
 
-			if ("".equals(apikey)) {
+			if (apikey != null && ("unknown".equals(apikey) || "".equals(apikey))) {
 				C3Logger.warning("Error getting voice file from VoiceRSS! VoiceRSS API-Key is missing! Check property file and make sure a key is specified!");
 				return false;
 			} else {
