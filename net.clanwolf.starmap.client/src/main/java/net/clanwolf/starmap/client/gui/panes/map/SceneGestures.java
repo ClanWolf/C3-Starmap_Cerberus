@@ -55,6 +55,8 @@ class SceneGestures {
 	private DragContext sceneDragContext = new DragContext();
 	private PannableCanvas canvas;
 
+	private boolean scrollingEnabled = true;
+
 	SceneGestures(PannableCanvas canvas) {
 		this.canvas = canvas;
 	}
@@ -78,6 +80,8 @@ class SceneGestures {
 	EventHandler<MouseEvent> getOnMouseClickedEventHandler() {
 		return onMouseClickedEventHandler;
 	}
+
+	EventHandler<MouseEvent> getOnMouseReleasedEventHandler() { return onMouseReleasedEventHandler; }
 
 	private EventHandler<MouseEvent> onMouseMovedEventHandler = event -> {
 //		double universeX = getUniverseX(event.getSceneX());
@@ -103,6 +107,9 @@ class SceneGestures {
 		@Override
 		public void handle(MouseEvent event) {
 
+			scrollingEnabled = false;
+//			C3Logger.info("Button pressed");
+
 			if (event.isPrimaryButtonDown()) {
 				canvas.hideStarSystemMarker();
 			}
@@ -120,6 +127,14 @@ class SceneGestures {
 
 			sceneDragContext.translateAnchorX = canvas.getTranslateX();
 			sceneDragContext.translateAnchorY = canvas.getTranslateY();
+		}
+	};
+
+	private EventHandler<MouseEvent> onMouseReleasedEventHandler = new EventHandler<MouseEvent>() {
+		@Override
+		public void handle(MouseEvent mouseEvent) {
+			scrollingEnabled = true;
+//			C3Logger.info("Button released");
 		}
 	};
 
@@ -158,7 +173,6 @@ class SceneGestures {
 
 	private EventHandler<MouseEvent> onMouseDraggedEventHandler = new EventHandler<MouseEvent>() {
 		public void handle(MouseEvent event) {
-
 			// right mouse button => panning
 			if (!event.isSecondaryButtonDown()) {
 				return;
@@ -170,7 +184,6 @@ class SceneGestures {
 			double diffY = sceneDragContext.translateAnchorY + event.getSceneY() - sceneDragContext.mouseAnchorY;
 
 			moveMapByDiff(x, y, diffX, diffY);
-
 			event.consume();
 		}
 	};
@@ -182,47 +195,49 @@ class SceneGestures {
 
 		@Override
 		public void handle(ScrollEvent event) {
-			double delta = 1.2;
-			double scale = canvas.getScale(); // only use Y, same value for X
-			double oldScale = scale;
+			if (scrollingEnabled) {
+				double delta = 1.2;
+				double scale = canvas.getScale(); // only use Y, same value for X
+				double oldScale = scale;
 
-			if (event.getDeltaY() < 0) {
-				scale /= delta;
-			} else {
-				scale *= delta;
+				if (event.getDeltaY() < 0) {
+					scale /= delta;
+				} else {
+					scale *= delta;
+				}
+
+				scale = clamp(scale);
+				double f = (scale / oldScale) - 1;
+
+				// maxX = right overhang, maxY = lower overhang
+				double maxX = canvas.getBoundsInParent().getMaxX()
+						- canvas.localToParent(canvas.getPrefWidth(), canvas.getPrefHeight()).getX();
+				double maxY = canvas.getBoundsInParent().getMaxY()
+						- canvas.localToParent(canvas.getPrefWidth(), canvas.getPrefHeight()).getY();
+
+				// minX = left overhang, minY = upper overhang
+				double minX = canvas.localToParent(0, 0).getX() - canvas.getBoundsInParent().getMinX();
+				double minY = canvas.localToParent(0, 0).getY() - canvas.getBoundsInParent().getMinY();
+
+				// adding the overhangs together, as we only consider the width of
+				// canvas itself
+				double subX = maxX + minX;
+				double subY = maxY + minY;
+
+				// subtracting the overall overhang from the width and only the left
+				// and upper overhang from the upper left point
+				double dx = (event.getSceneX() - ((canvas.getBoundsInParent().getWidth() - subX) / 2
+						+ (canvas.getBoundsInParent().getMinX() + minX)));
+				double dy = (event.getSceneY() - ((canvas.getBoundsInParent().getHeight() - subY) / 2
+						+ (canvas.getBoundsInParent().getMinY() + minY)));
+
+				canvas.setScale(scale);
+
+				// note: pivot value must be untransformed, i. e. without scaling
+				canvas.setPivot(f * dx, f * dy);
+
+				event.consume();
 			}
-
-			scale = clamp(scale);
-			double f = (scale / oldScale) - 1;
-
-			// maxX = right overhang, maxY = lower overhang
-			double maxX = canvas.getBoundsInParent().getMaxX()
-					- canvas.localToParent(canvas.getPrefWidth(), canvas.getPrefHeight()).getX();
-			double maxY = canvas.getBoundsInParent().getMaxY()
-					- canvas.localToParent(canvas.getPrefWidth(), canvas.getPrefHeight()).getY();
-
-			// minX = left overhang, minY = upper overhang
-			double minX = canvas.localToParent(0, 0).getX() - canvas.getBoundsInParent().getMinX();
-			double minY = canvas.localToParent(0, 0).getY() - canvas.getBoundsInParent().getMinY();
-
-			// adding the overhangs together, as we only consider the width of
-			// canvas itself
-			double subX = maxX + minX;
-			double subY = maxY + minY;
-
-			// subtracting the overall overhang from the width and only the left
-			// and upper overhang from the upper left point
-			double dx = (event.getSceneX() - ((canvas.getBoundsInParent().getWidth() - subX) / 2
-					+ (canvas.getBoundsInParent().getMinX() + minX)));
-			double dy = (event.getSceneY() - ((canvas.getBoundsInParent().getHeight() - subY) / 2
-					+ (canvas.getBoundsInParent().getMinY() + minY)));
-
-			canvas.setScale(scale);
-
-			// note: pivot value must be untransformed, i. e. without scaling
-			canvas.setPivot(f * dx, f * dy);
-
-			event.consume();
 		}
 	};
 

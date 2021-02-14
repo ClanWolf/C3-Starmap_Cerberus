@@ -84,5 +84,8 @@ public enum C3PROPS {
 	// Gui
 	COUNTRY,
 	LANGUAGE,
-	CONFIRM_EXIT;
+	CONFIRM_EXIT,
+
+	// Starmap
+	MAP_DIMENSIONS
 }

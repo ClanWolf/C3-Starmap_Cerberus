@@ -1080,7 +1080,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		noiseImage.toFront();
 		noiseImage.setVisible(true);
 		C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_welcome_message"));
-		C3SoundPlayer.play("/sound/fx/beep_02.wav", false);
+		C3SoundPlayer.play("/sound/fx/beep_02.mp3", false);
 		C3SoundPlayer.startMusic();
 
 		String tcphostname = C3Properties.getProperty(C3PROPS.TCP_HOSTNAME);

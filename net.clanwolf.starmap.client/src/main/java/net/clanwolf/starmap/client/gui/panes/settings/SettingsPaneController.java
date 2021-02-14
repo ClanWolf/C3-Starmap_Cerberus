@@ -191,7 +191,7 @@ public class SettingsPaneController extends AbstractC3Controller implements Acti
 						FadeInTransition.setToValue(1.0);
 						FadeInTransition.setCycleCount(3);
 						FadeInTransition.setOnFinished(event -> {
-							C3SoundPlayer.play("/sound/fx/beep_02.wav", false);
+							C3SoundPlayer.play("/sound/fx/beep_02.mp3", false);
 							ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("CancelWarning");
 							ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject("", false));
 							labelWarningText.setText("");

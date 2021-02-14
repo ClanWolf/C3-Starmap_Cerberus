@@ -169,6 +169,16 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	 */
 	private void initializeUniverseMap() {
 		if (boUniverse != null) {
+
+			String dims = C3Properties.getProperty(C3PROPS.MAP_DIMENSIONS);
+			int d = Integer.valueOf(dims);
+			if (d < 3000) {
+				d = 3000;
+			}
+			if (d < Config.MAP_DIM) {
+				C3Logger.info("Using map dimensions from user properties: " + d);
+				Config.setMapDim(d);
+			}
 			C3Logger.info("Beginning to build the star map from received universe data.");
 
 			Nexus.setCurrentSeason(boUniverse.currentSeason);
@@ -401,6 +411,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	private void addMouseFilters() {
 		if (sceneGestures != null) {
 			starMapPane.addEventFilter(MouseEvent.MOUSE_PRESSED, sceneGestures.getOnMousePressedEventHandler());
+			starMapPane.addEventFilter(MouseEvent.MOUSE_RELEASED, sceneGestures.getOnMouseReleasedEventHandler());
 			starMapPane.addEventFilter(MouseEvent.MOUSE_DRAGGED, sceneGestures.getOnMouseDraggedEventHandler());
 			starMapPane.addEventFilter(ScrollEvent.ANY, sceneGestures.getOnScrollEventHandler());
 			starMapPane.addEventFilter(MouseEvent.MOUSE_MOVED, sceneGestures.getOnMouseMovedEventHandler());
@@ -490,7 +501,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		});
 		sequentialTransition.play();
 
-		C3SoundPlayer.play("sound/fx/PremiumBeat_0013_cursor_click_11.wav", false);
+		C3SoundPlayer.play("sound/fx/cursor_click_11.mp3", false);
 	}
 
 	private void reCenterMap() {
@@ -696,7 +707,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		if (paneSystemDetail != null) {
 			// Set system information
 			Nexus.setSelectedStarSystem(sys);
-			C3SoundPlayer.play("sound/fx/PremiumBeat_0046_sci_fi_beep_electric.wav", false);
+			C3SoundPlayer.play("sound/fx/beep_electric.mp3", false);
 
 			Platform.runLater(() -> {
 				String name = boUniverse.factionBOs.get(sys.getAffiliation()).getName();

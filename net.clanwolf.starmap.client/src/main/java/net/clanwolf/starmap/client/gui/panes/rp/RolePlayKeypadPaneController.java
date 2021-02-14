@@ -317,7 +317,7 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 	private void setDigit(String digit, boolean playSound) {
 		if (!noAttemptsFree && !needReset) {
 			// Play sound
-			if (playSound) C3SoundPlayer.play("sound/fx/beep_02.wav", false);
+			if (playSound) C3SoundPlayer.play("sound/fx/beep_02.mp3", false);
 
 			if (sDisplay != null && sDisplay.length() >= 0 && sDisplay.length() < maxDigits) {
 				sDisplay = sDisplay + digit;
@@ -501,7 +501,7 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 		}
 
 		// fade digits on display
-		C3SoundPlayer.play("sound/fx/PremiumBeat_0045_alarm_system_keypad.wav", false);
+		C3SoundPlayer.play("sound/fx/alarm_system_keypad.mp3", false);
 
 		SequentialTransition sequentialTransition = new SequentialTransition();
 		int resultDigits = 1;

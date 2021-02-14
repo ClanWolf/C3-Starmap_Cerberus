@@ -3,4 +3,4 @@ ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActi
 (boolean is flashing)
 
 Play sound:
-C3SoundPlayer.play("sound/fx/beep_02.wav", false);
+C3SoundPlayer.play("sound/fx/beep_02.mp3", false);

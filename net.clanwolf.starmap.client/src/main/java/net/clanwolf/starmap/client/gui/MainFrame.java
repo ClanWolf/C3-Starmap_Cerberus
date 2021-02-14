@@ -66,6 +66,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.logging.Level;
 
 @SuppressWarnings("restriction")
@@ -277,6 +281,7 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 			// prepare the properties
 			C3Logger.info("Preparing user properties...");
 			prepareUserProperties();
+			prepareManual();
 
 			if (Nexus.isClearCacheOnStart()) {
 				clearCache();
@@ -323,6 +328,21 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 				C3Logger.info("Showing first welcome.");
 			}
 		} catch (IOException e) {
+			C3Logger.exception(null, e);
+		}
+	}
+
+	public static void prepareManual() {
+		try {
+			File dir = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "manual");
+			dir.mkdirs();
+
+			InputStream source = MainFrame.class.getResourceAsStream("/C3_Manual_de.pdf");
+			String destination = dir + File.separator + "C3_Manual_de.pdf";
+
+			Files.copy(source, Paths.get(destination), StandardCopyOption.REPLACE_EXISTING);
+		} catch (Exception e) {
+			C3Logger.info("Exception while copying the manual to local drive.");
 			C3Logger.exception(null, e);
 		}
 	}

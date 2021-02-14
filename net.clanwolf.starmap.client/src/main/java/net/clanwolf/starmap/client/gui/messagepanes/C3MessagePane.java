@@ -46,6 +46,7 @@ import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.enums.C3MESSAGERESULTS;
 import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
+import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.Tools;
 
 public class C3MessagePane extends Pane {
@@ -219,6 +220,9 @@ public class C3MessagePane extends Pane {
 	}
 
 	public void fadeIn() {
+
+		C3SoundPlayer.play("sound/fx/cursor_click_01.mp3", false);
+
 		// Fade in transition 01 (Background)
 		FadeTransition fadeInTransition_01 = new FadeTransition(Duration.millis(80), view);
 		fadeInTransition_01.setFromValue(0.0);

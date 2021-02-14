@@ -154,11 +154,11 @@
 				</div>   
 			</div>
 			
-			<audio src="./defaultsound.wav" type="audio/mp3" autoplay volume="0.3" ></audio>
+			<audio src="./defaultsound.mp3" type="audio/mp3" autoplay volume="0.3" ></audio>
 		</body>
 		</html>';
-	}	 
-			
+	}
+
 	// Create html code	
 	echo $html;
 ?>

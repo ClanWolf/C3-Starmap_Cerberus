@@ -122,7 +122,7 @@ public class C3MedalPane extends Pane {
 		rectBorder.toFront();
 		Tools.playGUICreationSound();
 
-		C3SoundPlayer.play("sound/fx/PremiumBeat_0013_cursor_selection_02.wav", false);
+		C3SoundPlayer.play("sound/fx/cursor_selection_15.mp3", false);
 
 		FadeTransition fadeInTransition = new FadeTransition(Duration.millis(10), this);
 		fadeInTransition.setFromValue(0.0);

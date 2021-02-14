@@ -155,21 +155,21 @@ public final class Tools {
 	}
 
 	public static void playButtonHoverSound3() {
-		C3SoundPlayer.play("/sound/fx/button_clicked_01.wav", false);
+		C3SoundPlayer.play("/sound/fx/button_clicked_01.mp3", false);
 	}
 
 	public static void playButtonClickSound() {
-		C3SoundPlayer.play("/sound/fx/button_clicked_02.wav", false);
+		C3SoundPlayer.play("/sound/fx/button_clicked_02.mp3", false);
 	}
 
-	public static void playAttentionSound() { C3SoundPlayer.play("/sound/fx/attention.wav", false); }
+	public static void playAttentionSound() { C3SoundPlayer.play("/sound/fx/attention.mp3", false); }
 
 	public static void playGUICreationSound() {
-		C3SoundPlayer.play("/sound/fx/slide_01.wav", false);
+		C3SoundPlayer.play("/sound/fx/slide_01.mp3", false);
 	}
 
 	public static void playGUIDestructionSound() {
-		C3SoundPlayer.play("/sound/fx/slide_02.wav", false);
+		C3SoundPlayer.play("/sound/fx/slide_02.mp3", false);
 	}
 
 	public static Alert C3Dialog(AlertType alertType, String title, String header, String content) {

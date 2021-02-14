@@ -152,7 +152,7 @@ public class C3SoundPlayer {
 			}
 			String fn = s.replace("%20", "_");
 
-			String f = cacheFolderName + File.separator + fn + ".wav";
+			String f = cacheFolderName + File.separator + fn + ".mp3";
 			File f1 = new File(f);
 
 			if (f1.isFile()) {
@@ -166,7 +166,7 @@ public class C3SoundPlayer {
 					C3Logger.info("TTS sound file missing, VoiceTTS failed.");
 					C3Logger.info("Looking for TTS sound file in packaged resources... ");
 					URL u = null;
-					String voicePath = "/sound/voice/" + lang + "/" + fn + ".wav";
+					String voicePath = "/sound/voice/" + lang + "/" + fn + ".mp3";
 					u = ((C3SoundPlayer)getInstance()).getClass().getResource(voicePath);
 					if (u != null) {
 						play(voicePath, true);
@@ -178,7 +178,7 @@ public class C3SoundPlayer {
 					C3Logger.info("Got file from VoiceTTS.");
 				}
 			}
-			play("/sound/fx/beep_02.wav", false);
+			play("/sound/fx/beep_02.mp3", false);
 		}
 	}
 
@@ -355,8 +355,7 @@ public class C3SoundPlayer {
 				C3Logger.info("Creating cache folder for voice files: " + success);
 			}
 			String fn = s.replace("%20", "_");
-
-			String f = cacheFolderName + File.separator + fn + ".wav";
+			String f = cacheFolderName + File.separator + fn + ".mp3";
 			File f1 = new File(f);
 
 			if (!f1.isFile()) {
@@ -369,6 +368,7 @@ public class C3SoundPlayer {
 				String language = "";
 				String voice = "";
 				String quality = "&f=44khz_16bit_stereo";
+				String format = "&c=MP3";
 
 				if ("de".equals(lang)) {
 					language = "&hl=de-de";
@@ -378,18 +378,18 @@ public class C3SoundPlayer {
 					voice = "&v=Alice"; // Alice,	Nancy, Lily, Harry
 				}
 
-				C3Logger.info("VoiceRSS API call: " + voiceRSSUrl + " *** API-Key *** " + quality + voice + language + "&src=" + s);
-				String u = voiceRSSUrl + apikey + quality + voice + language + "&src=" + s;
+				C3Logger.info("VoiceRSS API call: " + voiceRSSUrl + " *** API-Key *** " + quality + format + voice + language + "&src=" + s);
+				String u = voiceRSSUrl + apikey + quality + format + voice + language + "&src=" + s;
 
 				try {
 					HTTP.download(u, f);
 					File t = new File(f);
 					if (t.isFile() && t.canRead()) {
 						play(new File(f), true);
-						play("sound/fx/beep_02.wav", false);
+						play("sound/fx/beep_02.mp3", false);
 						return true;
 					}
-					play("sound/fx/beep_03.wav", false);
+					play("sound/fx/beep_03.mp3", false);
 					return false;
 				} catch (Exception e) {
 					// Speech could not be retrieved
@@ -398,58 +398,57 @@ public class C3SoundPlayer {
 			} else {
 				C3Logger.info("TTS sound file was found in cache: " + f1.getAbsolutePath() + ".");
 				play(f1, true);
-				play("sound/fx/beep_02.wav", false);
+				play("sound/fx/beep_02.mp3", false);
 			}
 			return false;
 		}
 		return false;
 	}
 
-	/**
-	 * Retrieves a speech file from a string from online mary tts service
-	 * @param s The sentence to be spoken by mary online service
-	 */
-	public static void getSpeechFromMary(String s) {
-
-		// http://mary.dfki.de:59125/documentation.html
-
-		if ("true".equals(C3Properties.getProperty(C3PROPS.PLAY_VOICE))) {
-			String lang = Internationalization.getLanguage();
-			String cacheFolderName = System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "cache" + File.separator + lang;
-			File cacheFolder = new File(cacheFolderName);
-			if (!cacheFolder.isDirectory()) {
-				boolean success = cacheFolder.mkdirs();
-				C3Logger.info("Creating cache folder for voice files: " + success);
-			}
-			String fn = s.replace("%20", "_");
-
-			String f = cacheFolderName + File.separator + fn + ".wav";
-			File f1 = new File(f);
-
-			if (!f1.isFile()) {
-				// use online Mary TTS
-				C3Logger.info("Online tts (Mary) requested...");
-
-				s = s.replace(" ", "%20");
-				String u = "http://mary.dfki.de:59125/process?INPUT_TEXT=" + s + "&INPUT_TYPE=TEXT&OUTPUT_TYPE=AUDIO&effect_JetPilot_selected=on&AUDIO=WAVE_FILE&LOCALE=";
-				if ("de".equals(lang)) {
-					u = u + "de";
-				} else if ("en".equals(lang)) {
-					u = u + "en_GB";
-				}
-
-				try {
-					HTTP.download(u, f);
-					play(new File(f), true);
-				} catch (Exception e) {
-					// Speech could not be retrieved
-					C3Logger.info("Error getting speech data: " + e.toString());
-				}
-			} else {
-				C3Logger.info("TTS sound file was found in cache: " + f1.getAbsolutePath() + ".");
-				play(f1, true);
-			}
-			play("sound/fx/beep_02.wav", false);
-		}
-	}
+//	/**
+//	 * Retrieves a speech file from a string from online mary tts service
+//	 * @param s The sentence to be spoken by mary online service
+//	 */
+//	public static void getSpeechFromMary(String s) {
+//
+//		// http://mary.dfki.de:59125/documentation.html
+//
+//		if ("true".equals(C3Properties.getProperty(C3PROPS.PLAY_VOICE))) {
+//			String lang = Internationalization.getLanguage();
+//			String cacheFolderName = System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "cache" + File.separator + lang;
+//			File cacheFolder = new File(cacheFolderName);
+//			if (!cacheFolder.isDirectory()) {
+//				boolean success = cacheFolder.mkdirs();
+//				C3Logger.info("Creating cache folder for voice files: " + success);
+//			}
+//			String fn = s.replace("%20", "_");
+//			String f = cacheFolderName + File.separator + fn + ".mp3";
+//			File f1 = new File(f);
+//
+//			if (!f1.isFile()) {
+//				// use online Mary TTS
+//				C3Logger.info("Online tts (Mary) requested...");
+//
+//				s = s.replace(" ", "%20");
+//				String u = "http://mary.dfki.de:59125/process?INPUT_TEXT=" + s + "&INPUT_TYPE=TEXT&OUTPUT_TYPE=AUDIO&effect_JetPilot_selected=on&AUDIO=WAVE_FILE&LOCALE=";
+//				if ("de".equals(lang)) {
+//					u = u + "de";
+//				} else if ("en".equals(lang)) {
+//					u = u + "en_GB";
+//				}
+//
+//				try {
+//					HTTP.download(u, f);
+//					play(new File(f), true);
+//				} catch (Exception e) {
+//					// Speech could not be retrieved
+//					C3Logger.info("Error getting speech data: " + e.toString());
+//				}
+//			} else {
+//				C3Logger.info("TTS sound file was found in cache: " + f1.getAbsolutePath() + ".");
+//				play(f1, true);
+//			}
+//			play("sound/fx/beep_02.mp3", false);
+//		}
+//	}
 }
