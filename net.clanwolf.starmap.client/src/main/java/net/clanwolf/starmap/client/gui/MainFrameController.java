@@ -494,15 +494,18 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 	private void moveMenuIndicator(int pos) {
 		if (!adminMenuActive) {
-			hudinfo1.setOpacity(1.0);
-			hudinfo1.setCache(true);
-			hudinfo1.setCacheHint(CacheHint.SPEED);
-			KeyValue key1 = new KeyValue(hudinfo1.translateYProperty(), pos);
-			Timeline timeline = new Timeline();
-			KeyFrame frame1 = new KeyFrame(Duration.millis(150), key1);
-			timeline.getKeyFrames().addAll(frame1);
-			timeline.play();
-			timeline.setOnFinished(event -> hudinfo1.setOpacity(0.7));
+			Platform.runLater(() -> {
+				C3Logger.info("Moving menu indicator to: " + pos);
+				hudinfo1.setOpacity(1.0);
+				hudinfo1.setCache(true);
+				hudinfo1.setCacheHint(CacheHint.SPEED);
+				KeyValue key1 = new KeyValue(hudinfo1.translateYProperty(), pos);
+				Timeline timeline = new Timeline();
+				KeyFrame frame1 = new KeyFrame(Duration.millis(150), key1);
+				timeline.getKeyFrames().addAll(frame1);
+				timeline.play();
+				timeline.setOnFinished(event -> hudinfo1.setOpacity(0.7));
+			});
 		}
 	}
 

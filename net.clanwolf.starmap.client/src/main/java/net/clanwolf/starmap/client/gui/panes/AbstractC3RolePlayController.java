@@ -68,11 +68,7 @@ public abstract class AbstractC3RolePlayController implements Initializable, Act
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
-
 		boRp = new BORolePlayStory();
-
-		// This is a template helper for layouting the panes in scenebuilder. It should not be visible in the running client.
-		templateBackground.setVisible(false);
 	}
 
 	/**

@@ -34,10 +34,8 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.CacheHint;
 import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseDragEvent;
@@ -49,15 +47,14 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.util.Duration;
-import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
-import net.clanwolf.starmap.client.gui.panes.map.tools.VoronoiDelaunay;
-import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
-import net.clanwolf.starmap.client.process.login.Login;
+import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
+import net.clanwolf.starmap.client.gui.panes.map.tools.VoronoiDelaunay;
+import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.universe.BOAttack;
 import net.clanwolf.starmap.client.process.universe.BOJumpship;
 import net.clanwolf.starmap.client.process.universe.BOStarSystem;
@@ -72,7 +69,6 @@ import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.enums.UNIVERSECONTEXT;
 import org.kynosarges.tektosyne.geometry.PointD;
 
-import javax.swing.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -118,9 +114,6 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	Label labelMouseCoords;
 
 	@FXML
-	private ImageView templateBackground;
-
-	@FXML
 	private Button mapButton01;
 
 	@FXML
@@ -148,20 +141,18 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		ActionManager.addActionCallbackListener(ACTIONS.SHOW_SYSTEM_DETAIL, this);
 		ActionManager.addActionCallbackListener(ACTIONS.HIDE_SYSTEM_DETAIL, this);
 		ActionManager.addActionCallbackListener(ACTIONS.UPDATE_COORD_INFO, this);
+		ActionManager.addActionCallbackListener(ACTIONS.MAP_CREATION_FINISHED, this);
 	}
 
 	/**
 	 * Initializes the pane controller.
 	 *
-	 * @param url
-	 *          the url.
-	 * @param rb
-	 *          the resource bundle containing the language strings.
+	 * @param url the url.
+	 * @param rb  the resource bundle containing the language strings.
 	 */
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		super.initialize(url, rb);
-		templateBackground.setVisible(false);
 	}
 
 	/**
@@ -169,7 +160,6 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	 */
 	private void initializeUniverseMap() {
 		if (boUniverse != null) {
-
 			String dims = C3Properties.getProperty(C3PROPS.MAP_DIMENSIONS);
 			int d = Integer.valueOf(dims);
 			if (d < 3000) {
@@ -403,8 +393,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-
 			C3Logger.info("Finished to build the star map.");
+			ActionManager.getAction(ACTIONS.MAP_CREATION_FINISHED).execute();
 		}
 	}
 
@@ -431,7 +421,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 	private void buildGuiEffect() {
 		// Fade in transition 01 (Background)
-		FadeTransition fadeInTransition_01 = new FadeTransition(Duration.millis(80), starMapPane);
+		FadeTransition fadeInTransition_01 = new FadeTransition(Duration.millis(100), starMapPane);
 		fadeInTransition_01.setFromValue(0.0);
 		fadeInTransition_01.setToValue(1.0);
 		fadeInTransition_01.setCycleCount(3);
@@ -480,15 +470,15 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 		// Transition sequence
 		SequentialTransition sequentialTransition = new SequentialTransition();
-		sequentialTransition.getChildren().addAll(  fadeInTransition_01,
+		sequentialTransition.getChildren().addAll(fadeInTransition_01,
 //													fadeInTransition_01a,
-													fadeInTransition_01b,
-													fadeInTransition_02,
-													fadeInTransition_03,
-													fadeInTransition_04,
-													fadeInTransition_05,
-													fadeInTransition_06
-												);
+				fadeInTransition_01b,
+				fadeInTransition_02,
+				fadeInTransition_03,
+				fadeInTransition_04,
+				fadeInTransition_05,
+				fadeInTransition_06
+		);
 		sequentialTransition.setCycleCount(1);
 		sequentialTransition.setOnFinished(new EventHandler<ActionEvent>() {
 			@Override
@@ -575,7 +565,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	private void centerStarSystemGroups() {
 		// this needs to be done after the stage is actually visible (stage.show)
 		// in order for the stackpane to have an actual size.
-		// Otherwise StarSystemGroups appear of from their real coordinates.
+		// Otherwise StarSystemGroups appear off from their real coordinates.
 		// Moved slightly to right and to the bottom
 		for (BOStarSystem ss : boUniverse.starSystemBOs.values()) {
 			StackPane sp = ss.getStarSystemStackPane();
@@ -588,12 +578,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	/**
 	 * Handles actions.
 	 *
-	 * @param action
-	 *            incoming action to be handled
-	 * @param o
-	 *            the action object passed along with the action
-	 * @return
-	 *            wether the handling should continue (this should be true in general)
+	 * @param action incoming action to be handled
+	 * @param o      the action object passed along with the action
+	 * @return wether the handling should continue (this should be true in general)
 	 */
 	@Override
 	public boolean handleAction(ACTIONS action, ActionObject o) {
@@ -610,11 +597,11 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					int round = boUniverse.currentRound;
 					String date = boUniverse.currentDate;
 
-					initializeUniverseMap();
+					Platform.runLater(() -> {
+						initializeUniverseMap();
+					});
 				}
-
 				ActionManager.getAction(ACTIONS.UPDATE_GAME_INFO).execute();
-
 				break;
 
 			case UPDATE_UNIVERSE:
@@ -642,21 +629,33 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				paneSystemDetail.setOpacity(0.0);
 				break;
 
+			case MAP_CREATION_FINISHED:
+				Platform.runLater(() -> {
+					centerStarSystemGroups();
+					buildGuiEffect();
+				});
+				C3Logger.info("Map is ready!");
+				break;
+
 			case PANE_CREATION_FINISHED:
 				if (o.getObject() instanceof AbstractC3Pane) {
 					AbstractC3Pane p = (AbstractC3Pane) o.getObject();
 					if ("MapPane".equals(p.getPaneName())) {
-						buildGuiEffect();
-						centerStarSystemGroups();
+						if (!firstCreationDone) {
+							GameState state = new GameState();
+							state.setMode(GAMESTATEMODES.GET_UNIVERSE_DATA);
+							state.addObject(UNIVERSECONTEXT.HH);
+							Nexus.fireNetworkEvent(state);
+						} else {
+							Platform.runLater(() -> {
+								buildGuiEffect();
+							});
+						}
 					}
 				}
 				break;
 
 			case LOGON_FINISHED_SUCCESSFULL:
-				GameState state = new GameState();
-				state.setMode(GAMESTATEMODES.GET_UNIVERSE_DATA);
-				state.addObject(UNIVERSECONTEXT.HH);
-				Nexus.fireNetworkEvent(state);
 				break;
 
 			case SHOW_SYSTEM_DETAIL:

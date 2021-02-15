@@ -669,7 +669,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 		File file = callFileChooser("Bilddatei (*.mp4)", "*.mp4");
 
 		if (file != null) {
-			C3Logger.info("File ausgew�hlt");
+			C3Logger.info("File ausgewählt");
 			tfMovie.setText(file.getAbsolutePath());
 			doUploadMovie = true;
 			doDeleteMovie = false;
