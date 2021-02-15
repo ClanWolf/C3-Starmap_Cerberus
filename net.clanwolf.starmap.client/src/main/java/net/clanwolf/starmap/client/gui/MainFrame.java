@@ -27,10 +27,7 @@
 package net.clanwolf.starmap.client.gui;
 
 import javafx.animation.FadeTransition;
-import javafx.application.Application;
-import javafx.application.ConditionalFeature;
-import javafx.application.Platform;
-import javafx.application.Preloader;
+import javafx.application.*;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
@@ -130,6 +127,12 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 		C3Logger.info("--- [start]");
 		Tools.listDirectory(f);
 		C3Logger.info("--- [end]");
+	}
+
+	private void openManual() {
+		File file = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "manual" + File.separator + "C3_Manual_de.pdf");
+		HostServices hostServices = getHostServices();
+		hostServices.showDocument(file.getAbsolutePath());
 	}
 
 	/**
@@ -239,6 +242,7 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 		ActionManager.addActionCallbackListener(ACTIONS.CURSOR_REQUEST_NORMAL_MESSAGE, this);
 		ActionManager.addActionCallbackListener(ACTIONS.CURSOR_REQUEST_WAIT_MESSAGE, this);
 		ActionManager.addActionCallbackListener(ACTIONS.SHOW_MESSAGE, this);
+		ActionManager.addActionCallbackListener(ACTIONS.OPEN_MANUAL, this);
 
 		stage.show();
 
@@ -460,6 +464,9 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 				break;
 			case SHOW_MESSAGE_WAS_ANSWERED:
 				messageactive = false;
+				break;
+			case OPEN_MANUAL:
+				openManual();
 				break;
 			default:
 				break;

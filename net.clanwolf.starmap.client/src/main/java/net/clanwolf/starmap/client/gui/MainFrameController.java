@@ -27,6 +27,7 @@
 package net.clanwolf.starmap.client.gui;
 
 import javafx.animation.*;
+import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -71,8 +72,10 @@ import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.enums.MEDALS;
 
+import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Calendar;
 import java.util.Optional;
 import java.util.Random;
 import java.util.ResourceBundle;
@@ -207,6 +210,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private ImageView hudinfo1;
 
 	@FXML
+	private Label helpLabel;
+
+	@FXML
 	private Label gameInfoLabel;
 
 	// -------------------------------------------------------------------------
@@ -301,6 +307,11 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		languageButton.getStyleClass().add("languageButton_hover");
 	}
 	// Mouse exited
+
+	@FXML
+	private void handleHelpMouseEventClick() {
+		ActionManager.getAction(ACTIONS.OPEN_MANUAL).execute();
+	}
 
 	@FXML
 	private void handleLanguageButtonMouseEventExit() {
@@ -920,13 +931,21 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		Platform.runLater(() -> adminButton.setGraphic(new ImageView(imageAdminButtonOff)));
 		adminButton.setDisable(true);
 
+		int year = Calendar.getInstance().get(Calendar.YEAR);
 		hudinfo1.setOpacity(0.7);
-		copyrightLabel.setText("©2000-2021 - clanwolf.net");
+		copyrightLabel.setText("©2000-" + year + " - clanwolf.net");
 		spectrumImage.setOpacity(0.1);
 		spectrumImage.setVisible(false);
 		noiseImage.setOpacity(0.0);
 		noiseImage.setVisible(false);
 		noiseImage.toFront();
+
+		Image helpImg = new Image(getClass().getResourceAsStream("/images/buttons/help.png"));
+		ImageView view = new ImageView(helpImg);
+		view.setFitHeight(16);
+		view.setPreserveRatio(true);
+		helpLabel.setGraphic(view);
+		helpLabel.setText("");
 
 		enableMainMenuButtons(Nexus.isLoggedIn(), Security.hasPrivilege(PRIVILEGES.ADMIN_IS_GOD_ADMIN));
 

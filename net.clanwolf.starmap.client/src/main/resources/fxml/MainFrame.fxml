@@ -20,6 +20,7 @@
             <Label fx:id="gameInfoLabel" layoutX="451.0" layoutY="30.0" prefHeight="20.0" prefWidth="195.0" />
          </children>
         </Pane>
+      <Label fx:id="helpLabel" layoutX="591.0" layoutY="581.0" onMouseClicked="#handleHelpMouseEventClick" prefHeight="20.0" prefWidth="12.0" text="Help" />
         <ImageView fx:id="noiseImage" fitHeight="523.0" fitWidth="859.0" layoutX="123.0" layoutY="37.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="false">
             <image>
                 <Image url="@../images/noise/noisemap.png" />
