@@ -624,7 +624,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		}
 		if (targetPane != null) {
 			AtomicBoolean success = new AtomicBoolean(openTargetPane(targetPane, spokenMessage));
-			if (!success.get()) {
+
+			if (!success.get() && currentlyDisplayedPane != null) {
 				moveMenuIndicator(menuIndicatorPosOld);
 				menuIndicatorPos = menuIndicatorPosOld;
 				Tools.playButtonClickSound();
