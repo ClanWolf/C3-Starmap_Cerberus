@@ -390,6 +390,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				mapButton02.toFront();
 				mapButton03.toFront();
 				paneSystemDetail.toFront();
+				paneSystemDetail.setOpacity(0.0f);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -456,17 +457,17 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		fadeInTransition_04.setToValue(1.0);
 		fadeInTransition_04.setCycleCount(4);
 
-		// Fade in transition 05 (DetailPane)
-		FadeTransition fadeInTransition_05 = new FadeTransition(Duration.millis(60), paneSystemDetail);
-		fadeInTransition_05.setFromValue(0.0);
-		fadeInTransition_05.setToValue(1.0);
-		fadeInTransition_05.setCycleCount(4);
-
-		// Fade in transition 06 (DetailPane)
-		FadeTransition fadeInTransition_06 = new FadeTransition(Duration.millis(470), paneSystemDetail);
-		fadeInTransition_06.setFromValue(1.0);
-		fadeInTransition_06.setToValue(0.0);
-		fadeInTransition_06.setCycleCount(1);
+//		// Fade in transition 05 (DetailPane)
+//		FadeTransition fadeInTransition_05 = new FadeTransition(Duration.millis(60), paneSystemDetail);
+//		fadeInTransition_05.setFromValue(0.0);
+//		fadeInTransition_05.setToValue(1.0);
+//		fadeInTransition_05.setCycleCount(4);
+//
+//		// Fade in transition 06 (DetailPane)
+//		FadeTransition fadeInTransition_06 = new FadeTransition(Duration.millis(470), paneSystemDetail);
+//		fadeInTransition_06.setFromValue(1.0);
+//		fadeInTransition_06.setToValue(0.0);
+//		fadeInTransition_06.setCycleCount(1);
 
 		// Transition sequence
 		SequentialTransition sequentialTransition = new SequentialTransition();
@@ -475,9 +476,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				fadeInTransition_01b,
 				fadeInTransition_02,
 				fadeInTransition_03,
-				fadeInTransition_04,
-				fadeInTransition_05,
-				fadeInTransition_06
+				fadeInTransition_04
+//				fadeInTransition_05
+//				fadeInTransition_06
 		);
 		sequentialTransition.setCycleCount(1);
 		sequentialTransition.setOnFinished(new EventHandler<ActionEvent>() {
