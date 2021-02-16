@@ -440,22 +440,22 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		fadeInTransition_01b.setCycleCount(3);
 
 		// Fade in transition 02 (Button)
-		FadeTransition fadeInTransition_02 = new FadeTransition(Duration.millis(70), mapButton01);
+		FadeTransition fadeInTransition_02 = new FadeTransition(Duration.millis(50), mapButton01);
 		fadeInTransition_02.setFromValue(0.0);
 		fadeInTransition_02.setToValue(1.0);
-		fadeInTransition_02.setCycleCount(4);
+		fadeInTransition_02.setCycleCount(3);
 
 		// Fade in transition 03 (Button)
-		FadeTransition fadeInTransition_03 = new FadeTransition(Duration.millis(70), mapButton02);
+		FadeTransition fadeInTransition_03 = new FadeTransition(Duration.millis(50), mapButton02);
 		fadeInTransition_03.setFromValue(0.0);
 		fadeInTransition_03.setToValue(1.0);
-		fadeInTransition_03.setCycleCount(4);
+		fadeInTransition_03.setCycleCount(3);
 
 		// Fade in transition 04 (Button)
-		FadeTransition fadeInTransition_04 = new FadeTransition(Duration.millis(70), mapButton03);
+		FadeTransition fadeInTransition_04 = new FadeTransition(Duration.millis(50), mapButton03);
 		fadeInTransition_04.setFromValue(0.0);
 		fadeInTransition_04.setToValue(1.0);
-		fadeInTransition_04.setCycleCount(4);
+		fadeInTransition_04.setCycleCount(3);
 
 //		// Fade in transition 05 (DetailPane)
 //		FadeTransition fadeInTransition_05 = new FadeTransition(Duration.millis(60), paneSystemDetail);
