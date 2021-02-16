@@ -1,8 +1,9 @@
 # C3-Starmap_Cerberus
 Starmap (C3).
 
-* Info    : http://www.clanwolf.net
-* GitHub  : https://github.com/ClanWolf/C3-Starmap_Cerberus
+* Info: http://www.clanwolf.net
+* GitHub: https://github.com/ClanWolf/C3-Starmap_Cerberus
+* Board: https://github.com/ClanWolf/C3-Starmap_Cerberus/projects/1
 
 This project is transporting the C3 client and server to module based Java 9+ development.
 For the first time, server and client reside in the same project as different modules and thus make it easier to handle the project.
