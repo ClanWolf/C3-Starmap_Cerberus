@@ -41,7 +41,7 @@ public class NSICreator {
 			bw.close();
 
 			System.out.println("-------------------------------------------------------------");
-			System.out.println("Writing upload script for this installer:");
+			System.out.println("Writing upload script for the installer:");
 			File fout2 = new File("NSIS\\upload_installer.script");
 			FileOutputStream fos2 = new FileOutputStream(fout2);
 			BufferedWriter bw2 = new BufferedWriter(new OutputStreamWriter(fos2));
@@ -57,6 +57,24 @@ public class NSICreator {
 			}
 			br2.close();
 			bw2.close();
+
+			System.out.println("-------------------------------------------------------------");
+			System.out.println("Writing upload script for the the server:");
+			File fout3 = new File("NSIS\\upload_server.script");
+			FileOutputStream fos3 = new FileOutputStream(fout3);
+			BufferedWriter bw3 = new BufferedWriter(new OutputStreamWriter(fos3));
+			BufferedReader br3 = new BufferedReader(new FileReader("NSIS\\upload_server.script_template"));
+			String line3;
+			while ((line3 = br3.readLine()) != null) {
+				if (line3.contains("###VERSION###")) {
+					line3 = line3.replace("###VERSION###", version);
+					writeLine(bw3, line3);
+				} else {
+					writeLine(bw3, line3);
+				}
+			}
+			br3.close();
+			bw3.close();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
