@@ -41,6 +41,14 @@ CD \
 CD C3\projects\C3-Starmap_Cerberus\NSIS
 makensis.exe /V4 /INPUTCHARSET utf8 /OUTPUTCHARSET utf8 c3-client.nsi
 
+ECHO *******************
+ECHO *******************
+ECHO *******************
+ECHO PRESS ANY KEY TO UPLOAD INSTALLER AND MANUAL
+PAUSE
+
+REM Upload installer
+
 REM ###############################################
 REM PAUSE
 REM ###############################################

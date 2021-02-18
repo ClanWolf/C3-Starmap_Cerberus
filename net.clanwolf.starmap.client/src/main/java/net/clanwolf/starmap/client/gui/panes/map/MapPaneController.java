@@ -473,12 +473,12 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		SequentialTransition sequentialTransition = new SequentialTransition();
 		sequentialTransition.getChildren().addAll(fadeInTransition_01,
 //													fadeInTransition_01a,
-				fadeInTransition_01b,
-				fadeInTransition_02,
-				fadeInTransition_03,
-				fadeInTransition_04
-//				fadeInTransition_05
-//				fadeInTransition_06
+													fadeInTransition_01b,
+													fadeInTransition_02,
+													fadeInTransition_03,
+													fadeInTransition_04
+//			                                    	fadeInTransition_05
+//			                                    	fadeInTransition_06
 		);
 		sequentialTransition.setCycleCount(1);
 		sequentialTransition.setOnFinished(new EventHandler<ActionEvent>() {
@@ -491,7 +491,6 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			}
 		});
 		sequentialTransition.play();
-
 		C3SoundPlayer.play("sound/fx/cursor_click_11.mp3", false);
 	}
 

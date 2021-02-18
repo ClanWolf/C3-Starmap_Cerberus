@@ -117,7 +117,7 @@
 			<scope>compile</scope>
 		</dependency>
 
-		<!--		<dependency>-->
+<!--		<dependency>-->
 <!--			<groupId>de.dfki.mary</groupId>-->
 <!--			<artifactId>voice-cmu-slt-hsmm</artifactId>-->
 <!--			<version>5.2</version>-->
@@ -170,6 +170,28 @@
 			</extension>
 		</extensions>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.8</version>
+				<executions>
+					<execution>
+						<phase>test</phase>
+						<goals>
+							<goal>run</goal>
+						</goals>
+						<configuration>
+							<tasks>
+								<echo>Copying manuals...</echo>
+								<echo>C3_Manual_de.pdf</echo>
+								<copy file="../doc/manual/C3_Manual_de.pdf" tofile="${basedir}/src/main/resources/C3_Manual_de.pdf"/>
+<!--								<echo>C3_Manual_en.pdf</echo>-->
+<!--								<copy file="../doc/manual/C3_Manual_en.pdf" tofile="${basedir}/src/main/resources/C3_Manual_en.pdf"/>-->
+							</tasks>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
