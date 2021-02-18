@@ -1,2 +1,5 @@
 C3-Client-*_install.exe
+upload_installer.script_template
 upload_installer.script
+upload_manual.script
+upload_server.script

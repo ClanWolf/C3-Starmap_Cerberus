@@ -27,6 +27,11 @@ IF EXIST "C:\Program Files\Java\jdk-15\bin\java.exe" (
   GOTO END
 )
 
+ECHO *******************
+ECHO *******************
+ECHO *******************
+PAUSE
+
 REM ###############################################
 REM PAUSE
 REM ###############################################
@@ -48,6 +53,8 @@ ECHO PRESS ANY KEY TO UPLOAD INSTALLER AND MANUAL
 PAUSE
 
 REM Upload installer
+"C:\Program Files (x86)\WinSCP\winscp.com" /ini=nul /script=C:\C3\projects\C3-Starmap_Cerberus\NSIS\upload_installer.script
+"C:\Program Files (x86)\WinSCP\winscp.com" /ini=nul /script=C:\C3\projects\C3-Starmap_Cerberus\NSIS\upload_manual.script
 
 REM ###############################################
 REM PAUSE
