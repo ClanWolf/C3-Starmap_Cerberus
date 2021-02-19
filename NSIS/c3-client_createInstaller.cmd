@@ -49,7 +49,7 @@ makensis.exe /V4 /INPUTCHARSET utf8 /OUTPUTCHARSET utf8 c3-client.nsi
 ECHO *******************
 ECHO *******************
 ECHO *******************
-"C:\Program Files (x86)\WinSCP\winscp.com" /ini=nul /script=C:\C3\projects\C3-Starmap_Cerberus\NSIS\upload_manual.script
+"C:\Program Files (x86)\WinSCP\winscp.com" /ini=nul /script=C:\C3\projects\C3-Starmap_Cerberus\NSIS\scripts\upload_manual.script
 
 :REQUEST
 ECHO Upload Installer? (y/n)
@@ -60,7 +60,7 @@ GOTO REQUEST
 
 :UPLOADINSTALLER
 REM Upload installer
-"C:\Program Files (x86)\WinSCP\winscp.com" /ini=nul /script=C:\C3\projects\C3-Starmap_Cerberus\NSIS\upload_installer.script
+"C:\Program Files (x86)\WinSCP\winscp.com" /ini=nul /script=C:\C3\projects\C3-Starmap_Cerberus\NSIS\scripts\upload_installer.script
 
 REM ###############################################
 REM PAUSE

@@ -1,2 +1,0 @@
-- Run java class NSICreator in the project net.clanwolf.starmap.client.packager
-- Run the resulting c3-client_createInstaller.cmd on the commandline
