@@ -18,10 +18,18 @@ RequestExecutionLevel admin
 AddBrandingImage left 130
 SetFont /LANG=${LANG_ENGLISH} "Arial" 9
 
+; installer image
 Function .onGuiInit
 	InitPluginsDir
 	File "/oname=$PluginsDir\inst.bmp" "inst.bmp"
 	SetBrandingImage /resizetofit "$PluginsDir\inst.bmp"
+FunctionEnd
+
+; uninstaller image
+Function un.onGuiInit
+	InitPluginsDir
+	File "/oname=$PluginsDir\uninst.bmp" "uninst.bmp"
+	SetBrandingImage /resizetofit "$PluginsDir\uninst.bmp"
 FunctionEnd
 
 ;--------------------------------

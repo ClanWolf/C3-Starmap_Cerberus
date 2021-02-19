@@ -30,7 +30,7 @@ IF EXIST "C:\Program Files\Java\jdk-15\bin\java.exe" (
 ECHO *******************
 ECHO *******************
 ECHO *******************
-PAUSE
+REM PAUSE
 
 REM ###############################################
 REM PAUSE
@@ -49,16 +49,21 @@ makensis.exe /V4 /INPUTCHARSET utf8 /OUTPUTCHARSET utf8 c3-client.nsi
 ECHO *******************
 ECHO *******************
 ECHO *******************
-ECHO PRESS ANY KEY TO UPLOAD INSTALLER AND MANUAL
-PAUSE
+"C:\Program Files (x86)\WinSCP\winscp.com" /ini=nul /script=C:\C3\projects\C3-Starmap_Cerberus\NSIS\upload_manual.script
 
+:REQUEST
+ECHO Upload Installer? (y/n)
+SET /p chc=
+IF '%chc%'=='y' GOTO UPLOADINSTALLER
+IF '%chc%'=='n' GOTO END
+GOTO REQUEST
+
+:UPLOADINSTALLER
 REM Upload installer
 "C:\Program Files (x86)\WinSCP\winscp.com" /ini=nul /script=C:\C3\projects\C3-Starmap_Cerberus\NSIS\upload_installer.script
-"C:\Program Files (x86)\WinSCP\winscp.com" /ini=nul /script=C:\C3\projects\C3-Starmap_Cerberus\NSIS\upload_manual.script
 
 REM ###############################################
 REM PAUSE
 REM ###############################################
 
 :END
-PAUSE
