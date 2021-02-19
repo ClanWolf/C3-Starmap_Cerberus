@@ -45,6 +45,8 @@ import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
 import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
+import net.clanwolf.starmap.client.net.GameSessionHeartBeatTimer;
+import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.client.process.login.Login;
@@ -54,6 +56,7 @@ import net.clanwolf.starmap.client.util.Internationalization;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.Timer;
 
 /**
  * FXML Controller class
@@ -485,6 +488,11 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 
 			case LOGON_FINISHED_SUCCESSFULL:
 				C3Logger.info("Successfull login");
+
+				C3Logger.info("Starting Timer to send NettySession keepalive heartbeat.");
+				Timer serverHeartBeat = new Timer();
+				serverHeartBeat.schedule(new GameSessionHeartBeatTimer(), 1000, 1000 * 60 * 1);
+
 				break;
 
 			case LOGON_FINISHED_WITH_ERROR:

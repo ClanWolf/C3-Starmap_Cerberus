@@ -80,6 +80,28 @@ import java.util.ResourceBundle;
  */
 public class MapPaneController extends AbstractC3Controller implements ActionCallBackListener {
 
+	@FXML
+	AnchorPane anchorPane;
+	@FXML
+	Pane starMapPane;
+	@FXML
+	Pane buttonBackground;
+	@FXML
+	Pane paneSystemDetail;
+	@FXML
+	Label labelSystemName;
+	@FXML
+	ImageView labelSystemImage;
+	@FXML
+	ImageView labelFactionImage;
+	@FXML
+	Label labelMouseCoords;
+	@FXML
+	Button mapButton01;
+	@FXML
+	Button mapButton02;
+	@FXML
+	Button mapButton03;
 	private boolean universeMapGenerationStarted = false;
 	private BOUniverse boUniverse = null;
 	private PannableCanvas canvas;
@@ -90,69 +112,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	private Image travelMarker;
 
 	@FXML
-	AnchorPane anchorPane;
-
-	@FXML
-	Pane starMapPane;
-
-	@FXML
-	Pane buttonBackground;
-
-	@FXML
-	Pane paneSystemDetail;
-
-	@FXML
-	Label labelSystemName;
-
-	@FXML
-	ImageView labelSystemImage;
-
-	@FXML
-	ImageView labelFactionImage;
-
-	@FXML
-	Label labelMouseCoords;
-
-	@FXML
-	private Button mapButton01;
-
-	@FXML
-	private Button mapButton02;
-
-	@FXML
-	private Button mapButton03;
-
-	@FXML
 	private void handleCenterButtonClick() throws Exception {
 		reCenterMap();
-	}
-
-	/**
-	 * Adds action callback listeners.
-	 */
-	@Override
-	public void addActionCallBackListeners() {
-		ActionManager.addActionCallbackListener(ACTIONS.CHANGE_LANGUAGE, this);
-		ActionManager.addActionCallbackListener(ACTIONS.PANE_CREATION_BEGINS, this);
-		ActionManager.addActionCallbackListener(ACTIONS.PANE_CREATION_FINISHED, this);
-		ActionManager.addActionCallbackListener(ACTIONS.PANE_DESTROY_CURRENT, this);
-		ActionManager.addActionCallbackListener(ACTIONS.NEW_UNIVERSE_RECEIVED, this);
-		ActionManager.addActionCallbackListener(ACTIONS.LOGON_FINISHED_SUCCESSFULL, this);
-		ActionManager.addActionCallbackListener(ACTIONS.SHOW_SYSTEM_DETAIL, this);
-		ActionManager.addActionCallbackListener(ACTIONS.HIDE_SYSTEM_DETAIL, this);
-		ActionManager.addActionCallbackListener(ACTIONS.UPDATE_COORD_INFO, this);
-		ActionManager.addActionCallbackListener(ACTIONS.MAP_CREATION_FINISHED, this);
-	}
-
-	/**
-	 * Initializes the pane controller.
-	 *
-	 * @param url the url.
-	 * @param rb  the resource bundle containing the language strings.
-	 */
-	@Override
-	public void initialize(URL url, ResourceBundle rb) {
-		super.initialize(url, rb);
 	}
 
 	/**
@@ -575,6 +536,127 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		}
 	}
 
+	public void hideSystemDetail() {
+		if (paneSystemDetail != null) {
+			if (paneSystemDetail.getOpacity() != 0.0) {
+				// Fade in transition 06 (DetailPane)
+				FadeTransition fadeInTransition_06 = new FadeTransition(Duration.millis(650), paneSystemDetail);
+				fadeInTransition_06.setFromValue(1.0);
+				fadeInTransition_06.setToValue(0.0);
+				fadeInTransition_06.setCycleCount(1);
+
+				// Transition sequence
+				SequentialTransition sequentialTransition = new SequentialTransition();
+				sequentialTransition.getChildren().addAll(fadeInTransition_06);
+				sequentialTransition.setCycleCount(1);
+				sequentialTransition.play();
+			}
+		}
+	}
+
+	public void showSystemDetail(BOStarSystem sys) {
+		if (paneSystemDetail != null) {
+			// Set system information
+			Nexus.setSelectedStarSystem(sys);
+			C3SoundPlayer.play("sound/fx/beep_electric.mp3", false);
+
+			Platform.runLater(() -> {
+				String name = boUniverse.factionBOs.get(sys.getAffiliation()).getName();
+				String shortName = boUniverse.factionBOs.get(sys.getAffiliation()).getShortName();
+				String color = boUniverse.factionBOs.get(sys.getAffiliation()).getColor();
+				String logo = boUniverse.factionBOs.get(sys.getAffiliation()).getLogo();
+				Image imagePlanet = null;
+				String systemImageName = String.format("%03d", Integer.parseInt(sys.getSystemImageName()));
+				try {
+					C3Logger.debug("Planet image: /images/planets/" + systemImageName + ".png");
+					C3Logger.debug("SystemImageName from DB: " + systemImageName);
+					imagePlanet = new Image(getClass().getResourceAsStream("/images/planets/" + systemImageName + ".png"));
+				} catch (Exception e) {
+					//e.printStackTrace();
+					C3Logger.info("Planet picture not found! Consider adding a fitting image for id: " + systemImageName);
+					imagePlanet = new Image(getClass().getResourceAsStream("/images/planets/000_default.png"));
+				}
+				if (imagePlanet == null) {
+					imagePlanet = new Image(getClass().getResourceAsStream("/images/planets/000_default.png"));
+				}
+				Image imageFaction = new Image(getClass().getResourceAsStream("/images/logos/factions/" + logo));
+
+				labelSystemImage.setImage(imagePlanet);
+				labelSystemName.setText(sys.getName());
+				labelFactionImage.setImage(imageFaction);
+				Double x = sys.getX();
+				Double y = sys.getY();
+				ActionManager.getAction(ACTIONS.UPDATE_COORD_INFO).execute(sys.getName() + " [X:" + String.format("%.2f", x) + "] - [Y:" + String.format("%.2f", y) + "]");
+			});
+
+			// Fade in transition 06 (DetailPane)
+			FadeTransition fadeInTransition_06 = new FadeTransition(Duration.millis(450), paneSystemDetail);
+			fadeInTransition_06.setFromValue(0.0);
+			fadeInTransition_06.setToValue(1.0);
+			fadeInTransition_06.setCycleCount(1);
+
+			// Transition sequence
+			SequentialTransition sequentialTransition = new SequentialTransition();
+			sequentialTransition.getChildren().addAll(fadeInTransition_06);
+			sequentialTransition.setCycleCount(1);
+			sequentialTransition.play();
+		}
+	}
+
+	/**
+	 * Sets strings for the current gui panel. This is done when the user switches languages.
+	 */
+	@Override
+	public void setStrings() {
+//		Platform.runLater(() -> {
+//			//
+//		});
+	}
+
+	/**
+	 * If a warning is active, this is what happens if the warning is on.
+	 */
+	@Override
+	public void warningOnAction() {
+		//
+	}
+
+	/**
+	 * If a warning is active, this is what happens if the warning is off.
+	 */
+	@Override
+	public void warningOffAction() {
+		//
+	}
+
+	/**
+	 * Adds action callback listeners.
+	 */
+	@Override
+	public void addActionCallBackListeners() {
+		ActionManager.addActionCallbackListener(ACTIONS.CHANGE_LANGUAGE, this);
+		ActionManager.addActionCallbackListener(ACTIONS.PANE_CREATION_BEGINS, this);
+		ActionManager.addActionCallbackListener(ACTIONS.PANE_CREATION_FINISHED, this);
+		ActionManager.addActionCallbackListener(ACTIONS.PANE_DESTROY_CURRENT, this);
+		ActionManager.addActionCallbackListener(ACTIONS.NEW_UNIVERSE_RECEIVED, this);
+		ActionManager.addActionCallbackListener(ACTIONS.LOGON_FINISHED_SUCCESSFULL, this);
+		ActionManager.addActionCallbackListener(ACTIONS.SHOW_SYSTEM_DETAIL, this);
+		ActionManager.addActionCallbackListener(ACTIONS.HIDE_SYSTEM_DETAIL, this);
+		ActionManager.addActionCallbackListener(ACTIONS.UPDATE_COORD_INFO, this);
+		ActionManager.addActionCallbackListener(ACTIONS.MAP_CREATION_FINISHED, this);
+	}
+
+	/**
+	 * Initializes the pane controller.
+	 *
+	 * @param url the url.
+	 * @param rb  the resource bundle containing the language strings.
+	 */
+	@Override
+	public void initialize(URL url, ResourceBundle rb) {
+		super.initialize(url, rb);
+	}
+
 	/**
 	 * Handles actions.
 	 *
@@ -642,6 +724,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					AbstractC3Pane p = (AbstractC3Pane) o.getObject();
 					if ("MapPane".equals(p.getPaneName())) {
 						if (!firstCreationDone) {
+							C3Logger.info("Sending request for universe data.");
 							GameState state = new GameState();
 							state.setMode(GAMESTATEMODES.GET_UNIVERSE_DATA);
 							state.addObject(UNIVERSECONTEXT.HH);
@@ -682,98 +765,5 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				break;
 		}
 		return true;
-	}
-
-	public void hideSystemDetail() {
-		if (paneSystemDetail != null) {
-			if (paneSystemDetail.getOpacity() != 0.0) {
-				// Fade in transition 06 (DetailPane)
-				FadeTransition fadeInTransition_06 = new FadeTransition(Duration.millis(650), paneSystemDetail);
-				fadeInTransition_06.setFromValue(1.0);
-				fadeInTransition_06.setToValue(0.0);
-				fadeInTransition_06.setCycleCount(1);
-
-				// Transition sequence
-				SequentialTransition sequentialTransition = new SequentialTransition();
-				sequentialTransition.getChildren().addAll(fadeInTransition_06);
-				sequentialTransition.setCycleCount(1);
-				sequentialTransition.play();
-			}
-		}
-	}
-
-	public void showSystemDetail(BOStarSystem sys) {
-		if (paneSystemDetail != null) {
-			// Set system information
-			Nexus.setSelectedStarSystem(sys);
-			C3SoundPlayer.play("sound/fx/beep_electric.mp3", false);
-
-			Platform.runLater(() -> {
-				String name = boUniverse.factionBOs.get(sys.getAffiliation()).getName();
-				String shortName = boUniverse.factionBOs.get(sys.getAffiliation()).getShortName();
-				String color = boUniverse.factionBOs.get(sys.getAffiliation()).getColor();
-				String logo = boUniverse.factionBOs.get(sys.getAffiliation()).getLogo();
-				Image imagePlanet = null;
-				String systemImageName = String.format("%03d", Integer.parseInt(sys.getSystemImageName()));
-				try {
-					C3Logger.debug("Planet image: /images/planets/" + systemImageName + ".png");
-					C3Logger.debug("SystemImageName from DB: " + systemImageName);
-					imagePlanet = new Image(getClass().getResourceAsStream("/images/planets/" + systemImageName + ".png"));
-				} catch (Exception e) {
-					//e.printStackTrace();
-					C3Logger.info("Planet picture not found! Consider adding a fiting image for id: " + systemImageName);
-					imagePlanet = new Image(getClass().getResourceAsStream("/images/planets/000_default.png"));
-				}
-				if (imagePlanet == null) {
-					imagePlanet = new Image(getClass().getResourceAsStream("/images/planets/000_default.png"));
-				}
-				Image imageFaction = new Image(getClass().getResourceAsStream("/images/logos/factions/" + logo));
-
-				labelSystemImage.setImage(imagePlanet);
-				labelSystemName.setText(sys.getName());
-				labelFactionImage.setImage(imageFaction);
-				Double x = sys.getX();
-				Double y = sys.getY();
-				ActionManager.getAction(ACTIONS.UPDATE_COORD_INFO).execute(sys.getName() + " [X:" + String.format("%.2f", x) + "] - [Y:" + String.format("%.2f", y) + "]");
-			});
-
-			// Fade in transition 06 (DetailPane)
-			FadeTransition fadeInTransition_06 = new FadeTransition(Duration.millis(450), paneSystemDetail);
-			fadeInTransition_06.setFromValue(0.0);
-			fadeInTransition_06.setToValue(1.0);
-			fadeInTransition_06.setCycleCount(1);
-
-			// Transition sequence
-			SequentialTransition sequentialTransition = new SequentialTransition();
-			sequentialTransition.getChildren().addAll(fadeInTransition_06);
-			sequentialTransition.setCycleCount(1);
-			sequentialTransition.play();
-		}
-	}
-
-	/**
-	 * Sets strings for the current gui panel. This is done when the user switches languages.
-	 */
-	@Override
-	public void setStrings() {
-//		Platform.runLater(() -> {
-//			//
-//		});
-	}
-
-	/**
-	 * If a warning is active, this is what happens if the warning is on.
-	 */
-	@Override
-	public void warningOnAction() {
-		//
-	}
-
-	/**
-	 * If a warning is active, this is what happens if the warning is off.
-	 */
-	@Override
-	public void warningOffAction() {
-		//
 	}
 }
