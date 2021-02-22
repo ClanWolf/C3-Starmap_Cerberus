@@ -180,7 +180,7 @@ public class Login {
 				// Templates.
 				loginInProgress = false;
 				C3Logger.info("Login failed!");
-				C3Logger.info("onLoginFailure: " + "Check UserDTO or Password!");
+				C3Logger.info("onLoginFailure: " + "Check Username and/or Password!");
 				ActionManager.getAction(ACTIONS.LOGON_FINISHED_WITH_ERROR).execute();
 			}
 
