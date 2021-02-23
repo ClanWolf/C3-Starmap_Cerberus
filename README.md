@@ -1,6 +1,8 @@
 # C3-Starmap_Cerberus
 Starmap (C3).
 
+[![CodeQL](https://github.com/ClanWolf/C3-Starmap_Cerberus/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/ClanWolf/C3-Starmap_Cerberus/actions/workflows/codeql-analysis.yml)
+
 * Info: http://www.clanwolf.net
 * GitHub: https://github.com/ClanWolf/C3-Starmap_Cerberus
 * Board: https://github.com/ClanWolf/C3-Starmap_Cerberus/projects/1
