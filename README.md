@@ -1,7 +1,7 @@
 # C3-Starmap_Cerberus
 Starmap (C3).
 
-[![Java CI with Maven](https://github.com/ClanWolf/C3-Starmap_Cerberus/actions/workflows/maven.yml/badge.svg)](https://github.com/ClanWolf/C3-Starmap_Cerberus/actions/workflows/maven.yml) [![CodeQL](https://github.com/ClanWolf/C3-Starmap_Cerberus/actions/workflows/codeql-analysis.yml/badge.svg)](https://github.com/ClanWolf/C3-Starmap_Cerberus/actions/workflows/codeql-analysis.yml)
+[![Java CI with Maven](https://github.com/ClanWolf/C3-Starmap_Cerberus/actions/workflows/maven.yml/badge.svg)](https://github.com/ClanWolf/C3-Starmap_Cerberus/actions/workflows/maven.yml)
 
 * Info: http://www.clanwolf.net
 * GitHub: https://github.com/ClanWolf/C3-Starmap_Cerberus
