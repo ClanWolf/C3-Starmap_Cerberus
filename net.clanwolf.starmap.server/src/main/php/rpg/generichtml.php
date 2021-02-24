@@ -2,22 +2,24 @@
 
 /**
  * Parameter
- * rpid            -> RolePlayID ist gleich der Name des Subdirectory unter /resources
+ * rpid            -> RolePlayID ist gleich der Name des dirs unter /resources
  * filename        -> Name des Bildes, das angezeigt werden soll
  * audio           -> Name der MP3, die abgespielt werden soll
  * video           -> Name der MP4, die angezeigt werden soll
  * TODO: storyname -> Name der Geschichte/des Kapitel
  * Es soll noch so sein, das man den Name der Story als Parameter übergeben kann,
- * dann soll dieser Zentriert im Bild angezeigt werden, aber nur, wenn keiner der anderen Parameter übergeben wurde
+ * dann soll dieser Zentriert im Bild angezeigt werden, aber nur, wenn keiner der
+ * anderen Parameter übergeben wurde
 
  * Wird kein Parameter angegeben, so wird lediglich das Default-Bild angezeigt
- * Wird einer der Parameter filename, audio, video angegeben ist der Parameter ripd zwingend notwendig
+ * Wird einer der Parameter filename, audio, video angegeben ist der Parameter ripd
+ * zwingend notwendig
  * da sonst die Resourcen nicht gefunden werden
 
  * Beispiel URL's
- * http://localhost/test/generichtml.php?rpid=1&filename=test.png
- * http://localhost/test/generichtml.php?rpid=1&filename=test.png&audio=Decoherence.mp3
- * http://localhost/test/generichtml.php?rpid=1&video=01.mp4
+ * localhost/test/generichtml.php?rpid=1&filename=test.png
+ * localhost/test/generichtml.php?rpid=1&filename=test.png&audio=Decoherence.mp3
+ * localhost/test/generichtml.php?rpid=1&video=01.mp4
  *
  * http://www.clanwolf.net/apps/C3/rpg/genericHtml.php
  */
@@ -150,7 +152,8 @@ if (isset($_GET["rpid"])) {
             </div>
         </div>
 
-        <audio src="./defaultsound.mp3" type="audio/mp3" autoplay volume="0.3" ></audio>
+        <audio src="./defaultsound.mp3" type="audio/mp3" autoplay volume="0.3">
+        </audio>
     </body>
     </html>';
 }
