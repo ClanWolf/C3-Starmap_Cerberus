@@ -26,7 +26,7 @@
   *
   * @category Servercomponents
   * @package  C3
-  * @author   Meldric warwolfen@gmail.com
+  * @author   Werner <Werner.kewenig@arcor.de>
   * @license  Apache License 2.0
   * @version  GIT: <git_id>
   * @link     https://www.clanwolf.net
@@ -45,7 +45,7 @@ $bodyVideo = '';
 $resourceSubPath = '';
 $storyname = '';
 
-if (isset ($_GET["storyname"])) {
+if (isset($_GET["storyname"])) {
     $storyname = $_GET["storyname"];
 }
 
