@@ -1,18 +1,20 @@
 <?php
-    require_once('./db.php');
 
-    $sql = "SELECT * FROM C3.SYSCONFIG";
-    $result = mysqli_query($conn, $sql);
-    if (mysqli_num_rows($result) > 0) {
-        while($row = mysqli_fetch_assoc($result)) {
-            $key = $row["Key"];
-            $value = $row["Value"];
+require_once './db.php';
 
-            if ($key === "VERSION CLIENT") {
-                echo $value;
-            }
+$sql = "SELECT * FROM C3.SYSCONFIG";
+$result = mysqli_query($conn, $sql);
+if (mysqli_num_rows($result) > 0) {
+    while ($row = mysqli_fetch_assoc($result)) {
+        $key = $row["Key"];
+        $value = $row["Value"];
+
+        if ($key === "VERSION CLIENT") {
+            echo $value;
         }
-    } else {
-        echo "ERROR: DB offline";
     }
+} else {
+    echo "ERROR: DB offline";
+}
+
 ?>
