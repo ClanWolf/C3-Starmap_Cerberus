@@ -524,68 +524,68 @@
 										}
 									</moduleInfoSource>
 								</module>
-								<module>
-									<artifact>
-										<groupId>com.fasterxml.jackson.core</groupId>
-										<artifactId>jackson-databind</artifactId>
-										<version>2.10.5.1</version>
-									</artifact>
-									<moduleInfoSource>
-										module com.fasterxml.jackson.databind {
-											requires java.desktop;
-											requires java.logging;
-											requires transitive com.fasterxml.jackson.core;
-											requires transitive com.fasterxml.jackson.annotation;
-											requires transitive java.sql;
-											requires transitive java.xml;
-											exports com.fasterxml.jackson.databind;
-											exports com.fasterxml.jackson.databind.annotation;
-											exports com.fasterxml.jackson.databind.cfg;
-											exports com.fasterxml.jackson.databind.deser;
-											exports com.fasterxml.jackson.databind.deser.impl;
-											exports com.fasterxml.jackson.databind.deser.std;
-											exports com.fasterxml.jackson.databind.exc;
-											exports com.fasterxml.jackson.databind.ext;
-											exports com.fasterxml.jackson.databind.introspect;
-											exports com.fasterxml.jackson.databind.jsonFormatVisitors;
-											exports com.fasterxml.jackson.databind.jsonschema;
-											exports com.fasterxml.jackson.databind.jsontype;
-											exports com.fasterxml.jackson.databind.jsontype.impl;
-											exports com.fasterxml.jackson.databind.module;
-											exports com.fasterxml.jackson.databind.node;
-											exports com.fasterxml.jackson.databind.ser;
-											exports com.fasterxml.jackson.databind.ser.impl;
-											exports com.fasterxml.jackson.databind.ser.std;
-											exports com.fasterxml.jackson.databind.type;
-											exports com.fasterxml.jackson.databind.util;
-											provides com.fasterxml.jackson.core.ObjectCodec with
-											com.fasterxml.jackson.databind.ObjectMapper;
-										}
-									</moduleInfoSource>
-								</module>
-								<module>
-									<artifact>
-										<groupId>com.fasterxml.jackson.core</groupId>
-										<artifactId>jackson-core</artifactId>
-										<version>2.10.5</version>
-									</artifact>
-									<moduleInfoSource>
-										module com.fasterxml.jackson.core {
-											exports com.fasterxml.jackson.core;
-											exports com.fasterxml.jackson.core.async;
-											exports com.fasterxml.jackson.core.base;
-											exports com.fasterxml.jackson.core.filter;
-											exports com.fasterxml.jackson.core.format;
-											exports com.fasterxml.jackson.core.io;
-											exports com.fasterxml.jackson.core.json;
-											exports com.fasterxml.jackson.core.json.async;
-											exports com.fasterxml.jackson.core.sym;
-											exports com.fasterxml.jackson.core.type;
-											exports com.fasterxml.jackson.core.util;
-											provides com.fasterxml.jackson.core.JsonFactory with com.fasterxml.jackson.core.JsonFactory;
-										}
-									</moduleInfoSource>
-								</module>
+<!--								<module>-->
+<!--									<artifact>-->
+<!--										<groupId>com.fasterxml.jackson.core</groupId>-->
+<!--										<artifactId>jackson-databind</artifactId>-->
+<!--										<version>2.10.5.1</version>-->
+<!--									</artifact>-->
+<!--									<moduleInfoSource>-->
+<!--										module com.fasterxml.jackson.databind {-->
+<!--											requires java.desktop;-->
+<!--											requires java.logging;-->
+<!--											requires transitive com.fasterxml.jackson.core;-->
+<!--											requires transitive com.fasterxml.jackson.annotation;-->
+<!--											requires transitive java.sql;-->
+<!--											requires transitive java.xml;-->
+<!--											exports com.fasterxml.jackson.databind;-->
+<!--											exports com.fasterxml.jackson.databind.annotation;-->
+<!--											exports com.fasterxml.jackson.databind.cfg;-->
+<!--											exports com.fasterxml.jackson.databind.deser;-->
+<!--											exports com.fasterxml.jackson.databind.deser.impl;-->
+<!--											exports com.fasterxml.jackson.databind.deser.std;-->
+<!--											exports com.fasterxml.jackson.databind.exc;-->
+<!--											exports com.fasterxml.jackson.databind.ext;-->
+<!--											exports com.fasterxml.jackson.databind.introspect;-->
+<!--											exports com.fasterxml.jackson.databind.jsonFormatVisitors;-->
+<!--											exports com.fasterxml.jackson.databind.jsonschema;-->
+<!--											exports com.fasterxml.jackson.databind.jsontype;-->
+<!--											exports com.fasterxml.jackson.databind.jsontype.impl;-->
+<!--											exports com.fasterxml.jackson.databind.module;-->
+<!--											exports com.fasterxml.jackson.databind.node;-->
+<!--											exports com.fasterxml.jackson.databind.ser;-->
+<!--											exports com.fasterxml.jackson.databind.ser.impl;-->
+<!--											exports com.fasterxml.jackson.databind.ser.std;-->
+<!--											exports com.fasterxml.jackson.databind.type;-->
+<!--											exports com.fasterxml.jackson.databind.util;-->
+<!--											provides com.fasterxml.jackson.core.ObjectCodec with-->
+<!--											com.fasterxml.jackson.databind.ObjectMapper;-->
+<!--										}-->
+<!--									</moduleInfoSource>-->
+<!--								</module>-->
+<!--								<module>-->
+<!--									<artifact>-->
+<!--										<groupId>com.fasterxml.jackson.core</groupId>-->
+<!--										<artifactId>jackson-core</artifactId>-->
+<!--										<version>2.10.5</version>-->
+<!--									</artifact>-->
+<!--									<moduleInfoSource>-->
+<!--										module com.fasterxml.jackson.core {-->
+<!--											exports com.fasterxml.jackson.core;-->
+<!--											exports com.fasterxml.jackson.core.async;-->
+<!--											exports com.fasterxml.jackson.core.base;-->
+<!--											exports com.fasterxml.jackson.core.filter;-->
+<!--											exports com.fasterxml.jackson.core.format;-->
+<!--											exports com.fasterxml.jackson.core.io;-->
+<!--											exports com.fasterxml.jackson.core.json;-->
+<!--											exports com.fasterxml.jackson.core.json.async;-->
+<!--											exports com.fasterxml.jackson.core.sym;-->
+<!--											exports com.fasterxml.jackson.core.type;-->
+<!--											exports com.fasterxml.jackson.core.util;-->
+<!--											provides com.fasterxml.jackson.core.JsonFactory with com.fasterxml.jackson.core.JsonFactory;-->
+<!--										}-->
+<!--									</moduleInfoSource>-->
+<!--								</module>-->
 								<module>
 									<artifact>
 										<groupId>com.voodoodyne.jackson.jsog</groupId>
@@ -605,7 +605,7 @@
 									<artifact>
 										<groupId>com.fasterxml.jackson.core</groupId>
 										<artifactId>jackson-annotations</artifactId>
-										<version>2.10.3</version>
+										<version>2.10.5</version>
 									</artifact>
 									<moduleInfoSource>
 										module com.fasterxml.jackson.annotation {
