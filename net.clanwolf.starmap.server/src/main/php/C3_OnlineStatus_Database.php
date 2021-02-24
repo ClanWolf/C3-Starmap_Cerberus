@@ -3,12 +3,12 @@
   * DB check online status
   * PHP version 7.2.10
   *
-  * @category  Servercomponents
-  * @package   C3
-  * @author    warwolfen@gmail.com
-  * @license   Apache License 2.0
-  * @version   1.0
-  * @link      https://www.clanwolf.net
+  * @category Servercomponents
+  * @package  C3
+  * @author   Meldric warwolfen@gmail.com
+  * @license  Apache License 2.0
+  * @version  GIT: <git_id>
+  * @link     https://www.clanwolf.net
   */
 
 require_once './db.php';

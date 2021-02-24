@@ -1,28 +1,36 @@
 <?php
-
-/**
- * Parameter
- * rpid            -> RolePlayID ist gleich der Name des dirs unter /resources
- * filename        -> Name des Bildes, das angezeigt werden soll
- * audio           -> Name der MP3, die abgespielt werden soll
- * video           -> Name der MP4, die angezeigt werden soll
- * TODO: storyname -> Name der Geschichte/des Kapitel
- * Es soll noch so sein, das man den Name der Story als Parameter übergeben kann,
- * dann soll dieser Zentriert im Bild angezeigt werden, aber nur, wenn keiner der
- * anderen Parameter übergeben wurde
-
- * Wird kein Parameter angegeben, so wird lediglich das Default-Bild angezeigt
- * Wird einer der Parameter filename, audio, video angegeben ist der Parameter ripd
- * zwingend notwendig
- * da sonst die Resourcen nicht gefunden werden
-
- * Beispiel URL's
- * localhost/test/generichtml.php?rpid=1&filename=test.png
- * localhost/test/generichtml.php?rpid=1&filename=test.png&audio=Decoherence.mp3
- * localhost/test/generichtml.php?rpid=1&video=01.mp4
- *
- * http://www.clanwolf.net/apps/C3/rpg/genericHtml.php
- */
+ /**
+  * Parameter
+  * rpid            -> RolePlayID ist gleich der Name des dirs unter /resources
+  * filename        -> Name des Bildes, das angezeigt werden soll
+  * audio           -> Name der MP3, die abgespielt werden soll
+  * video           -> Name der MP4, die angezeigt werden soll
+  * storyname       -> Name der Geschichte/des Kapitel
+  * Es soll noch so sein, das man den Name der Story als Parameter übergeben kann,
+  * dann soll dieser Zentriert im Bild angezeigt werden, aber nur, wenn keiner der
+  * anderen Parameter übergeben wurde
+  *
+  * Wird kein Parameter angegeben, so wird lediglich das Default-Bild angezeigt
+  * Wird einer der Parameter filename, audio, video angegeben ist der Parameter ripd
+  * zwingend notwendig
+  * da sonst die Resourcen nicht gefunden werden
+  *
+  * Beispiel URL's
+  * localhost/test/generichtml.php?rpid=1&filename=test.png
+  * localhost/test/generichtml.php?rpid=1&filename=test.png&audio=Decoherence.mp3
+  * localhost/test/generichtml.php?rpid=1&video=01.mp4
+  *
+  * http://www.clanwolf.net/apps/C3/rpg/genericHtml.php
+  *
+  * PHP version 7.2.10
+  *
+  * @category Servercomponents
+  * @package  C3
+  * @author   Meldric warwolfen@gmail.com
+  * @license  Apache License 2.0
+  * @version  GIT: <git_id>
+  * @link     https://www.clanwolf.net
+  */
 
 $ressourcePath = './resources/';
 
