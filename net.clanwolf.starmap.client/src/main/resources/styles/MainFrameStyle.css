@@ -356,9 +356,9 @@
 }
 
 .mapPane {
-	-fx-background-image: url('../images/map/background.jpg');
-	-fx-background-position: center center;
-	-fx-background-repeat: repeat;
+    -fx-background-image: url('../images/map/background.jpg');
+    -fx-background-position: center center;
+    -fx-background-repeat: repeat;
 }
 
 .RPStoriesButton {
@@ -410,14 +410,14 @@
 }
 
 .RPPlusButton {
-	-fx-background-image: url("../icons/rpplus.png");
+    -fx-background-image: url("../icons/rpplus.png");
     -fx-background-repeat: no-repeat;
     -fx-background-size: 8, 8;
     -fx-background-position: center;
 }
 
 .RPMinusButton {
-	-fx-background-image: url("../icons/rpminus.png");
+    -fx-background-image: url("../icons/rpminus.png");
     -fx-background-repeat: no-repeat;
     -fx-background-size: 8, 8;
     -fx-background-position: center;
