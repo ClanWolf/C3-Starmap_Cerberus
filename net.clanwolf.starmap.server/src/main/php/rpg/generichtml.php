@@ -1,10 +1,10 @@
 <?php
     /*
     * Parameter
-    * rpid      -> RolePlayID ist gleich der Name des Subdirectory unter /resources
-    * filename  -> Name des Bildes, das angezeigt werden soll
-    * audio     -> Name der MP3, die abgespielt werden soll
-    * video     -> Name der MP4, die angezeigt werden soll
+    * rpid            -> RolePlayID ist gleich der Name des Subdirectory unter /resources
+    * filename        -> Name des Bildes, das angezeigt werden soll
+    * audio           -> Name der MP3, die abgespielt werden soll
+    * video           -> Name der MP4, die angezeigt werden soll
     * TODO: storyname -> Name der Geschichte/des Kapitel
     * Es soll noch so sein, das man den Name der Story als Parameter übergeben kann,
     * dann soll dieser Zentriert im Bild angezeigt werden, aber nur, wenn keiner der anderen Parameter übergeben wurde
@@ -34,14 +34,14 @@
     $resourceSubPath = '';
     $storyname = '';
 
-    if (isset ( $_GET["storyname"] )){
+    if (isset ($_GET["storyname"])) {
         $storyname = $_GET["storyname"];
     }
 
-    if (isset ( $_GET["rpid"] )){
+    if (isset($_GET["rpid"])) {
         $resourceSubPath = $ressourcePath.$_GET["rpid"].'/';
 
-        if (isset ( $_GET["video"] )){
+        if (isset($_GET["video"])) {
             $bodyVideo = '<video src="'.$resourceSubPath.$_GET["video"].'" autoplay></video>';
 
         } else {
@@ -49,14 +49,14 @@
             $image = './default.png';
 
             // Check other image file
-            if (isset ( $_GET["filename"] )){
+            if (isset($_GET["filename"])) {
                 $image = $resourceSubPath.$_GET["filename"];
             }
             // Image file is always set    
             $bodyImg = '<img src="'.$image.'" width="720" height="420" alt="No image found"></img>';
 
             // Check audiofile
-            if (isset ( $_GET["audio"] )){
+            if (isset($_GET["audio"])) {
                 $bodyAudio = '<audio src="'.$resourceSubPath.$_GET["audio"].'" type="audio/mp3" autoplay volume="0.3"></audio>';
             }
         }    
