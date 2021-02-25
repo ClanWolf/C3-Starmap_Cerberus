@@ -29,6 +29,7 @@ package net.clanwolf.starmap.server;
 import io.nadron.server.ServerManager;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.server.util.HeartBeatTimer;
+import net.clanwolf.starmap.server.util.CheckShutdownFlagTimer;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 
