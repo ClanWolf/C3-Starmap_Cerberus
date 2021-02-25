@@ -52,7 +52,7 @@ public class GameServer {
 			// TODO: Use this to get the servers home dir:
 			File jarDir = new File(ClassLoader.getSystemClassLoader().getResource(".").getPath());
 		}
-		serverBaseDir = dir;
+		serverBaseDir = dir.getAbsolutePath();
 
 		boolean res = dir.mkdirs();
 		if (res || dir.exists()) {
