@@ -52,6 +52,8 @@ public class GameServer {
 			// TODO: Use this to get the servers home dir:
 			File jarDir = new File(ClassLoader.getSystemClassLoader().getResource(".").getPath());
 		}
+		serverBaseDir = dir;
+
 		boolean res = dir.mkdirs();
 		if (res || dir.exists()) {
 			String logFileName = dir + File.separator + "C3_Server.log";
@@ -85,11 +87,20 @@ public class GameServer {
 		return ctx;
 	}
 
+	private static void cleanupFlagFiles() {
+		File shutdownFlagFile = new File(dir + File.separator + "shutdown.flag");
+    		if (shutdownFlagFile.isFile()) {
+			boolean deleted = shutdownFlagFile.delete();
+		}
+	}
+
 	public static void startGames(AbstractApplicationContext ctx) {
 		try {
 			// EntityManagerHelper.getEntityManager();
 			// Log.print("EntityManager initialized");
 			C3Logger.print("Server ready");
+
+			cleanupFlagFiles();
 
 			// write heartbeat file every 5 minutes
 			Timer serverHeartBeat = new Timer();
