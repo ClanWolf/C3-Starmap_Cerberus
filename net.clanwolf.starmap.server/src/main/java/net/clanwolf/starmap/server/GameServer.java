@@ -88,7 +88,7 @@ public class GameServer {
 	}
 
 	private static void cleanupFlagFiles() {
-		File shutdownFlagFile = new File(dir + File.separator + "shutdown.flag");
+		File shutdownFlagFile = new File(serverBaseDir + File.separator + "shutdown.flag");
     		if (shutdownFlagFile.isFile()) {
 			boolean deleted = shutdownFlagFile.delete();
 		}
