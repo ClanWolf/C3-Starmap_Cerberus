@@ -38,7 +38,7 @@ import java.util.logging.Level;
 
 public class GameServer {
 	private static AbstractApplicationContext ctx;
-
+	private static String serverBaseDir;
 
 	public static void main(String[] args) {
 		// Logging
@@ -47,6 +47,9 @@ public class GameServer {
 			dir = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3");
 		} else {
 			dir = new File("/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/server");
+			
+			// TODO: Use this to get the servers home dir:
+			File jarDir = new File(ClassLoader.getSystemClassLoader().getResource(".").getPath());
 		}
 		boolean res = dir.mkdirs();
 		if (res || dir.exists()) {
@@ -90,6 +93,10 @@ public class GameServer {
 			// write heartbeat file every 5 minutes
 			Timer serverHeartBeat = new Timer();
 			serverHeartBeat.schedule(new HeartBeatTimer(), 1000, 1000 * 60 * 5);
+
+			// check shutdown flagfile every 30 seconds
+			Timer checkShutdownFlag = new Timer();
+			checkShutdownFlag.schedule(new checkShutdownFlagTimer(serverBaseDir), 1000, 1000 * 30);
 
 			// World world = ctx.getBean(World.class);
 			// GameRoom room1 = (GameRoom)ctx.getBean("Zombie_ROOM_1");
