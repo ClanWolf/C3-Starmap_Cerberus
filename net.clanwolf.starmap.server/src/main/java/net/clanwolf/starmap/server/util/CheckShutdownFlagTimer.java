@@ -44,7 +44,7 @@ public class CheckShutdownFlagTimer extends TimerTask {
 
 	private String dir = "";
 
-	public HeartBeatTimer(String path) {
+	public CheckShutdownFlagTimer(String path) {
 		this.dir = path;
 	}
 
