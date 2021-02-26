@@ -1,3 +1,8 @@
 module net.clanwolf.starmap.ircbot {
-
+	requires net.clanwolf.starmap.mail;
+	requires pircbotx;
+	requires guava;
+	requires java.sql;
+	requires java.naming;
+	requires mysql.connector.java;
 }

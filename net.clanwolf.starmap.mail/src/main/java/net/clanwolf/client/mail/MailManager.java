@@ -21,77 +21,46 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2020, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.server.mail;
+package net.clanwolf.client.mail;
 
-import net.clanwolf.starmap.logging.C3Logger;
-
-import javax.mail.Address;
-import javax.mail.Message;
-import javax.mail.MessagingException;
-import javax.mail.Transport;
-import javax.mail.internet.AddressException;
+//import javax.mail.internet.AddressException;
+import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.util.Date;
 import java.util.Properties;
 
-/**
- * Handles sending of emails.
- * 
- * @author Christian
- *
- */
 public class MailManager {
 	private static String mailServer = null;
 	private static String mailUser = null;
 	private static String mailPassword = null;
 
-	/**
-	 * Empty constructor.
-	 */
 	public MailManager() {
 		//
 	}
 
-	/**
-	 * Sets the mail server to be used.
-	 * 
-	 * @param server
-	 */
 	public static void setMailCredentials(String server, String user, String password) {
 		mailServer = server;
 		mailUser = user;
 		mailPassword = password;
 	}
 
-	/**
-	 * Checks email adress for validity.
-	 * 
-	 * @param emailadress
-	 * @return result of validity check
-	 */
-	private static boolean validEmailAdress(String emailadress) {
-		boolean valid = false;
-		try {
-			InternetAddress internetAddress = new InternetAddress(emailadress);
-			internetAddress.validate();
-			valid = true;
-		} catch (AddressException e) {
-			e.printStackTrace();
-			C3Logger.warning("Invalid Email Adress " + emailadress + " " + e.getMessage());
-		}
-		return valid;
-	}
+//	private static boolean validEmailAdress(String emailadress) {
+//		boolean valid = false;
+//		try {
+//			InternetAddress internetAddress = new InternetAddress(emailadress);
+//			internetAddress.validate();
+//			valid = true;
+//		} catch (AddressException e) {
+//			e.printStackTrace();
+//		}
+//		return valid;
+//	}
 
-	/**
-	 * Sends off a previouisly created Mail object.
-	 * 
-	 * @param mail
-	 */
 	private static boolean dispatch(Mail mail) {
 		boolean result = false;
 
@@ -105,10 +74,25 @@ public class MailManager {
 
 		try {
 			props = new Properties();
-			props.put("mail.smtp.host", mailServer);
-			props.put("mail.smtp.connectiontimeout", "600000");
-			props.put("mail.smtp.timeout", "600000");
-			session = javax.mail.Session.getDefaultInstance(props, null);
+			props.setProperty("mail.transport.protocol", "smtp");
+			props.setProperty("mail.smtp.host", mailServer);
+			props.setProperty("mail.smtp.auth", "true");
+			props.setProperty("mail.smtp.port", "587");
+			props.setProperty("mail.smtp.ssl.enable", "false");
+			props.setProperty("mail.smtp.socketFactory.port", "587");
+//			props.setProperty("mail.smtp.socketFactory.class", "javax.net.ssl.SSLSocketFactory");
+			props.setProperty("mail.smtp.socketFactory.fallback", "true");
+			props.setProperty("mail.smtp.starttls.enable", "true");
+			props.setProperty("mail.smtp.connectiontimeout", "600000");
+			props.setProperty("mail.smtp.timeout", "600000");
+			props.setProperty("mail.debug", "false");
+
+			session = Session.getInstance(props, new Authenticator() {
+				@Override
+				protected PasswordAuthentication getPasswordAuthentication() {
+					return new PasswordAuthentication(mailUser, mailPassword);
+				}
+			});
 
 			from = new InternetAddress(mail.sender());
 			msg = new MimeMessage(session);
@@ -133,41 +117,28 @@ public class MailManager {
 			msg.saveChanges();
 
 			transport = session.getTransport("smtp");
-			transport.connect(mailUser, mailPassword);
+			transport.connect(mailServer, mailUser, mailPassword);
 			transport.sendMessage(msg, msg.getAllRecipients());
 
 			result = true;
-			C3Logger.info("Successfully sent email from " + mail.sender() + " to " + mail.recipients());
-		} catch (Exception e) {
+			System.out.println("Successfully sent email from " + mail.sender() + " to " + mail.recipients());
+		} catch (Throwable e) {
 			e.printStackTrace();
-			C3Logger.exception("Failed to send email. Message: " + e.getMessage(), e);
-		} catch (Throwable t) {
-			t.printStackTrace();
-			C3Logger.exception("Failed to send email. Message: " + t.getMessage(), t);
+			System.out.println("Failed to send email " + e.getMessage());
 		} finally {
 			if (transport != null) {
 				try {
 					transport.close();
 				} catch (MessagingException e) {
-					C3Logger.error("Failed to close Mail smtp Transport: ", e);
+					System.out.println("Failed to close Mail smtp Transport: " + e.getMessage());
+
 				}
 			}
 		}
 		return result;
 	}
 
-	/**
-	 * Sends a mail.
-	 * 
-	 * @param sender
-	 * @param receivers
-	 * @param subject
-	 * @param content
-	 * @param html
-	 * @param breakOnError
-	 * @return
-	 */
-	public static boolean sendMail(String sender, String[] receivers, String subject, String content, boolean html, boolean breakOnError) {
+	public static boolean sendMail(String sender, String[] receivers, String subject, String content, boolean html) {
 		if (mailServer == null || mailUser == null || mailPassword == null) {
 			Properties mProperties = new Properties();
 			try {
@@ -176,38 +147,17 @@ public class MailManager {
 				String user = mProperties.getProperty("mail_user");
 				String pw = mProperties.getProperty("mail_pw");
 				MailManager.setMailCredentials(server, user, pw);
-
-				C3Logger.info("Server: " + server);
-				C3Logger.info("User: " + user);
-				C3Logger.info("Pass: " + pw);
 			} catch (IOException e) {
-				C3Logger.error("Failed to read mail properties", e);
+				System.out.println("Failed to read mail properties: " + e.getMessage());
 				return false;
 			}
 		}
 
 		Mail mail = new Mail();
-		if (MailManager.validEmailAdress(sender)) {
-			C3Logger.info("Set sender: " + sender);
-			mail.setSender(sender);
-		} else {
-			C3Logger.warning("Email Adress of Sender is not valid: " + sender);
-			if (breakOnError) {
-				throw new RuntimeException("Email Adress of Sender is not valid: " + sender);
-			}
-		}
+		mail.setSender(sender);
 		for (String receiver : receivers) {
-			if (MailManager.validEmailAdress(receiver)) {
-				C3Logger.info("Adding receiver: " + receiver);
-				mail.addRecipient(receiver);
-			} else {
-				C3Logger.warning("Email Adress of Receiver is not valid: " + receiver);
-				if (breakOnError) {
-					throw new RuntimeException("Email Adress of Receiver is not valid: " + receiver);
-				}
-			}
+			mail.addRecipient(receiver);
 		}
-		C3Logger.info("Set subject: " + subject);
 		mail.setSubject(subject);
 
 		if (content != null) {
@@ -218,7 +168,6 @@ public class MailManager {
 			}
 		}
 
-		C3Logger.info("Dispatching...");
 		return MailManager.dispatch(mail);
 	}
 }

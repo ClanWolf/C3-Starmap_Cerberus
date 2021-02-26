@@ -11,6 +11,7 @@ net.clanwolf.starmap.logging/target/*
 net.clanwolf.starmap.server/target/*
 net.clanwolf.starmap.transfer/target/*
 net.clanwolf.starmap.ircbot/target/*
+net.clanwolf.starmap.mail/target/*
 
 # Compiled class file
 *.class
