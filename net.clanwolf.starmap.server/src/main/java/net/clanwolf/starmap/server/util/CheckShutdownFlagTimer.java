@@ -59,8 +59,8 @@ public class CheckShutdownFlagTimer extends TimerTask {
 			// On the server, a script checks if the server is running every couple of minutes.
 			// If this methods shuts the server down, it will be going up by the script shortly after.
 			// This is used in case a new version of the jar file was uploaded.
-			C3Logger.info("Cleaning up flag files.");
-			cleanupFlagFiles();
+//			C3Logger.info("Cleaning up flag files.");
+//			cleanupFlagFiles();
 
 			C3Logger.info("Sending info mail.");
 			String[] receivers = { "warwolfen@gmail.com", "werner.kewenig@arcor.de" };
