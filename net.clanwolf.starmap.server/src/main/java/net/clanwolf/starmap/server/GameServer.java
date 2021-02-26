@@ -50,7 +50,7 @@ public class GameServer {
 			dir = new File("/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/server");
 			
 			// TODO: Use this to get the servers home dir:
-			File jarDir = new File(ClassLoader.getSystemClassLoader().getResource(".").getPath());
+			//File jarDir = new File(ClassLoader.getSystemClassLoader().getResource(".").getPath());
 		}
 		serverBaseDir = dir.getAbsolutePath();
 
@@ -87,20 +87,11 @@ public class GameServer {
 		return ctx;
 	}
 
-	private static void cleanupFlagFiles() {
-		File shutdownFlagFile = new File(serverBaseDir + File.separator + "shutdown.flag");
-    		if (shutdownFlagFile.isFile()) {
-			boolean deleted = shutdownFlagFile.delete();
-		}
-	}
-
 	public static void startGames(AbstractApplicationContext ctx) {
 		try {
 			// EntityManagerHelper.getEntityManager();
 			// Log.print("EntityManager initialized");
 			C3Logger.print("Server ready");
-
-			cleanupFlagFiles();
 
 			// write heartbeat file every 5 minutes
 			Timer serverHeartBeat = new Timer();
@@ -108,7 +99,7 @@ public class GameServer {
 
 			// check shutdown flagfile every 30 seconds
 			Timer checkShutdownFlag = new Timer();
-			checkShutdownFlag.schedule(new CheckShutdownFlagTimer(serverBaseDir), 1000, 1000 * 30);
+			checkShutdownFlag.schedule(new CheckShutdownFlagTimer(serverBaseDir), 1000, 1000 * 10);
 
 			// World world = ctx.getBean(World.class);
 			// GameRoom room1 = (GameRoom)ctx.getBean("Zombie_ROOM_1");

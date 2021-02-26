@@ -61,6 +61,7 @@
 		<module>net.clanwolf.starmap.client</module>
 		<module>net.clanwolf.starmap.client.preloader</module>
 		<module>net.clanwolf.starmap.client.packager</module>
+		<module>net.clanwolf.starmap.ircbot</module>
 	</modules>
 
 	<build>

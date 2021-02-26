@@ -174,6 +174,10 @@ public class MailManager {
 				String user = mProperties.getProperty("mail_user");
 				String pw = mProperties.getProperty("mail_pw");
 				MailManager.setMailCredentials(server, user, pw);
+
+				C3Logger.info("Server: " + server);
+				C3Logger.info("User: " + user);
+				C3Logger.info("Pass: " + pw);
 			} catch (IOException e) {
 				C3Logger.error("Failed to read mail properties", e);
 				return false;
@@ -182,6 +186,7 @@ public class MailManager {
 
 		Mail mail = new Mail();
 		if (MailManager.validEmailAdress(sender)) {
+			C3Logger.info("Sending...");
 			mail.setSender(sender);
 		} else {
 			C3Logger.warning("Email Adress of Sender is not valid: " + sender);
@@ -191,6 +196,7 @@ public class MailManager {
 		}
 		for (String receiver : receivers) {
 			if (MailManager.validEmailAdress(receiver)) {
+				C3Logger.info("Adding receiver: " + receiver);
 				mail.addRecipient(receiver);
 			} else {
 				C3Logger.warning("Email Adress of Receiver is not valid: " + receiver);
@@ -199,6 +205,7 @@ public class MailManager {
 				}
 			}
 		}
+		C3Logger.info("Setting subject: " + subject);
 		mail.setSubject(subject);
 
 		if (content != null) {
@@ -209,6 +216,7 @@ public class MailManager {
 			}
 		}
 
+		C3Logger.info("Dispatching.");
 		return MailManager.dispatch(mail);
 	}
 }

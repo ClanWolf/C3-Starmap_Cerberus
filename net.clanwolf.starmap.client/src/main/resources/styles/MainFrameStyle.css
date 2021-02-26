@@ -331,7 +331,7 @@
   -fx-background-size: 33, 17;
   -fx-background-position: center;
   -fx-font-family: "Arial";
-  -fx-background-insets: 0,1,2,0;
+  -fx-background-insets: 0, 1, 2, 0;
   -fx-padding: 0 0 0 0;
 }
 
@@ -341,7 +341,7 @@
   -fx-background-size: 33, 17;
   -fx-background-position: center;
   -fx-font-family: "Arial";
-  -fx-background-insets: 0,1,2,0;
+  -fx-background-insets: 0, 1, 2, 0;
   -fx-padding: 0 0 0 0;
 }
 
@@ -351,7 +351,7 @@
   -fx-background-size: 33, 17;
   -fx-background-position: center;
   -fx-font-family: "Arial";
-  -fx-background-insets: 0,1,2,0;
+  -fx-background-insets: 0, 1, 2, 0;
   -fx-padding: 0 0 0 0;
 }
 
@@ -424,21 +424,21 @@
 }
 
 .tab-pane *.tab-header-background {
-  -fx-background-color: rgba(0,0,0,0.0);
+  -fx-background-color: rgba(0, 0, 0, 0);
   -fx-effect: null;
 }
 
 .tab-pane *.tab-header-area {
-  -fx-background-color: rgba(0,0,0,0.0);
+  -fx-background-color: rgba(0, 0, 0, 0.0);
   -fx-effect: null;
 }
 
 .tab-pane {
-  -fx-border-color: rgba(53,89,119,0.6);
+  -fx-border-color: rgba(53, 89, 119, 0.6);
   -fx-border-width: 2;
-  -fx-background-color: rgba(48,82,112,0.0);
-  -fx-background-insets: 0,0,0,0;
-  -fx-background-radius: 0,0,0,0;
+  -fx-background-color: rgba(48, 82, 112, 0.0);
+  -fx-background-insets: 0, 0, 0, 0;
+  -fx-background-radius: 0, 0, 0, 0;
   -fx-padding: 0 0 0 0;
   -fx-font-family: "Consolas";
   -fx-font-size: 14px;
@@ -447,11 +447,11 @@
 }
 
 .tab {
-  -fx-border-color: rgba(53,89,119,0.6);
+  -fx-border-color: rgba(53, 89, 119, 0.6);
   -fx-border-width: 0;
-  -fx-background-color: rgba(48,82,112,0.4);
-  -fx-background-insets: 0,0,0,0;
-  -fx-background-radius: 0,0,0,0;
+  -fx-background-color: rgba(48, 82, 112, 0.4);
+  -fx-background-insets: 0, 0, 0, 0;
+  -fx-background-radius: 0, 0, 0, 0;
   -fx-padding: 3 10 3 10;
   -fx-font-family: "Consolas";
   -fx-font-size: 14px;
@@ -460,13 +460,13 @@
 }
 
 .tab:selected {
-  -fx-border-color: rgba(60,104,140,0.8);
+  -fx-border-color: rgba(60, 104, 140, 0.8);
   -fx-border-width: 0;
-  -fx-background-color: rgba(60,104,140,0.8);
+  -fx-background-color: rgba(60, 104, 140, 0.8);
 }
 
 .tab-content-area {
-  -fx-background-color: rgba(48,82,112,0.3);
+  -fx-background-color: rgba(48, 82, 112, 0.3);
 }
 
 .tab *.tab-label {
@@ -476,7 +476,7 @@
 .text-field {
   -fx-border-color: #779fc3;
   -fx-border-width: 1;
-  -fx-background-color: rgba(48,82,112,0.5);
+  -fx-background-color: rgba(48, 82, 112, 0.5);
   -fx-padding: 2 2 2 2;
   -fx-text-fill: #a3d4ef;
 }
@@ -486,8 +486,8 @@
 }
 
 .text-area {
-  -fx-border-color: rgba(53,89,119,0.6);
-  -fx-background-color: rgba(53,89,119,0.2);
+  -fx-border-color: rgba(53, 89, 119, 0.6);
+  -fx-background-color: rgba(53, 89, 119, 0.2);
   -fx-background-radius: 0, 0, 0, 0;
   -fx-font-family: "Consolas";
   -fx-font-size: 14px;
@@ -531,20 +531,20 @@
 }
 
 .systemDetailPanel {
-  -fx-border-color: rgba(53,89,119,0.9);
+  -fx-border-color: rgba(53, 89, 119, 0.9);
   -fx-border-width: 2;
-  -fx-background-color: rgba(48,82,112,0.8);
-  -fx-background-insets: 1,1,1,1;
-  -fx-background-radius: 0,0,0,0;
+  -fx-background-color: rgba(48, 82, 112, 0.8);
+  -fx-background-insets: 1, 1, 1, 1;
+  -fx-background-radius: 0, 0, 0, 0;
   -fx-padding: 8 8 8 8;
 }
 
 .contentTextArea {
-  -fx-border-color: rgba(53,89,119,0.6);
+  -fx-border-color: rgba(53, 89, 119, 0.6);
   -fx-border-width: 2;
-  -fx-background-color: rgba(48,82,112,0.3);
-  -fx-background-insets: 1,1,1,1;
-  -fx-background-radius: 0,0,0,0;
+  -fx-background-color: rgba(48, 82, 112, 0.3);
+  -fx-background-insets: 1, 1, 1, 1;
+  -fx-background-radius: 0, 0, 0, 0;
   -fx-padding: 8 8 8 8;
 }
 
@@ -552,35 +552,35 @@
   -fx-border-color: transparent;
   -fx-border-width: 0;
   -fx-background-color: transparent;
-  -fx-background-insets: 1,1,1,1;
-  -fx-background-radius: 0,0,0,0;
+  -fx-background-insets: 1, 1, 1, 1;
+  -fx-background-radius: 0, 0, 0, 0;
   -fx-padding: 8 8 8 8;
 }
 
 .contentTextAreaHelpField {
   -fx-border-color: #bedcbe;
   -fx-border-width: 1;
-  -fx-background-color: rgba(255,255,192,0.3);
-  -fx-background-insets: 1,1,1,1;
-  -fx-background-radius: 0,0,0,0;
+  -fx-background-color: rgba(255, 255, 192, 0.3);
+  -fx-background-insets: 1, 1, 1, 1;
+  -fx-background-radius: 0, 0, 0, 0;
   -fx-padding: 2 2 2 2;
   -fx-text-fill: #bedcbe;
 }
 
 .contentTextAreaBlock {
-  -fx-background-color: rgba(53,89,119,0.6);
-  -fx-background-insets: 0,0,0,0;
-  -fx-background-radius: 0,0,0,0;
+  -fx-background-color: rgba(53, 89, 119, 0.6);
+  -fx-background-insets: 0, 0, 0, 0;
+  -fx-background-radius: 0, 0, 0, 0;
   -fx-padding: 8 8 8 8;
 }
 
 .contentButton {
   -fx-border-color: #538b53;
-  -fx-background-color: rgba(70,118,70,0.4);
+  -fx-background-color: rgba(70, 118, 70, 0.4);
   -fx-background-image: url("../images/buttons/ContentButton_BG.png");
   -fx-background-repeat: no-repeat;
-  -fx-background-insets: 1,1,1,1;
-  -fx-background-radius: 0,0,0,0;
+  -fx-background-insets: 1, 1, 1, 1;
+  -fx-background-radius: 0, 0, 0, 0;
   -fx-padding: 10 10 8 10;
   -fx-font-family: "Consolas";
   -fx-font-size: 14px;
@@ -589,25 +589,25 @@
 }
 
 .contentButton:disabled {
-  -fx-background-color: rgba(12,22,32,0.8);
+  -fx-background-color: rgba(12, 22, 32, 0.8);
   -fx-text-fill: #fff;
   -fx-background-image: url("../images/buttons/ContentButton_BG_disabled.png");
 }
 
 .contentButton:hover {
-  -fx-background-color: rgba(70,118,70,0.8);
+  -fx-background-color: rgba(70, 118, 70, 0.8);
   -fx-text-fill: #fff;
   -fx-background-image: url("../images/buttons/ContentButton_BG_hover.png");
 }
 
 .contentButton:focused {
-  -fx-background-color: rgba(70,118,70,0.8);
+  -fx-background-color: rgba(70, 118, 70, 0.8);
   -fx-text-fill: #fff;
   -fx-background-image: url("../images/buttons/ContentButton_BG_focus.png");
 }
 
 .contentButton:armed {
-  -fx-background-color: rgba(255,255,132,0.5);
+  -fx-background-color: rgba(255, 255, 132, 0.5);
   -fx-border-color: #ffd42a;
   -fx-text-fill: #fff;
   -fx-background-image: url("../images/buttons/ContentButton_BG_armed.png");
@@ -615,11 +615,11 @@
 
 .contentButtonRed {
   -fx-border-color: #fe2f00;
-  -fx-background-color: rgba(200,36,0,0.4);
+  -fx-background-color: rgba(200, 36, 0, 0.4);
   -fx-background-image: url("../images/buttons/ContentButton_BG.png");
   -fx-background-repeat: no-repeat;
-  -fx-background-insets: 1,1,1,1;
-  -fx-background-radius: 0,0,0,0;
+  -fx-background-insets: 1, 1, 1, 1;
+  -fx-background-radius: 0, 0, 0, 0;
   -fx-padding: 10 10 8 10;
   -fx-font-family: "Consolas";
   -fx-font-size: 14px;
@@ -628,33 +628,33 @@
 }
 
 .contentButtonRed:hover {
-  -fx-background-color: rgba(200,36,0,0.8);
+  -fx-background-color: rgba(200, 36, 0, 0.8);
   -fx-text-fill: #fff;
   -fx-background-image: url("../images/buttons/ContentButton_BG_hover.png");
 }
 
 .contentButtonRed:focused {
-  -fx-background-color: rgba(200,36,0,0.8);
+  -fx-background-color: rgba(200, 36, 0, 0.8);
   -fx-text-fill: #fff;
   -fx-background-image: url("../images/buttons/ContentButton_BG_focus.png");
 }
 
 .contentButtonRed:armed {
-  -fx-background-color: rgba(200,36,0,0.5);
+  -fx-background-color: rgba(200, 36, 0, 0.5);
   -fx-border-color: #fe2f00;
   -fx-text-fill: #fff;
   -fx-background-image: url("../images/buttons/ContentButton_BG_armed.png");
 }
 
 .contentButtonRed:pressed {
-  -fx-background-color: rgba(200,36,0,0.5);
+  -fx-background-color: rgba(200, 36, 0, 0.5);
   -fx-border-color: #fe2f00;
   -fx-text-fill: #fff;
   -fx-background-image: url("../images/buttons/ContentButton_BG_armed.png");
 }
 
 .numpadButton {
-  -fx-background-color: rgba(70,118,70,0.4);
+  -fx-background-color: rgba(70, 118, 70, 0.4);
   -fx-background-repeat: no-repeat;
   -fx-padding: 10 10 8 10;
   -fx-font-family: "Consolas";
@@ -662,7 +662,7 @@
 }
 
 .numpadButton:hover {
-  -fx-background-color: rgba(190,118,190,0.4);
+  -fx-background-color: rgba(190, 118, 190, 0.4);
 }
 
 /* Toolbar button normal */
@@ -673,9 +673,9 @@
     #090a0c,
     linear-gradient(#38424b 0%, #1f2429 20%, #191d22 100%),
     linear-gradient(#20262b, #191d22),
-    radial-gradient(center 50% 0%, radius 100%, rgba(114,131,148,0.9), rgba(255,255,255,0));
-  -fx-background-insets: 0,1,2,0;
-  -fx-effect: dropshadow(three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1);
+    radial-gradient(center 50% 0%, radius 100%, rgba(114, 131, 148, 0.9), rgba(255, 255, 255, 0));
+  -fx-background-insets: 0, 1, 2, 0;
+  -fx-effect: dropshadow(three-pass-box , rgba(0, 0, 0, 0.6) , 5, 0.0 , 0 , 1);
   -fx-padding: 8 8 8 8;
 }
 
@@ -703,9 +703,9 @@
     #1c0000,
     linear-gradient(#850000 0%, #4e0000 20%, #410000 100%),
     linear-gradient(#520000, #410000),
-    radial-gradient(center 50% 0%, radius 100%, rgba(255,59,63,0.9), rgba(255,255,255,0));
-  -fx-background-insets: 0,1,2,0;
-  -fx-effect: dropshadow(three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1);
+    radial-gradient(center 50% 0%, radius 100%, rgba(255, 59, 63, 0.9), rgba(255, 255, 255, 0));
+  -fx-background-insets: 0, 1, 2, 0;
+  -fx-effect: dropshadow(three-pass-box , rgba(0, 0, 0, 0.6) , 5, 0.0 , 0 , 1);
   -fx-padding: 8 8 8 8;
 }
 

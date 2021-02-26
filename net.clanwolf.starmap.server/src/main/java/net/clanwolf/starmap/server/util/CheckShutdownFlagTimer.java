@@ -27,35 +27,55 @@
 package net.clanwolf.starmap.server.util;
 
 import net.clanwolf.starmap.logging.C3Logger;
-import net.clanwolf.starmap.server.enums.SystemListTypes;
+import net.clanwolf.starmap.server.mail.MailManager;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Calendar;
 import java.util.TimerTask;
 
 /**
  * @author Meldric
- *
  */
 public class CheckShutdownFlagTimer extends TimerTask {
 
 	private String dir = "";
 
+	private void cleanupFlagFiles() {
+		File shutdownFlagFile = new File(dir + File.separator + "C3-Server_shutdown.flag");
+		if (shutdownFlagFile.isFile()) {
+			boolean deleted = shutdownFlagFile.delete();
+		}
+	}
+
 	public CheckShutdownFlagTimer(String path) {
 		this.dir = path;
+		// Cleanup the flags once before the timer starts in case there were flags left from a previous time
+		cleanupFlagFiles();
 	}
 
 	@Override
 	public void run() {
-		File shutdownFlagFile = new File(dir + File.separator + "shutdown.flag");
-    if (shutdownFlagFile.isFile()) {
-      // On the server, a script checks if the server is running every couple of minutes.
-      // If this methods shuts the server down, it will be going up by the script shortly after.
-      // This is used in case a new version of the jar file was uploaded.
-      // System.exit();
-    }
+		File shutdownFlagFile = new File(dir + File.separator + "C3-Server_shutdown.flag");
+		if (shutdownFlagFile.exists() && shutdownFlagFile.isFile() && shutdownFlagFile.canRead()) {
+			// On the server, a script checks if the server is running every couple of minutes.
+			// If this methods shuts the server down, it will be going up by the script shortly after.
+			// This is used in case a new version of the jar file was uploaded.
+			C3Logger.info("Cleaning up flag files.");
+			cleanupFlagFiles();
+
+			C3Logger.info("Sending info mail.");
+			String[] receivers = { "warwolfen@gmail.com", "werner.kewenig@arcor.de" };
+			boolean sent = false;
+			sent = MailManager.sendMail("starmap@clanwolf.net", receivers, "C3 Server goes down after flag request", "C3 Server is shutting down...", false, false);
+			if (sent) {
+				// sent
+				C3Logger.info("Mail sent.");
+			} else {
+				// error during email sending
+				C3Logger.info("Error during mail dispatch.");
+			}
+
+			C3Logger.info("Exiting server.");
+			System.exit(5);
+		}
 	}
 }
