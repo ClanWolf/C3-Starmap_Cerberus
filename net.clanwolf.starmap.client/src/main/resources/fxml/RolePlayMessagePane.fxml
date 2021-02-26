@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="RolePlayStartPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.RolePlayMessagePaneController">
+    <children>
+      <ImageView fx:id="templateBackground" fitHeight="567.0" fitWidth="944.0" layoutX="-70.0" layoutY="-22.0" mouseTransparent="true" opacity="0.74" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/template_bg.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="backgroundImage" fitHeight="438.0" fitWidth="778.0" layoutX="62.0" layoutY="14.0" onMouseClicked="#handleOnMouseClicked" pickOnBounds="true">
+         <image>
+            <Image url="@../images/gui/HPG_Message.png" />
+         </image></ImageView>
+      <Button fx:id="btPreview" layoutX="62.0" layoutY="451.0" maxHeight="-Infinity" maxWidth="778.0" minHeight="-Infinity" minWidth="778.0" mnemonicParsing="false" onAction="#handleOnActionBtPreview" prefHeight="36.0" prefWidth="778.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css" text="&gt;&gt; weiter &gt;&gt;">
+         <font>
+            <Font size="12.0" />
+         </font></Button>
+      <TextArea fx:id="taStoryText" layoutX="246.0" layoutY="75.0" prefHeight="316.0" prefWidth="573.0" styleClass="contentTextAreaBlock" wrapText="true" />
+      <Label fx:id="labHeader" layoutX="253.0" layoutY="44.0" prefHeight="21.0" prefWidth="298.0" text="labHeader" textFill="WHITE" />
+      <Label fx:id="labDate" layoutX="253.0" layoutY="399.0" prefHeight="22.0" prefWidth="255.0" text="labDate" />
+      <Label fx:id="labSender" layoutX="551.0" layoutY="399.0" prefHeight="22.0" prefWidth="255.0" text="labSender" textAlignment="RIGHT" />
+      <Label fx:id="labSenderFaction" layoutX="62.0" layoutY="36.0" prefHeight="37.0" prefWidth="161.0" text="COMSTAR" textAlignment="CENTER">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <Label fx:id="labServiceName" layoutX="62.0" layoutY="391.0" prefHeight="37.0" prefWidth="161.0" text="SERVICE">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="ivSenderLogo" fitHeight="250.0" fitWidth="161.0" layoutX="62.0" layoutY="115.0" pickOnBounds="true" />
+    </children>
+    <stylesheets>
+        <URL value="@../styles/MainFrameStyle.css" />
+    </stylesheets>
+</AnchorPane>

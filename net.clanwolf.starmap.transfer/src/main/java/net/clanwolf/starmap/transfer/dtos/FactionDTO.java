@@ -33,6 +33,7 @@ public class FactionDTO extends Dto {
 	private String shortName;
 	private String color;
 	private String logo;
+	private Long id;
 
 	@SuppressWarnings("unused")
 	public String getName() {
@@ -65,5 +66,13 @@ public class FactionDTO extends Dto {
 
 	public void setLogo(String logo) {
 		this.logo = logo;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 }

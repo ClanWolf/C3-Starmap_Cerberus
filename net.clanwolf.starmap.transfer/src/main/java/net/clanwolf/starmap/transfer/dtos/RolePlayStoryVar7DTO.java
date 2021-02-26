@@ -24,39 +24,105 @@
  * Copyright (c) 2001-2021, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.transfer.enums;
+package net.clanwolf.starmap.transfer.dtos;
 
-/**
- * @author Undertaker
- */
-public enum ROLEPLAYENTRYTYPES {
-	C3_RP_STORY("Story"),
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import net.clanwolf.starmap.transfer.Dto;
 
-	C3_RP_CHAPTER("Chapter"),
 
-	C3_RP_STEP_V1("Step (Normal Story step)"),
+@JsonIdentityInfo(
+		scope= RolePlayStoryVar7DTO.class,
+		generator=ObjectIdGenerators.PropertyGenerator.class,
+		property = "id")
+public class RolePlayStoryVar7DTO extends Dto {
 
-	C3_RP_STEP_V2("Step (Path selection) without Image"),
 
-	C3_RP_STEP_V3("Step (Data input)"),
+	//@Column(name = "ID")
+	private Long id;
 
-	C3_RP_STEP_V4("Step (Dice)"),
+	//@JoinColumn(name = "StoryID")
+	private Long story;
 
-	C3_RP_STEP_V5("Step (Path selection) Image left"),
+	//@Column(name = "Faction")
+	private Long factionID;
 
-	C3_RP_STEP_V6("Step Keypad"),
+	//@Column(name = "ServiceName")
+	private String serviceName;
 
-	C3_RP_STEP_V7("Step Message");
+	//@Column(name = "Header")
+	private String header;
 
-	private final String label;
+	//@Column(name = "Sender")
+	private String sender;
 
-	ROLEPLAYENTRYTYPES(String label) {
-		this.label = label;
+	//@Column(name = "Date")
+	private String date;
+
+	//@JoinColumn(name = "NextStepID")
+	private Long nextStepID;
+
+	public Long getId() {
+		return id;
 	}
 
-	@Override
-	public String toString() {
-		return label;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
+	public Long getStory() {
+		return story;
+	}
+
+	public void setStory(Long story) {
+		this.story = story;
+	}
+
+	public Long getFaction() {
+		return factionID;
+	}
+
+	public void setFaction(Long faction) {
+		this.factionID = faction;
+	}
+
+	public String getServiceName() {
+		return serviceName;
+	}
+
+	public void setServiceName(String serviceName) {
+		this.serviceName = serviceName;
+	}
+
+	public String getHeader() {
+		return header;
+	}
+
+	public void setHeader(String header) {
+		this.header = header;
+	}
+
+	public String getSender() {
+		return sender;
+	}
+
+	public void setSender(String sender) {
+		this.sender = sender;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public Long getNextStepID() {
+		return nextStepID;
+	}
+
+	public void setNextStepID(Long nextStepID) {
+		this.nextStepID = nextStepID;
+	}
 }

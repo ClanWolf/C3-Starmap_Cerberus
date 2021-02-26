@@ -69,4 +69,11 @@ public class BOFaction {
 	public String getShortName() { return factionDTO.getShortName(); }
 
 	public String getName() { return factionDTO.getName(); }
+
+	public Long getID() {return factionDTO.getId();}
+
+	@Override
+	public String toString() {
+		return getName();
+	}
 }

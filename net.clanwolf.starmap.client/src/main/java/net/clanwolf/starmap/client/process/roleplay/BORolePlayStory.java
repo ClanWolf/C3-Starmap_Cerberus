@@ -32,6 +32,7 @@ import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
+import net.clanwolf.starmap.client.process.universe.BOFaction;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.C3PROPS;
 import net.clanwolf.starmap.client.util.C3Properties;
@@ -161,8 +162,30 @@ public class BORolePlayStory {
 	 * Give the default image back
 	 * @return
 	 */
-	private static Image getRPG_DefaultImage(){
+	public static Image getRPG_DefaultImage(){
 		InputStream defaultImageStream = BORolePlayStory.getInstance().getClass().getResourceAsStream("/images/gui/default_Step.png");
+		return new Image(defaultImageStream);
+	}
+
+	/**
+	 * Returns the default image back
+	 * @return
+	 */
+	public static Image getRPG_DefaultMessageImage(){
+		InputStream defaultImageStream = BORolePlayStory.getInstance().getClass().getResourceAsStream("/images/gui/HPG_Message.png");
+		return new Image(defaultImageStream);
+	}
+
+	/**
+	 * Returns the logo from a given faction back
+	 * @param f
+	 * @return
+	 */
+	public static Image getFactionImage(BOFaction f){
+		InputStream defaultImageStream = BORolePlayStory.getInstance().getClass().getResourceAsStream("/images/logos/factions/" + f.getLogo());
+		if(defaultImageStream != null){
+			defaultImageStream = BORolePlayStory.getInstance().getClass().getResourceAsStream("/images/logos/factions/WOB.png");
+		}
 		return new Image(defaultImageStream);
 	}
 
@@ -379,6 +402,7 @@ public class BORolePlayStory {
 		copy.setVar3ID(original.getVar3ID());
 		copy.setVar4ID(original.getVar4ID());
 		copy.setVar6ID(original.getVar6ID());
+		copy.setVar7ID(original.getVar7ID());
 		copy.setNextStepID(original.getNextStepID());
 
 		return copy;
@@ -653,7 +677,22 @@ public class BORolePlayStory {
 				ret = true;
 			}
 		}
+		// Check next step for ROLEPLAYENTRYTYPE C3_RP_STEP_V6
+		if (activeStory != null && activeStory.getVar6ID() != null) {
 
+			if ((activeStory.getVar6ID().getStoryIDSuccess()!= null && activeStory.getVar6ID().getStoryIDSuccess().equals(nextStep.getId()))
+					|| (activeStory.getVar6ID().getStoryIDFailure() != null && activeStory.getVar6ID().getStoryIDFailure().equals(nextStep.getId()))) {
+				ret = true;
+			}
+		}
+
+		// Check next step for ROLEPLAYENTRYTYPE C3_RP_STEP_V7
+		if (activeStory != null && activeStory.getVar7ID() != null) {
+
+			if ((activeStory.getVar7ID().getNextStepID()!= null && activeStory.getVar7ID().getNextStepID().equals(nextStep.getId()))) {
+				ret = true;
+			}
+		}
 		return ret;
 
 	}
@@ -689,7 +728,17 @@ public class BORolePlayStory {
 				&& story.getVar2ID().getOption1StoryID() == null ) {
 			nextStepFound = true;
 
+		} else if(story != null  && story.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V6
+				&& (story.getVar6ID().getStoryIDSuccess() == null ||
+				story.getVar6ID().getStoryIDFailure() == null)) {
+			nextStepFound = true;
+
+		} else if(story != null  && story.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V7
+				&& (story.getVar7ID().getNextStepID() == null )) {
+			nextStepFound = true;
+
 		}
+
 		
 		return nextStepFound;
 	}

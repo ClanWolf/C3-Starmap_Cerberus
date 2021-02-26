@@ -26,7 +26,10 @@
  */
 package net.clanwolf.starmap.client.process.universe;
 
+import javafx.scene.image.Image;
 import net.clanwolf.starmap.client.gui.panes.map.tools.GraphManager;
+import net.clanwolf.starmap.client.nexus.Nexus;
+import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
 import net.clanwolf.starmap.transfer.dtos.*;
 import org.kynosarges.tektosyne.geometry.GeoUtils;
 import org.kynosarges.tektosyne.geometry.PointD;
@@ -34,6 +37,7 @@ import org.kynosarges.tektosyne.geometry.PolygonLocation;
 import org.kynosarges.tektosyne.geometry.VoronoiResults;
 import org.kynosarges.tektosyne.subdivision.Subdivision;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -100,5 +104,18 @@ public class BOUniverse {
 		currentSeason = universeDTO.currentSeason;
 		currentRound = universeDTO.currentRound;
 		currentDate = universeDTO.currentDate;
+	}
+
+	public ArrayList<BOFaction> getFactionList(){
+		ArrayList<BOFaction> factionList = new ArrayList<BOFaction>(factionBOs.values());
+		return factionList;
+	}
+
+	public BOFaction getFactionByID(Long id){
+		for(BOFaction faction : Nexus.getBoUniverse().getFactionList()){
+			if(faction.getID().equals(id))
+				return faction;
+		}
+		return null;
 	}
 }

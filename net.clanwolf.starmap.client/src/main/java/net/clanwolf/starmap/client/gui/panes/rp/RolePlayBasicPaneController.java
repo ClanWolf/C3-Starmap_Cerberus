@@ -158,7 +158,9 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 			case C3_RP_STEP_V6:
 				changePaneAndController(Nexus.getCurrentChar().getStory().getVariante(), "/fxml/RolePlayKeypadPane.fxml");
 				break;
-
+			case C3_RP_STEP_V7:
+				changePaneAndController(Nexus.getCurrentChar().getStory().getVariante(),"/fxml/RolePlayMessagePane.fxml");
+				break;
 			default:
 				break;
 		}

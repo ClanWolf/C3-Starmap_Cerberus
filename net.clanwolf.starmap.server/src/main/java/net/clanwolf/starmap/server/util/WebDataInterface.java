@@ -64,11 +64,11 @@ public class WebDataInterface {
 
 			sb = new StringBuilder();
 			sb.append("SELECT \r\n");
-			//sb.append("         F.ID               AS sid,              \r\n");
 			sb.append("         F.Name_en          AS name,             \r\n");
 			sb.append("         F.ShortName        AS short,            \r\n");
 			sb.append("         F.Color            AS color,            \r\n");
-			sb.append("         F.Logo             AS logo              \r\n");
+			sb.append("         F.Logo             AS logo,              \r\n");
+			sb.append("         F.Id               AS id                \r\n");
 			sb.append("FROM     FACTION                F;");
 			selects.put(SystemListTypes.Factions.name(), sb.toString());
 
@@ -238,6 +238,7 @@ public class WebDataInterface {
 							f.setShortName(rs.getString("short"));
 							f.setColor(rs.getString("color"));
 							f.setLogo(rs.getString("logo"));
+							f.setId(rs.getLong("id"));
 
 							universe.factions.put(f.getShortName(), f);
 						}

@@ -81,6 +81,8 @@ public class RolePlayStoryDTO extends Dto {
     private RolePlayStoryVar4DTO var4ID;
 	//@JoinColumn(name = "Var6ID")
 	private RolePlayStoryVar6DTO var6ID;
+	//@JoinColumn(name = "Var7ID")
+	private RolePlayStoryVar7DTO var7ID;
 	//@JoinColumn(name = "NextStepID")
 	private Long nextStepID;
 	// @Column(name = "URL")
@@ -446,6 +448,14 @@ public class RolePlayStoryDTO extends Dto {
 
 	public void setWidthText(Integer widthText) {
 		this.widthText = widthText;
+	}
+
+	public RolePlayStoryVar7DTO getVar7ID() {
+		return var7ID;
+	}
+
+	public void setVar7ID(RolePlayStoryVar7DTO var7ID) {
+		this.var7ID = var7ID;
 	}
 
 	@Override

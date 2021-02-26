@@ -43,13 +43,17 @@ import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
+import net.clanwolf.starmap.client.process.universe.BOFaction;
+import net.clanwolf.starmap.client.process.universe.BOUniverse;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.client.util.Tools;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.*;
+import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
+import net.clanwolf.starmap.transfer.enums.UNIVERSECONTEXT;
 import net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes.ROLEPLAYINPUTDATATYPES;
 import net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes.ROLEPLAYOBJECTTYPES;
 
@@ -68,10 +72,14 @@ import java.util.ResourceBundle;
  */
 public class StoryEditorPaneController extends AbstractC3Controller implements ActionCallBackListener {
 
+
+	//------------------- Dialog -------------------
 	@FXML
 	Button buttonSave;
 	@FXML
 	Button buttonCancel;
+
+	//------------------- Treeview -------------------
 	@FXML
 	Button btNewStory;
 	@FXML
@@ -83,7 +91,21 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	@FXML
 	Button btRemove;
 	@FXML
+	private TreeView<RolePlayStoryDTO> treeStory;
+	@FXML
+	TabPane tabPaneStory;
+	@FXML
+	private Tab tabBasic, tabBasic2, tabBasic3, tabBasic4, tabBasic5, tabBasic6, tabBasic7, tabBasic8, tabBasic9;
+
+	//------------------- Char assignment -------------------
+	@FXML
 	Button btAddChar, btRemoveChar;
+	@FXML
+	private ListView<RolePlayCharacterDTO> lvAllCharacters, lvAssignedChar;
+	@FXML
+	Label labAssignedChar, labAllCharacters;
+
+	//------------------- Basic rpg -------------------
 	@FXML
 	Button btSelectImageFile, btSelectVoiceFile, btSelectMovieFile;
 	@FXML
@@ -91,47 +113,69 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	@FXML
 	Button btSortOrderUp, btSortOrderDown;
 	@FXML
-	Button btDeleteStoryOption1, btDeleteStoryOption2, btDeleteStoryOption3, btDeleteStoryOption4;
-	@FXML
-	Button btDeleteStoryOptionNextStep;
+	TextField tfStoryName, tfImage, tfVoice, tfMovie, tfXPosText, tfYPosText, tfHeightText, tfWidthText;
 	@FXML
 	Label labStoryName, labDescription, labStorytext, labRolePlayOff, labStoryVariante, labImage, labVoice, labMovie;
 	@FXML
-	Label labPathOption1, labPathOption2, labPathOption3,labPathOption4, labDataInputDataset;
-	@FXML
-	Label labDiceLabel, labDiceScore, labDiceScoreLess, labDiceScoreEqual, labDiceScoreMore, labAssignedChar, labAllCharacters, labCode,labAttempt,labAttemptSuccsess,labAttemptFailure;
-	@FXML
-	TextField tfStoryName, tfImage, tfVoice, tfMovie, tfCode, tfAttempt, tfXPosText, tfYPosText, tfHeightText, tfWidthText;
-	@FXML
 	ComboBox<ROLEPLAYENTRYTYPES> cbStoryVarianten;
 	@FXML
-	ComboBox<RolePlayStoryDTO> cbStoryPath1, cbStoryPath2, cbStoryPath3, cbStoryPath4, cbNextStep_V3;
+	TextArea taDescription, taStorytext, taRolePlayOff;
+	@FXML
+	private Label labImageAction, labVoiceAction, labMovieAction;
+	@FXML
+	private TextField tfSortOrder;
+
+	//------------------- Path of the story -------------------
+	@FXML
+	ComboBox<RolePlayStoryDTO> cbStoryPath1, cbStoryPath2, cbStoryPath3, cbStoryPath4;
+	@FXML
+	TextField tfStoryPath1, tfStoryPath2, tfStoryPath3, tfStoryPath4;
+	@FXML
+	Label labPathOption1, labPathOption2, labPathOption3,labPathOption4;
+	@FXML
+	Button btDeleteStoryOption1, btDeleteStoryOption2, btDeleteStoryOption3, btDeleteStoryOption4;
+
+	//------------------- Special form -------------------
 	@FXML
 	ComboBox<ROLEPLAYINPUTDATATYPES> cbDatafield1, cbDatafield2, cbDatafield3, cbDatafield4, cbDatafield5;
 	@FXML
 	ComboBox<ROLEPLAYOBJECTTYPES> cbroleplayinputdatatypes;
 	@FXML
+	ComboBox<RolePlayStoryDTO> cbNextStep_V3;
+	@FXML
+	Label labDataInputDataset;
+
+	//------------------- Dice -------------------
+	@FXML
+	Label labDiceLabel, labDiceScore, labDiceScoreLess, labDiceScoreEqual, labDiceScoreMore;
+	@FXML
 	ComboBox<RolePlayStoryDTO> cbDiceScoreLess, cbDiceScoreEqual, cbDiceScoreMore;
+	@FXML
+	TextField tfDiceScore;
+
+	//------------------- Next Step -------------------
 	@FXML
 	ComboBox<RolePlayStoryDTO> cbNextStep_V1;
 	@FXML
+	Button btDeleteStoryOptionNextStep;
+
+	//------------------- Keypad -------------------
+	@FXML
+	Label labCode,labAttempt,labAttemptSuccsess,labAttemptFailure;
+	@FXML
 	ComboBox<RolePlayStoryDTO> cbNextStep_AttemptSuccess, cbNextStep_AttemptFailure;
 	@FXML
-	TextField tfStoryPath1, tfStoryPath2, tfStoryPath3, tfStoryPath4, tfDiceScore;
+	TextField tfCode, tfAttempt;
+
+	//---------------------- HPG Message ----------------------
 	@FXML
-	TextArea taDescription, taStorytext, taRolePlayOff;
+	private ComboBox<RolePlayStoryDTO> cbNextStepV7;
 	@FXML
-	private TreeView<RolePlayStoryDTO> treeStory;
+	private TextField tfSender,tfSenddate,tfHeader,tfServiceName;
 	@FXML
-	TabPane tabPaneStory;
-	@FXML
-	private Tab tabBasic, tabBasic2, tabBasic3, tabBasic4, tabBasic5, tabBasic6, tabBasic7,tabBasic8;
-	@FXML
-	private ListView<RolePlayCharacterDTO> lvAllCharacters, lvAssignedChar;
-	@FXML
-	private Label labImageAction, labVoiceAction, labMovieAction;
-	@FXML
-	private TextField tfSortOrder;
+	private ComboBox<BOFaction> cbFaction;
+
+	//------------------- private fields -------------------
 
 	private TreeItem<RolePlayStoryDTO> root;
 	private TreeItem<RolePlayStoryDTO> selected;
@@ -149,6 +193,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	private static final int MODE_IS_NEW = 1;
 	private static final int MODE_IS_EDIT = 2;
 
+	//------------------- Methoden ------------------
 	@Override
 	public void addActionCallBackListeners() {
 		ActionManager.addActionCallbackListener(ACTIONS.CHANGE_LANGUAGE, this);
@@ -226,7 +271,15 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 					tabPaneStory.getTabs().remove(tabBasic6);
 					tabPaneStory.getTabs().remove(tabBasic7);
 					tabPaneStory.getTabs().remove(tabBasic8);
+					tabPaneStory.getTabs().remove(tabBasic9);
 
+					//Create universe if not exists
+					if(Nexus.getBoUniverse() == null) {
+						GameState state = new GameState();
+						state.setMode(GAMESTATEMODES.GET_UNIVERSE_DATA);
+						state.addObject(UNIVERSECONTEXT.HH);
+						Nexus.fireNetworkEvent(state);
+					}
 				}
 				break;
 			case SAVE_ROLEPLAY_STORY_OK:
@@ -350,6 +403,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	}
 
 	/* ----------------- FXML begin ----------------- */
+
 	@FXML
 	private void handleNewStoryButtonClick() {
 		C3Logger.info("handleNewButtonClick");
@@ -836,6 +890,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 		tabPaneStory.getTabs().remove(tabBasic6);
 		tabPaneStory.getTabs().remove(tabBasic7);
 		tabPaneStory.getTabs().remove(tabBasic8);
+		tabPaneStory.getTabs().remove(tabBasic9);
 
 		// Tab for character assignment
 		if (selected != null && selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STORY) {
@@ -908,6 +963,17 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 		} else {
 			if (tabPaneStory.getTabs().contains(tabBasic8)) {
 				tabPaneStory.getTabs().remove(tabBasic8);
+			}
+		}
+
+		// Tab for HPG-Message
+		if (selected != null && cbStoryVarianten.getSelectionModel().getSelectedItem() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V7) {
+			if (!tabPaneStory.getTabs().contains(tabBasic9)) {
+				tabPaneStory.getTabs().add(tabBasic9);
+			}
+		} else {
+			if (tabPaneStory.getTabs().contains(tabBasic9)) {
+				tabPaneStory.getTabs().remove(tabBasic9);
 			}
 		}
 	}
@@ -1001,6 +1067,9 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 		cbDatafield4.setConverter(new RPInputDataTypesStringConverter());
 		cbDatafield5.setConverter(new RPInputDataTypesStringConverter());
 
+		// Variante 7
+		cbNextStepV7.setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
+		cbFaction.setCellFactory(boFactionListView -> new RPCellFactoryFaction<BOFaction>());
 	}
 
 	private void fillComboBoxWithDataInputTypes(){
@@ -1057,6 +1126,8 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 
 			cbNextStep_V3.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
 
+			cbNextStepV7.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
+			cbFaction.getItems().setAll(Nexus.getBoUniverse().getFactionList());
 		}
 	}
 
@@ -1186,6 +1257,13 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 			tfWidthText.setDisable(false);
 			tfHeightText.setDisable(false);
 
+			cbNextStepV7.setDisable(false);;
+			tfSender.setDisable(false);
+			tfSenddate.setDisable(false);
+			tfHeader.setDisable(false);
+			tfServiceName.setDisable(false);
+			cbFaction.setDisable(false);
+
 		} else {
 			tfStoryName.setDisable(true);
 			cbStoryVarianten.setDisable(true);
@@ -1243,6 +1321,13 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 			tfYPosText.setDisable(true);
 			tfWidthText.setDisable(true);
 			tfHeightText.setDisable(true);
+
+			cbNextStepV7.setDisable(true);;
+			tfSender.setDisable(true);
+			tfSenddate.setDisable(true);
+			tfHeader.setDisable(true);
+			tfServiceName.setDisable(true);
+			cbFaction.setDisable(true);
 
 		}
 
@@ -1400,6 +1485,22 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 				tfAttempt.setText(selected.getValue().getVar6ID().getAttempts().toString());
 				cbNextStep_AttemptSuccess.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getVar6ID().getStoryIDSuccess()));
 				cbNextStep_AttemptFailure.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getVar6ID().getStoryIDFailure()));
+			} else {
+				tfCode.clear();
+				tfAttempt.clear();
+				cbNextStep_AttemptSuccess.setValue(null);
+				cbNextStep_AttemptFailure.setValue(null);
+			}
+
+			// set data for story variante 7
+			if (selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V7 && selected.getValue().getVar7ID() != null) {
+				cbNextStepV7.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getVar7ID().getNextStepID()));
+				tfSender.setText(selected.getValue().getVar7ID().getSender());
+				tfSenddate.setText(selected.getValue().getVar7ID().getDate());
+				tfHeader.setText(selected.getValue().getVar7ID().getHeader());
+				tfServiceName.setText(selected.getValue().getVar7ID().getServiceName());
+				cbFaction.setValue(Nexus.getBoUniverse().getFactionByID(selected.getValue().getVar7ID().getFaction()));
+
 			} else {
 				tfCode.clear();
 				tfAttempt.clear();
@@ -1635,8 +1736,37 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 			rp.setVar6ID(null);
 		}
 
-		return rp;
+		// set data for variante 7
+		if (rp.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V7) {
+			RolePlayStoryVar7DTO rpVar7 = rp.getVar7ID();
+			if (rpVar7 == null) {
+				rpVar7 = new RolePlayStoryVar7DTO();
+				rpVar7.setStory(rp.getId());
+			}
 
+			rpVar7.setSender(tfSender.getText());
+			rpVar7.setDate(tfSenddate.getText());
+			rpVar7.setHeader(tfHeader.getText());
+			rpVar7.setServiceName(tfServiceName.getText());
+
+			if(cbNextStepV7.getValue() != null) {
+				rpVar7.setNextStepID(cbNextStepV7.getValue().getId());
+			} else {
+				rpVar7.setNextStepID(null);
+			}
+
+			if(cbFaction.getValue() != null) {
+				rpVar7.setFaction(cbFaction.getValue().getID());
+			} else {
+				rpVar7.setFaction(null);
+			}
+
+			rp.setVar7ID(rpVar7);
+		} else {
+			rp.setVar7ID(null);
+		}
+
+		return rp;
 	}
 
 	private void fileTransfer () {
@@ -1761,6 +1891,13 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 		cbDatafield3.setValue(null);
 		cbDatafield4.setValue(null);
 		cbDatafield5.setValue(null);
+
+		cbNextStepV7.setValue(null);
+		tfSender.clear();
+		tfSenddate.clear();
+		tfHeader.clear();
+		tfServiceName.clear();
+		cbFaction.setValue(null);
 	}
 
 	private void createListeners () {
@@ -1830,6 +1967,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	public void warningOffAction () {
 	}
 
+	//------------------- Inner classes -------------------
 	private final class RPCellFactory<RolePlayStoryDTO> extends ListCell<net.clanwolf.starmap.transfer.dtos.RolePlayStoryDTO> {
 
 		@Override
@@ -1841,7 +1979,19 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 				setText(item.getStoryName() + " (" + item.getSortOrder().toString() + ")");
 			}
 		}
+	}
 
+	private final class RPCellFactoryFaction<BOFaction> extends ListCell<net.clanwolf.starmap.client.process.universe.BOFaction> {
+
+		@Override
+		protected void updateItem(net.clanwolf.starmap.client.process.universe.BOFaction item, boolean empty) {
+			super.updateItem(item, empty);
+			if (empty) {
+				setText(null);
+			} else {
+				setText(item.getName());
+			}
+		}
 	}
 
 	private final class RPCellFactoryDataInput<ROLEPLAYINPUTDATATYPES> extends ListCell<ROLEPLAYINPUTDATATYPES> {
@@ -1853,10 +2003,8 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 				setText(null);
 			} else {
 				setText(Internationalization.getString(item.toString()));
-
 			}
 		}
-
 	}
 
 	private final class RPInputDataTypesStringConverter extends StringConverter<ROLEPLAYINPUTDATATYPES> {
