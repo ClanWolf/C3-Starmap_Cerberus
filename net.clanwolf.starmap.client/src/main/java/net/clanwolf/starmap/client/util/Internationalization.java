@@ -128,7 +128,7 @@ public abstract class Internationalization {
 			}
 			return bundle.getString(key);
 		} catch (MissingResourceException mre) {
-			C3Logger.warning("Resource <" + key + "> can't be found in bundle: " + bundle);
+			// C3Logger.warning("Resource <" + key + "> can't be found in bundle: " + bundle);
 		}
 		return key;
 	}

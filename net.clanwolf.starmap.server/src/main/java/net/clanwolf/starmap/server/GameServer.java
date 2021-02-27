@@ -27,6 +27,7 @@
 package net.clanwolf.starmap.server;
 
 import io.nadron.server.ServerManager;
+import net.clanwolf.client.mail.MailManager;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.server.util.HeartBeatTimer;
 import net.clanwolf.starmap.server.util.CheckShutdownFlagTimer;
@@ -100,6 +101,18 @@ public class GameServer {
 			// check shutdown flagfile every 30 seconds
 			Timer checkShutdownFlag = new Timer();
 			checkShutdownFlag.schedule(new CheckShutdownFlagTimer(serverBaseDir), 1000, 1000 * 10);
+
+			C3Logger.info("Sending info mail.");
+			String[] receivers = { "warwolfen@gmail.com", "werner.kewenig@arcor.de" };
+			boolean sent = false;
+			sent = MailManager.sendMail("c3@clanwolf.net", receivers, "C3 Server is up again", "C3 Server started.", false);
+			if (sent) {
+				// sent
+				C3Logger.info("Mail sent.");
+			} else {
+				// error during email sending
+				C3Logger.info("Error during mail dispatch.");
+			}
 
 			// World world = ctx.getBean(World.class);
 			// GameRoom room1 = (GameRoom)ctx.getBean("Zombie_ROOM_1");

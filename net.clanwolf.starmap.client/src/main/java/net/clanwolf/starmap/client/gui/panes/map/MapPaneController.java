@@ -569,8 +569,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				Image imagePlanet = null;
 				String systemImageName = String.format("%03d", Integer.parseInt(sys.getSystemImageName()));
 				try {
-					C3Logger.debug("Planet image: /images/planets/" + systemImageName + ".png");
-					C3Logger.debug("SystemImageName from DB: " + systemImageName);
+//					C3Logger.debug("Planet image: /images/planets/" + systemImageName + ".png");
+//					C3Logger.debug("SystemImageName from DB: " + systemImageName);
 					imagePlanet = new Image(getClass().getResourceAsStream("/images/planets/" + systemImageName + ".png"));
 				} catch (Exception e) {
 					//e.printStackTrace();

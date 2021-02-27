@@ -506,7 +506,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private void moveMenuIndicator(int pos) {
 		if (!adminMenuActive) {
 			Platform.runLater(() -> {
-				C3Logger.info("Moving menu indicator to: " + pos);
+//				C3Logger.info("Moving menu indicator to: " + pos);
 				hudinfo1.setOpacity(1.0);
 				hudinfo1.setCache(true);
 				hudinfo1.setCacheHint(CacheHint.SPEED);

@@ -233,7 +233,7 @@ public class NodeGestures {
 	private EventHandler<MouseEvent> getOnMouseClickedEventHandler = new EventHandler<MouseEvent>() {
 		public void handle(MouseEvent event) {
 			if (event.isSecondaryButtonDown()) {
-				C3Logger.info("RIGHTCLICK");
+//				C3Logger.info("RIGHTCLICK");
 			}
 
 			// left mouse button click
