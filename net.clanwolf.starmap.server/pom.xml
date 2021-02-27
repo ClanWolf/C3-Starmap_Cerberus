@@ -27,6 +27,11 @@
 		</dependency>
 		<dependency>
 			<groupId>net.clanwolf.starmap</groupId>
+			<artifactId>net.clanwolf.starmap.mail</artifactId>
+			<version>5.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>net.clanwolf.starmap</groupId>
 			<artifactId>io.nadron.server</artifactId>
 			<version>${project.version}</version>
 			<!--			<scope>compile</scope>-->
@@ -230,12 +235,6 @@
 			<groupId>com.voodoodyne.jackson.jsog</groupId>
 			<artifactId>jackson-jsog</artifactId>
 			<version>1.1.1</version>
-		</dependency>
-		<dependency>
-			<groupId>net.clanwolf.starmap</groupId>
-			<artifactId>net.clanwolf.starmap.mail</artifactId>
-			<version>5.2.0</version>
-			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 

@@ -62,7 +62,7 @@ public class CWIRCBot extends ListenerAdapter {
 	private static UserChannelDao<User, Channel> channel = null;
 	private static final boolean server = true;
 	private static boolean started = false;
-	private static final String ircUserName = "Ulric2";
+	private static final String ircUserName = "Ulric";
 	private static final String ircServerUrl = "port80a.se.quakenet.org";
 	private static final String ircServerChannel = "#c3.clanwolf.net";
 	private static final String ircUserListFileName = "/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/server/ircUser.lst";
