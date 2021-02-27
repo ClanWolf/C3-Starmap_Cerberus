@@ -120,6 +120,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	 * Initializes the universe star map from the universe business object.
 	 */
 	private void initializeUniverseMap() {
+		boUniverse = Nexus.getBoUniverse();
 		if (boUniverse != null) {
 			String dims = C3Properties.getProperty(C3PROPS.MAP_DIMENSIONS);
 			int d = Integer.valueOf(dims);
@@ -667,25 +668,6 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	@Override
 	public boolean handleAction(ACTIONS action, ActionObject o) {
 		switch (action) {
-			case NEW_UNIVERSE_RECEIVED:
-				if (!universeMapGenerationStarted) {
-					universeMapGenerationStarted = true;
-					// A new universeDTO has been broadcasted by the server
-					UniverseDTO universeDTO = Nexus.getUniverseDTO();
-					boUniverse = new BOUniverse(universeDTO);
-					Nexus.setBOUniverse(boUniverse);
-
-					int season = boUniverse.currentSeason;
-					int round = boUniverse.currentRound;
-					String date = boUniverse.currentDate;
-
-					Platform.runLater(() -> {
-						initializeUniverseMap();
-					});
-				}
-				ActionManager.getAction(ACTIONS.UPDATE_GAME_INFO).execute();
-				break;
-
 			case UPDATE_UNIVERSE:
 				break;
 
@@ -724,11 +706,13 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					AbstractC3Pane p = (AbstractC3Pane) o.getObject();
 					if ("MapPane".equals(p.getPaneName())) {
 						if (!firstCreationDone) {
-							C3Logger.info("Sending request for universe data.");
-							GameState state = new GameState();
-							state.setMode(GAMESTATEMODES.GET_UNIVERSE_DATA);
-							state.addObject(UNIVERSECONTEXT.HH);
-							Nexus.fireNetworkEvent(state);
+							if (!universeMapGenerationStarted) {
+								universeMapGenerationStarted = true;
+								Platform.runLater(() -> {
+									initializeUniverseMap();
+								});
+							}
+							ActionManager.getAction(ACTIONS.UPDATE_GAME_INFO).execute();
 						} else {
 							Platform.runLater(() -> {
 								buildGuiEffect();

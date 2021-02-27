@@ -10,9 +10,9 @@ module net.clanwolf.starmap.server {
 	requires java.persistence;
 	requires net.clanwolf.starmap.transfer;
 	requires net.clanwolf.starmap.logging;
+	requires net.clanwolf.starmap.mail;
 	requires jackson.mapper.asl;
 	requires json.simple;
-	requires mail;
 	requires net.bytebuddy;
 	requires java.xml.bind;
 	requires com.fasterxml.jackson.core;

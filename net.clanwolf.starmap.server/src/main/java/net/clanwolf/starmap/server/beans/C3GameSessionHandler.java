@@ -38,7 +38,9 @@ import net.clanwolf.starmap.server.persistence.EntityConverter;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.UserDAO;
 import net.clanwolf.starmap.server.persistence.pojos.UserPOJO;
+import net.clanwolf.starmap.server.util.WebDataInterface;
 import net.clanwolf.starmap.transfer.GameState;
+import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 
 import java.sql.Timestamp;
@@ -201,6 +203,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		//user.setCharacterList(characterList);
 
 		state_userdata.addObject(user);
+		state_userdata.addObject2(WebDataInterface.getUniverse());
 		state_userdata.setReceiver(session.getId());
 
 		C3GameSessionHandler.sendNetworkEvent(session, state_userdata);

@@ -210,17 +210,17 @@
 			<artifactId>javax.el-api</artifactId>
 			<version>3.0.1-b06</version>
 		</dependency>
-		<dependency>
-			<groupId>javax.mail</groupId>
-			<artifactId>mail</artifactId>
-			<version>1.4.7</version>
-			<exclusions>
-				<exclusion>
-					<groupId>javax.activation</groupId>
-					<artifactId>activation</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>javax.mail</groupId>-->
+<!--			<artifactId>mail</artifactId>-->
+<!--			<version>1.4.7</version>-->
+<!--			<exclusions>-->
+<!--				<exclusion>-->
+<!--					<groupId>javax.activation</groupId>-->
+<!--					<artifactId>activation</artifactId>-->
+<!--				</exclusion>-->
+<!--			</exclusions>-->
+<!--		</dependency>-->
 <!--		<dependency>-->
 <!--			<groupId>com.fasterxml.jackson.core</groupId>-->
 <!--			<artifactId>jackson-databind</artifactId>-->
@@ -230,6 +230,12 @@
 			<groupId>com.voodoodyne.jackson.jsog</groupId>
 			<artifactId>jackson-jsog</artifactId>
 			<version>1.1.1</version>
+		</dependency>
+		<dependency>
+			<groupId>net.clanwolf.starmap</groupId>
+			<artifactId>net.clanwolf.starmap.mail</artifactId>
+			<version>5.2.0</version>
+			<scope>compile</scope>
 		</dependency>
 	</dependencies>
 

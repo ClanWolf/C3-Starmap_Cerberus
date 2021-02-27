@@ -272,14 +272,6 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 					tabPaneStory.getTabs().remove(tabBasic7);
 					tabPaneStory.getTabs().remove(tabBasic8);
 					tabPaneStory.getTabs().remove(tabBasic9);
-
-					//Create universe if not exists
-					if(Nexus.getBoUniverse() == null) {
-						GameState state = new GameState();
-						state.setMode(GAMESTATEMODES.GET_UNIVERSE_DATA);
-						state.addObject(UNIVERSECONTEXT.HH);
-						Nexus.fireNetworkEvent(state);
-					}
 				}
 				break;
 			case SAVE_ROLEPLAY_STORY_OK:

@@ -62,7 +62,7 @@ public class CWIRCBot extends ListenerAdapter {
 	private static UserChannelDao<User, Channel> channel = null;
 	private static final boolean server = true;
 	private static boolean started = false;
-	private static final String ircUserName = "Ulric";
+	private static final String ircUserName = "Ulric2";
 	private static final String ircServerUrl = "port80a.se.quakenet.org";
 	private static final String ircServerChannel = "#c3.clanwolf.net";
 	private static final String ircUserListFileName = "/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/server/ircUser.lst";
@@ -399,6 +399,17 @@ public class CWIRCBot extends ListenerAdapter {
 		}
 	}
 
+	private void botJoinedMail() {
+		String sender = "c3@clanwolf.net";
+		String[] receivers = { "keshik@googlegroups.com" };
+		String subject = "Bot has joined IRC";
+		String content = "Ulric has joined IRC channel.";
+		boolean success = MailManager.sendMail(sender, receivers, subject, content, false);
+		if (!success) {
+			send("Mail could not be sent to inform about new users!");
+		}
+	}
+
 	public static void main(String[] args) throws Exception {
 		int oneMinute = 1000 * 60;
 		dbc = new DBConnection();
@@ -412,6 +423,7 @@ public class CWIRCBot extends ListenerAdapter {
 		randomTextDropTimer.schedule(randomTextDrop, 1000, 3 * oneMinute);
 
 		CWIRCBot cwBot = new CWIRCBot();
+		cwBot.botJoinedMail();
 		userlistDrop.setBot(cwBot);
 		randomTextDrop.setBot(cwBot);
 		Internationalization.setBot(cwBot);

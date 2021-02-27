@@ -51,7 +51,7 @@ class C3GameSessionHandlerUniverse {
 			// state_universe.setReceiver();
 
 //			gm.sendBroadcast(Events.networkEvent(state_universe));
-			C3GameSessionHandler.sendBroadCast(gm,state_universe );
+			C3GameSessionHandler.sendBroadCast(gm, state_universe);
 		}
 	}
 }

@@ -33,6 +33,7 @@ import io.nadron.client.event.NetworkEvent;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionManager;
+import net.clanwolf.starmap.client.process.universe.BOUniverse;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.client.process.logout.Logout;
 import net.clanwolf.starmap.transfer.GameState;
@@ -69,6 +70,8 @@ public class EventCommunications {
 					// set current user
 					Nexus.setUser((UserDTO) state.getObject());
 					C3Logger.info("EventCommunications.onDataIn: myPlayerSessionID: -> " + Nexus.getMyPlayerSessionID());
+
+					Nexus.setBOUniverse(new BOUniverse((UniverseDTO) state.getObject2()));
 
 					// own playersession on server
 					Nexus.setMyPlayerSessionID(state.getReceiver());
