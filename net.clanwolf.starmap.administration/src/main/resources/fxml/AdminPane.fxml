@@ -6,41 +6,49 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
 <?import javafx.scene.control.TabPane?>
-<?import javafx.scene.control.TitledPane?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.client.administration.security.AdminGuiController">
+<AnchorPane maxHeight="600.0" maxWidth="800.0" minHeight="600.0" minWidth="800.0" prefHeight="600.0" prefWidth="800.0" snapToPixel="false" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.client.administration.security.AdminPaneController">
    <children>
-      <TitledPane animated="false" prefHeight="516.0" prefWidth="676.0" text="untitled">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="478.0" prefWidth="674.0">
-               <children>
-                  <TabPane layoutX="19.0" layoutY="27.0" prefHeight="412.0" prefWidth="637.0" tabClosingPolicy="UNAVAILABLE">
-                    <tabs>
-                      <Tab text="Untitled Tab 1">
-                        <content>
-                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
-                                 <children>
-                                    <CheckBox layoutX="56.0" layoutY="78.0" mnemonicParsing="false" text="CheckBox" />
-                                    <CheckBox layoutX="56.0" layoutY="117.0" mnemonicParsing="false" text="CheckBox" />
-                                    <ComboBox layoutX="148.0" layoutY="29.0" prefHeight="28.0" prefWidth="264.0" />
-                                    <Label layoutX="56.0" layoutY="35.0" text="Label" />
-                                 </children>
-                              </AnchorPane>
-                        </content>
-                      </Tab>
-                      <Tab text="Untitled Tab 2">
-                        <content>
-                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-                        </content>
-                      </Tab>
-                    </tabs>
-                  </TabPane>
-                  <Button layoutX="594.0" layoutY="448.0" mnemonicParsing="false" text="Button" />
-               </children>
-            </AnchorPane>
-        </content>
-      </TitledPane>
+      <TabPane layoutY="120.0" prefHeight="422.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE">
+        <tabs>
+          <Tab text="Untitled Tab 1">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="269.0" prefWidth="486.0">
+                     <children>
+                        <CheckBox layoutX="14.0" layoutY="78.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="650.0" text="CheckBox" />
+                        <CheckBox layoutX="14.0" layoutY="104.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="650.0" text="CheckBox" />
+                        <ComboBox layoutX="76.0" layoutY="25.0" prefHeight="28.0" prefWidth="709.0" AnchorPane.rightAnchor="15.0" />
+                        <Label layoutX="14.0" layoutY="30.0" prefHeight="18.0" prefWidth="44.0" text="User:" />
+                        <Label fx:id="labelDescription1" alignment="CENTER" contentDisplay="CENTER" layoutX="671.0" layoutY="77.0" mouseTransparent="true" prefHeight="40.0" prefWidth="113.0" style="-fx-background-color: #a9a9a9;" text="432" textAlignment="CENTER" textFill="#9a3e31">
+                           <font>
+                              <Font name="System Bold" size="25.0" />
+                           </font>
+                        </Label>
+                        <CheckBox layoutX="14.0" layoutY="130.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="650.0" text="CheckBox" />
+                        <CheckBox layoutX="14.0" layoutY="156.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="650.0" text="CheckBox" />
+                        <CheckBox layoutX="14.0" layoutY="182.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="650.0" text="CheckBox" />
+                        <CheckBox layoutX="14.0" layoutY="208.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="650.0" text="CheckBox" />
+                        <CheckBox layoutX="14.0" layoutY="234.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="650.0" text="CheckBox" />
+                     </children>
+                  </AnchorPane>
+            </content>
+          </Tab>
+          <Tab text="Untitled Tab 2">
+            <content>
+              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+            </content>
+          </Tab>
+        </tabs>
+      </TabPane>
+      <Button layoutX="730.0" layoutY="554.0" mnemonicParsing="false" text="Button" />
+      <Label fx:id="labelDescription" layoutX="132.0" layoutY="14.0" prefHeight="32.0" prefWidth="658.0" text="Description" />
+      <ImageView fx:id="ivLogo" fitHeight="100.0" fitWidth="100.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icons/C3_Icon2.png" />
+         </image></ImageView>
    </children>
 </AnchorPane>
