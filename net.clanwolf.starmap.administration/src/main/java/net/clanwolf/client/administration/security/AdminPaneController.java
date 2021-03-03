@@ -33,10 +33,7 @@ import javafx.scene.layout.VBox;
 import net.clanwolf.client.administration.util.Internationalization;
 import net.clanwolf.starmap.security.enums.PRIVILEGES;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class AdminPaneController {
 
@@ -77,6 +74,7 @@ public class AdminPaneController {
 		sMessagesPrivileges = ResourceBundle.getBundle("MessagesPrivilegeBundle", locale);
 
 		VBox root = new VBox();
+		HashMap<Integer, CheckBox> boxes = new HashMap<Integer, CheckBox>();
 		int j = 1;
 		int jj = 0;
 		Iterator i = Arrays.stream(PRIVILEGES.values()).sequential().iterator();
@@ -87,9 +85,13 @@ public class AdminPaneController {
 			if (!"DUMMY".equals(desc)) {
 				System.out.println(j + " " + p + " --- " + desc);
 				CheckBox cb = new CheckBox("[" + String.format("%02d", j) + "] - " + desc);
+				cb.setOnAction(event -> {
+					System.out.println("hier");
+				});
 				cb.setPrefWidth(630);
 				cb.setPrefHeight(25);
 				root.getChildren().add(cb);
+				boxes.put(j, cb);
 				jj++;
 			}
 			j++;
