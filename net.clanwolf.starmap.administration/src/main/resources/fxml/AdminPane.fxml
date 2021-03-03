@@ -39,7 +39,7 @@
          <image>
             <Image url="@../icons/C3_Icon2.png" />
          </image></ImageView>
-      <Label fx:id="labelPrivCode" alignment="CENTER" contentDisplay="CENTER" layoutX="540.0" layoutY="21.0" mouseTransparent="true" prefHeight="40.0" prefWidth="247.0" style="-fx-background-color: #a9a9a9;" text="432" textAlignment="CENTER" textFill="#9a3e31">
+      <Label fx:id="labelPrivCode" alignment="CENTER" contentDisplay="CENTER" layoutX="540.0" layoutY="21.0" mouseTransparent="true" prefHeight="40.0" prefWidth="247.0" style="-fx-background-color: #a9a9a9;" text="0" textAlignment="CENTER" textFill="#9a3e31">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>

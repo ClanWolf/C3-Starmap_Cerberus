@@ -44,7 +44,7 @@ public class AdminPaneController {
 	ImageView ivLogo;
 
 	@FXML
-	Label labelDescription, labelUser;
+	Label labelDescription, labelUser, labelPrivCode;
 
 	@FXML
 	Tab tabPrivileges;
@@ -63,6 +63,30 @@ public class AdminPaneController {
 	@FXML
 	public void btnCancelClicked() {
 //		System.out.println("Clicked Cancel");
+	}
+
+	private void calculatePrivCode() {
+		long privCode = 0;
+		Iterator<Integer> it = privilegeBoxes.keySet().iterator();
+		while (it.hasNext()) {
+			Integer key = it.next();
+			CheckBox b = privilegeBoxes.get(key);
+			if (b.isSelected()) {
+				if (key == 64) {
+					privCode = -1;
+					break;
+				}
+				privCode = privCode + key;
+			} else {
+				//
+			}
+		}
+		System.out.println("PrivCode: " + privCode);
+		labelPrivCode.setText("" + privCode);
+	}
+
+	private void setCheckBoxesForUser() {
+		// TODO: Inititalize privileges for user
 	}
 
 	public void init(Locale locale) {
@@ -87,7 +111,7 @@ public class AdminPaneController {
 				System.out.println(j + " " + p + " --- " + desc);
 				CheckBox cb = new CheckBox("[" + String.format("%02d", j) + "] - " + desc);
 				cb.setOnAction(event -> {
-					System.out.println("hier");
+					calculatePrivCode();
 				});
 				cb.setPrefWidth(630);
 				cb.setPrefHeight(25);
