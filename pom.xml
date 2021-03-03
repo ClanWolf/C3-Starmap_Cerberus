@@ -64,6 +64,7 @@
 		<module>net.clanwolf.starmap.ircbot</module>
 		<module>net.clanwolf.starmap.mail</module>
 		<module>net.clanwolf.starmap.administration</module>
+		<module>net.clanwolf.starmap.security</module>
 	</modules>
 
 	<build>

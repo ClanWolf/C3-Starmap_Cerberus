@@ -35,6 +35,11 @@
 		</dependency>
 		<dependency>
 			<groupId>net.clanwolf.starmap</groupId>
+			<artifactId>net.clanwolf.starmap.security</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>net.clanwolf.starmap</groupId>
 			<artifactId>net.clanwolf.starmap.client.preloader</artifactId>
 			<version>${project.version}</version>
 		</dependency>

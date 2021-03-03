@@ -27,7 +27,6 @@
 package net.clanwolf.starmap.client.gui.panes.map;
 
 import javafx.event.EventHandler;
-import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.Image;
@@ -42,19 +41,18 @@ import javafx.scene.shape.StrokeLineCap;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.StatusTextEntryActionObject;
-import net.clanwolf.starmap.client.enums.PRIVILEGES;
+import net.clanwolf.starmap.security.enums.PRIVILEGES;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.gui.panes.map.tools.Route;
 import net.clanwolf.starmap.client.process.universe.BOJumpship;
 import net.clanwolf.starmap.client.process.universe.BOStarSystem;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
-import net.clanwolf.starmap.client.security.Security;
+import net.clanwolf.starmap.security.Security;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.transfer.enums.MEDALS;
 
-import java.util.Iterator;
 import java.util.List;
 
 public class NodeGestures {
@@ -338,7 +336,7 @@ public class NodeGestures {
 
 			Node node = (Node) event.getSource();
 			if (node instanceof ImageView) { // must be a jumpship
-				if (Security.hasPrivilege(PRIVILEGES.FACTIONLEAD_HAS_ROLE) && Security.hasPrivilege(PRIVILEGES.FACTIONLEAD_MOVE_JUMPSHIP)) {
+				if (Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.FACTIONLEAD_HAS_ROLE) && Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.FACTIONLEAD_MOVE_JUMPSHIP)) {
 					boUniverse.currentlyDraggedJumpship = boUniverse.jumpshipBOs.get(node.getId());
 					node.toBack();
 					String name = node.getId();

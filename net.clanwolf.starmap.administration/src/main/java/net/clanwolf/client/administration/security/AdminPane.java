@@ -56,7 +56,7 @@ public class AdminPane extends Application {
 			stage.show();
 
 			AdminPaneController controller = fxmlLoader.getController();
-			controller.init();
+			controller.init(locale);
 
 			start(stage);
 		}

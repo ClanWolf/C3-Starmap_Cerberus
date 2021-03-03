@@ -27,23 +27,75 @@
 package net.clanwolf.client.administration.security;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
 import net.clanwolf.client.administration.util.Internationalization;
+import net.clanwolf.starmap.security.enums.PRIVILEGES;
+
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class AdminPaneController {
+
+	private static ResourceBundle sMessagesPrivileges;
 
 	@FXML
 	ImageView ivLogo;
 
 	@FXML
-	Label labelDescription;
+	Label labelDescription, labelUser;
 
-	public void init() {
-//		Image icon = new Image(getClass().getResourceAsStream("/icons/C3_Icon2.png"));
-//		ivLogo.setImage(icon);
+	@FXML
+	Tab tabPrivileges;
 
+	@FXML
+	Button btnSave, btnCancel;
+
+	@FXML
+	ScrollPane srollPane;
+
+	@FXML
+	public void btnSaveClicked() {
+//		System.out.println("Clicked Save");
+	}
+
+	@FXML
+	public void btnCancelClicked() {
+//		System.out.println("Clicked Cancel");
+	}
+
+	public void init(Locale locale) {
 		labelDescription.setText(Internationalization.getString("AdminSecurityDescription"));
+		tabPrivileges.setText(Internationalization.getString("AdminSecurityTabPrivileges"));
+		labelUser.setText(Internationalization.getString("AdminSecurityUserLabel"));
+		btnSave.setText(Internationalization.getString("AdminSecurityButtonSave"));
+		btnCancel.setText(Internationalization.getString("AdminSecurityButtonCancel"));
+
+		sMessagesPrivileges = ResourceBundle.getBundle("MessagesPrivilegeBundle", locale);
+
+		VBox root = new VBox();
+		int j = 1;
+		int jj = 0;
+		Iterator i = Arrays.stream(PRIVILEGES.values()).sequential().iterator();
+		while (i.hasNext()) {
+			PRIVILEGES p = (PRIVILEGES) i.next();
+
+			String desc = sMessagesPrivileges.getString("" + p);
+			if (!"DUMMY".equals(desc)) {
+				System.out.println(j + " " + p + " --- " + desc);
+				CheckBox cb = new CheckBox("[" + String.format("%02d", j) + "] - " + desc);
+				cb.setPrefWidth(630);
+				cb.setPrefHeight(25);
+				root.getChildren().add(cb);
+				jj++;
+			}
+			j++;
+		}
+		srollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+		srollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+		srollPane.setContent(root);
 	}
 }

@@ -1,17 +1,14 @@
 module net.clanwolf.starmap.client {
 	requires net.clanwolf.starmap.transfer;
 	requires net.clanwolf.starmap.logging;
+	requires net.clanwolf.starmap.security;
 	requires net.clanwolf.starmap.client.preloader;
-
 	requires jdk.crypto.ec;
 	requires jdk.crypto.cryptoki;
-
 	requires io.nadron.client;
-
 	requires tektosyne;
 	requires commons.net;
 	requires org.apache.commons.collections4;
-
 	requires java.desktop;
 
 	requires javafx.graphics;

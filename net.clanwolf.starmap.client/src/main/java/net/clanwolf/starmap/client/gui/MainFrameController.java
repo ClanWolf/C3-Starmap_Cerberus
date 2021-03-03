@@ -27,7 +27,6 @@
 package net.clanwolf.starmap.client.gui;
 
 import javafx.animation.*;
-import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -47,7 +46,7 @@ import javafx.util.Duration;
 import net.clanwolf.starmap.client.action.*;
 import net.clanwolf.starmap.client.enums.C3MESSAGERESULTS;
 import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
-import net.clanwolf.starmap.client.enums.PRIVILEGES;
+import net.clanwolf.starmap.security.enums.PRIVILEGES;
 import net.clanwolf.starmap.client.gui.medalpanes.C3MedalPane;
 import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
 import net.clanwolf.starmap.client.gui.messagepanes.C3MessagePane;
@@ -65,14 +64,13 @@ import net.clanwolf.starmap.client.process.universe.BOUniverse;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.client.net.Server;
 import net.clanwolf.starmap.client.nexus.Nexus;
-import net.clanwolf.starmap.client.security.Security;
+import net.clanwolf.starmap.security.Security;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.*;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.enums.MEDALS;
 
-import java.io.File;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.Calendar;
@@ -947,7 +945,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		helpLabel.setGraphic(view);
 		helpLabel.setText("");
 
-		enableMainMenuButtons(Nexus.isLoggedIn(), Security.hasPrivilege(PRIVILEGES.ADMIN_IS_GOD_ADMIN));
+		enableMainMenuButtons(Nexus.isLoggedIn(), Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN));
 
 		String versionString = "Version: " + Tools.getVersionNumber();
 		versionLabel.setText(versionString);
@@ -1121,7 +1119,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 		setConsoleEntry("Setting controll elements");
 
-		enableMainMenuButtons(Nexus.isLoggedIn(), Security.hasPrivilege(PRIVILEGES.ADMIN_IS_GOD_ADMIN));
+		enableMainMenuButtons(Nexus.isLoggedIn(), Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN));
 	}
 
 	private void NoiseAnimation() {
@@ -1375,7 +1373,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				Nexus.setLoggedInStatus(true);
 				Platform.runLater(() -> {
 					toplabel.setText("Con // " + tcphostname + ":" + tcpPort);
-					enableMainMenuButtons(Nexus.isLoggedIn(), Security.hasPrivilege(PRIVILEGES.ADMIN_IS_GOD_ADMIN));
+					enableMainMenuButtons(Nexus.isLoggedIn(), Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN));
 				});
 				break;
 

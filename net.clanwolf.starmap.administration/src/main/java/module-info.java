@@ -1,6 +1,7 @@
 module net.clanwolf.starmap.administration {
-	requires java.desktop;
 	requires net.clanwolf.starmap.logging;
+	requires net.clanwolf.starmap.security;
+	requires java.desktop;
 	requires javafx.graphics;
 	requires javafx.controls;
 	requires javafx.media;

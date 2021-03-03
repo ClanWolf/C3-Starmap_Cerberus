@@ -94,14 +94,6 @@ public class GameServer {
 			// Log.print("EntityManager initialized");
 			C3Logger.print("Server ready");
 
-			// write heartbeat file every 5 minutes
-			Timer serverHeartBeat = new Timer();
-			serverHeartBeat.schedule(new HeartBeatTimer(), 1000, 1000 * 60 * 5);
-
-			// check shutdown flagfile every 30 seconds
-			Timer checkShutdownFlag = new Timer();
-			checkShutdownFlag.schedule(new CheckShutdownFlagTimer(serverBaseDir), 1000, 1000 * 10);
-
 			C3Logger.info("Sending info mail.");
 			String[] receivers = { "warwolfen@gmail.com", "werner.kewenig@arcor.de" };
 			boolean sent = false;
@@ -113,6 +105,14 @@ public class GameServer {
 				// error during email sending
 				C3Logger.info("Error during mail dispatch.");
 			}
+
+			// write heartbeat file every some minutes
+			Timer serverHeartBeat = new Timer();
+			serverHeartBeat.schedule(new HeartBeatTimer(), 1000, 1000 * 60 * 5);
+
+			// check shutdown flagfile every some seconds
+			Timer checkShutdownFlag = new Timer();
+			checkShutdownFlag.schedule(new CheckShutdownFlagTimer(serverBaseDir), 1000, 1000 * 10);
 
 			// World world = ctx.getBean(World.class);
 			// GameRoom room1 = (GameRoom)ctx.getBean("Zombie_ROOM_1");

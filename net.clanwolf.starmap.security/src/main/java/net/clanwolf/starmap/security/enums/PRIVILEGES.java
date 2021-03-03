@@ -24,7 +24,7 @@
  * Copyright (c) 2001-2021, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.client.enums;
+package net.clanwolf.starmap.security.enums;
 
 public enum PRIVILEGES {
 
