@@ -38,6 +38,7 @@ import java.util.*;
 public class AdminPaneController {
 
 	private static ResourceBundle sMessagesPrivileges;
+	private HashMap<Integer, CheckBox> privilegeBoxes = new HashMap<Integer, CheckBox>();
 
 	@FXML
 	ImageView ivLogo;
@@ -74,7 +75,7 @@ public class AdminPaneController {
 		sMessagesPrivileges = ResourceBundle.getBundle("MessagesPrivilegeBundle", locale);
 
 		VBox root = new VBox();
-		HashMap<Integer, CheckBox> boxes = new HashMap<Integer, CheckBox>();
+
 		int j = 1;
 		int jj = 0;
 		Iterator i = Arrays.stream(PRIVILEGES.values()).sequential().iterator();
@@ -91,7 +92,7 @@ public class AdminPaneController {
 				cb.setPrefWidth(630);
 				cb.setPrefHeight(25);
 				root.getChildren().add(cb);
-				boxes.put(j, cb);
+				privilegeBoxes.put(j, cb);
 				jj++;
 			}
 			j++;
