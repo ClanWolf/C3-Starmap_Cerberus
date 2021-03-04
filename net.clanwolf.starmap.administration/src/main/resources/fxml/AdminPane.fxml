@@ -20,30 +20,35 @@
             <content>
               <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="269.0" prefWidth="486.0">
                      <children>
-                        <ComboBox layoutX="76.0" layoutY="20.0" prefHeight="28.0" prefWidth="671.0" AnchorPane.rightAnchor="15.0" />
-                        <Label fx:id="labelUser" layoutX="14.0" layoutY="25.0" prefHeight="18.0" prefWidth="96.0" text="User:" />
+                        <ComboBox layoutX="76.0" layoutY="18.0" prefHeight="30.0" prefWidth="438.0" AnchorPane.rightAnchor="248.0" />
+                        <Label fx:id="labelUser" layoutX="16.0" layoutY="25.0" prefHeight="18.0" prefWidth="94.0" text="User:" />
                         <ScrollPane fx:id="srollPane" hbarPolicy="NEVER" layoutX="14.0" layoutY="66.0" prefHeight="377.0" prefWidth="771.0" vbarPolicy="ALWAYS">
                            <padding>
                               <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                            </padding>
                         </ScrollPane>
+                        <Label fx:id="labelPrivCode" alignment="CENTER" contentDisplay="CENTER" layoutX="564.0" layoutY="18.0" mouseTransparent="true" prefHeight="30.0" prefWidth="221.0" style="-fx-background-color: #a9a9a9;" text="0" textAlignment="CENTER" textFill="#9a3e31">
+                           <font>
+                              <Font name="System Bold" size="14.0" />
+                           </font>
+                        </Label>
                      </children>
                   </AnchorPane>
             </content>
           </Tab>
         </tabs>
       </TabPane>
-      <Button fx:id="btnCancel" layoutX="659.0" layoutY="563.0" mnemonicParsing="false" onAction="#btnCancelClicked" prefHeight="25.0" prefWidth="125.0" text="Close" />
-      <Label fx:id="labelDescription" layoutX="90.0" layoutY="14.0" prefHeight="53.0" prefWidth="449.0" text="Description" />
+      <Button fx:id="btnCancel" layoutX="659.0" layoutY="560.0" mnemonicParsing="false" onAction="#btnCancelClicked" prefHeight="25.0" prefWidth="125.0" text="Close" />
+      <Label fx:id="labelDescription" layoutX="90.0" layoutY="14.0" prefHeight="53.0" prefWidth="692.0" text="Description" />
       <ImageView fx:id="ivLogo" fitHeight="53.0" fitWidth="64.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../icons/C3_Icon2.png" />
          </image></ImageView>
-      <Label fx:id="labelPrivCode" alignment="CENTER" contentDisplay="CENTER" layoutX="540.0" layoutY="21.0" mouseTransparent="true" prefHeight="40.0" prefWidth="247.0" style="-fx-background-color: #a9a9a9;" text="0" textAlignment="CENTER" textFill="#9a3e31">
+      <Button fx:id="btnSave" layoutX="526.0" layoutY="561.0" mnemonicParsing="false" onAction="#btnSaveClicked" prefHeight="25.0" prefWidth="125.0" text="Save" />
+      <Label fx:id="labelPrivCodeBinary" alignment="CENTER" contentDisplay="CENTER" layoutX="18.0" layoutY="563.0" mouseTransparent="true" prefHeight="15.0" prefWidth="494.0" text="0" textAlignment="CENTER" textFill="#314999">
          <font>
-            <Font name="System Bold" size="18.0" />
+            <Font size="10.0" />
          </font>
       </Label>
-      <Button fx:id="btnSave" layoutX="526.0" layoutY="564.0" mnemonicParsing="false" onAction="#btnSaveClicked" prefHeight="25.0" prefWidth="125.0" text="Save" />
    </children>
 </AnchorPane>

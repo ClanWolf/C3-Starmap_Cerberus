@@ -44,7 +44,7 @@ public class AdminPaneController {
 	ImageView ivLogo;
 
 	@FXML
-	Label labelDescription, labelUser, labelPrivCode;
+	Label labelDescription, labelUser, labelPrivCode, labelPrivCodeBinary;
 
 	@FXML
 	Tab tabPrivileges;
@@ -70,19 +70,23 @@ public class AdminPaneController {
 		Iterator<Integer> it = privilegeBoxes.keySet().iterator();
 		while (it.hasNext()) {
 			Integer key = it.next();
-			CheckBox b = privilegeBoxes.get(key);
-			if (b.isSelected()) {
+			CheckBox cb = privilegeBoxes.get(key);
+			if (cb.isSelected()) {
 				if (key == 64) {
-					privCode = -1;
+					privCode = 1L << 63;
 					break;
 				}
-				privCode = privCode + key;
+				Long tempPrivCode = 1L << key - 1;
+				privCode = privCode | tempPrivCode;
 			} else {
 				//
 			}
 		}
-		System.out.println("PrivCode: " + privCode);
+		String b = Long.toBinaryString(privCode);
+		String binCode = String.format("%64.64s", b).replace(' ', '0');
+//		System.out.println(binCode + " - " + privCode);
 		labelPrivCode.setText("" + privCode);
+		labelPrivCodeBinary.setText("" + binCode);
 	}
 
 	private void setCheckBoxesForUser() {
@@ -108,9 +112,6 @@ public class AdminPaneController {
 
 			String desc = sMessagesPrivileges.getString("" + p);
 			if (!"DUMMY".equals(desc)) {
-				System.out.println(j + " " + p + " --- " + desc);
-				System.out.println("Binary String: " + Long.toBinaryString(1L << jj));
-
 				String binVal = Long.toBinaryString(1L << jj);
 
 				CheckBox cb = new CheckBox("[" + String.format("%02d", j) + "] - " + desc);
