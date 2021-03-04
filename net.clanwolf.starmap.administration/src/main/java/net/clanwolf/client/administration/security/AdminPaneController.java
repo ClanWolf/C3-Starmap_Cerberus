@@ -109,6 +109,8 @@ public class AdminPaneController {
 			String desc = sMessagesPrivileges.getString("" + p);
 			if (!"DUMMY".equals(desc)) {
 				System.out.println(j + " " + p + " --- " + desc);
+				System.out.println("Binary String: " + Long.toBinaryString(1L << jj));
+
 				CheckBox cb = new CheckBox("[" + String.format("%02d", j) + "] - " + desc);
 				cb.setOnAction(event -> {
 					calculatePrivCode();
