@@ -111,6 +111,8 @@ public class AdminPaneController {
 				System.out.println(j + " " + p + " --- " + desc);
 				System.out.println("Binary String: " + Long.toBinaryString(1L << jj));
 
+				String binVal = Long.toBinaryString(1L << jj);
+
 				CheckBox cb = new CheckBox("[" + String.format("%02d", j) + "] - " + desc);
 				cb.setOnAction(event -> {
 					calculatePrivCode();
