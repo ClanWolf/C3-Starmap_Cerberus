@@ -10,45 +10,91 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="600.0" maxWidth="800.0" minHeight="600.0" minWidth="800.0" prefHeight="600.0" prefWidth="800.0" snapToPixel="false" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.client.administration.security.AdminPaneController">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="600.0" minWidth="800.0" snapToPixel="false" style="-fx-background-color: ;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.client.administration.security.AdminPaneController">
    <children>
-      <TabPane layoutY="83.0" prefHeight="474.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE">
-        <tabs>
-          <Tab fx:id="tabPrivileges" closable="false" text="Privileges">
-            <content>
-              <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="269.0" prefWidth="486.0">
-                     <children>
-                        <ComboBox layoutX="76.0" layoutY="18.0" prefHeight="30.0" prefWidth="438.0" AnchorPane.rightAnchor="248.0" />
-                        <Label fx:id="labelUser" layoutX="16.0" layoutY="25.0" prefHeight="18.0" prefWidth="94.0" text="User:" />
-                        <ScrollPane fx:id="srollPane" hbarPolicy="NEVER" layoutX="14.0" layoutY="66.0" prefHeight="377.0" prefWidth="771.0" vbarPolicy="ALWAYS">
-                           <padding>
-                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                           </padding>
-                        </ScrollPane>
-                        <Label fx:id="labelPrivCode" alignment="CENTER" contentDisplay="CENTER" layoutX="564.0" layoutY="18.0" mouseTransparent="true" prefHeight="30.0" prefWidth="221.0" style="-fx-background-color: #a9a9a9;" text="0" textAlignment="CENTER" textFill="#9a3e31">
-                           <font>
-                              <Font name="System Bold" size="14.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </AnchorPane>
-            </content>
-          </Tab>
-        </tabs>
-      </TabPane>
-      <Button fx:id="btnCancel" layoutX="659.0" layoutY="560.0" mnemonicParsing="false" onAction="#btnCancelClicked" prefHeight="25.0" prefWidth="125.0" text="Close" />
-      <Label fx:id="labelDescription" layoutX="90.0" layoutY="14.0" prefHeight="53.0" prefWidth="692.0" text="Description" />
-      <ImageView fx:id="ivLogo" fitHeight="53.0" fitWidth="64.0" layoutX="14.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../icons/C3_Icon2.png" />
-         </image></ImageView>
-      <Button fx:id="btnSave" layoutX="526.0" layoutY="561.0" mnemonicParsing="false" onAction="#btnSaveClicked" prefHeight="25.0" prefWidth="125.0" text="Save" />
-      <Label fx:id="labelPrivCodeBinary" alignment="CENTER" contentDisplay="CENTER" layoutX="18.0" layoutY="563.0" mouseTransparent="true" prefHeight="15.0" prefWidth="494.0" text="0" textAlignment="CENTER" textFill="#314999">
-         <font>
-            <Font size="10.0" />
-         </font>
-      </Label>
+      <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <center>
+            <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="466.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+              <tabs>
+                <Tab fx:id="tabPrivileges" closable="false" text="Privileges">
+                  <content>
+                    <AnchorPane maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="269.0" prefWidth="486.0">
+                           <children>
+                              <ComboBox layoutX="76.0" layoutY="18.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="441.0" AnchorPane.leftAnchor="114.0" AnchorPane.rightAnchor="245.0" />
+                              <Label fx:id="labelUser" layoutX="11.0" layoutY="25.0" prefHeight="18.0" prefWidth="99.0" text="User:" />
+                              <ScrollPane fx:id="srollPane" hbarPolicy="NEVER" layoutX="10.0" layoutY="66.0" prefHeight="389.0" prefWidth="780.0" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="66.0">
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </ScrollPane>
+                              <Label fx:id="labelPrivCode" alignment="CENTER" contentDisplay="CENTER" layoutX="564.0" layoutY="18.0" mouseTransparent="true" prefHeight="30.0" prefWidth="224.0" style="-fx-background-color: #a9a9a9;" text="0" textAlignment="CENTER" textFill="#9a3e31" AnchorPane.rightAnchor="10.0">
+                                 <font>
+                                    <Font name="System Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
+                  </content>
+                </Tab>
+              </tabs>
+            </TabPane>
+         </center>
+         <bottom>
+            <HBox alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" BorderPane.alignment="BOTTOM_RIGHT">
+               <children>
+                  <Label fx:id="labelPrivCodeBinary" alignment="CENTER_RIGHT" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" mouseTransparent="true" prefHeight="15.0" prefWidth="348.0" text="0000000000000000000000000000000000000000000000000000000000000000" textFill="#314999" HBox.hgrow="ALWAYS">
+                     <font>
+                        <Font size="10.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets bottom="10.0" right="20.0" top="10.0" />
+                     </HBox.margin>
+                  </Label>
+                  <Button fx:id="btnSave" defaultButton="true" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#btnSaveClicked" prefHeight="25.0" prefWidth="125.0" text="Save" HBox.hgrow="ALWAYS">
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <HBox.margin>
+                        <Insets bottom="10.0" right="10.0" top="10.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="btnCancel" cancelButton="true" mnemonicParsing="false" onAction="#btnCancelClicked" prefHeight="25.0" prefWidth="125.0" text="Close" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets bottom="10.0" right="10.0" top="10.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+               <BorderPane.margin>
+                  <Insets />
+               </BorderPane.margin>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </HBox>
+         </bottom>
+         <top>
+            <HBox alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER_LEFT">
+               <children>
+                  <ImageView fx:id="ivLogo" fitHeight="53.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER">
+                     <image>
+                        <Image url="@../icons/C3_Icon2.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="10.0" top="10.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <Label fx:id="labelDescription" maxHeight="1.7976931348623157E308" prefHeight="49.0" prefWidth="727.0" text="Description" HBox.hgrow="ALWAYS">
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="20.0" right="10.0" top="10.0" />
+                     </HBox.margin>
+                  </Label>
+               </children>
+            </HBox>
+         </top>
+      </BorderPane>
    </children>
 </AnchorPane>

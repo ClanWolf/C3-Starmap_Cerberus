@@ -31,9 +31,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import net.clanwolf.client.administration.util.Internationalization;
+import net.clanwolf.starmap.transfer.dtos.UserDTO;
 
+import java.util.ArrayList;
 import java.util.Locale;
 
 public class AdminPane extends Application {
@@ -41,7 +44,34 @@ public class AdminPane extends Application {
 	private final static Locale GERMAN = Locale.GERMAN;
 	private final static Locale ENGLISH = Locale.ENGLISH;
 
+	private AdminPaneController controller;
+
+	private ArrayList<UserDTO> userList = new ArrayList<UserDTO>();
+
+	public void setUserList(ArrayList<UserDTO> list) {
+		this.userList = list;
+	}
+
+	public ArrayList<UserDTO> getUserList() {
+		return this.userList;
+	}
+
 	public AdminPane(Locale locale) {
+
+		// https://stackoverflow.com/questions/10486731/how-to-create-a-modal-window-in-javafx-2-1
+		// Stage dialog = new Stage();
+		//
+		//// populate dialog with controls.
+		//...
+		//
+		//dialog.initOwner(parentStage);
+		//dialog.initModality(Modality.APPLICATION_MODAL);
+		//dialog.showAndWait();
+		//
+		//// process result of dialog operation.
+		//...
+
+
 		Parent root;
 		Internationalization.setLocale(locale);
 		try {
@@ -49,13 +79,23 @@ public class AdminPane extends Application {
 			fxmlLoader.setLocation(this.getClass().getResource("/fxml/AdminPane.fxml"));
 
 			root = fxmlLoader.load();
+//			AnchorPane.setTopAnchor(root, 0.0);
+//			AnchorPane.setLeftAnchor(root, 0.0);
+//			AnchorPane.setBottomAnchor(root, 0.0);
+//			AnchorPane.setRightAnchor(root, 0.0);
+
 			Stage stage = new Stage();
 			stage.setTitle(Internationalization.getString("AdminSecurityHeadline"));
-			stage.setScene(new Scene(root, 800, 600));
-			stage.setResizable(false);
+			Scene scene = new Scene(root);
+			stage.setScene(scene);
+			stage.sizeToScene();
+			stage.setResizable(true);
 			stage.show();
 
-			AdminPaneController controller = fxmlLoader.getController();
+			stage.setMinWidth(stage.getWidth());
+			stage.setMinHeight(stage.getHeight());
+
+			controller = fxmlLoader.getController();
 			controller.init(locale);
 
 			start(stage);

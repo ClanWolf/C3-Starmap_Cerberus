@@ -7,6 +7,7 @@ module net.clanwolf.starmap.administration {
 	requires javafx.media;
 	requires javafx.fxml;
 	requires java.logging;
+	requires net.clanwolf.starmap.transfer;
 
 	opens net.clanwolf.client.administration.security to javafx.fxml;
 

@@ -41,9 +41,6 @@ public class AdminPaneController {
 	private HashMap<Integer, CheckBox> privilegeBoxes = new HashMap<Integer, CheckBox>();
 
 	@FXML
-	ImageView ivLogo;
-
-	@FXML
 	Label labelDescription, labelUser, labelPrivCode, labelPrivCodeBinary;
 
 	@FXML
