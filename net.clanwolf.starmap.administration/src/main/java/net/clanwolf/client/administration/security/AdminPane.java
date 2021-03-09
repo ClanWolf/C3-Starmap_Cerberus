@@ -32,6 +32,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import net.clanwolf.client.administration.util.Internationalization;
 import net.clanwolf.starmap.transfer.dtos.UserDTO;
@@ -56,21 +57,10 @@ public class AdminPane extends Application {
 		return this.userList;
 	}
 
-	public AdminPane(Locale locale) {
+	public AdminPane(ArrayList<UserDTO> userList, Stage parentStage, Locale locale) {
+		this.userList = userList;
 
 		// https://stackoverflow.com/questions/10486731/how-to-create-a-modal-window-in-javafx-2-1
-		// Stage dialog = new Stage();
-		//
-		//// populate dialog with controls.
-		//...
-		//
-		//dialog.initOwner(parentStage);
-		//dialog.initModality(Modality.APPLICATION_MODAL);
-		//dialog.showAndWait();
-		//
-		//// process result of dialog operation.
-		//...
-
 
 		Parent root;
 		Internationalization.setLocale(locale);
@@ -79,10 +69,6 @@ public class AdminPane extends Application {
 			fxmlLoader.setLocation(this.getClass().getResource("/fxml/AdminPane.fxml"));
 
 			root = fxmlLoader.load();
-//			AnchorPane.setTopAnchor(root, 0.0);
-//			AnchorPane.setLeftAnchor(root, 0.0);
-//			AnchorPane.setBottomAnchor(root, 0.0);
-//			AnchorPane.setRightAnchor(root, 0.0);
 
 			Stage stage = new Stage();
 			stage.setTitle(Internationalization.getString("AdminSecurityHeadline"));
@@ -90,7 +76,9 @@ public class AdminPane extends Application {
 			stage.setScene(scene);
 			stage.sizeToScene();
 			stage.setResizable(true);
-			stage.show();
+			stage.initOwner(parentStage);
+			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.showAndWait();
 
 			stage.setMinWidth(stage.getWidth());
 			stage.setMinHeight(stage.getHeight());
@@ -105,9 +93,9 @@ public class AdminPane extends Application {
 		}
 	}
 
-	public AdminPane() {
-		this(GERMAN);
-	}
+//	public AdminPane() {
+//		this(GERMAN);
+//	}
 
 	@Override
 	public void start(Stage stage) throws Exception {

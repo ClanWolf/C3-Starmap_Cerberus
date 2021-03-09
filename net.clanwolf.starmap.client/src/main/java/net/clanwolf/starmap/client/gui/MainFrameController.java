@@ -161,6 +161,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	@FXML
 	private Button adminButton;
 	@FXML
+	private Button adminPaneButton;
+	@FXML
 	private Button exitButton;
 
 	// Column 1
@@ -630,6 +632,13 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 //				menuIndicatorPos = 147;
 //				moveMenuIndicator(menuIndicatorPos);
 			}
+			// ADMIN PANE
+			if (bn.equals(adminPaneButton)) {
+				C3Logger.info("Administration opened by user.");
+				setStatusText(Internationalization.getString("app_adminpane_infotext").replace("%20", " ") + ".", false);
+				targetPane = characterPane;
+				adminPaneOpen = true;
+			}
 		}
 		if (targetPane != null) {
 			AtomicBoolean success = new AtomicBoolean(openTargetPane(targetPane, spokenMessage));
@@ -664,7 +673,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 		if (adminMenuActive) {
 			storyEditorButton.setVisible(true);
-			renameMeButton2.setVisible(true);
+			adminPaneButton.setVisible(true);
 			renameMeButton3.setVisible(true);
 			renameMeButton4.setVisible(true);
 			renameMeButton5.setVisible(true);
@@ -711,7 +720,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 					// Column 2
 					storyEditorButton.setLayoutX(newX2);
-					renameMeButton2.setLayoutX(newX2);
+					adminPaneButton.setLayoutX(newX2);
 					renameMeButton3.setLayoutX(newX2);
 					renameMeButton4.setLayoutX(newX2);
 					renameMeButton5.setLayoutX(newX2);
@@ -726,7 +735,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				pluginsButton.setVisible(false);
 			} else {
 				storyEditorButton.setVisible(false);
-				renameMeButton2.setVisible(false);
+				adminPaneButton.setVisible(false);
 				renameMeButton3.setVisible(false);
 				renameMeButton4.setVisible(false);
 				renameMeButton5.setVisible(false);
@@ -1022,7 +1031,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		pluginsButton.setVisible(true);
 
 		storyEditorButton.setVisible(false);
-		renameMeButton2.setVisible(false);
+		adminPaneButton.setVisible(false);
 		renameMeButton3.setVisible(false);
 		renameMeButton4.setVisible(false);
 		renameMeButton5.setVisible(false);
@@ -1177,13 +1186,13 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				adminButton.setDisable(false);
 
 				storyEditorButton.setDisable(false);
-				renameMeButton2.setDisable(true);
+				adminPaneButton.setDisable(false);
 				renameMeButton3.setDisable(true);
 				renameMeButton4.setDisable(true);
 				renameMeButton5.setDisable(true);
 			} else {
 				storyEditorButton.setDisable(true);
-				renameMeButton2.setDisable(true);
+				adminPaneButton.setDisable(true);
 				renameMeButton3.setDisable(true);
 				renameMeButton4.setDisable(true);
 				renameMeButton5.setDisable(true);
@@ -1200,7 +1209,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 			// Column 2
 			storyEditorButton.setDisable(true);
-			renameMeButton2.setDisable(true);
+			adminPaneButton.setDisable(true);
 			renameMeButton3.setDisable(true);
 			renameMeButton4.setDisable(true);
 			renameMeButton5.setDisable(true);

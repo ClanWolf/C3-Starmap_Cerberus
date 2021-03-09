@@ -255,6 +255,34 @@
   -fx-background-position: center;
 }
 
+.editorButton {
+  -fx-background-image: url("../images/buttons/editor.png");
+  -fx-background-repeat: no-repeat;
+  -fx-background-size: 32, 32;
+  -fx-background-position: center;
+}
+
+.editorButton:hover {
+  -fx-background-image: url("../images/buttons/editor_hover.png");
+  -fx-background-repeat: no-repeat;
+  -fx-background-size: 32, 32;
+  -fx-background-position: center;
+}
+
+.adminButton {
+  -fx-background-image: url("../images/buttons/admin.png");
+  -fx-background-repeat: no-repeat;
+  -fx-background-size: 32, 32;
+  -fx-background-position: center;
+}
+
+.adminButton:hover {
+  -fx-background-image: url("../images/buttons/admin_hover.png");
+  -fx-background-repeat: no-repeat;
+  -fx-background-size: 32, 32;
+  -fx-background-position: center;
+}
+
 .industryButton {
   -fx-background-image: url("../images/buttons/industry.png");
   -fx-background-repeat: no-repeat;
