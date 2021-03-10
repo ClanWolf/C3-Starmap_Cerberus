@@ -205,8 +205,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 		state_userdata.addObject(user);
 		state_userdata.addObject2(WebDataInterface.getUniverse());
-		//TODO: set user list to Nexus
-//		state_userdata.addObject3(userlist);
+		state_userdata.addObject3(userlist);
 		state_userdata.setReceiver(session.getId());
 
 		C3GameSessionHandler.sendNetworkEvent(session, state_userdata);
