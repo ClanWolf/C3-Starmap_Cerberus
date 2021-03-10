@@ -24,14 +24,13 @@
  * Copyright (c) 2001-2021, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.client.administration.security;
+package net.clanwolf.starmap.client.gui.panes.security;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
-import net.clanwolf.client.administration.util.Internationalization;
-import net.clanwolf.starmap.security.enums.PRIVILEGES;
+import net.clanwolf.starmap.client.util.Internationalization;
+import net.clanwolf.starmap.client.enums.PRIVILEGES;
 
 import java.util.*;
 

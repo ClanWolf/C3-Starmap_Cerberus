@@ -46,6 +46,7 @@ public class GameState implements Serializable {
 
 	private Object obj;
 	private Object obj2;
+	private Object obj3;
 	private GAMESTATEMODES mode = GAMESTATEMODES.NO_MODE;
 
 	// It is a unique id to detected the same GameState on Server and Client
@@ -106,6 +107,13 @@ public class GameState implements Serializable {
 		return obj2;
 	}
 
+	public void addObject3(Object o) {
+		this.obj3 = o;
+	}
+
+	public Object getObject3() {
+		return obj3;
+	}
 
 	/**
 	 * @return the receiver

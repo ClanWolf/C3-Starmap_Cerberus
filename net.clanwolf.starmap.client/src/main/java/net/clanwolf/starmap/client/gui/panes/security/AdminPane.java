@@ -24,19 +24,19 @@
  * Copyright (c) 2001-2021, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.client.administration.security;
+package net.clanwolf.starmap.client.gui.panes.security;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import net.clanwolf.client.administration.util.Internationalization;
+import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.transfer.dtos.UserDTO;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -78,24 +78,22 @@ public class AdminPane extends Application {
 			stage.setResizable(true);
 			stage.initOwner(parentStage);
 			stage.initModality(Modality.APPLICATION_MODAL);
-			stage.showAndWait();
 
-			stage.setMinWidth(stage.getWidth());
-			stage.setMinHeight(stage.getHeight());
+			InputStream is = this.getClass().getResourceAsStream("/icons/C3_Icon2.png");
+			stage.getIcons().add(new Image(is));
+
+			stage.setMinWidth(800);
+			stage.setMinHeight(600);
 
 			controller = fxmlLoader.getController();
 			controller.init(locale);
 
-			start(stage);
+			stage.showAndWait();
 		}
 		catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
-//	public AdminPane() {
-//		this(GERMAN);
-//	}
 
 	@Override
 	public void start(Stage stage) throws Exception {

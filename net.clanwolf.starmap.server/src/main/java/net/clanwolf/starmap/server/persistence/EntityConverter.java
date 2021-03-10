@@ -100,6 +100,11 @@ public class EntityConverter {
 			state.addObject2(o);
 		}
 
+		if(state.getObject3() instanceof Pojo){
+			Object o = getDto((Pojo) state.getObject3());
+			state.addObject3(o);
+		}
+
 		if(state.getObject() instanceof ArrayList){
 			ArrayList al = (ArrayList)state.getObject();
 			ArrayList hlpAl = new ArrayList();
@@ -130,6 +135,22 @@ public class EntityConverter {
 				}
 			}
 			state.addObject2(hlpAl);
+		}
+
+		if(state.getObject3() instanceof ArrayList){
+			ArrayList al = (ArrayList)state.getObject3();
+			ArrayList hlpAl = new ArrayList();
+			Iterator iter = al.iterator();
+
+			while(iter.hasNext()){
+				Object o2 = iter.next();
+				if(o2 instanceof Pojo) {
+					hlpAl.add(getDto((Pojo) o2));
+				} else {
+					hlpAl.add(o2);
+				}
+			}
+			state.addObject3(hlpAl);
 		}
 
 		return state;
@@ -147,6 +168,11 @@ public class EntityConverter {
 			state.addObject2(o);
 		}
 
+		if(state.getObject3() instanceof Dto){
+			Object o = getPojo((Dto) state.getObject3());
+			state.addObject3(o);
+		}
+
 		if(state.getObject() instanceof ArrayList){
 			ArrayList al = (ArrayList)state.getObject();
 			ArrayList hlpAl = new ArrayList();
@@ -181,6 +207,24 @@ public class EntityConverter {
 				}
 			}
 			state.addObject2(hlpAl);
+		}
+
+		if(state.getObject3() instanceof ArrayList){
+			ArrayList al = (ArrayList)state.getObject3();
+			ArrayList hlpAl = new ArrayList();
+			Iterator iter = al.iterator();
+
+			while(iter.hasNext()){
+				Object o2 = iter.next();
+				if(o2 instanceof Dto) {
+					//hlpAl.add(getPojo((Dto) iter.next()));
+					hlpAl.add(getPojo((Dto) o2));
+				} else {
+					//hlpAl.add(iter.next());
+					hlpAl.add(o2);
+				}
+			}
+			state.addObject3(hlpAl);
 		}
 	}
 

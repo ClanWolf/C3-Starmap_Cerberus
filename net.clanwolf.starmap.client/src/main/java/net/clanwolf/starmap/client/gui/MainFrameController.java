@@ -42,11 +42,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import javafx.util.Duration;
+import net.clanwolf.starmap.client.gui.panes.security.AdminPane;
 import net.clanwolf.starmap.client.action.*;
 import net.clanwolf.starmap.client.enums.C3MESSAGERESULTS;
 import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
-import net.clanwolf.starmap.security.enums.PRIVILEGES;
+import net.clanwolf.starmap.client.enums.PRIVILEGES;
 import net.clanwolf.starmap.client.gui.medalpanes.C3MedalPane;
 import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
 import net.clanwolf.starmap.client.gui.messagepanes.C3MessagePane;
@@ -64,19 +66,17 @@ import net.clanwolf.starmap.client.process.universe.BOUniverse;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.client.net.Server;
 import net.clanwolf.starmap.client.nexus.Nexus;
-import net.clanwolf.starmap.security.Security;
+import net.clanwolf.starmap.client.security.Security;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.*;
 import net.clanwolf.starmap.transfer.GameState;
+import net.clanwolf.starmap.transfer.dtos.UserDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.enums.MEDALS;
 
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Calendar;
-import java.util.Optional;
-import java.util.Random;
-import java.util.ResourceBundle;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -92,6 +92,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private boolean enableLanguageSwitch = true;
 	private boolean buttonsAreMoving = false;
 	private boolean adminMenuActive = false;
+	private boolean openAdministrationPane = false;
 	private AbstractC3Pane currentlyDisplayedPane = null;
 	private AbstractC3Pane nextToDisplayPane = null;
 	private LoginPane loginPane = null;
@@ -628,16 +629,13 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				setStatusText(Internationalization.getString("app_settings_infotext").replace("%20", " ") + ".", false);
 				targetPane = characterPane;
 				adminPaneOpen = true;
-				// This is an admin button, so no menu indicator
-//				menuIndicatorPos = 147;
-//				moveMenuIndicator(menuIndicatorPos);
 			}
 			// ADMIN PANE
 			if (bn.equals(adminPaneButton)) {
-				C3Logger.info("Administration opened by user.");
+				C3Logger.info("Administration pane (Security) opened by user.");
 				setStatusText(Internationalization.getString("app_adminpane_infotext").replace("%20", " ") + ".", false);
-				targetPane = characterPane;
 				adminPaneOpen = true;
+				openAdministrationPane = true;
 			}
 		}
 		if (targetPane != null) {
@@ -648,8 +646,17 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				menuIndicatorPos = menuIndicatorPosOld;
 				Tools.playButtonClickSound();
 			}
-		} else {
+		} else if (!openAdministrationPane) {
 			C3Logger.info("TargetPane not defined!");
+		}
+		if (openAdministrationPane) {
+			C3Logger.info("Opening administration window!");
+
+			ArrayList<UserDTO> userList = new ArrayList<UserDTO>();
+
+			Stage stage = (Stage) rootAnchorPane.getScene().getWindow();
+			AdminPane ap = new AdminPane(userList, stage, Internationalization.getLocale());
+			openAdministrationPane = false;
 		}
 	}
 

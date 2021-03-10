@@ -30,11 +30,16 @@ import io.nadron.util.Credentials;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.server.persistence.CriteriaHelper;
 import net.clanwolf.starmap.server.persistence.daos.GenericDAO;
+import net.clanwolf.starmap.server.persistence.pojos.RolePlayStoryPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.UserPOJO;
 import net.clanwolf.starmap.server.util.Encryptor;
+import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
 import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * A data access object (DAO) providing persistence and search support for UserPOJO entities. Transaction control of the save(), update() and delete() operations must be handled externally by senders of these methods or must be manually added to each of
@@ -69,6 +74,21 @@ public class UserDAO extends GenericDAO {
 	@Override
 	public UserPOJO findById(Long userID, Long id) {
 		return (UserPOJO) super.findById(userID, UserPOJO.class, id);
+	}
+
+	public ArrayList<UserPOJO> getUserList() {
+		CriteriaHelper crit = new CriteriaHelper(UserPOJO.class);
+		List<Object> lRes = crit.getResultList();
+
+		ArrayList<UserPOJO> lUser = new ArrayList<>();
+		Iterator<Object> iter = lRes.iterator();
+		while (iter.hasNext()) {
+			UserPOJO up = (UserPOJO) iter.next();
+			lUser.add(up);
+			C3Logger.info(">>>>>>>>>>>>>>>>>>>>>>>>> " + up.getUserName());
+		}
+
+		return lUser;
 	}
 
 	public UserPOJO findByCredentials(EntityManager em, Credentials c) {

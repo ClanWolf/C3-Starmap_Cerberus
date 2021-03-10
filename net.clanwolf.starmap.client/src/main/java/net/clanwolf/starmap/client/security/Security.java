@@ -24,10 +24,10 @@
  * Copyright (c) 2001-2021, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.security;
+package net.clanwolf.starmap.client.security;
 
 //import net.clanwolf.starmap.client.nexus.Nexus;
-import net.clanwolf.starmap.security.enums.PRIVILEGES;
+import net.clanwolf.starmap.client.enums.PRIVILEGES;
 import net.clanwolf.starmap.transfer.dtos.UserDTO;
 
 /**

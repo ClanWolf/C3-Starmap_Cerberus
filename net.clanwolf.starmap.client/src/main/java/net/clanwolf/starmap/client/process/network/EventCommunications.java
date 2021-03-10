@@ -72,6 +72,8 @@ public class EventCommunications {
 					C3Logger.info("EventCommunications.onDataIn: myPlayerSessionID: -> " + Nexus.getMyPlayerSessionID());
 
 					Nexus.setBOUniverse(new BOUniverse((UniverseDTO) state.getObject2()));
+					//TODO: set user list to Nexus
+//					Nexus.setUserList((ArrayList<UserDTO>) state.getObject3());
 
 					// own playersession on server
 					Nexus.setMyPlayerSessionID(state.getReceiver());

@@ -37,6 +37,8 @@ import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
 import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
 import net.clanwolf.starmap.transfer.dtos.UserDTO;
 
+import java.util.ArrayList;
+
 /**
  * The Nexus is a central place to hold general information like the currently logged in user and such.
  *
@@ -54,6 +56,8 @@ public class Nexus {
 	private static BOUniverse boUniverse;
 	private static BOStarSystem boSelectedStarSystem;
 	private static boolean loggedIn = false;
+
+	private static ArrayList<UserDTO> userList;
 
 	private static int currentSeason;
 	private static int currentRound;
@@ -73,6 +77,14 @@ public class Nexus {
 	 */
 	private Nexus() {
 
+	}
+
+	public static void setUserList(ArrayList<UserDTO> list) {
+		userList = list;
+	}
+
+	public static ArrayList<UserDTO> getUserList() {
+		return userList;
 	}
 
 	public static void setTerra(BOStarSystem s) {

@@ -1,7 +1,6 @@
 module net.clanwolf.starmap.client {
 	requires net.clanwolf.starmap.transfer;
 	requires net.clanwolf.starmap.logging;
-	requires net.clanwolf.starmap.security;
 	requires net.clanwolf.starmap.client.preloader;
 	requires jdk.crypto.ec;
 	requires jdk.crypto.cryptoki;
@@ -10,12 +9,11 @@ module net.clanwolf.starmap.client {
 	requires commons.net;
 	requires org.apache.commons.collections4;
 	requires java.desktop;
-
+	requires java.logging;
 	requires javafx.graphics;
 	requires javafx.controls;
 	requires javafx.media;
 	requires javafx.fxml;
-	requires java.logging;
 
 	opens net.clanwolf.starmap.client.gui to javafx.fxml;
 	opens net.clanwolf.starmap.client.gui.panes to javafx.fxml;
@@ -25,6 +23,8 @@ module net.clanwolf.starmap.client {
 	opens net.clanwolf.starmap.client.gui.panes.confirmAppClose to javafx.fxml;
 	opens net.clanwolf.starmap.client.gui.panes.map to javafx.fxml;
 	opens net.clanwolf.starmap.client.gui.panes.userinfo to javafx.fxml;
+	opens net.clanwolf.starmap.client.security to javafx.fxml;
+	opens net.clanwolf.starmap.client.gui.panes.security to javafx.fxml;
 
 	exports net.clanwolf.starmap.client.util;
 	exports net.clanwolf.starmap.client.gui;
@@ -36,4 +36,6 @@ module net.clanwolf.starmap.client {
 	exports net.clanwolf.starmap.client.gui.panes.userinfo;
 	exports net.clanwolf.starmap.client.process.universe;
 	exports net.clanwolf.starmap.client.action;
+	exports net.clanwolf.starmap.client.security to javafx.fxml;
+	exports net.clanwolf.starmap.client.gui.panes.security to javafx.fxml;
 }

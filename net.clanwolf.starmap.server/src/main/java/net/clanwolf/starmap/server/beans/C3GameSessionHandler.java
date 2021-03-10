@@ -41,8 +41,10 @@ import net.clanwolf.starmap.server.persistence.pojos.UserPOJO;
 import net.clanwolf.starmap.server.util.WebDataInterface;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
+import net.clanwolf.starmap.transfer.dtos.UserDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 
+import java.sql.Array;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -128,10 +130,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			C3GameSessionHandlerRoleplay.saveRolePlayCharacterNextStep(session, state);
 			break;
 		case CLIENT_READY_FOR_EVENTS:
-			// TODO: Make this event appear in server log, then
-			C3Logger.info("HURRA!");
 			roomSession.getSessionReadyMap().put(session, true);
-
 			break;
 		default:
 			break;
@@ -202,8 +201,12 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		//ArrayList<RolePlayCharacterPOJO> characterList = RolePlayCharacterDAO.getInstance().getCharactersOfUser(user);
 		//user.setCharacterList(characterList);
 
+		ArrayList<UserPOJO> userlist = UserDAO.getInstance().getUserList();
+
 		state_userdata.addObject(user);
 		state_userdata.addObject2(WebDataInterface.getUniverse());
+		//TODO: set user list to Nexus
+//		state_userdata.addObject3(userlist);
 		state_userdata.setReceiver(session.getId());
 
 		C3GameSessionHandler.sendNetworkEvent(session, state_userdata);

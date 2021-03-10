@@ -384,7 +384,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 	private void buildGuiEffect() {
 		// Fade in transition 01 (Background)
-		FadeTransition fadeInTransition_01 = new FadeTransition(Duration.millis(100), starMapPane);
+		FadeTransition fadeInTransition_01 = new FadeTransition(Duration.millis(80), starMapPane);
 		fadeInTransition_01.setFromValue(0.0);
 		fadeInTransition_01.setToValue(1.0);
 		fadeInTransition_01.setCycleCount(3);
@@ -396,25 +396,25 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 //		fadeInTransition_01a.setCycleCount(1);
 
 		// Fade in transition 01b (Background)
-		FadeTransition fadeInTransition_01b = new FadeTransition(Duration.millis(70), buttonBackground);
+		FadeTransition fadeInTransition_01b = new FadeTransition(Duration.millis(50), buttonBackground);
 		fadeInTransition_01b.setFromValue(0.0);
 		fadeInTransition_01b.setToValue(1.0);
 		fadeInTransition_01b.setCycleCount(3);
 
 		// Fade in transition 02 (Button)
-		FadeTransition fadeInTransition_02 = new FadeTransition(Duration.millis(50), mapButton01);
+		FadeTransition fadeInTransition_02 = new FadeTransition(Duration.millis(40), mapButton01);
 		fadeInTransition_02.setFromValue(0.0);
 		fadeInTransition_02.setToValue(1.0);
 		fadeInTransition_02.setCycleCount(3);
 
 		// Fade in transition 03 (Button)
-		FadeTransition fadeInTransition_03 = new FadeTransition(Duration.millis(50), mapButton02);
+		FadeTransition fadeInTransition_03 = new FadeTransition(Duration.millis(40), mapButton02);
 		fadeInTransition_03.setFromValue(0.0);
 		fadeInTransition_03.setToValue(1.0);
 		fadeInTransition_03.setCycleCount(3);
 
 		// Fade in transition 04 (Button)
-		FadeTransition fadeInTransition_04 = new FadeTransition(Duration.millis(50), mapButton03);
+		FadeTransition fadeInTransition_04 = new FadeTransition(Duration.millis(40), mapButton03);
 		fadeInTransition_04.setFromValue(0.0);
 		fadeInTransition_04.setToValue(1.0);
 		fadeInTransition_04.setCycleCount(3);
