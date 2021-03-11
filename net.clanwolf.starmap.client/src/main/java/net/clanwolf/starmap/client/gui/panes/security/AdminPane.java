@@ -47,20 +47,8 @@ public class AdminPane extends Application {
 
 	private AdminPaneController controller;
 
-	private ArrayList<UserDTO> userList = new ArrayList<UserDTO>();
-
-	public void setUserList(ArrayList<UserDTO> list) {
-		this.userList = list;
-	}
-
-	public ArrayList<UserDTO> getUserList() {
-		return this.userList;
-	}
-
-	public AdminPane(ArrayList<UserDTO> userList, Stage parentStage, Locale locale) {
-		this.userList = userList;
-
-		// https://stackoverflow.com/questions/10486731/how-to-create-a-modal-window-in-javafx-2-1
+	public AdminPane(ArrayList<UserDTO> userListFromNexus, Stage parentStage, Locale locale) {
+		ArrayList<UserDTO> userList = userListFromNexus;
 
 		Parent root;
 		Internationalization.setLocale(locale);
@@ -86,7 +74,7 @@ public class AdminPane extends Application {
 			stage.setMinHeight(600);
 
 			controller = fxmlLoader.getController();
-			controller.init(locale);
+			controller.init(locale, userList);
 
 			stage.showAndWait();
 		}
@@ -98,9 +86,5 @@ public class AdminPane extends Application {
 	@Override
 	public void start(Stage stage) throws Exception {
 
-	}
-
-	public static void main(String[] args) {
-		launch(AdminPane.class, args);
 	}
 }

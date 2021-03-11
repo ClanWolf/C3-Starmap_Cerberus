@@ -24,7 +24,7 @@
                   <content>
                     <AnchorPane maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="269.0" prefWidth="486.0">
                            <children>
-                              <ComboBox layoutX="76.0" layoutY="18.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="30.0" prefWidth="441.0" AnchorPane.leftAnchor="114.0" AnchorPane.rightAnchor="245.0" />
+                              <ComboBox fx:id="cbUser" layoutX="76.0" layoutY="18.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onAction="#userSelectionChanged" prefHeight="30.0" prefWidth="441.0" AnchorPane.leftAnchor="114.0" AnchorPane.rightAnchor="245.0" />
                               <Label fx:id="labelUser" layoutX="11.0" layoutY="25.0" prefHeight="18.0" prefWidth="99.0" text="User:" />
                               <ScrollPane fx:id="srollPane" hbarPolicy="NEVER" layoutX="10.0" layoutY="66.0" prefHeight="389.0" prefWidth="780.0" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="66.0">
                                  <padding>

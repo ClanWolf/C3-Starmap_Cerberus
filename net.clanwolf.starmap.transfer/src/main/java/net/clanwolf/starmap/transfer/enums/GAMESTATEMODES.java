@@ -42,6 +42,7 @@ public enum GAMESTATEMODES {
 	USER_LOGGED_IN_DATA,                        /* Send answer to the client after successfully login (Object: UserDTO and Receiver:PlayerSession.getID() -> its the own id of the player session as string */
 	USER_GET_NEW_PLAYERLIST,                    /* Gets a new list of actual players (Object: ArrayList<UserDTO>)*/
 	USER_SAVE,
+	PRIVILEGE_SAVE,
 
 	BROADCAST_SEND_NEW_PLAYERLIST,              /* Inform all clients after a successfull login */
 

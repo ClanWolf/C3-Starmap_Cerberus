@@ -652,10 +652,10 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		if (openAdministrationPane) {
 			C3Logger.info("Opening administration window!");
 
-			ArrayList<UserDTO> userList = new ArrayList<UserDTO>();
+			ArrayList<UserDTO> userListFromNexus = Nexus.getUserList();
 
 			Stage stage = (Stage) rootAnchorPane.getScene().getWindow();
-			AdminPane ap = new AdminPane(userList, stage, Internationalization.getLocale());
+			AdminPane ap = new AdminPane(userListFromNexus, stage, Internationalization.getLocale());
 			openAdministrationPane = false;
 		}
 	}

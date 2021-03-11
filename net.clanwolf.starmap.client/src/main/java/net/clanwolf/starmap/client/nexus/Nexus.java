@@ -57,7 +57,7 @@ public class Nexus {
 	private static BOStarSystem boSelectedStarSystem;
 	private static boolean loggedIn = false;
 
-	private static ArrayList<UserDTO> userList;
+	private static ArrayList userList;
 
 	private static int currentSeason;
 	private static int currentRound;
@@ -79,11 +79,11 @@ public class Nexus {
 
 	}
 
-	public static void setUserList(ArrayList<UserDTO> list) {
+	public static void setUserList(ArrayList list) {
 		userList = list;
 	}
 
-	public static ArrayList<UserDTO> getUserList() {
+	public static ArrayList getUserList() {
 		return userList;
 	}
 
