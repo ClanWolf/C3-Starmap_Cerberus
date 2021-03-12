@@ -85,7 +85,7 @@ public class UserDAO extends GenericDAO {
 		while (iter.hasNext()) {
 			UserPOJO up = (UserPOJO) iter.next();
 			lUser.add(up);
-			C3Logger.info(">>>>>>>>>>>>>>>>>>>>>>>>> " + up.getUserName());
+//			C3Logger.info(">>>>>>>>>>>>>>>>>>>>>>>>> " + up.getUserName());
 		}
 
 		return lUser;
