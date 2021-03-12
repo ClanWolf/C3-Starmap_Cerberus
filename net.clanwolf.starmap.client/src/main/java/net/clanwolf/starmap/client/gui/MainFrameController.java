@@ -93,6 +93,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private boolean buttonsAreMoving = false;
 	private boolean adminMenuActive = false;
 	private boolean openAdministrationPane = false;
+	private boolean openEditorPane = false;
 	private AbstractC3Pane currentlyDisplayedPane = null;
 	private AbstractC3Pane nextToDisplayPane = null;
 	private LoginPane loginPane = null;
@@ -627,8 +628,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			if (bn.equals(storyEditorButton)) {
 				C3Logger.info("Character opened by user.");
 				setStatusText(Internationalization.getString("app_settings_infotext").replace("%20", " ") + ".", false);
-				targetPane = characterPane;
+				//targetPane = characterPane;
 				adminPaneOpen = true;
+				openEditorPane = true;
 			}
 			// ADMIN PANE
 			if (bn.equals(adminPaneButton)) {
@@ -657,6 +659,14 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			Stage stage = (Stage) rootAnchorPane.getScene().getWindow();
 			AdminPane ap = new AdminPane(userListFromNexus, stage, Internationalization.getLocale());
 			openAdministrationPane = false;
+		}
+
+		if (openEditorPane) {
+			C3Logger.info("Opening storyeditor window!");
+
+			Stage stage = (Stage) rootAnchorPane.getScene().getWindow();
+			StoryEditorPane ep = new StoryEditorPane(stage);
+			openEditorPane = false;
 		}
 	}
 
@@ -989,10 +999,11 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		settingsPane.setCacheHint(CacheHint.SPEED);
 		settingsPane.getController().addActionCallBackListeners();
 
-		characterPane = new StoryEditorPane();
-		characterPane.setCache(true);
-		characterPane.setCacheHint(CacheHint.SPEED);
-		characterPane.getController().addActionCallBackListeners();
+		//Stage stage = (Stage) rootAnchorPane.getScene().getWindow();
+		//characterPane = new StoryEditorPane(stage);
+		//characterPane.setCache(true);
+		//characterPane.setCacheHint(CacheHint.SPEED);
+		//characterPane.getController().addActionCallBackListeners();
 
 		confirmAppClosePane = new ConfirmAppClosePane();
 		confirmAppClosePane.setCache(true);

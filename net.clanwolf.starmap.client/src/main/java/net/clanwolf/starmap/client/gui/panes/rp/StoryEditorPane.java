@@ -26,7 +26,18 @@
  */
 package net.clanwolf.starmap.client.gui.panes.rp;
 
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
+import net.clanwolf.starmap.client.util.Internationalization;
+
+import java.io.InputStream;
+import java.util.Locale;
 
 /**
  * Login scene to log into the database.
@@ -34,10 +45,52 @@ import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
  * @author Meldric
  * @version 1.0
  */
-public class StoryEditorPane extends AbstractC3Pane {
+public class StoryEditorPane extends Application {
 
-	public StoryEditorPane() {
-		super("/fxml/StoryEditorPane.fxml", false, true);
-		paneName = "StoryEditorPane";
+	private final static Locale GERMAN = Locale.GERMAN;
+	private final static Locale ENGLISH = Locale.ENGLISH;
+
+	private StoryEditorPaneController controller;
+
+	public StoryEditorPane( Stage parentStage) {
+		//super("/fxml/StoryEditorPane.fxml", false, true);
+		//paneName = "StoryEditorPane";
+
+		Parent root;
+		//Internationalization.setLocale(locale);
+		try {
+			FXMLLoader fxmlLoader = new FXMLLoader();
+			fxmlLoader.setLocation(this.getClass().getResource("/fxml/StoryEditorPane.fxml"));
+
+			root = fxmlLoader.load();
+
+			Stage stage = new Stage();
+			stage.setTitle(Internationalization.getString("StoryEditorPane"));
+			Scene scene = new Scene(root);
+			stage.setScene(scene);
+			stage.sizeToScene();
+			stage.setResizable(true);
+			stage.initOwner(parentStage);
+			stage.initModality(Modality.APPLICATION_MODAL);
+
+			InputStream is = this.getClass().getResourceAsStream("/icons/C3_Icon2.png");
+			stage.getIcons().add(new Image(is));
+
+			stage.setMinWidth(800);
+			stage.setMinHeight(600);
+
+			controller = fxmlLoader.getController();
+			controller.initialize();
+
+			stage.showAndWait();
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	@Override
+	public void start(Stage stage) throws Exception {
+
 	}
 }

@@ -41,36 +41,30 @@ import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
-import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
 import net.clanwolf.starmap.client.process.universe.BOFaction;
-import net.clanwolf.starmap.client.process.universe.BOUniverse;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.client.util.Tools;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.*;
-import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
-import net.clanwolf.starmap.transfer.enums.UNIVERSECONTEXT;
 import net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes.ROLEPLAYINPUTDATATYPES;
 import net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes.ROLEPLAYOBJECTTYPES;
 
 import java.io.File;
-import java.net.URL;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Optional;
-import java.util.ResourceBundle;
 
 /**
  * FXML Controller class
  *
  * @author Undertaker
  */
-public class StoryEditorPaneController extends AbstractC3Controller implements ActionCallBackListener {
+public class StoryEditorPaneController implements ActionCallBackListener {
 
 
 	//------------------- Dialog -------------------
@@ -194,7 +188,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	private static final int MODE_IS_EDIT = 2;
 
 	//------------------- Methoden ------------------
-	@Override
+	//@Override
 	public void addActionCallBackListeners() {
 		ActionManager.addActionCallbackListener(ACTIONS.CHANGE_LANGUAGE, this);
 		ActionManager.addActionCallbackListener(ACTIONS.PANE_CREATION_FINISHED, this);
@@ -204,16 +198,13 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	}
 
 	/**
-	 * Initializes the controller class.
-	 *
-	 * @param url needs an URL
-	 * @param rb needs an resourcebaundel
+	 * Initializes the controller class
 	 */
-	@Override
-	public void initialize(URL url, ResourceBundle rb) {
-		super.initialize(url, rb);
+
+	public void initialize() {
 
 		boRP = new BORolePlayStory();
+		addActionCallBackListeners();
 
 		// Register actions from BORolePlayStory
 		boRP.registerActions(this);
@@ -237,43 +228,36 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 		setStrings();
 		createListeners();
 		enableListeners(true);
-		setWarningOff();
+
+		//-------------------------------------------
+		if (true) {
+
+			//
+			treeStory.setRoot(null);
+			initTreeView();
+
+			// Request all stories of the current user from server
+			boRP.getAllStories();
+
+			// Request all character from server
+			boRP.getAllCharacter();
+
+			//handleTabs();
+			tabPaneStory.getTabs().remove(tabBasic2);
+			tabPaneStory.getTabs().remove(tabBasic3);
+			tabPaneStory.getTabs().remove(tabBasic4);
+			tabPaneStory.getTabs().remove(tabBasic5);
+			tabPaneStory.getTabs().remove(tabBasic6);
+			tabPaneStory.getTabs().remove(tabBasic7);
+			tabPaneStory.getTabs().remove(tabBasic8);
+			tabPaneStory.getTabs().remove(tabBasic9);
+			//-------------------------------------
+		}
 	}
 
 	@Override
 	public boolean handleAction(ACTIONS action, ActionObject object) {
 		switch (action) {
-			case CHANGE_LANGUAGE:
-				setStrings();
-				break;
-			case PANE_CREATION_FINISHED:
-				if (object.getObject().getClass() == StoryEditorPane.class) {
-					C3Logger.info(object.getObject().toString());
-					C3Logger.info("PANE_CREATION_FINISHED: fillComboBox");
-
-					ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute();
-
-					//
-					treeStory.setRoot(null);
-					initTreeView();
-
-					// Request all stories of the current user from server
-					boRP.getAllStories();
-
-					// Request all character from server
-					boRP.getAllCharacter();
-
-					//handleTabs();
-					tabPaneStory.getTabs().remove(tabBasic2);
-					tabPaneStory.getTabs().remove(tabBasic3);
-					tabPaneStory.getTabs().remove(tabBasic4);
-					tabPaneStory.getTabs().remove(tabBasic5);
-					tabPaneStory.getTabs().remove(tabBasic6);
-					tabPaneStory.getTabs().remove(tabBasic7);
-					tabPaneStory.getTabs().remove(tabBasic8);
-					tabPaneStory.getTabs().remove(tabBasic9);
-				}
-				break;
 			case SAVE_ROLEPLAY_STORY_OK:
 				C3Logger.info("SAVE_ROLEPLAY_STORY_OK");
 
@@ -309,7 +293,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 					Alert alert = Tools.C3Dialog(AlertType.ERROR, Internationalization.getString("general_failure"), Internationalization.getString("general_failure"), Internationalization.getString("app_rp_storyeditor_story_error_save"));
 					Optional<ButtonType> result = alert.showAndWait();
 					if (result.isPresent() && result.get() == ButtonType.OK) {
-						setWarningOff();
+						//setWarningOff();
 					}
 				});
 
@@ -327,7 +311,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 					Alert alert = Tools.C3Dialog(AlertType.ERROR, Internationalization.getString("general_failure"), Internationalization.getString("general_failure"), Internationalization.getString("app_rp_storyeditor_story_error_delete"));
 					Optional<ButtonType> result = alert.showAndWait();
 					if (result.isPresent() && result.get() == ButtonType.OK) {
-						setWarningOff();
+						//setWarningOff();
 					}
 				});
 
@@ -417,7 +401,8 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 		selected = rpTreeItem;
 
 		mode = StoryEditorPaneController.MODE_IS_NEW;
-		setWarningOn(true);
+		warningOnAction ();
+		//setWarningOn(true);
 		setData();
 
 	}
@@ -436,7 +421,8 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 			selected = rpTreeItem;
 
 			mode = StoryEditorPaneController.MODE_IS_NEW;
-			setWarningOn(true);
+			warningOnAction ();
+			//setWarningOn(true);
 			setData();
 
 		}
@@ -458,7 +444,8 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 			selected = rpTreeItem;
 
 			mode = StoryEditorPaneController.MODE_IS_NEW;
-			setWarningOn(true);
+			warningOnAction ();
+			//setWarningOn(true);
 			fillComboboxWithStories();
 			setData();
 
@@ -472,7 +459,8 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 			selected = rpTreeItem2;
 
 			mode = StoryEditorPaneController.MODE_IS_NEW;
-			setWarningOn(true);
+			warningOnAction ();
+			//setWarningOn(true);
 			setData();
 
 		}
@@ -537,7 +525,8 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 		C3Logger.info("Message -> Kommunikationskanal wird bereitgestellt... please hold the line :-)");
 		tabPaneStory.getSelectionModel().select(0);
 		mode = StoryEditorPaneController.MODE_IS_EDIT;
-		setWarningOn(true);
+		warningOnAction ();
+		//setWarningOn(true);
 	}
 
 	@FXML
@@ -549,7 +538,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 
 		// if (boRP.checkBeforeSave(getData(boRP.getCopy(copy)))) {
 		if (boRP.checkBeforeSave(getData(rpCopyForSaving))) {
-			setWarningOff();
+			//setWarningOff();
 			mode = StoryEditorPaneController.MODE_IS_DEFAULT;
 
 			boRP.save(getData(selected.getValue()));
@@ -592,7 +581,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 				selected.getParent().getChildren().remove(toDelete);
 
 				resetFields();
-				setWarningOff();
+				//setWarningOff();
 				mode = StoryEditorPaneController.MODE_IS_DEFAULT;
 
 				buttonSave.setDisable(true);
@@ -611,7 +600,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 
 				setData();
 
-				setWarningOff();
+				//setWarningOff();
 				buttonSave.setDisable(true);
 				mode = StoryEditorPaneController.MODE_IS_DEFAULT;
 				enableButtons();
@@ -746,8 +735,8 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 		if (lvAllCharacters.getSelectionModel().getSelectedItem() != null) {
 			lvAssignedChar.getItems().add(lvAllCharacters.getSelectionModel().getSelectedItem());
 			lvAllCharacters.getItems().remove(lvAllCharacters.getSelectionModel().getSelectedItem());
-
-			setWarningOn(true);
+			warningOnAction ();
+			//setWarningOn(true);
 		}
 	}
 
@@ -756,8 +745,8 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 		if (lvAssignedChar.getSelectionModel().getSelectedItem() != null) {
 			lvAllCharacters.getItems().add(lvAssignedChar.getSelectionModel().getSelectedItem());
 			lvAssignedChar.getItems().remove(lvAssignedChar.getSelectionModel().getSelectedItem());
-
-			setWarningOn(true);
+			warningOnAction ();
+			//setWarningOn(true);
 		}
 	}
 
@@ -1804,7 +1793,6 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	/**
 	 *
 	 */
-	@Override
 	public void setStrings () {
 		/*
 		 * Example... buttonNew.setText(Internationalization.getString("general_new"));
@@ -1907,14 +1895,16 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 		editFieldChangeListener = new ChangeListener<>() {
 			@Override
 			public void changed(ObservableValue<? extends String> ov, String old_val, String new_val) {
-				setWarningOn(true);
+				warningOnAction ();
+				//setWarningOn(true);
 			}
 		};
 
 		editComboBoxChangeListener = new ChangeListener<>() {
 			@Override
 		public void changed(ObservableValue<?> ov, Object old_val, Object new_val) {
-			setWarningOn(true);
+				warningOnAction ();
+				//setWarningOn(true);
 			}
 		};
 	}
@@ -1949,7 +1939,6 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	/**
 	 *
 	 */
-	@Override
 	public void warningOnAction () {
 		buttonSave.setDisable(false);
 		buttonCancel.setDisable(false);
@@ -1966,7 +1955,6 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	/**
 	 *
 	 */
-	@Override
 	public void warningOffAction () {
 	}
 
