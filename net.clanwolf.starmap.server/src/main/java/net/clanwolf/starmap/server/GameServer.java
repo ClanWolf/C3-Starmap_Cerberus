@@ -48,9 +48,13 @@ public class GameServer {
 		File dir;
 		if(args.length > 0 && args[0].equals("IDE")) {
 			isDevelopmentPC = true;
-			dir = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3");
 		} else {
 			isDevelopmentPC = false;
+		}
+
+		if(isDevelopmentPC) {
+			dir = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3");
+		} else {
 			dir = new File("/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/server");
 			
 			// TODO: Use this to get the servers home dir:
@@ -66,7 +70,7 @@ public class GameServer {
 			C3Logger.setC3LogLevel(Level.FINEST);
 		}
 
-		if(args.length > 0 && args[0].equals("IDE")) {
+		if(isDevelopmentPC) {
 			ctx = new AnnotationConfigApplicationContext(SpringConfigIDE.class);
 		} else {
 			ctx = new AnnotationConfigApplicationContext(SpringConfig.class);
