@@ -28,6 +28,7 @@ package net.clanwolf.starmap.client.gui.panes.rp;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
@@ -159,15 +160,15 @@ public class RolePlayMessagePaneController extends AbstractC3RolePlayController 
 	@Override
 	public void getStoryValues(RolePlayCharacterDTO rpChar){
 
-
-
 		// set story image
 		Image im = BORolePlayStory.getRPG_DefaultMessageImage();
 		backgroundImage.setImage(im);
 
 		//Fonts
-		labSenderFaction.setStyle("-fx-font-alignment:center;-fx-background-color:transparent;-fx-border-color:transparent;");
-		labServiceName.setStyle("-fx-font-alignment:center;-fx-background-color:transparent;-fx-border-color:transparent;");
+		//labSenderFaction.setStyle("-fx-font-alignment:center;-fx-background-color:transparent;-fx-border-color:transparent;");
+		//labServiceName.setStyle("-fx-font-alignment:center;-fx-background-color:transparent;-fx-border-color:transparent;");
+		labSenderFaction.setAlignment(Pos.CENTER);
+		labServiceName.setAlignment(Pos.CENTER);
 
 		// set data
 		taStoryText.setText(rpChar.getStory().getStoryText());

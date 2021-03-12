@@ -28,6 +28,7 @@ package net.clanwolf.starmap.server.util;
 
 import net.clanwolf.client.mail.MailManager;
 import net.clanwolf.starmap.logging.C3Logger;
+import net.clanwolf.starmap.server.GameServer;
 
 import java.io.File;
 import java.util.TimerTask;
@@ -62,18 +63,19 @@ public class CheckShutdownFlagTimer extends TimerTask {
 //			C3Logger.info("Cleaning up flag files.");
 //			cleanupFlagFiles();
 
-			C3Logger.info("Sending info mail.");
-			String[] receivers = { "warwolfen@gmail.com" }; // , "werner.kewenig@arcor.de"
-			boolean sent = false;
-			sent = MailManager.sendMail("c3@clanwolf.net", receivers, "C3 Server goes down after flag request", "C3 Server is shutting down...", false);
-			if (sent) {
-				// sent
-				C3Logger.info("Mail sent.");
-			} else {
-				// error during email sending
-				C3Logger.info("Error during mail dispatch.");
+			if(!GameServer.isDevelopmentPC) {
+				C3Logger.info("Sending info mail.");
+				String[] receivers = {"warwolfen@gmail.com"}; // , "werner.kewenig@arcor.de"
+				boolean sent = false;
+				sent = MailManager.sendMail("c3@clanwolf.net", receivers, "C3 Server goes down after flag request", "C3 Server is shutting down...", false);
+				if (sent) {
+					// sent
+					C3Logger.info("Mail sent.");
+				} else {
+					// error during email sending
+					C3Logger.info("Error during mail dispatch.");
+				}
 			}
-
 			C3Logger.info("Exiting server.");
 			System.exit(5);
 		}

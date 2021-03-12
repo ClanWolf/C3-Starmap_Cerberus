@@ -41,13 +41,16 @@ import java.util.logging.Level;
 public class GameServer {
 	private static AbstractApplicationContext ctx;
 	private static String serverBaseDir;
+	public static boolean isDevelopmentPC;
 
 	public static void main(String[] args) {
 		// Logging
 		File dir;
 		if(args.length > 0 && args[0].equals("IDE")) {
+			isDevelopmentPC = true;
 			dir = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3");
 		} else {
+			isDevelopmentPC = false;
 			dir = new File("/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/server");
 			
 			// TODO: Use this to get the servers home dir:
@@ -94,16 +97,18 @@ public class GameServer {
 			// Log.print("EntityManager initialized");
 			C3Logger.print("Server ready");
 
-			C3Logger.info("Sending info mail.");
-			String[] receivers = { "warwolfen@gmail.com" }; // , "werner.kewenig@arcor.de"
-			boolean sent = false;
-			sent = MailManager.sendMail("c3@clanwolf.net", receivers, "C3 Server is up again", "C3 Server started.", false);
-			if (sent) {
-				// sent
-				C3Logger.info("Mail sent.");
-			} else {
-				// error during email sending
-				C3Logger.info("Error during mail dispatch.");
+			if( !isDevelopmentPC) {
+				C3Logger.info("Sending info mail.");
+				String[] receivers = {"warwolfen@gmail.com"}; // , "werner.kewenig@arcor.de"
+				boolean sent = false;
+				sent = MailManager.sendMail("c3@clanwolf.net", receivers, "C3 Server is up again", "C3 Server started.", false);
+				if (sent) {
+					// sent
+					C3Logger.info("Mail sent.");
+				} else {
+					// error during email sending
+					C3Logger.info("Error during mail dispatch.");
+				}
 			}
 
 			// write heartbeat file every some minutes

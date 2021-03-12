@@ -396,6 +396,17 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 
 	/* ----------------- FXML begin ----------------- */
 
+	//------------------- Dialog ----------------------------
+	//------------------- Treeview --------------------------
+	//------------------- Char assignment -------------------
+	//------------------- Basic rpg -------------------------
+	//------------------- Path of the story -----------------
+	//------------------- Special form ----------------------
+	//------------------- Dice ------------------------------
+	//------------------- Next Step -------------------------
+	//------------------- Keypad ----------------------------
+	//------------------- HPG Message -----------------------
+
 	@FXML
 	private void handleNewStoryButtonClick() {
 		C3Logger.info("handleNewButtonClick");
@@ -1960,6 +1971,7 @@ public class StoryEditorPaneController extends AbstractC3Controller implements A
 	}
 
 	//------------------- Inner classes -------------------
+
 	private final class RPCellFactory<RolePlayStoryDTO> extends ListCell<net.clanwolf.starmap.transfer.dtos.RolePlayStoryDTO> {
 
 		@Override
