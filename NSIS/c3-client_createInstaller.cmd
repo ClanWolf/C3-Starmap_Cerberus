@@ -54,16 +54,38 @@ ECHO *******************
 ECHO *******************
 "C:\Program Files (x86)\WinSCP\winscp.com" /ini=nul /script=C:\C3\projects\C3-Starmap_Cerberus\NSIS\scripts\upload_manual.script
 
-:REQUEST
+:REQUEST_INSTALLER
 ECHO Upload Installer? (y/n)
 SET /p chc=
 IF '%chc%'=='y' GOTO UPLOADINSTALLER
-IF '%chc%'=='n' GOTO END
-GOTO REQUEST
+IF '%chc%'=='n' GOTO REQUEST_SERVER
+GOTO REQUEST_INSTALLER
 
 :UPLOADINSTALLER
 REM Upload installer
 "C:\Program Files (x86)\WinSCP\winscp.com" /ini=nul /script=C:\C3\projects\C3-Starmap_Cerberus\NSIS\scripts\upload_installer.script
+
+:REQUEST_SERVER
+ECHO Upload Server? (y/n)
+SET /p chc1=
+IF '%chc1%'=='y' GOTO UPLOADSERVER
+IF '%chc1%'=='n' GOTO REQUEST_IRCBOT
+GOTO REQUEST_SERVER
+
+:UPLOADSERVER
+REM Upload server
+"C:\Program Files (x86)\WinSCP\winscp.com" /ini=nul /script=C:\C3\projects\C3-Starmap_Cerberus\NSIS\scripts\upload_server.script
+
+:REQUEST_IRCBOT
+ECHO Upload IRCBot? (y/n)
+SET /p chc2=
+IF '%chc2%'=='y' GOTO UPLOADIRCBOT
+IF '%chc2%'=='n' GOTO END
+GOTO REQUEST_IRCBOT
+
+:UPLOADIRCBOT
+REM Upload server
+"C:\Program Files (x86)\WinSCP\winscp.com" /ini=nul /script=C:\C3\projects\C3-Starmap_Cerberus\NSIS\scripts\upload_ircbot.script
 
 REM ###############################################
 REM PAUSE

@@ -117,6 +117,9 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		case USER_SAVE:
 			saveUser(session, state);
 			break;
+		case PRIVILEGE_SAVE:
+			savePrivileges(session, state);
+			break;
 		case ROLEPLAY_GET_CHAPTER_BYSORTORDER:
 			C3GameSessionHandlerRoleplay.getChapterBySortOrder(session, state);
 			break;
@@ -138,19 +141,40 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 	}
 
 	private void saveUser(PlayerSession session, GameState state) {
-
 		UserDAO dao = UserDAO.getInstance();
 		EntityManagerHelper.beginTransaction(getC3UserID(session));
 		
 		UserPOJO user = (UserPOJO)state.getObject();
 		user.setLastModified(new Timestamp(System.currentTimeMillis()));
-		if(user.getUserId()== null) {
+		if(user.getUserId() == null) {
 			dao.save(getC3UserID(session), state.getObject());
 		} else {
 			dao.update(getC3UserID(session), state.getObject());
 		}
 		
 //		EntityManagerHelper.commit((Long) session.getPlayer().getId());
+		EntityManagerHelper.commit(getC3UserID(session));
+	}
+
+	private void savePrivileges(PlayerSession session, GameState state) {
+
+		UserDAO dao = UserDAO.getInstance();
+		EntityManagerHelper.beginTransaction(getC3UserID(session));
+
+		ArrayList<UserPOJO> list = (ArrayList<UserPOJO>) state.getObject();
+		Iterator<UserPOJO> iter = list.iterator();
+		while(iter.hasNext()) {
+			UserPOJO user = (UserPOJO) iter.next();
+			user.setLastModified(new Timestamp(System.currentTimeMillis()));
+			if(user.getUserId() == null) {
+//				C3Logger.info("Saving: " + user.getUserName() + " - Privs: " + user.getPrivileges());
+				dao.save(getC3UserID(session), user);
+			} else {
+//				C3Logger.info("Updating: " + user.getUserName() + " - Privs: " + user.getPrivileges());
+				dao.update(getC3UserID(session), user);
+			}
+		}
+
 		EntityManagerHelper.commit(getC3UserID(session));
 	}
 

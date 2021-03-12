@@ -40,6 +40,11 @@
                         </AnchorPane>
                   </content>
                 </Tab>
+                  <Tab closable="false" disable="true" text="Details">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                    </content>
+                  </Tab>
               </tabs>
             </TabPane>
          </center>
@@ -81,7 +86,7 @@
                <children>
                   <ImageView fx:id="ivLogo" fitHeight="53.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER">
                      <image>
-                        <Image url="@../icons/C3_Icon2.png" />
+                        <Image url="@../icons/admin_big.png" />
                      </image>
                      <HBox.margin>
                         <Insets bottom="10.0" left="10.0" top="10.0" />
