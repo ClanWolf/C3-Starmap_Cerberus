@@ -40,6 +40,15 @@ public class AttackDTO extends Dto {
 	private Integer defenderId = 0;
 	private Integer priority;
 	private Integer attackType;
+	private Integer jumpshipId = 0;
+
+	public Integer getJumpshipId() {
+		return jumpshipId;
+	}
+
+	public void setJumpshipId(Integer jumpshipId) {
+		this.jumpshipId = jumpshipId;
+	}
 
 	public Integer getPriority() {
 		return priority;

@@ -65,7 +65,7 @@ public class CheckShutdownFlagTimer extends TimerTask {
 
 			if(!GameServer.isDevelopmentPC) {
 				C3Logger.info("Sending info mail.");
-				String[] receivers = {"warwolfen@gmail.com"}; // , "werner.kewenig@arcor.de"
+				String[] receivers = { "keshik@googlegroups.com" };
 				boolean sent = false;
 				sent = MailManager.sendMail("c3@clanwolf.net", receivers, "C3 Server goes down after flag request", "C3 Server is shutting down...", false);
 				if (sent) {

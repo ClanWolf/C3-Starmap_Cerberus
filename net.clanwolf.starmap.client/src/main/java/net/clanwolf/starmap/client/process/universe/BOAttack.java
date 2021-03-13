@@ -43,4 +43,6 @@ public class BOAttack {
 	public Integer getStarSystemId() { return attackDTO.getStarSystemId(); }
 
 	public Integer getAttackedFromStarSystem() { return attackDTO.getAttackedFromStarSystem(); }
+
+	public Integer getJumpshipId() { return attackDTO.getJumpshipId(); }
 }

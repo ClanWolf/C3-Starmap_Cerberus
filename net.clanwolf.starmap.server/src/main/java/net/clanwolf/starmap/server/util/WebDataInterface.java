@@ -186,10 +186,11 @@ public class WebDataInterface {
 			//sb.append("         A.Priority                 AS priority,               \r\n");
 			sb.append("         A.StarSystemID             AS starsystem,             \r\n");
 			sb.append("         A.StarSystemDataID         AS starsystemdata,         \r\n");
-			//sb.append("         A.AttackedFromStarSystemID AS attackedfromstarsystem, \r\n");
+			sb.append("         A.AttackedFromStarSystemID AS attackedfromstarsystem, \r\n");
 			sb.append("         A.AttackTypeID             AS attacktype,             \r\n");
 			//sb.append("         A.FactionID_Attacker       AS attacker,               \r\n");
-			sb.append("         A.FactionID_Defender       AS defender                \r\n");
+			sb.append("         A.FactionID_Defender       AS defender,               \r\n");
+			sb.append("         A.JumpshipID               AS jumpship                \r\n");
 			sb.append("FROM     _HH_ATTACK                 A;");
 			selects.put(SystemListTypes.HH_Attacks.name(), sb.toString());
 
@@ -197,10 +198,10 @@ public class WebDataInterface {
 			sb.append("SELECT \r\n");
 			sb.append("         JS.ID                      AS jsid,                   \r\n");
 			sb.append("         JS.JumpshipName            AS jumpshipName,           \r\n");
-			sb.append("         JS.JumpshipFactionID       AS jumpshipFactionID      \r\n");
-			//sb.append("         JS.StarSystemHistory       AS starHist,               \r\n");
+			sb.append("         JS.JumpshipFactionID       AS jumpshipFactionID,      \r\n");
+			sb.append("         JS.StarSystemHistory       AS starHist,               \r\n");
 			//sb.append("         JS.LastMovedInRound        AS lastMovedInRound,       \r\n");
-			//sb.append("         JS.AttackReady             AS attackReady             \r\n");
+			sb.append("         JS.AttackReady             AS attackReady             \r\n");
 			sb.append("FROM     _HH_JUMPSHIP               JS;");
 			selects.put(SystemListTypes.HH_Jumpships.name(), sb.toString());
 		}
@@ -291,10 +292,11 @@ public class WebDataInterface {
 							//a.setPriority(rs.getInt("priority"));
 							a.setStarSystemId(rs.getInt("starsystem"));
 							a.setStarSystemDataId(rs.getInt("starsystemdata"));
-							//a.setAttackedFromStarSystem(rs.getInt("attackedfromstarsystem"));
+							a.setAttackedFromStarSystem(rs.getInt("attackedfromstarsystem"));
 							a.setAttackType(rs.getInt("attackType"));
 							//a.setAttackerId(rs.getInt("attacker"));
 							a.setDefenderId(rs.getInt("defender"));
+							a.setJumpshipId(rs.getInt("jumpship"));
 
 							universe.attacks.add(a);
 						}
@@ -308,7 +310,7 @@ public class WebDataInterface {
 							js.setShipID(rs.getInt("jsid"));
 							js.setShipName(rs.getString("jumpshipName"));
 							js.setShipID(rs.getInt("jumpshipFactionID"));
-							//js.setStarSystemHistory(rs.getString("starHist"));
+							js.setStarSystemHistory(rs.getString("starHist"));
 							//js.setLastMovedInRound(rs.getInt("lastMovedInRound"));
 							//js.setCombatReady(rs.getBoolean("attackReady"));
 
@@ -317,7 +319,7 @@ public class WebDataInterface {
 						C3Logger.print("Created universe classes (Jumpships)...");
 					}
 					universe.currentSeason = 1;
-					universe.currentRound = 6;
+					universe.currentRound = 1;
 					universe.currentDate = "01.01.3052";
 
 					// create JSON representation

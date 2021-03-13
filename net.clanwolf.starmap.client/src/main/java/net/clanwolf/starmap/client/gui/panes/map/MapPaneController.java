@@ -236,9 +236,11 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					if (attack.getSeason().equals(boUniverse.currentSeason) && attack.getRound().equals(boUniverse.currentRound)) {
 						BOStarSystem attackedSystem;
 						BOStarSystem attackerStartedFromSystem;
+						BOJumpship jumpship;
 
 						attackedSystem = boUniverse.starSystemBOs.get(attack.getStarSystemId());
 						attackerStartedFromSystem = boUniverse.starSystemBOs.get(attack.getAttackedFromStarSystem());
+						jumpship = boUniverse.jumpshipBOs.get(attack.getJumpshipId());
 
 						if (attackedSystem != null && attackerStartedFromSystem != null) {
 							if (Config.MAP_FLASH_ATTACKED_SYSTEMS) {
@@ -303,9 +305,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				attacksPane.toBack();
 
 				for (BOJumpship js : boUniverse.jumpshipBOs.values()) {
-					// TODO: Jumpships
 					Integer currentSystemID = js.getCurrentSystemID();
-					ArrayList<Integer> hist = js.getStarSystemHistoryArray();
 
 					if (currentSystemID != null) {
 						ImageView jumpshipImage;

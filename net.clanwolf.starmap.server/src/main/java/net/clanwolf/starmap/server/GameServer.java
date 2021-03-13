@@ -103,7 +103,7 @@ public class GameServer {
 
 			if( !isDevelopmentPC) {
 				C3Logger.info("Sending info mail.");
-				String[] receivers = {"warwolfen@gmail.com"}; // , "werner.kewenig@arcor.de"
+				String[] receivers = { "keshik@googlegroups.com" };
 				boolean sent = false;
 				sent = MailManager.sendMail("c3@clanwolf.net", receivers, "C3 Server is up again", "C3 Server started.", false);
 				if (sent) {
