@@ -183,12 +183,12 @@ public class WebDataInterface {
 			sb.append("         A.ID                       AS aid,                    \r\n");
 			sb.append("         A.Season                   AS season,                 \r\n");
 			sb.append("         A.Round                    AS round,                  \r\n");
-			sb.append("         A.Priority                 AS priority,               \r\n");
+			//sb.append("         A.Priority                 AS priority,               \r\n");
 			sb.append("         A.StarSystemID             AS starsystem,             \r\n");
 			sb.append("         A.StarSystemDataID         AS starsystemdata,         \r\n");
-			sb.append("         A.AttackedFromStarSystemID AS attackedfromstarsystem, \r\n");
+			//sb.append("         A.AttackedFromStarSystemID AS attackedfromstarsystem, \r\n");
 			sb.append("         A.AttackTypeID             AS attacktype,             \r\n");
-			sb.append("         A.FactionID_Attacker       AS attacker,               \r\n");
+			//sb.append("         A.FactionID_Attacker       AS attacker,               \r\n");
 			sb.append("         A.FactionID_Defender       AS defender                \r\n");
 			sb.append("FROM     _HH_ATTACK                 A;");
 			selects.put(SystemListTypes.HH_Attacks.name(), sb.toString());
@@ -197,7 +197,7 @@ public class WebDataInterface {
 			sb.append("SELECT \r\n");
 			sb.append("         JS.ID                      AS jsid,                   \r\n");
 			sb.append("         JS.JumpshipName            AS jumpshipName,           \r\n");
-			sb.append("         JS.JumpshipFactionID       AS jumpshipFactionID,      \r\n");
+			sb.append("         JS.JumpshipFactionID       AS jumpshipFactionID      \r\n");
 			//sb.append("         JS.StarSystemHistory       AS starHist,               \r\n");
 			//sb.append("         JS.LastMovedInRound        AS lastMovedInRound,       \r\n");
 			//sb.append("         JS.AttackReady             AS attackReady             \r\n");
@@ -288,12 +288,12 @@ public class WebDataInterface {
 							a.setId(rs.getInt("aid"));
 							a.setSeason(rs.getInt("season"));
 							a.setRound(rs.getInt("round"));
-							a.setPriority(rs.getInt("priority"));
+							//a.setPriority(rs.getInt("priority"));
 							a.setStarSystemId(rs.getInt("starsystem"));
 							a.setStarSystemDataId(rs.getInt("starsystemdata"));
-							a.setAttackedFromStarSystem(rs.getInt("attackedfromstarsystem"));
+							//a.setAttackedFromStarSystem(rs.getInt("attackedfromstarsystem"));
 							a.setAttackType(rs.getInt("attackType"));
-							a.setAttackerId(rs.getInt("attacker"));
+							//a.setAttackerId(rs.getInt("attacker"));
 							a.setDefenderId(rs.getInt("defender"));
 
 							universe.attacks.add(a);
