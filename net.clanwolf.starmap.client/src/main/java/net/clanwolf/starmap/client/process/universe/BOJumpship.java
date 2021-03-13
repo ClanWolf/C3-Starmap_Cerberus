@@ -80,7 +80,7 @@ public class BOJumpship {
 		return jumpshipDTO.getShipName();
 	}
 
-	public boolean isCombatReady() { return jumpshipDTO.isCombatReady(); }
+	public boolean isAttackReady() { return jumpshipDTO.isAttackReady(); }
 
 	public ArrayList<Integer> getStarSystemHistoryArray() { return jumpshipDTO.getStarSystemHistoryArray(); }
 }

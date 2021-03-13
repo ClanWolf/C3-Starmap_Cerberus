@@ -309,7 +309,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 					if (currentSystemID != null) {
 						ImageView jumpshipImage;
-						if (js.isCombatReady()) {
+						if (js.isAttackReady()) {
 							jumpshipImage = new ImageView(new Image(getClass().getResourceAsStream("/images/map/jumpship_left_blue.png")));
 							jumpshipImage.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
 							jumpshipImage.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());

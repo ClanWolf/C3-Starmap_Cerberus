@@ -38,7 +38,7 @@ public class JumpshipDTO extends Dto {
 	private Integer factionID = 0;
 	private Integer lastMovedInRound = 0;
 	private boolean movedInCurrentRound = false;
-	private boolean combatReady;
+	private boolean attackReady;
 	private Integer currentSystemID = null;
 
 	public ArrayList<Integer> getStarSystemHistoryArray() {
@@ -79,13 +79,13 @@ public class JumpshipDTO extends Dto {
 	}
 
 	@SuppressWarnings("unused")
-	public boolean isCombatReady() {
-		return combatReady;
+	public boolean isAttackReady() {
+		return attackReady;
 	}
 
 	@SuppressWarnings("unused")
-	public void setCombatReady(boolean combatReady) {
-		this.combatReady = combatReady;
+	public void setAttackReady(boolean attackReady) {
+		this.attackReady = attackReady;
 	}
 
 	@SuppressWarnings("unused")
