@@ -56,7 +56,8 @@ public class GameServer {
 			dir = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3");
 		} else {
 			dir = new File("/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/server");
-			
+
+			// TODO: Find location of the jar file programmatically
 			// TODO: Use this to get the servers home dir:
 			//File jarDir = new File(ClassLoader.getSystemClassLoader().getResource(".").getPath());
 		}

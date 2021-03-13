@@ -312,7 +312,7 @@ public class WebDataInterface {
 							js.setShipID(rs.getInt("jumpshipFactionID"));
 							js.setStarSystemHistory(rs.getString("starHist"));
 							//js.setLastMovedInRound(rs.getInt("lastMovedInRound"));
-							//js.setCombatReady(rs.getBoolean("attackReady"));
+							js.setAttackReady(rs.getBoolean("attackReady"));
 
 							universe.jumpships.put(js.getShipName(), js);
 						}

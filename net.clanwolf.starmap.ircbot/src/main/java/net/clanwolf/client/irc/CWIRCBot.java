@@ -29,6 +29,7 @@ package net.clanwolf.client.irc;
 import com.google.common.collect.ImmutableSortedSet;
 import net.clanwolf.client.db.DBConnection;
 import net.clanwolf.client.mail.MailManager;
+import net.clanwolf.client.util.CheckShutdownFlagTimer;
 import net.clanwolf.client.util.Internationalization;
 import org.pircbotx.*;
 import org.pircbotx.exception.DaoException;
@@ -421,6 +422,12 @@ public class CWIRCBot extends ListenerAdapter {
 		Timer randomTextDropTimer = new Timer();
 		RandomTextDrop randomTextDrop = new RandomTextDrop();
 		randomTextDropTimer.schedule(randomTextDrop, 1000, 3 * oneMinute);
+
+		Timer checkShutdownFlag = new Timer();
+		// TODO: Find location of the jar file programmatically
+		File dir = new File("/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/server");
+		String serverBaseDir = dir.getAbsolutePath();
+		checkShutdownFlag.schedule(new CheckShutdownFlagTimer(serverBaseDir), 1000, 1000 * 10);
 
 		CWIRCBot cwBot = new CWIRCBot();
 		cwBot.botJoinedMail();
