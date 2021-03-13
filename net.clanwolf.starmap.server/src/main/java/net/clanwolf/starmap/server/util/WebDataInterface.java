@@ -204,6 +204,16 @@ public class WebDataInterface {
 			sb.append("         JS.AttackReady             AS attackReady             \r\n");
 			sb.append("FROM     _HH_JUMPSHIP               JS;");
 			selects.put(SystemListTypes.HH_Jumpships.name(), sb.toString());
+
+			sb = new StringBuilder();
+			sb.append("SELECT \r\n");
+			sb.append("         RP.ID                      AS rpid,                   \r\n");
+			sb.append("         RP.SeasonID                AS seasonID,               \r\n");
+			sb.append("         RP.RoundID                 AS roundID,                \r\n");
+			sb.append("         RP.JumpshipID              AS jumpshipID,             \r\n");
+			sb.append("         RP.SystemID                AS systemID                \r\n");
+			sb.append("FROM     _HH_ROUTEPOINTS            RP;");
+			selects.put(SystemListTypes.HH_Routepoints.name(), sb.toString());
 		}
 	}
 
@@ -289,13 +299,11 @@ public class WebDataInterface {
 							a.setId(rs.getInt("aid"));
 							a.setSeason(rs.getInt("season"));
 							a.setRound(rs.getInt("round"));
-							//a.setPriority(rs.getInt("priority"));
 							a.setStarSystemId(rs.getInt("starsystem"));
 							a.setStarSystemDataId(rs.getInt("starsystemdata"));
-							a.setAttackedFromStarSystem(rs.getInt("attackedfromstarsystem"));
 							a.setAttackType(rs.getInt("attackType"));
-							//a.setAttackerId(rs.getInt("attacker"));
-							a.setDefenderId(rs.getInt("defender"));
+							a.setAttackedFromStarSystem(rs.getInt("attackedfromstarsystem"));
+							a.setfactionId_defender(rs.getInt("defender"));
 							a.setJumpshipId(rs.getInt("jumpship"));
 
 							universe.attacks.add(a);
@@ -318,6 +326,22 @@ public class WebDataInterface {
 						}
 						C3Logger.print("Created universe classes (Jumpships)...");
 					}
+
+					if (type == SystemListTypes.HH_Routepoints) {
+						universe.routepoints.clear();
+						while (rs.next()) {
+							RoutePointDTO rp = new RoutePointDTO();
+							rp.setId(rs.getLong("rpid"));
+							rp.setSystemId(rs.getLong("systemID"));
+							rp.setRoundId(rs.getLong("roundID"));
+							rp.setSeasonId(rs.getLong("seasonID"));
+							rp.setJumpshipId(rs.getLong("jumpshipID"));
+
+							universe.routepoints.add(rp);
+						}
+						C3Logger.print("Created universe classes (Jumpships)...");
+					}
+
 					universe.currentSeason = 1;
 					universe.currentRound = 1;
 					universe.currentDate = "01.01.3052";

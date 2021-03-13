@@ -73,6 +73,8 @@ public class HeartBeatTimer extends TimerTask {
 		WebDataInterface.createSystemList(SystemListTypes.HH_Attacks);
 		C3Logger.print("Calling list creation (HH_Jumpships)...");
 		WebDataInterface.createSystemList(SystemListTypes.HH_Jumpships);
+		C3Logger.print("Calling list creation (HH_Routepoints)...");
+		WebDataInterface.createSystemList(SystemListTypes.HH_Routepoints);
 		C3Logger.print("Calling list creation (CM_StarSystems)...");
 		WebDataInterface.createSystemList(SystemListTypes.CM_StarSystems);
 	}

@@ -35,8 +35,6 @@ import static javax.persistence.GenerationType.IDENTITY;
 @Entity
 @Table(name = "_HH_ATTACKRESULT", catalog = "C3")
 public class HHjumpshipPOJO extends Pojo {
-
-
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "ID")
@@ -50,9 +48,6 @@ public class HHjumpshipPOJO extends Pojo {
 
 	@Column(name = "StarSystemHistory")
 	private String starSystemHistory;
-
-	@Column(name = "LastMovedInRound")
-	private Long lastMovedInRound;
 
 	@Column(name = "AttackReady")
 	private Boolean attackReady;
@@ -87,14 +82,6 @@ public class HHjumpshipPOJO extends Pojo {
 
 	public void setStarSystemHistory(String starSystemHistory) {
 		this.starSystemHistory = starSystemHistory;
-	}
-
-	public Long getLastMovedInRound() {
-		return lastMovedInRound;
-	}
-
-	public void setLastMovedInRound(Long lastMovedInRound) {
-		this.lastMovedInRound = lastMovedInRound;
 	}
 
 	public Boolean getAttackReady() {

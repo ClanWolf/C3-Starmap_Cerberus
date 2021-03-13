@@ -24,15 +24,71 @@
  * Copyright (c) 2001-2021, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.server.enums;
+package net.clanwolf.starmap.server.persistence.pojos;
 
-public enum SystemListTypes {
-	Factions,
+import net.clanwolf.starmap.server.persistence.Pojo;
 
-	HH_StarSystems,
-	HH_Attacks,
-	HH_Jumpships,
-	HH_Routepoints,
+import javax.persistence.*;
 
-	CM_StarSystems;
+import static javax.persistence.GenerationType.IDENTITY;
+
+@Entity
+@Table(name = "_HH_ROUTEPOINTS", catalog = "C3")
+public class HHroutepointsPOJO extends Pojo {
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "ID")
+	private Long id;
+
+	@Column(name = "SeasonID")
+	private Long seasonId;
+
+	@Column(name = "RoundID")
+	private Long roundId;
+
+	@Column(name = "JumpshipID")
+	private Long jumpshipId;
+
+	@Column(name = "SystemID")
+	private Long systemId;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getSeasonId() {
+		return seasonId;
+	}
+
+	public void setSeasonId(Long seasonID) {
+		this.seasonId = seasonID;
+	}
+
+	public Long getRoundId() {
+		return roundId;
+	}
+
+	public void setRoundId(Long roundID) {
+		this.roundId = roundID;
+	}
+
+	public Long getJumpshipId() {
+		return jumpshipId;
+	}
+
+	public void setJumpshipId(Long jumpshipId) {
+		this.jumpshipId = jumpshipId;
+	}
+
+	public Long getSystemId() {
+		return systemId;
+	}
+
+	public void setSystemId(Long systemId) {
+		this.systemId = systemId;
+	}
 }

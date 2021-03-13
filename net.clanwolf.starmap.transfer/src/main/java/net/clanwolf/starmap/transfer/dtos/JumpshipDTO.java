@@ -32,13 +32,12 @@ import java.util.ArrayList;
 
 public class JumpshipDTO extends Dto {
 
-	private String shipName = "";
-	private String starSystemHistory = "";
 	private Integer shipID = 0;
+	private String shipName = "";
 	private Integer factionID = 0;
-	private Integer lastMovedInRound = 0;
-	private boolean movedInCurrentRound = false;
+	private String starSystemHistory = "";
 	private boolean attackReady;
+	private boolean movedInCurrentRound = false;
 	private Integer currentSystemID = null;
 
 	public ArrayList<Integer> getStarSystemHistoryArray() {
@@ -96,16 +95,6 @@ public class JumpshipDTO extends Dto {
 	@SuppressWarnings("unused")
 	public void setStarSystemHistory(String starSystemHistory) {
 		this.starSystemHistory = starSystemHistory;
-	}
-
-	@SuppressWarnings("unused")
-	public Integer getLastMovedInRound() {
-		return lastMovedInRound;
-	}
-
-	@SuppressWarnings("unused")
-	public void setLastMovedInRound(Integer lastMovedInRound) {
-		this.lastMovedInRound = lastMovedInRound;
 	}
 
 	@SuppressWarnings("unused")

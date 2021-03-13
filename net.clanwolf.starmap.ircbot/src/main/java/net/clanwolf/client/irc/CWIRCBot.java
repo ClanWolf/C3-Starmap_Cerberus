@@ -31,6 +31,7 @@ import net.clanwolf.client.db.DBConnection;
 import net.clanwolf.client.mail.MailManager;
 import net.clanwolf.client.util.CheckShutdownFlagTimer;
 import net.clanwolf.client.util.Internationalization;
+import net.clanwolf.starmap.logging.C3Logger;
 import org.pircbotx.*;
 import org.pircbotx.exception.DaoException;
 import org.pircbotx.hooks.ListenerAdapter;
@@ -49,6 +50,7 @@ import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.logging.Level;
 
 public class CWIRCBot extends ListenerAdapter {
 
@@ -415,6 +417,19 @@ public class CWIRCBot extends ListenerAdapter {
 		int oneMinute = 1000 * 60;
 		dbc = new DBConnection();
 
+		// TODO: Find location of the jar file programmatically
+		File dir = new File("/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/server");
+		String serverBaseDir = dir.getAbsolutePath();
+
+		boolean res = dir.mkdirs();
+		if (res || dir.exists()) {
+			String logFileName = dir + File.separator + "C3_CWIRCBot.log";
+
+			C3Logger.setC3Logfile(logFileName);
+			C3Logger.setC3LogLevel(Level.FINEST);
+			C3Logger.info("IRCBot startet.");
+		}
+
 		Timer userlistDropTimer = new Timer();
 		UserListDrop userlistDrop = new UserListDrop();
 		userlistDropTimer.schedule(userlistDrop, 1000, 5 * oneMinute);
@@ -424,9 +439,6 @@ public class CWIRCBot extends ListenerAdapter {
 		randomTextDropTimer.schedule(randomTextDrop, 1000, 3 * oneMinute);
 
 		Timer checkShutdownFlag = new Timer();
-		// TODO: Find location of the jar file programmatically
-		File dir = new File("/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/server");
-		String serverBaseDir = dir.getAbsolutePath();
 		checkShutdownFlag.schedule(new CheckShutdownFlagTimer(serverBaseDir), 1000, 1000 * 10);
 
 		CWIRCBot cwBot = new CWIRCBot();

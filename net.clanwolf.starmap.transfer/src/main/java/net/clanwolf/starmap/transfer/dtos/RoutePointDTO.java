@@ -24,15 +24,64 @@
  * Copyright (c) 2001-2021, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.server.enums;
+package net.clanwolf.starmap.transfer.dtos;
 
-public enum SystemListTypes {
-	Factions,
+import net.clanwolf.starmap.transfer.Dto;
 
-	HH_StarSystems,
-	HH_Attacks,
-	HH_Jumpships,
-	HH_Routepoints,
+public class RoutePointDTO extends Dto {
+	private Long id;
+	private Long seasonId;
+	private Long roundId;
+	private Long jumpshipId;
+	private Long systemId;
 
-	CM_StarSystems;
+	@SuppressWarnings("unused")
+	public Long getId() {
+		return id;
+	}
+
+	@SuppressWarnings("unused")
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	@SuppressWarnings("unused")
+	public Long getSeasonId() {
+		return seasonId;
+	}
+
+	@SuppressWarnings("unused")
+	public void setSeasonId(Long seasonId) {
+		this.seasonId = seasonId;
+	}
+
+	@SuppressWarnings("unused")
+	public Long getRoundId() {
+		return roundId;
+	}
+
+	@SuppressWarnings("unused")
+	public void setRoundId(Long roundId) {
+		this.roundId = roundId;
+	}
+
+	@SuppressWarnings("unused")
+	public Long getJumpshipId() {
+		return jumpshipId;
+	}
+
+	@SuppressWarnings("unused")
+	public void setJumpshipId(Long jumpshipId) {
+		this.jumpshipId = jumpshipId;
+	}
+
+	@SuppressWarnings("unused")
+	public Long getSystemId() {
+		return systemId;
+	}
+
+	@SuppressWarnings("unused")
+	public void setSystemId(Long systemId) {
+		this.systemId = systemId;
+	}
 }

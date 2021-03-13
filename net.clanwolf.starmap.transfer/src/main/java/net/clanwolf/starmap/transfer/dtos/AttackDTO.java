@@ -35,11 +35,9 @@ public class AttackDTO extends Dto {
 	private Integer round = 0;
 	private Integer starSystemId = 0;
 	private Integer starSystemDataId = 0;
-	private Integer attackedFromStarSystem = 0;
-	private Integer attackerId = 0;
-	private Integer defenderId = 0;
-	private Integer priority;
 	private Integer attackType;
+	private Integer attackedFromStarSystem = 0;
+	private Integer factionId_defender = 0;
 	private Integer jumpshipId = 0;
 
 	public Integer getJumpshipId() {
@@ -48,14 +46,6 @@ public class AttackDTO extends Dto {
 
 	public void setJumpshipId(Integer jumpshipId) {
 		this.jumpshipId = jumpshipId;
-	}
-
-	public Integer getPriority() {
-		return priority;
-	}
-
-	public void setPriority(Integer priority) {
-		this.priority = priority;
 	}
 
 	public Integer getAttackType() {
@@ -114,20 +104,12 @@ public class AttackDTO extends Dto {
 		this.starSystemDataId = starSystemDataId;
 	}
 
-	public Integer getAttackerId() {
-		return attackerId;
+	public Integer getfactionId_defender() {
+		return factionId_defender;
 	}
 
-	public void setAttackerId(Integer attackerId) {
-		this.attackerId = attackerId;
-	}
-
-	public Integer getDefenderId() {
-		return defenderId;
-	}
-
-	public void setDefenderId(Integer defenderId) {
-		this.defenderId = defenderId;
+	public void setfactionId_defender(Integer defenderId) {
+		this.factionId_defender = defenderId;
 	}
 
 	public AttackDTO() {
