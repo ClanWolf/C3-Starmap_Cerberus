@@ -34,6 +34,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 import net.clanwolf.starmap.client.nexus.Nexus;
@@ -401,7 +402,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 		selected = rpTreeItem;
 
 		mode = StoryEditorPaneController.MODE_IS_NEW;
-		warningOnAction ();
+		warningOnAction (true);
 		//setWarningOn(true);
 		setData();
 
@@ -421,7 +422,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 			selected = rpTreeItem;
 
 			mode = StoryEditorPaneController.MODE_IS_NEW;
-			warningOnAction ();
+			warningOnAction (true);
 			//setWarningOn(true);
 			setData();
 
@@ -444,7 +445,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 			selected = rpTreeItem;
 
 			mode = StoryEditorPaneController.MODE_IS_NEW;
-			warningOnAction ();
+			warningOnAction (true);
 			//setWarningOn(true);
 			fillComboboxWithStories();
 			setData();
@@ -459,7 +460,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 			selected = rpTreeItem2;
 
 			mode = StoryEditorPaneController.MODE_IS_NEW;
-			warningOnAction ();
+			warningOnAction (true);
 			//setWarningOn(true);
 			setData();
 
@@ -525,7 +526,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 		C3Logger.info("Message -> Kommunikationskanal wird bereitgestellt... please hold the line :-)");
 		tabPaneStory.getSelectionModel().select(0);
 		mode = StoryEditorPaneController.MODE_IS_EDIT;
-		warningOnAction ();
+		warningOnAction (true);
 		//setWarningOn(true);
 	}
 
@@ -581,6 +582,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 				selected.getParent().getChildren().remove(toDelete);
 
 				resetFields();
+				warningOnAction(false);
 				//setWarningOff();
 				mode = StoryEditorPaneController.MODE_IS_DEFAULT;
 
@@ -599,7 +601,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 				treeStory.getSelectionModel().select(selected);
 
 				setData();
-
+				warningOnAction(false);
 				//setWarningOff();
 				buttonSave.setDisable(true);
 				mode = StoryEditorPaneController.MODE_IS_DEFAULT;
@@ -607,7 +609,9 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 				setStrings();
 
 			} else {
-				ActionManager.getAction(ACTIONS.PANE_DESTROY_CURRENT).execute();
+				//ActionManager.getAction(ACTIONS.PANE_DESTROY_CURRENT).execute();
+				Stage stage = (Stage) buttonSave.getScene().getWindow();
+				stage.close();
 			}
 		} else {
 			C3Logger.info("Do Nothing");
@@ -735,7 +739,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 		if (lvAllCharacters.getSelectionModel().getSelectedItem() != null) {
 			lvAssignedChar.getItems().add(lvAllCharacters.getSelectionModel().getSelectedItem());
 			lvAllCharacters.getItems().remove(lvAllCharacters.getSelectionModel().getSelectedItem());
-			warningOnAction ();
+			warningOnAction (true);
 			//setWarningOn(true);
 		}
 	}
@@ -745,7 +749,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 		if (lvAssignedChar.getSelectionModel().getSelectedItem() != null) {
 			lvAllCharacters.getItems().add(lvAssignedChar.getSelectionModel().getSelectedItem());
 			lvAssignedChar.getItems().remove(lvAssignedChar.getSelectionModel().getSelectedItem());
-			warningOnAction ();
+			warningOnAction (true);
 			//setWarningOn(true);
 		}
 	}
@@ -1895,7 +1899,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 		editFieldChangeListener = new ChangeListener<>() {
 			@Override
 			public void changed(ObservableValue<? extends String> ov, String old_val, String new_val) {
-				warningOnAction ();
+				warningOnAction (true);
 				//setWarningOn(true);
 			}
 		};
@@ -1903,7 +1907,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 		editComboBoxChangeListener = new ChangeListener<>() {
 			@Override
 		public void changed(ObservableValue<?> ov, Object old_val, Object new_val) {
-				warningOnAction ();
+				warningOnAction (true);
 				//setWarningOn(true);
 			}
 		};
@@ -1939,11 +1943,11 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 	/**
 	 *
 	 */
-	public void warningOnAction () {
+	public void warningOnAction (boolean enable) {
 		buttonSave.setDisable(false);
 		buttonCancel.setDisable(false);
 
-		enabledFields(true);
+		enabledFields(enable);
 		enableButtons();
 		setStrings();
 		AbstractC3Pane currentPane = Nexus.getCurrentlyOpenedPane();

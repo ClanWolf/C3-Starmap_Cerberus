@@ -198,9 +198,9 @@ public class WebDataInterface {
 			sb.append("         JS.ID                      AS jsid,                   \r\n");
 			sb.append("         JS.JumpshipName            AS jumpshipName,           \r\n");
 			sb.append("         JS.JumpshipFactionID       AS jumpshipFactionID,      \r\n");
-			sb.append("         JS.StarSystemHistory       AS starHist,               \r\n");
-			sb.append("         JS.LastMovedInRound        AS lastMovedInRound,       \r\n");
-			sb.append("         JS.AttackReady             AS attackReady             \r\n");
+			//sb.append("         JS.StarSystemHistory       AS starHist,               \r\n");
+			//sb.append("         JS.LastMovedInRound        AS lastMovedInRound,       \r\n");
+			//sb.append("         JS.AttackReady             AS attackReady             \r\n");
 			sb.append("FROM     _HH_JUMPSHIP               JS;");
 			selects.put(SystemListTypes.HH_Jumpships.name(), sb.toString());
 		}
@@ -308,9 +308,9 @@ public class WebDataInterface {
 							js.setShipID(rs.getInt("jsid"));
 							js.setShipName(rs.getString("jumpshipName"));
 							js.setShipID(rs.getInt("jumpshipFactionID"));
-							js.setStarSystemHistory(rs.getString("starHist"));
-							js.setLastMovedInRound(rs.getInt("lastMovedInRound"));
-							js.setCombatReady(rs.getBoolean("attackReady"));
+							//js.setStarSystemHistory(rs.getString("starHist"));
+							//js.setLastMovedInRound(rs.getInt("lastMovedInRound"));
+							//js.setCombatReady(rs.getBoolean("attackReady"));
 
 							universe.jumpships.put(js.getShipName(), js);
 						}
