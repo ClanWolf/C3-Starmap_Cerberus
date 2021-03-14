@@ -139,13 +139,14 @@ public class NodeGestures {
 		c.setRadius(8);
 		event.consume();
 
-		// TODO: Get the route
 		// Starting system and dragged target can be taken from new member vars to be created
 		BOStarSystem startSystem = boUniverse.starSystemBOs.get(boUniverse.currentlyDraggedJumpship.getCurrentSystemID());
 		BOStarSystem hovered = boUniverse.starSystemBOs.get(Integer.parseInt(c.getId()));
 
 		C3Logger.info(boUniverse.currentlyDraggedJumpship.getShipName() + " : " + startSystem.getName() + " : " + hovered.getName());
 		List<BOStarSystem> route = Route.getRoute(startSystem, hovered);
+
+		boUniverse.currentlyDraggedJumpship.setRouteSystems(route);
 
 		if (canvas.getChildren().contains(boUniverse.currentlyDraggedJumpship.routeLines)) {
 			canvas.getChildren().remove(boUniverse.currentlyDraggedJumpship.routeLines);

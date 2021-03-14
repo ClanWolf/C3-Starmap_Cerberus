@@ -212,7 +212,7 @@ public class WebDataInterface {
 			sb.append("         RP.RoundID                 AS roundID,                \r\n");
 			sb.append("         RP.JumpshipID              AS jumpshipID,             \r\n");
 			sb.append("         RP.SystemID                AS systemID                \r\n");
-			sb.append("FROM     _HH_ROUTEPOINTS            RP;");
+			sb.append("FROM     _HH_ROUTEPOINT             RP;");
 			selects.put(SystemListTypes.HH_Routepoints.name(), sb.toString());
 		}
 	}

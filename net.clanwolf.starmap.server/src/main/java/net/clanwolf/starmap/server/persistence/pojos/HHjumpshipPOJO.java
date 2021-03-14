@@ -30,10 +30,13 @@ import net.clanwolf.starmap.server.persistence.Pojo;
 
 import javax.persistence.*;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
-@Table(name = "_HH_ATTACKRESULT", catalog = "C3")
+@Table(name = "_HH_JUMPSHIP", catalog = "C3")
 public class HHjumpshipPOJO extends Pojo {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
@@ -52,12 +55,20 @@ public class HHjumpshipPOJO extends Pojo {
 	@Column(name = "AttackReady")
 	private Boolean attackReady;
 
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "JumpshipID")
+	private HHroutepointPOJO route;
+
 	public Long getId() {
 		return id;
 	}
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public HHroutepointPOJO getRoute() {
+		return route;
 	}
 
 	public String getJumpshipName() {

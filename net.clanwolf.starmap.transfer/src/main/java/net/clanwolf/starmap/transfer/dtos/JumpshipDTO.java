@@ -39,6 +39,14 @@ public class JumpshipDTO extends Dto {
 	private boolean attackReady;
 	private boolean movedInCurrentRound = false;
 	private Integer currentSystemID = null;
+	private ArrayList<RoutePointDTO> route;
+
+	private void setRoute(ArrayList<RoutePointDTO> route) {
+
+	}
+	private ArrayList<RoutePointDTO> getRoute() {
+		return this.route;
+	}
 
 	public ArrayList<Integer> getStarSystemHistoryArray() {
 		ArrayList<Integer> hist = null;

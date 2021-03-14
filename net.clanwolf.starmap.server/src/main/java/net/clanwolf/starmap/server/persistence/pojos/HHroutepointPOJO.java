@@ -33,8 +33,8 @@ import javax.persistence.*;
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
-@Table(name = "_HH_ROUTEPOINTS", catalog = "C3")
-public class HHroutepointsPOJO extends Pojo {
+@Table(name = "_HH_ROUTEPOINT", catalog = "C3")
+public class HHroutepointPOJO extends Pojo {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "ID")

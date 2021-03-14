@@ -32,14 +32,18 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
 import net.clanwolf.starmap.transfer.dtos.JumpshipDTO;
+import net.clanwolf.starmap.transfer.dtos.RoutePointDTO;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class BOJumpship {
 
 	private JumpshipDTO jumpshipDTO;
 	private ImageView jumpshipImage;
 	private Line predictedRouteLine = null;
+	private List<BOStarSystem> routeSystems = null;
+	private List<RoutePointDTO> route = null;
 	public Group routeLines = null;
 
 	@SuppressWarnings("unused")
@@ -51,6 +55,16 @@ public class BOJumpship {
 			predictedRouteLine.setStrokeLineCap(StrokeLineCap.ROUND);
 		}
 		return predictedRouteLine;
+	}
+
+	@SuppressWarnings("unused")
+	public void setRouteSystems(List<BOStarSystem> routeSystems) {
+		this.routeSystems = routeSystems;
+	}
+
+	@SuppressWarnings("unused")
+	public List<BOStarSystem> getRoute() {
+		return this.routeSystems;
 	}
 
 	@SuppressWarnings("unused")
@@ -68,19 +82,24 @@ public class BOJumpship {
 		this.jumpshipImage = jumpshipImage;
 	}
 
+	@SuppressWarnings("unused")
 	public BOJumpship(JumpshipDTO jumpshipDTO) {
 		this.jumpshipDTO = jumpshipDTO;
 	}
 
+	@SuppressWarnings("unused")
 	public Integer getCurrentSystemID() {
 		return jumpshipDTO.getCurrentSystemID();
 	}
 
+	@SuppressWarnings("unused")
 	public String getShipName() {
 		return jumpshipDTO.getShipName();
 	}
 
+	@SuppressWarnings("unused")
 	public boolean isAttackReady() { return jumpshipDTO.isAttackReady(); }
 
+	@SuppressWarnings("unused")
 	public ArrayList<Integer> getStarSystemHistoryArray() { return jumpshipDTO.getStarSystemHistoryArray(); }
 }
