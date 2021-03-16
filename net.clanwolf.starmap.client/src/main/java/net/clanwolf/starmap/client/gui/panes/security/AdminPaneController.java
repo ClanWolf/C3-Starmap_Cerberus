@@ -137,6 +137,8 @@ public class AdminPaneController {
 		labelPrivCode.setText("" + privCode);
 		labelPrivCodeBinary.setText("" + binCode);
 		currentUser.setPrivileges(privCode);
+		//TODO: Add admin id to a edit action
+		currentUser.setLastModifiedByUserID(Nexus.getCurrentlyLoggedOnUser.getUserID());
 	}
 
 	private void setCheckBoxesForUser(String username) {
