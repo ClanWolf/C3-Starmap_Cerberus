@@ -65,7 +65,7 @@ public class GameServer {
 
 		boolean res = dir.mkdirs();
 		if (res || dir.exists()) {
-			String logFileName = dir + File.separator + "C3_Server.log";
+			String logFileName = dir + File.separator + "log" + File.separator + "C3-Server.log";
 
 			C3Logger.setC3Logfile(logFileName);
 			C3Logger.setC3LogLevel(Level.FINEST);

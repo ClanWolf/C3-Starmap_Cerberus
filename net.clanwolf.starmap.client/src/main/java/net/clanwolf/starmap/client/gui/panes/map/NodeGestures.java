@@ -143,7 +143,7 @@ public class NodeGestures {
 		BOStarSystem startSystem = boUniverse.starSystemBOs.get(boUniverse.currentlyDraggedJumpship.getCurrentSystemID());
 		BOStarSystem hovered = boUniverse.starSystemBOs.get(Integer.parseInt(c.getId()));
 
-		C3Logger.info(boUniverse.currentlyDraggedJumpship.getShipName() + " : " + startSystem.getName() + " : " + hovered.getName());
+		C3Logger.info(boUniverse.currentlyDraggedJumpship.getJumpshipName() + " : " + startSystem.getName() + " : " + hovered.getName());
 		List<BOStarSystem> route = Route.getRoute(startSystem, hovered);
 
 		boUniverse.currentlyDraggedJumpship.setRouteSystems(route);

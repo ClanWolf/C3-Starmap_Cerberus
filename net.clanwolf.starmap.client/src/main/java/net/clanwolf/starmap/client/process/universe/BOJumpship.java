@@ -43,7 +43,7 @@ public class BOJumpship {
 	private ImageView jumpshipImage;
 	private Line predictedRouteLine = null;
 	private List<BOStarSystem> routeSystems = null;
-	private List<RoutePointDTO> route = null;
+//	private List<RoutePointDTO> route = null;
 	public Group routeLines = null;
 
 	@SuppressWarnings("unused")
@@ -93,8 +93,8 @@ public class BOJumpship {
 	}
 
 	@SuppressWarnings("unused")
-	public String getShipName() {
-		return jumpshipDTO.getShipName();
+	public String getJumpshipName() {
+		return jumpshipDTO.getJumpshipName();
 	}
 
 	@SuppressWarnings("unused")

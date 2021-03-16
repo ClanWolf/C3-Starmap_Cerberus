@@ -29,24 +29,18 @@ package net.clanwolf.starmap.transfer.dtos;
 import net.clanwolf.starmap.transfer.Dto;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class JumpshipDTO extends Dto {
 
-	private Integer shipID = 0;
-	private String shipName = "";
-	private Integer factionID = 0;
+	private Long ID;
+	private String jumpshipName = "";
+	private Long jumpshipFactionID;
 	private String starSystemHistory = "";
 	private boolean attackReady;
 	private boolean movedInCurrentRound = false;
-	private Integer currentSystemID = null;
-	private ArrayList<RoutePointDTO> route;
-
-	private void setRoute(ArrayList<RoutePointDTO> route) {
-
-	}
-	private ArrayList<RoutePointDTO> getRoute() {
-		return this.route;
-	}
+	private Integer currentSystemID;
+	private List<RoutePointDTO> route;
 
 	public ArrayList<Integer> getStarSystemHistoryArray() {
 		ArrayList<Integer> hist = null;
@@ -78,6 +72,16 @@ public class JumpshipDTO extends Dto {
 	}
 
 	@SuppressWarnings("unused")
+	public void setRoute(ArrayList<RoutePointDTO> route) {
+		this.route = route;
+	}
+
+	@SuppressWarnings("unused")
+	public List<RoutePointDTO> getRoute() {
+		return this.route;
+	}
+
+	@SuppressWarnings("unused")
 	public Integer getCurrentSystemID() {
 		if (currentSystemID == null) {
 			ArrayList<Integer> hist = getStarSystemHistoryArray();
@@ -106,13 +110,13 @@ public class JumpshipDTO extends Dto {
 	}
 
 	@SuppressWarnings("unused")
-	public Integer getFactionID() {
-		return factionID;
+	public Long getJumpshipFactionID() {
+		return jumpshipFactionID;
 	}
 
 	@SuppressWarnings("unused")
-	public void setFactionID(Integer factionID) {
-		this.factionID = factionID;
+	public void setJumpshipFactionID(Long jumpshipFactionID) {
+		this.jumpshipFactionID = jumpshipFactionID;
 	}
 
 	@SuppressWarnings("unused")
@@ -126,22 +130,22 @@ public class JumpshipDTO extends Dto {
 	}
 
 	@SuppressWarnings("unused")
-	public Integer getShipID() {
-		return shipID;
+	public Long getID() {
+		return ID;
 	}
 
 	@SuppressWarnings("unused")
-	public void setShipID(Integer shipID) {
-		this.shipID = shipID;
+	public void setID(Long id) {
+		this.ID = id;
 	}
 
 	@SuppressWarnings("unused")
-	public String getShipName() {
-		return shipName;
+	public String getJumpshipName() {
+		return jumpshipName;
 	}
 
 	@SuppressWarnings("unused")
-	public void setShipName(String shipName) {
-		this.shipName = shipName;
+	public void setJumpshipName(String jumpshipName) {
+		this.jumpshipName = jumpshipName;
 	}
 }

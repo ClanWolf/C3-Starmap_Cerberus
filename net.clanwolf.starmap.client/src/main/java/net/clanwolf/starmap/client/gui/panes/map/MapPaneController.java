@@ -318,7 +318,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 						} else {
 							jumpshipImage = new ImageView(new Image(getClass().getResourceAsStream("/images/map/jumpship_left_red.png")));
 						}
-						jumpshipImage.setId(js.getShipName());
+						jumpshipImage.setId(js.getJumpshipName());
 						jumpshipImage.setPreserveRatio(true);
 						jumpshipImage.setFitWidth(30);
 						jumpshipImage.setCacheHint(CacheHint.QUALITY);

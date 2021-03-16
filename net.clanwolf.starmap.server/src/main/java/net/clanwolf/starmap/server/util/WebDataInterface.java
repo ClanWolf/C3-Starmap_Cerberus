@@ -35,15 +35,13 @@ import org.codehaus.jackson.map.SerializationConfig.Feature;
 import org.hibernate.Session;
 import org.hibernate.jdbc.ReturningWork;
 import org.json.simple.JSONValue;
+import org.springframework.util.RouteMatcher;
 
 import javax.persistence.EntityManager;
 import java.io.*;
 import java.net.URLDecoder;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Queries the database for starsystem data
@@ -311,22 +309,6 @@ public class WebDataInterface {
 						C3Logger.print("Created universe classes (Attacks)...");
 					}
 
-					if (type == SystemListTypes.HH_Jumpships) {
-						universe.jumpships.clear();
-						while (rs.next()) {
-							JumpshipDTO js = new JumpshipDTO();
-							js.setShipID(rs.getInt("jsid"));
-							js.setShipName(rs.getString("jumpshipName"));
-							js.setShipID(rs.getInt("jumpshipFactionID"));
-							js.setStarSystemHistory(rs.getString("starHist"));
-							//js.setLastMovedInRound(rs.getInt("lastMovedInRound"));
-							js.setAttackReady(rs.getBoolean("attackReady"));
-
-							universe.jumpships.put(js.getShipName(), js);
-						}
-						C3Logger.print("Created universe classes (Jumpships)...");
-					}
-
 					if (type == SystemListTypes.HH_Routepoints) {
 						universe.routepoints.clear();
 						while (rs.next()) {
@@ -338,6 +320,32 @@ public class WebDataInterface {
 							rp.setJumpshipId(rs.getLong("jumpshipID"));
 
 							universe.routepoints.add(rp);
+						}
+						C3Logger.print("Created universe classes (Jumpships)...");
+					}
+
+					if (type == SystemListTypes.HH_Jumpships) {
+						universe.jumpships.clear();
+						while (rs.next()) {
+							JumpshipDTO js = new JumpshipDTO();
+							js.setID(rs.getLong("jsid"));
+							js.setJumpshipName(rs.getString("jumpshipName"));
+							js.setJumpshipFactionID(rs.getLong("jumpshipFactionID"));
+							js.setStarSystemHistory(rs.getString("starHist"));
+							//js.setLastMovedInRound(rs.getInt("lastMovedInRound"));
+							js.setAttackReady(rs.getBoolean("attackReady"));
+
+							ArrayList<RoutePointDTO> rpList = new ArrayList<>();
+							Iterator iterator = universe.routepoints.iterator();
+							while (iterator.hasNext()) {
+								RoutePointDTO rp = (RoutePointDTO) iterator.next();
+								if (rp.getJumpshipId().equals(js.getID())) {
+									rpList.add(rp);
+								}
+							}
+							js.setRoute(rpList);
+
+							universe.jumpships.put(js.getJumpshipName(), js);
 						}
 						C3Logger.print("Created universe classes (Jumpships)...");
 					}

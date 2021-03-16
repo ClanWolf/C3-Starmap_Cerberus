@@ -423,7 +423,7 @@ public class CWIRCBot extends ListenerAdapter {
 
 		boolean res = dir.mkdirs();
 		if (res || dir.exists()) {
-			String logFileName = dir + File.separator + "C3_CWIRCBot.log";
+			String logFileName = dir + File.separator + "log" + File.separator + "CWIRCBot.log";
 
 			C3Logger.setC3Logfile(logFileName);
 			C3Logger.setC3LogLevel(Level.FINEST);

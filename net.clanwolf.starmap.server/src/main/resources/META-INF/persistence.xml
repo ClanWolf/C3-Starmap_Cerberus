@@ -11,6 +11,7 @@
 		<class>net.clanwolf.starmap.server.persistence.pojos.RolePlayCharacterPOJO</class>
 		<class>net.clanwolf.starmap.server.persistence.pojos.RolePlayStoryVar2POJO</class>
 		<class>net.clanwolf.starmap.server.persistence.pojos.RolePlayStoryVar3POJO</class>
+		<class>net.clanwolf.starmap.server.persistence.pojos.HHroutepointPOJO</class>
 
 		<properties>
 

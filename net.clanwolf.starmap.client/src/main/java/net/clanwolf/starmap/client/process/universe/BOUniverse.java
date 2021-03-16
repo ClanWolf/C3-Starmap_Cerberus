@@ -98,7 +98,7 @@ public class BOUniverse {
 
 		for (JumpshipDTO jumpshipDTO : universeDTO.jumpships.values()) {
 			BOJumpship boJumpship = new BOJumpship(jumpshipDTO);
-			jumpshipBOs.put(jumpshipDTO.getShipName(), boJumpship);
+			jumpshipBOs.put(jumpshipDTO.getJumpshipName(), boJumpship);
 		}
 
 		currentSeason = universeDTO.currentSeason;

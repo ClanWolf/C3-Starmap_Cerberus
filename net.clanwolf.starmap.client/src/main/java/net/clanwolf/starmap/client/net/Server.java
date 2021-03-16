@@ -70,7 +70,7 @@ public class Server {
 		}
 		String value = "not found";
 		try {
-			URL url = new URL(serverURL + "server" + "/" + "C3_LatestClientVersion.php");
+			URL url = new URL(serverURL + "server/php/C3-LatestClientVersion.php");
 			value = new String(HTTP.get(url));
 //			C3Logger.debug("Connection URL: " + url);
 //			C3Logger.debug("Connection Result: " + value);
@@ -108,8 +108,8 @@ public class Server {
 				online = true;
 				// Server online check ok, testing db
 				try {
-					C3Logger.debug(serverURL + "server" + "/" + "C3_OnlineStatus_Database.php?p1=" + C3Properties.getProperty(C3PROPS.LOGIN_DATABASE));
-					URL url = new URL(serverURL + "server" + "/" + "C3_OnlineStatus_Database.php?p1=" + C3Properties.getProperty(C3PROPS.LOGIN_DATABASE));
+					C3Logger.debug(serverURL + "server/php/C3-OnlineStatus_Database.php?p1=" + C3Properties.getProperty(C3PROPS.LOGIN_DATABASE));
+					URL url = new URL(serverURL + "server/php/C3-OnlineStatus_Database.php?p1=" + C3Properties.getProperty(C3PROPS.LOGIN_DATABASE));
 					value = new String(HTTP.get(url));
 					C3Logger.debug("Connection URL: " + url);
 					C3Logger.debug("Connection Result: " + value);
@@ -260,7 +260,7 @@ public class Server {
 		String value;
 		boolean r = false;
 		try {
-			URL url = new URL(serverURL + "/" + "server" + "/" + "C3_OnlineStatus_Server.php");
+			URL url = new URL(serverURL + "/server/php/C3-OnlineStatus_Server.php");
 			value = new String(HTTP.get(url));
 			r = "online".equals(value);
 		} catch (MalformedURLException e) {
