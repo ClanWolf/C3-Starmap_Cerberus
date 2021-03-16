@@ -43,7 +43,7 @@ public class BOJumpship {
 	private ImageView jumpshipImage;
 	private Line predictedRouteLine = null;
 	private List<BOStarSystem> routeSystems = null;
-//	private List<RoutePointDTO> route = null;
+	private List<RoutePointDTO> route = null;
 	public Group routeLines = null;
 
 	@SuppressWarnings("unused")
@@ -63,7 +63,17 @@ public class BOJumpship {
 	}
 
 	@SuppressWarnings("unused")
-	public List<BOStarSystem> getRoute() {
+	public List<RoutePointDTO> getRoute() {
+		return route;
+	}
+
+	@SuppressWarnings("unused")
+	public void setRoute(List<RoutePointDTO> route) {
+		this.route = route;
+	}
+
+	@SuppressWarnings("unused")
+	public List<BOStarSystem> getRouteSystems() {
 		return this.routeSystems;
 	}
 
@@ -80,6 +90,11 @@ public class BOJumpship {
 	@SuppressWarnings("unused")
 	public void setJumpshipImage(ImageView jumpshipImage) {
 		this.jumpshipImage = jumpshipImage;
+	}
+
+	@SuppressWarnings("unused")
+	public Long getJumpshipId() {
+		return this.jumpshipDTO.getID();
 	}
 
 	@SuppressWarnings("unused")

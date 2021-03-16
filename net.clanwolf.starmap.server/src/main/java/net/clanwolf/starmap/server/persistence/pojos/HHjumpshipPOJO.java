@@ -55,9 +55,9 @@ public class HHjumpshipPOJO extends Pojo {
 	@Column(name = "AttackReady")
 	private Boolean attackReady;
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = HHroutepointPOJO.class)
-	@JoinColumn(name = "JumpshipID")
-	private List<HHroutepointPOJO> route = new ArrayList<>();
+//	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = HHroutepointPOJO.class)
+//	@JoinColumn(name = "JumpshipID")
+//	private List<HHroutepointPOJO> route = new ArrayList<>();
 
 	public Long getId() {
 		return id;
@@ -67,9 +67,9 @@ public class HHjumpshipPOJO extends Pojo {
 		this.id = id;
 	}
 
-	public List<HHroutepointPOJO> getRoute() {
-		return route;
-	}
+//	public List<HHroutepointPOJO> getRoute() {
+//		return route;
+//	}
 
 	public String getJumpshipName() {
 		return jumpshipName;

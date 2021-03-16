@@ -75,9 +75,17 @@ public class AdminPaneController {
 			C3Logger.info("User " + u.getUserName() + ": " + u.getPrivileges());
 		}
 
+		ArrayList<UserDTO> usersToSave = new ArrayList<>();
+		Iterator it = this.userList.iterator();
+		while (it.hasNext()) {
+			UserDTO u = (UserDTO)it.next();
+			if (!(originalPrivileges.get(u.getUserName())).equals(u.getPrivileges())) {
+				usersToSave.add(u);
+			}
+		}
 		GameState saveUsersState = new GameState();
 		saveUsersState.setMode(GAMESTATEMODES.PRIVILEGE_SAVE);
-		saveUsersState.addObject(this.userList);
+		saveUsersState.addObject(usersToSave);
 		Nexus.fireNetworkEvent(saveUsersState);
 
 		Stage stage = (Stage) btnSave.getScene().getWindow();
@@ -137,8 +145,7 @@ public class AdminPaneController {
 		labelPrivCode.setText("" + privCode);
 		labelPrivCodeBinary.setText("" + binCode);
 		currentUser.setPrivileges(privCode);
-		//TODO: Add admin id to a edit action
-		currentUser.setLastModifiedByUserID(Nexus.getCurrentlyLoggedOnUser.getUserID());
+		currentUser.setLastModifiedByUserID(Nexus.getCurrentUser().getUserId());
 	}
 
 	private void setCheckBoxesForUser(String username) {

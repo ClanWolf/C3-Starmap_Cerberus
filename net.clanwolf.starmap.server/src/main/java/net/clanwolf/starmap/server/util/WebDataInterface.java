@@ -335,16 +335,6 @@ public class WebDataInterface {
 							//js.setLastMovedInRound(rs.getInt("lastMovedInRound"));
 							js.setAttackReady(rs.getBoolean("attackReady"));
 
-							ArrayList<RoutePointDTO> rpList = new ArrayList<>();
-							Iterator iterator = universe.routepoints.iterator();
-							while (iterator.hasNext()) {
-								RoutePointDTO rp = (RoutePointDTO) iterator.next();
-								if (rp.getJumpshipId().equals(js.getID())) {
-									rpList.add(rp);
-								}
-							}
-							js.setRoute(rpList);
-
 							universe.jumpships.put(js.getJumpshipName(), js);
 						}
 						C3Logger.print("Created universe classes (Jumpships)...");

@@ -28,6 +28,7 @@ package net.clanwolf.starmap.client.process.universe;
 
 import javafx.scene.image.Image;
 import net.clanwolf.starmap.client.gui.panes.map.tools.GraphManager;
+import net.clanwolf.starmap.client.gui.panes.map.tools.Route;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
 import net.clanwolf.starmap.transfer.dtos.*;
@@ -49,6 +50,7 @@ public class BOUniverse {
 	public HashMap<String, BOFaction> factionBOs = new HashMap<>();
 	public HashMap<String, BOJumpship> jumpshipBOs = new HashMap<>();
 	public ArrayList<BOAttack> attackBOs = new ArrayList<>();
+	public HashMap<Long, ArrayList<RoutePointDTO>> routesList = new HashMap<Long, ArrayList<RoutePointDTO>>();
 
 	public Integer currentSeason;
 	public Integer currentRound;
@@ -101,14 +103,23 @@ public class BOUniverse {
 			jumpshipBOs.put(jumpshipDTO.getJumpshipName(), boJumpship);
 		}
 
+		for (RoutePointDTO p : universeDTO.routepoints) {
+			if (routesList.get(p.getJumpshipId()) != null) {
+				routesList.get(p.getJumpshipId()).add(p);
+			} else {
+				ArrayList<RoutePointDTO> l = new ArrayList<>();
+				l.add(p);
+				routesList.put(p.getJumpshipId(), l);
+			}
+		}
+
 		currentSeason = universeDTO.currentSeason;
 		currentRound = universeDTO.currentRound;
 		currentDate = universeDTO.currentDate;
 	}
 
 	public ArrayList<BOFaction> getFactionList(){
-		ArrayList<BOFaction> factionList = new ArrayList<BOFaction>(factionBOs.values());
-		return factionList;
+		return new ArrayList<BOFaction>(factionBOs.values());
 	}
 
 	public BOFaction getFactionByID(Long id){

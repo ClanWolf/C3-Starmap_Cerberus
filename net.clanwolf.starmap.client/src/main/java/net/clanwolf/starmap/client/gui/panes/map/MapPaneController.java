@@ -63,14 +63,9 @@ import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.C3PROPS;
 import net.clanwolf.starmap.client.util.C3Properties;
 import net.clanwolf.starmap.logging.C3Logger;
-import net.clanwolf.starmap.transfer.GameState;
-import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
-import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
-import net.clanwolf.starmap.transfer.enums.UNIVERSECONTEXT;
 import org.kynosarges.tektosyne.geometry.PointD;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 /**
@@ -331,6 +326,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 						canvas.getChildren().add(jumpshipImage);
 
 						js.setJumpshipImage(jumpshipImage);
+						js.setRoute(boUniverse.routesList.get(js.getJumpshipId()));
 					}
 				}
 
@@ -577,9 +573,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					C3Logger.info("Planet picture not found! Consider adding a fitting image for id: " + systemImageName);
 					imagePlanet = new Image(getClass().getResourceAsStream("/images/planets/000_default.png"));
 				}
-				if (imagePlanet == null) {
-					imagePlanet = new Image(getClass().getResourceAsStream("/images/planets/000_default.png"));
-				}
+//				if (imagePlanet == null) {
+//					imagePlanet = new Image(getClass().getResourceAsStream("/images/planets/000_default.png"));
+//				}
 				Image imageFaction = new Image(getClass().getResourceAsStream("/images/logos/factions/" + logo));
 
 				labelSystemImage.setImage(imagePlanet);
