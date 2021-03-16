@@ -109,6 +109,9 @@ public class UserPOJO extends Pojo {
 	@Column(name = "LastModified", nullable = true, length = 19)
 	private Timestamp lastModified;
 
+	@Column(name = "LastModifiedByUserID", nullable = true)
+	private Long lastModifiedByUserID;
+
 	@Column(name = "active", nullable = true, length = 11)
 	private int active;
 
@@ -158,6 +161,14 @@ public class UserPOJO extends Pojo {
 
 	public void setUserId(Long id) {
 		this.id = id;
+	}
+
+	public Long getLastModifiedByUserID() {
+		return this.lastModifiedByUserID;
+	}
+
+	public void setLastModifiedByUserID(Long id) {
+		this.lastModifiedByUserID = id;
 	}
 
 	public String getUserName() {
