@@ -63,6 +63,7 @@ public class UserDTO extends Dto {
 	private String bannReason;
 	private Timestamp created;
 	private Timestamp lastModified;
+	private Long lastModifiedByUserID;
 	private RolePlayCharacterDTO currentCharacter;
 	private int active;
 	private String userPasswordWebsite;
@@ -80,6 +81,14 @@ public class UserDTO extends Dto {
 
 	public void setUserId(Long id) {
 		this.id = id;
+	}
+
+	public Long getLastModifiedByUserID() {
+		return this.lastModifiedByUserID;
+	}
+
+	public void setLastModifiedByUserID(Long id) {
+		this.lastModifiedByUserID = id;
 	}
 
 	public String getUserName() {
