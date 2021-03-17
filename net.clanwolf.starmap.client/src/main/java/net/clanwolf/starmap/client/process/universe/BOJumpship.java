@@ -31,6 +31,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
+import net.clanwolf.starmap.client.gui.panes.map.tools.Route;
+import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.transfer.dtos.JumpshipDTO;
 import net.clanwolf.starmap.transfer.dtos.RoutePointDTO;
 
@@ -43,7 +45,7 @@ public class BOJumpship {
 	private ImageView jumpshipImage;
 	private Line predictedRouteLine = null;
 	private List<BOStarSystem> routeSystems = null;
-	private List<RoutePointDTO> route = null;
+	private ArrayList<RoutePointDTO> route = null;
 	public Group routeLines = null;
 
 	@SuppressWarnings("unused")
@@ -60,6 +62,19 @@ public class BOJumpship {
 	@SuppressWarnings("unused")
 	public void setRouteSystems(List<BOStarSystem> routeSystems) {
 		this.routeSystems = routeSystems;
+		route.clear();
+		int dist = 0;
+		for (BOStarSystem s : routeSystems) {
+			RoutePointDTO rp = new RoutePointDTO();
+			rp.setSystemId(Long.valueOf(s.getId()));
+			rp.setJumpshipId(jumpshipDTO.getID());
+			rp.setSeasonId(Long.valueOf(Nexus.getBoUniverse().currentSeason));
+			rp.setRoundId(Long.valueOf(Nexus.getBoUniverse().currentRound) + dist);
+			route.add(rp);
+			dist++;
+		}
+		Nexus.getBoUniverse().routesList.remove(jumpshipDTO.getID());
+		Nexus.getBoUniverse().routesList.put(jumpshipDTO.getID(), route);
 	}
 
 	@SuppressWarnings("unused")
@@ -68,7 +83,7 @@ public class BOJumpship {
 	}
 
 	@SuppressWarnings("unused")
-	public void setRoute(List<RoutePointDTO> route) {
+	public void setRoute(ArrayList<RoutePointDTO> route) {
 		this.route = route;
 	}
 

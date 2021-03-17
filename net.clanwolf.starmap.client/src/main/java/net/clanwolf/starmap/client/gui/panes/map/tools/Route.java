@@ -54,7 +54,7 @@ public class Route {
 		for (int i = 0; i < route.size() - 1; i++) {
 			PointD p1 = route.get(i);
 			BOStarSystem s1 = boUniverse.getStarSystemByPoint(p1);
-			C3Logger.info("### Starting from " + s1.getName());
+			C3Logger.info("### Starting from " + s1.getName() + " (" + s1.getId() + ")");
 
 			for (int j = i; j < route.size(); j++) {
 				if (j + 3 < route.size()) {
