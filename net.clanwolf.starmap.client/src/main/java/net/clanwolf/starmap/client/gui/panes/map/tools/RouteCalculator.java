@@ -36,8 +36,8 @@ import org.kynosarges.tektosyne.geometry.PointD;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Route {
-	public static List<BOStarSystem> getRoute(BOStarSystem source, BOStarSystem destination) {
+public class RouteCalculator {
+	public static List<BOStarSystem> calculateRoute(BOStarSystem source, BOStarSystem destination) {
 		BOUniverse boUniverse = Nexus.getBoUniverse();
 
 		List<BOStarSystem> calculatedRoute = new ArrayList<>();
@@ -115,7 +115,7 @@ public class Route {
 		return calculatedRoute;
 	}
 
-	private Route() {
+	private RouteCalculator() {
 		// private constructor
 	}
 }

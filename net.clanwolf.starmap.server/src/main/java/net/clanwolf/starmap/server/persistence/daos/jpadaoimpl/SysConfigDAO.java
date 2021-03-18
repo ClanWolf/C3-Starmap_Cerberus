@@ -41,7 +41,7 @@ public class SysConfigDAO extends GenericDAO {
 	public static SysConfigDAO getInstance() {
 		if (instance == null) {
 			instance = new SysConfigDAO();
-			instance.className = "UserPOJO";
+			instance.className = "SysConfigDAO";
 		}
 		return instance;
 	}

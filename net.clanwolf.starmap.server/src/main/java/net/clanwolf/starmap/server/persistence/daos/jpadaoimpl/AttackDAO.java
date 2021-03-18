@@ -24,82 +24,45 @@
  * Copyright (c) 2001-2021, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.server.persistence.pojos;
+package net.clanwolf.starmap.server.persistence.daos.jpadaoimpl;
 
-import net.clanwolf.starmap.server.persistence.Pojo;
+import net.clanwolf.starmap.server.persistence.daos.GenericDAO;
+import net.clanwolf.starmap.server.persistence.pojos.AttackPOJO;
 
-import javax.persistence.*;
+/**
+ * A data access object (DAO) providing persistence and search support for UserPOJO entities. Transaction control of the save(), update() and delete() operations must be handled externally by senders of these methods or must be manually added to each of
+ * these methods for data to be persisted to the JPA datastore.
+ *
+ * @author Undertaker
+ */
+public class AttackDAO extends GenericDAO {
 
-import static javax.persistence.GenerationType.IDENTITY;
+	private static AttackDAO instance;
 
-@Entity
-@Table(name = "_HH_ATTACKRESULT", catalog = "C3")
-public class HHattackresultPOJO extends Pojo {
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "ID")
-	private Long id;
-
-	@Column(name = "Season")
-	private Long season;
-
-	@Column(name = "Round")
-	private Long round;
-
-	@Column(name = "AttackID")
-	private Long attackID;
-
-	@Column(name = "FactionID_Winner")
-	private Long factionID_Winner;
-
-	@Column(name = "Remarks")
-	private String remarks;
-
-	public Long getId() {
-		return id;
+	public static AttackDAO getInstance() {
+		if (instance == null) {
+			instance = new AttackDAO();
+			instance.className = "UserPOJO";
+		}
+		return instance;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	private AttackDAO() {
+		// Empty constructor
 	}
 
-	public Long getSeason() {
-		return season;
+	@Override
+	public void delete(Long userID, Object entity) {
+		super.delete(userID, entity, ((AttackPOJO) entity).getId());
 	}
 
-	public void setSeason(Long season) {
-		this.season = season;
+	@Override
+	public AttackPOJO update(Long userID, Object entity) {
+		return (AttackPOJO) super.update(userID, entity);
 	}
 
-	public Long getRound() {
-		return round;
-	}
-
-	public void setRound(Long round) {
-		this.round = round;
-	}
-
-	public Long getAttackID() {
-		return attackID;
-	}
-
-	public void setAttackID(Long attackID) {
-		this.attackID = attackID;
-	}
-
-	public Long getFactionID_Winner() {
-		return factionID_Winner;
-	}
-
-	public void setFactionID_Winner(Long factionID_Winner) {
-		this.factionID_Winner = factionID_Winner;
-	}
-
-	public String getRemarks() {
-		return remarks;
-	}
-
-	public void setRemarks(String remarks) {
-		this.remarks = remarks;
+	@Override
+	public AttackPOJO findById(Long userID, Long id) {
+		return (AttackPOJO) super.findById(userID, AttackPOJO.class, id);
 	}
 }

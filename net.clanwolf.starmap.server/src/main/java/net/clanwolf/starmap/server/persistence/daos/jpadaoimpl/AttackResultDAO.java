@@ -27,42 +27,42 @@
 package net.clanwolf.starmap.server.persistence.daos.jpadaoimpl;
 
 import net.clanwolf.starmap.server.persistence.daos.GenericDAO;
-import net.clanwolf.starmap.server.persistence.pojos.HHstarSystemDataPOJO;
+import net.clanwolf.starmap.server.persistence.pojos.AttackResultPOJO;
 
 /**
  * A data access object (DAO) providing persistence and search support for UserPOJO entities. Transaction control of the save(), update() and delete() operations must be handled externally by senders of these methods or must be manually added to each of
  * these methods for data to be persisted to the JPA datastore.
- *
+
  * @author Undertaker
  */
-public class HHstarSystemDataDAO extends GenericDAO {
+public class AttackResultDAO extends GenericDAO {
 
-	private static HHstarSystemDataDAO instance;
+	private static AttackResultDAO instance;
 
-	public static HHstarSystemDataDAO getInstance() {
+	public static AttackResultDAO getInstance() {
 		if (instance == null) {
-			instance = new HHstarSystemDataDAO();
+			instance = new AttackResultDAO();
 			instance.className = "UserPOJO";
 		}
 		return instance;
 	}
 
-	private HHstarSystemDataDAO() {
+	private AttackResultDAO() {
 		// Empty constructor
 	}
 
 	@Override
 	public void delete(Long userID, Object entity) {
-		super.delete(userID, entity, ((HHstarSystemDataPOJO) entity).getId());
+		super.delete(userID, entity, ((AttackResultPOJO) entity).getId());
 	}
 
 	@Override
-	public HHstarSystemDataPOJO update(Long userID, Object entity) {
-		return (HHstarSystemDataPOJO) super.update(userID, entity);
+	public AttackResultPOJO update(Long userID, Object entity) {
+		return (AttackResultPOJO) super.update(userID, entity);
 	}
 
 	@Override
-	public HHstarSystemDataPOJO findById(Long userID, Long id) {
-		return (HHstarSystemDataPOJO) super.findById(userID, HHstarSystemDataPOJO.class, id);
+	public AttackResultPOJO findById(Long userID, Long id) {
+		return (AttackResultPOJO) super.findById(userID, AttackResultPOJO.class, id);
 	}
 }

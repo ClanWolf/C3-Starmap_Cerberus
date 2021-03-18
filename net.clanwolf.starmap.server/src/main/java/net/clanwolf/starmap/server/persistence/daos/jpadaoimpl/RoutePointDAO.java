@@ -24,71 +24,45 @@
  * Copyright (c) 2001-2021, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.server.persistence.pojos;
+package net.clanwolf.starmap.server.persistence.daos.jpadaoimpl;
 
-import net.clanwolf.starmap.server.persistence.Pojo;
+import net.clanwolf.starmap.server.persistence.daos.GenericDAO;
+import net.clanwolf.starmap.server.persistence.pojos.RoutePointPOJO;
 
-import javax.persistence.*;
+/**
+ * A data access object (DAO) providing persistence and search support for UserPOJO entities. Transaction control of the save(), update() and delete() operations must be handled externally by senders of these methods or must be manually added to each of
+ * these methods for data to be persisted to the JPA datastore.
+ *
+ * @author Undertaker
+ */
+public class RoutePointDAO extends GenericDAO {
 
-import static javax.persistence.GenerationType.IDENTITY;
+	private static RoutePointDAO instance;
 
-@Entity
-@Table(name = "_HH_ROUTEPOINT", catalog = "C3")
-public class HHroutepointPOJO extends Pojo {
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "ID")
-	private Long id;
-
-	@Column(name = "SeasonID")
-	private Long seasonId;
-
-	@Column(name = "RoundID")
-	private Long roundId;
-
-	@Column(name = "JumpshipID")
-	private Long jumpshipId;
-
-	@Column(name = "SystemID")
-	private Long systemId;
-
-	public Long getId() {
-		return id;
+	public static RoutePointDAO getInstance() {
+		if (instance == null) {
+			instance = new RoutePointDAO();
+			instance.className = "UserPOJO";
+		}
+		return instance;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	private RoutePointDAO() {
+		// Empty constructor
 	}
 
-	public Long getSeasonId() {
-		return seasonId;
+	@Override
+	public void delete(Long userID, Object entity) {
+		super.delete(userID, entity, ((RoutePointPOJO) entity).getId());
 	}
 
-	public void setSeasonId(Long seasonID) {
-		this.seasonId = seasonID;
+	@Override
+	public RoutePointPOJO update(Long id, Object entity) {
+		return (RoutePointPOJO) super.update(id, entity);
 	}
 
-	public Long getRoundId() {
-		return roundId;
-	}
-
-	public void setRoundId(Long roundID) {
-		this.roundId = roundID;
-	}
-
-	public Long getJumpshipId() {
-		return jumpshipId;
-	}
-
-	public void setJumpshipId(Long jumpshipId) {
-		this.jumpshipId = jumpshipId;
-	}
-
-	public Long getSystemId() {
-		return systemId;
-	}
-
-	public void setSystemId(Long systemId) {
-		this.systemId = systemId;
+	@Override
+	public RoutePointPOJO findById(Long routePointID, Long id) {
+		return (RoutePointPOJO) super.findById(routePointID, RoutePointPOJO.class, id);
 	}
 }

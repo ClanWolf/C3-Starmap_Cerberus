@@ -30,34 +30,30 @@ import net.clanwolf.starmap.server.persistence.Pojo;
 
 import javax.persistence.*;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
-@Table(name = "_HH_JUMPSHIP", catalog = "C3")
-public class HHjumpshipPOJO extends Pojo {
+@Table(name = "_HH_ATTACKRESULT", catalog = "C3")
+public class AttackResultPOJO extends Pojo {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "ID")
 	private Long id;
 
-	@Column(name = "JumpshipName")
-	private String jumpshipName;
+	@Column(name = "Season")
+	private Long season;
 
-	@Column(name = "JumpshipFactionID")
-	private Long jumpshipFactionID;
+	@Column(name = "Round")
+	private Long round;
 
-	@Column(name = "StarSystemHistory")
-	private String starSystemHistory;
+	@Column(name = "AttackID")
+	private Long attackID;
 
-	@Column(name = "AttackReady")
-	private Boolean attackReady;
+	@Column(name = "FactionID_Winner")
+	private Long factionID_Winner;
 
-//	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = HHroutepointPOJO.class)
-//	@JoinColumn(name = "JumpshipID")
-//	private List<HHroutepointPOJO> route = new ArrayList<>();
+	@Column(name = "Remarks")
+	private String remarks;
 
 	public Long getId() {
 		return id;
@@ -67,39 +63,43 @@ public class HHjumpshipPOJO extends Pojo {
 		this.id = id;
 	}
 
-//	public List<HHroutepointPOJO> getRoute() {
-//		return route;
-//	}
-
-	public String getJumpshipName() {
-		return jumpshipName;
+	public Long getSeason() {
+		return season;
 	}
 
-	public void setJumpshipName(String jumpshipName) {
-		this.jumpshipName = jumpshipName;
+	public void setSeason(Long season) {
+		this.season = season;
 	}
 
-	public Long getJumpshipFactionID() {
-		return jumpshipFactionID;
+	public Long getRound() {
+		return round;
 	}
 
-	public void setJumpshipFactionID(Long jumpshipFactionID) {
-		this.jumpshipFactionID = jumpshipFactionID;
+	public void setRound(Long round) {
+		this.round = round;
 	}
 
-	public String getStarSystemHistory() {
-		return starSystemHistory;
+	public Long getAttackID() {
+		return attackID;
 	}
 
-	public void setStarSystemHistory(String starSystemHistory) {
-		this.starSystemHistory = starSystemHistory;
+	public void setAttackID(Long attackID) {
+		this.attackID = attackID;
 	}
 
-	public Boolean getAttackReady() {
-		return attackReady;
+	public Long getFactionID_Winner() {
+		return factionID_Winner;
 	}
 
-	public void setAttackReady(Boolean attackReady) {
-		this.attackReady = attackReady;
+	public void setFactionID_Winner(Long factionID_Winner) {
+		this.factionID_Winner = factionID_Winner;
+	}
+
+	public String getRemarks() {
+		return remarks;
+	}
+
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
 	}
 }

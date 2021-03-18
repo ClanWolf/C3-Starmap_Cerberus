@@ -43,6 +43,7 @@ public enum GAMESTATEMODES {
 	USER_GET_NEW_PLAYERLIST,                    /* Gets a new list of actual players (Object: ArrayList<UserDTO>)*/
 	USER_SAVE,
 	PRIVILEGE_SAVE,
+	ROUTE_SAVE,
 
 	BROADCAST_SEND_NEW_PLAYERLIST,              /* Inform all clients after a successfull login */
 

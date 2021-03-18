@@ -36,15 +36,14 @@ import io.nadron.service.GameStateManagerService;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.server.persistence.EntityConverter;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
+import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.RoutePointDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.UserDAO;
+import net.clanwolf.starmap.server.persistence.pojos.RoutePointPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.UserPOJO;
 import net.clanwolf.starmap.server.util.WebDataInterface;
 import net.clanwolf.starmap.transfer.GameState;
-import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
-import net.clanwolf.starmap.transfer.dtos.UserDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 
-import java.sql.Array;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -120,6 +119,9 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		case PRIVILEGE_SAVE:
 			savePrivileges(session, state);
 			break;
+		case ROUTE_SAVE:
+			saveRoute(session, state);
+			break;
 		case ROLEPLAY_GET_CHAPTER_BYSORTORDER:
 			C3GameSessionHandlerRoleplay.getChapterBySortOrder(session, state);
 			break;
@@ -153,6 +155,27 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		}
 		
 //		EntityManagerHelper.commit((Long) session.getPlayer().getId());
+		EntityManagerHelper.commit(getC3UserID(session));
+	}
+
+	private void saveRoute(PlayerSession session, GameState state) {
+
+		RoutePointDAO dao = RoutePointDAO.getInstance();
+		EntityManagerHelper.beginTransaction(getC3UserID(session));
+
+		ArrayList<RoutePointPOJO> list = (ArrayList<RoutePointPOJO>) state.getObject();
+		Iterator<RoutePointPOJO> iter = list.iterator();
+		while(iter.hasNext()) {
+			RoutePointPOJO routePoint = (RoutePointPOJO) iter.next();
+			if(routePoint.getId() == null) {
+				C3Logger.info("Saving: " + routePoint);
+				dao.save(getC3UserID(session), routePoint);
+			} else {
+				C3Logger.info("Updating: " + routePoint);
+				dao.update(getC3UserID(session), routePoint);
+			}
+		}
+
 		EntityManagerHelper.commit(getC3UserID(session));
 	}
 

@@ -24,45 +24,77 @@
  * Copyright (c) 2001-2021, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.server.persistence.daos.jpadaoimpl;
+package net.clanwolf.starmap.server.persistence.pojos;
 
-import net.clanwolf.starmap.server.persistence.daos.GenericDAO;
-import net.clanwolf.starmap.server.persistence.pojos.HHattackresultPOJO;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import net.clanwolf.starmap.server.persistence.Pojo;
 
-/**
- * A data access object (DAO) providing persistence and search support for UserPOJO entities. Transaction control of the save(), update() and delete() operations must be handled externally by senders of these methods or must be manually added to each of
- * these methods for data to be persisted to the JPA datastore.
+import javax.persistence.*;
 
- * @author Undertaker
- */
-public class HHattackResultDAO extends GenericDAO {
+import static javax.persistence.GenerationType.IDENTITY;
 
-	private static HHattackResultDAO instance;
+@JsonIdentityInfo(
+		scope= RoutePointPOJO.class,
+		generator= ObjectIdGenerators.PropertyGenerator.class,
+		property="id")
+@Entity
+@Table(name = "_HH_ROUTEPOINT", catalog = "C3")
+public class RoutePointPOJO extends Pojo {
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "ID")
+	private Long id;
 
-	public static HHattackResultDAO getInstance() {
-		if (instance == null) {
-			instance = new HHattackResultDAO();
-			instance.className = "UserPOJO";
-		}
-		return instance;
+	@Column(name = "SeasonID")
+	private Long seasonId;
+
+	@Column(name = "RoundID")
+	private Long roundId;
+
+	@Column(name = "JumpshipID")
+	private Long jumpshipId;
+
+	@Column(name = "SystemID")
+	private Long systemId;
+
+	public Long getId() {
+		return id;
 	}
 
-	private HHattackResultDAO() {
-		// Empty constructor
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	@Override
-	public void delete(Long userID, Object entity) {
-		super.delete(userID, entity, ((HHattackresultPOJO) entity).getId());
+	public Long getSeasonId() {
+		return seasonId;
 	}
 
-	@Override
-	public HHattackresultPOJO update(Long userID, Object entity) {
-		return (HHattackresultPOJO) super.update(userID, entity);
+	public void setSeasonId(Long seasonID) {
+		this.seasonId = seasonID;
 	}
 
-	@Override
-	public HHattackresultPOJO findById(Long userID, Long id) {
-		return (HHattackresultPOJO) super.findById(userID, HHattackresultPOJO.class, id);
+	public Long getRoundId() {
+		return roundId;
+	}
+
+	public void setRoundId(Long roundID) {
+		this.roundId = roundID;
+	}
+
+	public Long getJumpshipId() {
+		return jumpshipId;
+	}
+
+	public void setJumpshipId(Long jumpshipId) {
+		this.jumpshipId = jumpshipId;
+	}
+
+	public Long getSystemId() {
+		return systemId;
+	}
+
+	public void setSystemId(Long systemId) {
+		this.systemId = systemId;
 	}
 }

@@ -27,7 +27,7 @@
 package net.clanwolf.starmap.server.persistence.daos.jpadaoimpl;
 
 import net.clanwolf.starmap.server.persistence.daos.GenericDAO;
-import net.clanwolf.starmap.server.persistence.pojos.HHattackPOJO;
+import net.clanwolf.starmap.server.persistence.pojos.JumpshipPOJO;
 
 /**
  * A data access object (DAO) providing persistence and search support for UserPOJO entities. Transaction control of the save(), update() and delete() operations must be handled externally by senders of these methods or must be manually added to each of
@@ -35,34 +35,34 @@ import net.clanwolf.starmap.server.persistence.pojos.HHattackPOJO;
  *
  * @author Undertaker
  */
-public class HHattackDAO extends GenericDAO {
+public class JumpshipDAO extends GenericDAO {
 
-	private static HHattackDAO instance;
+	private static JumpshipDAO instance;
 
-	public static HHattackDAO getInstance() {
+	public static JumpshipDAO getInstance() {
 		if (instance == null) {
-			instance = new HHattackDAO();
+			instance = new JumpshipDAO();
 			instance.className = "UserPOJO";
 		}
 		return instance;
 	}
 
-	private HHattackDAO() {
+	private JumpshipDAO() {
 		// Empty constructor
 	}
 
 	@Override
 	public void delete(Long userID, Object entity) {
-		super.delete(userID, entity, ((HHattackPOJO) entity).getId());
+		super.delete(userID, entity, ((JumpshipPOJO) entity).getId());
 	}
 
 	@Override
-	public HHattackPOJO update(Long userID, Object entity) {
-		return (HHattackPOJO) super.update(userID, entity);
+	public JumpshipPOJO update(Long userID, Object entity) {
+		return (JumpshipPOJO) super.update(userID, entity);
 	}
 
 	@Override
-	public HHattackPOJO findById(Long userID, Long id) {
-		return (HHattackPOJO) super.findById(userID, HHattackPOJO.class, id);
+	public JumpshipPOJO findById(Long userID, Long id) {
+		return (JumpshipPOJO) super.findById(userID, JumpshipPOJO.class, id);
 	}
 }

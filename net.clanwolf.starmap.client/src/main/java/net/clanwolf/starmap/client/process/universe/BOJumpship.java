@@ -31,10 +31,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
-import net.clanwolf.starmap.client.gui.panes.map.tools.Route;
+import net.clanwolf.starmap.client.gui.panes.map.tools.RouteCalculator;
 import net.clanwolf.starmap.client.nexus.Nexus;
+import net.clanwolf.starmap.logging.C3Logger;
+import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.JumpshipDTO;
 import net.clanwolf.starmap.transfer.dtos.RoutePointDTO;
+import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,22 +62,37 @@ public class BOJumpship {
 		return predictedRouteLine;
 	}
 
+	public void storeRouteToDatabase(ArrayList<RoutePointDTO> route) {
+		GameState saveRouteState = new GameState();
+		saveRouteState.setMode(GAMESTATEMODES.ROUTE_SAVE);
+		saveRouteState.addObject(route);
+		Nexus.fireNetworkEvent(saveRouteState);
+	}
+
 	@SuppressWarnings("unused")
 	public void setRouteSystems(List<BOStarSystem> routeSystems) {
 		this.routeSystems = routeSystems;
+		if (route == null) {
+			route = new ArrayList<RoutePointDTO>();
+		}
 		route.clear();
 		int dist = 0;
+		C3Logger.info("Setting route for Jumpship '" + jumpshipDTO.getJumpshipName() + "':");
 		for (BOStarSystem s : routeSystems) {
+			int round = Nexus.getBoUniverse().currentRound + dist;
 			RoutePointDTO rp = new RoutePointDTO();
 			rp.setSystemId(Long.valueOf(s.getId()));
 			rp.setJumpshipId(jumpshipDTO.getID());
 			rp.setSeasonId(Long.valueOf(Nexus.getBoUniverse().currentSeason));
-			rp.setRoundId(Long.valueOf(Nexus.getBoUniverse().currentRound) + dist);
+			rp.setRoundId(Long.valueOf(round));
 			route.add(rp);
+			C3Logger.info("--- RoutePoint: " + s.getName() + " (in round " + round + ")");
 			dist++;
 		}
+		C3Logger.info("Route set.");
 		Nexus.getBoUniverse().routesList.remove(jumpshipDTO.getID());
 		Nexus.getBoUniverse().routesList.put(jumpshipDTO.getID(), route);
+		storeRouteToDatabase(route);
 	}
 
 	@SuppressWarnings("unused")

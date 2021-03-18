@@ -34,7 +34,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Table(name = "_HH_ATTACK", catalog = "C3")
-public class HHattackPOJO extends Pojo {
+public class AttackPOJO extends Pojo {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "ID")

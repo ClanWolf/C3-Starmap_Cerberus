@@ -43,7 +43,7 @@ import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.StatusTextEntryActionObject;
 import net.clanwolf.starmap.client.enums.PRIVILEGES;
 import net.clanwolf.starmap.client.nexus.Nexus;
-import net.clanwolf.starmap.client.gui.panes.map.tools.Route;
+import net.clanwolf.starmap.client.gui.panes.map.tools.RouteCalculator;
 import net.clanwolf.starmap.client.process.universe.BOJumpship;
 import net.clanwolf.starmap.client.process.universe.BOStarSystem;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
@@ -144,7 +144,7 @@ public class NodeGestures {
 		BOStarSystem hovered = boUniverse.starSystemBOs.get(Integer.parseInt(c.getId()));
 
 		C3Logger.info(boUniverse.currentlyDraggedJumpship.getJumpshipName() + " : " + startSystem.getName() + " : " + hovered.getName());
-		List<BOStarSystem> route = Route.getRoute(startSystem, hovered);
+		List<BOStarSystem> route = RouteCalculator.calculateRoute(startSystem, hovered);
 
 		boUniverse.currentlyDraggedJumpship.setRouteSystems(route);
 

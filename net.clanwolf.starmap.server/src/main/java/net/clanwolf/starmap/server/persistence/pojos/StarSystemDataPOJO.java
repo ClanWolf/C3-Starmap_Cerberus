@@ -34,7 +34,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Table(name = "_HH_STARSYSTEMDATA", catalog = "C3")
-public class HHstarSystemDataPOJO extends Pojo {
+public class StarSystemDataPOJO extends Pojo {
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
