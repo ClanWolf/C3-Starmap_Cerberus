@@ -30,10 +30,10 @@ import net.clanwolf.starmap.server.persistence.daos.GenericDAO;
 import net.clanwolf.starmap.server.persistence.pojos.AttackResultPOJO;
 
 /**
- * A data access object (DAO) providing persistence and search support for UserPOJO entities. Transaction control of the save(), update() and delete() operations must be handled externally by senders of these methods or must be manually added to each of
- * these methods for data to be persisted to the JPA datastore.
-
- * @author Undertaker
+ * A data access object (DAO) providing persistence and search support for UserPOJO entities.
+ * Transaction control of the save(), update() and delete() operations must be handled externally
+ * by senders of these methods or must be manually added to each of these methods for data to be
+ * persisted to the JPA datastore.
  */
 public class AttackResultDAO extends GenericDAO {
 
@@ -42,7 +42,7 @@ public class AttackResultDAO extends GenericDAO {
 	public static AttackResultDAO getInstance() {
 		if (instance == null) {
 			instance = new AttackResultDAO();
-			instance.className = "UserPOJO";
+			instance.className = "AttackResultPOJO";
 		}
 		return instance;
 	}

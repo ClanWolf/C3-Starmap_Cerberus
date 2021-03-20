@@ -30,9 +30,10 @@ import net.clanwolf.starmap.server.persistence.daos.GenericDAO;
 import net.clanwolf.starmap.server.persistence.pojos.SysConfigPOJO;
 
 /**
- * A data access object (DAO) providing persistence and search support for UserPOJO entities. Transaction control of the save(), update() and delete() operations must be handled externally by senders of these methods or must be manually added to each of
- * these methods for data to be persisted to the JPA datastore.
- *
+ * A data access object (DAO) providing persistence and search support for UserPOJO entities.
+ * Transaction control of the save(), update() and delete() operations must be handled externally
+ * by senders of these methods or must be manually added to each of these methods for data to be
+ * persisted to the JPA datastore.
  */
 public class SysConfigDAO extends GenericDAO {
 
@@ -41,7 +42,7 @@ public class SysConfigDAO extends GenericDAO {
 	public static SysConfigDAO getInstance() {
 		if (instance == null) {
 			instance = new SysConfigDAO();
-			instance.className = "SysConfigDAO";
+			instance.className = "SysConfigPOJO";
 		}
 		return instance;
 	}

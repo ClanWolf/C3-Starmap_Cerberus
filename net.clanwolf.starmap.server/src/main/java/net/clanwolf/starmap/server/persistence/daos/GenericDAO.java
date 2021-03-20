@@ -34,8 +34,10 @@ import java.util.List;
 import java.util.logging.Level;
 
 /**
- * A data access object (DAO) providing persistence and search support for UserPOJO entities. Transaction control of the save(), update() and delete() operations must be handled externally by senders of these methods or must be manually added to each of
- * these methods for data to be persisted to the JPA datastore.>
+ * A data access object (DAO) providing persistence and search support for UserPOJO entities.
+ * Transaction control of the save(), update() and delete() operations must be handled externally
+ * by senders of these methods or must be manually added to each of these methods for data to be
+ * persisted to the JPA datastore.
  */
 public abstract class GenericDAO implements IDAO {
 
@@ -47,12 +49,12 @@ public abstract class GenericDAO implements IDAO {
 
 	@Override
 	public void save(Long userID, Object entity) {
-		EntityManagerHelper.log("saving UserPOJO instance", Level.INFO, null);
+		EntityManagerHelper.log("Saving UserPOJO instance", Level.INFO, null);
 		try {
 			getEntityManager(userID).persist(entity);
-			EntityManagerHelper.log("save successful", Level.INFO, null);
+			EntityManagerHelper.log("Save successful", Level.INFO, null);
 		} catch (RuntimeException re) {
-			EntityManagerHelper.log("save failed", Level.SEVERE, re);
+			EntityManagerHelper.log("Save failed", Level.SEVERE, re);
 			// getEntityManager().clear();
 			throw re;
 		}
@@ -60,28 +62,28 @@ public abstract class GenericDAO implements IDAO {
 
 	@Override
 	public Object update(Long userID, Object entity) {
-		EntityManagerHelper.log("updating RolePlayStoryPOJO instance", Level.INFO, null);
+		EntityManagerHelper.log("Updating RolePlayStoryPOJO instance", Level.INFO, null);
 
 		try {
 			Object result = getEntityManager(userID).merge(entity);
-			EntityManagerHelper.log("update successful", Level.INFO, null);
+			EntityManagerHelper.log("Update successful", Level.INFO, null);
 			return result;
 		} catch (RuntimeException re) {
-			EntityManagerHelper.log("update failed", Level.SEVERE, re);
+			EntityManagerHelper.log("Update failed", Level.SEVERE, re);
 			// getEntityManager().clear();
 			throw re;
 		}
 	}
 
 	public void delete(Long userID, Object entity, Long id) {
-		EntityManagerHelper.log("deleting UserPOJO instance", Level.INFO, null);
+		EntityManagerHelper.log("Deleting UserPOJO instance", Level.INFO, null);
 
 		try {
 			entity = getEntityManager(userID).getReference(entity.getClass(), id);
 			getEntityManager(userID).remove(entity);
-			EntityManagerHelper.log("delete successful", Level.INFO, null);
+			EntityManagerHelper.log("Delete successful", Level.INFO, null);
 		} catch (RuntimeException re) {
-			EntityManagerHelper.log("delete failed", Level.SEVERE, re);
+			EntityManagerHelper.log("Delete failed", Level.SEVERE, re);
 			// getEntityManager().clear();
 			throw re;
 		}
@@ -89,12 +91,11 @@ public abstract class GenericDAO implements IDAO {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Object findById(Long userID, Class clazz, Long id) {
-		EntityManagerHelper.log("finding object instance with id: " + id, Level.INFO, null);
+		EntityManagerHelper.log("Finding object instance with id: " + id, Level.INFO, null);
 		try {
-			Object instance = getEntityManager(userID).find(clazz, id);
-			return instance;
+			return getEntityManager(userID).find(clazz, id);
 		} catch (RuntimeException re) {
-			EntityManagerHelper.log("find failed", Level.SEVERE, re);
+			EntityManagerHelper.log("Find failed", Level.SEVERE, re);
 			// getEntityManager().clear();
 			throw re;
 		}
@@ -103,7 +104,7 @@ public abstract class GenericDAO implements IDAO {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<Object> findByProperty(Long userID, String propertyName, final Object value, final int... rowStartIdxAndCount) {
-		EntityManagerHelper.log("finding RolePlayStoryPOJO instance with property: " + propertyName + ", value: " + value, Level.INFO, null);
+		EntityManagerHelper.log("Finding instance (" + this.className + ") with property: " + propertyName + ", value: " + value, Level.INFO, null);
 		try {
 			final String queryString = "select model from " + this.className + " model where model." + propertyName + "= :propertyValue order by sortOrder";
 			Query query = getEntityManager(userID).createQuery(queryString);
@@ -123,7 +124,7 @@ public abstract class GenericDAO implements IDAO {
 			}
 			return query.getResultList();
 		} catch (RuntimeException re) {
-			EntityManagerHelper.log("find by property name failed", Level.SEVERE, re);
+			EntityManagerHelper.log("Find by property name failed", Level.SEVERE, re);
 			// getEntityManager().clear();
 			throw re;
 		}
@@ -132,7 +133,7 @@ public abstract class GenericDAO implements IDAO {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<Object> findAll(Long userID, final int... rowStartIdxAndCount) {
-		EntityManagerHelper.log("finding all UserPOJO instances", Level.INFO, null);
+		EntityManagerHelper.log("Finding all instances (" + this.className + ")", Level.INFO, null);
 		try {
 			final String queryString = "select model from " + this.className + " model";
 			Query query = getEntityManager(userID).createQuery(queryString);
@@ -151,7 +152,7 @@ public abstract class GenericDAO implements IDAO {
 			}
 			return query.getResultList();
 		} catch (RuntimeException re) {
-			EntityManagerHelper.log("find all failed", Level.SEVERE, re);
+			EntityManagerHelper.log("Find all failed", Level.SEVERE, re);
 			// getEntityManager().clear();
 			throw re;
 		}

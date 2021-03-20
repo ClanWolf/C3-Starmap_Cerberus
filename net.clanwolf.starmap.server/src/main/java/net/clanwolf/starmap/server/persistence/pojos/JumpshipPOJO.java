@@ -32,6 +32,9 @@ import net.clanwolf.starmap.server.persistence.Pojo;
 
 import javax.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static javax.persistence.GenerationType.IDENTITY;
 
 @JsonIdentityInfo(
@@ -58,9 +61,9 @@ public class JumpshipPOJO extends Pojo {
 	@Column(name = "AttackReady")
 	private Boolean attackReady;
 
-//	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = RoutepointPOJO.class)
+//	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = RoutePointPOJO.class)
 //	@JoinColumn(name = "JumpshipID")
-//	private List<RoutepointPOJO> routepointList = new ArrayList<>();
+//	private List<RoutePointPOJO> routepointList = new ArrayList<>();
 
 	public Long getId() {
 		return id;
@@ -70,7 +73,7 @@ public class JumpshipPOJO extends Pojo {
 		this.id = id;
 	}
 
-//	public List<HHroutepointPOJO> getRoutepointList() {
+//	public List<RoutePointPOJO> getRoutepointList() {
 //		return routepointList;
 //	}
 

@@ -51,8 +51,10 @@ import net.clanwolf.starmap.client.security.Security;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.logging.C3Logger;
+import net.clanwolf.starmap.transfer.dtos.RoutePointDTO;
 import net.clanwolf.starmap.transfer.enums.MEDALS;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class NodeGestures {
@@ -125,6 +127,9 @@ public class NodeGestures {
 			js.getPredictedRouteLine().toFront();
 			node.toFront();
 			boUniverse.currentlyDraggedJumpship.getPredictedRouteLine().setVisible(false);
+
+			ArrayList<RoutePointDTO> route = Nexus.getBoUniverse().routesList.get(boUniverse.currentlyDraggedJumpship.getJumpshipId());
+			boUniverse.currentlyDraggedJumpship.storeRouteToDatabase(route);
 		}
 	};
 

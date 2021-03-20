@@ -26,14 +26,23 @@
  */
 package net.clanwolf.starmap.server.persistence.daos.jpadaoimpl;
 
+import io.nadron.util.Credentials;
+import net.clanwolf.starmap.logging.C3Logger;
+import net.clanwolf.starmap.server.persistence.CriteriaHelper;
 import net.clanwolf.starmap.server.persistence.daos.GenericDAO;
 import net.clanwolf.starmap.server.persistence.pojos.RoutePointPOJO;
+import net.clanwolf.starmap.server.persistence.pojos.UserPOJO;
+import net.clanwolf.starmap.server.util.Encryptor;
+
+import javax.persistence.EntityManager;
+import java.util.Iterator;
+import java.util.List;
 
 /**
- * A data access object (DAO) providing persistence and search support for UserPOJO entities. Transaction control of the save(), update() and delete() operations must be handled externally by senders of these methods or must be manually added to each of
- * these methods for data to be persisted to the JPA datastore.
- *
- * @author Undertaker
+ * A data access object (DAO) providing persistence and search support for UserPOJO entities.
+ * Transaction control of the save(), update() and delete() operations must be handled externally
+ * by senders of these methods or must be manually added to each of these methods for data to be
+ * persisted to the JPA datastore.
  */
 public class RoutePointDAO extends GenericDAO {
 
@@ -42,7 +51,7 @@ public class RoutePointDAO extends GenericDAO {
 	public static RoutePointDAO getInstance() {
 		if (instance == null) {
 			instance = new RoutePointDAO();
-			instance.className = "UserPOJO";
+			instance.className = "RoutePointPOJO";
 		}
 		return instance;
 	}
@@ -51,18 +60,32 @@ public class RoutePointDAO extends GenericDAO {
 		// Empty constructor
 	}
 
+	public void deleteByJumpshipId(Long userID, Long jumpshipId) {
+		CriteriaHelper crit = new CriteriaHelper(RoutePointPOJO.class);
+		crit.addCriteria("jumpshipId", jumpshipId);
+
+		List<Object> objectList = crit.getResultList();
+
+		Iterator i = objectList.iterator();
+		while(i.hasNext()) {
+			RoutePointPOJO p = (RoutePointPOJO) i.next();
+			C3Logger.info("Deleting: " + p.getId());
+			delete(userID, p);
+		}
+	}
+
 	@Override
 	public void delete(Long userID, Object entity) {
 		super.delete(userID, entity, ((RoutePointPOJO) entity).getId());
 	}
 
 	@Override
-	public RoutePointPOJO update(Long id, Object entity) {
-		return (RoutePointPOJO) super.update(id, entity);
+	public RoutePointPOJO update(Long userID, Object entity) {
+		return (RoutePointPOJO) super.update(userID, entity);
 	}
 
 	@Override
-	public RoutePointPOJO findById(Long routePointID, Long id) {
-		return (RoutePointPOJO) super.findById(routePointID, RoutePointPOJO.class, id);
+	public RoutePointPOJO findById(Long userID, Long id) {
+		return (RoutePointPOJO) super.findById(userID, RoutePointPOJO.class, id);
 	}
 }

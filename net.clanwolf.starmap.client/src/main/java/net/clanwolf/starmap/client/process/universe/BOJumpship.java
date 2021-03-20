@@ -92,7 +92,6 @@ public class BOJumpship {
 		C3Logger.info("Route set.");
 		Nexus.getBoUniverse().routesList.remove(jumpshipDTO.getID());
 		Nexus.getBoUniverse().routesList.put(jumpshipDTO.getID(), route);
-		storeRouteToDatabase(route);
 	}
 
 	@SuppressWarnings("unused")

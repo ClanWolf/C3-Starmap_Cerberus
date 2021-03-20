@@ -164,6 +164,10 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		EntityManagerHelper.beginTransaction(getC3UserID(session));
 
 		ArrayList<RoutePointPOJO> list = (ArrayList<RoutePointPOJO>) state.getObject();
+
+		// TODO: DELETE all routePoints for this jumpship
+		dao.deleteByJumpshipId(getC3UserID(session), ((RoutePointPOJO)list.get(0)).getJumpshipId());
+
 		Iterator<RoutePointPOJO> iter = list.iterator();
 		while(iter.hasNext()) {
 			RoutePointPOJO routePoint = (RoutePointPOJO) iter.next();
