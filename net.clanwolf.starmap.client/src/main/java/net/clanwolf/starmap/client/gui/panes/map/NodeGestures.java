@@ -29,6 +29,7 @@ package net.clanwolf.starmap.client.gui.panes.map;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseDragEvent;
@@ -38,6 +39,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextBoundsType;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.StatusTextEntryActionObject;
@@ -55,6 +58,7 @@ import net.clanwolf.starmap.transfer.dtos.RoutePointDTO;
 import net.clanwolf.starmap.transfer.enums.MEDALS;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class NodeGestures {
@@ -65,6 +69,7 @@ public class NodeGestures {
 	private Image travelMarker;
 	private BOStarSystem previousSelectedSystem;
 	private BOUniverse boUniverse = Nexus.getBoUniverse();
+	private HashMap<Long, ArrayList<Text>> routePointLabelsMap = new HashMap<>();
 
 	NodeGestures(PannableCanvas canvas) {
 		this.canvas = canvas;
@@ -138,6 +143,18 @@ public class NodeGestures {
 		sourceNode.startFullDrag();
 	};
 
+	private double getWidth(Text text) {
+		new Scene(new Group(text));
+		text.applyCss();
+		return text.getLayoutBounds().getWidth();
+	}
+
+	private double getHeight(Text text) {
+		new Scene(new Group(text));
+		text.applyCss();
+		return text.getLayoutBounds().getHeight();
+	}
+
 	private EventHandler<MouseDragEvent> onStarSystemDragEnteredEventHandler = event -> {
 		Node node = (Node) event.getSource();
 		Circle c = (Circle) node;
@@ -152,14 +169,22 @@ public class NodeGestures {
 		List<BOStarSystem> route = RouteCalculator.calculateRoute(startSystem, hovered);
 
 		boUniverse.currentlyDraggedJumpship.setRouteSystems(route);
+		int currentRound = Nexus.getCurrentRound();
 
-		if (canvas.getChildren().contains(boUniverse.currentlyDraggedJumpship.routeLines)) {
-			canvas.getChildren().remove(boUniverse.currentlyDraggedJumpship.routeLines);
-		}
+		canvas.getChildren().remove(boUniverse.currentlyDraggedJumpship.routeLines);
+
+		routePointLabelsMap.computeIfAbsent(boUniverse.currentlyDraggedJumpship.getJumpshipId(), k -> new ArrayList<Text>());
+		canvas.getChildren().removeAll(routePointLabelsMap.get(boUniverse.currentlyDraggedJumpship.getJumpshipId()));
+		routePointLabelsMap.get(boUniverse.currentlyDraggedJumpship.getJumpshipId()).clear();
+
 		boUniverse.currentlyDraggedJumpship.routeLines = new Group();
+
 		for (int y = 0; y < route.size() - 1; y++) {
 			BOStarSystem s1 = (BOStarSystem) route.get(y);
 			BOStarSystem s2 = (BOStarSystem) route.get(y + 1);
+
+			int thisRound = currentRound + y + 1;
+			C3Logger.info("Drawing route for round: " + thisRound + " (" + s2.getName() + ")");
 
 			// Dotted line to every stop on the route
 			Line line = new Line(s1.getScreenX(), s1.getScreenY(), s2.getScreenX(), s2.getScreenY());
@@ -177,25 +202,45 @@ public class NodeGestures {
 			Circle circleS1 = new Circle();
 			circleS1.setCenterX(s1.getScreenX());
 			circleS1.setCenterY(s1.getScreenY());
-			circleS1.setRadius(s1.getStarSystemCircle().getRadius());
+//			circleS1.setRadius(s1.getStarSystemCircle().getRadius());
+			circleS1.setRadius(8);
 			circleS1.setStrokeWidth(s1.getStarSystemCircle().getStrokeWidth());
 			circleS1.setStroke(Color.web(boUniverse.factionBOs.get(s1.getAffiliation()).getColor()));
 			circleS1.setFill(Color.web(boUniverse.factionBOs.get(s1.getAffiliation()).getColor()));
 			circleS1.setOpacity(1.0);
 			circleS1.setVisible(true);
+
 			boUniverse.currentlyDraggedJumpship.routeLines.getChildren().add(circleS1);
 
 			// Filled dots for every stop on the route (S2)
 			Circle circleS2 = new Circle();
 			circleS2.setCenterX(s2.getScreenX());
 			circleS2.setCenterY(s2.getScreenY());
-			circleS2.setRadius(s2.getStarSystemCircle().getRadius());
+//			circleS2.setRadius(s2.getStarSystemCircle().getRadius());
+			circleS2.setRadius(8);
 			circleS2.setStrokeWidth(s2.getStarSystemCircle().getStrokeWidth());
 			circleS2.setStroke(Color.web(boUniverse.factionBOs.get(s2.getAffiliation()).getColor()));
 			circleS2.setFill(Color.web(boUniverse.factionBOs.get(s2.getAffiliation()).getColor()));
 			circleS2.setOpacity(1.0);
 			circleS2.setVisible(true);
+
 			boUniverse.currentlyDraggedJumpship.routeLines.getChildren().add(circleS2);
+
+			Text text;
+			text = new Text();
+			text.setText("" + thisRound);
+//			text.setStrokeWidth(.3);
+//			text.setStyle("-fx-font-family:'Arial';-fx-font-size:12px;-fx-text-fill:#ffffff;");
+			text.setFill(Color.WHITE);
+			text.setStroke(Color.BLACK);
+			text.setBoundsType(TextBoundsType.LOGICAL_VERTICAL_CENTER);
+			text.setMouseTransparent(true);
+			text.setLayoutX(s2.getScreenX() - (getWidth(text) / 2));
+			text.setLayoutY(s2.getScreenY() + 4);
+			text.toFront();
+
+			routePointLabelsMap.get(boUniverse.currentlyDraggedJumpship.getJumpshipId()).add(text);
+			canvas.getChildren().add(text);
 		}
 		canvas.getChildren().add(boUniverse.currentlyDraggedJumpship.routeLines);
 		boUniverse.currentlyDraggedJumpship.routeLines.toBack();
