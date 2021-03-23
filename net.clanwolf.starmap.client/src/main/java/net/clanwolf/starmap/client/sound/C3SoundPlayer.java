@@ -65,6 +65,9 @@ public class C3SoundPlayer {
 	private static HashMap<String, AudioClip> audioClipCache = new HashMap<>();
 	private static HashMap<String, Media> speechClipCache = new HashMap<>();
 
+	private static String languageSwitch = null;
+	private static String voiceSwitch = null;
+
 	private static final String voiceRSSUrl = "https://api.voicerss.org/";
 
 	/**
@@ -370,12 +373,17 @@ public class C3SoundPlayer {
 				String quality = "&f=44khz_16bit_stereo";
 				String format = "&c=MP3";
 
-				if ("de".equals(lang)) {
-					language = "&hl=de-de";
-					voice = "&v=Hanna"; // Hanna, Lina, Jonas
-				} else if ("en".equals(lang)) {
-					language = "&hl=en-gb";
-					voice = "&v=Alice"; // Alice,	Nancy, Lily, Harry
+				if (voiceSwitch != null) {
+					language = "&hl=" + languageSwitch;
+					voice = "&v=" + voiceSwitch;
+				} else {
+					if ("de".equals(lang)) {
+						language = "&hl=de-de";
+						voice = "&v=Hanna"; // Hanna, Lina, Jonas
+					} else if ("en".equals(lang)) {
+						language = "&hl=en-gb";
+						voice = "&v=Alice"; // Alice, Nancy, Lily, Harry
+					}
 				}
 
 				C3Logger.info("VoiceRSS API call: " + voiceRSSUrl + " *** API-Key *** " + quality + format + voice + language + "&src=" + s);
@@ -451,4 +459,60 @@ public class C3SoundPlayer {
 //			play("sound/fx/beep_02.mp3", false);
 //		}
 //	}
+
+	public static void getSamples() {
+		voiceSwitch = "Lina";
+		languageSwitch = "de-de";
+		getTTSFile("Landung");
+		getTTSFile("Beschreibung");
+		getTTSFile("Die Verteidiger greifen die Landezone der ankommenden Invasions-Kräfte an.");
+		getTTSFile("Sie versuchen, die Angreifer zu stören, sobald die sich aus dem Perimeter ihrer Landungsschiffe entfernt haben.");
+
+		voiceSwitch = "Mary";
+		languageSwitch = "en-us";
+		getTTSFile("Mission time");
+		getTTSFile("1 Alpha");
+		getTTSFile("2 Alpha");
+		getTTSFile("2 Bravo");
+		getTTSFile("3 Alpha");
+		getTTSFile("3 Bravo");
+		getTTSFile("3 Charlie");
+		getTTSFile("3 Delta");
+		getTTSFile("4 Alpha");
+		getTTSFile("4 Bravo");
+		getTTSFile("4 Charlie");
+		getTTSFile("4 Delta");
+		getTTSFile("4 Echo");
+		getTTSFile("4 Foxtrot");
+		getTTSFile("5 Alpha");
+		getTTSFile("5 Bravo");
+		getTTSFile("5 Charlie");
+		getTTSFile("5 Delta");
+		getTTSFile("5 Echo");
+		getTTSFile("5 Foxtrot");
+		getTTSFile("6 Alpha");
+		getTTSFile("6 Bravo");
+
+		getTTSFile("Forest Colony");
+		getTTSFile("River City");
+		getTTSFile("Alpine Peaks");
+		getTTSFile("Crimson Strait");
+		getTTSFile("HPG");
+		getTTSFile("Viridian Bog");
+		getTTSFile("Terra Therma");
+		getTTSFile("Canyon Network");
+		getTTSFile("Tourmaline Desert");
+		getTTSFile("Rubellite Oasis");
+		getTTSFile("Polar Highlands");
+		getTTSFile("Caustic Valley");
+
+		getTTSFile("Skirmish");
+		getTTSFile("Assault");
+		getTTSFile("Conquest");
+		getTTSFile("Domination");
+		getTTSFile("Incursion");
+
+		voiceSwitch = null;
+		languageSwitch = null;
+	}
 }
