@@ -70,9 +70,6 @@ public class RouteCalculator {
 
 
 
-
-
-
 //			PointD p2 = route.get(1);
 //			PointD p3 = route.get(2);
 //			BOStarSystem s2 = boUniverse.getStarSystemByPoint(p2);

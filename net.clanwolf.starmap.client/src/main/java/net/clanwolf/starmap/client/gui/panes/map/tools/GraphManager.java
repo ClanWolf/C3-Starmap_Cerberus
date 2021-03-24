@@ -176,9 +176,9 @@ public class GraphManager<T> implements GraphAgent<T> {
 		 *    between any two nodes makes pathfinding sensitive only to assigned step costs.
 		 *    This effectively replicates the behavior on a PolygonGrid.
 		 */
-		double distance = graph.getDistance(source, target);
-		return (distance * (nodeCosts.get(source) + nodeCosts.get(target)) / 2);
-//		return (30 * (nodeCosts.get(source) + nodeCosts.get(target)) / 2);
+//		double distance = graph.getDistance(source, target);
+//		return (distance * (nodeCosts.get(source) + nodeCosts.get(target)) / 2);
+		return (30 * (nodeCosts.get(source) + nodeCosts.get(target)) / 2);
 //		return scaleCost * nodeCosts.get(target);
 	}
 
