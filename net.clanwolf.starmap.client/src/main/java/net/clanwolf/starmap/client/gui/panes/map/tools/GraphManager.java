@@ -27,7 +27,9 @@
 package net.clanwolf.starmap.client.gui.panes.map.tools;
 
 import javafx.scene.layout.Pane;
+import net.clanwolf.starmap.client.gui.panes.map.Config;
 import net.clanwolf.starmap.client.process.universe.BOStarSystem;
+import net.clanwolf.starmap.logging.C3Logger;
 import org.kynosarges.tektosyne.geometry.PointD;
 import org.kynosarges.tektosyne.geometry.PolygonGrid;
 import org.kynosarges.tektosyne.geometry.RegularPolygon;
@@ -75,6 +77,7 @@ public class GraphManager<T> implements GraphAgent<T> {
 		// find best path from source to target
 		final AStar<T> aStar = new AStar<>(graph);
 		aStar.useWorldDistance = true;
+		aStar.setRelativeLimit(30);
 		final boolean success = aStar.findBestPath(this, source, target);
 		locations = aStar.nodes();
 
@@ -145,7 +148,10 @@ public class GraphManager<T> implements GraphAgent<T> {
 
 	@Override
 	public boolean canMakeStep(T source, T target) {
-		return (nodeCosts.get(target) < maxCost);
+		double distance = graph.getDistance(source, target) / Config.MAP_COORDINATES_MULTIPLICATOR;
+		boolean inRange = distance < 30;
+//		boolean withinCosts = nodeCosts.get(target) < maxCost;
+		return inRange;
 	}
 
 	@Override
@@ -170,10 +176,10 @@ public class GraphManager<T> implements GraphAgent<T> {
 		 *    between any two nodes makes pathfinding sensitive only to assigned step costs.
 		 *    This effectively replicates the behavior on a PolygonGrid.
 		 */
-		//double distance = graph.getDistance(source, target);
-		//return (distance * (nodeCosts.get(source) + nodeCosts.get(target)) / 2);
-		return (30 * (nodeCosts.get(source) + nodeCosts.get(target)) / 2);
-		//return scaleCost * nodeCosts.get(target);
+		double distance = graph.getDistance(source, target);
+		return (distance * (nodeCosts.get(source) + nodeCosts.get(target)) / 2);
+//		return (30 * (nodeCosts.get(source) + nodeCosts.get(target)) / 2);
+//		return scaleCost * nodeCosts.get(target);
 	}
 
 	private T findNode(BOStarSystem ss) {

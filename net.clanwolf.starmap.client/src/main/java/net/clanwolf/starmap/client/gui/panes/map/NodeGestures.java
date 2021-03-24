@@ -215,6 +215,7 @@ public class NodeGestures {
 				circleS1.setFill(Color.web(boUniverse.factionBOs.get(s1.getAffiliation()).getColor()));
 				circleS1.setOpacity(1.0);
 				circleS1.setVisible(true);
+				circleS1.setMouseTransparent(true);
 				circleS1.toFront();
 
 				circles.add(circleS1);
@@ -238,6 +239,7 @@ public class NodeGestures {
 			}
 			circleS2.setOpacity(1.0);
 			circleS2.setVisible(true);
+			circleS2.setMouseTransparent(true);
 			circleS2.toFront();
 
 			circles.add(circleS2);
@@ -256,6 +258,7 @@ public class NodeGestures {
 			text.setMouseTransparent(true);
 			text.setLayoutX(s2.getScreenX() - (getWidth(text) / 2));
 			text.setLayoutY(s2.getScreenY() + 4);
+			text.setMouseTransparent(true);
 			text.toFront();
 
 			texts.add(text);
@@ -270,6 +273,7 @@ public class NodeGestures {
 				marker.setImage(attackMarker);
 				marker.setTranslateX(s2.getScreenX() - (markerDim / 2));
 				marker.setTranslateY(s2.getScreenY() - (markerDim / 2));
+				marker.setMouseTransparent(true);
 
 				markers.add(marker);
 			}
@@ -281,6 +285,7 @@ public class NodeGestures {
 		boUniverse.currentlyDraggedJumpship.routeLines.getChildren().addAll(circles);
 		boUniverse.currentlyDraggedJumpship.routeLines.getChildren().addAll(texts);
 		boUniverse.currentlyDraggedJumpship.routeLines.toFront();
+		boUniverse.currentlyDraggedJumpship.getJumpshipImage().toFront();
 
 		canvas.getChildren().add(boUniverse.currentlyDraggedJumpship.routeLines);
 	};

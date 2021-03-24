@@ -34,6 +34,7 @@ import net.clanwolf.starmap.logging.C3Logger;
 import org.kynosarges.tektosyne.geometry.PointD;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class RouteCalculator {
@@ -47,71 +48,128 @@ public class RouteCalculator {
 		// This needs to be done to simulate jumps instead of going through all
 		// nodes.
 		List<PointD> route = boUniverse.graphManager.runAStar(source, destination);
-		BOStarSystem ss = boUniverse.getStarSystemByPoint(route.get(0));
-		calculatedRoute.add(ss);
-
+		PointD p1 = route.get(0);
+		BOStarSystem s1 = boUniverse.getStarSystemByPoint(p1);
+		calculatedRoute.add(s1);
 		C3Logger.info("---------------------------");
-		for (int i = 0; i < route.size() - 1; i++) {
-			PointD p1 = route.get(i);
-			BOStarSystem s1 = boUniverse.getStarSystemByPoint(p1);
-			C3Logger.info("### Starting from " + s1.getName() + " (" + s1.getId() + ")");
+		C3Logger.info("### Starting from " + s1.getName() + " (" + s1.getId() + ")");
 
-			for (int j = i; j < route.size(); j++) {
-				if (j + 3 < route.size()) {
-					PointD p4 = route.get(j + 3);
-					double distance14 = boUniverse.delaunaySubdivision.getDistance(p1, p4) / Config.MAP_COORDINATES_MULTIPLICATOR;
-
-					if (distance14 <= 30) {
-						C3Logger.info("Does this ever happen?");
-						throw new RuntimeException("Jumped over two systems in a route within 30LYs. Should not happen!");
-					}
-				}
-				if (j + 2 < route.size()) {
-					PointD p2 = route.get(j + 1);
-					PointD p3 = route.get(j + 2);
-					double distance12 = boUniverse.delaunaySubdivision.getDistance(p1, p2) / Config.MAP_COORDINATES_MULTIPLICATOR;
-					double distance13 = boUniverse.delaunaySubdivision.getDistance(p1, p3) / Config.MAP_COORDINATES_MULTIPLICATOR;
-
-					C3Logger.info("Distance 1-2: " + distance12);
-					C3Logger.info("Distance 1-3: " + distance13);
-
-					if (distance13 > 30) {
-						BOStarSystem s2 = boUniverse.getStarSystemByPoint(p2);
-						if (!calculatedRoute.contains(s2)) {
-							calculatedRoute.add(s2);
-						}
-						BOStarSystem s3 = boUniverse.getStarSystemByPoint(p3);
-						if (!calculatedRoute.contains(s3)) {
-							calculatedRoute.add(s3);
-						}
-						C3Logger.info("Adding 2 and 3 (" + s2.getName() + ", " + s3.getName() + ")");
-						break;
-					} else {
-						BOStarSystem s2 = boUniverse.getStarSystemByPoint(p2);
-						if (calculatedRoute.contains(s2)) {
-							C3Logger.info("Removing previously added 2 (" + s2.getName() + ")");
-							calculatedRoute.remove(s2);
-						}
-						BOStarSystem s3 = boUniverse.getStarSystemByPoint(p3);
-						if (!calculatedRoute.contains(s3)) {
-							calculatedRoute.add(s3);
-						}
-						i++;
-						C3Logger.info("Adding 3 (" + s3.getName() + ")");
-						break;
-					}
-				} else if (j + 2 == route.size()) {
-					C3Logger.info("Only one jump necessary.");
-					PointD p2 = route.get(j + 1);
-					BOStarSystem s2 = boUniverse.getStarSystemByPoint(p2);
-					if (!calculatedRoute.contains(s2)) {
-						calculatedRoute.add(s2);
-					}
-					break;
-				}
+		if (route.size() == 2) {
+			PointD p2 = route.get(1);
+			BOStarSystem s2 = boUniverse.getStarSystemByPoint(p2);
+			double distance12 = boUniverse.delaunaySubdivision.getDistance(p1, p2) / Config.MAP_COORDINATES_MULTIPLICATOR;
+			calculatedRoute.add(s2);
+			C3Logger.info("### Ending on " + s2.getName() + " (" + s2.getId() + ") - " + distance12 + " LY jump");
+			C3Logger.info("---------------------------");
+		} else if (route.size() > 2) {
+			for (int i=1; i<route.size(); i++) {
+				PointD pt1 = route.get(i);
+				BOStarSystem st1 = boUniverse.getStarSystemByPoint(pt1);
+				calculatedRoute.add(st1);
 			}
+
+
+
+
+
+
+//			PointD p2 = route.get(1);
+//			PointD p3 = route.get(2);
+//			BOStarSystem s2 = boUniverse.getStarSystemByPoint(p2);
+//			BOStarSystem s3 = boUniverse.getStarSystemByPoint(p3);
+//			double distance12 = boUniverse.delaunaySubdivision.getDistance(p1, p2) / Config.MAP_COORDINATES_MULTIPLICATOR;
+//			double distance23 = boUniverse.delaunaySubdivision.getDistance(p2, p3) / Config.MAP_COORDINATES_MULTIPLICATOR;
+//			double distance13 = boUniverse.delaunaySubdivision.getDistance(p1, p3) / Config.MAP_COORDINATES_MULTIPLICATOR;
+//			if (distance13 > 30) {
+//				if (!calculatedRoute.contains(s2)) {
+//					calculatedRoute.add(s2);
+//					C3Logger.info("### Jumping over " + s2.getName() + " (" + s2.getId() + ") - " + distance12 + " LY jump");
+//				}
+//			}
+//			if (!calculatedRoute.contains(s3)) {
+//				calculatedRoute.add(s3);
+//			}
+//			C3Logger.info("### Ending on " + s3.getName() + " (" + s3.getId() + ") - " + distance23 + " LY jump");
+//			C3Logger.info("---------------------------");
 		}
-		C3Logger.info("===========================");
+
+//		for (int i = 0; i < route.size() - 1; i++) {
+//			for (int j = i; j < route.size(); j++) {
+//				if (j + 3 < route.size()) {
+//					PointD p2 = route.get(j + 1);
+//					PointD p3 = route.get(j + 2);
+//					PointD p4 = route.get(j + 3);
+//					double distance14 = boUniverse.delaunaySubdivision.getDistance(p1, p4) / Config.MAP_COORDINATES_MULTIPLICATOR;
+//
+//					if (distance14 <= 30) {
+//						C3Logger.info("Does this ever happen?");
+//						BOStarSystem s4 = boUniverse.getStarSystemByPoint(p4);
+//						throw new RuntimeException("Jumped over two systems in a route within 30LYs. Should not happen!");
+////						if (calculatedRoute.contains(s3)) {
+////							C3Logger.info("Removing previously added 2 (" + s3.getName() + ")");
+////							calculatedRoute.remove(s3);
+////						}
+////						if (!calculatedRoute.contains(s4)) {
+////							calculatedRoute.add(s4);
+////							break;
+////						}
+//					}
+//				}
+//				if (j + 2 < route.size()) {
+//					PointD p2 = route.get(j + 1);
+//					PointD p3 = route.get(j + 2);
+//					double distance12 = boUniverse.delaunaySubdivision.getDistance(p1, p2) / Config.MAP_COORDINATES_MULTIPLICATOR;
+//					double distance23 = boUniverse.delaunaySubdivision.getDistance(p2, p3) / Config.MAP_COORDINATES_MULTIPLICATOR;
+//					double distance13 = boUniverse.delaunaySubdivision.getDistance(p1, p3) / Config.MAP_COORDINATES_MULTIPLICATOR;
+//
+//					C3Logger.info("Distance 1-2: " + distance12);
+//					C3Logger.info("Distance 2-3: " + distance23);
+//					C3Logger.info("Distance 1-3: " + distance13);
+//
+//					if (distance12 > 30) {
+//						C3Logger.info("Distance from 1 to 2 is bigger than 30 LY!");
+//					}
+//					if (distance13 > 30) {
+//						BOStarSystem s2 = boUniverse.getStarSystemByPoint(p2);
+//						if (!calculatedRoute.contains(s2)) {
+//							calculatedRoute.add(s2);
+//						}
+//						BOStarSystem s3 = boUniverse.getStarSystemByPoint(p3);
+//						if (!calculatedRoute.contains(s3)) {
+//							calculatedRoute.add(s3);
+//						}
+//						C3Logger.info("Adding 2 and 3 (" + s2.getName() + ", " + s3.getName() + ")");
+//						break;
+//					} else {
+//						BOStarSystem s2 = boUniverse.getStarSystemByPoint(p2);
+//						if (calculatedRoute.contains(s2)) {
+//							C3Logger.info("Removing previously added 2 (" + s2.getName() + ")");
+//							calculatedRoute.remove(s2);
+//						}
+//						BOStarSystem s3 = boUniverse.getStarSystemByPoint(p3);
+//						if (!calculatedRoute.contains(s3)) {
+//							calculatedRoute.add(s3);
+//						}
+//						i++;
+//						C3Logger.info("Adding 3 (" + s3.getName() + ")");
+//						break;
+//					}
+//				} else if (j + 2 == route.size()) {
+//					C3Logger.info("Only one jump necessary.");
+//					PointD p2 = route.get(j + 1);
+//					BOStarSystem s2 = boUniverse.getStarSystemByPoint(p2);
+//					if (!calculatedRoute.contains(s2)) {
+//						calculatedRoute.add(s2);
+//					}
+//					double distance = boUniverse.delaunaySubdivision.getDistance(p1, p2) / Config.MAP_COORDINATES_MULTIPLICATOR;
+//					C3Logger.info("Distance 1-2: " + distance);
+//					if (distance > 30) {
+//						C3Logger.info("Distance from 1 to 2 is bigger than 30 LY!");
+//					}
+//					break;
+//				}
+//			}
+//		}
 		return calculatedRoute;
 	}
 
