@@ -62,15 +62,14 @@ import java.util.HashMap;
 import java.util.List;
 
 public class NodeGestures {
-	private DragContext nodeDragContext = new DragContext();
+	private final DragContext nodeDragContext = new DragContext();
 	private PannableCanvas canvas;
 	private Image selectionMarker;
 	private Image attackMarker;
 	private Image travelMarker;
 	private BOStarSystem previousSelectedSystem;
-	private BOUniverse boUniverse = Nexus.getBoUniverse();
+	private final BOUniverse boUniverse = Nexus.getBoUniverse();
 	private HashMap<Long, ArrayList<Text>> routePointLabelsMap = new HashMap<>();
-//	private HashMap<BOStarSystem, Text> labledStarSystems = new HashMap<>();
 
 	NodeGestures(PannableCanvas canvas) {
 		this.canvas = canvas;
@@ -150,11 +149,11 @@ public class NodeGestures {
 		return text.getLayoutBounds().getWidth();
 	}
 
-	private double getHeight(Text text) {
-		new Scene(new Group(text));
-		text.applyCss();
-		return text.getLayoutBounds().getHeight();
-	}
+//	private double getHeight(Text text) {
+//		new Scene(new Group(text));
+//		text.applyCss();
+//		return text.getLayoutBounds().getHeight();
+//	}
 
 	private EventHandler<MouseDragEvent> onStarSystemDragEnteredEventHandler = event -> {
 		Node node = (Node) event.getSource();
@@ -180,6 +179,11 @@ public class NodeGestures {
 
 		boUniverse.currentlyDraggedJumpship.routeLines = new Group();
 
+		ArrayList<Line> lines = new ArrayList<>();
+		ArrayList<Circle> circles = new ArrayList<>();
+		ArrayList<Text> texts = new ArrayList<>();
+		ArrayList<ImageView> markers = new ArrayList<>();
+
 		for (int y = 0; y < route.size() - 1; y++) {
 			BOStarSystem s1 = (BOStarSystem) route.get(y);
 			BOStarSystem s2 = (BOStarSystem) route.get(y + 1);
@@ -197,21 +201,24 @@ public class NodeGestures {
 				line.setStroke(Color.LIGHTGREEN);
 			}
 			line.setStrokeLineCap(StrokeLineCap.ROUND);
-			boUniverse.currentlyDraggedJumpship.routeLines.getChildren().add(line);
+			lines.add(line);
 
-			// Filled dots for every stop on the route (S1)
-			Circle circleS1 = new Circle();
-			circleS1.setCenterX(s1.getScreenX());
-			circleS1.setCenterY(s1.getScreenY());
-//			circleS1.setRadius(s1.getStarSystemCircle().getRadius());
-			circleS1.setRadius(8);
-			circleS1.setStrokeWidth(s1.getStarSystemCircle().getStrokeWidth());
-			circleS1.setStroke(Color.web(boUniverse.factionBOs.get(s1.getAffiliation()).getColor()));
-			circleS1.setFill(Color.web(boUniverse.factionBOs.get(s1.getAffiliation()).getColor()));
-			circleS1.setOpacity(1.0);
-			circleS1.setVisible(true);
+			if (y == 0) {
+				// Filled dots for every stop on the route (S1)
+				Circle circleS1 = new Circle();
+				circleS1.setCenterX(s1.getScreenX());
+				circleS1.setCenterY(s1.getScreenY());
+//			    circleS1.setRadius(s1.getStarSystemCircle().getRadius());
+				circleS1.setRadius(8);
+				circleS1.setStrokeWidth(s1.getStarSystemCircle().getStrokeWidth());
+				circleS1.setStroke(Color.web(boUniverse.factionBOs.get(s1.getAffiliation()).getColor()));
+				circleS1.setFill(Color.web(boUniverse.factionBOs.get(s1.getAffiliation()).getColor()));
+				circleS1.setOpacity(1.0);
+				circleS1.setVisible(true);
+				circleS1.toFront();
 
-			boUniverse.currentlyDraggedJumpship.routeLines.getChildren().add(circleS1);
+				circles.add(circleS1);
+			}
 
 			// Filled dots for every stop on the route (S2)
 			Circle circleS2 = new Circle();
@@ -222,35 +229,60 @@ public class NodeGestures {
 			circleS2.setStrokeWidth(s2.getStarSystemCircle().getStrokeWidth());
 			circleS2.setStroke(Color.web(boUniverse.factionBOs.get(s2.getAffiliation()).getColor()));
 			circleS2.setFill(Color.web(boUniverse.factionBOs.get(s2.getAffiliation()).getColor()));
+			if (y == 0 && !("" + Nexus.getCurrentUser().getCurrentCharacter().getFactionId()).equals("" + s2.getFactionId())) {
+				circleS2.setFill(Color.RED);
+				circleS2.setStroke(Color.WHITE);
+			} else {
+				circleS2.setFill(Color.WHITE);
+				circleS2.setStroke(Color.BLACK);
+			}
 			circleS2.setOpacity(1.0);
 			circleS2.setVisible(true);
+			circleS2.toFront();
 
-			boUniverse.currentlyDraggedJumpship.routeLines.getChildren().add(circleS2);
+			circles.add(circleS2);
 
 			Text text;
-//			if (labledStarSystems.get(s2) != null) {
-//				text = labledStarSystems.get(s2);
-//			} else {
-//				text = new Text();
-//				labledStarSystems.put(s2, text);
-//			}
 			text = new Text();
 			text.setText("" + thisRound);
-//			text.setStrokeWidth(.3);
-//			text.setStyle("-fx-font-family:'Arial';-fx-font-size:12px;-fx-text-fill:#ffffff;");
-			text.setFill(Color.WHITE);
-			text.setStroke(Color.BLACK);
+			if (y == 0 && !("" + Nexus.getCurrentUser().getCurrentCharacter().getFactionId()).equals("" + s2.getFactionId())) {
+				text.setFill(Color.WHITE);
+				text.setStroke(Color.WHITE);
+			} else {
+				text.setFill(Color.BLACK);
+				text.setStroke(Color.BLACK);
+			}
 			text.setBoundsType(TextBoundsType.LOGICAL_VERTICAL_CENTER);
 			text.setMouseTransparent(true);
 			text.setLayoutX(s2.getScreenX() - (getWidth(text) / 2));
 			text.setLayoutY(s2.getScreenY() + 4);
 			text.toFront();
 
-			routePointLabelsMap.get(boUniverse.currentlyDraggedJumpship.getJumpshipId()).add(text);
-			canvas.getChildren().add(text);
+			texts.add(text);
+
+			if (y == 0 && !("" + Nexus.getCurrentUser().getCurrentCharacter().getFactionId()).equals("" + s2.getFactionId())) {
+				C3Logger.info("Attacking: " + s2.getName());
+				Double markerDim = 38.0d;
+				ImageView marker;
+				marker = new ImageView();
+				marker.setFitWidth(markerDim);
+				marker.setFitHeight(markerDim);
+				marker.setImage(attackMarker);
+				marker.setTranslateX(s2.getScreenX() - (markerDim / 2));
+				marker.setTranslateY(s2.getScreenY() - (markerDim / 2));
+
+				markers.add(marker);
+			}
 		}
+
+		// Add elements all at once in the end to ensure correct z-order
+		boUniverse.currentlyDraggedJumpship.routeLines.getChildren().addAll(lines);
+		boUniverse.currentlyDraggedJumpship.routeLines.getChildren().addAll(markers);
+		boUniverse.currentlyDraggedJumpship.routeLines.getChildren().addAll(circles);
+		boUniverse.currentlyDraggedJumpship.routeLines.getChildren().addAll(texts);
+		boUniverse.currentlyDraggedJumpship.routeLines.toFront();
+
 		canvas.getChildren().add(boUniverse.currentlyDraggedJumpship.routeLines);
-		boUniverse.currentlyDraggedJumpship.routeLines.toBack();
 	};
 
 	private EventHandler<MouseDragEvent> onStarSystemDragExitedEventHandler = event -> {
