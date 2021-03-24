@@ -70,7 +70,7 @@ public class NodeGestures {
 	private BOStarSystem previousSelectedSystem;
 	private BOUniverse boUniverse = Nexus.getBoUniverse();
 	private HashMap<Long, ArrayList<Text>> routePointLabelsMap = new HashMap<>();
-	private HashMap<BOStarSystem, Text> labledStarSystems = new HashMap<>();
+//	private HashMap<BOStarSystem, Text> labledStarSystems = new HashMap<>();
 
 	NodeGestures(PannableCanvas canvas) {
 		this.canvas = canvas;
@@ -228,12 +228,13 @@ public class NodeGestures {
 			boUniverse.currentlyDraggedJumpship.routeLines.getChildren().add(circleS2);
 
 			Text text;
-			if (labledStarSystems.get(s2) != null) {
-				text = labledStarSystems.get(s2);
-			} else {
-				text = new Text();
-				labledStarSystems.put(s2, text);
-			}
+//			if (labledStarSystems.get(s2) != null) {
+//				text = labledStarSystems.get(s2);
+//			} else {
+//				text = new Text();
+//				labledStarSystems.put(s2, text);
+//			}
+			text = new Text();
 			text.setText("" + thisRound);
 //			text.setStrokeWidth(.3);
 //			text.setStyle("-fx-font-family:'Arial';-fx-font-size:12px;-fx-text-fill:#ffffff;");
