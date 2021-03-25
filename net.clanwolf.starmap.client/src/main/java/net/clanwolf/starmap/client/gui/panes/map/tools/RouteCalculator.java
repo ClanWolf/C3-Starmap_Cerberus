@@ -68,7 +68,65 @@ public class RouteCalculator {
 				calculatedRoute.add(st1);
 			}
 
-
+			
+			// ^^^^^^^ Remove
+			
+			
+			
+			
+			
+			
+//			List<PointD> routeCleaned = new ArrayList<PointD>();
+//			while (route.size() > 2) {
+//				boolean removeFirst = false;
+//				PointD pt1 = route.get(0);
+//				PointD pt2 = route.get(1);
+//				PointD pt3 = route.get(2);
+//				double distance12 = boUniverse.delaunaySubdivision.getDistance(pt1, pt2) / Config.MAP_COORDINATES_MULTIPLICATOR;
+//				double distance23 = boUniverse.delaunaySubdivision.getDistance(pt2, pt3) / Config.MAP_COORDINATES_MULTIPLICATOR;
+//				double distance13 = boUniverse.delaunaySubdivision.getDistance(pt1, pt3) / Config.MAP_COORDINATES_MULTIPLICATOR;
+//
+//				if (distance13 < 30) {
+//					// distanz zum übernächsten Punkt ist < 30, die zwischenstation entfällt
+//					routeCleaned.add(route.get(0));
+//					// tempRouteNew.add(2); ist beim nächsten Schritt dann 0
+//				} else {
+//					// distanz zum übernächsten Punkt ist > 30, die Stationen werden gebraucht
+//					routeCleaned.add(route.get(0));
+//					routeCleaned.add(route.get(1));
+//					// tempRouteNew.add(2); ist beim nächsten Schritt dann 0
+//					removeFirst = true;
+//				}
+//				if (removeFirst) {
+//					route.remove(0);
+//				}
+//				route.remove(1);
+//			}
+//			// may need to add the last systems here!
+//			for (int i = 0; i < routeCleaned.size(); i++) {
+//				PointD p = routeCleaned.get(i);
+//				BOStarSystem s = boUniverse.getStarSystemByPoint(p);
+//				if (!calculatedRoute.contains(s)) {
+//					calculatedRoute.add(s);
+//					C3Logger.info("### Jumping over " + s.getName() + " (" + s.getId() + ")");
+//				}
+//			}
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 
 //			PointD p2 = route.get(1);
 //			PointD p3 = route.get(2);
