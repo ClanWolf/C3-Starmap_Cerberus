@@ -371,7 +371,7 @@ public class NodeGestures {
 
 
 
-					ActionManager.getAction(ACTIONS.SHOW_MEDAL).execute(MEDALS.First_Blood);
+					//ActionManager.getAction(ACTIONS.SHOW_MEDAL).execute(MEDALS.First_Blood);
 
 
 

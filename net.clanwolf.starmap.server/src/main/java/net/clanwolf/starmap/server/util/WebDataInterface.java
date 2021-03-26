@@ -341,7 +341,7 @@ public class WebDataInterface {
 					}
 
 					universe.currentSeason = 1;
-					universe.currentRound = 1;
+					universe.currentRound = 3;
 					universe.currentDate = "01.01.3052";
 
 					// create JSON representation

@@ -129,7 +129,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			C3Logger.info("Beginning to build the star map from received universe data.");
 
 			Nexus.setCurrentSeason(boUniverse.currentSeason);
-			Nexus.setCurrentRound(boUniverse.currentSeason);
+			Nexus.setCurrentRound(boUniverse.currentRound);
 			Nexus.setCurrentDate(boUniverse.currentDate);
 
 			selectionMarker = new Image(getClass().getResourceAsStream("/images/map/selectionIndicator.png"));
