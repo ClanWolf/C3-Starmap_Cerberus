@@ -44,7 +44,7 @@ public class JumpshipDTO extends Dto {
 
 	public ArrayList<Integer> getStarSystemHistoryArray() {
 		ArrayList<Integer> hist = null;
-		if (!"".equals(starSystemHistory)) {
+		if (starSystemHistory != null && !"".equals(starSystemHistory)) {
 			if (starSystemHistory.endsWith(";")) {
 				starSystemHistory = starSystemHistory.substring(0, starSystemHistory.length() - 1);
 			}

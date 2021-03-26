@@ -87,6 +87,8 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		C3Logger.debug("C3GameSessionHandler.executeCommand: " + state.getMode().toString());
 		EntityConverter.convertGameStateToPOJO(state);
 
+
+
 		switch (state.getMode()) {
 		case BROADCAST_SEND_NEW_PLAYERLIST:
 			sendNewPlayerList(session, state);

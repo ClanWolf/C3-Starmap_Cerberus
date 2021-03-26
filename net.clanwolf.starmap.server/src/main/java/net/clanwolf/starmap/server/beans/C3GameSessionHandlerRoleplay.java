@@ -29,12 +29,10 @@ package net.clanwolf.starmap.server.beans;
 import io.nadron.app.PlayerSession;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
+import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.JumpshipDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.RolePlayCharacterDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.RolePlayStoryDAO;
-import net.clanwolf.starmap.server.persistence.pojos.RolePlayCharacterPOJO;
-import net.clanwolf.starmap.server.persistence.pojos.RolePlayStoryPOJO;
-import net.clanwolf.starmap.server.persistence.pojos.RolePlayStoryVar3POJO;
-import net.clanwolf.starmap.server.persistence.pojos.UserPOJO;
+import net.clanwolf.starmap.server.persistence.pojos.*;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
@@ -356,4 +354,23 @@ public class C3GameSessionHandlerRoleplay {
 		}
 	}
 
+	/*static void requestJumpshipTest(PlayerSession session, GameState state) {
+		JumpshipDAO dao = JumpshipDAO.getInstance();
+		List<JumpshipPOJO> lrp = (List) dao.findAll(C3GameSessionHandler.getC3UserID(session), null);
+		ArrayList<JumpshipPOJO> mylist = new ArrayList(lrp);
+
+		System.out.println(mylist);
+
+		RoutePointPOJO point = new RoutePointPOJO();
+		point.setJumpshipId(1L);
+		point.setRoundId(1L);
+		point.setSeasonId(1L);
+		point.setSystemId(100L);
+
+		JumpshipPOJO j = mylist.get(1);
+		j.getRoutepointList().add(point);
+		dao.update(C3GameSessionHandler.getC3UserID(session),j );
+
+		C3Logger.info("Hier hat er hoffentlich alles gespeichert");
+	}*/
 }
