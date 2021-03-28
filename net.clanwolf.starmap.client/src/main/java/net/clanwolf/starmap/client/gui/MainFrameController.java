@@ -1147,6 +1147,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		setConsoleEntry("Setting controll elements");
 
 		enableMainMenuButtons(Nexus.isLoggedIn(), Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN));
+
+		C3SoundPlayer.getSamples();
 	}
 
 	private void NoiseAnimation() {

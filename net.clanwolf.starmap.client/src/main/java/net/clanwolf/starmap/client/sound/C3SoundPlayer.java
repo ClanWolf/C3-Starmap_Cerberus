@@ -463,54 +463,11 @@ public class C3SoundPlayer {
 	public static void getSamples() {
 		voiceSwitch = "Lina";
 		languageSwitch = "de-de";
-		getTTSFile("Landung");
-		getTTSFile("Beschreibung");
-		getTTSFile("Die Verteidiger greifen die Landezone der ankommenden Invasions-Kräfte an.");
-		getTTSFile("Sie versuchen, die Angreifer zu stören, sobald die sich aus dem Perimeter ihrer Landungsschiffe entfernt haben.");
+//		getTTSFile("Landung");
 
 		voiceSwitch = "Mary";
 		languageSwitch = "en-us";
-		getTTSFile("Mission time");
-		getTTSFile("1 Alpha");
-		getTTSFile("2 Alpha");
-		getTTSFile("2 Bravo");
-		getTTSFile("3 Alpha");
-		getTTSFile("3 Bravo");
-		getTTSFile("3 Charlie");
-		getTTSFile("3 Delta");
-		getTTSFile("4 Alpha");
-		getTTSFile("4 Bravo");
-		getTTSFile("4 Charlie");
-		getTTSFile("4 Delta");
-		getTTSFile("4 Echo");
-		getTTSFile("4 Foxtrot");
-		getTTSFile("5 Alpha");
-		getTTSFile("5 Bravo");
-		getTTSFile("5 Charlie");
-		getTTSFile("5 Delta");
-		getTTSFile("5 Echo");
-		getTTSFile("5 Foxtrot");
-		getTTSFile("6 Alpha");
-		getTTSFile("6 Bravo");
-
-		getTTSFile("Forest Colony");
-		getTTSFile("River City");
-		getTTSFile("Alpine Peaks");
-		getTTSFile("Crimson Strait");
-		getTTSFile("HPG");
-		getTTSFile("Viridian Bog");
-		getTTSFile("Terra Therma");
-		getTTSFile("Canyon Network");
-		getTTSFile("Tourmaline Desert");
-		getTTSFile("Rubellite Oasis");
-		getTTSFile("Polar Highlands");
-		getTTSFile("Caustic Valley");
-
-		getTTSFile("Skirmish");
-		getTTSFile("Assault");
-		getTTSFile("Conquest");
-		getTTSFile("Domination");
-		getTTSFile("Incursion");
+//		getTTSFile("Approaching drop zone");
 
 		voiceSwitch = null;
 		languageSwitch = null;
