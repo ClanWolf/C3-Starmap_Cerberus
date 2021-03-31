@@ -461,13 +461,15 @@ public class C3SoundPlayer {
 //	}
 
 	public static void getSamples() {
-		voiceSwitch = "Lina";
+//		voiceSwitch = "Lina";
+		voiceSwitch = "Jonas";
 		languageSwitch = "de-de";
-//		getTTSFile("Landung");
+//		getTTSFile("Der Planet wurde erobert. Die Verteidiger haben es nicht geschafft, die Invasion zu verhindern und wurden aufgerieben. Es weht eine neue Fahne über der Hauptstadt");
+//		getTTSFile("Die Invasion wurde zurück geschlagen. Der Planet bleibt im Besitz der bisherigen Fraktion und die stolzen Verteidiger reihen diesen Triumph in ihre Geschichte ein");
 
 		voiceSwitch = "Mary";
 		languageSwitch = "en-us";
-//		getTTSFile("Approaching drop zone");
+//		getTTSFile("Mining Collective");
 
 		voiceSwitch = null;
 		languageSwitch = null;

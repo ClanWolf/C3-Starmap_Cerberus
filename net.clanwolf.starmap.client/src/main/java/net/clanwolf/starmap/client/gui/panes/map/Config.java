@@ -60,7 +60,7 @@ public class Config {
 	public static final double zoomLevelToHideStarSystemLabels = 1.0;
 	public static final double zoomLevelToHideStarSystemCircles = 0.5;
 	public static final double zoomLevelToHideAttacks = 0.5;
-	public static final double zoomLevelToHideJumpships = 1.3;
+	public static final double zoomLevelToHideJumpships = 0.8;
 
 	// Background stars
 	public static int BACKGROUND_STARS_MAX_SIZE = 4;
