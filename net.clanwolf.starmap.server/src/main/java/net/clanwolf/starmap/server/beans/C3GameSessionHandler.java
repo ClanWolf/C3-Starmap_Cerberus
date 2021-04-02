@@ -36,8 +36,10 @@ import io.nadron.service.GameStateManagerService;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.server.persistence.EntityConverter;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
+import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.JumpshipDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.RoutePointDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.UserDAO;
+import net.clanwolf.starmap.server.persistence.pojos.JumpshipPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.RoutePointPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.UserPOJO;
 import net.clanwolf.starmap.server.util.WebDataInterface;
@@ -167,20 +169,19 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 		ArrayList<RoutePointPOJO> list = (ArrayList<RoutePointPOJO>) state.getObject();
 
-		// TODO: DELETE all routePoints for this jumpship
 		dao.deleteByJumpshipId(getC3UserID(session), ((RoutePointPOJO)list.get(0)).getJumpshipId());
 
 		Iterator<RoutePointPOJO> iter = list.iterator();
 		while(iter.hasNext()) {
 			RoutePointPOJO routePoint = (RoutePointPOJO) iter.next();
-			if(routePoint.getId() == null) {
-				C3Logger.info("Saving: " + routePoint);
-				dao.save(getC3UserID(session), routePoint);
-			} else {
-				C3Logger.info("Updating: " + routePoint);
-				dao.update(getC3UserID(session), routePoint);
-			}
+			routePoint.setId(null);
+
+			C3Logger.info("Saving: " + routePoint);
+			dao.save(getC3UserID(session), routePoint);
 		}
+
+		JumpshipDAO jsDao = JumpshipDAO.getInstance();
+		jsDao.setAttackReady(getC3UserID(session), ((RoutePointPOJO)list.get(0)).getJumpshipId(), false);
 
 		EntityManagerHelper.commit(getC3UserID(session));
 	}

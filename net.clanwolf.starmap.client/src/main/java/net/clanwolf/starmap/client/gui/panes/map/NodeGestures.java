@@ -132,9 +132,6 @@ public class NodeGestures {
 			js.getPredictedRouteLine().toFront();
 			node.toFront();
 			boUniverse.currentlyDraggedJumpship.getPredictedRouteLine().setVisible(false);
-
-			ArrayList<RoutePointDTO> route = Nexus.getBoUniverse().routesList.get(boUniverse.currentlyDraggedJumpship.getJumpshipId());
-			boUniverse.currentlyDraggedJumpship.storeRouteToDatabase(route);
 		}
 	};
 
@@ -367,20 +364,6 @@ public class NodeGestures {
 						marker.setImage(attackMarker);
 					}
 //					marker.setImage(selectionMarker);
-
-
-
-					ActionManager.getAction(ACTIONS.SHOW_MEDAL).execute(MEDALS.First_Blood);
-
-
-
-
-
-
-
-
-
-
 					marker.setTranslateX((sp.getWidth() / 2) - (markerDim / 2));
 					marker.setTranslateY((sp.getHeight() / 2) - (markerDim / 2));
 					if (previousSelectedSystem != null) {
@@ -429,33 +412,38 @@ public class NodeGestures {
 			double newTranslateY = nodeDragContext.translateAnchorY + ((event.getSceneY() - nodeDragContext.mouseAnchorY) / scale);
 
 			Node node = (Node) event.getSource();
-			if (node instanceof ImageView) { // must be a jumpship
-				if (Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.FACTIONLEAD_HAS_ROLE) && Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.FACTIONLEAD_MOVE_JUMPSHIP)) {
-					boUniverse.currentlyDraggedJumpship = boUniverse.jumpshipBOs.get(node.getId());
-					node.toBack();
-					String name = node.getId();
-					BOJumpship ship = boUniverse.jumpshipBOs.get(name);
-					canvas.showStarSystemMarker(boUniverse.starSystemBOs.get(ship.getCurrentSystemID()));
-					Line routeLine = ship.getPredictedRouteLine();
-					double startX = boUniverse.starSystemBOs.get(ship.getCurrentSystemID()).getScreenX();
-					double startY = boUniverse.starSystemBOs.get(ship.getCurrentSystemID()).getScreenY();
+			if (node instanceof ImageView) { // may be a jumpship
+				String name = node.getId();
+				BOJumpship ship = boUniverse.jumpshipBOs.get(name);
 
-					routeLine.setStartX(startX);
-					routeLine.setStartY(startY);
-					routeLine.setEndX(newTranslateX + 20);
-					routeLine.setEndY(newTranslateY + 10);
-					routeLine.toBack();
-					routeLine.setVisible(true);
-					routeLine.setOpacity(0.1);
-					if (!canvas.getChildren().contains(routeLine)) {
-						canvas.getChildren().add(routeLine);
+				// Is the dragged node a ship (?) and does it belong to my faction (?)
+				if (ship != null && ship.getJumpshipFaction() == Nexus.getCurrentUser().getCurrentCharacter().getFactionId()) {
+					if (Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.FACTIONLEAD_HAS_ROLE) && Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.FACTIONLEAD_MOVE_JUMPSHIP)) {
+						boUniverse.currentlyDraggedJumpship = boUniverse.jumpshipBOs.get(node.getId());
+						node.toBack();
+
+						canvas.showStarSystemMarker(boUniverse.starSystemBOs.get(ship.getCurrentSystemID()));
+						Line routeLine = ship.getPredictedRouteLine();
+						double startX = boUniverse.starSystemBOs.get(ship.getCurrentSystemID()).getScreenX();
+						double startY = boUniverse.starSystemBOs.get(ship.getCurrentSystemID()).getScreenY();
+
+						routeLine.setStartX(startX);
+						routeLine.setStartY(startY);
+						routeLine.setEndX(newTranslateX + 20);
+						routeLine.setEndY(newTranslateY + 10);
+						routeLine.toBack();
+						routeLine.setVisible(true);
+						routeLine.setOpacity(0.1);
+						if (!canvas.getChildren().contains(routeLine)) {
+							canvas.getChildren().add(routeLine);
+						}
+					} else {
+						// No privileges to move the jumpship
+						String mes = Internationalization.getString("C3_Speech_app_starmap_moving_jumpship_not_allowed");
+						StatusTextEntryActionObject o = new StatusTextEntryActionObject(mes, true, "YELLOW");
+						ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(o);
+						C3SoundPlayer.getTTSFile(mes);
 					}
-				} else {
-					// No privileges to move the jumpship
-					String mes = Internationalization.getString("C3_Speech_app_starmap_moving_jumpship_not_allowed");
-					StatusTextEntryActionObject o = new StatusTextEntryActionObject(mes, true, "YELLOW");
-					ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(o);
-					C3SoundPlayer.getTTSFile(mes);
 				}
 			}
 

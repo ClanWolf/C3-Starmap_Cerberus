@@ -65,4 +65,12 @@ public class JumpshipDAO extends GenericDAO {
 	public JumpshipPOJO findById(Long userID, Long id) {
 		return (JumpshipPOJO) super.findById(userID, JumpshipPOJO.class, id);
 	}
+
+	public void setAttackReady(Long userID, Long jumpshipId, boolean ready) {
+		JumpshipPOJO pojo = findById(userID, jumpshipId);
+		if (pojo != null) {
+			pojo.setAttackReady(ready);
+			update(userID, pojo);
+		}
+	}
 }

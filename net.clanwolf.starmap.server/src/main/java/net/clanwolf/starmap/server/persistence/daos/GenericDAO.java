@@ -49,7 +49,7 @@ public abstract class GenericDAO implements IDAO {
 
 	@Override
 	public void save(Long userID, Object entity) {
-		EntityManagerHelper.log("Saving UserPOJO instance", Level.INFO, null);
+		EntityManagerHelper.log("Saving instance (" + entity.getClass() + ")", Level.INFO, null);
 		try {
 			getEntityManager(userID).persist(entity);
 			EntityManagerHelper.log("Save successful", Level.INFO, null);
@@ -62,7 +62,7 @@ public abstract class GenericDAO implements IDAO {
 
 	@Override
 	public Object update(Long userID, Object entity) {
-		EntityManagerHelper.log("Updating RolePlayStoryPOJO instance", Level.INFO, null);
+		EntityManagerHelper.log("Updating instance (" + entity.getClass() + ")", Level.INFO, null);
 
 		try {
 			Object result = getEntityManager(userID).merge(entity);
@@ -76,7 +76,7 @@ public abstract class GenericDAO implements IDAO {
 	}
 
 	public void delete(Long userID, Object entity, Long id) {
-		EntityManagerHelper.log("Deleting UserPOJO instance", Level.INFO, null);
+		EntityManagerHelper.log("Deleting instance (" + entity.getClass()  + ")", Level.INFO, null);
 
 		try {
 			entity = getEntityManager(userID).getReference(entity.getClass(), id);

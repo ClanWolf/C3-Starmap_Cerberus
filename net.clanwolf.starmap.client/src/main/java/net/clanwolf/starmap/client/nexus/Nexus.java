@@ -30,6 +30,7 @@ import io.nadron.client.app.Session;
 import io.nadron.client.event.Events;
 import io.nadron.client.event.NetworkEvent;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
+import net.clanwolf.starmap.client.process.universe.BOJumpship;
 import net.clanwolf.starmap.client.process.universe.BOStarSystem;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
 import net.clanwolf.starmap.transfer.GameState;
@@ -71,6 +72,7 @@ public class Nexus {
 
 	private static BOStarSystem terra = null;
 	private static BOStarSystem currentlySelectedStarSystem = null;
+	private static BOJumpship currentlySelectedJumphip = null;
 
 	/**
 	 * Private constructor to prevent instantiation
@@ -101,6 +103,14 @@ public class Nexus {
 
 	public static BOStarSystem getCurrentlySelectedStarSystem() {
 		return currentlySelectedStarSystem;
+	}
+
+	public static void setCurrentlySelectedJumpship(BOJumpship j) {
+		currentlySelectedJumphip = j;
+	}
+
+	public static BOJumpship getCurrentlySelectedJumpship() {
+		return currentlySelectedJumphip;
 	}
 
 	public static void setSelectedStarSystem(BOStarSystem s) {

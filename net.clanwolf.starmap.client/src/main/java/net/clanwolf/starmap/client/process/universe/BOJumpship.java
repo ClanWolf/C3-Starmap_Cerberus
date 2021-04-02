@@ -135,8 +135,18 @@ public class BOJumpship {
 	}
 
 	@SuppressWarnings("unused")
+	public long getJumpshipFaction() {
+		return this.jumpshipDTO.getJumpshipFactionID();
+	}
+
+	@SuppressWarnings("unused")
 	public Integer getCurrentSystemID() {
 		return jumpshipDTO.getCurrentSystemID();
+	}
+
+	@SuppressWarnings("unused")
+	public BOStarSystem getCurrentSystem(long id) {
+		return (BOStarSystem) Nexus.getBoUniverse().starSystemBOs.get(id);
 	}
 
 	@SuppressWarnings("unused")

@@ -19,17 +19,24 @@
          <children>
             <Pane fx:id="buttonBackground" layoutX="-1.0" layoutY="421.0" mouseTransparent="true" prefHeight="51.0" prefWidth="778.0" styleClass="systemDetailPanel" stylesheets="@../styles/MainFrameStyle.css">
                <children>
-                  <Label fx:id="labelMouseCoords" layoutX="267.0" layoutY="15.0" prefHeight="23.0" prefWidth="382.0" text="" />
+                  <Label fx:id="labelMouseCoords" layoutX="228.0" layoutY="15.0" prefHeight="23.0" prefWidth="294.0" text="" />
                </children></Pane>
-            <Button fx:id="mapButton01" layoutX="5.0" layoutY="428.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="100.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css" text="Jump" />
-            <Button fx:id="mapButton02" layoutX="110.0" layoutY="428.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="100.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css" text="Attack" />
-            <Button fx:id="mapButton03" layoutX="671.0" layoutY="428.0" mnemonicParsing="false" onAction="#handleCenterButtonClick" prefHeight="37.0" prefWidth="100.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css" text="Center" />
+            <Button fx:id="mapButton02" layoutX="555.0" layoutY="428.0" mnemonicParsing="false" onAction="#handleCenterButtonClick" prefHeight="37.0" prefWidth="105.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css" text="Jumpship" />
+            <Button fx:id="mapButton01" disable="true" layoutX="5.0" layoutY="428.0" mnemonicParsing="false" onAction="#handleConfirmButtonClick" prefHeight="37.0" prefWidth="185.0" styleClass="contentButtonRed" stylesheets="@../styles/MainFrameStyle.css" text="Confirm Orders" />
+            <Button fx:id="mapButton03" layoutX="666.0" layoutY="428.0" mnemonicParsing="false" onAction="#handleCenterButtonClick" prefHeight="37.0" prefWidth="105.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css" text="Homeworld" />
          </children></Pane>
       <Pane fx:id="paneSystemDetail" layoutX="683.0" layoutY="22.0" mouseTransparent="true" prefHeight="253.0" prefWidth="149.0" styleClass="systemDetailPanel" stylesheets="@../styles/MainFrameStyle.css">
          <children>
             <Label fx:id="labelSystemName" alignment="CENTER" layoutX="15.0" layoutY="6.0" prefHeight="32.0" prefWidth="120.0" text="..." />
             <ImageView fx:id="labelSystemImage" fitHeight="114.0" fitWidth="114.0" layoutX="18.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true" />
             <ImageView fx:id="labelFactionImage" fitHeight="68.0" fitWidth="68.0" layoutX="41.0" layoutY="172.0" pickOnBounds="true" preserveRatio="true" />
+         </children>
+      </Pane>
+      <Pane fx:id="paneJumpshipDetail" layoutX="683.0" layoutY="22.0" mouseTransparent="true" prefHeight="253.0" prefWidth="149.0" styleClass="systemDetailPanel" stylesheets="@../styles/MainFrameStyle.css">
+         <children>
+            <Label fx:id="labelJumpshipName" alignment="CENTER" layoutX="15.0" layoutY="6.0" prefHeight="32.0" prefWidth="120.0" text="..." />
+            <ImageView fx:id="labelJumpshipImage" fitHeight="114.0" fitWidth="114.0" layoutX="18.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="labelJumpshipFactionImage" fitHeight="68.0" fitWidth="68.0" layoutX="41.0" layoutY="172.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </Pane>
 	</children>

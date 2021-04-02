@@ -63,9 +63,12 @@ import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.C3PROPS;
 import net.clanwolf.starmap.client.util.C3Properties;
 import net.clanwolf.starmap.logging.C3Logger;
+import net.clanwolf.starmap.transfer.dtos.RoutePointDTO;
+import net.clanwolf.starmap.transfer.enums.MEDALS;
 import org.kynosarges.tektosyne.geometry.PointD;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 /**
@@ -90,6 +93,14 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	@FXML
 	ImageView labelFactionImage;
 	@FXML
+	Pane paneJumpshipDetail;
+	@FXML
+	Label labelJumpshipName;
+	@FXML
+	ImageView labelJumpshipImage;
+	@FXML
+	ImageView labelJumpshipFactionImage;
+	@FXML
 	Label labelMouseCoords;
 	@FXML
 	Button mapButton01;
@@ -109,6 +120,22 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	@FXML
 	private void handleCenterButtonClick() throws Exception {
 		reCenterMap();
+	}
+
+	@FXML
+	private void handleConfirmButtonClick() throws Exception {
+		// Store jumproutes
+		for (BOJumpship js : Nexus.getBoUniverse().jumpshipBOs.values()) {
+			if (js.getJumpshipFaction() == Nexus.getCurrentUser().getCurrentCharacter().getFactionId()) {
+				C3Logger.info("Storing route to database");
+				ArrayList<RoutePointDTO> route = Nexus.getBoUniverse().routesList.get(js.getJumpshipId());
+				js.storeRouteToDatabase(route);
+			}
+		}
+		// Store attacks
+		// ToDo: Store attacks
+
+		ActionManager.getAction(ACTIONS.SHOW_MEDAL).execute(MEDALS.First_Blood);
 	}
 
 	/**
@@ -136,12 +163,13 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			attackMarker = new Image(getClass().getResourceAsStream("/images/map/attackIndicator.png"));
 			travelMarker = new Image(getClass().getResourceAsStream("/images/map/travelIndicator.png"));
 
-			starMapPane.setOpacity(0.0);
-			mapButton01.setOpacity(0.0);
-			mapButton02.setOpacity(0.0);
-			mapButton03.setOpacity(0.0);
-			paneSystemDetail.setOpacity(0.0);
-			buttonBackground.setOpacity(0.0);
+			starMapPane.setOpacity(0.0f);
+			mapButton01.setOpacity(0.0f);
+			mapButton02.setOpacity(0.0f);
+			mapButton03.setOpacity(0.0f);
+			paneSystemDetail.setOpacity(0.0f);
+			paneJumpshipDetail.setOpacity(0.0f);
+			buttonBackground.setOpacity(0.0f);
 
 			try {
 				canvas = new PannableCanvas();
@@ -302,16 +330,33 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				for (BOJumpship js : boUniverse.jumpshipBOs.values()) {
 					Integer currentSystemID = js.getCurrentSystemID();
 
+					boolean myOwnShip = false;
+					if (js.getJumpshipFaction() == Nexus.getCurrentUser().getCurrentCharacter().getFactionId()) {
+						// Ship belongs to my own faction
+						myOwnShip = true;
+					} else {
+						// Enemy ship
+						myOwnShip = false;
+					}
+
 					if (currentSystemID != null) {
 						ImageView jumpshipImage;
 						if (js.isAttackReady()) {
-							jumpshipImage = new ImageView(new Image(getClass().getResourceAsStream("/images/map/jumpship_left_blue.png")));
-							jumpshipImage.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
-							jumpshipImage.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
-							jumpshipImage.addEventFilter(MouseEvent.DRAG_DETECTED, nodeGestures.getOnMouseDragDetectedEventHandler());
-							jumpshipImage.addEventFilter(MouseEvent.MOUSE_RELEASED, nodeGestures.getOnMouseReleasedEventHandler());
+							if (myOwnShip) {
+								jumpshipImage = new ImageView(new Image(getClass().getResourceAsStream("/images/map/jumpship_left_blue.png")));
+								jumpshipImage.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
+								jumpshipImage.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
+								jumpshipImage.addEventFilter(MouseEvent.DRAG_DETECTED, nodeGestures.getOnMouseDragDetectedEventHandler());
+								jumpshipImage.addEventFilter(MouseEvent.MOUSE_RELEASED, nodeGestures.getOnMouseReleasedEventHandler());
+							} else {
+								jumpshipImage = new ImageView(new Image(getClass().getResourceAsStream("/images/map/jumpship_right_red.png")));
+							}
 						} else {
-							jumpshipImage = new ImageView(new Image(getClass().getResourceAsStream("/images/map/jumpship_left_red.png")));
+							if (myOwnShip) {
+								jumpshipImage = new ImageView(new Image(getClass().getResourceAsStream("/images/map/jumpship_left_neutral.png")));
+							} else {
+								jumpshipImage = new ImageView(new Image(getClass().getResourceAsStream("/images/map/jumpship_right_red.png")));
+							}
 						}
 						jumpshipImage.setId(js.getJumpshipName());
 						jumpshipImage.setPreserveRatio(true);
@@ -349,6 +394,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				mapButton03.toFront();
 				paneSystemDetail.toFront();
 				paneSystemDetail.setOpacity(0.0f);
+				paneJumpshipDetail.toFront();
+				paneJumpshipDetail.setOpacity(0.0f);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -454,9 +501,11 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 	private void reCenterMap() {
 		removeMouseFilters();
+		mapButton01.setDisable(true);
+		mapButton02.setDisable(true);
 		mapButton03.setDisable(true);
 
-		C3Logger.info("Travel to Terra");
+		C3Logger.info("Travel to Homeworld");
 		C3Logger.info("X: " + Config.MAP_INITIAL_TRANSLATE_X);
 		C3Logger.info("Y: " + Config.MAP_INITIAL_TRANSLATE_Y);
 
@@ -473,6 +522,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			@Override
 			public void handle(ActionEvent event) {
 				addMouseFilters();
+				mapButton01.setDisable(false);
+				mapButton02.setDisable(false);
 				mapButton03.setDisable(false);
 				for (int[] layer : Config.BACKGROUND_STARS_LAYERS) {
 					int level = layer[0];
@@ -488,6 +539,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 	private void moveMapToPosition(BOStarSystem sys) {
 		removeMouseFilters();
+		mapButton01.setDisable(true);
+		mapButton02.setDisable(true);
 		mapButton03.setDisable(true);
 
 		C3Logger.info("Travel to " + sys.getName());
@@ -507,6 +560,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			@Override
 			public void handle(ActionEvent event) {
 				addMouseFilters();
+				mapButton01.setDisable(false);
+				mapButton02.setDisable(false);
 				mapButton03.setDisable(false);
 				for (int[] layer : Config.BACKGROUND_STARS_LAYERS) {
 					int level = layer[0];
@@ -514,6 +569,46 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					canvas.showStarSystemMarker(sys);
 					Nexus.setCurrentlySelectedStarSystem(sys);
 					ActionManager.getAction(ACTIONS.SHOW_SYSTEM_DETAIL).execute(sys);
+				}
+			}
+		});
+		move.play();
+	}
+
+	private void moveMapToJumpship(BOJumpship jumpship) {
+		removeMouseFilters();
+		mapButton01.setDisable(true);
+		mapButton02.setDisable(true);
+		mapButton03.setDisable(true);
+
+		BOStarSystem starsystem = jumpship.getCurrentSystem(jumpship.getCurrentSystemID());
+
+		C3Logger.info("Travel to position of jumpship " + jumpship.getJumpshipName());
+		C3Logger.info("X: " + starsystem.getX());
+		C3Logger.info("Y: " + starsystem.getY());
+
+		for (int[] layer : Config.BACKGROUND_STARS_LAYERS) {
+			int level = layer[0];
+			canvas.fadeoutStars(level);
+		}
+
+		TranslateTransition move = new TranslateTransition(Duration.millis(400), canvas);
+		move.setCycleCount(1);
+		move.setByX(starsystem.getX() * Config.MAP_COORDINATES_MULTIPLICATOR);
+		move.setByY(starsystem.getY() * Config.MAP_COORDINATES_MULTIPLICATOR);
+		move.setOnFinished(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				addMouseFilters();
+				mapButton01.setDisable(false);
+				mapButton02.setDisable(false);
+				mapButton03.setDisable(false);
+				for (int[] layer : Config.BACKGROUND_STARS_LAYERS) {
+					int level = layer[0];
+					canvas.resetBackgroundStarPane(level);
+					canvas.showStarSystemMarker(starsystem);
+					Nexus.setCurrentlySelectedStarSystem(starsystem);
+					ActionManager.getAction(ACTIONS.SHOW_SYSTEM_DETAIL).execute(starsystem);
 				}
 			}
 		});
@@ -538,6 +633,24 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			if (paneSystemDetail.getOpacity() != 0.0) {
 				// Fade in transition 06 (DetailPane)
 				FadeTransition fadeInTransition_06 = new FadeTransition(Duration.millis(650), paneSystemDetail);
+				fadeInTransition_06.setFromValue(1.0);
+				fadeInTransition_06.setToValue(0.0);
+				fadeInTransition_06.setCycleCount(1);
+
+				// Transition sequence
+				SequentialTransition sequentialTransition = new SequentialTransition();
+				sequentialTransition.getChildren().addAll(fadeInTransition_06);
+				sequentialTransition.setCycleCount(1);
+				sequentialTransition.play();
+			}
+		}
+	}
+
+	public void hideJumpshipDetail() {
+		if (paneJumpshipDetail != null) {
+			if (paneJumpshipDetail.getOpacity() != 0.0) {
+				// Fade in transition 06 (DetailPane)
+				FadeTransition fadeInTransition_06 = new FadeTransition(Duration.millis(650), paneJumpshipDetail);
 				fadeInTransition_06.setFromValue(1.0);
 				fadeInTransition_06.setToValue(0.0);
 				fadeInTransition_06.setCycleCount(1);
@@ -588,6 +701,56 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 			// Fade in transition 06 (DetailPane)
 			FadeTransition fadeInTransition_06 = new FadeTransition(Duration.millis(450), paneSystemDetail);
+			fadeInTransition_06.setFromValue(0.0);
+			fadeInTransition_06.setToValue(1.0);
+			fadeInTransition_06.setCycleCount(1);
+
+			// Transition sequence
+			SequentialTransition sequentialTransition = new SequentialTransition();
+			sequentialTransition.getChildren().addAll(fadeInTransition_06);
+			sequentialTransition.setCycleCount(1);
+			sequentialTransition.play();
+		}
+	}
+
+	public void showJumpshipDetail(BOJumpship ship) {
+		if (paneJumpshipDetail != null) {
+			// Set jumpship information
+			Nexus.setCurrentlySelectedJumpship(ship);
+			C3SoundPlayer.play("sound/fx/beep_electric.mp3", false);
+
+			// TODO: Show ship information
+//			Platform.runLater(() -> {
+//				String name = boUniverse.factionBOs.get(sys.getAffiliation()).getName();
+//				String shortName = boUniverse.factionBOs.get(sys.getAffiliation()).getShortName();
+//				String color = boUniverse.factionBOs.get(sys.getAffiliation()).getColor();
+//				String logo = boUniverse.factionBOs.get(sys.getAffiliation()).getLogo();
+//				Image imagePlanet = null;
+//				String systemImageName = String.format("%03d", Integer.parseInt(sys.getSystemImageName()));
+//				try {
+//					//					C3Logger.debug("Planet image: /images/planets/" + systemImageName + ".png");
+//					//					C3Logger.debug("SystemImageName from DB: " + systemImageName);
+//					imagePlanet = new Image(getClass().getResourceAsStream("/images/planets/" + systemImageName + ".png"));
+//				} catch (Exception e) {
+//					//e.printStackTrace();
+//					C3Logger.info("Planet picture not found! Consider adding a fitting image for id: " + systemImageName);
+//					imagePlanet = new Image(getClass().getResourceAsStream("/images/planets/000_default.png"));
+//				}
+//				//				if (imagePlanet == null) {
+//				//					imagePlanet = new Image(getClass().getResourceAsStream("/images/planets/000_default.png"));
+//				//				}
+//				Image imageFaction = new Image(getClass().getResourceAsStream("/images/logos/factions/" + logo));
+//
+//				labelSystemImage.setImage(imagePlanet);
+//				labelSystemName.setText(sys.getName());
+//				labelFactionImage.setImage(imageFaction);
+//				Double x = sys.getX();
+//				Double y = sys.getY();
+//				ActionManager.getAction(ACTIONS.UPDATE_COORD_INFO).execute(sys.getName() + " [X:" + String.format("%.2f", x) + "] - [Y:" + String.format("%.2f", y) + "]");
+//			});
+
+			// Fade in transition 06 (DetailPane)
+			FadeTransition fadeInTransition_06 = new FadeTransition(Duration.millis(450), paneJumpshipDetail);
 			fadeInTransition_06.setFromValue(0.0);
 			fadeInTransition_06.setToValue(1.0);
 			fadeInTransition_06.setCycleCount(1);
@@ -672,21 +835,14 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				break;
 
 			case PANE_DESTROY_CURRENT:
-				starMapPane.setOpacity(0.0);
-				buttonBackground.setOpacity(0.0);
-				mapButton01.setOpacity(0.0);
-				mapButton02.setOpacity(0.0);
-				mapButton03.setOpacity(0.0);
-				paneSystemDetail.setOpacity(0.0);
-				break;
-
 			case PANE_CREATION_BEGINS:
-				starMapPane.setOpacity(0.0);
-				buttonBackground.setOpacity(0.0);
-				mapButton01.setOpacity(0.0);
-				mapButton02.setOpacity(0.0);
-				mapButton03.setOpacity(0.0);
-				paneSystemDetail.setOpacity(0.0);
+				starMapPane.setOpacity(0.0f);
+				buttonBackground.setOpacity(0.0f);
+				mapButton01.setOpacity(0.0f);
+				mapButton02.setOpacity(0.0f);
+				mapButton03.setOpacity(0.0f);
+				paneSystemDetail.setOpacity(0.0f);
+				paneJumpshipDetail.setOpacity(0.0f);
 				break;
 
 			case MAP_CREATION_FINISHED:
