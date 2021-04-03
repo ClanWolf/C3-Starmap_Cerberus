@@ -148,7 +148,7 @@ public class WebDataInterface {
 			//sb.append("         FT.ShortName        AS factiontype_short,\r\n");
 			//sb.append("         FT.Name_en          AS factiontype_en,   \r\n");
 			//sb.append("         FT.Name_de          AS factiontype_de,   \r\n");
-			//sb.append("         SSD.ID              AS starsystemdataid, \r\n");
+			sb.append("         SSD.ID              AS starsystemdataid, \r\n");
 			//sb.append("         SSD.StarSystemID    AS starsystemID,     \r\n");
 			sb.append("         SSD.FactionID       AS factionid,        \r\n");
 			sb.append("         SSD.Infrastructure  AS infrastructure,   \r\n");
@@ -258,12 +258,12 @@ public class WebDataInterface {
 						universe.starSystems.clear();
 						while (rs.next()) {
 							StarSystemDTO ss = new StarSystemDTO();
-							ss.setId(rs.getInt("sid"));
+							ss.setId(rs.getLong("sid"));
 							ss.setName(rs.getString("name"));
 							ss.setX(rs.getBigDecimal("x"));
 							ss.setY(rs.getBigDecimal("y"));
 							ss.setAffiliation(rs.getString("affiliation"));
-							ss.setFactionId(rs.getInt("factionid"));
+							ss.setFactionId(rs.getLong("factionid"));
 							ss.setStarType1(rs.getString("startype1"));
 							ss.setStarClass(rs.getString("class"));
 							ss.setSarnaLink(rs.getString("link"));
@@ -272,6 +272,7 @@ public class WebDataInterface {
 							ss.setVeternacy(rs.getString("veternacy"));
 							ss.setType(rs.getString("type"));
 							ss.setSystemImageName(rs.getString("systemImageName"));
+							ss.setStarSystemDataId(rs.getLong("starsystemdataid"));
 
 							HashMap<String, String> maps = new HashMap<>();
 							maps.put("s1map1", rs.getString("s1map1"));
@@ -294,15 +295,15 @@ public class WebDataInterface {
 						universe.attacks.clear();
 						while (rs.next()) {
 							AttackDTO a = new AttackDTO();
-							a.setId(rs.getInt("aid"));
+							a.setId(rs.getLong("aid"));
 							a.setSeason(rs.getInt("season"));
 							a.setRound(rs.getInt("round"));
-							a.setStarSystemId(rs.getInt("starsystem"));
-							a.setStarSystemDataId(rs.getInt("starsystemdata"));
-							a.setAttackType(rs.getInt("attackType"));
-							a.setAttackedFromStarSystem(rs.getInt("attackedfromstarsystem"));
-							a.setfactionId_defender(rs.getInt("defender"));
-							a.setJumpshipId(rs.getInt("jumpship"));
+							a.setStarSystemId(rs.getLong("starsystem"));
+							a.setStarSystemDataId(rs.getLong("starsystemdata"));
+							a.setAttackType(rs.getLong("attackType"));
+							a.setAttackedFromStarSystem(rs.getLong("attackedfromstarsystem"));
+							a.setfactionId_defender(rs.getLong("defender"));
+							a.setJumpshipId(rs.getLong("jumpship"));
 
 							universe.attacks.add(a);
 						}

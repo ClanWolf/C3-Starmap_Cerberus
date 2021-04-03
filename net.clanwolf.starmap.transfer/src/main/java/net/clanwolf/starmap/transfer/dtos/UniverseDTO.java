@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class UniverseDTO extends Dto {
-	public HashMap<Integer, StarSystemDTO> starSystems = new HashMap<>();
+	public HashMap<Long, StarSystemDTO> starSystems = new HashMap<>();
 	public HashMap<String, FactionDTO> factions = new HashMap<>();
 	public HashMap<String, JumpshipDTO> jumpships = new HashMap<>();
 	public ArrayList<AttackDTO> attacks = new ArrayList<>();

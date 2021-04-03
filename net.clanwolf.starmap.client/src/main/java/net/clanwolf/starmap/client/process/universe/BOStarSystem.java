@@ -76,61 +76,83 @@ public class BOStarSystem {
 	}
 
 	@SuppressWarnings("unused")
+	public Long getStarSystemDataId() {
+		return starSystemDTO.getStarSystemDataId();
+	}
+
+	@SuppressWarnings("unused")
 	public Circle getStarSystemCircle() {
 		return starSystemCircle;
 	}
 
+	@SuppressWarnings("unused")
 	public void setStarSystemCircle(Circle starSystemCircle) {
 		this.starSystemCircle = starSystemCircle;
 	}
 
+	@SuppressWarnings("unused")
 	public Label getStarSystemLabel() {
 		return starSystemLabel;
 	}
 
+	@SuppressWarnings("unused")
 	public void setStarSystemLabel(Label starSystemLabel) {
 		this.starSystemLabel = starSystemLabel;
 	}
 
+	@SuppressWarnings("unused")
 	public Group getStarSystemGroup() {
 		return starSystemGroup;
 	}
 
+	@SuppressWarnings("unused")
 	public void setStarSystemGroup(Group starSystemGroup) {
 		this.starSystemGroup = starSystemGroup;
 	}
 
+	@SuppressWarnings("unused")
 	public StackPane getStarSystemStackPane() {
 		return starSystemStackPane;
 	}
 
+	@SuppressWarnings("unused")
 	public void setStarSystemStackPane(StackPane starSystemStackPane) {
 		this.starSystemStackPane = starSystemStackPane;
 	}
 
+	@SuppressWarnings("unused")
 	public void setStarSystemSelectionMarker(ImageView m) {
 		this.marker = m;
 	}
 
+	@SuppressWarnings("unused")
 	public ImageView getStarSystemSelectionMarker() {
 		return marker;
 	}
 
+	@SuppressWarnings("unused")
 	public BOStarSystem(StarSystemDTO starSystemDTO) {
 		this.starSystemDTO = starSystemDTO;
 	}
 
+	@SuppressWarnings("unused")
 	public String getName() { return starSystemDTO.getName(); }
 
-	public Integer getId() { return starSystemDTO.getId(); }
+	@SuppressWarnings("unused")
+	public Long getId() { return starSystemDTO.getId(); }
 
+	@SuppressWarnings("unused")
 	public Double getX() { return starSystemDTO.getX(); }
 
+	@SuppressWarnings("unused")
 	public Double getY() { return starSystemDTO.getY(); }
 
+	@SuppressWarnings("unused")
 	public String getAffiliation() { return starSystemDTO.getAffiliation(); }
 
-	public Integer getFactionId() { return starSystemDTO.getFactionId(); }
+	@SuppressWarnings("unused")
+	public Long getFactionId() { return starSystemDTO.getFactionId(); }
 
+	@SuppressWarnings("unused")
 	public String getSystemImageName() { return starSystemDTO.getSystemImageName(); }
 }

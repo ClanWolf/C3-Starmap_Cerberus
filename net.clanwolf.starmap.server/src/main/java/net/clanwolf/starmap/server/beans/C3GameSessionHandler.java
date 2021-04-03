@@ -36,9 +36,11 @@ import io.nadron.service.GameStateManagerService;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.server.persistence.EntityConverter;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
+import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.AttackDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.JumpshipDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.RoutePointDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.UserDAO;
+import net.clanwolf.starmap.server.persistence.pojos.AttackPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.JumpshipPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.RoutePointPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.UserPOJO;
@@ -126,6 +128,9 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		case ROUTE_SAVE:
 			saveRoute(session, state);
 			break;
+		case ATTACK_SAVE:
+			saveAttack(session, state);
+			break;
 		case ROLEPLAY_GET_CHAPTER_BYSORTORDER:
 			C3GameSessionHandlerRoleplay.getChapterBySortOrder(session, state);
 			break;
@@ -160,6 +165,13 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		
 //		EntityManagerHelper.commit((Long) session.getPlayer().getId());
 		EntityManagerHelper.commit(getC3UserID(session));
+	}
+
+	private void saveAttack(PlayerSession session, GameState state) {
+		AttackDAO dao = AttackDAO.getInstance();
+		AttackPOJO attack = (AttackPOJO) state.getObject();
+		C3Logger.info("Saving attack: " + attack);
+		dao.save(getC3UserID(session), attack);
 	}
 
 	private void saveRoute(PlayerSession session, GameState state) {

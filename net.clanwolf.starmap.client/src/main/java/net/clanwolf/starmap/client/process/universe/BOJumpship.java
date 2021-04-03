@@ -140,7 +140,7 @@ public class BOJumpship {
 	}
 
 	@SuppressWarnings("unused")
-	public Integer getCurrentSystemID() {
+	public Long getCurrentSystemID() {
 		return jumpshipDTO.getCurrentSystemID();
 	}
 
@@ -158,5 +158,5 @@ public class BOJumpship {
 	public boolean isAttackReady() { return jumpshipDTO.isAttackReady(); }
 
 	@SuppressWarnings("unused")
-	public ArrayList<Integer> getStarSystemHistoryArray() { return jumpshipDTO.getStarSystemHistoryArray(); }
+	public ArrayList<Long> getStarSystemHistoryArray() { return jumpshipDTO.getStarSystemHistoryArray(); }
 }

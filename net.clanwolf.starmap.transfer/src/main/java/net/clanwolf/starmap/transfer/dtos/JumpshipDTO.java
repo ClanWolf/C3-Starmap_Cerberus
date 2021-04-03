@@ -39,18 +39,18 @@ public class JumpshipDTO extends Dto {
 	private String starSystemHistory = "";
 	private boolean attackReady;
 	private boolean movedInCurrentRound = false;
-	private Integer currentSystemID;
+	private Long currentSystemID;
 //	private List<RoutePointDTO> routepointList;
 
-	public ArrayList<Integer> getStarSystemHistoryArray() {
-		ArrayList<Integer> hist = null;
+	public ArrayList<Long> getStarSystemHistoryArray() {
+		ArrayList<Long> hist = null;
 		if (starSystemHistory != null && !"".equals(starSystemHistory)) {
 			if (starSystemHistory.endsWith(";")) {
 				starSystemHistory = starSystemHistory.substring(0, starSystemHistory.length() - 1);
 			}
 			if (!starSystemHistory.contains(";")) {
 				try {
-					currentSystemID = Integer.parseInt(starSystemHistory);
+					currentSystemID = Long.parseLong(starSystemHistory);
 				} catch (NumberFormatException nfe) {
 					// not a valid id
 				}
@@ -59,7 +59,7 @@ public class JumpshipDTO extends Dto {
 				hist = new ArrayList<>();
 				for (String s : hs) {
 					try {
-						Integer i = Integer.parseInt(s);
+						Long i = Long.parseLong(s);
 						hist.add(i);
 						currentSystemID = i;
 					} catch (NumberFormatException nfe) {
@@ -82,9 +82,9 @@ public class JumpshipDTO extends Dto {
 //	}
 
 	@SuppressWarnings("unused")
-	public Integer getCurrentSystemID() {
+	public Long getCurrentSystemID() {
 		if (currentSystemID == null) {
-			ArrayList<Integer> hist = getStarSystemHistoryArray();
+			ArrayList<Long> hist = getStarSystemHistoryArray();
 		}
 		return currentSystemID;
 	}

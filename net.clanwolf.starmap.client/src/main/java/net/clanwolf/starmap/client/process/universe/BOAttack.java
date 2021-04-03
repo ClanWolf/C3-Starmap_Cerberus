@@ -26,7 +26,11 @@
  */
 package net.clanwolf.starmap.client.process.universe;
 
+import net.clanwolf.starmap.client.nexus.Nexus;
+import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.AttackDTO;
+import net.clanwolf.starmap.transfer.dtos.RoutePointDTO;
+import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 
 public class BOAttack {
 
@@ -36,13 +40,20 @@ public class BOAttack {
 		this.attackDTO = attackDTO;
 	}
 
+	public void storeAttack() {
+		GameState saveAttackState = new GameState();
+		saveAttackState.setMode(GAMESTATEMODES.ATTACK_SAVE);
+		saveAttackState.addObject(attackDTO);
+		Nexus.fireNetworkEvent(saveAttackState);
+	}
+
 	public Integer getSeason() { return attackDTO.getSeason(); }
 
 	public Integer getRound() { return attackDTO.getRound(); }
 
-	public Integer getStarSystemId() { return attackDTO.getStarSystemId(); }
+	public Long getStarSystemId() { return attackDTO.getStarSystemId(); }
 
-	public Integer getAttackedFromStarSystem() { return attackDTO.getAttackedFromStarSystem(); }
+	public Long getAttackedFromStarSystem() { return attackDTO.getAttackedFromStarSystem(); }
 
-	public Integer getJumpshipId() { return attackDTO.getJumpshipId(); }
+	public Long getJumpshipId() { return attackDTO.getJumpshipId(); }
 }

@@ -33,11 +33,12 @@ import java.util.HashMap;
 
 public class StarSystemDTO extends Dto {
 
-	private Integer id;
+	private Long id;
+	private Long starSystemDataId;
 	private String name;
 	protected BigDecimal x;
 	protected BigDecimal y;
-	private Integer factionId;
+	private Long factionId;
 	private String affiliation;
 	private String starType1;
 	private String starClass;
@@ -51,6 +52,14 @@ public class StarSystemDTO extends Dto {
 
 	public void setSystemImageName(String n) {
 		systemImageName = n;
+	}
+
+	public void setStarSystemDataId(Long id) {
+		this.starSystemDataId = id;
+	}
+
+	public Long getStarSystemDataId() {
+		return this.starSystemDataId;
 	}
 
 	public String getSystemImageName() {
@@ -121,11 +130,11 @@ public class StarSystemDTO extends Dto {
 		this.starType1 = starType1;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -161,11 +170,11 @@ public class StarSystemDTO extends Dto {
 		this.affiliation = affiliation;
 	}
 
-	public Integer getFactionId() {
+	public Long getFactionId() {
 		return factionId;
 	}
 
-	public void setFactionId(Integer factionId) {
+	public void setFactionId(Long factionId) {
 		this.factionId = factionId;
 	}
 

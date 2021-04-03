@@ -63,6 +63,7 @@ import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.C3PROPS;
 import net.clanwolf.starmap.client.util.C3Properties;
 import net.clanwolf.starmap.logging.C3Logger;
+import net.clanwolf.starmap.transfer.dtos.AttackDTO;
 import net.clanwolf.starmap.transfer.dtos.RoutePointDTO;
 import net.clanwolf.starmap.transfer.enums.MEDALS;
 import org.kynosarges.tektosyne.geometry.PointD;
@@ -130,10 +131,29 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				C3Logger.info("Storing route to database");
 				ArrayList<RoutePointDTO> route = Nexus.getBoUniverse().routesList.get(js.getJumpshipId());
 				js.storeRouteToDatabase(route);
+
+				// Is the first coming jump (next round) to an enemy planet (?)
+				RoutePointDTO rp = route.get(1);
+				BOStarSystem s = Nexus.getBoUniverse().starSystemBOs.get(rp.getSystemId());
+				if (s.getFactionId() != js.getJumpshipFaction()) {
+					// This means there is an attack to be stored
+					// ToDo: Store attacks
+					AttackDTO attack = new AttackDTO();
+					attack.setAttackedFromStarSystem(((RoutePointDTO) route.get(0)).getSystemId());
+					attack.setAttackType(1L); // Type 1: Planetary Assault
+					attack.setfactionId_defender(s.getFactionId());
+					attack.setRound(Nexus.getCurrentRound());
+					attack.setSeason(Nexus.getCurrentSeason());
+					attack.setJumpshipId(js.getJumpshipId());
+					attack.setStarSystemId(rp.getSystemId());
+					attack.setStarSystemDataId(s.getStarSystemDataId());
+
+					BOAttack boAttack = new BOAttack(attack);
+					Nexus.getBoUniverse().attackBOs.add(boAttack);
+					boAttack.storeAttack();
+				}
 			}
 		}
-		// Store attacks
-		// ToDo: Store attacks
 
 		ActionManager.getAction(ACTIONS.SHOW_MEDAL).execute(MEDALS.First_Blood);
 	}
@@ -184,7 +204,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 				for (BOStarSystem starSystem : boUniverse.starSystemBOs.values()) {
 					String name = starSystem.getName();
-					Integer id = starSystem.getId();
+					Long id = starSystem.getId();
 					double x = starSystem.getScreenX();
 					double y = starSystem.getScreenY();
 
@@ -328,7 +348,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				attacksPane.toBack();
 
 				for (BOJumpship js : boUniverse.jumpshipBOs.values()) {
-					Integer currentSystemID = js.getCurrentSystemID();
+					Long currentSystemID = js.getCurrentSystemID();
 
 					boolean myOwnShip = false;
 					if (js.getJumpshipFaction() == Nexus.getCurrentUser().getCurrentCharacter().getFactionId()) {

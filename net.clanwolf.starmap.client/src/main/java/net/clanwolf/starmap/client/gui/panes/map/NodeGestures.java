@@ -160,7 +160,7 @@ public class NodeGestures {
 
 		// Starting system and dragged target can be taken from new member vars to be created
 		BOStarSystem startSystem = boUniverse.starSystemBOs.get(boUniverse.currentlyDraggedJumpship.getCurrentSystemID());
-		BOStarSystem hovered = boUniverse.starSystemBOs.get(Integer.parseInt(c.getId()));
+		BOStarSystem hovered = boUniverse.starSystemBOs.get(Long.parseLong(c.getId()));
 
 		C3Logger.info(boUniverse.currentlyDraggedJumpship.getJumpshipName() + " : " + startSystem.getName() + " : " + hovered.getName());
 		List<BOStarSystem> route = RouteCalculator.calculateRoute(startSystem, hovered);
@@ -300,7 +300,7 @@ public class NodeGestures {
 			Circle c = (Circle) node;
 			c.setRadius(8);
 
-			BOStarSystem hoveredStarSystem = boUniverse.starSystemBOs.get(Integer.parseInt(node.getId()));
+			BOStarSystem hoveredStarSystem = boUniverse.starSystemBOs.get(Long.parseLong(node.getId()));
 			Double x = hoveredStarSystem.getX();
 			Double y = hoveredStarSystem.getY();
 			ActionManager.getAction(ACTIONS.UPDATE_COORD_INFO).execute(hoveredStarSystem.getName() + " [X:" + String.format("%.2f", x) + "] - [Y:" + String.format("%.2f", y) + "]");
@@ -313,7 +313,7 @@ public class NodeGestures {
 			Circle c = (Circle) node;
 			c.setRadius(5);
 
-//			BOStarSystem hoveredStarSystem = boUniverse.starSystemBOs.get(Integer.parseInt(node.getId()));
+//			BOStarSystem hoveredStarSystem = boUniverse.starSystemBOs.get(Long.parseLong(node.getId()));
 			Double x = Nexus.getCurrentlySelectedStarSystem().getX();
 			Double y = Nexus.getCurrentlySelectedStarSystem().getY();
 			ActionManager.getAction(ACTIONS.UPDATE_COORD_INFO).execute(Nexus.getCurrentlySelectedStarSystem().getName() + " [X:" + String.format("%.2f", x) + "] - [Y:" + String.format("%.2f", y) + "]");
@@ -332,7 +332,7 @@ public class NodeGestures {
 			}
 
 			Node node = (Node) event.getSource();
-			BOStarSystem clickedStarSystem = boUniverse.starSystemBOs.get(Integer.parseInt(node.getId()));
+			BOStarSystem clickedStarSystem = boUniverse.starSystemBOs.get(Long.parseLong(node.getId()));
 			StackPane sp = clickedStarSystem.getStarSystemStackPane();
 			Group group = clickedStarSystem.getStarSystemGroup();
 

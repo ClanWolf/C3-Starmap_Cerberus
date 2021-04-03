@@ -42,7 +42,7 @@ public class BOUniverse {
 
 	private UniverseDTO universeDTO;
 
-	public HashMap<Integer, BOStarSystem> starSystemBOs = new HashMap<>();
+	public HashMap<Long, BOStarSystem> starSystemBOs = new HashMap<>();
 	public HashMap<String, BOFaction> factionBOs = new HashMap<>();
 	public HashMap<String, BOJumpship> jumpshipBOs = new HashMap<>();
 	public ArrayList<BOAttack> attackBOs = new ArrayList<>();

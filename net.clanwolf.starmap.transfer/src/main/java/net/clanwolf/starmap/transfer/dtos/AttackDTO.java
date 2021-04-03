@@ -30,45 +30,45 @@ import net.clanwolf.starmap.transfer.Dto;
 
 public class AttackDTO extends Dto {
 
-	private Integer id = 0;
-	private Integer season = 0;
-	private Integer round = 0;
-	private Integer starSystemId = 0;
-	private Integer starSystemDataId = 0;
-	private Integer attackType;
-	private Integer attackedFromStarSystem = 0;
-	private Integer factionId_defender = 0;
-	private Integer jumpshipId = 0;
+	private Long id;
+	private Integer season;
+	private Integer round;
+	private Long starSystemId;
+	private Long starSystemDataId;
+	private Long attackType;
+	private Long attackedFromStarSystem;
+	private Long factionId_defender;
+	private Long jumpshipId;
 
-	public Integer getJumpshipId() {
+	public Long getJumpshipId() {
 		return jumpshipId;
 	}
 
-	public void setJumpshipId(Integer jumpshipId) {
+	public void setJumpshipId(Long jumpshipId) {
 		this.jumpshipId = jumpshipId;
 	}
 
-	public Integer getAttackType() {
+	public Long getAttackType() {
 		return attackType;
 	}
 
-	public void setAttackType(Integer attackType) {
+	public void setAttackType(Long attackType) {
 		this.attackType = attackType;
 	}
 
-	public Integer getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public Integer getAttackedFromStarSystem() {
+	public Long getAttackedFromStarSystem() {
 		return attackedFromStarSystem;
 	}
 
-	public void setAttackedFromStarSystem(Integer attackedFromStarSystem) {
+	public void setAttackedFromStarSystem(Long attackedFromStarSystem) {
 		this.attackedFromStarSystem = attackedFromStarSystem;
 	}
 
@@ -88,27 +88,27 @@ public class AttackDTO extends Dto {
 		this.round = round;
 	}
 
-	public Integer getStarSystemId() {
+	public Long getStarSystemId() {
 		return starSystemId;
 	}
 
-	public void setStarSystemId(Integer starSystemId) {
+	public void setStarSystemId(Long starSystemId) {
 		this.starSystemId = starSystemId;
 	}
 
-	public Integer getStarSystemDataId() {
+	public Long getStarSystemDataId() {
 		return starSystemDataId;
 	}
 
-	public void setStarSystemDataId(Integer starSystemDataId) {
+	public void setStarSystemDataId(Long starSystemDataId) {
 		this.starSystemDataId = starSystemDataId;
 	}
 
-	public Integer getfactionId_defender() {
+	public Long getfactionId_defender() {
 		return factionId_defender;
 	}
 
-	public void setfactionId_defender(Integer defenderId) {
+	public void setfactionId_defender(Long defenderId) {
 		this.factionId_defender = defenderId;
 	}
 
