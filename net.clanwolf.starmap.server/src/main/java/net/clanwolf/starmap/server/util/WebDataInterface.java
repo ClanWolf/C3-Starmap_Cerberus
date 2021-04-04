@@ -298,12 +298,12 @@ public class WebDataInterface {
 							a.setId(rs.getLong("aid"));
 							a.setSeason(rs.getInt("season"));
 							a.setRound(rs.getInt("round"));
-							a.setStarSystemId(rs.getLong("starsystem"));
-							a.setStarSystemDataId(rs.getLong("starsystemdata"));
-							a.setAttackType(rs.getLong("attackType"));
-							a.setAttackedFromStarSystem(rs.getLong("attackedfromstarsystem"));
-							a.setfactionId_defender(rs.getLong("defender"));
-							a.setJumpshipId(rs.getLong("jumpship"));
+							a.setStarSystemID(rs.getLong("starsystem"));
+							a.setStarSystemDataID(rs.getLong("starsystemdata"));
+							a.setAttackTypeID(rs.getLong("attackType"));
+							a.setAttackedFromStarSystemID(rs.getLong("attackedfromstarsystem"));
+							a.setfactionID_Defender(rs.getLong("defender"));
+							a.setJumpshipID(rs.getLong("jumpship"));
 
 							universe.attacks.add(a);
 						}

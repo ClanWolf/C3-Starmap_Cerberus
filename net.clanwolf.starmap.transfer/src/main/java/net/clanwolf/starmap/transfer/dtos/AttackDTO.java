@@ -33,83 +33,101 @@ public class AttackDTO extends Dto {
 	private Long id;
 	private Integer season;
 	private Integer round;
-	private Long starSystemId;
-	private Long starSystemDataId;
-	private Long attackType;
-	private Long attackedFromStarSystem;
-	private Long factionId_defender;
-	private Long jumpshipId;
+	private Long starSystemID;
+	private Long starSystemDataID;
+	private Long attackTypeID;
+	private Long attackedFromStarSystemID;
+	private Long factionID_Defender;
+	private Long jumpshipID;
 
-	public Long getJumpshipId() {
-		return jumpshipId;
+	@SuppressWarnings("unused")
+	public Long getJumpshipID() {
+		return jumpshipID;
 	}
 
-	public void setJumpshipId(Long jumpshipId) {
-		this.jumpshipId = jumpshipId;
+	@SuppressWarnings("unused")
+	public void setJumpshipID(Long jumpshipID) {
+		this.jumpshipID = jumpshipID;
 	}
 
-	public Long getAttackType() {
-		return attackType;
+	@SuppressWarnings("unused")
+	public Long getAttackTypeID() {
+		return attackTypeID;
 	}
 
-	public void setAttackType(Long attackType) {
-		this.attackType = attackType;
+	@SuppressWarnings("unused")
+	public void setAttackTypeID(Long attackType) {
+		this.attackTypeID = attackType;
 	}
 
+	@SuppressWarnings("unused")
 	public Long getId() {
 		return id;
 	}
 
+	@SuppressWarnings("unused")
 	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public Long getAttackedFromStarSystem() {
-		return attackedFromStarSystem;
+	@SuppressWarnings("unused")
+	public Long getAttackedFromStarSystemID() {
+		return attackedFromStarSystemID;
 	}
 
-	public void setAttackedFromStarSystem(Long attackedFromStarSystem) {
-		this.attackedFromStarSystem = attackedFromStarSystem;
+	@SuppressWarnings("unused")
+	public void setAttackedFromStarSystemID(Long attackedFromStarSystem) {
+		this.attackedFromStarSystemID = attackedFromStarSystem;
 	}
 
+	@SuppressWarnings("unused")
 	public Integer getSeason() {
 		return season;
 	}
 
+	@SuppressWarnings("unused")
 	public void setSeason(Integer season) {
 		this.season = season;
 	}
 
+	@SuppressWarnings("unused")
 	public Integer getRound() {
 		return round;
 	}
 
+	@SuppressWarnings("unused")
 	public void setRound(Integer round) {
 		this.round = round;
 	}
 
-	public Long getStarSystemId() {
-		return starSystemId;
+	@SuppressWarnings("unused")
+	public Long getStarSystemID() {
+		return starSystemID;
 	}
 
-	public void setStarSystemId(Long starSystemId) {
-		this.starSystemId = starSystemId;
+	@SuppressWarnings("unused")
+	public void setStarSystemID(Long starSystemID) {
+		this.starSystemID = starSystemID;
 	}
 
-	public Long getStarSystemDataId() {
-		return starSystemDataId;
+	@SuppressWarnings("unused")
+	public Long getStarSystemDataID() {
+		return starSystemDataID;
 	}
 
-	public void setStarSystemDataId(Long starSystemDataId) {
-		this.starSystemDataId = starSystemDataId;
+	@SuppressWarnings("unused")
+	public void setStarSystemDataID(Long starSystemDataID) {
+		this.starSystemDataID = starSystemDataID;
 	}
 
-	public Long getfactionId_defender() {
-		return factionId_defender;
+	@SuppressWarnings("unused")
+	public Long getfactionID_Defender() {
+		return factionID_Defender;
 	}
 
-	public void setfactionId_defender(Long defenderId) {
-		this.factionId_defender = defenderId;
+	@SuppressWarnings("unused")
+	public void setfactionID_Defender(Long defenderID) {
+		this.factionID_Defender = defenderID;
 	}
 
 	public AttackDTO() {

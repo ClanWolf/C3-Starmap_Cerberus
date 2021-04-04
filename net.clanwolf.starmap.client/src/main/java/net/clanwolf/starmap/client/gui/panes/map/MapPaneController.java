@@ -139,14 +139,14 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					// This means there is an attack to be stored
 					// ToDo: Store attacks
 					AttackDTO attack = new AttackDTO();
-					attack.setAttackedFromStarSystem(((RoutePointDTO) route.get(0)).getSystemId());
-					attack.setAttackType(1L); // Type 1: Planetary Assault
-					attack.setfactionId_defender(s.getFactionId());
+					attack.setAttackedFromStarSystemID(((RoutePointDTO) route.get(0)).getSystemId());
+					attack.setAttackTypeID(1L); // Type 1: Planetary Assault
+					attack.setfactionID_Defender(s.getFactionId());
 					attack.setRound(Nexus.getCurrentRound());
 					attack.setSeason(Nexus.getCurrentSeason());
-					attack.setJumpshipId(js.getJumpshipId());
-					attack.setStarSystemId(rp.getSystemId());
-					attack.setStarSystemDataId(s.getStarSystemDataId());
+					attack.setJumpshipID(js.getJumpshipId());
+					attack.setStarSystemID(rp.getSystemId());
+					attack.setStarSystemDataID(s.getStarSystemDataId());
 
 					BOAttack boAttack = new BOAttack(attack);
 					Nexus.getBoUniverse().attackBOs.add(boAttack);

@@ -40,38 +40,47 @@ public class FactionDTO extends Dto {
 		return name;
 	}
 
+	@SuppressWarnings("unused")
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	@SuppressWarnings("unused")
 	public String getColor() {
 		return color;
 	}
 
+	@SuppressWarnings("unused")
 	public void setColor(String color) {
 		this.color = color;
 	}
 
+	@SuppressWarnings("unused")
 	public String getShortName() {
 		return shortName;
 	}
 
+	@SuppressWarnings("unused")
 	public void setShortName(String shortName) {
 		this.shortName = shortName;
 	}
 
+	@SuppressWarnings("unused")
 	public String getLogo() {
 		return logo;
 	}
 
+	@SuppressWarnings("unused")
 	public void setLogo(String logo) {
 		this.logo = logo;
 	}
 
+	@SuppressWarnings("unused")
 	public Long getId() {
 		return id;
 	}
 
+	@SuppressWarnings("unused")
 	public void setId(Long id) {
 		this.id = id;
 	}

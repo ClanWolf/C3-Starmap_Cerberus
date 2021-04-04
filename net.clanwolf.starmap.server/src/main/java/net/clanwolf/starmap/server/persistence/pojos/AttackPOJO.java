@@ -64,74 +64,90 @@ public class AttackPOJO extends Pojo {
 	@Column(name = "JumpshipID")
 	private Long jumpshipID;
 
+	@SuppressWarnings("unused")
 	public Long getId() {
 		return id;
 	}
 
+	@SuppressWarnings("unused")
 	public void setId(Long id) {
 		this.id = id;
 	}
 
+	@SuppressWarnings("unused")
 	public Long getSeason() {
 		return season;
 	}
 
-	public void setSeason(Long season) {
-		this.season = season;
-	}
+	@SuppressWarnings("unused")
+	public void setSeason(Long season) { this.season = season; }
 
+	@SuppressWarnings("unused")
 	public Long getRound() {
 		return round;
 	}
 
+	@SuppressWarnings("unused")
 	public void setRound(Long round) {
 		this.round = round;
 	}
 
+	@SuppressWarnings("unused")
 	public Long getStarSystemID() {
 		return starSystemID;
 	}
 
+	@SuppressWarnings("unused")
 	public void setStarSystemID(Long starSystemID) {
 		this.starSystemID = starSystemID;
 	}
 
+	@SuppressWarnings("unused")
 	public Long getStarSystemDataID() {
 		return starSystemDataID;
 	}
 
+	@SuppressWarnings("unused")
 	public void setStarSystemDataID(Long starSystemDataID) {
 		this.starSystemDataID = starSystemDataID;
 	}
 
+	@SuppressWarnings("unused")
 	public Long getAttackedFromStarSystemID() {
 		return attackedFromStarSystemID;
 	}
 
+	@SuppressWarnings("unused")
 	public void setAttackedFromStarSystemID(Long attackedFromStarSystemID) {
 		this.attackedFromStarSystemID = attackedFromStarSystemID;
 	}
 
+	@SuppressWarnings("unused")
 	public Long getAttackTypeID() {
 		return attackTypeID;
 	}
 
+	@SuppressWarnings("unused")
 	public void setAttackTypeID(Long attackTypeID) {
 		this.attackTypeID = attackTypeID;
 	}
 
+	@SuppressWarnings("unused")
 	public Long getFactionID_Defender() {
 		return factionID_Defender;
 	}
 
+	@SuppressWarnings("unused")
 	public void setFactionID_Defender(Long factionID_Defender) {
 		this.factionID_Defender = factionID_Defender;
 	}
 
+	@SuppressWarnings("unused")
 	public Long getJumpshipID() {
 		return jumpshipID;
 	}
 
+	@SuppressWarnings("unused")
 	public void setJumpshipID(Long jumpshipID) {
 		this.jumpshipID = jumpshipID;
 	}

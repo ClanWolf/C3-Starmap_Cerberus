@@ -51,9 +51,9 @@ public class BOAttack {
 
 	public Integer getRound() { return attackDTO.getRound(); }
 
-	public Long getStarSystemId() { return attackDTO.getStarSystemId(); }
+	public Long getStarSystemId() { return attackDTO.getStarSystemID(); }
 
-	public Long getAttackedFromStarSystem() { return attackDTO.getAttackedFromStarSystem(); }
+	public Long getAttackedFromStarSystem() { return attackDTO.getAttackedFromStarSystemID(); }
 
-	public Long getJumpshipId() { return attackDTO.getJumpshipId(); }
+	public Long getJumpshipId() { return attackDTO.getJumpshipID(); }
 }
