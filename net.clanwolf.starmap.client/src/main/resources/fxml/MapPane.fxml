@@ -32,11 +32,13 @@
             <ImageView fx:id="labelFactionImage" fitHeight="68.0" fitWidth="68.0" layoutX="41.0" layoutY="172.0" pickOnBounds="true" preserveRatio="true" />
          </children>
       </Pane>
-      <Pane fx:id="paneJumpshipDetail" layoutX="683.0" layoutY="22.0" mouseTransparent="true" prefHeight="253.0" prefWidth="149.0" styleClass="systemDetailPanel" stylesheets="@../styles/MainFrameStyle.css">
+      <Pane fx:id="paneJumpshipDetail" layoutX="683.0" layoutY="282.0" mouseTransparent="true" prefHeight="147.0" prefWidth="149.0" styleClass="systemDetailPanel" stylesheets="@../styles/MainFrameStyle.css">
          <children>
             <Label fx:id="labelJumpshipName" alignment="CENTER" layoutX="15.0" layoutY="6.0" prefHeight="32.0" prefWidth="120.0" text="..." />
-            <ImageView fx:id="labelJumpshipImage" fitHeight="114.0" fitWidth="114.0" layoutX="18.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true" />
-            <ImageView fx:id="labelJumpshipFactionImage" fitHeight="68.0" fitWidth="68.0" layoutX="41.0" layoutY="172.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="labelJumpshipImage" fitHeight="32.0" fitWidth="75.0" layoutX="36.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true" />
+            <ImageView fx:id="labelJumpshipFactionImage" fitHeight="51.0" fitWidth="53.0" layoutX="49.0" layoutY="86.0" pickOnBounds="true" preserveRatio="true" />
+            <Button fx:id="mapButton04" layoutX="10.0" layoutY="103.0" mnemonicParsing="false" onAction="#handleCenterButtonClick" prefHeight="37.0" prefWidth="62.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css" text="&lt;" />
+            <Button fx:id="mapButton05" layoutX="78.0" layoutY="103.0" mnemonicParsing="false" onAction="#handleCenterButtonClick" prefHeight="37.0" prefWidth="62.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css" text="&gt;" />
          </children>
       </Pane>
 	</children>

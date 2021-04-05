@@ -57,6 +57,10 @@ public abstract class GenericDAO implements IDAO {
 			EntityManagerHelper.log("Save failed", Level.SEVERE, re);
 			// getEntityManager().clear();
 			throw re;
+		} catch (Exception e) {
+			EntityManagerHelper.log("Save failed", Level.SEVERE, e);
+			e.printStackTrace();
+			throw e;
 		}
 	}
 
@@ -72,6 +76,10 @@ public abstract class GenericDAO implements IDAO {
 			EntityManagerHelper.log("Update failed", Level.SEVERE, re);
 			// getEntityManager().clear();
 			throw re;
+		} catch (Exception e) {
+			EntityManagerHelper.log("Update failed", Level.SEVERE, e);
+			e.printStackTrace();
+			throw e;
 		}
 	}
 
@@ -86,6 +94,10 @@ public abstract class GenericDAO implements IDAO {
 			EntityManagerHelper.log("Delete failed", Level.SEVERE, re);
 			// getEntityManager().clear();
 			throw re;
+		} catch (Exception e) {
+			EntityManagerHelper.log("Delete failed", Level.SEVERE, e);
+			e.printStackTrace();
+			throw e;
 		}
 	}
 
@@ -98,6 +110,10 @@ public abstract class GenericDAO implements IDAO {
 			EntityManagerHelper.log("Find failed", Level.SEVERE, re);
 			// getEntityManager().clear();
 			throw re;
+		} catch (Exception e) {
+			EntityManagerHelper.log("Find failed", Level.SEVERE, e);
+			e.printStackTrace();
+			throw e;
 		}
 	}
 
@@ -127,6 +143,10 @@ public abstract class GenericDAO implements IDAO {
 			EntityManagerHelper.log("Find by property name failed", Level.SEVERE, re);
 			// getEntityManager().clear();
 			throw re;
+		} catch (Exception e) {
+			EntityManagerHelper.log("Find by property name failed", Level.SEVERE, e);
+			e.printStackTrace();
+			throw e;
 		}
 	}
 
@@ -155,6 +175,10 @@ public abstract class GenericDAO implements IDAO {
 			EntityManagerHelper.log("Find all failed", Level.SEVERE, re);
 			// getEntityManager().clear();
 			throw re;
+		} catch (Exception e) {
+			EntityManagerHelper.log("Find all failed", Level.SEVERE, e);
+			e.printStackTrace();
+			throw e;
 		}
 	}
 }

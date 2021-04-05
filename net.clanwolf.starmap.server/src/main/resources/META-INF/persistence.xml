@@ -6,12 +6,16 @@
 
 	<persistence-unit name="starmap" transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-		<class>net.clanwolf.starmap.server.persistence.pojos.UserPOJO</class>
+
+		<class>net.clanwolf.starmap.server.persistence.pojos.AttackPOJO</class>
+		<class>net.clanwolf.starmap.server.persistence.pojos.AttackResultPOJO</class>
+		<class>net.clanwolf.starmap.server.persistence.pojos.JumpshipPOJO</class>
 		<class>net.clanwolf.starmap.server.persistence.pojos.RolePlayStoryPOJO</class>
 		<class>net.clanwolf.starmap.server.persistence.pojos.RolePlayCharacterPOJO</class>
 		<class>net.clanwolf.starmap.server.persistence.pojos.RolePlayStoryVar2POJO</class>
 		<class>net.clanwolf.starmap.server.persistence.pojos.RolePlayStoryVar3POJO</class>
 		<class>net.clanwolf.starmap.server.persistence.pojos.RoutePointPOJO</class>
+		<class>net.clanwolf.starmap.server.persistence.pojos.UserPOJO</class>
 
 		<properties>
 
