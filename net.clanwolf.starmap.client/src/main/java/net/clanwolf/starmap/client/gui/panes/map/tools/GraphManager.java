@@ -28,7 +28,9 @@ package net.clanwolf.starmap.client.gui.panes.map.tools;
 
 import javafx.scene.layout.Pane;
 import net.clanwolf.starmap.client.gui.panes.map.Config;
+import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.universe.BOStarSystem;
+import net.clanwolf.starmap.client.process.universe.BOUniverse;
 import net.clanwolf.starmap.logging.C3Logger;
 import org.kynosarges.tektosyne.geometry.PointD;
 import org.kynosarges.tektosyne.geometry.PolygonGrid;
@@ -47,6 +49,8 @@ public class GraphManager<T> implements GraphAgent<T> {
 	private final int maxCost;
 	private final PointD maxWorld;
 	private final double scaleCost;
+
+	private BOUniverse boUniverse = Nexus.getBoUniverse();
 
 	private final List<T> highlights = new ArrayList<>(2);
 	private final Map<T, Integer> nodeCosts;
@@ -150,12 +154,15 @@ public class GraphManager<T> implements GraphAgent<T> {
 	public boolean canMakeStep(T source, T target) {
 		double distance = graph.getDistance(source, target) / Config.MAP_COORDINATES_MULTIPLICATOR;
 		boolean inRange = distance < 30;
-//		boolean withinCosts = nodeCosts.get(target) < maxCost;
-		return inRange;
+		boolean isAttacked = (boUniverse.getStarSystemByPoint((PointD)target)).isCurrentlyUnderAttack();
+		// boolean withinCosts = nodeCosts.get(target) < maxCost;
+		return inRange && !isAttacked;
 	}
 
 	@Override
 	public boolean canOccupy(T target) {
+		// boolean isAttacked = (boUniverse.getStarSystemByPoint((PointD)target)).isCurrentlyUnderAttack();
+		// return !isAttacked;
 		return true;
 	}
 

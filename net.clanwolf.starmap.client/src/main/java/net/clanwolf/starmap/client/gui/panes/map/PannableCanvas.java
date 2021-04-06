@@ -378,23 +378,23 @@ public class PannableCanvas extends Pane {
 			} else if (myScale.get() < Config.zoomLevelToHideAttacks) {
 				attacksPane.setVisible(false);
 				for (BOJumpship ship : boUniverse.jumpshipBOs.values()) {
-					if (ship.getJumpshipImage() != null) {
-						ship.getJumpshipImage().setVisible(false);
+					if (ship.getJumpshipImageView() != null) {
+						ship.getJumpshipImageView().setVisible(false);
 //						ship.getPredictedRouteLine().setVisible(false);
 					}
 				}
 			}
 			if (myScale.get() >= Config.zoomLevelToHideJumpships) {
 				for (BOJumpship ship : boUniverse.jumpshipBOs.values()) {
-					if (ship.getJumpshipImage() != null) {
-						ship.getJumpshipImage().setVisible(true);
+					if (ship.getJumpshipImageView() != null) {
+						ship.getJumpshipImageView().setVisible(true);
 //						ship.getPredictedRouteLine().setVisible(true);
 					}
 				}
 			} else if (myScale.get() < Config.zoomLevelToHideJumpships) {
 				for (BOJumpship ship : boUniverse.jumpshipBOs.values()) {
-					if (ship.getJumpshipImage() != null) {
-						ship.getJumpshipImage().setVisible(false);
+					if (ship.getJumpshipImageView() != null) {
+						ship.getJumpshipImageView().setVisible(false);
 //						ship.getPredictedRouteLine().setVisible(false);
 					}
 				}

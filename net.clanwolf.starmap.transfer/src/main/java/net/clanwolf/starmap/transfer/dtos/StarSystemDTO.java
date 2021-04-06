@@ -48,137 +48,192 @@ public class StarSystemDTO extends Dto {
 	private String veternacy;
 	private String type;
 	private String systemImageName;
-	private HashMap<String, String> maps;
+//	private HashMap<String, String> maps;
+	private String description;
+	private Boolean captial;
 
+	@SuppressWarnings("unused")
+	public String getDescription() {
+		return this.description;
+	}
+
+	@SuppressWarnings("unused")
+	public void setDescription(String s) {
+		this.description = s;
+	}
+
+	@SuppressWarnings("unused")
+	public Boolean isCaptial() {
+		return this.captial;
+	}
+
+	@SuppressWarnings("unused")
+	public void setCaptial(Boolean b) {
+		this.captial = b;
+	}
+
+	@SuppressWarnings("unused")
 	public void setSystemImageName(String n) {
 		systemImageName = n;
 	}
 
+	@SuppressWarnings("unused")
 	public void setStarSystemDataId(Long id) {
 		this.starSystemDataId = id;
 	}
 
+	@SuppressWarnings("unused")
 	public Long getStarSystemDataId() {
 		return this.starSystemDataId;
 	}
 
+	@SuppressWarnings("unused")
 	public String getSystemImageName() {
 		return systemImageName;
 	}
 
+	@SuppressWarnings("unused")
 	public String getSarnaLink() {
 		return sarnaLink;
 	}
 
+	@SuppressWarnings("unused")
 	public void setSarnaLink(String sarnaLink) {
 		this.sarnaLink = sarnaLink;
 	}
 
+	@SuppressWarnings("unused")
 	public String getInfrastructure() {
 		return infrastructure;
 	}
 
+	@SuppressWarnings("unused")
 	public void setInfrastructure(String infrastructure) {
 		this.infrastructure = infrastructure;
 	}
 
+	@SuppressWarnings("unused")
 	public String getWealth() {
 		return wealth;
 	}
 
+	@SuppressWarnings("unused")
 	public void setWealth(String wealth) {
 		this.wealth = wealth;
 	}
 
+	@SuppressWarnings("unused")
 	public String getVeternacy() {
 		return veternacy;
 	}
 
+	@SuppressWarnings("unused")
 	public void setVeternacy(String veternacy) {
 		this.veternacy = veternacy;
 	}
 
+	@SuppressWarnings("unused")
 	public String getType() {
 		return type;
 	}
 
+	@SuppressWarnings("unused")
 	public void setType(String type) {
 		this.type = type;
 	}
 
-	public HashMap<String, String> getMaps() {
-		return maps;
-	}
+//	@SuppressWarnings("unused")
+//	public HashMap<String, String> getMaps() {
+//		return maps;
+//	}
 
-	public void setMaps(HashMap<String, String> maps) {
-		this.maps = maps;
-	}
+//	@SuppressWarnings("unused")
+//	public void setMaps(HashMap<String, String> maps) {
+//		this.maps = maps;
+//	}
 
+	@SuppressWarnings("unused")
 	public String getStarClass() {
 		return starClass;
 	}
 
+	@SuppressWarnings("unused")
 	public void setStarClass(String starClass) {
 		this.starClass = starClass;
 	}
 
+	@SuppressWarnings("unused")
 	public String getStarType1() {
 		return starType1;
 	}
 
+	@SuppressWarnings("unused")
 	public void setStarType1(String starType1) {
 		this.starType1 = starType1;
 	}
 
+	@SuppressWarnings("unused")
 	public Long getId() {
 		return id;
 	}
 
+	@SuppressWarnings("unused")
 	public void setId(Long id) {
 		this.id = id;
 	}
 
+	@SuppressWarnings("unused")
 	public String getName() {
 		return name;
 	}
 
+	@SuppressWarnings("unused")
 	public void setName(String name) {
 		this.name = name;
 	}
 
+	@SuppressWarnings("unused")
 	public double getX() {
 		return x.doubleValue();
 	}
 
+	@SuppressWarnings("unused")
 	public void setX(BigDecimal x) {
 		this.x = x;
 	}
 
+	@SuppressWarnings("unused")
 	public double getY() {
 		return y.doubleValue();
 	}
 
+	@SuppressWarnings("unused")
 	public void setY(BigDecimal y) {
 		this.y = y;
 	}
 
+	@SuppressWarnings("unused")
 	public String getAffiliation() {
 		return affiliation;
 	}
 
+	@SuppressWarnings("unused")
 	public void setAffiliation(String affiliation) {
 		this.affiliation = affiliation;
 	}
 
+	@SuppressWarnings("unused")
 	public Long getFactionId() {
 		return factionId;
 	}
 
+	@SuppressWarnings("unused")
 	public void setFactionId(Long factionId) {
 		this.factionId = factionId;
 	}
 
 	@Override
+	@SuppressWarnings("unused")
 	public String toString() {
 		return this.name;
 	}

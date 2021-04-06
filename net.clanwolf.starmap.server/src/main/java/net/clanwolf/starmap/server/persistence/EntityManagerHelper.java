@@ -38,8 +38,6 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @author MyEclipse Persistence Tools
@@ -84,13 +82,13 @@ public class EntityManagerHelper {
 		EntityManager manager = emMap.get(userID);
 
 		if (manager == null || !manager.isOpen()) {
-			C3Logger.info("Create new EntiyManager for UserPOJO ID: " + userID);
+			C3Logger.info("Create new EntityManager for UserPOJO ID: " + userID);
 
 			manager = emf.createEntityManager();
 			emMap.put(userID, manager);
 
 		} else {
-			C3Logger.info("Find EntiyManager for UserPOJO ID: " + userID);
+			C3Logger.info("Find EntityManager for UserPOJO ID: " + userID);
 		}
 		return manager;
 	}
@@ -98,7 +96,7 @@ public class EntityManagerHelper {
 	public static void closeEntityManager(Long userID) {
 		EntityManager manager = emMap.get(userID);
 		if (manager != null) {
-			C3Logger.info("Close EntiyManager for UserPOJO ID: " + userID);
+			C3Logger.info("Close EntityManager for UserPOJO ID: " + userID);
 			// manager.unwrap(Session.class).close();
 			manager.close();
 			emMap.remove(userID);

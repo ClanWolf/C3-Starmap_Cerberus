@@ -33,7 +33,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import net.clanwolf.starmap.client.gui.panes.map.Config;
-import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.transfer.dtos.StarSystemDTO;
 import org.kynosarges.tektosyne.geometry.PointD;
 
@@ -47,7 +46,9 @@ public class BOStarSystem {
 	private PointD[] voronoiRegion;
 	private Point2D coord;
 	private ImageView marker = null;
+	private boolean isCurrentlyUnderAttack = false;
 
+	@SuppressWarnings("unused")
 	public Point2D getCoordinates() {
 		if (coord == null) {
 			coord = new Point2D(this.getScreenX(), this.getScreenY());
@@ -55,24 +56,33 @@ public class BOStarSystem {
 		return coord;
 	}
 
+	@SuppressWarnings("unused")
 	public PointD[] getVoronoiRegion() {
 		return voronoiRegion;
 	}
 
+	@SuppressWarnings("unused")
 	public void setVoronoiRegion(PointD[] voronoiRegion) {
 		this.voronoiRegion = voronoiRegion;
 	}
 
+	@SuppressWarnings("unused")
 	public double getScreenX() {
 		double screenX = (starSystemDTO.getX()) * Config.MAP_COORDINATES_MULTIPLICATOR;
 		screenX = (Config.MAP_WIDTH / 2) + screenX;
 		return screenX;
 	}
 
+	@SuppressWarnings("unused")
 	public double getScreenY() {
 		double screenY = (starSystemDTO.getY()) * Config.MAP_COORDINATES_MULTIPLICATOR;
 		screenY = Config.MAP_HEIGHT - ((Config.MAP_HEIGHT /2) + screenY);
 		return screenY;
+	}
+
+	@SuppressWarnings("unused")
+	public Boolean isCapital() {
+		return starSystemDTO.isCaptial();
 	}
 
 	@SuppressWarnings("unused")
@@ -155,4 +165,19 @@ public class BOStarSystem {
 
 	@SuppressWarnings("unused")
 	public String getSystemImageName() { return starSystemDTO.getSystemImageName(); }
+
+	@SuppressWarnings("unused")
+	public void setCurrentlyUnderAttack(boolean b) {
+		this.isCurrentlyUnderAttack = b;
+	}
+
+	@SuppressWarnings("unused")
+	public boolean isCurrentlyUnderAttack() {
+		return this.isCurrentlyUnderAttack;
+	}
+
+	@SuppressWarnings("unused")
+	public String getDescription() {
+		return this.starSystemDTO.getDescription();
+	}
 }

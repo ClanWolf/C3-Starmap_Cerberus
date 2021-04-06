@@ -156,16 +156,17 @@ public class WebDataInterface {
 			sb.append("         SSD.Veternacy       AS veternacy,        \r\n");
 			sb.append("         SSD.Type            AS type,             \r\n");
 			sb.append("         SSD.Class           AS class,            \r\n");
-			//sb.append("         SSD.Description     AS description,      \r\n");
-			sb.append("         SSD.S1_Map01ID      AS s1map1,           \r\n");
-			sb.append("         SSD.S1_Map02ID      AS s1map2,           \r\n");
-			sb.append("         SSD.S1_Map03ID      AS s1map3,           \r\n");
-			sb.append("         SSD.S2_Map01ID      AS s2map1,           \r\n");
-			sb.append("         SSD.S2_Map02ID      AS s2map2,           \r\n");
-			sb.append("         SSD.S2_Map03ID      AS s2map3,           \r\n");
-			sb.append("         SSD.S3_Map01ID      AS s3map1,           \r\n");
-			sb.append("         SSD.S3_Map02ID      AS s3map2,           \r\n");
-			sb.append("         SSD.S3_Map03ID      AS s3map3            \r\n");
+			sb.append("         SSD.Description     AS description,      \r\n");
+			//sb.append("         SSD.S1_Map01ID      AS s1map1,           \r\n");
+			//sb.append("         SSD.S1_Map02ID      AS s1map2,           \r\n");
+			//sb.append("         SSD.S1_Map03ID      AS s1map3,           \r\n");
+			//sb.append("         SSD.S2_Map01ID      AS s2map1,           \r\n");
+			//sb.append("         SSD.S2_Map02ID      AS s2map2,           \r\n");
+			//sb.append("         SSD.S2_Map03ID      AS s2map3,           \r\n");
+			//sb.append("         SSD.S3_Map01ID      AS s3map1,           \r\n");
+			//sb.append("         SSD.S3_Map02ID      AS s3map2,           \r\n");
+			//sb.append("         SSD.S3_Map03ID      AS s3map3,           \r\n");
+			sb.append("         SSD.CapitalWorld    AS capital           \r\n");
 			sb.append("FROM     STARSYSTEM          STS,                 \r\n");
 			sb.append("         _HH_STARSYSTEMDATA  SSD,                 \r\n");
 			sb.append("         FACTION             F,                   \r\n");
@@ -274,17 +275,20 @@ public class WebDataInterface {
 							ss.setSystemImageName(rs.getString("systemImageName"));
 							ss.setStarSystemDataId(rs.getLong("starsystemdataid"));
 
-							HashMap<String, String> maps = new HashMap<>();
-							maps.put("s1map1", rs.getString("s1map1"));
-							maps.put("s1map2", rs.getString("s1map2"));
-							maps.put("s1map3", rs.getString("s1map3"));
-							maps.put("s2map1", rs.getString("s2map1"));
-							maps.put("s2map2", rs.getString("s2map2"));
-							maps.put("s2map3", rs.getString("s2map3"));
-							maps.put("s3map1", rs.getString("s3map1"));
-							maps.put("s3map2", rs.getString("s3map2"));
-							maps.put("s3map3", rs.getString("s3map3"));
-							ss.setMaps(maps);
+							ss.setDescription(rs.getString("description"));
+							ss.setCaptial(rs.getBoolean("capital"));
+
+//							HashMap<String, String> maps = new HashMap<>();
+//							maps.put("s1map1", rs.getString("s1map1"));
+//							maps.put("s1map2", rs.getString("s1map2"));
+//							maps.put("s1map3", rs.getString("s1map3"));
+//							maps.put("s2map1", rs.getString("s2map1"));
+//							maps.put("s2map2", rs.getString("s2map2"));
+//							maps.put("s2map3", rs.getString("s2map3"));
+//							maps.put("s3map1", rs.getString("s3map1"));
+//							maps.put("s3map2", rs.getString("s3map2"));
+//							maps.put("s3map3", rs.getString("s3map3"));
+//							ss.setMaps(maps);
 
 							universe.starSystems.put(ss.getId(), ss);
 						}

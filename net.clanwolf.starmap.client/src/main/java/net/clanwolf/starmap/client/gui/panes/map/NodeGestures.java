@@ -121,6 +121,8 @@ public class NodeGestures {
 		return onStarSystemDragExitedEventHandler;
 	}
 
+	public EventHandler<MouseEvent> getOnJumpShipClickedEventHandler() { return onJumpShipClickedEventHandler; }
+
 	public EventHandler<MouseEvent> getOnMouseReleasedEventHandler() {
 		return onMouseReleasedEventHandler;
 	}
@@ -128,10 +130,12 @@ public class NodeGestures {
 	private EventHandler<MouseEvent> onMouseReleasedEventHandler = event -> {
 		Node node = (Node) event.getSource();
 		if (node instanceof ImageView) {
-			BOJumpship js = boUniverse.jumpshipBOs.get(node.getId());
-			js.getPredictedRouteLine().toFront();
-			node.toFront();
-			boUniverse.currentlyDraggedJumpship.getPredictedRouteLine().setVisible(false);
+			if (boUniverse.currentlyDraggedJumpship != null) {
+				BOJumpship js = boUniverse.jumpshipBOs.get(node.getId());
+				js.getPredictedRouteLine().toFront();
+				node.toFront();
+				boUniverse.currentlyDraggedJumpship.getPredictedRouteLine().setVisible(false);
+			}
 		}
 	};
 
@@ -282,7 +286,7 @@ public class NodeGestures {
 		boUniverse.currentlyDraggedJumpship.routeLines.getChildren().addAll(circles);
 		boUniverse.currentlyDraggedJumpship.routeLines.getChildren().addAll(texts);
 		boUniverse.currentlyDraggedJumpship.routeLines.toFront();
-		boUniverse.currentlyDraggedJumpship.getJumpshipImage().toFront();
+		boUniverse.currentlyDraggedJumpship.getJumpshipImageView().toFront();
 
 		canvas.getChildren().add(boUniverse.currentlyDraggedJumpship.routeLines);
 	};
@@ -317,6 +321,20 @@ public class NodeGestures {
 			Double x = Nexus.getCurrentlySelectedStarSystem().getX();
 			Double y = Nexus.getCurrentlySelectedStarSystem().getY();
 			ActionManager.getAction(ACTIONS.UPDATE_COORD_INFO).execute(Nexus.getCurrentlySelectedStarSystem().getName() + " [X:" + String.format("%.2f", x) + "] - [Y:" + String.format("%.2f", y) + "]");
+		}
+	};
+
+	private EventHandler<MouseEvent> onJumpShipClickedEventHandler = new EventHandler<MouseEvent>() {
+		public void handle(MouseEvent event) {
+			if (event.getTarget() instanceof ImageView) {
+				// This is probably a jumpship
+				Node node = (Node) event.getSource();
+				String name = node.getId();
+				BOJumpship ship = boUniverse.jumpshipBOs.get(name);
+				if (ship != null) {
+					ActionManager.getAction(ACTIONS.SHOW_JUMPSHIP_DETAIL).execute(ship);
+				}
+			}
 		}
 	};
 

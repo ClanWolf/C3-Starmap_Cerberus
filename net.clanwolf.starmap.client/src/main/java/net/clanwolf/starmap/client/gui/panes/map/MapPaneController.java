@@ -109,6 +109,11 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	Button mapButton02;
 	@FXML
 	Button mapButton03;
+	@FXML
+	Button mapButton04;
+	@FXML
+	Button mapButton05;
+
 	private boolean universeMapGenerationStarted = false;
 	private BOUniverse boUniverse = null;
 	private PannableCanvas canvas;
@@ -117,6 +122,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	private Image selectionMarker;
 	private Image attackMarker;
 	private Image travelMarker;
+
+	private NodeGestures nodeGestures;
 
 	@FXML
 	private void handleCenterButtonClick() throws Exception {
@@ -151,11 +158,31 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					Nexus.getBoUniverse().attackBOs.add(boAttack);
 					boAttack.storeAttack();
 				}
-				js.setAttackReady(false);
+				setJumpshipToAttackReady(js, false);
 			}
 		}
 
 		ActionManager.getAction(ACTIONS.SHOW_MEDAL).execute(MEDALS.First_Blood);
+	}
+
+	public void setJumpshipToAttackReady(BOJumpship js, boolean value) {
+		if (!value) {
+			js.setAttackReady(false);
+			Image i = new Image(getClass().getResourceAsStream("/images/map/jumpship_left_neutral.png"));
+			js.setJumpshipImage(i);
+
+			ImageView jsiv = js.getJumpshipImageView();
+			jsiv.removeEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
+			jsiv.removeEventFilter(MouseEvent.DRAG_DETECTED, nodeGestures.getOnMouseDragDetectedEventHandler());
+		} else {
+			js.setAttackReady(true);
+			Image i = new Image(getClass().getResourceAsStream("/images/map/jumpship_left_blue.png"));
+			js.setJumpshipImage(i);
+
+			ImageView jsiv = js.getJumpshipImageView();
+			jsiv.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
+			jsiv.addEventFilter(MouseEvent.DRAG_DETECTED, nodeGestures.getOnMouseDragDetectedEventHandler());
+		}
 	}
 
 	/**
@@ -197,7 +224,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				canvas.setTranslateY(Config.MAP_INITIAL_TRANSLATE_Y);
 
 				// create sample nodes which can be dragged
-				NodeGestures nodeGestures = new NodeGestures(canvas);
+				nodeGestures = new NodeGestures(canvas);
 				nodeGestures.setSelectionMarker(selectionMarker);
 				nodeGestures.setAttackMarker(attackMarker);
 				nodeGestures.setTravelMarker(travelMarker);
@@ -207,6 +234,10 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					Long id = starSystem.getId();
 					double x = starSystem.getScreenX();
 					double y = starSystem.getScreenY();
+
+					if (starSystem.isCapital()) {
+						C3Logger.info(starSystem.getName() + " is the capital planet of faction " + starSystem.getAffiliation());
+					}
 
 					if ("Terra".equals(name)) {
 						Nexus.setTerra(starSystem);
@@ -232,6 +263,11 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					Circle starSystemCircle = new Circle(4);
 					starSystemCircle.setId(starSystem.getId().toString());
 					starSystemCircle.setStroke(c.deriveColor(1, 1, 1, 0.8));
+					if (starSystem.isCapital()) {
+						// TODO: Visually mark captial planets
+					} else {
+						//
+					}
 					starSystemCircle.setFill(c.deriveColor(1, 1, 1, 0.4));
 					starSystemCircle.setVisible(true);
 					starSystemCircle.toFront();
@@ -282,6 +318,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 						BOJumpship jumpship;
 
 						attackedSystem = boUniverse.starSystemBOs.get(attack.getStarSystemId());
+						attackedSystem.setCurrentlyUnderAttack(true);
 						attackerStartedFromSystem = boUniverse.starSystemBOs.get(attack.getAttackedFromStarSystem());
 						jumpship = boUniverse.jumpshipBOs.get(attack.getJumpshipId());
 
@@ -364,18 +401,28 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 						if (js.isAttackReady()) {
 							if (myOwnShip) {
 								jumpshipImage = new ImageView(new Image(getClass().getResourceAsStream("/images/map/jumpship_left_blue.png")));
-								jumpshipImage.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
 								jumpshipImage.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
 								jumpshipImage.addEventFilter(MouseEvent.DRAG_DETECTED, nodeGestures.getOnMouseDragDetectedEventHandler());
+								jumpshipImage.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
 								jumpshipImage.addEventFilter(MouseEvent.MOUSE_RELEASED, nodeGestures.getOnMouseReleasedEventHandler());
+								jumpshipImage.addEventFilter(MouseEvent.MOUSE_CLICKED, nodeGestures.getOnJumpShipClickedEventHandler());
 							} else {
 								jumpshipImage = new ImageView(new Image(getClass().getResourceAsStream("/images/map/jumpship_right_red.png")));
+								jumpshipImage.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
+								jumpshipImage.addEventFilter(MouseEvent.MOUSE_RELEASED, nodeGestures.getOnMouseReleasedEventHandler());
+								jumpshipImage.addEventFilter(MouseEvent.MOUSE_CLICKED, nodeGestures.getOnJumpShipClickedEventHandler());
 							}
 						} else {
 							if (myOwnShip) {
 								jumpshipImage = new ImageView(new Image(getClass().getResourceAsStream("/images/map/jumpship_left_neutral.png")));
+								jumpshipImage.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
+								jumpshipImage.addEventFilter(MouseEvent.MOUSE_RELEASED, nodeGestures.getOnMouseReleasedEventHandler());
+								jumpshipImage.addEventFilter(MouseEvent.MOUSE_CLICKED, nodeGestures.getOnJumpShipClickedEventHandler());
 							} else {
 								jumpshipImage = new ImageView(new Image(getClass().getResourceAsStream("/images/map/jumpship_right_red.png")));
+								jumpshipImage.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
+								jumpshipImage.addEventFilter(MouseEvent.MOUSE_RELEASED, nodeGestures.getOnMouseReleasedEventHandler());
+								jumpshipImage.addEventFilter(MouseEvent.MOUSE_CLICKED, nodeGestures.getOnJumpShipClickedEventHandler());
 							}
 						}
 						jumpshipImage.setId(js.getJumpshipName());
@@ -390,7 +437,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 						jumpshipImage.setVisible(false);
 						canvas.getChildren().add(jumpshipImage);
 
-						js.setJumpshipImage(jumpshipImage);
+						js.setJumpshipImageView(jumpshipImage);
 						js.setRoute(boUniverse.routesList.get(js.getJumpshipId()));
 					}
 				}
@@ -824,6 +871,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		ActionManager.addActionCallbackListener(ACTIONS.HIDE_SYSTEM_DETAIL, this);
 		ActionManager.addActionCallbackListener(ACTIONS.UPDATE_COORD_INFO, this);
 		ActionManager.addActionCallbackListener(ACTIONS.MAP_CREATION_FINISHED, this);
+		ActionManager.addActionCallbackListener(ACTIONS.SHOW_JUMPSHIP_DETAIL, this);
+		ActionManager.addActionCallbackListener(ACTIONS.HIDE_JUMPSHIP_DETAIL, this);
 	}
 
 	/**
@@ -908,6 +957,20 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 			case HIDE_SYSTEM_DETAIL:
 				hideSystemDetail();
+				break;
+
+			case SHOW_JUMPSHIP_DETAIL:
+				C3Logger.info("Showing jumpship detail");
+				if (o.getObject() instanceof BOJumpship) {
+					BOJumpship js = (BOJumpship) o.getObject();
+					showJumpshipDetail(js);
+				} else {
+					hideJumpshipDetail();
+				}
+				break;
+
+			case HIDE_JUMPSHIP_DETAIL:
+				hideJumpshipDetail();
 				break;
 
 			case UPDATE_COORD_INFO:
