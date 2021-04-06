@@ -50,20 +50,16 @@ public abstract class GenericDAO implements IDAO {
 
 	@Override
 	public void save(Long userID, Object entity) {
-		EntityManagerHelper.log("Saving instance (" + entity.getClass() + ")", Level.INFO, null);
-		C3Logger.info("Saving instance (" + entity.getClass() + ")");
+		C3Logger.info("Saving instance (" + entity.getClass().getName() + ")");
 		try {
 			getEntityManager(userID).persist(entity);
-			EntityManagerHelper.log("Save successful", Level.INFO, null);
 			C3Logger.info("Save successful");
 		} catch (RuntimeException re) {
-			EntityManagerHelper.log("Save failed", Level.SEVERE, re);
 			C3Logger.info("Save failed");
 			re.printStackTrace();
 			// getEntityManager().clear();
 			throw re;
 		} catch (Exception e) {
-			EntityManagerHelper.log("Save failed", Level.SEVERE, e);
 			C3Logger.info("Save failed");
 			e.printStackTrace();
 			// getEntityManager().clear();
@@ -73,21 +69,17 @@ public abstract class GenericDAO implements IDAO {
 
 	@Override
 	public Object update(Long userID, Object entity) {
-		EntityManagerHelper.log("Updating instance (" + entity.getClass() + ")", Level.INFO, null);
-		C3Logger.info("Updating instance (" + entity.getClass() + ")");
+		C3Logger.info("Updating instance (" + entity.getClass().getName() + ")");
 		try {
 			Object result = getEntityManager(userID).merge(entity);
-			EntityManagerHelper.log("Update successful", Level.INFO, null);
 			C3Logger.info("Update successful");
 			return result;
 		} catch (RuntimeException re) {
-			EntityManagerHelper.log("Update failed", Level.SEVERE, re);
 			C3Logger.info("Update failed");
 			re.printStackTrace();
 			// getEntityManager().clear();
 			throw re;
 		} catch (Exception e) {
-			EntityManagerHelper.log("Update failed", Level.SEVERE, e);
 			C3Logger.info("Update failed");
 			e.printStackTrace();
 			// getEntityManager().clear();
@@ -96,20 +88,17 @@ public abstract class GenericDAO implements IDAO {
 	}
 
 	public void delete(Long userID, Object entity, Long id) {
-		EntityManagerHelper.log("Deleting instance (" + entity.getClass()  + ")", Level.INFO, null);
-		C3Logger.info("Deleting instance (" + entity.getClass() + ")");
+		C3Logger.info("Deleting instance (" + entity.getClass().getName() + ")");
 		try {
 			entity = getEntityManager(userID).getReference(entity.getClass(), id);
 			getEntityManager(userID).remove(entity);
-			EntityManagerHelper.log("Delete successful", Level.INFO, null);
+			C3Logger.info("Delete successful");
 		} catch (RuntimeException re) {
-			EntityManagerHelper.log("Delete failed", Level.SEVERE, re);
 			C3Logger.info("Delete failed");
 			re.printStackTrace();
 			// getEntityManager().clear();
 			throw re;
 		} catch (Exception e) {
-			EntityManagerHelper.log("Delete failed", Level.SEVERE, e);
 			C3Logger.info("Delete failed");
 			e.printStackTrace();
 			// getEntityManager().clear();
@@ -119,18 +108,15 @@ public abstract class GenericDAO implements IDAO {
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Object findById(Long userID, Class clazz, Long id) {
-		EntityManagerHelper.log("Finding object instance with id: " + id, Level.INFO, null);
 		C3Logger.info("Finding object instance with id: " + id);
 		try {
 			return getEntityManager(userID).find(clazz, id);
 		} catch (RuntimeException re) {
-			EntityManagerHelper.log("Find failed", Level.SEVERE, re);
 			C3Logger.info("Find failed");
 			re.printStackTrace();
 			// getEntityManager().clear();
 			throw re;
 		} catch (Exception e) {
-			EntityManagerHelper.log("Find failed", Level.SEVERE, e);
 			C3Logger.info("Find failed");
 			e.printStackTrace();
 			// getEntityManager().clear();
@@ -141,7 +127,6 @@ public abstract class GenericDAO implements IDAO {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<Object> findByProperty(Long userID, String propertyName, final Object value, final int... rowStartIdxAndCount) {
-		EntityManagerHelper.log("Finding instance (" + this.className + ") with property: " + propertyName + ", value: " + value, Level.INFO, null);
 		C3Logger.info("Finding instance (" + this.className + ") with property: " + propertyName + ", value: " + value);
 		try {
 			final String queryString = "select model from " + this.className + " model where model." + propertyName + "= :propertyValue order by sortOrder";
@@ -162,13 +147,11 @@ public abstract class GenericDAO implements IDAO {
 			}
 			return query.getResultList();
 		} catch (RuntimeException re) {
-			EntityManagerHelper.log("Find by property name failed", Level.SEVERE, re);
 			C3Logger.info("Find by property name failed");
 			re.printStackTrace();
 			// getEntityManager().clear();
 			throw re;
 		} catch (Exception e) {
-			EntityManagerHelper.log("Find by property name failed", Level.SEVERE, e);
 			C3Logger.info("Find by property name failed");
 			// getEntityManager().clear();
 			e.printStackTrace();
@@ -179,7 +162,6 @@ public abstract class GenericDAO implements IDAO {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<Object> findAll(Long userID, final int... rowStartIdxAndCount) {
-		EntityManagerHelper.log("Finding all instances (" + this.className + ")", Level.INFO, null);
 		C3Logger.info("Finding all instances (" + this.className + ")");
 		try {
 			final String queryString = "select model from " + this.className + " model";
@@ -199,13 +181,11 @@ public abstract class GenericDAO implements IDAO {
 			}
 			return query.getResultList();
 		} catch (RuntimeException re) {
-			EntityManagerHelper.log("Find all failed", Level.SEVERE, re);
 			C3Logger.info("Find all failed");
 			re.printStackTrace();
 			// getEntityManager().clear();
 			throw re;
 		} catch (Exception e) {
-			EntityManagerHelper.log("Find all failed", Level.SEVERE, e);
 			C3Logger.info("Find all failed");
 			e.printStackTrace();
 			// getEntityManager().clear();

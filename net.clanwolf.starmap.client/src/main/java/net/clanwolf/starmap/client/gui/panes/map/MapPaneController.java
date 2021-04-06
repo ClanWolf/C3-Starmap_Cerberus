@@ -137,7 +137,6 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				BOStarSystem s = Nexus.getBoUniverse().starSystemBOs.get(rp.getSystemId());
 				if (s.getFactionId() != js.getJumpshipFaction()) {
 					// This means there is an attack to be stored
-					// ToDo: Store attacks
 					AttackDTO attack = new AttackDTO();
 					attack.setAttackedFromStarSystemID(((RoutePointDTO) route.get(0)).getSystemId());
 					attack.setAttackTypeID(1L); // Type 1: Planetary Assault
@@ -152,6 +151,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					Nexus.getBoUniverse().attackBOs.add(boAttack);
 					boAttack.storeAttack();
 				}
+				js.setAttackReady(false);
 			}
 		}
 

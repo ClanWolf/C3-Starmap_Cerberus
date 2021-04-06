@@ -91,8 +91,6 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		C3Logger.debug("C3GameSessionHandler.executeCommand: " + state.getMode().toString());
 		EntityConverter.convertGameStateToPOJO(state);
 
-
-
 		switch (state.getMode()) {
 		case BROADCAST_SEND_NEW_PLAYERLIST:
 			sendNewPlayerList(session, state);
@@ -162,16 +160,22 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		} else {
 			dao.update(getC3UserID(session), state.getObject());
 		}
-		
-//		EntityManagerHelper.commit((Long) session.getPlayer().getId());
+
 		EntityManagerHelper.commit(getC3UserID(session));
 	}
 
 	private void saveAttack(PlayerSession session, GameState state) {
 		AttackDAO dao = AttackDAO.getInstance();
+		EntityManagerHelper.beginTransaction(getC3UserID(session));
+
 		AttackPOJO attack = (AttackPOJO) state.getObject();
 		C3Logger.info("Saving attack: " + attack);
+		C3Logger.info("-- Attacker (jumpshipID): " + attack.getJumpshipID());
+		C3Logger.info("-- Attacking from: " + attack.getAttackedFromStarSystemID());
+		C3Logger.info("-- Attacked system: " + attack.getStarSystemID());
 		dao.save(getC3UserID(session), attack);
+
+		EntityManagerHelper.commit(getC3UserID(session));
 	}
 
 	private void saveRoute(PlayerSession session, GameState state) {

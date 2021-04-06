@@ -26,6 +26,8 @@
  */
 package net.clanwolf.starmap.server.persistence;
 
+import net.clanwolf.starmap.logging.C3Logger;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
@@ -45,7 +47,6 @@ import java.util.logging.Logger;
 public class EntityManagerHelper {
 
 	private static final EntityManagerFactory emf;
-	private static final Logger logger;
 	private static final HashMap<Object, EntityManager> emMap = new HashMap<>();
 
 	static {
@@ -72,29 +73,24 @@ public class EntityManagerHelper {
 		properties.put("hibernate.format_sql", "true");
 
 		emf = Persistence.createEntityManagerFactory("starmap", properties);
-
-		logger = Logger.getLogger("starmap");
-		logger.setLevel(Level.SEVERE);
 	}
 
 	public static EntityManager getEntityManager() {
-		Logger.getGlobal().info("Create free EntityManager");
-		EntityManager manager = emf.createEntityManager();
-		return manager;
+		C3Logger.info("Create free EntityManager");
+		return emf.createEntityManager();
 	}
 
 	public static EntityManager getEntityManager(Long userID) {
 		EntityManager manager = emMap.get(userID);
 
 		if (manager == null || !manager.isOpen()) {
-			Logger.getGlobal().info("Create new EntiyManager for UserPOJO ID: " + userID);
+			C3Logger.info("Create new EntiyManager for UserPOJO ID: " + userID);
 
 			manager = emf.createEntityManager();
 			emMap.put(userID, manager);
 
 		} else {
-			Logger.getGlobal().info("Find EntiyManager for UserPOJO ID: " + userID);
-
+			C3Logger.info("Find EntiyManager for UserPOJO ID: " + userID);
 		}
 		return manager;
 	}
@@ -102,30 +98,30 @@ public class EntityManagerHelper {
 	public static void closeEntityManager(Long userID) {
 		EntityManager manager = emMap.get(userID);
 		if (manager != null) {
-			Logger.getGlobal().info("Close EntiyManager for UserPOJO ID: " + userID);
+			C3Logger.info("Close EntiyManager for UserPOJO ID: " + userID);
 			// manager.unwrap(Session.class).close();
 			manager.close();
 			emMap.remove(userID);
 		}
 	}
 
+	@SuppressWarnings("unused")
 	public static void beginTransaction(Long userID) {
 		getEntityManager(userID).getTransaction().begin();
 	}
 
+	@SuppressWarnings("unused")
 	public static void commit(Long userID) {
 		getEntityManager(userID).getTransaction().commit();
 	}
 
+	@SuppressWarnings("unused")
 	public static void rollback(Long userID) {
 		getEntityManager(userID).getTransaction().rollback();
 	}
 
+	@SuppressWarnings("unused")
 	public static Query createQuery(Long userID, String query) {
 		return getEntityManager(userID).createQuery(query);
-	}
-
-	public static void log(String info, Level level, Throwable ex) {
-		logger.log(level, info, ex);
 	}
 }

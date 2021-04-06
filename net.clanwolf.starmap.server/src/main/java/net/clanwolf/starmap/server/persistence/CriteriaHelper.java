@@ -59,27 +59,33 @@ public class CriteriaHelper {
 		root = query.from(clazz);
 		alPredicate = new ArrayList<Predicate>();
 	}
-	
+
+	@SuppressWarnings("unused")
 	public void addCriteria(String columnName, Object value){
 		alPredicate.add(cb.equal(root.get(columnName), value));
 	}
-	
+
+	@SuppressWarnings("unused")
 	public void addCriteriaOR(Predicate... predicate){
 		alPredicate.add(cb.or(predicate));
 	}
-	
+
+	@SuppressWarnings("unused")
 	public void addCriteriaIsNull(String columnName){
 		alPredicate.add(cb.isNull(root.get(columnName)));
 	}
-	
+
+	@SuppressWarnings("unused")
 	public void addCriteriaIsNotNull(String columnName){
 		alPredicate.add(cb.isNotNull(root.get(columnName)));
 	}
-	
+
+	@SuppressWarnings("unused")
 	public Predicate createPredicate(String columnName, Object value){
 		return cb.equal(root.get(columnName), value);
 	}
-	
+
+	@SuppressWarnings("unused")
 	public Object getSingleResult(){
 		query.select(root);	
 		
@@ -96,8 +102,9 @@ public class CriteriaHelper {
 			// No resultset given back
 		}
 		return null;
-	}	
-	
+	}
+
+	@SuppressWarnings("unused")
 	public List<Object> getResultList(){
 		query.select(root);	
 		

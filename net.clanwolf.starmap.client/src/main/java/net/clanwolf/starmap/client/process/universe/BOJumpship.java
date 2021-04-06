@@ -155,6 +155,11 @@ public class BOJumpship {
 	}
 
 	@SuppressWarnings("unused")
+	public void setAttackReady(boolean s) {
+		jumpshipDTO.setAttackReady(s);
+	}
+
+	@SuppressWarnings("unused")
 	public boolean isAttackReady() { return jumpshipDTO.isAttackReady(); }
 
 	@SuppressWarnings("unused")
