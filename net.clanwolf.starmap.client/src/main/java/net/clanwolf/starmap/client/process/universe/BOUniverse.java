@@ -118,10 +118,20 @@ public class BOUniverse {
 		return new ArrayList<BOFaction>(factionBOs.values());
 	}
 
+	public ArrayList<BOJumpship> getJumpshipList() { return new ArrayList<BOJumpship>(jumpshipBOs.values()); }
+
 	public BOFaction getFactionByID(Long id){
 		for(BOFaction faction : Nexus.getBoUniverse().getFactionList()){
 			if(faction.getID().equals(id))
 				return faction;
+		}
+		return null;
+	}
+
+	public BOJumpship getJumpshipByID(Long id){
+		for(BOJumpship ship : Nexus.getBoUniverse().getJumpshipList()){
+			if(ship.getJumpshipId().equals(id))
+				return ship;
 		}
 		return null;
 	}

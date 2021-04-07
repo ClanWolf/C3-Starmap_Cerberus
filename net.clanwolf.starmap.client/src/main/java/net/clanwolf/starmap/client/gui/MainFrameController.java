@@ -32,11 +32,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.CacheHint;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -119,8 +116,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private int menuIndicatorPos = 0;
 	private boolean adminPaneOpen = false;
 
-	private Image imageAdminButtonOff = new Image(getClass().getResourceAsStream("/images/buttons/adminOff.png"));
-	private Image imageAdminButtonOn = new Image(getClass().getResourceAsStream("/images/buttons/adminOn.png"));
+	private final Image imageAdminButtonOff = new Image(getClass().getResourceAsStream("/images/buttons/adminOff.png"));
+	private final Image imageAdminButtonOn = new Image(getClass().getResourceAsStream("/images/buttons/adminOn.png"));
 
 	@FXML
 	private Label statuslabel;
@@ -216,6 +213,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 	@FXML
 	private Label gameInfoLabel;
+
+	@FXML
+	private TextField terminalPrompt;
 
 	// -------------------------------------------------------------------------
 	//
@@ -406,18 +406,10 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	@FXML
 	private void handleOnlineIndicatorLabelMouseEventEnter() {
 		switch (C3Properties.getProperty(C3PROPS.CHECK_ONLINE_STATUS)) {
-			case "NOT_STARTED":
-				setStatusText(Internationalization.getString("app_online_indicator_message_NOT_STARTED"), false);
-				break;
-			case "RUNNING_CHECK":
-				setStatusText(Internationalization.getString("app_online_indicator_message_RUNNING_CHECK"), false);
-				break;
-			case "ONLINE":
-				setStatusText(Internationalization.getString("app_online_indicator_message_ONLINE"), false);
-				break;
-			case "OFFLINE":
-				setStatusText(Internationalization.getString("app_online_indicator_message_OFFLINE"), false);
-				break;
+			case "NOT_STARTED" -> setStatusText(Internationalization.getString("app_online_indicator_message_NOT_STARTED"), false);
+			case "RUNNING_CHECK" -> setStatusText(Internationalization.getString("app_online_indicator_message_RUNNING_CHECK"), false);
+			case "ONLINE" -> setStatusText(Internationalization.getString("app_online_indicator_message_ONLINE"), false);
+			case "OFFLINE" -> setStatusText(Internationalization.getString("app_online_indicator_message_OFFLINE"), false);
 		}
 	}
 
@@ -444,18 +436,10 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	@FXML
 	private void handleDatabaseAccessibleIndicatorLabelMouseEventEnter() {
 		switch (C3Properties.getProperty(C3PROPS.CHECK_CONNECTION_STATUS)) {
-			case "NOT_STARTED":
-				setStatusText(Internationalization.getString("app_database_indicator_message_NOT_STARTED"), false);
-				break;
-			case "RUNNING_CHECK":
-				setStatusText(Internationalization.getString("app_database_indicator_message_RUNNING_CHECK"), false);
-				break;
-			case "ONLINE":
-				setStatusText(Internationalization.getString("app_database_indicator_message_ONLINE"), false);
-				break;
-			case "OFFLINE":
-				setStatusText(Internationalization.getString("app_database_indicator_message_OFFLINE"), false);
-				break;
+			case "NOT_STARTED" -> setStatusText(Internationalization.getString("app_database_indicator_message_NOT_STARTED"), false);
+			case "RUNNING_CHECK" -> setStatusText(Internationalization.getString("app_database_indicator_message_RUNNING_CHECK"), false);
+			case "ONLINE" -> setStatusText(Internationalization.getString("app_database_indicator_message_ONLINE"), false);
+			case "OFFLINE" -> setStatusText(Internationalization.getString("app_database_indicator_message_OFFLINE"), false);
 		}
 	}
 
@@ -1059,6 +1043,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 		showMenuIndicator(false);
 
+		terminalPrompt.toFront();
 		addActionCallBackListeners();
 	}
 
@@ -1306,7 +1291,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				break;
 
 			case DATABASECONNECTIONCHECK_STARTED:
-				if (C3Properties.getProperty(C3PROPS.CHECK_ONLINE_STATUS) == "OFFLINE") {
+				if (C3Properties.getProperty(C3PROPS.CHECK_ONLINE_STATUS).equals("OFFLINE")) {
 					// server is not online, do not try to check the database
 					C3Logger.info("Server is offline, DB is not checked!");
 				} else {
@@ -1378,12 +1363,17 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				break;
 
 			case LOGON_FINISHED_SUCCESSFULL:
-				// openTargetPane(new UserInfoPane(),
 				// Internationalization.getString("C3_Speech_close_warning"));
+
+				// TODO: This may take to long and a response object may arrive before the pane exists and lead to nullpointers!
 				userInfoPane = new UserInfoPane();
 				userInfoPane.setCache(true);
 				userInfoPane.setCacheHint(CacheHint.SPEED);
 				userInfoPane.getController().addActionCallBackListeners();
+
+				C3Logger.info("*********************************************");
+				C3Logger.info("*        userInfoPane is ready here!        *");
+				C3Logger.info("*********************************************");
 
 				ActionManager.getAction(ACTIONS.CHANGE_LANGUAGE).execute();
 				openTargetPane(userInfoPane, Internationalization.getString("C3_Speech_Successful_Login"));

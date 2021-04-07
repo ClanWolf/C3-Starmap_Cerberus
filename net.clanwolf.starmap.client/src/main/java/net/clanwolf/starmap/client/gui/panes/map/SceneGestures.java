@@ -29,6 +29,8 @@ package net.clanwolf.starmap.client.gui.panes.map;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
@@ -93,11 +95,12 @@ class SceneGestures {
 	private EventHandler<MouseEvent> onMouseClickedEventHandler = new EventHandler<MouseEvent>() {
 		@Override
 		public void handle(MouseEvent event) {
-			if (event.getTarget() instanceof Circle) {
+			if (event.getTarget() instanceof Circle || event.getTarget() instanceof ImageView || event.getTarget() instanceof Button) {
 				// nothing
 			} else {
 				if (event.getButton() == MouseButton.PRIMARY) {
 					ActionManager.getAction(ACTIONS.HIDE_SYSTEM_DETAIL).execute();
+					ActionManager.getAction(ACTIONS.HIDE_JUMPSHIP_DETAIL).execute();
 				}
 			}
 		}

@@ -54,8 +54,6 @@ import net.clanwolf.starmap.client.security.Security;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.logging.C3Logger;
-import net.clanwolf.starmap.transfer.dtos.RoutePointDTO;
-import net.clanwolf.starmap.transfer.enums.MEDALS;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -127,7 +125,7 @@ public class NodeGestures {
 		return onMouseReleasedEventHandler;
 	}
 
-	private EventHandler<MouseEvent> onMouseReleasedEventHandler = event -> {
+	private final EventHandler<MouseEvent> onMouseReleasedEventHandler = event -> {
 		Node node = (Node) event.getSource();
 		if (node instanceof ImageView) {
 			if (boUniverse.currentlyDraggedJumpship != null) {
@@ -139,7 +137,7 @@ public class NodeGestures {
 		}
 	};
 
-	private EventHandler<MouseEvent> onMouseDragDetectedEventHandler = event -> {
+	private final EventHandler<MouseEvent> onMouseDragDetectedEventHandler = event -> {
 		Node sourceNode = (Node) event.getSource();
 		sourceNode.startFullDrag();
 	};
@@ -156,7 +154,7 @@ public class NodeGestures {
 //		return text.getLayoutBounds().getHeight();
 //	}
 
-	private EventHandler<MouseDragEvent> onStarSystemDragEnteredEventHandler = event -> {
+	private final EventHandler<MouseDragEvent> onStarSystemDragEnteredEventHandler = event -> {
 		Node node = (Node) event.getSource();
 		Circle c = (Circle) node;
 		c.setRadius(8);
@@ -174,7 +172,7 @@ public class NodeGestures {
 
 		canvas.getChildren().remove(boUniverse.currentlyDraggedJumpship.routeLines);
 
-		routePointLabelsMap.computeIfAbsent(boUniverse.currentlyDraggedJumpship.getJumpshipId(), k -> new ArrayList<Text>());
+		routePointLabelsMap.computeIfAbsent(boUniverse.currentlyDraggedJumpship.getJumpshipId(), k -> new ArrayList<>());
 		canvas.getChildren().removeAll(routePointLabelsMap.get(boUniverse.currentlyDraggedJumpship.getJumpshipId()));
 		routePointLabelsMap.get(boUniverse.currentlyDraggedJumpship.getJumpshipId()).clear();
 
@@ -186,8 +184,8 @@ public class NodeGestures {
 		ArrayList<ImageView> markers = new ArrayList<>();
 
 		for (int y = 0; y < route.size() - 1; y++) {
-			BOStarSystem s1 = (BOStarSystem) route.get(y);
-			BOStarSystem s2 = (BOStarSystem) route.get(y + 1);
+			BOStarSystem s1 = route.get(y);
+			BOStarSystem s2 = route.get(y + 1);
 
 			int thisRound = currentRound + y + 1;
 			C3Logger.info("Drawing route for round: " + thisRound + " (" + s2.getName() + ")");
@@ -266,7 +264,7 @@ public class NodeGestures {
 
 			if (y == 0 && !("" + Nexus.getCurrentUser().getCurrentCharacter().getFactionId()).equals("" + s2.getFactionId())) {
 				C3Logger.info("Attacking: " + s2.getName());
-				Double markerDim = 38.0d;
+				double markerDim = 36.0d;
 				ImageView marker;
 				marker = new ImageView();
 				marker.setFitWidth(markerDim);
@@ -291,14 +289,14 @@ public class NodeGestures {
 		canvas.getChildren().add(boUniverse.currentlyDraggedJumpship.routeLines);
 	};
 
-	private EventHandler<MouseDragEvent> onStarSystemDragExitedEventHandler = event -> {
+	private final EventHandler<MouseDragEvent> onStarSystemDragExitedEventHandler = event -> {
 		Node node = (Node) event.getSource();
 		Circle c = (Circle) node;
 		c.setRadius(5);
 		event.consume();
 	};
 
-	private EventHandler<MouseEvent> onStarSystemHoverEnteredEventHandler = event -> {
+	private final EventHandler<MouseEvent> onStarSystemHoverEnteredEventHandler = event -> {
 		if (Config.MAP_HIGHLIGHT_HOVERED_STARSYSTEM) {
 			Node node = (Node) event.getSource();
 			Circle c = (Circle) node;
@@ -311,7 +309,7 @@ public class NodeGestures {
 		}
 	};
 
-	private EventHandler<MouseEvent> onStarSystemHoverExitedEventHandler = event -> {
+	private final EventHandler<MouseEvent> onStarSystemHoverExitedEventHandler = event -> {
 		if (Config.MAP_HIGHLIGHT_HOVERED_STARSYSTEM) {
 			Node node = (Node) event.getSource();
 			Circle c = (Circle) node;
@@ -324,24 +322,22 @@ public class NodeGestures {
 		}
 	};
 
-	private EventHandler<MouseEvent> onJumpShipClickedEventHandler = new EventHandler<MouseEvent>() {
-		public void handle(MouseEvent event) {
-			if (event.getTarget() instanceof ImageView) {
-				// This is probably a jumpship
-				Node node = (Node) event.getSource();
-				String name = node.getId();
-				BOJumpship ship = boUniverse.jumpshipBOs.get(name);
-				if (ship != null) {
-					ActionManager.getAction(ACTIONS.SHOW_JUMPSHIP_DETAIL).execute(ship);
-				}
+	private final EventHandler<MouseEvent> onJumpShipClickedEventHandler = event -> {
+		if (event.getTarget() instanceof ImageView) {
+			// This is probably a jumpship
+			Node node = (Node) event.getSource();
+			String name = node.getId();
+			BOJumpship ship = boUniverse.jumpshipBOs.get(name);
+			if (ship != null) {
+				ActionManager.getAction(ACTIONS.SHOW_JUMPSHIP_DETAIL).execute(ship);
 			}
 		}
 	};
 
-	private EventHandler<MouseEvent> getOnMouseClickedEventHandler = new EventHandler<MouseEvent>() {
+	private final EventHandler<MouseEvent> getOnMouseClickedEventHandler = new EventHandler<>() {
 		public void handle(MouseEvent event) {
 			if (event.isSecondaryButtonDown()) {
-//				C3Logger.info("RIGHTCLICK");
+				C3Logger.info("RIGHTCLICK");
 			}
 
 			// left mouse button click
@@ -354,21 +350,14 @@ public class NodeGestures {
 			StackPane sp = clickedStarSystem.getStarSystemStackPane();
 			Group group = clickedStarSystem.getStarSystemGroup();
 
-			C3Logger.info("System: "
-					+ clickedStarSystem.getName()
-					+ " (x: " + clickedStarSystem.getX()
-					+ " | y: " + clickedStarSystem.getY()
-					+ ") - "
-					+ "[id:"
-					+ clickedStarSystem.getId()
-					+ "]");
+			C3Logger.info("System: " + clickedStarSystem.getName() + " (x: " + clickedStarSystem.getX() + " | y: " + clickedStarSystem.getY() + ") - " + "[id:" + clickedStarSystem.getId() + "]");
 
-			if (clickedStarSystem != null && event.getTarget() instanceof Circle) {
+			if (event.getTarget() instanceof Circle) {
 				canvas.showStarSystemMarker(clickedStarSystem);
 				Nexus.setCurrentlySelectedStarSystem(clickedStarSystem);
 				ActionManager.getAction(ACTIONS.SHOW_SYSTEM_DETAIL).execute(clickedStarSystem);
 				if (group != null) {
-					Double markerDim = 38.0d;
+					double markerDim = 36.0d;
 					ImageView marker;
 					marker = new ImageView();
 					marker.setFitWidth(markerDim);
@@ -381,18 +370,19 @@ public class NodeGestures {
 						// This is an enemy system
 						marker.setImage(attackMarker);
 					}
-//					marker.setImage(selectionMarker);
-					marker.setTranslateX((sp.getWidth() / 2) - (markerDim / 2));
-					marker.setTranslateY((sp.getHeight() / 2) - (markerDim / 2));
+					//					marker.setImage(selectionMarker);
+					marker.setTranslateX((sp.getWidth() / 2) - (markerDim / 2) + 0.5);
+					marker.setTranslateY((sp.getHeight() / 2) - (markerDim / 2) + 0.5);
 					if (previousSelectedSystem != null) {
 						if (previousSelectedSystem.getStarSystemSelectionMarker() != null) {
 							Group previousgroup = previousSelectedSystem.getStarSystemGroup();
 							previousgroup.getChildren().remove(previousSelectedSystem.getStarSystemSelectionMarker());
 							previousSelectedSystem = clickedStarSystem;
 							previousSelectedSystem.setStarSystemSelectionMarker(marker);
-						} else {
-							// Marker is null. Probably this is the first system to be marked.
 						}
+//						else {
+//							// Marker is null. Probably this is the first system to be marked.
+//						}
 					} else {
 						previousSelectedSystem = clickedStarSystem;
 						previousSelectedSystem.setStarSystemSelectionMarker(marker);
@@ -403,7 +393,7 @@ public class NodeGestures {
 		}
 	};
 
-	private EventHandler<MouseEvent> onMousePressedEventHandler = event -> {
+	private final EventHandler<MouseEvent> onMousePressedEventHandler = event -> {
 		// left mouse button => dragging
 		if (!event.isPrimaryButtonDown()) {
 			return;
@@ -418,7 +408,7 @@ public class NodeGestures {
 		nodeDragContext.translateAnchorY = node.getTranslateY();
 	};
 
-	private EventHandler<MouseEvent> onMouseDraggedEventHandler = new EventHandler<MouseEvent>() {
+	private final EventHandler<MouseEvent> onMouseDraggedEventHandler = new EventHandler<>() {
 		public void handle(MouseEvent event) {
 			// left mouse button => dragging
 			if (!event.isPrimaryButtonDown()) {

@@ -221,35 +221,47 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 	}
 
 	private void setValues() {
-		// set logos
-		labelAvatar.setText("");
+		Platform.runLater(() -> {
 
-		// set values
-		valueUsername.setText(Nexus.getCurrentUser().getUserName());
-		valueLastLogin.setText(Nexus.getCurrentUser().getLastLogin() + "");
-		valueCreated.setText(Nexus.getCurrentUser().getCreated() + "");
+			C3Logger.info("*********************************************************");
+			C3Logger.info("*        trying to set userInfoPane values here!        *");
+			C3Logger.info("*********************************************************");
+
+			UserDTO user = Nexus.getCurrentUser();
+			if (user != null) {
+				// set logos
+				labelAvatar.setText("");
+
+				// set values
+				valueUsername.setText(user.getUserName());
+				valueLastLogin.setText(user.getLastLogin() + "");
+				valueCreated.setText(user.getCreated() + "");
+			}
+		});
 	}
 
 	private void setCharValues(RolePlayCharacterDTO character) {
 		// set logos
 
-		// TODO: Save image for every character in database
-//		Image charImage = new Image(character.getImage());
-//		ivCharacterPortrait.setImage(charImage);
+		Platform.runLater(() -> {
+			// TODO: Save image for every character in database
+			//		Image charImage = new Image(character.getImage());
+			//		ivCharacterPortrait.setImage(charImage);
 
-		// set values
-//		Image img = new Image("UIControls/logo.png");
-//		ivFactionLogo.setImage();
+			// set values
+			//		Image img = new Image("UIControls/logo.png");
+			//		ivFactionLogo.setImage();
 
-		valueCharName.setText(character.getName());
-		valueCharAge.setText("");
-		valueCharRank.setText("");
-		valueCharLocation.setText("");
-		valueCharXP.setText("");
-		valueBalance.setText("");
-		valueIncome.setText("");
-		valueSystems.setText("");
-		valueAtWar.setText("");
+			valueCharName.setText(character.getName());
+			valueCharAge.setText("");
+			valueCharRank.setText("");
+			valueCharLocation.setText("");
+			valueCharXP.setText("");
+			valueBalance.setText("");
+			valueIncome.setText("");
+			valueSystems.setText("");
+			valueAtWar.setText("");
+		});
 	}
 
 	@Override
@@ -357,7 +369,7 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 		// };
 	}
 
-	// @SuppressWarnings("unchecked")
+//	@SuppressWarnings("unchecked")
 	private void enableListeners(boolean enableListerners) {
 		// if (enableListerners) {
 		// tfUserName.textProperty().addListener(userNameFieldChangeListener);

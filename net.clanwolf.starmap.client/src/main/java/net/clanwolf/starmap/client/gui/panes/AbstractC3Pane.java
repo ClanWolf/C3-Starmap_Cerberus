@@ -61,18 +61,22 @@ public abstract class AbstractC3Pane extends Pane {
 	protected String paneName = "SET_ME_IN_PANE_CONSTRUCTOR";
 	private static boolean modal = false;
 
+	@SuppressWarnings("unused")
 	public String getPaneName() {
 		return paneName;
 	}
 
+	@SuppressWarnings("unused")
 	public void setModal(boolean v) {
 		modal = v;
 	}
 
+	@SuppressWarnings("unused")
 	public boolean isModal() {
 		return modal;
 	}
 
+	@SuppressWarnings("unused")
 	protected AbstractC3Controller controller = null;
 
 	@SuppressWarnings("unused")
@@ -80,6 +84,7 @@ public abstract class AbstractC3Pane extends Pane {
 		return showsPlanetRotation;
 	}
 
+	@SuppressWarnings("unused")
 	public void setShowsPlanetRotation(boolean show) {
 		showsPlanetRotation = show;
 	}
@@ -89,6 +94,7 @@ public abstract class AbstractC3Pane extends Pane {
 		return showMouseFollow;
 	}
 
+	@SuppressWarnings("unused")
 	public void setShowsMouseFollow(boolean show) {
 		showMouseFollow = show;
 	}
@@ -103,10 +109,12 @@ public abstract class AbstractC3Pane extends Pane {
 		this.isDisplayed = isDisplayed;
 	}
 
+	@SuppressWarnings("unused")
 	public AbstractC3Controller getController() {
 		return controller;
 	}
 
+	@SuppressWarnings("unused")
 	public AbstractC3Pane(String name, boolean showPlanets, boolean mouseFollow) {
 		showsPlanetRotation = showPlanets;
 		showMouseFollow = mouseFollow;
