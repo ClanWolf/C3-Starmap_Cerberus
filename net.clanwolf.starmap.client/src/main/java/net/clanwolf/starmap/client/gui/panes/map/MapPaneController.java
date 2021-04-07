@@ -31,6 +31,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.CacheHint;
 import javafx.scene.Group;
@@ -263,11 +264,6 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					Circle starSystemCircle = new Circle(4);
 					starSystemCircle.setId(starSystem.getId().toString());
 					starSystemCircle.setStroke(c.deriveColor(1, 1, 1, 0.8));
-					if (starSystem.isCapital()) {
-						// TODO: Visually mark captial planets
-					} else {
-						//
-					}
 					starSystemCircle.setFill(c.deriveColor(1, 1, 1, 0.4));
 					starSystemCircle.setVisible(true);
 					starSystemCircle.toFront();
@@ -278,7 +274,20 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					starSystemCircle.addEventFilter(MouseDragEvent.MOUSE_DRAG_EXITED, nodeGestures.getOnStarSystemDragExitedEventHandler());
 
 					starSystem.setStarSystemCircle(starSystemCircle);
+					if (starSystem.isCapital()) {
+						Circle starSystemCapitalCircle = new Circle(12);
+						starSystemCapitalCircle.setStrokeWidth(3.0);
+						starSystemCapitalCircle.setId(starSystem.getId().toString() + "_CapitalMarker");
+						starSystemCapitalCircle.setStroke(c.deriveColor(1, 1, 1, 0.95));
+						starSystemCapitalCircle.setFill(c.deriveColor(1, 1, 1, 0.0));
+						starSystemCapitalCircle.setVisible(true);
+						starSystemCapitalCircle.toBack();
+						starSystemCapitalCircle.setMouseTransparent(true);
+						stackPane.getChildren().add(starSystemCapitalCircle);
+						starSystemLabel.toFront();
+					}
 					stackPane.getChildren().add(1, starSystemCircle);
+					starSystemCircle.toFront();
 
 					starSystemGroup.getChildren().add(stackPane);
 					starSystemGroup.setTranslateX(x);
