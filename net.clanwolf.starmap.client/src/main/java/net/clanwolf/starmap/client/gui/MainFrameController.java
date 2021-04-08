@@ -36,6 +36,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -321,6 +323,24 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		languageButton.getStyleClass().remove("languageButton_hover");
 		languageButton.getStyleClass().add("languageButton_" + Internationalization.getLanguage());
 		enableLanguageSwitch = true;
+	}
+
+	@FXML
+	private void handleTerminalEnterButton(KeyEvent event) {
+		if (event.getCode() == KeyCode.UP) {
+			ActionManager.getAction(ACTIONS.TERMINAL_COMMAND).execute("*!!!*historyBack");
+		}
+		if (event.getCode() == KeyCode.DOWN) {
+			ActionManager.getAction(ACTIONS.TERMINAL_COMMAND).execute("*!!!*historyForward");
+		}
+		if (event.getCode() == KeyCode.ENTER) {
+			String enteredCommand = terminalPrompt.getText();
+			C3Logger.info("Enter pressed on terminal. Entered command: " + enteredCommand);
+			Platform.runLater(() -> {
+				ActionManager.getAction(ACTIONS.TERMINAL_COMMAND).execute(enteredCommand);
+				terminalPrompt.setText("");
+			});
+		}
 	}
 
 	// @FXML
@@ -881,6 +901,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		ActionManager.addActionCallbackListener(ACTIONS.START_ROLEPLAY, this);
 		ActionManager.addActionCallbackListener(ACTIONS.UPDATE_GAME_INFO, this);
 		ActionManager.addActionCallbackListener(ACTIONS.SHOW_MEDAL, this);
+		ActionManager.addActionCallbackListener(ACTIONS.SET_TERMINAL_TEXT, this);
 	}
 
 	private void setToLevelLoggedOutText() {
@@ -1363,17 +1384,14 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				break;
 
 			case LOGON_FINISHED_SUCCESSFULL:
-				// Internationalization.getString("C3_Speech_close_warning"));
-
 				// TODO: This may take to long and a response object may arrive before the pane exists and lead to nullpointers!
+				// if the user is null here, this may cause the endless Nullpointer Exceptions that sometimes occur on/after login
+				C3Logger.info("***************************************** Current user is: " + Nexus.getCurrentUser() + " (Check this not to be NULL)");
+
 				userInfoPane = new UserInfoPane();
 				userInfoPane.setCache(true);
 				userInfoPane.setCacheHint(CacheHint.SPEED);
 				userInfoPane.getController().addActionCallBackListeners();
-
-				C3Logger.info("*********************************************");
-				C3Logger.info("*        userInfoPane is ready here!        *");
-				C3Logger.info("*********************************************");
 
 				ActionManager.getAction(ACTIONS.CHANGE_LANGUAGE).execute();
 				openTargetPane(userInfoPane, Internationalization.getString("C3_Speech_Successful_Login"));
@@ -1385,7 +1403,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				setConsoleEntry("Verifying privileges");
 				setConsoleEntry("Applying security level");
 
-				// print information about the server logged in to to gui
+				// Print information about the server logged in to to gui
 				String tcphostname = C3Properties.getProperty(C3PROPS.TCP_HOSTNAME);
 				int tcpPort = Integer.parseInt(C3Properties.getProperty(C3PROPS.TCP_PORT));
 
@@ -1539,6 +1557,13 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					Image med = new Image(getClass().getResourceAsStream("/images/gui/rewards/" + imageName + ".png"));
 					showMedal(med, desc);
 				}
+				break;
+
+			case SET_TERMINAL_TEXT:
+				String commandFromHistory = o.getText();
+				Platform.runLater(() -> {
+					terminalPrompt.setText(commandFromHistory);
+				});
 				break;
 
 			case SHOW_MESSAGE_WAS_ANSWERED:

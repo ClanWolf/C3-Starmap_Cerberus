@@ -68,8 +68,11 @@ import net.clanwolf.starmap.transfer.dtos.RoutePointDTO;
 import net.clanwolf.starmap.transfer.enums.MEDALS;
 import org.kynosarges.tektosyne.geometry.PointD;
 
+import javax.swing.*;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
@@ -122,6 +125,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	private Image selectionMarker;
 	private Image attackMarker;
 	private Image travelMarker;
+
+	private LinkedList<String> commandHistory = new LinkedList<>();
+	private int commandHistoryIndex = 0;
 
 	private NodeGestures nodeGestures;
 
@@ -304,12 +310,12 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				canvas.addGrid_250();
 				canvas.setVisibility();
 
-//				Circle circle1 = new Circle(Config.MAP_WIDTH / 2, Config.MAP_HEIGHT / 2, 40);
-//				circle1.setStroke(Color.ORANGE);
-//				circle1.setFill(Color.ORANGE.deriveColor(1, 1, 1, 0.5));
-//				circle1.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
-//				circle1.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
-//				canvas.getChildren().add(circle1);
+				//				Circle circle1 = new Circle(Config.MAP_WIDTH / 2, Config.MAP_HEIGHT / 2, 40);
+				//				circle1.setStroke(Color.ORANGE);
+				//				circle1.setFill(Color.ORANGE.deriveColor(1, 1, 1, 0.5));
+				//				circle1.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
+				//				circle1.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
+				//				canvas.getChildren().add(circle1);
 
 				Pane borders = VoronoiDelaunay.getAreas();
 				canvas.getChildren().add(borders);
@@ -364,24 +370,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 							final double maxOffset = line.getStrokeDashArray().stream().reduce(0d, Double::sum);
 
-							Timeline timeline = new Timeline(
-									new KeyFrame(
-											Duration.ZERO,
-											new KeyValue(
-													line.strokeDashOffsetProperty(),
-													0,
-													Interpolator.LINEAR
-											)
-									),
-									new KeyFrame(
-											Duration.seconds(1),
-											new KeyValue(
-													line.strokeDashOffsetProperty(),
-													maxOffset,
-													Interpolator.LINEAR
-											)
-									)
-							);
+							Timeline timeline = new Timeline(new KeyFrame(Duration.ZERO, new KeyValue(line.strokeDashOffsetProperty(), 0, Interpolator.LINEAR)), new KeyFrame(Duration.seconds(1), new KeyValue(line.strokeDashOffsetProperty(), maxOffset, Interpolator.LINEAR)));
 							timeline.setCycleCount(Timeline.INDEFINITE);
 							timeline.play();
 							attacksPane.getChildren().add(line);
@@ -491,11 +480,11 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		fadeInTransition_01.setToValue(1.0);
 		fadeInTransition_01.setCycleCount(3);
 
-//		// Fade in transition 01a (Background)
-//		FadeTransition fadeInTransition_01a = new FadeTransition(Duration.millis(500), starMapPane);
-//		fadeInTransition_01a.setFromValue(0.0);
-//		fadeInTransition_01a.setToValue(1.0);
-//		fadeInTransition_01a.setCycleCount(1);
+		//		// Fade in transition 01a (Background)
+		//		FadeTransition fadeInTransition_01a = new FadeTransition(Duration.millis(500), starMapPane);
+		//		fadeInTransition_01a.setFromValue(0.0);
+		//		fadeInTransition_01a.setToValue(1.0);
+		//		fadeInTransition_01a.setCycleCount(1);
 
 		// Fade in transition 01b (Background)
 		FadeTransition fadeInTransition_01b = new FadeTransition(Duration.millis(50), buttonBackground);
@@ -521,28 +510,25 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		fadeInTransition_04.setToValue(1.0);
 		fadeInTransition_04.setCycleCount(3);
 
-//		// Fade in transition 05 (DetailPane)
-//		FadeTransition fadeInTransition_05 = new FadeTransition(Duration.millis(60), paneSystemDetail);
-//		fadeInTransition_05.setFromValue(0.0);
-//		fadeInTransition_05.setToValue(1.0);
-//		fadeInTransition_05.setCycleCount(4);
-//
-//		// Fade in transition 06 (DetailPane)
-//		FadeTransition fadeInTransition_06 = new FadeTransition(Duration.millis(470), paneSystemDetail);
-//		fadeInTransition_06.setFromValue(1.0);
-//		fadeInTransition_06.setToValue(0.0);
-//		fadeInTransition_06.setCycleCount(1);
+		//		// Fade in transition 05 (DetailPane)
+		//		FadeTransition fadeInTransition_05 = new FadeTransition(Duration.millis(60), paneSystemDetail);
+		//		fadeInTransition_05.setFromValue(0.0);
+		//		fadeInTransition_05.setToValue(1.0);
+		//		fadeInTransition_05.setCycleCount(4);
+		//
+		//		// Fade in transition 06 (DetailPane)
+		//		FadeTransition fadeInTransition_06 = new FadeTransition(Duration.millis(470), paneSystemDetail);
+		//		fadeInTransition_06.setFromValue(1.0);
+		//		fadeInTransition_06.setToValue(0.0);
+		//		fadeInTransition_06.setCycleCount(1);
 
 		// Transition sequence
 		SequentialTransition sequentialTransition = new SequentialTransition();
 		sequentialTransition.getChildren().addAll(fadeInTransition_01,
-//													fadeInTransition_01a,
-													fadeInTransition_01b,
-													fadeInTransition_02,
-													fadeInTransition_03,
-													fadeInTransition_04
-//			                                    	fadeInTransition_05
-//			                                    	fadeInTransition_06
+				//													fadeInTransition_01a,
+				fadeInTransition_01b, fadeInTransition_02, fadeInTransition_03, fadeInTransition_04
+				//			                                    	fadeInTransition_05
+				//			                                    	fadeInTransition_06
 		);
 		sequentialTransition.setCycleCount(1);
 		sequentialTransition.setOnFinished(event -> {
@@ -720,15 +706,15 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			C3SoundPlayer.play("sound/fx/beep_electric.mp3", false);
 
 			Platform.runLater(() -> {
-//				String name = boUniverse.factionBOs.get(sys.getAffiliation()).getName();
-//				String shortName = boUniverse.factionBOs.get(sys.getAffiliation()).getShortName();
-//				String color = boUniverse.factionBOs.get(sys.getAffiliation()).getColor();
+				//				String name = boUniverse.factionBOs.get(sys.getAffiliation()).getName();
+				//				String shortName = boUniverse.factionBOs.get(sys.getAffiliation()).getShortName();
+				//				String color = boUniverse.factionBOs.get(sys.getAffiliation()).getColor();
 				String logo = boUniverse.factionBOs.get(sys.getAffiliation()).getLogo();
 				Image imagePlanet;
 				String systemImageName = String.format("%03d", Integer.parseInt(sys.getSystemImageName()));
 				try {
-//					C3Logger.debug("Planet image: /images/planets/" + systemImageName + ".png");
-//					C3Logger.debug("SystemImageName from DB: " + systemImageName);
+					//					C3Logger.debug("Planet image: /images/planets/" + systemImageName + ".png");
+					//					C3Logger.debug("SystemImageName from DB: " + systemImageName);
 					imagePlanet = new Image(getClass().getResourceAsStream("/images/planets/" + systemImageName + ".png"));
 				} catch (Exception e) {
 					//e.printStackTrace();
@@ -769,9 +755,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				Long factionId = ship.getJumpshipFaction();
 				String jumpshipName = ship.getJumpshipName();
 				String logo = boUniverse.getFactionByID(factionId).getLogo();
-//				String factionName = boUniverse.getFactionByID(factionId).getName();
-//				String factionShortName = boUniverse.getFactionByID(factionId).getShortName();
-//				String color = boUniverse.getFactionByID(factionId).getColor();
+				//				String factionName = boUniverse.getFactionByID(factionId).getName();
+				//				String factionShortName = boUniverse.getFactionByID(factionId).getShortName();
+				//				String color = boUniverse.getFactionByID(factionId).getColor();
 
 				Image imageFaction = new Image(getClass().getResourceAsStream("/images/logos/factions/" + logo));
 				labelJumpshipName.setText(jumpshipName);
@@ -800,9 +786,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	 */
 	@Override
 	public void setStrings() {
-//		Platform.runLater(() -> {
-//			//
-//		});
+		//		Platform.runLater(() -> {
+		//			//
+		//		});
 	}
 
 	/**
@@ -838,6 +824,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		ActionManager.addActionCallbackListener(ACTIONS.MAP_CREATION_FINISHED, this);
 		ActionManager.addActionCallbackListener(ACTIONS.SHOW_JUMPSHIP_DETAIL, this);
 		ActionManager.addActionCallbackListener(ACTIONS.HIDE_JUMPSHIP_DETAIL, this);
+		ActionManager.addActionCallbackListener(ACTIONS.TERMINAL_COMMAND, this);
 	}
 
 	/**
@@ -849,6 +836,58 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		super.initialize(url, rb);
+	}
+
+	public void handleCommand(String com) {
+		if (!com.startsWith("*!!!*")) {
+			C3Logger.info("Received command: '" + com + "'");
+			commandHistory.add(com);
+			commandHistoryIndex++;
+			if (commandHistory.size() > 50) {
+				commandHistory.remove(0);
+			}
+		}
+
+		if ("*!!!*historyBack".equals(com)) {
+			if (commandHistoryIndex > 0) {
+				C3Logger.info("History back");
+				commandHistoryIndex--;
+				String histCom = commandHistory.get(commandHistoryIndex);
+				ActionManager.getAction(ACTIONS.SET_TERMINAL_TEXT).execute(histCom);
+			}
+		}
+
+		if ("*!!!*historyForward".equals(com)) {
+			if (commandHistoryIndex < commandHistory.size() - 1) {
+				C3Logger.info("History forward");
+				commandHistoryIndex++;
+				String histCom = commandHistory.get(commandHistoryIndex);
+				ActionManager.getAction(ACTIONS.SET_TERMINAL_TEXT).execute(histCom);
+			}
+		}
+
+		// ---------------------------------
+		// find
+		// ---------------------------------
+		if (com.startsWith("find ")) {
+			String value = com.substring(5);
+			if (!"".equals(value)) {
+				C3Logger.info("Searching for '" + value + "'");
+			}
+			C3Logger.info("Searching starsystems...");
+			for (BOStarSystem ss : boUniverse.starSystemBOs.values()) {
+				if (ss.getName().equalsIgnoreCase(value)) {
+					C3Logger.info("Found starsystem '" + value + "'");
+					moveMapToPosition(ss);
+				}
+			}
+			C3Logger.info("Searching jumpships...");
+			for (BOJumpship js : boUniverse.jumpshipBOs.values()) {
+				if (js.getJumpshipName().equalsIgnoreCase(value)) {
+					C3Logger.info("Found jumpship '" + value + "'");
+				}
+			}
+		}
 	}
 
 	/**
@@ -937,6 +976,11 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			case UPDATE_COORD_INFO:
 				String v = o.getText();
 				Platform.runLater(() -> labelMouseCoords.setText(v));
+				break;
+
+			case TERMINAL_COMMAND:
+				String com = o.getText();
+				handleCommand(com);
 				break;
 
 			default:

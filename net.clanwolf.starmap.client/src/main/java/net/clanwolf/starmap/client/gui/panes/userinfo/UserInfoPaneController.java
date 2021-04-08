@@ -222,16 +222,10 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 
 	private void setValues() {
 		Platform.runLater(() -> {
-
-			C3Logger.info("*********************************************************");
-			C3Logger.info("*        trying to set userInfoPane values here!        *");
-			C3Logger.info("*********************************************************");
-
 			UserDTO user = Nexus.getCurrentUser();
 			if (user != null) {
 				// set logos
 				labelAvatar.setText("");
-
 				// set values
 				valueUsername.setText(user.getUserName());
 				valueLastLogin.setText(user.getLastLogin() + "");
