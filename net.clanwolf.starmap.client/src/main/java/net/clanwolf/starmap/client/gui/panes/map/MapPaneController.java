@@ -28,8 +28,6 @@ package net.clanwolf.starmap.client.gui.panes.map;
 
 import javafx.animation.*;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.CacheHint;
@@ -68,11 +66,9 @@ import net.clanwolf.starmap.transfer.dtos.RoutePointDTO;
 import net.clanwolf.starmap.transfer.enums.MEDALS;
 import org.kynosarges.tektosyne.geometry.PointD;
 
-import javax.swing.*;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
@@ -126,18 +122,18 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	private Image attackMarker;
 	private Image travelMarker;
 
-	private LinkedList<String> commandHistory = new LinkedList<>();
+	private final LinkedList<String> commandHistory = new LinkedList<>();
 	private int commandHistoryIndex = 0;
 
 	private NodeGestures nodeGestures;
 
 	@FXML
-	private void handleCenterButtonClick() throws Exception {
+	private void handleCenterButtonClick() {
 		reCenterMap();
 	}
 
 	@FXML
-	private void handleConfirmButtonClick() throws Exception {
+	private void handleConfirmButtonClick() {
 		// Store jumproutes
 		for (BOJumpship js : Nexus.getBoUniverse().jumpshipBOs.values()) {
 			if (js.getJumpshipFaction() == Nexus.getCurrentUser().getCurrentCharacter().getFactionId()) {
@@ -151,7 +147,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				if (s.getFactionId() != js.getJumpshipFaction()) {
 					// This means there is an attack to be stored
 					AttackDTO attack = new AttackDTO();
-					attack.setAttackedFromStarSystemID(((RoutePointDTO) route.get(0)).getSystemId());
+					attack.setAttackedFromStarSystemID((route.get(0)).getSystemId());
 					attack.setAttackTypeID(1L); // Type 1: Planetary Assault
 					attack.setfactionID_Defender(s.getFactionId());
 					attack.setRound(Nexus.getCurrentRound());
@@ -546,6 +542,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		mapButton01.setDisable(true);
 		mapButton02.setDisable(true);
 		mapButton03.setDisable(true);
+		mapButton04.setDisable(true);
+		mapButton05.setDisable(true);
 
 		C3Logger.info("Travel to Homeworld");
 		C3Logger.info("X: " + Config.MAP_INITIAL_TRANSLATE_X);
@@ -565,6 +563,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			mapButton01.setDisable(false);
 			mapButton02.setDisable(false);
 			mapButton03.setDisable(false);
+			mapButton04.setDisable(false);
+			mapButton05.setDisable(false);
 			for (int[] layer : Config.BACKGROUND_STARS_LAYERS) {
 				int level = layer[0];
 				canvas.resetBackgroundStarPane(level);
@@ -578,9 +578,12 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 	private void moveMapToPosition(BOStarSystem sys) {
 		removeMouseFilters();
+
 		mapButton01.setDisable(true);
 		mapButton02.setDisable(true);
 		mapButton03.setDisable(true);
+		mapButton04.setDisable(true);
+		mapButton05.setDisable(true);
 
 		C3Logger.info("Travel to " + sys.getName());
 		C3Logger.info("X: " + sys.getX());
@@ -591,15 +594,25 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			canvas.fadeoutStars(level);
 		}
 
-		TranslateTransition move = new TranslateTransition(Duration.millis(400), canvas);
-		move.setCycleCount(1);
-		move.setByX(sys.getX() * Config.MAP_COORDINATES_MULTIPLICATOR);
-		move.setByY(sys.getY() * Config.MAP_COORDINATES_MULTIPLICATOR);
-		move.setOnFinished(event -> {
+		TranslateTransition move01 = new TranslateTransition(Duration.millis(0), canvas);
+		move01.setCycleCount(1);
+		move01.setToX(Config.MAP_INITIAL_TRANSLATE_X);
+		move01.setToY(Config.MAP_INITIAL_TRANSLATE_Y);
+
+		TranslateTransition move02 = new TranslateTransition(Duration.millis(400), canvas);
+		move02.setCycleCount(1);
+		move02.setByX(-sys.getX() * Config.MAP_COORDINATES_MULTIPLICATOR);
+		move02.setByY(sys.getY() * Config.MAP_COORDINATES_MULTIPLICATOR);
+
+		SequentialTransition seq = new SequentialTransition();
+		seq.getChildren().addAll(move01, move02);
+		seq.setOnFinished(event -> {
 			addMouseFilters();
 			mapButton01.setDisable(false);
 			mapButton02.setDisable(false);
 			mapButton03.setDisable(false);
+			mapButton04.setDisable(false);
+			mapButton05.setDisable(false);
 			for (int[] layer : Config.BACKGROUND_STARS_LAYERS) {
 				int level = layer[0];
 				canvas.resetBackgroundStarPane(level);
@@ -608,7 +621,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				ActionManager.getAction(ACTIONS.SHOW_SYSTEM_DETAIL).execute(sys);
 			}
 		});
-		move.play();
+		seq.play();
 	}
 
 	private void moveMapToJumpship(BOJumpship jumpship) {
@@ -616,6 +629,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		mapButton01.setDisable(true);
 		mapButton02.setDisable(true);
 		mapButton03.setDisable(true);
+		mapButton04.setDisable(true);
+		mapButton05.setDisable(true);
 
 		BOStarSystem starsystem = jumpship.getCurrentSystem(jumpship.getCurrentSystemID());
 
@@ -637,6 +652,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			mapButton01.setDisable(false);
 			mapButton02.setDisable(false);
 			mapButton03.setDisable(false);
+			mapButton04.setDisable(false);
+			mapButton05.setDisable(false);
 			for (int[] layer : Config.BACKGROUND_STARS_LAYERS) {
 				int level = layer[0];
 				canvas.resetBackgroundStarPane(level);
@@ -842,7 +859,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		if (!com.startsWith("*!!!*")) {
 			C3Logger.info("Received command: '" + com + "'");
 			commandHistory.add(com);
-			commandHistoryIndex++;
+			commandHistoryIndex = commandHistory.size();
 			if (commandHistory.size() > 50) {
 				commandHistory.remove(0);
 			}

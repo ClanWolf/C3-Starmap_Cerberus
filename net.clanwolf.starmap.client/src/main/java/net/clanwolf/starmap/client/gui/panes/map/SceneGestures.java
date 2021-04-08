@@ -54,6 +54,9 @@ class SceneGestures {
 	private double previousX;
 	private double previousY;
 
+	private double overallDifferenceX;
+	private double overallDifferencey;
+
 	private DragContext sceneDragContext = new DragContext();
 	private PannableCanvas canvas;
 
@@ -85,7 +88,7 @@ class SceneGestures {
 
 	EventHandler<MouseEvent> getOnMouseReleasedEventHandler() { return onMouseReleasedEventHandler; }
 
-	private EventHandler<MouseEvent> onMouseMovedEventHandler = event -> {
+	private final EventHandler<MouseEvent> onMouseMovedEventHandler = event -> {
 //		double universeX = getUniverseX(event.getSceneX());
 //		double universeY = getUniverseY(event.getSceneY());
 //		C3Logger.info("[" + universeX + ", " + universeY + "]");
@@ -111,7 +114,7 @@ class SceneGestures {
 		public void handle(MouseEvent event) {
 
 			scrollingEnabled = false;
-//			C3Logger.info("Button pressed");
+			// C3Logger.info("Button pressed");
 
 			if (event.isPrimaryButtonDown()) {
 				canvas.hideStarSystemMarker();
@@ -137,7 +140,7 @@ class SceneGestures {
 		@Override
 		public void handle(MouseEvent mouseEvent) {
 			scrollingEnabled = true;
-//			C3Logger.info("Button released");
+			// C3Logger.info("Button released");
 		}
 	};
 
@@ -174,28 +177,25 @@ class SceneGestures {
 		canvas.setTranslateY(diffY);
 	}
 
-	private EventHandler<MouseEvent> onMouseDraggedEventHandler = new EventHandler<MouseEvent>() {
-		public void handle(MouseEvent event) {
-			// right mouse button => panning
-			if (!event.isSecondaryButtonDown()) {
-				return;
-			}
-
-			double x = event.getX();
-			double y = event.getY();
-			double diffX = sceneDragContext.translateAnchorX + event.getSceneX() - sceneDragContext.mouseAnchorX;
-			double diffY = sceneDragContext.translateAnchorY + event.getSceneY() - sceneDragContext.mouseAnchorY;
-
-			moveMapByDiff(x, y, diffX, diffY);
-			event.consume();
+	private EventHandler<MouseEvent> onMouseDraggedEventHandler = event -> {
+		// right mouse button => panning
+		if (!event.isSecondaryButtonDown()) {
+			return;
 		}
+
+		double x = event.getX();
+		double y = event.getY();
+		double diffX = sceneDragContext.translateAnchorX + event.getSceneX() - sceneDragContext.mouseAnchorX;
+		double diffY = sceneDragContext.translateAnchorY + event.getSceneY() - sceneDragContext.mouseAnchorY;
+
+		moveMapByDiff(x, y, diffX, diffY);
+		event.consume();
 	};
 
 	/**
 	 * Mouse wheel handler: zoom to pivot point
 	 */
-	private EventHandler<ScrollEvent> onScrollEventHandler = new EventHandler<ScrollEvent>() {
-
+	private final EventHandler<ScrollEvent> onScrollEventHandler = new EventHandler<>() {
 		@Override
 		public void handle(ScrollEvent event) {
 			if (scrollingEnabled) {
@@ -213,10 +213,8 @@ class SceneGestures {
 				double f = (scale / oldScale) - 1;
 
 				// maxX = right overhang, maxY = lower overhang
-				double maxX = canvas.getBoundsInParent().getMaxX()
-						- canvas.localToParent(canvas.getPrefWidth(), canvas.getPrefHeight()).getX();
-				double maxY = canvas.getBoundsInParent().getMaxY()
-						- canvas.localToParent(canvas.getPrefWidth(), canvas.getPrefHeight()).getY();
+				double maxX = canvas.getBoundsInParent().getMaxX() - canvas.localToParent(canvas.getPrefWidth(), canvas.getPrefHeight()).getX();
+				double maxY = canvas.getBoundsInParent().getMaxY() - canvas.localToParent(canvas.getPrefWidth(), canvas.getPrefHeight()).getY();
 
 				// minX = left overhang, minY = upper overhang
 				double minX = canvas.localToParent(0, 0).getX() - canvas.getBoundsInParent().getMinX();
@@ -229,10 +227,8 @@ class SceneGestures {
 
 				// subtracting the overall overhang from the width and only the left
 				// and upper overhang from the upper left point
-				double dx = (event.getSceneX() - ((canvas.getBoundsInParent().getWidth() - subX) / 2
-						+ (canvas.getBoundsInParent().getMinX() + minX)));
-				double dy = (event.getSceneY() - ((canvas.getBoundsInParent().getHeight() - subY) / 2
-						+ (canvas.getBoundsInParent().getMinY() + minY)));
+				double dx = (event.getSceneX() - ((canvas.getBoundsInParent().getWidth() - subX) / 2 + (canvas.getBoundsInParent().getMinX() + minX)));
+				double dy = (event.getSceneY() - ((canvas.getBoundsInParent().getHeight() - subY) / 2 + (canvas.getBoundsInParent().getMinY() + minY)));
 
 				canvas.setScale(scale);
 
@@ -263,7 +259,7 @@ class SceneGestures {
 //		universeX = universeX / Config.MAP_COORDINATES_MULTIPLICATOR;
 //		return universeX;
 //	}
-//
+
 //	@SuppressWarnings("unused")
 //	private double getUniverseY(double screenY) {
 //		double universeY = screenY - (Config.MAP_HEIGHT / 2);
