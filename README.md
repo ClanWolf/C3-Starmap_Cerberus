@@ -12,5 +12,7 @@ This project is transporting the C3 client and server to module based Java 9+ de
 For the first time, server and client reside in the same project as different modules and thus make it easier to handle the project.
 Also the transfer classes do exist in their own separate module only one time now and a lot of copy&paste errors might not happen anymore.
 
+![Image1_2](https://user-images.githubusercontent.com/16292643/114176193-1d61c900-993b-11eb-877b-74a95bd872e6.png)
+
 If you want to support C3, consider donating at the following link:  
 <https://www.paypal.com/pools/c/8ri2Y8lrl7>
