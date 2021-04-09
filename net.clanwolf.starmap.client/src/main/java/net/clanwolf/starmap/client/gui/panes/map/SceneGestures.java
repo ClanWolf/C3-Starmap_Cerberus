@@ -54,9 +54,6 @@ class SceneGestures {
 	private double previousX;
 	private double previousY;
 
-	private double overallDifferenceX;
-	private double overallDifferencey;
-
 	private DragContext sceneDragContext = new DragContext();
 	private PannableCanvas canvas;
 
@@ -95,21 +92,18 @@ class SceneGestures {
 //		ActionManager.getAction(ACTIONS.UPDATE_COORD_INFO).execute("[" + String.format("%.2f", universeX) + ", " + String.format("%.2f", universeY) + "]");
 	};
 
-	private EventHandler<MouseEvent> onMouseClickedEventHandler = new EventHandler<MouseEvent>() {
-		@Override
-		public void handle(MouseEvent event) {
-			if (event.getTarget() instanceof Circle || event.getTarget() instanceof ImageView || event.getTarget() instanceof Button) {
-				// nothing
-			} else {
-				if (event.getButton() == MouseButton.PRIMARY) {
-					ActionManager.getAction(ACTIONS.HIDE_SYSTEM_DETAIL).execute();
-					ActionManager.getAction(ACTIONS.HIDE_JUMPSHIP_DETAIL).execute();
-				}
+	private EventHandler<MouseEvent> onMouseClickedEventHandler = event -> {
+		if (event.getTarget() instanceof Circle || event.getTarget() instanceof ImageView || event.getTarget() instanceof Button) {
+			// nothing
+		} else {
+			if (event.getButton() == MouseButton.PRIMARY) {
+				ActionManager.getAction(ACTIONS.HIDE_SYSTEM_DETAIL).execute();
+				ActionManager.getAction(ACTIONS.HIDE_JUMPSHIP_DETAIL).execute();
 			}
 		}
 	};
 
-	private EventHandler<MouseEvent> onMousePressedEventHandler = new EventHandler<MouseEvent>() {
+	private EventHandler<MouseEvent> onMousePressedEventHandler = new EventHandler<>() {
 		@Override
 		public void handle(MouseEvent event) {
 
@@ -136,12 +130,9 @@ class SceneGestures {
 		}
 	};
 
-	private EventHandler<MouseEvent> onMouseReleasedEventHandler = new EventHandler<MouseEvent>() {
-		@Override
-		public void handle(MouseEvent mouseEvent) {
-			scrollingEnabled = true;
-			// C3Logger.info("Button released");
-		}
+	private EventHandler<MouseEvent> onMouseReleasedEventHandler = mouseEvent -> {
+		scrollingEnabled = true;
+		// C3Logger.info("Button released");
 	};
 
 	public void moveMapByDiff(double x, double y, double diffX, double diffY) {

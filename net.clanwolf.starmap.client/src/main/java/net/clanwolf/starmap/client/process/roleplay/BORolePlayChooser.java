@@ -24,18 +24,11 @@
  * Copyright (c) 2001-2021, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.transfer.dtos;
+package net.clanwolf.starmap.client.process.roleplay;
 
-import net.clanwolf.starmap.transfer.Dto;
-
-public class ReportAttackResultDTO extends Dto {
-	Integer winnerFactionID = null;
-
-	public Integer getWinnerFactionID() {
-		return winnerFactionID;
-	}
-
-	public void setWinnerFactionID(Integer winnerFactionID) {
-		this.winnerFactionID = winnerFactionID;
+public class BORolePlayChooser {
+	// TODO: Find a fitting story for the given attack (choose from a list)
+	public static long getStoryID() {
+		return 16L;
 	}
 }

@@ -28,6 +28,9 @@ package net.clanwolf.starmap.transfer.dtos;
 
 import net.clanwolf.starmap.transfer.Dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AttackDTO extends Dto {
 
 	private Long id;
@@ -39,6 +42,51 @@ public class AttackDTO extends Dto {
 	private Long attackedFromStarSystemID;
 	private Long factionID_Defender;
 	private Long jumpshipID;
+	private Long characterID;
+	private Long storyID;
+	private Long factionID_Winner;
+	private String remarks;
+	private List<AttackVarsDTO> attackVarList = new ArrayList<>();
+
+	@SuppressWarnings("unused")
+	public Long getCharacterID() {
+		return characterID;
+	}
+
+	@SuppressWarnings("unused")
+	public void setCharacterID(Long characterID) {
+		this.characterID = characterID;
+	}
+
+	@SuppressWarnings("unused")
+	public Long getStoryID() {
+		return storyID;
+	}
+
+	@SuppressWarnings("unused")
+	public void setStoryID(Long storyID) {
+		this.storyID = storyID;
+	}
+
+	@SuppressWarnings("unused")
+	public Long getFactionID_Winner() {
+		return factionID_Winner;
+	}
+
+	@SuppressWarnings("unused")
+	public void setFactionID_Winner(Long factionID_Winner) {
+		this.factionID_Winner = factionID_Winner;
+	}
+
+	@SuppressWarnings("unused")
+	public String getRemarks() {
+		return remarks;
+	}
+
+	@SuppressWarnings("unused")
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
 
 	@SuppressWarnings("unused")
 	public Long getJumpshipID() {
@@ -121,13 +169,21 @@ public class AttackDTO extends Dto {
 	}
 
 	@SuppressWarnings("unused")
-	public Long getfactionID_Defender() {
+	public Long getFactionID_Defender() {
 		return factionID_Defender;
 	}
 
 	@SuppressWarnings("unused")
-	public void setfactionID_Defender(Long defenderID) {
+	public void setFactionID_Defender(Long defenderID) {
 		this.factionID_Defender = defenderID;
+	}
+
+	public List<AttackVarsDTO> getAttackVarList() {
+		return attackVarList;
+	}
+
+	public void setAttackVarList(List<AttackVarsDTO> attackVarList) {
+		this.attackVarList = attackVarList;
 	}
 
 	public AttackDTO() {

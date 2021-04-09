@@ -30,6 +30,9 @@ import net.clanwolf.starmap.server.persistence.Pojo;
 
 import javax.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static javax.persistence.GenerationType.IDENTITY;
 
 @Entity
@@ -64,9 +67,65 @@ public class AttackPOJO extends Pojo {
 	@Column(name = "JumpshipID")
 	private Long jumpshipID;
 
+	@Column(name = "CharacterID")
+	private Long characterID;
+
+	@Column(name = "StoryID")
+	private Long storyID;
+
+	@Column(name = "FactionID_Winner")
+	private Long factionID_Winner;
+
+	@Column(name = "Remarks")
+	private String remarks;
+
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = AttackVarsPOJO.class)
+	@JoinColumn(name = "AttackID")
+	private List<AttackVarsPOJO> attackVarList = new ArrayList<>();
+
+	@SuppressWarnings("unused")
+	public String getRemarks() {
+		return remarks;
+	}
+
+	@SuppressWarnings("unused")
+	public void setRemarks(String remarks) {
+		this.remarks = remarks;
+	}
+
+	@SuppressWarnings("unused")
+	public Long getFactionID_Winner() {
+		return factionID_Winner;
+	}
+
+	@SuppressWarnings("unused")
+	public void setFactionID_Winner(Long factionID_Winner) {
+		this.factionID_Winner = factionID_Winner;
+	}
+
 	@SuppressWarnings("unused")
 	public Long getId() {
 		return id;
+	}
+
+	@SuppressWarnings("unused")
+	public Long getCharacterID() {
+		return characterID;
+	}
+
+	@SuppressWarnings("unused")
+	public void setCharacterID(Long characterID) {
+		this.characterID = characterID;
+	}
+
+	@SuppressWarnings("unused")
+	public Long getStoryID() {
+		return storyID;
+	}
+
+	@SuppressWarnings("unused")
+	public void setStoryID(Long storyID) {
+		this.storyID = storyID;
 	}
 
 	@SuppressWarnings("unused")
@@ -150,5 +209,13 @@ public class AttackPOJO extends Pojo {
 	@SuppressWarnings("unused")
 	public void setJumpshipID(Long jumpshipID) {
 		this.jumpshipID = jumpshipID;
+	}
+
+	public List<AttackVarsPOJO> getAttackVarList() {
+		return attackVarList;
+	}
+
+	public void setAttackVarList(List<AttackVarsPOJO> attackVarList) {
+		this.attackVarList = attackVarList;
 	}
 }

@@ -203,25 +203,42 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 	}
 
 	private void savePrivileges(PlayerSession session, GameState state) {
-
 		UserDAO dao = UserDAO.getInstance();
-		EntityManagerHelper.beginTransaction(getC3UserID(session));
-
-		ArrayList<UserPOJO> list = (ArrayList<UserPOJO>) state.getObject();
-		Iterator<UserPOJO> iter = list.iterator();
-		while(iter.hasNext()) {
-			UserPOJO user = (UserPOJO) iter.next();
-			user.setLastModified(new Timestamp(System.currentTimeMillis()));
-			if(user.getUserId() == null) {
-//				C3Logger.info("Saving: " + user.getUserName() + " - Privs: " + user.getPrivileges());
-				dao.save(getC3UserID(session), user);
-			} else {
-//				C3Logger.info("Updating: " + user.getUserName() + " - Privs: " + user.getPrivileges());
-				dao.update(getC3UserID(session), user);
+		GameState response = new GameState(GAMESTATEMODES.ROLEPLAY_DELETE_STORY);
+		try {
+			EntityManagerHelper.beginTransaction(getC3UserID(session));
+			ArrayList<UserPOJO> list = (ArrayList<UserPOJO>) state.getObject();
+			Iterator<UserPOJO> iter = list.iterator();
+			while(iter.hasNext()) {
+				UserPOJO user = (UserPOJO) iter.next();
+				user.setLastModified(new Timestamp(System.currentTimeMillis()));
+				if(user.getUserId() == null) {
+					// C3Logger.info("Saving: " + user.getUserName() + " - Privs: " + user.getPrivileges());
+					dao.save(getC3UserID(session), user);
+				} else {
+					// C3Logger.info("Updating: " + user.getUserName() + " - Privs: " + user.getPrivileges());
+					dao.update(getC3UserID(session), user);
+				}
 			}
-		}
 
-		EntityManagerHelper.commit(getC3UserID(session));
+			EntityManagerHelper.commit(getC3UserID(session));
+
+			response.addObject(null);
+			response.setAction_successfully(Boolean.TRUE);
+		} catch (RuntimeException re) {
+			/* if a error occurs, we must do a rollback */
+			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
+
+			response.addObject(re.getMessage());
+			response.setAction_successfully(Boolean.FALSE);
+
+			C3Logger.error("saveRolePlayStory",re);
+		} finally {
+			/* and now we send a message to the client */
+			//			Event e = Events.networkEvent(response);
+			//			session.onEvent(e);
+			C3GameSessionHandler.sendNetworkEvent(session, response);
+		}
 	}
 
 	private void checkDoubleLogin(PlayerSession session, GameRoom gm) {

@@ -24,82 +24,53 @@
  * Copyright (c) 2001-2021, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.server.persistence.pojos;
+package net.clanwolf.starmap.transfer.dtos;
 
-import net.clanwolf.starmap.server.persistence.Pojo;
+import net.clanwolf.starmap.transfer.Dto;
 
-import javax.persistence.*;
-
-import static javax.persistence.GenerationType.IDENTITY;
-
-@Entity
-@Table(name = "_HH_ATTACKRESULT", catalog = "C3")
-public class AttackResultPOJO extends Pojo {
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "ID")
+public class AttackVarsDTO extends Dto {
 	private Long id;
-
-	@Column(name = "Season")
-	private Long season;
-
-	@Column(name = "Round")
-	private Long round;
-
-	@Column(name = "AttackID")
 	private Long attackID;
+	private String var;
+	private String value;
 
-	@Column(name = "FactionID_Winner")
-	private Long factionID_Winner;
-
-	@Column(name = "Remarks")
-	private String remarks;
-
+	@SuppressWarnings("unused")
 	public Long getId() {
 		return id;
 	}
 
+	@SuppressWarnings("unused")
 	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public Long getSeason() {
-		return season;
-	}
-
-	public void setSeason(Long season) {
-		this.season = season;
-	}
-
-	public Long getRound() {
-		return round;
-	}
-
-	public void setRound(Long round) {
-		this.round = round;
-	}
-
+	@SuppressWarnings("unused")
 	public Long getAttackID() {
 		return attackID;
 	}
 
+	@SuppressWarnings("unused")
 	public void setAttackID(Long attackID) {
 		this.attackID = attackID;
 	}
 
-	public Long getFactionID_Winner() {
-		return factionID_Winner;
+	@SuppressWarnings("unused")
+	public String getVar() {
+		return var;
 	}
 
-	public void setFactionID_Winner(Long factionID_Winner) {
-		this.factionID_Winner = factionID_Winner;
+	@SuppressWarnings("unused")
+	public void setVar(String var) {
+		this.var = var;
 	}
 
-	public String getRemarks() {
-		return remarks;
+	@SuppressWarnings("unused")
+	public String getValue() {
+		return value;
 	}
 
-	public void setRemarks(String remarks) {
-		this.remarks = remarks;
+	@SuppressWarnings("unused")
+	public void setValue(String value) {
+		this.value = value;
 	}
 }

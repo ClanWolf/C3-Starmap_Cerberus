@@ -33,6 +33,7 @@ import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -121,6 +122,10 @@ public class RolePlayStoryPOJO extends Pojo {
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "Var7ID")
 	private RolePlayStoryVar7POJO Var7ID;
+
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "StoryID")
+	private AttackPOJO attack;
 
 //	@ManyToOne(fetch = FetchType.EAGER)
 //	@JoinColumn(name = "NextStepID")
@@ -504,6 +509,14 @@ public class RolePlayStoryPOJO extends Pojo {
 
 	public void setVar7ID(RolePlayStoryVar7POJO var7ID) {
 		Var7ID = var7ID;
+	}
+
+	public AttackPOJO getAttack() {
+		return attack;
+	}
+
+	public void setAttack(AttackPOJO attack) {
+		this.attack = attack;
 	}
 
 	@Override

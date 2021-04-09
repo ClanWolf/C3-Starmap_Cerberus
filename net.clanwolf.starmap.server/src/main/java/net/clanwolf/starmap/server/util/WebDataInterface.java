@@ -190,6 +190,10 @@ public class WebDataInterface {
 			//sb.append("         A.FactionID_Attacker       AS attacker,               \r\n");
 			sb.append("         A.FactionID_Defender       AS defender,               \r\n");
 			sb.append("         A.JumpshipID               AS jumpship                \r\n");
+			sb.append("         A.FactionID_Winner         AS winner                  \r\n");
+			sb.append("         A.StoryID                  AS story                   \r\n");
+			sb.append("         A.CharacterID              AS char                    \r\n");
+			sb.append("         A.Remarks                  AS remarks                 \r\n");
 			sb.append("FROM     _HH_ATTACK                 A;");
 			selects.put(SystemListTypes.HH_Attacks.name(), sb.toString());
 
@@ -274,21 +278,8 @@ public class WebDataInterface {
 							ss.setType(rs.getString("type"));
 							ss.setSystemImageName(rs.getString("systemImageName"));
 							ss.setStarSystemDataId(rs.getLong("starsystemdataid"));
-
 							ss.setDescription(rs.getString("description"));
 							ss.setCaptial(rs.getBoolean("capital"));
-
-//							HashMap<String, String> maps = new HashMap<>();
-//							maps.put("s1map1", rs.getString("s1map1"));
-//							maps.put("s1map2", rs.getString("s1map2"));
-//							maps.put("s1map3", rs.getString("s1map3"));
-//							maps.put("s2map1", rs.getString("s2map1"));
-//							maps.put("s2map2", rs.getString("s2map2"));
-//							maps.put("s2map3", rs.getString("s2map3"));
-//							maps.put("s3map1", rs.getString("s3map1"));
-//							maps.put("s3map2", rs.getString("s3map2"));
-//							maps.put("s3map3", rs.getString("s3map3"));
-//							ss.setMaps(maps);
 
 							universe.starSystems.put(ss.getId(), ss);
 						}
@@ -306,8 +297,12 @@ public class WebDataInterface {
 							a.setStarSystemDataID(rs.getLong("starsystemdata"));
 							a.setAttackTypeID(rs.getLong("attackType"));
 							a.setAttackedFromStarSystemID(rs.getLong("attackedfromstarsystem"));
-							a.setfactionID_Defender(rs.getLong("defender"));
+							a.setFactionID_Defender(rs.getLong("defender"));
 							a.setJumpshipID(rs.getLong("jumpship"));
+							a.setFactionID_Winner(rs.getLong("winner"));
+							a.setStoryID(rs.getLong("story"));
+							a.setCharacterID(rs.getLong("char"));
+							a.setRemarks(rs.getString("remarks"));
 
 							universe.attacks.add(a);
 						}

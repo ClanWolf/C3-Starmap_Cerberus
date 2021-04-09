@@ -24,45 +24,68 @@
  * Copyright (c) 2001-2021, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.server.persistence.daos.jpadaoimpl;
+package net.clanwolf.starmap.server.persistence.pojos;
 
-import net.clanwolf.starmap.server.persistence.daos.GenericDAO;
-import net.clanwolf.starmap.server.persistence.pojos.AttackResultPOJO;
+import net.clanwolf.starmap.server.persistence.Pojo;
 
-/**
- * A data access object (DAO) providing persistence and search support for UserPOJO entities.
- * Transaction control of the save(), update() and delete() operations must be handled externally
- * by senders of these methods or must be manually added to each of these methods for data to be
- * persisted to the JPA datastore.
- */
-public class AttackResultDAO extends GenericDAO {
+import javax.persistence.*;
 
-	private static AttackResultDAO instance;
+import static javax.persistence.GenerationType.IDENTITY;
 
-	public static AttackResultDAO getInstance() {
-		if (instance == null) {
-			instance = new AttackResultDAO();
-			instance.className = "AttackResultPOJO";
-		}
-		return instance;
+@Entity
+@Table(name = "_HH_ATTACKVARS", catalog = "C3")
+public class AttackVarsPOJO extends Pojo {
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "ID")
+	private Long id;
+
+	@Column(name = "AttackID")
+	private Long attackID;
+
+	@Column(name = "Var")
+	private String var;
+
+	@Column(name = "Value")
+	private String value;
+
+	@SuppressWarnings("unused")
+	public Long getId() {
+		return id;
 	}
 
-	private AttackResultDAO() {
-		// Empty constructor
+	@SuppressWarnings("unused")
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	@Override
-	public void delete(Long userID, Object entity) {
-		super.delete(userID, entity, ((AttackResultPOJO) entity).getId());
+	@SuppressWarnings("unused")
+	public Long getAttackID() {
+		return attackID;
 	}
 
-	@Override
-	public AttackResultPOJO update(Long userID, Object entity) {
-		return (AttackResultPOJO) super.update(userID, entity);
+	@SuppressWarnings("unused")
+	public void setAttackID(Long attackID) {
+		this.attackID = attackID;
 	}
 
-	@Override
-	public AttackResultPOJO findById(Long userID, Long id) {
-		return (AttackResultPOJO) super.findById(userID, AttackResultPOJO.class, id);
+	@SuppressWarnings("unused")
+	public String getVar() {
+		return var;
+	}
+
+	@SuppressWarnings("unused")
+	public void setVar(String var) {
+		this.var = var;
+	}
+
+	@SuppressWarnings("unused")
+	public String getValue() {
+		return value;
+	}
+
+	@SuppressWarnings("unused")
+	public void setValue(String value) {
+		this.value = value;
 	}
 }

@@ -8,7 +8,6 @@
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
 		<class>net.clanwolf.starmap.server.persistence.pojos.AttackPOJO</class>
-		<class>net.clanwolf.starmap.server.persistence.pojos.AttackResultPOJO</class>
 		<class>net.clanwolf.starmap.server.persistence.pojos.JumpshipPOJO</class>
 		<class>net.clanwolf.starmap.server.persistence.pojos.RolePlayStoryPOJO</class>
 		<class>net.clanwolf.starmap.server.persistence.pojos.RolePlayCharacterPOJO</class>

@@ -48,7 +48,6 @@ public class StarSystemDTO extends Dto {
 	private String veternacy;
 	private String type;
 	private String systemImageName;
-//	private HashMap<String, String> maps;
 	private String description;
 	private Boolean captial;
 
@@ -141,16 +140,6 @@ public class StarSystemDTO extends Dto {
 	public void setType(String type) {
 		this.type = type;
 	}
-
-//	@SuppressWarnings("unused")
-//	public HashMap<String, String> getMaps() {
-//		return maps;
-//	}
-
-//	@SuppressWarnings("unused")
-//	public void setMaps(HashMap<String, String> maps) {
-//		this.maps = maps;
-//	}
 
 	@SuppressWarnings("unused")
 	public String getStarClass() {
