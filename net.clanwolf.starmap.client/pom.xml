@@ -120,6 +120,13 @@
 			<scope>compile</scope>
 		</dependency>
 
+		<!-- https://github.com/migzai/irc-api -->
+		<dependency>
+			<groupId>com.ircclouds.irc</groupId>
+			<artifactId>irc-api</artifactId>
+			<version>1.0-0011</version>
+		</dependency>
+
 <!--		<dependency>-->
 <!--			<groupId>de.dfki.mary</groupId>-->
 <!--			<artifactId>voice-cmu-slt-hsmm</artifactId>-->
