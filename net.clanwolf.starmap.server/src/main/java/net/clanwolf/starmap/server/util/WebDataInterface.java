@@ -189,10 +189,10 @@ public class WebDataInterface {
 			sb.append("         A.AttackTypeID             AS attacktype,             \r\n");
 			//sb.append("         A.FactionID_Attacker       AS attacker,               \r\n");
 			sb.append("         A.FactionID_Defender       AS defender,               \r\n");
-			sb.append("         A.JumpshipID               AS jumpship                \r\n");
-			sb.append("         A.FactionID_Winner         AS winner                  \r\n");
-			sb.append("         A.StoryID                  AS story                   \r\n");
-			sb.append("         A.CharacterID              AS char                    \r\n");
+			sb.append("         A.JumpshipID               AS jumpship,               \r\n");
+			sb.append("         A.FactionID_Winner         AS winner,                 \r\n");
+			sb.append("         A.StoryID                  AS story,                  \r\n");
+			sb.append("         A.CharacterID              AS rpChar,                 \r\n");
 			sb.append("         A.Remarks                  AS remarks                 \r\n");
 			sb.append("FROM     _HH_ATTACK                 A;");
 			selects.put(SystemListTypes.HH_Attacks.name(), sb.toString());
@@ -301,7 +301,7 @@ public class WebDataInterface {
 							a.setJumpshipID(rs.getLong("jumpship"));
 							a.setFactionID_Winner(rs.getLong("winner"));
 							a.setStoryID(rs.getLong("story"));
-							a.setCharacterID(rs.getLong("char"));
+							a.setCharacterID(rs.getLong("rpChar"));
 							a.setRemarks(rs.getString("remarks"));
 
 							universe.attacks.add(a);

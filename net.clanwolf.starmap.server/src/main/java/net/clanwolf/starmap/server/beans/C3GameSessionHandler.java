@@ -151,60 +151,105 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 	private void saveUser(PlayerSession session, GameState state) {
 		UserDAO dao = UserDAO.getInstance();
-		EntityManagerHelper.beginTransaction(getC3UserID(session));
-		
-		UserPOJO user = (UserPOJO)state.getObject();
-		user.setLastModified(new Timestamp(System.currentTimeMillis()));
-		if(user.getUserId() == null) {
-			dao.save(getC3UserID(session), state.getObject());
-		} else {
-			dao.update(getC3UserID(session), state.getObject());
-		}
+		GameState response = new GameState(GAMESTATEMODES.USER_SAVE);
 
-		EntityManagerHelper.commit(getC3UserID(session));
+		try {
+			EntityManagerHelper.beginTransaction(getC3UserID(session));
+
+			UserPOJO user = (UserPOJO)state.getObject();
+			user.setLastModified(new Timestamp(System.currentTimeMillis()));
+			if(user.getUserId() == null) {
+				dao.save(getC3UserID(session), state.getObject());
+			} else {
+				dao.update(getC3UserID(session), state.getObject());
+			}
+
+			EntityManagerHelper.commit(getC3UserID(session));
+
+			response.addObject(null);
+			response.setAction_successfully(Boolean.TRUE);
+		} catch (RuntimeException re) {
+			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
+
+			response.addObject(re.getMessage());
+			response.setAction_successfully(Boolean.FALSE);
+
+			C3Logger.error("User save", re);
+		} finally {
+			C3GameSessionHandler.sendNetworkEvent(session, response);
+		}
 	}
 
 	private void saveAttack(PlayerSession session, GameState state) {
 		AttackDAO dao = AttackDAO.getInstance();
-		EntityManagerHelper.beginTransaction(getC3UserID(session));
+		GameState response = new GameState(GAMESTATEMODES.ATTACK_SAVE);
 
-		AttackPOJO attack = (AttackPOJO) state.getObject();
-		C3Logger.info("Saving attack: " + attack);
-		C3Logger.info("-- Attacker (jumpshipID): " + attack.getJumpshipID());
-		C3Logger.info("-- Attacking from: " + attack.getAttackedFromStarSystemID());
-		C3Logger.info("-- Attacked system: " + attack.getStarSystemID());
-		dao.save(getC3UserID(session), attack);
+		try {
+			EntityManagerHelper.beginTransaction(getC3UserID(session));
 
-		EntityManagerHelper.commit(getC3UserID(session));
+			AttackPOJO attack = (AttackPOJO) state.getObject();
+			C3Logger.info("Saving attack: " + attack);
+			C3Logger.info("-- Attacker (jumpshipID): " + attack.getJumpshipID());
+			C3Logger.info("-- Attacking from: " + attack.getAttackedFromStarSystemID());
+			C3Logger.info("-- Attacked system: " + attack.getStarSystemID());
+			dao.save(getC3UserID(session), attack);
+
+			EntityManagerHelper.commit(getC3UserID(session));
+			response.addObject(null);
+			response.setAction_successfully(Boolean.TRUE);
+		} catch (RuntimeException re) {
+			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
+
+			response.addObject(re.getMessage());
+			response.setAction_successfully(Boolean.FALSE);
+
+			C3Logger.error("Attack save", re);
+		} finally {
+			C3GameSessionHandler.sendNetworkEvent(session, response);
+		}
 	}
 
 	private void saveRoute(PlayerSession session, GameState state) {
 
 		RoutePointDAO dao = RoutePointDAO.getInstance();
-		EntityManagerHelper.beginTransaction(getC3UserID(session));
+		GameState response = new GameState(GAMESTATEMODES.ROUTE_SAVE);
 
-		ArrayList<RoutePointPOJO> list = (ArrayList<RoutePointPOJO>) state.getObject();
+		try {
+			EntityManagerHelper.beginTransaction(getC3UserID(session));
+			ArrayList<RoutePointPOJO> list = (ArrayList<RoutePointPOJO>) state.getObject();
+			dao.deleteByJumpshipId(getC3UserID(session), ((RoutePointPOJO)list.get(0)).getJumpshipId());
 
-		dao.deleteByJumpshipId(getC3UserID(session), ((RoutePointPOJO)list.get(0)).getJumpshipId());
+			Iterator<RoutePointPOJO> iter = list.iterator();
+			while(iter.hasNext()) {
+				RoutePointPOJO routePoint = (RoutePointPOJO) iter.next();
+				routePoint.setId(null);
 
-		Iterator<RoutePointPOJO> iter = list.iterator();
-		while(iter.hasNext()) {
-			RoutePointPOJO routePoint = (RoutePointPOJO) iter.next();
-			routePoint.setId(null);
+				C3Logger.info("Saving: " + routePoint);
+				dao.save(getC3UserID(session), routePoint);
+			}
 
-			C3Logger.info("Saving: " + routePoint);
-			dao.save(getC3UserID(session), routePoint);
+			JumpshipDAO jsDao = JumpshipDAO.getInstance();
+			jsDao.setAttackReady(getC3UserID(session), ((RoutePointPOJO)list.get(0)).getJumpshipId(), false);
+
+			EntityManagerHelper.commit(getC3UserID(session));
+
+			response.addObject(null);
+			response.setAction_successfully(Boolean.TRUE);
+		} catch (RuntimeException re) {
+			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
+
+			response.addObject(re.getMessage());
+			response.setAction_successfully(Boolean.FALSE);
+
+			C3Logger.error("Route save", re);
+		} finally {
+			C3GameSessionHandler.sendNetworkEvent(session, response);
 		}
-
-		JumpshipDAO jsDao = JumpshipDAO.getInstance();
-		jsDao.setAttackReady(getC3UserID(session), ((RoutePointPOJO)list.get(0)).getJumpshipId(), false);
-
-		EntityManagerHelper.commit(getC3UserID(session));
 	}
 
 	private void savePrivileges(PlayerSession session, GameState state) {
 		UserDAO dao = UserDAO.getInstance();
-		GameState response = new GameState(GAMESTATEMODES.ROLEPLAY_DELETE_STORY);
+		GameState response = new GameState(GAMESTATEMODES.PRIVILEGE_SAVE);
 		try {
 			EntityManagerHelper.beginTransaction(getC3UserID(session));
 			ArrayList<UserPOJO> list = (ArrayList<UserPOJO>) state.getObject();
@@ -226,17 +271,13 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			response.addObject(null);
 			response.setAction_successfully(Boolean.TRUE);
 		} catch (RuntimeException re) {
-			/* if a error occurs, we must do a rollback */
 			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
 
 			response.addObject(re.getMessage());
 			response.setAction_successfully(Boolean.FALSE);
 
-			C3Logger.error("saveRolePlayStory",re);
+			C3Logger.error("Privilege save", re);
 		} finally {
-			/* and now we send a message to the client */
-			//			Event e = Events.networkEvent(response);
-			//			session.onEvent(e);
 			C3GameSessionHandler.sendNetworkEvent(session, response);
 		}
 	}
