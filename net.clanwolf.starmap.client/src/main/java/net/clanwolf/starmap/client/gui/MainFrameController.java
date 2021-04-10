@@ -43,6 +43,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import net.clanwolf.starmap.client.gui.panes.chat.ChatPane;
 import net.clanwolf.starmap.client.gui.panes.security.AdminPane;
 import net.clanwolf.starmap.client.action.*;
 import net.clanwolf.starmap.client.enums.C3MESSAGERESULTS;
@@ -98,9 +99,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private LoginPane loginPane = null;
 	private UserInfoPane userInfoPane = null;
 	private MapPane mapPane = null;
+	private ChatPane chatPane = null;
 	private SettingsPane settingsPane = null;
-	// private CharacterPane characterPane = null;
-	private StoryEditorPane characterPane = null;
 	private RolePlayBasicPane rolePlayPane = null;
 	// private InfoPane infoPane = null;
 	private ConfirmAppClosePane confirmAppClosePane = null;
@@ -118,8 +118,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private int menuIndicatorPos = 0;
 	private boolean adminPaneOpen = false;
 
-	private final Image imageAdminButtonOff = new Image(getClass().getResourceAsStream("/images/buttons/adminOff.png"));
-	private final Image imageAdminButtonOn = new Image(getClass().getResourceAsStream("/images/buttons/adminOn.png"));
+	private final Image imageAdminButtonOff = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/adminOff.png")));
+	private final Image imageAdminButtonOn = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/adminOn.png")));
 
 	@FXML
 	private Label statuslabel;
@@ -174,7 +174,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	@FXML
 	private Button mapButton;
 	@FXML
-	private Button characterButton;
+	private Button chatButton;
+//	@FXML
+//	private Button characterButton;
 	@FXML
 	private Button industryButton;
 	@FXML
@@ -266,10 +268,16 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	}
 
 	@FXML
-	private void handleCharacterButtonMouseEventEnter() {
-		setStatusText(Internationalization.getString("app_character_infotext"), false);
+	private void handleChatButtonMouseEventEnter() {
+		setStatusText(Internationalization.getString("app_chat_infotext"), false);
 		Tools.playButtonHoverSound();
 	}
+
+//	@FXML
+//	private void handleCharacterButtonMouseEventEnter() {
+//		setStatusText(Internationalization.getString("app_character_infotext"), false);
+//		Tools.playButtonHoverSound();
+//	}
 
 	@FXML
 	private void handleStoryEditorButtonMouseEventEnter() {
@@ -605,6 +613,18 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				moveMenuIndicator(menuIndicatorPos);
 				adminPaneOpen = false;
 			}
+			// CHAT
+			if (bn.equals(chatButton)) {
+				C3Logger.info("Chat opened by user.");
+				setStatusText(Internationalization.getString("app_chat_infotext").replace("%20", " ") + ".", false);
+				targetPane = chatPane;
+				if (!adminMenuActive) {
+					showMenuIndicator(true);
+				}
+				menuIndicatorPos = 233;
+				moveMenuIndicator(menuIndicatorPos);
+				adminPaneOpen = false;
+			}
 			// EXIT
 			if (bn.equals(exitButton)) {
 				// C3Logger.info("Application close requested by user.");
@@ -630,9 +650,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			}
 			// STORY EDITOR
 			if (bn.equals(storyEditorButton)) {
-				C3Logger.info("Character opened by user.");
-				setStatusText(Internationalization.getString("app_settings_infotext").replace("%20", " ") + ".", false);
-				//targetPane = characterPane;
+				C3Logger.info("Sory editor opened by user.");
+				setStatusText(Internationalization.getString("app_storyeditor_infotext").replace("%20", " ") + ".", false);
 				adminPaneOpen = true;
 				openEditorPane = true;
 			}
@@ -702,7 +721,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		} else {
 			rolePlayButton.setVisible(true);
 			mapButton.setVisible(true);
-			characterButton.setVisible(true);
+			chatButton.setVisible(true);
 			industryButton.setVisible(true);
 			pluginsButton.setVisible(true);
 			if (!adminPaneOpen && Nexus.getCurrentlyOpenedPane() != null) {
@@ -735,7 +754,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					// Column 1
 					rolePlayButton.setLayoutX(newX1);
 					mapButton.setLayoutX(newX1);
-					characterButton.setLayoutX(newX1);
+					chatButton.setLayoutX(newX1);
 					industryButton.setLayoutX(newX1);
 					pluginsButton.setLayoutX(newX1);
 
@@ -751,7 +770,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			if (adminMenuActive) {
 				rolePlayButton.setVisible(false);
 				mapButton.setVisible(false);
-				characterButton.setVisible(false);
+				chatButton.setVisible(false);
 				industryButton.setVisible(false);
 				pluginsButton.setVisible(false);
 			} else {
@@ -1004,12 +1023,6 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		settingsPane.setCacheHint(CacheHint.SPEED);
 		settingsPane.getController().addActionCallBackListeners();
 
-		//Stage stage = (Stage) rootAnchorPane.getScene().getWindow();
-		//characterPane = new StoryEditorPane(stage);
-		//characterPane.setCache(true);
-		//characterPane.setCacheHint(CacheHint.SPEED);
-		//characterPane.getController().addActionCallBackListeners();
-
 		confirmAppClosePane = new ConfirmAppClosePane();
 		confirmAppClosePane.setCache(true);
 		confirmAppClosePane.setCacheHint(CacheHint.SPEED);
@@ -1025,6 +1038,12 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		mapPane.setShowsPlanetRotation(false);
 		mapPane.setCacheHint(CacheHint.SPEED);
 		mapPane.getController().addActionCallBackListeners();
+
+		chatPane = new ChatPane();
+		chatPane.setShowsMouseFollow(false);
+		chatPane.setShowsPlanetRotation(false);
+		chatPane.setCacheHint(CacheHint.SPEED);
+		chatPane.getController().addActionCallBackListeners();
 
 		rolePlayPane = new RolePlayBasicPane();
 		rolePlayPane.setShowsMouseFollow(false);
@@ -1049,7 +1068,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 		rolePlayButton.setVisible(true);
 		mapButton.setVisible(true);
-		characterButton.setVisible(true);
+		chatButton.setVisible(true);
 		industryButton.setVisible(true);
 		pluginsButton.setVisible(true);
 
@@ -1058,9 +1077,6 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		renameMeButton3.setVisible(false);
 		renameMeButton4.setVisible(false);
 		renameMeButton5.setVisible(false);
-
-		// Disabled
-		// characterPane = new CharacterPane();
 
 		showMenuIndicator(false);
 
@@ -1203,7 +1219,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			// Column 1
 			rolePlayButton.setDisable(Nexus.getCurrentChar().getStory() == null);
 			mapButton.setDisable(false);
-			characterButton.setDisable(true);
+			chatButton.setDisable(false);
 			industryButton.setDisable(true);
 			pluginsButton.setDisable(true);
 
@@ -1229,7 +1245,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			// Column 1
 			rolePlayButton.setDisable(true);
 			mapButton.setDisable(true);
-			characterButton.setDisable(true);
+			chatButton.setDisable(true);
 			industryButton.setDisable(true);
 			pluginsButton.setDisable(true);
 

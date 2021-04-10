@@ -100,7 +100,7 @@
                 <URL value="@../styles/MainFrameStyle.css" />
             </stylesheets>
         </Button>
-        <Button id="btn_dark-blue" fx:id="characterButton" layoutX="68.0" layoutY="392.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onMouseEntered="#handleCharacterButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" text="" textAlignment="CENTER">
+        <Button id="btn_dark-blue" fx:id="chatButton" layoutX="68.0" layoutY="392.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleChatButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" styleClass="chatButton" text="" textAlignment="CENTER">
             <stylesheets>
                 <URL value="@../styles/MainFrameStyle.css" />
             </stylesheets>

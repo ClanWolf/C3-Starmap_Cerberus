@@ -311,6 +311,20 @@
   -fx-background-position: center;
 }
 
+.chatButton {
+  -fx-background-image: url("../images/buttons/chat.png");
+  -fx-background-repeat: no-repeat;
+  -fx-background-size: 32, 32;
+  -fx-background-position: center;
+}
+
+.chatButton:hover {
+  -fx-background-image: url("../images/buttons/chat_hover.png");
+  -fx-background-repeat: no-repeat;
+  -fx-background-size: 32, 32;
+  -fx-background-position: center;
+}
+
 .endroundButton {
   -fx-background-image: url("../images/buttons/endround.png");
   -fx-background-repeat: no-repeat;
