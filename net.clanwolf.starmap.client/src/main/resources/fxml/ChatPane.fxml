@@ -10,30 +10,30 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane id="LoginPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.chat.ChatPaneController">
+<AnchorPane id="ChatPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.chat.ChatPaneController">
 	<children>
-      <BorderPane layoutX="63.0" layoutY="15.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="472.0" prefWidth="776.0">
+      <BorderPane layoutX="63.0" layoutY="15.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="472.0" prefWidth="776.0" style="-fx-border-width: 0; -fx-background-color: transparent;" stylesheets="@../styles/MainFrameStyle.css">
          <right>
-            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="220.0" stylesheets="@../styles/MainFrameStyle.css" BorderPane.alignment="CENTER">
+            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="220.0" style="-fx-border-width: 0; -fx-background-color: transparent;" stylesheets="@../styles/MainFrameStyle.css" BorderPane.alignment="CENTER">
                <children>
-                  <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" stylesheets="@../styles/MainFrameStyle.css" VBox.vgrow="ALWAYS">
+                  <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-border-width: 0; -fx-background-color: transparent;" stylesheets="@../styles/MainFrameStyle.css" VBox.vgrow="ALWAYS">
                      <content>
-                        <ListView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" stylesheets="@../styles/MainFrameStyle.css" />
+                        <ListView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-border-width: 0; -fx-background-color: transparent;" styleClass="contentTextAreaEmpty" stylesheets="@../styles/MainFrameStyle.css" />
                      </content>
                   </ScrollPane>
                </children>
             </VBox>
          </right>
          <center>
-            <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+            <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" style="-fx-border-width: 0;" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
               <tabs>
                 <Tab text="Untitled Tab 1">
                      <content>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                        <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-border-width: 0;" styleClass="contentTabAnchorPane" stylesheets="@../styles/MainFrameStyle.css">
                            <children>
-                              <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" style="-fx-border-width: 0;" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <content>
-                                    <TextArea maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" />
+                                    <TextArea maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" style="-fx-border-width: 0; -fx-background-color: rgba(0,168,355,0.7);" styleClass="contentTextAreaEmpty" stylesheets="@../styles/MainFrameStyle.css" />
                                  </content>
                               </ScrollPane>
                            </children>

@@ -539,14 +539,21 @@
 
 .text-area .scroll-pane {
   -fx-background-color: transparent;
+  -fx-control-inner-background: transparent;
 }
 
 .text-area .scroll-pane .viewport{
   -fx-background-color: transparent;
+  -fx-control-inner-background: transparent;
 }
 
 .text-area .scroll-pane .content{
   -fx-background-color: transparent;
+  -fx-control-inner-background: transparent;
+}
+
+.scroll-pane > .viewport {
+   -fx-background-color: transparent;
 }
 
 /* Web View Area
