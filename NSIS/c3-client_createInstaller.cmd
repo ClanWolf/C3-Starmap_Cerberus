@@ -54,29 +54,29 @@ ECHO *******************
 ECHO *******************
 "C:\Program Files (x86)\WinSCP\winscp.com" /ini=nul /script=C:\C3\projects\C3-Starmap_Cerberus\NSIS\scripts\upload_manual.script
 
-:REQUEST_INSTALLER
-ECHO ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-ECHO Upload Client installer? (y/n)
-SET /p chc=
-IF '%chc%'=='y' GOTO UPLOADINSTALLER
-IF '%chc%'=='n' GOTO REQUEST_SERVER
-GOTO REQUEST_INSTALLER
-
-:UPLOADINSTALLER
-REM Upload installer
-"C:\Program Files (x86)\WinSCP\winscp.com" /ini=nul /script=C:\C3\projects\C3-Starmap_Cerberus\NSIS\scripts\upload_installer.script
-
 :REQUEST_SERVER
 ECHO ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ECHO Upload Server build? (y/n)
 SET /p chc1=
 IF '%chc1%'=='y' GOTO UPLOADSERVER
-IF '%chc1%'=='n' GOTO REQUEST_IRCBOT
+IF '%chc1%'=='n' GOTO REQUEST_INSTALLER
 GOTO REQUEST_SERVER
 
 :UPLOADSERVER
 REM Upload server
 "C:\Program Files (x86)\WinSCP\winscp.com" /ini=nul /script=C:\C3\projects\C3-Starmap_Cerberus\NSIS\scripts\upload_server.script
+
+:REQUEST_INSTALLER
+ECHO ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ECHO Upload Client installer? (y/n)
+SET /p chc=
+IF '%chc%'=='y' GOTO UPLOADINSTALLER
+IF '%chc%'=='n' GOTO REQUEST_IRCBOT
+GOTO REQUEST_INSTALLER
+
+:UPLOADINSTALLER
+REM Upload installer
+"C:\Program Files (x86)\WinSCP\winscp.com" /ini=nul /script=C:\C3\projects\C3-Starmap_Cerberus\NSIS\scripts\upload_installer.script
 
 :REQUEST_IRCBOT
 ECHO ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

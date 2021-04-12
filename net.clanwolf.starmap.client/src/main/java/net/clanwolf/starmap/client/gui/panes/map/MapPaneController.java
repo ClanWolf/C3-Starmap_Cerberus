@@ -51,6 +51,7 @@ import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
+import net.clanwolf.starmap.client.gui.panes.chat.ChatPane;
 import net.clanwolf.starmap.client.gui.panes.map.tools.VoronoiDelaunay;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.roleplay.BORolePlayChooser;
@@ -971,7 +972,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 			case TERMINAL_COMMAND:
 				String com = o.getText();
-				handleCommand(com);
+				if (Nexus.getCurrentlyOpenedPane() instanceof MapPane) {
+					handleCommand(com);
+				}
 				break;
 
 			default:

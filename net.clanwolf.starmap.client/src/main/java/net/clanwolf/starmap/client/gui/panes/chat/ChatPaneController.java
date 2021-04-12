@@ -26,18 +26,23 @@
  */
 package net.clanwolf.starmap.client.gui.panes.chat;
 
-import javafx.application.Platform;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
-import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
-import net.clanwolf.starmap.client.process.universe.BOJumpship;
-import net.clanwolf.starmap.client.process.universe.BOStarSystem;
+import net.clanwolf.starmap.client.net.irc.IRCClient;
+import net.clanwolf.starmap.client.net.irc.MessageActionObject;
+import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.logging.C3Logger;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ChatPaneController extends AbstractC3Controller implements ActionCallBackListener {
+
+	private IRCClient ircClient;
+	private List<String> userList = new ArrayList<>();
 
 	@Override
 	public void setStrings() {
@@ -47,6 +52,33 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 	@Override
 	public void addActionCallBackListeners() {
 		ActionManager.addActionCallbackListener(ACTIONS.CHANGE_LANGUAGE, this);
+		ActionManager.addActionCallbackListener(ACTIONS.PANE_DESTROY_CURRENT, this);
+		ActionManager.addActionCallbackListener(ACTIONS.PANE_CREATION_BEGINS, this);
+		ActionManager.addActionCallbackListener(ACTIONS.PANE_CREATION_FINISHED, this);
+		ActionManager.addActionCallbackListener(ACTIONS.LOGON_FINISHED_SUCCESSFULL, this);
+		ActionManager.addActionCallbackListener(ACTIONS.TERMINAL_COMMAND, this);
+
+		ActionManager.addActionCallbackListener(ACTIONS.IRC_USER_JOINED, this);
+		ActionManager.addActionCallbackListener(ACTIONS.IRC_USER_LEFT, this);
+		ActionManager.addActionCallbackListener(ACTIONS.IRC_ERROR, this);
+		ActionManager.addActionCallbackListener(ACTIONS.IRC_USER_JOINED, this);
+		ActionManager.addActionCallbackListener(ACTIONS.IRC_USER_PART, this);
+		ActionManager.addActionCallbackListener(ACTIONS.IRC_USER_KICKED, this);
+		ActionManager.addActionCallbackListener(ACTIONS.IRC_USER_QUIT, this);
+		ActionManager.addActionCallbackListener(ACTIONS.IRC_USER_NICKCHANGE, this);
+		ActionManager.addActionCallbackListener(ACTIONS.IRC_MESSAGE_IN_GENERAL, this);
+		ActionManager.addActionCallbackListener(ACTIONS.IRC_MESSAGE_IN_CHANNEL, this);
+		ActionManager.addActionCallbackListener(ACTIONS.IRC_MESSAGE_IN_PRIVATE, this);
+	}
+
+	private void handleCommand(String com) {
+		C3Logger.info("Sending to IRC: " + com);
+		MessageActionObject mo = new MessageActionObject();
+		// TODO: Is there a different target?
+		mo.setSource("");
+		mo.setTarget("");
+		mo.setMessage(com);
+		ActionManager.getAction(ACTIONS.IRC_SEND_MESSAGE).execute(mo);
 	}
 
 	/**
@@ -73,11 +105,58 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 				break;
 
 			case LOGON_FINISHED_SUCCESSFULL:
+				ircClient = new IRCClient(); // Connects in constructor
+				break;
+
+			case IRC_SEND_MESSAGE:
+
+				break;
+
+			case IRC_USER_JOINED:
+
+				break;
+
+			case IRC_USER_LEFT:
+
+				break;
+
+			case IRC_ERROR:
+
+				break;
+
+			case IRC_USER_PART:
+
+				break;
+
+			case IRC_USER_KICKED:
+
+				break;
+
+			case IRC_USER_QUIT:
+
+				break;
+
+			case IRC_USER_NICKCHANGE:
+
+				break;
+
+			case IRC_MESSAGE_IN_PRIVATE:
+
+				break;
+
+			case IRC_MESSAGE_IN_GENERAL:
+
+				break;
+
+			case IRC_MESSAGE_IN_CHANNEL:
+
 				break;
 
 			case TERMINAL_COMMAND:
 				String com = o.getText();
-//				handleCommand(com);
+				if (Nexus.getCurrentlyOpenedPane() instanceof ChatPane) {
+					handleCommand(com);
+				}
 				break;
 
 			default:

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.net.URL?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
@@ -9,41 +11,74 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane id="ChatPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.chat.ChatPaneController">
 	<children>
+      <Label alignment="BOTTOM_LEFT" layoutX="72.0" layoutY="24.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true" opacity="0.2" prefHeight="426.0" prefWidth="500.0" styleClass="contentLabelSideImageSatelite" visible="true">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Label>
       <BorderPane layoutX="63.0" layoutY="15.0" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="472.0" prefWidth="776.0" style="-fx-border-width: 0; -fx-background-color: transparent;" stylesheets="@../styles/MainFrameStyle.css">
-         <right>
-            <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="220.0" style="-fx-border-width: 0; -fx-background-color: transparent;" stylesheets="@../styles/MainFrameStyle.css" BorderPane.alignment="CENTER">
-               <children>
-                  <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-border-width: 0; -fx-background-color: transparent;" stylesheets="@../styles/MainFrameStyle.css" VBox.vgrow="ALWAYS">
-                     <content>
-                        <ListView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-border-width: 0; -fx-background-color: transparent;" styleClass="contentTextAreaEmpty" stylesheets="@../styles/MainFrameStyle.css" />
-                     </content>
-                  </ScrollPane>
-               </children>
-            </VBox>
-         </right>
          <center>
-            <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" style="-fx-border-width: 0;" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
-              <tabs>
-                <Tab text="Untitled Tab 1">
-                     <content>
-                        <AnchorPane prefHeight="200.0" prefWidth="200.0" style="-fx-border-width: 0;" styleClass="contentTabAnchorPane" stylesheets="@../styles/MainFrameStyle.css">
-                           <children>
-                              <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" style="-fx-border-width: 0;" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                 <content>
-                                    <TextArea maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" style="-fx-border-width: 0; -fx-background-color: rgba(0,168,355,0.7);" styleClass="contentTextAreaEmpty" stylesheets="@../styles/MainFrameStyle.css" />
-                                 </content>
-                              </ScrollPane>
-                           </children>
-                        </AnchorPane>
-                     </content>
-                  </Tab>
-              </tabs>
-            </TabPane>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" stylesheets="@../styles/MainFrameStyle.css" BorderPane.alignment="CENTER">
+               <children>
+                  <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="494.0" style="-fx-border-width: 0;" stylesheets="@../styles/MainFrameStyle.css" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="0.0">
+                    <tabs>
+                      <Tab closable="false" text="#c3.clanwolf.net">
+                           <content>
+                              <AnchorPane prefHeight="200.0" prefWidth="200.0" stylesheets="@../styles/MainFrameStyle.css">
+                                 <children>
+                                    <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: transparent;" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <content>
+                                          <TextArea editable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: rgba(53, 89, 119, 0.2);" stylesheets="@../styles/MainFrameStyle.css" />
+                                       </content>
+                                    </ScrollPane>
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </Tab>
+                    </tabs>
+                  </TabPane>
+               </children>
+            </AnchorPane>
          </center>
+         <right>
+            <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefWidth="220.0" style="-fx-border-width: 0; -fx-background-color: transparent;" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-border-width: 1; -fx-background-color: transparent;" stylesheets="@../styles/MainFrameStyle.css" VBox.vgrow="ALWAYS">
+                           <content>
+                              <ListView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-border-width: 0; -fx-background-color: rgba(53, 89, 119, 0.3);" stylesheets="@../styles/MainFrameStyle.css">
+                                 <opaqueInsets>
+                                    <Insets />
+                                 </opaqueInsets>
+                              </ListView>
+                           </content>
+                        </ScrollPane>
+                     </children>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                  </VBox>
+               </children>
+            </AnchorPane>
+         </right>
       </BorderPane>
+      <Label fx:id="panelHeadline" alignment="BASELINE_RIGHT" contentDisplay="CENTER" layoutX="14.0" layoutY="375.0" mouseTransparent="true" opacity="0.07" prefWidth="794.0" text="#HPRC">
+         <font>
+            <Font name="Arial Bold" size="80.0" />
+         </font>
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+         <textFill>
+            <Color red="0.412" green="0.620" blue="0.804" fx:id="x1" />
+         </textFill>
+      </Label>
 	</children>
 	<stylesheets>
 		<URL value="@../styles/MainFrameStyle.css" />

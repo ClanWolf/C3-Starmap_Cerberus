@@ -553,7 +553,13 @@
 }
 
 .scroll-pane > .viewport {
+  -fx-background-color: transparent;
+  -fx-control-inner-background: transparent;
+}
+
+.text-area > .viewport {
    -fx-background-color: transparent;
+   -fx-control-inner-background: transparent;
 }
 
 /* Web View Area
