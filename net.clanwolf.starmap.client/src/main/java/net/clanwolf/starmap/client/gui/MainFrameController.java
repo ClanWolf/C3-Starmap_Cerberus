@@ -921,6 +921,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		ActionManager.addActionCallbackListener(ACTIONS.UPDATE_GAME_INFO, this);
 		ActionManager.addActionCallbackListener(ACTIONS.SHOW_MEDAL, this);
 		ActionManager.addActionCallbackListener(ACTIONS.SET_TERMINAL_TEXT, this);
+//		ActionManager.addActionCallbackListener(ACTIONS.NEW_UNIVERSE_RECEIVED, this);
 	}
 
 	private void setToLevelLoggedOutText() {
@@ -1632,6 +1633,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 //				break;
 //			case NEW_UNIVERSE_RECEIVED:
 //				break;
+
 			default:
 				break;
 		}

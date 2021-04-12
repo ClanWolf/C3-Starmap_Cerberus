@@ -26,6 +26,13 @@
  */
 package net.clanwolf.starmap.client.gui.panes.chat;
 
+import com.ircclouds.irc.api.domain.messages.ChannelPrivMsg;
+import javafx.application.Platform;
+import javafx.fxml.FXML;
+import javafx.scene.control.TextArea;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
@@ -36,6 +43,8 @@ import net.clanwolf.starmap.client.net.irc.MessageActionObject;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.logging.C3Logger;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,6 +52,9 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 
 	private IRCClient ircClient;
 	private List<String> userList = new ArrayList<>();
+
+	@FXML
+	TextFlow textFlowChat;
 
 	@Override
 	public void setStrings() {
@@ -74,13 +86,35 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 	private void handleCommand(String com) {
 		C3Logger.info("Sending to IRC: " + com);
 		MessageActionObject mo = new MessageActionObject();
-		// TODO: Is there a different target?
+		// TODO: Is there a different target? Private message to someone?
 		mo.setSource("");
 		mo.setTarget("");
 		mo.setMessage(com);
+
+		addText("#a6ec58", IRCClient.myNick + ": " + com + System.getProperty("line.separator"));
 		ActionManager.getAction(ACTIONS.IRC_SEND_MESSAGE).execute(mo);
 	}
 
+	private void addText(String t) {
+		addText("", t);
+	}
+
+	private void addText(String color, String t) {
+		Platform.runLater(() -> {
+			DateFormat timeFormat = new SimpleDateFormat("HH:mm");
+			final long currentTime = System.currentTimeMillis();
+
+			Text t1 = new Text();
+			if (!"".equals(color)) {
+				t1.setStyle("-fx-font-weight:bold;-fx-font-family:'monospaced';-fx-fill:" + color + ";");
+			} else {
+				t1.setStyle("-fx-font-weight:bold;-fx-font-family:'monospaced';-fx-fill:#81d4ee;");
+			}
+			t1.setFont(Font.font("Arial", 14));
+			t1.setText("[" + timeFormat.format(currentTime) + "] " + t);
+			textFlowChat.getChildren().add(t1);
+		});
+	}
 	/**
 	 * Handles actions.
 	 *
@@ -91,6 +125,10 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 	@Override
 	public boolean handleAction(ACTIONS action, ActionObject o) {
 		switch (action) {
+			case LOGON_FINISHED_SUCCESSFULL:
+				ircClient = new IRCClient(); // Connects in constructor
+				break;
+
 			case CHANGE_LANGUAGE:
 				setStrings();
 				break;
@@ -104,52 +142,40 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 			case PANE_CREATION_FINISHED:
 				break;
 
-			case LOGON_FINISHED_SUCCESSFULL:
-				ircClient = new IRCClient(); // Connects in constructor
-				break;
-
-			case IRC_SEND_MESSAGE:
-
-				break;
-
 			case IRC_USER_JOINED:
-
 				break;
 
 			case IRC_USER_LEFT:
-
 				break;
 
 			case IRC_ERROR:
-
 				break;
 
 			case IRC_USER_PART:
-
 				break;
 
 			case IRC_USER_KICKED:
-
 				break;
 
 			case IRC_USER_QUIT:
-
 				break;
 
 			case IRC_USER_NICKCHANGE:
-
 				break;
 
 			case IRC_MESSAGE_IN_PRIVATE:
-
 				break;
 
 			case IRC_MESSAGE_IN_GENERAL:
-
 				break;
 
 			case IRC_MESSAGE_IN_CHANNEL:
-
+				ChannelPrivMsg msg = (ChannelPrivMsg) o.getObject();
+				if ("Ulric".equals(msg.getSource().getNick())) {
+					addText("#e9e75b",msg.getSource().getNick() + ": " + msg.getText() + System.getProperty("line.separator"));
+				} else {
+					addText(msg.getSource().getNick() + ": " + msg.getText() + System.getProperty("line.separator"));
+				}
 				break;
 
 			case TERMINAL_COMMAND:

@@ -51,7 +51,7 @@ public class IRCClient implements ActionCallBackListener {
 	private static final String ircServerChannel = "#c3.clanwolf.net";
 	private static boolean connected = false;
 	private static IRCApi _api;
-	private static String myNick = "";
+	public static String myNick = "";
 
 	public IRCClient() {
 		ActionManager.addActionCallbackListener(ACTIONS.IRC_SEND_MESSAGE, this);
@@ -73,7 +73,7 @@ public class IRCClient implements ActionCallBackListener {
 
 				connected = true;
 				myNick = nick;
-				ActionManager.getAction(ACTIONS.IRC_USER_JOINED).execute();
+				ActionManager.getAction(ACTIONS.IRC_USER_JOINED).execute(myNick);
 			}
 
 			@Override

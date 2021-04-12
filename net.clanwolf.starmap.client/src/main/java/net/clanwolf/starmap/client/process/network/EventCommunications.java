@@ -72,6 +72,9 @@ public class EventCommunications {
 					C3Logger.info("EventCommunications.onDataIn: myPlayerSessionID: -> " + Nexus.getMyPlayerSessionID());
 
 					Nexus.setBOUniverse(new BOUniverse((UniverseDTO) state.getObject2()));
+
+					ActionManager.getAction(ACTIONS.UPDATE_GAME_INFO).execute();
+
 					Object o3 = state.getObject3();
 					if (o3 instanceof ArrayList) {
 						Nexus.setUserList((ArrayList) state.getObject3());

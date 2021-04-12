@@ -39,7 +39,7 @@ public class ChannelMessageListener extends VariousMessageListenerAdapter {
 	@SuppressWarnings("unused")
 	public void onChannelMessage(ChannelPrivMsg msg) {
 		C3Logger.info("Channel message: (" + msg.getSource().getNick() + "): " + msg.getText());
-		ActionManager.getAction(ACTIONS.IRC_MESSAGE_IN_CHANNEL).execute();
+		ActionManager.getAction(ACTIONS.IRC_MESSAGE_IN_CHANNEL).execute(msg);
 	}
 
 	@Override
