@@ -55,6 +55,7 @@ public class IRCClient implements ActionCallBackListener {
 
 	public IRCClient() {
 		ActionManager.addActionCallbackListener(ACTIONS.IRC_SEND_MESSAGE, this);
+		ActionManager.addActionCallbackListener(ACTIONS.IRC_CHANGE_NICK, this);
 
 		String nick = "C3_" + Nexus.getCurrentUser().getUserName();
 		String altNick1 = "C3_" + Nexus.getCurrentUser().getUserName();
@@ -73,6 +74,7 @@ public class IRCClient implements ActionCallBackListener {
 
 				connected = true;
 				myNick = nick;
+				ActionManager.getAction(ACTIONS.IRC_CONNECTED).execute(myNick);
 				ActionManager.getAction(ACTIONS.IRC_USER_JOINED).execute(myNick);
 			}
 
@@ -145,6 +147,13 @@ public class IRCClient implements ActionCallBackListener {
 				String target = mo.getTarget();
 				String message = mo.getMessage();
 				sendMessage(source, target, message);
+				break;
+
+			case IRC_CHANGE_NICK:
+				NickChangeObject nco = (NickChangeObject)o.getObject();
+				C3Logger.info("Changing nick to " + nco.getNewNick());
+				myNick = nco.getNewNick();
+				_api.changeNick(nco.getNewNick());
 				break;
 
 			default:

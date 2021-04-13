@@ -29,8 +29,7 @@ package net.clanwolf.starmap.client.gui.panes.chat;
 import com.ircclouds.irc.api.domain.messages.ChannelPrivMsg;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.TextArea;
-import javafx.scene.text.Font;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import net.clanwolf.starmap.client.action.ACTIONS;
@@ -40,21 +39,30 @@ import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
 import net.clanwolf.starmap.client.net.irc.IRCClient;
 import net.clanwolf.starmap.client.net.irc.MessageActionObject;
+import net.clanwolf.starmap.client.net.irc.NickChangeObject;
 import net.clanwolf.starmap.client.nexus.Nexus;
+import net.clanwolf.starmap.client.sound.C3SoundPlayer;
+import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.logging.C3Logger;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ChatPaneController extends AbstractC3Controller implements ActionCallBackListener {
 
 	private IRCClient ircClient;
 	private List<String> userList = new ArrayList<>();
+	private final LinkedList<String> commandHistory = new LinkedList<>();
+	private int commandHistoryIndex = 0;
 
 	@FXML
 	TextFlow textFlowChat;
+
+	@FXML
+	ScrollPane spChat;
 
 	@Override
 	public void setStrings() {
@@ -70,6 +78,7 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 		ActionManager.addActionCallbackListener(ACTIONS.LOGON_FINISHED_SUCCESSFULL, this);
 		ActionManager.addActionCallbackListener(ACTIONS.TERMINAL_COMMAND, this);
 
+		ActionManager.addActionCallbackListener(ACTIONS.IRC_CONNECTED, this);
 		ActionManager.addActionCallbackListener(ACTIONS.IRC_USER_JOINED, this);
 		ActionManager.addActionCallbackListener(ACTIONS.IRC_USER_LEFT, this);
 		ActionManager.addActionCallbackListener(ACTIONS.IRC_ERROR, this);
@@ -81,18 +90,65 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 		ActionManager.addActionCallbackListener(ACTIONS.IRC_MESSAGE_IN_GENERAL, this);
 		ActionManager.addActionCallbackListener(ACTIONS.IRC_MESSAGE_IN_CHANNEL, this);
 		ActionManager.addActionCallbackListener(ACTIONS.IRC_MESSAGE_IN_PRIVATE, this);
+		ActionManager.addActionCallbackListener(ACTIONS.IRC_CHANGE_NICK, this);
+	}
+
+	private void init() {
+		spChat.vvalueProperty().bind(textFlowChat.heightProperty());
 	}
 
 	private void handleCommand(String com) {
-		C3Logger.info("Sending to IRC: " + com);
-		MessageActionObject mo = new MessageActionObject();
-		// TODO: Is there a different target? Private message to someone?
-		mo.setSource("");
-		mo.setTarget("");
-		mo.setMessage(com);
+		boolean sendingString = true;
 
-		addText("#a6ec58", IRCClient.myNick + ": " + com + System.getProperty("line.separator"));
-		ActionManager.getAction(ACTIONS.IRC_SEND_MESSAGE).execute(mo);
+		if (!com.startsWith("*!!!*")) {
+			C3Logger.info("Received command: '" + com + "'");
+			commandHistory.add(com);
+			commandHistoryIndex = commandHistory.size();
+			if (commandHistory.size() > 50) {
+				commandHistory.remove(0);
+			}
+		}
+
+		if ("*!!!*historyBack".equals(com)) {
+			if (commandHistoryIndex > 0) {
+				C3Logger.info("History back");
+				commandHistoryIndex--;
+				String histCom = commandHistory.get(commandHistoryIndex);
+				ActionManager.getAction(ACTIONS.SET_TERMINAL_TEXT).execute(histCom);
+			}
+			sendingString = false;
+		}
+
+		if ("*!!!*historyForward".equals(com)) {
+			if (commandHistoryIndex < commandHistory.size() - 1) {
+				C3Logger.info("History forward");
+				commandHistoryIndex++;
+				String histCom = commandHistory.get(commandHistoryIndex);
+				ActionManager.getAction(ACTIONS.SET_TERMINAL_TEXT).execute(histCom);
+			}
+			sendingString = false;
+		}
+
+		if (com.startsWith("/nick ")) {
+			com = com.substring(6);
+			NickChangeObject nco = new NickChangeObject();
+			nco.setOldNick(IRCClient.myNick);
+			nco.setNewNick(com);
+			ActionManager.getAction(ACTIONS.IRC_CHANGE_NICK).execute(nco);
+			sendingString = false;
+		}
+
+		if (sendingString) {
+			C3Logger.info("Sending to IRC: " + com);
+			MessageActionObject mo = new MessageActionObject();
+			// TODO: Is there a different target? Private message to someone?
+			mo.setSource("");
+			mo.setTarget("");
+			mo.setMessage(com);
+
+			addText("#edf2be", IRCClient.myNick + ": " + com + System.getProperty("line.separator"));
+			ActionManager.getAction(ACTIONS.IRC_SEND_MESSAGE).execute(mo);
+		}
 	}
 
 	private void addText(String t) {
@@ -105,12 +161,13 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 			final long currentTime = System.currentTimeMillis();
 
 			Text t1 = new Text();
+
 			if (!"".equals(color)) {
-				t1.setStyle("-fx-font-weight:bold;-fx-font-family:'monospaced';-fx-fill:" + color + ";");
+				t1.setStyle("-fx-fill:" + color + ";");
 			} else {
-				t1.setStyle("-fx-font-weight:bold;-fx-font-family:'monospaced';-fx-fill:#81d4ee;");
+				t1.setStyle("-fx-fill:#81d4ee;");
 			}
-			t1.setFont(Font.font("Arial", 14));
+
 			t1.setText("[" + timeFormat.format(currentTime) + "] " + t);
 			textFlowChat.getChildren().add(t1);
 		});
@@ -140,6 +197,11 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 				break;
 
 			case PANE_CREATION_FINISHED:
+				init();
+				break;
+
+			case IRC_CONNECTED:
+				C3SoundPlayer.getTTSFile(Internationalization.getString("C3_IRC_Connected"));
 				break;
 
 			case IRC_USER_JOINED:
@@ -169,19 +231,25 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 			case IRC_MESSAGE_IN_GENERAL:
 				break;
 
+			case IRC_CHANGE_NICK:
+				NickChangeObject nco = (NickChangeObject)o.getObject();
+				String v = Internationalization.getString("C3_IRC_IsNowKnownAs");
+				addText("#aaaaaa", nco.getOldNick() + " " + v + " " + nco.getNewNick() + System.getProperty("line.separator"));
+				break;
+
 			case IRC_MESSAGE_IN_CHANNEL:
 				ChannelPrivMsg msg = (ChannelPrivMsg) o.getObject();
 				if ("Ulric".equals(msg.getSource().getNick())) {
-					addText("#e9e75b",msg.getSource().getNick() + ": " + msg.getText() + System.getProperty("line.separator"));
+					addText("#addae7",msg.getSource().getNick() + ": " + msg.getText() + System.getProperty("line.separator"));
 				} else {
 					addText(msg.getSource().getNick() + ": " + msg.getText() + System.getProperty("line.separator"));
 				}
 				break;
 
 			case TERMINAL_COMMAND:
-				String com = o.getText();
+				String com1 = o.getText();
 				if (Nexus.getCurrentlyOpenedPane() instanceof ChatPane) {
-					handleCommand(com);
+					handleCommand(com1);
 				}
 				break;
 
