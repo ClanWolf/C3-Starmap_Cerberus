@@ -36,8 +36,8 @@ import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
-import net.clanwolf.starmap.client.gui.panes.chat.ChatPane;
 import net.clanwolf.starmap.client.nexus.Nexus;
+import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.logging.C3Logger;
 
 import java.util.Arrays;
@@ -57,9 +57,9 @@ public class IRCClient implements ActionCallBackListener {
 		ActionManager.addActionCallbackListener(ACTIONS.IRC_SEND_MESSAGE, this);
 		ActionManager.addActionCallbackListener(ACTIONS.IRC_CHANGE_NICK, this);
 
-		String nick = "C3_" + Nexus.getCurrentUser().getUserName();
-		String altNick1 = "C3_" + Nexus.getCurrentUser().getUserName();
-		String altNick2 = "C3_" + Nexus.getCurrentUser().getUserName();
+		String nick = "" + Nexus.getCurrentUser().getUserName();
+		String altNick1 = "" + Nexus.getCurrentUser().getUserName();
+		String altNick2 = "" + Nexus.getCurrentUser().getUserName();
 
 		_api = new IRCApiImpl(true);
 		_api.connect(getServerParams(nick, Arrays.asList(altNick1, altNick2), "C3-Client IRC", "ident", ircServerUrl, false), new Callback<IIRCState>() {
@@ -70,7 +70,7 @@ public class IRCClient implements ActionCallBackListener {
 				_api.addListener(new ChannelMessageListener());
 
 				_api.joinChannel(ircServerChannel);
-				_api.message(ircServerChannel, "C3 Client gestartet und angemeldet...");
+				_api.message(ircServerChannel, Internationalization.getString("C3_IRC_ConnAndLogon"));
 
 				connected = true;
 				myNick = nick;
