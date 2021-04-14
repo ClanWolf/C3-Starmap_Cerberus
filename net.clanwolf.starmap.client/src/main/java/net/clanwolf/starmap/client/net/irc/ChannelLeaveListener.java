@@ -52,7 +52,7 @@ public class ChannelLeaveListener extends VariousMessageListenerAdapter {
 	@Override
 	@SuppressWarnings("unused")
 	public void onUserQuit(QuitMessage aMsg) {
-		C3Logger.info("User " + aMsg.getSource().getNick() + " left quit");
-		ActionManager.getAction(ACTIONS.IRC_USER_QUIT).execute();
+		C3Logger.info("User " + aMsg.getSource().getNick() + " quit");
+		ActionManager.getAction(ACTIONS.IRC_USER_QUIT).execute(aMsg);
 	}
 }

@@ -57,14 +57,15 @@ public class IRCClient implements ActionCallBackListener {
 		ActionManager.addActionCallbackListener(ACTIONS.IRC_SEND_MESSAGE, this);
 		ActionManager.addActionCallbackListener(ACTIONS.IRC_CHANGE_NICK, this);
 		ActionManager.addActionCallbackListener(ACTIONS.IRC_SENDING_ACTION, this);
-		ActionManager.addActionCallbackListener(ACTIONS.IRC_GET_NAMELIST, this);
+//		ActionManager.addActionCallbackListener(ACTIONS.IRC_GET_NAMELIST, this);
 
-		String nick = "" + Nexus.getCurrentUser().getUserName();
-		String altNick1 = "" + Nexus.getCurrentUser().getUserName();
-		String altNick2 = "" + Nexus.getCurrentUser().getUserName();
+		String nick = "C3\\" + Nexus.getCurrentUser().getUserName() + "";
+		String altNick1 = "C3\\" + Nexus.getCurrentUser().getUserName() + "_1";
+		String altNick2 = "C3\\" + Nexus.getCurrentUser().getUserName() + "_2";
+		String altNick3 = "C3\\" + Nexus.getCurrentUser().getUserName() + "_3";
 
 		_api = new IRCApiImpl(true);
-		_api.connect(getServerParams(nick, Arrays.asList(altNick1, altNick2), "C3-Client IRC", "ident", ircServerUrl, false), new Callback<IIRCState>() {
+		_api.connect(getServerParams(nick, Arrays.asList(altNick1, altNick2, altNick3), "C3-Client IRC", "ident", ircServerUrl, false), new Callback<IIRCState>() {
 			@Override
 			public void onSuccess(final IIRCState aIRCState) {
 				_api.addListener(new ChannelJoinListener());
@@ -87,7 +88,6 @@ public class IRCClient implements ActionCallBackListener {
 				connected = true;
 				myNick = nick;
 				ActionManager.getAction(ACTIONS.IRC_CONNECTED).execute(myNick);
-				ActionManager.getAction(ACTIONS.IRC_USER_JOINED).execute(myNick);
 			}
 
 			@Override
@@ -96,7 +96,7 @@ public class IRCClient implements ActionCallBackListener {
 				C3Logger.print("IRC not connected!");
 				// aErrorMessage.printStackTrace();
 				// throw new RuntimeException(aErrorMessage);
-				ActionManager.getAction(ACTIONS.IRC_ERROR).execute();
+				ActionManager.getAction(ACTIONS.IRC_ERROR).execute(aErrorMessage.getMessage());
 			}
 		});
 	}
@@ -197,10 +197,10 @@ public class IRCClient implements ActionCallBackListener {
 				_api.act(ircServerChannel, t);
 				break;
 
-			case IRC_GET_NAMELIST:
-				C3Logger.info("Getting irc name list from server");
-				_api.rawMessage("/names");
-				break;
+//			case IRC_GET_NAMELIST:
+//				C3Logger.info("Getting irc name list from server");
+//				_api.rawMessage("/names");
+//				break;
 
 			default:
 				break;
