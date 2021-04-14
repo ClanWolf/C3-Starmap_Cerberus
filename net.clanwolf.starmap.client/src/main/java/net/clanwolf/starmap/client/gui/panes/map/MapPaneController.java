@@ -831,11 +831,13 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 	public void handleCommand(String com) {
 		if (!com.startsWith("*!!!*")) {
-			C3Logger.info("Received command: '" + com + "'");
-			commandHistory.add(com);
-			commandHistoryIndex = commandHistory.size();
-			if (commandHistory.size() > 50) {
-				commandHistory.remove(0);
+			if (!"".equals(com)) {
+				C3Logger.info("Received command: '" + com + "'");
+				commandHistory.add(com);
+				commandHistoryIndex = commandHistory.size();
+				if (commandHistory.size() > 50) {
+					commandHistory.remove(0);
+				}
 			}
 		}
 

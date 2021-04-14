@@ -56,6 +56,8 @@ public class IRCClient implements ActionCallBackListener {
 	public IRCClient() {
 		ActionManager.addActionCallbackListener(ACTIONS.IRC_SEND_MESSAGE, this);
 		ActionManager.addActionCallbackListener(ACTIONS.IRC_CHANGE_NICK, this);
+		ActionManager.addActionCallbackListener(ACTIONS.IRC_SENDING_ACTION, this);
+		ActionManager.addActionCallbackListener(ACTIONS.IRC_GET_NAMELIST, this);
 
 		String nick = "" + Nexus.getCurrentUser().getUserName();
 		String altNick1 = "" + Nexus.getCurrentUser().getUserName();
@@ -70,7 +72,17 @@ public class IRCClient implements ActionCallBackListener {
 				_api.addListener(new ChannelMessageListener());
 
 				_api.joinChannel(ircServerChannel);
-				_api.message(ircServerChannel, Internationalization.getString("C3_IRC_ConnAndLogon"));
+				_api.message(ircServerChannel, Internationalization.getString("C3_IRC_ConnAndLogon"), new Callback<String>() {
+					@Override
+					public void onSuccess(String s) {
+						C3Logger.info(s);
+					}
+
+					@Override
+					public void onFailure(Exception e) {
+						C3Logger.info("Error: " + e.getMessage());
+					}
+				});
 
 				connected = true;
 				myNick = nick;
@@ -92,9 +104,33 @@ public class IRCClient implements ActionCallBackListener {
 	private void sendMessage(String source, String target, String message) {
 		if (connected) {
 			if ("".equals(target)) {
-				_api.message(ircServerChannel, message);
+				if (!"".equals(message)) {
+					_api.message(ircServerChannel, message, new Callback<String>() {
+						@Override
+						public void onSuccess(String s) {
+							C3Logger.info(s);
+						}
+
+						@Override
+						public void onFailure(Exception e) {
+							C3Logger.info("Error: " + e.getMessage());
+						}
+					});
+				}
 			} else {
-				_api.message(target, message);
+				if (!"".equals(message)) {
+					_api.message(target, message, new Callback<String>() {
+						@Override
+						public void onSuccess(String s) {
+							C3Logger.info(s);
+						}
+
+						@Override
+						public void onFailure(Exception e) {
+							C3Logger.info("Error: " + e.getMessage());
+						}
+					});
+				}
 			}
 		}
 	}
@@ -154,6 +190,16 @@ public class IRCClient implements ActionCallBackListener {
 				C3Logger.info("Changing nick to " + nco.getNewNick());
 				myNick = nco.getNewNick();
 				_api.changeNick(nco.getNewNick());
+				break;
+
+			case IRC_SENDING_ACTION:
+				String t = (String)o.getText();
+				_api.act(ircServerChannel, t);
+				break;
+
+			case IRC_GET_NAMELIST:
+				C3Logger.info("Getting irc name list from server");
+				_api.rawMessage("/names");
 				break;
 
 			default:

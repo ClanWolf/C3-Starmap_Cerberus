@@ -16,7 +16,7 @@
 
 <AnchorPane id="ChatPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.chat.ChatPaneController">
 	<children>
-      <Label alignment="BOTTOM_LEFT" layoutX="40.0" layoutY="60.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true" opacity="0.2" prefHeight="390.0" prefWidth="500.0" styleClass="contentLabelSideImageSatelite2" visible="true">
+      <Label alignment="BOTTOM_LEFT" layoutX="40.0" layoutY="70.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true" opacity="0.2" prefHeight="375.0" prefWidth="500.0" styleClass="contentLabelSideImageSatelite2" visible="true">
          <stylesheets>
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>
@@ -56,7 +56,7 @@
                      <children>
                         <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-border-width: 1; -fx-background-color: transparent;" stylesheets="@../styles/MainFrameStyle.css" VBox.vgrow="ALWAYS">
                            <content>
-                              <ListView maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-border-width: 0; -fx-background-color: rgba(53, 89, 119, 0.6);" stylesheets="@../styles/MainFrameStyle.css">
+                              <ListView fx:id="lvUsers" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-border-width: 0; -fx-background-color: rgba(53, 89, 119, 0.6);" stylesheets="@../styles/MainFrameStyle.css">
                                  <opaqueInsets>
                                     <Insets />
                                  </opaqueInsets>

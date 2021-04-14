@@ -27,8 +27,10 @@
 package net.clanwolf.starmap.client.gui.panes.chat;
 
 import com.ircclouds.irc.api.domain.messages.ChannelPrivMsg;
+import com.ircclouds.irc.api.domain.messages.UserPrivMsg;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -64,6 +66,9 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 	@FXML
 	ScrollPane spChat;
 
+	@FXML
+	ListView lvUsers;
+
 	@Override
 	public void setStrings() {
 
@@ -91,6 +96,8 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 		ActionManager.addActionCallbackListener(ACTIONS.IRC_MESSAGE_IN_CHANNEL, this);
 		ActionManager.addActionCallbackListener(ACTIONS.IRC_MESSAGE_IN_PRIVATE, this);
 		ActionManager.addActionCallbackListener(ACTIONS.IRC_CHANGE_NICK, this);
+		ActionManager.addActionCallbackListener(ACTIONS.IRC_SENDING_ACTION, this);
+		ActionManager.addActionCallbackListener(ACTIONS.IRC_UPDATED_USERLIST_RECEIVED, this);
 	}
 
 	private void init() {
@@ -101,11 +108,13 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 		boolean sendingString = true;
 
 		if (!com.startsWith("*!!!*")) {
-			C3Logger.info("Received command: '" + com + "'");
-			commandHistory.add(com);
-			commandHistoryIndex = commandHistory.size();
-			if (commandHistory.size() > 50) {
-				commandHistory.remove(0);
+			if (!"".equals(com)) {
+				C3Logger.info("Received command: '" + com + "'");
+				commandHistory.add(com);
+				commandHistoryIndex = commandHistory.size();
+				if (commandHistory.size() > 50) {
+					commandHistory.remove(0);
+				}
 			}
 		}
 
@@ -131,23 +140,40 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 
 		if (com.startsWith("/nick ")) {
 			com = com.substring(6);
-			NickChangeObject nco = new NickChangeObject();
-			nco.setOldNick(IRCClient.myNick);
-			nco.setNewNick(com);
-			ActionManager.getAction(ACTIONS.IRC_CHANGE_NICK).execute(nco);
+			if (!"".equals(com)) {
+				NickChangeObject nco = new NickChangeObject();
+				nco.setOldNick(IRCClient.myNick);
+				nco.setNewNick(com);
+				ActionManager.getAction(ACTIONS.IRC_CHANGE_NICK).execute(nco);
+			}
+			sendingString = false;
+		}
+
+//		if (com.startsWith("/names")) {
+//			ActionManager.getAction(ACTIONS.IRC_GET_NAMELIST).execute();
+//			sendingString = false;
+//		}
+
+		if (com.startsWith("/me ")) {
+			com = com.substring(4);
+			if (!"".equals(com)) {
+				ActionManager.getAction(ACTIONS.IRC_SENDING_ACTION).execute(com);
+			}
 			sendingString = false;
 		}
 
 		if (sendingString) {
-			C3Logger.info("Sending to IRC: " + com);
-			MessageActionObject mo = new MessageActionObject();
-			// TODO: Is there a different target? Private message to someone?
-			mo.setSource("");
-			mo.setTarget("");
-			mo.setMessage(com);
+			if (!"".equals(com.trim())) {
+				C3Logger.info("Sending to IRC: " + com);
+				MessageActionObject mo = new MessageActionObject();
+				// TODO: Is there a different target? Private message to someone?
+				mo.setSource("");
+				mo.setTarget("");
+				mo.setMessage(com);
 
-			addText("#edf2be", IRCClient.myNick + ": " + com + System.getProperty("line.separator"));
-			ActionManager.getAction(ACTIONS.IRC_SEND_MESSAGE).execute(mo);
+				addText("#edf2be", IRCClient.myNick + ": " + com + System.getProperty("line.separator"));
+				ActionManager.getAction(ACTIONS.IRC_SEND_MESSAGE).execute(mo);
+			}
 		}
 	}
 
@@ -225,10 +251,26 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 			case IRC_USER_NICKCHANGE:
 				break;
 
+			case IRC_UPDATED_USERLIST_RECEIVED:
+				ArrayList<String> list = (ArrayList<String>) o.getObject();
+				Platform.runLater(() -> {
+					lvUsers.getItems().addAll(list);
+				});
+				break;
+
 			case IRC_MESSAGE_IN_PRIVATE:
+				UserPrivMsg msg = (UserPrivMsg) o.getObject();
+				addText("#99ff99",msg.getSource().getNick() + " [private]: " + msg.getText() + System.getProperty("line.separator"));
 				break;
 
 			case IRC_MESSAGE_IN_GENERAL:
+				ChannelPrivMsg msg2 = (ChannelPrivMsg) o.getObject();
+				addText("#99ff99",msg2.getSource().getNick() + "[general]: " + msg2.getText() + System.getProperty("line.separator"));
+				break;
+
+			case IRC_SENDING_ACTION:
+				String com2 = o.getText();
+				addText("#77ffee", IRCClient.myNick + " " + com2 + System.getProperty("line.separator"));
 				break;
 
 			case IRC_CHANGE_NICK:
@@ -238,11 +280,11 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 				break;
 
 			case IRC_MESSAGE_IN_CHANNEL:
-				ChannelPrivMsg msg = (ChannelPrivMsg) o.getObject();
-				if ("Ulric".equals(msg.getSource().getNick())) {
-					addText("#addae7",msg.getSource().getNick() + ": " + msg.getText() + System.getProperty("line.separator"));
+				ChannelPrivMsg msg3 = (ChannelPrivMsg) o.getObject();
+				if ("Ulric".equals(msg3.getSource().getNick())) {
+					addText("#addae7",msg3.getSource().getNick() + ": " + msg3.getText() + System.getProperty("line.separator"));
 				} else {
-					addText(msg.getSource().getNick() + ": " + msg.getText() + System.getProperty("line.separator"));
+					addText(msg3.getSource().getNick() + ": " + msg3.getText() + System.getProperty("line.separator"));
 				}
 				break;
 

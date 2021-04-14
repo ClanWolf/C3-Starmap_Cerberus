@@ -39,14 +39,14 @@ public class ChannelLeaveListener extends VariousMessageListenerAdapter {
 	@SuppressWarnings("unused")
 	public void onChannelPart(ChanPartMessage aMsg) {
 		C3Logger.info("User " + aMsg.getSource().getNick() + " left channel" + aMsg.getChannelName());
-		ActionManager.getAction(ACTIONS.IRC_USER_PART).execute();
+		ActionManager.getAction(ACTIONS.IRC_USER_PART).execute(aMsg);
 	}
 
 	@Override
 	@SuppressWarnings("unused")
 	public void onChannelKick(ChannelKick aMsg) {
 		C3Logger.info("User " + aMsg.getSource().getNick() + " was kicked from channel" + aMsg.getChannelName());
-		ActionManager.getAction(ACTIONS.IRC_USER_KICKED).execute();
+		ActionManager.getAction(ACTIONS.IRC_USER_KICKED).execute(aMsg);
 	}
 
 	@Override
