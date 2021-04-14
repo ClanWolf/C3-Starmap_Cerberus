@@ -50,6 +50,7 @@ import net.clanwolf.starmap.logging.C3Logger;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -59,6 +60,7 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 	private List<String> userList = new ArrayList<>();
 	private final LinkedList<String> commandHistory = new LinkedList<>();
 	private int commandHistoryIndex = 0;
+	private String selectedUser = "";
 
 	@FXML
 	TextFlow textFlowChat;
@@ -67,7 +69,21 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 	ScrollPane spChat;
 
 	@FXML
-	ListView lvUsers;
+	ListView<String> lvUsers;
+
+	@FXML
+	public void handleUserlistClick() {
+		Platform.runLater(() -> {
+			if (lvUsers.getSelectionModel().getSelectedItems().size() > 0) {
+				if (lvUsers.getSelectionModel().getSelectedItems().get(0).equals(selectedUser)) {
+					lvUsers.getSelectionModel().clearSelection();
+					selectedUser = "";
+				} else {
+					selectedUser = (String) lvUsers.getSelectionModel().getSelectedItems().get(0);
+				}
+			}
+		});
+	}
 
 	@Override
 	public void setStrings() {
@@ -249,6 +265,27 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 				break;
 
 			case IRC_USER_NICKCHANGE:
+				Platform.runLater(() -> {
+					NickChangeObject nco = (NickChangeObject) o.getObject();
+					Iterator<String> i = lvUsers.getItems().iterator();
+					int c = 0;
+					String s = null;
+					boolean found = false;
+					while (i.hasNext()) {
+						s = (String) i.next();
+						if (s.endsWith(nco.getOldNick()) || s.startsWith(nco.getOldNick())) {
+							s = s.replace(nco.getOldNick(), nco.getNewNick());
+							found = true;
+							break;
+						}
+						c++;
+					}
+					if (s != null && found) {
+						lvUsers.getItems().set(c, s);
+					}
+					String v = Internationalization.getString("C3_IRC_IsNowKnownAs");
+					addText("#aaaaaa", nco.getOldNick() + " " + v + " " + nco.getNewNick() + System.getProperty("line.separator"));
+				});
 				break;
 
 			case IRC_UPDATED_USERLIST_RECEIVED:
@@ -274,9 +311,9 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 				break;
 
 			case IRC_CHANGE_NICK:
-				NickChangeObject nco = (NickChangeObject)o.getObject();
-				String v = Internationalization.getString("C3_IRC_IsNowKnownAs");
-				addText("#aaaaaa", nco.getOldNick() + " " + v + " " + nco.getNewNick() + System.getProperty("line.separator"));
+//				NickChangeObject nco2 = (NickChangeObject)o.getObject();
+//				String v = Internationalization.getString("C3_IRC_IsNowKnownAs");
+//				addText("#aaaaaa", nco2.getOldNick() + " " + v + " " + nco2.getNewNick() + System.getProperty("line.separator"));
 				break;
 
 			case IRC_MESSAGE_IN_CHANNEL:

@@ -14,7 +14,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="SettingsPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.settings.SettingsPaneController">
+<AnchorPane id="SettingsPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.settings.SettingsPaneController">
   <children>
     <Label fx:id="panelHeadline" alignment="BASELINE_RIGHT" contentDisplay="CENTER" layoutX="14.0" layoutY="375.0" mouseTransparent="true" opacity="0.12" prefWidth="794.0" text="SETTINGS">
       <font>
@@ -24,10 +24,10 @@
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
       <textFill>
-        <Color blue="0.804" green="0.620" red="0.412" fx:id="x1" />
+        <Color red="0.412" green="0.620" blue="0.804" fx:id="x1" />
       </textFill>
     </Label>
-    <TabPane layoutX="62.0" layoutY="14.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="426.0" prefWidth="777.0" tabClosingPolicy="UNAVAILABLE">
+    <TabPane layoutX="62.0" layoutY="14.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="426.0" prefWidth="777.0" style="-fx-border-width: 0;" tabClosingPolicy="UNAVAILABLE">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
@@ -117,7 +117,7 @@
                     <URL value="@../styles/MainFrameStyle.css" />
                   </stylesheets>
                   <textFill>
-                    <Color blue="0.937" green="0.831" red="0.639" fx:id="x3" />
+                    <Color red="0.639" green="0.831" blue="0.937" fx:id="x3" />
                   </textFill>
                 </RadioButton>
                 <RadioButton fx:id="rb_SystemProxy" layoutX="316.0" layoutY="34.0" mnemonicParsing="false" text="SystemProxy" textFill="$x3">
