@@ -36,8 +36,8 @@ import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
-import net.clanwolf.starmap.client.gui.panes.chat.ChatPane;
 import net.clanwolf.starmap.client.nexus.Nexus;
+import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.logging.C3Logger;
 
 import java.util.Arrays;
@@ -55,13 +55,17 @@ public class IRCClient implements ActionCallBackListener {
 
 	public IRCClient() {
 		ActionManager.addActionCallbackListener(ACTIONS.IRC_SEND_MESSAGE, this);
+		ActionManager.addActionCallbackListener(ACTIONS.IRC_CHANGE_NICK, this);
+		ActionManager.addActionCallbackListener(ACTIONS.IRC_SENDING_ACTION, this);
+//		ActionManager.addActionCallbackListener(ACTIONS.IRC_GET_NAMELIST, this);
 
-		String nick = "C3_" + Nexus.getCurrentUser().getUserName();
-		String altNick1 = "C3_" + Nexus.getCurrentUser().getUserName();
-		String altNick2 = "C3_" + Nexus.getCurrentUser().getUserName();
+		String nick = "C3\\" + Nexus.getCurrentUser().getUserName() + "";
+		String altNick1 = "C3\\" + Nexus.getCurrentUser().getUserName() + "_1";
+		String altNick2 = "C3\\" + Nexus.getCurrentUser().getUserName() + "_2";
+		String altNick3 = "C3\\" + Nexus.getCurrentUser().getUserName() + "_3";
 
 		_api = new IRCApiImpl(true);
-		_api.connect(getServerParams(nick, Arrays.asList(altNick1, altNick2), "C3-Client IRC", "ident", ircServerUrl, false), new Callback<IIRCState>() {
+		_api.connect(getServerParams(nick, Arrays.asList(altNick1, altNick2, altNick3), "C3-Client IRC", "ident", ircServerUrl, false), new Callback<IIRCState>() {
 			@Override
 			public void onSuccess(final IIRCState aIRCState) {
 				_api.addListener(new ChannelJoinListener());
@@ -69,11 +73,21 @@ public class IRCClient implements ActionCallBackListener {
 				_api.addListener(new ChannelMessageListener());
 
 				_api.joinChannel(ircServerChannel);
-				_api.message(ircServerChannel, "C3 Client gestartet und angemeldet...");
+				_api.message(ircServerChannel, Internationalization.getString("C3_IRC_ConnAndLogon"), new Callback<String>() {
+					@Override
+					public void onSuccess(String s) {
+						C3Logger.info(s);
+					}
+
+					@Override
+					public void onFailure(Exception e) {
+						C3Logger.info("Error: " + e.getMessage());
+					}
+				});
 
 				connected = true;
 				myNick = nick;
-				ActionManager.getAction(ACTIONS.IRC_USER_JOINED).execute(myNick);
+				ActionManager.getAction(ACTIONS.IRC_CONNECTED).execute(myNick);
 			}
 
 			@Override
@@ -82,7 +96,7 @@ public class IRCClient implements ActionCallBackListener {
 				C3Logger.print("IRC not connected!");
 				// aErrorMessage.printStackTrace();
 				// throw new RuntimeException(aErrorMessage);
-				ActionManager.getAction(ACTIONS.IRC_ERROR).execute();
+				ActionManager.getAction(ACTIONS.IRC_ERROR).execute(aErrorMessage.getMessage());
 			}
 		});
 	}
@@ -90,9 +104,33 @@ public class IRCClient implements ActionCallBackListener {
 	private void sendMessage(String source, String target, String message) {
 		if (connected) {
 			if ("".equals(target)) {
-				_api.message(ircServerChannel, message);
+				if (!"".equals(message)) {
+					_api.message(ircServerChannel, message, new Callback<String>() {
+						@Override
+						public void onSuccess(String s) {
+							C3Logger.info(s);
+						}
+
+						@Override
+						public void onFailure(Exception e) {
+							C3Logger.info("Error: " + e.getMessage());
+						}
+					});
+				}
 			} else {
-				_api.message(target, message);
+				if (!"".equals(message)) {
+					_api.message(target, message, new Callback<String>() {
+						@Override
+						public void onSuccess(String s) {
+							C3Logger.info(s);
+						}
+
+						@Override
+						public void onFailure(Exception e) {
+							C3Logger.info("Error: " + e.getMessage());
+						}
+					});
+				}
 			}
 		}
 	}
@@ -146,6 +184,23 @@ public class IRCClient implements ActionCallBackListener {
 				String message = mo.getMessage();
 				sendMessage(source, target, message);
 				break;
+
+			case IRC_CHANGE_NICK:
+				NickChangeObject nco = (NickChangeObject)o.getObject();
+				C3Logger.info("Changing nick to " + nco.getNewNick());
+				myNick = nco.getNewNick();
+				_api.changeNick(nco.getNewNick());
+				break;
+
+			case IRC_SENDING_ACTION:
+				String t = (String)o.getText();
+				_api.act(ircServerChannel, t);
+				break;
+
+//			case IRC_GET_NAMELIST:
+//				C3Logger.info("Getting irc name list from server");
+//				_api.rawMessage("/names");
+//				break;
 
 			default:
 				break;

@@ -115,6 +115,12 @@
   -fx-background-position: right top;
 }
 
+.contentLabelSideImageSatelite2 {
+  -fx-background-image: url("../images/bg_units/satelite2.png");
+  -fx-background-repeat: no-repeat;
+  -fx-background-position: right top;
+}
+
 .contentLabelSideImageFingerprint {
   -fx-background-image: url("../images/gui/fingerprint.png");
   -fx-background-repeat: no-repeat;
@@ -537,6 +543,55 @@
   -fx-text-fill: #a3d4ef;
 }
 
+.scroll-bar:horizontal .track,
+.scroll-bar:vertical .track {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-background-radius: 0.0em;
+    -fx-border-radius: 0.0em;
+    -fx-opacity: 0.0;
+}
+
+.scroll-bar:horizontal .increment-button ,
+.scroll-bar:horizontal .decrement-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0.0em;
+    -fx-padding: 0.0 0.0 10.0 0.0;
+}
+
+.scroll-bar:vertical .increment-button,
+.scroll-bar:vertical .decrement-button {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0.0em;
+    -fx-padding: 0.0 10.0 0.0 0.0;
+}
+
+.scroll-bar .increment-arrow,
+.scroll-bar .decrement-arrow {
+    -fx-shape: " ";
+    -fx-padding: 0.15em 0.0;
+}
+
+.scroll-bar:vertical .increment-arrow,
+.scroll-bar:vertical .decrement-arrow {
+    -fx-shape: " ";
+    -fx-padding: 0.0 0.15em;
+}
+
+.scroll-bar:horizontal .thumb,
+.scroll-bar:vertical .thumb {
+    -fx-background-color: derive(#60b4e2,10.0%);
+    -fx-background-insets: 0.0, 0.0, 0.0;
+    -fx-background-radius: 0.0em;
+}
+
+.scroll-bar:horizontal .thumb:hover,
+.scroll-bar:vertical .thumb:hover {
+    -fx-background-color: derive(#60b4e2,10.0%);
+    -fx-background-insets: 0.0, 0.0, 0.0;
+    -fx-background-radius: 0.0em;
+}
+
 .text-area .scroll-pane {
   -fx-background-color: transparent;
   -fx-control-inner-background: transparent;
@@ -601,6 +656,12 @@
   -fx-background-insets: 1, 1, 1, 1;
   -fx-background-radius: 0, 0, 0, 0;
   -fx-padding: 8 8 8 8;
+}
+
+.IRCChatTextFlow {
+  -fx-font-family: "Arial";
+  -fx-font-size: 14px;
+  -fx-font-weight: normal;
 }
 
 .contentTextArea {

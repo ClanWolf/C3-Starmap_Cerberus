@@ -26,33 +26,23 @@
  */
 package net.clanwolf.starmap.client.net.irc;
 
-import com.ircclouds.irc.api.domain.messages.ChanPartMessage;
-import com.ircclouds.irc.api.domain.messages.ChannelKick;
-import com.ircclouds.irc.api.domain.messages.QuitMessage;
-import com.ircclouds.irc.api.listeners.VariousMessageListenerAdapter;
-import net.clanwolf.starmap.client.action.ACTIONS;
-import net.clanwolf.starmap.client.action.ActionManager;
-import net.clanwolf.starmap.logging.C3Logger;
+public class NickChangeObject {
+	private String oldNick;
+	private String newNick;
 
-public class ChannelLeaveListener extends VariousMessageListenerAdapter {
-	@Override
-	@SuppressWarnings("unused")
-	public void onChannelPart(ChanPartMessage aMsg) {
-		C3Logger.info("User " + aMsg.getSource().getNick() + " left channel" + aMsg.getChannelName());
-		ActionManager.getAction(ACTIONS.IRC_USER_PART).execute(aMsg);
+	public String getOldNick() {
+		return oldNick;
 	}
 
-	@Override
-	@SuppressWarnings("unused")
-	public void onChannelKick(ChannelKick aMsg) {
-		C3Logger.info("User " + aMsg.getSource().getNick() + " was kicked from channel" + aMsg.getChannelName());
-		ActionManager.getAction(ACTIONS.IRC_USER_KICKED).execute(aMsg);
+	public void setOldNick(String oldNick) {
+		this.oldNick = oldNick;
 	}
 
-	@Override
-	@SuppressWarnings("unused")
-	public void onUserQuit(QuitMessage aMsg) {
-		C3Logger.info("User " + aMsg.getSource().getNick() + " quit");
-		ActionManager.getAction(ACTIONS.IRC_USER_QUIT).execute(aMsg);
+	public String getNewNick() {
+		return newNick;
+	}
+
+	public void setNewNick(String newNick) {
+		this.newNick = newNick;
 	}
 }

@@ -38,13 +38,16 @@ public class ChannelJoinListener extends VariousMessageListenerAdapter {
 	@SuppressWarnings("unused")
 	public void onChannelJoin(ChanJoinMessage aMsg) {
 		C3Logger.info("User " + aMsg.getSource().getNick() + " joined channel" + aMsg.getChannelName());
-		ActionManager.getAction(ACTIONS.IRC_USER_JOINED).execute();
+		ActionManager.getAction(ACTIONS.IRC_USER_JOINED).execute(aMsg);
 	}
 
 	@Override
 	@SuppressWarnings("unused")
 	public void onNickChange(NickMessage aMsg) {
 		C3Logger.info("User " + aMsg.getSource().getNick() + " is now known as " + aMsg.getNewNick());
-		ActionManager.getAction(ACTIONS.IRC_USER_NICKCHANGE).execute();
+		NickChangeObject nco = new NickChangeObject();
+		nco.setOldNick(aMsg.getSource().getNick());
+		nco.setNewNick(aMsg.getNewNick());
+		ActionManager.getAction(ACTIONS.IRC_USER_NICKCHANGE).execute(nco);
 	}
 }

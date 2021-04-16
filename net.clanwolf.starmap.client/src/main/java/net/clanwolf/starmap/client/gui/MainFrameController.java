@@ -1580,6 +1580,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				String commandFromHistory = o.getText();
 				Platform.runLater(() -> {
 					terminalPrompt.setText(commandFromHistory);
+					terminalPrompt.positionCaret(commandFromHistory.length());
 				});
 				break;
 
