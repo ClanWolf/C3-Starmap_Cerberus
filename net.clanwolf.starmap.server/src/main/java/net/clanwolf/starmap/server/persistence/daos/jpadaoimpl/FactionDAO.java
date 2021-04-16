@@ -24,56 +24,67 @@
  * Copyright (c) 2001-2021, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.client.process.universe;
+package net.clanwolf.starmap.server.persistence.daos.jpadaoimpl;
 
-import javafx.scene.shape.Path;
-import net.clanwolf.starmap.transfer.dtos.FactionDTO;
-import org.kynosarges.tektosyne.geometry.PointD;
+import net.clanwolf.starmap.server.persistence.CriteriaHelper;
+import net.clanwolf.starmap.server.persistence.daos.GenericDAO;
+import net.clanwolf.starmap.server.persistence.pojos.AttackPOJO;
+import net.clanwolf.starmap.server.persistence.pojos.FactionPOJO;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
-public class BOFaction {
+/**
+ * A data access object (DAO) providing persistence and search support for UserPOJO entities.
+ * Transaction control of the save(), update() and delete() operations must be handled externally
+ * by senders of these methods or must be manually added to each of these methods for data to be
+ * persisted to the JPA datastore.
+ */
+public class FactionDAO extends GenericDAO {
 
-	private FactionDTO factionDTO;
-	private Path backgroundPath;
-	private ArrayList<PointD[]> voronoiRegions = new ArrayList<>();
+	private static FactionDAO instance;
 
-	public ArrayList<PointD[]> getVoronoiRegions() {
-		return voronoiRegions;
+	public static FactionDAO getInstance() {
+		if (instance == null) {
+			instance = new FactionDAO();
+			instance.className = "FactionPOJO";
+		}
+		return instance;
 	}
 
-	public void setVoronoiRegions(ArrayList<PointD[]> voronoiRegions) {
-		this.voronoiRegions = voronoiRegions;
+	private FactionDAO() {
+		// Empty constructor
 	}
-
-	public void addVoronoiRegion(PointD[] voronoiRegion) {
-		this.voronoiRegions.add(voronoiRegion);
-	}
-
-	public Path getBackgroundPath() {
-		return backgroundPath;
-	}
-
-	public void setBackgroundPath(Path backgroundPath) {
-		this.backgroundPath = backgroundPath;
-	}
-
-	public BOFaction(FactionDTO factionDTO) {
-		this.factionDTO = factionDTO;
-	}
-
-	public String getColor() { return factionDTO.getColor(); }
-
-	public String getLogo() { return factionDTO.getLogo(); }
-
-	public String getShortName() { return factionDTO.getShortName(); }
-
-	public String getName() { return factionDTO.getName_en(); }
-
-	public Long getID() {return factionDTO.getId();}
 
 	@Override
-	public String toString() {
-		return getName();
+	public void delete(Long userID, Object entity) {
+		super.delete(userID, entity, ((FactionPOJO) entity).getId());
+	}
+
+	@Override
+	public FactionPOJO update(Long userID, Object entity) {
+		return (FactionPOJO) super.update(userID, entity);
+	}
+
+	@Override
+	public FactionPOJO findById(Long userID, Long id) {
+		return (FactionPOJO) super.findById(userID, FactionPOJO.class, id);
+	}
+
+	/*
+	 * Give all open attacks of a season back
+	 */
+	public ArrayList<FactionPOJO> getAllFactions(){
+		CriteriaHelper crit = new CriteriaHelper(FactionPOJO.class);
+
+		List<Object> lRes = crit.getResultList();
+
+		Iterator<Object> iter = lRes.iterator();
+		ArrayList<FactionPOJO> lRPS = new ArrayList<>();
+
+		while (iter.hasNext()) lRPS.add((FactionPOJO) iter.next());
+
+		return lRPS;
 	}
 }

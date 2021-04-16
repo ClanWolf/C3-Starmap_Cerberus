@@ -28,18 +28,25 @@ package net.clanwolf.starmap.server.util;
 
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.server.enums.SystemListTypes;
+import net.clanwolf.starmap.server.persistence.EntityConverter;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
+import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.AttackDAO;
+import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.FactionDAO;
+import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.JumpshipDAO;
+import net.clanwolf.starmap.server.persistence.pojos.AttackPOJO;
+import net.clanwolf.starmap.server.persistence.pojos.FactionPOJO;
+import net.clanwolf.starmap.server.persistence.pojos.JumpshipPOJO;
+import net.clanwolf.starmap.server.persistence.pojos.RoutePointPOJO;
+import net.clanwolf.starmap.transfer.Dto;
 import net.clanwolf.starmap.transfer.dtos.*;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig.Feature;
 import org.hibernate.Session;
 import org.hibernate.jdbc.ReturningWork;
 import org.json.simple.JSONValue;
-import org.springframework.util.RouteMatcher;
 
 import javax.persistence.EntityManager;
 import java.io.*;
-import java.net.URLDecoder;
 import java.sql.*;
 import java.util.*;
 
@@ -52,23 +59,21 @@ public class WebDataInterface {
 	private static UniverseDTO universe;
 	private static boolean initialized = false;
 
+
 	public static UniverseDTO getUniverse() {
+		if (universe != null) {
+			return universe;
+		}
+		universe = new UniverseDTO();
+		universe.currentSeason = 1;
+		universe.currentRound = 3;
+		universe.currentDate = "01.01.3052";
 		return universe;
 	}
 
 	private static void initialize() {
 		if (!initialized) {
 			StringBuilder sb;
-
-			sb = new StringBuilder();
-			sb.append("SELECT \r\n");
-			sb.append("         F.Name_en          AS name,             \r\n");
-			sb.append("         F.ShortName        AS short,            \r\n");
-			sb.append("         F.Color            AS color,            \r\n");
-			sb.append("         F.Logo             AS logo,              \r\n");
-			sb.append("         F.Id               AS id                \r\n");
-			sb.append("FROM     FACTION                F;");
-			selects.put(SystemListTypes.Factions.name(), sb.toString());
 
 			sb = new StringBuilder();
 			sb.append("SELECT \r\n");
@@ -176,191 +181,168 @@ public class WebDataInterface {
 			sb.append("AND      F.FactionTypeID     = FT.ID              \r\n");
 			sb.append("AND      SSD.Active          = 1;");
 			selects.put(SystemListTypes.HH_StarSystems.name(), sb.toString());
-
-			sb = new StringBuilder();
-			sb.append("SELECT \r\n");
-			sb.append("         A.ID                       AS aid,                    \r\n");
-			sb.append("         A.Season                   AS season,                 \r\n");
-			sb.append("         A.Round                    AS round,                  \r\n");
-			//sb.append("         A.Priority                 AS priority,               \r\n");
-			sb.append("         A.StarSystemID             AS starsystem,             \r\n");
-			sb.append("         A.StarSystemDataID         AS starsystemdata,         \r\n");
-			sb.append("         A.AttackedFromStarSystemID AS attackedfromstarsystem, \r\n");
-			sb.append("         A.AttackTypeID             AS attacktype,             \r\n");
-			//sb.append("         A.FactionID_Attacker       AS attacker,               \r\n");
-			sb.append("         A.FactionID_Defender       AS defender,               \r\n");
-			sb.append("         A.JumpshipID               AS jumpship,               \r\n");
-			sb.append("         A.FactionID_Winner         AS winner,                 \r\n");
-			sb.append("         A.StoryID                  AS story,                  \r\n");
-			sb.append("         A.CharacterID              AS rpChar,                 \r\n");
-			sb.append("         A.Remarks                  AS remarks                 \r\n");
-			sb.append("FROM     _HH_ATTACK                 A;");
-			selects.put(SystemListTypes.HH_Attacks.name(), sb.toString());
-
-			sb = new StringBuilder();
-			sb.append("SELECT \r\n");
-			sb.append("         JS.ID                      AS jsid,                   \r\n");
-			sb.append("         JS.JumpshipName            AS jumpshipName,           \r\n");
-			sb.append("         JS.JumpshipFactionID       AS jumpshipFactionID,      \r\n");
-			sb.append("         JS.StarSystemHistory       AS starHist,               \r\n");
-			//sb.append("         JS.LastMovedInRound        AS lastMovedInRound,       \r\n");
-			sb.append("         JS.AttackReady             AS attackReady             \r\n");
-			sb.append("FROM     _HH_JUMPSHIP               JS;");
-			selects.put(SystemListTypes.HH_Jumpships.name(), sb.toString());
-
-			sb = new StringBuilder();
-			sb.append("SELECT \r\n");
-			sb.append("         RP.ID                      AS rpid,                   \r\n");
-			sb.append("         RP.SeasonID                AS seasonID,               \r\n");
-			sb.append("         RP.RoundID                 AS roundID,                \r\n");
-			sb.append("         RP.JumpshipID              AS jumpshipID,             \r\n");
-			sb.append("         RP.SystemID                AS systemID                \r\n");
-			sb.append("FROM     _HH_ROUTEPOINT             RP;");
-			selects.put(SystemListTypes.HH_Routepoints.name(), sb.toString());
 		}
+	}
+
+	private static String getJsonString(Dto dto){
+		// Create json string
+		ObjectMapper mapper = new ObjectMapper();
+		//Convert object to JSON string and pretty print
+		try {
+			return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(dto);
+
+		} catch (IOException e){
+			C3Logger.print("Error creating JSON string");
+			return null;
+		}
+	}
+
+	private static String loadAttacks(){
+		universe.attacks.clear();
+
+		AttackDAO dao = AttackDAO.getInstance();
+		ArrayList<AttackPOJO> pojoList = dao.getOpenAttacksOfASeason(1L);
+		Iterator<AttackPOJO> iter = pojoList.iterator();
+		StringBuffer jsonString = new StringBuffer();
+
+		while(iter.hasNext()) {
+			AttackDTO dto = EntityConverter.convertpojo2dto(iter.next(),AttackDTO.class);
+			universe.attacks.add(dto);
+			jsonString.append(getJsonString(dto));
+		}
+		return jsonString.toString();
+	}
+
+	private static String loadJumpshipsAndRoutePoints(){
+		universe.jumpships.clear();
+
+		JumpshipDAO dao = JumpshipDAO.getInstance();
+		ArrayList<JumpshipPOJO> pojoList = dao.getAllJumpships();
+		Iterator<JumpshipPOJO> iter = pojoList.iterator();
+		StringBuffer jsonString = new StringBuffer();
+
+		while(iter.hasNext()){
+			JumpshipPOJO js = iter.next();
+			JumpshipDTO dto = EntityConverter.convertpojo2dto(js,JumpshipDTO.class);
+			// Add Jumpship
+			universe.jumpships.put(js.getJumpshipName(),dto);
+			jsonString.append(getJsonString(dto));
+
+			// add RoutePoints
+			ArrayList rpList = new ArrayList(js.getRoutepointList());
+			Iterator<RoutePointPOJO> iterRP = rpList.iterator();
+			while(iterRP.hasNext()){
+				universe.routepoints.add(EntityConverter.convertpojo2dto(iterRP.next(),RoutePointDTO.class));
+			}
+		}
+		return jsonString.toString();
+	}
+
+	private static String loadFactions(){
+		universe.factions.clear();
+
+		FactionDAO dao = FactionDAO.getInstance();
+		ArrayList<FactionPOJO> pojoList = dao.getAllFactions();
+		Iterator<FactionPOJO> iter = pojoList.iterator();
+		StringBuffer jsonString = new StringBuffer();
+
+		while(iter.hasNext()) {
+			FactionPOJO f = iter.next();
+			FactionDTO dto = EntityConverter.convertpojo2dto(f,FactionDTO.class);
+			universe.factions.put(f.getShortName(),dto);
+			jsonString.append(getJsonString(dto));
+		}
+		return jsonString.toString();
 	}
 
 	// CALLED FROM HEARTBEATTIMER
 	public static void createSystemList(SystemListTypes type) {
 		initialize();
+		String systemsList = "";
 		C3Logger.print("Starting with the creation of the system list: " + type.name());
 
-		EntityManager manager = EntityManagerHelper.getEntityManager();
-		manager.getTransaction().begin();
+		getUniverse();
 
-		Session session = manager.unwrap(Session.class);
-		ResultObject result = session.doReturningWork(new ReturningWork<ResultObject>() {
-			@Override
-			public ResultObject execute(Connection conn) throws SQLException {
-				// execute your SQL
-				ResultSet rs = null;
-				ResultObject resultObject = new ResultObject();
-				String systemsList = null;
-				try (PreparedStatement stmt = conn.prepareStatement(selects.get(type.name()), ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
-					rs = stmt.executeQuery();
-					C3Logger.print("Select done...");
+		if (type == SystemListTypes.HH_Attacks) {
+			systemsList = loadAttacks();
+			C3Logger.print("Created universe classes (Attacks)...");
+		}
+		if (type == SystemListTypes.HH_Jumpships) {
+			systemsList = loadJumpshipsAndRoutePoints();
+			C3Logger.print("Created universe classes (Jumpships)...");
+		}
+		if (type == SystemListTypes.Factions) {
+			systemsList = loadFactions();
+			C3Logger.print("Created universe classes (Factions)...");
+		}
 
-					if (universe == null) {
-						universe = new UniverseDTO();
-					}
+		if (type == SystemListTypes.HH_StarSystems || type == SystemListTypes.CM_StarSystems) {
+			EntityManager manager = EntityManagerHelper.getEntityManager();
+			manager.getTransaction().begin();
 
-					if (type == SystemListTypes.Factions) {
-						universe.factions.clear();
-						while (rs.next()) {
-							FactionDTO f = new FactionDTO();
-							f.setName(rs.getString("name"));
-							f.setShortName(rs.getString("short"));
-							f.setColor(rs.getString("color"));
-							f.setLogo(rs.getString("logo"));
-							f.setId(rs.getLong("id"));
+			Session session = manager.unwrap(Session.class);
+			ResultObject result = session.doReturningWork(new ReturningWork<ResultObject>() {
+				@Override
+				public ResultObject execute(Connection conn) throws SQLException {
+					// execute your SQL
+					ResultSet rs = null;
+					ResultObject resultObject = new ResultObject();
+					String systemsList = null;
+					try (PreparedStatement stmt = conn.prepareStatement(selects.get(type.name()), ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
+						rs = stmt.executeQuery();
+						C3Logger.print("Select done...");
 
-							universe.factions.put(f.getShortName(), f);
+						if (type == SystemListTypes.HH_StarSystems) {
+							universe.starSystems.clear();
+							while (rs.next()) {
+								StarSystemDTO ss = new StarSystemDTO();
+								ss.setId(rs.getLong("sid"));
+								ss.setName(rs.getString("name"));
+								ss.setX(rs.getBigDecimal("x"));
+								ss.setY(rs.getBigDecimal("y"));
+								ss.setAffiliation(rs.getString("affiliation"));
+								ss.setFactionId(rs.getLong("factionid"));
+								ss.setStarType1(rs.getString("startype1"));
+								ss.setStarClass(rs.getString("class"));
+								ss.setSarnaLink(rs.getString("link"));
+								ss.setInfrastructure(rs.getString("infrastructure"));
+								ss.setWealth(rs.getString("wealth"));
+								ss.setVeternacy(rs.getString("veternacy"));
+								ss.setType(rs.getString("type"));
+								ss.setSystemImageName(rs.getString("systemImageName"));
+								ss.setStarSystemDataId(rs.getLong("starsystemdataid"));
+								ss.setDescription(rs.getString("description"));
+								ss.setCaptial(rs.getBoolean("capital"));
+
+								universe.starSystems.put(ss.getId(), ss);
+							}
+							C3Logger.print("Created universe classes (StarSystems)...");
 						}
-						C3Logger.print("Created universe classes (Factions)...");
+
+						// create JSON representation
+						rs.beforeFirst();
+						systemsList = getJSONFromResultSet(rs, type.name(), true);
+					} catch (Exception e) {
+						C3Logger.exception("Error creating mapdata file", e);
 					}
 
-					if (type == SystemListTypes.HH_StarSystems) {
-						universe.starSystems.clear();
-						while (rs.next()) {
-							StarSystemDTO ss = new StarSystemDTO();
-							ss.setId(rs.getLong("sid"));
-							ss.setName(rs.getString("name"));
-							ss.setX(rs.getBigDecimal("x"));
-							ss.setY(rs.getBigDecimal("y"));
-							ss.setAffiliation(rs.getString("affiliation"));
-							ss.setFactionId(rs.getLong("factionid"));
-							ss.setStarType1(rs.getString("startype1"));
-							ss.setStarClass(rs.getString("class"));
-							ss.setSarnaLink(rs.getString("link"));
-							ss.setInfrastructure(rs.getString("infrastructure"));
-							ss.setWealth(rs.getString("wealth"));
-							ss.setVeternacy(rs.getString("veternacy"));
-							ss.setType(rs.getString("type"));
-							ss.setSystemImageName(rs.getString("systemImageName"));
-							ss.setStarSystemDataId(rs.getLong("starsystemdataid"));
-							ss.setDescription(rs.getString("description"));
-							ss.setCaptial(rs.getBoolean("capital"));
-
-							universe.starSystems.put(ss.getId(), ss);
-						}
-						C3Logger.print("Created universe classes (StarSystems)...");
-					}
-
-					if (type == SystemListTypes.HH_Attacks) {
-						universe.attacks.clear();
-						while (rs.next()) {
-							AttackDTO a = new AttackDTO();
-							a.setId(rs.getLong("aid"));
-							a.setSeason(rs.getInt("season"));
-							a.setRound(rs.getInt("round"));
-							a.setStarSystemID(rs.getLong("starsystem"));
-							a.setStarSystemDataID(rs.getLong("starsystemdata"));
-							a.setAttackTypeID(rs.getLong("attackType"));
-							a.setAttackedFromStarSystemID(rs.getLong("attackedfromstarsystem"));
-							a.setFactionID_Defender(rs.getLong("defender"));
-							a.setJumpshipID(rs.getLong("jumpship"));
-							a.setFactionID_Winner(rs.getLong("winner"));
-							a.setStoryID(rs.getLong("story"));
-							a.setCharacterID(rs.getLong("rpChar"));
-							a.setRemarks(rs.getString("remarks"));
-
-							universe.attacks.add(a);
-						}
-						C3Logger.print("Created universe classes (Attacks)...");
-					}
-
-					if (type == SystemListTypes.HH_Routepoints) {
-						universe.routepoints.clear();
-						while (rs.next()) {
-							RoutePointDTO rp = new RoutePointDTO();
-							rp.setId(rs.getLong("rpid"));
-							rp.setSystemId(rs.getLong("systemID"));
-							rp.setRoundId(rs.getLong("roundID"));
-							rp.setSeasonId(rs.getLong("seasonID"));
-							rp.setJumpshipId(rs.getLong("jumpshipID"));
-
-							universe.routepoints.add(rp);
-						}
-						C3Logger.print("Created universe classes (Jumpships)...");
-					}
-
-					if (type == SystemListTypes.HH_Jumpships) {
-						universe.jumpships.clear();
-						while (rs.next()) {
-							JumpshipDTO js = new JumpshipDTO();
-							js.setID(rs.getLong("jsid"));
-							js.setJumpshipName(rs.getString("jumpshipName"));
-							js.setJumpshipFactionID(rs.getLong("jumpshipFactionID"));
-							js.setStarSystemHistory(rs.getString("starHist"));
-							//js.setLastMovedInRound(rs.getInt("lastMovedInRound"));
-							js.setAttackReady(rs.getBoolean("attackReady"));
-
-							universe.jumpships.put(js.getJumpshipName(), js);
-						}
-						C3Logger.print("Created universe classes (Jumpships)...");
-					}
-
-					universe.currentSeason = 1;
-					universe.currentRound = 3;
-					universe.currentDate = "01.01.3052";
-
-					// create JSON representation
-					rs.beforeFirst();
-					systemsList = getJSONFromResultSet(rs, type.name(), true);
-				} catch (Exception e) {
-					C3Logger.exception("Error creating mapdata file", e);
+					resultObject.setResultList(systemsList);
+					return resultObject;
 				}
-				resultObject.setResultList(systemsList);
-				return resultObject;
-			}
-		});
+			});
+
+			systemsList = result.getResultList();
+
+			manager.getTransaction().commit();
+			manager.close();
+		}
 
 //		File mapDataFile = null;
 		File mapDataFileHH = null;
 		File mapDataFileCM = null;
 
 		String decodedPath = "";
-		String systemsList = result.getResultList();
+//		String systemsList = result.getResultList();
 //		String filename = "";
 		String filenameHH = "";
 		String filenameCM = "";
@@ -453,8 +435,6 @@ public class WebDataInterface {
 			throw rte;
 		}
 
-		manager.getTransaction().commit();
-		manager.close();
 	}
 
 	public static String getJSONFromResultSet(ResultSet rs, String keyName) {

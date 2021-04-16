@@ -309,7 +309,7 @@ public class C3GameSessionHandlerRoleplay {
 
 	/**
 	 *
-	 * eturns a step of a story of a story with a given sort number
+	 * returns a step of a story of a story with a given sort number
 	 *
 	 * @param session PlayerSession
 	 * @param state GameState

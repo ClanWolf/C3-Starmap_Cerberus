@@ -189,4 +189,8 @@ public class AttackDTO extends Dto {
 	public AttackDTO() {
 		// empty constructor
 	}
+
+	public AttackDTO(long id) {
+		this.id = id;
+	}
 }

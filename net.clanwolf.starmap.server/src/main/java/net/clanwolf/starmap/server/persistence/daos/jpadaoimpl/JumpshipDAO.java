@@ -26,8 +26,14 @@
  */
 package net.clanwolf.starmap.server.persistence.daos.jpadaoimpl;
 
+import net.clanwolf.starmap.server.persistence.CriteriaHelper;
 import net.clanwolf.starmap.server.persistence.daos.GenericDAO;
+import net.clanwolf.starmap.server.persistence.pojos.AttackPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.JumpshipPOJO;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * A data access object (DAO) providing persistence and search support for UserPOJO entities.
@@ -72,5 +78,18 @@ public class JumpshipDAO extends GenericDAO {
 			pojo.setAttackReady(ready);
 			update(userID, pojo);
 		}
+	}
+
+	public ArrayList<JumpshipPOJO> getAllJumpships(){
+		CriteriaHelper crit = new CriteriaHelper(JumpshipPOJO.class);
+
+		List<Object> lRes = crit.getResultList();
+
+		Iterator<Object> iter = lRes.iterator();
+		ArrayList<JumpshipPOJO> lRPS = new ArrayList<>();
+
+		while (iter.hasNext()) lRPS.add((JumpshipPOJO) iter.next());
+
+		return lRPS;
 	}
 }

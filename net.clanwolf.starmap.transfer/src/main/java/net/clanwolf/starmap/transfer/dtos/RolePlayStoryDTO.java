@@ -84,7 +84,6 @@ public class RolePlayStoryDTO extends Dto {
 	//@JoinColumn(name = "Var7ID")
 	private RolePlayStoryVar7DTO var7ID;
 	//@JoinColumn(name = "StoryID")
-	private AttackDTO attack;
 	//@JoinColumn(name = "NextStepID")
 	private Long nextStepID;
 	// @Column(name = "URL")
@@ -458,14 +457,6 @@ public class RolePlayStoryDTO extends Dto {
 
 	public void setVar7ID(RolePlayStoryVar7DTO var7ID) {
 		this.var7ID = var7ID;
-	}
-
-	public AttackDTO getAttack() {
-		return attack;
-	}
-
-	public void setAttack(AttackDTO attack) {
-		this.attack = attack;
 	}
 
 	@Override

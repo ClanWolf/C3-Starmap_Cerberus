@@ -33,7 +33,6 @@ import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.process.universe.BOFaction;
-import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.C3PROPS;
 import net.clanwolf.starmap.client.util.C3Properties;
 import net.clanwolf.starmap.logging.C3Logger;
@@ -46,7 +45,6 @@ import net.clanwolf.starmap.transfer.dtos.RolePlayStoryDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
-import java.io.File;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -70,10 +68,10 @@ public class BORolePlayStory {
 	private ArrayList<RolePlayCharacterDTO> allCharacters;
 
 	// Constants
-	private static final String URL_RPG_BASIC = "rpg";
+	//private static final String URL_RPG_BASIC = "rpg";
 	private static final String URL_RPG_RESOURSES = "rpg/resources";
 
-	private static final String URL_RPG_BASIC_DEV = "rpg/dev";
+	//private static final String URL_RPG_BASIC_DEV = "rpg/dev";
 	private static final String URL_RPG_RESOURSES_DEV = "rpg/dev/resources";
 
 	private static BORolePlayStory instance = null;
@@ -113,12 +111,12 @@ public class BORolePlayStory {
 	 * @return
 	 *          the base url string for rpg
 	 */
-	public static String getRPG_BasicURL(){
+	/*public static String getRPG_BasicURL(){
 		if(Nexus.isDevelopmentPC()){
 			return C3Properties.getProperty(C3PROPS.SERVER_URL) + "/" + BORolePlayStory.URL_RPG_BASIC_DEV;
 		}
 		return C3Properties.getProperty(C3PROPS.SERVER_URL) + "/" + BORolePlayStory.URL_RPG_BASIC;
-	}
+	}*/
 
 	/**
 	 * Get the basic url for resources. The result depends on if the client is running on a dev system or not.
@@ -137,8 +135,8 @@ public class BORolePlayStory {
 
 	/**
 	 * get story image, if now story image exist return default image
-	 * @param rp
-	 * @return
+	 * @param  rp RolePlayStoryDTO
+	 * @return Image Image
 	 */
 	public static Image getRPG_Image(RolePlayStoryDTO rp){
 	    try {
@@ -160,7 +158,7 @@ public class BORolePlayStory {
 
 	/**
 	 * Give the default image back
-	 * @return
+	 * @return Image
 	 */
 	public static Image getRPG_DefaultImage(){
 		InputStream defaultImageStream = BORolePlayStory.getInstance().getClass().getResourceAsStream("/images/gui/default_Step.png");
@@ -169,7 +167,7 @@ public class BORolePlayStory {
 
 	/**
 	 * Returns the default image back
-	 * @return
+	 * @return Image
 	 */
 	public static Image getRPG_DefaultMessageImage(){
 		InputStream defaultImageStream = BORolePlayStory.getInstance().getClass().getResourceAsStream("/images/gui/HPG_Message.png");
@@ -179,7 +177,7 @@ public class BORolePlayStory {
 	/**
 	 * Returns the logo from a given faction back
 	 * @param f
-	 * @return
+	 * @return Image
 	 */
 	public static Image getFactionImage(BOFaction f){
 		InputStream defaultImageStream = BORolePlayStory.getInstance().getClass().getResourceAsStream("/images/logos/factions/" + f.getLogo());
@@ -728,7 +726,8 @@ public class BORolePlayStory {
 				&& story.getVar2ID().getOption1StoryID() == null ) {
 			nextStepFound = true;
 
-		} else if(story != null  && story.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V6
+		} else if(story != null  && story.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V6 &&
+				story.getVar6ID() != null
 				&& (story.getVar6ID().getStoryIDSuccess() == null ||
 				story.getVar6ID().getStoryIDFailure() == null)) {
 			nextStepFound = true;

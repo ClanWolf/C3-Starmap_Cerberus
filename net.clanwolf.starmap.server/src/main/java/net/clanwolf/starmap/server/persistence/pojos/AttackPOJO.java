@@ -26,6 +26,8 @@
  */
 package net.clanwolf.starmap.server.persistence.pojos;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import net.clanwolf.starmap.server.persistence.Pojo;
 
 import javax.persistence.*;
@@ -35,6 +37,10 @@ import java.util.List;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
+@JsonIdentityInfo(
+		scope= AttackPOJO.class,
+		generator= ObjectIdGenerators.PropertyGenerator.class,
+		property = "id")
 @Entity
 @Table(name = "_HH_ATTACK", catalog = "C3")
 public class AttackPOJO extends Pojo {
@@ -70,7 +76,7 @@ public class AttackPOJO extends Pojo {
 	@Column(name = "CharacterID")
 	private Long characterID;
 
-	@Column(name = "StoryID")
+	@JoinColumn(name = "StoryID")
 	private Long storyID;
 
 	@Column(name = "FactionID_Winner")

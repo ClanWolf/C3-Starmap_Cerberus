@@ -26,12 +26,17 @@
  */
 package net.clanwolf.starmap.server.persistence.pojos;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import net.clanwolf.starmap.server.persistence.Pojo;
 
 import javax.persistence.*;
 
 import static javax.persistence.GenerationType.IDENTITY;
-
+@JsonIdentityInfo(
+		scope= AttackVarsPOJO.class,
+		generator= ObjectIdGenerators.PropertyGenerator.class,
+		property = "id")
 @Entity
 @Table(name = "_HH_ATTACKVARS", catalog = "C3")
 public class AttackVarsPOJO extends Pojo {

@@ -40,7 +40,7 @@ public class JumpshipDTO extends Dto {
 	private boolean attackReady;
 	private boolean movedInCurrentRound = false;
 	private Long currentSystemID;
-//	private List<RoutePointDTO> routepointList;
+	private List<RoutePointDTO> routepointList;
 
 	public ArrayList<Long> getStarSystemHistoryArray() {
 		ArrayList<Long> hist = null;
@@ -147,5 +147,17 @@ public class JumpshipDTO extends Dto {
 	@SuppressWarnings("unused")
 	public void setJumpshipName(String jumpshipName) {
 		this.jumpshipName = jumpshipName;
+	}
+
+	public List<RoutePointDTO> getRoutepointList() {
+		return routepointList;
+	}
+
+	public void setRoutepointList(List<RoutePointDTO> routepointList) {
+		this.routepointList = routepointList;
+	}
+
+	public void setCurrentSystemID(Long currentSystemID) {
+		this.currentSystemID = currentSystemID;
 	}
 }
