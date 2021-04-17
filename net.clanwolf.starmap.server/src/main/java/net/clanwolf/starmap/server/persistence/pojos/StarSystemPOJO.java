@@ -1,120 +1,105 @@
-/* ---------------------------------------------------------------- |
- *    ____ _____                                                    |
- *   / ___|___ /                   Communicate - Command - Control  |
- *  | |     |_ \                   MK V "Cerberus"                  |
- *  | |___ ___) |                                                   |
- *   \____|____/                                                    |
- *                                                                  |
- * ---------------------------------------------------------------- |
- * Info        : https://www.clanwolf.net                           |
- * GitHub      : https://github.com/ClanWolf                        |
- * ---------------------------------------------------------------- |
- * Licensed under the Apache License, Version 2.0 (the "License");  |
- * you may not use this file except in compliance with the License. |
- * You may obtain a copy of the License at                          |
- * http://www.apache.org/licenses/LICENSE-2.0                       |
- *                                                                  |
- * Unless required by applicable law or agreed to in writing,       |
- * software distributed under the License is distributed on an "AS  |
- * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either  |
- * express or implied. See the License for the specific language    |
- * governing permissions and limitations under the License.         |
- *                                                                  |
- * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
- * ---------------------------------------------------------------- |
- */
-package net.clanwolf.starmap.transfer.dtos;
+package net.clanwolf.starmap.server.persistence.pojos;
 
-import net.clanwolf.starmap.transfer.Dto;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
+import javax.persistence.*;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 
-public class StarSystemDTO extends Dto {
+import static javax.persistence.GenerationType.IDENTITY;
 
-	//@Id
-	//@GeneratedValue(strategy = IDENTITY)
-	//@Column(name = "ID")
+@JsonIdentityInfo(
+		scope= net.clanwolf.starmap.server.persistence.pojos.StarSystemPOJO.class,
+		generator= ObjectIdGenerators.PropertyGenerator.class,
+		property = "id")
+@Entity
+@Table(name = "StarSystem", catalog = "C3")
+public class StarSystemPOJO {
+
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "ID")
 	private Long id;
 
-	//@Column(name = "Name")
+	@Column(name = "Name")
 	private String name;
 
-	//@Column(name = "x")
+	@Column(name = "x")
 	private BigDecimal x;
 
-	//@Column(name = "y")
+	@Column(name = "y")
 	private BigDecimal y;
 
-	//@Column(name = "StarType1")
+	@Column(name = "StarType1")
 	private String starType1;
 
-	//@Column(name = "StarType2")
+	@Column(name = "StarType2")
 	private String starType2;
 
-	//@Column(name = "StarType3")
+	@Column(name = "StarType3")
 	private String starType3;
 
-	//@Column(name = "Population")
+	@Column(name = "Population")
 	private Long population;
 
-	//@Column(name = "PopulationCountYear")
+	@Column(name = "PopulationCountYear")
 	private Long populationCountYear;
 
-	//@Column(name = "Capital")
+	@Column(name = "Capital")
 	private String capital;
 
-	//@Column(name = "Temperature")
+	@Column(name = "Temperature")
 	private Long temperature;
 
-	//@Column(name = "Position")
+	@Column(name = "Position")
 	private Long position;
 
-	//@Column(name = "Moons")
+	@Column(name = "Moons")
 	private String moons;
 
-	//@Column(name = "Landmasses")
+	@Column(name = "Landmasses")
 	private String landmasses;
 
-	//@Column(name = "Gravitation")
+	@Column(name = "Gravitation")
 	private Double gravitation;
 
-	//@Column(name = "WaterPercentage")
+	@Column(name = "WaterPercentage")
 	private Long waterPercentage;
 
-	//@Column(name = "Lifeform")
+	@Column(name = "Lifeform")
 	private String lifeform;
 
-	//@Column(name = "Resources")
+	@Column(name = "Resources")
 	private Long resources;
 
-	//@Column(name = "MainPlanet")
+	@Column(name = "MainPlanet")
 	private Boolean mainPlanet;
 
-	//@Column(name = "SystemImageName")
+	@Column(name = "SystemImageName")
 	private String systemImageName;
 
-	//@Column(name = "Uninhabitable")
+	@Column(name = "Uninhabitable")
 	private Boolean uninhabitable;
 
-	//@Column(name = "Rating")
+	@Column(name = "Rating")
 	private String rating;
 
-	//@Column(name = "SurfaceMap")
+	@Column(name = "SurfaceMap")
 	private String surfaceMap;
 
 	//@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	//@JoinColumn(name = "FactionID")
+	@JoinColumn(name = "FactionID")
 	private Long factionID;
 
-	//@Column(name = "FactionID_3025")
+	@Column(name = "FactionID_3025")
 	private Long factionID_3025;
 
-	//@Column(name = "SarnaLinkSystem")
+	@Column(name = "SarnaLinkSystem")
 	private String sarnaLinkSystem;
 
-	//@Column(name = "Description")
+	@Column(name = "Description")
 	private String description;
 
 	public Long getId() {
@@ -331,11 +316,5 @@ public class StarSystemDTO extends Dto {
 
 	public void setDescription(String description) {
 		this.description = description;
-	}
-
-	@Override
-	@SuppressWarnings("unused")
-	public String toString() {
-		return this.name;
 	}
 }

@@ -33,10 +33,8 @@ import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.AttackDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.FactionDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.JumpshipDAO;
-import net.clanwolf.starmap.server.persistence.pojos.AttackPOJO;
-import net.clanwolf.starmap.server.persistence.pojos.FactionPOJO;
-import net.clanwolf.starmap.server.persistence.pojos.JumpshipPOJO;
-import net.clanwolf.starmap.server.persistence.pojos.RoutePointPOJO;
+import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl._HH_StarSystemDataDAO;
+import net.clanwolf.starmap.server.persistence.pojos.*;
 import net.clanwolf.starmap.transfer.Dto;
 import net.clanwolf.starmap.transfer.dtos.*;
 import org.codehaus.jackson.map.ObjectMapper;
@@ -255,6 +253,24 @@ public class WebDataInterface {
 		return jsonString.toString();
 	}
 
+	private static String load_HH_StarSystemData(){
+		universe.starSystems.clear();
+
+		_HH_StarSystemDataDAO dao = _HH_StarSystemDataDAO.getInstance();
+		ArrayList<_HH_StarSystemDataPOJO> pojoList = dao.getAll_HH_StarSystemData();
+		Iterator<_HH_StarSystemDataPOJO> iter = pojoList.iterator();
+		StringBuffer jsonString = new StringBuffer();
+
+		while(iter.hasNext()) {
+			_HH_StarSystemDataPOJO f = iter.next();
+			_HH_StarSystemDataDTO dto = EntityConverter.convertpojo2dto(f,_HH_StarSystemDataDTO.class);
+			universe.starSystems.put(f.getStarSystemID().getId(),dto);
+			jsonString.append(getJsonString(dto));
+		}
+		return jsonString.toString();
+
+	}
+
 	// CALLED FROM HEARTBEATTIMER
 	public static void createSystemList(SystemListTypes type) {
 		initialize();
@@ -276,7 +292,12 @@ public class WebDataInterface {
 			C3Logger.print("Created universe classes (Factions)...");
 		}
 
-		if (type == SystemListTypes.HH_StarSystems || type == SystemListTypes.CM_StarSystems) {
+		if (type == SystemListTypes.HH_StarSystems) {
+			systemsList = load_HH_StarSystemData();
+			C3Logger.print("Created universe classes (Factions)...");
+		}
+
+		if (type == SystemListTypes.CM_StarSystems) {
 			EntityManager manager = EntityManagerHelper.getEntityManager();
 			manager.getTransaction().begin();
 
@@ -292,7 +313,7 @@ public class WebDataInterface {
 						rs = stmt.executeQuery();
 						C3Logger.print("Select done...");
 
-						if (type == SystemListTypes.HH_StarSystems) {
+						/*if (type == SystemListTypes.HH_StarSystems) {
 							universe.starSystems.clear();
 							while (rs.next()) {
 								StarSystemDTO ss = new StarSystemDTO();
@@ -317,7 +338,7 @@ public class WebDataInterface {
 								universe.starSystems.put(ss.getId(), ss);
 							}
 							C3Logger.print("Created universe classes (StarSystems)...");
-						}
+						}*/
 
 						// create JSON representation
 						rs.beforeFirst();

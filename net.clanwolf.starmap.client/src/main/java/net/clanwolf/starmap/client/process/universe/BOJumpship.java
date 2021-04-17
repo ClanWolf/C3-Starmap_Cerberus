@@ -42,6 +42,7 @@ import net.clanwolf.starmap.transfer.dtos.RoutePointDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class BOJumpship {
@@ -52,6 +53,7 @@ public class BOJumpship {
 	private List<BOStarSystem> routeSystems = null;
 	private ArrayList<RoutePointDTO> route = null;
 	public Group routeLines = null;
+	private Long currentSystemID;
 
 	@SuppressWarnings("unused")
 	public Line getPredictedRouteLine() {
@@ -64,10 +66,10 @@ public class BOJumpship {
 		return predictedRouteLine;
 	}
 
-	public void storeRouteToDatabase(ArrayList<RoutePointDTO> route) {
+	public void storeRouteToDatabase(JumpshipDTO jsDto) {
 		GameState saveRouteState = new GameState();
-		saveRouteState.setMode(GAMESTATEMODES.ROUTE_SAVE);
-		saveRouteState.addObject(route);
+		saveRouteState.setMode(GAMESTATEMODES.JUMPSHIP_SAVE);
+		saveRouteState.addObject(jsDto);
 		Nexus.fireNetworkEvent(saveRouteState);
 	}
 
@@ -84,8 +86,8 @@ public class BOJumpship {
 			for (BOStarSystem s : routeSystems) {
 				int round = Nexus.getBoUniverse().currentRound + dist;
 				RoutePointDTO rp = new RoutePointDTO();
-				rp.setSystemId(Long.valueOf(s.getId()));
-				rp.setJumpshipId(jumpshipDTO.getID());
+				rp.setSystemId(Long.valueOf(s.getStarSystemId()));
+				rp.setJumpshipId(jumpshipDTO.getId());
 				rp.setSeasonId(Long.valueOf(Nexus.getBoUniverse().currentSeason));
 				rp.setRoundId(Long.valueOf(round));
 				route.add(rp);
@@ -93,8 +95,8 @@ public class BOJumpship {
 				dist++;
 			}
 			C3Logger.info("Route set.");
-			Nexus.getBoUniverse().routesList.remove(jumpshipDTO.getID());
-			Nexus.getBoUniverse().routesList.put(jumpshipDTO.getID(), route);
+			Nexus.getBoUniverse().routesList.remove(jumpshipDTO.getId());
+			Nexus.getBoUniverse().routesList.put(jumpshipDTO.getId(), route);
 		} else {
 			C3Logger.info("Route was empty, nothing was set.");
 		}
@@ -137,7 +139,7 @@ public class BOJumpship {
 
 	@SuppressWarnings("unused")
 	public Long getJumpshipId() {
-		return this.jumpshipDTO.getID();
+		return this.jumpshipDTO.getId();
 	}
 
 	@SuppressWarnings("unused")
@@ -151,8 +153,42 @@ public class BOJumpship {
 	}
 
 	@SuppressWarnings("unused")
+	public ArrayList<Long> getStarSystemHistoryArray() {
+		String starSystemHistory = jumpshipDTO.getStarSystemHistory();
+		ArrayList<Long> hist = null;
+		if (starSystemHistory != null && !"".equals(starSystemHistory)) {
+			if (starSystemHistory.endsWith(";")) {
+				starSystemHistory = starSystemHistory.substring(0, starSystemHistory.length() - 1);
+			}
+			if (!starSystemHistory.contains(";")) {
+				try {
+					currentSystemID = Long.parseLong(starSystemHistory);
+				} catch (NumberFormatException nfe) {
+					// not a valid id
+				}
+			} else {
+				String[] hs = starSystemHistory.split(";");
+				hist = new ArrayList<>();
+				for (String s : hs) {
+					try {
+						Long i = Long.parseLong(s);
+						hist.add(i);
+						currentSystemID = i;
+					} catch (NumberFormatException nfe) {
+						// not a valid id
+					}
+				}
+			}
+		}
+		return hist;
+	}
+
+	@SuppressWarnings("unused")
 	public Long getCurrentSystemID() {
-		return jumpshipDTO.getCurrentSystemID();
+		if (currentSystemID == null) {
+			ArrayList<Long> hist = getStarSystemHistoryArray();
+		}
+		return currentSystemID;
 	}
 
 	@SuppressWarnings("unused")
@@ -171,8 +207,7 @@ public class BOJumpship {
 	}
 
 	@SuppressWarnings("unused")
-	public boolean isAttackReady() { return jumpshipDTO.isAttackReady(); }
+	public boolean isAttackReady() { return jumpshipDTO.getAttackReady(); }
 
-	@SuppressWarnings("unused")
-	public ArrayList<Long> getStarSystemHistoryArray() { return jumpshipDTO.getStarSystemHistoryArray(); }
+	public JumpshipDTO getJumpshipDTO(){ return jumpshipDTO;}
 }

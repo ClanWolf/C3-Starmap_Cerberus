@@ -46,6 +46,7 @@ import net.clanwolf.starmap.server.persistence.pojos.RoutePointPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.UserPOJO;
 import net.clanwolf.starmap.server.util.WebDataInterface;
 import net.clanwolf.starmap.transfer.GameState;
+import net.clanwolf.starmap.transfer.dtos.JumpshipDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 
 import java.sql.Timestamp;
@@ -123,8 +124,8 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		case PRIVILEGE_SAVE:
 			savePrivileges(session, state);
 			break;
-		case ROUTE_SAVE:
-			saveRoute(session, state);
+		case JUMPSHIP_SAVE:
+			saveJumpship(session, state);
 			break;
 		case ATTACK_SAVE:
 			saveAttack(session, state);
@@ -209,10 +210,32 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		}
 	}
 
+	private void saveJumpship(PlayerSession session, GameState state){
+		JumpshipDAO dao = JumpshipDAO.getInstance();
+		GameState response = new GameState(GAMESTATEMODES.JUMPSHIP_SAVE);
+
+		try {
+			EntityManagerHelper.beginTransaction(getC3UserID(session));
+			JumpshipPOJO js =(JumpshipPOJO) state.getObject();
+
+			dao.update(C3GameSessionHandler.getC3UserID(session),js);
+
+		} catch (RuntimeException re) {
+			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
+
+			response.addObject(re.getMessage());
+			response.setAction_successfully(Boolean.FALSE);
+
+			C3Logger.error("Jumpship save", re);
+		} finally {
+			C3GameSessionHandler.sendNetworkEvent(session, response);
+		}
+	}
+
 	private void saveRoute(PlayerSession session, GameState state) {
 
 		RoutePointDAO dao = RoutePointDAO.getInstance();
-		GameState response = new GameState(GAMESTATEMODES.ROUTE_SAVE);
+		GameState response = new GameState(GAMESTATEMODES.JUMPSHIP_SAVE);
 
 		try {
 			EntityManagerHelper.beginTransaction(getC3UserID(session));

@@ -33,12 +33,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import net.clanwolf.starmap.client.gui.panes.map.Config;
-import net.clanwolf.starmap.transfer.dtos.StarSystemDTO;
+import net.clanwolf.starmap.transfer.dtos._HH_StarSystemDataDTO;
 import org.kynosarges.tektosyne.geometry.PointD;
 
 public class BOStarSystem {
 
-	private StarSystemDTO starSystemDTO;
+	private _HH_StarSystemDataDTO hh_starSystemDataDTO;
 	private Circle starSystemCircle;
 	private Label starSystemLabel;
 	private StackPane starSystemStackPane;
@@ -68,27 +68,31 @@ public class BOStarSystem {
 
 	@SuppressWarnings("unused")
 	public double getScreenX() {
-		double screenX = (starSystemDTO.getX()) * Config.MAP_COORDINATES_MULTIPLICATOR;
+		double screenX = (hh_starSystemDataDTO.getStarSystemID().getX().doubleValue()) * Config.MAP_COORDINATES_MULTIPLICATOR;
 		screenX = (Config.MAP_WIDTH / 2) + screenX;
 		return screenX;
 	}
 
 	@SuppressWarnings("unused")
 	public double getScreenY() {
-		double screenY = (starSystemDTO.getY()) * Config.MAP_COORDINATES_MULTIPLICATOR;
+		double screenY = (hh_starSystemDataDTO.getStarSystemID().getY().doubleValue()) * Config.MAP_COORDINATES_MULTIPLICATOR;
 		screenY = Config.MAP_HEIGHT - ((Config.MAP_HEIGHT /2) + screenY);
 		return screenY;
 	}
 
 	@SuppressWarnings("unused")
-	public Boolean isCapital() {
-		return starSystemDTO.isCaptial();
+	public Boolean isCapitalWorld() {
+		return hh_starSystemDataDTO.getCapitalWorld();
 	}
 
 	@SuppressWarnings("unused")
 	public Long getStarSystemDataId() {
-		return starSystemDTO.getStarSystemDataId();
+		return hh_starSystemDataDTO.getId();
 	}
+	public Long getStarSystemId() {
+		return hh_starSystemDataDTO.getStarSystemID().getId();
+	}
+
 
 	@SuppressWarnings("unused")
 	public Circle getStarSystemCircle() {
@@ -141,30 +145,30 @@ public class BOStarSystem {
 	}
 
 	@SuppressWarnings("unused")
-	public BOStarSystem(StarSystemDTO starSystemDTO) {
-		this.starSystemDTO = starSystemDTO;
+	public BOStarSystem(_HH_StarSystemDataDTO starSystemDTO) {
+		this.hh_starSystemDataDTO = starSystemDTO;
 	}
 
 	@SuppressWarnings("unused")
-	public String getName() { return starSystemDTO.getName(); }
+	public String getName() { return hh_starSystemDataDTO.getStarSystemID().getName(); }
 
 	@SuppressWarnings("unused")
-	public Long getId() { return starSystemDTO.getId(); }
+	public Long getId() { return hh_starSystemDataDTO.getId(); }
 
 	@SuppressWarnings("unused")
-	public Double getX() { return starSystemDTO.getX(); }
+	public Double getX() { return hh_starSystemDataDTO.getStarSystemID().getX().doubleValue(); }
 
 	@SuppressWarnings("unused")
-	public Double getY() { return starSystemDTO.getY(); }
+	public Double getY() { return hh_starSystemDataDTO.getStarSystemID().getY().doubleValue(); }
 
 	@SuppressWarnings("unused")
-	public String getAffiliation() { return starSystemDTO.getAffiliation(); }
+	public String getAffiliation() { return hh_starSystemDataDTO.getFactionID().getShortName(); }
 
 	@SuppressWarnings("unused")
-	public Long getFactionId() { return starSystemDTO.getFactionId(); }
+	public Long getFactionId() { return hh_starSystemDataDTO.getFactionID().getId(); }
 
 	@SuppressWarnings("unused")
-	public String getSystemImageName() { return starSystemDTO.getSystemImageName(); }
+	public String getSystemImageName() { return hh_starSystemDataDTO.getStarSystemID().getSystemImageName(); }
 
 	@SuppressWarnings("unused")
 	public void setCurrentlyUnderAttack(boolean b) {
@@ -178,6 +182,6 @@ public class BOStarSystem {
 
 	@SuppressWarnings("unused")
 	public String getDescription() {
-		return this.starSystemDTO.getDescription();
+		return this.hh_starSystemDataDTO.getDescription();
 	}
 }

@@ -64,6 +64,7 @@ import net.clanwolf.starmap.client.util.C3PROPS;
 import net.clanwolf.starmap.client.util.C3Properties;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.transfer.dtos.AttackDTO;
+import net.clanwolf.starmap.transfer.dtos.JumpshipDTO;
 import net.clanwolf.starmap.transfer.dtos.RoutePointDTO;
 import net.clanwolf.starmap.transfer.enums.MEDALS;
 import org.kynosarges.tektosyne.geometry.PointD;
@@ -136,10 +137,14 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	private void handleConfirmButtonClick() {
 		// Store jumproutes
 		for (BOJumpship js : Nexus.getBoUniverse().jumpshipBOs.values()) {
-			if (js.getJumpshipFaction() == Nexus.getCurrentUser().getCurrentCharacter().getFactionId()) {
+			if (js.getJumpshipFaction() == Nexus.getCurrentUser().getCurrentCharacter().getFactionId() &&
+					Nexus.getBoUniverse().routesList.get(js.getJumpshipId()) != null ) {
+
 				C3Logger.info("Storing route to database");
 				ArrayList<RoutePointDTO> route = Nexus.getBoUniverse().routesList.get(js.getJumpshipId());
-				js.storeRouteToDatabase(route);
+				JumpshipDTO jsDto = js.getJumpshipDTO();
+				jsDto.setRoutepointList(route);
+				js.storeRouteToDatabase(jsDto);
 
 				// Is the first coming jump (next round) to an enemy planet (?)
 				RoutePointDTO rp = route.get(1);
@@ -235,11 +240,11 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 				for (BOStarSystem starSystem : boUniverse.starSystemBOs.values()) {
 					String name = starSystem.getName();
-					Long id = starSystem.getId();
+					Long id = starSystem.getStarSystemId();
 					double x = starSystem.getScreenX();
 					double y = starSystem.getScreenY();
 
-					if (starSystem.isCapital()) {
+					if (starSystem.isCapitalWorld()) {
 						C3Logger.info(starSystem.getName() + " is the capital planet of faction " + starSystem.getAffiliation());
 					}
 
@@ -265,7 +270,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					String colorString = boUniverse.factionBOs.get(starSystem.getAffiliation()).getColor();
 					Color c = Color.web(colorString);
 					Circle starSystemCircle = new Circle(4);
-					starSystemCircle.setId(starSystem.getId().toString());
+					starSystemCircle.setId(starSystem.getStarSystemId().toString());
 					starSystemCircle.setStroke(c.deriveColor(1, 1, 1, 0.8));
 					starSystemCircle.setFill(c.deriveColor(1, 1, 1, 0.4));
 					starSystemCircle.setVisible(true);
@@ -277,7 +282,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					starSystemCircle.addEventFilter(MouseDragEvent.MOUSE_DRAG_EXITED, nodeGestures.getOnStarSystemDragExitedEventHandler());
 
 					starSystem.setStarSystemCircle(starSystemCircle);
-					if (starSystem.isCapital()) {
+					if (starSystem.isCapitalWorld()) {
 						Circle starSystemCapitalCircle = new Circle(12);
 						starSystemCapitalCircle.setStrokeWidth(3.0);
 						starSystemCapitalCircle.setId(starSystem.getId().toString() + "_CapitalMarker");

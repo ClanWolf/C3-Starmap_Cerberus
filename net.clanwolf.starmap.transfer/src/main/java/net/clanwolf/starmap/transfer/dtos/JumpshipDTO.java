@@ -33,16 +33,77 @@ import java.util.List;
 
 public class JumpshipDTO extends Dto {
 
-	private Long ID;
-	private String jumpshipName = "";
-	private Long jumpshipFactionID;
-	private String starSystemHistory = "";
-	private boolean attackReady;
-	private boolean movedInCurrentRound = false;
-	private Long currentSystemID;
-	private List<RoutePointDTO> routepointList;
+	//@Id
+	//@GeneratedValue(strategy = IDENTITY)
+	//@Column(name = "ID")
+	private Long id;
 
-	public ArrayList<Long> getStarSystemHistoryArray() {
+	//@Column(name = "JumpshipName")
+	private String jumpshipName;
+
+	//@Column(name = "JumpshipFactionID")
+	private Long jumpshipFactionID;
+
+	//@Column(name = "StarSystemHistory")
+	private String starSystemHistory;
+
+	//@Column(name = "AttackReady")
+	private Boolean attackReady;
+
+	//@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = RoutePointPOJO.class)
+	//@JoinColumn(name = "JumpshipID")
+	private List<RoutePointDTO> routepointList = new ArrayList<>();
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getJumpshipName() {
+		return jumpshipName;
+	}
+
+	public void setJumpshipName(String jumpshipName) {
+		this.jumpshipName = jumpshipName;
+	}
+
+	public Long getJumpshipFactionID() {
+		return jumpshipFactionID;
+	}
+
+	public void setJumpshipFactionID(Long jumpshipFactionID) {
+		this.jumpshipFactionID = jumpshipFactionID;
+	}
+
+	public String getStarSystemHistory() {
+		return starSystemHistory;
+	}
+
+	public void setStarSystemHistory(String starSystemHistory) {
+		this.starSystemHistory = starSystemHistory;
+	}
+
+	public Boolean getAttackReady() {
+		return attackReady;
+	}
+
+	public void setAttackReady(Boolean attackReady) {
+		this.attackReady = attackReady;
+	}
+
+	public List<RoutePointDTO> getRoutepointList() {
+		return routepointList;
+	}
+
+	public void setRoutepointList(List<RoutePointDTO> routepointList) {
+		this.routepointList = routepointList;
+	}
+
+	/*public ArrayList<Long> getStarSystemHistoryArray() {
+		Long currentSystemID;
 		ArrayList<Long> hist = null;
 		if (starSystemHistory != null && !"".equals(starSystemHistory)) {
 			if (starSystemHistory.endsWith(";")) {
@@ -69,95 +130,5 @@ public class JumpshipDTO extends Dto {
 			}
 		}
 		return hist;
-	}
-
-//	@SuppressWarnings("unused")
-//	public void setRoute(ArrayList<RoutePointDTO> routepointList) {
-//		this.routepointList = routepointList;
-//	}
-//
-//	@SuppressWarnings("unused")
-//	public List<RoutePointDTO> getRoutepointList() {
-//		return this.routepointList;
-//	}
-
-	@SuppressWarnings("unused")
-	public Long getCurrentSystemID() {
-		if (currentSystemID == null) {
-			ArrayList<Long> hist = getStarSystemHistoryArray();
-		}
-		return currentSystemID;
-	}
-
-	@SuppressWarnings("unused")
-	public boolean isAttackReady() {
-		return attackReady;
-	}
-
-	@SuppressWarnings("unused")
-	public void setAttackReady(boolean attackReady) {
-		this.attackReady = attackReady;
-	}
-
-	@SuppressWarnings("unused")
-	public String getStarSystemHistory() {
-		return starSystemHistory;
-	}
-
-	@SuppressWarnings("unused")
-	public void setStarSystemHistory(String starSystemHistory) {
-		this.starSystemHistory = starSystemHistory;
-	}
-
-	@SuppressWarnings("unused")
-	public Long getJumpshipFactionID() {
-		return jumpshipFactionID;
-	}
-
-	@SuppressWarnings("unused")
-	public void setJumpshipFactionID(Long jumpshipFactionID) {
-		this.jumpshipFactionID = jumpshipFactionID;
-	}
-
-	@SuppressWarnings("unused")
-	public boolean isMovedInCurrentRound() {
-		return movedInCurrentRound;
-	}
-
-	@SuppressWarnings("unused")
-	public void setMovedInCurrentRound(boolean movedInCurrentRound) {
-		this.movedInCurrentRound = movedInCurrentRound;
-	}
-
-	@SuppressWarnings("unused")
-	public Long getID() {
-		return ID;
-	}
-
-	@SuppressWarnings("unused")
-	public void setID(Long id) {
-		this.ID = id;
-	}
-
-	@SuppressWarnings("unused")
-	public String getJumpshipName() {
-		return jumpshipName;
-	}
-
-	@SuppressWarnings("unused")
-	public void setJumpshipName(String jumpshipName) {
-		this.jumpshipName = jumpshipName;
-	}
-
-	public List<RoutePointDTO> getRoutepointList() {
-		return routepointList;
-	}
-
-	public void setRoutepointList(List<RoutePointDTO> routepointList) {
-		this.routepointList = routepointList;
-	}
-
-	public void setCurrentSystemID(Long currentSystemID) {
-		this.currentSystemID = currentSystemID;
-	}
+	}*/
 }

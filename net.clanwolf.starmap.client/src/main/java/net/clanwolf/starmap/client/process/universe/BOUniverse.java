@@ -79,9 +79,9 @@ public class BOUniverse {
 	public BOUniverse(UniverseDTO universeDTO) {
 		this.universeDTO = universeDTO;
 
-		for (StarSystemDTO ss : universeDTO.starSystems.values()) {
+		for (_HH_StarSystemDataDTO ss : universeDTO.starSystems.values()) {
 			BOStarSystem boStarSystem = new BOStarSystem(ss);
-			starSystemBOs.put(ss.getId(), boStarSystem);
+			starSystemBOs.put(ss.getStarSystemID().getId(), boStarSystem);
 		}
 
 		for (AttackDTO att : universeDTO.attacks) {
