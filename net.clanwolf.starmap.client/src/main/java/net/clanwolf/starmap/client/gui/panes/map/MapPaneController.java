@@ -215,6 +215,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			Nexus.setCurrentRound(boUniverse.currentRound);
 			Nexus.setCurrentDate(boUniverse.currentDate);
 
+			ArrayList<Line> lines = new ArrayList<>();
+
 			selectionMarker = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/selectionIndicator.png")));
 			attackMarker = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/attackIndicator.png")));
 			travelMarker = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/travelIndicator.png")));
@@ -385,26 +387,48 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 				for (BOJumpship js : boUniverse.jumpshipBOs.values()) {
 					Long currentSystemID = js.getCurrentSystemID();
-
 					boolean myOwnShip = js.getJumpshipFaction() == Nexus.getCurrentUser().getCurrentCharacter().getFactionId();
 
 					if (currentSystemID != null) {
 						ImageView jumpshipImage;
-						if (js.isAttackReady()) {
-							if (myOwnShip) {
+						if (myOwnShip) {
+							if (js.isAttackReady()) {
 								jumpshipImage = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_left_blue.png"))));
 								jumpshipImage.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
 								jumpshipImage.addEventFilter(MouseEvent.DRAG_DETECTED, nodeGestures.getOnMouseDragDetectedEventHandler());
 							} else {
-								jumpshipImage = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_right_red.png"))));
+								jumpshipImage = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_left_neutral.png"))));
+							}
+
+							// draw existing route points for my own ships
+							List<BOStarSystem> route = js.getStoredRoute();
+							if (route != null) {
+								for (int y = 0; y < route.size() - 1; y++) {
+									BOStarSystem s1 = route.get(y);
+									BOStarSystem s2 = route.get(y + 1);
+
+									// Dotted line to every stop on the route
+									Line line = new Line(s1.getScreenX(), s1.getScreenY(), s2.getScreenX(), s2.getScreenY());
+									line.setStrokeWidth(2.5);
+									line.getStrokeDashArray().setAll(2d, 10d, 8d, 10d);
+									line.setOpacity(0.8);
+									if (y == 0) {
+										line.setStroke(Color.LIGHTYELLOW);
+									} else {
+										line.setStroke(Color.LIGHTYELLOW);
+									}
+									line.setStrokeLineCap(StrokeLineCap.ROUND);
+									lines.add(line);
+								}
 							}
 						} else {
-							if (myOwnShip) {
-								jumpshipImage = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_left_neutral.png"))));
+							if (js.isAttackReady()) {
+								jumpshipImage = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_right_red.png"))));
 							} else {
 								jumpshipImage = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_right_red.png"))));
 							}
 						}
+
 						jumpshipImage.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
 						jumpshipImage.addEventFilter(MouseEvent.MOUSE_RELEASED, nodeGestures.getOnMouseReleasedEventHandler());
 						jumpshipImage.addEventFilter(MouseEvent.MOUSE_CLICKED, nodeGestures.getOnJumpShipClickedEventHandler());
@@ -426,6 +450,10 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					}
 				}
 
+				canvas.getChildren().addAll(lines);
+				for (Line l : lines) {
+					l.toBack();
+				}
 				starMapPane.getChildren().add(canvas);
 
 				Rectangle clip = new Rectangle(Config.CLIP_X, Config.CLIP_Y);

@@ -39,6 +39,7 @@ import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.JumpshipDTO;
 import net.clanwolf.starmap.transfer.dtos.RoutePointDTO;
+import net.clanwolf.starmap.transfer.dtos.StarSystemDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 
 import java.util.ArrayList;
@@ -115,6 +116,17 @@ public class BOJumpship {
 	@SuppressWarnings("unused")
 	public List<BOStarSystem> getRouteSystems() {
 		return this.routeSystems;
+	}
+
+	@SuppressWarnings("unused")
+	public List<BOStarSystem> getStoredRoute() {
+		List<RoutePointDTO> storedSystems = this.jumpshipDTO.getRoutepointList();
+		List<BOStarSystem> storedSystemBos = new ArrayList<>();
+		for (RoutePointDTO rp : storedSystems) {
+			BOStarSystem sbo = Nexus.getBoUniverse().starSystemBOs.get(rp.getSystemId());
+			storedSystemBos.add(sbo);
+		}
+		return storedSystemBos;
 	}
 
 	@SuppressWarnings("unused")
