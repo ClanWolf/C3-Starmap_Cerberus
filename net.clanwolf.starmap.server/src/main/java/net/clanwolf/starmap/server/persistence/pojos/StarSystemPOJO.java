@@ -15,7 +15,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 		generator= ObjectIdGenerators.PropertyGenerator.class,
 		property = "id")
 @Entity
-@Table(name = "StarSystem", catalog = "C3")
+@Table(name = "STARSYSTEM", catalog = "C3")
 public class StarSystemPOJO {
 
 	@Id
