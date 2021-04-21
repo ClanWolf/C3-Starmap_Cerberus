@@ -135,7 +135,6 @@ public class C3Room extends GameRoomSession {
 			C3Logger.debug("C3Room.onLogin: -> adding Event to PlayerSession");
 			playerSession.onEvent(e);
 			C3Logger.debug("C3Room.onLogin: -> LOG_IN_SUCCESS Event sent");
-			getSessionReadyMap().remove(playerSession);
 		} } ).start();
 	}
 
@@ -145,6 +144,7 @@ public class C3Room extends GameRoomSession {
 		C3Logger.info("disconnectSession: disconnected session -> " + playerSession.getId());
 		// remove player session from list with the wrong sessions
 		wrongPlayerSessions.remove(playerSession.getId());
+		getSessionReadyMap().remove(playerSession);
 
 		// EntityManager for room session must be closed on disconnect
 		if(playerSession.getPlayer().getId() != null) {
