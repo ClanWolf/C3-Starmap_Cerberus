@@ -222,6 +222,8 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 			dao.update(C3GameSessionHandler.getC3UserID(session),js);
 
+			EntityManagerHelper.commit(getC3UserID(session));
+
 		} catch (RuntimeException re) {
 			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
 
