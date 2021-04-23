@@ -54,6 +54,7 @@ public class EventCommunications {
 
 		if (event.getSource() instanceof GameState) {
 			GameState state = (GameState) event.getSource();
+			C3Logger.info("Event received: " + state.getMode());
 
 			switch (state.getMode()) {
 				case USER_GET_NEW_PLAYERLIST:

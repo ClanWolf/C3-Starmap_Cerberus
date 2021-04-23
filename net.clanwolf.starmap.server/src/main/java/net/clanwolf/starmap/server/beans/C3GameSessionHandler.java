@@ -179,7 +179,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 			C3Logger.error("User save", re);
 		} finally {
-			C3GameSessionHandler.sendNetworkEvent(session, response);
+//			C3GameSessionHandler.sendNetworkEvent(session, response);
 		}
 	}
 
@@ -208,7 +208,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 			C3Logger.error("Attack save", re);
 		} finally {
-			C3GameSessionHandler.sendNetworkEvent(session, response);
+//			C3GameSessionHandler.sendNetworkEvent(session, response);
 		}
 	}
 
@@ -232,7 +232,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 			C3Logger.error("Jumpship save", re);
 		} finally {
-			C3GameSessionHandler.sendNetworkEvent(session, response);
+//			C3GameSessionHandler.sendNetworkEvent(session, response);
 		}
 	}
 
@@ -270,7 +270,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 			C3Logger.error("Route save", re);
 		} finally {
-			C3GameSessionHandler.sendNetworkEvent(session, response);
+//			C3GameSessionHandler.sendNetworkEvent(session, response);
 		}
 	}
 
@@ -305,7 +305,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 			C3Logger.error("Privilege save", re);
 		} finally {
-			C3GameSessionHandler.sendNetworkEvent(session, response);
+//			C3GameSessionHandler.sendNetworkEvent(session, response);
 		}
 	}
 
@@ -340,16 +340,14 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 	private void getLoggedInUserData(PlayerSession session) {
 		C3Logger.debug("C3GameSessionHandler.getLoggedInUserData");
 		C3Logger.debug("C3GameSessionHandler.getLoggedInUserData.seesionID: -> " + session.getId());
-
-		GameState state_userdata = new GameState(GAMESTATEMODES.USER_LOGGED_IN_DATA);
-		C3Logger.info("Client is ready for data (" + session + "): " + roomSession.getSessionReadyMap().get(session));
-		C3Logger.info("Map: " + roomSession.getSessionReadyMap().toString());
+		C3Logger.debug("Client is ready for data (" + session + "): " + roomSession.getSessionReadyMap().get(session));
+		// C3Logger.debug("Map: " + roomSession.getSessionReadyMap().toString());
 
 		// Create a new GameState with the UserPOJO for the client, if login was successful
 		UserPOJO user = ((C3Player) session.getPlayer()).getUser();
 
 		( new Thread() { public void run() {
-			boolean ready;
+			boolean ready = false;
 			int counter = 50;
 			do {
 				ready = roomSession.getSessionReadyMap().containsKey(session) && roomSession.getSessionReadyMap().get(session);
@@ -357,7 +355,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 					break;
 				} else {
 					try {
-						C3Logger.debug("Waiting a moment before send the login result event...");
+						C3Logger.debug("Waiting a moment before sending the login result event...");
 						TimeUnit.MILLISECONDS.sleep(250);
 						counter--;
 					} catch (InterruptedException interruptedException) {
@@ -371,11 +369,15 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 				C3Logger.info("---------------------------- Sending userdata back...");
 				ArrayList<UserPOJO> userlist = UserDAO.getInstance().getUserList();
+
+				GameState state_userdata = new GameState(GAMESTATEMODES.USER_LOGGED_IN_DATA);
 				state_userdata.addObject(user);
 				state_userdata.addObject2(WebDataInterface.getUniverse());
 				state_userdata.addObject3(userlist);
 				state_userdata.setReceiver(session.getId());
 				C3GameSessionHandler.sendNetworkEvent(session, state_userdata);
+
+				C3Logger.info("Event sent: " + state.getMode());
 				C3Logger.info("---------------------------- Sending userdata done.");
 			} else {
 				C3Logger.info("Waiting for the client to be ready timed out... client did not respond in time!");
@@ -399,7 +401,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 			C3Logger.error("User save", re);
 		} finally {
-			C3GameSessionHandler.sendNetworkEvent(session, response);
+//			C3GameSessionHandler.sendNetworkEvent(session, response);
 		}
 
 		// Reads characterlist and add it to the user

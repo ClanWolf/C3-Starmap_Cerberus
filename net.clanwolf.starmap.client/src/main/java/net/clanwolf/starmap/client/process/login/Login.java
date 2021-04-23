@@ -175,9 +175,7 @@ public class Login {
 
 			@Override
 			public void onLoginFailure(Event event) {
-				super.onLoginFailure(event); // To change body of generated
-				// methods, choose Tools |
-				// Templates.
+				super.onLoginFailure(event);
 				loginInProgress = false;
 				C3Logger.info("Login failed!");
 				C3Logger.info("onLoginFailure: " + "Check Username and/or Password!");
@@ -190,11 +188,10 @@ public class Login {
 				loginInProgress = false;
 				C3Logger.info("Successfully logged in.");
 				C3Logger.info("onLoginSuccess: USER_REQUEST_LOGGED_IN_DATA");
-				GameState state = new GameState(GAMESTATEMODES.USER_REQUEST_LOGGED_IN_DATA);
 
+				GameState state = new GameState(GAMESTATEMODES.USER_REQUEST_LOGGED_IN_DATA);
 				NetworkEvent networkEvent = Events.networkEvent(state);
 				session.onEvent(networkEvent);
-
 				ActionManager.getAction(ACTIONS.LOGGED_ON).execute();
 			}
 
@@ -205,6 +202,7 @@ public class Login {
 		};
 		session.addHandler(handler);
 
+		C3Logger.info("Sending flag 'client is ready for events'");
 		GameState s = new GameState(GAMESTATEMODES.CLIENT_READY_FOR_EVENTS);
 		Nexus.fireNetworkEvent(s);
 	}
