@@ -65,6 +65,15 @@ public class JumpshipPOJO extends Pojo {
 	@JoinColumn(name = "JumpshipID")
 	private List<RoutePointPOJO> routepointList = new ArrayList<>();
 
+	/*@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = RoutePointPOJO.class)
+	@JoinColumn(name = "AttackidID")
+	private List<AttackPOJO> allAttacks = new ArrayList<>();
+
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = RoutePointPOJO.class)
+	@JoinColumn(name = "AttackidID")
+	@Where()
+	private List<AttackPOJO> openAttacks = new ArrayList<>();
+*/
 	public Long getId() {
 		return id;
 	}

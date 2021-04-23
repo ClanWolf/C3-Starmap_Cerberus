@@ -146,6 +146,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		case CLIENT_READY_FOR_EVENTS:
 			C3Logger.info("Setting flag 'Client is ready for data' for Session: " + session);
 			roomSession.getSessionReadyMap().put(session, Boolean.TRUE);
+			getLoggedInUserData(session);
 			break;
 		default:
 			break;
