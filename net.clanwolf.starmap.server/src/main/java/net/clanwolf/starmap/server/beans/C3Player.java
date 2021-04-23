@@ -149,6 +149,7 @@ public class C3Player implements Player {
 
     @Override
     public synchronized void logout(PlayerSession session) {
+
         session.close();
         if (null != playerSessions) {
             playerSessions.remove(session);

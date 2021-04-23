@@ -89,11 +89,16 @@ public abstract class AbstractSessionEventHandler implements
 		case Events.EXCEPTION:
 			onException(event);
 			break;
+//		case Events.LOG_OUT:
+//			onLogout(event);
+//			break;
 		default:
 			onCustomEvent(event);
 			break;
 		}
 	}
+
+//	public abstract void onLogout(Event event);
 
 	public abstract void onDataIn(Event event);
 

@@ -63,7 +63,7 @@ public class Login {
 
 	private static Session session = null;
 
-	private static boolean loginInProgress = false;
+	public static boolean loginInProgress = false;
 
 	private Login() {
 		// Prevent Instantiation
@@ -164,13 +164,28 @@ public class Login {
 	 */
 	private static void addDefaultHandlerToSession(Session session) {
 		AbstractSessionEventHandler handler = new AbstractSessionEventHandler(session) {
+			@Override
+			public void onGameRoomJoin(Event event) {
+				super.onGameRoomJoin(event);
+			}
+
+			@Override
+			public void onChangeAttribute(Event event) {
+				super.onChangeAttribute(event);
+			}
+
+			@Override
+			public synchronized void onException(Event event) {
+				super.onException(event);
+			}
 
 			@Override
 			public void onDisconnect(Event event) {
 				// TODO: Implement a new Action for disconnect from server
+				super.onDisconnect(event);
 				C3Logger.info("onDisconnect");
 				loginInProgress = false;
-				super.onDisconnect(event);
+
 			}
 
 			@Override

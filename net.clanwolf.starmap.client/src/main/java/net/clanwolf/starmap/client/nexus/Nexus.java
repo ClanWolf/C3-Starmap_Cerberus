@@ -30,6 +30,7 @@ import io.nadron.client.app.Session;
 import io.nadron.client.event.Events;
 import io.nadron.client.event.NetworkEvent;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
+import net.clanwolf.starmap.client.process.login.Login;
 import net.clanwolf.starmap.client.process.universe.BOJumpship;
 import net.clanwolf.starmap.client.process.universe.BOStarSystem;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
@@ -180,6 +181,7 @@ public class Nexus {
 		setUser(null);
 		setMyPlayerSessionID(null);
 		setSession(null);
+		Login.loginInProgress = false;
 	}
 
 	public static AbstractC3Pane getCurrentlyOpenedPane() {
