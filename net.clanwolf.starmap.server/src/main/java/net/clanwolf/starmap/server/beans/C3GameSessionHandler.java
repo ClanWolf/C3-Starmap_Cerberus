@@ -232,10 +232,11 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 			response.addObject(re.getMessage());
 			response.setAction_successfully(Boolean.FALSE);
+			C3GameSessionHandler.sendNetworkEvent(session, response);
 
 			C3Logger.error("Jumpship save", re);
 		} finally {
-//			C3GameSessionHandler.sendNetworkEvent(session, response);
+
 		}
 	}
 
@@ -270,10 +271,11 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 			response.addObject(re.getMessage());
 			response.setAction_successfully(Boolean.FALSE);
+			C3GameSessionHandler.sendNetworkEvent(session, response);
 
 			C3Logger.error("Route save", re);
 		} finally {
-//			C3GameSessionHandler.sendNetworkEvent(session, response);
+
 		}
 	}
 
@@ -305,10 +307,11 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 			response.addObject(re.getMessage());
 			response.setAction_successfully(Boolean.FALSE);
+			C3GameSessionHandler.sendNetworkEvent(session, response);
 
 			C3Logger.error("Privilege save", re);
 		} finally {
-//			C3GameSessionHandler.sendNetworkEvent(session, response);
+
 		}
 	}
 
@@ -416,10 +419,11 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 			response.addObject(re.getMessage());
 			response.setAction_successfully(Boolean.FALSE);
+			C3GameSessionHandler.sendNetworkEvent(session, response);
 
 			C3Logger.error("User save", re);
 		} finally {
-//			C3GameSessionHandler.sendNetworkEvent(session, response);
+
 		}
 
 		// Reads characterlist and add it to the user
