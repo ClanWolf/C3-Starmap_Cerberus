@@ -66,6 +66,7 @@ public class EventCommunications {
 						C3Logger.info(anUserList.getUserName() + " from UserDTO object");
 					}
 					break;
+
 				case USER_LOGGED_IN_DATA:
 					// set current user
 					Nexus.setUser((UserDTO) state.getObject());
@@ -79,7 +80,6 @@ public class EventCommunications {
 					if (o3 instanceof ArrayList) {
 						Nexus.setUserList((ArrayList) state.getObject3());
 					}
-
 
 					// own playersession on server
 					Nexus.setMyPlayerSessionID(state.getReceiver());
@@ -173,8 +173,8 @@ public class EventCommunications {
 					break;
 				case USER_REQUEST_LOGGED_IN_DATA:
 					break;
-				case USER_SAVE:
-					break;
+//				case USER_SAVE:
+//					break;
 				case BROADCAST_SEND_NEW_PLAYERLIST:
 					break;
 				case ROLEPLAY_REQUEST_ALLSTORIES:

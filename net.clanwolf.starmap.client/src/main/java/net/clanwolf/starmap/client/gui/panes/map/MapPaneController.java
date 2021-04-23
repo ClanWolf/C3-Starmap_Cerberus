@@ -450,10 +450,6 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					}
 				}
 
-				canvas.getChildren().addAll(lines);
-				for (Line l : lines) {
-					l.toBack();
-				}
 				starMapPane.getChildren().add(canvas);
 
 				Rectangle clip = new Rectangle(Config.CLIP_X, Config.CLIP_Y);
@@ -475,6 +471,11 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				paneSystemDetail.setOpacity(0.0f);
 				paneJumpshipDetail.toFront();
 				paneJumpshipDetail.setOpacity(0.0f);
+
+				canvas.getChildren().addAll(lines);
+				for (Line l : lines) {
+					l.toBack();
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

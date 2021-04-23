@@ -341,40 +341,16 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		C3Logger.debug("C3GameSessionHandler.getLoggedInUserData");
 		C3Logger.debug("C3GameSessionHandler.getLoggedInUserData.seesionID: -> " + session.getId());
 
-		// Create a new GameState with the UserPOJO for the client, if login was successful
-		UserPOJO user = ((C3Player) session.getPlayer()).getUser();
-
-		// Save last login date
-		UserDAO dao = UserDAO.getInstance();
-		GameState response = new GameState(GAMESTATEMODES.USER_SAVE);
-		try {
-			EntityManagerHelper.beginTransaction(C3GameSessionHandler.getC3UserID(session));
-			user.setLastLogin(new Timestamp(System.currentTimeMillis()));
-			dao.update(getC3UserID(session), ((C3Player) session.getPlayer()).getUser());
-			EntityManagerHelper.commit(C3GameSessionHandler.getC3UserID(session));
-			C3Logger.info("Last login saved for User");
-		} catch (RuntimeException re) {
-			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
-
-			response.addObject(re.getMessage());
-			response.setAction_successfully(Boolean.FALSE);
-
-			C3Logger.error("User save", re);
-		} finally {
-			C3GameSessionHandler.sendNetworkEvent(session, response);
-		}
-
-		// Reads characterlist and add it to the user
-		//ArrayList<RolePlayCharacterPOJO> characterList = RolePlayCharacterDAO.getInstance().getCharactersOfUser(user);
-		//user.setCharacterList(characterList);
-
 		GameState state_userdata = new GameState(GAMESTATEMODES.USER_LOGGED_IN_DATA);
 		C3Logger.info("Client is ready for data (" + session + "): " + roomSession.getSessionReadyMap().get(session));
 		C3Logger.info("Map: " + roomSession.getSessionReadyMap().toString());
 
+		// Create a new GameState with the UserPOJO for the client, if login was successful
+		UserPOJO user = ((C3Player) session.getPlayer()).getUser();
+
 		( new Thread() { public void run() {
 			boolean ready;
-			int counter = 20;
+			int counter = 50;
 			do {
 				ready = roomSession.getSessionReadyMap().containsKey(session) && roomSession.getSessionReadyMap().get(session);
 				if (ready || counter == 0) {
@@ -405,6 +381,30 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				C3Logger.info("Waiting for the client to be ready timed out... client did not respond in time!");
 			}
 		} } ).start();
+
+		// Save last login date
+		UserDAO dao = UserDAO.getInstance();
+		GameState response = new GameState(GAMESTATEMODES.USER_SAVE);
+		try {
+			EntityManagerHelper.beginTransaction(C3GameSessionHandler.getC3UserID(session));
+			user.setLastLogin(new Timestamp(System.currentTimeMillis()));
+			dao.update(getC3UserID(session), ((C3Player) session.getPlayer()).getUser());
+			EntityManagerHelper.commit(C3GameSessionHandler.getC3UserID(session));
+			C3Logger.info("Last login saved for User");
+		} catch (RuntimeException re) {
+			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
+
+			response.addObject(re.getMessage());
+			response.setAction_successfully(Boolean.FALSE);
+
+			C3Logger.error("User save", re);
+		} finally {
+			C3GameSessionHandler.sendNetworkEvent(session, response);
+		}
+
+		// Reads characterlist and add it to the user
+		//ArrayList<RolePlayCharacterPOJO> characterList = RolePlayCharacterDAO.getInstance().getCharactersOfUser(user);
+		//user.setCharacterList(characterList);
 	}
 
 	/**
