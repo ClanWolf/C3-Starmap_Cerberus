@@ -114,7 +114,7 @@ public class C3Room extends GameRoomSession {
 			e = Events.event(null, Events.LOG_IN_SUCCESS);
 		}
 
-		( new Thread() { public void run() {
+		/*( new Thread() { public void run() {
 			boolean ready;
 			int counter = 10;
 			do {
@@ -135,7 +135,11 @@ public class C3Room extends GameRoomSession {
 			C3Logger.debug("C3Room.onLogin: -> adding Event to PlayerSession");
 			playerSession.onEvent(e);
 			C3Logger.debug("C3Room.onLogin: -> LOG_IN_SUCCESS Event sent");
-		} } ).start();
+		} } ).start();*/
+
+		C3Logger.debug("C3Room.onLogin: -> adding Event to PlayerSession");
+		playerSession.onEvent(e);
+		C3Logger.debug("C3Room.onLogin: -> LOG_IN_SUCCESS Event sent");
 	}
 
 	@Override

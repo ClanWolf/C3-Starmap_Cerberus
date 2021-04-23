@@ -189,9 +189,9 @@ public class Login {
 				C3Logger.info("Successfully logged in.");
 				C3Logger.info("onLoginSuccess: USER_REQUEST_LOGGED_IN_DATA");
 
-				GameState state = new GameState(GAMESTATEMODES.USER_REQUEST_LOGGED_IN_DATA);
-				NetworkEvent networkEvent = Events.networkEvent(state);
-				session.onEvent(networkEvent);
+				//GameState state = new GameState(GAMESTATEMODES.USER_REQUEST_LOGGED_IN_DATA);
+				//NetworkEvent networkEvent = Events.networkEvent(state);
+				//session.onEvent(networkEvent);
 				ActionManager.getAction(ACTIONS.LOGGED_ON).execute();
 			}
 

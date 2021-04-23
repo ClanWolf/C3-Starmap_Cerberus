@@ -177,10 +177,11 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 			response.addObject(re.getMessage());
 			response.setAction_successfully(Boolean.FALSE);
+			C3GameSessionHandler.sendNetworkEvent(session, response);
 
 			C3Logger.error("User save", re);
 		} finally {
-//			C3GameSessionHandler.sendNetworkEvent(session, response);
+
 		}
 	}
 
@@ -347,7 +348,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		// Create a new GameState with the UserPOJO for the client, if login was successful
 		UserPOJO user = ((C3Player) session.getPlayer()).getUser();
 
-		( new Thread() { public void run() {
+		/*( new Thread() { public void run() {
 			boolean ready = false;
 			int counter = 50;
 			do {
@@ -383,7 +384,22 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			} else {
 				C3Logger.info("Waiting for the client to be ready timed out... client did not respond in time!");
 			}
-		} } ).start();
+		} } ).start();*/
+
+		C3Logger.info("Client is ready for data (" + session + "): " + roomSession.getSessionReadyMap().get(session));
+
+		C3Logger.info("---------------------------- Sending userdata back...");
+		ArrayList<UserPOJO> userlist = UserDAO.getInstance().getUserList();
+
+		GameState state_userdata = new GameState(GAMESTATEMODES.USER_LOGGED_IN_DATA);
+		state_userdata.addObject(user);
+		state_userdata.addObject2(WebDataInterface.getUniverse());
+		state_userdata.addObject3(userlist);
+		state_userdata.setReceiver(session.getId());
+		C3GameSessionHandler.sendNetworkEvent(session, state_userdata);
+
+		C3Logger.info("Event sent: " + state.getMode());
+		C3Logger.info("---------------------------- Sending userdata done.");
 
 		// Save last login date
 		UserDAO dao = UserDAO.getInstance();
