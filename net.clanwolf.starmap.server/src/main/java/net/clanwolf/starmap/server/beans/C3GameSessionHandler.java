@@ -207,10 +207,11 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 			response.addObject(re.getMessage());
 			response.setAction_successfully(Boolean.FALSE);
+			C3GameSessionHandler.sendNetworkEvent(session, response);
 
 			C3Logger.error("Attack save", re);
 		} finally {
-//			C3GameSessionHandler.sendNetworkEvent(session, response);
+
 		}
 	}
 
