@@ -143,10 +143,20 @@ public class Login {
 		StartEventHandler startEventHandler = new StartEventHandler(session) {
 			@Override
 			public void onEvent(Event event) {
-				C3Logger.info("Going to Change to Object Protocol");
-				C3Logger.info(event.toString());
+				C3Logger.info("##### Going to Change to Object Protocol");
+				if (event.getSource() instanceof GameState) {
+					// 0x1a START Event
+					GameState state = (GameState) event.getSource();
+					C3Logger.info("##### Event received, Mode: " + state.getMode());
+				} else {
+					C3Logger.info("Source: " + event.getSource());
+				}
+				C3Logger.info("##### Event: " + event.toString());
+				C3Logger.info("##### Reseting protocol");
 				session.resetProtocol(NettyObjectProtocol.INSTANCE);
+				C3Logger.info("##### Removing start handler");
 				session.removeHandler(this);
+				C3Logger.info("##### Adding default handler");
 				addDefaultHandlerToSession(session);
 			}
 		};
@@ -215,9 +225,10 @@ public class Login {
 				EventCommunications.onDataIn(session, event);
 			}
 		};
+		C3Logger.info("##### Adding default event handler");
 		session.addHandler(handler);
 
-		C3Logger.info("Sending flag 'client is ready for events'");
+		C3Logger.info("##### Sending flag 'client is ready for events'");
 		GameState s = new GameState(GAMESTATEMODES.CLIENT_READY_FOR_EVENTS);
 		Nexus.fireNetworkEvent(s);
 	}

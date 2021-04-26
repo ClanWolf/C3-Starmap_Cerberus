@@ -72,6 +72,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 		// Initialize the room state_login.
 		state = new GameState();
+		state = new GameState();
 		manager.setState(state); // set it back on the room
 	}
 
@@ -402,7 +403,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		state_userdata.setReceiver(session.getId());
 		C3GameSessionHandler.sendNetworkEvent(session, state_userdata);
 
-		C3Logger.info("Event sent: " + state.getMode());
+		C3Logger.info("Event sent: " + state_userdata.getMode());
 		C3Logger.info("---------------------------- Sending userdata done.");
 
 		// Save last login date
@@ -432,14 +433,12 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 	}
 
 	/**
-	 * Sends a actually list of players to all clients
+	 * Sends a list of players to all clients
 	 * 
 	 * @param session PlayerSession
 	 * @param state GameState
 	 */
 	private void sendNewPlayerList(PlayerSession session, GameState state) {
-
-		//TODO: Replace UserPOJO with UserPOJO-Transferobject
 		Iterator<PlayerSession> iter = room.getSessions().iterator();
 		ArrayList<UserPOJO> userList = new ArrayList<>();
 
@@ -452,7 +451,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		state_broadcast_login.addObject(userList);
 //		room.sendBroadcast(Events.networkEvent(state_broadcast_login));
 
-		C3GameSessionHandler.sendBroadCast(room,state_broadcast_login );
+		C3GameSessionHandler.sendBroadCast(room, state_broadcast_login);
 	}
 
 	static Long getC3UserID(PlayerSession session) {

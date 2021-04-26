@@ -34,6 +34,7 @@ import net.clanwolf.starmap.client.process.login.Login;
 import net.clanwolf.starmap.client.process.universe.BOJumpship;
 import net.clanwolf.starmap.client.process.universe.BOStarSystem;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
+import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
 import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
@@ -249,6 +250,8 @@ public class Nexus {
 		NetworkEvent networkEvent = Events.networkEvent(gameState);
 		if (session != null) {
 			Nexus.session.onEvent(networkEvent);
+		} else {
+			C3Logger.info("Session is still null! ERROR!");
 		}
 	}
 
