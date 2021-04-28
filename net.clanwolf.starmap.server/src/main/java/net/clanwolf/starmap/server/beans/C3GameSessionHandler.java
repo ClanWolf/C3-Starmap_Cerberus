@@ -145,9 +145,9 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			C3GameSessionHandlerRoleplay.saveRolePlayCharacterNextStep(session, state);
 			break;
 		case CLIENT_READY_FOR_EVENTS:
-			C3Logger.info("Setting flag 'Client is ready for data' for Session: " + session);
-			roomSession.getSessionReadyMap().put(session, Boolean.TRUE);
-			getLoggedInUserData(session);
+			C3Logger.debug("##### Setting flag 'Client is ready for data' for Session: " + session);
+			roomSession.getSessionReadyMap().put(session.toString(), Boolean.TRUE);
+//			getLoggedInUserData(session);
 			break;
 		default:
 			break;
@@ -194,10 +194,10 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			EntityManagerHelper.beginTransaction(getC3UserID(session));
 
 			AttackPOJO attack = (AttackPOJO) state.getObject();
-			C3Logger.info("Saving attack: " + attack);
-			C3Logger.info("-- Attacker (jumpshipID): " + attack.getJumpshipID());
-			C3Logger.info("-- Attacking from: " + attack.getAttackedFromStarSystemID());
-			C3Logger.info("-- Attacked system: " + attack.getStarSystemID());
+			C3Logger.debug("Saving attack: " + attack);
+			C3Logger.debug("-- Attacker (jumpshipID): " + attack.getJumpshipID());
+			C3Logger.debug("-- Attacking from: " + attack.getAttackedFromStarSystemID());
+			C3Logger.debug("-- Attacked system: " + attack.getStarSystemID());
 			dao.save(getC3UserID(session), attack);
 
 			EntityManagerHelper.commit(getC3UserID(session));
@@ -346,9 +346,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 	private void getLoggedInUserData(PlayerSession session) {
 		C3Logger.debug("C3GameSessionHandler.getLoggedInUserData");
-		C3Logger.debug("C3GameSessionHandler.getLoggedInUserData.seesionID: -> " + session.getId());
-		C3Logger.debug("Client is ready for data (" + session + "): " + roomSession.getSessionReadyMap().get(session));
-		// C3Logger.debug("Map: " + roomSession.getSessionReadyMap().toString());
+		C3Logger.debug("C3GameSessionHandler.getLoggedInUserData.sessionID: -> " + session.getId());
 
 		// Create a new GameState with the UserPOJO for the client, if login was successful
 		UserPOJO user = ((C3Player) session.getPlayer()).getUser();
@@ -357,7 +355,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			boolean ready = false;
 			int counter = 50;
 			do {
-				ready = roomSession.getSessionReadyMap().containsKey(session) && roomSession.getSessionReadyMap().get(session);
+				ready = roomSession.getSessionReadyMap().containsKey(session) && roomSession.getSessionReadyMap().get(session.toString());
 				if (ready || counter == 0) {
 					break;
 				} else {
@@ -372,7 +370,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			} while(!ready);
 
 			if (counter > 0) {
-				C3Logger.info("Client is ready for data (" + session + "): " + roomSession.getSessionReadyMap().get(session));
+				C3Logger.info("Client is ready for data (" + session + "): " + roomSession.getSessionReadyMap().get(session.toString()));
 
 				C3Logger.info("---------------------------- Sending userdata back...");
 				ArrayList<UserPOJO> userlist = UserDAO.getInstance().getUserList();
@@ -390,8 +388,6 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				C3Logger.info("Waiting for the client to be ready timed out... client did not respond in time!");
 			}
 		} } ).start();*/
-
-		C3Logger.info("Client is ready for data (" + session + "): " + roomSession.getSessionReadyMap().get(session));
 
 		C3Logger.info("---------------------------- Sending userdata back...");
 		ArrayList<UserPOJO> userlist = UserDAO.getInstance().getUserList();

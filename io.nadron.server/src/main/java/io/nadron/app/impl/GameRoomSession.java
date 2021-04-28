@@ -24,13 +24,11 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 
-public abstract class GameRoomSession extends DefaultSession implements GameRoom
-{
+public abstract class GameRoomSession extends DefaultSession implements GameRoom {
 
+	private HashMap<String, Boolean> sessionReadyMap = new HashMap<String, Boolean>();
 
-	private HashMap<PlayerSession, Boolean> sessionReadyMap = new HashMap<PlayerSession, Boolean>();
-
-	public HashMap<PlayerSession, Boolean> getSessionReadyMap() {
+	public HashMap<String, Boolean> getSessionReadyMap() {
 		return sessionReadyMap;
 	}
 
@@ -237,7 +235,7 @@ public abstract class GameRoomSession extends DefaultSession implements GameRoom
 	
 	public PlayerSession getSessionInstance(Player player)
 	{
-		PlayerSession playerSession = sessionFactory.newPlayerSession(this,player);
+		PlayerSession playerSession = sessionFactory.newPlayerSession(this, player);
 		return playerSession;
 	}
 	

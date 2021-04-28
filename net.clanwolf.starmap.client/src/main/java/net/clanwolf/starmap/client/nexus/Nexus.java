@@ -251,7 +251,7 @@ public class Nexus {
 		if (session != null) {
 			Nexus.session.onEvent(networkEvent);
 		} else {
-			C3Logger.info("Session is still null! ERROR!");
+			C3Logger.info("Session is null!");
 		}
 	}
 
