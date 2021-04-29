@@ -220,6 +220,14 @@ public class Login {
 			}
 
 			@Override
+			public void onNetworkMessage(NetworkEvent networkEvent) {
+				super.onNetworkMessage(networkEvent);
+				C3Logger.info("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
+				C3Logger.debug("Event received: " + networkEvent.getType());
+				C3Logger.info("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
+			}
+
+			@Override
 			public void onDataIn(Event event) {
 				EventCommunications.onDataIn(session, event);
 			}

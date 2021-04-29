@@ -102,8 +102,7 @@ public abstract class AbstractSessionEventHandler implements
 
 	public abstract void onDataIn(Event event);
 
-	public void onNetworkMessage(NetworkEvent networkEvent)
-	{
+	public void onNetworkMessage(NetworkEvent networkEvent) {
 		Session session = getSession();
 		boolean writeable = session.isWriteable();
 		MessageSender messageSender = null;

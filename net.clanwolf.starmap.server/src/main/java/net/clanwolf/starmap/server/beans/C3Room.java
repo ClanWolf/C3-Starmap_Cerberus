@@ -104,17 +104,6 @@ public class C3Room extends GameRoomSession {
 			}
 		});
 
-		Event e;
-		if (((C3Player) playerSession.getPlayer()).getUser() == null) {
-			// Send error message if user is null
-			C3Logger.debug("C3Room.onLogin: no user found -> send Events.LOG_IN_FAILURE");
-			e = Events.event(null, Events.LOG_IN_FAILURE);
-		} else {
-			// Create a new GameState with the UserPOJO for the client, if login was successful
-			C3Logger.debug("C3Room.onLogin: -> sending LOG_IN_SUCCESS Event. Session: " + playerSession.getId());
-			e = Events.event(null, Events.LOG_IN_SUCCESS);
-		}
-
 		( new Thread() { public void run() {
 			boolean ready;
 			int counter = 20;
@@ -128,7 +117,7 @@ public class C3Room extends GameRoomSession {
 
 			do {
 				C3Logger.debug("##### COUNTER: " + counter);
-				ready = getSessionReadyMap().containsKey(playerSession) && getSessionReadyMap().get(playerSession);
+				ready = getSessionReadyMap().containsKey(playerSession.toString()) && getSessionReadyMap().get(playerSession.toString());
 				C3Logger.debug("##### READY: " + ready);
 				if (ready || counter == 0) {
 					C3Logger.debug("##### READY: " + ready);
@@ -144,8 +133,20 @@ public class C3Room extends GameRoomSession {
 				}
 			} while(!ready);
 
-			if (counter == 0) {
-				// Login failed! Client did not respond in time
+			Event e;
+			if (((C3Player) playerSession.getPlayer()).getUser() == null || counter == 0) {
+				// Send error message if user is null
+				C3Logger.debug("C3Room.onLogin: no user found -> send Events.LOG_IN_FAILURE");
+
+				if (counter == 0) {
+					// Login failed! Client did not respond in time
+				}
+
+				e = Events.event(null, Events.LOG_IN_FAILURE);
+			} else {
+				// Create a new GameState with the UserPOJO for the client, if login was successful
+				C3Logger.debug("C3Room.onLogin: -> sending LOG_IN_SUCCESS Event. Session: " + playerSession.getId());
+				e = Events.event(null, Events.LOG_IN_SUCCESS);
 			}
 
 			Iterator it = getSessionReadyMap().keySet().iterator();
