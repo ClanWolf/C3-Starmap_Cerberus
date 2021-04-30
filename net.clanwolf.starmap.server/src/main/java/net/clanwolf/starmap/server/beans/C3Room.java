@@ -108,12 +108,12 @@ public class C3Room extends GameRoomSession {
 			boolean ready;
 			int counter = 20;
 
-			try {
-				C3Logger.debug("##### Waiting some time no matter what...");
-				TimeUnit.MILLISECONDS.sleep(2000);
-			} catch (InterruptedException interruptedException) {
-				interruptedException.printStackTrace();
-			}
+//			try {
+//				C3Logger.debug("##### Waiting some time no matter what...");
+//				TimeUnit.MILLISECONDS.sleep(2000);
+//			} catch (InterruptedException interruptedException) {
+//				interruptedException.printStackTrace();
+//			}
 
 			do {
 				C3Logger.debug("##### COUNTER: " + counter);

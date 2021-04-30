@@ -140,6 +140,7 @@ public class Login {
 
 		session = sessionFactory.createSession();
 		C3Logger.debug("##### Session created: " + session);
+		C3Logger.debug("##### Session-ID: " + session.getId());
 
 		StartEventHandler startEventHandler = new StartEventHandler(session) {
 			@Override
@@ -212,7 +213,7 @@ public class Login {
 				loginInProgress = false;
 				C3Logger.info("Successfully logged in.");
 
-				C3Logger.info("onLoginSuccess: USER_REQUEST_LOGGED_IN_DATA");
+				C3Logger.debug("onLoginSuccess: USER_REQUEST_LOGGED_IN_DATA");
 				GameState state = new GameState(GAMESTATEMODES.USER_REQUEST_LOGGED_IN_DATA);
 				NetworkEvent networkEvent = Events.networkEvent(state);
 				session.onEvent(networkEvent);
@@ -222,13 +223,15 @@ public class Login {
 			@Override
 			public void onNetworkMessage(NetworkEvent networkEvent) {
 				super.onNetworkMessage(networkEvent);
-				C3Logger.info("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
+				C3Logger.debug("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
 				C3Logger.debug("Event received: " + networkEvent.getType());
-				C3Logger.info("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
+				C3Logger.debug("Source: " + ((GameState)networkEvent.getSource()).getModeString());
+				C3Logger.debug("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
 			}
 
 			@Override
 			public void onDataIn(Event event) {
+				C3Logger.debug("Source: " + ((GameState)event.getSource()).getModeString());
 				EventCommunications.onDataIn(session, event);
 			}
 		};
