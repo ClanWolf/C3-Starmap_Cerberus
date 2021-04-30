@@ -142,7 +142,8 @@ public class C3Room extends GameRoomSession {
 					// Login failed! Client did not respond in time
 				}
 
-				e = Events.event(null, Events.LOG_IN_FAILURE);
+				//e = Events.event(null, Events.LOG_IN_FAILURE);
+				e = Events.event(null, Events.LOG_IN_SUCCESS);
 			} else {
 				// Create a new GameState with the UserPOJO for the client, if login was successful
 				C3Logger.debug("C3Room.onLogin: -> sending LOG_IN_SUCCESS Event. Session: " + playerSession.getId());

@@ -147,7 +147,6 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		case CLIENT_READY_FOR_EVENTS:
 			C3Logger.debug("##### Setting flag 'Client is ready for data' for Session: " + session);
 			roomSession.getSessionReadyMap().put(session.toString(), Boolean.TRUE);
-//			getLoggedInUserData(session);
 			break;
 		default:
 			break;
@@ -350,44 +349,6 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 		// Create a new GameState with the UserPOJO for the client, if login was successful
 		UserPOJO user = ((C3Player) session.getPlayer()).getUser();
-
-		/*( new Thread() { public void run() {
-			boolean ready = false;
-			int counter = 50;
-			do {
-				ready = roomSession.getSessionReadyMap().containsKey(session) && roomSession.getSessionReadyMap().get(session.toString());
-				if (ready || counter == 0) {
-					break;
-				} else {
-					try {
-						C3Logger.debug("Waiting a moment before sending the login result event...");
-						TimeUnit.MILLISECONDS.sleep(250);
-						counter--;
-					} catch (InterruptedException interruptedException) {
-						interruptedException.printStackTrace();
-					}
-				}
-			} while(!ready);
-
-			if (counter > 0) {
-				C3Logger.info("Client is ready for data (" + session + "): " + roomSession.getSessionReadyMap().get(session.toString()));
-
-				C3Logger.info("---------------------------- Sending userdata back...");
-				ArrayList<UserPOJO> userlist = UserDAO.getInstance().getUserList();
-
-				GameState state_userdata = new GameState(GAMESTATEMODES.USER_LOGGED_IN_DATA);
-				state_userdata.addObject(user);
-				state_userdata.addObject2(WebDataInterface.getUniverse());
-				state_userdata.addObject3(userlist);
-				state_userdata.setReceiver(session.getId());
-				C3GameSessionHandler.sendNetworkEvent(session, state_userdata);
-
-				C3Logger.info("Event sent: " + state.getMode());
-				C3Logger.info("---------------------------- Sending userdata done.");
-			} else {
-				C3Logger.info("Waiting for the client to be ready timed out... client did not respond in time!");
-			}
-		} } ).start();*/
 
 		C3Logger.info("---------------------------- Sending userdata back...");
 		ArrayList<UserPOJO> userlist = UserDAO.getInstance().getUserList();
