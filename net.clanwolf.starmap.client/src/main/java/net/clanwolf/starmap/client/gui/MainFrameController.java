@@ -1113,7 +1113,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			}
 			rowCount++;
 			Platform.runLater(() -> systemConsole.setText(oldContent));
-			// String screenNumber = ("000" + rowCount).substring((rowCount + "").length());
+			String screenNumber = ("000" + rowCount).substring((rowCount + "").length());
 			StringBuilder typeString = new StringBuilder();
 			try {
 				for (int i = 0; i < contentLine.length(); i++) {
@@ -1121,19 +1121,19 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					typeString.append(ch);
 					final String type = typeString.toString();
 					Platform.runLater(() -> {
-						// systemConsoleCurrentLine.setText(type + " < " + screenNumber + "#");
-						systemConsoleCurrentLine.setText(type);
+						systemConsoleCurrentLine.setText(type + " < " + screenNumber + "#");
+//						systemConsoleCurrentLine.setText(type);
 					});
 					TimeUnit.MILLISECONDS.sleep(80);
 				}
 				Platform.runLater(() -> {
-					// systemConsoleCurrentLine.setText(contentLine + " < " + screenNumber + "#");
-					systemConsoleCurrentLine.setText(contentLine);
+					systemConsoleCurrentLine.setText(contentLine + " < " + screenNumber + "#");
+//					systemConsoleCurrentLine.setText(contentLine);
 				});
 			} catch (InterruptedException e) {
 				//
 			}
-			if (rowCount > 20) {
+			if (rowCount > 10) {
 				oldContent = oldContent.substring(oldContent.indexOf("#") + 1);
 			}
 			oldContent = oldContent + contentLine + "\r\n";
