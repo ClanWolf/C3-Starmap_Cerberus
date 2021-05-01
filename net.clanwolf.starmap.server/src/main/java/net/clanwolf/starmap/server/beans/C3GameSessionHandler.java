@@ -357,7 +357,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		state_userdata.addObject(user);
 		state_userdata.addObject2(WebDataInterface.getUniverse());
 		state_userdata.addObject3(userlist);
-		state_userdata.setReceiver(session.getId());
+//		state_userdata.setReceiver(session.getId());
 		C3GameSessionHandler.sendNetworkEvent(session, state_userdata);
 
 		C3Logger.info("Event sent: " + state_userdata.getMode());
