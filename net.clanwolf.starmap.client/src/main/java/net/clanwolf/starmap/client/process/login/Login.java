@@ -231,7 +231,7 @@ public class Login {
 
 			@Override
 			public void onDataIn(Event event) {
-				C3Logger.debug("Source: " + ((GameState)event.getSource()).getModeString());
+				C3Logger.debug("##### Source: " + ((GameState)event.getSource()).getModeString());
 				EventCommunications.onDataIn(session, event);
 			}
 		};

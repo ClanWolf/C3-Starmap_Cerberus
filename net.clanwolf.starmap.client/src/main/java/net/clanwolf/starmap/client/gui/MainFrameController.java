@@ -1122,21 +1122,19 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					final String type = typeString.toString();
 					Platform.runLater(() -> {
 						systemConsoleCurrentLine.setText(type + " < " + screenNumber + "#");
-//						systemConsoleCurrentLine.setText(type);
 					});
-					TimeUnit.MILLISECONDS.sleep(80);
+					TimeUnit.MILLISECONDS.sleep(60);
 				}
 				Platform.runLater(() -> {
 					systemConsoleCurrentLine.setText(contentLine + " < " + screenNumber + "#");
-//					systemConsoleCurrentLine.setText(contentLine);
 				});
 			} catch (InterruptedException e) {
 				//
 			}
-			if (rowCount > 10) {
+			if (rowCount > 8) {
 				oldContent = oldContent.substring(oldContent.indexOf("#") + 1);
 			}
-			oldContent = oldContent + contentLine + "\r\n";
+			oldContent = oldContent + contentLine + " < " + screenNumber + "#" + "\r\n";
 		};
 		exec.execute(r);
 	}

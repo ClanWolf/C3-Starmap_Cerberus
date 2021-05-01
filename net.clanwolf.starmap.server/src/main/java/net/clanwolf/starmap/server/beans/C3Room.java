@@ -116,11 +116,10 @@ public class C3Room extends GameRoomSession {
 //			}
 
 			do {
-				C3Logger.debug("##### COUNTER: " + counter);
 				ready = getSessionReadyMap().containsKey(playerSession.toString()) && getSessionReadyMap().get(playerSession.toString());
+				C3Logger.debug("##### COUNTER: " + counter);
 				C3Logger.debug("##### READY: " + ready);
 				if (ready || counter == 0) {
-					C3Logger.debug("##### READY: " + ready);
 					break;
 				} else {
 					try {
@@ -142,8 +141,8 @@ public class C3Room extends GameRoomSession {
 					// Login failed! Client did not respond in time
 				}
 
-				//e = Events.event(null, Events.LOG_IN_FAILURE);
-				e = Events.event(null, Events.LOG_IN_SUCCESS);
+				e = Events.event(null, Events.LOG_IN_FAILURE);
+//				e = Events.event(null, Events.LOG_IN_SUCCESS);
 			} else {
 				// Create a new GameState with the UserPOJO for the client, if login was successful
 				C3Logger.debug("C3Room.onLogin: -> sending LOG_IN_SUCCESS Event. Session: " + playerSession.getId());
@@ -153,7 +152,7 @@ public class C3Room extends GameRoomSession {
 			Iterator it = getSessionReadyMap().keySet().iterator();
 			while(it.hasNext()) {
 				String s = (String)it.next();
-				C3Logger.debug("##### Session in sessionReadyMap: " + s + "(" + getSessionReadyMap().get(s.toString()) + ")");
+				C3Logger.debug("##### Session in sessionReadyMap: " + s + " (" + getSessionReadyMap().get(s.toString()) + ")");
 			}
 
 			C3Logger.debug("##### C3Room.onLogin: -> adding Event to PlayerSession");
