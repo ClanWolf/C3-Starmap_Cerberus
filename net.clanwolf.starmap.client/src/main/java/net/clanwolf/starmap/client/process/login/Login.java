@@ -191,6 +191,21 @@ public class Login {
 			}
 
 			@Override
+			public void onStop(Event event) {
+				super.onStop(event);
+			}
+
+			@Override
+			public void onStart(Event event) {
+				super.onStart(event);
+			}
+
+			@Override
+			public void onConnectFailed(Event event) {
+				super.onConnectFailed(event);
+			}
+
+			@Override
 			public void onDisconnect(Event event) {
 				// TODO: Implement a new Action for disconnect from server
 				super.onDisconnect(event);
