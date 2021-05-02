@@ -95,61 +95,62 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		EntityConverter.convertGameStateToPOJO(state);
 
 		switch (state.getMode()) {
-		case BROADCAST_SEND_NEW_PLAYERLIST:
-			sendNewPlayerList(session, state);
-			break;
-		case USER_REQUEST_LOGGED_IN_DATA:
-			getLoggedInUserData(session);
-			break;
-		case USER_CHECK_DOUBLE_LOGIN:
-			checkDoubleLogin(session, room);
-			break;
-		case USER_LOG_OUT:
-			session.getPlayer().logout(session);
-			sendNewPlayerList(session, state);
-			break;
-		case ROLEPLAY_SAVE_STORY:
-			C3GameSessionHandlerRoleplay.saveRolePlayStory(session, state);
-			break;
-		case ROLEPLAY_REQUEST_ALLSTORIES:
-			C3GameSessionHandlerRoleplay.requestAllStories(session, state);
-			break;
-		case ROLEPLAY_DELETE_STORY:
-			C3GameSessionHandlerRoleplay.deleteRolePlayStory(session, state);
-			break;
-		case ROLEPLAY_REQUEST_ALLCHARACTER:
-			C3GameSessionHandlerRoleplay.requestAllCharacter(session, state);
-			break;
-		case USER_SAVE:
-			saveUser(session, state);
-			break;
-		case PRIVILEGE_SAVE:
-			savePrivileges(session, state);
-			break;
-		case JUMPSHIP_SAVE:
-			saveJumpship(session, state);
-			break;
-		case ATTACK_SAVE:
-			saveAttack(session, state);
-			break;
-		case ROLEPLAY_GET_CHAPTER_BYSORTORDER:
-			C3GameSessionHandlerRoleplay.getChapterBySortOrder(session, state);
-			break;
-		case ROLEPLAY_GET_STEP_BYSORTORDER:
-			C3GameSessionHandlerRoleplay.getStepBySortOrder(session, state);
-			break;
-		case GET_UNIVERSE_DATA:
-			C3GameSessionHandlerUniverse.getUniverseData(session, room);
-			break;
-		case ROLEPLAY_SAVE_NEXT_STEP:
-			C3GameSessionHandlerRoleplay.saveRolePlayCharacterNextStep(session, state);
-			break;
-		case CLIENT_READY_FOR_EVENTS:
-			C3Logger.debug("##### Setting flag 'Client is ready for data' for Session: " + session.getId().toString());
-			roomSession.getSessionReadyMap().put(session.getId().toString(), Boolean.TRUE);
-			break;
-		default:
-			break;
+			case BROADCAST_SEND_NEW_PLAYERLIST:
+				sendNewPlayerList();
+				break;
+			case USER_REQUEST_LOGGED_IN_DATA:
+				getLoggedInUserData(session);
+				break;
+			case USER_CHECK_DOUBLE_LOGIN:
+				checkDoubleLogin(session, room);
+				break;
+			case USER_LOG_OUT:
+				C3Logger.debug("##### Logging off MULTIPLE TIMES ????");
+				session.getPlayer().logout(session);
+//				sendNewPlayerList();
+				break;
+			case ROLEPLAY_SAVE_STORY:
+				C3GameSessionHandlerRoleplay.saveRolePlayStory(session, state);
+				break;
+			case ROLEPLAY_REQUEST_ALLSTORIES:
+				C3GameSessionHandlerRoleplay.requestAllStories(session, state);
+				break;
+			case ROLEPLAY_DELETE_STORY:
+				C3GameSessionHandlerRoleplay.deleteRolePlayStory(session, state);
+				break;
+			case ROLEPLAY_REQUEST_ALLCHARACTER:
+				C3GameSessionHandlerRoleplay.requestAllCharacter(session, state);
+				break;
+			case USER_SAVE:
+				saveUser(session, state);
+				break;
+			case PRIVILEGE_SAVE:
+				savePrivileges(session, state);
+				break;
+			case JUMPSHIP_SAVE:
+				saveJumpship(session, state);
+				break;
+			case ATTACK_SAVE:
+				saveAttack(session, state);
+				break;
+			case ROLEPLAY_GET_CHAPTER_BYSORTORDER:
+				C3GameSessionHandlerRoleplay.getChapterBySortOrder(session, state);
+				break;
+			case ROLEPLAY_GET_STEP_BYSORTORDER:
+				C3GameSessionHandlerRoleplay.getStepBySortOrder(session, state);
+				break;
+			case GET_UNIVERSE_DATA:
+				C3GameSessionHandlerUniverse.getUniverseData(session, room);
+				break;
+			case ROLEPLAY_SAVE_NEXT_STEP:
+				C3GameSessionHandlerRoleplay.saveRolePlayCharacterNextStep(session, state);
+				break;
+			case CLIENT_READY_FOR_EVENTS:
+				C3Logger.debug("##### Setting flag 'Client is ready for data' for Session: " + session.getId().toString());
+				roomSession.getSessionReadyMap().put(session.getId().toString(), Boolean.TRUE);
+				break;
+			default:
+				break;
 		}
 	}
 
@@ -392,11 +393,8 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 	/**
 	 * Sends a list of players to all clients
-	 * 
-	 * @param session PlayerSession
-	 * @param state GameState
 	 */
-	private void sendNewPlayerList(PlayerSession session, GameState state) {
+	private void sendNewPlayerList() {
 		ArrayList<UserPOJO> userList = new ArrayList<>();
 		Iterator<PlayerSession> iter = room.getSessions().iterator();
 		while (iter.hasNext()) {
