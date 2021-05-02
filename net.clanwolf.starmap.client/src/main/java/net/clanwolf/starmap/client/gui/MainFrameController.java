@@ -1376,8 +1376,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					ActionManager.getAction(ACTIONS.PANE_DESTROY_CURRENT).execute();
 				}
 
-				GameState state = new GameState(GAMESTATEMODES.USER_LOG_OUT);
-				Nexus.fireNetworkEvent(state);
+//				GameState state = new GameState(GAMESTATEMODES.USER_LOG_OUT);
+//				Nexus.fireNetworkEvent(state);
 
 				break;
 
