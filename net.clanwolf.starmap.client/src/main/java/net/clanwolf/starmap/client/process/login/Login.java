@@ -178,31 +178,37 @@ public class Login {
 			@Override
 			public void onGameRoomJoin(Event event) {
 				super.onGameRoomJoin(event);
+				C3Logger.debug("##### Gameroom join! ----------------------------------------");
 			}
 
 			@Override
 			public void onChangeAttribute(Event event) {
 				super.onChangeAttribute(event);
+				C3Logger.debug("##### Attribute changed! ----------------------------------------");
 			}
 
 			@Override
 			public synchronized void onException(Event event) {
 				super.onException(event);
+				C3Logger.debug("##### EXCEPTION! ----------------------------------------");
 			}
 
 			@Override
 			public void onStop(Event event) {
 				super.onStop(event);
+				C3Logger.debug("##### Session stopped! ----------------------------------------");
 			}
 
 			@Override
 			public void onStart(Event event) {
 				super.onStart(event);
+				C3Logger.debug("##### Session started! ----------------------------------------");
 			}
 
 			@Override
 			public void onConnectFailed(Event event) {
 				super.onConnectFailed(event);
+				C3Logger.debug("##### Connect failed! ----------------------------------------");
 			}
 
 			@Override
@@ -238,16 +244,18 @@ public class Login {
 			@Override
 			public void onNetworkMessage(NetworkEvent networkEvent) {
 				super.onNetworkMessage(networkEvent);
-				C3Logger.debug("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
-				C3Logger.debug("Event received: " + networkEvent.getType());
+				C3Logger.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+				C3Logger.debug("Event: " + networkEvent.getType());
 				C3Logger.debug("Source: " + ((GameState)networkEvent.getSource()).getModeString());
-				C3Logger.debug("WWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWWW");
+				C3Logger.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
 			}
 
 			@Override
 			public void onDataIn(Event event) {
+				C3Logger.debug("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 				C3Logger.debug("##### Source: " + ((GameState)event.getSource()).getModeString());
 				EventCommunications.onDataIn(session, event);
+				C3Logger.debug("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 			}
 		};
 		C3Logger.debug("##### Adding default event handler");

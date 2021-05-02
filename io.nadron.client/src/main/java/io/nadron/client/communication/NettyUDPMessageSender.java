@@ -5,6 +5,7 @@ import io.nadron.client.app.Session;
 import io.nadron.client.communication.MessageSender.Fast;
 import io.nadron.client.event.Events;
 import io.netty.channel.socket.DatagramChannel;
+import net.clanwolf.starmap.logging.C3Logger;
 
 import java.net.SocketAddress;
 
@@ -44,14 +45,12 @@ public class NettyUDPMessageSender implements Fast
 	}
 
 	@Override
-	public synchronized void close()
-	{
+	public synchronized void close() {
 		if (isClosed)
 			return;
 		Session session = NettyUDPClient.CLIENTS.remove(channel.localAddress());
-		if (null == session)
-		{
-			System.err.println("Possible memory leak occurred. "
+		if (null == session) {
+			C3Logger.error("Possible memory leak occurred. "
 					+ "The session associated with udp localaddress: "
 					+ channel.localAddress()
 					+ " could not be removed from NettyUDPClient.CLIENTS map");
@@ -59,30 +58,23 @@ public class NettyUDPMessageSender implements Fast
 		isClosed = true;
 	}
 
-	public SocketAddress getRemoteAddress()
-	{
+	public SocketAddress getRemoteAddress() {
 		return remoteAddress;
 	}
 
-	public DatagramChannel getChannel()
-	{
+	public DatagramChannel getChannel() {
 		return channel;
 	}
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		String channelId = "UDP Channel: ";
-		if (null != channel)
-		{
+		if (null != channel) {
 			channelId += channel.toString();
-		}
-		else
-		{
+		} else {
 			channelId += "0";
 		}
-		String sender = "Netty " + channelId + " RemoteAddress: "
-				+ remoteAddress;
+		String sender = "Netty " + channelId + " RemoteAddress: " + remoteAddress;
 		return sender;
 	}
 }

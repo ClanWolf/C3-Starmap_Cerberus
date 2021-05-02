@@ -2,6 +2,7 @@ package io.nadron.client.event.impl;
 
 import io.nadron.client.app.Session;
 import io.nadron.client.event.*;
+import net.clanwolf.starmap.logging.C3Logger;
 
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -152,52 +153,37 @@ public class DefaultEventDispatcher implements EventDispatcher
 	}
 	
 	@Override
-	public void fireEvent(Event event)
-	{
+	public void fireEvent(Event event) {
 		boolean isShuttingDown = false;
-		synchronized (this)
-		{
+		synchronized (this) {
 			isShuttingDown = this.isShuttingDown;
 		}
-		if (!isShuttingDown)
-		{
-			for (EventHandler handler : genericHandlers)
-			{
+		if (!isShuttingDown) {
+			for (EventHandler handler : genericHandlers) {
 				handler.onEvent(event);
 			}
 
 			// retrieval is not thread safe, but since we are not setting it to
 			// null
 			// anywhere it should be fine.
-			List<EventHandler> handlers = handlersByEventType.get(event
-					.getType());
+			List<EventHandler> handlers = handlersByEventType.get(event.getType());
 			// Iteration is thread safe since we use copy on write.
-			if (null != handlers)
-			{
-				for (EventHandler handler : handlers)
-				{
+			if (null != handlers) {
+				for (EventHandler handler : handlers) {
 					handler.onEvent(event);
 				}
 			}
+		} else {
+			C3Logger.error("Discarding event: " + event + " as dispatcher is shutting down");
 		}
-		else
-		{
-			System.err.println("Discarding event: " + event
-					+ " as dispatcher is shutting down");
-		}
-
 	}
 
 	@Override
-	public void close()
-	{
-		synchronized (this)
-		{
+	public void close() {
+		synchronized (this) {
 			isShuttingDown = true;
 			genericHandlers.clear();
 			handlersByEventType.clear();
 		}
-
 	}
-
 }

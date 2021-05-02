@@ -186,8 +186,7 @@ public class DefaultSession implements Session
 	}
 	
 	@Override
-	public void onEvent(Event event)
-	{
+	public void onEvent(Event event) {
 		if(!isShuttingDown){
 			eventDispatcher.fireEvent(event);
 			C3Logger.debug("isShuttingDown: false");
@@ -203,8 +202,7 @@ public class DefaultSession implements Session
 	}
 
 	@Override
-	public void setId(Object id)
-	{
+	public void setId(Object id) {
 		throw new IllegalArgumentException("id cannot be set in this implementation, since it is final");
 	}
 
@@ -274,10 +272,8 @@ public class DefaultSession implements Session
 	}
 
 	@Override
-	public void setStatus(Status status)
-	{
+	public void setStatus(Status status) {
 		this.status = status;
-
 	}
 
 	@Override

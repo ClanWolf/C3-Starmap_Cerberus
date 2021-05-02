@@ -45,12 +45,9 @@ public class DefaultToServerHandler extends SimpleChannelInboundHandler<Event> {
 	}
 
 	@Override
-	public void channelInactive(ChannelHandlerContext ctx)
-			throws Exception
-	{
+	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
 		C3Logger.debug("Netty Channel " + ctx.channel() + " is closed.");
-		if (!playerSession.isShuttingDown())
-		{
+		if (!playerSession.isShuttingDown()) {
 			// Should not send close to session, since reconnection/other
 			// business logic might be in place.
 			Event event = Events.event(null, Events.DISCONNECT);
@@ -59,18 +56,15 @@ public class DefaultToServerHandler extends SimpleChannelInboundHandler<Event> {
 	}
 
 	@Override
-	public void userEventTriggered(ChannelHandlerContext ctx, Object evt) 
-	{
-		if (evt instanceof IdleStateEvent) 
-		{
-			C3Logger.warning(
-					"Channel " + ctx.channel() + " has been idle, exception event will be raised now: ");
+	public void userEventTriggered(ChannelHandlerContext ctx, Object evt) {
+		if (evt instanceof IdleStateEvent) {
+			C3Logger.warning("Channel " + ctx.channel() + " has been idle, exception event will be raised now: ");
 			// TODO check if setting payload as non-throwable cause issue?
 			Event event = Events.event(evt, Events.EXCEPTION);
 			playerSession.onEvent(event);
 		}
 	}
-	
+
 	public PlayerSession getPlayerSession()
 	{
 		return playerSession;

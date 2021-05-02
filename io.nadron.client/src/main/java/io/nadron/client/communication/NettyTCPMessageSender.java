@@ -6,7 +6,7 @@ import io.nadron.client.event.Events;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
-
+import net.clanwolf.starmap.logging.C3Logger;
 
 /**
  * A class that transmits messages reliably to remote machines/vm's. Internally
@@ -44,16 +44,13 @@ public class NettyTCPMessageSender implements Reliable
 		return channel;
 	}
 
-	public synchronized void close()
-	{
+	public synchronized void close() {
 		if (isClosed)
 			return;
 		ChannelFuture closeFuture = channel.close();
 		closeFuture.awaitUninterruptibly();
-		if (!closeFuture.isSuccess())
-		{
-			System.err.println("TCP channel " + channel
-					+ " did not close successfully");
+		if (!closeFuture.isSuccess()) {
+			C3Logger.error("TCP channel " + channel + " did not close successfully");
 		}
 		isClosed = true;
 	}
@@ -64,8 +61,7 @@ public class NettyTCPMessageSender implements Reliable
 	 * 
 	 * @param closeEvent
 	 */
-	public void close(Event closeEvent)
-	{
+	public void close(Event closeEvent) {
 		closeAfterFlushingPendingWrites(channel, closeEvent);
 	}
 
@@ -76,29 +72,20 @@ public class NettyTCPMessageSender implements Reliable
 	 * @param channel
 	 * @param event
 	 */
-	public void closeAfterFlushingPendingWrites(Channel channel, Event event)
-	{
-		if (channel.isActive())
-		{
+	public void closeAfterFlushingPendingWrites(Channel channel, Event event) {
+		if (channel.isActive()) {
 			channel.write(event).addListener(ChannelFutureListener.CLOSE);
-		}
-		else
-		{
-			System.err.println("Unable to write the Event :" + event
-					+ " to socket as channel is ot connected");
+		} else {
+			C3Logger.error("Unable to write the Event :" + event + " to socket as channel is ot connected");
 		}
 	}
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		String channelId = "TCP channel with Id: ";
-		if (null != channel)
-		{
+		if (null != channel) {
 			channelId += channel.toString();
-		}
-		else
-		{
+		} else {
 			channelId += "0";
 		}
 		String sender = "Netty " + channelId;

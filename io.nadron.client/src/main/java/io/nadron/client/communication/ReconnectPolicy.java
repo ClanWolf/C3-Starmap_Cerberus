@@ -5,6 +5,7 @@ import io.nadron.client.event.Event;
 import io.nadron.client.event.EventHandler;
 import io.nadron.client.event.Events;
 import io.nadron.client.util.LoginHelper;
+import net.clanwolf.starmap.logging.C3Logger;
 
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -84,19 +85,14 @@ public interface ReconnectPolicy
 			for (; tries <= times; tries++)
 			{
 				session.reconnect(loginHelper);
-				try
-				{
-					if (loginSuccessLatch.await(delay, TimeUnit.MILLISECONDS))
-					{
+				try {
+					if (loginSuccessLatch.await(delay, TimeUnit.MILLISECONDS)) {
 						break;
-					}
-					else
-					{
-						System.err.println("Reconnect try " + tries + " did not succeed");
+					} else {
+						C3Logger.error("Reconnect try " + tries + " did not succeed");
 					}
 				}
-				catch (InterruptedException e)
-				{
+				catch (InterruptedException e) {
 					throw new RuntimeException(e);
 				}
 			}
@@ -106,15 +102,14 @@ public interface ReconnectPolicy
 			if (tries > times)
 			{
 				loginSuccessLatch.countDown();
-				System.err.println("Reconnect attempted " + tries + " times did not succeed, going to close session");
+				C3Logger.error("Reconnect attempted " + tries + " times did not succeed, going to close session");
 				session.close();
 			}
 		}
 
 	}
 
-	class NoReconnect implements ReconnectPolicy
-	{
+	class NoReconnect implements ReconnectPolicy {
 		@Override
 		public void applyPolicy(Session session)
 		{

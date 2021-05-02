@@ -12,4 +12,5 @@ module io.nadron.client {
 	requires io.netty.transport;
 	requires io.netty.codec;
 	requires io.netty.common;
+	requires net.clanwolf.starmap.logging;
 }

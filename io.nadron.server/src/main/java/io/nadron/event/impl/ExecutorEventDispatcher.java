@@ -6,6 +6,7 @@ import io.nadron.event.EventDispatcher;
 import io.nadron.event.EventHandler;
 import io.nadron.event.Events;
 import io.nadron.event.SessionEventHandler;
+import net.clanwolf.starmap.logging.C3Logger;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -108,84 +109,61 @@ public class ExecutorEventDispatcher implements EventDispatcher
 				}
 			}
 		}
-
 	}
 
 	@Override
-	public void removeHandlersForEvent(int eventType)
-	{
-		synchronized (this)
-		{
-			List<EventHandler> handlers = this.handlersByEventType
-					.get(eventType);
-			if (null != handlers)
-			{
+	public void removeHandlersForEvent(int eventType) {
+		synchronized (this) {
+			List<EventHandler> handlers = this.handlersByEventType.get(eventType);
+			if (null != handlers) {
 				handlers.clear();
 			}
 		}
 	}
 
 	@Override
-	public boolean removeHandlersForSession(Session session)
-	{
+	public boolean removeHandlersForSession(Session session) {
 		List<EventHandler> removeList = new ArrayList<EventHandler>();
-		Collection<List<EventHandler>> eventHandlersList = handlersByEventType
-				.values();
-		for (List<EventHandler> handlerList : eventHandlersList)
-		{
-			if (null != handlerList)
-			{
-				for (EventHandler handler : handlerList)
-				{
-					if (handler instanceof SessionEventHandler)
-					{
+		Collection<List<EventHandler>> eventHandlersList = handlersByEventType.values();
+		for (List<EventHandler> handlerList : eventHandlersList) {
+			if (null != handlerList) {
+				for (EventHandler handler : handlerList) {
+					if (handler instanceof SessionEventHandler) {
 						SessionEventHandler sessionHandler = (SessionEventHandler) handler;
-						if (sessionHandler.getSession().equals(session))
-						{
+						if (sessionHandler.getSession().equals(session)) {
 							removeList.add(handler);
 						}
 					}
 				}
 			}
 		}
-		for (EventHandler handler : removeList)
-		{
+		for (EventHandler handler : removeList) {
 			removeHandler(handler);
 		}
 		return (removeList.size() > 0);
 	}
 
 	@Override
-	public synchronized void clear()
-	{
-		if(null != handlersByEventType)
-		{
+	public synchronized void clear() {
+		if(null != handlersByEventType) {
 			handlersByEventType.clear();
 		}
-		if(null != genericHandlers)
-		{
+		if(null != genericHandlers) {
 			genericHandlers.clear();
 		}
 	}
 	
 	@Override
-	public void fireEvent(final Event event)
-	{
+	public void fireEvent(final Event event) {
 		boolean isShuttingDown = false;
-		synchronized (this)
-		{
+		synchronized (this) {
 			isShuttingDown = this.isShuttingDown;
 		}
-		if (!isShuttingDown)
-		{
-			EXECUTOR.submit(new Runnable()
-			{
-
+		if (!isShuttingDown) {
+			EXECUTOR.submit(new Runnable() {
 				@Override
-				public void run()
-				{
-					for (EventHandler handler : genericHandlers)
-					{
+				public void run() {
+					for (EventHandler handler : genericHandlers) {
 						handler.onEvent(event);
 					}
 
@@ -195,31 +173,21 @@ public class ExecutorEventDispatcher implements EventDispatcher
 					List<EventHandler> handlers = handlersByEventType
 							.get(event.getType());
 					// Iteration is thread safe since we use copy on write.
-					if (null != handlers)
-					{
-						for (EventHandler handler : handlers)
-						{
+					if (null != handlers) {
+						for (EventHandler handler : handlers) {
 							handler.onEvent(event);
 						}
 					}
-
 				}
 			});
-
+		} else {
+			C3Logger.error("Discarding event: " + event + " as dispatcher is shutting down");
 		}
-		else
-		{
-			System.err.println("Discarding event: " + event
-					+ " as dispatcher is shutting down");
-		}
-
 	}
 
 	@Override
-	public void close()
-	{
-		synchronized (this)
-		{
+	public void close() {
+		synchronized (this) {
 			isShuttingDown = true;
 			genericHandlers.clear();
 			handlersByEventType.clear();

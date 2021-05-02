@@ -1670,8 +1670,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 
 
-		System.err.println("ERROR: " + userReactionResult);
-		System.out.println("OUT: " + userReactionResult);
+		C3Logger.info("ERROR: " + userReactionResult);
+		C3Logger.info("OUT: " + userReactionResult);
 
 		Platform.runLater(() -> mouseStopper.getChildren().remove(messagePane));
 

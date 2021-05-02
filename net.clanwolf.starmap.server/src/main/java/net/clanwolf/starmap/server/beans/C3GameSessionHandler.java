@@ -145,8 +145,8 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			C3GameSessionHandlerRoleplay.saveRolePlayCharacterNextStep(session, state);
 			break;
 		case CLIENT_READY_FOR_EVENTS:
-			C3Logger.debug("##### Setting flag 'Client is ready for data' for Session: " + session);
-			roomSession.getSessionReadyMap().put(session.toString(), Boolean.TRUE);
+			C3Logger.debug("##### Setting flag 'Client is ready for data' for Session: " + session.getId().toString());
+			roomSession.getSessionReadyMap().put(session.getId().toString(), Boolean.TRUE);
 			break;
 		default:
 			break;
@@ -357,10 +357,11 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		state_userdata.addObject(user);
 		state_userdata.addObject2(WebDataInterface.getUniverse());
 		state_userdata.addObject3(userlist);
-//		state_userdata.setReceiver(session.getId());
+		state_userdata.setReceiver(session.getId());
 		C3GameSessionHandler.sendNetworkEvent(session, state_userdata);
 
 		C3Logger.info("Event sent: " + state_userdata.getMode());
+		C3Logger.info("To receiver: " + session.getId());
 		C3Logger.info("---------------------------- Sending userdata done.");
 
 		// Save last login date
@@ -396,9 +397,8 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 	 * @param state GameState
 	 */
 	private void sendNewPlayerList(PlayerSession session, GameState state) {
-		Iterator<PlayerSession> iter = room.getSessions().iterator();
 		ArrayList<UserPOJO> userList = new ArrayList<>();
-
+		Iterator<PlayerSession> iter = room.getSessions().iterator();
 		while (iter.hasNext()) {
 			C3Player pl = (C3Player) iter.next().getPlayer();
 			userList.add(pl.getUser());
@@ -406,7 +406,6 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 		GameState state_broadcast_login = new GameState(GAMESTATEMODES.USER_GET_NEW_PLAYERLIST);
 		state_broadcast_login.addObject(userList);
-//		room.sendBroadcast(Events.networkEvent(state_broadcast_login));
 
 		C3GameSessionHandler.sendBroadCast(room, state_broadcast_login);
 	}
@@ -416,9 +415,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 	}
 
 	static public void sendNetworkEvent(PlayerSession session, GameState response) {
-
 		EntityConverter.convertGameStateToDTO(response);
-		/* and now we send a message to the client */
 		Event e = Events.networkEvent(response);
 		session.onEvent(e);
 	}

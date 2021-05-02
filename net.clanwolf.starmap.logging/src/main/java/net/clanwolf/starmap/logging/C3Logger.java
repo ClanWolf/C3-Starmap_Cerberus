@@ -57,7 +57,9 @@ public class C3Logger {
 		logprint(Level.WARNING, message, null);
 	}
 
-	public static void error(String message, Throwable th) { logprint(Level.SEVERE, message, th); }
+	public static void error(String message) { logprint(Level.SEVERE, "ERROR: " + message, null); }
+
+	public static void error(String message, Throwable th) { logprint(Level.SEVERE, "ERROR: " + message, th); }
 
 	public static void exception(String message, Throwable throwable) {
 		if (message == null) {
@@ -131,7 +133,8 @@ public class C3Logger {
 			logger.addHandler(consoleHandler);
 
 			if (prepareLogfile()) {
-				fileHandler = new FileHandler(c3LogFileName, FILE_SIZE, 5, true);
+//				fileHandler = new FileHandler(c3LogFileName, FILE_SIZE, 5, true); // appending to the previous logs
+				fileHandler = new FileHandler(c3LogFileName, FILE_SIZE, 5, false); // a new file for every start
 				fileHandler.setFormatter(c3formatter);
 				fileHandler.setEncoding("UTF-8");
 				fileHandler.setLevel(Level.FINEST);

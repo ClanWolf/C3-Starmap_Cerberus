@@ -8,6 +8,7 @@ import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.SimpleChannelInboundHandler;
+import net.clanwolf.starmap.logging.C3Logger;
 
 
 /**
@@ -29,9 +30,7 @@ public class DefaultToClientHandler extends SimpleChannelInboundHandler<Event>
 	}
 
 	@Override
-	public void channelRead0(ChannelHandlerContext ctx,
-			Event event) throws Exception
-	{
+	public void channelRead0(ChannelHandlerContext ctx, Event event) throws Exception {
 		session.onEvent(event);
 	}
 	
@@ -44,20 +43,15 @@ public class DefaultToClientHandler extends SimpleChannelInboundHandler<Event>
 	}
 	
 	@Override
-	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause)
-			throws Exception
-	{
-		System.err.println("Class:DefaultToClientHandler"
-				+ " Exception occurred in tcp channel: " + cause);
+	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
+		C3Logger.error("Class: DefaultToClientHandler: Exception occurred in tcp channel: " + cause, cause);
 		Event event = Events.event(cause, Events.EXCEPTION);
 		session.onEvent(event);
 	}
 
 	// TODO see if this causes reconnection failure
 	@Override
-	public void channelInactive(ChannelHandlerContext ctx)
-			throws Exception
-	{
+	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
 		if (!session.isShuttingDown())
 		{
 			// Should not send close to session, since reconnection/other
@@ -71,5 +65,4 @@ public class DefaultToClientHandler extends SimpleChannelInboundHandler<Event>
 	{
 		return NAME;
 	}
-	
 }

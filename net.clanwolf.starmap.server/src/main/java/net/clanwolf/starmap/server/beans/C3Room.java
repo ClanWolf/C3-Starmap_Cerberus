@@ -106,7 +106,7 @@ public class C3Room extends GameRoomSession {
 
 		( new Thread() { public void run() {
 			boolean ready;
-			int counter = 20;
+			int counter = 50;
 
 //			try {
 //				C3Logger.debug("##### Waiting some time no matter what...");
@@ -116,7 +116,7 @@ public class C3Room extends GameRoomSession {
 //			}
 
 			do {
-				ready = getSessionReadyMap().containsKey(playerSession.toString()) && getSessionReadyMap().get(playerSession.toString());
+				ready = getSessionReadyMap().containsKey(playerSession.getId().toString()) && getSessionReadyMap().get(playerSession.getId().toString());
 				C3Logger.debug("##### COUNTER: " + counter);
 				C3Logger.debug("##### READY: " + ready);
 				if (ready || counter == 0) {
@@ -133,13 +133,9 @@ public class C3Room extends GameRoomSession {
 			} while(!ready);
 
 			Event e;
-			if (((C3Player) playerSession.getPlayer()).getUser() == null || counter == 0) {
+			if (((C3Player) playerSession.getPlayer()).getUser() == null) {
 				// Send error message if user is null
 				C3Logger.debug("C3Room.onLogin: no user found -> send Events.LOG_IN_FAILURE");
-
-				if (counter == 0) {
-					// Login failed! Client did not respond in time
-				}
 
 				e = Events.event(null, Events.LOG_IN_FAILURE);
 //				e = Events.event(null, Events.LOG_IN_SUCCESS);
@@ -152,12 +148,12 @@ public class C3Room extends GameRoomSession {
 			Iterator it = getSessionReadyMap().keySet().iterator();
 			while(it.hasNext()) {
 				String s = (String)it.next();
-				C3Logger.debug("##### Session in sessionReadyMap: " + s + " (" + getSessionReadyMap().get(s.toString()) + ")");
+				C3Logger.debug("##### ------------------- Session in sessionReadyMap: " + s + " (Value: " + getSessionReadyMap().get(s) + ")");
 			}
 
 			C3Logger.debug("##### C3Room.onLogin: -> adding Event to PlayerSession");
 			playerSession.onEvent(e);
-			getSessionReadyMap().remove(playerSession.toString());
+			getSessionReadyMap().remove(playerSession.getId().toString());
 			C3Logger.debug("##### C3Room.onLogin: -> LOG_IN_SUCCESS Event sent");
 		} } ).start();
 	}
@@ -168,7 +164,7 @@ public class C3Room extends GameRoomSession {
 		C3Logger.info("disconnectSession: disconnected session -> " + playerSession.getId());
 		// remove player session from list with the wrong sessions
 		wrongPlayerSessions.remove(playerSession.getId());
-		getSessionReadyMap().remove(playerSession.toString());
+		getSessionReadyMap().remove(playerSession.getId().toString());
 
 		// EntityManager for room session must be closed on disconnect
 		if(playerSession.getPlayer().getId() != null) {

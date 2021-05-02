@@ -261,7 +261,7 @@ public abstract class HTTP {
 				C3Logger.exception(null, e);
 			}
 		} else {
-			System.err.println("Could not figure out local file name for " + address);
+			C3Logger.error("Could not figure out local file name for " + address);
 		}
 	}
 

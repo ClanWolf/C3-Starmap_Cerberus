@@ -3,7 +3,7 @@ package io.nadron.app;
 import io.nadron.service.TaskManagerService;
 
 /**
- * Represents a task that can be executed in the game system. Any class that
+ * Represents a task that can be executed in the game sys. Any class that
  * implements this interface and submits instances to the
  * {@link TaskManagerService} instance will be managed by the container. It
  * will automatically store the task such that restarts of the server do not
