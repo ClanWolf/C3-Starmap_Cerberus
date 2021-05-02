@@ -48,10 +48,8 @@ public class DefaultSessionEventHandler implements SessionEventHandler
 		doEventHandlerMethodLookup(event);
 	}
 
-	protected void doEventHandlerMethodLookup(Event event)
-	{
-		switch (event.getType())
-		{
+	protected void doEventHandlerMethodLookup(Event event) {
+		switch (event.getType()) {
 		case Events.SESSION_MESSAGE:
 			onDataIn(event);
 			break;
@@ -97,40 +95,31 @@ public class DefaultSessionEventHandler implements SessionEventHandler
 		}
 	}
 	
-	protected void onDataIn(Event event)
-	{
-		if (null != getSession())
-		{
+	protected void onDataIn(Event event) {
+		if (null != getSession()) {
 			PlayerSession pSession = (PlayerSession) getSession();
 			NetworkEvent networkEvent = new DefaultNetworkEvent(event);
-			if (pSession.isUDPEnabled())
-			{
+			if (pSession.isUDPEnabled()) {
 				networkEvent.setDeliveryGuaranty(FAST);
 			}
 			pSession.getGameRoom().sendBroadcast(networkEvent);
 		}
 	}
 
-	protected void onNetworkMessage(NetworkEvent event)
-	{
+	protected void onNetworkMessage(NetworkEvent event) {
 		Session session = getSession();
 		if (!session.isWriteable())
 			return;
 		DeliveryGuaranty guaranty = event.getDeliveryGuaranty();
-		if (guaranty.getGuaranty() == FAST.getGuaranty())
-		{
+		if (guaranty.getGuaranty() == FAST.getGuaranty()) {
 			Fast udpSender = session.getUdpSender();
-			if (null != udpSender)
-			{
+			if (null != udpSender) {
 				udpSender.sendMessage(event);
-			}
-			else
-			{
+			} else {
 				C3Logger.info("Going to discard event: {} since udpSender is null in session: {} " + event + session);
 			}
 		}
-		else
-		{
+		else {
 			session.getTcpSender().sendMessage(event);
 		}
 	}
@@ -145,39 +134,28 @@ public class DefaultSessionEventHandler implements SessionEventHandler
 		getSession().getTcpSender().sendMessage(event);
 	}
 	
-	protected void onConnect(ConnectEvent event)
-	{
+	protected void onConnect(ConnectEvent event) {
 		Session session = getSession();
-		if (null != event.getTcpSender())
-		{
+		if (null != event.getTcpSender()) {
 			session.setTcpSender(event.getTcpSender());
-		}
-		else
-		{
-			if(null == getSession().getTcpSender())
-			{
+		} else {
+			if(null == getSession().getTcpSender()) {
 				logNullTcpConnection(event);
-			}
-			else
-			{
+			} else {
 				session.setUDPEnabled(true);
 				session.setUdpSender(event.getUdpSender());
 			}
 		}
 	}
 	
-	protected void onReconnect(ConnectEvent event)
-	{
+	protected void onReconnect(ConnectEvent event) {
 		Session session = getSession();
 		// To synchronize with task for closing session in ReconnectRegistry service.
-		synchronized(session){
+		synchronized(session) {
 			@SuppressWarnings("unchecked")
-			SessionRegistryService<String> reconnectRegistry = ((SessionRegistryService<String>) session
-					.getAttribute(NadronConfig.RECONNECT_REGISTRY));
-			if (null != reconnectRegistry && Session.Status.CLOSED != session.getStatus())
-			{
-				reconnectRegistry.removeSession((String) session
-						.getAttribute(NadronConfig.RECONNECT_KEY));
+			SessionRegistryService<String> reconnectRegistry = ((SessionRegistryService<String>) session.getAttribute(NadronConfig.RECONNECT_REGISTRY));
+			if (null != reconnectRegistry && Session.Status.CLOSED != session.getStatus()) {
+				reconnectRegistry.removeSession((String) session.getAttribute(NadronConfig.RECONNECT_KEY));
 			}
 		}
 		onConnect(event);
@@ -193,43 +171,34 @@ public class DefaultSessionEventHandler implements SessionEventHandler
 		getSession().getTcpSender().sendMessage(event);
 	}
 	
-	protected void onConnectFailed(Event event)
-	{
+	protected void onConnectFailed(Event event) {
 		
 	}
 
-	protected void onDisconnect(Event event)
-	{
+	protected void onDisconnect(Event event) {
 		C3Logger.debug("Received disconnect event in session. ");
 		onException(event);
 	}
 	
-	protected void onChangeAttribute(ChangeAttributeEvent event)
-	{
+	protected void onChangeAttribute(ChangeAttributeEvent event) {
 		getSession().setAttribute(event.getKey(), event.getValue());
 	}
 
 	@SuppressWarnings("unchecked")
-	protected void onException(Event event)
-	{
+	protected void onException(Event event) {
 		Session session = getSession();
 		session.setStatus(Session.Status.NOT_CONNECTED);
 		session.setWriteable(false);
 		session.setUDPEnabled(false);// will be set to true by udpupstream handler on connect event.
-		String reconnectKey = (String) session
-				.getAttribute(NadronConfig.RECONNECT_KEY);
+		String reconnectKey = (String) session.getAttribute(NadronConfig.RECONNECT_KEY);
 		SessionRegistryService<String> registry = (SessionRegistryService<String>)session.getAttribute(NadronConfig.RECONNECT_REGISTRY);
-		if (null != reconnectKey && null != registry)
-		{
+		if (null != reconnectKey && null != registry) {
 			// If session is already in registry then do not re-register.
-			if(null == registry.getSession(reconnectKey)){
-				registry.putSession(
-						reconnectKey, getSession());
+			if(null == registry.getSession(reconnectKey)) {
+				registry.putSession(reconnectKey, getSession());
 				C3Logger.debug("Received exception/disconnect event in session. " + "Going to put session in reconnection registry");
 			}
-		}
-		else
-		{
+		} else {
 			C3Logger.debug("Received exception/disconnect event in session. " + "Going to close session");
 			onClose(event);
 		}
@@ -245,8 +214,7 @@ public class DefaultSessionEventHandler implements SessionEventHandler
 		getSession().close();
 	}
 	
-	protected void onCustomEvent(Event event)
-	{
+	protected void onCustomEvent(Event event) {
 
 	}
 
@@ -255,8 +223,7 @@ public class DefaultSessionEventHandler implements SessionEventHandler
 		return session;
 	}
 
-	public void setSession(Session session)
-	{
+	public void setSession(Session session) {
 		throw new UnsupportedOperationException("Session is a final variable and cannot be reset.");
 	}
 	

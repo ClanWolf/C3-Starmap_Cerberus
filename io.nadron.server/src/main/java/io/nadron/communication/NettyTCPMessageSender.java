@@ -15,13 +15,11 @@ import net.clanwolf.starmap.logging.C3Logger;
  * @author Abraham Menacherry
  * 
  */
-public class NettyTCPMessageSender implements Reliable
-{
+public class NettyTCPMessageSender implements Reliable {
 	private final Channel channel;
 	private static final DeliveryGuaranty DELIVERY_GUARANTY = DeliveryGuarantyOptions.RELIABLE;
 
-	public NettyTCPMessageSender(Channel channel)
-	{
+	public NettyTCPMessageSender(Channel channel) {
 		super();
 		this.channel = channel;
 	}
@@ -49,31 +47,23 @@ public class NettyTCPMessageSender implements Reliable
 	 * 
 	 */
 	@Override
-	public void close()
-	{
-		C3Logger.debug("Going to close tcp connection in class: {} " +  this + getClass().getName());
+	public void close() {
+		C3Logger.debug("Going to close tcp connection in class: {} " + this + getClass().getName());
 		Event event = Events.event(null, Events.DISCONNECT);
-		if (channel.isActive())
-		{
+		if (channel.isActive()) {
 			channel.write(event).addListener(ChannelFutureListener.CLOSE);
-		}
-		else
-		{
+		} else {
 			channel.close();
 			C3Logger.info("Unable to write the Event {} with type {} to socket " + event + event.getType());
 		}
 	}
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		String channelId = "TCP channel: ";
-		if (null != channel)
-		{
+		if (null != channel) {
 			channelId += channel.toString();
-		}
-		else
-		{
+		} else {
 			channelId += "0";
 		}
 		String sender = "Netty " + channelId;
