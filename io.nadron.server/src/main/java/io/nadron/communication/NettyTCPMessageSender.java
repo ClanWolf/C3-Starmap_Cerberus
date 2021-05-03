@@ -48,13 +48,17 @@ public class NettyTCPMessageSender implements Reliable {
 	 */
 	@Override
 	public void close() {
-		C3Logger.debug("Going to close tcp connection in class: {} " + this + getClass().getName());
+		C3Logger.info("Going to close tcp connection in class: " + this + getClass().getName());
 		Event event = Events.event(null, Events.DISCONNECT);
+
+		C3Logger.debug("##### Channel is open: " + channel.isOpen());
+		C3Logger.debug("##### Channel is active: " + channel.isActive());
+
 		if (channel.isActive()) {
 			channel.write(event).addListener(ChannelFutureListener.CLOSE);
 		} else {
 			channel.close();
-			C3Logger.info("Unable to write the Event {} with type {} to socket " + event + event.getType());
+			C3Logger.error("Unable to write the Event " +  event + " with type " + event.getType() + " to socket.");
 		}
 	}
 

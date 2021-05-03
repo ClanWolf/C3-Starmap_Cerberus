@@ -171,24 +171,20 @@ public abstract class GameRoomSession extends DefaultSession implements GameRoom
 	public abstract void onLogin(PlayerSession playerSession);
 	
 	@Override
-	public synchronized boolean connectSession(PlayerSession playerSession)
-	{
-		if (!isShuttingDown)
-		{
+	public synchronized boolean connectSession(PlayerSession playerSession) {
+		if (!isShuttingDown) {
 			playerSession.setStatus(Session.Status.CONNECTING);
 			sessions.add(playerSession);
 			playerSession.setGameRoom(this);
-			C3Logger.info("Protocol to be applied is: {} " + protocol.getClass().getName());
+			C3Logger.info("Protocol to be applied is: " + protocol.getClass().getName());
 			protocol.applyProtocol(playerSession,true);
 			createAndAddEventHandlers(playerSession);
 			playerSession.setStatus(Session.Status.CONNECTED);
 			afterSessionConnect(playerSession);
 			return true;
 			// TODO send event to all other sessions?
-		}
-		else
-		{
-			C3Logger.info("Game Room is shutting down, playerSession {} {} " +	playerSession + "will not be connected!");
+		} else {
+			C3Logger.info("Game Room is shutting down, playerSession: " + playerSession + " will not be connected!");
 			return false;
 		}
 	}

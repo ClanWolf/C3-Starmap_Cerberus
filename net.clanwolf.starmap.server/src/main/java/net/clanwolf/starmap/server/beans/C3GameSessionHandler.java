@@ -44,9 +44,11 @@ import net.clanwolf.starmap.server.persistence.pojos.AttackPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.JumpshipPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.RoutePointPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.UserPOJO;
+import net.clanwolf.starmap.server.util.ObjectSizeFetcher;
 import net.clanwolf.starmap.server.util.WebDataInterface;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.JumpshipDTO;
+import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 
 import java.sql.Timestamp;
@@ -354,9 +356,17 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		C3Logger.info("---------------------------- Sending userdata back...");
 		ArrayList<UserPOJO> userlist = UserDAO.getInstance().getUserList();
 
+		UniverseDTO uni = WebDataInterface.getUniverse();
+		C3Logger.info("---------------------------- Routepoints: " + uni.routepoints.size());
+		C3Logger.info("---------------------------- Attacks:     " + uni.attacks.size());
+		C3Logger.info("---------------------------- Factions:    " + uni.factions.size());
+		C3Logger.info("---------------------------- Jumpships:   " + uni.jumpships.size());
+		C3Logger.info("---------------------------- Starsystems: " + uni.starSystems.size());
+//		C3Logger.debug("Size of the universe object: " + ObjectSizeFetcher.getObjectSize(uni));
+
 		GameState state_userdata = new GameState(GAMESTATEMODES.USER_LOGGED_IN_DATA);
 		state_userdata.addObject(user);
-		state_userdata.addObject2(WebDataInterface.getUniverse());
+		state_userdata.addObject2(uni);
 		state_userdata.addObject3(userlist);
 		state_userdata.setReceiver(session.getId());
 		C3GameSessionHandler.sendNetworkEvent(session, state_userdata);

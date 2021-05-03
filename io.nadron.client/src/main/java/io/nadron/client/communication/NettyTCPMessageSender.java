@@ -76,7 +76,7 @@ public class NettyTCPMessageSender implements Reliable
 		if (channel.isActive()) {
 			channel.write(event).addListener(ChannelFutureListener.CLOSE);
 		} else {
-			C3Logger.error("Unable to write the Event :" + event + " to socket as channel is ot connected");
+			C3Logger.error("Unable to write the event: " + event + " to socket as channel is ot connected");
 		}
 	}
 

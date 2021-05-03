@@ -213,6 +213,7 @@ public class WebDataInterface {
 
 	private static String loadJumpshipsAndRoutePoints(){
 		universe.jumpships.clear();
+		universe.routepoints.clear();
 
 		JumpshipDAO dao = JumpshipDAO.getInstance();
 		ArrayList<JumpshipPOJO> pojoList = dao.getAllJumpships();
@@ -221,7 +222,7 @@ public class WebDataInterface {
 
 		while(iter.hasNext()){
 			JumpshipPOJO js = iter.next();
-			JumpshipDTO dto = EntityConverter.convertpojo2dto(js,JumpshipDTO.class);
+			JumpshipDTO dto = EntityConverter.convertpojo2dto(js, JumpshipDTO.class);
 			// Add Jumpship
 			universe.jumpships.put(js.getJumpshipName(),dto);
 			jsonString.append(getJsonString(dto));
@@ -230,7 +231,7 @@ public class WebDataInterface {
 			ArrayList rpList = new ArrayList(js.getRoutepointList());
 			Iterator<RoutePointPOJO> iterRP = rpList.iterator();
 			while(iterRP.hasNext()){
-				universe.routepoints.add(EntityConverter.convertpojo2dto(iterRP.next(),RoutePointDTO.class));
+				universe.routepoints.add(EntityConverter.convertpojo2dto(iterRP.next(), RoutePointDTO.class));
 			}
 		}
 		return jsonString.toString();
