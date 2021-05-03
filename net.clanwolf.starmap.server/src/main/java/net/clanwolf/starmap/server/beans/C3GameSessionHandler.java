@@ -353,15 +353,15 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		// Create a new GameState with the UserPOJO for the client, if login was successful
 		UserPOJO user = ((C3Player) session.getPlayer()).getUser();
 
-		C3Logger.info("---------------------------- Sending userdata back...");
+		C3Logger.debug("---------------------------- Sending userdata back...");
 		ArrayList<UserPOJO> userlist = UserDAO.getInstance().getUserList();
 
 		UniverseDTO uni = WebDataInterface.getUniverse();
-		C3Logger.info("---------------------------- Routepoints: " + uni.routepoints.size());
-		C3Logger.info("---------------------------- Attacks:     " + uni.attacks.size());
-		C3Logger.info("---------------------------- Factions:    " + uni.factions.size());
-		C3Logger.info("---------------------------- Jumpships:   " + uni.jumpships.size());
-		C3Logger.info("---------------------------- Starsystems: " + uni.starSystems.size());
+		C3Logger.debug("---------------------------- Routepoints: " + uni.routepoints.size());
+		C3Logger.debug("---------------------------- Attacks:     " + uni.attacks.size());
+		C3Logger.debug("---------------------------- Factions:    " + uni.factions.size());
+		C3Logger.debug("---------------------------- Jumpships:   " + uni.jumpships.size());
+		C3Logger.debug("---------------------------- Starsystems: " + uni.starSystems.size());
 //		C3Logger.debug("Size of the universe object: " + ObjectSizeFetcher.getObjectSize(uni));
 
 		GameState state_userdata = new GameState(GAMESTATEMODES.USER_LOGGED_IN_DATA);
@@ -371,9 +371,9 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		state_userdata.setReceiver(session.getId());
 		C3GameSessionHandler.sendNetworkEvent(session, state_userdata);
 
-		C3Logger.info("Event sent: " + state_userdata.getMode());
-		C3Logger.info("To receiver: " + session.getId());
-		C3Logger.info("---------------------------- Sending userdata done.");
+		C3Logger.debug("Event sent: " + state_userdata.getMode());
+		C3Logger.debug("To receiver: " + session.getId());
+		C3Logger.debug("---------------------------- Sending userdata done.");
 
 		// Save last login date
 		UserDAO dao = UserDAO.getInstance();
