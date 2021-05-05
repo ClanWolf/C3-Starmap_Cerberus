@@ -69,6 +69,16 @@ public class EventCommunications {
 					break;
 
 				case USER_LOGGED_IN_DATA:
+
+					// ACHTUNG:
+					// Wenn das Event hier geschickt wird, aber im Client nichts ankommt und nirgends eine Fehlermeldung
+					// auftaucht, dann ist wahrscheinlich das UniverseDTO zu groß für Netty (Paketgröße 65kB).
+					// Dann wird entweder das UniverseDTO immer größer, weil irgendwo ein .clear() fehlt (Mai 2021), oder
+					// es sind zu viele Daten in dem Objekt, weil das Spiel an sich zu groß geworden ist.
+					// Lösung:
+					// - Das Universe darf nicht durch ein fehlendes clear() immer weiter wachsen!
+					// - Die Daten müssen aufgeteilt werden, bis sie wieder in die Pakete passen!
+
 					// set current user
 					Nexus.setUser((UserDTO) state.getObject());
 					C3Logger.info("EventCommunications.onDataIn: myPlayerSessionID: -> " + Nexus.getMyPlayerSessionID());

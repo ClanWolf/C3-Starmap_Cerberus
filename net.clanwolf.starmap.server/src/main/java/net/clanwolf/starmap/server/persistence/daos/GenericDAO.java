@@ -43,6 +43,11 @@ import java.util.logging.Level;
 public abstract class GenericDAO implements IDAO {
 
 	protected String className = "";
+	private EntityManager fem = null; // free entity manager
+
+	protected EntityManager getFreeEntityManager() {
+		return EntityManagerHelper.getEntityManager();
+	}
 
 	protected EntityManager getEntityManager(Long userID) {
 		return EntityManagerHelper.getEntityManager(userID);
@@ -106,11 +111,24 @@ public abstract class GenericDAO implements IDAO {
 		}
 	}
 
+	public Object findById(Class clazz, Long id) {
+		return findById(null, clazz, id);
+	}
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Object findById(Long userID, Class clazz, Long id) {
-		C3Logger.info("Finding object instance with id: " + id);
+//		C3Logger.info("Finding object instance with id: " + id);
 		try {
-			return getEntityManager(userID).find(clazz, id);
+			if (userID != null) {
+				return getEntityManager(userID).find(clazz, id);
+			} else {
+				if (fem == null) {
+					fem = getFreeEntityManager();
+					return fem.find(clazz, id);
+				} else {
+					return fem.find(clazz, id);
+				}
+			}
 		} catch (RuntimeException re) {
 			C3Logger.info("Find failed");
 			re.printStackTrace();

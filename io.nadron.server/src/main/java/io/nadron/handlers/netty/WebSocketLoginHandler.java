@@ -67,7 +67,7 @@ public class WebSocketLoginHandler extends SimpleChannelInboundHandler<TextWebSo
 		}
 		else if (type == Events.RECONNECT)
 		{
-			C3Logger.debug("Reconnect attempt from " + channel.remoteAddress());
+			C3Logger.info("Reconnect attempt from " + channel.remoteAddress());
 			PlayerSession playerSession = lookupSession((String)event.getSource());
 			handleReconnect(playerSession, channel);
 		}

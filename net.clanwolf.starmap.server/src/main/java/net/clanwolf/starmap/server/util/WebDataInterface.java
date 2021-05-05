@@ -52,11 +52,9 @@ import java.util.*;
  * Queries the database for starsystem data
  */
 public class WebDataInterface {
-
 	private static Map<String, String> selects = new HashMap<>();
 	private static UniverseDTO universe;
 	private static boolean initialized = false;
-
 
 	public static UniverseDTO getUniverse() {
 		if (universe != null) {
@@ -269,14 +267,13 @@ public class WebDataInterface {
 			jsonString.append(getJsonString(dto));
 		}
 		return jsonString.toString();
-
 	}
 
 	// CALLED FROM HEARTBEATTIMER
 	public static void createSystemList(SystemListTypes type) {
 		initialize();
 		String systemsList = "";
-		C3Logger.print("Starting with the creation of the system list: " + type.name());
+		C3Logger.print("Creating universe lists: " + type.name());
 
 		getUniverse();
 
@@ -292,10 +289,9 @@ public class WebDataInterface {
 			systemsList = loadFactions();
 			C3Logger.print("Created universe classes (Factions)...");
 		}
-
 		if (type == SystemListTypes.HH_StarSystems) {
 			systemsList = load_HH_StarSystemData();
-			C3Logger.print("Created universe classes (Factions)...");
+			C3Logger.print("Created universe classes (HH_StarSystems)...");
 		}
 
 		if (type == SystemListTypes.CM_StarSystems) {

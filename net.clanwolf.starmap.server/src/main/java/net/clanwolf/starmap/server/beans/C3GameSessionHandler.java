@@ -44,17 +44,14 @@ import net.clanwolf.starmap.server.persistence.pojos.AttackPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.JumpshipPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.RoutePointPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.UserPOJO;
-import net.clanwolf.starmap.server.util.ObjectSizeFetcher;
 import net.clanwolf.starmap.server.util.WebDataInterface;
 import net.clanwolf.starmap.transfer.GameState;
-import net.clanwolf.starmap.transfer.dtos.JumpshipDTO;
 import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.concurrent.TimeUnit;
 
 /**
  *
@@ -107,9 +104,8 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				checkDoubleLogin(session, room);
 				break;
 			case USER_LOG_OUT:
-				C3Logger.debug("##### Logging off MULTIPLE TIMES ????");
 				session.getPlayer().logout(session);
-//				sendNewPlayerList();
+				sendNewPlayerList();
 				break;
 			case ROLEPLAY_SAVE_STORY:
 				C3GameSessionHandlerRoleplay.saveRolePlayStory(session, state);
@@ -148,7 +144,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				C3GameSessionHandlerRoleplay.saveRolePlayCharacterNextStep(session, state);
 				break;
 			case CLIENT_READY_FOR_EVENTS:
-				C3Logger.debug("##### Setting flag 'Client is ready for data' for Session: " + session.getId().toString());
+				C3Logger.info("Setting 'Client is ready for data' for session: " + session.getId().toString());
 				roomSession.getSessionReadyMap().put(session.getId().toString(), Boolean.TRUE);
 				break;
 			default:
@@ -347,23 +343,12 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 	}
 
 	private void getLoggedInUserData(PlayerSession session) {
-		C3Logger.debug("C3GameSessionHandler.getLoggedInUserData");
-		C3Logger.debug("C3GameSessionHandler.getLoggedInUserData.sessionID: -> " + session.getId());
-
-		// Create a new GameState with the UserPOJO for the client, if login was successful
 		UserPOJO user = ((C3Player) session.getPlayer()).getUser();
 
-		C3Logger.debug("---------------------------- Sending userdata back...");
+		C3Logger.info("Sending userdata/universe back after login...");
 		ArrayList<UserPOJO> userlist = UserDAO.getInstance().getUserList();
 
 		UniverseDTO uni = WebDataInterface.getUniverse();
-		C3Logger.debug("---------------------------- Routepoints: " + uni.routepoints.size());
-		C3Logger.debug("---------------------------- Attacks:     " + uni.attacks.size());
-		C3Logger.debug("---------------------------- Factions:    " + uni.factions.size());
-		C3Logger.debug("---------------------------- Jumpships:   " + uni.jumpships.size());
-		C3Logger.debug("---------------------------- Starsystems: " + uni.starSystems.size());
-//		C3Logger.debug("Size of the universe object: " + ObjectSizeFetcher.getObjectSize(uni));
-
 		GameState state_userdata = new GameState(GAMESTATEMODES.USER_LOGGED_IN_DATA);
 		state_userdata.addObject(user);
 		state_userdata.addObject2(uni);
@@ -371,9 +356,14 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		state_userdata.setReceiver(session.getId());
 		C3GameSessionHandler.sendNetworkEvent(session, state_userdata);
 
-		C3Logger.debug("Event sent: " + state_userdata.getMode());
-		C3Logger.debug("To receiver: " + session.getId());
-		C3Logger.debug("---------------------------- Sending userdata done.");
+		// ACHTUNG:
+		// Wenn das Event hier geschickt wird, aber im Client nichts ankommt und nirgends eine Fehlermeldung
+		// auftaucht, dann ist wahrscheinlich das UniverseDTO zu groß für Netty (Paketgröße 65kB).
+		// Dann wird entweder das UniverseDTO immer größer, weil irgendwo ein .clear() fehlt (Mai 2021), oder
+		// es sind zu viele Daten in dem Objekt, weil das Spiel an sich zu groß geworden ist.
+		// Lösung:
+		// - Das Universe darf nicht durch ein fehlendes clear() immer weiter wachsen!
+		// - Die Daten müssen aufgeteilt werden, bis sie wieder in die Pakete passen!
 
 		// Save last login date
 		UserDAO dao = UserDAO.getInstance();
@@ -430,8 +420,6 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 	static public void sendBroadCast(GameRoom gm, GameState response){
 		EntityConverter.convertGameStateToDTO(response);
-
 		gm.sendBroadcast(Events.networkEvent(response));
 	}
-
 }

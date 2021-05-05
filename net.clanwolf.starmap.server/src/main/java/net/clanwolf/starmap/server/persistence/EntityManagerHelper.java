@@ -74,7 +74,7 @@ public class EntityManagerHelper {
 	}
 
 	public static EntityManager getEntityManager() {
-		C3Logger.info("Create free EntityManager");
+//		C3Logger.info("Create free EntityManager");
 		return emf.createEntityManager();
 	}
 

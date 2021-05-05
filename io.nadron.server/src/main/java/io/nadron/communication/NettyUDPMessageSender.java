@@ -26,18 +26,14 @@ import java.net.SocketAddress;
  * @author Abraham Menacherry
  * 
  */
-public class NettyUDPMessageSender implements Fast
-{
+public class NettyUDPMessageSender implements Fast {
 	private final SocketAddress remoteAddress;
 	private final DatagramChannel channel;
 	private final SessionRegistryService<SocketAddress> sessionRegistryService;
 	private final EventContext eventContext;
 	private static final DeliveryGuaranty DELIVERY_GUARANTY = DeliveryGuarantyOptions.FAST;
 
-	public NettyUDPMessageSender(SocketAddress remoteAddress,
-			DatagramChannel channel,
-			SessionRegistryService<SocketAddress> sessionRegistryService)
-	{
+	public NettyUDPMessageSender(SocketAddress remoteAddress, DatagramChannel channel, SessionRegistryService<SocketAddress> sessionRegistryService) {
 		this.remoteAddress = remoteAddress;
 		this.channel = channel;
 		this.sessionRegistryService = sessionRegistryService;
@@ -45,8 +41,7 @@ public class NettyUDPMessageSender implements Fast
 	}
 
 	@Override
-	public Object sendMessage(Object message)
-	{
+	public Object sendMessage(Object message) {
 		// TODO this might overwrite valid context, check for better design
 		if(message instanceof Event){
 			((Event)message).setEventContext(eventContext);
@@ -55,46 +50,35 @@ public class NettyUDPMessageSender implements Fast
 	}
 
 	@Override
-	public DeliveryGuaranty getDeliveryGuaranty()
-	{
+	public DeliveryGuaranty getDeliveryGuaranty() {
 		return DELIVERY_GUARANTY;
 	}
 
 	@Override
-	public void close()
-	{
+	public void close() {
 		Session session = sessionRegistryService.getSession(remoteAddress);
-		if (sessionRegistryService.removeSession(remoteAddress))
-		{
-			C3Logger.debug("Successfully removed session: {} " +  session);
-		}
-		else
-		{
-			C3Logger.info("No udp session found for address: {} " + remoteAddress);
+		if (sessionRegistryService.removeSession(remoteAddress)) {
+			C3Logger.info("Successfully removed session: " +  session);
+		} else {
+			C3Logger.info("No udp session found for address: " + remoteAddress);
 		}
 
 	}
 
-	public SocketAddress getRemoteAddress()
-	{
+	public SocketAddress getRemoteAddress() {
 		return remoteAddress;
 	}
 
-	public DatagramChannel getChannel()
-	{
+	public DatagramChannel getChannel() {
 		return channel;
 	}
 
 	@Override
-	public String toString()
-	{
+	public String toString() {
 		String channelId = "UDP Channel: ";
-		if (null != channel)
-		{
+		if (null != channel) {
 			channelId += channel.toString();
-		}
-		else
-		{
+		} else {
 			channelId += "0";
 		}
 		String sender = "Netty " + channelId + " RemoteAddress: "
@@ -102,17 +86,16 @@ public class NettyUDPMessageSender implements Fast
 		return sender;
 	}
 
-	protected SessionRegistryService<SocketAddress> getSessionRegistryService()
-	{
+	protected SessionRegistryService<SocketAddress> getSessionRegistryService() {
 		return sessionRegistryService;
 	}
 	
-	protected static class EventContextImpl implements EventContext
-	{
+	protected static class EventContextImpl implements EventContext {
 		final InetSocketAddress clientAddress;
 		public EventContextImpl(InetSocketAddress clientAddress){
 			this.clientAddress = clientAddress;
 		}
+
 		@Override
 		public Session getSession() {
 			return null;
@@ -130,6 +113,5 @@ public class NettyUDPMessageSender implements Fast
 		@Override
 		public void setAttachment(Object attachement) {
 		}
-		
 	}
 }

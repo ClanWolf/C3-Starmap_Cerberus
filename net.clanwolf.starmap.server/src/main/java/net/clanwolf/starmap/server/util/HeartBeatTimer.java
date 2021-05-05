@@ -28,6 +28,7 @@ package net.clanwolf.starmap.server.util;
 
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.server.enums.SystemListTypes;
+import net.clanwolf.starmap.server.process.EndRound;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -77,5 +78,10 @@ public class HeartBeatTimer extends TimerTask {
 		WebDataInterface.createSystemList(SystemListTypes.HH_Routepoints);
 		C3Logger.print("Calling list creation (CM_StarSystems)...");
 		WebDataInterface.createSystemList(SystemListTypes.CM_StarSystems);
+
+		Long seasonId = 1L;
+		int round = 3;
+
+		EndRound.finalizeRound(seasonId, round);
 	}
 }

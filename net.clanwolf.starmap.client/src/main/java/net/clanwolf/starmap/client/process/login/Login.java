@@ -139,24 +139,21 @@ public class Login {
 		}
 
 		session = sessionFactory.createSession();
-		C3Logger.debug("##### Session created: " + session);
-		C3Logger.debug("##### Session-ID: " + session.getId());
+		C3Logger.info("Session created: " + session + " (Session-ID: " + session.getId() + ")");
 
 		StartEventHandler startEventHandler = new StartEventHandler(session) {
 			@Override
 			public void onEvent(Event event) {
-				C3Logger.debug("##### Going to Change to Object Protocol");
+				C3Logger.info("Event: " + event.toString() + ". Change to Object Protocol.");
 				if (event.getSource() instanceof GameState) {
 					// 0x1a START Event
 					GameState state = (GameState) event.getSource();
-					C3Logger.debug("##### Event received, Mode: " + state.getMode());
+					C3Logger.info("Event gamestate mode: " + state.getMode());
 				} else {
-					C3Logger.debug("##### Source: " + event.getSource());
+					C3Logger.info("Event source: " + event.getSource());
 				}
-				C3Logger.debug("##### Event: " + event.toString());
-				C3Logger.debug("##### Reseting protocol");
+
 				session.resetProtocol(NettyObjectProtocol.INSTANCE);
-				C3Logger.debug("##### Removing start handler");
 				session.removeHandler(this); // Removing startEventHandler
 				addDefaultHandlerToSession();
 			}
@@ -178,37 +175,37 @@ public class Login {
 			@Override
 			public void onGameRoomJoin(Event event) {
 				super.onGameRoomJoin(event);
-				C3Logger.debug("##### Gameroom join! ----------------------------------------");
+				C3Logger.debug("##### Gameroom join!");
 			}
 
 			@Override
 			public void onChangeAttribute(Event event) {
 				super.onChangeAttribute(event);
-				C3Logger.debug("##### Attribute changed! ----------------------------------------");
+				C3Logger.debug("##### Attribute changed!");
 			}
 
 			@Override
 			public synchronized void onException(Event event) {
 				super.onException(event);
-				C3Logger.debug("##### EXCEPTION! ----------------------------------------");
+				C3Logger.debug("##### EXCEPTION!");
 			}
 
 			@Override
 			public void onStop(Event event) {
 				super.onStop(event);
-				C3Logger.debug("##### Session stopped! ----------------------------------------");
+				C3Logger.debug("##### Session stopped!");
 			}
 
 			@Override
 			public void onStart(Event event) {
 				super.onStart(event);
-				C3Logger.debug("##### Session started! ----------------------------------------");
+				C3Logger.debug("##### Session started!");
 			}
 
 			@Override
 			public void onConnectFailed(Event event) {
 				super.onConnectFailed(event);
-				C3Logger.debug("##### Connect failed! ----------------------------------------");
+				C3Logger.debug("##### Connect failed!");
 			}
 
 			@Override
@@ -224,7 +221,7 @@ public class Login {
 				super.onLoginFailure(event);
 				loginInProgress = false;
 				C3Logger.info("Login failed!");
-				C3Logger.info("onLoginFailure: " + "Check Username and/or Password!");
+				C3Logger.info("onLoginFailure: Check Username and/or Password!");
 				ActionManager.getAction(ACTIONS.LOGON_FINISHED_WITH_ERROR).execute();
 			}
 
@@ -232,9 +229,7 @@ public class Login {
 			public void onLoginSuccess(Event event) {
 				super.onLoginSuccess(event);
 				loginInProgress = false;
-				C3Logger.info("Successfully logged in.");
-
-				C3Logger.debug("onLoginSuccess: USER_REQUEST_LOGGED_IN_DATA");
+				C3Logger.info("Successfully logged in. Sending: USER_REQUEST_LOGGED_IN_DATA");
 				GameState state = new GameState(GAMESTATEMODES.USER_REQUEST_LOGGED_IN_DATA);
 				NetworkEvent networkEvent = Events.networkEvent(state);
 				session.onEvent(networkEvent);
@@ -244,24 +239,19 @@ public class Login {
 			@Override
 			public void onNetworkMessage(NetworkEvent networkEvent) {
 				super.onNetworkMessage(networkEvent);
-				C3Logger.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
-				C3Logger.debug("Event: " + networkEvent.getType());
-				C3Logger.debug("Source: " + ((GameState)networkEvent.getSource()).getModeString());
-				C3Logger.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>");
+				C3Logger.info("Event: " + networkEvent.getType() + ". Source: " + ((GameState)networkEvent.getSource()).getModeString());
 			}
 
 			@Override
 			public void onDataIn(Event event) {
-				C3Logger.debug("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-				C3Logger.debug("##### Source: " + ((GameState)event.getSource()).getModeString());
+				C3Logger.info("OnDataIn source: " + ((GameState)event.getSource()).getModeString());
 				EventCommunications.onDataIn(session, event);
-				C3Logger.debug("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
 			}
 		};
-		C3Logger.debug("##### Adding default event handler");
+		C3Logger.info("Adding SessionEventHandler to session.");
 		session.addHandler(handler);
 
-		C3Logger.debug("##### Sending flag 'client is ready for events'");
+		C3Logger.info("Client is ready for events.");
 		GameState s = new GameState(GAMESTATEMODES.CLIENT_READY_FOR_EVENTS);
 		Nexus.fireNetworkEvent(s);
 	}

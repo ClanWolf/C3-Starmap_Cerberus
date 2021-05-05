@@ -44,7 +44,7 @@ public abstract class AbstractNettyServer implements NettyServer
 	@Override
 	public void stopServer() throws Exception 
 	{
-		C3Logger.debug("In stopServer method of class: {} " + this.getClass()
+		C3Logger.debug("In stopServer method of class: " + this.getClass()
 				.getName());
 		ChannelGroupFuture future = ALL_CHANNELS.close();
 		try 
@@ -53,7 +53,7 @@ public abstract class AbstractNettyServer implements NettyServer
 		} 
 		catch (InterruptedException e) 
 		{
-			C3Logger.info("Execption occurred while waiting for channels to close: {} " + e);
+			C3Logger.info("Execption occurred while waiting for channels to close: " + e);
 		} 
 		finally 
 		{

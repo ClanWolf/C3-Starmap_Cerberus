@@ -26,7 +26,6 @@
  */
 package net.clanwolf.starmap.server.beans;
 
-import io.nadron.app.Player;
 import io.nadron.app.PlayerSession;
 import io.nadron.app.impl.GameRoomSession;
 import io.nadron.event.Event;
@@ -37,8 +36,6 @@ import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -61,15 +58,14 @@ public class C3Room extends GameRoomSession {
 
 	@Override
 	public void onLogin(final PlayerSession playerSession) {
-		C3Logger.debug("C3Room.onLogin");
+		C3Logger.info("C3Room.onLogin");
 
 		// Add a session handler to player session. So that it can receive events.
 		playerSession.addHandler(new DefaultSessionEventHandler(playerSession) {
 
 			@Override
 			protected void onDataIn(Event event) {
-				C3Logger.debug("C3Room.onLogin.DefaultSessionEventHandler: onDataIn");
-				C3Logger.info("C3Room.onLogin.DefaultSessionEventHandler: PlayerSessionID -> " + playerSession.getId());
+				C3Logger.info("C3Room.onLogin.DefaultSessionEventHandler.onDataIn - PlayerSessionID -> " + playerSession.getId());
 
 				if (null != event.getSource()) {
 					// Pass the player session in the event context so that the
@@ -84,23 +80,21 @@ public class C3Room extends GameRoomSession {
 			@Override
 			protected void onLoginFailure(Event event) {
 				super.onLoginFailure(event);
-
-				C3Logger.debug("C3Room.onLogin.DefaultSessionEventHandler.onLoginFailure");
+				C3Logger.info("C3Room.onLogin.DefaultSessionEventHandler.onLoginFailure");
 				playerSession.getPlayer().logout(playerSession);
 			}
 
 			@Override
 			protected void onDisconnect(Event event) {
 				super.onDisconnect(event);
-
-				C3Logger.debug("C3Room.onLogin.DefaultSessionEventHandler.onDisconnect");
+				C3Logger.info("C3Room.onLogin.DefaultSessionEventHandler.onDisconnect");
 				playerSession.getPlayer().logout(playerSession);
 			}
 
 			@Override
 			protected void onLogout(Event event) {
 				super.onLogout(event);
-				C3Logger.debug("C3Room.onLogin.DefaultSessionEventHandler.onLogout");
+				C3Logger.info("C3Room.onLogin.DefaultSessionEventHandler.onLogout");
 			}
 		});
 
@@ -117,13 +111,13 @@ public class C3Room extends GameRoomSession {
 
 			do {
 				ready = getSessionReadyMap().containsKey(playerSession.getId().toString()) && getSessionReadyMap().get(playerSession.getId().toString());
-				C3Logger.debug("##### COUNTER: " + counter);
-				C3Logger.debug("##### READY: " + ready);
+//				C3Logger.debug("##### COUNTER: " + counter);
+//				C3Logger.debug("##### READY: " + ready);
 				if (ready || counter == 0) {
 					break;
 				} else {
 					try {
-						C3Logger.debug("##### Waiting a moment before send the login result event...");
+						C3Logger.info("Waiting a moment before send the login result event...");
 						TimeUnit.MILLISECONDS.sleep(250);
 						counter--;
 					} catch (InterruptedException interruptedException) {
@@ -135,32 +129,27 @@ public class C3Room extends GameRoomSession {
 			Event e;
 			if (((C3Player) playerSession.getPlayer()).getUser() == null) {
 				// Send error message if user is null
-				C3Logger.debug("C3Room.onLogin: no user found -> send Events.LOG_IN_FAILURE");
+				C3Logger.info("C3Room.onLogin: no user found -> send Events.LOG_IN_FAILURE");
 
 				e = Events.event(null, Events.LOG_IN_FAILURE);
-//				e = Events.event(null, Events.LOG_IN_SUCCESS);
 			} else {
-				// Create a new GameState with the UserPOJO for the client, if login was successful
-				C3Logger.debug("C3Room.onLogin: -> sending LOG_IN_SUCCESS Event. Session: " + playerSession.getId());
+				C3Logger.info("C3Room.onLogin: -> sending LOG_IN_SUCCESS Event. Session: " + playerSession.getId());
 				e = Events.event(null, Events.LOG_IN_SUCCESS);
 			}
 
-			Iterator it = getSessionReadyMap().keySet().iterator();
-			while(it.hasNext()) {
-				String s = (String)it.next();
-				C3Logger.debug("##### ------------------- Session in sessionReadyMap: " + s + " (Value: " + getSessionReadyMap().get(s) + ")");
-			}
+//			Iterator it = getSessionReadyMap().keySet().iterator();
+//			while(it.hasNext()) {
+//				String s = (String)it.next();
+//				C3Logger.debug("Session in sessionReadyMap: " + s + " (Value: " + getSessionReadyMap().get(s) + ")");
+//			}
 
-			C3Logger.debug("##### C3Room.onLogin: -> adding Event to PlayerSession");
 			playerSession.onEvent(e);
 			getSessionReadyMap().remove(playerSession.getId().toString());
-			C3Logger.debug("##### C3Room.onLogin: -> LOG_IN_SUCCESS Event sent");
 		} } ).start();
 	}
 
 	@Override
 	public synchronized boolean disconnectSession(PlayerSession playerSession) {
-		C3Logger.debug("disconnectSession");
 		C3Logger.info("disconnectSession: disconnected session -> " + playerSession.getId());
 		// remove player session from list with the wrong sessions
 		wrongPlayerSessions.remove(playerSession.getId());

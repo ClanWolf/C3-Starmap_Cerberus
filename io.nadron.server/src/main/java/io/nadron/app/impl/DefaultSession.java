@@ -189,9 +189,9 @@ public class DefaultSession implements Session
 	public void onEvent(Event event) {
 		if(!isShuttingDown){
 			eventDispatcher.fireEvent(event);
-			C3Logger.debug("isShuttingDown: false");
+//			C3Logger.debug("isShuttingDown: false");
 		} else {
-			C3Logger.debug("isShuttingDown: true");
+//			C3Logger.debug("isShuttingDown: true");
 		}
 	}
 

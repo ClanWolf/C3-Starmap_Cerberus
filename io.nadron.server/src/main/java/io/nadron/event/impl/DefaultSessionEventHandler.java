@@ -176,7 +176,7 @@ public class DefaultSessionEventHandler implements SessionEventHandler
 	}
 
 	protected void onDisconnect(Event event) {
-		C3Logger.debug("Received disconnect event in session. ");
+		C3Logger.info("Received disconnect event in session.");
 		onException(event);
 	}
 	
@@ -196,10 +196,10 @@ public class DefaultSessionEventHandler implements SessionEventHandler
 			// If session is already in registry then do not re-register.
 			if(null == registry.getSession(reconnectKey)) {
 				registry.putSession(reconnectKey, getSession());
-				C3Logger.debug("Received exception/disconnect event in session. " + "Going to put session in reconnection registry");
+				C3Logger.info("Received exception/disconnect event in session. Going to put session in reconnection registry.");
 			}
 		} else {
-			C3Logger.debug("Received exception/disconnect event in session. " + "Going to close session");
+			C3Logger.info("Received exception/disconnect event in session. Going to close session.");
 			onClose(event);
 		}
 	}

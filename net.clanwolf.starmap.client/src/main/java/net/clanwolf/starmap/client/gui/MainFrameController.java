@@ -1401,7 +1401,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			case LOGON_FINISHED_SUCCESSFULL:
 				// TODO: This may take to long and a response object may arrive before the pane exists and lead to nullpointers!
 				// if the user is null here, this may cause the endless Nullpointer Exceptions that sometimes occur on/after login
-				C3Logger.info("***************************************** Current user is: " + Nexus.getCurrentUser() + " (Check this not to be NULL)");
+				C3Logger.info("Current user is: " + Nexus.getCurrentUser() + " (Check this not to be NULL)");
 
 				userInfoPane = new UserInfoPane();
 				userInfoPane.setCache(true);
