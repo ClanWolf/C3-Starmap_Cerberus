@@ -253,7 +253,7 @@ public class JetlangEventDispatcher implements EventDispatcher
 
 	public synchronized boolean removeHandlersForSession(Session session)
 	{
-		C3Logger.info("Entered removeHandlersForSession for session {} " + session);
+		C3Logger.info("Entered removeHandlersForSession for session " + session);
 		List<EventHandler> removeList = new ArrayList<EventHandler>();
 		
 		Collection<List<EventHandler>> eventHandlersList = new ArrayList<List<EventHandler>>(
@@ -265,7 +265,7 @@ public class JetlangEventDispatcher implements EventDispatcher
 			removeList.addAll(getHandlersToRemoveForSession(handlerList,session));
 		}
 		
-		C3Logger.info("Going to remove {} handlers for session: {} " + removeList.size() +  session);
+		C3Logger.info("Going to remove " + removeList.size() + " handlers for session: " + session);
 		for (EventHandler handler : removeList)
 		{
 			removeHandler(handler);
@@ -276,7 +276,7 @@ public class JetlangEventDispatcher implements EventDispatcher
 	@Override
 	public synchronized void clear()
 	{
-		C3Logger.info("Going to clear handlers on dispatcher {} " + this);
+		C3Logger.info("Going to clear handlers on dispatcher " + this);
 		if(null != handlersByEventType)
 		{
 			handlersByEventType.clear();

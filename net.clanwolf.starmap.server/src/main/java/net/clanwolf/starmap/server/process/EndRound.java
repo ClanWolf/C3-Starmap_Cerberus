@@ -95,7 +95,7 @@ public class EndRound {
 		int seasonStartYear = c.get(Calendar.YEAR);
 		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 
-		int diff = (seasonStartYear - currentYear) * 365;
+		int diff = (int) Math.abs((seasonStartYear - currentYear) * 365.243);
 
 //		LocalDateTime date1 = new Timestamp(seasonStartDate.getTime()).toLocalDateTime();
 //		LocalDateTime date2 = new Timestamp(date.getTime()).toLocalDateTime();
@@ -127,5 +127,19 @@ public class EndRound {
 			// here is no ship left to move OR the time for the round is up
 			C3Logger.info("Finalizing the round.");
 		}
+	}
+
+	public static void main(String[] args) {
+		// 3052 - 2021 = 1031 Jahre Differenz
+		// 1031 Jahre * 365,25 Tage = 376.572,75 Tage Differenz
+		int currentYear = 2021;
+		int seasonStartYear = 3052;
+		int diff = (int) Math.abs((seasonStartYear - currentYear) * 365.243); // Schaltjahr factor
+
+		System.out.println("Current date: " + new Date(System.currentTimeMillis()));
+		System.out.println("Translated: " + addDaysToDate(new Date(System.currentTimeMillis()), diff));
+
+//		Current date: 2021-05-06
+//		Translated: 3052-05-06
 	}
 }
