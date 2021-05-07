@@ -217,10 +217,12 @@ public class AttackPOJO extends Pojo {
 		this.jumpshipID = jumpshipID;
 	}
 
+	@SuppressWarnings("unused")
 	public List<AttackVarsPOJO> getAttackVarList() {
 		return attackVarList;
 	}
 
+	@SuppressWarnings("unused")
 	public void setAttackVarList(List<AttackVarsPOJO> attackVarList) {
 		this.attackVarList = attackVarList;
 	}

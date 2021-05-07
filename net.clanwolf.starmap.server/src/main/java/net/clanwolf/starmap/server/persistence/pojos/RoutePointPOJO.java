@@ -58,42 +58,52 @@ public class RoutePointPOJO extends Pojo {
 	@Column(name = "SystemID")
 	private Long systemId;
 
+	@SuppressWarnings("unused")
 	public Long getId() {
 		return id;
 	}
 
+	@SuppressWarnings("unused")
 	public void setId(Long id) {
 		this.id = id;
 	}
 
+	@SuppressWarnings("unused")
 	public Long getSeasonId() {
 		return seasonId;
 	}
 
+	@SuppressWarnings("unused")
 	public void setSeasonId(Long seasonID) {
 		this.seasonId = seasonID;
 	}
 
+	@SuppressWarnings("unused")
 	public Long getRoundId() {
 		return roundId;
 	}
 
+	@SuppressWarnings("unused")
 	public void setRoundId(Long roundID) {
 		this.roundId = roundID;
 	}
 
+	@SuppressWarnings("unused")
 	public Long getJumpshipId() {
 		return jumpshipId;
 	}
 
+	@SuppressWarnings("unused")
 	public void setJumpshipId(Long jumpshipId) {
 		this.jumpshipId = jumpshipId;
 	}
 
+	@SuppressWarnings("unused")
 	public Long getSystemId() {
 		return systemId;
 	}
 
+	@SuppressWarnings("unused")
 	public void setSystemId(Long systemId) {
 		this.systemId = systemId;
 	}

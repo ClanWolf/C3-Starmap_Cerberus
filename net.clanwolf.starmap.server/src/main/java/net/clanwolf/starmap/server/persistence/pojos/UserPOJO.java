@@ -155,178 +155,222 @@ public class UserPOJO extends Pojo {
 
 	// Property accessors
 
+	@SuppressWarnings("unused")
 	public Long getUserId() {
 		return this.id;
 	}
 
+	@SuppressWarnings("unused")
 	public void setUserId(Long id) {
 		this.id = id;
 	}
 
+	@SuppressWarnings("unused")
 	public Long getLastModifiedByUserID() {
 		return this.lastModifiedByUserID;
 	}
 
+	@SuppressWarnings("unused")
 	public void setLastModifiedByUserID(Long id) {
 		this.lastModifiedByUserID = id;
 	}
 
+	@SuppressWarnings("unused")
 	public String getUserName() {
 		return this.userName;
 	}
 
+	@SuppressWarnings("unused")
 	public void setUserName(String userName) {
 		this.userName = userName;
 	}
 
+	@SuppressWarnings("unused")
 	public String getUserPassword() {
 		return this.userPassword;
 	}
 
+	@SuppressWarnings("unused")
 	public void setUserPassword(String userPassword) {
 		this.userPassword = userPassword;
 	}
 
+	@SuppressWarnings("unused")
 	public String getUserEMail() {
 		return this.userEMail;
 	}
 
+	@SuppressWarnings("unused")
 	public void setUserEMail(String userEMail) {
 		this.userEMail = userEMail;
 	}
 
+	@SuppressWarnings("unused")
 	public String getAvatar() {
 		return this.userAvatar;
 	}
 
+	@SuppressWarnings("unused")
 	public void setAvatar(String userAvatar) {
 		this.userAvatar = userAvatar;
 	}
 
+	@SuppressWarnings("unused")
 	public String getFirstName() {
 		return this.firstName;
 	}
 
+	@SuppressWarnings("unused")
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
 
+	@SuppressWarnings("unused")
 	public String getLastName() {
 		return this.lastName;
 	}
 
+	@SuppressWarnings("unused")
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
 
+	@SuppressWarnings("unused")
 	public String getLocation() {
 		return this.location;
 	}
 
+	@SuppressWarnings("unused")
 	public void setLocation(String location) {
 		this.location = location;
 	}
 
+	@SuppressWarnings("unused")
 	public int getZipcode() {
 		return this.zipcode;
 	}
 
+	@SuppressWarnings("unused")
 	public void setZipcode(int zipcode) {
 		this.zipcode = zipcode;
 	}
 
+	@SuppressWarnings("unused")
 	public String getWebsite() {
 		return this.website;
 	}
 
+	@SuppressWarnings("unused")
 	public void setWebsite(String website) {
 		this.website = website;
 	}
 
+	@SuppressWarnings("unused")
 	public long getPrivileges() {
 		return privileges;
 	}
 
+	@SuppressWarnings("unused")
 	public void setPrivileges(long privileges) {
 		this.privileges = privileges;
 	}
 
+	@SuppressWarnings("unused")
 	public Timestamp getBirthDate() {
 		return this.birthDate;
 	}
 
+	@SuppressWarnings("unused")
 	public void setBirthDate(Timestamp birthDate) {
 		this.birthDate = birthDate;
 	}
 
+	@SuppressWarnings("unused")
 	public Timestamp getJoinDate() {
 		return this.joinDate;
 	}
 
+	@SuppressWarnings("unused")
 	public void setJoinDate(Timestamp joinDate) {
 		this.joinDate = joinDate;
 	}
 
+	@SuppressWarnings("unused")
 	public Timestamp getLastLogin() {
 		return this.lastLogin;
 	}
 
+	@SuppressWarnings("unused")
 	public void setLastLogin(Timestamp lastLogin) {
 		this.lastLogin = lastLogin;
 	}
 
+	@SuppressWarnings("unused")
 	public Timestamp getBannedUntil() {
 		return this.bannedUntil;
 	}
 
+	@SuppressWarnings("unused")
 	public void setBannedUntil(Timestamp bannedUntil) {
 		this.bannedUntil = bannedUntil;
 	}
 
+	@SuppressWarnings("unused")
 	public String getBannReason() {
 		return this.bannReason;
 	}
 
+	@SuppressWarnings("unused")
 	public void setBannReason(String bannReason) {
 		this.bannReason = bannReason;
 	}
 
+	@SuppressWarnings("unused")
 	public Timestamp getCreated() {
 		return this.created;
 	}
 
+	@SuppressWarnings("unused")
 	public void setCreated(Timestamp created) {
 		this.created = created;
 	}
 
+	@SuppressWarnings("unused")
 	public Timestamp getLastModified() {
 		return this.lastModified;
 	}
 
+	@SuppressWarnings("unused")
 	public void setLastModified(Timestamp lastModified) {
 		this.lastModified = lastModified;
 	}
 
+	@SuppressWarnings("unused")
 	public RolePlayCharacterPOJO getCurrentCharacter() {
 		return this.currentCharacter;
 	}
 
+	@SuppressWarnings("unused")
 	public void setCurrentCharacter(RolePlayCharacterPOJO character) {
 		this.currentCharacter = character;
 	}
 
+	@SuppressWarnings("unused")
 	public String getUserPasswordWebsite() {
 		return userPasswordWebsite;
 	}
 
+	@SuppressWarnings("unused")
 	public void setUserPasswordWebsite(String userPasswordWebsite) {
 		this.userPasswordWebsite = userPasswordWebsite;
 	}
 
+	@SuppressWarnings("unused")
 	public int getActive() {
 		return active;
 	}
 
+	@SuppressWarnings("unused")
 	public void setActive(int active) {
 		this.active = active;
 	}

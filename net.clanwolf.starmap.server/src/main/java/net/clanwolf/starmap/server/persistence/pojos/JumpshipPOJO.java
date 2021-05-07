@@ -74,50 +74,63 @@ public class JumpshipPOJO extends Pojo {
 	@Where()
 	private List<AttackPOJO> openAttacks = new ArrayList<>();
 */
+
+	@SuppressWarnings("unused")
 	public Long getId() {
 		return id;
 	}
 
+	@SuppressWarnings("unused")
 	public void setId(Long id) {
 		this.id = id;
 	}
 
+	@SuppressWarnings("unused")
 	public String getJumpshipName() {
 		return jumpshipName;
 	}
 
+	@SuppressWarnings("unused")
 	public void setJumpshipName(String jumpshipName) {
 		this.jumpshipName = jumpshipName;
 	}
 
+	@SuppressWarnings("unused")
 	public Long getJumpshipFactionID() {
 		return jumpshipFactionID;
 	}
 
+	@SuppressWarnings("unused")
 	public void setJumpshipFactionID(Long jumpshipFactionID) {
 		this.jumpshipFactionID = jumpshipFactionID;
 	}
 
+	@SuppressWarnings("unused")
 	public String getStarSystemHistory() {
 		return starSystemHistory;
 	}
 
+	@SuppressWarnings("unused")
 	public void setStarSystemHistory(String starSystemHistory) {
 		this.starSystemHistory = starSystemHistory;
 	}
 
+	@SuppressWarnings("unused")
 	public Boolean getAttackReady() {
 		return attackReady;
 	}
 
+	@SuppressWarnings("unused")
 	public void setAttackReady(Boolean attackReady) {
 		this.attackReady = attackReady;
 	}
 
+	@SuppressWarnings("unused")
 	public List<RoutePointPOJO> getRoutepointList() {
 		return routepointList;
 	}
 
+	@SuppressWarnings("unused")
 	public void setRoutepointList(List<RoutePointPOJO> routepointList) {
 		this.routepointList = routepointList;
 	}

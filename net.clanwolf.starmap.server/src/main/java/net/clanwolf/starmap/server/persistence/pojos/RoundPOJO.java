@@ -5,35 +5,31 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import net.clanwolf.starmap.server.persistence.Pojo;
 
 import javax.persistence.*;
-
 import java.sql.Date;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
 @JsonIdentityInfo(
-		scope= SeasonPOJO.class,
+		scope= RoundPOJO.class,
 		generator= ObjectIdGenerators.PropertyGenerator.class,
 		property = "id")
 @Entity
-@Table(name = "_HH_SEASON", catalog = "C3")
-public class SeasonPOJO extends Pojo {
+@Table(name = "_HH_ROUND", catalog = "C3")
+public class RoundPOJO extends Pojo {
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
 	@Column(name = "ID")
 	private Long id;
 
-	@Column(name = "Name")
-	private String name;
+	@Column(name = "Round")
+	private Long round;
 
-	@Column(name = "Ended")
-	private Boolean ended;
+	@Column(name = "Season")
+	private Long season;
 
-	@Column(name = "Description")
-	private String description;
-
-	@Column(name = "StartDate")
-	private Date startDate;
+	@Column(name = "CurrentPhase")
+	private Long currentPhase;
 
 	@SuppressWarnings("unused")
 	public Long getId() {
@@ -46,42 +42,32 @@ public class SeasonPOJO extends Pojo {
 	}
 
 	@SuppressWarnings("unused")
-	public String getName() {
-		return name;
+	public Long getRound() {
+		return round;
 	}
 
 	@SuppressWarnings("unused")
-	public void setName(String name) {
-		this.name = name;
+	public void setRound(Long round) {
+		this.round = round;
 	}
 
 	@SuppressWarnings("unused")
-	public Boolean getEnded() {
-		return ended;
+	public Long getSeason() {
+		return season;
 	}
 
 	@SuppressWarnings("unused")
-	public void setEnded(Boolean ended) {
-		this.ended = ended;
+	public void setSeason(Long season) {
+		this.season = season;
 	}
 
 	@SuppressWarnings("unused")
-	public String getDescription() {
-		return description;
+	public Long getCurrentPhase() {
+		return currentPhase;
 	}
 
 	@SuppressWarnings("unused")
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	@SuppressWarnings("unused")
-	public Date getStartDate() {
-		return startDate;
-	}
-
-	@SuppressWarnings("unused")
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
+	public void setCurrentPhase(Long currentPhase) {
+		this.currentPhase = currentPhase;
 	}
 }

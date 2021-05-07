@@ -26,11 +26,13 @@
  */
 package net.clanwolf.starmap.server.persistence.daos.jpadaoimpl;
 
+import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.server.persistence.CriteriaHelper;
 import net.clanwolf.starmap.server.persistence.daos.GenericDAO;
-import net.clanwolf.starmap.server.persistence.pojos.AttackPOJO;
-import net.clanwolf.starmap.server.persistence.pojos.RolePlayStoryPOJO;
-import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
+import net.clanwolf.starmap.server.persistence.pojos.RoundPOJO;
+import net.clanwolf.starmap.server.persistence.pojos.SeasonPOJO;
+import net.clanwolf.starmap.server.persistence.pojos.UserPOJO;
+import net.clanwolf.starmap.server.util.Encryptor;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -42,72 +44,63 @@ import java.util.List;
  * by senders of these methods or must be manually added to each of these methods for data to be
  * persisted to the JPA datastore.
  */
-public class AttackDAO extends GenericDAO {
+public class RoundDAO extends GenericDAO {
 
-	private static AttackDAO instance;
+	private static RoundDAO instance;
 
-	public static AttackDAO getInstance() {
+	public static RoundDAO getInstance() {
 		if (instance == null) {
-			instance = new AttackDAO();
-			instance.className = "AttackPOJO";
+			instance = new RoundDAO();
+			instance.className = "RoundPOJO";
 		}
 		return instance;
 	}
 
-	private AttackDAO() {
+	private RoundDAO() {
 		// Empty constructor
 	}
 
 	@Override
-	public void delete(Long userID, Object entity) {
-		super.delete(userID, entity, ((AttackPOJO) entity).getId());
+	public void delete(Long roundID, Object entity) {
+		super.delete(roundID, entity, ((RoundPOJO) entity).getId());
 	}
 
 	@Override
-	public AttackPOJO update(Long userID, Object entity) {
-		return (AttackPOJO) super.update(userID, entity);
+	public RoundPOJO update(Long roundID, Object entity) {
+		return (RoundPOJO) super.update(roundID, entity);
 	}
 
 	@Override
-	public AttackPOJO findById(Long userID, Long id) {
-		return (AttackPOJO) super.findById(userID, AttackPOJO.class, id);
+	public RoundPOJO findById(Long userId, Long id) {
+		if (userId == null) {
+			return (RoundPOJO) super.findById(RoundPOJO.class, id);
+		} else {
+			return (RoundPOJO) super.findById(userId, RoundPOJO.class, id);
+		}
+	}
+
+	// Find the round pojo that belongs to that season (there is only one per season)
+	public RoundPOJO findBySeasonId(Long userId, Long seasonId) {
+		CriteriaHelper crit1 = new CriteriaHelper(RoundPOJO.class);
+		crit1.addCriteria("season", seasonId);
+
+		Object o = crit1.getSingleResult();
+
+		return (RoundPOJO) o;
 	}
 
 	/*
-	 * Give all open attacks back of a season back and a round
+	 * Give all rounds
 	 */
-	public ArrayList<AttackPOJO> getOpenAttacksOfASeasonForRound(Long season, int round){
-		CriteriaHelper crit = new CriteriaHelper(AttackPOJO.class);
-
-		crit.addCriteriaIsNull("factionID_Winner");
-		crit.addCriteria("season", season );
-		crit.addCriteria("round", round);
+	public ArrayList<RoundPOJO> getAllRounds(){
+		CriteriaHelper crit = new CriteriaHelper(RoundPOJO.class);
 
 		List<Object> lRes = crit.getResultList();
 
 		Iterator<Object> iter = lRes.iterator();
-		ArrayList<AttackPOJO> lRPS = new ArrayList<>();
+		ArrayList<RoundPOJO> lRPS = new ArrayList<>();
 
-		while (iter.hasNext()) lRPS.add((AttackPOJO) iter.next());
-
-		return lRPS;
-	}
-
-	/*
-	 * Give all open attacks of a season back
-	 */
-	public ArrayList<AttackPOJO> getOpenAttacksOfASeason(Long season){
-		CriteriaHelper crit = new CriteriaHelper(AttackPOJO.class);
-
-		crit.addCriteriaIsNull("factionID_Winner");
-		crit.addCriteria("season", season );
-
-		List<Object> lRes = crit.getResultList();
-
-		Iterator<Object> iter = lRes.iterator();
-		ArrayList<AttackPOJO> lRPS = new ArrayList<>();
-
-		while (iter.hasNext()) lRPS.add((AttackPOJO) iter.next());
+		while (iter.hasNext()) lRPS.add((RoundPOJO) iter.next());
 
 		return lRPS;
 	}

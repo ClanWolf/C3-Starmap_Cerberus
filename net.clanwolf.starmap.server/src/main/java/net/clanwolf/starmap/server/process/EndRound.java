@@ -27,9 +27,13 @@
 package net.clanwolf.starmap.server.process;
 
 import net.clanwolf.starmap.logging.C3Logger;
+import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.AttackDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.JumpshipDAO;
+import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.RoundDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.SeasonDAO;
+import net.clanwolf.starmap.server.persistence.pojos.AttackPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.JumpshipPOJO;
+import net.clanwolf.starmap.server.persistence.pojos.RoundPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.SeasonPOJO;
 
 import java.sql.Date;
@@ -76,9 +80,9 @@ public class EndRound {
 
 	private static boolean timeForThisRoundIsOver(Long seasonId, int round) {
 		Date nextRoundDate = getNextRoundDate(seasonId, round);
-		Date nowDate = new Date(System.currentTimeMillis());
+		Date translatedNowDate = translateRealDateToSeasonTime(new Date(System.currentTimeMillis()), 1L);
 
-		if(nextRoundDate.after(nowDate)){
+		if(nextRoundDate.after(translatedNowDate)){
 			return false; // the end of the round has not been reached on the calendar
 		} else {
 			return true; // round is officially over
@@ -95,7 +99,7 @@ public class EndRound {
 		int seasonStartYear = c.get(Calendar.YEAR);
 		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 
-		int diff = (int) Math.abs((seasonStartYear - currentYear) * 365.243);
+		int diff = (int) Math.abs((seasonStartYear - currentYear) * 365.243); // Days in year and Schaltjahr factor
 
 //		LocalDateTime date1 = new Timestamp(seasonStartDate.getTime()).toLocalDateTime();
 //		LocalDateTime date2 = new Timestamp(date.getTime()).toLocalDateTime();
@@ -104,9 +108,14 @@ public class EndRound {
 		return addDaysToDate(date, diff);
 	}
 
+	public static void findAWinner(AttackPOJO attackPOJO) {
+		// TODO: Find a winner
+	}
+
 	public static void finalizeRound(Long seasonId, int round) {
 		C3Logger.info("Checking on end of round.");
-		ArrayList<JumpshipPOJO> list = JumpshipDAO.getInstance().getAllJumpships();
+		ArrayList<JumpshipPOJO> jumpshipList = JumpshipDAO.getInstance().getAllJumpships();
+		ArrayList<AttackPOJO> openAttacksInRoundList = AttackDAO.getInstance().getOpenAttacksOfASeasonForRound(seasonId, round);
 
 		C3Logger.debug("Current date: " + new Date(System.currentTimeMillis()));
 		C3Logger.debug("Translated current date: " + translateRealDateToSeasonTime(new Date(System.currentTimeMillis()), 1L));
@@ -114,18 +123,54 @@ public class EndRound {
 		C3Logger.debug("Next round date: " + getNextRoundDate(seasonId, round));
 
 		boolean jumpshipsLeftToMove = false;
-		for (JumpshipPOJO js : list) {
+		int jscount = 0;
+		for (JumpshipPOJO js : jumpshipList) {
 			if (js.getAttackReady()) {
 				jumpshipsLeftToMove = true;
+				jscount++;
 			}
 		}
 
-		if (jumpshipsLeftToMove && !(timeForThisRoundIsOver(seasonId, round))) {
+		boolean attacksLeftToResolveInRound = openAttacksInRoundList.size() > 0; // We are ignoring the open attacks for the next round here
+
+		if ((jumpshipsLeftToMove || attacksLeftToResolveInRound) && !(timeForThisRoundIsOver(seasonId, round))) {
 			// round is still active
 			C3Logger.info("Round is still active.");
+			C3Logger.info("--- " + jscount + " jumpship have not moved.");
+			C3Logger.info("--- " + openAttacksInRoundList.size() + " attacks still to be resolved.");
+			C3Logger.info("--- There is still time left to make moves for this round!");
 		} else {
-			// here is no ship left to move OR the time for the round is up
-			C3Logger.info("Finalizing the round.");
+			// here is no ship left to move AND no attack left open OR the time for the round is up
+			C3Logger.info("Finalizing the round:");
+			C3Logger.info("--- There is NO time left for this round!");
+
+			// move all jumpships to their next waypoint
+			C3Logger.info("--- Moving all jumpships to their next waypoints.");
+			// Jumpships do not need to be moved, because the waypoints have a round indicator
+			// SAVE THIS! --> Nothing to save
+
+			// set all jumpships to attackReady again
+			C3Logger.info("--- Setting all jumpships to attackReady again.");
+			// TODO: Finalize jumpships
+			// ...
+			// SAVE THIS! (Do NOT forget to commit)
+
+			// set all open attacks to resolved (decide on a winner in the process!)
+			C3Logger.info("--- Resolve all attacks that are still open.");
+			// TODO: Finalize attacks
+			for (AttackPOJO attackPOJO : openAttacksInRoundList) {
+				findAWinner(attackPOJO);
+			}
+			// SAVE THIS! (Do NOT forget to commit)
+
+			// finally count the round indicator up once
+			C3Logger.info("--- Finally increasy the round indicator.");
+			// TODO: Finalize round
+			RoundPOJO roundPOJO = RoundDAO.getInstance().findBySeasonId(null, seasonId);
+			Long newRound = Long.valueOf(round + 1);
+			roundPOJO.setRound(newRound);
+			// SAVE THIS! (Do NOT forget to commit)
+
 		}
 	}
 
@@ -133,13 +178,15 @@ public class EndRound {
 		// 3052 - 2021 = 1031 Jahre Differenz
 		// 1031 Jahre * 365,25 Tage = 376.572,75 Tage Differenz
 		int currentYear = 2021;
+		Long season = 1L;
+		int round = 1;
+
 		int seasonStartYear = 3052;
-		int diff = (int) Math.abs((seasonStartYear - currentYear) * 365.243); // Schaltjahr factor
+		int diff = (int) Math.abs((seasonStartYear - currentYear) * 365.243); // Days in year and Schaltjahr factor
 
 		System.out.println("Current date: " + new Date(System.currentTimeMillis()));
 		System.out.println("Translated: " + addDaysToDate(new Date(System.currentTimeMillis()), diff));
-
-//		Current date: 2021-05-06
-//		Translated: 3052-05-06
+		// Current date: 2021-05-06
+		// Translated:   3052-05-06
 	}
 }
