@@ -30,6 +30,7 @@ import net.clanwolf.starmap.server.persistence.CriteriaHelper;
 import net.clanwolf.starmap.server.persistence.daos.GenericDAO;
 import net.clanwolf.starmap.server.persistence.pojos.AttackPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.JumpshipPOJO;
+import net.clanwolf.starmap.server.persistence.pojos.RoundPOJO;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -91,6 +92,15 @@ public class JumpshipDAO extends GenericDAO {
 		while (iter.hasNext()) lRPS.add((JumpshipPOJO) iter.next());
 
 		return lRPS;
+	}
+
+	public JumpshipPOJO getJumpshipForId(Long jumpshipID){
+		CriteriaHelper crit = new CriteriaHelper(JumpshipPOJO.class);
+		crit.addCriteria("ID", jumpshipID);
+
+		Object o = crit.getSingleResult();
+
+		return (JumpshipPOJO) o;
 	}
 
 	public ArrayList<JumpshipPOJO> getJumpshipsForFaction(Long factionID){

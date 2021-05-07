@@ -26,6 +26,7 @@
  */
 package net.clanwolf.starmap.server.beans;
 
+import io.nadron.app.GameRoom;
 import io.nadron.app.PlayerSession;
 import io.nadron.app.impl.GameRoomSession;
 import io.nadron.event.Event;
@@ -33,7 +34,9 @@ import io.nadron.event.Events;
 import io.nadron.event.impl.DefaultEventContext;
 import io.nadron.event.impl.DefaultSessionEventHandler;
 import net.clanwolf.starmap.logging.C3Logger;
+import net.clanwolf.starmap.server.persistence.EntityConverter;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
+import net.clanwolf.starmap.transfer.GameState;
 
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
@@ -47,13 +50,19 @@ import java.util.concurrent.TimeUnit;
  */
 public class C3Room extends GameRoomSession {
 	private static ArrayList<Object> wrongPlayerSessions;
-
-
+	private static ArrayList<C3Room> c3Rooms = new ArrayList<C3Room>();
 
 	public C3Room(GameRoomSessionBuilder builder) {
 		super(builder);
 		wrongPlayerSessions = new ArrayList<>();
 		addHandler(new C3GameSessionHandler(this));
+		c3Rooms.add(this);
+	}
+
+	public static void sendBroadcastMessage(GameState state) {
+		for (C3Room r : c3Rooms) {
+			C3GameSessionHandler.sendBroadCast(r, state);
+		}
 	}
 
 	@Override

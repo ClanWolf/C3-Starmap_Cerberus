@@ -80,7 +80,7 @@ public class RoundDAO extends GenericDAO {
 	}
 
 	// Find the round pojo that belongs to that season (there is only one per season)
-	public RoundPOJO findBySeasonId(Long userId, Long seasonId) {
+	public RoundPOJO findBySeasonId(Long seasonId) {
 		CriteriaHelper crit1 = new CriteriaHelper(RoundPOJO.class);
 		crit1.addCriteria("season", seasonId);
 

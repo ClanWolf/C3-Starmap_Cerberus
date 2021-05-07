@@ -27,15 +27,19 @@
 package net.clanwolf.starmap.server.process;
 
 import net.clanwolf.starmap.logging.C3Logger;
-import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.AttackDAO;
-import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.JumpshipDAO;
-import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.RoundDAO;
-import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.SeasonDAO;
+import net.clanwolf.starmap.server.beans.C3GameSessionHandler;
+import net.clanwolf.starmap.server.beans.C3Room;
+import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
+import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.*;
 import net.clanwolf.starmap.server.persistence.pojos.AttackPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.JumpshipPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.RoundPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.SeasonPOJO;
+import net.clanwolf.starmap.transfer.GameState;
+import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
+import org.hibernate.Transaction;
 
+import javax.persistence.EntityTransaction;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -109,7 +113,14 @@ public class EndRound {
 	}
 
 	public static void findAWinner(AttackPOJO attackPOJO) {
-		// TODO: Find a winner
+		Long jumpshipId = attackPOJO.getJumpshipID();
+		JumpshipPOJO jumpship = JumpshipDAO.getInstance().getJumpshipForId(jumpshipId);
+		Long attackerFactionId = jumpship.getJumpshipFactionID();
+		Long defenderFactionId = attackPOJO.getFactionID_Defender();
+
+		// it is 50/50 who wins this fight if it has not been resolved in a game / series of games
+		Long winnerId = Math.random() > 0.5 ? attackerFactionId : defenderFactionId;
+		attackPOJO.setFactionID_Winner(winnerId);
 	}
 
 	public static void finalizeRound(Long seasonId, int round) {
@@ -147,30 +158,55 @@ public class EndRound {
 			// move all jumpships to their next waypoint
 			C3Logger.info("--- Moving all jumpships to their next waypoints.");
 			// Jumpships do not need to be moved, because the waypoints have a round indicator
-			// SAVE THIS! --> Nothing to save
 
 			// set all jumpships to attackReady again
 			C3Logger.info("--- Setting all jumpships to attackReady again.");
-			// TODO: Finalize jumpships
-			// ...
-			// SAVE THIS! (Do NOT forget to commit)
+			for (JumpshipPOJO js : jumpshipList) {
+				js.setAttackReady(true);
+			}
 
 			// set all open attacks to resolved (decide on a winner in the process!)
 			C3Logger.info("--- Resolve all attacks that are still open.");
-			// TODO: Finalize attacks
 			for (AttackPOJO attackPOJO : openAttacksInRoundList) {
 				findAWinner(attackPOJO);
 			}
-			// SAVE THIS! (Do NOT forget to commit)
 
 			// finally count the round indicator up once
-			C3Logger.info("--- Finally increasy the round indicator.");
-			// TODO: Finalize round
-			RoundPOJO roundPOJO = RoundDAO.getInstance().findBySeasonId(null, seasonId);
 			Long newRound = Long.valueOf(round + 1);
+			C3Logger.info("--- Finally increasy the round indicator to: " + newRound);
+			RoundPOJO roundPOJO = RoundDAO.getInstance().findBySeasonId(seasonId);
 			roundPOJO.setRound(newRound);
-			// SAVE THIS! (Do NOT forget to commit)
 
+			// Save everything to the database
+			AttackDAO attackDAO = AttackDAO.getInstance();
+			JumpshipDAO jumpshipDAO = JumpshipDAO.getInstance();
+			RoundDAO roundDAO = RoundDAO.getInstance();
+
+			GameState endRoundInfo = new GameState(GAMESTATEMODES.FINALIZE_ROUND);
+			EntityTransaction transaction = EntityManagerHelper.getEntityManager().getTransaction();
+			try {
+				transaction.begin();
+				roundDAO.update(null, roundPOJO);
+				for (JumpshipPOJO jumpshipPOJO : jumpshipList) {
+					jumpshipDAO.update(null, jumpshipPOJO);
+				}
+				for (AttackPOJO attackPOJO : openAttacksInRoundList) {
+					attackDAO.update(null, attackPOJO);
+				}
+				transaction.commit();
+
+				endRoundInfo.addObject(null);
+				endRoundInfo.setAction_successfully(Boolean.TRUE);
+			} catch (RuntimeException re) {
+				transaction.rollback();
+
+				endRoundInfo.addObject(re.getMessage());
+				endRoundInfo.setAction_successfully(Boolean.FALSE);
+
+				C3Logger.error("Finalize round", re);
+			} finally {
+				C3Room.sendBroadcastMessage(endRoundInfo);
+			}
 		}
 	}
 

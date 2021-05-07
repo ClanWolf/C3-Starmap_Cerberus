@@ -45,12 +45,15 @@ public abstract class GenericDAO implements IDAO {
 	protected String className = "";
 	private EntityManager fem = null; // free entity manager
 
-	protected EntityManager getFreeEntityManager() {
-		return EntityManagerHelper.getEntityManager();
-	}
-
 	protected EntityManager getEntityManager(Long userID) {
-		return EntityManagerHelper.getEntityManager(userID);
+		if (userID == null) {
+			if (fem == null) {
+				fem = EntityManagerHelper.getEntityManager();
+			}
+			return fem;
+		} else {
+			return EntityManagerHelper.getEntityManager(userID);
+		}
 	}
 
 	@Override
@@ -76,7 +79,8 @@ public abstract class GenericDAO implements IDAO {
 	public Object update(Long userID, Object entity) {
 		C3Logger.info("Updating instance (" + entity.getClass().getName() + ")");
 		try {
-			Object result = getEntityManager(userID).merge(entity);
+			Object result = null;
+			result = getEntityManager(userID).merge(entity);
 			C3Logger.info("Update successful");
 			return result;
 		} catch (RuntimeException re) {
@@ -119,16 +123,7 @@ public abstract class GenericDAO implements IDAO {
 	public Object findById(Long userID, Class clazz, Long id) {
 //		C3Logger.info("Finding object instance with id: " + id);
 		try {
-			if (userID != null) {
-				return getEntityManager(userID).find(clazz, id);
-			} else {
-				if (fem == null) {
-					fem = getFreeEntityManager();
-					return fem.find(clazz, id);
-				} else {
-					return fem.find(clazz, id);
-				}
-			}
+			return getEntityManager(userID).find(clazz, id);
 		} catch (RuntimeException re) {
 			C3Logger.info("Find failed");
 			re.printStackTrace();
