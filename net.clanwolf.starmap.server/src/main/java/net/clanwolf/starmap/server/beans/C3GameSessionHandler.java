@@ -371,7 +371,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		try {
 			EntityManagerHelper.beginTransaction(C3GameSessionHandler.getC3UserID(session));
 			user.setLastLogin(new Timestamp(System.currentTimeMillis()));
-			dao.update(getC3UserID(session), ((C3Player) session.getPlayer()).getUser());
+			//dao.update(getC3UserID(session), ((C3Player) session.getPlayer()).getUser());
 			EntityManagerHelper.commit(C3GameSessionHandler.getC3UserID(session));
 			C3Logger.info("Last login saved for User");
 		} catch (RuntimeException re) {

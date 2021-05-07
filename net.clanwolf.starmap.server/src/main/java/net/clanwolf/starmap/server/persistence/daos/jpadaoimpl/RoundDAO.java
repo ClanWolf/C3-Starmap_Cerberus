@@ -66,8 +66,8 @@ public class RoundDAO extends GenericDAO {
 	}
 
 	@Override
-	public RoundPOJO update(Long roundID, Object entity) {
-		return (RoundPOJO) super.update(roundID, entity);
+	public RoundPOJO update(Long userID, Object entity) {
+		return (RoundPOJO) super.update(userID, entity);
 	}
 
 	@Override

@@ -27,6 +27,7 @@
 package net.clanwolf.starmap.server.process;
 
 import net.clanwolf.starmap.logging.C3Logger;
+import net.clanwolf.starmap.server.Nexus.Nexus;
 import net.clanwolf.starmap.server.beans.C3GameSessionHandler;
 import net.clanwolf.starmap.server.beans.C3Room;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
@@ -183,15 +184,15 @@ public class EndRound {
 			RoundDAO roundDAO = RoundDAO.getInstance();
 
 			GameState endRoundInfo = new GameState(GAMESTATEMODES.FINALIZE_ROUND);
-			EntityTransaction transaction = EntityManagerHelper.getEntityManager().getTransaction();
+			EntityTransaction transaction = EntityManagerHelper.getEntityManager(Nexus.DUMMY_USERID).getTransaction();
 			try {
 				transaction.begin();
-				roundDAO.update(null, roundPOJO);
+				roundDAO.update(Nexus.DUMMY_USERID, roundPOJO);
 				for (JumpshipPOJO jumpshipPOJO : jumpshipList) {
-					jumpshipDAO.update(null, jumpshipPOJO);
+					jumpshipDAO.update(Nexus.DUMMY_USERID, jumpshipPOJO);
 				}
 				for (AttackPOJO attackPOJO : openAttacksInRoundList) {
-					attackDAO.update(null, attackPOJO);
+					attackDAO.update(Nexus.DUMMY_USERID, attackPOJO);
 				}
 				transaction.commit();
 

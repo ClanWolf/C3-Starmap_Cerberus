@@ -295,7 +295,7 @@ public class WebDataInterface {
 		}
 
 		if (type == SystemListTypes.CM_StarSystems) {
-			EntityManager manager = EntityManagerHelper.getEntityManager();
+			EntityManager manager = EntityManagerHelper.getNewEntityManager();
 			manager.getTransaction().begin();
 
 			Session session = manager.unwrap(Session.class);

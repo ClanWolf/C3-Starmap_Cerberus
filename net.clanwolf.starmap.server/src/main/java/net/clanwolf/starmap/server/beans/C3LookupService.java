@@ -65,7 +65,7 @@ public class C3LookupService extends SimpleLookupService {
 
 		C3Logger.debug("C3LookupService.playerLookup");
 		C3Player player = new C3Player();
-		EntityManager em = EntityManagerHelper.getEntityManager();
+		EntityManager em = EntityManagerHelper.getNewEntityManager();
 
 		// Database UserPOJO auth check.
 		UserPOJO user = UserLogin.login(em, c);

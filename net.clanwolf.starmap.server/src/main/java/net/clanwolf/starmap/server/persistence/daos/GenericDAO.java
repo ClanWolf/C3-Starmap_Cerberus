@@ -43,17 +43,10 @@ import java.util.logging.Level;
 public abstract class GenericDAO implements IDAO {
 
 	protected String className = "";
-	private EntityManager fem = null; // free entity manager
+	private  static EntityManager fem = null; // free entity manager
 
 	protected EntityManager getEntityManager(Long userID) {
-		if (userID == null) {
-			if (fem == null) {
-				fem = EntityManagerHelper.getEntityManager();
-			}
-			return fem;
-		} else {
-			return EntityManagerHelper.getEntityManager(userID);
-		}
+		return EntityManagerHelper.getEntityManager(userID);
 	}
 
 	@Override

@@ -54,7 +54,7 @@ public class CriteriaHelper {
 	}
 	
 	private void init(){
-		cb = EntityManagerHelper.getEntityManager().getCriteriaBuilder();
+		cb = EntityManagerHelper.getNewEntityManager().getCriteriaBuilder();
 		query = cb.createQuery(clazz);
 		root = query.from(clazz);
 		alPredicate = new ArrayList<Predicate>();
@@ -93,7 +93,7 @@ public class CriteriaHelper {
 		predicateArr = alPredicate.toArray(predicateArr);
 		
 		query.select(root).where(predicateArr);
-		Query q = EntityManagerHelper.getEntityManager().createQuery(query);
+		Query q = EntityManagerHelper.getNewEntityManager().createQuery(query);
 		
 		try {
 			return q.getSingleResult();
@@ -112,7 +112,7 @@ public class CriteriaHelper {
 		predicateArr = alPredicate.toArray(predicateArr);
 		
 		query.select(root).where(predicateArr);
-		Query q = EntityManagerHelper.getEntityManager().createQuery(query);
+		Query q = EntityManagerHelper.getNewEntityManager().createQuery(query);
 		
 		try {
 			return q.getResultList();

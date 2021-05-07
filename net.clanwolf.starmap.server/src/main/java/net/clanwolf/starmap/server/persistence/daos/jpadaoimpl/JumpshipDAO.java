@@ -96,7 +96,7 @@ public class JumpshipDAO extends GenericDAO {
 
 	public JumpshipPOJO getJumpshipForId(Long jumpshipID){
 		CriteriaHelper crit = new CriteriaHelper(JumpshipPOJO.class);
-		crit.addCriteria("ID", jumpshipID);
+		crit.addCriteria("id", jumpshipID);
 
 		Object o = crit.getSingleResult();
 

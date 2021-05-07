@@ -67,13 +67,13 @@ public class EntityManagerHelper {
 		properties.put("hibernate.connection.is-connection-validation-required", "true");
 		properties.put("hibernate.connection.user", auth.getProperty("user"));
 		properties.put("hibernate.connection.password", auth.getProperty("password"));
-		properties.put("hibernate.show_sql", "false");
-		properties.put("hibernate.format_sql", "false");
+		properties.put("hibernate.show_sql", "true");
+		properties.put("hibernate.format_sql", "true");
 
 		emf = Persistence.createEntityManagerFactory("starmap", properties);
 	}
 
-	public static EntityManager getEntityManager() {
+	public static EntityManager getNewEntityManager() {
 //		C3Logger.info("Create free EntityManager");
 		return emf.createEntityManager();
 	}
