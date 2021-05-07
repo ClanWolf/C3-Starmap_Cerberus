@@ -31,6 +31,19 @@ public class RoundPOJO extends Pojo {
 	@Column(name = "CurrentPhase")
 	private Long currentPhase;
 
+	@Column(name = "CurrentRoundStartDate")
+	private Date currentRoundStartDate;
+
+	@SuppressWarnings("unused")
+	public Date getCurrentRoundStartDate() {
+		return currentRoundStartDate;
+	}
+
+	@SuppressWarnings("unused")
+	public void setCurrentRoundStartDate(Date currentRoundStartDate) {
+		this.currentRoundStartDate = currentRoundStartDate;
+	}
+
 	@SuppressWarnings("unused")
 	public Long getId() {
 		return id;
