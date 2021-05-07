@@ -196,6 +196,8 @@ public class EventCommunications {
 					break;
 				case ROLEPLAY_REQUEST_ALLCHARACTER:
 					break;
+				case FINALIZE_ROUND:
+					break;
 				default:
 					break;
 			}
