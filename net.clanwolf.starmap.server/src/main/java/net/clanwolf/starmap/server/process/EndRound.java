@@ -66,12 +66,31 @@ public class EndRound {
 	}
 
 	public static Date getRoundDate(Long seasonId, int additionalRounds) {
+		SeasonDAO dao = SeasonDAO.getInstance();
+		SeasonPOJO season = (SeasonPOJO) dao.findById(SeasonPOJO.class, seasonId);
+		Date seasonStartDate = season.getStartDate();
+
 		RoundDAO roundDAO = RoundDAO.getInstance();
 		RoundPOJO roundPOJO = roundDAO.findBySeasonId(seasonId);
 		Date currentRoundStartDate = roundPOJO.getCurrentRoundStartDate();
 
 		if (currentRoundStartDate == null) {
 			// this seems to be the first round in this season (?)
+			roundPOJO.setCurrentRoundStartDate(seasonStartDate);
+
+			EntityTransaction transaction = EntityManagerHelper.getEntityManager(Nexus.DUMMY_USERID).getTransaction();
+			try {
+				transaction.begin();
+				roundDAO.update(Nexus.DUMMY_USERID, roundPOJO);
+				transaction.commit();
+			} catch (RuntimeException re) {
+				transaction.rollback();
+				C3Logger.error("Finalize round", re);
+			} finally {
+
+			}
+
+			currentRoundStartDate = seasonStartDate;
 		}
 
 		int daysToAdd = additionalRounds * MAXDAYSINAROUND;
