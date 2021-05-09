@@ -76,6 +76,8 @@ public class EndRound {
 
 		if (currentRoundStartDate == null) {
 			// this seems to be the first round in this season (?)
+			C3Logger.info("Round date for current round is null! Setting round date to season start date.");
+
 			roundPOJO.setCurrentRoundStartDate(seasonStartDate);
 
 			EntityTransaction transaction = EntityManagerHelper.getEntityManager(Nexus.DUMMY_USERID).getTransaction();
@@ -85,7 +87,7 @@ public class EndRound {
 				transaction.commit();
 			} catch (RuntimeException re) {
 				transaction.rollback();
-				C3Logger.error("Finalize round", re);
+				C3Logger.error("Setting round date to season start date", re);
 			} finally {
 
 			}
@@ -95,8 +97,6 @@ public class EndRound {
 
 		int daysToAdd = additionalRounds * MAXDAYSINAROUND;
 		Date roundDate = addDaysToDate(currentRoundStartDate, daysToAdd);
-
-		// TODO: Here we can not just calculate the round date! We need to get the date from the round pojo
 
 		return roundDate;
 	}
