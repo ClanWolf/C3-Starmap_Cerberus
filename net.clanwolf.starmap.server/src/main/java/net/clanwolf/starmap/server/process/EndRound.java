@@ -51,7 +51,7 @@ import java.util.Calendar;
 
 public class EndRound {
 
-	private static int DAYSINAROUND = 7;
+	private static int MAXDAYSINAROUND = 7;
 
 	public static Date addDaysToDate(Date date, int daysToAdd) {
 		Calendar c = Calendar.getInstance();
@@ -65,26 +65,33 @@ public class EndRound {
 		return newDate;
 	}
 
-	public static Date getRoundDate(Long seasonId, int round, int additionalRounds) {
-		SeasonDAO dao = SeasonDAO.getInstance();
-		SeasonPOJO season = (SeasonPOJO) dao.findById(SeasonPOJO.class, seasonId);
+	public static Date getRoundDate(Long seasonId, int additionalRounds) {
+		RoundDAO roundDAO = RoundDAO.getInstance();
+		RoundPOJO roundPOJO = roundDAO.findBySeasonId(seasonId);
+		Date currentRoundStartDate = roundPOJO.getCurrentRoundStartDate();
 
-		int daysToAdd = (round + additionalRounds) * DAYSINAROUND;
-		Date roundDate = addDaysToDate(season.getStartDate(), daysToAdd);
+		if (currentRoundStartDate == null) {
+			// this seems to be the first round in this season (?)
+		}
+
+		int daysToAdd = additionalRounds * MAXDAYSINAROUND;
+		Date roundDate = addDaysToDate(currentRoundStartDate, daysToAdd);
+
+		// TODO: Here we can not just calculate the round date! We need to get the date from the round pojo
 
 		return roundDate;
 	}
 
-	public static Date getCurrentRoundDate(Long seasonId, int currentRound) {
-		return getRoundDate(seasonId, currentRound, 0); // current round, no additional rounds
+	public static Date getCurrentRoundDate(Long seasonId) {
+		return getRoundDate(seasonId, 0); // current round, no additional rounds
 	}
 
-	public static Date getNextRoundDate(Long seasonId, int currentRound) {
-		return getRoundDate(seasonId, currentRound, 1); // adding one round (7 days) to get the start of next round
+	public static Date getNextRoundDate(Long seasonId) {
+		return getRoundDate(seasonId, 1); // adding one round (7 days) to get the start of next round
 	}
 
 	private static boolean timeForThisRoundIsOver(Long seasonId, int round) {
-		Date nextRoundDate = getNextRoundDate(seasonId, round);
+		Date nextRoundDate = getNextRoundDate(seasonId);
 		Date translatedNowDate = translateRealDateToSeasonTime(new Date(System.currentTimeMillis()), 1L);
 
 		if(nextRoundDate.after(translatedNowDate)){
@@ -131,8 +138,8 @@ public class EndRound {
 
 		C3Logger.debug("Current date: " + new Date(System.currentTimeMillis()));
 		C3Logger.debug("Translated current date: " + translateRealDateToSeasonTime(new Date(System.currentTimeMillis()), 1L));
-		C3Logger.debug("Current round date: " + getCurrentRoundDate(seasonId, round));
-		C3Logger.debug("Next round date: " + getNextRoundDate(seasonId, round));
+		C3Logger.debug("Current round date: " + getCurrentRoundDate(seasonId));
+		C3Logger.debug("Next round date: " + getNextRoundDate(seasonId));
 
 		boolean jumpshipsLeftToMove = false;
 		int jscount = 0;
