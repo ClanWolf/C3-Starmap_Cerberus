@@ -113,6 +113,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	Button mapButton04;
 	@FXML
 	Button mapButton05;
+	@FXML
+	Button mapButton06;
 
 	private boolean universeMapGenerationStarted = false;
 	private BOUniverse boUniverse = null;
@@ -129,9 +131,15 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	private NodeGestures nodeGestures;
 
 	@FXML
-	private void handleCenterButtonClick() {
+	private void handleCenterHomeworldButtonClick() {
 		reCenterMap();
 	}
+
+	@FXML
+	private void handleCenterJumpshipButtonClick () {}
+
+	@FXML
+	private void handleAttackButtonClick() {}
 
 	@FXML
 	private void handleConfirmButtonClick() {
@@ -225,6 +233,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			mapButton01.setOpacity(0.0f);
 			mapButton02.setOpacity(0.0f);
 			mapButton03.setOpacity(0.0f);
+			mapButton04.setOpacity(0.0f);
+			mapButton05.setOpacity(0.0f);
+			mapButton06.setOpacity(0.0f);
 			paneSystemDetail.setOpacity(0.0f);
 			paneJumpshipDetail.setOpacity(0.0f);
 			buttonBackground.setOpacity(0.0f);
@@ -467,6 +478,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				mapButton01.toFront();
 				mapButton02.toFront();
 				mapButton03.toFront();
+				mapButton04.toFront();
+				mapButton05.toFront();
+				mapButton06.toFront();
 				paneSystemDetail.toFront();
 				paneSystemDetail.setOpacity(0.0f);
 				paneJumpshipDetail.toFront();
@@ -542,6 +556,12 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		fadeInTransition_04.setToValue(1.0);
 		fadeInTransition_04.setCycleCount(3);
 
+		// Fade in transition 05 (Button)
+		FadeTransition fadeInTransition_05 = new FadeTransition(Duration.millis(40), mapButton06);
+		fadeInTransition_05.setFromValue(0.0);
+		fadeInTransition_05.setToValue(1.0);
+		fadeInTransition_05.setCycleCount(3);
+
 		//		// Fade in transition 05 (DetailPane)
 		//		FadeTransition fadeInTransition_05 = new FadeTransition(Duration.millis(60), paneSystemDetail);
 		//		fadeInTransition_05.setFromValue(0.0);
@@ -558,8 +578,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		SequentialTransition sequentialTransition = new SequentialTransition();
 		sequentialTransition.getChildren().addAll(fadeInTransition_01,
 				//													fadeInTransition_01a,
-				fadeInTransition_01b, fadeInTransition_02, fadeInTransition_03, fadeInTransition_04
-				//			                                    	fadeInTransition_05
+				fadeInTransition_01b, fadeInTransition_02, fadeInTransition_03, fadeInTransition_04, fadeInTransition_05
 				//			                                    	fadeInTransition_06
 		);
 		sequentialTransition.setCycleCount(1);
@@ -580,6 +599,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		mapButton03.setDisable(true);
 		mapButton04.setDisable(true);
 		mapButton05.setDisable(true);
+		mapButton06.setDisable(true);
 
 		C3Logger.info("Travel to Homeworld");
 		C3Logger.info("X: " + Config.MAP_INITIAL_TRANSLATE_X);
@@ -601,6 +621,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			mapButton03.setDisable(false);
 			mapButton04.setDisable(false);
 			mapButton05.setDisable(false);
+			mapButton06.setDisable(false);
 			for (int[] layer : Config.BACKGROUND_STARS_LAYERS) {
 				int level = layer[0];
 				canvas.resetBackgroundStarPane(level);
@@ -620,6 +641,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		mapButton03.setDisable(true);
 		mapButton04.setDisable(true);
 		mapButton05.setDisable(true);
+		mapButton06.setDisable(true);
 
 		C3Logger.info("Travel to " + sys.getName());
 		C3Logger.info("X: " + sys.getX());
@@ -649,6 +671,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			mapButton03.setDisable(false);
 			mapButton04.setDisable(false);
 			mapButton05.setDisable(false);
+			mapButton06.setDisable(false);
 			for (int[] layer : Config.BACKGROUND_STARS_LAYERS) {
 				int level = layer[0];
 				canvas.resetBackgroundStarPane(level);
@@ -942,6 +965,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				mapButton01.setOpacity(0.0f);
 				mapButton02.setOpacity(0.0f);
 				mapButton03.setOpacity(0.0f);
+//				mapButton04.setOpacity(0.0f);
+//				mapButton05.setOpacity(0.0f);
+				mapButton06.setOpacity(0.0f);
 				paneSystemDetail.setOpacity(0.0f);
 				paneJumpshipDetail.setOpacity(0.0f);
 				break;

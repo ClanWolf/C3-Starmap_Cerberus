@@ -187,6 +187,7 @@ public class EndRound {
 			// Jumpships do not need to be moved, because the waypoints have a round indicator
 
 			// set all jumpships to attackReady again
+			// TODO: Those that have unresolved attacks in the system are NOT READY! First the attack must be played!
 			C3Logger.info("--- Setting all jumpships to attackReady again.");
 			for (JumpshipPOJO js : jumpshipList) {
 				js.setAttackReady(true);
