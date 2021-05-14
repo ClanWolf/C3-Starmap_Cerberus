@@ -24,66 +24,64 @@
  * Copyright (c) 2001-2021, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.client.gui.panes.security;
+package net.clanwolf.starmap.client.gui.panes.logging;
 
-import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.image.Image;
-import javafx.stage.Modality;
+import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.fxml.FXML;
+import javafx.scene.control.*;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import net.clanwolf.starmap.client.enums.PRIVILEGES;
+import net.clanwolf.starmap.client.nexus.Nexus;
+import net.clanwolf.starmap.client.security.Security;
 import net.clanwolf.starmap.client.util.Internationalization;
+import net.clanwolf.starmap.logging.C3Logger;
+import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.UserDTO;
+import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Locale;
+import java.util.*;
 
-public class AdminPane extends Application {
+public class LogPaneController {
 
-	private final static Locale GERMAN = Locale.GERMAN;
-	private final static Locale ENGLISH = Locale.ENGLISH;
+	@FXML
+	Label labelDescription, labelUser, labelPrivCode, labelPrivCodeBinary;
 
-	private AdminPaneController controller;
+	@FXML
+	Tab tabPrivileges;
 
-	public AdminPane(ArrayList<UserDTO> userListFromNexus, Stage parentStage, Locale locale) {
-		ArrayList<UserDTO> userList = userListFromNexus;
+	@FXML
+	Button btnSave, btnCancel;
 
-		Parent root;
-		Internationalization.setLocale(locale);
-		try {
-			FXMLLoader fxmlLoader = new FXMLLoader();
-			fxmlLoader.setLocation(this.getClass().getResource("/fxml/AdminPane.fxml"));
+	@FXML
+	ScrollPane srollPane;
 
-			root = fxmlLoader.load();
+	@FXML
+	ComboBox cbUser;
 
-			Stage stage = new Stage();
-			stage.setTitle(Internationalization.getString("AdminSecurityHeadline"));
-			Scene scene = new Scene(root);
-			stage.setScene(scene);
-			stage.sizeToScene();
-			stage.setResizable(true);
-			stage.initOwner(parentStage);
-			stage.initModality(Modality.APPLICATION_MODAL);
 
-			InputStream is = this.getClass().getResourceAsStream("/icons/C3_Icon2.png");
-			stage.getIcons().add(new Image(is));
 
-			stage.setMinWidth(800);
-			stage.setMinHeight(600);
-
-			controller = fxmlLoader.getController();
-			controller.init(locale, userList);
-
-			stage.showAndWait();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	@FXML
+	public void btnCancelClicked() {
+		Stage stage = (Stage) btnSave.getScene().getWindow();
+		stage.close();
 	}
 
-	@Override
-	public void start(Stage stage) throws Exception {
+	public void init(Locale locale) {
+
+		labelDescription.setText(Internationalization.getString("AdminSecurityDescription"));
+		tabPrivileges.setText(Internationalization.getString("AdminSecurityTabPrivileges"));
+		labelUser.setText(Internationalization.getString("AdminSecurityUserLabel"));
+		btnSave.setText(Internationalization.getString("AdminSecurityButtonSave"));
+		btnCancel.setText(Internationalization.getString("AdminSecurityButtonCancel"));
+
+		VBox root = new VBox();
+
+		srollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+		srollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+		srollPane.setContent(root);
 
 	}
 }

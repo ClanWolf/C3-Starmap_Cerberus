@@ -44,6 +44,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import net.clanwolf.starmap.client.gui.panes.chat.ChatPane;
+import net.clanwolf.starmap.client.gui.panes.logging.LogPane;
 import net.clanwolf.starmap.client.gui.panes.security.AdminPane;
 import net.clanwolf.starmap.client.action.*;
 import net.clanwolf.starmap.client.enums.C3MESSAGERESULTS;
@@ -93,6 +94,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private boolean buttonsAreMoving = false;
 	private boolean adminMenuActive = false;
 	private boolean openAdministrationPane = false;
+	private boolean openLogPane = false;
 	private boolean openEditorPane = false;
 	private AbstractC3Pane currentlyDisplayedPane = null;
 	private AbstractC3Pane nextToDisplayPane = null;
@@ -180,7 +182,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	@FXML
 	private Button industryButton;
 	@FXML
-	private Button pluginsButton;
+	private Button logButton;
 
 	// Column 2
 	@FXML
@@ -625,6 +627,13 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				moveMenuIndicator(menuIndicatorPos);
 				adminPaneOpen = false;
 			}
+			// LOG
+			if (bn.equals(logButton)) {
+				C3Logger.info("Log opened by user.");
+				setStatusText(Internationalization.getString("app_log_infotext").replace("%20", " ") + ".", false);
+
+				openLogPane = true;
+			}
 			// EXIT
 			if (bn.equals(exitButton)) {
 				// C3Logger.info("Application close requested by user.");
@@ -671,7 +680,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				menuIndicatorPos = menuIndicatorPosOld;
 				Tools.playButtonClickSound();
 			}
-		} else if (!openAdministrationPane) {
+		} else if (!openAdministrationPane && !openEditorPane && !openLogPane) {
 			C3Logger.info("TargetPane not defined!");
 		}
 		if (openAdministrationPane) {
@@ -690,6 +699,14 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			Stage stage = (Stage) rootAnchorPane.getScene().getWindow();
 			StoryEditorPane ep = new StoryEditorPane(stage);
 			openEditorPane = false;
+		}
+
+		if (openLogPane) {
+			C3Logger.info("Opening log window!");
+
+			Stage stage = (Stage) rootAnchorPane.getScene().getWindow();
+			LogPane lp = new LogPane(stage, Internationalization.getLocale());
+			openLogPane = false;
 		}
 	}
 
@@ -723,7 +740,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			mapButton.setVisible(true);
 			chatButton.setVisible(true);
 			industryButton.setVisible(true);
-			pluginsButton.setVisible(true);
+			logButton.setVisible(true);
 			if (!adminPaneOpen && Nexus.getCurrentlyOpenedPane() != null) {
 				showMenuIndicator(true);
 				moveMenuIndicator(menuIndicatorPos);
@@ -756,7 +773,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					mapButton.setLayoutX(newX1);
 					chatButton.setLayoutX(newX1);
 					industryButton.setLayoutX(newX1);
-					pluginsButton.setLayoutX(newX1);
+					logButton.setLayoutX(newX1);
 
 					// Column 2
 					storyEditorButton.setLayoutX(newX2);
@@ -772,7 +789,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				mapButton.setVisible(false);
 				chatButton.setVisible(false);
 				industryButton.setVisible(false);
-				pluginsButton.setVisible(false);
+				logButton.setVisible(false);
 			} else {
 				storyEditorButton.setVisible(false);
 				adminPaneButton.setVisible(false);
@@ -1071,7 +1088,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		mapButton.setVisible(true);
 		chatButton.setVisible(true);
 		industryButton.setVisible(true);
-		pluginsButton.setVisible(true);
+		logButton.setVisible(true);
 
 		storyEditorButton.setVisible(false);
 		adminPaneButton.setVisible(false);
@@ -1220,7 +1237,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			mapButton.setDisable(false);
 			chatButton.setDisable(false);
 			industryButton.setDisable(true);
-			pluginsButton.setDisable(true);
+			logButton.setDisable(false);
 
 			// Column 2
 			if (admin) {
@@ -1246,7 +1263,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			mapButton.setDisable(true);
 			chatButton.setDisable(true);
 			industryButton.setDisable(true);
-			pluginsButton.setDisable(true);
+			logButton.setDisable(false);
 
 			// Column 2
 			storyEditorButton.setDisable(true);

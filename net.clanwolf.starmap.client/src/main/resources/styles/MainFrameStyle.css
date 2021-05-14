@@ -331,6 +331,20 @@
   -fx-background-position: center;
 }
 
+.logButton {
+  -fx-background-image: url("../images/buttons/log.png");
+  -fx-background-repeat: no-repeat;
+  -fx-background-size: 32, 32;
+  -fx-background-position: center;
+}
+
+.logButton:hover {
+  -fx-background-image: url("../images/buttons/log_hover.png");
+  -fx-background-repeat: no-repeat;
+  -fx-background-size: 32, 32;
+  -fx-background-position: center;
+}
+
 .endroundButton {
   -fx-background-image: url("../images/buttons/endround.png");
   -fx-background-repeat: no-repeat;

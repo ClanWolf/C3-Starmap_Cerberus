@@ -24,7 +24,7 @@
  * Copyright (c) 2001-2021, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.client.gui.panes.security;
+package net.clanwolf.starmap.client.gui.panes.logging;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -33,6 +33,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import net.clanwolf.starmap.client.gui.panes.security.AdminPaneController;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.transfer.dtos.UserDTO;
 
@@ -40,26 +41,25 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class AdminPane extends Application {
+public class LogPane extends Application {
 
 	private final static Locale GERMAN = Locale.GERMAN;
 	private final static Locale ENGLISH = Locale.ENGLISH;
 
-	private AdminPaneController controller;
+	private LogPaneController controller;
 
-	public AdminPane(ArrayList<UserDTO> userListFromNexus, Stage parentStage, Locale locale) {
-		ArrayList<UserDTO> userList = userListFromNexus;
+	public LogPane(Stage parentStage, Locale locale) {
 
 		Parent root;
 		Internationalization.setLocale(locale);
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader();
-			fxmlLoader.setLocation(this.getClass().getResource("/fxml/AdminPane.fxml"));
+			fxmlLoader.setLocation(this.getClass().getResource("/fxml/LogPane.fxml"));
 
 			root = fxmlLoader.load();
 
 			Stage stage = new Stage();
-			stage.setTitle(Internationalization.getString("AdminSecurityHeadline"));
+			stage.setTitle(Internationalization.getString("LoggingHeadline"));
 			Scene scene = new Scene(root);
 			stage.setScene(scene);
 			stage.sizeToScene();
@@ -74,7 +74,7 @@ public class AdminPane extends Application {
 			stage.setMinHeight(600);
 
 			controller = fxmlLoader.getController();
-			controller.init(locale, userList);
+			controller.init(locale);
 
 			stage.showAndWait();
 		} catch (Exception e) {
