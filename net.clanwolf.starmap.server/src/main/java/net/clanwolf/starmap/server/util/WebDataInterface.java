@@ -30,10 +30,7 @@ import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.server.enums.SystemListTypes;
 import net.clanwolf.starmap.server.persistence.EntityConverter;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
-import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.AttackDAO;
-import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.FactionDAO;
-import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.JumpshipDAO;
-import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl._HH_StarSystemDataDAO;
+import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.*;
 import net.clanwolf.starmap.server.persistence.pojos.*;
 import net.clanwolf.starmap.transfer.Dto;
 import net.clanwolf.starmap.transfer.dtos.*;
@@ -255,14 +252,14 @@ public class WebDataInterface {
 	private static String load_HH_StarSystemData(){
 		universe.starSystems.clear();
 
-		_HH_StarSystemDataDAO dao = _HH_StarSystemDataDAO.getInstance();
-		ArrayList<_HH_StarSystemDataPOJO> pojoList = dao.getAll_HH_StarSystemData();
-		Iterator<_HH_StarSystemDataPOJO> iter = pojoList.iterator();
+		StarSystemDataDAO dao =StarSystemDataDAO.getInstance();
+		ArrayList<StarSystemDataPOJO> pojoList = dao.getAll_HH_StarSystemData();
+		Iterator<StarSystemDataPOJO> iter = pojoList.iterator();
 		StringBuffer jsonString = new StringBuffer();
 
 		while(iter.hasNext()) {
-			_HH_StarSystemDataPOJO f = iter.next();
-			_HH_StarSystemDataDTO dto = EntityConverter.convertpojo2dto(f,_HH_StarSystemDataDTO.class);
+			StarSystemDataPOJO f = iter.next();
+			StarSystemDataDTO dto = EntityConverter.convertpojo2dto(f, StarSystemDataDTO.class);
 			universe.starSystems.put(f.getStarSystemID().getId(),dto);
 			jsonString.append(getJsonString(dto));
 		}

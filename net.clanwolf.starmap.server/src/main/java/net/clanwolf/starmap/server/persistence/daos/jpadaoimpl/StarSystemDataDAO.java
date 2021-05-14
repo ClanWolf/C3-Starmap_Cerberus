@@ -26,8 +26,13 @@
  */
 package net.clanwolf.starmap.server.persistence.daos.jpadaoimpl;
 
+import net.clanwolf.starmap.server.persistence.CriteriaHelper;
 import net.clanwolf.starmap.server.persistence.daos.GenericDAO;
 import net.clanwolf.starmap.server.persistence.pojos.StarSystemDataPOJO;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * A data access object (DAO) providing persistence and search support for UserPOJO entities.
@@ -64,5 +69,21 @@ public class StarSystemDataDAO extends GenericDAO {
 	@Override
 	public StarSystemDataPOJO findById(Long userID, Long id) {
 		return (StarSystemDataPOJO) super.findById(userID, StarSystemDataPOJO.class, id);
+	}
+
+	/*
+	 * Give all open attacks of a season back
+	 */
+	public ArrayList<StarSystemDataPOJO> getAll_HH_StarSystemData(){
+		CriteriaHelper crit = new CriteriaHelper(StarSystemDataPOJO.class);
+
+		List<Object> lRes = crit.getResultList();
+
+		Iterator<Object> iter = lRes.iterator();
+		ArrayList<StarSystemDataPOJO> lRPS = new ArrayList<>();
+
+		while (iter.hasNext()) lRPS.add((StarSystemDataPOJO) iter.next());
+
+		return lRPS;
 	}
 }

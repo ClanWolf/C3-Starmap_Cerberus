@@ -41,11 +41,17 @@ public class StarSystemDataPOJO extends Pojo {
 	@Column(name = "ID")
 	private Long id;
 
-	@Column(name = "StarSystemID")
-	private Long starSystemID;
+	//@Column(name = "StarSystemID")
+	//private Long starSystemID;
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "StarSystemID")
+	private StarSystemPOJO starSystemID;
 
-	@Column(name = "FactionID")
-	private Long factionID;
+	//@Column(name = "FactionID")
+	//private Long factionID;
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "FactionID")
+	private FactionPOJO factionID;
 
 	@Column(name = "FactionID_Start")
 	private Long factionID_Start;
@@ -109,22 +115,22 @@ public class StarSystemDataPOJO extends Pojo {
 	}
 
 	@SuppressWarnings("unused")
-	public Long getStarSystemID() {
+	public StarSystemPOJO getStarSystemID() {
 		return starSystemID;
 	}
 
 	@SuppressWarnings("unused")
-	public void setStarSystemID(Long starSystemID) {
+	public void setStarSystemID(StarSystemPOJO starSystemID) {
 		this.starSystemID = starSystemID;
 	}
 
 	@SuppressWarnings("unused")
-	public Long getFactionID() {
+	public FactionPOJO getFactionID() {
 		return factionID;
 	}
 
 	@SuppressWarnings("unused")
-	public void setFactionID(Long factionID) {
+	public void setFactionID(FactionPOJO factionID) {
 		this.factionID = factionID;
 	}
 

@@ -3,7 +3,7 @@ package net.clanwolf.starmap.transfer.dtos;
 import net.clanwolf.starmap.transfer.Dto;
 
 
-public class _HH_StarSystemDataDTO extends Dto {
+public class StarSystemDataDTO extends Dto {
 
 	//@Id
 	//@GeneratedValue(strategy = IDENTITY)
