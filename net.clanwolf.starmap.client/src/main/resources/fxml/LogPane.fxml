@@ -12,17 +12,17 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 
-<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="600.0" minWidth="800.0" snapToPixel="false" style="-fx-background-color: ;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.security.AdminPaneController">
+<AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="600.0" minWidth="800.0" snapToPixel="false" style="-fx-background-color: ;" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.logging.LogPaneController">
    <children>
       <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <center>
             <TabPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="466.0" prefWidth="800.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
               <tabs>
-                <Tab fx:id="tabPrivileges" closable="false" text="Privileges">
+                <Tab fx:id="tabClientLog" closable="false" text="Client log">
                   <content>
                     <AnchorPane maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="269.0" prefWidth="486.0">
                            <children>
-                              <ScrollPane fx:id="srollPane" hbarPolicy="NEVER" layoutX="10.0" layoutY="66.0" prefHeight="389.0" prefWidth="780.0" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="66.0">
+                              <ScrollPane fx:id="srollPaneClientLog" hbarPolicy="NEVER" layoutX="10.0" layoutY="66.0" prefHeight="389.0" prefWidth="780.0" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                                  <padding>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </padding>
@@ -31,9 +31,16 @@
                         </AnchorPane>
                   </content>
                 </Tab>
-                  <Tab closable="false" disable="true" text="Details">
+                  <Tab fx:id="tabServerLog" closable="false" text="Server log">
                     <content>
-                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                           <children>
+                              <ScrollPane fx:id="srollPaneServerLog" hbarPolicy="NEVER" prefHeight="389.0" prefWidth="780.0" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
+                              </ScrollPane>
+                           </children></AnchorPane>
                     </content>
                   </Tab>
               </tabs>
@@ -42,7 +49,7 @@
          <bottom>
             <HBox alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" BorderPane.alignment="BOTTOM_RIGHT">
                <children>
-                  <Button fx:id="btnSave" defaultButton="true" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#btnSaveClicked" prefHeight="25.0" prefWidth="125.0" text="Save" HBox.hgrow="ALWAYS">
+                  <Button fx:id="btnReport" defaultButton="true" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="25.0" prefWidth="125.0" text="Report" HBox.hgrow="ALWAYS">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>
@@ -50,7 +57,7 @@
                         <Insets bottom="10.0" right="10.0" top="10.0" />
                      </HBox.margin>
                   </Button>
-                  <Button fx:id="btnCancel" cancelButton="true" mnemonicParsing="false" onAction="#btnCancelClicked" prefHeight="25.0" prefWidth="125.0" text="Close" HBox.hgrow="ALWAYS">
+                  <Button fx:id="btnClose" cancelButton="true" mnemonicParsing="false" onAction="#btnCloseClicked" prefHeight="25.0" prefWidth="125.0" text="Close" HBox.hgrow="ALWAYS">
                      <HBox.margin>
                         <Insets bottom="10.0" right="10.0" top="10.0" />
                      </HBox.margin>
@@ -69,7 +76,7 @@
                <children>
                   <ImageView fx:id="ivLogo" fitHeight="53.0" fitWidth="64.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER">
                      <image>
-                        <Image url="@../icons/admin_big.png" />
+                        <Image url="@../icons/log_big.png" />
                      </image>
                      <HBox.margin>
                         <Insets bottom="10.0" left="10.0" top="10.0" />

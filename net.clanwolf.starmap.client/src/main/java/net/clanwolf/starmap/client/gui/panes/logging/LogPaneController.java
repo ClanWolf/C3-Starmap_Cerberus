@@ -47,41 +47,45 @@ import java.util.*;
 public class LogPaneController {
 
 	@FXML
-	Label labelDescription, labelUser, labelPrivCode, labelPrivCodeBinary;
+	Label labelDescription;
 
 	@FXML
-	Tab tabPrivileges;
+	Tab tabClientLog;
 
 	@FXML
-	Button btnSave, btnCancel;
+	Tab tabServerLog;
 
 	@FXML
-	ScrollPane srollPane;
+	Button btnReport, btnClose;
 
 	@FXML
-	ComboBox cbUser;
-
-
+	ScrollPane srollPaneClientLog, srollPaneServerLog;
 
 	@FXML
-	public void btnCancelClicked() {
-		Stage stage = (Stage) btnSave.getScene().getWindow();
+	public void btnCloseClicked() {
+		Stage stage = (Stage) btnClose.getScene().getWindow();
 		stage.close();
 	}
 
 	public void init(Locale locale) {
 
-		labelDescription.setText(Internationalization.getString("AdminSecurityDescription"));
-		tabPrivileges.setText(Internationalization.getString("AdminSecurityTabPrivileges"));
-		labelUser.setText(Internationalization.getString("AdminSecurityUserLabel"));
-		btnSave.setText(Internationalization.getString("AdminSecurityButtonSave"));
-		btnCancel.setText(Internationalization.getString("AdminSecurityButtonCancel"));
+//		labelDescription.setText(Internationalization.getString("AdminSecurityDescription"));
+//		tabPrivileges.setText(Internationalization.getString("AdminSecurityTabPrivileges"));
+//		labelUser.setText(Internationalization.getString("AdminSecurityUserLabel"));
+//		btnSave.setText(Internationalization.getString("AdminSecurityButtonSave"));
+//		btnCancel.setText(Internationalization.getString("AdminSecurityButtonCancel"));
 
 		VBox root = new VBox();
 
-		srollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-		srollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-		srollPane.setContent(root);
+		// Client log
+		srollPaneClientLog.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+		srollPaneClientLog.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+		srollPaneClientLog.setContent(root);
+
+		// Server log
+		srollPaneServerLog.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+		srollPaneServerLog.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+		srollPaneServerLog.setContent(root);
 
 	}
 }

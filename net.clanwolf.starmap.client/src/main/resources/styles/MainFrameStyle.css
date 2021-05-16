@@ -792,6 +792,46 @@
   -fx-background-image: url("../images/buttons/ContentButton_BG_armed.png");
 }
 
+.contentButtonBlue {
+  -fx-border-color: #fe2f00;
+  -fx-background-color: rgba(2, 36, 0, 0.4);
+  -fx-background-image: url("../images/buttons/ContentButton_BG.png");
+  -fx-background-repeat: no-repeat;
+  -fx-background-insets: 1, 1, 1, 1;
+  -fx-background-radius: 0, 0, 0, 0;
+  -fx-padding: 10 10 8 10;
+  -fx-font-family: "Consolas";
+  -fx-font-size: 14px;
+  -fx-font-weight: bold;
+  -fx-text-fill: #bedcbe;
+}
+
+.contentButtonBlue:hover {
+  -fx-background-color: rgba(2, 36, 0, 0.8);
+  -fx-text-fill: #fff;
+  -fx-background-image: url("../images/buttons/ContentButton_BG_hover.png");
+}
+
+.contentButtonBlue:focused {
+  -fx-background-color: rgba(2, 36, 0, 0.8);
+  -fx-text-fill: #fff;
+  -fx-background-image: url("../images/buttons/ContentButton_BG_focus.png");
+}
+
+.contentButtonBlue:armed {
+  -fx-background-color: rgba(2, 36, 0, 0.5);
+  -fx-border-color: #fe2f00;
+  -fx-text-fill: #fff;
+  -fx-background-image: url("../images/buttons/ContentButton_BG_armed.png");
+}
+
+.contentButtonBlue:pressed {
+  -fx-background-color: rgba(2, 36, 0, 0.5);
+  -fx-border-color: #fe2f00;
+  -fx-text-fill: #fff;
+  -fx-background-image: url("../images/buttons/ContentButton_BG_armed.png");
+}
+
 .numpadButton {
   -fx-background-color: rgba(70, 118, 70, 0.4);
   -fx-background-repeat: no-repeat;
@@ -834,7 +874,7 @@
   -fx-border-width: 1;
 }
 
-/* Toolbar button normal */
+/* Toolbar button red */
 #btn_dark-red {
   -fx-border-color: null;
   -fx-border-width: 0;
@@ -860,6 +900,35 @@
 
 /* Toolbar button focused */
 #btn_dark-red:focused {
+  -fx-border-color: #808080;
+  -fx-border-width: 1;
+}
+
+/* Toolbar button blue */
+#btn_blue {
+  -fx-border-color: null;
+  -fx-border-width: 0;
+  -fx-background-color:
+    #000000,
+    linear-gradient(#7ebcea, #2f4b8f),
+    linear-gradient(#426ab7, #263e75),
+    linear-gradient(#395cab, #223768);
+  -fx-background-insets: 0, 1, 2, 0;
+  -fx-padding: 8 8 8 8;
+}
+
+/* Toolbar button hover */
+#btn_blue:hover {
+
+}
+
+/* Toolbar button disabled */
+#btn_blue:disabled {
+
+}
+
+/* Toolbar button focused */
+#btn_blue:focused {
   -fx-border-color: #808080;
   -fx-border-width: 1;
 }

@@ -64,8 +64,8 @@ public class LogPane extends Application {
 			stage.setScene(scene);
 			stage.sizeToScene();
 			stage.setResizable(true);
-			stage.initOwner(parentStage);
-			stage.initModality(Modality.APPLICATION_MODAL);
+			stage.initOwner(null);
+			stage.initModality(Modality.NONE);
 
 			InputStream is = this.getClass().getResourceAsStream("/icons/C3_Icon2.png");
 			stage.getIcons().add(new Image(is));

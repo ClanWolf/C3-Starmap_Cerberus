@@ -186,17 +186,16 @@ public class EndRound {
 			C3Logger.info("--- Moving all jumpships to their next waypoints.");
 			// Jumpships do not need to be moved, because the waypoints have a round indicator
 
-			// set all jumpships to attackReady again
-			// TODO: Those that have unresolved attacks in the system are NOT READY! First the attack must be played!
-			C3Logger.info("--- Setting all jumpships to attackReady again.");
-			for (JumpshipPOJO js : jumpshipList) {
-				js.setAttackReady(true);
-			}
-
 			// set all open attacks to resolved (decide on a winner in the process!)
 			C3Logger.info("--- Resolve all attacks that are still open.");
 			for (AttackPOJO attackPOJO : openAttacksInRoundList) {
 				findAWinner(attackPOJO);
+			}
+
+			// set all jumpships to attackReady again
+			C3Logger.info("--- Setting all jumpships to attackReady again.");
+			for (JumpshipPOJO js : jumpshipList) {
+				js.setAttackReady(true);
 			}
 
 			// finally count the round indicator up once
@@ -204,6 +203,9 @@ public class EndRound {
 			C3Logger.info("--- Finally increasy the round indicator to: " + newRound);
 			RoundPOJO roundPOJO = RoundDAO.getInstance().findBySeasonId(seasonId);
 			roundPOJO.setRound(newRound);
+
+			//TODO: Test!!
+			roundPOJO.setCurrentRoundStartDate(getNextRoundDate(seasonId));
 
 			// Save everything to the database
 			AttackDAO attackDAO = AttackDAO.getInstance();
