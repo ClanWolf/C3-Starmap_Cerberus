@@ -30,6 +30,7 @@ import io.nadron.client.app.Session;
 import io.nadron.client.event.Events;
 import io.nadron.client.event.NetworkEvent;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
+import net.clanwolf.starmap.client.gui.panes.logging.LogWatcher;
 import net.clanwolf.starmap.client.process.login.Login;
 import net.clanwolf.starmap.client.process.universe.BOJumpship;
 import net.clanwolf.starmap.client.process.universe.BOStarSystem;
@@ -61,6 +62,7 @@ public class Nexus {
 	private static boolean loggedIn = false;
 
 	private static ArrayList userList;
+	private static LogWatcher logWatcher;
 
 	private static int currentSeason;
 	private static int currentRound;
@@ -273,19 +275,32 @@ public class Nexus {
 	public static boolean isDevelopmentPC(){
 		return isDevelopmentPC;
 	}
+
 	public static void setIsDevelopmentPC(boolean devPC){
 		isDevelopmentPC = devPC;
 	}
+
 	public static void setClearCacheOnStart(boolean v) {
 		clearCacheOnStart = v;
 	}
+
 	public static boolean isClearCacheOnStart() {
 		return clearCacheOnStart;
 	}
+
 	public static void setLastAvailableClientVersion(String v) {
 		lastAvailableClientVersion = v;
 	}
+
 	public static String getLastAvailableClientVersion() {
 		return lastAvailableClientVersion;
+	}
+
+	public static LogWatcher getLogWatcher() {
+		return logWatcher;
+	}
+
+	public static void setLogWatcher(LogWatcher logWatcher) {
+		Nexus.logWatcher = logWatcher;
 	}
 }

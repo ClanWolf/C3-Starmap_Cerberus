@@ -75,6 +75,8 @@ public class LogPaneController {
 //		btnSave.setText(Internationalization.getString("AdminSecurityButtonSave"));
 //		btnCancel.setText(Internationalization.getString("AdminSecurityButtonCancel"));
 
+		Nexus.getLogWatcher().run();
+
 		VBox root = new VBox();
 
 		// Client log

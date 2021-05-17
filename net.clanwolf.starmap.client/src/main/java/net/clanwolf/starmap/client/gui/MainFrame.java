@@ -47,6 +47,7 @@ import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
+import net.clanwolf.starmap.client.gui.panes.logging.LogWatcher;
 import net.clanwolf.starmap.client.net.Server;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.client.nexus.Nexus;
@@ -269,6 +270,8 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 		if (res || dir.exists()) {
 			String logFileName = dir + File.separator + "starmap.log";
 			C3Properties.setProperty(C3PROPS.LOGFILE, logFileName);
+			LogWatcher logWatcher = new LogWatcher(logFileName);
+			Nexus.setLogWatcher(logWatcher);
 
 			notifyPreloader(new Preloader.ProgressNotification(50.0));
 

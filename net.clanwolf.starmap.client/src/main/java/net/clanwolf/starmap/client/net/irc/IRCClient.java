@@ -62,8 +62,6 @@ public class IRCClient implements ActionCallBackListener {
 		ActionManager.addActionCallbackListener(ACTIONS.IRC_CHANGE_NICK, this);
 		ActionManager.addActionCallbackListener(ACTIONS.IRC_SENDING_ACTION, this);
 //		ActionManager.addActionCallbackListener(ACTIONS.IRC_GET_NAMELIST, this);
-
-//		connect();
 	}
 
 	public void connect() {

@@ -400,18 +400,21 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 				if (o.getObject() instanceof UserInfoPane) {
 					if (!cooledOff) {
 						Thread coolOffThread = new Thread(() -> {
-							String caption = buttonLogout.getText();
-							try {
-								setLogoutButtonText(caption + " - 3");
-								Thread.sleep(500);
-								setLogoutButtonText(caption + " - 2");
-								Thread.sleep(500);
-								setLogoutButtonText(caption + " - 1");
-								Thread.sleep(500);
-								setLogoutButtonText(caption);
-								enableLogoutButton();
-							} catch (InterruptedException e) {
-								e.printStackTrace();
+							if (buttonLogout != null) {
+								String caption = buttonLogout.getText();
+								try {
+									setLogoutButtonText(caption + " - 3");
+									Thread.sleep(500);
+									setLogoutButtonText(caption + " - 2");
+									Thread.sleep(500);
+									setLogoutButtonText(caption + " - 1");
+									Thread.sleep(500);
+									setLogoutButtonText(caption);
+									enableLogoutButton();
+								} catch (InterruptedException e) {
+									C3Logger.debug("UserInfoPanelException [1254]");
+									e.printStackTrace();
+								}
 							}
 						});
 						coolOffThread.start();

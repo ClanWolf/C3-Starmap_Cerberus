@@ -46,7 +46,12 @@ public class LogPane extends Application {
 	private final static Locale GERMAN = Locale.GERMAN;
 	private final static Locale ENGLISH = Locale.ENGLISH;
 
+	private Stage stage;
 	private LogPaneController controller;
+
+	public void show() {
+		stage.show();
+	}
 
 	public LogPane(Stage parentStage, Locale locale) {
 
@@ -58,7 +63,7 @@ public class LogPane extends Application {
 
 			root = fxmlLoader.load();
 
-			Stage stage = new Stage();
+			stage = new Stage();
 			stage.setTitle(Internationalization.getString("LoggingHeadline"));
 			Scene scene = new Scene(root);
 			stage.setScene(scene);
@@ -76,7 +81,7 @@ public class LogPane extends Application {
 			controller = fxmlLoader.getController();
 			controller.init(locale);
 
-			stage.showAndWait();
+			stage.show();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

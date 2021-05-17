@@ -99,6 +99,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private AbstractC3Pane currentlyDisplayedPane = null;
 	private AbstractC3Pane nextToDisplayPane = null;
 	private LoginPane loginPane = null;
+	private LogPane logPane = null;
 	private UserInfoPane userInfoPane = null;
 	private MapPane mapPane = null;
 	private ChatPane chatPane = null;
@@ -703,9 +704,12 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 		if (openLogPane) {
 			C3Logger.info("Opening log window!");
-
 			Stage stage = (Stage) rootAnchorPane.getScene().getWindow();
-			LogPane lp = new LogPane(stage, Internationalization.getLocale());
+			if (logPane == null) {
+				logPane = new LogPane(stage, Internationalization.getLocale());
+			} else {
+				logPane.show();
+			}
 			openLogPane = false;
 		}
 	}
