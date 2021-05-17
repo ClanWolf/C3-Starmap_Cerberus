@@ -38,6 +38,7 @@ import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
+import net.clanwolf.starmap.client.gui.panes.character.CharacterPane;
 import net.clanwolf.starmap.client.net.irc.IRCClient;
 import net.clanwolf.starmap.client.net.irc.MessageActionObject;
 import net.clanwolf.starmap.client.net.irc.NickChangeObject;
@@ -258,7 +259,7 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 	public boolean handleAction(ACTIONS action, ActionObject o) {
 		switch (action) {
 			case LOGON_FINISHED_SUCCESSFULL:
-				ircClient = new IRCClient(); // Connects in constructor
+				ircClient = new IRCClient(); // Does NOT connect in constructor (!) - Connecting when pane is opened!
 				break;
 
 			case CHANGE_LANGUAGE:
@@ -272,7 +273,14 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 				break;
 
 			case PANE_CREATION_FINISHED:
-				init();
+				if (o.getObject().getClass() == ChatPane.class) {
+					C3Logger.info("Chat window opened.");
+					init();
+					if (ircClient != null && !ircClient.connected) {
+						C3Logger.info("Connecting to IRC...");
+						ircClient.connect();
+					}
+				}
 				break;
 
 			case IRC_CONNECTED:

@@ -35,6 +35,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
+import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.action.*;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
@@ -396,24 +397,26 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 				break;
 
 			case PANE_CREATION_FINISHED:
-				if (!cooledOff) {
-					Thread coolOffThread = new Thread(() -> {
-						String caption = buttonLogout.getText();
-						try {
-							setLogoutButtonText(caption + " - 3");
-							Thread.sleep(500);
-							setLogoutButtonText(caption + " - 2");
-							Thread.sleep(500);
-							setLogoutButtonText(caption + " - 1");
-							Thread.sleep(500);
-							setLogoutButtonText(caption);
-							enableLogoutButton();
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
-					});
-					coolOffThread.start();
-					cooledOff = true;
+				if (o.getObject() instanceof UserInfoPane) {
+					if (!cooledOff) {
+						Thread coolOffThread = new Thread(() -> {
+							String caption = buttonLogout.getText();
+							try {
+								setLogoutButtonText(caption + " - 3");
+								Thread.sleep(500);
+								setLogoutButtonText(caption + " - 2");
+								Thread.sleep(500);
+								setLogoutButtonText(caption + " - 1");
+								Thread.sleep(500);
+								setLogoutButtonText(caption);
+								enableLogoutButton();
+							} catch (InterruptedException e) {
+								e.printStackTrace();
+							}
+						});
+						coolOffThread.start();
+						cooledOff = true;
+					}
 				}
 				break;
 

@@ -49,9 +49,13 @@ public class IRCClient implements ActionCallBackListener {
 
 	private static final String ircServerUrl = "port80a.se.quakenet.org";
 	private static final String ircServerChannel = "#c3.clanwolf.net";
-	private static boolean connected = false;
+	public static boolean connected = false;
 	private static IRCApi _api;
 	public static String myNick = "";
+	public String nick = "C3\\" + Nexus.getCurrentUser().getUserName() + "";
+	public String altNick1 = "C3\\" + Nexus.getCurrentUser().getUserName() + "_1";
+	public String altNick2 = "C3\\" + Nexus.getCurrentUser().getUserName() + "_2";
+	public String altNick3 = "C3\\" + Nexus.getCurrentUser().getUserName() + "_3";
 
 	public IRCClient() {
 		ActionManager.addActionCallbackListener(ACTIONS.IRC_SEND_MESSAGE, this);
@@ -59,46 +63,45 @@ public class IRCClient implements ActionCallBackListener {
 		ActionManager.addActionCallbackListener(ACTIONS.IRC_SENDING_ACTION, this);
 //		ActionManager.addActionCallbackListener(ACTIONS.IRC_GET_NAMELIST, this);
 
-		String nick = "C3\\" + Nexus.getCurrentUser().getUserName() + "";
-		String altNick1 = "C3\\" + Nexus.getCurrentUser().getUserName() + "_1";
-		String altNick2 = "C3\\" + Nexus.getCurrentUser().getUserName() + "_2";
-		String altNick3 = "C3\\" + Nexus.getCurrentUser().getUserName() + "_3";
+//		connect();
+	}
 
+	public void connect() {
 		_api = new IRCApiImpl(true);
-//		_api.connect(getServerParams(nick, Arrays.asList(altNick1, altNick2, altNick3), "C3-Client IRC", "ident", ircServerUrl, false), new Callback<IIRCState>() {
-//			@Override
-//			public void onSuccess(final IIRCState aIRCState) {
-//				_api.addListener(new ChannelJoinListener());
-//				_api.addListener(new ChannelLeaveListener());
-//				_api.addListener(new ChannelMessageListener());
-//
-//				_api.joinChannel(ircServerChannel);
-//				_api.message(ircServerChannel, Internationalization.getString("C3_IRC_ConnAndLogon"), new Callback<String>() {
-//					@Override
-//					public void onSuccess(String s) {
-//						C3Logger.info(s);
-//					}
-//
-//					@Override
-//					public void onFailure(Exception e) {
-//						C3Logger.info("Error: " + e.getMessage());
-//					}
-//				});
-//
-//				connected = true;
-//				myNick = nick;
-//				ActionManager.getAction(ACTIONS.IRC_CONNECTED).execute(myNick);
-//			}
-//
-//			@Override
-//			public void onFailure(Exception aErrorMessage) {
-//				C3Logger.print("Error connecting IRC: " + aErrorMessage.getMessage());
-//				C3Logger.print("IRC not connected!");
-//				// aErrorMessage.printStackTrace();
-//				// throw new RuntimeException(aErrorMessage);
-//				ActionManager.getAction(ACTIONS.IRC_ERROR).execute(aErrorMessage.getMessage());
-//			}
-//		});
+		_api.connect(getServerParams(nick, Arrays.asList(altNick1, altNick2, altNick3), "C3-Client IRC", "ident", ircServerUrl, false), new Callback<IIRCState>() {
+			@Override
+			public void onSuccess(final IIRCState aIRCState) {
+				_api.addListener(new ChannelJoinListener());
+				_api.addListener(new ChannelLeaveListener());
+				_api.addListener(new ChannelMessageListener());
+
+				_api.joinChannel(ircServerChannel);
+				_api.message(ircServerChannel, Internationalization.getString("C3_IRC_ConnAndLogon"), new Callback<String>() {
+					@Override
+					public void onSuccess(String s) {
+						C3Logger.info(s);
+					}
+
+					@Override
+					public void onFailure(Exception e) {
+						C3Logger.info("Error: " + e.getMessage());
+					}
+				});
+
+				connected = true;
+				myNick = nick;
+				ActionManager.getAction(ACTIONS.IRC_CONNECTED).execute(myNick);
+			}
+
+			@Override
+			public void onFailure(Exception aErrorMessage) {
+				C3Logger.print("Error connecting IRC: " + aErrorMessage.getMessage());
+				C3Logger.print("IRC not connected!");
+				// aErrorMessage.printStackTrace();
+				// throw new RuntimeException(aErrorMessage);
+				ActionManager.getAction(ACTIONS.IRC_ERROR).execute(aErrorMessage.getMessage());
+			}
+		});
 	}
 
 	private void sendMessage(String source, String target, String message) {
