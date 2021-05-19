@@ -28,10 +28,12 @@ package net.clanwolf.starmap.logging;
 
 import java.io.File;
 import java.io.PrintStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.*;
 
 public class C3Logger {
-
 	private static boolean initialized = false;
 	private static boolean initializing = false;
 	private static final Logger logger = Logger.getLogger(C3Logger.class.getName());
@@ -39,7 +41,13 @@ public class C3Logger {
 	private static ConsoleHandler consoleHandler;
 	private static String c3LogFileName = "";
 	private static Level c3Loglevel = Level.FINEST;
-	private static final int FILE_SIZE = 3*1024*1024;
+	private static final int FILE_SIZE = 2*1024*1024;
+
+	private static int lwidth01 = 8;
+	private static int lwidth02 = 20;
+	private static int lwidth03 = 20;
+
+	public static ConcurrentLinkedQueue<String> logHistory = new ConcurrentLinkedQueue<>();
 
 	public static void print(String message) {
 		info(message);
@@ -107,6 +115,35 @@ public class C3Logger {
 		} else {
 			logger.logp(level, callerClassName, callerMethodName, message, throwable);
 		}
+
+		if (fileHandler != null) {
+			fileHandler.flush();
+		}
+
+		callerClassName = callerClassName.replaceAll("net.clanwolf.starmap.client.", "");
+		String lCallerClass = "";
+		if (callerClassName.length() > lwidth02) {
+			lCallerClass = "..." + callerClassName.substring(callerClassName.length() - (lwidth02 - 3));
+		} else {
+			lCallerClass = callerClassName;
+		}
+
+		String lCallerMethod = "";
+		if (callerMethodName.length() > lwidth03) {
+			lCallerMethod = "..." + callerMethodName.substring(callerMethodName.length() - (lwidth03 - 3));
+		} else {
+			lCallerMethod = callerMethodName;
+		}
+
+		String m = fixedLengthString(level.toString(), lwidth01)
+				+ " " + fixedLengthString(lCallerClass, lwidth02)
+				+ " / " + fixedLengthString(lCallerMethod, lwidth03)
+				+ " >> " + message;
+		logHistory.add(m);
+	}
+
+	public static String fixedLengthString(String string, int length) {
+		return String.format("%1$" + length + "s", string);
 	}
 
 	public static void setC3LogLevel(Level level) {
@@ -133,8 +170,14 @@ public class C3Logger {
 			logger.addHandler(consoleHandler);
 
 			if (prepareLogfile()) {
-//				fileHandler = new FileHandler(c3LogFileName, FILE_SIZE, 5, true); // appending to the previous logs
-				fileHandler = new FileHandler(c3LogFileName, FILE_SIZE, 5, false); // a new file for every start
+				// fileHandler = new FileHandler(c3LogFileName, FILE_SIZE, 5, true); // appending to the previous logs
+				fileHandler = new FileHandler(c3LogFileName, FILE_SIZE, 5, false) {  // a new file for every start
+					@Override
+					public synchronized void publish(final LogRecord record) {
+						super.publish(record);
+						super.flush();
+					}
+				};
 				fileHandler.setFormatter(c3formatter);
 				fileHandler.setEncoding("UTF-8");
 				fileHandler.setLevel(Level.FINEST);

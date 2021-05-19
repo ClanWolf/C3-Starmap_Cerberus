@@ -23,9 +23,12 @@
                   <content>
                     <AnchorPane maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="269.0" prefWidth="486.0">
                            <children>
-                              <ScrollPane fx:id="srollPaneClientLog" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" layoutX="10.0" layoutY="66.0" prefHeight="389.0" prefWidth="780.0" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                              <ScrollPane fx:id="srollPaneClientLog" fitToHeight="true" hbarPolicy="NEVER" layoutX="10.0" layoutY="66.0" prefHeight="389.0" prefWidth="780.0" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                                 <padding>
+                                    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                 </padding>
                                  <content>
-                                    <TextFlow fx:id="textFlowClientLog" prefHeight="200.0" prefWidth="200.0" styleClass="IRCChatTextFlow" stylesheets="@../styles/MainFrameStyle.css">
+                                    <TextFlow fx:id="textFlowClientLog" prefHeight="422.0" prefWidth="746.0" styleClass="LogTextFlow" stylesheets="@../styles/MainFrameStyle.css">
                                        <padding>
                                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                        </padding>
@@ -40,12 +43,12 @@
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <ScrollPane fx:id="srollPaneServerLog" fitToHeight="true" fitToWidth="true" hbarPolicy="NEVER" prefHeight="389.0" prefWidth="780.0" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                              <ScrollPane fx:id="srollPaneServerLog" fitToHeight="true" hbarPolicy="NEVER" prefHeight="389.0" prefWidth="780.0" vbarPolicy="ALWAYS" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                                  <padding>
                                     <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                  </padding>
                                  <content>
-                                    <TextFlow fx:id="textFlowServerLog" prefHeight="200.0" prefWidth="200.0" styleClass="IRCChatTextFlow" stylesheets="@../styles/MainFrameStyle.css">
+                                    <TextFlow fx:id="textFlowServerLog" prefHeight="422.0" prefWidth="746.0" styleClass="LogTextFlow" stylesheets="@../styles/MainFrameStyle.css">
                                        <padding>
                                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                        </padding>
@@ -61,7 +64,7 @@
          <bottom>
             <HBox alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" BorderPane.alignment="BOTTOM_RIGHT">
                <children>
-                  <Button fx:id="btnReport" defaultButton="true" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" prefHeight="25.0" prefWidth="125.0" text="Report" HBox.hgrow="ALWAYS">
+                  <Button fx:id="btnReport" defaultButton="true" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#btnReportClicked" prefHeight="25.0" prefWidth="125.0" text="Report" HBox.hgrow="ALWAYS">
                      <opaqueInsets>
                         <Insets />
                      </opaqueInsets>

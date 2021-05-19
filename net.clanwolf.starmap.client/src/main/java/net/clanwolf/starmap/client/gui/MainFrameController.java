@@ -708,7 +708,11 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			if (logPane == null) {
 				logPane = new LogPane(stage, Internationalization.getLocale());
 			} else {
-				logPane.show();
+				if (logPane.isVisible) {
+					logPane.hide();
+				} else {
+					logPane.show();
+				}
 			}
 			openLogPane = false;
 		}

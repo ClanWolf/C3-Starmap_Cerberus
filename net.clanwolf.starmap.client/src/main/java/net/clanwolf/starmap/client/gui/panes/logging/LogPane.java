@@ -33,6 +33,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import net.clanwolf.starmap.client.gui.panes.security.AdminPaneController;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.transfer.dtos.UserDTO;
@@ -46,11 +47,24 @@ public class LogPane extends Application {
 	private final static Locale GERMAN = Locale.GERMAN;
 	private final static Locale ENGLISH = Locale.ENGLISH;
 
+	public static boolean isVisible = false;
+
 	private Stage stage;
 	private LogPaneController controller;
 
 	public void show() {
 		stage.show();
+		toFront();
+		isVisible = true;
+	}
+
+	public void hide() {
+		stage.hide();
+		isVisible = false;
+	}
+
+	public void toFront() {
+		stage.toFront();
 	}
 
 	public LogPane(Stage parentStage, Locale locale) {
@@ -69,6 +83,7 @@ public class LogPane extends Application {
 			stage.setScene(scene);
 			stage.sizeToScene();
 			stage.setResizable(true);
+			stage.initStyle(StageStyle.UTILITY);
 			stage.initOwner(null);
 			stage.initModality(Modality.NONE);
 
@@ -82,6 +97,7 @@ public class LogPane extends Application {
 			controller.init(locale);
 
 			stage.show();
+			isVisible = true;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

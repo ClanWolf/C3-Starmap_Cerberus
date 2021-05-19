@@ -26,16 +26,28 @@
  */
 package net.clanwolf.starmap.client.gui.panes.logging;
 
+import com.ircclouds.irc.api.domain.messages.*;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
+import net.clanwolf.starmap.client.action.ACTIONS;
+import net.clanwolf.starmap.client.action.ActionCallBackListener;
+import net.clanwolf.starmap.client.action.ActionManager;
+import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.enums.PRIVILEGES;
+import net.clanwolf.starmap.client.gui.panes.chat.ChatPane;
+import net.clanwolf.starmap.client.net.irc.IRCClient;
+import net.clanwolf.starmap.client.net.irc.NickChangeObject;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.security.Security;
+import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.transfer.GameState;
@@ -44,7 +56,7 @@ import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 
 import java.util.*;
 
-public class LogPaneController {
+public class LogPaneController implements ActionCallBackListener {
 
 	@FXML
 	Label labelDescription;
@@ -62,32 +74,116 @@ public class LogPaneController {
 	ScrollPane srollPaneClientLog, srollPaneServerLog;
 
 	@FXML
+	TextFlow textFlowClientLog, textFlowServerLog;
+
+	@FXML
 	public void btnCloseClicked() {
 		Stage stage = (Stage) btnClose.getScene().getWindow();
 		stage.close();
+		LogPane.isVisible = false;
+	}
+
+	@FXML
+	public void btnReportClicked() {
+		// TODO: Report error
+	}
+
+	private static LogPaneController instance = null;
+
+	public static void addClientLine(String line) {
+		if (instance != null) {
+			Platform.runLater(() -> {
+				Text t1 = new Text();
+				t1.setWrappingWidth(0);
+				t1.setStyle("-fx-fill:#000000;");
+				if (line.contains("DEBUG")) {
+					t1.setStyle("-fx-fill:#669c35;");
+				} else if (line.contains("ERROR") || line.contains("EXCEPTION")) {
+					t1.setStyle("-fx-fill:#b51a00;");
+				}
+				t1.setText(line + "\r\n");
+				instance.textFlowClientLog.getChildren().add(t1);
+			});
+		}
+	}
+
+	public static void addServerLine(String line) {
+		if (instance != null) {
+			Platform.runLater(() -> {
+				Text t1 = new Text();
+				t1.setWrappingWidth(0);
+				t1.setStyle("-fx-fill:#000000;");
+				t1.setText(line + "\r\n");
+				instance.textFlowServerLog.getChildren().add(t1);
+			});
+		}
 	}
 
 	public void init(Locale locale) {
-
-//		labelDescription.setText(Internationalization.getString("AdminSecurityDescription"));
-//		tabPrivileges.setText(Internationalization.getString("AdminSecurityTabPrivileges"));
-//		labelUser.setText(Internationalization.getString("AdminSecurityUserLabel"));
-//		btnSave.setText(Internationalization.getString("AdminSecurityButtonSave"));
-//		btnCancel.setText(Internationalization.getString("AdminSecurityButtonCancel"));
+		labelDescription.setText(Internationalization.getString("LogDescription"));
+		tabClientLog.setText(Internationalization.getString("LogClientTab"));
+		tabServerLog.setText(Internationalization.getString("LogServerTab"));
+		btnReport.setText(Internationalization.getString("LogButtonReport"));
+		btnClose.setText(Internationalization.getString("LogButtonClose"));
 
 		Nexus.getLogWatcher().run();
-
-		VBox root = new VBox();
+		this.instance = this;
 
 		// Client log
 		srollPaneClientLog.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-		srollPaneClientLog.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-		srollPaneClientLog.setContent(root);
+		srollPaneClientLog.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+		srollPaneClientLog.vvalueProperty().bind(textFlowClientLog.heightProperty());
+		textFlowClientLog.setPrefWidth(Region.USE_COMPUTED_SIZE);
 
 		// Server log
 		srollPaneServerLog.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-		srollPaneServerLog.setVbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-		srollPaneServerLog.setContent(root);
+		srollPaneServerLog.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+		srollPaneServerLog.vvalueProperty().bind(textFlowServerLog.heightProperty());
+		textFlowServerLog.setPrefWidth(Region.USE_COMPUTED_SIZE);
 
+		tabServerLog.setDisable(Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN));
+
+		addActionCallBackListeners();
+	}
+
+	public void addActionCallBackListeners() {
+		ActionManager.addActionCallbackListener(ACTIONS.CHANGE_LANGUAGE, this);
+	}
+
+	public void setStrings() {
+		labelDescription.setText(Internationalization.getString("LogDescription"));
+		tabClientLog.setText(Internationalization.getString("LogClientTab"));
+		tabServerLog.setText(Internationalization.getString("LogServerTab"));
+		btnReport.setText(Internationalization.getString("LogButtonReport"));
+		btnClose.setText(Internationalization.getString("LogButtonClose"));
+	}
+
+	/**
+	 * Handles actions.
+	 *
+	 * @param action incoming action to be handled
+	 * @param o      the action object passed along with the action
+	 * @return wether the handling should continue (this should be true in general)
+	 */
+	@Override
+	public boolean handleAction(ACTIONS action, ActionObject o) {
+		switch (action) {
+			case CHANGE_LANGUAGE:
+				setStrings();
+				break;
+
+			case PANE_DESTROY_CURRENT:
+				break;
+
+			case PANE_CREATION_BEGINS:
+				break;
+
+			case PANE_CREATION_FINISHED:
+				break;
+
+			default:
+				break;
+		}
+		return true;
 	}
 }

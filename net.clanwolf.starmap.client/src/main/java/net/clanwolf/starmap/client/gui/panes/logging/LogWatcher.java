@@ -26,19 +26,28 @@
  */
 package net.clanwolf.starmap.client.gui.panes.logging;
 
+import net.clanwolf.starmap.client.net.HTTP;
 import net.clanwolf.starmap.logging.C3Logger;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class LogWatcher {
 	Path logFile;
 	private int lines = 0;
 	private int characters = 0;
+	private int startLine = 0;
+
+	private Thread clientLogwatcherThread;
+	private Thread serverLogwatcherThread;
 
 	private LogWatcher() {
 
@@ -49,58 +58,84 @@ public class LogWatcher {
 	}
 
 	public void run() {
-		try {
-			WatchService watcher = FileSystems.getDefault().newWatchService();
-
-			try (BufferedReader in = new BufferedReader(new FileReader(logFile.toFile()))) {
-				String line;
-				while ((line = in.readLine()) != null) {
-					lines++;
-					characters += line.length() + System.lineSeparator().length();
-				}
-			}
-
-			logFile.toAbsolutePath().getParent().register(watcher, StandardWatchEventKinds.ENTRY_MODIFY, StandardWatchEventKinds.ENTRY_CREATE);
-
-			new Thread("watcherThread") {
+		if (clientLogwatcherThread == null) {
+			clientLogwatcherThread = new Thread("watcherThread") {
 				public void run() {
 					try {
 						do {
-							WatchKey key = watcher.take();
-							C3Logger.info("Scanning for changes in log file...");
-							for (WatchEvent<?> event : key.pollEvents()) {
-								WatchEvent<Path> pathEvent = (WatchEvent<Path>) event;
-								Path path = pathEvent.context();
-								C3Logger.info("-------------------------------------------------------- Path: " + path);
-								if (path.equals(logFile)) {
-									try (BufferedReader in = new BufferedReader(new FileReader(pathEvent.context().toFile()))) {
-										String line;
-										Pattern p = Pattern.compile("WARN|ERROR");
-										in.skip(characters);
-										while ((line = in.readLine()) != null) {
-											lines++;
-											characters += line.length() + System.lineSeparator().length();
-											if (p.matcher(line).find()) {
-												// Do something
-												C3Logger.info("ääääääääääääääääää" + line);
-											} else {
-												C3Logger.info("ääääääääääääääääää222222" + line);
-											}
-										}
-									}
-								}
+							String entry = C3Logger.logHistory.poll();
+							if (entry != null) {
+								LogPaneController.addClientLine(entry);
+							} else {
+								Thread.sleep(800);
 							}
-							key.reset();
-//							Thread.sleep(5000);
-						} while (true);
-					} catch (IOException | InterruptedException ex) {
+							Thread.sleep(20);
+						} while (!this.isInterrupted());
+						clientLogwatcherThread = null;
+					} catch (Exception ex) {
 						ex.printStackTrace();
-						C3Logger.error("Exception while scanning logfile [3761].", ex);
+						C3Logger.error("Exception while scanning log entries [3761].", ex);
 					}
 				}
-			}.start();
-		} catch(IOException ioe) {
-			C3Logger.error("Exception while scanning logfile [3645].", ioe);
+			};
 		}
+		clientLogwatcherThread.start();
+
+		if (serverLogwatcherThread == null) {
+			serverLogwatcherThread = new Thread("watcherThread") {
+				public void run() {
+					try {
+						do {
+							byte[] serverLog = HTTP.get("https://www.clanwolf.net/apps/C3/server/log/C3-Server.log.0");
+							List<byte[]> lines = split(serverLog, "\\n".getBytes(StandardCharsets.UTF_8));
+							for (byte[] line : lines) {
+								String s = new String(line, StandardCharsets.UTF_8);
+								if (s != null) {
+									LogPaneController.addServerLine(s);
+								}
+							}
+							Thread.sleep(10 * 1000);
+						} while (!this.isInterrupted());
+						serverLogwatcherThread = null;
+					} catch (Exception ex) {
+						ex.printStackTrace();
+						C3Logger.error("Exception while scanning log entries [3761].", ex);
+					}
+				}
+			};
+		}
+		serverLogwatcherThread.start();
+	}
+
+	public void stop() {
+		clientLogwatcherThread.interrupt();
+		serverLogwatcherThread.interrupt();
+	}
+
+	private List<byte[]> split(byte[] array, byte[] delimiter) {
+		List<byte[]> byteArrays = new LinkedList<byte[]>();
+		if (delimiter.length == 0) {
+			return byteArrays;
+		}
+		int begin = 0;
+
+		outer: for (int i = 0; i < array.length - delimiter.length + 1; i++) {
+			for (int j = 0; j < delimiter.length; j++) {
+				if (array[i + j] != delimiter[j]) {
+					continue outer;
+				}
+			}
+
+			// If delimiter is at the beginning then there will not be any data.
+			if (begin != i)
+				byteArrays.add(Arrays.copyOfRange(array, begin, i));
+			begin = i + delimiter.length;
+		}
+
+		// delimiter at the very end with no data following?
+		if (begin != array.length)
+			byteArrays.add(Arrays.copyOfRange(array, begin, array.length));
+
+		return byteArrays;
 	}
 }
