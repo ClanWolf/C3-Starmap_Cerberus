@@ -41,7 +41,7 @@ public class LogEntry {
         this.message = message;
     }
 
-    public String getLineNumber() {
+    public Integer getLineNumber() {
         return lineNumber;
     }
     public String getLevel() {
