@@ -1,4 +1,17 @@
+
 <?php
+ /**
+  * Get table information on the C3 database
+  * PHP version 7.2.10
+  *
+  * @category Servercomponents
+  * @package  C3
+  * @author   Meldric <warwolfen@gmail.com>
+  * @license  Apache License 2.0
+  * @version  GIT: <git_id>
+  * @link     https://www.clanwolf.net
+  */
+
 	require_once('./db.php');
 
 	$sql = "SELECT * FROM information_schema.columns WHERE table_schema = 'C3' ORDER BY table_name,ordinal_position";
