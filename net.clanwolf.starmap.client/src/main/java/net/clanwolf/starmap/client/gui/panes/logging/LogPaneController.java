@@ -56,6 +56,12 @@ import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 
 import java.util.*;
 
+
+
+// https://stackoverflow.com/questions/39366828/add-a-simple-row-to-javafx-tableview
+
+
+
 public class LogPaneController implements ActionCallBackListener {
 
 	@FXML
