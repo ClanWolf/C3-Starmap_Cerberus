@@ -33,7 +33,7 @@ public class LogEntry {
     private String loggingClassMethod;
     private String message;
 
-    public Person(Integer lineNumber, String level, String loggingClass, String loggingClassMethod, String message) {
+    public LogEntry(Integer lineNumber, String level, String loggingClass, String loggingClassMethod, String message) {
         this.lineNumber = lineNumber;
         this.level = level;
         this.loggingClass = loggingClass;
