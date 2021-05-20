@@ -1,5 +1,4 @@
 <?php
-
  /**
   * Get table information on the C3 database
   * PHP version 7.2.10
