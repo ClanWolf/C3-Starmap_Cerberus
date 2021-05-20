@@ -39,7 +39,8 @@ public class C3Formatter extends Formatter {
 		return ""
 				// + "[" + id + "] "
 				+ dt1.format(new Date(record.getMillis()))
-				+ " " + record.getSourceClassName()
+				+ " " + record.getLevel()
+				+ "/" + record.getSourceClassName()
 				+ "/" + record.getSourceMethodName()
 				+ " >> " + record.getMessage() + "\n";
 	}

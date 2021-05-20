@@ -26,14 +26,11 @@
  */
 package net.clanwolf.starmap.client.gui.panes.logging;
 
-import com.ircclouds.irc.api.domain.messages.*;
 import javafx.application.Platform;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
@@ -42,25 +39,12 @@ import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.enums.PRIVILEGES;
-import net.clanwolf.starmap.client.gui.panes.chat.ChatPane;
-import net.clanwolf.starmap.client.net.irc.IRCClient;
-import net.clanwolf.starmap.client.net.irc.NickChangeObject;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.security.Security;
-import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.Internationalization;
-import net.clanwolf.starmap.logging.C3Logger;
-import net.clanwolf.starmap.transfer.GameState;
-import net.clanwolf.starmap.transfer.dtos.UserDTO;
-import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
-
-import java.util.*;
-
-
+import net.clanwolf.starmap.logging.LogEntry;
 
 // https://stackoverflow.com/questions/39366828/add-a-simple-row-to-javafx-tableview
-
-
 
 public class LogPaneController implements ActionCallBackListener {
 
@@ -77,10 +61,7 @@ public class LogPaneController implements ActionCallBackListener {
 	Button btnReport, btnClose;
 
 	@FXML
-	ScrollPane srollPaneClientLog, srollPaneServerLog;
-
-	@FXML
-	TextFlow textFlowClientLog, textFlowServerLog;
+	TableView<LogEntry> tableViewClientLog, tableViewServerLog;
 
 	@FXML
 	public void btnCloseClicked() {
@@ -96,36 +77,47 @@ public class LogPaneController implements ActionCallBackListener {
 
 	private static LogPaneController instance = null;
 
-	public static void addClientLine(String line) {
+	public static void addClientLine(LogEntry line) {
 		if (instance != null) {
 			Platform.runLater(() -> {
-				Text t1 = new Text();
-				t1.setWrappingWidth(0);
-				t1.setStyle("-fx-fill:#000000;");
-				if (line.contains("DEBUG")) {
-					t1.setStyle("-fx-fill:#669c35;");
-				} else if (line.contains("ERROR") || line.contains("EXCEPTION")) {
-					t1.setStyle("-fx-fill:#b51a00;");
-				}
-				t1.setText(line + "\r\n");
-				instance.textFlowClientLog.getChildren().add(t1);
+//				if (!instance.tableViewClientLog.getItems().contains(line)) {
+					instance.tableViewClientLog.getItems().add(line);
+//				}
 			});
 		}
 	}
 
-	public static void addServerLine(String line) {
+	public static void scrollClientDown() {
 		if (instance != null) {
 			Platform.runLater(() -> {
-				Text t1 = new Text();
-				t1.setWrappingWidth(0);
-				t1.setStyle("-fx-fill:#000000;");
-				t1.setText(line + "\r\n");
-				instance.textFlowServerLog.getChildren().add(t1);
+				instance.tableViewClientLog.scrollTo(instance.tableViewClientLog.getItems().size());
 			});
 		}
 	}
 
-	public void init(Locale locale) {
+	public static void addServerLine(LogEntry line) {
+		if (instance != null) {
+			Platform.runLater(() -> {
+//				if (!instance.tableViewServerLog.getItems().contains(line)) {
+					instance.tableViewServerLog.getItems().add(line);
+//				}
+			});
+		}
+	}
+
+	public static void scrollServerDown() {
+		if (instance != null) {
+			Platform.runLater(() -> {
+				instance.tableViewServerLog.scrollTo(instance.tableViewServerLog.getItems().size());
+			});
+		}
+	}
+
+	public static void clearServerLog() {
+		instance.tableViewServerLog.getItems().clear();
+	}
+
+	public void init() {
 		labelDescription.setText(Internationalization.getString("LogDescription"));
 		tabClientLog.setText(Internationalization.getString("LogClientTab"));
 		tabServerLog.setText(Internationalization.getString("LogServerTab"));
@@ -133,19 +125,61 @@ public class LogPaneController implements ActionCallBackListener {
 		btnClose.setText(Internationalization.getString("LogButtonClose"));
 
 		Nexus.getLogWatcher().run();
-		this.instance = this;
+		instance = this;
 
 		// Client log
-		srollPaneClientLog.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-		srollPaneClientLog.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-		srollPaneClientLog.vvalueProperty().bind(textFlowClientLog.heightProperty());
-		textFlowClientLog.setPrefWidth(Region.USE_COMPUTED_SIZE);
+		TableColumn<LogEntry, Integer> clientLineNumberColumn = new TableColumn<>("");
+		clientLineNumberColumn.setCellValueFactory(new PropertyValueFactory<>("lineNumber"));
+		clientLineNumberColumn.setPrefWidth(50);
+		TableColumn<LogEntry, String> clientLevelColumn = new TableColumn<>("");
+		clientLevelColumn.setCellValueFactory(new PropertyValueFactory<>("level"));
+		clientLevelColumn.setPrefWidth(50);
+//		TableColumn<LogEntry, String> clientTimestampColumn = new TableColumn<>("");
+//		clientTimestampColumn.setCellValueFactory(new PropertyValueFactory<>("timestamp"));
+//      clientTimestampColumn.setPrefWidth(300);
+		TableColumn<LogEntry, String> clientClassColumn = new TableColumn<>("");
+		clientClassColumn.setCellValueFactory(new PropertyValueFactory<>("loggingClass"));
+		clientClassColumn.setPrefWidth(250);
+		TableColumn<LogEntry, String> clientMethodColumn = new TableColumn<>("");
+		clientMethodColumn.setCellValueFactory(new PropertyValueFactory<>("loggingClassMethod"));
+		clientMethodColumn.setPrefWidth(80);
+		TableColumn<LogEntry, String> clientMessageColumn = new TableColumn<>("");
+		clientMessageColumn.setCellValueFactory(new PropertyValueFactory<>("message"));
+		clientMessageColumn.setPrefWidth(500);
+		tableViewClientLog.getColumns().addAll(clientLineNumberColumn,
+				clientLevelColumn,
+//				clientTimestampColumn,
+				clientClassColumn,
+				clientMethodColumn,
+				clientMessageColumn
+		);
 
 		// Server log
-		srollPaneServerLog.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
-		srollPaneServerLog.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-		srollPaneServerLog.vvalueProperty().bind(textFlowServerLog.heightProperty());
-		textFlowServerLog.setPrefWidth(Region.USE_COMPUTED_SIZE);
+		TableColumn<LogEntry, Integer> serverLineNumberColumn = new TableColumn<>("");
+		serverLineNumberColumn.setCellValueFactory(new PropertyValueFactory<>("lineNumber"));
+		serverLineNumberColumn.setPrefWidth(50);
+		TableColumn<LogEntry, String> serverLevelColumn = new TableColumn<>("");
+		serverLevelColumn.setCellValueFactory(new PropertyValueFactory<>("level"));
+		serverLevelColumn.setPrefWidth(50);
+		TableColumn<LogEntry, String> serverTimestampColumn = new TableColumn<>("");
+		serverTimestampColumn.setCellValueFactory(new PropertyValueFactory<>("timestamp"));
+		serverTimestampColumn.setPrefWidth(110);
+		TableColumn<LogEntry, String> serverClassColumn = new TableColumn<>("");
+		serverClassColumn.setCellValueFactory(new PropertyValueFactory<>("loggingClass"));
+		serverClassColumn.setPrefWidth(250);
+		TableColumn<LogEntry, String> serverMethodColumn = new TableColumn<>("");
+		serverMethodColumn.setCellValueFactory(new PropertyValueFactory<>("loggingClassMethod"));
+		serverMethodColumn.setPrefWidth(80);
+		TableColumn<LogEntry, String> serverMessageColumn = new TableColumn<>("");
+		serverMessageColumn.setCellValueFactory(new PropertyValueFactory<>("message"));
+		serverMessageColumn.setPrefWidth(500);
+		tableViewServerLog.getColumns().addAll(serverLineNumberColumn,
+				serverLevelColumn,
+				serverTimestampColumn,
+				serverClassColumn,
+				serverMethodColumn,
+				serverMessageColumn
+		);
 
 		tabServerLog.setDisable(Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN));
 
@@ -176,15 +210,6 @@ public class LogPaneController implements ActionCallBackListener {
 		switch (action) {
 			case CHANGE_LANGUAGE:
 				setStrings();
-				break;
-
-			case PANE_DESTROY_CURRENT:
-				break;
-
-			case PANE_CREATION_BEGINS:
-				break;
-
-			case PANE_CREATION_FINISHED:
 				break;
 
 			default:

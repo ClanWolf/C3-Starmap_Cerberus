@@ -43,11 +43,9 @@ public class C3Logger {
 	private static Level c3Loglevel = Level.FINEST;
 	private static final int FILE_SIZE = 2*1024*1024;
 
-	private static int lwidth01 = 8;
-	private static int lwidth02 = 20;
-	private static int lwidth03 = 20;
+	private static int rowCounter = 1;
 
-	public static ConcurrentLinkedQueue<String> logHistory = new ConcurrentLinkedQueue<>();
+	public static ConcurrentLinkedQueue<LogEntry> logHistory = new ConcurrentLinkedQueue<>();
 
 	public static void print(String message) {
 		info(message);
@@ -120,26 +118,9 @@ public class C3Logger {
 			fileHandler.flush();
 		}
 
-		callerClassName = callerClassName.replaceAll("net.clanwolf.starmap.client.", "");
-		String lCallerClass = "";
-		if (callerClassName.length() > lwidth02) {
-			lCallerClass = "..." + callerClassName.substring(callerClassName.length() - (lwidth02 - 3));
-		} else {
-			lCallerClass = callerClassName;
-		}
-
-		String lCallerMethod = "";
-		if (callerMethodName.length() > lwidth03) {
-			lCallerMethod = "..." + callerMethodName.substring(callerMethodName.length() - (lwidth03 - 3));
-		} else {
-			lCallerMethod = callerMethodName;
-		}
-
-		String m = fixedLengthString(level.toString(), lwidth01)
-				+ " " + fixedLengthString(lCallerClass, lwidth02)
-				+ " / " + fixedLengthString(lCallerMethod, lwidth03)
-				+ " >> " + message;
-		logHistory.add(m);
+		LogEntry logEntry = new LogEntry(rowCounter, level.toString(), "", callerClassName, callerMethodName, message);
+		logHistory.add(logEntry);
+		rowCounter++;
 	}
 
 	public static String fixedLengthString(String string, int length) {

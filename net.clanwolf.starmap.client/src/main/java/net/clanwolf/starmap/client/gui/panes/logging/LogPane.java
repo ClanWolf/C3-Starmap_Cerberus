@@ -83,18 +83,18 @@ public class LogPane extends Application {
 			stage.setScene(scene);
 			stage.sizeToScene();
 			stage.setResizable(true);
-			stage.initStyle(StageStyle.UTILITY);
+//			stage.initStyle(StageStyle.UTILITY);
 			stage.initOwner(null);
 			stage.initModality(Modality.NONE);
 
 			InputStream is = this.getClass().getResourceAsStream("/icons/C3_Icon2.png");
 			stage.getIcons().add(new Image(is));
 
-			stage.setMinWidth(800);
+			stage.setMinWidth(1000);
 			stage.setMinHeight(600);
 
 			controller = fxmlLoader.getController();
-			controller.init(locale);
+			controller.init();
 
 			stage.show();
 			isVisible = true;

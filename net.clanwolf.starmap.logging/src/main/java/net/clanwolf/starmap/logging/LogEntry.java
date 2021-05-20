@@ -24,17 +24,19 @@
  * Copyright (c) 2001-2021, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.client.gui.panes.logging;
+package net.clanwolf.starmap.logging;
 
 public class LogEntry {
     private Integer lineNumber;
     private String level;
+    private String timestamp;
     private String loggingClass;
     private String loggingClassMethod;
     private String message;
 
-    public LogEntry(Integer lineNumber, String level, String loggingClass, String loggingClassMethod, String message) {
+    public LogEntry(Integer lineNumber, String level, String timestamp, String loggingClass, String loggingClassMethod, String message) {
         this.lineNumber = lineNumber;
+        this.timestamp = timestamp;
         this.level = level;
         this.loggingClass = loggingClass;
         this.loggingClassMethod = loggingClassMethod;
@@ -44,6 +46,7 @@ public class LogEntry {
     public Integer getLineNumber() {
         return lineNumber;
     }
+    public String getTimestamp() { return timestamp; }
     public String getLevel() {
         return level;
     }

@@ -28,6 +28,7 @@ package net.clanwolf.starmap.client.gui.panes.logging;
 
 import net.clanwolf.starmap.client.net.HTTP;
 import net.clanwolf.starmap.logging.C3Logger;
+import net.clanwolf.starmap.logging.LogEntry;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -46,6 +47,9 @@ public class LogWatcher {
 	private int characters = 0;
 	private int startLine = 0;
 
+	private boolean clientScrolledDown = false;
+	private boolean serverScrolledDown = false;
+
 	private Thread clientLogwatcherThread;
 	private Thread serverLogwatcherThread;
 
@@ -63,11 +67,15 @@ public class LogWatcher {
 				public void run() {
 					try {
 						do {
-							String entry = C3Logger.logHistory.poll();
+							LogEntry entry = C3Logger.logHistory.poll();
 							if (entry != null) {
 								LogPaneController.addClientLine(entry);
 							} else {
 								Thread.sleep(800);
+								if (!clientScrolledDown) {
+									LogPaneController.scrollClientDown();
+									clientScrolledDown = true;
+								}
 							}
 							Thread.sleep(20);
 						} while (!this.isInterrupted());
@@ -87,12 +95,27 @@ public class LogWatcher {
 					try {
 						do {
 							byte[] serverLog = HTTP.get("https://www.clanwolf.net/apps/C3/server/log/C3-Server.log.0");
-							List<byte[]> lines = split(serverLog, "\\n".getBytes(StandardCharsets.UTF_8));
+							List<byte[]> lines = split(serverLog, "\n".getBytes(StandardCharsets.UTF_8));
+							LogPaneController.clearServerLog();
+							int rowCount = 1;
 							for (byte[] line : lines) {
 								String s = new String(line, StandardCharsets.UTF_8);
 								if (s != null) {
-									LogPaneController.addServerLine(s);
+									String timestamp = s.substring(0,18);
+									String con[] = s.substring(19).split("/", 3);
+									String level = con[0];
+									String loggingClass = con[1];
+									String loggingClassMethod = con[2].substring(0, con[2].indexOf(" >> "));
+									String message = con[2].substring(con[2].indexOf(" >> "));
+
+									LogEntry logEntry = new LogEntry(rowCount, level, timestamp, loggingClass, loggingClassMethod, message);
+									LogPaneController.addServerLine(logEntry);
+									rowCount++;
 								}
+							}
+							if (!serverScrolledDown) {
+								LogPaneController.scrollServerDown();
+								serverScrolledDown = true;
 							}
 							Thread.sleep(10 * 1000);
 						} while (!this.isInterrupted());
