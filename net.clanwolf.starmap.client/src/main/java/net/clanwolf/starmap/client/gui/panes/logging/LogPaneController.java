@@ -187,7 +187,9 @@ public class LogPaneController implements ActionCallBackListener {
 	}
 
 	public static void clearServerLog() {
-		instance.tableViewServerLog.getItems().clear();
+		if (instance != null) {
+			Platform.runLater(() -> instance.tableViewServerLog.getItems().clear());
+		}
 	}
 
 	public void init() {
@@ -234,9 +236,9 @@ public class LogPaneController implements ActionCallBackListener {
 				if (item == null || item.getLevel() == null)
 					setStyle("");
 				else if (item.getLevel().equals("SEVERE"))
-					setStyle("-fx-background-color: #baffba;");
+					setStyle("-fx-background-color: #ff856d;");
 				else if (item.getLevel().equals("WARNING"))
-					setStyle("-fx-background-color: #ffd7d1;");
+					setStyle("-fx-background-color: #f9f9a5;");
 				else
 					setStyle("");
 			}
@@ -276,9 +278,9 @@ public class LogPaneController implements ActionCallBackListener {
 				if (item == null || item.getLevel() == null)
 					setStyle("");
 				else if (item.getLevel().equals("SEVERE"))
-					setStyle("-fx-background-color: #baffba;");
+					setStyle("-fx-background-color: #ff856d;");
 				else if (item.getLevel().equals("WARNING"))
-					setStyle("-fx-background-color: #ffd7d1;");
+					setStyle("-fx-background-color: #f9f9a5;");
 				else
 					setStyle("");
 			}

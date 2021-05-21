@@ -45,6 +45,8 @@ public class C3Logger {
 
 	public static ConcurrentLinkedQueue<LogEntry> logHistory = new ConcurrentLinkedQueue<>();
 
+	// OFF, SEVERE, WARNING, INFO, CONFIG, FINE, FINER, FINEST, ALL
+
 	public static void print(String message) {
 		info(message);
 	}
