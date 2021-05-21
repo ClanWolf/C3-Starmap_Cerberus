@@ -39,6 +39,7 @@ import java.nio.file.*;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.regex.Pattern;
 
 public class LogWatcher {
@@ -49,6 +50,8 @@ public class LogWatcher {
 
 	private boolean clientScrolledDown = false;
 	private boolean serverScrolledDown = false;
+
+	private static String logURL = "https://www.clanwolf.net/apps/C3/server/log/C3-Server.log.0";
 
 	private Thread clientLogwatcherThread;
 	private Thread serverLogwatcherThread;
@@ -71,13 +74,13 @@ public class LogWatcher {
 							if (entry != null) {
 								LogPaneController.addClientLine(entry);
 							} else {
-								Thread.sleep(800);
+								Thread.sleep(1000);
 								if (!clientScrolledDown) {
 									LogPaneController.scrollClientDown();
 									clientScrolledDown = true;
 								}
 							}
-							Thread.sleep(20);
+							Thread.sleep(10);
 						} while (!this.isInterrupted());
 						clientLogwatcherThread = null;
 					} catch (Exception ex) {
@@ -94,7 +97,9 @@ public class LogWatcher {
 				public void run() {
 					try {
 						do {
-							byte[] serverLog = HTTP.get("https://www.clanwolf.net/apps/C3/server/log/C3-Server.log.0");
+							Level filterLevel = LogPaneController.getLevel();
+							LogPaneController.setLogURL(logURL);
+							byte[] serverLog = HTTP.get(logURL);
 							List<byte[]> lines = split(serverLog, "\n".getBytes(StandardCharsets.UTF_8));
 							LogPaneController.clearServerLog();
 							int rowCount = 1;
@@ -103,21 +108,33 @@ public class LogWatcher {
 								if (s != null) {
 									String timestamp = s.substring(0,18);
 									String con[] = s.substring(19).split("/", 3);
-									String level = con[0];
+									String levelString = con[0];
 									String loggingClass = con[1];
 									String loggingClassMethod = con[2].substring(0, con[2].indexOf(" >> "));
 									String message = con[2].substring(con[2].indexOf(" >> "));
 
-									LogEntry logEntry = new LogEntry(rowCount, level, timestamp, loggingClass, loggingClassMethod, message);
-									LogPaneController.addServerLine(logEntry);
-									rowCount++;
+									Level l = Level.parse(levelString);
+
+									if (l.intValue() >= filterLevel.intValue()) {
+										LogEntry logEntry = new LogEntry(rowCount, levelString, timestamp, loggingClass, loggingClassMethod, message);
+										LogPaneController.addServerLine(logEntry);
+										rowCount++;
+									}
 								}
 							}
 							if (!serverScrolledDown) {
 								LogPaneController.scrollServerDown();
 								serverScrolledDown = true;
 							}
-							Thread.sleep(10 * 1000);
+							for (int i = 120; i >= 0; i--) {
+								if (LogPaneController.instantRefresh) {
+									LogPaneController.setCountdownValue(0);
+									LogPaneController.instantRefresh = false;
+									break;
+								}
+								Thread.sleep(1000);
+								LogPaneController.setCountdownValue(i);
+							}
 						} while (!this.isInterrupted());
 						serverLogwatcherThread = null;
 					} catch (Exception ex) {
@@ -133,6 +150,10 @@ public class LogWatcher {
 	public void stop() {
 		clientLogwatcherThread.interrupt();
 		serverLogwatcherThread.interrupt();
+	}
+
+	public void start() {
+		run();
 	}
 
 	private List<byte[]> split(byte[] array, byte[] delimiter) {

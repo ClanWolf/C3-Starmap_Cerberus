@@ -29,27 +29,45 @@ package net.clanwolf.starmap.client.gui.panes.logging;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.Region;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.enums.PRIVILEGES;
+import net.clanwolf.starmap.client.net.FTP;
+import net.clanwolf.starmap.client.net.IP;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.security.Security;
+import net.clanwolf.starmap.client.util.C3PROPS;
+import net.clanwolf.starmap.client.util.C3Properties;
 import net.clanwolf.starmap.client.util.Internationalization;
+import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.logging.LogEntry;
 
+import java.awt.*;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.*;
+import java.nio.charset.StandardCharsets;
+import java.util.logging.Level;
+
 // https://stackoverflow.com/questions/39366828/add-a-simple-row-to-javafx-tableview
+// OFF, SEVERE, WARNING, INFO, CONFIG, FINE, FINER, FINEST, ALL
 
 public class LogPaneController implements ActionCallBackListener {
 
+	public static boolean instantRefresh = false;
+
 	@FXML
-	Label labelDescription;
+	Label labelDescription, labelCountdown;
+
+	@FXML
+	TextField logURL;
 
 	@FXML
 	Tab tabClientLog;
@@ -58,7 +76,10 @@ public class LogPaneController implements ActionCallBackListener {
 	Tab tabServerLog;
 
 	@FXML
-	Button btnReport, btnClose;
+	ComboBox<Level> cbLevel;
+
+	@FXML
+	Button btnReport, btnClose, btnRefresh;
 
 	@FXML
 	TableView<LogEntry> tableViewClientLog, tableViewServerLog;
@@ -71,45 +92,97 @@ public class LogPaneController implements ActionCallBackListener {
 	}
 
 	@FXML
+	public void btnRefreshClicked() {
+		instantRefresh = true;
+	}
+
+	private String encodeValue(String value) throws UnsupportedEncodingException {
+		return URLEncoder.encode(value, StandardCharsets.UTF_8.toString()).replace("+", "%20");
+	}
+
+	@FXML
 	public void btnReportClicked() {
 		// TODO: Report error
+		// curl -X POST -u <UserName>:<Generated-Token>-d “{\”title\”: \”New welcome page\”,\”body\”: \”To design a new page\”,\”labels\”: [\”enhancement\”],\”milestone\”: \”3\”,\”assignees\”: [\”<user-name1>\”,\”<user-name2\”],\”state\”: \”open\”}” https://api.github.com/repos/<user-name>/<repo-name>/issues
+		// https://www.softwaretestinghelp.com/github-rest-api-tutorial/#Labels_Milestones_Issues
+		// https://stackoverflow.com/questions/13324052/github-issue-creation-api
+
+		try {
+			String ip = IP.getExternalIP();
+			String timestamp = "" + System.currentTimeMillis();
+			String logfilename = "clientlog_" + ip + "-" + timestamp + ".log";
+
+			FTP ftpClient = new FTP(true);
+			ftpClient.upload(C3Properties.getProperty(C3PROPS.LOGFILE) + ".0", logfilename, true);
+			String serverUrl = C3Properties.getProperty(C3PROPS.SERVER_URL);
+
+			String formattedBody = "Es ist ein Fehler in C3 aufgetreten!\n\nHochgeladene Log-Datei:\n" + serverUrl + "/errorlogs/" + logfilename + "\n\nHier Beschreibung ergänzen:\n\n";
+
+			Desktop desktop;
+			if (Desktop.isDesktopSupported() && (desktop = Desktop.getDesktop()).isSupported(Desktop.Action.MAIL)) {
+				URI mailto;
+				mailto = new URI("mailto:c3@clanwolf.net?subject=C3%20Fehler-Report&body=" + encodeValue(formattedBody));
+				desktop.mail(mailto);
+			} else {
+				C3Logger.warning("Desktop does not support mailto!");
+				throw new RuntimeException("Desktop does not support mailto!");
+			}
+
+			ftpClient.disconnect();
+		} catch (URISyntaxException | IOException e) {
+			// TODO: Handle error here
+			e.printStackTrace();
+			C3Logger.error("Error while uploading client log file during report process.");
+		}
 	}
 
 	private static LogPaneController instance = null;
 
+	public static void setLogURL(String url) {
+		if (instance != null) {
+			Platform.runLater(() -> instance.logURL.setText(url));
+		}
+	}
+
+	public static Level getLevel() {
+		if (instance != null) {
+			Level l = instance.cbLevel.getSelectionModel().getSelectedItem();
+			if (l == null) {
+				return Level.ALL;
+			} else {
+				return l;
+			}
+		}
+		return Level.ALL;
+	}
+
+	public static void setCountdownValue(int v) {
+		if (instance != null) {
+			Platform.runLater(() -> instance.labelCountdown.setText("" + v));
+		}
+	}
+
 	public static void addClientLine(LogEntry line) {
 		if (instance != null) {
-			Platform.runLater(() -> {
-//				if (!instance.tableViewClientLog.getItems().contains(line)) {
-					instance.tableViewClientLog.getItems().add(line);
-//				}
-			});
+			Platform.runLater(() -> instance.tableViewClientLog.getItems().add(line));
 		}
 	}
 
 	public static void scrollClientDown() {
 		if (instance != null) {
-			Platform.runLater(() -> {
-				instance.tableViewClientLog.scrollTo(instance.tableViewClientLog.getItems().size());
-			});
+			Platform.runLater(() -> instance.tableViewClientLog.scrollTo(instance.tableViewClientLog.getItems().size()));
 		}
 	}
 
 	public static void addServerLine(LogEntry line) {
 		if (instance != null) {
-			Platform.runLater(() -> {
-//				if (!instance.tableViewServerLog.getItems().contains(line)) {
-					instance.tableViewServerLog.getItems().add(line);
-//				}
-			});
+			Platform.runLater(() -> instance.tableViewServerLog.getItems().add(line));
 		}
 	}
 
 	public static void scrollServerDown() {
 		if (instance != null) {
-			Platform.runLater(() -> {
-				instance.tableViewServerLog.scrollTo(instance.tableViewServerLog.getItems().size());
-			});
+			Platform.runLater(() -> instance.tableViewServerLog.scrollTo(instance.tableViewServerLog.getItems().size()));
 		}
 	}
 
@@ -154,6 +227,21 @@ public class LogPaneController implements ActionCallBackListener {
 				clientMessageColumn
 		);
 
+		tableViewClientLog.setRowFactory(tableViewClientLog -> new TableRow<LogEntry>() {
+			@Override
+			protected void updateItem(LogEntry item, boolean empty) {
+				super.updateItem(item, empty);
+				if (item == null || item.getLevel() == null)
+					setStyle("");
+				else if (item.getLevel().equals("SEVERE"))
+					setStyle("-fx-background-color: #baffba;");
+				else if (item.getLevel().equals("WARNING"))
+					setStyle("-fx-background-color: #ffd7d1;");
+				else
+					setStyle("");
+			}
+		});
+
 		// Server log
 		TableColumn<LogEntry, Integer> serverLineNumberColumn = new TableColumn<>("");
 		serverLineNumberColumn.setCellValueFactory(new PropertyValueFactory<>("lineNumber"));
@@ -180,6 +268,32 @@ public class LogPaneController implements ActionCallBackListener {
 				serverMethodColumn,
 				serverMessageColumn
 		);
+
+		tableViewServerLog.setRowFactory(tableViewServerLog -> new TableRow<LogEntry>() {
+			@Override
+			protected void updateItem(LogEntry item, boolean empty) {
+				super.updateItem(item, empty);
+				if (item == null || item.getLevel() == null)
+					setStyle("");
+				else if (item.getLevel().equals("SEVERE"))
+					setStyle("-fx-background-color: #baffba;");
+				else if (item.getLevel().equals("WARNING"))
+					setStyle("-fx-background-color: #ffd7d1;");
+				else
+					setStyle("");
+			}
+		});
+
+		// OFF, SEVERE, WARNING, INFO, CONFIG, FINE, FINER, FINEST, ALL
+		cbLevel.getItems().add(Level.OFF);
+		cbLevel.getItems().add(Level.SEVERE);
+		cbLevel.getItems().add(Level.WARNING);
+		cbLevel.getItems().add(Level.INFO);
+		cbLevel.getItems().add(Level.CONFIG);
+		cbLevel.getItems().add(Level.FINE);
+		cbLevel.getItems().add(Level.FINEST);
+		cbLevel.getItems().add(Level.ALL);
+		cbLevel.getSelectionModel().select(Level.ALL);
 
 		tabServerLog.setDisable(Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN));
 

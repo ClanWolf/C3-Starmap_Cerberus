@@ -28,8 +28,6 @@ package net.clanwolf.starmap.logging;
 
 import java.io.File;
 import java.io.PrintStream;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.logging.*;
 

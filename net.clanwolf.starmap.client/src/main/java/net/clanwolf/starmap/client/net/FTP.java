@@ -42,21 +42,36 @@ import java.io.IOException;
 public class FTP implements IFileTransfer {
 
 	private FTPClient ftpClient;
+	private boolean logUploader = false;
 
 	public FTP() {
+		this.logUploader = false;
+	}
 
+	public FTP(boolean logUpload) {
+		this.logUploader = logUpload;
 	}
 
 	private void connect() throws IOException {
 		ftpClient = new FTPClient();
 		ftpClient.setControlEncoding("UTF-8");
 
+		String user = "";
+		String password = "";
+		if (logUploader) {
+			user = C3Properties.getProperty(C3PROPS.FTP_USER_LOGUPLOAD);
+			password = C3Properties.getProperty(C3PROPS.FTP_PASSWORD_LOGUPLOAD);
+		} else {
+			user = C3Properties.getProperty(C3PROPS.FTP_USER);
+			password = C3Properties.getProperty(C3PROPS.FTP_PASSWORD);
+		}
+
 		ftpClient.connect(C3Properties.getProperty(C3PROPS.FTP_SERVER), Integer.parseInt(C3Properties.getProperty(C3PROPS.FTP_PORT)));
-		C3Logger.info(ftpClient.getReplyString());
-		ftpClient.login(C3Properties.getProperty(C3PROPS.FTP_USER), C3Properties.getProperty(C3PROPS.FTP_PASSWORD));
-		C3Logger.info(ftpClient.getReplyString());
+		C3Logger.info(ftpClient.getReplyString().trim().replaceAll("(\\r|\\n)", ""));
+		ftpClient.login(user, password);
+		C3Logger.info(ftpClient.getReplyString().trim().replaceAll("(\\r|\\n)", ""));
 		ftpClient.enterLocalPassiveMode();
-		C3Logger.info(ftpClient.getReplyString());
+		C3Logger.info(ftpClient.getReplyString().trim().replaceAll("(\\r|\\n)", ""));
 		ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE, FTPClient.BINARY_FILE_TYPE);
 		ftpClient.setFileTransferMode(FTPClient.BINARY_FILE_TYPE);
 	}
@@ -71,6 +86,10 @@ public class FTP implements IFileTransfer {
 
 	@Override
 	public boolean upload(String localSourceFile, String remoteResultFile) {
+		return upload(localSourceFile, remoteResultFile, false);
+	}
+
+	public boolean upload(String localSourceFile, String remoteResultFile, boolean errorreport) {
 
 		boolean ret = false;
 		FileInputStream fis = null;
@@ -81,12 +100,12 @@ public class FTP implements IFileTransfer {
 			}
 
 			fis = new FileInputStream(localSourceFile);
-			/*String subPath = "resources/";
-			if(Nexus.isDevelopmentPC()) {
-				subPath = "dev/resources/";
-			}*/
-			ftpClient.storeFile(getFTPSubPath() + remoteResultFile, fis);
-			C3Logger.info(ftpClient.getReplyString());
+			if (!errorreport) {
+				ftpClient.storeFile(getFTPSubPath() + remoteResultFile, fis);
+			} else {
+				ftpClient.storeFile("" + remoteResultFile, fis);
+			}
+			C3Logger.info(ftpClient.getReplyString().trim().replaceAll("(\\r|\\n)", ""));
 			ret = true;
 
 		} catch (IOException ioe) {
