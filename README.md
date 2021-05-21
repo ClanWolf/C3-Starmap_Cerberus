@@ -13,7 +13,7 @@ For the first time, server and client reside in the same project as different mo
 Also the transfer classes do exist in their own separate module only one time now.
 
 # C3
-C3 is a Server/Client application to simulate a part of the Inner Sphere (BattleTech). Factions can move units to planets and attack them. In case attackers win, the planet will change its color on the starmap. The fights itself are conducted not in C3, but in a number of external games that are interfaced to C3 to get back the actual results of the fight. The games include BATTLETECH, MWO, MegaMek or, basically, anything you can come up with.
+C3 is a Server/Client application to simulate a part of the Inner Sphere (BattleTech). Factions can move units to planets and attack them. In case attackers win, the planet will change its color on the starmap. The fights itself are conducted not in C3, but in a number of external games that are interfaced to C3 to get back the actual results of the fight. The games include BATTLETECH, MWO, MegaMek or, basically, anything you can come up with (including to let the client decide by dice-roll who wins).
 
 ![C3_screen_01](https://user-images.githubusercontent.com/16292643/119111321-3f169b80-ba23-11eb-9ec2-9608cab8a8a3.png)
 
