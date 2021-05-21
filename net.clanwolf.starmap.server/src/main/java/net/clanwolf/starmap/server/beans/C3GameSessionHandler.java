@@ -48,10 +48,15 @@ import net.clanwolf.starmap.server.util.WebDataInterface;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
+import net.clanwolf.starmap.transfer.util.Compressor;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.zip.GZIPOutputStream;
 
 /**
  *
@@ -349,12 +354,18 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		ArrayList<UserPOJO> userlist = UserDAO.getInstance().getUserList();
 
 		UniverseDTO uni = WebDataInterface.getUniverse();
+
+		byte[] myByte = Compressor.compress(uni);
+
 		GameState state_userdata = new GameState(GAMESTATEMODES.USER_LOGGED_IN_DATA);
 		state_userdata.addObject(user);
-		state_userdata.addObject2(uni);
+		//state_userdata.addObject2(uni);
+		state_userdata.addObject2(myByte);
 		state_userdata.addObject3(userlist);
 		state_userdata.setReceiver(session.getId());
 		C3GameSessionHandler.sendNetworkEvent(session, state_userdata);
+
+		//Object myUni = Compressor.deCompress(myByte);
 
 		// ACHTUNG:
 		// Wenn das Event hier geschickt wird, aber im Client nichts ankommt und nirgends eine Fehlermeldung

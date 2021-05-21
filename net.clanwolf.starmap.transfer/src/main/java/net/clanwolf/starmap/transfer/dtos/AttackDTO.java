@@ -30,6 +30,7 @@ import net.clanwolf.starmap.transfer.Dto;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public class AttackDTO extends Dto {
 
@@ -47,6 +48,7 @@ public class AttackDTO extends Dto {
 	private Long factionID_Winner;
 	private String remarks;
 	private List<AttackVarsDTO> attackVarList = new ArrayList<>();
+	private List<AttackCharacterDTO> attackCharList;
 
 	@SuppressWarnings("unused")
 	public Long getCharacterID() {
@@ -184,6 +186,14 @@ public class AttackDTO extends Dto {
 
 	public void setAttackVarList(List<AttackVarsDTO> attackVarList) {
 		this.attackVarList = attackVarList;
+	}
+
+	public List<AttackCharacterDTO> getAttackCharList() {
+		return attackCharList;
+	}
+
+	public void setAttackCharList(List<AttackCharacterDTO> attackCharList) {
+		this.attackCharList = attackCharList;
 	}
 
 	public AttackDTO() {

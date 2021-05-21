@@ -33,8 +33,13 @@ import net.clanwolf.starmap.server.util.WebDataInterface;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
+import net.clanwolf.starmap.transfer.util.Compressor;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.Iterator;
+import java.util.zip.GZIPOutputStream;
 
 class C3GameSessionHandlerUniverse {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
@@ -47,7 +52,7 @@ class C3GameSessionHandlerUniverse {
 		while (pl.hasNext()) {
 			PlayerSession plSession = pl.next();
 			GameState state_universe = new GameState(GAMESTATEMODES.GET_UNIVERSE_DATA);
-			state_universe.addObject(universe);
+			state_universe.addObject(Compressor.compress(universe));
 			// state_universe.setReceiver();
 
 //			gm.sendBroadcast(Events.networkEvent(state_universe));

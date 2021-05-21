@@ -29,11 +29,16 @@ package net.clanwolf.starmap.server.persistence.pojos;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import net.clanwolf.starmap.server.persistence.Pojo;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -88,6 +93,13 @@ public class AttackPOJO extends Pojo {
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = AttackVarsPOJO.class)
 	@JoinColumn(name = "AttackID")
 	private List<AttackVarsPOJO> attackVarList = new ArrayList<>();
+
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = AttackCharacterPOJO.class)
+	@JoinColumn(name = "AttackID")
+	// Without the tag @Fetch hibernate throws a MultipleBagFetchException.
+	// https://stackoverflow.com/questions/4334970/hibernate-throws-multiplebagfetchexception-cannot-simultaneously-fetch-multipl/5865605#5865605
+	@Fetch(value = FetchMode.SUBSELECT)
+	private List<AttackCharacterPOJO> attackCharList = new ArrayList<>();
 
 	@SuppressWarnings("unused")
 	public String getRemarks() {
@@ -225,5 +237,13 @@ public class AttackPOJO extends Pojo {
 	@SuppressWarnings("unused")
 	public void setAttackVarList(List<AttackVarsPOJO> attackVarList) {
 		this.attackVarList = attackVarList;
+	}
+
+	public List<AttackCharacterPOJO> getAttackCharList() {
+		return attackCharList;
+	}
+
+	public void setAttackCharList(List<AttackCharacterPOJO> attackCharList) {
+		this.attackCharList = attackCharList;
 	}
 }

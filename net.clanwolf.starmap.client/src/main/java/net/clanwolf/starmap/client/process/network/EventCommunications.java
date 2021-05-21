@@ -41,6 +41,7 @@ import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
 import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
 import net.clanwolf.starmap.transfer.dtos.UserDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
+import net.clanwolf.starmap.transfer.util.Compressor;
 
 import java.util.ArrayList;
 
@@ -83,7 +84,9 @@ public class EventCommunications {
 					Nexus.setUser((UserDTO) state.getObject());
 					C3Logger.info("EventCommunications.onDataIn: myPlayerSessionID: -> " + Nexus.getMyPlayerSessionID());
 
-					Nexus.setBOUniverse(new BOUniverse((UniverseDTO) state.getObject2()));
+					UniverseDTO uni = (UniverseDTO) Compressor.deCompress((byte[]) state.getObject2());
+					Nexus.setBOUniverse(new BOUniverse(uni));
+					//Nexus.setBOUniverse(new BOUniverse((UniverseDTO) state.getObject2()));
 
 					ActionManager.getAction(ACTIONS.UPDATE_GAME_INFO).execute();
 
@@ -174,7 +177,7 @@ public class EventCommunications {
 					break;
 
 				case GET_UNIVERSE_DATA:
-					UniverseDTO universeDTO = (UniverseDTO) state.getObject();
+					UniverseDTO universeDTO = (UniverseDTO) Compressor.deCompress((byte[])state.getObject());
 					Nexus.setUniverseDTO(universeDTO);
 
 					ActionManager.getAction(ACTIONS.NEW_UNIVERSE_RECEIVED).execute();

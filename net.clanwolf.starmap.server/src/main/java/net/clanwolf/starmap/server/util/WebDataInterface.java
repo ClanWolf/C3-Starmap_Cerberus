@@ -128,7 +128,7 @@ public class WebDataInterface {
 			sb.append("AND      F.FactionTypeID     = FT.ID;");
 			selects.put(SystemListTypes.CM_StarSystems.name(), sb.toString());
 
-			sb = new StringBuilder();
+			/*sb = new StringBuilder();
 			sb.append("SELECT \r\n");
 			sb.append("         STS.ID              AS sid,              \r\n");
 			sb.append("         STS.Name            AS name,             \r\n");
@@ -173,7 +173,7 @@ public class WebDataInterface {
 			sb.append("AND      SSD.FactionID       = F.ID               \r\n");
 			sb.append("AND      F.FactionTypeID     = FT.ID              \r\n");
 			sb.append("AND      SSD.Active          = 1;");
-			selects.put(SystemListTypes.HH_StarSystems.name(), sb.toString());
+			selects.put(SystemListTypes.HH_StarSystems.name(), sb.toString());*/
 		}
 	}
 
@@ -306,33 +306,6 @@ public class WebDataInterface {
 					try (PreparedStatement stmt = conn.prepareStatement(selects.get(type.name()), ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
 						rs = stmt.executeQuery();
 						C3Logger.print("Select done...");
-
-						/*if (type == SystemListTypes.HH_StarSystems) {
-							universe.starSystems.clear();
-							while (rs.next()) {
-								StarSystemDTO ss = new StarSystemDTO();
-								ss.setId(rs.getLong("sid"));
-								ss.setName(rs.getString("name"));
-								ss.setX(rs.getBigDecimal("x"));
-								ss.setY(rs.getBigDecimal("y"));
-								ss.setAffiliation(rs.getString("affiliation"));
-								ss.setFactionId(rs.getLong("factionid"));
-								ss.setStarType1(rs.getString("startype1"));
-								ss.setStarClass(rs.getString("class"));
-								ss.setSarnaLink(rs.getString("link"));
-								ss.setInfrastructure(rs.getString("infrastructure"));
-								ss.setWealth(rs.getString("wealth"));
-								ss.setVeternacy(rs.getString("veternacy"));
-								ss.setType(rs.getString("type"));
-								ss.setSystemImageName(rs.getString("systemImageName"));
-								ss.setStarSystemDataId(rs.getLong("starsystemdataid"));
-								ss.setDescription(rs.getString("description"));
-								ss.setCaptial(rs.getBoolean("capital"));
-
-								universe.starSystems.put(ss.getId(), ss);
-							}
-							C3Logger.print("Created universe classes (StarSystems)...");
-						}*/
 
 						// create JSON representation
 						rs.beforeFirst();
