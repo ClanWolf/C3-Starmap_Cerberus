@@ -175,6 +175,15 @@ public class BORolePlayStory {
 	}
 
 	/**
+	 * Returns the default image back
+	 * @return Image
+	 */
+	public static Image getRPG_DefaultImage(String image){
+		InputStream defaultImageStream = BORolePlayStory.getInstance().getClass().getResourceAsStream("/images/bg_rp/" + image);
+		return new Image(defaultImageStream);
+	}
+
+	/**
 	 * Returns the logo from a given faction back
 	 * @param f
 	 * @return Image

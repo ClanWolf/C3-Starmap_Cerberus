@@ -900,7 +900,8 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 		}
 
 		if (selected != null && selected.getValue().getVariante() != ROLEPLAYENTRYTYPES.C3_RP_STORY &&
-				selected != null && selected.getValue().getVariante() != ROLEPLAYENTRYTYPES.C3_RP_CHAPTER) {
+				selected.getValue().getVariante() != ROLEPLAYENTRYTYPES.C3_RP_CHAPTER &&
+				selected.getValue().getVariante() != ROLEPLAYENTRYTYPES.C3_RP_STEP_V8) {
 			if (!tabPaneStory.getTabs().contains(tabBasic2)) {
 				tabPaneStory.getTabs().add(tabBasic2);
 			}

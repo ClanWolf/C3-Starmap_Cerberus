@@ -46,7 +46,9 @@ public enum ROLEPLAYENTRYTYPES {
 
 	C3_RP_STEP_V6("Step Keypad"),
 
-	C3_RP_STEP_V7("Step Message");
+	C3_RP_STEP_V7("Step Message"),
+
+	C3_RP_STEP_V8("Step prepare battle");
 
 	private final String label;
 
