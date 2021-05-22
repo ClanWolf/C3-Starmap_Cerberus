@@ -297,7 +297,7 @@ public class LogPaneController implements ActionCallBackListener {
 		cbLevel.getItems().add(Level.ALL);
 		cbLevel.getSelectionModel().select(Level.ALL);
 
-		tabServerLog.setDisable(Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN));
+		tabServerLog.setDisable(!Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN));
 
 		addActionCallBackListeners();
 	}
