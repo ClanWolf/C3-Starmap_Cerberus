@@ -356,6 +356,7 @@ public class NodeGestures {
 				canvas.showStarSystemMarker(clickedStarSystem);
 				Nexus.setCurrentlySelectedStarSystem(clickedStarSystem);
 				ActionManager.getAction(ACTIONS.SHOW_SYSTEM_DETAIL).execute(clickedStarSystem);
+				ActionManager.getAction(ACTIONS.SYSTEM_WAS_SELECTED).execute(clickedStarSystem);
 				if (group != null) {
 					double markerDim = 36.0d;
 					ImageView marker;

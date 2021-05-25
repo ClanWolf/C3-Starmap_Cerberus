@@ -12,7 +12,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="LoginPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.login.LoginPaneController">
+<AnchorPane id="LoginPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.login.LoginPaneController">
   <children>
     <Label alignment="BOTTOM_LEFT" layoutX="62.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true" opacity="0.2" prefHeight="426.0" prefWidth="500.0" styleClass="contentLabelSideImageSatelite" visible="true">
       <stylesheets>
@@ -49,7 +49,7 @@
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
       <textFill>
-        <Color blue="0.937" green="0.831" red="0.639" fx:id="x2" />
+        <Color red="0.639" green="0.831" blue="0.937" fx:id="x2" />
       </textFill>
     </CheckBox>
     <CheckBox id="GuestAccount" fx:id="cbStorePassword" layoutX="510.0" layoutY="200.0" mnemonicParsing="false" onAction="#handleStorePasswordCheckboxClick" text="CheckBox" textFill="$x2">
@@ -63,12 +63,12 @@
       </stylesheets>
     </CheckBox>
     <TextField fx:id="tfFactionKey" layoutX="510.0" layoutY="331.0" prefWidth="200.0" />
-    <Button id="buttonYes" fx:id="buttonLogin" layoutX="540.0" layoutY="439.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleLoginButtonClick" prefWidth="140.0" styleClass="contentButton" text="Button">
+    <Button id="buttonYes" fx:id="buttonLogin" alignment="CENTER_RIGHT" layoutX="540.0" layoutY="439.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleLoginButtonClick" prefWidth="140.0" styleClass="contentButton" text="Button">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
     </Button>
-    <Button id="buttonNo" fx:id="buttonCancel" layoutX="689.0" layoutY="439.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleCancelButtonClick" onMouseEntered="#handleCancelButtonHoverEnter" onMouseExited="#handleCancelButtonHoverExit" prefWidth="140.0" styleClass="contentButton" text="Button">
+    <Button id="buttonNo" fx:id="buttonCancel" alignment="CENTER_RIGHT" layoutX="689.0" layoutY="439.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleCancelButtonClick" onMouseEntered="#handleCancelButtonHoverEnter" onMouseExited="#handleCancelButtonHoverExit" prefWidth="140.0" styleClass="contentButton" text="Button">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
@@ -92,7 +92,7 @@
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>
          <textFill>
-            <Color blue="0.804" green="0.620" red="0.412" fx:id="x1" />
+            <Color red="0.412" green="0.620" blue="0.804" fx:id="x1" />
          </textFill>
       </Label>
   </children>

@@ -66,7 +66,7 @@
                     <URL value="@../styles/MainFrameStyle.css" />
                   </stylesheets>
                 </TextField>
-                <Button id="testConnectioButton" fx:id="testConnectionButton" layoutX="252.0" layoutY="114.0" mnemonicParsing="false" onAction="#checkDatabaseConnection" prefWidth="203.0" styleClass="contentButton" text="testConnection">
+                <Button id="testConnectioButton" fx:id="testConnectionButton" alignment="CENTER_RIGHT" layoutX="252.0" layoutY="114.0" mnemonicParsing="false" onAction="#checkDatabaseConnection" prefWidth="203.0" styleClass="contentButton" text="testConnection">
                   <stylesheets>
                     <URL value="@../styles/MainFrameStyle.css" />
                   </stylesheets>
@@ -232,12 +232,12 @@
         </Tab>
       </tabs>
     </TabPane>
-    <Button fx:id="buttonYes" layoutX="547.0" layoutY="449.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#handleConfirmButtonClick" prefWidth="140.0" styleClass="contentButton" text="Button">
+    <Button fx:id="buttonYes" alignment="CENTER_RIGHT" layoutX="547.0" layoutY="449.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#handleConfirmButtonClick" prefWidth="140.0" styleClass="contentButton" text="Button">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
     </Button>
-    <Button fx:id="buttonNo" layoutX="698.0" layoutY="449.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#handleCancelButtonClick" onMouseEntered="#handleCancelButtonHoverEnter" onMouseExited="#handleCancelButtonHoverExit" prefWidth="140.0" styleClass="contentButton" text="Button">
+    <Button fx:id="buttonNo" alignment="CENTER_RIGHT" layoutX="698.0" layoutY="449.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#handleCancelButtonClick" onMouseEntered="#handleCancelButtonHoverEnter" onMouseExited="#handleCancelButtonHoverExit" prefWidth="140.0" styleClass="contentButton" text="Button">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>

@@ -51,6 +51,22 @@ public class C3Logger {
 		info(message);
 	}
 
+	public static void finest(String message) {
+		logprint(Level.FINEST, message, null);
+	}
+
+	public static void finer(String message) {
+		logprint(Level.FINER, message, null);
+	}
+
+	public static void fine(String message) {
+		logprint(Level.FINE, message, null);
+	}
+
+	public static void config(String message) {
+		logprint(Level.CONFIG, message, null);
+	}
+
 	public static void info(String message) {
 		logprint(Level.INFO, message, null);
 	}

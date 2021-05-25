@@ -29,6 +29,7 @@ package net.clanwolf.starmap.client.process.universe;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.AttackDTO;
+import net.clanwolf.starmap.transfer.dtos.JumpshipDTO;
 import net.clanwolf.starmap.transfer.dtos.RoutePointDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 
@@ -36,10 +37,12 @@ public class BOAttack {
 
 	private AttackDTO attackDTO;
 
+	@SuppressWarnings("unused")
 	public BOAttack(AttackDTO attackDTO) {
 		this.attackDTO = attackDTO;
 	}
 
+	@SuppressWarnings("unused")
 	public void storeAttack() {
 		GameState saveAttackState = new GameState();
 		saveAttackState.setMode(GAMESTATEMODES.ATTACK_SAVE);
@@ -47,13 +50,28 @@ public class BOAttack {
 		Nexus.fireNetworkEvent(saveAttackState);
 	}
 
+	@SuppressWarnings("unused")
 	public Integer getSeason() { return attackDTO.getSeason(); }
 
+	@SuppressWarnings("unused")
 	public Integer getRound() { return attackDTO.getRound(); }
 
+	@SuppressWarnings("unused")
 	public Long getStarSystemId() { return attackDTO.getStarSystemID(); }
 
+	@SuppressWarnings("unused")
 	public Long getAttackedFromStarSystem() { return attackDTO.getAttackedFromStarSystemID(); }
 
+	@SuppressWarnings("unused")
 	public Long getJumpshipId() { return attackDTO.getJumpshipID(); }
+
+	@SuppressWarnings("unused")
+	public Integer getAttackerFactionId() {
+		BOJumpship j = Nexus.getBoUniverse().getJumpshipByID(attackDTO.getJumpshipID());
+		Long id = j.getJumpshipFaction();
+		return id.intValue();
+	}
+
+	@SuppressWarnings("unused")
+	public Integer getDefenderFactionId() { return attackDTO.getFactionID_Defender().intValue(); }
 }

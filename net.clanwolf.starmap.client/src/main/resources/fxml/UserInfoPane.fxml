@@ -58,12 +58,12 @@
             </Label>
          </children>
       </GridPane>
-    <Button id="buttonYes" fx:id="buttonLogout" layoutX="540.0" layoutY="439.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleLogoutButtonClick" onMouseEntered="#handleLogoutButtonHoverEnter" onMouseExited="#handleLogoutButtonHoverExit" prefWidth="140.0" styleClass="contentButton" text="Logout">
+    <Button id="buttonYes" fx:id="buttonLogout" alignment="CENTER_RIGHT" layoutX="540.0" layoutY="439.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleLogoutButtonClick" onMouseEntered="#handleLogoutButtonHoverEnter" onMouseExited="#handleLogoutButtonHoverExit" prefWidth="140.0" styleClass="contentButton" text="Logout">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
     </Button>
-    <Button id="buttonNo" fx:id="buttonCancel" layoutX="689.0" layoutY="439.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleCancelButtonClick" onMouseEntered="#handleCancelButtonHoverEnter" onMouseExited="#handleCancelButtonHoverExit" prefWidth="140.0" styleClass="contentButton" text="Cancel">
+    <Button id="buttonNo" fx:id="buttonCancel" alignment="CENTER_RIGHT" layoutX="689.0" layoutY="439.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleCancelButtonClick" onMouseEntered="#handleCancelButtonHoverEnter" onMouseExited="#handleCancelButtonHoverExit" prefWidth="140.0" styleClass="contentButton" text="Cancel">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>

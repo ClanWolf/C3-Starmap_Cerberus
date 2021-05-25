@@ -30,6 +30,7 @@ import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
@@ -62,10 +63,12 @@ import net.clanwolf.starmap.client.process.universe.BOUniverse;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.C3PROPS;
 import net.clanwolf.starmap.client.util.C3Properties;
+import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.transfer.dtos.AttackDTO;
 import net.clanwolf.starmap.transfer.dtos.JumpshipDTO;
 import net.clanwolf.starmap.transfer.dtos.RoutePointDTO;
+import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
 import net.clanwolf.starmap.transfer.enums.MEDALS;
 import org.kynosarges.tektosyne.geometry.PointD;
 
@@ -114,7 +117,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	@FXML
 	Button mapButton05;
 	@FXML
-	Button mapButton06;
+	Button mapButton06; // Attack / join battle
 
 	private boolean universeMapGenerationStarted = false;
 	private BOUniverse boUniverse = null;
@@ -576,10 +579,14 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 		// Transition sequence
 		SequentialTransition sequentialTransition = new SequentialTransition();
-		sequentialTransition.getChildren().addAll(fadeInTransition_01,
-				//													fadeInTransition_01a,
-				fadeInTransition_01b, fadeInTransition_02, fadeInTransition_03, fadeInTransition_04, fadeInTransition_05
-				//			                                    	fadeInTransition_06
+		sequentialTransition.getChildren().addAll(      fadeInTransition_01,
+														// fadeInTransition_01a,
+														fadeInTransition_01b,
+														fadeInTransition_02,
+														fadeInTransition_03,
+														fadeInTransition_04,
+														fadeInTransition_05
+														// fadeInTransition_06
 		);
 		sequentialTransition.setCycleCount(1);
 		sequentialTransition.setOnFinished(event -> {
@@ -589,6 +596,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			}
 		});
 		sequentialTransition.play();
+		mapButton06.setVisible(false);
 		C3SoundPlayer.play("sound/fx/cursor_click_11.mp3", false);
 	}
 
@@ -600,6 +608,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		mapButton04.setDisable(true);
 		mapButton05.setDisable(true);
 		mapButton06.setDisable(true);
+		mapButton06.setVisible(false);
 
 		C3Logger.info("Travel to Homeworld");
 		C3Logger.info("X: " + Config.MAP_INITIAL_TRANSLATE_X);
@@ -873,6 +882,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		ActionManager.addActionCallbackListener(ACTIONS.SHOW_JUMPSHIP_DETAIL, this);
 		ActionManager.addActionCallbackListener(ACTIONS.HIDE_JUMPSHIP_DETAIL, this);
 		ActionManager.addActionCallbackListener(ACTIONS.TERMINAL_COMMAND, this);
+		ActionManager.addActionCallbackListener(ACTIONS.SYSTEM_WAS_SELECTED, this);
 	}
 
 	/**
@@ -960,16 +970,23 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 			case PANE_DESTROY_CURRENT:
 			case PANE_CREATION_BEGINS:
-				starMapPane.setOpacity(0.0f);
-				buttonBackground.setOpacity(0.0f);
-				mapButton01.setOpacity(0.0f);
-				mapButton02.setOpacity(0.0f);
-				mapButton03.setOpacity(0.0f);
-//				mapButton04.setOpacity(0.0f);
-//				mapButton05.setOpacity(0.0f);
-				mapButton06.setOpacity(0.0f);
-				paneSystemDetail.setOpacity(0.0f);
-				paneJumpshipDetail.setOpacity(0.0f);
+				if (o.getObject() instanceof AbstractC3Pane) {
+					AbstractC3Pane p = (AbstractC3Pane) o.getObject();
+					if ("MapPane".equals(p.getPaneName())) {
+						Platform.runLater(() -> {
+							starMapPane.setOpacity(0.0f);
+							buttonBackground.setOpacity(0.0f);
+							mapButton01.setOpacity(0.0f);
+							mapButton02.setOpacity(0.0f);
+							mapButton03.setOpacity(0.0f);
+							//				mapButton04.setOpacity(0.0f);
+							//				mapButton05.setOpacity(0.0f);
+							mapButton06.setOpacity(0.0f);
+							paneSystemDetail.setOpacity(0.0f);
+							paneJumpshipDetail.setOpacity(0.0f);
+						});
+					}
+				}
 				break;
 
 			case MAP_CREATION_FINISHED:
@@ -1006,6 +1023,65 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					showSystemDetail(ss);
 				} else {
 					hideSystemDetail();
+				}
+				break;
+
+			case SYSTEM_WAS_SELECTED:
+				if (o.getObject() instanceof BOStarSystem) {
+
+					// TODO: if character hat schon einen aktiven Kampf, mach nix
+
+					boolean hasAttack = false;
+					BOStarSystem ss = (BOStarSystem) o.getObject();
+					for (BOAttack a : Nexus.getBoUniverse().attackBOs) {
+						// Correct season and round
+						if (Nexus.getCurrentSeason() == a.getSeason() && Nexus.getCurrentRound() == a.getRound()) {
+							// Clicked star system has an attack going on
+							if (ss.getStarSystemId().equals(a.getStarSystemId())) {
+								hasAttack = true;
+
+								mapButton06.getStyleClass().remove("contentButton");
+								mapButton06.getStyleClass().remove("contentButtonRed");
+								mapButton06.getStyleClass().remove("contentButtonBlue");
+								mapButton06.getStyleClass().remove("contentButtonYellow");
+
+								if (Nexus.getCurrentUser().getCurrentCharacter().getFactionId().equals(a.getAttackerFactionId())) {
+									// I am from the attacker faction
+									C3Logger.info("I am the attacker.");
+									mapButton06.getStyleClass().add("contentButtonRed");
+									mapButton06.setText(Internationalization.getString("starmap_attack_system"));
+								} else if (Nexus.getCurrentUser().getCurrentCharacter().getFactionId().equals(a.getDefenderFactionId())) {
+									// I am from the defender faction
+									C3Logger.info("I am the defender.");
+									mapButton06.getStyleClass().add("contentButtonBlue");
+									mapButton06.setText(Internationalization.getString("starmap_defend_system"));
+								} else {
+									// I am someone else
+									C3Logger.info("I want to join the fight.");
+									mapButton06.getStyleClass().add("contentButtonYellow");
+									mapButton06.setText(Internationalization.getString("starmap_join_fight"));
+								}
+								mapButton06.setDisable(false);
+								mapButton06.setVisible(true);
+
+								FadeTransition fadeInTransition = new FadeTransition(Duration.millis(850), mapButton06);
+								fadeInTransition.setFromValue(0.2);
+								fadeInTransition.setToValue(1.0);
+								FadeTransition fadeOutTransition = new FadeTransition(Duration.millis(850), mapButton06);
+								fadeOutTransition.setFromValue(1.0);
+								fadeOutTransition.setToValue(0.2);
+								SequentialTransition sequentialTransition = new SequentialTransition();
+								sequentialTransition.getChildren().addAll(fadeInTransition, fadeOutTransition);
+								sequentialTransition.setCycleCount(Animation.INDEFINITE);
+								sequentialTransition.play();
+							}
+						}
+					}
+					if (!hasAttack) {
+						// disable attack button
+						mapButton06.setDisable(true);
+						mapButton06.setVisible(false);
+					}
 				}
 				break;
 

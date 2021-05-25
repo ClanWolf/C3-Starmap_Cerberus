@@ -726,6 +726,7 @@
   -fx-background-repeat: no-repeat;
   -fx-background-insets: 1, 1, 1, 1;
   -fx-background-radius: 0, 0, 0, 0;
+  -fx-alignment: RIGHT;
   -fx-padding: 10 10 8 10;
   -fx-font-family: "Consolas";
   -fx-font-size: 14px;
@@ -734,26 +735,33 @@
 }
 
 .contentButton:disabled {
-  -fx-background-color: rgba(12, 22, 32, 0.8);
+  -fx-background-color: rgba(70, 118, 70, 0.1);
   -fx-text-fill: #fff;
   -fx-background-image: url("../images/buttons/ContentButton_BG_disabled.png");
 }
 
 .contentButton:hover {
-  -fx-background-color: rgba(70, 118, 70, 0.8);
+  -fx-background-color: rgba(70, 118, 70, 0.7);
   -fx-text-fill: #fff;
   -fx-background-image: url("../images/buttons/ContentButton_BG_hover.png");
 }
 
 .contentButton:focused {
-  -fx-background-color: rgba(70, 118, 70, 0.8);
+  -fx-background-color: rgba(70, 118, 70, 0.7);
   -fx-text-fill: #fff;
   -fx-background-image: url("../images/buttons/ContentButton_BG_focus.png");
 }
 
 .contentButton:armed {
-  -fx-background-color: rgba(255, 255, 132, 0.5);
-  -fx-border-color: #ffd42a;
+/*  -fx-background-color: rgba(255, 255, 132, 0.5); */
+  -fx-background-color: rgba(70, 118, 70, 1.0);
+  -fx-text-fill: #fff;
+  -fx-background-image: url("../images/buttons/ContentButton_BG_armed.png");
+}
+
+.contentButton:pressed {
+/*  -fx-background-color: rgba(255, 255, 132, 0.5); */
+  -fx-background-color: rgba(70, 118, 70, 1.0);
   -fx-text-fill: #fff;
   -fx-background-image: url("../images/buttons/ContentButton_BG_armed.png");
 }
@@ -765,75 +773,130 @@
   -fx-background-repeat: no-repeat;
   -fx-background-insets: 1, 1, 1, 1;
   -fx-background-radius: 0, 0, 0, 0;
-  -fx-padding: 10 10 8 10;
+  -fx-alignment: RIGHT;
+  -fx-padding: 10 10 8 5;
   -fx-font-family: "Consolas";
   -fx-font-size: 14px;
   -fx-font-weight: bold;
   -fx-text-fill: #bedcbe;
 }
 
+.contentButtonRed:disabled {
+  -fx-background-color: rgba(200, 36, 0, 0.1);
+  -fx-text-fill: #fff;
+  -fx-background-image: url("../images/buttons/ContentButton_BG_disabled.png");
+}
+
 .contentButtonRed:hover {
-  -fx-background-color: rgba(200, 36, 0, 0.8);
+  -fx-background-color: rgba(200, 36, 0, 0.7);
   -fx-text-fill: #fff;
   -fx-background-image: url("../images/buttons/ContentButton_BG_hover.png");
 }
 
 .contentButtonRed:focused {
-  -fx-background-color: rgba(200, 36, 0, 0.8);
+  -fx-background-color: rgba(200, 36, 0, 0.7);
   -fx-text-fill: #fff;
   -fx-background-image: url("../images/buttons/ContentButton_BG_focus.png");
 }
 
 .contentButtonRed:armed {
-  -fx-background-color: rgba(200, 36, 0, 0.5);
-  -fx-border-color: #fe2f00;
+  -fx-background-color: rgba(200, 36, 0, 1.0);
   -fx-text-fill: #fff;
   -fx-background-image: url("../images/buttons/ContentButton_BG_armed.png");
 }
 
 .contentButtonRed:pressed {
-  -fx-background-color: rgba(200, 36, 0, 0.5);
-  -fx-border-color: #fe2f00;
+  -fx-background-color: rgba(200, 36, 0, 1.0);
   -fx-text-fill: #fff;
   -fx-background-image: url("../images/buttons/ContentButton_BG_armed.png");
 }
 
 .contentButtonBlue {
-  -fx-border-color: #fe2f00;
-  -fx-background-color: rgba(2, 36, 0, 0.4);
+  -fx-border-color: #94e3fe;
+  -fx-background-color: rgba(1, 112, 151, 0.4);
   -fx-background-image: url("../images/buttons/ContentButton_BG.png");
   -fx-background-repeat: no-repeat;
   -fx-background-insets: 1, 1, 1, 1;
   -fx-background-radius: 0, 0, 0, 0;
-  -fx-padding: 10 10 8 10;
+  -fx-alignment: RIGHT;
+  -fx-padding: 10 10 8 5;
   -fx-font-family: "Consolas";
   -fx-font-size: 14px;
   -fx-font-weight: bold;
   -fx-text-fill: #bedcbe;
 }
 
+.contentButtonBlue:disabled {
+  -fx-background-color: rgba(1, 112, 151, 0.1);
+  -fx-text-fill: #fff;
+  -fx-background-image: url("../images/buttons/ContentButton_BG_disabled.png");
+}
+
 .contentButtonBlue:hover {
-  -fx-background-color: rgba(2, 36, 0, 0.8);
+  -fx-background-color: rgba(1, 112, 151, 0.7);
   -fx-text-fill: #fff;
   -fx-background-image: url("../images/buttons/ContentButton_BG_hover.png");
 }
 
 .contentButtonBlue:focused {
-  -fx-background-color: rgba(2, 36, 0, 0.8);
+  -fx-background-color: rgba(1, 112, 151, 0.7);
   -fx-text-fill: #fff;
   -fx-background-image: url("../images/buttons/ContentButton_BG_focus.png");
 }
 
 .contentButtonBlue:armed {
-  -fx-background-color: rgba(2, 36, 0, 0.5);
-  -fx-border-color: #fe2f00;
+  -fx-background-color: rgba(1, 112, 151, 1.0);
   -fx-text-fill: #fff;
   -fx-background-image: url("../images/buttons/ContentButton_BG_armed.png");
 }
 
 .contentButtonBlue:pressed {
-  -fx-background-color: rgba(2, 36, 0, 0.5);
-  -fx-border-color: #fe2f00;
+  -fx-background-color: rgba(1, 112, 151, 1.0);
+  -fx-text-fill: #fff;
+  -fx-background-image: url("../images/buttons/ContentButton_BG_armed.png");
+}
+
+.contentButtonYellow {
+  -fx-border-color: #fecf74;
+  -fx-background-color: rgba(254, 168, 4, 0.4);
+  -fx-background-image: url("../images/buttons/ContentButton_BG.png");
+  -fx-background-repeat: no-repeat;
+  -fx-background-insets: 1, 1, 1, 1;
+  -fx-background-radius: 0, 0, 0, 0;
+  -fx-alignment: RIGHT;
+  -fx-padding: 10 10 8 5;
+  -fx-font-family: "Consolas";
+  -fx-font-size: 14px;
+  -fx-font-weight: bold;
+  -fx-text-fill: #bedcbe;
+}
+
+.contentButtonYellow:disabled {
+  -fx-background-color: rgba(254, 168, 4, 0.1);
+  -fx-text-fill: #fff;
+  -fx-background-image: url("../images/buttons/ContentButton_BG_disabled.png");
+}
+
+.contentButtonYellow:hover {
+  -fx-background-color: rgba(254, 168, 4, 0.7);
+  -fx-text-fill: #fff;
+  -fx-background-image: url("../images/buttons/ContentButton_BG_hover.png");
+}
+
+.contentButtonYellow:focused {
+  -fx-background-color: rgba(254, 168, 4, 0.7);
+  -fx-text-fill: #fff;
+  -fx-background-image: url("../images/buttons/ContentButton_BG_focus.png");
+}
+
+.contentButtonYellow:armed {
+  -fx-background-color: rgba(254, 168, 4, 1.0);
+  -fx-text-fill: #fff;
+  -fx-background-image: url("../images/buttons/ContentButton_BG_armed.png");
+}
+
+.contentButtonYellow:pressed {
+  -fx-background-color: rgba(254, 168, 4, 1.0);
   -fx-text-fill: #fff;
   -fx-background-image: url("../images/buttons/ContentButton_BG_armed.png");
 }

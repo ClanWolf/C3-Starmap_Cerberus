@@ -18,7 +18,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="CharacterPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.character.CharacterPaneController">
+<AnchorPane id="CharacterPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.character.CharacterPaneController">
   <children>
     <Label fx:id="panelHeadline" alignment="BASELINE_RIGHT" contentDisplay="CENTER" layoutX="14.0" layoutY="375.0" mouseTransparent="true" opacity="0.12" prefWidth="794.0" text="[[[___]]]">
       <font>
@@ -28,10 +28,10 @@
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
       <textFill>
-        <Color blue="0.804" green="0.620" red="0.412" fx:id="x1" />
+        <Color red="0.412" green="0.620" blue="0.804" fx:id="x1" />
       </textFill>
     </Label>
-    <Button id="buttonYes" fx:id="buttonNew" layoutX="670.0" layoutY="18.0" maxWidth="-Infinity" minWidth="-1.0" mnemonicParsing="false" onMouseClicked="#handleNewButtonClick" prefWidth="88.0" styleClass="contentButton" text="new">
+    <Button id="buttonYes" fx:id="buttonNew" alignment="CENTER_RIGHT" layoutX="670.0" layoutY="18.0" maxWidth="-Infinity" minWidth="-1.0" mnemonicParsing="false" onMouseClicked="#handleNewButtonClick" prefWidth="88.0" styleClass="contentButton" text="new">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
@@ -115,12 +115,12 @@
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
     </Label>
-    <Button id="buttonYes" fx:id="buttonSave" disable="true" layoutX="547.0" layoutY="449.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#handleSaveButtonClick" prefWidth="140.0" styleClass="contentButton" text="save" visible="true">
+    <Button id="buttonYes" fx:id="buttonSave" alignment="CENTER_RIGHT" disable="true" layoutX="547.0" layoutY="449.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#handleSaveButtonClick" prefWidth="140.0" styleClass="contentButton" text="save" visible="true">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
     </Button>
-    <Button id="buttonYes" fx:id="buttonCancel" disable="false" layoutX="699.0" layoutY="450.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#handleCancelButtonClick" prefWidth="140.0" styleClass="contentButton" text="cancel" visible="true">
+    <Button id="buttonYes" fx:id="buttonCancel" alignment="CENTER_RIGHT" disable="false" layoutX="699.0" layoutY="450.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#handleCancelButtonClick" prefWidth="140.0" styleClass="contentButton" text="cancel" visible="true">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
