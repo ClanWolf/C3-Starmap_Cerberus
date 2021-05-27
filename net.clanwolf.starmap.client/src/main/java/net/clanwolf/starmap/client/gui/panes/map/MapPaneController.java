@@ -236,8 +236,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			mapButton01.setOpacity(0.0f);
 			mapButton02.setOpacity(0.0f);
 			mapButton03.setOpacity(0.0f);
-			mapButton04.setOpacity(0.0f);
-			mapButton05.setOpacity(0.0f);
+//			mapButton04.setOpacity(0.0f);
+//			mapButton05.setOpacity(0.0f);
 			mapButton06.setOpacity(0.0f);
 			paneSystemDetail.setOpacity(0.0f);
 			paneJumpshipDetail.setOpacity(0.0f);
@@ -496,6 +496,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+			setStrings();
 			C3Logger.info("Finished to build the star map.");
 			ActionManager.getAction(ACTIONS.MAP_CREATION_FINISHED).execute();
 		}
@@ -843,9 +844,14 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	 */
 	@Override
 	public void setStrings() {
-		//		Platform.runLater(() -> {
-		//			//
-		//		});
+		Platform.runLater(() -> {
+			mapButton01.setText(Internationalization.getString("starmap_confirm_orders"));
+			mapButton02.setText(Internationalization.getString("starmap_center_selected_jumpship"));
+			mapButton03.setText(Internationalization.getString("starmap_center_homeworld"));
+			mapButton04.setText(Internationalization.getString("starmap_next_jumpship"));
+			mapButton05.setText(Internationalization.getString("starmap_previous_jumpship"));
+			mapButton06.setText("..."); // depends on the planet that is selected
+		});
 	}
 
 	/**

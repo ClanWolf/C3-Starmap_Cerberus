@@ -43,6 +43,8 @@ import org.json.simple.JSONValue;
 import javax.persistence.EntityManager;
 import java.io.*;
 import java.sql.*;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
@@ -57,10 +59,19 @@ public class WebDataInterface {
 		if (universe != null) {
 			return universe;
 		}
+
+		String pattern = "dd-MM-yyyy";
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+
+		Long season = 1L;
+		Long round = RoundDAO.getInstance().findBySeasonId(season).getRound();
+		Date date = RoundDAO.getInstance().findBySeasonId(season).getCurrentRoundStartDate();
+		String dateS = simpleDateFormat.format(date);
+
 		universe = new UniverseDTO();
-		universe.currentSeason = 1;
-		universe.currentRound = 3;
-		universe.currentDate = "01.01.3052";
+		universe.currentSeason = season.intValue();
+		universe.currentRound = round.intValue();
+		universe.currentDate = dateS;
 		return universe;
 	}
 

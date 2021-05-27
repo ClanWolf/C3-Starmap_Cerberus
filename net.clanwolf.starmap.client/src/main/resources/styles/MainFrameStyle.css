@@ -753,14 +753,12 @@
 }
 
 .contentButton:armed {
-/*  -fx-background-color: rgba(255, 255, 132, 0.5); */
   -fx-background-color: rgba(70, 118, 70, 1.0);
   -fx-text-fill: #fff;
   -fx-background-image: url("../images/buttons/ContentButton_BG_armed.png");
 }
 
 .contentButton:pressed {
-/*  -fx-background-color: rgba(255, 255, 132, 0.5); */
   -fx-background-color: rgba(70, 118, 70, 1.0);
   -fx-text-fill: #fff;
   -fx-background-image: url("../images/buttons/ContentButton_BG_armed.png");
