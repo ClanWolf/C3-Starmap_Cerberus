@@ -28,10 +28,13 @@ package net.clanwolf.starmap.client.process.universe;
 
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.transfer.GameState;
+import net.clanwolf.starmap.transfer.dtos.AttackCharacterDTO;
 import net.clanwolf.starmap.transfer.dtos.AttackDTO;
 import net.clanwolf.starmap.transfer.dtos.JumpshipDTO;
 import net.clanwolf.starmap.transfer.dtos.RoutePointDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
+
+import java.util.List;
 
 public class BOAttack {
 
@@ -48,6 +51,22 @@ public class BOAttack {
 		saveAttackState.setMode(GAMESTATEMODES.ATTACK_SAVE);
 		saveAttackState.addObject(attackDTO);
 		Nexus.fireNetworkEvent(saveAttackState);
+	}
+
+	public static boolean charHasAnActiveAttack() {
+		boolean charHasAnotherActiveAttack = false;
+		for (BOAttack a : Nexus.getBoUniverse().attackBOs) {
+			for (AttackCharacterDTO ac : a.getAttackCharList()) {
+				if (ac.getCharacterID().equals(Nexus.getCurrentUser().getCurrentCharacter())) {
+					charHasAnotherActiveAttack = true;
+				}
+			}
+		}
+		return charHasAnotherActiveAttack;
+	}
+
+	public AttackDTO getAttackDTO() {
+		return attackDTO;
 	}
 
 	@SuppressWarnings("unused")
@@ -91,5 +110,10 @@ public class BOAttack {
 		} else {
 			return null;
 		}
+	}
+
+	@SuppressWarnings("unused")
+	public List<AttackCharacterDTO> getAttackCharList() {
+		return attackDTO.getAttackCharList();
 	}
 }

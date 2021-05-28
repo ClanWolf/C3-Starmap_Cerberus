@@ -33,6 +33,8 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import net.clanwolf.starmap.client.gui.panes.map.Config;
+import net.clanwolf.starmap.client.nexus.Nexus;
+import net.clanwolf.starmap.transfer.dtos.AttackDTO;
 import net.clanwolf.starmap.transfer.dtos.StarSystemDataDTO;
 import org.kynosarges.tektosyne.geometry.PointD;
 
@@ -89,10 +91,21 @@ public class BOStarSystem {
 	public Long getStarSystemDataId() {
 		return hh_starSystemDataDTO.getId();
 	}
+
+	@SuppressWarnings("unused")
 	public Long getStarSystemId() {
 		return hh_starSystemDataDTO.getStarSystemID().getId();
 	}
 
+	@SuppressWarnings("unused")
+	public BOAttack getAttack() {
+		for (BOAttack a : Nexus.getBoUniverse().attackBOs) {
+			if (hh_starSystemDataDTO.getStarSystemID().getId().equals(a.getStarSystemId())) {
+				return a;
+			}
+		}
+		return null;
+	}
 
 	@SuppressWarnings("unused")
 	public Circle getStarSystemCircle() {
