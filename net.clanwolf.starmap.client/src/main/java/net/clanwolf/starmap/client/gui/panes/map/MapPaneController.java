@@ -46,10 +46,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.util.Duration;
-import net.clanwolf.starmap.client.action.ACTIONS;
-import net.clanwolf.starmap.client.action.ActionCallBackListener;
-import net.clanwolf.starmap.client.action.ActionManager;
-import net.clanwolf.starmap.client.action.ActionObject;
+import net.clanwolf.starmap.client.action.*;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
 import net.clanwolf.starmap.client.gui.panes.chat.ChatPane;
@@ -1038,8 +1035,18 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					// TODO: if character hat schon einen aktiven Kampf, mach nix
 
 					boolean hasAttack = false;
+					boolean attackAlreadyStarted = false;
+					boolean startAttackEnabled = false;
+
 					BOStarSystem ss = (BOStarSystem) o.getObject();
 					for (BOAttack a : Nexus.getBoUniverse().attackBOs) {
+
+						if (a.getStoryId() == null) {
+							attackAlreadyStarted = false;
+						} else {
+							attackAlreadyStarted = true;
+						}
+
 						// Correct season and round
 						if (Nexus.getCurrentSeason() == a.getSeason() && Nexus.getCurrentRound() == a.getRound()) {
 							// Clicked star system has an attack going on
@@ -1056,30 +1063,60 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 									C3Logger.info("I am the attacker.");
 									mapButton06.getStyleClass().add("contentButtonRed");
 									mapButton06.setText(Internationalization.getString("starmap_attack_system"));
+
+									if (!attackAlreadyStarted) {
+										// The attack has not been started yet, I am from the attacking faction, so I can start it now
+										startAttackEnabled = true;
+										ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("attack_youMayStartTheAttack"), true));
+									} else {
+										// Another warrior of my faction has started the attack, I am joining the attack
+										startAttackEnabled = true;
+										ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("attack_youMayJoinTheAttack"), true));
+									}
 								} else if (Nexus.getCurrentUser().getCurrentCharacter().getFactionId().equals(a.getDefenderFactionId())) {
 									// I am from the defender faction
 									C3Logger.info("I am the defender.");
 									mapButton06.getStyleClass().add("contentButtonBlue");
 									mapButton06.setText(Internationalization.getString("starmap_defend_system"));
+
+									if (!attackAlreadyStarted) {
+										// I cannot join the defenders, the attackers did not attack yet
+										ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("attack_attackersDidNotAttackYet"), true));
+									} else {
+										// I can join the defenders
+										startAttackEnabled = true;
+										ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("attack_youMayJoinTheDefenders"), true));
+									}
 								} else {
 									// I am someone else
 									C3Logger.info("I want to join the fight.");
 									mapButton06.getStyleClass().add("contentButtonYellow");
 									mapButton06.setText(Internationalization.getString("starmap_join_fight"));
-								}
-								mapButton06.setDisable(false);
-								mapButton06.setVisible(true);
 
-								FadeTransition fadeInTransition = new FadeTransition(Duration.millis(850), mapButton06);
-								fadeInTransition.setFromValue(0.2);
-								fadeInTransition.setToValue(1.0);
-								FadeTransition fadeOutTransition = new FadeTransition(Duration.millis(850), mapButton06);
-								fadeOutTransition.setFromValue(1.0);
-								fadeOutTransition.setToValue(0.2);
-								SequentialTransition sequentialTransition = new SequentialTransition();
-								sequentialTransition.getChildren().addAll(fadeInTransition, fadeOutTransition);
-								sequentialTransition.setCycleCount(Animation.INDEFINITE);
-								sequentialTransition.play();
+									if (!attackAlreadyStarted) {
+										// I cannot join the attack, the attackers did not attack yet
+										ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("attack_attackersDidNotAttackYet"), true));
+									} else {
+										// I can join the attack
+										startAttackEnabled = true;
+										ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("attack_youMayJoinTheAttack"), true));
+									}
+								}
+								if (startAttackEnabled) {
+									mapButton06.setDisable(false);
+									mapButton06.setVisible(true);
+
+									FadeTransition fadeInTransition = new FadeTransition(Duration.millis(850), mapButton06);
+									fadeInTransition.setFromValue(0.2);
+									fadeInTransition.setToValue(1.0);
+									FadeTransition fadeOutTransition = new FadeTransition(Duration.millis(850), mapButton06);
+									fadeOutTransition.setFromValue(1.0);
+									fadeOutTransition.setToValue(0.2);
+									SequentialTransition sequentialTransition = new SequentialTransition();
+									sequentialTransition.getChildren().addAll(fadeInTransition, fadeOutTransition);
+									sequentialTransition.setCycleCount(Animation.INDEFINITE);
+									sequentialTransition.play();
+								}
 							}
 						}
 					}

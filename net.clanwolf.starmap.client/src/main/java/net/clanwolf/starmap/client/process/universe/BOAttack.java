@@ -74,4 +74,22 @@ public class BOAttack {
 
 	@SuppressWarnings("unused")
 	public Integer getDefenderFactionId() { return attackDTO.getFactionID_Defender().intValue(); }
+
+	@SuppressWarnings("unused")
+	public Integer getCharacterId() {
+		if (attackDTO.getCharacterID() != null) {
+			return attackDTO.getCharacterID().intValue();
+		} else {
+			return null;
+		}
+	}
+
+	@SuppressWarnings("unused")
+	public Integer getStoryId() {
+		if (attackDTO.getStoryID() != null) {
+			return attackDTO.getStoryID().intValue();
+		} else {
+			return null;
+		}
+	}
 }
