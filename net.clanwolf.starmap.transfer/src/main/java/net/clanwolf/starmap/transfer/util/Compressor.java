@@ -1,8 +1,7 @@
 package net.clanwolf.starmap.transfer.util;
 
-import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
-
 import java.io.*;
+import java.util.zip.Deflater;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
@@ -16,7 +15,12 @@ public class Compressor {
 
 		try {
 			baos = new ByteArrayOutputStream();
-			gzipOut = new GZIPOutputStream(baos);
+//			gzipOut = new GZIPOutputStream(baos);
+			gzipOut = new GZIPOutputStream(baos) {
+				{
+					def.setLevel(Deflater.BEST_COMPRESSION);
+				}
+			};
 			objectOut = new ObjectOutputStream(gzipOut);
 			objectOut.writeObject(o);
 			gzipOut.finish();

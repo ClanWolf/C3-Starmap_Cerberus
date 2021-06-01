@@ -94,7 +94,7 @@ public class AttackPOJO extends Pojo {
 	@JoinColumn(name = "AttackID")
 	private List<AttackVarsPOJO> attackVarList = new ArrayList<>();
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = AttackCharacterPOJO.class)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE, targetEntity = AttackCharacterPOJO.class)
 	@JoinColumn(name = "AttackID")
 	// Without the tag @Fetch hibernate throws a MultipleBagFetchException.
 	// https://stackoverflow.com/questions/4334970/hibernate-throws-multiplebagfetchexception-cannot-simultaneously-fetch-multipl/5865605#5865605

@@ -32,6 +32,7 @@ import net.clanwolf.starmap.server.persistence.pojos.RolePlayStoryPOJO;
 import net.clanwolf.starmap.transfer.Dto;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.RolePlayStoryDTO;
+import net.clanwolf.starmap.transfer.util.Compressor;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -156,24 +157,86 @@ public class EntityConverter {
 		return state;
 	}
 
-	public static void convertGameStateToPOJO( GameState state){
+	public static void convertGameStateToPOJO(GameState state) {
 
-		if(state.getObject() instanceof Dto){
+		// https://stackoverflow.com/questions/13370221/persistentobjectexception-detached-entity-passed-to-persist-thrown-by-jpa-and-h
+
+		if (state.getObject() instanceof Dto) {
 			Object o = getPojo((Dto) state.getObject());
 			state.addObject(o);
+		} else if (state.getObject() instanceof byte[]) {
+			Object d = Compressor.deCompress((byte[]) state.getObject());
+			if (d instanceof Dto) {
+				Object o = getPojo((Dto) d);
+				state.addObject(o);
+			} else if (state.getObject() instanceof ArrayList) {
+				ArrayList al = (ArrayList)state.getObject();
+				ArrayList hlpAl = new ArrayList();
+				Iterator iter = al.iterator();
+
+				while(iter.hasNext()) {
+					Object o2 = iter.next();
+					if(o2 instanceof Dto) {
+						hlpAl.add(getPojo((Dto) o2));
+					} else {
+						hlpAl.add(o2);
+					}
+				}
+				state.addObject(hlpAl);
+			}
 		}
 
-		if(state.getObject2() instanceof Dto){
+		if (state.getObject2() instanceof Dto) {
 			Object o = getPojo((Dto) state.getObject2());
 			state.addObject2(o);
+		} else if (state.getObject2() instanceof byte[]) {
+			Object d = Compressor.deCompress((byte[]) state.getObject2());
+			if (d instanceof Dto) {
+				Object o = getPojo((Dto) d);
+				state.addObject2(o);
+			} else if (state.getObject2() instanceof ArrayList) {
+				ArrayList al = (ArrayList)state.getObject2();
+				ArrayList hlpAl = new ArrayList();
+				Iterator iter = al.iterator();
+
+				while(iter.hasNext()) {
+					Object o2 = iter.next();
+					if(o2 instanceof Dto) {
+						hlpAl.add(getPojo((Dto) o2));
+					} else {
+						hlpAl.add(o2);
+					}
+				}
+				state.addObject2(hlpAl);
+			}
 		}
 
-		if(state.getObject3() instanceof Dto){
+		if (state.getObject3() instanceof Dto) {
 			Object o = getPojo((Dto) state.getObject3());
 			state.addObject3(o);
+		} else if (state.getObject3() instanceof byte[]) {
+			Object d = Compressor.deCompress((byte[]) state.getObject3());
+			if (d instanceof Dto) {
+				Object o = getPojo((Dto) d);
+				state.addObject3(o);
+			} else if (state.getObject3() instanceof ArrayList) {
+				ArrayList al = (ArrayList)state.getObject3();
+				ArrayList hlpAl = new ArrayList();
+				Iterator iter = al.iterator();
+
+				while(iter.hasNext()) {
+					Object o2 = iter.next();
+					if(o2 instanceof Dto) {
+						hlpAl.add(getPojo((Dto) o2));
+					} else {
+						hlpAl.add(o2);
+					}
+				}
+				state.addObject3(hlpAl);
+			}
 		}
 
-		if(state.getObject() instanceof ArrayList){
+		if (state.getObject() instanceof ArrayList) {
 			ArrayList al = (ArrayList)state.getObject();
 			ArrayList hlpAl = new ArrayList();
 			Iterator iter = al.iterator();
@@ -181,17 +244,15 @@ public class EntityConverter {
 			while(iter.hasNext()){
 				Object o2 = iter.next();
 				if(o2 instanceof Dto) {
-					//hlpAl.add(getPojo((Dto) iter.next()));
 					hlpAl.add(getPojo((Dto) o2));
 				} else {
-					//hlpAl.add(iter.next());
 					hlpAl.add(o2);
 				}
 			}
 			state.addObject(hlpAl);
 		}
 
-		if(state.getObject2() instanceof ArrayList){
+		if (state.getObject2() instanceof ArrayList) {
 			ArrayList al = (ArrayList)state.getObject2();
 			ArrayList hlpAl = new ArrayList();
 			Iterator iter = al.iterator();
@@ -199,17 +260,15 @@ public class EntityConverter {
 			while(iter.hasNext()){
 				Object o2 = iter.next();
 				if(o2 instanceof Dto) {
-					//hlpAl.add(getPojo((Dto) iter.next()));
 					hlpAl.add(getPojo((Dto) o2));
 				} else {
-					//hlpAl.add(iter.next());
 					hlpAl.add(o2);
 				}
 			}
 			state.addObject2(hlpAl);
 		}
 
-		if(state.getObject3() instanceof ArrayList){
+		if (state.getObject3() instanceof ArrayList) {
 			ArrayList al = (ArrayList)state.getObject3();
 			ArrayList hlpAl = new ArrayList();
 			Iterator iter = al.iterator();
@@ -217,10 +276,8 @@ public class EntityConverter {
 			while(iter.hasNext()){
 				Object o2 = iter.next();
 				if(o2 instanceof Dto) {
-					//hlpAl.add(getPojo((Dto) iter.next()));
 					hlpAl.add(getPojo((Dto) o2));
 				} else {
-					//hlpAl.add(iter.next());
 					hlpAl.add(o2);
 				}
 			}

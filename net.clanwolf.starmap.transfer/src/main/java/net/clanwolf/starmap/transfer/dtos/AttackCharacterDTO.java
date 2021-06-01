@@ -2,12 +2,13 @@ package net.clanwolf.starmap.transfer.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import net.clanwolf.starmap.transfer.Dto;
 
 @JsonIdentityInfo(
 		scope= AttackCharacterDTO.class,
 		generator= ObjectIdGenerators.PropertyGenerator.class,
 		property = "id")
-public class AttackCharacterDTO {
+public class AttackCharacterDTO extends Dto {
 
 //	@Column(name = "ID")
 	private Long id;

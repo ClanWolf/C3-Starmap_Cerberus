@@ -27,12 +27,14 @@
 package net.clanwolf.starmap.client.process.universe;
 
 import net.clanwolf.starmap.client.nexus.Nexus;
+import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.AttackCharacterDTO;
 import net.clanwolf.starmap.transfer.dtos.AttackDTO;
 import net.clanwolf.starmap.transfer.dtos.JumpshipDTO;
 import net.clanwolf.starmap.transfer.dtos.RoutePointDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
+import net.clanwolf.starmap.transfer.util.Compressor;
 
 import java.util.List;
 
@@ -49,7 +51,9 @@ public class BOAttack {
 	public void storeAttack() {
 		GameState saveAttackState = new GameState();
 		saveAttackState.setMode(GAMESTATEMODES.ATTACK_SAVE);
-		saveAttackState.addObject(attackDTO);
+		byte[] compressedAttackDTO = Compressor.compress(attackDTO);
+		C3Logger.info("Compressed AttackDTO size: " + compressedAttackDTO.length);
+		saveAttackState.addObject(compressedAttackDTO);
 		Nexus.fireNetworkEvent(saveAttackState);
 	}
 

@@ -207,6 +207,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			response.addObject(null);
 			response.setAction_successfully(Boolean.TRUE);
 		} catch (RuntimeException re) {
+			re.printStackTrace();
 			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
 
 			response.addObject(re.getMessage());
