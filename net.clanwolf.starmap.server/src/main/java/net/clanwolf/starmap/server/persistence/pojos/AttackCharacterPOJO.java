@@ -24,7 +24,7 @@ public class AttackCharacterPOJO {
 	@Column(name = "AttackID")
 	private Long attackID;
 
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE, orphanRemoval = true)
 	@JoinColumn(name = "CharacterID")
 	private RolePlayCharacterPOJO characterID;
 

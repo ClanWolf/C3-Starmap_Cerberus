@@ -31,14 +31,11 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import net.clanwolf.starmap.server.persistence.Pojo;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -239,10 +236,12 @@ public class AttackPOJO extends Pojo {
 		this.attackVarList = attackVarList;
 	}
 
+	@SuppressWarnings("unused")
 	public List<AttackCharacterPOJO> getAttackCharList() {
 		return attackCharList;
 	}
 
+	@SuppressWarnings("unused")
 	public void setAttackCharList(List<AttackCharacterPOJO> attackCharList) {
 		this.attackCharList = attackCharList;
 	}
