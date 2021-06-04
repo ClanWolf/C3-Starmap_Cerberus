@@ -87,7 +87,8 @@ public class AttackPOJO extends Pojo {
 	@Column(name = "Remarks")
 	private String remarks;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = AttackVarsPOJO.class)
+
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE, targetEntity = AttackVarsPOJO.class)
 	@JoinColumn(name = "AttackID")
 	private List<AttackVarsPOJO> attackVarList = new ArrayList<>();
 
@@ -97,6 +98,7 @@ public class AttackPOJO extends Pojo {
 	// https://stackoverflow.com/questions/4334970/hibernate-throws-multiplebagfetchexception-cannot-simultaneously-fetch-multipl/5865605#5865605
 	@Fetch(value = FetchMode.SUBSELECT)
 	private List<AttackCharacterPOJO> attackCharList = new ArrayList<>();
+
 
 	@SuppressWarnings("unused")
 	public String getRemarks() {

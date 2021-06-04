@@ -17,7 +17,7 @@ public class AttackCharacterDTO extends Dto {
 	private Long attackID;
 
 //	@JoinColumn(name = "CharacterID")
-	private RolePlayCharacterDTO characterID;
+	private Long characterID;
 
 //	@Column(name = "Type")
 	private Long type;
@@ -38,11 +38,11 @@ public class AttackCharacterDTO extends Dto {
 		this.attackID = attackID;
 	}
 
-	public RolePlayCharacterDTO getCharacterID() {
+	public Long getCharacterID() {
 		return characterID;
 	}
 
-	public void setCharacterID(RolePlayCharacterDTO characterID) {
+	public void setCharacterID(Long characterID) {
 		this.characterID = characterID;
 	}
 

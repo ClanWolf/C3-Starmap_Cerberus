@@ -3,6 +3,7 @@ package net.clanwolf.starmap.server.persistence.pojos;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import net.clanwolf.starmap.server.persistence.Pojo;
 
 import javax.persistence.*;
 
@@ -14,7 +15,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 		property = "id")
 @Entity
 @Table(name = "_HH_ATTACK_CHARACTER", catalog = "C3")
-public class AttackCharacterPOJO {
+public class AttackCharacterPOJO extends Pojo {
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
@@ -24,9 +25,10 @@ public class AttackCharacterPOJO {
 	@Column(name = "AttackID")
 	private Long attackID;
 
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.MERGE, orphanRemoval = true)
-	@JoinColumn(name = "CharacterID")
-	private RolePlayCharacterPOJO characterID;
+	//@OneToOne(fetch = FetchType.EAGER, orphanRemoval = false)
+	//@JoinColumn(name = "CharacterID")
+	//private RolePlayCharacterPOJO characterID;
+	private Long characterID;
 
 	@Column(name = "Type")
 	private Long type;
@@ -47,11 +49,11 @@ public class AttackCharacterPOJO {
 		this.attackID = attackID;
 	}
 
-	public RolePlayCharacterPOJO getCharacterID() {
+	public Long getCharacterID() {
 		return characterID;
 	}
 
-	public void setCharacterID(RolePlayCharacterPOJO characterID) {
+	public void setCharacterID(Long characterID) {
 		this.characterID = characterID;
 	}
 

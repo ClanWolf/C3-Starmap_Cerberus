@@ -211,10 +211,23 @@ public class WebDataInterface {
 
 		while(iter.hasNext()) {
 			AttackDTO dto = EntityConverter.convertpojo2dto(iter.next(),AttackDTO.class);
+			//getCharacterFromAttack(dto);
 			universe.attacks.add(dto);
 			jsonString.append(getJsonString(dto));
 		}
 		return jsonString.toString();
+	}
+
+	private static void getCharacterFromAttack(AttackDTO attack){
+		AttackCharacterDAO dao = AttackCharacterDAO.getInstance();
+		ArrayList<AttackCharacterDTO> dtoList = new ArrayList<AttackCharacterDTO>();
+
+		ArrayList<AttackCharacterPOJO> myList = dao.getCharacterFromAttack(attack.getId());
+		Iterator<AttackCharacterPOJO> iter = myList.iterator();
+		while(iter.hasNext()){
+			AttackCharacterDTO dto = EntityConverter.convertpojo2dto(iter.next(),AttackCharacterDTO.class);
+			attack.getAttackCharList().add(dto);
+		}
 	}
 
 	private static String loadJumpshipsAndRoutePoints(){

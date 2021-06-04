@@ -53,6 +53,7 @@ public abstract class GenericDAO implements IDAO {
 	public void save(Long userID, Object entity) {
 		C3Logger.info("Saving instance (" + entity.getClass().getName() + ")");
 		try {
+			//getEntityManager(userID).
 			getEntityManager(userID).persist(entity);
 			C3Logger.info("Save successful");
 		} catch (RuntimeException re) {

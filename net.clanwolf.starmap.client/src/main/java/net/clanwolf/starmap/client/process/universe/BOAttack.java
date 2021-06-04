@@ -36,6 +36,7 @@ import net.clanwolf.starmap.transfer.dtos.RoutePointDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.util.Compressor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class BOAttack {
@@ -61,7 +62,7 @@ public class BOAttack {
 		boolean charHasAnotherActiveAttack = false;
 		for (BOAttack a : Nexus.getBoUniverse().attackBOs) {
 			for (AttackCharacterDTO ac : a.getAttackCharList()) {
-				if (ac.getCharacterID().equals(Nexus.getCurrentUser().getCurrentCharacter())) {
+				if (ac.getCharacterID().equals(Nexus.getCurrentUser().getCurrentCharacter().getId())) {
 					charHasAnotherActiveAttack = true;
 				}
 			}

@@ -45,6 +45,7 @@ public enum GAMESTATEMODES {
 	PRIVILEGE_SAVE,
 	JUMPSHIP_SAVE,
 	ATTACK_SAVE,
+	ATTACK_SAVE_RESPONSE,
 
 	BROADCAST_SEND_NEW_PLAYERLIST,              /* Inform all clients after a successfull login */
 

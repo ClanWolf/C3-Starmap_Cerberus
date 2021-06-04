@@ -36,14 +36,8 @@ import io.nadron.service.GameStateManagerService;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.server.persistence.EntityConverter;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
-import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.AttackDAO;
-import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.JumpshipDAO;
-import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.RoutePointDAO;
-import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.UserDAO;
-import net.clanwolf.starmap.server.persistence.pojos.AttackPOJO;
-import net.clanwolf.starmap.server.persistence.pojos.JumpshipPOJO;
-import net.clanwolf.starmap.server.persistence.pojos.RoutePointPOJO;
-import net.clanwolf.starmap.server.persistence.pojos.UserPOJO;
+import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.*;
+import net.clanwolf.starmap.server.persistence.pojos.*;
 import net.clanwolf.starmap.server.util.WebDataInterface;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
@@ -191,7 +185,6 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 	private void saveAttack(PlayerSession session, GameState state) {
 		AttackDAO dao = AttackDAO.getInstance();
-		GameState response = new GameState(GAMESTATEMODES.ATTACK_SAVE);
 
 		try {
 			EntityManagerHelper.beginTransaction(getC3UserID(session));
@@ -201,15 +194,24 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			C3Logger.debug("-- Attacker (jumpshipID): " + attack.getJumpshipID());
 			C3Logger.debug("-- Attacking from: " + attack.getAttackedFromStarSystemID());
 			C3Logger.debug("-- Attacked system: " + attack.getStarSystemID());
-			dao.save(getC3UserID(session), attack);
+
+			if(attack.getId() != null){
+				dao.update(getC3UserID(session), attack);
+			} else {
+				dao.save(getC3UserID(session), attack);
+			}
 
 			EntityManagerHelper.commit(getC3UserID(session));
-			response.addObject(null);
+
+			GameState response = new GameState(GAMESTATEMODES.ATTACK_SAVE_RESPONSE);
+			response.addObject(attack);
 			response.setAction_successfully(Boolean.TRUE);
+			C3GameSessionHandler.sendBroadCast(room, response);
 		} catch (RuntimeException re) {
 			re.printStackTrace();
 			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
 
+			GameState response = new GameState(GAMESTATEMODES.ERROR_MESSAGE);
 			response.addObject(re.getMessage());
 			response.setAction_successfully(Boolean.FALSE);
 			C3GameSessionHandler.sendNetworkEvent(session, response);

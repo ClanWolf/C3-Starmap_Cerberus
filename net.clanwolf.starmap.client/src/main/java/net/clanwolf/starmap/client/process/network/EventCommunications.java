@@ -37,13 +37,12 @@ import net.clanwolf.starmap.client.process.universe.BOUniverse;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.client.process.logout.Logout;
 import net.clanwolf.starmap.transfer.GameState;
-import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
-import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
-import net.clanwolf.starmap.transfer.dtos.UserDTO;
+import net.clanwolf.starmap.transfer.dtos.*;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.util.Compressor;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * @author Christian
@@ -114,6 +113,18 @@ public class EventCommunications {
 					ActionManager.getAction(ACTIONS.LOGON_FINISHED_SUCCESSFULL).execute();
 					break;
 				case NO_MODE:
+					break;
+				case ATTACK_SAVE_RESPONSE:
+					C3Logger.info("Attack has changed, likely another user joined or left.");
+					AttackDTO attack = (AttackDTO) state.getObject();
+
+					Iterator<AttackCharacterDTO> charList = attack.getAttackCharList().iterator();
+					while(charList.hasNext()){
+						if(charList.next().getCharacterID().equals(Nexus.getCurrentChar().getId())){
+							C3Logger.info("So... jetzt wird der RP Screen angezeigt... und? Siehst du ihn schon? ... mach mal die augen zu!");
+							break;
+						}
+					}
 					break;
 				case ERROR_MESSAGE:
 					break;

@@ -62,7 +62,9 @@ import net.clanwolf.starmap.client.util.C3PROPS;
 import net.clanwolf.starmap.client.util.C3Properties;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.logging.C3Logger;
+import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.*;
+import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.enums.MEDALS;
 import org.kynosarges.tektosyne.geometry.PointD;
 
@@ -137,17 +139,26 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 	@FXML
 	private void handleAttackButtonClick() {
+		mapButton06.setDisable(true);
+		mapButton06.setVisible(false);
+		ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("attack_youAlreadyHaveAFight"), true));
+
 		BOAttack a = Nexus.getCurrentlySelectedStarSystem().getAttack();
 		a.getAttackDTO().setCharacterID(Nexus.getCurrentChar().getId());
 		a.getAttackDTO().setStoryID(21L); 	// TODO: Hier müssen wir die Einstiegs-Story ID irgendwie definieren
 
 		AttackCharacterDTO ac = new AttackCharacterDTO();
 		ac.setAttackID(a.getAttackDTO().getId());
-		ac.setCharacterID(Nexus.getCurrentChar());
+		ac.setCharacterID(Nexus.getCurrentChar().getId());
 		ac.setType(1L);
 
 		a.getAttackDTO().getAttackCharList().add(ac);
 		a.storeAttack();
+
+		//GameState saveAttackState = new GameState();
+		//saveAttackState.setMode(GAMESTATEMODES.ATTACK_SAVE);
+		//saveAttackState.addObject(a.getAttackDTO());
+		//Nexus.fireNetworkEvent(saveAttackState);
 	}
 
 	@FXML
