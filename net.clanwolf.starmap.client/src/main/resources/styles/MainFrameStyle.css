@@ -317,6 +317,20 @@
   -fx-background-position: center;
 }
 
+.attackButton {
+  -fx-background-image: url("../images/buttons/attack.png");
+  -fx-background-repeat: no-repeat;
+  -fx-background-size: 32, 32;
+  -fx-background-position: center;
+}
+
+.attackButton:hover {
+  -fx-background-image: url("../images/buttons/attack_hover.png");
+  -fx-background-repeat: no-repeat;
+  -fx-background-size: 32, 32;
+  -fx-background-position: center;
+}
+
 .chatButton {
   -fx-background-image: url("../images/buttons/chat.png");
   -fx-background-repeat: no-repeat;
@@ -924,29 +938,16 @@
   -fx-effect: dropshadow(three-pass-box , rgba(0, 0, 0, 0.6) , 5, 0.0 , 0 , 1);
   -fx-padding: 8 8 8 8;
 }
-
-/* Toolbar button hover */
-#btn_dark-blue:hover {
-
-}
-
-/* Toolbar button disabled */
-#btn_dark-blue:disabled {
-
-}
-
-/* Toolbar button focused */
-#btn_dark-blue:focused {
-  -fx-border-color: #808080;
-  -fx-border-width: 1;
-}
+#btn_dark-blue:hover {}
+#btn_dark-blue:disabled {}
+#btn_dark-blue:focused {}
 
 /* Toolbar button red */
 #btn_dark-red {
   -fx-border-color: null;
   -fx-border-width: 0;
   -fx-background-color:
-    #1c0000,
+    #0d0000,
     linear-gradient(#850000 0%, #4e0000 20%, #410000 100%),
     linear-gradient(#520000, #410000),
     radial-gradient(center 50% 0%, radius 100%, rgba(255, 59, 63, 0.9), rgba(255, 255, 255, 0));
@@ -954,48 +955,22 @@
   -fx-effect: dropshadow(three-pass-box , rgba(0, 0, 0, 0.6) , 5, 0.0 , 0 , 1);
   -fx-padding: 8 8 8 8;
 }
-
-/* Toolbar button hover */
-#btn_dark-red:hover {
-
-}
-
-/* Toolbar button disabled */
-#btn_dark-red:disabled {
-
-}
-
-/* Toolbar button focused */
-#btn_dark-red:focused {
-  -fx-border-color: #808080;
-  -fx-border-width: 1;
-}
+#btn_dark-red:hover {}
+#btn_dark-red:disabled {}
+#btn_dark-red:focused {}
 
 /* Toolbar button blue */
 #btn_blue {
   -fx-border-color: null;
   -fx-border-width: 0;
   -fx-background-color:
-    #000000,
-    linear-gradient(#7ebcea, #2f4b8f),
+    #0d0000,
+    linear-gradient(#000040 0%, #000030 20%, #000010 100%),
     linear-gradient(#426ab7, #263e75),
-    linear-gradient(#395cab, #223768);
+    radial-gradient(center 50% 0%, radius 100%, rgba(40, 11, 255, 0.3), rgba(255, 255, 255, 0));
   -fx-background-insets: 0, 1, 2, 0;
   -fx-padding: 8 8 8 8;
 }
-
-/* Toolbar button hover */
-#btn_blue:hover {
-
-}
-
-/* Toolbar button disabled */
-#btn_blue:disabled {
-
-}
-
-/* Toolbar button focused */
-#btn_blue:focused {
-  -fx-border-color: #808080;
-  -fx-border-width: 1;
-}
+#btn_blue:hover {}
+#btn_blue:disabled {}
+#btn_blue:focused {}
