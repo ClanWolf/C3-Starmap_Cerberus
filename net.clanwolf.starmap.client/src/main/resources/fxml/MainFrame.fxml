@@ -95,17 +95,17 @@
                 <URL value="@../styles/MainFrameStyle.css" />
             </stylesheets>
         </Button>
-        <Button id="btn_dark-blue" fx:id="mapButton" layoutX="68.0" layoutY="349.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleMapButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" styleClass="mapButton" text="" textAlignment="CENTER">
+        <Button id="btn_dark-blue" fx:id="mapButton" layoutX="68.0" layoutY="306.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleMapButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" styleClass="mapButton" text="" textAlignment="CENTER">
             <stylesheets>
                 <URL value="@../styles/MainFrameStyle.css" />
             </stylesheets>
         </Button>
-        <Button id="btn_dark-blue" fx:id="chatButton" layoutX="68.0" layoutY="392.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleChatButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" styleClass="chatButton" text="" textAlignment="CENTER">
+        <Button id="btn_blue" fx:id="chatButton" layoutX="68.0" layoutY="435.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleChatButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" styleClass="chatButton" text="" textAlignment="CENTER">
             <stylesheets>
                 <URL value="@../styles/MainFrameStyle.css" />
             </stylesheets>
         </Button>
-        <Button id="btn_dark-blue" fx:id="industryButton" layoutX="68.0" layoutY="435.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onMouseEntered="#handleIndustryButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" text="" textAlignment="CENTER">
+        <Button id="btn_dark-blue" fx:id="industryButton" layoutX="68.0" layoutY="349.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onMouseEntered="#handleIndustryButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" text="" textAlignment="CENTER">
             <stylesheets>
                 <URL value="@../styles/MainFrameStyle.css" />
             </stylesheets>
@@ -161,7 +161,7 @@
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>
       </Button>
-      <Button id="btn_dark-blue" fx:id="rolePlayButton" layoutX="68.0" layoutY="306.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" prefHeight="40.0" prefWidth="40.0" styleClass="roleplayButton" text="" textAlignment="CENTER">
+      <Button id="btn_dark-blue" fx:id="rolePlayButton" layoutX="68.0" layoutY="392.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" prefHeight="40.0" prefWidth="40.0" styleClass="roleplayButton" text="" textAlignment="CENTER">
          <stylesheets>
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>

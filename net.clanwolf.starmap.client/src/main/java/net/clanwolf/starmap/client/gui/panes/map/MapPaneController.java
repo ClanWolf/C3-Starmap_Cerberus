@@ -1103,7 +1103,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 										if (!attackAlreadyStarted) {
 											// I cannot join the defenders, the attackers did not attack yet
-											ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("attack_attackersDidNotAttackYet"), true));
+											ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("attack_attackersDidNotAttackYet"), false));
 										} else {
 											// I can join the defenders
 											startAttackEnabled = true;
@@ -1117,7 +1117,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 										if (!attackAlreadyStarted) {
 											// I cannot join the attack, the attackers did not attack yet
-											ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("attack_attackersDidNotAttackYet"), true));
+											ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("attack_attackersDidNotAttackYet"), false));
 										} else {
 											// I can join the attack
 											startAttackEnabled = true;
@@ -1146,7 +1146,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 							// disable attack button
 							mapButton06.setDisable(true);
 							mapButton06.setVisible(false);
-							ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("attack_planetHasNoAttack"), true));
+							ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("attack_planetHasNoAttack"), false));
 						}
 					} else {
 						// disable attack button
