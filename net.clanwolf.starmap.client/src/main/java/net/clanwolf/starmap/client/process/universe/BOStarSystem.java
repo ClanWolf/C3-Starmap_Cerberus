@@ -98,16 +98,6 @@ public class BOStarSystem {
 	}
 
 	@SuppressWarnings("unused")
-	public BOAttack getAttack() {
-		for (BOAttack a : Nexus.getBoUniverse().attackBOs) {
-			if (hh_starSystemDataDTO.getStarSystemID().getId().equals(a.getStarSystemId())) {
-				return a;
-			}
-		}
-		return null;
-	}
-
-	@SuppressWarnings("unused")
 	public Circle getStarSystemCircle() {
 		return starSystemCircle;
 	}
@@ -196,5 +186,26 @@ public class BOStarSystem {
 	@SuppressWarnings("unused")
 	public String getDescription() {
 		return this.hh_starSystemDataDTO.getDescription();
+	}
+
+	@SuppressWarnings("unused")
+	public boolean isCurrentlyAttacked() {
+		boolean hasAttack = false;
+		for (BOAttack a : Nexus.getBoUniverse().attackBOs) {
+			if (a.getStarSystemId().equals(this.hh_starSystemDataDTO.getStarSystemID().getId())) {
+				hasAttack = true;
+			}
+		}
+		return hasAttack;
+	}
+
+	@SuppressWarnings("unused")
+	public BOAttack getAttack() {
+		for (BOAttack a : Nexus.getBoUniverse().attackBOs) {
+			if (hh_starSystemDataDTO.getStarSystemID().getId().equals(a.getStarSystemId())) {
+				return a;
+			}
+		}
+		return null;
 	}
 }

@@ -67,7 +67,7 @@ public class NodeGestures {
 	private Image travelMarker;
 	private BOStarSystem previousSelectedSystem;
 	private final BOUniverse boUniverse = Nexus.getBoUniverse();
-	private HashMap<Long, ArrayList<Text>> routePointLabelsMap = new HashMap<>();
+	private final HashMap<Long, ArrayList<Text>> routePointLabelsMap = new HashMap<>();
 
 	NodeGestures(PannableCanvas canvas) {
 		this.canvas = canvas;
@@ -148,11 +148,12 @@ public class NodeGestures {
 		return text.getLayoutBounds().getWidth();
 	}
 
-//	private double getHeight(Text text) {
-//		new Scene(new Group(text));
-//		text.applyCss();
-//		return text.getLayoutBounds().getHeight();
-//	}
+	@SuppressWarnings("unused")
+	private double getHeight(Text text) {
+		new Scene(new Group(text));
+		text.applyCss();
+		return text.getLayoutBounds().getHeight();
+	}
 
 	private final EventHandler<MouseDragEvent> onStarSystemDragEnteredEventHandler = event -> {
 		Node node = (Node) event.getSource();
@@ -364,14 +365,20 @@ public class NodeGestures {
 					marker.setFitWidth(markerDim);
 					marker.setFitHeight(markerDim);
 
-					if (("" + Nexus.getCurrentUser().getCurrentCharacter().getFactionId()).equals("" + clickedStarSystem.getFactionId())) {
-						// This is one of my own systems
-						marker.setImage(travelMarker);
-					} else {
-						// This is an enemy system
+					if (clickedStarSystem.isCurrentlyAttacked()) {
+						// This system is under attack
 						marker.setImage(attackMarker);
+					} else {
+						// This system is not attacked
+						if (("" + Nexus.getCurrentUser().getCurrentCharacter().getFactionId()).equals("" + clickedStarSystem.getFactionId())) {
+							// This system belongs to my own faction
+							marker.setImage(travelMarker);
+						} else {
+							// This system belongs to another faction
+							marker.setImage(selectionMarker);
+						}
 					}
-					//					marker.setImage(selectionMarker);
+
 					marker.setTranslateX((sp.getWidth() / 2) - (markerDim / 2) + 0.5);
 					marker.setTranslateY((sp.getHeight() / 2) - (markerDim / 2) + 0.5);
 					if (previousSelectedSystem != null) {
@@ -381,9 +388,6 @@ public class NodeGestures {
 							previousSelectedSystem = clickedStarSystem;
 							previousSelectedSystem.setStarSystemSelectionMarker(marker);
 						}
-//						else {
-//							// Marker is null. Probably this is the first system to be marked.
-//						}
 					} else {
 						previousSelectedSystem = clickedStarSystem;
 						previousSelectedSystem.setStarSystemSelectionMarker(marker);

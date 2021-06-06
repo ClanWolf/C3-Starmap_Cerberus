@@ -70,9 +70,7 @@ import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.security.Security;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.*;
-import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.UserDTO;
-import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.enums.MEDALS;
 
 import java.io.InputStream;
@@ -102,6 +100,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private LogPane logPane = null;
 	private UserInfoPane userInfoPane = null;
 	private MapPane mapPane = null;
+	private RolePlayBasicPane attackPane = null;
 	private ChatPane chatPane = null;
 	private SettingsPane settingsPane = null;
 	private RolePlayBasicPane rolePlayPane = null;
@@ -178,10 +177,10 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private Button mapButton;
 	@FXML
 	private Button chatButton;
-//	@FXML
-//	private Button characterButton;
 	@FXML
-	private Button industryButton;
+	private Button attackButton;
+//	@FXML
+//	private Button industryButton;
 	@FXML
 	private Button logButton;
 
@@ -289,8 +288,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	}
 
 	@FXML
-	private void handleIndustryButtonMouseEventEnter() {
-		setStatusText(Internationalization.getString("app_industry_infotext"), false);
+	private void handleAttackButtonMouseEventEnter() {
+		setStatusText(Internationalization.getString("app_attack_infotext"), false);
 		Tools.playButtonHoverSound();
 	}
 
@@ -591,19 +590,6 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				moveMenuIndicator(menuIndicatorPos);
 				adminPaneOpen = false;
 			}
-			// ROLEPLAY
-			if (bn.equals(rolePlayButton)) {
-				C3Logger.info("RolePlay opened by user.");
-				setStatusText(Internationalization.getString("app_settings_infotext").replace("%20", " ") + ".", false);
-				targetPane = rolePlayPane;
-				if (!adminMenuActive) {
-					showMenuIndicator(true);
-				}
-				menuIndicatorPos = 147;
-				moveMenuIndicator(menuIndicatorPos);
-				adminPaneOpen = false;
-				ActionManager.getAction(ACTIONS.START_ROLEPLAY).execute();
-			}
 			// STARMAP
 			if (bn.equals(mapButton)) {
 				C3Logger.info("Map opened by user.");
@@ -612,9 +598,35 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				if (!adminMenuActive) {
 					showMenuIndicator(true);
 				}
+				menuIndicatorPos = 147;
+				moveMenuIndicator(menuIndicatorPos);
+				adminPaneOpen = false;
+			}
+			// ATTACK / INVASION
+			if (bn.equals(attackButton)) {
+				C3Logger.info("Attack on a starsystem selected.");
+				setStatusText(Internationalization.getString("app_attack_infotext").replace("%20", " ") + ".", false);
+				targetPane = attackPane;
+				if (!adminMenuActive) {
+					showMenuIndicator(true);
+				}
 				menuIndicatorPos = 190;
 				moveMenuIndicator(menuIndicatorPos);
 				adminPaneOpen = false;
+			}
+			// ROLEPLAY
+			if (bn.equals(rolePlayButton)) {
+				C3Logger.info("RolePlay opened by user.");
+				setStatusText(Internationalization.getString("app_settings_infotext").replace("%20", " ") + ".", false);
+				targetPane = rolePlayPane;
+				if (!adminMenuActive) {
+					showMenuIndicator(true);
+				}
+//				menuIndicatorPos = 190;
+				menuIndicatorPos = 233;
+				moveMenuIndicator(menuIndicatorPos);
+				adminPaneOpen = false;
+				ActionManager.getAction(ACTIONS.START_ROLEPLAY).execute();
 			}
 			// CHAT
 			if (bn.equals(chatButton)) {
@@ -624,7 +636,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				if (!adminMenuActive) {
 					showMenuIndicator(true);
 				}
-				menuIndicatorPos = 233;
+//				menuIndicatorPos = 233;
+				menuIndicatorPos = 276;
 				moveMenuIndicator(menuIndicatorPos);
 				adminPaneOpen = false;
 			}
@@ -746,8 +759,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		} else {
 			rolePlayButton.setVisible(true);
 			mapButton.setVisible(true);
+			attackButton.setVisible(true);
 			chatButton.setVisible(true);
-			industryButton.setVisible(true);
+//			industryButton.setVisible(true);
 			logButton.setVisible(true);
 			if (!adminPaneOpen && Nexus.getCurrentlyOpenedPane() != null) {
 				showMenuIndicator(true);
@@ -779,8 +793,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					// Column 1
 					rolePlayButton.setLayoutX(newX1);
 					mapButton.setLayoutX(newX1);
+					attackButton.setLayoutX(newX1);
 					chatButton.setLayoutX(newX1);
-					industryButton.setLayoutX(newX1);
+//					industryButton.setLayoutX(newX1);
 					logButton.setLayoutX(newX1);
 
 					// Column 2
@@ -795,8 +810,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			if (adminMenuActive) {
 				rolePlayButton.setVisible(false);
 				mapButton.setVisible(false);
+				attackButton.setVisible(false);
 				chatButton.setVisible(false);
-				industryButton.setVisible(false);
+//				industryButton.setVisible(false);
 				logButton.setVisible(false);
 			} else {
 				storyEditorButton.setVisible(false);
@@ -1078,6 +1094,13 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		rolePlayPane.setCacheHint(CacheHint.SPEED);
 		rolePlayPane.getController().addActionCallBackListeners();
 
+		attackPane = new RolePlayBasicPane();
+		attackPane.setShowsMouseFollow(false);
+		attackPane.setShowsPlanetRotation(false);
+		attackPane.setCache(true);
+		attackPane.setCacheHint(CacheHint.SPEED);
+		attackPane.getController().addActionCallBackListeners();
+
 		// infoPane = new InfoPane();
 		// infoPane.getController().addActionCallBackListener();
 
@@ -1094,8 +1117,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 		rolePlayButton.setVisible(true);
 		mapButton.setVisible(true);
+		attackButton.setVisible(true);
 		chatButton.setVisible(true);
-		industryButton.setVisible(true);
+//		industryButton.setVisible(true);
 		logButton.setVisible(true);
 
 		storyEditorButton.setVisible(false);
@@ -1243,8 +1267,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			// Column 1
 			rolePlayButton.setDisable(Nexus.getCurrentChar().getStory() == null);
 			mapButton.setDisable(false);
+			attackButton.setDisable(false);
 			chatButton.setDisable(false);
-			industryButton.setDisable(true);
+//			industryButton.setDisable(true);
 			logButton.setDisable(false);
 
 			// Column 2
@@ -1269,8 +1294,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			// Column 1
 			rolePlayButton.setDisable(true);
 			mapButton.setDisable(true);
+			attackButton.setDisable(true);
 			chatButton.setDisable(true);
-			industryButton.setDisable(true);
+//			industryButton.setDisable(true);
 			logButton.setDisable(false);
 
 			// Column 2
