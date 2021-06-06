@@ -46,6 +46,7 @@ import java.util.TimerTask;
 public class HeartBeatTimer extends TimerTask {
 
 	private String tempDir = "";
+	private boolean currentlyRunning = false;
 
 	public HeartBeatTimer() {
 		String property = "java.io.tmpdir";
@@ -53,40 +54,46 @@ public class HeartBeatTimer extends TimerTask {
 	}
 
 	@Override
-	public void run() {
-		//C3Logger.print("Writing heartbeat ping to " + tempDir);
-		C3Logger.print("Writing heartbeat ping to " + "/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/c3.heartbeat");
+	public synchronized void run() {
+		if (!currentlyRunning) {
+			currentlyRunning = true;
 
-		Calendar calendar = Calendar.getInstance();
-		java.util.Date now = calendar.getTime();
-		java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(now.getTime());
+			//C3Logger.print("Writing heartbeat ping to " + tempDir);
+			C3Logger.print("Writing heartbeat ping to " + "/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/c3.heartbeat");
 
-		File heartbeatfile = new File("/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/c3.heartbeat");
-		try (BufferedWriter br = new BufferedWriter(new FileWriter(heartbeatfile))) {
-			br.write("" + currentTimestamp.getTime());
-		} catch (IOException ioe) {
-			C3Logger.exception("Error writing heartbeat file", ioe);
+			Calendar calendar = Calendar.getInstance();
+			java.util.Date now = calendar.getTime();
+			java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(now.getTime());
+
+			File heartbeatfile = new File("/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/c3.heartbeat");
+			try (BufferedWriter br = new BufferedWriter(new FileWriter(heartbeatfile))) {
+				br.write("" + currentTimestamp.getTime());
+			} catch (IOException ioe) {
+				C3Logger.exception("Error writing heartbeat file", ioe);
+			}
+
+			C3Logger.print("Calling list creation (Factions)...");
+			WebDataInterface.createSystemList(SystemListTypes.Factions);
+			C3Logger.print("Calling list creation (HH_StarSystems)...");
+			WebDataInterface.createSystemList(SystemListTypes.HH_StarSystems);
+			C3Logger.print("Calling list creation (HH_Attacks)...");
+			WebDataInterface.createSystemList(SystemListTypes.HH_Attacks);
+			C3Logger.print("Calling list creation (HH_Jumpships)...");
+			WebDataInterface.createSystemList(SystemListTypes.HH_Jumpships);
+			C3Logger.print("Calling list creation (HH_Routepoints)...");
+			WebDataInterface.createSystemList(SystemListTypes.HH_Routepoints);
+			C3Logger.print("Calling list creation (CM_StarSystems)...");
+			WebDataInterface.createSystemList(SystemListTypes.CM_StarSystems);
+
+			// TODO: Wo definieren wir die Season?
+			Long seasonId = 1L;
+			RoundDAO roundDAO = RoundDAO.getInstance();
+			RoundPOJO r = roundDAO.findBySeasonId(seasonId);
+			int round = r.getRound().intValue();
+
+			EndRound.finalizeRound(seasonId, round);
+
+			currentlyRunning = false;
 		}
-
-		C3Logger.print("Calling list creation (Factions)...");
-		WebDataInterface.createSystemList(SystemListTypes.Factions);
-		C3Logger.print("Calling list creation (HH_StarSystems)...");
-		WebDataInterface.createSystemList(SystemListTypes.HH_StarSystems);
-		C3Logger.print("Calling list creation (HH_Attacks)...");
-		WebDataInterface.createSystemList(SystemListTypes.HH_Attacks);
-		C3Logger.print("Calling list creation (HH_Jumpships)...");
-		WebDataInterface.createSystemList(SystemListTypes.HH_Jumpships);
-		C3Logger.print("Calling list creation (HH_Routepoints)...");
-		WebDataInterface.createSystemList(SystemListTypes.HH_Routepoints);
-		C3Logger.print("Calling list creation (CM_StarSystems)...");
-		WebDataInterface.createSystemList(SystemListTypes.CM_StarSystems);
-
-		// TODO: Wo definieren wir die Season?
-		Long seasonId = 1L;
-		RoundDAO roundDAO = RoundDAO.getInstance();
-		RoundPOJO r = roundDAO.findBySeasonId(seasonId);
-		int round = r.getRound().intValue();
-
-		EndRound.finalizeRound(seasonId, round);
 	}
 }

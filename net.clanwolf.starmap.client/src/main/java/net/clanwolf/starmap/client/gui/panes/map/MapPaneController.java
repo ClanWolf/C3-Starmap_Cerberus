@@ -166,7 +166,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		// Store jumproutes
 		for (BOJumpship js : Nexus.getBoUniverse().jumpshipBOs.values()) {
 			if (js.getJumpshipFaction() == Nexus.getCurrentUser().getCurrentCharacter().getFactionId() &&
-					Nexus.getBoUniverse().routesList.get(js.getJumpshipId()) != null ) {
+					Nexus.getBoUniverse().routesList.get(js.getJumpshipId()) != null) {
 
 				C3Logger.info("Storing route to database");
 				ArrayList<RoutePointDTO> route = Nexus.getBoUniverse().routesList.get(js.getJumpshipId());
@@ -183,7 +183,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					attack.setAttackedFromStarSystemID((route.get(0)).getSystemId());
 					attack.setAttackTypeID(1L); // Type 1: Planetary Assault
 					attack.setFactionID_Defender(s.getFactionId());
-					attack.setRound(Nexus.getCurrentRound());
+					attack.setRound(Nexus.getCurrentRound() + 1);
 					attack.setSeason(Nexus.getCurrentSeason());
 					attack.setJumpshipID(js.getJumpshipId());
 					attack.setStarSystemID(rp.getSystemId());
@@ -420,6 +420,20 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					Long currentSystemID = js.getCurrentSystemID();
 					boolean myOwnShip = js.getJumpshipFaction() == Nexus.getCurrentUser().getCurrentCharacter().getFactionId();
 
+					if (js.getRoute() != null) {
+						for (RoutePointDTO rp : js.getRoute()) {
+							if (rp.getRoundId().intValue() == Nexus.getCurrentRound()) {
+								if (rp.getSystemId().equals(currentSystemID)) {
+									// In this round, the jumpship should be at System of this routepoint
+									// --> all is fine, the jumpship is where it is expected to be
+								} else {
+									// The jumpship has not jumped and is not at the system it is expected
+									currentSystemID = rp.getSystemId();
+								}
+							}
+						}
+					}
+
 					if (currentSystemID != null) {
 						ImageView jumpshipImage;
 						if (myOwnShip) {
@@ -478,6 +492,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 						js.setJumpshipImageView(jumpshipImage);
 						js.setRoute(boUniverse.routesList.get(js.getJumpshipId()));
+					} else {
+						C3Logger.info("Jumpship '" + js.getJumpshipName() + "' has no current system. Seems to be a mistake!");
 					}
 				}
 

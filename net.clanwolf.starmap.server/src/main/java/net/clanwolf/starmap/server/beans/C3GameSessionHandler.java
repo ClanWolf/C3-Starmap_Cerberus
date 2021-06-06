@@ -38,6 +38,7 @@ import net.clanwolf.starmap.server.persistence.EntityConverter;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.*;
 import net.clanwolf.starmap.server.persistence.pojos.*;
+import net.clanwolf.starmap.server.util.HeartBeatTimer;
 import net.clanwolf.starmap.server.util.WebDataInterface;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
@@ -50,6 +51,7 @@ import java.io.ObjectOutputStream;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Timer;
 import java.util.zip.GZIPOutputStream;
 
 /**
@@ -92,6 +94,8 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		C3Logger.debug("C3GameSessionHandler.executeCommand: " + state.getMode().toString());
 		EntityConverter.convertGameStateToPOJO(state);
 
+		Timer serverHeartBeat;
+
 		switch (state.getMode()) {
 			case BROADCAST_SEND_NEW_PLAYERLIST:
 				sendNewPlayerList();
@@ -126,9 +130,13 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				break;
 			case JUMPSHIP_SAVE:
 				saveJumpship(session, state);
+				serverHeartBeat = new Timer();
+				serverHeartBeat.schedule(new HeartBeatTimer(), 100);
 				break;
 			case ATTACK_SAVE:
 				saveAttack(session, state);
+				serverHeartBeat = new Timer();
+				serverHeartBeat.schedule(new HeartBeatTimer(), 100);
 				break;
 			case ROLEPLAY_GET_CHAPTER_BYSORTORDER:
 				C3GameSessionHandlerRoleplay.getChapterBySortOrder(session, state);
