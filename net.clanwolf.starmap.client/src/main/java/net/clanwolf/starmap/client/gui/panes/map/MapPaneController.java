@@ -172,6 +172,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				ArrayList<RoutePointDTO> route = Nexus.getBoUniverse().routesList.get(js.getJumpshipId());
 				JumpshipDTO jsDto = js.getJumpshipDTO();
 				jsDto.setRoutepointList(route);
+				setJumpshipToAttackReady(js, false);
 				js.storeRouteToDatabase(jsDto);
 
 				// Is the first coming jump (next round) to an enemy planet (?)
@@ -195,7 +196,6 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					Nexus.getBoUniverse().attackBOs.add(boAttack);
 					boAttack.storeAttack();
 				}
-				setJumpshipToAttackReady(js, false);
 			}
 		}
 
@@ -362,7 +362,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				canvas.setAttacksPane(attacksPane);
 
 				for (BOAttack attack : boUniverse.attackBOs) {
-					if (attack.getSeason().equals(boUniverse.currentSeason) && attack.getRound().equals(boUniverse.currentRound)) {
+					if (attack.getSeason().equals(boUniverse.currentSeason) &&
+							(attack.getRound().equals(boUniverse.currentRound + 1)) || (attack.getRound().equals(boUniverse.currentRound))
+					) {
 						BOStarSystem attackedSystem;
 						BOStarSystem attackerStartedFromSystem;
 						// BOJumpship jumpship = boUniverse.getJumpshipByID(attack.getJumpshipId());
@@ -429,6 +431,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 								} else {
 									// The jumpship has not jumped and is not at the system it is expected
 									currentSystemID = rp.getSystemId();
+									C3Logger.info("Fixing position of jumpship that apparently did not jump!");
 								}
 							}
 						}

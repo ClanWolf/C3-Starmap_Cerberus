@@ -32,10 +32,7 @@ import net.clanwolf.starmap.server.beans.C3GameSessionHandler;
 import net.clanwolf.starmap.server.beans.C3Room;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.*;
-import net.clanwolf.starmap.server.persistence.pojos.AttackPOJO;
-import net.clanwolf.starmap.server.persistence.pojos.JumpshipPOJO;
-import net.clanwolf.starmap.server.persistence.pojos.RoundPOJO;
-import net.clanwolf.starmap.server.persistence.pojos.SeasonPOJO;
+import net.clanwolf.starmap.server.persistence.pojos.*;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import org.hibernate.Transaction;
@@ -192,17 +189,25 @@ public class EndRound {
 				findAWinner(attackPOJO);
 			}
 
-			// set all jumpships to attackReady again
+			// Count the round indicator up once
+			Long newRound = Long.valueOf(round + 1);
+			C3Logger.info("--- Finally increase the round indicator to: " + newRound);
+			RoundPOJO roundPOJO = RoundDAO.getInstance().findBySeasonId(seasonId);
+			roundPOJO.setRound(newRound);
+
+			// Set all jumpships to attackReady again
+			// Add the next system (according to the new round) from the current route to StarSystemHistory column
 			C3Logger.info("--- Setting all jumpships to attackReady again.");
 			for (JumpshipPOJO js : jumpshipList) {
 				js.setAttackReady(true);
+				for (RoutePointPOJO p : js.getRoutepointList()) {
+					if (p.getRoundId().equals(newRound)) {
+						String ssh = js.getStarSystemHistory();
+						ssh = ssh + ";" + p.getSystemId();
+						js.setStarSystemHistory(ssh);
+					}
+				}
 			}
-
-			// finally count the round indicator up once
-			Long newRound = Long.valueOf(round + 1);
-			C3Logger.info("--- Finally increasy the round indicator to: " + newRound);
-			RoundPOJO roundPOJO = RoundDAO.getInstance().findBySeasonId(seasonId);
-			roundPOJO.setRound(newRound);
 
 			//TODO: Test!!
 			roundPOJO.setCurrentRoundStartDate(getNextRoundDate(seasonId));
