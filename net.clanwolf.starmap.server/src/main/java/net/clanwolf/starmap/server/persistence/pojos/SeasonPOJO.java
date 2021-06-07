@@ -35,6 +35,19 @@ public class SeasonPOJO extends Pojo {
 	@Column(name = "StartDate")
 	private Date startDate;
 
+	@Column(name = "DaysInRound")
+	private Long daysInRound;
+
+	@SuppressWarnings("unused")
+	public Long getDaysInRound() {
+		return daysInRound;
+	}
+
+	@SuppressWarnings("unused")
+	public void setDaysInRound(Long daysInRound) {
+		this.daysInRound = daysInRound;
+	}
+
 	@SuppressWarnings("unused")
 	public Long getId() {
 		return id;

@@ -66,6 +66,7 @@ public class EndRound {
 		SeasonDAO dao = SeasonDAO.getInstance();
 		SeasonPOJO season = (SeasonPOJO) dao.findById(SeasonPOJO.class, seasonId);
 		Date seasonStartDate = season.getStartDate();
+		MAXDAYSINAROUND = season.getDaysInRound().intValue();
 
 		RoundDAO roundDAO = RoundDAO.getInstance();
 		RoundPOJO roundPOJO = roundDAO.findBySeasonId(seasonId);
