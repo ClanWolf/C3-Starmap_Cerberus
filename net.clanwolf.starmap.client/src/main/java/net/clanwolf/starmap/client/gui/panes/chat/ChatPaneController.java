@@ -29,16 +29,13 @@ package net.clanwolf.starmap.client.gui.panes.chat;
 import com.ircclouds.irc.api.domain.messages.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextFlow;
+import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
-import net.clanwolf.starmap.client.gui.panes.character.CharacterPane;
 import net.clanwolf.starmap.client.net.irc.IRCClient;
 import net.clanwolf.starmap.client.net.irc.MessageActionObject;
 import net.clanwolf.starmap.client.net.irc.NickChangeObject;
@@ -60,10 +57,7 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 	private String selectedUser = "";
 
 	@FXML
-	TextFlow textFlowChat;
-
-	@FXML
-	ScrollPane spChat;
+	TableView<ChatEntry> tableViewChat;
 
 	@FXML
 	ListView<String> lvUsers;
@@ -113,8 +107,41 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 		ActionManager.addActionCallbackListener(ACTIONS.IRC_UPDATED_USERLIST_RECEIVED, this);
 	}
 
+	private static ChatPaneController instance = null;
+
 	private void init() {
-		spChat.vvalueProperty().bind(textFlowChat.heightProperty());
+		instance = this;
+
+		TableColumn<ChatEntry, String> chatTimeColumn = new TableColumn<>("fgdg");
+		chatTimeColumn.setCellValueFactory(new PropertyValueFactory<ChatEntry, String>("chatTime"));
+		chatTimeColumn.setPrefWidth(50);
+		TableColumn<ChatEntry, String> chatUserColumn = new TableColumn<>("fdg");
+		chatUserColumn.setCellValueFactory(new PropertyValueFactory<ChatEntry, String>("chatUser"));
+		chatUserColumn.setPrefWidth(50);
+		TableColumn<ChatEntry, String> chatTextColumn = new TableColumn<>("fdg");
+		chatTextColumn.setCellValueFactory(new PropertyValueFactory<ChatEntry, String>("chatText"));
+		chatTextColumn.setPrefWidth(250);
+		tableViewChat.getColumns().addAll(chatTimeColumn,
+				chatUserColumn,
+				chatTextColumn
+		);
+
+//		tableViewChat.setRowFactory(tableViewChat -> new TableRow<ChatEntry>() {
+//			@Override
+//			protected void updateItem(ChatEntry item, boolean empty) {
+//				super.updateItem(item, empty);
+////				if (item == null || item.getUser() == null) {
+////					//setStyle("");
+////				} else if (item.getUser().equals("Meldric")) {
+////					//setStyle("-fx-background-color: #ff856d;");
+////				} else {
+////					//setStyle("");
+////					//setStyle("-fx-background-color: #ff856d;");
+////				}
+//			}
+//		});
+
+		addChatLine("", "Connecting...");
 	}
 
 	private void handleCommand(String com) {
@@ -191,41 +218,57 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 					}
 					mo.setTarget(tar);
 					C3Logger.info("Private message to: " + lvUsers.getSelectionModel().getSelectedItems().get(0));
-					color = "#99ff99";
-					addText(color, IRCClient.myNick + " [" + Internationalization.getString("C3_IRC_Priv") + "]: " + com + System.getProperty("line.separator"));
+//					color = "#99ff99";
+
+					addChatLine(IRCClient.myNick + " [" + Internationalization.getString("C3_IRC_Priv") + "]: ", com);
+
+//					addText(color, IRCClient.myNick + " [" + Internationalization.getString("C3_IRC_Priv") + "]: " + com + System.getProperty("line.separator"));
 				} else {
-					color = "#edf2be";
-					addText(color, IRCClient.myNick + ": " + com + System.getProperty("line.separator"));
+					addChatLine(IRCClient.myNick + ": ", com);
+//					color = "#edf2be";
+//					addText(color, IRCClient.myNick + ": " + com + System.getProperty("line.separator"));
 				}
 				mo.setSource("");
 				mo.setMessage(com);
-
 
 				ActionManager.getAction(ACTIONS.IRC_SEND_MESSAGE).execute(mo);
 			}
 		}
 	}
 
-	private void addText(String t) {
-		addText("", t);
-	}
+//	private void addText(String t) {
+//		addText("", t);
+//	}
+//
+//	private void addText(String color, String t) {
+//		Platform.runLater(() -> {
+//			DateFormat timeFormat = new SimpleDateFormat("HH:mm");
+//			final long currentTime = System.currentTimeMillis();
+//
+//			Text t1 = new Text();
+//
+//			if (!"".equals(color)) {
+//				t1.setStyle("-fx-fill:" + color + ";");
+//			} else {
+//				t1.setStyle("-fx-fill:#81d4ee;");
+//			}
+//
+//			t1.setText("[" + timeFormat.format(currentTime) + "] " + t);
+//			textFlowChat.getChildren().add(t1);
+//		});
+//	}
 
-	private void addText(String color, String t) {
-		Platform.runLater(() -> {
+	public static void addChatLine(String chatUser, String chatText) {
+		if (instance != null) {
+			if (chatUser == null) {
+				chatUser = "";
+			}
 			DateFormat timeFormat = new SimpleDateFormat("HH:mm");
 			final long currentTime = System.currentTimeMillis();
-
-			Text t1 = new Text();
-
-			if (!"".equals(color)) {
-				t1.setStyle("-fx-fill:" + color + ";");
-			} else {
-				t1.setStyle("-fx-fill:#81d4ee;");
-			}
-
-			t1.setText("[" + timeFormat.format(currentTime) + "] " + t);
-			textFlowChat.getChildren().add(t1);
-		});
+			final String chatTime = "" + timeFormat.format(currentTime);
+			ChatEntry ent = new ChatEntry(chatTime, chatUser, chatText);
+			Platform.runLater(() -> instance.tableViewChat.getItems().add(ent));
+		}
 	}
 
 	private void removeUser(String userName) {
@@ -276,7 +319,7 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 				if (o.getObject().getClass() == ChatPane.class) {
 					C3Logger.info("Chat window opened.");
 					init();
-					if (ircClient != null && !ircClient.connected) {
+					if (ircClient != null && !IRCClient.connected) {
 						C3Logger.info("Connecting to IRC...");
 						ircClient.connect();
 					}
@@ -292,7 +335,9 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 					ChanJoinMessage cjm = (ChanJoinMessage) o.getObject();
 					if (!lvUsers.getItems().contains(cjm.getSource().getNick())) {
 						lvUsers.getItems().add(cjm.getSource().getNick());
-						addText("#aaaaaa", cjm.getSource().getNick() + " " + Internationalization.getString("C3_IRC_Joined") + " " + System.getProperty("line.separator"));
+						addChatLine(null, cjm.getSource().getNick() + Internationalization.getString("C3_IRC_Joined"));
+
+//						addText("#aaaaaa", cjm.getSource().getNick() + " " + Internationalization.getString("C3_IRC_Joined") + " " + System.getProperty("line.separator"));
 					}
 				});
 				break;
@@ -303,7 +348,8 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 			case IRC_ERROR:
 				Platform.runLater(() -> {
 					String eMsg = o.getText();
-					addText("#ff0000", Internationalization.getString("C3_Speech_Failure") + " " + eMsg + System.getProperty("line.separator"));
+					addChatLine(null, Internationalization.getString("C3_Speech_Failure") + " " + eMsg);
+//					addText("#ff0000", Internationalization.getString("C3_Speech_Failure") + " " + eMsg + System.getProperty("line.separator"));
 				});
 				break;
 
@@ -311,7 +357,8 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 				Platform.runLater(() -> {
 					ChanPartMessage pmsg = (ChanPartMessage) o.getObject();
 					removeUser(pmsg.getSource().getNick());
-					addText("#aaaaaa", pmsg.getSource().getNick() + " " + Internationalization.getString("C3_IRC_Left") + " " + System.getProperty("line.separator"));
+					addChatLine(null, pmsg.getSource().getNick() + " " + Internationalization.getString("C3_IRC_Left"));
+//					addText("#aaaaaa", pmsg.getSource().getNick() + " " + Internationalization.getString("C3_IRC_Left") + " " + System.getProperty("line.separator"));
 				});
 				break;
 
@@ -319,7 +366,8 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 				Platform.runLater(() -> {
 					ChannelKick kmsg = (ChannelKick) o.getObject();
 					removeUser(kmsg.getKickedNickname());
-					addText("#aaaaaa", kmsg.getKickedNickname() + " " + Internationalization.getString("C3_IRC_WasKicked") + " " + System.getProperty("line.separator"));
+					addChatLine(null, kmsg.getKickedNickname() + " " + Internationalization.getString("C3_IRC_WasKicked"));
+//					addText("#aaaaaa", kmsg.getKickedNickname() + " " + Internationalization.getString("C3_IRC_WasKicked") + " " + System.getProperty("line.separator"));
 				});
 				break;
 
@@ -327,7 +375,8 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 				Platform.runLater(() -> {
 					QuitMessage qmsg = (QuitMessage) o.getObject();
 					removeUser(qmsg.getSource().getNick());
-					addText("#aaaaaa", qmsg.getSource().getNick() + " " + Internationalization.getString("C3_IRC_Quit") + " " + qmsg.getQuitMsg() + System.getProperty("line.separator"));
+					addChatLine(null, qmsg.getSource().getNick() + " " + Internationalization.getString("C3_IRC_Quit") + " " + qmsg.getQuitMsg());
+//					addText("#aaaaaa", qmsg.getSource().getNick() + " " + Internationalization.getString("C3_IRC_Quit") + " " + qmsg.getQuitMsg() + System.getProperty("line.separator"));
 				});
 				break;
 
@@ -351,7 +400,8 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 						lvUsers.getItems().set(c, s);
 					}
 					String v = Internationalization.getString("C3_IRC_IsNowKnownAs");
-					addText("#aaaaaa", nco.getOldNick() + " " + v + " " + nco.getNewNick() + System.getProperty("line.separator"));
+					addChatLine(null, nco.getOldNick() + " " + v + " " + nco.getNewNick());
+//					addText("#aaaaaa", nco.getOldNick() + " " + v + " " + nco.getNewNick() + System.getProperty("line.separator"));
 				});
 				break;
 
@@ -368,21 +418,24 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 			case IRC_MESSAGE_IN_PRIVATE:
 				Platform.runLater(() -> {
 					UserPrivMsg msg = (UserPrivMsg) o.getObject();
-					addText("#99ff99", msg.getSource().getNick() + " [" + Internationalization.getString("C3_IRC_Priv") + "]: " + msg.getText() + System.getProperty("line.separator"));
+					addChatLine(msg.getSource().getNick() + " [" + Internationalization.getString("C3_IRC_Priv") + "]: ", msg.getText());
+//					addText("#99ff99", msg.getSource().getNick() + " [" + Internationalization.getString("C3_IRC_Priv") + "]: " + msg.getText() + System.getProperty("line.separator"));
 				});
 				break;
 
 			case IRC_MESSAGE_IN_GENERAL:
 				Platform.runLater(() -> {
 					ChannelPrivMsg msg2 = (ChannelPrivMsg) o.getObject();
-					addText("#99ff99", msg2.getSource().getNick() + "[" + Internationalization.getString("C3_IRC_General") + "]: " + msg2.getText() + System.getProperty("line.separator"));
+					addChatLine(msg2.getSource().getNick() + "[" + Internationalization.getString("C3_IRC_General") + "]: ", msg2.getText());
+//					addText("#99ff99", msg2.getSource().getNick() + "[" + Internationalization.getString("C3_IRC_General") + "]: " + msg2.getText() + System.getProperty("line.separator"));
 				});
 				break;
 
 			case IRC_SENDING_ACTION:
 				Platform.runLater(() -> {
 					String com2 = o.getText();
-					addText("#77ffee", IRCClient.myNick + " " + com2 + System.getProperty("line.separator"));
+					addChatLine(IRCClient.myNick, com2);
+//					addText("#77ffee", IRCClient.myNick + " " + com2 + System.getProperty("line.separator"));
 				});
 				break;
 
@@ -395,11 +448,7 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 			case IRC_MESSAGE_IN_CHANNEL:
 				Platform.runLater(() -> {
 					ChannelPrivMsg msg3 = (ChannelPrivMsg) o.getObject();
-					if ("Ulric".equals(msg3.getSource().getNick())) {
-						addText("#addae7", msg3.getSource().getNick() + ": " + msg3.getText() + System.getProperty("line.separator"));
-					} else {
-						addText(msg3.getSource().getNick() + ": " + msg3.getText() + System.getProperty("line.separator"));
-					}
+					addChatLine(msg3.getSource().getNick(), msg3.getText());
 				});
 				break;
 

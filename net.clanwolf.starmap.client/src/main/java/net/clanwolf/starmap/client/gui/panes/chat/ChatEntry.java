@@ -24,50 +24,31 @@
  * Copyright (c) 2001-2021, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.logging;
+package net.clanwolf.starmap.client.gui.panes.chat;
 
-public class LogEntry {
-    private Integer lineNumber;
-    private String level;
-    private String timestamp;
-    private String loggingClass;
-    private String loggingClassMethod;
-    private String message;
+public class ChatEntry {
+    private final String chatTime;
+    private final String chatUser;
+    private final String chatText;
 
-    public LogEntry(Integer lineNumber, String level, String timestamp, String loggingClass, String loggingClassMethod, String message) {
-        this.lineNumber = lineNumber;
-        this.timestamp = timestamp;
-        this.level = level;
-        this.loggingClass = loggingClass;
-        this.loggingClassMethod = loggingClassMethod;
-        this.message = message;
+    public ChatEntry(String chatTime, String chatUser, String chatText) {
+        this.chatTime = chatTime;
+        this.chatUser = chatUser;
+        this.chatText = chatText;
     }
 
 	@SuppressWarnings("unused")
-    public Integer getLineNumber() {
-        return lineNumber;
+    public String getChatTime() {
+        return chatTime;
     }
 
 	@SuppressWarnings("unused")
-    public String getTimestamp() { return timestamp; }
-
-	@SuppressWarnings("unused")
-    public String getLevel() {
-        return level;
+    public String getChatUser() {
+        return chatUser;
     }
 
 	@SuppressWarnings("unused")
-    public String getLoggingClass() {
-        return loggingClass;
-    }
-
-	@SuppressWarnings("unused")
-    public String getLoggingClassMethod() {
-        return loggingClassMethod;
-    }
-
-	@SuppressWarnings("unused")
-    public String getMessage() {
-        return message;
+    public String getChatText() {
+        return chatText;
     }
 }

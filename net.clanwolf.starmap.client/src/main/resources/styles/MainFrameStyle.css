@@ -549,6 +549,39 @@
   -fx-text-fill: #a3d4ef;
 }
 
+.table-view {
+   -fx-text-fill: black;
+   -fx-background-color: transparent;
+}
+.table-view:focused {
+    -fx-background-color: transparent;
+}
+.table-view .table-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: black;
+}
+.table-row-cell {
+    -fx-text-fill: black;
+    -fx-background-color: transparent
+    -fx-table-cell-border-color: transparent;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0.0em; /* 0 */
+}
+.table-row-cell:odd {
+    -fx-background-color: transparent
+    -fx-table-cell-border-color: transparent;
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0.0em; /* 0 */
+}
+.table-row-cell:selected {
+    -fx-background-color: #005797;
+    -fx-background-insets: 0;
+    -fx-background-radius: 1;
+}
+.table-view .filler {
+    -fx-background-color: transparent;
+}
+
 .text-field {
   -fx-border-color: #779fc3;
   -fx-border-width: 1;
