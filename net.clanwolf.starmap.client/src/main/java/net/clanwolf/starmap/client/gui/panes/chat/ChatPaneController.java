@@ -445,7 +445,7 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 			case IRC_MESSAGE_IN_PRIVATE:
 				Platform.runLater(() -> {
 					UserPrivMsg msg = (UserPrivMsg) o.getObject();
-					addChatLine(msg.getSource().getNick() + " [" + Internationalization.getString("C3_IRC_Priv") + "] ", msg.getText());
+					addChatLine(msg.getSource().getNick() + " [" + Internationalization.getString("C3_IRC_Priv") + "] ", msg.getText() + " (-> " + msg.getToUser() + ")");
 				});
 				break;
 
