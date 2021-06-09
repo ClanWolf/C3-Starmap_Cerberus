@@ -232,7 +232,7 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 					}
 					mo.setTarget(tar);
 					C3Logger.info("Private message to: " + lvUsers.getSelectionModel().getSelectedItems().get(0));
-					addChatLine(IRCClient.myNick + " [" + Internationalization.getString("C3_IRC_Priv") + "] ", com);
+					addChatLine(IRCClient.myNick + " [" + Internationalization.getString("C3_IRC_Priv") + "] ", com + " (-> " + tar + ")");
 				} else {
 					addChatLine(IRCClient.myNick + " ", com);
 				}
