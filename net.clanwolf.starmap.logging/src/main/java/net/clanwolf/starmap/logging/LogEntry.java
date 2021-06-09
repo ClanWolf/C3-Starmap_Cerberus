@@ -27,12 +27,12 @@
 package net.clanwolf.starmap.logging;
 
 public class LogEntry {
-    private Integer lineNumber;
-    private String level;
-    private String timestamp;
-    private String loggingClass;
-    private String loggingClassMethod;
-    private String message;
+    private final Integer lineNumber;
+    private final String level;
+    private final String timestamp;
+    private final String loggingClass;
+    private final String loggingClassMethod;
+    private final String message;
 
     public LogEntry(Integer lineNumber, String level, String timestamp, String loggingClass, String loggingClassMethod, String message) {
         this.lineNumber = lineNumber;

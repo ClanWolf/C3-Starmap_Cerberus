@@ -206,21 +206,30 @@ public class LogPaneController implements ActionCallBackListener {
 		TableColumn<LogEntry, Integer> clientLineNumberColumn = new TableColumn<>("");
 		clientLineNumberColumn.setCellValueFactory(new PropertyValueFactory<>("lineNumber"));
 		clientLineNumberColumn.setPrefWidth(50);
+		clientLineNumberColumn.setMaxWidth(50);
+		clientLineNumberColumn.setMinWidth(50);
 		TableColumn<LogEntry, String> clientLevelColumn = new TableColumn<>("");
 		clientLevelColumn.setCellValueFactory(new PropertyValueFactory<>("level"));
 		clientLevelColumn.setPrefWidth(50);
+		clientLevelColumn.setMaxWidth(50);
+		clientLevelColumn.setMinWidth(50);
 //		TableColumn<LogEntry, String> clientTimestampColumn = new TableColumn<>("");
 //		clientTimestampColumn.setCellValueFactory(new PropertyValueFactory<>("timestamp"));
 //      clientTimestampColumn.setPrefWidth(300);
 		TableColumn<LogEntry, String> clientClassColumn = new TableColumn<>("");
 		clientClassColumn.setCellValueFactory(new PropertyValueFactory<>("loggingClass"));
 		clientClassColumn.setPrefWidth(250);
+		clientClassColumn.setMaxWidth(250);
+		clientClassColumn.setMinWidth(250);
 		TableColumn<LogEntry, String> clientMethodColumn = new TableColumn<>("");
 		clientMethodColumn.setCellValueFactory(new PropertyValueFactory<>("loggingClassMethod"));
 		clientMethodColumn.setPrefWidth(80);
+		clientMethodColumn.setMaxWidth(80);
+		clientMethodColumn.setMinWidth(80);
 		TableColumn<LogEntry, String> clientMessageColumn = new TableColumn<>("");
 		clientMessageColumn.setCellValueFactory(new PropertyValueFactory<>("message"));
 		clientMessageColumn.setPrefWidth(500);
+		tableViewClientLog.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		tableViewClientLog.getColumns().addAll(clientLineNumberColumn,
 				clientLevelColumn,
 //				clientTimestampColumn,
@@ -248,27 +257,38 @@ public class LogPaneController implements ActionCallBackListener {
 		TableColumn<LogEntry, Integer> serverLineNumberColumn = new TableColumn<>("");
 		serverLineNumberColumn.setCellValueFactory(new PropertyValueFactory<>("lineNumber"));
 		serverLineNumberColumn.setPrefWidth(50);
+		serverLineNumberColumn.setMinWidth(50);
+		serverLineNumberColumn.setMaxWidth(50);
 		TableColumn<LogEntry, String> serverLevelColumn = new TableColumn<>("");
 		serverLevelColumn.setCellValueFactory(new PropertyValueFactory<>("level"));
 		serverLevelColumn.setPrefWidth(50);
+		serverLevelColumn.setMaxWidth(50);
+		serverLevelColumn.setMinWidth(50);
 		TableColumn<LogEntry, String> serverTimestampColumn = new TableColumn<>("");
 		serverTimestampColumn.setCellValueFactory(new PropertyValueFactory<>("timestamp"));
 		serverTimestampColumn.setPrefWidth(110);
+		serverTimestampColumn.setMaxWidth(110);
+		serverTimestampColumn.setMinWidth(110);
 		TableColumn<LogEntry, String> serverClassColumn = new TableColumn<>("");
 		serverClassColumn.setCellValueFactory(new PropertyValueFactory<>("loggingClass"));
 		serverClassColumn.setPrefWidth(250);
+		serverClassColumn.setMaxWidth(250);
+		serverClassColumn.setMinWidth(250);
 		TableColumn<LogEntry, String> serverMethodColumn = new TableColumn<>("");
 		serverMethodColumn.setCellValueFactory(new PropertyValueFactory<>("loggingClassMethod"));
 		serverMethodColumn.setPrefWidth(80);
+		serverMethodColumn.setMaxWidth(80);
+		serverMethodColumn.setMinWidth(80);
 		TableColumn<LogEntry, String> serverMessageColumn = new TableColumn<>("");
 		serverMessageColumn.setCellValueFactory(new PropertyValueFactory<>("message"));
 		serverMessageColumn.setPrefWidth(500);
-		tableViewServerLog.getColumns().addAll(serverLineNumberColumn,
-				serverLevelColumn,
-				serverTimestampColumn,
-				serverClassColumn,
-				serverMethodColumn,
-				serverMessageColumn
+		tableViewServerLog.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+		tableViewServerLog.getColumns().addAll( serverLineNumberColumn,
+												serverLevelColumn,
+												serverTimestampColumn,
+												serverClassColumn,
+												serverMethodColumn,
+												serverMessageColumn
 		);
 
 		tableViewServerLog.setRowFactory(tableViewServerLog -> new TableRow<LogEntry>() {

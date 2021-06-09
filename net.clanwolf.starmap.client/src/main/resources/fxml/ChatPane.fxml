@@ -31,7 +31,10 @@
                            <content>
                               <AnchorPane prefHeight="200.0" prefWidth="200.0" stylesheets="@../styles/MainFrameStyle.css">
                                  <children>
-                                    <TableView fx:id="tableViewChat" editable="true" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                                    <TableView fx:id="tableViewChat" prefHeight="200.0" prefWidth="200.0" stylesheets="@../styles/MainFrameStyle.css" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <padding>
+                                          <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                                       </padding></TableView>
                                  </children>
                               </AnchorPane>
                            </content>

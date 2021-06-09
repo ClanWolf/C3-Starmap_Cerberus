@@ -26,29 +26,32 @@
  */
 package net.clanwolf.starmap.client.gui.panes.chat;
 
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+
 public class ChatEntry {
-    private final String chatTime;
-    private final String chatUser;
-    private final String chatText;
+    private final StringProperty chatTime;
+    private final StringProperty chatUser;
+    private final StringProperty chatText;
 
     public ChatEntry(String chatTime, String chatUser, String chatText) {
-        this.chatTime = chatTime;
-        this.chatUser = chatUser;
-        this.chatText = chatText;
+        this.chatTime = new SimpleStringProperty(chatTime);
+        this.chatUser = new SimpleStringProperty(chatUser);
+        this.chatText = new SimpleStringProperty(chatText);
     }
 
 	@SuppressWarnings("unused")
-    public String getChatTime() {
-        return chatTime;
+    public StringProperty getChatTime() {
+        return this.chatTime;
     }
 
 	@SuppressWarnings("unused")
-    public String getChatUser() {
-        return chatUser;
+    public StringProperty getChatUser() {
+        return this.chatUser;
     }
 
 	@SuppressWarnings("unused")
-    public String getChatText() {
-        return chatText;
+    public StringProperty getChatText() {
+        return this.chatText;
     }
 }
