@@ -118,36 +118,38 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 		tableViewChat.getStyleClass().add("noheader");
 		TableColumn<ChatEntry, String> chatTimeColumn = new TableColumn<>("");
 		chatTimeColumn.setCellValueFactory(data -> data.getValue().getChatTime());
-		chatTimeColumn.setPrefWidth(60);
-		chatTimeColumn.setMaxWidth(60);
-		chatTimeColumn.setMinWidth(60);
+		chatTimeColumn.setPrefWidth(70);
+		chatTimeColumn.setMaxWidth(70);
+		chatTimeColumn.setMinWidth(70);
 		TableColumn<ChatEntry, String> chatUserColumn = new TableColumn<>("");
 		chatUserColumn.setCellValueFactory(data -> data.getValue().getChatUser());
-		chatUserColumn.setPrefWidth(80);
-		chatUserColumn.setMaxWidth(80);
-		chatUserColumn.setMinWidth(80);
+		chatUserColumn.setPrefWidth(100);
+		chatUserColumn.setMaxWidth(100);
+		chatUserColumn.setMinWidth(100);
 		TableColumn<ChatEntry, String> chatTextColumn = new TableColumn<>("");
 		chatTextColumn.setCellValueFactory(data -> data.getValue().getChatText());
-		chatTextColumn.setPrefWidth(250);
+//		chatTextColumn.setPrefWidth(250);
 		tableViewChat.getColumns().addAll(  chatTimeColumn,
 											chatUserColumn,
 											chatTextColumn
 		);
 
-//		tableViewChat.setRowFactory(tableViewChat -> new TableRow<ChatEntry>() {
-//			@Override
-//			protected void updateItem(ChatEntry item, boolean empty) {
-//				super.updateItem(item, empty);
-////				if (item == null || item.getUser() == null) {
-////					//setStyle("");
-////				} else if (item.getUser().equals("Meldric")) {
-////					//setStyle("-fx-background-color: #ff856d;");
-////				} else {
-////					//setStyle("");
-////					//setStyle("-fx-background-color: #ff856d;");
-////				}
-//			}
-//		});
+		tableViewChat.setRowFactory(tableViewChat -> new TableRow<ChatEntry>() {
+			@Override
+			protected void updateItem(ChatEntry item, boolean empty) {
+				super.updateItem(item, empty);
+				if (item == null || item.getChatUser() == null) {
+					setStyle("");
+				} else if (item.getChatUser().get() != null && item.getChatUser().get().toLowerCase().equals("Ulric".toLowerCase())) {
+					setStyle("-fx-background-color: #ff856d;");
+				} else if (item.getChatUser().get() != null && item.getChatUser().get().toLowerCase().contains("[" + Internationalization.getString("C3_IRC_Priv") + "]")) {
+					setStyle("-fx-background-color: #ff4444;");
+				} else {
+					setStyle("");
+					//setStyle("-fx-background-color: #ff856d;");
+				}
+			}
+		});
 
 		instance = this;
 		tableViewChat.setVisible(true);
@@ -230,9 +232,9 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 					}
 					mo.setTarget(tar);
 					C3Logger.info("Private message to: " + lvUsers.getSelectionModel().getSelectedItems().get(0));
-					addChatLine(IRCClient.myNick + " [" + Internationalization.getString("C3_IRC_Priv") + "]: ", com);
+					addChatLine(IRCClient.myNick + " [" + Internationalization.getString("C3_IRC_Priv") + "] ", com);
 				} else {
-					addChatLine(IRCClient.myNick + ": ", com);
+					addChatLine(IRCClient.myNick + " ", com);
 				}
 				mo.setSource("");
 				mo.setMessage(com);
@@ -241,37 +243,64 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 		}
 	}
 
-//	private void addText(String t) {
-//		addText("", t);
-//	}
-//
-//	private void addText(String color, String t) {
-//		Platform.runLater(() -> {
-//			DateFormat timeFormat = new SimpleDateFormat("HH:mm");
-//			final long currentTime = System.currentTimeMillis();
-//
-//			Text t1 = new Text();
-//
-//			if (!"".equals(color)) {
-//				t1.setStyle("-fx-fill:" + color + ";");
-//			} else {
-//				t1.setStyle("-fx-fill:#81d4ee;");
-//			}
-//
-//			t1.setText("[" + timeFormat.format(currentTime) + "] " + t);
-//			textFlowChat.getChildren().add(t1);
-//		});
-//	}
+	public static void autoResizeColumns(TableView<?> table) {
+		TableColumn column = table.getColumns().get(1);
+		Text t;
+		double max = 5.0d;
+		for (int i = 0; i < table.getItems().size(); i++) {
+			if (column.getCellData(i) != null) {
+				t = new Text(column.getCellData(i).toString());
+				double calcwidth = t.getLayoutBounds().getWidth();
+				if (calcwidth > max) {
+					max = calcwidth;
+				}
+			}
+		}
+		column.setPrefWidth(max + 30.0d);
+		column.setMaxWidth(max + 30.0d);
+		column.setMinWidth(max + 30.0d);
+	}
 
 	public static void addChatLine(String chatUser, String chatText) {
 		if (instance != null) {
 			Platform.runLater(() -> {
-				DateFormat timeFormat = new SimpleDateFormat("HH:mm");
+				DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
 				final long currentTime = System.currentTimeMillis();
 				final String chatTime = "" + timeFormat.format(currentTime);
-				ChatEntry ent = new ChatEntry(chatTime, chatUser, chatText);
-				instance.tableViewChat.getItems().add(ent);
+
+				if (chatText.contains(" ")) {
+					boolean firstLineDone = false;
+					String line = "";
+					String[] words = chatText.split(" ");
+					ChatEntry entry;
+					for (String word : words) {
+						if (line.length() + word.length() + 2 < 55) {
+							line = line + word + " ";
+						} else {
+							if (firstLineDone) {
+								entry = new ChatEntry(null, null, line);
+							} else {
+								entry = new ChatEntry(chatTime, chatUser, line);
+							}
+							instance.tableViewChat.getItems().add(entry);
+							line = word + " ";
+							firstLineDone = true;
+						}
+					}
+					if (!"".equals(line)) {
+						if (firstLineDone) {
+							entry = new ChatEntry(null, null, line);
+						} else {
+							entry = new ChatEntry(chatTime, chatUser, line);
+						}
+						instance.tableViewChat.getItems().add(entry);
+					}
+				} else {
+					ChatEntry entry = new ChatEntry(chatTime, chatUser, chatText);
+					instance.tableViewChat.getItems().add(entry);
+				}
 				instance.tableViewChat.scrollTo(instance.tableViewChat.getItems().size());
+//				autoResizeColumns(instance.tableViewChat);
 			});
 		}
 	}
@@ -340,7 +369,7 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 					ChanJoinMessage cjm = (ChanJoinMessage) o.getObject();
 					if (!lvUsers.getItems().contains(cjm.getSource().getNick())) {
 						lvUsers.getItems().add(cjm.getSource().getNick());
-						addChatLine(null, cjm.getSource().getNick() + Internationalization.getString("C3_IRC_Joined"));
+						addChatLine(null, cjm.getSource().getNick() + " " + Internationalization.getString("C3_IRC_Joined"));
 					}
 				});
 				break;
@@ -416,14 +445,14 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 			case IRC_MESSAGE_IN_PRIVATE:
 				Platform.runLater(() -> {
 					UserPrivMsg msg = (UserPrivMsg) o.getObject();
-					addChatLine(msg.getSource().getNick() + " [" + Internationalization.getString("C3_IRC_Priv") + "]: ", msg.getText());
+					addChatLine(msg.getSource().getNick() + " [" + Internationalization.getString("C3_IRC_Priv") + "] ", msg.getText());
 				});
 				break;
 
 			case IRC_MESSAGE_IN_GENERAL:
 				Platform.runLater(() -> {
 					ChannelPrivMsg msg2 = (ChannelPrivMsg) o.getObject();
-					addChatLine(msg2.getSource().getNick() + "[" + Internationalization.getString("C3_IRC_General") + "]: ", msg2.getText());
+					addChatLine(msg2.getSource().getNick() + "[" + Internationalization.getString("C3_IRC_General") + "] ", msg2.getText());
 				});
 				break;
 
