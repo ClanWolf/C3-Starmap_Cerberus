@@ -33,6 +33,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.skin.TableHeaderRow;
 import javafx.scene.control.skin.TableViewSkinBase;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Callback;
 import net.clanwolf.starmap.client.action.ACTIONS;
@@ -140,13 +141,12 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 				super.updateItem(item, empty);
 				if (item == null || item.getChatUser() == null) {
 					setStyle("");
-				} else if (item.getChatUser().get() != null && item.getChatUser().get().toLowerCase().equals("Ulric".toLowerCase())) {
-					setStyle("-fx-background-color: #ff856d;");
+				} else if (item.getChatUser().get() != null && item.getChatUser().get().equalsIgnoreCase("Ulric".toLowerCase())) {
+					setStyle("-fx-background-color: #1d374b;");
 				} else if (item.getChatUser().get() != null && item.getChatUser().get().toLowerCase().contains("[" + Internationalization.getString("C3_IRC_Priv") + "]")) {
-					setStyle("-fx-background-color: #ff4444;");
+					setStyle("-fx-background-color: #0f2c3b;");
 				} else {
 					setStyle("");
-					//setStyle("-fx-background-color: #ff856d;");
 				}
 			}
 		});
