@@ -58,11 +58,13 @@ public class GameServer {
 			for (String a : args) {
 				isDevelopmentPC = a.equals("IDE");
 				if (a.toLowerCase().startsWith("season=")) {
-					// Season is defaulting to 1, can be set by a parameter
-					String[] v = a.split("=");
-					Long s = Long.valueOf(v[1]);
-					if (s != null) {
+					try {
+						// Season is defaulting to 1, can be set by a parameter
+						String[] v = a.split("=");
+						Long s = Long.valueOf(v[1]);
 						setCurrentSeason(s);
+					} catch(NumberFormatException e) {
+						C3Logger.info("Parameter for Season could not be parsed to a number! Defaulting to 1.");
 					}
 				}
 			}
