@@ -43,13 +43,29 @@ public class GameServer {
 	private static String serverBaseDir;
 	public static boolean isDevelopmentPC;
 
+	private static Long currentSeason = 1L;
+	public static Long getCurrentSeason() {
+		return currentSeason;
+	}
+	public static void setCurrentSeason(Long s) {
+		currentSeason = s;
+	}
+
 	public static void main(String[] args) {
 		// Logging
 		File dir;
-		if(args.length > 0 && args[0].equals("IDE")) {
-			isDevelopmentPC = true;
-		} else {
-			isDevelopmentPC = false;
+		if(args.length > 0) {
+			for (String a : args) {
+				isDevelopmentPC = a.equals("IDE");
+				if (a.toLowerCase().startsWith("season=")) {
+					// Season is defaulting to 1, can be set by a parameter
+					String[] v = a.split("=");
+					Long s = Long.valueOf(v[1]);
+					if (s != null) {
+						setCurrentSeason(s);
+					}
+				}
+			}
 		}
 
 		if(isDevelopmentPC) {

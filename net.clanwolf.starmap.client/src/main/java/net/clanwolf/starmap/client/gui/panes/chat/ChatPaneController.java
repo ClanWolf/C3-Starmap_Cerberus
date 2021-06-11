@@ -30,12 +30,7 @@ import com.ircclouds.irc.api.domain.messages.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.skin.TableHeaderRow;
-import javafx.scene.control.skin.TableViewSkinBase;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.util.Callback;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
@@ -139,12 +134,11 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 			@Override
 			protected void updateItem(ChatEntry item, boolean empty) {
 				super.updateItem(item, empty);
-				if (item == null || item.getChatUser() == null) {
-					setStyle("");
-				} else if (item.getChatUser().get() != null && item.getChatUser().get().equalsIgnoreCase("Ulric".toLowerCase())) {
-					setStyle("-fx-background-color: #1d374b;");
-				} else if (item.getChatUser().get() != null && item.getChatUser().get().toLowerCase().contains("[" + Internationalization.getString("C3_IRC_Priv") + "]")) {
-					setStyle("-fx-background-color: #0f2c3b;");
+				if (item != null) {
+					String color = item.getColor().get();
+					if (color != null && !"".equals(color)) {
+						setStyle(color);
+					}
 				} else {
 					setStyle("");
 				}
@@ -232,7 +226,7 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 					}
 					mo.setTarget(tar);
 					C3Logger.info("Private message to: " + lvUsers.getSelectionModel().getSelectedItems().get(0));
-					addChatLine(IRCClient.myNick + " [" + Internationalization.getString("C3_IRC_Priv") + "] ", com + " (-> " + tar + ")");
+					addChatLine(IRCClient.myNick + " [" + Internationalization.getString("C3_IRC_Priv") + "] ", "(-> " + tar + ") " + com);
 				} else {
 					addChatLine(IRCClient.myNick + " ", com);
 				}
@@ -268,6 +262,13 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 				final long currentTime = System.currentTimeMillis();
 				final String chatTime = "" + timeFormat.format(currentTime);
 
+				String c = "";
+				if (chatUser.equalsIgnoreCase("Ulric".toLowerCase())) {
+					c = "-fx-background-color: #1d374b;";
+				} else if (chatUser.contains("[" + Internationalization.getString("C3_IRC_Priv") + "]")) {
+					c = "-fx-background-color: #294d69;";
+				}
+
 				if (chatText.contains(" ")) {
 					boolean firstLineDone = false;
 					String line = "";
@@ -278,9 +279,9 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 							line = line + word + " ";
 						} else {
 							if (firstLineDone) {
-								entry = new ChatEntry(null, null, line);
+								entry = new ChatEntry(c,null, null, line);
 							} else {
-								entry = new ChatEntry(chatTime, chatUser, line);
+								entry = new ChatEntry(c, chatTime, chatUser, line);
 							}
 							instance.tableViewChat.getItems().add(entry);
 							line = word + " ";
@@ -289,14 +290,14 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 					}
 					if (!"".equals(line)) {
 						if (firstLineDone) {
-							entry = new ChatEntry(null, null, line);
+							entry = new ChatEntry(c,null, null, line);
 						} else {
-							entry = new ChatEntry(chatTime, chatUser, line);
+							entry = new ChatEntry(c, chatTime, chatUser, line);
 						}
 						instance.tableViewChat.getItems().add(entry);
 					}
 				} else {
-					ChatEntry entry = new ChatEntry(chatTime, chatUser, chatText);
+					ChatEntry entry = new ChatEntry(c, chatTime, chatUser, chatText);
 					instance.tableViewChat.getItems().add(entry);
 				}
 				instance.tableViewChat.scrollTo(instance.tableViewChat.getItems().size());
@@ -445,7 +446,7 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 			case IRC_MESSAGE_IN_PRIVATE:
 				Platform.runLater(() -> {
 					UserPrivMsg msg = (UserPrivMsg) o.getObject();
-					addChatLine(msg.getSource().getNick() + " [" + Internationalization.getString("C3_IRC_Priv") + "] ", msg.getText() + " (-> " + msg.getToUser() + ")");
+					addChatLine(msg.getSource().getNick() + " [" + Internationalization.getString("C3_IRC_Priv") + "] ", "(-> " + msg.getToUser() + ") " + msg.getText());
 				});
 				break;
 

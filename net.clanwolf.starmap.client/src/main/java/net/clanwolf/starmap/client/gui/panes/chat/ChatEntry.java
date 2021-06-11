@@ -30,15 +30,20 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
 public class ChatEntry {
+	private final StringProperty color;
     private final StringProperty chatTime;
     private final StringProperty chatUser;
     private final StringProperty chatText;
 
-    public ChatEntry(String chatTime, String chatUser, String chatText) {
+    public ChatEntry(String color, String chatTime, String chatUser, String chatText) {
+    	this.color = new SimpleStringProperty(color);
         this.chatTime = new SimpleStringProperty(chatTime);
         this.chatUser = new SimpleStringProperty(chatUser);
         this.chatText = new SimpleStringProperty(chatText);
     }
+
+	@SuppressWarnings("unused")
+	public StringProperty getColor() { return this.color; }
 
 	@SuppressWarnings("unused")
     public StringProperty getChatTime() {

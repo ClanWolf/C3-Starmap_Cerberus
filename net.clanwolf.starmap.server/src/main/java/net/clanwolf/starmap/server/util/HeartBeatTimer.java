@@ -27,6 +27,7 @@
 package net.clanwolf.starmap.server.util;
 
 import net.clanwolf.starmap.logging.C3Logger;
+import net.clanwolf.starmap.server.GameServer;
 import net.clanwolf.starmap.server.enums.SystemListTypes;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.RoundDAO;
 import net.clanwolf.starmap.server.persistence.pojos.RoundPOJO;
@@ -85,8 +86,7 @@ public class HeartBeatTimer extends TimerTask {
 			C3Logger.print("Calling list creation (CM_StarSystems)...");
 			WebDataInterface.createSystemList(SystemListTypes.CM_StarSystems);
 
-			// TODO: Wo definieren wir die Season?
-			Long seasonId = 1L;
+			Long seasonId = GameServer.getCurrentSeason();
 			RoundDAO roundDAO = RoundDAO.getInstance();
 			RoundPOJO r = roundDAO.findBySeasonId(seasonId);
 			int round = r.getRound().intValue();

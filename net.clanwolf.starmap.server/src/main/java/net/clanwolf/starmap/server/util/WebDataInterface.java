@@ -27,6 +27,7 @@
 package net.clanwolf.starmap.server.util;
 
 import net.clanwolf.starmap.logging.C3Logger;
+import net.clanwolf.starmap.server.GameServer;
 import net.clanwolf.starmap.server.enums.SystemListTypes;
 import net.clanwolf.starmap.server.persistence.EntityConverter;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
@@ -56,17 +57,18 @@ public class WebDataInterface {
 	private static boolean initialized = false;
 
 	public static UniverseDTO getUniverse() {
-		if (universe != null) {
-			return universe;
-		}
-
 		String pattern = "dd-MM-yyyy";
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 
-		Long season = 1L;
+		Long season = GameServer.getCurrentSeason();
 		Long round = RoundDAO.getInstance().findBySeasonId(season).getRound();
 		Date date = RoundDAO.getInstance().findBySeasonId(season).getCurrentRoundStartDate();
 		String dateS = simpleDateFormat.format(date);
+
+		if (universe != null) {
+			universe.currentRound = round.intValue();
+			return universe;
+		}
 
 		universe = new UniverseDTO();
 		universe.currentSeason = season.intValue();
