@@ -80,7 +80,7 @@ public class LogWatcher {
 									clientScrolledDown = true;
 								}
 							}
-							Thread.sleep(10);
+							Thread.sleep(3);
 						} while (!this.isInterrupted());
 						clientLogwatcherThread = null;
 					} catch (Exception ex) {

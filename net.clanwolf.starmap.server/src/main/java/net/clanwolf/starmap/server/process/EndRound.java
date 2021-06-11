@@ -27,6 +27,7 @@
 package net.clanwolf.starmap.server.process;
 
 import net.clanwolf.starmap.logging.C3Logger;
+import net.clanwolf.starmap.server.GameServer;
 import net.clanwolf.starmap.server.Nexus.Nexus;
 import net.clanwolf.starmap.server.beans.C3GameSessionHandler;
 import net.clanwolf.starmap.server.beans.C3Room;
@@ -200,7 +201,14 @@ public class EndRound {
 			// Add the next system (according to the new round) from the current route to StarSystemHistory column
 			C3Logger.info("--- Setting all jumpships to attackReady again.");
 			for (JumpshipPOJO js : jumpshipList) {
-				js.setAttackReady(true);
+				boolean jumpshipHasAnOpenAttack = false;
+				for (AttackPOJO a : AttackDAO.getInstance().getOpenAttacksOfASeasonForRound(GameServer.getCurrentSeason(), newRound.intValue())) {
+					if (a.getJumpshipID().equals(js.getId())) {
+						jumpshipHasAnOpenAttack = true;
+					}
+				}
+				js.setAttackReady(!jumpshipHasAnOpenAttack);
+
 				for (RoutePointPOJO p : js.getRoutepointList()) {
 					if (p.getRoundId().equals(newRound)) {
 						String ssh = js.getStarSystemHistory();
@@ -210,7 +218,6 @@ public class EndRound {
 				}
 			}
 
-			//TODO: Test!!
 			roundPOJO.setCurrentRoundStartDate(getNextRoundDate(seasonId));
 
 			// Save everything to the database
@@ -246,19 +253,19 @@ public class EndRound {
 		}
 	}
 
-	public static void main(String[] args) {
-		// 3052 - 2021 = 1031 Jahre Differenz
-		// 1031 Jahre * 365,25 Tage = 376.572,75 Tage Differenz
-		int currentYear = 2021;
-		Long season = 1L;
-		int round = 1;
-
-		int seasonStartYear = 3052;
-		int diff = (int) Math.abs((seasonStartYear - currentYear) * 365.243); // Days in year and Schaltjahr factor
-
-		System.out.println("Current date: " + new Date(System.currentTimeMillis()));
-		System.out.println("Translated: " + addDaysToDate(new Date(System.currentTimeMillis()), diff));
-		// Current date: 2021-05-06
-		// Translated:   3052-05-06
-	}
+//	public static void main(String[] args) {
+//		// 3052 - 2021 = 1031 Jahre Differenz
+//		// 1031 Jahre * 365,25 Tage = 376.572,75 Tage Differenz
+//		int currentYear = 2021;
+//		Long season = 1L;
+//		int round = 1;
+//
+//		int seasonStartYear = 3052;
+//		int diff = (int) Math.abs((seasonStartYear - currentYear) * 365.243); // Days in year and Schaltjahr factor
+//
+//		System.out.println("Current date: " + new Date(System.currentTimeMillis()));
+//		System.out.println("Translated: " + addDaysToDate(new Date(System.currentTimeMillis()), diff));
+//		// Current date: 2021-05-06
+//		// Translated:   3052-05-06
+//	}
 }

@@ -263,10 +263,12 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 				final String chatTime = "" + timeFormat.format(currentTime);
 
 				String c = "";
-				if (chatUser.equalsIgnoreCase("Ulric".toLowerCase())) {
-					c = "-fx-background-color: #1d374b;";
-				} else if (chatUser.contains("[" + Internationalization.getString("C3_IRC_Priv") + "]")) {
-					c = "-fx-background-color: #294d69;";
+				if (chatUser != null) {
+					if (chatUser.equalsIgnoreCase("Ulric".toLowerCase())) {
+						c = "-fx-background-color: #1d374b;";
+					} else if (chatUser.contains("[" + Internationalization.getString("C3_IRC_Priv") + "]")) {
+						c = "-fx-background-color: #294d69;";
+					}
 				}
 
 				if (chatText.contains(" ")) {
