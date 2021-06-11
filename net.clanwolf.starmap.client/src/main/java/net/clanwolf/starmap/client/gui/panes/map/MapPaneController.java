@@ -1014,7 +1014,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			case PANE_CREATION_BEGINS:
 				if (o.getObject() instanceof AbstractC3Pane) {
 					AbstractC3Pane p = (AbstractC3Pane) o.getObject();
-					if ("MapPane".equals(p.getPaneName())) {
+					//if ("MapPane".equals(p.getPaneName())) {
 						Platform.runLater(() -> {
 							starMapPane.setOpacity(0.0f);
 							buttonBackground.setOpacity(0.0f);
@@ -1027,7 +1027,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 							paneSystemDetail.setOpacity(0.0f);
 							paneJumpshipDetail.setOpacity(0.0f);
 						});
-					}
+					//}
 				}
 				break;
 

@@ -223,6 +223,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	@FXML
 	private TextField terminalPrompt;
 
+	@FXML
+	private ImageView ircIndicator;
+
 	// -------------------------------------------------------------------------
 	//
 	// Button hovering
@@ -963,6 +966,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		ActionManager.addActionCallbackListener(ACTIONS.SHOW_MEDAL, this);
 		ActionManager.addActionCallbackListener(ACTIONS.SET_TERMINAL_TEXT, this);
 //		ActionManager.addActionCallbackListener(ACTIONS.NEW_UNIVERSE_RECEIVED, this);
+		ActionManager.addActionCallbackListener(ACTIONS.HIDE_IRC_INDICATOR, this);
+		ActionManager.addActionCallbackListener(ACTIONS.SHOW_IRC_INDICATOR, this);
 	}
 
 	private void setToLevelLoggedOutText() {
@@ -1645,6 +1650,14 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					BOUniverse boUniverse = Nexus.getBoUniverse();
 					gameInfoLabel.setText("S" + boUniverse.currentSeason + "/R" + boUniverse.currentRound + " - " + boUniverse.currentDate);
 				});
+				break;
+
+			case HIDE_IRC_INDICATOR:
+				ircIndicator.setVisible(false);
+				break;
+
+			case SHOW_IRC_INDICATOR:
+				ircIndicator.setVisible(true);
 				break;
 
 //			case START_ROLEPLAY:

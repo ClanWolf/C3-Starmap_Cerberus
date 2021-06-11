@@ -55,6 +55,7 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 	private final LinkedList<String> commandHistory = new LinkedList<>();
 	private int commandHistoryIndex = 0;
 	private String selectedUser = "";
+	private boolean initStarted = false;
 
 	@FXML
 	TableView<ChatEntry> tableViewChat;
@@ -110,6 +111,7 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 	private static ChatPaneController instance = null;
 
 	private void init() {
+		initStarted = true;
 		tableViewChat.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		tableViewChat.getStyleClass().add("noheader");
 		TableColumn<ChatEntry, String> chatTimeColumn = new TableColumn<>("");
@@ -357,9 +359,14 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 					C3Logger.info("Chat window opened.");
 					if (ircClient != null && !IRCClient.connected) {
 						C3Logger.info("Connecting to IRC...");
-						init();
 						ircClient.connect();
 					}
+					if (ircClient != null && !initStarted) {
+						C3Logger.info("Initializing IRC panel.");
+						init();
+					}
+					ActionManager.getAction(ACTIONS.HIDE_IRC_INDICATOR).execute();
+//					ActionManager.getAction(ACTIONS.SHOW_IRC_INDICATOR).execute();
 				}
 				break;
 

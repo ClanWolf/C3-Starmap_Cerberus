@@ -176,6 +176,11 @@
             <Image url="@../images/gui/hud.gif" />
          </image>
       </ImageView>
+      <ImageView fx:id="ircIndicator" fitHeight="16.0" fitWidth="16.0" layoutX="67.0" layoutY="459.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icons/teal-circle.png" />
+         </image>
+      </ImageView>
     </children>
     <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />

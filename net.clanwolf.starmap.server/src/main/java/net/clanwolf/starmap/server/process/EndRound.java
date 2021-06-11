@@ -29,27 +29,20 @@ package net.clanwolf.starmap.server.process;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.server.GameServer;
 import net.clanwolf.starmap.server.Nexus.Nexus;
-import net.clanwolf.starmap.server.beans.C3GameSessionHandler;
 import net.clanwolf.starmap.server.beans.C3Room;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.*;
 import net.clanwolf.starmap.server.persistence.pojos.*;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
-import org.hibernate.Transaction;
 
 import javax.persistence.EntityTransaction;
 import java.sql.Date;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.time.Duration;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Calendar;
 
 public class EndRound {
-
-	private static int MAXDAYSINAROUND = 7;
 
 	public static Date addDaysToDate(Date date, int daysToAdd) {
 		Calendar c = Calendar.getInstance();
@@ -58,16 +51,14 @@ public class EndRound {
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		String newDateString = sdf.format(c.getTime());
-		Date newDate = Date.valueOf(newDateString);
 
-		return newDate;
+		return Date.valueOf(newDateString);
 	}
 
 	public static Date getRoundDate(Long seasonId, int additionalRounds) {
 		SeasonDAO dao = SeasonDAO.getInstance();
 		SeasonPOJO season = (SeasonPOJO) dao.findById(SeasonPOJO.class, seasonId);
 		Date seasonStartDate = season.getStartDate();
-		MAXDAYSINAROUND = season.getDaysInRound().intValue();
 
 		RoundDAO roundDAO = RoundDAO.getInstance();
 		RoundPOJO roundPOJO = roundDAO.findBySeasonId(seasonId);
@@ -87,17 +78,12 @@ public class EndRound {
 			} catch (RuntimeException re) {
 				transaction.rollback();
 				C3Logger.error("Setting round date to season start date", re);
-			} finally {
-
 			}
-
 			currentRoundStartDate = seasonStartDate;
 		}
 
-		int daysToAdd = additionalRounds * MAXDAYSINAROUND;
-		Date roundDate = addDaysToDate(currentRoundStartDate, daysToAdd);
-
-		return roundDate;
+		int daysToAdd = additionalRounds * season.getDaysInRound().intValue();
+		return addDaysToDate(currentRoundStartDate, daysToAdd);
 	}
 
 	public static Date getCurrentRoundDate(Long seasonId) {
@@ -108,15 +94,12 @@ public class EndRound {
 		return getRoundDate(seasonId, 1); // adding one round (7 days) to get the start of next round
 	}
 
-	private static boolean timeForThisRoundIsOver(Long seasonId, int round) {
+	private static boolean timeForThisRoundIsOver(Long seasonId) {
 		Date nextRoundDate = getNextRoundDate(seasonId);
 		Date translatedNowDate = translateRealDateToSeasonTime(new Date(System.currentTimeMillis()), 1L);
 
-		if(nextRoundDate.after(translatedNowDate)){
-			return false; // the end of the round has not been reached on the calendar
-		} else {
-			return true; // round is officially over
-		}
+		// round is officially over
+		return !nextRoundDate.after(translatedNowDate); // the end of the round has not been reached on the calendar
 	}
 
 	public static Date translateRealDateToSeasonTime(Date date, Long seasonId) {
@@ -170,7 +153,7 @@ public class EndRound {
 
 		boolean attacksLeftToResolveInRound = openAttacksInRoundList.size() > 0; // We are ignoring the open attacks for the next round here
 
-		if ((jumpshipsLeftToMove || attacksLeftToResolveInRound) && !(timeForThisRoundIsOver(seasonId, round))) {
+		if ((jumpshipsLeftToMove || attacksLeftToResolveInRound) && !(timeForThisRoundIsOver(seasonId))) {
 			// round is still active
 			C3Logger.info("Round is still active.");
 			C3Logger.info("--- " + jscount + " jumpship have not moved.");
@@ -192,7 +175,7 @@ public class EndRound {
 			}
 
 			// Count the round indicator up once
-			Long newRound = Long.valueOf(round + 1);
+			Long newRound = (long) (round + 1);
 			C3Logger.info("--- Finally increase the round indicator to: " + newRound);
 			RoundPOJO roundPOJO = RoundDAO.getInstance().findBySeasonId(seasonId);
 			roundPOJO.setRound(newRound);
@@ -205,6 +188,7 @@ public class EndRound {
 				for (AttackPOJO a : AttackDAO.getInstance().getOpenAttacksOfASeasonForRound(GameServer.getCurrentSeason(), newRound.intValue())) {
 					if (a.getJumpshipID().equals(js.getId())) {
 						jumpshipHasAnOpenAttack = true;
+						break;
 					}
 				}
 				js.setAttackReady(!jumpshipHasAnOpenAttack);
