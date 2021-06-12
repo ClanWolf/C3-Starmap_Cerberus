@@ -305,7 +305,7 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 					instance.tableViewChat.getItems().add(entry);
 				}
 				instance.tableViewChat.scrollTo(instance.tableViewChat.getItems().size());
-//				autoResizeColumns(instance.tableViewChat);
+				ActionManager.getAction(ACTIONS.SHOW_IRC_INDICATOR).execute();
 			});
 		}
 	}

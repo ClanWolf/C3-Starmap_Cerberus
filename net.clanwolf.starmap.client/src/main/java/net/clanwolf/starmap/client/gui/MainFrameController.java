@@ -1657,7 +1657,12 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				break;
 
 			case SHOW_IRC_INDICATOR:
-				ircIndicator.setVisible(true);
+				if (!currentlyDisplayedPane.getPaneName().equals("ChatPane")) {
+					if (!ircIndicator.isVisible()) {
+						ircIndicator.setVisible(true);
+						C3SoundPlayer.play("sound/fx/beep_electric_3.mp3", false);
+					}
+				}
 				break;
 
 //			case START_ROLEPLAY:
