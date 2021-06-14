@@ -113,8 +113,10 @@ public class EventCommunications {
 
 					ActionManager.getAction(ACTIONS.LOGON_FINISHED_SUCCESSFULL).execute();
 					break;
+
 				case NO_MODE:
 					break;
+
 				case ATTACK_SAVE_RESPONSE:
 					C3Logger.info("Attack has changed, likely another user joined or left.");
 					AttackDTO attack = (AttackDTO) state.getObject();
@@ -127,6 +129,7 @@ public class EventCommunications {
 					}
 					ActionManager.getAction(ACTIONS.ENABLE_MAIN_MENU_BUTTONS).execute();
 					break;
+
 				case ERROR_MESSAGE:
 					break;
 				case USER_LOG_OUT:
