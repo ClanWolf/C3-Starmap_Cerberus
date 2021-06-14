@@ -119,9 +119,8 @@ public class EventCommunications {
 					C3Logger.info("Attack has changed, likely another user joined or left.");
 					AttackDTO attack = (AttackDTO) state.getObject();
 
-					Iterator<AttackCharacterDTO> charList = attack.getAttackCharList().iterator();
-					while(charList.hasNext()){
-						if(charList.next().getCharacterID().equals(Nexus.getCurrentChar().getId())){
+					for (AttackCharacterDTO attackCharacterDTO : attack.getAttackCharList()) {
+						if (attackCharacterDTO.getCharacterID().equals(Nexus.getCurrentChar().getId())) {
 							C3Logger.info("So... jetzt wird der RP Screen angezeigt... und? Siehst du ihn schon? ... mach mal die augen zu!");
 							break;
 						}
