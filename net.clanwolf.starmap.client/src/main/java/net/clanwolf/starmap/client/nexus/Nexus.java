@@ -32,11 +32,13 @@ import io.nadron.client.event.NetworkEvent;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
 import net.clanwolf.starmap.client.gui.panes.logging.LogWatcher;
 import net.clanwolf.starmap.client.process.login.Login;
+import net.clanwolf.starmap.client.process.universe.BOAttack;
 import net.clanwolf.starmap.client.process.universe.BOJumpship;
 import net.clanwolf.starmap.client.process.universe.BOStarSystem;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.transfer.GameState;
+import net.clanwolf.starmap.transfer.dtos.AttackCharacterDTO;
 import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
 import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
 import net.clanwolf.starmap.transfer.dtos.UserDTO;
@@ -214,6 +216,21 @@ public class Nexus {
 		return currentChar;
 	}
 
+	public static boolean userHasAttack() {
+		boolean userHasAttack = false;
+		if (Nexus.getBoUniverse() != null) {
+			for (BOAttack a : Nexus.getBoUniverse().attackBOs) {
+				for (AttackCharacterDTO ac : a.getAttackCharList()) {
+					if (ac.getCharacterID().equals(Nexus.getCurrentUser().getCurrentCharacter().getId())) {
+						// The user currently logged in has joined an attack that was not resolved yet
+						userHasAttack = true;
+						break;
+					}
+				}
+			}
+		}
+		return userHasAttack;
+	}
 	/**
 	 * @return the myPlayerSessionID
 	 */

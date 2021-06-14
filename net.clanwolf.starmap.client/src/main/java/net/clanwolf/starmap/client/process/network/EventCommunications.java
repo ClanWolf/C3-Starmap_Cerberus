@@ -30,6 +30,7 @@ import io.nadron.client.app.Session;
 import io.nadron.client.event.Event;
 import io.nadron.client.event.Events;
 import io.nadron.client.event.NetworkEvent;
+import net.clanwolf.starmap.client.gui.MainFrameController;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionManager;
@@ -125,6 +126,7 @@ public class EventCommunications {
 							break;
 						}
 					}
+					ActionManager.getAction(ACTIONS.ENABLE_MAIN_MENU_BUTTONS).execute();
 					break;
 				case ERROR_MESSAGE:
 					break;

@@ -63,6 +63,7 @@ import net.clanwolf.starmap.client.gui.panes.rp.RolePlayBasicPane;
 import net.clanwolf.starmap.client.gui.panes.rp.StoryEditorPane;
 import net.clanwolf.starmap.client.gui.panes.settings.SettingsPane;
 import net.clanwolf.starmap.client.gui.panes.userinfo.UserInfoPane;
+import net.clanwolf.starmap.client.process.universe.BOAttack;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.client.net.Server;
@@ -70,6 +71,8 @@ import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.security.Security;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.*;
+import net.clanwolf.starmap.transfer.dtos.AttackCharacterDTO;
+import net.clanwolf.starmap.transfer.dtos.AttackDTO;
 import net.clanwolf.starmap.transfer.dtos.UserDTO;
 import net.clanwolf.starmap.transfer.enums.MEDALS;
 
@@ -968,6 +971,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 //		ActionManager.addActionCallbackListener(ACTIONS.NEW_UNIVERSE_RECEIVED, this);
 		ActionManager.addActionCallbackListener(ACTIONS.HIDE_IRC_INDICATOR, this);
 		ActionManager.addActionCallbackListener(ACTIONS.SHOW_IRC_INDICATOR, this);
+		ActionManager.addActionCallbackListener(ACTIONS.ENABLE_MAIN_MENU_BUTTONS, this);
 	}
 
 	private void setToLevelLoggedOutText() {
@@ -1272,9 +1276,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			// Column 1
 			rolePlayButton.setDisable(Nexus.getCurrentChar().getStory() == null);
 			mapButton.setDisable(false);
-			attackButton.setDisable(false);
+			attackButton.setDisable(!Nexus.userHasAttack());
 			chatButton.setDisable(false);
-//			industryButton.setDisable(true);
 			logButton.setDisable(false);
 
 			// Column 2
@@ -1301,7 +1304,6 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			mapButton.setDisable(true);
 			attackButton.setDisable(true);
 			chatButton.setDisable(true);
-//			industryButton.setDisable(true);
 			logButton.setDisable(false);
 
 			// Column 2
@@ -1663,6 +1665,10 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 						C3SoundPlayer.play("sound/fx/beep_electric_3.mp3", false);
 					}
 				}
+				break;
+
+			case ENABLE_MAIN_MENU_BUTTONS:
+				enableMainMenuButtons(Nexus.isLoggedIn(), Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN));
 				break;
 
 //			case START_ROLEPLAY:
