@@ -26,6 +26,7 @@
  */
 package net.clanwolf.starmap.client.process.universe;
 
+import javafx.collections.transformation.SortedList;
 import net.clanwolf.starmap.client.gui.panes.map.tools.GraphManager;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.transfer.dtos.*;
@@ -37,6 +38,7 @@ import org.kynosarges.tektosyne.subdivision.Subdivision;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.TreeSet;
 
 public class BOUniverse {
 
@@ -47,6 +49,8 @@ public class BOUniverse {
 	public HashMap<String, BOJumpship> jumpshipBOs = new HashMap<>();
 	public ArrayList<BOAttack> attackBOs = new ArrayList<>();
 	public HashMap<Long, ArrayList<RoutePointDTO>> routesList = new HashMap<Long, ArrayList<RoutePointDTO>>();
+
+	public TreeSet<BOJumpship> jumpshipListSorted = null;
 
 	public Integer currentSeason;
 	public Integer currentRound;
@@ -74,6 +78,14 @@ public class BOUniverse {
 			}
 		}
 		return null;
+	}
+
+	public TreeSet<BOJumpship> getJumpshipListSorted() {
+		if (jumpshipListSorted == null) {
+			jumpshipListSorted = new TreeSet<>();
+			jumpshipListSorted.addAll(jumpshipBOs.values());
+		}
+		return jumpshipListSorted;
 	}
 
 	public BOUniverse(UniverseDTO universeDTO) {

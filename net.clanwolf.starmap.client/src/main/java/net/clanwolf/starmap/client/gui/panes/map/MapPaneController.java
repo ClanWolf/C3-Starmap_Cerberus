@@ -30,7 +30,6 @@ import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
 import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
@@ -49,10 +48,8 @@ import javafx.util.Duration;
 import net.clanwolf.starmap.client.action.*;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
-import net.clanwolf.starmap.client.gui.panes.chat.ChatPane;
 import net.clanwolf.starmap.client.gui.panes.map.tools.VoronoiDelaunay;
 import net.clanwolf.starmap.client.nexus.Nexus;
-import net.clanwolf.starmap.client.process.roleplay.BORolePlayChooser;
 import net.clanwolf.starmap.client.process.universe.BOAttack;
 import net.clanwolf.starmap.client.process.universe.BOJumpship;
 import net.clanwolf.starmap.client.process.universe.BOStarSystem;
@@ -62,9 +59,7 @@ import net.clanwolf.starmap.client.util.C3PROPS;
 import net.clanwolf.starmap.client.util.C3Properties;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.logging.C3Logger;
-import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.*;
-import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.enums.MEDALS;
 import org.kynosarges.tektosyne.geometry.PointD;
 
@@ -120,9 +115,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	private PannableCanvas canvas;
 	private boolean firstCreationDone = false;
 	private SceneGestures sceneGestures;
-	private Image selectionMarker;
-	private Image attackMarker;
-	private Image travelMarker;
+
+	private BOJumpship currentlyCenteredJumpship = null;
 
 	private final LinkedList<String> commandHistory = new LinkedList<>();
 	private int commandHistoryIndex = 0;
@@ -135,7 +129,58 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	}
 
 	@FXML
-	private void handleCenterJumpshipButtonClick () {}
+	private void handleCenterJumpshipButtonClick() {
+		if (currentlyCenteredJumpship == null) {
+			for (BOJumpship j : Nexus.getBoUniverse().jumpshipBOs.values()) {
+				long jsid = j.getJumpshipFaction();
+				if ((int) jsid == Nexus.getCurrentUser().getCurrentCharacter().getFactionId()) {
+					currentlyCenteredJumpship = j;
+					BOStarSystem s = currentlyCenteredJumpship.getCurrentSystem(currentlyCenteredJumpship.getCurrentSystemID());
+					moveMapToPosition(s);
+				}
+			}
+		} else {
+			BOStarSystem s = currentlyCenteredJumpship.getCurrentSystem(currentlyCenteredJumpship.getCurrentSystemID());
+			moveMapToPosition(s);
+		}
+		ActionManager.getAction(ACTIONS.SHOW_JUMPSHIP_DETAIL).execute(currentlyCenteredJumpship);
+	}
+
+	@FXML
+	private void handlePreviousJumpshipButtonClick() {
+		if (currentlyCenteredJumpship == null) {
+			handleCenterJumpshipButtonClick();
+		} else {
+			for (BOJumpship js : Nexus.getBoUniverse().getJumpshipListSorted()) {
+				if (js.getJumpshipName().equals(currentlyCenteredJumpship.getJumpshipName())) {
+					if (Nexus.getBoUniverse().getJumpshipListSorted().lower(js) != null) {
+						currentlyCenteredJumpship = Nexus.getBoUniverse().getJumpshipListSorted().lower(js);
+						break;
+					}
+				}
+			}
+		}
+		handleCenterJumpshipButtonClick();
+		ActionManager.getAction(ACTIONS.SHOW_JUMPSHIP_DETAIL).execute(currentlyCenteredJumpship);
+	}
+
+	@FXML
+	private void handleNextJumpshipButtonClick() {
+		if (currentlyCenteredJumpship == null) {
+			handleCenterJumpshipButtonClick();
+		} else {
+			for (BOJumpship js : Nexus.getBoUniverse().getJumpshipListSorted()) {
+				if (js.getJumpshipName().equals(currentlyCenteredJumpship.getJumpshipName())) {
+					if (Nexus.getBoUniverse().getJumpshipListSorted().higher(js) != null) {
+						currentlyCenteredJumpship = Nexus.getBoUniverse().getJumpshipListSorted().higher(js);
+						break;
+					}
+				}
+			}
+		}
+		handleCenterJumpshipButtonClick();
+		ActionManager.getAction(ACTIONS.SHOW_JUMPSHIP_DETAIL).execute(currentlyCenteredJumpship);
+	}
 
 	@FXML
 	private void handleAttackButtonClick() {
@@ -245,9 +290,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 			ArrayList<Line> lines = new ArrayList<>();
 
-			selectionMarker = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/selectionIndicator.png")));
-			attackMarker = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/attackIndicator.png")));
-			travelMarker = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/travelIndicator.png")));
+			Image selectionMarker = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/selectionIndicator.png")));
+			Image attackMarker = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/attackIndicator.png")));
+			Image travelMarker = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/travelIndicator.png")));
 
 			starMapPane.setOpacity(0.0f);
 			mapButton01.setOpacity(0.0f);
@@ -656,7 +701,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			canvas.fadeoutStars(level);
 		}
 
-		TranslateTransition move = new TranslateTransition(Duration.millis(400), canvas);
+		TranslateTransition move = new TranslateTransition(Duration.millis(10), canvas);
 		move.setCycleCount(1);
 		move.setToX(Config.MAP_INITIAL_TRANSLATE_X);
 		move.setToY(Config.MAP_INITIAL_TRANSLATE_Y);
@@ -703,7 +748,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		move01.setToX(Config.MAP_INITIAL_TRANSLATE_X);
 		move01.setToY(Config.MAP_INITIAL_TRANSLATE_Y);
 
-		TranslateTransition move02 = new TranslateTransition(Duration.millis(400), canvas);
+		TranslateTransition move02 = new TranslateTransition(Duration.millis(10), canvas);
 		move02.setCycleCount(1);
 		move02.setByX(-sys.getX() * Config.MAP_COORDINATES_MULTIPLICATOR * canvas.getScale());
 		move02.setByY(sys.getY() * Config.MAP_COORDINATES_MULTIPLICATOR * canvas.getScale());
@@ -826,7 +871,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			});
 
 			// Fade in transition 06 (DetailPane)
-			FadeTransition fadeInTransition_06 = new FadeTransition(Duration.millis(450), paneSystemDetail);
+			FadeTransition fadeInTransition_06 = new FadeTransition(Duration.millis(200), paneSystemDetail);
 			fadeInTransition_06.setFromValue(0.0);
 			fadeInTransition_06.setToValue(1.0);
 			fadeInTransition_06.setCycleCount(1);
@@ -860,7 +905,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			});
 
 			// Fade in transition 06 (DetailPane)
-			FadeTransition fadeInTransition_06 = new FadeTransition(Duration.millis(450), paneJumpshipDetail);
+			FadeTransition fadeInTransition_06 = new FadeTransition(Duration.millis(200), paneJumpshipDetail);
 			fadeInTransition_06.setFromValue(0.0);
 			fadeInTransition_06.setToValue(1.0);
 			fadeInTransition_06.setCycleCount(1);
@@ -884,8 +929,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			mapButton01.setText(Internationalization.getString("starmap_confirm_orders"));
 			mapButton02.setText(Internationalization.getString("starmap_center_selected_jumpship"));
 			mapButton03.setText(Internationalization.getString("starmap_center_homeworld"));
-			mapButton04.setText(Internationalization.getString("starmap_next_jumpship"));
-			mapButton05.setText(Internationalization.getString("starmap_previous_jumpship"));
+			mapButton04.setText(Internationalization.getString("starmap_previous_jumpship"));
+			mapButton05.setText(Internationalization.getString("starmap_next_jumpship"));
 			mapButton06.setText("..."); // depends on the planet that is selected
 		});
 	}
@@ -1072,7 +1117,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				if (o.getObject() instanceof BOStarSystem) {
 
 					boolean hasAttack = false;
-					boolean attackAlreadyStarted = false;
+					boolean attackAlreadyStarted;
 					boolean startAttackEnabled = false;
 
 					BOStarSystem ss = (BOStarSystem) o.getObject();
@@ -1082,11 +1127,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 					if (!BOAttack.charHasAnActiveAttack()) {
 						for (BOAttack a : Nexus.getBoUniverse().attackBOs) {
-							if (a.getStoryId() == null) {
-								attackAlreadyStarted = false;
-							} else {
-								attackAlreadyStarted = true;
-							}
+							attackAlreadyStarted = a.getStoryId() != null;
 
 							// Correct season and round
 							if (Nexus.getCurrentSeason() == a.getSeason() && Nexus.getCurrentRound() == a.getRound()) {

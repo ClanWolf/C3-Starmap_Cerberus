@@ -38,8 +38,8 @@
             <Label fx:id="labelJumpshipName" alignment="CENTER" layoutX="15.0" layoutY="6.0" prefHeight="32.0" prefWidth="120.0" text="..." />
             <ImageView fx:id="labelJumpshipImage" fitHeight="32.0" fitWidth="62.0" layoutX="12.0" layoutY="54.0" pickOnBounds="true" preserveRatio="true" />
             <ImageView fx:id="labelJumpshipFactionImage" fitHeight="57.0" fitWidth="62.0" layoutX="77.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true" />
-            <Button fx:id="mapButton04" alignment="CENTER_RIGHT" layoutX="10.0" layoutY="103.0" mnemonicParsing="false" onAction="#handleCenterHomeworldButtonClick" prefHeight="37.0" prefWidth="62.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css" text="&lt;" />
-            <Button fx:id="mapButton05" alignment="CENTER_RIGHT" layoutX="78.0" layoutY="103.0" mnemonicParsing="false" onAction="#handleCenterHomeworldButtonClick" prefHeight="37.0" prefWidth="62.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css" text="&gt;" />
+            <Button fx:id="mapButton04" alignment="CENTER_RIGHT" layoutX="10.0" layoutY="103.0" mnemonicParsing="false" onAction="#handlePreviousJumpshipButtonClick" prefHeight="37.0" prefWidth="62.0" styleClass="contentButtonClean" stylesheets="@../styles/MainFrameStyle.css" text="&lt;" />
+            <Button fx:id="mapButton05" alignment="CENTER_RIGHT" layoutX="78.0" layoutY="103.0" mnemonicParsing="false" onAction="#handleNextJumpshipButtonClick" prefHeight="37.0" prefWidth="62.0" styleClass="contentButtonClean" stylesheets="@../styles/MainFrameStyle.css" text="&gt;" />
          </children>
       </Pane>
 	</children>

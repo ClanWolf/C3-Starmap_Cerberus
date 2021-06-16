@@ -827,6 +827,45 @@
   -fx-background-image: url("../images/buttons/ContentButton_BG_armed.png");
 }
 
+.contentButtonClean {
+  -fx-border-color: #538b53;
+  -fx-background-color: rgba(70, 118, 70, 0.4);
+  -fx-background-repeat: no-repeat;
+  -fx-background-insets: 1, 1, 1, 1;
+  -fx-background-radius: 0, 0, 0, 0;
+  -fx-alignment: CENTER;
+  -fx-padding: 10 10 8 10;
+  -fx-font-family: "Consolas";
+  -fx-font-size: 14px;
+  -fx-font-weight: bold;
+  -fx-text-fill: #bedcbe;
+}
+
+.contentButtonClean:disabled {
+  -fx-background-color: rgba(70, 118, 70, 0.1);
+  -fx-text-fill: #fff;
+}
+
+.contentButtonClean:hover {
+  -fx-background-color: rgba(70, 118, 70, 0.7);
+  -fx-text-fill: #fff;
+}
+
+.contentButtonClean:focused {
+  -fx-background-color: rgba(70, 118, 70, 0.7);
+  -fx-text-fill: #fff;
+}
+
+.contentButtonClean:armed {
+  -fx-background-color: rgba(70, 118, 70, 1.0);
+  -fx-text-fill: #fff;
+}
+
+.contentButtonClean:pressed {
+  -fx-background-color: rgba(70, 118, 70, 1.0);
+  -fx-text-fill: #fff;
+}
+
 .contentButtonRed {
   -fx-border-color: #fe2f00;
   -fx-background-color: rgba(200, 36, 0, 0.4);

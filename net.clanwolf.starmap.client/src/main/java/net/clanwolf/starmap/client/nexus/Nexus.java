@@ -29,6 +29,7 @@ package net.clanwolf.starmap.client.nexus;
 import io.nadron.client.app.Session;
 import io.nadron.client.event.Events;
 import io.nadron.client.event.NetworkEvent;
+import javafx.collections.transformation.SortedList;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
 import net.clanwolf.starmap.client.gui.panes.logging.LogWatcher;
 import net.clanwolf.starmap.client.process.login.Login;

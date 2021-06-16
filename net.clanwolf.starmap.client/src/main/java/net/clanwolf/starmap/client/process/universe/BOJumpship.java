@@ -29,24 +29,20 @@ package net.clanwolf.starmap.client.process.universe;
 import javafx.scene.Group;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
-import net.clanwolf.starmap.client.gui.panes.map.tools.RouteCalculator;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.JumpshipDTO;
 import net.clanwolf.starmap.transfer.dtos.RoutePointDTO;
-import net.clanwolf.starmap.transfer.dtos.StarSystemDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-public class BOJumpship {
+public class BOJumpship implements Comparable<BOJumpship> {
 
 	private JumpshipDTO jumpshipDTO;
 	private ImageView jumpshipImage;
@@ -79,7 +75,7 @@ public class BOJumpship {
 		if (routeSystems.size() > 0) {
 			this.routeSystems = routeSystems;
 			if (route == null) {
-				route = new ArrayList<RoutePointDTO>();
+				route = new ArrayList<>();
 			}
 			route.clear();
 			int dist = 0;
@@ -87,10 +83,10 @@ public class BOJumpship {
 			for (BOStarSystem s : routeSystems) {
 				int round = Nexus.getBoUniverse().currentRound + dist;
 				RoutePointDTO rp = new RoutePointDTO();
-				rp.setSystemId(Long.valueOf(s.getStarSystemId()));
+				rp.setSystemId(s.getStarSystemId());
 				rp.setJumpshipId(jumpshipDTO.getId());
 				rp.setSeasonId(Long.valueOf(Nexus.getBoUniverse().currentSeason));
-				rp.setRoundId(Long.valueOf(round));
+				rp.setRoundId((long) round);
 				route.add(rp);
 				C3Logger.info("--- RoutePoint: " + s.getName() + " (in round " + round + ")");
 				dist++;
@@ -205,7 +201,7 @@ public class BOJumpship {
 
 	@SuppressWarnings("unused")
 	public BOStarSystem getCurrentSystem(long id) {
-		return (BOStarSystem) Nexus.getBoUniverse().starSystemBOs.get(id);
+		return Nexus.getBoUniverse().starSystemBOs.get(id);
 	}
 
 	@SuppressWarnings("unused")
@@ -221,5 +217,11 @@ public class BOJumpship {
 	@SuppressWarnings("unused")
 	public boolean isAttackReady() { return jumpshipDTO.getAttackReady(); }
 
+	@SuppressWarnings("unused")
 	public JumpshipDTO getJumpshipDTO(){ return jumpshipDTO;}
+
+	@Override
+	public int compareTo(BOJumpship o) {
+		return getJumpshipName().compareTo(o.getJumpshipName());
+	}
 }
