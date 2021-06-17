@@ -26,6 +26,7 @@
  */
 package net.clanwolf.starmap.server.process;
 
+import net.clanwolf.client.mail.MailManager;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.server.GameServer;
 import net.clanwolf.starmap.server.Nexus.Nexus;
@@ -160,6 +161,9 @@ public class EndRound {
 			C3Logger.info("--- " + openAttacksInRoundList.size() + " attacks still to be resolved.");
 			C3Logger.info("--- There is still time left to make moves for this round!");
 		} else {
+			StringBuilder resolvedAttacks = new StringBuilder();
+			StringBuilder movedJumpships = new StringBuilder();
+
 			// here is no ship left to move AND no attack left open OR the time for the round is up
 			C3Logger.info("Finalizing the round:");
 			C3Logger.info("--- There is NO time left for this round!");
@@ -172,6 +176,7 @@ public class EndRound {
 			C3Logger.info("--- Resolve all attacks that are still open.");
 			for (AttackPOJO attackPOJO : openAttacksInRoundList) {
 				findAWinner(attackPOJO);
+				resolvedAttacks.append("Jumpship with id ").append(attackPOJO.getJumpshipID()).append(" attacked system with id ").append(attackPOJO.getStarSystemID()).append("--> resolved to winner: ").append(attackPOJO.getFactionID_Winner()).append("\r\n");
 			}
 
 			// Count the round indicator up once
@@ -198,6 +203,7 @@ public class EndRound {
 						String ssh = js.getStarSystemHistory();
 						ssh = ssh + ";" + p.getSystemId();
 						js.setStarSystemHistory(ssh);
+						movedJumpships.append("Jumpship ").append(js.getJumpshipName()).append(" moved to ").append(p.getSystemId()).append(" (systemId).\r\n");
 					}
 				}
 			}
@@ -233,6 +239,33 @@ public class EndRound {
 				C3Logger.error("Finalize round", re);
 			} finally {
 				C3Room.sendBroadcastMessage(endRoundInfo);
+			}
+
+			// Sending mail with information about the last round
+			C3Logger.info("Sending mail about finalized round.");
+			String[] receivers = { "keshik@googlegroups.com" };
+			boolean sent;
+
+			StringBuilder subject = new StringBuilder();
+			subject.append("C3 Server finalized round ").append(round).append(" of season ").append(seasonId).append(". New round is ").append(newRound);
+
+			StringBuilder message = new StringBuilder();
+			message.append("Round ").append(round).append(" finalized.\r\n\r\n");
+			message.append("The new round ").append(newRound).append(" will last until ").append(getNextRoundDate(seasonId)).append(".\r\n\r\n");
+			message.append("Resolved attacks:\r\n");
+			message.append(resolvedAttacks).append("\r\n");
+			message.append("Moved jumpships:\r\n");
+			message.append(movedJumpships).append("\r\n");
+			message.append("Conquered star systems:\r\n");
+			message.append("...");
+
+			sent = MailManager.sendMail("c3@clanwolf.net", receivers, subject.toString(), message.toString(), false);
+			if (sent) {
+				// sent
+				C3Logger.info("Mail sent.");
+			} else {
+				// error during email sending
+				C3Logger.info("Error during mail dispatch.");
 			}
 		}
 	}
