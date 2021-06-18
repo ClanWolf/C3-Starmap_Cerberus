@@ -47,7 +47,7 @@
             </HBox>
          </bottom>
          <left>
-            <VBox prefHeight="445.0" prefWidth="209.0" BorderPane.alignment="CENTER">
+            <VBox prefHeight="445.0" prefWidth="250.0" BorderPane.alignment="CENTER">
                <children>
                   <ToolBar prefHeight="44.0" prefWidth="200.0">
                     <items>
@@ -70,41 +70,47 @@
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
                               <Label fx:id="labStoryName" layoutX="12.0" layoutY="23.0" text="Bezeichnung" />
-                              <TextField fx:id="tfStoryName" layoutX="132.0" layoutY="20.0" prefHeight="22.0" prefWidth="363.0" />
+                              <TextField fx:id="tfStoryName" layoutX="132.0" layoutY="20.0" prefHeight="22.0" prefWidth="363.0" AnchorPane.leftAnchor="130.0" AnchorPane.rightAnchor="100.0" />
                               <Label fx:id="labStoryVariante" layoutX="12.0" layoutY="59.0" text="Variante" />
-                              <ComboBox fx:id="cbStoryVarianten" layoutX="131.0" layoutY="55.0" maxWidth="1.7976931348623157E308" onAction="#handleCbStoryVariantenAction" prefHeight="27.0" AnchorPane.leftAnchor="131.0" AnchorPane.rightAnchor="0.0">
+                              <ComboBox fx:id="cbStoryVarianten" layoutX="131.0" layoutY="55.0" maxWidth="1.7976931348623157E308" onAction="#handleCbStoryVariantenAction" prefHeight="27.0" AnchorPane.leftAnchor="130.0" AnchorPane.rightAnchor="100.0">
                                  <padding>
                                     <Insets right="10.0" />
                                  </padding>
                               </ComboBox>
                               <Label fx:id="labImage" layoutX="14.0" layoutY="98.0" text="Image" />
-                              <TextField fx:id="tfImage" layoutX="130.0" layoutY="95.0" onKeyTyped="#handleImageOnKeyTyped" prefHeight="22.0" prefWidth="349.0" />
-                              <Button id="btn_dark-blue" fx:id="btSelectImageFile" layoutX="486.0" layoutY="91.0" mnemonicParsing="false" onAction="#handleSelectImageFile" prefHeight="26.0" prefWidth="22.0" styleClass="RPEmptyButton" text="Button" textFill="WHITE" />
+                              <TextField fx:id="tfImage" layoutX="130.0" layoutY="95.0" onKeyTyped="#handleImageOnKeyTyped" prefHeight="22.0" prefWidth="349.0" AnchorPane.leftAnchor="130.0" AnchorPane.rightAnchor="100.0" />
+                              <Button id="btn_dark-blue" fx:id="btSelectImageFile" layoutX="486.0" layoutY="91.0" mnemonicParsing="false" onAction="#handleSelectImageFile" prefHeight="26.0" prefWidth="22.0" styleClass="RPEmptyButton" text="Button" textFill="WHITE" AnchorPane.rightAnchor="40.0" />
                               <Label fx:id="labVoice" layoutX="14.0" layoutY="135.0" text="Voice" />
-                              <TextField fx:id="tfVoice" layoutX="130.0" layoutY="133.0" onKeyTyped="#handleVoiceOnKeyTyped" prefHeight="22.0" prefWidth="348.0" />
-                              <Button id="btn_dark-blue" fx:id="btSelectVoiceFile" layoutX="486.0" layoutY="128.0" mnemonicParsing="false" onAction="#handleSelectVoiceFile" prefHeight="26.0" prefWidth="22.0" styleClass="RPEmptyButton" text="Button" textFill="WHITE" />
+                              <TextField fx:id="tfVoice" layoutX="130.0" layoutY="133.0" onKeyTyped="#handleVoiceOnKeyTyped" prefHeight="22.0" prefWidth="348.0" AnchorPane.leftAnchor="130.0" AnchorPane.rightAnchor="100.0" />
+                              <Button id="btn_dark-blue" fx:id="btSelectVoiceFile" layoutX="486.0" layoutY="128.0" mnemonicParsing="false" onAction="#handleSelectVoiceFile" prefHeight="26.0" prefWidth="22.0" styleClass="RPEmptyButton" text="Button" textFill="WHITE" AnchorPane.rightAnchor="40.0" />
                               <Label fx:id="labMovie" layoutX="16.0" layoutY="172.0" text="Movie" />
-                              <TextField fx:id="tfMovie" layoutX="130.0" layoutY="169.0" onKeyTyped="#handleMovieKeyTyped" prefHeight="22.0" prefWidth="348.0" />
-                              <Button id="btn_dark-blue" fx:id="btSelectMovieFile" layoutX="486.0" layoutY="165.0" mnemonicParsing="false" onAction="#handleSelectMovieFile" prefHeight="26.0" prefWidth="22.0" styleClass="RPEmptyButton" text="Button" textFill="WHITE" />
+                              <TextField fx:id="tfMovie" layoutX="130.0" layoutY="169.0" onKeyTyped="#handleMovieKeyTyped" prefHeight="22.0" prefWidth="348.0" AnchorPane.leftAnchor="130.0" AnchorPane.rightAnchor="100.0" />
+                              <Button id="btn_dark-blue" fx:id="btSelectMovieFile" layoutX="486.0" layoutY="165.0" mnemonicParsing="false" onAction="#handleSelectMovieFile" prefHeight="26.0" prefWidth="22.0" styleClass="RPEmptyButton" text="Button" textFill="WHITE" AnchorPane.rightAnchor="40.0" />
                               <Label fx:id="labDescription" layoutX="16.0" layoutY="240.0" text="Description" />
-                              <ScrollPane hbarPolicy="NEVER" layoutX="132.0" layoutY="240.0">
+                              <ScrollPane fitToWidth="true" hbarPolicy="NEVER" layoutX="132.0" layoutY="240.0" maxWidth="1.7976931348623157E308" prefHeight="136.0" prefWidth="786.0" AnchorPane.leftAnchor="131.0" AnchorPane.rightAnchor="0.0">
                                  <content>
-                                    <TextArea id="Description" fx:id="taDescription" prefHeight="136.0" prefWidth="420.0" wrapText="true" />
+                                    <TextArea id="Description" fx:id="taDescription" maxWidth="1.7976931348623157E308" prefHeight="136.0" wrapText="true">
+                                       <padding>
+                                          <Insets right="10.0" />
+                                       </padding></TextArea>
                                  </content>
+                                 <padding>
+                                    <Insets right="10.0" />
+                                 </padding>
                               </ScrollPane>
-                              <Button id="btn_dark-blue" fx:id="btDeleteImageFile" ellipsisString="" layoutX="520.0" layoutY="91.0" mnemonicParsing="false" onAction="#handleDeleteImageFile" prefHeight="22.0" prefWidth="30.0" styleClass="RPDeleteButton2" />
-                              <Button id="btn_dark-blue" fx:id="btDeleteVoiceFile" ellipsisString="" layoutX="519.0" layoutY="128.0" mnemonicParsing="false" onAction="#handleDeleteVoiceFile" prefHeight="26.0" prefWidth="30.0" styleClass="RPDeleteButton2" />
-                              <Button id="btn_dark-blue" fx:id="btDeleteMovieFile" ellipsisString="" layoutX="519.0" layoutY="165.0" mnemonicParsing="false" onAction="#handleDeleteMovieFile" prefHeight="26.0" prefWidth="30.0" styleClass="RPDeleteButton2" />
+                              <Button id="btn_dark-blue" fx:id="btDeleteImageFile" ellipsisString="" layoutX="520.0" layoutY="91.0" mnemonicParsing="false" onAction="#handleDeleteImageFile" prefHeight="22.0" prefWidth="30.0" styleClass="RPDeleteButton2" AnchorPane.rightAnchor="0.0" />
+                              <Button id="btn_dark-blue" fx:id="btDeleteVoiceFile" ellipsisString="" layoutX="519.0" layoutY="128.0" mnemonicParsing="false" onAction="#handleDeleteVoiceFile" prefHeight="26.0" prefWidth="30.0" styleClass="RPDeleteButton2" AnchorPane.rightAnchor="0.0" />
+                              <Button id="btn_dark-blue" fx:id="btDeleteMovieFile" ellipsisString="" layoutX="519.0" layoutY="165.0" mnemonicParsing="false" onAction="#handleDeleteMovieFile" prefHeight="26.0" prefWidth="30.0" styleClass="RPDeleteButton2" AnchorPane.rightAnchor="0.0" />
                               <Label fx:id="labImageAction" layoutX="79.0" layoutY="98.0" prefHeight="16.0" prefWidth="24.0" styleClass="RPDeleteButton2" />
                               <Label fx:id="labVoiceAction" layoutX="79.0" layoutY="135.0" prefHeight="16.0" prefWidth="24.0" styleClass="RPDeleteButton2" />
                               <Label fx:id="labMovieAction" layoutX="79.0" layoutY="172.0" prefHeight="16.0" prefWidth="24.0" styleClass="RPDeleteButton2" />
-                              <Button id="btn_dark-blue" fx:id="btSortOrderUp" layoutX="541.0" layoutY="17.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleSortOrderUp" prefHeight="12.0" prefWidth="12.0" styleClass="RPPlusButton" text="+" textAlignment="CENTER">
+                              <Button id="btn_dark-blue" fx:id="btSortOrderUp" layoutX="541.0" layoutY="17.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleSortOrderUp" prefHeight="12.0" prefWidth="12.0" styleClass="RPPlusButton" text="+" textAlignment="CENTER" AnchorPane.rightAnchor="20.0">
                                  <font>
                                     <Font size="9.0" />
                                  </font>
                               </Button>
-                              <Button id="btn_dark-blue" fx:id="btSortOrderDown" layoutX="541.0" layoutY="33.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleSortOrderDown" prefHeight="12.0" prefWidth="12.0" styleClass="RPMinusButton" text="-" />
-                              <TextField fx:id="tfSortOrder" alignment="CENTER_RIGHT" editable="false" layoutX="496.0" layoutY="20.0" prefHeight="22.0" prefWidth="41.0" />
+                              <Button id="btn_dark-blue" fx:id="btSortOrderDown" layoutX="541.0" layoutY="33.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleSortOrderDown" prefHeight="12.0" prefWidth="12.0" styleClass="RPMinusButton" text="-" AnchorPane.rightAnchor="20.0" />
+                              <TextField fx:id="tfSortOrder" alignment="CENTER_RIGHT" editable="false" layoutX="496.0" layoutY="20.0" prefHeight="22.0" prefWidth="41.0" AnchorPane.rightAnchor="40.0" />
                            </children>
                         </AnchorPane>
                   </content>
@@ -113,10 +119,10 @@
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
       <children>
-                              <Label fx:id="labStorytext" layoutX="16.0" layoutY="12.0" prefHeight="16.0" prefWidth="528.0" text="Storytext" textAlignment="CENTER" />
-                              <TextArea fx:id="taStorytext" layoutX="16.0" layoutY="32.0" prefHeight="197.0" prefWidth="534.0" wrapText="true" />
-                              <Label fx:id="labRolePlayOff" layoutX="14.0" layoutY="286.0" text="RolePlayOff" />
-                              <TextArea fx:id="taRolePlayOff" layoutX="16.0" layoutY="311.0" prefHeight="49.0" prefWidth="534.0" wrapText="true" />
+                              <Label fx:id="labStorytext" layoutX="16.0" layoutY="12.0" maxWidth="1.7976931348623157E308" prefHeight="16.0" prefWidth="528.0" text="Storytext" textAlignment="CENTER" AnchorPane.leftAnchor="16.0" />
+                              <TextArea fx:id="taStorytext" layoutX="16.0" layoutY="32.0" maxWidth="1.7976931348623157E308" prefHeight="197.0" prefWidth="534.0" wrapText="true" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="0.0" />
+                              <Label fx:id="labRolePlayOff" layoutX="16.0" layoutY="286.0" text="RolePlayOff" AnchorPane.leftAnchor="16.0" />
+                              <TextArea fx:id="taRolePlayOff" layoutX="16.0" layoutY="311.0" maxWidth="1.7976931348623157E308" prefHeight="49.0" prefWidth="534.0" wrapText="true" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="0.0" />
                               <Label layoutX="16.0" layoutY="237.0" text="Position " />
                               <Label layoutX="93.0" layoutY="237.0" text="X/Y" />
                               <TextField fx:id="tfXPosText" layoutX="129.0" layoutY="233.0" prefHeight="24.0" prefWidth="51.0" />
@@ -133,22 +139,22 @@
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <Label fx:id="labPathOption1" layoutX="14.0" layoutY="14.0" prefHeight="17.0" prefWidth="496.0" text="Weg 1" />
-                              <TextField fx:id="tfStoryPath1" layoutX="15.0" layoutY="38.0" prefHeight="22.0" prefWidth="504.0" />
-                              <ComboBox fx:id="cbStoryPath1" layoutX="14.0" layoutY="67.0" prefHeight="26.0" prefWidth="507.0" />
-                              <Label fx:id="labPathOption2" layoutX="13.0" layoutY="101.0" prefHeight="17.0" prefWidth="496.0" text="Weg 2" />
-                              <TextField fx:id="tfStoryPath2" layoutX="14.0" layoutY="125.0" prefHeight="22.0" prefWidth="506.0" />
-                              <ComboBox fx:id="cbStoryPath2" layoutX="13.0" layoutY="153.0" prefHeight="26.0" prefWidth="508.0" />
-                              <Label fx:id="labPathOption3" layoutX="13.0" layoutY="188.0" prefHeight="17.0" prefWidth="504.0" text="Weg 3" />
-                              <TextField fx:id="tfStoryPath3" layoutX="14.0" layoutY="212.0" prefHeight="22.0" prefWidth="506.0" />
-                              <ComboBox fx:id="cbStoryPath3" layoutX="13.0" layoutY="241.0" prefHeight="26.0" prefWidth="508.0" />
-                              <Button id="btn_dark-blue" fx:id="btDeleteStoryOption1" ellipsisString="" layoutX="522.0" layoutY="33.0" mnemonicParsing="false" onAction="#handleDeleteStoryOption1" prefHeight="22.0" prefWidth="30.0" styleClass="RPDeleteButton2" />
-                              <Button id="btn_dark-blue" fx:id="btDeleteStoryOption2" ellipsisString="" layoutX="521.0" layoutY="120.0" mnemonicParsing="false" onAction="#handleDeleteStoryOption2" prefHeight="22.0" prefWidth="31.0" styleClass="RPDeleteButton2" />
-                              <Button id="btn_dark-blue" fx:id="btDeleteStoryOption3" ellipsisString="" layoutX="522.0" layoutY="207.0" mnemonicParsing="false" onAction="#handleDeleteStoryOption3" prefHeight="22.0" prefWidth="30.0" styleClass="RPDeleteButton2" />
-                              <Label fx:id="labPathOption4" layoutX="13.0" layoutY="275.0" prefHeight="17.0" prefWidth="506.0" text="Weg 4" />
-                              <TextField fx:id="tfStoryPath4" layoutX="14.0" layoutY="298.0" prefHeight="22.0" prefWidth="506.0" />
-                              <ComboBox fx:id="cbStoryPath4" layoutX="13.0" layoutY="325.0" prefHeight="26.0" prefWidth="508.0" />
-                              <Button id="btn_dark-blue" fx:id="btDeleteStoryOption4" ellipsisString="" layoutX="522.0" layoutY="293.0" mnemonicParsing="false" onAction="#handleDeleteStoryOption4" prefHeight="22.0" prefWidth="30.0" styleClass="RPDeleteButton2" />
+                              <Label fx:id="labPathOption1" layoutX="16.0" layoutY="14.0" prefHeight="17.0" prefWidth="496.0" text="Weg 1" />
+                              <TextField fx:id="tfStoryPath1" layoutX="16.0" layoutY="38.0" prefHeight="22.0" prefWidth="504.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="40.0" />
+                              <ComboBox fx:id="cbStoryPath1" layoutX="16.0" layoutY="67.0" prefHeight="26.0" prefWidth="507.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="40.0" />
+                              <Label fx:id="labPathOption2" layoutX="16.0" layoutY="101.0" prefHeight="17.0" prefWidth="496.0" text="Weg 2" />
+                              <TextField fx:id="tfStoryPath2" layoutX="16.0" layoutY="125.0" prefHeight="22.0" prefWidth="506.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="40.0" />
+                              <ComboBox fx:id="cbStoryPath2" layoutX="16.0" layoutY="153.0" prefHeight="26.0" prefWidth="508.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="40.0" />
+                              <Label fx:id="labPathOption3" layoutX="16.0" layoutY="188.0" prefHeight="17.0" prefWidth="504.0" text="Weg 3" />
+                              <TextField fx:id="tfStoryPath3" layoutX="16.0" layoutY="212.0" prefHeight="22.0" prefWidth="506.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="40.0" />
+                              <ComboBox fx:id="cbStoryPath3" layoutX="16.0" layoutY="241.0" prefHeight="26.0" prefWidth="508.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="40.0" />
+                              <Button id="btn_dark-blue" fx:id="btDeleteStoryOption1" ellipsisString="" layoutX="522.0" layoutY="33.0" mnemonicParsing="false" onAction="#handleDeleteStoryOption1" prefHeight="22.0" prefWidth="30.0" styleClass="RPDeleteButton2" AnchorPane.rightAnchor="0.0" />
+                              <Button id="btn_dark-blue" fx:id="btDeleteStoryOption2" ellipsisString="" layoutX="521.0" layoutY="120.0" mnemonicParsing="false" onAction="#handleDeleteStoryOption2" prefHeight="22.0" prefWidth="31.0" styleClass="RPDeleteButton2" AnchorPane.rightAnchor="0.0" />
+                              <Button id="btn_dark-blue" fx:id="btDeleteStoryOption3" ellipsisString="" layoutX="522.0" layoutY="207.0" mnemonicParsing="false" onAction="#handleDeleteStoryOption3" prefHeight="22.0" prefWidth="30.0" styleClass="RPDeleteButton2" AnchorPane.rightAnchor="0.0" />
+                              <Label fx:id="labPathOption4" layoutX="16.0" layoutY="275.0" prefHeight="17.0" prefWidth="506.0" text="Weg 4" />
+                              <TextField fx:id="tfStoryPath4" layoutX="16.0" layoutY="298.0" prefHeight="22.0" prefWidth="506.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="40.0" />
+                              <ComboBox fx:id="cbStoryPath4" layoutX="16.0" layoutY="325.0" prefHeight="26.0" prefWidth="508.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="40.0" />
+                              <Button id="btn_dark-blue" fx:id="btDeleteStoryOption4" ellipsisString="" layoutX="522.0" layoutY="293.0" mnemonicParsing="false" onAction="#handleDeleteStoryOption4" prefHeight="22.0" prefWidth="30.0" styleClass="RPDeleteButton2" AnchorPane.rightAnchor="0.0" />
                            </children>
                         </AnchorPane>
                     </content>
@@ -157,20 +163,20 @@
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <Label fx:id="labDataInputText1" layoutX="14.0" layoutY="82.0" prefHeight="16.0" prefWidth="88.0" text="Datenfeld 1" />
-                              <ComboBox fx:id="cbDatafield1" layoutX="120.0" layoutY="75.0" prefHeight="26.0" prefWidth="425.0" />
-                              <Label fx:id="labDataInputDataset" layoutX="14.0" layoutY="14.0" prefHeight="16.0" prefWidth="102.0" text="Objekt" />
-                              <Label fx:id="labDataInputText2" layoutX="15.0" layoutY="115.0" prefHeight="16.0" prefWidth="88.0" text="Datenfeld 2" />
-                              <ComboBox fx:id="cbDatafield2" layoutX="120.0" layoutY="108.0" prefHeight="26.0" prefWidth="425.0" />
-                              <ComboBox fx:id="cbDatafield3" layoutX="120.0" layoutY="142.0" prefHeight="26.0" prefWidth="425.0" />
-                              <Label fx:id="labDataInputText3" layoutX="15.0" layoutY="149.0" prefHeight="16.0" prefWidth="88.0" text="Datenfeld 3" />
-                              <Label fx:id="labDataInputText4" layoutX="15.0" layoutY="181.0" prefHeight="16.0" prefWidth="88.0" text="Datenfeld 4" />
-                              <Label fx:id="labNextStep" layoutX="15.0" layoutY="278.0" prefHeight="16.0" prefWidth="88.0" text="Next Step" />
-                              <ComboBox fx:id="cbDatafield4" layoutX="120.0" layoutY="174.0" prefHeight="26.0" prefWidth="425.0" />
-                              <ComboBox fx:id="cbroleplayinputdatatypes" layoutX="120.0" layoutY="7.0" onAction="#handleActionInputDataTypes" prefHeight="26.0" prefWidth="425.0" />
-                              <ComboBox fx:id="cbNextStep_V3" layoutX="120.0" layoutY="271.0" prefHeight="26.0" prefWidth="425.0" />
-                              <Label fx:id="labDataInputText5" layoutX="15.0" layoutY="216.0" prefHeight="16.0" prefWidth="88.0" text="Datenfeld 5" />
-                              <ComboBox fx:id="cbDatafield5" layoutX="120.0" layoutY="209.0" prefHeight="26.0" prefWidth="425.0" />
+                              <Label fx:id="labDataInputText1" layoutX="16.0" layoutY="82.0" prefHeight="16.0" prefWidth="88.0" text="Datenfeld 1" />
+                              <ComboBox fx:id="cbDatafield1" layoutX="120.0" layoutY="75.0" prefHeight="26.0" prefWidth="425.0" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="0.0" />
+                              <Label fx:id="labDataInputDataset" layoutX="16.0" layoutY="14.0" prefHeight="16.0" prefWidth="102.0" text="Objekt" />
+                              <Label fx:id="labDataInputText2" layoutX="16.0" layoutY="115.0" prefHeight="16.0" prefWidth="88.0" text="Datenfeld 2" />
+                              <ComboBox fx:id="cbDatafield2" layoutX="120.0" layoutY="108.0" prefHeight="26.0" prefWidth="425.0" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="0.0" />
+                              <ComboBox fx:id="cbDatafield3" layoutX="120.0" layoutY="142.0" prefHeight="26.0" prefWidth="425.0" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="0.0" />
+                              <Label fx:id="labDataInputText3" layoutX="16.0" layoutY="149.0" prefHeight="16.0" prefWidth="88.0" text="Datenfeld 3" />
+                              <Label fx:id="labDataInputText4" layoutX="16.0" layoutY="181.0" prefHeight="16.0" prefWidth="88.0" text="Datenfeld 4" />
+                              <Label fx:id="labNextStep" layoutX="16.0" layoutY="278.0" prefHeight="16.0" prefWidth="88.0" text="Next Step" />
+                              <ComboBox fx:id="cbDatafield4" layoutX="120.0" layoutY="174.0" prefHeight="26.0" prefWidth="425.0" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="0.0" />
+                              <ComboBox fx:id="cbroleplayinputdatatypes" layoutX="120.0" layoutY="7.0" onAction="#handleActionInputDataTypes" prefHeight="26.0" prefWidth="425.0" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="0.0" />
+                              <ComboBox fx:id="cbNextStep_V3" layoutX="120.0" layoutY="271.0" prefHeight="26.0" prefWidth="425.0" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="0.0" />
+                              <Label fx:id="labDataInputText5" layoutX="16.0" layoutY="216.0" prefHeight="16.0" prefWidth="88.0" text="Datenfeld 5" />
+                              <ComboBox fx:id="cbDatafield5" layoutX="120.0" layoutY="209.0" prefHeight="26.0" prefWidth="425.0" AnchorPane.leftAnchor="120.0" AnchorPane.rightAnchor="0.0" />
                            </children>
                         </AnchorPane>
                     </content>
@@ -179,15 +185,15 @@
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <Label fx:id="labDiceLabel" layoutX="15.0" layoutY="22.0" prefHeight="16.0" prefWidth="532.0" text="Die gefürfelte Augenzahl basiert auf 2W6!" />
-                              <Label fx:id="labDiceScore" layoutX="15.0" layoutY="47.0" prefHeight="16.0" prefWidth="122.0" text="Augenzahl" />
+                              <Label fx:id="labDiceLabel" layoutX="16.0" layoutY="22.0" prefHeight="16.0" prefWidth="532.0" text="Die gefürfelte Augenzahl basiert auf 2W6!" />
+                              <Label fx:id="labDiceScore" layoutX="16.0" layoutY="47.0" prefHeight="16.0" prefWidth="122.0" text="Augenzahl" />
                               <TextField fx:id="tfDiceScore" layoutX="101.0" layoutY="44.0" />
-                              <Label fx:id="labDiceScoreLess" layoutX="15.0" layoutY="92.0" prefHeight="16.0" prefWidth="509.0" text="Step, wenn weniger als angegebene Augenzahl gewürfelt wurde" />
-                              <ComboBox fx:id="cbDiceScoreLess" layoutX="15.0" layoutY="114.0" prefHeight="26.0" prefWidth="508.0" />
-                              <ComboBox fx:id="cbDiceScoreEqual" layoutX="15.0" layoutY="175.0" prefHeight="26.0" prefWidth="508.0" />
-                              <Label fx:id="labDiceScoreEqual" layoutX="15.0" layoutY="152.0" prefHeight="16.0" prefWidth="503.0" text="Step, wenn die gleiche Augenzahl gewürfelt wurde" />
-                              <Label fx:id="labDiceScoreMore" layoutX="15.0" layoutY="219.0" prefHeight="16.0" prefWidth="507.0" text="Step, wenn mehr als angegebene Augenzahl gewürfelt wurde" />
-                              <ComboBox fx:id="cbDiceScoreMore" layoutX="15.0" layoutY="241.0" prefHeight="26.0" prefWidth="508.0" />
+                              <Label fx:id="labDiceScoreLess" layoutX="16.0" layoutY="92.0" prefHeight="16.0" prefWidth="509.0" text="Step, wenn weniger als angegebene Augenzahl gewürfelt wurde" />
+                              <ComboBox fx:id="cbDiceScoreLess" layoutX="16.0" layoutY="114.0" prefHeight="26.0" prefWidth="508.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="0.0" />
+                              <ComboBox fx:id="cbDiceScoreEqual" layoutX="16.0" layoutY="175.0" prefHeight="26.0" prefWidth="508.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="0.0" />
+                              <Label fx:id="labDiceScoreEqual" layoutX="16.0" layoutY="152.0" prefHeight="16.0" prefWidth="503.0" text="Step, wenn die gleiche Augenzahl gewürfelt wurde" />
+                              <Label fx:id="labDiceScoreMore" layoutX="16.0" layoutY="219.0" prefHeight="16.0" prefWidth="507.0" text="Step, wenn mehr als angegebene Augenzahl gewürfelt wurde" />
+                              <ComboBox fx:id="cbDiceScoreMore" layoutX="16.0" layoutY="241.0" prefHeight="26.0" prefWidth="508.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="0.0" />
                            </children>
                         </AnchorPane>
                     </content>
@@ -210,9 +216,9 @@
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <Label layoutX="15.0" layoutY="25.0" prefHeight="24.0" prefWidth="286.0" text="Next Step" />
-                              <ComboBox fx:id="cbNextStep_V1" layoutX="15.0" layoutY="47.0" prefHeight="26.0" prefWidth="508.0" />
-                              <Button id="btn_dark-blue" fx:id="btDeleteStoryOptionNextStep" ellipsisString="" layoutX="523.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleDeleteStoryOptionNextStep" prefHeight="22.0" prefWidth="30.0" styleClass="RPDeleteButton2" />
+                              <Label layoutX="16.0" layoutY="25.0" prefHeight="24.0" prefWidth="286.0" text="Next Step" />
+                              <ComboBox fx:id="cbNextStep_V1" layoutX="16.0" layoutY="47.0" prefHeight="26.0" prefWidth="508.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="40.0" />
+                              <Button id="btn_dark-blue" fx:id="btDeleteStoryOptionNextStep" ellipsisString="" layoutX="530.0" layoutY="42.0" mnemonicParsing="false" onAction="#handleDeleteStoryOptionNextStep" prefHeight="22.0" prefWidth="30.0" styleClass="RPDeleteButton2" AnchorPane.rightAnchor="0.0" />
                            </children>
                         </AnchorPane>
                     </content>
@@ -221,14 +227,14 @@
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <Label fx:id="labCode" layoutX="23.0" layoutY="14.0" prefHeight="17.0" prefWidth="218.0" text="Code der erraten werden soll" />
-                              <TextField fx:id="tfCode" layoutX="251.0" layoutY="11.0" prefHeight="24.0" prefWidth="163.0" />
-                              <Label fx:id="labAttempt" layoutX="24.0" layoutY="35.0" prefHeight="47.0" prefWidth="216.0" text="Anzahl Versuche zum erraten des Codes" wrapText="true" />
-                              <TextField fx:id="tfAttempt" layoutX="251.0" layoutY="46.0" prefHeight="24.0" prefWidth="163.0" />
-                              <Label fx:id="labAttemptSuccsess" layoutX="24.0" layoutY="82.0" prefHeight="24.0" prefWidth="216.0" text="Schritt im Erfolgsfall" wrapText="true" />
-                              <ComboBox fx:id="cbNextStep_AttemptSuccess" layoutX="251.0" layoutY="80.0" prefHeight="27.0" prefWidth="270.0" />
-                              <Label fx:id="labAttemptFailure" layoutX="24.0" layoutY="116.0" prefHeight="24.0" prefWidth="216.0" text="Schritt bei Fehlschlag" wrapText="true" />
-                              <ComboBox fx:id="cbNextStep_AttemptFailure" layoutX="251.0" layoutY="114.0" prefHeight="27.0" prefWidth="270.0" />
+                              <Label fx:id="labCode" layoutX="16.0" layoutY="14.0" prefHeight="17.0" prefWidth="218.0" text="Code der erraten werden soll" />
+                              <TextField fx:id="tfCode" layoutX="251.0" layoutY="11.0" prefHeight="24.0" prefWidth="163.0" AnchorPane.leftAnchor="251.0" />
+                              <Label fx:id="labAttempt" layoutX="16.0" layoutY="35.0" prefHeight="47.0" prefWidth="216.0" text="Anzahl Versuche zum erraten des Codes" wrapText="true" />
+                              <TextField fx:id="tfAttempt" layoutX="251.0" layoutY="46.0" prefHeight="24.0" prefWidth="163.0" AnchorPane.leftAnchor="251.0" />
+                              <Label fx:id="labAttemptSuccsess" layoutX="16.0" layoutY="82.0" prefHeight="24.0" prefWidth="216.0" text="Schritt im Erfolgsfall" wrapText="true" />
+                              <ComboBox fx:id="cbNextStep_AttemptSuccess" layoutX="251.0" layoutY="80.0" prefHeight="27.0" prefWidth="270.0" AnchorPane.leftAnchor="251.0" AnchorPane.rightAnchor="0.0" />
+                              <Label fx:id="labAttemptFailure" layoutX="16.0" layoutY="116.0" prefHeight="24.0" prefWidth="216.0" text="Schritt bei Fehlschlag" wrapText="true" />
+                              <ComboBox fx:id="cbNextStep_AttemptFailure" layoutX="251.0" layoutY="114.0" prefHeight="27.0" prefWidth="270.0" AnchorPane.leftAnchor="251.0" AnchorPane.rightAnchor="0.0" />
                            </children>
                         </AnchorPane>
                     </content>
@@ -237,18 +243,18 @@
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <Label layoutX="27.0" layoutY="29.0" prefHeight="17.0" prefWidth="134.0" text="Sender Fraktion" />
-                              <ComboBox fx:id="cbFaction" layoutX="161.0" layoutY="24.0" prefHeight="27.0" prefWidth="313.0" />
-                              <Label layoutX="27.0" layoutY="67.0" prefHeight="17.0" prefWidth="134.0" text="Service Name" />
-                              <TextField fx:id="tfServiceName" layoutX="162.0" layoutY="63.0" prefHeight="24.0" prefWidth="311.0" />
-                              <Label layoutX="27.0" layoutY="98.0" prefHeight="17.0" prefWidth="134.0" text="Kopfzeile" />
-                              <TextField fx:id="tfHeader" layoutX="162.0" layoutY="94.0" prefHeight="24.0" prefWidth="311.0" />
-                              <Label layoutX="27.0" layoutY="129.0" prefHeight="17.0" prefWidth="134.0" text="Sendedatum" />
-                              <TextField fx:id="tfSenddate" layoutX="162.0" layoutY="125.0" prefHeight="24.0" prefWidth="311.0" />
-                              <Label layoutX="27.0" layoutY="160.0" prefHeight="17.0" prefWidth="134.0" text="Sender" />
-                              <TextField fx:id="tfSender" layoutX="162.0" layoutY="156.0" prefHeight="24.0" prefWidth="311.0" />
-                              <Label layoutX="27.0" layoutY="193.0" prefHeight="17.0" prefWidth="134.0" text="Nächster Schritt" />
-                              <ComboBox fx:id="cbNextStepV7" layoutX="161.0" layoutY="188.0" prefHeight="27.0" prefWidth="313.0" />
+                              <Label layoutX="16.0" layoutY="29.0" prefHeight="17.0" prefWidth="134.0" text="Sender Fraktion" />
+                              <ComboBox fx:id="cbFaction" layoutX="161.0" layoutY="24.0" prefHeight="27.0" prefWidth="313.0" AnchorPane.leftAnchor="161.0" AnchorPane.rightAnchor="0.0" />
+                              <Label layoutX="16.0" layoutY="67.0" prefHeight="17.0" prefWidth="134.0" text="Service Name" />
+                              <TextField fx:id="tfServiceName" layoutX="162.0" layoutY="63.0" prefHeight="24.0" prefWidth="311.0" AnchorPane.leftAnchor="162.0" AnchorPane.rightAnchor="0.0" />
+                              <Label layoutX="16.0" layoutY="98.0" prefHeight="17.0" prefWidth="134.0" text="Kopfzeile" />
+                              <TextField fx:id="tfHeader" layoutX="162.0" layoutY="94.0" prefHeight="24.0" prefWidth="311.0" AnchorPane.leftAnchor="162.0" AnchorPane.rightAnchor="0.0" />
+                              <Label layoutX="16.0" layoutY="129.0" prefHeight="17.0" prefWidth="134.0" text="Sendedatum" />
+                              <TextField fx:id="tfSenddate" layoutX="162.0" layoutY="125.0" prefHeight="24.0" prefWidth="311.0" AnchorPane.leftAnchor="162.0" AnchorPane.rightAnchor="0.0" />
+                              <Label layoutX="16.0" layoutY="160.0" prefHeight="17.0" prefWidth="134.0" text="Sender" />
+                              <TextField fx:id="tfSender" layoutX="162.0" layoutY="156.0" prefHeight="24.0" prefWidth="311.0" AnchorPane.leftAnchor="162.0" AnchorPane.rightAnchor="0.0" />
+                              <Label layoutX="16.0" layoutY="193.0" prefHeight="17.0" prefWidth="134.0" text="Nächster Schritt" />
+                              <ComboBox fx:id="cbNextStepV7" layoutX="161.0" layoutY="188.0" prefHeight="27.0" prefWidth="313.0" AnchorPane.leftAnchor="161.0" AnchorPane.rightAnchor="0.0" />
                            </children>
                         </AnchorPane>
                     </content>
