@@ -860,6 +860,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					C3Logger.info("Planet picture not found! Consider adding a fitting image for id: " + systemImageName);
 					imagePlanet = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/planets/000_default.png")));
 				}
+				C3Logger.debug("Looking for faction logo: /images/logos/factions/" + logo);
 				Image imageFaction = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logos/factions/" + logo)));
 
 				labelSystemImage.setImage(imagePlanet);

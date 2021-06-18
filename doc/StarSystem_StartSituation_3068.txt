@@ -5,56 +5,64 @@ CLAN
 Clan Geisterbär FactionID 30
 SELECT id, name FROM `STARSYSTEM` WHERE Name in ('Mannedorf','Skandia','Maule','Nox','Utrecht','Altenmarkt','Rubigen','Toffen','Eguilles','Setubal','Ardoz','Halesowen','Sternwerde','Krenice');
 
-85 Altenmarkt
-131 Ardoz
-593 Eguilles
-782 Halesowen
-1048 Krenice
-1187 Mannedorf
-1217 Maule
-1423 Nox
-1642 Rubigen
-1716 Setubal
-1762 Skandia
-1809 Sternwerde
-1920 Toffen
-1976 Utrecht
+85 Altenmarkt 				- ok
+131 Ardoz 					- ok
+593 Eguilles 				- ok
+782 Halesowen 				- ok
+1048 Krenice 				- ok
+1187 Mannedorf 				- ok
+1217 Maule 					- ok
+1423 Nox 					- ok
+1642 Rubigen 				- ok
+1716 Setubal 				- ok
+1762 Skandia 				- ok
+1809 Sternwerde 			- ok
+1920 Toffen 				- ok
+1976 Utrecht 				- ok
+
+INSERT INTO `_HH_STARSYSTEMDATA` (`ID`, `StarSystemID`, `FactionID`, `FactionID_Start`, `Infrastructure`, `Wealth`, `Veternacy`, `Class`, `Type`, `Description`, `CapitalWorld`, `Active`) VALUES (NULL, '131', '30', '30', '0', '0', '0', '0', '0', '', '0', '1');
 
 Clan Wolf FactionID 36
 SELECT id, name FROM `STARSYSTEM` WHERE Name in ('Heiligendreuz','Kobe','Karston','Hyperion','Shaula (Perrot 3025-)','Hainfeld','Thun','Galuzzo','Carse','Diosd','Ramsau','Lothan','Bessarabia','Satalice');
 
-243 Bessarabia
-370 Carse
-557 Diosd
-707 Galuzzo
-781 Hainfeld
-815 Heiligendreuz
-876 Hyperion
-969 Karston
-1029 Kobe
-1140 Lothan
-1584 Ramsau
-1686 Satalice
-1723 Shaula (Perrot 3025-)
-1906 Thun
+243 Bessarabia 				- ok
+370 Carse 					- ok
+557 Diosd 					- ok
+707 Galuzzo 				- ok
+781 Hainfeld 				- ok
+815 Heiligendreuz 			- ok
+876 Hyperion 				- ok
+969 Karston 				- ok
+1029 Kobe 					- ok
+1140 Lothan 				- ok
+1584 Ramsau 				- ok
+1686 Satalice 				- ok
+1723 Shaula (Perrot 3025-) 	- ok
+1906 Thun 					- ok
+
++ 1886 Terra (!) --> 4 Comstar
+
+INSERT INTO `_HH_STARSYSTEMDATA` (`ID`, `StarSystemID`, `FactionID`, `FactionID_Start`, `Infrastructure`, `Wealth`, `Veternacy`, `Class`, `Type`, `Description`, `CapitalWorld`, `Active`) VALUES (NULL, '243', '36', '36', '0', '0', '0', '0', '0', '', '0', '1');
 
 Clan Jadefalke FactionID 32
 SELECT id, name FROM `STARSYSTEM` WHERE Name in ('Biota','Montmarault','Quarell','Jabuka','Crimond','Orkney (LC)','Rastaban','Styk II','La Grave','Wheel','Domain','Graceland','Pandora','Ballynure');
 
-195 Ballynure
-256 Biota
-479 Crimond
-562 Domain
-751 Graceland
-919 Jabuka
-1067 La Grave
-1307 Montmarault
-1455 Orkney (LC)
-1477 Pandora
-1564 Quarell
-1592 Rastaban
-1819 Styk
-2057 Wheel
+195 Ballynure 				- ok
+256 Biota 					- ok
+479 Crimond 				- ok
+562 Domain 					- ok
+751 Graceland 				- ok
+919 Jabuka 					- ok
+1067 La Grave 				- ok
+1307 Montmarault 			- ok
+1455 Orkney (LC) 			- ok
+1477 Pandora 				- ok
+1564 Quarell 				- ok
+1592 Rastaban 				- ok
+1819 Styk 					- ok - falsch --> 1824 Suk II
+2057 Wheel 					- ok
+
+INSERT INTO `_HH_STARSYSTEMDATA` (`ID`, `StarSystemID`, `FactionID`, `FactionID_Start`, `Infrastructure`, `Wealth`, `Veternacy`, `Class`, `Type`, `Description`, `CapitalWorld`, `Active`) VALUES (NULL, '256', '32', '32', '0', '0', '0', '0', '0', '', '0', '1');
 
 --------------------------------------------------
 
@@ -62,53 +70,59 @@ IS
 Lyranisches Commonwealth FactionID 11
 SELECT id, name FROM `STARSYSTEM` WHERE Name in ('Karbala','Tomans','Borghese','Kelenfold','Rasalgethi','Fort Loudon','Meacham','Blue Diamond','Fatima','Morningside','Ganshoren','Apostica','Arcturus','Surcin');
 
-125 Apostica
-130 Arcturus
-269 Blue Diamond
-286 Borghese
-654 Fatima
-681 Fort Loudon
-714 Ganshoren
-967 Karbala
-988 Kelenfold
-1231 Meacham
-1317 Morningside
-1590 Rasalgethi
-1830 Surcin
-1926 Tomans
+125 Apostica 				- ok
+130 Arcturus				- ok
+269 Blue Diamond			- ok
+286 Borghese				- ok
+654 Fatima					- ok
+681 Fort Loudon				- ok
+714 Ganshoren				- ok
+967 Karbala					- ok
+988 Kelenfold				- ok
+1231 Meacham				- ok
+1317 Morningside			- ok
+1590 Rasalgethi				- ok
+1830 Surcin					- ok
+1926 Tomans					- ok
+
+INSERT INTO `_HH_STARSYSTEMDATA` (`ID`, `StarSystemID`, `FactionID`, `FactionID_Start`, `Infrastructure`, `Wealth`, `Veternacy`, `Class`, `Type`, `Description`, `CapitalWorld`, `Active`) VALUES (NULL, '130', '11', '11', '0', '0', '0', '0', '0', '', '0', '1');
 
 Freie Republik Rasalhague FactionID 7
 SELECT id, name FROM `STARSYSTEM` WHERE Name in ('Tukayyid','Ueda','Karbala','Dehgolan','Grumium','Al Hillah','Orestes','Camlann','Port Moseby','Sakhalin','Accrington','Phalan','Symington','Dalkeith');
 
-13 Accrington
-37 Al Hillah
-346 Camlann (LC)
-499 Dalkeith
-521 Dehgolan
-767 Grumium
-967 Karbala
-1452 Orestes
-1506 Phalan
-1536 Port Moseby
-4205 Sakhalin (LC)
-1842 Symington
-1954 Tukayyid
-1962 Ueda
+13 Accrington				- ok
+37 Al Hillah				- ok
+346 Camlann (LC)			- ok
+499 Dalkeith				- ok
+521 Dehgolan				- ok
+767 Grumium					- ok
+1452 Orestes				- ok
+1506 Phalan					- ok
+1536 Port Moseby			- ok
+4205 Sakhalin (LC)			- ok
+1739 Shionoha				- ok
+1842 Symington				- ok
+1954 Tukayyid				- ok
+1962 Ueda					- ok
+
+INSERT INTO `_HH_STARSYSTEMDATA` (`ID`, `StarSystemID`, `FactionID`, `FactionID_Start`, `Infrastructure`, `Wealth`, `Veternacy`, `Class`, `Type`, `Description`, `CapitalWorld`, `Active`) VALUES (NULL, '1739', '7', '7', '0', '0', '0', '0', '0', '', '0', '1');
 
 Draconiskombinat FactionID 5
 SELECT id, name FROM `STARSYSTEM` WHERE Name in ('Port Moseby','Meilen','Chandler','Numki','Suladat','Trolloc Prime','Buckminster','Shirotori','Najha','Kiesen','Darius','Odabas','Plikhua');
 
-165 Aubisson
-316 Buckminster
-399 Chandler
-509 Darius
-1005 Kiesen
-1237 Meilen
-1335 Najha
-1426 Numki
-1435 Odabasi
-1513 Pilkhua
-1536 Port Moseby
-1742 Shirotori
-1825 Sulafat
-1941 Trolloc Prime
+165 Aubisson				- ok
+316 Buckminster				- ok
+332 Caldrea					- ok
+399 Chandler				- ok
+509 Darius					- ok
+1005 Kiesen					- ok
+1237 Meilen					- ok
+1335 Najha					- ok
+1426 Numki					- ok
+1435 Odabasi				- ok
+1513 Pilkhua				- ok
+1742 Shirotori				- ok
+1825 Sulafat				- ok
+1941 Trolloc Prime			- ok
+
+INSERT INTO `_HH_STARSYSTEMDATA` (`ID`, `StarSystemID`, `FactionID`, `FactionID_Start`, `Infrastructure`, `Wealth`, `Veternacy`, `Class`, `Type`, `Description`, `CapitalWorld`, `Active`) VALUES (NULL, '399', '5', '5', '0', '0', '0', '0', '0', '', '0', '1');
