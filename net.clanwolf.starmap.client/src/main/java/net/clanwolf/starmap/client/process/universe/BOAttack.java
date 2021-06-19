@@ -48,6 +48,10 @@ public class BOAttack {
 		this.attackDTO = attackDTO;
 	}
 
+	public void setAttackDTO(AttackDTO a) {
+		this.attackDTO = a;
+	}
+
 	@SuppressWarnings("unused")
 	public void storeAttack() {
 		GameState saveAttackState = new GameState();
@@ -56,6 +60,15 @@ public class BOAttack {
 		C3Logger.info("Compressed AttackDTO size: " + compressedAttackDTO.length);
 		saveAttackState.addObject(compressedAttackDTO);
 		Nexus.fireNetworkEvent(saveAttackState);
+	}
+
+	public void storeAttackCharacters(AttackCharacterDTO attackCharacterDTO) {
+		GameState saveAttackCharacterState = new GameState();
+		saveAttackCharacterState.setMode(GAMESTATEMODES.ATTACK_CHARACTER_SAVE);
+		byte[] compressedAttackCharacterDTO = Compressor.compress(attackCharacterDTO);
+		C3Logger.info("Compressed AttackCharacterDTO size: " + compressedAttackCharacterDTO.length);
+		saveAttackCharacterState.addObject(compressedAttackCharacterDTO);
+		Nexus.fireNetworkEvent(saveAttackCharacterState);
 	}
 
 	public static boolean charHasAnActiveAttack() {

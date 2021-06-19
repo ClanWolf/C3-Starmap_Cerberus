@@ -189,8 +189,6 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("attack_youAlreadyHaveAFight"), true));
 
 		BOAttack a = Nexus.getCurrentlySelectedStarSystem().getAttack();
-		a.getAttackDTO().setCharacterID(Nexus.getCurrentChar().getId());
-		a.getAttackDTO().setStoryID(21L); 	// TODO: Hier müssen wir die Einstiegs-Story ID irgendwie definieren
 
 		AttackCharacterDTO ac = new AttackCharacterDTO();
 		ac.setAttackID(a.getAttackDTO().getId());
@@ -198,7 +196,20 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		ac.setType(1L);
 
 		a.getAttackDTO().getAttackCharList().add(ac);
-		a.storeAttack();
+
+		if (a.getCharacterId() != null) {
+			a.getAttackDTO().setCharacterID(Nexus.getCurrentChar().getId());
+			a.getAttackDTO().setStoryID(21L);    // TODO: Hier müssen wir die Einstiegs-Story ID irgendwie definieren
+			a.storeAttack();
+		} else {
+			a.storeAttackCharacters(ac);
+		}
+
+
+
+
+
+		ActionManager.getAction(ACTIONS.SWITCH_TO_INVASION).execute();
 
 		//GameState saveAttackState = new GameState();
 		//saveAttackState.setMode(GAMESTATEMODES.ATTACK_SAVE);

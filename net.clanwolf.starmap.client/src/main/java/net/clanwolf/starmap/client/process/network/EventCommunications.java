@@ -34,6 +34,7 @@ import net.clanwolf.starmap.client.gui.MainFrameController;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionManager;
+import net.clanwolf.starmap.client.process.universe.BOAttack;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.client.process.logout.Logout;
@@ -118,7 +119,7 @@ public class EventCommunications {
 					break;
 
 				case ATTACK_SAVE_RESPONSE:
-					C3Logger.info("Attack has changed, likely another user joined or left.");
+					C3Logger.info("Attack has been started.");
 					AttackDTO attack = (AttackDTO) state.getObject();
 
 					for (AttackCharacterDTO attackCharacterDTO : attack.getAttackCharList()) {
@@ -130,6 +131,19 @@ public class EventCommunications {
 					ActionManager.getAction(ACTIONS.ENABLE_MAIN_MENU_BUTTONS).execute();
 					break;
 
+				case ATTACK_CHARACTER_SAVE_RESPONSE:
+					C3Logger.info("Attack has changed, a user joined or left.");
+					AttackDTO attackDTO = (AttackDTO) state.getObject();
+
+					for (BOAttack a : Nexus.getBoUniverse().attackBOs) {
+						if (attackDTO.getId().equals(a.getAttackDTO().getId())) {
+							a.setAttackDTO(attackDTO);
+							ActionManager.getAction(ACTIONS.UPDATE_USERS_FOR_ATTACK).execute();
+							break;
+						}
+					}
+
+					break;
 				case ERROR_MESSAGE:
 					break;
 				case USER_LOG_OUT:

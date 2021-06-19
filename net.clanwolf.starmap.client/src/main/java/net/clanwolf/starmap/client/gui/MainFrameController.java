@@ -972,6 +972,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		ActionManager.addActionCallbackListener(ACTIONS.HIDE_IRC_INDICATOR, this);
 		ActionManager.addActionCallbackListener(ACTIONS.SHOW_IRC_INDICATOR, this);
 		ActionManager.addActionCallbackListener(ACTIONS.ENABLE_MAIN_MENU_BUTTONS, this);
+		ActionManager.addActionCallbackListener(ACTIONS.SWITCH_TO_INVASION, this);
 	}
 
 	private void setToLevelLoggedOutText() {
@@ -1669,6 +1670,10 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 			case ENABLE_MAIN_MENU_BUTTONS:
 				enableMainMenuButtons(Nexus.isLoggedIn(), Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN));
+				break;
+
+			case SWITCH_TO_INVASION:
+				openTargetPane(attackPane, "");
 				break;
 
 //			case START_ROLEPLAY:

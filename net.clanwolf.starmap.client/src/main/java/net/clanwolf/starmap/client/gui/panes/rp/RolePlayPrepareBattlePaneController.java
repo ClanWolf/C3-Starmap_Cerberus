@@ -65,13 +65,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 	private AnchorPane anchorPane;
 
 	@FXML
-	private Label labHeader;
-
-	@FXML
 	private Button btPreview;
-
-	@FXML
-	private TextArea taStoryText;
 
 	public RolePlayPrepareBattlePaneController() {
 	}
@@ -107,6 +101,10 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 				// set current step of story
 				getStoryValues(Nexus.getCurrentChar());
 			}
+			break;
+		case UPDATE_USERS_FOR_ATTACK:
+			C3Logger.info("The userlist has changed. Update information on the listboxes.");
+			// TODO: Charactere updaten
 			break;
 		default:
 			break;
@@ -148,36 +146,6 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 	@Override
 	public void getStoryValues(RolePlayCharacterDTO rpChar){
-
-		double xOffset = 62;
-		double yOffset = 14;
-
-		// set postion and size from textarea
-		if(rpChar.getStory().getxPosText() != null &&
-				rpChar.getStory().getyPosText() != null &&
-				rpChar.getStory().getWidthText() != null &&
-				rpChar.getStory().getHeightText() != null){
-
-			taStoryText.setLayoutX(rpChar.getStory().getxPosText().doubleValue() + xOffset);
-			taStoryText.setLayoutY(rpChar.getStory().getyPosText().doubleValue() + yOffset);
-			taStoryText.setPrefSize(rpChar.getStory().getWidthText().doubleValue(),rpChar.getStory().getHeightText().doubleValue());
-
-		} else {
-
-			taStoryText.setLayoutX(xOffset);
-			taStoryText.setLayoutY(yOffset);
-			taStoryText.setPrefSize(778,438);
-		}
-
-		taStoryText.setVisible(true);
-		labHeader.setVisible(false);
-
-		taStoryText.setText(rpChar.getStory().getStoryText());
-
-		// set story image
-		Image im = BORolePlayStory.getRPG_DefaultImage("prepare_battle.jpg");
-		backgroundImage.setImage(im);
-
 		// play sound
 		if (rpChar.getStory().getStoryMP3() != null) {
 			C3SoundPlayer.play(BORolePlayStory.getRPG_Soundfile(rpChar.getStory()), false);

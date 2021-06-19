@@ -138,6 +138,11 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				serverHeartBeat = new Timer();
 				serverHeartBeat.schedule(new HeartBeatTimer(), 100);
 				break;
+			case ATTACK_CHARACTER_SAVE:
+				saveAttackCharacter(session, state);
+				serverHeartBeat = new Timer();
+				serverHeartBeat.schedule(new HeartBeatTimer(), 100);
+				break;
 			case ROLEPLAY_GET_CHAPTER_BYSORTORDER:
 				C3GameSessionHandlerRoleplay.getChapterBySortOrder(session, state);
 				break;
@@ -186,8 +191,6 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			C3GameSessionHandler.sendNetworkEvent(session, response);
 
 			C3Logger.error("User save", re);
-		} finally {
-
 		}
 	}
 
@@ -225,8 +228,40 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			C3GameSessionHandler.sendNetworkEvent(session, response);
 
 			C3Logger.error("Attack save", re);
-		} finally {
+		}
+	}
 
+	private void saveAttackCharacter(PlayerSession session, GameState state) {
+		AttackCharacterDAO dao = AttackCharacterDAO.getInstance();
+
+		try {
+			EntityManagerHelper.beginTransaction(getC3UserID(session));
+			AttackCharacterPOJO attackCharacter = (AttackCharacterPOJO) state.getObject();
+
+			if(attackCharacter.getId() != null){
+				dao.update(getC3UserID(session), attackCharacter);
+			} else {
+				dao.save(getC3UserID(session), attackCharacter);
+			}
+			EntityManagerHelper.commit(getC3UserID(session));
+
+			AttackDAO attackDAO = AttackDAO.getInstance();
+			AttackPOJO attackPOJO = attackDAO.findById(getC3UserID(session), attackCharacter.getAttackID());
+
+			GameState response = new GameState(GAMESTATEMODES.ATTACK_CHARACTER_SAVE_RESPONSE);
+			response.addObject(attackPOJO);
+			response.setAction_successfully(Boolean.TRUE);
+			C3GameSessionHandler.sendBroadCast(room, response);
+		} catch (RuntimeException re) {
+			re.printStackTrace();
+			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
+
+			GameState response = new GameState(GAMESTATEMODES.ERROR_MESSAGE);
+			response.addObject(re.getMessage());
+			response.setAction_successfully(Boolean.FALSE);
+			C3GameSessionHandler.sendNetworkEvent(session, response);
+
+			C3Logger.error("Attack character save", re);
 		}
 	}
 

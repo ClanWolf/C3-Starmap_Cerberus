@@ -1,32 +1,120 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.net.URL?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane id="RolePlayStartPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.RolePlayPrepareBattlePaneController">
     <children>
-      <ImageView fx:id="templateBackground" fitHeight="567.0" fitWidth="944.0" layoutX="-70.0" layoutY="-22.0" mouseTransparent="true" opacity="0.74" pickOnBounds="true" preserveRatio="true" visible="false">
+      <ImageView fx:id="backgroundImage" fitHeight="438.0" fitWidth="778.0" layoutX="62.0" layoutY="14.0" onMouseClicked="#handleOnMouseClicked" opacity="0.9" pickOnBounds="true">
          <image>
-            <Image url="@../images/template_bg.png" />
-         </image>
-      </ImageView>
-      <ImageView fx:id="backgroundImage" fitHeight="438.0" fitWidth="778.0" layoutX="62.0" layoutY="14.0" onMouseClicked="#handleOnMouseClicked" pickOnBounds="true" />
+            <Image url="@../images/gui/default_Step.png" />
+         </image></ImageView>
+      <BorderPane prefHeight="200.0" prefWidth="200.0" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="55.0" AnchorPane.leftAnchor="64.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="16.0">
+         <left>
+            <VBox alignment="TOP_CENTER" stylesheets="@../styles/MainFrameStyle.css" BorderPane.alignment="CENTER">
+               <children>
+                  <Label styleClass="contentLabel" stylesheets="@../styles/MainFrameStyle.css" text="Attacker">
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="10.0" />
+                     </VBox.margin></Label>
+                  <ImageView fitHeight="150.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/logos/factions/CJF.png" />
+                     </image>
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin>
+                  </ImageView>
+                  <ComboBox maxWidth="1.7976931348623157E308" prefWidth="150.0">
+                     <VBox.margin>
+                        <Insets bottom="5.0" />
+                     </VBox.margin>
+                  </ComboBox>
+                  <ListView styleClass="systemDetailPanelSolid" stylesheets="@../styles/MainFrameStyle.css" />
+               </children>
+               <BorderPane.margin>
+                  <Insets left="10.0" />
+               </BorderPane.margin>
+            </VBox>
+         </left>
+         <right>
+            <VBox alignment="TOP_CENTER" stylesheets="@../styles/MainFrameStyle.css" BorderPane.alignment="CENTER">
+               <children>
+                  <Label alignment="TOP_LEFT" styleClass="contentLabel" stylesheets="@../styles/MainFrameStyle.css" text="Defender">
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="10.0" />
+                     </VBox.margin></Label>
+                  <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/logos/factions/LC.png" />
+                     </image>
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin>
+                  </ImageView>
+                  <ComboBox maxWidth="1.7976931348623157E308" prefWidth="150.0" stylesheets="@../styles/MainFrameStyle.css">
+                     <VBox.margin>
+                        <Insets bottom="5.0" />
+                     </VBox.margin>
+                  </ComboBox>
+                  <ListView styleClass="systemDetailPanelSolid" stylesheets="@../styles/MainFrameStyle.css" />
+               </children>
+               <BorderPane.margin>
+                  <Insets right="10.0" />
+               </BorderPane.margin>
+            </VBox>
+         </right>
+         <center>
+            <AnchorPane BorderPane.alignment="CENTER">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="430.0" prefWidth="196.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <ImageView fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/planets/016.png" />
+                           </image>
+                           <VBox.margin>
+                              <Insets bottom="15.0" />
+                           </VBox.margin>
+                        </ImageView>
+                        <Label styleClass="contentLabel" stylesheets="@../styles/MainFrameStyle.css" text="Terra">
+                           <padding>
+                              <Insets bottom="60.0" />
+                           </padding>
+                        </Label>
+                        <Button mnemonicParsing="false" prefHeight="37.0" prefWidth="80.0" styleClass="contentButtonClean" stylesheets="@../styles/MainFrameStyle.css" text="&gt;">
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                        </Button>
+                        <Button mnemonicParsing="false" prefHeight="37.0" prefWidth="80.0" styleClass="contentButtonClean" stylesheets="@../styles/MainFrameStyle.css" text="&lt;">
+                           <VBox.margin>
+                              <Insets bottom="10.0" />
+                           </VBox.margin>
+                        </Button>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+         </center>
+         <padding>
+            <Insets bottom="10.0" />
+         </padding>
+      </BorderPane>
       <Button fx:id="btPreview" alignment="CENTER_RIGHT" layoutX="62.0" layoutY="451.0" maxHeight="-Infinity" maxWidth="778.0" minHeight="-Infinity" minWidth="778.0" mnemonicParsing="false" onAction="#handleOnActionBtPreview" prefHeight="36.0" prefWidth="778.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css" text="&gt;&gt; weiter &gt;&gt;">
          <font>
             <Font size="12.0" />
          </font></Button>
-      <TextArea fx:id="taStoryText" layoutX="62.0" layoutY="14.0" prefHeight="82.0" prefWidth="778.0" styleClass="contentTextAreaBlock" wrapText="true" />
-      <Label fx:id="labHeader" alignment="CENTER" layoutX="63.0" layoutY="87.0" prefHeight="54.0" prefWidth="776.0" textAlignment="CENTER" textFill="#fffbfb" visible="false">
-         <font>
-            <Font size="32.0" />
-         </font>
-      </Label>
     </children>
     <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />

@@ -107,6 +107,7 @@ public class C3GameSessionHandlerRoleplay {
 			response.setAction_successfully(Boolean.TRUE);
 
 		} catch (Exception re) {
+			re.printStackTrace();
 
 			/* if a error occurs, we must do a rollback */
 			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
