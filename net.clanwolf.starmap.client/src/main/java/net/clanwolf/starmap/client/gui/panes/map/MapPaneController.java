@@ -197,7 +197,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 		a.getAttackDTO().getAttackCharList().add(ac);
 
-		if (a.getCharacterId() != null) {
+		if (a.getCharacterId() == null) {
 			a.getAttackDTO().setCharacterID(Nexus.getCurrentChar().getId());
 			a.getAttackDTO().setStoryID(21L);    // TODO: Hier müssen wir die Einstiegs-Story ID irgendwie definieren
 			a.storeAttack();
