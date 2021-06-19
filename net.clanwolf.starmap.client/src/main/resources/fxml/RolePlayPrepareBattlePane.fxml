@@ -35,7 +35,7 @@
                         <Insets bottom="5.0" top="5.0" />
                      </VBox.margin>
                   </ImageView>
-                  <ComboBox maxWidth="1.7976931348623157E308" prefWidth="150.0">
+                  <ComboBox maxWidth="1.7976931348623157E308" prefWidth="150.0" styleClass="text-field">
                      <VBox.margin>
                         <Insets bottom="5.0" />
                      </VBox.margin>
@@ -62,7 +62,7 @@
                         <Insets bottom="5.0" top="5.0" />
                      </VBox.margin>
                   </ImageView>
-                  <ComboBox maxWidth="1.7976931348623157E308" prefWidth="150.0" stylesheets="@../styles/MainFrameStyle.css">
+                  <ComboBox maxWidth="1.7976931348623157E308" prefWidth="150.0" styleClass="text-field" stylesheets="@../styles/MainFrameStyle.css">
                      <VBox.margin>
                         <Insets bottom="5.0" />
                      </VBox.margin>
