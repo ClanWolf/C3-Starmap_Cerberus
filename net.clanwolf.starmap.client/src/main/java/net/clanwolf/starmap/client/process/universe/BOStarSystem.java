@@ -189,6 +189,11 @@ public class BOStarSystem {
 	}
 
 	@SuppressWarnings("unused")
+	public Long getType() {
+		return this.hh_starSystemDataDTO.getType();
+	}
+
+	@SuppressWarnings("unused")
 	public boolean isCurrentlyAttacked() {
 		boolean hasAttack = false;
 		for (BOAttack a : Nexus.getBoUniverse().attackBOs) {

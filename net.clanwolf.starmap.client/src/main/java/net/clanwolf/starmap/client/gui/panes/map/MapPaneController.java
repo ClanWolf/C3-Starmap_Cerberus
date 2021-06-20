@@ -194,7 +194,6 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		ac.setAttackID(a.getAttackDTO().getId());
 		ac.setCharacterID(Nexus.getCurrentChar().getId());
 		ac.setType(1L);
-
 		a.getAttackDTO().getAttackCharList().add(ac);
 
 		if (a.getCharacterId() == null) {
@@ -340,6 +339,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					if ("Terra".equals(name)) {
 						Nexus.setTerra(starSystem);
 					}
+
+					// TODO: Travel to the homeworld of the character that logged in
 					if ("Diosd".equals(name)) {
 						Nexus.setCurrentlySelectedStarSystem(starSystem);
 					}
@@ -358,7 +359,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 					String colorString = boUniverse.factionBOs.get(starSystem.getAffiliation()).getColor();
 					Color c = Color.web(colorString);
-					Circle starSystemCircle = new Circle(4);
+					Circle starSystemCircle = new Circle(5);
 					starSystemCircle.setId(starSystem.getStarSystemId().toString());
 					starSystemCircle.setStroke(c.deriveColor(1, 1, 1, 0.8));
 					starSystemCircle.setFill(c.deriveColor(1, 1, 1, 0.4));
@@ -371,6 +372,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					starSystemCircle.addEventFilter(MouseDragEvent.MOUSE_DRAG_EXITED, nodeGestures.getOnStarSystemDragExitedEventHandler());
 
 					starSystem.setStarSystemCircle(starSystemCircle);
+
+					// Capital worlds
 					if (starSystem.isCapitalWorld()) {
 						Circle starSystemCapitalCircle = new Circle(12);
 						starSystemCapitalCircle.setStrokeWidth(3.0);
@@ -383,6 +386,13 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 						stackPane.getChildren().add(starSystemCapitalCircle);
 						starSystemLabel.toFront();
 					}
+
+					// Industrial worlds
+					if (starSystem.getType().equals(1L)) {
+						// This is an industrial world
+						// TODO: Show icon
+					}
+
 					stackPane.getChildren().add(1, starSystemCircle);
 					starSystemCircle.toFront();
 

@@ -209,7 +209,7 @@ public class NodeGestures {
 				circleS1.setCenterX(s1.getScreenX());
 				circleS1.setCenterY(s1.getScreenY());
 //			    circleS1.setRadius(s1.getStarSystemCircle().getRadius());
-				circleS1.setRadius(8);
+				circleS1.setRadius(10);
 				circleS1.setStrokeWidth(s1.getStarSystemCircle().getStrokeWidth());
 				circleS1.setStroke(Color.web(boUniverse.factionBOs.get(s1.getAffiliation()).getColor()));
 				circleS1.setFill(Color.web(boUniverse.factionBOs.get(s1.getAffiliation()).getColor()));
@@ -226,7 +226,7 @@ public class NodeGestures {
 			circleS2.setCenterX(s2.getScreenX());
 			circleS2.setCenterY(s2.getScreenY());
 //			circleS2.setRadius(s2.getStarSystemCircle().getRadius());
-			circleS2.setRadius(8);
+			circleS2.setRadius(10);
 			circleS2.setStrokeWidth(s2.getStarSystemCircle().getStrokeWidth());
 			circleS2.setStroke(Color.web(boUniverse.factionBOs.get(s2.getAffiliation()).getColor()));
 			circleS2.setFill(Color.web(boUniverse.factionBOs.get(s2.getAffiliation()).getColor()));
