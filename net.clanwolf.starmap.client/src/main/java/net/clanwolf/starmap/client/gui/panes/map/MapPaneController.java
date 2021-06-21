@@ -390,7 +390,19 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					// Industrial worlds
 					if (starSystem.getType().equals(1L)) {
 						// This is an industrial world
-						// TODO: Show icon
+						ImageView industryImage = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/icon_industry.png"))));
+						industryImage.setId(starSystem.getName() + "_industrialMarker");
+						industryImage.setPreserveRatio(true);
+						industryImage.setFitWidth(12);
+						industryImage.setCacheHint(CacheHint.QUALITY);
+						industryImage.setSmooth(false);
+						industryImage.setTranslateX(starSystem.getScreenX() + 7);
+						industryImage.setTranslateY(starSystem.getScreenY() - 6);
+						industryImage.setMouseTransparent(true);
+						industryImage.setOpacity(0.9d);
+						industryImage.toFront();
+						industryImage.setVisible(true);
+						canvas.getChildren().add(industryImage);
 					}
 
 					stackPane.getChildren().add(1, starSystemCircle);

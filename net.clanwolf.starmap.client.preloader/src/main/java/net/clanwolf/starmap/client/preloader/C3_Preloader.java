@@ -121,7 +121,7 @@ public class C3_Preloader extends Preloader {
 	@Override
 	public void handleStateChangeNotification(StateChangeNotification evt) {
 		if (evt.getType() == StateChangeNotification.Type.BEFORE_START) {
-			if (!isEmbedded && stage.isShowing()) {
+			if (!isEmbedded && stage.isShowing() && stage.getScene() != null) {
 				// fade out, hide stage at the end of animation
 				FadeTransition ft = new FadeTransition(Duration.millis(1000), stage.getScene().getRoot());
 				ft.setFromValue(1.0);

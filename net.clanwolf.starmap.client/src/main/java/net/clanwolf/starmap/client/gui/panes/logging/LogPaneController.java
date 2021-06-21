@@ -86,8 +86,10 @@ public class LogPaneController implements ActionCallBackListener {
 
 	@FXML
 	public void btnCloseClicked() {
-		Stage stage = (Stage) btnClose.getScene().getWindow();
-		stage.close();
+		if (btnClose.getScene() != null) {
+			Stage stage = (Stage) btnClose.getScene().getWindow();
+			stage.close();
+		}
 		LogPane.isVisible = false;
 	}
 

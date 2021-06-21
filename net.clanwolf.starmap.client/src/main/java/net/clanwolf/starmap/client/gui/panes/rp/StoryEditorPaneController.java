@@ -610,8 +610,10 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 
 			} else {
 				//ActionManager.getAction(ACTIONS.PANE_DESTROY_CURRENT).execute();
-				Stage stage = (Stage) buttonSave.getScene().getWindow();
-				stage.close();
+				if (buttonSave.getScene() != null) {
+					Stage stage = (Stage) buttonSave.getScene().getWindow();
+					stage.close();
+				}
 			}
 		} else {
 			C3Logger.info("Do Nothing");

@@ -9,7 +9,7 @@ SELECT id, name FROM `STARSYSTEM` WHERE Name in ('Mannedorf','Skandia','Maule','
 131 Ardoz 					- ok
 593 Eguilles 				- ok
 782 Halesowen 				- ok
-1048 Krenice 				- ok
+1048 Krenice 				- ok --> 80 Alshain
 1187 Mannedorf 				- ok
 1217 Maule 					- ok
 1423 Nox 					- ok
@@ -31,13 +31,13 @@ SELECT id, name FROM `STARSYSTEM` WHERE Name in ('Heiligendreuz','Kobe','Karston
 707 Galuzzo 				- ok
 781 Hainfeld 				- ok
 815 Heiligendreuz 			- ok
-876 Hyperion 				- ok
+876 Hyperion 				- ok --> 1853 Tamar
 969 Karston 				- ok
 1029 Kobe 					- ok
 1140 Lothan 				- ok
 1584 Ramsau 				- ok
 1686 Satalice 				- ok
-1723 Shaula (Perrot 3025-) 	- ok
+1723 Shaula (Perrot 3025-) 	- ok --> 773 Gunzburg
 1906 Thun 					- ok
 
 + 1886 Terra (!) --> 4 Comstar
@@ -49,7 +49,7 @@ SELECT id, name FROM `STARSYSTEM` WHERE Name in ('Biota','Montmarault','Quarell'
 
 195 Ballynure 				- ok
 256 Biota 					- ok
-479 Crimond 				- ok
+479 Crimond 				- ok --> 1821 Sudeten
 562 Domain 					- ok
 751 Graceland 				- ok
 919 Jabuka 					- ok
@@ -60,7 +60,7 @@ SELECT id, name FROM `STARSYSTEM` WHERE Name in ('Biota','Montmarault','Quarell'
 1564 Quarell 				- ok
 1592 Rastaban 				- ok
 1819 Styk 					- ok - falsch --> 1824 Suk II
-2057 Wheel 					- ok
+2057 Wheel 					- ok --> 490 Cusset				(Wheel war zu nah, konnte nicht ausgewählt werden)
 
 INSERT INTO `_HH_STARSYSTEMDATA` (`ID`, `StarSystemID`, `FactionID`, `FactionID_Start`, `Infrastructure`, `Wealth`, `Veternacy`, `Class`, `Type`, `Description`, `CapitalWorld`, `Active`) VALUES (NULL, '256', '32', '32', '0', '0', '0', '0', '0', '', '0', '1');
 
