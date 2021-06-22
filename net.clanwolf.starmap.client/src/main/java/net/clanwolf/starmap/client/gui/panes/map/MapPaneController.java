@@ -195,7 +195,11 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		AttackCharacterDTO ac = new AttackCharacterDTO();
 		ac.setAttackID(a.getAttackDTO().getId());
 		ac.setCharacterID(Nexus.getCurrentChar().getId());
-		ac.setType(1L);
+		//if (pilotRole == 2L) { // Defender, check if defenders already have a commander
+		//	if (a.getAttackDTO().getAttackCharList().contains(3L)) {
+		//	}
+		//}
+		ac.setType(currentPlayerRoleInInvasion);
 		a.getAttackDTO().getAttackCharList().add(ac);
 
 		if (a.getCharacterId() == null) {
