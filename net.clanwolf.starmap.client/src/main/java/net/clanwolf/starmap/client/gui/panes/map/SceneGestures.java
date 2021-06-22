@@ -203,6 +203,9 @@ class SceneGestures {
 				scale = clamp(scale);
 				double f = (scale / oldScale) - 1;
 
+				// TODO: fix Pivot
+				// What is canvas.getPrefWidth()? May that be the reason why pivot is not on the current mouse position?
+
 				// maxX = right overhang, maxY = lower overhang
 				double maxX = canvas.getBoundsInParent().getMaxX() - canvas.localToParent(canvas.getPrefWidth(), canvas.getPrefHeight()).getX();
 				double maxY = canvas.getBoundsInParent().getMaxY() - canvas.localToParent(canvas.getPrefWidth(), canvas.getPrefHeight()).getY();
@@ -225,6 +228,9 @@ class SceneGestures {
 
 				// note: pivot value must be untransformed, i. e. without scaling
 				canvas.setPivot(f * dx, f * dy);
+
+				C3Logger.debug("Pivot-X: " + f * dx);
+				C3Logger.debug("Pivot-Y: " + f * dy);
 
 				event.consume();
 			}
