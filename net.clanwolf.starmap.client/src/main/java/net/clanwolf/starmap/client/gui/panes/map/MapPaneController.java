@@ -123,7 +123,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 	private NodeGestures nodeGestures;
 
-	private Long currentPlayerRoleInInvasion = 0;
+	private Long currentPlayerRoleInInvasion = 0L;
 
 	@FXML
 	private void handleCenterHomeworldButtonClick() {
