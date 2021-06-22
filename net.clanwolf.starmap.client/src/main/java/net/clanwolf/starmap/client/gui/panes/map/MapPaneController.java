@@ -123,6 +123,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 	private NodeGestures nodeGestures;
 
+	private Long currentPlayerRoleInInvasion = 0;
+
 	@FXML
 	private void handleCenterHomeworldButtonClick() {
 		reCenterMap();
@@ -1183,10 +1185,12 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 										if (!attackAlreadyStarted) {
 											// The attack has not been started yet, I am from the attacking faction, so I can start it now
 											startAttackEnabled = true;
+											currentPlayerRoleInInvasion = 1L; // Attacker commander
 											ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("attack_youMayStartTheAttack"), true));
 										} else {
 											// Another warrior of my faction has started the attack, I am joining the attack
 											startAttackEnabled = true;
+											currentPlayerRoleInInvasion = 0L; // Attacker warrior
 											ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("attack_youMayJoinTheAttack"), true));
 										}
 									} else if (Nexus.getCurrentUser().getCurrentCharacter().getFactionId().equals(a.getDefenderFactionId())) {
@@ -1201,6 +1205,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 										} else {
 											// I can join the defenders
 											startAttackEnabled = true;
+											currentPlayerRoleInInvasion = 2L; // Defender (First will become commander --> 3L)
 											ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("attack_youMayJoinTheDefenders"), true));
 										}
 									} else {
@@ -1215,6 +1220,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 										} else {
 											// I can join the attack
 											startAttackEnabled = true;
+											currentPlayerRoleInInvasion = 4L; // Supporter (Will be placed in team with less pilots or random // cannot be commander)
 											ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("attack_youMayJoinTheAttack"), true));
 										}
 									}
