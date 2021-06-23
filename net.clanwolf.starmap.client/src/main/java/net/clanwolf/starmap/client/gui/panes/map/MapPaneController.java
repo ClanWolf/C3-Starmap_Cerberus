@@ -335,7 +335,6 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				canvas.setTranslateY(Config.MAP_INITIAL_TRANSLATE_Y);
 				canvas.setPrefSize(Config.MAP_DIM, Config.MAP_DIM);
 
-				// create sample nodes which can be dragged
 				nodeGestures = new NodeGestures(canvas);
 				nodeGestures.setSelectionMarker(selectionMarker);
 				nodeGestures.setAttackMarker(attackMarker);
@@ -521,6 +520,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 								if (rp.getSystemId().equals(currentSystemID)) {
 									// In this round, the jumpship should be at System of this routepoint
 									// --> all is fine, the jumpship is where it is expected to be
+									C3Logger.info("Jumpship " + js.getJumpshipName() + " is where it is expected to be.");
 								} else {
 									// The jumpship has not jumped and is not at the system it is expected
 									currentSystemID = rp.getSystemId();
