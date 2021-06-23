@@ -26,14 +26,19 @@
  */
 package net.clanwolf.starmap.client.util;
 
+import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.DialogPane;
+import javafx.scene.image.WritableImage;
+import net.clanwolf.starmap.client.gui.panes.map.PannableCanvas;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.client.net.FTP;
 import net.clanwolf.starmap.client.net.IFileTransfer;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -91,6 +96,17 @@ public final class Tools {
 		cal.setTimeZone(TimeZone.getTimeZone("ECT"));
 		SimpleDateFormat df = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
 		return df.format(cal.getTime());
+	}
+
+	public static void saveMapScreenshot(int width, int height, PannableCanvas canvas) {
+		WritableImage wi = new WritableImage(width, height);
+		try {
+			File file = new File("c:\\temp\\map.png");
+			ImageIO.write(SwingFXUtils.fromFXImage(canvas.snapshot(null, wi),null),"png", file);
+		} catch (IOException e) {
+			e.printStackTrace();
+			C3Logger.error("Could not save map screenshot!");
+		}
 	}
 
 	/**

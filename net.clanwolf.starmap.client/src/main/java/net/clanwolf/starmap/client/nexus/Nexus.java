@@ -29,7 +29,6 @@ package net.clanwolf.starmap.client.nexus;
 import io.nadron.client.app.Session;
 import io.nadron.client.event.Events;
 import io.nadron.client.event.NetworkEvent;
-import javafx.collections.transformation.SortedList;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
 import net.clanwolf.starmap.client.gui.panes.logging.LogWatcher;
 import net.clanwolf.starmap.client.process.login.Login;
@@ -53,7 +52,6 @@ import java.util.ArrayList;
  */
 @SuppressWarnings("WeakerAccess")
 public class Nexus {
-
 	private static UserDTO currentUser;
 	private static RolePlayCharacterDTO currentChar;
 	private static Object myPlayerSessionID;
@@ -78,6 +76,7 @@ public class Nexus {
 	private static boolean clearCacheOnStart = false;
 
 	private static BOStarSystem terra = null;
+	private static BOStarSystem homeworld = null;
 	private static BOStarSystem currentlySelectedStarSystem = null;
 	private static BOJumpship currentlySelectedJumphip = null;
 
@@ -88,101 +87,129 @@ public class Nexus {
 
 	}
 
+	@SuppressWarnings("unused")
 	public static void setUserList(ArrayList list) {
 		userList = list;
 	}
 
+	@SuppressWarnings("unused")
 	public static ArrayList getUserList() {
 		return userList;
 	}
 
+	@SuppressWarnings("unused")
 	public static void setTerra(BOStarSystem s) {
 		terra = s;
 	}
 
+	@SuppressWarnings("unused")
+	public static void setHomeWorld(BOStarSystem s) {
+		homeworld = s;
+	}
+
+	@SuppressWarnings("unused")
 	public static BOStarSystem getTerra() {
 		return terra;
 	}
 
+	@SuppressWarnings("unused")
+	public static BOStarSystem getHomeworld() { return homeworld; }
+
+	@SuppressWarnings("unused")
 	public static void setCurrentlySelectedStarSystem(BOStarSystem s) {
 		currentlySelectedStarSystem = s;
 	}
 
+	@SuppressWarnings("unused")
 	public static BOStarSystem getCurrentlySelectedStarSystem() {
 		return currentlySelectedStarSystem;
 	}
 
+	@SuppressWarnings("unused")
 	public static void setCurrentlySelectedJumpship(BOJumpship j) {
 		currentlySelectedJumphip = j;
 	}
 
+	@SuppressWarnings("unused")
 	public static BOJumpship getCurrentlySelectedJumpship() {
 		return currentlySelectedJumphip;
 	}
 
+	@SuppressWarnings("unused")
 	public static void setSelectedStarSystem(BOStarSystem s) {
 		boSelectedStarSystem = s;
 	}
+
+	@SuppressWarnings("unused")
 	public BOStarSystem getSelectedStarSystem() {
 		return boSelectedStarSystem;
 	}
 
+	@SuppressWarnings("unused")
 	public static void setCurrentSeason(int v) {
 		currentSeason = v;
 	}
+
+	@SuppressWarnings("unused")
 	public static void setCurrentRound(int v) {
 		currentRound = v;
 	}
+
+	@SuppressWarnings("unused")
 	public static void setCurrentDate(String v) {
 		currentDate = v;
 	}
 
+	@SuppressWarnings("unused")
 	public static int getCurrentSeason() { return currentSeason; }
+
+	@SuppressWarnings("unused")
 	public static int getCurrentRound() { return currentRound; }
+
+	@SuppressWarnings("unused")
 	public static String getCurrentDate() { return currentDate; }
 
+	@SuppressWarnings("unused")
 	public static BOUniverse getBoUniverse() {
 		return boUniverse;
 	}
 
+	@SuppressWarnings("unused")
 	public static void setBOUniverse(BOUniverse boUni) {
 		boUniverse = boUni;
 	}
 
+	@SuppressWarnings("unused")
 	public static UniverseDTO getUniverseDTO() {
 		return universeDTO;
 	}
 
+	@SuppressWarnings("unused")
 	public static void setUniverseDTO(UniverseDTO uni) {
 		universeDTO = uni;
 	}
 
-	/**
-	 * Set the currently logged in user
-	 *
-	 * @param user user
-	 */
+	@SuppressWarnings("unused")
 	public static void setUser(UserDTO user) {
 		currentUser = user;
 	}
 
+	@SuppressWarnings("unused")
 	public static void setChar(RolePlayCharacterDTO character) {
 		currentChar = character;
 	}
 
-	/**
-	 * Returns whether the client is logged in or not
-	 *
-	 * @return login state
-	 */
+	@SuppressWarnings("unused")
 	public static boolean isLoggedIn() {
 		return loggedIn && (currentUser != null);
 	}
 
+	@SuppressWarnings("unused")
 	public static void setLoggedInStatus(boolean value) {
 		loggedIn = value;
 	}
 
+	@SuppressWarnings("unused")
 	public static void resetAfterLogout() {
 		setUser(null);
 		setMyPlayerSessionID(null);
@@ -190,33 +217,28 @@ public class Nexus {
 		Login.loginInProgress = false;
 	}
 
+	@SuppressWarnings("unused")
 	public static AbstractC3Pane getCurrentlyOpenedPane() {
 		return currentlyOpenedPane;
 	}
 
+	@SuppressWarnings("unused")
 	public static void setCurrentlyOpenedPane(AbstractC3Pane currentlyOpenedPane) {
 		Nexus.currentlyOpenedPane = currentlyOpenedPane;
 	}
 
-	/**
-	 * Get the currently logged in user
-	 *
-	 * @return UserDTO
-	 */
+	@SuppressWarnings("unused")
 	public static UserDTO getCurrentUser() {
 		return currentUser;
 	}
 
-	/**
-	 * Get the currently selected char for the user
-	 *
-	 * @return char
-	 */
+	@SuppressWarnings("unused")
 	public static RolePlayCharacterDTO getCurrentChar() {
 		currentChar = currentUser.getCurrentCharacter();
 		return currentChar;
 	}
 
+	@SuppressWarnings("unused")
 	public static boolean userHasAttack() {
 		boolean userHasAttack = false;
 		if (Nexus.getBoUniverse() != null) {
@@ -232,40 +254,28 @@ public class Nexus {
 		}
 		return userHasAttack;
 	}
-	/**
-	 * @return the myPlayerSessionID
-	 */
+
+	@SuppressWarnings("unused")
 	public static Object getMyPlayerSessionID() {
 		return myPlayerSessionID;
 	}
 
-	/**
-	 * @param myPlayerSessionID the myPlayerSessionID to set
-	 */
+	@SuppressWarnings("unused")
 	public static void setMyPlayerSessionID(Object myPlayerSessionID) {
 		Nexus.myPlayerSessionID = myPlayerSessionID;
 	}
 
-	/**
-	 * @return the session
-	 */
 	@SuppressWarnings("unused")
 	public static Session getSession() {
 		return session;
 	}
 
-	/**
-	 * @param session the session to set
-	 */
+	@SuppressWarnings("unused")
 	public static void setSession(Session session) {
 		Nexus.session = session;
 	}
 
-	/**
-	 * Send a network event with the given gamestate to the server
-	 *
-	 * @param gameState gamestate
-	 */
+	@SuppressWarnings("unused")
 	public static void fireNetworkEvent(GameState gameState) {
 		NetworkEvent networkEvent = Events.networkEvent(gameState);
 		if (session != null) {
@@ -275,49 +285,52 @@ public class Nexus {
 		}
 	}
 
-	/**
-	 * @return the mainFrameEnabled
-	 */
 	@SuppressWarnings("unused")
 	public static boolean isMainFrameEnabled() {
 		return mainFrameEnabled;
 	}
 
-	/**
-	 * @param mainFrameEnabled the mainFrameEnabled to set
-	 */
+	@SuppressWarnings("unused")
 	public static void setMainFrameEnabled(boolean mainFrameEnabled) {
 		Nexus.mainFrameEnabled = mainFrameEnabled;
 	}
 
+	@SuppressWarnings("unused")
 	public static boolean isDevelopmentPC(){
 		return isDevelopmentPC;
 	}
 
+	@SuppressWarnings("unused")
 	public static void setIsDevelopmentPC(boolean devPC){
 		isDevelopmentPC = devPC;
 	}
 
+	@SuppressWarnings("unused")
 	public static void setClearCacheOnStart(boolean v) {
 		clearCacheOnStart = v;
 	}
 
+	@SuppressWarnings("unused")
 	public static boolean isClearCacheOnStart() {
 		return clearCacheOnStart;
 	}
 
+	@SuppressWarnings("unused")
 	public static void setLastAvailableClientVersion(String v) {
 		lastAvailableClientVersion = v;
 	}
 
+	@SuppressWarnings("unused")
 	public static String getLastAvailableClientVersion() {
 		return lastAvailableClientVersion;
 	}
 
+	@SuppressWarnings("unused")
 	public static LogWatcher getLogWatcher() {
 		return logWatcher;
 	}
 
+	@SuppressWarnings("unused")
 	public static void setLogWatcher(LogWatcher logWatcher) {
 		Nexus.logWatcher = logWatcher;
 	}

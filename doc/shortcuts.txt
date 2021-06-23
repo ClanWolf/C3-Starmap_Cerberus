@@ -4,3 +4,6 @@ ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActi
 
 Play sound:
 C3SoundPlayer.play("sound/fx/beep_02.mp3", false);
+
+TS3-API:
+https://github.com/TheHolyWaffle/TeamSpeak-3-Java-API

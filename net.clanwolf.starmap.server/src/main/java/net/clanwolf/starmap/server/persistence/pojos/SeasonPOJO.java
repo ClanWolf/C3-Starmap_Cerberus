@@ -29,6 +29,12 @@ public class SeasonPOJO extends Pojo {
 	@Column(name = "Ended")
 	private Boolean ended;
 
+	@Column(name = "MetaPhase")
+	private Long metaPhase;
+
+	@Column(name = "TFSArrivalRound")
+	private Long serpentArrivalRound;
+
 	@Column(name = "Description")
 	private String description;
 
@@ -96,5 +102,25 @@ public class SeasonPOJO extends Pojo {
 	@SuppressWarnings("unused")
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
+	}
+
+	@SuppressWarnings("unused")
+	public Long getMetaPhase() {
+		return metaPhase;
+	}
+
+	@SuppressWarnings("unused")
+	public void setMetaPhase(Long metaPhase) {
+		this.metaPhase = metaPhase;
+	}
+
+	@SuppressWarnings("unused")
+	public Long getSerpentArrivalRound() {
+		return serpentArrivalRound;
+	}
+
+	@SuppressWarnings("unused")
+	public void setSerpentArrivalRound(Long serpentArrivalRound) {
+		this.serpentArrivalRound = serpentArrivalRound;
 	}
 }

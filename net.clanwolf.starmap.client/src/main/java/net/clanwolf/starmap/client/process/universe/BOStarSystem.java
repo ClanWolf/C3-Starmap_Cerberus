@@ -34,13 +34,12 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import net.clanwolf.starmap.client.gui.panes.map.Config;
 import net.clanwolf.starmap.client.nexus.Nexus;
-import net.clanwolf.starmap.transfer.dtos.AttackDTO;
 import net.clanwolf.starmap.transfer.dtos.StarSystemDataDTO;
 import org.kynosarges.tektosyne.geometry.PointD;
 
 public class BOStarSystem {
 
-	private StarSystemDataDTO hh_starSystemDataDTO;
+	private final StarSystemDataDTO hh_starSystemDataDTO;
 	private Circle starSystemCircle;
 	private Label starSystemLabel;
 	private StackPane starSystemStackPane;
@@ -56,6 +55,16 @@ public class BOStarSystem {
 			coord = new Point2D(this.getScreenX(), this.getScreenY());
 		}
 		return coord;
+	}
+
+	@SuppressWarnings("unused")
+	public boolean isActive() {
+		return hh_starSystemDataDTO.getActive();
+	}
+
+	@SuppressWarnings("unused")
+	public Long getActiveInMetaPhase() {
+		return hh_starSystemDataDTO.getActiveInMetaPhase();
 	}
 
 	@SuppressWarnings("unused")

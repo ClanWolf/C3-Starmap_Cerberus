@@ -20,6 +20,11 @@ SELECT id, name FROM `STARSYSTEM` WHERE Name in ('Mannedorf','Skandia','Maule','
 1920 Toffen 				- ok
 1976 Utrecht 				- ok
 
++ inactive:
+1195 Marawi
+989 Kempten --> 1726 Sheliak
+1916 Tinaca
+
 INSERT INTO `_HH_STARSYSTEMDATA` (`ID`, `StarSystemID`, `FactionID`, `FactionID_Start`, `Infrastructure`, `Wealth`, `Veternacy`, `Class`, `Type`, `Description`, `CapitalWorld`, `Active`) VALUES (NULL, '131', '30', '30', '0', '0', '0', '0', '0', '', '0', '1');
 
 Clan Wolf FactionID 36
@@ -39,6 +44,11 @@ SELECT id, name FROM `STARSYSTEM` WHERE Name in ('Heiligendreuz','Kobe','Karston
 1686 Satalice 				- ok
 1723 Shaula (Perrot 3025-) 	- ok --> 773 Gunzburg
 1906 Thun 					- ok
+
++ inactive: 
+2047 Weingarten
+1243 Memmingen
+1093 Laurent
 
 + 1886 Terra (!) --> 4 Comstar
 
@@ -62,7 +72,12 @@ SELECT id, name FROM `STARSYSTEM` WHERE Name in ('Biota','Montmarault','Quarell'
 1819 Styk 					- ok - falsch --> 1824 Suk II
 2057 Wheel 					- ok --> 490 Cusset				(Wheel war zu nah, konnte nicht ausgewählt werden)
 
-INSERT INTO `_HH_STARSYSTEMDATA` (`ID`, `StarSystemID`, `FactionID`, `FactionID_Start`, `Infrastructure`, `Wealth`, `Veternacy`, `Class`, `Type`, `Description`, `CapitalWorld`, `Active`) VALUES (NULL, '256', '32', '32', '0', '0', '0', '0', '0', '', '0', '1');
++ Inactive: 
+236 Benfled
+266 Blair Atholl
+448 Colmar
+
+INSERT INTO `_HH_STARSYSTEMDATA` (`ID`, `StarSystemID`, `FactionID`, `FactionID_Start`, `Infrastructure`, `Wealth`, `Veternacy`, `Class`, `Type`, `Description`, `CapitalWorld`, `Active`) VALUES (NULL, '256', '32', '32', '0', '0', '0', '0', '0', '', '0', '0');
 
 --------------------------------------------------
 
@@ -84,6 +99,16 @@ SELECT id, name FROM `STARSYSTEM` WHERE Name in ('Karbala','Tomans','Borghese','
 1590 Rasalgethi				- ok
 1830 Surcin					- ok
 1926 Tomans					- ok
+
++ inactive: 
+564 Donegal
+1508 Pherkad
+832 Hillerod
+1437 Odessa
+716 Garrison
+2288 Cameron
+
+Kockengen!!!
 
 INSERT INTO `_HH_STARSYSTEMDATA` (`ID`, `StarSystemID`, `FactionID`, `FactionID_Start`, `Infrastructure`, `Wealth`, `Veternacy`, `Class`, `Type`, `Description`, `CapitalWorld`, `Active`) VALUES (NULL, '130', '11', '11', '0', '0', '0', '0', '0', '', '0', '1');
 
@@ -124,5 +149,13 @@ SELECT id, name FROM `STARSYSTEM` WHERE Name in ('Port Moseby','Meilen','Chandle
 1742 Shirotori				- ok
 1825 Sulafat				- ok
 1941 Trolloc Prime			- ok
+
++ inactive:
+191 Baldur,
+34 Aix-la-Chapelle, 
+326 Cadiz, 
+237 Benjamin, 
+955 Kajkazawa,
+178 Awano
 
 INSERT INTO `_HH_STARSYSTEMDATA` (`ID`, `StarSystemID`, `FactionID`, `FactionID_Start`, `Infrastructure`, `Wealth`, `Veternacy`, `Class`, `Type`, `Description`, `CapitalWorld`, `Active`) VALUES (NULL, '399', '5', '5', '0', '0', '0', '0', '0', '', '0', '1');

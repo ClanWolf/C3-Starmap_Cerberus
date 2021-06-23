@@ -104,6 +104,9 @@ public class StarSystemDataPOJO extends Pojo {
 	@Column(name = "Active")
 	private Boolean active;
 
+	@Column(name = "ActiveInMetaPhase")
+	private Long activeInMetaPhase;
+
 	@SuppressWarnings("unused")
 	public Long getId() {
 		return id;
@@ -302,5 +305,15 @@ public class StarSystemDataPOJO extends Pojo {
 	@SuppressWarnings("unused")
 	public void setActive(Boolean active) {
 		this.active = active;
+	}
+
+	@SuppressWarnings("unused")
+	public Long getActiveInMetaPhase() {
+		return activeInMetaPhase;
+	}
+
+	@SuppressWarnings("unused")
+	public void setActiveInMetaPhase(Long activeInMetaPhase) {
+		this.activeInMetaPhase = activeInMetaPhase;
 	}
 }

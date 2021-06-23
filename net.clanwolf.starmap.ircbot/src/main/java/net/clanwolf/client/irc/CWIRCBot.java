@@ -58,6 +58,9 @@ public class CWIRCBot extends ListenerAdapter {
 	// - euroserv.fr.quakenet.org
 	// - port80a.se.quakenet.org
 
+	// TS3:
+	// https://github.com/TheHolyWaffle/TeamSpeak-3-Java-API
+
 	public static boolean dropDebugStrings = false;
 
 	private static PircBotX pIrcBot;

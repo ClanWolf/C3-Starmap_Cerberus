@@ -58,6 +58,7 @@ import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.C3PROPS;
 import net.clanwolf.starmap.client.util.C3Properties;
 import net.clanwolf.starmap.client.util.Internationalization;
+import net.clanwolf.starmap.client.util.Tools;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.transfer.dtos.*;
 import net.clanwolf.starmap.transfer.enums.MEDALS;
@@ -151,7 +152,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	@FXML
 	private void handlePreviousJumpshipButtonClick() {
 		if (currentlyCenteredJumpship == null) {
-			handleCenterJumpshipButtonClick();
+			currentlyCenteredJumpship = Nexus.getCurrentlySelectedJumpship();
 		} else {
 			for (BOJumpship js : Nexus.getBoUniverse().getJumpshipListSorted()) {
 				if (js.getJumpshipName().equals(currentlyCenteredJumpship.getJumpshipName())) {
@@ -163,13 +164,12 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			}
 		}
 		handleCenterJumpshipButtonClick();
-		ActionManager.getAction(ACTIONS.SHOW_JUMPSHIP_DETAIL).execute(currentlyCenteredJumpship);
 	}
 
 	@FXML
 	private void handleNextJumpshipButtonClick() {
 		if (currentlyCenteredJumpship == null) {
-			handleCenterJumpshipButtonClick();
+			currentlyCenteredJumpship = Nexus.getCurrentlySelectedJumpship();
 		} else {
 			for (BOJumpship js : Nexus.getBoUniverse().getJumpshipListSorted()) {
 				if (js.getJumpshipName().equals(currentlyCenteredJumpship.getJumpshipName())) {
@@ -181,7 +181,6 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			}
 		}
 		handleCenterJumpshipButtonClick();
-		ActionManager.getAction(ACTIONS.SHOW_JUMPSHIP_DETAIL).execute(currentlyCenteredJumpship);
 	}
 
 	@FXML
@@ -195,15 +194,15 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		AttackCharacterDTO ac = new AttackCharacterDTO();
 		ac.setAttackID(a.getAttackDTO().getId());
 		ac.setCharacterID(Nexus.getCurrentChar().getId());
-		boolean defenderHaveCommander = false;
+		boolean defenderHasCommander = false;
 		if (currentPlayerRoleInInvasion == 2L) { // Defender, check if defenders already have a commander
 			for (AttackCharacterDTO acl : a.getAttackDTO().getAttackCharList()) {
 				if (acl.getType() == 3L) {
-					defenderHaveCommander = true;
+					defenderHasCommander = true;
 					break;
 				}
 			}
-			if (!defenderHaveCommander) {
+			if (!defenderHasCommander) {
 				currentPlayerRoleInInvasion = 3L; // The first defender to show up will initially get the role as commander
 			}
 		}
@@ -218,16 +217,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			a.storeAttackCharacters(ac);
 		}
 
-
-
-
-
 		ActionManager.getAction(ACTIONS.SWITCH_TO_INVASION).execute();
-
-		//GameState saveAttackState = new GameState();
-		//saveAttackState.setMode(GAMESTATEMODES.ATTACK_SAVE);
-		//saveAttackState.addObject(a.getAttackDTO());
-		//Nexus.fireNetworkEvent(saveAttackState);
 	}
 
 	@FXML
@@ -354,9 +344,10 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 						Nexus.setTerra(starSystem);
 					}
 
-					// TODO: Travel to the homeworld of the character that logged in
-					if ("Diosd".equals(name)) {
+					Integer myFactionId = Nexus.getCurrentChar().getFactionId();
+					if (starSystem.isCapitalWorld() && starSystem.getFactionId().intValue() == myFactionId) {
 						Nexus.setCurrentlySelectedStarSystem(starSystem);
+						Nexus.setHomeWorld(starSystem);
 					}
 
 					Group starSystemGroup = new Group();
@@ -426,6 +417,15 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					starSystemGroup.setTranslateX(x);
 					starSystemGroup.setTranslateY(y);
 					starSystemGroup.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMouseClickedEventHandler());
+
+					if (!starSystem.isActive()) {
+						// TODO: set opacity according to defined phase
+//						if (starSystem.getActiveInPhase() == 4) {
+//							starSystemGroup.setOpacity(0.2d);
+//						}
+						starSystemGroup.setOpacity(0.2d);
+						starSystemGroup.setMouseTransparent(true);
+					}
 
 					starSystem.setStarSystemStackPane(stackPane);
 					starSystem.setStarSystemGroup(starSystemGroup);
@@ -626,7 +626,13 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				e.printStackTrace();
 			}
 			setStrings();
-			C3Logger.info("Finished to build the star map.");
+			C3Logger.info("Finished to build the starmap.");
+
+			Double w = Config.MAP_WIDTH;
+			Double h = Config.MAP_HEIGHT;
+			Tools.saveMapScreenshot(w.intValue(), h.intValue(), canvas);
+			C3Logger.info("Saved screenshot of the starmap.");
+
 			ActionManager.getAction(ACTIONS.MAP_CREATION_FINISHED).execute();
 		}
 	}

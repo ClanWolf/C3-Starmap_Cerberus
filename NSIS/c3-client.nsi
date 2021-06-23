@@ -94,6 +94,12 @@ Section "C3-Client (required)"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\jdk.xml.dom\ASSEMBLY_EXCEPTION"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\jdk.xml.dom\ADDITIONAL_LICENSE_INFO"
 
+	CreateDirectory $INSTDIR\legal\jdk.unsupported.desktop
+	SetOutpath $INSTDIR\legal\jdk.unsupported.desktop
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\jdk.unsupported.desktop\LICENSE"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\jdk.unsupported.desktop\ASSEMBLY_EXCEPTION"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\jdk.unsupported.desktop\ADDITIONAL_LICENSE_INFO"
+
 	CreateDirectory $INSTDIR\legal\jdk.unsupported
 	SetOutpath $INSTDIR\legal\jdk.unsupported
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\jdk.unsupported\LICENSE"
@@ -388,6 +394,9 @@ Section "Uninstall"
 	Delete $INSTDIR\legal\jdk.xml.dom\LICENSE
 	Delete $INSTDIR\legal\jdk.xml.dom\ASSEMBLY_EXCEPTION
 	Delete $INSTDIR\legal\jdk.xml.dom\ADDITIONAL_LICENSE_INFO
+	Delete $INSTDIR\legal\jdk.unsupported.desktop\LICENSE
+	Delete $INSTDIR\legal\jdk.unsupported.desktop\ASSEMBLY_EXCEPTION
+	Delete $INSTDIR\legal\jdk.unsupported.desktop\ADDITIONAL_LICENSE_INFO
 	Delete $INSTDIR\legal\jdk.unsupported\LICENSE
 	Delete $INSTDIR\legal\jdk.unsupported\ASSEMBLY_EXCEPTION
 	Delete $INSTDIR\legal\jdk.unsupported\ADDITIONAL_LICENSE_INFO
@@ -582,6 +591,7 @@ Section "Uninstall"
 	RMDir "$INSTDIR\legal\jdk.crypto.ec"
 	RMDir "$INSTDIR\legal\jdk.jsobject"
 	RMDir "$INSTDIR\legal\jdk.unsupported"
+	RMDir "$INSTDIR\legal\jdk.unsupported.desktop"
 	RMDir "$INSTDIR\legal\jdk.xml.dom"
 	RMDir "$INSTDIR\legal"
 	RMDir "$INSTDIR\lib\security"
