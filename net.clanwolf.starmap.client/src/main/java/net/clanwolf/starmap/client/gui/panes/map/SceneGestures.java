@@ -26,36 +26,23 @@
  */
 package net.clanwolf.starmap.client.gui.panes.map;
 
-import javafx.application.Platform;
 import javafx.event.EventHandler;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
-import javafx.scene.layout.Pane;
 import javafx.scene.shape.Circle;
 import net.clanwolf.starmap.client.action.ACTIONS;
-import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
-import net.clanwolf.starmap.client.action.ActionObject;
-import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
-import net.clanwolf.starmap.client.nexus.Nexus;
-import net.clanwolf.starmap.client.process.universe.BOStarSystem;
-import net.clanwolf.starmap.client.process.universe.BOUniverse;
 import net.clanwolf.starmap.logging.C3Logger;
-import net.clanwolf.starmap.transfer.GameState;
-import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
-import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
-import net.clanwolf.starmap.transfer.enums.UNIVERSECONTEXT;
 
 class SceneGestures {
 	private double previousX;
 	private double previousY;
 
-	private DragContext sceneDragContext = new DragContext();
-	private PannableCanvas canvas;
+	private final DragContext sceneDragContext = new DragContext();
+	private final PannableCanvas canvas;
 
 	private boolean scrollingEnabled = true;
 
@@ -86,14 +73,17 @@ class SceneGestures {
 	EventHandler<MouseEvent> getOnMouseReleasedEventHandler() { return onMouseReleasedEventHandler; }
 
 	private final EventHandler<MouseEvent> onMouseMovedEventHandler = event -> {
-//		double universeX = getUniverseX(event.getSceneX());
-//		double universeY = getUniverseY(event.getSceneY());
+//		// These methods did not calculate correct data. If needed, they need to be re-implemented to give
+//		// correct results!
+//		double universeX = getUniverseX(event.getSceneX() - 190);
+//		double universeY = getUniverseY(event.getSceneY() - 70);
 //		C3Logger.info("[" + universeX + ", " + universeY + "]");
 //		ActionManager.getAction(ACTIONS.UPDATE_COORD_INFO).execute("[" + String.format("%.2f", universeX) + ", " + String.format("%.2f", universeY) + "]");
 	};
 
-	private EventHandler<MouseEvent> onMouseClickedEventHandler = event -> {
+	private final EventHandler<MouseEvent> onMouseClickedEventHandler = event -> {
 		if (event.getTarget() instanceof Circle || event.getTarget() instanceof ImageView || event.getTarget() instanceof Button) {
+			C3Logger.info("No action.");
 			// nothing
 		} else {
 			if (event.getButton() == MouseButton.PRIMARY) {
@@ -103,7 +93,7 @@ class SceneGestures {
 		}
 	};
 
-	private EventHandler<MouseEvent> onMousePressedEventHandler = new EventHandler<>() {
+	private final EventHandler<MouseEvent> onMousePressedEventHandler = new EventHandler<>() {
 		@Override
 		public void handle(MouseEvent event) {
 
@@ -130,7 +120,7 @@ class SceneGestures {
 		}
 	};
 
-	private EventHandler<MouseEvent> onMouseReleasedEventHandler = mouseEvent -> {
+	private final EventHandler<MouseEvent> onMouseReleasedEventHandler = mouseEvent -> {
 		scrollingEnabled = true;
 		// C3Logger.info("Button released");
 	};
@@ -168,7 +158,7 @@ class SceneGestures {
 		canvas.setTranslateY(diffY);
 	}
 
-	private EventHandler<MouseEvent> onMouseDraggedEventHandler = event -> {
+	private final EventHandler<MouseEvent> onMouseDraggedEventHandler = event -> {
 		// right mouse button => panning
 		if (!event.isSecondaryButtonDown()) {
 			return;
@@ -203,9 +193,6 @@ class SceneGestures {
 				scale = clamp(scale);
 				double f = (scale / oldScale) - 1;
 
-				// TODO: fix Pivot
-				// What is canvas.getPrefWidth()? May that be the reason why pivot is not on the current mouse position?
-
 				// maxX = right overhang, maxY = lower overhang
 				double maxX = canvas.getBoundsInParent().getMaxX() - canvas.localToParent(canvas.getPrefWidth(), canvas.getPrefHeight()).getX();
 				double maxY = canvas.getBoundsInParent().getMaxY() - canvas.localToParent(canvas.getPrefWidth(), canvas.getPrefHeight()).getY();
@@ -221,16 +208,13 @@ class SceneGestures {
 
 				// subtracting the overall overhang from the width and only the left
 				// and upper overhang from the upper left point
-				double dx = (event.getSceneX() - ((canvas.getBoundsInParent().getWidth() - subX) / 2 + (canvas.getBoundsInParent().getMinX() + minX)));
-				double dy = (event.getSceneY() - ((canvas.getBoundsInParent().getHeight() - subY) / 2 + (canvas.getBoundsInParent().getMinY() + minY)));
+				double dx = (event.getSceneX() - 190 - ((canvas.getBoundsInParent().getWidth() - subX) / 2 + (canvas.getBoundsInParent().getMinX() + minX)));
+				double dy = (event.getSceneY() - 70 - ((canvas.getBoundsInParent().getHeight() - subY) / 2 + (canvas.getBoundsInParent().getMinY() + minY)));
 
 				canvas.setScale(scale);
 
 				// note: pivot value must be untransformed, i. e. without scaling
 				canvas.setPivot(f * dx, f * dy);
-
-				C3Logger.debug("Pivot-X: " + f * dx);
-				C3Logger.debug("Pivot-Y: " + f * dy);
 
 				event.consume();
 			}
@@ -247,18 +231,19 @@ class SceneGestures {
 		return value;
 	}
 
-	// These methods did not calculate correct data. If needed, they need to be re-implemented to give
-	// correct results!
-
 //	@SuppressWarnings("unused")
 //	private double getUniverseX(double screenX) {
+//		// These methods did not calculate correct data. If needed, they need to be re-implemented to give
+//		// correct results!
 //		double universeX = screenX - (Config.MAP_WIDTH / 2);
 //		universeX = universeX / Config.MAP_COORDINATES_MULTIPLICATOR;
 //		return universeX;
 //	}
-
+//
 //	@SuppressWarnings("unused")
 //	private double getUniverseY(double screenY) {
+//		// These methods did not calculate correct data. If needed, they need to be re-implemented to give
+//		// correct results!
 //		double universeY = screenY - (Config.MAP_HEIGHT / 2);
 //		universeY = universeY / Config.MAP_COORDINATES_MULTIPLICATOR;
 //		return universeY;

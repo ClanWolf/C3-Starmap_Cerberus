@@ -195,10 +195,18 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		AttackCharacterDTO ac = new AttackCharacterDTO();
 		ac.setAttackID(a.getAttackDTO().getId());
 		ac.setCharacterID(Nexus.getCurrentChar().getId());
-		//if (pilotRole == 2L) { // Defender, check if defenders already have a commander
-		//	if (a.getAttackDTO().getAttackCharList().contains(3L)) {
-		//	}
-		//}
+		boolean defenderHaveCommander = false;
+		if (currentPlayerRoleInInvasion == 2L) { // Defender, check if defenders already have a commander
+			for (AttackCharacterDTO acl : a.getAttackDTO().getAttackCharList()) {
+				if (acl.getType() == 3L) {
+					defenderHaveCommander = true;
+					break;
+				}
+			}
+			if (!defenderHaveCommander) {
+				currentPlayerRoleInInvasion = 3L; // The first defender to show up will initially get the role as commander
+			}
+		}
 		ac.setType(currentPlayerRoleInInvasion);
 		a.getAttackDTO().getAttackCharList().add(ac);
 
@@ -325,6 +333,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				canvas = new PannableCanvas();
 				canvas.setTranslateX(Config.MAP_INITIAL_TRANSLATE_X);
 				canvas.setTranslateY(Config.MAP_INITIAL_TRANSLATE_Y);
+				canvas.setPrefSize(Config.MAP_DIM, Config.MAP_DIM);
 
 				// create sample nodes which can be dragged
 				nodeGestures = new NodeGestures(canvas);
