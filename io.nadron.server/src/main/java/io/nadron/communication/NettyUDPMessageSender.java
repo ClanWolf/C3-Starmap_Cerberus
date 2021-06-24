@@ -46,6 +46,10 @@ public class NettyUDPMessageSender implements Fast {
 		if(message instanceof Event){
 			((Event)message).setEventContext(eventContext);
 		}
+		
+		C3Logger.debug("BUFFER-SIZE (RCV): " + channel.getReceiveBufferSize());
+		C3Logger.debug("BUFFER-SIZE (SND): " + channel.getSendBufferSize());
+		
 		return channel.writeAndFlush(message);
 	}
 
