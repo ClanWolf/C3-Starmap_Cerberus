@@ -29,19 +29,18 @@ package net.clanwolf.starmap.client.process.universe;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.transfer.GameState;
-import net.clanwolf.starmap.transfer.dtos.AttackCharacterDTO;
-import net.clanwolf.starmap.transfer.dtos.AttackDTO;
-import net.clanwolf.starmap.transfer.dtos.JumpshipDTO;
-import net.clanwolf.starmap.transfer.dtos.RoutePointDTO;
+import net.clanwolf.starmap.transfer.dtos.*;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.util.Compressor;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class BOAttack {
 
 	private AttackDTO attackDTO;
+	private HashMap<Long, RolePlayCharacterDTO> rpCharList;
 
 	@SuppressWarnings("unused")
 	public BOAttack(AttackDTO attackDTO) {
@@ -133,5 +132,16 @@ public class BOAttack {
 	@SuppressWarnings("unused")
 	public List<AttackCharacterDTO> getAttackCharList() {
 		return attackDTO.getAttackCharList();
+	}
+
+	public RolePlayCharacterDTO getRpCharByID(Long key){
+		return rpCharList.get(key);
+	}
+
+	public void setRpCharList(ArrayList<RolePlayCharacterDTO> ls){
+		rpCharList.clear();
+		for(RolePlayCharacterDTO rpc : ls){
+			rpCharList.put(rpc.getId(),rpc);
+		}
 	}
 }

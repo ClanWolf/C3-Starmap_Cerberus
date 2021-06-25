@@ -26,18 +26,10 @@
  */
 package net.clanwolf.starmap.client.gui.panes.rp;
 
-import javafx.animation.FadeTransition;
-import javafx.animation.SequentialTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.image.Image;
+import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.paint.Color;
-import javafx.util.Duration;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
@@ -45,8 +37,10 @@ import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3RolePlayController;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
+import net.clanwolf.starmap.client.process.universe.BOAttack;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.logging.C3Logger;
+import net.clanwolf.starmap.transfer.dtos.AttackCharacterDTO;
 import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
@@ -67,12 +61,25 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 	@FXML
 	private Button btPreview;
 
+	@FXML
+	private ComboBox<RolePlayCharacterDTO> cbDropleadAttacker;
+
+	@FXML
+	private ComboBox<RolePlayCharacterDTO> cbDropleadDefender;
+
+	@FXML
+	private ListView<RolePlayCharacterDTO> lsAttacker;
+
+	@FXML
+	private ListView<RolePlayCharacterDTO> lsDefender;
+
 	public RolePlayPrepareBattlePaneController() {
 	}
 
 	@Override
 	public void addActionCallBackListeners() {
 		ActionManager.addActionCallbackListener(ACTIONS.START_ROLEPLAY, this);
+		ActionManager.addActionCallbackListener(ACTIONS.UPDATE_USERS_FOR_ATTACK, this);
 	}
 
 	@Override
@@ -99,12 +106,47 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 				C3Logger.debug("RolePlayIntroPaneController -> START_ROLEPLAY");
 
 				// set current step of story
-				getStoryValues(Nexus.getCurrentChar());
+				//getStoryValues(Nexus.);
 			}
 			break;
 		case UPDATE_USERS_FOR_ATTACK:
 			C3Logger.info("The userlist has changed. Update information on the listboxes.");
 			// TODO: Charactere updaten
+			if (o.getObject() instanceof BOAttack) {
+				BOAttack a = (BOAttack) o.getObject();
+				for (AttackCharacterDTO ac : a.getAttackCharList()) {
+					if (ac.getType().equals(1L) || ac.getType().equals(0L)) { // Droplead attacker
+						cbDropleadAttacker.getItems().add(a.getRpCharByID(ac.getCharacterID()));
+
+						if (ac.getType().equals(1L)){
+							cbDropleadAttacker.getSelectionModel().select(a.getRpCharByID(ac.getCharacterID()));
+
+						} else {
+							lsAttacker.getItems().add(a.getRpCharByID(ac.getCharacterID()));
+						}
+					} else if (ac.getType().equals(3L) || ac.getType().equals(2L)) { // Droplead attacker
+						cbDropleadDefender.getItems().add(a.getRpCharByID(ac.getCharacterID()));
+
+						if (ac.getType().equals(3L)) {
+							cbDropleadDefender.getSelectionModel().select(a.getRpCharByID(ac.getCharacterID()));
+
+						} else {
+							lsDefender.getItems().add(a.getRpCharByID(ac.getCharacterID()));
+						}
+					} else if (ac.getType().equals(4L)) {
+						int defs = lsDefender.getItems().size();
+						int atts = lsAttacker.getItems().size();
+						if (atts > defs) {
+							lsDefender.getItems().add(a.getRpCharByID(ac.getCharacterID()));
+						} else if (atts < defs) {
+							lsDefender.getItems().add(a.getRpCharByID(ac.getCharacterID()));
+						} else {
+							lsAttacker.getItems().add(a.getRpCharByID(ac.getCharacterID()));
+						}
+					}
+				}
+			}
+			C3Logger.info("The userlist has changed. Update information on the listboxes. ");
 			break;
 		default:
 			break;

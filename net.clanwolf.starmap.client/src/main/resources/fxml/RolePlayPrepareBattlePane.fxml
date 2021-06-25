@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="RolePlayStartPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.RolePlayPrepareBattlePaneController">
+<AnchorPane id="RolePlayStartPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.RolePlayPrepareBattlePaneController">
     <children>
       <ImageView fx:id="backgroundImage" fitHeight="438.0" fitWidth="778.0" layoutX="62.0" layoutY="14.0" onMouseClicked="#handleOnMouseClicked" opacity="0.9" pickOnBounds="true">
          <image>
@@ -35,12 +35,12 @@
                         <Insets bottom="5.0" top="5.0" />
                      </VBox.margin>
                   </ImageView>
-                  <ComboBox maxWidth="1.7976931348623157E308" prefWidth="150.0" styleClass="text-field">
+                  <ComboBox fx:id="cbDropleadAttacker" maxWidth="1.7976931348623157E308" prefWidth="150.0" styleClass="text-field">
                      <VBox.margin>
                         <Insets bottom="5.0" />
                      </VBox.margin>
                   </ComboBox>
-                  <ListView styleClass="systemDetailPanelSolid" stylesheets="@../styles/MainFrameStyle.css" />
+                  <ListView fx:id="lvAttacker" styleClass="systemDetailPanelSolid" stylesheets="@../styles/MainFrameStyle.css" />
                </children>
                <BorderPane.margin>
                   <Insets left="10.0" />
@@ -62,12 +62,12 @@
                         <Insets bottom="5.0" top="5.0" />
                      </VBox.margin>
                   </ImageView>
-                  <ComboBox maxWidth="1.7976931348623157E308" prefWidth="150.0" styleClass="text-field" stylesheets="@../styles/MainFrameStyle.css">
+                  <ComboBox fx:id="cbDropleadDefender" maxWidth="1.7976931348623157E308" prefWidth="150.0" styleClass="text-field" stylesheets="@../styles/MainFrameStyle.css">
                      <VBox.margin>
                         <Insets bottom="5.0" />
                      </VBox.margin>
                   </ComboBox>
-                  <ListView styleClass="systemDetailPanelSolid" stylesheets="@../styles/MainFrameStyle.css" />
+                  <ListView fx:id="lvDefender" styleClass="systemDetailPanelSolid" stylesheets="@../styles/MainFrameStyle.css" />
                </children>
                <BorderPane.margin>
                   <Insets right="10.0" />

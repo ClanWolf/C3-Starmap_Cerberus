@@ -248,10 +248,18 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			AttackDAO attackDAO = AttackDAO.getInstance();
 			AttackPOJO attackPOJO = attackDAO.findById(getC3UserID(session), attackCharacter.getAttackID());
 
+			ArrayList<RolePlayCharacterPOJO> rpCharList = new ArrayList<RolePlayCharacterPOJO>();
+			for(AttackCharacterPOJO ac : attackPOJO.getAttackCharList()){
+				rpCharList.add(RolePlayCharacterDAO.getInstance().findById(ac.getCharacterID(), getC3UserID(session)));
+			}
+
+
 			GameState response = new GameState(GAMESTATEMODES.ATTACK_CHARACTER_SAVE_RESPONSE);
 			response.addObject(attackPOJO);
+			response.addObject2(rpCharList);
 			response.setAction_successfully(Boolean.TRUE);
 			C3GameSessionHandler.sendBroadCast(room, response);
+
 		} catch (RuntimeException re) {
 			re.printStackTrace();
 			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
