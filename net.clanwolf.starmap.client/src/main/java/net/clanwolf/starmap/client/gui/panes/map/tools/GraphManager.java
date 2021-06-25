@@ -155,9 +155,9 @@ public class GraphManager<T> implements GraphAgent<T> {
 		double distance = graph.getDistance(source, target) / Config.MAP_COORDINATES_MULTIPLICATOR;
 		boolean inRange = distance < 30;
 		boolean isAttacked = (boUniverse.getStarSystemByPoint((PointD)target)).isCurrentlyUnderAttack();
-		boolean isActive = (boUniverse.getStarSystemByPoint((PointD)target)).isActive();
+		boolean isActiveInPhase = (boUniverse.getStarSystemByPoint((PointD)target)).isActiveInPhase(Nexus.getCurrentSeasonMetaPhase());
 		// boolean withinCosts = nodeCosts.get(target) < maxCost;
-		return inRange && isActive && !isAttacked;
+		return inRange && isActiveInPhase && !isAttacked;
 	}
 
 	@Override

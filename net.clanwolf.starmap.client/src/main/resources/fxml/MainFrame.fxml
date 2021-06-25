@@ -31,7 +31,7 @@
                   <Insets bottom="25.0" top="15.0" />
                </VBox.margin>
             </ImageView>
-            <Label alignment="TOP_CENTER" contentDisplay="CENTER" stylesheets="@../styles/MainFrameStyle.css" text="32 / 60" textFill="#aee7ee">
+            <Label fx:id="labelTFSProgress" alignment="TOP_CENTER" contentDisplay="CENTER" stylesheets="@../styles/MainFrameStyle.css" text="..." textFill="#aee7ee">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
