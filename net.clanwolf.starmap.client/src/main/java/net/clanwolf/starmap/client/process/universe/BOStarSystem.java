@@ -71,7 +71,8 @@ public class BOStarSystem {
 
 	@SuppressWarnings("unused")
 	public boolean isActiveInPhase(int phase) {
-		return (hh_starSystemDataDTO.getActiveInMetaPhase() & (long) phase) == (long) phase;
+		// return (hh_starSystemDataDTO.getActiveInMetaPhase() & (long) phase) == (long) phase;
+		return hh_starSystemDataDTO.getActiveInMetaPhase().intValue() <= phase;
 	}
 
 	@SuppressWarnings("unused")

@@ -231,9 +231,13 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private ImageView ircIndicator;
 
 	@FXML
-	ProgressBar TFSProgress;
+	private ProgressBar TFSProgress;
+
 	@FXML
-	VBox TFSInfo;
+	private VBox TFSInfo;
+
+	@FXML
+	private Label labelTFSProgress;
 
 	// -------------------------------------------------------------------------
 	//
@@ -251,15 +255,23 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 	@FXML
 	private void handleTFSProgressEntered() {
+		double tfsProgress = 100d / 60d * Nexus.getBoUniverse().currentRound;
+		String progString = Nexus.getBoUniverse().currentRound + " / 60";
+		labelTFSProgress.setText(progString);
 		TFSInfo.toFront();
 		TFSProgress.toFront();
+		TFSProgress.setProgress(tfsProgress);
 		TFSInfo.setVisible(true);
 	}
 
 	@FXML
 	private void handleTFSProgressExited() {
+		double tfsProgress = 100d / 60d * Nexus.getBoUniverse().currentRound;
+		String progString = Nexus.getBoUniverse().currentRound + " / 60";
+		labelTFSProgress.setText(progString);
 		TFSInfo.toFront();
 		TFSProgress.toFront();
+		TFSProgress.setProgress(tfsProgress);
 		TFSInfo.setVisible(false);
 	}
 
@@ -1507,9 +1519,13 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					enableMainMenuButtons(Nexus.isLoggedIn(), Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN));
 					BOUniverse boUniverse = Nexus.getBoUniverse();
 					gameInfoLabel.setText("S" + boUniverse.currentSeason + "/R" + boUniverse.currentRound + " * Phase " + Tools.getRomanNumber(boUniverse.currentSeasonMetaPhase) + " - " + boUniverse.currentDate);
-				});
 
-				TFSProgress.setVisible(true);
+					labelTFSProgress.setText(boUniverse.currentRound + " / 60");
+					TFSProgress.setProgress(100d / 60d * boUniverse.currentRound);
+					TFSProgress.setVisible(true);
+					TFSProgress.toFront();
+					TFSInfo.setVisible(false);
+				});
 				break;
 
 			case LOGON_RUNNING:

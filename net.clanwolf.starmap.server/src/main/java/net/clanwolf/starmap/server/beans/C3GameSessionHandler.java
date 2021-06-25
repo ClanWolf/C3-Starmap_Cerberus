@@ -410,6 +410,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		UniverseDTO uni = WebDataInterface.getUniverse();
 
 		byte[] myByte = Compressor.compress(uni);
+		C3Logger.debug("Size of UniverseDTO: " + myByte.length + " byte.");
 
 		GameState state_userdata = new GameState(GAMESTATEMODES.USER_LOGGED_IN_DATA);
 		state_userdata.addObject(user);

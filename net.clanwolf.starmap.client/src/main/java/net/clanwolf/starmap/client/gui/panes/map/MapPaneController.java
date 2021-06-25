@@ -221,7 +221,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		ac.setType(currentPlayerRoleInInvasion);
 		a.getAttackDTO().getAttackCharList().add(ac);
 
-		if (a.getCharacterId() == null) {
+		if (a.getCharacterId() == null || a.getStoryId() == null) {
 			a.getAttackDTO().setCharacterID(Nexus.getCurrentChar().getId());
 			a.getAttackDTO().setStoryID(21L);    // TODO: Hier müssen wir die Einstiegs-Story ID irgendwie definieren
 			a.storeAttack();
@@ -432,10 +432,10 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					starSystemGroup.setTranslateY(y);
 					starSystemGroup.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMouseClickedEventHandler());
 
-					if (!starSystem.isActive()) {
-						// TODO: set opacity according to defined phase
+					if (starSystem.isActive()) {
 						if (starSystem.isActiveInPhase(Nexus.getCurrentSeasonMetaPhase())) {
-							//C3Logger.debug("System is active in the current MetaPhase!");
+							// C3Logger.debug("System is active in the current MetaPhase!");
+						} else {
 							starSystemGroup.setOpacity(0.2d);
 							starSystemGroup.setMouseTransparent(true);
 						}
