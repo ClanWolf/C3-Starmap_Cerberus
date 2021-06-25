@@ -153,36 +153,46 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 	@FXML
 	private void handlePreviousJumpshipButtonClick() {
+		boolean found = false;
 		if (currentlyCenteredJumpship == null) {
 			currentlyCenteredJumpship = Nexus.getCurrentlySelectedJumpship();
+			found = true;
 		} else {
 			for (BOJumpship js : Nexus.getBoUniverse().getJumpshipListSorted()) {
 				if (js.getJumpshipName().equals(currentlyCenteredJumpship.getJumpshipName())) {
 					if (Nexus.getBoUniverse().getJumpshipListSorted().lower(js) != null) {
 						currentlyCenteredJumpship = Nexus.getBoUniverse().getJumpshipListSorted().lower(js);
+						found = true;
 						break;
 					}
 				}
 			}
 		}
-		handleCenterJumpshipButtonClick();
+		if (found) {
+			handleCenterJumpshipButtonClick();
+		}
 	}
 
 	@FXML
 	private void handleNextJumpshipButtonClick() {
+		boolean found = false;
 		if (currentlyCenteredJumpship == null) {
 			currentlyCenteredJumpship = Nexus.getCurrentlySelectedJumpship();
+			found = true;
 		} else {
 			for (BOJumpship js : Nexus.getBoUniverse().getJumpshipListSorted()) {
 				if (js.getJumpshipName().equals(currentlyCenteredJumpship.getJumpshipName())) {
 					if (Nexus.getBoUniverse().getJumpshipListSorted().higher(js) != null) {
 						currentlyCenteredJumpship = Nexus.getBoUniverse().getJumpshipListSorted().higher(js);
+						found = true;
 						break;
 					}
 				}
 			}
 		}
-		handleCenterJumpshipButtonClick();
+		if (found) {
+			handleCenterJumpshipButtonClick();
+		}
 	}
 
 	@FXML
@@ -422,13 +432,13 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					starSystemGroup.setTranslateY(y);
 					starSystemGroup.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMouseClickedEventHandler());
 
-					if (starSystem.isActiveInPhase(Nexus.getCurrentSeasonMetaPhase())) {
-						//C3Logger.debug("System is active in the current MetaPhase!");
-					}
 					if (!starSystem.isActive()) {
 						// TODO: set opacity according to defined phase
-						starSystemGroup.setOpacity(0.2d);
-						starSystemGroup.setMouseTransparent(true);
+						if (starSystem.isActiveInPhase(Nexus.getCurrentSeasonMetaPhase())) {
+							//C3Logger.debug("System is active in the current MetaPhase!");
+							starSystemGroup.setOpacity(0.2d);
+							starSystemGroup.setMouseTransparent(true);
+						}
 					}
 
 					starSystem.setStarSystemStackPane(stackPane);

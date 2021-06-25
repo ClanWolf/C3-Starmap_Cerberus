@@ -275,8 +275,8 @@ public class PannableCanvas extends Pane {
 		border.setMouseTransparent(true);
 
 		GraphicsContext gc = border.getGraphicsContext2D();
-		gc.setStroke(Color.WHITESMOKE);
-		gc.setLineWidth(14);
+		gc.setStroke(Color.GRAY);
+		gc.setLineWidth(16);
 
 		gc.strokeLine(0, 0, w, 0);
 		gc.strokeLine(0, 0, 0, h);
