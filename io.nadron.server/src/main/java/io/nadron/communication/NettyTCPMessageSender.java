@@ -48,7 +48,7 @@ public class NettyTCPMessageSender implements Reliable {
 	 */
 	@Override
 	public void close() {
-		C3Logger.info("Going to close tcp connection in class: " + this + getClass().getName());
+		C3Logger.info("Going to close TCP connection in class: " + this + getClass().getName());
 		Event event = Events.event(null, Events.DISCONNECT);
 
 //		C3Logger.debug("##### Channel is open: " + channel.isOpen());

@@ -67,6 +67,7 @@ public class Nexus {
 
 	private static int currentSeason;
 	private static int currentRound;
+	private static int currentSeasonMetaPhase;
 	private static String currentDate;
 
 	private static String lastAvailableClientVersion = "not checked yet";
@@ -162,6 +163,12 @@ public class Nexus {
 
 	@SuppressWarnings("unused")
 	public static int getCurrentSeason() { return currentSeason; }
+
+	@SuppressWarnings("unused")
+	public static void setCurrentSeasonMetaPhase(int v) { currentSeasonMetaPhase = v; }
+
+	@SuppressWarnings("unused")
+	public static int getCurrentSeasonMetaPhase() { return currentSeasonMetaPhase; }
 
 	@SuppressWarnings("unused")
 	public static int getCurrentRound() { return currentRound; }

@@ -55,6 +55,7 @@ public class PannableCanvas extends Pane {
 	private Canvas grid_500 = null;
 	private Canvas grid_250 = null;
 	private Canvas grid_center = null;
+	private Canvas border = null;
 	private Pane starPane = null;
 	private Pane attacksPane = null;
 	private Pane paneSystemDetail = null;
@@ -258,10 +259,32 @@ public class PannableCanvas extends Pane {
 		if (grid_500 != null) {
 			if (myScale.get() >= Config.zoomLevelToHideGrid1) {
 				grid_500.setVisible(true);
+				border.setVisible(true);
 			} else if (myScale.get() < Config.zoomLevelToHideGrid1) {
 				grid_500.setVisible(false);
+				border.setVisible(false);
 			}
 		}
+	}
+
+	public void addOuterBorder() {
+		double w = Config.MAP_WIDTH;
+		double h = Config.MAP_HEIGHT;
+
+		border = new Canvas(w, h);
+		border.setMouseTransparent(true);
+
+		GraphicsContext gc = border.getGraphicsContext2D();
+		gc.setStroke(Color.WHITESMOKE);
+		gc.setLineWidth(14);
+
+		gc.strokeLine(0, 0, w, 0);
+		gc.strokeLine(0, 0, 0, h);
+		gc.strokeLine(w, 0, w, h);
+		gc.strokeLine(0, h, w, h);
+
+		getChildren().add(border);
+		border.toFront();
 	}
 
 	public void addGrid_250() {
@@ -341,6 +364,10 @@ public class PannableCanvas extends Pane {
 					for (BOStarSystem ss : boUniverse.starSystemBOs.values()) {
 						Label l = ss.getStarSystemLabel();
 						l.setVisible(starSystemLabelsVisible);
+						ImageView iv = ss.getIndustryImage();
+						if (iv != null) {
+							iv.setVisible(starSystemLabelsVisible);
+						}
 					}
 				}
 			} else if (myScale.get() < Config.zoomLevelToHideStarSystemLabels) {
@@ -349,6 +376,10 @@ public class PannableCanvas extends Pane {
 					for (BOStarSystem ss : boUniverse.starSystemBOs.values()) {
 						Label l = ss.getStarSystemLabel();
 						l.setVisible(starSystemLabelsVisible);
+						ImageView iv = ss.getIndustryImage();
+						if (iv != null) {
+							iv.setVisible(starSystemLabelsVisible);
+						}
 					}
 				}
 			}

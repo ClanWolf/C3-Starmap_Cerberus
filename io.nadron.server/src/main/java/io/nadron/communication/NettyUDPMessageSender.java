@@ -47,8 +47,8 @@ public class NettyUDPMessageSender implements Fast {
 			((Event)message).setEventContext(eventContext);
 		}
 		
-		C3Logger.debug("BUFFER-SIZE (RCV): " + channel.getReceiveBufferSize());
-		C3Logger.debug("BUFFER-SIZE (SND): " + channel.getSendBufferSize());
+		C3Logger.debug("UDP BUFFER-SIZE (RCV): " + channel.config().getReceiveBufferSize());
+		C3Logger.debug("UDP BUFFER-SIZE (SND): " + channel.config().getSendBufferSize());
 		
 		return channel.writeAndFlush(message);
 	}
@@ -62,9 +62,9 @@ public class NettyUDPMessageSender implements Fast {
 	public void close() {
 		Session session = sessionRegistryService.getSession(remoteAddress);
 		if (sessionRegistryService.removeSession(remoteAddress)) {
-			C3Logger.info("Successfully removed session: " +  session);
+			C3Logger.info("Successfully removed UDP session: " +  session);
 		} else {
-			C3Logger.info("No udp session found for address: " + remoteAddress);
+			C3Logger.info("No UDP session found for address: " + remoteAddress);
 		}
 
 	}

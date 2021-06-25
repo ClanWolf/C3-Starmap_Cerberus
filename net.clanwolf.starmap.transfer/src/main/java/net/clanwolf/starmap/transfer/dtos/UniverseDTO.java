@@ -39,6 +39,7 @@ public class UniverseDTO extends Dto {
 	public ArrayList<RoutePointDTO> routepoints = new ArrayList<>();
 
 	public Integer currentSeason;
+	public Integer currentSeasonMetaPhase;
 	public Integer currentRound;
 	public String currentDate;
 }

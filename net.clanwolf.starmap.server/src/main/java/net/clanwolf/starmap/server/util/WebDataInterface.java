@@ -57,13 +57,17 @@ public class WebDataInterface {
 	private static boolean initialized = false;
 
 	public static UniverseDTO getUniverse() {
-		String pattern = "dd-MM-yyyy";
+		String pattern = "dd.MM.yyyy";
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 
 		Long season = GameServer.getCurrentSeason();
 		Long round = RoundDAO.getInstance().findBySeasonId(season).getRound();
 		Date date = RoundDAO.getInstance().findBySeasonId(season).getCurrentRoundStartDate();
 		String dateS = simpleDateFormat.format(date);
+
+		SeasonDAO dao = SeasonDAO.getInstance();
+		SeasonPOJO seasonPOJO = (SeasonPOJO) dao.findById(SeasonPOJO.class, season);
+		Long seasonMetaPhase = seasonPOJO.getMetaPhase();
 
 		if (universe != null) {
 			universe.currentRound = round.intValue();
@@ -72,6 +76,7 @@ public class WebDataInterface {
 
 		universe = new UniverseDTO();
 		universe.currentSeason = season.intValue();
+		universe.currentSeasonMetaPhase = seasonMetaPhase.intValue();
 		universe.currentRound = round.intValue();
 		universe.currentDate = dateS;
 		return universe;

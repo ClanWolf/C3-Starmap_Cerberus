@@ -34,6 +34,7 @@ import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseDragEvent;
@@ -42,6 +43,7 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.util.Duration;
@@ -128,7 +130,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 	@FXML
 	private void handleCenterHomeworldButtonClick() {
-		reCenterMap();
+		moveMapToPosition(Nexus.getHomeworld());
 	}
 
 	@FXML
@@ -299,6 +301,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			C3Logger.info("Beginning to build the star map from received universe data.");
 
 			Nexus.setCurrentSeason(boUniverse.currentSeason);
+			Nexus.setCurrentSeasonMetaPhase(boUniverse.currentSeasonMetaPhase);
 			Nexus.setCurrentRound(boUniverse.currentRound);
 			Nexus.setCurrentDate(boUniverse.currentDate);
 
@@ -407,6 +410,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 						industryImage.setOpacity(0.9d);
 						industryImage.toFront();
 						industryImage.setVisible(true);
+						starSystem.setIndustryMarker(industryImage);
 						canvas.getChildren().add(industryImage);
 					}
 
@@ -418,11 +422,11 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					starSystemGroup.setTranslateY(y);
 					starSystemGroup.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMouseClickedEventHandler());
 
+					if (starSystem.isActiveInPhase(Nexus.getCurrentSeasonMetaPhase())) {
+						//C3Logger.debug("System is active in the current MetaPhase!");
+					}
 					if (!starSystem.isActive()) {
 						// TODO: set opacity according to defined phase
-//						if (starSystem.getActiveInPhase() == 4) {
-//							starSystemGroup.setOpacity(0.2d);
-//						}
 						starSystemGroup.setOpacity(0.2d);
 						starSystemGroup.setMouseTransparent(true);
 					}
@@ -436,6 +440,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				canvas.addGrid_Center();
 				canvas.addGrid_500();
 				canvas.addGrid_250();
+				canvas.addOuterBorder();
 				canvas.setVisibility();
 
 				//				Circle circle1 = new Circle(Config.MAP_WIDTH / 2, Config.MAP_HEIGHT / 2, 40);
@@ -630,7 +635,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 			Double w = Config.MAP_WIDTH;
 			Double h = Config.MAP_HEIGHT;
-			Tools.saveMapScreenshot(w.intValue(), h.intValue(), canvas);
+			Tools.saveMapScreenshot(w.intValue(), h.intValue() / 2 + 200, canvas);
 			C3Logger.info("Saved screenshot of the starmap.");
 
 			ActionManager.getAction(ACTIONS.MAP_CREATION_FINISHED).execute();

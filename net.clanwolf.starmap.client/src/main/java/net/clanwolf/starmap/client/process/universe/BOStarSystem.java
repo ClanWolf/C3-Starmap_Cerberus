@@ -29,6 +29,7 @@ package net.clanwolf.starmap.client.process.universe;
 import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
@@ -47,6 +48,7 @@ public class BOStarSystem {
 	private PointD[] voronoiRegion;
 	private Point2D coord;
 	private ImageView marker = null;
+	private ImageView industryMarker = null;
 	private boolean isCurrentlyUnderAttack = false;
 
 	@SuppressWarnings("unused")
@@ -55,6 +57,21 @@ public class BOStarSystem {
 			coord = new Point2D(this.getScreenX(), this.getScreenY());
 		}
 		return coord;
+	}
+
+	@SuppressWarnings("unused")
+	public void setIndustryMarker(ImageView v) {
+		this.industryMarker = v;
+	}
+
+	@SuppressWarnings("unused")
+	public ImageView getIndustryImage() {
+		return industryMarker;
+	}
+
+	@SuppressWarnings("unused")
+	public boolean isActiveInPhase(int phase) {
+		return (hh_starSystemDataDTO.getActiveInMetaPhase() & (long) phase) == (long) phase;
 	}
 
 	@SuppressWarnings("unused")

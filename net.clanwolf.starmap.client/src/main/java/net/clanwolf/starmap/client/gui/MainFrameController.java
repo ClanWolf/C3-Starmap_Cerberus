@@ -40,6 +40,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -229,6 +230,11 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	@FXML
 	private ImageView ircIndicator;
 
+	@FXML
+	ProgressBar TFSProgress;
+	@FXML
+	VBox TFSInfo;
+
 	// -------------------------------------------------------------------------
 	//
 	// Button hovering
@@ -242,6 +248,20 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		Tools.playButtonHoverSound();
 	}
 	// Mouse entered
+
+	@FXML
+	private void handleTFSProgressEntered() {
+		TFSInfo.toFront();
+		TFSProgress.toFront();
+		TFSInfo.setVisible(true);
+	}
+
+	@FXML
+	private void handleTFSProgressExited() {
+		TFSInfo.toFront();
+		TFSProgress.toFront();
+		TFSInfo.setVisible(false);
+	}
 
 	@FXML
 	private void handleExitLabelTopRightMouseEventEnter() {
@@ -1485,7 +1505,11 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				Platform.runLater(() -> {
 					toplabel.setText("Con // " + tcphostname + ":" + tcpPort);
 					enableMainMenuButtons(Nexus.isLoggedIn(), Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN));
+					BOUniverse boUniverse = Nexus.getBoUniverse();
+					gameInfoLabel.setText("S" + boUniverse.currentSeason + "/R" + boUniverse.currentRound + " * Phase " + Tools.getRomanNumber(boUniverse.currentSeasonMetaPhase) + " - " + boUniverse.currentDate);
 				});
+
+				TFSProgress.setVisible(true);
 				break;
 
 			case LOGON_RUNNING:
@@ -1628,7 +1652,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					Integer id = ((MEDALS)o.getObject()).getId();
 					String imageName = ((MEDALS)o.getObject()).toString();
 					String desc = Internationalization.getString("MEDALS_" + imageName + "_desc");
-					Image med = new Image(getClass().getResourceAsStream("/images/gui/rewards/" + imageName + ".png"));
+					Image med = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/gui/rewards/" + imageName + ".png")));
 					showMedal(med, desc);
 				}
 				break;
@@ -1651,7 +1675,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			case UPDATE_GAME_INFO:
 				Platform.runLater(() -> {
 					BOUniverse boUniverse = Nexus.getBoUniverse();
-					gameInfoLabel.setText("S" + boUniverse.currentSeason + "/R" + boUniverse.currentRound + " - " + boUniverse.currentDate);
+					gameInfoLabel.setText("S" + boUniverse.currentSeason + "/R" + boUniverse.currentRound + " * Phase " + Tools.getRomanNumber(boUniverse.currentSeasonMetaPhase) + " - " + boUniverse.currentDate);
 				});
 				break;
 
@@ -1674,6 +1698,12 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 			case SWITCH_TO_INVASION:
 				openTargetPane(attackPane, "");
+				if (!adminMenuActive) {
+					showMenuIndicator(true);
+				}
+				menuIndicatorPos = 190;
+				moveMenuIndicator(menuIndicatorPos);
+
 				break;
 
 //			case START_ROLEPLAY:

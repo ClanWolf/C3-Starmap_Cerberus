@@ -33,6 +33,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.DialogPane;
 import javafx.scene.image.WritableImage;
 import net.clanwolf.starmap.client.gui.panes.map.PannableCanvas;
+import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.client.net.FTP;
 import net.clanwolf.starmap.client.net.IFileTransfer;
@@ -40,6 +41,7 @@ import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -98,11 +100,30 @@ public final class Tools {
 		return df.format(cal.getTime());
 	}
 
+	public static String getRomanNumber(int n) {
+		String seasonMetaPhase = "";
+		if (n > 20) {
+			throw new RuntimeException("Season number is too high!");
+		}
+		seasonMetaPhase = RomanNumber.toRoman(n);
+		return seasonMetaPhase;
+	}
+
 	public static void saveMapScreenshot(int width, int height, PannableCanvas canvas) {
 		WritableImage wi = new WritableImage(width, height);
 		try {
-			File file = new File("c:\\temp\\map.png");
-			ImageIO.write(SwingFXUtils.fromFXImage(canvas.snapshot(null, wi),null),"png", file);
+			File file = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "C3_Season" + Nexus.getCurrentSeason() + "_map.png");
+			BufferedImage bi = SwingFXUtils.fromFXImage(canvas.snapshot(null, wi), null);
+
+			final int screenshotWidth = 2500;
+			final int screenshotHeight = 2000;
+			final BufferedImage finaleImage = new BufferedImage(screenshotWidth, screenshotHeight, BufferedImage.TYPE_INT_RGB);
+			Graphics g = finaleImage.getGraphics();
+			g.drawImage(finaleImage, (bi.getWidth() - screenshotWidth) / 2,(bi.getHeight() - screenshotHeight) / 2, screenshotWidth, screenshotHeight,null);
+			g.drawImage(bi, -(bi.getWidth() - screenshotWidth) / 2, -200, bi.getWidth(), bi.getHeight(),null);
+			g.dispose();
+
+			ImageIO.write(finaleImage ,"png", file);
 		} catch (IOException e) {
 			e.printStackTrace();
 			C3Logger.error("Could not save map screenshot!");

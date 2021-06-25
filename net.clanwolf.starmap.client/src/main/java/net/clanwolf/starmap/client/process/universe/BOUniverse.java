@@ -53,6 +53,7 @@ public class BOUniverse {
 	public TreeSet<BOJumpship> jumpshipListSorted = null;
 
 	public Integer currentSeason;
+	public Integer currentSeasonMetaPhase;
 	public Integer currentRound;
 	public String currentDate;
 
@@ -122,6 +123,7 @@ public class BOUniverse {
 		}
 
 		currentSeason = universeDTO.currentSeason;
+		currentSeasonMetaPhase = universeDTO.currentSeasonMetaPhase;
 		currentRound = universeDTO.currentRound;
 		currentDate = universeDTO.currentDate;
 	}
