@@ -140,7 +140,7 @@ public class EventCommunications {
 						if (attackDTO.getId().equals(a.getAttackDTO().getId())) {
 							a.setAttackDTO(attackDTO);
 							a.setRpCharList(rpCharList);
-							ActionManager.getAction(ACTIONS.UPDATE_USERS_FOR_ATTACK).execute();
+							ActionManager.getAction(ACTIONS.UPDATE_USERS_FOR_ATTACK).execute(a);
 							break;
 						}
 					}
