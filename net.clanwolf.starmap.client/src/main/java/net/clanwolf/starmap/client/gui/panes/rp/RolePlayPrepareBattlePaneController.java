@@ -68,10 +68,10 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 	private ComboBox<RolePlayCharacterDTO> cbDropleadDefender;
 
 	@FXML
-	private ListView<RolePlayCharacterDTO> lsAttacker;
+	private ListView<RolePlayCharacterDTO> lvAttacker;
 
 	@FXML
-	private ListView<RolePlayCharacterDTO> lsDefender;
+	private ListView<RolePlayCharacterDTO> lvDefender;
 
 	public RolePlayPrepareBattlePaneController() {
 	}
@@ -122,7 +122,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 							cbDropleadAttacker.getSelectionModel().select(a.getRpCharByID(ac.getCharacterID()));
 
 						} else {
-							lsAttacker.getItems().add(a.getRpCharByID(ac.getCharacterID()));
+							lvAttacker.getItems().add(a.getRpCharByID(ac.getCharacterID()));
 						}
 					} else if (ac.getType().equals(3L) || ac.getType().equals(2L)) { // Droplead attacker
 						cbDropleadDefender.getItems().add(a.getRpCharByID(ac.getCharacterID()));
@@ -131,17 +131,17 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 							cbDropleadDefender.getSelectionModel().select(a.getRpCharByID(ac.getCharacterID()));
 
 						} else {
-							lsDefender.getItems().add(a.getRpCharByID(ac.getCharacterID()));
+							lvDefender.getItems().add(a.getRpCharByID(ac.getCharacterID()));
 						}
 					} else if (ac.getType().equals(4L)) {
-						int defs = lsDefender.getItems().size();
-						int atts = lsAttacker.getItems().size();
+						int defs = lvDefender.getItems().size();
+						int atts = lvAttacker.getItems().size();
 						if (atts > defs) {
-							lsDefender.getItems().add(a.getRpCharByID(ac.getCharacterID()));
+							lvDefender.getItems().add(a.getRpCharByID(ac.getCharacterID()));
 						} else if (atts < defs) {
-							lsDefender.getItems().add(a.getRpCharByID(ac.getCharacterID()));
+							lvDefender.getItems().add(a.getRpCharByID(ac.getCharacterID()));
 						} else {
-							lsAttacker.getItems().add(a.getRpCharByID(ac.getCharacterID()));
+							lvAttacker.getItems().add(a.getRpCharByID(ac.getCharacterID()));
 						}
 					}
 				}
