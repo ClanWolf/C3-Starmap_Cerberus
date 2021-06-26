@@ -643,11 +643,6 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			setStrings();
 			C3Logger.info("Finished to build the starmap.");
 
-			Double w = Config.MAP_WIDTH;
-			Double h = Config.MAP_HEIGHT;
-			Tools.saveMapScreenshot(w.intValue(), h.intValue() / 2 + 200, canvas);
-			C3Logger.info("Saved screenshot of the starmap.");
-
 			ActionManager.getAction(ACTIONS.MAP_CREATION_FINISHED).execute();
 		}
 	}
@@ -1149,6 +1144,12 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			case MAP_CREATION_FINISHED:
 				Platform.runLater(() -> {
 					centerStarSystemGroups();
+
+					Double w = Config.MAP_WIDTH;
+					Double h = Config.MAP_HEIGHT;
+					Tools.saveMapScreenshot(w.intValue(), h.intValue() / 2 + 200, canvas);
+					C3Logger.info("Saved history screenshot of the starmap.");
+
 					buildGuiEffect();
 				});
 				C3Logger.info("Map is ready!");

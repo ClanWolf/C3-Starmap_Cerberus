@@ -26,12 +26,16 @@
  */
 package net.clanwolf.starmap.client.util;
 
+import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.DialogPane;
+import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
+import net.clanwolf.starmap.client.action.ACTIONS;
+import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.gui.panes.map.PannableCanvas;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.logging.C3Logger;
@@ -110,6 +114,7 @@ public final class Tools {
 	}
 
 	public static void saveMapScreenshot(int width, int height, PannableCanvas canvas) {
+		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute();
 		WritableImage wi = new WritableImage(width, height);
 		try {
 			File file1 = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "history" + File.separator + "C3_Season" + Nexus.getCurrentSeason() + "_map.png");
@@ -126,8 +131,12 @@ public final class Tools {
 			g.drawImage(bi, -(bi.getWidth() - screenshotWidth) / 2, -200, bi.getWidth(), bi.getHeight(),null);
 			g.dispose();
 
+			Image c3Icon = new Image(Tools.class.getResourceAsStream("/icons/C3_Icon2.png"));
+			Image hhIcon = new Image(Tools.class.getResourceAsStream("/icons/hammerhead.png"));
 			Graphics2D g2d = finaleImage.createGraphics();
 			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+			g2d.drawImage(SwingFXUtils.fromFXImage(c3Icon, null), 50, 1850, 100,100, null);
+			g2d.drawImage(SwingFXUtils.fromFXImage(hhIcon, null), 2350, 1850, 100,100, null);
 
 			String s1 = "C3 / Hammerhead - Map Export";
 			String s2 = "Season:";
@@ -140,16 +149,22 @@ public final class Tools {
 			String sv4 = "" + Nexus.getCurrentSeasonMetaPhase();
 			String sv5 = Nexus.getCurrentChar().getName() + " (" + Nexus.getCurrentUser().getUserName() + ")" ;
 
+			SimpleDateFormat formatter= new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+			Date date = new Date(System.currentTimeMillis());
+			String sd = formatter.format(date);
+
 			FontMetrics fm = g2d.getFontMetrics();
-			g2d.setFont(new Font("Arial", Font.BOLD, 32));
+			g2d.setFont(new Font("Arial", Font.BOLD, 45));
 			g2d.setPaint(Color.WHITE);
+			g2d.drawString(s1, 50, 100);
 
 			g2d.setFont(new Font("Arial", Font.PLAIN, 26));
-			g2d.drawString(s1, 50, 100);
 			g2d.drawString(s2, 50, 170);
 			g2d.drawString(s3, 50, 200);
 			g2d.drawString(s4, 50, 230);
 			g2d.drawString(s5, 50, 300);
+			g2d.drawString(Nexus.getCurrentDate(), 2100,100);
+			g2d.drawString(sd, 2100,130);
 
 			g2d.setPaint(Color.GREEN);
 			g2d.drawString(sv2, 200, 170);
@@ -164,6 +179,7 @@ public final class Tools {
 			e.printStackTrace();
 			C3Logger.error("Could not save map screenshot!");
 		}
+		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute();
 	}
 
 	/**
