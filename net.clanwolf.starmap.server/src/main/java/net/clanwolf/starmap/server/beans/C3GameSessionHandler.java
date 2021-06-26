@@ -250,7 +250,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 			ArrayList<RolePlayCharacterPOJO> rpCharList = new ArrayList<RolePlayCharacterPOJO>();
 			for(AttackCharacterPOJO ac : attackPOJO.getAttackCharList()){
-				rpCharList.add(RolePlayCharacterDAO.getInstance().findById(ac.getCharacterID(), getC3UserID(session)));
+				rpCharList.add(RolePlayCharacterDAO.getInstance().findById(getC3UserID(session), ac.getCharacterID()));
 			}
 
 
