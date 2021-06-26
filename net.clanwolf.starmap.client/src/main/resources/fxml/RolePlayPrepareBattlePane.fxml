@@ -89,7 +89,7 @@
                         </ImageView>
                         <Label styleClass="contentLabel" stylesheets="@../styles/MainFrameStyle.css" text="Terra">
                            <padding>
-                              <Insets bottom="60.0" />
+                              <Insets bottom="30.0" />
                            </padding>
                         </Label>
                         <Button mnemonicParsing="false" prefHeight="37.0" prefWidth="80.0" styleClass="contentButtonClean" stylesheets="@../styles/MainFrameStyle.css" text="&gt;">
@@ -102,6 +102,12 @@
                               <Insets bottom="10.0" />
                            </VBox.margin>
                         </Button>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="37.0" prefWidth="80.0" styleClass="contentButtonRed" stylesheets="@../styles/MainFrameStyle.css" text="Kick">
+                           <VBox.margin>
+                              <Insets bottom="30.0" />
+                           </VBox.margin>
+                        </Button>
+                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="37.0" prefWidth="80.0" styleClass="contentButtonYellow" stylesheets="@../styles/MainFrameStyle.css" text="Leave" />
                      </children>
                   </VBox>
                </children>

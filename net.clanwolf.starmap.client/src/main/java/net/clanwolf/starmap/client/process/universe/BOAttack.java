@@ -40,7 +40,7 @@ import java.util.List;
 public class BOAttack {
 
 	private AttackDTO attackDTO;
-	private HashMap<Long, RolePlayCharacterDTO> rpCharList;
+	private HashMap<Long, RolePlayCharacterDTO> rpCharList = new HashMap<>();
 
 	@SuppressWarnings("unused")
 	public BOAttack(AttackDTO attackDTO) {
