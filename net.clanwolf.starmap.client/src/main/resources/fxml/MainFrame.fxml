@@ -54,7 +54,7 @@
             </image>
         </ImageView>
       <Label id="onlineIndicatorLabelHoverHelper" fx:id="exitLabelTopRight" layoutX="982.0" layoutY="28.0" maxHeight="20.0" maxWidth="22.0" minHeight="20.0" minWidth="22.0" onMouseClicked="#handleTopRightExitLabel" onMouseEntered="#handleExitLabelTopRightMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="20.0" prefWidth="22.0" />
-      <Label id="statuslabel" fx:id="copyrightLabel" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="740.0" layoutY="584.0" minHeight="16.0" minWidth="69.0" prefHeight="16.0" prefWidth="181.0" styleClass="toplabel">
+      <Label id="statuslabel" fx:id="copyrightLabel" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="740.0" layoutY="584.0" minHeight="16.0" minWidth="69.0" mouseTransparent="true" prefHeight="16.0" prefWidth="181.0" styleClass="toplabel">
          <stylesheets>
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>
@@ -69,7 +69,7 @@
             </stylesheets>
         </Label>
       <Label fx:id="systemConsoleCursor" alignment="BOTTOM_RIGHT" contentDisplay="RIGHT" disable="true" layoutX="948.0" layoutY="470.0" maxHeight="16.0" maxWidth="593.0" minHeight="16.0" minWidth="12.0" prefHeight="16.0" prefWidth="12.0" stylesheets="@../styles/MainFrameStyle.css" text="_" textAlignment="RIGHT" textFill="#f2f5f2" />
-        <Label id="" fx:id="versionLabel" layoutX="124.0" layoutY="584.0" prefWidth="212.0" styleClass="versionlabel" text="Version">
+        <Label id="" fx:id="versionLabel" layoutX="124.0" layoutY="584.0" mouseTransparent="true" prefWidth="212.0" styleClass="versionlabel" text="Version">
             <font>
                 <Font name="System Italic" size="10.0" />
             </font>
@@ -82,7 +82,7 @@
                 <URL value="@../styles/MainFrameStyle.css" />
             </stylesheets>
         </Label>
-        <Label id="statuslabel" fx:id="toplabel" contentDisplay="RIGHT" layoutX="791.0" layoutY="30.0" minHeight="16.0" minWidth="69.0" prefHeight="16.0" prefWidth="173.0" styleClass="toplabel">
+        <Label id="statuslabel" fx:id="toplabel" contentDisplay="RIGHT" layoutX="791.0" layoutY="30.0" minHeight="16.0" minWidth="69.0" mouseTransparent="true" prefHeight="16.0" prefWidth="173.0" styleClass="toplabel">
             <stylesheets>
                 <URL value="@../styles/MainFrameStyle.css" />
             </stylesheets>
