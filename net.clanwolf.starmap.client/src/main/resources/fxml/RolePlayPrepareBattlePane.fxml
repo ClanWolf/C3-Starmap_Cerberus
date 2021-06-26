@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="RolePlayStartPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.RolePlayPrepareBattlePaneController">
+<AnchorPane id="RolePlayStartPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.RolePlayPrepareBattlePaneController">
     <children>
       <ImageView fx:id="backgroundImage" fitHeight="438.0" fitWidth="778.0" layoutX="62.0" layoutY="14.0" onMouseClicked="#handleOnMouseClicked" opacity="0.9" pickOnBounds="true">
          <image>
@@ -89,7 +89,7 @@
                         </ImageView>
                         <Label styleClass="contentLabel" stylesheets="@../styles/MainFrameStyle.css" text="Terra">
                            <padding>
-                              <Insets bottom="30.0" />
+                              <Insets bottom="20.0" />
                            </padding>
                         </Label>
                         <Button mnemonicParsing="false" prefHeight="37.0" prefWidth="80.0" styleClass="contentButtonClean" stylesheets="@../styles/MainFrameStyle.css" text="&gt;">
@@ -99,15 +99,15 @@
                         </Button>
                         <Button mnemonicParsing="false" prefHeight="37.0" prefWidth="80.0" styleClass="contentButtonClean" stylesheets="@../styles/MainFrameStyle.css" text="&lt;">
                            <VBox.margin>
+                              <Insets bottom="40.0" />
+                           </VBox.margin>
+                        </Button>
+                        <Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="37.0" prefWidth="80.0" styleClass="contentButtonRed" stylesheets="@../styles/MainFrameStyle.css" text="Kick">
+                           <VBox.margin>
                               <Insets bottom="10.0" />
                            </VBox.margin>
                         </Button>
-                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="37.0" prefWidth="80.0" styleClass="contentButtonRed" stylesheets="@../styles/MainFrameStyle.css" text="Kick">
-                           <VBox.margin>
-                              <Insets bottom="30.0" />
-                           </VBox.margin>
-                        </Button>
-                        <Button alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="37.0" prefWidth="80.0" styleClass="contentButtonYellow" stylesheets="@../styles/MainFrameStyle.css" text="Leave" />
+                        <Button alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="37.0" prefWidth="80.0" styleClass="contentButtonYellow" stylesheets="@../styles/MainFrameStyle.css" text="Leave" />
                      </children>
                   </VBox>
                </children>
