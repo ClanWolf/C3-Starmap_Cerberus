@@ -51,7 +51,7 @@
                      <children>
                         <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-border-width: 1; -fx-background-color: transparent;" stylesheets="@../styles/MainFrameStyle.css" VBox.vgrow="ALWAYS">
                            <content>
-                              <ListView fx:id="lvUsers" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#handleUserlistClick" style="-fx-border-width: 0; -fx-background-color: rgba(53, 89, 119, 0.6);" styleClass="IRCChatTextFlow" stylesheets="@../styles/MainFrameStyle.css">
+                              <ListView fx:id="lvUsers" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#handleUserlistClick" stylesheets="@../styles/MainFrameStyle.css">
                                  <opaqueInsets>
                                     <Insets />
                                  </opaqueInsets>

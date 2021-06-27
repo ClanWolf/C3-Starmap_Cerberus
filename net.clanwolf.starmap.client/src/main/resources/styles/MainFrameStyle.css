@@ -735,10 +735,29 @@
   -fx-padding: 8 8 8 8;
 }
 
-.IRCChatTextFlow {
-  -fx-font-family: "Arial";
+.listView {
+  -fx-font-family: "Consolas";
   -fx-font-size: 14px;
   -fx-font-weight: normal;
+  -fx-background-color: rgba(26, 45, 57, 0.8);
+  -fx-border-width: 0;
+  -fx-text-fill: white;
+}
+.list-view .list-cell:even {
+  -fx-background-color: rgba(26, 45, 57, 0.8);
+  -fx-text-fill: white;
+}
+.list-view .list-cell:odd {
+  -fx-background-color: rgba(26, 45, 57, 0.8);
+  -fx-text-fill: white;
+}
+/* .list-view .list-cell:hover {
+  -fx-background-color: red;
+  -fx-text-fill: white;
+} */
+.list-view .list-cell:focused {
+  -fx-background-color: rgba(91, 140, 175, 0.9);
+  -fx-text-fill: white;
 }
 
 .LogTextFlow {

@@ -40,7 +40,6 @@ import java.util.List;
 public class BOAttack {
 
 	private AttackDTO attackDTO;
-	private HashMap<Long, RolePlayCharacterDTO> rpCharList = new HashMap<>();
 
 	@SuppressWarnings("unused")
 	public BOAttack(AttackDTO attackDTO) {
@@ -132,16 +131,5 @@ public class BOAttack {
 	@SuppressWarnings("unused")
 	public List<AttackCharacterDTO> getAttackCharList() {
 		return attackDTO.getAttackCharList();
-	}
-
-	public RolePlayCharacterDTO getRpCharByID(Long key){
-		return rpCharList.get(key);
-	}
-
-	public void setRpCharList(ArrayList<RolePlayCharacterDTO> ls){
-		rpCharList.clear();
-		for(RolePlayCharacterDTO rpc : ls){
-			rpCharList.put(rpc.getId(),rpc);
-		}
 	}
 }

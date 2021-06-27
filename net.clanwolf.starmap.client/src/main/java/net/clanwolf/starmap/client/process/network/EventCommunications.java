@@ -44,6 +44,7 @@ import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.util.Compressor;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 /**
@@ -93,7 +94,18 @@ public class EventCommunications {
 
 					Object o3 = state.getObject3();
 					if (o3 instanceof ArrayList) {
-						Nexus.setUserList((ArrayList) state.getObject3());
+						ArrayList<UserDTO> allUsers = (ArrayList<UserDTO>) state.getObject3();
+						Nexus.setUserList(allUsers);
+						HashMap<Long, RolePlayCharacterDTO> allChars = new HashMap<>();
+						for (UserDTO u : allUsers) {
+							RolePlayCharacterDTO c = u.getCurrentCharacter();
+							if (c != null) {
+								allChars.put(c.getId(), c);
+							} else {
+								C3Logger.info("User " + u.getUserName() + " does not have a character!");
+							}
+						}
+						Nexus.setCharacterList(allChars);
 					}
 
 					// own playersession on server
@@ -139,7 +151,6 @@ public class EventCommunications {
 					for (BOAttack a : Nexus.getBoUniverse().attackBOs) {
 						if (attackDTO.getId().equals(a.getAttackDTO().getId())) {
 							a.setAttackDTO(attackDTO);
-							a.setRpCharList(rpCharList);
 							ActionManager.getAction(ACTIONS.UPDATE_USERS_FOR_ATTACK).execute(a);
 							break;
 						}

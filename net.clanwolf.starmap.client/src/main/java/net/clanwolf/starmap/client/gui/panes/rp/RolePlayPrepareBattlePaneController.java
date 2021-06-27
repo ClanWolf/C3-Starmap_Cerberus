@@ -73,6 +73,11 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 	@FXML
 	private ListView<RolePlayCharacterDTO> lvDefender;
 
+	@FXML
+	public void handleListMouseClick() {
+		C3Logger.debug("Clicked");
+	}
+
 	public RolePlayPrepareBattlePaneController() {
 	}
 
@@ -85,6 +90,49 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		super.initialize(url, rb);
+		BOAttack a = Nexus.getCurrentAttackOfUser();
+		// TODO: Beim init sind alle Character noch null... müssen initial gefüllt werden
+		updateLists(a);
+		C3Logger.info("Init ^^^^^------------------------------------------------------------------ WIESO KOMMEN WIR HIER ZWEIMAL REIN ---" + a.getAttackDTO().getId());
+	}
+
+	public void updateLists(BOAttack a) {
+		for (AttackCharacterDTO ac : a.getAttackCharList()) {
+			if (ac.getType().equals(1L) || ac.getType().equals(0L)) { // Droplead attacker
+				cbDropleadAttacker.getItems().add(Nexus.getCharacterById(ac.getCharacterID()));
+				cbDropleadDefender.getItems().add(Nexus.getCharacterById(ac.getCharacterID())); // weg
+				if (ac.getType().equals(1L)){
+					cbDropleadAttacker.getSelectionModel().select(Nexus.getCharacterById(ac.getCharacterID()));
+				} else {
+					lvAttacker.getItems().add(Nexus.getCharacterById(ac.getCharacterID()));
+					lvAttacker.getItems().add(Nexus.getCharacterById(ac.getCharacterID())); // weg
+					lvAttacker.getItems().add(Nexus.getCharacterById(ac.getCharacterID())); // weg
+					lvAttacker.getItems().add(Nexus.getCharacterById(ac.getCharacterID())); // weg
+
+					lvDefender.getItems().add(Nexus.getCharacterById(ac.getCharacterID())); // weg
+					lvDefender.getItems().add(Nexus.getCharacterById(ac.getCharacterID())); // weg
+					lvDefender.getItems().add(Nexus.getCharacterById(ac.getCharacterID())); // weg
+					lvDefender.getItems().add(Nexus.getCharacterById(ac.getCharacterID())); // weg
+				}
+			} else if (ac.getType().equals(3L) || ac.getType().equals(2L)) { // Droplead attacker
+				cbDropleadDefender.getItems().add(Nexus.getCharacterById(ac.getCharacterID()));
+				if (ac.getType().equals(3L)) {
+					cbDropleadDefender.getSelectionModel().select(Nexus.getCharacterById(ac.getCharacterID()));
+				} else {
+					lvDefender.getItems().add(Nexus.getCharacterById(ac.getCharacterID()));
+				}
+			} else if (ac.getType().equals(4L)) {
+				int defs = lvDefender.getItems().size();
+				int atts = lvAttacker.getItems().size();
+				if (atts > defs) {
+					lvDefender.getItems().add(Nexus.getCharacterById(ac.getCharacterID()));
+				} else if (atts < defs) {
+					lvDefender.getItems().add(Nexus.getCharacterById(ac.getCharacterID()));
+				} else {
+					lvAttacker.getItems().add(Nexus.getCharacterById(ac.getCharacterID()));
+				}
+			}
+		}
 	}
 
 	/**
@@ -100,57 +148,25 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 	public boolean handleAction(ACTIONS action, ActionObject o) {
 		if(anchorPane != null && !anchorPane.isVisible()) return true;
 		switch (action) {
+			case START_ROLEPLAY:
+				if(ROLEPLAYENTRYTYPES.C3_RP_STEP_V8 == o.getObject()) {
+					C3Logger.debug("RolePlayIntroPaneController -> START_ROLEPLAY");
 
-		case START_ROLEPLAY:
-			if(ROLEPLAYENTRYTYPES.C3_RP_STEP_V8 == o.getObject()) {
-				C3Logger.debug("RolePlayIntroPaneController -> START_ROLEPLAY");
-
-				// set current step of story
-				//getStoryValues(Nexus.);
-			}
-			break;
-		case UPDATE_USERS_FOR_ATTACK:
-			C3Logger.info("The userlist has changed. Update information on the listboxes.");
-			// TODO: Charactere updaten
-			if (o.getObject() instanceof BOAttack) {
-				BOAttack a = (BOAttack) o.getObject();
-				for (AttackCharacterDTO ac : a.getAttackCharList()) {
-					if (ac.getType().equals(1L) || ac.getType().equals(0L)) { // Droplead attacker
-						cbDropleadAttacker.getItems().add(a.getRpCharByID(ac.getCharacterID()));
-
-						if (ac.getType().equals(1L)){
-							cbDropleadAttacker.getSelectionModel().select(a.getRpCharByID(ac.getCharacterID()));
-
-						} else {
-							lvAttacker.getItems().add(a.getRpCharByID(ac.getCharacterID()));
-						}
-					} else if (ac.getType().equals(3L) || ac.getType().equals(2L)) { // Droplead attacker
-						cbDropleadDefender.getItems().add(a.getRpCharByID(ac.getCharacterID()));
-
-						if (ac.getType().equals(3L)) {
-							cbDropleadDefender.getSelectionModel().select(a.getRpCharByID(ac.getCharacterID()));
-
-						} else {
-							lvDefender.getItems().add(a.getRpCharByID(ac.getCharacterID()));
-						}
-					} else if (ac.getType().equals(4L)) {
-						int defs = lvDefender.getItems().size();
-						int atts = lvAttacker.getItems().size();
-						if (atts > defs) {
-							lvDefender.getItems().add(a.getRpCharByID(ac.getCharacterID()));
-						} else if (atts < defs) {
-							lvDefender.getItems().add(a.getRpCharByID(ac.getCharacterID()));
-						} else {
-							lvAttacker.getItems().add(a.getRpCharByID(ac.getCharacterID()));
-						}
-					}
+					// set current step of story
+					//getStoryValues(Nexus.);
 				}
-			}
-			C3Logger.info("The userlist has changed. Update information on the listboxes. ");
-			break;
-		default:
-			break;
+				break;
 
+			case UPDATE_USERS_FOR_ATTACK:
+				C3Logger.info("The userlist has changed. Update information on the listboxes.");
+				if (o.getObject() instanceof BOAttack) {
+					BOAttack a = (BOAttack) o.getObject();
+					updateLists(a);
+				}
+				C3Logger.info("The userlist has changed. Update information on the listboxes. ");
+				break;
+			default:
+				break;
 		}
 		return true;
 	}

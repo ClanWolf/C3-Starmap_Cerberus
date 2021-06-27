@@ -44,6 +44,7 @@ import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
 import net.clanwolf.starmap.transfer.dtos.UserDTO;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * The Nexus is a central place to hold general information like the currently logged in user and such.
@@ -62,7 +63,9 @@ public class Nexus {
 	private static BOStarSystem boSelectedStarSystem;
 	private static boolean loggedIn = false;
 
-	private static ArrayList userList;
+	private static BOAttack currentAttackOfUser;
+	private static ArrayList<UserDTO> userList;
+	private static HashMap<Long, RolePlayCharacterDTO> characterList;
 	private static LogWatcher logWatcher;
 
 	private static int currentSeason;
@@ -254,12 +257,21 @@ public class Nexus {
 					if (ac.getCharacterID().equals(Nexus.getCurrentUser().getCurrentCharacter().getId())) {
 						// The user currently logged in has joined an attack that was not resolved yet
 						userHasAttack = true;
+						currentAttackOfUser = a;
 						break;
 					}
 				}
 			}
 		}
 		return userHasAttack;
+	}
+
+	@SuppressWarnings("unused")
+	public static BOAttack getCurrentAttackOfUser() {
+		if (currentAttackOfUser == null) {
+			userHasAttack(); // to set currentAttack to user
+		}
+		return currentAttackOfUser;
 	}
 
 	@SuppressWarnings("unused")
@@ -340,5 +352,20 @@ public class Nexus {
 	@SuppressWarnings("unused")
 	public static void setLogWatcher(LogWatcher logWatcher) {
 		Nexus.logWatcher = logWatcher;
+	}
+
+	@SuppressWarnings("unused")
+	public static RolePlayCharacterDTO getCharacterById(Long id) {
+		return characterList.get(id);
+	}
+
+	@SuppressWarnings("unused")
+	public static HashMap<Long, RolePlayCharacterDTO> getCharacterList() {
+		return characterList;
+	}
+
+	@SuppressWarnings("unused")
+	public static void setCharacterList(HashMap<Long, RolePlayCharacterDTO> characterList) {
+		Nexus.characterList = characterList;
 	}
 }

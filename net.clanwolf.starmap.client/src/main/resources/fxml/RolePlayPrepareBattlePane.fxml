@@ -35,12 +35,12 @@
                         <Insets bottom="5.0" top="5.0" />
                      </VBox.margin>
                   </ImageView>
-                  <ComboBox fx:id="cbDropleadAttacker" maxWidth="1.7976931348623157E308" prefWidth="150.0" styleClass="text-field">
+                  <ComboBox fx:id="cbDropleadAttacker" maxWidth="1.7976931348623157E308" prefWidth="150.0" stylesheets="@../styles/MainFrameStyle.css">
                      <VBox.margin>
                         <Insets bottom="5.0" />
                      </VBox.margin>
                   </ComboBox>
-                  <ListView fx:id="lvAttacker" styleClass="systemDetailPanelSolid" stylesheets="@../styles/MainFrameStyle.css" />
+                  <ListView fx:id="lvAttacker" onMouseClicked="#handleListMouseClick" stylesheets="@../styles/MainFrameStyle.css" />
                </children>
                <BorderPane.margin>
                   <Insets left="10.0" />
@@ -62,12 +62,12 @@
                         <Insets bottom="5.0" top="5.0" />
                      </VBox.margin>
                   </ImageView>
-                  <ComboBox fx:id="cbDropleadDefender" maxWidth="1.7976931348623157E308" prefWidth="150.0" styleClass="text-field" stylesheets="@../styles/MainFrameStyle.css">
+                  <ComboBox fx:id="cbDropleadDefender" maxWidth="1.7976931348623157E308" prefWidth="150.0" stylesheets="@../styles/MainFrameStyle.css">
                      <VBox.margin>
                         <Insets bottom="5.0" />
                      </VBox.margin>
                   </ComboBox>
-                  <ListView fx:id="lvDefender" styleClass="systemDetailPanelSolid" stylesheets="@../styles/MainFrameStyle.css" />
+                  <ListView fx:id="lvDefender" onMouseClicked="#handleListMouseClick" stylesheets="@../styles/MainFrameStyle.css" />
                </children>
                <BorderPane.margin>
                   <Insets right="10.0" />
