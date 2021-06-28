@@ -86,9 +86,9 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		RolePlayCharacterDTO selectedChar = lvAttacker.getSelectionModel().getSelectedItem();
 		if (selectedChar != null && !selectedChar.getName().equals("...")) {
 			btnToLeft.setDisable(true);
-			btnToRight.setDisable(false);
-			btnKick.setDisable(false);
-			btnPromote.setDisable(false);
+			btnToRight.setDisable(!iamdroplead);
+			btnKick.setDisable(!iamdroplead);
+			btnPromote.setDisable(!iamdroplead);
 		} else {
 			btnToLeft.setDisable(true);
 			btnToRight.setDisable(true);
@@ -105,11 +105,13 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		btnPromote.setText("Degrade");
 
 		RolePlayCharacterDTO selectedChar = lvDropleadAttacker.getSelectionModel().getSelectedItem();
+		Long role = characterRoleMap.get(selectedChar.getId());
+
 		if (selectedChar != null && !selectedChar.getName().equals("...")) {
+			btnToLeft.setDisable(!iamdroplead);
+			btnToRight.setDisable(!iamdroplead);
+			btnKick.setDisable(!iamdroplead);
 			btnPromote.setDisable(!iamdroplead);
-			btnToLeft.setDisable(true);
-			btnToRight.setDisable(true);
-			btnKick.setDisable(true);
 		} else {
 			btnToLeft.setDisable(true);
 			btnToRight.setDisable(true);
@@ -128,10 +130,10 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 		RolePlayCharacterDTO selectedChar = lvDefender.getSelectionModel().getSelectedItem();
 		if (selectedChar != null && !selectedChar.getName().equals("...")) {
-			btnToLeft.setDisable(false);
+			btnToLeft.setDisable(!iamdroplead);
 			btnToRight.setDisable(true);
-			btnKick.setDisable(false);
-			btnPromote.setDisable(false);
+			btnKick.setDisable(!iamdroplead);
+			btnPromote.setDisable(!iamdroplead);
 		} else {
 			btnToLeft.setDisable(true);
 			btnToRight.setDisable(true);
@@ -149,11 +151,13 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		btnPromote.setText("Degrade");
 
 		RolePlayCharacterDTO selectedChar = lvDropleadDefender.getSelectionModel().getSelectedItem();
+		Long role = characterRoleMap.get(selectedChar.getId());
+
 		if (selectedChar != null && !selectedChar.getName().equals("...")) {
+			btnToLeft.setDisable(!iamdroplead);
+			btnToRight.setDisable(!iamdroplead);
+			btnKick.setDisable(!iamdroplead);
 			btnPromote.setDisable(!iamdroplead);
-			btnToLeft.setDisable(true);
-			btnToRight.setDisable(true);
-			btnKick.setDisable(true);
 		} else {
 			btnToLeft.setDisable(true);
 			btnToRight.setDisable(true);
