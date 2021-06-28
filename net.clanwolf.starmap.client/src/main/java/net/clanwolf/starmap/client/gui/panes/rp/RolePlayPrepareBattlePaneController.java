@@ -54,18 +54,21 @@ import java.util.ResourceBundle;
 public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayController implements ActionCallBackListener {
 
 	private HashMap<Long, Boolean> animationPlayedMap = new HashMap<>();
+	private RolePlayCharacterDTO dummy = new RolePlayCharacterDTO();
+	private boolean iamdroplead = false;
+	private HashMap<Long, Long> characterRoleMap = new HashMap<>();
 
 	@FXML
 	private AnchorPane anchorPane;
 
 	@FXML
-	private Button btPreview;
+	private Button btPreview, btnKick, btnToRight, btnToLeft, btnPromote;
 
 	@FXML
-	private ComboBox<RolePlayCharacterDTO> cbDropleadAttacker;
+	private ListView<RolePlayCharacterDTO> lvDropleadAttacker;
 
 	@FXML
-	private ComboBox<RolePlayCharacterDTO> cbDropleadDefender;
+	private ListView<RolePlayCharacterDTO> lvDropleadDefender;
 
 	@FXML
 	private ListView<RolePlayCharacterDTO> lvAttacker;
@@ -74,8 +77,90 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 	private ListView<RolePlayCharacterDTO> lvDefender;
 
 	@FXML
-	public void handleListMouseClick() {
-		C3Logger.debug("Clicked");
+	public void handleAttackerListMouseClick() {
+		lvDefender.getSelectionModel().clearSelection();
+		lvDropleadAttacker.getSelectionModel().clearSelection();
+		lvDropleadDefender.getSelectionModel().clearSelection();
+		btnPromote.setText("Promote");
+
+		RolePlayCharacterDTO selectedChar = lvAttacker.getSelectionModel().getSelectedItem();
+		if (selectedChar != null && !selectedChar.getName().equals("...")) {
+			btnToLeft.setDisable(true);
+			btnToRight.setDisable(false);
+			btnKick.setDisable(false);
+			btnPromote.setDisable(false);
+		} else {
+			btnToLeft.setDisable(true);
+			btnToRight.setDisable(true);
+			btnKick.setDisable(true);
+			btnPromote.setDisable(true);
+		}
+		C3Logger.debug("Attackerlist Clicked");
+	}
+
+	@FXML
+	public void handleAttackerDropleadMouseClick() {
+		lvAttacker.getSelectionModel().clearSelection();
+		lvDefender.getSelectionModel().clearSelection();
+		btnPromote.setText("Degrade");
+
+		RolePlayCharacterDTO selectedChar = lvDropleadAttacker.getSelectionModel().getSelectedItem();
+		if (selectedChar != null && !selectedChar.getName().equals("...")) {
+			btnPromote.setDisable(!iamdroplead);
+			btnToLeft.setDisable(true);
+			btnToRight.setDisable(true);
+			btnKick.setDisable(true);
+		} else {
+			btnToLeft.setDisable(true);
+			btnToRight.setDisable(true);
+			btnKick.setDisable(true);
+			btnPromote.setDisable(true);
+		}
+		C3Logger.debug("Attacker droplead Clicked");
+	}
+
+	@FXML
+	public void handleDefenderListMouseClick() {
+		lvAttacker.getSelectionModel().clearSelection();
+		lvDropleadAttacker.getSelectionModel().clearSelection();
+		lvDropleadDefender.getSelectionModel().clearSelection();
+		btnPromote.setText("Promote");
+
+		RolePlayCharacterDTO selectedChar = lvDefender.getSelectionModel().getSelectedItem();
+		if (selectedChar != null && !selectedChar.getName().equals("...")) {
+			btnToLeft.setDisable(false);
+			btnToRight.setDisable(true);
+			btnKick.setDisable(false);
+			btnPromote.setDisable(false);
+		} else {
+			btnToLeft.setDisable(true);
+			btnToRight.setDisable(true);
+			btnKick.setDisable(true);
+			btnPromote.setDisable(true);
+			btnPromote.setDisable(true);
+		}
+		C3Logger.debug("DefenderList Clicked");
+	}
+
+	@FXML
+	public void handleDefenderDropleadMouseClick() {
+		lvAttacker.getSelectionModel().clearSelection();
+		lvDefender.getSelectionModel().clearSelection();
+		btnPromote.setText("Degrade");
+
+		RolePlayCharacterDTO selectedChar = lvDropleadDefender.getSelectionModel().getSelectedItem();
+		if (selectedChar != null && !selectedChar.getName().equals("...")) {
+			btnPromote.setDisable(!iamdroplead);
+			btnToLeft.setDisable(true);
+			btnToRight.setDisable(true);
+			btnKick.setDisable(true);
+		} else {
+			btnToLeft.setDisable(true);
+			btnToRight.setDisable(true);
+			btnKick.setDisable(true);
+			btnPromote.setDisable(true);
+		}
+		C3Logger.debug("Defender droplead Clicked");
 	}
 
 	public RolePlayPrepareBattlePaneController() {
@@ -90,46 +175,85 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		super.initialize(url, rb);
+		dummy.setName("...");
+
 		BOAttack a = Nexus.getCurrentAttackOfUser();
-		// TODO: Beim init sind alle Character noch null... müssen initial gefüllt werden
 		updateLists(a);
+		lvAttacker.getSelectionModel().clearSelection();
+		lvDefender.getSelectionModel().clearSelection();
+		btnKick.setDisable(true);
+		btnPromote.setDisable(true);
+
 		C3Logger.info("Init ^^^^^------------------------------------------------------------------ WIESO KOMMEN WIR HIER ZWEIMAL REIN ---" + a.getAttackDTO().getId());
 	}
 
 	public void updateLists(BOAttack a) {
-		for (AttackCharacterDTO ac : a.getAttackCharList()) {
-			if (ac.getType().equals(1L) || ac.getType().equals(0L)) { // Droplead attacker
-				cbDropleadAttacker.getItems().add(Nexus.getCharacterById(ac.getCharacterID()));
-				cbDropleadDefender.getItems().add(Nexus.getCharacterById(ac.getCharacterID())); // weg
-				if (ac.getType().equals(1L)){
-					cbDropleadAttacker.getSelectionModel().select(Nexus.getCharacterById(ac.getCharacterID()));
-				} else {
-					lvAttacker.getItems().add(Nexus.getCharacterById(ac.getCharacterID()));
-					lvAttacker.getItems().add(Nexus.getCharacterById(ac.getCharacterID())); // weg
-					lvAttacker.getItems().add(Nexus.getCharacterById(ac.getCharacterID())); // weg
-					lvAttacker.getItems().add(Nexus.getCharacterById(ac.getCharacterID())); // weg
+		lvDropleadAttacker.getItems().clear();
+		lvDropleadDefender.getItems().clear();
+		lvDefender.getItems().clear();
+		lvAttacker.getItems().clear();
+		lvDropleadAttacker.getItems().add(dummy);
+		lvDropleadDefender.getItems().add(dummy);
+		lvDefender.getItems().add(dummy);
+		lvAttacker.getItems().add(dummy);
+		lvDropleadAttacker.getSelectionModel().clearSelection();
+		lvDropleadDefender.getSelectionModel().clearSelection();
 
-					lvDefender.getItems().add(Nexus.getCharacterById(ac.getCharacterID())); // weg
-					lvDefender.getItems().add(Nexus.getCharacterById(ac.getCharacterID())); // weg
-					lvDefender.getItems().add(Nexus.getCharacterById(ac.getCharacterID())); // weg
-					lvDefender.getItems().add(Nexus.getCharacterById(ac.getCharacterID())); // weg
+		characterRoleMap.clear();
+
+		for (AttackCharacterDTO ac : a.getAttackCharList()) {
+			characterRoleMap.put(ac.getCharacterID(), ac.getType());
+
+			if (ac.getType().equals(1L) || ac.getType().equals(0L)) { // Attacker
+				if (ac.getType().equals(1L)) { // Droplead
+					// Put this dropleader into upper list
+					lvDropleadAttacker.getItems().clear();
+					lvDropleadAttacker.getItems().add(Nexus.getCharacterById(ac.getCharacterID()));
+					lvDropleadAttacker.getItems().remove(dummy);
+					lvDropleadAttacker.getSelectionModel().clearSelection();
+					if (ac.getCharacterID().equals(Nexus.getCurrentChar().getId())) {
+						iamdroplead = true;
+					}
+				} else { // Warrior
+					// Put this warrior into lower list (not a droplead)
+					lvAttacker.getItems().add(Nexus.getCharacterById(ac.getCharacterID()));
+					lvAttacker.getItems().remove(dummy);
 				}
-			} else if (ac.getType().equals(3L) || ac.getType().equals(2L)) { // Droplead attacker
-				cbDropleadDefender.getItems().add(Nexus.getCharacterById(ac.getCharacterID()));
-				if (ac.getType().equals(3L)) {
-					cbDropleadDefender.getSelectionModel().select(Nexus.getCharacterById(ac.getCharacterID()));
-				} else {
+			} else if (ac.getType().equals(3L) || ac.getType().equals(2L)) {
+				if (ac.getType().equals(3L)) { // Droplead
+					// Put this dropleader into upper list
+					lvDropleadDefender.getItems().clear();
+					lvDropleadDefender.getItems().add(Nexus.getCharacterById(ac.getCharacterID()));
+					lvDropleadAttacker.getItems().remove(dummy);
+					lvDropleadDefender.getSelectionModel().clearSelection();
+				} else { // Warrior
+					// Put this warrior into lower list (not a droplead)
 					lvDefender.getItems().add(Nexus.getCharacterById(ac.getCharacterID()));
+					lvDefender.getItems().remove(dummy);
 				}
 			} else if (ac.getType().equals(4L)) {
-				int defs = lvDefender.getItems().size();
+				// This warrior will help out, not coming from attacker OR defender factions
+				// Cannot be a droplead on either side
+				// Will be assigned to the side with fewer pilots or the attacker in case of same number of pilots
 				int atts = lvAttacker.getItems().size();
+				int defs = lvDefender.getItems().size();
+
+				if (lvDropleadAttacker.getItems().size() > 0 && !lvDropleadAttacker.getItems().get(0).getName().equals("...")) {
+					atts++;
+				}
+				if (lvDropleadDefender.getItems().size() > 0 && !lvDropleadDefender.getItems().get(0).getName().equals("...")) {
+					defs++;
+				}
+
 				if (atts > defs) {
 					lvDefender.getItems().add(Nexus.getCharacterById(ac.getCharacterID()));
+					lvDefender.getItems().remove(dummy);
 				} else if (atts < defs) {
 					lvDefender.getItems().add(Nexus.getCharacterById(ac.getCharacterID()));
+					lvDefender.getItems().remove(dummy);
 				} else {
 					lvAttacker.getItems().add(Nexus.getCharacterById(ac.getCharacterID()));
+					lvAttacker.getItems().remove(dummy);
 				}
 			}
 		}

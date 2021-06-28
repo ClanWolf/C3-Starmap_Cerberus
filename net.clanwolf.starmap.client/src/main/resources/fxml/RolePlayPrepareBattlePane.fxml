@@ -3,7 +3,6 @@
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.image.Image?>
@@ -35,12 +34,11 @@
                         <Insets bottom="5.0" top="5.0" />
                      </VBox.margin>
                   </ImageView>
-                  <ComboBox fx:id="cbDropleadAttacker" maxWidth="1.7976931348623157E308" prefWidth="150.0" stylesheets="@../styles/MainFrameStyle.css">
+                  <ListView fx:id="lvDropleadAttacker" fixedCellSize="23.0" maxHeight="25.0" minHeight="25.0" onMouseClicked="#handleAttackerDropleadMouseClick" prefHeight="25.0" prefWidth="200.0" stylesheets="@../styles/MainFrameStyle.css" VBox.vgrow="NEVER">
                      <VBox.margin>
                         <Insets bottom="5.0" />
-                     </VBox.margin>
-                  </ComboBox>
-                  <ListView fx:id="lvAttacker" onMouseClicked="#handleListMouseClick" stylesheets="@../styles/MainFrameStyle.css" />
+                     </VBox.margin></ListView>
+                  <ListView fx:id="lvAttacker" onMouseClicked="#handleAttackerListMouseClick" stylesheets="@../styles/MainFrameStyle.css" />
                </children>
                <BorderPane.margin>
                   <Insets left="10.0" />
@@ -62,12 +60,11 @@
                         <Insets bottom="5.0" top="5.0" />
                      </VBox.margin>
                   </ImageView>
-                  <ComboBox fx:id="cbDropleadDefender" maxWidth="1.7976931348623157E308" prefWidth="150.0" stylesheets="@../styles/MainFrameStyle.css">
+                  <ListView fx:id="lvDropleadDefender" fixedCellSize="23.0" maxHeight="25.0" minHeight="25.0" onMouseClicked="#handleDefenderDropleadMouseClick" prefHeight="25.0" prefWidth="200.0" stylesheets="@../styles/MainFrameStyle.css" VBox.vgrow="NEVER">
                      <VBox.margin>
                         <Insets bottom="5.0" />
-                     </VBox.margin>
-                  </ComboBox>
-                  <ListView fx:id="lvDefender" onMouseClicked="#handleListMouseClick" stylesheets="@../styles/MainFrameStyle.css" />
+                     </VBox.margin></ListView>
+                  <ListView fx:id="lvDefender" onMouseClicked="#handleDefenderListMouseClick" stylesheets="@../styles/MainFrameStyle.css" />
                </children>
                <BorderPane.margin>
                   <Insets right="10.0" />
@@ -77,14 +74,14 @@
          <center>
             <AnchorPane BorderPane.alignment="CENTER">
                <children>
-                  <VBox alignment="CENTER" prefHeight="430.0" prefWidth="196.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <VBox alignment="CENTER" fillWidth="false" prefHeight="430.0" prefWidth="196.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
                         <ImageView fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../images/planets/016.png" />
                            </image>
                            <VBox.margin>
-                              <Insets bottom="15.0" />
+                              <Insets bottom="10.0" />
                            </VBox.margin>
                         </ImageView>
                         <Label styleClass="contentLabel" stylesheets="@../styles/MainFrameStyle.css" text="Terra">
@@ -92,22 +89,30 @@
                               <Insets bottom="20.0" />
                            </padding>
                         </Label>
-                        <Button mnemonicParsing="false" prefHeight="37.0" prefWidth="80.0" styleClass="contentButtonClean" stylesheets="@../styles/MainFrameStyle.css" text="&gt;">
+                        <Button fx:id="btnToRight" mnemonicParsing="false" prefHeight="30.0" prefWidth="80.0" styleClass="contentButtonClean" stylesheets="@../styles/MainFrameStyle.css" text="&gt;">
                            <VBox.margin>
-                              <Insets bottom="10.0" />
+                              <Insets bottom="5.0" />
                            </VBox.margin>
                         </Button>
-                        <Button mnemonicParsing="false" prefHeight="37.0" prefWidth="80.0" styleClass="contentButtonClean" stylesheets="@../styles/MainFrameStyle.css" text="&lt;">
+                        <Button fx:id="btnToLeft" mnemonicParsing="false" prefHeight="30.0" prefWidth="80.0" styleClass="contentButtonClean" stylesheets="@../styles/MainFrameStyle.css" text="&lt;">
                            <VBox.margin>
-                              <Insets bottom="40.0" />
+                              <Insets bottom="20.0" />
                            </VBox.margin>
                         </Button>
-                        <Button alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="37.0" prefWidth="80.0" styleClass="contentButtonRed" stylesheets="@../styles/MainFrameStyle.css" text="Kick">
+                        <Button fx:id="btnPromote" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" styleClass="contentButtonBlue" stylesheets="@../styles/MainFrameStyle.css" text="Promote">
                            <VBox.margin>
-                              <Insets bottom="10.0" />
+                              <Insets bottom="5.0" />
                            </VBox.margin>
                         </Button>
-                        <Button alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="37.0" prefWidth="80.0" styleClass="contentButtonYellow" stylesheets="@../styles/MainFrameStyle.css" text="Leave" />
+                        <Button fx:id="btnKick" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" styleClass="contentButtonRed" stylesheets="@../styles/MainFrameStyle.css" text="Kick">
+                           <VBox.margin>
+                              <Insets bottom="5.0" />
+                           </VBox.margin>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </Button>
+                        <Button fx:id="btnLeave" alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" styleClass="contentButtonYellow" stylesheets="@../styles/MainFrameStyle.css" text="Leave" />
                      </children>
                   </VBox>
                </children>
