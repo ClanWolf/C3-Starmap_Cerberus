@@ -171,6 +171,10 @@ public final class Tools {
 			g2d.drawString(sv3, 200, 200);
 			g2d.drawString(sv4, 200, 230);
 			g2d.drawString(sv5, 200, 300);
+
+			g2d.setFont(new Font("Arial", Font.BOLD, 250));
+			g2d.setPaint(Color.CYAN);
+			g2d.drawString(Nexus.getCurrentRound() + "", 2100, 400);
 			g2d.dispose();
 
 			ImageIO.write(finaleImage ,"png", file1);

@@ -84,6 +84,8 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		btnPromote.setText("Promote");
 
 		RolePlayCharacterDTO selectedChar = lvAttacker.getSelectionModel().getSelectedItem();
+		Long role = characterRoleMap.get(selectedChar.getId());
+
 		if (selectedChar != null && !selectedChar.getName().equals("...")) {
 			btnToLeft.setDisable(true);
 			btnToRight.setDisable(!iamdroplead);
@@ -94,6 +96,9 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 			btnToRight.setDisable(true);
 			btnKick.setDisable(true);
 			btnPromote.setDisable(true);
+		}
+		if (selectedChar.getName().equals(Nexus.getCurrentChar().getName())) {
+			btnKick.setDisable(true); // Can not kick myself
 		}
 		C3Logger.debug("Attackerlist Clicked");
 	}
@@ -108,15 +113,18 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		Long role = characterRoleMap.get(selectedChar.getId());
 
 		if (selectedChar != null && !selectedChar.getName().equals("...")) {
-			btnToLeft.setDisable(!iamdroplead);
-			btnToRight.setDisable(!iamdroplead);
-			btnKick.setDisable(!iamdroplead);
+			btnToLeft.setDisable(true); // the droplead can not be switched while droplead, degrade first
+			btnToRight.setDisable(true); // the droplead can not be switched while droplead, degrade first
+			btnKick.setDisable(true); // the droplead can not be kicked while droplead, degrade first
 			btnPromote.setDisable(!iamdroplead);
 		} else {
 			btnToLeft.setDisable(true);
 			btnToRight.setDisable(true);
 			btnKick.setDisable(true);
 			btnPromote.setDisable(true);
+		}
+		if (selectedChar.getName().equals(Nexus.getCurrentChar().getName())) {
+			btnKick.setDisable(true); // Can not kick myself
 		}
 		C3Logger.debug("Attacker droplead Clicked");
 	}
@@ -129,17 +137,22 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		btnPromote.setText("Promote");
 
 		RolePlayCharacterDTO selectedChar = lvDefender.getSelectionModel().getSelectedItem();
+		Long role = characterRoleMap.get(selectedChar.getId());
+
 		if (selectedChar != null && !selectedChar.getName().equals("...")) {
 			btnToLeft.setDisable(!iamdroplead);
 			btnToRight.setDisable(true);
 			btnKick.setDisable(!iamdroplead);
-			btnPromote.setDisable(!iamdroplead);
+			btnPromote.setDisable(!iamdroplead || role == 4L); // No promotion for players from 3rd factions
 		} else {
 			btnToLeft.setDisable(true);
 			btnToRight.setDisable(true);
 			btnKick.setDisable(true);
 			btnPromote.setDisable(true);
 			btnPromote.setDisable(true);
+		}
+		if (selectedChar.getName().equals(Nexus.getCurrentChar().getName())) {
+			btnKick.setDisable(true); // Can not kick myself
 		}
 		C3Logger.debug("DefenderList Clicked");
 	}
@@ -154,15 +167,18 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		Long role = characterRoleMap.get(selectedChar.getId());
 
 		if (selectedChar != null && !selectedChar.getName().equals("...")) {
-			btnToLeft.setDisable(!iamdroplead);
-			btnToRight.setDisable(!iamdroplead);
-			btnKick.setDisable(!iamdroplead);
+			btnToLeft.setDisable(true); // the droplead can not be switched while droplead, degrade first
+			btnToRight.setDisable(true); // the droplead can not be switched while droplead, degrade first
+			btnKick.setDisable(true); // the droplead can not be kicked while droplead, degrade first
 			btnPromote.setDisable(!iamdroplead);
 		} else {
 			btnToLeft.setDisable(true);
 			btnToRight.setDisable(true);
 			btnKick.setDisable(true);
 			btnPromote.setDisable(true);
+		}
+		if (selectedChar.getName().equals(Nexus.getCurrentChar().getName())) {
+			btnKick.setDisable(true); // Can not kick myself
 		}
 		C3Logger.debug("Defender droplead Clicked");
 	}
@@ -187,6 +203,8 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		lvDefender.getSelectionModel().clearSelection();
 		btnKick.setDisable(true);
 		btnPromote.setDisable(true);
+		btnToLeft.setDisable(true);
+		btnToRight.setDisable(true);
 
 		C3Logger.info("Init ^^^^^------------------------------------------------------------------ WIESO KOMMEN WIR HIER ZWEIMAL REIN ---" + a.getAttackDTO().getId());
 	}

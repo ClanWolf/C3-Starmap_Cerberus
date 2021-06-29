@@ -9,6 +9,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
@@ -26,7 +27,7 @@
                      <VBox.margin>
                         <Insets bottom="5.0" top="10.0" />
                      </VBox.margin></Label>
-                  <ImageView fitHeight="150.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/logos/factions/CJF.png" />
                      </image>
@@ -34,11 +35,31 @@
                         <Insets bottom="5.0" top="5.0" />
                      </VBox.margin>
                   </ImageView>
-                  <ListView fx:id="lvDropleadAttacker" fixedCellSize="23.0" maxHeight="25.0" minHeight="25.0" onMouseClicked="#handleAttackerDropleadMouseClick" prefHeight="25.0" prefWidth="200.0" stylesheets="@../styles/MainFrameStyle.css" VBox.vgrow="NEVER">
+                  <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <ListView fx:id="lvDropleadAttacker" fixedCellSize="23.0" maxHeight="25.0" minHeight="25.0" onMouseClicked="#handleAttackerDropleadMouseClick" prefHeight="25.0" prefWidth="200.0" stylesheets="@../styles/MainFrameStyle.css" HBox.hgrow="ALWAYS" />
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/ranks/CW/SCapt.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/ranks/command.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </ImageView>
+                     </children>
                      <VBox.margin>
                         <Insets bottom="5.0" />
-                     </VBox.margin></ListView>
-                  <ListView fx:id="lvAttacker" onMouseClicked="#handleAttackerListMouseClick" stylesheets="@../styles/MainFrameStyle.css" />
+                     </VBox.margin>
+                  </HBox>
+                  <ListView fx:id="lvAttacker" onMouseClicked="#handleAttackerListMouseClick" stylesheets="@../styles/MainFrameStyle.css" VBox.vgrow="ALWAYS" />
                </children>
                <BorderPane.margin>
                   <Insets left="10.0" />
@@ -52,7 +73,7 @@
                      <VBox.margin>
                         <Insets bottom="5.0" top="10.0" />
                      </VBox.margin></Label>
-                  <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/logos/factions/LC.png" />
                      </image>
@@ -60,11 +81,31 @@
                         <Insets bottom="5.0" top="5.0" />
                      </VBox.margin>
                   </ImageView>
-                  <ListView fx:id="lvDropleadDefender" fixedCellSize="23.0" maxHeight="25.0" minHeight="25.0" onMouseClicked="#handleDefenderDropleadMouseClick" prefHeight="25.0" prefWidth="200.0" stylesheets="@../styles/MainFrameStyle.css" VBox.vgrow="NEVER">
-                     <VBox.margin>
+                  <HBox prefHeight="100.0" prefWidth="200.0">
+                     <children>
+                        <ListView fx:id="lvDropleadDefender" fixedCellSize="23.0" maxHeight="25.0" minHeight="25.0" onMouseClicked="#handleDefenderDropleadMouseClick" prefHeight="25.0" prefWidth="200.0" stylesheets="@../styles/MainFrameStyle.css" />
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/ranks/CJF/SCapt.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </ImageView>
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../images/ranks/command.png" />
+                           </image>
+                           <HBox.margin>
+                              <Insets left="5.0" />
+                           </HBox.margin>
+                        </ImageView>
+                     </children>
+                     <padding>
                         <Insets bottom="5.0" />
-                     </VBox.margin></ListView>
-                  <ListView fx:id="lvDefender" onMouseClicked="#handleDefenderListMouseClick" stylesheets="@../styles/MainFrameStyle.css" />
+                     </padding>
+                  </HBox>
+                  <ListView fx:id="lvDefender" onMouseClicked="#handleDefenderListMouseClick" stylesheets="@../styles/MainFrameStyle.css" VBox.vgrow="ALWAYS" />
                </children>
                <BorderPane.margin>
                   <Insets right="10.0" />
@@ -76,14 +117,28 @@
                <children>
                   <VBox alignment="CENTER" fillWidth="false" prefHeight="430.0" prefWidth="196.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <ImageView fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/planets/016.png" />
-                           </image>
-                           <VBox.margin>
-                              <Insets bottom="10.0" />
-                           </VBox.margin>
-                        </ImageView>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                           <children>
+                              <ImageView fitHeight="150.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../icons/attack.png" />
+                                 </image>
+                              </ImageView>
+                              <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/planets/016.png" />
+                                 </image>
+                                 <HBox.margin>
+                                    <Insets left="25.0" right="25.0" />
+                                 </HBox.margin>
+                              </ImageView>
+                              <ImageView fitHeight="150.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../icons/defend.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </HBox>
                         <Label styleClass="contentLabel" stylesheets="@../styles/MainFrameStyle.css" text="Terra">
                            <padding>
                               <Insets bottom="20.0" />
@@ -106,7 +161,7 @@
                         </Button>
                         <Button fx:id="btnKick" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" styleClass="contentButtonRed" stylesheets="@../styles/MainFrameStyle.css" text="Kick">
                            <VBox.margin>
-                              <Insets bottom="5.0" />
+                              <Insets bottom="35.0" />
                            </VBox.margin>
                            <opaqueInsets>
                               <Insets />
