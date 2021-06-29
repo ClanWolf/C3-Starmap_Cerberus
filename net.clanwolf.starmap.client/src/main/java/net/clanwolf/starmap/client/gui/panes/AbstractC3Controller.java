@@ -27,6 +27,7 @@
 package net.clanwolf.starmap.client.gui.panes;
 
 import javafx.animation.FadeTransition;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -61,33 +62,34 @@ public abstract class AbstractC3Controller implements Initializable, ActionCallB
 	private AnchorPane anchorPane;
 
 	private void createGeneralControls() {
+		Platform.runLater(() -> {
+			InputStream is = this.getClass().getResourceAsStream("/icons/alert.png");
+			Image image = new Image(is, 25, 25, false, false);
+			ImageView view = new ImageView(image);
 
-		InputStream is = this.getClass().getResourceAsStream("/icons/alert.png");
-		Image image = new Image(is, 25, 25, false, false);
-		ImageView view = new ImageView(image);
+			labelWarningIcon = new Label("", view);
+			labelWarningIcon.setLayoutX(505);
+			labelWarningIcon.setLayoutY(455);
+			labelWarningIcon.setVisible(false);
+			labelWarningIcon.setMouseTransparent(true);
 
-		labelWarningIcon = new Label("", view);
-		labelWarningIcon.setLayoutX(505);
-		labelWarningIcon.setLayoutY(455);
-		labelWarningIcon.setVisible(false);
-		labelWarningIcon.setMouseTransparent(true);
+			labelWarningText = new Label("");
+			labelWarningText.setLayoutX(548);
+			labelWarningText.setLayoutY(395);
+			labelWarningText.setPrefWidth(300);
+			labelWarningText.setPrefHeight(56);
+			labelWarningText.setVisible(true);
+			labelWarningText.setMouseTransparent(true);
 
-		labelWarningText = new Label("");
-		labelWarningText.setLayoutX(548);
-		labelWarningText.setLayoutY(395);
-		labelWarningText.setPrefWidth(300);
-		labelWarningText.setPrefHeight(56);
-		labelWarningText.setVisible(true);
-		labelWarningText.setMouseTransparent(true);
+			FadeTransition fadeTransition = new FadeTransition(Duration.millis(300), labelWarningText);
+			fadeTransition.setFromValue(1.0);
+			fadeTransition.setToValue(0.0);
+			fadeTransition.setAutoReverse(true);
+			fadeTransition.setCycleCount(FadeTransition.INDEFINITE);
+			fadeTransition.play();
 
-		FadeTransition fadeTransition = new FadeTransition(Duration.millis(300), labelWarningText);
-		fadeTransition.setFromValue(1.0);
-		fadeTransition.setToValue(0.0);
-		fadeTransition.setAutoReverse(true);
-		fadeTransition.setCycleCount(FadeTransition.INDEFINITE);
-		fadeTransition.play();
-
-		anchorPane.getChildren().addAll(labelWarningIcon, labelWarningText);
+			anchorPane.getChildren().addAll(labelWarningIcon, labelWarningText);
+		});
 	}
 
 	/**
@@ -97,7 +99,7 @@ public abstract class AbstractC3Controller implements Initializable, ActionCallB
 
 	protected void setWarningOn(boolean setModal) {
 		if (!warningActive) {
-			labelWarningIcon.setVisible(true);
+			Platform.runLater(() -> { labelWarningIcon.setVisible(true); });
 			warningOnAction();
 			warningActive = true;
 		}
@@ -108,7 +110,7 @@ public abstract class AbstractC3Controller implements Initializable, ActionCallB
 	}
 
 	protected void setWarningOff() {
-		labelWarningIcon.setVisible(false);
+		Platform.runLater(() -> { labelWarningIcon.setVisible(false); });
 		warningOffAction();
 		warningActive = false;
 		AbstractC3Pane currentPane = Nexus.getCurrentlyOpenedPane();

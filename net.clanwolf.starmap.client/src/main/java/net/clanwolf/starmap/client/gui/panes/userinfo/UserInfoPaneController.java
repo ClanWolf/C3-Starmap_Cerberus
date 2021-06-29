@@ -448,7 +448,9 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 	 */
 	@Override
 	public void warningOnAction() {
-		buttonLogout.setDisable(false);
+		Platform.runLater(() -> {
+			buttonLogout.setDisable(false);
+		});
 	}
 
 	/**
@@ -456,6 +458,8 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 	 */
 	@Override
 	public void warningOffAction() {
-		buttonLogout.setDisable(true);
+		Platform.runLater(() -> {
+			buttonLogout.setDisable(true);
+		});
 	}
 }

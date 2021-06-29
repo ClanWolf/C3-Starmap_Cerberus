@@ -846,18 +846,22 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			}
 			buttonsAreMoving = false;
 			if (adminMenuActive) {
-				rolePlayButton.setVisible(false);
-				mapButton.setVisible(false);
-				attackButton.setVisible(false);
-				chatButton.setVisible(false);
-//				industryButton.setVisible(false);
-				logButton.setVisible(false);
+				Platform.runLater(() -> {
+					rolePlayButton.setVisible(false);
+					mapButton.setVisible(false);
+					attackButton.setVisible(false);
+					chatButton.setVisible(false);
+					//				industryButton.setVisible(false);
+					logButton.setVisible(false);
+				});
 			} else {
-				storyEditorButton.setVisible(false);
-				adminPaneButton.setVisible(false);
-				renameMeButton3.setVisible(false);
-				renameMeButton4.setVisible(false);
-				renameMeButton5.setVisible(false);
+				Platform.runLater(() -> {
+					storyEditorButton.setVisible(false);
+					adminPaneButton.setVisible(false);
+					renameMeButton3.setVisible(false);
+					renameMeButton4.setVisible(false);
+					renameMeButton5.setVisible(false);
+				});
 			}
 		};
 		Thread t = new Thread(r);

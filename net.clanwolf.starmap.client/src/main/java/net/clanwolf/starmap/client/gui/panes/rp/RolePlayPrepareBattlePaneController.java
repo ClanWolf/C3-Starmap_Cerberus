@@ -53,10 +53,10 @@ import java.util.ResourceBundle;
  */
 public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayController implements ActionCallBackListener {
 
-	private HashMap<Long, Boolean> animationPlayedMap = new HashMap<>();
-	private RolePlayCharacterDTO dummy = new RolePlayCharacterDTO();
+//	private HashMap<Long, Boolean> animationPlayedMap = new HashMap<>();
+	private final RolePlayCharacterDTO dummy = new RolePlayCharacterDTO();
 	private boolean iamdroplead = false;
-	private HashMap<Long, Long> characterRoleMap = new HashMap<>();
+	private final HashMap<Long, Long> characterRoleMap = new HashMap<>();
 
 	@FXML
 	private AnchorPane anchorPane;
@@ -84,23 +84,21 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		btnPromote.setText("Promote");
 
 		RolePlayCharacterDTO selectedChar = lvAttacker.getSelectionModel().getSelectedItem();
-		Long role = characterRoleMap.get(selectedChar.getId());
-
 		if (selectedChar != null && !selectedChar.getName().equals("...")) {
+//			Long role = characterRoleMap.get(selectedChar.getId());
 			btnToLeft.setDisable(true);
 			btnToRight.setDisable(!iamdroplead);
 			btnKick.setDisable(!iamdroplead);
 			btnPromote.setDisable(!iamdroplead);
+			if (selectedChar.getName().equals(Nexus.getCurrentChar().getName())) {
+				btnKick.setDisable(true); // Can not kick myself
+			}
 		} else {
 			btnToLeft.setDisable(true);
 			btnToRight.setDisable(true);
 			btnKick.setDisable(true);
 			btnPromote.setDisable(true);
 		}
-		if (selectedChar.getName().equals(Nexus.getCurrentChar().getName())) {
-			btnKick.setDisable(true); // Can not kick myself
-		}
-		C3Logger.debug("Attackerlist Clicked");
 	}
 
 	@FXML
@@ -110,23 +108,21 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		btnPromote.setText("Degrade");
 
 		RolePlayCharacterDTO selectedChar = lvDropleadAttacker.getSelectionModel().getSelectedItem();
-		Long role = characterRoleMap.get(selectedChar.getId());
-
 		if (selectedChar != null && !selectedChar.getName().equals("...")) {
+//			Long role = characterRoleMap.get(selectedChar.getId());
 			btnToLeft.setDisable(true); // the droplead can not be switched while droplead, degrade first
 			btnToRight.setDisable(true); // the droplead can not be switched while droplead, degrade first
 			btnKick.setDisable(true); // the droplead can not be kicked while droplead, degrade first
 			btnPromote.setDisable(!iamdroplead);
+			if (selectedChar.getName().equals(Nexus.getCurrentChar().getName())) {
+				btnKick.setDisable(true); // Can not kick myself
+			}
 		} else {
 			btnToLeft.setDisable(true);
 			btnToRight.setDisable(true);
 			btnKick.setDisable(true);
 			btnPromote.setDisable(true);
 		}
-		if (selectedChar.getName().equals(Nexus.getCurrentChar().getName())) {
-			btnKick.setDisable(true); // Can not kick myself
-		}
-		C3Logger.debug("Attacker droplead Clicked");
 	}
 
 	@FXML
@@ -137,13 +133,15 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		btnPromote.setText("Promote");
 
 		RolePlayCharacterDTO selectedChar = lvDefender.getSelectionModel().getSelectedItem();
-		Long role = characterRoleMap.get(selectedChar.getId());
-
 		if (selectedChar != null && !selectedChar.getName().equals("...")) {
+			Long role = characterRoleMap.get(selectedChar.getId());
 			btnToLeft.setDisable(!iamdroplead);
 			btnToRight.setDisable(true);
 			btnKick.setDisable(!iamdroplead);
 			btnPromote.setDisable(!iamdroplead || role == 4L); // No promotion for players from 3rd factions
+			if (selectedChar.getName().equals(Nexus.getCurrentChar().getName())) {
+				btnKick.setDisable(true); // Can not kick myself
+			}
 		} else {
 			btnToLeft.setDisable(true);
 			btnToRight.setDisable(true);
@@ -151,10 +149,6 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 			btnPromote.setDisable(true);
 			btnPromote.setDisable(true);
 		}
-		if (selectedChar.getName().equals(Nexus.getCurrentChar().getName())) {
-			btnKick.setDisable(true); // Can not kick myself
-		}
-		C3Logger.debug("DefenderList Clicked");
 	}
 
 	@FXML
@@ -164,23 +158,21 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		btnPromote.setText("Degrade");
 
 		RolePlayCharacterDTO selectedChar = lvDropleadDefender.getSelectionModel().getSelectedItem();
-		Long role = characterRoleMap.get(selectedChar.getId());
-
 		if (selectedChar != null && !selectedChar.getName().equals("...")) {
+//			Long role = characterRoleMap.get(selectedChar.getId());
 			btnToLeft.setDisable(true); // the droplead can not be switched while droplead, degrade first
 			btnToRight.setDisable(true); // the droplead can not be switched while droplead, degrade first
 			btnKick.setDisable(true); // the droplead can not be kicked while droplead, degrade first
 			btnPromote.setDisable(!iamdroplead);
+			if (selectedChar.getName().equals(Nexus.getCurrentChar().getName())) {
+				btnKick.setDisable(true); // Can not kick myself
+			}
 		} else {
 			btnToLeft.setDisable(true);
 			btnToRight.setDisable(true);
 			btnKick.setDisable(true);
 			btnPromote.setDisable(true);
 		}
-		if (selectedChar.getName().equals(Nexus.getCurrentChar().getName())) {
-			btnKick.setDisable(true); // Can not kick myself
-		}
-		C3Logger.debug("Defender droplead Clicked");
 	}
 
 	public RolePlayPrepareBattlePaneController() {
@@ -190,6 +182,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 	public void addActionCallBackListeners() {
 		ActionManager.addActionCallbackListener(ACTIONS.START_ROLEPLAY, this);
 		ActionManager.addActionCallbackListener(ACTIONS.UPDATE_USERS_FOR_ATTACK, this);
+		ActionManager.addActionCallbackListener(ACTIONS.CHANGE_LANGUAGE, this);
 	}
 
 	@Override
@@ -206,6 +199,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		btnToLeft.setDisable(true);
 		btnToRight.setDisable(true);
 
+		setStrings();
 		C3Logger.info("Init ^^^^^------------------------------------------------------------------ WIESO KOMMEN WIR HIER ZWEIMAL REIN ---" + a.getAttackDTO().getId());
 	}
 
@@ -294,6 +288,10 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 	public boolean handleAction(ACTIONS action, ActionObject o) {
 		if(anchorPane != null && !anchorPane.isVisible()) return true;
 		switch (action) {
+			case CHANGE_LANGUAGE:
+				setStrings();
+				break;
+
 			case START_ROLEPLAY:
 				if(ROLEPLAYENTRYTYPES.C3_RP_STEP_V8 == o.getObject()) {
 					C3Logger.debug("RolePlayIntroPaneController -> START_ROLEPLAY");
@@ -309,7 +307,6 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 					BOAttack a = (BOAttack) o.getObject();
 					updateLists(a);
 				}
-				C3Logger.info("The userlist has changed. Update information on the listboxes. ");
 				break;
 			default:
 				break;
