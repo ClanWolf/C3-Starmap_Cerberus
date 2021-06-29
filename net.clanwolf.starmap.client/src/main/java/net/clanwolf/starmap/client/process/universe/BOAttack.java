@@ -46,6 +46,7 @@ public class BOAttack {
 		this.attackDTO = attackDTO;
 	}
 
+	@SuppressWarnings("unused")
 	public void setAttackDTO(AttackDTO a) {
 		this.attackDTO = a;
 	}
@@ -60,6 +61,7 @@ public class BOAttack {
 		Nexus.fireNetworkEvent(saveAttackState);
 	}
 
+	@SuppressWarnings("unused")
 	public void storeAttackCharacters(AttackCharacterDTO attackCharacterDTO) {
 		GameState saveAttackCharacterState = new GameState();
 		saveAttackCharacterState.setMode(GAMESTATEMODES.ATTACK_CHARACTER_SAVE);
@@ -69,6 +71,7 @@ public class BOAttack {
 		Nexus.fireNetworkEvent(saveAttackCharacterState);
 	}
 
+	@SuppressWarnings("unused")
 	public static boolean charHasAnActiveAttack() {
 		boolean charHasAnotherActiveAttack = false;
 		for (BOAttack a : Nexus.getBoUniverse().attackBOs) {
@@ -81,6 +84,7 @@ public class BOAttack {
 		return charHasAnotherActiveAttack;
 	}
 
+	@SuppressWarnings("unused")
 	public AttackDTO getAttackDTO() {
 		return attackDTO;
 	}
