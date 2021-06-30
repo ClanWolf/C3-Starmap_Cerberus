@@ -19,7 +19,7 @@
          <image>
             <Image url="@../images/gui/default_Step.png" />
          </image></ImageView>
-      <BorderPane prefHeight="200.0" prefWidth="200.0" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="55.0" AnchorPane.leftAnchor="64.0" AnchorPane.rightAnchor="14.0" AnchorPane.topAnchor="16.0">
+      <BorderPane maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="62.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="16.0">
          <left>
             <VBox alignment="TOP_CENTER" stylesheets="@../styles/MainFrameStyle.css" BorderPane.alignment="CENTER">
                <children>
@@ -140,9 +140,9 @@
                            </children>
                         </HBox>
                         <Label styleClass="contentLabel" stylesheets="@../styles/MainFrameStyle.css" text="Terra">
-                           <padding>
-                              <Insets bottom="20.0" />
-                           </padding>
+                           <VBox.margin>
+                              <Insets bottom="60.0" />
+                           </VBox.margin>
                         </Label>
                         <Button fx:id="btnToRight" mnemonicParsing="false" prefHeight="30.0" prefWidth="80.0" styleClass="contentButtonClean" stylesheets="@../styles/MainFrameStyle.css" text="&gt;">
                            <VBox.margin>
@@ -151,7 +151,7 @@
                         </Button>
                         <Button fx:id="btnToLeft" mnemonicParsing="false" prefHeight="30.0" prefWidth="80.0" styleClass="contentButtonClean" stylesheets="@../styles/MainFrameStyle.css" text="&lt;">
                            <VBox.margin>
-                              <Insets bottom="20.0" />
+                              <Insets bottom="50.0" />
                            </VBox.margin>
                         </Button>
                         <Button fx:id="btnPromote" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" styleClass="contentButtonBlue" stylesheets="@../styles/MainFrameStyle.css" text="Promote">
@@ -161,13 +161,12 @@
                         </Button>
                         <Button fx:id="btnKick" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" styleClass="contentButtonRed" stylesheets="@../styles/MainFrameStyle.css" text="Kick">
                            <VBox.margin>
-                              <Insets bottom="35.0" />
+                              <Insets />
                            </VBox.margin>
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
                         </Button>
-                        <Button fx:id="btnLeave" alignment="CENTER_RIGHT" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" styleClass="contentButtonYellow" stylesheets="@../styles/MainFrameStyle.css" text="Leave" />
                      </children>
                   </VBox>
                </children>
@@ -176,11 +175,25 @@
          <padding>
             <Insets bottom="10.0" />
          </padding>
+         <bottom>
+            <HBox alignment="CENTER" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="btnLeave" alignment="CENTER_RIGHT" contentDisplay="CENTER" minHeight="35.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="120.0" styleClass="contentButtonYellow" stylesheets="@../styles/MainFrameStyle.css" text="Leave" />
+                  <Button fx:id="btNext" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="35.0" mnemonicParsing="false" onAction="#handleOnActionBtPreview" prefHeight="35.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css" text="Weiter" HBox.hgrow="ALWAYS">
+                     <font>
+                        <Font size="12.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
+                  </Button>
+               </children>
+               <BorderPane.margin>
+                  <Insets top="10.0" />
+               </BorderPane.margin>
+            </HBox>
+         </bottom>
       </BorderPane>
-      <Button fx:id="btPreview" alignment="CENTER_RIGHT" layoutX="62.0" layoutY="451.0" maxHeight="-Infinity" maxWidth="778.0" minHeight="-Infinity" minWidth="778.0" mnemonicParsing="false" onAction="#handleOnActionBtPreview" prefHeight="36.0" prefWidth="778.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css" text="&gt;&gt; weiter &gt;&gt;">
-         <font>
-            <Font size="12.0" />
-         </font></Button>
     </children>
     <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />

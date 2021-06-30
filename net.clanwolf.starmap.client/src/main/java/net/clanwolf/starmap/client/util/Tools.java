@@ -26,9 +26,7 @@
  */
 package net.clanwolf.starmap.client.util;
 
-import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.DialogPane;
@@ -54,10 +52,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.TimeZone;
+import java.util.*;
 
 /**
  * Different methods for miscellanious tasks.
@@ -88,8 +83,7 @@ public final class Tools {
 	}
 
 	public static String getVersionNumber() {
-		String version = System.getProperty("version", "unknown");
-		return version;
+		return System.getProperty("version", "unknown");
 	}
 
 	/**
@@ -105,12 +99,10 @@ public final class Tools {
 	}
 
 	public static String getRomanNumber(int n) {
-		String seasonMetaPhase = "";
 		if (n > 20) {
 			throw new RuntimeException("Season number is too high!");
 		}
-		seasonMetaPhase = RomanNumber.toRoman(n);
-		return seasonMetaPhase;
+		return RomanNumber.toRoman(n);
 	}
 
 	public static void saveMapScreenshot(int width, int height, PannableCanvas canvas) {
@@ -119,8 +111,9 @@ public final class Tools {
 		try {
 			File file1 = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "history" + File.separator + "C3_Season" + Nexus.getCurrentSeason() + "_map.png");
 			File file2 = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "history" + File.separator + "C3_Season" + Nexus.getCurrentSeason() + "_Round" + Nexus.getCurrentRound() + "_" + Nexus.getCurrentChar() + "_map_history.png");
-			file1.mkdirs();
-			file2.mkdirs();
+			if (!file1.mkdirs()) {
+				C3Logger.error("Could not create history folder!");
+			}
 			BufferedImage bi = SwingFXUtils.fromFXImage(canvas.snapshot(null, wi), null);
 
 			final int screenshotWidth = 2500;       // For map dimension of 4000 x 4000
@@ -131,8 +124,8 @@ public final class Tools {
 			g.drawImage(bi, -(bi.getWidth() - screenshotWidth) / 2, -200, bi.getWidth(), bi.getHeight(),null);
 			g.dispose();
 
-			Image c3Icon = new Image(Tools.class.getResourceAsStream("/icons/C3_Icon2.png"));
-			Image hhIcon = new Image(Tools.class.getResourceAsStream("/icons/hammerhead.png"));
+			Image c3Icon = new Image(Objects.requireNonNull(Tools.class.getResourceAsStream("/icons/C3_Icon2.png")));
+			Image hhIcon = new Image(Objects.requireNonNull(Tools.class.getResourceAsStream("/icons/hammerhead.png")));
 			Graphics2D g2d = finaleImage.createGraphics();
 			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 			g2d.drawImage(SwingFXUtils.fromFXImage(c3Icon, null), 50, 1850, 100,100, null);
@@ -153,7 +146,6 @@ public final class Tools {
 			Date date = new Date(System.currentTimeMillis());
 			String sd = formatter.format(date);
 
-			FontMetrics fm = g2d.getFontMetrics();
 			g2d.setFont(new Font("Arial", Font.BOLD, 45));
 			g2d.setPaint(Color.WHITE);
 			g2d.drawString(s1, 50, 100);
@@ -175,6 +167,15 @@ public final class Tools {
 			g2d.setFont(new Font("Arial", Font.BOLD, 250));
 			g2d.setPaint(Color.CYAN);
 			g2d.drawString(Nexus.getCurrentRound() + "", 2100, 400);
+
+			// Add a border
+			g2d.setPaint(Color.GRAY);
+			g2d.setStroke(new BasicStroke(20));
+			g2d.drawLine(0, 0, 2500,0);
+			g2d.drawLine(0, 0, 0,2000);
+			g2d.drawLine(2500, 0, 2500,2000);
+			g2d.drawLine(0, 2000, 2500,2000);
+
 			g2d.dispose();
 
 			ImageIO.write(finaleImage ,"png", file1);

@@ -39,7 +39,7 @@
          </children>
       </VBox>
       <ProgressBar fx:id="TFSProgress" layoutX="173.0" layoutY="23.0" onMouseEntered="#handleTFSProgressEntered" onMouseExited="#handleTFSProgressExited" prefHeight="18.0" prefWidth="125.0" progress="0.56" visible="false" />
-      <Label fx:id="gameInfoLabel" layoutX="416.0" layoutY="30.0" mouseTransparent="true" prefHeight="20.0" prefWidth="212.0" />
+      <Label fx:id="gameInfoLabel" layoutX="422.0" layoutY="30.0" mouseTransparent="true" prefHeight="20.0" prefWidth="206.0" />
       <Label fx:id="terminalLabel" layoutX="574.0" layoutY="556.0" prefHeight="20.0" prefWidth="66.0" text="Terminal:" />
       <TextField fx:id="terminalPrompt" layoutX="639.0" layoutY="555.0" onKeyPressed="#handleTerminalEnterButton" prefHeight="20.0" prefWidth="305.0" styleClass="text" stylesheets="@../styles/MainFrameStyle.css" />
       <Label fx:id="helpLabel" layoutX="591.0" layoutY="581.0" onMouseClicked="#handleHelpMouseEventClick" prefHeight="20.0" prefWidth="12.0" text="Help" />

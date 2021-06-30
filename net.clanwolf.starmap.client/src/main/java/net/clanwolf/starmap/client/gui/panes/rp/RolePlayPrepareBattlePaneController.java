@@ -62,7 +62,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 	private AnchorPane anchorPane;
 
 	@FXML
-	private Button btPreview, btnKick, btnToRight, btnToLeft, btnPromote;
+	private Button btNext, btnKick, btnToRight, btnToLeft, btnPromote;
 
 	@FXML
 	private ListView<RolePlayCharacterDTO> lvDropleadAttacker;
@@ -198,6 +198,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		btnPromote.setDisable(true);
 		btnToLeft.setDisable(true);
 		btnToRight.setDisable(true);
+		btNext.setDisable(true);
 
 		setStrings();
 		C3Logger.info("Init ^^^^^------------------------------------------------------------------ WIESO KOMMEN WIR HIER ZWEIMAL REIN ---" + a.getAttackDTO().getId());
