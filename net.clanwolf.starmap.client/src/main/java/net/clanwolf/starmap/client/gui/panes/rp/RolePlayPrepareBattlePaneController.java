@@ -26,19 +26,28 @@
  */
 package net.clanwolf.starmap.client.gui.panes.rp;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.SequentialTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
+import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3RolePlayController;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
 import net.clanwolf.starmap.client.process.universe.BOAttack;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
+import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.transfer.dtos.AttackCharacterDTO;
 import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
@@ -46,6 +55,7 @@ import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 /**
@@ -57,12 +67,14 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 	private final RolePlayCharacterDTO dummy = new RolePlayCharacterDTO();
 	private boolean iamdroplead = false;
 	private final HashMap<Long, Long> characterRoleMap = new HashMap<>();
+	private boolean firstCreationDone = false;
+	private boolean creating = false;
 
 	@FXML
 	private AnchorPane anchorPane;
 
 	@FXML
-	private Button btNext, btnKick, btnToRight, btnToLeft, btnPromote;
+	private Button btNext, btnKick, btnToRight, btnToLeft, btnPromote, btnLeave;
 
 	@FXML
 	private ListView<RolePlayCharacterDTO> lvDropleadAttacker;
@@ -77,11 +89,26 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 	private ListView<RolePlayCharacterDTO> lvDefender;
 
 	@FXML
+	private ImageView backgroundImage, ivAttackerLogo, ivDefenderLogo, ivPlanet, ivAttackerRank, ivDefenderRank;
+
+	@FXML
+	private VBox vbLeft, vbRight;
+
+	@FXML
+	private HBox hbButtons;
+
+	@FXML
+	private AnchorPane apCenter;
+
+	@FXML
+	private Label lSystemName, lAttacker, lDefender;
+
+	@FXML
 	public void handleAttackerListMouseClick() {
 		lvDefender.getSelectionModel().clearSelection();
 		lvDropleadAttacker.getSelectionModel().clearSelection();
 		lvDropleadDefender.getSelectionModel().clearSelection();
-		btnPromote.setText("Promote");
+		btnPromote.setText(Internationalization.getString("C3_Lobby_Promote"));
 
 		RolePlayCharacterDTO selectedChar = lvAttacker.getSelectionModel().getSelectedItem();
 		if (selectedChar != null && !selectedChar.getName().equals("...")) {
@@ -105,7 +132,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 	public void handleAttackerDropleadMouseClick() {
 		lvAttacker.getSelectionModel().clearSelection();
 		lvDefender.getSelectionModel().clearSelection();
-		btnPromote.setText("Degrade");
+		btnPromote.setText(Internationalization.getString("C3_Lobby_Demote"));
 
 		RolePlayCharacterDTO selectedChar = lvDropleadAttacker.getSelectionModel().getSelectedItem();
 		if (selectedChar != null && !selectedChar.getName().equals("...")) {
@@ -130,7 +157,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		lvAttacker.getSelectionModel().clearSelection();
 		lvDropleadAttacker.getSelectionModel().clearSelection();
 		lvDropleadDefender.getSelectionModel().clearSelection();
-		btnPromote.setText("Promote");
+		btnPromote.setText(Internationalization.getString("C3_Lobby_Promote"));
 
 		RolePlayCharacterDTO selectedChar = lvDefender.getSelectionModel().getSelectedItem();
 		if (selectedChar != null && !selectedChar.getName().equals("...")) {
@@ -155,7 +182,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 	public void handleDefenderDropleadMouseClick() {
 		lvAttacker.getSelectionModel().clearSelection();
 		lvDefender.getSelectionModel().clearSelection();
-		btnPromote.setText("Degrade");
+		btnPromote.setText(Internationalization.getString("C3_Lobby_Demote"));
 
 		RolePlayCharacterDTO selectedChar = lvDropleadDefender.getSelectionModel().getSelectedItem();
 		if (selectedChar != null && !selectedChar.getName().equals("...")) {
@@ -183,6 +210,59 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		ActionManager.addActionCallbackListener(ACTIONS.START_ROLEPLAY, this);
 		ActionManager.addActionCallbackListener(ACTIONS.UPDATE_USERS_FOR_ATTACK, this);
 		ActionManager.addActionCallbackListener(ACTIONS.CHANGE_LANGUAGE, this);
+		ActionManager.addActionCallbackListener(ACTIONS.PANE_CREATION_FINISHED, this);
+		ActionManager.addActionCallbackListener(ACTIONS.PANE_DESTROY_CURRENT, this);
+		ActionManager.addActionCallbackListener(ACTIONS.PANE_CREATION_BEGINS, this);
+	}
+
+	private void buildGuiEffect() {
+		if (!creating) {
+			creating = true;
+			// Fade in transition 01 (Background)
+			FadeTransition fadeInTransition_01 = new FadeTransition(Duration.millis(80), backgroundImage);
+			fadeInTransition_01.setFromValue(0.0);
+			fadeInTransition_01.setToValue(1.0);
+			fadeInTransition_01.setCycleCount(3);
+
+			// Fade in transition 02 (LEFT)
+			FadeTransition fadeInTransition_02 = new FadeTransition(Duration.millis(40), vbLeft);
+			fadeInTransition_02.setFromValue(0.0);
+			fadeInTransition_02.setToValue(1.0);
+			fadeInTransition_02.setCycleCount(3);
+
+			// Fade in transition 03 (RIGHT)
+			FadeTransition fadeInTransition_03 = new FadeTransition(Duration.millis(40), vbRight);
+			fadeInTransition_03.setFromValue(0.0);
+			fadeInTransition_03.setToValue(1.0);
+			fadeInTransition_03.setCycleCount(3);
+
+			// Fade in transition 04 (CENTER)
+			FadeTransition fadeInTransition_04 = new FadeTransition(Duration.millis(40), apCenter);
+			fadeInTransition_04.setFromValue(0.0);
+			fadeInTransition_04.setToValue(1.0);
+			fadeInTransition_04.setCycleCount(3);
+
+			// Fade in transition 05 (Buttons)
+			FadeTransition fadeInTransition_05 = new FadeTransition(Duration.millis(40), hbButtons);
+			fadeInTransition_05.setFromValue(0.0);
+			fadeInTransition_05.setToValue(1.0);
+			fadeInTransition_05.setCycleCount(3);
+
+			// Transition sequence
+			SequentialTransition sequentialTransition = new SequentialTransition();
+			sequentialTransition.getChildren().addAll(fadeInTransition_01,
+					fadeInTransition_02,
+					fadeInTransition_03,
+					fadeInTransition_04,
+					fadeInTransition_05);
+			sequentialTransition.setCycleCount(1);
+			sequentialTransition.setOnFinished(event -> {
+				creating = false;
+				firstCreationDone = true;
+			});
+			sequentialTransition.play();
+			C3SoundPlayer.play("sound/fx/cursor_click_11.mp3", false);
+		}
 	}
 
 	@Override
@@ -200,7 +280,67 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		btnToRight.setDisable(true);
 		btNext.setDisable(true);
 
+		backgroundImage.setOpacity(0.0f);
+		vbLeft.setOpacity(0.0f);
+		vbRight.setOpacity(0.0f);
+		apCenter.setOpacity(0.0f);
+		hbButtons.setOpacity(0.0f);
+
+		lSystemName.setText(a.getStarSystemName());
+		String attackerShortName = Nexus.getBoUniverse().getFactionByID(a.getAttackerFactionId().longValue()).getShortName();
+		String defenderShortName = Nexus.getBoUniverse().getFactionByID(a.getDefenderFactionId().longValue()).getShortName();
+		lAttacker.setText(a.getAttackerFactionName() + " (" + attackerShortName + ")");
+		lDefender.setText(a.getDefenderFactionName() + " (" + defenderShortName + ")");
+
+		String attackerlogo = Nexus.getBoUniverse().getFactionByID(a.getAttackerFactionId().longValue()).getLogo();
+		Image imageAttackerLogo = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logos/factions/" + attackerlogo)));
+		String defenderlogo = Nexus.getBoUniverse().getFactionByID(a.getDefenderFactionId().longValue()).getLogo();
+		Image imageDefenderLogo = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logos/factions/" + defenderlogo)));
+		ivAttackerLogo.setImage(imageAttackerLogo);
+		ivDefenderLogo.setImage(imageDefenderLogo);
+		ivPlanet.setImage(Nexus.getBoUniverse().starSystemBOs.get(a.getStarSystemId()).getSystemImage());
+
+		String attackerRankName = "";
+		if (a.getAttackerFactionId().equals(36)) { // CW
+			attackerRankName = attackerRankName + "CW/SCapt.png";
+		} else if (a.getAttackerFactionId().equals(30)) { // CGB
+			attackerRankName = attackerRankName + "CGB/SCapt.png";
+		} else if (a.getAttackerFactionId().equals(32)) { // CJF
+			attackerRankName = attackerRankName + "CJF/SCapt.png";
+		} else if (a.getAttackerFactionId().equals(11)) { // LA
+			attackerRankName = attackerRankName + "LA/Hauptmann.png";
+		} else if (a.getAttackerFactionId().equals(7)) { // FRR
+			attackerRankName = attackerRankName + "FRR/Kapten.png";
+		} else if (a.getAttackerFactionId().equals(5)) { // DC
+			attackerRankName = attackerRankName + "DC/Tai-i.png";
+		}
+
+		String defenderRankName = "";
+		if (a.getDefenderFactionId().equals(36)) { // CW
+			defenderRankName = defenderRankName + "CW/SCapt.png";
+		} else if (a.getDefenderFactionId().equals(30)) { // CGB
+			defenderRankName = defenderRankName + "CGB/SCapt.png";
+		} else if (a.getDefenderFactionId().equals(32)) { // CJF
+			defenderRankName = defenderRankName + "CJF/SCapt.png";
+		} else if (a.getDefenderFactionId().equals(9)) { // LA
+			defenderRankName = defenderRankName + "LA/Hauptmann.png";
+		} else if (a.getDefenderFactionId().equals(7)) { // FRR
+			defenderRankName = defenderRankName + "FRR/Kapten.png";
+		} else if (a.getDefenderFactionId().equals(5)) { // DC
+			defenderRankName = defenderRankName + "DC/Tai-i.png";
+		}
+
+		if (!"".equals(attackerRankName)) {
+			Image attackerRank = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/ranks/" + attackerRankName)));
+			ivAttackerRank.setImage(attackerRank);
+		}
+		if (!"".equals(defenderRankName)) {
+			Image defenderRank = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/ranks/" + defenderRankName)));
+			ivDefenderRank.setImage(defenderRank);
+		}
+
 		setStrings();
+		buildGuiEffect();
 		C3Logger.info("Init ^^^^^------------------------------------------------------------------ WIESO KOMMEN WIR HIER ZWEIMAL REIN ---" + a.getAttackDTO().getId());
 	}
 
@@ -302,6 +442,28 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 				}
 				break;
 
+			case PANE_DESTROY_CURRENT:
+			case PANE_CREATION_BEGINS:
+				Platform.runLater(() -> {
+					backgroundImage.setOpacity(0.0f);
+					vbLeft.setOpacity(0.0f);
+					vbRight.setOpacity(0.0f);
+					apCenter.setOpacity(0.0f);
+					hbButtons.setOpacity(0.0f);
+				});
+				break;
+
+			case PANE_CREATION_FINISHED:
+				if (o.getObject() instanceof RolePlayBasicPane) {
+					AbstractC3Pane p = (AbstractC3Pane) o.getObject();
+					if ("AttackPane".equals(p.getPaneName())) {
+//						if (!firstCreationDone) {
+							Platform.runLater(this::buildGuiEffect);
+//						}
+					}
+				}
+				break;
+
 			case UPDATE_USERS_FOR_ATTACK:
 				C3Logger.info("The userlist has changed. Update information on the listboxes.");
 				if (o.getObject() instanceof BOAttack) {
@@ -318,7 +480,22 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 	@Override
 	public void setStrings() {
 		Platform.runLater(() -> {
+			// clear selection
+			lvAttacker.getSelectionModel().clearSelection();
+			lvDefender.getSelectionModel().clearSelection();
+			lvDropleadAttacker.getSelectionModel().clearSelection();
+			lvDropleadDefender.getSelectionModel().clearSelection();
+
 			// set strings
+			btnLeave.setText(Internationalization.getString("C3_Lobby_Leave"));
+			btNext.setText(Internationalization.getString("C3_Lobby_Next"));
+			btnPromote.setText(Internationalization.getString("C3_Lobby_Promote"));
+
+			BOAttack a = Nexus.getCurrentAttackOfUser();
+			String attackerShortName = Nexus.getBoUniverse().getFactionByID(a.getAttackerFactionId().longValue()).getShortName();
+			String defenderShortName = Nexus.getBoUniverse().getFactionByID(a.getDefenderFactionId().longValue()).getShortName();
+			lAttacker.setText(a.getAttackerFactionName() + " (" + attackerShortName + ")");
+			lDefender.setText(a.getDefenderFactionName() + " (" + defenderShortName + ")");
 		});
 	}
 

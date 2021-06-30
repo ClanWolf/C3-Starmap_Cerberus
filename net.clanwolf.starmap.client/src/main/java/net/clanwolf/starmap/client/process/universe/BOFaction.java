@@ -27,6 +27,7 @@
 package net.clanwolf.starmap.client.process.universe;
 
 import javafx.scene.shape.Path;
+import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.transfer.dtos.FactionDTO;
 import org.kynosarges.tektosyne.geometry.PointD;
 
@@ -38,39 +39,59 @@ public class BOFaction {
 	private Path backgroundPath;
 	private ArrayList<PointD[]> voronoiRegions = new ArrayList<>();
 
+	@SuppressWarnings("unused")
 	public ArrayList<PointD[]> getVoronoiRegions() {
 		return voronoiRegions;
 	}
 
+	@SuppressWarnings("unused")
 	public void setVoronoiRegions(ArrayList<PointD[]> voronoiRegions) {
 		this.voronoiRegions = voronoiRegions;
 	}
 
+	@SuppressWarnings("unused")
 	public void addVoronoiRegion(PointD[] voronoiRegion) {
 		this.voronoiRegions.add(voronoiRegion);
 	}
 
+	@SuppressWarnings("unused")
 	public Path getBackgroundPath() {
 		return backgroundPath;
 	}
 
+	@SuppressWarnings("unused")
 	public void setBackgroundPath(Path backgroundPath) {
 		this.backgroundPath = backgroundPath;
 	}
 
+	@SuppressWarnings("unused")
 	public BOFaction(FactionDTO factionDTO) {
 		this.factionDTO = factionDTO;
 	}
 
+	@SuppressWarnings("unused")
 	public String getColor() { return factionDTO.getColor(); }
 
+	@SuppressWarnings("unused")
 	public String getLogo() { return factionDTO.getLogo(); }
 
+	@SuppressWarnings("unused")
 	public String getShortName() { return factionDTO.getShortName(); }
 
+	@SuppressWarnings("unused")
 	public String getName() { return factionDTO.getName_en(); }
 
-	public Long getID() {return factionDTO.getId();}
+	@SuppressWarnings("unused")
+	public String getLocalizedName() {
+		if ("en".equals(Internationalization.getLanguage())) {
+			return factionDTO.getName_en();
+		} else {
+			return factionDTO.getName_de();
+		}
+	}
+
+	@SuppressWarnings("unused")
+	public Long getID() { return factionDTO.getId();}
 
 	@Override
 	public String toString() {

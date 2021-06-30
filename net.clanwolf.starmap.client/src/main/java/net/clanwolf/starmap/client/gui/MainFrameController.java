@@ -1140,7 +1140,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		rolePlayPane.setCacheHint(CacheHint.SPEED);
 		rolePlayPane.getController().addActionCallBackListeners();
 
-		attackPane = new RolePlayBasicPane();
+		attackPane = new RolePlayBasicPane("AttackPane");
 		attackPane.setShowsMouseFollow(false);
 		attackPane.setShowsPlanetRotation(false);
 		attackPane.setCache(true);

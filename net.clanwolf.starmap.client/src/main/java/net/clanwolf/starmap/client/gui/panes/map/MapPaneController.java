@@ -910,24 +910,12 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 			Platform.runLater(() -> {
 				//				String name = boUniverse.factionBOs.get(sys.getAffiliation()).getName();
-				//				String shortName = boUniverse.factionBOs.get(sys.getAffiliation()).getShortName();
 				//				String color = boUniverse.factionBOs.get(sys.getAffiliation()).getColor();
+				//				String shortName = boUniverse.factionBOs.get(sys.getAffiliation()).getShortName();
 				String logo = boUniverse.factionBOs.get(sys.getAffiliation()).getLogo();
-				Image imagePlanet;
-				String systemImageName = String.format("%03d", Integer.parseInt(sys.getSystemImageName()));
-				try {
-					//					C3Logger.debug("Planet image: /images/planets/" + systemImageName + ".png");
-					//					C3Logger.debug("SystemImageName from DB: " + systemImageName);
-					imagePlanet = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/planets/" + systemImageName + ".png")));
-				} catch (Exception e) {
-					//e.printStackTrace();
-					C3Logger.info("Planet picture not found! Consider adding a fitting image for id: " + systemImageName);
-					imagePlanet = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/planets/000_default.png")));
-				}
-				C3Logger.debug("Looking for faction logo: /images/logos/factions/" + logo);
 				Image imageFaction = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logos/factions/" + logo)));
 
-				labelSystemImage.setImage(imagePlanet);
+				labelSystemImage.setImage(sys.getSystemImage());
 				labelSystemName.setText(sys.getName());
 				labelFactionImage.setImage(imageFaction);
 				Double x = sys.getX();
@@ -1123,21 +1111,18 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			case PANE_DESTROY_CURRENT:
 			case PANE_CREATION_BEGINS:
 				if (o.getObject() instanceof AbstractC3Pane) {
-					AbstractC3Pane p = (AbstractC3Pane) o.getObject();
-					//if ("MapPane".equals(p.getPaneName())) {
-						Platform.runLater(() -> {
-							starMapPane.setOpacity(0.0f);
-							buttonBackground.setOpacity(0.0f);
-							mapButton01.setOpacity(0.0f);
-							mapButton02.setOpacity(0.0f);
-							mapButton03.setOpacity(0.0f);
-							//				mapButton04.setOpacity(0.0f);
-							//				mapButton05.setOpacity(0.0f);
-							mapButton06.setOpacity(0.0f);
-							paneSystemDetail.setOpacity(0.0f);
-							paneJumpshipDetail.setOpacity(0.0f);
-						});
-					//}
+					Platform.runLater(() -> {
+						starMapPane.setOpacity(0.0f);
+						buttonBackground.setOpacity(0.0f);
+						mapButton01.setOpacity(0.0f);
+						mapButton02.setOpacity(0.0f);
+						mapButton03.setOpacity(0.0f);
+						//				mapButton04.setOpacity(0.0f);
+						//				mapButton05.setOpacity(0.0f);
+						mapButton06.setOpacity(0.0f);
+						paneSystemDetail.setOpacity(0.0f);
+						paneJumpshipDetail.setOpacity(0.0f);
+					});
 				}
 				break;
 

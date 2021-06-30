@@ -99,6 +99,15 @@ public class BOAttack {
 	public Long getStarSystemId() { return attackDTO.getStarSystemID(); }
 
 	@SuppressWarnings("unused")
+	public String getStarSystemName() { return Nexus.getBoUniverse().starSystemBOs.get(attackDTO.getStarSystemID()).getName(); }
+
+	@SuppressWarnings("unused")
+	public String getAttackerFactionName() { return Nexus.getBoUniverse().getFactionByID((getAttackerFactionId().longValue())).getLocalizedName(); }
+
+	@SuppressWarnings("unused")
+	public String getDefenderFactionName() { return Nexus.getBoUniverse().getFactionByID(attackDTO.getFactionID_Defender()).getLocalizedName(); }
+
+	@SuppressWarnings("unused")
 	public Long getAttackedFromStarSystem() { return attackDTO.getAttackedFromStarSystemID(); }
 
 	@SuppressWarnings("unused")

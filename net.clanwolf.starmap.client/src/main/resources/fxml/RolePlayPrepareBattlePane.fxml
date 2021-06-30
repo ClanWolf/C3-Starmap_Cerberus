@@ -21,13 +21,13 @@
          </image></ImageView>
       <BorderPane maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="4.0" AnchorPane.leftAnchor="62.0" AnchorPane.rightAnchor="12.0" AnchorPane.topAnchor="16.0">
          <left>
-            <VBox alignment="TOP_CENTER" stylesheets="@../styles/MainFrameStyle.css" BorderPane.alignment="CENTER">
+            <VBox fx:id="vbLeft" alignment="TOP_CENTER" stylesheets="@../styles/MainFrameStyle.css" BorderPane.alignment="CENTER">
                <children>
-                  <Label styleClass="contentLabel" stylesheets="@../styles/MainFrameStyle.css" text="Attacker">
+                  <Label fx:id="lAttacker" styleClass="contentLabel" stylesheets="@../styles/MainFrameStyle.css" text="Attacker">
                      <VBox.margin>
                         <Insets bottom="5.0" top="10.0" />
                      </VBox.margin></Label>
-                  <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="ivAttackerLogo" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/logos/factions/CJF.png" />
                      </image>
@@ -38,7 +38,7 @@
                   <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
                      <children>
                         <ListView fx:id="lvDropleadAttacker" fixedCellSize="23.0" maxHeight="25.0" minHeight="25.0" onMouseClicked="#handleAttackerDropleadMouseClick" prefHeight="25.0" prefWidth="200.0" stylesheets="@../styles/MainFrameStyle.css" HBox.hgrow="ALWAYS" />
-                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="ivAttackerRank" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../images/ranks/CW/SCapt.png" />
                            </image>
@@ -67,13 +67,13 @@
             </VBox>
          </left>
          <right>
-            <VBox alignment="TOP_CENTER" stylesheets="@../styles/MainFrameStyle.css" BorderPane.alignment="CENTER">
+            <VBox fx:id="vbRight" alignment="TOP_CENTER" stylesheets="@../styles/MainFrameStyle.css" BorderPane.alignment="CENTER">
                <children>
-                  <Label alignment="TOP_LEFT" styleClass="contentLabel" stylesheets="@../styles/MainFrameStyle.css" text="Defender">
+                  <Label fx:id="lDefender" alignment="TOP_LEFT" styleClass="contentLabel" stylesheets="@../styles/MainFrameStyle.css" text="Defender">
                      <VBox.margin>
                         <Insets bottom="5.0" top="10.0" />
                      </VBox.margin></Label>
-                  <ImageView fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fx:id="ivDefenderLogo" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/logos/factions/LC.png" />
                      </image>
@@ -83,18 +83,10 @@
                   </ImageView>
                   <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <ListView fx:id="lvDropleadDefender" fixedCellSize="23.0" maxHeight="25.0" minHeight="25.0" onMouseClicked="#handleDefenderDropleadMouseClick" prefHeight="25.0" prefWidth="200.0" stylesheets="@../styles/MainFrameStyle.css" />
-                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                        <ListView fx:id="lvDropleadDefender" fixedCellSize="23.0" maxHeight="25.0" minHeight="25.0" onMouseClicked="#handleDefenderDropleadMouseClick" prefHeight="25.0" prefWidth="200.0" stylesheets="@../styles/MainFrameStyle.css" HBox.hgrow="ALWAYS" />
+                        <ImageView fx:id="ivDefenderRank" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../images/ranks/CJF/SCapt.png" />
-                           </image>
-                           <HBox.margin>
-                              <Insets left="5.0" />
-                           </HBox.margin>
-                        </ImageView>
-                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
-                           <image>
-                              <Image url="@../images/ranks/command.png" />
                            </image>
                            <HBox.margin>
                               <Insets left="5.0" />
@@ -113,7 +105,7 @@
             </VBox>
          </right>
          <center>
-            <AnchorPane BorderPane.alignment="CENTER">
+            <AnchorPane fx:id="apCenter" BorderPane.alignment="CENTER">
                <children>
                   <VBox alignment="CENTER" fillWidth="false" prefHeight="430.0" prefWidth="196.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
@@ -124,7 +116,7 @@
                                     <Image url="@../icons/attack.png" />
                                  </image>
                               </ImageView>
-                              <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="ivPlanet" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/planets/016.png" />
                                  </image>
@@ -139,7 +131,7 @@
                               </ImageView>
                            </children>
                         </HBox>
-                        <Label styleClass="contentLabel" stylesheets="@../styles/MainFrameStyle.css" text="Terra">
+                        <Label fx:id="lSystemName" styleClass="contentLabel" stylesheets="@../styles/MainFrameStyle.css" text="Terra">
                            <VBox.margin>
                               <Insets bottom="60.0" />
                            </VBox.margin>
@@ -176,7 +168,7 @@
             <Insets bottom="10.0" />
          </padding>
          <bottom>
-            <HBox alignment="CENTER" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <HBox fx:id="hbButtons" alignment="CENTER" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
                   <Button fx:id="btnLeave" alignment="CENTER_RIGHT" contentDisplay="CENTER" minHeight="35.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="120.0" styleClass="contentButtonYellow" stylesheets="@../styles/MainFrameStyle.css" text="Leave" />
                   <Button fx:id="btNext" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="35.0" mnemonicParsing="false" onAction="#handleOnActionBtPreview" prefHeight="35.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css" text="Weiter" HBox.hgrow="ALWAYS">

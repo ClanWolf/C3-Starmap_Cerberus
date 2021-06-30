@@ -35,8 +35,11 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import net.clanwolf.starmap.client.gui.panes.map.Config;
 import net.clanwolf.starmap.client.nexus.Nexus;
+import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.transfer.dtos.StarSystemDataDTO;
 import org.kynosarges.tektosyne.geometry.PointD;
+
+import java.util.Objects;
 
 public class BOStarSystem {
 
@@ -199,6 +202,19 @@ public class BOStarSystem {
 
 	@SuppressWarnings("unused")
 	public String getSystemImageName() { return hh_starSystemDataDTO.getStarSystemID().getSystemImageName(); }
+
+	@SuppressWarnings("unused")
+	public Image getSystemImage() {
+		Image imagePlanet;
+		String systemImageName = String.format("%03d", Integer.parseInt(hh_starSystemDataDTO.getStarSystemID().getSystemImageName()));
+		try {
+			imagePlanet = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/planets/" + systemImageName + ".png")));
+		} catch (Exception e) {
+			C3Logger.info("Planet picture not found! Consider adding a fitting image for id: " + systemImageName);
+			imagePlanet = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/planets/000_default.png")));
+		}
+		return imagePlanet;
+	}
 
 	@SuppressWarnings("unused")
 	public void setCurrentlyUnderAttack(boolean b) {
