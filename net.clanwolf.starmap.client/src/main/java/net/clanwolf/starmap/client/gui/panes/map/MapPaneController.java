@@ -46,6 +46,10 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextBoundsType;
 import javafx.util.Duration;
 import net.clanwolf.starmap.client.action.*;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
@@ -396,7 +400,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 						Circle starSystemCapitalCircle = new Circle(12);
 						starSystemCapitalCircle.setStrokeWidth(3.0);
 						starSystemCapitalCircle.setId(starSystem.getId().toString() + "_CapitalMarker");
-						starSystemCapitalCircle.setStroke(c.deriveColor(1, 1, 1, 0.95));
+						starSystemCapitalCircle.setStroke(c.deriveColor(1, 1, 1, 0.75));
 						starSystemCapitalCircle.setFill(c.deriveColor(1, 1, 1, 0.0));
 						starSystemCapitalCircle.setVisible(true);
 						starSystemCapitalCircle.toBack();
@@ -406,28 +410,67 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					}
 
 					// Industrial worlds
+					ImageView industryImage = null;
 					if (starSystem.getType().equals(1L)) {
 						// This is an industrial world
-						ImageView industryImage = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/icon_industry.png"))));
+						industryImage = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/icon_industry.png"))));
 						industryImage.setId(starSystem.getName() + "_industrialMarker");
 						industryImage.setPreserveRatio(true);
 						industryImage.setFitWidth(12);
 						industryImage.setCacheHint(CacheHint.QUALITY);
 						industryImage.setSmooth(false);
-						industryImage.setTranslateX(starSystem.getScreenX() + 7);
-						industryImage.setTranslateY(starSystem.getScreenY() - 6);
 						industryImage.setMouseTransparent(true);
 						industryImage.setOpacity(0.9d);
 						industryImage.toFront();
 						industryImage.setVisible(true);
+						industryImage.setMouseTransparent(true);
+						industryImage.setLayoutX(20);
+						industryImage.setLayoutY(20);
 						starSystem.setIndustryMarker(industryImage);
-						canvas.getChildren().add(industryImage);
 					}
 
+					// add level indicator
+					Rectangle bgBox = new Rectangle();
+					bgBox.setStrokeWidth(0.8);
+					bgBox.setStroke(Color.BLACK);
+					bgBox.setFill(Color.WHITE);
+					bgBox.setWidth(5);
+					bgBox.setHeight(7);
+					bgBox.setLayoutX(0);
+					bgBox.setLayoutY(0);
+					bgBox.toBack();
+
+					Text starSystemLevelLabel = new Text();
+					starSystemLevelLabel.setId(name + "_Level");
+					starSystemLevelLabel.setCacheHint(CacheHint.SCALE);
+					starSystemLevelLabel.setFont(Font.font("Arial", FontWeight.BOLD, 5));
+					starSystemLevelLabel.setFill(Color.BLACK);
+					starSystemLevelLabel.setStrokeWidth(0);
+					starSystemLevelLabel.setStroke(Color.BLACK);
+					starSystemLevelLabel.setBoundsType(TextBoundsType.LOGICAL_VERTICAL_CENTER);
+					starSystemLevelLabel.setText(starSystem.getLevel() + "");
+					starSystemLevelLabel.setMouseTransparent(true);
+					starSystemLevelLabel.setLayoutX(1.2);
+					starSystemLevelLabel.setLayoutY(5.4);
+					starSystemLevelLabel.toFront();
+
+					Pane levelLabel = new Pane();
+					levelLabel.setPadding(new Insets(0,0,0,0));
+					levelLabel.getChildren().add(0, bgBox);
+					levelLabel.getChildren().add(1, starSystemLevelLabel);
+					levelLabel.setLayoutX(20);
+					levelLabel.setLayoutY(20);
+
+					// stack star system layers to stackpane
 					stackPane.getChildren().add(1, starSystemCircle);
 					starSystemCircle.toFront();
 
-					starSystemGroup.getChildren().add(stackPane);
+					starSystemGroup.getChildren().add(0, levelLabel);
+					starSystemGroup.getChildren().add(1, stackPane);
+					if (industryImage != null) {
+						starSystemGroup.getChildren().add(2, industryImage);
+					}
+					levelLabel.toFront();
 					starSystemGroup.setTranslateX(x);
 					starSystemGroup.setTranslateY(y);
 					starSystemGroup.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMouseClickedEventHandler());
@@ -856,12 +899,21 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		// in order for the stackpane to have an actual size.
 		// Otherwise StarSystemGroups appear off from their real coordinates.
 		// Moved slightly to right and to the bottom
-		for (BOStarSystem ss : boUniverse.starSystemBOs.values()) {
-			StackPane sp = ss.getStarSystemStackPane();
-			Group g = ss.getStarSystemGroup();
-			g.setLayoutX(-sp.getWidth() / 2);
-			g.setLayoutY(-sp.getHeight() / 2);
-		}
+		Platform.runLater(() -> {
+			for (BOStarSystem ss : boUniverse.starSystemBOs.values()) {
+				StackPane sp = ss.getStarSystemStackPane();
+				Group g = ss.getStarSystemGroup();
+				g.setLayoutX(-sp.getWidth() / 2);
+				g.setLayoutY(-sp.getHeight() / 2);
+
+//				g.getChildren().get(0).setLayoutX(-g.getBoundsInParent().getWidth() / 2 - 4); // Level width
+//				g.getChildren().get(0).setLayoutY(-g.getBoundsInParent().getHeight() / 2); // Level height
+//				if (g.getChildren().size() > 2) {
+//					g.getChildren().get(2).setLayoutX(g.getBoundsInParent().getWidth() / 2 + 10); // IndustryImage width
+//					g.getChildren().get(2).setLayoutY(g.getBoundsInParent().getHeight() / 2 - 4); // IndustryImage height
+//				}
+			}
+		});
 	}
 
 	public void hideSystemDetail() {
