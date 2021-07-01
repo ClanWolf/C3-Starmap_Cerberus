@@ -101,7 +101,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 	private AnchorPane apCenter;
 
 	@FXML
-	private Label lSystemName, lAttacker, lDefender;
+	private Label lSystemName, lAttacker, lDefender, lAttackerShortname, lDefenderShortname;
 
 	@FXML
 	public void handleAttackerListMouseClick() {
@@ -289,8 +289,10 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		lSystemName.setText(a.getStarSystemName());
 		String attackerShortName = Nexus.getBoUniverse().getFactionByID(a.getAttackerFactionId().longValue()).getShortName();
 		String defenderShortName = Nexus.getBoUniverse().getFactionByID(a.getDefenderFactionId().longValue()).getShortName();
-		lAttacker.setText(a.getAttackerFactionName() + " (" + attackerShortName + ")");
-		lDefender.setText(a.getDefenderFactionName() + " (" + defenderShortName + ")");
+		lAttacker.setText(a.getAttackerFactionName());
+		lAttackerShortname.setText("(" + attackerShortName + ")");
+		lDefender.setText(a.getDefenderFactionName());
+		lDefenderShortname.setText("(" + defenderShortName + ")");
 
 		String attackerlogo = Nexus.getBoUniverse().getFactionByID(a.getAttackerFactionId().longValue()).getLogo();
 		Image imageAttackerLogo = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logos/factions/" + attackerlogo)));
@@ -494,8 +496,10 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 			BOAttack a = Nexus.getCurrentAttackOfUser();
 			String attackerShortName = Nexus.getBoUniverse().getFactionByID(a.getAttackerFactionId().longValue()).getShortName();
 			String defenderShortName = Nexus.getBoUniverse().getFactionByID(a.getDefenderFactionId().longValue()).getShortName();
-			lAttacker.setText(a.getAttackerFactionName() + " (" + attackerShortName + ")");
-			lDefender.setText(a.getDefenderFactionName() + " (" + defenderShortName + ")");
+			lAttacker.setText(a.getAttackerFactionName());
+			lAttackerShortname.setText("(" + attackerShortName + ")");
+			lDefender.setText(a.getDefenderFactionName());
+			lDefenderShortname.setText("(" + defenderShortName + ")");
 		});
 	}
 

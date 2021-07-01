@@ -26,7 +26,6 @@
  */
 package net.clanwolf.starmap.client.process.universe;
 
-import javafx.collections.transformation.SortedList;
 import net.clanwolf.starmap.client.gui.panes.map.tools.GraphManager;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.transfer.dtos.*;
@@ -48,7 +47,7 @@ public class BOUniverse {
 	public HashMap<String, BOFaction> factionBOs = new HashMap<>();
 	public HashMap<String, BOJumpship> jumpshipBOs = new HashMap<>();
 	public ArrayList<BOAttack> attackBOs = new ArrayList<>();
-	public HashMap<Long, ArrayList<RoutePointDTO>> routesList = new HashMap<Long, ArrayList<RoutePointDTO>>();
+	public HashMap<Long, ArrayList<RoutePointDTO>> routesList = new HashMap<>();
 
 	public TreeSet<BOJumpship> jumpshipListSorted = null;
 
@@ -129,10 +128,10 @@ public class BOUniverse {
 	}
 
 	public ArrayList<BOFaction> getFactionList(){
-		return new ArrayList<BOFaction>(factionBOs.values());
+		return new ArrayList<>(factionBOs.values());
 	}
 
-	public ArrayList<BOJumpship> getJumpshipList() { return new ArrayList<BOJumpship>(jumpshipBOs.values()); }
+	public ArrayList<BOJumpship> getJumpshipList() { return new ArrayList<>(jumpshipBOs.values()); }
 
 	public BOFaction getFactionByID(Long id){
 		for(BOFaction faction : Nexus.getBoUniverse().getFactionList()){

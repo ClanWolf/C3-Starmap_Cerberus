@@ -107,6 +107,9 @@ public class StarSystemDataPOJO extends Pojo {
 	@Column(name = "ActiveInMetaPhase")
 	private Long activeInMetaPhase;
 
+	@Column(name = "Level")
+	private Long level;
+
 	@SuppressWarnings("unused")
 	public Long getId() {
 		return id;
@@ -315,5 +318,15 @@ public class StarSystemDataPOJO extends Pojo {
 	@SuppressWarnings("unused")
 	public void setActiveInMetaPhase(Long activeInMetaPhase) {
 		this.activeInMetaPhase = activeInMetaPhase;
+	}
+
+	@SuppressWarnings("unused")
+	public Long getLevel() {
+		return level;
+	}
+
+	@SuppressWarnings("unused")
+	public void setLevel(Long level) {
+		this.level = level;
 	}
 }

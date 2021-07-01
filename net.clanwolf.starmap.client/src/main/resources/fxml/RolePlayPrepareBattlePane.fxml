@@ -25,14 +25,19 @@
                <children>
                   <Label fx:id="lAttacker" styleClass="contentLabel" stylesheets="@../styles/MainFrameStyle.css" text="Attacker">
                      <VBox.margin>
-                        <Insets bottom="5.0" top="10.0" />
+                        <Insets top="10.0" />
                      </VBox.margin></Label>
+                  <Label fx:id="lAttackerShortname" styleClass="contentLabel" stylesheets="@../styles/MainFrameStyle.css" text="Label">
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </Label>
                   <ImageView fx:id="ivAttackerLogo" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/logos/factions/CJF.png" />
                      </image>
                      <VBox.margin>
-                        <Insets bottom="5.0" top="5.0" />
+                        <Insets bottom="10.0" top="5.0" />
                      </VBox.margin>
                   </ImageView>
                   <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
@@ -56,7 +61,7 @@
                         </ImageView>
                      </children>
                      <VBox.margin>
-                        <Insets bottom="5.0" />
+                        <Insets bottom="10.0" />
                      </VBox.margin>
                   </HBox>
                   <ListView fx:id="lvAttacker" onMouseClicked="#handleAttackerListMouseClick" stylesheets="@../styles/MainFrameStyle.css" VBox.vgrow="ALWAYS" />
@@ -71,14 +76,19 @@
                <children>
                   <Label fx:id="lDefender" alignment="TOP_LEFT" styleClass="contentLabel" stylesheets="@../styles/MainFrameStyle.css" text="Defender">
                      <VBox.margin>
-                        <Insets bottom="5.0" top="10.0" />
+                        <Insets top="10.0" />
                      </VBox.margin></Label>
+                  <Label fx:id="lDefenderShortname" styleClass="contentLabel" stylesheets="@../styles/MainFrameStyle.css" text="Label">
+                     <VBox.margin>
+                        <Insets bottom="10.0" />
+                     </VBox.margin>
+                  </Label>
                   <ImageView fx:id="ivDefenderLogo" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/logos/factions/LC.png" />
                      </image>
                      <VBox.margin>
-                        <Insets bottom="5.0" top="5.0" />
+                        <Insets bottom="10.0" top="5.0" />
                      </VBox.margin>
                   </ImageView>
                   <HBox prefHeight="100.0" prefWidth="200.0">
@@ -94,7 +104,7 @@
                         </ImageView>
                      </children>
                      <padding>
-                        <Insets bottom="5.0" />
+                        <Insets bottom="10.0" />
                      </padding>
                   </HBox>
                   <ListView fx:id="lvDefender" onMouseClicked="#handleDefenderListMouseClick" stylesheets="@../styles/MainFrameStyle.css" VBox.vgrow="ALWAYS" />

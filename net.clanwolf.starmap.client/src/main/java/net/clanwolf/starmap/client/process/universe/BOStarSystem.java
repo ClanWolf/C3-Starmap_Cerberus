@@ -55,6 +55,11 @@ public class BOStarSystem {
 	private boolean isCurrentlyUnderAttack = false;
 
 	@SuppressWarnings("unused")
+	public Long getLevel() {
+		return hh_starSystemDataDTO.getLevel();
+	}
+
+	@SuppressWarnings("unused")
 	public Point2D getCoordinates() {
 		if (coord == null) {
 			coord = new Point2D(this.getScreenX(), this.getScreenY());
