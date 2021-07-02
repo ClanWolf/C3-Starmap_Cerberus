@@ -597,7 +597,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 						}
 					}
 
-					//js.getLevel();
+					// js.getLevel();
 
 					if (currentSystemID != null) {
 						ImageView jumpshipImage;
