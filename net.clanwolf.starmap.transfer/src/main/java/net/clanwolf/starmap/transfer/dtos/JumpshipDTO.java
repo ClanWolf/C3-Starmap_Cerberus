@@ -54,52 +54,77 @@ public class JumpshipDTO extends Dto {
 	//@JoinColumn(name = "JumpshipID")
 	private List<RoutePointDTO> routepointList = new ArrayList<>();
 
+//	@Column(name = "Level")
+	private Long level;
+
+	@SuppressWarnings("unused")
 	public Long getId() {
 		return id;
 	}
 
+	@SuppressWarnings("unused")
 	public void setId(Long id) {
 		this.id = id;
 	}
 
+	@SuppressWarnings("unused")
 	public String getJumpshipName() {
 		return jumpshipName;
 	}
 
+	@SuppressWarnings("unused")
 	public void setJumpshipName(String jumpshipName) {
 		this.jumpshipName = jumpshipName;
 	}
 
+	@SuppressWarnings("unused")
 	public Long getJumpshipFactionID() {
 		return jumpshipFactionID;
 	}
 
+	@SuppressWarnings("unused")
 	public void setJumpshipFactionID(Long jumpshipFactionID) {
 		this.jumpshipFactionID = jumpshipFactionID;
 	}
 
+	@SuppressWarnings("unused")
 	public String getStarSystemHistory() {
 		return starSystemHistory;
 	}
 
+	@SuppressWarnings("unused")
 	public void setStarSystemHistory(String starSystemHistory) {
 		this.starSystemHistory = starSystemHistory;
 	}
 
+	@SuppressWarnings("unused")
 	public Boolean getAttackReady() {
 		return attackReady;
 	}
 
+	@SuppressWarnings("unused")
 	public void setAttackReady(Boolean attackReady) {
 		this.attackReady = attackReady;
 	}
 
+	@SuppressWarnings("unused")
 	public List<RoutePointDTO> getRoutepointList() {
 		return routepointList;
 	}
 
+	@SuppressWarnings("unused")
 	public void setRoutepointList(List<RoutePointDTO> routepointList) {
 		this.routepointList = routepointList;
+	}
+
+	@SuppressWarnings("unused")
+	public Long getLevel() {
+		return level;
+	}
+
+	@SuppressWarnings("unused")
+	public void setLevel(Long level) {
+		this.level = level;
 	}
 
 	/*public ArrayList<Long> getStarSystemHistoryArray() {

@@ -436,6 +436,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					bgBox.setHeight(7);
 					bgBox.setLayoutX(0);
 					bgBox.setLayoutY(0);
+					bgBox.setMouseTransparent(true);
 					bgBox.toBack();
 
 					Text starSystemLevelLabel = new Text();
@@ -456,6 +457,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					levelLabel.setPadding(new Insets(0,0,0,0));
 					levelLabel.getChildren().add(0, bgBox);
 					levelLabel.getChildren().add(1, starSystemLevelLabel);
+					levelLabel.setMouseTransparent(true);
 					levelLabel.setTranslateX(starSystem.getScreenX() + 2.4);
 					levelLabel.setTranslateY(starSystem.getScreenY() - 0.6);
 
@@ -594,6 +596,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 							}
 						}
 					}
+
+					//js.getLevel();
 
 					if (currentSystemID != null) {
 						ImageView jumpshipImage;
