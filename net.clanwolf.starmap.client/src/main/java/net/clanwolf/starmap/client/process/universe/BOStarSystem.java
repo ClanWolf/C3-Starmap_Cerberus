@@ -31,6 +31,7 @@ import javafx.scene.Group;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import net.clanwolf.starmap.client.gui.panes.map.Config;
@@ -46,6 +47,7 @@ public class BOStarSystem {
 	private final StarSystemDataDTO hh_starSystemDataDTO;
 	private Circle starSystemCircle;
 	private Label starSystemLabel;
+	private Pane levelLabel;
 	private StackPane starSystemStackPane;
 	private Group starSystemGroup;
 	private PointD[] voronoiRegion;
@@ -53,6 +55,16 @@ public class BOStarSystem {
 	private ImageView marker = null;
 	private ImageView industryMarker = null;
 	private boolean isCurrentlyUnderAttack = false;
+
+	@SuppressWarnings("unused")
+	public void setLevelLabel(Pane level) {
+		this.levelLabel = level;
+	}
+
+	@SuppressWarnings("unused")
+	public Pane getLevelLabel() {
+		return this.levelLabel;
+	}
 
 	@SuppressWarnings("unused")
 	public Long getLevel() {

@@ -38,7 +38,7 @@ public class Config {
 	// due to a bug in JavaFx. So, it may be changed by a user-property in order to make
 	// it work properly.
 	// e.g. map_dimensions=3000
-	public static double MAP_DIM = 6000;
+	public static double MAP_DIM = 4000;
 	public static double MAP_WIDTH = MAP_DIM;
 	public static double MAP_HEIGHT = MAP_DIM;
 	public static double MAP_INITIAL_TRANSLATE_X = -(MAP_WIDTH / 2) + (CLIP_X / 2);   // X: 0 Center = Terra
@@ -57,10 +57,11 @@ public class Config {
 	// Hide on zoom
 	public static final double zoomLevelToHideGrid1 = 0.4;
 	public static final double zoomLevelToHideGrid2 = 0.7;
+	public static final double zoomLevelToHideLevelIcons = 1.8;
 	public static final double zoomLevelToHideStarSystemLabels = 1.0;
 	public static final double zoomLevelToHideStarSystemCircles = 0.5;
 	public static final double zoomLevelToHideAttacks = 0.5;
-	public static final double zoomLevelToHideJumpships = 0.8;
+	public static final double zoomLevelToHideJumpships = 0.5;
 
 	// Background stars
 	public static int BACKGROUND_STARS_MAX_SIZE = 4;

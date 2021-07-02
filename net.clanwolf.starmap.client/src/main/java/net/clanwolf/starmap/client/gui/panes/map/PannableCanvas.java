@@ -46,6 +46,7 @@ import net.clanwolf.starmap.client.process.universe.BOJumpship;
 import net.clanwolf.starmap.client.process.universe.BOStarSystem;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -350,10 +351,27 @@ public class PannableCanvas extends Pane {
 	public void setScale(double scale) {
 		myScale.set(scale);
 		setStarSystemLabelsVisible();
+		setLevelIconsVisible();
 		setStarSystemCirclesVisible();
 		setGrid_500_Visible();
 		setGrid_250_Visible();
 		setAttacksVisible();
+	}
+
+	private void setLevelIconsVisible() {
+		if (boUniverse.starSystemBOs != null) {
+			if (myScale.get() >= Config.zoomLevelToHideLevelIcons) {
+				for (BOStarSystem ss : boUniverse.starSystemBOs.values()) {
+					Pane levelLabel = ss.getLevelLabel();
+					levelLabel.setVisible(true);
+				}
+			} else if (myScale.get() < Config.zoomLevelToHideLevelIcons) {
+				for (BOStarSystem ss : boUniverse.starSystemBOs.values()) {
+					Pane levelLabel = ss.getLevelLabel();
+					levelLabel.setVisible(false);
+				}
+			}
+		}
 	}
 
 	private void setStarSystemLabelsVisible() {
@@ -368,6 +386,8 @@ public class PannableCanvas extends Pane {
 						if (iv != null) {
 							iv.setVisible(starSystemLabelsVisible);
 						}
+						Pane levelLabel = ss.getLevelLabel();
+						levelLabel.setVisible(starSystemLabelsVisible);
 					}
 				}
 			} else if (myScale.get() < Config.zoomLevelToHideStarSystemLabels) {
@@ -380,6 +400,8 @@ public class PannableCanvas extends Pane {
 						if (iv != null) {
 							iv.setVisible(starSystemLabelsVisible);
 						}
+						Pane levelLabel = ss.getLevelLabel();
+						levelLabel.setVisible(starSystemLabelsVisible);
 					}
 				}
 			}
@@ -435,6 +457,7 @@ public class PannableCanvas extends Pane {
 
 	public void setVisibility() {
 		setStarSystemLabelsVisible();
+		setLevelIconsVisible();
 		setStarSystemCirclesVisible();
 		setGrid_500_Visible();
 		setGrid_250_Visible();

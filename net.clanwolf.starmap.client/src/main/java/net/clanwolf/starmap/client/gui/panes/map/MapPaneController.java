@@ -34,7 +34,6 @@ import javafx.scene.CacheHint;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseDragEvent;
@@ -43,7 +42,6 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
 import javafx.scene.text.Font;
@@ -424,8 +422,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 						industryImage.toFront();
 						industryImage.setVisible(true);
 						industryImage.setMouseTransparent(true);
-						industryImage.setLayoutX(20);
-						industryImage.setLayoutY(20);
+						industryImage.setTranslateX(starSystem.getScreenX() + 6);
+						industryImage.setTranslateY(starSystem.getScreenY() - 5);
 						starSystem.setIndustryMarker(industryImage);
 					}
 
@@ -458,19 +456,21 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					levelLabel.setPadding(new Insets(0,0,0,0));
 					levelLabel.getChildren().add(0, bgBox);
 					levelLabel.getChildren().add(1, starSystemLevelLabel);
-					levelLabel.setLayoutX(20);
-					levelLabel.setLayoutY(20);
+					levelLabel.setTranslateX(starSystem.getScreenX() + 2.4);
+					levelLabel.setTranslateY(starSystem.getScreenY() - 0.6);
 
 					// stack star system layers to stackpane
 					stackPane.getChildren().add(1, starSystemCircle);
 					starSystemCircle.toFront();
 
-					starSystemGroup.getChildren().add(0, levelLabel);
-					starSystemGroup.getChildren().add(1, stackPane);
+					starSystemGroup.getChildren().add(stackPane);
+
+					// Level and industry icons need to be added to the canvas directly, or the centering of circles
+					// and labels does not work anymore!
+					canvas.getChildren().add(levelLabel);
 					if (industryImage != null) {
-						starSystemGroup.getChildren().add(2, industryImage);
+						canvas.getChildren().add(industryImage);
 					}
-					levelLabel.toFront();
 					starSystemGroup.setTranslateX(x);
 					starSystemGroup.setTranslateY(y);
 					starSystemGroup.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMouseClickedEventHandler());
@@ -480,13 +480,20 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 							// C3Logger.debug("System is active in the current MetaPhase!");
 						} else {
 							starSystemGroup.setOpacity(0.2d);
+							levelLabel.setOpacity(0.2d);
+							if (industryImage != null) {
+								industryImage.setOpacity(0.2d);
+							}
 							starSystemGroup.setMouseTransparent(true);
 						}
 					}
 
 					starSystem.setStarSystemStackPane(stackPane);
 					starSystem.setStarSystemGroup(starSystemGroup);
+					starSystem.setLevelLabel(levelLabel);
 					canvas.getChildren().add(starSystemGroup);
+
+					levelLabel.toFront();
 				}
 
 				canvas.addStarPane();
@@ -789,6 +796,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		C3SoundPlayer.play("sound/fx/cursor_click_11.mp3", false);
 	}
 
+	@SuppressWarnings("unused")
 	private void reCenterMap() {
 		removeMouseFilters();
 		mapButton01.setDisable(true);
@@ -905,13 +913,6 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				Group g = ss.getStarSystemGroup();
 				g.setLayoutX(-sp.getWidth() / 2);
 				g.setLayoutY(-sp.getHeight() / 2);
-
-//				g.getChildren().get(0).setLayoutX(-g.getBoundsInParent().getWidth() / 2 - 4); // Level width
-//				g.getChildren().get(0).setLayoutY(-g.getBoundsInParent().getHeight() / 2); // Level height
-//				if (g.getChildren().size() > 2) {
-//					g.getChildren().get(2).setLayoutX(g.getBoundsInParent().getWidth() / 2 + 10); // IndustryImage width
-//					g.getChildren().get(2).setLayoutY(g.getBoundsInParent().getHeight() / 2 - 4); // IndustryImage height
-//				}
 			}
 		});
 	}
