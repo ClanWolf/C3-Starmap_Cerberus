@@ -63,9 +63,12 @@ public class BOJumpship implements Comparable<BOJumpship> {
 		return predictedRouteLine;
 	}
 
+	@SuppressWarnings("unused")
 	public Long getLevel() {
 		return jumpshipDTO.getLevel();
 	}
+
+	@SuppressWarnings("unused")
 	public void storeRouteToDatabase(JumpshipDTO jsDto) {
 		GameState saveRouteState = new GameState();
 		saveRouteState.setMode(GAMESTATEMODES.JUMPSHIP_SAVE);

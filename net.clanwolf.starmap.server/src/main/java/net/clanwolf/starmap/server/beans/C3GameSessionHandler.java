@@ -45,14 +45,10 @@ import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.util.Compressor;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Timer;
-import java.util.zip.GZIPOutputStream;
 
 /**
  *

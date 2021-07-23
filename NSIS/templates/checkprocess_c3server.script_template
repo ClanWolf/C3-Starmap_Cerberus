@@ -1,0 +1,4 @@
+#!/bin/sh
+test -f /var/www/vhosts/clanwolf.net/httpdocs/apps/C3/server/C3-Server_shutdown.flag && exit
+ps -fC java | grep C3-Server- || /opt/jdk-###JAVA_VERSION_PATH###/bin/java -jar /var/www/vhosts/clanwolf.net/httpdocs/apps/C3/server/C3-Server-###VERSION###.jar ; exit
+exit
