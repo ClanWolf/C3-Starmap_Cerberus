@@ -30,6 +30,7 @@ import net.clanwolf.starmap.transfer.Dto;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class UniverseDTO extends Dto {
 	public HashMap<Long, StarSystemDataDTO> starSystems = new HashMap<>();
@@ -37,6 +38,7 @@ public class UniverseDTO extends Dto {
 	public HashMap<String, JumpshipDTO> jumpships = new HashMap<>();
 	public ArrayList<AttackDTO> attacks = new ArrayList<>();
 	public ArrayList<RoutePointDTO> routepoints = new ArrayList<>();
+	public HashSet<RolePlayStoryDTO> attackStorys = new HashSet<>();
 
 	public Integer currentSeason;
 	public Integer currentSeasonMetaPhase;

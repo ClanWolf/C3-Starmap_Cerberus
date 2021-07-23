@@ -28,6 +28,7 @@ package net.clanwolf.starmap.server.util;
 
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.server.GameServer;
+import net.clanwolf.starmap.server.Nexus.Nexus;
 import net.clanwolf.starmap.server.enums.SystemListTypes;
 import net.clanwolf.starmap.server.persistence.EntityConverter;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
@@ -210,6 +211,7 @@ public class WebDataInterface {
 
 	private static String loadAttacks(){
 		universe.attacks.clear();
+		universe.attackStorys.clear();
 
 		AttackDAO dao = AttackDAO.getInstance();
 		ArrayList<AttackPOJO> pojoList = dao.getOpenAttacksOfASeason(1L);
@@ -221,6 +223,11 @@ public class WebDataInterface {
 			//getCharacterFromAttack(dto);
 			universe.attacks.add(dto);
 			jsonString.append(getJsonString(dto));
+
+			RolePlayStoryPOJO rpPojo = RolePlayStoryDAO.getInstance().findById(Nexus.DUMMY_USERID, dto.getStoryID());
+			RolePlayStoryDTO rpDto = EntityConverter.convertpojo2dto(rpPojo,RolePlayStoryDTO.class);
+
+			universe.attackStorys.add(rpDto);
 		}
 		return jsonString.toString();
 	}
