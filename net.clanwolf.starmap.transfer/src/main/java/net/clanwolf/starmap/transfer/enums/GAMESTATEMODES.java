@@ -68,5 +68,7 @@ public enum GAMESTATEMODES {
 
 	GET_UNIVERSE_DATA,                          /* Get all universe data from server */
 	FINALIZE_ROUND,
-	SESSION_KEEPALIVE;
+	SESSION_KEEPALIVE,
+
+	FORCE_FINALIZE_ROUND;
 }

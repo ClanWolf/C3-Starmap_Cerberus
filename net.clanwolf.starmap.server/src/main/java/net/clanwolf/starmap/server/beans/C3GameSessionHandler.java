@@ -38,6 +38,7 @@ import net.clanwolf.starmap.server.persistence.EntityConverter;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.*;
 import net.clanwolf.starmap.server.persistence.pojos.*;
+import net.clanwolf.starmap.server.process.EndRound;
 import net.clanwolf.starmap.server.util.HeartBeatTimer;
 import net.clanwolf.starmap.server.util.WebDataInterface;
 import net.clanwolf.starmap.transfer.GameState;
@@ -155,6 +156,9 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				C3Logger.info("Setting 'Client is ready for data' for session: " + session.getId().toString());
 				roomSession.getSessionReadyMap().put(session.getId().toString(), Boolean.TRUE);
 				break;
+			case FORCE_FINALIZE_ROUND:
+				EndRound.setForceFinalize(true);
+				break;
 			default:
 				break;
 		}
@@ -202,7 +206,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			C3Logger.debug("-- Attacking from: " + attack.getAttackedFromStarSystemID());
 			C3Logger.debug("-- Attacked system: " + attack.getStarSystemID());
 
-			if(attack.getId() != null){
+			if(attack.getId() != null) {
 				dao.update(getC3UserID(session), attack);
 			} else {
 				dao.save(getC3UserID(session), attack);

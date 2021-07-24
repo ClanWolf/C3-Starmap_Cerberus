@@ -38,7 +38,7 @@ public class UniverseDTO extends Dto {
 	public HashMap<String, JumpshipDTO> jumpships = new HashMap<>();
 	public ArrayList<AttackDTO> attacks = new ArrayList<>();
 	public ArrayList<RoutePointDTO> routepoints = new ArrayList<>();
-	public HashSet<RolePlayStoryDTO> attackStorys = new HashSet<>();
+	public HashMap<Long, RolePlayStoryDTO> attackStorys = new HashMap<>();
 
 	public Integer currentSeason;
 	public Integer currentSeasonMetaPhase;

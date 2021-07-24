@@ -57,9 +57,14 @@ public abstract class AbstractC3Controller implements Initializable, ActionCallB
 	protected boolean warningActive = false;
 	protected Label labelWarningIcon;
 	protected Label labelWarningText;
+	protected String paneName = "";
 
 	@FXML
 	private AnchorPane anchorPane;
+
+	public void setPaneName(String name) {
+		this.paneName = name;
+	}
 
 	private void createGeneralControls() {
 		Platform.runLater(() -> {
