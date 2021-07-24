@@ -95,6 +95,28 @@ public class RolePlayStoryDAO extends GenericDAO {
 	}
 
 	/**
+	 *
+	 *
+	 * @return ArrayList<RolePlayStoryPOJO> *
+	 */
+	public ArrayList<RolePlayStoryPOJO> getAllStoriesByStory(RolePlayStoryPOJO rp) {
+		CriteriaHelper crit = new CriteriaHelper(RolePlayStoryPOJO.class);
+
+		crit.addCriteriaOR(crit.createPredicate("story", rp));
+
+		List<Object> lRes = crit.getResultList();
+
+		Iterator<Object> iter = lRes.iterator();
+		ArrayList<RolePlayStoryPOJO> lRPS = new ArrayList<>();
+
+		while (iter.hasNext()) {
+			lRPS.add((RolePlayStoryPOJO) iter.next());
+		}
+
+		return lRPS;
+	}
+
+	/**
 	 * Returns a chapter of a story with a given sort number
 	 *
 	 * @param rp RolePlayStoryPOJO
