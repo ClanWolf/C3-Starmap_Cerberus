@@ -42,8 +42,15 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class EndRound {
+
+	private static AtomicBoolean forceFinalize = new AtomicBoolean(false);
+
+	public static synchronized void setForceFinalize(boolean v) {
+		forceFinalize.set(v);
+	}
 
 	public static Date addDaysToDate(Date date, int daysToAdd) {
 		Calendar c = Calendar.getInstance();
@@ -154,13 +161,15 @@ public class EndRound {
 
 		boolean attacksLeftToResolveInRound = openAttacksInRoundList.size() > 0; // We are ignoring the open attacks for the next round here
 
-		if ((jumpshipsLeftToMove || attacksLeftToResolveInRound) && !(timeForThisRoundIsOver(seasonId))) {
+		if ((jumpshipsLeftToMove || attacksLeftToResolveInRound) && !(timeForThisRoundIsOver(seasonId)) && !forceFinalize.get()) {
 			// round is still active
 			C3Logger.info("Round is still active.");
 			C3Logger.info("--- " + jscount + " jumpship have not moved.");
 			C3Logger.info("--- " + openAttacksInRoundList.size() + " attacks still to be resolved.");
 			C3Logger.info("--- There is still time left to make moves for this round!");
 		} else {
+			forceFinalize.set(false);
+
 			StringBuilder resolvedAttacks = new StringBuilder();
 			StringBuilder movedJumpships = new StringBuilder();
 

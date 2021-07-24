@@ -38,7 +38,11 @@ import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3RolePlayController;
+import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
+import net.clanwolf.starmap.client.process.universe.BOAttack;
+import net.clanwolf.starmap.client.process.universe.BOUniverse;
 import net.clanwolf.starmap.logging.C3Logger;
+import net.clanwolf.starmap.transfer.dtos.RolePlayStoryDTO;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
 import java.io.IOException;
@@ -137,7 +141,14 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 
 	private void loadScreen(){
 
-		switch(Nexus.getCurrentChar().getStory().getVariante()){
+		ROLEPLAYENTRYTYPES type = null;
+		if (paneName.equals("AttackPane")) {
+			type = Nexus.getBoUniverse().getAttackStories().get(Nexus.getCurrentAttackOfUser().getAttackDTO().getStoryID()).getVariante();
+		} else {
+			type = Nexus.getCurrentChar().getStory().getVariante();
+		}
+
+		switch(type){
 			case C3_RP_STORY:
 			case C3_RP_CHAPTER:
 			case C3_RP_STEP_V1:

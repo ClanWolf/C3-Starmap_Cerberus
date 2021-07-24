@@ -37,6 +37,7 @@ import org.kynosarges.tektosyne.subdivision.Subdivision;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.TreeSet;
 
 public class BOUniverse {
@@ -86,6 +87,10 @@ public class BOUniverse {
 			jumpshipListSorted.addAll(jumpshipBOs.values());
 		}
 		return jumpshipListSorted;
+	}
+
+	public HashMap<Long, RolePlayStoryDTO> getAttackStories() {
+		return universeDTO.attackStorys;
 	}
 
 	public BOUniverse(UniverseDTO universeDTO) {

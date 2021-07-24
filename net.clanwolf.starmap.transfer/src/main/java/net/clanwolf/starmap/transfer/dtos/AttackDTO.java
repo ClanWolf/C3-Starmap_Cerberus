@@ -27,6 +27,7 @@
 package net.clanwolf.starmap.transfer.dtos;
 
 import net.clanwolf.starmap.transfer.Dto;
+import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
 import java.util.ArrayList;
 import java.util.List;

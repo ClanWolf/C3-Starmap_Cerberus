@@ -26,6 +26,8 @@
  */
 package net.clanwolf.starmap.client.gui;
 
+import io.nadron.client.app.Game;
+import io.nadron.client.event.NetworkEvent;
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -65,6 +67,8 @@ import net.clanwolf.starmap.client.gui.panes.rp.StoryEditorPane;
 import net.clanwolf.starmap.client.gui.panes.settings.SettingsPane;
 import net.clanwolf.starmap.client.gui.panes.userinfo.UserInfoPane;
 import net.clanwolf.starmap.client.process.universe.BOAttack;
+import net.clanwolf.starmap.client.process.universe.BOJumpship;
+import net.clanwolf.starmap.client.process.universe.BOStarSystem;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.client.net.Server;
@@ -72,9 +76,11 @@ import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.security.Security;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.*;
+import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.AttackCharacterDTO;
 import net.clanwolf.starmap.transfer.dtos.AttackDTO;
 import net.clanwolf.starmap.transfer.dtos.UserDTO;
+import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.enums.MEDALS;
 
 import java.io.InputStream;
@@ -123,6 +129,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private C3MedalPane medalPane = null;
 	private int menuIndicatorPos = 0;
 	private boolean adminPaneOpen = false;
+
+	private final LinkedList<String> commandHistory = new LinkedList<>();
+	private int commandHistoryIndex = 0;
 
 	private final Image imageAdminButtonOff = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/adminOff.png")));
 	private final Image imageAdminButtonOn = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/adminOn.png")));
@@ -1009,6 +1018,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		ActionManager.addActionCallbackListener(ACTIONS.SHOW_IRC_INDICATOR, this);
 		ActionManager.addActionCallbackListener(ACTIONS.ENABLE_MAIN_MENU_BUTTONS, this);
 		ActionManager.addActionCallbackListener(ACTIONS.SWITCH_TO_INVASION, this);
+		ActionManager.addActionCallbackListener(ACTIONS.TERMINAL_COMMAND, this);
 	}
 
 	private void setToLevelLoggedOutText() {
@@ -1140,12 +1150,14 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		rolePlayPane.setCacheHint(CacheHint.SPEED);
 		rolePlayPane.getController().addActionCallBackListeners();
 
-		attackPane = new RolePlayBasicPane("AttackPane");
+		String paneName = "AttackPane";
+		attackPane = new RolePlayBasicPane(paneName);
 		attackPane.setShowsMouseFollow(false);
 		attackPane.setShowsPlanetRotation(false);
 		attackPane.setCache(true);
 		attackPane.setCacheHint(CacheHint.SPEED);
 		attackPane.getController().addActionCallBackListeners();
+		attackPane.getController().setPaneName(paneName);
 
 		// infoPane = new InfoPane();
 		// infoPane.getController().addActionCallBackListener();
@@ -1351,6 +1363,47 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			renameMeButton5.setDisable(true);
 		}
 	}
+
+	public void handleCommand(String com) {
+		if (!com.startsWith("*!!!*")) {
+			if (!"".equals(com)) {
+				C3Logger.info("Received command: '" + com + "'");
+				commandHistory.add(com);
+				commandHistoryIndex = commandHistory.size();
+				if (commandHistory.size() > 50) {
+					commandHistory.remove(0);
+				}
+			}
+		}
+
+		if ("*!!!*historyBack".equals(com)) {
+			if (commandHistoryIndex > 0) {
+				C3Logger.info("History back");
+				commandHistoryIndex--;
+				String histCom = commandHistory.get(commandHistoryIndex);
+				ActionManager.getAction(ACTIONS.SET_TERMINAL_TEXT).execute(histCom);
+			}
+		}
+
+		if ("*!!!*historyForward".equals(com)) {
+			if (commandHistoryIndex < commandHistory.size() - 1) {
+				C3Logger.info("History forward");
+				commandHistoryIndex++;
+				String histCom = commandHistory.get(commandHistoryIndex);
+				ActionManager.getAction(ACTIONS.SET_TERMINAL_TEXT).execute(histCom);
+			}
+		}
+
+		// ---------------------------------
+		// force finalize round
+		// ---------------------------------
+		if (com.toLowerCase().startsWith("force finalize round")) {
+			GameState s = new GameState();
+			s.setMode(GAMESTATEMODES.FORCE_FINALIZE_ROUND);
+			Nexus.fireNetworkEvent(s);
+		}
+	}
+
 	/**
 	 * Handle Actions
 	 *
@@ -1585,6 +1638,14 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			case SET_CONSOLE_OUTPUT_LINE:
 				String s = (String) o.getObject();
 				setConsoleEntry(s);
+				break;
+
+			case TERMINAL_COMMAND:
+				String com = o.getText();
+				// TODO: Command category "general" --> not connected to a pane
+				if (com.contains("force finalize round")) {
+					handleCommand(com);
+				}
 				break;
 
 			case NOISE:
