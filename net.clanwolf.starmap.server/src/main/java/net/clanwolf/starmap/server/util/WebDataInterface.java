@@ -225,9 +225,11 @@ public class WebDataInterface {
 			jsonString.append(getJsonString(dto));
 
 			RolePlayStoryPOJO rpPojo = RolePlayStoryDAO.getInstance().findById(Nexus.DUMMY_USERID, dto.getStoryID());
-			RolePlayStoryDTO rpDto = EntityConverter.convertpojo2dto(rpPojo,RolePlayStoryDTO.class);
-
-			universe.attackStorys.put(dto.getStoryID(), rpDto);
+			ArrayList<RolePlayStoryPOJO> storyList = RolePlayStoryDAO.getInstance().getAllStoriesByStory(rpPojo.getStory());
+			for (RolePlayStoryPOJO p : storyList) {
+				RolePlayStoryDTO dtoStory = EntityConverter.convertpojo2dto(p, RolePlayStoryDTO.class);
+				universe.attackStorys.put(p.getId(), dtoStory);
+			}
 		}
 		return jsonString.toString();
 	}
