@@ -5,7 +5,7 @@ import java.io.*;
 public class NSICreator {
 	public static void main(String[] args) {
 		String version = null;
-		String java_version_path = null;
+		String java_version_path = "16.0.2"; // this is the java version installed on the server for the path in scripts!
 
 		try {
 			BufferedReader brProps = new BufferedReader(new FileReader("net.clanwolf.starmap.client\\src\\main\\resources\\c3.properties"));
@@ -15,14 +15,10 @@ public class NSICreator {
 					String[] p1 = lineProps.split("=");
 					version = p1[1];
 				}
-				if (lineProps.startsWith("java_version")) {
-					String[] p2 = lineProps.split("=");
-					java_version_path = p2[1];
-				}
 			}
 
 			System.out.println("Version: " + version);
-			System.out.println("Java-Version: " + java_version_path);
+			System.out.println("Java-Version-Path: " + java_version_path);
 
 			if (version == null || java_version_path == null) {
 				throw new Exception("Version could not be found in properties.");
