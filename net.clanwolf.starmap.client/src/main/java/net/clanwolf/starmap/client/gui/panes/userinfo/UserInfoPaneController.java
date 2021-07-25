@@ -162,6 +162,7 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 	@FXML
 	private void handleLogoutButtonHoverEnter() {
 		setWarningOn(false);
+		Platform.runLater(() -> { labelWarningIcon.setVisible(true); });
 		if (warningActive) {
 			labelWarningText.setText(Internationalization.getString("app_user_info_panel_logoutWarning"));
 			ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_warning"), true));
@@ -218,6 +219,7 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 		if (enableExitEvent) {
 			labelWarningText.setText("");
 			ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject("", false));
+			Platform.runLater(() -> { labelWarningIcon.setVisible(false); });
 		}
 	}
 

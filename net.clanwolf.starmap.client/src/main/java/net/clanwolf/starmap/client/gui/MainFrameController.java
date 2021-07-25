@@ -263,6 +263,30 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	// Mouse entered
 
 	@FXML
+	private void handleHelpButtonHoverEnter() {
+		Image helpImg = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/help_hover.png")));
+		ImageView view = new ImageView(helpImg);
+		view.setFitHeight(16);
+		view.setPreserveRatio(true);
+		helpLabel.setGraphic(view);
+		helpLabel.setText("");
+		setStatusText(Internationalization.getString("app_pane_open_manual_infotext"), false);
+		Tools.playButtonHoverSound();
+		C3SoundPlayer.getTTSFile(Internationalization.getString("app_web_help"));
+	}
+
+	@FXML
+	private void handleHelpButtonHoverExit() {
+		Image helpImg = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/help.png")));
+		ImageView view = new ImageView(helpImg);
+		view.setFitHeight(16);
+		view.setPreserveRatio(true);
+		helpLabel.setGraphic(view);
+		helpLabel.setText("");
+		setStatusText("", false);
+	}
+
+	@FXML
 	private void handleTFSProgressEntered() {
 		double tfsProgress = 100d / 60d * Nexus.getBoUniverse().currentRound;
 		String progString = Nexus.getBoUniverse().currentRound + " / 60";
@@ -1398,9 +1422,13 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		// force finalize round
 		// ---------------------------------
 		if (com.toLowerCase().startsWith("force finalize round")) {
-			GameState s = new GameState();
-			s.setMode(GAMESTATEMODES.FORCE_FINALIZE_ROUND);
-			Nexus.fireNetworkEvent(s);
+			if (Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN)) {
+				GameState s = new GameState();
+				s.setMode(GAMESTATEMODES.FORCE_FINALIZE_ROUND);
+				Nexus.fireNetworkEvent(s);
+			} else {
+				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_notallowed"), false));
+			}
 		}
 	}
 

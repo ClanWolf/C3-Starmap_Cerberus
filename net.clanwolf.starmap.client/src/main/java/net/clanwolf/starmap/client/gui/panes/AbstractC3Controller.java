@@ -79,8 +79,8 @@ public abstract class AbstractC3Controller implements Initializable, ActionCallB
 			labelWarningIcon.setMouseTransparent(true);
 
 			labelWarningText = new Label("");
-			labelWarningText.setLayoutX(548);
-			labelWarningText.setLayoutY(395);
+			labelWarningText.setLayoutX(480);
+			labelWarningText.setLayoutY(420);
 			labelWarningText.setPrefWidth(300);
 			labelWarningText.setPrefHeight(56);
 			labelWarningText.setVisible(true);

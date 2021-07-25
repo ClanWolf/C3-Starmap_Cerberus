@@ -40,14 +40,19 @@
       </VBox>
       <ProgressBar fx:id="TFSProgress" layoutX="173.0" layoutY="23.0" onMouseEntered="#handleTFSProgressEntered" onMouseExited="#handleTFSProgressExited" prefHeight="18.0" prefWidth="125.0" progress="0.56" visible="false" />
       <Label fx:id="gameInfoLabel" layoutX="422.0" layoutY="30.0" mouseTransparent="true" prefHeight="20.0" prefWidth="206.0" />
-      <Label fx:id="terminalLabel" layoutX="574.0" layoutY="556.0" prefHeight="20.0" prefWidth="66.0" text="Terminal:" />
+      <Label fx:id="terminalLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="567.0" layoutY="556.0" prefHeight="20.0" prefWidth="66.0" text="Terminal:" />
       <TextField fx:id="terminalPrompt" layoutX="639.0" layoutY="555.0" onKeyPressed="#handleTerminalEnterButton" prefHeight="20.0" prefWidth="305.0" styleClass="text" stylesheets="@../styles/MainFrameStyle.css" />
-      <Label fx:id="helpLabel" layoutX="591.0" layoutY="581.0" onMouseClicked="#handleHelpMouseEventClick" prefHeight="20.0" prefWidth="12.0" text="Help" />
+      <Label fx:id="helpLabel" layoutX="591.0" layoutY="581.0" onMouseClicked="#handleHelpMouseEventClick" onMouseEntered="#handleHelpButtonHoverEnter" onMouseExited="#handleHelpButtonHoverExit" prefHeight="20.0" prefWidth="12.0" text="Help" />
         <ImageView fx:id="noiseImage" fitHeight="523.0" fitWidth="859.0" layoutX="123.0" layoutY="37.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="false">
             <image>
                 <Image url="@../images/noise/noisemap.png" />
             </image>
         </ImageView>
+      <ImageView fx:id="hudCircle" fitHeight="110.0" fitWidth="100.0" layoutX="145.0" layoutY="315.0" mouseTransparent="true" opacity="0.04" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/gui/hud_circle.gif" />
+         </image>
+      </ImageView>
         <ImageView fx:id="spectrumImage" fitHeight="57.72469711303711" fitWidth="430.0" layoutX="-57.0" layoutY="318.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="false" rotate="90.0">
             <image>
                 <Image url="@../images/spectrum/spectrum.png" />
