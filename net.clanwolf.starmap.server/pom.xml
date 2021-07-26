@@ -8,7 +8,7 @@
 	<parent>
 		<artifactId>C3-Starmap_Cerberus</artifactId>
 		<groupId>net.clanwolf.starmap</groupId>
-		<version>5.2.0</version>
+		<version>${revision}</version>
 	</parent>
 
 	<artifactId>net.clanwolf.starmap.server</artifactId>
@@ -28,7 +28,7 @@
 		<dependency>
 			<groupId>net.clanwolf.starmap</groupId>
 			<artifactId>net.clanwolf.starmap.mail</artifactId>
-			<version>5.2.0</version>
+			<version>${project.version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>javax.activation</groupId>

@@ -336,6 +336,7 @@ Section "C3-Client (required)"
 	CreateDirectory $INSTDIR\bin\server
 	SetOutpath $INSTDIR\bin\server
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\server\jvm.dll"
+###FILELIST###
 
 	; Write the installation path into the registry
 	WriteRegStr HKLM SOFTWARE\C3-Client "Install_Dir" "$INSTDIR"

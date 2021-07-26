@@ -1,3 +1,29 @@
+/* ---------------------------------------------------------------- |
+ *    ____ _____                                                    |
+ *   / ___|___ /                   Communicate - Command - Control  |
+ *  | |     |_ \                   MK V "Cerberus"                  |
+ *  | |___ ___) |                                                   |
+ *   \____|____/                                                    |
+ *                                                                  |
+ * ---------------------------------------------------------------- |
+ * Info        : https://www.clanwolf.net                           |
+ * GitHub      : https://github.com/ClanWolf                        |
+ * ---------------------------------------------------------------- |
+ * Licensed under the Apache License, Version 2.0 (the "License");  |
+ * you may not use this file except in compliance with the License. |
+ * You may obtain a copy of the License at                          |
+ * http://www.apache.org/licenses/LICENSE-2.0                       |
+ *                                                                  |
+ * Unless required by applicable law or agreed to in writing,       |
+ * software distributed under the License is distributed on an "AS  |
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either  |
+ * express or implied. See the License for the specific language    |
+ * governing permissions and limitations under the License.         |
+ *                                                                  |
+ * C3 includes libraries and source code by various authors.        |
+ * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * ---------------------------------------------------------------- |
+ */
 package net.clanwolf.starmap.client.packager;
 
 import java.io.*;
@@ -8,7 +34,7 @@ public class NSICreator {
 		String java_version_path = "16.0.2"; // this is the java version installed on the server for the path in scripts!
 
 		try {
-			BufferedReader brProps = new BufferedReader(new FileReader("net.clanwolf.starmap.client\\src\\main\\resources\\c3.properties"));
+			BufferedReader brProps = new BufferedReader(new FileReader("C:\\C3\\projects\\C3-Starmap_Cerberus\\net.clanwolf.starmap.client\\target\\classes\\c3.properties"));
 			String lineProps;
 			while ((lineProps = brProps.readLine()) != null) {
 				if (lineProps.startsWith("version=")) {
@@ -21,7 +47,7 @@ public class NSICreator {
 			System.out.println("Java-Version-Path: " + java_version_path);
 
 			if (version == null || java_version_path == null) {
-				throw new Exception("Version could not be found in properties.");
+				throw new Exception("Version could not be found in target folder (!) properties.");
 			}
 
 			NSICreator creator = new NSICreator();
@@ -50,18 +76,17 @@ public class NSICreator {
 			while ((line = br.readLine()) != null) {
 				if (line.contains("###FILELIST###")) {
 					cl.walk(bw,"C:\\C3\\projects\\C3-Starmap_Cerberus\\net.clanwolf.starmap.client\\target\\jlink-image");
-				} else if (line.contains("###VERSION###")) {
-					line = line.replace("###VERSION###", version);
-					writeLine(bw, line);
-				} else if (line.contains("###FILELISTTOREMOVE###")) {
-					line = line.replace("###FILELISTTOREMOVE###", cl.getListDeleteFilesDuringUninstall());
-					writeLine(bw, line);
-				} else if (line.contains("###DIRECTORYLISTTOREMOVE###")) {
-					line = line.replace("###DIRECTORYLISTTOREMOVE###", cl.getListDeleteFoldersDuringUninstall());
-					writeLine(bw, line);
-				} else {
-					writeLine(bw, line);
 				}
+				if (line.contains("###VERSION###")) {
+					line = line.replace("###VERSION###", version);
+				}
+				if (line.contains("###FILELISTTOREMOVE###")) {
+					line = line.replace("###FILELISTTOREMOVE###", cl.getListDeleteFilesDuringUninstall());
+				}
+				if (line.contains("###DIRECTORYLISTTOREMOVE###")) {
+					line = line.replace("###DIRECTORYLISTTOREMOVE###", cl.getListDeleteFoldersDuringUninstall());
+				}
+				writeLine(bw, line);
 			}
 			br.close();
 			bw.close();
@@ -76,13 +101,11 @@ public class NSICreator {
 			while ((line2 = br2.readLine()) != null) {
 				if (line2.contains("###VERSION###")) {
 					line2 = line2.replace("###VERSION###", version);
-					writeLine(bw2, line2);
-				} else if (line2.contains("###JAVA_VERSION_PATH###")) {
-					line2 = line2.replace("###JAVA_VERSION_PATH###", java_version_path);
-					writeLine(bw2, line2);
-				} else {
-					writeLine(bw2, line2);
 				}
+				if (line2.contains("###JAVA_VERSION_PATH###")) {
+					line2 = line2.replace("###JAVA_VERSION_PATH###", java_version_path);
+				}
+				writeLine(bw2, line2);
 			}
 			br2.close();
 			bw2.close();
@@ -97,13 +120,11 @@ public class NSICreator {
 			while ((line3 = br3.readLine()) != null) {
 				if (line3.contains("###VERSION###")) {
 					line3 = line3.replace("###VERSION###", version);
-					writeLine(bw3, line3);
-				} else if (line3.contains("###JAVA_VERSION_PATH###")) {
-					line3 = line3.replace("###JAVA_VERSION_PATH###", java_version_path);
-					writeLine(bw3, line3);
-				} else {
-					writeLine(bw3, line3);
 				}
+				if (line3.contains("###JAVA_VERSION_PATH###")) {
+					line3 = line3.replace("###JAVA_VERSION_PATH###", java_version_path);
+				}
+				writeLine(bw3, line3);
 			}
 			br3.close();
 			bw3.close();
@@ -118,13 +139,11 @@ public class NSICreator {
 			while ((line4 = br4.readLine()) != null) {
 				if (line4.contains("###VERSION###")) {
 					line4 = line4.replace("###VERSION###", version);
-					writeLine(bw4, line4);
-				} else if (line4.contains("###JAVA_VERSION_PATH###")) {
-					line4 = line4.replace("###JAVA_VERSION_PATH###", java_version_path);
-					writeLine(bw4, line4);
-				} else {
-					writeLine(bw4, line4);
 				}
+				if (line4.contains("###JAVA_VERSION_PATH###")) {
+					line4 = line4.replace("###JAVA_VERSION_PATH###", java_version_path);
+				}
+				writeLine(bw4, line4);
 			}
 			br4.close();
 			bw4.close();
@@ -139,13 +158,11 @@ public class NSICreator {
 			while ((line5 = br5.readLine()) != null) {
 				if (line5.contains("###VERSION###")) {
 					line5 = line5.replace("###VERSION###", version);
-					writeLine(bw5, line5);
-				} else if (line5.contains("###JAVA_VERSION_PATH###")) {
-					line5 = line5.replace("###JAVA_VERSION_PATH###", java_version_path);
-					writeLine(bw5, line5);
-				} else {
-					writeLine(bw5, line5);
 				}
+				if (line5.contains("###JAVA_VERSION_PATH###")) {
+					line5 = line5.replace("###JAVA_VERSION_PATH###", java_version_path);
+				}
+				writeLine(bw5, line5);
 			}
 			br5.close();
 			bw5.close();
@@ -160,13 +177,11 @@ public class NSICreator {
 			while ((line6 = br6.readLine()) != null) {
 				if (line6.contains("###VERSION###")) {
 					line6 = line6.replace("###VERSION###", version);
-					writeLine(bw6, line6);
-				} else if (line6.contains("###JAVA_VERSION_PATH###")) {
-					line6 = line6.replace("###JAVA_VERSION_PATH###", java_version_path);
-					writeLine(bw6, line6);
-				} else {
-					writeLine(bw6, line6);
 				}
+				if (line6.contains("###JAVA_VERSION_PATH###")) {
+					line6 = line6.replace("###JAVA_VERSION_PATH###", java_version_path);
+				}
+				writeLine(bw6, line6);
 			}
 			br6.close();
 			bw6.close();

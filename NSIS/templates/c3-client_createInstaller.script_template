@@ -46,6 +46,9 @@ ECHO .
 C:
 CD \
 CD C3\projects\C3-Starmap_Cerberus\NSIS
+
+DEL C3-Client-*.* /F /Q
+
 makensis.exe /V4 /INPUTCHARSET utf8 /OUTPUTCHARSET utf8 c3-client.nsi
 
 certutil -hashfile c:\c3\projects\C3-Starmap_Cerberus\NSIS\C3-Client-%VERSION%_install.exe MD5  | find /i /v "md5" | find /i /v "certutil" > c:\c3\projects\C3-Starmap_Cerberus\NSIS\C3-Client-%VERSION%_install.md5checksum
