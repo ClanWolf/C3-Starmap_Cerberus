@@ -1,25 +1,15 @@
 @ECHO OFF
 ECHO .
-ECHO .
-ECHO ###############################################
-ECHO #
-ECHO # !!! ATTENTION !!!
-ECHO #
-ECHO # Consider changing the version number
-ECHO # (in 'NSICreator.java')
-ECHO #
-ECHO ###############################################
-ECHO .
-ECHO .
-
-ECHO .
 ECHO Will run command NSICreator to add needed files to the NSIS config file
 ECHO .
 C:
 CD \
 CD C:\C3\projects\C3-Starmap_Cerberus
 
-SET VERSION=5.2.0
+REM SET VERSION=5.2.3
+FOR /f "delims== tokens=1,2" %%G in (C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\target\classes\version.number) do set %%G=%%H
+ECHO Found version: %VERSION%
+REM PAUSE
 
 IF EXIST "C:\Program Files\Java\jdk-16.0.2\bin\java.exe" (
   ECHO Java found
