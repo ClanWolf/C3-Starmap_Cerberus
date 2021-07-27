@@ -1,4 +1,0 @@
-1. Change version number in ALL pom.xml files (all module sub-projects)
-2. Change version number in c3.properties file (creation of scripts will read version from there!)
-3. Change java version number (if needed) in c3.properties file (creation of scripts will read version from there!)
-4.
