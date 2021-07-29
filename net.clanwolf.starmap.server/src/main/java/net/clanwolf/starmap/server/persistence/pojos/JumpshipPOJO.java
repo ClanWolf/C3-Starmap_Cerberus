@@ -55,6 +55,9 @@ public class JumpshipPOJO extends Pojo {
 	@Column(name = "JumpshipFactionID")
 	private Long jumpshipFactionID;
 
+	@Column(name = "HomeSystem")
+	private Long homeSystemID;
+
 	@Column(name = "StarSystemHistory")
 	private String starSystemHistory;
 
@@ -106,6 +109,16 @@ public class JumpshipPOJO extends Pojo {
 	@SuppressWarnings("unused")
 	public void setJumpshipFactionID(Long jumpshipFactionID) {
 		this.jumpshipFactionID = jumpshipFactionID;
+	}
+
+	@SuppressWarnings("unused")
+	public Long getHomeSystemID() {
+		return homeSystemID;
+	}
+
+	@SuppressWarnings("unused")
+	public void setHomeSystemID(Long homeSystemID) {
+		this.homeSystemID = homeSystemID;
 	}
 
 	@SuppressWarnings("unused")
