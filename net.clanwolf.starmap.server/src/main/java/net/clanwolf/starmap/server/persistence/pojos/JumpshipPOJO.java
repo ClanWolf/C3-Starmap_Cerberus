@@ -55,7 +55,7 @@ public class JumpshipPOJO extends Pojo {
 	@Column(name = "JumpshipFactionID")
 	private Long jumpshipFactionID;
 
-	@Column(name = "HomeSystem")
+	@Column(name = "HomeSystemID")
 	private Long homeSystemID;
 
 	@Column(name = "StarSystemHistory")
