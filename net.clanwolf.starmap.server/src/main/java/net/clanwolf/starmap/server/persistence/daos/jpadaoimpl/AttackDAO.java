@@ -73,6 +73,17 @@ public class AttackDAO extends GenericDAO {
 		return (AttackPOJO) super.findById(userID, AttackPOJO.class, id);
 	}
 
+	public AttackPOJO findOpenAttackByRound(Long userID, Long jumpShipID, Long season, Long round) {
+		CriteriaHelper crit = new CriteriaHelper(AttackPOJO.class);
+
+		crit.createPredicate("jumpshipID",jumpShipID);
+		crit.addCriteria("round", round);
+		crit.addCriteria("season", season);
+
+		return (AttackPOJO)crit.getSingleResult();
+	}
+
+
 	/*
 	 * Give all open attacks back of a season back and a round
 	 */

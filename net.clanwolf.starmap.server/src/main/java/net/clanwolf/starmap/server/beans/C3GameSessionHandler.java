@@ -200,22 +200,34 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		try {
 			EntityManagerHelper.beginTransaction(getC3UserID(session));
 
+			AttackPOJO existingAttack = null;
 			AttackPOJO attack = (AttackPOJO) state.getObject();
 			C3Logger.debug("Saving attack: " + attack);
 			C3Logger.debug("-- Attacker (jumpshipID): " + attack.getJumpshipID());
 			C3Logger.debug("-- Attacking from: " + attack.getAttackedFromStarSystemID());
 			C3Logger.debug("-- Attacked system: " + attack.getStarSystemID());
 
+
 			if(attack.getId() != null) {
 				dao.update(getC3UserID(session), attack);
 			} else {
-				dao.save(getC3UserID(session), attack);
+				// Check if attack exits
+				existingAttack = dao.findOpenAttackByRound(getC3UserID(session),attack.getJumpshipID(), attack.getSeason(), attack.getRound());
+
+				if(existingAttack == null){
+					dao.save(getC3UserID(session), attack);
+				} else {
+					attack = existingAttack;
+				}
 			}
 
 			EntityManagerHelper.commit(getC3UserID(session));
 
 			GameState response = new GameState(GAMESTATEMODES.ATTACK_SAVE_RESPONSE);
 			response.addObject(attack);
+			if( existingAttack != null){
+				response.addObject2(getC3UserID(session));
+			}
 			response.setAction_successfully(Boolean.TRUE);
 			C3GameSessionHandler.sendBroadCast(room, response);
 		} catch (RuntimeException re) {
