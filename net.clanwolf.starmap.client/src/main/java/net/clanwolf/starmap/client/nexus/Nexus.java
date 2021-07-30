@@ -253,12 +253,14 @@ public class Nexus {
 		boolean userHasAttack = false;
 		if (Nexus.getBoUniverse() != null) {
 			for (BOAttack a : Nexus.getBoUniverse().attackBOs) {
-				for (AttackCharacterDTO ac : a.getAttackCharList()) {
-					if (ac.getCharacterID().equals(Nexus.getCurrentUser().getCurrentCharacter().getId())) {
-						// The user currently logged in has joined an attack that was not resolved yet
-						userHasAttack = true;
-						currentAttackOfUser = a;
-						break;
+				if (a.getAttackCharList() != null) {
+					for (AttackCharacterDTO ac : a.getAttackCharList()) {
+						if (ac.getCharacterID().equals(Nexus.getCurrentUser().getCurrentCharacter().getId())) {
+							// The user currently logged in has joined an attack that was not resolved yet
+							userHasAttack = true;
+							currentAttackOfUser = a;
+							break;
+						}
 					}
 				}
 			}

@@ -77,12 +77,10 @@ public class C3MessagePane extends Pane {
 		yesButton.setLayoutY(160);
 		yesButton.setMinWidth(150);
 		yesButton.getStyleClass().add("contentButtonRed");
-		yesButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				message.setResult(C3MESSAGERESULTS.YES);
-				fadeOut();
-			}
+		yesButton.setAlignment(Pos.CENTER_RIGHT);
+		yesButton.setOnAction(event -> {
+			message.setResult(C3MESSAGERESULTS.YES);
+			fadeOut();
 		});
 		yesButton.setOnMouseEntered(e -> {
 			ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL_MESSAGE).execute();
@@ -95,12 +93,10 @@ public class C3MessagePane extends Pane {
 		noButton.setLayoutY(160);
 		noButton.setMinWidth(150);
 		noButton.getStyleClass().add("contentButtonRed");
-		noButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				message.setResult(C3MESSAGERESULTS.NO);
-				fadeOut();
-			}
+		noButton.setAlignment(Pos.CENTER_RIGHT);
+		noButton.setOnAction(event -> {
+			message.setResult(C3MESSAGERESULTS.NO);
+			fadeOut();
 		});
 		noButton.setOnMouseEntered(e -> {
 			ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL_MESSAGE).execute();
@@ -113,12 +109,10 @@ public class C3MessagePane extends Pane {
 		okButton.setLayoutY(160);
 		okButton.setMinWidth(150);
 		okButton.getStyleClass().add("contentButtonRed");
-		okButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				message.setResult(C3MESSAGERESULTS.OK);
-				fadeOut();
-			}
+		okButton.setAlignment(Pos.CENTER_RIGHT);
+		okButton.setOnAction(event -> {
+			message.setResult(C3MESSAGERESULTS.OK);
+			fadeOut();
 		});
 		okButton.setOnMouseEntered(e -> {
 			ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL_MESSAGE).execute();
@@ -131,12 +125,10 @@ public class C3MessagePane extends Pane {
 		closeButton.setLayoutY(160);
 		closeButton.setMinWidth(150);
 		closeButton.getStyleClass().add("contentButtonRed");
-		closeButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				message.setResult(C3MESSAGERESULTS.CLOSED);
-				fadeOut();
-			}
+		closeButton.setAlignment(Pos.CENTER_RIGHT);
+		closeButton.setOnAction(event -> {
+			message.setResult(C3MESSAGERESULTS.CLOSED);
+			fadeOut();
 		});
 		closeButton.setOnMouseEntered(e -> {
 			ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL_MESSAGE).execute();
@@ -149,12 +141,10 @@ public class C3MessagePane extends Pane {
 		cancelButton.setLayoutY(160);
 		cancelButton.setMinWidth(150);
 		cancelButton.getStyleClass().add("contentButtonRed");
-		cancelButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				message.setResult(C3MESSAGERESULTS.CANCELED);
-				fadeOut();
-			}
+		cancelButton.setAlignment(Pos.CENTER_RIGHT);
+		cancelButton.setOnAction(event -> {
+			message.setResult(C3MESSAGERESULTS.CANCELED);
+			fadeOut();
 		});
 		cancelButton.setOnMouseEntered(e -> {
 			ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL_MESSAGE).execute();
@@ -243,38 +233,35 @@ public class C3MessagePane extends Pane {
 		final C3MessagePane mp = this;
 		KeyFrame frame1 = new KeyFrame(Duration.seconds(.15), key1, key2, key3, key4);
 		timeline.getKeyFrames().addAll(frame1);
-		timeline.setOnFinished(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				mp.getChildren().add(rectBorder);
+		timeline.setOnFinished(event -> {
+			mp.getChildren().add(rectBorder);
 
-				double w = rect.getWidth() * 6;
-				double h = rect.getHeight() * 4;
-				double x = rect.getX();
-				double y = rect.getY();
-				rectBorder.setWidth(w);
-				rectBorder.setHeight(h);
-				rectBorder.setX(x);
-				rectBorder.setY(y);
+			double w = rect.getWidth() * 6;
+			double h = rect.getHeight() * 4;
+			double x = rect.getX();
+			double y = rect.getY();
+			rectBorder.setWidth(w);
+			rectBorder.setHeight(h);
+			rectBorder.setX(x);
+			rectBorder.setY(y);
 
-				mp.getChildren().add(messageText);
+			mp.getChildren().add(messageText);
 
-				switch (type) {
-					case OK_CANCEL:
-						mp.getChildren().add(okButton);
-						mp.getChildren().add(cancelButton);
-						break;
-					case YES_NO:
-						mp.getChildren().add(yesButton);
-						mp.getChildren().add(noButton);
-						break;
-					case CLOSE:
-						mp.getChildren().add(closeButton);
-						closeButton.toFront();
-						break;
-					default:
-						break;
-				}
+			switch (type) {
+				case OK_CANCEL:
+					mp.getChildren().add(okButton);
+					mp.getChildren().add(cancelButton);
+					break;
+				case YES_NO:
+					mp.getChildren().add(yesButton);
+					mp.getChildren().add(noButton);
+					break;
+				case CLOSE:
+					mp.getChildren().add(closeButton);
+					closeButton.toFront();
+					break;
+				default:
+					break;
 			}
 		});
 
@@ -282,13 +269,7 @@ public class C3MessagePane extends Pane {
 
 		// Transition sequence
 		SequentialTransition sequentialTransition = new SequentialTransition();
-		sequentialTransition.setOnFinished(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				rectBorder.toFront();
-
-			}
-		});
+		sequentialTransition.setOnFinished(event -> rectBorder.toFront());
 		sequentialTransition.getChildren().addAll(fadeInTransition_02, timeline, fadeInTransition_01);
 		sequentialTransition.setCycleCount(1);
 		sequentialTransition.play();
@@ -307,12 +288,7 @@ public class C3MessagePane extends Pane {
 		FadeOutTransition.setFromValue(1.0);
 		FadeOutTransition.setToValue(0.0);
 		FadeOutTransition.setCycleCount(1);
-		FadeOutTransition.setOnFinished(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				ActionManager.getAction(ACTIONS.SHOW_MESSAGE_WAS_ANSWERED).execute(message);
-			}
-		});
+		FadeOutTransition.setOnFinished(event -> ActionManager.getAction(ACTIONS.SHOW_MESSAGE_WAS_ANSWERED).execute(message));
 		FadeOutTransition.play();
 	}
 }

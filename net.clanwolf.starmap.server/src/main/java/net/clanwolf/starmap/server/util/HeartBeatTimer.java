@@ -28,15 +28,22 @@ package net.clanwolf.starmap.server.util;
 
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.server.GameServer;
+import net.clanwolf.starmap.server.beans.C3GameSessionHandler;
+import net.clanwolf.starmap.server.beans.C3Room;
 import net.clanwolf.starmap.server.enums.SystemListTypes;
+import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.RoundDAO;
 import net.clanwolf.starmap.server.persistence.pojos.RoundPOJO;
+import net.clanwolf.starmap.server.persistence.pojos.UserPOJO;
 import net.clanwolf.starmap.server.process.EndRound;
+import net.clanwolf.starmap.transfer.GameState;
+import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.TimerTask;
 
@@ -46,12 +53,19 @@ import java.util.TimerTask;
  */
 public class HeartBeatTimer extends TimerTask {
 
+	private boolean informClients = false;
 	private String tempDir = "";
 	private boolean currentlyRunning = false;
 
 	public HeartBeatTimer() {
 		String property = "java.io.tmpdir";
 		tempDir = System.getProperty(property);
+	}
+
+	public HeartBeatTimer(boolean informClients) {
+		String property = "java.io.tmpdir";
+		tempDir = System.getProperty(property);
+		this.informClients = informClients;
 	}
 
 	@Override
@@ -92,6 +106,13 @@ public class HeartBeatTimer extends TimerTask {
 			int round = r.getRound().intValue();
 
 			EndRound.finalizeRound(seasonId, round);
+
+			if (informClients) {
+				// TODO: Broadcast new version of the universe to the clients
+				GameState response = new GameState(GAMESTATEMODES.GET_UNIVERSE_DATA);
+				response.addObject(WebDataInterface.getUniverse());
+//				C3Room.sendBroadcastMessage(response);
+			}
 
 			currentlyRunning = false;
 		}

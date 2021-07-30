@@ -219,7 +219,7 @@ public class WebDataInterface {
 		StringBuffer jsonString = new StringBuffer();
 
 		while(iter.hasNext()) {
-			AttackDTO dto = EntityConverter.convertpojo2dto(iter.next(),AttackDTO.class);
+			AttackDTO dto = EntityConverter.convertpojo2dto(iter.next(), AttackDTO.class);
 			//getCharacterFromAttack(dto);
 			universe.attacks.add(dto);
 			jsonString.append(getJsonString(dto));

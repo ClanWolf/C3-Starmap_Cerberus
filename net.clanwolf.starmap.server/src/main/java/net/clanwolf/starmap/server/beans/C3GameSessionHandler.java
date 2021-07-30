@@ -128,17 +128,17 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			case JUMPSHIP_SAVE:
 				saveJumpship(session, state);
 				serverHeartBeat = new Timer();
-				serverHeartBeat.schedule(new HeartBeatTimer(), 100);
+				serverHeartBeat.schedule(new HeartBeatTimer(true), 100);
 				break;
 			case ATTACK_SAVE:
 				saveAttack(session, state);
 				serverHeartBeat = new Timer();
-				serverHeartBeat.schedule(new HeartBeatTimer(), 100);
+				serverHeartBeat.schedule(new HeartBeatTimer(true), 100);
 				break;
 			case ATTACK_CHARACTER_SAVE:
 				saveAttackCharacter(session, state);
 				serverHeartBeat = new Timer();
-				serverHeartBeat.schedule(new HeartBeatTimer(), 100);
+				serverHeartBeat.schedule(new HeartBeatTimer(true), 100);
 				break;
 			case ROLEPLAY_GET_CHAPTER_BYSORTORDER:
 				C3GameSessionHandlerRoleplay.getChapterBySortOrder(session, state);
@@ -164,7 +164,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		}
 	}
 
-	private void saveUser(PlayerSession session, GameState state) {
+	private synchronized void saveUser(PlayerSession session, GameState state) {
 		UserDAO dao = UserDAO.getInstance();
 		GameState response = new GameState(GAMESTATEMODES.USER_SAVE);
 
@@ -194,7 +194,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		}
 	}
 
-	private void saveAttack(PlayerSession session, GameState state) {
+	private synchronized void saveAttack(PlayerSession session, GameState state) {
 		AttackDAO dao = AttackDAO.getInstance();
 
 		try {
@@ -226,7 +226,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			GameState response = new GameState(GAMESTATEMODES.ATTACK_SAVE_RESPONSE);
 			response.addObject(attack);
 			if( existingAttack != null){
-				response.addObject2(getC3UserID(session));
+				response.addObject2(session.getId());
 			}
 			response.setAction_successfully(Boolean.TRUE);
 			C3GameSessionHandler.sendBroadCast(room, response);
@@ -243,7 +243,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		}
 	}
 
-	private void saveAttackCharacter(PlayerSession session, GameState state) {
+	private synchronized void saveAttackCharacter(PlayerSession session, GameState state) {
 		AttackCharacterDAO dao = AttackCharacterDAO.getInstance();
 
 		try {
@@ -278,7 +278,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		}
 	}
 
-	private void saveJumpship(PlayerSession session, GameState state){
+	private synchronized void saveJumpship(PlayerSession session, GameState state){
 		JumpshipDAO dao = JumpshipDAO.getInstance();
 		GameState response = new GameState(GAMESTATEMODES.JUMPSHIP_SAVE);
 
@@ -303,7 +303,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		}
 	}
 
-	private void saveRoute(PlayerSession session, GameState state) {
+	private synchronized void saveRoute(PlayerSession session, GameState state) {
 
 		RoutePointDAO dao = RoutePointDAO.getInstance();
 		GameState response = new GameState(GAMESTATEMODES.JUMPSHIP_SAVE);
@@ -342,7 +342,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		}
 	}
 
-	private void savePrivileges(PlayerSession session, GameState state) {
+	private synchronized void savePrivileges(PlayerSession session, GameState state) {
 		UserDAO dao = UserDAO.getInstance();
 		GameState response = new GameState(GAMESTATEMODES.PRIVILEGE_SAVE);
 		try {
@@ -378,7 +378,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		}
 	}
 
-	private void checkDoubleLogin(PlayerSession session, GameRoom gm) {
+	private synchronized void checkDoubleLogin(PlayerSession session, GameRoom gm) {
 		C3Logger.debug("C3Room.afterSessionConnect");
 
 		// get the actual user
@@ -406,7 +406,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		}
 	}
 
-	private void getLoggedInUserData(PlayerSession session) {
+	private synchronized void getLoggedInUserData(PlayerSession session) {
 		UserPOJO user = ((C3Player) session.getPlayer()).getUser();
 
 		C3Logger.info("Sending userdata/universe back after login...");

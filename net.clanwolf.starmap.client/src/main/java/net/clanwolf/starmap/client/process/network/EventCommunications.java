@@ -133,13 +133,23 @@ public class EventCommunications {
 				case ATTACK_SAVE_RESPONSE:
 					C3Logger.info("Attack has been started.");
 					AttackDTO attack = (AttackDTO) state.getObject();
-
-					for (AttackCharacterDTO attackCharacterDTO : attack.getAttackCharList()) {
-						if (attackCharacterDTO.getCharacterID().equals(Nexus.getCurrentChar().getId())) {
-							C3Logger.info("So... jetzt wird der RP Screen angezeigt... und? Siehst du ihn schon? ... mach mal die augen zu!");
-							break;
-						}
+					Long userIDOfSavingUser = (Long) state.getObject2(); // --> session.getId();
+					if (userIDOfSavingUser == null) {
+						// My attack was saved
+					} else {
+						// Someone else moved this jumpship and managed to save faster than I did, no luck!
 					}
+
+//					for (AttackCharacterDTO attackCharacterDTO : attack.getAttackCharList()) {
+//						if (attackCharacterDTO.getCharacterID().equals(Nexus.getCurrentChar().getId())) {
+//							C3Logger.info("");
+//							break;
+//						}
+//					}
+
+					// TODO: Update universe with the received attack object
+					// What about the jumpship and the routepoints?
+
 					ActionManager.getAction(ACTIONS.ENABLE_MAIN_MENU_BUTTONS).execute();
 					break;
 

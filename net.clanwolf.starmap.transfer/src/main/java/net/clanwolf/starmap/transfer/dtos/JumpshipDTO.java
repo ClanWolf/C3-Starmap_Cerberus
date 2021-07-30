@@ -44,6 +44,9 @@ public class JumpshipDTO extends Dto {
 	//@Column(name = "JumpshipFactionID")
 	private Long jumpshipFactionID;
 
+	//@Column(name = "HomeSystemID")
+	private Long homeSystemID;
+
 	//@Column(name = "StarSystemHistory")
 	private String starSystemHistory;
 
@@ -54,7 +57,7 @@ public class JumpshipDTO extends Dto {
 	//@JoinColumn(name = "JumpshipID")
 	private List<RoutePointDTO> routepointList = new ArrayList<>();
 
-//	@Column(name = "Level")
+	//@Column(name = "Level")
 	private Long level;
 
 	@SuppressWarnings("unused")
@@ -85,6 +88,16 @@ public class JumpshipDTO extends Dto {
 	@SuppressWarnings("unused")
 	public void setJumpshipFactionID(Long jumpshipFactionID) {
 		this.jumpshipFactionID = jumpshipFactionID;
+	}
+
+	@SuppressWarnings("unused")
+	public Long getHomeSystemID() {
+		return homeSystemID;
+	}
+
+	@SuppressWarnings("unused")
+	public void setHomeSystemID(Long homeSystemID) {
+		this.homeSystemID = homeSystemID;
 	}
 
 	@SuppressWarnings("unused")

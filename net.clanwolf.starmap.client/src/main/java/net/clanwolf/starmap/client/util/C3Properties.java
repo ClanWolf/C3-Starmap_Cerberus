@@ -129,7 +129,7 @@ public class C3Properties {
 		userProperties.entrySet().stream().forEach((userProperty) -> {
 			String key = (String) userProperty.getKey();
 			if (sProperties.containsKey(key) && !C3PROPS.VERSION.name().toLowerCase().equals(key)) {
-				setProperty(C3PROPS.valueOf((String) ((String) userProperty.getKey()).toUpperCase()), (String) userProperty.getValue(), true);
+				setProperty(C3PROPS.valueOf(((String) userProperty.getKey()).toUpperCase()), (String) userProperty.getValue(), true, false);
 			}
 		});
 		return true;
@@ -190,6 +190,10 @@ public class C3Properties {
 		setProperty(key, value, false);
 	}
 
+	public static void setProperty(C3PROPS key, String value, boolean store) {
+		setProperty(key, value, store, true);
+	}
+
 	/**
 	 * Sets a property and stores it
 	 *
@@ -197,7 +201,7 @@ public class C3Properties {
 	 * @param value String
 	 * @param store boolean
 	 */
-	public static void setProperty(C3PROPS key, String value, boolean store) {
+	public static void setProperty(C3PROPS key, String value, boolean store, boolean encrypt) {
 		String strKey = key.name().toLowerCase();
 		String prop = sProperties.getProperty(strKey);
 
@@ -206,10 +210,14 @@ public class C3Properties {
 				|| C3PROPS.PROXY_PASSWORD.equals(key)
 				|| C3PROPS.LOGIN_PASSWORD.equals(key)) {
 			if ((value != null && value.length() > 0 && C3PROPS.PROXY_PASSWORD.equals(key))) {
-				value = encrypt(value);
+				if (encrypt) {
+					value = encrypt(value);
+				}
 			}
 			if ((value != null && value.length() > 0 && C3PROPS.LOGIN_PASSWORD.equals(key))) {
-				value = encrypt(value);
+				if (encrypt) {
+					value = encrypt(value);
+				}
 			}
 			if (value == null || value.length() == 0) {
 				sProperties.remove(strKey);
