@@ -207,7 +207,6 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			C3Logger.debug("-- Attacking from: " + attack.getAttackedFromStarSystemID());
 			C3Logger.debug("-- Attacked system: " + attack.getStarSystemID());
 
-
 			if(attack.getId() != null) {
 				dao.update(getC3UserID(session), attack);
 			} else {
@@ -278,25 +277,26 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		}
 	}
 
-	private synchronized void saveJumpship(PlayerSession session, GameState state){
-		JumpshipDAO dao = JumpshipDAO.getInstance();
+	private synchronized void saveJumpship(PlayerSession session, GameState state) {
+		JumpshipDAO daoJS = JumpshipDAO.getInstance();
+		RoutePointDAO daoRP = RoutePointDAO.getInstance();
 		GameState response = new GameState(GAMESTATEMODES.JUMPSHIP_SAVE);
 
 		try {
 			EntityManagerHelper.beginTransaction(getC3UserID(session));
-			JumpshipPOJO js =(JumpshipPOJO) state.getObject();
 
-			dao.update(C3GameSessionHandler.getC3UserID(session),js);
+			// TODO: Delete old routepoints?
+			ArrayList<RoutePointPOJO> list = (ArrayList<RoutePointPOJO>) state.getObject();
+			daoRP.deleteByJumpshipId(getC3UserID(session), list.get(0).getJumpshipId());
 
+			JumpshipPOJO js = (JumpshipPOJO)state.getObject();
+			daoJS.update(C3GameSessionHandler.getC3UserID(session), js);
 			EntityManagerHelper.commit(getC3UserID(session));
-
 		} catch (RuntimeException re) {
 			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
-
 			response.addObject(re.getMessage());
 			response.setAction_successfully(Boolean.FALSE);
 			C3GameSessionHandler.sendNetworkEvent(session, response);
-
 			C3Logger.error("Jumpship save", re);
 		} finally {
 
@@ -311,11 +311,11 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		try {
 			EntityManagerHelper.beginTransaction(getC3UserID(session));
 			ArrayList<RoutePointPOJO> list = (ArrayList<RoutePointPOJO>) state.getObject();
-			dao.deleteByJumpshipId(getC3UserID(session), ((RoutePointPOJO)list.get(0)).getJumpshipId());
+			dao.deleteByJumpshipId(getC3UserID(session), list.get(0).getJumpshipId());
 
 			Iterator<RoutePointPOJO> iter = list.iterator();
 			while(iter.hasNext()) {
-				RoutePointPOJO routePoint = (RoutePointPOJO) iter.next();
+				RoutePointPOJO routePoint = iter.next();
 				routePoint.setId(null);
 
 				C3Logger.info("Saving: " + routePoint);
