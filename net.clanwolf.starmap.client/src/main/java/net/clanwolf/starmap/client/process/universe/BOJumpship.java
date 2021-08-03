@@ -69,11 +69,11 @@ public class BOJumpship implements Comparable<BOJumpship> {
 	}
 
 	@SuppressWarnings("unused")
-	public void storeRouteToDatabase(JumpshipDTO jsDto) {
-		GameState saveRouteState = new GameState();
-		saveRouteState.setMode(GAMESTATEMODES.JUMPSHIP_SAVE);
-		saveRouteState.addObject(jsDto);
-		Nexus.fireNetworkEvent(saveRouteState);
+	public void storeJumpship(JumpshipDTO jsDto) {
+		GameState saveJS = new GameState();
+		saveJS.setMode(GAMESTATEMODES.JUMPSHIP_SAVE);
+		saveJS.addObject(jsDto);
+		Nexus.fireNetworkEvent(saveJS);
 	}
 
 	@SuppressWarnings("unused")

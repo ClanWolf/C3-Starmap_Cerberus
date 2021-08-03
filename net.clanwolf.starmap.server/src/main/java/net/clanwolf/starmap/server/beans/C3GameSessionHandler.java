@@ -48,7 +48,6 @@ import net.clanwolf.starmap.transfer.util.Compressor;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Timer;
 
 /**
@@ -284,22 +283,18 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 		try {
 			EntityManagerHelper.beginTransaction(getC3UserID(session));
-
-			// TODO: Delete old routepoints?
-			ArrayList<RoutePointPOJO> list = (ArrayList<RoutePointPOJO>) state.getObject();
-			daoRP.deleteByJumpshipId(getC3UserID(session), list.get(0).getJumpshipId());
-
 			JumpshipPOJO js = (JumpshipPOJO)state.getObject();
+			daoRP.deleteByJumpshipId(getC3UserID(session), js.getId());
 			daoJS.update(C3GameSessionHandler.getC3UserID(session), js);
 			EntityManagerHelper.commit(getC3UserID(session));
 		} catch (RuntimeException re) {
+			C3Logger.error("Jumpship save", re);
+			re.printStackTrace();
 			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
 			response.addObject(re.getMessage());
 			response.setAction_successfully(Boolean.FALSE);
 			C3GameSessionHandler.sendNetworkEvent(session, response);
-			C3Logger.error("Jumpship save", re);
-		} finally {
-
+//		} finally {
 		}
 	}
 
@@ -313,9 +308,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			ArrayList<RoutePointPOJO> list = (ArrayList<RoutePointPOJO>) state.getObject();
 			dao.deleteByJumpshipId(getC3UserID(session), list.get(0).getJumpshipId());
 
-			Iterator<RoutePointPOJO> iter = list.iterator();
-			while(iter.hasNext()) {
-				RoutePointPOJO routePoint = iter.next();
+			for (RoutePointPOJO routePoint : list) {
 				routePoint.setId(null);
 
 				C3Logger.info("Saving: " + routePoint);
@@ -323,22 +316,21 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			}
 
 			JumpshipDAO jsDao = JumpshipDAO.getInstance();
-			jsDao.setAttackReady(getC3UserID(session), ((RoutePointPOJO)list.get(0)).getJumpshipId(), false);
+			jsDao.setAttackReady(getC3UserID(session), list.get(0).getJumpshipId(), false);
 
 			EntityManagerHelper.commit(getC3UserID(session));
 
 			response.addObject(null);
 			response.setAction_successfully(Boolean.TRUE);
 		} catch (RuntimeException re) {
+			C3Logger.error("Route save", re);
+			re.printStackTrace();
 			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
 
 			response.addObject(re.getMessage());
 			response.setAction_successfully(Boolean.FALSE);
 			C3GameSessionHandler.sendNetworkEvent(session, response);
-
-			C3Logger.error("Route save", re);
-		} finally {
-
+//		} finally {
 		}
 	}
 
@@ -348,11 +340,9 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		try {
 			EntityManagerHelper.beginTransaction(getC3UserID(session));
 			ArrayList<UserPOJO> list = (ArrayList<UserPOJO>) state.getObject();
-			Iterator<UserPOJO> iter = list.iterator();
-			while(iter.hasNext()) {
-				UserPOJO user = (UserPOJO) iter.next();
+			for (UserPOJO user : list) {
 				user.setLastModified(new Timestamp(System.currentTimeMillis()));
-				if(user.getUserId() == null) {
+				if (user.getUserId() == null) {
 					// C3Logger.info("Saving: " + user.getUserName() + " - Privs: " + user.getPrivileges());
 					dao.save(getC3UserID(session), user);
 				} else {
@@ -366,15 +356,14 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			response.addObject(null);
 			response.setAction_successfully(Boolean.TRUE);
 		} catch (RuntimeException re) {
+			C3Logger.error("Privilege save", re);
+			re.printStackTrace();
 			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
 
 			response.addObject(re.getMessage());
 			response.setAction_successfully(Boolean.FALSE);
 			C3GameSessionHandler.sendNetworkEvent(session, response);
-
-			C3Logger.error("Privilege save", re);
-		} finally {
-
+//		} finally {
 		}
 	}
 
@@ -453,8 +442,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			C3GameSessionHandler.sendNetworkEvent(session, response);
 
 			C3Logger.error("User save", re);
-		} finally {
-
+//		} finally {
 		}
 
 		// Reads characterlist and add it to the user
@@ -467,9 +455,8 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 	 */
 	private void sendNewPlayerList() {
 		ArrayList<UserPOJO> userList = new ArrayList<>();
-		Iterator<PlayerSession> iter = room.getSessions().iterator();
-		while (iter.hasNext()) {
-			C3Player pl = (C3Player) iter.next().getPlayer();
+		for (PlayerSession playerSession : room.getSessions()) {
+			C3Player pl = (C3Player) playerSession.getPlayer();
 			userList.add(pl.getUser());
 		}
 

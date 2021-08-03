@@ -239,14 +239,15 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		// Store jumproutes
 		for (BOJumpship js : Nexus.getBoUniverse().jumpshipBOs.values()) {
 			if (js.getJumpshipFaction() == Nexus.getCurrentUser().getCurrentCharacter().getFactionId() &&
-					Nexus.getBoUniverse().routesList.get(js.getJumpshipId()) != null) {
+				Nexus.getBoUniverse().routesList.get(js.getJumpshipId()) != null) {
 
 				C3Logger.info("Storing route to database");
 				ArrayList<RoutePointDTO> route = Nexus.getBoUniverse().routesList.get(js.getJumpshipId());
 				JumpshipDTO jsDto = js.getJumpshipDTO();
 				jsDto.setRoutepointList(route);
 				setJumpshipToAttackReady(js, false);
-				js.storeRouteToDatabase(jsDto);
+				js.setAttackReady(false);
+				js.storeJumpship(jsDto);
 
 				// Is the first coming jump (next round) to an enemy planet (?)
 				RoutePointDTO rp = route.get(1);
