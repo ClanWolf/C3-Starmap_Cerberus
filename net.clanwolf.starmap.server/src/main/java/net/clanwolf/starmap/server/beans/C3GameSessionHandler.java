@@ -64,10 +64,11 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		this.room = session;
 		this.roomSession = session;
 		GameStateManagerService manager = room.getStateManager();
-		state = (GameState) manager.getState();
 
-		// Initialize the room state_login.
-		state = new GameState();
+		// TODO: Die beiden States hier wurden nie benutzt (auch in alten Versionen der Klasse nicht)!
+		//		state = (GameState) manager.getState();
+		//		// Initialize the room state_login.
+		//		state = new GameState();
 		state = new GameState();
 		manager.setState(state); // set it back on the room
 	}

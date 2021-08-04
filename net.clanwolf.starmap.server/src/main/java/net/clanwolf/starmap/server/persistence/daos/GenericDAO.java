@@ -43,7 +43,7 @@ import java.util.logging.Level;
 public abstract class GenericDAO implements IDAO {
 
 	protected String className = "";
-	private  static EntityManager fem = null; // free entity manager
+	private static EntityManager fem = null; // free entity manager
 
 	protected EntityManager getEntityManager(Long userID) {
 		return EntityManagerHelper.getEntityManager(userID);
@@ -56,16 +56,11 @@ public abstract class GenericDAO implements IDAO {
 			//getEntityManager(userID).
 			getEntityManager(userID).persist(entity);
 			C3Logger.info("Save successful");
-		} catch (RuntimeException re) {
+		} catch (Exception re) {
 			C3Logger.info("Save failed");
 			re.printStackTrace();
 			// getEntityManager().clear();
 			throw re;
-		} catch (Exception e) {
-			C3Logger.info("Save failed");
-			e.printStackTrace();
-			// getEntityManager().clear();
-			throw e;
 		}
 	}
 
@@ -77,16 +72,11 @@ public abstract class GenericDAO implements IDAO {
 			result = getEntityManager(userID).merge(entity);
 			C3Logger.info("Update successful");
 			return result;
-		} catch (RuntimeException re) {
+		} catch (Exception re) {
 			C3Logger.info("Update failed");
 			re.printStackTrace();
 			// getEntityManager().clear();
 			throw re;
-		} catch (Exception e) {
-			C3Logger.info("Update failed");
-			e.printStackTrace();
-			// getEntityManager().clear();
-			throw e;
 		}
 	}
 
@@ -96,16 +86,11 @@ public abstract class GenericDAO implements IDAO {
 			entity = getEntityManager(userID).getReference(entity.getClass(), id);
 			getEntityManager(userID).remove(entity);
 			C3Logger.info("Delete successful");
-		} catch (RuntimeException re) {
+		} catch (Exception re) {
 			C3Logger.info("Delete failed");
 			re.printStackTrace();
 			// getEntityManager().clear();
 			throw re;
-		} catch (Exception e) {
-			C3Logger.info("Delete failed");
-			e.printStackTrace();
-			// getEntityManager().clear();
-			throw e;
 		}
 	}
 
@@ -118,16 +103,11 @@ public abstract class GenericDAO implements IDAO {
 //		C3Logger.info("Finding object instance with id: " + id);
 		try {
 			return getEntityManager(userID).find(clazz, id);
-		} catch (RuntimeException re) {
+		} catch (Exception re) {
 			C3Logger.info("Find failed");
 			re.printStackTrace();
 			// getEntityManager().clear();
 			throw re;
-		} catch (Exception e) {
-			C3Logger.info("Find failed");
-			e.printStackTrace();
-			// getEntityManager().clear();
-			throw e;
 		}
 	}
 
@@ -153,16 +133,11 @@ public abstract class GenericDAO implements IDAO {
 				}
 			}
 			return query.getResultList();
-		} catch (RuntimeException re) {
+		} catch (Exception re) {
 			C3Logger.info("Find by property name failed");
 			re.printStackTrace();
 			// getEntityManager().clear();
 			throw re;
-		} catch (Exception e) {
-			C3Logger.info("Find by property name failed");
-			// getEntityManager().clear();
-			e.printStackTrace();
-			throw e;
 		}
 	}
 
@@ -187,16 +162,11 @@ public abstract class GenericDAO implements IDAO {
 				}
 			}
 			return query.getResultList();
-		} catch (RuntimeException re) {
+		} catch (Exception re) {
 			C3Logger.info("Find all failed");
 			re.printStackTrace();
 			// getEntityManager().clear();
 			throw re;
-		} catch (Exception e) {
-			C3Logger.info("Find all failed");
-			e.printStackTrace();
-			// getEntityManager().clear();
-			throw e;
 		}
 	}
 }

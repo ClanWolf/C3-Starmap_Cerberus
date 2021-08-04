@@ -216,7 +216,7 @@ public class WebDataInterface {
 		AttackDAO dao = AttackDAO.getInstance();
 		ArrayList<AttackPOJO> pojoList = dao.getOpenAttacksOfASeason(1L);
 		Iterator<AttackPOJO> iter = pojoList.iterator();
-		StringBuffer jsonString = new StringBuffer();
+		StringBuilder jsonString = new StringBuilder();
 
 		while(iter.hasNext()) {
 			AttackDTO dto = EntityConverter.convertpojo2dto(iter.next(), AttackDTO.class);
@@ -239,9 +239,8 @@ public class WebDataInterface {
 		ArrayList<AttackCharacterDTO> dtoList = new ArrayList<AttackCharacterDTO>();
 
 		ArrayList<AttackCharacterPOJO> myList = dao.getCharacterFromAttack(attack.getId());
-		Iterator<AttackCharacterPOJO> iter = myList.iterator();
-		while(iter.hasNext()){
-			AttackCharacterDTO dto = EntityConverter.convertpojo2dto(iter.next(),AttackCharacterDTO.class);
+		for (AttackCharacterPOJO attackCharacterPOJO : myList) {
+			AttackCharacterDTO dto = EntityConverter.convertpojo2dto(attackCharacterPOJO, AttackCharacterDTO.class);
 			attack.getAttackCharList().add(dto);
 		}
 	}
@@ -253,7 +252,7 @@ public class WebDataInterface {
 		JumpshipDAO dao = JumpshipDAO.getInstance();
 		ArrayList<JumpshipPOJO> pojoList = dao.getAllJumpships();
 		Iterator<JumpshipPOJO> iter = pojoList.iterator();
-		StringBuffer jsonString = new StringBuffer();
+		StringBuilder jsonString = new StringBuilder();
 
 		while(iter.hasNext()){
 			JumpshipPOJO js = iter.next();
@@ -263,10 +262,9 @@ public class WebDataInterface {
 			jsonString.append(getJsonString(dto));
 
 			// add RoutePoints
-			ArrayList rpList = new ArrayList(js.getRoutepointList());
-			Iterator<RoutePointPOJO> iterRP = rpList.iterator();
-			while(iterRP.hasNext()){
-				universe.routepoints.add(EntityConverter.convertpojo2dto(iterRP.next(), RoutePointDTO.class));
+			ArrayList<RoutePointPOJO> rpList = new ArrayList<>(js.getRoutepointList());
+			for (RoutePointPOJO routePointPOJO : rpList) {
+				universe.routepoints.add(EntityConverter.convertpojo2dto(routePointPOJO, RoutePointDTO.class));
 			}
 		}
 		return jsonString.toString();
@@ -278,7 +276,7 @@ public class WebDataInterface {
 		FactionDAO dao = FactionDAO.getInstance();
 		ArrayList<FactionPOJO> pojoList = dao.getAllFactions();
 		Iterator<FactionPOJO> iter = pojoList.iterator();
-		StringBuffer jsonString = new StringBuffer();
+		StringBuilder jsonString = new StringBuilder();
 
 		while(iter.hasNext()) {
 			FactionPOJO f = iter.next();
@@ -295,7 +293,7 @@ public class WebDataInterface {
 		StarSystemDataDAO dao =StarSystemDataDAO.getInstance();
 		ArrayList<StarSystemDataPOJO> pojoList = dao.getAll_HH_StarSystemData();
 		Iterator<StarSystemDataPOJO> iter = pojoList.iterator();
-		StringBuffer jsonString = new StringBuffer();
+		StringBuilder jsonString = new StringBuilder();
 
 		while(iter.hasNext()) {
 			StarSystemDataPOJO f = iter.next();
@@ -336,27 +334,24 @@ public class WebDataInterface {
 			manager.getTransaction().begin();
 
 			Session session = manager.unwrap(Session.class);
-			ResultObject result = session.doReturningWork(new ReturningWork<ResultObject>() {
-				@Override
-				public ResultObject execute(Connection conn) throws SQLException {
-					// execute your SQL
-					ResultSet rs = null;
-					ResultObject resultObject = new ResultObject();
-					String systemsList = null;
-					try (PreparedStatement stmt = conn.prepareStatement(selects.get(type.name()), ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
-						rs = stmt.executeQuery();
-						C3Logger.print("Select done...");
+			ResultObject result = session.doReturningWork(conn -> {
+				// execute your SQL
+				ResultSet rs;
+				ResultObject resultObject = new ResultObject();
+				String systemsList1 = null;
+				try (PreparedStatement stmt = conn.prepareStatement(selects.get(type.name()), ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
+					rs = stmt.executeQuery();
+					C3Logger.print("Select done...");
 
-						// create JSON representation
-						rs.beforeFirst();
-						systemsList = getJSONFromResultSet(rs, type.name(), true);
-					} catch (Exception e) {
-						C3Logger.exception("Error creating mapdata file", e);
-					}
-
-					resultObject.setResultList(systemsList);
-					return resultObject;
+					// create JSON representation
+					rs.beforeFirst();
+					systemsList1 = getJSONFromResultSet(rs, type.name(), true);
+				} catch (Exception e) {
+					C3Logger.exception("Error creating mapdata file", e);
 				}
+
+				resultObject.setResultList(systemsList1);
+				return resultObject;
 			});
 
 			systemsList = result.getResultList();
