@@ -214,6 +214,13 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 		Nexus.fireNetworkEvent(state);
 	}
 
+	public void saveLastLogin(UserDTO user) {
+		GameState state = new GameState(GAMESTATEMODES.USER_SAVE_LAST_LOGIN_DATE);
+		state.addObject(user);
+
+		Nexus.fireNetworkEvent(state);
+	}
+
 	@FXML
 	private void handleLogoutButtonHoverExit() {
 		if (enableExitEvent) {
@@ -291,7 +298,7 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 //		}
 		if (Nexus.getCurrentChar() != null) {
 			cbCharChooser.getSelectionModel().select(Nexus.getCurrentChar());
-			handleCharSelection();
+			setCharValues(Nexus.getCurrentChar());
 		}
 
 		// find the currently selected character.
@@ -302,6 +309,7 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 		// Image imageFactionLogo = new Image(Nexus.getCurrentChar().getImage(), 100, 100, false, false);
 
 		setValues();
+		saveLastLogin(Nexus.getCurrentUser());
 
 		createListeners();
 		enableListeners(true);

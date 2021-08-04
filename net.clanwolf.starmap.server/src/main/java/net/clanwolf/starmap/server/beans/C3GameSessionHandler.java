@@ -118,6 +118,9 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			case ROLEPLAY_REQUEST_ALLCHARACTER:
 				C3GameSessionHandlerRoleplay.requestAllCharacter(session, state);
 				break;
+			case USER_SAVE_LAST_LOGIN_DATE:
+				saveUser(session, state, true, false);
+				break;
 			case USER_SAVE:
 				saveUser(session, state);
 				break;
@@ -164,6 +167,10 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 	}
 
 	private synchronized void saveUser(PlayerSession session, GameState state) {
+		saveUser(session, state, false, false);
+	}
+
+	private synchronized void saveUser(PlayerSession session, GameState state, boolean updateloggedInTime, boolean modified) {
 		UserDAO dao = UserDAO.getInstance();
 		GameState response = new GameState(GAMESTATEMODES.USER_SAVE);
 
@@ -171,7 +178,13 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			EntityManagerHelper.beginTransaction(getC3UserID(session));
 
 			UserPOJO user = (UserPOJO)state.getObject();
-			user.setLastModified(new Timestamp(System.currentTimeMillis()));
+
+			if (modified) {
+				user.setLastModified(new Timestamp(System.currentTimeMillis()));
+			}
+			if (updateloggedInTime) {
+				user.setLastLogin(new Timestamp(System.currentTimeMillis()));
+			}
 			if(user.getUserId() == null) {
 				dao.save(getC3UserID(session), state.getObject());
 			} else {
@@ -183,13 +196,13 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			response.addObject(null);
 			response.setAction_successfully(Boolean.TRUE);
 		} catch (RuntimeException re) {
+			C3Logger.error("User save", re);
+			re.printStackTrace();
 			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
 
 			response.addObject(re.getMessage());
 			response.setAction_successfully(Boolean.FALSE);
 			C3GameSessionHandler.sendNetworkEvent(session, response);
-
-			C3Logger.error("User save", re);
 		}
 	}
 
@@ -431,17 +444,20 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		try {
 			EntityManagerHelper.beginTransaction(C3GameSessionHandler.getC3UserID(session));
 			user.setLastLogin(new Timestamp(System.currentTimeMillis()));
-			//dao.update(getC3UserID(session), ((C3Player) session.getPlayer()).getUser());
+			dao.update(C3GameSessionHandler.getC3UserID(session), user);
+			C3Logger.info("Last login saved for User:");
+			C3Logger.info("Name: " + user.getUserName());
+			C3Logger.info("Timestamp: " + new Timestamp(System.currentTimeMillis()));
+			C3Logger.info("--------------------");
 			EntityManagerHelper.commit(C3GameSessionHandler.getC3UserID(session));
-			C3Logger.info("Last login saved for User");
 		} catch (RuntimeException re) {
+			C3Logger.error("User save", re);
+			re.printStackTrace();
 			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
 
 			response.addObject(re.getMessage());
 			response.setAction_successfully(Boolean.FALSE);
 			C3GameSessionHandler.sendNetworkEvent(session, response);
-
-			C3Logger.error("User save", re);
 //		} finally {
 		}
 
