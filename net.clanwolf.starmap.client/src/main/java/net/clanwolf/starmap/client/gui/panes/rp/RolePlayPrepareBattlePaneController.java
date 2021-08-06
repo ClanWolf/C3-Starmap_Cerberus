@@ -36,6 +36,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.util.Callback;
 import javafx.util.Duration;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
@@ -51,6 +52,7 @@ import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.transfer.dtos.AttackCharacterDTO;
 import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
+import net.clanwolf.starmap.transfer.dtos.UserDTO;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
 import java.net.URL;
@@ -213,6 +215,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		ActionManager.addActionCallbackListener(ACTIONS.PANE_CREATION_FINISHED, this);
 		ActionManager.addActionCallbackListener(ACTIONS.PANE_DESTROY_CURRENT, this);
 		ActionManager.addActionCallbackListener(ACTIONS.PANE_CREATION_BEGINS, this);
+		ActionManager.addActionCallbackListener(ACTIONS.NEW_PLAYERLIST_RECEIVED, this);
 	}
 
 	private void buildGuiEffect() {
@@ -341,12 +344,51 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 			ivDefenderRank.setImage(defenderRank);
 		}
 
+		Callback<ListView<RolePlayCharacterDTO>, ListCell<RolePlayCharacterDTO>> renderer = new Callback<>() {
+			@Override
+			public ListCell<RolePlayCharacterDTO> call(ListView<RolePlayCharacterDTO> param) {
+				ListCell<RolePlayCharacterDTO> cell = new ListCell<RolePlayCharacterDTO>() {
+					@Override
+					protected void updateItem(RolePlayCharacterDTO item, boolean empty) {
+						super.updateItem(item, empty);
+						if (!empty || item != null) {
+							boolean online = false;
+							for (UserDTO u : Nexus.getCurrentlyOnlineUserList()) {
+								if (u.getCurrentCharacter().getId().equals(item.getId())) {
+									online = true;
+									break;
+								}
+							}
+							if (online) {
+								setText(item.getName());
+							} else {
+								if (!"...".equals(item.getName())) {
+									setText(item.getName() + " (offline)");
+								} else {
+									setText(item.getName());
+								}
+							}
+						} else {
+							setText(null);
+							setGraphic(null);
+						}
+					}
+				};
+				return cell;
+			}
+		};
+
+		lvAttacker.setCellFactory(renderer);
+		lvDefender.setCellFactory(renderer);
+		lvDropleadAttacker.setCellFactory(renderer);
+		lvDropleadDefender.setCellFactory(renderer);
+
 		setStrings();
 		buildGuiEffect();
 		C3Logger.info("Init ^^^^^------------------------------------------------------------------ WIESO KOMMEN WIR HIER ZWEIMAL REIN ---" + a.getAttackDTO().getId());
 	}
 
-	public void updateLists(BOAttack a) {
+	public synchronized void updateLists(BOAttack a) {
 		lvDropleadAttacker.getItems().clear();
 		lvDropleadDefender.getItems().clear();
 		lvDefender.getItems().clear();
@@ -473,6 +515,11 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 					updateLists(a);
 				}
 				break;
+
+			case NEW_PLAYERLIST_RECEIVED:
+				updateLists(Nexus.getCurrentAttackOfUser());
+				break;
+
 			default:
 				break;
 		}

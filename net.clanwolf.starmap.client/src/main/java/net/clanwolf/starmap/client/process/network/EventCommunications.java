@@ -67,6 +67,8 @@ public class EventCommunications {
 					for (UserDTO anUserList : userList) {
 						C3Logger.info(anUserList.getUserName() + " from UserDTO object");
 					}
+					Nexus.setCurrentlyOnlineUserList(userList);
+					ActionManager.getAction(ACTIONS.NEW_PLAYERLIST_RECEIVED).execute();
 					break;
 
 				case USER_LOGGED_IN_DATA:

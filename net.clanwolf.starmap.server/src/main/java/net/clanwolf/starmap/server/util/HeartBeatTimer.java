@@ -111,7 +111,7 @@ public class HeartBeatTimer extends TimerTask {
 				// TODO: Broadcast new version of the universe to the clients
 				GameState response = new GameState(GAMESTATEMODES.GET_UNIVERSE_DATA);
 				response.addObject(WebDataInterface.getUniverse());
-//				C3Room.sendBroadcastMessage(response);
+				C3Room.sendBroadcastMessage(response);
 			}
 
 			currentlyRunning = false;

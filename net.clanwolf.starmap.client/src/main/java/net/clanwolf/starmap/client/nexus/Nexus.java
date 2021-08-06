@@ -68,6 +68,7 @@ public class Nexus {
 
 	private static BOAttack currentAttackOfUser;
 	private static ArrayList<UserDTO> userList;
+	private static ArrayList<UserDTO> currentlyOnlineUserList;
 	private static HashMap<Long, RolePlayCharacterDTO> characterList;
 	private static LogWatcher logWatcher;
 
@@ -121,6 +122,16 @@ public class Nexus {
 				C3Logger.error("Could not save command history file!");
 			}
 		}
+	}
+
+	@SuppressWarnings("unused")
+	public static void setCurrentlyOnlineUserList(ArrayList<UserDTO> list) {
+		currentlyOnlineUserList = list;
+	}
+
+	@SuppressWarnings("unused")
+	public static ArrayList<UserDTO> getCurrentlyOnlineUserList() {
+		return currentlyOnlineUserList;
 	}
 
 	@SuppressWarnings("unused")

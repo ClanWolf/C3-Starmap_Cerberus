@@ -1878,7 +1878,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 //			case CURSOR_REQUEST_WAIT_MESSAGE:
 //				break;
 			case NEW_UNIVERSE_RECEIVED:
-				C3Logger.info("Do something with the new UNIVERSE!!!");
+				C3Logger.info("Do something with the new UNIVERSE (here)!!!");
 				break;
 
 			default:

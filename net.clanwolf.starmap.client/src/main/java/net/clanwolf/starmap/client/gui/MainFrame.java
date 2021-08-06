@@ -342,7 +342,8 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 					Nexus.commandHistoryIndex++;
 				}
 			} catch (FileNotFoundException e) {
-				e.printStackTrace();
+				// file has never been written yet
+				//e.printStackTrace();
 			}
 		} else {
 			C3Logger.info("Could not create: " + dir.getAbsolutePath());
