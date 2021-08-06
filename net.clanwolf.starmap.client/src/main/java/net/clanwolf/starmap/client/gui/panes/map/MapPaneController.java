@@ -222,7 +222,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 		if (a.getCharacterId() == null || a.getStoryId() == null) {
 			a.getAttackDTO().setCharacterID(Nexus.getCurrentChar().getId());
-//			a.getAttackDTO().setStoryID(21L);    // TODO: Hier müssen wir die Einstiegs-Story ID irgendwie definieren
+			a.getAttackDTO().setStoryID(19L);    // TODO: Hier müssen wir die Einstiegs-Story ID irgendwie definieren
 			a.storeAttack();
 		} else {
 			a.storeAttackCharacters(ac);
@@ -261,7 +261,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					attack.setStarSystemID(rp.getSystemId());
 					attack.setStarSystemDataID(s.getStarSystemDataId());
 					attack.setCharacterID(Nexus.getCurrentChar().getId());
-					attack.setStoryID(19L);    // TODO: Hier müssen wir die Einstiegs-Story ID irgendwie definieren
+					//attack.setStoryID(19L);
 					//attack.setStoryID2(BORolePlayChooser.getStoryID());
 
 					BOAttack boAttack = new BOAttack(attack);

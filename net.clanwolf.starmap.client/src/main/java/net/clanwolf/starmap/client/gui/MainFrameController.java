@@ -1434,6 +1434,26 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
 			}
 		}
+
+		// ---------------------------------
+		// re-create universe
+		// ---------------------------------
+		if (com.toLowerCase().startsWith("create universe")) {
+			if (Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN)) {
+				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_success"), false));
+				GameState s = new GameState();
+				s.setMode(GAMESTATEMODES.FORCE_NEW_UNIVERSE);
+				Nexus.fireNetworkEvent(s);
+				Nexus.storeCommandHistory();
+			} else {
+				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_notallowed"), false));
+				C3Message message = new C3Message();
+				message.setType(C3MESSAGETYPES.CLOSE);
+				message.setText(Internationalization.getString("general_notallowed"));
+				C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
+				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
+			}
+		}
 	}
 
 	/**
@@ -1676,7 +1696,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				String com = o.getText();
 				// TODO: Command category "general" --> not connected to a pane
 				if (Nexus.isLoggedIn()) {
-					if (com.contains("finalize round")) {
+					if (com.contains("finalize round")
+					|| com.contains("create universe")) {
 						handleCommand(com);
 					}
 				}
@@ -1819,6 +1840,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				menuIndicatorPos = 190;
 				moveMenuIndicator(menuIndicatorPos);
 
+				attackButton.setDisable(false);
 				break;
 
 //			case START_ROLEPLAY:
@@ -1855,8 +1877,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 //				break;
 //			case CURSOR_REQUEST_WAIT_MESSAGE:
 //				break;
-//			case NEW_UNIVERSE_RECEIVED:
-//				break;
+			case NEW_UNIVERSE_RECEIVED:
+				C3Logger.info("Do something with the new UNIVERSE!!!");
+				break;
 
 			default:
 				break;

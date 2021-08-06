@@ -161,6 +161,12 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				break;
 			case FORCE_FINALIZE_ROUND:
 				EndRound.setForceFinalize(true);
+				serverHeartBeat = new Timer();
+				serverHeartBeat.schedule(new HeartBeatTimer(true), 100);
+				break;
+			case FORCE_NEW_UNIVERSE:
+				serverHeartBeat = new Timer();
+				serverHeartBeat.schedule(new HeartBeatTimer(true), 100);
 				break;
 			default:
 				break;

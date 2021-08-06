@@ -224,11 +224,14 @@ public class WebDataInterface {
 			universe.attacks.add(dto);
 			jsonString.append(getJsonString(dto));
 
-			RolePlayStoryPOJO rpPojo = RolePlayStoryDAO.getInstance().findById(Nexus.DUMMY_USERID, dto.getStoryID());
-			ArrayList<RolePlayStoryPOJO> storyList = RolePlayStoryDAO.getInstance().getAllStoriesByStory(rpPojo.getStory());
-			for (RolePlayStoryPOJO p : storyList) {
-				RolePlayStoryDTO dtoStory = EntityConverter.convertpojo2dto(p, RolePlayStoryDTO.class);
-				universe.attackStorys.put(p.getId(), dtoStory);
+			assert dto != null;
+			if (dto.getStoryID() != null) {
+				RolePlayStoryPOJO rpPojo = RolePlayStoryDAO.getInstance().findById(Nexus.DUMMY_USERID, dto.getStoryID());
+				ArrayList<RolePlayStoryPOJO> storyList = RolePlayStoryDAO.getInstance().getAllStoriesByStory(rpPojo.getStory());
+				for (RolePlayStoryPOJO p : storyList) {
+					RolePlayStoryDTO dtoStory = EntityConverter.convertpojo2dto(p, RolePlayStoryDTO.class);
+					universe.attackStorys.put(p.getId(), dtoStory);
+				}
 			}
 		}
 		return jsonString.toString();
