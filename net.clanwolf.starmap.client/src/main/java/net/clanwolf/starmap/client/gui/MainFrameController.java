@@ -130,9 +130,6 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private int menuIndicatorPos = 0;
 	private boolean adminPaneOpen = false;
 
-	private final LinkedList<String> commandHistory = new LinkedList<>();
-	private int commandHistoryIndex = 0;
-
 	private final Image imageAdminButtonOff = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/adminOff.png")));
 	private final Image imageAdminButtonOn = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/adminOn.png")));
 
@@ -1392,28 +1389,28 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		if (!com.startsWith("*!!!*")) {
 			if (!"".equals(com)) {
 				C3Logger.info("Received command: '" + com + "'");
-				commandHistory.add(com);
-				commandHistoryIndex = commandHistory.size();
-				if (commandHistory.size() > 50) {
-					commandHistory.remove(0);
+				Nexus.commandHistory.add(com);
+				Nexus.commandHistoryIndex = Nexus.commandHistory.size();
+				if (Nexus.commandHistory.size() > 50) {
+					Nexus.commandHistory.remove(0);
 				}
 			}
 		}
 
 		if ("*!!!*historyBack".equals(com)) {
-			if (commandHistoryIndex > 0) {
+			if (Nexus.commandHistoryIndex > 0) {
 				C3Logger.info("History back");
-				commandHistoryIndex--;
-				String histCom = commandHistory.get(commandHistoryIndex);
+				Nexus.commandHistoryIndex--;
+				String histCom = Nexus.commandHistory.get(Nexus.commandHistoryIndex);
 				ActionManager.getAction(ACTIONS.SET_TERMINAL_TEXT).execute(histCom);
 			}
 		}
 
 		if ("*!!!*historyForward".equals(com)) {
-			if (commandHistoryIndex < commandHistory.size() - 1) {
+			if (Nexus.commandHistoryIndex < Nexus.commandHistory.size() - 1) {
 				C3Logger.info("History forward");
-				commandHistoryIndex++;
-				String histCom = commandHistory.get(commandHistoryIndex);
+				Nexus.commandHistoryIndex++;
+				String histCom = Nexus.commandHistory.get(Nexus.commandHistoryIndex);
 				ActionManager.getAction(ACTIONS.SET_TERMINAL_TEXT).execute(histCom);
 			}
 		}
@@ -1421,13 +1418,20 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		// ---------------------------------
 		// force finalize round
 		// ---------------------------------
-		if (com.toLowerCase().startsWith("force finalize round")) {
+		if (com.toLowerCase().startsWith("finalize round")) {
 			if (Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN)) {
+				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_success"), false));
 				GameState s = new GameState();
 				s.setMode(GAMESTATEMODES.FORCE_FINALIZE_ROUND);
 				Nexus.fireNetworkEvent(s);
+				Nexus.storeCommandHistory();
 			} else {
 				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_notallowed"), false));
+				C3Message message = new C3Message();
+				message.setType(C3MESSAGETYPES.CLOSE);
+				message.setText(Internationalization.getString("general_notallowed"));
+				C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
+				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
 			}
 		}
 	}
@@ -1671,8 +1675,10 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			case TERMINAL_COMMAND:
 				String com = o.getText();
 				// TODO: Command category "general" --> not connected to a pane
-				if (com.contains("force finalize round")) {
-					handleCommand(com);
+				if (Nexus.isLoggedIn()) {
+					if (com.contains("finalize round")) {
+						handleCommand(com);
+					}
 				}
 				break;
 

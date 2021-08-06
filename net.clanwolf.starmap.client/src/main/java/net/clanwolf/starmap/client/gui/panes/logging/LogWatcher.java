@@ -139,7 +139,7 @@ public class LogWatcher {
 						serverLogwatcherThread = null;
 					} catch (Exception ex) {
 						ex.printStackTrace();
-						C3Logger.error("Exception while scanning log entries [3761].", ex);
+						C3Logger.error("Exception while scanning log entries [3768].", ex);
 					}
 				}
 			};

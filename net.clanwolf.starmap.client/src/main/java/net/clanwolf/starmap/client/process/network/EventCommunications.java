@@ -30,7 +30,6 @@ import io.nadron.client.app.Session;
 import io.nadron.client.event.Event;
 import io.nadron.client.event.Events;
 import io.nadron.client.event.NetworkEvent;
-import net.clanwolf.starmap.client.gui.MainFrameController;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionManager;
@@ -45,7 +44,6 @@ import net.clanwolf.starmap.transfer.util.Compressor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 
 /**
  * @author Christian

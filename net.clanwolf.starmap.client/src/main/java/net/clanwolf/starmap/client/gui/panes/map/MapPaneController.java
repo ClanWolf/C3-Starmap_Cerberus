@@ -123,9 +123,6 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 	private BOJumpship currentlyCenteredJumpship = null;
 
-	private final LinkedList<String> commandHistory = new LinkedList<>();
-	private int commandHistoryIndex = 0;
-
 	private NodeGestures nodeGestures;
 
 	private Long currentPlayerRoleInInvasion = 0L;
@@ -1099,28 +1096,28 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		if (!com.startsWith("*!!!*")) {
 			if (!"".equals(com)) {
 				C3Logger.info("Received command: '" + com + "'");
-				commandHistory.add(com);
-				commandHistoryIndex = commandHistory.size();
-				if (commandHistory.size() > 50) {
-					commandHistory.remove(0);
+				Nexus.commandHistory.add(com);
+				Nexus.commandHistoryIndex = Nexus.commandHistory.size();
+				if (Nexus.commandHistory.size() > 50) {
+					Nexus.commandHistory.remove(0);
 				}
 			}
 		}
 
 		if ("*!!!*historyBack".equals(com)) {
-			if (commandHistoryIndex > 0) {
+			if (Nexus.commandHistoryIndex > 0) {
 				C3Logger.info("History back");
-				commandHistoryIndex--;
-				String histCom = commandHistory.get(commandHistoryIndex);
+				Nexus.commandHistoryIndex--;
+				String histCom = Nexus.commandHistory.get(Nexus.commandHistoryIndex);
 				ActionManager.getAction(ACTIONS.SET_TERMINAL_TEXT).execute(histCom);
 			}
 		}
 
 		if ("*!!!*historyForward".equals(com)) {
-			if (commandHistoryIndex < commandHistory.size() - 1) {
+			if (Nexus.commandHistoryIndex < Nexus.commandHistory.size() - 1) {
 				C3Logger.info("History forward");
-				commandHistoryIndex++;
-				String histCom = commandHistory.get(commandHistoryIndex);
+				Nexus.commandHistoryIndex++;
+				String histCom = Nexus.commandHistory.get(Nexus.commandHistoryIndex);
 				ActionManager.getAction(ACTIONS.SET_TERMINAL_TEXT).execute(histCom);
 			}
 		}
@@ -1147,6 +1144,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					moveMapToJumpship(js);
 				}
 			}
+			Nexus.storeCommandHistory();
 		}
 	}
 
@@ -1361,8 +1359,10 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 			case TERMINAL_COMMAND:
 				String com = o.getText();
-				if (Nexus.getCurrentlyOpenedPane() instanceof MapPane) {
-					handleCommand(com);
+				if (Nexus.isLoggedIn()) {
+					if (Nexus.getCurrentlyOpenedPane() instanceof MapPane) {
+						handleCommand(com);
+					}
 				}
 				break;
 

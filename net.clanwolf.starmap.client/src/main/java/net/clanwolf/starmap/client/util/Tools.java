@@ -112,7 +112,7 @@ public final class Tools {
 			File file1 = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "history" + File.separator + "C3_Season" + Nexus.getCurrentSeason() + "_map.png");
 			File file2 = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "history" + File.separator + "C3_Season" + Nexus.getCurrentSeason() + "_Round" + Nexus.getCurrentRound() + "_" + Nexus.getCurrentChar() + "_map_history.png");
 			if (!file1.mkdirs()) {
-				C3Logger.error("Could not create history folder!");
+				// C3Logger.error("Could not create history folder!");
 			}
 			BufferedImage bi = SwingFXUtils.fromFXImage(canvas.snapshot(null, wi), null);
 

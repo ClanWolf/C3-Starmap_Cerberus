@@ -52,8 +52,6 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 
 	private IRCClient ircClient;
 	private List<String> userList = new ArrayList<>();
-	private final LinkedList<String> commandHistory = new LinkedList<>();
-	private int commandHistoryIndex = 0;
 	private String selectedUser = "";
 	private boolean initStarted = false;
 
@@ -160,29 +158,29 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 		if (!com.startsWith("*!!!*")) {
 			if (!"".equals(com)) {
 				C3Logger.info("Received command: '" + com + "'");
-				commandHistory.add(com);
-				commandHistoryIndex = commandHistory.size();
-				if (commandHistory.size() > 50) {
-					commandHistory.remove(0);
+				Nexus.commandHistory.add(com);
+				Nexus.commandHistoryIndex = Nexus.commandHistory.size();
+				if (Nexus.commandHistory.size() > 50) {
+					Nexus.commandHistory.remove(0);
 				}
 			}
 		}
 
 		if ("*!!!*historyBack".equals(com)) {
-			if (commandHistoryIndex > 0) {
+			if (Nexus.commandHistoryIndex > 0) {
 				C3Logger.info("History back");
-				commandHistoryIndex--;
-				String histCom = commandHistory.get(commandHistoryIndex);
+				Nexus.commandHistoryIndex--;
+				String histCom = Nexus.commandHistory.get(Nexus.commandHistoryIndex);
 				ActionManager.getAction(ACTIONS.SET_TERMINAL_TEXT).execute(histCom);
 			}
 			sendingString = false;
 		}
 
 		if ("*!!!*historyForward".equals(com)) {
-			if (commandHistoryIndex < commandHistory.size() - 1) {
+			if (Nexus.commandHistoryIndex < Nexus.commandHistory.size() - 1) {
 				C3Logger.info("History forward");
-				commandHistoryIndex++;
-				String histCom = commandHistory.get(commandHistoryIndex);
+				Nexus.commandHistoryIndex++;
+				String histCom = Nexus.commandHistory.get(Nexus.commandHistoryIndex);
 				ActionManager.getAction(ACTIONS.SET_TERMINAL_TEXT).execute(histCom);
 			}
 			sendingString = false;
@@ -197,11 +195,13 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 				ActionManager.getAction(ACTIONS.IRC_CHANGE_NICK).execute(nco);
 			}
 			sendingString = false;
+			Nexus.storeCommandHistory();
 		}
 
 //		if (com.startsWith("/names")) {
 //			ActionManager.getAction(ACTIONS.IRC_GET_NAMELIST).execute();
 //			sendingString = false;
+//  		Nexus.storeCommandHistory();
 //		}
 
 		if (com.startsWith("/me ")) {
@@ -210,6 +210,7 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 				ActionManager.getAction(ACTIONS.IRC_SENDING_ACTION).execute(com);
 			}
 			sendingString = false;
+			Nexus.storeCommandHistory();
 		}
 
 		if (sendingString) {
@@ -235,12 +236,13 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 				mo.setSource("");
 				mo.setMessage(com);
 				ActionManager.getAction(ACTIONS.IRC_SEND_MESSAGE).execute(mo);
+				Nexus.storeCommandHistory();
 			}
 		}
 	}
 
 	public static void autoResizeColumns(TableView<?> table) {
-		TableColumn column = table.getColumns().get(1);
+		TableColumn<?, ?> column = table.getColumns().get(1);
 		Text t;
 		double max = 5.0d;
 		for (int i = 0; i < table.getItems().size(); i++) {
@@ -488,8 +490,10 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 
 			case TERMINAL_COMMAND:
 				String com1 = o.getText();
-				if (Nexus.getCurrentlyOpenedPane() instanceof ChatPane) {
-					handleCommand(com1);
+				if (Nexus.isLoggedIn()) {
+					if (Nexus.getCurrentlyOpenedPane() instanceof ChatPane) {
+						handleCommand(com1);
+					}
 				}
 				break;
 

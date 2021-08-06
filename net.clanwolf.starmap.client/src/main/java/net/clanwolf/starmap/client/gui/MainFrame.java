@@ -60,6 +60,7 @@ import net.clanwolf.starmap.client.util.Tools;
 import net.clanwolf.starmap.client.preloader.C3_Preloader;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Authenticator;
@@ -68,6 +69,8 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
+import java.util.Scanner;
 import java.util.logging.Level;
 
 @SuppressWarnings("restriction")
@@ -324,6 +327,22 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 				}
 			} catch(Exception e) {
 				C3Logger.warning("Could not check latest available client version online!");
+			}
+
+			String commandFileName = dir + File.separator + "command.log";
+			File commandLogFile = new File(commandFileName);
+			Nexus.setCommandLogFile(commandLogFile);
+
+			// fill command history from stored file
+			try {
+				Scanner input = new Scanner(commandLogFile);
+				Nexus.commandHistoryIndex = 0;
+				while (input.hasNextLine()) {
+					Nexus.commandHistory.add(input.nextLine());
+					Nexus.commandHistoryIndex++;
+				}
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
 			}
 		} else {
 			C3Logger.info("Could not create: " + dir.getAbsolutePath());

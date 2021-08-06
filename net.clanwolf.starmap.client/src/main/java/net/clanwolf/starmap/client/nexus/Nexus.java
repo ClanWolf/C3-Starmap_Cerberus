@@ -43,8 +43,11 @@ import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
 import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
 import net.clanwolf.starmap.transfer.dtos.UserDTO;
 
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 
 /**
  * The Nexus is a central place to hold general information like the currently logged in user and such.
@@ -84,6 +87,10 @@ public class Nexus {
 	private static BOStarSystem currentlySelectedStarSystem = null;
 	private static BOJumpship currentlySelectedJumphip = null;
 
+	public static LinkedList<String> commandHistory = new LinkedList<>();
+	public static int commandHistoryIndex = 0;
+	public static File commandLogFile = null;
+
 	/**
 	 * Private constructor to prevent instantiation
 	 */
@@ -92,12 +99,37 @@ public class Nexus {
 	}
 
 	@SuppressWarnings("unused")
-	public static void setUserList(ArrayList list) {
+	public static void setCommandLogFile(File file) {
+		commandLogFile = file;
+	}
+
+	@SuppressWarnings("unused")
+	public static File getCommandLogFile() {
+		return commandLogFile;
+	}
+
+	@SuppressWarnings("unused")
+	public synchronized static void storeCommandHistory() {
+		// store command history to file
+		if (commandLogFile != null) {
+			try (PrintWriter out = new PrintWriter(commandLogFile, StandardCharsets.UTF_8)) {
+				for (String l : commandHistory) {
+					out.write(l + "\r\n");
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+				C3Logger.error("Could not save command history file!");
+			}
+		}
+	}
+
+	@SuppressWarnings("unused")
+	public static void setUserList(ArrayList<UserDTO> list) {
 		userList = list;
 	}
 
 	@SuppressWarnings("unused")
-	public static ArrayList getUserList() {
+	public static ArrayList<UserDTO> getUserList() {
 		return userList;
 	}
 

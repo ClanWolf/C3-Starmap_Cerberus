@@ -245,9 +245,9 @@ public class LogPaneController implements ActionCallBackListener {
 				if (item == null || item.getLevel() == null)
 					setStyle("");
 				else if (item.getLevel().equals("SEVERE"))
-					setStyle("-fx-background-color: #ff856d;");
+					setStyle("-fx-background-color:#ff856d;-fx-table-cell-border-color:#ff856d;-fx-text-fill:red");
 				else if (item.getLevel().equals("WARNING"))
-					setStyle("-fx-background-color: #f9f9a5;");
+					setStyle("-fx-background-color:#b5b60c;-fx-table-cell-border-color:#b5b60c;-fx-text-fill:red");
 				else
 					setStyle("");
 			}
@@ -298,9 +298,9 @@ public class LogPaneController implements ActionCallBackListener {
 				if (item == null || item.getLevel() == null)
 					setStyle("");
 				else if (item.getLevel().equals("SEVERE"))
-					setStyle("-fx-background-color: #ff856d;");
+					setStyle("-fx-background-color:#ff856d;-fx-table-cell-border-color:#ff856d;-fx-text-fill:red");
 				else if (item.getLevel().equals("WARNING"))
-					setStyle("-fx-background-color: #f9f9a5;");
+					setStyle("-fx-background-color:#b5b60c;-fx-table-cell-border-color:#b5b60c;-fx-text-fill:red");
 				else
 					setStyle("");
 			}
