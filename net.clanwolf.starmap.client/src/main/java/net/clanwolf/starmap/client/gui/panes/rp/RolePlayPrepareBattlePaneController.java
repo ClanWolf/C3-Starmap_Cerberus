@@ -458,6 +458,10 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 				}
 			}
 		}
+		lvDropleadAttacker.getSelectionModel().clearSelection();
+		lvDropleadDefender.getSelectionModel().clearSelection();
+		lvAttacker.getSelectionModel().clearSelection();
+		lvDefender.getSelectionModel().clearSelection();
 	}
 
 	/**
