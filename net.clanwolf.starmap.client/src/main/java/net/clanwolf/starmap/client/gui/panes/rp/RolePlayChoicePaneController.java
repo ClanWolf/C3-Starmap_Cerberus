@@ -43,6 +43,7 @@ import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
 import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
+import net.clanwolf.starmap.transfer.dtos.RolePlayStoryDTO;
 import net.clanwolf.starmap.transfer.dtos.RolePlayStoryVar2DTO;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
@@ -118,6 +119,7 @@ public class RolePlayChoicePaneController extends AbstractC3RolePlayController i
 	@Override
 	public boolean handleAction(ACTIONS action, ActionObject o) {
 		if(anchorPane != null && !anchorPane.isVisible()) return true;
+		C3Logger.debug("Flag for CharRP" + isCharRP);
 		switch (action) {
 		case START_ROLEPLAY:
 			if(ROLEPLAYENTRYTYPES.C3_RP_STEP_V2 == o.getObject() ||
@@ -127,12 +129,11 @@ public class RolePlayChoicePaneController extends AbstractC3RolePlayController i
 				init();
 
 				// set current step of story
-				getStoryValues(Nexus.getCurrentChar());
+				getStoryValues(getCurrentRP());
 			}
 			break;
 		default:
 			break;
-
 		}
 		return true;
 	}
@@ -148,100 +149,105 @@ public class RolePlayChoicePaneController extends AbstractC3RolePlayController i
 
 	@FXML
 	private void handleOnActionbtChoice1(){
-		Long rp = Nexus.getCurrentChar().getStory().getVar2ID().getOption1StoryID();
+		Long rp = getCurrentRP().getVar2ID().getOption1StoryID();
 		saveNextStep(rp);
-
 	}
 
 	@FXML
 	private void handleOnActionbtChoice2(){
-		Long rp = Nexus.getCurrentChar().getStory().getVar2ID().getOption2StoryID();
+		Long rp = getCurrentRP().getVar2ID().getOption2StoryID();
 		saveNextStep(rp);
 	}
 
 	@FXML
 	private void handleOnActionbtChoice3(){
-		Long rp = Nexus.getCurrentChar().getStory().getVar2ID().getOption3StoryID();
+		Long rp = getCurrentRP().getVar2ID().getOption3StoryID();
 		saveNextStep(rp);
 	}
 
 	@FXML
 	private void handleOnActionbtChoice4(){
-		Long rp = Nexus.getCurrentChar().getStory().getVar2ID().getOption4StoryID();
+		Long rp = getCurrentRP().getVar2ID().getOption4StoryID();
 		saveNextStep(rp);
 	}
 
 	/******************************** THIS ********************************/
 	@Override
 	public void getStoryValues(RolePlayCharacterDTO rpChar) {
-		if (rpChar.getStory().getStoryIntro() == null) {
-			//set background image
-			Image im = BORolePlayStory.getRPG_Image(null);
-			backgroundImage.setImage(im);
+		//TODO: Change methode
+	}
 
-			//set story image
-			Image im2 = BORolePlayStory.getRPG_Image(rpChar.getStory());
-			rpImage.setImage(im2);
-		}
+	@Override
+	public void getStoryValues(RolePlayStoryDTO rpStory) {
 
-		// play sound
-		if (rpChar.getStory().getStoryMP3() != null) {
-			C3SoundPlayer.play(BORolePlayStory.getRPG_Soundfile(rpChar.getStory()), false);
-		}
+			if (rpStory.getStoryIntro() == null) {
+				//set background image
+				Image im = BORolePlayStory.getRPG_Image(null);
+				backgroundImage.setImage(im);
 
-		//TODO: append single chars step by step until the whole text is displaying
-		taRpText.setText(rpChar.getStory().getStoryText());
-
-		if(rpChar.getStory().getVar2ID() != null) {
-
-			RolePlayStoryVar2DTO rpVar2 = rpChar.getStory().getVar2ID();
-
-			double x = 59;
-			double y = 455;
-			double offset = 40;
-
-			// rpVar2
-			if (rpVar2.getOption4StoryID() != null) {
-				btChoice4.setVisible(true);
-
-				btChoice4.setLayoutX(x);
-				btChoice4.setLayoutY(y);
-
-				y = y - offset;
-
-				btChoice4.setText(rpVar2.getOption4Text());
+				//set story image
+				Image im2 = BORolePlayStory.getRPG_Image(rpStory);
+				rpImage.setImage(im2);
 			}
 
-			if (rpVar2.getOption3StoryID() != null) {
-				btChoice3.setVisible(true);
-
-				btChoice3.setLayoutX(x);
-				btChoice3.setLayoutY(y);
-
-				y = y - offset;
-
-				btChoice3.setText(rpVar2.getOption3Text());
+			// play sound
+			if (rpStory.getStoryMP3() != null) {
+				C3SoundPlayer.play(BORolePlayStory.getRPG_Soundfile(rpStory), false);
 			}
 
-			if (rpVar2.getOption2StoryID() != null) {
-				btChoice2.setVisible(true);
+			//TODO: append single chars step by step until the whole text is displaying
+			taRpText.setText(rpStory.getStoryText());
 
-				btChoice2.setLayoutX(x);
-				btChoice2.setLayoutY(y);
+			if (rpStory.getVar2ID() != null) {
 
-				y = y - offset;
+				RolePlayStoryVar2DTO rpVar2 = rpStory.getVar2ID();
 
-				btChoice2.setText(rpVar2.getOption2Text());
+				double x = 59;
+				double y = 455;
+				double offset = 40;
+
+				// rpVar2
+				if (rpVar2.getOption4StoryID() != null) {
+					btChoice4.setVisible(true);
+
+					btChoice4.setLayoutX(x);
+					btChoice4.setLayoutY(y);
+
+					y = y - offset;
+
+					btChoice4.setText(rpVar2.getOption4Text());
+				}
+
+				if (rpVar2.getOption3StoryID() != null) {
+					btChoice3.setVisible(true);
+
+					btChoice3.setLayoutX(x);
+					btChoice3.setLayoutY(y);
+
+					y = y - offset;
+
+					btChoice3.setText(rpVar2.getOption3Text());
+				}
+
+				if (rpVar2.getOption2StoryID() != null) {
+					btChoice2.setVisible(true);
+
+					btChoice2.setLayoutX(x);
+					btChoice2.setLayoutY(y);
+
+					y = y - offset;
+
+					btChoice2.setText(rpVar2.getOption2Text());
+				}
+
+				if (rpVar2.getOption1StoryID() != null) {
+					btChoice1.setVisible(true);
+
+					btChoice1.setLayoutX(x);
+					btChoice1.setLayoutY(y);
+
+					btChoice1.setText(rpVar2.getOption1Text());
+				}
 			}
-
-			if (rpVar2.getOption1StoryID() != null) {
-				btChoice1.setVisible(true);
-
-				btChoice1.setLayoutX(x);
-				btChoice1.setLayoutY(y);
-
-				btChoice1.setText(rpVar2.getOption1Text());
-			}
-		}
 	}
 }

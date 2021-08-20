@@ -47,6 +47,7 @@ import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
+import net.clanwolf.starmap.transfer.dtos.RolePlayStoryDTO;
 import net.clanwolf.starmap.transfer.dtos.RolePlayStoryVar2DTO;
 import net.clanwolf.starmap.transfer.dtos.RolePlayStoryVar3DTO;
 import net.clanwolf.starmap.transfer.enums.DATATYPES;
@@ -130,7 +131,7 @@ public class RolePlayDataInputController extends AbstractC3RolePlayController im
 				init();
 
 				// set current step of story
-				getStoryValues(Nexus.getCurrentChar());
+				getStoryValues(getCurrentRP());
 			}
 			break;
 		default:
@@ -151,7 +152,7 @@ public class RolePlayDataInputController extends AbstractC3RolePlayController im
 
 	@FXML
 	private void handleOnActionBtContinue(){
-		Long rp = Nexus.getCurrentChar().getStory().getVar3ID().getNextStoryID();
+		Long rp = getCurrentRP().getVar3ID().getNextStoryID();
 		saveNextStep(rp);
 
 	}
@@ -192,20 +193,25 @@ public class RolePlayDataInputController extends AbstractC3RolePlayController im
 
 	@Override
 	public void getStoryValues(RolePlayCharacterDTO rpChar) {
+		//TODO: do nothing
+	}
+
+	@Override
+	public void getStoryValues(RolePlayStoryDTO rpStory) {
 		// set story image
-		Image im = BORolePlayStory.getRPG_Image(rpChar.getStory());
+		Image im = BORolePlayStory.getRPG_Image(rpStory);
 		backgroundImage.setImage(im);
 
 		// play sound
-		if (rpChar.getStory().getStoryMP3() != null) {
-			C3SoundPlayer.play(BORolePlayStory.getRPG_Soundfile(rpChar.getStory()), false);
+		if (rpStory.getStoryMP3() != null) {
+			C3SoundPlayer.play(BORolePlayStory.getRPG_Soundfile(rpStory), false);
 		}
 
 		//TODO: append single chars step by step until the whole text is displaying
-		taStoryText.setText(rpChar.getStory().getStoryText());
+		taStoryText.setText(rpStory.getStoryText());
 
-		if(!bInit && rpChar.getStory().getVar3ID() != null) {
-			RolePlayStoryVar3DTO rpVar3 = rpChar.getStory().getVar3ID();
+		if(!bInit && rpStory.getVar3ID() != null) {
+			RolePlayStoryVar3DTO rpVar3 = rpStory.getVar3ID();
 
 			setField(rpVar3.getDataSet1());
 			setField(rpVar3.getDataSet2());

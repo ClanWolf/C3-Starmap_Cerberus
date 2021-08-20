@@ -1164,21 +1164,25 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		chatPane.setCacheHint(CacheHint.SPEED);
 		chatPane.getController().addActionCallBackListeners();
 
-		rolePlayPane = new RolePlayBasicPane();
+		String paneNameCharacter = "CharacterPane";
+		rolePlayPane = new RolePlayBasicPane(paneNameCharacter);
 		rolePlayPane.setShowsMouseFollow(false);
 		rolePlayPane.setShowsPlanetRotation(false);
 		rolePlayPane.setCache(true);
 		rolePlayPane.setCacheHint(CacheHint.SPEED);
 		rolePlayPane.getController().addActionCallBackListeners();
+		rolePlayPane.getController().setPaneName(paneNameCharacter);
+		C3Logger.debug("RolePlayPane: " + rolePlayPane + " -> Controller: " + rolePlayPane.getController());
 
-		String paneName = "AttackPane";
-		attackPane = new RolePlayBasicPane(paneName);
+		String paneNameAttack = "AttackPane";
+		attackPane = new RolePlayBasicPane(paneNameAttack);
 		attackPane.setShowsMouseFollow(false);
 		attackPane.setShowsPlanetRotation(false);
 		attackPane.setCache(true);
 		attackPane.setCacheHint(CacheHint.SPEED);
 		attackPane.getController().addActionCallBackListeners();
-		attackPane.getController().setPaneName(paneName);
+		attackPane.getController().setPaneName(paneNameAttack);
+		C3Logger.debug("AttackPane: " + attackPane + " -> Controller: " + attackPane.getController());
 
 		// infoPane = new InfoPane();
 		// infoPane.getController().addActionCallBackListener();

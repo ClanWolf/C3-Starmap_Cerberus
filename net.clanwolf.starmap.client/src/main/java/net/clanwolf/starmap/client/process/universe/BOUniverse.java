@@ -93,6 +93,10 @@ public class BOUniverse {
 		return universeDTO.attackStorys;
 	}
 
+	public RolePlayStoryDTO getAttackStoriesByID(Long storyID) {
+		return universeDTO.attackStorys.get(storyID);
+	}
+
 	public BOUniverse(UniverseDTO universeDTO) {
 		this.universeDTO = universeDTO;
 

@@ -43,6 +43,7 @@ import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
+import net.clanwolf.starmap.transfer.dtos.RolePlayStoryDTO;
 import net.clanwolf.starmap.transfer.dtos.RolePlayStoryVar3DTO;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
@@ -130,7 +131,7 @@ public class RolePlayChoice2PaneController extends AbstractC3RolePlayController 
 				init();
 
 				// set current step of story
-				getStoryValues(Nexus.getCurrentChar());
+				getStoryValues(getCurrentRP());
 			}
 			break;
 		default:
@@ -152,7 +153,7 @@ public class RolePlayChoice2PaneController extends AbstractC3RolePlayController 
 	@FXML
 	private void handleOnActionbtChoice1(){
 
-		Long rp = Nexus.getCurrentChar().getStory().getVar3ID().getNextStoryID();
+		Long rp = getCurrentRP().getVar3ID().getNextStoryID();
 		saveNextStep(rp);
 
 	}
@@ -178,7 +179,12 @@ public class RolePlayChoice2PaneController extends AbstractC3RolePlayController 
 	/******************************** THIS ********************************/
 	@Override
 	public void getStoryValues(RolePlayCharacterDTO rpChar) {
-		if (rpChar.getStory().getStoryIntro() == null) {
+		//TODO: do nothing
+	}
+
+	@Override
+	public void getStoryValues(RolePlayStoryDTO rpStory) {
+		if (rpStory.getStoryIntro() == null) {
 			String imURL;
 
 			if(rpIBackgroundImage != null) {
@@ -187,29 +193,29 @@ public class RolePlayChoice2PaneController extends AbstractC3RolePlayController 
 			}
 
 			// Check step for own image. If now own image availabale use default image
-			if (rpChar.getStory().getStoryImage() != null) {
-				imURL = BORolePlayStory.getRPG_ResourceURL() + "/" + rpChar.getStory().getId().toString() + "/" + rpChar.getStory().getStoryImage();
+			if (rpStory.getStoryImage() != null) {
+				imURL = BORolePlayStory.getRPG_ResourceURL() + "/" + rpStory.getId().toString() + "/" + rpStory.getStoryImage();
 				Image im = new Image(imURL);
 				rpImage.setImage(im);
 
 			}
 			// play sound
-			if (rpChar.getStory().getStoryMP3() != null) {
-				C3SoundPlayer.play(BORolePlayStory.getRPG_Soundfile(rpChar.getStory()), false);
+			if (rpStory.getStoryMP3() != null) {
+				C3SoundPlayer.play(BORolePlayStory.getRPG_Soundfile(rpStory), false);
 			}
 
 		}
 
 		//TODO: append single chars step by step until the whole text is displaying
-		taRpText.setText(rpChar.getStory().getStoryText());
+		taRpText.setText(rpStory.getStoryText());
 
-		if(rpChar.getStory().getVar3ID() != null){
+		if(rpStory.getVar3ID() != null){
 
 			double x = 59;
 			double y = 455;
 			double offset = 40;
 
-			RolePlayStoryVar3DTO rpVar3 = rpChar.getStory().getVar3ID();
+			RolePlayStoryVar3DTO rpVar3 = rpStory.getVar3ID();
 
 //			// rpVar3
 //			if(rpVar3.getNextStory4ID() != null){

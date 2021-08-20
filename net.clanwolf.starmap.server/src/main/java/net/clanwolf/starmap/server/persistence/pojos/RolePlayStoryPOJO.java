@@ -52,7 +52,8 @@ public class RolePlayStoryPOJO extends Pojo {
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "StoryID", insertable = false, updatable = false)
+    @JoinColumn(name = "StoryID")
+   // @JoinColumn(name = "StoryID", insertable = false, updatable = false)
     private RolePlayStoryPOJO story;
 
     @ManyToOne(fetch = FetchType.EAGER)

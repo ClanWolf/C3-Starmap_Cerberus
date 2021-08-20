@@ -47,6 +47,7 @@ import net.clanwolf.starmap.client.process.universe.BOFaction;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
+import net.clanwolf.starmap.transfer.dtos.RolePlayStoryDTO;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
 import java.net.URL;
@@ -116,7 +117,7 @@ public class RolePlayMessagePaneController extends AbstractC3RolePlayController 
 				C3Logger.debug("RolePlayIntroPaneController -> START_ROLEPLAY");
 
 				// set current step of story
-				getStoryValues(Nexus.getCurrentChar());
+				getStoryValues(getCurrentRP());
 			}
 			break;
 		default:
@@ -142,23 +143,18 @@ public class RolePlayMessagePaneController extends AbstractC3RolePlayController 
 	@FXML
 	private void handleOnActionBtPreview(){
 		//TODO: Get and save next step of the story
-		/*RolePlayCharacterDTO currentChar = Nexus.getCurrentChar();
-		if(currentChar.getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STORY ) {
-			boRp.getNextChapterBySortOrder(currentChar, 1);
-		}
-		if(currentChar.getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_CHAPTER ) {
-			boRp.getNextStepBySortOrder(currentChar, 1);
-		}
-		if(currentChar.getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1 ){
-			Long rp = Nexus.getCurrentChar().getStory().getNextStepID();
-			saveNextStep(rp);
-		}*/
+		saveNextStep(getCurrentRP().getVar7ID().getNextStepID());
+
 	}
 
 	/******************************** THIS ********************************/
+	@Override
+	public void getStoryValues(RolePlayCharacterDTO rpChar) {
+		//TODO: do nothing
+	}
 
 	@Override
-	public void getStoryValues(RolePlayCharacterDTO rpChar){
+	public void getStoryValues(RolePlayStoryDTO rpStory){
 
 		// set story image
 		Image im = BORolePlayStory.getRPG_DefaultMessageImage();
@@ -171,19 +167,19 @@ public class RolePlayMessagePaneController extends AbstractC3RolePlayController 
 		labServiceName.setAlignment(Pos.CENTER);
 
 		// set data
-		taStoryText.setText(rpChar.getStory().getStoryText());
-		labHeader.setText(rpChar.getStory().getVar7ID().getHeader());
-		labDate.setText(rpChar.getStory().getVar7ID().getDate());
-		labSender.setText(rpChar.getStory().getVar7ID().getSender());
-		labSenderFaction.setText(Nexus.getBoUniverse().getFactionByID(rpChar.getStory().getVar7ID().getFaction()).getName());
-		labServiceName.setText(rpChar.getStory().getVar7ID().getServiceName());
+		taStoryText.setText(rpStory.getStoryText());
+		labHeader.setText(rpStory.getVar7ID().getHeader());
+		labDate.setText(rpStory.getVar7ID().getDate());
+		labSender.setText(rpStory.getVar7ID().getSender());
+		labSenderFaction.setText(Nexus.getBoUniverse().getFactionByID(rpStory.getVar7ID().getFaction()).getName());
+		labServiceName.setText(rpStory.getVar7ID().getServiceName());
 
-		BOFaction f = Nexus.getBoUniverse().getFactionByID(rpChar.getStory().getVar7ID().getFaction());
+		BOFaction f = Nexus.getBoUniverse().getFactionByID(rpStory.getVar7ID().getFaction());
 		ivSenderLogo.setImage(BORolePlayStory.getFactionImage(f));
 
 		// play sound
-		if (rpChar.getStory().getStoryMP3() != null) {
-			C3SoundPlayer.play(BORolePlayStory.getRPG_Soundfile(rpChar.getStory()), false);
+		if (rpStory.getStoryMP3() != null) {
+			C3SoundPlayer.play(BORolePlayStory.getRPG_Soundfile(rpStory), false);
 		}
 
 	} //getStoryValues

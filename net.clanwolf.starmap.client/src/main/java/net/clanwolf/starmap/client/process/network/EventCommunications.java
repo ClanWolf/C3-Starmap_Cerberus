@@ -151,6 +151,7 @@ public class EventCommunications {
 					// What about the jumpship and the routepoints?
 
 					ActionManager.getAction(ACTIONS.ENABLE_MAIN_MENU_BUTTONS).execute();
+					ActionManager.getAction(ACTIONS.ROLEPLAY_NEXT_STEP_CHANGE_PANE).execute(state.getObject());
 					break;
 
 				case ATTACK_CHARACTER_SAVE_RESPONSE:

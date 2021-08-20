@@ -52,6 +52,7 @@ import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.transfer.dtos.AttackCharacterDTO;
 import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
+import net.clanwolf.starmap.transfer.dtos.RolePlayStoryDTO;
 import net.clanwolf.starmap.transfer.dtos.UserDTO;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
@@ -486,7 +487,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 					C3Logger.debug("RolePlayIntroPaneController -> START_ROLEPLAY");
 
 					// set current step of story
-					//getStoryValues(Nexus.);
+					//getStoryValues(getCurrentRP());
 				}
 				break;
 
@@ -563,23 +564,21 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 	@FXML
 	private void handleOnActionBtPreview(){
 		//TODO: Get and save next step of the story
-		/*RolePlayCharacterDTO currentChar = Nexus.getCurrentChar();
-		if(currentChar.getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STORY ) {
-			boRp.getNextChapterBySortOrder(currentChar, 1);
-		}
-		if(currentChar.getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_CHAPTER ) {
-			boRp.getNextStepBySortOrder(currentChar, 1);
-		}
+		/*
 		if(currentChar.getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1 ){
-			Long rp = Nexus.getCurrentChar().getStory().getNextStepID();
+			Long rp = getCurrentRP().getNextStepID();
 			saveNextStep(rp);
 		}*/
 	}
 
 	/******************************** THIS ********************************/
+	@Override
+	public void getStoryValues(RolePlayCharacterDTO rpChar) {
+		//TODO: do nothing
+	}
 
 	@Override
-	public void getStoryValues(RolePlayCharacterDTO rpChar){
+	public void getStoryValues(RolePlayStoryDTO rpChar){
 		// play sound
 		if (rpChar.getStory().getStoryMP3() != null) {
 			C3SoundPlayer.play(BORolePlayStory.getRPG_Soundfile(rpChar.getStory()), false);

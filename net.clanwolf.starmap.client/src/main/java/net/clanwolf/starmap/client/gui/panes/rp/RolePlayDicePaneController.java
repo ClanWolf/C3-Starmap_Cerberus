@@ -43,6 +43,7 @@ import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
+import net.clanwolf.starmap.transfer.dtos.RolePlayStoryDTO;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
 import java.io.InputStream;
@@ -181,19 +182,24 @@ public class RolePlayDicePaneController extends AbstractC3RolePlayController imp
 		Long rp = null;
 
 		if(Nexus.getCurrentChar().getStory().getVar4ID().getScore() == diceResult){
-			rp = Nexus.getCurrentChar().getStory().getVar4ID().getStoryIDScoreEqual();
+			rp = getCurrentRP().getVar4ID().getStoryIDScoreEqual();
 
 		} else if(Nexus.getCurrentChar().getStory().getVar4ID().getScore() > diceResult){
-			rp = Nexus.getCurrentChar().getStory().getVar4ID().getStoryIDScoreMore();
+			rp = getCurrentRP().getVar4ID().getStoryIDScoreMore();
 
 		} else if(Nexus.getCurrentChar().getStory().getVar4ID().getScore() < diceResult){
-			rp = Nexus.getCurrentChar().getStory().getVar4ID().getStoryIDScoreLess();
+			rp = getCurrentRP().getVar4ID().getStoryIDScoreLess();
 
 		}
 		saveNextStep(rp);
 	}
 
 	/******************************** THIS ********************************/
+	@Override
+	public void getStoryValues(RolePlayStoryDTO rpChar) {
+		//TODO: Change methode
+	}
+
 	@Override
 	public void getStoryValues(RolePlayCharacterDTO rpChar) {
 		// set story image

@@ -35,6 +35,8 @@ import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
+import net.clanwolf.starmap.client.process.universe.BOAttack;
+import net.clanwolf.starmap.transfer.dtos.AttackDTO;
 import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
 import net.clanwolf.starmap.transfer.dtos.RolePlayStoryDTO;
 
@@ -49,7 +51,8 @@ import java.util.ResourceBundle;
 public abstract class AbstractC3RolePlayController implements Initializable, ActionCallBackListener {
 
 	protected BORolePlayStory boRp;
-	protected RolePlayStoryDTO rp;
+	//protected RolePlayStoryDTO rp;
+	protected boolean isCharRP = true;
 
 	@FXML
 	private ImageView templateBackground;
@@ -64,7 +67,13 @@ public abstract class AbstractC3RolePlayController implements Initializable, Act
 
 	public abstract void addActionCallBackListeners();
 
+	//TODO: delete this after my corrections
 	public abstract void getStoryValues(RolePlayCharacterDTO rpChar);
+
+	public abstract void getStoryValues(RolePlayStoryDTO rpStory);
+
+
+
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
@@ -84,7 +93,26 @@ public abstract class AbstractC3RolePlayController implements Initializable, Act
 	public abstract boolean handleAction(ACTIONS action, ActionObject o);
 
 	protected void saveNextStep(Long rp){
-//		Nexus.getCurrentChar().setStory(boRp.getStoryByID(rp));
-		boRp.saveRolePlayCharacter(Nexus.getCurrentChar(), rp);
+		if(isCharRP){
+			boRp.saveRolePlayCharacter(Nexus.getCurrentChar(), rp);
+		} else {
+			BOAttack bo = Nexus.getCurrentAttackOfUser();
+			AttackDTO attack = bo.getAttackDTO();
+			attack.setStoryID(rp);
+			bo.storeAttack();
+		}
+	}
+
+	public void setIsCharRP(boolean isCharRP){
+		this.isCharRP = isCharRP;
+	}
+
+	protected RolePlayStoryDTO getCurrentRP(){
+		if(isCharRP){
+			return Nexus.getCurrentChar().getStory();
+		} else {
+			BOAttack bo = Nexus.getCurrentAttackOfUser();
+			return Nexus.getBoUniverse().getAttackStoriesByID(Long.valueOf(bo.getStoryId()));
+		}
 	}
 }

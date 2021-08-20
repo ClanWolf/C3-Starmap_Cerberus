@@ -48,6 +48,7 @@ import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
 import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
+import net.clanwolf.starmap.transfer.dtos.RolePlayStoryDTO;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
 import java.net.MalformedURLException;
@@ -107,7 +108,7 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 				C3Logger.debug("RolePlayIntroPaneController -> START_ROLEPLAY");
 
 				// set current step of story
-				getStoryValues(Nexus.getCurrentChar());
+				getStoryValues(getCurrentRP());
 
 				Boolean animationPlayed = animationPlayedMap.get(Nexus.getCurrentChar().getStory().getId());
 				if (animationPlayed == null || !animationPlayed) {
@@ -128,6 +129,9 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 
 					animationPlayedMap.put(Nexus.getCurrentChar().getStory().getId(), true);
 				}
+			} else if(ROLEPLAYENTRYTYPES.C3_RP_STEP_V1 == o.getObject()){
+				// set current step of story
+				getStoryValues(getCurrentRP());
 			}
 			break;
 		default:
@@ -152,16 +156,16 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 
 	@FXML
 	private void handleOnActionBtPreview(){
-		//TODO: Get and save next step of the story
+		//TODO: Change the methods for C3_RP_STORY and C3_RP_CHAPTER of attack, otherwise it dosen't works
 		RolePlayCharacterDTO currentChar = Nexus.getCurrentChar();
-		if(currentChar.getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STORY ) {
+		if(getCurrentRP().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STORY ) {
 			boRp.getNextChapterBySortOrder(currentChar, 1);
 		}
-		if(currentChar.getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_CHAPTER ) {
+		if(getCurrentRP().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_CHAPTER ) {
 			boRp.getNextStepBySortOrder(currentChar, 1);
 		}
-		if(currentChar.getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1 ){
-			Long rp = Nexus.getCurrentChar().getStory().getNextStepID();
+		if(getCurrentRP().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1 ){
+			Long rp = getCurrentRP().getNextStepID();
 			saveNextStep(rp);
 		}
 	}
@@ -170,19 +174,24 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 
 	@Override
 	public void getStoryValues(RolePlayCharacterDTO rpChar){
+		//Do nothing
+	}
+
+	@Override
+	public void getStoryValues(RolePlayStoryDTO rpStory){
 
 		double xOffset = 62;
 		double yOffset = 14;
 
 		// set postion and size from textarea
-		if(rpChar.getStory().getxPosText() != null &&
-				rpChar.getStory().getyPosText() != null &&
-				rpChar.getStory().getWidthText() != null &&
-				rpChar.getStory().getHeightText() != null){
+		if(rpStory.getxPosText() != null &&
+				rpStory.getyPosText() != null &&
+				rpStory.getWidthText() != null &&
+				rpStory.getHeightText() != null){
 
-			taStoryText.setLayoutX(rpChar.getStory().getxPosText().doubleValue() + xOffset);
-			taStoryText.setLayoutY(rpChar.getStory().getyPosText().doubleValue() + yOffset);
-			taStoryText.setPrefSize(rpChar.getStory().getWidthText().doubleValue(),rpChar.getStory().getHeightText().doubleValue());
+			taStoryText.setLayoutX(rpStory.getxPosText().doubleValue() + xOffset);
+			taStoryText.setLayoutY(rpStory.getyPosText().doubleValue() + yOffset);
+			taStoryText.setPrefSize(rpStory.getWidthText().doubleValue(),rpStory.getHeightText().doubleValue());
 
 		} else {
 
@@ -192,11 +201,11 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 		}
 
 		// fade text from labHeader if step is story or chapter
-		if(rpChar.getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1){
+		if(rpStory.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1){
 			taStoryText.setVisible(true);
 			labHeader.setVisible(false);
 
-			taStoryText.setText(rpChar.getStory().getStoryText());
+			taStoryText.setText(rpStory.getStoryText());
 
 		} else {
 			taStoryText.setVisible(false);
@@ -207,11 +216,11 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 				labHeader.setOpacity(0.0);
 			}
 			labHeader.setVisible(true);
-			labHeader.setText(rpChar.getStory().getStoryName());
+			labHeader.setText(rpStory.getStoryName());
 		}
 
 		// set story image
-		Image im = BORolePlayStory.getRPG_Image(rpChar.getStory());
+		Image im = BORolePlayStory.getRPG_Image(rpStory);
 		backgroundImage.setImage(im);
 
 		Boolean animationPlayed = animationPlayedMap.get(Nexus.getCurrentChar().getStory().getId());
@@ -220,8 +229,8 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 		}
 
 		// play sound
-		if (rpChar.getStory().getStoryMP3() != null) {
-			C3SoundPlayer.play(BORolePlayStory.getRPG_Soundfile(rpChar.getStory()), false);
+		if (rpStory.getStoryMP3() != null) {
+			C3SoundPlayer.play(BORolePlayStory.getRPG_Soundfile(rpStory), false);
 		}
 	} //getStoryValues
 }

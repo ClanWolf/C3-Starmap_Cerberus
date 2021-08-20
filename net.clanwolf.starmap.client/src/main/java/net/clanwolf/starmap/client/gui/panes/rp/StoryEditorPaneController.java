@@ -1360,7 +1360,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 
 			lvAssignedChar.getItems().clear();
 			for (RolePlayCharacterDTO rpc : boRP.getCharacterList()) {
-				if (rpc.getStory() != null && selected.getValue() != null && rpc.getStory().getStory().getId().equals(selected.getValue().getId())) {
+				if (rpc.getStory() != null && selected.getValue() != null && rpc.getStory().getStory() != null && rpc.getStory().getStory().getId().equals(selected.getValue().getId())) {
 					lvAssignedChar.getItems().add(rpc);
 				}
 			}
@@ -1501,10 +1501,12 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 				cbFaction.setValue(Nexus.getBoUniverse().getFactionByID(selected.getValue().getVar7ID().getFaction()));
 
 			} else {
-				tfCode.clear();
-				tfAttempt.clear();
-				cbNextStep_AttemptSuccess.setValue(null);
-				cbNextStep_AttemptFailure.setValue(null);
+				tfSender.clear();
+				tfSenddate.clear();
+				tfHeader.clear();
+				tfServiceName.clear();
+				cbNextStepV7.setValue(null);
+				cbFaction.setValue(null);
 			}
 		}
 	}
@@ -1515,7 +1517,6 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 		rp.setStoryDescription(taDescription.getText());
 		rp.setStoryText(taStorytext.getText());
 		rp.setRolePlayOff(taRolePlayOff.getText());
-
 		// keep the actual sort number
 		rp.setSortOrderOld(rp.getSortOrder());
 		rp.setSortOrder(Integer.valueOf(tfSortOrder.getText()));
@@ -1580,6 +1581,8 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 
 		// set data for variante 1
 		if (rp.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1) {
+
+
 			if (cbNextStep_V1.getValue() != null) {
 				rp.setNextStepID(cbNextStep_V1.getValue().getId());
 			}
@@ -1698,9 +1701,15 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 			} else {
 				rpVar4.setScore(Integer.valueOf(tfDiceScore.getText()));
 			}
-			rpVar4.setStoryIDScoreEqual(cbDiceScoreEqual.getValue().getId());
-			rpVar4.setStoryIDScoreLess(cbDiceScoreLess.getValue().getId());
-			rpVar4.setStoryIDScoreMore(cbDiceScoreMore.getValue().getId());
+			if(cbDiceScoreEqual.getValue() != null) {
+				rpVar4.setStoryIDScoreEqual(cbDiceScoreEqual.getValue().getId());
+			}
+			if(cbDiceScoreLess.getValue() != null) {
+				rpVar4.setStoryIDScoreLess(cbDiceScoreLess.getValue().getId());
+			}
+			if(cbDiceScoreMore.getValue() != null) {
+				rpVar4.setStoryIDScoreMore(cbDiceScoreMore.getValue().getId());
+			}
 
 			rp.setVar4ID(rpVar4);
 

@@ -192,8 +192,10 @@ public class BORolePlayStory {
 		InputStream defaultImageStream = BORolePlayStory.getInstance().getClass().getResourceAsStream("/images/logos/factions/" + f.getLogo());
 		if(defaultImageStream != null){
 			defaultImageStream = BORolePlayStory.getInstance().getClass().getResourceAsStream("/images/logos/factions/WOB.png");
+			return new Image(defaultImageStream);
 		}
-		return new Image(defaultImageStream);
+		return null;
+
 	}
 
 	public static URL getRPG_Soundfile(RolePlayStoryDTO rp){

@@ -52,6 +52,7 @@ import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
+import net.clanwolf.starmap.transfer.dtos.RolePlayStoryDTO;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
 import java.io.InputStream;
@@ -139,7 +140,7 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 				init();
 
 				// set current step of story
-				getStoryValues(Nexus.getCurrentChar());
+				getStoryValues(getCurrentRP());
 			}
 			break;
 		default:
@@ -238,9 +239,9 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 		Long rp = null;
 
 		if(!codeOK && Nexus.getCurrentChar().getStory().getVar6ID().getStoryIDFailure() != null){
-			rp = Nexus.getCurrentChar().getStory().getVar6ID().getStoryIDFailure();
+			rp = getCurrentRP().getVar6ID().getStoryIDFailure();
 		} else {
-			rp = Nexus.getCurrentChar().getStory().getVar6ID().getStoryIDSuccess();
+			rp = getCurrentRP().getVar6ID().getStoryIDSuccess();
 		}
 
 		saveNextStep(rp);
@@ -521,17 +522,22 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 
 	@Override
 	public void getStoryValues(RolePlayCharacterDTO rpChar) {
-		sSecretCode = rpChar.getStory().getVar6ID().getSecretCode();
-		attempts = rpChar.getStory().getVar6ID().getAttempts();
+		//TODO: do nothing
+	}
+
+	@Override
+	public void getStoryValues(RolePlayStoryDTO rpStory) {
+		sSecretCode = rpStory.getVar6ID().getSecretCode();
+		attempts = rpStory.getVar6ID().getAttempts();
 		maxDigits = sSecretCode.length();
 
 		// set story image
-		Image im = BORolePlayStory.getRPG_Image(rpChar.getStory());
+		Image im = BORolePlayStory.getRPG_Image(rpStory);
 		backgroundImage.setImage(im);
 
 		// play sound
-		if (rpChar.getStory().getStoryMP3() != null) {
-			C3SoundPlayer.play(BORolePlayStory.getRPG_Soundfile(rpChar.getStory()), false);
+		if (rpStory.getStoryMP3() != null) {
+			C3SoundPlayer.play(BORolePlayStory.getRPG_Soundfile(rpStory), false);
 		}
 	}
 }
