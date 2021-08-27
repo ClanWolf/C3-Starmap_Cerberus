@@ -67,9 +67,6 @@ public abstract class AbstractC3RolePlayController implements Initializable, Act
 
 	public abstract void addActionCallBackListeners();
 
-	//TODO: delete this after my corrections
-	public abstract void getStoryValues(RolePlayCharacterDTO rpChar);
-
 	public abstract void getStoryValues(RolePlayStoryDTO rpStory);
 
 

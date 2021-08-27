@@ -140,7 +140,7 @@ public class RolePlayDicePaneController extends AbstractC3RolePlayController imp
 				init();
 
 				// set current step of story
-				getStoryValues(Nexus.getCurrentChar());
+				getStoryValues(getCurrentRP());
 			}
 			break;
 		default:
@@ -195,22 +195,18 @@ public class RolePlayDicePaneController extends AbstractC3RolePlayController imp
 	}
 
 	/******************************** THIS ********************************/
-	@Override
-	public void getStoryValues(RolePlayStoryDTO rpChar) {
-		//TODO: Change methode
-	}
 
 	@Override
-	public void getStoryValues(RolePlayCharacterDTO rpChar) {
+	public void getStoryValues(RolePlayStoryDTO rpChar) {
 		// set story image
-		Image im = BORolePlayStory.getRPG_Image(rpChar.getStory());
+		Image im = BORolePlayStory.getRPG_Image(rpChar);
 		backgroundImage.setImage(im);
 
 		// play sound
-		if (rpChar.getStory().getStoryMP3() != null) {
-			C3SoundPlayer.play(BORolePlayStory.getRPG_Soundfile(rpChar.getStory()), false);
+		if (rpChar.getStoryMP3() != null) {
+			C3SoundPlayer.play(BORolePlayStory.getRPG_Soundfile(rpChar), false);
 		}
 
-		taRpText.setText(rpChar.getStory().getStoryText());
+		taRpText.setText(rpChar.getStoryText());
 	}
 }

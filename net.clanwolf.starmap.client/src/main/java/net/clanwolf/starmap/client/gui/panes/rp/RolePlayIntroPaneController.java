@@ -173,11 +173,6 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 	/******************************** THIS ********************************/
 
 	@Override
-	public void getStoryValues(RolePlayCharacterDTO rpChar){
-		//Do nothing
-	}
-
-	@Override
 	public void getStoryValues(RolePlayStoryDTO rpStory){
 
 		double xOffset = 62;

@@ -192,11 +192,6 @@ public class RolePlayDataInputController extends AbstractC3RolePlayController im
 	}
 
 	@Override
-	public void getStoryValues(RolePlayCharacterDTO rpChar) {
-		//TODO: do nothing
-	}
-
-	@Override
 	public void getStoryValues(RolePlayStoryDTO rpStory) {
 		// set story image
 		Image im = BORolePlayStory.getRPG_Image(rpStory);

@@ -177,10 +177,6 @@ public class RolePlayChoice2PaneController extends AbstractC3RolePlayController 
 	}
 
 	/******************************** THIS ********************************/
-	@Override
-	public void getStoryValues(RolePlayCharacterDTO rpChar) {
-		//TODO: do nothing
-	}
 
 	@Override
 	public void getStoryValues(RolePlayStoryDTO rpStory) {

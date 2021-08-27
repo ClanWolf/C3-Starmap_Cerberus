@@ -573,11 +573,6 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 	/******************************** THIS ********************************/
 	@Override
-	public void getStoryValues(RolePlayCharacterDTO rpChar) {
-		//TODO: do nothing
-	}
-
-	@Override
 	public void getStoryValues(RolePlayStoryDTO rpChar){
 		// play sound
 		if (rpChar.getStory().getStoryMP3() != null) {

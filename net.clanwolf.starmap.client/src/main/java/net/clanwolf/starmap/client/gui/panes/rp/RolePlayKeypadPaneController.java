@@ -521,11 +521,6 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 	}
 
 	@Override
-	public void getStoryValues(RolePlayCharacterDTO rpChar) {
-		//TODO: do nothing
-	}
-
-	@Override
 	public void getStoryValues(RolePlayStoryDTO rpStory) {
 		sSecretCode = rpStory.getVar6ID().getSecretCode();
 		attempts = rpStory.getVar6ID().getAttempts();

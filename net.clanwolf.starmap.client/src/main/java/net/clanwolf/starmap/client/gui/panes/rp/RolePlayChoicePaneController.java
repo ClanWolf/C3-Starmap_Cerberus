@@ -172,10 +172,6 @@ public class RolePlayChoicePaneController extends AbstractC3RolePlayController i
 	}
 
 	/******************************** THIS ********************************/
-	@Override
-	public void getStoryValues(RolePlayCharacterDTO rpChar) {
-		//TODO: Change methode
-	}
 
 	@Override
 	public void getStoryValues(RolePlayStoryDTO rpStory) {
