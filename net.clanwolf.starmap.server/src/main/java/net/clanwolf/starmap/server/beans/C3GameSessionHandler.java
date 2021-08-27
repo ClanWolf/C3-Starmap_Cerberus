@@ -323,7 +323,8 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		}
 	}
 
-	private synchronized void saveRoute(PlayerSession session, GameState state) {
+	// RoutePoints are now saved with hibernate together with the jumpship
+	/*private synchronized void saveRoute(PlayerSession session, GameState state) {
 
 		RoutePointDAO dao = RoutePointDAO.getInstance();
 		GameState response = new GameState(GAMESTATEMODES.JUMPSHIP_SAVE);
@@ -357,7 +358,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			C3GameSessionHandler.sendNetworkEvent(session, response);
 //		} finally {
 		}
-	}
+	}*/
 
 	private synchronized void savePrivileges(PlayerSession session, GameState state) {
 		UserDAO dao = UserDAO.getInstance();
