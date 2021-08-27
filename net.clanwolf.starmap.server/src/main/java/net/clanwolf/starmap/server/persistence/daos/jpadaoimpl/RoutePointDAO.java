@@ -74,6 +74,20 @@ public class RoutePointDAO extends GenericDAO {
 		}
 	}
 
+	public void deleteByJumpshipId(Long userID) {
+		CriteriaHelper crit = new CriteriaHelper(RoutePointPOJO.class);
+		crit.addCriteriaIsNull("jumpshipId");
+
+		List<Object> objectList = crit.getResultList();
+
+		Iterator i = objectList.iterator();
+		while(i.hasNext()) {
+			RoutePointPOJO p = (RoutePointPOJO) i.next();
+			C3Logger.info("Deleting: " + p.getId());
+			delete(userID, p);
+		}
+	}
+
 	@Override
 	public void delete(Long userID, Object entity) {
 		super.delete(userID, entity, ((RoutePointPOJO) entity).getId());

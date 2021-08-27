@@ -48,6 +48,7 @@ import net.clanwolf.starmap.transfer.util.Compressor;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 
 /**
@@ -304,8 +305,12 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		try {
 			EntityManagerHelper.beginTransaction(getC3UserID(session));
 			JumpshipPOJO js = (JumpshipPOJO)state.getObject();
-			daoRP.deleteByJumpshipId(getC3UserID(session), js.getId());
+
+			js.getRoutepointList().clear();
 			daoJS.update(C3GameSessionHandler.getC3UserID(session), js);
+
+			daoRP.deleteByJumpshipId(getC3UserID(session));
+
 			EntityManagerHelper.commit(getC3UserID(session));
 		} catch (RuntimeException re) {
 			C3Logger.error("Jumpship save", re);
