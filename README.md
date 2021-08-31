@@ -21,5 +21,6 @@ C3 is a Server/Client application to simulate a part of the Inner Sphere (Battle
 
 ![C3_screen_03](https://user-images.githubusercontent.com/16292643/119111407-548bc580-ba23-11eb-9b9b-8c8b8b1fd28d.png)
 
-If you want to support C3, consider donating at the following link:  
-<https://www.paypal.com/pools/c/8ri2Y8lrl7>
+If you want to support C3, consider to become a patreon or donate via paypal:  
+<https://www.paypal.com/donate?token=SrCxd2l7S3sKbgQWU4jG19vgzbWNN4evLxPOwtuQY8APeglyDVpYcmuIkDm7V5RGPACIB17XN1PuiKhD>
+<https://www.patreon.com/ClanWolf>
