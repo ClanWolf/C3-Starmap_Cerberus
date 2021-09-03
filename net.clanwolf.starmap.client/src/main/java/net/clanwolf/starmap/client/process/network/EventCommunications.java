@@ -169,6 +169,8 @@ public class EventCommunications {
 
 					break;
 				case ERROR_MESSAGE:
+					C3Logger.info("ErrorMessage");
+					C3Logger.error((String) state.getObject());
 					break;
 				case USER_LOG_OUT:
 					break;
