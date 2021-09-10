@@ -57,6 +57,8 @@ public class EventCommunications {
 			GameState state = (GameState) event.getSource();
 			C3Logger.info("Event received: " + state.getMode());
 
+			showErrorMessage(state);
+
 			switch (state.getMode()) {
 				case USER_GET_NEW_PLAYERLIST:
 					C3Logger.info("EventCommunications.onDataIn: neue Playerliste ->" + state.getObject());
@@ -260,6 +262,12 @@ public class EventCommunications {
 				default:
 					break;
 			}
+		}
+	}
+
+	public static void showErrorMessage(GameState g){
+		if(!g.isAction_successfully()){
+			C3Logger.error((String) g.getObject());
 		}
 	}
 }
