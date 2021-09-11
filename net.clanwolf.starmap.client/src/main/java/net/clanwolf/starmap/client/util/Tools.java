@@ -106,85 +106,87 @@ public final class Tools {
 	}
 
 	public static void saveMapScreenshot(int width, int height, PannableCanvas canvas) {
-		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute();
-		WritableImage wi = new WritableImage(width, height);
-		try {
-			File file1 = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "history" + File.separator + "C3_Season" + Nexus.getCurrentSeason() + "_map.png");
-			File file2 = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "history" + File.separator + "C3_Season" + Nexus.getCurrentSeason() + "_Round" + Nexus.getCurrentRound() + "_" + Nexus.getCurrentChar() + "_map_history.png");
-			if (!file1.mkdirs()) {
-				// C3Logger.error("Could not create history folder!");
+		if (!Nexus.isDevelopmentPC()) {
+			ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute();
+			WritableImage wi = new WritableImage(width, height);
+			try {
+				File file1 = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "history" + File.separator + "C3_Season" + Nexus.getCurrentSeason() + "_map.png");
+				File file2 = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "history" + File.separator + "C3_Season" + Nexus.getCurrentSeason() + "_Round" + Nexus.getCurrentRound() + "_" + Nexus.getCurrentChar() + "_map_history.png");
+				if (!file1.mkdirs()) {
+					// C3Logger.error("Could not create history folder!");
+				}
+				BufferedImage bi = SwingFXUtils.fromFXImage(canvas.snapshot(null, wi), null);
+
+				final int screenshotWidth = 2500;       // For map dimension of 4000 x 4000
+				final int screenshotHeight = 2000;      // For map dimension of 4000 x 4000
+				final BufferedImage finaleImage = new BufferedImage(screenshotWidth, screenshotHeight, BufferedImage.TYPE_INT_RGB);
+				Graphics g = finaleImage.getGraphics();
+				g.drawImage(finaleImage, (bi.getWidth() - screenshotWidth) / 2, (bi.getHeight() - screenshotHeight) / 2, screenshotWidth, screenshotHeight, null);
+				g.drawImage(bi, -(bi.getWidth() - screenshotWidth) / 2, -200, bi.getWidth(), bi.getHeight(), null);
+				g.dispose();
+
+				Image c3Icon = new Image(Objects.requireNonNull(Tools.class.getResourceAsStream("/icons/C3_Icon2.png")));
+				Image hhIcon = new Image(Objects.requireNonNull(Tools.class.getResourceAsStream("/icons/hammerhead.png")));
+				Graphics2D g2d = finaleImage.createGraphics();
+				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+				g2d.drawImage(SwingFXUtils.fromFXImage(c3Icon, null), 50, 1850, 100, 100, null);
+				g2d.drawImage(SwingFXUtils.fromFXImage(hhIcon, null), 2350, 1850, 100, 100, null);
+
+				String s1 = "C3 / Hammerhead - Map Export";
+				String s2 = "Season:";
+				String s3 = "Round:";
+				String s4 = "Metaphase:";
+				String s5 = "User:";
+
+				String sv2 = "" + Nexus.getCurrentSeason();
+				String sv3 = "" + Nexus.getCurrentRound();
+				String sv4 = "" + Nexus.getCurrentSeasonMetaPhase();
+				String sv5 = Nexus.getCurrentChar().getName() + " (" + Nexus.getCurrentUser().getUserName() + ")";
+
+				SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+				Date date = new Date(System.currentTimeMillis());
+				String sd = formatter.format(date);
+
+				g2d.setFont(new Font("Arial", Font.BOLD, 45));
+				g2d.setPaint(Color.WHITE);
+				g2d.drawString(s1, 50, 100);
+
+				g2d.setFont(new Font("Arial", Font.PLAIN, 26));
+				g2d.drawString(s2, 50, 170);
+				g2d.drawString(s3, 50, 200);
+				g2d.drawString(s4, 50, 230);
+				g2d.drawString(s5, 50, 300);
+				g2d.drawString(Nexus.getCurrentDate(), 2100, 100);
+				g2d.drawString(sd, 2100, 130);
+
+				g2d.setPaint(Color.GREEN);
+				g2d.drawString(sv2, 200, 170);
+				g2d.drawString(sv3, 200, 200);
+				g2d.drawString(sv4, 200, 230);
+				g2d.drawString(sv5, 200, 300);
+
+				g2d.setFont(new Font("Arial", Font.BOLD, 250));
+				g2d.setPaint(Color.CYAN);
+				g2d.drawString(Nexus.getCurrentRound() + "", 2100, 400);
+
+				// Add a border
+				g2d.setPaint(Color.GRAY);
+				g2d.setStroke(new BasicStroke(20));
+				g2d.drawLine(0, 0, 2500, 0);
+				g2d.drawLine(0, 0, 0, 2000);
+				g2d.drawLine(2500, 0, 2500, 2000);
+				g2d.drawLine(0, 2000, 2500, 2000);
+
+				g2d.dispose();
+
+				ImageIO.write(finaleImage, "png", file1);
+				ImageIO.write(finaleImage, "png", file2);
+			} catch (IOException e) {
+				e.printStackTrace();
+				C3Logger.error("Could not save map screenshot!");
 			}
-			BufferedImage bi = SwingFXUtils.fromFXImage(canvas.snapshot(null, wi), null);
-
-			final int screenshotWidth = 2500;       // For map dimension of 4000 x 4000
-			final int screenshotHeight = 2000;      // For map dimension of 4000 x 4000
-			final BufferedImage finaleImage = new BufferedImage(screenshotWidth, screenshotHeight, BufferedImage.TYPE_INT_RGB);
-			Graphics g = finaleImage.getGraphics();
-			g.drawImage(finaleImage, (bi.getWidth() - screenshotWidth) / 2,(bi.getHeight() - screenshotHeight) / 2, screenshotWidth, screenshotHeight,null);
-			g.drawImage(bi, -(bi.getWidth() - screenshotWidth) / 2, -200, bi.getWidth(), bi.getHeight(),null);
-			g.dispose();
-
-			Image c3Icon = new Image(Objects.requireNonNull(Tools.class.getResourceAsStream("/icons/C3_Icon2.png")));
-			Image hhIcon = new Image(Objects.requireNonNull(Tools.class.getResourceAsStream("/icons/hammerhead.png")));
-			Graphics2D g2d = finaleImage.createGraphics();
-			g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-			g2d.drawImage(SwingFXUtils.fromFXImage(c3Icon, null), 50, 1850, 100,100, null);
-			g2d.drawImage(SwingFXUtils.fromFXImage(hhIcon, null), 2350, 1850, 100,100, null);
-
-			String s1 = "C3 / Hammerhead - Map Export";
-			String s2 = "Season:";
-			String s3 = "Round:";
-			String s4 = "Metaphase:";
-			String s5 = "User:";
-
-			String sv2 = "" + Nexus.getCurrentSeason();
-			String sv3 = "" + Nexus.getCurrentRound();
-			String sv4 = "" + Nexus.getCurrentSeasonMetaPhase();
-			String sv5 = Nexus.getCurrentChar().getName() + " (" + Nexus.getCurrentUser().getUserName() + ")" ;
-
-			SimpleDateFormat formatter= new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-			Date date = new Date(System.currentTimeMillis());
-			String sd = formatter.format(date);
-
-			g2d.setFont(new Font("Arial", Font.BOLD, 45));
-			g2d.setPaint(Color.WHITE);
-			g2d.drawString(s1, 50, 100);
-
-			g2d.setFont(new Font("Arial", Font.PLAIN, 26));
-			g2d.drawString(s2, 50, 170);
-			g2d.drawString(s3, 50, 200);
-			g2d.drawString(s4, 50, 230);
-			g2d.drawString(s5, 50, 300);
-			g2d.drawString(Nexus.getCurrentDate(), 2100,100);
-			g2d.drawString(sd, 2100,130);
-
-			g2d.setPaint(Color.GREEN);
-			g2d.drawString(sv2, 200, 170);
-			g2d.drawString(sv3, 200, 200);
-			g2d.drawString(sv4, 200, 230);
-			g2d.drawString(sv5, 200, 300);
-
-			g2d.setFont(new Font("Arial", Font.BOLD, 250));
-			g2d.setPaint(Color.CYAN);
-			g2d.drawString(Nexus.getCurrentRound() + "", 2100, 400);
-
-			// Add a border
-			g2d.setPaint(Color.GRAY);
-			g2d.setStroke(new BasicStroke(20));
-			g2d.drawLine(0, 0, 2500,0);
-			g2d.drawLine(0, 0, 0,2000);
-			g2d.drawLine(2500, 0, 2500,2000);
-			g2d.drawLine(0, 2000, 2500,2000);
-
-			g2d.dispose();
-
-			ImageIO.write(finaleImage ,"png", file1);
-			ImageIO.write(finaleImage, "png", file2);
-		} catch (IOException e) {
-			e.printStackTrace();
-			C3Logger.error("Could not save map screenshot!");
+			ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute();
 		}
-		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute();
 	}
 
 	/**

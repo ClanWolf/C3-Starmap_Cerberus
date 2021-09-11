@@ -40,6 +40,8 @@ public class UniverseDTO extends Dto {
 	public ArrayList<RoutePointDTO> routepoints = new ArrayList<>();
 	public HashMap<Long, RolePlayStoryDTO> attackStorys = new HashMap<>();
 
+	public String lastRoundResultProtocol;
+
 	public Integer currentSeason;
 	public Integer currentSeasonMetaPhase;
 	public Integer currentRound;

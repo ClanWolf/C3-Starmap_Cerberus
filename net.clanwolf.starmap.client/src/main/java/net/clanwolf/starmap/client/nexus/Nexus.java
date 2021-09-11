@@ -61,7 +61,6 @@ public class Nexus {
 	private static Object myPlayerSessionID;
 	private static Session session;
 	private static boolean mainFrameEnabled;
-	private static UniverseDTO universeDTO;
 	private static BOUniverse boUniverse;
 	private static BOStarSystem boSelectedStarSystem;
 	private static boolean loggedIn = false;
@@ -230,16 +229,6 @@ public class Nexus {
 	@SuppressWarnings("unused")
 	public static void setBOUniverse(BOUniverse boUni) {
 		boUniverse = boUni;
-	}
-
-	@SuppressWarnings("unused")
-	public static UniverseDTO getUniverseDTO() {
-		return universeDTO;
-	}
-
-	@SuppressWarnings("unused")
-	public static void setUniverseDTO(UniverseDTO uni) {
-		universeDTO = uni;
 	}
 
 	@SuppressWarnings("unused")

@@ -38,6 +38,7 @@ import net.clanwolf.starmap.server.persistence.pojos.UserPOJO;
 import net.clanwolf.starmap.server.process.EndRound;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
+import net.clanwolf.starmap.transfer.util.Compressor;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -87,6 +88,13 @@ public class HeartBeatTimer extends TimerTask {
 				C3Logger.exception("Error writing heartbeat file", ioe);
 			}
 
+			Long seasonId = GameServer.getCurrentSeason();
+			RoundDAO roundDAO = RoundDAO.getInstance();
+			RoundPOJO r = roundDAO.findBySeasonId(seasonId);
+			int round = r.getRound().intValue();
+
+			String resultProtocol = EndRound.finalizeRound(seasonId, round);
+
 			C3Logger.print("Calling list creation (Factions)...");
 			WebDataInterface.createSystemList(SystemListTypes.Factions);
 			C3Logger.print("Calling list creation (HH_StarSystems)...");
@@ -100,17 +108,15 @@ public class HeartBeatTimer extends TimerTask {
 			C3Logger.print("Calling list creation (CM_StarSystems)...");
 			WebDataInterface.createSystemList(SystemListTypes.CM_StarSystems);
 
-			Long seasonId = GameServer.getCurrentSeason();
-			RoundDAO roundDAO = RoundDAO.getInstance();
-			RoundPOJO r = roundDAO.findBySeasonId(seasonId);
-			int round = r.getRound().intValue();
-
-			EndRound.finalizeRound(seasonId, round);
+			if (!"".equals(resultProtocol)) {
+				WebDataInterface.getUniverse().lastRoundResultProtocol = resultProtocol;
+			}
 
 			if (informClients) {
 				// TODO: Broadcast new version of the universe to the clients
+				C3Logger.print("Send updated universe to all clients.");
 				GameState response = new GameState(GAMESTATEMODES.GET_UNIVERSE_DATA);
-				response.addObject(WebDataInterface.getUniverse());
+				response.addObject(Compressor.compress(WebDataInterface.getUniverse()));
 				C3Room.sendBroadcastMessage(response);
 			}
 

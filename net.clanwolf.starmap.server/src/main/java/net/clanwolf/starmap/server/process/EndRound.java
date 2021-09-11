@@ -129,7 +129,7 @@ public class EndRound {
 		return addDaysToDate(date, diff);
 	}
 
-	public static void findAWinner(AttackPOJO attackPOJO) {
+	public static Long findAWinner(AttackPOJO attackPOJO) {
 		Long jumpshipId = attackPOJO.getJumpshipID();
 		JumpshipPOJO jumpship = JumpshipDAO.getInstance().getJumpshipForId(jumpshipId);
 		Long attackerFactionId = jumpship.getJumpshipFactionID();
@@ -138,9 +138,10 @@ public class EndRound {
 		// it is 50/50 who wins this fight if it has not been resolved in a game / series of games
 		Long winnerId = Math.random() > 0.5 ? attackerFactionId : defenderFactionId;
 		attackPOJO.setFactionID_Winner(winnerId);
+		return winnerId;
 	}
 
-	public static void finalizeRound(Long seasonId, int round) {
+	public static String finalizeRound(Long seasonId, int round) {
 		C3Logger.info("Checking on end of round.");
 		ArrayList<JumpshipPOJO> jumpshipList = JumpshipDAO.getInstance().getAllJumpships();
 		ArrayList<AttackPOJO> openAttacksInRoundList = AttackDAO.getInstance().getOpenAttacksOfASeasonForRound(seasonId, round);
@@ -161,6 +162,9 @@ public class EndRound {
 
 		boolean attacksLeftToResolveInRound = openAttacksInRoundList.size() > 0; // We are ignoring the open attacks for the next round here
 
+		StringBuilder resolvedAttacks = new StringBuilder();
+		StringBuilder movedJumpships = new StringBuilder();
+
 		if ((jumpshipsLeftToMove || attacksLeftToResolveInRound) && !(timeForThisRoundIsOver(seasonId)) && !forceFinalize.get()) {
 			// round is still active
 			C3Logger.info("Round is still active.");
@@ -169,9 +173,6 @@ public class EndRound {
 			C3Logger.info("--- There is still time left to make moves for this round!");
 		} else {
 			forceFinalize.set(false);
-
-			StringBuilder resolvedAttacks = new StringBuilder();
-			StringBuilder movedJumpships = new StringBuilder();
 
 			// here is no ship left to move AND no attack left open OR the time for the round is up
 			C3Logger.info("Finalizing the round:");
@@ -184,8 +185,14 @@ public class EndRound {
 			// set all open attacks to resolved (decide on a winner in the process!)
 			C3Logger.info("--- Resolve all attacks that are still open.");
 			for (AttackPOJO attackPOJO : openAttacksInRoundList) {
-				findAWinner(attackPOJO);
-				resolvedAttacks.append("Jumpship with id ").append(attackPOJO.getJumpshipID()).append(" attacked system with id ").append(attackPOJO.getStarSystemID()).append("--> resolved to winner: ").append(attackPOJO.getFactionID_Winner()).append("\r\n");
+				Long winnerId = findAWinner(attackPOJO);
+
+				JumpshipPOJO jsPojo = JumpshipDAO.getInstance().findById(Nexus.DUMMY_USERID, attackPOJO.getJumpshipID());
+				StarSystemPOJO ssPojo = StarSystemDAO.getInstance().findById(Nexus.DUMMY_USERID, attackPOJO.getStarSystemID());
+				FactionPOJO fWinnerPojo = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, attackPOJO.getFactionID_Winner());
+				FactionPOJO fJumpshipPOJO = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, jsPojo.getJumpshipFactionID());
+
+				resolvedAttacks.append("Jumpship '" + jsPojo.getJumpshipName() + "' (" + jsPojo.getId() + ") of " + fJumpshipPOJO.getShortName() + " (").append(attackPOJO.getJumpshipID()).append(") attacked system '" + ssPojo.getName() + "' (" + ssPojo.getId() + ") ").append("--> resolved to winner: ").append(fWinnerPojo.getShortName() + " (" + attackPOJO.getFactionID_Winner() + ").").append("\r\n");
 			}
 
 			// Count the round indicator up once
@@ -212,7 +219,10 @@ public class EndRound {
 						String ssh = js.getStarSystemHistory();
 						ssh = ssh + ";" + p.getSystemId();
 						js.setStarSystemHistory(ssh);
-						movedJumpships.append("Jumpship ").append(js.getJumpshipName()).append(" moved to ").append(p.getSystemId()).append(" (systemId).\r\n");
+
+						StarSystemPOJO ssPojo = StarSystemDAO.getInstance().findById(Nexus.DUMMY_USERID, p.getSystemId());
+
+						movedJumpships.append("Jumpship '").append(js.getJumpshipName()).append("' moved to ").append(ssPojo.getName()).append(" (" + ssPojo.getId() + ").\r\n");
 					}
 				}
 			}
@@ -265,8 +275,6 @@ public class EndRound {
 			message.append(resolvedAttacks).append("\r\n");
 			message.append("Moved jumpships:\r\n");
 			message.append(movedJumpships).append("\r\n");
-			message.append("Conquered star systems:\r\n");
-			message.append("...");
 
 			sent = MailManager.sendMail("c3@clanwolf.net", receivers, subject.toString(), message.toString(), false);
 			if (sent) {
@@ -277,6 +285,7 @@ public class EndRound {
 				C3Logger.info("Error during mail dispatch.");
 			}
 		}
+		return resolvedAttacks.toString() + "\r\n" + movedJumpships.toString();
 	}
 
 //	public static void main(String[] args) {

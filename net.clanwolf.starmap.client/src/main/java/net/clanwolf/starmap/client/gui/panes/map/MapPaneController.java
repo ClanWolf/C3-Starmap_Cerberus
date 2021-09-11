@@ -294,6 +294,15 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		}
 	}
 
+	private void refreshUniverseMap() {
+		if (boUniverse != null) {
+			Nexus.setCurrentSeason(boUniverse.currentSeason);
+			Nexus.setCurrentSeasonMetaPhase(boUniverse.currentSeasonMetaPhase);
+			Nexus.setCurrentRound(boUniverse.currentRound);
+			Nexus.setCurrentDate(boUniverse.currentDate);
+		}
+	}
+
 	/**
 	 * Initializes the universe star map from the universe business object.
 	 */
@@ -1159,6 +1168,12 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	public boolean handleAction(ACTIONS action, ActionObject o) {
 		switch (action) {
 			case UPDATE_UNIVERSE:
+				break;
+
+			case NEW_UNIVERSE_RECEIVED:
+				C3Logger.info("Received new universe, repainting map.");
+				Platform.runLater(this::refreshUniverseMap);
+				ActionManager.getAction(ACTIONS.UPDATE_GAME_INFO).execute();
 				break;
 
 			case CHANGE_LANGUAGE:

@@ -55,7 +55,7 @@ public class EventCommunications {
 
 		if (event.getSource() instanceof GameState) {
 			GameState state = (GameState) event.getSource();
-			C3Logger.info("Event received: " + state.getMode());
+//			C3Logger.info("Event received: " + state.getMode());
 
 			showErrorMessage(state);
 
@@ -138,22 +138,25 @@ public class EventCommunications {
 					Long userIDOfSavingUser = (Long) state.getObject2(); // --> session.getId();
 					if (userIDOfSavingUser == null) {
 						// My attack was saved
+						// If I was the one who saved this attack, in my universe I already have the attack without an id
+						// this needs to be removed and replaced with the one that comes back from the server (this one has
+						// the id that was persisted.
+						BOAttack attackToBeRemoved = null;
+						for (BOAttack boa : Nexus.getBoUniverse().attackBOs) {
+							if (boa.getAttackDTO().getId() == null) {
+								attackToBeRemoved = boa;
+								break;
+							}
+						}
+						if (attackToBeRemoved != null) {
+							Nexus.getBoUniverse().attackBOs.remove(attackToBeRemoved);
+						}
 					} else {
 						// Someone else moved this jumpship and managed to save faster than I did, no luck!
 					}
 
-//					for (AttackCharacterDTO attackCharacterDTO : attack.getAttackCharList()) {
-//						if (attackCharacterDTO.getCharacterID().equals(Nexus.getCurrentChar().getId())) {
-//							C3Logger.info("");
-//							break;
-//						}
-//					}
-
-					// TODO: Update universe with the received attack object
-					// What about the jumpship and the routepoints?
-
+					Nexus.getBoUniverse().attackBOs.add(new BOAttack(attack));
 					ActionManager.getAction(ACTIONS.ENABLE_MAIN_MENU_BUTTONS).execute();
-					ActionManager.getAction(ACTIONS.ROLEPLAY_NEXT_STEP_CHANGE_PANE).execute(state.getObject());
 					break;
 
 				case ATTACK_CHARACTER_SAVE_RESPONSE:
@@ -236,7 +239,8 @@ public class EventCommunications {
 				case GET_UNIVERSE_DATA:
 					C3Logger.info("Re-created universe received from server!");
 					UniverseDTO universeDTO = (UniverseDTO) Compressor.deCompress((byte[])state.getObject());
-					Nexus.setUniverseDTO(universeDTO);
+//					Nexus.setUniverseDTO(universeDTO);
+					Nexus.setBOUniverse(new BOUniverse(universeDTO));
 
 					ActionManager.getAction(ACTIONS.NEW_UNIVERSE_RECEIVED).execute();
 
@@ -258,6 +262,7 @@ public class EventCommunications {
 				case ROLEPLAY_REQUEST_ALLCHARACTER:
 					break;
 				case FINALIZE_ROUND:
+					C3Logger.info("Server did finalize round.");
 					break;
 				default:
 					break;
@@ -266,7 +271,7 @@ public class EventCommunications {
 	}
 
 	public static void showErrorMessage(GameState g){
-		if(!g.isAction_successfully()){
+		if(g.isAction_successfully() != null && !g.isAction_successfully()){
 			C3Logger.error((String) g.getObject());
 		}
 	}
