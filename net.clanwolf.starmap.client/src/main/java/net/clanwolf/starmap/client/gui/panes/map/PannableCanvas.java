@@ -127,6 +127,10 @@ public class PannableCanvas extends Pane {
 		starSystemMarkerCircle30ly.setVisible(true);
 	}
 
+	public void show3DStars(boolean value) {
+		starPane.setVisible(value);
+	}
+
 	/**
 	 * Add a grid to the canvas, send it to back
 	 */

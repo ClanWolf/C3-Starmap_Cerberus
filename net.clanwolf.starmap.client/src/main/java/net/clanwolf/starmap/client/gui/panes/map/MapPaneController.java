@@ -295,6 +295,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	}
 
 	private void refreshUniverseMap() {
+		ActionManager.getAction(ACTIONS.NOISE).execute(1100);
 		if (boUniverse != null) {
 			Nexus.setCurrentSeason(boUniverse.currentSeason);
 			Nexus.setCurrentSeasonMetaPhase(boUniverse.currentSeasonMetaPhase);
@@ -307,6 +308,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	 * Initializes the universe star map from the universe business object.
 	 */
 	private void initializeUniverseMap() {
+		ActionManager.getAction(ACTIONS.NOISE).execute(1100);
 		boUniverse = Nexus.getBoUniverse();
 		if (boUniverse != null) {
 			String dims = C3Properties.getProperty(C3PROPS.MAP_DIMENSIONS);
@@ -1204,9 +1206,12 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 					Double w = Config.MAP_WIDTH;
 					Double h = Config.MAP_HEIGHT;
-					Tools.saveMapScreenshot(w.intValue(), h.intValue() / 2 + 200, canvas);
-					C3Logger.info("Saved history screenshot of the starmap.");
 
+					canvas.show3DStars(false);
+					Tools.saveMapScreenshot(w.intValue(), h.intValue() / 2 + 200, canvas);
+					canvas.show3DStars(true);
+
+					C3Logger.info("Saved history screenshot of the starmap.");
 					buildGuiEffect();
 				});
 				C3Logger.info("Map is ready!");
