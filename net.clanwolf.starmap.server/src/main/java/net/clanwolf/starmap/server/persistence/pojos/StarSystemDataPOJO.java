@@ -41,15 +41,11 @@ public class StarSystemDataPOJO extends Pojo {
 	@Column(name = "ID")
 	private Long id;
 
-	//@Column(name = "StarSystemID")
-	//private Long starSystemID;
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "StarSystemID")
 	private StarSystemPOJO starSystemID;
 
-	//@Column(name = "FactionID")
-	//private Long factionID;
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "FactionID")
 	private FactionPOJO factionID;
 
@@ -70,33 +66,6 @@ public class StarSystemDataPOJO extends Pojo {
 
 	@Column(name = "Description")
 	private String description;
-
-//	@Column(name = "S1_Map01ID")
-//	private Long s1_Map01ID;
-//
-//	@Column(name = "S1_Map02ID")
-//	private Long s1_Map02ID;
-//
-//	@Column(name = "S1_Map03ID")
-//	private Long s1_Map03ID;
-//
-//	@Column(name = "S2_Map01ID")
-//	private Long s2_Map01ID;
-//
-//	@Column(name = "S2_Map02ID")
-//	private Long s2_Map02ID;
-//
-//	@Column(name = "S2_Map03ID")
-//	private Long s2_Map03ID;
-//
-//	@Column(name = "S3_Map01ID")
-//	private Long s3_Map01ID;
-//
-//	@Column(name = "S3_Map02ID")
-//	private Long s3_Map02ID;
-//
-//	@Column(name = "S3_Map03ID")
-//	private Long s3_Map03ID;
 
 	@Column(name = "CapitalWorld")
 	private Boolean capitalWorld;
@@ -199,96 +168,6 @@ public class StarSystemDataPOJO extends Pojo {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-
-//	@SuppressWarnings("unused")
-//	public Long getS1_Map01ID() {
-//		return s1_Map01ID;
-//	}
-
-//	@SuppressWarnings("unused")
-//	public void setS1_Map01ID(Long s1_Map01ID) {
-//		this.s1_Map01ID = s1_Map01ID;
-//	}
-
-//	@SuppressWarnings("unused")
-//	public Long getS1_Map02ID() {
-//		return s1_Map02ID;
-//	}
-
-//	@SuppressWarnings("unused")
-//	public void setS1_Map02ID(Long s1_Map02ID) {
-//		this.s1_Map02ID = s1_Map02ID;
-//	}
-
-//	@SuppressWarnings("unused")
-//	public Long getS1_Map03ID() {
-//		return s1_Map03ID;
-//	}
-
-//	@SuppressWarnings("unused")
-//	public void setS1_Map03ID(Long s1_Map03ID) {
-//		this.s1_Map03ID = s1_Map03ID;
-//	}
-
-//	@SuppressWarnings("unused")
-//	public Long getS2_Map01ID() {
-//		return s2_Map01ID;
-//	}
-
-//	@SuppressWarnings("unused")
-//	public void setS2_Map01ID(Long s2_Map01ID) {
-//		this.s2_Map01ID = s2_Map01ID;
-//	}
-
-//	@SuppressWarnings("unused")
-//	public Long getS2_Map02ID() {
-//		return s2_Map02ID;
-//	}
-
-//	@SuppressWarnings("unused")
-//	public void setS2_Map02ID(Long s2_Map02ID) {
-//		this.s2_Map02ID = s2_Map02ID;
-//	}
-
-//	@SuppressWarnings("unused")
-//	public Long getS2_Map03ID() {
-//		return s2_Map03ID;
-//	}
-
-//	@SuppressWarnings("unused")
-//	public void setS2_Map03ID(Long s2_Map03ID) {
-//		this.s2_Map03ID = s2_Map03ID;
-//	}
-
-//	@SuppressWarnings("unused")
-//	public Long getS3_Map01ID() {
-//		return s3_Map01ID;
-//	}
-
-//	@SuppressWarnings("unused")
-//	public void setS3_Map01ID(Long s3_Map01ID) {
-//		this.s3_Map01ID = s3_Map01ID;
-//	}
-
-//	@SuppressWarnings("unused")
-//	public Long getS3_Map02ID() {
-//		return s3_Map02ID;
-//	}
-
-//	@SuppressWarnings("unused")
-//	public void setS3_Map02ID(Long s3_Map02ID) {
-//		this.s3_Map02ID = s3_Map02ID;
-//	}
-
-//	@SuppressWarnings("unused")
-//	public Long getS3_Map03ID() {
-//		return s3_Map03ID;
-//	}
-
-//	@SuppressWarnings("unused")
-//	public void setS3_Map03ID(Long s3_Map03ID) {
-//		this.s3_Map03ID = s3_Map03ID;
-//	}
 
 	@SuppressWarnings("unused")
 	public Boolean getCapitalWorld() {

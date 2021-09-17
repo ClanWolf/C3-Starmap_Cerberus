@@ -246,13 +246,17 @@ public class EndRound {
 				for (JumpshipPOJO jumpshipPOJO : jumpshipList) {
 					jumpshipDAO.update(Nexus.DUMMY_USERID, jumpshipPOJO);
 				}
+				//transaction.commit();
+				//transaction.begin();
 				for (AttackPOJO attackPOJO : openAttacksInRoundList) {
 					attackDAO.update(Nexus.DUMMY_USERID, attackPOJO);
 				}
+				//transaction.commit();
+				//transaction.begin();
 				for (AttackPOJO attackPOJO : AttackDAO.getInstance().getAllAttacksOfASeasonForRound(seasonId, round)) {
 					StarSystemDataPOJO ssdPojo = ssdDAO.findById(Nexus.DUMMY_USERID, attackPOJO.getStarSystemDataID());
-//					FactionPOJO fPojo = fDAO.findById(Nexus.DUMMY_USERID, attackPOJO.getFactionID_Winner());
-					FactionPOJO fPojo = fDAO.findById(Nexus.DUMMY_USERID, 32L);
+					FactionPOJO fPojo = fDAO.findById(Nexus.DUMMY_USERID, attackPOJO.getFactionID_Winner());
+					//FactionPOJO fPojo = fDAO.findById(Nexus.DUMMY_USERID, 36L);
 					ssdPojo.setFactionID(fPojo);
 
 					ssdDAO.update(Nexus.DUMMY_USERID, ssdPojo);
@@ -262,6 +266,7 @@ public class EndRound {
 				endRoundInfo.addObject(null);
 				endRoundInfo.setAction_successfully(Boolean.TRUE);
 			} catch (RuntimeException re) {
+				re.printStackTrace();
 				transaction.rollback();
 
 				endRoundInfo.addObject(re.getMessage());
