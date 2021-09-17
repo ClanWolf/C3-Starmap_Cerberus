@@ -83,6 +83,24 @@ public class AttackDAO extends GenericDAO {
 		return (AttackPOJO)crit.getSingleResult();
 	}
 
+	/*
+	 * Give all attacks back of a season back and a round
+	 */
+	public ArrayList<AttackPOJO> getAllAttacksOfASeasonForRound(Long season, int round){
+		CriteriaHelper crit = new CriteriaHelper(AttackPOJO.class);
+
+		crit.addCriteria("season", season );
+		crit.addCriteria("round", round);
+
+		List<Object> lRes = crit.getResultList();
+
+		Iterator<Object> iter = lRes.iterator();
+		ArrayList<AttackPOJO> lRPS = new ArrayList<>();
+
+		while (iter.hasNext()) lRPS.add((AttackPOJO) iter.next());
+
+		return lRPS;
+	}
 
 	/*
 	 * Give all open attacks back of a season back and a round

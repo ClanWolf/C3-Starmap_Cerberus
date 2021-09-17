@@ -32,6 +32,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.CacheHint;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -120,11 +121,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	private PannableCanvas canvas;
 	private boolean firstCreationDone = false;
 	private SceneGestures sceneGestures;
-
 	private BOJumpship currentlyCenteredJumpship = null;
-
 	private NodeGestures nodeGestures;
-
 	private Long currentPlayerRoleInInvasion = 0L;
 
 	@FXML
@@ -301,6 +299,48 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			Nexus.setCurrentSeasonMetaPhase(boUniverse.currentSeasonMetaPhase);
 			Nexus.setCurrentRound(boUniverse.currentRound);
 			Nexus.setCurrentDate(boUniverse.currentDate);
+
+			// update systems (owner color and active status)
+			for (BOStarSystem starSystem : boUniverse.starSystemBOs.values()) {
+				String colorString = boUniverse.factionBOs.get(starSystem.getAffiliation()).getColor();
+				Color c = Color.web(colorString);
+				starSystem.getStarSystemCircle().setStroke(c.deriveColor(1, 1, 1, 0.8));
+				starSystem.getStarSystemCircle().setFill(c.deriveColor(1, 1, 1, 0.4));
+
+				if (starSystem.isActive()) {
+					if (starSystem.isActiveInPhase(Nexus.getCurrentSeasonMetaPhase())) {
+						// C3Logger.debug("System is active in the current MetaPhase!");
+						starSystem.getStarSystemGroup().setOpacity(1.0d);
+						starSystem.getLevelLabel().setOpacity(1.0d);
+						if (starSystem.getIndustryImage() != null) {
+							starSystem.getIndustryImage().setOpacity(1.0d);
+						}
+						starSystem.getStarSystemGroup().setMouseTransparent(false);
+					} else {
+						// C3Logger.debug("System is NOT active in the current MetaPhase!");
+						starSystem.getStarSystemGroup().setOpacity(0.2d);
+						starSystem.getLevelLabel().setOpacity(0.2d);
+						if (starSystem.getIndustryImage() != null) {
+							starSystem.getIndustryImage().setOpacity(0.2d);
+						}
+						starSystem.getStarSystemGroup().setMouseTransparent(true);
+					}
+				}
+			}
+
+			// Redraw borders
+			Pane borders = null;
+			for (Node node : canvas.getChildren()) {
+				if ("borderPane".equals(node.getId())) {
+					borders = (Pane) node;
+				}
+			}
+			if (borders != null) {
+				canvas.getChildren().remove(borders);
+				borders = VoronoiDelaunay.getAreas();
+				canvas.getChildren().add(borders);
+				borders.toBack();
+			}
 		}
 	}
 
@@ -523,6 +563,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				//				canvas.getChildren().add(circle1);
 
 				Pane borders = VoronoiDelaunay.getAreas();
+				borders.setId("borderPane");
 				canvas.getChildren().add(borders);
 				borders.toBack();
 
@@ -1119,8 +1160,12 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			if (Nexus.commandHistoryIndex > 0) {
 				C3Logger.info("History back");
 				Nexus.commandHistoryIndex--;
-				String histCom = Nexus.commandHistory.get(Nexus.commandHistoryIndex);
-				ActionManager.getAction(ACTIONS.SET_TERMINAL_TEXT).execute(histCom);
+				try {
+					String histCom = Nexus.commandHistory.get(Nexus.commandHistoryIndex);
+					ActionManager.getAction(ACTIONS.SET_TERMINAL_TEXT).execute(histCom);
+				} catch(IndexOutOfBoundsException ioob) {
+					// do nothing here
+				}
 			}
 		}
 
