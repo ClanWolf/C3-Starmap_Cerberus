@@ -192,8 +192,6 @@ public class EndRound {
 				FactionPOJO fWinnerPojo = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, attackPOJO.getFactionID_Winner());
 				FactionPOJO fJumpshipPOJO = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, jsPojo.getJumpshipFactionID());
 
-				ssPojo.setFactionID(winnerId);
-
 				resolvedAttacks.append("Jumpship '" + jsPojo.getJumpshipName() + "' (" + jsPojo.getId() + ") of " + fJumpshipPOJO.getShortName() + " (").append(attackPOJO.getJumpshipID()).append(") attacked system '" + ssPojo.getName() + "' (" + ssPojo.getId() + ") ").append("--> resolved to winner: ").append(fWinnerPojo.getShortName() + " (" + attackPOJO.getFactionID_Winner() + ").").append("\r\n");
 			}
 
@@ -254,8 +252,15 @@ public class EndRound {
 				//transaction.commit();
 				//transaction.begin();
 				for (AttackPOJO attackPOJO : AttackDAO.getInstance().getAllAttacksOfASeasonForRound(seasonId, round)) {
+					Long winnerId = null;
+					for (AttackPOJO openAttackPOJO : openAttacksInRoundList) {
+						if (openAttackPOJO.getId().equals(attackPOJO.getId())) {
+							winnerId = openAttackPOJO.getFactionID_Winner();
+						}
+					}
+
 					StarSystemDataPOJO ssdPojo = ssdDAO.findById(Nexus.DUMMY_USERID, attackPOJO.getStarSystemDataID());
-					FactionPOJO fPojo = fDAO.findById(Nexus.DUMMY_USERID, attackPOJO.getFactionID_Winner());
+					FactionPOJO fPojo = fDAO.findById(Nexus.DUMMY_USERID, winnerId);
 					//FactionPOJO fPojo = fDAO.findById(Nexus.DUMMY_USERID, 36L);
 					ssdPojo.setFactionID(fPojo);
 
