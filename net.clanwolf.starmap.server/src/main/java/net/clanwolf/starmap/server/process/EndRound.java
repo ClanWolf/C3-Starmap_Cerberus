@@ -38,6 +38,8 @@ import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 
 import javax.persistence.EntityTransaction;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -230,6 +232,9 @@ public class EndRound {
 			roundPOJO.setCurrentRoundStartDate(getNextRoundDate(seasonId));
 
 			// Save everything to the database
+
+			String exceptionWhileSaving = "";
+
 			AttackDAO attackDAO = AttackDAO.getInstance();
 			JumpshipDAO jumpshipDAO = JumpshipDAO.getInstance();
 			RoundDAO roundDAO = RoundDAO.getInstance();
@@ -258,11 +263,17 @@ public class EndRound {
 							winnerId = openAttackPOJO.getFactionID_Winner();
 						}
 					}
+					if (winnerId == null) {
+						// there is an attack, but it has been resolved by fighting (not by dice) and there was already
+						// a result in the attackPOJO itself (this attack has NOT been in the list of openAttacks).
+						winnerId = attackPOJO.getFactionID_Winner();
+					}
 
 					StarSystemDataPOJO ssdPojo = ssdDAO.findById(Nexus.DUMMY_USERID, attackPOJO.getStarSystemDataID());
 					FactionPOJO fPojo = fDAO.findById(Nexus.DUMMY_USERID, winnerId);
 					//FactionPOJO fPojo = fDAO.findById(Nexus.DUMMY_USERID, 36L);
 					ssdPojo.setFactionID(fPojo);
+					C3Logger.debug("**** Storing winner for attack " + attackPOJO.getId() + " to be " + winnerId + ".");
 
 					ssdDAO.update(Nexus.DUMMY_USERID, ssdPojo);
 				}
@@ -272,6 +283,12 @@ public class EndRound {
 				endRoundInfo.setAction_successfully(Boolean.TRUE);
 			} catch (RuntimeException re) {
 				re.printStackTrace();
+
+				StringWriter sw = new StringWriter();
+				PrintWriter pw = new PrintWriter(sw);
+				re.printStackTrace(pw);
+				exceptionWhileSaving = sw.toString();
+
 				transaction.rollback();
 
 				endRoundInfo.addObject(re.getMessage());
@@ -291,6 +308,16 @@ public class EndRound {
 			subject.append("C3 Server finalized round ").append(round).append(" of season ").append(seasonId).append(". New round is ").append(newRound);
 
 			StringBuilder message = new StringBuilder();
+
+			if (!"".equals(exceptionWhileSaving)) {
+				message.append("\r\n\r\n-------------------------------------------------------------------");
+				message.append("\r\n!!! ERROR, Attention required !!!");
+				message.append("\r\n\r\nException occured while ending round:");
+				message.append(exceptionWhileSaving);
+				message.append("-------------------------------------------------------------------");
+				message.append("\r\n\r\n\r\n\r\n");
+			}
+
 			message.append("Round ").append(round).append(" finalized.\r\n\r\n");
 			message.append("The new round ").append(newRound).append(" will last until ").append(getNextRoundDate(seasonId)).append(".\r\n\r\n");
 			message.append("Resolved attacks:\r\n");

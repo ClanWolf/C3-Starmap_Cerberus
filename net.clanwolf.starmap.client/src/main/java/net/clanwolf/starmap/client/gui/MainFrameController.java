@@ -1403,8 +1403,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 		if ("*!!!*historyBack".equals(com)) {
 			if (Nexus.commandHistoryIndex > 0) {
-				C3Logger.info("History back");
 				Nexus.commandHistoryIndex--;
+				C3Logger.info("History back to index: " + Nexus.commandHistoryIndex);
 				String histCom = Nexus.commandHistory.get(Nexus.commandHistoryIndex);
 				ActionManager.getAction(ACTIONS.SET_TERMINAL_TEXT).execute(histCom);
 			}
@@ -1412,8 +1412,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 		if ("*!!!*historyForward".equals(com)) {
 			if (Nexus.commandHistoryIndex < Nexus.commandHistory.size() - 1) {
-				C3Logger.info("History forward");
 				Nexus.commandHistoryIndex++;
+				C3Logger.info("History forward to index: " + Nexus.commandHistoryIndex);
 				String histCom = Nexus.commandHistory.get(Nexus.commandHistoryIndex);
 				ActionManager.getAction(ACTIONS.SET_TERMINAL_TEXT).execute(histCom);
 			}
