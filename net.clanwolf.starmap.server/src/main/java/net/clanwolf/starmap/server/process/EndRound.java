@@ -191,7 +191,7 @@ public class EndRound {
 
 				JumpshipPOJO jsPojo = JumpshipDAO.getInstance().findById(Nexus.DUMMY_USERID, attackPOJO.getJumpshipID());
 				StarSystemPOJO ssPojo = StarSystemDAO.getInstance().findById(Nexus.DUMMY_USERID, attackPOJO.getStarSystemID());
-				FactionPOJO fWinnerPojo = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, attackPOJO.getFactionID_Winner());
+				FactionPOJO fWinnerPojo = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, winnerId);
 				FactionPOJO fJumpshipPOJO = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, jsPojo.getJumpshipFactionID());
 
 				resolvedAttacks.append("Jumpship '" + jsPojo.getJumpshipName() + "' (" + jsPojo.getId() + ") of " + fJumpshipPOJO.getShortName() + " (").append(attackPOJO.getJumpshipID()).append(") attacked system '" + ssPojo.getName() + "' (" + ssPojo.getId() + ") ").append("--> resolved to winner: ").append(fWinnerPojo.getShortName() + " (" + attackPOJO.getFactionID_Winner() + ").").append("\r\n");
@@ -223,7 +223,6 @@ public class EndRound {
 						js.setStarSystemHistory(ssh);
 
 						StarSystemPOJO ssPojo = StarSystemDAO.getInstance().findById(Nexus.DUMMY_USERID, p.getSystemId());
-
 						movedJumpships.append("Jumpship '").append(js.getJumpshipName()).append("' moved to ").append(ssPojo.getName()).append(" (" + ssPojo.getId() + ").\r\n");
 					}
 				}
@@ -232,7 +231,6 @@ public class EndRound {
 			roundPOJO.setCurrentRoundStartDate(getNextRoundDate(seasonId));
 
 			// Save everything to the database
-
 			String exceptionWhileSaving = "";
 
 			AttackDAO attackDAO = AttackDAO.getInstance();
@@ -247,6 +245,7 @@ public class EndRound {
 				transaction.begin();
 				roundDAO.update(Nexus.DUMMY_USERID, roundPOJO);
 				for (JumpshipPOJO jumpshipPOJO : jumpshipList) {
+					jumpshipDAO.refresh(Nexus.DUMMY_USERID, jumpshipPOJO);
 					jumpshipDAO.update(Nexus.DUMMY_USERID, jumpshipPOJO);
 				}
 				//transaction.commit();

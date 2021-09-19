@@ -159,10 +159,10 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 			if (!"".equals(com)) {
 				C3Logger.info("Received command: '" + com + "'");
 				Nexus.commandHistory.add(com);
-				Nexus.commandHistoryIndex = Nexus.commandHistory.size();
 				if (Nexus.commandHistory.size() > 50) {
 					Nexus.commandHistory.remove(0);
 				}
+				Nexus.commandHistoryIndex = Nexus.commandHistory.size();
 			}
 		}
 
