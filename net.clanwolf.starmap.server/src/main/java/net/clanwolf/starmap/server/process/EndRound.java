@@ -245,16 +245,16 @@ public class EndRound {
 				transaction.begin();
 				roundDAO.update(Nexus.DUMMY_USERID, roundPOJO);
 				for (JumpshipPOJO jumpshipPOJO : jumpshipList) {
-					jumpshipDAO.refresh(Nexus.DUMMY_USERID, jumpshipPOJO);
+//					jumpshipDAO.refresh(Nexus.DUMMY_USERID, jumpshipPOJO);
 					jumpshipDAO.update(Nexus.DUMMY_USERID, jumpshipPOJO);
 				}
-				//transaction.commit();
-				//transaction.begin();
+//				transaction.commit();
+//				transaction.begin();
 				for (AttackPOJO attackPOJO : openAttacksInRoundList) {
 					attackDAO.update(Nexus.DUMMY_USERID, attackPOJO);
 				}
-				//transaction.commit();
-				//transaction.begin();
+				transaction.commit();
+				transaction.begin();
 				for (AttackPOJO attackPOJO : AttackDAO.getInstance().getAllAttacksOfASeasonForRound(seasonId, round)) {
 					Long winnerId = null;
 					for (AttackPOJO openAttackPOJO : openAttacksInRoundList) {
@@ -281,6 +281,7 @@ public class EndRound {
 				endRoundInfo.addObject(null);
 				endRoundInfo.setAction_successfully(Boolean.TRUE);
 			} catch (RuntimeException re) {
+				C3Logger.error("Finalize round", re);
 				re.printStackTrace();
 
 				StringWriter sw = new StringWriter();
@@ -292,8 +293,6 @@ public class EndRound {
 
 				endRoundInfo.addObject(re.getMessage());
 				endRoundInfo.setAction_successfully(Boolean.FALSE);
-
-				C3Logger.error("Finalize round", re);
 			} finally {
 				C3Room.sendBroadcastMessage(endRoundInfo);
 			}
