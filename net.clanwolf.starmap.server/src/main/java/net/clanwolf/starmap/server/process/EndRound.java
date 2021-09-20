@@ -146,6 +146,8 @@ public class EndRound {
 	public static String finalizeRound(Long seasonId, int round) {
 		C3Logger.info("Checking on end of round.");
 		ArrayList<JumpshipPOJO> jumpshipList = JumpshipDAO.getInstance().getAllJumpships();
+		//ArrayList<JumpshipPOJO> jumpshipList = new ArrayList<>();
+
 		ArrayList<AttackPOJO> openAttacksInRoundList = AttackDAO.getInstance().getOpenAttacksOfASeasonForRound(seasonId, round);
 
 		C3Logger.debug("Current date: " + new Date(System.currentTimeMillis()));
@@ -155,7 +157,18 @@ public class EndRound {
 
 		boolean jumpshipsLeftToMove = false;
 		int jscount = 0;
+
+		/*JumpshipDAO jsDaoHelp = JumpshipDAO.getInstance();
+		for (JumpshipPOJO js : jumpshipListHELP) {
+
+			JumpshipPOJO jsHelp = jsDaoHelp.findById(Nexus.DUMMY_USERID, js.getId());
+			jsDaoHelp.refresh(Nexus.DUMMY_USERID, jsHelp);
+			jumpshipList.add(jsHelp);
+		}*/
+
+
 		for (JumpshipPOJO js : jumpshipList) {
+
 			if (js.getAttackReady()) {
 				jumpshipsLeftToMove = true;
 				jscount++;
@@ -253,8 +266,8 @@ public class EndRound {
 				for (AttackPOJO attackPOJO : openAttacksInRoundList) {
 					attackDAO.update(Nexus.DUMMY_USERID, attackPOJO);
 				}
-				transaction.commit();
-				transaction.begin();
+				//transaction.commit();
+				//transaction.begin();
 				for (AttackPOJO attackPOJO : AttackDAO.getInstance().getAllAttacksOfASeasonForRound(seasonId, round)) {
 					Long winnerId = null;
 					for (AttackPOJO openAttackPOJO : openAttacksInRoundList) {
@@ -323,13 +336,16 @@ public class EndRound {
 			message.append("Moved jumpships:\r\n");
 			message.append(movedJumpships).append("\r\n");
 
-			sent = MailManager.sendMail("c3@clanwolf.net", receivers, subject.toString(), message.toString(), false);
-			if (sent) {
-				// sent
-				C3Logger.info("Mail sent.");
-			} else {
-				// error during email sending
-				C3Logger.info("Error during mail dispatch.");
+			if(!GameServer.isDevelopmentPC) {
+				sent = MailManager.sendMail("c3@clanwolf.net", receivers, subject.toString(), message.toString(), false);
+
+				if (sent) {
+					// sent
+					C3Logger.info("Mail sent.");
+				} else {
+					// error during email sending
+					C3Logger.info("Error during mail dispatch.");
+				}
 			}
 		}
 		return resolvedAttacks.toString() + "\r\n" + movedJumpships.toString();
