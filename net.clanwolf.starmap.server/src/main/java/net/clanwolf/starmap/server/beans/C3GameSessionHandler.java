@@ -322,7 +322,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			EntityManagerHelper.commit(getC3UserID(session));
 
 			JumpshipPOJO jsHelp = daoJS.findById(C3GameSessionHandler.getC3UserID(session), js.getId());
-			daoJS.refresh(C3GameSessionHandler.getC3UserID(session), jsHelp);
+			daoJS.refresh(C3GameSessionHandler.getC3UserID(session), jsHelp); // test
 
 		} catch (RuntimeException re) {
 			C3Logger.error("Jumpship save", re);
