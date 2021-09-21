@@ -35,6 +35,7 @@ import javax.persistence.Query;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -76,6 +77,36 @@ public class EntityManagerHelper {
 	public static EntityManager getNewEntityManager() {
 //		C3Logger.info("Create free EntityManager");
 		return emf.createEntityManager();
+	}
+
+	@SuppressWarnings("unchecked")
+	public static void clearCache() {
+		C3Logger.info("Clearing hibernate cache.");
+		try {
+			for (EntityManager em : emMap.values()) {
+				em.flush();
+				em.clear();
+			}
+			C3Logger.info("Hibernate cache cleared succesfully.");
+		} catch (Exception e) {
+			e.printStackTrace();
+			C3Logger.error("Hibernate cache NOT cleared.");
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public void refresh(Object entity) {
+		C3Logger.info("Refreshing instance (" + entity.getClass().getName() + ")");
+		try {
+			for (EntityManager em : emMap.values()) {
+				em.refresh(entity);
+			}
+			C3Logger.info("Refresh successful");
+		} catch (Exception re) {
+			C3Logger.error("Refresh failed");
+			re.printStackTrace();
+			throw re;
+		}
 	}
 
 	public static EntityManager getEntityManager(Long userID) {

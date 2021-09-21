@@ -256,6 +256,7 @@ public class EndRound {
 			EntityTransaction transaction = EntityManagerHelper.getEntityManager(Nexus.DUMMY_USERID).getTransaction();
 			try {
 				transaction.begin();
+				EntityManagerHelper.clearCache();
 				roundDAO.update(Nexus.DUMMY_USERID, roundPOJO);
 				for (JumpshipPOJO jumpshipPOJO : jumpshipList) {
 //					jumpshipDAO.refresh(Nexus.DUMMY_USERID, jumpshipPOJO);

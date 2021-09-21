@@ -94,22 +94,6 @@ public abstract class GenericDAO implements IDAO {
 		}
 	}
 
-	public void refresh(Long userID, Object entity) {
-		C3Logger.info("Refreshing instance (" + entity.getClass().getName() + ")");
-		try {
-			getEntityManager(userID).refresh(entity);
-			
-			// TODO: session.refresh(
-			
-			
-			C3Logger.info("Refresh successful");
-		} catch (Exception re) {
-			C3Logger.info("Refresh failed");
-			re.printStackTrace();
-			throw re;
-		}
-	}
-
 	public Object findById(Class clazz, Long id) {
 		return findById(null, clazz, id);
 	}
