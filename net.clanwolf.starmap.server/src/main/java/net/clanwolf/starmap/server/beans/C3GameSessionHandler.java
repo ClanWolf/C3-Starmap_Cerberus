@@ -321,11 +321,9 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 			EntityManagerHelper.commit(getC3UserID(session));
 
-			// old
-			//JumpshipPOJO jsHelp = daoJS.findById(C3GameSessionHandler.getC3UserID(session), js.getId());
-			//daoJS.refresh(C3GameSessionHandler.getC3UserID(session), jsHelp); // test
+			JumpshipPOJO jsHelp = daoJS.findById(C3GameSessionHandler.getC3UserID(session), js.getId());
+			daoJS.refresh(C3GameSessionHandler.getC3UserID(session), jsHelp);
 
-			// TODO: Clear hibernate cache, refresh jumpship and routepoints
 			// https://stackoverflow.com/questions/5832415/entitymanager-refresh
 			//entityManager().flush(); // -> maybe not the best idea, better not use this
 			//entityManager.clear();

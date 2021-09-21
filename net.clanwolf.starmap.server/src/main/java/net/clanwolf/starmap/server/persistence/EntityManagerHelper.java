@@ -153,4 +153,9 @@ public class EntityManagerHelper {
 	public static Query createQuery(Long userID, String query) {
 		return getEntityManager(userID).createQuery(query);
 	}
+
+	@SuppressWarnings("unused")
+	public static void clear(Long userID) {
+		getEntityManager(userID).clear();
+	}
 }

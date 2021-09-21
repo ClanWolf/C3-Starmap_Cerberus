@@ -83,6 +83,7 @@ public class EndRound {
 			EntityTransaction transaction = EntityManagerHelper.getEntityManager(Nexus.DUMMY_USERID).getTransaction();
 			try {
 				transaction.begin();
+				//EntityManagerHelper.clear(Nexus.DUMMY_USERID);
 				roundDAO.update(Nexus.DUMMY_USERID, roundPOJO);
 				transaction.commit();
 			} catch (RuntimeException re) {
@@ -254,9 +255,10 @@ public class EndRound {
 
 			GameState endRoundInfo = new GameState(GAMESTATEMODES.FINALIZE_ROUND);
 			EntityTransaction transaction = EntityManagerHelper.getEntityManager(Nexus.DUMMY_USERID).getTransaction();
+
 			try {
 				transaction.begin();
-				EntityManagerHelper.clearCache();
+				EntityManagerHelper.clear(Nexus.DUMMY_USERID);
 				roundDAO.update(Nexus.DUMMY_USERID, roundPOJO);
 				for (JumpshipPOJO jumpshipPOJO : jumpshipList) {
 //					jumpshipDAO.refresh(Nexus.DUMMY_USERID, jumpshipPOJO);
