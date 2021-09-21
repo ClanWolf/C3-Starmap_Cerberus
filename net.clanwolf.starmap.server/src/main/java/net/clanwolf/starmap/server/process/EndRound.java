@@ -264,13 +264,9 @@ public class EndRound {
 //					jumpshipDAO.refresh(Nexus.DUMMY_USERID, jumpshipPOJO);
 					jumpshipDAO.update(Nexus.DUMMY_USERID, jumpshipPOJO);
 				}
-//				transaction.commit();
-//				transaction.begin();
 				for (AttackPOJO attackPOJO : openAttacksInRoundList) {
 					attackDAO.update(Nexus.DUMMY_USERID, attackPOJO);
 				}
-				//transaction.commit();
-				//transaction.begin();
 				for (AttackPOJO attackPOJO : AttackDAO.getInstance().getAllAttacksOfASeasonForRound(seasonId, round)) {
 					Long winnerId = null;
 					for (AttackPOJO openAttackPOJO : openAttacksInRoundList) {
@@ -286,7 +282,6 @@ public class EndRound {
 
 					StarSystemDataPOJO ssdPojo = ssdDAO.findById(Nexus.DUMMY_USERID, attackPOJO.getStarSystemDataID());
 					FactionPOJO fPojo = fDAO.findById(Nexus.DUMMY_USERID, winnerId);
-					//FactionPOJO fPojo = fDAO.findById(Nexus.DUMMY_USERID, 36L);
 					ssdPojo.setFactionID(fPojo);
 					C3Logger.debug("**** Storing winner for attack " + attackPOJO.getId() + " to be " + winnerId + ".");
 
