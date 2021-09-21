@@ -321,8 +321,16 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 			EntityManagerHelper.commit(getC3UserID(session));
 
-			JumpshipPOJO jsHelp = daoJS.findById(C3GameSessionHandler.getC3UserID(session), js.getId());
-			daoJS.refresh(C3GameSessionHandler.getC3UserID(session), jsHelp); // test
+			// old
+			//JumpshipPOJO jsHelp = daoJS.findById(C3GameSessionHandler.getC3UserID(session), js.getId());
+			//daoJS.refresh(C3GameSessionHandler.getC3UserID(session), jsHelp); // test
+
+			// TODO: Clear hibernate cache, refresh jumpship and routepoints
+			// https://stackoverflow.com/questions/5832415/entitymanager-refresh
+			//entityManager.clear();
+			
+			// https://stackoverflow.com/questions/27905148/force-hibernate-to-read-database-and-not-return-cached-entity
+			//session.refresh(entity);
 
 		} catch (RuntimeException re) {
 			C3Logger.error("Jumpship save", re);
