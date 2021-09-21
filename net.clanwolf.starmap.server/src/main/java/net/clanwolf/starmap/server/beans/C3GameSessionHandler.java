@@ -327,7 +327,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 			// TODO: Clear hibernate cache, refresh jumpship and routepoints
 			// https://stackoverflow.com/questions/5832415/entitymanager-refresh
-			//entityManager().flush();
+			//entityManager().flush(); // -> maybe not the best idea, better not use this
 			//entityManager.clear();
 			
 			// https://stackoverflow.com/questions/27905148/force-hibernate-to-read-database-and-not-return-cached-entity
