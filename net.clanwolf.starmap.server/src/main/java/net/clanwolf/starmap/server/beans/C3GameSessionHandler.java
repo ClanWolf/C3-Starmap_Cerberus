@@ -330,7 +330,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			//entityManager.clear();
 			
 			// https://stackoverflow.com/questions/27905148/force-hibernate-to-read-database-and-not-return-cached-entity
-			//session.refresh(entity);
+			//session.refresh(entity); // -> hibernate session!
 
 		} catch (RuntimeException re) {
 			C3Logger.error("Jumpship save", re);
