@@ -1,0 +1,1 @@
+-- Reset all tables to reset a season to starting conditions.
