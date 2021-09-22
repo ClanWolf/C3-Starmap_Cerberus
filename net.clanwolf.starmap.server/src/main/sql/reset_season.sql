@@ -1,1 +1,14 @@
 -- Reset all tables to reset a season to starting conditions.
+
+-- Do the following steps:
+-- * Delete all jumppoints
+-- * Move all ships to their starting systems (= homeworlds for now)
+-- * Set starsystem_history for all ships to the start system id
+-- * Set level for all ships to 1
+-- * Delete all attacks
+-- * Delete all attack_characters
+-- * Delete all attack_vars
+-- * Delete all events (?)
+-- * Reset starting date to new value (in round / Season)
+-- * Reset round value to 1 in season entry
+-- * Set factionid to factionid_start for all entries in starsystemdata
