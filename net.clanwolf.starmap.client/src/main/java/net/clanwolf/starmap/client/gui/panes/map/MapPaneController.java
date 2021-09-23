@@ -270,7 +270,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				//js.routeLines.getChildren().removeAll();
 
 				// TODO: Move the jumpship-IMAGE (!) back to the system where the route starts
-				Long currentSystemID = route.get(0).
+				Long currentSystemID = route.get(0).getSystemId();
 				ImageView jsi = js.getJumpshipImageView();
 				jsi.setTranslateX(boUniverse.starSystemBOs.get(currentSystemID).getScreenX() - 35);
 				jsi.setTranslateY(boUniverse.starSystemBOs.get(currentSystemID).getScreenY() - 8);
