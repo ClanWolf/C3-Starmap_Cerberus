@@ -266,9 +266,18 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					boAttack.storeAttack();
 				}
 
-				// TODO: Remove the predicted routes lines and circles from the map and move the jumpship-IMAGE (!) back to the system where the route starts
-				// TODO: Add another action ACTIONS.SHOW_CONFIRMATION_JUMP with another icon (and sound?) to confirm jump. Shorter!
+				// TODO: Remove the predicted routes lines and circles from the map
+				
 
+				// TODO: Move the jumpship-IMAGE (!) back to the system where the route starts
+				ImageView jsi = js.getJumpshipImageView();
+				jsi.setTranslateX(boUniverse.starSystemBOs.get(currentSystemID).getScreenX() - 35);
+				jsi.setTranslateY(boUniverse.starSystemBOs.get(currentSystemID).getScreenY() - 8);
+				jsi.setMouseTransparent(true);
+				jsi.toFront();
+				jsi.setVisible(true);
+
+				// TODO: Add another action ACTIONS.SHOW_CONFIRMATION_JUMP with another icon (and sound?) to confirm jump. Shorter!
 				ActionManager.getAction(ACTIONS.SHOW_MEDAL).execute(MEDALS.First_Blood);
 			} else {
 				C3Logger.info(js.getJumpshipName() + " is not attack ready, nothing happens.");
