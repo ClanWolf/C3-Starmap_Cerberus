@@ -267,7 +267,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				}
 
 				// TODO: Remove the predicted routes lines and circles from the map
-				//js.routeLines.getChildren().removeAll();
+				js.routeLines.getChildren().clear();
 
 				// TODO: Move the jumpship-IMAGE (!) back to the system where the route starts
 				Long currentSystemID = route.get(0).getSystemId();
