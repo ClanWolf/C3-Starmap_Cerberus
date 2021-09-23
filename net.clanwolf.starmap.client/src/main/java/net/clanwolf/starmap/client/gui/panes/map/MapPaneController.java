@@ -481,17 +481,21 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				if (currentSystemID != null && targetSystemId != null) {
 					if (myOwnShip) {
 						if (js.isAttackReady()) {
-//							jumpshipImage = set Image!new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_left_blue_1.png"))));
+							Image left_blue = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_left_blue_1.png")));
+							jumpshipImage.setImage(left_blue);
 //							jumpshipImage.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
 //							jumpshipImage.addEventFilter(MouseEvent.DRAG_DETECTED, nodeGestures.getOnMouseDragDetectedEventHandler());
 						} else {
-//							jumpshipImage = set Image!new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_left_neutral.png"))));
+							Image left_neutral = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_left_neutral.png")));
+							jumpshipImage.setImage(left_neutral);
 						}
 					} else {
 						if (js.isAttackReady()) {
-//							jumpshipImage = set Image!new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_right_red.png"))));
+							Image right_red = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_right_red.png")));
+							jumpshipImage.setImage(right_red);
 						} else {
-//							jumpshipImage = set Image!new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_right_red.png"))));
+							Image right_red = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_right_red.png")));
+							jumpshipImage.setImage(right_red);
 						}
 					}
 
