@@ -266,7 +266,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					boAttack.storeAttack();
 				}
 				
-				// Remove the predicted routes lines from the map and move the jumpship-IMAGE back to the system where the route starts
+				// TODO: Remove the predicted routes lines and circles from the map and move the jumpship-IMAGE (!) back to the system where the route starts
 				
 				ActionManager.getAction(ACTIONS.SHOW_MEDAL).execute(MEDALS.First_Blood);
 			} else {
