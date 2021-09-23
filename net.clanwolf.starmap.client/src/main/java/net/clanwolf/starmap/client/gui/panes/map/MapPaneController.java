@@ -267,16 +267,27 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				}
 
 				// TODO: Remove the predicted routes lines and circles from the map
+				FadeTransition fadeOut = new FadeTransition(Duration.millis(2000), js.routeLines);
+        			fadeOut.setFromValue(1.0);
+        			fadeOut.setToValue(0.0);
+				fadeOut.play();
 				js.routeLines.getChildren().clear();
 
 				// TODO: Move the jumpship-IMAGE (!) back to the system where the route starts
 				Long currentSystemID = route.get(0).getSystemId();
 				ImageView jsi = js.getJumpshipImageView();
-				jsi.setTranslateX(boUniverse.starSystemBOs.get(currentSystemID).getScreenX() - 35);
-				jsi.setTranslateY(boUniverse.starSystemBOs.get(currentSystemID).getScreenY() - 8);
+				//jsi.setTranslateX(boUniverse.starSystemBOs.get(currentSystemID).getScreenX() - 35);
+				//jsi.setTranslateY(boUniverse.starSystemBOs.get(currentSystemID).getScreenY() - 8);
 				jsi.setMouseTransparent(true);
 				jsi.toFront();
 				jsi.setVisible(true);
+
+			        TranslateTransition transition = new TranslateTransition(Duration.millis(500), jsi);
+				transition.setFromX(jsi.getTranslateX());
+        			transition.setFromY(jsi.getTranslateY());
+        			transition.setToX(boUniverse.starSystemBOs.get(currentSystemID).getScreenX() - 35);
+        			transition.setToY(boUniverse.starSystemBOs.get(currentSystemID).getScreenY() - 8);
+        			transition.playFromStart();
 
 				// TODO: Add another action ACTIONS.SHOW_CONFIRMATION_JUMP with another icon (and sound?) to confirm jump. Shorter!
 				ActionManager.getAction(ACTIONS.SHOW_MEDAL).execute(MEDALS.First_Blood);
