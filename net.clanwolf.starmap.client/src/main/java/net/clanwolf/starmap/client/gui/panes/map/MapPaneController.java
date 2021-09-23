@@ -265,6 +265,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					Nexus.getBoUniverse().attackBOs.add(boAttack);
 					boAttack.storeAttack();
 				}
+				
+				// Remove the predicted routes lines from the map and move the jumpship-IMAGE back to the system where the route starts
+				
 				ActionManager.getAction(ACTIONS.SHOW_MEDAL).execute(MEDALS.First_Blood);
 			} else {
 				C3Logger.info(js.getJumpshipName() + " is not attack ready, nothing happens.");
