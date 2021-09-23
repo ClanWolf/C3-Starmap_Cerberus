@@ -53,6 +53,11 @@ public class BOJumpship implements Comparable<BOJumpship> {
 	private Long currentSystemID;
 
 	@SuppressWarnings("unused")
+	public void setJumpshipDTO(JumpshipDTO jumpshipDTO) {
+		this.jumpshipDTO = jumpshipDTO;
+	}
+
+	@SuppressWarnings("unused")
 	public Line getPredictedRouteLine() {
 		if (predictedRouteLine == null) {
 			predictedRouteLine = new Line();
@@ -208,6 +213,11 @@ public class BOJumpship implements Comparable<BOJumpship> {
 	@SuppressWarnings("unused")
 	public BOStarSystem getCurrentSystem(long id) {
 		return Nexus.getBoUniverse().starSystemBOs.get(id);
+	}
+
+	@SuppressWarnings("unused")
+	public void setCurrentSystemID(Long id) {
+		currentSystemID = id;
 	}
 
 	@SuppressWarnings("unused")

@@ -310,6 +310,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			newRoute.addAll(js.getRoutepointList());
 
 			js.getRoutepointList().clear();
+			js.setStarSystemHistory(newRoute.get(0).getSystemId() + "");
 			daoJS.update(C3GameSessionHandler.getC3UserID(session), js);
 
 			daoRP.deleteByJumpshipId(getC3UserID(session));

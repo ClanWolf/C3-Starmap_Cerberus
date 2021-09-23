@@ -97,6 +97,31 @@ public class BOUniverse {
 		return universeDTO.attackStorys.get(storyID);
 	}
 
+	public void setUniverseDTO(UniverseDTO uniDTO) {
+		// Insert refreshed universe
+		this.universeDTO = uniDTO;
+		this.currentSeason = this.universeDTO.currentSeason;
+		this.currentSeasonMetaPhase = this.universeDTO.currentSeasonMetaPhase;
+		this.currentRound = this.universeDTO.currentRound;
+		this.currentDate = this.universeDTO.currentDate;
+
+		for (StarSystemDataDTO starSystemDataDTO : universeDTO.starSystems.values()) {
+			BOStarSystem ss = starSystemBOs.get(starSystemDataDTO.getStarSystemID().getId());
+			ss.setStarSystemDataDTO(starSystemDataDTO);
+		}
+
+		attackBOs.clear();
+		for (AttackDTO att : universeDTO.attacks) {
+			BOAttack boAttack = new BOAttack(att);
+			attackBOs.add(boAttack);
+		}
+
+		for (JumpshipDTO jumpshipDTO : universeDTO.jumpships.values()) {
+			BOJumpship boJumpship = jumpshipBOs.get(jumpshipDTO.getJumpshipName());
+			boJumpship.setJumpshipDTO(jumpshipDTO);
+		}
+	}
+
 	public BOUniverse(UniverseDTO universeDTO) {
 		this.universeDTO = universeDTO;
 

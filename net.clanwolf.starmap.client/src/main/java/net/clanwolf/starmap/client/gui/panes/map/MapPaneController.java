@@ -119,6 +119,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	private boolean universeMapGenerationStarted = false;
 	private BOUniverse boUniverse = null;
 	private PannableCanvas canvas;
+	private Pane borders;
+	private Pane attacksPane;
 	private boolean firstCreationDone = false;
 	private SceneGestures sceneGestures;
 	private BOJumpship currentlyCenteredJumpship = null;
@@ -264,33 +266,123 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					BOAttack boAttack = new BOAttack(attack);
 					Nexus.getBoUniverse().attackBOs.add(boAttack);
 					boAttack.storeAttack();
+
+					BOStarSystem attackedSystem;
+					BOStarSystem attackerStartedFromSystem;
+					attackedSystem = boUniverse.starSystemBOs.get(boAttack.getStarSystemId());
+					attackedSystem.setCurrentlyUnderAttack(true);
+					attackerStartedFromSystem = boUniverse.starSystemBOs.get(boAttack.getAttackedFromStarSystem());
+
+					if (attackedSystem != null && attackerStartedFromSystem != null) {
+						Platform.runLater(() -> {
+							if (Config.MAP_FLASH_ATTACKED_SYSTEMS) {
+								PointD[] points = attackedSystem.getVoronoiRegion();
+								if (points != null) {
+									Circle circle = new Circle(attackedSystem.getScreenX(), attackedSystem.getScreenY(), Config.MAP_BACKGROUND_AREA_RADIUS);
+									circle.setVisible(false);
+									Shape systemBackground = Shape.intersect(new Polygon(PointD.toDoubles(points)), circle);
+									String colorString = boUniverse.factionBOs.get(attackerStartedFromSystem.getAffiliation()).getColor();
+									Color c = Color.web(colorString);
+									systemBackground.setFill(c);
+									FadeTransition fadeTransition = new FadeTransition(Duration.seconds(1.0), (systemBackground));
+									fadeTransition.setFromValue(0.5);
+									fadeTransition.setToValue(0.0);
+									fadeTransition.setAutoReverse(true);
+									fadeTransition.setCycleCount(Animation.INDEFINITE);
+									fadeTransition.play();
+									canvas.getChildren().add(systemBackground);
+									systemBackground.setVisible(true);
+									systemBackground.toBack();
+								}
+							}
+
+							double attackedSysX = attackedSystem.getScreenX();
+							double attackedSysY = attackedSystem.getScreenY();
+							double attackedFromSysX = attackerStartedFromSystem.getScreenX();
+							double attackedFromSysY = attackerStartedFromSystem.getScreenY();
+
+							Line line = new Line(attackedSysX, attackedSysY, attackedFromSysX, attackedFromSysY);
+							line.getStrokeDashArray().setAll(50d, 20d, 5d, 20d);
+							line.setStrokeWidth(3);
+							line.setStroke(Color.RED);
+							line.setStrokeLineCap(StrokeLineCap.ROUND);
+
+							final double maxOffset = line.getStrokeDashArray().stream().reduce(0d, Double::sum);
+
+							Timeline timeline = new Timeline(new KeyFrame(Duration.ZERO, new KeyValue(line.strokeDashOffsetProperty(), 0, Interpolator.LINEAR)), new KeyFrame(Duration.seconds(1), new KeyValue(line.strokeDashOffsetProperty(), maxOffset, Interpolator.LINEAR)));
+							timeline.setCycleCount(Timeline.INDEFINITE);
+							timeline.play();
+							attacksPane.getChildren().add(line);
+						});
+					}
 				}
 
-				// TODO: Remove the predicted routes lines and circles from the map
-				FadeTransition fadeOut = new FadeTransition(Duration.millis(2000), js.routeLines);
-        			fadeOut.setFromValue(1.0);
-        			fadeOut.setToValue(0.0);
-				fadeOut.play();
-				js.routeLines.getChildren().clear();
+				Platform.runLater(() -> {
+					ArrayList<Line> removeLines = new ArrayList<>();
+					for (Node n : canvas.getChildren()) {
+						if (n instanceof Line) {
+							if ("existingRouteLine".equals(n.getId())) {
+								n.setVisible(false);
+								removeLines.add((Line)n);
+							}
+						}
+					}
+					canvas.getChildren().removeAll(removeLines);
 
-				// TODO: Move the jumpship-IMAGE (!) back to the system where the route starts
-				Long currentSystemID = route.get(0).getSystemId();
-				ImageView jsi = js.getJumpshipImageView();
-				//jsi.setTranslateX(boUniverse.starSystemBOs.get(currentSystemID).getScreenX() - 35);
-				//jsi.setTranslateY(boUniverse.starSystemBOs.get(currentSystemID).getScreenY() - 8);
-				jsi.setMouseTransparent(true);
-				jsi.toFront();
-				jsi.setVisible(true);
+					// draw existing route points for my own ships
+					ArrayList<Line> lines = new ArrayList<>();
+					if (route != null) {
+						for (int y = 0; y < route.size() - 1; y++) {
+							RoutePointDTO rp1 = route.get(y);
+							RoutePointDTO rp2 = route.get(y + 1);
+							BOStarSystem s1 = Nexus.getBoUniverse().starSystemBOs.get(rp1.getSystemId());
+							BOStarSystem s2 = Nexus.getBoUniverse().starSystemBOs.get(rp2.getSystemId());
 
-			        TranslateTransition transition = new TranslateTransition(Duration.millis(500), jsi);
-				transition.setFromX(jsi.getTranslateX());
-        			transition.setFromY(jsi.getTranslateY());
-        			transition.setToX(boUniverse.starSystemBOs.get(currentSystemID).getScreenX() - 35);
-        			transition.setToY(boUniverse.starSystemBOs.get(currentSystemID).getScreenY() - 8);
-        			transition.playFromStart();
+							// Dotted line to every stop on the route
+							Line line = new Line(s1.getScreenX(), s1.getScreenY(), s2.getScreenX(), s2.getScreenY());
+							line.setStrokeWidth(2.5);
+							line.getStrokeDashArray().setAll(2d, 10d, 8d, 10d);
+							line.setOpacity(0.8);
+							if (y == 0) {
+								line.setStroke(Color.LIGHTYELLOW);
+							} else {
+								line.setStroke(Color.LIGHTYELLOW);
+							}
+							line.setStrokeLineCap(StrokeLineCap.ROUND);
+							line.setId("existingRouteLine");
+							lines.add(line);
+						}
+					}
+					canvas.getChildren().addAll(lines);
+					for (Line l : lines) {
+						l.toBack();
+					}
 
-				// TODO: Add another action ACTIONS.SHOW_CONFIRMATION_JUMP with another icon (and sound?) to confirm jump. Shorter!
-				ActionManager.getAction(ACTIONS.SHOW_MEDAL).execute(MEDALS.First_Blood);
+					FadeTransition fadeOut = new FadeTransition(Duration.millis(6000), js.routeLines);
+					fadeOut.setFromValue(1.0);
+					fadeOut.setToValue(0.0);
+					fadeOut.setOnFinished(event -> {
+						js.routeLines.getChildren().clear();
+					});
+					fadeOut.play();
+
+					Long currentSystemID = route.get(0).getSystemId();
+					ImageView jsi = js.getJumpshipImageView();
+					jsi.setMouseTransparent(true);
+					jsi.toFront();
+					jsi.setVisible(true);
+
+					TranslateTransition transition = new TranslateTransition(Duration.millis(500), jsi);
+					transition.setFromX(jsi.getTranslateX());
+					transition.setFromY(jsi.getTranslateY());
+					transition.setToX(boUniverse.starSystemBOs.get(currentSystemID).getScreenX() - 35);
+					transition.setToY(boUniverse.starSystemBOs.get(currentSystemID).getScreenY() - 8);
+					transition.setOnFinished(event -> {
+						// TODO: Add another action ACTIONS.SHOW_CONFIRMATION_JUMP with another icon (and sound?) to confirm jump. Shorter!
+						ActionManager.getAction(ACTIONS.SHOW_MEDAL).execute(MEDALS.First_Blood);
+					});
+					transition.playFromStart();
+				});
 			} else {
 				C3Logger.info(js.getJumpshipName() + " is not attack ready, nothing happens.");
 			}
@@ -318,8 +410,13 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	}
 
 	private void refreshUniverseMap() {
+		// Refresh universe map (GUI)
 		ActionManager.getAction(ACTIONS.NOISE).execute(1100);
-		if (boUniverse != null) {
+		if (boUniverse != null) { // this is the same universe, but the objects have been updated to the returned, new universe
+
+			// TODO: update system colors
+			// TODO: Redraw borders
+
 			Nexus.setCurrentSeason(boUniverse.currentSeason);
 			Nexus.setCurrentSeasonMetaPhase(boUniverse.currentSeasonMetaPhase);
 			Nexus.setCurrentRound(boUniverse.currentRound);
@@ -327,6 +424,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 			// update systems (owner color and active status)
 			for (BOStarSystem starSystem : boUniverse.starSystemBOs.values()) {
+
 				String colorString = boUniverse.factionBOs.get(starSystem.getAffiliation()).getColor();
 				Color c = Color.web(colorString);
 				starSystem.getStarSystemCircle().setStroke(c.deriveColor(1, 1, 1, 0.8));
@@ -354,17 +452,62 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			}
 
 			// Redraw borders
-			Pane borders = null;
-			for (Node node : canvas.getChildren()) {
-				if ("borderPane".equals(node.getId())) {
-					borders = (Pane) node;
+//			for (Node node : canvas.getChildren()) {
+//				if ("borderPane".equals(node.getId())) {
+//					borders = (Pane) node;
+//				}
+//			}
+//			if (borders != null) {
+//				canvas.getChildren().remove(borders);
+//				borders = VoronoiDelaunay.getAreas();
+//				canvas.getChildren().add(borders);
+//				borders.toBack();
+//			}
+
+//			borders = VoronoiDelaunay.getAreas();
+//			borders.setId("borderPane");
+//			canvas.getChildren().add(borders);
+//			borders.toBack();
+
+			// Move the ships
+			for (BOJumpship js : boUniverse.jumpshipBOs.values()) {
+				Long currentSystemID = js.getCurrentSystemID();
+				boolean myOwnShip = js.getJumpshipFaction() == Nexus.getCurrentUser().getCurrentCharacter().getFactionId();
+				ImageView jumpshipImage = js.getJumpshipImageView();
+
+				String lastSystemIdFromHistory = new ArrayDeque<>(Arrays.asList(js.getJumpshipDTO().getStarSystemHistory().split(";"))).getLast();
+				Long targetSystemId = Long.parseLong(lastSystemIdFromHistory);
+
+				if (currentSystemID != null && targetSystemId != null) {
+					if (myOwnShip) {
+						if (js.isAttackReady()) {
+//							jumpshipImage = set Image!new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_left_blue_1.png"))));
+//							jumpshipImage.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
+//							jumpshipImage.addEventFilter(MouseEvent.DRAG_DETECTED, nodeGestures.getOnMouseDragDetectedEventHandler());
+						} else {
+//							jumpshipImage = set Image!new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_left_neutral.png"))));
+						}
+					} else {
+						if (js.isAttackReady()) {
+//							jumpshipImage = set Image!new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_right_red.png"))));
+						} else {
+//							jumpshipImage = set Image!new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_right_red.png"))));
+						}
+					}
+
+					// if no attack open
+					if (!currentSystemID.equals(targetSystemId)) {
+//						jumpshipImage.setTranslateX(boUniverse.starSystemBOs.get(currentSystemID).getScreenX() - 35);
+//						jumpshipImage.setTranslateY(boUniverse.starSystemBOs.get(currentSystemID).getScreenY() - 8);
+					}
+					jumpshipImage.setMouseTransparent(false);
+					jumpshipImage.toFront();
+
+					js.setCurrentSystemID(targetSystemId);
+					js.setRoute(boUniverse.routesList.get(js.getJumpshipId()));
+				} else {
+					C3Logger.info("Jumpship '" + js.getJumpshipName() + "' has no current system. Seems to be a mistake!");
 				}
-			}
-			if (borders != null) {
-				canvas.getChildren().remove(borders);
-				borders = VoronoiDelaunay.getAreas();
-				canvas.getChildren().add(borders);
-				borders.toBack();
 			}
 		}
 	}
@@ -587,13 +730,13 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				//				circle1.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
 				//				canvas.getChildren().add(circle1);
 
-				Pane borders = VoronoiDelaunay.getAreas();
+				borders = VoronoiDelaunay.getAreas();
 				borders.setId("borderPane");
 				canvas.getChildren().add(borders);
 				borders.toBack();
 
 				// Attacks pane
-				Pane attacksPane = new Pane();
+				attacksPane = new Pane();
 				canvas.setAttacksPane(attacksPane);
 
 				for (BOAttack attack : boUniverse.attackBOs) {
@@ -704,6 +847,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 										line.setStroke(Color.LIGHTYELLOW);
 									}
 									line.setStrokeLineCap(StrokeLineCap.ROUND);
+									line.setId("existingRouteLine");
 									lines.add(line);
 								}
 							}

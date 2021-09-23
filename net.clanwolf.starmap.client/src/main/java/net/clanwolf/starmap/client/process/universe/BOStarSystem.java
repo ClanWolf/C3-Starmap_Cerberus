@@ -44,7 +44,7 @@ import java.util.Objects;
 
 public class BOStarSystem {
 
-	private final StarSystemDataDTO hh_starSystemDataDTO;
+	private StarSystemDataDTO hh_starSystemDataDTO;
 	private Circle starSystemCircle;
 	private Label starSystemLabel;
 	private Pane levelLabel;
@@ -55,6 +55,11 @@ public class BOStarSystem {
 	private ImageView marker = null;
 	private ImageView industryMarker = null;
 	private boolean isCurrentlyUnderAttack = false;
+
+	@SuppressWarnings("unused")
+	public void setStarSystemDataDTO(StarSystemDataDTO hh_starSystemDataDTO) {
+		this.hh_starSystemDataDTO = hh_starSystemDataDTO;
+	}
 
 	@SuppressWarnings("unused")
 	public void setLevelLabel(Pane level) {

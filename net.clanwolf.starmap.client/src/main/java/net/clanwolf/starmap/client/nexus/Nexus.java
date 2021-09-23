@@ -232,6 +232,11 @@ public class Nexus {
 	}
 
 	@SuppressWarnings("unused")
+	public static void injectNewUniverseDTO(UniverseDTO uniDTO) {
+		boUniverse.setUniverseDTO(uniDTO);
+	}
+
+	@SuppressWarnings("unused")
 	public static void setUser(UserDTO user) {
 		currentUser = user;
 	}

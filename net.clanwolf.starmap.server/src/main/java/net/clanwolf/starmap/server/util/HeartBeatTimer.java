@@ -113,7 +113,7 @@ public class HeartBeatTimer extends TimerTask {
 			}
 
 			if (informClients) {
-				// TODO: Broadcast new version of the universe to the clients
+				// Broadcast new version of the universe to the clients
 				C3Logger.print("Send updated universe to all clients.");
 				GameState response = new GameState(GAMESTATEMODES.GET_UNIVERSE_DATA);
 				response.addObject(Compressor.compress(WebDataInterface.getUniverse()));

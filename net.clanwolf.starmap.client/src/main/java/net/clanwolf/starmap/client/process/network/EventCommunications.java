@@ -233,22 +233,21 @@ public class EventCommunications {
 					Nexus.getCurrentUser().setCurrentCharacter(rpo);
 
 					ActionManager.getAction(ACTIONS.ROLEPLAY_NEXT_STEP_CHANGE_PANE).execute(state.getObject());
-
 					break;
 
 				case GET_UNIVERSE_DATA:
 					C3Logger.info("Re-created universe received from server!");
 					UniverseDTO universeDTO = (UniverseDTO) Compressor.deCompress((byte[])state.getObject());
-//					Nexus.setUniverseDTO(universeDTO);
-					Nexus.setBOUniverse(new BOUniverse(universeDTO));
-
+					Nexus.injectNewUniverseDTO(universeDTO);
 					ActionManager.getAction(ACTIONS.NEW_UNIVERSE_RECEIVED).execute();
-
 					break;
+
 				case USER_CHECK_DOUBLE_LOGIN:
 					break;
+
 				case USER_REQUEST_LOGGED_IN_DATA:
 					break;
+
 //				case USER_SAVE:
 //					break;
 				case BROADCAST_SEND_NEW_PLAYERLIST:
