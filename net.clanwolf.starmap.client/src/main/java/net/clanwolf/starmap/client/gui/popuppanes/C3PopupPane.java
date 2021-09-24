@@ -24,15 +24,13 @@
  * Copyright (c) 2001-2021, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.client.gui.medalpanes;
+package net.clanwolf.starmap.client.gui.popuppanes;
 
 import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.CacheHint;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -41,17 +39,13 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.util.Duration;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionManager;
-import net.clanwolf.starmap.client.enums.C3MESSAGERESULTS;
-import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
-import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.Tools;
 
-public class C3MedalPane extends Pane {
+public class C3PopupPane extends Pane {
 
 	private Image medal = null;
 	private String desc = null;
@@ -59,7 +53,7 @@ public class C3MedalPane extends Pane {
 	private Rectangle rectBorder;
 	private ImageView view;
 
-	public C3MedalPane(Image image, String desc) {
+	public C3PopupPane(Image image, String desc) {
 		this.medal = image;
 		this.desc = desc;
 
@@ -146,7 +140,7 @@ public class C3MedalPane extends Pane {
 		KeyValue key2 = new KeyValue(rect.translateYProperty(), -35);
 		KeyValue key3 = new KeyValue(rect.scaleXProperty(), 6);
 		KeyValue key4 = new KeyValue(rect.scaleYProperty(), 4);
-		final C3MedalPane mp = this;
+		final C3PopupPane mp = this;
 		KeyFrame frame1 = new KeyFrame(Duration.seconds(.15), key1, key2, key3, key4);
 		timeline.getKeyFrames().addAll(frame1);
 		timeline.setOnFinished(new EventHandler<ActionEvent>() {

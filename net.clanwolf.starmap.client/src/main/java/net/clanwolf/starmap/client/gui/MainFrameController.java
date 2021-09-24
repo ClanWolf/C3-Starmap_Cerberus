@@ -26,8 +26,6 @@
  */
 package net.clanwolf.starmap.client.gui;
 
-import io.nadron.client.app.Game;
-import io.nadron.client.event.NetworkEvent;
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -53,7 +51,7 @@ import net.clanwolf.starmap.client.action.*;
 import net.clanwolf.starmap.client.enums.C3MESSAGERESULTS;
 import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
 import net.clanwolf.starmap.client.enums.PRIVILEGES;
-import net.clanwolf.starmap.client.gui.medalpanes.C3MedalPane;
+import net.clanwolf.starmap.client.gui.popuppanes.C3MedalPane;
 import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
 import net.clanwolf.starmap.client.gui.messagepanes.C3MessagePane;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
@@ -66,9 +64,7 @@ import net.clanwolf.starmap.client.gui.panes.rp.RolePlayBasicPane;
 import net.clanwolf.starmap.client.gui.panes.rp.StoryEditorPane;
 import net.clanwolf.starmap.client.gui.panes.settings.SettingsPane;
 import net.clanwolf.starmap.client.gui.panes.userinfo.UserInfoPane;
-import net.clanwolf.starmap.client.process.universe.BOAttack;
-import net.clanwolf.starmap.client.process.universe.BOJumpship;
-import net.clanwolf.starmap.client.process.universe.BOStarSystem;
+import net.clanwolf.starmap.client.gui.popuppanes.C3PopupPane;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.client.net.Server;
@@ -77,11 +73,10 @@ import net.clanwolf.starmap.client.security.Security;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.*;
 import net.clanwolf.starmap.transfer.GameState;
-import net.clanwolf.starmap.transfer.dtos.AttackCharacterDTO;
-import net.clanwolf.starmap.transfer.dtos.AttackDTO;
 import net.clanwolf.starmap.transfer.dtos.UserDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.enums.MEDALS;
+import net.clanwolf.starmap.transfer.enums.POPUPS;
 
 import java.io.InputStream;
 import java.net.URL;
@@ -127,6 +122,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private ExecutorService exec = null;
 	private C3MessagePane messagePane = null;
 	private C3MedalPane medalPane = null;
+	private C3PopupPane popupPane = null;
 	private int menuIndicatorPos = 0;
 	private boolean adminPaneOpen = false;
 
@@ -1033,6 +1029,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		ActionManager.addActionCallbackListener(ACTIONS.START_ROLEPLAY, this);
 		ActionManager.addActionCallbackListener(ACTIONS.UPDATE_GAME_INFO, this);
 		ActionManager.addActionCallbackListener(ACTIONS.SHOW_MEDAL, this);
+		ActionManager.addActionCallbackListener(ACTIONS.SHOW_POPUP, this);
 		ActionManager.addActionCallbackListener(ACTIONS.SET_TERMINAL_TEXT, this);
 //		ActionManager.addActionCallbackListener(ACTIONS.NEW_UNIVERSE_RECEIVED, this);
 		ActionManager.addActionCallbackListener(ACTIONS.HIDE_IRC_INDICATOR, this);
@@ -1797,6 +1794,16 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				}
 				break;
 
+			case SHOW_POPUP:
+				if ((o != null) && (o.getObject() instanceof POPUPS)) {
+					Integer id = ((POPUPS)o.getObject()).getId();
+					String imageName = ((POPUPS)o.getObject()).toString();
+					String desc = Internationalization.getString("POPUPS_" + imageName + "_desc");
+					Image pop = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/gui/popups/" + imageName + ".png")));
+					showPopup(pop, "");
+				}
+				break;
+
 			case SET_TERMINAL_TEXT:
 				String commandFromHistory = o.getText();
 				Platform.runLater(() -> {
@@ -1910,6 +1917,17 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			Tools.playGUICreationSound();
 			mouseStopper.getChildren().add(medalPane);
 			medalPane.fadeIn();
+		});
+	}
+
+	private void showPopup(Image image, String desc) {
+		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute();
+
+		popupPane = new C3PopupPane(image, desc);
+		Platform.runLater(() -> {
+			Tools.playGUICreationSound();
+			mouseStopper.getChildren().add(popupPane);
+			popupPane.fadeIn();
 		});
 	}
 

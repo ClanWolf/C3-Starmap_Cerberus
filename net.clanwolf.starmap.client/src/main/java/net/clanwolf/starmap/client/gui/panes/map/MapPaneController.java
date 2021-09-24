@@ -67,6 +67,7 @@ import net.clanwolf.starmap.client.util.Tools;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.transfer.dtos.*;
 import net.clanwolf.starmap.transfer.enums.MEDALS;
+import net.clanwolf.starmap.transfer.enums.POPUPS;
 import org.kynosarges.tektosyne.geometry.PointD;
 
 import java.net.URL;
@@ -378,8 +379,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					transition.setToX(boUniverse.starSystemBOs.get(currentSystemID).getScreenX() - 35);
 					transition.setToY(boUniverse.starSystemBOs.get(currentSystemID).getScreenY() - 8);
 					transition.setOnFinished(event -> {
-						// TODO: Add another action ACTIONS.SHOW_CONFIRMATION_JUMP with another icon (and sound?) to confirm jump. Shorter!
-						ActionManager.getAction(ACTIONS.SHOW_MEDAL).execute(MEDALS.First_Blood);
+						ActionManager.getAction(ACTIONS.SHOW_POPUP).execute(POPUPS.Orders_Confirmed);
 					});
 					transition.playFromStart();
 				});
@@ -475,8 +475,12 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				boolean myOwnShip = js.getJumpshipFaction() == Nexus.getCurrentUser().getCurrentCharacter().getFactionId();
 				ImageView jumpshipImage = js.getJumpshipImageView();
 
-				String lastSystemIdFromHistory = new ArrayDeque<>(Arrays.asList(js.getJumpshipDTO().getStarSystemHistory().split(";"))).getLast();
-				Long targetSystemId = Long.parseLong(lastSystemIdFromHistory);
+				ArrayDeque<String> history = new ArrayDeque<>(Arrays.asList(js.getJumpshipDTO().getStarSystemHistory().split(";")));
+				String targetSystemIdString = history.getLast();
+				Long targetSystemId = Long.parseLong(targetSystemIdString);
+				history.removeLast();
+				String fallbackToSystemIdString = history.getLast();
+				Long fallbackToSystemId = Long.parseLong(fallbackToSystemIdString);
 
 				if (currentSystemID != null && targetSystemId != null) {
 					if (myOwnShip) {
@@ -499,10 +503,23 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 						}
 					}
 
-					// if no attack open
+					// TODO: Check if the attack succeeded or if the unit lost (then move backwards and delete route)
+					// TODO: Check what faction owns the target system
 					if (!currentSystemID.equals(targetSystemId)) {
-//						jumpshipImage.setTranslateX(boUniverse.starSystemBOs.get(currentSystemID).getScreenX() - 35);
-//						jumpshipImage.setTranslateY(boUniverse.starSystemBOs.get(currentSystemID).getScreenY() - 8);
+						ImageView jsi = js.getJumpshipImageView();
+						jsi.setMouseTransparent(true);
+						jsi.toFront();
+						jsi.setVisible(true);
+
+						TranslateTransition transition = new TranslateTransition(Duration.millis(500), jsi);
+						transition.setFromX(jsi.getTranslateX());
+						transition.setFromY(jsi.getTranslateY());
+						transition.setToX(boUniverse.starSystemBOs.get(targetSystemId).getScreenX() - 35);
+						transition.setToY(boUniverse.starSystemBOs.get(targetSystemId).getScreenY() - 8);
+						transition.setOnFinished(event -> {
+							jsi.setMouseTransparent(false);
+						});
+						transition.playFromStart();
 					}
 					jumpshipImage.setMouseTransparent(false);
 					jumpshipImage.toFront();
