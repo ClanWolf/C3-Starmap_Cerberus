@@ -1487,15 +1487,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				StatusTextEntryActionObject ste = (StatusTextEntryActionObject) o.getObject();
 				if (ste.getColor() != null && !"".equals(ste.getColor())) {
 					switch (ste.getColor()) {
-						case "GREEN":
-							color = "#00ff00";
-							break;
-						case "BLUE":
-							color = "#0000ff";
-							break;
-						case "YELLOW":
-							color = "#ffff00";
-							break;
+						case "GREEN" -> color = "#00ff00";
+						case "BLUE" -> color = "#0000ff";
+						case "YELLOW" -> color = "#ffff00";
 					}
 				}
 				setStatusText(ste.getMessage(), ste.isFlash(), color);
@@ -1787,7 +1781,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			case SHOW_MEDAL:
 				if ((o != null) && (o.getObject() instanceof MEDALS)) {
 					Integer id = ((MEDALS)o.getObject()).getId();
-					String imageName = ((MEDALS)o.getObject()).toString();
+					String imageName = o.getObject().toString();
 					String desc = Internationalization.getString("MEDALS_" + imageName + "_desc");
 					Image med = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/gui/rewards/" + imageName + ".png")));
 					showMedal(med, desc);
@@ -1797,10 +1791,10 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			case SHOW_POPUP:
 				if ((o != null) && (o.getObject() instanceof POPUPS)) {
 					Integer id = ((POPUPS)o.getObject()).getId();
-					String imageName = ((POPUPS)o.getObject()).toString();
+					String imageName = o.getObject().toString();
 					String desc = Internationalization.getString("POPUPS_" + imageName + "_desc");
 					Image pop = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/gui/popups/" + imageName + ".png")));
-					showPopup(pop, "");
+					showPopup(pop, desc);
 				}
 				break;
 

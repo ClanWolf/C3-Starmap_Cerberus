@@ -27,8 +27,6 @@
 package net.clanwolf.starmap.client.gui.popuppanes;
 
 import javafx.animation.*;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.CacheHint;
 import javafx.scene.control.TextField;
@@ -47,15 +45,11 @@ import net.clanwolf.starmap.client.util.Tools;
 
 public class C3MedalPane extends Pane {
 
-	private Image medal = null;
-	private String desc = null;
-	private Rectangle rect;
-	private Rectangle rectBorder;
-	private ImageView view;
+	private final Rectangle rect;
+	private final Rectangle rectBorder;
+	private final ImageView view;
 
 	public C3MedalPane(Image image, String desc) {
-		this.medal = image;
-		this.desc = desc;
 
 		rectBorder = new Rectangle(600, 400);
 		rectBorder.setStroke(Color.rgb(190, 56, 243, 1.0));
@@ -72,7 +66,7 @@ public class C3MedalPane extends Pane {
 		rect.setFill(Color.rgb(97, 23, 124, 0.95));
 
 		view = new ImageView();
-		view.setImage(medal);
+		view.setImage(image);
 		view.setFitWidth(200);
 		view.setFitHeight(200);
 		view.setTranslateX(10);
@@ -143,29 +137,26 @@ public class C3MedalPane extends Pane {
 		final C3MedalPane mp = this;
 		KeyFrame frame1 = new KeyFrame(Duration.seconds(.15), key1, key2, key3, key4);
 		timeline.getKeyFrames().addAll(frame1);
-		timeline.setOnFinished(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				if (!mp.getChildren().contains(rectBorder)) {
-					mp.getChildren().add(rectBorder);
-				}
-				double w = rect.getWidth() * 6;
-				double h = rect.getHeight() * 4;
-				double x = rect.getX();
-				double y = rect.getY();
-				rectBorder.setWidth(w);
-				rectBorder.setHeight(h);
-				rectBorder.setX(x);
-				rectBorder.setY(y);
-
-				// Fade in transition 03 (Medal)
-				FadeTransition fadeInTransition_03 = new FadeTransition(Duration.millis(10), view);
-				fadeInTransition_03.setFromValue(0.0);
-				fadeInTransition_03.setToValue(1.0);
-				fadeInTransition_03.setCycleCount(1);
-
-				fadeInTransition_03.play();
+		timeline.setOnFinished(event -> {
+			if (!mp.getChildren().contains(rectBorder)) {
+				mp.getChildren().add(rectBorder);
 			}
+			double w = rect.getWidth() * 6;
+			double h = rect.getHeight() * 4;
+			double x = rect.getX();
+			double y = rect.getY();
+			rectBorder.setWidth(w);
+			rectBorder.setHeight(h);
+			rectBorder.setX(x);
+			rectBorder.setY(y);
+
+			// Fade in transition 03 (Medal)
+			FadeTransition fadeInTransition_03 = new FadeTransition(Duration.millis(10), view);
+			fadeInTransition_03.setFromValue(0.0);
+			fadeInTransition_03.setToValue(1.0);
+			fadeInTransition_03.setCycleCount(1);
+
+			fadeInTransition_03.play();
 		});
 
 		ScaleTransition st = new ScaleTransition(Duration.millis(4000), view);
@@ -177,12 +168,7 @@ public class C3MedalPane extends Pane {
 
 		// Transition sequence
 		SequentialTransition sequentialTransition = new SequentialTransition();
-		sequentialTransition.setOnFinished(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				fadeOut();
-			}
-		});
+		sequentialTransition.setOnFinished(event -> fadeOut());
 		sequentialTransition.getChildren().addAll(fadeInTransition, fadeInTransition_01, timeline, fadeInTransition_02, st);
 		sequentialTransition.setCycleCount(1);
 		sequentialTransition.play();
@@ -193,12 +179,7 @@ public class C3MedalPane extends Pane {
 		FadeOutTransition.setFromValue(1.0);
 		FadeOutTransition.setToValue(0.0);
 		FadeOutTransition.setCycleCount(1);
-		FadeOutTransition.setOnFinished(new EventHandler<ActionEvent>() {
-			@Override
-			public void handle(ActionEvent event) {
-				ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute();
-			}
-		});
+		FadeOutTransition.setOnFinished(event -> ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute());
 		FadeOutTransition.play();
 	}
 }

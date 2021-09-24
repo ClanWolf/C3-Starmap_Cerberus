@@ -274,6 +274,23 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					attackedSystem.setCurrentlyUnderAttack(true);
 					attackerStartedFromSystem = boUniverse.starSystemBOs.get(boAttack.getAttackedFromStarSystem());
 
+					// Remove old attack visuals
+					ArrayList<Node> lineElementsToRemove = new ArrayList<>();
+					for (Node n : attacksPane.getChildren()) {
+						if (("attackVisuals" + js.getJumpshipName()).equals(n.getId())) {
+							lineElementsToRemove.add(n);
+						}
+					}
+					attacksPane.getChildren().removeAll(lineElementsToRemove);
+
+					ArrayList<Node> backgroundElementsToRemove = new ArrayList<>();
+					for (Node n : canvas.getChildren()) {
+						if (("attackVisuals" + js.getJumpshipName()).equals(n.getId())) {
+							backgroundElementsToRemove.add(n);
+						}
+					}
+					canvas.getChildren().removeAll(backgroundElementsToRemove);
+
 					if (attackedSystem != null && attackerStartedFromSystem != null) {
 						Platform.runLater(() -> {
 							if (Config.MAP_FLASH_ATTACKED_SYSTEMS) {
@@ -291,6 +308,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 									fadeTransition.setAutoReverse(true);
 									fadeTransition.setCycleCount(Animation.INDEFINITE);
 									fadeTransition.play();
+									systemBackground.setId("attackVisuals" + js.getJumpshipName());
 									canvas.getChildren().add(systemBackground);
 									systemBackground.setVisible(true);
 									systemBackground.toBack();
@@ -307,6 +325,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 							line.setStrokeWidth(3);
 							line.setStroke(Color.RED);
 							line.setStrokeLineCap(StrokeLineCap.ROUND);
+							line.setId("attackVisuals" + js.getJumpshipName());
 
 							final double maxOffset = line.getStrokeDashArray().stream().reduce(0d, Double::sum);
 
@@ -430,6 +449,26 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				starSystem.getStarSystemCircle().setStroke(c.deriveColor(1, 1, 1, 0.8));
 				starSystem.getStarSystemCircle().setFill(c.deriveColor(1, 1, 1, 0.4));
 
+				BOAttack a = starSystem.getAttack();
+				Image attackMarker;
+				if (a != null) {
+					if (a.getRound().equals(boUniverse.currentRound) && a.getStarSystemId().equals(starSystem.getStarSystemId())) {
+						double markerDim = 20.0d;
+						attackMarker = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/attack2.png")));
+						ImageView marker;
+						marker = new ImageView();
+						marker.setFitWidth(markerDim);
+						marker.setFitHeight(markerDim);
+						marker.setImage(attackMarker);
+						marker.setTranslateX(starSystem.getScreenX() - (markerDim / 2));
+						marker.setTranslateY(starSystem.getScreenY() - (markerDim / 2) - 15);
+						marker.setMouseTransparent(true);
+						marker.toFront();
+						marker.setId("swordsIcon");
+						canvas.getChildren().add(marker);
+					}
+				}
+
 				if (starSystem.isActive()) {
 					if (starSystem.isActiveInPhase(Nexus.getCurrentSeasonMetaPhase())) {
 						// C3Logger.debug("System is active in the current MetaPhase!");
@@ -475,35 +514,43 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				boolean myOwnShip = js.getJumpshipFaction() == Nexus.getCurrentUser().getCurrentCharacter().getFactionId();
 				ImageView jumpshipImage = js.getJumpshipImageView();
 
+				Long targetSystemId = null;
+				Long fallbackToSystemId = null;
+
 				ArrayDeque<String> history = new ArrayDeque<>(Arrays.asList(js.getJumpshipDTO().getStarSystemHistory().split(";")));
-				String targetSystemIdString = history.getLast();
-				Long targetSystemId = Long.parseLong(targetSystemIdString);
-				history.removeLast();
-				String fallbackToSystemIdString = history.getLast();
-				Long fallbackToSystemId = Long.parseLong(fallbackToSystemIdString);
+				if (history.size() > 0) {
+					String targetSystemIdString = history.getLast();
+					targetSystemId = Long.parseLong(targetSystemIdString);
+					history.removeLast();
+					if (history.size() > 0) {
+						String fallbackToSystemIdString = history.getLast();
+						fallbackToSystemId = Long.parseLong(fallbackToSystemIdString);
+					}
+				}
+
+				if (myOwnShip) {
+					if (js.isAttackReady()) {
+						Image left_blue = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_left_blue_1.png")));
+						jumpshipImage.setImage(left_blue);
+						jumpshipImage.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
+						jumpshipImage.addEventFilter(MouseEvent.DRAG_DETECTED, nodeGestures.getOnMouseDragDetectedEventHandler());
+					} else {
+						Image left_neutral = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_left_neutral.png")));
+						jumpshipImage.setImage(left_neutral);
+					}
+				} else {
+					if (js.isAttackReady()) {
+						Image right_red = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_right_red.png")));
+						jumpshipImage.setImage(right_red);
+					} else {
+						Image right_red = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_right_red.png")));
+						jumpshipImage.setImage(right_red);
+					}
+				}
 
 				if (currentSystemID != null && targetSystemId != null) {
-					if (myOwnShip) {
-						if (js.isAttackReady()) {
-							Image left_blue = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_left_blue_1.png")));
-							jumpshipImage.setImage(left_blue);
-//							jumpshipImage.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
-//							jumpshipImage.addEventFilter(MouseEvent.DRAG_DETECTED, nodeGestures.getOnMouseDragDetectedEventHandler());
-						} else {
-							Image left_neutral = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_left_neutral.png")));
-							jumpshipImage.setImage(left_neutral);
-						}
-					} else {
-						if (js.isAttackReady()) {
-							Image right_red = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_right_red.png")));
-							jumpshipImage.setImage(right_red);
-						} else {
-							Image right_red = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_right_red.png")));
-							jumpshipImage.setImage(right_red);
-						}
-					}
-
 					// TODO: Check if the attack succeeded or if the unit lost (then move backwards and delete route)
+					// TODO: If the fallback system has been taken by the enemy, trigger a new event here. Scenario "Fighting retreat"?
 					// TODO: Check what faction owns the target system
 					if (!currentSystemID.equals(targetSystemId)) {
 						ImageView jsi = js.getJumpshipImageView();
@@ -766,7 +813,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					) {
 						BOStarSystem attackedSystem;
 						BOStarSystem attackerStartedFromSystem;
-						// BOJumpship jumpship = boUniverse.getJumpshipByID(attack.getJumpshipId());
+						BOJumpship jumpship = boUniverse.getJumpshipByID(attack.getJumpshipId());
 
 						attackedSystem = boUniverse.starSystemBOs.get(attack.getStarSystemId());
 						attackedSystem.setCurrentlyUnderAttack(true);
@@ -788,6 +835,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 									fadeTransition.setAutoReverse(true);
 									fadeTransition.setCycleCount(Animation.INDEFINITE);
 									fadeTransition.play();
+									systemBackground.setId("attackVisuals" + jumpship.getJumpshipName());
 									canvas.getChildren().add(systemBackground);
 									systemBackground.setVisible(true);
 									systemBackground.toBack();
@@ -804,6 +852,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 							line.setStrokeWidth(3);
 							line.setStroke(Color.RED);
 							line.setStrokeLineCap(StrokeLineCap.ROUND);
+							line.setId("attackVisuals" + jumpship.getJumpshipName());
 
 							final double maxOffset = line.getStrokeDashArray().stream().reduce(0d, Double::sum);
 
