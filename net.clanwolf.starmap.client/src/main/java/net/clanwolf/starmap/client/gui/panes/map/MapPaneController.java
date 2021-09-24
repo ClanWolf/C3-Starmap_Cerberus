@@ -453,15 +453,15 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				Image attackMarker;
 				if (a != null) {
 					if (a.getRound().equals(boUniverse.currentRound) && a.getStarSystemId().equals(starSystem.getStarSystemId())) {
-						double markerDim = 20.0d;
 						attackMarker = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/attack2.png")));
+						double markerDim = 16.0d;
 						ImageView marker;
 						marker = new ImageView();
 						marker.setFitWidth(markerDim);
 						marker.setFitHeight(markerDim);
 						marker.setImage(attackMarker);
 						marker.setTranslateX(starSystem.getScreenX() - (markerDim / 2));
-						marker.setTranslateY(starSystem.getScreenY() - (markerDim / 2) - 15);
+						marker.setTranslateY(starSystem.getScreenY() - (markerDim / 2) - 12);
 						marker.setMouseTransparent(true);
 						marker.toFront();
 						marker.setId("swordsIcon");
@@ -534,6 +534,23 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 						jumpshipImage.setImage(left_blue);
 						jumpshipImage.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
 						jumpshipImage.addEventFilter(MouseEvent.DRAG_DETECTED, nodeGestures.getOnMouseDragDetectedEventHandler());
+
+						// Remove old attack visuals
+						ArrayList<Node> lineElementsToRemove = new ArrayList<>();
+						for (Node n : attacksPane.getChildren()) {
+							if (("attackVisuals" + js.getJumpshipName()).equals(n.getId())) {
+								lineElementsToRemove.add(n);
+							}
+						}
+						attacksPane.getChildren().removeAll(lineElementsToRemove);
+
+						ArrayList<Node> backgroundElementsToRemove = new ArrayList<>();
+						for (Node n : canvas.getChildren()) {
+							if (("attackVisuals" + js.getJumpshipName()).equals(n.getId())) {
+								backgroundElementsToRemove.add(n);
+							}
+						}
+						canvas.getChildren().removeAll(backgroundElementsToRemove);
 					} else {
 						Image left_neutral = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_left_neutral.png")));
 						jumpshipImage.setImage(left_neutral);
