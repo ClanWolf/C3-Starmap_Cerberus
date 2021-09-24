@@ -135,7 +135,7 @@ public class EventCommunications {
 				case ATTACK_SAVE_RESPONSE:
 					C3Logger.info("Attack has been started.");
 					AttackDTO attack = (AttackDTO) state.getObject();
-					Long userIDOfSavingUser = (Long) state.getObject2(); // --> session.getId();
+					String userIDOfSavingUser = (String) state.getObject2(); // --> session.getId();
 					if (userIDOfSavingUser == null) {
 						// My attack was saved
 						// If I was the one who saved this attack, in my universe I already have the attack without an id

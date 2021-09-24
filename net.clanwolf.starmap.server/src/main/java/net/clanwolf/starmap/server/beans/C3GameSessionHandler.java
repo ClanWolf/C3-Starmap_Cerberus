@@ -244,7 +244,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 			GameState response = new GameState(GAMESTATEMODES.ATTACK_SAVE_RESPONSE);
 			response.addObject(attack);
-			if( existingAttack != null){
+			if(existingAttack != null) {
 				response.addObject2(session.getId());
 			}
 			response.setAction_successfully(Boolean.TRUE);
