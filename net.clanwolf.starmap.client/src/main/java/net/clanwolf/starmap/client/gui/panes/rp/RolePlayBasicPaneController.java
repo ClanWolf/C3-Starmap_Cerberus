@@ -162,7 +162,7 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 					changePaneAndController(Nexus.getCurrentChar().getStory().getVariante(), "/fxml/RolePlayMessagePane.fxml");
 					break;
 				case C3_RP_STEP_V8:
-					changePaneAndController(Nexus.getCurrentChar().getStory().getVariante(), "/fxml/RolePlayPrepareBattlePane.fxml");
+					changePaneAndController(ROLEPLAYENTRYTYPES.C3_RP_STEP_V8, "/fxml/RolePlayPrepareBattlePane.fxml");
 					break;
 				default:
 					break;
