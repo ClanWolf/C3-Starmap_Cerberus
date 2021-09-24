@@ -232,7 +232,7 @@ public class Nexus {
 	}
 
 	@SuppressWarnings("unused")
-	public static void injectNewUniverseDTO(UniverseDTO uniDTO) {
+	public static synchronized void injectNewUniverseDTO(UniverseDTO uniDTO) {
 		boUniverse.setUniverseDTO(uniDTO);
 	}
 

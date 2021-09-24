@@ -97,7 +97,7 @@ public class BOUniverse {
 		return universeDTO.attackStorys.get(storyID);
 	}
 
-	public void setUniverseDTO(UniverseDTO uniDTO) {
+	public synchronized void setUniverseDTO(UniverseDTO uniDTO) {
 		// Insert refreshed universe
 		this.universeDTO = uniDTO;
 		this.currentSeason = this.universeDTO.currentSeason;

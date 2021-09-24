@@ -424,7 +424,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		}
 	}
 
-	private void refreshUniverseMap() {
+	private synchronized void refreshUniverseMap() {
 		// Refresh universe map (GUI)
 		ActionManager.getAction(ACTIONS.NOISE).execute(1100);
 		if (boUniverse != null) { // this is the same universe, but the objects have been updated to the returned, new universe
@@ -1475,6 +1475,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				C3Logger.info("Received new universe, repainting map.");
 				Platform.runLater(this::refreshUniverseMap);
 				ActionManager.getAction(ACTIONS.UPDATE_GAME_INFO).execute();
+				ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute();
 				break;
 
 			case CHANGE_LANGUAGE:

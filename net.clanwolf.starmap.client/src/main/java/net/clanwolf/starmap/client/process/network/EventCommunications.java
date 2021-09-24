@@ -237,6 +237,7 @@ public class EventCommunications {
 
 				case GET_UNIVERSE_DATA:
 					C3Logger.info("Re-created universe received from server!");
+					ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute();
 					UniverseDTO universeDTO = (UniverseDTO) Compressor.deCompress((byte[])state.getObject());
 					Nexus.injectNewUniverseDTO(universeDTO);
 					ActionManager.getAction(ACTIONS.NEW_UNIVERSE_RECEIVED).execute();
