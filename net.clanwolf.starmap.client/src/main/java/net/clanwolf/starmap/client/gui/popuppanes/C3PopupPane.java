@@ -52,7 +52,7 @@ public class C3PopupPane extends Pane {
 	public C3PopupPane(Image image, String desc) {
 
 		rectBorder = new Rectangle(600, 400);
-		rectBorder.setStroke(Color.rgb(81, 114, 15, 1.0));
+		rectBorder.setStroke(Color.rgb(130, 170, 20, 1.0));
 		rectBorder.setStrokeWidth(3.0);
 		rectBorder.setFill(Color.TRANSPARENT);
 		rectBorder.setOpacity(1.0);
@@ -63,14 +63,14 @@ public class C3PopupPane extends Pane {
 		rectBorder.setMouseTransparent(true);
 
 		rect = new Rectangle(100, 100);
-		rect.setFill(Color.rgb(125, 170, 34, 0.95));
+		rect.setFill(Color.rgb(81, 114, 15, 0.95));
 
 		view = new ImageView();
 		view.setImage(image);
 		view.setFitWidth(300);
 		view.setFitHeight(110);
-		view.setTranslateX(10);
-		view.setTranslateY(-120);
+		view.setTranslateX(-40);
+		view.setTranslateY(-110);
 		view.setOpacity(0.0);
 
 		TextField textField = new TextField();

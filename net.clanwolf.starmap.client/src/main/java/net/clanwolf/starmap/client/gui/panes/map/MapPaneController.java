@@ -381,9 +381,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					FadeTransition fadeOut = new FadeTransition(Duration.millis(6000), js.routeLines);
 					fadeOut.setFromValue(1.0);
 					fadeOut.setToValue(0.0);
-					fadeOut.setOnFinished(event -> {
-						js.routeLines.getChildren().clear();
-					});
+					fadeOut.setOnFinished(event -> js.routeLines.getChildren().clear());
 					fadeOut.play();
 
 					Long currentSystemID = route.get(0).getSystemId();
@@ -397,9 +395,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					transition.setFromY(jsi.getTranslateY());
 					transition.setToX(boUniverse.starSystemBOs.get(currentSystemID).getScreenX() - 35);
 					transition.setToY(boUniverse.starSystemBOs.get(currentSystemID).getScreenY() - 8);
-					transition.setOnFinished(event -> {
-						ActionManager.getAction(ACTIONS.SHOW_POPUP).execute(POPUPS.Orders_Confirmed);
-					});
+					transition.setOnFinished(event -> ActionManager.getAction(ACTIONS.SHOW_POPUP).execute(POPUPS.Orders_Confirmed));
 					transition.playFromStart();
 				});
 			} else {
@@ -440,6 +436,14 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			Nexus.setCurrentSeasonMetaPhase(boUniverse.currentSeasonMetaPhase);
 			Nexus.setCurrentRound(boUniverse.currentRound);
 			Nexus.setCurrentDate(boUniverse.currentDate);
+
+			ArrayList<Node> swordsIconsToRemove = new ArrayList<>();
+			for (Node n : canvas.getChildren()) {
+				if ("swordsIcon".equals(n.getId())) {
+					swordsIconsToRemove.add(n);
+				}
+			}
+			canvas.getChildren().removeAll(swordsIconsToRemove);
 
 			// update systems (owner color and active status)
 			for (BOStarSystem starSystem : boUniverse.starSystemBOs.values()) {
@@ -580,9 +584,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 						transition.setFromY(jsi.getTranslateY());
 						transition.setToX(boUniverse.starSystemBOs.get(targetSystemId).getScreenX() - 35);
 						transition.setToY(boUniverse.starSystemBOs.get(targetSystemId).getScreenY() - 8);
-						transition.setOnFinished(event -> {
-							jsi.setMouseTransparent(false);
-						});
+						transition.setOnFinished(event -> jsi.setMouseTransparent(false));
 						transition.playFromStart();
 					}
 					jumpshipImage.setMouseTransparent(false);
@@ -1501,11 +1503,11 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				Platform.runLater(() -> {
 					centerStarSystemGroups();
 
-					Double w = Config.MAP_WIDTH;
-					Double h = Config.MAP_HEIGHT;
+					double w = Config.MAP_WIDTH;
+					double h = Config.MAP_HEIGHT;
 
 					canvas.show3DStars(false);
-					Tools.saveMapScreenshot(w.intValue(), h.intValue() / 2 + 200, canvas);
+					Tools.saveMapScreenshot((int) w, (int) h / 2 + 200, canvas);
 					canvas.show3DStars(true);
 
 					C3Logger.info("Saved history screenshot of the starmap.");
