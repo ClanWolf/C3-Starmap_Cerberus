@@ -109,6 +109,10 @@ public class EndRound {
 		Date nextRoundDate = getNextRoundDate(seasonId);
 		Date translatedNowDate = translateRealDateToSeasonTime(new Date(System.currentTimeMillis()), 1L);
 
+		SimpleDateFormat dateFormatter = new SimpleDateFormat("E yyyy.MM.dd 'at' hh:mm:ss a zzz");
+		C3Logger.info("nextRoundDate: " + dateFormatter.format(nextRoundDate));
+		C3Logger.info("translatedNowDate: " + dateFormatter.format(translatedNowDate));
+
 		// round is officially over
 		return !nextRoundDate.after(translatedNowDate); // the end of the round has not been reached on the calendar
 	}
@@ -144,7 +148,7 @@ public class EndRound {
 		return winnerId;
 	}
 
-	public static String finalizeRound(Long seasonId, int round) {
+	public synchronized static String finalizeRound(Long seasonId, int round) {
 		C3Logger.info("Checking on end of round.");
 		ArrayList<JumpshipPOJO> jumpshipList = JumpshipDAO.getInstance().getAllJumpships();
 		//ArrayList<JumpshipPOJO> jumpshipList = new ArrayList<>();
