@@ -228,14 +228,17 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			C3Logger.debug("-- Attacked system: " + attack.getStarSystemID());
 
 			if(attack.getId() != null) {
+				C3Logger.debug("attack.getId() != null");
 				dao.update(getC3UserID(session), attack);
 			} else {
 				// Check if attack exits
 				existingAttack = dao.findOpenAttackByRound(getC3UserID(session),attack.getJumpshipID(), attack.getSeason(), attack.getRound());
 
 				if(existingAttack == null){
+					C3Logger.debug("SAVE: if(existingAttack == null)");
 					dao.save(getC3UserID(session), attack);
 				} else {
+					C3Logger.debug("ELSE -> if(existingAttack == null)");
 					attack = existingAttack;
 				}
 			}

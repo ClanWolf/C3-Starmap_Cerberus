@@ -76,9 +76,10 @@ public class AttackDAO extends GenericDAO {
 	public AttackPOJO findOpenAttackByRound(Long userID, Long jumpShipID, Long season, Long round) {
 		CriteriaHelper crit = new CriteriaHelper(AttackPOJO.class);
 
-		crit.createPredicate("jumpshipID",jumpShipID);
+		crit.addCriteria("jumpshipID",jumpShipID);
 		crit.addCriteria("round", round);
 		crit.addCriteria("season", season);
+		crit.addCriteriaIsNull("factionID_Winner");
 
 		return (AttackPOJO)crit.getSingleResult();
 	}
