@@ -361,17 +361,19 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 								}
 							}
 							if (online) {
-								setText(item.getName());
+								Platform.runLater(() -> setText(item.getName()));
 							} else {
 								if (!"...".equals(item.getName())) {
-									setText(item.getName() + " (offline)");
+									Platform.runLater(() -> setText(item.getName() + " (offline)"));
 								} else {
-									setText(item.getName());
+									Platform.runLater(() -> setText(item.getName()));
 								}
 							}
 						} else {
-							setText(null);
-							setGraphic(null);
+							Platform.runLater(() -> {
+								setText(null);
+								setGraphic(null);
+							});
 						}
 					}
 				};

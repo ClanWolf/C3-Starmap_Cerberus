@@ -69,7 +69,7 @@ public class C3PopupPane extends Pane {
 		view.setImage(image);
 		view.setFitWidth(300);
 		view.setFitHeight(110);
-		view.setTranslateX(-40);
+		view.setTranslateX(-50);
 		view.setTranslateY(-110);
 		view.setOpacity(0.0);
 
