@@ -536,23 +536,6 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 						jumpshipImage.setImage(left_blue);
 						jumpshipImage.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
 						jumpshipImage.addEventFilter(MouseEvent.DRAG_DETECTED, nodeGestures.getOnMouseDragDetectedEventHandler());
-
-						// Remove old attack visuals
-						ArrayList<Node> lineElementsToRemove = new ArrayList<>();
-						for (Node n : attacksPane.getChildren()) {
-							if (("attackVisuals" + js.getJumpshipName()).equals(n.getId())) {
-								lineElementsToRemove.add(n);
-							}
-						}
-						attacksPane.getChildren().removeAll(lineElementsToRemove);
-
-						ArrayList<Node> backgroundElementsToRemove = new ArrayList<>();
-						for (Node n : canvas.getChildren()) {
-							if (("attackVisuals" + js.getJumpshipName()).equals(n.getId())) {
-								backgroundElementsToRemove.add(n);
-							}
-						}
-						canvas.getChildren().removeAll(backgroundElementsToRemove);
 					} else {
 						Image left_neutral = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_left_neutral.png")));
 						jumpshipImage.setImage(left_neutral);
@@ -561,28 +544,28 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					if (js.isAttackReady()) {
 						Image right_red = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_right_red.png")));
 						jumpshipImage.setImage(right_red);
-
-						// Remove old attack visuals
-						ArrayList<Node> lineElementsToRemove = new ArrayList<>();
-						for (Node n : attacksPane.getChildren()) {
-							if (("attackVisuals" + js.getJumpshipName()).equals(n.getId())) {
-								lineElementsToRemove.add(n);
-							}
-						}
-						attacksPane.getChildren().removeAll(lineElementsToRemove);
-
-						ArrayList<Node> backgroundElementsToRemove = new ArrayList<>();
-						for (Node n : canvas.getChildren()) {
-							if (("attackVisuals" + js.getJumpshipName()).equals(n.getId())) {
-								backgroundElementsToRemove.add(n);
-							}
-						}
-						canvas.getChildren().removeAll(backgroundElementsToRemove);
 					} else {
 						Image right_red = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_right_red.png")));
 						jumpshipImage.setImage(right_red);
 					}
 				}
+
+				// Remove old attack visuals
+				ArrayList<Node> lineElementsToRemove = new ArrayList<>();
+				for (Node n : attacksPane.getChildren()) {
+					if (("attackVisuals" + js.getJumpshipName()).equals(n.getId())) {
+						lineElementsToRemove.add(n);
+					}
+				}
+				attacksPane.getChildren().removeAll(lineElementsToRemove);
+
+				ArrayList<Node> backgroundElementsToRemove = new ArrayList<>();
+				for (Node n : canvas.getChildren()) {
+					if (("attackVisuals" + js.getJumpshipName()).equals(n.getId())) {
+						backgroundElementsToRemove.add(n);
+					}
+				}
+				canvas.getChildren().removeAll(backgroundElementsToRemove);
 
 				for (BOAttack boAttack : boUniverse.attackBOs) {
 					BOStarSystem attackedSystem;
