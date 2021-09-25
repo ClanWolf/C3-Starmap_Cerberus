@@ -102,7 +102,7 @@ public class EndRound {
 	}
 
 	public static Date getNextRoundDate(Long seasonId) {
-		return getRoundDate(seasonId, 1); // adding one round (7 days) to get the start of next round
+		return getRoundDate(seasonId, 1); // adding one round (x days) to get the start of next round
 	}
 
 	private static boolean timeForThisRoundIsOver(Long seasonId) {
@@ -170,7 +170,6 @@ public class EndRound {
 			jsDaoHelp.refresh(Nexus.DUMMY_USERID, jsHelp);
 			jumpshipList.add(jsHelp);
 		}*/
-
 
 		for (JumpshipPOJO js : jumpshipList) {
 
@@ -241,12 +240,14 @@ public class EndRound {
 						js.setStarSystemHistory(ssh);
 
 						StarSystemPOJO ssPojo = StarSystemDAO.getInstance().findById(Nexus.DUMMY_USERID, p.getSystemId());
-						movedJumpships.append("Jumpship '").append(js.getJumpshipName()).append("' moved to ").append(ssPojo.getName()).append(" (" + ssPojo.getId() + ").\r\n");
+						movedJumpships.append("Jumpship '").append(js.getJumpshipName()).append("' moved to ").append(ssPojo.getName()).append(" (").append(ssPojo.getId()).append(").\r\n");
 					}
 				}
 			}
 
-			roundPOJO.setCurrentRoundStartDate(getNextRoundDate(seasonId));
+//			roundPOJO.setCurrentRoundStartDate(getNextRoundDate(seasonId));
+			// TODO: Check this! Set start date of a new round always to NOW, not a calculated date in future, because there the dates run apart over time
+			roundPOJO.setCurrentRoundStartDate(translateRealDateToSeasonTime(new Date(System.currentTimeMillis()), seasonId));
 
 			// Save everything to the database
 			String exceptionWhileSaving = "";
