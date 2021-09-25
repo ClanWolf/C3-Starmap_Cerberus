@@ -34,12 +34,74 @@ import net.clanwolf.starmap.client.gui.panes.map.Config;
 import net.clanwolf.starmap.client.process.universe.BOFaction;
 import net.clanwolf.starmap.client.process.universe.BOStarSystem;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
+import net.clanwolf.starmap.logging.C3Logger;
 import org.kynosarges.tektosyne.geometry.*;
 
 public class VoronoiDelaunay {
 
 	private static BOUniverse boUniverse;
 //	private static ArrayList<VoronoiEdge> innerEdges = new ArrayList<>();
+
+	public static Pane updateAreas() {
+
+		// clear the regions for each faction
+		for (BOFaction f : boUniverse.factionBOs.values()) {
+			f.clearRegions();
+			f.setBackgroundPath(null);
+		}
+
+		// check what voronoi region contains the current star system
+		for (BOStarSystem ss : boUniverse.starSystemBOs.values()) {
+			C3Logger.info(ss.getName() + " / " + ss.getAffiliation());
+			BOFaction faction = boUniverse.factionBOs.get(ss.getAffiliation());
+			faction.addVoronoiRegion(ss.getVoronoiRegion());
+		}
+
+		// paint the background circles
+		for (BOStarSystem ss : boUniverse.starSystemBOs.values()) {
+			PointD p = new PointD(ss.getScreenX(), ss.getScreenY());
+
+			// create clipped circles to render the inner areas
+			BOFaction faction = boUniverse.factionBOs.get(ss.getAffiliation());
+			Path path;
+			if (faction.getBackgroundPath() != null) {
+				path = faction.getBackgroundPath();
+			} else {
+				path = new Path();
+			}
+			Circle fc = new Circle(p.x, p.y, Config.MAP_BACKGROUND_AREA_RADIUS - Config.MAP_BACKGROUND_AREA_RADIUS_BORDER_WIDTH);
+			path = (Path) Path.union(path, fc);
+			faction.setBackgroundPath(path);
+		}
+
+		// create new borders
+		final Pane borderPane = new Pane();
+		for (BOFaction faction : boUniverse.factionBOs.values()) {
+			if (faction.getBackgroundPath() != null) {
+				Shape shape = faction.getBackgroundPath();
+				Shape regions = null;
+				for (PointD[] region : faction.getVoronoiRegions()) {
+					Polygon polygon = new Polygon(PointD.toDoubles(region));
+					if (regions == null) {
+						regions = polygon;
+					} else {
+						regions = Shape.union(regions, polygon);
+					}
+				}
+				if (regions != null) {
+					Shape factionBackground = Shape.intersect(shape, regions);
+					String colorString = faction.getColor();
+					Color color = Color.web(colorString);
+					factionBackground.setFill(color.deriveColor(1,1,1,0.2));
+					factionBackground.setStrokeWidth(Config.MAP_BACKGROUND_AREA_RADIUS_BORDER_WIDTH);
+					factionBackground.setStrokeLineJoin(StrokeLineJoin.ROUND);
+					factionBackground.setStroke(Config.MAP_BACKGROUND_AREA_BORDER_COLOR.deriveColor(.7, .7,.7, 1));
+					borderPane.getChildren().add(factionBackground);
+				}
+			}
+		}
+		return borderPane;
+	}
 
 	public static Pane getAreas() {
 		boUniverse = Nexus.getBoUniverse();

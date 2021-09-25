@@ -505,10 +505,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 //				borders.toBack();
 //			}
 
-//			borders = VoronoiDelaunay.getAreas();
-//			borders.setId("borderPane");
-//			canvas.getChildren().add(borders);
-//			borders.toBack();
+
 
 			// Move the ships
 			for (BOJumpship js : boUniverse.jumpshipBOs.values()) {
@@ -647,6 +644,12 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					C3Logger.info("Jumpship '" + js.getJumpshipName() + "' has no current system. Seems to be a mistake!");
 				}
 			}
+			Platform.runLater(() -> {
+				canvas.getChildren().remove(borders);
+				borders = VoronoiDelaunay.updateAreas();
+				canvas.getChildren().add(borders);
+				borders.toBack();
+			});
 		}
 	}
 

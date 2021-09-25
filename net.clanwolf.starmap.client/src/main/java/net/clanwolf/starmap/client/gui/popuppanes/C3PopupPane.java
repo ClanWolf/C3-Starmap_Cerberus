@@ -67,10 +67,10 @@ public class C3PopupPane extends Pane {
 
 		view = new ImageView();
 		view.setImage(image);
-		view.setFitWidth(300);
-		view.setFitHeight(110);
-		view.setTranslateX(-50);
-		view.setTranslateY(-110);
+		view.setFitWidth(220);
+		view.setFitHeight(220);
+		view.setTranslateX(10);
+		view.setTranslateY(-120);
 		view.setOpacity(0.0);
 
 		TextField textField = new TextField();
@@ -118,13 +118,13 @@ public class C3PopupPane extends Pane {
 		fadeInTransition.setCycleCount(1);
 
 		// Fade in transition 01 (Background)
-		FadeTransition fadeInTransition_01 = new FadeTransition(Duration.millis(80), rect);
+		FadeTransition fadeInTransition_01 = new FadeTransition(Duration.millis(50), rect);
 		fadeInTransition_01.setFromValue(0.0);
 		fadeInTransition_01.setToValue(1.0);
 		fadeInTransition_01.setCycleCount(2);
 
 		// Fade in transition 02 (Border)
-		FadeTransition fadeInTransition_02 = new FadeTransition(Duration.millis(250), rectBorder);
+		FadeTransition fadeInTransition_02 = new FadeTransition(Duration.millis(200), rectBorder);
 		fadeInTransition_02.setFromValue(0.0);
 		fadeInTransition_02.setToValue(1.0);
 		fadeInTransition_02.setCycleCount(4);
@@ -159,12 +159,12 @@ public class C3PopupPane extends Pane {
 			fadeInTransition_03.play();
 		});
 
-		ScaleTransition st = new ScaleTransition(Duration.millis(2000), view);
-		st.setToX(1.2f);
-		st.setToY(1.2f);
+		ScaleTransition st = new ScaleTransition(Duration.millis(1300), view);
+		st.setToX(1.1f);
+		st.setToY(1.1f);
 		st.setCycleCount(1);
 
-		ActionManager.getAction(ACTIONS.NOISE).execute(600);
+		ActionManager.getAction(ACTIONS.NOISE).execute(300);
 
 		// Transition sequence
 		SequentialTransition sequentialTransition = new SequentialTransition();

@@ -40,6 +40,11 @@ public class BOFaction {
 	private ArrayList<PointD[]> voronoiRegions = new ArrayList<>();
 
 	@SuppressWarnings("unused")
+	public void clearRegions() {
+		this.voronoiRegions.clear();
+	}
+
+	@SuppressWarnings("unused")
 	public ArrayList<PointD[]> getVoronoiRegions() {
 		return voronoiRegions;
 	}
