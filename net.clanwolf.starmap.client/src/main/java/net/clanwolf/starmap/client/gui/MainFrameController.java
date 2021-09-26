@@ -1455,6 +1455,14 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
 			}
 		}
+
+		if (com.toLowerCase().startsWith("test popup")) {
+			ActionManager.getAction(ACTIONS.SHOW_POPUP).execute(POPUPS.Orders_Confirmed);
+		}
+
+		if (com.toLowerCase().startsWith("test medal")) {
+			ActionManager.getAction(ACTIONS.SHOW_MEDAL).execute(MEDALS.First_Blood);
+		}
 	}
 
 	/**
@@ -1689,12 +1697,18 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 			case TERMINAL_COMMAND:
 				String com = o.getText();
-				// TODO: Command category "general" --> not connected to a pane
 				if (Nexus.isLoggedIn()) {
 					if (com.contains("finalize round")
 					|| com.contains("create universe")) {
 						handleCommand(com);
 					}
+				}
+				if (com.contains("test popup")
+				|| com.contains("test medal")) {
+					handleCommand(com);
+				}
+				if (com.startsWith("*!!!*")) {
+					handleCommand(com);
 				}
 				break;
 
@@ -1780,7 +1794,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 			case SHOW_MEDAL:
 				if ((o != null) && (o.getObject() instanceof MEDALS)) {
-					Integer id = ((MEDALS)o.getObject()).getId();
+					// Integer id = ((MEDALS)o.getObject()).getId();
 					String imageName = o.getObject().toString();
 					String desc = Internationalization.getString("MEDALS_" + imageName + "_desc");
 					Image med = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/gui/rewards/" + imageName + ".png")));
@@ -1790,7 +1804,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 			case SHOW_POPUP:
 				if ((o != null) && (o.getObject() instanceof POPUPS)) {
-					Integer id = ((POPUPS)o.getObject()).getId();
+					// Integer id = ((POPUPS)o.getObject()).getId();
 					String imageName = o.getObject().toString();
 					String desc = Internationalization.getString("POPUPS_" + imageName + "_desc");
 					Image pop = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/gui/popups/" + imageName + ".png")));

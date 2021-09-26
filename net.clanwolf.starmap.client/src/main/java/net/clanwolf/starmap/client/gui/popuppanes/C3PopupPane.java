@@ -63,13 +63,13 @@ public class C3PopupPane extends Pane {
 		rectBorder.setMouseTransparent(true);
 
 		rect = new Rectangle(100, 100);
-		rect.setFill(Color.rgb(81, 114, 15, 0.95));
+		rect.setFill(Color.rgb(54, 75, 10, 0.95));
 
 		view = new ImageView();
 		view.setImage(image);
 		view.setFitWidth(220);
 		view.setFitHeight(220);
-		view.setTranslateX(10);
+		view.setTranslateX(0);
 		view.setTranslateY(-120);
 		view.setOpacity(0.0);
 
@@ -160,8 +160,8 @@ public class C3PopupPane extends Pane {
 		});
 
 		ScaleTransition st = new ScaleTransition(Duration.millis(1300), view);
-		st.setToX(1.1f);
-		st.setToY(1.1f);
+		st.setToX(1.2f);
+		st.setToY(1.2f);
 		st.setCycleCount(1);
 
 		ActionManager.getAction(ACTIONS.NOISE).execute(300);

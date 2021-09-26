@@ -69,7 +69,7 @@ public class C3MedalPane extends Pane {
 		view.setImage(image);
 		view.setFitWidth(200);
 		view.setFitHeight(200);
-		view.setTranslateX(10);
+		view.setTranslateX(0);
 		view.setTranslateY(-120);
 		view.setOpacity(0.0);
 
