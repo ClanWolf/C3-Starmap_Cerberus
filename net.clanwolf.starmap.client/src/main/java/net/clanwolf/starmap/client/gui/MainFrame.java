@@ -65,11 +65,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.List;
 import java.util.Scanner;
 import java.util.logging.Level;
 
@@ -226,6 +224,7 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 		FadeInTransition.setOnFinished(event -> ActionManager.getAction(ACTIONS.APPLICATION_STARTUP).execute());
 
 		InputStream is = this.getClass().getResourceAsStream("/icons/C3_Icon2.png");
+		assert is != null;
 		stage.getIcons().add(new Image(is));
 		stage.setTitle(Internationalization.getString("app_headline"));
 		// TODO: Resize the window (outcomment the initStyle StageStyle)
@@ -370,12 +369,17 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 	public static void prepareManual() {
 		try {
 			File dir = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "manual");
-			dir.mkdirs();
+			boolean success = dir.mkdirs();
+			if (success) {
+				C3Logger.info("Created manual folder");
+			}
 
 			InputStream source = MainFrame.class.getResourceAsStream("/C3_Manual_de.pdf");
 			String destination = dir + File.separator + "C3_Manual_de.pdf";
 
-			Files.copy(source, Paths.get(destination), StandardCopyOption.REPLACE_EXISTING);
+			if (source != null) {
+				Files.copy(source, Paths.get(destination), StandardCopyOption.REPLACE_EXISTING);
+			}
 		} catch (Exception e) {
 			C3Logger.info("Exception while copying the manual to local drive.");
 			C3Logger.exception(null, e);
@@ -395,13 +399,13 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 				System.out.println("Starting C3 Client: " + arg);
 				System.out.println("Detected commandline arg: " + arg);
 
-				if (arg.toUpperCase().equals("IDE")) {
+				if (arg.equalsIgnoreCase("IDE")) {
 					isDevelopmentPC = true;
 				}
-				if (arg.toUpperCase().equals("CLEARCACHE")) {
+				if (arg.equalsIgnoreCase("CLEARCACHE")) {
 					clearCache = true;
 				}
-				if (arg.toUpperCase().equals("HELP")) {
+				if (arg.equalsIgnoreCase("HELP")) {
 					System.out.println("Command line help:");
 					System.out.println("- /IDE        : Running in the development environment.");
 					System.out.println("- /CLEARCACHE : Clear all cached files on startup.");

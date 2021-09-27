@@ -237,7 +237,7 @@
          </children>
       </GridPane>
       <ComboBox fx:id="cbCharChooser" layoutX="203.0" layoutY="162.0" onAction="#handleCharSelection" onShowing="#handleOpenCharList" prefHeight="23.0" prefWidth="392.0" stylesheets="@../styles/MainFrameStyle.css" />
-      <Label fx:id="labelBalance1" layoutX="633.0" layoutY="288.0" prefHeight="17.0" prefWidth="181.0" styleClass="contentLabel" text="Clan Wolf">
+      <Label fx:id="labelFactionName" layoutX="633.0" layoutY="288.0" prefHeight="17.0" prefWidth="181.0" styleClass="contentLabel" text="Clan Wolf">
          <stylesheets>
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>

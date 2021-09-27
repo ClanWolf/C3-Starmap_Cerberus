@@ -159,12 +159,12 @@ public class C3PopupPane extends Pane {
 			fadeInTransition_03.play();
 		});
 
-		ScaleTransition st = new ScaleTransition(Duration.millis(1300), view);
-		st.setToX(1.2f);
-		st.setToY(1.2f);
+		ScaleTransition st = new ScaleTransition(Duration.millis(1500), view);
+		st.setToX(1.1f);
+		st.setToY(1.1f);
 		st.setCycleCount(1);
 
-		ActionManager.getAction(ACTIONS.NOISE).execute(300);
+		ActionManager.getAction(ACTIONS.NOISE).execute(500);
 
 		// Transition sequence
 		SequentialTransition sequentialTransition = new SequentialTransition();

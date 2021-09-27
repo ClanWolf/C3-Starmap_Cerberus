@@ -39,6 +39,7 @@ import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.action.*;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
+import net.clanwolf.starmap.client.process.universe.BOFaction;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.client.process.logout.Logout;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
@@ -50,6 +51,7 @@ import net.clanwolf.starmap.transfer.dtos.UserDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 /**
@@ -107,6 +109,8 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 	private Label valueCharXP;
 
 	@FXML
+	private Label labelFactionName;
+	@FXML
 	private Label labelBalance;
 	@FXML
 	private Label labelIncome;
@@ -136,6 +140,7 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 	@FXML
 	private ComboBox<RolePlayCharacterDTO> cbCharChooser;
 
+	private BOFaction factionOfCurrentChar = null;
 	@FXML
 	private void handleCancelButtonHoverEnter() {
 		// do nothing here for now
@@ -236,10 +241,24 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 			if (user != null) {
 				// set logos
 				labelAvatar.setText("");
+
 				// set values
 				valueUsername.setText(user.getUserName());
 				valueLastLogin.setText(user.getLastLogin() + "");
 				valueCreated.setText(user.getCreated() + "");
+
+				for (BOFaction f : Nexus.getBoUniverse().factionBOs.values()) {
+					if (f.getID() == Nexus.getCurrentChar().getFactionId().longValue()) {
+						factionOfCurrentChar = f;
+						break;
+					}
+				}
+				Image imageFaction = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logos/factions/" + factionOfCurrentChar.getLogo())));
+				ivFactionLogo.setImage(imageFaction);
+				labelFaction.setText(factionOfCurrentChar.getLocalizedName()); // left panel
+				labelFactionName.setText(factionOfCurrentChar.getLocalizedName()); // right panel
+				valueSystems.setText("" + factionOfCurrentChar.getNumberOfSystemsOwned());
+				valueAtWar.setText("" + factionOfCurrentChar.getNumberOfSystemsContested());
 			}
 		});
 	}
@@ -338,6 +357,9 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 
 			buttonLogout.setText(Internationalization.getString("general_logout"));
 			buttonCancel.setText(Internationalization.getString("general_cancel"));
+
+			labelFactionName.setText(factionOfCurrentChar.getLocalizedName());
+			valueFaction.setText(factionOfCurrentChar.getLocalizedName());
 		});
 	}
 

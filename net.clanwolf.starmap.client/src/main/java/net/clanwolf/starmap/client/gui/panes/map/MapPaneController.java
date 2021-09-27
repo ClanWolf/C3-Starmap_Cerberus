@@ -390,13 +390,14 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					jsi.toFront();
 					jsi.setVisible(true);
 
-					TranslateTransition transition = new TranslateTransition(Duration.millis(500), jsi);
+					TranslateTransition transition = new TranslateTransition(Duration.millis(100), jsi);
 					transition.setFromX(jsi.getTranslateX());
 					transition.setFromY(jsi.getTranslateY());
 					transition.setToX(boUniverse.starSystemBOs.get(currentSystemID).getScreenX() - 35);
 					transition.setToY(boUniverse.starSystemBOs.get(currentSystemID).getScreenY() - 8);
-					transition.setOnFinished(event -> ActionManager.getAction(ACTIONS.SHOW_POPUP).execute(POPUPS.Orders_Confirmed));
+//					transition.setOnFinished(event -> ActionManager.getAction(ACTIONS.SHOW_POPUP).execute(POPUPS.Orders_Confirmed));
 					transition.playFromStart();
+					ActionManager.getAction(ACTIONS.SHOW_POPUP).execute(POPUPS.Orders_Confirmed);
 				});
 			} else {
 				C3Logger.info(js.getJumpshipName() + " is not attack ready, nothing happens.");
@@ -426,153 +427,137 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 	private synchronized void refreshUniverseMap() {
 		// Refresh universe map (GUI)
-		ActionManager.getAction(ACTIONS.NOISE).execute(1100);
-		if (boUniverse != null) { // this is the same universe, but the objects have been updated to the returned, new universe
+		ActionManager.getAction(ACTIONS.NOISE).execute(800);
+		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute();
+		Platform.runLater(() -> {
+			if (boUniverse != null) { // this is the same universe, but the objects have been updated to the returned, new universe
+				Nexus.setCurrentSeason(boUniverse.currentSeason);
+				Nexus.setCurrentSeasonMetaPhase(boUniverse.currentSeasonMetaPhase);
+				Nexus.setCurrentRound(boUniverse.currentRound);
+				Nexus.setCurrentDate(boUniverse.currentDate);
 
-			Nexus.setCurrentSeason(boUniverse.currentSeason);
-			Nexus.setCurrentSeasonMetaPhase(boUniverse.currentSeasonMetaPhase);
-			Nexus.setCurrentRound(boUniverse.currentRound);
-			Nexus.setCurrentDate(boUniverse.currentDate);
-
-			ArrayList<Node> swordsIconsToRemove = new ArrayList<>();
-			for (Node n : canvas.getChildren()) {
-				if ("swordsIcon".equals(n.getId())) {
-					swordsIconsToRemove.add(n);
-				}
-			}
-			canvas.getChildren().removeAll(swordsIconsToRemove);
-
-			// update systems (owner color and active status)
-			for (BOStarSystem starSystem : boUniverse.starSystemBOs.values()) {
-
-				String colorString = boUniverse.factionBOs.get(starSystem.getAffiliation()).getColor();
-				Color c = Color.web(colorString);
-				starSystem.getStarSystemCircle().setStroke(c.deriveColor(1, 1, 1, 0.8));
-				starSystem.getStarSystemCircle().setFill(c.deriveColor(1, 1, 1, 0.4));
-
-				BOAttack a = starSystem.getAttack();
-				Image attackMarker;
-				if (a != null) {
-					if (a.getRound().equals(boUniverse.currentRound) && a.getStarSystemId().equals(starSystem.getStarSystemId())) {
-						attackMarker = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/attack2.png")));
-						double markerDim = 16.0d;
-						ImageView marker;
-						marker = new ImageView();
-						marker.setFitWidth(markerDim);
-						marker.setFitHeight(markerDim);
-						marker.setImage(attackMarker);
-						marker.setTranslateX(starSystem.getScreenX() - (markerDim / 2));
-						marker.setTranslateY(starSystem.getScreenY() - (markerDim / 2) - 12);
-						marker.setMouseTransparent(true);
-						marker.toFront();
-						marker.setId("swordsIcon");
-						canvas.getChildren().add(marker);
-					}
-				}
-
-				if (starSystem.isActive()) {
-					if (starSystem.isActiveInPhase(Nexus.getCurrentSeasonMetaPhase())) {
-						// C3Logger.debug("System is active in the current MetaPhase!");
-						starSystem.getStarSystemGroup().setOpacity(1.0d);
-						starSystem.getLevelLabel().setOpacity(1.0d);
-						if (starSystem.getIndustryImage() != null) {
-							starSystem.getIndustryImage().setOpacity(1.0d);
-						}
-						starSystem.getStarSystemGroup().setMouseTransparent(false);
-					} else {
-						// C3Logger.debug("System is NOT active in the current MetaPhase!");
-						starSystem.getStarSystemGroup().setOpacity(0.2d);
-						starSystem.getLevelLabel().setOpacity(0.2d);
-						if (starSystem.getIndustryImage() != null) {
-							starSystem.getIndustryImage().setOpacity(0.2d);
-						}
-						starSystem.getStarSystemGroup().setMouseTransparent(true);
-					}
-				}
-			}
-
-			// TODO: Redraw borders
-			// Redraw borders
-//			for (Node node : canvas.getChildren()) {
-//				if ("borderPane".equals(node.getId())) {
-//					borders = (Pane) node;
-//				}
-//			}
-//			if (borders != null) {
-//				canvas.getChildren().remove(borders);
-//				borders = VoronoiDelaunay.getAreas();
-//				canvas.getChildren().add(borders);
-//				borders.toBack();
-//			}
-
-
-
-			// Move the ships
-			for (BOJumpship js : boUniverse.jumpshipBOs.values()) {
-				Long currentSystemID = js.getCurrentSystemID();
-				boolean myOwnShip = js.getJumpshipFaction() == Nexus.getCurrentUser().getCurrentCharacter().getFactionId();
-				ImageView jumpshipImage = js.getJumpshipImageView();
-
-				Long targetSystemId = null;
-				Long fallbackToSystemId = null;
-
-				ArrayDeque<String> history = new ArrayDeque<>(Arrays.asList(js.getJumpshipDTO().getStarSystemHistory().split(";")));
-				if (history.size() > 0) {
-					String targetSystemIdString = history.getLast();
-					targetSystemId = Long.parseLong(targetSystemIdString);
-					history.removeLast();
-					if (history.size() > 0) {
-						String fallbackToSystemIdString = history.getLast();
-						fallbackToSystemId = Long.parseLong(fallbackToSystemIdString);
-					}
-				}
-
-				if (myOwnShip) {
-					if (js.isAttackReady()) {
-						Image left_blue = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_left_blue_1.png")));
-						jumpshipImage.setImage(left_blue);
-						jumpshipImage.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
-						jumpshipImage.addEventFilter(MouseEvent.DRAG_DETECTED, nodeGestures.getOnMouseDragDetectedEventHandler());
-					} else {
-						Image left_neutral = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_left_neutral.png")));
-						jumpshipImage.setImage(left_neutral);
-					}
-				} else {
-					if (js.isAttackReady()) {
-						Image right_red = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_right_red.png")));
-						jumpshipImage.setImage(right_red);
-					} else {
-						Image right_red = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_right_red.png")));
-						jumpshipImage.setImage(right_red);
-					}
-				}
-
-				// Remove old attack visuals
-				ArrayList<Node> lineElementsToRemove = new ArrayList<>();
-				for (Node n : attacksPane.getChildren()) {
-					if (("attackVisuals" + js.getJumpshipName()).equals(n.getId())) {
-						lineElementsToRemove.add(n);
-					}
-				}
-				attacksPane.getChildren().removeAll(lineElementsToRemove);
-
-				ArrayList<Node> backgroundElementsToRemove = new ArrayList<>();
+				ArrayList<Node> swordsIconsToRemove = new ArrayList<>();
 				for (Node n : canvas.getChildren()) {
-					if (("attackVisuals" + js.getJumpshipName()).equals(n.getId())) {
-						backgroundElementsToRemove.add(n);
+					if ("swordsIcon".equals(n.getId())) {
+						swordsIconsToRemove.add(n);
 					}
 				}
-				canvas.getChildren().removeAll(backgroundElementsToRemove);
+				canvas.getChildren().removeAll(swordsIconsToRemove);
 
-				for (BOAttack boAttack : boUniverse.attackBOs) {
-					BOStarSystem attackedSystem;
-					BOStarSystem attackerStartedFromSystem;
-					attackedSystem = boUniverse.starSystemBOs.get(boAttack.getStarSystemId());
-					attackedSystem.setCurrentlyUnderAttack(true);
-					attackerStartedFromSystem = boUniverse.starSystemBOs.get(boAttack.getAttackedFromStarSystem());
+				// update systems (owner color and active status)
+				for (BOStarSystem starSystem : boUniverse.starSystemBOs.values()) {
 
-					if (attackedSystem != null && attackerStartedFromSystem != null) {
-						Platform.runLater(() -> {
+					String colorString = boUniverse.factionBOs.get(starSystem.getAffiliation()).getColor();
+					Color c = Color.web(colorString);
+					starSystem.getStarSystemCircle().setStroke(c.deriveColor(1, 1, 1, 0.8));
+					starSystem.getStarSystemCircle().setFill(c.deriveColor(1, 1, 1, 0.4));
+
+					BOAttack a = starSystem.getAttack();
+					Image attackMarker;
+					if (a != null) {
+						if (a.getRound().equals(boUniverse.currentRound) && a.getStarSystemId().equals(starSystem.getStarSystemId())) {
+							attackMarker = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/attack2.png")));
+							double markerDim = 16.0d;
+							ImageView marker;
+							marker = new ImageView();
+							marker.setFitWidth(markerDim);
+							marker.setFitHeight(markerDim);
+							marker.setImage(attackMarker);
+							marker.setTranslateX(starSystem.getScreenX() - (markerDim / 2));
+							marker.setTranslateY(starSystem.getScreenY() - (markerDim / 2) - 12);
+							marker.setMouseTransparent(true);
+							marker.toFront();
+							marker.setId("swordsIcon");
+							canvas.getChildren().add(marker);
+						}
+					}
+
+					if (starSystem.isActive()) {
+						if (starSystem.isActiveInPhase(Nexus.getCurrentSeasonMetaPhase())) {
+							// C3Logger.debug("System is active in the current MetaPhase!");
+							starSystem.getStarSystemGroup().setOpacity(1.0d);
+							starSystem.getLevelLabel().setOpacity(1.0d);
+							if (starSystem.getIndustryImage() != null) {
+								starSystem.getIndustryImage().setOpacity(1.0d);
+							}
+							starSystem.getStarSystemGroup().setMouseTransparent(false);
+						} else {
+							// C3Logger.debug("System is NOT active in the current MetaPhase!");
+							starSystem.getStarSystemGroup().setOpacity(0.2d);
+							starSystem.getLevelLabel().setOpacity(0.2d);
+							if (starSystem.getIndustryImage() != null) {
+								starSystem.getIndustryImage().setOpacity(0.2d);
+							}
+							starSystem.getStarSystemGroup().setMouseTransparent(true);
+						}
+					}
+				}
+
+				// Move the ships
+				for (BOJumpship js : boUniverse.jumpshipBOs.values()) {
+					Long currentSystemID = js.getCurrentSystemID();
+					boolean myOwnShip = js.getJumpshipFaction() == Nexus.getCurrentUser().getCurrentCharacter().getFactionId();
+					ImageView jumpshipImage = js.getJumpshipImageView();
+
+					Long targetSystemId = null;
+					Long fallbackToSystemId = null;
+
+					ArrayDeque<String> history = new ArrayDeque<>(Arrays.asList(js.getJumpshipDTO().getStarSystemHistory().split(";")));
+					if (history.size() > 0) {
+						String targetSystemIdString = history.getLast();
+						targetSystemId = Long.parseLong(targetSystemIdString);
+						history.removeLast();
+						if (history.size() > 0) {
+							String fallbackToSystemIdString = history.getLast();
+							fallbackToSystemId = Long.parseLong(fallbackToSystemIdString);
+						}
+					}
+
+					if (myOwnShip) {
+						if (js.isAttackReady()) {
+							Image left_blue = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_left_blue_1.png")));
+							jumpshipImage.setImage(left_blue);
+							jumpshipImage.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
+							jumpshipImage.addEventFilter(MouseEvent.DRAG_DETECTED, nodeGestures.getOnMouseDragDetectedEventHandler());
+						} else {
+							Image left_neutral = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_left_neutral.png")));
+							jumpshipImage.setImage(left_neutral);
+						}
+					} else {
+						if (js.isAttackReady()) {
+							Image right_red = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_right_red.png")));
+							jumpshipImage.setImage(right_red);
+						} else {
+							Image right_red = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_right_red.png")));
+							jumpshipImage.setImage(right_red);
+						}
+					}
+
+					// Remove old attack visuals
+					ArrayList<Node> lineElementsToRemove = new ArrayList<>();
+					for (Node n : attacksPane.getChildren()) {
+						if (("attackVisuals" + js.getJumpshipName()).equals(n.getId())) {
+							lineElementsToRemove.add(n);
+						}
+					}
+					attacksPane.getChildren().removeAll(lineElementsToRemove);
+
+					ArrayList<Node> backgroundElementsToRemove = new ArrayList<>();
+					for (Node n : canvas.getChildren()) {
+						if (("attackVisuals" + js.getJumpshipName()).equals(n.getId())) {
+							backgroundElementsToRemove.add(n);
+						}
+					}
+					canvas.getChildren().removeAll(backgroundElementsToRemove);
+
+					for (BOAttack boAttack : boUniverse.attackBOs) {
+						BOStarSystem attackedSystem;
+						BOStarSystem attackerStartedFromSystem;
+						attackedSystem = boUniverse.starSystemBOs.get(boAttack.getStarSystemId());
+						attackedSystem.setCurrentlyUnderAttack(true);
+						attackerStartedFromSystem = boUniverse.starSystemBOs.get(boAttack.getAttackedFromStarSystem());
+
+						if (attackedSystem != null && attackerStartedFromSystem != null) {
 							if (Config.MAP_FLASH_ATTACKED_SYSTEMS) {
 								PointD[] points = attackedSystem.getVoronoiRegion();
 								if (points != null) {
@@ -613,44 +598,46 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 							timeline.setCycleCount(Timeline.INDEFINITE);
 							timeline.play();
 							attacksPane.getChildren().add(line);
-						});
+						}
+					}
+
+					if (currentSystemID != null && targetSystemId != null) {
+						// TODO: Check if the attack succeeded or if the unit lost (then move backwards and delete route)
+						// TODO: If the fallback system has been taken by the enemy, trigger a new event here. Scenario "Fighting retreat"?
+						// TODO: Check what faction owns the target system
+						if (!currentSystemID.equals(targetSystemId)) {
+							ImageView jsi = js.getJumpshipImageView();
+							jsi.setMouseTransparent(true);
+							jsi.toFront();
+							jsi.setVisible(true);
+
+							TranslateTransition transition = new TranslateTransition(Duration.millis(500), jsi);
+							transition.setFromX(jsi.getTranslateX());
+							transition.setFromY(jsi.getTranslateY());
+							transition.setToX(boUniverse.starSystemBOs.get(targetSystemId).getScreenX() - 35);
+							transition.setToY(boUniverse.starSystemBOs.get(targetSystemId).getScreenY() - 8);
+							transition.setOnFinished(event -> {
+								jsi.setMouseTransparent(false);
+								ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute();
+							});
+							transition.playFromStart();
+						}
+						jumpshipImage.setMouseTransparent(false);
+						jumpshipImage.toFront();
+
+						js.setCurrentSystemID(targetSystemId);
+						js.setRoute(boUniverse.routesList.get(js.getJumpshipId()));
+					} else {
+						C3Logger.info("Jumpship '" + js.getJumpshipName() + "' has no current system. Seems to be a mistake!");
 					}
 				}
-
-				if (currentSystemID != null && targetSystemId != null) {
-					// TODO: Check if the attack succeeded or if the unit lost (then move backwards and delete route)
-					// TODO: If the fallback system has been taken by the enemy, trigger a new event here. Scenario "Fighting retreat"?
-					// TODO: Check what faction owns the target system
-					if (!currentSystemID.equals(targetSystemId)) {
-						ImageView jsi = js.getJumpshipImageView();
-						jsi.setMouseTransparent(true);
-						jsi.toFront();
-						jsi.setVisible(true);
-
-						TranslateTransition transition = new TranslateTransition(Duration.millis(500), jsi);
-						transition.setFromX(jsi.getTranslateX());
-						transition.setFromY(jsi.getTranslateY());
-						transition.setToX(boUniverse.starSystemBOs.get(targetSystemId).getScreenX() - 35);
-						transition.setToY(boUniverse.starSystemBOs.get(targetSystemId).getScreenY() - 8);
-						transition.setOnFinished(event -> jsi.setMouseTransparent(false));
-						transition.playFromStart();
-					}
-					jumpshipImage.setMouseTransparent(false);
-					jumpshipImage.toFront();
-
-					js.setCurrentSystemID(targetSystemId);
-					js.setRoute(boUniverse.routesList.get(js.getJumpshipId()));
-				} else {
-					C3Logger.info("Jumpship '" + js.getJumpshipName() + "' has no current system. Seems to be a mistake!");
-				}
-			}
-			Platform.runLater(() -> {
 				canvas.getChildren().remove(borders);
 				borders = VoronoiDelaunay.updateAreas();
 				canvas.getChildren().add(borders);
 				borders.toBack();
-			});
-		}
+
+			}
+		});
 	}
 
 	/**
@@ -1527,9 +1514,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 			case NEW_UNIVERSE_RECEIVED:
 				C3Logger.info("Received new universe, repainting map.");
-				Platform.runLater(this::refreshUniverseMap);
+				refreshUniverseMap();
 				ActionManager.getAction(ACTIONS.UPDATE_GAME_INFO).execute();
-				ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute();
 				break;
 
 			case CHANGE_LANGUAGE:

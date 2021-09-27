@@ -30,6 +30,7 @@ import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.CacheHint;
 import javafx.scene.control.*;
@@ -38,9 +39,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -785,7 +784,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			if (logPane == null) {
 				logPane = new LogPane(stage, Internationalization.getLocale());
 			} else {
-				if (logPane.isVisible) {
+				if (LogPane.isVisible) {
 					logPane.hide();
 				} else {
 					logPane.show();
@@ -1104,7 +1103,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		noiseImage.setVisible(false);
 		noiseImage.toFront();
 
-		Image helpImg = new Image(getClass().getResourceAsStream("/images/buttons/help.png"));
+		Image helpImg = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/help.png")));
 		ImageView view = new ImageView(helpImg);
 		view.setFitHeight(16);
 		view.setPreserveRatio(true);
@@ -1770,6 +1769,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				Nexus.setMainFrameEnabled(true);
 				Platform.runLater(() -> {
 					mouseStopper.toFront();
+//					mouseStopper.setBackground(null);
 					waitAnimationPane.showCircleAnimation(false);
 					mouseStopper.setMouseTransparent(true);
 				});
@@ -1780,6 +1780,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				Nexus.setMainFrameEnabled(false);
 				Platform.runLater(() -> {
 					mouseStopper.toFront();
+//					mouseStopper.setBackground(new Background(new BackgroundFill(Color.BLUE, new CornerRadii(0), Insets.EMPTY)));
 					waitAnimationPane.showCircleAnimation(true);
 					mouseStopper.setMouseTransparent(false);
 				});

@@ -27,6 +27,7 @@
 package net.clanwolf.starmap.client.process.universe;
 
 import javafx.scene.shape.Path;
+import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.transfer.dtos.FactionDTO;
 import org.kynosarges.tektosyne.geometry.PointD;
@@ -38,6 +39,28 @@ public class BOFaction {
 	private FactionDTO factionDTO;
 	private Path backgroundPath;
 	private ArrayList<PointD[]> voronoiRegions = new ArrayList<>();
+
+	public int getNumberOfSystemsOwned() {
+		int i = 0;
+		for (BOStarSystem ss : Nexus.getBoUniverse().starSystemBOs.values()) {
+			if (ss.getFactionId() == Nexus.getCurrentChar().getFactionId().longValue()) {
+				i++;
+			}
+		}
+		return i;
+	}
+
+	public int getNumberOfSystemsContested() {
+		int i = 0;
+		for (BOStarSystem ss : Nexus.getBoUniverse().starSystemBOs.values()) {
+			if (ss.getFactionId() == Nexus.getCurrentChar().getFactionId().longValue()) {
+				if (ss.isCurrentlyAttacked()) {
+					i++;
+				}
+			}
+		}
+		return i;
+	}
 
 	@SuppressWarnings("unused")
 	public void clearRegions() {

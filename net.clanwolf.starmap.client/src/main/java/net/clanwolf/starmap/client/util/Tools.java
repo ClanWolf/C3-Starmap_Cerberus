@@ -78,6 +78,7 @@ public final class Tools {
 		// do nothing
 	}
 
+	@SuppressWarnings("unused")
 	public static String getJavaVersion() {
 		return (System.getProperty("java.version"));
 	}
@@ -91,6 +92,7 @@ public final class Tools {
 	 *
 	 * @return sysdate as string
 	 */
+	@SuppressWarnings("unused")
 	public static String getClientSysdate() {
 		GregorianCalendar cal = new GregorianCalendar();
 		cal.setTimeZone(TimeZone.getTimeZone("ECT"));
@@ -113,7 +115,7 @@ public final class Tools {
 				File file1 = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "history" + File.separator + "C3_Season" + Nexus.getCurrentSeason() + "_map.png");
 				File file2 = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "history" + File.separator + "C3_Season" + Nexus.getCurrentSeason() + "_Round" + Nexus.getCurrentRound() + "_" + Nexus.getCurrentChar() + "_map_history.png");
 				if (!file1.mkdirs()) {
-					// C3Logger.error("Could not create history folder!");
+					// C3Logger.error("Could not create history folder or it already existed!");
 				}
 				BufferedImage bi = SwingFXUtils.fromFXImage(canvas.snapshot(null, wi), null);
 
@@ -215,6 +217,7 @@ public final class Tools {
 	 * @param days Days
 	 * @return String
 	 */
+	@SuppressWarnings("unused")
 	public static String addDayToDate(String date, int days) {
 		GregorianCalendar c = Tools.getCalendar(date);
 		c.add(Calendar.DATE, days);
@@ -222,6 +225,7 @@ public final class Tools {
 		return df.format(c.getTime());
 	}
 
+	@SuppressWarnings("unused")
 	public static void startBrowser(String url) {
 		try {
 			startBrowser(new URL(url));
@@ -250,6 +254,7 @@ public final class Tools {
 		C3SoundPlayer.play("/sound/fx/button_hover_02.mp3", false);
 	}
 
+	@SuppressWarnings("unused")
 	public static void playButtonHoverSound3() {
 		C3SoundPlayer.play("/sound/fx/button_clicked_01.mp3", false);
 	}
@@ -286,7 +291,7 @@ public final class Tools {
 	}
 
 	public static void cleanDirectory(File dir, long numberOfDays) {
-		for (File file: dir.listFiles()) {
+		for (File file: Objects.requireNonNull(dir.listFiles())) {
 			if (file.isDirectory()) {
 				cleanDirectory(file, numberOfDays);
 			}
@@ -299,22 +304,28 @@ public final class Tools {
 //			System.out.println("diff: " + diff);
 
 			if (numberOfDays * 24 * 60 * 60 * 1000 < diff) {
-				file.delete();
+				boolean success = file.delete();
+				if (!success) {
+					C3Logger.info("File could not be deleted: " + file.getAbsolutePath());
+				}
 			} else {
 				// file will be left
 			}
 		}
 	}
 	public static void purgeDirectory(File dir) {
-		for (File file: dir.listFiles()) {
+		for (File file: Objects.requireNonNull(dir.listFiles())) {
 			if (file.isDirectory()) {
 				purgeDirectory(file);
 			}
-			file.delete();
+			boolean success = file.delete();
+			if (!success) {
+				C3Logger.info("File could not be deleted: " + file.getAbsolutePath());
+			}
 		}
 	}
 	public static void listDirectory(File dir) {
-		for (File file: dir.listFiles()) {
+		for (File file: Objects.requireNonNull(dir.listFiles())) {
 			if (file.isDirectory()) {
 				listDirectory(file);
 			}

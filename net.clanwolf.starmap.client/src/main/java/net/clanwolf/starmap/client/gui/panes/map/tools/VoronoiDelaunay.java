@@ -34,7 +34,6 @@ import net.clanwolf.starmap.client.gui.panes.map.Config;
 import net.clanwolf.starmap.client.process.universe.BOFaction;
 import net.clanwolf.starmap.client.process.universe.BOStarSystem;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
-import net.clanwolf.starmap.logging.C3Logger;
 import org.kynosarges.tektosyne.geometry.*;
 
 public class VoronoiDelaunay {
@@ -52,7 +51,6 @@ public class VoronoiDelaunay {
 
 		// check what voronoi region contains the current star system
 		for (BOStarSystem ss : boUniverse.starSystemBOs.values()) {
-			C3Logger.info(ss.getName() + " / " + ss.getAffiliation());
 			BOFaction faction = boUniverse.factionBOs.get(ss.getAffiliation());
 			faction.addVoronoiRegion(ss.getVoronoiRegion());
 		}

@@ -27,11 +27,9 @@
 package net.clanwolf.starmap.transfer.dtos;
 
 import net.clanwolf.starmap.transfer.Dto;
-import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class AttackDTO extends Dto {
 
@@ -181,18 +179,22 @@ public class AttackDTO extends Dto {
 		this.factionID_Defender = defenderID;
 	}
 
+	@SuppressWarnings("unused")
 	public List<AttackVarsDTO> getAttackVarList() {
 		return attackVarList;
 	}
 
+	@SuppressWarnings("unused")
 	public void setAttackVarList(List<AttackVarsDTO> attackVarList) {
 		this.attackVarList = attackVarList;
 	}
 
+	@SuppressWarnings("unused")
 	public List<AttackCharacterDTO> getAttackCharList() {
 		return attackCharList;
 	}
 
+	@SuppressWarnings("unused")
 	public void setAttackCharList(List<AttackCharacterDTO> attackCharList) {
 		this.attackCharList = attackCharList;
 	}
