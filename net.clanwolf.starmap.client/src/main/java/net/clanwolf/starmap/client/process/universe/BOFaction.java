@@ -33,6 +33,7 @@ import net.clanwolf.starmap.transfer.dtos.FactionDTO;
 import org.kynosarges.tektosyne.geometry.PointD;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class BOFaction {
 
@@ -40,7 +41,19 @@ public class BOFaction {
 	private Path backgroundPath;
 	private ArrayList<PointD[]> voronoiRegions = new ArrayList<>();
 
-	public int getNumberOfSystemsOwned() {
+	@SuppressWarnings("unused")
+	public int getSystemsCountAttacking() {
+		int i = 0;
+		for (BOAttack a : Nexus.getBoUniverse().attackBOs) {
+			if (Objects.equals(a.getAttackerFactionId(), Nexus.getCurrentChar().getFactionId())) {
+				i++;
+			}
+		}
+		return i;
+	}
+
+	@SuppressWarnings("unused")
+	public int getSystemCountAll() {
 		int i = 0;
 		for (BOStarSystem ss : Nexus.getBoUniverse().starSystemBOs.values()) {
 			if (ss.getFactionId() == Nexus.getCurrentChar().getFactionId().longValue()) {
@@ -50,7 +63,8 @@ public class BOFaction {
 		return i;
 	}
 
-	public int getNumberOfSystemsContested() {
+	@SuppressWarnings("unused")
+	public int getSystemCountDefending() {
 		int i = 0;
 		for (BOStarSystem ss : Nexus.getBoUniverse().starSystemBOs.values()) {
 			if (ss.getFactionId() == Nexus.getCurrentChar().getFactionId().longValue()) {
@@ -60,6 +74,99 @@ public class BOFaction {
 			}
 		}
 		return i;
+	}
+
+	@SuppressWarnings("unused")
+	public int getSystemCountRegular() {
+		int i = 0;
+		for (BOStarSystem ss : Nexus.getBoUniverse().starSystemBOs.values()) {
+			if (ss.getFactionId() == Nexus.getCurrentChar().getFactionId().longValue()) {
+				if (ss.getLevel() == 1) {
+					i++;
+				}
+			}
+		}
+		return i;
+	}
+
+	@SuppressWarnings("unused")
+	public int getSystemCountIndustrial() {
+		int i = 0;
+		for (BOStarSystem ss : Nexus.getBoUniverse().starSystemBOs.values()) {
+			if (ss.getFactionId() == Nexus.getCurrentChar().getFactionId().longValue()) {
+				if (ss.getLevel() == 2) {
+					i++;
+				}
+			}
+		}
+		return i;
+	}
+
+	@SuppressWarnings("unused")
+	public int getSystemCountCapital() {
+		int i = 0;
+		for (BOStarSystem ss : Nexus.getBoUniverse().starSystemBOs.values()) {
+			if (ss.getFactionId() == Nexus.getCurrentChar().getFactionId().longValue()) {
+				if (ss.getLevel() == 3) {
+					i++;
+				}
+			}
+		}
+		return i;
+	}
+
+	public double getIncome() {
+		double d = 0;
+		for (BOStarSystem ss : Nexus.getBoUniverse().starSystemBOs.values()) {
+			if (ss.getFactionId() == Nexus.getCurrentChar().getFactionId().longValue()) {
+				switch (ss.getLevel().intValue()) {
+					case 1 -> // Regular world
+							d = d + 250;
+					case 2 -> // Industrial world
+							d = d + 1_500;
+					case 3 -> // Captial world
+							d = d + 5_000;
+				}
+			}
+		}
+		return d;
+	}
+
+	public double getCost() {
+		double d = 0;
+		for (BOStarSystem ss : Nexus.getBoUniverse().starSystemBOs.values()) {
+			if (ss.getFactionId() == Nexus.getCurrentChar().getFactionId().longValue()) {
+				switch (ss.getLevel().intValue()) {
+					case 1 -> { // Regular world
+						d = d + 150;
+						if (ss.isCurrentlyAttacked()) d = d + 120;
+					}
+					case 2 -> { // Industrial world
+						d = d + 1_000;
+						if (ss.isCurrentlyAttacked()) d = d + 300;
+					}
+					case 3 -> { // Captial world
+						d = d + 2_000;
+						if (ss.isCurrentlyAttacked()) d = d + 500;
+					}
+				}
+			}
+			// Attacking starsystems is expensive
+			if (ss.getAttack() != null) {
+				if (Objects.equals(ss.getAttack().getAttackerFactionId(), Nexus.getCurrentChar().getFactionId())) {
+					d = switch (ss.getLevel().intValue()) {
+						case 1 -> // Regular world
+								d + 3_000;
+						case 2 -> // Industrial world
+								d + 6_000;
+						case 3 -> // Captial world
+								d + 10_000;
+						default -> d;
+					};
+				}
+			}
+		}
+		return d;
 	}
 
 	@SuppressWarnings("unused")

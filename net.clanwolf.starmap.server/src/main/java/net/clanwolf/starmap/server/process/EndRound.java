@@ -44,6 +44,7 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class EndRound {
@@ -151,8 +152,6 @@ public class EndRound {
 	public synchronized static String finalizeRound(Long seasonId, int round) {
 		C3Logger.info("Checking on end of round.");
 		ArrayList<JumpshipPOJO> jumpshipList = JumpshipDAO.getInstance().getAllJumpships();
-		//ArrayList<JumpshipPOJO> jumpshipList = new ArrayList<>();
-
 		ArrayList<AttackPOJO> openAttacksInRoundList = AttackDAO.getInstance().getOpenAttacksOfASeasonForRound(seasonId, round);
 
 		C3Logger.debug("Current date: " + new Date(System.currentTimeMillis()));
@@ -163,16 +162,7 @@ public class EndRound {
 		boolean jumpshipsLeftToMove = false;
 		int jscount = 0;
 
-		/*JumpshipDAO jsDaoHelp = JumpshipDAO.getInstance();
-		for (JumpshipPOJO js : jumpshipListHELP) {
-
-			JumpshipPOJO jsHelp = jsDaoHelp.findById(Nexus.DUMMY_USERID, js.getId());
-			jsDaoHelp.refresh(Nexus.DUMMY_USERID, jsHelp);
-			jumpshipList.add(jsHelp);
-		}*/
-
 		for (JumpshipPOJO js : jumpshipList) {
-
 			if (js.getAttackReady()) {
 				jumpshipsLeftToMove = true;
 				jscount++;
@@ -293,6 +283,96 @@ public class EndRound {
 					ssdDAO.update(Nexus.DUMMY_USERID, ssdPojo);
 				}
 				transaction.commit();
+
+				// ---------------------------------------------------------------------------
+
+				// TODO: Calculate income and cost for each faction
+				// see BOFaction for the numbers!
+
+				// Generate faction statistic data
+				ArrayList<FactionPOJO> factionList = FactionDAO.getInstance().getAllFactions();
+				ArrayList<StarSystemDataPOJO> starsystemdataList = StarSystemDataDAO.getInstance().getAll_HH_StarSystemData();
+
+				HashMap<Long, Double> costMap = new HashMap<>();
+				HashMap<Long, Double> incomeMap = new HashMap<>();
+				HashMap<Long, Integer> systemCountAll = new HashMap<>();
+				HashMap<Long, Integer> systemCountAttacking = new HashMap<>();
+				HashMap<Long, Integer> systemCountDefending = new HashMap<>();
+				HashMap<Long, Integer> systemCountRegular = new HashMap<>();
+				HashMap<Long, Integer> systemCountIndustrial = new HashMap<>();
+				HashMap<Long, Integer> systemCountCapital = new HashMap<>();
+				for (FactionPOJO faction : factionList) {
+					double cost = 0;
+					double income = 0;
+					int countAll = 0;
+					int countAttacking = 0;
+					int countDefending = 0;
+					int countRegular = 0;
+					int countIndustrial = 0;
+					int countCapital = 0;
+					for (StarSystemDataPOJO starsystemdata : starsystemdataList) {
+						if (starsystemdata.getFactionID().getId().equals(faction.getId())) {
+							countAll++;
+							switch (starsystemdata.getLevel().intValue()) {
+								case 1 -> { // Regular
+									countRegular++;
+									income = income + 250;
+									cost = cost + 150;
+								}
+								case 2 -> { // Industrial
+									countIndustrial++;
+									income = income + 1_500;
+									cost = cost + 1_000;
+								}
+								case 3 -> { // Capital
+									countCapital++;
+									income = income + 5_000;
+									cost = cost + 2_000;
+								}
+							}
+						}
+						for (AttackPOJO a : AttackDAO.getInstance().getAllAttacksOfASeasonForRound(seasonId, round)) {
+							if (a.getFactionID_Defender().equals(faction.getId())) {
+								countDefending++;
+								switch (starsystemdata.getLevel().intValue()) {
+									case 1 -> { // Regular world
+										cost = cost + 120;
+									}
+									case 2 -> { // Industrial world
+										cost = cost + 300;
+									}
+									case 3 -> { // Captial world
+										cost = cost + 500;
+									}
+								}
+							}
+							for (JumpshipPOJO jumpshipPOJO : jumpshipList) {
+								if (jumpshipPOJO.getId().equals(a.getJumpshipID())) {
+									countAttacking++;
+									switch (starsystemdata.getLevel().intValue()) {
+										case 1 -> { // Regular world
+											cost = cost + 3_000;
+										}
+										case 2 -> { // Industrial world
+											cost = cost + 6_000;
+										}
+										case 3 -> { // Captial world
+											cost = cost + 10_000;
+										}
+									}
+								}
+							}
+						}
+					}
+					costMap.put(faction.getId(), cost);
+					incomeMap.put(faction.getId(), income);
+					systemCountAll.put(faction.getId(), countAll);
+					systemCountAttacking.put(faction.getId(), countAttacking);
+					systemCountDefending.put(faction.getId(), countDefending);
+					systemCountRegular.put(faction.getId(), countRegular);
+					systemCountIndustrial.put(faction.getId(), countIndustrial);
+					systemCountCapital.put(faction.getId(), countCapital);
+				}
 
 				endRoundInfo.addObject(null);
 				endRoundInfo.setAction_successfully(Boolean.TRUE);

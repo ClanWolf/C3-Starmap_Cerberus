@@ -51,6 +51,8 @@ import net.clanwolf.starmap.transfer.dtos.UserDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 
 import java.net.URL;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -115,6 +117,8 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 	@FXML
 	private Label labelIncome;
 	@FXML
+	private Label labelCost;
+	@FXML
 	private Label labelSystems;
 	@FXML
 	private Label labelAtWar;
@@ -122,6 +126,8 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 	private Label valueBalance;
 	@FXML
 	private Label valueIncome;
+	@FXML
+	private Label valueCost;
 	@FXML
 	private Label valueSystems;
 	@FXML
@@ -244,8 +250,8 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 
 				// set values
 				valueUsername.setText(user.getUserName());
-				valueLastLogin.setText(user.getLastLogin() + "");
-				valueCreated.setText(user.getCreated() + "");
+				valueLastLogin.setText(new SimpleDateFormat("dd.MM.yyyy HH:mm").format(user.getLastLogin()));
+				valueCreated.setText(new SimpleDateFormat("dd.MM.yyyy HH:mm").format(user.getCreated()));
 
 				for (BOFaction f : Nexus.getBoUniverse().factionBOs.values()) {
 					if (f.getID() == Nexus.getCurrentChar().getFactionId().longValue()) {
@@ -257,8 +263,18 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 				ivFactionLogo.setImage(imageFaction);
 				labelFaction.setText(factionOfCurrentChar.getLocalizedName()); // left panel
 				labelFactionName.setText(factionOfCurrentChar.getLocalizedName()); // right panel
-				valueSystems.setText("" + factionOfCurrentChar.getNumberOfSystemsOwned());
-				valueAtWar.setText("" + factionOfCurrentChar.getNumberOfSystemsContested());
+				valueSystems.setText("" + factionOfCurrentChar.getSystemCountAll());
+				valueAtWar.setText("" + factionOfCurrentChar.getSystemCountDefending());
+
+				double income = factionOfCurrentChar.getIncome();
+				double cost = factionOfCurrentChar.getCost();
+				double balance = income - cost;
+
+				DecimalFormat df = new DecimalFormat("###,###,###.##");
+
+				valueIncome.setText(df.format(income) + " k₵");
+				valueCost.setText(df.format(cost) + " k₵");
+				valueBalance.setText(df.format(balance) + " k₵");
 			}
 		});
 	}
@@ -351,6 +367,7 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 			labelCharXP.setText(Internationalization.getString("app_user_info_panel_charxp"));
 			labelBalance.setText(Internationalization.getString("app_user_info_panel_balance"));
 			labelIncome.setText(Internationalization.getString("app_user_info_panel_income"));
+			labelCost.setText(Internationalization.getString("app_user_info_panel_cost"));
 			labelSystems.setText(Internationalization.getString("app_user_info_panel_systems"));
 			labelAtWar.setText(Internationalization.getString("app_user_info_panel_contested"));
 			labelLastLogin.setText(Internationalization.getString("app_user_info_panel_lastlogin"));

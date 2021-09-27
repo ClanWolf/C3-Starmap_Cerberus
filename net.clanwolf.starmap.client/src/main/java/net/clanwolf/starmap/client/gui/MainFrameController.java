@@ -128,6 +128,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private final Image imageAdminButtonOff = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/adminOff.png")));
 	private final Image imageAdminButtonOn = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/adminOn.png")));
 
+	private boolean helpvoiceplayedonce = false;
+
 	@FXML
 	private Label statuslabel;
 	@FXML
@@ -264,7 +266,10 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		helpLabel.setText("");
 		setStatusText(Internationalization.getString("app_pane_open_manual_infotext"), false);
 		Tools.playButtonHoverSound();
-		C3SoundPlayer.getTTSFile(Internationalization.getString("app_web_help"));
+		if (!helpvoiceplayedonce) {
+			C3SoundPlayer.getTTSFile(Internationalization.getString("app_web_help"));
+			helpvoiceplayedonce = true;
+		}
 	}
 
 	@FXML

@@ -96,54 +96,65 @@
             <Image url="@../images/logos/factions/CW.png" />
          </image>
       </ImageView>
-      <GridPane layoutX="634.0" layoutY="326.0" prefHeight="68.0" prefWidth="168.0">
+      <GridPane layoutX="634.0" layoutY="326.0" prefHeight="90.0" prefWidth="168.0">
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="95.5" minWidth="10.0" prefWidth="86.5" />
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="86.5" minWidth="10.0" prefWidth="81.5" />
          </columnConstraints>
          <rowConstraints>
-            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
-            <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="18.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="18.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="18.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="18.0" vgrow="SOMETIMES" />
+	        <RowConstraints minHeight="10.0" prefHeight="18.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Label fx:id="labelBalance" styleClass="contentLabel" text="Balance:">
+            <Label fx:id="labelBalance" styleClass="contentLabel" text="Balance:" GridPane.rowIndex="4">
                <stylesheets>
                   <URL value="@../styles/MainFrameStyle.css" />
                </stylesheets>
             </Label>
-            <Label fx:id="labelIncome" styleClass="contentLabel" text="Income:" GridPane.rowIndex="1">
+            <Label fx:id="labelIncome" styleClass="contentLabel" text="Income:" GridPane.rowIndex="2">
                <stylesheets>
                   <URL value="@../styles/MainFrameStyle.css" />
                </stylesheets>
             </Label>
-            <Label fx:id="labelSystems" styleClass="contentLabel" text="Systems:" GridPane.rowIndex="2">
+	         <Label fx:id="labelCost" styleClass="contentLabel" text="Cost:" GridPane.rowIndex="3">
+		         <stylesheets>
+			         <URL value="@../styles/MainFrameStyle.css" />
+		         </stylesheets>
+	         </Label>
+            <Label fx:id="labelSystems" styleClass="contentLabel" text="Systems:">
                <stylesheets>
                   <URL value="@../styles/MainFrameStyle.css" />
                </stylesheets>
             </Label>
-            <Label fx:id="labelAtWar" styleClass="contentLabel" text="Contested:" GridPane.rowIndex="3">
+            <Label fx:id="labelAtWar" styleClass="contentLabel" text="Contested:" GridPane.rowIndex="1">
                <stylesheets>
                   <URL value="@../styles/MainFrameStyle.css" />
                </stylesheets>
             </Label>
-            <Label fx:id="valueBalance" prefHeight="16.0" prefWidth="84.0" styleClass="contentLabel" text="Balance" GridPane.columnIndex="1">
+            <Label fx:id="valueBalance" alignment="TOP_RIGHT" contentDisplay="RIGHT" prefHeight="16.0" prefWidth="84.0" styleClass="contentLabel" text="Balance" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <stylesheets>
                   <URL value="@../styles/MainFrameStyle.css" />
                </stylesheets>
             </Label>
-            <Label fx:id="valueIncome" prefHeight="16.0" prefWidth="84.0" styleClass="contentLabel" text="Income" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <Label fx:id="valueIncome" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="16.0" prefWidth="84.0" styleClass="contentLabel" text="Income" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <stylesheets>
                   <URL value="@../styles/MainFrameStyle.css" />
                </stylesheets>
             </Label>
-            <Label fx:id="valueSystems" prefHeight="16.0" prefWidth="84.0" styleClass="contentLabel" text="Systems" GridPane.columnIndex="1" GridPane.rowIndex="2">
+	         <Label fx:id="valueCost" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="16.0" prefWidth="84.0" styleClass="contentLabel" text="Cost" GridPane.columnIndex="1" GridPane.rowIndex="3">
+		         <stylesheets>
+			         <URL value="@../styles/MainFrameStyle.css" />
+		         </stylesheets>
+	         </Label>
+            <Label fx:id="valueSystems" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="16.0" prefWidth="84.0" styleClass="contentLabel" text="Systems" GridPane.columnIndex="1">
                <stylesheets>
                   <URL value="@../styles/MainFrameStyle.css" />
                </stylesheets>
             </Label>
-            <Label fx:id="valueAtWar" prefHeight="16.0" prefWidth="84.0" styleClass="contentLabel" text="Contested" GridPane.columnIndex="1" GridPane.rowIndex="3">
+            <Label fx:id="valueAtWar" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="16.0" prefWidth="84.0" styleClass="contentLabel" text="Contested" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <stylesheets>
                   <URL value="@../styles/MainFrameStyle.css" />
                </stylesheets>
