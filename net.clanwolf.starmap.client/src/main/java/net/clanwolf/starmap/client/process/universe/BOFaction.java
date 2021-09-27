@@ -116,20 +116,12 @@ public class BOFaction {
 	}
 
 	public double getIncome() {
-		double d = 0;
-		for (BOStarSystem ss : Nexus.getBoUniverse().starSystemBOs.values()) {
-			if (ss.getFactionId() == Nexus.getCurrentChar().getFactionId().longValue()) {
-				switch (ss.getLevel().intValue()) {
-					case 1 -> // Regular world
-							d = d + 250;
-					case 2 -> // Industrial world
-							d = d + 1_500;
-					case 3 -> // Captial world
-							d = d + 5_000;
-				}
-			}
-		}
-		return d;
+		double income = 0;
+		income = income + getSystemCountRegular() * 250;
+		income = income + getSystemCountIndustrial() * 1_500;
+		income = income + getSystemCountCapital() * 5_000;
+
+		return income;
 	}
 
 	public double getCost() {
