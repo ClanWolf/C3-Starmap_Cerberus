@@ -86,4 +86,17 @@ public class StarSystemDataDAO extends GenericDAO {
 
 		return lRPS;
 	}
+
+	public ArrayList<Long> getAll_HH_FactionIds(){
+		CriteriaHelper crit = new CriteriaHelper(StarSystemDataPOJO.class);
+
+		List<Object> lRes = crit.getResultList();
+
+		Iterator<Object> iter = lRes.iterator();
+		ArrayList<Long> lRPS = new ArrayList<>();
+
+		while (iter.hasNext()) lRPS.add(((StarSystemDataPOJO) iter.next()).getFactionID().getId());
+
+		return lRPS;
+	}
 }

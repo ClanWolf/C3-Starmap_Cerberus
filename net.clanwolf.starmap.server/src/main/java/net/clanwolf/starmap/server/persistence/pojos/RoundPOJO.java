@@ -54,8 +54,8 @@ public class RoundPOJO extends Pojo {
 	@Column(name = "Season")
 	private Long season;
 
-	@Column(name = "CurrentPhase")
-	private Long currentPhase;
+//	@Column(name = "CurrentPhase")
+//	private Long currentPhase;
 
 	@Column(name = "CurrentRoundStartDate")
 	private Date currentRoundStartDate;
@@ -100,13 +100,13 @@ public class RoundPOJO extends Pojo {
 		this.season = season;
 	}
 
-	@SuppressWarnings("unused")
-	public Long getCurrentPhase() {
-		return currentPhase;
-	}
-
-	@SuppressWarnings("unused")
-	public void setCurrentPhase(Long currentPhase) {
-		this.currentPhase = currentPhase;
-	}
+//	@SuppressWarnings("unused")
+//	public Long getCurrentPhase() {
+//		return currentPhase;
+//	}
+//
+//	@SuppressWarnings("unused")
+//	public void setCurrentPhase(Long currentPhase) {
+//		this.currentPhase = currentPhase;
+//	}
 }

@@ -202,7 +202,7 @@ public class EndRound {
 				FactionPOJO fWinnerPojo = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, winnerId);
 				FactionPOJO fJumpshipPOJO = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, jsPojo.getJumpshipFactionID());
 
-				resolvedAttacks.append("Jumpship '" + jsPojo.getJumpshipName() + "' (" + jsPojo.getId() + ") of " + fJumpshipPOJO.getShortName() + " (").append(attackPOJO.getJumpshipID()).append(") attacked system '" + ssPojo.getName() + "' (" + ssPojo.getId() + ") ").append("--> resolved to winner: ").append(fWinnerPojo.getShortName() + " (" + attackPOJO.getFactionID_Winner() + ").").append("\r\n");
+				resolvedAttacks.append("Jumpship '").append(jsPojo.getJumpshipName()).append("' (").append(jsPojo.getId()).append(") of ").append(fJumpshipPOJO.getShortName()).append(" (").append(attackPOJO.getJumpshipID()).append(") attacked system '").append(ssPojo.getName()).append("' (").append(ssPojo.getId()).append(") ").append("--> resolved to winner: ").append(fWinnerPojo.getShortName() + " (" + attackPOJO.getFactionID_Winner() + ").").append("\r\n");
 			}
 
 			// Count the round indicator up once
@@ -242,6 +242,7 @@ public class EndRound {
 
 			// Save everything to the database
 			String exceptionWhileSaving = "";
+			ArrayList<String> factionStatistics = new ArrayList<>();
 
 			AttackDAO attackDAO = AttackDAO.getInstance();
 			JumpshipDAO jumpshipDAO = JumpshipDAO.getInstance();
@@ -287,22 +288,22 @@ public class EndRound {
 
 				// ---------------------------------------------------------------------------
 
-				// TODO: Calculate income and cost for each faction
+				// TODO: Calculate income and cost for each faction in HH
 				// see BOFaction for the numbers!
 
 				// Generate faction statistic data
-				ArrayList<FactionPOJO> factionList = FactionDAO.getInstance().getAllFactions();
-				ArrayList<StarSystemDataPOJO> starsystemdataList = StarSystemDataDAO.getInstance().getAll_HH_StarSystemData();
+				ArrayList<FactionPOJO> factionListHH = FactionDAO.getInstance().getAll_HH_Factions();
+				ArrayList<StarSystemDataPOJO> starsystemdataListHH = StarSystemDataDAO.getInstance().getAll_HH_StarSystemData();
 
-				HashMap<Long, Double> costMap = new HashMap<>();
-				HashMap<Long, Double> incomeMap = new HashMap<>();
+				HashMap<Long, Double> systemCostMap = new HashMap<>();
+				HashMap<Long, Double> systemIncomeMap = new HashMap<>();
 				HashMap<Long, Integer> systemCountAll = new HashMap<>();
 				HashMap<Long, Integer> systemCountAttacking = new HashMap<>();
 				HashMap<Long, Integer> systemCountDefending = new HashMap<>();
 				HashMap<Long, Integer> systemCountRegular = new HashMap<>();
 				HashMap<Long, Integer> systemCountIndustrial = new HashMap<>();
 				HashMap<Long, Integer> systemCountCapital = new HashMap<>();
-				for (FactionPOJO faction : factionList) {
+				for (FactionPOJO faction : factionListHH) {
 					double cost = 0;
 					double income = 0;
 					int countAll = 0;
@@ -311,7 +312,7 @@ public class EndRound {
 					int countRegular = 0;
 					int countIndustrial = 0;
 					int countCapital = 0;
-					for (StarSystemDataPOJO starsystemdata : starsystemdataList) {
+					for (StarSystemDataPOJO starsystemdata : starsystemdataListHH) {
 						if (starsystemdata.getFactionID().getId().equals(faction.getId())) {
 							countAll++;
 							switch (starsystemdata.getLevel().intValue()) {
@@ -336,37 +337,45 @@ public class EndRound {
 							if (a.getFactionID_Defender().equals(faction.getId())) {
 								countDefending++;
 								switch (starsystemdata.getLevel().intValue()) {
-									case 1 -> { // Regular world
-										cost = cost + Constants.REGULAR_SYSTEM_DEFEND_COST;
-									}
-									case 2 -> { // Industrial world
-										cost = cost + Constants.INDUSTRIAL_SYSTEM_DEFEND_COST;
-									}
-									case 3 -> { // Captial world
-										cost = cost + Constants.CAPITAL_SYSTEM_DEFEND_COST;
-									}
+									case 1 -> // Regular world
+											cost = cost + Constants.REGULAR_SYSTEM_DEFEND_COST;
+									case 2 -> // Industrial world
+											cost = cost + Constants.INDUSTRIAL_SYSTEM_DEFEND_COST;
+									case 3 -> // Captial world
+											cost = cost + Constants.CAPITAL_SYSTEM_DEFEND_COST;
 								}
 							}
 							for (JumpshipPOJO jumpshipPOJO : jumpshipList) {
 								if (jumpshipPOJO.getId().equals(a.getJumpshipID())) {
 									countAttacking++;
 									switch (starsystemdata.getLevel().intValue()) {
-										case 1 -> { // Regular world
-											cost = cost + Constants.REGULAR_SYSTEM_ATTACK_COST;
-										}
-										case 2 -> { // Industrial world
-											cost = cost + Constants.INDUSTRIAL_SYSTEM_ATTACK_COST;
-										}
-										case 3 -> { // Captial world
-											cost = cost + Constants.CAPITAL_SYSTEM_ATTACK_COST;
-										}
+										case 1 -> // Regular world
+												cost = cost + Constants.REGULAR_SYSTEM_ATTACK_COST;
+										case 2 -> // Industrial world
+												cost = cost + Constants.INDUSTRIAL_SYSTEM_ATTACK_COST;
+										case 3 -> // Captial world
+												cost = cost + Constants.CAPITAL_SYSTEM_ATTACK_COST;
 									}
 								}
 							}
 						}
 					}
-					costMap.put(faction.getId(), cost);
-					incomeMap.put(faction.getId(), income);
+
+					String s = "";
+					s += "\r\n" + faction.getName_en() + " (" + faction.getShortName() + ")\r\n";
+					s += "--------------------------------\r\n";
+					s += "Systems: " + countAll + "\r\n";
+					s += "Imdustrial: " + countIndustrial + "\r\n";
+					s += "Capital: " + countCapital + "\r\n";
+					s += "Attacking: " + countAttacking + "\r\n";
+					s += "Defending: " + countDefending + "\r\n";
+					s += "Income: " + income + " k₵\r\n";
+					s += "Cost: " + cost + " k₵\r\n";
+					s += "Balance: " + (income - cost) + " k₵\r\n";
+					factionStatistics.add(s);
+
+					systemCostMap.put(faction.getId(), cost);
+					systemIncomeMap.put(faction.getId(), income);
 					systemCountAll.put(faction.getId(), countAll);
 					systemCountAttacking.put(faction.getId(), countAttacking);
 					systemCountDefending.put(faction.getId(), countDefending);
@@ -414,11 +423,16 @@ public class EndRound {
 			}
 
 			message.append("Round ").append(round).append(" finalized.\r\n\r\n");
+			message.append("Current date is: ").append(getCurrentRoundDate(seasonId));
 			message.append("The new round ").append(newRound).append(" will last until ").append(getNextRoundDate(seasonId)).append(".\r\n\r\n");
 			message.append("Resolved attacks:\r\n");
 			message.append(resolvedAttacks).append("\r\n");
 			message.append("Moved jumpships:\r\n");
 			message.append(movedJumpships).append("\r\n");
+
+			for (String s : factionStatistics) {
+				message.append(s);
+			}
 
 			if(!GameServer.isDevelopmentPC) {
 				sent = MailManager.sendMail("c3@clanwolf.net", receivers, subject.toString(), message.toString(), false);
@@ -430,9 +444,11 @@ public class EndRound {
 					// error during email sending
 					C3Logger.info("Error during mail dispatch.");
 				}
+			} else {
+				C3Logger.info("Mail was not sent out because this is a dev computer.");
 			}
 		}
-		return resolvedAttacks.toString() + "\r\n" + movedJumpships.toString();
+		return resolvedAttacks + "\r\n" + movedJumpships;
 	}
 
 //	public static void main(String[] args) {

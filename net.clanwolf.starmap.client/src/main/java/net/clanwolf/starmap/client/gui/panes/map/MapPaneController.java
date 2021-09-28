@@ -621,6 +621,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 								ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute();
 							});
 							transition.playFromStart();
+						} else {
+							ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute();
 						}
 						jumpshipImage.setMouseTransparent(false);
 						jumpshipImage.toFront();
@@ -629,6 +631,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 						js.setRoute(boUniverse.routesList.get(js.getJumpshipId()));
 					} else {
 						C3Logger.info("Jumpship '" + js.getJumpshipName() + "' has no current system. Seems to be a mistake!");
+						ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute();
 					}
 				}
 				canvas.getChildren().remove(borders);

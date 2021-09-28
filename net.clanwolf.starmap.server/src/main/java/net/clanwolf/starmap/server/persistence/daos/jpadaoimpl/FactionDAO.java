@@ -87,4 +87,23 @@ public class FactionDAO extends GenericDAO {
 
 		return lRPS;
 	}
+
+	public ArrayList<FactionPOJO> getAll_HH_Factions(){
+		CriteriaHelper crit = new CriteriaHelper(FactionPOJO.class);
+
+		ArrayList<Long> factionIdsHH = StarSystemDataDAO.getInstance().getAll_HH_FactionIds();
+		List<Object> lRes = crit.getResultList();
+
+		Iterator<Object> iter = lRes.iterator();
+		ArrayList<FactionPOJO> lRPS = new ArrayList<>();
+
+		while (iter.hasNext()) {
+			FactionPOJO f = (FactionPOJO) iter.next();
+			if (factionIdsHH.contains(f.getId())) {
+				lRPS.add(f);
+			}
+		}
+
+		return lRPS;
+	}
 }

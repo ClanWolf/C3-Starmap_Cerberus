@@ -43,10 +43,10 @@ public class BOFaction {
 	private ArrayList<PointD[]> voronoiRegions = new ArrayList<>();
 
 	@SuppressWarnings("unused")
-	public int getSystemsCountAttacking() {
+	public int getSystemCountAll() {
 		int i = 0;
-		for (BOAttack a : Nexus.getBoUniverse().attackBOs) {
-			if (Objects.equals(a.getAttackerFactionId(), Nexus.getCurrentChar().getFactionId())) {
+		for (BOStarSystem ss : Nexus.getBoUniverse().starSystemBOs.values()) {
+			if (ss.getFactionId() == Nexus.getCurrentChar().getFactionId().longValue()) {
 				i++;
 			}
 		}
@@ -54,10 +54,10 @@ public class BOFaction {
 	}
 
 	@SuppressWarnings("unused")
-	public int getSystemCountAll() {
+	public int getSystemsCountAttacking() {
 		int i = 0;
-		for (BOStarSystem ss : Nexus.getBoUniverse().starSystemBOs.values()) {
-			if (ss.getFactionId() == Nexus.getCurrentChar().getFactionId().longValue()) {
+		for (BOAttack a : Nexus.getBoUniverse().attackBOs) {
+			if (Objects.equals(a.getAttackerFactionId(), Nexus.getCurrentChar().getFactionId())) {
 				i++;
 			}
 		}
