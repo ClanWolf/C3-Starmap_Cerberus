@@ -292,6 +292,7 @@ public class EndRound {
 				// see BOFaction for the numbers!
 
 				// Generate faction statistic data
+				C3Logger.info("Start to generate statistics...");
 				ArrayList<FactionPOJO> factionListHH = FactionDAO.getInstance().getAll_HH_Factions();
 				ArrayList<StarSystemDataPOJO> starsystemdataListHH = StarSystemDataDAO.getInstance().getAll_HH_StarSystemData();
 
@@ -383,6 +384,7 @@ public class EndRound {
 					systemCountIndustrial.put(faction.getId(), countIndustrial);
 					systemCountCapital.put(faction.getId(), countCapital);
 				}
+				C3Logger.info("... statistics finished.");
 
 				endRoundInfo.addObject(null);
 				endRoundInfo.setAction_successfully(Boolean.TRUE);
