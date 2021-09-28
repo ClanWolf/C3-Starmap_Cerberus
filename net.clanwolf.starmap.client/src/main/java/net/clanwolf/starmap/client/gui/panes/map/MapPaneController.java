@@ -1005,7 +1005,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 						jumpshipImage.setTranslateY(boUniverse.starSystemBOs.get(currentSystemID).getScreenY() - 8);
 						jumpshipImage.setMouseTransparent(false);
 						jumpshipImage.toFront();
-						jumpshipImage.setVisible(false);
+						jumpshipImage.setVisible(true);
 						canvas.getChildren().add(jumpshipImage);
 
 						js.setJumpshipImageView(jumpshipImage);
