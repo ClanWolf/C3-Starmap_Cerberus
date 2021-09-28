@@ -29,6 +29,7 @@ package net.clanwolf.starmap.client.process.universe;
 import javafx.scene.shape.Path;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.util.Internationalization;
+import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.transfer.dtos.FactionDTO;
 import org.kynosarges.tektosyne.geometry.PointD;
 
@@ -117,48 +118,50 @@ public class BOFaction {
 
 	public double getIncome() {
 		double income = 0;
-		income = income + getSystemCountRegular() * 250;
-		income = income + getSystemCountIndustrial() * 1_500;
-		income = income + getSystemCountCapital() * 5_000;
+		income = income + getSystemCountRegular() * Constants.REGULAR_SYSTEM_GENERAL_INCOME;
+		income = income + getSystemCountIndustrial() * Constants.INDUSTRIAL_SYSTEM_GENERAL_INCOME;
+		income = income + getSystemCountCapital() * Constants.CAPITAL_SYSTEM_GENERAL_INCOME;
 
 		return income;
 	}
 
 	public double getCost() {
-		double d = 0;
+		double cost = 0;
+		// Regular costs
+		cost = cost + getSystemCountRegular() * Constants.REGULAR_SYSTEM_GENERAL_COST;
+		cost = cost + getSystemCountIndustrial() * Constants.INDUSTRIAL_SYSTEM_GENERAL_COST;
+		cost = cost + getSystemCountCapital() * Constants.CAPITAL_SYSTEM_GENERAL_COST;
+
+		// Costs for defending systems
 		for (BOStarSystem ss : Nexus.getBoUniverse().starSystemBOs.values()) {
 			if (ss.getFactionId() == Nexus.getCurrentChar().getFactionId().longValue()) {
 				switch (ss.getLevel().intValue()) {
 					case 1 -> { // Regular world
-						d = d + 150;
-						if (ss.isCurrentlyAttacked()) d = d + 120;
+						if (ss.isCurrentlyAttacked()) cost = cost + Constants.REGULAR_SYSTEM_DEFEND_COST;
 					}
 					case 2 -> { // Industrial world
-						d = d + 1_000;
-						if (ss.isCurrentlyAttacked()) d = d + 300;
+						if (ss.isCurrentlyAttacked()) cost = cost + Constants.INDUSTRIAL_SYSTEM_DEFEND_COST;
 					}
 					case 3 -> { // Captial world
-						d = d + 2_000;
-						if (ss.isCurrentlyAttacked()) d = d + 500;
+						if (ss.isCurrentlyAttacked()) cost = cost + Constants.CAPITAL_SYSTEM_DEFEND_COST;
 					}
 				}
 			}
-			// Attacking starsystems is expensive
+			// Costs for attacking starsystems
 			if (ss.getAttack() != null) {
 				if (Objects.equals(ss.getAttack().getAttackerFactionId(), Nexus.getCurrentChar().getFactionId())) {
-					d = switch (ss.getLevel().intValue()) {
+					switch (ss.getLevel().intValue()) {
 						case 1 -> // Regular world
-								d + 3_000;
+								cost = cost + Constants.REGULAR_SYSTEM_ATTACK_COST;
 						case 2 -> // Industrial world
-								d + 6_000;
+								cost = cost + Constants.INDUSTRIAL_SYSTEM_ATTACK_COST;
 						case 3 -> // Captial world
-								d + 10_000;
-						default -> d;
+								cost = cost + Constants.CAPITAL_SYSTEM_ATTACK_COST;
 					};
 				}
 			}
 		}
-		return d;
+		return cost;
 	}
 
 	@SuppressWarnings("unused")

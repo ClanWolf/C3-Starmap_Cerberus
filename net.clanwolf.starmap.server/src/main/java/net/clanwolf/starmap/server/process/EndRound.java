@@ -27,6 +27,7 @@
 package net.clanwolf.starmap.server.process;
 
 import net.clanwolf.client.mail.MailManager;
+import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.server.GameServer;
 import net.clanwolf.starmap.server.Nexus.Nexus;
@@ -316,18 +317,18 @@ public class EndRound {
 							switch (starsystemdata.getLevel().intValue()) {
 								case 1 -> { // Regular
 									countRegular++;
-									income = income + 250;
-									cost = cost + 150;
+									income = income + Constants.REGULAR_SYSTEM_GENERAL_INCOME;
+									cost = cost + Constants.REGULAR_SYSTEM_GENERAL_COST;
 								}
 								case 2 -> { // Industrial
 									countIndustrial++;
-									income = income + 1_500;
-									cost = cost + 1_000;
+									income = income + Constants.INDUSTRIAL_SYSTEM_GENERAL_INCOME;
+									cost = cost + Constants.INDUSTRIAL_SYSTEM_GENERAL_COST;
 								}
 								case 3 -> { // Capital
 									countCapital++;
-									income = income + 5_000;
-									cost = cost + 2_000;
+									income = income + Constants.CAPITAL_SYSTEM_GENERAL_INCOME;
+									cost = cost + Constants.CAPITAL_SYSTEM_GENERAL_COST;
 								}
 							}
 						}
@@ -336,13 +337,13 @@ public class EndRound {
 								countDefending++;
 								switch (starsystemdata.getLevel().intValue()) {
 									case 1 -> { // Regular world
-										cost = cost + 120;
+										cost = cost + Constants.REGULAR_SYSTEM_DEFEND_COST;
 									}
 									case 2 -> { // Industrial world
-										cost = cost + 300;
+										cost = cost + Constants.INDUSTRIAL_SYSTEM_DEFEND_COST;
 									}
 									case 3 -> { // Captial world
-										cost = cost + 500;
+										cost = cost + Constants.CAPITAL_SYSTEM_DEFEND_COST;
 									}
 								}
 							}
@@ -351,13 +352,13 @@ public class EndRound {
 									countAttacking++;
 									switch (starsystemdata.getLevel().intValue()) {
 										case 1 -> { // Regular world
-											cost = cost + 3_000;
+											cost = cost + Constants.REGULAR_SYSTEM_ATTACK_COST;
 										}
 										case 2 -> { // Industrial world
-											cost = cost + 6_000;
+											cost = cost + Constants.INDUSTRIAL_SYSTEM_ATTACK_COST;
 										}
 										case 3 -> { // Captial world
-											cost = cost + 10_000;
+											cost = cost + Constants.CAPITAL_SYSTEM_ATTACK_COST;
 										}
 									}
 								}
