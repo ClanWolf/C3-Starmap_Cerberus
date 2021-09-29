@@ -933,6 +933,12 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					Long currentSystemID = js.getCurrentSystemID();
 					boolean myOwnShip = js.getJumpshipFaction() == Nexus.getCurrentUser().getCurrentCharacter().getFactionId();
 
+					if (Nexus.getCurrentChar().getJumpshipId().intValue() == js.getJumpshipId()) {
+						// This is my own personal unit, move map to this ship
+						currentlyCenteredJumpship = js;
+						moveMapToJumpship(currentlyCenteredJumpship);
+					}
+
 					if (js.getRoute() != null) {
 						for (RoutePointDTO rp : js.getRoute()) {
 							if (rp.getRoundId().intValue() == Nexus.getCurrentRound()) {
@@ -1144,7 +1150,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		sequentialTransition.setCycleCount(1);
 		sequentialTransition.setOnFinished(event -> {
 			if (!firstCreationDone) {
-				moveMapToPosition(Nexus.getCurrentlySelectedStarSystem());
+				// moveMapToPosition(Nexus.getCurrentlySelectedStarSystem());
 				firstCreationDone = true;
 			}
 		});
