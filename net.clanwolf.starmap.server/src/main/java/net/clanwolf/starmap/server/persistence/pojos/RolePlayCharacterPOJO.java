@@ -68,22 +68,29 @@ public class RolePlayCharacterPOJO extends Pojo {
 	@Column(name = "StarsystemID")
 	private Integer starSystemId;
 
+	@Column(name = "JumpshipID")
+	private Integer jumpshipId;
+
 	public RolePlayCharacterPOJO(){
 		//
 	}
 
+	@SuppressWarnings("unused")
 	public Integer getFactionId() {
 		return factionId;
 	}
 
+	@SuppressWarnings("unused")
 	public void setFactionId(Integer factionId) {
 		this.factionId = factionId;
 	}
 
+	@SuppressWarnings("unused")
 	public Integer getStarSystemId() {
 		return starSystemId;
 	}
 
+	@SuppressWarnings("unused")
 	public void setStarSystemId(Integer starSystemId) {
 		this.starSystemId = starSystemId;
 	}
@@ -91,6 +98,7 @@ public class RolePlayCharacterPOJO extends Pojo {
 	/**
 	 * @return the id
 	 */
+	@SuppressWarnings("unused")
 	public Long getId() {
 		return id;
 	}
@@ -98,6 +106,7 @@ public class RolePlayCharacterPOJO extends Pojo {
 	/**
 	 * @param id the id to set
 	 */
+	@SuppressWarnings("unused")
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -105,6 +114,7 @@ public class RolePlayCharacterPOJO extends Pojo {
 	/**
 	 * @return the name
 	 */
+	@SuppressWarnings("unused")
 	public String getName() {
 		return name;
 	}
@@ -112,6 +122,7 @@ public class RolePlayCharacterPOJO extends Pojo {
 	/**
 	 * @param name the name to set
 	 */
+	@SuppressWarnings("unused")
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -119,6 +130,7 @@ public class RolePlayCharacterPOJO extends Pojo {
 	/**
 	 * @return the user
 	 */
+	@SuppressWarnings("unused")
 	public UserPOJO getUser() {
 		return user;
 	}
@@ -126,6 +138,7 @@ public class RolePlayCharacterPOJO extends Pojo {
 	/**
 	 * @param user the user to set
 	 */
+	@SuppressWarnings("unused")
 	public void setUser(UserPOJO user) {
 		this.user = user;
 	}
@@ -133,6 +146,7 @@ public class RolePlayCharacterPOJO extends Pojo {
 	/**
 	 * @return the story
 	 */
+	@SuppressWarnings("unused")
 	public RolePlayStoryPOJO getStory() {
 		return story;
 	}
@@ -140,13 +154,24 @@ public class RolePlayCharacterPOJO extends Pojo {
 	/**
 	 * @param story the story to set
 	 */
+	@SuppressWarnings("unused")
 	public void setStory(RolePlayStoryPOJO story) {
 		this.story = story;
 	}
 
+	@SuppressWarnings("unused")
+	public Integer getJumpshipId() {
+		return jumpshipId;
+	}
+
+	@SuppressWarnings("unused")
+	public void setJumpshipId(Integer jumpshipId) {
+		this.jumpshipId = jumpshipId;
+	}
+
+	@SuppressWarnings("unused")
 	@Override
 	public String toString() {
 		return this.getName();
 	}
-
 }

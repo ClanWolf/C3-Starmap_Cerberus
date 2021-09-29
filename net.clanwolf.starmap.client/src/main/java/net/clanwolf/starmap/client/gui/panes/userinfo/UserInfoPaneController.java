@@ -40,6 +40,7 @@ import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.action.*;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
 import net.clanwolf.starmap.client.process.universe.BOFaction;
+import net.clanwolf.starmap.client.process.universe.BOJumpship;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.client.process.logout.Logout;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
@@ -109,6 +110,11 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 	private Label valueCharLocation;
 	@FXML
 	private Label valueCharXP;
+
+	@FXML
+	private Label labelUnit;
+	@FXML
+	private Label valueUnit;
 
 	@FXML
 	private Label labelFactionName;
@@ -279,6 +285,15 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 				valueIncome.setText(df.format(income) + " k₵");
 				valueCost.setText(df.format(cost) + " k₵");
 				valueBalance.setText(df.format(balance) + " k₵");
+
+				String unitname = "";
+				for (BOJumpship js : Nexus.getBoUniverse().jumpshipBOs.values()) {
+					if(js.getJumpshipId().intValue() == Nexus.getCurrentChar().getJumpshipId()) {
+						unitname = js.getJumpshipName();
+					}
+				}
+				labelUnit.setText("Unit:");
+				valueUnit.setText("\"" + unitname + "\"");
 			}
 		});
 	}

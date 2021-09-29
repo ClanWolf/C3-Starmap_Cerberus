@@ -366,8 +366,9 @@ public class EndRound {
 					s += "\r\n" + faction.getName_en() + " (" + faction.getShortName() + ")\r\n";
 					s += "--------------------------------\r\n";
 					s += "Systems: " + countAll + "\r\n";
-					s += "Imdustrial: " + countIndustrial + "\r\n";
-					s += "Capital: " + countCapital + "\r\n";
+					s += "- Regular: " + countRegular + "\r\n";
+					s += "- Industrial: " + countIndustrial + "\r\n";
+					s += "- Capital: " + countCapital + "\r\n";
 					s += "Attacking: " + countAttacking + "\r\n";
 					s += "Defending: " + countDefending + "\r\n";
 					s += "Income: " + income + " k₵\r\n";

@@ -52,6 +52,8 @@ public class RolePlayCharacterDTO extends Dto {
 	private Integer factionId;
 	//@Column(name = "StarsystemID")
 	private Integer starSystemId;
+	//@Column(name = "JumpshipID")
+	private Integer jumpshipId;
 
 	public RolePlayCharacterDTO(){
 		 
@@ -60,6 +62,7 @@ public class RolePlayCharacterDTO extends Dto {
 	/**
 	 * @return the id
 	 */
+	@SuppressWarnings("unused")
 	public Long getId() {
 		return id;
 	}
@@ -67,6 +70,7 @@ public class RolePlayCharacterDTO extends Dto {
 	/**
 	 * @param id the id to set
 	 */
+	@SuppressWarnings("unused")
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -74,6 +78,7 @@ public class RolePlayCharacterDTO extends Dto {
 	/**
 	 * @return the name
 	 */
+	@SuppressWarnings("unused")
 	public String getName() {
 		return name;
 	}
@@ -81,6 +86,7 @@ public class RolePlayCharacterDTO extends Dto {
 	/**
 	 * @param name the name to set
 	 */
+	@SuppressWarnings("unused")
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -88,6 +94,7 @@ public class RolePlayCharacterDTO extends Dto {
 	/**
 	 * @return the user
 	 */
+	@SuppressWarnings("unused")
 	public UserDTO getUser() {
 		return user;
 	}
@@ -95,6 +102,7 @@ public class RolePlayCharacterDTO extends Dto {
 	/**
 	 * @param user the user to set
 	 */
+	@SuppressWarnings("unused")
 	public void setUser(UserDTO user) {
 		this.user = user;
 	}
@@ -102,6 +110,7 @@ public class RolePlayCharacterDTO extends Dto {
 	/**
 	 * @return the story
 	 */
+	@SuppressWarnings("unused")
 	public RolePlayStoryDTO getStory() {
 		return story;
 	}
@@ -109,28 +118,43 @@ public class RolePlayCharacterDTO extends Dto {
 	/**
 	 * @param story the story to set
 	 */
+	@SuppressWarnings("unused")
 	public void setStory(RolePlayStoryDTO story) {
 		this.story = story;
+	}
+
+	@SuppressWarnings("unused")
+	public Integer getFactionId() {
+		return factionId;
+	}
+
+	@SuppressWarnings("unused")
+	public void setFactionId(Integer factionId) {
+		this.factionId = factionId;
+	}
+
+	@SuppressWarnings("unused")
+	public Integer getStarSystemId() {
+		return starSystemId;
+	}
+
+	@SuppressWarnings("unused")
+	public void setStarSystemId(Integer starSystemId) {
+		this.starSystemId = starSystemId;
+	}
+
+	@SuppressWarnings("unused")
+	public Integer getJumpshipId() {
+		return jumpshipId;
+	}
+
+	@SuppressWarnings("unused")
+	public void setJumpshipId(Integer jumpshipId) {
+		this.jumpshipId = jumpshipId;
 	}
 
 	@Override
 	public String toString() {
 		return this.getName();
-	}
-
-	public Integer getFactionId() {
-		return factionId;
-	}
-
-	public void setFactionId(Integer factionId) {
-		this.factionId = factionId;
-	}
-
-	public Integer getStarSystemId() {
-		return starSystemId;
-	}
-
-	public void setStarSystemId(Integer starSystemId) {
-		this.starSystemId = starSystemId;
 	}
 }
