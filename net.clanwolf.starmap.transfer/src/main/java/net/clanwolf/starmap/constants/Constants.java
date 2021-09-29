@@ -32,19 +32,19 @@ public class Constants implements java.io.Serializable {
 	@Serial
 	private static final long serialVersionUID = 1L;
 
-	public static final double REGULAR_SYSTEM_GENERAL_INCOME = 250;
-	public static final double INDUSTRIAL_SYSTEM_GENERAL_INCOME = 1_500;
-	public static final double CAPITAL_SYSTEM_GENERAL_INCOME = 5_000;
+	public static final long REGULAR_SYSTEM_GENERAL_INCOME = 250;
+	public static final long INDUSTRIAL_SYSTEM_GENERAL_INCOME = 1_500;
+	public static final long CAPITAL_SYSTEM_GENERAL_INCOME = 5_000;
 
-	public static final double REGULAR_SYSTEM_GENERAL_COST = 150;
-	public static final double INDUSTRIAL_SYSTEM_GENERAL_COST = 1_000;
-	public static final double CAPITAL_SYSTEM_GENERAL_COST = 2_000;
+	public static final long REGULAR_SYSTEM_GENERAL_COST = 150;
+	public static final long INDUSTRIAL_SYSTEM_GENERAL_COST = 1_000;
+	public static final long CAPITAL_SYSTEM_GENERAL_COST = 2_000;
 
-	public static final double REGULAR_SYSTEM_DEFEND_COST = 120;
-	public static final double INDUSTRIAL_SYSTEM_DEFEND_COST = 300;
-	public static final double CAPITAL_SYSTEM_DEFEND_COST = 500;
+	public static final long REGULAR_SYSTEM_DEFEND_COST = 120;
+	public static final long INDUSTRIAL_SYSTEM_DEFEND_COST = 300;
+	public static final long CAPITAL_SYSTEM_DEFEND_COST = 500;
 
-	public static final double REGULAR_SYSTEM_ATTACK_COST = 3_000;
-	public static final double INDUSTRIAL_SYSTEM_ATTACK_COST = 6_000;
-	public static final double CAPITAL_SYSTEM_ATTACK_COST = 10_000;
+	public static final long REGULAR_SYSTEM_ATTACK_COST = 3_000;
+	public static final long INDUSTRIAL_SYSTEM_ATTACK_COST = 6_000;
+	public static final long CAPITAL_SYSTEM_ATTACK_COST = 10_000;
 }
