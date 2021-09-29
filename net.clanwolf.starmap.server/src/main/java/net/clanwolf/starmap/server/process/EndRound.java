@@ -296,8 +296,8 @@ public class EndRound {
 				ArrayList<FactionPOJO> factionListHH = FactionDAO.getInstance().getAll_HH_Factions();
 				ArrayList<StarSystemDataPOJO> starsystemdataListHH = StarSystemDataDAO.getInstance().getAll_HH_StarSystemData();
 
-				HashMap<Long, Double> systemCostMap = new HashMap<>();
-				HashMap<Long, Double> systemIncomeMap = new HashMap<>();
+				HashMap<Long, Long> systemCostMap = new HashMap<>();
+				HashMap<Long, Long> systemIncomeMap = new HashMap<>();
 				HashMap<Long, Integer> systemCountAll = new HashMap<>();
 				HashMap<Long, Integer> systemCountAttacking = new HashMap<>();
 				HashMap<Long, Integer> systemCountDefending = new HashMap<>();
