@@ -305,8 +305,8 @@ public class EndRound {
 				HashMap<Long, Integer> systemCountIndustrial = new HashMap<>();
 				HashMap<Long, Integer> systemCountCapital = new HashMap<>();
 				for (FactionPOJO faction : factionListHH) {
-					double cost = 0;
-					double income = 0;
+					long cost = 0;
+					long income = 0;
 					int countAll = 0;
 					int countAttacking = 0;
 					int countDefending = 0;
