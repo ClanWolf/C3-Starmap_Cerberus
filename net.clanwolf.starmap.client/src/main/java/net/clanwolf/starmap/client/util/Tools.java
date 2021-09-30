@@ -169,7 +169,7 @@ public final class Tools {
 
 				g2d.setFont(new Font("Arial", Font.BOLD, 250));
 				g2d.setPaint(Color.CYAN);
-				g2d.drawString(Nexus.getCurrentRound() + "", 2100, 400);
+				g2d.drawString(Nexus.getCurrentRound() + "", 1800, 400);
 
 				// Add a border
 				g2d.setPaint(Color.GRAY);
