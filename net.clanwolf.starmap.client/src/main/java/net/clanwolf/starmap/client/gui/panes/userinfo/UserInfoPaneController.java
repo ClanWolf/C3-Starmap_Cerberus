@@ -266,6 +266,7 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 				for (BOFaction f : Nexus.getBoUniverse().factionBOs.values()) {
 					if (f.getID() == Nexus.getCurrentChar().getFactionId().longValue()) {
 						factionOfCurrentChar = f;
+						Nexus.setCurrentFaction(factionOfCurrentChar);
 						break;
 					}
 				}

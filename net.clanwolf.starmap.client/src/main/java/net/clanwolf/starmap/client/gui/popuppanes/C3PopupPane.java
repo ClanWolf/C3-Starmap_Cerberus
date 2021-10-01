@@ -159,17 +159,19 @@ public class C3PopupPane extends Pane {
 			fadeInTransition_03.play();
 		});
 
-		ScaleTransition st = new ScaleTransition(Duration.millis(1500), view);
-		st.setToX(1.1f);
-		st.setToY(1.1f);
-		st.setCycleCount(1);
+//		ScaleTransition st = new ScaleTransition(Duration.millis(1500), view);
+//		st.setToX(1.0f);
+//		st.setToY(1.0f);
+//		st.setCycleCount(1);
 
 		ActionManager.getAction(ACTIONS.NOISE).execute(500);
 
 		// Transition sequence
 		SequentialTransition sequentialTransition = new SequentialTransition();
 		sequentialTransition.setOnFinished(event -> fadeOut());
-		sequentialTransition.getChildren().addAll(fadeInTransition, fadeInTransition_01, timeline, fadeInTransition_02, st);
+		sequentialTransition.getChildren().addAll(fadeInTransition, fadeInTransition_01, timeline, fadeInTransition_02
+				// ,st
+				);
 		sequentialTransition.setCycleCount(1);
 		sequentialTransition.play();
 	}

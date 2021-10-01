@@ -159,17 +159,19 @@ public class C3MedalPane extends Pane {
 			fadeInTransition_03.play();
 		});
 
-		ScaleTransition st = new ScaleTransition(Duration.millis(4000), view);
-		st.setToX(1.2f);
-		st.setToY(1.2f);
-		st.setCycleCount(1);
+//		ScaleTransition st = new ScaleTransition(Duration.millis(4000), view);
+//		st.setToX(1.2f);
+//		st.setToY(1.2f);
+//		st.setCycleCount(1);
 
 		ActionManager.getAction(ACTIONS.NOISE).execute(600);
 
 		// Transition sequence
 		SequentialTransition sequentialTransition = new SequentialTransition();
 		sequentialTransition.setOnFinished(event -> fadeOut());
-		sequentialTransition.getChildren().addAll(fadeInTransition, fadeInTransition_01, timeline, fadeInTransition_02, st);
+		sequentialTransition.getChildren().addAll(fadeInTransition, fadeInTransition_01, timeline, fadeInTransition_02
+				//, st
+				);
 		sequentialTransition.setCycleCount(1);
 		sequentialTransition.play();
 	}

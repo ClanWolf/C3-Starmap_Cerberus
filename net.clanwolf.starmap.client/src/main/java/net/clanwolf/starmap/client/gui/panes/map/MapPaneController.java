@@ -647,7 +647,6 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	 * Initializes the universe star map from the universe business object.
 	 */
 	private void initializeUniverseMap() {
-		ActionManager.getAction(ACTIONS.NOISE).execute(1100);
 		boUniverse = Nexus.getBoUniverse();
 		if (boUniverse != null) {
 			String dims = C3Properties.getProperty(C3PROPS.MAP_DIMENSIONS);
@@ -1573,6 +1572,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 						if (!firstCreationDone) {
 							if (!universeMapGenerationStarted) {
 								universeMapGenerationStarted = true;
+								ActionManager.getAction(ACTIONS.NOISE).execute(1100);
 								Platform.runLater(this::initializeUniverseMap);
 							}
 							ActionManager.getAction(ACTIONS.UPDATE_GAME_INFO).execute();

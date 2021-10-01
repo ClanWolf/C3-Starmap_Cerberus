@@ -28,7 +28,7 @@
 		<revision>5.4.17</revision>
 
 		<!-- Versions -->
-		<version.java>15</version.java>
+		<version.java>17</version.java>
 		<version.javafx>16</version.javafx>
 		<version.maven-compiler-plugin>3.8.1</version.maven-compiler-plugin>
 		<version.exec-maven-plugin>1.6.0</version.exec-maven-plugin>

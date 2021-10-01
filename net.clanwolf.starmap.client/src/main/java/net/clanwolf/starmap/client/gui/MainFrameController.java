@@ -1438,6 +1438,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
 				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
 			}
+			Nexus.storeCommandHistory();
 		}
 
 		// ---------------------------------
@@ -1458,14 +1459,17 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
 				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
 			}
+			Nexus.storeCommandHistory();
 		}
 
 		if (com.toLowerCase().startsWith("test popup")) {
 			ActionManager.getAction(ACTIONS.SHOW_POPUP).execute(POPUPS.Orders_Confirmed);
+			Nexus.storeCommandHistory();
 		}
 
 		if (com.toLowerCase().startsWith("test medal")) {
 			ActionManager.getAction(ACTIONS.SHOW_MEDAL).execute(MEDALS.First_Blood);
+			Nexus.storeCommandHistory();
 		}
 	}
 

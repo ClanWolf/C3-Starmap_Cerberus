@@ -16,6 +16,8 @@ module net.clanwolf.starmap.client {
 	requires javafx.fxml;
 	requires javafx.swing;
 	requires irc.api;
+	requires thumbnailator;
+	requires jnativehook;
 
 	opens net.clanwolf.starmap.client.security to javafx.fxml;
 	opens net.clanwolf.starmap.client.gui to javafx.fxml;

@@ -129,6 +129,9 @@ public class PannableCanvas extends Pane {
 
 	public void show3DStars(boolean value) {
 		starPane.setVisible(value);
+		starSystemMarkerCircle30ly.setVisible(value);
+		starSystemMarkerCircle60ly.setVisible(value);
+		attacksPane.setVisible(value);
 	}
 
 	/**

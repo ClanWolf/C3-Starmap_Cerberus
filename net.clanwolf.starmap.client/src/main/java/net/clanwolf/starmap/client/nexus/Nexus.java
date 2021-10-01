@@ -32,10 +32,7 @@ import io.nadron.client.event.NetworkEvent;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
 import net.clanwolf.starmap.client.gui.panes.logging.LogWatcher;
 import net.clanwolf.starmap.client.process.login.Login;
-import net.clanwolf.starmap.client.process.universe.BOAttack;
-import net.clanwolf.starmap.client.process.universe.BOJumpship;
-import net.clanwolf.starmap.client.process.universe.BOStarSystem;
-import net.clanwolf.starmap.client.process.universe.BOUniverse;
+import net.clanwolf.starmap.client.process.universe.*;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.AttackCharacterDTO;
@@ -71,6 +68,7 @@ public class Nexus {
 	private static HashMap<Long, RolePlayCharacterDTO> characterList;
 	private static LogWatcher logWatcher;
 
+	private static BOFaction currentFaction;
 	private static int currentSeason;
 	private static int currentRound;
 	private static int currentSeasonMetaPhase;
@@ -96,6 +94,16 @@ public class Nexus {
 	 */
 	private Nexus() {
 
+	}
+
+	@SuppressWarnings("unused")
+	public static BOFaction getCurrentFaction() {
+		return currentFaction;
+	}
+
+	@SuppressWarnings("unused")
+	public static void setCurrentFaction(BOFaction currentFaction) {
+		Nexus.currentFaction = currentFaction;
 	}
 
 	@SuppressWarnings("unused")

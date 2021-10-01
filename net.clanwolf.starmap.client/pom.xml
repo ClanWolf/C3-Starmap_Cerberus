@@ -146,6 +146,18 @@
 			</exclusions>
 		</dependency>
 
+		<dependency>
+			<groupId>net.coobird</groupId>
+			<artifactId>thumbnailator</artifactId>
+			<version>0.4.14</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.github.kwhat</groupId>
+			<artifactId>jnativehook</artifactId>
+			<version>2.2.0</version>
+		</dependency>
+
 <!--		<dependency>-->
 <!--			<groupId>de.dfki.mary</groupId>-->
 <!--			<artifactId>voice-cmu-slt-hsmm</artifactId>-->
@@ -295,10 +307,11 @@
 <!--							</jdepsExtraArgs>-->
 <!--							<modules>-->
 <!--								<module>-->
+
 <!--									<artifact>-->
-<!--										<groupId>com.ircclouds.irc</groupId>-->
-<!--										<artifactId>irc-api</artifactId>-->
-<!--										<version>1.0-0014</version>-->
+<!--										<groupId>com.github.kwhat</groupId>-->
+<!--										<artifactId>jnativehook</artifactId>-->
+<!--										<version>2.2.0</version>-->
 <!--									</artifact>-->
 <!--&lt;!&ndash;									<additionalDependencies>&ndash;&gt;-->
 <!--&lt;!&ndash;										<dependency>&ndash;&gt;-->
@@ -347,6 +360,49 @@
 											exports com.ning.compress.lzf.impl;
 											exports com.ning.compress.lzf.parallel;
 											exports com.ning.compress.lzf.util;
+										}
+									</moduleInfoSource>
+								</module>
+								<module>
+									<artifact>
+										<groupId>com.github.kwhat</groupId>
+										<artifactId>jnativehook</artifactId>
+										<version>2.2.0</version>
+									</artifact>
+									<moduleInfoSource>
+										module jnativehook {
+											requires transitive java.desktop;
+											requires transitive java.logging;
+											exports com.github.kwhat.jnativehook;
+											exports com.github.kwhat.jnativehook.dispatcher;
+											exports com.github.kwhat.jnativehook.example;
+											exports com.github.kwhat.jnativehook.keyboard;
+											exports com.github.kwhat.jnativehook.mouse;
+										}
+									</moduleInfoSource>
+								</module>
+								<module>
+									<artifact>
+										<groupId>net.coobird</groupId>
+										<artifactId>thumbnailator</artifactId>
+										<version>0.4.14</version>
+									</artifact>
+									<moduleInfoSource>
+										module thumbnailator {
+											requires java.xml;
+											requires transitive java.desktop;
+											exports net.coobird.thumbnailator;
+											exports net.coobird.thumbnailator.builders;
+											exports net.coobird.thumbnailator.filters;
+											exports net.coobird.thumbnailator.geometry;
+											exports net.coobird.thumbnailator.makers;
+											exports net.coobird.thumbnailator.name;
+											exports net.coobird.thumbnailator.resizers;
+											exports net.coobird.thumbnailator.resizers.configurations;
+											exports net.coobird.thumbnailator.tasks;
+											exports net.coobird.thumbnailator.tasks.io;
+											exports net.coobird.thumbnailator.util;
+											exports net.coobird.thumbnailator.util.exif;
 										}
 									</moduleInfoSource>
 								</module>
