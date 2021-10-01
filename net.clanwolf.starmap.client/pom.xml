@@ -241,8 +241,8 @@
 				<version>${version.maven-compiler-plugin}</version>
 				<configuration>
 					<release>${version.java}</release>
-					<source>${version.java}</source>
-					<target>${version.java}</target>
+					<source>17</source>
+					<target>17</target>
 					<!--<compilerArgs>-->
 						<!--<compilerArg>&#45;&#45;module-path</compilerArg>-->
 						<!--<compilerArg>${project.build.directory}/modules</compilerArg>-->

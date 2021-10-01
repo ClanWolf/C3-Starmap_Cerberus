@@ -81,7 +81,9 @@
 					<release>${version.java}</release>
 					<showWarnings>true</showWarnings>
 					<showDeprecation>true</showDeprecation>
-				</configuration>
+                    <source>17</source>
+                    <target>17</target>
+                </configuration>
 				<dependencies>
 					<dependency>
 						<groupId>org.ow2.asm</groupId>
