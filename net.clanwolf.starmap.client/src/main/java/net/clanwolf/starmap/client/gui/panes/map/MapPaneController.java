@@ -64,6 +64,7 @@ import net.clanwolf.starmap.client.util.C3PROPS;
 import net.clanwolf.starmap.client.util.C3Properties;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.client.util.Tools;
+import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.transfer.dtos.*;
 import net.clanwolf.starmap.transfer.enums.MEDALS;
@@ -207,15 +208,15 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		ac.setAttackID(a.getAttackDTO().getId());
 		ac.setCharacterID(Nexus.getCurrentChar().getId());
 		boolean defenderHasCommander = false;
-		if (currentPlayerRoleInInvasion == 2L) { // Defender, check if defenders already have a commander
+		if (currentPlayerRoleInInvasion == Constants.ROLE_DEFENDER_WARRIOR) { // Defender, check if defenders already have a commander
 			for (AttackCharacterDTO acl : a.getAttackDTO().getAttackCharList()) {
-				if (acl.getType() == 3L) {
+				if (acl.getType() == Constants.ROLE_DEFENDER_COMMANDER) {
 					defenderHasCommander = true;
 					break;
 				}
 			}
 			if (!defenderHasCommander) {
-				currentPlayerRoleInInvasion = 3L; // The first defender to show up will initially get the role as commander
+				currentPlayerRoleInInvasion = Constants.ROLE_DEFENDER_COMMANDER; // The first defender to show up will initially get the role as commander
 			}
 		}
 		ac.setType(currentPlayerRoleInInvasion);
@@ -226,7 +227,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			a.getAttackDTO().setStoryID(19L);    // TODO: Hier müssen wir die Einstiegs-Story ID irgendwie definieren
 			a.storeAttack();
 		} else {
-			a.storeAttackCharacters(ac);
+			a.storeAttackCharacters(ac, true);
 		}
 
 		ActionManager.getAction(ACTIONS.SWITCH_TO_INVASION).execute();
@@ -1631,12 +1632,12 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 										if (!attackAlreadyStarted) {
 											// The attack has not been started yet, I am from the attacking faction, so I can start it now
 											startAttackEnabled = true;
-											currentPlayerRoleInInvasion = 1L; // Attacker commander
+											currentPlayerRoleInInvasion = Constants.ROLE_ATTACKER_COMMANDER; // Attacker commander
 											ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("attack_youMayStartTheAttack"), true));
 										} else {
 											// Another warrior of my faction has started the attack, I am joining the attack
 											startAttackEnabled = true;
-											currentPlayerRoleInInvasion = 0L; // Attacker warrior
+											currentPlayerRoleInInvasion = Constants.ROLE_ATTACKER_WARRIOR; // Attacker warrior
 											ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("attack_youMayJoinTheAttack"), true));
 										}
 									} else if (Nexus.getCurrentUser().getCurrentCharacter().getFactionId().equals(a.getDefenderFactionId())) {
@@ -1651,7 +1652,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 										} else {
 											// I can join the defenders
 											startAttackEnabled = true;
-											currentPlayerRoleInInvasion = 2L; // Defender (First will become commander --> 3L)
+											currentPlayerRoleInInvasion = Constants.ROLE_DEFENDER_WARRIOR; // Defender (First will become commander --> 3L)
 											ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("attack_youMayJoinTheDefenders"), true));
 										}
 									} else {
@@ -1666,7 +1667,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 										} else {
 											// I can join the attack
 											startAttackEnabled = true;
-											currentPlayerRoleInInvasion = 4L; // Supporter (Will be placed in team with less pilots or random // cannot be commander)
+											currentPlayerRoleInInvasion = Constants.ROLE_SUPPORTER; // Supporter (Will be placed in team with less pilots or random // cannot be commander)
 											ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("attack_youMayJoinTheAttack"), true));
 										}
 									}

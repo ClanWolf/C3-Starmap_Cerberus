@@ -83,7 +83,7 @@ Section "C3-Client (required)"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\security\public_suffix_list.dat"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\security\default.policy"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\security\cacerts"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\security\blacklisted.certs"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\security\blocked.certs"
 
 	CreateDirectory $INSTDIR\legal
 	SetOutpath $INSTDIR\legal
@@ -208,6 +208,7 @@ Section "C3-Client (required)"
 	CreateDirectory $INSTDIR\legal\java.base
 	SetOutpath $INSTDIR\legal\java.base
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\zlib.md"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\wepoll.md"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\unicode.md"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\public_suffix.md"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\LICENSE"
@@ -285,7 +286,6 @@ Section "C3-Client (required)"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\java.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\j2pkcs11.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\instrument.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\harfbuzz.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\freetype.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\fontmanager.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\C3-Starmap_Cerberus.bat"
@@ -390,7 +390,7 @@ Section "Uninstall"
 	Delete $INSTDIR\lib\security\public_suffix_list.dat
 	Delete $INSTDIR\lib\security\default.policy
 	Delete $INSTDIR\lib\security\cacerts
-	Delete $INSTDIR\lib\security\blacklisted.certs
+	Delete $INSTDIR\lib\security\blocked.certs
 	Delete $INSTDIR\legal\jdk.xml.dom\LICENSE
 	Delete $INSTDIR\legal\jdk.xml.dom\ASSEMBLY_EXCEPTION
 	Delete $INSTDIR\legal\jdk.xml.dom\ADDITIONAL_LICENSE_INFO
@@ -458,6 +458,7 @@ Section "Uninstall"
 	Delete $INSTDIR\legal\java.datatransfer\ASSEMBLY_EXCEPTION
 	Delete $INSTDIR\legal\java.datatransfer\ADDITIONAL_LICENSE_INFO
 	Delete $INSTDIR\legal\java.base\zlib.md
+	Delete $INSTDIR\legal\java.base\wepoll.md
 	Delete $INSTDIR\legal\java.base\unicode.md
 	Delete $INSTDIR\legal\java.base\public_suffix.md
 	Delete $INSTDIR\legal\java.base\LICENSE
@@ -511,7 +512,6 @@ Section "Uninstall"
 	Delete $INSTDIR\bin\java.dll
 	Delete $INSTDIR\bin\j2pkcs11.dll
 	Delete $INSTDIR\bin\instrument.dll
-	Delete $INSTDIR\bin\harfbuzz.dll
 	Delete $INSTDIR\bin\freetype.dll
 	Delete $INSTDIR\bin\fontmanager.dll
 	Delete $INSTDIR\bin\C3-Starmap_Cerberus.bat
