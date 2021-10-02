@@ -6,7 +6,7 @@ C:
 CD \
 CD C:\C3\projects\C3-Starmap_Cerberus
 
-REM SET VERSION=5.4.17
+REM SET VERSION=5.5.1
 FOR /f "delims== tokens=1,2" %%G in (C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\target\classes\version.number) do set %%G=%%H
 ECHO Found version: %VERSION%
 REM PAUSE
