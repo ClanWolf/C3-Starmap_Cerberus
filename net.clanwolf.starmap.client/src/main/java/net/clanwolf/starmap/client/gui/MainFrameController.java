@@ -1872,6 +1872,22 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				attackButton.setDisable(false);
 				break;
 
+			case SWITCH_TO_MAP:
+				// Kicked!
+				C3SoundPlayer.play("sound/fx/readout_beep.mp3", false);
+
+				if (attackPane.isDisplayed()) {
+					openTargetPane(mapPane, "");
+					if (!adminMenuActive) {
+						showMenuIndicator(true);
+					}
+					menuIndicatorPos = 147;
+					moveMenuIndicator(menuIndicatorPos);
+				}
+
+				attackButton.setDisable(true);
+				break;
+
 //			case START_ROLEPLAY:
 //				break;
 //			case LOGINCHECK_STARTED:

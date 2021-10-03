@@ -158,9 +158,6 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		RolePlayCharacterDTO selectedChar = lvDefender.getSelectionModel().getSelectedItem();
 		lvDefender.getItems().remove(selectedChar);
 		lvAttacker.getItems().add(selectedChar);
-		if (lvDefender.getItems().size() == 0) {
-			lvDefender.getItems().add(dummy);
-		}
 		lvAttacker.getItems().remove(dummy);
 		lvDefender.getSelectionModel().clearSelection();
 		lvAttacker.getSelectionModel().clearSelection();
@@ -182,9 +179,6 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		RolePlayCharacterDTO selectedChar = lvAttacker.getSelectionModel().getSelectedItem();
 		lvAttacker.getItems().remove(selectedChar);
 		lvDefender.getItems().add(selectedChar);
-		if (lvAttacker.getItems().size() == 0) {
-			lvAttacker.getItems().add(dummy);
-		}
 		lvDefender.getItems().remove(dummy);
 		lvDefender.getSelectionModel().clearSelection();
 		lvAttacker.getSelectionModel().clearSelection();
@@ -214,12 +208,6 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		}
 		lvAttacker.getItems().remove(selectedChar);
 		lvDefender.getItems().remove(selectedChar);
-		if (lvAttacker.getItems().size() == 0) {
-			lvAttacker.getItems().add(dummy);
-		}
-		if (lvDefender.getItems().size() == 0) {
-			lvDefender.getItems().add(dummy);
-		}
 
 		AttackCharacterDTO ac = characterRoleMap.get(selectedChar.getId());
 		ac.setType(null); // delete AC
@@ -228,7 +216,16 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 	@FXML
 	public void handleLeaveButtonClick() {
+		BOAttack a = Nexus.getCurrentAttackOfUser();
+		AttackCharacterDTO acd = null;
+		for (AttackCharacterDTO ac : a.getAttackCharList()) {
+			if (ac.getCharacterID().equals(Nexus.getCurrentChar().getId())) {
+				acd = ac;
+			}
+		}
+		// TODO: DELETE acd
 
+		ActionManager.getAction(ACTIONS.SWITCH_TO_MAP).execute();
 	}
 
 	@FXML
@@ -238,6 +235,12 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 	public void checkConditionsToStartDrop(AttackCharacterDTO ac) {
 		C3SoundPlayer.play("sound/fx/button_clicked_05.mp3", false);
+		if (lvDefender.getItems().size() == 0) {
+			lvDefender.getItems().add(dummy);
+		}
+		if (lvAttacker.getItems().size() == 0) {
+			lvAttacker.getItems().add(dummy);
+		}
 		lvAttacker.requestFocus();
 		BOAttack a = Nexus.getCurrentAttackOfUser();
 		AttackDTO attackDTO = a.getAttackDTO();
@@ -616,9 +619,21 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 			case UPDATE_USERS_FOR_ATTACK:
 				C3Logger.info("The userlist has changed. Update information on the listboxes.");
-				if (o.getObject() instanceof BOAttack) {
-					BOAttack a = (BOAttack) o.getObject();
-					updateLists(a);
+				if (o.getObject() instanceof BOAttack a) {
+					List<AttackCharacterDTO> l = a.getAttackCharList();
+					boolean kicked = true;
+					for (AttackCharacterDTO ac : l) {
+						if (ac.getCharacterID().equals(Nexus.getCurrentChar().getId())) {
+							kicked = false;
+						}
+					}
+					if (kicked) {
+						// I have been kicked from the lobby, need to change the currently displayed pane
+						C3Logger.info("I have been kicked from lobby!");
+						ActionManager.getAction(ACTIONS.SWITCH_TO_MAP).execute();
+					} else {
+						updateLists(a);
+					}
 				}
 				break;
 
