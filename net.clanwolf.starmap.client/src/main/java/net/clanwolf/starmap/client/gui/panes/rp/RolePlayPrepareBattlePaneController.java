@@ -54,6 +54,7 @@ import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.transfer.dtos.*;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
+import javax.swing.*;
 import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.*;
@@ -154,20 +155,22 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 	}
 
 	@FXML
-	public void handleToLeftButtonClick() {
+	public synchronized void handleToLeftButtonClick() {
+		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute();
+//		btnToLeft.setDisable(true);
+//		lvAttacker.getItems().add(dummy);
+//		lvDefender.getItems().add(dummy);
 		RolePlayCharacterDTO selectedChar = lvDefender.getSelectionModel().getSelectedItem();
-		lvDefender.getItems().remove(selectedChar);
-		lvAttacker.getItems().add(selectedChar);
-		lvAttacker.getItems().remove(dummy);
-		lvDefender.getSelectionModel().clearSelection();
-		lvAttacker.getSelectionModel().clearSelection();
-		btnToLeft.setDisable(true);
+//		lvDefender.getItems().remove(selectedChar);
+//		lvAttacker.getItems().add(selectedChar);
+//		lvDefender.getSelectionModel().clearSelection();
+//		lvAttacker.getSelectionModel().clearSelection();
 		btnKick.setDisable(true);
 		btnPromote.setDisable(true);
 
 		AttackCharacterDTO ac = characterRoleMap.get(selectedChar.getId());
 		if (ac.getType().equals(Constants.ROLE_DEFENDER_WARRIOR)) {
-			ac.setType(Constants.ROLE_ATTACKER_WARRIOR); // delete AC
+			ac.setType(Constants.ROLE_ATTACKER_WARRIOR);
 		} else if (ac.getType().equals(Constants.ROLE_DEFENDER_SUPPORTER)) {
 			ac.setType(Constants.ROLE_ATTACKER_SUPPORTER);
 		}
@@ -175,20 +178,22 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 	}
 
 	@FXML
-	public void handleToRightButtonClick() {
+	public synchronized void handleToRightButtonClick() {
+		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute();
+//		btnToRight.setDisable(true);
+//		lvAttacker.getItems().add(dummy);
+//		lvDefender.getItems().add(dummy);
 		RolePlayCharacterDTO selectedChar = lvAttacker.getSelectionModel().getSelectedItem();
-		lvAttacker.getItems().remove(selectedChar);
-		lvDefender.getItems().add(selectedChar);
-		lvDefender.getItems().remove(dummy);
-		lvDefender.getSelectionModel().clearSelection();
-		lvAttacker.getSelectionModel().clearSelection();
-		btnToRight.setDisable(true);
+//		lvAttacker.getItems().remove(selectedChar);
+//		lvDefender.getItems().add(selectedChar);
+//		lvDefender.getSelectionModel().clearSelection();
+//		lvAttacker.getSelectionModel().clearSelection();
 		btnKick.setDisable(true);
 		btnPromote.setDisable(true);
 
 		AttackCharacterDTO ac = characterRoleMap.get(selectedChar.getId());
 		if (ac.getType().equals(Constants.ROLE_ATTACKER_WARRIOR)) {
-			ac.setType(Constants.ROLE_DEFENDER_WARRIOR); // delete AC
+			ac.setType(Constants.ROLE_DEFENDER_WARRIOR);
 		} else if (ac.getType().equals(Constants.ROLE_ATTACKER_SUPPORTER)) {
 			ac.setType(Constants.ROLE_DEFENDER_SUPPORTER);
 		}
@@ -201,7 +206,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 	}
 
 	@FXML
-	public void handleKickButtonClick() {
+	public synchronized void handleKickButtonClick() {
 		RolePlayCharacterDTO selectedChar = lvAttacker.getSelectionModel().getSelectedItem();
 		if (selectedChar == null) {
 			selectedChar = lvDefender.getSelectionModel().getSelectedItem();
@@ -211,20 +216,18 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 		AttackCharacterDTO ac = characterRoleMap.get(selectedChar.getId());
 		ac.setType(null); // delete AC
-		// TODO: DELETE acd
+		// TODO: DELETE ac
 		checkConditionsToStartDrop(ac);
 	}
 
 	@FXML
-	public void handleLeaveButtonClick() {
+	public synchronized void handleLeaveButtonClick() {
 		BOAttack a = Nexus.getCurrentAttackOfUser();
-		AttackCharacterDTO acd = null;
 		for (AttackCharacterDTO ac : a.getAttackCharList()) {
 			if (ac.getCharacterID().equals(Nexus.getCurrentChar().getId())) {
-				acd = ac;
+				// TODO: DELETE ac
 			}
 		}
-		// TODO: DELETE acd
 		ActionManager.getAction(ACTIONS.SWITCH_TO_MAP).execute();
 	}
 
@@ -233,23 +236,70 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 	}
 
-	public void checkConditionsToStartDrop(AttackCharacterDTO ac) {
+	public synchronized void checkConditionsToStartDrop(AttackCharacterDTO ac) {
 		C3SoundPlayer.play("sound/fx/button_clicked_05.mp3", false);
-		if (lvDefender.getItems().size() == 0) {
-			lvDefender.getItems().add(dummy);
-		}
-		if (lvAttacker.getItems().size() == 0) {
-			lvAttacker.getItems().add(dummy);
-		}
-		lvAttacker.requestFocus();
+
+		btnToRight.setDisable(true);
+		btnToLeft.setDisable(true);
+		btnKick.setDisable(true);
+		btnPromote.setDisable(true);
+
+//		if (lvDefender.getItems().size() == 0) {
+//			lvDefender.getItems().add(dummy);
+//		}
+//		if (lvAttacker.getItems().size() == 0) {
+//			lvAttacker.getItems().add(dummy);
+//		}
+
 		BOAttack a = Nexus.getCurrentAttackOfUser();
 		AttackDTO attackDTO = a.getAttackDTO();
 		List<AttackCharacterDTO> acl = attackDTO.getAttackCharList();
-		if (ac.getType() == null) {
-			acl.remove(ac);
+		if (ac != null) {
+			if (ac.getType() == null) {
+				acl.remove(ac);
+			}
+			// Save attack character
+			a.storeAttackCharacters(ac, false);
 		}
-		// Save attack character
-		a.storeAttackCharacters(ac, false);
+
+		boolean attackersOnline = true;
+		boolean defendersOnline = true;
+		boolean allOnline = false;
+
+		for (RolePlayCharacterDTO rpc : lvAttacker.getItems()) {
+			boolean online = false;
+			for (UserDTO u : Nexus.getCurrentlyOnlineUserList()) {
+				if (u.getCurrentCharacter().getId().equals(rpc.getId())) {
+					online = true;
+					break;
+				}
+			}
+			if (!online) {
+				attackersOnline = false;
+				break;
+			}
+		}
+
+		for (RolePlayCharacterDTO rpc : lvDefender.getItems()) {
+			if (rpc.getName().endsWith("(offline)")) {
+				defendersOnline = false;
+				break;
+			}
+		}
+
+		if (!lvDropleadAttacker.getItems().get(0).getName().endsWith("(offline)")
+			&& !lvDropleadDefender.getItems().get(0).getName().endsWith("(offline)")
+			&& attackersOnline
+			&& defendersOnline) {
+			allOnline = true;
+		}
+
+		C3Logger.debug("Droplead Attacker: " + (lvDropleadAttacker.getItems().size() == 1 && !"...".equals(lvDropleadAttacker.getItems().get(0).getName())));
+		C3Logger.debug("Droplead Defender: " + (lvDropleadDefender.getItems().size() == 1 && !"...".equals(lvDropleadDefender.getItems().get(0).getName())));
+		C3Logger.debug("Count Attacker: " + (lvAttacker.getItems().size() >= 2));
+		C3Logger.debug("Count Defender: " + (lvDefender.getItems().size() >= 2));
+		C3Logger.debug("Equal pilot count: " + (lvAttacker.getItems().size() == lvDefender.getItems().size() && lvAttacker.getItems().size() >= 2));
+		C3Logger.debug("Everybody online: " + allOnline);
 
 		btNext.setDisable(true);
 		// Check conditions
@@ -264,6 +314,8 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 			// Enable "continue"
 			btNext.setDisable(false);
 		}
+		lvAttacker.requestFocus();
+		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute();
 	}
 
 	@FXML
@@ -499,7 +551,8 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 		setStrings();
 		buildGuiEffect();
-		C3Logger.info("Init ^^^^^------------------------------------------------------------------ WIESO KOMMEN WIR HIER ZWEIMAL REIN ---" + a.getAttackDTO().getId());
+		checkConditionsToStartDrop(null);
+//		C3Logger.info("Init ^^^^^------------------------------------------------------------------ WIESO KOMMEN WIR HIER ZWEIMAL REIN ---" + a.getAttackDTO().getId());
 	}
 
 	public synchronized void updateLists(BOAttack a) {
@@ -575,6 +628,11 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 				}
 			}
 		}
+		btnToRight.setDisable(true);
+		btnToLeft.setDisable(true);
+		btnKick.setDisable(true);
+		btnPromote.setDisable(true);
+
 		lvDropleadAttacker.getSelectionModel().clearSelection();
 		lvDropleadDefender.getSelectionModel().clearSelection();
 		lvAttacker.getSelectionModel().clearSelection();
