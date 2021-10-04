@@ -211,6 +211,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 		AttackCharacterDTO ac = characterRoleMap.get(selectedChar.getId());
 		ac.setType(null); // delete AC
+		// TODO: DELETE acd
 		checkConditionsToStartDrop(ac);
 	}
 
@@ -224,7 +225,6 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 			}
 		}
 		// TODO: DELETE acd
-
 		ActionManager.getAction(ACTIONS.SWITCH_TO_MAP).execute();
 	}
 
@@ -250,6 +250,20 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		}
 		// Save attack character
 		a.storeAttackCharacters(ac, false);
+
+		btNext.setDisable(true);
+		// Check conditions
+		if (lvDropleadAttacker.getItems().size() == 1
+				&& lvDropleadDefender.getItems().size() == 1
+				&& !"...".equals(lvDropleadAttacker.getItems().get(0).getName())
+				&& !"...".equals(lvDropleadDefender.getItems().get(0).getName())
+				&& lvAttacker.getItems().size() >= 2
+				&& lvDefender.getItems().size() >= 2
+				&& lvAttacker.getItems().size() == lvDefender.getItems().size()
+		) {
+			// Enable "continue"
+			btNext.setDisable(false);
+		}
 	}
 
 	@FXML
