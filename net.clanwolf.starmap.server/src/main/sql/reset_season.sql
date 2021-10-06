@@ -16,13 +16,7 @@
 ------ Scripte ------
 
 -- Reset starting date to new value (in round / Season)
-INSERT INTO c3._hh_season
-(Name, Ended, MetaPhase, TFSArrivalRound, Description, StartDate, DaysInRound)
-VALUES('HammerHead Season 2 (2021)', 0, NULL, 100, '', '3060-01-01', 3);
-
-INSERT INTO c3.`_hh_round`
-(Round, Season, CurrentPhase, CurrentRoundStartDate)
-VALUES(1, select max(id) from season where ended = 0), 0, '3060-01-01');
+update c3._hh_round set round = 1, CurrentRoundStartDate = (select startdate from c3._hh_season where id = 1);
 
 ----- Delete all jumppoints -----
 delete * from c3._hh_routepoint;
@@ -40,4 +34,4 @@ update c3._hh_starsystemdata set factionid = factionID_start;
 
 update c3._hh_jumpship j set j.level = 1, j.HomeSystemID = (select s.id from c3._hh_starsystemdata s where s.CapitalWorld = 1 and s.faction_id = j.jumpshipFactionID);
 
-update c3._hh_jumpship j set StarSystemHistory = FORMAT(HomeSystemID, 0));
+update c3._hh_jumpship j set attackready = 1, StarSystemHistory = FORMAT(HomeSystemID, 0));

@@ -144,22 +144,22 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 					changePaneAndController(ROLEPLAYENTRYTYPES.C3_RP_STEP_V1, "/fxml/RolePlayIntroPane.fxml");
 					break;
 				case C3_RP_STEP_V2:
-					changePaneAndController(Nexus.getCurrentChar().getStory().getVariante(), "/fxml/RolePlayChoicePane.fxml");
+					changePaneAndController(ROLEPLAYENTRYTYPES.C3_RP_STEP_V2, "/fxml/RolePlayChoicePane.fxml");
 					break;
 				case C3_RP_STEP_V3:
-					changePaneAndController(Nexus.getCurrentChar().getStory().getVariante(), "/fxml/RolePlayDataInputPane.fxml");
+					changePaneAndController(ROLEPLAYENTRYTYPES.C3_RP_STEP_V3, "/fxml/RolePlayDataInputPane.fxml");
 					break;
 				case C3_RP_STEP_V4:
-					changePaneAndController(Nexus.getCurrentChar().getStory().getVariante(), "/fxml/RolePlayDicePane.fxml");
+					changePaneAndController(ROLEPLAYENTRYTYPES.C3_RP_STEP_V4, "/fxml/RolePlayDicePane.fxml");
 					break;
 				case C3_RP_STEP_V5:
-					changePaneAndController(Nexus.getCurrentChar().getStory().getVariante(), "/fxml/RolePlayChoicePaneImageLeft.fxml");
+					changePaneAndController(ROLEPLAYENTRYTYPES.C3_RP_STEP_V5, "/fxml/RolePlayChoicePaneImageLeft.fxml");
 					break;
 				case C3_RP_STEP_V6:
-					changePaneAndController(Nexus.getCurrentChar().getStory().getVariante(), "/fxml/RolePlayKeypadPane.fxml");
+					changePaneAndController(ROLEPLAYENTRYTYPES.C3_RP_STEP_V6, "/fxml/RolePlayKeypadPane.fxml");
 					break;
 				case C3_RP_STEP_V7:
-					changePaneAndController(Nexus.getCurrentChar().getStory().getVariante(), "/fxml/RolePlayMessagePane.fxml");
+					changePaneAndController(ROLEPLAYENTRYTYPES.C3_RP_STEP_V7, "/fxml/RolePlayMessagePane.fxml");
 					break;
 				case C3_RP_STEP_V8:
 					changePaneAndController(ROLEPLAYENTRYTYPES.C3_RP_STEP_V8, "/fxml/RolePlayPrepareBattlePane.fxml");
