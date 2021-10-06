@@ -216,18 +216,15 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 		AttackCharacterDTO ac = characterRoleMap.get(selectedChar.getId());
 		ac.setType(null); // delete AC
-		// TODO: DELETE ac
 		checkConditionsToStartDrop(ac);
 	}
 
 	@FXML
 	public synchronized void handleLeaveButtonClick() {
 		BOAttack a = Nexus.getCurrentAttackOfUser();
-		for (AttackCharacterDTO ac : a.getAttackCharList()) {
-			if (ac.getCharacterID().equals(Nexus.getCurrentChar().getId())) {
-				// TODO: DELETE ac
-			}
-		}
+		AttackCharacterDTO ac2 = characterRoleMap.get(Nexus.getCurrentChar().getId());
+		ac2.setType(null); // delete AC
+		checkConditionsToStartDrop(ac2);
 		ActionManager.getAction(ACTIONS.SWITCH_TO_MAP).execute();
 	}
 
@@ -244,22 +241,10 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		btnKick.setDisable(true);
 		btnPromote.setDisable(true);
 
-//		if (lvDefender.getItems().size() == 0) {
-//			lvDefender.getItems().add(dummy);
-//		}
-//		if (lvAttacker.getItems().size() == 0) {
-//			lvAttacker.getItems().add(dummy);
-//		}
-
 		BOAttack a = Nexus.getCurrentAttackOfUser();
 		AttackDTO attackDTO = a.getAttackDTO();
-		List<AttackCharacterDTO> acl = attackDTO.getAttackCharList();
 		if (ac != null) {
-			if (ac.getType() == null) {
-				acl.remove(ac);
-			}
-			// Save attack character
-			a.storeAttackCharacters(ac, false);
+			a.storeAttackCharacters(ac, false, (ac.getType() == null));
 		}
 
 		boolean attackersOnline = true;

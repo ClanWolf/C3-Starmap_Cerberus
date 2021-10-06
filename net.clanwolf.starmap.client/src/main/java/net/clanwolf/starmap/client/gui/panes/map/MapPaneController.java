@@ -227,7 +227,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			a.getAttackDTO().setStoryID(19L);    // TODO: Hier müssen wir die Einstiegs-Story ID irgendwie definieren
 			a.storeAttack();
 		} else {
-			a.storeAttackCharacters(ac, true);
+			a.storeAttackCharacters(ac, true, Boolean.FALSE);
 		}
 
 		ActionManager.getAction(ACTIONS.SWITCH_TO_INVASION).execute();

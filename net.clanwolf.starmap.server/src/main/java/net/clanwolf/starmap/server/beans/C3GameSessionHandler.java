@@ -275,15 +275,25 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			EntityManagerHelper.beginTransaction(getC3UserID(session));
 			AttackCharacterPOJO attackCharacter = (AttackCharacterPOJO) state.getObject();
 
-			if(attackCharacter.getId() != null){
-				dao.update(getC3UserID(session), attackCharacter);
+			if((Boolean) state.getObject2()) {
+				dao.delete(getC3UserID(session), attackCharacter);
 			} else {
-				dao.save(getC3UserID(session), attackCharacter);
+				if (attackCharacter.getId() != null) {
+					dao.update(getC3UserID(session), attackCharacter);
+				} else {
+					dao.save(getC3UserID(session), attackCharacter);
+				}
 			}
+
 			EntityManagerHelper.commit(getC3UserID(session));
+
+			EntityManagerHelper.clear(getC3UserID(session));
 
 			AttackDAO attackDAO = AttackDAO.getInstance();
 			AttackPOJO attackPOJO = attackDAO.findById(getC3UserID(session), attackCharacter.getAttackID());
+
+			AttackDAO daoAttack = AttackDAO.getInstance();
+			daoAttack.refresh(C3GameSessionHandler.getC3UserID(session), attackPOJO);
 
 			GameState response = new GameState(GAMESTATEMODES.ATTACK_CHARACTER_SAVE_RESPONSE);
 			response.addObject(attackPOJO);
