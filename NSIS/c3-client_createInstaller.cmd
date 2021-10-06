@@ -6,14 +6,14 @@ C:
 CD \
 CD C:\C3\projects\C3-Starmap_Cerberus
 
-REM SET VERSION=5.4.17
+REM SET VERSION=5.5.1
 FOR /f "delims== tokens=1,2" %%G in (C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\target\classes\version.number) do set %%G=%%H
 ECHO Found version: %VERSION%
 REM PAUSE
 
-IF EXIST "C:\Program Files\Java\jdk-16.0.2\bin\java.exe" (
+IF EXIST "C:\Program Files\Java\jdk-17\bin\java.exe" (
   ECHO Java found
-  "C:\Program Files\Java\jdk-16.0.2\bin\java.exe" -jar C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client.packager\target\net.clanwolf.starmap.client.packager-%VERSION%.jar
+  "C:\Program Files\Java\jdk-17\bin\java.exe" -jar C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client.packager\target\net.clanwolf.starmap.client.packager-%VERSION%.jar
 ) ELSE (
   ECHO Java NOT found
   GOTO END

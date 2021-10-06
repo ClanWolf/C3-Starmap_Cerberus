@@ -144,6 +144,9 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				serverHeartBeat = new Timer();
 				serverHeartBeat.schedule(new HeartBeatTimer(true), 100);
 				break;
+			case ATTACK_CHARACTER_SAVE_WITHOUT_NEW_UNIVERSE:
+				saveAttackCharacter(session, state);
+				break;
 			case ROLEPLAY_GET_CHAPTER_BYSORTORDER:
 				C3GameSessionHandlerRoleplay.getChapterBySortOrder(session, state);
 				break;

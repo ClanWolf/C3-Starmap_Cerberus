@@ -47,4 +47,12 @@ public class Constants implements java.io.Serializable {
 	public static final long REGULAR_SYSTEM_ATTACK_COST = 3_000;
 	public static final long INDUSTRIAL_SYSTEM_ATTACK_COST = 6_000;
 	public static final long CAPITAL_SYSTEM_ATTACK_COST = 10_000;
+
+	public static final long ROLE_ATTACKER_WARRIOR = 0L; // 0L Attacker Warrior
+	public static final long ROLE_ATTACKER_COMMANDER = 1L; // 1L Attacker Commander
+	public static final long ROLE_DEFENDER_WARRIOR = 2L; // 2L Defender
+	public static final long ROLE_DEFENDER_COMMANDER = 3L; // 3L Defender Commander
+	public static final long ROLE_SUPPORTER = 4L; // 4L Attacker Supporter
+	public static final long ROLE_ATTACKER_SUPPORTER = 5L; // 4L Attacker Supporter
+	public static final long ROLE_DEFENDER_SUPPORTER = 6L; // 5L Defender Supporter
 }

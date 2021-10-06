@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="RolePlayStartPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.RolePlayPrepareBattlePaneController">
+<AnchorPane id="RolePlayStartPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.RolePlayPrepareBattlePaneController">
     <children>
       <ImageView fx:id="backgroundImage" fitHeight="438.0" fitWidth="778.0" layoutX="62.0" layoutY="14.0" onMouseClicked="#handleOnMouseClicked" opacity="0.9" pickOnBounds="true">
          <image>
@@ -146,22 +146,22 @@
                               <Insets bottom="60.0" />
                            </VBox.margin>
                         </Label>
-                        <Button fx:id="btnToRight" mnemonicParsing="false" prefHeight="30.0" prefWidth="80.0" styleClass="contentButtonClean" stylesheets="@../styles/MainFrameStyle.css" text="&gt;">
+                        <Button fx:id="btnToRight" mnemonicParsing="false" onAction="#handleToRightButtonClick" prefHeight="30.0" prefWidth="80.0" styleClass="contentButtonClean" stylesheets="@../styles/MainFrameStyle.css" text="&gt;">
                            <VBox.margin>
                               <Insets bottom="5.0" />
                            </VBox.margin>
                         </Button>
-                        <Button fx:id="btnToLeft" mnemonicParsing="false" prefHeight="30.0" prefWidth="80.0" styleClass="contentButtonClean" stylesheets="@../styles/MainFrameStyle.css" text="&lt;">
+                        <Button fx:id="btnToLeft" mnemonicParsing="false" onAction="#handleToLeftButtonClick" prefHeight="30.0" prefWidth="80.0" styleClass="contentButtonClean" stylesheets="@../styles/MainFrameStyle.css" text="&lt;">
                            <VBox.margin>
                               <Insets bottom="50.0" />
                            </VBox.margin>
                         </Button>
-                        <Button fx:id="btnPromote" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" styleClass="contentButtonBlue" stylesheets="@../styles/MainFrameStyle.css" text="Promote">
+                        <Button fx:id="btnPromote" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#handlePromoteButtonClick" prefHeight="30.0" prefWidth="120.0" styleClass="contentButtonBlue" stylesheets="@../styles/MainFrameStyle.css" text="Promote">
                            <VBox.margin>
                               <Insets bottom="5.0" />
                            </VBox.margin>
                         </Button>
-                        <Button fx:id="btnKick" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="30.0" prefWidth="120.0" styleClass="contentButtonRed" stylesheets="@../styles/MainFrameStyle.css" text="Kick">
+                        <Button fx:id="btnKick" alignment="CENTER_RIGHT" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#handleKickButtonClick" prefHeight="30.0" prefWidth="120.0" styleClass="contentButtonRed" stylesheets="@../styles/MainFrameStyle.css" text="Kick">
                            <VBox.margin>
                               <Insets />
                            </VBox.margin>
@@ -180,8 +180,8 @@
          <bottom>
             <HBox fx:id="hbButtons" alignment="CENTER" prefWidth="200.0" BorderPane.alignment="CENTER">
                <children>
-                  <Button fx:id="btnLeave" alignment="CENTER_RIGHT" contentDisplay="CENTER" minHeight="35.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="120.0" styleClass="contentButtonYellow" stylesheets="@../styles/MainFrameStyle.css" text="Leave" />
-                  <Button fx:id="btNext" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="35.0" mnemonicParsing="false" onAction="#handleOnActionBtPreview" prefHeight="35.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css" text="Weiter" HBox.hgrow="ALWAYS">
+                  <Button fx:id="btnLeave" alignment="CENTER_RIGHT" contentDisplay="CENTER" minHeight="35.0" mnemonicParsing="false" onAction="#handleLeaveButtonClick" prefHeight="35.0" prefWidth="120.0" styleClass="contentButtonYellow" stylesheets="@../styles/MainFrameStyle.css" text="Leave" />
+                  <Button fx:id="btNext" alignment="CENTER_RIGHT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="35.0" mnemonicParsing="false" onAction="#handleContinueButtonClick" prefHeight="35.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css" text="Weiter" HBox.hgrow="ALWAYS">
                      <font>
                         <Font size="12.0" />
                      </font>

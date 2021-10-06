@@ -49,17 +49,15 @@ import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
 import net.clanwolf.starmap.client.process.universe.BOAttack;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.Internationalization;
+import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.logging.C3Logger;
-import net.clanwolf.starmap.transfer.dtos.AttackCharacterDTO;
-import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
-import net.clanwolf.starmap.transfer.dtos.RolePlayStoryDTO;
-import net.clanwolf.starmap.transfer.dtos.UserDTO;
+import net.clanwolf.starmap.transfer.dtos.*;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
+import javax.swing.*;
+import java.lang.reflect.Array;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Objects;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * @author Undertaker
@@ -69,7 +67,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 //	private HashMap<Long, Boolean> animationPlayedMap = new HashMap<>();
 	private final RolePlayCharacterDTO dummy = new RolePlayCharacterDTO();
 	private boolean iamdroplead = false;
-	private final HashMap<Long, Long> characterRoleMap = new HashMap<>();
+	private final HashMap<Long, AttackCharacterDTO> characterRoleMap = new HashMap<>();
 	private boolean firstCreationDone = false;
 	private boolean creating = false;
 
@@ -115,11 +113,11 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 		RolePlayCharacterDTO selectedChar = lvAttacker.getSelectionModel().getSelectedItem();
 		if (selectedChar != null && !selectedChar.getName().equals("...")) {
-//			Long role = characterRoleMap.get(selectedChar.getId());
+			Long role = (characterRoleMap.get(selectedChar.getId())).getType();
 			btnToLeft.setDisable(true);
 			btnToRight.setDisable(!iamdroplead);
 			btnKick.setDisable(!iamdroplead);
-			btnPromote.setDisable(!iamdroplead);
+			btnPromote.setDisable(!iamdroplead || (role != Constants.ROLE_ATTACKER_WARRIOR)); // No promotion for players from 3rd factions
 			if (selectedChar.getName().equals(Nexus.getCurrentChar().getName())) {
 				btnKick.setDisable(true); // Can not kick myself
 			}
@@ -135,7 +133,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 	public void handleAttackerDropleadMouseClick() {
 		lvAttacker.getSelectionModel().clearSelection();
 		lvDefender.getSelectionModel().clearSelection();
-		btnPromote.setText(Internationalization.getString("C3_Lobby_Demote"));
+		//btnPromote.setText(Internationalization.getString("C3_Lobby_Demote"));
 
 		RolePlayCharacterDTO selectedChar = lvDropleadAttacker.getSelectionModel().getSelectedItem();
 		if (selectedChar != null && !selectedChar.getName().equals("...")) {
@@ -143,7 +141,8 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 			btnToLeft.setDisable(true); // the droplead can not be switched while droplead, degrade first
 			btnToRight.setDisable(true); // the droplead can not be switched while droplead, degrade first
 			btnKick.setDisable(true); // the droplead can not be kicked while droplead, degrade first
-			btnPromote.setDisable(!iamdroplead);
+//			btnPromote.setDisable(!iamdroplead);
+			btnPromote.setDisable(true);
 			if (selectedChar.getName().equals(Nexus.getCurrentChar().getName())) {
 				btnKick.setDisable(true); // Can not kick myself
 			}
@@ -156,6 +155,170 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 	}
 
 	@FXML
+	public synchronized void handleToLeftButtonClick() {
+		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute();
+//		btnToLeft.setDisable(true);
+//		lvAttacker.getItems().add(dummy);
+//		lvDefender.getItems().add(dummy);
+		RolePlayCharacterDTO selectedChar = lvDefender.getSelectionModel().getSelectedItem();
+//		lvDefender.getItems().remove(selectedChar);
+//		lvAttacker.getItems().add(selectedChar);
+//		lvDefender.getSelectionModel().clearSelection();
+//		lvAttacker.getSelectionModel().clearSelection();
+		btnKick.setDisable(true);
+		btnPromote.setDisable(true);
+
+		AttackCharacterDTO ac = characterRoleMap.get(selectedChar.getId());
+		if (ac.getType().equals(Constants.ROLE_DEFENDER_WARRIOR)) {
+			ac.setType(Constants.ROLE_ATTACKER_WARRIOR);
+		} else if (ac.getType().equals(Constants.ROLE_DEFENDER_SUPPORTER)) {
+			ac.setType(Constants.ROLE_ATTACKER_SUPPORTER);
+		}
+		checkConditionsToStartDrop(ac);
+	}
+
+	@FXML
+	public synchronized void handleToRightButtonClick() {
+		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute();
+//		btnToRight.setDisable(true);
+//		lvAttacker.getItems().add(dummy);
+//		lvDefender.getItems().add(dummy);
+		RolePlayCharacterDTO selectedChar = lvAttacker.getSelectionModel().getSelectedItem();
+//		lvAttacker.getItems().remove(selectedChar);
+//		lvDefender.getItems().add(selectedChar);
+//		lvDefender.getSelectionModel().clearSelection();
+//		lvAttacker.getSelectionModel().clearSelection();
+		btnKick.setDisable(true);
+		btnPromote.setDisable(true);
+
+		AttackCharacterDTO ac = characterRoleMap.get(selectedChar.getId());
+		if (ac.getType().equals(Constants.ROLE_ATTACKER_WARRIOR)) {
+			ac.setType(Constants.ROLE_DEFENDER_WARRIOR);
+		} else if (ac.getType().equals(Constants.ROLE_ATTACKER_SUPPORTER)) {
+			ac.setType(Constants.ROLE_DEFENDER_SUPPORTER);
+		}
+		checkConditionsToStartDrop(ac);
+	}
+
+	@FXML
+	public void handlePromoteButtonClick() {
+
+	}
+
+	@FXML
+	public synchronized void handleKickButtonClick() {
+		RolePlayCharacterDTO selectedChar = lvAttacker.getSelectionModel().getSelectedItem();
+		if (selectedChar == null) {
+			selectedChar = lvDefender.getSelectionModel().getSelectedItem();
+		}
+		lvAttacker.getItems().remove(selectedChar);
+		lvDefender.getItems().remove(selectedChar);
+
+		AttackCharacterDTO ac = characterRoleMap.get(selectedChar.getId());
+		ac.setType(null); // delete AC
+		// TODO: DELETE ac
+		checkConditionsToStartDrop(ac);
+	}
+
+	@FXML
+	public synchronized void handleLeaveButtonClick() {
+		BOAttack a = Nexus.getCurrentAttackOfUser();
+		for (AttackCharacterDTO ac : a.getAttackCharList()) {
+			if (ac.getCharacterID().equals(Nexus.getCurrentChar().getId())) {
+				// TODO: DELETE ac
+			}
+		}
+		ActionManager.getAction(ACTIONS.SWITCH_TO_MAP).execute();
+	}
+
+	@FXML
+	public void handleContinueButtonClick() {
+
+	}
+
+	public synchronized void checkConditionsToStartDrop(AttackCharacterDTO ac) {
+		C3SoundPlayer.play("sound/fx/button_clicked_05.mp3", false);
+
+		btnToRight.setDisable(true);
+		btnToLeft.setDisable(true);
+		btnKick.setDisable(true);
+		btnPromote.setDisable(true);
+
+//		if (lvDefender.getItems().size() == 0) {
+//			lvDefender.getItems().add(dummy);
+//		}
+//		if (lvAttacker.getItems().size() == 0) {
+//			lvAttacker.getItems().add(dummy);
+//		}
+
+		BOAttack a = Nexus.getCurrentAttackOfUser();
+		AttackDTO attackDTO = a.getAttackDTO();
+		List<AttackCharacterDTO> acl = attackDTO.getAttackCharList();
+		if (ac != null) {
+			if (ac.getType() == null) {
+				acl.remove(ac);
+			}
+			// Save attack character
+			a.storeAttackCharacters(ac, false);
+		}
+
+		boolean attackersOnline = true;
+		boolean defendersOnline = true;
+		boolean allOnline = false;
+
+		for (RolePlayCharacterDTO rpc : lvAttacker.getItems()) {
+			boolean online = false;
+			for (UserDTO u : Nexus.getCurrentlyOnlineUserList()) {
+				if (u.getCurrentCharacter().getId().equals(rpc.getId())) {
+					online = true;
+					break;
+				}
+			}
+			if (!online) {
+				attackersOnline = false;
+				break;
+			}
+		}
+
+		for (RolePlayCharacterDTO rpc : lvDefender.getItems()) {
+			if (rpc.getName().endsWith("(offline)")) {
+				defendersOnline = false;
+				break;
+			}
+		}
+
+		if (!lvDropleadAttacker.getItems().get(0).getName().endsWith("(offline)")
+			&& !lvDropleadDefender.getItems().get(0).getName().endsWith("(offline)")
+			&& attackersOnline
+			&& defendersOnline) {
+			allOnline = true;
+		}
+
+		C3Logger.debug("Droplead Attacker: " + (lvDropleadAttacker.getItems().size() == 1 && !"...".equals(lvDropleadAttacker.getItems().get(0).getName())));
+		C3Logger.debug("Droplead Defender: " + (lvDropleadDefender.getItems().size() == 1 && !"...".equals(lvDropleadDefender.getItems().get(0).getName())));
+		C3Logger.debug("Count Attacker: " + (lvAttacker.getItems().size() >= 2));
+		C3Logger.debug("Count Defender: " + (lvDefender.getItems().size() >= 2));
+		C3Logger.debug("Equal pilot count: " + (lvAttacker.getItems().size() == lvDefender.getItems().size() && lvAttacker.getItems().size() >= 2));
+		C3Logger.debug("Everybody online: " + allOnline);
+
+		btNext.setDisable(true);
+		// Check conditions
+		if (lvDropleadAttacker.getItems().size() == 1
+				&& lvDropleadDefender.getItems().size() == 1
+				&& !"...".equals(lvDropleadAttacker.getItems().get(0).getName())
+				&& !"...".equals(lvDropleadDefender.getItems().get(0).getName())
+				&& lvAttacker.getItems().size() >= 2
+				&& lvDefender.getItems().size() >= 2
+				&& lvAttacker.getItems().size() == lvDefender.getItems().size()
+		) {
+			// Enable "continue"
+			btNext.setDisable(false);
+		}
+		lvAttacker.requestFocus();
+		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute();
+	}
+
+	@FXML
 	public void handleDefenderListMouseClick() {
 		lvAttacker.getSelectionModel().clearSelection();
 		lvDropleadAttacker.getSelectionModel().clearSelection();
@@ -164,11 +327,11 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 		RolePlayCharacterDTO selectedChar = lvDefender.getSelectionModel().getSelectedItem();
 		if (selectedChar != null && !selectedChar.getName().equals("...")) {
-			Long role = characterRoleMap.get(selectedChar.getId());
+			Long role = (characterRoleMap.get(selectedChar.getId())).getType();
 			btnToLeft.setDisable(!iamdroplead);
 			btnToRight.setDisable(true);
 			btnKick.setDisable(!iamdroplead);
-			btnPromote.setDisable(!iamdroplead || role == 4L); // No promotion for players from 3rd factions
+			btnPromote.setDisable(!iamdroplead || (role != Constants.ROLE_ATTACKER_WARRIOR)); // No promotion for players from 3rd factions
 			if (selectedChar.getName().equals(Nexus.getCurrentChar().getName())) {
 				btnKick.setDisable(true); // Can not kick myself
 			}
@@ -185,7 +348,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 	public void handleDefenderDropleadMouseClick() {
 		lvAttacker.getSelectionModel().clearSelection();
 		lvDefender.getSelectionModel().clearSelection();
-		btnPromote.setText(Internationalization.getString("C3_Lobby_Demote"));
+//		btnPromote.setText(Internationalization.getString("C3_Lobby_Demote"));
 
 		RolePlayCharacterDTO selectedChar = lvDropleadDefender.getSelectionModel().getSelectedItem();
 		if (selectedChar != null && !selectedChar.getName().equals("...")) {
@@ -193,7 +356,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 			btnToLeft.setDisable(true); // the droplead can not be switched while droplead, degrade first
 			btnToRight.setDisable(true); // the droplead can not be switched while droplead, degrade first
 			btnKick.setDisable(true); // the droplead can not be kicked while droplead, degrade first
-			btnPromote.setDisable(!iamdroplead);
+			btnPromote.setDisable(true);
 			if (selectedChar.getName().equals(Nexus.getCurrentChar().getName())) {
 				btnKick.setDisable(true); // Can not kick myself
 			}
@@ -388,7 +551,8 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 		setStrings();
 		buildGuiEffect();
-		C3Logger.info("Init ^^^^^------------------------------------------------------------------ WIESO KOMMEN WIR HIER ZWEIMAL REIN ---" + a.getAttackDTO().getId());
+		checkConditionsToStartDrop(null);
+//		C3Logger.info("Init ^^^^^------------------------------------------------------------------ WIESO KOMMEN WIR HIER ZWEIMAL REIN ---" + a.getAttackDTO().getId());
 	}
 
 	public synchronized void updateLists(BOAttack a) {
@@ -406,10 +570,10 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		characterRoleMap.clear();
 
 		for (AttackCharacterDTO ac : a.getAttackCharList()) {
-			characterRoleMap.put(ac.getCharacterID(), ac.getType());
+			characterRoleMap.put(ac.getCharacterID(), ac);
 
-			if (ac.getType().equals(1L) || ac.getType().equals(0L)) { // Attacker
-				if (ac.getType().equals(1L)) { // Droplead
+			if (ac.getType().equals(Constants.ROLE_ATTACKER_COMMANDER) || ac.getType().equals(Constants.ROLE_ATTACKER_WARRIOR) || ac.getType().equals(Constants.ROLE_ATTACKER_SUPPORTER)) { // Attacker
+				if (ac.getType().equals(Constants.ROLE_ATTACKER_COMMANDER)) { // Droplead
 					// Put this dropleader into upper list
 					lvDropleadAttacker.getItems().clear();
 					lvDropleadAttacker.getItems().add(Nexus.getCharacterById(ac.getCharacterID()));
@@ -423,8 +587,8 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 					lvAttacker.getItems().add(Nexus.getCharacterById(ac.getCharacterID()));
 					lvAttacker.getItems().remove(dummy);
 				}
-			} else if (ac.getType().equals(3L) || ac.getType().equals(2L)) {
-				if (ac.getType().equals(3L)) { // Droplead
+			} else if (ac.getType().equals(Constants.ROLE_DEFENDER_COMMANDER) || ac.getType().equals(Constants.ROLE_DEFENDER_WARRIOR) || ac.getType().equals(Constants.ROLE_DEFENDER_SUPPORTER)) {
+				if (ac.getType().equals(Constants.ROLE_DEFENDER_COMMANDER)) { // Droplead
 					// Put this dropleader into upper list
 					lvDropleadDefender.getItems().clear();
 					lvDropleadDefender.getItems().add(Nexus.getCharacterById(ac.getCharacterID()));
@@ -435,7 +599,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 					lvDefender.getItems().add(Nexus.getCharacterById(ac.getCharacterID()));
 					lvDefender.getItems().remove(dummy);
 				}
-			} else if (ac.getType().equals(4L)) {
+			} else if (ac.getType().equals(Constants.ROLE_SUPPORTER)) {
 				// This warrior will help out, not coming from attacker OR defender factions
 				// Cannot be a droplead on either side
 				// Will be assigned to the side with fewer pilots or the attacker in case of same number of pilots
@@ -452,19 +616,29 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 				if (atts > defs) {
 					lvDefender.getItems().add(Nexus.getCharacterById(ac.getCharacterID()));
 					lvDefender.getItems().remove(dummy);
+					ac.setType(Constants.ROLE_DEFENDER_SUPPORTER);
 				} else if (atts < defs) {
-					lvDefender.getItems().add(Nexus.getCharacterById(ac.getCharacterID()));
-					lvDefender.getItems().remove(dummy);
+					lvAttacker.getItems().add(Nexus.getCharacterById(ac.getCharacterID()));
+					lvAttacker.getItems().remove(dummy);
+					ac.setType(Constants.ROLE_ATTACKER_SUPPORTER);
 				} else {
 					lvAttacker.getItems().add(Nexus.getCharacterById(ac.getCharacterID()));
 					lvAttacker.getItems().remove(dummy);
+					ac.setType(Constants.ROLE_ATTACKER_SUPPORTER);
 				}
 			}
 		}
+		btnToRight.setDisable(true);
+		btnToLeft.setDisable(true);
+		btnKick.setDisable(true);
+		btnPromote.setDisable(true);
+
 		lvDropleadAttacker.getSelectionModel().clearSelection();
 		lvDropleadDefender.getSelectionModel().clearSelection();
 		lvAttacker.getSelectionModel().clearSelection();
 		lvDefender.getSelectionModel().clearSelection();
+
+		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute();
 	}
 
 	/**
@@ -517,9 +691,21 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 			case UPDATE_USERS_FOR_ATTACK:
 				C3Logger.info("The userlist has changed. Update information on the listboxes.");
-				if (o.getObject() instanceof BOAttack) {
-					BOAttack a = (BOAttack) o.getObject();
-					updateLists(a);
+				if (o.getObject() instanceof BOAttack a) {
+					List<AttackCharacterDTO> l = a.getAttackCharList();
+					boolean kicked = true;
+					for (AttackCharacterDTO ac : l) {
+						if (ac.getCharacterID().equals(Nexus.getCurrentChar().getId())) {
+							kicked = false;
+						}
+					}
+					if (kicked) {
+						// I have been kicked from the lobby, need to change the currently displayed pane
+						C3Logger.info("I have been kicked from lobby!");
+						ActionManager.getAction(ACTIONS.SWITCH_TO_MAP).execute();
+					} else {
+						updateLists(a);
+					}
 				}
 				break;
 
