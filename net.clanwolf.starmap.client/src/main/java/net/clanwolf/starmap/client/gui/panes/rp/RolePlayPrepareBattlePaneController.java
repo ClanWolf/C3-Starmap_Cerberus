@@ -127,6 +127,9 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 			btnKick.setDisable(true);
 			btnPromote.setDisable(true);
 		}
+		if (selectedChar == Nexus.getCurrentChar()) {
+			btnKick.setDisable(true);
+		}
 	}
 
 	@FXML
@@ -202,7 +205,23 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 	@FXML
 	public void handlePromoteButtonClick() {
-
+		RolePlayCharacterDTO selectedChar = lvAttacker.getSelectionModel().getSelectedItem();
+		if (selectedChar == null) {
+			selectedChar = lvDefender.getSelectionModel().getSelectedItem();
+			AttackCharacterDTO ac = characterRoleMap.get(selectedChar.getId());
+			ac.setType(Constants.ROLE_DEFENDER_COMMANDER);
+			checkConditionsToStartDrop(ac);
+			AttackCharacterDTO ac2 = characterRoleMap.get(lvDropleadDefender.getItems().get(0).getId());
+			ac2.setType(Constants.ROLE_DEFENDER_WARRIOR);
+			checkConditionsToStartDrop(ac2);
+		} else {
+			AttackCharacterDTO ac = characterRoleMap.get(selectedChar.getId());
+			ac.setType(Constants.ROLE_ATTACKER_COMMANDER);
+			checkConditionsToStartDrop(ac);
+			AttackCharacterDTO ac2 = characterRoleMap.get(lvDropleadAttacker.getItems().get(0).getId());
+			ac2.setType(Constants.ROLE_ATTACKER_WARRIOR);
+			checkConditionsToStartDrop(ac2);
+		}
 	}
 
 	@FXML
@@ -211,20 +230,17 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		if (selectedChar == null) {
 			selectedChar = lvDefender.getSelectionModel().getSelectedItem();
 		}
-		lvAttacker.getItems().remove(selectedChar);
-		lvDefender.getItems().remove(selectedChar);
-
 		AttackCharacterDTO ac = characterRoleMap.get(selectedChar.getId());
-		ac.setType(null); // delete AC
+		ac.setType(null);
 		checkConditionsToStartDrop(ac);
 	}
 
 	@FXML
 	public synchronized void handleLeaveButtonClick() {
 		BOAttack a = Nexus.getCurrentAttackOfUser();
-		AttackCharacterDTO ac2 = characterRoleMap.get(Nexus.getCurrentChar().getId());
-		ac2.setType(null); // delete AC
-		checkConditionsToStartDrop(ac2);
+		AttackCharacterDTO ac = characterRoleMap.get(Nexus.getCurrentChar().getId());
+		ac.setType(null);
+		checkConditionsToStartDrop(ac);
 		ActionManager.getAction(ACTIONS.SWITCH_TO_MAP).execute();
 	}
 
@@ -242,7 +258,6 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		btnPromote.setDisable(true);
 
 		BOAttack a = Nexus.getCurrentAttackOfUser();
-		AttackDTO attackDTO = a.getAttackDTO();
 		if (ac != null) {
 			a.storeAttackCharacters(ac, false, (ac.getType() == null));
 		}
@@ -326,6 +341,9 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 			btnKick.setDisable(true);
 			btnPromote.setDisable(true);
 			btnPromote.setDisable(true);
+		}
+		if (selectedChar == Nexus.getCurrentChar()) {
+			btnKick.setDisable(true);
 		}
 	}
 

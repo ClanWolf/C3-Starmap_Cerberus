@@ -1040,6 +1040,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		ActionManager.addActionCallbackListener(ACTIONS.SHOW_IRC_INDICATOR, this);
 		ActionManager.addActionCallbackListener(ACTIONS.ENABLE_MAIN_MENU_BUTTONS, this);
 		ActionManager.addActionCallbackListener(ACTIONS.SWITCH_TO_INVASION, this);
+		ActionManager.addActionCallbackListener(ACTIONS.SWITCH_TO_MAP, this);
 		ActionManager.addActionCallbackListener(ACTIONS.TERMINAL_COMMAND, this);
 	}
 
