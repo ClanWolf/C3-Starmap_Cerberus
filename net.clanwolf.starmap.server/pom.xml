@@ -34,6 +34,10 @@
 					<groupId>javax.activation</groupId>
 					<artifactId>activation</artifactId>
 				</exclusion>
+<!--				<exclusion>-->
+<!--					<groupId>com.sun.activation</groupId>-->
+<!--					<artifactId>jakarta.activation</artifactId>-->
+<!--				</exclusion>-->
 			</exclusions>
 		</dependency>
 		<dependency>

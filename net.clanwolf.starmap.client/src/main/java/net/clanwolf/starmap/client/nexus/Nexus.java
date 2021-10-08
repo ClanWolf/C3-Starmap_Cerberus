@@ -322,6 +322,11 @@ public class Nexus {
 	}
 
 	@SuppressWarnings("unused")
+	public static void setCurrentAttackOfUserToNull() {
+		currentAttackOfUser = null;
+	}
+
+	@SuppressWarnings("unused")
 	public static Object getMyPlayerSessionID() {
 		return myPlayerSessionID;
 	}

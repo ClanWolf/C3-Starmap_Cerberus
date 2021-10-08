@@ -224,13 +224,13 @@
 							<goal>run</goal>
 						</goals>
 						<configuration>
-							<tasks>
+							<target>
 								<echo>Copying manuals...</echo>
 								<echo>C3_Manual_de.pdf</echo>
 								<copy file="../doc/manual/C3_Manual_de.pdf" tofile="${basedir}/src/main/resources/C3_Manual_de.pdf"/>
 <!--								<echo>C3_Manual_en.pdf</echo>-->
 <!--								<copy file="../doc/manual/C3_Manual_en.pdf" tofile="${basedir}/src/main/resources/C3_Manual_en.pdf"/>-->
-							</tasks>
+							</target>
 						</configuration>
 					</execution>
 				</executions>

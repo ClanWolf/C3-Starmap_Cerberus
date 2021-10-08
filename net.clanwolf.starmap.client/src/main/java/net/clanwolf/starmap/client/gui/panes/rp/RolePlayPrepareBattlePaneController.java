@@ -241,6 +241,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		AttackCharacterDTO ac = characterRoleMap.get(Nexus.getCurrentChar().getId());
 		ac.setType(null);
 		checkConditionsToStartDrop(ac);
+		Nexus.setCurrentAttackOfUserToNull();
 		ActionManager.getAction(ACTIONS.SWITCH_TO_MAP).execute();
 	}
 
