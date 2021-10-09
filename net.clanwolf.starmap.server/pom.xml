@@ -68,19 +68,11 @@
 			<!--				</exclusion>-->
 			<!--			</exclusions>-->
 		</dependency>
-
-<!--		<dependency>-->
-<!--			<groupId>mysql</groupId>-->
-<!--			<artifactId>mysql-connector-java</artifactId>-->
-<!--			<version>6.0.6</version>-->
-<!--		</dependency>-->
-
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>[8.0.16,)</version>
+			<version>8.0.25</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
