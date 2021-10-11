@@ -136,6 +136,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 	public void handleAttackerDropleadMouseClick() {
 		lvAttacker.getSelectionModel().clearSelection();
 		lvDefender.getSelectionModel().clearSelection();
+		lvDropleadDefender.getSelectionModel().clearSelection();
 		//btnPromote.setText(Internationalization.getString("C3_Lobby_Demote"));
 
 		RolePlayCharacterDTO selectedChar = lvDropleadAttacker.getSelectionModel().getSelectedItem();
@@ -352,6 +353,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 	public void handleDefenderDropleadMouseClick() {
 		lvAttacker.getSelectionModel().clearSelection();
 		lvDefender.getSelectionModel().clearSelection();
+		lvDropleadAttacker.getSelectionModel().clearSelection();
 //		btnPromote.setText(Internationalization.getString("C3_Lobby_Demote"));
 
 		RolePlayCharacterDTO selectedChar = lvDropleadDefender.getSelectionModel().getSelectedItem();
@@ -571,9 +573,22 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		lvDropleadAttacker.getSelectionModel().clearSelection();
 		lvDropleadDefender.getSelectionModel().clearSelection();
 
+		HashMap<AttackCharacterDTO, RolePlayCharacterDTO> potentialDropleadersAttacker = new HashMap<>();
+		HashMap<AttackCharacterDTO, RolePlayCharacterDTO> potentialDropleadersDefender = new HashMap<>();
+
 		characterRoleMap.clear();
 
 		for (AttackCharacterDTO ac : a.getAttackCharList()) {
+			RolePlayCharacterDTO c = Nexus.getCharacterById(ac.getCharacterID());
+			if (a.getAttackerFactionId().equals(c.getFactionId())) {
+				// this user belongs to the attacker faction
+				potentialDropleadersAttacker.put(ac, c);
+			}
+			if (a.getDefenderFactionId().equals(Nexus.getCharacterById(ac.getCharacterID()).getFactionId())) {
+				// this user belongs to the defender faction
+				potentialDropleadersDefender.put(ac, c);
+			}
+
 			characterRoleMap.put(ac.getCharacterID(), ac);
 
 			if (ac.getType().equals(Constants.ROLE_ATTACKER_COMMANDER) || ac.getType().equals(Constants.ROLE_ATTACKER_WARRIOR) || ac.getType().equals(Constants.ROLE_ATTACKER_SUPPORTER)) { // Attacker
@@ -632,6 +647,30 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 				}
 			}
 		}
+
+		// are attacker droplead still empty?
+		if (lvDropleadAttacker.getItems().size() == 1 && "...".equals(lvDropleadAttacker.getItems().get(0).getName())) {
+			for (AttackCharacterDTO ac : potentialDropleadersAttacker.keySet()) {
+				lvDropleadAttacker.getItems().remove(0);
+				lvDropleadAttacker.getItems().add(potentialDropleadersAttacker.get(ac));
+				lvAttacker.getItems().remove(potentialDropleadersAttacker.get(ac));
+				if (lvAttacker.getItems().size() == 0) {
+					lvAttacker.getItems().add(dummy);
+				}
+			}
+		}
+		// are defender droplead still empty?
+		if (lvDropleadDefender.getItems().size() == 1 && "...".equals(lvDropleadDefender.getItems().get(0).getName())) {
+			for (AttackCharacterDTO ac : potentialDropleadersDefender.keySet()) {
+				lvDropleadDefender.getItems().remove(0);
+				lvDropleadDefender.getItems().add(potentialDropleadersAttacker.get(ac));
+				lvDefender.getItems().remove(potentialDropleadersAttacker.get(ac));
+				if (lvDefender.getItems().size() == 0) {
+					lvDefender.getItems().add(dummy);
+				}
+			}
+		}
+
 		btnToRight.setDisable(true);
 		btnToLeft.setDisable(true);
 		btnKick.setDisable(true);
@@ -641,6 +680,8 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		lvDropleadDefender.getSelectionModel().clearSelection();
 		lvAttacker.getSelectionModel().clearSelection();
 		lvDefender.getSelectionModel().clearSelection();
+
+		checkConditionsToStartDrop(null);
 
 		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute();
 	}
