@@ -43,21 +43,49 @@
 			<artifactId>io.nadron.client</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>net.clanwolf.starmap</groupId>
-			<artifactId>net.clanwolf.starmap.server</artifactId>
-			<version>${project.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.jboss.spec.javax.transaction</groupId>
-					<artifactId>jboss-transaction-api_1.2_spec</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>net.clanwolf.starmap</groupId>
-					<artifactId>net.clanwolf.starmap.mail</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>net.clanwolf.starmap</groupId>-->
+<!--			<artifactId>net.clanwolf.starmap.server</artifactId>-->
+<!--			<version>${project.version}</version>-->
+<!--			<exclusions>-->
+<!--				<exclusion>-->
+<!--					<groupId>org.jboss.spec.javax.transaction</groupId>-->
+<!--					<artifactId>jboss-transaction-api_1.2_spec</artifactId>-->
+<!--				</exclusion>-->
+<!--				<exclusion>-->
+<!--					<groupId>net.clanwolf.starmap</groupId>-->
+<!--					<artifactId>net.clanwolf.starmap.mail</artifactId>-->
+<!--				</exclusion>-->
+<!--				<exclusion>-->
+<!--					<groupId>net.clanwolf.starmap</groupId>-->
+<!--					<artifactId>net.clanwolf.starmap.ircbot</artifactId>-->
+<!--				</exclusion>-->
+<!--&lt;!&ndash;				<exclusion>&ndash;&gt;-->
+<!--&lt;!&ndash;					<groupId>org.jboss.logging</groupId>&ndash;&gt;-->
+<!--&lt;!&ndash;					<artifactId>jboss-logging</artifactId>&ndash;&gt;-->
+<!--&lt;!&ndash;				</exclusion>&ndash;&gt;-->
+<!--&lt;!&ndash;				<exclusion>&ndash;&gt;-->
+<!--&lt;!&ndash;					<groupId>org.hibernate</groupId>&ndash;&gt;-->
+<!--&lt;!&ndash;					<artifactId>hibernate-ehcache</artifactId>&ndash;&gt;-->
+<!--&lt;!&ndash;				</exclusion>&ndash;&gt;-->
+<!--&lt;!&ndash;				<exclusion>&ndash;&gt;-->
+<!--&lt;!&ndash;					<groupId>net.sf.ehcache</groupId>&ndash;&gt;-->
+<!--&lt;!&ndash;					<artifactId>ehcache</artifactId>&ndash;&gt;-->
+<!--&lt;!&ndash;				</exclusion>&ndash;&gt;-->
+<!--&lt;!&ndash;				<exclusion>&ndash;&gt;-->
+<!--&lt;!&ndash;					<groupId>com.zaxxer</groupId>&ndash;&gt;-->
+<!--&lt;!&ndash;					<artifactId>HikariCP</artifactId>&ndash;&gt;-->
+<!--&lt;!&ndash;				</exclusion>&ndash;&gt;-->
+<!--&lt;!&ndash;				<exclusion>&ndash;&gt;-->
+<!--&lt;!&ndash;					<groupId>org.hibernate</groupId>&ndash;&gt;-->
+<!--&lt;!&ndash;					<artifactId>hibernate-core</artifactId>&ndash;&gt;-->
+<!--&lt;!&ndash;				</exclusion>&ndash;&gt;-->
+<!--&lt;!&ndash;				<exclusion>&ndash;&gt;-->
+<!--&lt;!&ndash;					<groupId>org.springframework.security</groupId>&ndash;&gt;-->
+<!--&lt;!&ndash;					<artifactId>spring-security-core</artifactId>&ndash;&gt;-->
+<!--&lt;!&ndash;				</exclusion>&ndash;&gt;-->
+<!--			</exclusions>-->
+<!--		</dependency>-->
 		<dependency>
 			<groupId>org.kynosarges</groupId>
 			<artifactId>tektosyne</artifactId>
@@ -111,25 +139,29 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>1.7.30</version>
+			<version>1.7.32</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
-			<artifactId>slf4j-simple</artifactId>
-			<version>1.7.30</version>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>1.7.32</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jetbrains</groupId>
 			<artifactId>annotations</artifactId>
-			<version>20.1.0</version>
+			<version>22.0.0</version>
 			<scope>compile</scope>
 		</dependency>
 
 		<!-- https://github.com/migzai/irc-api -->
+		<!-- https://mvnrepository.com/artifact/org.jitsi/irc-api -->
 		<dependency>
 			<groupId>com.ircclouds.irc</groupId>
 			<artifactId>irc-api</artifactId>
 			<version>1.0-0014</version>
+<!--			<groupId>org.jitsi</groupId>-->
+<!--			<artifactId>irc-api</artifactId>-->
+<!--			<version>1.0-0015-jitsi-1</version>-->
 			<exclusions>
 				<exclusion>
 					<groupId>org.slf4j</groupId>
@@ -287,8 +319,7 @@
 			<plugin>
 				<groupId>org.moditect</groupId>
 				<artifactId>moditect-maven-plugin</artifactId>
-<!--				<version>1.0.0.Beta2</version>-->
-				<version>1.0.0.RC1</version>
+				<version>1.0.0.RC2</version>
 				<extensions>true</extensions>
 				<executions>
 
@@ -304,14 +335,15 @@
 <!--							<jdepsExtraArgs>-->
 <!--								<arg>&#45;&#45;multi-release</arg>-->
 <!--								<arg>9</arg>-->
+<!--								<arg>&#45;&#45;ignore-missing-deps</arg>-->
 <!--							</jdepsExtraArgs>-->
 <!--							<modules>-->
 <!--								<module>-->
 
 <!--									<artifact>-->
-<!--										<groupId>com.github.kwhat</groupId>-->
-<!--										<artifactId>jnativehook</artifactId>-->
-<!--										<version>2.2.0</version>-->
+<!--										<groupId>org.slf4j</groupId>-->
+<!--										<artifactId>slf4j-log4j12</artifactId>-->
+<!--										<version>1.7.32</version>-->
 <!--									</artifact>-->
 <!--&lt;!&ndash;									<additionalDependencies>&ndash;&gt;-->
 <!--&lt;!&ndash;										<dependency>&ndash;&gt;-->
@@ -406,6 +438,35 @@
 										}
 									</moduleInfoSource>
 								</module>
+<!--								<module>-->
+<!--									<artifact>-->
+<!--										<groupId>org.jitsi</groupId>-->
+<!--										<artifactId>irc-api</artifactId>-->
+<!--										<version>1.0-0015-jitsi-1</version>-->
+<!--									</artifact>-->
+<!--									<moduleInfoSource>-->
+<!--										module irc.api {-->
+<!--											requires org.apache.commons.codec;-->
+<!--											requires org.slf4j;-->
+<!--											exports com.ircclouds.irc.api;-->
+<!--											exports com.ircclouds.irc.api.commands;-->
+<!--											exports com.ircclouds.irc.api.comms;-->
+<!--											exports com.ircclouds.irc.api.ctcp;-->
+<!--											exports com.ircclouds.irc.api.domain;-->
+<!--											exports com.ircclouds.irc.api.domain.messages;-->
+<!--											exports com.ircclouds.irc.api.domain.messages.interfaces;-->
+<!--											exports com.ircclouds.irc.api.filters;-->
+<!--											exports com.ircclouds.irc.api.listeners;-->
+<!--											exports com.ircclouds.irc.api.negotiators;-->
+<!--											exports com.ircclouds.irc.api.negotiators.api;-->
+<!--											exports com.ircclouds.irc.api.negotiators.capabilities;-->
+<!--											exports com.ircclouds.irc.api.om;-->
+<!--											exports com.ircclouds.irc.api.state;-->
+<!--											exports com.ircclouds.irc.api.utils;-->
+<!--											exports nl.dannyvanheumen.nio;-->
+<!--										}-->
+<!--									</moduleInfoSource>-->
+<!--								</module>-->
 								<module>
 									<artifact>
 										<groupId>com.ircclouds.irc</groupId>
@@ -414,6 +475,8 @@
 									</artifact>
 									<moduleInfoSource>
 										module irc.api {
+											requires org.slf4j;
+<!--										requires slf4j.log4j12;-->
 											exports com.ircclouds.irc.api;
 											exports com.ircclouds.irc.api.commands;
 											exports com.ircclouds.irc.api.comms;
@@ -939,6 +1002,47 @@
 										}
 									</moduleInfoSource>
 								</module>
+								<module>
+									<artifact>
+										<groupId>org.openjfx</groupId>
+										<artifactId>javafx-swing</artifactId>
+										<version>${version.javafx}</version>
+									</artifact>
+									<moduleInfoSource>
+										module javafx.swingEmpty {
+										}
+									</moduleInfoSource>
+								</module>
+								<module>
+									<artifact>
+										<groupId>org.slf4j</groupId>
+										<artifactId>slf4j-api</artifactId>
+										<version>1.7.32</version>
+									</artifact>
+									<moduleInfoSource>
+										module org.slf4j {
+											exports org.slf4j;
+											exports org.slf4j.event;
+											exports org.slf4j.helpers;
+											exports org.slf4j.spi;
+										}
+									</moduleInfoSource>
+								</module>
+								<module>
+									<artifact>
+										<groupId>org.slf4j</groupId>
+										<artifactId>slf4j-log4j12</artifactId>
+										<version>1.7.32</version>
+									</artifact>
+									<moduleInfoSource>
+										module slf4j.log4j12 {
+											requires log4j;
+											requires transitive org.slf4j;
+											exports org.apache.log4j;
+											exports org.slf4j.impl;
+										}
+									</moduleInfoSource>
+								</module>
 							</modules>
 						</configuration>
 					</execution>
@@ -965,6 +1069,11 @@
 								<module>${moduleName}/${mainClass}</module>
 							</launcher>
 							<compression>2</compression>
+
+							<!-- NONE, APP, APP_WITH_DEPENDENCIES -->
+							<jarInclusionPolicy>NONE</jarInclusionPolicy>
+
+							<ignoreSigningInformation>true</ignoreSigningInformation>
 							<stripDebug>true</stripDebug>
 							<outputDirectory>${project.build.directory}/jlink-image</outputDirectory>
 						</configuration>

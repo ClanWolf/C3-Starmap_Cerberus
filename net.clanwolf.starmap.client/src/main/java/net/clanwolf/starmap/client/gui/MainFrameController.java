@@ -1850,7 +1850,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				break;
 
 			case SHOW_IRC_INDICATOR:
-				if (!currentlyDisplayedPane.getPaneName().equals("ChatPane")) {
+				if (currentlyDisplayedPane == null || !currentlyDisplayedPane.getPaneName().equals("ChatPane")) {
 					if (!ircIndicator.isVisible()) {
 						ircIndicator.setVisible(true);
 						C3SoundPlayer.play("sound/fx/beep_electric_3.mp3", false);
