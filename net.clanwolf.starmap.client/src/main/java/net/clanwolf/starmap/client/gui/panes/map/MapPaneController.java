@@ -217,6 +217,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			}
 			if (!defenderHasCommander) {
 				currentPlayerRoleInInvasion = Constants.ROLE_DEFENDER_COMMANDER; // The first defender to show up will initially get the role as commander
+			} else {
+				currentPlayerRoleInInvasion = Constants.ROLE_DEFENDER_WARRIOR; // If there is a commander, I will fall back to warrior
 			}
 		}
 		boolean attackerHasCommander = false;
@@ -229,6 +231,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			}
 			if (!attackerHasCommander) {
 				currentPlayerRoleInInvasion = Constants.ROLE_ATTACKER_COMMANDER; // The first attacker to show up will initially get the role as commander
+			} else {
+				currentPlayerRoleInInvasion = Constants.ROLE_ATTACKER_WARRIOR; // If there is a commander, I will fall back to warrior
 			}
 		}
 		ac.setType(currentPlayerRoleInInvasion);
