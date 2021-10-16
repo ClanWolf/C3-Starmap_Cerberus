@@ -47,6 +47,8 @@ import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
+import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
+import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
 import net.clanwolf.starmap.client.gui.panes.logging.LogWatcher;
 import net.clanwolf.starmap.client.net.Server;
 import net.clanwolf.starmap.logging.C3Logger;
@@ -58,6 +60,7 @@ import net.clanwolf.starmap.client.util.C3Properties;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.client.util.Tools;
 import net.clanwolf.starmap.client.preloader.C3_Preloader;
+import net.clanwolf.starmap.transfer.enums.POPUPS;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -85,6 +88,8 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 	private boolean waitcursor = false;
 	private boolean messageactive = false;
 	private static boolean isDevelopmentPC = false;
+
+	private static boolean promptNewVersionInstall = false;
 
 	/**
 	 * Horizontal position of the main window.
@@ -135,6 +140,94 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 		File file = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "manual" + File.separator + "C3_Manual_de.pdf");
 		HostServices hostServices = getHostServices();
 		hostServices.showDocument(file.getAbsolutePath());
+	}
+
+	@Override
+	public void init() {
+		notifyPreloader(new Preloader.ProgressNotification(10.0));
+
+		// Logging
+		File dir = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3");
+		boolean res = dir.mkdirs();
+		if (res || dir.exists()) {
+			String logFileName = dir + File.separator + "starmap.log";
+			C3Properties.setProperty(C3PROPS.LOGFILE, logFileName);
+			LogWatcher logWatcher = new LogWatcher(logFileName);
+			Nexus.setLogWatcher(logWatcher);
+
+			notifyPreloader(new Preloader.ProgressNotification(50.0));
+
+			C3Logger.setC3Logfile(logFileName);
+			C3Logger.setC3LogLevel(Level.FINEST);
+
+			C3Logger.info("---------------------------------------------------------------------");
+			C3Logger.info("STARTING C3 (" + Tools.getVersionNumber() + ")");
+			C3Logger.info("---------------------------------------------------------------------");
+			C3Logger.info("Logfile : " + logFileName);
+			C3Logger.info("Loglevel: " + C3Logger.getC3LogLevel());
+
+			notifyPreloader(new Preloader.ProgressNotification(70.0));
+
+			// prepare the properties
+			C3Logger.info("Preparing user properties...");
+			prepareUserProperties();
+			prepareManual();
+
+			if (Nexus.isClearCacheOnStart()) {
+				clearCache();
+			} else {
+				cleanCache();
+			}
+
+			if (isDevelopmentPC) {
+				C3Logger.warning("--------------------------------------------------------------");
+				C3Logger.warning("--------------- THIS IS A DEVELOPMENT MACHINE! ---------------");
+				C3Logger.warning("--------------------------------------------------------------");
+				C3Properties.setProperty(C3PROPS.DEV_PC, "true", false);
+			}
+
+			notifyPreloader(new Preloader.ProgressNotification(100.0));
+
+			try {
+				String availableClientVersion = Server.checkLastAvailableClientVersion();
+				C3Logger.info("Latest available client version online: " + availableClientVersion);
+
+				if ("${project.version}".equals(Tools.getVersionNumber())) {
+					C3Logger.info("Currently used client version: *** Running in local debugger! *** (no version check online).");
+				} else {
+					C3Logger.info("Currently used client version: " + Tools.getVersionNumber());
+
+					if (availableClientVersion.equals(Tools.getVersionNumber())) {
+						C3Logger.info("Currently used client version is the latest.");
+					} else {
+						C3Logger.info("Difference detected: Prompt to download new version.");
+						// TODO: Generate prompt to download latest version
+						promptNewVersionInstall = true;
+					}
+				}
+			} catch(Exception e) {
+				C3Logger.warning("Could not check latest available client version online!");
+			}
+
+			String commandFileName = dir + File.separator + "command.log";
+			File commandLogFile = new File(commandFileName);
+			Nexus.setCommandLogFile(commandLogFile);
+
+			// fill command history from stored file
+			try {
+				Scanner input = new Scanner(commandLogFile);
+				Nexus.commandHistoryIndex = 0;
+				while (input.hasNextLine()) {
+					Nexus.commandHistory.add(input.nextLine());
+					Nexus.commandHistoryIndex++;
+				}
+			} catch (FileNotFoundException e) {
+				// file has never been written yet
+				//e.printStackTrace();
+			}
+		} else {
+			C3Logger.info("Could not create: " + dir.getAbsolutePath());
+		}
 	}
 
 	/**
@@ -260,92 +353,12 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 //			// error during email sending
 //			C3Logger.info("Error during mail dispatch.");
 //		}
-	}
 
-	@Override
-	public void init() {
-		notifyPreloader(new Preloader.ProgressNotification(10.0));
-
-		// Logging
-		File dir = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3");
-		boolean res = dir.mkdirs();
-		if (res || dir.exists()) {
-			String logFileName = dir + File.separator + "starmap.log";
-			C3Properties.setProperty(C3PROPS.LOGFILE, logFileName);
-			LogWatcher logWatcher = new LogWatcher(logFileName);
-			Nexus.setLogWatcher(logWatcher);
-
-			notifyPreloader(new Preloader.ProgressNotification(50.0));
-
-			C3Logger.setC3Logfile(logFileName);
-			C3Logger.setC3LogLevel(Level.FINEST);
-
-			C3Logger.info("---------------------------------------------------------------------");
-			C3Logger.info("STARTING C3 (" + Tools.getVersionNumber() + ")");
-			C3Logger.info("---------------------------------------------------------------------");
-			C3Logger.info("Logfile : " + logFileName);
-			C3Logger.info("Loglevel: " + C3Logger.getC3LogLevel());
-
-			notifyPreloader(new Preloader.ProgressNotification(70.0));
-
-			// prepare the properties
-			C3Logger.info("Preparing user properties...");
-			prepareUserProperties();
-			prepareManual();
-
-			if (Nexus.isClearCacheOnStart()) {
-				clearCache();
-			} else {
-				cleanCache();
-			}
-
-			if (isDevelopmentPC) {
-				C3Logger.warning("--------------------------------------------------------------");
-				C3Logger.warning("--------------- THIS IS A DEVELOPMENT MACHINE! ---------------");
-				C3Logger.warning("--------------------------------------------------------------");
-				C3Properties.setProperty(C3PROPS.DEV_PC, "true", false);
-			}
-
-			notifyPreloader(new Preloader.ProgressNotification(100.0));
-
-			try {
-				String availableClientVersion = Server.checkLastAvailableClientVersion();
-				C3Logger.info("Latest available client version online: " + availableClientVersion);
-
-				if ("${project.version}".equals(Tools.getVersionNumber())) {
-					C3Logger.info("Currently used client version: *** Running in local debugger! *** (no version check online).");
-				} else {
-					C3Logger.info("Currently used client version: " + Tools.getVersionNumber());
-
-					if (availableClientVersion.equals(Tools.getVersionNumber())) {
-						C3Logger.info("Currently used client version is the latest.");
-					} else {
-						C3Logger.info("Difference detected: Prompt to download new version.");
-						// TODO: Generate prompt to download latest version
-					}
-				}
-			} catch(Exception e) {
-				C3Logger.warning("Could not check latest available client version online!");
-			}
-
-			String commandFileName = dir + File.separator + "command.log";
-			File commandLogFile = new File(commandFileName);
-			Nexus.setCommandLogFile(commandLogFile);
-
-			// fill command history from stored file
-			try {
-				Scanner input = new Scanner(commandLogFile);
-				Nexus.commandHistoryIndex = 0;
-				while (input.hasNextLine()) {
-					Nexus.commandHistory.add(input.nextLine());
-					Nexus.commandHistoryIndex++;
-				}
-			} catch (FileNotFoundException e) {
-				// file has never been written yet
-				//e.printStackTrace();
-			}
-		} else {
-			C3Logger.info("Could not create: " + dir.getAbsolutePath());
+		if (promptNewVersionInstall) {
+			C3Message message = new C3Message();
+			message.setText("Neue Version verfügbar! Herunterladen?");
+			message.setType(C3MESSAGETYPES.YES_NO);
+			ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
 		}
 	}
 
