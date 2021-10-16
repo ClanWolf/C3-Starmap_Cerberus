@@ -18,6 +18,33 @@ RequestExecutionLevel admin
 AddBrandingImage left 130
 SetFont /LANG=${LANG_ENGLISH} "Arial" 9
 
+; uninstall before install
+; https://nsis.sourceforge.io/mediawiki/index.php?title=Auto-uninstall_old_before_installing_new&oldid=24968
+Function .onInit
+	ReadRegStr $R0 HKLM \
+	"Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" \
+	"UninstallString"
+	StrCmp $R0 "" done
+
+	MessageBox MB_OKCANCEL|MB_USERICON \
+	"C3-Client is already installed. $\n$\nClick `OK` to remove the \
+	previous version or `Cancel` to cancel this upgrade." \
+	IDOK uninst
+	Abort
+
+	;Run the uninstaller
+	uninst:
+		ClearErrors
+		ExecWait '$R0 _?=$INSTDIR'
+		IfErrors 0 noError
+			GetErrorLevel $0 ;check the return error value from the uninstaller
+			MessageBox MB_USERICON|MB_OK "Uninstall aborted ($0).$\n$\n\
+			Old version needs to be removed first."
+			Abort
+		noError:
+	done:
+FunctionEnd
+
 ; installer image
 Function .onGuiInit
 	InitPluginsDir

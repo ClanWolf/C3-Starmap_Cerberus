@@ -208,7 +208,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		ac.setAttackID(a.getAttackDTO().getId());
 		ac.setCharacterID(Nexus.getCurrentChar().getId());
 		boolean defenderHasCommander = false;
-		if (currentPlayerRoleInInvasion == Constants.ROLE_DEFENDER_WARRIOR) { // Defender, check if defenders already have a commander
+		if (currentPlayerRoleInInvasion == Constants.ROLE_DEFENDER_COMMANDER || currentPlayerRoleInInvasion == Constants.ROLE_DEFENDER_WARRIOR) { // Defender, check if defenders already have a commander
 			for (AttackCharacterDTO acl : a.getAttackDTO().getAttackCharList()) {
 				if (acl.getType() == Constants.ROLE_DEFENDER_COMMANDER) {
 					defenderHasCommander = true;
@@ -217,6 +217,18 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			}
 			if (!defenderHasCommander) {
 				currentPlayerRoleInInvasion = Constants.ROLE_DEFENDER_COMMANDER; // The first defender to show up will initially get the role as commander
+			}
+		}
+		boolean attackerHasCommander = false;
+		if (currentPlayerRoleInInvasion == Constants.ROLE_ATTACKER_COMMANDER || currentPlayerRoleInInvasion == Constants.ROLE_ATTACKER_WARRIOR) {
+			for (AttackCharacterDTO acl : a.getAttackDTO().getAttackCharList()) {
+				if (acl.getType() == Constants.ROLE_ATTACKER_COMMANDER) {
+					attackerHasCommander = true;
+					break;
+				}
+			}
+			if (!attackerHasCommander) {
+				currentPlayerRoleInInvasion = Constants.ROLE_ATTACKER_COMMANDER; // The first attacker to show up will initially get the role as commander
 			}
 		}
 		ac.setType(currentPlayerRoleInInvasion);
@@ -1710,8 +1722,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 			case SHOW_JUMPSHIP_DETAIL:
 				C3Logger.info("Showing jumpship detail");
-				if (o.getObject() instanceof BOJumpship) {
-					BOJumpship js = (BOJumpship) o.getObject();
+				if (o.getObject() instanceof BOJumpship js) {
 					showJumpshipDetail(js);
 				} else {
 					hideJumpshipDetail();
