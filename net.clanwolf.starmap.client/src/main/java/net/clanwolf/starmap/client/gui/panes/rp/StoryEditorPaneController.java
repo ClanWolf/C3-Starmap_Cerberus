@@ -371,7 +371,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 
 				mode = StoryEditorPaneController.MODE_IS_DEFAULT;
 				enableButtons();
-				ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute();
+				ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("13");
 
 			default:
 				break;

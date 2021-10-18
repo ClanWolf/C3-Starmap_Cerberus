@@ -189,7 +189,7 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 				Tools.playAttentionSound();
 				enableExitEvent = false;
 				Platform.runLater(() -> {
-					ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute();
+					ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("12");
 
 					FadeTransition FadeInTransition = new FadeTransition(Duration.millis(200), buttonLogout);
 					FadeInTransition.setFromValue(0.0);

@@ -29,6 +29,7 @@ package net.clanwolf.starmap.client.gui.panes;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.SequentialTransition;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.CacheHint;
 import javafx.scene.Parent;
@@ -217,19 +218,19 @@ public abstract class AbstractC3Pane extends Pane {
 	}
 
 	public void paneCreation() {
-		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute();
+		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("8");
 		firePaneConstructionBeginsEvent();
 		Tools.playGUICreationSound();
 		this.setOpacity(1.0);
 
 		// Fade in transition 01 (Background)
-		FadeTransition fadeInTransition_01 = new FadeTransition(Duration.millis(70), backgroundPolygon);
+		FadeTransition fadeInTransition_01 = new FadeTransition(Duration.millis(60), backgroundPolygon);
 		fadeInTransition_01.setFromValue(0.0);
 		fadeInTransition_01.setToValue(0.2);
 		fadeInTransition_01.setCycleCount(4);
 
 		// Fade in transition 02 (Border)
-		FadeTransition fadeInTransition_02 = new FadeTransition(Duration.millis(120), borderPolygon);
+		FadeTransition fadeInTransition_02 = new FadeTransition(Duration.millis(110), borderPolygon);
 		fadeInTransition_02.setFromValue(0.0);
 		fadeInTransition_02.setToValue(1.0);
 		fadeInTransition_02.setCycleCount(2);
@@ -245,11 +246,11 @@ public abstract class AbstractC3Pane extends Pane {
 	}
 
 	public void paneDestruction() {
-		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute();
+		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("9");
 		Tools.playGUIDestructionSound();
 
 		// Fade out transition 01 (Background)
-		FadeTransition FadeOutTransition_01 = new FadeTransition(Duration.millis(90), borderPolygon);
+		FadeTransition FadeOutTransition_01 = new FadeTransition(Duration.millis(80), borderPolygon);
 		FadeOutTransition_01.setFromValue(0.2);
 		FadeOutTransition_01.setToValue(0.0);
 		FadeOutTransition_01.setCycleCount(2);
@@ -274,10 +275,12 @@ public abstract class AbstractC3Pane extends Pane {
 	}
 
 	public void firePaneConstructionEvent() {
+		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("41");
 		ActionManager.getAction(ACTIONS.PANE_CREATION_FINISHED).execute(this);
 	}
 
 	public void firePaneDestructionEvent() {
+		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("42");
 		ActionManager.getAction(ACTIONS.PANE_DESTRUCTION_FINISHED).execute(this);
 	}
 }

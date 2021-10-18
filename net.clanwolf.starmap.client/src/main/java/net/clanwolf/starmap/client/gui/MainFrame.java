@@ -89,8 +89,6 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 	private boolean messageactive = false;
 	private static boolean isDevelopmentPC = false;
 
-	private static boolean promptNewVersionInstall = false;
-
 	/**
 	 * Horizontal position of the main window.
 	 */
@@ -202,7 +200,7 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 					} else {
 						C3Logger.info("Difference detected: Prompt to download new version.");
 						// TODO: Generate prompt to download latest version
-						promptNewVersionInstall = true;
+						Nexus.promptNewVersionInstall = true;
 					}
 				}
 			} catch(Exception e) {
@@ -353,13 +351,6 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 //			// error during email sending
 //			C3Logger.info("Error during mail dispatch.");
 //		}
-
-		if (promptNewVersionInstall) {
-			C3Message message = new C3Message();
-			message.setText("Neue Version verfügbar! Herunterladen?");
-			message.setType(C3MESSAGETYPES.YES_NO);
-			ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
-		}
 	}
 
 	/**

@@ -88,6 +88,7 @@ public class Nexus {
 	public static LinkedList<String> commandHistory = new LinkedList<>();
 	public static int commandHistoryIndex = 0;
 	public static File commandLogFile = null;
+	public static boolean promptNewVersionInstall = false;
 
 	/**
 	 * Private constructor to prevent instantiation

@@ -148,7 +148,7 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 		instance = this;
 		tableViewChat.setVisible(true);
 		if (!IRCClient.connected) {
-			addChatLine("", "...");
+			addChatLine("", Internationalization.getString("C3_IRC_Connecting"));
 		}
 	}
 
@@ -319,8 +319,9 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 			String s = null;
 			boolean found = false;
 			while (i.hasNext()) {
-				s = (String) i.next();
-				if (s.endsWith(userName) || s.startsWith(userName)) {
+				s = i.next();
+//				if (s.endsWith(userName) || s.startsWith(userName)) {
+				if (s.replace("@", "").equals(userName)) {
 					found = true;
 					break;
 				}

@@ -160,7 +160,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 	@FXML
 	public synchronized void handleToLeftButtonClick() {
-		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute();
+		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("1");
 //		btnToLeft.setDisable(true);
 //		lvAttacker.getItems().add(dummy);
 //		lvDefender.getItems().add(dummy);
@@ -183,7 +183,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 	@FXML
 	public synchronized void handleToRightButtonClick() {
-		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute();
+		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("2");
 //		btnToRight.setDisable(true);
 //		lvAttacker.getItems().add(dummy);
 //		lvDefender.getItems().add(dummy);
@@ -317,7 +317,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 			btNext.setDisable(false);
 		}
 		lvAttacker.requestFocus();
-		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute();
+		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("1");
 	}
 
 	@FXML
@@ -683,7 +683,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 		checkConditionsToStartDrop(null);
 
-		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute();
+		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("2");
 	}
 
 	/**

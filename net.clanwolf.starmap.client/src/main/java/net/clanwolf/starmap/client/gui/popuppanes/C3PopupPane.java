@@ -181,7 +181,7 @@ public class C3PopupPane extends Pane {
 		FadeOutTransition.setFromValue(1.0);
 		FadeOutTransition.setToValue(0.0);
 		FadeOutTransition.setCycleCount(1);
-		FadeOutTransition.setOnFinished(event -> ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute());
+		FadeOutTransition.setOnFinished(event -> ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("16"));
 		FadeOutTransition.play();
 	}
 }

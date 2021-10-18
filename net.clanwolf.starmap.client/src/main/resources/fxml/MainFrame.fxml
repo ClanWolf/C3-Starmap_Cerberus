@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" fx:id="rootAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="630.0" prefWidth="1030.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.MainFrameController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="AnchorPane" fx:id="rootAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="630.0" prefWidth="1030.0" xmlns="http://javafx.com/javafx/17" fx:controller="net.clanwolf.starmap.client.gui.MainFrameController">
     <children>
         <Pane fx:id="mouseStopper" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="1.0" prefHeight="630.0" prefWidth="1030.0" styleClass="AnchorPane" visible="true">
             <stylesheets>
@@ -59,7 +59,7 @@
             </image>
         </ImageView>
       <Label id="onlineIndicatorLabelHoverHelper" fx:id="exitLabelTopRight" layoutX="982.0" layoutY="28.0" maxHeight="20.0" maxWidth="22.0" minHeight="20.0" minWidth="22.0" onMouseClicked="#handleTopRightExitLabel" onMouseEntered="#handleExitLabelTopRightMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="20.0" prefWidth="22.0" />
-      <Label id="statuslabel" fx:id="copyrightLabel" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="740.0" layoutY="584.0" minHeight="16.0" minWidth="69.0" mouseTransparent="true" prefHeight="16.0" prefWidth="181.0" styleClass="toplabel">
+      <Label id="statuslabel" fx:id="copyrightLabel" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="723.0" layoutY="583.0" minHeight="16.0" minWidth="69.0" mouseTransparent="true" prefHeight="16.0" prefWidth="217.0" styleClass="toplabel">
          <stylesheets>
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>
@@ -87,7 +87,7 @@
                 <URL value="@../styles/MainFrameStyle.css" />
             </stylesheets>
         </Label>
-        <Label id="statuslabel" fx:id="toplabel" contentDisplay="RIGHT" layoutX="791.0" layoutY="30.0" minHeight="16.0" minWidth="69.0" mouseTransparent="true" prefHeight="16.0" prefWidth="173.0" styleClass="toplabel">
+        <Label id="statuslabel" fx:id="toplabel" contentDisplay="RIGHT" layoutX="786.0" layoutY="30.0" minHeight="16.0" minWidth="69.0" mouseTransparent="true" prefHeight="16.0" prefWidth="189.0" styleClass="toplabel">
             <stylesheets>
                 <URL value="@../styles/MainFrameStyle.css" />
             </stylesheets>

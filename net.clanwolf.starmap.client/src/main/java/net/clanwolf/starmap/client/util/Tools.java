@@ -115,7 +115,7 @@ public final class Tools {
 
 	public static void saveMapScreenshot(int width, int height, PannableCanvas canvas) {
 		if (!Nexus.isDevelopmentPC()) {
-			ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute();
+			ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("14");
 			WritableImage wi = new WritableImage(width, height);
 
 //			Runnable runnable = () -> {
@@ -210,7 +210,7 @@ public final class Tools {
 //			thread.start();
 
 			// If a thread is used here, things like the nebula image end up on the screenshot that should not be there
-			ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute();
+			ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("14");
 		}
 	}
 

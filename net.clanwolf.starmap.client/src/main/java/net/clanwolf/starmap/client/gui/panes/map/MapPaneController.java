@@ -445,7 +445,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	private synchronized void refreshUniverseMap() {
 		// Refresh universe map (GUI)
 		ActionManager.getAction(ACTIONS.NOISE).execute(800);
-		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute();
+		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("10");
 		Platform.runLater(() -> {
 			if (boUniverse != null) { // this is the same universe, but the objects have been updated to the returned, new universe
 				Nexus.setCurrentSeason(boUniverse.currentSeason);
@@ -635,11 +635,11 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 							transition.setToY(boUniverse.starSystemBOs.get(targetSystemId).getScreenY() - 8);
 							transition.setOnFinished(event -> {
 								jsi.setMouseTransparent(false);
-								ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute();
+								ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("9");
 							});
 							transition.playFromStart();
 						} else {
-							ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute();
+							ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("10");
 						}
 						jumpshipImage.setMouseTransparent(false);
 						jumpshipImage.toFront();
@@ -648,7 +648,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 						js.setRoute(boUniverse.routesList.get(js.getJumpshipId()));
 					} else {
 						C3Logger.info("Jumpship '" + js.getJumpshipName() + "' has no current system. Seems to be a mistake!");
-						ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute();
+						ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("11");
 					}
 				}
 				canvas.getChildren().remove(borders);
@@ -1072,6 +1072,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			setStrings();
 			C3Logger.info("Finished to build the starmap.");
 
+			ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("12");
 			ActionManager.getAction(ACTIONS.MAP_CREATION_FINISHED).execute();
 		}
 	}

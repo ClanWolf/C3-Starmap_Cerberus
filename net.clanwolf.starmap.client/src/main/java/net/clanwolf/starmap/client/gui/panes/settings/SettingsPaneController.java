@@ -184,7 +184,7 @@ public class SettingsPaneController extends AbstractC3Controller implements Acti
 					public void run() {
 
 						// TODO: Abstract the behavior of the cancel button
-						ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute();
+						ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("11");
 
 						FadeTransition FadeInTransition = new FadeTransition(Duration.millis(400), buttonNo);
 						FadeInTransition.setFromValue(0.0);

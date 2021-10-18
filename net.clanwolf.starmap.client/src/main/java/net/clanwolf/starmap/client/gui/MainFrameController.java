@@ -84,6 +84,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Controlls gui objects for the MainFrame class.
@@ -127,8 +128,10 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 	private final Image imageAdminButtonOff = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/adminOff.png")));
 	private final Image imageAdminButtonOn = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/adminOn.png")));
-
 	private boolean helpvoiceplayedonce = false;
+
+	private static int counterWaitCursor = 0; // a global counter
+	private static ReentrantLock counterWaitCursorLock = new ReentrantLock(true); // enable fairness policy
 
 	@FXML
 	private Label statuslabel;
@@ -1273,37 +1276,16 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		exec.execute(r);
 	}
 
-	/**
-	 * Here all the actions go in that need to be performed once the client is started up and showing
-	 */
-	private void startup() {
-		SpeechSpectrumAnimation();
-		NoiseAnimation();
-
-		noiseImage.toFront();
-		noiseImage.setVisible(true);
-		C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_welcome_message"));
-		C3SoundPlayer.play("/sound/fx/beep_02.mp3", false);
-		C3SoundPlayer.startMusic();
-
-		String tcphostname = C3Properties.getProperty(C3PROPS.TCP_HOSTNAME);
-		int tcpPort = Integer.parseInt(C3Properties.getProperty(C3PROPS.TCP_PORT));
-
-		// Start has been executed, app is running
-		setConsoleEntry("Initializing security context [encrypting]");
-		setConsoleEntry("Accessing");
-		setConsoleEntry("Access granted! [CBGGE88776]");
-		setConsoleEntry("Initializing C3-Network");
-		setConsoleEntry("Connecting to " + tcphostname + ":" + tcpPort + "...");
-
-		Server.checkServerStatusTask();
-		Server.checkDatabaseConnectionTask();
-
-		setConsoleEntry("Setting controll elements");
-
-		enableMainMenuButtons(Nexus.isLoggedIn(), Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN));
-
-		C3SoundPlayer.getSamples();
+	private static void decrementCounter(){
+		counterWaitCursorLock.lock();
+		try {
+			counterWaitCursor--;
+			if (counterWaitCursor < 0) {
+				counterWaitCursor = 0;
+			}
+		} finally{
+			counterWaitCursorLock.unlock();
+		}
 	}
 
 	private void NoiseAnimation() {
@@ -1474,6 +1456,55 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		}
 	}
 
+	private static void incrementCounter(){
+		counterWaitCursorLock.lock();
+		try {
+			counterWaitCursor++;
+		} finally{
+			counterWaitCursorLock.unlock();
+		}
+	}
+
+	/**
+	 * Here all the actions go in that need to be performed once the client is started up and showing
+	 */
+	private void startup() {
+		SpeechSpectrumAnimation();
+		NoiseAnimation();
+
+		noiseImage.toFront();
+		noiseImage.setVisible(true);
+		C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_welcome_message"));
+		C3SoundPlayer.play("/sound/fx/beep_02.mp3", false);
+		C3SoundPlayer.startMusic();
+
+		String tcphostname = C3Properties.getProperty(C3PROPS.TCP_HOSTNAME);
+		int tcpPort = Integer.parseInt(C3Properties.getProperty(C3PROPS.TCP_PORT));
+
+		// Start has been executed, app is running
+		setConsoleEntry("Initializing security context [encrypting]");
+		setConsoleEntry("Accessing");
+		setConsoleEntry("Access granted! [CBGGE88776]");
+		setConsoleEntry("Initializing C3-Network");
+		setConsoleEntry("Connecting to " + tcphostname + ":" + tcpPort + "...");
+
+		Server.checkServerStatusTask();
+		Server.checkDatabaseConnectionTask();
+
+		setConsoleEntry("Setting controll elements");
+
+		enableMainMenuButtons(Nexus.isLoggedIn(), Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN));
+
+		C3SoundPlayer.getSamples();
+
+		if (Nexus.promptNewVersionInstall) {
+			C3Message message = new C3Message();
+			message.setText("Neue Version verfügbar! Herunterladen?");
+			message.setType(C3MESSAGETYPES.YES_NO);
+			ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
+		}
+	}
+
 	/**
 	 * Handle Actions
 	 *
@@ -1514,7 +1545,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				break;
 
 			case ONLINECHECK_STARTED:
-				ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute();
+				ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("3");
 				// Log.debug("ACTIONS.ONLINE_STATUS_CHECK_STARTED catched.");
 				onlineIndicatorLabel.setStyle("-fx-background-color: #808000;");
 				C3Properties.setProperty(C3PROPS.CHECK_ONLINE_STATUS, "RUNNING_CHECK", false);
@@ -1525,7 +1556,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				if (result) {
 					onlineIndicatorLabel.setStyle("-fx-background-color: #008000;");
 					C3Properties.setProperty(C3PROPS.CHECK_ONLINE_STATUS, "ONLINE", false);
-					ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute();
+					ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("3");
 				} else {
 					onlineIndicatorLabel.setStyle("-fx-background-color: #c00000;");
 					C3Properties.setProperty(C3PROPS.CHECK_ONLINE_STATUS, "OFFLINE", false);
@@ -1543,7 +1574,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					// server is not online, do not try to check the database
 					C3Logger.info("Server is offline, DB is not checked!");
 				} else {
-					ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute();
+					ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("4");
 					databaseAccessibleIndicatorLabel.setStyle("-fx-background-color: #808000;");
 					C3Properties.setProperty(C3PROPS.CHECK_CONNECTION_STATUS, "RUNNING_CHECK", false);
 				}
@@ -1555,7 +1586,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				if (result3) {
 					databaseAccessibleIndicatorLabel.setStyle("-fx-background-color: #008000;");
 					C3Properties.setProperty(C3PROPS.CHECK_CONNECTION_STATUS, "ONLINE", false);
-					ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute();
+					ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("4");
 				} else {
 					databaseAccessibleIndicatorLabel.setStyle("-fx-background-color: #c00000;");
 					C3Properties.setProperty(C3PROPS.CHECK_CONNECTION_STATUS, "OFFLINE", false);
@@ -1611,7 +1642,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				break;
 
 			case LOGON_FINISHED_SUCCESSFULL:
-				// TODO: This may take to long and a response object may arrive before the pane exists and lead to nullpointers!
+				// TODO: This may take too long and a response object may arrive before the pane exists and lead to nullpointers!
 				// if the user is null here, this may cause the endless Nullpointer Exceptions that sometimes occur on/after login
 				C3Logger.info("Current user is: " + Nexus.getCurrentUser() + " (Check this not to be NULL)");
 
@@ -1636,7 +1667,15 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 				Nexus.setLoggedInStatus(true);
 				Platform.runLater(() -> {
-					toplabel.setText("Con // " + tcphostname + ":" + tcpPort);
+					if (Nexus.getCurrentUser() != null) {
+						if (Nexus.getCurrentUser().getUserName().length() > 10) {
+							toplabel.setText(Nexus.getCurrentUser().getUserName());
+						} else {
+							toplabel.setText(Nexus.getCurrentUser().getUserName() + "@" + tcphostname + ":" + tcpPort);
+						}
+					} else {
+						toplabel.setText("Con // " + tcphostname + ":" + tcpPort);
+					}
 					enableMainMenuButtons(Nexus.isLoggedIn(), Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN));
 					BOUniverse boUniverse = Nexus.getBoUniverse();
 					gameInfoLabel.setText("S" + boUniverse.currentSeason + "/R" + boUniverse.currentRound + " * Phase " + Tools.getRomanNumber(boUniverse.currentSeasonMetaPhase) + " - " + boUniverse.currentDate);
@@ -1647,6 +1686,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					TFSProgress.toFront();
 					TFSInfo.setVisible(false);
 				});
+				ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("5");
 				break;
 
 			case LOGON_RUNNING:
@@ -1663,7 +1703,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 			case PANE_CREATION_FINISHED:
 				currentlyDisplayedPane = (AbstractC3Pane) o.getObject();
-				ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute();
+				ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("6");
 				paneTransitionInProgress = false;
 				break;
 
@@ -1680,7 +1720,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					if (nextToDisplayPane != null) {
 						createNextPane();
 					} else {
-						ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute();
+						ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("7");
 						systemConsole.setOpacity(0.4);
 						systemConsoleCurrentLine.setOpacity(0.4);
 						spectrumImage.setOpacity(0.1);
@@ -1777,28 +1817,41 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 			case CURSOR_REQUEST_NORMAL:
 				Nexus.setMainFrameEnabled(true);
-				Platform.runLater(() -> {
-					mouseStopper.toFront();
-//					mouseStopper.setBackground(null);
-					waitAnimationPane.showCircleAnimation(false);
-					mouseStopper.setMouseTransparent(true);
-				});
+				String sourceIdRN = "";
+				if (o.getText() != null && !"".equals(o.getText())) {
+					sourceIdRN = o.getText();
+				}
+				decrementCounter();
+				C3Logger.info("Requesting NORMAL cursor (" + counterWaitCursor + "). --> " + sourceIdRN);
+				if (counterWaitCursor == 0) {
+					Platform.runLater(() -> {
+						mouseStopper.toFront();
+						// mouseStopper.setBackground(null);
+						waitAnimationPane.showCircleAnimation(false);
+						mouseStopper.setMouseTransparent(true);
+					});
+				}
 				ActionManager.getAction(ACTIONS.ACTION_SUCCESSFULLY_EXECUTED).execute(o);
 				break;
 
 			case CURSOR_REQUEST_WAIT:
+				String sourceIdRW = "";
+				if (o.getText() != null && !"".equals(o.getText())) {
+					sourceIdRW = o.getText();
+				}
 				Nexus.setMainFrameEnabled(false);
+				incrementCounter();
+				C3Logger.info("Requesting WAIT cursor (" + counterWaitCursor + "). --> " + sourceIdRW);
 				Platform.runLater(() -> {
 					mouseStopper.toFront();
-//					mouseStopper.setBackground(new Background(new BackgroundFill(Color.BLUE, new CornerRadii(0), Insets.EMPTY)));
+					// mouseStopper.setBackground(new Background(new BackgroundFill(Color.BLUE, new CornerRadii(0), Insets.EMPTY)));
 					waitAnimationPane.showCircleAnimation(true);
 					mouseStopper.setMouseTransparent(false);
 				});
 				break;
 
 			case SHOW_MESSAGE:
-				if ((o != null) && (o.getObject() instanceof C3Message)) {
-					C3Message message = (C3Message) o.getObject();
+				if ((o != null) && (o.getObject() instanceof C3Message message)) {
 					showMessage(message);
 				}
 				break;
@@ -1934,7 +1987,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	}
 
 	private void showMessage(C3Message message) {
-		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute();
+		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("5");
 
 		messagePane = new C3MessagePane(message);
 		Platform.runLater(() -> {
@@ -1945,7 +1998,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	}
 
 	private void showMedal(Image image, String desc) {
-		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute();
+		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("6");
 
 		medalPane = new C3MedalPane(image, desc);
 		Platform.runLater(() -> {
@@ -1955,8 +2008,22 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		});
 	}
 
+	/**
+	 *
+	 */
+	@Override
+	public void warningOnAction() {
+	}
+
+	/**
+	 *
+	 */
+	@Override
+	public void warningOffAction() {
+	}
+
 	private void showPopup(Image image, String desc) {
-		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute();
+		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("7");
 
 		popupPane = new C3PopupPane(image, desc);
 		Platform.runLater(() -> {
@@ -1980,20 +2047,6 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 		Platform.runLater(() -> mouseStopper.getChildren().remove(messagePane));
 
-		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute();
-	}
-
-	/**
-	 *
-	 */
-	@Override
-	public void warningOnAction() {
-	}
-
-	/**
-	 *
-	 */
-	@Override
-	public void warningOffAction() {
+		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("8");
 	}
 }
