@@ -1671,7 +1671,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 						if (Nexus.getCurrentUser().getUserName().length() > 10) {
 							toplabel.setText(Nexus.getCurrentUser().getUserName());
 						} else {
-							toplabel.setText(Nexus.getCurrentUser().getUserName() + "@" + tcphostname + ":" + tcpPort);
+							toplabel.setText(Nexus.getCurrentUser().getUserName() + " @ " + tcphostname + ":" + tcpPort);
 						}
 					} else {
 						toplabel.setText("Con // " + tcphostname + ":" + tcpPort);

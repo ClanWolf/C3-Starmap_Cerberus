@@ -224,13 +224,13 @@ public abstract class AbstractC3Pane extends Pane {
 		this.setOpacity(1.0);
 
 		// Fade in transition 01 (Background)
-		FadeTransition fadeInTransition_01 = new FadeTransition(Duration.millis(60), backgroundPolygon);
+		FadeTransition fadeInTransition_01 = new FadeTransition(Duration.millis(50), backgroundPolygon);
 		fadeInTransition_01.setFromValue(0.0);
 		fadeInTransition_01.setToValue(0.2);
 		fadeInTransition_01.setCycleCount(4);
 
 		// Fade in transition 02 (Border)
-		FadeTransition fadeInTransition_02 = new FadeTransition(Duration.millis(110), borderPolygon);
+		FadeTransition fadeInTransition_02 = new FadeTransition(Duration.millis(100), borderPolygon);
 		fadeInTransition_02.setFromValue(0.0);
 		fadeInTransition_02.setToValue(1.0);
 		fadeInTransition_02.setCycleCount(2);
