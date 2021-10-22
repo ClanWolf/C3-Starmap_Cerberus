@@ -395,13 +395,14 @@ public final class Tools {
 					fileOutputStream.write(dataBuffer, 0, bytesRead);
 					counter++;
 					StatusTextEntryActionObject o = new StatusTextEntryActionObject("Downloading Client installer: " + counter + " KB", false, "#555555");
+					o.setJustUpdate(true);
 					ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(o);
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			// TODO: Installer is downloaded, do something with it
-//			ActionManager.getAction(ACTIONS.CLIENT_INSTALLER_DOWNLOAD_COMPLETE).execute();
+			// ActionManager.getAction(ACTIONS.CLIENT_INSTALLER_DOWNLOAD_COMPLETE).execute();
 		};
 		Thread thread = new Thread(runnable);
 		thread.start();

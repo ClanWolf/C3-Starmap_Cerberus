@@ -908,6 +908,10 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	}
 
 	private void setStatusText(String t, boolean flash, String color) {
+		setStatusText(t, flash, "", false);
+	}
+
+	private void setStatusText(String t, boolean flash, String color, boolean justUpdate) {
 		if (fadeTransition_flash == null) {
 			fadeTransition_flash = new FadeTransition(Duration.millis(200), statuslabel);
 			fadeTransition_flash.setFromValue(1.0);
@@ -938,8 +942,12 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			if ("".equals(color)) {
 				statuslabel.setTextFill(Color.web("#667288"));
 			}
-			fadeTransition_flash.stop();
-			fadeTransition_fadein.play();
+			if (justUpdate) {
+
+			} else {
+				fadeTransition_flash.stop();
+				fadeTransition_fadein.play();
+			}
 		}
 	}
 
@@ -1544,7 +1552,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				}
 				String finalColor = color;
 				Platform.runLater(() -> {
-					setStatusText(ste.getMessage(), ste.isFlash(), finalColor);
+					setStatusText(ste.getMessage(), ste.isFlash(), finalColor, ste.isJustUpdate());
 				});
 				break;
 

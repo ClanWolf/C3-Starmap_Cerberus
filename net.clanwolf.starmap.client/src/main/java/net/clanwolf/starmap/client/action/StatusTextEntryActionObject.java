@@ -37,6 +37,7 @@ public class StatusTextEntryActionObject {
 	private boolean flash = false;
 	private String message = "";
 	private String color = "";
+	private boolean justUpdate = false;
 
 	/**
 	 * An object to encapsulate Message and flash status for the status line.
@@ -90,5 +91,13 @@ public class StatusTextEntryActionObject {
 	 */
 	public void setMessage(String message) {
 		this.message = message;
+	}
+
+	public boolean isJustUpdate() {
+		return justUpdate;
+	}
+
+	public void setJustUpdate(boolean justUpdate) {
+		this.justUpdate = justUpdate;
 	}
 }
