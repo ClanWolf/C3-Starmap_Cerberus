@@ -212,15 +212,17 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 			AttackCharacterDTO ac = characterRoleMap.get(selectedChar.getId());
 			ac.setType(Constants.ROLE_DEFENDER_COMMANDER);
 			checkConditionsToStartDrop(ac);
-			AttackCharacterDTO ac2 = characterRoleMap.get(lvDropleadDefender.getItems().get(0).getId());
+			AttackCharacterDTO ac2 = characterRoleMap.get(lvDropleadDefender.getItems().get(0).getId()); // this must be me (if the button was enabled)
 			ac2.setType(Constants.ROLE_DEFENDER_WARRIOR);
+			iamdroplead = false;
 			checkConditionsToStartDrop(ac2);
 		} else {
 			AttackCharacterDTO ac = characterRoleMap.get(selectedChar.getId());
 			ac.setType(Constants.ROLE_ATTACKER_COMMANDER);
 			checkConditionsToStartDrop(ac);
-			AttackCharacterDTO ac2 = characterRoleMap.get(lvDropleadAttacker.getItems().get(0).getId());
+			AttackCharacterDTO ac2 = characterRoleMap.get(lvDropleadAttacker.getItems().get(0).getId()); // this must be me (if the button was enabled)
 			ac2.setType(Constants.ROLE_ATTACKER_WARRIOR);
+			iamdroplead = false;
 			checkConditionsToStartDrop(ac2);
 		}
 	}
@@ -314,9 +316,9 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 				&& lvAttacker.getItems().size() == lvDefender.getItems().size()
 		) {
 			// Enable "continue"
-			btNext.setDisable(false);
+			Platform.runLater(() -> btNext.setDisable(false));
 		}
-		lvAttacker.requestFocus();
+		Platform.runLater(() -> lvAttacker.requestFocus());
 		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("1");
 	}
 

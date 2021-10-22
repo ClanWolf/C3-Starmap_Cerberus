@@ -431,7 +431,7 @@ public class NodeGestures {
 
 				// Is the dragged node a ship (?) and does it belong to my faction (?)
 				if (ship != null && ship.getJumpshipFaction() == Nexus.getCurrentUser().getCurrentCharacter().getFactionId()) {
-					if (Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.FACTIONLEAD_HAS_ROLE) && Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.FACTIONLEAD_MOVE_JUMPSHIP)) {
+					if ((Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.FACTIONLEAD_HAS_ROLE) || Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.UNITLEAD_HAS_ROLE)) && Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.FACTIONLEAD_MOVE_JUMPSHIP)) {
 						boUniverse.currentlyDraggedJumpship = boUniverse.jumpshipBOs.get(node.getId());
 						node.toBack();
 
