@@ -26,15 +26,19 @@
  */
 package net.clanwolf.starmap.client.util;
 
+import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.DialogPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
+import javafx.stage.Stage;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionManager;
+import net.clanwolf.starmap.client.action.StatusTextEntryActionObject;
 import net.clanwolf.starmap.client.gui.panes.map.PannableCanvas;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.universe.BOFaction;
@@ -45,16 +49,13 @@ import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.coobird.thumbnailator.Thumbnails;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
+import java.io.*;
+import java.net.*;
 import java.nio.Buffer;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -352,6 +353,7 @@ public final class Tools {
 			}
 		}
 	}
+
 	public static void purgeDirectory(File dir) {
 		for (File file: Objects.requireNonNull(dir.listFiles())) {
 			if (file.isDirectory()) {
@@ -363,6 +365,7 @@ public final class Tools {
 			}
 		}
 	}
+
 	public static void listDirectory(File dir) {
 		for (File file: Objects.requireNonNull(dir.listFiles())) {
 			if (file.isDirectory()) {
@@ -370,5 +373,37 @@ public final class Tools {
 			}
 			C3Logger.info(file.getAbsolutePath());
 		}
+	}
+
+	public static void downloadFile(String link) throws Exception {
+		Runnable runnable = () -> {
+			String[] bits = link.split("/");
+			String updateName = bits[bits.length - 1];
+
+			File dir = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "update");
+			boolean success = dir.mkdirs();
+			if (success) {
+				C3Logger.info("Created updates folder");
+			}
+
+			try (BufferedInputStream in = new BufferedInputStream(new URL(link).openStream());
+			     FileOutputStream fileOutputStream = new FileOutputStream(dir + File.separator + updateName)) {
+				byte[] dataBuffer = new byte[1024];
+				int counter = 0;
+				int bytesRead;
+				while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
+					fileOutputStream.write(dataBuffer, 0, bytesRead);
+					counter++;
+					StatusTextEntryActionObject o = new StatusTextEntryActionObject("Downloading Client installer: " + counter + " KB", false, "#555555");
+					ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(o);
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			// TODO: Installer is downloaded, do something with it
+//			ActionManager.getAction(ACTIONS.CLIENT_INSTALLER_DOWNLOAD_COMPLETE).execute();
+		};
+		Thread thread = new Thread(runnable);
+		thread.start();
 	}
 }

@@ -67,7 +67,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.Authenticator;
+import java.net.MalformedURLException;
 import java.net.PasswordAuthentication;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -337,6 +339,7 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 		ActionManager.addActionCallbackListener(ACTIONS.CURSOR_REQUEST_WAIT_MESSAGE, this);
 		ActionManager.addActionCallbackListener(ACTIONS.SHOW_MESSAGE, this);
 		ActionManager.addActionCallbackListener(ACTIONS.OPEN_MANUAL, this);
+		ActionManager.addActionCallbackListener(ACTIONS.OPEN_CLIENTVERSION_DOWNLOADPAGE, this);
 
 		stage.show();
 
@@ -498,6 +501,22 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 				break;
 			case OPEN_MANUAL:
 				openManual();
+				break;
+			case OPEN_CLIENTVERSION_DOWNLOADPAGE:
+				Platform.runLater(() -> {
+					try {
+						String directDownloadUrl = C3Properties.getProperty(C3PROPS.AUTOMATIC_DOWNLOAD_CLIENT_URL);
+						directDownloadUrl = directDownloadUrl.replace("##v##", Nexus.getLastAvailableClientVersion());
+						C3Logger.info("Downloading: " + directDownloadUrl);
+						Tools.downloadFile(directDownloadUrl);
+					} catch (Exception e) {
+						C3Logger.info("Exception during download of client update. Redirecting to manual download...");
+						e.printStackTrace();
+						String url = C3Properties.getProperty(C3PROPS.MANUAL_DOWNLOAD_CLIENT_URL);
+						HostServices hostServices = getHostServices();
+						hostServices.showDocument(url);
+					}
+				});
 				break;
 			default:
 				break;

@@ -185,6 +185,22 @@ public class NSICreator {
 			}
 			br6.close();
 			bw6.close();
+
+			System.out.println("-------------------------------------------------------------");
+			System.out.println("Writing version update script:");
+			File fout7 = new File("net.clanwolf.starmap.server\\src\\main\\php\\insert_new_version.php");
+			FileOutputStream fos7 = new FileOutputStream(fout7);
+			BufferedWriter bw7 = new BufferedWriter(new OutputStreamWriter(fos7));
+			BufferedReader br7 = new BufferedReader(new FileReader("NSIS\\templates\\insert_new_version.php_template"));
+			String line7;
+			while ((line7 = br7.readLine()) != null) {
+				if (line7.contains("###VERSION###")) {
+					line7 = line7.replace("###VERSION###", version);
+				}
+				writeLine(bw7, line7);
+			}
+			br7.close();
+			bw7.close();
 		} catch(Exception e) {
 			e.printStackTrace();
 		}

@@ -27,6 +27,7 @@
 package net.clanwolf.starmap.client.gui;
 
 import javafx.animation.*;
+import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -78,6 +79,7 @@ import net.clanwolf.starmap.transfer.enums.MEDALS;
 import net.clanwolf.starmap.transfer.enums.POPUPS;
 
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
@@ -1540,8 +1542,10 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 						case "YELLOW" -> color = "#ffff00";
 					}
 				}
-				setStatusText(ste.getMessage(), ste.isFlash(), color);
-
+				String finalColor = color;
+				Platform.runLater(() -> {
+					setStatusText(ste.getMessage(), ste.isFlash(), finalColor);
+				});
 				break;
 
 			case ONLINECHECK_STARTED:
@@ -2036,17 +2040,11 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private void closeMessage(C3Message message) {
 		C3MESSAGERESULTS userReactionResult = message.getResult();
 
+		C3Logger.info("USER ANSWERED: " + userReactionResult);
 
-
-
-
-
-
-		C3Logger.info("ERROR: " + userReactionResult);
-		C3Logger.info("OUT: " + userReactionResult);
+		ActionManager.getAction(ACTIONS.OPEN_CLIENTVERSION_DOWNLOADPAGE).execute();
 
 		Platform.runLater(() -> mouseStopper.getChildren().remove(messagePane));
-
 		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("8");
 	}
 }
