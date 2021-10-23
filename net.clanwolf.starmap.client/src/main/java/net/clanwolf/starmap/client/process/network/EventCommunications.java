@@ -240,6 +240,7 @@ public class EventCommunications {
 					ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("13");
 					UniverseDTO universeDTO = (UniverseDTO) Compressor.deCompress((byte[])state.getObject());
 					Nexus.injectNewUniverseDTO(universeDTO);
+					ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("13_33");
 					ActionManager.getAction(ACTIONS.NEW_UNIVERSE_RECEIVED).execute();
 					break;
 

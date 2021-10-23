@@ -655,9 +655,10 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				borders = VoronoiDelaunay.updateAreas();
 				canvas.getChildren().add(borders);
 				borders.toBack();
-
+				ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("10_33");
 			}
 		});
+		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("10_33");
 	}
 
 	/**

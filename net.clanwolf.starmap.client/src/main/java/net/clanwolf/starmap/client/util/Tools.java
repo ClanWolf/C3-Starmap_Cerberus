@@ -401,8 +401,7 @@ public final class Tools {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			// TODO: Installer is downloaded, do something with it
-			// ActionManager.getAction(ACTIONS.CLIENT_INSTALLER_DOWNLOAD_COMPLETE).execute();
+			ActionManager.getAction(ACTIONS.CLIENT_INSTALLER_DOWNLOAD_COMPLETE).execute();
 		};
 		Thread thread = new Thread(runnable);
 		thread.start();

@@ -340,6 +340,7 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 		ActionManager.addActionCallbackListener(ACTIONS.SHOW_MESSAGE, this);
 		ActionManager.addActionCallbackListener(ACTIONS.OPEN_MANUAL, this);
 		ActionManager.addActionCallbackListener(ACTIONS.OPEN_CLIENTVERSION_DOWNLOADPAGE, this);
+		ActionManager.addActionCallbackListener(ACTIONS.CLIENT_INSTALLER_DOWNLOAD_COMPLETE, this);
 
 		stage.show();
 
@@ -517,6 +518,10 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 						hostServices.showDocument(url);
 					}
 				});
+				break;
+			case CLIENT_INSTALLER_DOWNLOAD_COMPLETE:
+				// TODO: Install new version
+
 				break;
 			default:
 				break;
