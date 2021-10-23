@@ -523,7 +523,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 					@Override
 					protected void updateItem(RolePlayCharacterDTO item, boolean empty) {
 						super.updateItem(item, empty);
-						if (!empty || item != null) {
+						if (item != null) {
 							boolean online = false;
 							for (UserDTO u : Nexus.getCurrentlyOnlineUserList()) {
 								if (u.getCurrentCharacter().getId().equals(item.getId())) {
@@ -656,19 +656,28 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 				lvDropleadAttacker.getItems().remove(0);
 				lvDropleadAttacker.getItems().add(potentialDropleadersAttacker.get(ac));
 				lvAttacker.getItems().remove(potentialDropleadersAttacker.get(ac));
+				lvDefender.getItems().remove(potentialDropleadersAttacker.get(ac));
 				if (lvAttacker.getItems().size() == 0) {
 					lvAttacker.getItems().add(dummy);
+				}
+				if (lvDefender.getItems().size() == 0) {
+					lvDefender.getItems().add(dummy);
 				}
 			}
 		}
 		// are defender droplead still empty?
+		C3Logger.debug("Size" + lvDropleadDefender.getItems().size());
 		if (lvDropleadDefender.getItems().size() == 1 && "...".equals(lvDropleadDefender.getItems().get(0).getName())) {
 			for (AttackCharacterDTO ac : potentialDropleadersDefender.keySet()) {
 				lvDropleadDefender.getItems().remove(0);
-				lvDropleadDefender.getItems().add(potentialDropleadersAttacker.get(ac));
-				lvDefender.getItems().remove(potentialDropleadersAttacker.get(ac));
+				lvDropleadDefender.getItems().add(potentialDropleadersDefender.get(ac));
+				lvDefender.getItems().remove(potentialDropleadersDefender.get(ac));
+				lvAttacker.getItems().remove(potentialDropleadersDefender.get(ac));
 				if (lvDefender.getItems().size() == 0) {
 					lvDefender.getItems().add(dummy);
+				}
+				if (lvAttacker.getItems().size() == 0) {
+					lvAttacker.getItems().add(dummy);
 				}
 			}
 		}
