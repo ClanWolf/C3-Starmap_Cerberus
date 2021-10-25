@@ -24,85 +24,19 @@
  * Copyright (c) 2001-2021, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.client.gui.messagepanes;
-
-import net.clanwolf.starmap.client.enums.C3MESSAGERESULTS;
-import net.clanwolf.starmap.client.enums.C3MESSAGES;
-import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
+package net.clanwolf.starmap.client.enums;
 
 /**
  * @author Christian
  *
  */
-public class C3Message {
+public enum C3MESSAGES {
 
-	private String text = "";
-	private C3MESSAGETYPES type;
-	private C3MESSAGES message;
-	private C3MESSAGERESULTS result;
-
-	public C3Message(C3MESSAGES m) {
-		this.message = m;
-	}
-
-	/**
-	 * @return the text
-	 */
-	public String getText() {
-		return text;
-	}
-
-	/**
-	 * @param text
-	 *            the text to set
-	 */
-	public void setText(String text) {
-		this.text = text;
-	}
-
-	/**
-	 * @return the message
-	 */
-	public C3MESSAGES getMessage() {
-		return message;
-	}
-
-	/**
-	 * @param message
-	 *            the type to set
-	 */
-	public void setType(C3MESSAGES message) {
-		this.message = message;
-	}
-
-	/**
-	 * @return the type
-	 */
-	public C3MESSAGETYPES getType() {
-		return type;
-	}
-
-	/**
-	 * @param type
-	 *            the type to set
-	 */
-	public void setType(C3MESSAGETYPES type) {
-		this.type = type;
-	}
-
-	/**
-	 * @return the result
-	 */
-	public C3MESSAGERESULTS getResult() {
-		return result;
-	}
-
-	/**
-	 * @param result
-	 *            the result to set
-	 */
-	public void setResult(C3MESSAGERESULTS result) {
-		this.result = result;
-	}
+	DOWNLOAD_CLIENT,
+	ERROR_NOT_ALLOWED,
+	ERROR_WRONG_CREDENTIALS,
+	ERROR_NO_EDITING_ALLOWED,
+	ERROR_SERVER_OFFLINE,
+	ERROR_DATABASE_OFFLINE;
 
 }

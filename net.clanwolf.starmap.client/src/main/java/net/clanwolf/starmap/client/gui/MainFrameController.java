@@ -44,6 +44,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import net.clanwolf.starmap.client.enums.C3MESSAGES;
 import net.clanwolf.starmap.client.gui.panes.chat.ChatPane;
 import net.clanwolf.starmap.client.gui.panes.logging.LogPane;
 import net.clanwolf.starmap.client.gui.panes.security.AdminPane;
@@ -155,6 +156,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private Label databaseAccessibleIndicatorLabelHoverHelper;
 	@FXML
 	private Label versionLabel;
+	@FXML
+	private Label labelWaitText;
 	// @FXML
 	// private Label webButton_ClanPage;
 	// @FXML
@@ -1425,7 +1428,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				Nexus.storeCommandHistory();
 			} else {
 				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_notallowed"), false));
-				C3Message message = new C3Message();
+				C3Message message = new C3Message(C3MESSAGES.ERROR_NOT_ALLOWED);
 				message.setType(C3MESSAGETYPES.CLOSE);
 				message.setText(Internationalization.getString("general_notallowed"));
 				C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
@@ -1446,7 +1449,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				Nexus.storeCommandHistory();
 			} else {
 				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_notallowed"), false));
-				C3Message message = new C3Message();
+				C3Message message = new C3Message(C3MESSAGES.ERROR_NOT_ALLOWED);
 				message.setType(C3MESSAGETYPES.CLOSE);
 				message.setText(Internationalization.getString("general_notallowed"));
 				C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
@@ -1508,7 +1511,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		C3SoundPlayer.getSamples();
 
 		if (Nexus.promptNewVersionInstall) {
-			C3Message message = new C3Message();
+			C3Message message = new C3Message(C3MESSAGES.DOWNLOAD_CLIENT);
 			message.setText("Neue Version verfügbar! Herunterladen?");
 			message.setType(C3MESSAGETYPES.YES_NO);
 			ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
@@ -1572,7 +1575,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				} else {
 					onlineIndicatorLabel.setStyle("-fx-background-color: #c00000;");
 					C3Properties.setProperty(C3PROPS.CHECK_ONLINE_STATUS, "OFFLINE", false);
-					C3Message message = new C3Message();
+					C3Message message = new C3Message(C3MESSAGES.ERROR_SERVER_OFFLINE);
 					message.setType(C3MESSAGETYPES.CLOSE);
 					message.setText("Server seems to be offline.");
 					C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
@@ -1602,7 +1605,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				} else {
 					databaseAccessibleIndicatorLabel.setStyle("-fx-background-color: #c00000;");
 					C3Properties.setProperty(C3PROPS.CHECK_CONNECTION_STATUS, "OFFLINE", false);
-					C3Message message = new C3Message();
+					C3Message message = new C3Message(C3MESSAGES.ERROR_DATABASE_OFFLINE);
 					message.setType(C3MESSAGETYPES.CLOSE);
 					message.setText(Internationalization.getString("app_database_indicator_message_OFFLINE"));
 					C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
@@ -1841,6 +1844,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 						// mouseStopper.setBackground(null);
 						waitAnimationPane.showCircleAnimation(false);
 						mouseStopper.setMouseTransparent(true);
+						labelWaitText.setText("");
+						labelWaitText.setVisible(false);
 					});
 				}
 				ActionManager.getAction(ACTIONS.ACTION_SUCCESSFULLY_EXECUTED).execute(o);
@@ -1851,6 +1856,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				if (o.getText() != null && !"".equals(o.getText())) {
 					sourceIdRW = o.getText();
 				}
+				final String str = sourceIdRW;
 				Nexus.setMainFrameEnabled(false);
 				incrementCounter();
 				C3Logger.info("Requesting WAIT cursor (" + counterWaitCursor + "). --> " + sourceIdRW);
@@ -1859,6 +1865,10 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					// mouseStopper.setBackground(new Background(new BackgroundFill(Color.BLUE, new CornerRadii(0), Insets.EMPTY)));
 					waitAnimationPane.showCircleAnimation(true);
 					mouseStopper.setMouseTransparent(false);
+					if (str.length() > 3) {
+						labelWaitText.setText(str);
+					}
+					labelWaitText.setVisible(true);
 				});
 				break;
 
@@ -2047,10 +2057,15 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 	private void closeMessage(C3Message message) {
 		C3MESSAGERESULTS userReactionResult = message.getResult();
+		C3Logger.info("USER ANSWERED '" + userReactionResult + "' to MESSAGE '" + message.getMessage() + "'");
 
-		C3Logger.info("USER ANSWERED: " + userReactionResult);
-
-		ActionManager.getAction(ACTIONS.OPEN_CLIENTVERSION_DOWNLOADPAGE).execute();
+		if (message.getMessage() == C3MESSAGES.DOWNLOAD_CLIENT) {
+			if (C3MESSAGERESULTS.YES.equals(userReactionResult)) {
+				ActionManager.getAction(ACTIONS.OPEN_CLIENTVERSION_DOWNLOADPAGE).execute();
+			} else if (C3MESSAGERESULTS.NO.equals(userReactionResult)) {
+				C3Logger.info("The latest version should be installed in any situation!");
+			}
+		}
 
 		Platform.runLater(() -> mouseStopper.getChildren().remove(messagePane));
 		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("8");

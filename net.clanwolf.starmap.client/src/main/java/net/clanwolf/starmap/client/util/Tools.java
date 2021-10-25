@@ -377,6 +377,8 @@ public final class Tools {
 
 	public static void downloadFile(String link) throws Exception {
 		Runnable runnable = () -> {
+			ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute(Internationalization.getString("general_download_client_installer"));
+
 			String[] bits = link.split("/");
 			String updateName = bits[bits.length - 1];
 
@@ -386,8 +388,17 @@ public final class Tools {
 				C3Logger.info("Created updates folder");
 			}
 
-			try (BufferedInputStream in = new BufferedInputStream(new URL(link).openStream());
-			     FileOutputStream fileOutputStream = new FileOutputStream(dir + File.separator + updateName)) {
+			File existingUpdate = new File(dir + File.separator + updateName);
+			if (existingUpdate.exists() && existingUpdate.isFile() && existingUpdate.canWrite()) {
+				boolean deleted = existingUpdate.delete();
+				if (!deleted) {
+					C3Logger.info("Could not delete old version of the update!");
+					return; // ends the thread
+				}
+			}
+
+			boolean exceptionOccured = false;
+			try (BufferedInputStream in = new BufferedInputStream(new URL(link).openStream()); FileOutputStream fileOutputStream = new FileOutputStream(dir + File.separator + updateName)) {
 				byte[] dataBuffer = new byte[1024];
 				int counter = 0;
 				int bytesRead;
@@ -400,8 +411,11 @@ public final class Tools {
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
+				exceptionOccured = true;
 			}
-			ActionManager.getAction(ACTIONS.CLIENT_INSTALLER_DOWNLOAD_COMPLETE).execute();
+			if (!exceptionOccured) {
+				ActionManager.getAction(ACTIONS.CLIENT_INSTALLER_DOWNLOAD_COMPLETE).execute();
+			}
 		};
 		Thread thread = new Thread(runnable);
 		thread.start();

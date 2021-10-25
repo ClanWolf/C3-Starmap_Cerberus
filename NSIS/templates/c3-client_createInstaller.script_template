@@ -72,6 +72,7 @@ GOTO REQUEST_INSTALLER
 :UPLOADINSTALLER
 REM Upload installer
 "C:\Program Files (x86)\WinSCP\winscp.com" /ini=nul /script=C:\C3\projects\C3-Starmap_Cerberus\NSIS\scripts\upload_installer.script
+START "" "https://www.clanwolf.net/apps/C3/server/php/insert_new_version.php"
 
 :REQUEST_IRCBOT
 ECHO ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

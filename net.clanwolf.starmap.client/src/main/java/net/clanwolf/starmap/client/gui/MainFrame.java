@@ -62,10 +62,7 @@ import net.clanwolf.starmap.client.util.Tools;
 import net.clanwolf.starmap.client.preloader.C3_Preloader;
 import net.clanwolf.starmap.transfer.enums.POPUPS;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.Authenticator;
 import java.net.MalformedURLException;
 import java.net.PasswordAuthentication;
@@ -73,6 +70,9 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.logging.Level;
 
@@ -519,9 +519,56 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 					}
 				});
 				break;
-			case CLIENT_INSTALLER_DOWNLOAD_COMPLETE:
-				// TODO: Install new version
 
+			case CLIENT_INSTALLER_DOWNLOAD_COMPLETE:
+				try {
+					File dir = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "update");
+
+					String installerName = "";
+					if (dir.exists() && dir.isDirectory()) {
+						File[] files = Objects.requireNonNull(dir.listFiles());
+						Arrays.sort(files);
+						for (File f : files) {
+							if (f.getName().startsWith("C3-Client-") && f.getName().endsWith("_install.exe")) {
+								installerName = f.getName();
+							}
+						}
+						if (!"".equals(installerName)) {
+							C3Logger.info("Trying to install new version. If this fails, try manually to run:");
+							C3Logger.info("cmd.exe "
+									+ "/c "
+									+ dir + File.separator + installerName
+									+ " > "
+									+ System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "update" + File.separator + installerName + ".log"
+									+ " 2>&1");
+							ProcessBuilder processBuilder = new ProcessBuilder(
+									"cmd.exe ",
+									"/c ",
+									dir + File.separator + installerName,
+									" > ",
+									System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "update" + File.separator + installerName + ".log",
+									" 2>&1");
+							Process process = processBuilder.start();
+
+//							BufferedReader reader =	new BufferedReader(new InputStreamReader(process.getInputStream()));
+//							StringBuilder builder = new StringBuilder();
+//							String line = null;
+//							while ( (line = reader.readLine()) != null) {
+//								builder.append(line);
+//								builder.append(System.getProperty("line.separator"));
+//							}
+//							String result = builder.toString();
+//							C3Logger.debug(result);
+
+							C3Logger.info("Closing C3 client for installation...");
+							System.exit(0);
+						} else {
+							C3Logger.info("No installer found.");
+						}
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 				break;
 			default:
 				break;

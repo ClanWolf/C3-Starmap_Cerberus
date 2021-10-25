@@ -6,7 +6,7 @@ C:
 CD \
 CD C:\C3\projects\C3-Starmap_Cerberus
 
-REM SET VERSION=5.6.4
+REM SET VERSION=5.6.7
 FOR /f "delims== tokens=1,2" %%G in (C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\target\classes\version.number) do set %%G=%%H
 ECHO Found version: %VERSION%
 REM PAUSE
@@ -72,6 +72,7 @@ GOTO REQUEST_INSTALLER
 :UPLOADINSTALLER
 REM Upload installer
 "C:\Program Files (x86)\WinSCP\winscp.com" /ini=nul /script=C:\C3\projects\C3-Starmap_Cerberus\NSIS\scripts\upload_installer.script
+START "" "https://www.clanwolf.net/apps/C3/server/php/insert_new_version.php"
 
 :REQUEST_IRCBOT
 ECHO ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

@@ -42,6 +42,7 @@ import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
+import net.clanwolf.starmap.client.enums.C3MESSAGES;
 import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
 import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
@@ -499,7 +500,7 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 				C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
 				C3Logger.info("Login error");
 
-				C3Message m = new C3Message();
+				C3Message m = new C3Message(C3MESSAGES.ERROR_WRONG_CREDENTIALS);
 				m.setText(Internationalization.getString("app_error_credentials_wrong"));
 				m.setType(C3MESSAGETYPES.CLOSE);
 				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(m);
@@ -510,7 +511,7 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 
 			case CLEAR_PASSWORD_FIELD:
 				C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
-				C3Message m1 = new C3Message();
+				C3Message m1 = new C3Message(C3MESSAGES.ERROR_NO_EDITING_ALLOWED);
 				m1.setText("Stored password cannot be edited. Reseting.");
 				m1.setType(C3MESSAGETYPES.CLOSE);
 				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(m1);

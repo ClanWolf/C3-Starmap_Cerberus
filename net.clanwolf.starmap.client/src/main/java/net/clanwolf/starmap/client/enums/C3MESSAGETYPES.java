@@ -32,6 +32,8 @@ package net.clanwolf.starmap.client.enums;
  */
 public enum C3MESSAGETYPES {
 
-	OK_CANCEL, CLOSE, YES_NO;
+	OK_CANCEL,
+	CLOSE,
+	YES_NO;
 
 }
