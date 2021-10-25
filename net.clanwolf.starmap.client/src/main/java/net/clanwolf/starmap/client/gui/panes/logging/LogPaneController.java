@@ -110,7 +110,16 @@ public class LogPaneController implements ActionCallBackListener {
 		try {
 			String ip = IP.getExternalIP();
 			String timestamp = "" + System.currentTimeMillis();
-			String logfilename = "clientlog_" + Nexus.getCurrentUser().getUserName() + "_" + ip + "-" + timestamp + ".log";
+			String username = "";
+			if (Nexus.getCurrentUser() != null) {
+				username = Nexus.getCurrentUser().getUserName();
+			}
+			String logfilename = "";
+			if (!"".equals(username)) {
+				logfilename = "clientlog_" + username + "_" + ip + "-" + timestamp + ".log";
+			} else {
+				logfilename = "clientlog_" + ip + "-" + timestamp + ".log";
+			}
 
 			FTP ftpClient = new FTP(true);
 			ftpClient.upload(C3Properties.getProperty(C3PROPS.LOGFILE) + ".0", logfilename, true);
