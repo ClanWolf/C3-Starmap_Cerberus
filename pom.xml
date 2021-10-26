@@ -25,7 +25,7 @@
 		<mainClass>net.clanwolf.starmap.client.gui.MainFrame</mainClass>
 
 		<!-- https://stackoverflow.com/questions/10582054/maven-project-version-inheritance-do-i-have-to-specify-the-parent-version -->
-		<revision>5.6.7</revision>
+		<revision>5.6.8</revision>
 
 		<!-- Versions -->
 		<version.java>17</version.java>

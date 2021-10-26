@@ -15,6 +15,7 @@ BrandingText /TRIMRIGHT "ClanWolf.net"
 InstallDir $PROGRAMFILES64\C3-Client
 InstallDirRegKey HKLM "Software\C3-Client" "Install_Dir"
 RequestExecutionLevel admin
+; RequestExecutionLevel user
 AddBrandingImage left 130
 SetFont /LANG=${LANG_ENGLISH} "Arial" 9
 
@@ -113,7 +114,7 @@ Section "Start Menu Shortcuts"
 	CreateDirectory "$SMPROGRAMS\C3-Client"
 
 	CreateShortcut "$SMPROGRAMS\C3-Client\C3-Client.lnk" "$INSTDIR\bin\C3-Starmap_Cerberus.bat" "" "$INSTDIR\c3.ico" 0
-	CreateShortCut "$SMPROGRAMS\C3-Client\Remove.lnk" "$INSTDIR\Uninstall.exe" "" "$INSTDIR\c3.ico" 0
+	; CreateShortCut "$SMPROGRAMS\C3-Client\Remove.lnk" "$INSTDIR\Uninstall.exe" "" "$INSTDIR\c3.ico" 0
 SectionEnd
 
 ;--------------------------------
@@ -130,7 +131,7 @@ Section "Uninstall"
 	Delete $INSTDIR\c3.ico
 	Delete $INSTDIR\uninstall.exe
 	Delete $SMPROGRAMS\C3-Client\C3-Client.lnk
-	Delete $SMPROGRAMS\C3-Client\Remove.lnk
+	; Delete $SMPROGRAMS\C3-Client\Remove.lnk
 
 ###DIRECTORYLISTTOREMOVE###
 	RMDir "$INSTDIR"
