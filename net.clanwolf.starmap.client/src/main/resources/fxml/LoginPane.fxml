@@ -12,7 +12,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="LoginPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.login.LoginPaneController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="LoginPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/17" fx:controller="net.clanwolf.starmap.client.gui.panes.login.LoginPaneController">
   <children>
     <Label alignment="BOTTOM_LEFT" layoutX="62.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true" opacity="0.2" prefHeight="426.0" prefWidth="500.0" styleClass="contentLabelSideImageSatelite" visible="true">
       <stylesheets>
@@ -57,7 +57,7 @@
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
     </CheckBox>
-    <CheckBox id="GuestAccount" fx:id="cbDoAutoLogin" layoutX="510.0" layoutY="220.0" mnemonicParsing="false" onAction="#handleDoAutoLoginCheckboxClick" text="CheckBox" textFill="$x2">
+    <CheckBox id="GuestAccount" fx:id="cbDoAutoLogin" disable="true" layoutX="510.0" layoutY="220.0" mnemonicParsing="false" onAction="#handleDoAutoLoginCheckboxClick" text="CheckBox" textFill="$x2">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>

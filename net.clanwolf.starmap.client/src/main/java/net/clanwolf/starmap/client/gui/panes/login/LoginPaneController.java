@@ -187,7 +187,7 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 
 			tfUserName.setDisable(false);
 			tfPassword.setDisable(false);
-			cbDoAutoLogin.setDisable(false);
+			cbDoAutoLogin.setDisable(true);
 			cbStorePassword.setDisable(false);
 			cbDoAutoLogin.setSelected(AutoStart_OldValue);
 			cbStorePassword.setSelected(StorePassword_OldValue);
@@ -209,7 +209,7 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 		if (cbStorePassword.isSelected()) {
 			C3Properties.setProperty(C3PROPS.STORE_LOGIN_PASSWORD, "true", true);
 			cbDoAutoLogin.setSelected(false);
-			cbDoAutoLogin.setDisable(false);
+			cbDoAutoLogin.setDisable(true);
 		} else {
 			C3Properties.setProperty(C3PROPS.STORE_LOGIN_PASSWORD, "false", true);
 			cbDoAutoLogin.setSelected(false);
@@ -303,10 +303,12 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 				cbStorePassword.setSelected(false);
 				tfPassword.setText("");
 			}
-			if ("true".equals(C3Properties.getProperty(C3PROPS.AUTO_LOGIN))) {
-				cbDoAutoLogin.setSelected(true);
-				autologin = true;
-			}
+//			if ("true".equals(C3Properties.getProperty(C3PROPS.AUTO_LOGIN))) {
+//				cbDoAutoLogin.setSelected(true);
+//				autologin = true;
+//			}
+			cbDoAutoLogin.setSelected(false);
+			autologin = false;
 
 			tfFactionKey.setVisible(false);
 			labelFactionKey.setVisible(false);

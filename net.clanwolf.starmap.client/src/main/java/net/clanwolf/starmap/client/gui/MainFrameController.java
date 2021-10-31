@@ -1693,7 +1693,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					}
 					enableMainMenuButtons(Nexus.isLoggedIn(), Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN));
 					BOUniverse boUniverse = Nexus.getBoUniverse();
-					gameInfoLabel.setText("S" + boUniverse.currentSeason + "/R" + boUniverse.currentRound + " * Phase " + Tools.getRomanNumber(boUniverse.currentSeasonMetaPhase) + " - " + boUniverse.currentDate);
+					gameInfoLabel.setText("S" + boUniverse.currentSeason + " R" + boUniverse.currentRound + " " + Tools.getRomanNumber(boUniverse.currentSeasonMetaPhase) + " - " + boUniverse.currentDate);
 
 					labelTFSProgress.setText(boUniverse.currentRound + " / 60");
 					TFSProgress.setProgress(100d / 60d * boUniverse.currentRound);
