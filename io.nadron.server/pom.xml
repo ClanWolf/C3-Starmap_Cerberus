@@ -59,21 +59,11 @@
 			<artifactId>blazeds-core</artifactId>
 			<version>3.2.0.3978</version>
 		</dependency>
-<!--		Not needed (?) -->
-<!--		<dependency>-->
-<!--			<groupId>com.adobe.blazeds</groupId>-->
-<!--			<artifactId>blazeds-common</artifactId>-->
-<!--			<version>3.2.0.3978</version>-->
-<!--		</dependency>-->
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>
 			<version>1.9.13</version>
 		</dependency>
-
-
-
-
 
 		<!-- Netty +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 <!--		<dependency>-->
@@ -118,22 +108,22 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
-			<version>4.2.2.RELEASE</version>
+			<version>${version.spring}</version> <!-- vorher: 4.2.2.RELEASE -->
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>4.2.2.RELEASE</version>
+			<version>${version.spring}</version> <!-- vorher: 4.2.2.RELEASE -->
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
-			<version>4.2.2.RELEASE</version>
+			<version>${version.spring}</version> <!-- vorher: 4.2.2.RELEASE -->
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
-			<version>4.2.1.RELEASE</version>
+			<version>${version.spring-security-config}</version>
 		</dependency>
 	</dependencies>
 </project>

@@ -24,16 +24,20 @@
 
 		<mainClass>net.clanwolf.starmap.client.gui.MainFrame</mainClass>
 
+		<!-- C3 Revision -->
 		<!-- https://stackoverflow.com/questions/10582054/maven-project-version-inheritance-do-i-have-to-specify-the-parent-version -->
-		<revision>5.7.1</revision>
+		<revision>5.7.3</revision>
 
 		<!-- Versions -->
 		<version.java>17</version.java>
 		<version.javafx>17.0.0.1</version.javafx>
 		<version.maven-compiler-plugin>3.8.1</version.maven-compiler-plugin>
 		<version.exec-maven-plugin>1.6.0</version.exec-maven-plugin>
-		<version.asm>7.3.1</version.asm>
+		<version.asm>9.2</version.asm> <!-- vorher: 7.3.1 -->
 		<version.netty>4.1.69.Final</version.netty>
+		<version.spring>5.3.11</version.spring>
+		<version.spring-security-config>5.5.1</version.spring-security-config>
+		<version.hibernate>5.5.8</version.hibernate> <!-- vorher: 5.4.1 -->
 	</properties>
 
 	<repositories>
