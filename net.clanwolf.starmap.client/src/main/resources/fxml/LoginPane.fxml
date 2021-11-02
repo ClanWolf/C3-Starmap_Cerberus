@@ -44,7 +44,7 @@
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
     </PasswordField>
-    <CheckBox id="GuestAccount" fx:id="cbGuestAccount" layoutX="510.0" layoutY="180.0" mnemonicParsing="false" onAction="#handleUseGuestLoginCheckboxClick" text="CheckBox">
+    <CheckBox id="GuestAccount" fx:id="cbGuestAccount" disable="true" layoutX="510.0" layoutY="180.0" mnemonicParsing="false" onAction="#handleUseGuestLoginCheckboxClick" text="CheckBox">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>

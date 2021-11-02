@@ -1,0 +1,79 @@
+C3 version history
+----------------
+
+01 CREATED
+02 UPDATED
+03 ADDED
+04 FIXED
+05 CHANGED
+06 REMOVED
+07 STARTED
+08 PREPARED
+
+#########################################################
+
+Version 5.7.3 (01.11.2021)
+- UPDATED: Spring libraries --> 5.3.11
+- CHANGED: Deactivated auto login checkbox
+- CHANGED: Deactivated guest account checkbox
+- PREPARED: Executable to add signature added to workspace (offline)
+
+Version 5.7.1 (28.10.2021)
+- UPDATED: JavaFX --> 17.0.0.1
+- UPDATED: Netty --> 4.1.60.FINAL
+- PREPARED: Code signing needed for *Setup.exe, order initiated
+
+Version 5.6.7 (26.10.2021)
+- ADDED: Download for client installer
+- ADDED: Messages enumeration
+- ADDED: Log upload within log view pane (-> share logs to debug)
+- FIXED: Additional strings internationalized
+- FIXED: Update flow
+
+Version 5.6.4 (23.10.2021)
+- CREATED: User and char for user ArchAngel
+- FIXED: Multiple errors in lobby
+- FIXED: Multiple inconsistencies during client update
+- CHANGED: Handling of version changed to enable update check
+
+Version 5.6.1 (16.10.2021)
+- CREATED: User and char for user Kernreaktor
+- ADDED: Installer finds previous version and runs uninstall first
+- FIXED: Text for 'Log'
+- FIXED: Multiple errors in lobby
+- FIXED: Exception in chat
+- REMOVED: Dependency to server in client
+
+Version 5.5.1 (02.10.2021)
+- UPDATED: Java --> 17
+- ADDED: Rudimentäre Wirtschaftsdaten für alle Systeme (!)
+- ADDED: Correct information on char detail panel
+- ADDED: Lobby
+- ADDED: API to create preview images of map screenshots
+- ADDED: Faction logo in screenshot
+- ADDED: API for global shortcuts
+- ADDED: View of the season screenshots on website
+- ADDED: Progressbar for season on website
+- CHANGED: Map moves to currently active jumpship on start
+- CHANGED: Naming convention for the screenshots
+- STARTED: Script to reset season on database
+
+Version 5.4.6 (25.09.2021)
+- FIXED: Error during saving of attacks
+- FIXED: Several small errors
+
+Version 5.3.2 (22.09.2021)
+- FIXED: Jumpships now jump
+- STARTED: Map refresh
+
+Version: 5.3.1 (21.09.2021)
+- FIXED: Error while storing routepoints and jumpships
+
+Version: 5.3.0 (10.09.2021)
+- SOLVED: NullPointer while saving an attack
+- SOLVED: Returning the update after saving (!!!)
+- STARTED: Implementation of the refresh for the map
+
+---
+
+Started changelog with version 5.3.0.
