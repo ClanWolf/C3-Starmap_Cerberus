@@ -46,4 +46,5 @@ module net.clanwolf.starmap.client {
 	exports net.clanwolf.starmap.client.gui.panes.security to javafx.fxml;
 	exports net.clanwolf.starmap.client.gui.panes.chat to javafx.fxml;
 	exports net.clanwolf.starmap.client.gui.panes.logging to javafx.fxml;
+	exports net.clanwolf.starmap.client.gui.panes.dice to javafx.fxml;
 }

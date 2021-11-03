@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+
+<AnchorPane id="###name###Pane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.###name###.###Name###PaneController">
+	<children>
+      <ImageView fx:id="templateBackground" fitHeight="567.0" fitWidth="944.0" layoutX="-70.0" layoutY="-22.0" mouseTransparent="true" opacity="0.74" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../../../../../net.clanwolf.starmap.client/src/main/resources/images/template_bg.png" />
+         </image>
+      </ImageView>
+      <Pane fx:id="contentPane" cache="true" cacheHint="SPEED" depthTest="DISABLE" layoutX="63.0" layoutY="15.0" prefHeight="470.0" prefWidth="776.0" stylesheets="@../../../../../../../net.clanwolf.starmap.client/src/main/resources/styles/MainFrameStyle.css" />
+	</children>
+	<stylesheets>
+		<URL value="@../../../../../../../net.clanwolf.starmap.client/src/main/resources/styles/MainFrameStyle.css" />
+	</stylesheets>
+</AnchorPane>

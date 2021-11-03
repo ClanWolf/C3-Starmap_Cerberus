@@ -218,6 +218,21 @@
   -fx-background-position: center;
 }
 
+.diceButton {
+  -fx-background-image: url("../images/buttons/dice.png");
+  -fx-background-repeat: no-repeat;
+  -fx-background-size: 32, 32;
+  -fx-background-position: center;
+}
+
+.diceButton:hover {
+  -fx-background-image: url("../images/buttons/dice_hover.png");
+  -fx-background-repeat: no-repeat;
+  -fx-background-size: 32, 32;
+  -fx-background-insets: -20, -20;
+  -fx-background-position: center;
+}
+
 .roleplayButton {
   -fx-background-image: url("../images/buttons/roleplay.png");
   -fx-background-repeat: no-repeat;

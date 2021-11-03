@@ -1,0 +1,5 @@
++		###name###Pane = new ###Name###Pane();
++		###name###Pane.setShowsMouseFollow(false);
++		###name###Pane.setShowsPlanetRotation(false);
++		###name###Pane.setCacheHint(CacheHint.SPEED);
++		###name###Pane.getController().addActionCallBackListeners();

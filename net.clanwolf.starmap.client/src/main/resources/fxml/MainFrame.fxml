@@ -131,7 +131,7 @@
                 <URL value="@../styles/MainFrameStyle.css" />
             </stylesheets>
         </Button>
-        <Button id="btn_blue" fx:id="chatButton" layoutX="68.0" layoutY="435.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleChatButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" styleClass="chatButton" text="" textAlignment="CENTER">
+        <Button id="btn_dark-blue" fx:id="diceButton" layoutX="68.0" layoutY="435.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleDiceButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" styleClass="diceButton" text="" textAlignment="CENTER">
             <stylesheets>
                 <URL value="@../styles/MainFrameStyle.css" />
             </stylesheets>
@@ -141,7 +141,7 @@
                 <URL value="@../styles/MainFrameStyle.css" />
             </stylesheets>
         </Button>
-        <Button id="btn_blue" fx:id="logButton" layoutX="68.0" layoutY="478.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handlePluginsButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" styleClass="logButton" text="" textAlignment="CENTER">
+        <Button id="btn_blue" fx:id="chatButton" layoutX="68.0" layoutY="478.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleChatButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" styleClass="chatButton" text="" textAlignment="CENTER">
             <stylesheets>
                 <URL value="@../styles/MainFrameStyle.css" />
             </stylesheets>
@@ -182,7 +182,7 @@
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>
       </Button>
-      <Button id="btn_dark-blue" fx:id="renameMeButton5" layoutX="114.0" layoutY="478.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" prefHeight="40.0" prefWidth="40.0" text="" textAlignment="CENTER">
+      <Button id="btn_blue" fx:id="logButton" layoutX="114.0" layoutY="478.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleLogButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" styleClass="logButton" text="" textAlignment="CENTER">
          <stylesheets>
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>
@@ -192,7 +192,7 @@
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>
       </Button>
-      <Button id="btn_dark-blue" fx:id="rolePlayButton" layoutX="68.0" layoutY="392.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" prefHeight="40.0" prefWidth="40.0" styleClass="roleplayButton" text="" textAlignment="CENTER">
+      <Button id="btn_dark-blue" fx:id="rolePlayButton" layoutX="68.0" layoutY="392.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handlePersonalRPButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" styleClass="roleplayButton" text="" textAlignment="CENTER">
          <stylesheets>
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>

@@ -46,6 +46,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import net.clanwolf.starmap.client.enums.C3MESSAGES;
 import net.clanwolf.starmap.client.gui.panes.chat.ChatPane;
+import net.clanwolf.starmap.client.gui.panes.dice.DicePane;
 import net.clanwolf.starmap.client.gui.panes.logging.LogPane;
 import net.clanwolf.starmap.client.gui.panes.security.AdminPane;
 import net.clanwolf.starmap.client.action.*;
@@ -110,6 +111,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private MapPane mapPane = null;
 	private RolePlayBasicPane attackPane = null;
 	private ChatPane chatPane = null;
+	private DicePane dicePane = null;
 	private SettingsPane settingsPane = null;
 	private RolePlayBasicPane rolePlayPane = null;
 	// private InfoPane infoPane = null;
@@ -179,8 +181,6 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	@FXML
 	private Button adminButton;
 	@FXML
-	private Button adminPaneButton;
-	@FXML
 	private Button exitButton;
 
 	// Column 1
@@ -191,25 +191,23 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	@FXML
 	private Button mapButton;
 	@FXML
-	private Button chatButton;
+	private Button diceButton;
 	@FXML
 	private Button attackButton;
-//	@FXML
-//	private Button industryButton;
 	@FXML
-	private Button logButton;
+	private Button chatButton;
 
 	// Column 2
 	@FXML
 	private Button storyEditorButton;
 	@FXML
-	private Button renameMeButton2;
+	private Button adminPaneButton;
 	@FXML
 	private Button renameMeButton3;
 	@FXML
 	private Button renameMeButton4;
 	@FXML
-	private Button renameMeButton5;
+	private Button logButton;
 
 	@FXML
 	private AnchorPane rootAnchorPane;
@@ -370,8 +368,20 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	}
 
 	@FXML
-	private void handlePluginsButtonMouseEventEnter() {
-		setStatusText(Internationalization.getString("app_plugins_infotext"), false);
+	private void handleLogButtonMouseEventEnter() {
+		setStatusText(Internationalization.getString("app_log_infotext"), false);
+		Tools.playButtonHoverSound();
+	}
+
+	@FXML
+	private void handlePersonalRPButtonMouseEventEnter() {
+		setStatusText(Internationalization.getString("app_personalrp_infotext"), false);
+		Tools.playButtonHoverSound();
+	}
+
+	@FXML
+	private void handleDiceButtonMouseEventEnter() {
+		setStatusText(Internationalization.getString("app_dice_infotext"), false);
 		Tools.playButtonHoverSound();
 	}
 
@@ -698,11 +708,24 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				if (!adminMenuActive) {
 					showMenuIndicator(true);
 				}
-//				menuIndicatorPos = 190;
+				// menuIndicatorPos = 190;
 				menuIndicatorPos = 233;
 				moveMenuIndicator(menuIndicatorPos);
 				adminPaneOpen = false;
 				ActionManager.getAction(ACTIONS.START_ROLEPLAY).execute();
+			}
+			// DICE
+			if (bn.equals(diceButton)) {
+				C3Logger.info("Dice opened by user.");
+				setStatusText(Internationalization.getString("app_dice_infotext").replace("%20", " ") + ".", false);
+				targetPane = dicePane;
+				if (!adminMenuActive) {
+					showMenuIndicator(true);
+				}
+				// menuIndicatorPos = 233;
+				menuIndicatorPos = 276;
+				moveMenuIndicator(menuIndicatorPos);
+				adminPaneOpen = false;
 			}
 			// CHAT
 			if (bn.equals(chatButton)) {
@@ -712,8 +735,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				if (!adminMenuActive) {
 					showMenuIndicator(true);
 				}
-//				menuIndicatorPos = 233;
-				menuIndicatorPos = 276;
+				// menuIndicatorPos = 233;
+				// menuIndicatorPos = 276;
+				menuIndicatorPos = 319;
 				moveMenuIndicator(menuIndicatorPos);
 				adminPaneOpen = false;
 			}
@@ -830,15 +854,14 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			adminPaneButton.setVisible(true);
 			renameMeButton3.setVisible(true);
 			renameMeButton4.setVisible(true);
-			renameMeButton5.setVisible(true);
+			logButton.setVisible(true);
 			showMenuIndicator(false);
 		} else {
 			rolePlayButton.setVisible(true);
 			mapButton.setVisible(true);
 			attackButton.setVisible(true);
+			diceButton.setVisible(true);
 			chatButton.setVisible(true);
-//			industryButton.setVisible(true);
-			logButton.setVisible(true);
 			if (!adminPaneOpen && Nexus.getCurrentlyOpenedPane() != null) {
 				showMenuIndicator(true);
 				moveMenuIndicator(menuIndicatorPos);
@@ -870,16 +893,15 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					rolePlayButton.setLayoutX(newX1);
 					mapButton.setLayoutX(newX1);
 					attackButton.setLayoutX(newX1);
+					diceButton.setLayoutX(newX1);
 					chatButton.setLayoutX(newX1);
-//					industryButton.setLayoutX(newX1);
-					logButton.setLayoutX(newX1);
 
 					// Column 2
 					storyEditorButton.setLayoutX(newX2);
 					adminPaneButton.setLayoutX(newX2);
 					renameMeButton3.setLayoutX(newX2);
 					renameMeButton4.setLayoutX(newX2);
-					renameMeButton5.setLayoutX(newX2);
+					logButton.setLayoutX(newX2);
 				});
 			}
 			buttonsAreMoving = false;
@@ -888,9 +910,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					rolePlayButton.setVisible(false);
 					mapButton.setVisible(false);
 					attackButton.setVisible(false);
+					diceButton.setVisible(false);
 					chatButton.setVisible(false);
-					//				industryButton.setVisible(false);
-					logButton.setVisible(false);
 				});
 			} else {
 				Platform.runLater(() -> {
@@ -898,7 +919,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					adminPaneButton.setVisible(false);
 					renameMeButton3.setVisible(false);
 					renameMeButton4.setVisible(false);
-					renameMeButton5.setVisible(false);
+					logButton.setVisible(false);
 				});
 			}
 		};
@@ -1114,7 +1135,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		t1.start();
 
 		Platform.runLater(() -> adminButton.setGraphic(new ImageView(imageAdminButtonOff)));
-		adminButton.setDisable(true);
+		adminButton.setDisable(false);
 
 		int year = Calendar.getInstance().get(Calendar.YEAR);
 		hudinfo1.setOpacity(0.7);
@@ -1182,6 +1203,12 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		chatPane.setCacheHint(CacheHint.SPEED);
 		chatPane.getController().addActionCallBackListeners();
 
+		dicePane = new DicePane();
+		dicePane.setShowsMouseFollow(false);
+		dicePane.setShowsPlanetRotation(false);
+		dicePane.setCacheHint(CacheHint.SPEED);
+		dicePane.getController().addActionCallBackListeners();
+
 		String paneNameCharacter = "CharacterPane";
 		rolePlayPane = new RolePlayBasicPane(paneNameCharacter);
 		rolePlayPane.setShowsMouseFollow(false);
@@ -1219,15 +1246,14 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		rolePlayButton.setVisible(true);
 		mapButton.setVisible(true);
 		attackButton.setVisible(true);
+		diceButton.setVisible(true);
 		chatButton.setVisible(true);
-//		industryButton.setVisible(true);
-		logButton.setVisible(true);
 
 		storyEditorButton.setVisible(false);
 		adminPaneButton.setVisible(false);
 		renameMeButton3.setVisible(false);
 		renameMeButton4.setVisible(false);
-		renameMeButton5.setVisible(false);
+		logButton.setVisible(false);
 
 		showMenuIndicator(false);
 
@@ -1348,8 +1374,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			rolePlayButton.setDisable(Nexus.getCurrentChar().getStory() == null);
 			mapButton.setDisable(false);
 			attackButton.setDisable(!Nexus.userHasAttack());
+			diceButton.setDisable(false);
 			chatButton.setDisable(false);
-			logButton.setDisable(false);
 
 			// Column 2
 			if (admin) {
@@ -1359,30 +1385,30 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				adminPaneButton.setDisable(false);
 				renameMeButton3.setDisable(true);
 				renameMeButton4.setDisable(true);
-				renameMeButton5.setDisable(true);
+				logButton.setDisable(false);
 			} else {
 				storyEditorButton.setDisable(true);
 				adminPaneButton.setDisable(true);
 				renameMeButton3.setDisable(true);
 				renameMeButton4.setDisable(true);
-				renameMeButton5.setDisable(true);
+				logButton.setDisable(false);
 			}
 		} else {
-			adminButton.setDisable(true);
+			adminButton.setDisable(false);
 
 			// Column 1
 			rolePlayButton.setDisable(true);
 			mapButton.setDisable(true);
 			attackButton.setDisable(true);
+			diceButton.setDisable(true);
 			chatButton.setDisable(true);
-			logButton.setDisable(false);
 
 			// Column 2
 			storyEditorButton.setDisable(true);
 			adminPaneButton.setDisable(true);
 			renameMeButton3.setDisable(true);
 			renameMeButton4.setDisable(true);
-			renameMeButton5.setDisable(true);
+			logButton.setDisable(false);
 		}
 	}
 
