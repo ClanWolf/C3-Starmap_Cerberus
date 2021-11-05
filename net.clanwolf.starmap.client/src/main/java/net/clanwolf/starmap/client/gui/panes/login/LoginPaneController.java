@@ -36,12 +36,11 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
-import net.clanwolf.starmap.client.action.ACTIONS;
-import net.clanwolf.starmap.client.action.ActionCallBackListener;
-import net.clanwolf.starmap.client.action.ActionManager;
-import net.clanwolf.starmap.client.action.ActionObject;
+import net.clanwolf.starmap.client.action.*;
 import net.clanwolf.starmap.client.enums.C3MESSAGES;
 import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
 import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
@@ -56,6 +55,7 @@ import net.clanwolf.starmap.client.util.C3Properties;
 import net.clanwolf.starmap.client.util.Internationalization;
 
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.Timer;
 
@@ -82,6 +82,8 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 	private Button buttonLogin;
 	@FXML
 	private Button buttonCancel;
+	@FXML
+	private ImageView patreonButton;
 	@FXML
 	private Label labelFingerprint;
 	@FXML
@@ -120,6 +122,29 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 		// } else {
 		// warningLabel.setText("");
 		// }
+	}
+
+	@FXML
+	private void patreonButtonPressed() {
+		ActionManager.getAction(ACTIONS.OPEN_PATREON).execute();
+	}
+
+	@FXML
+	private void patreonButtonOnMouseEntered() {
+		Image patreonImgHover = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logos/patreon_hover.png")));
+		patreonButton.setImage(patreonImgHover);
+		StatusTextEntryActionObject o = new StatusTextEntryActionObject("", false);
+		o.setMessage(Internationalization.getString("app_patreon_infotext").replace("%20", " "));
+		ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(o);
+	}
+
+	@FXML
+	private void patreonButtonOnMouseExited() {
+		Image patreonImg = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logos/patreon.png")));
+		patreonButton.setImage(patreonImg);
+		StatusTextEntryActionObject o = new StatusTextEntryActionObject("", false);
+		o.setMessage("");
+		ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(o);
 	}
 
 	@FXML

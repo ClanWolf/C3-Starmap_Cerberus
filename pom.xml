@@ -37,7 +37,7 @@
 		<version.netty>4.1.69.Final</version.netty>
 		<version.spring>5.3.11</version.spring>
 		<version.spring-security-config>5.5.1</version.spring-security-config>
-		<version.hibernate>5.5.8</version.hibernate> <!-- vorher: 5.4.1 -->
+		<version.hibernate>5.5.8</version.hibernate> <!-- vorher: 5.4.1 - !!! NOT USED YET !!! -->
 	</properties>
 
 	<repositories>

@@ -7,6 +7,8 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.shape.Rectangle?>
@@ -95,6 +97,11 @@
             <Color red="0.412" green="0.620" blue="0.804" fx:id="x1" />
          </textFill>
       </Label>
+      <ImageView fx:id="patreonButton" fitHeight="59.0" fitWidth="48.0" layoutX="760.0" layoutY="295.0" onMouseEntered="#patreonButtonOnMouseEntered" onMouseExited="#patreonButtonOnMouseExited" onMousePressed="#patreonButtonPressed" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/logos/patreon.png" />
+         </image>
+      </ImageView>
   </children>
   <stylesheets>
     <URL value="@../styles/MainFrameStyle.css" />
