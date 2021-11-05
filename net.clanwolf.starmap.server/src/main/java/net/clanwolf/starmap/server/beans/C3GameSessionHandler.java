@@ -279,8 +279,10 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				dao.delete(getC3UserID(session), attackCharacter);
 			} else {
 				if (attackCharacter.getId() != null) {
+					C3Logger.debug("??? updating attackcharacter with id: " + attackCharacter.getId());
 					dao.update(getC3UserID(session), attackCharacter);
 				} else {
+					C3Logger.debug("??? daving new attackcharacter (id: " + attackCharacter.getId() + ")");
 					dao.save(getC3UserID(session), attackCharacter);
 				}
 			}
