@@ -33,11 +33,13 @@
 		<version.javafx>17.0.0.1</version.javafx>
 		<version.maven-compiler-plugin>3.8.1</version.maven-compiler-plugin>
 		<version.exec-maven-plugin>1.6.0</version.exec-maven-plugin>
-		<version.asm>7.3.1</version.asm> <!-- vorher: 7.3.1 -> 9.2 -->
+		<version.asm>9.2</version.asm>                                              <!-- 7.3.1       <-> 9.2         -->
 		<version.netty>4.1.69.Final</version.netty>
 		<version.spring>5.3.11</version.spring>
 		<version.spring-security-config>5.5.1</version.spring-security-config>
-		<version.hibernate>5.5.8</version.hibernate> <!-- vorher: 5.4.1 - !!! NOT USED YET !!! -->
+		<version.hibernate>5.4.1.Final</version.hibernate>                          <!-- 5.4.1.Final <-> 5.6.1.Final -->
+		<version.hibernate_hikaricp>5.4.1.Final</version.hibernate_hikaricp>        <!-- 5.4.1.Final <-> 5.5.8.Final -->
+		<version.hikaricp>3.3.1</version.hikaricp>                                  <!-- 3.3.1       <-> 5.0.0       -->
 	</properties>
 
 	<repositories>

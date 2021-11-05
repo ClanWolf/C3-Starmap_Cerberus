@@ -539,12 +539,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private void handleOnlineIndicatorLabelMouseEventClick() {
 		Server.checkServerStatusTask();
 		switch (C3Properties.getProperty(C3PROPS.CHECK_ONLINE_STATUS)) {
-			case "ONLINE":
-				C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Server_Status_Online"));
-				break;
-			case "OFFLINE":
-				C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Server_Status_Offline"));
-				break;
+			case "ONLINE" -> C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Server_Status_Online"));
+			case "OFFLINE" -> C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Server_Status_Offline"));
 		}
 	}
 	// Mouse entered
@@ -1538,7 +1534,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 		if (Nexus.promptNewVersionInstall) {
 			C3Message message = new C3Message(C3MESSAGES.DOWNLOAD_CLIENT);
-			message.setText("Neue Version verfügbar! Herunterladen?");
+			String m = Internationalization.getString("app_new_version_available");
+			message.setText(m);
 			message.setType(C3MESSAGETYPES.YES_NO);
 			ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
 		}

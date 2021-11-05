@@ -47,8 +47,6 @@ import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
-import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
-import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
 import net.clanwolf.starmap.client.gui.panes.logging.LogWatcher;
 import net.clanwolf.starmap.client.net.Server;
 import net.clanwolf.starmap.logging.C3Logger;
@@ -60,18 +58,14 @@ import net.clanwolf.starmap.client.util.C3Properties;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.client.util.Tools;
 import net.clanwolf.starmap.client.preloader.C3_Preloader;
-import net.clanwolf.starmap.transfer.enums.POPUPS;
 
 import java.io.*;
 import java.net.Authenticator;
-import java.net.MalformedURLException;
 import java.net.PasswordAuthentication;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -206,7 +200,6 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 						C3Logger.info("Currently used client version is the latest.");
 					} else {
 						C3Logger.info("Difference detected: Prompt to download new version.");
-						// TODO: Generate prompt to download latest version
 						Nexus.promptNewVersionInstall = true;
 					}
 				}
@@ -269,7 +262,7 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 		Parent root = loader.load();
 
 		scene = new Scene(root);
-		scene.getStylesheets().add(this.getClass().getResource("/styles/MainFrameStyle.css").toExternalForm());
+		scene.getStylesheets().add(Objects.requireNonNull(this.getClass().getResource("/styles/MainFrameStyle.css")).toExternalForm());
 		// This event filter gets the mouse position even if mouse transparent is true
 		scene.addEventFilter(MouseEvent.MOUSE_MOVED, (MouseEvent mouseEvent) -> {
 			mouseX = mouseEvent.getSceneX();

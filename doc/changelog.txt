@@ -12,8 +12,10 @@ C3 version history
 
 #########################################################
 
-Version 5.7.7 (..2021)
+Version 5.7.7 (06.11.2021)
+- UPDATRED: ASM -> 9.2
 - ADDED: Patreon button to login screen
+- CHANGED: Version numbers added to the parent pom.xml
 
 Version 5.7.4 (03.11.2021)
 - ADDED: Changelog upload
