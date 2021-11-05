@@ -12,7 +12,7 @@ C3 version history
 
 #########################################################
 
-Version 5.7.5 (..2021)
+Version 5.7.7 (..2021)
 - ADDED: Patreon button to login screen
 
 Version 5.7.4 (03.11.2021)

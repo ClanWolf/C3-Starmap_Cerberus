@@ -189,20 +189,8 @@
 			<artifactId>jnativehook</artifactId>
 			<version>2.2.0</version>
 		</dependency>
-		<dependency>
-			<groupId>net.clanwolf.starmap</groupId>
-			<artifactId>net.clanwolf.starmap.logging</artifactId>
-			<version>5.7.4</version>
-			<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>net.clanwolf.starmap</groupId>
-			<artifactId>net.clanwolf.starmap.logging</artifactId>
-			<version>5.7.4</version>
-			<scope>compile</scope>
-		</dependency>
 
-		<!--		<dependency>-->
+<!--		<dependency>-->
 <!--			<groupId>de.dfki.mary</groupId>-->
 <!--			<artifactId>voice-cmu-slt-hsmm</artifactId>-->
 <!--			<version>5.2</version>-->
