@@ -263,7 +263,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 		BOAttack a = Nexus.getCurrentAttackOfUser();
 		if (ac != null) {
-			a.storeAttackCharacters(ac, false, (ac.getType() == null));
+			a.storeAttackCharacters(ac, (ac.getType() == null));
 		}
 
 		boolean attackersOnline = true;

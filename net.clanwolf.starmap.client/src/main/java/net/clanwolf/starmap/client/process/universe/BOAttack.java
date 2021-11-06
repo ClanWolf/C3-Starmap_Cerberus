@@ -62,13 +62,10 @@ public class BOAttack {
 	}
 
 	@SuppressWarnings("unused")
-	public void storeAttackCharacters(AttackCharacterDTO attackCharacterDTO, boolean getNewUniverse, Boolean bRemoveAttackChar) {
+	public void storeAttackCharacters(AttackCharacterDTO attackCharacterDTO, Boolean bRemoveAttackChar) {
 		GameState saveAttackCharacterState = new GameState();
-		if (getNewUniverse) {
-			saveAttackCharacterState.setMode(GAMESTATEMODES.ATTACK_CHARACTER_SAVE);
-		} else {
-			saveAttackCharacterState.setMode(GAMESTATEMODES.ATTACK_CHARACTER_SAVE_WITHOUT_NEW_UNIVERSE);
-		}
+		saveAttackCharacterState.setMode(GAMESTATEMODES.ATTACK_CHARACTER_SAVE);
+
 		byte[] compressedAttackCharacterDTO = Compressor.compress(attackCharacterDTO);
 		C3Logger.info("Compressed AttackCharacterDTO size: " + compressedAttackCharacterDTO.length);
 		saveAttackCharacterState.addObject(compressedAttackCharacterDTO);

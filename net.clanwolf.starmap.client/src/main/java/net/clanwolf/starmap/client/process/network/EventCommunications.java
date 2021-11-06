@@ -162,7 +162,7 @@ public class EventCommunications {
 				case ATTACK_CHARACTER_SAVE_RESPONSE:
 					C3Logger.info("Attack has changed, a user joined or left.");
 					AttackDTO attackDTO = (AttackDTO) state.getObject();
-					ArrayList<RolePlayCharacterDTO> rpCharList = (ArrayList<RolePlayCharacterDTO>)state.getObject2();
+//					ArrayList<RolePlayCharacterDTO> rpCharList = (ArrayList<RolePlayCharacterDTO>)state.getObject2();
 
 					for (BOAttack a : Nexus.getBoUniverse().attackBOs) {
 						if (attackDTO.getId().equals(a.getAttackDTO().getId())) {

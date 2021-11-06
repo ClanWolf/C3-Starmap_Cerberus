@@ -755,16 +755,33 @@
   -fx-font-size: 14px;
   -fx-font-weight: normal;
   -fx-background-color: rgba(26, 45, 57, 0.8);
+  -fx-border-color: rgba(26, 45, 57, 0.8);
   -fx-border-width: 0;
   -fx-text-fill: white;
 }
+.list-view {
+  -fx-background-insets: 0;
+  -fx-padding: 0;
+}
 .list-view .list-cell:even {
   -fx-background-color: rgba(26, 45, 57, 0.8);
+  -fx-border-color: rgba(26, 45, 57, 0.8);
+  -fx-box-border: rgba(26, 45, 57, 0.8);
+  -fx-control-inner-background: rgba(26, 45, 57, 0.8);
+  -fx-border-width: 0;
   -fx-text-fill: white;
+  -fx-background-insets: 0;
+  -fx-padding: 0;
 }
 .list-view .list-cell:odd {
   -fx-background-color: rgba(26, 45, 57, 0.8);
+  -fx-border-color: rgba(26, 45, 57, 0.8);
+  -fx-box-border: rgba(26, 45, 57, 0.8);
+  -fx-control-inner-background: rgba(26, 45, 57, 0.8);
+  -fx-border-width: 0;
   -fx-text-fill: white;
+  -fx-background-insets: 0;
+  -fx-padding: 0;
 }
 /* .list-view .list-cell:hover {
   -fx-background-color: red;
@@ -772,7 +789,13 @@
 } */
 .list-view .list-cell:focused {
   -fx-background-color: rgba(91, 140, 175, 0.9);
+  -fx-border-color: rgba(26, 45, 57, 0.8);
+  -fx-box-border: rgba(26, 45, 57, 0.8);
+  -fx-control-inner-background: rgba(26, 45, 57, 0.8);
+  -fx-border-width: 0;
   -fx-text-fill: white;
+  -fx-background-insets: 0;
+  -fx-padding: 0;
 }
 
 .LogTextFlow {

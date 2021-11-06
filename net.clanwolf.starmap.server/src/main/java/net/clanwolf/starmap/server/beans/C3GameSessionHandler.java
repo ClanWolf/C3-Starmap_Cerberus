@@ -132,17 +132,17 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			case JUMPSHIP_SAVE:
 				saveJumpship(session, state);
 				serverHeartBeat = new Timer();
-				serverHeartBeat.schedule(new HeartBeatTimer(true), 100);
+				serverHeartBeat.schedule(new HeartBeatTimer(true), 10);
 				break;
 			case ATTACK_SAVE:
 				saveAttack(session, state);
 				serverHeartBeat = new Timer();
-				serverHeartBeat.schedule(new HeartBeatTimer(true), 100);
+				serverHeartBeat.schedule(new HeartBeatTimer(true), 10);
 				break;
 			case ATTACK_CHARACTER_SAVE:
 				saveAttackCharacter(session, state);
 				serverHeartBeat = new Timer();
-				serverHeartBeat.schedule(new HeartBeatTimer(true), 100);
+				serverHeartBeat.schedule(new HeartBeatTimer(true), 10);
 				break;
 			case ATTACK_CHARACTER_SAVE_WITHOUT_NEW_UNIVERSE:
 				saveAttackCharacter(session, state);
@@ -166,11 +166,11 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			case FORCE_FINALIZE_ROUND:
 				EndRound.setForceFinalize(true);
 				serverHeartBeat = new Timer();
-				serverHeartBeat.schedule(new HeartBeatTimer(true), 100);
+				serverHeartBeat.schedule(new HeartBeatTimer(true), 10);
 				break;
 			case FORCE_NEW_UNIVERSE:
 				serverHeartBeat = new Timer();
-				serverHeartBeat.schedule(new HeartBeatTimer(true), 100);
+				serverHeartBeat.schedule(new HeartBeatTimer(true), 10);
 				break;
 			default:
 				break;
@@ -279,10 +279,10 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				dao.delete(getC3UserID(session), attackCharacter);
 			} else {
 				if (attackCharacter.getId() != null) {
-					C3Logger.debug("??? updating attackcharacter with id: " + attackCharacter.getId());
+					C3Logger.debug("??? updating attackcharacter (id: " + attackCharacter.getId() + ")");
 					dao.update(getC3UserID(session), attackCharacter);
 				} else {
-					C3Logger.debug("??? daving new attackcharacter (id: " + attackCharacter.getId() + ")");
+					C3Logger.debug("??? saving new attackcharacter (id: " + attackCharacter.getId() + ")");
 					dao.save(getC3UserID(session), attackCharacter);
 				}
 			}

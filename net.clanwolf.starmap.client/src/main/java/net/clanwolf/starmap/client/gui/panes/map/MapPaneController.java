@@ -243,7 +243,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			a.getAttackDTO().setStoryID(19L);    // TODO: Hier müssen wir die Einstiegs-Story ID irgendwie definieren
 			a.storeAttack();
 		} else {
-			a.storeAttackCharacters(ac, true, Boolean.FALSE);
+			a.storeAttackCharacters(ac, Boolean.FALSE);
 		}
 
 		ActionManager.getAction(ACTIONS.SWITCH_TO_INVASION).execute();
@@ -444,7 +444,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 	private synchronized void refreshUniverseMap() {
 		// Refresh universe map (GUI)
-		ActionManager.getAction(ACTIONS.NOISE).execute(800);
+		ActionManager.getAction(ACTIONS.NOISE).execute(200);
 		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("10");
 		Platform.runLater(() -> {
 			if (boUniverse != null) { // this is the same universe, but the objects have been updated to the returned, new universe
