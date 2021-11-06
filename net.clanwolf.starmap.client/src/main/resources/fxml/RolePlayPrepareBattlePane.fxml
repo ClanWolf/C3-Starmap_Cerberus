@@ -42,7 +42,7 @@
                   </ImageView>
                   <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <ListView fx:id="lvDropleadAttacker" fixedCellSize="23.0" maxHeight="25.0" minHeight="25.0" onMouseClicked="#handleAttackerDropleadMouseClick" prefHeight="25.0" prefWidth="200.0" stylesheets="@../styles/MainFrameStyle.css" HBox.hgrow="ALWAYS" />
+                        <ListView fx:id="lvDropleadAttacker" fixedCellSize="23.0" maxHeight="30.0" minHeight="30.0" onMouseClicked="#handleAttackerDropleadMouseClick" prefHeight="30.0" prefWidth="200.0" stylesheets="@../styles/MainFrameStyle.css" HBox.hgrow="ALWAYS" />
                         <ImageView fx:id="ivAttackerRank" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../images/ranks/CW/SCapt.png" />
@@ -93,7 +93,7 @@
                   </ImageView>
                   <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <ListView fx:id="lvDropleadDefender" fixedCellSize="23.0" maxHeight="25.0" minHeight="25.0" onMouseClicked="#handleDefenderDropleadMouseClick" prefHeight="25.0" prefWidth="200.0" stylesheets="@../styles/MainFrameStyle.css" HBox.hgrow="ALWAYS" />
+                        <ListView fx:id="lvDropleadDefender" fixedCellSize="23.0" maxHeight="30.0" minHeight="30.0" onMouseClicked="#handleDefenderDropleadMouseClick" prefHeight="30.0" prefWidth="200.0" stylesheets="@../styles/MainFrameStyle.css" HBox.hgrow="ALWAYS" />
                         <ImageView fx:id="ivDefenderRank" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../images/ranks/CJF/SCapt.png" />

@@ -54,8 +54,6 @@ import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.transfer.dtos.*;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
-import javax.swing.*;
-import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.*;
 
@@ -240,7 +238,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 	@FXML
 	public synchronized void handleLeaveButtonClick() {
-		BOAttack a = Nexus.getCurrentAttackOfUser();
+//		BOAttack a = Nexus.getCurrentAttackOfUser();
 		AttackCharacterDTO ac = characterRoleMap.get(Nexus.getCurrentChar().getId());
 		ac.setType(null);
 		checkConditionsToStartDrop(ac);
@@ -519,7 +517,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		Callback<ListView<RolePlayCharacterDTO>, ListCell<RolePlayCharacterDTO>> renderer = new Callback<>() {
 			@Override
 			public ListCell<RolePlayCharacterDTO> call(ListView<RolePlayCharacterDTO> param) {
-				ListCell<RolePlayCharacterDTO> cell = new ListCell<RolePlayCharacterDTO>() {
+				return new ListCell<>() {
 					@Override
 					protected void updateItem(RolePlayCharacterDTO item, boolean empty) {
 						super.updateItem(item, empty);
@@ -535,9 +533,15 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 								Platform.runLater(() -> setText(item.getName()));
 							} else {
 								if (!"...".equals(item.getName())) {
-									Platform.runLater(() -> setText(item.getName() + " (offline)"));
+									Platform.runLater(() -> {
+										setText(item.getName() + " (offline)");
+										setStyle("-fx-text-fill: cyan;");
+									});
 								} else {
-									Platform.runLater(() -> setText(item.getName()));
+									Platform.runLater(() -> {
+										setText(item.getName());
+										setStyle("-fx-text-fill: white;");
+									});
 								}
 							}
 						} else {
@@ -548,7 +552,6 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 						}
 					}
 				};
-				return cell;
 			}
 		};
 

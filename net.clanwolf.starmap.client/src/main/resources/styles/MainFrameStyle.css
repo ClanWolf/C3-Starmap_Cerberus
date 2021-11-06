@@ -24,6 +24,9 @@
  * Copyright (c) 2001-2021, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
+
+ /* https://stackoverflow.com/questions/45067838/javafx-list-view-coloring-the-list-cell */
+
 .root {
   -fx-accent: #427aa2;
   -fx-focus-color: #427aa2;
@@ -750,52 +753,43 @@
   -fx-padding: 8 8 8 8;
 }
 
-.listView {
-  -fx-font-family: "Consolas";
-  -fx-font-size: 14px;
-  -fx-font-weight: normal;
-  -fx-background-color: rgba(26, 45, 57, 0.8);
-  -fx-border-color: rgba(26, 45, 57, 0.8);
-  -fx-border-width: 0;
-  -fx-text-fill: white;
-}
+/* list-view -------------------------------------------------------------------------------------------------------- */
 .list-view {
-  -fx-background-insets: 0;
-  -fx-padding: 0;
+  -fx-font-family: "Consolas";
+  -fx-font-size: 12px;
+  -fx-font-weight: normal;
+  -fx-background-color: rgba(26, 45, 57, 1.0);
+  -fx-box-border: rgba(126, 45, 57, 1.0);
+  -fx-control-inner-background: rgba(26, 45, 57, 1.0);
+  -fx-background-insets: 0, 1;
+  -fx-padding: 1;
 }
 .list-view .list-cell:even {
-  -fx-background-color: rgba(26, 45, 57, 0.8);
-  -fx-border-color: rgba(26, 45, 57, 0.8);
-  -fx-box-border: rgba(26, 45, 57, 0.8);
-  -fx-control-inner-background: rgba(26, 45, 57, 0.8);
+  -fx-background-color: rgba(26, 45, 57, 0.75);
+  -fx-border-color:  rgba(26, 45, 57, 1.0);
+  -fx-control-inner-background: rgba(26, 45, 57, 1.0);
+  -fx-box-border:  rgba(26, 45, 57, 1.0);
   -fx-border-width: 0;
+  -fx-border-style: hidden hidden hidden hidden;
   -fx-text-fill: white;
-  -fx-background-insets: 0;
-  -fx-padding: 0;
 }
 .list-view .list-cell:odd {
-  -fx-background-color: rgba(26, 45, 57, 0.8);
-  -fx-border-color: rgba(26, 45, 57, 0.8);
-  -fx-box-border: rgba(26, 45, 57, 0.8);
-  -fx-control-inner-background: rgba(26, 45, 57, 0.8);
+  -fx-background-color: rgba(26, 45, 57, 0.75);
+  -fx-border-color:  rgba(26, 45, 57, 1.0);
+  -fx-control-inner-background: rgba(26, 45, 57, 1.0);
+  -fx-box-border:  rgba(26, 45, 57, 1.0);
   -fx-border-width: 0;
+  -fx-border-style: hidden hidden hidden hidden;
   -fx-text-fill: white;
-  -fx-background-insets: 0;
-  -fx-padding: 0;
 }
-/* .list-view .list-cell:hover {
-  -fx-background-color: red;
-  -fx-text-fill: white;
-} */
 .list-view .list-cell:focused {
   -fx-background-color: rgba(91, 140, 175, 0.9);
-  -fx-border-color: rgba(26, 45, 57, 0.8);
-  -fx-box-border: rgba(26, 45, 57, 0.8);
-  -fx-control-inner-background: rgba(26, 45, 57, 0.8);
+  -fx-border-color:  rgba(26, 45, 57, 1.0);
+  -fx-control-inner-background: rgba(26, 45, 57, 1.0);
+  -fx-box-border:  rgba(26, 45, 57, 1.0);
   -fx-border-width: 0;
+  -fx-border-style: hidden hidden hidden hidden;
   -fx-text-fill: white;
-  -fx-background-insets: 0;
-  -fx-padding: 0;
 }
 
 .LogTextFlow {

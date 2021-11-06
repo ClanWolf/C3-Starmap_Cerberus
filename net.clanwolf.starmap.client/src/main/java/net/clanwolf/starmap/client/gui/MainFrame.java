@@ -105,26 +105,43 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 	 */
 	public static double mouseY = 0;
 
+	public static void prepareManual() {
+		try {
+			File dir = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "manual");
+			boolean success = dir.mkdirs();
+			if (success) {
+				C3Logger.info("Created manual folder");
+			}
+
+			// Manual
+			InputStream source = MainFrame.class.getResourceAsStream("/C3_Manual_de.pdf");
+			String destination = dir + File.separator + "C3_Manual_de.pdf";
+			if (source != null) {
+				Files.copy(source, Paths.get(destination), StandardCopyOption.REPLACE_EXISTING);
+			}
+
+			// Changelog
+			InputStream source2 = MainFrame.class.getResourceAsStream("/changelog.txt");
+			String destination2 = dir + File.separator + "changelog.txt";
+			if (source2 != null) {
+				Files.copy(source2, Paths.get(destination2), StandardCopyOption.REPLACE_EXISTING);
+			}
+		} catch (Exception e) {
+			C3Logger.info("Exception while copying the manual to local drive.");
+			C3Logger.exception(null, e);
+		}
+	}
+
 	public void clearCache() {
 		C3Logger.info("Clearing cache!");
 		String cacheFolderName = System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "cache";
 		File f = new File(cacheFolderName);
-		f.mkdirs();
+		boolean success = f.mkdirs();
+		if (!success) {
+			C3Logger.info("Folder " + f.getAbsolutePath() + " could not be created!");
+		}
 		Tools.purgeDirectory(f);
 		C3Logger.info("The following files were left over (could not be deleted):");
-		C3Logger.info("--- [start]");
-		Tools.listDirectory(f);
-		C3Logger.info("--- [end]");
-	}
-
-	public void cleanCache() {
-		long numberOfDays = 90;
-		C3Logger.info("Cleaning cache (cleaning files older than " + numberOfDays + " days)!");
-		String cacheFolderName = System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "cache";
-		File f = new File(cacheFolderName);
-		f.mkdirs();
-		Tools.cleanDirectory(f, numberOfDays);
-		C3Logger.info("The following files were left over (could not be deleted or were younger than " + numberOfDays + " days):");
 		C3Logger.info("--- [start]");
 		Tools.listDirectory(f);
 		C3Logger.info("--- [end]");
@@ -228,6 +245,39 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 		}
 	}
 
+	public void cleanCache() {
+		long numberOfDays = 90;
+		C3Logger.info("Cleaning cache (cleaning files older than " + numberOfDays + " days)!");
+		String cacheFolderName = System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "cache";
+		File f = new File(cacheFolderName);
+		boolean success = f.mkdirs();
+		if (!success) {
+			C3Logger.info("Folder " + f.getAbsolutePath() + " could not be created!");
+		}
+		Tools.cleanDirectory(f, numberOfDays);
+		C3Logger.info("The following files were left over (could not be deleted or were younger than " + numberOfDays + " days):");
+		C3Logger.info("--- [start]");
+		Tools.listDirectory(f);
+		C3Logger.info("--- [end]");
+	}
+
+	/**
+	 * Prepare the property file for each user.
+	 * Values from the user properties do overwrite central properties.
+	 */
+	private static void prepareUserProperties() {
+		try {
+			File dir = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3");
+			boolean showEditProperties = C3Properties.loadUserProperties(dir.toString());
+			if (showEditProperties) {
+				// TODO: Show scene to initially edit settings
+				C3Logger.info("Showing first welcome.");
+			}
+		} catch (IOException e) {
+			C3Logger.exception(null, e);
+		}
+	}
+
 	/**
 	 * The start method for the application.
 	 *
@@ -299,6 +349,8 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 
 		InputStream isImageNormalCursor = this.getClass().getResourceAsStream("/images/C3_Mouse_Cursor.png");
 		InputStream isImageWaitCursor = this.getClass().getResourceAsStream("/images/C3_Mouse_Cursor_WAIT.png");
+		assert isImageNormalCursor != null;
+		assert isImageWaitCursor != null;
 		imageNormalCursor = new Image(isImageNormalCursor);
 		imageWaitCursor = new Image(isImageWaitCursor);
 		imageCursorNormal = new ImageCursor(imageNormalCursor, 1, 1);
@@ -354,43 +406,6 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 //			// error during email sending
 //			C3Logger.info("Error during mail dispatch.");
 //		}
-	}
-
-	/**
-	 * Prepare the property file for each user.
-	 * Values from the user properties do overwrite central properties.
-	 */
-	private static void prepareUserProperties() {
-		try {
-			File dir = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3");
-			boolean showEditProperties = C3Properties.loadUserProperties(dir.toString());
-			if (showEditProperties) {
-				// TODO: Show scene to initially edit settings
-				C3Logger.info("Showing first welcome.");
-			}
-		} catch (IOException e) {
-			C3Logger.exception(null, e);
-		}
-	}
-
-	public static void prepareManual() {
-		try {
-			File dir = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "manual");
-			boolean success = dir.mkdirs();
-			if (success) {
-				C3Logger.info("Created manual folder");
-			}
-
-			InputStream source = MainFrame.class.getResourceAsStream("/C3_Manual_de.pdf");
-			String destination = dir + File.separator + "C3_Manual_de.pdf";
-
-			if (source != null) {
-				Files.copy(source, Paths.get(destination), StandardCopyOption.REPLACE_EXISTING);
-			}
-		} catch (Exception e) {
-			C3Logger.info("Exception while copying the manual to local drive.");
-			C3Logger.exception(null, e);
-		}
 	}
 
 	public static void main(String[] args) {
@@ -552,15 +567,17 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 									" 2>&1");
 							Process process = processBuilder.start();
 
-//							BufferedReader reader =	new BufferedReader(new InputStreamReader(process.getInputStream()));
-//							StringBuilder builder = new StringBuilder();
-//							String line = null;
-//							while ( (line = reader.readLine()) != null) {
-//								builder.append(line);
-//								builder.append(System.getProperty("line.separator"));
-//							}
-//							String result = builder.toString();
-//							C3Logger.debug(result);
+							C3Logger.info("--- Output start (may be empty, if exe is not printing anything) ---");
+							BufferedReader reader =	new BufferedReader(new InputStreamReader(process.getInputStream()));
+							StringBuilder builder = new StringBuilder();
+							String line;
+							while ( (line = reader.readLine()) != null) {
+								builder.append(line);
+								builder.append(System.getProperty("line.separator"));
+							}
+							String result = builder.toString();
+							C3Logger.debug(result);
+							C3Logger.info("--- Output end ---");
 
 							C3Logger.info("Closing C3 client for installation...");
 							System.exit(0);

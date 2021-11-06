@@ -213,7 +213,6 @@
 <!--				</exclusion>-->
 <!--			</exclusions>-->
 <!--		</dependency>-->
-
 	</dependencies>
 
 	<!-- https://github.com/moditect/moditect#adding-module-descriptors-to-existing-jar-files -->
@@ -262,6 +261,8 @@
 								<copy file="../doc/manual/C3_Manual_de.pdf" tofile="${basedir}/src/main/resources/C3_Manual_de.pdf"/>
 <!--								<echo>C3_Manual_en.pdf</echo>-->
 <!--								<copy file="../doc/manual/C3_Manual_en.pdf" tofile="${basedir}/src/main/resources/C3_Manual_en.pdf"/>-->
+								<echo>changelog.txt</echo>
+								<copy file="../doc/changelog.txt" tofile="${basedir}/src/main/resources/changelog.txt"/>
 							</target>
 						</configuration>
 					</execution>
