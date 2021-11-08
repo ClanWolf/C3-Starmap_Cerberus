@@ -131,20 +131,24 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 
 	@FXML
 	private void patreonButtonOnMouseEntered() {
-		Image patreonImgHover = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logos/patreon_hover.png")));
-		patreonButton.setImage(patreonImgHover);
-		StatusTextEntryActionObject o = new StatusTextEntryActionObject("", false);
-		o.setMessage(Internationalization.getString("app_patreon_infotext").replace("%20", " "));
-		ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(o);
+		Platform.runLater(() -> {
+			Image patreonImgHover = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logos/patreon_hover.png")));
+			patreonButton.setImage(patreonImgHover);
+			StatusTextEntryActionObject o = new StatusTextEntryActionObject("", false);
+			o.setMessage(Internationalization.getString("app_patreon_infotext").replace("%20", " "));
+			ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(o);
+		});
 	}
 
 	@FXML
 	private void patreonButtonOnMouseExited() {
-		Image patreonImg = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logos/patreon.png")));
-		patreonButton.setImage(patreonImg);
-		StatusTextEntryActionObject o = new StatusTextEntryActionObject("", false);
-		o.setMessage("");
-		ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(o);
+		Platform.runLater(() -> {
+			Image patreonImg = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logos/patreon.png")));
+			patreonButton.setImage(patreonImg);
+			StatusTextEntryActionObject o = new StatusTextEntryActionObject("", false);
+			o.setMessage("");
+			ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(o);
+		});
 	}
 
 	@FXML

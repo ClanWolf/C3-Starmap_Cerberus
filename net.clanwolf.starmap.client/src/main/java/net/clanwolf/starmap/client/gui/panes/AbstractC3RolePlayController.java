@@ -69,9 +69,6 @@ public abstract class AbstractC3RolePlayController implements Initializable, Act
 
 	public abstract void getStoryValues(RolePlayStoryDTO rpStory);
 
-
-
-
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		boRp = new BORolePlayStory();

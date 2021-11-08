@@ -29,6 +29,7 @@ package net.clanwolf.starmap.client.gui.panes;
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.SequentialTransition;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.CacheHint;
@@ -221,28 +222,31 @@ public abstract class AbstractC3Pane extends Pane {
 		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("8");
 		firePaneConstructionBeginsEvent();
 		Tools.playGUICreationSound();
-		this.setOpacity(1.0);
 
-		// Fade in transition 01 (Background)
-		FadeTransition fadeInTransition_01 = new FadeTransition(Duration.millis(50), backgroundPolygon);
-		fadeInTransition_01.setFromValue(0.0);
-		fadeInTransition_01.setToValue(0.2);
-		fadeInTransition_01.setCycleCount(4);
+		Platform.runLater(() -> {
+			this.setOpacity(1.0);
 
-		// Fade in transition 02 (Border)
-		FadeTransition fadeInTransition_02 = new FadeTransition(Duration.millis(100), borderPolygon);
-		fadeInTransition_02.setFromValue(0.0);
-		fadeInTransition_02.setToValue(1.0);
-		fadeInTransition_02.setCycleCount(2);
+			// Fade in transition 01 (Background)
+			FadeTransition fadeInTransition_01 = new FadeTransition(Duration.millis(50), backgroundPolygon);
+			fadeInTransition_01.setFromValue(0.0);
+			fadeInTransition_01.setToValue(0.2);
+			fadeInTransition_01.setCycleCount(4);
 
-		// Transition sequence
-		SequentialTransition sequentialTransition = new SequentialTransition();
-		sequentialTransition.setOnFinished(event -> firePaneConstructionEvent());
-		sequentialTransition.getChildren().addAll(fadeInTransition_01, fadeInTransition_02);
-		sequentialTransition.setCycleCount(1);
-		sequentialTransition.play();
-		isDisplayed = true;
-		Nexus.setCurrentlyOpenedPane(this);
+			// Fade in transition 02 (Border)
+			FadeTransition fadeInTransition_02 = new FadeTransition(Duration.millis(100), borderPolygon);
+			fadeInTransition_02.setFromValue(0.0);
+			fadeInTransition_02.setToValue(1.0);
+			fadeInTransition_02.setCycleCount(2);
+
+			// Transition sequence
+			SequentialTransition sequentialTransition = new SequentialTransition();
+			sequentialTransition.setOnFinished(event -> firePaneConstructionEvent());
+			sequentialTransition.getChildren().addAll(fadeInTransition_01, fadeInTransition_02);
+			sequentialTransition.setCycleCount(1);
+			sequentialTransition.play();
+			isDisplayed = true;
+			Nexus.setCurrentlyOpenedPane(this);
+		});
 	}
 
 	public void paneDestruction() {

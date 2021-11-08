@@ -1324,38 +1324,42 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	}
 
 	private void NoiseAnimation() {
-		int COLUMNS = 2;
-		int COUNT = 4;
-		int OFFSET_X = 0;
-		int OFFSET_Y = 0;
-		int WIDTH = 860;
-		int HEIGHT = 524;
+		Platform.runLater(() -> {
+			int COLUMNS = 2;
+			int COUNT = 4;
+			int OFFSET_X = 0;
+			int OFFSET_Y = 0;
+			int WIDTH = 860;
+			int HEIGHT = 524;
 
-		InputStream is = this.getClass().getResourceAsStream("/images/noise/noisemap.png");
-		noiseImage.setImage(new Image(is));
-		noiseImage.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
-		noiseImage.setCache(true);
-		noiseImage.setCacheHint(CacheHint.SPEED);
-		noiseAnimation = new SpriteAnimation(noiseImage, Duration.millis(200), COUNT, COLUMNS, OFFSET_X, OFFSET_Y, WIDTH, HEIGHT);
-		noiseAnimation.setCycleCount(Animation.INDEFINITE);
+			InputStream is = this.getClass().getResourceAsStream("/images/noise/noisemap.png");
+			noiseImage.setImage(new Image(is));
+			noiseImage.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
+			noiseImage.setCache(true);
+			noiseImage.setCacheHint(CacheHint.SPEED);
+			noiseAnimation = new SpriteAnimation(noiseImage, Duration.millis(200), COUNT, COLUMNS, OFFSET_X, OFFSET_Y, WIDTH, HEIGHT);
+			noiseAnimation.setCycleCount(Animation.INDEFINITE);
+		});
 	}
 
 	private void SpeechSpectrumAnimation() {
 		if (spectrumAnimation == null) {
-			int COLUMNS = 3;
-			int COUNT = 21;
-			int OFFSET_X = 0;
-			int OFFSET_Y = 0;
-			int WIDTH = 247;
-			int HEIGHT = 63;
+			Platform.runLater(() -> {
+				int COLUMNS = 3;
+				int COUNT = 21;
+				int OFFSET_X = 0;
+				int OFFSET_Y = 0;
+				int WIDTH = 247;
+				int HEIGHT = 63;
 
-			InputStream is = this.getClass().getResourceAsStream("/images/spectrum/spectrum.png");
-			spectrumImage.setImage(new Image(is));
-			spectrumImage.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
-			spectrumImage.setCache(true);
-			spectrumImage.setCacheHint(CacheHint.QUALITY);
-			spectrumAnimation = new SpriteAnimation(spectrumImage, Duration.millis(1000), COUNT, COLUMNS, OFFSET_X, OFFSET_Y, WIDTH, HEIGHT);
-			spectrumAnimation.setCycleCount(Animation.INDEFINITE);
+				InputStream is = this.getClass().getResourceAsStream("/images/spectrum/spectrum.png");
+				spectrumImage.setImage(new Image(is));
+				spectrumImage.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
+				spectrumImage.setCache(true);
+				spectrumImage.setCacheHint(CacheHint.QUALITY);
+				spectrumAnimation = new SpriteAnimation(spectrumImage, Duration.millis(1000), COUNT, COLUMNS, OFFSET_X, OFFSET_Y, WIDTH, HEIGHT);
+				spectrumAnimation.setCycleCount(Animation.INDEFINITE);
+			});
 		}
 	}
 
@@ -1560,9 +1564,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			case READY_TO_LOGIN:
 				boolean va = (boolean) o.getObject();
 				if (va) {
-					loginIndicatorLabel.setStyle("-fx-background-color: #008000;");
+					Platform.runLater(() -> loginIndicatorLabel.setStyle("-fx-background-color: #008000;"));
 				} else {
-					loginIndicatorLabel.setStyle("-fx-background-color: #c00000;");
+					Platform.runLater(() -> loginIndicatorLabel.setStyle("-fx-background-color: #c00000;"));
 				}
 				break;
 
@@ -1577,26 +1581,24 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					}
 				}
 				String finalColor = color;
-				Platform.runLater(() -> {
-					setStatusText(ste.getMessage(), ste.isFlash(), finalColor, ste.isJustUpdate());
-				});
+				Platform.runLater(() -> setStatusText(ste.getMessage(), ste.isFlash(), finalColor, ste.isJustUpdate()));
 				break;
 
 			case ONLINECHECK_STARTED:
 				ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("3");
 				// Log.debug("ACTIONS.ONLINE_STATUS_CHECK_STARTED catched.");
-				onlineIndicatorLabel.setStyle("-fx-background-color: #808000;");
+				Platform.runLater(() -> onlineIndicatorLabel.setStyle("-fx-background-color: #808000;"));
 				C3Properties.setProperty(C3PROPS.CHECK_ONLINE_STATUS, "RUNNING_CHECK", false);
 				break;
 
 			case ONLINECHECK_FINISHED:
 				boolean result = (boolean) o.getObject();
 				if (result) {
-					onlineIndicatorLabel.setStyle("-fx-background-color: #008000;");
+					Platform.runLater(() -> onlineIndicatorLabel.setStyle("-fx-background-color: #008000;"));
 					C3Properties.setProperty(C3PROPS.CHECK_ONLINE_STATUS, "ONLINE", false);
 					ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("3");
 				} else {
-					onlineIndicatorLabel.setStyle("-fx-background-color: #c00000;");
+					Platform.runLater(() -> onlineIndicatorLabel.setStyle("-fx-background-color: #c00000;"));
 					C3Properties.setProperty(C3PROPS.CHECK_ONLINE_STATUS, "OFFLINE", false);
 					C3Message message = new C3Message(C3MESSAGES.ERROR_SERVER_OFFLINE);
 					message.setType(C3MESSAGETYPES.CLOSE);
@@ -1613,7 +1615,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					C3Logger.info("Server is offline, DB is not checked!");
 				} else {
 					ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("4");
-					databaseAccessibleIndicatorLabel.setStyle("-fx-background-color: #808000;");
+					Platform.runLater(() -> databaseAccessibleIndicatorLabel.setStyle("-fx-background-color: #808000;"));
 					C3Properties.setProperty(C3PROPS.CHECK_CONNECTION_STATUS, "RUNNING_CHECK", false);
 				}
 				break;
@@ -1622,11 +1624,11 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				boolean result3 = (boolean) o.getObject();
 				// Log.debug("ACTIONS.DATABASECONNECTIONCHECK_FINISHED catched. Online: " + result3);
 				if (result3) {
-					databaseAccessibleIndicatorLabel.setStyle("-fx-background-color: #008000;");
+					Platform.runLater(() -> databaseAccessibleIndicatorLabel.setStyle("-fx-background-color: #008000;"));
 					C3Properties.setProperty(C3PROPS.CHECK_CONNECTION_STATUS, "ONLINE", false);
 					ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("4");
 				} else {
-					databaseAccessibleIndicatorLabel.setStyle("-fx-background-color: #c00000;");
+					Platform.runLater(() -> databaseAccessibleIndicatorLabel.setStyle("-fx-background-color: #c00000;"));
 					C3Properties.setProperty(C3PROPS.CHECK_CONNECTION_STATUS, "OFFLINE", false);
 					C3Message message = new C3Message(C3MESSAGES.ERROR_DATABASE_OFFLINE);
 					message.setType(C3MESSAGETYPES.CLOSE);
@@ -1638,12 +1640,14 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				break;
 
 			case LOGGING_OFF:
-				Nexus.setLoggedInStatus(false);
-				enableMainMenuButtons(Nexus.isLoggedIn(), false);
+				Platform.runLater(() -> {
+					Nexus.setLoggedInStatus(false);
+					Platform.runLater(() -> enableMainMenuButtons(Nexus.isLoggedIn(), false));
+				});
 				break;
 
 			case LOGGED_OFF_COMPLETE:
-				loginIndicatorLabel.setStyle("-fx-background-color: #c00000;");
+				Platform.runLater(() -> loginIndicatorLabel.setStyle("-fx-background-color: #c00000;"));
 				C3Properties.setProperty(C3PROPS.CHECK_LOGIN_STATUS, "LOGGED_OFF", false);
 
 				//noinspection StatementWithEmptyBody
@@ -1677,34 +1681,38 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				break;
 
 			case LOGGED_ON:
+				Platform.runLater(() -> {
+					//
+				});
 				break;
 
 			case LOGON_FINISHED_SUCCESSFULL:
-				// TODO: This may take too long and a response object may arrive before the pane exists and lead to nullpointers!
-				// if the user is null here, this may cause the endless Nullpointer Exceptions that sometimes occur on/after login
-				C3Logger.info("Current user is: " + Nexus.getCurrentUser() + " (Check this not to be NULL)");
-
-				userInfoPane = new UserInfoPane();
-				userInfoPane.setCache(true);
-				userInfoPane.setCacheHint(CacheHint.SPEED);
-				userInfoPane.getController().addActionCallBackListeners();
-
-				ActionManager.getAction(ACTIONS.CHANGE_LANGUAGE).execute();
-				openTargetPane(userInfoPane, Internationalization.getString("C3_Speech_Successful_Login"));
-
-				loginIndicatorLabel.setStyle("-fx-background-color: #008000;");
-				C3Properties.setProperty(C3PROPS.CHECK_LOGIN_STATUS, "LOGGED_ON", false);
-
-				setConsoleEntry("Logged on to C3-Network");
-				setConsoleEntry("Verifying privileges");
-				setConsoleEntry("Applying security level");
-
-				// Print information about the server logged in to to gui
-				String tcphostname = C3Properties.getProperty(C3PROPS.TCP_HOSTNAME);
-				int tcpPort = Integer.parseInt(C3Properties.getProperty(C3PROPS.TCP_PORT));
-
-				Nexus.setLoggedInStatus(true);
 				Platform.runLater(() -> {
+					// TODO: This may take too long and a response object may arrive before the pane exists and lead to nullpointers!
+					// if the user is null here, this may cause the endless Nullpointer Exceptions that sometimes occur on/after login
+					C3Logger.info("Current user is: " + Nexus.getCurrentUser() + " (Check this not to be NULL)");
+
+					userInfoPane = new UserInfoPane();
+					userInfoPane.setCache(true);
+					userInfoPane.setCacheHint(CacheHint.SPEED);
+					userInfoPane.getController().addActionCallBackListeners();
+
+					ActionManager.getAction(ACTIONS.CHANGE_LANGUAGE).execute();
+					openTargetPane(userInfoPane, Internationalization.getString("C3_Speech_Successful_Login"));
+
+					loginIndicatorLabel.setStyle("-fx-background-color: #008000;");
+					C3Properties.setProperty(C3PROPS.CHECK_LOGIN_STATUS, "LOGGED_ON", false);
+
+					setConsoleEntry("Logged on to C3-Network");
+					setConsoleEntry("Verifying privileges");
+					setConsoleEntry("Applying security level");
+
+					// Print information about the server logged in to to gui
+					String tcphostname = C3Properties.getProperty(C3PROPS.TCP_HOSTNAME);
+					int tcpPort = Integer.parseInt(C3Properties.getProperty(C3PROPS.TCP_PORT));
+
+					Nexus.setLoggedInStatus(true);
+
 					if (Nexus.getCurrentUser() != null) {
 						if (Nexus.getCurrentUser().getUserName().length() > 10) {
 							toplabel.setText(Nexus.getCurrentUser().getUserName());
@@ -1772,14 +1780,18 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				break;
 
 			case SET_CONSOLE_OPACITY:
-				double v = (double) o.getObject();
-				systemConsole.setOpacity(v);
-				systemConsoleCurrentLine.setOpacity(v);
+				Platform.runLater(() -> {
+					double v = (double) o.getObject();
+					systemConsole.setOpacity(v);
+					systemConsoleCurrentLine.setOpacity(v);
+				});
 				break;
 
 			case SET_CONSOLE_OUTPUT_LINE:
-				String s = (String) o.getObject();
-				setConsoleEntry(s);
+				Platform.runLater(() -> {
+					String s = (String) o.getObject();
+					setConsoleEntry(s);
+				});
 				break;
 
 			case TERMINAL_COMMAND:
