@@ -12,7 +12,7 @@ C3 version history
 
 #########################################################
 
-Version 5.7.9 ( xxx .11.2021)
+Version 5.7.9 (09.11.2021)
 - FIXED: Invasion lobby
 - CHANGED: (Try) Thread execution of user info (to fix the NullPointer that sometimes fires after login)
 
