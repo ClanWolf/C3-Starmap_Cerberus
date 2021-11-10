@@ -132,7 +132,7 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 	@FXML
 	private void patreonButtonOnMouseEntered() {
 		Platform.runLater(() -> {
-			Image patreonImgHover = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logos/patreon_hover.png")));
+			Image patreonImgHover = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logos/liberapay_hover.png")));
 			patreonButton.setImage(patreonImgHover);
 			StatusTextEntryActionObject o = new StatusTextEntryActionObject("", false);
 			o.setMessage(Internationalization.getString("app_patreon_infotext").replace("%20", " "));
@@ -143,7 +143,7 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 	@FXML
 	private void patreonButtonOnMouseExited() {
 		Platform.runLater(() -> {
-			Image patreonImg = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logos/patreon.png")));
+			Image patreonImg = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logos/liberapay.png")));
 			patreonButton.setImage(patreonImg);
 			StatusTextEntryActionObject o = new StatusTextEntryActionObject("", false);
 			o.setMessage("");

@@ -99,7 +99,7 @@
       </Label>
       <ImageView fx:id="patreonButton" fitHeight="37.0" fitWidth="39.0" layoutX="492.0" layoutY="438.0" onMouseEntered="#patreonButtonOnMouseEntered" onMouseExited="#patreonButtonOnMouseExited" onMousePressed="#patreonButtonPressed" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/logos/patreon.png" />
+            <Image url="@../images/logos/liberapay.png" />
          </image>
       </ImageView>
   </children>

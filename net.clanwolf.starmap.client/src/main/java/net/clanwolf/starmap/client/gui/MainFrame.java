@@ -155,7 +155,8 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 
 	private void openPatreon() {
 		HostServices hostServices = getHostServices();
-		hostServices.showDocument("https://www.patreon.com/bePatron?u=59537497&redirect_uri=https%3A%2F%2Fwww.clanwolf.net%2Fviewpage.php%3Fpage_id%3D300&utm_medium=widget");
+		//hostServices.showDocument("https://www.patreon.com/bePatron?u=59537497&redirect_uri=https%3A%2F%2Fwww.clanwolf.net%2Fviewpage.php%3Fpage_id%3D300&utm_medium=widget");
+		hostServices.showDocument("https://liberapay.com/WarWolfen");
 	}
 
 	@Override

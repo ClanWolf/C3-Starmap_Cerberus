@@ -12,6 +12,9 @@ C3 version history
 
 #########################################################
 
+Version 5.7.10 (10.11.2021)
+- CHANGED: Changed link to liberapay.com
+
 Version 5.7.9 (09.11.2021)
 - FIXED: Invasion lobby
 - CHANGED: (Try) Thread execution of user info (to fix the NullPointer that sometimes fires after login)
