@@ -1,7 +1,7 @@
 # C3-Starmap_Cerberus
 Starmap (C3).
 
-[![Java CI with Maven](https://github.com/ClanWolf/C3-Starmap_Cerberus/actions/workflows/maven.yml/badge.svg)](https://github.com/ClanWolf/C3-Starmap_Cerberus/actions/workflows/maven.yml) [![Codacy Security Scan](https://github.com/ClanWolf/C3-Starmap_Cerberus/actions/workflows/codacy-analysis.yml/badge.svg)](https://github.com/ClanWolf/C3-Starmap_Cerberus/actions/workflows/codacy-analysis.yml) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Java CI with Maven](https://github.com/ClanWolf/C3-Starmap_Cerberus/actions/workflows/maven.yml/badge.svg)](https://github.com/ClanWolf/C3-Starmap_Cerberus/actions/workflows/maven.yml) [![Codacy Security Scan](https://github.com/ClanWolf/C3-Starmap_Cerberus/actions/workflows/codacy-analysis.yml/badge.svg)](https://github.com/ClanWolf/C3-Starmap_Cerberus/actions/workflows/codacy-analysis.yml) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) <img src="https://img.shields.io/liberapay/receives/WarWolfen.svg?logo=liberapay">
 
 * General Info: <http://www.clanwolf.net>
 * Project page: <https://www.clanwolf.net/viewpage.php?page_id=1>
