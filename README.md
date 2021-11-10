@@ -1,7 +1,7 @@
 # C3-Starmap_Cerberus
 Starmap (C3).
 
-[![Java CI with Maven](https://github.com/ClanWolf/C3-Starmap_Cerberus/actions/workflows/maven.yml/badge.svg)](https://github.com/ClanWolf/C3-Starmap_Cerberus/actions/workflows/maven.yml) [![Codacy Security Scan](https://github.com/ClanWolf/C3-Starmap_Cerberus/actions/workflows/codacy-analysis.yml/badge.svg)](https://github.com/ClanWolf/C3-Starmap_Cerberus/actions/workflows/codacy-analysis.yml) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![Liberapay](https://img.shields.io/liberapay/receives/WarWolfen.svg?logo=liberapay)](https://liberapay.com/WarWolfen/donate)
+[![Java CI with Maven](https://github.com/ClanWolf/C3-Starmap_Cerberus/actions/workflows/maven.yml/badge.svg)](https://github.com/ClanWolf/C3-Starmap_Cerberus/actions/workflows/maven.yml) [![Codacy Security Scan](https://github.com/ClanWolf/C3-Starmap_Cerberus/actions/workflows/codacy-analysis.yml/badge.svg)](https://github.com/ClanWolf/C3-Starmap_Cerberus/actions/workflows/codacy-analysis.yml) [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![Liberapay](https://img.shields.io/liberapay/receives/WarWolfen.svg?logo=liberapay)](https://liberapay.com/WarWolfen)
 
 * General Info: <http://www.clanwolf.net>
 * Project page: <https://www.clanwolf.net/viewpage.php?page_id=1>
@@ -29,4 +29,4 @@ See additional information on the [BattleTech - The Board Game](https://bg.battl
 If you want to support C3, consider to donate via paypal or become a patreon:
 * [Paypal](https://www.paypal.com/donate?token=AwC5gorl98THoYU4nCfwClErqsySjRleA5PRrgjHXiQcCSSz5unSHbdSnpHQbJDjqzzZVSO6r7Ngv9Vw "Paypal")
 * [Patreon](https://www.patreon.com/ClanWolf "Patreon")
-* [Liberapay](https://liberapay.com/WarWolfen/donate "Liberapay")
+* [Liberapay](https://liberapay.com/WarWolfen "Liberapay")
