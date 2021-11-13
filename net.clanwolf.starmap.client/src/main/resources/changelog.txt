@@ -12,8 +12,18 @@ C3 version history
 
 #########################################################
 
+TODO:
+Change table AttackType
+1 | PA | CL v IS | Planetary Assault CL vs IS | 19,20,21
+2 | PA | IS v IS | Planetary Assault IS vs IS | 22,24,29
+
+#########################################################
+
+Version 5.7.12 (13.11.2021)
+- Fixes for the lobby
+
 Version 5.7.10 (10.11.2021)
-- CHANGED: Changed link to liberapay.com
+- CHANGED: Changed donation link to liberapay.com
 
 Version 5.7.9 (09.11.2021)
 - FIXED: Invasion lobby

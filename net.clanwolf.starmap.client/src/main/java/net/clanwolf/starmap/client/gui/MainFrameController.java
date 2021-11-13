@@ -1688,9 +1688,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 			case LOGON_FINISHED_SUCCESSFULL:
 				Platform.runLater(() -> {
-					// TODO: This may take too long and a response object may arrive before the pane exists and lead to nullpointers!
-					// if the user is null here, this may cause the endless Nullpointer Exceptions that sometimes occur on/after login
-					C3Logger.info("Current user is: " + Nexus.getCurrentUser() + " (Check this not to be NULL)");
+					// C3Logger.info("Current user is: " + Nexus.getCurrentUser() + " (Check this not to be NULL)");
 
 					userInfoPane = new UserInfoPane();
 					userInfoPane.setCache(true);
@@ -1741,10 +1739,12 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				break;
 
 			case PANE_CREATION_BEGINS:
-				paneTransitionInProgress = true;
-				systemConsole.setOpacity(0.1);
-				systemConsoleCurrentLine.setOpacity(0.1);
-				spectrumImage.setOpacity(0.8);
+				Platform.runLater(() -> {
+					paneTransitionInProgress = true;
+					systemConsole.setOpacity(0.1);
+					systemConsoleCurrentLine.setOpacity(0.1);
+					spectrumImage.setOpacity(0.8);
+				});
 				break;
 
 			case PANE_CREATION_FINISHED:
@@ -1760,22 +1760,24 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 			case PANE_DESTRUCTION_FINISHED:
 				if (o.getObject() instanceof Pane) {
-					Pane p = (Pane) o.getObject();
-					rootAnchorPane.getChildren().remove(p);
-					currentlyDisplayedPane = null;
-					if (nextToDisplayPane != null) {
-						createNextPane();
-					} else {
-						ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("7");
-						systemConsole.setOpacity(0.4);
-						systemConsoleCurrentLine.setOpacity(0.4);
-						spectrumImage.setOpacity(0.1);
+					Platform.runLater(() -> {
+						Pane p = (Pane) o.getObject();
+						rootAnchorPane.getChildren().remove(p);
+						currentlyDisplayedPane = null;
+						if (nextToDisplayPane != null) {
+							createNextPane();
+						} else {
+							ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("7");
+							systemConsole.setOpacity(0.4);
+							systemConsoleCurrentLine.setOpacity(0.4);
+							spectrumImage.setOpacity(0.1);
 
-						showMenuIndicator(false);
-						adminPaneOpen = false;
-						Nexus.setCurrentlyOpenedPane(null);
-					}
-					paneTransitionInProgress = false;
+							showMenuIndicator(false);
+							adminPaneOpen = false;
+							Nexus.setCurrentlyOpenedPane(null);
+						}
+						paneTransitionInProgress = false;
+					});
 				}
 				break;
 
@@ -1845,13 +1847,21 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				break;
 
 			case START_SPEECH_SPECTRUM:
-				spectrumImage.setVisible(true);
-				spectrumAnimation.play();
+				Platform.runLater(() -> {
+					spectrumImage.setVisible(true);
+					if (spectrumAnimation != null) {
+						spectrumAnimation.play();
+					}
+				});
 				break;
 
 			case STOP_SPEECH_SPECTRUM:
-				spectrumImage.setVisible(false);
-				spectrumAnimation.stop();
+				Platform.runLater(() -> {
+					spectrumImage.setVisible(false);
+					if (spectrumAnimation != null) {
+						spectrumAnimation.stop();
+					}
+				});
 				break;
 
 //			case APPLICATION_EXIT:
@@ -1872,7 +1882,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					sourceIdRN = o.getText();
 				}
 				decrementCounter();
-				C3Logger.info("Requesting NORMAL cursor (" + counterWaitCursor + "). --> " + sourceIdRN);
+				// C3Logger.info("Requesting NORMAL cursor (" + counterWaitCursor + "). --> " + sourceIdRN);
 				if (counterWaitCursor == 0) {
 					Platform.runLater(() -> {
 						mouseStopper.toFront();
@@ -1894,7 +1904,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				final String str = sourceIdRW;
 				Nexus.setMainFrameEnabled(false);
 				incrementCounter();
-				C3Logger.info("Requesting WAIT cursor (" + counterWaitCursor + "). --> " + sourceIdRW);
+				// C3Logger.info("Requesting WAIT cursor (" + counterWaitCursor + "). --> " + sourceIdRW);
 				Platform.runLater(() -> {
 					mouseStopper.toFront();
 					// mouseStopper.setBackground(new Background(new BackgroundFill(Color.BLUE, new CornerRadii(0), Insets.EMPTY)));

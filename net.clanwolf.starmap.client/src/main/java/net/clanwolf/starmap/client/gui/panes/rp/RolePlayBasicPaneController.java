@@ -81,7 +81,7 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 	public boolean handleAction(ACTIONS action, ActionObject o) {
 		switch (action) {
 			case PANE_CREATION_FINISHED:
-				C3Logger.debug("PANE_CREATION_FINISHED Object: " + o.getObject().toString());
+				// C3Logger.debug("PANE_CREATION_FINISHED Object: " + o.getObject().toString());
 				if(o.getObject() instanceof RolePlayBasicPane){
 					RolePlayBasicPane rpbp = (RolePlayBasicPane)o.getObject();
 					// do this for the right pane
