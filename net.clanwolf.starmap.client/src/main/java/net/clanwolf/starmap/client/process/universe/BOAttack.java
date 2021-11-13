@@ -73,6 +73,7 @@ public class BOAttack {
 		Nexus.fireNetworkEvent(saveAttackCharacterState);
 	}
 
+
 	@SuppressWarnings("unused")
 	public static boolean charHasAnActiveAttack() {
 		boolean charHasAnotherActiveAttack = false;

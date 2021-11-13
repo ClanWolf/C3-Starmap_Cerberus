@@ -47,7 +47,7 @@ public class BOUniverse {
 	public HashMap<Long, BOStarSystem> starSystemBOs = new HashMap<>();
 	public HashMap<String, BOFaction> factionBOs = new HashMap<>();
 	public HashMap<String, BOJumpship> jumpshipBOs = new HashMap<>();
-	public ArrayList<BOAttack> attackBOs = new ArrayList<>();
+	public HashSet<BOAttack> attackBOs = new HashSet<>();
 	public HashMap<Long, ArrayList<RoutePointDTO>> routesList = new HashMap<>();
 
 	public TreeSet<BOJumpship> jumpshipListSorted = null;

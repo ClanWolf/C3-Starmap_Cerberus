@@ -155,8 +155,15 @@ public class EventCommunications {
 						// Someone else moved this jumpship and managed to save faster than I did, no luck!
 					}
 
+
 					Nexus.getBoUniverse().attackBOs.add(new BOAttack(attack));
+					RolePlayStoryDTO rpDTO = (RolePlayStoryDTO) state.getObject3();
+					if(rpDTO != null) {
+						Nexus.getBoUniverse().getAttackStories().put(rpDTO.getId(), rpDTO);
+					}
+
 					ActionManager.getAction(ACTIONS.ENABLE_MAIN_MENU_BUTTONS).execute();
+					ActionManager.getAction(ACTIONS.UPDATE_USERS_FOR_ATTACK).execute();
 					break;
 
 				case ATTACK_CHARACTER_SAVE_RESPONSE:

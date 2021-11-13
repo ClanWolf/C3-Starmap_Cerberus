@@ -176,6 +176,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		} else if (ac.getType().equals(Constants.ROLE_DEFENDER_SUPPORTER)) {
 			ac.setType(Constants.ROLE_ATTACKER_SUPPORTER);
 		}
+		saveAttack();
 		checkConditionsToStartDrop(ac);
 	}
 
@@ -199,6 +200,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		} else if (ac.getType().equals(Constants.ROLE_ATTACKER_SUPPORTER)) {
 			ac.setType(Constants.ROLE_DEFENDER_SUPPORTER);
 		}
+		saveAttack();
 		checkConditionsToStartDrop(ac);
 	}
 
@@ -223,6 +225,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 			iamdroplead = false;
 			checkConditionsToStartDrop(ac2);
 		}
+		saveAttack();
 	}
 
 	@FXML
@@ -233,6 +236,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		}
 		AttackCharacterDTO ac = characterRoleMap.get(selectedChar.getId());
 		ac.setType(null);
+		saveAttack();
 		checkConditionsToStartDrop(ac);
 	}
 
@@ -241,6 +245,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 //		BOAttack a = Nexus.getCurrentAttackOfUser();
 		AttackCharacterDTO ac = characterRoleMap.get(Nexus.getCurrentChar().getId());
 		ac.setType(null);
+		saveAttack();
 		checkConditionsToStartDrop(ac);
 		Nexus.setCurrentAttackOfUserToNull();
 		ActionManager.getAction(ACTIONS.SWITCH_TO_MAP).execute();
@@ -251,6 +256,52 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 	}
 
+	public synchronized void saveAttack(){
+
+		BOAttack a = Nexus.getCurrentAttackOfUser();
+
+		ArrayList<AttackCharacterDTO> charList = new ArrayList<AttackCharacterDTO>();
+
+		for(RolePlayCharacterDTO attacker : lvAttacker.getItems() ){
+			if(!attacker.getName().equals("...")) {
+				AttackCharacterDTO acDTO = new AttackCharacterDTO();
+				acDTO.setCharacterID(attacker.getId());
+				acDTO.setAttackID(a.getAttackDTO().getId());
+				acDTO.setType(characterRoleMap.get(attacker.getId()).getType());
+				charList.add(acDTO);
+			}
+		}
+
+		for(RolePlayCharacterDTO defender : lvDefender.getItems() ){
+			if(!defender.getName().equals("...")) {
+				AttackCharacterDTO acDTO = new AttackCharacterDTO();
+				acDTO.setCharacterID(defender.getId());
+				acDTO.setAttackID(a.getAttackDTO().getId());
+				acDTO.setType(characterRoleMap.get(defender.getId()).getType());
+				charList.add(acDTO);
+			}
+		}
+
+		if(!lvDropleadAttacker.getItems().get(0).getName().equals("...")) {
+			AttackCharacterDTO acDTODropLeadAttacker = new AttackCharacterDTO();
+			acDTODropLeadAttacker.setCharacterID(lvDropleadAttacker.getItems().get(0).getId());
+			acDTODropLeadAttacker.setAttackID(a.getAttackDTO().getId());
+			acDTODropLeadAttacker.setType(characterRoleMap.get(lvDropleadAttacker.getItems().get(0).getId()).getType());
+			charList.add(acDTODropLeadAttacker);
+		}
+
+		if(!lvDropleadDefender.getItems().get(0).getName().equals("...")) {
+			AttackCharacterDTO acDTODropLeadDefender = new AttackCharacterDTO();
+			acDTODropLeadDefender.setCharacterID(lvDropleadDefender.getItems().get(0).getId());
+			acDTODropLeadDefender.setAttackID(a.getAttackDTO().getId());
+			acDTODropLeadDefender.setType(characterRoleMap.get(lvDropleadDefender.getItems().get(0).getId()).getType());
+			charList.add(acDTODropLeadDefender);
+		}
+
+		a.getAttackDTO().setAttackCharList(charList) ;
+		a.storeAttack();
+	}
+
 	public synchronized void checkConditionsToStartDrop(AttackCharacterDTO ac) {
 		C3SoundPlayer.play("sound/fx/button_clicked_05.mp3", false);
 
@@ -259,10 +310,12 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		btnKick.setDisable(true);
 		btnPromote.setDisable(true);
 
-		BOAttack a = Nexus.getCurrentAttackOfUser();
-		if (ac != null) {
+		//BOAttack a = Nexus.getCurrentAttackOfUser();
+		/*if (ac != null) {
 			a.storeAttackCharacters(ac, (ac.getType() == null));
-		}
+		}*/
+
+
 
 		boolean attackersOnline = true;
 		boolean defendersOnline = true;
@@ -720,7 +773,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 			case START_ROLEPLAY:
 				if(ROLEPLAYENTRYTYPES.C3_RP_STEP_V8 == o.getObject()) {
 					C3Logger.debug("RolePlayIntroPaneController -> START_ROLEPLAY");
-
+					saveAttack();
 					// set current step of story
 					//getStoryValues(getCurrentRP());
 				}
@@ -743,6 +796,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 					if ("AttackPane".equals(p.getPaneName())) {
 //						if (!firstCreationDone) {
 							Platform.runLater(this::buildGuiEffect);
+
 //						}
 					}
 				}
@@ -750,8 +804,8 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 			case UPDATE_USERS_FOR_ATTACK:
 				C3Logger.info("The userlist has changed. Update information on the listboxes.");
-				if (o.getObject() instanceof BOAttack a) {
-					List<AttackCharacterDTO> l = a.getAttackCharList();
+				if (Nexus.getCurrentAttackOfUser() != null) {
+					List<AttackCharacterDTO> l = Nexus.getCurrentAttackOfUser().getAttackCharList();
 					boolean kicked = true;
 					for (AttackCharacterDTO ac : l) {
 						if (ac.getCharacterID().equals(Nexus.getCurrentChar().getId())) {
@@ -763,7 +817,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 						C3Logger.info("I have been kicked from lobby!");
 						ActionManager.getAction(ACTIONS.SWITCH_TO_MAP).execute();
 					} else {
-						updateLists(a);
+						updateLists(Nexus.getCurrentAttackOfUser());
 					}
 				}
 				break;

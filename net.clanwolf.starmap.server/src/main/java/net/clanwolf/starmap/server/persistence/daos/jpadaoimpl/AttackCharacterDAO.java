@@ -26,9 +26,11 @@
  */
 package net.clanwolf.starmap.server.persistence.daos.jpadaoimpl;
 
+import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.server.persistence.CriteriaHelper;
 import net.clanwolf.starmap.server.persistence.daos.GenericDAO;
 import net.clanwolf.starmap.server.persistence.pojos.AttackCharacterPOJO;
+import net.clanwolf.starmap.server.persistence.pojos.RoutePointPOJO;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -88,5 +90,19 @@ public class AttackCharacterDAO extends GenericDAO {
 		while (iter.hasNext()) lRPS.add((AttackCharacterPOJO) iter.next());
 
 		return lRPS;
+	}
+
+	public void deleteByAttackId(Long userID) {
+		CriteriaHelper crit = new CriteriaHelper(AttackCharacterPOJO.class);
+		crit.addCriteriaIsNull("attackID");
+
+		List<Object> objectList = crit.getResultList();
+
+		Iterator i = objectList.iterator();
+		while (i.hasNext()) {
+			AttackCharacterPOJO p = (AttackCharacterPOJO) i.next();
+			C3Logger.info("Deleting: " + p.getId());
+			delete(userID, p);
+		}
 	}
 }

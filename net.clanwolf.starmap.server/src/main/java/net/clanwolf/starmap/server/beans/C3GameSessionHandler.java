@@ -140,12 +140,12 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				serverHeartBeat.schedule(new HeartBeatTimer(true), 10);
 				break;
 			case ATTACK_CHARACTER_SAVE:
-				saveAttackCharacter(session, state);
-				serverHeartBeat = new Timer();
-				serverHeartBeat.schedule(new HeartBeatTimer(true), 10);
+				//saveAttackCharacter(session, state);
+				//serverHeartBeat = new Timer();
+				//serverHeartBeat.schedule(new HeartBeatTimer(true), 10);
 				break;
 			case ATTACK_CHARACTER_SAVE_WITHOUT_NEW_UNIVERSE:
-				saveAttackCharacter(session, state);
+				//saveAttackCharacter(session, state);
 				break;
 			case ROLEPLAY_GET_CHAPTER_BYSORTORDER:
 				C3GameSessionHandlerRoleplay.getChapterBySortOrder(session, state);
@@ -219,6 +219,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 	private synchronized void saveAttack(PlayerSession session, GameState state) {
 		AttackDAO dao = AttackDAO.getInstance();
+		AttackCharacterDAO daoAC = AttackCharacterDAO.getInstance();
 
 		try {
 			EntityManagerHelper.beginTransaction(getC3UserID(session));
@@ -229,6 +230,12 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			C3Logger.debug("-- Attacker (jumpshipID): " + attack.getJumpshipID());
 			C3Logger.debug("-- Attacking from: " + attack.getAttackedFromStarSystemID());
 			C3Logger.debug("-- Attacked system: " + attack.getStarSystemID());
+
+			ArrayList<AttackCharacterPOJO> newAttackCharacters = new ArrayList<AttackCharacterPOJO>();
+			if(attack.getAttackCharList() != null) {
+				newAttackCharacters.addAll(attack.getAttackCharList());
+				attack.getAttackCharList().clear();
+			}
 
 			if(attack.getId() != null) {
 				C3Logger.debug("attack.getId() != null");
@@ -246,13 +253,49 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				}
 			}
 
+			//daoAC.deleteByAttackId(getC3UserID(session));
+
+			/*if(newAttackCharacters.size() > 0) {
+				attack.setAttackCharList(newAttackCharacters);
+			}*/
+
+			/*for(AttackCharacterPOJO acPojo : newAttackCharacters){
+				acPojo.setAttackID(attack.getId());
+				daoAC.save(C3GameSessionHandler.getC3UserID(session), acPojo);
+			}*/
+
+			attack.setAttackCharList(newAttackCharacters);
+
+
+			RolePlayStoryPOJO rpPojo = null;
+			if(attack.getStoryID() != null) {
+				rpPojo = RolePlayStoryDAO.getInstance().findById(getC3UserID(session), attack.getStoryID());
+			} else {
+				rpPojo = RolePlayStoryDAO.getInstance().findById(getC3UserID(session), 19L);
+			}
+
+			attack.setStoryID(rpPojo.getId());
+
+			dao.update(getC3UserID(session), attack);
+
+
+
 			EntityManagerHelper.commit(getC3UserID(session));
+
+			EntityManagerHelper.beginTransaction(getC3UserID(session));
+			daoAC.deleteByAttackId(getC3UserID(session));
+			EntityManagerHelper.commit(getC3UserID(session));
+
+			attack = dao.findById(getC3UserID(session), attack.getId());
+			dao.refresh(C3GameSessionHandler.getC3UserID(session), attack);
 
 			GameState response = new GameState(GAMESTATEMODES.ATTACK_SAVE_RESPONSE);
 			response.addObject(attack);
 			if(existingAttack != null) {
 				response.addObject2(session.getId());
 			}
+			response.addObject3(rpPojo);
+
 			response.setAction_successfully(Boolean.TRUE);
 			C3GameSessionHandler.sendBroadCast(room, response);
 		} catch (RuntimeException re) {
@@ -268,7 +311,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		}
 	}
 
-	private synchronized void saveAttackCharacter(PlayerSession session, GameState state) {
+	/*private synchronized void saveAttackCharacter(PlayerSession session, GameState state) {
 		AttackCharacterDAO dao = AttackCharacterDAO.getInstance();
 
 		try {
@@ -313,7 +356,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 			C3Logger.error("Attack character save", re);
 		}
-	}
+	}*/
 
 	private synchronized void saveJumpship(PlayerSession session, GameState state) {
 		JumpshipDAO daoJS = JumpshipDAO.getInstance();
