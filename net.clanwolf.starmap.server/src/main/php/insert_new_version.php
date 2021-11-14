@@ -13,10 +13,10 @@
 
 require_once('./db.php');
 
-$sql = "UPDATE C3.SYSCONFIG SET VALUE='5.7.12' WHERE SYSCONFIG.KEY='VERSION CLIENT'";
+$sql = "UPDATE C3.SYSCONFIG SET VALUE='5.7.13' WHERE SYSCONFIG.KEY='VERSION CLIENT'";
 
 if ($conn->query($sql) === TRUE) {
-  echo "Record updated successfully to 5.7.12.";
+  echo "Record updated successfully to 5.7.13.";
 } else {
   echo "Error updating record: " . $conn->error;
 }

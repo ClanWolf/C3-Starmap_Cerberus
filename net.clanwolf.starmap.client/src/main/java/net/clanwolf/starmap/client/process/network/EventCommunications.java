@@ -142,21 +142,21 @@ public class EventCommunications {
 						// this needs to be removed and replaced with the one that comes back from the server (this one has
 						// the id that was persisted.
 						BOAttack attackToBeRemoved = null;
-						for (BOAttack boa : Nexus.getBoUniverse().attackBOs) {
+						for (BOAttack boa : Nexus.getBoUniverse().attackBOs.values()) {
 							if (boa.getAttackDTO().getId() == null) {
 								attackToBeRemoved = boa;
 								break;
 							}
 						}
 						if (attackToBeRemoved != null) {
-							Nexus.getBoUniverse().attackBOs.remove(attackToBeRemoved);
+							Nexus.getBoUniverse().attackBOs.remove(attackToBeRemoved.getAttackDTO().getId());
 						}
 					} else {
 						// Someone else moved this jumpship and managed to save faster than I did, no luck!
 					}
 
-
-					Nexus.getBoUniverse().attackBOs.add(new BOAttack(attack));
+					BOAttack boa = new BOAttack(attack);
+					Nexus.getBoUniverse().attackBOs.put(boa.getAttackDTO().getId(), boa);
 					RolePlayStoryDTO rpDTO = (RolePlayStoryDTO) state.getObject3();
 					if(rpDTO != null) {
 						Nexus.getBoUniverse().getAttackStories().put(rpDTO.getId(), rpDTO);
@@ -171,7 +171,7 @@ public class EventCommunications {
 					AttackDTO attackDTO = (AttackDTO) state.getObject();
 //					ArrayList<RolePlayCharacterDTO> rpCharList = (ArrayList<RolePlayCharacterDTO>)state.getObject2();
 
-					for (BOAttack a : Nexus.getBoUniverse().attackBOs) {
+					for (BOAttack a : Nexus.getBoUniverse().attackBOs.values()) {
 						if (attackDTO.getId().equals(a.getAttackDTO().getId())) {
 							a.setAttackDTO(attackDTO);
 							ActionManager.getAction(ACTIONS.UPDATE_USERS_FOR_ATTACK).execute(a);

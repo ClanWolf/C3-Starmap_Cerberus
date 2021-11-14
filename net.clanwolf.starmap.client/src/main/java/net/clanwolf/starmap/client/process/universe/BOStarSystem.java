@@ -261,7 +261,7 @@ public class BOStarSystem {
 	@SuppressWarnings("unused")
 	public boolean isCurrentlyAttacked() {
 		boolean hasAttack = false;
-		for (BOAttack a : Nexus.getBoUniverse().attackBOs) {
+		for (BOAttack a : Nexus.getBoUniverse().attackBOs.values()) {
 			if (a.getStarSystemId().equals(this.hh_starSystemDataDTO.getStarSystemID().getId())) {
 				hasAttack = true;
 			}
@@ -271,7 +271,7 @@ public class BOStarSystem {
 
 	@SuppressWarnings("unused")
 	public BOAttack getAttack() {
-		for (BOAttack a : Nexus.getBoUniverse().attackBOs) {
+		for (BOAttack a : Nexus.getBoUniverse().attackBOs.values()) {
 			if (hh_starSystemDataDTO.getStarSystemID().getId().equals(a.getStarSystemId())) {
 				return a;
 			}

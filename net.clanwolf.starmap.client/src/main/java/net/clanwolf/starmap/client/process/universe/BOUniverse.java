@@ -47,7 +47,7 @@ public class BOUniverse {
 	public HashMap<Long, BOStarSystem> starSystemBOs = new HashMap<>();
 	public HashMap<String, BOFaction> factionBOs = new HashMap<>();
 	public HashMap<String, BOJumpship> jumpshipBOs = new HashMap<>();
-	public HashSet<BOAttack> attackBOs = new HashSet<>();
+	public HashMap<Long, BOAttack> attackBOs = new HashMap<>();
 	public HashMap<Long, ArrayList<RoutePointDTO>> routesList = new HashMap<>();
 
 	public TreeSet<BOJumpship> jumpshipListSorted = null;
@@ -97,31 +97,6 @@ public class BOUniverse {
 		return universeDTO.attackStorys.get(storyID);
 	}
 
-	public synchronized void setUniverseDTO(UniverseDTO uniDTO) {
-		// Insert refreshed universe
-		this.universeDTO = uniDTO;
-		this.currentSeason = this.universeDTO.currentSeason;
-		this.currentSeasonMetaPhase = this.universeDTO.currentSeasonMetaPhase;
-		this.currentRound = this.universeDTO.currentRound;
-		this.currentDate = this.universeDTO.currentDate;
-
-		for (StarSystemDataDTO starSystemDataDTO : universeDTO.starSystems.values()) {
-			BOStarSystem ss = starSystemBOs.get(starSystemDataDTO.getStarSystemID().getId());
-			ss.setStarSystemDataDTO(starSystemDataDTO);
-		}
-
-		attackBOs.clear();
-		for (AttackDTO att : universeDTO.attacks) {
-			BOAttack boAttack = new BOAttack(att);
-			attackBOs.add(boAttack);
-		}
-
-		for (JumpshipDTO jumpshipDTO : universeDTO.jumpships.values()) {
-			BOJumpship boJumpship = jumpshipBOs.get(jumpshipDTO.getJumpshipName());
-			boJumpship.setJumpshipDTO(jumpshipDTO);
-		}
-	}
-
 	public BOUniverse(UniverseDTO universeDTO) {
 		this.universeDTO = universeDTO;
 
@@ -132,7 +107,7 @@ public class BOUniverse {
 
 		for (AttackDTO att : universeDTO.attacks) {
 			BOAttack boAttack = new BOAttack(att);
-			attackBOs.add(boAttack);
+			attackBOs.put(boAttack.getAttackDTO().getId(), boAttack);
 		}
 
 		for (FactionDTO factionDTO : universeDTO.factions.values()) {
@@ -159,6 +134,31 @@ public class BOUniverse {
 		currentSeasonMetaPhase = universeDTO.currentSeasonMetaPhase;
 		currentRound = universeDTO.currentRound;
 		currentDate = universeDTO.currentDate;
+	}
+
+	public synchronized void setUniverseDTO(UniverseDTO uniDTO) {
+		// Insert refreshed universe
+		this.universeDTO = uniDTO;
+		this.currentSeason = this.universeDTO.currentSeason;
+		this.currentSeasonMetaPhase = this.universeDTO.currentSeasonMetaPhase;
+		this.currentRound = this.universeDTO.currentRound;
+		this.currentDate = this.universeDTO.currentDate;
+
+		for (StarSystemDataDTO starSystemDataDTO : universeDTO.starSystems.values()) {
+			BOStarSystem ss = starSystemBOs.get(starSystemDataDTO.getStarSystemID().getId());
+			ss.setStarSystemDataDTO(starSystemDataDTO);
+		}
+
+		attackBOs.clear();
+		for (AttackDTO att : universeDTO.attacks) {
+			BOAttack boAttack = new BOAttack(att);
+			attackBOs.put(boAttack.getAttackDTO().getId(), boAttack);
+		}
+
+		for (JumpshipDTO jumpshipDTO : universeDTO.jumpships.values()) {
+			BOJumpship boJumpship = jumpshipBOs.get(jumpshipDTO.getJumpshipName());
+			boJumpship.setJumpshipDTO(jumpshipDTO);
+		}
 	}
 
 	public ArrayList<BOFaction> getFactionList(){

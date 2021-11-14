@@ -66,9 +66,11 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.logging.Level;
+import java.util.regex.Pattern;
 
 @SuppressWarnings("restriction")
 public class MainFrame extends Application implements EventHandler<WindowEvent>, ActionCallBackListener {
@@ -159,6 +161,23 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 		hostServices.showDocument("https://liberapay.com/WarWolfen");
 	}
 
+	public boolean newerVersionAvailable(String v1) {
+		// return true if the given version is higher than the currently used one
+		boolean givenVersionIsHigher = false;
+		String v2 = Tools.getVersionNumber();
+		String[] v1Parts = v1.split(Pattern.quote("."));
+		String[] v2Parts = v2.split(Pattern.quote("."));
+		for (int i=0; i < 3; i++) {
+			int v1i = Integer.parseInt(v1Parts[i]);
+			int v2i = Integer.parseInt(v2Parts[i]);
+			if (v1i > v2i) {
+				givenVersionIsHigher = true;
+				break;
+			}
+		}
+		return givenVersionIsHigher;
+	}
+
 	@Override
 	public void init() {
 		notifyPreloader(new Preloader.ProgressNotification(10.0));
@@ -182,6 +201,14 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 			C3Logger.info("---------------------------------------------------------------------");
 			C3Logger.info("Logfile : " + logFileName);
 			C3Logger.info("Loglevel: " + C3Logger.getC3LogLevel());
+
+			Long k1 = 1L;
+			Long k2 = 1L;
+			Long k3 = 1L;
+			HashMap<Long, String> test = new HashMap<>();
+			test.put(k1, "test12");
+			test.put(k2, "test15");
+			test.put(k3, "test13");
 
 			notifyPreloader(new Preloader.ProgressNotification(70.0));
 
@@ -214,7 +241,8 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 				} else {
 					C3Logger.info("Currently used client version: " + Tools.getVersionNumber());
 
-					if (availableClientVersion.equals(Tools.getVersionNumber())) {
+					// if (availableClientVersion.equals(Tools.getVersionNumber())) {
+					if (!newerVersionAvailable(availableClientVersion)) {
 						C3Logger.info("Currently used client version is the latest.");
 					} else {
 						C3Logger.info("Difference detected: Prompt to download new version.");
