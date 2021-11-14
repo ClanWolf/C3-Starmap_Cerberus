@@ -49,7 +49,7 @@
 			<property name="hibernate.hikari.dataSource.prepStmtCacheSqlLimit" value="2048" />
 			<property name="hibernate.hikari.dataSource.useServerPrepStmts" value="true" />
 
-			<property name="hibernate.show_sql" value="true"/>
+			<property name="hibernate.show_sql" value="false"/>
 			<property name="hibernate.format_sql" value="true"/>
 			<property name="hibernate.use_sql_comments" value="false"/>
 
