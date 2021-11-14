@@ -30,7 +30,6 @@ import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.SequentialTransition;
 import javafx.application.Platform;
-import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.CacheHint;
 import javafx.scene.Parent;
@@ -253,25 +252,28 @@ public abstract class AbstractC3Pane extends Pane {
 		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("9");
 		Tools.playGUIDestructionSound();
 
-		// Fade out transition 01 (Background)
-		FadeTransition FadeOutTransition_01 = new FadeTransition(Duration.millis(80), borderPolygon);
-		FadeOutTransition_01.setFromValue(0.2);
-		FadeOutTransition_01.setToValue(0.0);
-		FadeOutTransition_01.setCycleCount(2);
+		Platform.runLater(() -> {
+			// Fade out transition 01 (Background)
+			FadeTransition FadeOutTransition_01 = new FadeTransition(Duration.millis(80), borderPolygon);
+			FadeOutTransition_01.setFromValue(0.2);
+			FadeOutTransition_01.setToValue(0.0);
+			FadeOutTransition_01.setCycleCount(2);
 
-		// Fade out transition 02 (Border)
-		FadeTransition FadeOutTransition_02 = new FadeTransition(Duration.millis(50), this);
-		FadeOutTransition_02.setFromValue(1.0);
-		FadeOutTransition_02.setToValue(0.0);
-		FadeOutTransition_02.setCycleCount(3);
+			// Fade out transition 02 (Border)
+			FadeTransition FadeOutTransition_02 = new FadeTransition(Duration.millis(50), this);
+			FadeOutTransition_02.setFromValue(1.0);
+			FadeOutTransition_02.setToValue(0.0);
+			FadeOutTransition_02.setCycleCount(3);
 
-		// Transition sequence
-		ParallelTransition parallelTransition = new ParallelTransition();
-		parallelTransition.setOnFinished(event -> firePaneDestructionEvent());
-		parallelTransition.getChildren().addAll(FadeOutTransition_01, FadeOutTransition_02);
-		parallelTransition.setCycleCount(1);
-		parallelTransition.play();
-		isDisplayed = false;
+			// Transition sequence
+			ParallelTransition parallelTransition = new ParallelTransition();
+			parallelTransition.setOnFinished(event -> firePaneDestructionEvent());
+			parallelTransition.getChildren().addAll(FadeOutTransition_01, FadeOutTransition_02);
+			parallelTransition.setCycleCount(1);
+			parallelTransition.play();
+
+			isDisplayed = false;
+		});
 	}
 
 	public void firePaneConstructionBeginsEvent() {

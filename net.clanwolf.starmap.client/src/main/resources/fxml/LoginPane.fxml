@@ -97,7 +97,7 @@
             <Color red="0.412" green="0.620" blue="0.804" fx:id="x1" />
          </textFill>
       </Label>
-      <ImageView fx:id="patreonButton" fitHeight="37.0" fitWidth="39.0" layoutX="492.0" layoutY="438.0" onMouseEntered="#patreonButtonOnMouseEntered" onMouseExited="#patreonButtonOnMouseExited" onMousePressed="#patreonButtonPressed" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="patreonButton" fitHeight="37.0" fitWidth="39.0" layoutX="490.0" layoutY="439.0" onMouseEntered="#patreonButtonOnMouseEntered" onMouseExited="#patreonButtonOnMouseExited" onMousePressed="#patreonButtonPressed" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/logos/liberapay.png" />
          </image>

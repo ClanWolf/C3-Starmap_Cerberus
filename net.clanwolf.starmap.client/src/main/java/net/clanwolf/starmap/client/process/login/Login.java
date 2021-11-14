@@ -146,13 +146,13 @@ public class Login {
 		StartEventHandler startEventHandler = new StartEventHandler(session) {
 			@Override
 			public void onEvent(Event event) {
-				C3Logger.info("Event: " + event.toString() + ". Change to Object Protocol.");
+				// C3Logger.info("Event: " + event.toString() + ". Change to Object Protocol.");
 				if (event.getSource() instanceof GameState) {
 					// 0x1a START Event
 					GameState state = (GameState) event.getSource();
-					C3Logger.info("Event gamestate mode: " + state.getMode());
+					// C3Logger.info("Event gamestate mode: " + state.getMode());
 				} else {
-					C3Logger.info("Event source: " + event.getSource());
+					// C3Logger.info("Event source: " + event.getSource());
 				}
 
 				session.resetProtocol(NettyObjectProtocol.INSTANCE);
