@@ -234,6 +234,11 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			ArrayList<AttackCharacterPOJO> newAttackCharacters = new ArrayList<AttackCharacterPOJO>();
 			if(attack.getAttackCharList() != null) {
 				newAttackCharacters.addAll(attack.getAttackCharList());
+
+				for(AttackCharacterPOJO acPojo :  daoAC.getCharacterFromAttack(attack.getId())){
+					daoAC.delete(getC3UserID(session), acPojo);
+				}
+
 				attack.getAttackCharList().clear();
 			}
 
@@ -282,9 +287,9 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 			EntityManagerHelper.commit(getC3UserID(session));
 
-			EntityManagerHelper.beginTransaction(getC3UserID(session));
-			daoAC.deleteByAttackId(getC3UserID(session));
-			EntityManagerHelper.commit(getC3UserID(session));
+			//EntityManagerHelper.beginTransaction(getC3UserID(session));
+			//daoAC.deleteByAttackId(getC3UserID(session));
+			//EntityManagerHelper.commit(getC3UserID(session));
 
 			attack = dao.findById(getC3UserID(session), attack.getId());
 			dao.refresh(C3GameSessionHandler.getC3UserID(session), attack);
