@@ -236,7 +236,8 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 				String availableClientVersion = Server.checkLastAvailableClientVersion();
 				C3Logger.info("Latest available client version online: " + availableClientVersion);
 
-				if ("${project.version}".equals(Tools.getVersionNumber())) {
+				if ("${project.version}".equals(Tools.getVersionNumber())
+					|| isDevelopmentPC) {
 					C3Logger.info("Currently used client version: *** Running in local debugger! *** (no version check online).");
 				} else {
 					C3Logger.info("Currently used client version: " + Tools.getVersionNumber());

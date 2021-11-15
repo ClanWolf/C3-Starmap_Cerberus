@@ -637,15 +637,20 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		characterRoleMap.clear();
 
 		for (AttackCharacterDTO ac : a.getAttackCharList()) {
+			String l = "##### ";
 			RolePlayCharacterDTO c = Nexus.getCharacterById(ac.getCharacterID());
+			l = l + c.getName() + " ";
 			if (a.getAttackerFactionId().equals(c.getFactionId())) {
 				// this user belongs to the attacker faction
 				potentialDropleadersAttacker.put(ac, c);
+				l = l + "(potential droplead for attacker) ";
 			}
 			if (a.getDefenderFactionId().equals(Nexus.getCharacterById(ac.getCharacterID()).getFactionId())) {
 				// this user belongs to the defender faction
 				potentialDropleadersDefender.put(ac, c);
+				l = l + "(potential droplead for defender) ";
 			}
+			C3Logger.debug(l);
 
 			characterRoleMap.put(ac.getCharacterID(), ac);
 
@@ -804,7 +809,9 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 			case UPDATE_USERS_FOR_ATTACK:
 				C3Logger.info("The userlist has changed. Update information on the listboxes.");
+				C3Logger.debug("##### Userlist update event received.");
 				if (Nexus.getCurrentAttackOfUser() != null) {
+					C3Logger.debug("##### I have an attack.");
 					List<AttackCharacterDTO> l = Nexus.getCurrentAttackOfUser().getAttackCharList();
 					boolean kicked = true;
 					for (AttackCharacterDTO ac : l) {
@@ -814,16 +821,21 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 					}
 					if (kicked) {
 						// I have been kicked from the lobby, need to change the currently displayed pane
-						C3Logger.info("I have been kicked from lobby!");
+						C3Logger.debug("##### I have been kicked...");
 						ActionManager.getAction(ACTIONS.SWITCH_TO_MAP).execute();
 					} else {
+						C3Logger.debug("##### Updating lists...");
 						updateLists(Nexus.getCurrentAttackOfUser());
 					}
+				} else {
+					C3Logger.debug("##### I do NOT have an attack.");
 				}
 				break;
 
 			case NEW_PLAYERLIST_RECEIVED:
-				updateLists(Nexus.getCurrentAttackOfUser());
+				// This should happen in UPDATE_USERS_FOR_ATTACK
+				// TODO: Remove listener and this case here if it is not needed!
+				// updateLists(Nexus.getCurrentAttackOfUser());
 				break;
 
 			default:
