@@ -639,7 +639,8 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		for (AttackCharacterDTO ac : a.getAttackCharList()) {
 			String l = "##### ";
 			RolePlayCharacterDTO c = Nexus.getCharacterById(ac.getCharacterID());
-			l = l + c.getName() + " ";
+
+			l = l + c.getName() + " (Type: " + ac.getType() + ") ";
 			if (a.getAttackerFactionId().equals(c.getFactionId())) {
 				// this user belongs to the attacker faction
 				potentialDropleadersAttacker.put(ac, c);
