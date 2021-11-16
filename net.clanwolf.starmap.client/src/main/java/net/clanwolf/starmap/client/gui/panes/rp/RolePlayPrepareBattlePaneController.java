@@ -583,7 +583,10 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 								}
 							}
 							if (online) {
-								Platform.runLater(() -> setText(item.getName()));
+								Platform.runLater(() -> {
+									setText(item.getName());
+									setStyle("-fx-text-fill: white;");
+								});
 							} else {
 								if (!"...".equals(item.getName())) {
 									Platform.runLater(() -> {
@@ -637,7 +640,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		characterRoleMap.clear();
 
 		for (AttackCharacterDTO ac : a.getAttackCharList()) {
-			String l = "##### ";
+			String l = "###### ";
 			RolePlayCharacterDTO c = Nexus.getCharacterById(ac.getCharacterID());
 
 			l = l + c.getName() + " (Type: " + ac.getType() + ") ";
