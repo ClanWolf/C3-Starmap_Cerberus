@@ -19,8 +19,12 @@ Change table AttackType
 
 #########################################################
 
+Version 5.7.15 (.11.2021)
+- ADDED: PHP script to reset attacks
+- ADDED: PHP script to reset season
+
 Version 5.7.14 (15.11.2021)
-- CHANGED: Nullable fields in C3._HH_ATTACK_CHARACTER
+- CHANGED: Fields in C3._HH_ATTACK_CHARACTER made Nullable (to fix object saving)
 - REMOVED: Update check for DEV runs (local debug)
 
 Version 5.7.13 (14.11.2021)

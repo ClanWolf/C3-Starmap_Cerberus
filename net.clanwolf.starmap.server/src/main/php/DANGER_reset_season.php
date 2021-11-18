@@ -19,9 +19,15 @@ ini_set("display_errors", 1);
 require_once('./db.php');
 ?>
 
-<html><header></header><body>
+<html>
+
+<header>
+</header>
+
+<body>
 
 <h1>DANGERZONE!</h1>
+
 <p>RESET SEASON.<br>Type "reset the season" to run the script.</p>
 <form method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 <label for="idKey">Confirm:</label>

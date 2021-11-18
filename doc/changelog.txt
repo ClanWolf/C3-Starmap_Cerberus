@@ -16,8 +16,13 @@ TODO:
 Change table AttackType
 1 | PA | CL v IS | Planetary Assault CL vs IS | 19,20,21
 2 | PA | IS v IS | Planetary Assault IS vs IS | 22,24,29
+From this number one is to choose to enter as entry point for a starting invasion lobby.
 
 #########################################################
+
+Version 5.7.15 (.11.2021)
+- ADDED: PHP script to reset attacks
+- ADDED: PHP script to reset season
 
 Version 5.7.14 (15.11.2021)
 - CHANGED: Fields in C3._HH_ATTACK_CHARACTER made Nullable (to fix object saving)

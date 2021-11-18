@@ -619,7 +619,6 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		setStrings();
 		buildGuiEffect();
 		checkConditionsToStartDrop(null);
-//		C3Logger.info("Init ^^^^^------------------------------------------------------------------ WIESO KOMMEN WIR HIER ZWEIMAL REIN ---" + a.getAttackDTO().getId());
 	}
 
 	public synchronized void updateLists(BOAttack a) {
