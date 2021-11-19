@@ -232,7 +232,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			C3Logger.debug("-- Attacked system: " + attack.getStarSystemID());
 
 			ArrayList<AttackCharacterPOJO> newAttackCharacters = new ArrayList<AttackCharacterPOJO>();
-			if(attack.getAttackCharList() != null) {
+			/*if( attack.getAttackCharList() != null) {
 				newAttackCharacters.addAll(attack.getAttackCharList());
 
 				for(AttackCharacterPOJO acPojo :  daoAC.getCharacterFromAttack(attack.getId())) {
@@ -241,7 +241,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				}
 
 				attack.getAttackCharList().clear();
-			}
+			}*/
 
 			if(attack.getId() != null) {
 				C3Logger.debug("attack.getId() != null");
