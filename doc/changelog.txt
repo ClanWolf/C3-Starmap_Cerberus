@@ -20,9 +20,11 @@ From this number one is to choose to enter as entry point for a starting invasio
 
 #########################################################
 
-Version 5.7.15 (.11.2021)
+Version 5.7.15 (19.11.2021)
 - ADDED: PHP script to reset attacks
 - ADDED: PHP script to reset season
+- FIXED: Bug while saving chars in lobby
+- CHANGED: Shortened lines in log output
 
 Version 5.7.14 (15.11.2021)
 - CHANGED: Fields in C3._HH_ATTACK_CHARACTER made Nullable (to fix object saving)

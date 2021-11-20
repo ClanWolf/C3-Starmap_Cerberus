@@ -35,8 +35,8 @@ public class C3OutputStream extends OutputStream {
 	Level level;
 	StringBuilder stringBuilder;
 
-	PrintStream stdout = System.out;
-	PrintStream stderr = System.err;
+//	PrintStream stdout = System.out;
+//	PrintStream stderr = System.err;
 
 	public C3OutputStream(Logger logger, Level level) {
 		this.logger = logger;

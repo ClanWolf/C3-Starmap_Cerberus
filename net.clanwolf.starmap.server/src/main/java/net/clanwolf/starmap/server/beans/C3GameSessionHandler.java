@@ -237,7 +237,8 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 				/*for(AttackCharacterPOJO acPojo :  daoAC.getCharacterFromAttack(attack.getId())) {
 					C3Logger.info("Deleting AttackCharacter: " + acPojo.getId());
-					daoAC.delete(getC3UserID(session), acPojo);
+					AttackCharacterPOJO acPojo2 = daoAC.findById(getC3UserID(session), acPojo.getId());
+					daoAC.delete(getC3UserID(session), acPojo2);
 				}
 
 				attack.getAttackCharList().clear();*/
@@ -274,7 +275,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 			/*if(newAttackCharacters.size() > 0) {
 				attack.setAttackCharList(newAttackCharacters);
-			}*/
+			}
 
 			/*for(AttackCharacterPOJO acPojo : newAttackCharacters){
 				//acPojo.setAttackID(attack.getId());

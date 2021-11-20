@@ -40,7 +40,7 @@ public class C3Formatter extends Formatter {
 				// + "[" + id + "] "
 				+ dt1.format(new Date(record.getMillis()))
 				+ " " + record.getLevel()
-				+ "/" + record.getSourceClassName()
+				+ "/" + record.getSourceClassName().replace("net.clanwolf.starmap.", "...")
 				+ "/" + record.getSourceMethodName()
 				+ " >> " + record.getMessage() + "\n";
 	}
