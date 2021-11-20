@@ -122,5 +122,29 @@ public class CriteriaHelper {
 		}
 		
 		return null;
-	}	
+	}
+
+		public List<Object> getResultList(Long userID){
+		query.select(root);
+
+		Predicate[] predicateArr = new Predicate[alPredicate.size()];
+		predicateArr = alPredicate.toArray(predicateArr);
+		Query q = null;
+		query.select(root).where(predicateArr);
+		if (userID != null) {
+			q = EntityManagerHelper.getEntityManager(userID).createQuery(query);
+		} else {
+			q = EntityManagerHelper.getNewEntityManager().createQuery(query);
+		}
+
+
+		try {
+			return q.getResultList();
+
+		} catch (NoResultException e) {
+			// No resultset given back
+		}
+
+		return null;
+	}
 }

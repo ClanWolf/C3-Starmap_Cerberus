@@ -232,16 +232,27 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			C3Logger.debug("-- Attacked system: " + attack.getStarSystemID());
 
 			ArrayList<AttackCharacterPOJO> newAttackCharacters = new ArrayList<AttackCharacterPOJO>();
-			/*if( attack.getAttackCharList() != null) {
+			if( attack.getAttackCharList() != null) {
 				newAttackCharacters.addAll(attack.getAttackCharList());
 
-				for(AttackCharacterPOJO acPojo :  daoAC.getCharacterFromAttack(attack.getId())) {
+				/*for(AttackCharacterPOJO acPojo :  daoAC.getCharacterFromAttack(attack.getId())) {
 					C3Logger.info("Deleting AttackCharacter: " + acPojo.getId());
 					daoAC.delete(getC3UserID(session), acPojo);
 				}
 
-				attack.getAttackCharList().clear();
-			}*/
+				attack.getAttackCharList().clear();*/
+			}
+
+			RolePlayStoryPOJO rpPojo = null;
+			if(attack.getStoryID() != null) {
+				rpPojo = RolePlayStoryDAO.getInstance().findById(getC3UserID(session), attack.getStoryID());
+			} else {
+				rpPojo = RolePlayStoryDAO.getInstance().findById(getC3UserID(session), 19L);
+			}
+
+			attack.setStoryID(rpPojo.getId());
+
+
 
 			if(attack.getId() != null) {
 				C3Logger.debug("attack.getId() != null");
@@ -266,14 +277,20 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			}*/
 
 			/*for(AttackCharacterPOJO acPojo : newAttackCharacters){
-				acPojo.setAttackID(attack.getId());
-				daoAC.save(C3GameSessionHandler.getC3UserID(session), acPojo);
+				//acPojo.setAttackID(attack.getId());
+				//daoAC.save(C3GameSessionHandler.getC3UserID(session), acPojo);
+				if(acPojo.getId() != null) {
+					daoAC.delete(getC3UserID(session), acPojo);
+				}
 			}*/
+			/*if(attack.getAttackCharList() != null) {
+				//attack.getAttackCharList().clear();
+			}*/
+			//attack.setAttackCharList(newAttackCharacters);
 
-			attack.setAttackCharList(newAttackCharacters);
 
 
-			RolePlayStoryPOJO rpPojo = null;
+			/*RolePlayStoryPOJO rpPojo = null;
 			if(attack.getStoryID() != null) {
 				rpPojo = RolePlayStoryDAO.getInstance().findById(getC3UserID(session), attack.getStoryID());
 			} else {
@@ -282,15 +299,16 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 			attack.setStoryID(rpPojo.getId());
 
-			dao.update(getC3UserID(session), attack);
+			dao.update(getC3UserID(session), attack);*/
 
+			//daoAC.deleteByAttackId(getC3UserID(session));
 
 
 			EntityManagerHelper.commit(getC3UserID(session));
 
-			//EntityManagerHelper.beginTransaction(getC3UserID(session));
-			//daoAC.deleteByAttackId(getC3UserID(session));
-			//EntityManagerHelper.commit(getC3UserID(session));
+			EntityManagerHelper.beginTransaction(getC3UserID(session));
+			daoAC.deleteByAttackId(getC3UserID(session));
+			EntityManagerHelper.commit(getC3UserID(session));
 
 			attack = dao.findById(getC3UserID(session), attack.getId());
 			dao.refresh(C3GameSessionHandler.getC3UserID(session), attack);
