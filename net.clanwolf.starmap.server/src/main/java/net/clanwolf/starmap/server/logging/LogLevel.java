@@ -24,8 +24,20 @@
  * Copyright (c) 2001-2021, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.server.Nexus;
+package net.clanwolf.starmap.server.logging;
 
-public class Nexus {
-	public static Long DUMMY_USERID = -1L;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+
+public class LogLevel {
+
+	public static void setSQLLevelDebug()	{
+		//Enable SQL logging
+		Logger.getLogger("org.hibernate.type").setLevel(Level.DEBUG);
+	}
+
+	public static void setSQLLevelOff() {
+		//Disable SQL logging
+		Logger.getLogger("org.hibernate.type").setLevel(Level.OFF);
+	}
 }

@@ -29,6 +29,7 @@ package net.clanwolf.starmap.server;
 import io.nadron.server.ServerManager;
 import net.clanwolf.client.mail.MailManager;
 import net.clanwolf.starmap.logging.C3Logger;
+import net.clanwolf.starmap.server.logging.LogLevel;
 import net.clanwolf.starmap.server.util.HeartBeatTimer;
 import net.clanwolf.starmap.server.util.CheckShutdownFlagTimer;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -99,6 +100,8 @@ public class GameServer {
 
 		// Start the main game server
 		ServerManager serverManager = ctx.getBean(ServerManager.class);
+
+		LogLevel.setSQLLevelOff();
 
 		try {
 			serverManager.startServers();

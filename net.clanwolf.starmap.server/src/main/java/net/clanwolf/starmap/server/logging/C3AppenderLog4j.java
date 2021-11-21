@@ -1,4 +1,4 @@
-package net.clanwolf.starmap.server.util;
+package net.clanwolf.starmap.server.logging;
 
 import net.clanwolf.starmap.logging.C3Logger;
 import org.apache.log4j.AppenderSkeleton;
