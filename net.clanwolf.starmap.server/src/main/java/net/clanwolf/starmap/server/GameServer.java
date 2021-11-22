@@ -101,7 +101,7 @@ public class GameServer {
 		// Start the main game server
 		ServerManager serverManager = ctx.getBean(ServerManager.class);
 
-		LogLevel.setSQLLevelOff();
+		LogLevel.setSQLLevelOn();
 
 		try {
 			serverManager.startServers();

@@ -29,15 +29,48 @@ package net.clanwolf.starmap.server.logging;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
+//      DEBUG Level
+//      This log4j level helps developer to debug application. Level of message logged will be focused on providing
+//      support to a application developer.
+//
+//      INFO Level
+//      This log4j level gives the progress and chosen state information. This level will be generally useful for end
+//      user. This level is one level higher than DEBUG.
+//
+//      WARN Level
+//      This log4j level gives a warning about an unexpected event to the user. The messages coming out of this level
+//      may not halt the progress of the system.
+//
+//      ERROR Level
+//      This log4j level gives information about a serious error which needs to be addressed and may result in unstable
+//      state. This level is one level higher than WARN.
+//
+//      FATAL Level
+//      This log4j level is straightforward and you do not get it quite often. Once you get this level and it indicates
+//      application death.
+//
+//      ALL Level
+//      This log4j level is used to turn on all levels of logging. Once this is configured and the levels are not
+//      considered.
+//
+//      OFF Level
+//      This log4j level is opposite to ALL level. It turns off all the logging.
+//
+//      TRACE Level
+//      This log4j level gives more detailed information than the DEBUG level and sits top of the hierarchy. This level
+//      is introduced from version 1.2.12 in log4j.
+
 public class LogLevel {
 
-	public static void setSQLLevelDebug()	{
+	@SuppressWarnings("unused")
+	public static void setSQLLevelOn()	{
 		//Enable SQL logging
-		Logger.getLogger("org.hibernate.type").setLevel(Level.DEBUG);
+		Logger.getLogger("org.hibernate.SQL").setLevel(Level.INFO);
 	}
 
+	@SuppressWarnings("unused")
 	public static void setSQLLevelOff() {
 		//Disable SQL logging
-		Logger.getLogger("org.hibernate.type").setLevel(Level.OFF);
+		Logger.getLogger("org.hibernate.SQL").setLevel(Level.OFF);
 	}
 }

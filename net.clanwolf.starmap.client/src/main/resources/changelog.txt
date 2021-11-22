@@ -20,6 +20,13 @@ From this number one is to choose to enter as entry point for a starting invasio
 
 #########################################################
 
+Version 5.7.17 (xx.11.2021)
+-
+
+Version 5.7.16 (21.11.2021)
+- FIXED: Doubled users in lobby
+- CHANGED: SQL log can now be switched on/off within code
+
 Version 5.7.15 (19.11.2021)
 - ADDED: PHP script to reset attacks
 - ADDED: PHP script to reset season

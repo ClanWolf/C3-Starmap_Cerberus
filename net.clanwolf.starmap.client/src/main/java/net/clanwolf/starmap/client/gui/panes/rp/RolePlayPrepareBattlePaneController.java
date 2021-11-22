@@ -268,7 +268,9 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 				acDTO.setCharacterID(attacker.getId());
 				acDTO.setAttackID(a.getAttackDTO().getId());
 				acDTO.setType(characterRoleMap.get(attacker.getId()).getType());
-				charList.add(acDTO);
+				if (acDTO.getType() != null) {
+					charList.add(acDTO);
+				}
 			}
 		}
 
@@ -278,7 +280,9 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 				acDTO.setCharacterID(defender.getId());
 				acDTO.setAttackID(a.getAttackDTO().getId());
 				acDTO.setType(characterRoleMap.get(defender.getId()).getType());
-				charList.add(acDTO);
+				if (acDTO.getType() != null) {
+					charList.add(acDTO);
+				}
 			}
 		}
 
@@ -287,7 +291,9 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 			acDTODropLeadAttacker.setCharacterID(lvDropleadAttacker.getItems().get(0).getId());
 			acDTODropLeadAttacker.setAttackID(a.getAttackDTO().getId());
 			acDTODropLeadAttacker.setType(characterRoleMap.get(lvDropleadAttacker.getItems().get(0).getId()).getType());
-			charList.add(acDTODropLeadAttacker);
+			if (acDTODropLeadAttacker.getType() != null) {
+				charList.add(acDTODropLeadAttacker);
+			}
 		}
 
 		if(!lvDropleadDefender.getItems().get(0).getName().equals("...")) {
@@ -295,7 +301,9 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 			acDTODropLeadDefender.setCharacterID(lvDropleadDefender.getItems().get(0).getId());
 			acDTODropLeadDefender.setAttackID(a.getAttackDTO().getId());
 			acDTODropLeadDefender.setType(characterRoleMap.get(lvDropleadDefender.getItems().get(0).getId()).getType());
-			charList.add(acDTODropLeadDefender);
+			if (acDTODropLeadDefender.getType() != null) {
+				charList.add(acDTODropLeadDefender);
+			}
 		}
 
 		a.getAttackDTO().setAttackCharList(charList) ;

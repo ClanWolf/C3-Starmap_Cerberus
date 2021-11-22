@@ -163,7 +163,20 @@ public class EventCommunications {
 					}
 
 					ActionManager.getAction(ACTIONS.ENABLE_MAIN_MENU_BUTTONS).execute();
-					ActionManager.getAction(ACTIONS.UPDATE_USERS_FOR_ATTACK).execute();
+
+					boolean iAmIn = false;
+					for (AttackCharacterDTO c : attack.getAttackCharList()) {
+						if (c.getCharacterID().equals(Nexus.getCurrentChar().getId())) {
+							iAmIn = true;
+						}
+					}
+
+					if (!iAmIn) {
+						Nexus.setCurrentAttackOfUserToNull();
+						ActionManager.getAction(ACTIONS.SWITCH_TO_MAP).execute();
+					} else {
+						ActionManager.getAction(ACTIONS.UPDATE_USERS_FOR_ATTACK).execute();
+					}
 					break;
 
 				case ATTACK_CHARACTER_SAVE_RESPONSE:
