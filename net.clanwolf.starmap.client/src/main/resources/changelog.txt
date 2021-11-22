@@ -20,8 +20,8 @@ From this number one is to choose to enter as entry point for a starting invasio
 
 #########################################################
 
-Version 5.7.17 (xx.11.2021)
--
+Version 5.7.17 (22.11.2021)
+- FIXED: Kicking users
 
 Version 5.7.16 (21.11.2021)
 - FIXED: Doubled users in lobby
