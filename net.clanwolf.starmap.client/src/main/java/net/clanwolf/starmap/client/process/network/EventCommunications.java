@@ -171,11 +171,10 @@ public class EventCommunications {
 						}
 					}
 
+					ActionManager.getAction(ACTIONS.UPDATE_USERS_FOR_ATTACK).execute();
 					if (!iAmIn) {
 						Nexus.setCurrentAttackOfUserToNull();
 						ActionManager.getAction(ACTIONS.SWITCH_TO_MAP).execute();
-					} else {
-						ActionManager.getAction(ACTIONS.UPDATE_USERS_FOR_ATTACK).execute();
 					}
 					break;
 

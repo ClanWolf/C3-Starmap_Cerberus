@@ -256,7 +256,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 	}
 
-	public synchronized void saveAttack(){
+	public synchronized void saveAttack() {
 
 		BOAttack a = Nexus.getCurrentAttackOfUser();
 
