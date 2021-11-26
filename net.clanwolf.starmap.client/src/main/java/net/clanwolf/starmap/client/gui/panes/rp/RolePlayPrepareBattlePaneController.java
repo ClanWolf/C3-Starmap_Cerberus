@@ -219,7 +219,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 	@FXML
 	public void handlePromoteButtonClick() {
 		RolePlayCharacterDTO selectedChar = lvAttacker.getSelectionModel().getSelectedItem();
-		if (selectedChar == null) {
+		if (selectedChar != null) {
 			if (characterRoleMap.get(Nexus.getCurrentChar().getId()).getType() == Constants.ROLE_DEFENDER_COMMANDER) {
 				selectedChar = lvDefender.getSelectionModel().getSelectedItem();
 				AttackCharacterDTO ac = characterRoleMap.get(selectedChar.getId());
