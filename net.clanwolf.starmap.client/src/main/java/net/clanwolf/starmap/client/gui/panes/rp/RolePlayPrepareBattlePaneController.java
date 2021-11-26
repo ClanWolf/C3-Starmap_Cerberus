@@ -116,6 +116,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 			btnToRight.setDisable(!iamdroplead);
 			btnKick.setDisable(!iamdroplead);
 			btnPromote.setDisable(!iamdroplead);
+			btnPromote.setDisable(characterRoleMap.get(Nexus.getCurrentChar().getId()).getType() != Constants.ROLE_ATTACKER_COMMANDER);
 			btnPromote.setDisable(role != Constants.ROLE_ATTACKER_WARRIOR); // No promotion for players from 3rd factions
 			if (selectedChar.getName().equals(Nexus.getCurrentChar().getName())) {
 				btnKick.setDisable(true); // Can not kick myself
@@ -401,8 +402,8 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 			btnKick.setDisable(!iamdroplead);
 			btnKick.setDisable(characterRoleMap.get(Nexus.getCurrentChar().getId()).getType() != Constants.ROLE_DEFENDER_COMMANDER);
 			btnPromote.setDisable(!iamdroplead);
-			btnPromote.setDisable(role != Constants.ROLE_DEFENDER_WARRIOR); // No promotion for players from 3rd factions
 			btnPromote.setDisable(characterRoleMap.get(Nexus.getCurrentChar().getId()).getType() != Constants.ROLE_DEFENDER_COMMANDER);
+			btnPromote.setDisable(role != Constants.ROLE_DEFENDER_WARRIOR); // No promotion for players from 3rd factions
 
 			if (selectedChar.getName().equals(Nexus.getCurrentChar().getName())) {
 				btnKick.setDisable(true); // Can not kick myself
