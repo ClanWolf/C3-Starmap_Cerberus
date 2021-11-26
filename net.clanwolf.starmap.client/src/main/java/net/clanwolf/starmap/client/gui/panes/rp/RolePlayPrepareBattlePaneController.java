@@ -47,6 +47,7 @@ import net.clanwolf.starmap.client.gui.panes.AbstractC3RolePlayController;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
 import net.clanwolf.starmap.client.process.universe.BOAttack;
+import net.clanwolf.starmap.client.process.universe.BOFaction;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.constants.Constants;
@@ -116,10 +117,11 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 			btnToRight.setDisable(!iamdroplead);
 			btnKick.setDisable(!iamdroplead);
 
-			boolean iAmAttackerCommander = characterRoleMap.get(Nexus.getCurrentChar().getId()).getType() != Constants.ROLE_ATTACKER_COMMANDER;
-			boolean clickedWarriorIsSameFaction = role != Constants.ROLE_ATTACKER_WARRIOR;
+			boolean iAmAttackerCommander = characterRoleMap.get(Nexus.getCurrentChar().getId()).getType() == Constants.ROLE_ATTACKER_COMMANDER;
+			boolean clickedWarriorIsSameFaction = role == Constants.ROLE_ATTACKER_WARRIOR;
+			boolean clickedWarriorIsOnline = Nexus.getUserIsOnline(selectedChar.getId());
 
-			btnPromote.setDisable(!(iAmAttackerCommander && clickedWarriorIsSameFaction)); // No promotion for players from 3rd factions
+			btnPromote.setDisable(!(iAmAttackerCommander && clickedWarriorIsSameFaction && clickedWarriorIsOnline)); // No promotion for players from 3rd factions
 			if (selectedChar.getName().equals(Nexus.getCurrentChar().getName())) {
 				btnKick.setDisable(true); // Can not kick myself
 			}
@@ -218,24 +220,29 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 	public void handlePromoteButtonClick() {
 		RolePlayCharacterDTO selectedChar = lvAttacker.getSelectionModel().getSelectedItem();
 		if (selectedChar == null) {
-			selectedChar = lvDefender.getSelectionModel().getSelectedItem();
-			AttackCharacterDTO ac = characterRoleMap.get(selectedChar.getId());
-			ac.setType(Constants.ROLE_DEFENDER_COMMANDER);
-			checkConditionsToStartDrop(ac);
-			AttackCharacterDTO ac2 = characterRoleMap.get(lvDropleadDefender.getItems().get(0).getId()); // this must be me (if the button was enabled)
-			ac2.setType(Constants.ROLE_DEFENDER_WARRIOR);
-			iamdroplead = false;
-			checkConditionsToStartDrop(ac2);
-		} else {
-			AttackCharacterDTO ac = characterRoleMap.get(selectedChar.getId());
-			ac.setType(Constants.ROLE_ATTACKER_COMMANDER);
-			checkConditionsToStartDrop(ac);
-			AttackCharacterDTO ac2 = characterRoleMap.get(lvDropleadAttacker.getItems().get(0).getId()); // this must be me (if the button was enabled)
-			ac2.setType(Constants.ROLE_ATTACKER_WARRIOR);
-			iamdroplead = false;
-			checkConditionsToStartDrop(ac2);
+			if (characterRoleMap.get(Nexus.getCurrentChar().getId()).getType() == Constants.ROLE_DEFENDER_COMMANDER) {
+				selectedChar = lvDefender.getSelectionModel().getSelectedItem();
+				AttackCharacterDTO ac = characterRoleMap.get(selectedChar.getId());
+				ac.setType(Constants.ROLE_DEFENDER_COMMANDER);
+				checkConditionsToStartDrop(ac);
+				AttackCharacterDTO ac2 = characterRoleMap.get(lvDropleadDefender.getItems().get(0).getId()); // this must be me (if the button was enabled)
+				ac2.setType(Constants.ROLE_DEFENDER_WARRIOR);
+				iamdroplead = false;
+				checkConditionsToStartDrop(ac2);
+
+				saveAttack();
+			} else if (characterRoleMap.get(Nexus.getCurrentChar().getId()).getType() == Constants.ROLE_ATTACKER_COMMANDER) {
+				AttackCharacterDTO ac = characterRoleMap.get(selectedChar.getId());
+				ac.setType(Constants.ROLE_ATTACKER_COMMANDER);
+				checkConditionsToStartDrop(ac);
+				AttackCharacterDTO ac2 = characterRoleMap.get(lvDropleadAttacker.getItems().get(0).getId()); // this must be me (if the button was enabled)
+				ac2.setType(Constants.ROLE_ATTACKER_WARRIOR);
+				iamdroplead = false;
+				checkConditionsToStartDrop(ac2);
+
+				saveAttack();
+			}
 		}
-		saveAttack();
 	}
 
 	@FXML
@@ -404,10 +411,11 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 			btnKick.setDisable(!iamdroplead);
 			btnKick.setDisable(characterRoleMap.get(Nexus.getCurrentChar().getId()).getType() != Constants.ROLE_DEFENDER_COMMANDER);
 
-			boolean iAmDefenderCommander = characterRoleMap.get(Nexus.getCurrentChar().getId()).getType() != Constants.ROLE_DEFENDER_COMMANDER;
-			boolean clickedWarriorIsSameFaction = role != Constants.ROLE_DEFENDER_WARRIOR;
+			boolean iAmDefenderCommander = characterRoleMap.get(Nexus.getCurrentChar().getId()).getType() == Constants.ROLE_DEFENDER_COMMANDER;
+			boolean clickedWarriorIsSameFaction = role == Constants.ROLE_DEFENDER_WARRIOR;
+			boolean clickedWarriorIsOnline = Nexus.getUserIsOnline(selectedChar.getId());
 
-			btnPromote.setDisable(!(iAmDefenderCommander && clickedWarriorIsSameFaction)); // No promotion for players from 3rd factions
+			btnPromote.setDisable(!(iAmDefenderCommander && clickedWarriorIsSameFaction && clickedWarriorIsOnline)); // No promotion for players from 3rd factions
 
 			if (selectedChar.getName().equals(Nexus.getCurrentChar().getName())) {
 				btnKick.setDisable(true); // Can not kick myself
@@ -597,22 +605,19 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 					protected void updateItem(RolePlayCharacterDTO item, boolean empty) {
 						super.updateItem(item, empty);
 						if (item != null) {
-							boolean online = false;
-							for (UserDTO u : Nexus.getCurrentlyOnlineUserList()) {
-								if (u.getCurrentCharacter().getId().equals(item.getId())) {
-									online = true;
-									break;
-								}
-							}
+							boolean online = Nexus.getUserIsOnline(item.getId());
+
 							if (online) {
 								Platform.runLater(() -> {
-									setText(item.getName());
+									BOFaction faction = Nexus.getBoUniverse().getFactionByID(item.getFactionId().longValue());
+									setText("[" + faction.getShortName() + "] " + item.getName());
 									setStyle("-fx-text-fill: white;");
 								});
 							} else {
 								if (!"...".equals(item.getName())) {
 									Platform.runLater(() -> {
-										setText(item.getName() + " (offline)");
+										BOFaction faction = Nexus.getBoUniverse().getFactionByID(item.getFactionId().longValue());
+										setText("[" + faction.getShortName() + "] " + item.getName() + " (offline)");
 										setStyle("-fx-text-fill: cyan;");
 									});
 								} else {

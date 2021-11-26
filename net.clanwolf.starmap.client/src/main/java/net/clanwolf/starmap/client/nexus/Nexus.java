@@ -132,6 +132,15 @@ public class Nexus {
 		}
 	}
 
+	public static boolean getUserIsOnline(Long id) {
+		for (UserDTO u : Nexus.getCurrentlyOnlineUserList()) {
+			if (u.getCurrentCharacter().getId().equals(id)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	@SuppressWarnings("unused")
 	public static void setCurrentlyOnlineUserList(ArrayList<UserDTO> list) {
 		currentlyOnlineUserList = list;
