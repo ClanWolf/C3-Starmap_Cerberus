@@ -219,6 +219,21 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 	@FXML
 	public void handlePromoteButtonClick() {
 		RolePlayCharacterDTO selectedChar = lvAttacker.getSelectionModel().getSelectedItem();
+		if (selectedChar != null) { // selected Char is attacker
+			if (characterRoleMap.get(Nexus.getCurrentChar().getId()).getType() == Constants.ROLE_ATTACKER_COMMANDER) {
+				AttackCharacterDTO ac = characterRoleMap.get(selectedChar.getId());
+				ac.setType(Constants.ROLE_ATTACKER_COMMANDER);
+				checkConditionsToStartDrop(ac);
+				AttackCharacterDTO ac2 = characterRoleMap.get(lvDropleadAttacker.getItems().get(0).getId()); // this must be me (if the button was enabled)
+				ac2.setType(Constants.ROLE_ATTACKER_WARRIOR);
+				iamdroplead = false;
+				checkConditionsToStartDrop(ac2);
+
+				saveAttack();
+			}
+		}
+
+		selectedChar = lvDefender.getSelectionModel().getSelectedItem();
 		if (selectedChar != null) {
 			if (characterRoleMap.get(Nexus.getCurrentChar().getId()).getType() == Constants.ROLE_DEFENDER_COMMANDER) {
 				selectedChar = lvDefender.getSelectionModel().getSelectedItem();
@@ -227,16 +242,6 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 				checkConditionsToStartDrop(ac);
 				AttackCharacterDTO ac2 = characterRoleMap.get(lvDropleadDefender.getItems().get(0).getId()); // this must be me (if the button was enabled)
 				ac2.setType(Constants.ROLE_DEFENDER_WARRIOR);
-				iamdroplead = false;
-				checkConditionsToStartDrop(ac2);
-
-				saveAttack();
-			} else if (characterRoleMap.get(Nexus.getCurrentChar().getId()).getType() == Constants.ROLE_ATTACKER_COMMANDER) {
-				AttackCharacterDTO ac = characterRoleMap.get(selectedChar.getId());
-				ac.setType(Constants.ROLE_ATTACKER_COMMANDER);
-				checkConditionsToStartDrop(ac);
-				AttackCharacterDTO ac2 = characterRoleMap.get(lvDropleadAttacker.getItems().get(0).getId()); // this must be me (if the button was enabled)
-				ac2.setType(Constants.ROLE_ATTACKER_WARRIOR);
 				iamdroplead = false;
 				checkConditionsToStartDrop(ac2);
 
