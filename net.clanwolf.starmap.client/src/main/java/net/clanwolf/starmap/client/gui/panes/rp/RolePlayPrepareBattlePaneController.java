@@ -115,9 +115,11 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 			btnToLeft.setDisable(true);
 			btnToRight.setDisable(!iamdroplead);
 			btnKick.setDisable(!iamdroplead);
-			btnPromote.setDisable(!iamdroplead);
-			btnPromote.setDisable(characterRoleMap.get(Nexus.getCurrentChar().getId()).getType() != Constants.ROLE_ATTACKER_COMMANDER);
-			btnPromote.setDisable(role != Constants.ROLE_ATTACKER_WARRIOR); // No promotion for players from 3rd factions
+
+			boolean iAmAttackerCommander = characterRoleMap.get(Nexus.getCurrentChar().getId()).getType() != Constants.ROLE_ATTACKER_COMMANDER;
+			boolean clickedWarriorIsSameFaction = role != Constants.ROLE_ATTACKER_WARRIOR;
+
+			btnPromote.setDisable(!(iAmAttackerCommander && clickedWarriorIsSameFaction)); // No promotion for players from 3rd factions
 			if (selectedChar.getName().equals(Nexus.getCurrentChar().getName())) {
 				btnKick.setDisable(true); // Can not kick myself
 			}
@@ -401,9 +403,11 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 			btnToRight.setDisable(true);
 			btnKick.setDisable(!iamdroplead);
 			btnKick.setDisable(characterRoleMap.get(Nexus.getCurrentChar().getId()).getType() != Constants.ROLE_DEFENDER_COMMANDER);
-			btnPromote.setDisable(!iamdroplead);
-			btnPromote.setDisable(characterRoleMap.get(Nexus.getCurrentChar().getId()).getType() != Constants.ROLE_DEFENDER_COMMANDER);
-			btnPromote.setDisable(role != Constants.ROLE_DEFENDER_WARRIOR); // No promotion for players from 3rd factions
+
+			boolean iAmDefenderCommander = characterRoleMap.get(Nexus.getCurrentChar().getId()).getType() != Constants.ROLE_DEFENDER_COMMANDER;
+			boolean clickedWarriorIsSameFaction = role != Constants.ROLE_DEFENDER_WARRIOR;
+
+			btnPromote.setDisable(!(iAmDefenderCommander && clickedWarriorIsSameFaction)); // No promotion for players from 3rd factions
 
 			if (selectedChar.getName().equals(Nexus.getCurrentChar().getName())) {
 				btnKick.setDisable(true); // Can not kick myself
