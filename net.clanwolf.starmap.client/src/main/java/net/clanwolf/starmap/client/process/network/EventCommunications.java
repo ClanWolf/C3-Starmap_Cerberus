@@ -163,16 +163,16 @@ public class EventCommunications {
 					}
 
 					ActionManager.getAction(ACTIONS.ENABLE_MAIN_MENU_BUTTONS).execute();
+					ActionManager.getAction(ACTIONS.UPDATE_USERS_FOR_ATTACK).execute();
 
-					boolean iAmIn = false;
+					boolean currentCharInList = false;
 					for (AttackCharacterDTO c : attack.getAttackCharList()) {
 						if (c.getCharacterID().equals(Nexus.getCurrentChar().getId())) {
-							iAmIn = true;
+							currentCharInList = true;
 						}
 					}
-
-					ActionManager.getAction(ACTIONS.UPDATE_USERS_FOR_ATTACK).execute();
-					if (!iAmIn) {
+					if (!currentCharInList) {
+						// Obviously I have been kicked and need to be moved from the lobby
 						Nexus.setCurrentAttackOfUserToNull();
 						ActionManager.getAction(ACTIONS.SWITCH_TO_MAP).execute();
 					}

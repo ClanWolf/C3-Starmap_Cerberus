@@ -186,7 +186,7 @@
                         <Font size="12.0" />
                      </font>
                      <HBox.margin>
-                        <Insets />
+                        <Insets left="1.0" />
                      </HBox.margin>
                   </Button>
                </children>

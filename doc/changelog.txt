@@ -20,6 +20,10 @@ From this number one is to choose to enter as entry point for a starting invasio
 
 #########################################################
 
+Version 5.8.0 (26.11.2021)
+- ADDED: Automatic char generation for new users
+- CHANGED: Map screenshot will be skipped on dev computers
+
 Version 5.7.17 (22.11.2021)
 - FIXED: Kicking users
 

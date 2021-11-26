@@ -115,7 +115,8 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 			btnToLeft.setDisable(true);
 			btnToRight.setDisable(!iamdroplead);
 			btnKick.setDisable(!iamdroplead);
-			btnPromote.setDisable(!iamdroplead || (role != Constants.ROLE_ATTACKER_WARRIOR)); // No promotion for players from 3rd factions
+			btnPromote.setDisable(!iamdroplead);
+			btnPromote.setDisable(role != Constants.ROLE_ATTACKER_WARRIOR); // No promotion for players from 3rd factions
 			if (selectedChar.getName().equals(Nexus.getCurrentChar().getName())) {
 				btnKick.setDisable(true); // Can not kick myself
 			}
@@ -170,10 +171,13 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		btnKick.setDisable(true);
 		btnPromote.setDisable(true);
 
+		BOAttack a = Nexus.getCurrentAttackOfUser();
 		AttackCharacterDTO ac = characterRoleMap.get(selectedChar.getId());
-		if (ac.getType().equals(Constants.ROLE_DEFENDER_WARRIOR)) {
+		RolePlayCharacterDTO c = Nexus.getCharacterById(ac.getCharacterID());
+
+		if (c.getFactionId().equals(a.getAttackerFactionId())) {
 			ac.setType(Constants.ROLE_ATTACKER_WARRIOR);
-		} else if (ac.getType().equals(Constants.ROLE_DEFENDER_SUPPORTER)) {
+		} else {
 			ac.setType(Constants.ROLE_ATTACKER_SUPPORTER);
 		}
 		saveAttack();
@@ -194,10 +198,13 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		btnKick.setDisable(true);
 		btnPromote.setDisable(true);
 
+		BOAttack a = Nexus.getCurrentAttackOfUser();
 		AttackCharacterDTO ac = characterRoleMap.get(selectedChar.getId());
-		if (ac.getType().equals(Constants.ROLE_ATTACKER_WARRIOR)) {
+		RolePlayCharacterDTO c = Nexus.getCharacterById(ac.getCharacterID());
+
+		if (c.getFactionId().equals(a.getDefenderFactionId())) {
 			ac.setType(Constants.ROLE_DEFENDER_WARRIOR);
-		} else if (ac.getType().equals(Constants.ROLE_ATTACKER_SUPPORTER)) {
+		} else {
 			ac.setType(Constants.ROLE_DEFENDER_SUPPORTER);
 		}
 		saveAttack();
@@ -242,7 +249,6 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 	@FXML
 	public synchronized void handleLeaveButtonClick() {
-//		BOAttack a = Nexus.getCurrentAttackOfUser();
 		AttackCharacterDTO ac = characterRoleMap.get(Nexus.getCurrentChar().getId());
 		ac.setType(null);
 		saveAttack();
@@ -257,7 +263,6 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 	}
 
 	public synchronized void saveAttack() {
-
 		BOAttack a = Nexus.getCurrentAttackOfUser();
 
 		ArrayList<AttackCharacterDTO> charList = new ArrayList<AttackCharacterDTO>();
@@ -394,7 +399,11 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 			btnToLeft.setDisable(!iamdroplead);
 			btnToRight.setDisable(true);
 			btnKick.setDisable(!iamdroplead);
-			btnPromote.setDisable(!iamdroplead || (role != Constants.ROLE_ATTACKER_WARRIOR)); // No promotion for players from 3rd factions
+			btnKick.setDisable(characterRoleMap.get(Nexus.getCurrentChar().getId()).getType() != Constants.ROLE_DEFENDER_COMMANDER);
+			btnPromote.setDisable(!iamdroplead);
+			btnPromote.setDisable(role != Constants.ROLE_DEFENDER_WARRIOR); // No promotion for players from 3rd factions
+			btnPromote.setDisable(characterRoleMap.get(Nexus.getCurrentChar().getId()).getType() != Constants.ROLE_DEFENDER_COMMANDER);
+
 			if (selectedChar.getName().equals(Nexus.getCurrentChar().getName())) {
 				btnKick.setDisable(true); // Can not kick myself
 			}
