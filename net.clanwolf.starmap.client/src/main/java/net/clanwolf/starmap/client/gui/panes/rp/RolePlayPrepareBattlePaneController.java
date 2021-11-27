@@ -689,6 +689,12 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 			characterRoleMap.put(ac.getCharacterID(), ac);
 
+			if (c.getId().equals(Nexus.getCurrentChar().getId())) {
+				if (ac.getType().equals(Constants.ROLE_ATTACKER_COMMANDER) || ac.getType().equals(Constants.ROLE_DEFENDER_COMMANDER)) {
+					iamdroplead = true;
+				}
+			}
+
 			if (ac.getType().equals(Constants.ROLE_ATTACKER_COMMANDER) || ac.getType().equals(Constants.ROLE_ATTACKER_WARRIOR) || ac.getType().equals(Constants.ROLE_ATTACKER_SUPPORTER)) { // Attacker
 				if (ac.getType().equals(Constants.ROLE_ATTACKER_COMMANDER)) { // Droplead
 					// Put this dropleader into upper list
