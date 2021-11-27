@@ -18,12 +18,22 @@ Change table AttackType
 2 | PA | IS v IS | Planetary Assault IS vs IS | 22,24,29
 From this number one is to choose to enter as entry point for a starting invasion lobby.
 
+If the attacker commander leaves the lobby, all attackcharacters are deleted and removed from the lobby (lobby closed)
+
+If user does not have rights to move a dropship, he should not be able to move the ship icon and the jump button should be disabled (?)
+
+Attacker commander may move characters in both directions (?)
+
+Check what happens if a finalize round finds open attack lobby
+
 #########################################################
 
 Version 5.8.0 (26.11.2021)
 - ADDED: Automatic char generation for new users
-- FIXED: Handling of promotions in lobby
+- ADDED: Faction shortname added to users of the lobby
+- FIXED: Handling of lobby
 - CHANGED: Map screenshot will be skipped on dev computers
+- CHANGED: Continue button in lobby jumps into invasion steps
 
 Version 5.7.17 (22.11.2021)
 - FIXED: Kicking users

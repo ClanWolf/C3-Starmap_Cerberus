@@ -274,7 +274,8 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 	@FXML
 	public void handleContinueButtonClick() {
-
+		RolePlayStoryDTO rpID = Nexus.getBoUniverse().getAttackStories().get(Nexus.getCurrentAttackOfUser().getAttackDTO().getStoryID());
+		saveNextStep(rpID.getNextStepID());
 	}
 
 	public synchronized void saveAttack() {

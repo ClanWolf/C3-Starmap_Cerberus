@@ -135,6 +135,7 @@ public class EventCommunications {
 				case ATTACK_SAVE_RESPONSE:
 					C3Logger.info("Attack has been started.");
 					AttackDTO attack = (AttackDTO) state.getObject();
+					boolean bNewStoryID = !Nexus.getCurrentAttackOfUser().getAttackDTO().getStoryID().equals(attack.getStoryID());
 					String userIDOfSavingUser = (String) state.getObject2(); // --> session.getId();
 					if (userIDOfSavingUser == null) {
 						// My attack was saved
@@ -176,6 +177,11 @@ public class EventCommunications {
 						Nexus.setCurrentAttackOfUserToNull();
 						ActionManager.getAction(ACTIONS.SWITCH_TO_MAP).execute();
 					}
+
+					if(bNewStoryID){
+						ActionManager.getAction(ACTIONS.ROLEPLAY_NEXT_STEP_CHANGE_PANE).execute(state.getObject());
+					}
+
 					break;
 
 				case ATTACK_CHARACTER_SAVE_RESPONSE:
