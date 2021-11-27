@@ -113,15 +113,15 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		RolePlayCharacterDTO selectedChar = lvAttacker.getSelectionModel().getSelectedItem();
 		if (selectedChar != null && !selectedChar.getName().equals("...")) {
 			Long role = (characterRoleMap.get(selectedChar.getId())).getType();
-			btnToLeft.setDisable(true);
-			btnToRight.setDisable(!iamdroplead);
-			btnKick.setDisable(!iamdroplead);
-
 			boolean iAmAttackerCommander = characterRoleMap.get(Nexus.getCurrentChar().getId()).getType() == Constants.ROLE_ATTACKER_COMMANDER;
 			boolean clickedWarriorIsSameFaction = role == Constants.ROLE_ATTACKER_WARRIOR;
 			boolean clickedWarriorIsOnline = Nexus.getUserIsOnline(selectedChar.getId());
 
+			btnToLeft.setDisable(true);
+			btnToRight.setDisable(!iAmAttackerCommander);
+			btnKick.setDisable(!iAmAttackerCommander);
 			btnPromote.setDisable(!(iAmAttackerCommander && clickedWarriorIsSameFaction && clickedWarriorIsOnline)); // No promotion for players from 3rd factions
+
 			if (selectedChar.getName().equals(Nexus.getCurrentChar().getName())) {
 				btnKick.setDisable(true); // Can not kick myself
 			}
@@ -411,15 +411,14 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		RolePlayCharacterDTO selectedChar = lvDefender.getSelectionModel().getSelectedItem();
 		if (selectedChar != null && !selectedChar.getName().equals("...")) {
 			Long role = (characterRoleMap.get(selectedChar.getId())).getType();
-			btnToLeft.setDisable(!iamdroplead);
-			btnToRight.setDisable(true);
-			btnKick.setDisable(!iamdroplead);
-			btnKick.setDisable(characterRoleMap.get(Nexus.getCurrentChar().getId()).getType() != Constants.ROLE_DEFENDER_COMMANDER);
-
 			boolean iAmDefenderCommander = characterRoleMap.get(Nexus.getCurrentChar().getId()).getType() == Constants.ROLE_DEFENDER_COMMANDER;
 			boolean clickedWarriorIsSameFaction = role == Constants.ROLE_DEFENDER_WARRIOR;
 			boolean clickedWarriorIsOnline = Nexus.getUserIsOnline(selectedChar.getId());
 
+			btnToLeft.setDisable(!iAmDefenderCommander);
+			btnToRight.setDisable(true);
+			btnKick.setDisable(!iAmDefenderCommander);
+			btnKick.setDisable(characterRoleMap.get(Nexus.getCurrentChar().getId()).getType() != Constants.ROLE_DEFENDER_COMMANDER);
 			btnPromote.setDisable(!(iAmDefenderCommander && clickedWarriorIsSameFaction && clickedWarriorIsOnline)); // No promotion for players from 3rd factions
 
 			if (selectedChar.getName().equals(Nexus.getCurrentChar().getName())) {
@@ -689,11 +688,11 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 			characterRoleMap.put(ac.getCharacterID(), ac);
 
-			if (c.getId().equals(Nexus.getCurrentChar().getId())) {
-				if (ac.getType().equals(Constants.ROLE_ATTACKER_COMMANDER) || ac.getType().equals(Constants.ROLE_DEFENDER_COMMANDER)) {
-					iamdroplead = true;
-				}
-			}
+//			if (c.getId().equals(Nexus.getCurrentChar().getId())) {
+//				if (ac.getType().equals(Constants.ROLE_ATTACKER_COMMANDER) || ac.getType().equals(Constants.ROLE_DEFENDER_COMMANDER)) {
+//					iamdroplead = true;
+//				}
+//			}
 
 			if (ac.getType().equals(Constants.ROLE_ATTACKER_COMMANDER) || ac.getType().equals(Constants.ROLE_ATTACKER_WARRIOR) || ac.getType().equals(Constants.ROLE_ATTACKER_SUPPORTER)) { // Attacker
 				if (ac.getType().equals(Constants.ROLE_ATTACKER_COMMANDER)) { // Droplead
