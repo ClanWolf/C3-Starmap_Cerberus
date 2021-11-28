@@ -90,6 +90,8 @@ public class Nexus {
 	public static File commandLogFile = null;
 	public static boolean promptNewVersionInstall = false;
 
+	public static Long storyID_beforeSavingRespones;
+
 	/**
 	 * Private constructor to prevent instantiation
 	 */
@@ -429,5 +431,15 @@ public class Nexus {
 	@SuppressWarnings("unused")
 	public static void setCharacterList(HashMap<Long, RolePlayCharacterDTO> characterList) {
 		Nexus.characterList = characterList;
+	}
+
+	@SuppressWarnings("unused")
+	public static void setStoryBeforeSaving(Long storyID) {
+		storyID_beforeSavingRespones = storyID;
+	}
+
+	@SuppressWarnings("unused")
+	public static Long getStoryBeforeSaving(){
+		return storyID_beforeSavingRespones;
 	}
 }

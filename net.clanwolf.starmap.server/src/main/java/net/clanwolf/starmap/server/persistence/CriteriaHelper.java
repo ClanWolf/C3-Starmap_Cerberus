@@ -87,7 +87,9 @@ public class CriteriaHelper {
 
 	@SuppressWarnings("unused")
 	public Object getSingleResult(){
-		query.select(root);	
+
+		return getSingleResult(null);
+		/*query.select(root);
 		
 		Predicate[] predicateArr = new Predicate[alPredicate.size()];
 		predicateArr = alPredicate.toArray(predicateArr);
@@ -101,12 +103,40 @@ public class CriteriaHelper {
 		} catch (NoResultException e) {
 			// No resultset given back
 		}
+		return null;*/
+	}
+
+	@SuppressWarnings("unused")
+	public Object getSingleResult(Long userID){
+		query.select(root);
+
+		Predicate[] predicateArr = new Predicate[alPredicate.size()];
+		predicateArr = alPredicate.toArray(predicateArr);
+
+		query.select(root).where(predicateArr);
+		Query q = EntityManagerHelper.getNewEntityManager().createQuery(query);
+		if (userID != null) {
+			q = EntityManagerHelper.getEntityManager(userID).createQuery(query);
+		} else {
+			q = EntityManagerHelper.getNewEntityManager().createQuery(query);
+		}
+
+
+		try {
+			return q.getSingleResult();
+
+		} catch (NoResultException e) {
+			// No resultset given back
+			e.printStackTrace();
+		}
 		return null;
 	}
 
 	@SuppressWarnings("unused")
 	public List<Object> getResultList(){
-		query.select(root);	
+
+		return getResultList(null);
+		/*query.select(root);
 		
 		Predicate[] predicateArr = new Predicate[alPredicate.size()];
 		predicateArr = alPredicate.toArray(predicateArr);
@@ -121,7 +151,7 @@ public class CriteriaHelper {
 			// No resultset given back
 		}
 		
-		return null;
+		return null;*/
 	}
 
 		public List<Object> getResultList(Long userID){
@@ -137,14 +167,13 @@ public class CriteriaHelper {
 			q = EntityManagerHelper.getNewEntityManager().createQuery(query);
 		}
 
-
 		try {
 			return q.getResultList();
 
 		} catch (NoResultException e) {
 			// No resultset given back
+			e.printStackTrace();
 		}
-
 		return null;
 	}
 }
