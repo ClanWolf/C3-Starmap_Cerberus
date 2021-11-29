@@ -28,6 +28,12 @@ Check what happens if a finalize round finds open attack lobby
 
 #########################################################
 
+Version 5.8.2 (29.11.2021)
+- ADDED: First contributed planet image (Tukayyid by Prator Andreas, 998)
+
+Version 5.8.1 (28.11.2021)
+- FIXED: Jump from lobby to first step of invasion
+
 Version 5.8.0 (26.11.2021)
 - ADDED: Automatic char generation for new users
 - ADDED: Faction shortname added to users of the lobby
