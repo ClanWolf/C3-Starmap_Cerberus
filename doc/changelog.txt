@@ -30,6 +30,11 @@ Check what happens if a finalize round finds open attack lobby
 
 Version 5.8.2 (29.11.2021)
 - ADDED: First contributed planet image (Tukayyid by Prator Andreas, 998)
+- ADDED: Automated mail to developers in case a jumpship has no current starsystem
+- ADDED: Linenumber to default log output
+- FIXED: "Confirm" button to send orders to jumpships (move jumpships) is only enabled, if the user has the privilege
+- FIXED: Prevented dragging of jumpships if the user has no privilege to move them
+- FIXED: Map centers on factions homeworld if user does not have a unit (instead of defaulting to Terra)
 
 Version 5.8.1 (28.11.2021)
 - FIXED: Jump from lobby to first step of invasion

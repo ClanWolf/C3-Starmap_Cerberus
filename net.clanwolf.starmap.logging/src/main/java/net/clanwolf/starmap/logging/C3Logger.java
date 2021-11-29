@@ -119,22 +119,23 @@ public class C3Logger {
 		StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
 		String callerClassName = stackTraceElements[3].getClassName();
 		String callerMethodName = stackTraceElements[3].getMethodName();
+		int callerLineNumber = stackTraceElements[3].getLineNumber();
 
 		if (!initialized && !initializing) {
 			prepare();
 		}
 
 		if (throwable == null) {
-			logger.logp(level, callerClassName, callerMethodName, message);
+			logger.logp(level, callerClassName, callerMethodName + " (L" + callerLineNumber + ")", message);
 		} else {
-			logger.logp(level, callerClassName, callerMethodName, message, throwable);
+			logger.logp(level, callerClassName, callerMethodName + " (L" + callerLineNumber + ")", message, throwable);
 		}
 
 		if (fileHandler != null) {
 			fileHandler.flush();
 		}
 
-		LogEntry logEntry = new LogEntry(rowCounter, level.toString(), "", callerClassName, callerMethodName, message);
+		LogEntry logEntry = new LogEntry(rowCounter, level.toString(), "", callerClassName, callerMethodName + " (L" + callerLineNumber + ")", message);
 		logHistory.add(logEntry);
 		rowCounter++;
 	}

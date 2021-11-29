@@ -69,6 +69,10 @@ public class NodeGestures {
 	private final BOUniverse boUniverse = Nexus.getBoUniverse();
 	private final HashMap<Long, ArrayList<Text>> routePointLabelsMap = new HashMap<>();
 
+	private double draggedStartedX = 0.0f;
+	private double draggedStartedY = 0.0f;
+	private boolean moveJumpShipToDragStart = false;
+
 	NodeGestures(PannableCanvas canvas) {
 		this.canvas = canvas;
 	}
@@ -128,11 +132,23 @@ public class NodeGestures {
 	private final EventHandler<MouseEvent> onMouseReleasedEventHandler = event -> {
 		Node node = (Node) event.getSource();
 		if (node instanceof ImageView) {
-			if (boUniverse.currentlyDraggedJumpship != null) {
-				BOJumpship js = boUniverse.jumpshipBOs.get(node.getId());
-				js.getPredictedRouteLine().toFront();
-				node.toFront();
-				boUniverse.currentlyDraggedJumpship.getPredictedRouteLine().setVisible(false);
+			BOJumpship js = boUniverse.jumpshipBOs.get(node.getId());
+			if (js != null) {
+				if (moveJumpShipToDragStart) {
+					ImageView s = js.getJumpshipImageView();
+					s.setTranslateX(draggedStartedX - 35);
+					s.setTranslateY(draggedStartedY - 8);
+
+					draggedStartedX = 0.0f;
+					draggedStartedY = 0.0f;
+					moveJumpShipToDragStart = false;
+				} else {
+					if (boUniverse.currentlyDraggedJumpship != null) {
+						js.getPredictedRouteLine().toFront();
+						node.toFront();
+						boUniverse.currentlyDraggedJumpship.getPredictedRouteLine().setVisible(false);
+					}
+				}
 			}
 		}
 	};
@@ -431,7 +447,8 @@ public class NodeGestures {
 
 				// Is the dragged node a ship (?) and does it belong to my faction (?)
 				if (ship != null && ship.getJumpshipFaction() == Nexus.getCurrentUser().getCurrentCharacter().getFactionId()) {
-					if ((Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.FACTIONLEAD_HAS_ROLE) || Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.UNITLEAD_HAS_ROLE)) && Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.FACTIONLEAD_MOVE_JUMPSHIP)) {
+//					if ((Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.FACTIONLEAD_HAS_ROLE) || Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.UNITLEAD_HAS_ROLE)) && Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.FACTIONLEAD_MOVE_JUMPSHIP)) {
+					if (Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.FACTIONLEAD_MOVE_JUMPSHIP)) {
 						boUniverse.currentlyDraggedJumpship = boUniverse.jumpshipBOs.get(node.getId());
 						node.toBack();
 
@@ -452,10 +469,17 @@ public class NodeGestures {
 						}
 					} else {
 						// No privileges to move the jumpship
-						String mes = Internationalization.getString("C3_Speech_app_starmap_moving_jumpship_not_allowed");
-						StatusTextEntryActionObject o = new StatusTextEntryActionObject(mes, true, "YELLOW");
-						ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(o);
-						C3SoundPlayer.getTTSFile(mes);
+						if (moveJumpShipToDragStart == false) {
+							String mes = Internationalization.getString("C3_Speech_app_starmap_moving_jumpship_not_allowed");
+							StatusTextEntryActionObject o = new StatusTextEntryActionObject(mes, true, "YELLOW");
+							ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(o);
+							C3SoundPlayer.getTTSFile(mes);
+
+							// Stop dragging of the jumpship here!
+							draggedStartedX = boUniverse.starSystemBOs.get(ship.getCurrentSystemID()).getScreenX();
+							draggedStartedY = boUniverse.starSystemBOs.get(ship.getCurrentSystemID()).getScreenY();
+							moveJumpShipToDragStart = true;
+						}
 					}
 				}
 			}

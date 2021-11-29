@@ -51,6 +51,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextBoundsType;
 import javafx.util.Duration;
 import net.clanwolf.starmap.client.action.*;
+import net.clanwolf.starmap.client.enums.PRIVILEGES;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
 import net.clanwolf.starmap.client.gui.panes.map.tools.VoronoiDelaunay;
@@ -59,6 +60,7 @@ import net.clanwolf.starmap.client.process.universe.BOAttack;
 import net.clanwolf.starmap.client.process.universe.BOJumpship;
 import net.clanwolf.starmap.client.process.universe.BOStarSystem;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
+import net.clanwolf.starmap.client.security.Security;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.C3PROPS;
 import net.clanwolf.starmap.client.util.C3Properties;
@@ -106,7 +108,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	@FXML
 	Label labelMouseCoords;
 	@FXML
-	Button mapButton01;
+	Button mapButton01; // confirm
 	@FXML
 	Button mapButton02;
 	@FXML
@@ -666,6 +668,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	 */
 	private void initializeUniverseMap() {
 		boUniverse = Nexus.getBoUniverse();
+		boolean mapCenteredOnJumpship = false;
 		if (boUniverse != null) {
 			String dims = C3Properties.getProperty(C3PROPS.MAP_DIMENSIONS);
 			int d = Integer.parseInt(dims);
@@ -954,6 +957,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 						// This is my own personal unit, move map to this ship
 						currentlyCenteredJumpship = js;
 						moveMapToJumpship(currentlyCenteredJumpship);
+						mapCenteredOnJumpship = true;
 					}
 
 					if (js.getRoute() != null) {
@@ -1034,7 +1038,15 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 						js.setJumpshipImageView(jumpshipImage);
 						js.setRoute(boUniverse.routesList.get(js.getJumpshipId()));
 					} else {
-						C3Logger.info("Jumpship '" + js.getJumpshipName() + "' has no current system. Seems to be a mistake!");
+						String m = "Jumpship '" + js.getJumpshipName() + "' has no current system. Needs to be checked!";
+						C3Logger.info(m);
+						Tools.sendAlarmMailToAdminGroup(m);
+					}
+				}
+
+				if (!mapCenteredOnJumpship) {
+					if (Nexus.getHomeworld() != null) {
+						moveMapToPosition(Nexus.getHomeworld());
 					}
 				}
 
@@ -1203,7 +1215,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		move.setToY(Config.MAP_INITIAL_TRANSLATE_Y);
 		move.setOnFinished(event -> {
 			addMouseFilters();
-			mapButton01.setDisable(false);
+			boolean mayMoveJumpships = Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.FACTIONLEAD_MOVE_JUMPSHIP);
+			if (mayMoveJumpships) { mapButton01.setDisable(false); }
 			mapButton02.setDisable(false);
 			mapButton03.setDisable(false);
 			mapButton04.setDisable(false);
@@ -1253,7 +1266,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		seq.getChildren().addAll(move01, move02);
 		seq.setOnFinished(event -> {
 			addMouseFilters();
-			mapButton01.setDisable(false);
+			boolean mayMoveJumpships = Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.FACTIONLEAD_MOVE_JUMPSHIP);
+			if (mayMoveJumpships) { mapButton01.setDisable(false); }
 			mapButton02.setDisable(false);
 			mapButton03.setDisable(false);
 			mapButton04.setDisable(false);

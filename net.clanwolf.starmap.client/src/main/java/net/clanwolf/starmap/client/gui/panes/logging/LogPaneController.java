@@ -44,6 +44,7 @@ import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.util.C3PROPS;
 import net.clanwolf.starmap.client.util.C3Properties;
 import net.clanwolf.starmap.client.util.Internationalization;
+import net.clanwolf.starmap.client.util.Tools;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.logging.LogEntry;
 
@@ -96,10 +97,6 @@ public class LogPaneController implements ActionCallBackListener {
 		instantRefresh = true;
 	}
 
-	private String encodeValue(String value) throws UnsupportedEncodingException {
-		return URLEncoder.encode(value, StandardCharsets.UTF_8.toString()).replace("+", "%20");
-	}
-
 	@FXML
 	public void btnReportClicked() {
 		// TODO: Report error to gitHub (?)
@@ -125,12 +122,13 @@ public class LogPaneController implements ActionCallBackListener {
 			ftpClient.upload(C3Properties.getProperty(C3PROPS.LOGFILE) + ".0", logfilename, true);
 			String serverUrl = C3Properties.getProperty(C3PROPS.SERVER_URL);
 
-			String formattedBody = "Es ist ein Fehler in C3 aufgetreten!\n\nHochgeladene Log-Datei:\n" + serverUrl + "/errorlogs/" + logfilename + "\n\nHier Beschreibung ergänzen:\n\n";
+			String formattedBody = "Error in C3 client!\n\nUploaded log:\n" + serverUrl + "/errorlogs/" + logfilename + "\n\nAdd description:\n\n";
 
+			// TODO: Move this into the method in Tools!
 			Desktop desktop;
 			if (Desktop.isDesktopSupported() && (desktop = Desktop.getDesktop()).isSupported(Desktop.Action.MAIL)) {
 				URI mailto;
-				mailto = new URI("mailto:c3@clanwolf.net?subject=C3%20Fehler-Report&body=" + encodeValue(formattedBody));
+				mailto = new URI("mailto:c3@clanwolf.net?subject=C3%20Error-Report&body=" + Tools.encodeValue(formattedBody));
 				desktop.mail(mailto);
 			} else {
 				C3Logger.warning("Desktop does not support mailto!");
