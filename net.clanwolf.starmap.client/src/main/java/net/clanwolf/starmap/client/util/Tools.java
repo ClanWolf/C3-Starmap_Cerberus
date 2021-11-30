@@ -57,6 +57,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.*;
 import java.nio.Buffer;
+import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -83,6 +84,43 @@ public final class Tools {
 	 */
 	private Tools() {
 		// do nothing
+	}
+
+	public static String encodeValue(String value) throws UnsupportedEncodingException {
+		return URLEncoder.encode(value, StandardCharsets.UTF_8.toString()).replace("+", "%20");
+	}
+
+	@SuppressWarnings("unused")
+	public static void sendAlarmMailToAdminGroup(String message) {
+		String userName = "";
+		if (Nexus.getCurrentUser() != null) {
+			userName = Nexus.getCurrentUser().getUserName();
+		}
+		if (!"".equals(userName)) {
+			sendMailToAdminGroup("C3 Message (" + userName + ")" , message);
+		} else {
+			sendMailToAdminGroup("C3 Message", message);
+		}
+	}
+
+	@SuppressWarnings("unused")
+	public static void sendMailToAdminGroup(String subject, String message) {
+		// TODO: Rename method and generalize
+		// TODO: Encode subject and add to the link
+		try {
+			Desktop desktop;
+			if (Desktop.isDesktopSupported() && (desktop = Desktop.getDesktop()).isSupported(Desktop.Action.MAIL)) {
+				URI mailto;
+				mailto = new URI("mailto:c3@clanwolf.net?subject=C3%20Alarm&body=" + encodeValue(message));
+				desktop.mail(mailto);
+			} else {
+				C3Logger.warning("Desktop does not support mailto!");
+				throw new RuntimeException("Desktop does not support mailto!");
+			}
+		} catch (URISyntaxException | IOException e) {
+			e.printStackTrace();
+			C3Logger.error("Error while reporting suspicious situation to admins.");
+		}
 	}
 
 	@SuppressWarnings("unused")
