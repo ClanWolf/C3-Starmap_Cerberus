@@ -53,6 +53,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Set;
 
 /**
  * Business object for a roleplay story.
@@ -832,6 +833,20 @@ public class BORolePlayStory {
 		state.addObject2(sortOrder);
 
 		Nexus.fireNetworkEvent(state);
+	}
+
+	public Long getFirstStepOfChapter(RolePlayStoryDTO rpDTO){
+
+		C3Logger.debug(rpDTO.getStoryName());
+
+		for(RolePlayStoryDTO rp : Nexus.getBoUniverse().getAttackStories().values()){
+			if( rpDTO.getId().equals(rp.getParentStory().getId()) && rp.getSortOrder() == 1){
+				C3Logger.debug(rp.getStoryName());
+				return rp.getId();
+			}
+		}
+
+		return null;
 	}
 
 	/**

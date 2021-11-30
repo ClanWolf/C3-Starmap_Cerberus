@@ -127,7 +127,7 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 					sequentialTransition.setCycleCount(1);
 					sequentialTransition.play();
 
-					animationPlayedMap.put(Nexus.getCurrentChar().getStory().getId(), true);
+					animationPlayedMap.put(getCurrentRP().getId(), true);
 				}
 			} else if(ROLEPLAYENTRYTYPES.C3_RP_STEP_V1 == o.getObject()){
 				// set current step of story
@@ -162,7 +162,13 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 			boRp.getNextChapterBySortOrder(currentChar, 1);
 		}
 		if(getCurrentRP().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_CHAPTER ) {
-			boRp.getNextStepBySortOrder(currentChar, 1);
+			if(isCharRP) {
+				boRp.getNextStepBySortOrder(currentChar, 1);
+			} else {
+				BORolePlayStory boRp = new BORolePlayStory();
+				Long rp = boRp.getFirstStepOfChapter(getCurrentRP());
+				saveNextStep(rp);
+			}
 		}
 		if(getCurrentRP().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1 ){
 			Long rp = getCurrentRP().getNextStepID();
