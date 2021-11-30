@@ -110,7 +110,7 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 				// set current step of story
 				getStoryValues(getCurrentRP());
 
-				Boolean animationPlayed = animationPlayedMap.get(Nexus.getCurrentChar().getStory().getId());
+				Boolean animationPlayed = animationPlayedMap.get(getCurrentRP().getId());
 				if (animationPlayed == null || !animationPlayed) {
 					FadeTransition fadeInTransition_01 = new FadeTransition(Duration.millis(800), backgroundImage);
 					fadeInTransition_01.setFromValue(0.0);
@@ -206,7 +206,8 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 			taStoryText.setVisible(false);
 
 			labHeader.setEffect(new DropShadow(20, Color.BLACK));
-			Boolean animationPlayed = animationPlayedMap.get(Nexus.getCurrentChar().getStory().getId());
+			//Boolean animationPlayed = animationPlayedMap.get(Nexus.getCurrentChar().getStory().getId());
+			Boolean animationPlayed = animationPlayedMap.get(getCurrentRP().getId());
 			if (animationPlayed == null || !animationPlayed) {
 				labHeader.setOpacity(0.0);
 			}
@@ -218,7 +219,8 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 		Image im = BORolePlayStory.getRPG_Image(rpStory);
 		backgroundImage.setImage(im);
 
-		Boolean animationPlayed = animationPlayedMap.get(Nexus.getCurrentChar().getStory().getId());
+		//Boolean animationPlayed = animationPlayedMap.get(Nexus.getCurrentChar().getStory().getId());
+		Boolean animationPlayed = animationPlayedMap.get(getCurrentRP().getId());
 		if (animationPlayed == null || !animationPlayed) {
 			backgroundImage.setOpacity(0.0);
 		}

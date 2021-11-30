@@ -69,6 +69,8 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 	private final HashMap<Long, AttackCharacterDTO> characterRoleMap = new HashMap<>();
 	private boolean firstCreationDone = false;
 	private boolean creating = false;
+	private boolean testNextButton=false;
+	private boolean bOnlyOneSave = true;
 
 	@FXML
 	private AnchorPane anchorPane;
@@ -386,7 +388,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		C3Logger.debug("Equal pilot count: " + (lvAttacker.getItems().size() == lvDefender.getItems().size() && lvAttacker.getItems().size() >= 2));
 		C3Logger.debug("Everybody online: " + allOnline);
 
-		btNext.setDisable(true);
+		btNext.setDisable(testNextButton);
 		// Check conditions
 		if (lvDropleadAttacker.getItems().size() == 1
 				&& lvDropleadDefender.getItems().size() == 1
@@ -540,7 +542,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		btnPromote.setDisable(true);
 		btnToLeft.setDisable(true);
 		btnToRight.setDisable(true);
-		btNext.setDisable(true);
+		btNext.setDisable(testNextButton);
 
 		backgroundImage.setOpacity(0.0f);
 		vbLeft.setOpacity(0.0f);
@@ -820,9 +822,12 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 			case START_ROLEPLAY:
 				if(ROLEPLAYENTRYTYPES.C3_RP_STEP_V8 == o.getObject()) {
 					C3Logger.debug("RolePlayIntroPaneController -> START_ROLEPLAY");
-					saveAttack();
+					if(bOnlyOneSave) {
+						bOnlyOneSave = false;
+						saveAttack();
+					}
 					// set current step of story
-					//getStoryValues(getCurrentRP());
+					getStoryValues(getCurrentRP());
 				}
 				break;
 

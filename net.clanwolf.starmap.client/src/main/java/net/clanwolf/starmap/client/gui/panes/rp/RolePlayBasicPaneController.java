@@ -125,7 +125,7 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 		if (paneName.equals("AttackPane") && Nexus.getCurrentAttackOfUser() != null) {
 			isCharacterPane = false;
 			myType = Nexus.getBoUniverse().getAttackStories().get(Nexus.getCurrentAttackOfUser().getAttackDTO().getStoryID()).getVariante();
-		} else if (paneName.equals("CharacterPane")){
+		} else if (paneName.equals("CharacterPane") && Nexus.getCurrentChar().getStory() != null){
 			isCharacterPane = true;
 			myType = Nexus.getCurrentChar().getStory().getVariante();
 		}
