@@ -1534,6 +1534,21 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 		enableMainMenuButtons(Nexus.isLoggedIn(), Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN));
 
+		// Add values to the property file in case they are not present
+		// Do not change them if they are present
+		if (C3Properties.getProperty(C3PROPS.FTP_USER_LOGUPLOAD).equals("unknown") || C3Properties.getProperty(C3PROPS.FTP_USER_LOGUPLOAD).equals("")) {
+			C3Properties.setProperty(C3PROPS.FTP_USER_LOGUPLOAD, "c3_client_logupload", true);
+		}
+		if (C3Properties.getProperty(C3PROPS.FTP_PASSWORD_LOGUPLOAD).equals("unknown") || C3Properties.getProperty(C3PROPS.FTP_PASSWORD_LOGUPLOAD).equals("")) {
+			C3Properties.setProperty(C3PROPS.FTP_PASSWORD_LOGUPLOAD, "Pg4!j60g", true);
+		}
+		if (C3Properties.getProperty(C3PROPS.FTP_USER_HISTORYUPLOAD).equals("unknown") || C3Properties.getProperty(C3PROPS.FTP_USER_HISTORYUPLOAD).equals("")) {
+			C3Properties.setProperty(C3PROPS.FTP_USER_HISTORYUPLOAD, "c3_client_historyupload", true);
+		}
+		if (C3Properties.getProperty(C3PROPS.FTP_PASSWORD_HISTORYUPLOAD).equals("unknown") || C3Properties.getProperty(C3PROPS.FTP_PASSWORD_HISTORYUPLOAD).equals("")) {
+			C3Properties.setProperty(C3PROPS.FTP_PASSWORD_HISTORYUPLOAD, "ffdw556+*#ASD", true);
+		}
+
 		C3SoundPlayer.getSamples();
 
 		if (Nexus.promptNewVersionInstall) {

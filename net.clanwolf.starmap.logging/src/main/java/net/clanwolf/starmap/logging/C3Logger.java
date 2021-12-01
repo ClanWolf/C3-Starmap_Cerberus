@@ -39,7 +39,7 @@ public class C3Logger {
 	private static ConsoleHandler consoleHandler;
 	private static String c3LogFileName = "";
 	private static Level c3Loglevel = Level.FINEST;
-	private static final int FILE_SIZE = 2*1024*1024;
+	private static final int FILE_SIZE = 4*1024*1024;
 
 	private static int rowCounter = 1;
 
@@ -170,7 +170,7 @@ public class C3Logger {
 
 			if (prepareLogfile()) {
 				// fileHandler = new FileHandler(c3LogFileName, FILE_SIZE, 5, true); // appending to the previous logs
-				fileHandler = new FileHandler(c3LogFileName, FILE_SIZE, 5, false) {  // a new file for every start
+				fileHandler = new FileHandler(c3LogFileName, FILE_SIZE, 3, false) {  // a new file for every start
 					@Override
 					public synchronized void publish(final LogRecord record) {
 						super.publish(record);

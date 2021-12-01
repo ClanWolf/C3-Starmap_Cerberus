@@ -1040,7 +1040,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					} else {
 						String m = "Jumpship '" + js.getJumpshipName() + "' has no current system. Needs to be checked!";
 						C3Logger.info(m);
-						Tools.sendAlarmMailToAdminGroup(m);
+						Tools.sendMailToAdminGroup(m);
 					}
 				}
 
@@ -1302,14 +1302,12 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		// in order for the stackpane to have an actual size.
 		// Otherwise StarSystemGroups appear off from their real coordinates.
 		// Moved slightly to right and to the bottom
-		Platform.runLater(() -> {
-			for (BOStarSystem ss : boUniverse.starSystemBOs.values()) {
-				StackPane sp = ss.getStarSystemStackPane();
-				Group g = ss.getStarSystemGroup();
-				g.setLayoutX(-sp.getWidth() / 2);
-				g.setLayoutY(-sp.getHeight() / 2);
-			}
-		});
+		for (BOStarSystem ss : boUniverse.starSystemBOs.values()) {
+			StackPane sp = ss.getStarSystemStackPane();
+			Group g = ss.getStarSystemGroup();
+			g.setLayoutX(-sp.getWidth() / 2);
+			g.setLayoutY(-sp.getHeight() / 2);
+		}
 	}
 
 	public void hideSystemDetail() {

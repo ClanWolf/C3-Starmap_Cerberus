@@ -24,82 +24,16 @@
  * Copyright (c) 2001-2021, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.client.util;
+package net.clanwolf.starmap.client.enums;
 
-public enum C3PROPS {
+/**
+ * @author Meldric
+ *
+ */
+public enum C3FTPTYPES {
 
-	// Values must be in upper case here, or the re-creation of the user property file will result
-	// in exceptions (during the put, the key needs to be uppercase).
+	FTP_DEFAULT,
+	FTP_LOGUPLOAD,
+	FTP_HISTORYUPLOAD;
 
-	// SERVER
-	TCP_HOSTNAME,
-	TCP_PORT,
-	SERVER_URL,
-	MANUAL_DOWNLOAD_CLIENT_URL,
-	AUTOMATIC_DOWNLOAD_CLIENT_URL,
-
-	// LOGIN
-	LOGIN_USER,
-	LOGIN_PASSWORD,
-	LOGIN_DATABASE,
-	AUTO_LOGIN,
-	STORE_LOGIN_PASSWORD,
-	USE_GUEST_ACCOUNT,
-	FACTION_KEY,
-
-	// PROXY
-	USE_PROXY,
-	USE_SYSTEM_PROXY,
-	PROXY_SERVER,
-	PROXY_PORT,
-	PROXY_USER,
-	PROXY_PASSWORD,
-	PROXY_DOMAIN,
-	PROXY_NEEDS_AUTHENTICATION,
-	PROXY_SAVE_PASSWORD,
-
-	// FTP
-	FTP_SERVER,
-	FTP_PORT,
-	FTP_USER,
-	FTP_PASSWORD,
-	FTP_USER_LOGUPLOAD,
-	FTP_PASSWORD_LOGUPLOAD,
-	FTP_USER_HISTORYUPLOAD,
-	FTP_PASSWORD_HISTORYUPLOAD,
-
-	// GUI
-	LANGUAGE,
-	MAP_DIMENSIONS,
-
-	// SOUND
-	PLAY_VOICE,
-	PLAY_MUSIC,
-	PLAY_SOUND,
-	SOUNDVOLUME,
-	SPEECHVOLUME,
-	MUSICVOLUME,
-	MUSICTRACK,
-	VOICERSSAPIKEY,
-
-	// SYSTEM
-	VERSION,
-	BROWSER,
-
-	// Whenever the version changes, the user properties file is regenerated, containing only the
-	// properties that are contained in this file (with their previously given values by the user).
-	// This helps to clean the property file and keep it free from old entries.
-
-	// RUNTIME - Not stored!
-
-	// GAME
-	CHECK_CONNECTION_STATUS,
-	CHECK_ONLINE_STATUS,
-	CHECK_LOGIN_STATUS,
-	CONNECTED_SUCCESSFULLY_ONCE,
-	LOGGED_IN_SUCCESSFULLY_ONCE,
-
-	// ENV
-	LOGFILE,
-	DEV_PC
 }

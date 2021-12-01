@@ -34,10 +34,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-import net.clanwolf.starmap.client.action.ACTIONS;
-import net.clanwolf.starmap.client.action.ActionCallBackListener;
-import net.clanwolf.starmap.client.action.ActionManager;
-import net.clanwolf.starmap.client.action.ActionObject;
+import net.clanwolf.starmap.client.action.*;
+import net.clanwolf.starmap.client.enums.C3FTPTYPES;
 import net.clanwolf.starmap.client.net.FTP;
 import net.clanwolf.starmap.client.net.IP;
 import net.clanwolf.starmap.client.nexus.Nexus;
@@ -104,43 +102,29 @@ public class LogPaneController implements ActionCallBackListener {
 		// https://www.softwaretestinghelp.com/github-rest-api-tutorial/#Labels_Milestones_Issues
 		// https://stackoverflow.com/questions/13324052/github-issue-creation-api
 
-		try {
-			String ip = IP.getExternalIP();
-			String timestamp = "" + System.currentTimeMillis();
-			String username = "";
-			if (Nexus.getCurrentUser() != null) {
-				username = Nexus.getCurrentUser().getUserName();
-			}
-			String logfilename = "";
-			if (!"".equals(username)) {
-				logfilename = "clientlog_" + username + "_" + ip + "-" + timestamp + ".log";
-			} else {
-				logfilename = "clientlog_" + ip + "-" + timestamp + ".log";
-			}
-
-			FTP ftpClient = new FTP(true);
-			ftpClient.upload(C3Properties.getProperty(C3PROPS.LOGFILE) + ".0", logfilename, true);
-			String serverUrl = C3Properties.getProperty(C3PROPS.SERVER_URL);
-
-			String formattedBody = "Error in C3 client!\n\nUploaded log:\n" + serverUrl + "/errorlogs/" + logfilename + "\n\nAdd description:\n\n";
-
-			// TODO: Move this into the method in Tools!
-			Desktop desktop;
-			if (Desktop.isDesktopSupported() && (desktop = Desktop.getDesktop()).isSupported(Desktop.Action.MAIL)) {
-				URI mailto;
-				mailto = new URI("mailto:c3@clanwolf.net?subject=C3%20Error-Report&body=" + Tools.encodeValue(formattedBody));
-				desktop.mail(mailto);
-			} else {
-				C3Logger.warning("Desktop does not support mailto!");
-				throw new RuntimeException("Desktop does not support mailto!");
-			}
-
-			ftpClient.disconnect();
-		} catch (URISyntaxException | IOException e) {
-			// TODO: Handle error here
-			e.printStackTrace();
-			C3Logger.error("Error while uploading client log file during report process.");
+		String ip = IP.getExternalIP();
+		String timestamp = "" + System.currentTimeMillis();
+		String username = "";
+		if (Nexus.getCurrentUser() != null) {
+			username = Nexus.getCurrentUser().getUserName();
 		}
+		String logfilename = "";
+		if (!"".equals(username)) {
+			logfilename = "clientlog_" + username + "_" + ip + "-" + timestamp + ".log";
+		} else {
+			logfilename = "clientlog_" + ip + "-" + timestamp + ".log";
+		}
+
+		StatusTextEntryActionObject o = new StatusTextEntryActionObject("Uploading logfile...", false);
+		ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(o);
+		FTP ftpClient = new FTP(C3FTPTYPES.FTP_LOGUPLOAD);
+		ftpClient.upload(C3Properties.getProperty(C3PROPS.LOGFILE) + ".0", logfilename);
+
+		String serverUrl = C3Properties.getProperty(C3PROPS.SERVER_URL);
+		String formattedBody = "Error in C3 client!\n\nUploaded log:\n" + serverUrl + "/errorlogs/" + logfilename + "\n\nAdd description:\n\n";
+		Tools.sendMailToAdminGroup(formattedBody);
+
+		ftpClient.disconnect();
 	}
 
 	private static LogPaneController instance = null;
