@@ -114,7 +114,7 @@ public class CriteriaHelper {
 		predicateArr = alPredicate.toArray(predicateArr);
 
 		query.select(root).where(predicateArr);
-		Query q = EntityManagerHelper.getNewEntityManager().createQuery(query);
+		Query q = null;
 		if (userID != null) {
 			q = EntityManagerHelper.getEntityManager(userID).createQuery(query);
 		} else {
