@@ -114,7 +114,7 @@ public class CriteriaHelper {
 		predicateArr = alPredicate.toArray(predicateArr);
 
 		query.select(root).where(predicateArr);
-		Query q = EntityManagerHelper.getNewEntityManager().createQuery(query);
+		Query q = null;
 		if (userID != null) {
 			q = EntityManagerHelper.getEntityManager(userID).createQuery(query);
 		} else {
@@ -127,7 +127,7 @@ public class CriteriaHelper {
 
 		} catch (NoResultException e) {
 			// No resultset given back
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		return null;
 	}
@@ -154,7 +154,7 @@ public class CriteriaHelper {
 		return null;*/
 	}
 
-		public List<Object> getResultList(Long userID){
+	public List<Object> getResultList(Long userID){
 		query.select(root);
 
 		Predicate[] predicateArr = new Predicate[alPredicate.size()];
