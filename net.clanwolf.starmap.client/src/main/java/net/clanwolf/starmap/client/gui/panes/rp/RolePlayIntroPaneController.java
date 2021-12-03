@@ -160,8 +160,7 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 		RolePlayCharacterDTO currentChar = Nexus.getCurrentChar();
 		if(getCurrentRP().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STORY ) {
 			boRp.getNextChapterBySortOrder(currentChar, 1);
-		}
-		if(getCurrentRP().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_CHAPTER ) {
+		} else if(getCurrentRP().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_CHAPTER ) {
 			if(isCharRP) {
 				boRp.getNextStepBySortOrder(currentChar, 1);
 			} else {
@@ -169,8 +168,8 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 				Long rp = boRp.getFirstStepOfChapter(getCurrentRP());
 				saveNextStep(rp);
 			}
-		}
-		if(getCurrentRP().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1 ){
+		} else {
+//		if(getCurrentRP().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1 ){
 			Long rp = getCurrentRP().getNextStepID();
 			saveNextStep(rp);
 		}
