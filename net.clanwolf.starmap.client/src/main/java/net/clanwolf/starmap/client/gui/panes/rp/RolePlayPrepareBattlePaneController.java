@@ -535,6 +535,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		dummy.setName("...");
 
 		BOAttack a = Nexus.getCurrentAttackOfUser();
+		Nexus.setStoryBeforeSaving(a.getStoryId().longValue());
 		updateLists(a);
 		lvAttacker.getSelectionModel().clearSelection();
 		lvDefender.getSelectionModel().clearSelection();
