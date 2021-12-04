@@ -33,10 +33,7 @@ import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
@@ -60,7 +57,7 @@ public class C3Properties {
 	private static final String REGENERATION_WARNING = "File will be regenerated regularly!";
 	private static final Properties sProperties = new Properties();
 
-	/**
+	/*
 	 * Static initializer.
 	 */
 	static {
@@ -208,13 +205,31 @@ public class C3Properties {
 		if (prop == null
 				|| !prop.equals(value)
 				|| C3PROPS.PROXY_PASSWORD.equals(key)
-				|| C3PROPS.LOGIN_PASSWORD.equals(key)) {
+				|| C3PROPS.LOGIN_PASSWORD.equals(key)
+				|| C3PROPS.FTP_PASSWORD_HISTORYUPLOAD.equals(key)
+				|| C3PROPS.FTP_PASSWORD_LOGUPLOAD.equals(key)
+				|| C3PROPS.FTP_PASSWORD.equals(key)) {
 			if ((value != null && value.length() > 0 && C3PROPS.PROXY_PASSWORD.equals(key))) {
 				if (encrypt) {
 					value = encrypt(value);
 				}
 			}
 			if ((value != null && value.length() > 0 && C3PROPS.LOGIN_PASSWORD.equals(key))) {
+				if (encrypt) {
+					value = encrypt(value);
+				}
+			}
+			if ((value != null && value.length() > 0 && C3PROPS.FTP_PASSWORD_HISTORYUPLOAD.equals(key))) {
+				if (encrypt) {
+					value = encrypt(value);
+				}
+			}
+			if ((value != null && value.length() > 0 && C3PROPS.FTP_PASSWORD_LOGUPLOAD.equals(key))) {
+				if (encrypt) {
+					value = encrypt(value);
+				}
+			}
+			if ((value != null && value.length() > 0 && C3PROPS.FTP_PASSWORD.equals(key))) {
 				if (encrypt) {
 					value = encrypt(value);
 				}
@@ -297,8 +312,12 @@ public class C3Properties {
 		String value = sProperties.getProperty(key.name().toLowerCase(), UNKNOWN);
 
 		if (((C3PROPS.PROXY_PASSWORD.equals(key))
-				|| (C3PROPS.LOGIN_PASSWORD.equals(key))) && (value == null ? UNKNOWN != null : !value.equals(UNKNOWN))) {
-			value = decrypt(value);
+			|| (C3PROPS.LOGIN_PASSWORD.equals(key))
+			|| (C3PROPS.FTP_PASSWORD.equals(key))
+			|| (C3PROPS.FTP_PASSWORD_LOGUPLOAD.equals(key))
+			|| (C3PROPS.FTP_PASSWORD_HISTORYUPLOAD.equals(key)))
+			&& (value == null ? UNKNOWN != null : !value.equals(UNKNOWN))) {
+			value = decrypt(value.replaceAll("\\\\\\\\\\\\", "\\\\"));
 		}
 		return value;
 	}

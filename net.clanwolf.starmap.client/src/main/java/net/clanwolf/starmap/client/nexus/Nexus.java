@@ -124,8 +124,12 @@ public class Nexus {
 		// store command history to file
 		if (commandLogFile != null) {
 			try (PrintWriter out = new PrintWriter(commandLogFile, StandardCharsets.UTF_8)) {
+				String oldCommand = "";
 				for (String l : commandHistory) {
-					out.write(l + "\r\n");
+					if (!l.equals(oldCommand)) {
+						out.write(l + "\r\n");
+						oldCommand = l;
+					}
 				}
 			} catch (IOException e) {
 				e.printStackTrace();

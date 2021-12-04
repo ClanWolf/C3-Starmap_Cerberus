@@ -26,7 +26,7 @@
 
 		<!-- C3 Revision -->
 		<!-- https://stackoverflow.com/questions/10582054/maven-project-version-inheritance-do-i-have-to-specify-the-parent-version -->
-		<revision>5.8.4</revision>
+		<revision>5.8.5</revision>
 
 		<!-- Versions -->
 		<version.java>17</version.java>
@@ -35,7 +35,7 @@
 		<version.exec-maven-plugin>1.6.0</version.exec-maven-plugin>
 		<version.asm>9.2</version.asm>                                              <!-- 7.3.1       <-> 9.2         -->
 		<version.netty>4.1.69.Final</version.netty>
-		<version.spring>5.3.11</version.spring>
+		<version.spring>5.3.13</version.spring>                                     <!-- 5.3.11      <-> 5.3.13      -->
 		<version.spring-security-config>5.5.1</version.spring-security-config>
 		<version.hibernate>5.4.1.Final</version.hibernate>                          <!-- 5.4.1.Final <-> 5.6.1.Final -->
 		<version.hibernate_hikaricp>5.4.1.Final</version.hibernate_hikaricp>        <!-- 5.4.1.Final <-> 5.5.8.Final -->

@@ -28,7 +28,14 @@ Check what happens if a finalize round finds open attack lobby
 
 #########################################################
 
-Version 5.8.4 (xx.12.2021)
+Version 5.8.5 (04.12.2021)
+- Command history stores multiple same entries only once
+- Lobby enters attack steps
+- Steps now play audio
+- New image for Tukayyid
+- Changed faction colors to improve visibility
+
+Version 5.8.4 (02.12.2021)
 - CREATED: Enumeration for FTP upload types
 - ADDED: Additional ftp user for history upload
 - ADDED: Automated upload for history images

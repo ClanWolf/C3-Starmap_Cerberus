@@ -129,7 +129,7 @@
 		<dependency>
 			<groupId>net.bytebuddy</groupId>
 			<artifactId>byte-buddy</artifactId>
-			<version>1.9.12</version>
+			<version>1.12.1</version> <!-- vorher: 1.9.12 -->
 		</dependency>
 		<dependency>
 			<groupId>javax.xml.bind</groupId>

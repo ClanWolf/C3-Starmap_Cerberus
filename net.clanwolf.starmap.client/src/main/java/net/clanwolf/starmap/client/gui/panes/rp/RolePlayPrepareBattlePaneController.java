@@ -626,13 +626,13 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 								if (!"...".equals(item.getName())) {
 									Platform.runLater(() -> {
 										BOFaction faction = Nexus.getBoUniverse().getFactionByID(item.getFactionId().longValue());
-										setText("[" + faction.getShortName() + "] " + item.getName() + " (offline)");
-										setStyle("-fx-text-fill: cyan;");
+										setText("[" + faction.getShortName() + "] " + item.getName() + " (off)"); // offline
+										setStyle("-fx-text-fill:cyan;");
 									});
 								} else {
 									Platform.runLater(() -> {
 										setText(item.getName());
-										setStyle("-fx-text-fill: white;");
+										setStyle("-fx-text-fill:white;");
 									});
 								}
 							}

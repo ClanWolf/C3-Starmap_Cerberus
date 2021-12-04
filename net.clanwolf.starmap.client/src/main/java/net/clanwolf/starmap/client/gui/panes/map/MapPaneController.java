@@ -1599,8 +1599,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				break;
 
 			case PANE_CREATION_FINISHED:
-				if (o.getObject() instanceof AbstractC3Pane) {
-					AbstractC3Pane p = (AbstractC3Pane) o.getObject();
+				if (o.getObject() instanceof AbstractC3Pane p) {
 					if ("MapPane".equals(p.getPaneName())) {
 						if (!firstCreationDone) {
 							if (!universeMapGenerationStarted) {
@@ -1620,8 +1619,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				break;
 
 			case SHOW_SYSTEM_DETAIL:
-				if (o.getObject() instanceof BOStarSystem) {
-					BOStarSystem ss = (BOStarSystem) o.getObject();
+				if (o.getObject() instanceof BOStarSystem ss) {
 					showSystemDetail(ss);
 				} else {
 					hideSystemDetail();
@@ -1629,13 +1627,11 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				break;
 
 			case SYSTEM_WAS_SELECTED:
-				if (o.getObject() instanceof BOStarSystem) {
+				if (o.getObject() instanceof BOStarSystem ss) {
 
 					boolean hasAttack = false;
 					boolean attackAlreadyStarted;
 					boolean startAttackEnabled = false;
-
-					BOStarSystem ss = (BOStarSystem) o.getObject();
 
 					// Check if the currently logged on char participates in any other attack
 					// if yes, he cannot join this one
