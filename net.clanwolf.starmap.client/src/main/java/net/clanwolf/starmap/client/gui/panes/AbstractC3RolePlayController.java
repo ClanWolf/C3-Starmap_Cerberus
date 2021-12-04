@@ -36,6 +36,7 @@ import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
 import net.clanwolf.starmap.client.process.universe.BOAttack;
+import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.transfer.dtos.AttackDTO;
 import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
 import net.clanwolf.starmap.transfer.dtos.RolePlayStoryDTO;
@@ -87,6 +88,7 @@ public abstract class AbstractC3RolePlayController implements Initializable, Act
 	public abstract boolean handleAction(ACTIONS action, ActionObject o);
 
 	protected void saveNextStep(Long rp){
+		C3SoundPlayer.stopSpeechPlayer();
 		if(isCharRP){
 			boRp.saveRolePlayCharacter(Nexus.getCurrentChar(), rp);
 		} else {

@@ -185,6 +185,13 @@ public class C3SoundPlayer {
 		}
 	}
 
+	public static void stopSpeechPlayer(){
+		if(speechPlayer != null){
+			speechPlayer.stop();
+			speechPlayer = null;
+		}
+	}
+
 	/**
 	 * Play sample from URL.
 	 *
