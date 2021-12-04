@@ -253,6 +253,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				dao.update(getC3UserID(session), attack);
 			} else {
 				// Check if attack exits
+				//existingAttack = dao.findOpenAttackByRound(getC3UserID(session),attack.getJumpshipID(), attack.getSeason(), attack.getRound());
 				existingAttack = dao.findOpenAttackByRound(getC3UserID(session),attack.getJumpshipID(), attack.getSeason(), attack.getRound());
 
 				if(existingAttack == null){
