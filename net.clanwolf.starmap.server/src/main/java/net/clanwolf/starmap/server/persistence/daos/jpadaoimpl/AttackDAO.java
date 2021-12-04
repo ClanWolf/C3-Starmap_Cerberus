@@ -81,7 +81,7 @@ public class AttackDAO extends GenericDAO {
 		crit.addCriteria("season", season);
 		crit.addCriteriaIsNull("factionID_Winner");
 
-		return (AttackPOJO)crit.getSingleResult();
+		return (AttackPOJO)crit.getSingleResult(userID);
 	}
 
 	/*

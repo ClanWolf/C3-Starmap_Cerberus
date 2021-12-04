@@ -135,7 +135,7 @@ public class EventCommunications {
 				case ATTACK_SAVE_RESPONSE:
 					C3Logger.info("Attack has been started.");
 					AttackDTO attack = (AttackDTO) state.getObject();
-					RolePlayStoryDTO rpOldDTO = Nexus.getBoUniverse().getAttackStories().get(Nexus.getCurrentAttackOfUser().getAttackDTO().getStoryID());
+					//RolePlayStoryDTO rpOldDTO = Nexus.getBoUniverse().getAttackStories().get(Nexus.getCurrentAttackOfUser().getAttackDTO().getStoryID());
 					boolean storyWasChanged = false;
 					if(	Nexus.getStoryBeforeSaving() != null && !attack.getStoryID().equals(Nexus.getStoryBeforeSaving())){
 						storyWasChanged = true;
