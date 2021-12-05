@@ -29,6 +29,7 @@ package net.clanwolf.starmap.client.nexus;
 import io.nadron.client.app.Session;
 import io.nadron.client.event.Events;
 import io.nadron.client.event.NetworkEvent;
+import javafx.scene.control.Slider;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
 import net.clanwolf.starmap.client.gui.panes.logging.LogWatcher;
 import net.clanwolf.starmap.client.process.login.Login;
@@ -91,6 +92,12 @@ public class Nexus {
 	public static boolean promptNewVersionInstall = false;
 
 	public static Long storyID_beforeSavingRespones;
+
+	public static Slider mainframeVolumeSlider = null;
+
+	public static void setMainFrameVolumeSlider(Slider slider) {
+		mainframeVolumeSlider = slider;
+	}
 
 	/**
 	 * Private constructor to prevent instantiation

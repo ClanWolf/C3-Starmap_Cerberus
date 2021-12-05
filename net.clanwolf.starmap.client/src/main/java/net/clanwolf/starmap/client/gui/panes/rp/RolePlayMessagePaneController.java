@@ -174,7 +174,9 @@ public class RolePlayMessagePaneController extends AbstractC3RolePlayController 
 
 		// play sound
 		if (rpStory.getStoryMP3() != null) {
-			C3SoundPlayer.play(BORolePlayStory.getRPG_Soundfile(rpStory), false);
+//			C3SoundPlayer.play(BORolePlayStory.getRPG_Soundfile(rpStory), false);
+			C3SoundPlayer.playRPSound(BORolePlayStory.getRPG_Soundfile(rpStory));
+
 		}
 
 	} //getStoryValues

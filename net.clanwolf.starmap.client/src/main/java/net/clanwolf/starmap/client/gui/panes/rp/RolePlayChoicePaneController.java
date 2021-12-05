@@ -104,7 +104,6 @@ public class RolePlayChoicePaneController extends AbstractC3RolePlayController i
 		btChoice2.setVisible(false);
 		btChoice3.setVisible(false);
 		btChoice4.setVisible(false);
-
 	}
 
 	/**
@@ -188,7 +187,8 @@ public class RolePlayChoicePaneController extends AbstractC3RolePlayController i
 
 			// play sound
 			if (rpStory.getStoryMP3() != null) {
-				C3SoundPlayer.play(BORolePlayStory.getRPG_Soundfile(rpStory), false);
+//				C3SoundPlayer.play(BORolePlayStory.getRPG_Soundfile(rpStory), false);
+				C3SoundPlayer.playRPSound(BORolePlayStory.getRPG_Soundfile(rpStory));
 			}
 
 			//TODO: append single chars step by step until the whole text is displaying

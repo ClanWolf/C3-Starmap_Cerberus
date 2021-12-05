@@ -248,6 +248,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	@FXML
 	private Label labelTFSProgress;
 
+	@FXML
+	Slider slVolumeControl;
+
 	// -------------------------------------------------------------------------
 	//
 	// Button hovering
@@ -1254,6 +1257,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		showMenuIndicator(false);
 
 		terminalPrompt.toFront();
+		slVolumeControl.toFront();
 		addActionCallBackListeners();
 	}
 
@@ -1501,74 +1505,6 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			counterWaitCursor++;
 		} finally{
 			counterWaitCursorLock.unlock();
-		}
-	}
-
-	/**
-	 * Here all the actions go in that need to be performed once the client is started up and showing
-	 */
-	private void startup() {
-		SpeechSpectrumAnimation();
-		NoiseAnimation();
-
-		noiseImage.toFront();
-		noiseImage.setVisible(true);
-		C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_welcome_message"));
-		C3SoundPlayer.play("/sound/fx/beep_02.mp3", false);
-		C3SoundPlayer.startMusic();
-
-		String tcphostname = C3Properties.getProperty(C3PROPS.TCP_HOSTNAME);
-		int tcpPort = Integer.parseInt(C3Properties.getProperty(C3PROPS.TCP_PORT));
-
-		// Start has been executed, app is running
-		setConsoleEntry("Initializing security context [encrypting]");
-		setConsoleEntry("Accessing");
-		setConsoleEntry("Access granted! [CBGGE88776]");
-		setConsoleEntry("Initializing C3-Network");
-		setConsoleEntry("Connecting to " + tcphostname + ":" + tcpPort + "...");
-
-		Server.checkServerStatusTask();
-		Server.checkDatabaseConnectionTask();
-
-		setConsoleEntry("Setting controll elements");
-
-		enableMainMenuButtons(Nexus.isLoggedIn(), Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN));
-
-		// Add values to the property file in case they are not present
-		// Do not change them if they are present
-
-		// encrypted
-		//ftp_password=DJ9G4ix1bYTy/K5QmR8jdQ==
-		//ftp_password_logupload=AsdSqD58lmfkL7oyS+oenQ==
-		//ftp_password_historyupload=ipmMIwmjxlpI1s7JJ1Ei6g==
-
-		if (C3Properties.getProperty(C3PROPS.FTP_USER).equals("unknown") || C3Properties.getProperty(C3PROPS.FTP_USER).equals("")) {
-			C3Properties.setProperty(C3PROPS.FTP_USER, "c3_client", true);
-		}
-		if (C3Properties.getProperty(C3PROPS.FTP_USER_LOGUPLOAD).equals("unknown") || C3Properties.getProperty(C3PROPS.FTP_USER_LOGUPLOAD).equals("")) {
-			C3Properties.setProperty(C3PROPS.FTP_USER_LOGUPLOAD, "c3_client_logupload", true);
-		}
-		if (C3Properties.getProperty(C3PROPS.FTP_USER_HISTORYUPLOAD).equals("unknown") || C3Properties.getProperty(C3PROPS.FTP_USER_HISTORYUPLOAD).equals("")) {
-			C3Properties.setProperty(C3PROPS.FTP_USER_HISTORYUPLOAD, "c3_client_historyupload", true);
-		}
-		if (C3Properties.getProperty(C3PROPS.FTP_PASSWORD).equals("unknown") || C3Properties.getProperty(C3PROPS.FTP_PASSWORD).equals("")) {
-			C3Properties.setProperty(C3PROPS.FTP_PASSWORD, "DJ9G4ix1bYTy/K5QmR8jdQ==", true, false);
-		}
-		if (C3Properties.getProperty(C3PROPS.FTP_PASSWORD_LOGUPLOAD).equals("unknown") || C3Properties.getProperty(C3PROPS.FTP_PASSWORD_LOGUPLOAD).equals("")) {
-			C3Properties.setProperty(C3PROPS.FTP_PASSWORD_LOGUPLOAD, "AsdSqD58lmfkL7oyS+oenQ==", true, false);
-		}
-		if (C3Properties.getProperty(C3PROPS.FTP_PASSWORD_HISTORYUPLOAD).equals("unknown") || C3Properties.getProperty(C3PROPS.FTP_PASSWORD_HISTORYUPLOAD).equals("")) {
-			C3Properties.setProperty(C3PROPS.FTP_PASSWORD_HISTORYUPLOAD, "ipmMIwmjxlpI1s7JJ1Ei6g==", true, false);
-		}
-
-		C3SoundPlayer.getSamples();
-
-		if (Nexus.promptNewVersionInstall) {
-			C3Message message = new C3Message(C3MESSAGES.DOWNLOAD_CLIENT);
-			String m = Internationalization.getString("app_new_version_available");
-			message.setText(m);
-			message.setType(C3MESSAGETYPES.YES_NO);
-			ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
 		}
 	}
 
@@ -1870,6 +1806,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					FadeInTransition.setOnFinished(event -> FadeOutTransition.play());
 
 					FadeInTransition.play();
+					slVolumeControl.toFront();
 				});
 				break;
 
@@ -1913,6 +1850,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				if (counterWaitCursor == 0) {
 					Platform.runLater(() -> {
 						mouseStopper.toFront();
+						slVolumeControl.toFront();
 						// mouseStopper.setBackground(null);
 						waitAnimationPane.showCircleAnimation(false);
 						mouseStopper.setMouseTransparent(true);
@@ -1920,6 +1858,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 						labelWaitText.setVisible(false);
 					});
 				}
+				slVolumeControl.toFront();
 				ActionManager.getAction(ACTIONS.ACTION_SUCCESSFULLY_EXECUTED).execute(o);
 				break;
 
@@ -1934,6 +1873,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				// C3Logger.info("Requesting WAIT cursor (" + counterWaitCursor + "). --> " + sourceIdRW);
 				Platform.runLater(() -> {
 					mouseStopper.toFront();
+					slVolumeControl.toFront();
 					// mouseStopper.setBackground(new Background(new BackgroundFill(Color.BLUE, new CornerRadii(0), Insets.EMPTY)));
 					waitAnimationPane.showCircleAnimation(true);
 					mouseStopper.setMouseTransparent(false);
@@ -1942,12 +1882,14 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					}
 					labelWaitText.setVisible(true);
 				});
+				slVolumeControl.toFront();
 				break;
 
 			case SHOW_MESSAGE:
 				if ((o != null) && (o.getObject() instanceof C3Message message)) {
 					showMessage(message);
 				}
+				slVolumeControl.toFront();
 				break;
 
 			case SHOW_MEDAL:
@@ -1958,6 +1900,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					Image med = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/gui/rewards/" + imageName + ".png")));
 					showMedal(med, desc);
 				}
+				slVolumeControl.toFront();
 				break;
 
 			case SHOW_POPUP:
@@ -1968,6 +1911,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					Image pop = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/gui/popups/" + imageName + ".png")));
 					showPopup(pop, desc);
 				}
+				slVolumeControl.toFront();
 				break;
 
 			case SET_TERMINAL_TEXT:
@@ -2007,6 +1951,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 			case ENABLE_MAIN_MENU_BUTTONS:
 				enableMainMenuButtons(Nexus.isLoggedIn(), Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN));
+				slVolumeControl.toFront();
 				break;
 
 			case SWITCH_TO_INVASION:
@@ -2078,6 +2023,83 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				break;
 		}
 		return true;
+	}
+
+	/**
+	 * Here all the actions go in that need to be performed once the client is started up and showing
+	 */
+	private void startup() {
+		SpeechSpectrumAnimation();
+		NoiseAnimation();
+
+		noiseImage.toFront();
+		noiseImage.setVisible(true);
+		C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_welcome_message"));
+		C3SoundPlayer.play("/sound/fx/beep_02.mp3", false);
+		C3SoundPlayer.startMusic();
+
+		String tcphostname = C3Properties.getProperty(C3PROPS.TCP_HOSTNAME);
+		int tcpPort = Integer.parseInt(C3Properties.getProperty(C3PROPS.TCP_PORT));
+
+		// Start has been executed, app is running
+		setConsoleEntry("Initializing security context [encrypting]");
+		setConsoleEntry("Accessing");
+		setConsoleEntry("Access granted! [CBGGE88776]");
+		setConsoleEntry("Initializing C3-Network");
+		setConsoleEntry("Connecting to " + tcphostname + ":" + tcpPort + "...");
+
+		Server.checkServerStatusTask();
+		Server.checkDatabaseConnectionTask();
+
+		setConsoleEntry("Setting controll elements");
+
+		enableMainMenuButtons(Nexus.isLoggedIn(), Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN));
+
+		// Add values to the property file in case they are not present
+		// Do not change them if they are present
+
+		// encrypted
+		//ftp_password=DJ9G4ix1bYTy/K5QmR8jdQ==
+		//ftp_password_logupload=AsdSqD58lmfkL7oyS+oenQ==
+		//ftp_password_historyupload=ipmMIwmjxlpI1s7JJ1Ei6g==
+
+		if (C3Properties.getProperty(C3PROPS.FTP_USER).equals("unknown") || C3Properties.getProperty(C3PROPS.FTP_USER).equals("")) {
+			C3Properties.setProperty(C3PROPS.FTP_USER, "c3_client", true);
+		}
+		if (C3Properties.getProperty(C3PROPS.FTP_USER_LOGUPLOAD).equals("unknown") || C3Properties.getProperty(C3PROPS.FTP_USER_LOGUPLOAD).equals("")) {
+			C3Properties.setProperty(C3PROPS.FTP_USER_LOGUPLOAD, "c3_client_logupload", true);
+		}
+		if (C3Properties.getProperty(C3PROPS.FTP_USER_HISTORYUPLOAD).equals("unknown") || C3Properties.getProperty(C3PROPS.FTP_USER_HISTORYUPLOAD).equals("")) {
+			C3Properties.setProperty(C3PROPS.FTP_USER_HISTORYUPLOAD, "c3_client_historyupload", true);
+		}
+		if (C3Properties.getProperty(C3PROPS.FTP_PASSWORD).equals("unknown") || C3Properties.getProperty(C3PROPS.FTP_PASSWORD).equals("")) {
+			C3Properties.setProperty(C3PROPS.FTP_PASSWORD, "DJ9G4ix1bYTy/K5QmR8jdQ==", true, false);
+		}
+		if (C3Properties.getProperty(C3PROPS.FTP_PASSWORD_LOGUPLOAD).equals("unknown") || C3Properties.getProperty(C3PROPS.FTP_PASSWORD_LOGUPLOAD).equals("")) {
+			C3Properties.setProperty(C3PROPS.FTP_PASSWORD_LOGUPLOAD, "AsdSqD58lmfkL7oyS+oenQ==", true, false);
+		}
+		if (C3Properties.getProperty(C3PROPS.FTP_PASSWORD_HISTORYUPLOAD).equals("unknown") || C3Properties.getProperty(C3PROPS.FTP_PASSWORD_HISTORYUPLOAD).equals("")) {
+			C3Properties.setProperty(C3PROPS.FTP_PASSWORD_HISTORYUPLOAD, "ipmMIwmjxlpI1s7JJ1Ei6g==", true, false);
+		}
+
+		C3SoundPlayer.getSamples();
+
+		if (Nexus.promptNewVersionInstall) {
+			C3Message message = new C3Message(C3MESSAGES.DOWNLOAD_CLIENT);
+			String m = Internationalization.getString("app_new_version_available");
+			message.setText(m);
+			message.setType(C3MESSAGETYPES.YES_NO);
+			ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
+		}
+
+		slVolumeControl.toFront();
+		slVolumeControl.setMin(0.0d);
+		slVolumeControl.setMax(1.0d);
+		slVolumeControl.setValue(0.5d);
+		Nexus.setMainFrameVolumeSlider(slVolumeControl);
+
+		Timer checkSystemClipboardForMWOResultTimer = new Timer();
+		checkSystemClipboardForMWOResultTimer.schedule(new CheckClipboardForMwoApi(), 1000, 1000 * 1);
 	}
 
 	private void showMessage(C3Message message) {

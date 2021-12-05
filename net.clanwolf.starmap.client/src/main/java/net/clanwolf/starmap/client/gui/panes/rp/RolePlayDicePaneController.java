@@ -204,7 +204,8 @@ public class RolePlayDicePaneController extends AbstractC3RolePlayController imp
 
 		// play sound
 		if (rpChar.getStoryMP3() != null) {
-			C3SoundPlayer.play(BORolePlayStory.getRPG_Soundfile(rpChar), false);
+//			C3SoundPlayer.play(BORolePlayStory.getRPG_Soundfile(rpChar), false);
+			C3SoundPlayer.playRPSound(BORolePlayStory.getRPG_Soundfile(rpChar));
 		}
 
 		taRpText.setText(rpChar.getStoryText());

@@ -6,6 +6,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -45,6 +46,7 @@
             </Label>
          </children>
       </VBox>
+      <Slider fx:id="slVolumeControl" layoutX="986.0" layoutY="132.0" orientation="VERTICAL" prefHeight="413.0" prefWidth="14.0" />
       <ProgressBar fx:id="TFSProgress" layoutX="173.0" layoutY="23.0" onMouseEntered="#handleTFSProgressEntered" onMouseExited="#handleTFSProgressExited" prefHeight="18.0" prefWidth="125.0" progress="0.56" visible="false" />
       <Label fx:id="gameInfoLabel" layoutX="422.0" layoutY="30.0" mouseTransparent="true" prefHeight="20.0" prefWidth="206.0" />
       <Label fx:id="terminalLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="567.0" layoutY="556.0" prefHeight="20.0" prefWidth="66.0" text="Terminal:" />

@@ -38,6 +38,7 @@ import javafx.util.Duration;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.net.HTTP;
+import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.util.C3PROPS;
 import net.clanwolf.starmap.client.util.C3Properties;
 import net.clanwolf.starmap.client.util.Internationalization;
@@ -59,11 +60,13 @@ public class C3SoundPlayer {
 	private static Media media = null;
 	private static MediaPlayer mediaPlayer = null;
 	private static MediaPlayer speechPlayer = null;
+	private static MediaPlayer rpPlayer = null;
 	private static double voiceVolume = 0.0;
 	private static double soundVolume = 0.0;
 	private static double musicVolume = 0.0;
 	private static HashMap<String, AudioClip> audioClipCache = new HashMap<>();
 	private static HashMap<String, Media> speechClipCache = new HashMap<>();
+	private static HashMap<String, Media> rpClipCache = new HashMap<>();
 
 	private static String languageSwitch = null;
 	private static String voiceSwitch = null;
@@ -192,6 +195,32 @@ public class C3SoundPlayer {
 		}
 	}
 
+	public static void playRPSound(final URL url) {
+		if (rpPlayer != null) {
+			rpPlayer.stop();
+			rpPlayer = null;
+		}
+		String urlString = url.toString();
+
+		Media rpClip;
+		if (rpClipCache.get(urlString) != null) {
+			C3Logger.info("Playing RP clip from memory cache.");
+			rpClip = rpClipCache.get(urlString);
+		} else {
+			C3Logger.info("Caching RP clip.");
+			rpClip = new Media(urlString);
+			rpClipCache.put(url.toString(), rpClip);
+		}
+		rpPlayer = new MediaPlayer(rpClip);
+		rpPlayer.setVolume(0.5d * 100);
+		rpPlayer.setVolume(voiceVolume);
+		if (Nexus.mainframeVolumeSlider != null) {
+			rpPlayer.volumeProperty().bindBidirectional(Nexus.mainframeVolumeSlider.valueProperty());
+		}
+//		rpPlayer.setOnEndOfMedia( () -> ActionManager.getAction(ACTIONS.STOP_SPEECH_SPECTRUM).execute() );
+		rpPlayer.play();
+	}
+
 	/**
 	 * Play sample from URL.
 	 *
@@ -301,6 +330,11 @@ public class C3SoundPlayer {
 	 */
 	public static void setVoiceVolume(double v) {
 		voiceVolume = v;
+		if (speechPlayer != null) {
+//			Platform.runLater(() -> {
+//				speechPlayer.setVolume(voiceVolume);
+//			});
+		}
 	}
 
 	/**

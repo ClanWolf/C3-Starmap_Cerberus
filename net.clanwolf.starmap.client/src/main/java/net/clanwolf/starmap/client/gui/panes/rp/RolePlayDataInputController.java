@@ -199,7 +199,8 @@ public class RolePlayDataInputController extends AbstractC3RolePlayController im
 
 		// play sound
 		if (rpStory.getStoryMP3() != null) {
-			C3SoundPlayer.play(BORolePlayStory.getRPG_Soundfile(rpStory), false);
+//			C3SoundPlayer.play(BORolePlayStory.getRPG_Soundfile(rpStory), false);
+			C3SoundPlayer.playRPSound(BORolePlayStory.getRPG_Soundfile(rpStory));
 		}
 
 		//TODO: append single chars step by step until the whole text is displaying
