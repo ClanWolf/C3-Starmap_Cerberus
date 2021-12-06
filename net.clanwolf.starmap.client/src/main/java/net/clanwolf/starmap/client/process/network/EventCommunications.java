@@ -127,7 +127,9 @@ public class EventCommunications {
 					session.onEvent(networkEventCheckDoubleLogin);
 
 					BOAttack att = Nexus.getCurrentAttackOfUser();
-					Nexus.setStoryBeforeSaving(att.getStoryId().longValue());
+					if (att != null) {
+						Nexus.setStoryBeforeSaving(att.getStoryId().longValue());
+					}
 
 					ActionManager.getAction(ACTIONS.LOGON_FINISHED_SUCCESSFULL).execute();
 					break;

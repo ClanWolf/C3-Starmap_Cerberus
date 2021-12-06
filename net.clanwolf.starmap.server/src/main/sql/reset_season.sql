@@ -19,12 +19,14 @@
 update c3._hh_round set round = 1, CurrentRoundStartDate = (select startdate from c3._hh_season where id = 1);
 
 ----- Delete all jumppoints -----
-delete * from c3._hh_routepoint;
+delete from _HH_ROUTEPOINT;
 
 ----- Delete all attacks, attack_characters , attack_vars -----
-delete * from c3._hh_attack;
-delete * from c3._hh_attack_character;
-delete * from c3._hh_attackvars;
+delete from _HH_ATTACK;
+delete from _HH_ATTACK_CHARACTER;
+delete from _HH_ATTACKVARS;
+
+commit;
 
 ----- StarSystemData
 update c3._hh_starsystemdata set factionid = factionID_start;
