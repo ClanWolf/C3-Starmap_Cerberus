@@ -418,10 +418,13 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		if (selectedChar != null && !selectedChar.getName().equals("...")) {
 			Long role = (characterRoleMap.get(selectedChar.getId())).getType();
 			boolean iAmDefenderCommander = characterRoleMap.get(Nexus.getCurrentChar().getId()).getType() == Constants.ROLE_DEFENDER_COMMANDER;
+			boolean iAmAttackerCommander = characterRoleMap.get(Nexus.getCurrentChar().getId()).getType() == Constants.ROLE_ATTACKER_COMMANDER;
 			boolean clickedWarriorIsSameFaction = role == Constants.ROLE_DEFENDER_WARRIOR;
 			boolean clickedWarriorIsOnline = Nexus.getUserIsOnline(selectedChar.getId());
 
-			btnToLeft.setDisable(!iAmDefenderCommander);
+			boolean mayMoveDefender = iAmDefenderCommander || iAmAttackerCommander; // Attacker commander may move everyone
+
+			btnToLeft.setDisable(!mayMoveDefender);
 			btnToRight.setDisable(true);
 			btnKick.setDisable(!iAmDefenderCommander);
 			btnKick.setDisable(characterRoleMap.get(Nexus.getCurrentChar().getId()).getType() != Constants.ROLE_DEFENDER_COMMANDER);

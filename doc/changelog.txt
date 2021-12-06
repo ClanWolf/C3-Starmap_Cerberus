@@ -24,9 +24,10 @@ If user does not have rights to move a dropship, he should not be able to move t
 
 Attacker commander may move characters in both directions (?)
 
-Check what happens if a finalize round finds open attack lobby
-
 #########################################################
+
+Version 5.9.0 (  xx  .12.2021)
+- CHANGED: Attacker commander may move defender warriors in lobby
 
 Version 5.8.9 (06.12.2021)
 - STARTED: Invasion pane
