@@ -81,7 +81,9 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 	@Override
 	public void addActionCallBackListeners() {
 		ActionManager.addActionCallbackListener(ACTIONS.START_ROLEPLAY, this);
+		ActionManager.addActionCallbackListener(ACTIONS.FINALIZE_ROUND, this);
 	}
+
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
@@ -133,6 +135,9 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 				// set current step of story
 				getStoryValues(getCurrentRP());
 			}
+			break;
+		case FINALIZE_ROUND:
+			checkToCancelInvasion();
 			break;
 		default:
 			break;

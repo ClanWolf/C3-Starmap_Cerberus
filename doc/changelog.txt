@@ -28,6 +28,12 @@ Check what happens if a finalize round finds open attack lobby
 
 #########################################################
 
+Version 5.8.9 (06.12.2021)
+- STARTED: Invasion pane
+
+Version 5.8.8 (06.12.2021)
+- FIXED: NullPointerException in invasion
+
 Version 5.8.7 (06.12.2021)
 - FIXED: Jumping between steps in an invasion scenario after restarting the client
 - CHANGED: Roleplay sounds now pause if the user moves away from the roleplay pane

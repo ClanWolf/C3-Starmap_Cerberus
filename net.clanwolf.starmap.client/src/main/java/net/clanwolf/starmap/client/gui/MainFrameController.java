@@ -45,6 +45,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import net.clanwolf.starmap.client.enums.C3MESSAGES;
+import net.clanwolf.starmap.client.gui.panes.AbstractC3RolePlayController;
 import net.clanwolf.starmap.client.gui.panes.chat.ChatPane;
 import net.clanwolf.starmap.client.gui.panes.dice.DicePane;
 import net.clanwolf.starmap.client.gui.panes.logging.LogPane;
@@ -250,6 +251,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 	@FXML
 	Slider slVolumeControl;
+
+	@FXML
+	ImageView ivMuteToggle;
 
 	// -------------------------------------------------------------------------
 	//
@@ -1719,6 +1723,16 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				currentlyDisplayedPane = (AbstractC3Pane) o.getObject();
 				ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("6");
 				paneTransitionInProgress = false;
+
+				Platform.runLater(() -> {
+					if (currentlyDisplayedPane instanceof RolePlayBasicPane) {
+						slVolumeControl.setVisible(true);
+						ivMuteToggle.setVisible(true);
+					} else {
+						slVolumeControl.setVisible(false);
+						ivMuteToggle.setVisible(false);
+					}
+				});
 				break;
 
 			case PANE_DESTROY_CURRENT:
@@ -1863,7 +1877,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 						labelWaitText.setVisible(false);
 					});
 				}
-				slVolumeControl.toFront();
+				Platform.runLater(() -> {
+					slVolumeControl.toFront();
+				});
 				ActionManager.getAction(ACTIONS.ACTION_SUCCESSFULLY_EXECUTED).execute(o);
 				break;
 
@@ -1887,14 +1903,18 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					}
 					labelWaitText.setVisible(true);
 				});
-				slVolumeControl.toFront();
+				Platform.runLater(() -> {
+					slVolumeControl.toFront();
+				});
 				break;
 
 			case SHOW_MESSAGE:
 				if ((o != null) && (o.getObject() instanceof C3Message message)) {
 					showMessage(message);
 				}
-				slVolumeControl.toFront();
+				Platform.runLater(() -> {
+					slVolumeControl.toFront();
+				});
 				break;
 
 			case SHOW_MEDAL:
@@ -1905,7 +1925,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					Image med = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/gui/rewards/" + imageName + ".png")));
 					showMedal(med, desc);
 				}
-				slVolumeControl.toFront();
+				Platform.runLater(() -> {
+					slVolumeControl.toFront();
+				});
 				break;
 
 			case SHOW_POPUP:
@@ -1916,7 +1938,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					Image pop = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/gui/popups/" + imageName + ".png")));
 					showPopup(pop, desc);
 				}
-				slVolumeControl.toFront();
+				Platform.runLater(() -> {
+					slVolumeControl.toFront();
+				});
 				break;
 
 			case SET_TERMINAL_TEXT:
@@ -1956,7 +1980,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 			case ENABLE_MAIN_MENU_BUTTONS:
 				enableMainMenuButtons(Nexus.isLoggedIn(), Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN));
-				slVolumeControl.toFront();
+				Platform.runLater(() -> {
+					slVolumeControl.toFront();
+				});
 				break;
 
 			case SWITCH_TO_INVASION:
@@ -2100,14 +2126,15 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
 		}
 
-		slVolumeControl.toFront();
-		slVolumeControl.setMin(0.0d);
-		slVolumeControl.setMax(1.0d);
-		slVolumeControl.setValue(0.5d);
-		Nexus.setMainFrameVolumeSlider(slVolumeControl);
-
-		Timer checkSystemClipboardForMWOResultTimer = new Timer();
-		checkSystemClipboardForMWOResultTimer.schedule(new CheckClipboardForMwoApi(), 1000, 1000 * 1);
+		Platform.runLater(() -> {
+			slVolumeControl.toFront();
+			slVolumeControl.setMin(0.0d);
+			slVolumeControl.setMax(1.0d);
+			slVolumeControl.setValue(0.5d);
+			Nexus.setMainFrameVolumeSlider(slVolumeControl);
+			Timer checkSystemClipboardForMWOResultTimer = new Timer();
+			checkSystemClipboardForMWOResultTimer.schedule(new CheckClipboardForMwoApi(), 1000, 1000 * 1);
+		});
 	}
 
 	private void showMessage(C3Message message) {

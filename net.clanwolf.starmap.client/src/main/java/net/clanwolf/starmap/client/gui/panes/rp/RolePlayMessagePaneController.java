@@ -91,6 +91,7 @@ public class RolePlayMessagePaneController extends AbstractC3RolePlayController 
 	@Override
 	public void addActionCallBackListeners() {
 		ActionManager.addActionCallbackListener(ACTIONS.START_ROLEPLAY, this);
+		ActionManager.addActionCallbackListener(ACTIONS.FINALIZE_ROUND, this);
 	}
 
 	@Override
@@ -111,6 +112,10 @@ public class RolePlayMessagePaneController extends AbstractC3RolePlayController 
 	public boolean handleAction(ACTIONS action, ActionObject o) {
 		if(anchorPane != null && !anchorPane.isVisible()) return true;
 		switch (action) {
+
+		case FINALIZE_ROUND:
+			checkToCancelInvasion();
+			break;
 
 		case START_ROLEPLAY:
 			if(ROLEPLAYENTRYTYPES.C3_RP_STEP_V7 == o.getObject()) {

@@ -30,6 +30,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
@@ -37,6 +38,7 @@ import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
 import net.clanwolf.starmap.client.process.universe.BOAttack;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
+import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.transfer.dtos.AttackDTO;
 import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
 import net.clanwolf.starmap.transfer.dtos.RolePlayStoryDTO;
@@ -70,6 +72,13 @@ public abstract class AbstractC3RolePlayController implements Initializable, Act
 
 	public abstract void getStoryValues(RolePlayStoryDTO rpStory);
 
+	public void checkToCancelInvasion() {
+		if (isAttackRP()) { // this is not a character roleplay pane --> AttackPane
+			C3Logger.info("The round has been finalized. This roleplay session needs to be canceled.");
+			ActionManager.getAction(ACTIONS.SWITCH_TO_MAP).execute();
+		}
+	}
+
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		boRp = new BORolePlayStory();
@@ -101,6 +110,14 @@ public abstract class AbstractC3RolePlayController implements Initializable, Act
 
 	public void setIsCharRP(boolean isCharRP){
 		this.isCharRP = isCharRP;
+	}
+
+	public boolean isCharRP() {
+		return isCharRP;
+	}
+
+	public boolean isAttackRP() {
+		return !isCharRP;
 	}
 
 	protected RolePlayStoryDTO getCurrentRP(){
