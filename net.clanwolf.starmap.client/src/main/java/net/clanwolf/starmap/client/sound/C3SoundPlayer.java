@@ -68,6 +68,8 @@ public class C3SoundPlayer {
 	private static HashMap<String, Media> speechClipCache = new HashMap<>();
 	private static HashMap<String, Media> rpClipCache = new HashMap<>();
 
+	private static String lastRolePlaySampleURL = "";
+
 	private static String languageSwitch = null;
 	private static String voiceSwitch = null;
 
@@ -195,12 +197,32 @@ public class C3SoundPlayer {
 		}
 	}
 
-	public static void playRPSound(final URL url) {
+	public static void pauseRPSound() {
 		if (rpPlayer != null) {
-			rpPlayer.stop();
-			rpPlayer = null;
+			rpPlayer.pause();
 		}
+	}
+
+	public static void playRPSound(final URL url) {
+		boolean playerPaused = false;
 		String urlString = url.toString();
+
+		if (rpPlayer != null) {
+			if (!lastRolePlaySampleURL.equals(urlString)) {
+				// This is a new sample. Another step was activated
+				// The old sample is outdated and the new one must be loaded
+				// TODO: Should it be started right away to make the user aware of this?
+				rpPlayer.stop();
+			}
+			if (rpPlayer.getStatus().equals(MediaPlayer.Status.PAUSED)) {
+				playerPaused = true;
+				rpPlayer.play(); // continue the last sample that was paused by changing the pane
+				return;
+			} else {
+				rpPlayer.stop();
+				rpPlayer = null;
+			}
+		}
 
 		Media rpClip;
 		if (rpClipCache.get(urlString) != null) {
@@ -218,6 +240,7 @@ public class C3SoundPlayer {
 			rpPlayer.volumeProperty().bindBidirectional(Nexus.mainframeVolumeSlider.valueProperty());
 		}
 //		rpPlayer.setOnEndOfMedia( () -> ActionManager.getAction(ACTIONS.STOP_SPEECH_SPECTRUM).execute() );
+		lastRolePlaySampleURL = url.toString();
 		rpPlayer.play();
 	}
 

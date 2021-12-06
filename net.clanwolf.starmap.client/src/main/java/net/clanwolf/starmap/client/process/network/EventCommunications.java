@@ -126,6 +126,9 @@ public class EventCommunications {
 					NetworkEvent networkEventCheckDoubleLogin = Events.networkEvent(stateCheckDoubleLogin);
 					session.onEvent(networkEventCheckDoubleLogin);
 
+					BOAttack att = Nexus.getCurrentAttackOfUser();
+					Nexus.setStoryBeforeSaving(att.getStoryId().longValue());
+
 					ActionManager.getAction(ACTIONS.LOGON_FINISHED_SUCCESSFULL).execute();
 					break;
 
@@ -294,6 +297,7 @@ public class EventCommunications {
 					break;
 				case FINALIZE_ROUND:
 					C3Logger.info("Server did finalize round.");
+					ActionManager.getAction(ACTIONS.FINALIZE_ROUND).execute();
 					break;
 				default:
 					break;

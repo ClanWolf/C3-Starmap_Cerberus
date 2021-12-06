@@ -995,6 +995,11 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					if (!"".equals(sm)) {
 						C3SoundPlayer.getTTSFile(sm);
 					}
+
+					if (!targetPane.getPaneName().equals("RolePlayBasicPane")) {
+						C3SoundPlayer.pauseRPSound();
+					}
+
 				}
 			} else {
 				if (currentlyDisplayedPane == targetPane) {
@@ -1978,6 +1983,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					moveMenuIndicator(menuIndicatorPos);
 				}
 
+				// If this happens, we have been dropping out of an invasion lobby or game.
+				// Either the round was finalized or we have been kicked from the lobby.
+				// Anyway, we can not just click on the attack-button at this point.
 				attackButton.setDisable(true);
 				break;
 

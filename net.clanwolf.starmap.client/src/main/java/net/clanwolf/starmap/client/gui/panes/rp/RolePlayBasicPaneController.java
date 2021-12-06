@@ -68,6 +68,7 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 		ActionManager.addActionCallbackListener(ACTIONS.CHANGE_LANGUAGE, this);
 		ActionManager.addActionCallbackListener(ACTIONS.PANE_CREATION_FINISHED, this);
 		ActionManager.addActionCallbackListener(ACTIONS.ROLEPLAY_NEXT_STEP_CHANGE_PANE, this);
+		ActionManager.addActionCallbackListener(ACTIONS.FINALIZE_ROUND, this);
 	}
 
 	@Override
@@ -94,6 +95,14 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 				C3Logger.debug("Choose now the next step of story!");
 				loadScreen();
 				break;
+			case FINALIZE_ROUND:
+
+				// TODO: If this is an invasion roleplay pane, we need to kick the player from this game
+				// because this invasion was solved by the end-of-round script on the server and on client
+				// side this needs to be canceled.
+
+				C3Logger.info("The round has been finalized. This roleplay session needs to be canceled.");
+				ActionManager.getAction(ACTIONS.SWITCH_TO_MAP).execute();
 			default:
 				break;
 		}

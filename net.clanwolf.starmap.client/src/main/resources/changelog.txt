@@ -26,13 +26,11 @@ Attacker commander may move characters in both directions (?)
 
 Check what happens if a finalize round finds open attack lobby
 
-Open doors:
-- Checking clipboard for MWO API checks
-- Global shortcut buttons (for "continue" while ingame e.g.)
-- TeamSpeak API
-- IRC API
-
 #########################################################
+
+Version 5.8.7 (  xx  .12.2021)
+- FIXED: Jumping between steps in an invasion scenario after restarting the client
+- CHANGED: Roleplay sounds now pause if the user moves away from the roleplay pane
 
 Version 5.8.6 (05.12.2021)
 - ADDED: Striken text / tooltip for offline users in lobby
