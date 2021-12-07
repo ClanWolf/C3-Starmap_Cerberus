@@ -1873,6 +1873,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 						// mouseStopper.setBackground(null);
 						waitAnimationPane.showCircleAnimation(false);
 						mouseStopper.setMouseTransparent(true);
+						//labelWaitText.setContentDisplay(ContentDisplay.CENTER);
 						labelWaitText.setText("");
 						labelWaitText.setVisible(false);
 					});

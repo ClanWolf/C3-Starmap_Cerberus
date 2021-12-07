@@ -568,6 +568,8 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 				break;
 
 			case CLIENT_INSTALLER_DOWNLOAD_COMPLETE:
+				ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute();
+
 				try {
 					File dir = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "update");
 
@@ -584,30 +586,34 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 							C3Logger.info("Trying to install new version. If this fails, try manually to run:");
 							C3Logger.info("cmd.exe "
 									+ "/c "
+									//+ "start "
 									+ dir + File.separator + installerName
 									+ " > "
 									+ System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "update" + File.separator + installerName + ".log"
-									+ " 2>&1");
+									//+ " 2>&1");
+									+ " > nul 2>&1");
 							ProcessBuilder processBuilder = new ProcessBuilder(
 									"cmd.exe ",
 									"/c ",
+									//"start ",
 									dir + File.separator + installerName,
 									" > ",
 									System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "update" + File.separator + installerName + ".log",
-									" 2>&1");
+									//" 2>&1");
+									" > nul 2>&1");
 							Process process = processBuilder.start();
 
-							C3Logger.info("--- Output start (may be empty, if exe is not printing anything) ---");
-							BufferedReader reader =	new BufferedReader(new InputStreamReader(process.getInputStream()));
-							StringBuilder builder = new StringBuilder();
-							String line;
-							while ( (line = reader.readLine()) != null) {
-								builder.append(line);
-								builder.append(System.getProperty("line.separator"));
-							}
-							String result = builder.toString();
-							C3Logger.debug(result);
-							C3Logger.info("--- Output end ---");
+//							C3Logger.info("--- Output start (may be empty, if exe is not printing anything) ---");
+//							BufferedReader reader =	new BufferedReader(new InputStreamReader(process.getInputStream()));
+//							StringBuilder builder = new StringBuilder();
+//							String line;
+//							while ( (line = reader.readLine()) != null) {
+//								builder.append(line);
+//								builder.append(System.getProperty("line.separator"));
+//							}
+//							String result = builder.toString();
+//							C3Logger.debug(result);
+//							C3Logger.info("--- Output end ---");
 
 							C3Logger.info("Closing C3 client for installation...");
 							System.exit(0);

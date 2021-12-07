@@ -26,7 +26,11 @@ Attacker commander may move characters in both directions (?)
 
 #########################################################
 
-Version 5.9.0 (  xx  .12.2021)
+Version 5.9.3 (07.12.2021)
+- FIXED: Update process, launching installer, exiting client
+
+Version 5.9.0 (07.12.2021)
+- FIXED: NullPointer in clipboard monitoring
 - CHANGED: Attacker commander may move defender warriors in lobby
 
 Version 5.8.9 (06.12.2021)
