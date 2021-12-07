@@ -26,6 +26,9 @@ Attacker commander may move characters in both directions (?)
 
 #########################################################
 
+Version 5.9.4 (07.12.2021)
+- ADDED: Code-signing certification to the installer executable build script
+
 Version 5.9.3 (07.12.2021)
 - FIXED: Update process, launching installer, exiting client
 
