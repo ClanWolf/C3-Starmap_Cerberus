@@ -1,30 +1,11 @@
 C3 version history
-----------------
+--------------------------------
 
-01 CREATED
-02 UPDATED
-03 ADDED
-04 FIXED
-05 CHANGED
-06 REMOVED
-07 STARTED
-08 PREPARED
-
-#########################################################
-
-TODO:
-Change table AttackType
-1 | PA | CL v IS | Planetary Assault CL vs IS | 19,20,21
-2 | PA | IS v IS | Planetary Assault IS vs IS | 22,24,29
-From this number one is to choose to enter as entry point for a starting invasion lobby.
-
-If the attacker commander leaves the lobby, all attackcharacters are deleted and removed from the lobby (lobby closed)
-
-If user does not have rights to move a dropship, he should not be able to move the ship icon and the jump button should be disabled (?)
-
-Attacker commander may move characters in both directions (?)
-
-#########################################################
+Version 5.9.5 (09.12.2021)
+- ADDED: A startup executable that will avoid the cmd window on running the client
+- ADDED: The additional option (shortcut) to start the client with the console window (for troubleshooting)
+- CHANGED: License will be shown to agree on installation
+- CHANGED: Client will start after installation has finished
 
 Version 5.9.4 (07.12.2021)
 - ADDED: Code-signing certification to the installer executable build script
@@ -199,3 +180,12 @@ Version: 5.3.0 (10.09.2021)
 ---
 
 Started changelog with version 5.3.0.
+
+01 CREATED
+02 UPDATED
+03 ADDED
+04 FIXED
+05 CHANGED
+06 REMOVED
+07 STARTED
+08 PREPARED

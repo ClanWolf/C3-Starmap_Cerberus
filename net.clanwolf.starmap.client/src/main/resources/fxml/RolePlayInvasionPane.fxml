@@ -2,12 +2,16 @@
 
 <?import java.net.URL?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.shape.Circle?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="RolePlayStartPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/15.0.1" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.RolePlayChoicePaneController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="RolePlayStartPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/17" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.RolePlayChoicePaneController">
     <children>
       <ImageView fx:id="templateBackground" fitHeight="567.0" fitWidth="944.0" layoutX="-70.0" layoutY="-22.0" mouseTransparent="true" opacity="0.74" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
@@ -16,11 +20,27 @@
       </ImageView>
       <ImageView fx:id="rpImage" fitHeight="150.0" fitWidth="46.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true" visible="false" />
       <ImageView fx:id="backgroundImage" fitHeight="490.0" fitWidth="785.0" layoutX="58.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" />
-      <TextArea fx:id="taRpText" layoutX="59.0" layoutY="8.0" prefHeight="318.0" prefWidth="784.0" styleClass="contentTextAreaBlock" wrapText="true" />
-      <Button fx:id="btChoice1" layoutX="59.0" layoutY="331.0" mnemonicParsing="false" onAction="#handleOnActionbtChoice1" opacity="0.8" prefHeight="36.0" prefWidth="784.0" text="btChoice1" />
-      <Button fx:id="btChoice2" layoutX="59.0" layoutY="373.0" mnemonicParsing="false" onAction="#handleOnActionbtChoice2" opacity="0.8" prefHeight="36.0" prefWidth="784.0" text="btChoice2" />
-      <Button fx:id="btChoice3" layoutX="59.0" layoutY="416.0" mnemonicParsing="false" onAction="#handleOnActionbtChoice3" opacity="0.8" prefHeight="36.0" prefWidth="784.0" text="btChoice3" />
-      <Button fx:id="btChoice4" layoutX="59.0" layoutY="458.0" mnemonicParsing="false" onAction="#handleOnActionbtChoice4" opacity="0.8" prefHeight="36.0" prefWidth="784.0" text="btChoice4" />
+      <TextArea fx:id="taRpText" layoutX="59.0" layoutY="8.0" prefHeight="318.0" prefWidth="784.0" styleClass="contentTextAreaBlock" stylesheets="@../styles/MainFrameStyle.css" wrapText="true" />
+      <Button fx:id="btChoice1" layoutX="59.0" layoutY="331.0" mnemonicParsing="false" onAction="#handleOnActionbtChoice1" opacity="0.8" prefHeight="36.0" prefWidth="599.0" styleClass="contentButtonBlue" stylesheets="@../styles/MainFrameStyle.css" text="btChoice1" />
+      <Button fx:id="btChoice2" layoutX="59.0" layoutY="373.0" mnemonicParsing="false" onAction="#handleOnActionbtChoice2" opacity="0.8" prefHeight="36.0" prefWidth="599.0" styleClass="contentButtonRed" stylesheets="@../styles/MainFrameStyle.css" text="btChoice2" />
+      <Button fx:id="btChoice3" layoutX="59.0" layoutY="416.0" mnemonicParsing="false" onAction="#handleOnActionbtChoice3" opacity="0.8" prefHeight="36.0" prefWidth="599.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css" text="btChoice3" />
+      <Button fx:id="btChoice4" layoutX="59.0" layoutY="458.0" mnemonicParsing="false" onAction="#handleOnActionbtChoice4" opacity="0.8" prefHeight="36.0" prefWidth="599.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css" text="btChoice4" />
+      <TableView layoutX="662.0" layoutY="298.0" prefHeight="196.0" prefWidth="181.0" stylesheets="@../styles/MainFrameStyle.css">
+        <columns>
+          <TableColumn prefWidth="75.0" text="C1" />
+          <TableColumn prefWidth="75.0" text="C2" />
+        </columns>
+      </TableView>
+      <Pane layoutX="60.0" layoutY="6.0" prefHeight="54.0" prefWidth="205.0">
+         <children>
+            <Circle fill="DODGERBLUE" layoutX="176.0" layoutY="27.0" radius="18.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fill="DODGERBLUE" layoutX="32.0" layoutY="27.0" radius="18.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fill="DODGERBLUE" layoutX="140.0" layoutY="27.0" radius="18.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fill="DODGERBLUE" layoutX="104.0" layoutY="27.0" radius="18.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fill="DODGERBLUE" layoutX="68.0" layoutY="27.0" radius="18.0" stroke="BLACK" strokeType="INSIDE" />
+         </children>
+      </Pane>
+      <ImageView fitHeight="205.0" fitWidth="205.0" layoutX="63.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true" />
     </children>
     <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />

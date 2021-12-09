@@ -42,7 +42,8 @@ public class CheckClipboardForMwoApi extends TimerTask {
 	private String currentContent = "";
 
 	public CheckClipboardForMwoApi() {
-
+		previousContent = "";
+		currentContent = "";
 	}
 
 	@Override
