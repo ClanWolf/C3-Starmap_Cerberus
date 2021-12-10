@@ -172,7 +172,7 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 					changePaneAndController(ROLEPLAYENTRYTYPES.C3_RP_STEP_V8, "/fxml/RolePlayPrepareBattlePane.fxml");
 					break;
 				case C3_RP_STEP_V9:
-					changePaneAndController(ROLEPLAYENTRYTYPES.C3_RP_STEP_V8, "/fxml/RolePlayInvasionPane.fxml");
+					changePaneAndController(ROLEPLAYENTRYTYPES.C3_RP_STEP_V9, "/fxml/RolePlayInvasionPane.fxml");
 					break;
 				default:
 					break;

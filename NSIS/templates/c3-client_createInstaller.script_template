@@ -13,6 +13,7 @@ REM PAUSE
 
 ECHO Copying launcher exe
 COPY C:\c3\projects\C3-Starmap_Cerberus\NSIS\client_launcher_executable\C3-Starmap_Cerberus.exe_ C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\target\jlink-image\bin\C3-Starmap_Cerberus.exe
+REM PAUSE
 
 IF EXIST "C:\Program Files\Java\jdk-###JAVA_VERSION_PATH###\bin\java.exe" (
   ECHO Java found

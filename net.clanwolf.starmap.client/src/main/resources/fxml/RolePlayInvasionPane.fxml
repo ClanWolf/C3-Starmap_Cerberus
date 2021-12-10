@@ -2,8 +2,6 @@
 
 <?import java.net.URL?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -18,29 +16,71 @@
             <Image url="@../images/template_bg.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="rpImage" fitHeight="150.0" fitWidth="46.0" layoutX="14.0" layoutY="8.0" pickOnBounds="true" preserveRatio="true" visible="false" />
+      <ImageView fx:id="rpImage" fitHeight="253.0" fitWidth="205.0" layoutX="85.0" layoutY="66.0" pickOnBounds="true" preserveRatio="true" visible="false" />
       <ImageView fx:id="backgroundImage" fitHeight="490.0" fitWidth="785.0" layoutX="58.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" />
       <TextArea fx:id="taRpText" layoutX="59.0" layoutY="8.0" prefHeight="318.0" prefWidth="784.0" styleClass="contentTextAreaBlock" stylesheets="@../styles/MainFrameStyle.css" wrapText="true" />
-      <Button fx:id="btChoice1" layoutX="59.0" layoutY="331.0" mnemonicParsing="false" onAction="#handleOnActionbtChoice1" opacity="0.8" prefHeight="36.0" prefWidth="599.0" styleClass="contentButtonBlue" stylesheets="@../styles/MainFrameStyle.css" text="btChoice1" />
-      <Button fx:id="btChoice2" layoutX="59.0" layoutY="373.0" mnemonicParsing="false" onAction="#handleOnActionbtChoice2" opacity="0.8" prefHeight="36.0" prefWidth="599.0" styleClass="contentButtonRed" stylesheets="@../styles/MainFrameStyle.css" text="btChoice2" />
-      <Button fx:id="btChoice3" layoutX="59.0" layoutY="416.0" mnemonicParsing="false" onAction="#handleOnActionbtChoice3" opacity="0.8" prefHeight="36.0" prefWidth="599.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css" text="btChoice3" />
-      <Button fx:id="btChoice4" layoutX="59.0" layoutY="458.0" mnemonicParsing="false" onAction="#handleOnActionbtChoice4" opacity="0.8" prefHeight="36.0" prefWidth="599.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css" text="btChoice4" />
-      <TableView layoutX="662.0" layoutY="298.0" prefHeight="196.0" prefWidth="181.0" stylesheets="@../styles/MainFrameStyle.css">
-        <columns>
-          <TableColumn prefWidth="75.0" text="C1" />
-          <TableColumn prefWidth="75.0" text="C2" />
-        </columns>
-      </TableView>
-      <Pane layoutX="60.0" layoutY="6.0" prefHeight="54.0" prefWidth="205.0">
+      <Button fx:id="btChoice1" layoutX="58.0" layoutY="344.0" mnemonicParsing="false" onAction="#handleOnActionbtChoice1" opacity="0.8" prefHeight="37.0" prefWidth="676.0" styleClass="contentButtonBlue" stylesheets="@../styles/MainFrameStyle.css" text="btChoice1" />
+      <Button fx:id="btChoice2" layoutX="58.0" layoutY="382.0" mnemonicParsing="false" onAction="#handleOnActionbtChoice2" opacity="0.8" prefHeight="37.0" prefWidth="676.0" styleClass="contentButtonRed" stylesheets="@../styles/MainFrameStyle.css" text="btChoice2" />
+      <Button fx:id="btChoice3" layoutX="58.0" layoutY="420.0" mnemonicParsing="false" onAction="#handleOnActionbtChoice3" opacity="0.8" prefHeight="37.0" prefWidth="676.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css" text="btChoice3" />
+      <Button fx:id="btChoice4" layoutX="58.0" layoutY="458.0" mnemonicParsing="false" onAction="#handleOnActionbtChoice4" opacity="0.8" prefHeight="37.0" prefWidth="676.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css" text="btChoice4" />
+      <Pane layoutX="58.0" layoutY="283.0" prefHeight="44.0" prefWidth="149.0">
          <children>
-            <Circle fill="DODGERBLUE" layoutX="176.0" layoutY="27.0" radius="18.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="DODGERBLUE" layoutX="32.0" layoutY="27.0" radius="18.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="DODGERBLUE" layoutX="140.0" layoutY="27.0" radius="18.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="DODGERBLUE" layoutX="104.0" layoutY="27.0" radius="18.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="DODGERBLUE" layoutX="68.0" layoutY="27.0" radius="18.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fill="DODGERBLUE" layoutX="122.0" layoutY="21.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fill="DODGERBLUE" layoutX="26.0" layoutY="21.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fill="DODGERBLUE" layoutX="98.0" layoutY="21.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fill="DODGERBLUE" layoutX="74.0" layoutY="21.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fill="DODGERBLUE" layoutX="50.0" layoutY="21.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
          </children>
       </Pane>
-      <ImageView fitHeight="205.0" fitWidth="205.0" layoutX="63.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fitHeight="37.0" fitWidth="36.0" layoutX="742.0" layoutY="344.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icons/success.png" />
+         </image></ImageView>
+      <ImageView fitHeight="37.0" fitWidth="36.0" layoutX="742.0" layoutY="382.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icons/success.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="37.0" fitWidth="36.0" layoutX="742.0" layoutY="420.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icons/success.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="37.0" fitWidth="36.0" layoutX="742.0" layoutY="458.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icons/success.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="37.0" fitWidth="36.0" layoutX="742.0" layoutY="287.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/logos/factions/FRR.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="37.0" fitWidth="36.0" layoutX="791.0" layoutY="344.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icons/success.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="37.0" fitWidth="36.0" layoutX="791.0" layoutY="382.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icons/success.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="37.0" fitWidth="36.0" layoutX="791.0" layoutY="420.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icons/success.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="37.0" fitWidth="36.0" layoutX="791.0" layoutY="458.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icons/success.png" />
+         </image>
+      </ImageView>
+      <ImageView fitHeight="37.0" fitWidth="36.0" layoutX="791.0" layoutY="287.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/logos/factions/LC.png" />
+         </image>
+      </ImageView>
     </children>
     <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
