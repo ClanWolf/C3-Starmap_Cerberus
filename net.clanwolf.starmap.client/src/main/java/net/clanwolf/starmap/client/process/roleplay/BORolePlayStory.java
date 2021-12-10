@@ -703,6 +703,15 @@ public class BORolePlayStory {
 				ret = true;
 			}
 		}
+
+		if (activeStory != null && activeStory.getVar9ID() != null) {
+
+			if ((activeStory.getVar9ID().getOption1StoryID() != null && activeStory.getVar9ID().getOption1StoryID().equals(nextStep.getId()))
+					|| (activeStory.getVar9ID().getOption2StoryID() != null && activeStory.getVar9ID().getOption2StoryID().equals(nextStep.getId()))
+					|| (activeStory.getVar9ID().getOption3StoryID() != null && activeStory.getVar9ID().getOption3StoryID().equals(nextStep.getId()))) {
+				ret = true;
+			}
+		}
 		return ret;
 
 	}
@@ -748,10 +757,14 @@ public class BORolePlayStory {
 				&& (story.getVar7ID().getNextStepID() == null )) {
 			nextStepFound = true;
 
+		} else if(story != null  && story.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V9
+				&& story.getVar9ID().getOption1StoryID() == null ) {
+			nextStepFound = true;
 		}
 
-		
-		return nextStepFound;
+
+
+			return nextStepFound;
 	}
 
 	/*--************** Send networkevents **************--*/

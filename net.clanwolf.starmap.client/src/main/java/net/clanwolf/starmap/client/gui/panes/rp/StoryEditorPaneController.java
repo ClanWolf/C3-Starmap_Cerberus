@@ -920,7 +920,8 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 
 		// Tab for story path selection
 		if (selected != null && ( cbStoryVarianten.getSelectionModel().getSelectedItem() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V2 ||
-				cbStoryVarianten.getSelectionModel().getSelectedItem() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V5)) {
+				cbStoryVarianten.getSelectionModel().getSelectedItem() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V5 ||
+				cbStoryVarianten.getSelectionModel().getSelectedItem() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V9)) {
 			if (!tabPaneStory.getTabs().contains(tabBasic4)) {
 				tabPaneStory.getTabs().add(tabBasic4);
 			}
@@ -1508,6 +1509,29 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 				cbNextStepV7.setValue(null);
 				cbFaction.setValue(null);
 			}
+
+			// set data for story variante 9
+			if ((selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V9) && selected.getValue().getVar9ID() != null) {
+				tfStoryPath1.setText(selected.getValue().getVar9ID().getOption1Text());
+				tfStoryPath2.setText(selected.getValue().getVar9ID().getOption2Text());
+				tfStoryPath3.setText(selected.getValue().getVar9ID().getOption3Text());
+				tfStoryPath4.setText(selected.getValue().getVar9ID().getOption4Text());
+
+				cbStoryPath1.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getVar9ID().getOption1StoryID()));
+				cbStoryPath2.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getVar9ID().getOption2StoryID()));
+				cbStoryPath3.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getVar9ID().getOption3StoryID()));
+				cbStoryPath4.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getVar9ID().getOption4StoryID()));
+
+			} else {
+				cbStoryPath1.setValue(null);
+				cbStoryPath2.setValue(null);
+				cbStoryPath3.setValue(null);
+				cbStoryPath4.setValue(null);
+				tfStoryPath1.clear();
+				tfStoryPath2.clear();
+				tfStoryPath3.clear();
+				tfStoryPath4.clear();
+			}
 		}
 	}
 
@@ -1772,6 +1796,47 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 			rp.setVar7ID(rpVar7);
 		} else {
 			rp.setVar7ID(null);
+		}
+
+		// set data for variante 9
+		if (rp.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V9) {
+
+			RolePlayStoryVar9DTO rpVar9 = rp.getVar9ID();
+			if (rpVar9 == null) {
+				rpVar9 = new RolePlayStoryVar9DTO();
+				rpVar9.setStory(rp.getId());
+			}
+
+			if (cbStoryPath1.getValue() != null) {
+				rpVar9.setOption1StoryID(cbStoryPath1.getValue().getId());
+			} else {
+				rpVar9.setOption1StoryID(null);
+			}
+			if (cbStoryPath2.getValue() != null) {
+				rpVar9.setOption2StoryID(cbStoryPath2.getValue().getId());
+			} else {
+				rpVar9.setOption2StoryID(null);
+			}
+			if (cbStoryPath3.getValue() != null) {
+				rpVar9.setOption3StoryID(cbStoryPath3.getValue().getId());
+			} else {
+				rpVar9.setOption3StoryID(null);
+			}
+			if (cbStoryPath4.getValue() != null) {
+				rpVar9.setOption4StoryID(cbStoryPath4.getValue().getId());
+			} else {
+				rpVar9.setOption4StoryID(null);
+			}
+
+			rpVar9.setOption1Text(tfStoryPath1.getText());
+			rpVar9.setOption2Text(tfStoryPath2.getText());
+			rpVar9.setOption3Text(tfStoryPath3.getText());
+			rpVar9.setOption4Text(tfStoryPath4.getText());
+
+			rp.setVar9ID(rpVar9);
+
+		} else {
+			rp.setVar9ID(null);
 		}
 
 		return rp;
