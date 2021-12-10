@@ -48,7 +48,9 @@ public enum ROLEPLAYENTRYTYPES {
 
 	C3_RP_STEP_V7("Step Message"),
 
-	C3_RP_STEP_V8("Step prepare battle");
+	C3_RP_STEP_V8("Step prepare battle"),
+
+	C3_RP_STEP_V9("Step invasion drop");
 
 	private final String label;
 

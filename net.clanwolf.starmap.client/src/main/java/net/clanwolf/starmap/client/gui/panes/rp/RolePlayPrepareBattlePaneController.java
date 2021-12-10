@@ -418,10 +418,13 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		if (selectedChar != null && !selectedChar.getName().equals("...")) {
 			Long role = (characterRoleMap.get(selectedChar.getId())).getType();
 			boolean iAmDefenderCommander = characterRoleMap.get(Nexus.getCurrentChar().getId()).getType() == Constants.ROLE_DEFENDER_COMMANDER;
+			boolean iAmAttackerCommander = characterRoleMap.get(Nexus.getCurrentChar().getId()).getType() == Constants.ROLE_ATTACKER_COMMANDER;
 			boolean clickedWarriorIsSameFaction = role == Constants.ROLE_DEFENDER_WARRIOR;
 			boolean clickedWarriorIsOnline = Nexus.getUserIsOnline(selectedChar.getId());
 
-			btnToLeft.setDisable(!iAmDefenderCommander);
+			boolean mayMoveDefender = iAmDefenderCommander || iAmAttackerCommander; // Attacker commander may move everyone
+
+			btnToLeft.setDisable(!mayMoveDefender);
 			btnToRight.setDisable(true);
 			btnKick.setDisable(!iAmDefenderCommander);
 			btnKick.setDisable(characterRoleMap.get(Nexus.getCurrentChar().getId()).getType() != Constants.ROLE_DEFENDER_COMMANDER);
@@ -479,6 +482,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		ActionManager.addActionCallbackListener(ACTIONS.PANE_DESTROY_CURRENT, this);
 		ActionManager.addActionCallbackListener(ACTIONS.PANE_CREATION_BEGINS, this);
 		ActionManager.addActionCallbackListener(ACTIONS.NEW_PLAYERLIST_RECEIVED, this);
+		ActionManager.addActionCallbackListener(ACTIONS.FINALIZE_ROUND, this);
 	}
 
 	private void buildGuiEffect() {
@@ -737,6 +741,10 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 //						}
 					}
 				}
+				break;
+
+			case FINALIZE_ROUND:
+				checkToCancelInvasion();
 				break;
 
 			case UPDATE_USERS_FOR_ATTACK:

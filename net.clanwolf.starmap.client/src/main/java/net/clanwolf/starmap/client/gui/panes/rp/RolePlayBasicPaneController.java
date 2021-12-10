@@ -96,13 +96,11 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 				loadScreen();
 				break;
 			case FINALIZE_ROUND:
-
-				// TODO: If this is an invasion roleplay pane, we need to kick the player from this game
-				// because this invasion was resolved by the end-of-round script on the server and on client
-				// side this needs to be canceled.
-
-				C3Logger.info("The round has been finalized. This roleplay session needs to be canceled.");
-				ActionManager.getAction(ACTIONS.SWITCH_TO_MAP).execute();
+				if (!isCharacterPane) { // this is not a character roleplay pane --> AttackPane
+					C3Logger.info("The round has been finalized. This roleplay session needs to be canceled.");
+					ActionManager.getAction(ACTIONS.SWITCH_TO_MAP).execute();
+				}
+				break;
 			default:
 				break;
 		}
@@ -172,6 +170,9 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 					break;
 				case C3_RP_STEP_V8:
 					changePaneAndController(ROLEPLAYENTRYTYPES.C3_RP_STEP_V8, "/fxml/RolePlayPrepareBattlePane.fxml");
+					break;
+				case C3_RP_STEP_V9:
+					changePaneAndController(ROLEPLAYENTRYTYPES.C3_RP_STEP_V9, "/fxml/RolePlayInvasionPane.fxml");
 					break;
 				default:
 					break;

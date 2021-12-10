@@ -6,10 +6,13 @@ C:
 CD \
 CD C:\C3\projects\C3-Starmap_Cerberus
 
-REM SET VERSION=5.8.7
+REM SET VERSION=5.9.5
 FOR /f "delims== tokens=1,2" %%G in (C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\target\classes\version.number) do set %%G=%%H
 ECHO Found version: %VERSION%
 REM PAUSE
+
+ECHO Copying launcher exe
+COPY C:\c3\projects\C3-Starmap_Cerberus\NSIS\client_launcher_executable\C3-Starmap_Cerberus.exe_ C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\target\jlink-image\bin\C3-Starmap_Cerberus.exe
 
 IF EXIST "C:\Program Files\Java\jdk-17\bin\java.exe" (
   ECHO Java found
@@ -70,6 +73,17 @@ IF '%chc%'=='n' GOTO REQUEST_IRCBOT
 GOTO REQUEST_INSTALLER
 
 :UPLOADINSTALLER
+REM Sign installer
+ECHO ####################################################################################
+ECHO #
+ECHO # Signing the installer executable
+ECHO #
+ECHO ####################################################################################
+
+FOR /F "delims=" %%f IN (C:\c3\projects\C3-Starmap_Cerberus\NSIS\setstorepw.cmd) DO %%f
+REM ECHO C:\C3\tools\Windows10-SignTool\signtool.exe sign /f C:\C3\certificate\c3_certificate.pfx /p %STOREPW% /fd SHA256 C:\c3\projects\C3-Starmap_Cerberus\NSIS\C3-Client-%VERSION%_install.exe
+C:\C3\tools\Windows10-SignTool\signtool.exe sign /f C:\C3\certificate\c3_certificate.pfx /p %STOREPW% /fd SHA256 C:\c3\projects\C3-Starmap_Cerberus\NSIS\C3-Client-%VERSION%_install.exe
+
 REM Upload installer
 "C:\Program Files (x86)\WinSCP\winscp.com" /ini=nul /script=C:\C3\projects\C3-Starmap_Cerberus\NSIS\scripts\upload_installer.script
 START "" "https://www.clanwolf.net/apps/C3/server/php/insert_new_version.php"

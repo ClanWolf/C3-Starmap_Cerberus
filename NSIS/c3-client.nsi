@@ -9,7 +9,7 @@ Name "C3-Client_Installer"
 Caption "C3 Client Installer"
 Icon "c3.ico"
 UninstallIcon "c3.ico"
-OutFile "C3-Client-5.8.7_install.exe"
+OutFile "C3-Client-5.9.5_install.exe"
 BrandingText /TRIMRIGHT "ClanWolf.net"
 
 InstallDir $PROGRAMFILES64\C3-Client
@@ -18,6 +18,16 @@ RequestExecutionLevel admin
 ; RequestExecutionLevel user
 AddBrandingImage left 130
 SetFont /LANG=${LANG_ENGLISH} "Arial" 9
+
+; start shortcut at the end of the installation
+Function .onInstSuccess
+    ;MessageBox MB_OK "Reached LaunchLink $\r$\n \
+    ;                 SMPROGRAMS: $SMPROGRAMS  $\r$\n \
+    ;                 Start Menu Folder: $STARTMENU_FOLDER $\r$\n \
+    ;                 InstallDirectory: $INSTDIR "
+    ExecShell "" "https://www.clanwolf.net/apps/C3/changelog.txt?refresh=true"
+    ExecShell "" "$INSTDIR\bin\C3-Starmap_Cerberus.exe"
+FunctionEnd
 
 ; uninstall before install
 ; https://nsis.sourceforge.io/mediawiki/index.php?title=Auto-uninstall_old_before_installing_new&oldid=24968
@@ -63,16 +73,27 @@ FunctionEnd
 ;--------------------------------
 
 LoadLanguageFile "${NSISDIR}\Contrib\Language files\English.nlf"
-VIProductVersion "5.8.7.0"
+VIProductVersion "5.9.5.0"
 VIAddVersionKey /LANG=0 "ProductName" "C3 Client"
 VIAddVersionKey /LANG=0 "Comments" "StarMap"
 VIAddVersionKey /LANG=0 "CompanyName" "ClanWolf.net [CWG]"
 VIAddVersionKey /LANG=0 "LegalTrademarks" "StarMap of the Inner Sphere and Clan Space."
 VIAddVersionKey /LANG=0 "LegalCopyright" "© ClanWolf.net"
 VIAddVersionKey /LANG=0 "FileDescription" "StarMap"
-VIAddVersionKey /LANG=0 "FileVersion" "5.8.7"
+VIAddVersionKey /LANG=0 "FileVersion" "5.9.5"
 
 ;--------------------------------
+
+;Page license
+PageEx license
+  LicenseData ../LICENSE
+  LicenseForceSelection checkbox
+PageExEnd
+
+;PageEx
+;  LicenseText "Changelog"
+;  LicenseData ../doc/changelog.txt
+;PageExEnd
 
 Page components
 Page directory
@@ -319,6 +340,7 @@ Section "C3-Client (required)"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\instrument.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\freetype.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\fontmanager.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\C3-Starmap_Cerberus.exe"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\C3-Starmap_Cerberus.bat"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\C3-Starmap_Cerberus"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\awt.dll"
@@ -375,8 +397,8 @@ Section "C3-Client (required)"
 	; Write the uninstall keys for Windows
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayName" "C3-Client"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayIcon" "$INSTDIR\c3.ico"
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayVersion" "5.8.7"
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "Publisher" "ClanWolf.net [CWG]"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayVersion" "5.9.5"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "Publisher" "ClanWolf.net [CWG], Christian Bartel"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "InstallSource" "$EXEDIR\"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "UninstallString" '"$INSTDIR\uninstall.exe"'
 	WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "NoModify" 1
@@ -391,7 +413,8 @@ Section "Start Menu Shortcuts"
 	SetOutpath $INSTDIR ; this folder is used as working directory for the following links
 	CreateDirectory "$SMPROGRAMS\C3-Client"
 
-	CreateShortcut "$SMPROGRAMS\C3-Client\C3-Client.lnk" "$INSTDIR\bin\C3-Starmap_Cerberus.bat" "" "$INSTDIR\c3.ico" 0
+	CreateShortcut "$SMPROGRAMS\C3-Client\C3-Client.lnk" "$INSTDIR\bin\C3-Starmap_Cerberus.exe" "" "$INSTDIR\c3.ico" 0
+	CreateShortcut "$SMPROGRAMS\C3-Client\C3-Client (Console).lnk" "$INSTDIR\bin\C3-Starmap_Cerberus.bat" "" "$INSTDIR\c3.ico" 0
 	; CreateShortCut "$SMPROGRAMS\C3-Client\Remove.lnk" "$INSTDIR\Uninstall.exe" "" "$INSTDIR\c3.ico" 0
 SectionEnd
 
@@ -545,6 +568,7 @@ Section "Uninstall"
 	Delete $INSTDIR\bin\instrument.dll
 	Delete $INSTDIR\bin\freetype.dll
 	Delete $INSTDIR\bin\fontmanager.dll
+	Delete $INSTDIR\bin\C3-Starmap_Cerberus.exe
 	Delete $INSTDIR\bin\C3-Starmap_Cerberus.bat
 	Delete $INSTDIR\bin\C3-Starmap_Cerberus
 	Delete $INSTDIR\bin\awt.dll
@@ -594,6 +618,7 @@ Section "Uninstall"
 	Delete $INSTDIR\c3.ico
 	Delete $INSTDIR\uninstall.exe
 	Delete $SMPROGRAMS\C3-Client\C3-Client.lnk
+	Delete $SMPROGRAMS\C3-Client\C3-Client_console.lnk
 	; Delete $SMPROGRAMS\C3-Client\Remove.lnk
 
 	RMDir "$INSTDIR\bin\server"

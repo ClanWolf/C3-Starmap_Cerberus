@@ -1,32 +1,27 @@
 C3 version history
-----------------
+--------------------------------
 
-01 CREATED
-02 UPDATED
-03 ADDED
-04 FIXED
-05 CHANGED
-06 REMOVED
-07 STARTED
-08 PREPARED
+Version 5.9.5 (09.12.2021)
+- ADDED: A startup executable that will avoid the command window on running the client
+- ADDED: The additional option (shortcut) to start the client with the console window (for troubleshooting)
+- CHANGED: License will be shown to agree on installation
+- CHANGED: Client will start after installation has finished
 
-#########################################################
+Version 5.9.4 (07.12.2021)
+- ADDED: Code-signing certification to the installer executable build script
 
-TODO:
-Change table AttackType
-1 | PA | CL v IS | Planetary Assault CL vs IS | 19,20,21
-2 | PA | IS v IS | Planetary Assault IS vs IS | 22,24,29
-From this number one is to choose to enter as entry point for a starting invasion lobby.
+Version 5.9.3 (07.12.2021)
+- FIXED: Update process, launching installer, exiting client
 
-If the attacker commander leaves the lobby, all attackcharacters are deleted and removed from the lobby (lobby closed)
+Version 5.9.0 (07.12.2021)
+- FIXED: NullPointer in clipboard monitoring
+- CHANGED: Attacker commander may move defender warriors in lobby
 
-If user does not have rights to move a dropship, he should not be able to move the ship icon and the jump button should be disabled (?)
+Version 5.8.9 (06.12.2021)
+- STARTED: Invasion pane
 
-Attacker commander may move characters in both directions (?)
-
-Check what happens if a finalize round finds open attack lobby
-
-#########################################################
+Version 5.8.8 (06.12.2021)
+- FIXED: NullPointerException in invasion
 
 Version 5.8.7 (06.12.2021)
 - FIXED: Jumping between steps in an invasion scenario after restarting the client
@@ -185,3 +180,12 @@ Version: 5.3.0 (10.09.2021)
 ---
 
 Started changelog with version 5.3.0.
+
+01 CREATED
+02 UPDATED
+03 ADDED
+04 FIXED
+05 CHANGED
+06 REMOVED
+07 STARTED
+08 PREPARED

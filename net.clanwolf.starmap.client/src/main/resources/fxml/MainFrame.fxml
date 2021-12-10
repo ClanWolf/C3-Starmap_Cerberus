@@ -22,7 +22,7 @@
                 <URL value="@../styles/MainFrameStyle.css" />
             </stylesheets>
          <children>
-            <Label fx:id="labelWaitText" alignment="CENTER" layoutY="218.0" prefHeight="14.0" prefWidth="1030.0">
+            <Label fx:id="labelWaitText" alignment="TOP_CENTER" contentDisplay="CENTER" layoutY="168.0" prefHeight="86.0" prefWidth="1030.0">
                <font>
                   <Font size="18.0" />
                </font>

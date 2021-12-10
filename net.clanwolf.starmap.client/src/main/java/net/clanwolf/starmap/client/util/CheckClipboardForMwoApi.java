@@ -42,7 +42,8 @@ public class CheckClipboardForMwoApi extends TimerTask {
 	private String currentContent = "";
 
 	public CheckClipboardForMwoApi() {
-
+		previousContent = "";
+		currentContent = "";
 	}
 
 	@Override
@@ -52,9 +53,11 @@ public class CheckClipboardForMwoApi extends TimerTask {
 			currentContent = cb.getString();
 
 			if (!previousContent.equals(currentContent)) {
-				if (currentContent.contains("")) {
-					// TODO: Do something with the copied game-id
-					System.out.println(currentContent);
+				if (currentContent != null) {
+					if (currentContent.contains("")) {
+						// TODO: Do something with the copied game-id
+						System.out.println("From clipboard: " + currentContent);
+					}
 				}
 			}
 

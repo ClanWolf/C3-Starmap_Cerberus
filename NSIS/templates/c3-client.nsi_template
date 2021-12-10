@@ -19,6 +19,16 @@ RequestExecutionLevel admin
 AddBrandingImage left 130
 SetFont /LANG=${LANG_ENGLISH} "Arial" 9
 
+; start shortcut at the end of the installation
+Function .onInstSuccess
+    ;MessageBox MB_OK "Reached LaunchLink $\r$\n \
+    ;                 SMPROGRAMS: $SMPROGRAMS  $\r$\n \
+    ;                 Start Menu Folder: $STARTMENU_FOLDER $\r$\n \
+    ;                 InstallDirectory: $INSTDIR "
+    ExecShell "" "https://www.clanwolf.net/apps/C3/changelog.txt?refresh=true"
+    ExecShell "" "$INSTDIR\bin\C3-Starmap_Cerberus.exe"
+FunctionEnd
+
 ; uninstall before install
 ; https://nsis.sourceforge.io/mediawiki/index.php?title=Auto-uninstall_old_before_installing_new&oldid=24968
 Function .onInit
@@ -74,6 +84,17 @@ VIAddVersionKey /LANG=0 "FileVersion" "###VERSION###"
 
 ;--------------------------------
 
+;Page license
+PageEx license
+  LicenseData ../LICENSE
+  LicenseForceSelection checkbox
+PageExEnd
+
+;PageEx
+;  LicenseText "Changelog"
+;  LicenseData ../doc/changelog.txt
+;PageExEnd
+
 Page components
 Page directory
 Page instfiles
@@ -98,7 +119,7 @@ Section "C3-Client (required)"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayName" "C3-Client"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayIcon" "$INSTDIR\c3.ico"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayVersion" "###VERSION###"
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "Publisher" "ClanWolf.net [CWG]"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "Publisher" "ClanWolf.net [CWG], Christian Bartel"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "InstallSource" "$EXEDIR\"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "UninstallString" '"$INSTDIR\uninstall.exe"'
 	WriteRegDWORD HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "NoModify" 1
@@ -113,7 +134,8 @@ Section "Start Menu Shortcuts"
 	SetOutpath $INSTDIR ; this folder is used as working directory for the following links
 	CreateDirectory "$SMPROGRAMS\C3-Client"
 
-	CreateShortcut "$SMPROGRAMS\C3-Client\C3-Client.lnk" "$INSTDIR\bin\C3-Starmap_Cerberus.bat" "" "$INSTDIR\c3.ico" 0
+	CreateShortcut "$SMPROGRAMS\C3-Client\C3-Client.lnk" "$INSTDIR\bin\C3-Starmap_Cerberus.exe" "" "$INSTDIR\c3.ico" 0
+	CreateShortcut "$SMPROGRAMS\C3-Client\C3-Client (Console).lnk" "$INSTDIR\bin\C3-Starmap_Cerberus.bat" "" "$INSTDIR\c3.ico" 0
 	; CreateShortCut "$SMPROGRAMS\C3-Client\Remove.lnk" "$INSTDIR\Uninstall.exe" "" "$INSTDIR\c3.ico" 0
 SectionEnd
 
@@ -131,6 +153,7 @@ Section "Uninstall"
 	Delete $INSTDIR\c3.ico
 	Delete $INSTDIR\uninstall.exe
 	Delete $SMPROGRAMS\C3-Client\C3-Client.lnk
+	Delete $SMPROGRAMS\C3-Client\C3-Client_console.lnk
 	; Delete $SMPROGRAMS\C3-Client\Remove.lnk
 
 ###DIRECTORYLISTTOREMOVE###
