@@ -83,6 +83,8 @@ public class RolePlayStoryDTO extends Dto {
 	private RolePlayStoryVar6DTO var6ID;
 	//@JoinColumn(name = "Var7ID")
 	private RolePlayStoryVar7DTO var7ID;
+	//@JoinColumn(name = "Var9ID")
+	private RolePlayStoryVar9DTO var9ID;
 	//@JoinColumn(name = "StoryID")
 	//@JoinColumn(name = "NextStepID")
 	private Long nextStepID;
@@ -457,6 +459,14 @@ public class RolePlayStoryDTO extends Dto {
 
 	public void setVar7ID(RolePlayStoryVar7DTO var7ID) {
 		this.var7ID = var7ID;
+	}
+
+	public RolePlayStoryVar9DTO getVar9ID() {
+		return var9ID;
+	}
+
+	public void setVar9ID(RolePlayStoryVar9DTO var9ID) {
+		this.var9ID = var9ID;
 	}
 
 	@Override

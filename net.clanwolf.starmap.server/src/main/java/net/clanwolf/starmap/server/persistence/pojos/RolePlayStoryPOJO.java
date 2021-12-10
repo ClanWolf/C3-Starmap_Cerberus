@@ -124,6 +124,10 @@ public class RolePlayStoryPOJO extends Pojo {
 	@JoinColumn(name = "Var7ID")
 	private RolePlayStoryVar7POJO Var7ID;
 
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	@JoinColumn(name = "Var9ID")
+	private RolePlayStoryVar9POJO Var9ID;
+
 //	@ManyToOne(fetch = FetchType.EAGER)
 //	@JoinColumn(name = "NextStepID")
 //	private RolePlayStoryPOJO nextStepID;
@@ -506,6 +510,14 @@ public class RolePlayStoryPOJO extends Pojo {
 
 	public void setVar7ID(RolePlayStoryVar7POJO var7ID) {
 		Var7ID = var7ID;
+	}
+
+	public RolePlayStoryVar9POJO getVar9ID() {
+		return Var9ID;
+	}
+
+	public void setVar9ID(RolePlayStoryVar9POJO var9ID) {
+		Var9ID = var9ID;
 	}
 
 	@Override
