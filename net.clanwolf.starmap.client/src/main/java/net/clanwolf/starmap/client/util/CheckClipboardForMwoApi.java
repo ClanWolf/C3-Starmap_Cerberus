@@ -52,6 +52,10 @@ public class CheckClipboardForMwoApi extends TimerTask {
 			Clipboard cb = Clipboard.getSystemClipboard();
 			currentContent = cb.getString();
 
+			if (previousContent == null) {
+				previousContent = "";
+			}
+
 			if (!previousContent.equals(currentContent)) {
 				if (currentContent != null) {
 					if (currentContent.contains("")) {

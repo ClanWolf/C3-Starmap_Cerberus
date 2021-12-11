@@ -1,6 +1,9 @@
 C3 version history
 --------------------------------
 
+Version 5.9.6 (11.12.2021)
+- ADDED: Confirmation workflow in lobby
+
 Version 5.9.5 (09.12.2021)
 - ADDED: A startup executable that will avoid the command window on running the client
 - ADDED: The additional option (shortcut) to start the client with the console window (for troubleshooting)
