@@ -1421,7 +1421,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 				tfWidthText.clear();
 			}
 
-			// set data for story variante 2 / variante 5
+			// set data for story variante 2 / variante 5 / variante 9
 			if ((selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V2 ||
 					selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V5) && selected.getValue().getVar2ID() != null) {
 				tfStoryPath1.setText(selected.getValue().getVar2ID().getOption1Text());
@@ -1434,16 +1434,34 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 				cbStoryPath3.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getVar2ID().getOption3StoryID()));
 				cbStoryPath4.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getVar2ID().getOption4StoryID()));
 
-			} else {
-				cbStoryPath1.setValue(null);
-				cbStoryPath2.setValue(null);
-				cbStoryPath3.setValue(null);
-				cbStoryPath4.setValue(null);
-				tfStoryPath1.clear();
-				tfStoryPath2.clear();
-				tfStoryPath3.clear();
-				tfStoryPath4.clear();
-			}
+			} else if ((selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V9) && selected.getValue().getVar9ID() != null) {
+				tfStoryPath1.setText(selected.getValue().getVar9ID().getOption1Text());
+				tfStoryPath2.setText(selected.getValue().getVar9ID().getOption2Text());
+				tfStoryPath3.setText(selected.getValue().getVar9ID().getOption3Text());
+				tfStoryPath4.setText(selected.getValue().getVar9ID().getOption4Text());
+
+				cbStoryPath1.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getVar9ID().getOption1StoryID()));
+				cbStoryPath2.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getVar9ID().getOption2StoryID()));
+				cbStoryPath3.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getVar9ID().getOption3StoryID()));
+				cbStoryPath4.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getVar9ID().getOption4StoryID()));
+
+				tfAttackerDropVictories.setText(selected.getValue().getVar9ID().getAttackerDropVictories().toString());
+				tfDefenderDropVictories.setText(selected.getValue().getVar9ID().getDefenderDropVictories().toString());
+
+				} else {
+					cbStoryPath1.setValue(null);
+					cbStoryPath2.setValue(null);
+					cbStoryPath3.setValue(null);
+					cbStoryPath4.setValue(null);
+					tfStoryPath1.clear();
+					tfStoryPath2.clear();
+					tfStoryPath3.clear();
+					tfStoryPath4.clear();
+
+
+					tfAttackerDropVictories.clear();
+					tfDefenderDropVictories.clear();
+				}
 
 			// set data for story variante 3
 			if (selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V3 && selected.getValue().getVar3ID() != null) {
@@ -1519,33 +1537,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 				cbFaction.setValue(null);
 			}
 
-			// set data for story variante 9
-			if ((selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V9) && selected.getValue().getVar9ID() != null) {
-				tfStoryPath1.setText(selected.getValue().getVar9ID().getOption1Text());
-				tfStoryPath2.setText(selected.getValue().getVar9ID().getOption2Text());
-				tfStoryPath3.setText(selected.getValue().getVar9ID().getOption3Text());
-				tfStoryPath4.setText(selected.getValue().getVar9ID().getOption4Text());
 
-				cbStoryPath1.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getVar9ID().getOption1StoryID()));
-				cbStoryPath2.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getVar9ID().getOption2StoryID()));
-				cbStoryPath3.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getVar9ID().getOption3StoryID()));
-				cbStoryPath4.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getVar9ID().getOption4StoryID()));
-
-				tfAttackerDropVictories.setText(selected.getValue().getVar9ID().getAttackerDropVictories().toString());
-				tfDefenderDropVictories.setText(selected.getValue().getVar9ID().getDefenderDropVictories().toString());
-
-			} else {
-				cbStoryPath1.setValue(null);
-				cbStoryPath2.setValue(null);
-				cbStoryPath3.setValue(null);
-				cbStoryPath4.setValue(null);
-				tfStoryPath1.clear();
-				tfStoryPath2.clear();
-				tfStoryPath3.clear();
-				tfStoryPath4.clear();
-				tfAttackerDropVictories.clear();
-				tfDefenderDropVictories.clear();
-			}
 		}
 	}
 
