@@ -130,6 +130,9 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 	@FXML
 	Button btDeleteStoryOption1, btDeleteStoryOption2, btDeleteStoryOption3, btDeleteStoryOption4;
 
+	@FXML
+	TextField tfAttackerDropVictories, tfDefenderDropVictories;
+
 	//------------------- Special form -------------------
 	@FXML
 	ComboBox<ROLEPLAYINPUTDATATYPES> cbDatafield1, cbDatafield2, cbDatafield3, cbDatafield4, cbDatafield5;
@@ -1231,6 +1234,9 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 			btDeleteStoryOption2.setDisable(false);
 			btDeleteStoryOption3.setDisable(false);
 
+			tfAttackerDropVictories.setDisable(false);
+			tfDefenderDropVictories.setDisable(false);
+
 			cbroleplayinputdatatypes.setDisable(false);
 			cbDatafield1.setDisable(false);
 			cbDatafield2.setDisable(false);
@@ -1295,6 +1301,9 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 			btDeleteStoryOption1.setDisable(true);
 			btDeleteStoryOption2.setDisable(true);
 			btDeleteStoryOption3.setDisable(true);
+
+			tfAttackerDropVictories.setDisable(true);
+			tfDefenderDropVictories.setDisable(true);
 
 			cbroleplayinputdatatypes.setDisable(true);
 			cbDatafield1.setDisable(true);
@@ -1522,6 +1531,9 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 				cbStoryPath3.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getVar9ID().getOption3StoryID()));
 				cbStoryPath4.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getVar9ID().getOption4StoryID()));
 
+				tfAttackerDropVictories.setText(selected.getValue().getVar9ID().getAttackerDropVictories().toString());
+				tfDefenderDropVictories.setText(selected.getValue().getVar9ID().getDefenderDropVictories().toString());
+
 			} else {
 				cbStoryPath1.setValue(null);
 				cbStoryPath2.setValue(null);
@@ -1531,6 +1543,8 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 				tfStoryPath2.clear();
 				tfStoryPath3.clear();
 				tfStoryPath4.clear();
+				tfAttackerDropVictories.clear();
+				tfDefenderDropVictories.clear();
 			}
 		}
 	}
@@ -1833,6 +1847,10 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 			rpVar9.setOption3Text(tfStoryPath3.getText());
 			rpVar9.setOption4Text(tfStoryPath4.getText());
 
+
+			rpVar9.setAttackerDropVictories(Integer.parseInt(tfAttackerDropVictories.getText()));
+			rpVar9.setDefenderDropVictories(Integer.parseInt(tfDefenderDropVictories.getText()));
+
 			rp.setVar9ID(rpVar9);
 
 		} else {
@@ -1941,6 +1959,8 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 		cbStoryPath2.setValue(null);
 		cbStoryPath3.setValue(null);
 		cbStoryPath4.setValue(null);
+		tfAttackerDropVictories.clear();
+		tfDefenderDropVictories.clear();
 		tfDiceScore.clear();
 		cbDiceScoreEqual.setValue(null);
 		cbDiceScoreLess.setValue(null);

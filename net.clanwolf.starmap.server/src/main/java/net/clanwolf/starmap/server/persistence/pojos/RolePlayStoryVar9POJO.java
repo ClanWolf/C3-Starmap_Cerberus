@@ -76,6 +76,12 @@ public class RolePlayStoryVar9POJO extends Pojo{
 	@Column(name = "Option4Text")
 	private String option4Text;
 
+	@Column(name = "DefenderDropVictories")
+	private Integer defenderDropVictories;
+
+	@Column(name = "AttackerDropVictories")
+	private Integer attackerDropVictories;
+
 	/* -- Getter -- */
 	public Long getId() {
 		return id;
@@ -208,4 +214,19 @@ public class RolePlayStoryVar9POJO extends Pojo{
 		this.option4Text = option4Text;
 	}
 
+	public Integer getDefenderDropVictories() {
+		return defenderDropVictories;
+	}
+
+	public void setDefenderDropVictories(Integer defenderDropVictories) {
+		this.defenderDropVictories = defenderDropVictories;
+	}
+
+	public Integer getAttackerDropVictories() {
+		return attackerDropVictories;
+	}
+
+	public void setAttackerDropVictories(Integer attackerDropVictories) {
+		this.attackerDropVictories = attackerDropVictories;
+	}
 }

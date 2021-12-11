@@ -155,6 +155,10 @@
                               <TextField fx:id="tfStoryPath4" layoutX="16.0" layoutY="298.0" prefHeight="22.0" prefWidth="506.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="40.0" />
                               <ComboBox fx:id="cbStoryPath4" layoutX="16.0" layoutY="325.0" prefHeight="26.0" prefWidth="508.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="40.0" />
                               <Button id="btn_dark-blue" fx:id="btDeleteStoryOption4" ellipsisString="" layoutX="522.0" layoutY="293.0" mnemonicParsing="false" onAction="#handleDeleteStoryOption4" prefHeight="22.0" prefWidth="30.0" styleClass="RPDeleteButton2" AnchorPane.rightAnchor="0.0" />
+                              <Label layoutX="16.0" layoutY="365.0" prefHeight="17.0" prefWidth="199.0" text="Attacker drop victories" />
+                              <Label layoutX="360.0" layoutY="365.0" prefHeight="17.0" prefWidth="199.0" text="Defender drop victories" />
+                              <TextField fx:id="tfAttackerDropVictories" layoutX="215.0" layoutY="362.0" />
+                              <TextField fx:id="tfDefenderDropVictories" layoutX="567.0" layoutY="362.0" />
                            </children>
                         </AnchorPane>
                     </content>

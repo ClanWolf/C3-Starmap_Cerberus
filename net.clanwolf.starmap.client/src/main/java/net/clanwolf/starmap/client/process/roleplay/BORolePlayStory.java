@@ -413,6 +413,7 @@ public class BORolePlayStory {
 		copy.setVar4ID(original.getVar4ID());
 		copy.setVar6ID(original.getVar6ID());
 		copy.setVar7ID(original.getVar7ID());
+		copy.setVar9ID(original.getVar9ID());
 		copy.setNextStepID(original.getNextStepID());
 
 		return copy;

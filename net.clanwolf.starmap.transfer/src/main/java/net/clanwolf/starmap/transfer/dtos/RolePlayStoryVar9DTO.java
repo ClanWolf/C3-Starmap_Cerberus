@@ -55,9 +55,12 @@ public class RolePlayStoryVar9DTO extends Dto {
 	private String option3Text;
 	//@JoinColumn(name = "Option4StoryID")
 	private Long option4StoryID;
-
 	//@Column(name = "Option4Text")
 	private String option4Text;
+	//@Column(name = "DefenderDropVictories")
+	private Integer defenderDropVictories;
+	//@Column(name = "AttackerDropVictories")
+	private Integer attackerDropVictories;
 
 	/* -- Getter -- */
 	public Long getId() {
@@ -195,4 +198,19 @@ public class RolePlayStoryVar9DTO extends Dto {
 		this.option4Text = option4Text;
 	}
 
+	public Integer getDefenderDropVictories() {
+		return defenderDropVictories;
+	}
+
+	public void setDefenderDropVictories(Integer defenderDropVictories) {
+		this.defenderDropVictories = defenderDropVictories;
+	}
+
+	public Integer getAttackerDropVictories() {
+		return attackerDropVictories;
+	}
+
+	public void setAttackerDropVictories(Integer attackerDropVictories) {
+		this.attackerDropVictories = attackerDropVictories;
+	}
 }
