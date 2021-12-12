@@ -27,11 +27,9 @@
 package net.clanwolf.starmap.client.gui;
 
 import javafx.animation.*;
-import javafx.application.HostServices;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.CacheHint;
 import javafx.scene.control.*;
@@ -45,7 +43,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import net.clanwolf.starmap.client.enums.C3MESSAGES;
-import net.clanwolf.starmap.client.gui.panes.AbstractC3RolePlayController;
 import net.clanwolf.starmap.client.gui.panes.chat.ChatPane;
 import net.clanwolf.starmap.client.gui.panes.dice.DicePane;
 import net.clanwolf.starmap.client.gui.panes.logging.LogPane;
@@ -68,6 +65,7 @@ import net.clanwolf.starmap.client.gui.panes.rp.StoryEditorPane;
 import net.clanwolf.starmap.client.gui.panes.settings.SettingsPane;
 import net.clanwolf.starmap.client.gui.panes.userinfo.UserInfoPane;
 import net.clanwolf.starmap.client.gui.popuppanes.C3PopupPane;
+import net.clanwolf.starmap.client.mwo.CheckClipboardForMwoApi;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.client.net.Server;
@@ -82,7 +80,6 @@ import net.clanwolf.starmap.transfer.enums.MEDALS;
 import net.clanwolf.starmap.transfer.enums.POPUPS;
 
 import java.io.*;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
@@ -134,6 +131,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 	private final Image imageAdminButtonOff = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/adminOff.png")));
 	private final Image imageAdminButtonOn = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/adminOn.png")));
+	private final Image muteButtonImageHover = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/mute_hover.png")));
+	private final Image muteButtonImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/mute.png")));
 	private boolean helpvoiceplayedonce = false;
 
 	private static int counterWaitCursor = 0; // a global counter
@@ -444,6 +443,27 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				terminalPrompt.setText("");
 			});
 		}
+	}
+
+	@FXML
+	private void rpMuteButtonClick() {
+		Platform.runLater(() -> {
+			slVolumeControl.setValue(0.0d);
+		});
+	}
+
+	@FXML
+	private void rpMuteButtonHoverEnter() {
+		Platform.runLater(() -> {
+			ivMuteToggle.setImage(muteButtonImageHover);
+		});
+	}
+
+	@FXML
+	private void rpMuteButtonHoverExit() {
+		Platform.runLater(() -> {
+			ivMuteToggle.setImage(muteButtonImage);
+		});
 	}
 
 	// @FXML
@@ -1267,6 +1287,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 		terminalPrompt.toFront();
 		slVolumeControl.toFront();
+		ivMuteToggle.toFront();
 		addActionCallBackListeners();
 	}
 
@@ -1826,6 +1847,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 					FadeInTransition.play();
 					slVolumeControl.toFront();
+					ivMuteToggle.toFront();
 				});
 				break;
 
@@ -1870,6 +1892,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					Platform.runLater(() -> {
 						mouseStopper.toFront();
 						slVolumeControl.toFront();
+						ivMuteToggle.toFront();
 						// mouseStopper.setBackground(null);
 						waitAnimationPane.showCircleAnimation(false);
 						mouseStopper.setMouseTransparent(true);
@@ -1880,6 +1903,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				}
 				Platform.runLater(() -> {
 					slVolumeControl.toFront();
+					ivMuteToggle.toFront();
 				});
 				ActionManager.getAction(ACTIONS.ACTION_SUCCESSFULLY_EXECUTED).execute(o);
 				break;
@@ -1896,6 +1920,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				Platform.runLater(() -> {
 					mouseStopper.toFront();
 					slVolumeControl.toFront();
+					ivMuteToggle.toFront();
 					// mouseStopper.setBackground(new Background(new BackgroundFill(Color.BLUE, new CornerRadii(0), Insets.EMPTY)));
 					waitAnimationPane.showCircleAnimation(true);
 					mouseStopper.setMouseTransparent(false);
@@ -1906,6 +1931,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				});
 				Platform.runLater(() -> {
 					slVolumeControl.toFront();
+					ivMuteToggle.toFront();
 				});
 				break;
 
@@ -1915,6 +1941,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				}
 				Platform.runLater(() -> {
 					slVolumeControl.toFront();
+					ivMuteToggle.toFront();
 				});
 				break;
 
@@ -1928,6 +1955,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				}
 				Platform.runLater(() -> {
 					slVolumeControl.toFront();
+					ivMuteToggle.toFront();
 				});
 				break;
 
@@ -1941,6 +1969,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				}
 				Platform.runLater(() -> {
 					slVolumeControl.toFront();
+					ivMuteToggle.toFront();
 				});
 				break;
 
@@ -1983,6 +2012,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				enableMainMenuButtons(Nexus.isLoggedIn(), Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN));
 				Platform.runLater(() -> {
 					slVolumeControl.toFront();
+					ivMuteToggle.toFront();
 				});
 				break;
 
@@ -2128,6 +2158,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		}
 
 		Platform.runLater(() -> {
+			ivMuteToggle.toFront();
 			slVolumeControl.toFront();
 			slVolumeControl.setMin(0.0d);
 			slVolumeControl.setMax(1.0d);
@@ -2136,6 +2167,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			Timer checkSystemClipboardForMWOResultTimer = new Timer();
 			checkSystemClipboardForMWOResultTimer.schedule(new CheckClipboardForMwoApi(), 1000, 1000 * 1);
 		});
+
+		openTargetPane(loginPane, "");
 	}
 
 	private void showMessage(C3Message message) {

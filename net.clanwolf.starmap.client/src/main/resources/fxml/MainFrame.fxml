@@ -46,12 +46,12 @@
             </Label>
          </children>
       </VBox>
-      <ImageView fx:id="ivMuteToggle" fitHeight="16.0" fitWidth="16.0" layoutX="985.0" layoutY="111.0" pickOnBounds="true" preserveRatio="true" visible="false">
+      <ImageView fx:id="ivMuteToggle" fitHeight="25.0" fitWidth="25.0" layoutX="142.0" layoutY="507.0" onMouseClicked="#rpMuteButtonClick" onMouseEntered="#rpMuteButtonHoverEnter" onMouseExited="#rpMuteButtonHoverExit" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../images/buttons/mute.png" />
          </image>
       </ImageView>
-      <Slider fx:id="slVolumeControl" layoutX="986.0" layoutY="132.0" orientation="VERTICAL" prefHeight="413.0" prefWidth="14.0" visible="false" />
+      <Slider fx:id="slVolumeControl" layoutX="148.0" layoutY="346.0" nodeOrientation="LEFT_TO_RIGHT" orientation="VERTICAL" prefHeight="154.0" prefWidth="14.0" visible="false" />
       <ProgressBar fx:id="TFSProgress" layoutX="173.0" layoutY="23.0" onMouseEntered="#handleTFSProgressEntered" onMouseExited="#handleTFSProgressExited" prefHeight="18.0" prefWidth="125.0" progress="0.56" visible="false" />
       <Label fx:id="gameInfoLabel" layoutX="422.0" layoutY="30.0" mouseTransparent="true" prefHeight="20.0" prefWidth="206.0" />
       <Label fx:id="terminalLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="567.0" layoutY="556.0" prefHeight="20.0" prefWidth="66.0" text="Terminal:" />

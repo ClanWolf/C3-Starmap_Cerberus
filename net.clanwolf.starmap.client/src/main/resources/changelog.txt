@@ -1,6 +1,10 @@
 C3 version history
 --------------------------------
 
+Version 5.9.7 (12.12.2021)
+- CHANGED: Invasion pane changes (confirmation)
+- CHANGED: On startup the client will open login pane automatically
+
 Version 5.9.6 (11.12.2021)
 - ADDED: Confirmation workflow in lobby
 

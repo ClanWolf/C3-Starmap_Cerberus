@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.shape.Circle?>
 
-<AnchorPane id="RolePlayStartPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.RolePlayInvasionPaneController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="RolePlayStartPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/17" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.RolePlayInvasionPaneController">
     <children>
       <ImageView fx:id="templateBackground" fitHeight="567.0" fitWidth="944.0" layoutX="-70.0" layoutY="-22.0" mouseTransparent="true" opacity="0.74" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
@@ -17,68 +17,88 @@
          </image>
       </ImageView>
       <ImageView fx:id="backgroundImage" fitHeight="490.0" fitWidth="785.0" layoutX="58.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="rpImage" fitHeight="319.0" fitWidth="184.0" layoutX="58.0" layoutY="4.0" pickOnBounds="true" preserveRatio="true" />
-      <TextArea fx:id="taRpText" layoutX="251.0" layoutY="8.0" prefHeight="318.0" prefWidth="593.0" styleClass="contentTextAreaBlock" stylesheets="@../styles/MainFrameStyle.css" wrapText="true" />
-      <Button fx:id="btChoice1" layoutX="58.0" layoutY="344.0" mnemonicParsing="false" onAction="#handleOnActionbtChoice1" opacity="0.8" prefHeight="37.0" prefWidth="676.0" styleClass="contentButtonBlue" stylesheets="@../styles/MainFrameStyle.css" text="btChoice1" />
-      <Button fx:id="btChoice2" layoutX="58.0" layoutY="382.0" mnemonicParsing="false" onAction="#handleOnActionbtChoice2" opacity="0.8" prefHeight="37.0" prefWidth="676.0" styleClass="contentButtonRed" stylesheets="@../styles/MainFrameStyle.css" text="btChoice2" />
-      <Button fx:id="btChoice3" layoutX="58.0" layoutY="420.0" mnemonicParsing="false" onAction="#handleOnActionbtChoice3" opacity="0.8" prefHeight="37.0" prefWidth="676.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css" text="btChoice3" />
-      <Button fx:id="btChoice4" layoutX="58.0" layoutY="458.0" mnemonicParsing="false" onAction="#handleOnActionbtChoice4" opacity="0.8" prefHeight="37.0" prefWidth="676.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css" text="btChoice4" />
-      <Pane layoutX="58.0" layoutY="283.0" prefHeight="44.0" prefWidth="149.0">
+      <ImageView fx:id="rpImage" fitHeight="292.0" fitWidth="187.0" layoutX="60.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
+      <TextArea fx:id="taRpText" layoutX="251.0" layoutY="8.0" prefHeight="318.0" prefWidth="592.0" styleClass="contentTextAreaBlock" stylesheets="@../styles/MainFrameStyle.css" wrapText="true" />
+      <Button fx:id="btChoice1" alignment="CENTER_RIGHT" layoutX="58.0" layoutY="344.0" mnemonicParsing="false" onAction="#handleOnActionbtChoice1" opacity="0.8" prefHeight="37.0" prefWidth="703.0" styleClass="contentButtonBlue" stylesheets="@../styles/MainFrameStyle.css" text="btChoice1" />
+      <Button fx:id="btChoice2" alignment="CENTER_RIGHT" layoutX="58.0" layoutY="382.0" mnemonicParsing="false" onAction="#handleOnActionbtChoice2" opacity="0.8" prefHeight="37.0" prefWidth="703.0" styleClass="contentButtonRed" stylesheets="@../styles/MainFrameStyle.css" text="btChoice2" />
+      <Button fx:id="btChoice3" alignment="CENTER_RIGHT" layoutX="58.0" layoutY="420.0" mnemonicParsing="false" onAction="#handleOnActionbtChoice3" opacity="0.8" prefHeight="37.0" prefWidth="703.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css" text="btChoice3" />
+      <Button fx:id="btChoice4" alignment="CENTER_RIGHT" layoutX="58.0" layoutY="458.0" mnemonicParsing="false" onAction="#handleOnActionbtChoice4" opacity="0.8" prefHeight="37.0" prefWidth="703.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css" text="btChoice4" />
+      <Pane fx:id="paneCurrentScore" layoutX="64.0" layoutY="307.0" prefHeight="36.0" prefWidth="134.0">
          <children>
-            <Circle fill="DODGERBLUE" layoutX="122.0" layoutY="21.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="DODGERBLUE" layoutX="26.0" layoutY="21.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="DODGERBLUE" layoutX="98.0" layoutY="21.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="DODGERBLUE" layoutX="74.0" layoutY="21.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="DODGERBLUE" layoutX="50.0" layoutY="21.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fill="DODGERBLUE" layoutX="117.0" layoutY="18.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fill="DODGERBLUE" layoutX="17.0" layoutY="18.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fill="DODGERBLUE" layoutX="92.0" layoutY="18.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fill="DODGERBLUE" layoutX="67.0" layoutY="18.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fill="DODGERBLUE" layoutX="42.0" layoutY="18.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
          </children>
       </Pane>
-      <ImageView fx:id="confirmAttacker1" fitHeight="37.0" fitWidth="36.0" layoutX="742.0" layoutY="344.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="confirmAttacker1" fitHeight="37.0" fitWidth="36.0" layoutX="768.0" layoutY="344.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../icons/success.png" />
+            <Image url="@../icons/checked.png" />
          </image></ImageView>
-      <ImageView fx:id="confirmAttacker2" fitHeight="37.0" fitWidth="36.0" layoutX="742.0" layoutY="382.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="confirmAttacker2" fitHeight="37.0" fitWidth="36.0" layoutX="768.0" layoutY="382.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../icons/success.png" />
+            <Image url="@../icons/check.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="confirmAttacker3" fitHeight="37.0" fitWidth="36.0" layoutX="742.0" layoutY="420.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="confirmAttacker3" fitHeight="37.0" fitWidth="36.0" layoutX="768.0" layoutY="420.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../icons/success.png" />
+            <Image url="@../icons/check.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="confirmAttacker4" fitHeight="37.0" fitWidth="36.0" layoutX="742.0" layoutY="458.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="confirmAttacker4" fitHeight="37.0" fitWidth="36.0" layoutX="768.0" layoutY="458.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../icons/success.png" />
+            <Image url="@../icons/check.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="attackerHeader" fitHeight="37.0" fitWidth="36.0" layoutX="742.0" layoutY="287.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="attackerHeader" fitHeight="37.0" fitWidth="36.0" layoutX="768.0" layoutY="300.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/logos/factions/FRR.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="confirmDefender1" fitHeight="37.0" fitWidth="36.0" layoutX="791.0" layoutY="344.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="confirmDefender1" fitHeight="37.0" fitWidth="36.0" layoutX="806.0" layoutY="344.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../icons/success.png" />
+            <Image url="@../icons/check.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="confirmDefender2" fitHeight="37.0" fitWidth="36.0" layoutX="791.0" layoutY="382.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="confirmDefender2" fitHeight="37.0" fitWidth="36.0" layoutX="806.0" layoutY="382.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../icons/success.png" />
+            <Image url="@../icons/checked.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="confirmDefender3" fitHeight="37.0" fitWidth="36.0" layoutX="791.0" layoutY="420.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="confirmDefender3" fitHeight="37.0" fitWidth="36.0" layoutX="806.0" layoutY="420.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../icons/success.png" />
+            <Image url="@../icons/check.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="confirmDefender4" fitHeight="37.0" fitWidth="36.0" layoutX="791.0" layoutY="458.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="confirmDefender4" fitHeight="37.0" fitWidth="36.0" layoutX="806.0" layoutY="458.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../icons/success.png" />
+            <Image url="@../icons/check.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="defenderHeader" fitHeight="37.0" fitWidth="36.0" layoutX="791.0" layoutY="287.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="defenderHeader" fitHeight="37.0" fitWidth="36.0" layoutX="806.0" layoutY="300.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/logos/factions/LC.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="defenderButtonIcon" fitHeight="30.0" fitWidth="30.0" layoutX="98.0" layoutY="349.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/logos/factions/FRR.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="attackerButtonIcon" fitHeight="30.0" fitWidth="30.0" layoutX="97.0" layoutY="386.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/logos/factions/LC.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="ivAttackerWaiting" fitHeight="20.0" fitWidth="20.0" layoutX="776.0" layoutY="323.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icons/waiting.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="ivDefenderWaiting" fitHeight="20.0" fitWidth="20.0" layoutX="813.0" layoutY="324.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icons/waiting.png" />
          </image>
       </ImageView>
     </children>

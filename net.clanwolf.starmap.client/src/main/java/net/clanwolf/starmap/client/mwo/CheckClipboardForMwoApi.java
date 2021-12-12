@@ -24,7 +24,7 @@
  * Copyright (c) 2001-2021, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.client.util;
+package net.clanwolf.starmap.client.mwo;
 
 import javafx.application.Platform;
 import javafx.scene.input.Clipboard;

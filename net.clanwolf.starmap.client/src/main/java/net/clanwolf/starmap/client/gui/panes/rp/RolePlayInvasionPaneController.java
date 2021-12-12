@@ -33,6 +33,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
@@ -86,6 +87,21 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 
 	@FXML
 	private Button btChoice4;
+
+	@FXML
+	private Pane paneCurrentScore;
+
+	@FXML
+	private ImageView defenderButtonIcon;
+
+	@FXML
+	private ImageView attackerButtonIcon;
+
+	@FXML
+	private ImageView ivDefenderWaiting;
+
+	@FXML
+	private ImageView ivAttackerWaiting;
 
 	public RolePlayInvasionPaneController() {
 	}
@@ -156,11 +172,11 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 				RolePlayStoryVar9DTO rpVar9 = rpStory.getVar9ID();
 
 				double x = 59;
-				double y = 455;
+				double y = 452;
 				double offset = 40;
 
-				double x2 = 742;
-				double x3 = 791;
+				double x2 = 768;
+				double x3 = 806;
 
 
 				// rpVar9
@@ -217,6 +233,8 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 					confirmDefender2.setLayoutX(x3);
 					confirmDefender2.setLayoutY(y);
 
+					defenderButtonIcon.setLayoutY(y + 4);
+//					defenderButtonIcon.setVisible(true);
 
 					y = y - offset;
 
@@ -238,13 +256,23 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 					confirmDefender1.setLayoutY(y);
 
 					btChoice1.setText(rpVar9.getOption1Text());
+
+					attackerButtonIcon.setLayoutY(y + 4);
+//					attackerButtonIcon.setVisible(true);
 				}
 
+				double yPos = y - offset - 5;
+
 				attackerHeader.setLayoutX(x2);
-				attackerHeader.setLayoutY(y - offset - 10);
+				attackerHeader.setLayoutY(yPos);
 
 				defenderHeader.setLayoutX(x3);
-				defenderHeader.setLayoutY(y - offset - 10);
+				defenderHeader.setLayoutY(yPos);
+
+				ivAttackerWaiting.setLayoutY(y - 25);
+				ivDefenderWaiting.setLayoutY(y - 25);
+
+				paneCurrentScore.setLayoutY(yPos);
 			}
 	}
 
