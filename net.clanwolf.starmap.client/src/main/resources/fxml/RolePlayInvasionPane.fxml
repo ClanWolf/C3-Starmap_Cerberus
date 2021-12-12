@@ -25,11 +25,11 @@
       <Button fx:id="btChoice4" alignment="CENTER_RIGHT" layoutX="58.0" layoutY="458.0" mnemonicParsing="false" onAction="#handleOnActionbtChoice4" opacity="0.8" prefHeight="37.0" prefWidth="703.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css" text="btChoice4" />
       <Pane fx:id="paneCurrentScore" layoutX="64.0" layoutY="307.0" prefHeight="36.0" prefWidth="134.0">
          <children>
-            <Circle fill="DODGERBLUE" layoutX="117.0" layoutY="18.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="DODGERBLUE" layoutX="17.0" layoutY="18.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="DODGERBLUE" layoutX="92.0" layoutY="18.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="DODGERBLUE" layoutX="67.0" layoutY="18.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
-            <Circle fill="DODGERBLUE" layoutX="42.0" layoutY="18.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fx:id="circleScore05" fill="WHITE" layoutX="117.0" layoutY="18.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fx:id="circleScore01" fill="WHITE" layoutX="17.0" layoutY="18.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fx:id="circleScore04" fill="WHITE" layoutX="92.0" layoutY="18.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fx:id="circleScore03" fill="WHITE" layoutX="67.0" layoutY="18.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+            <Circle fx:id="circleScore02" fill="WHITE" layoutX="42.0" layoutY="18.0" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
          </children>
       </Pane>
       <ImageView fx:id="confirmAttacker1" fitHeight="37.0" fitWidth="36.0" layoutX="768.0" layoutY="344.0" pickOnBounds="true" preserveRatio="true">

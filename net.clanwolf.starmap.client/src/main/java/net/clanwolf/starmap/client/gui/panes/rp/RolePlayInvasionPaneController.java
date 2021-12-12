@@ -26,6 +26,8 @@
  */
 package net.clanwolf.starmap.client.gui.panes.rp;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.SequentialTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -34,11 +36,14 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Circle;
+import javafx.util.Duration;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3RolePlayController;
+import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.logging.C3Logger;
@@ -48,6 +53,7 @@ import net.clanwolf.starmap.transfer.dtos.RolePlayStoryVar9DTO;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 /**
@@ -103,6 +109,10 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 	@FXML
 	private ImageView ivAttackerWaiting;
 
+	ArrayList<Circle> scoreCircles = null;
+	@FXML
+	private Circle circleScore01, circleScore02, circleScore03, circleScore04, circleScore05;
+
 	public RolePlayInvasionPaneController() {
 	}
 
@@ -128,6 +138,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 		attackerHeader.setVisible(true);
 		defenderHeader.setVisible(true);
 
+		scoreAnimation(2,2);
 	}
 
 	@Override
@@ -141,6 +152,40 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 	public void addActionCallBackListeners() {
 		ActionManager.addActionCallbackListener(ACTIONS.FINALIZE_ROUND, this);
 		ActionManager.addActionCallbackListener(ACTIONS.START_ROLEPLAY, this);
+	}
+
+	public void scoreAnimation(int attackerWins, int defenderWins) {
+		Platform.runLater(() -> {
+			if (scoreCircles == null) {
+				scoreCircles = new ArrayList<>();
+				scoreCircles.add(circleScore01);
+				scoreCircles.add(circleScore02);
+				scoreCircles.add(circleScore03);
+				scoreCircles.add(circleScore04);
+				scoreCircles.add(circleScore05);
+			}
+
+			SequentialTransition sequentialTransition = new SequentialTransition();
+
+			int count = 1;
+			for (Circle c : scoreCircles) {
+				FadeTransition fadeInTransition = new FadeTransition(Duration.millis(450), c);
+				fadeInTransition.setFromValue(0.0);
+				fadeInTransition.setToValue(1.0);
+				fadeInTransition.setCycleCount(1);
+
+				if (count <= attackerWins) {
+					// color this circle red
+				}
+				if (count >= 5 - defenderWins) {
+					// color this circle blue
+				}
+				sequentialTransition.getChildren().add(fadeInTransition);
+				count++;
+			}
+			sequentialTransition.setCycleCount(1);
+			sequentialTransition.play();
+		});
 	}
 
 	/******************************** THIS ********************************/
