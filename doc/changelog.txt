@@ -1,6 +1,14 @@
 C3 version history
 --------------------------------
 
+Version 6.0.0 (13.12.2021)
+- ADDED: API call for MWO lobby API game stats
+- FIXED: Security issue in ircBot
+- CHANGED: Update ircBot log4j due to security issue
+- CHANGED: Update server log4j due to security issue
+- CHANGED: Updated different libraries to their latest versions
+- CHANGED: Added fade in animation to scores in invasion pane
+
 Version 5.9.7 (12.12.2021)
 - CHANGED: Invasion pane changes (confirmation)
 - CHANGED: On startup the client will open login pane automatically

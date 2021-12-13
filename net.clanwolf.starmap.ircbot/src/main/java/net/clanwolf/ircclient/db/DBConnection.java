@@ -21,38 +21,42 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2020, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.client.mwo;
+package net.clanwolf.ircclient.db;
 
-import javafx.application.Platform;
-import javafx.scene.input.Clipboard;
+import com.mysql.cj.jdbc.MysqlDataSource;
+import net.clanwolf.ircclient.irc.CWIRCBot;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Properties;
-import java.util.TimerTask;
 
-/**
- * @author Meldric
- */
-public class CheckClipboardForMwoApi extends TimerTask {
+public class DBConnection {
 
-	private String previousContent = "";
-	private String currentContent = "";
+	private Connection conn = null;
+	private CWIRCBot bot = null;
 
-	public CheckClipboardForMwoApi() {
-		previousContent = "";
-		currentContent = "";
+	public void setBot(CWIRCBot bot) {
+		this.bot = bot;
 	}
 
-	public void getMWOGameStats(Long gameid) {
+	public boolean connected() {
+		return conn != null;
+	}
+
+	public DBConnection() {
 		final Properties auth = new Properties();
 		try {
 			final String authFileName = "auth.properties";
-			InputStream inputStream = CheckClipboardForMwoApi.class.getClassLoader().getResourceAsStream(authFileName);
+			InputStream inputStream = DBConnection.class.getClassLoader().getResourceAsStream(authFileName);
 			if (inputStream != null) {
 				auth.load(inputStream);
 			} else {
@@ -62,29 +66,34 @@ public class CheckClipboardForMwoApi extends TimerTask {
 			ioe.printStackTrace();
 		}
 
-		String url = "https://mwomercs.com/api/v1/matches/" + gameid + "?api_token=" + auth.getProperty("mwo_api_key");
+		try {
+			Context context = new InitialContext();
+			MysqlDataSource dataSource = new MysqlDataSource();
+			dataSource.setUser(auth.getProperty("user"));
+			dataSource.setPassword(auth.getProperty("password"));
+			dataSource.setServerName("localhost");
+			dataSource.setDatabaseName("C3");
+			dataSource.setServerTimezone("CET");
+
+			conn = dataSource.getConnection();
+		} catch (NamingException | SQLException e) {
+			e.printStackTrace();
+			if (bot != null) {
+				if (CWIRCBot.dropDebugStrings) bot.send(e.getMessage());
+			}
+		}
 	}
 
-	@Override
-	public void run() {
-		Platform.runLater(() -> {
-			Clipboard cb = Clipboard.getSystemClipboard();
-			currentContent = cb.getString();
-
-			if (previousContent == null) {
-				previousContent = "";
-			}
-
-			if (!previousContent.equals(currentContent)) {
-				if (currentContent != null) {
-					if (currentContent.contains("")) {
-						// TODO: Do something with the copied game-id
-						System.out.println("From clipboard: " + currentContent);
-					}
-				}
-			}
-
-			previousContent = currentContent;
-		});
-	}
+//	public void getValue() {
+//		try {
+//			Statement stmt = conn.createStatement();
+//			ResultSet rs = stmt.executeQuery("SELECT ID FROM USERS");
+//
+//			rs.close();
+//			stmt.close();
+//			conn.close();
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//	}
 }

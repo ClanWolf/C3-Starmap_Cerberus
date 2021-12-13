@@ -32,6 +32,7 @@ import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.server.logging.LogLevel;
 import net.clanwolf.starmap.server.util.HeartBeatTimer;
 import net.clanwolf.starmap.server.util.CheckShutdownFlagTimer;
+import org.apache.logging.log4j.LogManager;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 
@@ -70,6 +71,7 @@ public class GameServer {
 				}
 			}
 		}
+		org.apache.logging.log4j.Logger logger = LogManager.getLogger();
 
 		if(isDevelopmentPC) {
 			dir = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3");

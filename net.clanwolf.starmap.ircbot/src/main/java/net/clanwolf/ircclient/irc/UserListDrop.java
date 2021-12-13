@@ -24,59 +24,23 @@
  * Copyright (c) 2001-2020, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.client.db;
+package net.clanwolf.ircclient.irc;
 
-import com.mysql.cj.jdbc.MysqlDataSource;
-import net.clanwolf.client.irc.CWIRCBot;
+import java.util.TimerTask;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import java.sql.Connection;
-import java.sql.SQLException;
+public class UserListDrop extends TimerTask {
 
-public class DBConnection {
-
-	private Connection conn = null;
 	private CWIRCBot bot = null;
 
 	public void setBot(CWIRCBot bot) {
 		this.bot = bot;
 	}
 
-	public boolean connected() {
-		return conn != null;
-	}
-
-	public DBConnection() {
-		try {
-			Context context = new InitialContext();
-			MysqlDataSource dataSource = new MysqlDataSource();
-			dataSource.setUser("C3_Workbench");
-			dataSource.setPassword("C69udmj99cz7z3cm6a6f48lrolsfkfr7");
-			dataSource.setServerName("localhost");
-			dataSource.setDatabaseName("C3");
-			dataSource.setServerTimezone("CET");
-
-			conn = dataSource.getConnection();
-		} catch (NamingException | SQLException e) {
-			e.printStackTrace();
-			if (bot != null) {
-				if (CWIRCBot.dropDebugStrings) bot.send(e.getMessage());
-			}
+	@Override
+	public void run() {
+		if (bot != null) {
+			if (CWIRCBot.dropDebugStrings) bot.send("Dropping user list.");
+			bot.saveUserList();
 		}
 	}
-
-//	public void getValue() {
-//		try {
-//			Statement stmt = conn.createStatement();
-//			ResultSet rs = stmt.executeQuery("SELECT ID FROM USERS");
-//
-//			rs.close();
-//			stmt.close();
-//			conn.close();
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//	}
 }

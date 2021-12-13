@@ -24,56 +24,60 @@
  * Copyright (c) 2001-2021, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.client.util;
+package net.clanwolf.ircclient.logging;
 
-import net.clanwolf.client.mail.MailManager;
+import net.clanwolf.starmap.logging.C3Logger;
+import org.apache.logging.log4j.core.Appender;
+import org.apache.logging.log4j.core.Core;
+import org.apache.logging.log4j.core.Filter;
+import org.apache.logging.log4j.core.LogEvent;
+import org.apache.logging.log4j.core.appender.AbstractAppender;
+import org.apache.logging.log4j.core.config.plugins.Plugin;
+import org.apache.logging.log4j.core.config.plugins.PluginAttribute;
+import org.apache.logging.log4j.core.config.plugins.PluginElement;
+import org.apache.logging.log4j.core.config.plugins.PluginFactory;
 
-import java.io.File;
-import java.util.TimerTask;
+import java.time.Instant;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
-/**
- * @author Meldric
- */
-public class CheckShutdownFlagTimer extends TimerTask {
+@Plugin(name = "C3AppenderLog4j", category = Core.CATEGORY_NAME, elementType = Appender.ELEMENT_TYPE)
+public class C3AppenderLog4j extends AbstractAppender {
 
-	private String dir = "";
+	private ConcurrentMap<String, LogEvent> eventMap = new ConcurrentHashMap<>();
 
-	private void cleanupFlagFiles() {
-		File shutdownFlagFile = new File(dir + File.separator + "C3-IRCBot_shutdown.flag");
-		if (shutdownFlagFile.isFile()) {
-			boolean deleted = shutdownFlagFile.delete();
-		}
+	protected C3AppenderLog4j(String name, Filter filter) {
+		super(name, filter, null);
 	}
 
-	public CheckShutdownFlagTimer(String path) {
-		this.dir = path;
-		// Cleanup the flags once before the timer starts in case there were flags left from a previous time
-		cleanupFlagFiles();
+	@PluginFactory
+	public static C3AppenderLog4j createAppender(
+			@PluginAttribute("name") String name,
+			@PluginElement("Filter") Filter filter) {
+		return new C3AppenderLog4j(name, filter);
 	}
 
 	@Override
-	public void run() {
-		File shutdownFlagFile = new File(dir + File.separator + "C3-IRCBot_shutdown.flag");
-		if (shutdownFlagFile.exists() && shutdownFlagFile.isFile() && shutdownFlagFile.canRead()) {
-			// On the server, a script checks if the server is running every couple of minutes.
-			// If this methods shuts the server down, it will be going up by the script shortly after.
-			// This is used in case a new version of the jar file was uploaded.
-//			C3Logger.info("Cleaning up flag files.");
-//			cleanupFlagFiles();
-
-//			C3Logger.info("Sending info mail.");
-			String[] receivers = { "keshik@googlegroups.com" };
-			boolean sent = false;
-			sent = MailManager.sendMail("c3@clanwolf.net", receivers, "CWIRCBot goes down after flag request", "CWIRCBot is shutting down...", false);
-			if (sent) {
-				// sent
-//				C3Logger.info("Mail sent.");
-			} else {
-				// error during email sending
-//				C3Logger.info("Error during mail dispatch.");
-			}
-
-			System.exit(5);
-		}
+	public void append(LogEvent event) {
+		eventMap.put(Instant.now().toString(), event);
+		C3Logger.info(event.getMessage().getFormattedMessage());
 	}
 }
+
+// Changed in december 2021 due to global alarm of log4j vulnarability
+
+//public class C3AppenderLog4j extends AppenderSkeleton {
+//
+//	@Override
+//	protected void append(LoggingEvent event) {
+//		C3Logger.info(event.getRenderedMessage());
+//	}
+//
+//	public void close() {
+//
+//	}
+//
+//	public boolean requiresLayout() {
+//		return false;
+//	}
+//}

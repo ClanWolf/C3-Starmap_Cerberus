@@ -29,6 +29,9 @@
                 </transformer>
                 <transformer>
                   <mainClass>net.clanwolf.starmap.server.GameServer</mainClass>
+                  <manifestEntries>
+                    <Multi-Release>true</Multi-Release>
+                  </manifestEntries>
                 </transformer>
               </transformers>
             </configuration>

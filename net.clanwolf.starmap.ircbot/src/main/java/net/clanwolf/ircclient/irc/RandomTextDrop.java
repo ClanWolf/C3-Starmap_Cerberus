@@ -24,74 +24,41 @@
  * Copyright (c) 2001-2020, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.client.util;
+package net.clanwolf.ircclient.irc;
 
-import net.clanwolf.client.irc.CWIRCBot;
+import java.util.Random;
+import java.util.TimerTask;
 
-import java.text.MessageFormat;
-import java.util.Locale;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
+public class RandomTextDrop extends TimerTask {
+	private CWIRCBot bot = null;
 
-public abstract class Internationalization {
-
-	private static ResourceBundle sMessages;
-	private static Locale sCurrentLocale;
-
-	private static CWIRCBot cwIrcBot = null;
-
-	static {
-		Locale l = Locale.GERMAN;
-		try {
-			setLocale(l);
-		} catch (MissingResourceException mre) {
-			setLocale(Locale.ENGLISH);
-		}
+	public void setBot(CWIRCBot bot) {
+		this.bot = bot;
 	}
 
-	public static void setLocale(Locale locale) throws MissingResourceException {
-		sMessages = ResourceBundle.getBundle("MessagesBundle", locale);
-		sCurrentLocale = locale;
-		Locale.setDefault(sCurrentLocale);
-	}
+	@Override
+	public void run() {
+		if (bot != null) {
+			String users = bot.getUserListString();
+			if (users != null) {
+				users = users.replaceAll("@Meldric\r\n", "");
+				users = users.replaceAll("@Q\r\n", "");
+				users = users.replaceAll("D\r\n", "");
+				users = users.replaceAll("Ulric\r\n", "");
+				users = users.replaceAll("Topic:.*\r\n", "");
+				users = users.trim();
 
-	public static void setBot(CWIRCBot b) {
-		cwIrcBot = b;
-	}
-
-	public static Locale getLocale() {
-		return sCurrentLocale;
-	}
-
-	public static String getLanguage() {
-		return sCurrentLocale.getLanguage();
-	}
-
-	public static String getString(String key) {
-		return getStringSaveFromBundle(key, sMessages);
-	}
-
-	public static String getString(String key, String... args) {
-		String msg = getStringSaveFromBundle(key, sMessages);
-		if (msg != null) {
-			MessageFormat formatter = new MessageFormat("");
-			formatter.applyPattern(msg);
-			return formatter.format(args);
-		}
-		return null;
-	}
-
-	private static String getStringSaveFromBundle(String key, ResourceBundle bundle) {
-		try {
-			if (key == null) {
-				return null;
-			}
-			return bundle.getString(key);
-		} catch (MissingResourceException mre) {
-			if (cwIrcBot != null) {
-				cwIrcBot.send(Internationalization.getString("resourceNotFound", key, "" + bundle)); // [e001]
+				if (!"".contentEquals(users)) {
+					Random r = new Random();
+					int randomInt = r.nextInt(25) + 1;
+					if (randomInt <= 2) {
+						if (CWIRCBot.dropDebugStrings) {
+							bot.send("Users currently present (topics and admins stripped): #" + users + "#");
+						}
+						bot.dropRandomLine();
+					}
+				}
 			}
 		}
-		return key;
 	}
 }

@@ -1,12 +1,36 @@
-# Separate appender for log4j so that stdout does not need to be redirected
-log4j.rootLogger=INFO, stdout
-log4j.appender.stdout=net.clanwolf.starmap.server.logging.C3AppenderLog4j
+<?xml version="1.0" encoding="UTF-8"?>
 
-log4j.logger.org.hibernate=off
-log4j.logger.org.hibernate.SQL=off
-log4j.logger.org.hibernate.type.descriptor.sql=off
+<Configuration xmlns:xi="http://www.w3.org/2001/XInclude"
+               status="debug" strict="true" name="C3Config"
+               packages="net.clanwolf.ircclient.logging"
+>
+	<Appenders>
+		<C3AppenderLog4j name="C3AppenderLog4j">
+			<Layout type="PatternLayout">
+				<Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
+			</Layout>
+		</C3AppenderLog4j>
+	</Appenders>
+	<Loggers>
+		<Root level="debug">
+			<AppenderRef ref="C3AppenderLog4j" />
+		</Root>
+	</Loggers>
+</Configuration>
 
-# -------------------------------------------------------------------
+<!--
+log4j.properties (old):
+
+		log4j.rootLogger=ALL,stdout
+
+		log4j.logger.org.hibernate=INFO
+		log4j.logger.org.springframework=INFO
+
+		log4j.appender.stdout=org.apache.log4j.ConsoleAppender
+		log4j.appender.stdout.Threshold=DEBUG
+		log4j.appender.stdout.Target=System.out
+		log4j.appender.stdout.layout=org.apache.log4j.PatternLayout
+		log4j.appender.stdout.layout.ConversionPattern=%d{yyyy-MM-dd HH:mm:ss} %-5p %c{1}:%L - %m%n
 
 # ALL Level
 # This log4j level is used to turn on all levels of logging. Once this is configured and the levels are not
@@ -38,3 +62,4 @@ log4j.logger.org.hibernate.type.descriptor.sql=off
 
 # OFF Level
 # This log4j level is opposite to ALL level. It turns off all the logging.
+-->

@@ -26,8 +26,12 @@
  */
 package net.clanwolf.starmap.server.logging;
 
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.core.LoggerContext;
+import org.apache.logging.log4j.core.config.Configuration;
+import org.apache.logging.log4j.core.config.LoggerConfig;
 
 //      DEBUG Level
 //      This log4j level helps developer to debug application. Level of message logged will be focused on providing
@@ -65,12 +69,22 @@ public class LogLevel {
 	@SuppressWarnings("unused")
 	public static void setSQLLevelOn()	{
 		//Enable SQL logging
-		Logger.getLogger("org.hibernate.SQL").setLevel(Level.INFO);
+		Logger logger = LogManager.getLogger("org.hibernate.sql");
+		LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
+		Configuration config = ctx.getConfiguration();
+		LoggerConfig loggerConfig = config.getLoggerConfig(logger.getName());
+		loggerConfig.setLevel(Level.INFO);
+		ctx.updateLoggers();
 	}
 
 	@SuppressWarnings("unused")
 	public static void setSQLLevelOff() {
 		//Disable SQL logging
-		Logger.getLogger("org.hibernate.SQL").setLevel(Level.OFF);
+		Logger logger = LogManager.getLogger("org.hibernate.sql");
+		LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
+		Configuration config = ctx.getConfiguration();
+		LoggerConfig loggerConfig = config.getLoggerConfig(logger.getName());
+		loggerConfig.setLevel(Level.OFF);
+		ctx.updateLoggers();
 	}
 }

@@ -27,21 +27,57 @@
 package net.clanwolf.starmap.server.logging;
 
 import net.clanwolf.starmap.logging.C3Logger;
-import org.apache.log4j.AppenderSkeleton;
-import org.apache.log4j.spi.LoggingEvent;
+import org.apache.logging.log4j.core.Appender;
+import org.apache.logging.log4j.core.Core;
+import org.apache.logging.log4j.core.Filter;
+import org.apache.logging.log4j.core.LogEvent;
+import org.apache.logging.log4j.core.appender.AbstractAppender;
+import org.apache.logging.log4j.core.config.plugins.Plugin;
+import org.apache.logging.log4j.core.config.plugins.PluginAttribute;
+import org.apache.logging.log4j.core.config.plugins.PluginElement;
+import org.apache.logging.log4j.core.config.plugins.PluginFactory;
 
-public class C3AppenderLog4j extends AppenderSkeleton {
+import java.time.Instant;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+
+@Plugin(name = "C3AppenderLog4j", category = Core.CATEGORY_NAME, elementType = Appender.ELEMENT_TYPE)
+public class C3AppenderLog4j extends AbstractAppender {
+
+	private ConcurrentMap<String, LogEvent> eventMap = new ConcurrentHashMap<>();
+
+	protected C3AppenderLog4j(String name, Filter filter) {
+		super(name, filter, null);
+	}
+
+	@PluginFactory
+	public static C3AppenderLog4j createAppender(
+			@PluginAttribute("name") String name,
+			@PluginElement("Filter") Filter filter) {
+		return new C3AppenderLog4j(name, filter);
+	}
 
 	@Override
-	protected void append(LoggingEvent event) {
-		C3Logger.info(event.getRenderedMessage());
-	}
-
-	public void close() {
-
-	}
-
-	public boolean requiresLayout() {
-		return false;
+	public void append(LogEvent event) {
+		eventMap.put(Instant.now().toString(), event);
+		C3Logger.info(event.getMessage().getFormattedMessage());
 	}
 }
+
+// Changed in december 2021 due to global alarm of log4j vulnarability
+
+//public class C3AppenderLog4j extends AppenderSkeleton {
+//
+//	@Override
+//	protected void append(LoggingEvent event) {
+//		C3Logger.info(event.getRenderedMessage());
+//	}
+//
+//	public void close() {
+//
+//	}
+//
+//	public boolean requiresLayout() {
+//		return false;
+//	}
+//}

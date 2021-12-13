@@ -24,13 +24,13 @@
  * Copyright (c) 2001-2020, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.client.irc;
+package net.clanwolf.ircclient.irc;
 
 import com.google.common.collect.ImmutableSortedSet;
-import net.clanwolf.client.db.DBConnection;
+import net.clanwolf.ircclient.db.DBConnection;
 import net.clanwolf.client.mail.MailManager;
-import net.clanwolf.client.util.CheckShutdownFlagTimer;
-import net.clanwolf.client.util.Internationalization;
+import net.clanwolf.ircclient.util.CheckShutdownFlagTimer;
+import net.clanwolf.ircclient.util.Internationalization;
 import net.clanwolf.starmap.logging.C3Logger;
 import org.pircbotx.*;
 import org.pircbotx.exception.DaoException;

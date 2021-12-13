@@ -46,7 +46,10 @@
                   <resource>META-INF/spring.schemas</resource>
                 </transformer>
                 <transformer>
-                  <mainClass>net.clanwolf.client.irc.CWIRCBot</mainClass>
+                  <mainClass>net.clanwolf.ircclient.irc.CWIRCBot</mainClass>
+                  <manifestEntries>
+                    <Multi-Release>true</Multi-Release>
+                  </manifestEntries>
                 </transformer>
               </transformers>
             </configuration>

@@ -2155,6 +2155,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			message.setText(m);
 			message.setType(C3MESSAGETYPES.YES_NO);
 			ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
+		} else {
+			openTargetPane(loginPane, "");
 		}
 
 		Platform.runLater(() -> {
@@ -2167,8 +2169,6 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			Timer checkSystemClipboardForMWOResultTimer = new Timer();
 			checkSystemClipboardForMWOResultTimer.schedule(new CheckClipboardForMwoApi(), 1000, 1000 * 1);
 		});
-
-		openTargetPane(loginPane, "");
 	}
 
 	private void showMessage(C3Message message) {

@@ -350,11 +350,13 @@
 <!--							</jdepsExtraArgs>-->
 <!--							<modules>-->
 <!--								<module>-->
-
 <!--									<artifact>-->
-<!--										<groupId>org.slf4j</groupId>-->
-<!--										<artifactId>slf4j-log4j12</artifactId>-->
-<!--										<version>1.7.32</version>-->
+<!--										<groupId>org.apache.logging.log4j</groupId>-->
+<!--										<artifactId>log4j-core</artifactId>-->
+<!--										<version>2.15.0</version>-->
+<!--&lt;!&ndash;										<groupId>org.apache.logging.log4j</groupId>&ndash;&gt;-->
+<!--&lt;!&ndash;										<artifactId>log4j-slf4j-impl</artifactId>&ndash;&gt;-->
+<!--&lt;!&ndash;										<version>2.15.0</version>&ndash;&gt;-->
 <!--									</artifact>-->
 <!--&lt;!&ndash;									<additionalDependencies>&ndash;&gt;-->
 <!--&lt;!&ndash;										<dependency>&ndash;&gt;-->
