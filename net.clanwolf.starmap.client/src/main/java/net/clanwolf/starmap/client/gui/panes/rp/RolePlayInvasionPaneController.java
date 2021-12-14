@@ -36,6 +36,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.util.Duration;
 import net.clanwolf.starmap.client.action.ACTIONS;
@@ -43,12 +44,10 @@ import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3RolePlayController;
-import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.logging.C3Logger;
 import net.clanwolf.starmap.transfer.dtos.RolePlayStoryDTO;
-import net.clanwolf.starmap.transfer.dtos.RolePlayStoryVar2DTO;
 import net.clanwolf.starmap.transfer.dtos.RolePlayStoryVar9DTO;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
@@ -138,7 +137,8 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 		attackerHeader.setVisible(true);
 		defenderHeader.setVisible(true);
 
-		scoreAnimation(2,2);
+		scoreAnimation(1,2);
+
 	}
 
 	@Override
@@ -176,9 +176,16 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 
 				if (count <= attackerWins) {
 					// color this circle red
-				}
-				if (count >= 5 - defenderWins) {
+					c.setStroke(Color.web("#a2270c"));
+					c.setFill(Color.web("#511d14"));
+				} else if (count > 5 - defenderWins) {
 					// color this circle blue
+					c.setStroke(Color.web("#6292a4"));
+					c.setFill(Color.web("#113544"));
+				} else {
+					// color this circle gray
+					c.setStroke(Color.web("#ffffff"));
+					c.setFill(Color.web("#5d6165"));
 				}
 				sequentialTransition.getChildren().add(fadeInTransition);
 				count++;
