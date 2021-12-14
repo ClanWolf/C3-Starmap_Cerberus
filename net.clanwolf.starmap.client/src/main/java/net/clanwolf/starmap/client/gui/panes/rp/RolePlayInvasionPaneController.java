@@ -108,9 +108,12 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 	@FXML
 	private ImageView ivAttackerWaiting;
 
-	ArrayList<Circle> scoreCircles = null;
 	@FXML
 	private Circle circleScore01, circleScore02, circleScore03, circleScore04, circleScore05;
+	ArrayList<Circle> scoreCircles = null;
+
+	private Integer attackerDropVictories = 0;
+	private Integer defenderDropVictories = 0;
 
 	public RolePlayInvasionPaneController() {
 	}
@@ -136,9 +139,6 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 
 		attackerHeader.setVisible(true);
 		defenderHeader.setVisible(true);
-
-		scoreAnimation(1,2);
-
 	}
 
 	@Override
@@ -230,6 +230,14 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 				double x2 = 768;
 				double x3 = 806;
 
+				attackerDropVictories = rpVar9.getAttackerDropVictories();
+				defenderDropVictories = rpVar9.getDefenderDropVictories();
+				if (attackerDropVictories != null && defenderDropVictories != null) {
+					scoreAnimation(attackerDropVictories, defenderDropVictories);
+				} else {
+					C3Logger.error("Current score is not available!");
+					scoreAnimation(1, 1);
+				}
 
 				// rpVar9
 				if (rpVar9.getOption4StoryID() != null) {

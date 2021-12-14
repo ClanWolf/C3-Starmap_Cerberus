@@ -48,7 +48,7 @@ public class CheckClipboardForMwoApi extends TimerTask {
 		currentContent = "";
 	}
 
-	public void getMWOGameStats(Long gameid) {
+	public void getMWOGameStats(String gameid) {
 		final Properties auth = new Properties();
 		try {
 			final String authFileName = "auth.properties";
@@ -78,8 +78,11 @@ public class CheckClipboardForMwoApi extends TimerTask {
 			if (!previousContent.equals(currentContent)) {
 				if (currentContent != null) {
 					if (currentContent.contains("")) {
-						// TODO: Do something with the copied game-id
-						System.out.println("From clipboard: " + currentContent);
+						System.out.println("From clipboard: " + currentContent + " (Length: " + currentContent.length() + ")");
+
+						if (currentContent.length() == 15) {
+							getMWOGameStats(currentContent);
+						}
 					}
 				}
 			}

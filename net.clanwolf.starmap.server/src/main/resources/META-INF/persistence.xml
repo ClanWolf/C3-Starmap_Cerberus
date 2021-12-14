@@ -31,7 +31,9 @@
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
 
 			<!-- Connection release fix (?) -->
-			<property name="hibernate.connection.release_mode" value="after_transaction" />
+			<!-- https://docs.jboss.org/hibernate/stable/orm/userguide/html_single/Hibernate_User_Guide.html -->
+			<!-- <property name="hibernate.connection.release_mode" value="after_transaction" /> DEPRECATED WARNING -->
+			<property name="hibernate.connection.handling_mode" value="DELAYED_ACQUISITION_AND_RELEASE_AFTER_TRANSACTION" />
 
 			<!-- Hikari connection pool -->
 			<!-- property name="hibernate.hikari.dataSource.url" value="jdbc:mysql://localhost:3306/C3?useUnicode=yes&amp;characterEncoding=UTF-8" /-->
