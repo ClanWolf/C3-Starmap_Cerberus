@@ -18,6 +18,7 @@ module net.clanwolf.starmap.client {
 	requires irc.api;
 	requires thumbnailator;
 	requires jnativehook;
+	requires com.google.gson;
 
 	opens net.clanwolf.starmap.client.security to javafx.fxml;
 	opens net.clanwolf.starmap.client.gui to javafx.fxml;
@@ -31,6 +32,7 @@ module net.clanwolf.starmap.client {
 	opens net.clanwolf.starmap.client.gui.panes.chat to javafx.fxml;
 	opens net.clanwolf.starmap.client.gui.panes.security to javafx.fxml;
 	opens net.clanwolf.starmap.client.gui.panes.logging to javafx.fxml;
+	opens net.clanwolf.starmap.client.mwo to com.google.gson;
 
 	exports net.clanwolf.starmap.client.util;
 	exports net.clanwolf.starmap.client.gui;

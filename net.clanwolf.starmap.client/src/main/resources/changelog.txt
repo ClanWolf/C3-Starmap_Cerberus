@@ -1,10 +1,14 @@
 C3 version history
 --------------------------------
 
+Version 6.0.3 (  xx .12.2021)
+- ADDED: Requesting match results from MWO API (key is taken from clipboard)
+
 Version 6.0.2 (14.12.2021)
 - FIXED: hikari connection pool server is working again
 - CHANGED: Disabled JNDI in spring on server
 - CHANGED: Disabled log4j in client
+- CHANGED: Updated a number of libraries
 
 Version 6.0.0 (13.12.2021)
 - ADDED: API call for MWO lobby API game stats

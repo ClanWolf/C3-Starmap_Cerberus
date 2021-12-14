@@ -28,27 +28,33 @@ package net.clanwolf.starmap.client.mwo;
 
 import javafx.application.Platform;
 import javafx.scene.input.Clipboard;
+import net.clanwolf.starmap.client.net.HTTP;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.Properties;
 import java.util.TimerTask;
+
+import com.google.gson.Gson;
+import net.clanwolf.starmap.logging.C3Logger;
 
 /**
  * @author Meldric
  */
 public class CheckClipboardForMwoApi extends TimerTask {
 
-	private String previousContent = "";
-	private String currentContent = "";
+	private static String previousContent;
+	private static String currentContent;
 
 	public CheckClipboardForMwoApi() {
-		previousContent = "";
-		currentContent = "";
+
 	}
 
-	public void getMWOGameStats(String gameid) {
+	public MWOMatchResult getMWOGameStats(String gameid) {
+		MWOMatchResult matchDetails = null;
 		final Properties auth = new Properties();
 		try {
 			final String authFileName = "auth.properties";
@@ -62,7 +68,20 @@ public class CheckClipboardForMwoApi extends TimerTask {
 			ioe.printStackTrace();
 		}
 
+		//C3Logger.info("Trying to request game info.");
 		String url = "https://mwomercs.com/api/v1/matches/" + gameid + "?api_token=" + auth.getProperty("mwo_api_key");
+		try {
+			// Example
+			// game-id: 312013716556150
+			// result:
+			// String matchDetailString = "{\"MatchDetails\":{\"Map\":\"PolarHighlands\",\"ViewMode\":\"FirstPersonOnly\",\"TimeOfDay\":\"Day\",\"GameMode\":\"Domination\",\"Region\":\"NorthAmerica\",\"MatchTimeMinutes\":\"15\",\"UseStockLoadout\":false,\"NoMechQuirks\":false,\"NoMechEfficiencies\":false,\"WinningTeam\":\"2\",\"Team1Score\":6,\"Team2Score\":60,\"MatchDuration\":\"245\",\"CompleteTime\":\"2018-03-30T01:41:51+00:00\"},\"UserDetails\":[{\"Username\":\"hordes1ayer2\",\"IsSpectator\":true,\"Team\":null,\"Lance\":null,\"MechItemID\":0,\"MechName\":null,\"SkillTier\":null,\"HealthPercentage\":0,\"Kills\":0,\"KillsMostDamage\":0,\"Assists\":0,\"ComponentsDestroyed\":0,\"MatchScore\":0,\"Damage\":0,\"TeamDamage\":0,\"UnitTag\":\"\"},{\"Username\":\"Jay Z\",\"IsSpectator\":true,\"Team\":null,\"Lance\":null,\"MechItemID\":0,\"MechName\":null,\"SkillTier\":null,\"HealthPercentage\":0,\"Kills\":0,\"KillsMostDamage\":0,\"Assists\":0,\"ComponentsDestroyed\":0,\"MatchScore\":0,\"Damage\":0,\"TeamDamage\":0,\"UnitTag\":\"\"},{\"Username\":\"Nickredace\",\"IsSpectator\":false,\"Team\":\"2\",\"Lance\":\"2\",\"MechItemID\":337,\"MechName\":\"wlf-1a\",\"SkillTier\":1,\"HealthPercentage\":72,\"Kills\":1,\"KillsMostDamage\":1,\"Assists\":7,\"ComponentsDestroyed\":5,\"MatchScore\":225,\"Damage\":299,\"TeamDamage\":10,\"UnitTag\":\"-SA-\"},{\"Username\":\"Xylog\",\"IsSpectator\":false,\"Team\":\"2\",\"Lance\":\"2\",\"MechItemID\":368,\"MechName\":\"hbk-iic-a\",\"SkillTier\":2,\"HealthPercentage\":53,\"Kills\":2,\"KillsMostDamage\":0,\"Assists\":6,\"ComponentsDestroyed\":4,\"MatchScore\":158,\"Damage\":289,\"TeamDamage\":46,\"UnitTag\":\"-SA-\"},{\"Username\":\"Blackwater Social Media\",\"IsSpectator\":false,\"Team\":\"2\",\"Lance\":\"2\",\"MechItemID\":335,\"MechName\":\"wlf-2\",\"SkillTier\":1,\"HealthPercentage\":76,\"Kills\":0,\"KillsMostDamage\":2,\"Assists\":8,\"ComponentsDestroyed\":0,\"MatchScore\":258,\"Damage\":404,\"TeamDamage\":5,\"UnitTag\":\"-SA-\"},{\"Username\":\"MechWarrior1283\",\"IsSpectator\":false,\"Team\":\"2\",\"Lance\":\"2\",\"MechItemID\":595,\"MechName\":\"mlx-g\",\"SkillTier\":2,\"HealthPercentage\":51,\"Kills\":3,\"KillsMostDamage\":2,\"Assists\":5,\"ComponentsDestroyed\":5,\"MatchScore\":233,\"Damage\":287,\"TeamDamage\":21,\"UnitTag\":\"-SA-\"},{\"Username\":\"RED Smith\",\"IsSpectator\":false,\"Team\":\"2\",\"Lance\":\"1\",\"MechItemID\":292,\"MechName\":\"ach-a\",\"SkillTier\":2,\"HealthPercentage\":0,\"Kills\":0,\"KillsMostDamage\":1,\"Assists\":8,\"ComponentsDestroyed\":0,\"MatchScore\":154,\"Damage\":198,\"TeamDamage\":3,\"UnitTag\":\"-SA-\"},{\"Username\":\"DJDizzyG\",\"IsSpectator\":false,\"Team\":\"2\",\"Lance\":\"1\",\"MechItemID\":128,\"MechName\":\"grf-3m\",\"SkillTier\":2,\"HealthPercentage\":0,\"Kills\":0,\"KillsMostDamage\":0,\"Assists\":8,\"ComponentsDestroyed\":0,\"MatchScore\":64,\"Damage\":1,\"TeamDamage\":3,\"UnitTag\":\"-SA-\"},{\"Username\":\"DOMV2\",\"IsSpectator\":false,\"Team\":\"2\",\"Lance\":\"1\",\"MechItemID\":460,\"MechName\":\"hmn-c\",\"SkillTier\":1,\"HealthPercentage\":0,\"Kills\":1,\"KillsMostDamage\":1,\"Assists\":7,\"ComponentsDestroyed\":4,\"MatchScore\":199,\"Damage\":261,\"TeamDamage\":10,\"UnitTag\":\"-SA-\"},{\"Username\":\"Morticia Mellian\",\"IsSpectator\":false,\"Team\":\"2\",\"Lance\":\"1\",\"MechItemID\":268,\"MechName\":\"scr-a\",\"SkillTier\":1,\"HealthPercentage\":0,\"Kills\":1,\"KillsMostDamage\":1,\"Assists\":6,\"ComponentsDestroyed\":1,\"MatchScore\":149,\"Damage\":149,\"TeamDamage\":0,\"UnitTag\":\"-SA-\"},{\"Username\":\"DecoyTheDad\",\"IsSpectator\":false,\"Team\":\"1\",\"Lance\":\"3\",\"MechItemID\":368,\"MechName\":\"hbk-iic-a\",\"SkillTier\":1,\"HealthPercentage\":0,\"Kills\":1,\"KillsMostDamage\":1,\"Assists\":2,\"ComponentsDestroyed\":3,\"MatchScore\":172,\"Damage\":296,\"TeamDamage\":2,\"UnitTag\":\"228\"},{\"Username\":\"The0nlyRazor\",\"IsSpectator\":false,\"Team\":\"1\",\"Lance\":\"3\",\"MechItemID\":595,\"MechName\":\"mlx-g\",\"SkillTier\":2,\"HealthPercentage\":0,\"Kills\":1,\"KillsMostDamage\":1,\"Assists\":3,\"ComponentsDestroyed\":3,\"MatchScore\":159,\"Damage\":261,\"TeamDamage\":13,\"UnitTag\":\"228\"},{\"Username\":\"T0furk3y\",\"IsSpectator\":false,\"Team\":\"1\",\"Lance\":\"3\",\"MechItemID\":291,\"MechName\":\"ach-prime\",\"SkillTier\":2,\"HealthPercentage\":0,\"Kills\":0,\"KillsMostDamage\":0,\"Assists\":4,\"ComponentsDestroyed\":0,\"MatchScore\":80,\"Damage\":117,\"TeamDamage\":12,\"UnitTag\":\"CCdn\"},{\"Username\":\"Vipes\",\"IsSpectator\":false,\"Team\":\"1\",\"Lance\":\"3\",\"MechItemID\":334,\"MechName\":\"wlf-2r\",\"SkillTier\":3,\"HealthPercentage\":0,\"Kills\":1,\"KillsMostDamage\":0,\"Assists\":3,\"ComponentsDestroyed\":2,\"MatchScore\":66,\"Damage\":120,\"TeamDamage\":20,\"UnitTag\":\"\"},{\"Username\":\"Dimento Graven\",\"IsSpectator\":false,\"Team\":\"1\",\"Lance\":\"2\",\"MechItemID\":111,\"MechName\":\"shd-2d2\",\"SkillTier\":1,\"HealthPercentage\":0,\"Kills\":0,\"KillsMostDamage\":0,\"Assists\":4,\"ComponentsDestroyed\":1,\"MatchScore\":161,\"Damage\":233,\"TeamDamage\":1,\"UnitTag\":\"228\"},{\"Username\":\"nuttyrat\",\"IsSpectator\":false,\"Team\":\"1\",\"Lance\":\"2\",\"MechItemID\":460,\"MechName\":\"hmn-c\",\"SkillTier\":1,\"HealthPercentage\":0,\"Kills\":1,\"KillsMostDamage\":1,\"Assists\":3,\"ComponentsDestroyed\":1,\"MatchScore\":140,\"Damage\":230,\"TeamDamage\":11,\"UnitTag\":\"CCdn\"},{\"Username\":\"Lokamis\",\"IsSpectator\":false,\"Team\":\"1\",\"Lance\":\"2\",\"MechItemID\":111,\"MechName\":\"shd-2d2\",\"SkillTier\":1,\"HealthPercentage\":0,\"Kills\":0,\"KillsMostDamage\":1,\"Assists\":4,\"ComponentsDestroyed\":0,\"MatchScore\":93,\"Damage\":134,\"TeamDamage\":1,\"UnitTag\":\"228\"},{\"Username\":\"RjBass3\",\"IsSpectator\":false,\"Team\":\"1\",\"Lance\":\"2\",\"MechItemID\":169,\"MechName\":\"adr-d\",\"SkillTier\":1,\"HealthPercentage\":0,\"Kills\":0,\"KillsMostDamage\":0,\"Assists\":4,\"ComponentsDestroyed\":0,\"MatchScore\":114,\"Damage\":268,\"TeamDamage\":35,\"UnitTag\":\"228\"},{\"Username\":\"M E M E M A C H I N E\",\"IsSpectator\":false,\"Team\":\"1\",\"Lance\":\"1\",\"MechItemID\":478,\"MechName\":\"nva-bk\",\"SkillTier\":1,\"HealthPercentage\":0,\"Kills\":0,\"KillsMostDamage\":1,\"Assists\":0,\"ComponentsDestroyed\":0,\"MatchScore\":0,\"Damage\":0,\"TeamDamage\":43,\"UnitTag\":\"BEER\"},{\"Username\":\"Bensien\",\"IsSpectator\":false,\"Team\":\"1\",\"Lance\":\"1\",\"MechItemID\":368,\"MechName\":\"hbk-iic-a\",\"SkillTier\":1,\"HealthPercentage\":0,\"Kills\":0,\"KillsMostDamage\":0,\"Assists\":0,\"ComponentsDestroyed\":0,\"MatchScore\":11,\"Damage\":0,\"TeamDamage\":0,\"UnitTag\":\"228\"},{\"Username\":\"Kajihn\",\"IsSpectator\":false,\"Team\":\"1\",\"Lance\":\"1\",\"MechItemID\":190,\"MechName\":\"whk-primei\",\"SkillTier\":2,\"HealthPercentage\":0,\"Kills\":0,\"KillsMostDamage\":0,\"Assists\":0,\"ComponentsDestroyed\":0,\"MatchScore\":7,\"Damage\":0,\"TeamDamage\":0,\"UnitTag\":\"228\"}]}";
+			String matchDetailString = new String(HTTP.get(url), StandardCharsets.UTF_8);
+			matchDetails = new Gson().fromJson(matchDetailString, MWOMatchResult.class);
+			//System.out.println(matchDetails);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return matchDetails;
 	}
 
 	@Override
@@ -70,23 +89,29 @@ public class CheckClipboardForMwoApi extends TimerTask {
 		Platform.runLater(() -> {
 			Clipboard cb = Clipboard.getSystemClipboard();
 			currentContent = cb.getString();
-
 			if (previousContent == null) {
 				previousContent = "";
 			}
-
 			if (!previousContent.equals(currentContent)) {
 				if (currentContent != null) {
-					if (currentContent.contains("")) {
-						System.out.println("From clipboard: " + currentContent + " (Length: " + currentContent.length() + ")");
-
+					if (!"".equals(currentContent)) {
+						//C3Logger.info("From clipboard: " + currentContent + " (Length: " + currentContent.length() + ")");
 						if (currentContent.length() == 15) {
-							getMWOGameStats(currentContent);
+							MWOMatchResult results = getMWOGameStats(currentContent);
+							if (results != null) {
+								C3Logger.info("Map: " + results.getMatchDetails().getMap());
+								C3Logger.info("Username: " + results.getUserDetails().get(0).getUsername());
+							} else {
+								C3Logger.info("The content did not get a valid response. Ignoring.");
+							}
+						} else {
+							C3Logger.info("The content does not fit the pattern. Ignoring.");
 						}
 					}
 				}
+			} else {
+				C3Logger.info("The content has been copied to clipboard before. Ignoring.");
 			}
-
 			previousContent = currentContent;
 		});
 	}
