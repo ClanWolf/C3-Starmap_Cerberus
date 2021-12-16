@@ -21,27 +21,31 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.logging;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.logging.Formatter;
-import java.util.logging.LogRecord;
+import java.io.IOException;
+import java.lang.invoke.MethodHandles;
+import java.util.logging.FileHandler;
 
-public class C3Formatter extends Formatter {
-	@Override
-	public String format(LogRecord record) {
-		// String id = String.format("%04d", record.getThreadID());
-		SimpleDateFormat dt1 = new SimpleDateFormat("MM/dd*HH:mm:ss.SSS");
-		return ""
-				// + "[" + id + "] "
-				+ dt1.format(new Date(record.getMillis()))
-				+ " " + record.getLevel()
-				+ "/" + record.getSourceClassName().replace("net.clanwolf.starmap.", "...")
-				+ "/" + record.getSourceMethodName()
-				+ " >> " + record.getMessage() + "\n";
+public class C3LogUtil {
+
+	public static void loadConfigurationAndSetLogFile(String logFileName) {
+		try {
+			int FILE_SIZE_LIMIT = 4 * 1024 * 1024;
+			java.util.logging.LogManager.getLogManager().readConfiguration(MethodHandles.lookup().lookupClass().getClassLoader().getResourceAsStream("logging.properties"));
+			if (logFileName != null) {
+				FileHandler fileHandler = new FileHandler(logFileName, FILE_SIZE_LIMIT, 3, false);
+				fileHandler.setEncoding("UTF-8");
+				//fileHandler.setFormatter(new SocotoLogFormatter());
+
+				java.util.logging.Logger julLogger = java.util.logging.Logger.getLogger("");
+				julLogger.addHandler(fileHandler);
+			}
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
 	}
 }

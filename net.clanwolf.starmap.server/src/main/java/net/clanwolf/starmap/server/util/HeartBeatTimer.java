@@ -21,12 +21,13 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.server.util;
 
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.server.GameServer;
 import net.clanwolf.starmap.server.beans.C3GameSessionHandler;
 import net.clanwolf.starmap.server.beans.C3Room;
@@ -44,6 +45,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.lang.invoke.MethodHandles;
 import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.TimerTask;
@@ -53,6 +55,7 @@ import java.util.TimerTask;
  *
  */
 public class HeartBeatTimer extends TimerTask {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	private boolean informClients = false;
 	private String tempDir = "";
@@ -74,8 +77,8 @@ public class HeartBeatTimer extends TimerTask {
 		if (!currentlyRunning) {
 			currentlyRunning = true;
 
-			//C3Logger.print("Writing heartbeat ping to " + tempDir);
-			C3Logger.print("Writing heartbeat ping to " + "/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/c3.heartbeat");
+			//logger.info("Writing heartbeat ping to " + tempDir);
+			logger.info("Writing heartbeat ping to " + "/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/c3.heartbeat");
 
 			Calendar calendar = Calendar.getInstance();
 			java.util.Date now = calendar.getTime();
@@ -85,7 +88,7 @@ public class HeartBeatTimer extends TimerTask {
 			try (BufferedWriter br = new BufferedWriter(new FileWriter(heartbeatfile))) {
 				br.write("" + currentTimestamp.getTime());
 			} catch (IOException ioe) {
-				C3Logger.exception("Error writing heartbeat file", ioe);
+				logger.error("Error writing heartbeat file", ioe);
 			}
 
 			Long seasonId = GameServer.getCurrentSeason();
@@ -95,17 +98,17 @@ public class HeartBeatTimer extends TimerTask {
 
 			String resultProtocol = EndRound.finalizeRound(seasonId, round);
 
-			C3Logger.print("Calling list creation (Factions)...");
+			logger.info("Calling list creation (Factions)...");
 			WebDataInterface.createSystemList(SystemListTypes.Factions);
-			C3Logger.print("Calling list creation (HH_StarSystems)...");
+			logger.info("Calling list creation (HH_StarSystems)...");
 			WebDataInterface.createSystemList(SystemListTypes.HH_StarSystems);
-			C3Logger.print("Calling list creation (HH_Attacks)...");
+			logger.info("Calling list creation (HH_Attacks)...");
 			WebDataInterface.createSystemList(SystemListTypes.HH_Attacks);
-			C3Logger.print("Calling list creation (HH_Jumpships)...");
+			logger.info("Calling list creation (HH_Jumpships)...");
 			WebDataInterface.createSystemList(SystemListTypes.HH_Jumpships);
-			C3Logger.print("Calling list creation (HH_Routepoints)...");
+			logger.info("Calling list creation (HH_Routepoints)...");
 			WebDataInterface.createSystemList(SystemListTypes.HH_Routepoints);
-			C3Logger.print("Calling list creation (CM_StarSystems)...");
+			logger.info("Calling list creation (CM_StarSystems)...");
 			WebDataInterface.createSystemList(SystemListTypes.CM_StarSystems);
 
 			if (!"".equals(resultProtocol)) {
@@ -114,7 +117,7 @@ public class HeartBeatTimer extends TimerTask {
 
 			if (informClients) {
 				// Broadcast new version of the universe to the clients
-				C3Logger.print("Send updated universe to all clients.");
+				logger.info("Send updated universe to all clients.");
 				GameState response = new GameState(GAMESTATEMODES.GET_UNIVERSE_DATA);
 				response.addObject(Compressor.compress(WebDataInterface.getUniverse()));
 				C3Room.sendBroadcastMessage(response);

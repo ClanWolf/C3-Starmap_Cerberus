@@ -6,8 +6,10 @@ import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.ByteToMessageDecoder;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.lang.invoke.MethodHandles;
 import java.util.List;
 
 /**
@@ -24,6 +26,8 @@ import java.util.List;
  * 
  */
 public class ProtocolMultiplexerDecoder extends ByteToMessageDecoder {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
 	private final LoginProtocol loginProtocol;
 	private final int bytesForProtocolCheck;
 
@@ -51,7 +55,7 @@ public class ProtocolMultiplexerDecoder extends ByteToMessageDecoder {
 			byte[] headerBytes = new byte[bytesForProtocolCheck];
 			in.getBytes(in.readerIndex(), headerBytes, 0,
 					bytesForProtocolCheck);
-			C3Logger.warning(
+			logger.warn(
 					"Unknown protocol, discard everything and close the connection " + ctx.channel() + ". Incoming Bytes " + BinaryUtils.getHexString(headerBytes));
 			close(in, ctx);
 		}

@@ -1,13 +1,16 @@
 package io.nadron.concurrent;
 
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.lang.invoke.MethodHandles;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadFactory;
 
-public enum Lanes
-{
+public enum Lanes {
 	LANES;
+
+	final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	final String serverCores = System.getProperty("jet.lanes");
 	final int numOfCores;
 	final Lane<String, ExecutorService>[] jetLanes;
@@ -24,7 +27,7 @@ public enum Lanes
 			}
 			catch (NumberFormatException e)
 			{
-				C3Logger.warning("Invalid server cores {} passed in, going to ignore " + serverCores);
+				logger.warn("Invalid server cores {} passed in, going to ignore " + serverCores);
 				// ignore;
 			}
 		}

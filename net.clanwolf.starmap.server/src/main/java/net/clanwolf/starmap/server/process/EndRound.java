@@ -21,14 +21,15 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.server.process;
 
 import net.clanwolf.client.mail.MailManager;
 import net.clanwolf.starmap.constants.Constants;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.server.GameServer;
 import net.clanwolf.starmap.server.Nexus.Nexus;
 import net.clanwolf.starmap.server.beans.C3Room;
@@ -41,6 +42,7 @@ import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import javax.persistence.EntityTransaction;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.lang.invoke.MethodHandles;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -49,6 +51,7 @@ import java.util.HashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class EndRound {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	private static AtomicBoolean forceFinalize = new AtomicBoolean(false);
 
@@ -78,7 +81,7 @@ public class EndRound {
 
 		if (currentRoundStartDate == null) {
 			// this seems to be the first round in this season (?)
-			C3Logger.info("Round date for current round is null! Setting round date to season start date.");
+			logger.info("Round date for current round is null! Setting round date to season start date.");
 
 			roundPOJO.setCurrentRoundStartDate(seasonStartDate);
 
@@ -90,7 +93,7 @@ public class EndRound {
 				transaction.commit();
 			} catch (RuntimeException re) {
 				transaction.rollback();
-				C3Logger.error("Setting round date to season start date", re);
+				logger.error("Setting round date to season start date", re);
 			}
 			currentRoundStartDate = seasonStartDate;
 		}
@@ -112,8 +115,8 @@ public class EndRound {
 		Date translatedNowDate = translateRealDateToSeasonTime(new Date(System.currentTimeMillis()), 1L);
 
 		SimpleDateFormat dateFormatter = new SimpleDateFormat("E yyyy.MM.dd 'at' hh:mm:ss a zzz");
-		C3Logger.info("nextRoundDate: " + dateFormatter.format(nextRoundDate));
-		C3Logger.info("translatedNowDate: " + dateFormatter.format(translatedNowDate));
+		logger.info("nextRoundDate: " + dateFormatter.format(nextRoundDate));
+		logger.info("translatedNowDate: " + dateFormatter.format(translatedNowDate));
 
 		// round is officially over
 		return !nextRoundDate.after(translatedNowDate); // the end of the round has not been reached on the calendar
@@ -151,14 +154,14 @@ public class EndRound {
 	}
 
 	public synchronized static String finalizeRound(Long seasonId, int round) {
-		C3Logger.info("Checking on end of round.");
+		logger.info("Checking on end of round.");
 		ArrayList<JumpshipPOJO> jumpshipList = JumpshipDAO.getInstance().getAllJumpships();
 		ArrayList<AttackPOJO> openAttacksInRoundList = AttackDAO.getInstance().getOpenAttacksOfASeasonForRound(seasonId, round);
 
-		C3Logger.debug("Current date: " + new Date(System.currentTimeMillis()));
-		C3Logger.debug("Translated current date: " + translateRealDateToSeasonTime(new Date(System.currentTimeMillis()), 1L));
-		C3Logger.debug("Current round date: " + getCurrentRoundDate(seasonId));
-		C3Logger.debug("Next round date: " + getNextRoundDate(seasonId));
+		logger.debug("Current date: " + new Date(System.currentTimeMillis()));
+		logger.debug("Translated current date: " + translateRealDateToSeasonTime(new Date(System.currentTimeMillis()), 1L));
+		logger.debug("Current round date: " + getCurrentRoundDate(seasonId));
+		logger.debug("Next round date: " + getNextRoundDate(seasonId));
 
 		boolean jumpshipsLeftToMove = false;
 		int jscount = 0;
@@ -177,23 +180,23 @@ public class EndRound {
 
 		if ((jumpshipsLeftToMove || attacksLeftToResolveInRound) && !(timeForThisRoundIsOver(seasonId)) && !forceFinalize.get()) {
 			// round is still active
-			C3Logger.info("Round is still active.");
-			C3Logger.info("--- " + jscount + " jumpship have not moved.");
-			C3Logger.info("--- " + openAttacksInRoundList.size() + " attacks still to be resolved.");
-			C3Logger.info("--- There is still time left to make moves for this round!");
+			logger.info("Round is still active.");
+			logger.info("--- " + jscount + " jumpship have not moved.");
+			logger.info("--- " + openAttacksInRoundList.size() + " attacks still to be resolved.");
+			logger.info("--- There is still time left to make moves for this round!");
 		} else {
 			forceFinalize.set(false);
 
 			// here is no ship left to move AND no attack left open OR the time for the round is up
-			C3Logger.info("Finalizing the round:");
-			C3Logger.info("--- There is NO time left for this round!");
+			logger.info("Finalizing the round:");
+			logger.info("--- There is NO time left for this round!");
 
 			// move all jumpships to their next waypoint
-			C3Logger.info("--- Moving all jumpships to their next waypoints.");
+			logger.info("--- Moving all jumpships to their next waypoints.");
 			// Jumpships do not need to be moved, because the waypoints have a round indicator
 
 			// set all open attacks to resolved (decide on a winner in the process!)
-			C3Logger.info("--- Resolve all attacks that are still open.");
+			logger.info("--- Resolve all attacks that are still open.");
 			for (AttackPOJO attackPOJO : openAttacksInRoundList) {
 				Long winnerId = findAWinner(attackPOJO);
 
@@ -207,13 +210,13 @@ public class EndRound {
 
 			// Count the round indicator up once
 			Long newRound = (long) (round + 1);
-			C3Logger.info("--- Finally increase the round indicator to: " + newRound);
+			logger.info("--- Finally increase the round indicator to: " + newRound);
 			RoundPOJO roundPOJO = RoundDAO.getInstance().findBySeasonId(seasonId);
 			roundPOJO.setRound(newRound);
 
 			// Set all jumpships to attackReady again
 			// Add the next system (according to the new round) from the current route to StarSystemHistory column
-			C3Logger.info("--- Setting all jumpships to attackReady again.");
+			logger.info("--- Setting all jumpships to attackReady again.");
 			for (JumpshipPOJO js : jumpshipList) {
 				boolean jumpshipHasAnOpenAttack = false;
 				for (AttackPOJO a : AttackDAO.getInstance().getOpenAttacksOfASeasonForRound(GameServer.getCurrentSeason(), newRound.intValue())) {
@@ -280,7 +283,7 @@ public class EndRound {
 					StarSystemDataPOJO ssdPojo = ssdDAO.findById(Nexus.DUMMY_USERID, attackPOJO.getStarSystemDataID());
 					FactionPOJO fPojo = fDAO.findById(Nexus.DUMMY_USERID, winnerId);
 					ssdPojo.setFactionID(fPojo);
-					C3Logger.debug("**** Storing winner for attack " + attackPOJO.getId() + " to be " + winnerId + ".");
+					logger.debug("**** Storing winner for attack " + attackPOJO.getId() + " to be " + winnerId + ".");
 
 					ssdDAO.update(Nexus.DUMMY_USERID, ssdPojo);
 				}
@@ -292,7 +295,7 @@ public class EndRound {
 				// see BOFaction for the numbers!
 
 				// Generate faction statistic data
-				C3Logger.info("Start to generate statistics...");
+				logger.info("Start to generate statistics...");
 				ArrayList<FactionPOJO> factionListHH = FactionDAO.getInstance().getAll_HH_Factions();
 				ArrayList<StarSystemDataPOJO> starsystemdataListHH = StarSystemDataDAO.getInstance().getAll_HH_StarSystemData();
 
@@ -385,12 +388,12 @@ public class EndRound {
 					systemCountIndustrial.put(faction.getId(), countIndustrial);
 					systemCountCapital.put(faction.getId(), countCapital);
 				}
-				C3Logger.info("... statistics finished.");
+				logger.info("... statistics finished.");
 
 				endRoundInfo.addObject(null);
 				endRoundInfo.setAction_successfully(Boolean.TRUE);
 			} catch (RuntimeException re) {
-				C3Logger.error("Finalize round", re);
+				logger.error("Finalize round", re);
 				re.printStackTrace();
 
 				StringWriter sw = new StringWriter();
@@ -407,7 +410,7 @@ public class EndRound {
 			}
 
 			// Sending mail with information about the last round
-			C3Logger.info("Sending mail about finalized round.");
+			logger.info("Sending mail about finalized round.");
 			String[] receivers = { "keshik@googlegroups.com" };
 			boolean sent;
 
@@ -442,13 +445,13 @@ public class EndRound {
 
 				if (sent) {
 					// sent
-					C3Logger.info("Mail sent.");
+					logger.info("Mail sent.");
 				} else {
 					// error during email sending
-					C3Logger.info("Error during mail dispatch.");
+					logger.info("Error during mail dispatch.");
 				}
 			} else {
-				C3Logger.info("Mail was not sent out because this is a dev computer.");
+				logger.info("Mail was not sent out because this is a dev computer.");
 			}
 		}
 		return resolvedAttacks + "\r\n" + movedJumpships;

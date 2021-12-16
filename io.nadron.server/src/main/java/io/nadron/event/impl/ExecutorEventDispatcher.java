@@ -6,8 +6,10 @@ import io.nadron.event.EventDispatcher;
 import io.nadron.event.EventHandler;
 import io.nadron.event.Events;
 import io.nadron.event.SessionEventHandler;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -17,9 +19,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-
-public class ExecutorEventDispatcher implements EventDispatcher
-{
+public class ExecutorEventDispatcher implements EventDispatcher {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	private static final ExecutorService EXECUTOR = Executors
 			.newSingleThreadExecutor();
 	static
@@ -181,7 +182,7 @@ public class ExecutorEventDispatcher implements EventDispatcher
 				}
 			});
 		} else {
-			C3Logger.error("Discarding event: " + event + " as dispatcher is shutting down");
+			logger.error("Discarding event: " + event + " as dispatcher is shutting down");
 		}
 	}
 

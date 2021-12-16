@@ -21,14 +21,16 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.client.action;
 
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.awt.event.ActionEvent;
+import java.lang.invoke.MethodHandles;
 
 /**
  * C3 Action
@@ -36,6 +38,7 @@ import java.awt.event.ActionEvent;
  * @author Meldric
  */
 public class C3Action extends AbstractC3Action implements ActionCallBackListener {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	private static final long serialVersionUID = 1L;
 	private ACTIONS mAction;
@@ -123,7 +126,7 @@ public class C3Action extends AbstractC3Action implements ActionCallBackListener
 		try {
 			return listener.handleAction(action, o);
 		} catch (Throwable th) {
-			C3Logger.exception(null, th);
+			logger.error(null, th);
 		}
 		return false;
 	}

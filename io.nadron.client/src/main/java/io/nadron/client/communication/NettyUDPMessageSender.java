@@ -5,8 +5,10 @@ import io.nadron.client.app.Session;
 import io.nadron.client.communication.MessageSender.Fast;
 import io.nadron.client.event.Events;
 import io.netty.channel.socket.DatagramChannel;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.lang.invoke.MethodHandles;
 import java.net.SocketAddress;
 
 
@@ -18,8 +20,9 @@ import java.net.SocketAddress;
  * @author Abraham Menacherry
  * 
  */
-public class NettyUDPMessageSender implements Fast
-{
+public class NettyUDPMessageSender implements Fast {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
 	private boolean isClosed = false;
 	private final SocketAddress remoteAddress;
 	private final DatagramChannel channel;
@@ -50,7 +53,7 @@ public class NettyUDPMessageSender implements Fast
 			return;
 		Session session = NettyUDPClient.CLIENTS.remove(channel.localAddress());
 		if (null == session) {
-			C3Logger.error("Possible memory leak occurred. "
+			logger.error("Possible memory leak occurred. "
 					+ "The session associated with udp localaddress: "
 					+ channel.localAddress()
 					+ " could not be removed from NettyUDPClient.CLIENTS map");

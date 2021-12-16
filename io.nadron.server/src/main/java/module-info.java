@@ -16,6 +16,7 @@ module io.nadron.server {
 	requires io.netty.common;
 	requires io.netty.buffer;
 	requires io.netty.handler;
+	requires org.slf4j;
 
 	exports io.nadron.server;
 	exports io.nadron.app;

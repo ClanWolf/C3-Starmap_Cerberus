@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.client.gui;
@@ -67,7 +67,8 @@ import net.clanwolf.starmap.client.gui.panes.userinfo.UserInfoPane;
 import net.clanwolf.starmap.client.gui.popuppanes.C3PopupPane;
 import net.clanwolf.starmap.client.mwo.CheckClipboardForMwoApi;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.client.net.Server;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.security.Security;
@@ -80,6 +81,7 @@ import net.clanwolf.starmap.transfer.enums.MEDALS;
 import net.clanwolf.starmap.transfer.enums.POPUPS;
 
 import java.io.*;
+import java.lang.invoke.MethodHandles;
 import java.net.URL;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
@@ -94,6 +96,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author Meldric
  */
 public class MainFrameController extends AbstractC3Controller implements ActionCallBackListener {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	private boolean enableLanguageSwitch = true;
 	private boolean buttonsAreMoving = false;
@@ -437,7 +440,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		}
 		if (event.getCode() == KeyCode.ENTER) {
 			String enteredCommand = terminalPrompt.getText();
-			C3Logger.info("Enter pressed on terminal. Entered command: " + enteredCommand);
+			logger.info("Enter pressed on terminal. Entered command: " + enteredCommand);
 			Platform.runLater(() -> {
 				ActionManager.getAction(ACTIONS.TERMINAL_COMMAND).execute(enteredCommand);
 				terminalPrompt.setText("");
@@ -532,7 +535,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				C3Properties.setProperty(C3PROPS.LANGUAGE, "de", true);
 				ActionManager.getAction(ACTIONS.CHANGE_LANGUAGE).execute(Internationalization.GERMAN);
 			}
-			C3Logger.info("Language changed. Switched to: " + Internationalization.getLanguage());
+			logger.info("Language changed. Switched to: " + Internationalization.getLanguage());
 			languageButton.getStyleClass().remove("languageButton_hover");
 			languageButton.getStyleClass().remove("languageButton_de");
 			languageButton.getStyleClass().remove("languageButton_en");
@@ -610,7 +613,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 	@FXML
 	private void handleTopRightExitLabel() {
-		// C3Logger.info("Application close requested by user.");
+		// logger.info("Application close requested by user.");
 		AbstractC3Pane targetPane;
 		String spokenMessage = Internationalization.getString("C3_Speech_close_warning");
 		setStatusText(Internationalization.getString("C3_Speech_close_warning").replace("%20", " ") + ".", false);
@@ -631,7 +634,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private void moveMenuIndicator(int pos) {
 		if (!adminMenuActive) {
 			Platform.runLater(() -> {
-//				C3Logger.info("Moving menu indicator to: " + pos);
+//				logger.info("Moving menu indicator to: " + pos);
 				hudinfo1.setOpacity(1.0);
 				hudinfo1.setCache(true);
 				hudinfo1.setCacheHint(CacheHint.SPEED);
@@ -666,7 +669,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			// LOGIN / USERINFO
 			if (bn.equals(userButton)) {
 				if (!Nexus.isLoggedIn()) {
-					C3Logger.info("Login opened by user.");
+					logger.info("Login opened by user.");
 					setStatusText(Internationalization.getString("app_login_infotext").replace("%20", " ") + ".", false);
 					targetPane = loginPane;
 					if (!adminMenuActive) {
@@ -676,7 +679,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					moveMenuIndicator(menuIndicatorPos);
 					adminPaneOpen = false;
 				} else {
-					C3Logger.info("Open Userinfo panel for logged in user.");
+					logger.info("Open Userinfo panel for logged in user.");
 					setStatusText(Internationalization.getString("app_open_userinfo").replace("%20", " ") + ".", false);
 					targetPane = userInfoPane;
 					if (!adminMenuActive) {
@@ -689,7 +692,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			}
 			// SETTINGS
 			if (bn.equals(settingsButton)) {
-				C3Logger.info("Settings opened by user.");
+				logger.info("Settings opened by user.");
 				setStatusText(Internationalization.getString("app_settings_infotext").replace("%20", " ") + ".", false);
 				targetPane = settingsPane;
 				if (!adminMenuActive) {
@@ -701,7 +704,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			}
 			// STARMAP
 			if (bn.equals(mapButton)) {
-				C3Logger.info("Map opened by user.");
+				logger.info("Map opened by user.");
 				setStatusText(Internationalization.getString("app_map_infotext").replace("%20", " ") + ".", false);
 				targetPane = mapPane;
 				if (!adminMenuActive) {
@@ -713,7 +716,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			}
 			// ATTACK / INVASION
 			if (bn.equals(attackButton)) {
-				C3Logger.info("Attack on a starsystem selected.");
+				logger.info("Attack on a starsystem selected.");
 				setStatusText(Internationalization.getString("app_attack_infotext").replace("%20", " ") + ".", false);
 				targetPane = attackPane;
 				if (!adminMenuActive) {
@@ -725,7 +728,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			}
 			// ROLEPLAY
 			if (bn.equals(rolePlayButton)) {
-				C3Logger.info("RolePlay opened by user.");
+				logger.info("RolePlay opened by user.");
 				setStatusText(Internationalization.getString("app_settings_infotext").replace("%20", " ") + ".", false);
 				targetPane = rolePlayPane;
 				if (!adminMenuActive) {
@@ -739,7 +742,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			}
 			// DICE
 			if (bn.equals(diceButton)) {
-				C3Logger.info("Dice opened by user.");
+				logger.info("Dice opened by user.");
 				setStatusText(Internationalization.getString("app_dice_infotext").replace("%20", " ") + ".", false);
 				targetPane = dicePane;
 				if (!adminMenuActive) {
@@ -752,7 +755,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			}
 			// CHAT
 			if (bn.equals(chatButton)) {
-				C3Logger.info("Chat opened by user.");
+				logger.info("Chat opened by user.");
 				setStatusText(Internationalization.getString("app_chat_infotext").replace("%20", " ") + ".", false);
 				targetPane = chatPane;
 				if (!adminMenuActive) {
@@ -766,14 +769,14 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			}
 			// LOG
 			if (bn.equals(logButton)) {
-				C3Logger.info("Log opened by user.");
+				logger.info("Log opened by user.");
 				setStatusText(Internationalization.getString("app_log_infotext").replace("%20", " ") + ".", false);
 
 				openLogPane = true;
 			}
 			// EXIT
 			if (bn.equals(exitButton)) {
-				// C3Logger.info("Application close requested by user.");
+				// logger.info("Application close requested by user.");
 				spokenMessage = Internationalization.getString("C3_Speech_close_warning");
 				setStatusText(Internationalization.getString("C3_Speech_close_warning").replace("%20", " ") + ".", false);
 				targetPane = confirmAppClosePane;
@@ -788,7 +791,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			// ADMIN BUTTONS
 			// ADMINS
 			if (bn.equals(adminButton)) {
-				C3Logger.info("Admin menu opened by user.");
+				logger.info("Admin menu opened by user.");
 				setStatusText(Internationalization.getString("app_admin_infotext").replace("%20", " ") + ".", true);
 				shiftButtonColumn();
 				Tools.playButtonClickSound();
@@ -796,14 +799,14 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			}
 			// STORY EDITOR
 			if (bn.equals(storyEditorButton)) {
-				C3Logger.info("Sory editor opened by user.");
+				logger.info("Sory editor opened by user.");
 				setStatusText(Internationalization.getString("app_storyeditor_infotext").replace("%20", " ") + ".", false);
 				adminPaneOpen = true;
 				openEditorPane = true;
 			}
 			// ADMIN PANE
 			if (bn.equals(adminPaneButton)) {
-				C3Logger.info("Administration pane (Security) opened by user.");
+				logger.info("Administration pane (Security) opened by user.");
 				setStatusText(Internationalization.getString("app_adminpane_infotext").replace("%20", " ") + ".", false);
 				adminPaneOpen = true;
 				openAdministrationPane = true;
@@ -818,10 +821,10 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				Tools.playButtonClickSound();
 			}
 		} else if (!openAdministrationPane && !openEditorPane && !openLogPane) {
-			C3Logger.info("TargetPane not defined!");
+			logger.info("TargetPane not defined!");
 		}
 		if (openAdministrationPane) {
-			C3Logger.info("Opening administration window!");
+			logger.info("Opening administration window!");
 
 			ArrayList<UserDTO> userListFromNexus = Nexus.getUserList();
 
@@ -831,7 +834,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		}
 
 		if (openEditorPane) {
-			C3Logger.info("Opening storyeditor window!");
+			logger.info("Opening storyeditor window!");
 
 			Stage stage = (Stage) rootAnchorPane.getScene().getWindow();
 			StoryEditorPane ep = new StoryEditorPane(stage);
@@ -839,7 +842,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		}
 
 		if (openLogPane) {
-			C3Logger.info("Opening log window!");
+			logger.info("Opening log window!");
 			Stage stage = (Stage) rootAnchorPane.getScene().getWindow();
 			if (logPane == null) {
 				logPane = new LogPane(stage, Internationalization.getLocale());
@@ -891,7 +894,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			}
 		}
 
-		C3Logger.info("Adminmenu: " + adminMenuActive);
+		logger.info("Adminmenu: " + adminMenuActive);
 
 		Runnable r = () -> {
 			buttonsAreMoving = true;
@@ -1245,7 +1248,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		rolePlayPane.setCacheHint(CacheHint.SPEED);
 		rolePlayPane.getController().addActionCallBackListeners();
 		rolePlayPane.getController().setPaneName(paneNameCharacter);
-		C3Logger.debug("RolePlayPane: " + rolePlayPane + " -> Controller: " + rolePlayPane.getController());
+		logger.debug("RolePlayPane: " + rolePlayPane + " -> Controller: " + rolePlayPane.getController());
 
 		String paneNameAttack = "AttackPane";
 		attackPane = new RolePlayBasicPane(paneNameAttack);
@@ -1255,7 +1258,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		attackPane.setCacheHint(CacheHint.SPEED);
 		attackPane.getController().addActionCallBackListeners();
 		attackPane.getController().setPaneName(paneNameAttack);
-		C3Logger.debug("AttackPane: " + attackPane + " -> Controller: " + attackPane.getController());
+		logger.debug("AttackPane: " + attackPane + " -> Controller: " + attackPane.getController());
 
 		// infoPane = new InfoPane();
 		// infoPane.getController().addActionCallBackListener();
@@ -1446,98 +1449,6 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		}
 	}
 
-	public void handleCommand(String com) {
-		if (!com.startsWith("*!!!*")) {
-			if (!"".equals(com)) {
-				C3Logger.info("Received command: '" + com + "'");
-				Nexus.commandHistory.add(com);
-				if (Nexus.commandHistory.size() > 50) {
-					Nexus.commandHistory.remove(0);
-				}
-				Nexus.commandHistoryIndex = Nexus.commandHistory.size();
-			}
-		}
-
-		if ("*!!!*historyBack".equals(com)) {
-			if (Nexus.commandHistoryIndex > 0) {
-				Nexus.commandHistoryIndex--;
-				C3Logger.info("History back to index: " + Nexus.commandHistoryIndex);
-				String histCom = Nexus.commandHistory.get(Nexus.commandHistoryIndex);
-				ActionManager.getAction(ACTIONS.SET_TERMINAL_TEXT).execute(histCom);
-			}
-		}
-
-		if ("*!!!*historyForward".equals(com)) {
-			if (Nexus.commandHistoryIndex < Nexus.commandHistory.size() - 1) {
-				Nexus.commandHistoryIndex++;
-				C3Logger.info("History forward to index: " + Nexus.commandHistoryIndex);
-				String histCom = Nexus.commandHistory.get(Nexus.commandHistoryIndex);
-				ActionManager.getAction(ACTIONS.SET_TERMINAL_TEXT).execute(histCom);
-			}
-		}
-
-		// ---------------------------------
-		// force finalize round
-		// ---------------------------------
-		if (com.toLowerCase().startsWith("finalize round")) {
-			if (Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN)) {
-				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_success"), false));
-				GameState s = new GameState();
-				s.setMode(GAMESTATEMODES.FORCE_FINALIZE_ROUND);
-				Nexus.fireNetworkEvent(s);
-				Nexus.storeCommandHistory();
-			} else {
-				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_notallowed"), false));
-				C3Message message = new C3Message(C3MESSAGES.ERROR_NOT_ALLOWED);
-				message.setType(C3MESSAGETYPES.CLOSE);
-				message.setText(Internationalization.getString("general_notallowed"));
-				C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
-				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
-			}
-			Nexus.storeCommandHistory();
-		}
-
-		// ---------------------------------
-		// re-create universe
-		// ---------------------------------
-		if (com.toLowerCase().startsWith("create universe")) {
-			if (Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN)) {
-				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_success"), false));
-				GameState s = new GameState();
-				s.setMode(GAMESTATEMODES.FORCE_NEW_UNIVERSE);
-				Nexus.fireNetworkEvent(s);
-				Nexus.storeCommandHistory();
-			} else {
-				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_notallowed"), false));
-				C3Message message = new C3Message(C3MESSAGES.ERROR_NOT_ALLOWED);
-				message.setType(C3MESSAGETYPES.CLOSE);
-				message.setText(Internationalization.getString("general_notallowed"));
-				C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
-				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
-			}
-			Nexus.storeCommandHistory();
-		}
-
-		if (com.toLowerCase().startsWith("test popup")) {
-			ActionManager.getAction(ACTIONS.SHOW_POPUP).execute(POPUPS.Orders_Confirmed);
-			Nexus.storeCommandHistory();
-		}
-
-		if (com.toLowerCase().startsWith("test medal")) {
-			ActionManager.getAction(ACTIONS.SHOW_MEDAL).execute(MEDALS.First_Blood);
-			Nexus.storeCommandHistory();
-		}
-	}
-
-	private static void incrementCounter(){
-		counterWaitCursorLock.lock();
-		try {
-			counterWaitCursor++;
-		} finally{
-			counterWaitCursorLock.unlock();
-		}
-	}
-
 	/**
 	 * Handle Actions
 	 *
@@ -1605,7 +1516,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			case DATABASECONNECTIONCHECK_STARTED:
 				if (C3Properties.getProperty(C3PROPS.CHECK_ONLINE_STATUS).equals("OFFLINE")) {
 					// server is not online, do not try to check the database
-					C3Logger.info("Server is offline, DB is not checked!");
+					logger.info("Server is offline, DB is not checked!");
 				} else {
 					ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("4");
 					Platform.runLater(() -> databaseAccessibleIndicatorLabel.setStyle("-fx-background-color: #808000;"));
@@ -1668,7 +1579,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 							Internationalization.getString("ACTIONS.LOGGED_OFF_AFTER_DOUBLE_LOGIN_COMPLETE.description"));
 					Optional<ButtonType> r = alert.showAndWait();
 					if (r.isPresent() && ButtonType.OK == r.get()) {
-						C3Logger.info("Message has been confirmed.");
+						logger.info("Message has been confirmed.");
 					}
 				});
 				break;
@@ -1681,7 +1592,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 			case LOGON_FINISHED_SUCCESSFULL:
 				Platform.runLater(() -> {
-					// C3Logger.info("Current user is: " + Nexus.getCurrentUser() + " (Check this not to be NULL)");
+					// logger.info("Current user is: " + Nexus.getCurrentUser() + " (Check this not to be NULL)");
 
 					userInfoPane = new UserInfoPane();
 					userInfoPane.setCache(true);
@@ -1887,7 +1798,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					sourceIdRN = o.getText();
 				}
 				decrementCounter();
-				// C3Logger.info("Requesting NORMAL cursor (" + counterWaitCursor + "). --> " + sourceIdRN);
+				// logger.info("Requesting NORMAL cursor (" + counterWaitCursor + "). --> " + sourceIdRN);
 				if (counterWaitCursor == 0) {
 					Platform.runLater(() -> {
 						mouseStopper.toFront();
@@ -1916,7 +1827,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				final String str = sourceIdRW;
 				Nexus.setMainFrameEnabled(false);
 				incrementCounter();
-				// C3Logger.info("Requesting WAIT cursor (" + counterWaitCursor + "). --> " + sourceIdRW);
+				// logger.info("Requesting WAIT cursor (" + counterWaitCursor + "). --> " + sourceIdRW);
 				Platform.runLater(() -> {
 					mouseStopper.toFront();
 					slVolumeControl.toFront();
@@ -2081,13 +1992,105 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 //			case CURSOR_REQUEST_WAIT_MESSAGE:
 //				break;
 			case NEW_UNIVERSE_RECEIVED:
-				C3Logger.info("Do something with the new UNIVERSE (here)!!!");
+				logger.info("Do something with the new UNIVERSE (here)!!!");
 				break;
 
 			default:
 				break;
 		}
 		return true;
+	}
+
+	private static void incrementCounter(){
+		counterWaitCursorLock.lock();
+		try {
+			counterWaitCursor++;
+		} finally{
+			counterWaitCursorLock.unlock();
+		}
+	}
+
+	public void handleCommand(String com) {
+		if (!com.startsWith("*!!!*")) {
+			if (!"".equals(com)) {
+				logger.info("Received command: '" + com + "'");
+				Nexus.commandHistory.add(com);
+				if (Nexus.commandHistory.size() > 50) {
+					Nexus.commandHistory.remove(0);
+				}
+				Nexus.commandHistoryIndex = Nexus.commandHistory.size();
+			}
+		}
+
+		if ("*!!!*historyBack".equals(com)) {
+			if (Nexus.commandHistoryIndex > 0) {
+				Nexus.commandHistoryIndex--;
+				logger.info("History back to index: " + Nexus.commandHistoryIndex);
+				String histCom = Nexus.commandHistory.get(Nexus.commandHistoryIndex);
+				ActionManager.getAction(ACTIONS.SET_TERMINAL_TEXT).execute(histCom);
+			}
+		}
+
+		if ("*!!!*historyForward".equals(com)) {
+			if (Nexus.commandHistoryIndex < Nexus.commandHistory.size() - 1) {
+				Nexus.commandHistoryIndex++;
+				logger.info("History forward to index: " + Nexus.commandHistoryIndex);
+				String histCom = Nexus.commandHistory.get(Nexus.commandHistoryIndex);
+				ActionManager.getAction(ACTIONS.SET_TERMINAL_TEXT).execute(histCom);
+			}
+		}
+
+		// ---------------------------------
+		// force finalize round
+		// ---------------------------------
+		if (com.toLowerCase().startsWith("finalize round")) {
+			if (Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN)) {
+				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_success"), false));
+				GameState s = new GameState();
+				s.setMode(GAMESTATEMODES.FORCE_FINALIZE_ROUND);
+				Nexus.fireNetworkEvent(s);
+				Nexus.storeCommandHistory();
+			} else {
+				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_notallowed"), false));
+				C3Message message = new C3Message(C3MESSAGES.ERROR_NOT_ALLOWED);
+				message.setType(C3MESSAGETYPES.CLOSE);
+				message.setText(Internationalization.getString("general_notallowed"));
+				C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
+				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
+			}
+			Nexus.storeCommandHistory();
+		}
+
+		// ---------------------------------
+		// re-create universe
+		// ---------------------------------
+		if (com.toLowerCase().startsWith("create universe")) {
+			if (Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN)) {
+				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_success"), false));
+				GameState s = new GameState();
+				s.setMode(GAMESTATEMODES.FORCE_NEW_UNIVERSE);
+				Nexus.fireNetworkEvent(s);
+				Nexus.storeCommandHistory();
+			} else {
+				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_notallowed"), false));
+				C3Message message = new C3Message(C3MESSAGES.ERROR_NOT_ALLOWED);
+				message.setType(C3MESSAGETYPES.CLOSE);
+				message.setText(Internationalization.getString("general_notallowed"));
+				C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
+				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
+			}
+			Nexus.storeCommandHistory();
+		}
+
+		if (com.toLowerCase().startsWith("test popup")) {
+			ActionManager.getAction(ACTIONS.SHOW_POPUP).execute(POPUPS.Orders_Confirmed);
+			Nexus.storeCommandHistory();
+		}
+
+		if (com.toLowerCase().startsWith("test medal")) {
+			ActionManager.getAction(ACTIONS.SHOW_MEDAL).execute(MEDALS.First_Blood);
+			Nexus.storeCommandHistory();
+		}
 	}
 
 	/**
@@ -2220,13 +2223,13 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 	private void closeMessage(C3Message message) {
 		C3MESSAGERESULTS userReactionResult = message.getResult();
-		C3Logger.info("USER ANSWERED '" + userReactionResult + "' to MESSAGE '" + message.getMessage() + "'");
+		logger.info("USER ANSWERED '" + userReactionResult + "' to MESSAGE '" + message.getMessage() + "'");
 
 		if (message.getMessage() == C3MESSAGES.DOWNLOAD_CLIENT) {
 			if (C3MESSAGERESULTS.YES.equals(userReactionResult)) {
 				ActionManager.getAction(ACTIONS.OPEN_CLIENTVERSION_DOWNLOADPAGE).execute();
 			} else if (C3MESSAGERESULTS.NO.equals(userReactionResult)) {
-				C3Logger.info("The latest version should be installed in any situation!");
+				logger.info("The latest version should be installed in any situation!");
 			}
 		}
 

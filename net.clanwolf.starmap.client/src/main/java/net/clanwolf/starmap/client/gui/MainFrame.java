@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.client.gui;
@@ -49,7 +49,7 @@ import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.logging.LogWatcher;
 import net.clanwolf.starmap.client.net.Server;
-import net.clanwolf.starmap.logging.C3Logger;
+import net.clanwolf.starmap.logging.C3LogUtil;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.logout.Logout;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
@@ -58,22 +58,24 @@ import net.clanwolf.starmap.client.util.C3Properties;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.client.util.Tools;
 import net.clanwolf.starmap.client.preloader.C3_Preloader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.lang.invoke.MethodHandles;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Objects;
 import java.util.Scanner;
-import java.util.logging.Level;
 import java.util.regex.Pattern;
 
 @SuppressWarnings("restriction")
 public class MainFrame extends Application implements EventHandler<WindowEvent>, ActionCallBackListener {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	private Image imageNormalCursor = null;
 	private Image imageWaitCursor = null;
@@ -112,7 +114,7 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 			File dir = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "manual");
 			boolean success = dir.mkdirs();
 			if (success) {
-				C3Logger.info("Created manual folder");
+				logger.info("Created manual folder");
 			}
 
 			// Manual
@@ -129,24 +131,14 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 				Files.copy(source2, Paths.get(destination2), StandardCopyOption.REPLACE_EXISTING);
 			}
 		} catch (Exception e) {
-			C3Logger.info("Exception while copying the manual to local drive.");
-			C3Logger.exception(null, e);
+			logger.info("Exception while copying the manual to local drive.");
+			logger.error(null, e);
 		}
 	}
 
-	public void clearCache() {
-		C3Logger.info("Clearing cache!");
-		String cacheFolderName = System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "cache";
-		File f = new File(cacheFolderName);
-		boolean success = f.mkdirs();
-		if (!success) {
-			C3Logger.info("Folder " + f.getAbsolutePath() + " could not be created!");
-		}
-		Tools.purgeDirectory(f);
-		C3Logger.info("The following files were left over (could not be deleted):");
-		C3Logger.info("--- [start]");
-		Tools.listDirectory(f);
-		C3Logger.info("--- [end]");
+	// This needs to be done in the main class once at startup to set the file handler for the logger
+	public static void prepareLogging(String logFileName) {
+		C3LogUtil.loadConfigurationAndSetLogFile(logFileName);
 	}
 
 	private void openManual() {
@@ -178,6 +170,38 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 		return givenVersionIsHigher;
 	}
 
+	/**
+	 * Prepare the property file for each user.
+	 * Values from the user properties do overwrite central properties.
+	 */
+	private static void prepareUserProperties() {
+		try {
+			File dir = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3");
+			boolean showEditProperties = C3Properties.loadUserProperties(dir.toString());
+			if (showEditProperties) {
+				// TODO: Show scene to initially edit settings
+				logger.info("Showing first welcome.");
+			}
+		} catch (IOException e) {
+			logger.error(null, e);
+		}
+	}
+
+	public void clearCache() {
+		logger.info("Clearing cache!");
+		String cacheFolderName = System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "cache";
+		File f = new File(cacheFolderName);
+		boolean success = f.mkdirs();
+		if (!success) {
+			logger.info("Folder " + f.getAbsolutePath() + " could not be created!");
+		}
+		Tools.purgeDirectory(f);
+		logger.info("The following files were left over (could not be deleted):");
+		logger.info("--- [start]");
+		Tools.listDirectory(f);
+		logger.info("--- [end]");
+	}
+
 	@Override
 	public void init() {
 		notifyPreloader(new Preloader.ProgressNotification(10.0));
@@ -186,34 +210,25 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 		File dir = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3");
 		boolean res = dir.mkdirs();
 		if (res || dir.exists()) {
+
 			String logFileName = dir + File.separator + "starmap.log";
+			prepareLogging(logFileName);
+
 			C3Properties.setProperty(C3PROPS.LOGFILE, logFileName);
 			LogWatcher logWatcher = new LogWatcher(logFileName);
 			Nexus.setLogWatcher(logWatcher);
 
 			notifyPreloader(new Preloader.ProgressNotification(50.0));
 
-			C3Logger.setC3Logfile(logFileName);
-			C3Logger.setC3LogLevel(Level.FINEST);
-
-			C3Logger.info("---------------------------------------------------------------------");
-			C3Logger.info("STARTING C3 (" + Tools.getVersionNumber() + ")");
-			C3Logger.info("---------------------------------------------------------------------");
-			C3Logger.info("Logfile : " + logFileName);
-			C3Logger.info("Loglevel: " + C3Logger.getC3LogLevel());
-
-			Long k1 = 1L;
-			Long k2 = 1L;
-			Long k3 = 1L;
-			HashMap<Long, String> test = new HashMap<>();
-			test.put(k1, "test12");
-			test.put(k2, "test15");
-			test.put(k3, "test13");
+			logger.info("---------------------------------------------------------------------");
+			logger.info("STARTING C3 (" + Tools.getVersionNumber() + ")");
+			logger.info("---------------------------------------------------------------------");
+			logger.info("Logfile : " + logFileName);
 
 			notifyPreloader(new Preloader.ProgressNotification(70.0));
 
 			// prepare the properties
-			C3Logger.info("Preparing user properties...");
+			logger.info("Preparing user properties...");
 			prepareUserProperties();
 			prepareManual();
 
@@ -224,9 +239,9 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 			}
 
 			if (isDevelopmentPC) {
-				C3Logger.warning("--------------------------------------------------------------");
-				C3Logger.warning("--------------- THIS IS A DEVELOPMENT MACHINE! ---------------");
-				C3Logger.warning("--------------------------------------------------------------");
+				logger.warn("--------------------------------------------------------------");
+				logger.warn("--------------- THIS IS A DEVELOPMENT MACHINE! ---------------");
+				logger.warn("--------------------------------------------------------------");
 				C3Properties.setProperty(C3PROPS.DEV_PC, "true", false);
 			}
 
@@ -234,24 +249,24 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 
 			try {
 				String availableClientVersion = Server.checkLastAvailableClientVersion();
-				C3Logger.info("Latest available client version online: " + availableClientVersion);
+				logger.info("Latest available client version online: " + availableClientVersion);
 
 				if ("${project.version}".equals(Tools.getVersionNumber())
 					|| isDevelopmentPC) {
-					C3Logger.info("Currently used client version: *** Running in local debugger! *** (no version check online).");
+					logger.info("Currently used client version: *** Running in local debugger! *** (no version check online).");
 				} else {
-					C3Logger.info("Currently used client version: " + Tools.getVersionNumber());
+					logger.info("Currently used client version: " + Tools.getVersionNumber());
 
 					// if (availableClientVersion.equals(Tools.getVersionNumber())) {
 					if (!newerVersionAvailable(availableClientVersion)) {
-						C3Logger.info("Currently used client version is the latest.");
+						logger.info("Currently used client version is the latest.");
 					} else {
-						C3Logger.info("Difference detected: Prompt to download new version.");
+						logger.info("Difference detected: Prompt to download new version.");
 						Nexus.promptNewVersionInstall = true;
 					}
 				}
 			} catch(Exception e) {
-				C3Logger.warning("Could not check latest available client version online!");
+				logger.warn("Could not check latest available client version online!");
 			}
 
 			String commandFileName = dir + File.separator + "command.log";
@@ -271,40 +286,7 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 				//e.printStackTrace();
 			}
 		} else {
-			C3Logger.info("Could not create: " + dir.getAbsolutePath());
-		}
-	}
-
-	public void cleanCache() {
-		long numberOfDays = 90;
-		C3Logger.info("Cleaning cache (cleaning files older than " + numberOfDays + " days)!");
-		String cacheFolderName = System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "cache";
-		File f = new File(cacheFolderName);
-		boolean success = f.mkdirs();
-		if (!success) {
-			C3Logger.info("Folder " + f.getAbsolutePath() + " could not be created!");
-		}
-		Tools.cleanDirectory(f, numberOfDays);
-		C3Logger.info("The following files were left over (could not be deleted or were younger than " + numberOfDays + " days):");
-		C3Logger.info("--- [start]");
-		Tools.listDirectory(f);
-		C3Logger.info("--- [end]");
-	}
-
-	/**
-	 * Prepare the property file for each user.
-	 * Values from the user properties do overwrite central properties.
-	 */
-	private static void prepareUserProperties() {
-		try {
-			File dir = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3");
-			boolean showEditProperties = C3Properties.loadUserProperties(dir.toString());
-			if (showEditProperties) {
-				// TODO: Show scene to initially edit settings
-				C3Logger.info("Showing first welcome.");
-			}
-		} catch (IOException e) {
-			C3Logger.exception(null, e);
+			logger.info("Could not create: " + dir.getAbsolutePath());
 		}
 	}
 
@@ -317,9 +299,9 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 	public void start(final Stage s) throws Exception {
 		// check transparency
 		if (Platform.isSupported(ConditionalFeature.TRANSPARENT_WINDOW)) {
-			C3Logger.info("Checking transparency: Full Window Transparency supported.");
+			logger.info("Checking transparency: Full Window Transparency supported.");
 		} else {
-			C3Logger.info("Checking transparency: Full Window Transparency NOT (!) supported.");
+			logger.info("Checking transparency: Full Window Transparency NOT (!) supported.");
 		}
 
 		// Set authenticaton for the proxy
@@ -373,7 +355,7 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 			// TODO: Add check for the resize control and perform resize of the
 			// window
 			if (mouseEvent.getTarget().toString().equals("Label[id=ResizerControl, styleClassLabel]")) {
-				C3Logger.info("ReSIZE");
+				logger.info("ReSIZE");
 			}
 		});
 
@@ -425,17 +407,33 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 
 		stage.show();
 
-		C3Logger.info("Mail dispatch disabled in source code.");
+		logger.info("Mail dispatch disabled in source code.");
 //		String[] receivers = {"warwolfen@gmail.com", "werner.kewenig@arcor.de"};
 //		boolean sent = false;
 //		sent = MailManager.sendMail("starmap@clanwolf.net", receivers, "C3 Client (" + Tools.getVersionNumber() + ")", "C3 Client (" + Tools.getVersionNumber() + ") was successfully started.", false, false);
 //		if (sent) {
 //			// sent
-//			C3Logger.info("Mail sent.");
+//			logger.info("Mail sent.");
 //		} else {
 //			// error during email sending
-//			C3Logger.info("Error during mail dispatch.");
+//			logger.info("Error during mail dispatch.");
 //		}
+	}
+
+	public void cleanCache() {
+		long numberOfDays = 90;
+		logger.info("Cleaning cache (cleaning files older than " + numberOfDays + " days)!");
+		String cacheFolderName = System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "cache";
+		File f = new File(cacheFolderName);
+		boolean success = f.mkdirs();
+		if (!success) {
+			logger.info("Folder " + f.getAbsolutePath() + " could not be created!");
+		}
+		Tools.cleanDirectory(f, numberOfDays);
+		logger.info("The following files were left over (could not be deleted or were younger than " + numberOfDays + " days):");
+		logger.info("--- [start]");
+		Tools.listDirectory(f);
+		logger.info("--- [end]");
 	}
 
 	public static void main(String[] args) {
@@ -503,11 +501,10 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 			case APPLICATION_EXIT:
 
 				if (Nexus.isLoggedIn()) {
-					C3Logger.info("Application exit: logging off server");
+					logger.info("Application exit: logging off server");
 					Logout.doLogout(false);
 				}
 
-				C3Logger.shutdown();
 				C3SoundPlayer.killMediaPlayer();
 				Platform.runLater(() -> {
 					C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_goodbye_message"));
@@ -555,10 +552,10 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 					try {
 						String directDownloadUrl = C3Properties.getProperty(C3PROPS.AUTOMATIC_DOWNLOAD_CLIENT_URL);
 						directDownloadUrl = directDownloadUrl.replace("##v##", Nexus.getLastAvailableClientVersion());
-						C3Logger.info("Downloading: " + directDownloadUrl);
+						logger.info("Downloading: " + directDownloadUrl);
 						Tools.downloadFile(directDownloadUrl);
 					} catch (Exception e) {
-						C3Logger.info("Exception during download of client update. Redirecting to manual download...");
+						logger.info("Exception during download of client update. Redirecting to manual download...");
 						e.printStackTrace();
 						String url = C3Properties.getProperty(C3PROPS.MANUAL_DOWNLOAD_CLIENT_URL);
 						HostServices hostServices = getHostServices();
@@ -583,8 +580,8 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 							}
 						}
 						if (!"".equals(installerName)) {
-							C3Logger.info("Trying to install new version. If this fails, try manually to run:");
-							C3Logger.info("cmd.exe "
+							logger.info("Trying to install new version. If this fails, try manually to run:");
+							logger.info("cmd.exe "
 									+ "/c "
 									//+ "start "
 									+ dir + File.separator + installerName
@@ -603,7 +600,7 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 									" > nul 2>&1");
 							Process process = processBuilder.start();
 
-//							C3Logger.info("--- Output start (may be empty, if exe is not printing anything) ---");
+//							logger.info("--- Output start (may be empty, if exe is not printing anything) ---");
 //							BufferedReader reader =	new BufferedReader(new InputStreamReader(process.getInputStream()));
 //							StringBuilder builder = new StringBuilder();
 //							String line;
@@ -612,13 +609,13 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 //								builder.append(System.getProperty("line.separator"));
 //							}
 //							String result = builder.toString();
-//							C3Logger.debug(result);
-//							C3Logger.info("--- Output end ---");
+//							logger.debug(result);
+//							logger.info("--- Output end ---");
 
-							C3Logger.info("Closing C3 client for installation...");
+							logger.info("Closing C3 client for installation...");
 							System.exit(0);
 						} else {
-							C3Logger.info("No installer found.");
+							logger.info("No installer found.");
 						}
 					}
 				} catch (IOException e) {

@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.client.gui.panes.map;
@@ -35,9 +35,14 @@ import javafx.scene.input.ScrollEvent;
 import javafx.scene.shape.Circle;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionManager;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.invoke.MethodHandles;
 
 class SceneGestures {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
 	private double previousX;
 	private double previousY;
 
@@ -77,13 +82,13 @@ class SceneGestures {
 //		// correct results!
 //		double universeX = getUniverseX(event.getSceneX() - 190);
 //		double universeY = getUniverseY(event.getSceneY() - 70);
-//		C3Logger.info("[" + universeX + ", " + universeY + "]");
+//		logger.info("[" + universeX + ", " + universeY + "]");
 //		ActionManager.getAction(ACTIONS.UPDATE_COORD_INFO).execute("[" + String.format("%.2f", universeX) + ", " + String.format("%.2f", universeY) + "]");
 	};
 
 	private final EventHandler<MouseEvent> onMouseClickedEventHandler = event -> {
 		if (event.getTarget() instanceof Circle || event.getTarget() instanceof ImageView || event.getTarget() instanceof Button) {
-			C3Logger.info("No action.");
+			logger.info("No action.");
 			// nothing
 		} else {
 			if (event.getButton() == MouseButton.PRIMARY) {
@@ -98,7 +103,7 @@ class SceneGestures {
 		public void handle(MouseEvent event) {
 
 			scrollingEnabled = false;
-			// C3Logger.info("Button pressed");
+			// logger.info("Button pressed");
 
 			if (event.isPrimaryButtonDown()) {
 				canvas.hideStarSystemMarker();
@@ -122,7 +127,7 @@ class SceneGestures {
 
 	private final EventHandler<MouseEvent> onMouseReleasedEventHandler = mouseEvent -> {
 		scrollingEnabled = true;
-		// C3Logger.info("Button released");
+		// logger.info("Button released");
 	};
 
 	public void moveMapByDiff(double x, double y, double diffX, double diffY) {

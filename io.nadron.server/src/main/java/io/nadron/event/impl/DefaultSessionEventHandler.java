@@ -11,7 +11,10 @@ import io.nadron.event.NetworkEvent;
 import io.nadron.event.SessionEventHandler;
 import io.nadron.service.SessionRegistryService;
 import io.nadron.util.NadronConfig;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.invoke.MethodHandles;
 
 import static io.nadron.communication.DeliveryGuaranty.DeliveryGuarantyOptions.FAST;
 
@@ -27,8 +30,9 @@ import static io.nadron.communication.DeliveryGuaranty.DeliveryGuarantyOptions.F
  * @author Abraham Menacherry
  * 
  */
-public class DefaultSessionEventHandler implements SessionEventHandler
-{
+public class DefaultSessionEventHandler implements SessionEventHandler {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
 	private final Session session;
 	
 	public DefaultSessionEventHandler(Session session)
@@ -116,7 +120,7 @@ public class DefaultSessionEventHandler implements SessionEventHandler
 			if (null != udpSender) {
 				udpSender.sendMessage(event);
 			} else {
-				C3Logger.info("Going to discard event: {} since udpSender is null in session: {} " + event + session);
+				logger.info("Going to discard event: {} since udpSender is null in session: {} " + event + session);
 			}
 		}
 		else {
@@ -176,7 +180,7 @@ public class DefaultSessionEventHandler implements SessionEventHandler
 	}
 
 	protected void onDisconnect(Event event) {
-		C3Logger.info("Received disconnect event in session.");
+		logger.info("Received disconnect event in session.");
 		onException(event);
 	}
 	
@@ -196,10 +200,10 @@ public class DefaultSessionEventHandler implements SessionEventHandler
 			// If session is already in registry then do not re-register.
 			if(null == registry.getSession(reconnectKey)) {
 				registry.putSession(reconnectKey, getSession());
-				C3Logger.info("Received exception/disconnect event in session. Going to put session in reconnection registry.");
+				logger.info("Received exception/disconnect event in session. Going to put session in reconnection registry.");
 			}
 		} else {
-			C3Logger.info("Received exception/disconnect event in session. Going to close session.");
+			logger.info("Received exception/disconnect event in session. Going to close session.");
 			onClose(event);
 		}
 	}
@@ -228,6 +232,6 @@ public class DefaultSessionEventHandler implements SessionEventHandler
 	}
 	
 	private void logNullTcpConnection(Event event){
-		C3Logger.warning("Discarding {} as TCP connection is not fully " + "established for this {} " + event + getSession());
+		logger.warn("Discarding {} as TCP connection is not fully " + "established for this {} " + event + getSession());
 	}
 }

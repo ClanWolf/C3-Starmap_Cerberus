@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.client.process.universe;
@@ -33,16 +33,19 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
 import net.clanwolf.starmap.client.nexus.Nexus;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.JumpshipDTO;
 import net.clanwolf.starmap.transfer.dtos.RoutePointDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 
+import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
 
 public class BOJumpship implements Comparable<BOJumpship> {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	private JumpshipDTO jumpshipDTO;
 	private ImageView jumpshipImage;
@@ -90,7 +93,7 @@ public class BOJumpship implements Comparable<BOJumpship> {
 			}
 			route.clear();
 			int dist = 0;
-			C3Logger.info("Setting route for Jumpship '" + jumpshipDTO.getJumpshipName() + "':");
+			logger.info("Setting route for Jumpship '" + jumpshipDTO.getJumpshipName() + "':");
 			for (BOStarSystem s : routeSystems) {
 				int round = Nexus.getBoUniverse().currentRound + dist;
 				RoutePointDTO rp = new RoutePointDTO();
@@ -99,14 +102,14 @@ public class BOJumpship implements Comparable<BOJumpship> {
 				rp.setSeasonId(Long.valueOf(Nexus.getBoUniverse().currentSeason));
 				rp.setRoundId((long) round);
 				route.add(rp);
-				C3Logger.info("--- RoutePoint: " + s.getName() + " (in round " + round + ")");
+				logger.info("--- RoutePoint: " + s.getName() + " (in round " + round + ")");
 				dist++;
 			}
-			C3Logger.info("Route set.");
+			logger.info("Route set.");
 			Nexus.getBoUniverse().routesList.remove(jumpshipDTO.getId());
 			Nexus.getBoUniverse().routesList.put(jumpshipDTO.getId(), route);
 		} else {
-			C3Logger.info("Route was empty, nothing was set.");
+			logger.info("Route was empty, nothing was set.");
 		}
 	}
 

@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.client.gui.panes.map.tools;
@@ -30,18 +30,18 @@ import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.gui.panes.map.Config;
 import net.clanwolf.starmap.client.process.universe.BOStarSystem;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.kynosarges.tektosyne.geometry.PointD;
 
+import java.lang.invoke.MethodHandles;
 import java.util.*;
 import java.util.logging.Level;
 
 public class RouteCalculator {
-	public static List<BOStarSystem> calculateRoute(BOStarSystem source, BOStarSystem destination) {
-		Level originalLevel = C3Logger.getC3LogLevel();
-		C3Logger.info("C3 log level: " + originalLevel);
-		C3Logger.setC3LogLevel(java.util.logging.Level.FINEST);
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
+	public static List<BOStarSystem> calculateRoute(BOStarSystem source, BOStarSystem destination) {
 		BOUniverse boUniverse = Nexus.getBoUniverse();
 		List<BOStarSystem> calculatedRoute = new ArrayList<>();
 
@@ -50,8 +50,8 @@ public class RouteCalculator {
 			PointD p1 = route.get(0);
 			BOStarSystem s1 = boUniverse.getStarSystemByPoint(p1);
 			calculatedRoute.add(s1);
-			C3Logger.info("--------------------------- [ Start Optimizing route ]");
-			C3Logger.info("### Starting from " + s1.getName() + " (" + s1.getId() + ")");
+			logger.info("--------------------------- [ Start Optimizing route ]");
+			logger.info("### Starting from " + s1.getName() + " (" + s1.getId() + ")");
 
 			if (route.size() == 2) {
 				PointD p2 = route.get(1);
@@ -77,19 +77,19 @@ public class RouteCalculator {
 					if (st1.getId() == destination.getId()) {
 						destinationReached = true;
 					} else {
-						C3Logger.info("Starting from " + st1.getName());
+						logger.info("Starting from " + st1.getName());
 						for (int c = cc; c < routeList.size(); c++) {
 							PointD pt = routeList.get(c);
 							double distance = boUniverse.delaunaySubdivision.getDistance(pt1, pt) / Config.MAP_COORDINATES_MULTIPLICATOR;
 
-							C3Logger.info("Considering: " + boUniverse.getStarSystemByPoint(pt).getName());
+							logger.info("Considering: " + boUniverse.getStarSystemByPoint(pt).getName());
 							if (distance < 30) {
 								removeList.add(pt);
 								jumpToPoint = pt;
-								C3Logger.info("-- Removing: " + boUniverse.getStarSystemByPoint(jumpToPoint).getName());
+								logger.info("-- Removing: " + boUniverse.getStarSystemByPoint(jumpToPoint).getName());
 							} else {
 								removeList.remove(jumpToPoint);
-								C3Logger.info("-- Keeping: " + boUniverse.getStarSystemByPoint(jumpToPoint).getName());
+								logger.info("-- Keeping: " + boUniverse.getStarSystemByPoint(jumpToPoint).getName());
 								break;
 							}
 						}
@@ -104,12 +104,9 @@ public class RouteCalculator {
 					}
 				} while (!destinationReached);
 
-				C3Logger.info("--------------------------- [ End Optimizing route ]");
+				logger.info("--------------------------- [ End Optimizing route ]");
 			}
 		}
-
-		C3Logger.info("Switching to previous log level: " + originalLevel);
-		C3Logger.setC3LogLevel(originalLevel);
 
 		return calculatedRoute;
 	}

@@ -8,7 +8,10 @@ import io.nadron.protocols.AbstractNettyProtocol;
 import io.nadron.util.NettyUtils;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.LengthFieldPrepender;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.invoke.MethodHandles;
 
 /**
  * A simple protocol which would just strip out the length bytes from the buffer
@@ -21,8 +24,9 @@ import net.clanwolf.starmap.logging.C3Logger;
  * @author Abraham Menacherry
  * 
  */
-public class ChannelBufferProtocol extends AbstractNettyProtocol
-{
+public class ChannelBufferProtocol extends AbstractNettyProtocol {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
 	/**
 	 * Utility handler provided by netty to add the length of the outgoing
 	 * message to the message as a header.
@@ -39,7 +43,7 @@ public class ChannelBufferProtocol extends AbstractNettyProtocol
 	@Override
 	public void applyProtocol(PlayerSession playerSession)
 	{
-		C3Logger.info("Going to apply " + getProtocolName() + " on session: " + playerSession);
+		logger.info("Going to apply " + getProtocolName() + " on session: " + playerSession);
 		
 		ChannelPipeline pipeline = NettyUtils
 				.getPipeLineOfConnection(playerSession);

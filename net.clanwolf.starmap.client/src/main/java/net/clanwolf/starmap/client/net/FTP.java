@@ -21,14 +21,15 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.client.net;
 
 import net.clanwolf.starmap.client.enums.C3FTPTYPES;
 import net.clanwolf.starmap.client.nexus.Nexus;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.client.util.C3PROPS;
 import net.clanwolf.starmap.client.util.C3Properties;
 import org.apache.commons.net.ftp.FTPClient;
@@ -36,12 +37,14 @@ import org.apache.commons.net.ftp.FTPFile;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.lang.invoke.MethodHandles;
 
 /**
  * @author Undertaker
  *
  */
 public class FTP implements IFileTransfer {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	private FTPClient ftpClient;
 	private C3FTPTYPES ftptype;
@@ -72,11 +75,11 @@ public class FTP implements IFileTransfer {
 		}
 
 		ftpClient.connect(C3Properties.getProperty(C3PROPS.FTP_SERVER), Integer.parseInt(C3Properties.getProperty(C3PROPS.FTP_PORT)));
-		C3Logger.info(ftpClient.getReplyString().trim().replaceAll("(\\r|\\n)", ""));
+		logger.info(ftpClient.getReplyString().trim().replaceAll("(\\r|\\n)", ""));
 		ftpClient.login(user, password);
-		C3Logger.info(ftpClient.getReplyString().trim().replaceAll("(\\r|\\n)", ""));
+		logger.info(ftpClient.getReplyString().trim().replaceAll("(\\r|\\n)", ""));
 		ftpClient.enterLocalPassiveMode();
-		C3Logger.info(ftpClient.getReplyString().trim().replaceAll("(\\r|\\n)", ""));
+		logger.info(ftpClient.getReplyString().trim().replaceAll("(\\r|\\n)", ""));
 		ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE, FTPClient.BINARY_FILE_TYPE);
 		ftpClient.setFileTransferMode(FTPClient.BINARY_FILE_TYPE);
 	}
@@ -124,11 +127,11 @@ public class FTP implements IFileTransfer {
 				}
 			}
 
-			C3Logger.info(ftpClient.getReplyString().trim().replaceAll("(\\r|\\n)", ""));
+			logger.info(ftpClient.getReplyString().trim().replaceAll("(\\r|\\n)", ""));
 			ret = true;
 
 		} catch (IOException ioe) {
-			C3Logger.exception(null, ioe);
+			logger.error(null, ioe);
 		} finally {
 			try {
 				if (fis != null) {
@@ -153,11 +156,11 @@ public class FTP implements IFileTransfer {
 			}
 
 			ftpClient.deleteFile(remoteResultFile);
-			C3Logger.info(ftpClient.getReplyString());
+			logger.info(ftpClient.getReplyString());
 			ret = true;
 
 		} catch (IOException ioe) {
-			C3Logger.exception(null, ioe);
+			logger.error(null, ioe);
 		} finally {
 			try {
 				ftpClient.disconnect();
@@ -196,7 +199,7 @@ public class FTP implements IFileTransfer {
 			ftpClient.makeDirectory(getFTPSubPath() + pathname);
 			ret = true;
 		} catch (IOException ioe) {
-			C3Logger.exception(null, ioe);
+			logger.error(null, ioe);
 		}
 		return ret;
 	}
@@ -213,9 +216,9 @@ public class FTP implements IFileTransfer {
 			String[] filenameList = ftpClient.listNames(getFTPSubPath() + subDir);
 
 			for (int i = 0; i < filenameList.length; i++) {
-				C3Logger.info(filenameList[i]);
+				logger.info(filenameList[i]);
 				if (filter == null || filenameList[i].contains(filter)) {
-					C3Logger.info(filenameList[i] + " - delete");
+					logger.info(filenameList[i] + " - delete");
 					delete(filenameList[i]);
 				}
 
@@ -223,7 +226,7 @@ public class FTP implements IFileTransfer {
 
 			ret = true;
 		} catch (IOException ioe) {
-			C3Logger.exception(null, ioe);
+			logger.error(null, ioe);
 		}
 		return ret;
 	}

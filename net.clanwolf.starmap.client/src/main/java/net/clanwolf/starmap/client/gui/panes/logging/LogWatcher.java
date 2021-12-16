@@ -21,28 +21,28 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.client.gui.panes.logging;
 
 import net.clanwolf.starmap.client.net.HTTP;
-import net.clanwolf.starmap.logging.C3Logger;
-import net.clanwolf.starmap.logging.LogEntry;
+import net.clanwolf.starmap.logging.C3LogHandler;
+import net.clanwolf.starmap.logging.C3LogEntry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.slf4j.event.Level;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.lang.invoke.MethodHandles;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.regex.Pattern;
 
 public class LogWatcher {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
 	Path logFile;
 	private int lines = 0;
 	private int characters = 0;
@@ -70,7 +70,8 @@ public class LogWatcher {
 				public void run() {
 					try {
 						do {
-							LogEntry entry = C3Logger.logHistory.poll();
+							clientScrolledDown = LogPaneController.clientScrolledDown;
+							C3LogEntry entry = C3LogHandler.logHistory.poll();
 							if (entry != null) {
 								LogPaneController.addClientLine(entry);
 							} else {
@@ -85,7 +86,7 @@ public class LogWatcher {
 						clientLogwatcherThread = null;
 					} catch (Exception ex) {
 						ex.printStackTrace();
-						C3Logger.error("Exception while scanning log entries [3761].", ex);
+						logger.error("Exception while scanning log entries [3761].", ex);
 					}
 				}
 			};
@@ -97,6 +98,7 @@ public class LogWatcher {
 				public void run() {
 					try {
 						do {
+							serverScrolledDown = LogPaneController.serverScrolledDown;
 							Level filterLevel = LogPaneController.getLevel();
 							LogPaneController.setLogURL(logURL);
 							byte[] serverLog = HTTP.get(logURL);
@@ -106,20 +108,9 @@ public class LogWatcher {
 							for (byte[] line : lines) {
 								String s = new String(line, StandardCharsets.UTF_8);
 								if (s != null) {
-									String timestamp = s.substring(0,18);
-									String con[] = s.substring(19).split("/", 3);
-									String levelString = con[0];
-									String loggingClass = con[1];
-									String loggingClassMethod = con[2].substring(0, con[2].indexOf(" >> "));
-									String message = con[2].substring(con[2].indexOf(" >> "));
-
-									Level l = Level.parse(levelString);
-
-									if (l.intValue() >= filterLevel.intValue()) {
-										LogEntry logEntry = new LogEntry(rowCount, levelString, timestamp, loggingClass, loggingClassMethod, message);
-										LogPaneController.addServerLine(logEntry);
-										rowCount++;
-									}
+									C3LogEntry entry = new C3LogEntry(rowCount, "Test", s);
+									LogPaneController.addServerLine(entry);
+									rowCount++;
 								}
 							}
 							if (!serverScrolledDown) {
@@ -139,7 +130,7 @@ public class LogWatcher {
 						serverLogwatcherThread = null;
 					} catch (Exception ex) {
 						ex.printStackTrace();
-						C3Logger.error("Exception while scanning log entries [3768].", ex);
+						logger.error("Exception while scanning log entries [3768].", ex);
 					}
 				}
 			};

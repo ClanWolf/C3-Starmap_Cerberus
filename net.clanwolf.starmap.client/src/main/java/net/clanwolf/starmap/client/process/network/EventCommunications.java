@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.client.process.network;
@@ -35,13 +35,15 @@ import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.process.universe.BOAttack;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.client.process.logout.Logout;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.*;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.util.Compressor;
 
+import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -49,25 +51,26 @@ import java.util.HashMap;
  * @author Christian
  */
 public class EventCommunications {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	public static void onDataIn(Session session, Event event) {
-		C3Logger.info("EventCommunications.onDataIn: " + event.getType());
+		logger.info("EventCommunications.onDataIn: " + event.getType());
 
 		if (event.getSource() instanceof GameState) {
 			GameState state = (GameState) event.getSource();
-//			C3Logger.info("Event received: " + state.getMode());
+//			logger.info("Event received: " + state.getMode());
 
 			showErrorMessage(state);
 
 			switch (state.getMode()) {
 				case USER_GET_NEW_PLAYERLIST:
-					C3Logger.info("EventCommunications.onDataIn: neue Playerliste ->" + state.getObject());
+					logger.info("EventCommunications.onDataIn: neue Playerliste ->" + state.getObject());
 
 					@SuppressWarnings("unchecked")
 					ArrayList<UserDTO> userList = (ArrayList<UserDTO>) state.getObject();
 
 					for (UserDTO anUserList : userList) {
-						C3Logger.info(anUserList.getUserName() + " from UserDTO object");
+						logger.info(anUserList.getUserName() + " from UserDTO object");
 					}
 					Nexus.setCurrentlyOnlineUserList(userList);
 					ActionManager.getAction(ACTIONS.NEW_PLAYERLIST_RECEIVED).execute();
@@ -86,7 +89,7 @@ public class EventCommunications {
 
 					// set current user
 					Nexus.setUser((UserDTO) state.getObject());
-					C3Logger.info("EventCommunications.onDataIn: myPlayerSessionID: -> " + Nexus.getMyPlayerSessionID());
+					logger.info("EventCommunications.onDataIn: myPlayerSessionID: -> " + Nexus.getMyPlayerSessionID());
 
 					UniverseDTO uni = (UniverseDTO) Compressor.deCompress((byte[]) state.getObject2());
 					Nexus.setBOUniverse(new BOUniverse(uni));
@@ -104,7 +107,7 @@ public class EventCommunications {
 							if (c != null) {
 								allChars.put(c.getId(), c);
 							} else {
-								C3Logger.info("User " + u.getUserName() + " does not have a character!");
+								logger.info("User " + u.getUserName() + " does not have a character!");
 							}
 						}
 						Nexus.setCharacterList(allChars);
@@ -112,7 +115,7 @@ public class EventCommunications {
 
 					// own playersession on server
 					Nexus.setMyPlayerSessionID(state.getReceiver());
-					C3Logger.info("EventCommunications.onDataIn: myPlayerSessionID: -> " + Nexus.getMyPlayerSessionID());
+					logger.info("EventCommunications.onDataIn: myPlayerSessionID: -> " + Nexus.getMyPlayerSessionID());
 
 					// Send new playerlist
 					GameState stateSendPlayList = new GameState(GAMESTATEMODES.BROADCAST_SEND_NEW_PLAYERLIST);
@@ -138,7 +141,7 @@ public class EventCommunications {
 					break;
 
 				case ATTACK_SAVE_RESPONSE:
-					C3Logger.info("Attack has been started.");
+					logger.info("Attack has been started.");
 					AttackDTO attack = (AttackDTO) state.getObject();
 					//RolePlayStoryDTO rpOldDTO = Nexus.getBoUniverse().getAttackStories().get(Nexus.getCurrentAttackOfUser().getAttackDTO().getStoryID());
 					boolean storyWasChanged = false;
@@ -195,7 +198,7 @@ public class EventCommunications {
 					break;
 
 				case ATTACK_CHARACTER_SAVE_RESPONSE:
-					C3Logger.info("Attack has changed, a user joined or left.");
+					logger.info("Attack has changed, a user joined or left.");
 					AttackDTO attackDTO = (AttackDTO) state.getObject();
 //					ArrayList<RolePlayCharacterDTO> rpCharList = (ArrayList<RolePlayCharacterDTO>)state.getObject2();
 
@@ -209,59 +212,59 @@ public class EventCommunications {
 
 					break;
 				case ERROR_MESSAGE:
-					C3Logger.info("ErrorMessage");
-					C3Logger.error((String) state.getObject());
+					logger.info("ErrorMessage");
+					logger.error((String) state.getObject());
 					break;
 				case USER_LOG_OUT:
 					break;
 				case USER_LOGOUT_AFTER_DOUBLE_LOGIN:
-					C3Logger.info("EventCommunications.onDataIn: USER_LOGOUT_AFTER_DOUBLE_LOGIN -> " + state.getReceiver().toString());
+					logger.info("EventCommunications.onDataIn: USER_LOGOUT_AFTER_DOUBLE_LOGIN -> " + state.getReceiver().toString());
 					if (state.getReceiver().toString().equals(Nexus.getMyPlayerSessionID().toString())) {
-						C3Logger.info("onDataIn: LOGOFF_AFTER_DOUBLE_LOGIN: Logout wegen Doppellogin");
+						logger.info("onDataIn: LOGOFF_AFTER_DOUBLE_LOGIN: Logout wegen Doppellogin");
 						Logout.doLogout(true);
 					}
 					break;
 				case ROLEPLAY_SAVE_STORY:
 					if (state.isAction_successfully() == null) {
-						C3Logger.info("ROLEPLAY_SAVE_STORY: No action state: " + state.getObject().toString());
+						logger.info("ROLEPLAY_SAVE_STORY: No action state: " + state.getObject().toString());
 
 					} else if (state.isAction_successfully()) {
-						C3Logger.info("ROLEPLAY_SAVE_STORY: Speichern erfolgreich! - " + state.getObject().toString());
+						logger.info("ROLEPLAY_SAVE_STORY: Speichern erfolgreich! - " + state.getObject().toString());
 						ActionManager.getAction(ACTIONS.SAVE_ROLEPLAY_STORY_OK).execute(state);
 
 					} else if (!state.isAction_successfully()) {
-						C3Logger.info("ROLEPLAY_SAVE_STORY: Fehler beim Speichern: " + state.getObject().toString());
+						logger.info("ROLEPLAY_SAVE_STORY: Fehler beim Speichern: " + state.getObject().toString());
 						ActionManager.getAction(ACTIONS.SAVE_ROLEPLAY_STORY_ERR).execute(state.getObject());
 
 					}
 					break;
 				case ROLEPLAY_DELETE_STORY:
 					if (state.isAction_successfully() == null) {
-						C3Logger.info("ROLEPLAY_DELETE_STORY: No action state: " + state.getObject().toString());
+						logger.info("ROLEPLAY_DELETE_STORY: No action state: " + state.getObject().toString());
 
 					} else if (state.isAction_successfully()) {
-						C3Logger.info("ROLEPLAY_DELETE_STORY_OK");
+						logger.info("ROLEPLAY_DELETE_STORY_OK");
 						ActionManager.getAction(ACTIONS.DELETE_ROLEPLAY_STORY_OK).execute();
 
 					} else if (!state.isAction_successfully()) {
-						C3Logger.info("ROLEPLAY_DELETE_STORY_ERR");
+						logger.info("ROLEPLAY_DELETE_STORY_ERR");
 						ActionManager.getAction(ACTIONS.DELETE_ROLEPLAY_STORY_ERR).execute(state.getObject());
 
 					}
 					break;
 				case ROLEPLAY_GET_ALLSTORIES:
-					C3Logger.info("ROLEPLAY_GET_ALLSTORIES " + state.getObject().toString());
+					logger.info("ROLEPLAY_GET_ALLSTORIES " + state.getObject().toString());
 					ActionManager.getAction(ACTIONS.GET_ROLEPLAY_ALLSTORIES).execute(state.getObject());
 					break;
 				case ROLEPLAY_GET_ALLCHARACTER:
-					C3Logger.info("ROLEPLAY_GET_ALLCHARACTER " + state.getObject().toString());
+					logger.info("ROLEPLAY_GET_ALLCHARACTER " + state.getObject().toString());
 					ActionManager.getAction(ACTIONS.GET_ROLEPLAY_ALLCHARACTER).execute(state.getObject());
 					break;
 
 				case ROLEPLAY_GET_CHAPTER_BYSORTORDER:
 				case ROLEPLAY_GET_STEP_BYSORTORDER:
 				case ROLEPLAY_SAVE_NEXT_STEP:
-					C3Logger.info("ROLEPLAY_GET_CHAPTER_BYSORTORDER " + state.getObject().toString());
+					logger.info("ROLEPLAY_GET_CHAPTER_BYSORTORDER " + state.getObject().toString());
 
 					RolePlayCharacterDTO rpo = (RolePlayCharacterDTO) state.getObject();
 					Nexus.setChar(rpo);
@@ -271,7 +274,7 @@ public class EventCommunications {
 					break;
 
 				case GET_UNIVERSE_DATA:
-					C3Logger.info("Re-created universe received from server!");
+					logger.info("Re-created universe received from server!");
 					ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("13");
 					UniverseDTO universeDTO = (UniverseDTO) Compressor.deCompress((byte[])state.getObject());
 					Nexus.injectNewUniverseDTO(universeDTO);
@@ -298,7 +301,7 @@ public class EventCommunications {
 				case ROLEPLAY_REQUEST_ALLCHARACTER:
 					break;
 				case FINALIZE_ROUND:
-					C3Logger.info("Server did finalize round.");
+					logger.info("Server did finalize round.");
 					ActionManager.getAction(ACTIONS.FINALIZE_ROUND).execute();
 					break;
 				default:
@@ -309,7 +312,7 @@ public class EventCommunications {
 
 	public static void showErrorMessage(GameState g){
 		if(g.isAction_successfully() != null && !g.isAction_successfully()){
-			C3Logger.error((String) g.getObject());
+			logger.error((String) g.getObject());
 		}
 	}
 }

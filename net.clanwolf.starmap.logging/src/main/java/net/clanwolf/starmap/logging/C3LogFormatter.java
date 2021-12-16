@@ -21,39 +21,27 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.logging;
 
-import java.io.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.logging.Formatter;
+import java.util.logging.LogRecord;
 
-public class C3OutputStream extends OutputStream {
-	Logger logger;
-	Level level;
-	StringBuilder stringBuilder;
-
-//	PrintStream stdout = System.out;
-//	PrintStream stderr = System.err;
-
-	public C3OutputStream(Logger logger, Level level) {
-		this.logger = logger;
-		this.level = level;
-		stringBuilder = new StringBuilder();
-	}
-
+public class C3LogFormatter extends Formatter {
 	@Override
-	public final void write(int i) throws IOException {
-		char c = (char) i;
-		if (c == '\r' || c == '\n') {
-			if (stringBuilder.length() > 0) {
-				logger.log(level, "stdOut/stdErr (redirected): " + stringBuilder.toString());
-				stringBuilder = new StringBuilder();
-			}
-		} else {
-			stringBuilder.append(c);
-		}
+	public String format(LogRecord record) {
+		// String id = String.format("%04d", record.getThreadID());
+		SimpleDateFormat dt1 = new SimpleDateFormat("MM/dd*HH:mm:ss.SSS");
+		return ""
+				// + "[" + id + "] "
+				+ dt1.format(new Date(record.getMillis()))
+				+ " " + record.getLevel()
+				+ "/" + record.getSourceClassName().replace("net.clanwolf.starmap.", "...")
+				+ "/" + record.getSourceMethodName()
+				+ " >> " + record.getMessage() + "\n";
 	}
 }

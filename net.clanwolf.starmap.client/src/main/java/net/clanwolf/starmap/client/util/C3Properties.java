@@ -21,12 +21,13 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.client.util;
 
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -34,6 +35,7 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.*;
+import java.lang.invoke.MethodHandles;
 import java.security.InvalidKeyException;
 import java.security.Key;
 import java.security.NoSuchAlgorithmException;
@@ -48,6 +50,7 @@ import java.util.Properties;
  * @version 1.0
  */
 public class C3Properties {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	private static SecretKeySpec mSecretKey;
 	private static File sUserPropertyFile;
@@ -87,7 +90,7 @@ public class C3Properties {
 			sProperties.load(Thread.currentThread().getContextClassLoader().getResourceAsStream("c3.properties"));
 
 		} catch (NoSuchAlgorithmException | NoSuchPaddingException | IOException e) {
-			C3Logger.exception("Cipher: " + e, e);
+			logger.error("Cipher: " + e, e);
 		}
 	}
 
@@ -259,7 +262,7 @@ public class C3Properties {
 						props.store(fOut, REGENERATION_WARNING);
 					}
 				} catch (IOException e) {
-					C3Logger.exception(null, e);
+					logger.error(null, e);
 				}
 			}
 			updateSystemProperties();
@@ -279,7 +282,7 @@ public class C3Properties {
 			byte[] encryptedValue = Base64.getEncoder().encode(result);
 			value = new String(encryptedValue);
 		} catch (InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
-			C3Logger.exception(null, e);
+			logger.error(null, e);
 		}
 		return value;
 	}
@@ -360,7 +363,7 @@ public class C3Properties {
 
 		} catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException | IllegalBlockSizeException
 				| BadPaddingException e) {
-			C3Logger.exception(null, e);
+			logger.error(null, e);
 		}
 		return value;
 	}
@@ -375,7 +378,7 @@ public class C3Properties {
 		try {
 			return Integer.parseInt(getProperty(key));
 		} catch (NumberFormatException nfe) {
-			C3Logger.exception(null, nfe);
+			logger.error(null, nfe);
 		}
 		return 0;
 	}

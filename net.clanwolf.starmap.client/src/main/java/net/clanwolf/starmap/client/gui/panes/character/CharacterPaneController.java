@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.client.gui.panes.character;
@@ -37,9 +37,11 @@ import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.client.util.Internationalization;
 
+import java.lang.invoke.MethodHandles;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -49,6 +51,7 @@ import java.util.ResourceBundle;
  * @author Undertaker
  */
 public class CharacterPaneController extends AbstractC3Controller implements ActionCallBackListener {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	@FXML
 	private Button buttonNew;
@@ -121,8 +124,8 @@ public class CharacterPaneController extends AbstractC3Controller implements Act
 				break;
 			case PANE_CREATION_FINISHED:
 				if (object.getObject().getClass() == CharacterPane.class) {
-					C3Logger.info(object.getObject().toString());
-					C3Logger.info("PANE_CREATION_FINISHED: fillComboBox");
+					logger.info(object.getObject().toString());
+					logger.info("PANE_CREATION_FINISHED: fillComboBox");
 					fillComboBox();
 				}
 				break;
@@ -237,7 +240,7 @@ public class CharacterPaneController extends AbstractC3Controller implements Act
 	}
 
 	private void fillComboBox() {
-		C3Logger.info("fillComboBox");
+		logger.info("fillComboBox");
 
 		/* Combobox Fraktionen füllen */
 		/*

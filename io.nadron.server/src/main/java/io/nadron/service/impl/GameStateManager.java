@@ -1,11 +1,15 @@
 package io.nadron.service.impl;
 
 import io.nadron.service.GameStateManagerService;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.lang.invoke.MethodHandles;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class GameStateManager implements GameStateManagerService {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
 	private Object state;
 	byte [] serializedBytes;
 	private AtomicInteger syncKey;
@@ -57,7 +61,7 @@ public class GameStateManager implements GameStateManagerService {
 	{
 		if (null == key || !(key instanceof Integer))
 		{
-			C3Logger.warning("Invalid key provided: " + key);
+			logger.warn("Invalid key provided: " + key);
 			return false;
 		}
 

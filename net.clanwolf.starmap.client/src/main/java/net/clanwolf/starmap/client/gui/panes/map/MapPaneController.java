@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.client.gui.panes.map;
@@ -67,12 +67,14 @@ import net.clanwolf.starmap.client.util.C3Properties;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.client.util.Tools;
 import net.clanwolf.starmap.constants.Constants;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.transfer.dtos.*;
 import net.clanwolf.starmap.transfer.enums.MEDALS;
 import net.clanwolf.starmap.transfer.enums.POPUPS;
 import org.kynosarges.tektosyne.geometry.PointD;
 
+import java.lang.invoke.MethodHandles;
 import java.net.URL;
 import java.util.*;
 
@@ -82,6 +84,7 @@ import java.util.*;
  * @author Meldric
  */
 public class MapPaneController extends AbstractC3Controller implements ActionCallBackListener {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	@FXML
 	AnchorPane anchorPane;
@@ -259,7 +262,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				Nexus.getBoUniverse().routesList.get(js.getJumpshipId()) != null &&
 				js.isAttackReady()) {
 
-				C3Logger.info("Storing route to database");
+				logger.info("Storing route to database");
 				ArrayList<RoutePointDTO> route = Nexus.getBoUniverse().routesList.get(js.getJumpshipId());
 				JumpshipDTO jsDto = js.getJumpshipDTO();
 				jsDto.setRoutepointList(route);
@@ -419,7 +422,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					ActionManager.getAction(ACTIONS.SHOW_POPUP).execute(POPUPS.Orders_Confirmed);
 				});
 			} else {
-				C3Logger.info(js.getJumpshipName() + " is not attack ready, nothing happens.");
+				logger.info(js.getJumpshipName() + " is not attack ready, nothing happens.");
 			}
 		}
 	}
@@ -493,7 +496,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 					if (starSystem.isActive()) {
 						if (starSystem.isActiveInPhase(Nexus.getCurrentSeasonMetaPhase())) {
-							// C3Logger.debug("System is active in the current MetaPhase!");
+							// logger.debug("System is active in the current MetaPhase!");
 							starSystem.getStarSystemGroup().setOpacity(1.0d);
 							starSystem.getLevelLabel().setOpacity(1.0d);
 							if (starSystem.getIndustryImage() != null) {
@@ -501,7 +504,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 							}
 							starSystem.getStarSystemGroup().setMouseTransparent(false);
 						} else {
-							// C3Logger.debug("System is NOT active in the current MetaPhase!");
+							// logger.debug("System is NOT active in the current MetaPhase!");
 							starSystem.getStarSystemGroup().setOpacity(0.2d);
 							starSystem.getLevelLabel().setOpacity(0.2d);
 							if (starSystem.getIndustryImage() != null) {
@@ -649,7 +652,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 						js.setCurrentSystemID(targetSystemId);
 						js.setRoute(boUniverse.routesList.get(js.getJumpshipId()));
 					} else {
-						C3Logger.info("Jumpship '" + js.getJumpshipName() + "' has no current system. Seems to be a mistake!");
+						logger.info("Jumpship '" + js.getJumpshipName() + "' has no current system. Seems to be a mistake!");
 						ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("11");
 					}
 				}
@@ -676,10 +679,10 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				d = 3000;
 			}
 			if (d < Config.MAP_DIM) {
-				C3Logger.info("Using map dimensions from user properties: " + d);
+				logger.info("Using map dimensions from user properties: " + d);
 				Config.setMapDim(d);
 			}
-			C3Logger.info("Beginning to build the star map from received universe data.");
+			logger.info("Beginning to build the star map from received universe data.");
 
 			Nexus.setCurrentSeason(boUniverse.currentSeason);
 			Nexus.setCurrentSeasonMetaPhase(boUniverse.currentSeasonMetaPhase);
@@ -721,7 +724,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					double y = starSystem.getScreenY();
 
 					if (starSystem.isCapitalWorld()) {
-						C3Logger.info(starSystem.getName() + " is the capital planet of faction " + starSystem.getAffiliation());
+						logger.info(starSystem.getName() + " is the capital planet of faction " + starSystem.getAffiliation());
 					}
 
 					if ("Terra".equals(name)) {
@@ -848,7 +851,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 					if (starSystem.isActive()) {
 						if (starSystem.isActiveInPhase(Nexus.getCurrentSeasonMetaPhase())) {
-							// C3Logger.debug("System is active in the current MetaPhase!");
+							// logger.debug("System is active in the current MetaPhase!");
 						} else {
 							starSystemGroup.setOpacity(0.2d);
 							levelLabel.setOpacity(0.2d);
@@ -966,11 +969,11 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 								if (rp.getSystemId().equals(currentSystemID)) {
 									// In this round, the jumpship should be at System of this routepoint
 									// --> all is fine, the jumpship is where it is expected to be
-									C3Logger.info("Jumpship " + js.getJumpshipName() + " is where it is expected to be.");
+									logger.info("Jumpship " + js.getJumpshipName() + " is where it is expected to be.");
 								} else {
 									// The jumpship has not jumped and is not at the system it is expected
 									currentSystemID = rp.getSystemId();
-									C3Logger.info("Fixing position of jumpship that apparently did not jump!");
+									logger.info("Fixing position of jumpship that apparently did not jump!");
 								}
 							}
 						}
@@ -1039,7 +1042,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 						js.setRoute(boUniverse.routesList.get(js.getJumpshipId()));
 					} else {
 						String m = "Jumpship '" + js.getJumpshipName() + "' has no current system. Needs to be checked!";
-						C3Logger.info(m);
+						logger.info(m);
 						Tools.sendMailToAdminGroup(m);
 					}
 				}
@@ -1083,7 +1086,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				e.printStackTrace();
 			}
 			setStrings();
-			C3Logger.info("Finished to build the starmap.");
+			logger.info("Finished to build the starmap.");
 
 			ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("12");
 			ActionManager.getAction(ACTIONS.MAP_CREATION_FINISHED).execute();
@@ -1200,9 +1203,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		mapButton06.setDisable(true);
 		mapButton06.setVisible(false);
 
-		C3Logger.info("Travel to Homeworld");
-		C3Logger.info("X: " + Config.MAP_INITIAL_TRANSLATE_X);
-		C3Logger.info("Y: " + Config.MAP_INITIAL_TRANSLATE_Y);
+		logger.info("Travel to Homeworld");
+		logger.info("X: " + Config.MAP_INITIAL_TRANSLATE_X);
+		logger.info("Y: " + Config.MAP_INITIAL_TRANSLATE_Y);
 
 		for (int[] layer : Config.BACKGROUND_STARS_LAYERS) {
 			int level = layer[0];
@@ -1243,9 +1246,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		mapButton05.setDisable(true);
 		mapButton06.setDisable(true);
 
-		C3Logger.info("Travel to " + sys.getName());
-		C3Logger.info("X: " + sys.getX());
-		C3Logger.info("Y: " + sys.getY());
+		logger.info("Travel to " + sys.getName());
+		logger.info("X: " + sys.getX());
+		logger.info("Y: " + sys.getY());
 
 		for (int[] layer : Config.BACKGROUND_STARS_LAYERS) {
 			int level = layer[0];
@@ -1293,7 +1296,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 	private void moveMapToJumpship(BOJumpship jumpship) {
 		BOStarSystem starsystem = jumpship.getCurrentSystem(jumpship.getCurrentSystemID());
-		C3Logger.info("Travel to position of jumpship " + jumpship.getJumpshipName() + " --> " + starsystem.getName());
+		logger.info("Travel to position of jumpship " + jumpship.getJumpshipName() + " --> " + starsystem.getName());
 		moveMapToPosition(starsystem);
 	}
 
@@ -1485,7 +1488,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	public void handleCommand(String com) {
 		if (!com.startsWith("*!!!*")) {
 			if (!"".equals(com)) {
-				C3Logger.info("Received command: '" + com + "'");
+				logger.info("Received command: '" + com + "'");
 				Nexus.commandHistory.add(com);
 				if (Nexus.commandHistory.size() > 50) {
 					Nexus.commandHistory.remove(0);
@@ -1497,7 +1500,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		if ("*!!!*historyBack".equals(com)) {
 			if (Nexus.commandHistoryIndex > 0) {
 				Nexus.commandHistoryIndex--;
-				C3Logger.info("History back to index: " + Nexus.commandHistoryIndex);
+				logger.info("History back to index: " + Nexus.commandHistoryIndex);
 				String histCom = Nexus.commandHistory.get(Nexus.commandHistoryIndex);
 				ActionManager.getAction(ACTIONS.SET_TERMINAL_TEXT).execute(histCom);
 			}
@@ -1506,7 +1509,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		if ("*!!!*historyForward".equals(com)) {
 			if (Nexus.commandHistoryIndex < Nexus.commandHistory.size() - 1) {
 				Nexus.commandHistoryIndex++;
-				C3Logger.info("History forward to index: " + Nexus.commandHistoryIndex);
+				logger.info("History forward to index: " + Nexus.commandHistoryIndex);
 				String histCom = Nexus.commandHistory.get(Nexus.commandHistoryIndex);
 				ActionManager.getAction(ACTIONS.SET_TERMINAL_TEXT).execute(histCom);
 			}
@@ -1518,19 +1521,19 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		if (com.toLowerCase().startsWith("find ")) {
 			String value = com.substring(5);
 			if (!"".equals(value)) {
-				C3Logger.info("Searching for '" + value + "'");
+				logger.info("Searching for '" + value + "'");
 			}
-			C3Logger.info("Searching starsystems...");
+			logger.info("Searching starsystems...");
 			for (BOStarSystem ss : boUniverse.starSystemBOs.values()) {
 				if (ss.getName().equalsIgnoreCase(value)) {
-					C3Logger.info("Found starsystem '" + value + "'");
+					logger.info("Found starsystem '" + value + "'");
 					moveMapToPosition(ss);
 				}
 			}
-			C3Logger.info("Searching jumpships...");
+			logger.info("Searching jumpships...");
 			for (BOJumpship js : boUniverse.jumpshipBOs.values()) {
 				if (js.getJumpshipName().equalsIgnoreCase(value)) {
-					C3Logger.info("Found jumpship '" + value + "'");
+					logger.info("Found jumpship '" + value + "'");
 					moveMapToJumpship(js);
 				}
 			}
@@ -1552,7 +1555,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				break;
 
 			case NEW_UNIVERSE_RECEIVED:
-				C3Logger.info("Received new universe, repainting map.");
+				logger.info("Received new universe, repainting map.");
 				refreshUniverseMap();
 				ActionManager.getAction(ACTIONS.UPDATE_GAME_INFO).execute();
 				break;
@@ -1592,10 +1595,10 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					}
 					canvas.show3DStars(true);
 
-					C3Logger.info("Saved history screenshot of the starmap.");
+					logger.info("Saved history screenshot of the starmap.");
 					buildGuiEffect();
 				});
-				C3Logger.info("Map is ready!");
+				logger.info("Map is ready!");
 				break;
 
 			case PANE_CREATION_FINISHED:
@@ -1653,7 +1656,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 									if (Nexus.getCurrentUser().getCurrentCharacter().getFactionId().equals(a.getAttackerFactionId())) {
 										// I am from the attacker faction
-										C3Logger.info("I am the attacker.");
+										logger.info("I am the attacker.");
 										mapButton06.getStyleClass().add("contentButtonRed");
 										mapButton06.setText(Internationalization.getString("starmap_attack_system"));
 
@@ -1670,7 +1673,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 										}
 									} else if (Nexus.getCurrentUser().getCurrentCharacter().getFactionId().equals(a.getDefenderFactionId())) {
 										// I am from the defender faction
-										C3Logger.info("I am the defender.");
+										logger.info("I am the defender.");
 										mapButton06.getStyleClass().add("contentButtonBlue");
 										mapButton06.setText(Internationalization.getString("starmap_defend_system"));
 
@@ -1685,7 +1688,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 										}
 									} else {
 										// I am someone else
-										C3Logger.info("I want to join the fight.");
+										logger.info("I want to join the fight.");
 										mapButton06.getStyleClass().add("contentButtonYellow");
 										mapButton06.setText(Internationalization.getString("starmap_join_fight"));
 
@@ -1737,7 +1740,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				break;
 
 			case SHOW_JUMPSHIP_DETAIL:
-				C3Logger.info("Showing jumpship detail");
+				logger.info("Showing jumpship detail");
 				if (o.getObject() instanceof BOJumpship js) {
 					showJumpshipDetail(js);
 				} else {

@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.client.gui.panes.rp;
@@ -45,7 +45,8 @@ import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.Internationalization;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
 import net.clanwolf.starmap.transfer.dtos.RolePlayStoryDTO;
 import net.clanwolf.starmap.transfer.dtos.RolePlayStoryVar2DTO;
@@ -57,6 +58,7 @@ import net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes.ROLEPLAYOBJECT
 import net.clanwolf.starmap.transfer.util.CatalogLoader;
 
 import java.io.InputStream;
+import java.lang.invoke.MethodHandles;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
@@ -65,6 +67,7 @@ import java.util.ResourceBundle;
  * @author Undertaker
  */
 public class RolePlayDataInputController extends AbstractC3RolePlayController implements ActionCallBackListener {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	@FXML
 	private AnchorPane anchorPane;
@@ -126,7 +129,7 @@ public class RolePlayDataInputController extends AbstractC3RolePlayController im
 		switch (action) {
 		case START_ROLEPLAY:
 			if(ROLEPLAYENTRYTYPES.C3_RP_STEP_V3 == o.getObject()) {
-				C3Logger.debug("RolePlayChoicePaneController -> START_ROLEPLAY");
+				logger.debug("RolePlayChoicePaneController -> START_ROLEPLAY");
 
 				init();
 

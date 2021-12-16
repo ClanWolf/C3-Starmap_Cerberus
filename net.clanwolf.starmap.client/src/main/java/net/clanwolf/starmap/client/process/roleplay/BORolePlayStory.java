@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.client.process.roleplay;
@@ -35,7 +35,8 @@ import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.process.universe.BOFaction;
 import net.clanwolf.starmap.client.util.C3PROPS;
 import net.clanwolf.starmap.client.util.C3Properties;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.client.net.IFileTransfer;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.client.util.Tools;
@@ -46,6 +47,7 @@ import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
 import java.io.InputStream;
+import java.lang.invoke.MethodHandles;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -62,6 +64,7 @@ import java.util.Set;
  * @author Meldric
  */
 public class BORolePlayStory {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	private ArrayList<RolePlayStoryDTO> allStories; // Contains all selected stories
 	private String errorText; // Contains error text after an action (checkBeforeSave, checkBeforeDelete,...
@@ -151,7 +154,7 @@ public class BORolePlayStory {
 
 	    } catch (Exception e) {
 	    	// if an error occurs return the default image
-	    	C3Logger.info("Error by loading RPG image! " + e.getMessage());
+	    	logger.info("Error by loading RPG image! " + e.getMessage());
 		    e.printStackTrace();
 		    return getRPG_DefaultImage();
 	    }
@@ -205,7 +208,7 @@ public class BORolePlayStory {
 		try {
 			return new URL(serverUrl + "/" + soundPath + "/" + rp.getStoryMP3());
 		} catch (MalformedURLException e) {
-			C3Logger.info("Error by loading RPG image! " + e.getMessage());
+			logger.info("Error by loading RPG image! " + e.getMessage());
 			e.printStackTrace();
 			return null;
 		}
@@ -278,7 +281,7 @@ public class BORolePlayStory {
 	 */
 	public void addStoryToList(RolePlayStoryDTO story) {
 		for (RolePlayStoryDTO rp : allStories) {
-			C3Logger.info("Story: " + rp.getStoryName() + " ChangedStory: " + story.getStoryName());
+			logger.info("Story: " + rp.getStoryName() + " ChangedStory: " + story.getStoryName());
 
 			// if there is an object with the same id we remove it first
 			if (rp.getId().equals(story.getId())) {
@@ -320,7 +323,7 @@ public class BORolePlayStory {
 	public RolePlayStoryDTO getStoryByID(Long id){
 		for(RolePlayStoryDTO rp : allStories) {
 			if (rp.getId().equals(id)) {
-				C3Logger.info(String.valueOf(rp.getId()));
+				logger.info(String.valueOf(rp.getId()));
 				return rp;
 			}
 		}
@@ -460,7 +463,7 @@ public class BORolePlayStory {
 
 		while (iter.hasNext()) {
 			RolePlayStoryDTO rpIter = iter.next();
-			C3Logger.info("Story: " + rpIter.getStoryName() + " SortOrder: " + rpIter.getSortOrder());
+			logger.info("Story: " + rpIter.getStoryName() + " SortOrder: " + rpIter.getSortOrder());
 
 			//if (rpIter.getParentStory().getId().longValue() == rp.getParentStory().getId().longValue() && rpIter.getId() != rp.getId() && rpIter.getSortOrder() >= minSortOrder && rpIter.getSortOrder() <= maxSortOrder) {
 
@@ -468,7 +471,7 @@ public class BORolePlayStory {
 				// change sortorder
 				int old = rpIter.getSortOrder();
 				int t = rpIter.getSortOrder() + index;
-				C3Logger.info("Move: " + rpIter.getStoryName() + " / old Order: " + old + " -> new Order: " + t);
+				logger.info("Move: " + rpIter.getStoryName() + " / old Order: " + old + " -> new Order: " + t);
 
 				rpIter.setSortOrder(rpIter.getSortOrder() + index);
 				changedSortOrder.add(rpIter);
@@ -851,11 +854,11 @@ public class BORolePlayStory {
 
 	public Long getFirstStepOfChapter(RolePlayStoryDTO rpDTO){
 
-		C3Logger.debug(rpDTO.getStoryName());
+		logger.debug(rpDTO.getStoryName());
 
 		for(RolePlayStoryDTO rp : Nexus.getBoUniverse().getAttackStories().values()){
 			if( rpDTO.getId().equals(rp.getParentStory().getId()) && rp.getSortOrder() == 1){
-				C3Logger.debug(rp.getStoryName());
+				logger.debug(rp.getStoryName());
 				return rp.getId();
 			}
 		}

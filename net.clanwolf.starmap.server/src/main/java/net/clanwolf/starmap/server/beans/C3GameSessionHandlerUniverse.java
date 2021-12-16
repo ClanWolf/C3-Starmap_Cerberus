@@ -21,14 +21,15 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.server.beans;
 
 import io.nadron.app.GameRoom;
 import io.nadron.app.PlayerSession;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.server.util.WebDataInterface;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
@@ -38,13 +39,16 @@ import net.clanwolf.starmap.transfer.util.Compressor;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.lang.invoke.MethodHandles;
 import java.util.Iterator;
 import java.util.zip.GZIPOutputStream;
 
 class C3GameSessionHandlerUniverse {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	static void getUniverseData(PlayerSession session, GameRoom gm) {
-		C3Logger.print("Getting universe data on request of a client.");
+		logger.info("Getting universe data on request of a client.");
 		UniverseDTO universe = WebDataInterface.getUniverse();
 
 		// TODO: Broadcast new UniverseDTO to logged in (HH) clients

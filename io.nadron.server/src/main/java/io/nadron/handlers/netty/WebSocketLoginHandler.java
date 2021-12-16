@@ -23,9 +23,11 @@ import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 
+import java.lang.invoke.MethodHandles;
 import java.util.List;
 
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.codehaus.jackson.map.ObjectMapper;
 
 /**
@@ -38,8 +40,9 @@ import org.codehaus.jackson.map.ObjectMapper;
  * 
  */
 @Sharable
-public class WebSocketLoginHandler extends SimpleChannelInboundHandler<TextWebSocketFrame>
-{
+public class WebSocketLoginHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
 	private LookupService lookupService;
 	protected ReconnectSessionRegistry reconnectRegistry;
 	protected UniqueIDGeneratorService idGeneratorService;
@@ -53,12 +56,12 @@ public class WebSocketLoginHandler extends SimpleChannelInboundHandler<TextWebSo
 	{
 		Channel channel = ctx.channel();
 		String data = frame.text();
-		C3Logger.info("From websocket: " + data);
+		logger.info("From websocket: " + data);
 		Event event = jackson.readValue(data, DefaultEvent.class);
 		int type = event.getType();
 		if (Events.LOG_IN == type)
 		{
-			C3Logger.info("Login attempt from " + channel.remoteAddress());
+			logger.info("Login attempt from " + channel.remoteAddress());
 			List<String> credList = null;
 			credList = (List) event.getSource();
 			Player player = lookupPlayer(credList.get(0), credList.get(1));
@@ -67,13 +70,13 @@ public class WebSocketLoginHandler extends SimpleChannelInboundHandler<TextWebSo
 		}
 		else if (type == Events.RECONNECT)
 		{
-			C3Logger.info("Reconnect attempt from " + channel.remoteAddress());
+			logger.info("Reconnect attempt from " + channel.remoteAddress());
 			PlayerSession playerSession = lookupSession((String)event.getSource());
 			handleReconnect(playerSession, channel);
 		}
 		else
 		{
-			C3Logger.debug("Invalid event {} sent from remote address {}. "
+			logger.debug("Invalid event {} sent from remote address {}. "
 							+ "Going to close channel " +
 					new Object[] { event.getType(),
 							channel.remoteAddress(), channel });
@@ -141,7 +144,7 @@ public class WebSocketLoginHandler extends SimpleChannelInboundHandler<TextWebSo
 		Player player = lookupService.playerLookup(credentials);
 		if (null == player)
 		{
-			C3Logger.warning("Invalid credentials provided by user: " + credentials);
+			logger.warn("Invalid credentials provided by user: " + credentials);
 		}
 		return player;
 	}
@@ -173,14 +176,14 @@ public class WebSocketLoginHandler extends SimpleChannelInboundHandler<TextWebSo
 			String reconnectKey = (String)idGeneratorService.generateFor(playerSession.getClass());
 			playerSession.setAttribute(NadronConfig.RECONNECT_KEY, reconnectKey);
 			playerSession.setAttribute(NadronConfig.RECONNECT_REGISTRY, reconnectRegistry);
-			C3Logger.info("Sending GAME_ROOM_JOIN_SUCCESS to channel " + channel);
+			logger.info("Sending GAME_ROOM_JOIN_SUCCESS to channel " + channel);
 			ChannelFuture future = channel.writeAndFlush(eventToFrame(Events.GAME_ROOM_JOIN_SUCCESS, reconnectKey));
 			connectToGameRoom(gameRoom, playerSession, future);
 		} else {
 			// Write failure and close channel.
 			ChannelFuture future = channel.writeAndFlush(eventToFrame(Events.GAME_ROOM_JOIN_FAILURE, null));
 			future.addListener(ChannelFutureListener.CLOSE);
-			C3Logger.warning("Invalid ref key provided by client: " + refKey + ". Channel " + channel + " will be closed");
+			logger.warn("Invalid ref key provided by client: " + refKey + ". Channel " + channel + " will be closed");
 		}
 	}
 
@@ -189,7 +192,7 @@ public class WebSocketLoginHandler extends SimpleChannelInboundHandler<TextWebSo
 			@Override
 			public void operationComplete(ChannelFuture future) throws Exception {
 				Channel channel = future.channel();
-				C3Logger.warning("Sending GAME_ROOM_JOIN_SUCCESS to channel {} completed" + channel);
+				logger.warn("Sending GAME_ROOM_JOIN_SUCCESS to channel {} completed" + channel);
 				if (future.isSuccess()) {
 					// Set the tcp channel on the session.
 					NettyTCPMessageSender tcpSender = new NettyTCPMessageSender(channel);
@@ -200,7 +203,7 @@ public class WebSocketLoginHandler extends SimpleChannelInboundHandler<TextWebSo
 					tcpSender.sendMessage(Events.event(null, Events.START));
 					gameRoom.onLogin(playerSession);
 				} else {
-					C3Logger.warning("Sending GAME_ROOM_JOIN_SUCCESS message to client was failure, channel will be closed");
+					logger.warn("Sending GAME_ROOM_JOIN_SUCCESS message to client was failure, channel will be closed");
 					channel.close();
 				}
 			}

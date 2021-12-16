@@ -21,16 +21,18 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.server.persistence.daos;
 
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.logging.Level;
 
@@ -41,6 +43,7 @@ import java.util.logging.Level;
  * persisted to the JPA datastore.
  */
 public abstract class GenericDAO implements IDAO {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	protected String className = "";
 	private static EntityManager fem = null; // free entity manager
@@ -51,13 +54,13 @@ public abstract class GenericDAO implements IDAO {
 
 	@Override
 	public void save(Long userID, Object entity) {
-		C3Logger.info("Saving instance (" + entity.getClass().getName() + ")");
+		logger.info("Saving instance (" + entity.getClass().getName() + ")");
 		try {
 			//getEntityManager(userID).
 			getEntityManager(userID).persist(entity);
-			C3Logger.info("Save successful");
+			logger.info("Save successful");
 		} catch (Exception re) {
-			C3Logger.info("Save failed");
+			logger.info("Save failed");
 			re.printStackTrace();
 			// getEntityManager().clear();
 			throw re;
@@ -66,57 +69,14 @@ public abstract class GenericDAO implements IDAO {
 
 	@Override
 	public Object update(Long userID, Object entity) {
-		C3Logger.info("Updating instance (" + entity.getClass().getName() + ")");
+		logger.info("Updating instance (" + entity.getClass().getName() + ")");
 		try {
 			Object result = null;
 			result = getEntityManager(userID).merge(entity);
-			C3Logger.info("Update successful");
+			logger.info("Update successful");
 			return result;
 		} catch (Exception re) {
-			C3Logger.info("Update failed");
-			re.printStackTrace();
-			// getEntityManager().clear();
-			throw re;
-		}
-	}
-
-	public void delete(Long userID, Object entity, Long id) {
-		C3Logger.info("Deleting instance (" + entity.getClass().getName() + ")");
-		try {
-			entity = getEntityManager(userID).getReference(entity.getClass(), id);
-			getEntityManager(userID).remove(entity);
-			C3Logger.info("Delete successful");
-		} catch (Exception re) {
-			C3Logger.info("Delete failed");
-			re.printStackTrace();
-			// getEntityManager().clear();
-			throw re;
-		}
-	}
-
-	public void refresh(Long userID, Object entity) {
-		C3Logger.info("Refreshing instance (" + entity.getClass().getName() + ")");
-		try {
-			getEntityManager(userID).refresh(entity);
-			C3Logger.info("Refresh successful");
-		} catch (Exception re) {
-			C3Logger.info("Refresh failed");
-			re.printStackTrace();
-			throw re;
-		}
-	}
-
-	public Object findById(Class clazz, Long id) {
-		return findById(null, clazz, id);
-	}
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public Object findById(Long userID, Class clazz, Long id) {
-//		C3Logger.info("Finding object instance with id: " + id);
-		try {
-			return getEntityManager(userID).find(clazz, id);
-		} catch (Exception re) {
-			C3Logger.info("Find failed");
+			logger.info("Update failed");
 			re.printStackTrace();
 			// getEntityManager().clear();
 			throw re;
@@ -126,7 +86,7 @@ public abstract class GenericDAO implements IDAO {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<Object> findByProperty(Long userID, String propertyName, final Object value, final int... rowStartIdxAndCount) {
-		C3Logger.info("Finding instance (" + this.className + ") with property: " + propertyName + ", value: " + value);
+		logger.info("Finding instance (" + this.className + ") with property: " + propertyName + ", value: " + value);
 		try {
 			final String queryString = "select model from " + this.className + " model where model." + propertyName + "= :propertyValue order by sortOrder";
 			Query query = getEntityManager(userID).createQuery(queryString);
@@ -146,7 +106,7 @@ public abstract class GenericDAO implements IDAO {
 			}
 			return query.getResultList();
 		} catch (Exception re) {
-			C3Logger.info("Find by property name failed");
+			logger.info("Find by property name failed");
 			re.printStackTrace();
 			// getEntityManager().clear();
 			throw re;
@@ -156,7 +116,7 @@ public abstract class GenericDAO implements IDAO {
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<Object> findAll(Long userID, final int... rowStartIdxAndCount) {
-		C3Logger.info("Finding all instances (" + this.className + ")");
+		logger.info("Finding all instances (" + this.className + ")");
 		try {
 			final String queryString = "select model from " + this.className + " model";
 			Query query = getEntityManager(userID).createQuery(queryString);
@@ -175,7 +135,50 @@ public abstract class GenericDAO implements IDAO {
 			}
 			return query.getResultList();
 		} catch (Exception re) {
-			C3Logger.info("Find all failed");
+			logger.info("Find all failed");
+			re.printStackTrace();
+			// getEntityManager().clear();
+			throw re;
+		}
+	}
+
+	public Object findById(Class clazz, Long id) {
+		return findById(null, clazz, id);
+	}
+
+	public void delete(Long userID, Object entity, Long id) {
+		logger.info("Deleting instance (" + entity.getClass().getName() + ")");
+		try {
+			entity = getEntityManager(userID).getReference(entity.getClass(), id);
+			getEntityManager(userID).remove(entity);
+			logger.info("Delete successful");
+		} catch (Exception re) {
+			logger.info("Delete failed");
+			re.printStackTrace();
+			// getEntityManager().clear();
+			throw re;
+		}
+	}
+
+	public void refresh(Long userID, Object entity) {
+		logger.info("Refreshing instance (" + entity.getClass().getName() + ")");
+		try {
+			getEntityManager(userID).refresh(entity);
+			logger.info("Refresh successful");
+		} catch (Exception re) {
+			logger.info("Refresh failed");
+			re.printStackTrace();
+			throw re;
+		}
+	}
+
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public Object findById(Long userID, Class clazz, Long id) {
+//		logger.info("Finding object instance with id: " + id);
+		try {
+			return getEntityManager(userID).find(clazz, id);
+		} catch (Exception re) {
+			logger.info("Find failed");
 			re.printStackTrace();
 			// getEntityManager().clear();
 			throw re;

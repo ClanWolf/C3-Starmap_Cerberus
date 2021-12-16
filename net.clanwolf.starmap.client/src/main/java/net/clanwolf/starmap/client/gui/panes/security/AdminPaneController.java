@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.client.gui.panes.security;
@@ -37,14 +37,17 @@ import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.security.Security;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.client.enums.PRIVILEGES;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.UserDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 
+import java.lang.invoke.MethodHandles;
 import java.util.*;
 
 public class AdminPaneController {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	private static ResourceBundle sMessagesPrivileges;
 	private HashMap<Integer, CheckBox> privilegeBoxes = new HashMap<Integer, CheckBox>();
@@ -72,7 +75,7 @@ public class AdminPaneController {
 		Iterator iterator = this.userList.iterator();
 		while (iterator.hasNext()) {
 			UserDTO u = (UserDTO) iterator.next();
-			C3Logger.info("User " + u.getUserName() + ": " + u.getPrivileges());
+			logger.info("User " + u.getUserName() + ": " + u.getPrivileges());
 		}
 
 		ArrayList<UserDTO> usersToSave = new ArrayList<>();
@@ -149,7 +152,7 @@ public class AdminPaneController {
 	}
 
 	private void setCheckBoxesForUser(String username) {
-//		C3Logger.info("User changed to: " + username);
+//		logger.info("User changed to: " + username);
 		boolean godadmin = false;
 
 		Iterator iter = this.userList.iterator();
@@ -163,7 +166,7 @@ public class AdminPaneController {
 						// god admin detected
 						godadmin = true;
 					}
-//					C3Logger.info("User has: " + privs);
+//					logger.info("User has: " + privs);
 					Platform.runLater(() -> {
 						String b = Long.toBinaryString(privs);
 						String binCode = String.format("%64.64s", b).replace(' ', '0');

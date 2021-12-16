@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.client.process.login;
@@ -41,17 +41,20 @@ import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.util.*;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.client.process.network.EventCommunications;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 
+import java.lang.invoke.MethodHandles;
 import java.util.concurrent.TimeUnit;
 
 /**
  * @author Meldric
  */
 public class Login {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	private static String username = "";
 	private static String password = "";
@@ -96,7 +99,7 @@ public class Login {
 		// Upon login, get the values from the textfields and set the
 		// properties. The database comes from the settings!
 
-		C3Logger.info("Login");
+		logger.info("Login");
 		String used_username;
 		String used_password;
 
@@ -112,11 +115,11 @@ public class Login {
 			}
 		}
 
-		C3Logger.debug("Used username: " + used_username + " (enable output in source to debug credentials).");
-//		C3Logger.debug("Used password: " + password);
-//		C3Logger.debug("Used (encrypted) password: " + used_password);
-//		C3Logger.debug("PW1: " + Encryptor.getPasswordFromPair("first", used_password));
-//		C3Logger.debug("PW2: " + Encryptor.getPasswordFromPair("second", used_password));
+		logger.debug("Used username: " + used_username + " (enable output in source to debug credentials).");
+//		logger.debug("Used password: " + password);
+//		logger.debug("Used (encrypted) password: " + used_password);
+//		logger.debug("PW1: " + Encryptor.getPasswordFromPair("first", used_password));
+//		logger.debug("PW2: " + Encryptor.getPasswordFromPair("second", used_password));
 
 		/*
 		 * BEGIN Server Login
@@ -141,18 +144,18 @@ public class Login {
 		}
 
 		session = sessionFactory.createSession();
-		C3Logger.info("Session created: " + session + " (Session-ID: " + session.getId() + ")");
+		logger.info("Session created: " + session + " (Session-ID: " + session.getId() + ")");
 
 		StartEventHandler startEventHandler = new StartEventHandler(session) {
 			@Override
 			public void onEvent(Event event) {
-				// C3Logger.info("Event: " + event.toString() + ". Change to Object Protocol.");
+				// logger.info("Event: " + event.toString() + ". Change to Object Protocol.");
 				if (event.getSource() instanceof GameState) {
 					// 0x1a START Event
 					GameState state = (GameState) event.getSource();
-					// C3Logger.info("Event gamestate mode: " + state.getMode());
+					// logger.info("Event gamestate mode: " + state.getMode());
 				} else {
-					// C3Logger.info("Event source: " + event.getSource());
+					// logger.info("Event source: " + event.getSource());
 				}
 
 				session.resetProtocol(NettyObjectProtocol.INSTANCE);
@@ -175,63 +178,22 @@ public class Login {
 	private static void addDefaultHandlerToSession() {
 		AbstractSessionEventHandler handler = new AbstractSessionEventHandler(session) {
 			@Override
-			public void onGameRoomJoin(Event event) {
-				super.onGameRoomJoin(event);
-				C3Logger.debug("##### Gameroom join!");
+			public void onDataIn(Event event) {
+				logger.info("OnDataIn source: " + ((GameState)event.getSource()).getModeString());
+				EventCommunications.onDataIn(session, event);
 			}
 
 			@Override
-			public void onChangeAttribute(Event event) {
-				super.onChangeAttribute(event);
-				C3Logger.debug("##### Attribute changed!");
-			}
-
-			@Override
-			public synchronized void onException(Event event) {
-				super.onException(event);
-				C3Logger.debug("##### EXCEPTION!");
-			}
-
-			@Override
-			public void onStop(Event event) {
-				super.onStop(event);
-				C3Logger.debug("##### Session stopped!");
-			}
-
-			@Override
-			public void onStart(Event event) {
-				super.onStart(event);
-				C3Logger.debug("##### Session started!");
-			}
-
-			@Override
-			public void onConnectFailed(Event event) {
-				super.onConnectFailed(event);
-				C3Logger.debug("##### Connect failed!");
-			}
-
-			@Override
-			public void onDisconnect(Event event) {
-				// TODO: Implement a new Action for disconnect from server
-				super.onDisconnect(event);
-				C3Logger.info("onDisconnect");
-				loginInProgress = false;
-			}
-
-			@Override
-			public void onLoginFailure(Event event) {
-				super.onLoginFailure(event);
-				loginInProgress = false;
-				C3Logger.info("Login failed!");
-				C3Logger.info("onLoginFailure: Check Username and/or Password!");
-				ActionManager.getAction(ACTIONS.LOGON_FINISHED_WITH_ERROR).execute();
+			public void onNetworkMessage(NetworkEvent networkEvent) {
+				super.onNetworkMessage(networkEvent);
+				logger.info("Event: " + networkEvent.getType() + ". Source: " + ((GameState)networkEvent.getSource()).getModeString());
 			}
 
 			@Override
 			public void onLoginSuccess(Event event) {
 				super.onLoginSuccess(event);
 				loginInProgress = false;
-				C3Logger.info("Successfully logged in. Sending: USER_REQUEST_LOGGED_IN_DATA");
+				logger.info("Successfully logged in. Sending: USER_REQUEST_LOGGED_IN_DATA");
 				GameState state = new GameState(GAMESTATEMODES.USER_REQUEST_LOGGED_IN_DATA);
 				NetworkEvent networkEvent = Events.networkEvent(state);
 				session.onEvent(networkEvent);
@@ -239,21 +201,62 @@ public class Login {
 			}
 
 			@Override
-			public void onNetworkMessage(NetworkEvent networkEvent) {
-				super.onNetworkMessage(networkEvent);
-				C3Logger.info("Event: " + networkEvent.getType() + ". Source: " + ((GameState)networkEvent.getSource()).getModeString());
+			public void onGameRoomJoin(Event event) {
+				super.onGameRoomJoin(event);
+				logger.debug("##### Gameroom join!");
 			}
 
 			@Override
-			public void onDataIn(Event event) {
-				C3Logger.info("OnDataIn source: " + ((GameState)event.getSource()).getModeString());
-				EventCommunications.onDataIn(session, event);
+			public void onLoginFailure(Event event) {
+				super.onLoginFailure(event);
+				loginInProgress = false;
+				logger.info("Login failed!");
+				logger.info("onLoginFailure: Check Username and/or Password!");
+				ActionManager.getAction(ACTIONS.LOGON_FINISHED_WITH_ERROR).execute();
+			}
+
+			@Override
+			public void onStart(Event event) {
+				super.onStart(event);
+				logger.debug("##### Session started!");
+			}
+
+			@Override
+			public void onStop(Event event) {
+				super.onStop(event);
+				logger.debug("##### Session stopped!");
+			}
+
+			@Override
+			public void onConnectFailed(Event event) {
+				super.onConnectFailed(event);
+				logger.debug("##### Connect failed!");
+			}
+
+			@Override
+			public void onDisconnect(Event event) {
+				// TODO: Implement a new Action for disconnect from server
+				super.onDisconnect(event);
+				logger.info("onDisconnect");
+				loginInProgress = false;
+			}
+
+			@Override
+			public void onChangeAttribute(Event event) {
+				super.onChangeAttribute(event);
+				logger.debug("##### Attribute changed!");
+			}
+
+			@Override
+			public synchronized void onException(Event event) {
+				super.onException(event);
+				logger.debug("##### EXCEPTION!");
 			}
 		};
-		C3Logger.info("Adding SessionEventHandler to session.");
+		logger.info("Adding SessionEventHandler to session.");
 		session.addHandler(handler);
 
-		C3Logger.info("Client is ready for events.");
+		logger.info("Client is ready for events.");
 		GameState s = new GameState(GAMESTATEMODES.CLIENT_READY_FOR_EVENTS);
 		Nexus.fireNetworkEvent(s);
 	}
@@ -261,10 +264,10 @@ public class Login {
 	public static void login(String username, String password, String factionKey, boolean passwordEncrypted) throws Exception {
 
 		if (loginInProgress) {
-			C3Logger.info("Login rejected, already logging in...");
+			logger.info("Login rejected, already logging in...");
 			return;
 		} else {
-			C3Logger.info("Login initiated.");
+			logger.info("Login initiated.");
 			loginInProgress = true;
 		}
 

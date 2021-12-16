@@ -21,13 +21,14 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.server.beans;
 
 import io.nadron.app.PlayerSession;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.JumpshipDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.RolePlayCharacterDAO;
@@ -38,11 +39,13 @@ import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 import net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes.ROLEPLAYINPUTDATATYPES;
 
+import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 public class C3GameSessionHandlerRoleplay {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	/**
 	 * Save a RolpPlayStory into the database
@@ -115,7 +118,7 @@ public class C3GameSessionHandlerRoleplay {
 			response.addObject(re.getMessage());
 			response.setAction_successfully(Boolean.FALSE);
 
-			C3Logger.error("saveRolePlayStory",re);
+			logger.error("saveRolePlayStory",re);
 			// throw re;
 		} finally {
 			/* and now we send a message to the client */
@@ -166,7 +169,7 @@ public class C3GameSessionHandlerRoleplay {
 			response.addObject(re.getMessage());
 			response.setAction_successfully(Boolean.FALSE);
 
-			C3Logger.error("saveRolePlayStory",re);
+			logger.error("saveRolePlayStory",re);
 		} finally {
 
 			/* and now we send a message to the client */
@@ -255,7 +258,7 @@ public class C3GameSessionHandlerRoleplay {
 			response.addObject(re.getMessage());
 			response.setAction_successfully(Boolean.FALSE);
 
-			C3Logger.error("saveRolePlayStory",re);
+			logger.error("saveRolePlayStory",re);
 		} finally {
 			/* and now we send a message to the client */
 //			Event e = Events.networkEvent(response);
@@ -298,7 +301,7 @@ public class C3GameSessionHandlerRoleplay {
 			response.addObject(re.getMessage());
 			response.setAction_successfully(Boolean.FALSE);
 
-			C3Logger.error("saveRolePlayStory",re);
+			logger.error("saveRolePlayStory",re);
 		} finally {
 			/* and now we send a message to the client */
 //			Event e = Events.networkEvent(response);
@@ -345,7 +348,7 @@ public class C3GameSessionHandlerRoleplay {
 			response.addObject(re.getMessage());
 			response.setAction_successfully(Boolean.FALSE);
 
-			C3Logger.error("saveRolePlayStory",re);
+			logger.error("saveRolePlayStory",re);
 		} finally {
 			/* and now we send a message to the client */
 //			Event e = Events.networkEvent(response);
@@ -372,6 +375,6 @@ public class C3GameSessionHandlerRoleplay {
 		j.getRoutepointList().add(point);
 		dao.update(C3GameSessionHandler.getC3UserID(session),j );
 
-		C3Logger.info("Hier hat er hoffentlich alles gespeichert");
+		logger.info("Hier hat er hoffentlich alles gespeichert");
 	}*/
 }

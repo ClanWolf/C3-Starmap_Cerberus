@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.client.gui.panes.rp;
@@ -38,10 +38,12 @@ import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3RolePlayController;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
 import java.io.IOException;
+import java.lang.invoke.MethodHandles;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.ResourceBundle;
@@ -50,6 +52,7 @@ import java.util.ResourceBundle;
  * @author Undertaker
  */
 public class RolePlayBasicPaneController extends AbstractC3Controller implements ActionCallBackListener {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	@FXML
 	private AnchorPane anchorPane;
@@ -82,7 +85,7 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 	public boolean handleAction(ACTIONS action, ActionObject o) {
 		switch (action) {
 			case PANE_CREATION_FINISHED:
-				// C3Logger.debug("PANE_CREATION_FINISHED Object: " + o.getObject().toString());
+				// logger.debug("PANE_CREATION_FINISHED Object: " + o.getObject().toString());
 				if(o.getObject() instanceof RolePlayBasicPane){
 					RolePlayBasicPane rpbp = (RolePlayBasicPane)o.getObject();
 					// do this for the right pane
@@ -92,12 +95,12 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 				}
 				break;
 			case ROLEPLAY_NEXT_STEP_CHANGE_PANE:
-				C3Logger.debug("Choose now the next step of story!");
+				logger.debug("Choose now the next step of story!");
 				loadScreen();
 				break;
 			case FINALIZE_ROUND:
 				if (!isCharacterPane) { // this is not a character roleplay pane --> AttackPane
-					C3Logger.info("The round has been finalized. This roleplay session needs to be canceled.");
+					logger.info("The round has been finalized. This roleplay session needs to be canceled.");
 					ActionManager.getAction(ACTIONS.SWITCH_TO_MAP).execute();
 				}
 				break;
@@ -137,7 +140,7 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 			myType = Nexus.getCurrentChar().getStory().getVariante();
 		}
 
-		C3Logger.debug("Pane: " + this + " Flag isCharacterPane: " + isCharacterPane);
+		logger.debug("Pane: " + this + " Flag isCharacterPane: " + isCharacterPane);
 
 		if( myType != null) {
 			switch (myType) {
@@ -204,17 +207,17 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 
 						storyPanes.put(myType, pane);
 						storyController.put(myType,controller);
-						C3Logger.debug("changePaneAndController -> create new Pane: " + pane);
+						logger.debug("changePaneAndController -> create new Pane: " + pane);
 
 						ActionManager.getAction(ACTIONS.START_ROLEPLAY).execute(myType);
 					} catch (IOException ioe) {
-						C3Logger.exception(ioe.getMessage(),ioe);
+						logger.error(ioe.getMessage(),ioe);
 					}
 				}
 			});
 		} else {
 			Platform.runLater(() -> {
-				C3Logger.debug("changePaneAndController -> found Pane: " + myPane);
+				logger.debug("changePaneAndController -> found Pane: " + myPane);
 				anchorPane.getChildren().clear();
 
 				AbstractC3RolePlayController rpController = storyController.get(myType);

@@ -17,14 +17,17 @@ import io.nadron.event.impl.NetworkEventListener;
 import io.nadron.protocols.Protocol;
 import io.nadron.service.GameStateManagerService;
 import io.nadron.service.impl.GameStateManager;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.lang.invoke.MethodHandles;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 
 public abstract class GameRoomSession extends DefaultSession implements GameRoom {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	private HashMap<String, Boolean> sessionReadyMap = new HashMap<String, Boolean>();
 
@@ -176,7 +179,7 @@ public abstract class GameRoomSession extends DefaultSession implements GameRoom
 			playerSession.setStatus(Session.Status.CONNECTING);
 			sessions.add(playerSession);
 			playerSession.setGameRoom(this);
-			C3Logger.info("Protocol to be applied is: " + protocol.getClass().getName());
+			logger.info("Protocol to be applied is: " + protocol.getClass().getName());
 			protocol.applyProtocol(playerSession,true);
 			createAndAddEventHandlers(playerSession);
 			playerSession.setStatus(Session.Status.CONNECTED);
@@ -184,7 +187,7 @@ public abstract class GameRoomSession extends DefaultSession implements GameRoom
 			return true;
 			// TODO send event to all other sessions?
 		} else {
-			C3Logger.info("Game Room is shutting down, playerSession: " + playerSession + " will not be connected!");
+			logger.info("Game Room is shutting down, playerSession: " + playerSession + " will not be connected!");
 			return false;
 		}
 	}
@@ -332,6 +335,6 @@ public abstract class GameRoomSession extends DefaultSession implements GameRoom
 		// Add the handler to the game room's EventDispatcher so that it will
 		// pass game room network events to player session session.
 		this.eventDispatcher.addHandler(networkEventHandler);
-		C3Logger.info("Added Network handler to " + "EventDispatcher of GameRoom {}, for session: {}" + this + playerSession);
+		logger.info("Added Network handler to " + "EventDispatcher of GameRoom {}, for session: {}" + this + playerSession);
 	}
 }

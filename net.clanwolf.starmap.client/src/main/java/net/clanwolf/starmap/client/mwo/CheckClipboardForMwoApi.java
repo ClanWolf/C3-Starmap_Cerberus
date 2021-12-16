@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.client.mwo;
@@ -33,18 +33,21 @@ import net.clanwolf.starmap.client.net.HTTP;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.invoke.MethodHandles;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Properties;
 import java.util.TimerTask;
 
 import com.google.gson.Gson;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author Meldric
  */
 public class CheckClipboardForMwoApi extends TimerTask {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	private static String previousContent;
 	private static String currentContent;
@@ -68,7 +71,7 @@ public class CheckClipboardForMwoApi extends TimerTask {
 			ioe.printStackTrace();
 		}
 
-		//C3Logger.info("Trying to request game info.");
+		//logger.info("Trying to request game info.");
 		String url = "https://mwomercs.com/api/v1/matches/" + gameid + "?api_token=" + auth.getProperty("mwo_api_key");
 		try {
 			// Example
@@ -95,22 +98,22 @@ public class CheckClipboardForMwoApi extends TimerTask {
 			if (!previousContent.equals(currentContent)) {
 				if (currentContent != null) {
 					if (!"".equals(currentContent)) {
-						//C3Logger.info("From clipboard: " + currentContent + " (Length: " + currentContent.length() + ")");
+						//logger.info("From clipboard: " + currentContent + " (Length: " + currentContent.length() + ")");
 						if (currentContent.length() == 15) {
 							MWOMatchResult results = getMWOGameStats(currentContent);
 							if (results != null) {
-								C3Logger.info("Map: " + results.getMatchDetails().getMap());
-								C3Logger.info("Username: " + results.getUserDetails().get(0).getUsername());
+								logger.info("Map: " + results.getMatchDetails().getMap());
+								logger.info("Username: " + results.getUserDetails().get(0).getUsername());
 							} else {
-								C3Logger.info("The content did not get a valid response. Ignoring.");
+								logger.info("The content did not get a valid response. Ignoring.");
 							}
 						} else {
-							C3Logger.info("The content does not fit the pattern. Ignoring.");
+//							logger.info("The content does not fit the pattern. Ignoring.");
 						}
 					}
 				}
 			} else {
-				C3Logger.info("The content has been copied to clipboard before. Ignoring.");
+//				logger.info("The content has been copied to clipboard before. Ignoring.");
 			}
 			previousContent = currentContent;
 		});

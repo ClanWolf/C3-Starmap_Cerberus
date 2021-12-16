@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 
@@ -840,7 +840,6 @@
   -fx-background-repeat: no-repeat;
   -fx-background-insets: 1, 1, 1, 1;
   -fx-background-radius: 0, 0, 0, 0;
-  -fx-alignment: RIGHT;
   -fx-padding: 10 10 8 10;
   -fx-font-family: "Consolas";
   -fx-font-size: 14px;
@@ -924,7 +923,6 @@
   -fx-background-repeat: no-repeat;
   -fx-background-insets: 1, 1, 1, 1;
   -fx-background-radius: 0, 0, 0, 0;
-  -fx-alignment: RIGHT;
   -fx-padding: 10 10 8 5;
   -fx-font-family: "Consolas";
   -fx-font-size: 14px;
@@ -969,7 +967,6 @@
   -fx-background-repeat: no-repeat;
   -fx-background-insets: 1, 1, 1, 1;
   -fx-background-radius: 0, 0, 0, 0;
-  -fx-alignment: RIGHT;
   -fx-padding: 10 10 8 5;
   -fx-font-family: "Consolas";
   -fx-font-size: 14px;
@@ -1014,7 +1011,6 @@
   -fx-background-repeat: no-repeat;
   -fx-background-insets: 1, 1, 1, 1;
   -fx-background-radius: 0, 0, 0, 0;
-  -fx-alignment: RIGHT;
   -fx-padding: 10 10 8 5;
   -fx-font-family: "Consolas";
   -fx-font-size: 14px;

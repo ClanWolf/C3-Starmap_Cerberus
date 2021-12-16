@@ -8,9 +8,13 @@ import io.nadron.protocols.AbstractNettyProtocol;
 import io.nadron.util.NettyUtils;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.LengthFieldPrepender;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.invoke.MethodHandles;
 
 public class MsgPackProtocol extends AbstractNettyProtocol {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	
 	/**
 	 * Utility handler provided by netty to add the length of the outgoing
@@ -30,7 +34,7 @@ public class MsgPackProtocol extends AbstractNettyProtocol {
 	@Override
 	public void applyProtocol(PlayerSession playerSession)
 	{
-		C3Logger.warning("Going to apply " + getProtocolName() + " on session: " + playerSession);
+		logger.warn("Going to apply " + getProtocolName() + " on session: " + playerSession);
 		ChannelPipeline pipeline = NettyUtils
 				.getPipeLineOfConnection(playerSession);
 		NettyUtils.clearPipeline(pipeline);

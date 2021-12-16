@@ -9,13 +9,10 @@ import io.nadron.event.EventHandler;
 import io.nadron.event.impl.EventDispatchers;
 import io.nadron.service.UniqueIDGeneratorService;
 import io.nadron.service.impl.SimpleUniqueIdGenerator;
-import net.clanwolf.starmap.logging.C3Logger;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-
 
 /**
  * The default implementation of the session class. This class is responsible
@@ -189,9 +186,9 @@ public class DefaultSession implements Session
 	public void onEvent(Event event) {
 		if(!isShuttingDown){
 			eventDispatcher.fireEvent(event);
-//			C3Logger.debug("isShuttingDown: false");
+//			logger.debug("isShuttingDown: false");
 		} else {
-//			C3Logger.debug("isShuttingDown: true");
+//			logger.debug("isShuttingDown: true");
 		}
 	}
 

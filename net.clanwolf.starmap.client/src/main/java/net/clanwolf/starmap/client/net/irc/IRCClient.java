@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.client.net.irc;
@@ -38,12 +38,15 @@ import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.util.Internationalization;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.lang.invoke.MethodHandles;
 import java.util.Arrays;
 import java.util.List;
 
 public class IRCClient implements ActionCallBackListener {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	// https://github.com/migzai/irc-api
 
@@ -77,12 +80,12 @@ public class IRCClient implements ActionCallBackListener {
 				_api.message(ircServerChannel, Internationalization.getString("C3_IRC_ConnAndLogon"), new Callback<String>() {
 					@Override
 					public void onSuccess(String s) {
-						C3Logger.info(s);
+						logger.info(s);
 					}
 
 					@Override
 					public void onFailure(Exception e) {
-						C3Logger.info("Error: " + e.getMessage());
+						logger.info("Error: " + e.getMessage());
 					}
 				});
 
@@ -93,8 +96,8 @@ public class IRCClient implements ActionCallBackListener {
 
 			@Override
 			public void onFailure(Exception aErrorMessage) {
-				C3Logger.print("Error connecting IRC: " + aErrorMessage.getMessage());
-				C3Logger.print("IRC not connected!");
+				logger.info("Error connecting IRC: " + aErrorMessage.getMessage());
+				logger.info("IRC not connected!");
 				// aErrorMessage.printStackTrace();
 				// throw new RuntimeException(aErrorMessage);
 				ActionManager.getAction(ACTIONS.IRC_ERROR).execute(aErrorMessage.getMessage());
@@ -109,12 +112,12 @@ public class IRCClient implements ActionCallBackListener {
 					_api.message(ircServerChannel, message, new Callback<String>() {
 						@Override
 						public void onSuccess(String s) {
-							C3Logger.info(s);
+							logger.info(s);
 						}
 
 						@Override
 						public void onFailure(Exception e) {
-							C3Logger.info("Error: " + e.getMessage());
+							logger.info("Error: " + e.getMessage());
 						}
 					});
 				}
@@ -123,12 +126,12 @@ public class IRCClient implements ActionCallBackListener {
 					_api.message(target, message, new Callback<String>() {
 						@Override
 						public void onSuccess(String s) {
-							C3Logger.info(s);
+							logger.info(s);
 						}
 
 						@Override
 						public void onFailure(Exception e) {
-							C3Logger.info("Error: " + e.getMessage());
+							logger.info("Error: " + e.getMessage());
 						}
 					});
 				}
@@ -188,7 +191,7 @@ public class IRCClient implements ActionCallBackListener {
 
 			case IRC_CHANGE_NICK:
 				NickChangeObject nco = (NickChangeObject)o.getObject();
-				C3Logger.info("Changing nick to " + nco.getNewNick());
+				logger.info("Changing nick to " + nco.getNewNick());
 				myNick = nco.getNewNick();
 				_api.changeNick(nco.getNewNick());
 				break;
@@ -199,7 +202,7 @@ public class IRCClient implements ActionCallBackListener {
 				break;
 
 //			case IRC_GET_NAMELIST:
-//				C3Logger.info("Getting irc name list from server");
+//				logger.info("Getting irc name list from server");
 //				_api.rawMessage("/names");
 //				break;
 

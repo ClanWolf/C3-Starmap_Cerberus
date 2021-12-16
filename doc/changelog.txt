@@ -4,6 +4,7 @@ C3 version history
 Version 6.0.3 (15.12.2021)
 - ADDED: Requesting match results from MWO API (key is taken from clipboard)
 - CHANGED: Working pickup of Game-ID from clipboard and downloading game info object
+- CHANGED: Changed all the logging to SLF4J (major refactory)
 
 Version 6.0.2 (14.12.2021)
 - FIXED: hikari connection pool server is working again

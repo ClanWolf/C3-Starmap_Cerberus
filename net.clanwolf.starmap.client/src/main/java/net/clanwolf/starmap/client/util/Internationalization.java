@@ -21,13 +21,15 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.client.util;
 
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.lang.invoke.MethodHandles;
 import java.util.Locale;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -40,6 +42,7 @@ import java.util.ResourceBundle;
  * @version 1.0
  */
 public abstract class Internationalization {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	private static ResourceBundle sMessages;
 	private static ResourceBundle sEventMessages;
@@ -61,9 +64,9 @@ public abstract class Internationalization {
 		try {
 			setLocale(l);
 		} catch (MissingResourceException mre) {
-			C3Logger.exception(null, mre);
-			C3Logger.warning("Cannot find resource-bundle for locale: " + l);
-			C3Logger.warning("Falling back to english!");
+			logger.error(null, mre);
+			logger.warn("Cannot find resource-bundle for locale: " + l);
+			logger.warn("Falling back to english!");
 			setLocale(ENGLISH);
 		}
 	}
@@ -128,7 +131,7 @@ public abstract class Internationalization {
 			}
 			return bundle.getString(key);
 		} catch (MissingResourceException mre) {
-			// C3Logger.warning("Resource <" + key + "> can't be found in bundle: " + bundle);
+			// logger.warn("Resource <" + key + "> can't be found in bundle: " + bundle);
 		}
 		return key;
 	}

@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.client.net.irc;
@@ -32,27 +32,32 @@ import com.ircclouds.irc.api.domain.messages.QuitMessage;
 import com.ircclouds.irc.api.listeners.VariousMessageListenerAdapter;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionManager;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.invoke.MethodHandles;
 
 public class ChannelLeaveListener extends VariousMessageListenerAdapter {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
 	@Override
 	@SuppressWarnings("unused")
 	public void onChannelPart(ChanPartMessage aMsg) {
-		C3Logger.info("User " + aMsg.getSource().getNick() + " left channel" + aMsg.getChannelName());
+		logger.info("User " + aMsg.getSource().getNick() + " left channel" + aMsg.getChannelName());
 		ActionManager.getAction(ACTIONS.IRC_USER_PART).execute(aMsg);
 	}
 
 	@Override
 	@SuppressWarnings("unused")
 	public void onChannelKick(ChannelKick aMsg) {
-		C3Logger.info("User " + aMsg.getSource().getNick() + " was kicked from channel" + aMsg.getChannelName());
+		logger.info("User " + aMsg.getSource().getNick() + " was kicked from channel" + aMsg.getChannelName());
 		ActionManager.getAction(ACTIONS.IRC_USER_KICKED).execute(aMsg);
 	}
 
 	@Override
 	@SuppressWarnings("unused")
 	public void onUserQuit(QuitMessage aMsg) {
-		C3Logger.info("User " + aMsg.getSource().getNick() + " quit");
+		logger.info("User " + aMsg.getSource().getNick() + " quit");
 		ActionManager.getAction(ACTIONS.IRC_USER_QUIT).execute(aMsg);
 	}
 }

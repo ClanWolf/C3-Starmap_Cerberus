@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.client.net;
@@ -35,11 +35,13 @@ import net.clanwolf.starmap.client.enums.C3MESSAGERESULTS;
 import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
 import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
 import net.clanwolf.starmap.client.nexus.Nexus;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.client.util.C3PROPS;
 import net.clanwolf.starmap.client.util.C3Properties;
 
 import java.io.IOException;
+import java.lang.invoke.MethodHandles;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -49,6 +51,7 @@ import java.net.URL;
  * @author Meldric
  */
 public class Server {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	private static String serverURL = "";
 	private static String username = "";
@@ -72,15 +75,15 @@ public class Server {
 		try {
 			URL url = new URL(serverURL + "server/php/C3-LatestClientVersion.php");
 			value = new String(HTTP.get(url));
-//			C3Logger.debug("Connection URL: " + url);
-//			C3Logger.debug("Connection Result: " + value);
+//			logger.debug("Connection URL: " + url);
+//			logger.debug("Connection Result: " + value);
 		} catch (MalformedURLException e) {
-			C3Logger.exception(null, e);
+			logger.error(null, e);
 		} catch (IOException ioe) {
-			C3Logger.exception( null,ioe);
+			logger.error( null,ioe);
 		}
-		C3Logger.info("Client version check done.");
-//		C3Logger.info("Client version available: " + value);
+		logger.info("Client version check done.");
+//		logger.info("Client version available: " + value);
 		Nexus.setLastAvailableClientVersion(value);
 		return value;
 	}
@@ -108,24 +111,24 @@ public class Server {
 				online = true;
 				// Server online check ok, testing db
 				try {
-					C3Logger.debug(serverURL + "server/php/C3-OnlineStatus_Database.php?p1=" + C3Properties.getProperty(C3PROPS.LOGIN_DATABASE));
+					logger.debug(serverURL + "server/php/C3-OnlineStatus_Database.php?p1=" + C3Properties.getProperty(C3PROPS.LOGIN_DATABASE));
 					URL url = new URL(serverURL + "server/php/C3-OnlineStatus_Database.php?p1=" + C3Properties.getProperty(C3PROPS.LOGIN_DATABASE));
 					value = new String(HTTP.get(url));
-					C3Logger.debug("Connection URL: " + url);
-					C3Logger.debug("Connection Result: " + value);
+					logger.debug("Connection URL: " + url);
+					logger.debug("Connection Result: " + value);
 					// use "endswith" here, in case debugging in PHP is enabled!
 					r = value.equals("online");
 				} catch (MalformedURLException e) {
-					C3Logger.exception(null, e);
+					logger.error(null, e);
 				} catch (IOException ioe) {
-					C3Logger.exception(null, ioe);
+					logger.error(null, ioe);
 				}
-				C3Logger.info("Database connection check done.");
+				logger.info("Database connection check done.");
 				if (r) {
-					C3Logger.info("Database connection check: database accessible!");
+					logger.info("Database connection check: database accessible!");
 					C3Properties.setProperty(C3PROPS.CHECK_CONNECTION_STATUS, "ONLINE");
 				} else {
-					C3Logger.info("Database connection check: database in-accessible, check values!");
+					logger.info("Database connection check: database in-accessible, check values!");
 					C3Properties.setProperty(C3PROPS.CHECK_CONNECTION_STATUS, "OFFLINE");
 				}
 			}
@@ -195,12 +198,12 @@ public class Server {
 		try {
 			String u = serverURL + "C3_CheckUserLogin.php?cps1=" + username + "&cus4=" + password + "&db_database=" + database;
 			URL url = new URL(u);
-			C3Logger.debug(url + "");
+			logger.debug(url + "");
 			checkresult = new String(HTTP.get(url));
 		} catch (MalformedURLException e) {
-			C3Logger.exception(null, e);
+			logger.error(null, e);
 		} catch (IOException ioe) {
-			C3Logger.exception( null,ioe);
+			logger.error( null,ioe);
 		}
 		checkresult = checkresult.replaceAll("\\n", "");
 		checkresult = checkresult.replaceAll("\\r", "");
@@ -211,7 +214,7 @@ public class Server {
 				finalResult = resultLine.substring(3, resultLine.lastIndexOf("]"));
 			}
 		}
-		C3Logger.debug("Result: " + finalResult);
+		logger.debug("Result: " + finalResult);
 		return Integer.parseInt(finalResult);
 	}
 
@@ -264,14 +267,14 @@ public class Server {
 			value = new String(HTTP.get(url));
 			r = "online".equals(value);
 		} catch (MalformedURLException e) {
-			C3Logger.exception(null, e);
+			logger.error(null, e);
 		} catch (IOException ioe) {
-			C3Logger.exception( null,ioe);
+			logger.error( null,ioe);
 		}
 		if (r) {
-			C3Logger.info("Onlinestatus: online");
+			logger.info("Onlinestatus: online");
 		} else {
-			C3Logger.info("Onlinestatus: offline");
+			logger.info("Onlinestatus: offline");
 		}
 		return r;
 	}

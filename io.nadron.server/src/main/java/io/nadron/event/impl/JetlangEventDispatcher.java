@@ -8,6 +8,7 @@ import io.nadron.event.EventHandler;
 import io.nadron.event.Events;
 import io.nadron.event.SessionEventHandler;
 
+import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -17,7 +18,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.jetlang.channels.BatchSubscriber;
 import org.jetlang.channels.MemoryChannel;
 import org.jetlang.core.Callback;
@@ -25,8 +27,9 @@ import org.jetlang.core.Disposable;
 import org.jetlang.core.Filter;
 import org.jetlang.fibers.Fiber;
 
-public class JetlangEventDispatcher implements EventDispatcher
-{
+public class JetlangEventDispatcher implements EventDispatcher {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
 	// TODO make it as a setter/constructor parameters
 	private Map<Integer, List<EventHandler>> handlersByEventType;
 	private List<EventHandler> anyHandler;
@@ -135,7 +138,7 @@ public class JetlangEventDispatcher implements EventDispatcher
 		final int eventType = eventHandler.getEventType();
 		if (eventType != Events.ANY)
 		{
-			C3Logger.info("The incoming handler {} is not of type ANY " + eventHandler);
+			logger.info("The incoming handler {} is not of type ANY " + eventHandler);
 			throw new IllegalArgumentException(
 					"The incoming handler is not of type ANY");
 		}
@@ -253,7 +256,7 @@ public class JetlangEventDispatcher implements EventDispatcher
 
 	public synchronized boolean removeHandlersForSession(Session session)
 	{
-		C3Logger.info("Entered removeHandlersForSession for session " + session);
+		logger.info("Entered removeHandlersForSession for session " + session);
 		List<EventHandler> removeList = new ArrayList<EventHandler>();
 		
 		Collection<List<EventHandler>> eventHandlersList = new ArrayList<List<EventHandler>>(
@@ -265,7 +268,7 @@ public class JetlangEventDispatcher implements EventDispatcher
 			removeList.addAll(getHandlersToRemoveForSession(handlerList,session));
 		}
 		
-		C3Logger.info("Going to remove " + removeList.size() + " handlers for session: " + session);
+		logger.info("Going to remove " + removeList.size() + " handlers for session: " + session);
 		for (EventHandler handler : removeList)
 		{
 			removeHandler(handler);
@@ -276,7 +279,7 @@ public class JetlangEventDispatcher implements EventDispatcher
 	@Override
 	public synchronized void clear()
 	{
-		C3Logger.info("Going to clear handlers on dispatcher " + this);
+		logger.info("Going to clear handlers on dispatcher " + this);
 		if(null != handlersByEventType)
 		{
 			handlersByEventType.clear();

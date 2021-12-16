@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.client.gui.panes.map;
@@ -53,13 +53,17 @@ import net.clanwolf.starmap.client.process.universe.BOUniverse;
 import net.clanwolf.starmap.client.security.Security;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.Internationalization;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class NodeGestures {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
 	private final DragContext nodeDragContext = new DragContext();
 	private PannableCanvas canvas;
 	private Image selectionMarker;
@@ -181,7 +185,7 @@ public class NodeGestures {
 		BOStarSystem startSystem = boUniverse.starSystemBOs.get(boUniverse.currentlyDraggedJumpship.getCurrentSystemID());
 		BOStarSystem hovered = boUniverse.starSystemBOs.get(Long.parseLong(c.getId()));
 
-		C3Logger.info(boUniverse.currentlyDraggedJumpship.getJumpshipName() + " : " + startSystem.getName() + " : " + hovered.getName());
+		logger.info(boUniverse.currentlyDraggedJumpship.getJumpshipName() + " : " + startSystem.getName() + " : " + hovered.getName());
 		List<BOStarSystem> route = RouteCalculator.calculateRoute(startSystem, hovered);
 
 		boUniverse.currentlyDraggedJumpship.setRouteSystems(route);
@@ -205,7 +209,7 @@ public class NodeGestures {
 			BOStarSystem s2 = route.get(y + 1);
 
 			int thisRound = currentRound + y + 1;
-			C3Logger.info("Drawing route for round: " + thisRound + " (" + s2.getName() + ")");
+			logger.info("Drawing route for round: " + thisRound + " (" + s2.getName() + ")");
 
 			// Dotted line to every stop on the route
 			Line line = new Line(s1.getScreenX(), s1.getScreenY(), s2.getScreenX(), s2.getScreenY());
@@ -280,7 +284,7 @@ public class NodeGestures {
 			texts.add(text);
 
 			if (y == 0 && !("" + Nexus.getCurrentUser().getCurrentCharacter().getFactionId()).equals("" + s2.getFactionId())) {
-				C3Logger.info("Attacking: " + s2.getName());
+				logger.info("Attacking: " + s2.getName());
 				double markerDim = 36.0d;
 				ImageView marker;
 				marker = new ImageView();
@@ -354,7 +358,7 @@ public class NodeGestures {
 	private final EventHandler<MouseEvent> getOnMouseClickedEventHandler = new EventHandler<>() {
 		public void handle(MouseEvent event) {
 			if (event.isSecondaryButtonDown()) {
-				C3Logger.info("RIGHTCLICK");
+				logger.info("RIGHTCLICK");
 			}
 
 			// left mouse button click
@@ -367,7 +371,7 @@ public class NodeGestures {
 			StackPane sp = clickedStarSystem.getStarSystemStackPane();
 			Group group = clickedStarSystem.getStarSystemGroup();
 
-			C3Logger.info("System: " + clickedStarSystem.getName() + " (x: " + clickedStarSystem.getX() + " | y: " + clickedStarSystem.getY() + ") - " + "[id:" + clickedStarSystem.getId() + "]");
+			logger.info("System: " + clickedStarSystem.getName() + " (x: " + clickedStarSystem.getX() + " | y: " + clickedStarSystem.getY() + ") - " + "[id:" + clickedStarSystem.getId() + "]");
 
 			if (event.getTarget() instanceof Circle) {
 				canvas.showStarSystemMarker(clickedStarSystem);

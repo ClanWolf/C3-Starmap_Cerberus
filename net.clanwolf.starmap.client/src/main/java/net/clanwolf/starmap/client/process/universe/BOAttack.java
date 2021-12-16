@@ -21,23 +21,26 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.client.process.universe;
 
 import net.clanwolf.starmap.client.nexus.Nexus;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.*;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.util.Compressor;
 
+import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class BOAttack {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	private AttackDTO attackDTO;
 
@@ -56,7 +59,7 @@ public class BOAttack {
 		GameState saveAttackState = new GameState();
 		saveAttackState.setMode(GAMESTATEMODES.ATTACK_SAVE);
 		byte[] compressedAttackDTO = Compressor.compress(attackDTO);
-		C3Logger.info("Compressed AttackDTO size: " + compressedAttackDTO.length);
+		logger.info("Compressed AttackDTO size: " + compressedAttackDTO.length);
 		saveAttackState.addObject(compressedAttackDTO);
 		Nexus.fireNetworkEvent(saveAttackState);
 	}
@@ -67,7 +70,7 @@ public class BOAttack {
 		saveAttackCharacterState.setMode(GAMESTATEMODES.ATTACK_CHARACTER_SAVE);
 
 		byte[] compressedAttackCharacterDTO = Compressor.compress(attackCharacterDTO);
-		C3Logger.info("Compressed AttackCharacterDTO size: " + compressedAttackCharacterDTO.length);
+		logger.info("Compressed AttackCharacterDTO size: " + compressedAttackCharacterDTO.length);
 		saveAttackCharacterState.addObject(compressedAttackCharacterDTO);
 		saveAttackCharacterState.addObject2(bRemoveAttackChar);
 		Nexus.fireNetworkEvent(saveAttackCharacterState);

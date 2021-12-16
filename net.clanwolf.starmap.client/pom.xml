@@ -32,16 +32,6 @@
 			<groupId>net.clanwolf.starmap</groupId>
 			<artifactId>net.clanwolf.starmap.logging</artifactId>
 			<version>${project.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>log4j</groupId>
-					<artifactId>log4j</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-log4j12</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>net.clanwolf.starmap</groupId>
@@ -1038,36 +1028,36 @@
 										}
 									</moduleInfoSource>
 								</module>
-								<module>
-									<artifact>
-										<groupId>org.slf4j</groupId>
-										<artifactId>slf4j-api</artifactId>
-										<version>1.7.32</version>
-									</artifact>
-									<moduleInfoSource>
-										module org.slf4j {
-											exports org.slf4j;
-											exports org.slf4j.event;
-											exports org.slf4j.helpers;
-											exports org.slf4j.spi;
-										}
-									</moduleInfoSource>
-								</module>
-								<module>
-									<artifact>
-										<groupId>org.slf4j</groupId>
-										<artifactId>slf4j-log4j12</artifactId>
-										<version>1.7.32</version>
-									</artifact>
-									<moduleInfoSource>
-										module slf4j.log4j12 {
-											requires log4j;
-											requires transitive org.slf4j;
-											exports org.apache.log4j;
-											exports org.slf4j.impl;
-										}
-									</moduleInfoSource>
-								</module>
+<!--								<module>-->
+<!--									<artifact>-->
+<!--										<groupId>org.slf4j</groupId>-->
+<!--										<artifactId>slf4j-api</artifactId>-->
+<!--										<version>1.7.32</version>-->
+<!--									</artifact>-->
+<!--									<moduleInfoSource>-->
+<!--										module org.slf4j {-->
+<!--											exports org.slf4j;-->
+<!--											exports org.slf4j.event;-->
+<!--											exports org.slf4j.helpers;-->
+<!--											exports org.slf4j.spi;-->
+<!--										}-->
+<!--									</moduleInfoSource>-->
+<!--								</module>-->
+<!--								<module>-->
+<!--									<artifact>-->
+<!--										<groupId>org.slf4j</groupId>-->
+<!--										<artifactId>slf4j-log4j12</artifactId>-->
+<!--										<version>1.7.32</version>-->
+<!--									</artifact>-->
+<!--									<moduleInfoSource>-->
+<!--										module slf4j.log4j12 {-->
+<!--											requires log4j;-->
+<!--											requires transitive org.slf4j;-->
+<!--											exports org.apache.log4j;-->
+<!--											exports org.slf4j.impl;-->
+<!--										}-->
+<!--									</moduleInfoSource>-->
+<!--								</module>-->
 							</modules>
 						</configuration>
 					</execution>

@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.server.beans;
@@ -30,11 +30,13 @@ import io.nadron.app.GameRoom;
 import io.nadron.app.Player;
 import io.nadron.service.impl.SimpleLookupService;
 import io.nadron.util.Credentials;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
 import net.clanwolf.starmap.server.persistence.pojos.UserPOJO;
 
 import javax.persistence.EntityManager;
+import java.lang.invoke.MethodHandles;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,6 +45,7 @@ import java.util.Map;
  * @author domenico.colucci
  */
 public class C3LookupService extends SimpleLookupService {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	private final Map<String, GameRoom> refKeyGameRoomMap;
 
@@ -63,7 +66,7 @@ public class C3LookupService extends SimpleLookupService {
 	@Override
 	public Player playerLookup(Credentials c) {
 
-		C3Logger.debug("C3LookupService.playerLookup");
+		logger.debug("C3LookupService.playerLookup");
 		C3Player player = new C3Player();
 		EntityManager em = EntityManagerHelper.getNewEntityManager();
 
@@ -75,7 +78,7 @@ public class C3LookupService extends SimpleLookupService {
 		if (user != null) {
 			player.setUser(user);
 			EntityManagerHelper.getEntityManager((Long)player.getId());
-			C3Logger.info("C3LookupService.playerLookup->LOG_IN_SUCCESSFUL->user: " + c.getUsername());
+			logger.info("C3LookupService.playerLookup->LOG_IN_SUCCESSFUL->user: " + c.getUsername());
 
 		} else {
 			player.setUser(null);

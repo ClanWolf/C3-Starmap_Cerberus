@@ -21,18 +21,20 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.client.net;
 
 import javafx.scene.image.Image;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.client.util.C3PROPS;
 import net.clanwolf.starmap.client.util.C3Properties;
 
 import javax.net.ssl.*;
 import java.io.*;
+import java.lang.invoke.MethodHandles;
 import java.net.*;
 import java.security.SecureRandom;
 import java.security.cert.CertificateException;
@@ -45,6 +47,7 @@ import java.util.Properties;
  * @author Meldric
  */
 public abstract class HTTP {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 //	/**
 //	 * set the hostadress of the http-server
@@ -125,13 +128,13 @@ public abstract class HTTP {
 			props.setProperty("jdk.internal.httpclient.disableHostnameVerification", "true");
 
 			if (C3Properties.getBoolean(C3PROPS.USE_PROXY)) {
-				//C3Logger.warning("Using proxy.");
+				//logger.warn("Using proxy.");
 				String proxyHost = C3Properties.getProperty(C3PROPS.PROXY_SERVER);
 				int proxyPort = C3Properties.getInt(C3PROPS.PROXY_PORT);
 				Proxy p = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost, proxyPort));
 				conn = (HttpsURLConnection) url.openConnection(p);
 			} else {
-				//C3Logger.warning("Using NO proxy.");
+				//logger.warn("Using NO proxy.");
 				conn = (HttpsURLConnection) url.openConnection();
 			}
 
@@ -148,7 +151,7 @@ public abstract class HTTP {
 			conn.setRequestProperty("Content-type", "text/plain");
 
 			// connect to Server
-			//C3Logger.warning("Connecting.");
+			//logger.warn("Connecting.");
 			conn.connect();
 
 			checkResponseCode(conn);
@@ -182,9 +185,9 @@ public abstract class HTTP {
 
 	private static void checkResponseCode(HttpURLConnection connection) throws IOException {
 		if (connection.getResponseCode() / 100 != 2) {
-			C3Logger.warning("WARNING: " + connection.getResponseCode());
+			logger.warn("WARNING: " + connection.getResponseCode());
 		} else {
-			//C3Logger.warning("Connection response: " + connection.getResponseCode());
+			//logger.warn("Connection response: " + connection.getResponseCode());
 		}
 	}
 
@@ -230,7 +233,7 @@ public abstract class HTTP {
 				// numWritten += numRead;
 			}
 		} catch (Exception e) {
-			C3Logger.exception(null, e);
+			logger.error(null, e);
 			throw (e);
 		} finally {
 			try {
@@ -241,7 +244,7 @@ public abstract class HTTP {
 					out.close();
 				}
 			} catch (IOException ioe) {
-				C3Logger.exception(null, ioe);
+				logger.error(null, ioe);
 			}
 		}
 	}
@@ -257,21 +260,21 @@ public abstract class HTTP {
 			try {
 				download(address, address.substring(lastSlashIndex + 1));
 			} catch (Exception e) {
-				C3Logger.exception(null, e);
+				logger.error(null, e);
 			}
 		} else {
-			C3Logger.error("Could not figure out local file name for " + address);
+			logger.error("Could not figure out local file name for " + address);
 		}
 	}
 
 	public static Image getCachedImage(String s, String subPath) throws Exception {
-		C3Logger.info("Looking for image for string: " + s);
+		logger.info("Looking for image for string: " + s);
 
 		String cacheFolderName = System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "cache" + File.separator + "image" + File.separator + subPath;
 		File cacheFolder = new File(cacheFolderName);
 		if (!cacheFolder.isDirectory()) {
 			boolean success = cacheFolder.mkdirs();
-			C3Logger.info("Creating cache folder for image files: " + success);
+			logger.info("Creating cache folder for image files: " + success);
 		}
 
 		String imageFileName = cacheFolderName + File.separator + s;

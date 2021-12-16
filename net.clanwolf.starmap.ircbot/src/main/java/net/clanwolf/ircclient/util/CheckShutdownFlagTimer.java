@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.ircclient.util;
@@ -58,19 +58,19 @@ public class CheckShutdownFlagTimer extends TimerTask {
 			// On the server, a script checks if the server is running every couple of minutes.
 			// If this methods shuts the server down, it will be going up by the script shortly after.
 			// This is used in case a new version of the jar file was uploaded.
-//			C3Logger.info("Cleaning up flag files.");
+//			logger.info("Cleaning up flag files.");
 //			cleanupFlagFiles();
 
-//			C3Logger.info("Sending info mail.");
+//			logger.info("Sending info mail.");
 			String[] receivers = { "keshik@googlegroups.com" };
 			boolean sent = false;
 			sent = MailManager.sendMail("c3@clanwolf.net", receivers, "CWIRCBot goes down after flag request", "CWIRCBot is shutting down...", false);
 			if (sent) {
 				// sent
-//				C3Logger.info("Mail sent.");
+//				logger.info("Mail sent.");
 			} else {
 				// error during email sending
-//				C3Logger.info("Error during mail dispatch.");
+//				logger.info("Error during mail dispatch.");
 			}
 
 			System.exit(5);

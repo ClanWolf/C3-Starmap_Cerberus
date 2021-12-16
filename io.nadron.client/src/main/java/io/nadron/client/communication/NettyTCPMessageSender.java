@@ -6,7 +6,10 @@ import io.nadron.client.event.Events;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.invoke.MethodHandles;
 
 /**
  * A class that transmits messages reliably to remote machines/vm's. Internally
@@ -15,8 +18,9 @@ import net.clanwolf.starmap.logging.C3Logger;
  * @author Abraham Menacherry
  * 
  */
-public class NettyTCPMessageSender implements Reliable
-{
+public class NettyTCPMessageSender implements Reliable {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
 	private boolean isClosed = false;
 	private final Channel channel;
 	private static final DeliveryGuaranty DELIVERY_GUARANTY = DeliveryGuaranty.DeliveryGuarantyOptions.RELIABLE;
@@ -50,7 +54,7 @@ public class NettyTCPMessageSender implements Reliable
 		ChannelFuture closeFuture = channel.close();
 		closeFuture.awaitUninterruptibly();
 		if (!closeFuture.isSuccess()) {
-			C3Logger.error("TCP channel " + channel + " did not close successfully");
+			logger.error("TCP channel " + channel + " did not close successfully");
 		}
 		isClosed = true;
 	}
@@ -76,7 +80,7 @@ public class NettyTCPMessageSender implements Reliable
 		if (channel.isActive()) {
 			channel.write(event).addListener(ChannelFutureListener.CLOSE);
 		} else {
-			C3Logger.error("Unable to write the event: " + event + " to socket as channel is ot connected");
+			logger.error("Unable to write the event: " + event + " to socket as channel is ot connected");
 		}
 	}
 

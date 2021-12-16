@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.client.process.universe;
@@ -36,13 +36,16 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
 import net.clanwolf.starmap.client.gui.panes.map.Config;
 import net.clanwolf.starmap.client.nexus.Nexus;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.transfer.dtos.StarSystemDataDTO;
 import org.kynosarges.tektosyne.geometry.PointD;
 
+import java.lang.invoke.MethodHandles;
 import java.util.Objects;
 
 public class BOStarSystem {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	private StarSystemDataDTO hh_starSystemDataDTO;
 	private Circle starSystemCircle;
@@ -232,7 +235,7 @@ public class BOStarSystem {
 		try {
 			imagePlanet = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/planets/" + systemImageName + ".png")));
 		} catch (Exception e) {
-			C3Logger.info("Planet picture not found! Consider adding a fitting image for id: " + systemImageName);
+			logger.info("Planet picture not found! Consider adding a fitting image for id: " + systemImageName);
 			imagePlanet = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/planets/000_default.png")));
 		}
 		return imagePlanet;

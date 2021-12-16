@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.server.beans;
@@ -33,11 +33,13 @@ import io.nadron.event.Event;
 import io.nadron.event.Events;
 import io.nadron.event.impl.DefaultEventContext;
 import io.nadron.event.impl.DefaultSessionEventHandler;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.server.persistence.EntityConverter;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
 import net.clanwolf.starmap.transfer.GameState;
 
+import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.concurrent.TimeUnit;
 
@@ -49,6 +51,8 @@ import java.util.concurrent.TimeUnit;
  *
  */
 public class C3Room extends GameRoomSession {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
 	private static ArrayList<Object> wrongPlayerSessions;
 	private static ArrayList<C3Room> c3Rooms = new ArrayList<C3Room>();
 
@@ -67,14 +71,14 @@ public class C3Room extends GameRoomSession {
 
 	@Override
 	public void onLogin(final PlayerSession playerSession) {
-		C3Logger.info("C3Room.onLogin");
+		logger.info("C3Room.onLogin");
 
 		// Add a session handler to player session. So that it can receive events.
 		playerSession.addHandler(new DefaultSessionEventHandler(playerSession) {
 
 			@Override
 			protected void onDataIn(Event event) {
-				C3Logger.info("C3Room.onLogin.DefaultSessionEventHandler.onDataIn - PlayerSessionID -> " + playerSession.getId());
+				logger.info("C3Room.onLogin.DefaultSessionEventHandler.onDataIn - PlayerSessionID -> " + playerSession.getId());
 
 				if (null != event.getSource()) {
 					// Pass the player session in the event context so that the
@@ -89,21 +93,21 @@ public class C3Room extends GameRoomSession {
 			@Override
 			protected void onLoginFailure(Event event) {
 				super.onLoginFailure(event);
-				C3Logger.info("C3Room.onLogin.DefaultSessionEventHandler.onLoginFailure");
+				logger.info("C3Room.onLogin.DefaultSessionEventHandler.onLoginFailure");
 				playerSession.getPlayer().logout(playerSession);
 			}
 
 			@Override
 			protected void onDisconnect(Event event) {
 				super.onDisconnect(event);
-				C3Logger.info("C3Room.onLogin.DefaultSessionEventHandler.onDisconnect");
+				logger.info("C3Room.onLogin.DefaultSessionEventHandler.onDisconnect");
 				playerSession.getPlayer().logout(playerSession);
 			}
 
 			@Override
 			protected void onLogout(Event event) {
 				super.onLogout(event);
-				C3Logger.info("C3Room.onLogin.DefaultSessionEventHandler.onLogout");
+				logger.info("C3Room.onLogin.DefaultSessionEventHandler.onLogout");
 			}
 		});
 
@@ -112,7 +116,7 @@ public class C3Room extends GameRoomSession {
 			int counter = 50;
 
 //			try {
-//				C3Logger.debug("##### Waiting some time no matter what...");
+//				logger.debug("##### Waiting some time no matter what...");
 //				TimeUnit.MILLISECONDS.sleep(2000);
 //			} catch (InterruptedException interruptedException) {
 //				interruptedException.printStackTrace();
@@ -120,13 +124,13 @@ public class C3Room extends GameRoomSession {
 
 			do {
 				ready = getSessionReadyMap().containsKey(playerSession.getId().toString()) && getSessionReadyMap().get(playerSession.getId().toString());
-//				C3Logger.debug("##### COUNTER: " + counter);
-//				C3Logger.debug("##### READY: " + ready);
+//				logger.debug("##### COUNTER: " + counter);
+//				logger.debug("##### READY: " + ready);
 				if (ready || counter == 0) {
 					break;
 				} else {
 					try {
-						C3Logger.info("Waiting a moment before send the login result event...");
+						logger.info("Waiting a moment before send the login result event...");
 						TimeUnit.MILLISECONDS.sleep(250);
 						counter--;
 					} catch (InterruptedException interruptedException) {
@@ -138,18 +142,18 @@ public class C3Room extends GameRoomSession {
 			Event e;
 			if (((C3Player) playerSession.getPlayer()).getUser() == null) {
 				// Send error message if user is null
-				C3Logger.info("C3Room.onLogin: no user found -> send Events.LOG_IN_FAILURE");
+				logger.info("C3Room.onLogin: no user found -> send Events.LOG_IN_FAILURE");
 
 				e = Events.event(null, Events.LOG_IN_FAILURE);
 			} else {
-				C3Logger.info("C3Room.onLogin: -> sending LOG_IN_SUCCESS Event. Session: " + playerSession.getId());
+				logger.info("C3Room.onLogin: -> sending LOG_IN_SUCCESS Event. Session: " + playerSession.getId());
 				e = Events.event(null, Events.LOG_IN_SUCCESS);
 			}
 
 //			Iterator it = getSessionReadyMap().keySet().iterator();
 //			while(it.hasNext()) {
 //				String s = (String)it.next();
-//				C3Logger.debug("Session in sessionReadyMap: " + s + " (Value: " + getSessionReadyMap().get(s) + ")");
+//				logger.debug("Session in sessionReadyMap: " + s + " (Value: " + getSessionReadyMap().get(s) + ")");
 //			}
 
 			playerSession.onEvent(e);
@@ -159,7 +163,7 @@ public class C3Room extends GameRoomSession {
 
 	@Override
 	public synchronized boolean disconnectSession(PlayerSession playerSession) {
-		C3Logger.info("disconnectSession: disconnected session -> " + playerSession.getId());
+		logger.info("disconnectSession: disconnected session -> " + playerSession.getId());
 		// remove player session from list with the wrong sessions
 		wrongPlayerSessions.remove(playerSession.getId());
 		getSessionReadyMap().remove(playerSession.getId().toString());

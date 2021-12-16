@@ -10,7 +10,10 @@ import io.nadron.handlers.netty.TextWebsocketEncoder;
 import io.nadron.protocols.AbstractNettyProtocol;
 import io.nadron.util.NettyUtils;
 import io.netty.channel.ChannelPipeline;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.invoke.MethodHandles;
 
 /**
  * This protocol can be used for websocket clients which pass JSon objects as
@@ -21,8 +24,8 @@ import net.clanwolf.starmap.logging.C3Logger;
  * @author Abraham Menacherry
  * 
  */
-public class WebSocketProtocol extends AbstractNettyProtocol
-{
+public class WebSocketProtocol extends AbstractNettyProtocol {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	/**
 	 * Used to decode incoming JSon string objects to {@link Event} objects.
@@ -53,7 +56,7 @@ public class WebSocketProtocol extends AbstractNettyProtocol
 	@Override
 	public void applyProtocol(PlayerSession playerSession)
 	{
-		C3Logger.info("Going to apply " + getProtocolName() + " on session: " + playerSession);
+		logger.info("Going to apply " + getProtocolName() + " on session: " + playerSession);
 
 		ChannelPipeline pipeline = NettyUtils
 				.getPipeLineOfConnection(playerSession);

@@ -21,12 +21,13 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.server.persistence;
 
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -35,6 +36,7 @@ import javax.persistence.Query;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,6 +46,7 @@ import java.util.Properties;
  * @author MyEclipse Persistence Tools
  */
 public class EntityManagerHelper {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	private static final EntityManagerFactory emf;
 	private static final HashMap<Object, EntityManager> emMap = new HashMap<>();
@@ -75,37 +78,22 @@ public class EntityManagerHelper {
 	}
 
 	public static EntityManager getNewEntityManager() {
-//		C3Logger.info("Create free EntityManager");
+//		logger.info("Create free EntityManager");
 		return emf.createEntityManager();
 	}
 
 	@SuppressWarnings("unchecked")
 	public static void clearCache() {
-		C3Logger.info("Clearing hibernate cache.");
+		logger.info("Clearing hibernate cache.");
 		try {
 			for (EntityManager em : emMap.values()) {
 				em.flush();
 				em.clear();
 			}
-			C3Logger.info("Hibernate cache cleared succesfully.");
+			logger.info("Hibernate cache cleared succesfully.");
 		} catch (Exception e) {
 			e.printStackTrace();
-			C3Logger.error("Hibernate cache NOT cleared.");
-		}
-	}
-
-	@SuppressWarnings("unchecked")
-	public void refresh(Object entity) {
-		C3Logger.info("Refreshing instance (" + entity.getClass().getName() + ")");
-		try {
-			for (EntityManager em : emMap.values()) {
-				em.refresh(entity);
-			}
-			C3Logger.info("Refresh successful");
-		} catch (Exception re) {
-			C3Logger.error("Refresh failed");
-			re.printStackTrace();
-			throw re;
+			logger.error("Hibernate cache NOT cleared.");
 		}
 	}
 
@@ -113,13 +101,13 @@ public class EntityManagerHelper {
 		EntityManager manager = emMap.get(userID);
 
 		if (manager == null || !manager.isOpen()) {
-			C3Logger.info("Create new EntityManager for UserPOJO ID: " + userID);
+			logger.info("Create new EntityManager for UserPOJO ID: " + userID);
 
 			manager = emf.createEntityManager();
 			emMap.put(userID, manager);
 
 		} else {
-			C3Logger.info("Find EntityManager for UserPOJO ID: " + userID);
+			logger.info("Find EntityManager for UserPOJO ID: " + userID);
 		}
 		return manager;
 	}
@@ -127,10 +115,25 @@ public class EntityManagerHelper {
 	public static void closeEntityManager(Long userID) {
 		EntityManager manager = emMap.get(userID);
 		if (manager != null) {
-			C3Logger.info("Close EntityManager for UserPOJO ID: " + userID);
+			logger.info("Close EntityManager for UserPOJO ID: " + userID);
 			// manager.unwrap(Session.class).close();
 			manager.close();
 			emMap.remove(userID);
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public void refresh(Object entity) {
+		logger.info("Refreshing instance (" + entity.getClass().getName() + ")");
+		try {
+			for (EntityManager em : emMap.values()) {
+				em.refresh(entity);
+			}
+			logger.info("Refresh successful");
+		} catch (Exception re) {
+			logger.error("Refresh failed");
+			re.printStackTrace();
+			throw re;
 		}
 	}
 

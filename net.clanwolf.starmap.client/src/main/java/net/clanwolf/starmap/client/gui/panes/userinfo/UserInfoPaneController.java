@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.client.gui.panes.userinfo;
@@ -41,7 +41,8 @@ import net.clanwolf.starmap.client.action.*;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
 import net.clanwolf.starmap.client.process.universe.BOFaction;
 import net.clanwolf.starmap.client.process.universe.BOJumpship;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.client.process.logout.Logout;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.Internationalization;
@@ -51,6 +52,7 @@ import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
 import net.clanwolf.starmap.transfer.dtos.UserDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 
+import java.lang.invoke.MethodHandles;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -63,6 +65,7 @@ import java.util.ResourceBundle;
  * @author Meldric
  */
 public class UserInfoPaneController extends AbstractC3Controller implements ActionCallBackListener {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	private boolean cancelWarning = true;
 	private boolean enableExitEvent = true;
@@ -211,7 +214,7 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 
 	@FXML
 	private void handleCharSelection() {
-		C3Logger.info("Character selected");
+		logger.info("Character selected");
 		RolePlayCharacterDTO character = cbCharChooser.getSelectionModel().getSelectedItem();
 		setCharValues(character);
 		Nexus.getCurrentUser().setCurrentCharacter(character);
@@ -221,7 +224,7 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 
 	@FXML
 	private void handleOpenCharList() {
-		C3Logger.info("Opened Char selection.");
+		logger.info("Opened Char selection.");
 	}
 
 	public void save(UserDTO user) {
@@ -486,7 +489,7 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 									Platform.runLater(() -> { setLogoutButtonText(caption); });
 									enableLogoutButton();
 								} catch (InterruptedException e) {
-									C3Logger.debug("UserInfoPanelException [1254]");
+									logger.debug("UserInfoPanelException [1254]");
 									e.printStackTrace();
 								}
 							}

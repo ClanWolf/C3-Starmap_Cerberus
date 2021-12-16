@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.client.sound;
@@ -42,9 +42,11 @@ import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.util.C3PROPS;
 import net.clanwolf.starmap.client.util.C3Properties;
 import net.clanwolf.starmap.client.util.Internationalization;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.lang.invoke.MethodHandles;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
@@ -55,6 +57,7 @@ import java.util.HashMap;
  * @author Meldric
  */
 public class C3SoundPlayer {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	private static C3SoundPlayer instance = null;
 	private static Media media = null;
@@ -138,7 +141,7 @@ public class C3SoundPlayer {
 		try {
 			play(f.toURI().toURL(), speech);
 		} catch (MalformedURLException e) {
-			C3Logger.exception(null, e);
+			logger.error(null, e);
 		}
 	}
 
@@ -149,14 +152,14 @@ public class C3SoundPlayer {
 	 */
 	public static void getTTSFile(String s) {
 		if ("true".equals(C3Properties.getProperty(C3PROPS.PLAY_VOICE))) {
-			C3Logger.info("Looking for voice sample file for string: " + s);
+			logger.info("Looking for voice sample file for string: " + s);
 
 			String lang = Internationalization.getLanguage();
 			String cacheFolderName = System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "cache" + File.separator + "voice" + File.separator + lang;
 			File cacheFolder = new File(cacheFolderName);
 			if (!cacheFolder.isDirectory()) {
 				boolean success = cacheFolder.mkdirs();
-				C3Logger.info("Creating cache folder for voice files: " + success);
+				logger.info("Creating cache folder for voice files: " + success);
 			}
 			String fn = s.replace("%20", "_");
 
@@ -164,26 +167,26 @@ public class C3SoundPlayer {
 			File f1 = new File(f);
 
 			if (f1.isFile()) {
-				C3Logger.info("TTS sound file was found in cache: " + f1.getAbsolutePath() + ".");
+				logger.info("TTS sound file was found in cache: " + f1.getAbsolutePath() + ".");
 				play(f1, true);
 			} else {
 				//getSpeechFromMary(fn); // the old way with MaryTTS
 				boolean gotSpeechFile = getSpeechFromVoiceRSS(fn); // the new way with VoiceRSS
 
 				if (!gotSpeechFile) {
-					C3Logger.info("TTS sound file missing, VoiceTTS failed.");
-					C3Logger.info("Looking for TTS sound file in packaged resources... ");
+					logger.info("TTS sound file missing, VoiceTTS failed.");
+					logger.info("Looking for TTS sound file in packaged resources... ");
 					URL u = null;
 					String voicePath = "/sound/voice/" + lang + "/" + fn + ".mp3";
 					u = ((C3SoundPlayer)getInstance()).getClass().getResource(voicePath);
 					if (u != null) {
 						play(voicePath, true);
-						C3Logger.info("TTS sound file was found in resources.");
+						logger.info("TTS sound file was found in resources.");
 					} else {
-						C3Logger.info("TTS sound file was NOT found in resources.");
+						logger.info("TTS sound file was NOT found in resources.");
 					}
 				} else {
-					C3Logger.info("Got file from VoiceTTS.");
+					logger.info("Got file from VoiceTTS.");
 				}
 			}
 			play("/sound/fx/beep_02.mp3", false);
@@ -226,10 +229,10 @@ public class C3SoundPlayer {
 
 		Media rpClip;
 		if (rpClipCache.get(urlString) != null) {
-			C3Logger.info("Playing RP clip from memory cache.");
+			logger.info("Playing RP clip from memory cache.");
 			rpClip = rpClipCache.get(urlString);
 		} else {
-			C3Logger.info("Caching RP clip.");
+			logger.info("Caching RP clip.");
 			rpClip = new Media(urlString);
 			rpClipCache.put(url.toString(), rpClip);
 		}
@@ -266,10 +269,10 @@ public class C3SoundPlayer {
 
 						Media speechClip;
 						if (speechClipCache.get(urlString) != null) {
-							C3Logger.info("Playing TTS clip from memory cache.");
+							logger.info("Playing TTS clip from memory cache.");
 							speechClip = speechClipCache.get(urlString);
 						} else {
-							C3Logger.info("Caching TTS clip.");
+							logger.info("Caching TTS clip.");
 							speechClip = new Media(urlString);
 							speechClipCache.put(url.toString(), speechClip);
 						}
@@ -286,7 +289,7 @@ public class C3SoundPlayer {
 						speechPlayer.play();
 					}
 				} catch (MediaException me) {
-					C3Logger.exception(null, me);
+					logger.error(null, me);
 					ActionManager.getAction(ACTIONS.STOP_SPEECH_SPECTRUM).execute();
 				}
 			} else {
@@ -298,7 +301,7 @@ public class C3SoundPlayer {
 						soundClip.stop();
 					} else {
 						String u = url.toString();
-						C3Logger.info("Caching sound. Url: " + u);
+						logger.info("Caching sound. Url: " + u);
 						soundClip = new AudioClip(u);
 						audioClipCache.put(url.toString(), soundClip);
 					}
@@ -306,7 +309,7 @@ public class C3SoundPlayer {
 				}
 			}
 		} else {
-			C3Logger.info("Sound resource not found (url is null).");
+			logger.info("Sound resource not found (url is null).");
 		}
 	}
 
@@ -327,7 +330,7 @@ public class C3SoundPlayer {
 			StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
 			String callerClassName = stackTraceElements[3].getClassName();
 			String callerMethodName = stackTraceElements[3].getMethodName();
-			C3Logger.info(callerClassName + "/" + callerMethodName + " was looking for sound: " + soundPath + ". Not found!");
+			logger.info(callerClassName + "/" + callerMethodName + " was looking for sound: " + soundPath + ". Not found!");
 		}
 		play(u, isSpeech);
 	}
@@ -388,7 +391,7 @@ public class C3SoundPlayer {
 			media = new Media(mediaFile.toString());
 			mediaPlayer = new MediaPlayer(media);
 			mediaPlayer.setVolume(musicVolume / 4);
-			C3Logger.info("Playing background music.");
+			logger.info("Playing background music.");
 			mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
 			mediaPlayer.play();
 		}
@@ -408,7 +411,7 @@ public class C3SoundPlayer {
 			String apikey = C3Properties.getProperty(C3PROPS.VOICERSSAPIKEY);
 
 			if (apikey != null && ("unknown".equals(apikey) || "".equals(apikey))) {
-				C3Logger.warning("Error getting voice file from VoiceRSS! VoiceRSS API-Key is missing! Check property file and make sure a key is specified!");
+				logger.warn("Error getting voice file from VoiceRSS! VoiceRSS API-Key is missing! Check property file and make sure a key is specified!");
 				return false;
 			} else {
 				apikey = "?key=" + apikey;
@@ -419,7 +422,7 @@ public class C3SoundPlayer {
 			File cacheFolder = new File(cacheFolderName);
 			if (!cacheFolder.isDirectory()) {
 				boolean success = cacheFolder.mkdirs();
-				C3Logger.info("Creating cache folder for voice files: " + success);
+				logger.info("Creating cache folder for voice files: " + success);
 			}
 			String fn = s.replace("%20", "_");
 			String f = cacheFolderName + File.separator + fn + ".mp3";
@@ -427,7 +430,7 @@ public class C3SoundPlayer {
 
 			if (!f1.isFile()) {
 				// use online VoiceRSS TTS
-				C3Logger.info("Online tts (VoiceRSS) requested...");
+				logger.info("Online tts (VoiceRSS) requested...");
 
 				s = s.replace(" ", "%20");
 				s = s.replace("_", "%20");
@@ -450,7 +453,7 @@ public class C3SoundPlayer {
 					}
 				}
 
-				C3Logger.info("VoiceRSS API call: " + voiceRSSUrl + " *** API-Key *** " + quality + format + voice + language + "&src=" + s);
+				logger.info("VoiceRSS API call: " + voiceRSSUrl + " *** API-Key *** " + quality + format + voice + language + "&src=" + s);
 				String u = voiceRSSUrl + apikey + quality + format + voice + language + "&src=" + s;
 
 				try {
@@ -465,10 +468,10 @@ public class C3SoundPlayer {
 					return false;
 				} catch (Exception e) {
 					// Speech could not be retrieved
-					C3Logger.info("Error getting speech data: " + e.toString());
+					logger.info("Error getting speech data: " + e.toString());
 				}
 			} else {
-				C3Logger.info("TTS sound file was found in cache: " + f1.getAbsolutePath() + ".");
+				logger.info("TTS sound file was found in cache: " + f1.getAbsolutePath() + ".");
 				play(f1, true);
 				play("sound/fx/beep_02.mp3", false);
 			}
@@ -491,7 +494,7 @@ public class C3SoundPlayer {
 //			File cacheFolder = new File(cacheFolderName);
 //			if (!cacheFolder.isDirectory()) {
 //				boolean success = cacheFolder.mkdirs();
-//				C3Logger.info("Creating cache folder for voice files: " + success);
+//				logger.info("Creating cache folder for voice files: " + success);
 //			}
 //			String fn = s.replace("%20", "_");
 //			String f = cacheFolderName + File.separator + fn + ".mp3";
@@ -499,7 +502,7 @@ public class C3SoundPlayer {
 //
 //			if (!f1.isFile()) {
 //				// use online Mary TTS
-//				C3Logger.info("Online tts (Mary) requested...");
+//				logger.info("Online tts (Mary) requested...");
 //
 //				s = s.replace(" ", "%20");
 //				String u = "http://mary.dfki.de:59125/process?INPUT_TEXT=" + s + "&INPUT_TYPE=TEXT&OUTPUT_TYPE=AUDIO&effect_JetPilot_selected=on&AUDIO=WAVE_FILE&LOCALE=";
@@ -514,10 +517,10 @@ public class C3SoundPlayer {
 //					play(new File(f), true);
 //				} catch (Exception e) {
 //					// Speech could not be retrieved
-//					C3Logger.info("Error getting speech data: " + e.toString());
+//					logger.info("Error getting speech data: " + e.toString());
 //				}
 //			} else {
-//				C3Logger.info("TTS sound file was found in cache: " + f1.getAbsolutePath() + ".");
+//				logger.info("TTS sound file was found in cache: " + f1.getAbsolutePath() + ".");
 //				play(f1, true);
 //			}
 //			play("sound/fx/beep_02.mp3", false);

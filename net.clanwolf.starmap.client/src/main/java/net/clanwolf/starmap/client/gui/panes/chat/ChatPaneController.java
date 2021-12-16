@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.client.gui.panes.chat;
@@ -42,13 +42,16 @@ import net.clanwolf.starmap.client.net.irc.NickChangeObject;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.Internationalization;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.lang.invoke.MethodHandles;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class ChatPaneController extends AbstractC3Controller implements ActionCallBackListener {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	private IRCClient ircClient;
 	private List<String> userList = new ArrayList<>();
@@ -157,7 +160,7 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 
 		if (!com.startsWith("*!!!*")) {
 			if (!"".equals(com)) {
-				C3Logger.info("Received command: '" + com + "'");
+				logger.info("Received command: '" + com + "'");
 				Nexus.commandHistory.add(com);
 				if (Nexus.commandHistory.size() > 50) {
 					Nexus.commandHistory.remove(0);
@@ -169,7 +172,7 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 		if ("*!!!*historyBack".equals(com)) {
 			if (Nexus.commandHistoryIndex > 0) {
 				Nexus.commandHistoryIndex--;
-				C3Logger.info("History back to index: " + Nexus.commandHistoryIndex);
+				logger.info("History back to index: " + Nexus.commandHistoryIndex);
 				String histCom = Nexus.commandHistory.get(Nexus.commandHistoryIndex);
 				ActionManager.getAction(ACTIONS.SET_TERMINAL_TEXT).execute(histCom);
 			}
@@ -179,7 +182,7 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 		if ("*!!!*historyForward".equals(com)) {
 			if (Nexus.commandHistoryIndex < Nexus.commandHistory.size() - 1) {
 				Nexus.commandHistoryIndex++;
-				C3Logger.info("History forward to index: " + Nexus.commandHistoryIndex);
+				logger.info("History forward to index: " + Nexus.commandHistoryIndex);
 				String histCom = Nexus.commandHistory.get(Nexus.commandHistoryIndex);
 				ActionManager.getAction(ACTIONS.SET_TERMINAL_TEXT).execute(histCom);
 			}
@@ -216,7 +219,7 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 		if (sendingString) {
 			if (!"".equals(com.trim())) {
 				String color = "";
-				C3Logger.info("Sending to IRC: " + com);
+				logger.info("Sending to IRC: " + com);
 				MessageActionObject mo = new MessageActionObject();
 				if (lvUsers.getSelectionModel().getSelectedItems().size() > 0) {
 					String tar = lvUsers.getSelectionModel().getSelectedItems().get(0);
@@ -228,7 +231,7 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 						tar = tar.substring(1);
 					}
 					mo.setTarget(tar);
-					C3Logger.info("Private message to: " + lvUsers.getSelectionModel().getSelectedItems().get(0));
+					logger.info("Private message to: " + lvUsers.getSelectionModel().getSelectedItems().get(0));
 					addChatLine(IRCClient.myNick + " [" + Internationalization.getString("C3_IRC_Priv") + "] ", "(-> " + tar + ") " + com);
 				} else {
 					addChatLine(IRCClient.myNick + " ", com);
@@ -359,13 +362,13 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 
 			case PANE_CREATION_FINISHED:
 				if (o.getObject().getClass() == ChatPane.class) {
-					C3Logger.info("Chat window opened.");
+					logger.info("Chat window opened.");
 					if (ircClient != null && !IRCClient.connected) {
-						C3Logger.info("Connecting to IRC...");
+						logger.info("Connecting to IRC...");
 						ircClient.connect();
 					}
 					if (ircClient != null && !initStarted) {
-						C3Logger.info("Initializing IRC panel.");
+						logger.info("Initializing IRC panel.");
 						init();
 					}
 					ActionManager.getAction(ACTIONS.HIDE_IRC_INDICATOR).execute();

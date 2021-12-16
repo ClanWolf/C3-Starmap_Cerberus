@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.client.gui.panes.###name###;
@@ -32,7 +32,8 @@ import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
 import net.clanwolf.starmap.client.nexus.Nexus;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.util.*;
@@ -76,7 +77,7 @@ public class ###Name###PaneController extends AbstractC3Controller implements Ac
 
 		if (!com.startsWith("*!!!*")) {
 			if (!"".equals(com)) {
-				C3Logger.info("Received command: '" + com + "'");
+				logger.info("Received command: '" + com + "'");
 				Nexus.commandHistory.add(com);
 				if (Nexus.commandHistory.size() > 50) {
 					Nexus.commandHistory.remove(0);
@@ -88,7 +89,7 @@ public class ###Name###PaneController extends AbstractC3Controller implements Ac
 		if ("*!!!*historyBack".equals(com)) {
 			if (Nexus.commandHistoryIndex > 0) {
 				Nexus.commandHistoryIndex--;
-				C3Logger.info("History back to index: " + Nexus.commandHistoryIndex);
+				logger.info("History back to index: " + Nexus.commandHistoryIndex);
 				String histCom = Nexus.commandHistory.get(Nexus.commandHistoryIndex);
 				ActionManager.getAction(ACTIONS.SET_TERMINAL_TEXT).execute(histCom);
 			}
@@ -98,7 +99,7 @@ public class ###Name###PaneController extends AbstractC3Controller implements Ac
 		if ("*!!!*historyForward".equals(com)) {
 			if (Nexus.commandHistoryIndex < Nexus.commandHistory.size() - 1) {
 				Nexus.commandHistoryIndex++;
-				C3Logger.info("History forward to index: " + Nexus.commandHistoryIndex);
+				logger.info("History forward to index: " + Nexus.commandHistoryIndex);
 				String histCom = Nexus.commandHistory.get(Nexus.commandHistoryIndex);
 				ActionManager.getAction(ACTIONS.SET_TERMINAL_TEXT).execute(histCom);
 			}
@@ -131,7 +132,7 @@ public class ###Name###PaneController extends AbstractC3Controller implements Ac
 
 			case PANE_CREATION_FINISHED:
 				if (o.getObject().getClass() == ###Name###Pane.class) {
-					C3Logger.info("###Name### window opened.");
+					logger.info("###Name### window opened.");
 					init();
 				}
 				break;

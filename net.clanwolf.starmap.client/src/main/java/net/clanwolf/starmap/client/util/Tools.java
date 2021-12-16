@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.client.util;
@@ -39,7 +39,8 @@ import net.clanwolf.starmap.client.enums.C3FTPTYPES;
 import net.clanwolf.starmap.client.gui.panes.map.PannableCanvas;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.universe.BOFaction;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.client.net.FTP;
 import net.clanwolf.starmap.client.net.IFileTransfer;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
@@ -51,6 +52,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.lang.invoke.MethodHandles;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
@@ -65,12 +67,13 @@ import java.util.*;
  * @version 1.0
  */
 public final class Tools {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	static {
 		try {
 			System.getProperties().load(Thread.currentThread().getContextClassLoader().getResourceAsStream("version.number"));
 		} catch (IOException e) {
-			C3Logger.info("Cannot load version-informations: " + e);
+			logger.info("Cannot load version-informations: " + e);
 		} // try
 	}
 
@@ -111,12 +114,12 @@ public final class Tools {
 				mailto = new URI("mailto:c3@clanwolf.net?subject=" + encodeValue(addUserName(subject)) + "&body=" + encodeValue(message));
 				desktop.mail(mailto);
 			} else {
-				C3Logger.warning("Desktop does not support mailto!");
+				logger.warn("Desktop does not support mailto!");
 				throw new RuntimeException("Desktop does not support mailto!");
 			}
 		} catch (URISyntaxException | IOException e) {
 			e.printStackTrace();
-			C3Logger.error("Error while reporting suspicious situation to admins.");
+			logger.error("Error while reporting suspicious situation to admins.");
 		}
 	}
 
@@ -165,7 +168,7 @@ public final class Tools {
 				File file2 = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "history" + File.separator + "C3_S" + Nexus.getCurrentSeason() + "_R" + Nexus.getCurrentRound() + "_map_history.png");
 				File file3 = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "history" + File.separator + "C3_S" + Nexus.getCurrentSeason() + "_R" + Nexus.getCurrentRound() + "_map_history_preview.png");
 				if (!file1.mkdirs()) {
-					// C3Logger.error("Could not create history folder or it already existed!");
+					// logger.error("Could not create history folder or it already existed!");
 				}
 				BufferedImage bi = SwingFXUtils.fromFXImage(canvas.snapshot(null, wi), null);
 
@@ -250,14 +253,14 @@ public final class Tools {
 				t.start();
 			} catch (IOException e) {
 				e.printStackTrace();
-				C3Logger.error("Could not save map screenshot!");
+				logger.error("Could not save map screenshot!");
 			}
 
 			// DO NOT use a thread here!
 			// Otherwise things like the nebula image end up on the screenshot (should not be there)
 			ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("14");
 		} else {
-			C3Logger.error("Skipping map screenshot because this is a dev machine.");
+			logger.error("Skipping map screenshot because this is a dev machine.");
 		}
 	}
 
@@ -291,7 +294,7 @@ public final class Tools {
 			calendar.setTime(df.parse(date));
 			return calendar;
 		} catch (ParseException e) {
-			C3Logger.exception(null, e);
+			logger.error(null, e);
 		}
 		// we shouldn't get here
 		return new GregorianCalendar();
@@ -317,7 +320,7 @@ public final class Tools {
 		try {
 			startBrowser(new URL(url));
 		} catch (MalformedURLException e) {
-			C3Logger.exception(null, e);
+			logger.error(null, e);
 		}
 	}
 
@@ -325,7 +328,7 @@ public final class Tools {
 		try {
 			startBrowser(url.toURI());
 		} catch (URISyntaxException e) {
-			C3Logger.exception(null, e);
+			logger.error(null, e);
 		}
 	}
 
@@ -333,7 +336,7 @@ public final class Tools {
 		try {
 			Desktop.getDesktop().browse(uri);
 		} catch (IOException e) {
-			C3Logger.exception(null, e);
+			logger.error(null, e);
 		}
 	}
 
@@ -393,7 +396,7 @@ public final class Tools {
 			if (numberOfDays * 24 * 60 * 60 * 1000 < diff) {
 				boolean success = file.delete();
 				if (!success) {
-					C3Logger.info("File could not be deleted: " + file.getAbsolutePath());
+					logger.info("File could not be deleted: " + file.getAbsolutePath());
 				}
 			} else {
 				// file will be left
@@ -408,7 +411,7 @@ public final class Tools {
 			}
 			boolean success = file.delete();
 			if (!success) {
-				C3Logger.info("File could not be deleted: " + file.getAbsolutePath());
+				logger.info("File could not be deleted: " + file.getAbsolutePath());
 			}
 		}
 	}
@@ -418,7 +421,7 @@ public final class Tools {
 			if (file.isDirectory()) {
 				listDirectory(file);
 			}
-			C3Logger.info(file.getAbsolutePath());
+			logger.info(file.getAbsolutePath());
 		}
 	}
 
@@ -432,14 +435,14 @@ public final class Tools {
 			File dir = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "update");
 			boolean success = dir.mkdirs();
 			if (success) {
-				C3Logger.info("Created updates folder");
+				logger.info("Created updates folder");
 			}
 
 			File existingUpdate = new File(dir + File.separator + updateName);
 			if (existingUpdate.exists() && existingUpdate.isFile() && existingUpdate.canWrite()) {
 				boolean deleted = existingUpdate.delete();
 				if (!deleted) {
-					C3Logger.info("Could not delete old version of the update!");
+					logger.info("Could not delete old version of the update!");
 					return; // ends the thread
 				}
 			}

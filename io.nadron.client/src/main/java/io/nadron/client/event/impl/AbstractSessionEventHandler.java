@@ -10,7 +10,10 @@ import io.nadron.client.event.NetworkEvent;
 import io.nadron.client.event.SessionEventHandler;
 import io.nadron.client.util.Config;
 import io.netty.buffer.ByteBuf;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.invoke.MethodHandles;
 
 
 /**
@@ -23,6 +26,8 @@ import net.clanwolf.starmap.logging.C3Logger;
  * 
  */
 public abstract class AbstractSessionEventHandler implements SessionEventHandler {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
 	protected static final int eventType = Events.ANY;
 
 	protected Session session;
@@ -160,12 +165,12 @@ public abstract class AbstractSessionEventHandler implements SessionEventHandler
 				session.getReconnectPolicy().applyPolicy(session);
 			}
 			else {
-				C3Logger.error("Received exception event in session. Going to close session [001]");
+				logger.error("Received exception event in session. Going to close session [001]");
 				onClose(event);
 			}
 		}
 		else {
-			C3Logger.error("Received exception event in session. Going to close session [002]");
+			logger.error("Received exception event in session. Going to close session [002]");
 			onClose(event);
 		}
 	}

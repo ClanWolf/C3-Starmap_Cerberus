@@ -1,17 +1,21 @@
 package net.clanwolf.starmap.server.util;
 
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.lang.invoke.MethodHandles;
 import java.util.Base64;
 
 public class Encryptor {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
 	public static String getPasswordFromPair(String indicator, String passwordPair) {
 		String pw = "";
 		try {
 			String[] pws = passwordPair.split("#");
 
 			if (pws.length != 2) {
-				C3Logger.warning("Wrong pw format. Only one of two values provided! Cannot log in!");
+				logger.warn("Wrong pw format. Only one of two values provided! Cannot log in!");
 				return pw;
 			}
 
@@ -30,7 +34,7 @@ public class Encryptor {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			C3Logger.exception("UserLookup failed!", e);
+			logger.error("UserLookup failed!", e);
 		}
 		return pw;
 	}

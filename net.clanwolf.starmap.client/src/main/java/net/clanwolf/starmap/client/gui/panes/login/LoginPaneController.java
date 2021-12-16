@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.client.gui.panes.login;
@@ -48,12 +48,14 @@ import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
 import net.clanwolf.starmap.client.net.GameSessionHeartBeatTimer;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.client.process.login.Login;
 import net.clanwolf.starmap.client.util.C3PROPS;
 import net.clanwolf.starmap.client.util.C3Properties;
 import net.clanwolf.starmap.client.util.Internationalization;
 
+import java.lang.invoke.MethodHandles;
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
@@ -65,6 +67,7 @@ import java.util.Timer;
  * @author Meldric
  */
 public class LoginPaneController extends AbstractC3Controller implements ActionCallBackListener {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	@FXML
 	private CheckBox cbGuestAccount;
@@ -255,7 +258,7 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 			C3Properties.setProperty(C3PROPS.AUTO_LOGIN, "false", true);
 			autologin = false;
 		}
-		C3Logger.info("Auto-Login: " + autologin);
+		logger.info("Auto-Login: " + autologin);
 	}
 
 	@Override
@@ -444,8 +447,8 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 				if (!cbGuestAccount.isSelected()) {
 					if (!"".equals(old_val)) {
 						if (password_encrypted) {
-//							C3Logger.debug(old_val);
-//							C3Logger.debug(new_val);
+//							logger.debug(old_val);
+//							logger.debug(new_val);
 
 							if (!"".equals(new_val)) {
 								ActionManager.getAction(ACTIONS.CLEAR_PASSWORD_FIELD).execute();
@@ -453,7 +456,7 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 						} else {
 							pass = tfPassword.getText();
 							password_encrypted = false;
-							// C3Logger.debug("Reseting encryption / taking new pw");
+							// logger.debug("Reseting encryption / taking new pw");
 						}
 					}
 				}
@@ -519,9 +522,9 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 				break;
 
 			case LOGON_FINISHED_SUCCESSFULL:
-				C3Logger.info("Successfull login");
+				logger.info("Successfull login");
 
-				C3Logger.info("Starting Timer to send NettySession keepalive heartbeat.");
+				logger.info("Starting Timer to send NettySession keepalive heartbeat.");
 				Timer serverHeartBeat = new Timer();
 				serverHeartBeat.schedule(new GameSessionHeartBeatTimer(), 1000, 1000 * 60 * 1);
 
@@ -529,7 +532,7 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 
 			case LOGON_FINISHED_WITH_ERROR:
 				C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
-				C3Logger.info("Login error");
+				logger.info("Login error");
 
 				C3Message m = new C3Message(C3MESSAGES.ERROR_WRONG_CREDENTIALS);
 				m.setText(Internationalization.getString("app_error_credentials_wrong"));
@@ -537,7 +540,7 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(m);
 
 				// int result = showMessage("Login ERROR!", 1);
-				// C3Logger.info("Result of message (user interaction): " + result);
+				// logger.info("Result of message (user interaction): " + result);
 				break;
 
 			case CLEAR_PASSWORD_FIELD:
@@ -554,7 +557,7 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 				enableListeners(true);
 				pass = "";
 				password_encrypted = false;
-				// C3Logger.debug("Reseting encryption / setting back [encrypted pw cannot be edited in field]");
+				// logger.debug("Reseting encryption / setting back [encrypted pw cannot be edited in field]");
 				break;
 
 			default:

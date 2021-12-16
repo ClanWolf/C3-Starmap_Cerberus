@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.client.gui.panes.rp;
@@ -53,10 +53,12 @@ import net.clanwolf.starmap.client.process.universe.BOFaction;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.constants.Constants;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.transfer.dtos.*;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
+import java.lang.invoke.MethodHandles;
 import java.net.URL;
 import java.util.*;
 
@@ -64,6 +66,7 @@ import java.util.*;
  * @author Undertaker
  */
 public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayController implements ActionCallBackListener {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 //	private HashMap<Long, Boolean> animationPlayedMap = new HashMap<>();
 	private final RolePlayCharacterDTO dummy = new RolePlayCharacterDTO();
@@ -383,12 +386,12 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 			allOnline = true;
 		}
 
-		C3Logger.debug("Droplead Attacker: " + (lvDropleadAttacker.getItems().size() == 1 && !"...".equals(lvDropleadAttacker.getItems().get(0).getName())));
-		C3Logger.debug("Droplead Defender: " + (lvDropleadDefender.getItems().size() == 1 && !"...".equals(lvDropleadDefender.getItems().get(0).getName())));
-		C3Logger.debug("Count Attacker: " + (lvAttacker.getItems().size() >= 2));
-		C3Logger.debug("Count Defender: " + (lvDefender.getItems().size() >= 2));
-		C3Logger.debug("Equal pilot count: " + (lvAttacker.getItems().size() == lvDefender.getItems().size() && lvAttacker.getItems().size() >= 2));
-		C3Logger.debug("Everybody online: " + allOnline);
+		logger.debug("Droplead Attacker: " + (lvDropleadAttacker.getItems().size() == 1 && !"...".equals(lvDropleadAttacker.getItems().get(0).getName())));
+		logger.debug("Droplead Defender: " + (lvDropleadDefender.getItems().size() == 1 && !"...".equals(lvDropleadDefender.getItems().get(0).getName())));
+		logger.debug("Count Attacker: " + (lvAttacker.getItems().size() >= 2));
+		logger.debug("Count Defender: " + (lvDefender.getItems().size() >= 2));
+		logger.debug("Equal pilot count: " + (lvAttacker.getItems().size() == lvDefender.getItems().size() && lvAttacker.getItems().size() >= 2));
+		logger.debug("Everybody online: " + allOnline);
 
 		btNext.setDisable(testNextButton);
 		// Check conditions
@@ -577,7 +580,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 				potentialDropleadersDefender.put(ac, c);
 				l = l + "(potential droplead for defender) ";
 			}
-			C3Logger.debug(l);
+			logger.debug(l);
 
 			characterRoleMap.put(ac.getCharacterID(), ac);
 
@@ -660,7 +663,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 			}
 		}
 		// are defender droplead still empty?
-		C3Logger.debug("Size" + lvDropleadDefender.getItems().size());
+		logger.debug("Size" + lvDropleadDefender.getItems().size());
 		if (lvDropleadDefender.getItems().size() == 1 && "...".equals(lvDropleadDefender.getItems().get(0).getName())) {
 			for (AttackCharacterDTO ac : potentialDropleadersDefender.keySet()) {
 				lvDropleadDefender.getItems().remove(0);
@@ -710,7 +713,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 			case START_ROLEPLAY:
 				if(ROLEPLAYENTRYTYPES.C3_RP_STEP_V8 == o.getObject()) {
-					C3Logger.debug("RolePlayIntroPaneController -> START_ROLEPLAY");
+					logger.debug("RolePlayIntroPaneController -> START_ROLEPLAY");
 					if(bOnlyOneSave) {
 						bOnlyOneSave = false;
 						saveAttack();
@@ -748,10 +751,10 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 				break;
 
 			case UPDATE_USERS_FOR_ATTACK:
-				C3Logger.info("The userlist has changed. Update information on the listboxes.");
-				C3Logger.debug("##### Userlist update event received.");
+				logger.info("The userlist has changed. Update information on the listboxes.");
+				logger.debug("##### Userlist update event received.");
 				if (Nexus.getCurrentAttackOfUser() != null) {
-					C3Logger.debug("##### I have an attack.");
+					logger.debug("##### I have an attack.");
 					List<AttackCharacterDTO> l = Nexus.getCurrentAttackOfUser().getAttackCharList();
 					boolean kicked = true;
 					for (AttackCharacterDTO ac : l) {
@@ -761,14 +764,14 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 					}
 					if (kicked) {
 						// I have been kicked from the lobby, need to change the currently displayed pane
-						C3Logger.debug("##### I have been kicked...");
+						logger.debug("##### I have been kicked...");
 						ActionManager.getAction(ACTIONS.SWITCH_TO_MAP).execute();
 					} else {
-						C3Logger.debug("##### Updating lists...");
+						logger.debug("##### Updating lists...");
 						updateLists(Nexus.getCurrentAttackOfUser());
 					}
 				} else {
-					C3Logger.debug("##### I do NOT have an attack.");
+					logger.debug("##### I do NOT have an attack.");
 				}
 				break;
 

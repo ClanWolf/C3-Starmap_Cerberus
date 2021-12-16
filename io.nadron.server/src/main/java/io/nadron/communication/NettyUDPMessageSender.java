@@ -10,8 +10,10 @@ import io.nadron.event.impl.DefaultNetworkEvent;
 import io.nadron.handlers.netty.UDPUpstreamHandler;
 import io.nadron.service.SessionRegistryService;
 import io.netty.channel.socket.DatagramChannel;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.lang.invoke.MethodHandles;
 import java.net.InetSocketAddress;
 import java.net.SocketAddress;
 
@@ -27,6 +29,7 @@ import java.net.SocketAddress;
  * 
  */
 public class NettyUDPMessageSender implements Fast {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	private final SocketAddress remoteAddress;
 	private final DatagramChannel channel;
 	private final SessionRegistryService<SocketAddress> sessionRegistryService;
@@ -47,8 +50,8 @@ public class NettyUDPMessageSender implements Fast {
 			((Event)message).setEventContext(eventContext);
 		}
 		
-		C3Logger.debug("UDP BUFFER-SIZE (RCV): " + channel.config().getReceiveBufferSize());
-		C3Logger.debug("UDP BUFFER-SIZE (SND): " + channel.config().getSendBufferSize());
+		logger.debug("UDP BUFFER-SIZE (RCV): " + channel.config().getReceiveBufferSize());
+		logger.debug("UDP BUFFER-SIZE (SND): " + channel.config().getSendBufferSize());
 		
 		return channel.writeAndFlush(message);
 	}
@@ -62,9 +65,9 @@ public class NettyUDPMessageSender implements Fast {
 	public void close() {
 		Session session = sessionRegistryService.getSession(remoteAddress);
 		if (sessionRegistryService.removeSession(remoteAddress)) {
-			C3Logger.info("Successfully removed UDP session: " +  session);
+			logger.info("Successfully removed UDP session: " +  session);
 		} else {
-			C3Logger.info("No UDP session found for address: " + remoteAddress);
+			logger.info("No UDP session found for address: " + remoteAddress);
 		}
 
 	}

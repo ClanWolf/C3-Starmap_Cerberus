@@ -21,53 +21,34 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.logging;
 
-public class LogEntry {
-    private final Integer lineNumber;
-    private final String level;
-    private final String timestamp;
-    private final String loggingClass;
-    private final String loggingClassMethod;
-    private final String message;
+public class C3LogEntry {
+	private final Integer lineNumber;
+	private final String level;
+	private final String message;
 
-    public LogEntry(Integer lineNumber, String level, String timestamp, String loggingClass, String loggingClassMethod, String message) {
-        this.lineNumber = lineNumber;
-        this.timestamp = timestamp;
-        this.level = level;
-        this.loggingClass = loggingClass;
-        this.loggingClassMethod = loggingClassMethod;
-        this.message = message;
-    }
+	public C3LogEntry(Integer lineNumber, String level, String message) {
+		this.lineNumber = lineNumber;
+		this.level = level;
+		this.message = message;
+	}
 
 	@SuppressWarnings("unused")
-    public Integer getLineNumber() {
-        return lineNumber;
-    }
+	public Integer getLineNumber() {
+		return lineNumber;
+	}
 
 	@SuppressWarnings("unused")
-    public String getTimestamp() { return timestamp; }
+	public String getLevel() {
+		return level;
+	}
 
 	@SuppressWarnings("unused")
-    public String getLevel() {
-        return level;
-    }
-
-	@SuppressWarnings("unused")
-    public String getLoggingClass() {
-        return loggingClass;
-    }
-
-	@SuppressWarnings("unused")
-    public String getLoggingClassMethod() {
-        return loggingClassMethod;
-    }
-
-	@SuppressWarnings("unused")
-    public String getMessage() {
-        return message;
-    }
+	public String getMessage() {
+		return message;
+	}
 }

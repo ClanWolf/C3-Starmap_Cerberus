@@ -2,13 +2,16 @@ package io.nadron.server.netty;
 
 import io.nadron.context.AppContext;
 import io.nadron.server.ServerManager;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.lang.invoke.MethodHandles;
 import java.util.HashSet;
 import java.util.Set;
 
-public class ServerManagerImpl implements ServerManager
-{
+public class ServerManagerImpl implements ServerManager {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
 	private Set<AbstractNettyServer> servers;
 	
 	public ServerManagerImpl()
@@ -67,7 +70,7 @@ public class ServerManagerImpl implements ServerManager
 			}
 			catch (Exception e)
 			{
-				C3Logger.info("Unable to stop server {} due to error {} " + nettyServer + e);
+				logger.info("Unable to stop server {} due to error {} " + nettyServer + e);
 				throw e;
 			}
 		}

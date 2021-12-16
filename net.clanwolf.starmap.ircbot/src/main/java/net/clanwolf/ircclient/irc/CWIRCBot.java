@@ -31,7 +31,7 @@ import net.clanwolf.ircclient.db.DBConnection;
 import net.clanwolf.client.mail.MailManager;
 import net.clanwolf.ircclient.util.CheckShutdownFlagTimer;
 import net.clanwolf.ircclient.util.Internationalization;
-import net.clanwolf.starmap.logging.C3Logger;
+import net.clanwolf.starmap.logging.C3LogUtil;
 import org.pircbotx.*;
 import org.pircbotx.exception.DaoException;
 import org.pircbotx.hooks.ListenerAdapter;
@@ -40,19 +40,22 @@ import org.pircbotx.hooks.events.NickChangeEvent;
 import org.pircbotx.hooks.events.PartEvent;
 import org.pircbotx.hooks.events.QuitEvent;
 import org.pircbotx.hooks.types.GenericMessageEvent;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.invoke.MethodHandles;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.logging.Level;
 
 public class CWIRCBot extends ListenerAdapter {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	// QuakeNet Servers:
 	// - euroserv.fr.quakenet.org
@@ -71,11 +74,22 @@ public class CWIRCBot extends ListenerAdapter {
 	private static final String ircUserName = "Ulric";
 	private static final String ircServerUrl = "port80a.se.quakenet.org";
 	private static final String ircServerChannel = "#c3.clanwolf.net";
-	private static final String ircUserListFileName = "/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/server/ircUser.lst";
+
+	private static String serverBaseDir = new File("/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/server").getAbsolutePath();
+	private static final String ircUserListFileName = serverBaseDir + "/ircUser.lst";
 	private static final String heartbeatFileName = "/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/c3.heartbeat";
 	private static StringBuilder userListString = null;
 
 	private static String lang = "de";
+
+	// This needs to be done in the main class once at startup to set the file handler for the logger
+	public static void prepareLogging() {
+		String logFileName = serverBaseDir + File.separator + "log" + File.separator + "CWIRCBot.log";
+			C3LogUtil.loadConfigurationAndSetLogFile(logFileName);
+//			logger.setC3Logfile(logFileName);
+//			logger.setC3LogLevel(Level.FINEST);
+//			logger.info("IRCBot startet.");
+	}
 
 	private static final String[] message = {
 		Internationalization.getString("msg0001"),
@@ -420,18 +434,7 @@ public class CWIRCBot extends ListenerAdapter {
 		int oneMinute = 1000 * 60;
 		dbc = new DBConnection();
 
-		// TODO: Find location of the jar file programmatically
-		File dir = new File("/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/server");
-		String serverBaseDir = dir.getAbsolutePath();
-
-		boolean res = dir.mkdirs();
-		if (res || dir.exists()) {
-			String logFileName = dir + File.separator + "log" + File.separator + "CWIRCBot.log";
-
-			C3Logger.setC3Logfile(logFileName);
-			C3Logger.setC3LogLevel(Level.FINEST);
-			C3Logger.info("IRCBot startet.");
-		}
+		prepareLogging();
 
 		Timer userlistDropTimer = new Timer();
 		UserListDrop userlistDrop = new UserListDrop();

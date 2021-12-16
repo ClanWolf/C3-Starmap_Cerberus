@@ -5,11 +5,12 @@ import io.nadron.client.event.Event;
 import io.nadron.client.event.EventHandler;
 import io.nadron.client.event.Events;
 import io.nadron.client.util.LoginHelper;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.lang.invoke.MethodHandles;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-
 
 /**
  * Implementations of this policy determine the logic to be applied for
@@ -18,8 +19,9 @@ import java.util.concurrent.TimeUnit;
  * @author Abraham Menacherry
  * 
  */
-public interface ReconnectPolicy
-{
+public interface ReconnectPolicy {
+	final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
 	void applyPolicy(Session session);
 	ReconnectPolicy NO_RECONNECT = new NoReconnect();
 	
@@ -89,7 +91,7 @@ public interface ReconnectPolicy
 					if (loginSuccessLatch.await(delay, TimeUnit.MILLISECONDS)) {
 						break;
 					} else {
-						C3Logger.error("Reconnect try " + tries + " did not succeed");
+						logger.error("Reconnect try " + tries + " did not succeed");
 					}
 				}
 				catch (InterruptedException e) {
@@ -102,7 +104,7 @@ public interface ReconnectPolicy
 			if (tries > times)
 			{
 				loginSuccessLatch.countDown();
-				C3Logger.error("Reconnect attempted " + tries + " times did not succeed, going to close session");
+				logger.error("Reconnect attempted " + tries + " times did not succeed, going to close session");
 				session.close();
 			}
 		}

@@ -10,11 +10,13 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelPipeline;
 import io.netty.util.CharsetUtil;
 
+import java.lang.invoke.MethodHandles;
 import java.net.InetSocketAddress;
 import java.nio.charset.Charset;
 import java.util.NoSuchElementException;
 
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * This class would be an assortment of netty related utility methods.
@@ -22,6 +24,8 @@ import net.clanwolf.starmap.logging.C3Logger;
  *
  */
 public class NettyUtils {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
 	public static final String NETTY_CHANNEL = "NETTY_CHANNEL";
 	
 	public static ChannelPipeline getPipeLineOfConnection(
@@ -60,7 +64,7 @@ public class NettyUtils {
 				pipeline.removeFirst();
 				counter++;
 			}
-			C3Logger.warning("Removed " + counter + " handlers from pipeline");
+			logger.warn("Removed " + counter + " handlers from pipeline");
 		}
 		catch (NoSuchElementException e)
 		{
@@ -215,7 +219,7 @@ public class NettyUtils {
 		}
 		catch (Exception e)
 		{
-			C3Logger.warning("Error occurred while trying to read string from buffer: " + e);
+			logger.warn("Error occurred while trying to read string from buffer: " + e);
 		}
 		return str;
 	}
@@ -318,7 +322,7 @@ public class NettyUtils {
 			buffer = Unpooled.wrappedBuffer(lengthBuffer, stringBuffer);
 		}
 		catch (Exception e) {
-			C3Logger.warning("Error occurred while trying to write string buffer: " + e);
+			logger.warn("Error occurred while trying to write string buffer: " + e);
 		}
 		return buffer;
 	}
@@ -339,7 +343,7 @@ public class NettyUtils {
 		try{
 			obj = decoder.convert(objBuffer);
 		}catch(Exception e){
-			C3Logger.warning("Error occurred while trying to read object from buffer: " + e);
+			logger.warn("Error occurred while trying to read object from buffer: " + e);
 		}
 		return obj;
 	}
@@ -357,7 +361,7 @@ public class NettyUtils {
 			buffer = Unpooled.wrappedBuffer(lengthBuffer,
 					objectBuffer);
 		} catch (Exception e) {
-			C3Logger.warning("Error occurred while writing object to buffer: " + e);
+			logger.warn("Error occurred while writing object to buffer: " + e);
 		}
 		return buffer;
 	}

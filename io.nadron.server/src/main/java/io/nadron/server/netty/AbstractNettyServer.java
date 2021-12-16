@@ -8,12 +8,15 @@ import io.netty.channel.group.ChannelGroup;
 import io.netty.channel.group.ChannelGroupFuture;
 import io.netty.channel.group.DefaultChannelGroup;
 import io.netty.util.concurrent.GlobalEventExecutor;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.lang.invoke.MethodHandles;
 import java.net.InetSocketAddress;
 
-public abstract class AbstractNettyServer implements NettyServer
-{
+public abstract class AbstractNettyServer implements NettyServer {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
 	public static final ChannelGroup ALL_CHANNELS = new DefaultChannelGroup("NADRON-CHANNELS", GlobalEventExecutor.INSTANCE);
 	protected GameAdminService gameAdminService;
 	protected final NettyConfig nettyConfig;
@@ -42,9 +45,8 @@ public abstract class AbstractNettyServer implements NettyServer
 	}
 	
 	@Override
-	public void stopServer() throws Exception 
-	{
-		C3Logger.debug("In stopServer method of class: " + this.getClass()
+	public void stopServer() throws Exception {
+		logger.debug("In stopServer method of class: " + this.getClass()
 				.getName());
 		ChannelGroupFuture future = ALL_CHANNELS.close();
 		try 
@@ -53,7 +55,7 @@ public abstract class AbstractNettyServer implements NettyServer
 		} 
 		catch (InterruptedException e) 
 		{
-			C3Logger.info("Execption occurred while waiting for channels to close: " + e);
+			logger.info("Execption occurred while waiting for channels to close: " + e);
 		} 
 		finally 
 		{

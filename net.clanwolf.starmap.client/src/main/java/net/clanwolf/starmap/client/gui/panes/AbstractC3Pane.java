@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.client.gui.panes;
@@ -42,15 +42,19 @@ import javafx.util.Duration;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionManager;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.client.util.Tools;
 
 import java.io.IOException;
+import java.lang.invoke.MethodHandles;
 
 /**
  * @author Meldric
  */
 public abstract class AbstractC3Pane extends Pane {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
 	private final Polygon backgroundPolygon;
 	private final Polygon borderPolygon;
 	//	private final Line separatorLine;
@@ -132,7 +136,7 @@ public abstract class AbstractC3Pane extends Pane {
 			controller = loader.getController();
 		} catch (IOException e) {
 			e.printStackTrace();
-			C3Logger.exception("IOException while reading FXML.", e);
+			logger.error("IOException while reading FXML.", e);
 		}
 		backgroundPolygon = new Polygon();
 		backgroundPolygon.getPoints().addAll(48.0, 5.0, 847.0, 5.0, 847.0, 495.0, 5.0, 495.0, 5.0, 104.0, 48.0, 70.0);

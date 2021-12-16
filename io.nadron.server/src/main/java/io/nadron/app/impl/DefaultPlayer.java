@@ -6,8 +6,6 @@ import io.nadron.app.PlayerSession;
 import java.util.HashSet;
 import java.util.Set;
 
-
-
 public class DefaultPlayer implements Player
 {
 	/**

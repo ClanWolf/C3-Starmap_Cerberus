@@ -21,58 +21,40 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.server;
 
 import io.nadron.server.ServerManager;
 import net.clanwolf.client.mail.MailManager;
-import net.clanwolf.starmap.logging.C3Logger;
-import net.clanwolf.starmap.server.logging.LogLevel;
+import net.clanwolf.starmap.logging.C3LogUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.server.util.HeartBeatTimer;
 import net.clanwolf.starmap.server.util.CheckShutdownFlagTimer;
-import org.apache.logging.log4j.LogManager;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 
 import java.io.File;
+import java.lang.invoke.MethodHandles;
 import java.util.Timer;
-import java.util.logging.Level;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class GameServer {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
 	private static AbstractApplicationContext ctx;
 	private static String serverBaseDir;
 	public static boolean isDevelopmentPC;
 
 	private static Long currentSeason = 1L;
-	public static Long getCurrentSeason() {
-		return currentSeason;
-	}
-	public static void setCurrentSeason(Long s) {
-		currentSeason = s;
-	}
 
-	public static void main(String[] args) {
-		// Logging
+	// This needs to be done in the main class once at startup to set the file handler for the logger
+	public static void prepareLogging() {
 		File dir;
-		if(args.length > 0) {
-			for (String a : args) {
-				isDevelopmentPC = a.equals("IDE");
-				if (a.toLowerCase().startsWith("season=")) {
-					try {
-						// Season is defaulting to 1, can be set by a parameter
-						String[] v = a.split("=");
-						Long s = Long.valueOf(v[1]);
-						setCurrentSeason(s);
-					} catch(NumberFormatException e) {
-						C3Logger.info("Parameter for Season could not be parsed to a number! Defaulting to 1.");
-					}
-				}
-			}
-		}
-		org.apache.logging.log4j.Logger logger = LogManager.getLogger();
-
 		if(isDevelopmentPC) {
 			dir = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3");
 		} else {
@@ -87,10 +69,38 @@ public class GameServer {
 		boolean res = dir.mkdirs();
 		if (res || dir.exists()) {
 			String logFileName = dir + File.separator + "log" + File.separator + "C3-Server.log";
-
-			C3Logger.setC3Logfile(logFileName);
-			C3Logger.setC3LogLevel(Level.FINEST);
+			C3LogUtil.loadConfigurationAndSetLogFile(logFileName);
+//			logger.setC3Logfile(logFileName);
+//			logger.setC3LogLevel(Level.FINEST);
 		}
+	}
+
+	public static Long getCurrentSeason() {
+		return currentSeason;
+	}
+	public static void setCurrentSeason(Long s) {
+		currentSeason = s;
+	}
+
+	public static void main(String[] args) {
+		if(args.length > 0) {
+			for (String a : args) {
+				isDevelopmentPC = a.equals("IDE");
+				if (a.toLowerCase().startsWith("season=")) {
+					try {
+						// Season is defaulting to 1, can be set by a parameter
+						String[] v = a.split("=");
+						Long s = Long.valueOf(v[1]);
+						setCurrentSeason(s);
+					} catch(NumberFormatException e) {
+						logger.info("Parameter for Season could not be parsed to a number! Defaulting to 1.");
+					}
+				}
+			}
+		}
+
+		// Logging
+		prepareLogging();
 
 		if(isDevelopmentPC) {
 			ctx = new AnnotationConfigApplicationContext(SpringConfigIDE.class);
@@ -103,15 +113,13 @@ public class GameServer {
 		// Start the main game server
 		ServerManager serverManager = ctx.getBean(ServerManager.class);
 
-		LogLevel.setSQLLevelOn();
-
 		try {
 			serverManager.startServers();
 			// serverManager.startServers(18090,843,8081);
 		} catch (Exception e) {
-			C3Logger.exception("Unable to start servers cleanly.", e);
+			logger.error("Unable to start servers cleanly.", e);
 		}
-		C3Logger.print("Started servers");
+		logger.info("Started servers");
 		startGames(ctx);
 	}
 
@@ -123,19 +131,19 @@ public class GameServer {
 		try {
 			// EntityManagerHelper.getEntityManager();
 			// Log.print("EntityManager initialized");
-			C3Logger.print("Server ready");
+			logger.info("Server ready");
 
 			if( !isDevelopmentPC) {
-				C3Logger.info("Sending info mail.");
+				logger.info("Sending info mail.");
 				String[] receivers = { "keshik@googlegroups.com" };
 				boolean sent = false;
 				sent = MailManager.sendMail("c3@clanwolf.net", receivers, "C3 Server is up again", "C3 Server started.", false);
 				if (sent) {
 					// sent
-					C3Logger.info("Mail sent.");
+					logger.info("Mail sent.");
 				} else {
 					// error during email sending
-					C3Logger.info("Error during mail dispatch.");
+					logger.info("Error during mail dispatch.");
 				}
 			}
 

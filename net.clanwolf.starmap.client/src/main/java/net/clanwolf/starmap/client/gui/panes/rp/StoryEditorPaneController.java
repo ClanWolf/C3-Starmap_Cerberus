@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.client.gui.panes.rp;
@@ -44,7 +44,8 @@ import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
 import net.clanwolf.starmap.client.process.universe.BOFaction;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.client.util.Tools;
@@ -55,6 +56,7 @@ import net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes.ROLEPLAYINPUTD
 import net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes.ROLEPLAYOBJECTTYPES;
 
 import java.io.File;
+import java.lang.invoke.MethodHandles;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -66,7 +68,7 @@ import java.util.Optional;
  * @author Undertaker
  */
 public class StoryEditorPaneController implements ActionCallBackListener {
-
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	//------------------- Dialog -------------------
 	@FXML
@@ -263,7 +265,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 	public boolean handleAction(ACTIONS action, ActionObject object) {
 		switch (action) {
 			case SAVE_ROLEPLAY_STORY_OK:
-				C3Logger.info("SAVE_ROLEPLAY_STORY_OK");
+				logger.info("SAVE_ROLEPLAY_STORY_OK");
 
 				GameState gs = (GameState) object.getObject();
 
@@ -290,7 +292,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 
 				break;
 			case SAVE_ROLEPLAY_STORY_ERR:
-				C3Logger.info("SAVE_ROLEPLAY_STORY_ERR");
+				logger.info("SAVE_ROLEPLAY_STORY_ERR");
 
 				Platform.runLater(() -> {
 
@@ -309,7 +311,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 				enableButtons();
 				break;
 			case DELETE_ROLEPLAY_STORY_ERR:
-				C3Logger.info("DELETE_ROLEPLAY_STORY_ERR");
+				logger.info("DELETE_ROLEPLAY_STORY_ERR");
 				Platform.runLater(() -> {
 
 					Alert alert = Tools.C3Dialog(AlertType.ERROR, Internationalization.getString("general_failure"), Internationalization.getString("general_failure"), Internationalization.getString("app_rp_storyeditor_story_error_delete"));
@@ -322,7 +324,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 				break;
 			case GET_ROLEPLAY_ALLCHARACTER:
 				Platform.runLater(() -> {
-					C3Logger.info("GET_ROLEPLAY_ALLCHARACTER");
+					logger.info("GET_ROLEPLAY_ALLCHARACTER");
 
 					@SuppressWarnings("unchecked")
 					ArrayList<RolePlayCharacterDTO> hlpLstChar = (ArrayList<RolePlayCharacterDTO>) object.getObject();
@@ -340,7 +342,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 
 				break;
 			case GET_ROLEPLAY_ALLSTORIES:
-				C3Logger.info("GET_ROLEPLAY_STORYANDCHAPTER");
+				logger.info("GET_ROLEPLAY_STORYANDCHAPTER");
 
 				@SuppressWarnings("unchecked")
 				ArrayList<RolePlayStoryDTO> hlpLst = (ArrayList<RolePlayStoryDTO>) object.getObject();
@@ -397,7 +399,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 
 	@FXML
 	private void handleNewStoryButtonClick() {
-		C3Logger.info("handleNewButtonClick");
+		logger.info("handleNewButtonClick");
 		TreeItem<RolePlayStoryDTO> rpTreeItem = new TreeItem<>(boRP.addNewStory());
 		root.getChildren().add(rpTreeItem);
 
@@ -413,7 +415,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 
 	@FXML
 	private void handleNewChapterButtonClick() {
-		C3Logger.info("handleNewChapterButtonClick");
+		logger.info("handleNewChapterButtonClick");
 
 		// Can be only added if parent is a story
 		if (treeStory.getTreeItemLevel(selected) == 1) {
@@ -435,7 +437,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 
 	@FXML
 	private void handleNewStoryStepButtonClick() {
-		C3Logger.info("handleNewStoryStepButtonClick");
+		logger.info("handleNewStoryStepButtonClick");
 		// Can be only added if parent is a chapter
 		// or it is a step. In this case add it on the same level
 		if (treeStory.getTreeItemLevel(selected) == 2) {
@@ -473,7 +475,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 
 	@FXML
 	private void handleDeleteSeletedTreeItem() {
-		C3Logger.info("handleDeleteSeletedTreeItem");
+		logger.info("handleDeleteSeletedTreeItem");
 
 		Alert alert = Tools.C3Dialog(AlertType.CONFIRMATION, Internationalization.getString("app_rp_storyeditor_story_delete_question_label"), Internationalization.getString("app_rp_storyeditor_story_delete_question_label"),
 				Internationalization.getString("app_rp_storyeditor_story_delete_question_text"));
@@ -498,10 +500,10 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 
 	@FXML
 	private void handleSelectTreeItem() {
-		C3Logger.info("handleSelectTreeItem");
+		logger.info("handleSelectTreeItem");
 		if (mode == StoryEditorPaneController.MODE_IS_DEFAULT) {
 			selected = treeStory.getSelectionModel().getSelectedItem();
-			C3Logger.info(treeStory.getTreeItemLevel(selected) + "");
+			logger.info(treeStory.getTreeItemLevel(selected) + "");
 
 			enableListeners(false);
 			enableButtons();
@@ -525,8 +527,8 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 
 	@FXML
 	private void handleEditStoryButtonClick() {
-		C3Logger.info("handleEditStoryButtonClick");
-		C3Logger.info("Message -> Kommunikationskanal wird bereitgestellt... please hold the line :-)");
+		logger.info("handleEditStoryButtonClick");
+		logger.info("Message -> Kommunikationskanal wird bereitgestellt... please hold the line :-)");
 		tabPaneStory.getSelectionModel().select(0);
 		mode = StoryEditorPaneController.MODE_IS_EDIT;
 		warningOnAction (true);
@@ -619,7 +621,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 				}
 			}
 		} else {
-			C3Logger.info("Do Nothing");
+			logger.info("Do Nothing");
 		}
 	}
 
@@ -628,7 +630,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 		File file = callFileChooser("Bilddatei (*.png)", "*.png");
 
 		if (file != null) {
-			C3Logger.info("File ausgewählt");
+			logger.info("File ausgewählt");
 			tfImage.setText(file.getAbsolutePath());
 			doUploadImage = true;
 			doDeleteImage = false;
@@ -648,7 +650,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 			doDeleteImage = false;
 		}
 
-		C3Logger.info("handleImageOnKeyTyped");
+		logger.info("handleImageOnKeyTyped");
 	}
 
 	@FXML
@@ -661,7 +663,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 			doUploadSound = true;
 			doDeleteSound = false;
 		}
-		C3Logger.info("handleVoiceOnKeyTyped");
+		logger.info("handleVoiceOnKeyTyped");
 	}
 
 	@FXML
@@ -674,7 +676,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 			doUploadMovie = true;
 			doDeleteMovie = false;
 		}
-		C3Logger.info("handleMovieKeyTyped");
+		logger.info("handleMovieKeyTyped");
 	}
 
 	@FXML
@@ -682,7 +684,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 		File file = callFileChooser("Bilddatei (*.mp3)", "*.mp3");
 
 		if (file != null) {
-			C3Logger.info("File ausgewählt");
+			logger.info("File ausgewählt");
 			tfVoice.setText(file.getAbsolutePath());
 			doUploadSound = true;
 			doDeleteSound = false;
@@ -724,7 +726,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 		File file = callFileChooser("Bilddatei (*.mp4)", "*.mp4");
 
 		if (file != null) {
-			C3Logger.info("File ausgewählt");
+			logger.info("File ausgewählt");
 			tfMovie.setText(file.getAbsolutePath());
 			doUploadMovie = true;
 			doDeleteMovie = false;
@@ -733,9 +735,9 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 
 	@FXML
 	private void handleSelectionTabCharAssignment() {
-		C3Logger.info("handleSelectionTabCharAssignment");
+		logger.info("handleSelectionTabCharAssignment");
 		if (tabBasic3.isSelected()) {
-			C3Logger.info("handleSelectionTabCharAssignment -> selected");
+			logger.info("handleSelectionTabCharAssignment -> selected");
 		}
 	}
 
@@ -761,7 +763,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 
 	@FXML
 	private void handleSortOrderUp() {
-		C3Logger.info("handleSortOrderUp");
+		logger.info("handleSortOrderUp");
 		int sortOrder = Integer.parseInt(tfSortOrder.getText());
 		if (sortOrder < selected.getParent().getChildren().size()) {
 			sortOrder++;
@@ -780,7 +782,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 
 	@FXML
 	private void handleSortOrderDown() {
-		C3Logger.info("handleSortOrderDown");
+		logger.info("handleSortOrderDown");
 		int sortOrder = Integer.parseInt(tfSortOrder.getText());
 		if (sortOrder > 1) {
 			sortOrder--;
@@ -800,7 +802,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 
 	@FXML
 	private void handleCbStoryVariantenAction() {
-		C3Logger.info("handleCbStoryVariantenAction");
+		logger.info("handleCbStoryVariantenAction");
 		handleTabs();
 
 	}
@@ -860,7 +862,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 
 	@FXML
 	private void handleDiceScoreTextChanged() {
-		C3Logger.info("handleDiceScoreTextChanged");
+		logger.info("handleDiceScoreTextChanged");
 	}
 
 	@FXML
@@ -1012,7 +1014,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 							setGraphic(null);
 						} else {
 							setText(item.getSortOrder().toString() + " " + item.getStoryName());
-							C3Logger.info("setCellFactory: updateItem: " + item.getStoryName());
+							logger.info("setCellFactory: updateItem: " + item.getStoryName());
 
 							// Set marking, if it is a next step
 							if (selected != null && boRP.isNextStep(selected.getValue(), item)) {
@@ -1033,7 +1035,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 							IconList il = new IconList(item.getVariante(), isNextStep, hasWarning);
 							setGraphic(il);
 						}
-						C3Logger.info("setCellFactory: updateItem: ");
+						logger.info("setCellFactory: updateItem: ");
 					}
 				};
 			}
@@ -1076,7 +1078,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 	}
 
 	private void fillComboBoxWithDataInputTypes(){
-		C3Logger.debug("fillComboBoxWithDataInputTypes");
+		logger.debug("fillComboBoxWithDataInputTypes");
 		ArrayList<ROLEPLAYINPUTDATATYPES> dataList = new ArrayList<>();
 
 		for(ROLEPLAYINPUTDATATYPES t : ROLEPLAYINPUTDATATYPES.values()) {
@@ -1101,7 +1103,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 	}
 
 	private void fillComboboxWithStories() {
-		C3Logger.debug("fillComboboxWithStories");
+		logger.debug("fillComboboxWithStories");
 		if (selected != null) {
 			cbStoryPath1.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
 			cbStoryPath2.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
@@ -1465,7 +1467,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 
 			// set data for story variante 3
 			if (selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V3 && selected.getValue().getVar3ID() != null) {
-				C3Logger.debug("setData");
+				logger.debug("setData");
 
 				if (selected.getValue().getVar3ID().getDataSet1() != null) {
 					cbroleplayinputdatatypes.getSelectionModel().select(selected.getValue().getVar3ID().getDataSet1().types);
@@ -1587,10 +1589,10 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 			// find all new added chars
 			for (RolePlayCharacterDTO rpc : lvAssignedChar.getItems()) {
 				if (rpc.getStory() == null) {
-					C3Logger.info("Add new char to Story: " + rpc.getName());
+					logger.info("Add new char to Story: " + rpc.getName());
 					newCharIds.add(rpc.getId());
 				} else {
-					C3Logger.info("do nothing: " + rpc.getName());
+					logger.info("do nothing: " + rpc.getName());
 				}
 			}
 			rp.setNewCharIDs(newCharIds);
@@ -1600,10 +1602,10 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 			// find all chars to remove from story
 			for (RolePlayCharacterDTO rpc : lvAllCharacters.getItems()) {
 				if (rpc.getStory() != null) {
-					C3Logger.info("Remove from story: " + rpc.getName());
+					logger.info("Remove from story: " + rpc.getName());
 					removedCharIds.add(rpc.getId());
 				} else {
-					C3Logger.info("do nothing: " + rpc.getName());
+					logger.info("do nothing: " + rpc.getName());
 				}
 			}
 			rp.setRemovedCharIDs(removedCharIds);
@@ -1878,7 +1880,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 			bOK = boRP.deleteVideo(selected.getValue());
 		}
 
-		if (!bOK) C3Logger.debug("Error while upload!");
+		if (!bOK) logger.debug("Error while upload!");
 	}
 
 	/**

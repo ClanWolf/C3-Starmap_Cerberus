@@ -21,21 +21,21 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.client.gui.panes.logging;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import net.clanwolf.starmap.client.action.*;
 import net.clanwolf.starmap.client.enums.C3FTPTYPES;
+import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
+import net.clanwolf.starmap.client.gui.panes.rp.RolePlayBasicPane;
 import net.clanwolf.starmap.client.net.FTP;
 import net.clanwolf.starmap.client.net.IP;
 import net.clanwolf.starmap.client.nexus.Nexus;
@@ -43,43 +43,109 @@ import net.clanwolf.starmap.client.util.C3PROPS;
 import net.clanwolf.starmap.client.util.C3Properties;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.client.util.Tools;
-import net.clanwolf.starmap.logging.C3Logger;
-import net.clanwolf.starmap.logging.LogEntry;
-
-import java.awt.*;
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.net.*;
-import java.nio.charset.StandardCharsets;
-import java.util.logging.Level;
+import net.clanwolf.starmap.logging.C3LogEntry;
+import org.slf4j.event.Level;
 
 // https://stackoverflow.com/questions/39366828/add-a-simple-row-to-javafx-tableview
-// OFF, SEVERE, WARNING, INFO, CONFIG, FINE, FINER, FINEST, ALL
 
 public class LogPaneController implements ActionCallBackListener {
 
 	public static boolean instantRefresh = false;
-
+	public static boolean clientScrolledDown = false;
 	@FXML
 	Label labelDescription, labelCountdown;
-
 	@FXML
 	TextField logURL;
-
 	@FXML
 	Tab tabClientLog;
-
 	@FXML
 	Tab tabServerLog;
-
 	@FXML
 	ComboBox<Level> cbLevel;
-
 	@FXML
 	Button btnReport, btnClose, btnRefresh;
+	public static boolean serverScrolledDown = false;
+	private static LogPaneController instance = null;
+	@FXML
+	TableView<C3LogEntry> tableViewClientLog, tableViewServerLog;
+
+	public static void setLogURL(String url) {
+		if (instance != null) {
+			Platform.runLater(() -> instance.logURL.setText(url));
+		}
+	}
+
+	public static Level getLevel() {
+		if (instance != null) {
+			Level l = instance.cbLevel.getSelectionModel().getSelectedItem();
+			if (l == null) {
+				return Level.INFO;
+			} else {
+				return l;
+			}
+		}
+		return Level.INFO;
+	}
+
+	public static void setCountdownValue(int v) {
+		if (instance != null) {
+			Platform.runLater(() -> instance.labelCountdown.setText("" + v));
+		}
+	}
+
+	public static void addClientLine(C3LogEntry line) {
+		if (instance != null) {
+			Platform.runLater(() -> instance.tableViewClientLog.getItems().add(line));
+		}
+	}
+
+	public static void scrollClientDown() {
+		if (instance != null) {
+			Platform.runLater(() -> instance.tableViewClientLog.scrollTo(instance.tableViewClientLog.getItems().size()));
+		}
+	}
+
+	public static void addServerLine(C3LogEntry line) {
+		if (instance != null) {
+			Platform.runLater(() -> instance.tableViewServerLog.getItems().add(line));
+		}
+	}
+
+	public static void scrollServerDown() {
+		if (instance != null) {
+			Platform.runLater(() -> instance.tableViewServerLog.scrollTo(instance.tableViewServerLog.getItems().size()));
+		}
+	}
+
+	public static void clearServerLog() {
+		if (instance != null) {
+			Platform.runLater(() -> instance.tableViewServerLog.getItems().clear());
+		}
+	}
 
 	@FXML
-	TableView<LogEntry> tableViewClientLog, tableViewServerLog;
+	public void onClientLogScrollStarted() {
+		ScrollBar logClientScrollBar = (ScrollBar) tableViewClientLog.lookup(".scroll-bar:vertical");
+		logClientScrollBar.valueProperty().addListener((observable, oldValue, newValue) -> {
+			if ((Double) newValue == 1.0) {
+				clientScrolledDown = true;
+			} else {
+				clientScrolledDown = false;
+			}
+		});
+	}
+
+	@FXML
+	public void onServerLogScrollStarted() {
+		ScrollBar logServerScrollBar = (ScrollBar) tableViewServerLog.lookup(".scroll-bar:vertical");
+		logServerScrollBar.valueProperty().addListener((observable, oldValue, newValue) -> {
+			if ((Double) newValue == 1.0) {
+				serverScrolledDown = true;
+			} else {
+				serverScrolledDown = false;
+			}
+		});
+	}
 
 	@FXML
 	public void btnCloseClicked() {
@@ -127,62 +193,6 @@ public class LogPaneController implements ActionCallBackListener {
 		ftpClient.disconnect();
 	}
 
-	private static LogPaneController instance = null;
-
-	public static void setLogURL(String url) {
-		if (instance != null) {
-			Platform.runLater(() -> instance.logURL.setText(url));
-		}
-	}
-
-	public static Level getLevel() {
-		if (instance != null) {
-			Level l = instance.cbLevel.getSelectionModel().getSelectedItem();
-			if (l == null) {
-				return Level.ALL;
-			} else {
-				return l;
-			}
-		}
-		return Level.ALL;
-	}
-
-	public static void setCountdownValue(int v) {
-		if (instance != null) {
-			Platform.runLater(() -> instance.labelCountdown.setText("" + v));
-		}
-	}
-
-	public static void addClientLine(LogEntry line) {
-		if (instance != null) {
-			Platform.runLater(() -> instance.tableViewClientLog.getItems().add(line));
-		}
-	}
-
-	public static void scrollClientDown() {
-		if (instance != null) {
-			Platform.runLater(() -> instance.tableViewClientLog.scrollTo(instance.tableViewClientLog.getItems().size()));
-		}
-	}
-
-	public static void addServerLine(LogEntry line) {
-		if (instance != null) {
-			Platform.runLater(() -> instance.tableViewServerLog.getItems().add(line));
-		}
-	}
-
-	public static void scrollServerDown() {
-		if (instance != null) {
-			Platform.runLater(() -> instance.tableViewServerLog.scrollTo(instance.tableViewServerLog.getItems().size()));
-		}
-	}
-
-	public static void clearServerLog() {
-		if (instance != null) {
-			Platform.runLater(() -> instance.tableViewServerLog.getItems().clear());
-		}
-	}
-
 	public void init() {
 		labelDescription.setText(Internationalization.getString("LogDescription"));
 		tabClientLog.setText(Internationalization.getString("LogClientTab"));
@@ -194,121 +204,105 @@ public class LogPaneController implements ActionCallBackListener {
 		instance = this;
 
 		// Client log
-		TableColumn<LogEntry, Integer> clientLineNumberColumn = new TableColumn<>("");
-		clientLineNumberColumn.setCellValueFactory(new PropertyValueFactory<>("lineNumber"));
-		clientLineNumberColumn.setPrefWidth(50);
-		clientLineNumberColumn.setMaxWidth(50);
-		clientLineNumberColumn.setMinWidth(50);
-		TableColumn<LogEntry, String> clientLevelColumn = new TableColumn<>("");
-		clientLevelColumn.setCellValueFactory(new PropertyValueFactory<>("level"));
-		clientLevelColumn.setPrefWidth(50);
-		clientLevelColumn.setMaxWidth(50);
-		clientLevelColumn.setMinWidth(50);
-//		TableColumn<LogEntry, String> clientTimestampColumn = new TableColumn<>("");
-//		clientTimestampColumn.setCellValueFactory(new PropertyValueFactory<>("timestamp"));
-//      clientTimestampColumn.setPrefWidth(300);
-		TableColumn<LogEntry, String> clientClassColumn = new TableColumn<>("");
-		clientClassColumn.setCellValueFactory(new PropertyValueFactory<>("loggingClass"));
-		clientClassColumn.setPrefWidth(250);
-		clientClassColumn.setMaxWidth(250);
-		clientClassColumn.setMinWidth(250);
-		TableColumn<LogEntry, String> clientMethodColumn = new TableColumn<>("");
-		clientMethodColumn.setCellValueFactory(new PropertyValueFactory<>("loggingClassMethod"));
-		clientMethodColumn.setPrefWidth(80);
-		clientMethodColumn.setMaxWidth(80);
-		clientMethodColumn.setMinWidth(80);
-		TableColumn<LogEntry, String> clientMessageColumn = new TableColumn<>("");
-		clientMessageColumn.setCellValueFactory(new PropertyValueFactory<>("message"));
-		clientMessageColumn.setPrefWidth(500);
-		tableViewClientLog.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-		tableViewClientLog.getColumns().addAll(clientLineNumberColumn,
-				clientLevelColumn,
-//				clientTimestampColumn,
-				clientClassColumn,
-				clientMethodColumn,
-				clientMessageColumn
-		);
+		TableColumn<C3LogEntry, Integer> clientLogLinenumberColumn = new TableColumn<>("");
+		clientLogLinenumberColumn.setCellValueFactory(new PropertyValueFactory<>("lineNumber"));
+		clientLogLinenumberColumn.setPrefWidth(50);
+		TableColumn<C3LogEntry, Integer> clientLogMessageColumn = new TableColumn<>("");
+		clientLogMessageColumn.setCellValueFactory(new PropertyValueFactory<>("message"));
+		clientLogMessageColumn.setPrefWidth(3000);
 
-		tableViewClientLog.setRowFactory(tableViewClientLog -> new TableRow<LogEntry>() {
+		clientLogLinenumberColumn.setResizable(false);
+		clientLogMessageColumn.setResizable(true);
+
+		tableViewClientLog.getColumns().addAll(clientLogLinenumberColumn, clientLogMessageColumn);
+
+		tableViewClientLog.setRowFactory(tableViewClientLog -> new TableRow<>() {
+			private void doUpdateItem(C3LogEntry item) {
+				// actually do the update and styling
+				for (Node n : getChildren()) {
+					n.setStyle("-fx-font-size:12px;-fx-text-fill:red;-fx-font-family:'monospaced';");
+				}
+				if (item != null) {
+					if (item.getMessage().contains("SEVERE")) {
+						setStyle("-fx-background-color:#ff856d;-fx-table-cell-border-color:#ff856d;");
+					} else if (item.getMessage().contains(" [WARNING |")) {
+						setStyle("-fx-background-color:#b5b60c;-fx-table-cell-border-color:#b5b60c;");
+					} else {
+						setStyle("-fx-background-color:#b5b60c;-fx-table-cell-border-color:#b5b60c;");
+					}
+				}
+			}
+
 			@Override
-			protected void updateItem(LogEntry item, boolean empty) {
+			public void updateIndex(int i) {
+				super.updateIndex(i);
+				doUpdateItem(getItem());
+			}
+
+			@Override
+			protected void updateItem(C3LogEntry item, boolean empty) {
 				super.updateItem(item, empty);
-				if (item == null || item.getLevel() == null)
-					setStyle("");
-				else if (item.getLevel().equals("SEVERE"))
-					setStyle("-fx-background-color:#ff856d;-fx-table-cell-border-color:#ff856d;-fx-text-fill:red");
-				else if (item.getLevel().equals("WARNING"))
-					setStyle("-fx-background-color:#b5b60c;-fx-table-cell-border-color:#b5b60c;-fx-text-fill:red");
-				else
-					setStyle("");
+				doUpdateItem(item);
 			}
 		});
 
 		// Server log
-		TableColumn<LogEntry, Integer> serverLineNumberColumn = new TableColumn<>("");
-		serverLineNumberColumn.setCellValueFactory(new PropertyValueFactory<>("lineNumber"));
-		serverLineNumberColumn.setPrefWidth(50);
-		serverLineNumberColumn.setMinWidth(50);
-		serverLineNumberColumn.setMaxWidth(50);
-		TableColumn<LogEntry, String> serverLevelColumn = new TableColumn<>("");
-		serverLevelColumn.setCellValueFactory(new PropertyValueFactory<>("level"));
-		serverLevelColumn.setPrefWidth(50);
-		serverLevelColumn.setMaxWidth(50);
-		serverLevelColumn.setMinWidth(50);
-		TableColumn<LogEntry, String> serverTimestampColumn = new TableColumn<>("");
-		serverTimestampColumn.setCellValueFactory(new PropertyValueFactory<>("timestamp"));
-		serverTimestampColumn.setPrefWidth(110);
-		serverTimestampColumn.setMaxWidth(110);
-		serverTimestampColumn.setMinWidth(110);
-		TableColumn<LogEntry, String> serverClassColumn = new TableColumn<>("");
-		serverClassColumn.setCellValueFactory(new PropertyValueFactory<>("loggingClass"));
-		serverClassColumn.setPrefWidth(250);
-		serverClassColumn.setMaxWidth(250);
-		serverClassColumn.setMinWidth(250);
-		TableColumn<LogEntry, String> serverMethodColumn = new TableColumn<>("");
-		serverMethodColumn.setCellValueFactory(new PropertyValueFactory<>("loggingClassMethod"));
-		serverMethodColumn.setPrefWidth(80);
-		serverMethodColumn.setMaxWidth(80);
-		serverMethodColumn.setMinWidth(80);
-		TableColumn<LogEntry, String> serverMessageColumn = new TableColumn<>("");
-		serverMessageColumn.setCellValueFactory(new PropertyValueFactory<>("message"));
-		serverMessageColumn.setPrefWidth(500);
-		tableViewServerLog.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-		tableViewServerLog.getColumns().addAll( serverLineNumberColumn,
-												serverLevelColumn,
-												serverTimestampColumn,
-												serverClassColumn,
-												serverMethodColumn,
-												serverMessageColumn
-		);
+		TableColumn<C3LogEntry, Integer> serverLogLinenumberColumn = new TableColumn<>("");
+		serverLogLinenumberColumn.setCellValueFactory(new PropertyValueFactory<>("lineNumber"));
+		serverLogLinenumberColumn.setPrefWidth(50);
+		TableColumn<C3LogEntry, Integer> serverLogMessageColumn = new TableColumn<>("");
+		serverLogMessageColumn.setCellValueFactory(new PropertyValueFactory<>("message"));
+		serverLogMessageColumn.setPrefWidth(3000);
 
-		tableViewServerLog.setRowFactory(tableViewServerLog -> new TableRow<LogEntry>() {
+		serverLogLinenumberColumn.setResizable(false);
+		serverLogMessageColumn.setResizable(true);
+
+		tableViewServerLog.getColumns().addAll(serverLogLinenumberColumn, serverLogMessageColumn);
+
+		tableViewServerLog.setRowFactory(tableViewServerLog -> new TableRow<>() {
+			private void doUpdateItem(C3LogEntry item) {
+				// actually do the update and styling
+				for (Node n : getChildren()) {
+					n.setStyle("-fx-font-size:12px;-fx-text-fill:red;-fx-font-family:'monospaced';");
+				}
+				if (item != null) {
+					if (item.getMessage().contains("SEVERE")) {
+						setStyle("-fx-background-color:#ff856d;-fx-table-cell-border-color:#ff856d;");
+					} else if (item.getMessage().contains(" [WARNING |")) {
+						setStyle("-fx-background-color:#b5b60c;-fx-table-cell-border-color:#b5b60c;");
+					} else {
+						setStyle("-fx-background-color:#b5b60c;-fx-table-cell-border-color:#b5b60c;");
+					}
+				}
+			}
+
 			@Override
-			protected void updateItem(LogEntry item, boolean empty) {
+			public void updateIndex(int i) {
+				super.updateIndex(i);
+				doUpdateItem(getItem());
+			}
+
+			@Override
+			protected void updateItem(C3LogEntry item, boolean empty) {
 				super.updateItem(item, empty);
-				if (item == null || item.getLevel() == null)
-					setStyle("");
-				else if (item.getLevel().equals("SEVERE"))
-					setStyle("-fx-background-color:#ff856d;-fx-table-cell-border-color:#ff856d;-fx-text-fill:red");
-				else if (item.getLevel().equals("WARNING"))
-					setStyle("-fx-background-color:#b5b60c;-fx-table-cell-border-color:#b5b60c;-fx-text-fill:red");
-				else
-					setStyle("");
+				doUpdateItem(item);
 			}
 		});
 
-		// OFF, SEVERE, WARNING, INFO, CONFIG, FINE, FINER, FINEST, ALL
-		cbLevel.getItems().add(Level.OFF);
-		cbLevel.getItems().add(Level.SEVERE);
-		cbLevel.getItems().add(Level.WARNING);
-		cbLevel.getItems().add(Level.INFO);
-		cbLevel.getItems().add(Level.CONFIG);
-		cbLevel.getItems().add(Level.FINE);
-		cbLevel.getItems().add(Level.FINEST);
-		cbLevel.getItems().add(Level.ALL);
-		cbLevel.getSelectionModel().select(Level.ALL);
+		//	TRACE – log events with this level are the most fine-grained and are usually not needed unless you need to have the full visibility of what is happening in your application and inside the third-party libraries that you use. You can expect the TRACE logging level to be very verbose.
+		//	DEBUG – less granular compared to the TRACE level, but still more than you will need in everyday use. The DEBUG log level should be used for information that may be needed for deeper diagnostics and troubleshooting.
+		//	INFO – the standard log level indicating that something happened, application processed a request, etc. The information logged using the INFO log level should be purely informative and not looking into them on a regular basis shouldn’t result in missing any important information.
+		//	WARN – the log level that indicates that something unexpected happened in the application. For example a problem, or a situation that might disturb one of the processes, but the whole application is still working.
+		//	ERROR – the log level that should be used when the application hits an issue preventing one or more functionalities from properly functioning. The ERROR log level can be used when one of the payment systems is not available, but there is still the option to check out the basket in the e-commerce application or when your social media logging option is not working for some reason. You can also see the ERROR log level associated with exceptions.
 
-//		tabServerLog.setDisable(!Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN));
+		cbLevel.getItems().add(Level.TRACE);
+		cbLevel.getItems().add(Level.DEBUG);
+		cbLevel.getItems().add(Level.INFO);
+		cbLevel.getItems().add(Level.WARN);
+		cbLevel.getItems().add(Level.ERROR);
+		cbLevel.getSelectionModel().select(Level.INFO);
+
+		//		tabServerLog.setDisable(!Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN));
 
 		addActionCallBackListeners();
 	}
@@ -338,7 +332,6 @@ public class LogPaneController implements ActionCallBackListener {
 			case CHANGE_LANGUAGE:
 				setStrings();
 				break;
-
 			default:
 				break;
 		}

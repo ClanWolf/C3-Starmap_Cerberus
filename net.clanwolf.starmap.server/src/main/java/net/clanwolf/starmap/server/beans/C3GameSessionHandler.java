@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2021, ClanWolf.net                            |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.server.beans;
@@ -33,7 +33,8 @@ import io.nadron.event.Event;
 import io.nadron.event.Events;
 import io.nadron.event.impl.SessionMessageHandler;
 import io.nadron.service.GameStateManagerService;
-import net.clanwolf.starmap.logging.C3Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.server.persistence.EntityConverter;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.*;
@@ -46,6 +47,7 @@ import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.util.Compressor;
 
+import java.lang.invoke.MethodHandles;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +58,8 @@ import java.util.Timer;
  * @author Undertaker
  */
 public class C3GameSessionHandler extends SessionMessageHandler {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
 	private GameRoom room;// not really required. It can be accessed as getSession() also.
 	private GameState state;
 	private GameRoomSession roomSession;
@@ -76,7 +80,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 	@Override
 	public void onEvent(Event event) {
-		C3Logger.debug("C3GameSessionHandler.onEvent");
+		logger.debug("C3GameSessionHandler.onEvent");
 		GameState state = null;
 
 		if (event.getSource() instanceof GameState) {
@@ -89,7 +93,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 	}
 
 	private void executeCommand(PlayerSession session, GameState state) {
-		C3Logger.debug("C3GameSessionHandler.executeCommand: " + state.getMode().toString());
+		logger.debug("C3GameSessionHandler.executeCommand: " + state.getMode().toString());
 		EntityConverter.convertGameStateToPOJO(state);
 
 		Timer serverHeartBeat;
@@ -160,7 +164,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				C3GameSessionHandlerRoleplay.saveRolePlayCharacterNextStep(session, state);
 				break;
 			case CLIENT_READY_FOR_EVENTS:
-				C3Logger.info("Setting 'Client is ready for data' for session: " + session.getId().toString());
+				logger.info("Setting 'Client is ready for data' for session: " + session.getId().toString());
 				roomSession.getSessionReadyMap().put(session.getId().toString(), Boolean.TRUE);
 				break;
 			case FORCE_FINALIZE_ROUND:
@@ -207,7 +211,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			response.addObject(null);
 			response.setAction_successfully(Boolean.TRUE);
 		} catch (RuntimeException re) {
-			C3Logger.error("User save", re);
+			logger.error("User save", re);
 			re.printStackTrace();
 			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
 
@@ -226,10 +230,10 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 			AttackPOJO existingAttack = null;
 			AttackPOJO attack = (AttackPOJO) state.getObject();
-			C3Logger.debug("Saving attack: " + attack);
-			C3Logger.debug("-- Attacker (jumpshipID): " + attack.getJumpshipID());
-			C3Logger.debug("-- Attacking from: " + attack.getAttackedFromStarSystemID());
-			C3Logger.debug("-- Attacked system: " + attack.getStarSystemID());
+			logger.debug("Saving attack: " + attack);
+			logger.debug("-- Attacker (jumpshipID): " + attack.getJumpshipID());
+			logger.debug("-- Attacking from: " + attack.getAttackedFromStarSystemID());
+			logger.debug("-- Attacked system: " + attack.getStarSystemID());
 
 			ArrayList<AttackCharacterPOJO> newAttackCharacters = new ArrayList<AttackCharacterPOJO>();
 			if( attack.getAttackCharList() != null) {
@@ -249,7 +253,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 
 			if(attack.getId() != null) {
-				C3Logger.debug("attack.getId() != null");
+				logger.debug("attack.getId() != null");
 				dao.update(getC3UserID(session), attack);
 			} else {
 				// Check if attack exits
@@ -257,10 +261,10 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				existingAttack = dao.findOpenAttackByRound(getC3UserID(session),attack.getJumpshipID(), attack.getSeason(), attack.getRound());
 
 				if(existingAttack == null){
-					C3Logger.debug("SAVE: if(existingAttack == null)");
+					logger.debug("SAVE: if(existingAttack == null)");
 					dao.save(getC3UserID(session), attack);
 				} else {
-					C3Logger.debug("ELSE -> if(existingAttack == null)");
+					logger.debug("ELSE -> if(existingAttack == null)");
 					attack = existingAttack;
 				}
 			}
@@ -304,7 +308,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			response.setAction_successfully(Boolean.FALSE);
 			C3GameSessionHandler.sendNetworkEvent(session, response);
 
-			C3Logger.error("Attack save", re);
+			logger.error("Attack save", re);
 		}
 	}
 
@@ -319,10 +323,10 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				dao.delete(getC3UserID(session), attackCharacter);
 			} else {
 				if (attackCharacter.getId() != null) {
-					C3Logger.debug("??? updating attackcharacter (id: " + attackCharacter.getId() + ")");
+					logger.debug("??? updating attackcharacter (id: " + attackCharacter.getId() + ")");
 					dao.update(getC3UserID(session), attackCharacter);
 				} else {
-					C3Logger.debug("??? saving new attackcharacter (id: " + attackCharacter.getId() + ")");
+					logger.debug("??? saving new attackcharacter (id: " + attackCharacter.getId() + ")");
 					dao.save(getC3UserID(session), attackCharacter);
 				}
 			}
@@ -351,7 +355,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			response.setAction_successfully(Boolean.FALSE);
 			C3GameSessionHandler.sendNetworkEvent(session, response);
 
-			C3Logger.error("Attack character save", re);
+			logger.error("Attack character save", re);
 		}
 	}*/
 
@@ -391,7 +395,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			//session.refresh(entity); // -> hibernate session!
 
 		} catch (RuntimeException re) {
-			C3Logger.error("Jumpship save", re);
+			logger.error("Jumpship save", re);
 			re.printStackTrace();
 			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
 			GameState errormessage = new GameState(GAMESTATEMODES.JUMPSHIP_SAVE);
@@ -410,10 +414,10 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			for (UserPOJO user : list) {
 				user.setLastModified(new Timestamp(System.currentTimeMillis()));
 				if (user.getUserId() == null) {
-					// C3Logger.info("Saving: " + user.getUserName() + " - Privs: " + user.getPrivileges());
+					// logger.info("Saving: " + user.getUserName() + " - Privs: " + user.getPrivileges());
 					dao.save(getC3UserID(session), user);
 				} else {
-					// C3Logger.info("Updating: " + user.getUserName() + " - Privs: " + user.getPrivileges());
+					// logger.info("Updating: " + user.getUserName() + " - Privs: " + user.getPrivileges());
 					dao.update(getC3UserID(session), user);
 				}
 			}
@@ -423,7 +427,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			response.addObject(null);
 			response.setAction_successfully(Boolean.TRUE);
 		} catch (RuntimeException re) {
-			C3Logger.error("Privilege save", re);
+			logger.error("Privilege save", re);
 			re.printStackTrace();
 			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
 
@@ -434,12 +438,12 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 	}
 
 	private synchronized void checkDoubleLogin(PlayerSession session, GameRoom gm) {
-		C3Logger.debug("C3Room.afterSessionConnect");
+		logger.debug("C3Room.afterSessionConnect");
 
 		// get the actual user
 		UserPOJO newUser = ((C3Player) session.getPlayer()).getUser();
 
-		C3Logger.debug("C3Room.afterSessionConnect -> search wrong session");
+		logger.debug("C3Room.afterSessionConnect -> search wrong session");
 		if (newUser != null) {
 			for (PlayerSession plSession : gm.getSessions()) {
 
@@ -447,7 +451,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 				// find a other session from the user of the actual player session and send an USER_LOGOUT_AFTER_DOUBLE_LOGIN event
 				if (userID.equals(newUser.getUserId()) && session != plSession) {
-					C3Logger.debug("C3Room.afterSessionConnect -> find wrong session");
+					logger.debug("C3Room.afterSessionConnect -> find wrong session");
 
 					GameState state_broadcast_login = new GameState(GAMESTATEMODES.USER_LOGOUT_AFTER_DOUBLE_LOGIN);
 					state_broadcast_login.setReceiver(plSession.getId());
@@ -464,13 +468,13 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 	private synchronized void getLoggedInUserData(PlayerSession session) {
 		UserPOJO user = ((C3Player) session.getPlayer()).getUser();
 
-		C3Logger.info("Sending userdata/universe back after login...");
+		logger.info("Sending userdata/universe back after login...");
 		ArrayList<UserPOJO> userlist = UserDAO.getInstance().getUserList();
 
 		UniverseDTO uni = WebDataInterface.getUniverse();
 
 		byte[] myByte = Compressor.compress(uni);
-		C3Logger.debug("Size of UniverseDTO: " + myByte.length + " byte.");
+		logger.debug("Size of UniverseDTO: " + myByte.length + " byte.");
 
 		GameState state_userdata = new GameState(GAMESTATEMODES.USER_LOGGED_IN_DATA);
 		state_userdata.addObject(user);
@@ -498,13 +502,13 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			EntityManagerHelper.beginTransaction(C3GameSessionHandler.getC3UserID(session));
 			user.setLastLogin(new Timestamp(System.currentTimeMillis()));
 			dao.update(C3GameSessionHandler.getC3UserID(session), user);
-			C3Logger.info("Last login saved for User:");
-			C3Logger.info("Name: " + user.getUserName());
-			C3Logger.info("Timestamp: " + new Timestamp(System.currentTimeMillis()));
-			C3Logger.info("--------------------");
+			logger.info("Last login saved for User:");
+			logger.info("Name: " + user.getUserName());
+			logger.info("Timestamp: " + new Timestamp(System.currentTimeMillis()));
+			logger.info("--------------------");
 			EntityManagerHelper.commit(C3GameSessionHandler.getC3UserID(session));
 		} catch (Exception re) {
-			C3Logger.error("User save", re);
+			logger.error("User save", re);
 			//sendErrorMessageToClient(session, re);
 			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
 			response.addObject(re.getMessage());
