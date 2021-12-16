@@ -22,7 +22,16 @@
 		<moduleName>net.clanwolf.starmap.client</moduleName>
 	</properties>
 
+	<!-- ########################################################################################################### -->
+	<!-- ##                                                                                                       ## -->
+	<!-- ##                                                                                                       ## -->
+	<!-- ## DEPENDENCIES                                                                                          ## -->
+	<!-- ##                                                                                                       ## -->
+	<!-- ##                                                                                                       ## -->
+	<!-- ########################################################################################################### -->
+
 	<dependencies>
+		<!-- C3 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 		<dependency>
 			<groupId>net.clanwolf.starmap</groupId>
 			<artifactId>net.clanwolf.starmap.transfer</artifactId>
@@ -43,64 +52,8 @@
 			<artifactId>io.nadron.client</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-<!--		<dependency>-->
-<!--			<groupId>net.clanwolf.starmap</groupId>-->
-<!--			<artifactId>net.clanwolf.starmap.server</artifactId>-->
-<!--			<version>${project.version}</version>-->
-<!--			<exclusions>-->
-<!--				<exclusion>-->
-<!--					<groupId>org.jboss.spec.javax.transaction</groupId>-->
-<!--					<artifactId>jboss-transaction-api_1.2_spec</artifactId>-->
-<!--				</exclusion>-->
-<!--				<exclusion>-->
-<!--					<groupId>net.clanwolf.starmap</groupId>-->
-<!--					<artifactId>net.clanwolf.starmap.mail</artifactId>-->
-<!--				</exclusion>-->
-<!--				<exclusion>-->
-<!--					<groupId>net.clanwolf.starmap</groupId>-->
-<!--					<artifactId>net.clanwolf.starmap.ircbot</artifactId>-->
-<!--				</exclusion>-->
-<!--&lt;!&ndash;				<exclusion>&ndash;&gt;-->
-<!--&lt;!&ndash;					<groupId>org.jboss.logging</groupId>&ndash;&gt;-->
-<!--&lt;!&ndash;					<artifactId>jboss-logging</artifactId>&ndash;&gt;-->
-<!--&lt;!&ndash;				</exclusion>&ndash;&gt;-->
-<!--&lt;!&ndash;				<exclusion>&ndash;&gt;-->
-<!--&lt;!&ndash;					<groupId>org.hibernate</groupId>&ndash;&gt;-->
-<!--&lt;!&ndash;					<artifactId>hibernate-ehcache</artifactId>&ndash;&gt;-->
-<!--&lt;!&ndash;				</exclusion>&ndash;&gt;-->
-<!--&lt;!&ndash;				<exclusion>&ndash;&gt;-->
-<!--&lt;!&ndash;					<groupId>net.sf.ehcache</groupId>&ndash;&gt;-->
-<!--&lt;!&ndash;					<artifactId>ehcache</artifactId>&ndash;&gt;-->
-<!--&lt;!&ndash;				</exclusion>&ndash;&gt;-->
-<!--&lt;!&ndash;				<exclusion>&ndash;&gt;-->
-<!--&lt;!&ndash;					<groupId>com.zaxxer</groupId>&ndash;&gt;-->
-<!--&lt;!&ndash;					<artifactId>HikariCP</artifactId>&ndash;&gt;-->
-<!--&lt;!&ndash;				</exclusion>&ndash;&gt;-->
-<!--&lt;!&ndash;				<exclusion>&ndash;&gt;-->
-<!--&lt;!&ndash;					<groupId>org.hibernate</groupId>&ndash;&gt;-->
-<!--&lt;!&ndash;					<artifactId>hibernate-core</artifactId>&ndash;&gt;-->
-<!--&lt;!&ndash;				</exclusion>&ndash;&gt;-->
-<!--&lt;!&ndash;				<exclusion>&ndash;&gt;-->
-<!--&lt;!&ndash;					<groupId>org.springframework.security</groupId>&ndash;&gt;-->
-<!--&lt;!&ndash;					<artifactId>spring-security-core</artifactId>&ndash;&gt;-->
-<!--&lt;!&ndash;				</exclusion>&ndash;&gt;-->
-<!--			</exclusions>-->
-<!--		</dependency>-->
-		<dependency>
-			<groupId>org.kynosarges</groupId>
-			<artifactId>tektosyne</artifactId>
-			<version>6.2.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.commons</groupId>
-			<artifactId>commons-collections4</artifactId>
-			<version>4.3</version>
-		</dependency>
-		<dependency>
-			<groupId>commons-net</groupId>
-			<artifactId>commons-net</artifactId>
-			<version>3.6</version>
-		</dependency>
+
+		<!-- JavaFX ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 		<dependency>
 			<groupId>org.openjfx</groupId>
 			<artifactId>javafx-controls</artifactId>
@@ -137,31 +90,31 @@
 			<version>${version.javafx}</version>
 		</dependency>
 
-<!-- This can be taken in if needed for bugtracking. -->
-<!-- In general it is disabled because of log4j vulnarabilities -->
-<!-- Rename log4j.properties to make it work! -->
-
-<!--		<dependency>-->
-<!--			<groupId>org.slf4j</groupId>-->
-<!--			<artifactId>slf4j-api</artifactId>-->
-<!--			<version>1.7.32</version>-->
-<!--		</dependency>-->
-<!--		<dependency>-->
-<!--			<groupId>org.slf4j</groupId>-->
-<!--			<artifactId>slf4j-log4j12</artifactId>-->
-<!--			<version>1.7.32</version>-->
-<!--		</dependency>-->
-
+		<!-- Other +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+		<dependency>
+			<groupId>org.kynosarges</groupId>
+			<artifactId>tektosyne</artifactId>
+			<version>6.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-collections4</artifactId>
+			<version>4.3</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-net</groupId>
+			<artifactId>commons-net</artifactId>
+			<version>3.6</version>
+		</dependency>
 		<dependency>
 			<groupId>org.jetbrains</groupId>
 			<artifactId>annotations</artifactId>
 			<version>22.0.0</version>
 			<scope>compile</scope>
 		</dependency>
-
-		<!-- https://github.com/migzai/irc-api -->
-		<!-- https://mvnrepository.com/artifact/org.jitsi/irc-api -->
 		<dependency>
+			<!-- https://github.com/migzai/irc-api -->
+			<!-- https://mvnrepository.com/artifact/org.jitsi/irc-api -->
 			<groupId>com.ircclouds.irc</groupId>
 			<artifactId>irc-api</artifactId>
 			<version>1.0-0014</version>
@@ -169,10 +122,6 @@
 <!--			<artifactId>irc-api</artifactId>-->
 <!--			<version>1.0-0015-jitsi-1</version>-->
 			<exclusions>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-api</artifactId>
-				</exclusion>
 				<exclusion>
 					<groupId>com.googlecode.jmockit</groupId>
 					<artifactId>jmockit</artifactId>
@@ -183,25 +132,21 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-
 		<dependency>
 			<groupId>net.coobird</groupId>
 			<artifactId>thumbnailator</artifactId>
 			<version>0.4.14</version>
 		</dependency>
-
 		<dependency>
 			<groupId>com.github.kwhat</groupId>
 			<artifactId>jnativehook</artifactId>
 			<version>2.2.1</version>
 		</dependency>
-
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
 			<version>2.8.9</version>
 		</dependency>
-
 <!--		<dependency>-->
 <!--			<groupId>de.dfki.mary</groupId>-->
 <!--			<artifactId>voice-cmu-slt-hsmm</artifactId>-->
@@ -226,6 +171,14 @@
 <!--			</exclusions>-->
 <!--		</dependency>-->
 	</dependencies>
+
+	<!-- ########################################################################################################### -->
+	<!-- ##                                                                                                       ## -->
+	<!-- ##                                                                                                       ## -->
+	<!-- ## BUILD                                                                                                 ## -->
+	<!-- ##                                                                                                       ## -->
+	<!-- ##                                                                                                       ## -->
+	<!-- ########################################################################################################### -->
 
 	<!-- https://github.com/moditect/moditect#adding-module-descriptors-to-existing-jar-files -->
 

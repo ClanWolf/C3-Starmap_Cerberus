@@ -23,7 +23,18 @@
 		<version>${revision}</version>
 	</parent>
 
+	<artifactId>net.clanwolf.starmap.logging</artifactId>
+
+	<!-- ########################################################################################################### -->
+	<!-- ##                                                                                                       ## -->
+	<!-- ##                                                                                                       ## -->
+	<!-- ## DEPENDENCIES                                                                                          ## -->
+	<!-- ##                                                                                                       ## -->
+	<!-- ##                                                                                                       ## -->
+	<!-- ########################################################################################################### -->
+
 	<dependencies>
+		<!-- Logging +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
@@ -32,11 +43,6 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
-			<version>2.0.0-alpha5</version>
-		</dependency>
-		<dependency>
-			<groupId>org.slf4j</groupId>
-			<artifactId>jul-to-slf4j</artifactId>
 			<version>2.0.0-alpha5</version>
 		</dependency>
 		<dependency>
@@ -50,7 +56,5 @@
 			<version>2.0.0-alpha5</version>
 		</dependency>
 	</dependencies>
-
-	<artifactId>net.clanwolf.starmap.logging</artifactId>
 
 </project>

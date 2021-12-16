@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Tab?>
@@ -25,7 +26,7 @@
                   <content>
                     <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="269.0" prefWidth="486.0">
                            <children>
-                              <TableView fx:id="tableViewClientLog" onScroll="#onClientLogScrollStarted" onScrollStarted="#onClientLogScrollStarted" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                              <TableView fx:id="tableViewClientLog" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
                            </children>
                         </AnchorPane>
                   </content>
@@ -36,7 +37,7 @@
                            <children>
                               <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <center>
-                                    <TableView fx:id="tableViewServerLog" onScroll="#onServerLogScrollStarted" onScrollStarted="#onServerLogScrollStarted" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+                                    <TableView fx:id="tableViewServerLog" prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
                                  </center>
                                  <top>
                                     <HBox alignment="CENTER_LEFT" prefWidth="200.0" BorderPane.alignment="CENTER">
@@ -92,6 +93,11 @@
          <bottom>
             <HBox alignment="CENTER_RIGHT" maxWidth="1.7976931348623157E308" BorderPane.alignment="BOTTOM_RIGHT">
                <children>
+                  <CheckBox fx:id="cbAutoScroll" mnemonicParsing="false" onAction="#onServerLogScrollToggle" selected="true" text="Autoscroll">
+                     <padding>
+                        <Insets right="30.0" />
+                     </padding>
+                  </CheckBox>
                   <Button fx:id="btnReport" defaultButton="true" mnemonicParsing="false" nodeOrientation="LEFT_TO_RIGHT" onAction="#btnReportClicked" prefHeight="25.0" prefWidth="125.0" text="Report" HBox.hgrow="ALWAYS">
                      <opaqueInsets>
                         <Insets />

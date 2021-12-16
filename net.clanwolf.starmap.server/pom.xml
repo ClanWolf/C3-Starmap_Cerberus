@@ -13,7 +13,16 @@
 
 	<artifactId>net.clanwolf.starmap.server</artifactId>
 
+	<!-- ########################################################################################################### -->
+	<!-- ##                                                                                                       ## -->
+	<!-- ##                                                                                                       ## -->
+	<!-- ## DEPENDENCIES                                                                                          ## -->
+	<!-- ##                                                                                                       ## -->
+	<!-- ##                                                                                                       ## -->
+	<!-- ########################################################################################################### -->
+
 	<dependencies>
+		<!-- C3 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 		<dependency>
 			<groupId>net.clanwolf.starmap</groupId>
 			<artifactId>net.clanwolf.starmap.transfer</artifactId>
@@ -68,15 +77,19 @@
 			<!--				</exclusion>-->
 			<!--			</exclusions>-->
 		</dependency>
+
+		<!-- MySQL +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>8.0.25</version>
+			<version>${version.mysql-connector}</version>
 		</dependency>
+
+		<!-- Hibernate +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>${version.hibernate}</version> <!-- 5.4.1.Final -->
+			<version>${version.hibernate}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>javax.activation</groupId>
@@ -87,14 +100,30 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-entitymanager</artifactId>
-			<version>${version.hibernate}</version> <!-- 5.4.1.Final -->
+			<version>${version.hibernate}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-ehcache</artifactId>
-			<version>${version.hibernate}</version> <!-- 5.4.1.Final -->
+			<version>${version.hibernate}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate.common</groupId>
+			<artifactId>hibernate-commons-annotations</artifactId>
+			<version>5.1.2.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.transaction</groupId>
+			<artifactId>javax.transaction-api</artifactId>
+			<version>1.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.spec.javax.transaction</groupId>
+			<artifactId>jboss-transaction-api_1.2_spec</artifactId>
+			<version>2.0.0.CR1</version>
 		</dependency>
 
+		<!-- Hikari ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 		<!-- hikariCP and hikari jars are on the server next to the server jar. Path is in the manifest file -->
 		<!-- if this version is changed, consider entering the new versions into the manifest (below) and upload -->
 		<!-- the files manually! -->
@@ -104,17 +133,55 @@
 			<version>${version.hikaricp}</version>
 			<type>jar</type>
 		</dependency>
-
 		<!-- hikariCP and hikari jars are on the server next to the server jar. Path is in the manifest file -->
 		<!-- if this version is changed, consider entering the new versions into the manifest (below) and upload -->
 		<!-- the files manually! -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-hikaricp</artifactId>
-			<version>${version.hibernate_hikaricp}</version> <!-- 5.4.1 -->
+			<version>${version.hibernate_hikaricp}</version>
 			<type>jar</type>
 		</dependency>
 
+		<!-- Spring ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${version.spring}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context</artifactId>
+			<version>${version.spring}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+			<version>${version.spring}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>${version.spring-security-config}</version>
+		</dependency>
+		<dependency>
+			<groupId>javax.persistence</groupId>
+			<artifactId>javax.persistence-api</artifactId>
+			<version>2.2</version>
+		</dependency>
+
+		<!-- Other +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+		<dependency>
+			<groupId>org.dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+			<version>2.1.3</version>
+			<exclusions>
+				<exclusion>
+					<groupId>xml-apis</groupId>
+					<artifactId>xml-apis</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 		<dependency>
 			<groupId>org.javassist</groupId>
 			<artifactId>javassist</artifactId>
@@ -126,68 +193,15 @@
 			<version>0.2.3.4</version>
 		</dependency>
 		<dependency>
-			<groupId>javax.transaction</groupId>
-			<artifactId>javax.transaction-api</artifactId>
-			<version>1.3</version>
-		</dependency>
-		<dependency>
-			<groupId>org.jboss.spec.javax.transaction</groupId>
-			<artifactId>jboss-transaction-api_1.2_spec</artifactId>
-			<version>2.0.0.Alpha1</version>
-		</dependency>
-		<dependency>
 			<groupId>net.bytebuddy</groupId>
 			<artifactId>byte-buddy</artifactId>
-			<version>1.12.2</version> <!-- vorher: 1.9.12 -->
+			<version>1.12.2</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.xml.bind</groupId>
 			<artifactId>jaxb-api</artifactId>
 			<version>2.3.1</version>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-orm</artifactId>
-			<version>${version.spring}</version> <!-- vorher: 5.3.10 -->
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-context</artifactId>
-			<version>${version.spring}</version> <!-- vorher: 5.3.10 -->
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-tx</artifactId>
-			<version>${version.spring}</version> <!-- vorher: 5.3.10 -->
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.security</groupId>
-			<artifactId>spring-security-config</artifactId>
-			<version>${version.spring-security-config}</version>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate.common</groupId>
-			<artifactId>hibernate-commons-annotations</artifactId>
-			<version>5.1.2.Final</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.persistence</groupId>
-			<artifactId>javax.persistence-api</artifactId>
-			<version>2.2</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.dom4j</groupId>
-			<artifactId>dom4j</artifactId>
-			<version>2.1.3</version> <!-- 1.6.1 -->
-			<exclusions>
-				<exclusion>
-					<groupId>xml-apis</groupId>
-					<artifactId>xml-apis</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-
 		<dependency>
 			<groupId>net.sourceforge.collections</groupId>
 			<artifactId>collections-generic</artifactId>
@@ -224,17 +238,17 @@
 			<artifactId>jackson-jsog</artifactId>
 			<version>1.1.1</version>
 		</dependency>
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-slf4j-impl</artifactId>
-			<version>${version.slf4j-log4j}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>org.slf4j</groupId>
-					<artifactId>slf4j-api</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.apache.logging.log4j</groupId>-->
+<!--			<artifactId>log4j-slf4j-impl</artifactId>-->
+<!--			<version>${version.slf4j-log4j}</version>-->
+<!--			<exclusions>-->
+<!--				<exclusion>-->
+<!--					<groupId>org.slf4j</groupId>-->
+<!--					<artifactId>slf4j-api</artifactId>-->
+<!--				</exclusion>-->
+<!--			</exclusions>-->
+<!--		</dependency>-->
 <!--		<dependency>-->
 <!--			<groupId>org.slf4j</groupId>-->
 <!--			<artifactId>slf4j-api</artifactId>-->
@@ -250,27 +264,35 @@
 <!--			<artifactId>log4j-api</artifactId>-->
 <!--			<version>${version.log4j}</version>-->
 <!--		</dependency>-->
-		<!--		<dependency>-->
-		<!--			<groupId>log4j</groupId>-->
-		<!--			<artifactId>log4j</artifactId>-->
-		<!--			<version>1.2.17</version>-->
-		<!--		</dependency>-->
-		<!--		<dependency>-->
-		<!--			<groupId>org.slf4j</groupId>-->
-		<!--			<artifactId>slf4j-log4j12</artifactId>-->
-		<!--			<version>1.7.32</version>-->
-		<!--		</dependency>-->
-		<!--		<dependency>-->
-		<!--			<groupId>org.slf4j</groupId>-->
-		<!--			<artifactId>jcl-over-slf4j</artifactId>-->
-		<!--			<version>1.8.0-beta4</version>-->
-		<!--		</dependency>-->
-		<!--		<dependency>-->
-		<!--			<groupId>org.slf4j</groupId>-->
-		<!--			<artifactId>slf4j-simple</artifactId>-->
-		<!--			<version>1.7.26</version>-->
-		<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>log4j</groupId>-->
+<!--			<artifactId>log4j</artifactId>-->
+<!--			<version>1.2.17</version>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>org.slf4j</groupId>-->
+<!--			<artifactId>slf4j-log4j12</artifactId>-->
+<!--			<version>1.7.32</version>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>org.slf4j</groupId>-->
+<!--			<artifactId>jcl-over-slf4j</artifactId>-->
+<!--			<version>1.8.0-beta4</version>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>org.slf4j</groupId>-->
+<!--			<artifactId>slf4j-simple</artifactId>-->
+<!--			<version>1.7.26</version>-->
+<!--		</dependency>-->
 	</dependencies>
+
+	<!-- ########################################################################################################### -->
+	<!-- ##                                                                                                       ## -->
+	<!-- ##                                                                                                       ## -->
+	<!-- ## BUILD                                                                                                 ## -->
+	<!-- ##                                                                                                       ## -->
+	<!-- ##                                                                                                       ## -->
+	<!-- ########################################################################################################### -->
 
 	<build>
 		<finalName>C3-Server-${project.version}</finalName>
@@ -298,7 +320,7 @@
 									<manifestEntries>
 										<Multi-Release>true</Multi-Release>
 										<Class-Path>hibernate-hikaricp-5.6.2.Final.jar HikariCP-5.0.0.jar</Class-Path>
-										<Built-By>ClanWolf.info (Christian Bartel)</Built-By>
+										<Built-By>ClanWolf.net (Christian Bartel)</Built-By>
 									</manifestEntries>
 								</transformer>
 							</transformers>

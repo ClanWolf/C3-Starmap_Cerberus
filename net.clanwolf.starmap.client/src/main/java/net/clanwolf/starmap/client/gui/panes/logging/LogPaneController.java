@@ -44,11 +44,16 @@ import net.clanwolf.starmap.client.util.C3Properties;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.client.util.Tools;
 import net.clanwolf.starmap.logging.C3LogEntry;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
+
+import java.lang.invoke.MethodHandles;
 
 // https://stackoverflow.com/questions/39366828/add-a-simple-row-to-javafx-tableview
 
 public class LogPaneController implements ActionCallBackListener {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	public static boolean instantRefresh = false;
 	public static boolean clientScrolledDown = false;
@@ -64,10 +69,15 @@ public class LogPaneController implements ActionCallBackListener {
 	ComboBox<Level> cbLevel;
 	@FXML
 	Button btnReport, btnClose, btnRefresh;
-	public static boolean serverScrolledDown = false;
+
+	public static boolean logAutoscrolldown = true;
 	private static LogPaneController instance = null;
+
 	@FXML
 	TableView<C3LogEntry> tableViewClientLog, tableViewServerLog;
+
+	@FXML
+	CheckBox cbAutoScroll;
 
 	public static void setLogURL(String url) {
 		if (instance != null) {
@@ -124,27 +134,8 @@ public class LogPaneController implements ActionCallBackListener {
 	}
 
 	@FXML
-	public void onClientLogScrollStarted() {
-		ScrollBar logClientScrollBar = (ScrollBar) tableViewClientLog.lookup(".scroll-bar:vertical");
-		logClientScrollBar.valueProperty().addListener((observable, oldValue, newValue) -> {
-			if ((Double) newValue == 1.0) {
-				clientScrolledDown = true;
-			} else {
-				clientScrolledDown = false;
-			}
-		});
-	}
-
-	@FXML
-	public void onServerLogScrollStarted() {
-		ScrollBar logServerScrollBar = (ScrollBar) tableViewServerLog.lookup(".scroll-bar:vertical");
-		logServerScrollBar.valueProperty().addListener((observable, oldValue, newValue) -> {
-			if ((Double) newValue == 1.0) {
-				serverScrolledDown = true;
-			} else {
-				serverScrolledDown = false;
-			}
-		});
+	public void onServerLogScrollToggle() {
+		logAutoscrolldown = cbAutoScroll.isSelected();
 	}
 
 	@FXML
@@ -206,29 +197,57 @@ public class LogPaneController implements ActionCallBackListener {
 		// Client log
 		TableColumn<C3LogEntry, Integer> clientLogLinenumberColumn = new TableColumn<>("");
 		clientLogLinenumberColumn.setCellValueFactory(new PropertyValueFactory<>("lineNumber"));
-		clientLogLinenumberColumn.setPrefWidth(50);
+		clientLogLinenumberColumn.setPrefWidth(60);
+		TableColumn<C3LogEntry, Integer> clientLogLevelColumn = new TableColumn<>("");
+		clientLogLevelColumn.setCellValueFactory(new PropertyValueFactory<>("level"));
+		clientLogLevelColumn.setPrefWidth(120);
 		TableColumn<C3LogEntry, Integer> clientLogMessageColumn = new TableColumn<>("");
 		clientLogMessageColumn.setCellValueFactory(new PropertyValueFactory<>("message"));
 		clientLogMessageColumn.setPrefWidth(3000);
 
 		clientLogLinenumberColumn.setResizable(false);
+		clientLogLevelColumn.setResizable(false);
 		clientLogMessageColumn.setResizable(true);
 
-		tableViewClientLog.getColumns().addAll(clientLogLinenumberColumn, clientLogMessageColumn);
+		tableViewClientLog.getColumns().addAll(clientLogLinenumberColumn, clientLogLevelColumn, clientLogMessageColumn);
 
 		tableViewClientLog.setRowFactory(tableViewClientLog -> new TableRow<>() {
 			private void doUpdateItem(C3LogEntry item) {
 				// actually do the update and styling
-				for (Node n : getChildren()) {
-					n.setStyle("-fx-font-size:12px;-fx-text-fill:red;-fx-font-family:'monospaced';");
-				}
+				String style = "-fx-font-size:15px;-fx-font-family:'Consolas';";
 				if (item != null) {
-					if (item.getMessage().contains("SEVERE")) {
-						setStyle("-fx-background-color:#ff856d;-fx-table-cell-border-color:#ff856d;");
-					} else if (item.getMessage().contains(" [WARNING |")) {
-						setStyle("-fx-background-color:#b5b60c;-fx-table-cell-border-color:#b5b60c;");
-					} else {
-						setStyle("-fx-background-color:#b5b60c;-fx-table-cell-border-color:#b5b60c;");
+					int i = 0;
+					for (Node n : getChildren()) {
+						if (i == 0) {                   // column 0
+							switch (item.getLevel()) {
+								case "TRACE" -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:darkgray;";
+								case "DEBUG" -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:darkgray;";
+								case "INFO" -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:darkgray;";
+								case "WARNING" -> style = style + "-fx-background-color:#ffe6c5;-fx-text-fill:darkgray;";
+								case "ERROR" -> style = style + "-fx-background-color:#ff6547;-fx-text-fill:darkgray;";
+								default -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:darkgray;";
+							}
+						} else if (i == 1) {            // column 1
+							switch (item.getLevel()) {
+								case "TRACE" -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:purple;";
+								case "DEBUG" -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:purple;";
+								case "INFO" -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:purple;";
+								case "WARNING" -> style = style + "-fx-background-color:#ffe6c5;-fx-text-fill:purple;";
+								case "ERROR" -> style = style + "-fx-background-color:#ff6547;-fx-text-fill:purple;";
+								default -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:purple;";
+							}
+						} else if (i == 2) {            // column 2
+							switch (item.getLevel()) {
+								case "TRACE" -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:black;";
+								case "DEBUG" -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:black;";
+								case "INFO" -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:black;";
+								case "WARNING" -> style = style + "-fx-background-color:#ffe6c5;-fx-text-fill:black;";
+								case "ERROR" -> style = style + "-fx-background-color:#ff6547;-fx-text-fill:black;";
+								default -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:black;";
+							}
+						}
+						n.setStyle(style);
+						i++;
 					}
 				}
 			}
@@ -249,7 +268,10 @@ public class LogPaneController implements ActionCallBackListener {
 		// Server log
 		TableColumn<C3LogEntry, Integer> serverLogLinenumberColumn = new TableColumn<>("");
 		serverLogLinenumberColumn.setCellValueFactory(new PropertyValueFactory<>("lineNumber"));
-		serverLogLinenumberColumn.setPrefWidth(50);
+		serverLogLinenumberColumn.setPrefWidth(60);
+		TableColumn<C3LogEntry, Integer> serverLogLevelColumn = new TableColumn<>("");
+		serverLogLevelColumn.setCellValueFactory(new PropertyValueFactory<>("level"));
+		serverLogLevelColumn.setPrefWidth(120);
 		TableColumn<C3LogEntry, Integer> serverLogMessageColumn = new TableColumn<>("");
 		serverLogMessageColumn.setCellValueFactory(new PropertyValueFactory<>("message"));
 		serverLogMessageColumn.setPrefWidth(3000);
@@ -257,21 +279,45 @@ public class LogPaneController implements ActionCallBackListener {
 		serverLogLinenumberColumn.setResizable(false);
 		serverLogMessageColumn.setResizable(true);
 
-		tableViewServerLog.getColumns().addAll(serverLogLinenumberColumn, serverLogMessageColumn);
+		tableViewServerLog.getColumns().addAll(serverLogLinenumberColumn, serverLogLevelColumn, serverLogMessageColumn);
 
 		tableViewServerLog.setRowFactory(tableViewServerLog -> new TableRow<>() {
 			private void doUpdateItem(C3LogEntry item) {
 				// actually do the update and styling
-				for (Node n : getChildren()) {
-					n.setStyle("-fx-font-size:12px;-fx-text-fill:red;-fx-font-family:'monospaced';");
-				}
+				String style = "-fx-font-size:15px;-fx-font-family:'Consolas';";
 				if (item != null) {
-					if (item.getMessage().contains("SEVERE")) {
-						setStyle("-fx-background-color:#ff856d;-fx-table-cell-border-color:#ff856d;");
-					} else if (item.getMessage().contains(" [WARNING |")) {
-						setStyle("-fx-background-color:#b5b60c;-fx-table-cell-border-color:#b5b60c;");
-					} else {
-						setStyle("-fx-background-color:#b5b60c;-fx-table-cell-border-color:#b5b60c;");
+					int i = 0;
+					for (Node n : getChildren()) {
+						if (i == 0) {                   // column 0
+							switch (item.getLevel()) {
+								case "TRACE" -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:darkgray;";
+								case "DEBUG" -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:darkgray;";
+								case "INFO" -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:darkgray;";
+								case "WARNING" -> style = style + "-fx-background-color:#ffe6c5;-fx-text-fill:darkgray;";
+								case "ERROR" -> style = style + "-fx-background-color:#ff6547;-fx-text-fill:darkgray;";
+								default -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:darkgray;";
+							}
+						} else if (i == 1) {            // column 1
+							switch (item.getLevel()) {
+								case "TRACE" -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:purple;";
+								case "DEBUG" -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:purple;";
+								case "INFO" -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:purple;";
+								case "WARNING" -> style = style + "-fx-background-color:#ffe6c5;-fx-text-fill:purple;";
+								case "ERROR" -> style = style + "-fx-background-color:#ff6547;-fx-text-fill:purple;";
+								default -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:purple;";
+							}
+						} else if (i == 2) {            // column 2
+							switch (item.getLevel()) {
+								case "TRACE" -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:black;";
+								case "DEBUG" -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:black;";
+								case "INFO" -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:black;";
+								case "WARNING" -> style = style + "-fx-background-color:#ffe6c5;-fx-text-fill:black;";
+								case "ERROR" -> style = style + "-fx-background-color:#ff6547;-fx-text-fill:black;";
+								default -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:black;";
+							}
+						}
+						n.setStyle(style);
+						i++;
 					}
 				}
 			}

@@ -49,6 +49,7 @@
                   <mainClass>net.clanwolf.ircclient.irc.CWIRCBot</mainClass>
                   <manifestEntries>
                     <Multi-Release>true</Multi-Release>
+                    <Built-By>ClanWolf.net (Christian Bartel)</Built-By>
                   </manifestEntries>
                 </transformer>
               </transformers>

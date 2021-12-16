@@ -25,42 +25,49 @@
 
 	<artifactId>io.nadron.client</artifactId>
 
+	<!-- ########################################################################################################### -->
+	<!-- ##                                                                                                       ## -->
+	<!-- ##                                                                                                       ## -->
+	<!-- ## DEPENDENCIES                                                                                          ## -->
+	<!-- ##                                                                                                       ## -->
+	<!-- ##                                                                                                       ## -->
+	<!-- ########################################################################################################### -->
+
 	<dependencies>
-		<dependency>
-			<groupId>io.netty</groupId>
-			<artifactId>netty-common</artifactId>
-<!--			<version>4.1.70.Final</version>-->
-			<version>${version.netty}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.netty</groupId>
-			<artifactId>netty-transport</artifactId>
-<!--			<version>4.1.70.Final</version>-->
-			<version>${version.netty}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.netty</groupId>
-			<artifactId>netty-buffer</artifactId>
-<!--			<version>4.1.70.Final</version>-->
-			<version>${version.netty}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.netty</groupId>
-			<artifactId>netty-codec</artifactId>
-<!--			<version>4.1.70.Final</version>-->
-			<version>${version.netty}</version>
-		</dependency>
-		<dependency>
-			<groupId>io.netty</groupId>
-			<artifactId>netty-handler</artifactId>
-<!--			<version>4.1.70.Final</version>-->
-			<version>${version.netty}</version>
-		</dependency>
+		<!-- C3 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 		<dependency>
 			<groupId>net.clanwolf.starmap</groupId>
 			<artifactId>net.clanwolf.starmap.logging</artifactId>
 			<version>${project.version}</version>
 			<scope>compile</scope>
 		</dependency>
+
+		<!-- Netty +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-common</artifactId>
+			<version>${version.netty}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-transport</artifactId>
+			<version>${version.netty}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-buffer</artifactId>
+			<version>${version.netty}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-codec</artifactId>
+			<version>${version.netty}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.netty</groupId>
+			<artifactId>netty-handler</artifactId>
+			<version>${version.netty}</version>
+		</dependency>
 	</dependencies>
+
 </project>

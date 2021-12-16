@@ -25,7 +25,16 @@
 
 	<artifactId>io.nadron.server</artifactId>
 
+	<!-- ########################################################################################################### -->
+	<!-- ##                                                                                                       ## -->
+	<!-- ##                                                                                                       ## -->
+	<!-- ## DEPENDENCIES                                                                                          ## -->
+	<!-- ##                                                                                                       ## -->
+	<!-- ##                                                                                                       ## -->
+	<!-- ########################################################################################################### -->
+
 	<dependencies>
+		<!-- C3 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 		<dependency>
 			<groupId>net.clanwolf.starmap</groupId>
 			<artifactId>net.clanwolf.starmap.logging</artifactId>
@@ -33,7 +42,6 @@
 		</dependency>
 
 		<!-- Jackson +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-<!--		This is in jackson-core now -->
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-core-asl</artifactId>
@@ -55,28 +63,12 @@
 			<version>0.2.9</version>
 		</dependency>
 		<dependency>
-			<groupId>com.adobe.blazeds</groupId>
-			<artifactId>blazeds-core</artifactId>
-			<version>3.2.0.3978</version>
-		</dependency>
-		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
 			<artifactId>jackson-mapper-asl</artifactId>
 			<version>1.9.13</version>
 		</dependency>
 
 		<!-- Netty +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
-<!--		<dependency>-->
-<!--			<groupId>io.netty</groupId>-->
-<!--			<artifactId>netty-all</artifactId>-->
-<!--			<version>${version.netty}</version>-->
-<!--			<exclusions>-->
-<!--				<exclusion>-->
-<!--					<groupId>io.netty</groupId>-->
-<!--					<artifactId>netty-example</artifactId>-->
-<!--				</exclusion>-->
-<!--			</exclusions>-->
-<!--		</dependency>-->
 		<dependency>
 			<groupId>io.netty</groupId>
 			<artifactId>netty-buffer</artifactId>
@@ -98,35 +90,39 @@
 			<version>${version.netty}</version>
 		</dependency>
 
-		<dependency>
-			<groupId>org.msgpack</groupId>
-			<artifactId>msgpack</artifactId>
-			<version>0.6.12</version>
-		</dependency>
-
 		<!-- Spring ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
-<!--			<version>5.3.13</version>-->
-			<version>${version.spring}</version> <!-- vorher: 4.2.2.RELEASE -->
+			<version>${version.spring}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-<!--			<version>5.3.13</version>-->
-			<version>${version.spring}</version> <!-- vorher: 4.2.2.RELEASE -->
+			<version>${version.spring}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
-<!--			<version>5.3.13</version>-->
-			<version>${version.spring}</version> <!-- vorher: 4.2.2.RELEASE -->
+			<version>${version.spring}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
 			<version>${version.spring-security-config}</version>
 		</dependency>
+
+		<!-- Other +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+		<dependency>
+			<groupId>com.adobe.blazeds</groupId>
+			<artifactId>blazeds-core</artifactId>
+			<version>3.2.0.3978</version>
+		</dependency>
+		<dependency>
+			<groupId>org.msgpack</groupId>
+			<artifactId>msgpack</artifactId>
+			<version>0.6.12</version>
+		</dependency>
 	</dependencies>
+
 </project>

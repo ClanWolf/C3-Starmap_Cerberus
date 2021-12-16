@@ -48,9 +48,6 @@ public class LogWatcher {
 	private int characters = 0;
 	private int startLine = 0;
 
-	private boolean clientScrolledDown = false;
-	private boolean serverScrolledDown = false;
-
 	private static String logURL = "https://www.clanwolf.net/apps/C3/server/log/C3-Server.log.0";
 
 	private Thread clientLogwatcherThread;
@@ -70,15 +67,13 @@ public class LogWatcher {
 				public void run() {
 					try {
 						do {
-							clientScrolledDown = LogPaneController.clientScrolledDown;
 							C3LogEntry entry = C3LogHandler.logHistory.poll();
 							if (entry != null) {
 								LogPaneController.addClientLine(entry);
 							} else {
 								Thread.sleep(1000);
-								if (!clientScrolledDown) {
+								if (LogPaneController.logAutoscrolldown) {
 									LogPaneController.scrollClientDown();
-									clientScrolledDown = true;
 								}
 							}
 							Thread.sleep(3);
@@ -98,7 +93,6 @@ public class LogWatcher {
 				public void run() {
 					try {
 						do {
-							serverScrolledDown = LogPaneController.serverScrolledDown;
 							Level filterLevel = LogPaneController.getLevel();
 							LogPaneController.setLogURL(logURL);
 							byte[] serverLog = HTTP.get(logURL);
@@ -108,20 +102,20 @@ public class LogWatcher {
 							for (byte[] line : lines) {
 								String s = new String(line, StandardCharsets.UTF_8);
 								if (s != null) {
-									C3LogEntry entry = new C3LogEntry(rowCount, "Test", s);
+									String level = s.substring(20, 27).trim();
+									C3LogEntry entry = new C3LogEntry(rowCount, level, s);
 									LogPaneController.addServerLine(entry);
 									rowCount++;
 								}
-							}
-							if (!serverScrolledDown) {
-								LogPaneController.scrollServerDown();
-								serverScrolledDown = true;
 							}
 							for (int i = 120; i >= 0; i--) {
 								if (LogPaneController.instantRefresh) {
 									LogPaneController.setCountdownValue(0);
 									LogPaneController.instantRefresh = false;
 									break;
+								}
+								if (LogPaneController.logAutoscrolldown) {
+									LogPaneController.scrollServerDown();
 								}
 								Thread.sleep(1000);
 								LogPaneController.setCountdownValue(i);

@@ -26,7 +26,7 @@
 
 		<!-- C3 Revision -->
 		<!-- https://stackoverflow.com/questions/10582054/maven-project-version-inheritance-do-i-have-to-specify-the-parent-version -->
-		<revision>6.0.3</revision>
+		<revision>6.0.4</revision>
 
 		<!-- Versions -->
 		<version.java>17</version.java>
@@ -34,12 +34,12 @@
 		<version.maven-compiler-plugin>3.8.1</version.maven-compiler-plugin>
 		<version.exec-maven-plugin>1.6.0</version.exec-maven-plugin>
 		<version.asm>9.2</version.asm>                                              <!-- 7.3.1       <-> 9.2         -->
-		<version.netty>4.1.70.Final</version.netty>
+		<version.netty>4.1.72.Final</version.netty>
 		<version.spring>5.3.13</version.spring>                                     <!-- 5.3.11      <-> 5.3.13      -->
 		<version.spring-security-config>5.5.1</version.spring-security-config>
 		<version.hibernate>5.6.2.Final</version.hibernate>                          <!-- 5.4.1.Final <-> 5.6.1.Final -->
-		<version.log4j>2.16.0</version.log4j>
-		<version.slf4j-log4j>2.16.0</version.slf4j-log4j>
+		<version.mysql-connector>8.0.27</version.mysql-connector>
+		<version.slf4j>2.0.0-alpha5</version.slf4j>
 		<!-- hikariCP and hikari jars are on the server next to the server jar. Path is in the manifest file -->
 		<!-- if this version is changed, consider entering the new versions into the manifest (below) and upload -->
 		<!-- the files manually! -->
@@ -81,6 +81,14 @@
 		<module>net.clanwolf.starmap.ircbot</module>
 		<module>net.clanwolf.starmap.mail</module>
 	</modules>
+
+	<!-- ########################################################################################################### -->
+	<!-- ##                                                                                                       ## -->
+	<!-- ##                                                                                                       ## -->
+	<!-- ## BUILD                                                                                                 ## -->
+	<!-- ##                                                                                                       ## -->
+	<!-- ##                                                                                                       ## -->
+	<!-- ########################################################################################################### -->
 
 	<build>
 		<plugins>

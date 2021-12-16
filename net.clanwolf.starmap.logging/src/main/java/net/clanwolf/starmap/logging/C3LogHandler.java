@@ -43,7 +43,7 @@ public class C3LogHandler extends StreamHandler {
 	@Override
 	public void publish(LogRecord record) {
 		String logEntry = new java.util.logging.SimpleFormatter().format(record).replaceAll("\r\n", "");
-		C3LogEntry entry = new C3LogEntry(rowCounter, "Test", logEntry);
+		C3LogEntry entry = new C3LogEntry(rowCounter, record.getLevel().getName(), logEntry);
 		logHistory.add(entry);
 		rowCounter++;
 		super.publish(record);
