@@ -46,21 +46,23 @@ import java.util.zip.GZIPOutputStream;
 class C3GameSessionHandlerUniverse {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	static void getUniverseData(PlayerSession session, GameRoom gm) {
 		logger.info("Getting universe data on request of a client.");
 		UniverseDTO universe = WebDataInterface.getUniverse();
 
 		// TODO: Broadcast new UniverseDTO to logged in (HH) clients
-		Iterator<PlayerSession> pl = gm.getSessions().iterator();
-		while (pl.hasNext()) {
-			PlayerSession plSession = pl.next();
-			GameState state_universe = new GameState(GAMESTATEMODES.GET_UNIVERSE_DATA);
-			state_universe.addObject(Compressor.compress(universe));
-			// state_universe.setReceiver();
+		// TODO: Remove the loop! This broadcast just needs to be there once
+//		for (PlayerSession plSession : gm.getSessions()) {
+//			GameState state_universe = new GameState(GAMESTATEMODES.GET_UNIVERSE_DATA);
+//			state_universe.addObject(Compressor.compress(universe));
+//			// state_universe.setReceiver();
+//
+//			//			gm.sendBroadcast(Events.networkEvent(state_universe));
+//			C3GameSessionHandler.sendBroadCast(gm, state_universe);
+//		}
 
-//			gm.sendBroadcast(Events.networkEvent(state_universe));
-			C3GameSessionHandler.sendBroadCast(gm, state_universe);
-		}
+		GameState state_universe = new GameState(GAMESTATEMODES.GET_UNIVERSE_DATA);
+		state_universe.addObject(Compressor.compress(universe));
+		C3GameSessionHandler.sendBroadCast(gm, state_universe);
 	}
 }

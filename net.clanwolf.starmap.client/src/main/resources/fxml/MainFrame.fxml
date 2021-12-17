@@ -27,6 +27,11 @@
                   <Font size="18.0" />
                </font>
             </Label>
+            <ImageView fx:id="ivMWOLogo" fitHeight="34.0" fitWidth="79.0" layoutX="694.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true" visible="false">
+               <image>
+                  <Image url="@../images/logos/games/mwo_logo.png" />
+               </image>
+            </ImageView>
          </children>
         </Pane>
       <VBox fx:id="TFSInfo" alignment="TOP_CENTER" layoutX="176.0" layoutY="38.0" prefHeight="200.0" prefWidth="100.0" styleClass="systemDetailPanelSolid" stylesheets="@../styles/MainFrameStyle.css" visible="false">

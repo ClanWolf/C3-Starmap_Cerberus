@@ -44,6 +44,8 @@ public class RolePlayCharacterDTO extends Dto {
     public Long id;
     //@Column(name = "CharName")
     private String name;
+	//@Column(name = "MWOUsername")
+	private String mwoUsername;
     //@JoinColumn(name = "UserID")
     private UserDTO user;
     //@JoinColumn(name = "StoryID")
@@ -151,6 +153,16 @@ public class RolePlayCharacterDTO extends Dto {
 	@SuppressWarnings("unused")
 	public void setJumpshipId(Integer jumpshipId) {
 		this.jumpshipId = jumpshipId;
+	}
+
+	@SuppressWarnings("unused")
+	public String getMwoUsername() {
+		return mwoUsername;
+	}
+
+	@SuppressWarnings("unused")
+	public void setMwoUsername(String mwoUsername) {
+		this.mwoUsername = mwoUsername;
 	}
 
 	@Override

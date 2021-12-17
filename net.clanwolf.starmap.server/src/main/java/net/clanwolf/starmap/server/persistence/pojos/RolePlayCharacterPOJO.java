@@ -54,6 +54,9 @@ public class RolePlayCharacterPOJO extends Pojo {
 	@Column(name = "CharName")
 	private String name;
 
+	@Column(name = "MWOUsername")
+	private String mwoUsername;
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "UserID")
 	private UserPOJO user;
@@ -173,5 +176,15 @@ public class RolePlayCharacterPOJO extends Pojo {
 	@Override
 	public String toString() {
 		return this.getName();
+	}
+
+	@SuppressWarnings("unused")
+	public String getMwoUsername() {
+		return mwoUsername;
+	}
+
+	@SuppressWarnings("unused")
+	public void setMwoUsername(String mwoUsername) {
+		this.mwoUsername = mwoUsername;
 	}
 }

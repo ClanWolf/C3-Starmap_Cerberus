@@ -214,36 +214,27 @@ public class LogPaneController implements ActionCallBackListener {
 		tableViewClientLog.setRowFactory(tableViewClientLog -> new TableRow<>() {
 			private void doUpdateItem(C3LogEntry item) {
 				// actually do the update and styling
-				String style = "-fx-font-size:15px;-fx-font-family:'Consolas';";
+				String style = "-fx-font-size:15px;-fx-font-family:'Consolas';-fx-border-width:0px;-fx-padding: 1 1 1 1;";
 				if (item != null) {
 					int i = 0;
 					for (Node n : getChildren()) {
 						if (i == 0) {                   // column 0
 							switch (item.getLevel()) {
-								case "TRACE" -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:darkgray;";
-								case "DEBUG" -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:darkgray;";
-								case "INFO" -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:darkgray;";
-								case "WARNING" -> style = style + "-fx-background-color:#ffe6c5;-fx-text-fill:darkgray;";
-								case "ERROR" -> style = style + "-fx-background-color:#ff6547;-fx-text-fill:darkgray;";
-								default -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:darkgray;";
+								case "WARNING" -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:darkgray;" : "-fx-background-color:#ffe6c5;-fx-text-fill:darkgray;");
+								case "ERROR" -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:darkgray;" : "-fx-background-color:#ff6547;-fx-text-fill:darkgray;");
+								default -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:darkgray;" : "-fx-background-color:#e0f7fe;-fx-text-fill:darkgray;");
 							}
 						} else if (i == 1) {            // column 1
 							switch (item.getLevel()) {
-								case "TRACE" -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:purple;";
-								case "DEBUG" -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:purple;";
-								case "INFO" -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:purple;";
-								case "WARNING" -> style = style + "-fx-background-color:#ffe6c5;-fx-text-fill:purple;";
-								case "ERROR" -> style = style + "-fx-background-color:#ff6547;-fx-text-fill:purple;";
-								default -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:purple;";
+								case "WARNING" -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:purple;" : "-fx-background-color:#ffe6c5;-fx-text-fill:purple;");
+								case "ERROR" -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:purple;" : "-fx-background-color:#ff6547;-fx-text-fill:purple;");
+								default -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:purple;" : "-fx-background-color:#e0f7fe;-fx-text-fill:purple;");
 							}
 						} else if (i == 2) {            // column 2
 							switch (item.getLevel()) {
-								case "TRACE" -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:black;";
-								case "DEBUG" -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:black;";
-								case "INFO" -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:black;";
-								case "WARNING" -> style = style + "-fx-background-color:#ffe6c5;-fx-text-fill:black;";
-								case "ERROR" -> style = style + "-fx-background-color:#ff6547;-fx-text-fill:black;";
-								default -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:black;";
+								case "WARNING" -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:black;" : "-fx-background-color:#ffe6c5;-fx-text-fill:black;");
+								case "ERROR" -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:black;" : "-fx-background-color:#ff6547;-fx-text-fill:black;");
+								default -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:black;" : "-fx-background-color:#e0f7fe;-fx-text-fill:black;");
 							}
 						}
 						n.setStyle(style);
@@ -284,36 +275,27 @@ public class LogPaneController implements ActionCallBackListener {
 		tableViewServerLog.setRowFactory(tableViewServerLog -> new TableRow<>() {
 			private void doUpdateItem(C3LogEntry item) {
 				// actually do the update and styling
-				String style = "-fx-font-size:15px;-fx-font-family:'Consolas';";
+				String style = "-fx-font-size:15px;-fx-font-family:'Consolas';-fx-border-width:0px;-fx-padding: 1 1 1 1;";
 				if (item != null) {
 					int i = 0;
 					for (Node n : getChildren()) {
 						if (i == 0) {                   // column 0
 							switch (item.getLevel()) {
-								case "TRACE" -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:darkgray;";
-								case "DEBUG" -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:darkgray;";
-								case "INFO" -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:darkgray;";
-								case "WARNING" -> style = style + "-fx-background-color:#ffe6c5;-fx-text-fill:darkgray;";
-								case "ERROR" -> style = style + "-fx-background-color:#ff6547;-fx-text-fill:darkgray;";
-								default -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:darkgray;";
+								case "WARNING" -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:darkgray;" : "-fx-background-color:#ffe6c5;-fx-text-fill:darkgray;");
+								case "ERROR" -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:darkgray;" : "-fx-background-color:#ff6547;-fx-text-fill:darkgray;");
+								default -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:darkgray;" : "-fx-background-color:#e0f7fe;-fx-text-fill:darkgray;");
 							}
 						} else if (i == 1) {            // column 1
 							switch (item.getLevel()) {
-								case "TRACE" -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:purple;";
-								case "DEBUG" -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:purple;";
-								case "INFO" -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:purple;";
-								case "WARNING" -> style = style + "-fx-background-color:#ffe6c5;-fx-text-fill:purple;";
-								case "ERROR" -> style = style + "-fx-background-color:#ff6547;-fx-text-fill:purple;";
-								default -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:purple;";
+								case "WARNING" -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:purple;" : "-fx-background-color:#ffe6c5;-fx-text-fill:purple;");
+								case "ERROR" -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:purple;" : "-fx-background-color:#ff6547;-fx-text-fill:purple;");
+								default -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:purple;" : "-fx-background-color:#e0f7fe;-fx-text-fill:purple;");
 							}
 						} else if (i == 2) {            // column 2
 							switch (item.getLevel()) {
-								case "TRACE" -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:black;";
-								case "DEBUG" -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:black;";
-								case "INFO" -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:black;";
-								case "WARNING" -> style = style + "-fx-background-color:#ffe6c5;-fx-text-fill:black;";
-								case "ERROR" -> style = style + "-fx-background-color:#ff6547;-fx-text-fill:black;";
-								default -> style = style + "-fx-background-color:#e0f7fe;-fx-text-fill:black;";
+								case "WARNING" -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:black;" : "-fx-background-color:#ffe6c5;-fx-text-fill:black;");
+								case "ERROR" -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:black;" : "-fx-background-color:#ff6547;-fx-text-fill:black;");
+								default -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:black;" : "-fx-background-color:#e0f7fe;-fx-text-fill:black;");
 							}
 						}
 						n.setStyle(style);

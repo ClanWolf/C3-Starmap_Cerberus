@@ -291,9 +291,6 @@ public class EndRound {
 
 				// ---------------------------------------------------------------------------
 
-				// TODO: Calculate income and cost for each faction in HH
-				// see BOFaction for the numbers!
-
 				// Generate faction statistic data
 				logger.info("Start to generate statistics...");
 				ArrayList<FactionPOJO> factionListHH = FactionDAO.getInstance().getAll_HH_Factions();

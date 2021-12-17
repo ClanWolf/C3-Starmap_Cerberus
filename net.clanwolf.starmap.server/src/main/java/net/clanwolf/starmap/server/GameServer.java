@@ -38,6 +38,7 @@ import org.springframework.context.support.AbstractApplicationContext;
 
 import java.io.File;
 import java.lang.invoke.MethodHandles;
+import java.net.URISyntaxException;
 import java.util.Timer;
 
 import org.slf4j.Logger;
@@ -57,12 +58,17 @@ public class GameServer {
 		File dir;
 		if(isDevelopmentPC) {
 			dir = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3");
+			logger.error("Server directory was set manually to: " + dir + " (Development PC is set to true)");
 		} else {
-			dir = new File("/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/server");
-
-			// TODO: Find location of the jar file programmatically
-			// TODO: Use this to get the servers home dir:
-			//File jarDir = new File(ClassLoader.getSystemClassLoader().getResource(".").getPath());
+			try {
+				dir = new File(GameServer.class.getProtectionDomain().getCodeSource().getLocation().toURI()).getParentFile();
+				logger.error("Found server directory programmatically at: " + dir.getAbsolutePath());
+			} catch (URISyntaxException e) {
+				logger.error("Server directory could not be found programmatically. Check this!");
+				e.printStackTrace();
+				dir = new File("/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/server");
+				logger.error("Server directory was set manually to: " + dir);
+			}
 		}
 		serverBaseDir = dir.getAbsolutePath();
 
@@ -70,8 +76,6 @@ public class GameServer {
 		if (res || dir.exists()) {
 			String logFileName = dir + File.separator + "log" + File.separator + "C3-Server.log";
 			C3LogUtil.loadConfigurationAndSetLogFile(logFileName);
-//			logger.setC3Logfile(logFileName);
-//			logger.setC3LogLevel(Level.FINEST);
 		}
 	}
 

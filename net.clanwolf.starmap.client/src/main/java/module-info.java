@@ -20,6 +20,7 @@ module net.clanwolf.starmap.client {
 	requires jnativehook;
 	requires com.google.gson;
 	requires org.slf4j;
+	requires java.sql;
 
 	opens net.clanwolf.starmap.client.security to javafx.fxml;
 	opens net.clanwolf.starmap.client.gui to javafx.fxml;

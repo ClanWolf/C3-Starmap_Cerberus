@@ -1,6 +1,10 @@
 C3 version history
 --------------------------------
 
+Version 6.0.5 (17.12.2021)
+- ADDED: Visualization of clipboard checking (for MWO results)
+- FIXED: Further changes to log window
+
 Version 6.0.4 (17.12.2021)
 - FIXED: Log window reworked
 

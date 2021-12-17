@@ -231,6 +231,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private ImageView hudinfo1;
 
 	@FXML
+	private ImageView ivMWOLogo;
+
+	@FXML
 	private Label helpLabel;
 
 	@FXML
@@ -1110,6 +1113,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		ActionManager.addActionCallbackListener(ACTIONS.SWITCH_TO_INVASION, this);
 		ActionManager.addActionCallbackListener(ACTIONS.SWITCH_TO_MAP, this);
 		ActionManager.addActionCallbackListener(ACTIONS.TERMINAL_COMMAND, this);
+		ActionManager.addActionCallbackListener(ACTIONS.FLASH_MWO_LOGO_ONCE, this);
 	}
 
 	private void setToLevelLoggedOutText() {
@@ -1919,6 +1923,21 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				}
 				break;
 
+			case FLASH_MWO_LOGO_ONCE:
+				Platform.runLater(() -> {
+					ivMWOLogo.setVisible(true);
+					ivMWOLogo.setOpacity(1.0);
+					ivMWOLogo.toFront();
+					C3SoundPlayer.play("sound/fx/beep_03.mp3", false);
+					FadeTransition fadeOutTransition = new FadeTransition(Duration.millis(1000), ivMWOLogo);
+					fadeOutTransition.setFromValue(1.0);
+					fadeOutTransition.setToValue(0.0);
+					fadeOutTransition.setCycleCount(1);
+					fadeOutTransition.setOnFinished(event -> ivMWOLogo.setVisible(false));
+					fadeOutTransition.play();
+				});
+				break;
+
 			case ENABLE_MAIN_MENU_BUTTONS:
 				enableMainMenuButtons(Nexus.isLoggedIn(), Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN));
 				Platform.runLater(() -> {
@@ -2169,8 +2188,6 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			slVolumeControl.setMax(1.0d);
 			slVolumeControl.setValue(0.5d);
 			Nexus.setMainFrameVolumeSlider(slVolumeControl);
-			Timer checkSystemClipboardForMWOResultTimer = new Timer();
-			checkSystemClipboardForMWOResultTimer.schedule(new CheckClipboardForMwoApi(), 1000, 1000 * 1);
 		});
 	}
 

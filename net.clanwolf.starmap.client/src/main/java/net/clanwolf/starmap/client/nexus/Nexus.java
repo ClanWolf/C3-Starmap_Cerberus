@@ -103,11 +103,21 @@ public class Nexus {
 		mainframeVolumeSlider = slider;
 	}
 
+	public static boolean mwoCheckingActive = false;
+
 	/**
 	 * Private constructor to prevent instantiation
 	 */
 	private Nexus() {
 
+	}
+
+	public static void setMWOCheckingActive(boolean value) {
+		mwoCheckingActive = value;
+	}
+
+	public static boolean isMwoCheckingActive() {
+		return mwoCheckingActive;
 	}
 
 	@SuppressWarnings("unused")

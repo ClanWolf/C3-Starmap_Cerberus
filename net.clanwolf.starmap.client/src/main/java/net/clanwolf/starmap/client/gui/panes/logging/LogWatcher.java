@@ -48,7 +48,7 @@ public class LogWatcher {
 	private int characters = 0;
 	private int startLine = 0;
 
-	private static String logURL = "https://www.clanwolf.net/apps/C3/server/log/C3-Server.log.0";
+	private static final String logURL = "https://www.clanwolf.net/apps/C3/server/log/C3-Server.log.0";
 
 	private Thread clientLogwatcherThread;
 	private Thread serverLogwatcherThread;
@@ -101,12 +101,10 @@ public class LogWatcher {
 							int rowCount = 1;
 							for (byte[] line : lines) {
 								String s = new String(line, StandardCharsets.UTF_8);
-								if (s != null) {
-									String level = s.substring(20, 27).trim();
-									C3LogEntry entry = new C3LogEntry(rowCount, level, s);
-									LogPaneController.addServerLine(entry);
-									rowCount++;
-								}
+								String level = s.substring(20, 27).trim();
+								C3LogEntry entry = new C3LogEntry(rowCount, level, s);
+								LogPaneController.addServerLine(entry);
+								rowCount++;
 							}
 							for (int i = 120; i >= 0; i--) {
 								if (LogPaneController.instantRefresh) {

@@ -38,8 +38,26 @@ public class MWOMatchResult {
     @SerializedName("UserDetails")
     @Expose
     private List<UserDetail> userDetails = null;
+	private String gameID;
+	private String jsonString;
 
-    public MatchDetails getMatchDetails() {
+	public String getGameID() {
+		return gameID;
+	}
+
+	public void setGameID(String gameID) {
+		this.gameID = gameID;
+	}
+
+	public String getJsonString() {
+		return jsonString;
+	}
+
+	public void setJsonString(String jsonString) {
+		this.jsonString = jsonString;
+	}
+
+	public MatchDetails getMatchDetails() {
         return matchDetails;
     }
 

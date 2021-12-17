@@ -44,6 +44,8 @@ import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3RolePlayController;
+import net.clanwolf.starmap.client.mwo.*;
+import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import org.slf4j.Logger;
@@ -56,6 +58,7 @@ import java.lang.invoke.MethodHandles;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.ResourceBundle;
+import java.util.Timer;
 
 /**
  * @author Undertaker
@@ -142,6 +145,12 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 
 		attackerHeader.setVisible(true);
 		defenderHeader.setVisible(true);
+
+		if (!Nexus.isMwoCheckingActive()) {
+			Timer checkSystemClipboardForMWOResultTimer = new Timer();
+			checkSystemClipboardForMWOResultTimer.schedule(new CheckClipboardForMwoApi(), 0, 2000);
+			Nexus.setMWOCheckingActive(true);
+		}
 	}
 
 	@Override
@@ -155,6 +164,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 	public void addActionCallBackListeners() {
 		ActionManager.addActionCallbackListener(ACTIONS.FINALIZE_ROUND, this);
 		ActionManager.addActionCallbackListener(ACTIONS.START_ROLEPLAY, this);
+		ActionManager.addActionCallbackListener(ACTIONS.MWO_DROPSTATS_RECEIVED, this);
 	}
 
 	public void scoreAnimation(int attackerWins, int defenderWins) {
@@ -215,7 +225,6 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 
 			// play sound
 			if (rpStory.getStoryMP3() != null) {
-//				C3SoundPlayer.play(BORolePlayStory.getRPG_Soundfile(rpStory), false);
 				C3SoundPlayer.playRPSound(BORolePlayStory.getRPG_Soundfile(rpStory));
 			}
 
@@ -375,6 +384,10 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 				// set current step of story
 				getStoryValues(getCurrentRP());
 			}
+			break;
+		case MWO_DROPSTATS_RECEIVED:
+			MWOMatchResult result = (MWOMatchResult) o.getObject();
+			ResultAnalyzer.analyseMWOResult(result);
 			break;
 		default:
 			break;
