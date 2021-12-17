@@ -8,6 +8,7 @@
 	<persistence-unit name="starmap" transaction-type="RESOURCE_LOCAL">
 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
+		<!--
 		<class>net.clanwolf.starmap.server.persistence.pojos.AttackPOJO</class>
 		<class>net.clanwolf.starmap.server.persistence.pojos.JumpshipPOJO</class>
 		<class>net.clanwolf.starmap.server.persistence.pojos.RolePlayStoryPOJO</class>
@@ -18,7 +19,7 @@
 		<class>net.clanwolf.starmap.server.persistence.pojos.UserPOJO</class>
 		<class>net.clanwolf.starmap.server.persistence.pojos.StarSystemDataPOJO</class>
 		<class>net.clanwolf.starmap.server.persistence.pojos.StarSystemPOJO</class>
-
+ 		-->
 		<properties>
 
 			<property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
