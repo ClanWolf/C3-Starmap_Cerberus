@@ -33,6 +33,7 @@ import io.nadron.event.Event;
 import io.nadron.event.Events;
 import io.nadron.event.impl.SessionMessageHandler;
 import io.nadron.service.GameStateManagerService;
+import net.clanwolf.starmap.transfer.dtos.AttackCharacterDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.server.persistence.EntityConverter;
@@ -52,6 +53,8 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
+
+import static net.clanwolf.starmap.constants.Constants.*;
 
 /**
  *
@@ -242,15 +245,27 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			}
 
 			RolePlayStoryPOJO rpPojo = null;
+			Long attackerCommanderNextStoryId = null;
+			Long defenderCommanderNextStoryId = null;
 			if(attack.getStoryID() != null) {
-				rpPojo = RolePlayStoryDAO.getInstance().findById(getC3UserID(session), attack.getStoryID());
+				for (AttackCharacterPOJO ac : newAttackCharacters) {
+					if (ac.getType().equals(ROLE_ATTACKER_COMMANDER)) {
+						attackerCommanderNextStoryId = ac.getNextStoryId();
+					}
+					if (ac.getType().equals(ROLE_DEFENDER_COMMANDER)) {
+						defenderCommanderNextStoryId = ac.getNextStoryId();
+					}
+				}
+				if (attackerCommanderNextStoryId != null &&	attackerCommanderNextStoryId.equals(defenderCommanderNextStoryId)) {
+					rpPojo = RolePlayStoryDAO.getInstance().findById(getC3UserID(session), attackerCommanderNextStoryId);
+				} else {
+					rpPojo = RolePlayStoryDAO.getInstance().findById(getC3UserID(session), attack.getStoryID());
+				}
+				attack.setStoryID(rpPojo.getId());
 			} else {
 				rpPojo = RolePlayStoryDAO.getInstance().findById(getC3UserID(session), 19L);
 			}
-
 			attack.setStoryID(rpPojo.getId());
-
-
 
 			if(attack.getId() != null) {
 				logger.debug("attack.getId() != null");

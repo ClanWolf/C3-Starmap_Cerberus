@@ -33,12 +33,23 @@ public class AttackCharacterPOJO extends Pojo {
 	@Column(name = "Type")
 	private Long type;
 
+	@Column(name = "nextStoryId")
+	private Long nextStoryId;
+
 	public Long getId() {
 		return id;
 	}
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public Long getNextStoryId() {
+		return nextStoryId;
+	}
+
+	public void setNextStoryId(Long nextStoryId) {
+		this.nextStoryId = nextStoryId;
 	}
 
 	public Long getAttackID() {

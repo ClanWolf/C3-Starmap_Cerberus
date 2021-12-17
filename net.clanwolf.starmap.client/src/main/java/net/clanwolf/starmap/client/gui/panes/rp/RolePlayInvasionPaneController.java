@@ -47,7 +47,10 @@ import net.clanwolf.starmap.client.gui.panes.AbstractC3RolePlayController;
 import net.clanwolf.starmap.client.mwo.*;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
+import net.clanwolf.starmap.client.process.universe.BOAttack;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
+import net.clanwolf.starmap.transfer.dtos.AttackCharacterDTO;
+import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.transfer.dtos.RolePlayStoryDTO;
@@ -395,29 +398,43 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 		return true;
 	}
 
+	public void saveNextInvasionStep(Long rp) {
+		BOAttack a = Nexus.getCurrentAttackOfUser();
+		RolePlayCharacterDTO rpc = Nexus.getCurrentChar();
+
+		for (AttackCharacterDTO ac : a.getAttackCharList()) {
+			if (ac.getCharacterID().equals(rpc.getId())) {
+				ac.setNextStoryId(rp);
+				logger.info("Next story id saved for Character " + rpc.getName() + ": " + rp);
+				a.storeAttack();
+				break;
+			}
+		}
+	}
+
 	/******************************** FXML ********************************/
 
 	@FXML
 	private void handleOnActionbtChoice1(){
 		Long rp = getCurrentRP().getVar9ID().getOption1StoryID();
-		saveNextStep(rp);
+		saveNextInvasionStep(rp);
 	}
 
 	@FXML
 	private void handleOnActionbtChoice2(){
 		Long rp = getCurrentRP().getVar9ID().getOption2StoryID();
-		saveNextStep(rp);
+		saveNextInvasionStep(rp);
 	}
 
 	@FXML
 	private void handleOnActionbtChoice3(){
 		Long rp = getCurrentRP().getVar9ID().getOption3StoryID();
-		saveNextStep(rp);
+		saveNextInvasionStep(rp);
 	}
 
 	@FXML
 	private void handleOnActionbtChoice4(){
 		Long rp = getCurrentRP().getVar9ID().getOption4StoryID();
-		saveNextStep(rp);
+		saveNextInvasionStep(rp);
 	}
 }
