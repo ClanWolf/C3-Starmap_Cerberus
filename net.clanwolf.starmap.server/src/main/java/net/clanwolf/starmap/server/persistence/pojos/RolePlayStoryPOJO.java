@@ -92,6 +92,15 @@ public class RolePlayStoryPOJO extends Pojo {
     @Column(name = "RolePlayOff")
     private String rolePlayOff;
 
+	@Column(name = "buttonText")
+	private String buttonText;
+
+	@Column(name = "attackerWins")
+	private Boolean attackerWins;
+
+	@Column(name = "defenderWins")
+	private Boolean defenderWins;
+
 	@Column(name = "xPosText")
 	private Integer xPosText;
 
@@ -160,6 +169,29 @@ public class RolePlayStoryPOJO extends Pojo {
 
     } // getId
 
+	public Boolean getDefenderWins() {
+		return defenderWins;
+	}
+
+	public void setDefenderWins(Boolean defenderWins) {
+		this.defenderWins = defenderWins;
+	}
+
+	public String getButtonText() {
+		return buttonText;
+	}
+
+	public void setButtonText(String buttonText) {
+		this.buttonText = buttonText;
+	}
+
+	public Boolean getAttackerWins() {
+		return attackerWins;
+	}
+
+	public void setAttackerWins(Boolean attackerWins) {
+		this.attackerWins = attackerWins;
+	}
 
 	public RolePlayStoryPOJO getStory() {
 		return story;

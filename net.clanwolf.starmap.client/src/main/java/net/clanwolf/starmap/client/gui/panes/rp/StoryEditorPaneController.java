@@ -158,6 +158,10 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 	ComboBox<RolePlayStoryDTO> cbNextStep_V1;
 	@FXML
 	Button btDeleteStoryOptionNextStep;
+	@FXML
+	TextField tfButtonText;
+	@FXML
+	CheckBox cbAttackerWins, cbDefenderWins;
 
 	//------------------- Keypad -------------------
 	@FXML
@@ -1414,6 +1418,15 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 					tfWidthText.clear();
 				}
 
+				if(selected.getValue().getButtonText() != null){
+					tfButtonText.setText(selected.getValue().getButtonText());
+				} else {
+					tfButtonText.clear();
+				}
+
+				cbAttackerWins.setSelected(selected.getValue().getAttackerWins() != null && selected.getValue().getAttackerWins());
+				cbDefenderWins.setSelected(selected.getValue().getDefenderWins() != null && selected.getValue().getDefenderWins());
+
 			} else {
 				cbNextStep_V1.setValue(null);
 
@@ -1644,6 +1657,15 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 			} else {
 				rp.setWidthText(null);
 			}
+
+			if(tfButtonText.getText() != null && !tfButtonText.getText().equals("")){
+				rp.setButtonText(tfButtonText.getText());
+			} else {
+				rp.setButtonText("weiter");
+			}
+
+			rp.setAttackerWins(cbAttackerWins.isSelected());
+			rp.setDefenderWins(cbDefenderWins.isSelected());
 		}
 
 		// set data for variante 2

@@ -87,6 +87,14 @@ public class RolePlayStoryDTO extends Dto {
 	private RolePlayStoryVar9DTO var9ID;
 	//@JoinColumn(name = "StoryID")
 	//@JoinColumn(name = "NextStepID")
+	//@Column(name = "buttonText")
+	private String buttonText;
+
+	//@Column(name = "attackerWins")
+	private Boolean attackerWins;
+	//@Column(name = "defenderWins")
+	private Boolean defenderWins;
+
 	private Long nextStepID;
 	// @Column(name = "URL")
     private String url;
@@ -110,6 +118,29 @@ public class RolePlayStoryDTO extends Dto {
 
     } // getId
 
+	public Boolean getDefenderWins() {
+		return defenderWins;
+	}
+
+	public void setDefenderWins(Boolean defenderWins) {
+		this.defenderWins = defenderWins;
+	}
+
+	public String getButtonText() {
+		return buttonText;
+	}
+
+	public void setButtonText(String buttonText) {
+		this.buttonText = buttonText;
+	}
+
+	public Boolean getAttackerWins() {
+		return attackerWins;
+	}
+
+	public void setAttackerWins(Boolean attackerWins) {
+		this.attackerWins = attackerWins;
+	}
 
 	public RolePlayStoryDTO getStory() {
 		return story;

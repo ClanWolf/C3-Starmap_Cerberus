@@ -3,6 +3,7 @@
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
@@ -21,7 +22,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="StoryEditorPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.StoryEditorPaneController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="StoryEditorPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/17" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.StoryEditorPaneController">
   <children>
       <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <bottom>
@@ -223,6 +224,10 @@
                               <Label layoutX="16.0" layoutY="25.0" prefHeight="24.0" prefWidth="286.0" text="Next Step" />
                               <ComboBox fx:id="cbNextStep_V1" layoutX="16.0" layoutY="47.0" prefHeight="26.0" prefWidth="508.0" AnchorPane.leftAnchor="16.0" AnchorPane.rightAnchor="40.0" />
                               <Button id="btn_dark-blue" fx:id="btDeleteStoryOptionNextStep" ellipsisString="" layoutX="530.0" layoutY="42.0" mnemonicParsing="false" onAction="#handleDeleteStoryOptionNextStep" prefHeight="22.0" prefWidth="30.0" styleClass="RPDeleteButton2" AnchorPane.rightAnchor="0.0" />
+                              <TextField fx:id="tfButtonText" layoutX="110.0" layoutY="116.0" />
+                              <CheckBox fx:id="cbAttackerWins" layoutX="283.0" layoutY="119.0" mnemonicParsing="false" text="Attacker wins" />
+                              <Label layoutX="23.0" layoutY="119.0" text="Buttontext" />
+                              <CheckBox fx:id="cbDefenderWins" layoutX="450.0" layoutY="118.0" mnemonicParsing="false" text="Defender wins" />
                            </children>
                         </AnchorPane>
                     </content>

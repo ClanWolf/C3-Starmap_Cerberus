@@ -260,12 +260,12 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				if (attackerCommanderNextStoryId != null &&	attackerCommanderNextStoryId.equals(defenderCommanderNextStoryId)) {
 					rpPojo = RolePlayStoryDAO.getInstance().findById(getC3UserID(session), attackerCommanderNextStoryId);
 
-					if(rpPojo.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V9){
-						if( rpPojo.getVar9ID().getAttackerDropVictories() == 3){
+					if(rpPojo.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1){
+						if( rpPojo.getAttackerWins()){
 							JumpshipPOJO jpWinner = JumpshipDAO.getInstance().findById(getC3UserID(session),attack.getJumpshipID());
 							attack.setFactionID_Winner(jpWinner.getJumpshipFactionID());
 
-						} else if ( rpPojo.getVar9ID().getDefenderDropVictories() == 3){
+						} else if ( rpPojo.getDefenderWins()){
 							attack.setFactionID_Winner(attack.getFactionID_Defender());
 						}
 					}
