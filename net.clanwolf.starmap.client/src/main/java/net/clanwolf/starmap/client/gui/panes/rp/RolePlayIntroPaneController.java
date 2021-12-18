@@ -166,24 +166,28 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 	private void handleOnActionBtPreview(){
 		//TODO: Change the methods for C3_RP_STORY and C3_RP_CHAPTER of attack, otherwise it dosen't works
 		RolePlayCharacterDTO currentChar = Nexus.getCurrentChar();
-		if(getCurrentRP().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STORY ) {
-			boRp.getNextChapterBySortOrder(currentChar, 1);
-		} else if(getCurrentRP().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_CHAPTER ) {
-			if(isCharRP) {
-				boRp.getNextStepBySortOrder(currentChar, 1);
+		if (getCurrentRP() != null) {
+			if (getCurrentRP().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STORY) {
+				boRp.getNextChapterBySortOrder(currentChar, 1);
+			} else if (getCurrentRP().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_CHAPTER) {
+				if (isCharRP) {
+					boRp.getNextStepBySortOrder(currentChar, 1);
+				} else {
+					BORolePlayStory boRp = new BORolePlayStory();
+					Long rp = boRp.getFirstStepOfChapter(getCurrentRP());
+					saveNextStep(rp);
+				}
 			} else {
-				BORolePlayStory boRp = new BORolePlayStory();
-				Long rp = boRp.getFirstStepOfChapter(getCurrentRP());
-				saveNextStep(rp);
+				//		if(getCurrentRP().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1 ){
+				Long rp = getCurrentRP().getNextStepID();
+				if (rp != null) {
+					saveNextStep(rp);
+				} else {
+					ActionManager.getAction(ACTIONS.SWITCH_TO_MAP).execute();
+				}
 			}
 		} else {
-//		if(getCurrentRP().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1 ){
-			Long rp = getCurrentRP().getNextStepID();
-			if (rp != null) {
-				saveNextStep(rp);
-			} else {
-				ActionManager.getAction(ACTIONS.SWITCH_TO_MAP).execute();
-			}
+			ActionManager.getAction(ACTIONS.SWITCH_TO_MAP).execute();
 		}
 	}
 
