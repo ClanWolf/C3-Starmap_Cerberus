@@ -1617,6 +1617,8 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 
 			if (cbNextStep_V1.getValue() != null) {
 				rp.setNextStepID(cbNextStep_V1.getValue().getId());
+			} else {
+				rp.setNextStepID(null);
 			}
 
 			if(tfXPosText.getText() != null && !tfXPosText.getText().equals("")){

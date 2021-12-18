@@ -34,6 +34,7 @@ import io.nadron.event.Events;
 import io.nadron.event.impl.SessionMessageHandler;
 import io.nadron.service.GameStateManagerService;
 import net.clanwolf.starmap.transfer.dtos.AttackCharacterDTO;
+import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.server.persistence.EntityConverter;
@@ -258,6 +259,18 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				}
 				if (attackerCommanderNextStoryId != null &&	attackerCommanderNextStoryId.equals(defenderCommanderNextStoryId)) {
 					rpPojo = RolePlayStoryDAO.getInstance().findById(getC3UserID(session), attackerCommanderNextStoryId);
+
+					if(rpPojo.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V9){
+						if( rpPojo.getVar9ID().getAttackerDropVictories() == 3){
+							JumpshipPOJO jpWinner = JumpshipDAO.getInstance().findById(getC3UserID(session),attack.getJumpshipID());
+							attack.setFactionID_Winner(jpWinner.getJumpshipFactionID());
+
+						} else if ( rpPojo.getVar9ID().getDefenderDropVictories() == 3){
+							attack.setFactionID_Winner(attack.getFactionID_Defender());
+						}
+					}
+					// wenn storytype == V9 ist und Gewinner oder VErleirer 3 Punkte habe
+					// dann den gewinner in der Attack setzen
 				} else {
 					rpPojo = RolePlayStoryDAO.getInstance().findById(getC3UserID(session), attack.getStoryID());
 				}
@@ -266,6 +279,8 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				rpPojo = RolePlayStoryDAO.getInstance().findById(getC3UserID(session), 19L);
 			}
 			attack.setStoryID(rpPojo.getId());
+
+
 
 			if(attack.getId() != null) {
 				logger.debug("attack.getId() != null");

@@ -179,7 +179,11 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 		} else {
 //		if(getCurrentRP().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1 ){
 			Long rp = getCurrentRP().getNextStepID();
-			saveNextStep(rp);
+			if (rp != null) {
+				saveNextStep(rp);
+			} else {
+				ActionManager.getAction(ACTIONS.SWITCH_TO_MAP).execute();
+			}
 		}
 	}
 
