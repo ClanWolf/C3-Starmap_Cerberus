@@ -1,6 +1,10 @@
 C3 version history
 --------------------------------
 
+Version 6.0.7 (20.12.2021)
+- FIXED: Confirmation display of chosen winner of the other faction
+- CHANGED: Removed beep sound for every clipboard scan
+
 Version 6.0.6 (18.12.2021)
 - FIXED: Confirmation in invasion steps
 - FIXED: Storing of invasion results

@@ -48,7 +48,9 @@ import net.clanwolf.starmap.client.mwo.*;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
 import net.clanwolf.starmap.client.process.universe.BOAttack;
+import net.clanwolf.starmap.client.process.universe.BOFaction;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
+import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.transfer.dtos.AttackCharacterDTO;
 import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
 import org.slf4j.Logger;
@@ -60,6 +62,7 @@ import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 import java.lang.invoke.MethodHandles;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.Timer;
 
@@ -136,6 +139,11 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 		btChoice3.setVisible(false);
 		btChoice4.setVisible(false);
 
+		btChoice1.setDisable(true);
+		btChoice1.setDisable(true);
+		btChoice1.setDisable(true);
+		btChoice1.setDisable(true);
+
 		confirmAttacker1.setVisible(false);
 		confirmAttacker2.setVisible(false);
 		confirmAttacker3.setVisible(false);
@@ -152,8 +160,78 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 		if (!Nexus.isMwoCheckingActive()) {
 			Timer checkSystemClipboardForMWOResultTimer = new Timer();
 			checkSystemClipboardForMWOResultTimer.schedule(new CheckClipboardForMwoApi(), 0, 2000);
+			Nexus.setCheckSystemClipboardForMWOResultTimer(checkSystemClipboardForMWOResultTimer);
 			Nexus.setMWOCheckingActive(true);
 		}
+
+		for (AttackCharacterDTO ac : Nexus.getCurrentAttackOfUser().getAttackCharList()) {
+			if (ac.getCharacterID().equals(Nexus.getCurrentChar().getId())) {
+				// this is my own attackchar
+				if (ac.getType().equals(Constants.ROLE_ATTACKER_COMMANDER) || ac.getType().equals(Constants.ROLE_DEFENDER_COMMANDER)) {
+					// I am defender commander or attacker commander
+					btChoice1.setDisable(false);
+					btChoice2.setDisable(false);
+					btChoice3.setDisable(false);
+					btChoice4.setDisable(false);
+				}
+			}
+		}
+
+		BOAttack a = Nexus.getCurrentAttackOfUser();
+		BOFaction attacker = Nexus.getBoUniverse().getFactionByID(a.getAttackerFactionId().longValue());
+		BOFaction defender = Nexus.getBoUniverse().getFactionByID(a.getDefenderFactionId().longValue());
+
+		Image attackerLogo = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logos/factions/" + attacker.getLogo())));
+		Image defenderLogo = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logos/factions/" + defender.getLogo())));
+
+		attackerHeader.setImage(attackerLogo);
+		defenderHeader.setImage(defenderLogo);
+		attackerButtonIcon.setImage(attackerLogo);
+		defenderButtonIcon.setImage(defenderLogo);
+	}
+
+	public void statusUpdate() {
+		Platform.runLater(() -> {
+			Image imageUnselected = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/check.png")));
+			Image imageSelected = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/checked.png")));
+
+			confirmAttacker1.setImage(imageUnselected);
+			confirmAttacker2.setImage(imageUnselected);
+			confirmAttacker3.setImage(imageUnselected);
+			confirmAttacker4.setImage(imageUnselected);
+
+			confirmDefender1.setImage(imageUnselected);
+			confirmDefender2.setImage(imageUnselected);
+			confirmDefender3.setImage(imageUnselected);
+			confirmDefender4.setImage(imageUnselected);
+
+			for (AttackCharacterDTO ac : Nexus.getCurrentAttackOfUser().getAttackCharList()) {
+				if (ac.getType().equals(Constants.ROLE_ATTACKER_COMMANDER)) {
+					if (ac.getNextStoryId() != Nexus.getCurrentAttackOfUser().getStoryId().longValue()) {
+						ivAttackerWaiting.setVisible(false);
+						if (ac.getSelectedAttackerWon() != null && ac.getSelectedAttackerWon()) {
+							confirmAttacker1.setImage(imageSelected);
+							confirmAttacker2.setImage(imageUnselected);
+						} else if (ac.getSelectedDefenderWon() != null && ac.getSelectedDefenderWon()) {
+							confirmAttacker1.setImage(imageUnselected);
+							confirmAttacker2.setImage(imageSelected);
+						}
+					}
+				}
+				if (ac.getType().equals(Constants.ROLE_DEFENDER_COMMANDER)) {
+					if (ac.getNextStoryId() != Nexus.getCurrentAttackOfUser().getStoryId().longValue()) {
+						ivDefenderWaiting.setVisible(false);
+						if (ac.getSelectedAttackerWon() != null && ac.getSelectedAttackerWon()) {
+							confirmDefender1.setImage(imageSelected);
+							confirmDefender2.setImage(imageUnselected);
+						} else if (ac.getSelectedDefenderWon() != null && ac.getSelectedDefenderWon()) {
+							confirmDefender1.setImage(imageUnselected);
+							confirmDefender2.setImage(imageSelected);
+						}
+					}
+				}
+			}
+		});
 	}
 
 	@Override
@@ -168,6 +246,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 		ActionManager.addActionCallbackListener(ACTIONS.FINALIZE_ROUND, this);
 		ActionManager.addActionCallbackListener(ACTIONS.START_ROLEPLAY, this);
 		ActionManager.addActionCallbackListener(ACTIONS.MWO_DROPSTATS_RECEIVED, this);
+		ActionManager.addActionCallbackListener(ACTIONS.UPDATE_USERS_FOR_ATTACK, this);
 	}
 
 	public void scoreAnimation(int attackerWins, int defenderWins) {
@@ -392,19 +471,24 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 			MWOMatchResult result = (MWOMatchResult) o.getObject();
 			ResultAnalyzer.analyseMWOResult(result);
 			break;
+		case UPDATE_USERS_FOR_ATTACK:
+			statusUpdate();
+			break;
 		default:
 			break;
 		}
 		return true;
 	}
 
-	public void saveNextInvasionStep(Long rp) {
+	public void saveNextInvasionStep(Long rp, boolean attackerWon, boolean defenderWon) {
 		BOAttack a = Nexus.getCurrentAttackOfUser();
 		RolePlayCharacterDTO rpc = Nexus.getCurrentChar();
 
 		for (AttackCharacterDTO ac : a.getAttackCharList()) {
 			if (ac.getCharacterID().equals(rpc.getId())) {
 				ac.setNextStoryId(rp);
+				ac.setSelectedAttackerWon(attackerWon);
+				ac.setSelectedDefenderWon(defenderWon);
 				logger.info("Next story id saved for Character " + rpc.getName() + ": " + rp);
 				a.storeAttack();
 				break;
@@ -417,24 +501,24 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 	@FXML
 	private void handleOnActionbtChoice1(){
 		Long rp = getCurrentRP().getVar9ID().getOption1StoryID();
-		saveNextInvasionStep(rp);
+		saveNextInvasionStep(rp, true, false);
 	}
 
 	@FXML
 	private void handleOnActionbtChoice2(){
 		Long rp = getCurrentRP().getVar9ID().getOption2StoryID();
-		saveNextInvasionStep(rp);
+		saveNextInvasionStep(rp, false, true);
 	}
 
 	@FXML
 	private void handleOnActionbtChoice3(){
 		Long rp = getCurrentRP().getVar9ID().getOption3StoryID();
-		saveNextInvasionStep(rp);
+		saveNextInvasionStep(rp, false, false);
 	}
 
 	@FXML
 	private void handleOnActionbtChoice4(){
 		Long rp = getCurrentRP().getVar9ID().getOption4StoryID();
-		saveNextInvasionStep(rp);
+		saveNextInvasionStep(rp, false, false);
 	}
 }

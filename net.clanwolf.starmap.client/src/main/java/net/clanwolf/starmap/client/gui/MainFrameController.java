@@ -1928,7 +1928,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					ivMWOLogo.setVisible(true);
 					ivMWOLogo.setOpacity(1.0);
 					ivMWOLogo.toFront();
-					C3SoundPlayer.play("sound/fx/beep_03.mp3", false);
+//					C3SoundPlayer.play("sound/fx/beep_03.mp3", false);
 					FadeTransition fadeOutTransition = new FadeTransition(Duration.millis(1000), ivMWOLogo);
 					fadeOutTransition.setFromValue(1.0);
 					fadeOutTransition.setToValue(0.0);

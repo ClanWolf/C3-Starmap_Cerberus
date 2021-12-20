@@ -8,6 +8,7 @@
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -55,8 +56,14 @@
          <image>
             <Image url="@../images/buttons/mute.png" />
          </image>
+         <effect>
+            <DropShadow />
+         </effect>
       </ImageView>
-      <Slider fx:id="slVolumeControl" layoutX="148.0" layoutY="346.0" nodeOrientation="LEFT_TO_RIGHT" orientation="VERTICAL" prefHeight="154.0" prefWidth="14.0" visible="false" />
+      <Slider fx:id="slVolumeControl" layoutX="148.0" layoutY="346.0" nodeOrientation="LEFT_TO_RIGHT" orientation="VERTICAL" prefHeight="154.0" prefWidth="14.0" visible="false">
+         <effect>
+            <DropShadow />
+         </effect></Slider>
       <ProgressBar fx:id="TFSProgress" layoutX="173.0" layoutY="23.0" onMouseEntered="#handleTFSProgressEntered" onMouseExited="#handleTFSProgressExited" prefHeight="18.0" prefWidth="125.0" progress="0.56" visible="false" />
       <Label fx:id="gameInfoLabel" layoutX="422.0" layoutY="30.0" mouseTransparent="true" prefHeight="20.0" prefWidth="206.0" />
       <Label fx:id="terminalLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="567.0" layoutY="556.0" prefHeight="20.0" prefWidth="66.0" text="Terminal:" />

@@ -36,42 +36,78 @@ public class AttackCharacterPOJO extends Pojo {
 	@Column(name = "nextStoryId")
 	private Long nextStoryId;
 
+	@Column(name = "selectedAttackerWon")
+	private Boolean selectedAttackerWon;
+
+	@Column(name = "selectedDefenderWon")
+	private Boolean selectedDefenderWon;
+
+	@SuppressWarnings("unused")
+	public Boolean getSelectedAttackerWon() {
+		return selectedAttackerWon;
+	}
+
+	@SuppressWarnings("unused")
+	public void setSelectedAttackerWon(Boolean selectedAttackerWon) {
+		this.selectedAttackerWon = selectedAttackerWon;
+	}
+
+	@SuppressWarnings("unused")
+	public Boolean getSelectedDefenderWon() {
+		return selectedDefenderWon;
+	}
+
+	@SuppressWarnings("unused")
+	public void setSelectedDefenderWon(Boolean selectedDefenderWon) {
+		this.selectedDefenderWon = selectedDefenderWon;
+	}
+
+	@SuppressWarnings("unused")
 	public Long getId() {
 		return id;
 	}
 
+	@SuppressWarnings("unused")
 	public void setId(Long id) {
 		this.id = id;
 	}
 
+	@SuppressWarnings("unused")
 	public Long getNextStoryId() {
 		return nextStoryId;
 	}
 
+	@SuppressWarnings("unused")
 	public void setNextStoryId(Long nextStoryId) {
 		this.nextStoryId = nextStoryId;
 	}
 
+	@SuppressWarnings("unused")
 	public Long getAttackID() {
 		return attackID;
 	}
 
+	@SuppressWarnings("unused")
 	public void setAttackID(Long attackID) {
 		this.attackID = attackID;
 	}
 
+	@SuppressWarnings("unused")
 	public Long getCharacterID() {
 		return characterID;
 	}
 
+	@SuppressWarnings("unused")
 	public void setCharacterID(Long characterID) {
 		this.characterID = characterID;
 	}
 
+	@SuppressWarnings("unused")
 	public Long getType() {
 		return type;
 	}
 
+	@SuppressWarnings("unused")
 	public void setType(Long type) {
 		this.type = type;
 	}

@@ -3,6 +3,7 @@
 <?import java.net.URL?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -34,7 +35,7 @@
       </Pane>
       <ImageView fx:id="confirmAttacker1" fitHeight="37.0" fitWidth="36.0" layoutX="768.0" layoutY="344.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../icons/checked.png" />
+            <Image url="@../icons/check.png" />
          </image></ImageView>
       <ImageView fx:id="confirmAttacker2" fitHeight="37.0" fitWidth="36.0" layoutX="768.0" layoutY="382.0" pickOnBounds="true" preserveRatio="true">
          <image>
@@ -63,7 +64,7 @@
       </ImageView>
       <ImageView fx:id="confirmDefender2" fitHeight="37.0" fitWidth="36.0" layoutX="806.0" layoutY="382.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../icons/checked.png" />
+            <Image url="@../icons/check.png" />
          </image>
       </ImageView>
       <ImageView fx:id="confirmDefender3" fitHeight="37.0" fitWidth="36.0" layoutX="806.0" layoutY="420.0" pickOnBounds="true" preserveRatio="true">
@@ -91,15 +92,37 @@
             <Image url="@../images/logos/factions/LC.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="ivAttackerWaiting" fitHeight="20.0" fitWidth="20.0" layoutX="776.0" layoutY="323.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="ivAttackerWaiting" fitHeight="20.0" fitWidth="20.0" layoutX="777.0" layoutY="323.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../icons/waiting.png" />
          </image>
+         <effect>
+            <DropShadow />
+         </effect>
       </ImageView>
-      <ImageView fx:id="ivDefenderWaiting" fitHeight="20.0" fitWidth="20.0" layoutX="813.0" layoutY="324.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="ivDefenderWaiting" fitHeight="20.0" fitWidth="20.0" layoutX="814.0" layoutY="323.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../icons/waiting.png" />
          </image>
+         <effect>
+            <DropShadow />
+         </effect>
+      </ImageView>
+      <ImageView fitHeight="26.0" fitWidth="24.0" layoutX="775.0" layoutY="333.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icons/attack.png" />
+         </image>
+         <effect>
+            <DropShadow />
+         </effect>
+      </ImageView>
+      <ImageView fitHeight="24.0" fitWidth="20.0" layoutX="814.0" layoutY="334.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icons/defend.png" />
+         </image>
+         <effect>
+            <DropShadow />
+         </effect>
       </ImageView>
     </children>
     <stylesheets>

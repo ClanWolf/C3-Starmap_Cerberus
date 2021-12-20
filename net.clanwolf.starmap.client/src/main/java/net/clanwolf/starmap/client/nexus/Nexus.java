@@ -48,6 +48,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Timer;
 
 /**
  * The Nexus is a central place to hold general information like the currently logged in user and such.
@@ -104,6 +105,14 @@ public class Nexus {
 	}
 
 	public static boolean mwoCheckingActive = false;
+	public static Timer checkSystemClipboardForMWOResultTimer = null;
+
+	public static Timer getCheckSystemClipboardForMWOResultTimer() {
+		return checkSystemClipboardForMWOResultTimer;
+	}
+	public static void setCheckSystemClipboardForMWOResultTimer(Timer checkSystemClipboardForMWOResultTimer) {
+		checkSystemClipboardForMWOResultTimer = checkSystemClipboardForMWOResultTimer;
+	}
 
 	/**
 	 * Private constructor to prevent instantiation
