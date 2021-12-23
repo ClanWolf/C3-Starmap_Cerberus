@@ -430,7 +430,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	public void setJumpshipToAttackReady(BOJumpship js, boolean value) {
 		if (!value) {
 			js.setAttackReady(false);
-			Image i = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_left_neutral.png")));
+			String imageName = "jumpship_Faction" + js.getJumpshipFaction() + "_disabled.png";
+			Image i = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/" + imageName)));
 			js.setJumpshipImage(i);
 
 			ImageView jsiv = js.getJumpshipImageView();
@@ -438,7 +439,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			jsiv.removeEventFilter(MouseEvent.DRAG_DETECTED, nodeGestures.getOnMouseDragDetectedEventHandler());
 		} else {
 			js.setAttackReady(true);
-			Image i = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_left_blue.png")));
+			String imageName = "jumpship_Faction" + js.getJumpshipFaction() + ".png";
+			Image i = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/" + imageName)));
 			js.setJumpshipImage(i);
 
 			ImageView jsiv = js.getJumpshipImageView();
@@ -537,21 +539,40 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 					if (myOwnShip) {
 						if (js.isAttackReady()) {
-							Image left_blue = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_left_blue_1.png")));
-							jumpshipImage.setImage(left_blue);
+							//Image left_blue = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_left_blue_1.png")));
+
+							//TODO: Add level to the jumpship
+							String imageName = "jumpship_Faction" + js.getJumpshipFaction() + ".png";
+							Image i = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/" + imageName)));
+
+							jumpshipImage.setImage(i);
 							jumpshipImage.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
 							jumpshipImage.addEventFilter(MouseEvent.DRAG_DETECTED, nodeGestures.getOnMouseDragDetectedEventHandler());
 						} else {
-							Image left_neutral = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_left_neutral.png")));
-							jumpshipImage.setImage(left_neutral);
+							//Image left_neutral = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_left_neutral.png")));
+
+							String imageName = "jumpship_Faction" + js.getJumpshipFaction() + "_disabled.png";
+							Image i = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/" + imageName)));
+
+							jumpshipImage.setImage(i);
 						}
 					} else {
 						if (js.isAttackReady()) {
-							Image right_red = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_right_red.png")));
-							jumpshipImage.setImage(right_red);
+							//Image right_red = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_right_red.png")));
+
+							//TODO: Add level to the jumpship
+							String imageName = "jumpship_Faction" + js.getJumpshipFaction() + ".png";
+							Image i = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/" + imageName)));
+
+							jumpshipImage.setImage(i);
 						} else {
-							Image right_red = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_right_red.png")));
-							jumpshipImage.setImage(right_red);
+							//Image right_red = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_right_red.png")));
+
+							//TODO: Add level to the jumpship
+							String imageName = "jumpship_Faction" + js.getJumpshipFaction() + ".png";
+							Image i = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/" + imageName)));
+
+							jumpshipImage.setImage(i);
 						}
 					}
 
@@ -985,11 +1006,17 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 						ImageView jumpshipImage;
 						if (myOwnShip) {
 							if (js.isAttackReady()) {
-								jumpshipImage = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_left_blue_1.png"))));
+
+								//TODO: Add level to the jumpship
+								String imageName = "jumpship_Faction" + js.getJumpshipFaction() + ".png";
+								Image i = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/" + imageName)));
+								jumpshipImage = new ImageView(i);
 								jumpshipImage.addEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
 								jumpshipImage.addEventFilter(MouseEvent.DRAG_DETECTED, nodeGestures.getOnMouseDragDetectedEventHandler());
 							} else {
-								jumpshipImage = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_left_neutral.png"))));
+								String imageName = "jumpship_Faction" + js.getJumpshipFaction() + "_disabled.png";
+								Image i = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/" + imageName)));
+								jumpshipImage = new ImageView(i);
 							}
 
 							// draw existing route points for my own ships
@@ -1016,9 +1043,15 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 							}
 						} else {
 							if (js.isAttackReady()) {
-								jumpshipImage = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_right_red.png"))));
+								//TODO: Add level to the jumpship
+								String imageName = "jumpship_Faction" + js.getJumpshipFaction() + ".png";
+								Image i = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/" + imageName)));
+								jumpshipImage = new ImageView(i);
 							} else {
-								jumpshipImage = new ImageView(new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_right_red.png"))));
+								//TODO: Add level to the jumpship
+								String imageName = "jumpship_Faction" + js.getJumpshipFaction() + ".png";
+								Image i = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/" + imageName)));
+								jumpshipImage = new ImageView(i);
 							}
 						}
 
