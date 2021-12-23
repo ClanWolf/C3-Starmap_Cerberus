@@ -27,6 +27,5 @@ See additional information on the [BattleTech - The Board Game](https://bg.battl
 
 # Support
 If you want to support C3, consider to donate via paypal or become a patreon:
-* [Paypal](https://www.paypal.com/donate?token=AwC5gorl98THoYU4nCfwClErqsySjRleA5PRrgjHXiQcCSSz5unSHbdSnpHQbJDjqzzZVSO6r7Ngv9Vw "Paypal")
-* [Patreon](https://www.patreon.com/ClanWolf "Patreon")
 * [Liberapay](https://liberapay.com/WarWolfen "Liberapay")
+* [Paypal](https://www.paypal.com/donate?token=AwC5gorl98THoYU4nCfwClErqsySjRleA5PRrgjHXiQcCSSz5unSHbdSnpHQbJDjqzzZVSO6r7Ngv9Vw "Paypal")
