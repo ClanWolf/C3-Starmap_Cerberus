@@ -56,6 +56,11 @@ public class ResultAnalyzer {
 		String mode = md.getGameMode();
 		String winner = md.getWinningTeam();
 
+		Integer team1NumberOfPilots = 0;
+		Integer team2NumberOfPilots = 0;
+		Integer team1SurvivingPercentage = 0;
+		Integer team2SurvivingPercentage = 0;
+
 		// 2018-03-30T01:41:51+00:00
 		Timestamp timestampFromMWOGame = null;
 		double hours = 0.0;
@@ -117,6 +122,14 @@ public class ResultAnalyzer {
 				}
 			}
 
+			if (team.equals("1")) {
+				team1NumberOfPilots++;
+				team1SurvivingPercentage += healthPercentage;
+			} else if (team.equals("2")) {
+				team2NumberOfPilots++;
+				team2SurvivingPercentage += healthPercentage;
+			}
+
 			logger.info(("- " + team + " "
 					+ userNameFormatted
 					+ "[" + unitFormatted + "]"
@@ -127,7 +140,21 @@ public class ResultAnalyzer {
 
 			// Tonnage by adding the mech weights from a lookup table?
 			// XP = Kills * damage / number of players, weil das Team gewinnt! ????
+
+			// Kosten für den Kampf von Surviving percentage
 		}
+
+		result.setTeam1NumberOfPilots(team1NumberOfPilots);
+		result.setTeam2NumberOfPilots(team2NumberOfPilots);
+		result.setTeam1SurvivingPercentage(team1SurvivingPercentage / team1NumberOfPilots);
+		result.setTeam2SurvivingPercentage(team2SurvivingPercentage / team2NumberOfPilots);
+
+		logger.info("Team 1 number of pilots: " + team1NumberOfPilots);
+		logger.info("Team 2 number of pilots: " + team2NumberOfPilots);
+
+		logger.info("Team 1 surviving percentage: " + team1SurvivingPercentage / team1NumberOfPilots);
+		logger.info("Team 2 surviving percentage: " + team2SurvivingPercentage / team2NumberOfPilots);
+
 		logger.info("============================================================================================================");
 	}
 }

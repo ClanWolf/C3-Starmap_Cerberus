@@ -41,6 +41,11 @@ public class MWOMatchResult {
 	private String gameID;
 	private String jsonString;
 
+	Integer team1NumberOfPilots = 0;
+	Integer team2NumberOfPilots = 0;
+	Integer team1SurvivingPercentage = 0;
+	Integer team2SurvivingPercentage = 0;
+
 	public String getGameID() {
 		return gameID;
 	}
@@ -73,4 +78,35 @@ public class MWOMatchResult {
         this.userDetails = userDetails;
     }
 
+	public Integer getTeam1NumberOfPilots() {
+		return team1NumberOfPilots;
+	}
+
+	public void setTeam1NumberOfPilots(Integer team1NumberOfPilots) {
+		this.team1NumberOfPilots = team1NumberOfPilots;
+	}
+
+	public Integer getTeam2NumberOfPilots() {
+		return team2NumberOfPilots;
+	}
+
+	public void setTeam2NumberOfPilots(Integer team2NumberOfPilots) {
+		this.team2NumberOfPilots = team2NumberOfPilots;
+	}
+
+	public Integer getTeam1SurvivingPercentage() {
+		return team1SurvivingPercentage;
+	}
+
+	public void setTeam1SurvivingPercentage(Integer team1SurvivingPercentage) {
+		this.team1SurvivingPercentage = team1SurvivingPercentage;
+	}
+
+	public Integer getTeam2SurvivingPercentage() {
+		return team2SurvivingPercentage;
+	}
+
+	public void setTeam2SurvivingPercentage(Integer team2SurvivingPercentage) {
+		this.team2SurvivingPercentage = team2SurvivingPercentage;
+	}
 }

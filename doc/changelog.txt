@@ -1,6 +1,14 @@
 C3 version history
 --------------------------------
 
+Version 6.1.1 (03.01.2022)
+- UPDATED: Several libs
+
+Version 6.1.0 (30.12.2021)
+- UPDATED: NSIS 3.08
+- UPDATED: Several libs
+- CHANGED: jumpship icons to reflect faction (by color), facing all from left to right now
+
 Version 6.0.7 (20.12.2021)
 - FIXED: Confirmation display of chosen winner of the other faction
 - CHANGED: Removed beep sound for every clipboard scan
