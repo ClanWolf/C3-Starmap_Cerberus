@@ -123,7 +123,7 @@
                            <children>
                               <ImageView fitHeight="150.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../icons/attack.png" />
+                                    <Image url="@../icons/attack_circle.png" />
                                  </image>
                               </ImageView>
                               <ImageView fx:id="ivPlanet" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
@@ -136,7 +136,7 @@
                               </ImageView>
                               <ImageView fitHeight="150.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../icons/defend.png" />
+                                    <Image url="@../icons/defend_circle.png" />
                                  </image>
                               </ImageView>
                            </children>
