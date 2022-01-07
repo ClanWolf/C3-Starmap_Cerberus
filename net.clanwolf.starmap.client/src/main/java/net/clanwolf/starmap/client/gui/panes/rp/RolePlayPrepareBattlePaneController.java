@@ -74,7 +74,6 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 	private final HashMap<Long, AttackCharacterDTO> characterRoleMap = new HashMap<>();
 	private boolean firstCreationDone = false;
 	private boolean creating = false;
-	private boolean testNextButton=false;
 	private boolean bOnlyOneSave = true;
 
 	@FXML
@@ -393,8 +392,8 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		logger.debug("Equal pilot count: " + (lvAttacker.getItems().size() == lvDefender.getItems().size() && lvAttacker.getItems().size() >= 2));
 		logger.debug("Everybody online: " + allOnline);
 
-		btNext.setDisable(testNextButton);
 		// Check conditions
+		btNext.setDisable(true);
 		if (lvDropleadAttacker.getItems().size() == 1
 				&& lvDropleadDefender.getItems().size() == 1
 				&& !"...".equals(lvDropleadAttacker.getItems().get(0).getName())
@@ -841,7 +840,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		btnPromote.setDisable(true);
 		btnToLeft.setDisable(true);
 		btnToRight.setDisable(true);
-		btNext.setDisable(testNextButton);
+		btNext.setDisable(true);
 
 		backgroundImage.setOpacity(0.0f);
 		vbLeft.setOpacity(0.0f);
