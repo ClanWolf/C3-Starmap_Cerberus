@@ -393,7 +393,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		logger.debug("Everybody online: " + allOnline);
 
 		// Check conditions
-		btNext.setDisable(true);
+		Platform.runLater(() -> btNext.setDisable(true));
 		if (lvDropleadAttacker.getItems().size() == 1
 				&& lvDropleadDefender.getItems().size() == 1
 				&& !"...".equals(lvDropleadAttacker.getItems().get(0).getName())
@@ -403,7 +403,16 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 				&& lvAttacker.getItems().size() == lvDefender.getItems().size()
 		) {
 			// Enable "continue"
-			Platform.runLater(() -> btNext.setDisable(false));
+			BOAttack a = Nexus.getCurrentAttackOfUser();
+			RolePlayCharacterDTO rpc = Nexus.getCurrentChar();
+			for (AttackCharacterDTO atc : a.getAttackCharList()) {
+				if (atc.getCharacterID().equals(rpc.getId())) {
+					if (atc.getType().equals(Constants.ROLE_ATTACKER_COMMANDER)) {
+						Platform.runLater(() -> btNext.setDisable(false));
+						break;
+					}
+				}
+			}
 		}
 		Platform.runLater(() -> lvAttacker.requestFocus());
 		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("1");
@@ -430,6 +439,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 			btnToRight.setDisable(true);
 			btnKick.setDisable(!iAmDefenderCommander);
 			btnKick.setDisable(characterRoleMap.get(Nexus.getCurrentChar().getId()).getType() != Constants.ROLE_DEFENDER_COMMANDER);
+			btnKick.setDisable(!iAmAttackerCommander); // Attacker commander may kick anyone
 			btnPromote.setDisable(!(iAmDefenderCommander && clickedWarriorIsSameFaction && clickedWarriorIsOnline)); // No promotion for players from 3rd factions
 
 			if (selectedChar.getName().equals(Nexus.getCurrentChar().getName())) {

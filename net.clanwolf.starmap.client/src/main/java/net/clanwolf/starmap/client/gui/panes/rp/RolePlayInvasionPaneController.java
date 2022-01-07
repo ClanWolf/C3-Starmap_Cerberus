@@ -502,6 +502,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 			if (ac.getCharacterID().equals(rpc.getId())) {
 				ac.setSelectedAttackerWon(attackerWon);
 				ac.setSelectedDefenderWon(defenderWon);
+				ac.setNextStoryId(rp);
 				myType = ac.getType();
 				logger.info("Next story id saved for Character " + rpc.getName() + ": " + rp);
 				break;

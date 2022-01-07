@@ -3,6 +3,7 @@ C3 version history
 
 Version 6.1.2 (07.01.2022)
 - UPDATED: Manual
+- FIXED: Attacker commander may kick anyone from the lobby
 - FIXED: Buttons get disabled correctly for anyone but the two commanders
 - FIXED: Error in Invasion Pane Controller, missing next storyId
 
