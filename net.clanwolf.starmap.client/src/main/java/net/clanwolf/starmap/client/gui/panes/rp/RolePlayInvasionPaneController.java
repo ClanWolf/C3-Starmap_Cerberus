@@ -140,9 +140,9 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 		btChoice4.setVisible(false);
 
 		btChoice1.setDisable(true);
-		btChoice1.setDisable(true);
-		btChoice1.setDisable(true);
-		btChoice1.setDisable(true);
+		btChoice2.setDisable(true);
+		btChoice3.setDisable(true);
+		btChoice4.setDisable(true);
 
 		confirmAttacker1.setVisible(false);
 		confirmAttacker2.setVisible(false);
@@ -173,6 +173,11 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 					btChoice2.setDisable(false);
 					btChoice3.setDisable(false);
 					btChoice4.setDisable(false);
+				} else {
+//					btChoice1.setDisable(true);
+//					btChoice2.setDisable(true);
+//					btChoice3.setDisable(true);
+//					btChoice4.setDisable(true);
 				}
 			}
 		}
@@ -484,16 +489,36 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 		BOAttack a = Nexus.getCurrentAttackOfUser();
 		RolePlayCharacterDTO rpc = Nexus.getCurrentChar();
 
+//		public static final long ROLE_ATTACKER_WARRIOR = 0L; // 0L Attacker Warrior
+//		public static final long ROLE_ATTACKER_COMMANDER = 1L; // 1L Attacker Commander
+//		public static final long ROLE_DEFENDER_WARRIOR = 2L; // 2L Defender
+//		public static final long ROLE_DEFENDER_COMMANDER = 3L; // 3L Defender Commander
+//		public static final long ROLE_SUPPORTER = 4L; // 4L Attacker Supporter
+//		public static final long ROLE_ATTACKER_SUPPORTER = 5L; // 4L Attacker Supporter
+//		public static final long ROLE_DEFENDER_SUPPORTER = 6L; // 5L Defender Supporter
+
+		Long myType = -1L;
 		for (AttackCharacterDTO ac : a.getAttackCharList()) {
 			if (ac.getCharacterID().equals(rpc.getId())) {
-				ac.setNextStoryId(rp);
 				ac.setSelectedAttackerWon(attackerWon);
 				ac.setSelectedDefenderWon(defenderWon);
+				myType = ac.getType();
 				logger.info("Next story id saved for Character " + rpc.getName() + ": " + rp);
-				a.storeAttack();
 				break;
 			}
 		}
+		for (AttackCharacterDTO ac : a.getAttackCharList()) {
+			if (myType.equals(Constants.ROLE_ATTACKER_COMMANDER)) {
+				if (ac.getType().equals(Constants.ROLE_ATTACKER_WARRIOR) || ac.getType().equals(Constants.ROLE_ATTACKER_SUPPORTER)) {
+					ac.setNextStoryId(rp);
+				}
+			} else if (myType.equals(Constants.ROLE_DEFENDER_COMMANDER)) {
+				if (ac.getType().equals(Constants.ROLE_DEFENDER_WARRIOR) || ac.getType().equals(Constants.ROLE_DEFENDER_SUPPORTER)) {
+					ac.setNextStoryId(rp);
+				}
+			}
+		}
+		a.storeAttack();
 	}
 
 	/******************************** FXML ********************************/

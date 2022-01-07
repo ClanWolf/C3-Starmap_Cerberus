@@ -924,6 +924,12 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 									setText(t);
 									setTooltip(null);
 									setStyle("-fx-text-fill: white;");
+
+									for (Node n : getChildren()) {
+										if (n instanceof Text) {
+											n.setStyle("-fx-strikethrough:false;");
+										}
+									}
 								});
 							} else {
 								if (!"...".equals(item.getName())) {

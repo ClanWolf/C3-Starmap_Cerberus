@@ -44,7 +44,7 @@ public class ResultAnalyzer {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	public static void analyseMWOResult(MWOMatchResult result) {
-		//TODO: Handle MWO Game result
+		MapInfo mapInfo = new MapInfo();
 
 		MatchDetails md = result.getMatchDetails();
 		logger.info("============================================================================================================");
@@ -52,12 +52,14 @@ public class ResultAnalyzer {
 
 		String gameId = result.getGameID();
 		String jsonString = result.getJsonString();
-		String map = md.getMap();
+		String map = mapInfo.map.get(md.getMap());
 		String mode = md.getGameMode();
 		String winner = md.getWinningTeam();
 
 		Integer team1NumberOfPilots = 0;
 		Integer team2NumberOfPilots = 0;
+		int team1Tonnage = 0;
+		int team2Tonnage = 0;
 		Integer team1SurvivingPercentage = 0;
 		Integer team2SurvivingPercentage = 0;
 
@@ -77,24 +79,28 @@ public class ResultAnalyzer {
 			e.printStackTrace();
 		}
 
-		logger.info("Game-ID     : " + gameId);
-		logger.info("Drop ended  : " + md.getCompleteTime());
-		logger.info("Hours since : " + hours);
-		logger.info("Data        : " + jsonString);
-		logger.info("Map         : " + map);
-		logger.info("Mode        : " + mode);
-		logger.info("Team 1 score: " + md.getTeam1Score());
-		logger.info("Team 2 score: " + md.getTeam2Score());
-		logger.info("Winner      : Team " + winner);
+		//logger.info("Data         : " + jsonString);
+		logger.info("Game-ID      : " + gameId);
+		logger.info("Drop ended   : " + md.getCompleteTime());
+		logger.info("Hours since  : " + hours);
+		logger.info("Map          : " + map);
+		logger.info("Mode         : " + mode);
+		logger.info("Team 1 score : " + md.getTeam1Score());
+		logger.info("Team 2 score : " + md.getTeam2Score());
+		logger.info("Winner       : Team " + winner);
 		logger.info("------------------------------------------------------------------------------------------------------------");
-		logger.info("Team                  MWO Username      Unit           Mech        K/A  Damage          C3 User");
+		logger.info("Team                  MWO Username      Unit           Mech (ton.)      K/A    Damage          C3 User");
 
 		HashMap<UserDetail, RolePlayCharacterDTO> userMatchList = new HashMap<>();
 
 		for (UserDetail ud : result.getUserDetails()) {
+			MechIdInfo mechInfo = new MechIdInfo();
+
 			String team = ud.getTeam() == null ? "/" : ud.getTeam();
 			String userName = ud.getUsername();
 			String mech = ud.getMechName();
+			String mechFullName = mechInfo.getFullname(ud.getMechItemID());
+			int tonnage = mechInfo.getTonnage(ud.getMechItemID());
 			String unit = ud.getUnitTag();
 			Integer kills = ud.getKills();
 			Integer killsMostDamage = ud.getKillsMostDamage();
@@ -104,7 +110,6 @@ public class ResultAnalyzer {
 			Integer componentsDestroyed = ud.getComponentsDestroyed();
 			Integer matchScore = ud.getMatchScore();
 			Integer healthPercentage = ud.getHealthPercentage();
-
 			String userNameFormatted = String.format("%30s %n", userName);
 			String unitFormatted = String.format("%6s %n", unit);
 			String mechFormatted = mech != null ? String.format("%15s %n", mech) : String.format("%15s %n", "-");
@@ -125,15 +130,18 @@ public class ResultAnalyzer {
 			if (team.equals("1")) {
 				team1NumberOfPilots++;
 				team1SurvivingPercentage += healthPercentage;
+				team1Tonnage += tonnage;
 			} else if (team.equals("2")) {
 				team2NumberOfPilots++;
 				team2SurvivingPercentage += healthPercentage;
+				team2Tonnage += tonnage;
 			}
 
 			logger.info(("- " + team + " "
 					+ userNameFormatted
 					+ "[" + unitFormatted + "]"
 					+ mechFormatted.toUpperCase()
+					+ "(" + String.format("%2s %n", tonnage) + "t) "
 					+ killsFormatted + " "
 					+ damageFormatted + " "
 					+ foundUser).replaceAll("\r\n", ""));
@@ -151,7 +159,8 @@ public class ResultAnalyzer {
 
 		logger.info("Team 1 number of pilots: " + team1NumberOfPilots);
 		logger.info("Team 2 number of pilots: " + team2NumberOfPilots);
-
+		logger.info("Team 1 tonnage: " + team1Tonnage);
+		logger.info("Team 2 tonnage: " + team2Tonnage);
 		logger.info("Team 1 surviving percentage: " + team1SurvivingPercentage / team1NumberOfPilots);
 		logger.info("Team 2 surviving percentage: " + team2SurvivingPercentage / team2NumberOfPilots);
 

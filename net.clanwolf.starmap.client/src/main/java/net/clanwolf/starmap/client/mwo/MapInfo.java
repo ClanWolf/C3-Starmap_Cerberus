@@ -1,4 +1,4 @@
-package net.clanwolf.starmap.client.mwo;/* ---------------------------------------------------------------- |
+/* ---------------------------------------------------------------- |
  *    ____ _____                                                    |
  *   / ___|___ /                   Communicate - Command - Control  |
  *  | |     |_ \                   MK V "Cerberus"                  |
@@ -24,6 +24,7 @@ package net.clanwolf.starmap.client.mwo;/* -------------------------------------
  * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
+package net.clanwolf.starmap.client.mwo;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +35,7 @@ import java.util.Map;
  */
 public class MapInfo {
 
-    private final Map<String, String> map = new HashMap<>();
+    final Map<String, String> map = new HashMap<>();
 
 
     public MapInfo(){
