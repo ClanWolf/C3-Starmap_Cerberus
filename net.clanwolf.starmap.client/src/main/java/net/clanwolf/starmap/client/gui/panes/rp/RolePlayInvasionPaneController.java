@@ -196,47 +196,49 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 	}
 
 	public void statusUpdate() {
-		Platform.runLater(() -> {
-			Image imageUnselected = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/check.png")));
-			Image imageSelected = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/checked.png")));
+		if (Nexus.getCurrentAttackOfUser().getStoryId() != null) {
+			Platform.runLater(() -> {
+				Image imageUnselected = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/check.png")));
+				Image imageSelected = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/checked.png")));
 
-			confirmAttacker1.setImage(imageUnselected);
-			confirmAttacker2.setImage(imageUnselected);
-			confirmAttacker3.setImage(imageUnselected);
-			confirmAttacker4.setImage(imageUnselected);
+				confirmAttacker1.setImage(imageUnselected);
+				confirmAttacker2.setImage(imageUnselected);
+				confirmAttacker3.setImage(imageUnselected);
+				confirmAttacker4.setImage(imageUnselected);
 
-			confirmDefender1.setImage(imageUnselected);
-			confirmDefender2.setImage(imageUnselected);
-			confirmDefender3.setImage(imageUnselected);
-			confirmDefender4.setImage(imageUnselected);
+				confirmDefender1.setImage(imageUnselected);
+				confirmDefender2.setImage(imageUnselected);
+				confirmDefender3.setImage(imageUnselected);
+				confirmDefender4.setImage(imageUnselected);
 
-			for (AttackCharacterDTO ac : Nexus.getCurrentAttackOfUser().getAttackCharList()) {
-				if (ac.getType().equals(Constants.ROLE_ATTACKER_COMMANDER)) {
-					if (ac.getNextStoryId() != Nexus.getCurrentAttackOfUser().getStoryId().longValue()) {
-						ivAttackerWaiting.setVisible(false);
-						if (ac.getSelectedAttackerWon() != null && ac.getSelectedAttackerWon()) {
-							confirmAttacker1.setImage(imageSelected);
-							confirmAttacker2.setImage(imageUnselected);
-						} else if (ac.getSelectedDefenderWon() != null && ac.getSelectedDefenderWon()) {
-							confirmAttacker1.setImage(imageUnselected);
-							confirmAttacker2.setImage(imageSelected);
+				for (AttackCharacterDTO ac : Nexus.getCurrentAttackOfUser().getAttackCharList()) {
+					if (ac.getType().equals(Constants.ROLE_ATTACKER_COMMANDER)) {
+						if (ac.getNextStoryId() != Nexus.getCurrentAttackOfUser().getStoryId().longValue()) {
+							ivAttackerWaiting.setVisible(false);
+							if (ac.getSelectedAttackerWon() != null && ac.getSelectedAttackerWon()) {
+								confirmAttacker1.setImage(imageSelected);
+								confirmAttacker2.setImage(imageUnselected);
+							} else if (ac.getSelectedDefenderWon() != null && ac.getSelectedDefenderWon()) {
+								confirmAttacker1.setImage(imageUnselected);
+								confirmAttacker2.setImage(imageSelected);
+							}
+						}
+					}
+					if (ac.getType().equals(Constants.ROLE_DEFENDER_COMMANDER)) {
+						if (ac.getNextStoryId() != Nexus.getCurrentAttackOfUser().getStoryId().longValue()) {
+							ivDefenderWaiting.setVisible(false);
+							if (ac.getSelectedAttackerWon() != null && ac.getSelectedAttackerWon()) {
+								confirmDefender1.setImage(imageSelected);
+								confirmDefender2.setImage(imageUnselected);
+							} else if (ac.getSelectedDefenderWon() != null && ac.getSelectedDefenderWon()) {
+								confirmDefender1.setImage(imageUnselected);
+								confirmDefender2.setImage(imageSelected);
+							}
 						}
 					}
 				}
-				if (ac.getType().equals(Constants.ROLE_DEFENDER_COMMANDER)) {
-					if (ac.getNextStoryId() != Nexus.getCurrentAttackOfUser().getStoryId().longValue()) {
-						ivDefenderWaiting.setVisible(false);
-						if (ac.getSelectedAttackerWon() != null && ac.getSelectedAttackerWon()) {
-							confirmDefender1.setImage(imageSelected);
-							confirmDefender2.setImage(imageUnselected);
-						} else if (ac.getSelectedDefenderWon() != null && ac.getSelectedDefenderWon()) {
-							confirmDefender1.setImage(imageUnselected);
-							confirmDefender2.setImage(imageSelected);
-						}
-					}
-				}
-			}
-		});
+			});
+		}
 	}
 
 	@Override
