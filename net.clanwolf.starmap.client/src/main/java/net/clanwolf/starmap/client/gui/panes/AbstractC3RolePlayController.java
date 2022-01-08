@@ -38,6 +38,7 @@ import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
 import net.clanwolf.starmap.client.process.universe.BOAttack;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
+import net.clanwolf.starmap.transfer.dtos.AttackCharacterDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.transfer.dtos.AttackDTO;
@@ -128,6 +129,20 @@ public abstract class AbstractC3RolePlayController implements Initializable, Act
 			return Nexus.getCurrentChar().getStory();
 		} else {
 			BOAttack bo = Nexus.getCurrentAttackOfUser();
+
+//			BOAttack boAttackFinished = null;
+//			if (Nexus.getBoUniverse().getAttackStoriesByID(Long.valueOf(bo.getStoryId())) == null) {
+//				for (BOAttack b : Nexus.getBoUniverse().attackBOsFinishedInThisRound.values()) {
+//					if (b.getAttackDTO().getAttackCharList() != null) {
+//						for (AttackCharacterDTO ac : b.getAttackDTO().getAttackCharList()) {
+//							if (ac.getCharacterID().equals(Nexus.getCurrentUser().getCurrentCharacter().getId())) {
+//								return Nexus.getBoUniverse().getAttackStoriesByID(b.getAttackDTO().getStoryID());
+//							}
+//						}
+//					}
+//				}
+//			}
+
 			return Nexus.getBoUniverse().getAttackStoriesByID(Long.valueOf(bo.getStoryId()));
 		}
 	}

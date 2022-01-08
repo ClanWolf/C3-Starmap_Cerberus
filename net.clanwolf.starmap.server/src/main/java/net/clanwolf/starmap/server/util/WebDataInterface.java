@@ -217,8 +217,12 @@ public class WebDataInterface {
 		universe.attacks.clear();
 		universe.attackStorys.clear();
 
+		Long seasonId = 1L;
+		RoundPOJO roundPOJO = RoundDAO.getInstance().findBySeasonId(seasonId);
+
 		AttackDAO dao = AttackDAO.getInstance();
-		ArrayList<AttackPOJO> pojoList = dao.getOpenAttacksOfASeason(1L);
+		//ArrayList<AttackPOJO> pojoList = dao.getOpenAttacksOfASeason(seasonId);
+		ArrayList<AttackPOJO> pojoList = dao.getAllAttacksOfASeasonForRound(seasonId, roundPOJO.getRound());
 		Iterator<AttackPOJO> iter = pojoList.iterator();
 		StringBuilder jsonString = new StringBuilder();
 

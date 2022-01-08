@@ -48,6 +48,7 @@ public class BOUniverse {
 	public HashMap<String, BOFaction> factionBOs = new HashMap<>();
 	public HashMap<String, BOJumpship> jumpshipBOs = new HashMap<>();
 	public HashMap<Long, BOAttack> attackBOs = new HashMap<>();
+	public HashMap<Long, BOAttack> attackBOsFinishedInThisRound = new HashMap<>();
 	public HashMap<Long, ArrayList<RoutePointDTO>> routesList = new HashMap<>();
 
 	public TreeSet<BOJumpship> jumpshipListSorted = null;
@@ -150,9 +151,14 @@ public class BOUniverse {
 		}
 
 		attackBOs.clear();
+		attackBOsFinishedInThisRound.clear();
 		for (AttackDTO att : universeDTO.attacks) {
 			BOAttack boAttack = new BOAttack(att);
-			attackBOs.put(boAttack.getAttackDTO().getId(), boAttack);
+			if (boAttack.getAttackDTO().getFactionID_Winner() == null) {
+				attackBOs.put(boAttack.getAttackDTO().getId(), boAttack);
+			} else {
+				attackBOsFinishedInThisRound.put(boAttack.getAttackDTO().getId(), boAttack);
+			}
 		}
 
 		for (JumpshipDTO jumpshipDTO : universeDTO.jumpships.values()) {
