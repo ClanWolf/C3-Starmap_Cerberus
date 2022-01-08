@@ -87,4 +87,10 @@ public class MapInfo {
         return  this.map.getOrDefault(apimapname, apimapname);
     }
 
+    public void Unload() {
+
+        this.map.clear();
+
+    }
+
 }

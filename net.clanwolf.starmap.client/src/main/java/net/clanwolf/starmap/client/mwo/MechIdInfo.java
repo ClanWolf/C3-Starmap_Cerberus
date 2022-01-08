@@ -971,4 +971,10 @@ public class MechIdInfo {
         return IsValidId(MechItemID) ? this.mechids.get(MechItemID).shortname : this.msginvalidid;
 
     }
+
+    public void Unload() {
+
+        this.mechids.clear();
+
+    }
 }
