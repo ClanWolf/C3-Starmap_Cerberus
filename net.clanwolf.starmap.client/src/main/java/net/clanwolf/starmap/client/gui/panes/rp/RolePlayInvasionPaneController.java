@@ -213,7 +213,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 
 				for (AttackCharacterDTO ac : Nexus.getCurrentAttackOfUser().getAttackCharList()) {
 					if (ac.getType().equals(Constants.ROLE_ATTACKER_COMMANDER)) {
-						if (ac.getNextStoryId() != Nexus.getCurrentAttackOfUser().getStoryId().longValue()) {
+						if (ac.getNextStoryId() != null && ac.getNextStoryId() != Nexus.getCurrentAttackOfUser().getStoryId().longValue()) {
 							ivAttackerWaiting.setVisible(false);
 							if (ac.getSelectedAttackerWon() != null && ac.getSelectedAttackerWon()) {
 								confirmAttacker1.setImage(imageSelected);
@@ -225,7 +225,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 						}
 					}
 					if (ac.getType().equals(Constants.ROLE_DEFENDER_COMMANDER)) {
-						if (ac.getNextStoryId() != Nexus.getCurrentAttackOfUser().getStoryId().longValue()) {
+						if (ac.getNextStoryId() != null && ac.getNextStoryId() != Nexus.getCurrentAttackOfUser().getStoryId().longValue()) {
 							ivDefenderWaiting.setVisible(false);
 							if (ac.getSelectedAttackerWon() != null && ac.getSelectedAttackerWon()) {
 								confirmDefender1.setImage(imageSelected);
