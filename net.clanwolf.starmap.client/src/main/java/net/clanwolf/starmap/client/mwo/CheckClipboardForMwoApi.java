@@ -60,7 +60,7 @@ public class CheckClipboardForMwoApi extends TimerTask {
 
 	}
 
-	public MWOMatchResult getMWOGameStats(String gameid) {
+	public static MWOMatchResult getMWOGameStats(String gameid) {
 		MWOMatchResult matchDetails = null;
 		final Properties auth = new Properties();
 		try {
@@ -123,5 +123,19 @@ public class CheckClipboardForMwoApi extends TimerTask {
 			}
 			previousContent = currentContent;
 		});
+	}
+
+	public static void main(String[] args) {
+		// 420332911230604
+		// 421333638615793
+		// 419705846001647
+
+		// 421604221556762
+		// 421179019792407
+		// 421492552406500
+		// 421879099465036
+
+		MWOMatchResult results = getMWOGameStats("421333638615793");
+		ResultAnalyzer.analyseMWOResult(results);
 	}
 }

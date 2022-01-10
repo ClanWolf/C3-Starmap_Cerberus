@@ -117,13 +117,15 @@ public class ResultAnalyzer {
 			String damageFormatted = String.format("%6s %n", damage);
 
 			String foundUser = String.format("%15s %n", "-");
-			for (AttackCharacterDTO ac : Nexus.getCurrentAttackOfUser().getAttackCharList()) {
-				RolePlayCharacterDTO rpc = Nexus.getCharacterById(ac.getCharacterID());
-				String mwoName = rpc.getMwoUsername();
-				if (userName.equals(mwoName)) {
-					foundUser = String.format("%15s %n", "(" + rpc.getName() + ")");
-					userMatchList.put(ud, rpc);
-					break;
+			if (Nexus.getCurrentAttackOfUser() != null) {
+				for (AttackCharacterDTO ac : Nexus.getCurrentAttackOfUser().getAttackCharList()) {
+					RolePlayCharacterDTO rpc = Nexus.getCharacterById(ac.getCharacterID());
+					String mwoName = rpc.getMwoUsername();
+					if (userName.equals(mwoName)) {
+						foundUser = String.format("%15s %n", "(" + rpc.getName() + ")");
+						userMatchList.put(ud, rpc);
+						break;
+					}
 				}
 			}
 
