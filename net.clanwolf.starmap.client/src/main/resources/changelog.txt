@@ -1,6 +1,10 @@
 C3 version history
 --------------------------------
 
+Version 6.1.3 (10.01.2022)
+- CHANGED: Added download progress display by KERNREAKTOR
+- CHANGED: Further work on the manual has been done
+
 Version 6.1.2 (08.01.2022)
 - UPDATED: Manual
 - FIXED: Attacker commander may kick anyone from the lobby
