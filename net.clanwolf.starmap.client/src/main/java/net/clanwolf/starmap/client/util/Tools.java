@@ -452,13 +452,14 @@ public final class Tools {
 				byte[] dataBuffer = new byte[1024];
 				float counter = 0;
 				int bytesRead;
-				float filesize = new URL(link).openConnection().getContentLength() / 1024;
-				final java.text.DecimalFormat twoDigits = new java.text.DecimalFormat( "0.00" );
+				float filesize = new URL(link).openConnection().getContentLength();
+				final java.text.DecimalFormat twoDigits = new java.text.DecimalFormat( "0.0" );
+				TxtProgressBar tbp = new TxtProgressBar((int) filesize,"□","■");
 
 				while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
 					fileOutputStream.write(dataBuffer, 0, bytesRead);
 					counter++;
-					StatusTextEntryActionObject o = new StatusTextEntryActionObject("Downloading Client installer: " + twoDigits.format(counter /1024) + " MB of " + twoDigits.format(filesize /1024)  + " MB (" + twoDigits.format(counter * 100 / filesize) + "%)", false, "#555555");
+					StatusTextEntryActionObject o = new StatusTextEntryActionObject("Downloading Client installer: " + tbp.getcurprogress((int) counter) + " " + twoDigits.format(counter /1024) + " MB of " + twoDigits.format(filesize /1024 / 1024)  + " MB (" + twoDigits.format(counter * 100 / filesize) + " %)", false, "#555555");
 					o.setJustUpdate(true);
 					ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(o);
 				}
