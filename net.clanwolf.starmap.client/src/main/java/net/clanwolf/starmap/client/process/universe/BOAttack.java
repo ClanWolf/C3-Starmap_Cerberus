@@ -80,7 +80,7 @@ public class BOAttack {
 	@SuppressWarnings("unused")
 	public static boolean charHasAnActiveAttack() {
 		boolean charHasAnotherActiveAttack = false;
-		for (BOAttack a : Nexus.getBoUniverse().attackBOs.values()) {
+		for (BOAttack a : Nexus.getBoUniverse().attackBOsOpenInThisRound.values()) {
 			for (AttackCharacterDTO ac : a.getAttackCharList()) {
 				if (ac.getCharacterID().equals(Nexus.getCurrentUser().getCurrentCharacter().getId())) {
 					charHasAnotherActiveAttack = true;

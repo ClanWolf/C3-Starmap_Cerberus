@@ -344,7 +344,7 @@ public class Nexus {
 	public static boolean userHasAttack() {
 		boolean userHasAttack = false;
 		if (Nexus.getBoUniverse() != null) {
-			for (BOAttack a : Nexus.getBoUniverse().attackBOs.values()) {
+			for (BOAttack a : Nexus.getBoUniverse().attackBOsOpenInThisRound.values()) {
 				if (a.getAttackCharList() != null) {
 					for (AttackCharacterDTO ac : a.getAttackCharList()) {
 						if (ac.getCharacterID().equals(Nexus.getCurrentUser().getCurrentCharacter().getId())) {

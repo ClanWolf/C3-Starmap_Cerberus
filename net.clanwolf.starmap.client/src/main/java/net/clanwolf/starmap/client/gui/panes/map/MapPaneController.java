@@ -287,7 +287,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					attack.setCharacterID(Nexus.getCurrentChar().getId());
 
 					BOAttack boAttack = new BOAttack(attack);
-					Nexus.getBoUniverse().attackBOs.put(boAttack.getAttackDTO().getId(), boAttack);
+					Nexus.getBoUniverse().attackBOsOpenInThisRound.put(boAttack.getAttackDTO().getId(), boAttack);
 					boAttack.storeAttack();
 
 					BOStarSystem attackedSystem;
@@ -593,7 +593,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					}
 					canvas.getChildren().removeAll(backgroundElementsToRemove);
 
-					for (BOAttack boAttack : boUniverse.attackBOs.values()) {
+					for (BOAttack boAttack : boUniverse.attackBOsOpenInThisRound.values()) {
 						BOStarSystem attackedSystem;
 						BOStarSystem attackerStartedFromSystem;
 						attackedSystem = boUniverse.starSystemBOs.get(boAttack.getStarSystemId());
@@ -914,7 +914,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				attacksPane = new Pane();
 				canvas.setAttacksPane(attacksPane);
 
-				for (BOAttack attack : boUniverse.attackBOs.values()) {
+				for (BOAttack attack : boUniverse.attackBOsOpenInThisRound.values()) {
 					if (attack.getSeason().equals(boUniverse.currentSeason) &&
 							(attack.getRound().equals(boUniverse.currentRound + 1)) || (attack.getRound().equals(boUniverse.currentRound))
 					) {
@@ -1673,7 +1673,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					// if yes, he cannot join this one
 
 					if (!BOAttack.charHasAnActiveAttack()) {
-						for (BOAttack a : Nexus.getBoUniverse().attackBOs.values()) {
+						for (BOAttack a : Nexus.getBoUniverse().attackBOsOpenInThisRound.values()) {
 							attackAlreadyStarted = a.getStoryId() != null;
 
 							// Correct season and round

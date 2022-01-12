@@ -56,7 +56,7 @@ public class BOFaction {
 	@SuppressWarnings("unused")
 	public int getSystemsCountAttacking() {
 		int i = 0;
-		for (BOAttack a : Nexus.getBoUniverse().attackBOs.values()) {
+		for (BOAttack a : Nexus.getBoUniverse().attackBOsOpenInThisRound.values()) {
 			if (Objects.equals(a.getAttackerFactionId(), Nexus.getCurrentChar().getFactionId())) {
 				i++;
 			}
