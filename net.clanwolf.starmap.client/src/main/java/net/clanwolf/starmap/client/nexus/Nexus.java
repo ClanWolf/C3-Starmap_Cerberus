@@ -69,6 +69,7 @@ public class Nexus {
 	private static boolean loggedIn = false;
 
 	private static BOAttack currentAttackOfUser;
+	private static BOAttack finishedAttackOfUser;
 	private static ArrayList<UserDTO> userList;
 	private static ArrayList<UserDTO> currentlyOnlineUserList;
 	private static HashMap<Long, RolePlayCharacterDTO> characterList;
@@ -360,11 +361,39 @@ public class Nexus {
 	}
 
 	@SuppressWarnings("unused")
+	public static boolean userHasFinishedAttackInCurrentRound() {
+		boolean userHasFinishedAttack = false;
+		if (Nexus.getBoUniverse() != null) {
+			for (BOAttack a : Nexus.getBoUniverse().attackBOsFinishedInThisRound.values()) {
+				if (a.getAttackCharList() != null) {
+					for (AttackCharacterDTO ac : a.getAttackCharList()) {
+						if (ac.getCharacterID().equals(Nexus.getCurrentUser().getCurrentCharacter().getId())) {
+							// The user currently logged in has joined an attack that was not resolved yet
+							userHasFinishedAttack = true;
+							finishedAttackOfUser = a;
+							break;
+						}
+					}
+				}
+			}
+		}
+		return userHasFinishedAttack;
+	}
+
+	@SuppressWarnings("unused")
 	public static BOAttack getCurrentAttackOfUser() {
 		if (currentAttackOfUser == null) {
 			userHasAttack(); // to set currentAttack to user
 		}
 		return currentAttackOfUser;
+	}
+
+	@SuppressWarnings("unused")
+	public static BOAttack getFinishedAttackInThisRoundForUser() {
+		if (finishedAttackOfUser == null) {
+			userHasFinishedAttackInCurrentRound(); // to set currentAttack to user
+		}
+		return finishedAttackOfUser;
 	}
 
 	@SuppressWarnings("unused")

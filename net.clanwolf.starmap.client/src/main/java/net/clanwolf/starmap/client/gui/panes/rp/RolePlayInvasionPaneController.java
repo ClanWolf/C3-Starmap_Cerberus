@@ -196,8 +196,10 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 	}
 
 	public void statusUpdate() {
-		if (Nexus.getCurrentAttackOfUser().getStoryId() != null) {
+		if (Nexus.getCurrentAttackOfUser() != null && Nexus.getCurrentAttackOfUser().getStoryId() != null) {
 			Platform.runLater(() -> {
+				BOAttack att = Nexus.getCurrentAttackOfUser();
+
 				Image imageUnselected = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/check.png")));
 				Image imageSelected = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/checked.png")));
 
@@ -211,9 +213,13 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 				confirmDefender3.setImage(imageUnselected);
 				confirmDefender4.setImage(imageUnselected);
 
-				for (AttackCharacterDTO ac : Nexus.getCurrentAttackOfUser().getAttackCharList()) {
+				if (att == null) {
+					att = Nexus.getFinishedAttackInThisRoundForUser();
+				}
+
+				for (AttackCharacterDTO ac : att.getAttackCharList()) {
 					if (ac.getType().equals(Constants.ROLE_ATTACKER_COMMANDER)) {
-						if (ac.getNextStoryId() != null && ac.getNextStoryId() != Nexus.getCurrentAttackOfUser().getStoryId().longValue()) {
+						if (ac.getNextStoryId() != null && ac.getNextStoryId() != att.getStoryId().longValue()) {
 							ivAttackerWaiting.setVisible(false);
 							if (ac.getSelectedAttackerWon() != null && ac.getSelectedAttackerWon()) {
 								confirmAttacker1.setImage(imageSelected);
@@ -225,7 +231,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 						}
 					}
 					if (ac.getType().equals(Constants.ROLE_DEFENDER_COMMANDER)) {
-						if (ac.getNextStoryId() != null && ac.getNextStoryId() != Nexus.getCurrentAttackOfUser().getStoryId().longValue()) {
+						if (ac.getNextStoryId() != null && ac.getNextStoryId() != att.getStoryId().longValue()) {
 							ivDefenderWaiting.setVisible(false);
 							if (ac.getSelectedAttackerWon() != null && ac.getSelectedAttackerWon()) {
 								confirmDefender1.setImage(imageSelected);

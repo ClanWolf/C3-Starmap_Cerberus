@@ -414,6 +414,9 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 				}
 			}
 		}
+
+		Platform.runLater(() -> btNext.setDisable(false));
+
 		Platform.runLater(() -> lvAttacker.requestFocus());
 		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("1");
 	}
