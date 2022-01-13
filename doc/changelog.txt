@@ -1,6 +1,13 @@
 C3 version history
 --------------------------------
 
+Version 6.1.4 (12.01.2022)
+- ADDED: New class to replace var keys in roleplay texts
+- FIXED: Entries in the console history are displayed only once as intended
+- FIXED: NullPointerException while ending an invasion lobby has been fixed
+- CHANGED: Further changes in the manual
+- CHANGED: Invasion Intro has the button disabled unless current user is attacker commander
+
 Version 6.1.3 (10.01.2022)
 - CHANGED: Added download progress display by KERNREAKTOR
 - CHANGED: Further work on the manual has been done

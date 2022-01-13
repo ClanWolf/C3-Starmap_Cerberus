@@ -14,7 +14,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="SettingsPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.settings.SettingsPaneController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="SettingsPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/17" fx:controller="net.clanwolf.starmap.client.gui.panes.settings.SettingsPaneController">
   <children>
     <Label fx:id="panelHeadline" alignment="BASELINE_RIGHT" contentDisplay="CENTER" layoutX="14.0" layoutY="375.0" mouseTransparent="true" opacity="0.12" prefWidth="794.0" text="SETTINGS">
       <font>
@@ -230,6 +230,32 @@
             </AnchorPane>
           </content>
         </Tab>
+            <Tab fx:id="tab31" text="Tab4_General">
+               <content>
+                  <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <Label alignment="BOTTOM_LEFT" mouseTransparent="true" opacity="0.2" prefHeight="382.0" prefWidth="252.0" styleClass="contentLabelSideImage">
+                           <stylesheets>
+                              <URL value="@../styles/MainFrameStyle.css" />
+                           </stylesheets>
+                        </Label>
+                        <CheckBox id="check_Speak" fx:id="checkbox_CheckClipBoardForMWOAPI" layoutX="124.0" layoutY="33.0" mnemonicParsing="false" onAction="#handleSpeechSelectButton" text="CheckClipBoardForMWOAPI_CheckBox">
+                           <stylesheets>
+                              <URL value="@../styles/MainFrameStyle.css" />
+                           </stylesheets>
+                           <textFill>
+                              <Color red="0.639" green="0.831" blue="0.937" fx:id="x31" />
+                           </textFill>
+                        </CheckBox>
+                        <CheckBox fx:id="checkbox_HistoryScreenshot" layoutX="124.0" layoutY="71.0" mnemonicParsing="false" onAction="#handleEffectsSelectButton" text="HistoryScreenshot_CheckBox" textFill="$x31">
+                           <stylesheets>
+                              <URL value="@../styles/MainFrameStyle.css" />
+                           </stylesheets>
+                        </CheckBox>
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
       </tabs>
     </TabPane>
     <Button fx:id="buttonYes" alignment="CENTER_RIGHT" layoutX="547.0" layoutY="449.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#handleConfirmButtonClick" prefWidth="140.0" styleClass="contentButton" text="Button">

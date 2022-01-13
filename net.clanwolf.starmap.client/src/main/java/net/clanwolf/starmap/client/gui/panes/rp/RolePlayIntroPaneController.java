@@ -44,7 +44,10 @@ import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3RolePlayController;
+import net.clanwolf.starmap.client.process.universe.BOAttack;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
+import net.clanwolf.starmap.constants.Constants;
+import net.clanwolf.starmap.transfer.dtos.AttackCharacterDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
@@ -91,6 +94,18 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		super.initialize(url, rb);
+		if (!isCharRP) {
+			BOAttack attack = Nexus.getCurrentAttackOfUser();
+			if (attack != null) {
+				if (attack.getAttackCharList() != null) {
+					for (AttackCharacterDTO c : attack.getAttackCharList()) {
+						if (c.getCharacterID().equals(Nexus.getCurrentChar().getId())) {
+							btPreview.setDisable(!c.getType().equals(Constants.ROLE_ATTACKER_COMMANDER));
+						}
+					}
+				}
+			}
+		}
 	}
 
 	/**
