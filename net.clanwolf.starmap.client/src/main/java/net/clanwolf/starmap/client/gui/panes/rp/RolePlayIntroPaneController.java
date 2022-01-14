@@ -94,6 +94,7 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		super.initialize(url, rb);
+		btPreview.setDisable(true);
 		if (!isCharRP) {
 			BOAttack attack = Nexus.getCurrentAttackOfUser();
 			if (attack != null) {
@@ -105,6 +106,8 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 					}
 				}
 			}
+		} else {
+			btPreview.setDisable(false);
 		}
 	}
 

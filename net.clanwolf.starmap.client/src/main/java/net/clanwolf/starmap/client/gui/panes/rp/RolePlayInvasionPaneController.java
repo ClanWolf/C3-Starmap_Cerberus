@@ -50,6 +50,7 @@ import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
 import net.clanwolf.starmap.client.process.universe.BOAttack;
 import net.clanwolf.starmap.client.process.universe.BOFaction;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
+import net.clanwolf.starmap.client.util.RPVarReplacer;
 import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.transfer.dtos.AttackCharacterDTO;
 import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
@@ -196,10 +197,13 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 	}
 
 	public void statusUpdate() {
-		if (Nexus.getCurrentAttackOfUser() != null && Nexus.getCurrentAttackOfUser().getStoryId() != null) {
-			Platform.runLater(() -> {
-				BOAttack att = Nexus.getCurrentAttackOfUser();
+		Platform.runLater(() -> {
+			BOAttack att = Nexus.getCurrentAttackOfUser();
+			if (att == null) {
+				att = Nexus.getFinishedAttackInThisRoundForUser();
+			}
 
+			if (att != null && att.getStoryId() != null) {
 				Image imageUnselected = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/check.png")));
 				Image imageSelected = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/checked.png")));
 
@@ -212,10 +216,6 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 				confirmDefender2.setImage(imageUnselected);
 				confirmDefender3.setImage(imageUnselected);
 				confirmDefender4.setImage(imageUnselected);
-
-				if (att == null) {
-					att = Nexus.getFinishedAttackInThisRoundForUser();
-				}
 
 				for (AttackCharacterDTO ac : att.getAttackCharList()) {
 					if (ac.getType().equals(Constants.ROLE_ATTACKER_COMMANDER)) {
@@ -243,8 +243,8 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 						}
 					}
 				}
-			});
-		}
+			}
+		});
 	}
 
 	@Override
@@ -307,140 +307,144 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 
 	@Override
 	public void getStoryValues(RolePlayStoryDTO rpStory) {
+		if (rpStory.getStoryIntro() == null) {
+			//set background image
+			Image im = BORolePlayStory.getRPG_Image(null);
+			backgroundImage.setImage(im);
 
-			if (rpStory.getStoryIntro() == null) {
-				//set background image
-				Image im = BORolePlayStory.getRPG_Image(null);
-				backgroundImage.setImage(im);
+			//set story image
+			Image im2 = BORolePlayStory.getRPG_Image(rpStory);
+			rpImage.setImage(im2);
+		}
 
-				//set story image
-				Image im2 = BORolePlayStory.getRPG_Image(rpStory);
-				rpImage.setImage(im2);
+		// play sound
+		if (rpStory.getStoryMP3() != null) {
+			C3SoundPlayer.playRPSound(BORolePlayStory.getRPG_Soundfile(rpStory));
+		}
+
+		// REPLACE VARS!
+		String storyStepText = rpStory.getStoryText();
+		storyStepText = storyStepText.replaceAll("@@ATTACKER@@", RPVarReplacer.getValueForKey("@@ATTACKER@@"));
+		storyStepText = storyStepText.replaceAll("@@DEFENDER@@", RPVarReplacer.getValueForKey("@@DEFENDER@@"));
+		storyStepText = storyStepText.replaceAll("@@PLANET@@", RPVarReplacer.getValueForKey("@@PLANET@@"));
+
+		//TODO: append single chars step by step until the whole text is displaying
+		taRpText.setText(storyStepText);
+
+		if (rpStory.getVar9ID() != null) {
+			RolePlayStoryVar9DTO rpVar9 = rpStory.getVar9ID();
+
+			double x = 59;
+			double y = 452;
+			double offset = 40;
+
+			double x2 = 768;
+			double x3 = 806;
+
+			attackerDropVictories = rpVar9.getAttackerDropVictories();
+			defenderDropVictories = rpVar9.getDefenderDropVictories();
+			if (attackerDropVictories != null && defenderDropVictories != null) {
+				scoreAnimation(attackerDropVictories, defenderDropVictories);
+			} else {
+				logger.error("Current score is not available!");
+				scoreAnimation(1, 1);
 			}
 
-			// play sound
-			if (rpStory.getStoryMP3() != null) {
-				C3SoundPlayer.playRPSound(BORolePlayStory.getRPG_Soundfile(rpStory));
+			// rpVar9
+			if (rpVar9.getOption4StoryID() != null) {
+				btChoice4.setVisible(true);
+				confirmAttacker4.setVisible(true);
+				confirmDefender4.setVisible(true);
+
+
+				btChoice4.setLayoutX(x);
+				btChoice4.setLayoutY(y);
+
+				confirmAttacker4.setLayoutX(x2);
+				confirmAttacker4.setLayoutY(y);
+
+				confirmDefender4.setLayoutX(x3);
+				confirmDefender4.setLayoutY(y);
+
+				y = y - offset;
+
+				btChoice4.setText(rpVar9.getOption4Text());
 			}
 
-			//TODO: append single chars step by step until the whole text is displaying
-			taRpText.setText(rpStory.getStoryText());
+			if (rpVar9.getOption3StoryID() != null) {
+				btChoice3.setVisible(true);
+				confirmAttacker3.setVisible(true);
+				confirmDefender3.setVisible(true);
 
-			if (rpStory.getVar9ID() != null) {
+				btChoice3.setLayoutX(x);
+				btChoice3.setLayoutY(y);
 
-				RolePlayStoryVar9DTO rpVar9 = rpStory.getVar9ID();
+				confirmAttacker3.setLayoutX(x2);
+				confirmAttacker3.setLayoutY(y);
 
-				double x = 59;
-				double y = 452;
-				double offset = 40;
+				confirmDefender3.setLayoutX(x3);
+				confirmDefender3.setLayoutY(y);
 
-				double x2 = 768;
-				double x3 = 806;
+				y = y - offset;
 
-				attackerDropVictories = rpVar9.getAttackerDropVictories();
-				defenderDropVictories = rpVar9.getDefenderDropVictories();
-				if (attackerDropVictories != null && defenderDropVictories != null) {
-					scoreAnimation(attackerDropVictories, defenderDropVictories);
-				} else {
-					logger.error("Current score is not available!");
-					scoreAnimation(1, 1);
-				}
+				btChoice3.setText(rpVar9.getOption3Text());
+			}
 
-				// rpVar9
-				if (rpVar9.getOption4StoryID() != null) {
-					btChoice4.setVisible(true);
-					confirmAttacker4.setVisible(true);
-					confirmDefender4.setVisible(true);
+			if (rpVar9.getOption2StoryID() != null) {
+				btChoice2.setVisible(true);
+				confirmAttacker2.setVisible(true);
+				confirmDefender2.setVisible(true);
 
+				btChoice2.setLayoutX(x);
+				btChoice2.setLayoutY(y);
 
-					btChoice4.setLayoutX(x);
-					btChoice4.setLayoutY(y);
+				confirmAttacker2.setLayoutX(x2);
+				confirmAttacker2.setLayoutY(y);
 
-					confirmAttacker4.setLayoutX(x2);
-					confirmAttacker4.setLayoutY(y);
+				confirmDefender2.setLayoutX(x3);
+				confirmDefender2.setLayoutY(y);
 
-					confirmDefender4.setLayoutX(x3);
-					confirmDefender4.setLayoutY(y);
-
-					y = y - offset;
-
-					btChoice4.setText(rpVar9.getOption4Text());
-				}
-
-				if (rpVar9.getOption3StoryID() != null) {
-					btChoice3.setVisible(true);
-					confirmAttacker3.setVisible(true);
-					confirmDefender3.setVisible(true);
-
-					btChoice3.setLayoutX(x);
-					btChoice3.setLayoutY(y);
-
-					confirmAttacker3.setLayoutX(x2);
-					confirmAttacker3.setLayoutY(y);
-
-					confirmDefender3.setLayoutX(x3);
-					confirmDefender3.setLayoutY(y);
-
-					y = y - offset;
-
-					btChoice3.setText(rpVar9.getOption3Text());
-				}
-
-				if (rpVar9.getOption2StoryID() != null) {
-					btChoice2.setVisible(true);
-					confirmAttacker2.setVisible(true);
-					confirmDefender2.setVisible(true);
-
-					btChoice2.setLayoutX(x);
-					btChoice2.setLayoutY(y);
-
-					confirmAttacker2.setLayoutX(x2);
-					confirmAttacker2.setLayoutY(y);
-
-					confirmDefender2.setLayoutX(x3);
-					confirmDefender2.setLayoutY(y);
-
-					defenderButtonIcon.setLayoutY(y + 4);
+				defenderButtonIcon.setLayoutY(y + 4);
 //					defenderButtonIcon.setVisible(true);
 
-					y = y - offset;
+				y = y - offset;
 
-					btChoice2.setText(rpVar9.getOption2Text());
-				}
-
-				if (rpVar9.getOption1StoryID() != null) {
-					btChoice1.setVisible(true);
-					confirmAttacker1.setVisible(true);
-					confirmDefender1.setVisible(true);
-
-					btChoice1.setLayoutX(x);
-					btChoice1.setLayoutY(y);
-
-					confirmAttacker1.setLayoutX(x2);
-					confirmAttacker1.setLayoutY(y);
-
-					confirmDefender1.setLayoutX(x3);
-					confirmDefender1.setLayoutY(y);
-
-					btChoice1.setText(rpVar9.getOption1Text());
-
-					attackerButtonIcon.setLayoutY(y + 4);
-//					attackerButtonIcon.setVisible(true);
-				}
-
-				double yPos = y - offset - 5;
-
-				attackerHeader.setLayoutX(x2);
-				attackerHeader.setLayoutY(yPos);
-
-				defenderHeader.setLayoutX(x3);
-				defenderHeader.setLayoutY(yPos);
-
-				ivAttackerWaiting.setLayoutY(y - 25);
-				ivDefenderWaiting.setLayoutY(y - 25);
-
-				paneCurrentScore.setLayoutY(yPos);
+				btChoice2.setText(rpVar9.getOption2Text());
 			}
+
+			if (rpVar9.getOption1StoryID() != null) {
+				btChoice1.setVisible(true);
+				confirmAttacker1.setVisible(true);
+				confirmDefender1.setVisible(true);
+
+				btChoice1.setLayoutX(x);
+				btChoice1.setLayoutY(y);
+
+				confirmAttacker1.setLayoutX(x2);
+				confirmAttacker1.setLayoutY(y);
+
+				confirmDefender1.setLayoutX(x3);
+				confirmDefender1.setLayoutY(y);
+
+				btChoice1.setText(rpVar9.getOption1Text());
+
+				attackerButtonIcon.setLayoutY(y + 4);
+//					attackerButtonIcon.setVisible(true);
+			}
+
+			double yPos = y - offset - 5;
+
+			attackerHeader.setLayoutX(x2);
+			attackerHeader.setLayoutY(yPos);
+
+			defenderHeader.setLayoutX(x3);
+			defenderHeader.setLayoutY(yPos);
+
+			ivAttackerWaiting.setLayoutY(y - 25);
+			ivDefenderWaiting.setLayoutY(y - 25);
+
+			paneCurrentScore.setLayoutY(yPos);
+		}
 	}
 
 	@Override
@@ -536,12 +540,14 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 	private void handleOnActionbtChoice1(){
 		Long rp = getCurrentRP().getVar9ID().getOption1StoryID();
 		saveNextInvasionStep(rp, true, false);
+		logger.info("Choice1: Attacker won, defender lost. Target rp id: " + rp);
 	}
 
 	@FXML
 	private void handleOnActionbtChoice2(){
 		Long rp = getCurrentRP().getVar9ID().getOption2StoryID();
 		saveNextInvasionStep(rp, false, true);
+		logger.info("Choice2: Attacker lost, defender won. Target rp id: " + rp);
 	}
 
 	@FXML

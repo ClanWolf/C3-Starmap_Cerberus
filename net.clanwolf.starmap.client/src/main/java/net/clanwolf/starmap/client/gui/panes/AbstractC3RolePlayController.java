@@ -132,20 +132,22 @@ public abstract class AbstractC3RolePlayController implements Initializable, Act
 			if (bo == null) {
 				bo = Nexus.getFinishedAttackInThisRoundForUser();
 			}
-
-			if (Nexus.getBoUniverse().getAttackStoriesByID(Long.valueOf(bo.getStoryId())) == null) {
-				for (BOAttack b : Nexus.getBoUniverse().attackBOsAllInThisRound.values()) {
-					if (b.getAttackDTO().getAttackCharList() != null) {
-						for (AttackCharacterDTO ac : b.getAttackDTO().getAttackCharList()) {
-							if (ac.getCharacterID().equals(Nexus.getCurrentUser().getCurrentCharacter().getId())) {
-								return Nexus.getBoUniverse().getAttackStoriesByID(b.getAttackDTO().getStoryID());
+			if (bo != null) {
+				if (Nexus.getBoUniverse().getAttackStoriesByID(Long.valueOf(bo.getStoryId())) == null) {
+					for (BOAttack b : Nexus.getBoUniverse().attackBOsAllInThisRound.values()) {
+						if (b.getAttackDTO().getAttackCharList() != null) {
+							for (AttackCharacterDTO ac : b.getAttackDTO().getAttackCharList()) {
+								if (ac.getCharacterID().equals(Nexus.getCurrentUser().getCurrentCharacter().getId())) {
+									return Nexus.getBoUniverse().getAttackStoriesByID(b.getAttackDTO().getStoryID());
+								}
 							}
 						}
 					}
 				}
+				return Nexus.getBoUniverse().getAttackStoriesByID(Long.valueOf(bo.getStoryId()));
+			} else {
+				return null;
 			}
-
-			return Nexus.getBoUniverse().getAttackStoriesByID(Long.valueOf(bo.getStoryId()));
 		}
 	}
 }

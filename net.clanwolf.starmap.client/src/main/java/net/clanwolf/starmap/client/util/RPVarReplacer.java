@@ -34,17 +34,11 @@ public class RPVarReplacer {
 	static BOAttack attack = Nexus.getCurrentAttackOfUser();
 
 	public static String getValueForKey(String key) {
-		String v = "";
-
-		switch (key) {
-			case "@@ATTACKER@@":
-				v = attack.getAttackerFactionName();
-				break;
-			case "@@DEFENDER@@":
-				v = attack.getDefenderFactionName();
-				break;
-		}
-
-		return v;
+		return switch (key) {
+			case "@@ATTACKER@@" -> attack.getAttackerFactionName();
+			case "@@DEFENDER@@" -> attack.getDefenderFactionName();
+			case "@@PLANET@@" -> attack.getStarSystemName();
+			default -> "";
+		};
 	}
 }

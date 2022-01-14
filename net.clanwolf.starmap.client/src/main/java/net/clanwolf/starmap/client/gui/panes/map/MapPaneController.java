@@ -1522,7 +1522,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		if (!com.startsWith("*!!!*")) {
 			if (!"".equals(com)) {
 				logger.info("Received command: '" + com + "'");
-				Nexus.commandHistory.add(com);
+				if (!Nexus.commandHistory.getLast().equals(com)) {
+					Nexus.commandHistory.add(com);
+				}
 				if (Nexus.commandHistory.size() > 50) {
 					Nexus.commandHistory.remove(0);
 				}

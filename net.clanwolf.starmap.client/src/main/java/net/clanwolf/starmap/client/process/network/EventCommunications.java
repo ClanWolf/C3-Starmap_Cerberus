@@ -193,7 +193,13 @@ public class EventCommunications {
 
 					if(storyWasChanged) {
 						ActionManager.getAction(ACTIONS.ROLEPLAY_NEXT_STEP_CHANGE_PANE).execute(state.getObject());
-						Nexus.setStoryBeforeSaving(Nexus.getCurrentAttackOfUser().getStoryId().longValue());
+						BOAttack a = Nexus.getCurrentAttackOfUser();
+						if (a == null) {
+							a = Nexus.getFinishedAttackInThisRoundForUser();
+						}
+						if (a != null) {
+							Nexus.setStoryBeforeSaving(a.getStoryId().longValue());
+						}
 					}
 					break;
 

@@ -133,7 +133,9 @@ public class DicePaneController extends AbstractC3Controller implements ActionCa
 		if (!com.startsWith("*!!!*")) {
 			if (!"".equals(com)) {
 				logger.info("Received command: '" + com + "'");
-				Nexus.commandHistory.add(com);
+				if (!Nexus.commandHistory.getLast().equals(com)) {
+					Nexus.commandHistory.add(com);
+				}
 				if (Nexus.commandHistory.size() > 50) {
 					Nexus.commandHistory.remove(0);
 				}
