@@ -1,6 +1,9 @@
 C3 version history
 --------------------------------
 
+Version 6.1.5 (14.01.2022)
+-
+
 Version 6.1.4 (12.01.2022)
 - ADDED: New class to replace var keys in roleplay texts
 - FIXED: Entries in the console history are displayed only once as intended

@@ -72,6 +72,7 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 		ActionManager.addActionCallbackListener(ACTIONS.PANE_CREATION_FINISHED, this);
 		ActionManager.addActionCallbackListener(ACTIONS.ROLEPLAY_NEXT_STEP_CHANGE_PANE, this);
 		ActionManager.addActionCallbackListener(ACTIONS.FINALIZE_ROUND, this);
+		ActionManager.addActionCallbackListener(ACTIONS.RESET_STORY_PANES, this);
 	}
 
 	@Override
@@ -103,6 +104,9 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 					logger.info("The round has been finalized. This roleplay session needs to be canceled.");
 					ActionManager.getAction(ACTIONS.SWITCH_TO_MAP).execute();
 				}
+				break;
+			case RESET_STORY_PANES:
+				storyPanes.clear();
 				break;
 			default:
 				break;

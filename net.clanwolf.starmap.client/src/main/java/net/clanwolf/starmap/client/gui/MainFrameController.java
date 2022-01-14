@@ -1958,7 +1958,6 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				break;
 
 			case SWITCH_TO_MAP:
-				// Kicked!
 				C3SoundPlayer.play("sound/fx/readout_beep.mp3", false);
 
 				if (attackPane.isDisplayed()) {
@@ -1974,6 +1973,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				// Either the round was finalized or we have been kicked from the lobby.
 				// Anyway, we can not just click on the attack-button at this point.
 				attackButton.setDisable(true);
+
+				ActionManager.getAction(ACTIONS.RESET_STORY_PANES).execute();
 				break;
 
 //			case START_ROLEPLAY:

@@ -94,6 +94,21 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		super.initialize(url, rb);
+	}
+
+	/**
+	 * Handle Actions
+	 *
+	 * @param action
+	 *            Action
+	 * @param o
+	 *            Action object
+	 * @return true
+	 */
+	@Override
+	public boolean handleAction(ACTIONS action, ActionObject o) {
+		if(anchorPane != null && !anchorPane.isVisible()) return true;
+
 		btPreview.setDisable(true);
 		if (!isCharRP) {
 			BOAttack attack = Nexus.getCurrentAttackOfUser();
@@ -109,20 +124,7 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 		} else {
 			btPreview.setDisable(false);
 		}
-	}
 
-	/**
-	 * Handle Actions
-	 *
-	 * @param action
-	 *            Action
-	 * @param o
-	 *            Action object
-	 * @return true
-	 */
-	@Override
-	public boolean handleAction(ACTIONS action, ActionObject o) {
-		if(anchorPane != null && !anchorPane.isVisible()) return true;
 		switch (action) {
 
 		case START_ROLEPLAY:
@@ -133,25 +135,27 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 				// set current step of story
 				getStoryValues(getCurrentRP());
 
-				Boolean animationPlayed = animationPlayedMap.get(getCurrentRP().getId());
-				if (animationPlayed == null || !animationPlayed) {
-					FadeTransition fadeInTransition_01 = new FadeTransition(Duration.millis(800), backgroundImage);
-					fadeInTransition_01.setFromValue(0.0);
-					fadeInTransition_01.setToValue(1.0);
-					fadeInTransition_01.setCycleCount(1);
+				Platform.runLater(() -> {
+					Boolean animationPlayed = animationPlayedMap.get(getCurrentRP().getId());
+					if (animationPlayed == null || !animationPlayed) {
+						FadeTransition fadeInTransition_01 = new FadeTransition(Duration.millis(800), backgroundImage);
+						fadeInTransition_01.setFromValue(0.0);
+						fadeInTransition_01.setToValue(1.0);
+						fadeInTransition_01.setCycleCount(1);
 
-					FadeTransition fadeInTransition_03 = new FadeTransition(Duration.millis(1500), labHeader);
-					fadeInTransition_03.setFromValue(0.0);
-					fadeInTransition_03.setToValue(1.0);
-					fadeInTransition_03.setCycleCount(1);
+						FadeTransition fadeInTransition_03 = new FadeTransition(Duration.millis(1500), labHeader);
+						fadeInTransition_03.setFromValue(0.0);
+						fadeInTransition_03.setToValue(1.0);
+						fadeInTransition_03.setCycleCount(1);
 
-					SequentialTransition sequentialTransition = new SequentialTransition();
-					sequentialTransition.getChildren().addAll(fadeInTransition_01, fadeInTransition_03);
-					sequentialTransition.setCycleCount(1);
-					sequentialTransition.play();
+						SequentialTransition sequentialTransition = new SequentialTransition();
+						sequentialTransition.getChildren().addAll(fadeInTransition_01, fadeInTransition_03);
+						sequentialTransition.setCycleCount(1);
+						sequentialTransition.play();
 
-					animationPlayedMap.put(getCurrentRP().getId(), true);
-				}
+						animationPlayedMap.put(getCurrentRP().getId(), true);
+					}
+				});
 			} else if(ROLEPLAYENTRYTYPES.C3_RP_STEP_V1 == o.getObject()){
 				// set current step of story
 				getStoryValues(getCurrentRP());
