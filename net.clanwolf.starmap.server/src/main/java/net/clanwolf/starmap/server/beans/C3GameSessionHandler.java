@@ -120,6 +120,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				C3GameSessionHandlerRoleplay.saveRolePlayStory(session, state);
 				break;
 			case ROLEPLAY_REQUEST_ALLSTORIES:
+			case ROLEPLAY_REQUEST_STEPSBYSTORY:
 				C3GameSessionHandlerRoleplay.requestAllStories(session, state);
 				break;
 			case ROLEPLAY_DELETE_STORY:

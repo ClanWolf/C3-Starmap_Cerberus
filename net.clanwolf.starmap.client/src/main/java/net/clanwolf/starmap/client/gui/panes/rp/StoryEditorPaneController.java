@@ -93,7 +93,8 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 	TabPane tabPaneStory;
 	@FXML
 	private Tab tabBasic, tabBasic2, tabBasic3, tabBasic4, tabBasic5, tabBasic6, tabBasic7, tabBasic8, tabBasic9;
-
+	@FXML
+	private ComboBox<RolePlayStoryDTO> cbStorySelection;
 	//------------------- Char assignment -------------------
 	@FXML
 	Button btAddChar, btRemoveChar;
@@ -350,38 +351,47 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 
 				@SuppressWarnings("unchecked")
 				ArrayList<RolePlayStoryDTO> hlpLst = (ArrayList<RolePlayStoryDTO>) object.getObject();
-				boRP.setStoryList(hlpLst);
-
-				// Get story
-				ArrayList<RolePlayStoryDTO> liRP = boRP.getStoriesFromList();
-				Iterator<RolePlayStoryDTO> iter = liRP.iterator();
-				root.getChildren().clear();
-				while (iter.hasNext()) {
-					TreeItem<RolePlayStoryDTO> rpTreeItem = new TreeItem<>(iter.next());
-					rpTreeItem.setExpanded(false);
-					root.getChildren().add(rpTreeItem);
-
-					// Get chapter
-					ArrayList<RolePlayStoryDTO> liRPChapter = boRP.getChildsFromStory(rpTreeItem.getValue());
-					for (RolePlayStoryDTO aLiRPChapter : liRPChapter) {
-						TreeItem<RolePlayStoryDTO> rpTreeItemChapter = new TreeItem<>(aLiRPChapter);
-						rpTreeItemChapter.setExpanded(false);
-						rpTreeItem.getChildren().add(rpTreeItemChapter);
-
-						// Get step
-						ArrayList<RolePlayStoryDTO> liRPStep = boRP.getChildsFromStory(rpTreeItemChapter.getValue());
-						for (RolePlayStoryDTO aLiRPStep : liRPStep) {
-							TreeItem<RolePlayStoryDTO> rpTreeItemStep = new TreeItem<>(aLiRPStep);
-							rpTreeItemStep.setExpanded(false);
-							rpTreeItemChapter.getChildren().add(rpTreeItemStep);
-						}
-					}
-				}
+				boRP.setMainStories(hlpLst);
+				cbStorySelection.getItems().setAll(boRP.getMainStories());
 
 				mode = StoryEditorPaneController.MODE_IS_DEFAULT;
 				enableButtons();
 				ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("13");
+				break;
+			case GET_ROLEPLAY_STEPSBYSTORY:
+				ArrayList<RolePlayStoryDTO> gs2 = (ArrayList<RolePlayStoryDTO>) object.getObject();
+				gs2.add((RolePlayStoryDTO)cbStorySelection.getValue());
+				boRP.setStoryList( gs2);
 
+				Platform.runLater(() -> {
+					//ArrayList<RolePlayStoryDTO> liRP = boRP.getStoryList();
+					ArrayList<RolePlayStoryDTO> liRP = new ArrayList<RolePlayStoryDTO>();
+					liRP.add((RolePlayStoryDTO)cbStorySelection.getValue());
+					Iterator<RolePlayStoryDTO> iter = liRP.iterator();
+					root.getChildren().clear();
+					while (iter.hasNext()) {
+						TreeItem<RolePlayStoryDTO> rpTreeItem = new TreeItem<>(iter.next());
+						rpTreeItem.setExpanded(false);
+						root.getChildren().add(rpTreeItem);
+
+						// Get chapter
+						ArrayList<RolePlayStoryDTO> liRPChapter = boRP.getChildsFromStory(rpTreeItem.getValue());
+						for (RolePlayStoryDTO aLiRPChapter : liRPChapter) {
+							TreeItem<RolePlayStoryDTO> rpTreeItemChapter = new TreeItem<>(aLiRPChapter);
+							rpTreeItemChapter.setExpanded(false);
+							rpTreeItem.getChildren().add(rpTreeItemChapter);
+
+							// Get step
+							ArrayList<RolePlayStoryDTO> liRPStep = boRP.getChildsFromStory(rpTreeItemChapter.getValue());
+							for (RolePlayStoryDTO aLiRPStep : liRPStep) {
+								TreeItem<RolePlayStoryDTO> rpTreeItemStep = new TreeItem<>(aLiRPStep);
+								rpTreeItemStep.setExpanded(false);
+								rpTreeItemChapter.getChildren().add(rpTreeItemStep);
+							}
+						}
+					}
+				});
+				break;
 			default:
 				break;
 		}
@@ -391,6 +401,11 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 	/* ----------------- FXML begin ----------------- */
 
 	//------------------- Dialog ----------------------------
+	@FXML
+	private void handleOnAction_StorySelection(){
+		boRP.getAllStepsByStory((RolePlayStoryDTO) cbStorySelection.getValue());
+	}
+
 	//------------------- Treeview --------------------------
 	//------------------- Char assignment -------------------
 	//------------------- Basic rpg -------------------------
@@ -1051,6 +1066,8 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 	 * Initalisation of combobox cbStoryVarianten
 	 */
 	private void initCombobox() {
+		cbStorySelection.setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
+
 		cbNextStep_V1.setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());
 
 		cbStoryPath1.setCellFactory(rolePlayStoryDTOListView -> new RPCellFactory<RolePlayStoryDTO>());

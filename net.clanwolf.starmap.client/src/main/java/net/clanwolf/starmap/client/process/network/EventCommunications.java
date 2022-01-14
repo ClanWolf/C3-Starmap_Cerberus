@@ -262,11 +262,14 @@ public class EventCommunications {
 					logger.info("ROLEPLAY_GET_ALLSTORIES " + state.getObject().toString());
 					ActionManager.getAction(ACTIONS.GET_ROLEPLAY_ALLSTORIES).execute(state.getObject());
 					break;
+				case ROLEPLAY_GET_STEPSBYSTORY:
+					logger.info("ROLEPLAY_GET_STEPSBYSTORY " + state.getObject().toString());
+					ActionManager.getAction(ACTIONS.GET_ROLEPLAY_STEPSBYSTORY).execute(state.getObject());
+					break;
 				case ROLEPLAY_GET_ALLCHARACTER:
 					logger.info("ROLEPLAY_GET_ALLCHARACTER " + state.getObject().toString());
 					ActionManager.getAction(ACTIONS.GET_ROLEPLAY_ALLCHARACTER).execute(state.getObject());
 					break;
-
 				case ROLEPLAY_GET_CHAPTER_BYSORTORDER:
 				case ROLEPLAY_GET_STEP_BYSORTORDER:
 				case ROLEPLAY_SAVE_NEXT_STEP:

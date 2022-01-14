@@ -68,6 +68,9 @@ public enum GAMESTATEMODES {
 	ROLEPLAY_REQUEST_ALLCHARACTER,              /**/
 	ROLEPLAY_GET_ALLCHARACTER,                  /**/
 
+	ROLEPLAY_REQUEST_STEPSBYSTORY,
+	ROLEPLAY_GET_STEPSBYSTORY,
+
 	GET_UNIVERSE_DATA,                          /* Get all universe data from server */
 	FINALIZE_ROUND,
 	SESSION_KEEPALIVE,

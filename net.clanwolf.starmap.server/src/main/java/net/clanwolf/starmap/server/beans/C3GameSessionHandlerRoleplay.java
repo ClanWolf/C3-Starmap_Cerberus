@@ -190,17 +190,22 @@ public class C3GameSessionHandlerRoleplay {
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	static void requestAllStories(PlayerSession session, GameState state) {
 		RolePlayStoryDAO dao = RolePlayStoryDAO.getInstance();
-		UserPOJO user = (UserPOJO) state.getObject();
-		// List<RolePlayStoryPOJO> lrp = (List<RolePlayStoryPOJO>)(List)daos.findAll(null);
-		List<RolePlayStoryPOJO> lrp = (List) dao.findByProperty(C3GameSessionHandler.getC3UserID(session), "author", user.getUserId(), null);
-		ArrayList<RolePlayStoryPOJO> mylist = new ArrayList(lrp);
 
-		GameState response = new GameState(GAMESTATEMODES.ROLEPLAY_GET_ALLSTORIES);
+		RolePlayStoryPOJO rpMainStory = (RolePlayStoryPOJO) state.getObject();
+		ArrayList<RolePlayStoryPOJO> mylist = new ArrayList();
+
+		GameState response = null;
+
+		if(rpMainStory == null){
+			mylist = dao.getAllMainStories();
+			response = new GameState(GAMESTATEMODES.ROLEPLAY_GET_ALLSTORIES);
+		}
+		else {
+			mylist = dao.getAllStoriesByStory(rpMainStory);
+			response = new GameState(GAMESTATEMODES.ROLEPLAY_GET_STEPSBYSTORY);
+		}
+
 		response.addObject(mylist);
-
-//		Event e = Events.networkEvent(response);
-//		session.onEvent(e);
-
 		C3GameSessionHandler.sendNetworkEvent(session, response);
 	}
 

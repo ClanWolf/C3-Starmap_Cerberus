@@ -67,6 +67,7 @@ public class BORolePlayStory {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	private ArrayList<RolePlayStoryDTO> allStories; // Contains all selected stories
+	private ArrayList<RolePlayStoryDTO> allMainStories; // Contains all selected main stories
 	private String errorText; // Contains error text after an action (checkBeforeSave, checkBeforeDelete,...
 
 	private ArrayList<RolePlayCharacterDTO> allCharacters;
@@ -107,6 +108,7 @@ public class BORolePlayStory {
 		ActionManager.addActionCallbackListener(ACTIONS.DELETE_ROLEPLAY_STORY_OK, callBackListener);
 		ActionManager.addActionCallbackListener(ACTIONS.DELETE_ROLEPLAY_STORY_ERR, callBackListener);
 		ActionManager.addActionCallbackListener(ACTIONS.GET_ROLEPLAY_ALLCHARACTER, callBackListener);
+		ActionManager.addActionCallbackListener(ACTIONS.GET_ROLEPLAY_STEPSBYSTORY, callBackListener);
 	}
 
 	/**
@@ -312,6 +314,19 @@ public class BORolePlayStory {
 	public void setStoryList(ArrayList<RolePlayStoryDTO> li) {
 		allStories = li;
 	}
+
+	public ArrayList<RolePlayStoryDTO> getStoryList(){
+		return allStories;
+	}
+
+	public void setMainStories(ArrayList<RolePlayStoryDTO> li) {
+		allMainStories = li;
+	}
+
+	public ArrayList<RolePlayStoryDTO> getMainStories(){
+		return allMainStories;
+	}
+
 
 	/**
 	 * Gets a story by id.
@@ -808,7 +823,15 @@ public class BORolePlayStory {
 	public void getAllStories() {
 		GameState state = new GameState();
 		state.setMode(GAMESTATEMODES.ROLEPLAY_REQUEST_ALLSTORIES);
-		state.addObject(Nexus.getCurrentUser());
+		//state.addObject(Nexus.getCurrentUser());
+
+		Nexus.fireNetworkEvent(state);
+	}
+
+	public void getAllStepsByStory(RolePlayStoryDTO rp) {
+		GameState state = new GameState();
+		state.setMode(GAMESTATEMODES.ROLEPLAY_REQUEST_STEPSBYSTORY);
+		state.addObject(rp);
 
 		Nexus.fireNetworkEvent(state);
 	}
