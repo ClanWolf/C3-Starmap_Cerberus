@@ -1975,6 +1975,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				attackButton.setDisable(true);
 
 				ActionManager.getAction(ACTIONS.RESET_STORY_PANES).execute();
+				ActionManager.getAction(ACTIONS.NEW_UNIVERSE_RECEIVED).execute(); // TODO: This is only to redraw the map to see the color change
 				break;
 
 //			case START_ROLEPLAY:
