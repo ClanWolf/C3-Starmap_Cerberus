@@ -34,6 +34,7 @@ import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.process.universe.BOAttack;
+import net.clanwolf.starmap.client.process.universe.BOStarSystem;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -143,6 +144,7 @@ public class EventCommunications {
 				case ATTACK_SAVE_RESPONSE:
 					logger.info("Attack has been started.");
 					AttackDTO attack = (AttackDTO) state.getObject();
+
 					//RolePlayStoryDTO rpOldDTO = Nexus.getBoUniverse().getAttackStories().get(Nexus.getCurrentAttackOfUser().getAttackDTO().getStoryID());
 					boolean storyWasChanged = false;
 					if(	Nexus.getStoryBeforeSaving() != null && !attack.getStoryID().equals(Nexus.getStoryBeforeSaving())){
@@ -201,6 +203,22 @@ public class EventCommunications {
 							Nexus.setStoryBeforeSaving(a.getStoryId().longValue());
 						}
 					}
+
+
+
+
+					// TODO: Winner Faction wird ins System geschrieben, aber es wird trotzdem nicht gefärbt!!!!
+
+
+
+
+
+					Long factionWinnerId = attack.getFactionID_Winner();
+					if (factionWinnerId != null) {
+						BOStarSystem boSs = Nexus.getBoUniverse().starSystemBOs.get(attack.getStarSystemID());
+						boSs.setFactionId(attack.getFactionID_Winner());
+						ActionManager.getAction(ACTIONS.REPAINT_MAP).execute();
+					}
 					break;
 
 				case ATTACK_CHARACTER_SAVE_RESPONSE:
@@ -217,6 +235,7 @@ public class EventCommunications {
 					}
 
 					break;
+
 				case ERROR_MESSAGE:
 					logger.info("ErrorMessage");
 					logger.error((String) state.getObject());

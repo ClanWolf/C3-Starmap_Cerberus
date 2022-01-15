@@ -200,6 +200,11 @@ public class BOFaction {
 	}
 
 	@SuppressWarnings("unused")
+	public FactionDTO getFactionDTO() {
+		return this.factionDTO;
+	}
+
+	@SuppressWarnings("unused")
 	public String getColor() { return factionDTO.getColor(); }
 
 	@SuppressWarnings("unused")

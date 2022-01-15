@@ -1505,6 +1505,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		ActionManager.addActionCallbackListener(ACTIONS.HIDE_JUMPSHIP_DETAIL, this);
 		ActionManager.addActionCallbackListener(ACTIONS.TERMINAL_COMMAND, this);
 		ActionManager.addActionCallbackListener(ACTIONS.SYSTEM_WAS_SELECTED, this);
+		ActionManager.addActionCallbackListener(ACTIONS.REPAINT_MAP, this);
 	}
 
 	/**
@@ -1587,6 +1588,11 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	public boolean handleAction(ACTIONS action, ActionObject o) {
 		switch (action) {
 			case UPDATE_UNIVERSE:
+				break;
+
+			case REPAINT_MAP:
+				logger.info("Map will be repainted.");
+				refreshUniverseMap();
 				break;
 
 			case NEW_UNIVERSE_RECEIVED:

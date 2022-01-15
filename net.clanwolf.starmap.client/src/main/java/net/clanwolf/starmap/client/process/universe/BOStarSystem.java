@@ -223,6 +223,19 @@ public class BOStarSystem {
 	public String getAffiliation() { return hh_starSystemDataDTO.getFactionID().getShortName(); }
 
 	@SuppressWarnings("unused")
+	public void setFactionId(Long factionId) {
+		BOFaction faction = null;
+		for (BOFaction f : Nexus.getBoUniverse().factionBOs.values()) {
+			if (f.getID().equals(factionId)) {
+				faction = f;
+			}
+		}
+		if (faction != null) {
+			this.hh_starSystemDataDTO.setFactionID(faction.getFactionDTO());
+		}
+	}
+
+	@SuppressWarnings("unused")
 	public Long getFactionId() { return hh_starSystemDataDTO.getFactionID().getId(); }
 
 	@SuppressWarnings("unused")
