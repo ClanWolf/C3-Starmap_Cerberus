@@ -29,9 +29,12 @@ package net.clanwolf.starmap.client.mwo;
 import java.util.HashMap;
 import java.util.Map;
 
-/*
-  Author: KERNREAKTOR
-  Version: 14-12-2021
+/**
+ * Diese Klasse weist der MechItemId die von der MWO Api ausgelesen wird,
+ * einen Mech' zu und diese Eigenschaften des Mech's können ausgelesen werden.
+ *
+ * @author KERNREAKTOR
+ * @version 14-12-2021
  */
 public class MechIdInfo {
 
@@ -56,16 +59,25 @@ public class MechIdInfo {
         this.shortname = shortname;
     }
 
+    /**
+     * Mechklassen die es in MWO gibt.
+     */
     public enum EMechclass
     {
         LIGHT, MEDIUM,	HEAVY,	ASSAULT, UNKNOWN
     }
 
+    /**
+     * Die Fraktionen die es in MWO gibt.
+     */
     public enum EFaction
     {
         INNERSPHERE, CLAN, UNKNOWN
     }
 
+    /**
+     * Alle Mech's die es gibt werden in einer (HashMap) initialesiert.
+     */
     public MechIdInfo() {
 
         this.mechids.put(1,new MechIdInfo(EFaction.INNERSPHERE,"HUNCHBACK",50, EMechclass.MEDIUM,"STANDARD","HUNCHBACK HBK-4G","HBK-4G"));
@@ -925,53 +937,110 @@ public class MechIdInfo {
 
     }
 
+    /**
+     * Überprüft, ob es eine gültige MechItemId ist.
+     *
+     * @param MechItemID Die (int) Id von der MWO Api
+     * @return Gibt den (Boolean) Wahrheitswert zurück
+     */
     public Boolean IsValidId(Integer MechItemID){
 
         return this.mechids.containsKey(MechItemID);
     }
 
+    /**
+     * Die (int) Tonnage des Mech's wird zurückgegeben.
+     *
+     * @param MechItemID Die (int) MechItemId von der MWO Api,
+     * @return Gibt die (int) Tonnage des Mech's zurück.
+     */
     public Integer getTonnage(Integer MechItemID) {
 
         return IsValidId(MechItemID) ? this.mechids.get(MechItemID).tonnage : 0;
 
     }
 
+    /**
+     * Die (Enum) Fraktion wird zurückgegeben.
+     *
+     * @param MechItemID Die (int) MechItemId von der MWO Api.
+     * @return Gibt die (Enum) Fraktion des Mech's zurück.
+     */
     public EFaction getFaction(Integer MechItemID) {
 
         return IsValidId(MechItemID) ? this.mechids.get(MechItemID).faction : EFaction.UNKNOWN;
 
     }
 
+    /**
+     * Die (String) Chassis des Mech's wird zurückgegeben.
+     *
+     * @param MechItemID Die (int) MechItemId von der MWO Api.
+     * @return Gibt (String) Chassis des Mech's zurück.
+     */
     public String getChassis(Integer MechItemID) {
 
         return IsValidId(MechItemID) ? this.mechids.get(MechItemID).chassis : this.msginvalidid;
 
     }
 
+    /**
+     * Die (Enum) Mechklasse wird zurückgegeben:
+     *
+     * @param MechItemID Die (int) MechItemId von der MWO Api.
+     * @return Gibt die (Enum) Mechklasse zurück.
+     */
     public EMechclass getMechclass(Integer MechItemID) {
 
         return IsValidId(MechItemID) ? this.mechids.get(MechItemID).mechclass : EMechclass.UNKNOWN;
 
     }
 
+    /**
+     * Die (String) Variante des Mech's wird zurückgegeben.
+     *
+     * <p>Die (String) Werte die er zurückgeben kann ist: CHAMPION, HERO, SPECIAL und STANDARD</p>
+     *
+     * @param MechItemID Die (int) MechItemId von der MWO Api.
+     * @return Gibt die (String) Variant zurück.
+     */
     public String getVarianttype(Integer MechItemID) {
 
         return IsValidId(MechItemID) ? this.mechids.get(MechItemID).varianttype : this.msginvalidid;
 
     }
 
+    /**
+     * Der Vollständige (String) Mechname wird zurückgegeben.
+     *
+     * <p>Ein Beispielname wäre: GARGOYLE GAR-PRIME(I)</p>
+     *
+     * @param MechItemID Die (int) MechItemId von der MWO Api.
+     * @return Gib den (String) vollständigen Mechnamen zurück.
+     */
     public String getFullname(Integer MechItemID) {
 
         return IsValidId(MechItemID) ? this.mechids.get(MechItemID).fullname : this.msginvalidid;
 
     }
 
+    /**
+     * Die Kurzform des (String) Mech'snamens wird zurückgeben.
+     *
+     * <p>Ein Beispiel wäre: GAR-PRIME(I)</p>
+     *
+     * @param MechItemID Die (int) MechItemId von der MWO Api.
+     * @return Gibt die Kurzform des (String) Mech'snamens zurück.
+     */
     public String getShortname(Integer MechItemID) {
 
         return IsValidId(MechItemID) ? this.mechids.get(MechItemID).shortname : this.msginvalidid;
 
     }
 
+    /**
+     * Löscht die (HashMap) die mit {@link #MechIdInfo()} initialesiert wurde.
+     */
     public void Unload() {
 
         this.mechids.clear();

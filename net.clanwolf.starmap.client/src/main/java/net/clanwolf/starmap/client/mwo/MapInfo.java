@@ -29,15 +29,20 @@ package net.clanwolf.starmap.client.mwo;
 import java.util.HashMap;
 import java.util.Map;
 
-/*
-  Author: KERNREAKTOR
-  Version: 14-12-2021
+/**
+ * Diese Klasse konventiert von der MWO Api ausgelesen Kartennamen,
+ * in dem Spiel angezeigten Kartennamen.
+ *
+ * @author KERNREAKTOR
+ * @version 14-12-2021
  */
 public class MapInfo {
 
     final Map<String, String> map = new HashMap<>();
 
-
+    /**
+     * Initialesiert die Klasse {@link #MapInfo()}
+     */
     public MapInfo(){
 
         map.put("AlpinePeaks","Alpine Peaks");
@@ -82,11 +87,20 @@ public class MapInfo {
 
     }
 
+    /**
+     * Gibt den Kartennamen zurück, wie er in dem Spiel angezeigt wird.
+     *
+     * @param apimapname Den (String) Wert der in der MWO Api ausgegeben wird.
+     * @return Gibt den (String) Kartenname zurück.
+     */
     public String GetMapName(String apimapname){
 
         return  this.map.getOrDefault(apimapname, apimapname);
     }
 
+    /**
+     * Löscht die (HashMap) die mit {@link #MapInfo()} initialesiert wurde.
+     */
     public void Unload() {
 
         this.map.clear();
