@@ -79,6 +79,9 @@ public class SettingsPaneController extends AbstractC3Controller implements Acti
 	private Tab tab2;
 	@FXML
 	private Tab tab3;
+	@FXML
+	private Tab tab4;
+
 	// Proxy-Tab
 	@FXML
 	private RadioButton rb_NoProxy;
@@ -137,6 +140,11 @@ public class SettingsPaneController extends AbstractC3Controller implements Acti
 	// @FXML
 	// private TextArea selectTrackHelp;
 
+	@FXML
+	private CheckBox checkbox_HistoryScreenshot;
+	@FXML
+	private CheckBox checkbox_CheckClipBoardForMWOAPI;
+
 	// Volumes
 	private double SpeechVolume = 0.0;
 	private double SoundVolume = 0.0;
@@ -160,6 +168,8 @@ public class SettingsPaneController extends AbstractC3Controller implements Acti
 	// private String initial_selectTrack;
 	private boolean initial_UseProxyAuthentication;
 	private boolean initial_StoreProxyPassword;
+	private boolean initial_checkbox_HistoryScreenshot;
+	private boolean initial_checkbox_CheckClipBoardForMWOAPI;
 	private ChangeListener<? super String> editFieldChangeListener;
 	private ChangeListener<? super Number> editSliderSpeechChangeListener;
 	private ChangeListener<? super Number> editSliderSoundChangeListener;
@@ -167,6 +177,8 @@ public class SettingsPaneController extends AbstractC3Controller implements Acti
 	private ChangeListener<? super Toggle> editProxyToggleChangeListener;
 	private ChangeListener<? super Boolean> editProxyNeedsAuthenticationChangeListener;
 	private ChangeListener<? super Boolean> editProxySavePasswordChangeListener;
+	private ChangeListener<? super Boolean> editcheckbox_CheckClipBoardForMWOAPI;
+	private ChangeListener<? super Boolean> editcheckbox_HistoryScreenshot;
 
 	@FXML
 	private void handleCancelButtonHoverEnter() {
@@ -363,6 +375,8 @@ public class SettingsPaneController extends AbstractC3Controller implements Acti
 		initial_UseProxy_ToggleIndex = proxyToggleGroup.getToggles().indexOf(proxyToggleGroup.getSelectedToggle());
 		initial_UseProxyAuthentication = cb_Authentication.isSelected();
 		initial_StoreProxyPassword = cb_SaveProxyPassword.isSelected();
+		initial_checkbox_HistoryScreenshot = checkbox_HistoryScreenshot.isSelected();
+		initial_checkbox_CheckClipBoardForMWOAPI = checkbox_CheckClipBoardForMWOAPI.isSelected();
 		// initial_selectTrack = selectTrack.getText();
 
 		C3Properties.setProperty(C3PROPS.SERVER_URL, edit_ServerURL.getText(), true);
@@ -645,6 +659,15 @@ public class SettingsPaneController extends AbstractC3Controller implements Acti
 			resultIcon.getStyleClass().remove("resultIconLabel_Failure");
 			resultIcon.getStyleClass().add("resultIconLabel_Success");
 		}
+
+		if ("true".equals(C3Properties.getProperty(C3PROPS.GENERALS_SCREENSHOT_HISTORY))) {
+			checkbox_HistoryScreenshot.setSelected(true);
+		}
+
+		if ("true".equals(C3Properties.getProperty(C3PROPS.GENERALS_CLIPBOARD_API))) {
+			checkbox_CheckClipBoardForMWOAPI.setSelected(true);
+		}
+
 		createListeners();
 		enableListeners(true);
 	}
@@ -705,6 +728,22 @@ public class SettingsPaneController extends AbstractC3Controller implements Acti
 			}
 			setWarningOn(true);
 		};
+		editcheckbox_CheckClipBoardForMWOAPI = (ChangeListener<Boolean>) (ov, old_val, new_val) -> {
+			if (checkbox_CheckClipBoardForMWOAPI.isSelected()) {
+				C3Properties.setProperty(C3PROPS.GENERALS_CLIPBOARD_API, "true", true);
+			} else {
+				C3Properties.setProperty(C3PROPS.GENERALS_CLIPBOARD_API, "false", true);
+			}
+			setWarningOn(true);
+		};
+		editcheckbox_HistoryScreenshot = (ChangeListener<Boolean>) (ov, old_val, new_val) -> {
+			if (checkbox_HistoryScreenshot.isSelected()) {
+				C3Properties.setProperty(C3PROPS.GENERALS_SCREENSHOT_HISTORY, "true", true);
+			} else {
+				C3Properties.setProperty(C3PROPS.GENERALS_SCREENSHOT_HISTORY, "false", true);
+			}
+			setWarningOn(true);
+		};
 	}
 
 	// @SuppressWarnings("unchecked")
@@ -724,6 +763,8 @@ public class SettingsPaneController extends AbstractC3Controller implements Acti
 			proxyToggleGroup.selectedToggleProperty().addListener(editProxyToggleChangeListener);
 			cb_Authentication.selectedProperty().addListener(editProxyNeedsAuthenticationChangeListener);
 			cb_SaveProxyPassword.selectedProperty().addListener(editProxySavePasswordChangeListener);
+			checkbox_HistoryScreenshot.selectedProperty().addListener(editcheckbox_HistoryScreenshot);
+			checkbox_CheckClipBoardForMWOAPI.selectedProperty().addListener(editcheckbox_CheckClipBoardForMWOAPI);
 		} else {
 			edit_ServerURL.textProperty().removeListener(editFieldChangeListener);
 			edit_DatabaseName.textProperty().removeListener(editFieldChangeListener);
@@ -739,6 +780,8 @@ public class SettingsPaneController extends AbstractC3Controller implements Acti
 			proxyToggleGroup.selectedToggleProperty().removeListener(editProxyToggleChangeListener);
 			cb_Authentication.selectedProperty().removeListener(editProxyNeedsAuthenticationChangeListener);
 			cb_SaveProxyPassword.selectedProperty().removeListener(editProxySavePasswordChangeListener);
+			checkbox_HistoryScreenshot.selectedProperty().removeListener(editcheckbox_HistoryScreenshot);
+			checkbox_CheckClipBoardForMWOAPI.selectedProperty().removeListener(editcheckbox_CheckClipBoardForMWOAPI);
 		}
 	}
 

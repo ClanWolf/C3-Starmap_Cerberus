@@ -204,21 +204,13 @@ public class EventCommunications {
 						}
 					}
 
-
-
-
-					// TODO: Winner Faction wird ins System geschrieben, aber es wird trotzdem nicht gefärbt!!!!
-
-
-
-
-
-					Long factionWinnerId = attack.getFactionID_Winner();
-					if (factionWinnerId != null) {
-						BOStarSystem boSs = Nexus.getBoUniverse().starSystemBOs.get(attack.getStarSystemID());
-						boSs.setFactionId(attack.getFactionID_Winner());
-						ActionManager.getAction(ACTIONS.REPAINT_MAP).execute();
-					}
+					// Ein Versuch, ein eingenommenes System direkt im Client zu färben, geht so nicht!
+//					Long factionWinnerId = attack.getFactionID_Winner();
+//					if (factionWinnerId != null) {
+//						BOStarSystem boSs = Nexus.getBoUniverse().starSystemBOs.get(attack.getStarSystemID());
+//						boSs.setFactionId(attack.getFactionID_Winner());
+//						ActionManager.getAction(ACTIONS.REPAINT_MAP).execute();
+//					}
 					break;
 
 				case ATTACK_CHARACTER_SAVE_RESPONSE:

@@ -1,6 +1,13 @@
 C3 version history
 --------------------------------
 
+Version 6.1.6 (16.01.2022)
+- ADDED: A number of additional systems for meta phases 4 and up
+- FIXED: Display of download progress while downloading update
+- FIXED: Storing of the system owner after an attack
+- CHANGED: Monitoring of clipboard for MWO API String now optional (settings)
+- CHANGED: Creation of history screenshot of the map now optional (settings)
+
 Version 6.1.5 (14.01.2022)
 - CHANGED: Owner of a system changed immediatly after the attack (does not wait for next round)
 - CHANGED: Editor improvements

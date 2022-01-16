@@ -230,7 +230,7 @@
             </AnchorPane>
           </content>
         </Tab>
-            <Tab fx:id="tab31" text="Tab4_General">
+            <Tab fx:id="tab4" text="Tab4_General">
                <content>
                   <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>

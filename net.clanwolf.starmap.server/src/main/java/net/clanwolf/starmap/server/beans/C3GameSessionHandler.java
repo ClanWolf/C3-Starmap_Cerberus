@@ -146,7 +146,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			case ATTACK_SAVE:
 				saveAttack(session, state);
 				serverHeartBeat = new Timer();
-				serverHeartBeat.schedule(new HeartBeatTimer(true), 10);
+				serverHeartBeat.schedule(new HeartBeatTimer(true), 1000);
 				break;
 			case ATTACK_CHARACTER_SAVE:
 				//saveAttackCharacter(session, state);
@@ -261,19 +261,18 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				if (attackerCommanderNextStoryId != null &&	attackerCommanderNextStoryId.equals(defenderCommanderNextStoryId)) {
 					rpPojo = RolePlayStoryDAO.getInstance().findById(getC3UserID(session), attackerCommanderNextStoryId);
 
-					if(rpPojo.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1){
+					if(rpPojo.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1) {
 						if( rpPojo.getAttackerWins()){
 							JumpshipPOJO jpWinner = JumpshipDAO.getInstance().findById(getC3UserID(session),attack.getJumpshipID());
 							attack.setFactionID_Winner(jpWinner.getJumpshipFactionID());
 							StarSystemDAO systemDao = StarSystemDAO.getInstance();
 							StarSystemPOJO ss = systemDao.findById(getC3UserID(session), attack.getStarSystemID());
 							ss.setFactionID(jpWinner.getJumpshipFactionID());
+							systemDao.update(getC3UserID(session), ss);
 						} else if ( rpPojo.getDefenderWins()){
 							attack.setFactionID_Winner(attack.getFactionID_Defender());
 						}
 					}
-					// wenn storytype == V9 ist und Gewinner oder VErleirer 3 Punkte habe
-					// dann den gewinner in der Attack setzen
 				} else {
 					rpPojo = RolePlayStoryDAO.getInstance().findById(getC3UserID(session), attack.getStoryID());
 				}
@@ -282,8 +281,6 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				rpPojo = RolePlayStoryDAO.getInstance().findById(getC3UserID(session), 19L);
 			}
 			attack.setStoryID(rpPojo.getId());
-
-
 
 			if(attack.getId() != null) {
 				logger.debug("attack.getId() != null");

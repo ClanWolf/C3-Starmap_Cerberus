@@ -154,7 +154,6 @@ public final class Tools {
 
 	public static void saveMapScreenshot(int width, int height, PannableCanvas canvas) {
 		if(C3Properties.getBoolean(C3PROPS.GENERALS_SCREENSHOT_HISTORY)) {
-
 			if (!Nexus.isDevelopmentPC()) {
 				ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("14");
 				WritableImage wi = new WritableImage(width, height);
@@ -264,14 +263,9 @@ public final class Tools {
 			} else {
 				logger.error("Skipping map screenshot because this is a dev machine.");
 			}
-
 		} else {
-
 			logger.info(Internationalization.getString("app_CreateMapScreenshot"));
-
 		}
-
-
 	}
 
 	// Bad image quality, has been replaced by https://github.com/coobird/thumbnailator
