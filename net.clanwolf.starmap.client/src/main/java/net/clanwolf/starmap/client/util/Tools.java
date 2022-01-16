@@ -153,115 +153,125 @@ public final class Tools {
 	}
 
 	public static void saveMapScreenshot(int width, int height, PannableCanvas canvas) {
-		if (!Nexus.isDevelopmentPC()) {
-			ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("14");
-			WritableImage wi = new WritableImage(width, height);
+		if(C3Properties.getBoolean(C3PROPS.GENERALS_SCREENSHOT_HISTORY)) {
 
-			StatusTextEntryActionObject o1 = new StatusTextEntryActionObject("Creating history images...", false);
-			ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(o1);
+			if (!Nexus.isDevelopmentPC()) {
+				ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("14");
+				WritableImage wi = new WritableImage(width, height);
 
-			try {
-				BOFaction faction = Nexus.getCurrentFaction();
-				Image imageFaction = new Image(Objects.requireNonNull(Tools.class.getResourceAsStream("/images/logos/factions/" + faction.getLogo())));
+				StatusTextEntryActionObject o1 = new StatusTextEntryActionObject("Creating history images...", false);
+				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(o1);
 
-				File file1 = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "history" + File.separator + "C3_S" + Nexus.getCurrentSeason() + "_map.png");
-				File file2 = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "history" + File.separator + "C3_S" + Nexus.getCurrentSeason() + "_R" + Nexus.getCurrentRound() + "_map_history.png");
-				File file3 = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "history" + File.separator + "C3_S" + Nexus.getCurrentSeason() + "_R" + Nexus.getCurrentRound() + "_map_history_preview.png");
-				if (!file1.mkdirs()) {
-					// logger.error("Could not create history folder or it already existed!");
+				try {
+					BOFaction faction = Nexus.getCurrentFaction();
+					Image imageFaction = new Image(Objects.requireNonNull(Tools.class.getResourceAsStream("/images/logos/factions/" + faction.getLogo())));
+
+					File file1 = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "history" + File.separator + "C3_S" + Nexus.getCurrentSeason() + "_map.png");
+					File file2 = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "history" + File.separator + "C3_S" + Nexus.getCurrentSeason() + "_R" + Nexus.getCurrentRound() + "_map_history.png");
+					File file3 = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "history" + File.separator + "C3_S" + Nexus.getCurrentSeason() + "_R" + Nexus.getCurrentRound() + "_map_history_preview.png");
+					if (!file1.mkdirs()) {
+						// logger.error("Could not create history folder or it already existed!");
+					}
+					BufferedImage bi = SwingFXUtils.fromFXImage(canvas.snapshot(null, wi), null);
+
+					final int screenshotWidth = 2500;       // For map dimension of 4000 x 4000
+					final int screenshotHeight = 2000;      // For map dimension of 4000 x 4000
+					final BufferedImage finaleImage = new BufferedImage(screenshotWidth, screenshotHeight, BufferedImage.TYPE_INT_RGB);
+					Graphics g = finaleImage.getGraphics();
+					g.drawImage(finaleImage, (bi.getWidth() - screenshotWidth) / 2, (bi.getHeight() - screenshotHeight) / 2, screenshotWidth, screenshotHeight, null);
+					g.drawImage(bi, -(bi.getWidth() - screenshotWidth) / 2, -200, bi.getWidth(), bi.getHeight(), null);
+					g.dispose();
+
+					Image c3Icon = new Image(Objects.requireNonNull(Tools.class.getResourceAsStream("/icons/C3_Icon2.png")));
+					Image hhIcon = new Image(Objects.requireNonNull(Tools.class.getResourceAsStream("/icons/hammerhead.png")));
+					Graphics2D g2d = finaleImage.createGraphics();
+					g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+					g2d.drawImage(SwingFXUtils.fromFXImage(c3Icon, null), 50, 1850, 100, 100, null);
+					g2d.drawImage(SwingFXUtils.fromFXImage(hhIcon, null), 2350, 1850, 100, 100, null);
+					//g2d.drawImage(SwingFXUtils.fromFXImage(imageFaction, null), 50,350, 150,150, null);
+
+					String s1 = "C3 / Hammerhead - Season history map";
+					String s2 = "Season:";
+					String s3 = "Round:";
+					String s4 = "Metaphase:";
+					//String s5 = "User:";
+
+					String sv2 = "" + Nexus.getCurrentSeason();
+					String sv3 = "" + Nexus.getCurrentRound();
+					String sv4 = "" + Nexus.getCurrentSeasonMetaPhase();
+					//String sv5 = Nexus.getCurrentChar().getName() + " (" + Nexus.getCurrentUser().getUserName() + ")";
+
+					SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
+					Date date = new Date(System.currentTimeMillis());
+					String sd = formatter.format(date);
+
+					g2d.setFont(new Font("Arial", Font.BOLD, 45));
+					g2d.setPaint(Color.WHITE);
+					g2d.drawString(s1, 50, 100);
+
+					g2d.setFont(new Font("Arial", Font.PLAIN, 26));
+					g2d.drawString(s2, 50, 170);
+					g2d.drawString(s3, 50, 200);
+					g2d.drawString(s4, 50, 230);
+					//g2d.drawString(s5, 50, 300);
+					g2d.drawString(Nexus.getCurrentDate(), 2100, 100);
+					g2d.drawString(sd, 2100, 130);
+
+					g2d.setPaint(Color.GREEN);
+					g2d.drawString(sv2, 200, 170);
+					g2d.drawString(sv3, 200, 200);
+					g2d.drawString(sv4, 200, 230);
+					//g2d.drawString(sv5, 200, 300);
+
+					g2d.setFont(new Font("Arial", Font.BOLD, 200));
+					g2d.setPaint(Color.CYAN);
+					g2d.drawString(Nexus.getCurrentRound() + "", 2100, 400);
+
+					// Add a border
+					g2d.setPaint(Color.GRAY);
+					g2d.setStroke(new BasicStroke(20));
+					g2d.drawLine(0, 0, 2500, 0);
+					g2d.drawLine(0, 0, 0, 2000);
+					g2d.drawLine(2500, 0, 2500, 2000);
+					g2d.drawLine(0, 2000, 2500, 2000);
+
+					g2d.dispose();
+
+					ImageIO.write(finaleImage, "png", file1);
+					ImageIO.write(finaleImage, "png", file2);
+					// https://github.com/coobird/thumbnailator
+					ImageIO.write(Thumbnails.of(finaleImage).scale(0.10).asBufferedImage(), "png", file3);
+
+					Runnable runnable = () -> {
+						StatusTextEntryActionObject o2 = new StatusTextEntryActionObject("Uploading history images...", false);
+						ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(o2);
+
+						FTP ftpClient = new FTP(C3FTPTYPES.FTP_HISTORYUPLOAD);
+						ftpClient.upload(file1.getAbsolutePath(), file1.getName(), "S" + sv2);
+						ftpClient.upload(file2.getAbsolutePath(), file2.getName(), "S" + sv2);
+						ftpClient.upload(file3.getAbsolutePath(), file3.getName(), "S" + sv2);
+					};
+					Thread t = new Thread(runnable);
+					t.start();
+				} catch (IOException e) {
+					e.printStackTrace();
+					logger.error("Could not save map screenshot!");
 				}
-				BufferedImage bi = SwingFXUtils.fromFXImage(canvas.snapshot(null, wi), null);
 
-				final int screenshotWidth = 2500;       // For map dimension of 4000 x 4000
-				final int screenshotHeight = 2000;      // For map dimension of 4000 x 4000
-				final BufferedImage finaleImage = new BufferedImage(screenshotWidth, screenshotHeight, BufferedImage.TYPE_INT_RGB);
-				Graphics g = finaleImage.getGraphics();
-				g.drawImage(finaleImage, (bi.getWidth() - screenshotWidth) / 2, (bi.getHeight() - screenshotHeight) / 2, screenshotWidth, screenshotHeight, null);
-				g.drawImage(bi, -(bi.getWidth() - screenshotWidth) / 2, -200, bi.getWidth(), bi.getHeight(), null);
-				g.dispose();
-
-				Image c3Icon = new Image(Objects.requireNonNull(Tools.class.getResourceAsStream("/icons/C3_Icon2.png")));
-				Image hhIcon = new Image(Objects.requireNonNull(Tools.class.getResourceAsStream("/icons/hammerhead.png")));
-				Graphics2D g2d = finaleImage.createGraphics();
-				g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-				g2d.drawImage(SwingFXUtils.fromFXImage(c3Icon, null), 50, 1850, 100, 100, null);
-				g2d.drawImage(SwingFXUtils.fromFXImage(hhIcon, null), 2350, 1850, 100, 100, null);
-				//g2d.drawImage(SwingFXUtils.fromFXImage(imageFaction, null), 50,350, 150,150, null);
-
-				String s1 = "C3 / Hammerhead - Season history map";
-				String s2 = "Season:";
-				String s3 = "Round:";
-				String s4 = "Metaphase:";
-				//String s5 = "User:";
-
-				String sv2 = "" + Nexus.getCurrentSeason();
-				String sv3 = "" + Nexus.getCurrentRound();
-				String sv4 = "" + Nexus.getCurrentSeasonMetaPhase();
-				//String sv5 = Nexus.getCurrentChar().getName() + " (" + Nexus.getCurrentUser().getUserName() + ")";
-
-				SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm:ss");
-				Date date = new Date(System.currentTimeMillis());
-				String sd = formatter.format(date);
-
-				g2d.setFont(new Font("Arial", Font.BOLD, 45));
-				g2d.setPaint(Color.WHITE);
-				g2d.drawString(s1, 50, 100);
-
-				g2d.setFont(new Font("Arial", Font.PLAIN, 26));
-				g2d.drawString(s2, 50, 170);
-				g2d.drawString(s3, 50, 200);
-				g2d.drawString(s4, 50, 230);
-				//g2d.drawString(s5, 50, 300);
-				g2d.drawString(Nexus.getCurrentDate(), 2100, 100);
-				g2d.drawString(sd, 2100, 130);
-
-				g2d.setPaint(Color.GREEN);
-				g2d.drawString(sv2, 200, 170);
-				g2d.drawString(sv3, 200, 200);
-				g2d.drawString(sv4, 200, 230);
-				//g2d.drawString(sv5, 200, 300);
-
-				g2d.setFont(new Font("Arial", Font.BOLD, 200));
-				g2d.setPaint(Color.CYAN);
-				g2d.drawString(Nexus.getCurrentRound() + "", 2100, 400);
-
-				// Add a border
-				g2d.setPaint(Color.GRAY);
-				g2d.setStroke(new BasicStroke(20));
-				g2d.drawLine(0, 0, 2500, 0);
-				g2d.drawLine(0, 0, 0, 2000);
-				g2d.drawLine(2500, 0, 2500, 2000);
-				g2d.drawLine(0, 2000, 2500, 2000);
-
-				g2d.dispose();
-
-				ImageIO.write(finaleImage, "png", file1);
-				ImageIO.write(finaleImage, "png", file2);
-				// https://github.com/coobird/thumbnailator
-				ImageIO.write(Thumbnails.of(finaleImage).scale(0.10).asBufferedImage(), "png", file3);
-
-				Runnable runnable = () -> {
-					StatusTextEntryActionObject o2 = new StatusTextEntryActionObject("Uploading history images...", false);
-					ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(o2);
-
-					FTP ftpClient = new FTP(C3FTPTYPES.FTP_HISTORYUPLOAD);
-					ftpClient.upload(file1.getAbsolutePath(), file1.getName(), "S" + sv2);
-					ftpClient.upload(file2.getAbsolutePath(), file2.getName(), "S" + sv2);
-					ftpClient.upload(file3.getAbsolutePath(), file3.getName(), "S" + sv2);
-				};
-				Thread t = new Thread(runnable);
-				t.start();
-			} catch (IOException e) {
-				e.printStackTrace();
-				logger.error("Could not save map screenshot!");
+				// DO NOT use a thread here!
+				// Otherwise things like the nebula image end up on the screenshot (should not be there)
+				ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("14");
+			} else {
+				logger.error("Skipping map screenshot because this is a dev machine.");
 			}
 
-			// DO NOT use a thread here!
-			// Otherwise things like the nebula image end up on the screenshot (should not be there)
-			ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("14");
 		} else {
-			logger.error("Skipping map screenshot because this is a dev machine.");
+
+			logger.info(Internationalization.getString("app_CreateMapScreenshot"));
+
 		}
+
+
 	}
 
 	// Bad image quality, has been replaced by https://github.com/coobird/thumbnailator
@@ -450,16 +460,22 @@ public final class Tools {
 			boolean exceptionOccured = false;
 			try (BufferedInputStream in = new BufferedInputStream(new URL(link).openStream()); FileOutputStream fileOutputStream = new FileOutputStream(dir + File.separator + updateName)) {
 				byte[] dataBuffer = new byte[1024];
-				float counter = 0;
+				int counter = 0;
 				int bytesRead;
-				float filesize = new URL(link).openConnection().getContentLength();
-				final java.text.DecimalFormat twoDigits = new java.text.DecimalFormat( "0.0" );
-				TxtProgressBar tbp = new TxtProgressBar((int) filesize,"□","■");
+				int filesize =  new URL(link).openConnection().getContentLength() / 1024;
+
+				TxtProgressBar tpb = new TxtProgressBar( filesize,"□","■");
 
 				while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
 					fileOutputStream.write(dataBuffer, 0, bytesRead);
 					counter++;
-					StatusTextEntryActionObject o = new StatusTextEntryActionObject("Downloading Client installer: " + tbp.getcurprogress((int) counter) + " " + twoDigits.format(counter /1024) + " MB of " + twoDigits.format(filesize /1024 / 1024)  + " MB (" + twoDigits.format(counter * 100 / filesize) + " %)", false, "#555555");
+
+					StatusTextEntryActionObject o = new StatusTextEntryActionObject(Internationalization.getString("app_downloadInstaller")
+							+ " "
+							+ tpb.getcurprogress(counter) + " "
+							+ counter / 1024 + " MB of " + filesize / 1024   + " MB ("
+							+ tpb.getCurrentpercentvalue() + ")", false, "#555555");
+
 					o.setJustUpdate(true);
 					ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(o);
 				}
