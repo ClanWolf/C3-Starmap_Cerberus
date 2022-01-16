@@ -44,6 +44,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.CycleMethod;
+import javafx.scene.paint.LinearGradient;
+import javafx.scene.paint.Stop;
 import javafx.scene.shape.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -644,6 +647,48 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 						}
 					}
 
+					for (BOAttack boAttack : boUniverse.attackBOsFinishedInThisRound.values()) {
+						BOStarSystem attackedSystem;
+						BOStarSystem attackerStartedFromSystem;
+						attackedSystem = boUniverse.starSystemBOs.get(boAttack.getStarSystemId());
+						attackerStartedFromSystem = boUniverse.starSystemBOs.get(boAttack.getAttackedFromStarSystem());
+
+						if (attackedSystem != null && attackerStartedFromSystem != null) {
+							PointD[] points = attackedSystem.getVoronoiRegion();
+							if (points != null) {
+								if (boAttack.getAttackerFactionId().equals(boAttack.getAttackDTO().getFactionID_Winner().intValue())) {
+									Circle circle = new Circle(attackedSystem.getScreenX(), attackedSystem.getScreenY(), Config.MAP_BACKGROUND_AREA_RADIUS);
+									circle.setVisible(false);
+									Shape systemBackground = Shape.intersect(new Polygon(PointD.toDoubles(points)), circle);
+
+									String colorString1 = boUniverse.factionBOs.get(attackerStartedFromSystem.getAffiliation()).getColor();
+									Color c1 = Color.web(colorString1);
+									String colorString2 = boUniverse.factionBOs.get(attackedSystem.getAffiliation()).getColor();
+									Color c2 = Color.web(colorString2);
+
+									Stop[] stops = new Stop[]{new Stop(0.8, c1), new Stop(0.8, c2)};
+									LinearGradient lg = new LinearGradient(0, 0, 10, 10, false, CycleMethod.REPEAT, stops);
+									systemBackground.setFill(lg);
+									systemBackground.setOpacity(0.2);
+
+									boolean alreadyMarked = false;
+									systemBackground.setId("attackFinishedInThisRoundVisuals" + attackedSystem.getName());
+									for (Node n : canvas.getChildren()) {
+										if (n.getId() != null && n.getId().equals("attackFinishedInThisRoundVisuals" + attackedSystem.getName())) {
+											alreadyMarked = true;
+											break;
+										}
+									}
+									if (!alreadyMarked) {
+										canvas.getChildren().add(systemBackground);
+									}
+									systemBackground.setVisible(true);
+									systemBackground.toBack();
+								}
+							}
+						}
+					}
+
 					if (currentSystemID != null && targetSystemId != null) {
 						// TODO: Check if the attack succeeded or if the unit lost (then move backwards and delete route)
 						// TODO: If the fallback system has been taken by the enemy, trigger a new event here. Scenario "Fighting retreat"?
@@ -970,6 +1015,40 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 						}
 					}
 				}
+
+				for (BOAttack boAttack : boUniverse.attackBOsFinishedInThisRound.values()) {
+					BOStarSystem attackedSystem;
+					BOStarSystem attackerStartedFromSystem;
+					attackedSystem = boUniverse.starSystemBOs.get(boAttack.getStarSystemId());
+					attackerStartedFromSystem = boUniverse.starSystemBOs.get(boAttack.getAttackedFromStarSystem());
+
+					if (attackedSystem != null && attackerStartedFromSystem != null) {
+						PointD[] points = attackedSystem.getVoronoiRegion();
+						if (points != null) {
+							if (boAttack.getAttackerFactionId().equals(boAttack.getAttackDTO().getFactionID_Winner().intValue())) {
+								Circle circle = new Circle(attackedSystem.getScreenX(), attackedSystem.getScreenY(), Config.MAP_BACKGROUND_AREA_RADIUS);
+								circle.setVisible(false);
+								Shape systemBackground = Shape.intersect(new Polygon(PointD.toDoubles(points)), circle);
+
+								String colorString1 = boUniverse.factionBOs.get(attackerStartedFromSystem.getAffiliation()).getColor();
+								Color c1 = Color.web(colorString1);
+								String colorString2 = boUniverse.factionBOs.get(attackedSystem.getAffiliation()).getColor();
+								Color c2 = Color.web(colorString2);
+
+								Stop[] stops = new Stop[]{new Stop(0.8, c1), new Stop(0.8, c2)};
+								LinearGradient lg = new LinearGradient(0, 0, 10, 10, false, CycleMethod.REPEAT, stops);
+								systemBackground.setFill(lg);
+								systemBackground.setOpacity(0.2);
+
+								systemBackground.setId("attackFinishedInThisRoundVisuals" + attackedSystem.getName());
+								canvas.getChildren().add(systemBackground);
+								systemBackground.setVisible(true);
+								systemBackground.toBack();
+							}
+						}
+					}
+				}
+
 				canvas.getChildren().add(attacksPane);
 				attacksPane.toBack();
 
@@ -1682,7 +1761,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 					if (!BOAttack.charHasAnActiveAttack()) {
 						for (BOAttack a : Nexus.getBoUniverse().attackBOsOpenInThisRound.values()) {
-							attackAlreadyStarted = a.getStoryId() != null;
+							//attackAlreadyStarted = a.getStoryId() != null;
+							attackAlreadyStarted = a.attackLobbyHasBeenStarted();
 
 							// Correct season and round
 							if (Nexus.getCurrentSeason() == a.getSeason() && Nexus.getCurrentRound() == a.getRound()) {
@@ -1802,7 +1882,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				String com = o.getText();
 				if (Nexus.isLoggedIn()) {
 					if (Nexus.getCurrentlyOpenedPane() instanceof MapPane) {
-						handleCommand(com);
+						if (!com.startsWith("*!!!*")) {
+							handleCommand(com);
+						}
 					}
 				}
 				break;

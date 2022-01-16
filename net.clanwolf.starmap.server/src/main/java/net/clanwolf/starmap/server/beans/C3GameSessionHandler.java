@@ -265,10 +265,10 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 						if( rpPojo.getAttackerWins()){
 							JumpshipPOJO jpWinner = JumpshipDAO.getInstance().findById(getC3UserID(session),attack.getJumpshipID());
 							attack.setFactionID_Winner(jpWinner.getJumpshipFactionID());
-							StarSystemDAO systemDao = StarSystemDAO.getInstance();
-							StarSystemPOJO ss = systemDao.findById(getC3UserID(session), attack.getStarSystemID());
-							ss.setFactionID(jpWinner.getJumpshipFactionID());
-							systemDao.update(getC3UserID(session), ss);
+//							StarSystemDAO systemDao = StarSystemDAO.getInstance();
+//							StarSystemPOJO ss = systemDao.findById(getC3UserID(session), attack.getStarSystemID());
+//							ss.setFactionID(jpWinner.getJumpshipFactionID());
+//							systemDao.update(getC3UserID(session), ss);
 						} else if ( rpPojo.getDefenderWins()){
 							attack.setFactionID_Winner(attack.getFactionID_Defender());
 						}

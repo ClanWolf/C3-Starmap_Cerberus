@@ -498,7 +498,9 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 				String com1 = o.getText();
 				if (Nexus.isLoggedIn()) {
 					if (Nexus.getCurrentlyOpenedPane() instanceof ChatPane) {
-						handleCommand(com1);
+						if (!com1.startsWith("*!!!*")) {
+							handleCommand(com1);
+						}
 					}
 				}
 				break;

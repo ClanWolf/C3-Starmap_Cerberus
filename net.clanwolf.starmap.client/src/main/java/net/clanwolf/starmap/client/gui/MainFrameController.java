@@ -303,7 +303,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 	@FXML
 	private void handleTFSProgressEntered() {
-		double tfsProgress = 100d / 60d * Nexus.getBoUniverse().currentRound;
+		double tfsProgress = (100d / 60d * Nexus.getBoUniverse().currentRound) / 100;
 		String progString = Nexus.getBoUniverse().currentRound + " / 60";
 		labelTFSProgress.setText(progString);
 		TFSInfo.toFront();
@@ -314,7 +314,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 	@FXML
 	private void handleTFSProgressExited() {
-		double tfsProgress = 100d / 60d * Nexus.getBoUniverse().currentRound;
+		double tfsProgress = (100d / 60d * Nexus.getBoUniverse().currentRound) / 100;
 		String progString = Nexus.getBoUniverse().currentRound + " / 60";
 		labelTFSProgress.setText(progString);
 		TFSInfo.toFront();
@@ -1633,7 +1633,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					gameInfoLabel.setText("S" + boUniverse.currentSeason + " R" + boUniverse.currentRound + "/60 " + Tools.getRomanNumber(boUniverse.currentSeasonMetaPhase) + " - " + boUniverse.currentDate);
 
 					labelTFSProgress.setText(boUniverse.currentRound + " / 60");
-					TFSProgress.setProgress(100d / 60d * boUniverse.currentRound);
+					double tfsProgress = (100d / 60d * Nexus.getBoUniverse().currentRound) / 100;
+					TFSProgress.setProgress(tfsProgress);
 					TFSProgress.setVisible(true);
 					TFSProgress.toFront();
 					TFSInfo.setVisible(false);
@@ -1907,6 +1908,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				Platform.runLater(() -> {
 					BOUniverse boUniverse = Nexus.getBoUniverse();
 					gameInfoLabel.setText("S" + boUniverse.currentSeason + "*" + Tools.getRomanNumber(boUniverse.currentSeasonMetaPhase) + "/R" + boUniverse.currentRound + " - " + boUniverse.currentDate);
+
+					double tfsProgress = (100d / 60d * Nexus.getBoUniverse().currentRound) / 100;
+					TFSProgress.setProgress(tfsProgress);
 				});
 				break;
 
@@ -1967,6 +1971,13 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					}
 					menuIndicatorPos = 147;
 					moveMenuIndicator(menuIndicatorPos);
+
+					if (Nexus.isMwoCheckingActive()) {
+						Timer t = Nexus.getCheckSystemClipboardForMWOResultTimer();
+						t.cancel();
+						t.purge();
+						Nexus.setMWOCheckingActive(false);
+					}
 				}
 
 				// If this happens, we have been dropping out of an invasion lobby or game.

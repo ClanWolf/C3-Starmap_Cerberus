@@ -324,6 +324,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 
 		// REPLACE VARS!
 		String storyStepText = rpStory.getStoryText();
+
 		storyStepText = storyStepText.replaceAll("@@ATTACKER@@", RPVarReplacer.getValueForKey("@@ATTACKER@@"));
 		storyStepText = storyStepText.replaceAll("@@DEFENDER@@", RPVarReplacer.getValueForKey("@@DEFENDER@@"));
 		storyStepText = storyStepText.replaceAll("@@PLANET@@", RPVarReplacer.getValueForKey("@@PLANET@@"));
@@ -444,6 +445,32 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 			ivDefenderWaiting.setLayoutY(y - 25);
 
 			paneCurrentScore.setLayoutY(yPos);
+
+			String button01Text = btChoice1.getText();
+			String button02Text = btChoice2.getText();
+			String button03Text = btChoice3.getText();
+			String button04Text = btChoice4.getText();
+
+			button01Text = button01Text.replaceAll("@@ATTACKER@@", RPVarReplacer.getValueForKey("@@ATTACKER@@"));
+			button01Text = button01Text.replaceAll("@@DEFENDER@@", RPVarReplacer.getValueForKey("@@DEFENDER@@"));
+			button01Text = button01Text.replaceAll("@@PLANET@@", RPVarReplacer.getValueForKey("@@PLANET@@"));
+
+			button02Text = button02Text.replaceAll("@@ATTACKER@@", RPVarReplacer.getValueForKey("@@ATTACKER@@"));
+			button02Text = button02Text.replaceAll("@@DEFENDER@@", RPVarReplacer.getValueForKey("@@DEFENDER@@"));
+			button02Text = button02Text.replaceAll("@@PLANET@@", RPVarReplacer.getValueForKey("@@PLANET@@"));
+
+			button03Text = button03Text.replaceAll("@@ATTACKER@@", RPVarReplacer.getValueForKey("@@ATTACKER@@"));
+			button03Text = button03Text.replaceAll("@@DEFENDER@@", RPVarReplacer.getValueForKey("@@DEFENDER@@"));
+			button03Text = button03Text.replaceAll("@@PLANET@@", RPVarReplacer.getValueForKey("@@PLANET@@"));
+
+			button04Text = button04Text.replaceAll("@@ATTACKER@@", RPVarReplacer.getValueForKey("@@ATTACKER@@"));
+			button04Text = button04Text.replaceAll("@@DEFENDER@@", RPVarReplacer.getValueForKey("@@DEFENDER@@"));
+			button04Text = button04Text.replaceAll("@@PLANET@@", RPVarReplacer.getValueForKey("@@PLANET@@"));
+
+			btChoice1.setText(button01Text);
+			btChoice2.setText(button02Text);
+			btChoice3.setText(button03Text);
+			btChoice4.setText(button04Text);
 		}
 	}
 

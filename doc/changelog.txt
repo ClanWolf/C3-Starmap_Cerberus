@@ -1,12 +1,17 @@
 C3 version history
 --------------------------------
 
-Version 6.1.6 (16.01.2022)
+Version 6.1.7 (16.01.2022)
 - ADDED: A number of additional systems for meta phases 4 and up
+- ADDED: Marker for systems that have been attacked in the current round and conquered
+- FIXED: Behaviour of the command terminal cursor keys (up and down, history)
 - FIXED: Display of download progress while downloading update
 - FIXED: Storing of the system owner after an attack
+- FIXED: Progress of season is displayed correctly now
+- FIXED: Lobby can only be joined if it has been started by attacker commander
 - CHANGED: Monitoring of clipboard for MWO API String now optional (settings)
 - CHANGED: Creation of history screenshot of the map now optional (settings)
+- CHANGED: Clipboard monitoring stops if an invasion is over
 
 Version 6.1.5 (14.01.2022)
 - CHANGED: Owner of a system changed immediatly after the attack (does not wait for next round)

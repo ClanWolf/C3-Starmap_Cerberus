@@ -109,64 +109,64 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 	public boolean handleAction(ACTIONS action, ActionObject o) {
 		if(anchorPane != null && !anchorPane.isVisible()) return true;
 
-		btPreview.setDisable(true);
-		if (!isCharRP) {
-			BOAttack attack = Nexus.getCurrentAttackOfUser();
-			if (attack != null) {
-				if (attack.getAttackCharList() != null) {
-					for (AttackCharacterDTO c : attack.getAttackCharList()) {
-						if (c.getCharacterID().equals(Nexus.getCurrentChar().getId())) {
-							btPreview.setDisable(!c.getType().equals(Constants.ROLE_ATTACKER_COMMANDER));
+		btPreview.setDisable(false);
+		if (ROLEPLAYENTRYTYPES.C3_RP_STEP_V1 != o.getObject()) { // NOT a Normal story step (so likely intro or invasion pane)
+			if (!isCharRP) {
+				BOAttack attack = Nexus.getCurrentAttackOfUser();
+				if (attack != null) {
+					if (attack.getAttackCharList() != null) {
+						for (AttackCharacterDTO c : attack.getAttackCharList()) {
+							if (c.getCharacterID().equals(Nexus.getCurrentChar().getId())) {
+								btPreview.setDisable(!c.getType().equals(Constants.ROLE_ATTACKER_COMMANDER));
+							}
 						}
 					}
 				}
+			} else {
+				btPreview.setDisable(false);
 			}
-		} else {
-			btPreview.setDisable(false);
 		}
 
 		switch (action) {
+			case START_ROLEPLAY:
+				if(ROLEPLAYENTRYTYPES.C3_RP_STORY == o.getObject() ||
+						ROLEPLAYENTRYTYPES.C3_RP_CHAPTER == o.getObject()) {
+					logger.debug("RolePlayIntroPaneController -> START_ROLEPLAY");
 
-		case START_ROLEPLAY:
-			if(ROLEPLAYENTRYTYPES.C3_RP_STORY == o.getObject() ||
-					ROLEPLAYENTRYTYPES.C3_RP_CHAPTER == o.getObject()) {
-				logger.debug("RolePlayIntroPaneController -> START_ROLEPLAY");
+					// set current step of story
+					getStoryValues(getCurrentRP());
 
-				// set current step of story
-				getStoryValues(getCurrentRP());
+					Platform.runLater(() -> {
+						Boolean animationPlayed = animationPlayedMap.get(getCurrentRP().getId());
+						if (animationPlayed == null || !animationPlayed) {
+							FadeTransition fadeInTransition_01 = new FadeTransition(Duration.millis(800), backgroundImage);
+							fadeInTransition_01.setFromValue(0.0);
+							fadeInTransition_01.setToValue(1.0);
+							fadeInTransition_01.setCycleCount(1);
 
-				Platform.runLater(() -> {
-					Boolean animationPlayed = animationPlayedMap.get(getCurrentRP().getId());
-					if (animationPlayed == null || !animationPlayed) {
-						FadeTransition fadeInTransition_01 = new FadeTransition(Duration.millis(800), backgroundImage);
-						fadeInTransition_01.setFromValue(0.0);
-						fadeInTransition_01.setToValue(1.0);
-						fadeInTransition_01.setCycleCount(1);
+							FadeTransition fadeInTransition_03 = new FadeTransition(Duration.millis(1500), labHeader);
+							fadeInTransition_03.setFromValue(0.0);
+							fadeInTransition_03.setToValue(1.0);
+							fadeInTransition_03.setCycleCount(1);
 
-						FadeTransition fadeInTransition_03 = new FadeTransition(Duration.millis(1500), labHeader);
-						fadeInTransition_03.setFromValue(0.0);
-						fadeInTransition_03.setToValue(1.0);
-						fadeInTransition_03.setCycleCount(1);
+							SequentialTransition sequentialTransition = new SequentialTransition();
+							sequentialTransition.getChildren().addAll(fadeInTransition_01, fadeInTransition_03);
+							sequentialTransition.setCycleCount(1);
+							sequentialTransition.play();
 
-						SequentialTransition sequentialTransition = new SequentialTransition();
-						sequentialTransition.getChildren().addAll(fadeInTransition_01, fadeInTransition_03);
-						sequentialTransition.setCycleCount(1);
-						sequentialTransition.play();
-
-						animationPlayedMap.put(getCurrentRP().getId(), true);
-					}
-				});
-			} else if(ROLEPLAYENTRYTYPES.C3_RP_STEP_V1 == o.getObject()){
-				// set current step of story
-				getStoryValues(getCurrentRP());
-			}
-			break;
-		case FINALIZE_ROUND:
-			checkToCancelInvasion();
-			break;
-		default:
-			break;
-
+							animationPlayedMap.put(getCurrentRP().getId(), true);
+						}
+					});
+				} else if(ROLEPLAYENTRYTYPES.C3_RP_STEP_V1 == o.getObject()){
+					// set current step of story
+					getStoryValues(getCurrentRP());
+				}
+				break;
+			case FINALIZE_ROUND:
+				checkToCancelInvasion();
+				break;
+			default:
+				break;
 		}
 		return true;
 	}

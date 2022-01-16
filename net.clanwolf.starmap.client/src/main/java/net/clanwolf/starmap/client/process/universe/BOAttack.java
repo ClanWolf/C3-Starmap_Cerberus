@@ -27,6 +27,7 @@
 package net.clanwolf.starmap.client.process.universe;
 
 import net.clanwolf.starmap.client.nexus.Nexus;
+import net.clanwolf.starmap.constants.Constants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.transfer.GameState;
@@ -145,6 +146,18 @@ public class BOAttack {
 		} else {
 			return null;
 		}
+	}
+
+	@SuppressWarnings("unused")
+	public boolean attackLobbyHasBeenStarted() {
+		boolean attackHasBeenStarted = false;
+		for (AttackCharacterDTO a : attackDTO.getAttackCharList()) {
+			if (a.getType().equals(Constants.ROLE_ATTACKER_COMMANDER)) {
+				attackHasBeenStarted = true;
+				break;
+			}
+		}
+		return attackHasBeenStarted;
 	}
 
 	@SuppressWarnings("unused")

@@ -143,7 +143,9 @@ public class ###Name###PaneController extends AbstractC3Controller implements Ac
 				String com1 = o.getText();
 				if (Nexus.isLoggedIn()) {
 					if (Nexus.getCurrentlyOpenedPane() instanceof DicePane) {
-						handleCommand(com1);
+						if (!com.startsWith("*!!!*")) {
+                    		handleCommand(com1);
+                    	}
 					}
 				}
 				break;

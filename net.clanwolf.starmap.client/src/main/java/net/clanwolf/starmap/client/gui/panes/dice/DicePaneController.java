@@ -112,7 +112,9 @@ public class DicePaneController extends AbstractC3Controller implements ActionCa
 				String com1 = o.getText();
 				if (Nexus.isLoggedIn()) {
 					if (Nexus.getCurrentlyOpenedPane() instanceof DicePane) {
-						handleCommand(com1);
+						if (!com1.startsWith("*!!!*")) {
+							handleCommand(com1);
+						}
 					}
 				}
 				break;

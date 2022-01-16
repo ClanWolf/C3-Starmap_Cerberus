@@ -98,7 +98,6 @@ public class Nexus {
 	public static boolean promptNewVersionInstall = false;
 
 	public static Long storyID_beforeSavingRespones;
-
 	public static Slider mainframeVolumeSlider = null;
 
 	public static void setMainFrameVolumeSlider(Slider slider) {
@@ -111,8 +110,9 @@ public class Nexus {
 	public static Timer getCheckSystemClipboardForMWOResultTimer() {
 		return checkSystemClipboardForMWOResultTimer;
 	}
-	public static void setCheckSystemClipboardForMWOResultTimer(Timer checkSystemClipboardForMWOResultTimer) {
-		checkSystemClipboardForMWOResultTimer = checkSystemClipboardForMWOResultTimer;
+
+	public static void setCheckSystemClipboardForMWOResultTimer(Timer checkSystemClipboardForMWOResultTimerV) {
+		checkSystemClipboardForMWOResultTimer = checkSystemClipboardForMWOResultTimerV;
 	}
 
 	/**
