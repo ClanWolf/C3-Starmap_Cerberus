@@ -1715,7 +1715,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					}
 					canvas.show3DStars(true);
 
-					logger.info("Saved history screenshot of the starmap.");
+					if(C3Properties.getBoolean(C3PROPS.GENERALS_SCREENSHOT_HISTORY)) { logger.info("Saved history screenshot of the starmap."); }
+
 					buildGuiEffect();
 				});
 				logger.info("Map is ready!");
