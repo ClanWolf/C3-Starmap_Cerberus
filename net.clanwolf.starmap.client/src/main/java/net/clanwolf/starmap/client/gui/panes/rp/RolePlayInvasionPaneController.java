@@ -50,6 +50,9 @@ import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
 import net.clanwolf.starmap.client.process.universe.BOAttack;
 import net.clanwolf.starmap.client.process.universe.BOFaction;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
+import net.clanwolf.starmap.client.util.C3PROPS;
+import net.clanwolf.starmap.client.util.C3Properties;
+import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.client.util.RPVarReplacer;
 import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.transfer.dtos.AttackCharacterDTO;
@@ -159,10 +162,16 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 		defenderHeader.setVisible(true);
 
 		if (!Nexus.isMwoCheckingActive()) {
-			Timer checkSystemClipboardForMWOResultTimer = new Timer();
-			checkSystemClipboardForMWOResultTimer.schedule(new CheckClipboardForMwoApi(), 0, 2000);
-			Nexus.setCheckSystemClipboardForMWOResultTimer(checkSystemClipboardForMWOResultTimer);
-			Nexus.setMWOCheckingActive(true);
+
+			if(C3Properties.getBoolean(C3PROPS.GENERALS_CLIPBOARD_API)) {
+
+				Timer checkSystemClipboardForMWOResultTimer = new Timer();
+				checkSystemClipboardForMWOResultTimer.schedule(new CheckClipboardForMwoApi(), 0, 2000);
+				Nexus.setCheckSystemClipboardForMWOResultTimer(checkSystemClipboardForMWOResultTimer);
+				Nexus.setMWOCheckingActive(true);
+
+			} else { logger.info(Internationalization.getString("app_checkclipboarddisable")); 	}
+
 		}
 
 		for (AttackCharacterDTO ac : Nexus.getCurrentAttackOfUser().getAttackCharList()) {
