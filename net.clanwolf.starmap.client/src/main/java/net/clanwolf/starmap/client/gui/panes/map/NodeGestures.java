@@ -327,6 +327,10 @@ public class NodeGestures {
 			Double x = hoveredStarSystem.getX();
 			Double y = hoveredStarSystem.getY();
 			ActionManager.getAction(ACTIONS.UPDATE_COORD_INFO).execute(hoveredStarSystem.getName() + " [X:" + String.format("%.2f", x) + "] - [Y:" + String.format("%.2f", y) + "]");
+
+//			if (Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN)) {
+//				logger.info("Hovered System information: " + hoveredStarSystem.getName() + " (x: " + hoveredStarSystem.getX() + " | y: " + hoveredStarSystem.getY() + ") - " + "[StarSystemId / StarSystemDataId: " + hoveredStarSystem.getStarSystemId() + " / " + hoveredStarSystem.getStarSystemDataId() + "]");
+//			}
 		}
 	};
 

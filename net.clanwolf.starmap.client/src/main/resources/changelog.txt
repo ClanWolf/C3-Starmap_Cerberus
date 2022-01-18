@@ -1,6 +1,10 @@
 C3 version history
 --------------------------------
 
+Version 6.1.8 (18.01.2022)
+- FIXED: Broken charset in properties file
+- CHANGED: Further additions to the manual
+
 Version 6.1.7 (16.01.2022)
 - ADDED: A number of additional systems for meta phases 4 and up
 - ADDED: Marker for systems that have been attacked in the current round and conquered
