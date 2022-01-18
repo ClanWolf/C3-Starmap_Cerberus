@@ -2164,6 +2164,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		//ftp_password_logupload=AsdSqD58lmfkL7oyS+oenQ==
 		//ftp_password_historyupload=ipmMIwmjxlpI1s7JJ1Ei6g==
 
+		if (C3Properties.getProperty(C3PROPS.FTP_PORT).equals("unknown") || C3Properties.getProperty(C3PROPS.FTP_PORT).equals("")) {
+			C3Properties.setProperty(C3PROPS.FTP_PORT, "21", true);
+		}
 		if (C3Properties.getProperty(C3PROPS.FTP_USER).equals("unknown") || C3Properties.getProperty(C3PROPS.FTP_USER).equals("")) {
 			C3Properties.setProperty(C3PROPS.FTP_USER, "c3_client", true);
 		}

@@ -909,8 +909,7 @@ public class BORolePlayStory {
 	 * @param story RolePlayStoryDTO
 	 * @return boolean TRUE if upload was successful, otherwise FALSE
 	 */
-	public boolean uploadImage(RolePlayStoryDTO story) {
-
+	public boolean uploadImage(RolePlayStoryDTO story) throws Exception {
 		IFileTransfer ft = Tools.getFileTransfer();
 		String subDir = story.getId().toString();
 		ft.makeDir(subDir);
@@ -924,8 +923,7 @@ public class BORolePlayStory {
 	 * @param story RolePlayStoryDTO
 	 * @return boolean TRUE if upload was successful, otherwise FALSE
 	 */
-	public boolean uploadSound(RolePlayStoryDTO story) {
-
+	public boolean uploadSound(RolePlayStoryDTO story) throws Exception {
 		IFileTransfer ft = Tools.getFileTransfer();
 		String subDir = story.getId().toString();
 		ft.makeDir(subDir);
@@ -939,8 +937,7 @@ public class BORolePlayStory {
 	 * @param story RolePlayStoryDTO
 	 * @return boolean TRUE if upload was successful, otherwise FALSE
 	 */
-	public boolean uploadVideo(RolePlayStoryDTO story) {
-
+	public boolean uploadVideo(RolePlayStoryDTO story) throws Exception {
 		IFileTransfer ft = Tools.getFileTransfer();
 		String subDir = story.getId().toString();
 		ft.makeDir(subDir);
@@ -954,8 +951,7 @@ public class BORolePlayStory {
 	 * @param story RolePlayStoryDTO
 	 * @return boolean TRUE if delete was successful, otherwise FALSE
 	 */
-	public boolean deleteImage(RolePlayStoryDTO story) {
-
+	public boolean deleteImage(RolePlayStoryDTO story) throws Exception {
 		IFileTransfer ft = Tools.getFileTransfer();
 		String subDir = story.getId().toString();
 		return ft.deleteAllFiles(subDir, ".png");
@@ -967,8 +963,7 @@ public class BORolePlayStory {
 	 * @param story RolePlayStoryDTO
 	 * @return boolean TRUE if delete was successful, otherwise FALSE
 	 */
-	public boolean deleteSound(RolePlayStoryDTO story) {
-
+	public boolean deleteSound(RolePlayStoryDTO story) throws Exception {
 		IFileTransfer ft = Tools.getFileTransfer();
 		String subDir = story.getId().toString();
 		return ft.deleteAllFiles(subDir, ".mp3");
@@ -980,8 +975,7 @@ public class BORolePlayStory {
 	 * @param story RolePlayStoryDTO
 	 * @return boolean TRUE if delete was successful, otherwise FALSE
 	 */
-	public boolean deleteVideo(RolePlayStoryDTO story) {
-
+	public boolean deleteVideo(RolePlayStoryDTO story) throws Exception {
 		IFileTransfer ft = Tools.getFileTransfer();
 		String subDir = story.getId().toString();
 		return ft.deleteAllFiles(subDir, ".mp4");
@@ -998,6 +992,5 @@ public class BORolePlayStory {
 	 */
 	private boolean isSameRolePlayStore(RolePlayStoryDTO r1, RolePlayStoryDTO r2) {
 		return r1 != null && r2 != null && r1.getId().equals(r2.getId());
-
 	}
 }

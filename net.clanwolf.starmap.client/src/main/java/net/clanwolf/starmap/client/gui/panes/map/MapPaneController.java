@@ -1717,6 +1717,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 						logger.info("Saved history screenshot has been disabled.");
 					}
 					canvas.show3DStars(true);
+
 					buildGuiEffect();
 				});
 				logger.info("Map is ready!");

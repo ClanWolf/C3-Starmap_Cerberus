@@ -245,10 +245,16 @@ public final class Tools {
 						StatusTextEntryActionObject o2 = new StatusTextEntryActionObject("Uploading history images...", false);
 						ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(o2);
 
-						FTP ftpClient = new FTP(C3FTPTYPES.FTP_HISTORYUPLOAD);
-						ftpClient.upload(file1.getAbsolutePath(), file1.getName(), "S" + sv2);
-						ftpClient.upload(file2.getAbsolutePath(), file2.getName(), "S" + sv2);
-						ftpClient.upload(file3.getAbsolutePath(), file3.getName(), "S" + sv2);
+						try {
+							FTP ftpClient = new FTP(C3FTPTYPES.FTP_HISTORYUPLOAD);
+							ftpClient.upload(file1.getAbsolutePath(), file1.getName(), "S" + sv2);
+							ftpClient.upload(file2.getAbsolutePath(), file2.getName(), "S" + sv2);
+							ftpClient.upload(file3.getAbsolutePath(), file3.getName(), "S" + sv2);
+						} catch (Exception e) {
+							e.printStackTrace();
+							logger.info("Exception during ftp upload: " + e.getMessage());
+							logger.info("--------- FTP credentials seem to be missing! ---------");
+						}
 					};
 					Thread t = new Thread(runnable);
 					t.start();

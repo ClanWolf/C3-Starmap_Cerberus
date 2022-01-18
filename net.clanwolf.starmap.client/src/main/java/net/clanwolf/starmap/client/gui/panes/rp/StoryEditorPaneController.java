@@ -1882,7 +1882,6 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 			rpVar9.setOption3Text(tfStoryPath3.getText());
 			rpVar9.setOption4Text(tfStoryPath4.getText());
 
-
 			rpVar9.setAttackerDropVictories(Integer.parseInt(tfAttackerDropVictories.getText()));
 			rpVar9.setDefenderDropVictories(Integer.parseInt(tfDefenderDropVictories.getText()));
 
@@ -1897,31 +1896,36 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 
 	private void fileTransfer () {
 		boolean bOK = false;
-		if (doUploadImage) {
-			bOK = boRP.uploadImage(selected.getValue());
-		}
+		try {
+			if (doUploadImage) {
+				bOK = boRP.uploadImage(selected.getValue());
+			}
 
-		if (doDeleteImage) {
-			bOK = boRP.deleteImage(selected.getValue());
-		}
+			if (doDeleteImage) {
+				bOK = boRP.deleteImage(selected.getValue());
+			}
 
-		if (doUploadSound) {
-			bOK = boRP.uploadSound(selected.getValue());
-		}
+			if (doUploadSound) {
+				bOK = boRP.uploadSound(selected.getValue());
+			}
 
-		if (doDeleteSound) {
-			bOK = boRP.deleteSound(selected.getValue());
-		}
+			if (doDeleteSound) {
+				bOK = boRP.deleteSound(selected.getValue());
+			}
 
-		if (doUploadMovie) {
-			bOK = boRP.uploadVideo(selected.getValue());
-		}
+			if (doUploadMovie) {
+				bOK = boRP.uploadVideo(selected.getValue());
+			}
 
-		if (doDeleteMovie) {
-			bOK = boRP.deleteVideo(selected.getValue());
-		}
+			if (doDeleteMovie) {
+				bOK = boRP.deleteVideo(selected.getValue());
+			}
 
-		if (!bOK) logger.debug("Error while upload!");
+			if (!bOK) logger.debug("Error while upload!");
+		} catch(Exception e) {
+			e.printStackTrace();
+			logger.info("Exception during ftp upload!");
+		}
 	}
 
 	/**

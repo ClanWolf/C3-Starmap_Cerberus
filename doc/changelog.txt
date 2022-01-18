@@ -1,6 +1,11 @@
 C3 version history
 --------------------------------
 
+Version 6.1.9 (18.01.2022)
+- FIXED: FTP connect did fail because of missing credentials
+- FIXED: Exception during evaluation of port property fixed
+- FIXED: Exception handling in file transfer
+
 Version 6.1.8 (18.01.2022)
 - FIXED: Broken charset in properties file
 - CHANGED: Further additions to the manual

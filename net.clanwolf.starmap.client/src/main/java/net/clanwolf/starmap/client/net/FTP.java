@@ -57,12 +57,14 @@ public class FTP implements IFileTransfer {
 		this.ftptype = type;
 	}
 
-	private void connect() throws IOException {
+	private void connect() throws Exception {
 		ftpClient = new FTPClient();
 		ftpClient.setControlEncoding("UTF-8");
 
 		String user = "";
 		String password = "";
+		int ftp_port;
+
 		if (ftptype == C3FTPTYPES.FTP_LOGUPLOAD) {
 			user = C3Properties.getProperty(C3PROPS.FTP_USER_LOGUPLOAD);
 			password = C3Properties.getProperty(C3PROPS.FTP_PASSWORD_LOGUPLOAD);
@@ -74,14 +76,32 @@ public class FTP implements IFileTransfer {
 			password = C3Properties.getProperty(C3PROPS.FTP_PASSWORD);
 		}
 
-		ftpClient.connect(C3Properties.getProperty(C3PROPS.FTP_SERVER), Integer.parseInt(C3Properties.getProperty(C3PROPS.FTP_PORT)));
-		logger.info(ftpClient.getReplyString().trim().replaceAll("(\\r|\\n)", ""));
-		ftpClient.login(user, password);
-		logger.info(ftpClient.getReplyString().trim().replaceAll("(\\r|\\n)", ""));
-		ftpClient.enterLocalPassiveMode();
-		logger.info(ftpClient.getReplyString().trim().replaceAll("(\\r|\\n)", ""));
-		ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE, FTPClient.BINARY_FILE_TYPE);
-		ftpClient.setFileTransferMode(FTPClient.BINARY_FILE_TYPE);
+		try {
+			ftp_port = Integer.parseInt(C3Properties.getProperty(C3PROPS.FTP_PORT));
+		} catch(NumberFormatException nfe) {
+			//nfe.printStackTrace();
+			logger.info("FTP Port could not be taken from properties, setting to 21!");
+			ftp_port = 21;
+		}
+
+		try {
+			if (!"".equals(user) && !"".equals(password)) {
+				ftpClient.connect(C3Properties.getProperty(C3PROPS.FTP_SERVER), ftp_port);
+				logger.info(ftpClient.getReplyString().trim().replaceAll("(\\r|\\n)", ""));
+				ftpClient.login(user, password);
+				logger.info(ftpClient.getReplyString().trim().replaceAll("(\\r|\\n)", ""));
+				ftpClient.enterLocalPassiveMode();
+				logger.info(ftpClient.getReplyString().trim().replaceAll("(\\r|\\n)", ""));
+				ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE, FTPClient.BINARY_FILE_TYPE);
+				ftpClient.setFileTransferMode(FTPClient.BINARY_FILE_TYPE);
+			} else {
+				throw new Exception("No userdata!");
+			}
+		} catch(Exception e) {
+			e.printStackTrace();
+			logger.error("Exception while ftp file transfer!", e);
+			throw e;
+		}
 	}
 
 	private String getFTPSubPath(){
@@ -92,11 +112,96 @@ public class FTP implements IFileTransfer {
 		return subPath;
 	}
 
-	public boolean upload(String localSourceFile, String remoteResultFile) {
+	public boolean upload(String localSourceFile, String remoteResultFile) throws Exception {
 		return upload(localSourceFile, remoteResultFile, "");
 	}
 
-	public boolean upload(String localSourceFile, String remoteResultFile, String subfolder) {
+	@Override
+	public boolean delete(String remoteResultFile) throws Exception {
+
+		boolean ret = false;
+		try {
+			if (ftpClient == null || !ftpClient.isConnected()) {
+				connect();
+			}
+
+			ftpClient.deleteFile(remoteResultFile);
+			logger.info(ftpClient.getReplyString());
+			ret = true;
+
+		} catch (IOException ioe) {
+			logger.error(null, ioe);
+		} finally {
+			try {
+				ftpClient.disconnect();
+			} catch (IOException e) {
+				/* nothing to do */
+			}
+		}
+
+		return ret;
+	}
+
+	@Override
+	public boolean makeDir(String pathname) throws Exception {
+
+		boolean ret = false;
+		try {
+			if (ftpClient == null || !ftpClient.isConnected()) {
+				connect();
+			}
+
+			ftpClient.makeDirectory(getFTPSubPath() + pathname);
+			ret = true;
+		} catch (IOException ioe) {
+			logger.error(null, ioe);
+		}
+		return ret;
+	}
+
+	@Override
+	public boolean disconnect() {
+
+		boolean ret = false;
+		try {
+			ftpClient.logout();
+			ftpClient.disconnect();
+			ret = true;
+
+		} catch (IOException ioe) {
+			// do nothing
+		}
+		return ret;
+	}
+
+	@Override
+	public boolean deleteAllFiles(String subDir, String filter) throws Exception {
+
+		boolean ret = false;
+		try {
+			if (ftpClient == null || !ftpClient.isConnected()) {
+				connect();
+			}
+
+			String[] filenameList = ftpClient.listNames(getFTPSubPath() + subDir);
+
+			for (int i = 0; i < filenameList.length; i++) {
+				logger.info(filenameList[i]);
+				if (filter == null || filenameList[i].contains(filter)) {
+					logger.info(filenameList[i] + " - delete");
+					delete(filenameList[i]);
+				}
+
+			}
+
+			ret = true;
+		} catch (IOException ioe) {
+			logger.error(null, ioe);
+		}
+		return ret;
+	}
+
+	public boolean upload(String localSourceFile, String remoteResultFile, String subfolder) throws Exception {
 		boolean ret = false;
 		FileInputStream fis = null;
 
@@ -143,91 +248,6 @@ public class FTP implements IFileTransfer {
 			}
 		}
 
-		return ret;
-	}
-
-	@Override
-	public boolean delete(String remoteResultFile) {
-
-		boolean ret = false;
-		try {
-			if (ftpClient == null || !ftpClient.isConnected()) {
-				connect();
-			}
-
-			ftpClient.deleteFile(remoteResultFile);
-			logger.info(ftpClient.getReplyString());
-			ret = true;
-
-		} catch (IOException ioe) {
-			logger.error(null, ioe);
-		} finally {
-			try {
-				ftpClient.disconnect();
-			} catch (IOException e) {
-				/* nothing to do */
-			}
-		}
-
-		return ret;
-	}
-
-	@Override
-	public boolean disconnect() {
-
-		boolean ret = false;
-		try {
-			ftpClient.logout();
-			ftpClient.disconnect();
-			ret = true;
-
-		} catch (IOException ioe) {
-			// do nothing
-		}
-		return ret;
-	}
-
-	@Override
-	public boolean makeDir(String pathname) {
-
-		boolean ret = false;
-		try {
-			if (ftpClient == null || !ftpClient.isConnected()) {
-				connect();
-			}
-
-			ftpClient.makeDirectory(getFTPSubPath() + pathname);
-			ret = true;
-		} catch (IOException ioe) {
-			logger.error(null, ioe);
-		}
-		return ret;
-	}
-
-	@Override
-	public boolean deleteAllFiles(String subDir, String filter) {
-
-		boolean ret = false;
-		try {
-			if (ftpClient == null || !ftpClient.isConnected()) {
-				connect();
-			}
-
-			String[] filenameList = ftpClient.listNames(getFTPSubPath() + subDir);
-
-			for (int i = 0; i < filenameList.length; i++) {
-				logger.info(filenameList[i]);
-				if (filter == null || filenameList[i].contains(filter)) {
-					logger.info(filenameList[i] + " - delete");
-					delete(filenameList[i]);
-				}
-
-			}
-
-			ret = true;
-		} catch (IOException ioe) {
-			logger.error(null, ioe);
-		}
 		return ret;
 	}
 }

@@ -162,16 +162,14 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 		defenderHeader.setVisible(true);
 
 		if (!Nexus.isMwoCheckingActive()) {
-
-			if(C3Properties.getBoolean(C3PROPS.GENERALS_CLIPBOARD_API)) {
-
+			if (C3Properties.getBoolean(C3PROPS.GENERALS_CLIPBOARD_API)) {
 				Timer checkSystemClipboardForMWOResultTimer = new Timer();
 				checkSystemClipboardForMWOResultTimer.schedule(new CheckClipboardForMwoApi(), 0, 2000);
 				Nexus.setCheckSystemClipboardForMWOResultTimer(checkSystemClipboardForMWOResultTimer);
 				Nexus.setMWOCheckingActive(true);
-
-			} else { logger.info(Internationalization.getString("app_checkclipboarddisable")); 	}
-
+			} else {
+				logger.info(Internationalization.getString("app_checkclipboarddisable"));
+			}
 		}
 
 		for (AttackCharacterDTO ac : Nexus.getCurrentAttackOfUser().getAttackCharList()) {

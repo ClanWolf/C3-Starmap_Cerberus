@@ -33,10 +33,10 @@ package net.clanwolf.starmap.client.net;
 public interface IFileTransfer {
 
 	//public File download( String remoteSourceFile, String localTargetFile);
-	public boolean upload(String localTargetFile, String remoteSourceFile);
-	public boolean delete(String remoteSourceFile);
-	public boolean makeDir(String pathname);
-	public boolean deleteAllFiles(String subDir, String filter);
+	public boolean upload(String localTargetFile, String remoteSourceFile) throws Exception;
+	public boolean delete(String remoteSourceFile) throws Exception;
+	public boolean makeDir(String pathname) throws Exception;
+	public boolean deleteAllFiles(String subDir, String filter) throws Exception;
 	
 	public boolean disconnect();
 	
