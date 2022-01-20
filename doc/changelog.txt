@@ -1,6 +1,9 @@
 C3 version history
 --------------------------------
 
+Version 6.1.10 (20.01.2022)
+- FIXED: Sometimes the currently logged in user was not displayed at the top
+
 Version 6.1.9 (18.01.2022)
 - FIXED: FTP connect did fail because of missing credentials
 - FIXED: Exception during evaluation of port property fixed
