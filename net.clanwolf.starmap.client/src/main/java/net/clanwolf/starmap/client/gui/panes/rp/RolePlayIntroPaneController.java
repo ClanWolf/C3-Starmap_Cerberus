@@ -81,6 +81,8 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 	@FXML
 	private TextArea taStoryText;
 
+	private boolean buttonPressed = false;
+
 	public RolePlayIntroPaneController() {
 	}
 
@@ -94,6 +96,7 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		super.initialize(url, rb);
+		buttonPressed = false;
 	}
 
 	/**
@@ -109,20 +112,23 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 	public boolean handleAction(ACTIONS action, ActionObject o) {
 		if(anchorPane != null && !anchorPane.isVisible()) return true;
 
-		btPreview.setDisable(false);
-		if (ROLEPLAYENTRYTYPES.C3_RP_STEP_V1 != o.getObject()) { // NOT a Normal story step (so likely intro or invasion pane)
-			if (!isCharRP) {
-				BOAttack attack = Nexus.getCurrentAttackOfUser();
-				if (attack != null) {
-					if (attack.getAttackCharList() != null) {
-						for (AttackCharacterDTO c : attack.getAttackCharList()) {
-							if (c.getCharacterID().equals(Nexus.getCurrentChar().getId())) {
-								btPreview.setDisable(!c.getType().equals(Constants.ROLE_ATTACKER_COMMANDER));
+		if (!buttonPressed) {
+			if (ROLEPLAYENTRYTYPES.C3_RP_STEP_V1 != o.getObject()) { // NOT a Normal story step (so likely intro or invasion pane)
+				if (!isCharRP) {
+					BOAttack attack = Nexus.getCurrentAttackOfUser();
+					if (attack != null) {
+						if (attack.getAttackCharList() != null) {
+							for (AttackCharacterDTO c : attack.getAttackCharList()) {
+								if (c.getCharacterID().equals(Nexus.getCurrentChar().getId())) {
+									btPreview.setDisable(!c.getType().equals(Constants.ROLE_ATTACKER_COMMANDER));
+								}
 							}
 						}
 					}
+				} else {
+					btPreview.setDisable(false);
 				}
-			} else {
+			} else if (getCurrentRP().getNextStepID() == null) {
 				btPreview.setDisable(false);
 			}
 		}
@@ -161,6 +167,7 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 					// set current step of story
 					getStoryValues(getCurrentRP());
 				}
+				buttonPressed = false;
 				break;
 			case FINALIZE_ROUND:
 				checkToCancelInvasion();
@@ -186,6 +193,10 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 
 	@FXML
 	private void handleOnActionBtPreview(){
+
+		btPreview.setDisable(true);
+		buttonPressed = true;
+
 		//TODO: Change the methods for C3_RP_STORY and C3_RP_CHAPTER of attack, otherwise it dosen't works
 		RolePlayCharacterDTO currentChar = Nexus.getCurrentChar();
 		if (getCurrentRP() != null) {

@@ -463,13 +463,16 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				Nexus.setCurrentRound(boUniverse.currentRound);
 				Nexus.setCurrentDate(boUniverse.currentDate);
 
-				ArrayList<Node> swordsIconsToRemove = new ArrayList<>();
+				ArrayList<Node> nodesToRemove = new ArrayList<>();
 				for (Node n : canvas.getChildren()) {
 					if ("swordsIcon".equals(n.getId())) {
-						swordsIconsToRemove.add(n);
+						nodesToRemove.add(n);
+					}
+					if (n.getId() != null && n.getId().startsWith("attackFinishedInThisRoundVisuals")) {
+						nodesToRemove.add(n);
 					}
 				}
-				canvas.getChildren().removeAll(swordsIconsToRemove);
+				canvas.getChildren().removeAll(nodesToRemove);
 
 				// update systems (owner color and active status)
 				for (BOStarSystem starSystem : boUniverse.starSystemBOs.values()) {
@@ -1189,8 +1192,18 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				paneSystemDetail.setOpacity(0.0f);
 				paneJumpshipDetail.toFront();
 				paneJumpshipDetail.setOpacity(0.0f);
-
 				canvas.getChildren().addAll(lines);
+
+				Circle circleTukayyidLine = new Circle(Nexus.getTerra().getScreenX(), Nexus.getTerra().getScreenY(), 1052.7d);
+				circleTukayyidLine.setVisible(true);
+				circleTukayyidLine.setOpacity(0.22f);
+				circleTukayyidLine.getStrokeDashArray().setAll(50d, 20d, 5d, 20d);
+				circleTukayyidLine.setStrokeWidth(7);
+				circleTukayyidLine.setStroke(Color.YELLOW);
+				circleTukayyidLine.setFill(Color.TRANSPARENT);
+				circleTukayyidLine.toBack();
+				canvas.getChildren().add(circleTukayyidLine);
+
 				for (Line l : lines) {
 					l.toBack();
 				}

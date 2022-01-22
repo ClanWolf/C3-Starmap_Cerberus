@@ -55,12 +55,9 @@ import net.clanwolf.starmap.client.util.C3Properties;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.client.util.RPVarReplacer;
 import net.clanwolf.starmap.constants.Constants;
-import net.clanwolf.starmap.transfer.dtos.AttackCharacterDTO;
-import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
+import net.clanwolf.starmap.transfer.dtos.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import net.clanwolf.starmap.transfer.dtos.RolePlayStoryDTO;
-import net.clanwolf.starmap.transfer.dtos.RolePlayStoryVar9DTO;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
 import java.lang.invoke.MethodHandles;
@@ -135,6 +132,8 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 	}
 
 	private void init(){
+		Image imageUnselected = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/check.png")));
+
 		taRpText.setStyle("-fx-opacity: 1");
 		taRpText.setEditable(false);
 
@@ -157,6 +156,16 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 		confirmDefender2.setVisible(false);
 		confirmDefender3.setVisible(false);
 		confirmDefender4.setVisible(false);
+
+		confirmAttacker1.setImage(imageUnselected);
+		confirmAttacker2.setImage(imageUnselected);
+		confirmAttacker3.setImage(imageUnselected);
+		confirmAttacker4.setImage(imageUnselected);
+
+		confirmDefender1.setImage(imageUnselected);
+		confirmDefender2.setImage(imageUnselected);
+		confirmDefender3.setImage(imageUnselected);
+		confirmDefender4.setImage(imageUnselected);
 
 		attackerHeader.setVisible(true);
 		defenderHeader.setVisible(true);
@@ -267,6 +276,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 		ActionManager.addActionCallbackListener(ACTIONS.START_ROLEPLAY, this);
 		ActionManager.addActionCallbackListener(ACTIONS.MWO_DROPSTATS_RECEIVED, this);
 		ActionManager.addActionCallbackListener(ACTIONS.UPDATE_USERS_FOR_ATTACK, this);
+		ActionManager.addActionCallbackListener(ACTIONS.ROLEPLAY_NEXT_STEP_CHANGE_PANE, this);
 	}
 
 	public void scoreAnimation(int attackerWins, int defenderWins) {
@@ -524,6 +534,36 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 			break;
 		case UPDATE_USERS_FOR_ATTACK:
 			statusUpdate();
+			break;
+		case ROLEPLAY_NEXT_STEP_CHANGE_PANE:
+			Platform.runLater(() -> {
+				Image imageSelected = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/checked_confirmed.png")));
+				AttackDTO a = (AttackDTO) o.getObject();
+				boolean attackerWon = false;
+				boolean defenderWon = false;
+				for (AttackCharacterDTO c : a.getAttackCharList()) {
+					if (c.getSelectedAttackerWon() != null && c.getSelectedAttackerWon()) {
+						attackerWon = true;
+					} else if (c.getSelectedDefenderWon() != null && c.getSelectedDefenderWon()) {
+						defenderWon = true;
+					}
+				}
+				if (attackerWon) {
+					confirmAttacker1.setImage(imageSelected);
+					confirmDefender1.setImage(imageSelected);
+					btChoice1.setDisable(true);
+					btChoice2.setDisable(true);
+					btChoice3.setDisable(true);
+					btChoice4.setDisable(true);
+				} else if (defenderWon) {
+					confirmAttacker2.setImage(imageSelected);
+					confirmDefender2.setImage(imageSelected);
+					btChoice1.setDisable(true);
+					btChoice2.setDisable(true);
+					btChoice3.setDisable(true);
+					btChoice4.setDisable(true);
+				}
+			});
 			break;
 		default:
 			break;

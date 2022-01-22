@@ -31,9 +31,8 @@ import net.clanwolf.starmap.client.process.universe.BOAttack;
 
 public class RPVarReplacer {
 
-	static BOAttack attack = Nexus.getCurrentAttackOfUser();
-
 	public static String getValueForKey(String key) {
+		BOAttack attack = Nexus.getCurrentAttackOfUser();
 		return switch (key) {
 			case "@@ATTACKER@@" -> attack.getAttackerFactionName();
 			case "@@DEFENDER@@" -> attack.getDefenderFactionName();

@@ -27,6 +27,9 @@
 package net.clanwolf.starmap.client.gui.panes.rp;
 
 import javafx.application.Platform;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
@@ -38,6 +41,8 @@ import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3RolePlayController;
+import net.clanwolf.starmap.client.sound.C3SoundPlayer;
+import net.clanwolf.starmap.transfer.dtos.AttackDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
@@ -97,7 +102,7 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 				break;
 			case ROLEPLAY_NEXT_STEP_CHANGE_PANE:
 				logger.debug("Choose now the next step of story!");
-				loadScreen();
+				loadScreen(2000);
 				break;
 			case FINALIZE_ROUND:
 				if (!isCharacterPane) { // this is not a character roleplay pane --> AttackPane
@@ -107,6 +112,7 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 				break;
 			case RESET_STORY_PANES:
 				storyPanes.clear();
+				storyController.clear();
 				break;
 			default:
 				break;
@@ -134,7 +140,11 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 
 	//******************************** THIS ********************************/
 
-	private void loadScreen(){
+	private void loadScreen() {
+		loadScreen(0);
+	}
+
+	private void loadScreen(int waitMilliseconds) {
 		// get the correct ROLEPLAYENTRYTYPE from the right story
 		if (paneName.equals("AttackPane") && Nexus.getCurrentAttackOfUser() != null) {
 			isCharacterPane = false;
@@ -179,7 +189,24 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 					changePaneAndController(ROLEPLAYENTRYTYPES.C3_RP_STEP_V8, "/fxml/RolePlayPrepareBattlePane.fxml");
 					break;
 				case C3_RP_STEP_V9:
-					changePaneAndController(ROLEPLAYENTRYTYPES.C3_RP_STEP_V9, "/fxml/RolePlayInvasionPane.fxml");
+					Task<Void> sleeper = new Task<Void>() {
+						@Override
+						protected Void call() throws Exception {
+							try {
+								Thread.sleep(waitMilliseconds);
+							} catch (InterruptedException ignored) {
+							}
+							return null;
+						}
+					};
+					sleeper.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+						@Override
+						public void handle(WorkerStateEvent event) {
+							changePaneAndController(ROLEPLAYENTRYTYPES.C3_RP_STEP_V9, "/fxml/RolePlayInvasionPane.fxml");
+						}
+					});
+					C3SoundPlayer.play("sound/fx/beep_electric_2.mp3", false);
+					new Thread(sleeper).start();
 					break;
 				default:
 					break;
@@ -210,7 +237,7 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 						anchorPane.getChildren().setAll(pane);
 
 						storyPanes.put(myType, pane);
-						storyController.put(myType,controller);
+						storyController.put(myType, controller);
 						logger.debug("changePaneAndController -> create new Pane: " + pane);
 
 						ActionManager.getAction(ACTIONS.START_ROLEPLAY).execute(myType);
