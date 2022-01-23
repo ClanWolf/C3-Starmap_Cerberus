@@ -1,6 +1,9 @@
 C3 version history
 --------------------------------
 
+Version 6.1.14 (23.01.2022)
+- FIXED: Scope for slf4j provider at runtime
+
 Version 6.1.11 (21.01.2022)
 - ADDED: Circle on the map to mark the Tukayyid line
 - ADDED: Visual feedback if winner of a single drop was selected

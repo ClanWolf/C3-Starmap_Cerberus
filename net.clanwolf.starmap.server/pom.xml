@@ -319,7 +319,7 @@
 									<mainClass>net.clanwolf.starmap.server.GameServer</mainClass>
 									<manifestEntries>
 										<Multi-Release>true</Multi-Release>
-										<Class-Path>hibernate-hikaricp-5.6.2.Final.jar HikariCP-5.0.0.jar</Class-Path>
+										<Class-Path>hibernate-hikaricp-5.6.4.Final.jar HikariCP-5.0.1.jar</Class-Path>
 										<Built-By>ClanWolf.net (Christian Bartel)</Built-By>
 									</manifestEntries>
 								</transformer>
