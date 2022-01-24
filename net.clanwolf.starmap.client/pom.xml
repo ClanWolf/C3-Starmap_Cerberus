@@ -999,29 +999,6 @@
 										}
 									</moduleInfoSource>
 								</module>
-
-<!--								<module>-->
-<!--									<artifact>-->
-<!--										<groupId>org.slf4j</groupId>-->
-<!--										<artifactId>slf4j-log4j14</artifactId>-->
-<!--										<version>${version.slf4j}</version>-->
-<!--									</artifact>-->
-<!--								</module>-->
-<!--								<module>-->
-<!--									<artifact>-->
-<!--										<groupId>org.slf4j</groupId>-->
-<!--										<artifactId>jcl-over-slf4j</artifactId>-->
-<!--										<version>${version.slf4j}</version>-->
-<!--									</artifact>-->
-<!--								</module>-->
-<!--								<module>-->
-<!--									<artifact>-->
-<!--										<groupId>org.slf4j</groupId>-->
-<!--										<artifactId>log4j-over-slf4j</artifactId>-->
-<!--										<version>${version.slf4j}</version>-->
-<!--									</artifact>-->
-<!--								</module>-->
-
 							</modules>
 						</configuration>
 					</execution>

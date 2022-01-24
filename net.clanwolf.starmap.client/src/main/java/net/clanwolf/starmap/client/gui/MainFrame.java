@@ -187,19 +187,57 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 		}
 	}
 
-	public void clearCache() {
-		logger.info("Clearing cache!");
-		String cacheFolderName = System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "cache";
-		File f = new File(cacheFolderName);
-		boolean success = f.mkdirs();
-		if (!success) {
-			logger.info("Folder " + f.getAbsolutePath() + " could not be created!");
+	public static void main(String[] args) {
+		System.setProperty("javafx.preloader", C3_Preloader.class.getCanonicalName());
+
+		// This is not written to a logger in order to see it even if the logger is not correctly initialized
+		System.out.println("...");
+		System.out.println("Starting C3 Client.");
+		System.out.println("-----------------------------");
+		System.out.println("Use the version with this console for testing purposes.");
+		System.out.println("The logfile can be found here (read most recent file):");
+		System.out.println("    C:/Users/<username>/.ClanWolf.net_C3/starmap.log.x");
+		System.out.println("-----------------------------");
+		System.out.println("Module main:         " + System.getProperty("jdk.module.main"));
+		System.out.println("Module main class:   " + System.getProperty("jdk.module.main.class"));
+		System.out.println("Module path:         " + System.getProperty("jdk.module.path"));
+		System.out.println("Module upgrade path: " + System.getProperty("jdk.module.upgrade.path"));
+		System.out.println("Class path:          " + System.getProperty("java.class.path"));
+		System.out.println("-----------------------------");
+		System.out.println("Command line help:");
+		System.out.println("- /IDE        : Running in the development environment.");
+		System.out.println("- /CLEARCACHE : Clear all cached files on startup.");
+//		System.out.println("- /HELP       : This help list.");
+		System.out.println("-----------------------------");
+
+		isDevelopmentPC = false;
+		boolean clearCache = false;
+		if(args.length > 0) {
+			for (String arg : args) {
+				arg = arg.replaceAll("-", "");
+				arg = arg.replaceAll("/", "");
+
+				System.out.println("Starting C3 Client: " + arg);
+				System.out.println("Detected commandline arg: " + arg);
+
+				if (arg.equalsIgnoreCase("IDE")) {
+					isDevelopmentPC = true;
+				}
+				if (arg.equalsIgnoreCase("CLEARCACHE")) {
+					clearCache = true;
+				}
+//				if (arg.equalsIgnoreCase("HELP")) {
+//					System.out.println("Command line help:");
+//					System.out.println("- /IDE        : Running in the development environment.");
+//					System.out.println("- /CLEARCACHE : Clear all cached files on startup.");
+//					System.out.println("- /HELP       : This help list.");
+//				}
+			}
 		}
-		Tools.purgeDirectory(f);
-		logger.info("The following files were left over (could not be deleted):");
-		logger.info("--- [start]");
-		Tools.listDirectory(f);
-		logger.info("--- [end]");
+		Nexus.setIsDevelopmentPC(isDevelopmentPC);
+		Nexus.setClearCacheOnStart(clearCache);
+
+		launch(MainFrame.class, args);
 	}
 
 	@Override
@@ -436,48 +474,32 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 		logger.info("--- [end]");
 	}
 
-	public static void main(String[] args) {
-		System.setProperty("javafx.preloader", C3_Preloader.class.getCanonicalName());
-
-		// This is not written to a logger in order to see it even if the logger is not correctly initialized
-		System.out.println("...");
-		System.out.println("Starting C3 Client.");
-		System.out.println("-----------------------------");
-		System.out.println("Module main:         " + System.getProperty("jdk.module.main"));
-		System.out.println("Module main class:   " + System.getProperty("jdk.module.main.class"));
-		System.out.println("Module path:         " + System.getProperty("jdk.module.path"));
-		System.out.println("Module upgrade path: " + System.getProperty("jdk.module.upgrade.path"));
-		System.out.println("Class path:          " + System.getProperty("java.class.path"));
-		System.out.println("-----------------------------");
-
-		isDevelopmentPC = false;
-		boolean clearCache = false;
-		if(args.length > 0) {
-			for (String arg : args) {
-				arg = arg.replaceAll("-", "");
-				arg = arg.replaceAll("/", "");
-
-				System.out.println("Starting C3 Client: " + arg);
-				System.out.println("Detected commandline arg: " + arg);
-
-				if (arg.equalsIgnoreCase("IDE")) {
-					isDevelopmentPC = true;
-				}
-				if (arg.equalsIgnoreCase("CLEARCACHE")) {
-					clearCache = true;
-				}
-				if (arg.equalsIgnoreCase("HELP")) {
-					System.out.println("Command line help:");
-					System.out.println("- /IDE        : Running in the development environment.");
-					System.out.println("- /CLEARCACHE : Clear all cached files on startup.");
-					System.out.println("- /HELP       : This help list.");
-				}
-			}
+	public void clearCache() {
+		logger.info("Clearing cache!");
+		String cacheFolderName = System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "cache";
+		File f = new File(cacheFolderName);
+		boolean success = f.mkdirs();
+		if (!success) {
+			logger.info("Folder " + f.getAbsolutePath() + " could not be created!");
 		}
-		Nexus.setIsDevelopmentPC(isDevelopmentPC);
-		Nexus.setClearCacheOnStart(clearCache);
+		Tools.purgeDirectory(f);
+		logger.info("The following files were left over (could not be deleted):");
+		logger.info("--- [start]");
+		Tools.listDirectory(f);
+		logger.info("--- [end]");
 
-		launch(MainFrame.class, args);
+		// Clear downloaded updates folder
+		String updateFolderName = System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "update";
+		File u = new File(updateFolderName);
+		boolean success2 = u.mkdirs();
+		if (!success2) {
+			logger.info("Folder " + f.getAbsolutePath() + " could not be created!");
+		}
+		Tools.purgeDirectory(u);
+		logger.info("The following update installers were left over (could not be deleted):");
+		logger.info("--- [start]");
+		Tools.listDirectory(u);
+		logger.info("--- [end]");
 	}
 
 	// Records relative x and y coordinates.

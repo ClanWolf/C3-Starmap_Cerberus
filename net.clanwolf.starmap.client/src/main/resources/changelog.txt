@@ -4,6 +4,7 @@ C3 version history
 Version 6.1.17 (24.01.2022)
 - UPDATED: Several libs
 - ADDED: Log output of the module path to hunt down provider problems with lsf4j
+- ADDED: Command line switch to clean will also delete downloaded installers
 - FIXED: Logging on client does work again
 
 Version 6.1.14 (23.01.2022)

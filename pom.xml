@@ -37,14 +37,16 @@
 		<version.netty>4.1.72.Final</version.netty>
 		<version.spring>5.3.15</version.spring>                                     <!-- 5.3.11      <-> 5.3.13      -->
 		<version.spring-security-config>5.5.1</version.spring-security-config>
-		<version.hibernate>5.6.3.Final</version.hibernate>                          <!-- 5.4.1.Final <-> 5.6.1.Final -->
+		<version.hibernate>5.6.3.Final</version.hibernate>
 		<version.mysql-connector>8.0.28</version.mysql-connector>
 		<version.slf4j>2.0.0-alpha6</version.slf4j>
-		<!-- hikariCP and hikari jars are on the server next to the server jar. Path is in the manifest file -->
-		<!-- if this version is changed, consider entering the new versions into the manifest (below) and upload -->
-		<!-- the files manually! -->
-		<version.hibernate_hikaricp>5.6.4.Final</version.hibernate_hikaricp>        <!-- 5.4.1.Final <-> 5.6.1.Final -->
-		<version.hikaricp>5.0.1</version.hikaricp>                                  <!-- 3.3.1       <-> 5.0.0       -->
+		<!-- hikariCP and hikari jars are on the server next to the server jar. -->
+		<!-- Path is in the manifest file!                                      -->
+		<!-- IF this version is changed:                                        -->
+		<!-- * ENTER the new versions into the manifest (server.pom)            -->
+		<!-- and upload the files manually!                                     -->
+		<version.hibernate_hikaricp>5.6.4.Final</version.hibernate_hikaricp>
+		<version.hikaricp>5.0.1</version.hikaricp>
 	</properties>
 
 	<repositories>
