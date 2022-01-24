@@ -33,6 +33,7 @@ import io.nadron.event.Event;
 import io.nadron.event.Events;
 import io.nadron.event.impl.SessionMessageHandler;
 import io.nadron.service.GameStateManagerService;
+import net.clanwolf.client.mail.MailManager;
 import net.clanwolf.starmap.transfer.dtos.AttackCharacterDTO;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 import org.slf4j.Logger;
@@ -535,6 +536,18 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			logger.info("Last login saved for User:");
 			logger.info("Name: " + user.getUserName());
 			logger.info("Timestamp: " + new Timestamp(System.currentTimeMillis()));
+			logger.info("--------------------");
+
+			boolean sent = false;
+			String[] receivers = { "keshik@googlegroups.com" };
+			sent = MailManager.sendMail("c3@clanwolf.net", receivers, user.getUserName() + " logged into C3 client", "User logged into C3 client.", false);
+			if (sent) {
+				// sent
+				logger.info("User logged in information mail sent.");
+			} else {
+				// error during email sending
+				logger.info("Error during mail dispatch.");
+			}
 			logger.info("--------------------");
 			EntityManagerHelper.commit(C3GameSessionHandler.getC3UserID(session));
 		} catch (Exception re) {

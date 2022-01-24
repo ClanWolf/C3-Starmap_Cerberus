@@ -1,6 +1,10 @@
 C3 version history
 --------------------------------
 
+Version 6.1.19 (24.01.2022)
+- CHANGED: While new installer is uploading download is prevented
+- CHANGED: Included JVM parameter to allow for bigger images to be rendered in client
+
 Version 6.1.17 (24.01.2022)
 - UPDATED: Several libs
 - ADDED: Log output of the module path to hunt down provider problems with lsf4j

@@ -113,7 +113,7 @@
                 <URL value="@../styles/MainFrameStyle.css" />
             </stylesheets>
         </Label>
-        <Label id="statuslabel" fx:id="toplabel" contentDisplay="RIGHT" layoutX="786.0" layoutY="30.0" minHeight="16.0" minWidth="69.0" mouseTransparent="true" prefHeight="16.0" prefWidth="189.0" styleClass="toplabel">
+        <Label id="statuslabel" fx:id="toplabel" contentDisplay="RIGHT" layoutX="786.0" layoutY="30.0" minHeight="16.0" minWidth="69.0" prefHeight="16.0" prefWidth="189.0" styleClass="toplabel">
             <stylesheets>
                 <URL value="@../styles/MainFrameStyle.css" />
             </stylesheets>

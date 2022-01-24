@@ -23,6 +23,9 @@ IF EXIST "C:\Program Files\Java\jdk-###JAVA_VERSION_PATH###\bin\java.exe" (
   GOTO END
 )
 
+ECHO Add JVM-OPTIONS to start file (copy template)
+COPY C:\C3\projects\C3-Starmap_Cerberus\NSIS\templates\start.bat_template C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\target\jlink-image\bin\C3-Starmap_Cerberus.bat
+
 ECHO *******************
 ECHO *******************
 ECHO *******************

@@ -6,7 +6,7 @@ C:
 CD \
 CD C:\C3\projects\C3-Starmap_Cerberus
 
-REM SET VERSION=6.1.17
+REM SET VERSION=6.1.19
 FOR /f "delims== tokens=1,2" %%G in (C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\target\classes\version.number) do set %%G=%%H
 ECHO Found version: %VERSION%
 REM PAUSE
@@ -22,6 +22,9 @@ IF EXIST "C:\Program Files\Java\jdk-17\bin\java.exe" (
   ECHO Java NOT found
   GOTO END
 )
+
+ECHO Add JVM-OPTIONS to start file (copy template)
+COPY C:\C3\projects\C3-Starmap_Cerberus\NSIS\templates\start.bat_template C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\target\jlink-image\bin\C3-Starmap_Cerberus.bat
 
 ECHO *******************
 ECHO *******************

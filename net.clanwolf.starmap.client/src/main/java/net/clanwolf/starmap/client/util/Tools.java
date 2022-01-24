@@ -161,6 +161,7 @@ public final class Tools {
 				StatusTextEntryActionObject o1 = new StatusTextEntryActionObject("Creating history images...", false);
 				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(o1);
 
+				logger.info("creating... 1");
 				try {
 					BOFaction faction = Nexus.getCurrentFaction();
 					Image imageFaction = new Image(Objects.requireNonNull(Tools.class.getResourceAsStream("/images/logos/factions/" + faction.getLogo())));
@@ -173,6 +174,8 @@ public final class Tools {
 					}
 					BufferedImage bi = SwingFXUtils.fromFXImage(canvas.snapshot(null, wi), null);
 
+					logger.info("creating... 2");
+
 					final int screenshotWidth = 2500;       // For map dimension of 4000 x 4000
 					final int screenshotHeight = 2000;      // For map dimension of 4000 x 4000
 					final BufferedImage finaleImage = new BufferedImage(screenshotWidth, screenshotHeight, BufferedImage.TYPE_INT_RGB);
@@ -180,6 +183,8 @@ public final class Tools {
 					g.drawImage(finaleImage, (bi.getWidth() - screenshotWidth) / 2, (bi.getHeight() - screenshotHeight) / 2, screenshotWidth, screenshotHeight, null);
 					g.drawImage(bi, -(bi.getWidth() - screenshotWidth) / 2, -200, bi.getWidth(), bi.getHeight(), null);
 					g.dispose();
+
+					logger.info("creating... 3");
 
 					Image c3Icon = new Image(Objects.requireNonNull(Tools.class.getResourceAsStream("/icons/C3_Icon2.png")));
 					Image hhIcon = new Image(Objects.requireNonNull(Tools.class.getResourceAsStream("/icons/hammerhead.png")));
@@ -240,6 +245,8 @@ public final class Tools {
 					ImageIO.write(finaleImage, "png", file2);
 					// https://github.com/coobird/thumbnailator
 					ImageIO.write(Thumbnails.of(finaleImage).scale(0.10).asBufferedImage(), "png", file3);
+
+					logger.info("creating... 4");
 
 					Runnable runnable = () -> {
 						StatusTextEntryActionObject o2 = new StatusTextEntryActionObject("Uploading history images...", false);
