@@ -439,6 +439,17 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 	public static void main(String[] args) {
 		System.setProperty("javafx.preloader", C3_Preloader.class.getCanonicalName());
 
+		// This is not written to a logger in order to see it even if the logger is not correctly initialized
+		System.out.println("...");
+		System.out.println("Starting C3 Client.");
+		System.out.println("-----------------------------");
+		System.out.println("Module main:         " + System.getProperty("jdk.module.main"));
+		System.out.println("Module main class:   " + System.getProperty("jdk.module.main.class"));
+		System.out.println("Module path:         " + System.getProperty("jdk.module.path"));
+		System.out.println("Module upgrade path: " + System.getProperty("jdk.module.upgrade.path"));
+		System.out.println("Class path:          " + System.getProperty("java.class.path"));
+		System.out.println("-----------------------------");
+
 		isDevelopmentPC = false;
 		boolean clearCache = false;
 		if(args.length > 0) {

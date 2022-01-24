@@ -135,7 +135,7 @@
 		<dependency>
 			<groupId>net.coobird</groupId>
 			<artifactId>thumbnailator</artifactId>
-			<version>0.4.15</version>
+			<version>0.4.16</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.kwhat</groupId>
@@ -253,6 +253,24 @@
 						<version>${version.asm}</version>
 					</dependency>
 				</dependencies>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>3.1.1</version>
+				<executions>
+					<execution>
+						<id>copy-dependencies</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>copy-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/modules</outputDirectory>
+							<includeScope>runtime</includeScope>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -385,7 +403,7 @@
 									<artifact>
 										<groupId>net.coobird</groupId>
 										<artifactId>thumbnailator</artifactId>
-										<version>0.4.15</version>
+										<version>0.4.16</version>
 									</artifact>
 									<moduleInfoSource>
 										module thumbnailator {
@@ -981,36 +999,29 @@
 										}
 									</moduleInfoSource>
 								</module>
+
 <!--								<module>-->
 <!--									<artifact>-->
 <!--										<groupId>org.slf4j</groupId>-->
-<!--										<artifactId>slf4j-api</artifactId>-->
-<!--										<version>1.7.32</version>-->
+<!--										<artifactId>slf4j-log4j14</artifactId>-->
+<!--										<version>${version.slf4j}</version>-->
 <!--									</artifact>-->
-<!--									<moduleInfoSource>-->
-<!--										module org.slf4j {-->
-<!--											exports org.slf4j;-->
-<!--											exports org.slf4j.event;-->
-<!--											exports org.slf4j.helpers;-->
-<!--											exports org.slf4j.spi;-->
-<!--										}-->
-<!--									</moduleInfoSource>-->
 <!--								</module>-->
 <!--								<module>-->
 <!--									<artifact>-->
 <!--										<groupId>org.slf4j</groupId>-->
-<!--										<artifactId>slf4j-log4j12</artifactId>-->
-<!--										<version>1.7.32</version>-->
+<!--										<artifactId>jcl-over-slf4j</artifactId>-->
+<!--										<version>${version.slf4j}</version>-->
 <!--									</artifact>-->
-<!--									<moduleInfoSource>-->
-<!--										module slf4j.log4j12 {-->
-<!--											requires log4j;-->
-<!--											requires transitive org.slf4j;-->
-<!--											exports org.apache.log4j;-->
-<!--											exports org.slf4j.impl;-->
-<!--										}-->
-<!--									</moduleInfoSource>-->
 <!--								</module>-->
+<!--								<module>-->
+<!--									<artifact>-->
+<!--										<groupId>org.slf4j</groupId>-->
+<!--										<artifactId>log4j-over-slf4j</artifactId>-->
+<!--										<version>${version.slf4j}</version>-->
+<!--									</artifact>-->
+<!--								</module>-->
+
 							</modules>
 						</configuration>
 					</execution>
@@ -1044,24 +1055,6 @@
 							<ignoreSigningInformation>true</ignoreSigningInformation>
 							<stripDebug>true</stripDebug>
 							<outputDirectory>${project.build.directory}/jlink-image</outputDirectory>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<version>3.1.1</version>
-				<executions>
-					<execution>
-						<id>copy-dependencies</id>
-						<phase>prepare-package</phase>
-						<goals>
-							<goal>copy-dependencies</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${project.build.directory}/modules</outputDirectory>
-							<includeScope>runtime</includeScope>
 						</configuration>
 					</execution>
 				</executions>
