@@ -470,6 +470,7 @@ public final class Tools {
 				int counter = 0;
 				int bytesRead;
 				int filesize =  new URL(link).openConnection().getContentLength() / 1024;
+				String downloadprogress;
 
 				TxtProgressBar tpb = new TxtProgressBar( filesize,"□","■");
 
@@ -477,12 +478,12 @@ public final class Tools {
 					fileOutputStream.write(dataBuffer, 0, bytesRead);
 					counter++;
 
-					StatusTextEntryActionObject o = new StatusTextEntryActionObject(Internationalization.getString("app_downloadInstaller")
-							+ " "
-							+ tpb.getcurprogress(counter) + " "
-							+ counter / 1024 + " MB of " + filesize / 1024   + " MB ("
-							+ tpb.getCurrentpercentvalue() + ")", false, "#555555");
-
+					downloadprogress = Internationalization.getString("app_downloadInstaller");
+					downloadprogress = downloadprogress.replace("{tpb}",tpb.getcurprogress(counter));
+					downloadprogress = downloadprogress.replace("{curmb}",String.valueOf(counter / 1024));
+					downloadprogress = downloadprogress.replace("{maxmb}",String.valueOf(filesize / 1024));
+					downloadprogress = downloadprogress.replace("{curpercent}",tpb.getCurrentpercentvalue());
+					StatusTextEntryActionObject o = new StatusTextEntryActionObject(downloadprogress,false, "#555555");
 					o.setJustUpdate(true);
 					ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(o);
 				}

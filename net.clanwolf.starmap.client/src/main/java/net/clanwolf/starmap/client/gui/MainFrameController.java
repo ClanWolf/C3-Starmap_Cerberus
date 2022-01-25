@@ -2197,6 +2197,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		if (Nexus.promptNewVersionInstall) {
 			C3Message message = new C3Message(C3MESSAGES.DOWNLOAD_CLIENT);
 			String m = Internationalization.getString("app_new_version_available");
+			m = m.replace("{version}",Nexus.getLastAvailableClientVersion());
 			message.setText(m);
 			message.setType(C3MESSAGETYPES.YES_NO);
 			ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
