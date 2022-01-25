@@ -47,6 +47,7 @@ import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.enums.C3MESSAGERESULTS;
 import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
+import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.client.util.Tools;
 
 public class C3MessagePane extends Pane {
@@ -58,11 +59,11 @@ public class C3MessagePane extends Pane {
 	private Image icon = null;
 	private ImageView view;
 
-	private Button yesButton = new Button("Yes");
-	private Button noButton = new Button("No");
+	private Button yesButton = new Button(Internationalization.getString("general_yes"));
+	private Button noButton = new Button(Internationalization.getString("general_no"));
 	private Button okButton = new Button("OK");
-	private Button closeButton = new Button("Close");
-	private Button cancelButton = new Button("Cancel");
+	private Button closeButton = new Button(Internationalization.getString("general_close"));
+	private Button cancelButton = new Button(Internationalization.getString("general_cancel"));
 
 	private Rectangle rect;
 	private Rectangle rectBorder;

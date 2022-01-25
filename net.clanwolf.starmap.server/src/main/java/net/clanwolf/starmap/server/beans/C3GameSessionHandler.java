@@ -35,6 +35,7 @@ import io.nadron.event.impl.SessionMessageHandler;
 import io.nadron.service.GameStateManagerService;
 import net.clanwolf.client.mail.MailManager;
 import net.clanwolf.starmap.transfer.dtos.AttackCharacterDTO;
+import net.clanwolf.starmap.transfer.dtos.StatsMwoDTO;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -149,6 +150,9 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				serverHeartBeat = new Timer();
 				serverHeartBeat.schedule(new HeartBeatTimer(true), 1000);
 				break;
+			case STATS_MWO_SAVE:
+				saveStatsMwo(session, state);
+				break;
 			case ATTACK_CHARACTER_SAVE:
 				//saveAttackCharacter(session, state);
 				//serverHeartBeat = new Timer();
@@ -224,6 +228,39 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			response.addObject(re.getMessage());
 			response.setAction_successfully(Boolean.FALSE);
 			C3GameSessionHandler.sendNetworkEvent(session, response);
+		}
+	}
+
+	private synchronized void saveStatsMwo(PlayerSession session, GameState state) {
+		StatsMwoDAO dao = StatsMwoDAO.getInstance();
+
+		try {
+			EntityManagerHelper.beginTransaction(getC3UserID(session));
+
+			StatsMwoPOJO statsMwo = (StatsMwoPOJO) state.getObject();
+			logger.debug("Saving MWO stats for game id: " + statsMwo.getGameId());
+
+			if(statsMwo.getId() != null) {
+				logger.debug("attack.getId() != null");
+				dao.update(getC3UserID(session), statsMwo);
+			} else {
+				dao.save(getC3UserID(session), statsMwo);
+			}
+			EntityManagerHelper.commit(getC3UserID(session));
+
+			GameState response = new GameState(GAMESTATEMODES.STATS_MWO_SAVE_RESPONSE);
+			response.setAction_successfully(Boolean.TRUE);
+			C3GameSessionHandler.sendBroadCast(room, response);
+		} catch (RuntimeException re) {
+			re.printStackTrace();
+			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
+
+			GameState response = new GameState(GAMESTATEMODES.ERROR_MESSAGE);
+			response.addObject(re.getMessage());
+			response.setAction_successfully(Boolean.FALSE);
+			C3GameSessionHandler.sendNetworkEvent(session, response);
+
+			logger.error("Stats MWO save", re);
 		}
 	}
 

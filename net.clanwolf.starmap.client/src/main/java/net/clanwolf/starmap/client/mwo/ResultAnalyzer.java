@@ -27,8 +27,10 @@
 package net.clanwolf.starmap.client.mwo;
 
 import net.clanwolf.starmap.client.nexus.Nexus;
+import net.clanwolf.starmap.client.process.universe.BOStatsMwo;
 import net.clanwolf.starmap.transfer.dtos.AttackCharacterDTO;
 import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
+import net.clanwolf.starmap.transfer.dtos.StatsMwoDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,7 +45,7 @@ import java.util.HashMap;
 public class ResultAnalyzer {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	public static void analyseMWOResult(MWOMatchResult result) {
+	public static void analyseAndStoreMWOResult(MWOMatchResult result, boolean store) {
 		MapInfo mapInfo = new MapInfo();
 
 		MatchDetails md = result.getMatchDetails();
@@ -165,6 +167,24 @@ public class ResultAnalyzer {
 		logger.info("Team 2 tonnage: " + team2Tonnage);
 		logger.info("Team 1 surviving percentage: " + team1SurvivingPercentage / team1NumberOfPilots);
 		logger.info("Team 2 surviving percentage: " + team2SurvivingPercentage / team2NumberOfPilots);
+
+		if (store) {
+			logger.info("Storing game stats to database...");
+			try {
+				StatsMwoDTO stats = new StatsMwoDTO();
+				stats.setSeasonId(Nexus.getCurrentAttackOfUser().getSeason().longValue());
+				stats.setAttackId(Nexus.getCurrentAttackOfUser().getAttackDTO().getId());
+				stats.setGameId(gameId);
+				stats.setRawData(jsonString);
+
+				BOStatsMwo boStatsMwo = new BOStatsMwo(stats);
+				boStatsMwo.storeStatsMwo();
+				logger.info("... done.");
+			} catch (Exception e) {
+				e.printStackTrace();
+				logger.error("Error while saving mwo game results.", e);
+			}
+		}
 
 		logger.info("============================================================================================================");
 	}

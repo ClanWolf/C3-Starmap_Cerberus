@@ -228,6 +228,10 @@ public class EventCommunications {
 
 					break;
 
+				case STATS_MWO_SAVE_RESPONSE:
+					System.out.println("MWO Stats saved!");
+					break;
+
 				case ERROR_MESSAGE:
 					logger.info("ErrorMessage");
 					logger.error((String) state.getObject());

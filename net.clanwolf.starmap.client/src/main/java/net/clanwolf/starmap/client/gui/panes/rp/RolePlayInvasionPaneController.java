@@ -530,7 +530,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 			break;
 		case MWO_DROPSTATS_RECEIVED:
 			MWOMatchResult result = (MWOMatchResult) o.getObject();
-			ResultAnalyzer.analyseMWOResult(result);
+			ResultAnalyzer.analyseAndStoreMWOResult(result, true);
 			break;
 		case UPDATE_USERS_FOR_ATTACK:
 			statusUpdate();

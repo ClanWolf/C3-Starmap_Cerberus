@@ -51,6 +51,9 @@ public enum GAMESTATEMODES {
 	ATTACK_CHARACTER_SAVE_WITHOUT_NEW_UNIVERSE,
 	ATTACK_CHARACTER_SAVE_RESPONSE,
 
+	STATS_MWO_SAVE,
+	STATS_MWO_SAVE_RESPONSE,
+
 	BROADCAST_SEND_NEW_PLAYERLIST,              /* Inform all clients after a successfull login */
 
 	ROLEPLAY_GET_ALLSTORIES,                    /* OBJECT: null */

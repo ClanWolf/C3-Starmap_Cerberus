@@ -136,6 +136,6 @@ public class CheckClipboardForMwoApi extends TimerTask {
 		// 421879099465036
 
 		MWOMatchResult results = getMWOGameStats("421333638615793");
-		ResultAnalyzer.analyseMWOResult(results);
+		ResultAnalyzer.analyseAndStoreMWOResult(results, false);
 	}
 }
