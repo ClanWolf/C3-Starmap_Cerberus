@@ -519,8 +519,8 @@ public class SettingsPaneController extends AbstractC3Controller implements Acti
 
 		//Tab 4 Generals
 		tab4.setText(Internationalization.getString("app_pane_settings_tab4Name_Generals"));
-		checkbox_HistoryScreenshot.setText(Internationalization.getString("app_pane_settings_generals_access_clipborad"));
-		checkbox_CheckClipBoardForMWOAPI.setText(Internationalization.getString("app_pane_settings_generals_historyscreenshots"));
+		checkbox_HistoryScreenshot.setText(Internationalization.getString("app_pane_settings_generals_historyscreenshots"));
+		checkbox_CheckClipBoardForMWOAPI.setText(Internationalization.getString("app_pane_settings_generals_access_clipborad"));
 
 		buttonNo.setText(Internationalization.getString("general_cancel"));
 		buttonYes.setText(Internationalization.getString("general_save"));
@@ -833,8 +833,8 @@ public class SettingsPaneController extends AbstractC3Controller implements Acti
 
 			//Tab 4 Generals
 			tab4.setText(Internationalization.getString("app_pane_settings_tab4Name_Generals"));
-			checkbox_HistoryScreenshot.setText(Internationalization.getString("app_pane_settings_generals_access_clipborad"));
-			checkbox_CheckClipBoardForMWOAPI.setText(Internationalization.getString("app_pane_settings_generals_historyscreenshots"));
+			checkbox_HistoryScreenshot.setText(Internationalization.getString("app_pane_settings_generals_historyscreenshots"));
+			checkbox_CheckClipBoardForMWOAPI.setText(Internationalization.getString("app_pane_settings_generals_access_clipborad"));
 
 			buttonNo.setText(Internationalization.getString("general_cancel"));
 			buttonYes.setText(Internationalization.getString("general_save"));
