@@ -35,18 +35,26 @@ public class Constants implements java.io.Serializable {
 	public static final long REGULAR_SYSTEM_GENERAL_INCOME = 250;
 	public static final long INDUSTRIAL_SYSTEM_GENERAL_INCOME = 1_500;
 	public static final long CAPITAL_SYSTEM_GENERAL_INCOME = 5_000;
+	public static final long FACTION_CAPITAL_SYSTEM_GENERAL_INCOME = 25_000;
+	public static final long TERRA_GENERAL_INCOME = 55_000;
 
 	public static final long REGULAR_SYSTEM_GENERAL_COST = 150;
 	public static final long INDUSTRIAL_SYSTEM_GENERAL_COST = 1_000;
 	public static final long CAPITAL_SYSTEM_GENERAL_COST = 2_000;
+	public static final long FACTION_CAPITAL_SYSTEM_GENERAL_COST = 17_000;
+	public static final long TERRA_GENERAL_COST = 22_000;
 
 	public static final long REGULAR_SYSTEM_DEFEND_COST = 120;
 	public static final long INDUSTRIAL_SYSTEM_DEFEND_COST = 300;
 	public static final long CAPITAL_SYSTEM_DEFEND_COST = 500;
+	public static final long FACTION_CAPITAL_SYSTEM_DEFEND_COST = 1500;
+	public static final long TERRA_DEFEND_COST = 11500;
 
 	public static final long REGULAR_SYSTEM_ATTACK_COST = 3_000;
 	public static final long INDUSTRIAL_SYSTEM_ATTACK_COST = 6_000;
 	public static final long CAPITAL_SYSTEM_ATTACK_COST = 10_000;
+	public static final long FACTION_CAPITAL_SYSTEM_ATTACK_COST = 20_000;
+	public static final long TERRA_ATTACK_COST = 100_000;
 
 	public static final long ROLE_ATTACKER_WARRIOR = 0L; // 0L Attacker Warrior
 	public static final long ROLE_ATTACKER_COMMANDER = 1L; // 1L Attacker Commander
