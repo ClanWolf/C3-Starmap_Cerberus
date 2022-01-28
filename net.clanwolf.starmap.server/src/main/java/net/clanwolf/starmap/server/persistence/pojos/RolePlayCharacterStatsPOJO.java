@@ -64,7 +64,7 @@ public class RolePlayCharacterStatsPOJO extends Pojo {
 	private Boolean LeadingPosition;
 
 	@Column(name = "MwoMatchId")
-	private Long mwoMatchId;
+	private String mwoMatchId;
 
 	@Column(name = "MwoKills")
 	private Long mwoKills;
@@ -133,12 +133,12 @@ public class RolePlayCharacterStatsPOJO extends Pojo {
 	}
 
 	@SuppressWarnings("unused")
-	public Long getMwoMatchId() {
+	public String getMwoMatchId() {
 		return mwoMatchId;
 	}
 
 	@SuppressWarnings("unused")
-	public void setMwoMatchId(Long mwoMatchId) {
+	public void setMwoMatchId(String mwoMatchId) {
 		this.mwoMatchId = mwoMatchId;
 	}
 
