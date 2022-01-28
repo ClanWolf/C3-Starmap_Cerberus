@@ -30,6 +30,8 @@ import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.universe.BOAttackStats;
 import net.clanwolf.starmap.client.process.universe.BORolePlayCharacterStats;
 import net.clanwolf.starmap.client.process.universe.BOStatsMwo;
+import net.clanwolf.starmap.client.sound.C3SoundPlayer;
+import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.transfer.dtos.*;
 import org.slf4j.Logger;
@@ -223,72 +225,76 @@ public class ResultAnalyzer {
 		logger.info("Team 2 surviving percentage: " + team2SurvivingPercentage / team2NumberOfPilots);
 
 		if (store) {
-			logger.info("Storing raw game stats to database...");
-			try {
-				StatsMwoDTO stats = new StatsMwoDTO();
-				stats.setSeasonId(Nexus.getCurrentAttackOfUser().getSeason().longValue());
-				stats.setAttackId(Nexus.getCurrentAttackOfUser().getAttackDTO().getId());
-				stats.setGameId(gameId);
-				stats.setRawData(jsonString);
+			if (attackerTeam != null && defenderTeam != null) {
+				logger.info("Storing raw game stats to database...");
+				try {
+					StatsMwoDTO stats = new StatsMwoDTO();
+					stats.setSeasonId(Nexus.getCurrentAttackOfUser().getSeason().longValue());
+					stats.setAttackId(Nexus.getCurrentAttackOfUser().getAttackDTO().getId());
+					stats.setGameId(gameId);
+					stats.setRawData(jsonString);
 
-				BOStatsMwo boStatsMwo = new BOStatsMwo(stats);
-				boStatsMwo.storeStatsMwo();
-				logger.info("... done.");
-			} catch (Exception e) {
-				e.printStackTrace();
-				logger.error("Error while saving mwo game results.", e);
-			}
-			logger.info("Storing attack stats to database...");
-			try {
-				AttackStatsDTO attackStats = new AttackStatsDTO();
-				attackStats.setSeasonId(Nexus.getCurrentAttackOfUser().getSeason().longValue());
-				attackStats.setAttackId(Nexus.getCurrentAttackOfUser().getAttackDTO().getId());
-				attackStats.setStarSystemDataId(Nexus.getCurrentAttackOfUser().getStarSystemId());
-				attackStats.setMwoMatchId(gameId);
-				attackStats.setDropId("");
-				attackStats.setAttackerFactionId(Nexus.getCurrentAttackOfUser().getAttackerFactionId().longValue());
-				attackStats.setDefenderFactionId(Nexus.getCurrentAttackOfUser().getDefenderFactionId().longValue());
-				if ("1".equals(attackerTeam) && "2".equals(defenderTeam)) {
-					attackStats.setAttackerTonnage(team1Tonnage);
-					attackStats.setDefenderTonnage(team2Tonnage);
-					attackStats.setAttackerLostTonnage(team1LostTonnage);
-					attackStats.setDefenderLostTonnage(team2LostTonnage);
-					attackStats.setAttackerKillCount(team1KillCount);
-					attackStats.setDefenderKillCount(team2KillCount);
-					if ("1".equals(winner)) { // Attacker won
-						attackStats.setWinnerFactionId(Nexus.getCurrentAttackOfUser().getAttackerFactionId().longValue());
-					} else if ("2".equals(winner)) { // Defender won
-						attackStats.setWinnerFactionId(Nexus.getCurrentAttackOfUser().getDefenderFactionId().longValue());
-					}
-				} else if ("2".equals(attackerTeam) && "1".equals(defenderTeam)) {
-					attackStats.setAttackerTonnage(team2Tonnage);
-					attackStats.setDefenderTonnage(team1Tonnage);
-					attackStats.setAttackerLostTonnage(team2LostTonnage);
-					attackStats.setDefenderLostTonnage(team1LostTonnage);
-					attackStats.setAttackerKillCount(team2KillCount);
-					attackStats.setDefenderKillCount(team1KillCount);
-					if ("1".equals(winner)) { // Defender won
-						attackStats.setWinnerFactionId(Nexus.getCurrentAttackOfUser().getDefenderFactionId().longValue());
-					} else if ("2".equals(winner)) { // Attacker won
-						attackStats.setWinnerFactionId(Nexus.getCurrentAttackOfUser().getAttackerFactionId().longValue());
-					}
+					BOStatsMwo boStatsMwo = new BOStatsMwo(stats);
+					boStatsMwo.storeStatsMwo();
+					logger.info("... done.");
+				} catch (Exception e) {
+					e.printStackTrace();
+					logger.error("Error while saving mwo game results.", e);
 				}
+				logger.info("Storing attack stats to database...");
+				try {
+					AttackStatsDTO attackStats = new AttackStatsDTO();
+					attackStats.setSeasonId(Nexus.getCurrentAttackOfUser().getSeason().longValue());
+					attackStats.setAttackId(Nexus.getCurrentAttackOfUser().getAttackDTO().getId());
+					attackStats.setStarSystemDataId(Nexus.getCurrentAttackOfUser().getStarSystemId());
+					attackStats.setMwoMatchId(gameId);
+					attackStats.setDropId("");
+					attackStats.setAttackerFactionId(Nexus.getCurrentAttackOfUser().getAttackerFactionId().longValue());
+					attackStats.setDefenderFactionId(Nexus.getCurrentAttackOfUser().getDefenderFactionId().longValue());
+					if ("1".equals(attackerTeam) && "2".equals(defenderTeam)) {
+						attackStats.setAttackerTonnage(team1Tonnage);
+						attackStats.setDefenderTonnage(team2Tonnage);
+						attackStats.setAttackerLostTonnage(team1LostTonnage);
+						attackStats.setDefenderLostTonnage(team2LostTonnage);
+						attackStats.setAttackerKillCount(team1KillCount);
+						attackStats.setDefenderKillCount(team2KillCount);
+						if ("1".equals(winner)) { // Attacker won
+							attackStats.setWinnerFactionId(Nexus.getCurrentAttackOfUser().getAttackerFactionId().longValue());
+						} else if ("2".equals(winner)) { // Defender won
+							attackStats.setWinnerFactionId(Nexus.getCurrentAttackOfUser().getDefenderFactionId().longValue());
+						}
+					} else if ("2".equals(attackerTeam) && "1".equals(defenderTeam)) {
+						attackStats.setAttackerTonnage(team2Tonnage);
+						attackStats.setDefenderTonnage(team1Tonnage);
+						attackStats.setAttackerLostTonnage(team2LostTonnage);
+						attackStats.setDefenderLostTonnage(team1LostTonnage);
+						attackStats.setAttackerKillCount(team2KillCount);
+						attackStats.setDefenderKillCount(team1KillCount);
+						if ("1".equals(winner)) { // Defender won
+							attackStats.setWinnerFactionId(Nexus.getCurrentAttackOfUser().getDefenderFactionId().longValue());
+						} else if ("2".equals(winner)) { // Attacker won
+							attackStats.setWinnerFactionId(Nexus.getCurrentAttackOfUser().getAttackerFactionId().longValue());
+						}
+					}
 
-				BOAttackStats boAttackStats = new BOAttackStats(attackStats);
-				boAttackStats.storeAttackStats();
-				logger.info("... done.");
-			} catch (Exception e) {
-				e.printStackTrace();
-				logger.error("Error while saving attack stats.", e);
-			}
-			logger.info("Storing roleplay character stats to database...");
-			try {
-				BORolePlayCharacterStats boRolePlayCharacterStats = new BORolePlayCharacterStats(characterStatsList);
-				boRolePlayCharacterStats.storeRolePlayCharacterStats();
-				logger.info("... done.");
-			} catch (Exception e) {
-				e.printStackTrace();
-				logger.error("Error while saving attack stats.", e);
+					BOAttackStats boAttackStats = new BOAttackStats(attackStats);
+					boAttackStats.storeAttackStats();
+					logger.info("... done.");
+				} catch (Exception e) {
+					e.printStackTrace();
+					logger.error("Error while saving attack stats.", e);
+				}
+				logger.info("Storing roleplay character stats to database...");
+				try {
+					BORolePlayCharacterStats boRolePlayCharacterStats = new BORolePlayCharacterStats(characterStatsList);
+					boRolePlayCharacterStats.storeRolePlayCharacterStats();
+					logger.info("... done.");
+				} catch (Exception e) {
+					e.printStackTrace();
+					logger.error("Error while saving attack stats.", e);
+				}
+			} else {
+				C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_InvalidBlackboxData"));
 			}
 		}
 

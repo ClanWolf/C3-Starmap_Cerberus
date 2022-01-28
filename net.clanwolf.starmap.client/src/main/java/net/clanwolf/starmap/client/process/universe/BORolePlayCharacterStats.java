@@ -50,9 +50,10 @@ public class BORolePlayCharacterStats {
 	public void storeRolePlayCharacterStats() {
 		GameState saveRolePlayCharacterState = new GameState();
 		saveRolePlayCharacterState.setMode(GAMESTATEMODES.CHARACTER_STATS_SAVE);
-		byte[] compressedRolePlayCharacterState = Compressor.compress(rolePlayCharacterStatsDTOList);
-		logger.info("Compressed rolePlayCharacterStatsDTO size: " + compressedRolePlayCharacterState.length);
-		saveRolePlayCharacterState.addObject(compressedRolePlayCharacterState);
+//		byte[] compressedRolePlayCharacterState = Compressor.compress(rolePlayCharacterStatsDTOList);
+//		logger.info("Compressed rolePlayCharacterStatsDTO size: " + compressedRolePlayCharacterState.length);
+//		saveRolePlayCharacterState.addObject(compressedRolePlayCharacterState);
+		saveRolePlayCharacterState.addObject(rolePlayCharacterStatsDTOList);
 		Nexus.fireNetworkEvent(saveRolePlayCharacterState);
 	}
 }

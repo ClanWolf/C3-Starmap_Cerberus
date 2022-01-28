@@ -38,6 +38,7 @@ import net.clanwolf.starmap.transfer.dtos.AttackCharacterDTO;
 import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterStatsDTO;
 import net.clanwolf.starmap.transfer.dtos.StatsMwoDTO;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
+import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.server.persistence.EntityConverter;
@@ -315,7 +316,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			StatsMwoPOJO statsMwo = (StatsMwoPOJO) state.getObject();
 			logger.debug("Saving MWO stats for game id: " + statsMwo.getGameId());
 
-			if(statsMwo.getId() != null) {
+			if (statsMwo.getId() != null) {
 				logger.debug("attack.getId() != null");
 				dao.update(getC3UserID(session), statsMwo);
 			} else {
