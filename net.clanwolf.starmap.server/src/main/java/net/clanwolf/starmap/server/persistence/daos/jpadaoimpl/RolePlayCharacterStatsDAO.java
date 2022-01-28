@@ -24,73 +24,45 @@
  * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.server.persistence.pojos;
+package net.clanwolf.starmap.server.persistence.daos.jpadaoimpl;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import net.clanwolf.starmap.server.persistence.Pojo;
+import net.clanwolf.starmap.server.persistence.daos.GenericDAO;
+import net.clanwolf.starmap.server.persistence.pojos.RolePlayCharacterStatsPOJO;
 
-import javax.persistence.*;
+/**
+ * A data access object (DAO) providing persistence and search support for UserPOJO entities.
+ * Transaction control of the save(), update() and delete() operations must be handled externally
+ * by senders of these methods or must be manually added to each of these methods for data to be
+ * persisted to the JPA datastore.
+ */
+public class RolePlayCharacterStatsDAO extends GenericDAO {
 
-import static javax.persistence.GenerationType.IDENTITY;
-@JsonIdentityInfo(
-		scope= AttackVarsPOJO.class,
-		generator= ObjectIdGenerators.PropertyGenerator.class,
-		property = "id")
-@Entity
-@Table(name = "_HH_ATTACK_VARS", catalog = "C3")
-public class AttackVarsPOJO extends Pojo {
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "ID")
-	private Long id;
+	private static RolePlayCharacterStatsDAO instance;
 
-	@Column(name = "AttackID")
-	private Long attackID;
-
-	@Column(name = "Var")
-	private String var;
-
-	@Column(name = "Value")
-	private String value;
-
-	@SuppressWarnings("unused")
-	public Long getId() {
-		return id;
+	private RolePlayCharacterStatsDAO() {
+		// Empty constructor
 	}
 
-	@SuppressWarnings("unused")
-	public void setId(Long id) {
-		this.id = id;
+	public static RolePlayCharacterStatsDAO getInstance() {
+		if (instance == null) {
+			instance = new RolePlayCharacterStatsDAO();
+			instance.className = "RolePlayCharacterStatsPOJO";
+		}
+		return instance;
 	}
 
-	@SuppressWarnings("unused")
-	public Long getAttackID() {
-		return attackID;
+	@Override
+	public void delete(Long roleplayCharacterStatsId, Object entity) {
+		super.delete(roleplayCharacterStatsId, entity, ((RolePlayCharacterStatsPOJO) entity).getId());
 	}
 
-	@SuppressWarnings("unused")
-	public void setAttackID(Long attackID) {
-		this.attackID = attackID;
+	@Override
+	public RolePlayCharacterStatsPOJO findById(Long userId, Long id) {
+		return (RolePlayCharacterStatsPOJO) super.findById(userId, RolePlayCharacterStatsPOJO.class, id);
 	}
 
-	@SuppressWarnings("unused")
-	public String getVar() {
-		return var;
-	}
-
-	@SuppressWarnings("unused")
-	public void setVar(String var) {
-		this.var = var;
-	}
-
-	@SuppressWarnings("unused")
-	public String getValue() {
-		return value;
-	}
-
-	@SuppressWarnings("unused")
-	public void setValue(String value) {
-		this.value = value;
+	@Override
+	public RolePlayCharacterStatsPOJO update(Long roleplayCharacterStatsId, Object entity) {
+		return (RolePlayCharacterStatsPOJO) super.update(roleplayCharacterStatsId, entity);
 	}
 }

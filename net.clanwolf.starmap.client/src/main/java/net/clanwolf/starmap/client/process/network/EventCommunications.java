@@ -36,6 +36,8 @@ import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.process.universe.BOAttack;
 import net.clanwolf.starmap.client.process.universe.BOStarSystem;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
+import net.clanwolf.starmap.client.sound.C3SoundPlayer;
+import net.clanwolf.starmap.client.util.Internationalization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.client.process.logout.Logout;
@@ -229,7 +231,33 @@ public class EventCommunications {
 					break;
 
 				case STATS_MWO_SAVE_RESPONSE:
-					System.out.println("MWO Stats saved!");
+					if (state.isAction_successfully()) {
+						System.out.println("MWO stats saved!");
+						C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_MwoApiRequestSuccessfull"));
+					} else {
+						System.out.println("MWO stats NOT saved!");
+						C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_MwoApiRequestFailed"));
+					}
+					break;
+
+				case ATTACK_STATS_SAVE_RESPONSE:
+					if (state.isAction_successfully()) {
+						System.out.println("Attack stats saved!");
+						C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_AttackStatsStoreSuccessfull"));
+					} else {
+						System.out.println("Attack stats NOT saved!");
+						C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_AttackStatsStoreFailed"));
+					}
+					break;
+
+				case CHARACTER_STATS_SAVE_RESPONSE:
+					if (state.isAction_successfully()) {
+						System.out.println("Character stats saved!");
+						C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_CharacterStatsStoreSuccessfull"));
+					} else {
+						System.out.println("Character stats NOT saved!");
+						C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_CharacterStatsStoreFailed"));
+					}
 					break;
 
 				case ERROR_MESSAGE:

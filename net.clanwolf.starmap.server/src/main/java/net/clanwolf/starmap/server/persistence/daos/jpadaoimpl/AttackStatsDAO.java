@@ -24,73 +24,45 @@
  * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.server.persistence.pojos;
+package net.clanwolf.starmap.server.persistence.daos.jpadaoimpl;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import net.clanwolf.starmap.server.persistence.Pojo;
+import net.clanwolf.starmap.server.persistence.daos.GenericDAO;
+import net.clanwolf.starmap.server.persistence.pojos.AttackStatsPOJO;
 
-import javax.persistence.*;
+/**
+ * A data access object (DAO) providing persistence and search support for UserPOJO entities.
+ * Transaction control of the save(), update() and delete() operations must be handled externally
+ * by senders of these methods or must be manually added to each of these methods for data to be
+ * persisted to the JPA datastore.
+ */
+public class AttackStatsDAO extends GenericDAO {
 
-import static javax.persistence.GenerationType.IDENTITY;
-@JsonIdentityInfo(
-		scope= AttackVarsPOJO.class,
-		generator= ObjectIdGenerators.PropertyGenerator.class,
-		property = "id")
-@Entity
-@Table(name = "_HH_ATTACK_VARS", catalog = "C3")
-public class AttackVarsPOJO extends Pojo {
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "ID")
-	private Long id;
+	private static AttackStatsDAO instance;
 
-	@Column(name = "AttackID")
-	private Long attackID;
-
-	@Column(name = "Var")
-	private String var;
-
-	@Column(name = "Value")
-	private String value;
-
-	@SuppressWarnings("unused")
-	public Long getId() {
-		return id;
+	private AttackStatsDAO() {
+		// Empty constructor
 	}
 
-	@SuppressWarnings("unused")
-	public void setId(Long id) {
-		this.id = id;
+	public static AttackStatsDAO getInstance() {
+		if (instance == null) {
+			instance = new AttackStatsDAO();
+			instance.className = "AttackStatsPOJO";
+		}
+		return instance;
 	}
 
-	@SuppressWarnings("unused")
-	public Long getAttackID() {
-		return attackID;
+	@Override
+	public void delete(Long attackStatsId, Object entity) {
+		super.delete(attackStatsId, entity, ((AttackStatsPOJO) entity).getId());
 	}
 
-	@SuppressWarnings("unused")
-	public void setAttackID(Long attackID) {
-		this.attackID = attackID;
+	@Override
+	public AttackStatsPOJO findById(Long userId, Long id) {
+		return (AttackStatsPOJO) super.findById(userId, AttackStatsPOJO.class, id);
 	}
 
-	@SuppressWarnings("unused")
-	public String getVar() {
-		return var;
-	}
-
-	@SuppressWarnings("unused")
-	public void setVar(String var) {
-		this.var = var;
-	}
-
-	@SuppressWarnings("unused")
-	public String getValue() {
-		return value;
-	}
-
-	@SuppressWarnings("unused")
-	public void setValue(String value) {
-		this.value = value;
+	@Override
+	public AttackStatsPOJO update(Long attackStatsId, Object entity) {
+		return (AttackStatsPOJO) super.update(attackStatsId, entity);
 	}
 }

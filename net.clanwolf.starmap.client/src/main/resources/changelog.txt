@@ -1,6 +1,14 @@
 C3 version history
 --------------------------------
 
+Version 6.2.0 (27.01.2022)
+- ADDED: Saving of attack and user statistiks from MWO API
+
+Version 6.1.21 (26.01.2022)
+- ADDED: New statistic tables and corresponding classes
+- CHANGED: Renamed a number of tables
+- CHANGED: Further improvements of update downloading
+
 Version 6.1.20 (25.01.2022)
 - ADDED: Data Access classes for STATS_MWO table
 - ADDED: Saving of actual API values from MWO lobbies

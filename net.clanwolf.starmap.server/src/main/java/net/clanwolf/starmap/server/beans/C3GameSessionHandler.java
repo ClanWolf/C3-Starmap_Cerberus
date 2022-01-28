@@ -35,6 +35,7 @@ import io.nadron.event.impl.SessionMessageHandler;
 import io.nadron.service.GameStateManagerService;
 import net.clanwolf.client.mail.MailManager;
 import net.clanwolf.starmap.transfer.dtos.AttackCharacterDTO;
+import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterStatsDTO;
 import net.clanwolf.starmap.transfer.dtos.StatsMwoDTO;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 import org.slf4j.Logger;
@@ -153,6 +154,12 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			case STATS_MWO_SAVE:
 				saveStatsMwo(session, state);
 				break;
+			case CHARACTER_STATS_SAVE:
+				saveCharacterStats(session, state);
+				break;
+			case ATTACK_STATS_SAVE:
+				saveAttackStats(session, state);
+				break;
 			case ATTACK_CHARACTER_SAVE:
 				//saveAttackCharacter(session, state);
 				//serverHeartBeat = new Timer();
@@ -228,6 +235,74 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			response.addObject(re.getMessage());
 			response.setAction_successfully(Boolean.FALSE);
 			C3GameSessionHandler.sendNetworkEvent(session, response);
+		}
+	}
+
+	private synchronized void saveCharacterStats(PlayerSession session, GameState state) {
+		RolePlayCharacterStatsDAO dao = RolePlayCharacterStatsDAO.getInstance();
+
+		try {
+			EntityManagerHelper.beginTransaction(getC3UserID(session));
+
+			ArrayList<RolePlayCharacterStatsPOJO> list = (ArrayList<RolePlayCharacterStatsPOJO>)state.getObject();
+			for (RolePlayCharacterStatsPOJO charStats : list) {
+				logger.debug("Saving character stats for game id: " + charStats.getMwoMatchId() + ", rpCharId: " + charStats.getRoleplayCharacterId());
+				if(charStats.getId() != null) {
+					logger.debug("rolePlayCharacterStats.getId() != null");
+					dao.update(getC3UserID(session), charStats);
+				} else {
+					dao.save(getC3UserID(session), charStats);
+				}
+			}
+
+			EntityManagerHelper.commit(getC3UserID(session));
+
+			GameState response = new GameState(GAMESTATEMODES.CHARACTER_STATS_SAVE_RESPONSE);
+			response.setAction_successfully(Boolean.TRUE);
+			C3GameSessionHandler.sendBroadCast(room, response);
+		} catch (RuntimeException re) {
+			re.printStackTrace();
+			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
+
+			GameState response = new GameState(GAMESTATEMODES.ERROR_MESSAGE);
+			response.addObject(re.getMessage());
+			response.setAction_successfully(Boolean.FALSE);
+			C3GameSessionHandler.sendNetworkEvent(session, response);
+
+			logger.error("CharacterStats save", re);
+		}
+	}
+
+	private synchronized void saveAttackStats(PlayerSession session, GameState state) {
+		AttackStatsDAO dao = AttackStatsDAO.getInstance();
+
+		try {
+			EntityManagerHelper.beginTransaction(getC3UserID(session));
+
+			AttackStatsPOJO attackStats = (AttackStatsPOJO) state.getObject();
+			logger.debug("Saving attack stats for game id: " + attackStats.getMwoMatchId());
+
+			if(attackStats.getId() != null) {
+				logger.debug("attackStats.getId() != null");
+				dao.update(getC3UserID(session), attackStats);
+			} else {
+				dao.save(getC3UserID(session), attackStats);
+			}
+			EntityManagerHelper.commit(getC3UserID(session));
+
+			GameState response = new GameState(GAMESTATEMODES.ATTACK_STATS_SAVE_RESPONSE);
+			response.setAction_successfully(Boolean.TRUE);
+			C3GameSessionHandler.sendBroadCast(room, response);
+		} catch (RuntimeException re) {
+			re.printStackTrace();
+			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
+
+			GameState response = new GameState(GAMESTATEMODES.ERROR_MESSAGE);
+			response.addObject(re.getMessage());
+			response.setAction_successfully(Boolean.FALSE);
+			C3GameSessionHandler.sendNetworkEvent(session, response);
+
+			logger.error("AttackStats save", re);
 		}
 	}
 

@@ -27,10 +27,11 @@
 package net.clanwolf.starmap.client.mwo;
 
 import net.clanwolf.starmap.client.nexus.Nexus;
+import net.clanwolf.starmap.client.process.universe.BOAttackStats;
+import net.clanwolf.starmap.client.process.universe.BORolePlayCharacterStats;
 import net.clanwolf.starmap.client.process.universe.BOStatsMwo;
-import net.clanwolf.starmap.transfer.dtos.AttackCharacterDTO;
-import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
-import net.clanwolf.starmap.transfer.dtos.StatsMwoDTO;
+import net.clanwolf.starmap.constants.Constants;
+import net.clanwolf.starmap.transfer.dtos.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,6 +40,7 @@ import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -60,10 +62,17 @@ public class ResultAnalyzer {
 
 		Integer team1NumberOfPilots = 0;
 		Integer team2NumberOfPilots = 0;
-		int team1Tonnage = 0;
-		int team2Tonnage = 0;
+		Long team1Tonnage = 0l;
+		Long team2Tonnage = 0l;
+		Long team1LostTonnage = 0l;
+		Long team2LostTonnage = 0l;
+		Long team1KillCount = 0l;
+		Long team2KillCount = 0l;
 		Integer team1SurvivingPercentage = 0;
 		Integer team2SurvivingPercentage = 0;
+
+		String attackerTeam = null;
+		String defenderTeam = null;
 
 		// 2018-03-30T01:41:51+00:00
 		Timestamp timestampFromMWOGame = null;
@@ -94,6 +103,7 @@ public class ResultAnalyzer {
 		logger.info("Team                  MWO Username      Unit           Mech (ton.)      K/A    Damage          C3 User");
 
 		HashMap<UserDetail, RolePlayCharacterDTO> userMatchList = new HashMap<>();
+		ArrayList<RolePlayCharacterStatsDTO> characterStatsList = new ArrayList<>();
 
 		for (UserDetail ud : result.getUserDetails()) {
 			MechIdInfo mechInfo = new MechIdInfo();
@@ -101,6 +111,7 @@ public class ResultAnalyzer {
 			String team = ud.getTeam() == null ? "/" : ud.getTeam();
 			String userName = ud.getUsername();
 			String mech = ud.getMechName();
+			boolean leadingPosition = false;
 			String mechFullName = mechInfo.getFullname(ud.getMechItemID());
 			int tonnage = mechInfo.getTonnage(ud.getMechItemID());
 			String unit = ud.getUnitTag();
@@ -126,7 +137,25 @@ public class ResultAnalyzer {
 					if (userName.equals(mwoName)) {
 						foundUser = String.format("%15s %n", "(" + rpc.getName() + ")");
 						userMatchList.put(ud, rpc);
-						break;
+						if (ac.getType().equals(Constants.ROLE_ATTACKER_COMMANDER)) {
+							leadingPosition = true;
+							attackerTeam = team;
+						} else if (ac.getType().equals(Constants.ROLE_DEFENDER_COMMANDER)) {
+							leadingPosition = true;
+							defenderTeam = team;
+						} else if (ac.getType().equals(Constants.ROLE_ATTACKER_WARRIOR)) {
+							leadingPosition = false;
+							attackerTeam = team;
+						} else if (ac.getType().equals(Constants.ROLE_DEFENDER_WARRIOR)) {
+							leadingPosition = false;
+							defenderTeam = team;
+						} else if (ac.getType().equals(Constants.ROLE_ATTACKER_SUPPORTER)) {
+							leadingPosition = false;
+							attackerTeam = team;
+						} else if (ac.getType().equals(Constants.ROLE_DEFENDER_SUPPORTER)) {
+							leadingPosition = false;
+							defenderTeam = team;
+						}
 					}
 				}
 			}
@@ -135,10 +164,18 @@ public class ResultAnalyzer {
 				team1NumberOfPilots++;
 				team1SurvivingPercentage += healthPercentage;
 				team1Tonnage += tonnage;
+				if (healthPercentage == 0) {
+					team2LostTonnage += tonnage;
+					team2KillCount++;
+				}
 			} else if (team.equals("2")) {
 				team2NumberOfPilots++;
 				team2SurvivingPercentage += healthPercentage;
 				team2Tonnage += tonnage;
+				if (healthPercentage == 0) {
+					team1LostTonnage += tonnage;
+					team1KillCount++;
+				}
 			}
 
 			logger.info(("- " + team + " "
@@ -149,6 +186,23 @@ public class ResultAnalyzer {
 					+ killsFormatted + " "
 					+ damageFormatted + " "
 					+ foundUser).replaceAll("\r\n", ""));
+
+			RolePlayCharacterDTO rpchar = userMatchList.get(ud);
+			if (rpchar != null) {
+				RolePlayCharacterStatsDTO charStats = new RolePlayCharacterStatsDTO();
+				charStats.setSeasonId(Nexus.getCurrentAttackOfUser().getSeason().longValue());
+				charStats.setAttackId(Nexus.getCurrentAttackOfUser().getSeason().longValue());
+				charStats.setRoleplayCharacterId(rpchar.getId());
+				charStats.setMwoMatchId(gameId);
+				charStats.setLeadingPosition(leadingPosition);
+				charStats.setMwoMatchScore(matchScore.longValue());
+				charStats.setMwoDamage(damage.longValue());
+				charStats.setMwoKills(kills.longValue());
+				charStats.setMwoSurvivalPercentage(healthPercentage.longValue());
+
+				logger.info("Storing stats data for character: " + Nexus.getCurrentUser().getCurrentCharacter());
+				characterStatsList.add(charStats);
+			}
 
 			// Tonnage by adding the mech weights from a lookup table?
 			// XP = Kills * damage / number of players, weil das Team gewinnt! ????
@@ -169,7 +223,7 @@ public class ResultAnalyzer {
 		logger.info("Team 2 surviving percentage: " + team2SurvivingPercentage / team2NumberOfPilots);
 
 		if (store) {
-			logger.info("Storing game stats to database...");
+			logger.info("Storing raw game stats to database...");
 			try {
 				StatsMwoDTO stats = new StatsMwoDTO();
 				stats.setSeasonId(Nexus.getCurrentAttackOfUser().getSeason().longValue());
@@ -183,6 +237,58 @@ public class ResultAnalyzer {
 			} catch (Exception e) {
 				e.printStackTrace();
 				logger.error("Error while saving mwo game results.", e);
+			}
+			logger.info("Storing attack stats to database...");
+			try {
+				AttackStatsDTO attackStats = new AttackStatsDTO();
+				attackStats.setSeasonId(Nexus.getCurrentAttackOfUser().getSeason().longValue());
+				attackStats.setAttackId(Nexus.getCurrentAttackOfUser().getAttackDTO().getId());
+				attackStats.setStarSystemDataId(Nexus.getCurrentAttackOfUser().getStarSystemId());
+				attackStats.setMwoMatchId(gameId);
+				attackStats.setDropId("");
+				attackStats.setAttackerFactionId(Nexus.getCurrentAttackOfUser().getAttackerFactionId().longValue());
+				attackStats.setDefenderFactionId(Nexus.getCurrentAttackOfUser().getDefenderFactionId().longValue());
+				if ("1".equals(attackerTeam) && "2".equals(defenderTeam)) {
+					attackStats.setAttackerTonnage(team1Tonnage);
+					attackStats.setDefenderTonnage(team2Tonnage);
+					attackStats.setAttackerLostTonnage(team1LostTonnage);
+					attackStats.setDefenderLostTonnage(team2LostTonnage);
+					attackStats.setAttackerKillCount(team1KillCount);
+					attackStats.setDefenderKillCount(team2KillCount);
+					if ("1".equals(winner)) { // Attacker won
+						attackStats.setWinnerFactionId(Nexus.getCurrentAttackOfUser().getAttackerFactionId().longValue());
+					} else if ("2".equals(winner)) { // Defender won
+						attackStats.setWinnerFactionId(Nexus.getCurrentAttackOfUser().getDefenderFactionId().longValue());
+					}
+				} else if ("2".equals(attackerTeam) && "1".equals(defenderTeam)) {
+					attackStats.setAttackerTonnage(team2Tonnage);
+					attackStats.setDefenderTonnage(team1Tonnage);
+					attackStats.setAttackerLostTonnage(team2LostTonnage);
+					attackStats.setDefenderLostTonnage(team1LostTonnage);
+					attackStats.setAttackerKillCount(team2KillCount);
+					attackStats.setDefenderKillCount(team1KillCount);
+					if ("1".equals(winner)) { // Defender won
+						attackStats.setWinnerFactionId(Nexus.getCurrentAttackOfUser().getDefenderFactionId().longValue());
+					} else if ("2".equals(winner)) { // Attacker won
+						attackStats.setWinnerFactionId(Nexus.getCurrentAttackOfUser().getAttackerFactionId().longValue());
+					}
+				}
+
+				BOAttackStats boAttackStats = new BOAttackStats(attackStats);
+				boAttackStats.storeAttackStats();
+				logger.info("... done.");
+			} catch (Exception e) {
+				e.printStackTrace();
+				logger.error("Error while saving attack stats.", e);
+			}
+			logger.info("Storing roleplay character stats to database...");
+			try {
+				BORolePlayCharacterStats boRolePlayCharacterStats = new BORolePlayCharacterStats(characterStatsList);
+				boRolePlayCharacterStats.storeRolePlayCharacterStats();
+				logger.info("... done.");
+			} catch (Exception e) {
+				e.printStackTrace();
+				logger.error("Error while saving attack stats.", e);
 			}
 		}
 

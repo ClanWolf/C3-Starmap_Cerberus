@@ -24,73 +24,35 @@
  * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.server.persistence.pojos;
+package net.clanwolf.starmap.client.process.universe;
 
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import net.clanwolf.starmap.server.persistence.Pojo;
+import net.clanwolf.starmap.client.nexus.Nexus;
+import net.clanwolf.starmap.transfer.GameState;
+import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterStatsDTO;
+import net.clanwolf.starmap.transfer.dtos.StatsMwoDTO;
+import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
+import net.clanwolf.starmap.transfer.util.Compressor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import javax.persistence.*;
+import java.lang.invoke.MethodHandles;
+import java.util.ArrayList;
 
-import static javax.persistence.GenerationType.IDENTITY;
-@JsonIdentityInfo(
-		scope= AttackVarsPOJO.class,
-		generator= ObjectIdGenerators.PropertyGenerator.class,
-		property = "id")
-@Entity
-@Table(name = "_HH_ATTACK_VARS", catalog = "C3")
-public class AttackVarsPOJO extends Pojo {
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "ID")
-	private Long id;
+public class BORolePlayCharacterStats {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+	private ArrayList<RolePlayCharacterStatsDTO> rolePlayCharacterStatsDTOList;
 
-	@Column(name = "AttackID")
-	private Long attackID;
-
-	@Column(name = "Var")
-	private String var;
-
-	@Column(name = "Value")
-	private String value;
-
-	@SuppressWarnings("unused")
-	public Long getId() {
-		return id;
+	public BORolePlayCharacterStats(ArrayList<RolePlayCharacterStatsDTO> rolePlayCharStatsDTOList) {
+		this.rolePlayCharacterStatsDTOList = rolePlayCharStatsDTOList;
 	}
 
 	@SuppressWarnings("unused")
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	@SuppressWarnings("unused")
-	public Long getAttackID() {
-		return attackID;
-	}
-
-	@SuppressWarnings("unused")
-	public void setAttackID(Long attackID) {
-		this.attackID = attackID;
-	}
-
-	@SuppressWarnings("unused")
-	public String getVar() {
-		return var;
-	}
-
-	@SuppressWarnings("unused")
-	public void setVar(String var) {
-		this.var = var;
-	}
-
-	@SuppressWarnings("unused")
-	public String getValue() {
-		return value;
-	}
-
-	@SuppressWarnings("unused")
-	public void setValue(String value) {
-		this.value = value;
+	public void storeRolePlayCharacterStats() {
+		GameState saveRolePlayCharacterState = new GameState();
+		saveRolePlayCharacterState.setMode(GAMESTATEMODES.CHARACTER_STATS_SAVE);
+		byte[] compressedRolePlayCharacterState = Compressor.compress(rolePlayCharacterStatsDTOList);
+		logger.info("Compressed rolePlayCharacterStatsDTO size: " + compressedRolePlayCharacterState.length);
+		saveRolePlayCharacterState.addObject(compressedRolePlayCharacterState);
+		Nexus.fireNetworkEvent(saveRolePlayCharacterState);
 	}
 }
