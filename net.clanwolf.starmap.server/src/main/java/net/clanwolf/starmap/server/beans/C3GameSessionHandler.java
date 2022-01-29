@@ -653,7 +653,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 			boolean sent = false;
 			String[] receivers = { "keshik@googlegroups.com" };
-			sent = MailManager.sendMail("c3@clanwolf.net", receivers, user.getUserName() + " logged into C3 client", "User logged into C3 client.", false);
+			//sent = MailManager.sendMail("c3@clanwolf.net", receivers, user.getUserName() + " logged into C3 client", "User logged into C3 client.", false);
 			if (sent) {
 				// sent
 				logger.info("User logged in information mail sent.");

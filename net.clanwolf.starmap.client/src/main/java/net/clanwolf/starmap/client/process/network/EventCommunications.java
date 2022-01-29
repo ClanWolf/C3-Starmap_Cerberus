@@ -206,13 +206,11 @@ public class EventCommunications {
 						}
 					}
 
-					// Ein Versuch, ein eingenommenes System direkt im Client zu färben, geht so nicht!
-//					Long factionWinnerId = attack.getFactionID_Winner();
-//					if (factionWinnerId != null) {
-//						BOStarSystem boSs = Nexus.getBoUniverse().starSystemBOs.get(attack.getStarSystemID());
-//						boSs.setFactionId(attack.getFactionID_Winner());
-//						ActionManager.getAction(ACTIONS.REPAINT_MAP).execute();
-//					}
+					// Wenn Kampf beendet wurde dann den aktuellen Kampf des Users auf Null setzen
+					Long factionWinnerId = attack.getFactionID_Winner();
+					if (factionWinnerId != null) {
+						Nexus.setCurrentAttackOfUserToNull();
+					}
 					break;
 
 				case ATTACK_CHARACTER_SAVE_RESPONSE:
