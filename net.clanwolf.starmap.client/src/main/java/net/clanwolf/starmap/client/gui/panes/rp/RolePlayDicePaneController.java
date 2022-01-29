@@ -207,17 +207,17 @@ public class RolePlayDicePaneController extends AbstractC3RolePlayController imp
 	/******************************** THIS ********************************/
 
 	@Override
-	public void getStoryValues(RolePlayStoryDTO rpChar) {
+	public void getStoryValues(RolePlayStoryDTO rpStory) {
 		// set story image
-		Image im = BORolePlayStory.getRPG_Image(rpChar);
+		Image im = BORolePlayStory.getRPG_Image(rpStory);
 		backgroundImage.setImage(im);
 
 		// play sound
-		if (rpChar.getStoryMP3() != null) {
-//			C3SoundPlayer.play(BORolePlayStory.getRPG_Soundfile(rpChar), false);
-			C3SoundPlayer.playRPSound(BORolePlayStory.getRPG_Soundfile(rpChar));
+		if (rpStory.getStoryMP3() != null) {
+			C3SoundPlayer.playRPSound(Objects.requireNonNull(BORolePlayStory.getRPG_Soundfile(rpStory)), audioStartedOnce);
+			audioStartedOnce = true;
 		}
 
-		taRpText.setText(rpChar.getStoryText());
+		taRpText.setText(rpStory.getStoryText());
 	}
 }

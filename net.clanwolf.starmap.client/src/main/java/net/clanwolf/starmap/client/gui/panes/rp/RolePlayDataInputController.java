@@ -61,6 +61,7 @@ import java.io.InputStream;
 import java.lang.invoke.MethodHandles;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 /**
@@ -202,8 +203,8 @@ public class RolePlayDataInputController extends AbstractC3RolePlayController im
 
 		// play sound
 		if (rpStory.getStoryMP3() != null) {
-//			C3SoundPlayer.play(BORolePlayStory.getRPG_Soundfile(rpStory), false);
-			C3SoundPlayer.playRPSound(BORolePlayStory.getRPG_Soundfile(rpStory));
+			C3SoundPlayer.playRPSound(Objects.requireNonNull(BORolePlayStory.getRPG_Soundfile(rpStory)), audioStartedOnce);
+			audioStartedOnce = true;
 		}
 
 		//TODO: append single chars step by step until the whole text is displaying

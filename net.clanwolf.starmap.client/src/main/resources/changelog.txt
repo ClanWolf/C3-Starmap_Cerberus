@@ -1,6 +1,14 @@
 C3 version history
 --------------------------------
 
+Version 6.2.2 (29.01.2022)
+- FIXED: Storing of statistics data
+- FIXED: Mouse transparency of Tukayyid line (circle)
+- FIXED: Unique constraint for attack and char stats added
+- FIXED: MWO API got additional check for valid code (15 long, only numbers)
+- FIXED: Clipboard will be cleared on first start of the monitoring
+- FIXED: Roleplay sound clips during invasion should stop after the first run
+
 Version 6.2.1 (27.01.2022)
 - ADDED: Saving of attack and user statistiks from MWO API
 

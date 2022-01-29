@@ -206,7 +206,7 @@ public class C3SoundPlayer {
 		}
 	}
 
-	public static void playRPSound(final URL url) {
+	public static void playRPSound(final URL url, boolean audioStartedOnce) {
 		boolean playerPaused = false;
 		String urlString = url.toString();
 
@@ -227,24 +227,27 @@ public class C3SoundPlayer {
 			}
 		}
 
-		Media rpClip;
-		if (rpClipCache.get(urlString) != null) {
-			logger.info("Playing RP clip from memory cache.");
-			rpClip = rpClipCache.get(urlString);
-		} else {
-			logger.info("Caching RP clip.");
-			rpClip = new Media(urlString);
-			rpClipCache.put(url.toString(), rpClip);
+		if (!audioStartedOnce) {
+			Media rpClip;
+			if (rpClipCache.get(urlString) != null) {
+				logger.info("Playing RP clip from memory cache.");
+				rpClip = rpClipCache.get(urlString);
+			} else {
+				logger.info("Caching RP clip.");
+				rpClip = new Media(urlString);
+				rpClipCache.put(url.toString(), rpClip);
+			}
+			rpPlayer = new MediaPlayer(rpClip);
+			rpPlayer.setVolume(0.5d * 100);
+			rpPlayer.setCycleCount(1);
+			rpPlayer.setVolume(voiceVolume);
+			if (Nexus.mainframeVolumeSlider != null) {
+				rpPlayer.volumeProperty().bindBidirectional(Nexus.mainframeVolumeSlider.valueProperty());
+			}
+			//		rpPlayer.setOnEndOfMedia( () -> ActionManager.getAction(ACTIONS.STOP_SPEECH_SPECTRUM).execute() );
+			lastRolePlaySampleURL = url.toString();
+			rpPlayer.play();
 		}
-		rpPlayer = new MediaPlayer(rpClip);
-		rpPlayer.setVolume(0.5d * 100);
-		rpPlayer.setVolume(voiceVolume);
-		if (Nexus.mainframeVolumeSlider != null) {
-			rpPlayer.volumeProperty().bindBidirectional(Nexus.mainframeVolumeSlider.valueProperty());
-		}
-//		rpPlayer.setOnEndOfMedia( () -> ActionManager.getAction(ACTIONS.STOP_SPEECH_SPECTRUM).execute() );
-		lastRolePlaySampleURL = url.toString();
-		rpPlayer.play();
 	}
 
 	/**

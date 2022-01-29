@@ -1202,6 +1202,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				circleTukayyidLine.setStroke(Color.YELLOW);
 				circleTukayyidLine.setFill(Color.TRANSPARENT);
 				circleTukayyidLine.toBack();
+				circleTukayyidLine.setMouseTransparent(true);
 				canvas.getChildren().add(circleTukayyidLine);
 
 				for (Line l : lines) {

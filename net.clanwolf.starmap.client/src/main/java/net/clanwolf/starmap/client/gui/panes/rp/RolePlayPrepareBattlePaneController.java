@@ -551,11 +551,11 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 	/******************************** THIS ********************************/
 	@Override
-	public void getStoryValues(RolePlayStoryDTO rpChar){
+	public void getStoryValues(RolePlayStoryDTO rpStory){
 		// play sound
-		if (rpChar.getStory().getStoryMP3() != null) {
-//			C3SoundPlayer.play(BORolePlayStory.getRPG_Soundfile(rpChar.getStory()), false);
-			C3SoundPlayer.playRPSound(BORolePlayStory.getRPG_Soundfile(rpChar.getStory()));
+		if (rpStory.getStory().getStoryMP3() != null) {
+			C3SoundPlayer.playRPSound(Objects.requireNonNull(BORolePlayStory.getRPG_Soundfile(rpStory)), audioStartedOnce);
+			audioStartedOnce = true;
 		}
 	} //getStoryValues
 

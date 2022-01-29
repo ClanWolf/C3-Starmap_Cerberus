@@ -34,6 +34,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.Clipboard;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -172,6 +173,9 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 
 		if (!Nexus.isMwoCheckingActive()) {
 			if (C3Properties.getBoolean(C3PROPS.GENERALS_CLIPBOARD_API)) {
+				Clipboard cb = Clipboard.getSystemClipboard();
+				cb.clear();
+
 				Timer checkSystemClipboardForMWOResultTimer = new Timer();
 				checkSystemClipboardForMWOResultTimer.schedule(new CheckClipboardForMwoApi(), 0, 2000);
 				Nexus.setCheckSystemClipboardForMWOResultTimer(checkSystemClipboardForMWOResultTimer);
@@ -335,9 +339,8 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 		}
 
 		// play sound
-		if (rpStory.getStoryMP3() != null) {
-			C3SoundPlayer.playRPSound(BORolePlayStory.getRPG_Soundfile(rpStory));
-		}
+		C3SoundPlayer.playRPSound(Objects.requireNonNull(BORolePlayStory.getRPG_Soundfile(rpStory)), audioStartedOnce);
+		audioStartedOnce = true;
 
 		// REPLACE VARS!
 		String storyStepText = rpStory.getStoryText();

@@ -59,6 +59,7 @@ import java.lang.invoke.MethodHandles;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
 /**
@@ -281,8 +282,8 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 
 		// play sound
 		if (rpStory.getStoryMP3() != null) {
-//			C3SoundPlayer.play(BORolePlayStory.getRPG_Soundfile(rpStory), false);
-			C3SoundPlayer.playRPSound(BORolePlayStory.getRPG_Soundfile(rpStory));
+			C3SoundPlayer.playRPSound(Objects.requireNonNull(BORolePlayStory.getRPG_Soundfile(rpStory)), audioStartedOnce);
+			audioStartedOnce = true;
 		}
 	} //getStoryValues
 }

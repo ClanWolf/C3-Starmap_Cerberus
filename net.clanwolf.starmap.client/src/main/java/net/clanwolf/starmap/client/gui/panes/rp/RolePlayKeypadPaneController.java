@@ -59,6 +59,7 @@ import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 import java.io.InputStream;
 import java.lang.invoke.MethodHandles;
 import java.net.URL;
+import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 
@@ -535,8 +536,8 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 
 		// play sound
 		if (rpStory.getStoryMP3() != null) {
-//			C3SoundPlayer.play(BORolePlayStory.getRPG_Soundfile(rpStory), false);
-			C3SoundPlayer.playRPSound(BORolePlayStory.getRPG_Soundfile(rpStory));
+			C3SoundPlayer.playRPSound(Objects.requireNonNull(BORolePlayStory.getRPG_Soundfile(rpStory)), audioStartedOnce);
+			audioStartedOnce = true;
 		}
 	}
 }

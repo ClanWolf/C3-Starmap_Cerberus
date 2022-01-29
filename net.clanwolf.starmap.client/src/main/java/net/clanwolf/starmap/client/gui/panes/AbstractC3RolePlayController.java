@@ -60,6 +60,7 @@ public abstract class AbstractC3RolePlayController implements Initializable, Act
 	protected BORolePlayStory boRp;
 	//protected RolePlayStoryDTO rp;
 	protected boolean isCharRP = true;
+	protected boolean audioStartedOnce = false;
 
 	@FXML
 	private ImageView templateBackground;
