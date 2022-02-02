@@ -73,10 +73,10 @@ public class CheckShutdownFlagTimer extends TimerTask {
 				sent = MailManager.sendMail("c3@clanwolf.net", receivers, "C3 Server goes down after flag request", "C3 Server is shutting down...", false);
 				if (sent) {
 					// sent
-					logger.info("Mail sent.");
+					logger.info("Mail sent. [6]");
 				} else {
 					// error during email sending
-					logger.info("Error during mail dispatch.");
+					logger.info("Error during mail dispatch. [6]");
 				}
 			}
 			logger.info("Exiting server.");

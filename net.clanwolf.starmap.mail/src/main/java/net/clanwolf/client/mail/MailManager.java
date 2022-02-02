@@ -26,15 +26,20 @@
  */
 package net.clanwolf.client.mail;
 
-//import javax.mail.internet.AddressException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import java.io.IOException;
+import java.lang.invoke.MethodHandles;
 import java.util.Date;
 import java.util.Properties;
 
 public class MailManager {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
 	private static String mailServer = null;
 	private static String mailUser = null;
 	private static String mailPassword = null;
@@ -121,17 +126,17 @@ public class MailManager {
 			transport.sendMessage(msg, msg.getAllRecipients());
 
 			result = true;
-			System.out.println("Successfully sent email from " + mail.sender() + " to " + mail.recipients());
+			logger.info("Successfully sent email from " + mail.sender() + " to " + mail.recipients());
 		} catch (Throwable e) {
 			e.printStackTrace();
-			System.out.println("Failed to send email " + e.getMessage());
+			logger.error("Failed to send email.", e);
+//			logger.info("Failed to send email " + e.getMessage());
 		} finally {
 			if (transport != null) {
 				try {
 					transport.close();
 				} catch (MessagingException e) {
-					System.out.println("Failed to close Mail smtp Transport: " + e.getMessage());
-
+					logger.info("Failed to close Mail smtp Transport: " + e.getMessage());
 				}
 			}
 		}
@@ -148,7 +153,7 @@ public class MailManager {
 				String pw = mProperties.getProperty("mail_pw");
 				MailManager.setMailCredentials(server, user, pw);
 			} catch (IOException e) {
-				System.out.println("Failed to read mail properties: " + e.getMessage());
+				logger.info("Failed to read mail properties: " + e.getMessage());
 				return false;
 			}
 		}

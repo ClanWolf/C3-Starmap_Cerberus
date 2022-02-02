@@ -653,13 +653,13 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 			boolean sent = false;
 			String[] receivers = { "keshik@googlegroups.com" };
-			//sent = MailManager.sendMail("c3@clanwolf.net", receivers, user.getUserName() + " logged into C3 client", "User logged into C3 client.", false);
+			sent = MailManager.sendMail("c3@clanwolf.net", receivers, user.getUserName() + " logged into C3 client", "User logged into C3 client.", false);
 			if (sent) {
 				// sent
-				logger.info("User logged in information mail sent.");
+				logger.info("User logged in information mail sent. [4]");
 			} else {
 				// error during email sending
-				logger.info("Error during mail dispatch.");
+				logger.info("Error during mail dispatch. [4]");
 			}
 			logger.info("--------------------");
 			EntityManagerHelper.commit(C3GameSessionHandler.getC3UserID(session));

@@ -7,4 +7,5 @@ module net.clanwolf.starmap.ircbot {
 	requires mysql.connector.java;
 	requires net.clanwolf.starmap.logging;
 	requires org.slf4j;
+	requires org.slf4j.jul;
 }

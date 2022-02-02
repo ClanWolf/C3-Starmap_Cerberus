@@ -39,7 +39,7 @@ public class C3LogUtil {
 			if (logFileName != null) {
 				FileHandler fileHandler = new FileHandler(logFileName, FILE_SIZE_LIMIT, 3, false);
 				fileHandler.setEncoding("UTF-8");
-				//fileHandler.setFormatter(new SocotoLogFormatter());
+				//fileHandler.setFormatter(new C3LogFormatter());
 
 				java.util.logging.Logger julLogger = java.util.logging.Logger.getLogger("");
 				julLogger.addHandler(fileHandler);

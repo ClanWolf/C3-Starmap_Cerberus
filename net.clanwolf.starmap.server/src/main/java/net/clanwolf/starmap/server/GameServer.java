@@ -39,6 +39,7 @@ import org.springframework.context.support.AbstractApplicationContext;
 import java.io.File;
 import java.lang.invoke.MethodHandles;
 import java.net.URISyntaxException;
+import java.util.Properties;
 import java.util.Timer;
 
 import org.slf4j.Logger;
@@ -87,6 +88,9 @@ public class GameServer {
 	}
 
 	public static void main(String[] args) {
+		Properties props = System.getProperties();
+		props.setProperty("org.jboss.logging.provider", "slf4j");
+
 		if(args.length > 0) {
 			for (String a : args) {
 				isDevelopmentPC = a.equals("IDE");
@@ -144,10 +148,10 @@ public class GameServer {
 				sent = MailManager.sendMail("c3@clanwolf.net", receivers, "C3 Server is up again", "C3 Server started.", false);
 				if (sent) {
 					// sent
-					logger.info("Mail sent.");
+					logger.info("Mail sent. [3]");
 				} else {
 					// error during email sending
-					logger.info("Error during mail dispatch.");
+					logger.info("Error during mail dispatch. [3]");
 				}
 			}
 

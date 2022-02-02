@@ -451,10 +451,10 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 //		sent = MailManager.sendMail("starmap@clanwolf.net", receivers, "C3 Client (" + Tools.getVersionNumber() + ")", "C3 Client (" + Tools.getVersionNumber() + ") was successfully started.", false, false);
 //		if (sent) {
 //			// sent
-//			logger.info("Mail sent.");
+//			logger.info("Mail sent. [2]");
 //		} else {
 //			// error during email sending
-//			logger.info("Error during mail dispatch.");
+//			logger.info("Error during mail dispatch. [2]");
 //		}
 	}
 

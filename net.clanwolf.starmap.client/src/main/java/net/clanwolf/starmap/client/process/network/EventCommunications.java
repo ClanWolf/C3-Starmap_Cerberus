@@ -230,30 +230,30 @@ public class EventCommunications {
 
 				case STATS_MWO_SAVE_RESPONSE:
 					if (state.isAction_successfully()) {
-						System.out.println("MWO stats saved!");
+						logger.info("MWO stats saved!");
 						C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_MwoApiRequestSuccessfull"));
 					} else {
-						System.out.println("MWO stats NOT saved!");
+						logger.info("MWO stats NOT saved!");
 						C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_MwoApiRequestFailed"));
 					}
 					break;
 
 				case ATTACK_STATS_SAVE_RESPONSE:
 					if (state.isAction_successfully()) {
-						System.out.println("Attack stats saved!");
+						logger.info("Attack stats saved!");
 						C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_AttackStatsStoreSuccessfull"));
 					} else {
-						System.out.println("Attack stats NOT saved!");
+						logger.info("Attack stats NOT saved!");
 						C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_AttackStatsStoreFailed"));
 					}
 					break;
 
 				case CHARACTER_STATS_SAVE_RESPONSE:
 					if (state.isAction_successfully()) {
-						System.out.println("Character stats saved!");
+						logger.info("Character stats saved!");
 						C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_CharacterStatsStoreSuccessfull"));
 					} else {
-						System.out.println("Character stats NOT saved!");
+						logger.info("Character stats NOT saved!");
 						C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_CharacterStatsStoreFailed"));
 					}
 					break;

@@ -493,10 +493,10 @@ public class EndRound {
 
 				if (sent) {
 					// sent
-					logger.info("Mail sent.");
+					logger.info("Mail sent. [5]");
 				} else {
 					// error during email sending
-					logger.info("Error during mail dispatch.");
+					logger.info("Error during mail dispatch. [5]");
 				}
 			} else {
 				logger.info("Mail was not sent out because this is a dev computer.");

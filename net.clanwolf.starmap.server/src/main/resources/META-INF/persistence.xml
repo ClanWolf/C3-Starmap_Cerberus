@@ -29,7 +29,8 @@
 			<!-- autoReconnect=true&amp; removed from url -->
 
 			<property name="current_session_context_class" value="thread" />
-			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />
+<!--			<property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect" />-->
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MariaDB103Dialect" />
 
 			<!-- Connection release fix (?) -->
 			<!-- https://docs.jboss.org/hibernate/stable/orm/userguide/html_single/Hibernate_User_Guide.html -->
@@ -52,10 +53,9 @@
 			<property name="hibernate.hikari.dataSource.prepStmtCacheSqlLimit" value="2048" />
 			<property name="hibernate.hikari.dataSource.useServerPrepStmts" value="true" />
 
-			<property name="hibernate.show_sql" value="false"/>
-			<property name="hibernate.format_sql" value="false"/>
+			<!-- <property name="hibernate.show_sql" value="true"/>: Done in logging.properties! -->
+			<property name="hibernate.format_sql" value="true"/>
 			<property name="hibernate.use_sql_comments" value="false"/>
-
 		</properties>
 	</persistence-unit>
 

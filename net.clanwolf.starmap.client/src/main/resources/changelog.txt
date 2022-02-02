@@ -2,6 +2,8 @@ C3 version history
 --------------------------------
 
 Version 6.2.6 (02.02.2022)
+- UPDATED: Several libs
+- CHANGED: Logging settings
 - PREPARED: Checking on a logging issue
 
 Version 6.2.5 (01.02.2022)

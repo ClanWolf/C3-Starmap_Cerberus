@@ -27,14 +27,18 @@
 package net.clanwolf.ircclient.util;
 
 import net.clanwolf.client.mail.MailManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.lang.invoke.MethodHandles;
 import java.util.TimerTask;
 
 /**
  * @author Meldric
  */
 public class CheckShutdownFlagTimer extends TimerTask {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	private String dir = "";
 
@@ -67,10 +71,10 @@ public class CheckShutdownFlagTimer extends TimerTask {
 			sent = MailManager.sendMail("c3@clanwolf.net", receivers, "CWIRCBot goes down after flag request", "CWIRCBot is shutting down...", false);
 			if (sent) {
 				// sent
-//				logger.info("Mail sent.");
+				logger.info("Mail sent. [1]");
 			} else {
 				// error during email sending
-//				logger.info("Error during mail dispatch.");
+				logger.info("Error during mail dispatch. [1]");
 			}
 
 			System.exit(5);
