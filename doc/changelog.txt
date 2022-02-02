@@ -1,6 +1,19 @@
 C3 version history
 --------------------------------
 
+Version 6.2.6 (02.02.2022)
+- PREPARED: Checking on a logging issue
+
+Version 6.2.5 (01.02.2022)
+- ADDED: A number of additional stats data to the database (from MWO API)
+- ADDED: Column to link attack to a forum thread
+- ADDED: Statistics data to the end of round stats
+- PREPARED: Creation of a thread for each planetary attack (for roleplay and results)
+
+Version 6.2.3 (30.01.2022)
+- CHANGED: Buttons in invasion enable after points are displayed
+- CHANGED: Dice pane disabled (for now)
+
 Version 6.2.2 (29.01.2022)
 - FIXED: Storing of statistics data
 - FIXED: Mouse transparency of Tukayyid line (circle)

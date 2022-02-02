@@ -48,6 +48,9 @@ public class AttackStatsDTO extends Dto {
 //	@Column(name = "SeasonID")
 	private Long seasonId;
 
+//	@Column(name = "RoundID")
+	private Long roundId;
+
 //	@Column(name = "AttackID")
 	private Long attackId;
 
@@ -56,6 +59,15 @@ public class AttackStatsDTO extends Dto {
 
 //	@Column(name = "MwoMatchID")
 	private String mwoMatchId;
+
+//	@Column(name = "Map")
+	private String map;
+
+//	@Column(name = "Mode")
+	private String mode;
+
+//	@Column(name = "DropEnded")
+	private String dropEnded;
 
 //	@Column(name = "StarSystemDataId")
 	private Long starSystemDataId;
@@ -68,6 +80,12 @@ public class AttackStatsDTO extends Dto {
 
 //	@Column(name = "WinnerFactionId")
 	private Long winnerFactionId;
+
+//	@Column(name = "AttackerNumberOfPilots")
+	private Long attackerNumberOfPilots;
+
+//	@Column(name = "DefenderNumberOfPilots")
+	private Long defenderNumberOfPilots;
 
 //	@Column(name = "AttackerTonnage")
 	private Long attackerTonnage;
@@ -112,6 +130,16 @@ public class AttackStatsDTO extends Dto {
 	}
 
 	@SuppressWarnings("unused")
+	public Long getRoundId() {
+		return roundId;
+	}
+
+	@SuppressWarnings("unused")
+	public void setRoundId(Long roundId) {
+		this.roundId = roundId;
+	}
+
+	@SuppressWarnings("unused")
 	public Long getAttackId() {
 		return attackId;
 	}
@@ -139,6 +167,34 @@ public class AttackStatsDTO extends Dto {
 	@SuppressWarnings("unused")
 	public void setMwoMatchId(String mwoMatchId) {
 		this.mwoMatchId = mwoMatchId;
+	}
+
+	@SuppressWarnings("unused")
+	public String getMap() { return this.map; }
+
+	@SuppressWarnings("unused")
+	public void setMap(String map) {
+		this.map = map;
+	}
+
+	@SuppressWarnings("unused")
+	public String getMode() {
+		return mode;
+	}
+
+	@SuppressWarnings("unused")
+	public void setMode(String mode) {
+		this.mode = mode;
+	}
+
+	@SuppressWarnings("unused")
+	public String getDropEnded() {
+		return dropEnded;
+	}
+
+	@SuppressWarnings("unused")
+	public void setDropEnded(String dropEnded) {
+		this.dropEnded = dropEnded;
 	}
 
 	@SuppressWarnings("unused")
@@ -199,6 +255,26 @@ public class AttackStatsDTO extends Dto {
 	@SuppressWarnings("unused")
 	public void setDefenderTonnage(Long defenderTonnage) {
 		this.defenderTonnage = defenderTonnage;
+	}
+
+	@SuppressWarnings("unused")
+	public Long getAttackerNumberOfPilots() {
+		return attackerNumberOfPilots;
+	}
+
+	@SuppressWarnings("unused")
+	public void setAttackerNumberOfPilots(Long attackerNumberOfPilots) {
+		this.attackerNumberOfPilots = attackerNumberOfPilots;
+	}
+
+	@SuppressWarnings("unused")
+	public Long getDefenderNumberOfPilots() {
+		return defenderNumberOfPilots;
+	}
+
+	@SuppressWarnings("unused")
+	public void setDefenderNumberOfPilots(Long defenderNumberOfPilots) {
+		this.defenderNumberOfPilots = defenderNumberOfPilots;
 	}
 
 	@SuppressWarnings("unused")

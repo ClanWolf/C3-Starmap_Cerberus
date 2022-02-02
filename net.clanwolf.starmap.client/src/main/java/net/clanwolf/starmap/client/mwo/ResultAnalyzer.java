@@ -245,13 +245,19 @@ public class ResultAnalyzer {
 				try {
 					AttackStatsDTO attackStats = new AttackStatsDTO();
 					attackStats.setSeasonId(Nexus.getCurrentAttackOfUser().getSeason().longValue());
+					attackStats.setRoundId(Nexus.getCurrentAttackOfUser().getRound().longValue());
 					attackStats.setAttackId(Nexus.getCurrentAttackOfUser().getAttackDTO().getId());
 					attackStats.setStarSystemDataId(Nexus.getCurrentAttackOfUser().getStarSystemId());
 					attackStats.setMwoMatchId(gameId);
 					attackStats.setDropId("");
+					attackStats.setMap(map);
+					attackStats.setMode(mode);
+					attackStats.setDropEnded(md.getCompleteTime());
 					attackStats.setAttackerFactionId(Nexus.getCurrentAttackOfUser().getAttackerFactionId().longValue());
 					attackStats.setDefenderFactionId(Nexus.getCurrentAttackOfUser().getDefenderFactionId().longValue());
 					if ("1".equals(attackerTeam) && "2".equals(defenderTeam)) {
+						attackStats.setAttackerNumberOfPilots(team1NumberOfPilots.longValue());
+						attackStats.setDefenderNumberOfPilots(team2NumberOfPilots.longValue());
 						attackStats.setAttackerTonnage(team1Tonnage);
 						attackStats.setDefenderTonnage(team2Tonnage);
 						attackStats.setAttackerLostTonnage(team1LostTonnage);
@@ -264,6 +270,8 @@ public class ResultAnalyzer {
 							attackStats.setWinnerFactionId(Nexus.getCurrentAttackOfUser().getDefenderFactionId().longValue());
 						}
 					} else if ("2".equals(attackerTeam) && "1".equals(defenderTeam)) {
+						attackStats.setAttackerNumberOfPilots(team1NumberOfPilots.longValue());
+						attackStats.setDefenderNumberOfPilots(team2NumberOfPilots.longValue());
 						attackStats.setAttackerTonnage(team2Tonnage);
 						attackStats.setDefenderTonnage(team1Tonnage);
 						attackStats.setAttackerLostTonnage(team2LostTonnage);

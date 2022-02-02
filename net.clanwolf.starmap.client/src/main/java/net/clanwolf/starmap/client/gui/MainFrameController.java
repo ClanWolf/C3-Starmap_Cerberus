@@ -1419,7 +1419,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			rolePlayButton.setDisable(Nexus.getCurrentChar().getStory() == null);
 			mapButton.setDisable(false);
 			attackButton.setDisable(!Nexus.userHasAttack());
-			diceButton.setDisable(false);
+			diceButton.setDisable(true);
 			chatButton.setDisable(false);
 
 			// Column 2

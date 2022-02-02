@@ -26,8 +26,14 @@
  */
 package net.clanwolf.starmap.server.persistence.daos.jpadaoimpl;
 
+import net.clanwolf.starmap.server.persistence.CriteriaHelper;
 import net.clanwolf.starmap.server.persistence.daos.GenericDAO;
+import net.clanwolf.starmap.server.persistence.pojos.AttackPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.AttackStatsPOJO;
+
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * A data access object (DAO) providing persistence and search support for UserPOJO entities.
@@ -64,5 +70,19 @@ public class AttackStatsDAO extends GenericDAO {
 	@Override
 	public AttackStatsPOJO update(Long attackStatsId, Object entity) {
 		return (AttackStatsPOJO) super.update(attackStatsId, entity);
+	}
+
+	public ArrayList<AttackStatsPOJO> getStatisticsForAttack(Long seasonId, Long roundId) {
+		CriteriaHelper crit = new CriteriaHelper(AttackStatsPOJO.class);
+
+		crit.addCriteria("SeasonId", seasonId);
+		crit.addCriteria("RoundId", roundId);
+		List<Object> res = crit.getResultList();
+
+		Iterator<Object> iter = res.iterator();
+		ArrayList<AttackStatsPOJO> l = new ArrayList<>();
+		while (iter.hasNext()) l.add((AttackStatsPOJO) iter.next());
+
+		return l;
 	}
 }

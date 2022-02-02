@@ -29,9 +29,11 @@ package net.clanwolf.starmap.client.gui.panes.rp;
 import javafx.animation.FadeTransition;
 import javafx.animation.SequentialTransition;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
@@ -185,24 +187,6 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 			}
 		}
 
-		for (AttackCharacterDTO ac : Nexus.getCurrentAttackOfUser().getAttackCharList()) {
-			if (ac.getCharacterID().equals(Nexus.getCurrentChar().getId())) {
-				// this is my own attackchar
-				if (ac.getType().equals(Constants.ROLE_ATTACKER_COMMANDER) || ac.getType().equals(Constants.ROLE_DEFENDER_COMMANDER)) {
-					// I am defender commander or attacker commander
-					btChoice1.setDisable(false);
-					btChoice2.setDisable(false);
-					btChoice3.setDisable(false);
-					btChoice4.setDisable(false);
-				} else {
-//					btChoice1.setDisable(true);
-//					btChoice2.setDisable(true);
-//					btChoice3.setDisable(true);
-//					btChoice4.setDisable(true);
-				}
-			}
-		}
-
 		BOAttack a = Nexus.getCurrentAttackOfUser();
 		BOFaction attacker = Nexus.getBoUniverse().getFactionByID(a.getAttackerFactionId().longValue());
 		BOFaction defender = Nexus.getBoUniverse().getFactionByID(a.getDefenderFactionId().longValue());
@@ -298,7 +282,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 
 			int count = 1;
 			for (Circle c : scoreCircles) {
-				FadeTransition fadeInTransition = new FadeTransition(Duration.millis(450), c);
+				FadeTransition fadeInTransition = new FadeTransition(Duration.millis(250), c);
 				fadeInTransition.setFromValue(0.0);
 				fadeInTransition.setToValue(1.0);
 				fadeInTransition.setCycleCount(1);
@@ -320,6 +304,26 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 				count++;
 			}
 			sequentialTransition.setCycleCount(1);
+			sequentialTransition.setOnFinished((ActionEvent event) -> {
+					for (AttackCharacterDTO ac : Nexus.getCurrentAttackOfUser().getAttackCharList()) {
+						if (ac.getCharacterID().equals(Nexus.getCurrentChar().getId())) {
+							// this is my own attackchar
+							if (ac.getType().equals(Constants.ROLE_ATTACKER_COMMANDER) || ac.getType().equals(Constants.ROLE_DEFENDER_COMMANDER)) {
+								// I am defender commander or attacker commander
+								btChoice1.setDisable(false);
+								btChoice2.setDisable(false);
+								btChoice3.setDisable(false);
+								btChoice4.setDisable(false);
+							} else {
+								btChoice1.setTooltip(new Tooltip(Internationalization.getString("app_rp_invasion_waiting_for_confirmation")));
+								btChoice2.setTooltip(new Tooltip(Internationalization.getString("app_rp_invasion_waiting_for_confirmation")));
+								btChoice3.setTooltip(new Tooltip(Internationalization.getString("app_rp_invasion_waiting_for_confirmation")));
+								btChoice4.setTooltip(new Tooltip(Internationalization.getString("app_rp_invasion_waiting_for_confirmation")));
+							}
+						}
+					}
+				}
+			);
 			sequentialTransition.play();
 		});
 	}

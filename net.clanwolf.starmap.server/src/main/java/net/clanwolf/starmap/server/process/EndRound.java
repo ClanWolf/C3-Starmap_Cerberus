@@ -157,6 +157,7 @@ public class EndRound {
 		logger.info("Checking on end of round.");
 		ArrayList<JumpshipPOJO> jumpshipList = JumpshipDAO.getInstance().getAllJumpships();
 		ArrayList<AttackPOJO> openAttacksInRoundList = AttackDAO.getInstance().getOpenAttacksOfASeasonForRound(seasonId, round);
+		ArrayList<AttackPOJO> allAttacksForRound = AttackDAO.getInstance().getAllAttacksOfASeasonForRound(seasonId, round);
 
 		logger.debug("Current date: " + new Date(System.currentTimeMillis()));
 		logger.debug("Translated current date: " + translateRealDateToSeasonTime(new Date(System.currentTimeMillis()), 1L));
@@ -175,6 +176,7 @@ public class EndRound {
 
 		boolean attacksLeftToResolveInRound = openAttacksInRoundList.size() > 0; // We are ignoring the open attacks for the next round here
 
+		StringBuilder foughtAttacks = new StringBuilder();
 		StringBuilder resolvedAttacks = new StringBuilder();
 		StringBuilder movedJumpships = new StringBuilder();
 
@@ -191,12 +193,57 @@ public class EndRound {
 			logger.info("Finalizing the round:");
 			logger.info("--- There is NO time left for this round!");
 
-			// move all jumpships to their next waypoint
-			logger.info("--- Moving all jumpships to their next waypoints.");
-			// Jumpships do not need to be moved, because the waypoints have a round indicator
+			// list all attacks that were fought in this round
+			logger.info("--- Attacks that have been fought in this round:");
+			for (AttackPOJO attackPOJO : allAttacksForRound) {
+				if (!openAttacksInRoundList.contains(attackPOJO)) {
+					// This attack was not resolved by automation but was fought
+					// There should be stats entries in the database that could be displayed (partially) here
+					Long winnerId = attackPOJO.getFactionID_Winner();
+
+					JumpshipPOJO jsPojo = JumpshipDAO.getInstance().findById(Nexus.DUMMY_USERID, attackPOJO.getJumpshipID());
+					StarSystemPOJO ssPojo = StarSystemDAO.getInstance().findById(Nexus.DUMMY_USERID, attackPOJO.getStarSystemID());
+					FactionPOJO fWinnerPojo = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, winnerId);
+					FactionPOJO fJumpshipPOJO = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, jsPojo.getJumpshipFactionID());
+
+					logger.info("1");
+					// Get statistics for this attack
+					ArrayList<AttackStatsPOJO> statisticsList = AttackStatsDAO.getInstance().getStatisticsForAttack(seasonId, attackPOJO.getId());
+					logger.info("2");
+					if (!statisticsList.isEmpty()) {
+						// log stats
+						for (AttackStatsPOJO asp : statisticsList) {
+							FactionPOJO factionAttacker = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, asp.getAttackerFactionId());
+							FactionPOJO factionDefender = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, asp.getDefenderFactionId());
+							FactionPOJO factionWinner = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, asp.getWinnerFactionId());
+							StarSystemDataPOJO starSystemDataPOJO = StarSystemDataDAO.getInstance().findById(Nexus.DUMMY_USERID, asp.getStarSystemDataId());
+							StarSystemPOJO starSystemPOJO = StarSystemDAO.getInstance().findById(Nexus.DUMMY_USERID, starSystemDataPOJO.getStarSystemID().getId());
+
+							logger.info("--- found stats for attack: " + asp.getAttackId());
+							foughtAttacks.append("MWO Match ID: " + asp.getMwoMatchId());
+							foughtAttacks.append("Map: " + asp.getMap());
+							foughtAttacks.append("Mode: " + asp.getMode());
+							foughtAttacks.append("Time: " + asp.getDropEnded());
+							foughtAttacks.append("Faction '" + factionAttacker.getShortName() + "' attacked on System '" + starSystemPOJO.getName() + "'.");
+							if (factionAttacker.equals(factionWinner)) {
+								// Attacker won, planet will change hands
+								foughtAttacks.append("Attacking faction (" + asp.getAttackerFactionId() + ") won! The system will change the owner.");
+							} else {
+								// Defender won, planet will stay with the original faction
+								foughtAttacks.append("Defending faction (" + asp.getDefenderFactionId() + ") won! The system will stay with them.");
+							}
+							foughtAttacks.append("Attacker fielded " + asp.getAttackerNumberOfPilots() + " Mechs (" + asp.getAttackerTonnage() + "t) and lost " + asp.getDefenderKillCount() + " Mechs (" + asp.getAttackerLostTonnage() + "t)");
+							foughtAttacks.append("Defender fielded " + asp.getDefenderNumberOfPilots() + " Mechs (" + asp.getDefenderTonnage() + "t) and lost " + asp.getAttackerKillCount() + " Mechs (" + asp.getDefenderLostTonnage() + "t)");
+						}
+					} else {
+						// no statistics found
+						logger.info("--- no statistics found for attackId: " + attackPOJO.getId());
+					}
+				}
+			}
 
 			// set all open attacks to resolved (decide on a winner in the process!)
-			logger.info("--- Resolve all attacks that are still open.");
+			logger.info("--- Resolved attacks that were still open:");
 			for (AttackPOJO attackPOJO : openAttacksInRoundList) {
 				Long winnerId = findAWinner(attackPOJO);
 
@@ -205,8 +252,12 @@ public class EndRound {
 				FactionPOJO fWinnerPojo = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, winnerId);
 				FactionPOJO fJumpshipPOJO = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, jsPojo.getJumpshipFactionID());
 
-				resolvedAttacks.append("Jumpship '").append(jsPojo.getJumpshipName()).append("' (").append(jsPojo.getId()).append(") of ").append(fJumpshipPOJO.getShortName()).append(" (").append(attackPOJO.getJumpshipID()).append(") attacked system '").append(ssPojo.getName()).append("' (").append(ssPojo.getId()).append(") ").append("--> resolved to winner: ").append(fWinnerPojo.getShortName() + " (" + attackPOJO.getFactionID_Winner() + ").").append("\r\n");
+				resolvedAttacks.append("Jumpship '").append(jsPojo.getJumpshipName()).append("' (").append(jsPojo.getId()).append(") of ").append(fJumpshipPOJO.getShortName()).append(" (").append(fJumpshipPOJO.getId()).append(") attacked system '").append(ssPojo.getName()).append("' (").append(ssPojo.getId()).append(") ").append("--> resolved to winner: ").append(fWinnerPojo.getShortName() + " (" + attackPOJO.getFactionID_Winner() + ").").append("\r\n");
 			}
+
+			// move all jumpships to their next waypoint
+			logger.info("--- Moving all jumpships to their next waypoints.");
+			// Jumpships do not need to be moved, because the waypoints have a round indicator
 
 			// Count the round indicator up once
 			Long newRound = (long) (round + 1);

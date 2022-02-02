@@ -87,6 +87,8 @@ public class AttackPOJO extends Pojo {
 	@Column(name = "Remarks")
 	private String remarks;
 
+	@Column(name = "ForumThreadLink")
+	private String forumThreadLink;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE, targetEntity = AttackVarsPOJO.class)
 	@JoinColumn(name = "AttackID")
@@ -108,6 +110,16 @@ public class AttackPOJO extends Pojo {
 	@SuppressWarnings("unused")
 	public void setRemarks(String remarks) {
 		this.remarks = remarks;
+	}
+
+	@SuppressWarnings("unused")
+	public String getForumThreadLink() {
+		return forumThreadLink;
+	}
+
+	@SuppressWarnings("unused")
+	public void setForumThreadLink(String forumThreadLink) {
+		this.forumThreadLink = forumThreadLink;
 	}
 
 	@SuppressWarnings("unused")
