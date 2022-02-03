@@ -28,7 +28,6 @@ package net.clanwolf.starmap.server.persistence.daos.jpadaoimpl;
 
 import net.clanwolf.starmap.server.persistence.CriteriaHelper;
 import net.clanwolf.starmap.server.persistence.daos.GenericDAO;
-import net.clanwolf.starmap.server.persistence.pojos.AttackPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.AttackStatsPOJO;
 
 import java.util.ArrayList;

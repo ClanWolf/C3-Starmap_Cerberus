@@ -27,7 +27,7 @@
 			<groupId>net.clanwolf.starmap</groupId>
 			<artifactId>net.clanwolf.starmap.transfer</artifactId>
 			<version>${project.version}</version>
-			<scope>compile</scope>
+<!--			<scope>compile</scope>-->
 		</dependency>
 		<dependency>
 			<groupId>net.clanwolf.starmap</groupId>
@@ -232,57 +232,6 @@
 <!--			<groupId>com.fasterxml.jackson.core</groupId>-->
 <!--			<artifactId>jackson-databind</artifactId>-->
 <!--			<version>2.10.5.1</version>-->
-<!--		</dependency>-->
-		<dependency>
-			<groupId>com.voodoodyne.jackson.jsog</groupId>
-			<artifactId>jackson-jsog</artifactId>
-			<version>1.1.1</version>
-		</dependency>
-<!--		<dependency>-->
-<!--			<groupId>org.apache.logging.log4j</groupId>-->
-<!--			<artifactId>log4j-slf4j-impl</artifactId>-->
-<!--			<version>${version.slf4j-log4j}</version>-->
-<!--			<exclusions>-->
-<!--				<exclusion>-->
-<!--					<groupId>org.slf4j</groupId>-->
-<!--					<artifactId>slf4j-api</artifactId>-->
-<!--				</exclusion>-->
-<!--			</exclusions>-->
-<!--		</dependency>-->
-<!--		<dependency>-->
-<!--			<groupId>org.slf4j</groupId>-->
-<!--			<artifactId>slf4j-api</artifactId>-->
-<!--			<version>1.7.32</version>-->
-<!--		</dependency>-->
-<!--		<dependency>-->
-<!--			<groupId>org.apache.logging.log4j</groupId>-->
-<!--			<artifactId>log4j-core</artifactId>-->
-<!--			<version>${version.log4j}</version>-->
-<!--		</dependency>-->
-<!--		<dependency>-->
-<!--			<groupId>org.apache.logging.log4j</groupId>-->
-<!--			<artifactId>log4j-api</artifactId>-->
-<!--			<version>${version.log4j}</version>-->
-<!--		</dependency>-->
-<!--		<dependency>-->
-<!--			<groupId>log4j</groupId>-->
-<!--			<artifactId>log4j</artifactId>-->
-<!--			<version>1.2.17</version>-->
-<!--		</dependency>-->
-<!--		<dependency>-->
-<!--			<groupId>org.slf4j</groupId>-->
-<!--			<artifactId>slf4j-log4j12</artifactId>-->
-<!--			<version>1.7.32</version>-->
-<!--		</dependency>-->
-<!--		<dependency>-->
-<!--			<groupId>org.slf4j</groupId>-->
-<!--			<artifactId>jcl-over-slf4j</artifactId>-->
-<!--			<version>1.8.0-beta4</version>-->
-<!--		</dependency>-->
-<!--		<dependency>-->
-<!--			<groupId>org.slf4j</groupId>-->
-<!--			<artifactId>slf4j-simple</artifactId>-->
-<!--			<version>1.7.26</version>-->
 <!--		</dependency>-->
 	</dependencies>
 

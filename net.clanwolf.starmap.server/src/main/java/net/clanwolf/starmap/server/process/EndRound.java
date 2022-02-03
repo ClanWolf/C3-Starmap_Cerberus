@@ -220,20 +220,20 @@ public class EndRound {
 							StarSystemPOJO starSystemPOJO = StarSystemDAO.getInstance().findById(Nexus.DUMMY_USERID, starSystemDataPOJO.getStarSystemID().getId());
 
 							logger.info("--- found stats for attack: " + asp.getAttackId());
-							foughtAttacks.append("MWO Match ID: " + asp.getMwoMatchId());
-							foughtAttacks.append("Map: " + asp.getMap());
-							foughtAttacks.append("Mode: " + asp.getMode());
-							foughtAttacks.append("Time: " + asp.getDropEnded());
-							foughtAttacks.append("Faction '" + factionAttacker.getShortName() + "' attacked on System '" + starSystemPOJO.getName() + "'.");
+							foughtAttacks.append("MWO Match ID: ").append(asp.getMwoMatchId());
+							foughtAttacks.append("Map: ").append(asp.getMap());
+							foughtAttacks.append("Mode: ").append(asp.getMode());
+							foughtAttacks.append("Time: ").append(asp.getDropEnded());
+							foughtAttacks.append("Faction '").append(factionAttacker.getShortName()).append("' attacked on System '").append(starSystemPOJO.getName()).append("'.");
 							if (factionAttacker.equals(factionWinner)) {
 								// Attacker won, planet will change hands
-								foughtAttacks.append("Attacking faction (" + asp.getAttackerFactionId() + ") won! The system will change the owner.");
+								foughtAttacks.append("Attacking faction (").append(asp.getAttackerFactionId()).append(") won! The system will change the owner.");
 							} else {
 								// Defender won, planet will stay with the original faction
-								foughtAttacks.append("Defending faction (" + asp.getDefenderFactionId() + ") won! The system will stay with them.");
+								foughtAttacks.append("Defending faction (").append(asp.getDefenderFactionId()).append(") won! The system will stay with them.");
 							}
-							foughtAttacks.append("Attacker fielded " + asp.getAttackerNumberOfPilots() + " Mechs (" + asp.getAttackerTonnage() + "t) and lost " + asp.getDefenderKillCount() + " Mechs (" + asp.getAttackerLostTonnage() + "t)");
-							foughtAttacks.append("Defender fielded " + asp.getDefenderNumberOfPilots() + " Mechs (" + asp.getDefenderTonnage() + "t) and lost " + asp.getAttackerKillCount() + " Mechs (" + asp.getDefenderLostTonnage() + "t)");
+							foughtAttacks.append("Attacker fielded ").append(asp.getAttackerNumberOfPilots()).append(" Mechs (").append(asp.getAttackerTonnage()).append("t) and lost ").append(asp.getDefenderKillCount()).append(" Mechs (").append(asp.getAttackerLostTonnage()).append("t)");
+							foughtAttacks.append("Defender fielded ").append(asp.getDefenderNumberOfPilots()).append(" Mechs (").append(asp.getDefenderTonnage()).append("t) and lost ").append(asp.getAttackerKillCount()).append(" Mechs (").append(asp.getDefenderLostTonnage()).append("t)");
 						}
 					} else {
 						// no statistics found
