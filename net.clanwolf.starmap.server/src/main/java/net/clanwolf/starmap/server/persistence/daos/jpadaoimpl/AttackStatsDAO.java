@@ -74,8 +74,8 @@ public class AttackStatsDAO extends GenericDAO {
 	public ArrayList<AttackStatsPOJO> getStatisticsForAttack(Long seasonId, Long roundId) {
 		CriteriaHelper crit = new CriteriaHelper(AttackStatsPOJO.class);
 
-		crit.addCriteria("SeasonId", seasonId);
-		crit.addCriteria("RoundId", roundId);
+		crit.addCriteria("seasonId", seasonId);
+		crit.addCriteria("roundId", roundId);
 		List<Object> res = crit.getResultList();
 
 		Iterator<Object> iter = res.iterator();
