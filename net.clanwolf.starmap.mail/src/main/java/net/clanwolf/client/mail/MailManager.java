@@ -95,7 +95,7 @@ public class MailManager {
 			session = Session.getInstance(props, new Authenticator() {
 				@Override
 				protected PasswordAuthentication getPasswordAuthentication() {
-					return new PasswordAuthentication(mailUser, mailPassword);
+				return new PasswordAuthentication(mailUser, mailPassword);
 				}
 			});
 
@@ -130,7 +130,6 @@ public class MailManager {
 		} catch (Throwable e) {
 			e.printStackTrace();
 			logger.error("Failed to send email.", e);
-//			logger.info("Failed to send email " + e.getMessage());
 		} finally {
 			if (transport != null) {
 				try {
@@ -153,7 +152,7 @@ public class MailManager {
 				String pw = mProperties.getProperty("mail_pw");
 				MailManager.setMailCredentials(server, user, pw);
 			} catch (IOException e) {
-				logger.info("Failed to read mail properties: " + e.getMessage());
+				logger.error("Failed to read mail properties", e);
 				return false;
 			}
 		}

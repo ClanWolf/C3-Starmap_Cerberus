@@ -51,19 +51,19 @@ public class AttackStatsPOJO extends Pojo {
 	@Column(name = "ID")
 	public Long id;
 
-	@Column(name = "SeasonID")
+	@Column(name = "SeasonId")
 	private Long seasonId;
 
-	@Column(name = "RoundID")
+	@Column(name = "RoundId")
 	private Long roundId;
 
-	@Column(name = "AttackID")
+	@Column(name = "AttackId")
 	private Long attackId;
 
-	@Column(name = "DropID")
+	@Column(name = "DropId")
 	private String dropId;
 
-	@Column(name = "MwoMatchID")
+	@Column(name = "MwoMatchId")
 	private String mwoMatchId;
 
 	@Column(name = "Map")
