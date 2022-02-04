@@ -42,6 +42,7 @@ public enum GAMESTATEMODES {
 	USER_LOGGED_IN_DATA,                        /* Send answer to the client after successfully login (Object: UserDTO and Receiver:PlayerSession.getID() -> its the own id of the player session as string */
 	USER_GET_NEW_PLAYERLIST,                    /* Gets a new list of actual players (Object: ArrayList<UserDTO>)*/
 	USER_SAVE,
+	USER_SESSION_SAVE,
 	USER_SAVE_LAST_LOGIN_DATE,
 	PRIVILEGE_SAVE,
 	JUMPSHIP_SAVE,
@@ -83,5 +84,7 @@ public enum GAMESTATEMODES {
 	SESSION_KEEPALIVE,
 
 	FORCE_FINALIZE_ROUND,
-	FORCE_NEW_UNIVERSE;
+	FORCE_NEW_UNIVERSE,
+
+	SERVER_GOES_DOWN;
 }

@@ -241,20 +241,20 @@ public class EndRound {
 							StarSystemPOJO starSystemPOJO = StarSystemDAO.getInstance().findById(Nexus.DUMMY_USERID, starSystemDataPOJO.getStarSystemID().getId());
 
 							logger.info("--- found stats for attack: " + asp.getAttackId());
-							foughtAttacks.append("MWO Match ID: ").append(asp.getMwoMatchId());
-							foughtAttacks.append("Map: ").append(asp.getMap());
-							foughtAttacks.append("Mode: ").append(asp.getMode());
-							foughtAttacks.append("Time: ").append(asp.getDropEnded());
-							foughtAttacks.append("Faction '").append(factionAttacker.getShortName()).append("' attacked on System '").append(starSystemPOJO.getName()).append("'.");
+							foughtAttacks.append("MWO Match ID: ").append(asp.getMwoMatchId()).append("\r\n");
+							foughtAttacks.append("Map: ").append(asp.getMap()).append("\r\n");
+							foughtAttacks.append("Mode: ").append(asp.getMode()).append("\r\n");
+							foughtAttacks.append("Time: ").append(asp.getDropEnded()).append("\r\n");
+							foughtAttacks.append("Faction '").append(factionAttacker.getShortName()).append("' attacked on System '").append(starSystemPOJO.getName()).append("'. ").append("System is defended by ").append(factionDefender.getShortName()).append(". ").append("\r\n");
 							if (factionAttacker.equals(factionWinner)) {
 								// Attacker won, planet will change hands
-								foughtAttacks.append("Attacking faction (").append(asp.getAttackerFactionId()).append(") won! The system will change the owner.");
+								foughtAttacks.append("Attacking faction (").append(asp.getAttackerFactionId()).append(") won! The system will change the owner.").append("\r\n");
 							} else {
 								// Defender won, planet will stay with the original faction
-								foughtAttacks.append("Defending faction (").append(asp.getDefenderFactionId()).append(") won! The system will stay with them.");
+								foughtAttacks.append("Defending faction (").append(asp.getDefenderFactionId()).append(") won! The system will stay with them.").append("\r\n");
 							}
-							foughtAttacks.append("Attacker fielded ").append(asp.getAttackerNumberOfPilots()).append(" Mechs (").append(asp.getAttackerTonnage()).append("t) and lost ").append(asp.getDefenderKillCount()).append(" Mechs (").append(asp.getAttackerLostTonnage()).append("t)");
-							foughtAttacks.append("Defender fielded ").append(asp.getDefenderNumberOfPilots()).append(" Mechs (").append(asp.getDefenderTonnage()).append("t) and lost ").append(asp.getAttackerKillCount()).append(" Mechs (").append(asp.getDefenderLostTonnage()).append("t)");
+							foughtAttacks.append("Attacker fielded ").append(asp.getAttackerNumberOfPilots()).append(" Mechs (").append(asp.getAttackerTonnage()).append("t) and lost ").append(asp.getDefenderKillCount()).append(" Mechs (").append(asp.getAttackerLostTonnage()).append("t)").append("\r\n");
+							foughtAttacks.append("Defender fielded ").append(asp.getDefenderNumberOfPilots()).append(" Mechs (").append(asp.getDefenderTonnage()).append("t) and lost ").append(asp.getAttackerKillCount()).append(" Mechs (").append(asp.getDefenderLostTonnage()).append("t)").append("\r\n");
 						}
 					} else {
 						// no statistics found
@@ -501,7 +501,7 @@ public class EndRound {
 				logger.info("Mail was not sent out because this is a dev computer.");
 			}
 		}
-		return resolvedAttacks + "\r\n" + movedJumpships;
+		return foughtAttacks + "\r\n" + resolvedAttacks + "\r\n" + movedJumpships;
 	}
 
 //	public static void main(String[] args) {

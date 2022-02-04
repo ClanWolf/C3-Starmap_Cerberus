@@ -1,7 +1,8 @@
 C3 version history
 --------------------------------
 
-Version 6.3.0 (03.02.2022)
+Version 6.3.1 (04.02.2022)
+- ADDED: Storing user session data
 - FIXED: Upload of server order of actions problem
 - FIXED: Ending of round works again (error was introduced with stats)
 

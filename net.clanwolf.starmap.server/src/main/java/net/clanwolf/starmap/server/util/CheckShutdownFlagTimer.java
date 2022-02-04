@@ -26,13 +26,23 @@
  */
 package net.clanwolf.starmap.server.util;
 
+import io.nadron.app.PlayerSession;
 import net.clanwolf.client.mail.MailManager;
+import net.clanwolf.starmap.server.beans.C3GameSessionHandler;
+import net.clanwolf.starmap.server.beans.C3Player;
+import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
+import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.UserSessionDAO;
+import net.clanwolf.starmap.server.persistence.pojos.UserPOJO;
+import net.clanwolf.starmap.server.persistence.pojos.UserSessionPOJO;
+import net.clanwolf.starmap.transfer.GameState;
+import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.server.GameServer;
 
 import java.io.File;
 import java.lang.invoke.MethodHandles;
+import java.sql.Timestamp;
 import java.util.TimerTask;
 
 /**
@@ -79,6 +89,13 @@ public class CheckShutdownFlagTimer extends TimerTask {
 					logger.info("Error during mail dispatch. [6]");
 				}
 			}
+
+			// Informing clients about the shutdown
+			GameState gameStateShutdownMessage = new GameState(GAMESTATEMODES.SERVER_GOES_DOWN);
+			gameStateShutdownMessage.addObject(null);
+			gameStateShutdownMessage.setAction_successfully(Boolean.TRUE);
+			C3GameSessionHandler.sendBroadCast(gameStateShutdownMessage);
+
 			logger.info("Exiting server.");
 			System.exit(5);
 		}

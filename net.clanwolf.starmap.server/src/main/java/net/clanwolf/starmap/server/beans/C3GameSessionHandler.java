@@ -68,12 +68,14 @@ import static net.clanwolf.starmap.constants.Constants.*;
 public class C3GameSessionHandler extends SessionMessageHandler {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	private GameRoom room;// not really required. It can be accessed as getSession() also.
+	private static GameRoom staticRoom; // used for broadcast messages from places where the room is not known
+	private GameRoom room;
 	private GameState state;
 	private GameRoomSession roomSession;
 
 	public C3GameSessionHandler(GameRoomSession session) {
 		super(session);
+		staticRoom = session;
 		this.room = session;
 		this.roomSession = session;
 		GameStateManagerService manager = room.getStateManager();
@@ -100,102 +102,36 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		}
 	}
 
-	private void executeCommand(PlayerSession session, GameState state) {
-		logger.debug("C3GameSessionHandler.executeCommand: " + state.getMode().toString());
-		EntityConverter.convertGameStateToPOJO(state);
+	static public void sendBroadCast(GameState response){
+		EntityConverter.convertGameStateToDTO(response);
+		staticRoom.sendBroadcast(Events.networkEvent(response));
+	}
 
-		Timer serverHeartBeat;
+	private void storeUserSession(PlayerSession session) {
+		UserSessionDAO dao = UserSessionDAO.getInstance();
+		GameState response = new GameState(GAMESTATEMODES.USER_SESSION_SAVE);
 
-		switch (state.getMode()) {
-			case BROADCAST_SEND_NEW_PLAYERLIST:
-				sendNewPlayerList();
-				break;
-			case USER_REQUEST_LOGGED_IN_DATA:
-				getLoggedInUserData(session);
-				break;
-			case USER_CHECK_DOUBLE_LOGIN:
-				checkDoubleLogin(session, room);
-				break;
-			case USER_LOG_OUT:
-				session.getPlayer().logout(session);
-				sendNewPlayerList();
-				break;
-			case ROLEPLAY_SAVE_STORY:
-				C3GameSessionHandlerRoleplay.saveRolePlayStory(session, state);
-				break;
-			case ROLEPLAY_REQUEST_ALLSTORIES:
-			case ROLEPLAY_REQUEST_STEPSBYSTORY:
-				C3GameSessionHandlerRoleplay.requestAllStories(session, state);
-				break;
-			case ROLEPLAY_DELETE_STORY:
-				C3GameSessionHandlerRoleplay.deleteRolePlayStory(session, state);
-				break;
-			case ROLEPLAY_REQUEST_ALLCHARACTER:
-				C3GameSessionHandlerRoleplay.requestAllCharacter(session, state);
-				break;
-			case USER_SAVE_LAST_LOGIN_DATE:
-				saveUser(session, state, true, false);
-				break;
-			case USER_SAVE:
-				saveUser(session, state);
-				break;
-			case PRIVILEGE_SAVE:
-				savePrivileges(session, state);
-				break;
-			case JUMPSHIP_SAVE:
-				saveJumpship(session, state);
-				serverHeartBeat = new Timer();
-				serverHeartBeat.schedule(new HeartBeatTimer(true), 10);
-				break;
-			case ATTACK_SAVE:
-				saveAttack(session, state);
-				serverHeartBeat = new Timer();
-				serverHeartBeat.schedule(new HeartBeatTimer(true), 1000);
-				break;
-			case STATS_MWO_SAVE:
-				saveStatsMwo(session, state);
-				break;
-			case CHARACTER_STATS_SAVE:
-				saveCharacterStats(session, state);
-				break;
-			case ATTACK_STATS_SAVE:
-				saveAttackStats(session, state);
-				break;
-			case ATTACK_CHARACTER_SAVE:
-				//saveAttackCharacter(session, state);
-				//serverHeartBeat = new Timer();
-				//serverHeartBeat.schedule(new HeartBeatTimer(true), 10);
-				break;
-			case ATTACK_CHARACTER_SAVE_WITHOUT_NEW_UNIVERSE:
-				//saveAttackCharacter(session, state);
-				break;
-			case ROLEPLAY_GET_CHAPTER_BYSORTORDER:
-				C3GameSessionHandlerRoleplay.getChapterBySortOrder(session, state);
-				break;
-			case ROLEPLAY_GET_STEP_BYSORTORDER:
-				C3GameSessionHandlerRoleplay.getStepBySortOrder(session, state);
-				break;
-			case GET_UNIVERSE_DATA:
-				C3GameSessionHandlerUniverse.getUniverseData(session, room);
-				break;
-			case ROLEPLAY_SAVE_NEXT_STEP:
-				C3GameSessionHandlerRoleplay.saveRolePlayCharacterNextStep(session, state);
-				break;
-			case CLIENT_READY_FOR_EVENTS:
-				logger.info("Setting 'Client is ready for data' for session: " + session.getId().toString());
-				roomSession.getSessionReadyMap().put(session.getId().toString(), Boolean.TRUE);
-				break;
-			case FORCE_FINALIZE_ROUND:
-				EndRound.setForceFinalize(true);
-				serverHeartBeat = new Timer();
-				serverHeartBeat.schedule(new HeartBeatTimer(true), 10);
-				break;
-			case FORCE_NEW_UNIVERSE:
-				serverHeartBeat = new Timer();
-				serverHeartBeat.schedule(new HeartBeatTimer(true), 10);
-				break;
-			default:
-				break;
+		try {
+			EntityManagerHelper.beginTransaction(getC3UserID(session));
+
+			UserPOJO user = ((C3Player) session.getPlayer()).getUser();
+			UserSessionPOJO userSessionPOJO = new UserSessionPOJO();
+			userSessionPOJO.setUserId(user.getUserId());
+			userSessionPOJO.setLoginTime(new Timestamp(System.currentTimeMillis()));
+
+			dao.save(C3GameSessionHandler.getC3UserID(session), userSessionPOJO);
+			EntityManagerHelper.commit(getC3UserID(session));
+
+			response.addObject(null);
+			response.setAction_successfully(Boolean.TRUE);
+		} catch (RuntimeException re) {
+			logger.error("User session save", re);
+			re.printStackTrace();
+			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
+
+			response.addObject(re.getMessage());
+			response.setAction_successfully(Boolean.FALSE);
+			C3GameSessionHandler.sendNetworkEvent(session, response);
 		}
 	}
 
@@ -702,6 +638,106 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 	static public void sendBroadCast(GameRoom gm, GameState response){
 		EntityConverter.convertGameStateToDTO(response);
 		gm.sendBroadcast(Events.networkEvent(response));
+	}
+
+	private void executeCommand(PlayerSession session, GameState state) {
+		logger.debug("C3GameSessionHandler.executeCommand: " + state.getMode().toString());
+		EntityConverter.convertGameStateToPOJO(state);
+
+		Timer serverHeartBeat;
+
+		switch (state.getMode()) {
+			case BROADCAST_SEND_NEW_PLAYERLIST:
+				sendNewPlayerList();
+				break;
+			case USER_REQUEST_LOGGED_IN_DATA:
+				storeUserSession(session);
+				getLoggedInUserData(session);
+				break;
+			case USER_CHECK_DOUBLE_LOGIN:
+				checkDoubleLogin(session, room);
+				break;
+			case USER_LOG_OUT:
+				session.getPlayer().logout(session);
+				sendNewPlayerList();
+				break;
+			case ROLEPLAY_SAVE_STORY:
+				C3GameSessionHandlerRoleplay.saveRolePlayStory(session, state);
+				break;
+			case ROLEPLAY_REQUEST_ALLSTORIES:
+			case ROLEPLAY_REQUEST_STEPSBYSTORY:
+				C3GameSessionHandlerRoleplay.requestAllStories(session, state);
+				break;
+			case ROLEPLAY_DELETE_STORY:
+				C3GameSessionHandlerRoleplay.deleteRolePlayStory(session, state);
+				break;
+			case ROLEPLAY_REQUEST_ALLCHARACTER:
+				C3GameSessionHandlerRoleplay.requestAllCharacter(session, state);
+				break;
+			case USER_SAVE_LAST_LOGIN_DATE:
+				saveUser(session, state, true, false);
+				break;
+			case USER_SAVE:
+				saveUser(session, state);
+				break;
+			case PRIVILEGE_SAVE:
+				savePrivileges(session, state);
+				break;
+			case JUMPSHIP_SAVE:
+				saveJumpship(session, state);
+				serverHeartBeat = new Timer();
+				serverHeartBeat.schedule(new HeartBeatTimer(true), 10);
+				break;
+			case ATTACK_SAVE:
+				saveAttack(session, state);
+				serverHeartBeat = new Timer();
+				serverHeartBeat.schedule(new HeartBeatTimer(true), 1000);
+				break;
+			case STATS_MWO_SAVE:
+				saveStatsMwo(session, state);
+				break;
+			case CHARACTER_STATS_SAVE:
+				saveCharacterStats(session, state);
+				break;
+			case ATTACK_STATS_SAVE:
+				saveAttackStats(session, state);
+				break;
+			case ATTACK_CHARACTER_SAVE:
+				//saveAttackCharacter(session, state);
+				//serverHeartBeat = new Timer();
+				//serverHeartBeat.schedule(new HeartBeatTimer(true), 10);
+				break;
+			case ATTACK_CHARACTER_SAVE_WITHOUT_NEW_UNIVERSE:
+				//saveAttackCharacter(session, state);
+				break;
+			case ROLEPLAY_GET_CHAPTER_BYSORTORDER:
+				C3GameSessionHandlerRoleplay.getChapterBySortOrder(session, state);
+				break;
+			case ROLEPLAY_GET_STEP_BYSORTORDER:
+				C3GameSessionHandlerRoleplay.getStepBySortOrder(session, state);
+				break;
+			case GET_UNIVERSE_DATA:
+				C3GameSessionHandlerUniverse.getUniverseData(session, room);
+				break;
+			case ROLEPLAY_SAVE_NEXT_STEP:
+				C3GameSessionHandlerRoleplay.saveRolePlayCharacterNextStep(session, state);
+				break;
+			case CLIENT_READY_FOR_EVENTS:
+				logger.info("Setting 'Client is ready for data' for session: " + session.getId().toString());
+				roomSession.getSessionReadyMap().put(session.getId().toString(), Boolean.TRUE);
+				break;
+			case FORCE_FINALIZE_ROUND:
+				EndRound.setForceFinalize(true);
+				serverHeartBeat = new Timer();
+				serverHeartBeat.schedule(new HeartBeatTimer(true), 10);
+				break;
+			case FORCE_NEW_UNIVERSE:
+				serverHeartBeat = new Timer();
+				serverHeartBeat.schedule(new HeartBeatTimer(true), 10);
+				break;
+			default:
+				break;
+		}
 	}
 
 	static public void sendErrorMessageToClient(PlayerSession session, Exception re){
