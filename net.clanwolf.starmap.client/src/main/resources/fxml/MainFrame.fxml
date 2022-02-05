@@ -64,6 +64,7 @@
          <effect>
             <DropShadow />
          </effect></Slider>
+      <Pane fx:id="paneVolumeControl" layoutX="137.0" layoutY="343.0" prefHeight="200.0" prefWidth="35.0" styleClass="contentTextAreaBlock2" stylesheets="@../styles/MainFrameStyle.css" visible="false" />
       <ProgressBar fx:id="TFSProgress" layoutX="173.0" layoutY="23.0" onMouseEntered="#handleTFSProgressEntered" onMouseExited="#handleTFSProgressExited" prefHeight="18.0" prefWidth="125.0" progress="0.56" visible="false" />
       <Label fx:id="gameInfoLabel" layoutX="422.0" layoutY="30.0" mouseTransparent="true" prefHeight="20.0" prefWidth="206.0" />
       <Label fx:id="terminalLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="567.0" layoutY="556.0" prefHeight="20.0" prefWidth="66.0" text="Terminal:" />

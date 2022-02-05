@@ -262,6 +262,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	@FXML
 	ImageView ivMuteToggle;
 
+	@FXML
+	Pane paneVolumeControl;
+
 	// -------------------------------------------------------------------------
 	//
 	// Button hovering
@@ -1297,6 +1300,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		showMenuIndicator(false);
 
 		terminalPrompt.toFront();
+		paneVolumeControl.toFront();
 		slVolumeControl.toFront();
 		ivMuteToggle.toFront();
 		addActionCallBackListeners();
@@ -1669,9 +1673,11 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 				Platform.runLater(() -> {
 					if (currentlyDisplayedPane instanceof RolePlayBasicPane) {
+						paneVolumeControl.setVisible(true);
 						slVolumeControl.setVisible(true);
 						ivMuteToggle.setVisible(true);
 					} else {
+						paneVolumeControl.setVisible(false);
 						slVolumeControl.setVisible(false);
 						ivMuteToggle.setVisible(false);
 					}
@@ -1768,6 +1774,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					FadeInTransition.setOnFinished(event -> FadeOutTransition.play());
 
 					FadeInTransition.play();
+					paneVolumeControl.toFront();
 					slVolumeControl.toFront();
 					ivMuteToggle.toFront();
 				});
@@ -1813,6 +1820,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				if (counterWaitCursor == 0) {
 					Platform.runLater(() -> {
 						mouseStopper.toFront();
+						paneVolumeControl.toFront();
 						slVolumeControl.toFront();
 						ivMuteToggle.toFront();
 						// mouseStopper.setBackground(null);
@@ -1824,6 +1832,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					});
 				}
 				Platform.runLater(() -> {
+					paneVolumeControl.toFront();
 					slVolumeControl.toFront();
 					ivMuteToggle.toFront();
 				});
@@ -1841,6 +1850,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				// logger.info("Requesting WAIT cursor (" + counterWaitCursor + "). --> " + sourceIdRW);
 				Platform.runLater(() -> {
 					mouseStopper.toFront();
+					paneVolumeControl.toFront();
 					slVolumeControl.toFront();
 					ivMuteToggle.toFront();
 					// mouseStopper.setBackground(new Background(new BackgroundFill(Color.BLUE, new CornerRadii(0), Insets.EMPTY)));
@@ -1852,6 +1862,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					labelWaitText.setVisible(true);
 				});
 				Platform.runLater(() -> {
+					paneVolumeControl.toFront();
 					slVolumeControl.toFront();
 					ivMuteToggle.toFront();
 				});
@@ -1862,6 +1873,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					showMessage(message);
 				}
 				Platform.runLater(() -> {
+					paneVolumeControl.toFront();
 					slVolumeControl.toFront();
 					ivMuteToggle.toFront();
 				});
@@ -1876,6 +1888,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					showMedal(med, desc);
 				}
 				Platform.runLater(() -> {
+					paneVolumeControl.toFront();
 					slVolumeControl.toFront();
 					ivMuteToggle.toFront();
 				});
@@ -1890,6 +1903,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					showPopup(pop, desc);
 				}
 				Platform.runLater(() -> {
+					paneVolumeControl.toFront();
 					slVolumeControl.toFront();
 					ivMuteToggle.toFront();
 				});
@@ -1951,6 +1965,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			case ENABLE_MAIN_MENU_BUTTONS:
 				enableMainMenuButtons(Nexus.isLoggedIn(), Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN));
 				Platform.runLater(() -> {
+					paneVolumeControl.toFront();
 					slVolumeControl.toFront();
 					ivMuteToggle.toFront();
 				});
@@ -2206,6 +2221,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		}
 
 		Platform.runLater(() -> {
+			paneVolumeControl.toFront();
 			ivMuteToggle.toFront();
 			slVolumeControl.toFront();
 			slVolumeControl.setMin(0.0d);

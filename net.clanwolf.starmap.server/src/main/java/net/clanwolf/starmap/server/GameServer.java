@@ -163,7 +163,7 @@ public class GameServer {
 
 			// check shutdown flagfile every some seconds
 			Timer checkShutdownFlag = new Timer();
-			checkShutdownFlag.schedule(new CheckShutdownFlagTimer(serverBaseDir), 1000, 1000 * 10);
+			checkShutdownFlag.schedule(new CheckShutdownFlagTimer(serverBaseDir), 1000, 1000 * 5);
 
 			// World world = ctx.getBean(World.class);
 			// GameRoom room1 = (GameRoom)ctx.getBean("Zombie_ROOM_1");

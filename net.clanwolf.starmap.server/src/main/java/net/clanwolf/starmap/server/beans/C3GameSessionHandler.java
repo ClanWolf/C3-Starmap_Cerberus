@@ -111,15 +111,23 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		UserSessionDAO dao = UserSessionDAO.getInstance();
 		GameState response = new GameState(GAMESTATEMODES.USER_SESSION_SAVE);
 
+		// https://www.lima-city.de/thread/mysql-tabellen-datensaetze-anzahl-begrenzen-und-alte-loeschen
+
 		try {
 			EntityManagerHelper.beginTransaction(getC3UserID(session));
 
 			UserPOJO user = ((C3Player) session.getPlayer()).getUser();
-			UserSessionPOJO userSessionPOJO = new UserSessionPOJO();
-			userSessionPOJO.setUserId(user.getUserId());
-			userSessionPOJO.setLoginTime(new Timestamp(System.currentTimeMillis()));
+			UserSessionPOJO userSessionPOJO = dao.getUserSessionByUserId(user.getUserId());
 
-			dao.save(C3GameSessionHandler.getC3UserID(session), userSessionPOJO);
+			if (userSessionPOJO == null) {
+				userSessionPOJO = new UserSessionPOJO();
+				userSessionPOJO.setUserId(user.getUserId());
+				userSessionPOJO.setLoginTime(new Timestamp(System.currentTimeMillis()));
+				dao.save(getC3UserID(session), userSessionPOJO);
+			} else {
+				userSessionPOJO.setLoginTime(new Timestamp(System.currentTimeMillis()));
+				dao.update(getC3UserID(session), userSessionPOJO);
+			}
 			EntityManagerHelper.commit(getC3UserID(session));
 
 			response.addObject(null);
@@ -127,11 +135,11 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		} catch (RuntimeException re) {
 			logger.error("User session save", re);
 			re.printStackTrace();
-			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
+			EntityManagerHelper.rollback(getC3UserID(session));
 
 			response.addObject(re.getMessage());
 			response.setAction_successfully(Boolean.FALSE);
-			C3GameSessionHandler.sendNetworkEvent(session, response);
+			sendNetworkEvent(session, response);
 		}
 	}
 

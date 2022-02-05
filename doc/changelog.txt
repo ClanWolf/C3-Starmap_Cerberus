@@ -1,6 +1,10 @@
 C3 version history
 --------------------------------
 
+Version 6.3.3 (05.02.2022)
+- Finalized user session save
+- Background for invasion audio control
+
 Version 6.3.1 (04.02.2022)
 - ADDED: Storing user session data
 - FIXED: Upload of server order of actions problem

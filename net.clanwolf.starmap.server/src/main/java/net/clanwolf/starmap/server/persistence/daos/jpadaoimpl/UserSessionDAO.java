@@ -65,6 +65,12 @@ public class UserSessionDAO extends GenericDAO {
 		return (UserSessionPOJO) super.findById(userID, UserSessionPOJO.class, id);
 	}
 
+	public UserSessionPOJO getUserSessionByUserId(Long userId) {
+		CriteriaHelper crit = new CriteriaHelper(UserSessionPOJO.class);
+		crit.addCriteria("userId", userId);
+		return (UserSessionPOJO) crit.getSingleResult();
+	}
+
 	@Override
 	public UserSessionPOJO update(Long userID, Object entity) {
 		return (UserSessionPOJO) super.update(userID, entity);

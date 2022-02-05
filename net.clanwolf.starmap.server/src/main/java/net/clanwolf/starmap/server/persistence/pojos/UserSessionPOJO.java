@@ -58,7 +58,7 @@ public class UserSessionPOJO extends Pojo {
 	@Column(name = "UserId", nullable = false)
 	private Long userId;
 
-	@Column(name = "LoginTime", nullable = true)
+	@Column(name = "LoginTime", nullable = false)
 	private Timestamp loginTime;
 
 	// Constructors
@@ -71,12 +71,12 @@ public class UserSessionPOJO extends Pojo {
 
 	@SuppressWarnings("unused")
 	public Long getUserId() {
-		return this.id;
+		return this.userId;
 	}
 
 	@SuppressWarnings("unused")
 	public void setUserId(Long id) {
-		this.id = id;
+		this.userId = id;
 	}
 
 	@SuppressWarnings("unused")
