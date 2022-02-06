@@ -58,6 +58,9 @@ public class UserSessionPOJO extends Pojo {
 	@Column(name = "UserId", nullable = false)
 	private Long userId;
 
+	@Column(name = "ClientVersion")
+	private String clientVersion;
+
 	@Column(name = "LoginTime", nullable = false)
 	private Timestamp loginTime;
 
@@ -97,5 +100,15 @@ public class UserSessionPOJO extends Pojo {
 	@SuppressWarnings("unused")
 	public void setLoginTime(Timestamp loginTime) {
 		this.loginTime = loginTime;
+	}
+
+	@SuppressWarnings("unused")
+	public String getClientVersion() {
+		return clientVersion;
+	}
+
+	@SuppressWarnings("unused")
+	public void setClientVersion(String clientVersion) {
+		this.clientVersion = clientVersion;
 	}
 }

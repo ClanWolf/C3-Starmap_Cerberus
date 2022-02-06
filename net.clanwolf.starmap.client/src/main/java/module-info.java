@@ -6,7 +6,7 @@ module net.clanwolf.starmap.client {
 	requires jdk.crypto.cryptoki;
 	requires io.nadron.client;
 	requires tektosyne;
-	requires commons.net;
+	requires org.apache.commons.net;
 	requires org.apache.commons.collections4;
 	requires java.desktop;
 	requires java.logging;

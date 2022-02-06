@@ -195,6 +195,7 @@ public class Login {
 				loginInProgress = false;
 				logger.info("Successfully logged in. Sending: USER_REQUEST_LOGGED_IN_DATA");
 				GameState state = new GameState(GAMESTATEMODES.USER_REQUEST_LOGGED_IN_DATA);
+				state.addObject(Tools.getVersionNumber());
 				NetworkEvent networkEvent = Events.networkEvent(state);
 				session.onEvent(networkEvent);
 				ActionManager.getAction(ACTIONS.LOGGED_ON).execute();

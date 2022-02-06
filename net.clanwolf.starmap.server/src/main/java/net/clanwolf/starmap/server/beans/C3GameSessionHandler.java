@@ -107,7 +107,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		staticRoom.sendBroadcast(Events.networkEvent(response));
 	}
 
-	private void storeUserSession(PlayerSession session) {
+	private void storeUserSession(PlayerSession session, String clientVersion) {
 		UserSessionDAO dao = UserSessionDAO.getInstance();
 		GameState response = new GameState(GAMESTATEMODES.USER_SESSION_SAVE);
 
@@ -122,9 +122,11 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			if (userSessionPOJO == null) {
 				userSessionPOJO = new UserSessionPOJO();
 				userSessionPOJO.setUserId(user.getUserId());
+				userSessionPOJO.setClientVersion(clientVersion);
 				userSessionPOJO.setLoginTime(new Timestamp(System.currentTimeMillis()));
 				dao.save(getC3UserID(session), userSessionPOJO);
 			} else {
+				userSessionPOJO.setClientVersion(clientVersion);
 				userSessionPOJO.setLoginTime(new Timestamp(System.currentTimeMillis()));
 				dao.update(getC3UserID(session), userSessionPOJO);
 			}
@@ -659,7 +661,11 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				sendNewPlayerList();
 				break;
 			case USER_REQUEST_LOGGED_IN_DATA:
-				storeUserSession(session);
+				String clientVersion = "-";
+				if (state.getObject() instanceof String) {
+					clientVersion = (String) state.getObject();
+				}
+				storeUserSession(session, clientVersion);
 				getLoggedInUserData(session);
 				break;
 			case USER_CHECK_DOUBLE_LOGIN:

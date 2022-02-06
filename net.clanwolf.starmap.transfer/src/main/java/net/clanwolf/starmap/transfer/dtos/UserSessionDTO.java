@@ -55,6 +55,9 @@ public class UserSessionDTO extends Dto {
 //	@Column(name = "UserId", nullable = false)
 	private Long userId;
 
+//	@Column(name = "ClientVersion")
+	private String clientVersion;
+
 //	@Column(name = "LoginTime", nullable = true)
 	private Timestamp loginTime;
 
@@ -94,5 +97,15 @@ public class UserSessionDTO extends Dto {
 	@SuppressWarnings("unused")
 	public void setLoginTime(Timestamp loginTime) {
 		this.loginTime = loginTime;
+	}
+
+	@SuppressWarnings("unused")
+	public String getClientVersion() {
+		return clientVersion;
+	}
+
+	@SuppressWarnings("unused")
+	public void setClientVersion(String clientVersion) {
+		this.clientVersion = clientVersion;
 	}
 }

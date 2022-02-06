@@ -65,6 +65,13 @@ public class NSICreator {
 		System.out.println(text);
 	}
 
+	private void writeLineLinux(BufferedWriter bw, String text) throws Exception {
+		bw.write(text);
+		bw.write("\n");
+
+		System.out.println(text);
+	}
+
 	private void createNsiFile(String version, String java_version_path) {
 		try {
 			File fout = new File("NSIS\\c3-client.nsi");
@@ -85,6 +92,9 @@ public class NSICreator {
 				}
 				if (line.contains("###DIRECTORYLISTTOREMOVE###")) {
 					line = line.replace("###DIRECTORYLISTTOREMOVE###", cl.getListDeleteFoldersDuringUninstall());
+				}
+				if (line.contains("###TIMESTAMP###")) {
+					line = line.replace("###TIMESTAMP###", System.currentTimeMillis() + "");
 				}
 				writeLine(bw, line);
 			}
@@ -162,7 +172,7 @@ public class NSICreator {
 				if (line5.contains("###JAVA_VERSION_PATH###")) {
 					line5 = line5.replace("###JAVA_VERSION_PATH###", java_version_path);
 				}
-				writeLine(bw5, line5);
+				writeLineLinux(bw5, line5);
 			}
 			br5.close();
 			bw5.close();

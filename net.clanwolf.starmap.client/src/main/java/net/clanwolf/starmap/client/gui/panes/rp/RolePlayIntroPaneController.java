@@ -46,6 +46,7 @@ import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3RolePlayController;
 import net.clanwolf.starmap.client.process.universe.BOAttack;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
+import net.clanwolf.starmap.client.util.RPVarReplacer;
 import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.transfer.dtos.AttackCharacterDTO;
 import org.slf4j.Logger;
@@ -255,7 +256,12 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 			taStoryText.setVisible(true);
 			labHeader.setVisible(false);
 
-			taStoryText.setText(rpStory.getStoryText());
+			String storyStepText = rpStory.getStoryText();
+			storyStepText = storyStepText.replaceAll("@@ATTACKER@@", RPVarReplacer.getValueForKey("@@ATTACKER@@"));
+			storyStepText = storyStepText.replaceAll("@@DEFENDER@@", RPVarReplacer.getValueForKey("@@DEFENDER@@"));
+			storyStepText = storyStepText.replaceAll("@@PLANET@@", RPVarReplacer.getValueForKey("@@PLANET@@"));
+
+			taStoryText.setText(storyStepText);
 
 		} else {
 			taStoryText.setVisible(false);
@@ -267,7 +273,13 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 				labHeader.setOpacity(0.0);
 			}
 			labHeader.setVisible(true);
-			labHeader.setText(rpStory.getStoryName());
+
+			String storyStepText = rpStory.getStoryText();
+			storyStepText = storyStepText.replaceAll("@@ATTACKER@@", RPVarReplacer.getValueForKey("@@ATTACKER@@"));
+			storyStepText = storyStepText.replaceAll("@@DEFENDER@@", RPVarReplacer.getValueForKey("@@DEFENDER@@"));
+			storyStepText = storyStepText.replaceAll("@@PLANET@@", RPVarReplacer.getValueForKey("@@PLANET@@"));
+
+			labHeader.setText(storyStepText);
 		}
 
 		// set story image

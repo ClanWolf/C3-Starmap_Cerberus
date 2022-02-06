@@ -1,9 +1,14 @@
 C3 version history
 --------------------------------
 
+Version 6.4.1 (05.02.2022)
+- UPDATED: All dependencies
+- FIXED: Session data contains client version now
+- FIXED: Attempt to refresh changelog page after update
+
 Version 6.3.3 (05.02.2022)
-- Finalized user session save
-- Background for invasion audio control
+- ADDED: Background for invasion audio control
+- FIXED: Finalized user session save
 
 Version 6.3.1 (04.02.2022)
 - ADDED: Storing user session data
