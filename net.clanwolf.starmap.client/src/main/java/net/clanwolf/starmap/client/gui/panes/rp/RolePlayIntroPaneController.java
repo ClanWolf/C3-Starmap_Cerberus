@@ -46,6 +46,7 @@ import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3RolePlayController;
 import net.clanwolf.starmap.client.process.universe.BOAttack;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
+import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.client.util.RPVarReplacer;
 import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.transfer.dtos.AttackCharacterDTO;
@@ -251,6 +252,13 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 			taStoryText.setPrefSize(778,438);
 		}
 
+		String buttonText = rpStory.getButtonText();
+		if (buttonText != null) {
+			btPreview.setText(buttonText);
+		} else {
+			btPreview.setText(Internationalization.getString("C3_Lobby_Next"));
+		}
+
 		// fade text from labHeader if step is story or chapter
 		if(rpStory.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1){
 			taStoryText.setVisible(true);
@@ -262,7 +270,6 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 			storyStepText = storyStepText.replaceAll("@@PLANET@@", RPVarReplacer.getValueForKey("@@PLANET@@"));
 
 			taStoryText.setText(storyStepText);
-
 		} else {
 			taStoryText.setVisible(false);
 
@@ -274,12 +281,14 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 			}
 			labHeader.setVisible(true);
 
-			String storyStepText = rpStory.getStoryText();
-			storyStepText = storyStepText.replaceAll("@@ATTACKER@@", RPVarReplacer.getValueForKey("@@ATTACKER@@"));
-			storyStepText = storyStepText.replaceAll("@@DEFENDER@@", RPVarReplacer.getValueForKey("@@DEFENDER@@"));
-			storyStepText = storyStepText.replaceAll("@@PLANET@@", RPVarReplacer.getValueForKey("@@PLANET@@"));
+			String storyName = rpStory.getStoryName();
+			if (storyName != null) {
+				storyName = storyName.replaceAll("@@ATTACKER@@", RPVarReplacer.getValueForKey("@@ATTACKER@@"));
+				storyName = storyName.replaceAll("@@DEFENDER@@", RPVarReplacer.getValueForKey("@@DEFENDER@@"));
+				storyName = storyName.replaceAll("@@PLANET@@", RPVarReplacer.getValueForKey("@@PLANET@@"));
+			}
 
-			labHeader.setText(storyStepText);
+			labHeader.setText(storyName);
 		}
 
 		// set story image

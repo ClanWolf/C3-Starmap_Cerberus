@@ -1,6 +1,9 @@
 C3 version history
 --------------------------------
 
+Version 6.4.3 (06.02.2022)
+- FIXED: Download of client installer crashes the app if installer does not exist on server
+
 Version 6.4.1 (05.02.2022)
 - UPDATED: All dependencies
 - FIXED: Session data contains client version now

@@ -490,10 +490,15 @@ public final class Tools {
 				}
 			} catch (IOException e) {
 				e.printStackTrace();
+				logger.error("Downloading installer.exe failed!", e);
 				exceptionOccured = true;
 			}
 			if (!exceptionOccured) {
 				ActionManager.getAction(ACTIONS.CLIENT_INSTALLER_DOWNLOAD_COMPLETE).execute();
+			} else {
+				// Client installer not found
+				logger.error("Downloading installer error");
+				ActionManager.getAction(ACTIONS.CLIENT_INSTALLER_DOWNLOAD_ERROR).execute();
 			}
 		};
 		Thread thread = new Thread(runnable);

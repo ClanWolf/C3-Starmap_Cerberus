@@ -191,7 +191,7 @@ public class NSICreator {
 				if (line6.contains("###JAVA_VERSION_PATH###")) {
 					line6 = line6.replace("###JAVA_VERSION_PATH###", java_version_path);
 				}
-				writeLine(bw6, line6);
+				writeLineLinux(bw6, line6);
 			}
 			br6.close();
 			bw6.close();

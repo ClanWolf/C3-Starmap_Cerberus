@@ -43,10 +43,10 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 import javafx.util.Duration;
-import net.clanwolf.starmap.client.action.ACTIONS;
-import net.clanwolf.starmap.client.action.ActionCallBackListener;
-import net.clanwolf.starmap.client.action.ActionManager;
-import net.clanwolf.starmap.client.action.ActionObject;
+import net.clanwolf.starmap.client.action.*;
+import net.clanwolf.starmap.client.enums.C3MESSAGES;
+import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
+import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
 import net.clanwolf.starmap.client.gui.panes.logging.LogWatcher;
 import net.clanwolf.starmap.client.net.Server;
 import net.clanwolf.starmap.logging.C3LogUtil;
@@ -442,6 +442,7 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 		ActionManager.addActionCallbackListener(ACTIONS.OPEN_PATREON, this);
 		ActionManager.addActionCallbackListener(ACTIONS.OPEN_CLIENTVERSION_DOWNLOADPAGE, this);
 		ActionManager.addActionCallbackListener(ACTIONS.CLIENT_INSTALLER_DOWNLOAD_COMPLETE, this);
+		ActionManager.addActionCallbackListener(ACTIONS.CLIENT_INSTALLER_DOWNLOAD_ERROR, this);
 
 		stage.show();
 
@@ -597,6 +598,16 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 				});
 				break;
 
+			case CLIENT_INSTALLER_DOWNLOAD_ERROR:
+				ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute();
+				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_download_client_error"), false));
+				C3Message message = new C3Message(C3MESSAGES.ERROR_CLIENT_DOWNLOAD_FAILED);
+				message.setType(C3MESSAGETYPES.CLOSE);
+				message.setText(Internationalization.getString("general_download_client_error"));
+				C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
+				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
+				break;
+
 			case CLIENT_INSTALLER_DOWNLOAD_COMPLETE:
 				ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute();
 
@@ -655,6 +666,7 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 					e.printStackTrace();
 				}
 				break;
+
 			default:
 				break;
 		}
