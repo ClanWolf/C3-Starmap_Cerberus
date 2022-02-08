@@ -131,12 +131,13 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 	private Integer attackerDropVictories = 0;
 	private Integer defenderDropVictories = 0;
 
+	Image imageUnselected = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/check.png")));
+	Image imageSelected = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/checked.png")));
+
 	public RolePlayInvasionPaneController() {
 	}
 
 	private void init(){
-		Image imageUnselected = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/check.png")));
-
 		taRpText.setStyle("-fx-opacity: 1");
 		taRpText.setEditable(false);
 
@@ -208,9 +209,6 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 			}
 
 			if (att != null && att.getStoryId() != null) {
-				Image imageUnselected = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/check.png")));
-				Image imageSelected = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/checked.png")));
-
 				confirmAttacker1.setImage(imageUnselected);
 				confirmAttacker2.setImage(imageUnselected);
 				confirmAttacker3.setImage(imageUnselected);
@@ -305,25 +303,28 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 			}
 			sequentialTransition.setCycleCount(1);
 			sequentialTransition.setOnFinished((ActionEvent event) -> {
-					for (AttackCharacterDTO ac : Nexus.getCurrentAttackOfUser().getAttackCharList()) {
-						if (ac.getCharacterID().equals(Nexus.getCurrentChar().getId())) {
-							// this is my own attackchar
-							if (ac.getType().equals(Constants.ROLE_ATTACKER_COMMANDER) || ac.getType().equals(Constants.ROLE_DEFENDER_COMMANDER)) {
-								// I am defender commander or attacker commander
-								btChoice1.setDisable(false);
-								btChoice2.setDisable(false);
-								btChoice3.setDisable(false);
-								btChoice4.setDisable(false);
-							} else {
-								btChoice1.setTooltip(new Tooltip(Internationalization.getString("app_rp_invasion_waiting_for_confirmation")));
-								btChoice2.setTooltip(new Tooltip(Internationalization.getString("app_rp_invasion_waiting_for_confirmation")));
-								btChoice3.setTooltip(new Tooltip(Internationalization.getString("app_rp_invasion_waiting_for_confirmation")));
-								btChoice4.setTooltip(new Tooltip(Internationalization.getString("app_rp_invasion_waiting_for_confirmation")));
-							}
+				for (AttackCharacterDTO ac : Nexus.getCurrentAttackOfUser().getAttackCharList()) {
+					if (ac.getCharacterID().equals(Nexus.getCurrentChar().getId())) {
+						// this is my own attackchar
+						if (ac.getType().equals(Constants.ROLE_ATTACKER_COMMANDER) || ac.getType().equals(Constants.ROLE_DEFENDER_COMMANDER)) {
+							// I am defender commander or attacker commander
+							btChoice1.setDisable(false);
+							btChoice2.setDisable(false);
+							btChoice3.setDisable(false);
+							btChoice4.setDisable(false);
+						} else {
+							btChoice1.setTooltip(new Tooltip(Internationalization.getString("app_rp_invasion_waiting_for_confirmation")));
+							btChoice2.setTooltip(new Tooltip(Internationalization.getString("app_rp_invasion_waiting_for_confirmation")));
+							btChoice3.setTooltip(new Tooltip(Internationalization.getString("app_rp_invasion_waiting_for_confirmation")));
+							btChoice4.setTooltip(new Tooltip(Internationalization.getString("app_rp_invasion_waiting_for_confirmation")));
 						}
 					}
 				}
-			);
+				ivAttackerWaiting.setVisible(true);
+				ivDefenderWaiting.setVisible(true);
+
+				statusUpdate();
+			});
 			sequentialTransition.play();
 		});
 	}
@@ -570,6 +571,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 					btChoice3.setDisable(true);
 					btChoice4.setDisable(true);
 				}
+				audioStartedOnce = false;
 			});
 			break;
 		default:

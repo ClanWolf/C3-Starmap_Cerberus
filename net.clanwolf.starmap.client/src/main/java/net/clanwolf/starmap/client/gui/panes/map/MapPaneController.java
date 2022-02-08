@@ -54,7 +54,10 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextBoundsType;
 import javafx.util.Duration;
 import net.clanwolf.starmap.client.action.*;
+import net.clanwolf.starmap.client.enums.C3MESSAGES;
+import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
 import net.clanwolf.starmap.client.enums.PRIVILEGES;
+import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
 import net.clanwolf.starmap.client.gui.panes.map.tools.VoronoiDelaunay;
@@ -70,6 +73,8 @@ import net.clanwolf.starmap.client.util.C3Properties;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.client.util.Tools;
 import net.clanwolf.starmap.constants.Constants;
+import net.clanwolf.starmap.transfer.GameState;
+import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.transfer.dtos.*;
@@ -1665,6 +1670,48 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					logger.info("Found jumpship '" + value + "'");
 					moveMapToJumpship(js);
 				}
+			}
+			Nexus.storeCommandHistory();
+		}
+
+		// ---------------------------------
+		// force finalize round
+		// ---------------------------------
+		if (com.toLowerCase().startsWith("finalize round")) {
+			if (Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN)) {
+				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_success"), false));
+				GameState s = new GameState();
+				s.setMode(GAMESTATEMODES.FORCE_FINALIZE_ROUND);
+				Nexus.fireNetworkEvent(s);
+				Nexus.storeCommandHistory();
+			} else {
+				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_notallowed"), false));
+				C3Message message = new C3Message(C3MESSAGES.ERROR_NOT_ALLOWED);
+				message.setType(C3MESSAGETYPES.CLOSE);
+				message.setText(Internationalization.getString("general_notallowed"));
+				C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
+				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
+			}
+			Nexus.storeCommandHistory();
+		}
+
+		// ---------------------------------
+		// re-create universe
+		// ---------------------------------
+		if (com.toLowerCase().startsWith("create universe")) {
+			if (Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN)) {
+				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_success"), false));
+				GameState s = new GameState();
+				s.setMode(GAMESTATEMODES.FORCE_NEW_UNIVERSE);
+				Nexus.fireNetworkEvent(s);
+				Nexus.storeCommandHistory();
+			} else {
+				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_notallowed"), false));
+				C3Message message = new C3Message(C3MESSAGES.ERROR_NOT_ALLOWED);
+				message.setType(C3MESSAGETYPES.CLOSE);
+				message.setText(Internationalization.getString("general_notallowed"));
+				C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
+				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
 			}
 			Nexus.storeCommandHistory();
 		}

@@ -276,6 +276,10 @@ public class Login {
 		Login.password = password;
 		Login.passwordEncrypted = passwordEncrypted;
 
+//		logger.info("username: " + username);
+//		logger.info("password: " + password);
+//		logger.info("encrypted:" + passwordEncrypted);
+
 		savePassword();
 		doLogin();
 	}

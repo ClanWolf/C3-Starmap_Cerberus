@@ -66,6 +66,8 @@ import net.clanwolf.starmap.client.gui.panes.settings.SettingsPane;
 import net.clanwolf.starmap.client.gui.panes.userinfo.UserInfoPane;
 import net.clanwolf.starmap.client.gui.popuppanes.C3PopupPane;
 import net.clanwolf.starmap.client.mwo.CheckClipboardForMwoApi;
+import net.clanwolf.starmap.client.process.universe.BOJumpship;
+import net.clanwolf.starmap.client.process.universe.BOStarSystem;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -1730,7 +1732,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			case TERMINAL_COMMAND:
 				String com = o.getText();
 				if (Nexus.isLoggedIn()) {
-					if (com.contains("finalize round")
+					if (com.contains("find")
+					|| com.contains("finalize round")
 					|| com.contains("create universe")) {
 						handleCommand(com);
 					}
@@ -2095,45 +2098,27 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		}
 
 		// ---------------------------------
+		// find
+		// ---------------------------------
+		if (com.toLowerCase().startsWith("find")) {
+			StatusTextEntryActionObject ste = new StatusTextEntryActionObject(Internationalization.getString("general_only_works_on_map"), true);
+			ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(ste);
+		}
+
+		// ---------------------------------
 		// force finalize round
 		// ---------------------------------
 		if (com.toLowerCase().startsWith("finalize round")) {
-			if (Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN)) {
-				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_success"), false));
-				GameState s = new GameState();
-				s.setMode(GAMESTATEMODES.FORCE_FINALIZE_ROUND);
-				Nexus.fireNetworkEvent(s);
-				Nexus.storeCommandHistory();
-			} else {
-				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_notallowed"), false));
-				C3Message message = new C3Message(C3MESSAGES.ERROR_NOT_ALLOWED);
-				message.setType(C3MESSAGETYPES.CLOSE);
-				message.setText(Internationalization.getString("general_notallowed"));
-				C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
-				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
-			}
-			Nexus.storeCommandHistory();
+			StatusTextEntryActionObject ste = new StatusTextEntryActionObject(Internationalization.getString("general_only_works_on_map"), true);
+			ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(ste);
 		}
 
 		// ---------------------------------
 		// re-create universe
 		// ---------------------------------
 		if (com.toLowerCase().startsWith("create universe")) {
-			if (Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN)) {
-				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_success"), false));
-				GameState s = new GameState();
-				s.setMode(GAMESTATEMODES.FORCE_NEW_UNIVERSE);
-				Nexus.fireNetworkEvent(s);
-				Nexus.storeCommandHistory();
-			} else {
-				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_notallowed"), false));
-				C3Message message = new C3Message(C3MESSAGES.ERROR_NOT_ALLOWED);
-				message.setType(C3MESSAGETYPES.CLOSE);
-				message.setText(Internationalization.getString("general_notallowed"));
-				C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
-				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
-			}
-			Nexus.storeCommandHistory();
+			StatusTextEntryActionObject ste = new StatusTextEntryActionObject(Internationalization.getString("general_only_works_on_map"), true);
+			ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(ste);
 		}
 
 		if (com.toLowerCase().startsWith("test popup")) {

@@ -193,7 +193,7 @@ public class ResultAnalyzer {
 			if (rpchar != null) {
 				RolePlayCharacterStatsDTO charStats = new RolePlayCharacterStatsDTO();
 				charStats.setSeasonId(Nexus.getCurrentAttackOfUser().getSeason().longValue());
-				charStats.setAttackId(Nexus.getCurrentAttackOfUser().getSeason().longValue());
+				charStats.setAttackId(Nexus.getCurrentAttackOfUser().getAttackDTO().getId());
 				charStats.setRoleplayCharacterId(rpchar.getId());
 				charStats.setMwoMatchId(gameId);
 				charStats.setLeadingPosition(leadingPosition);

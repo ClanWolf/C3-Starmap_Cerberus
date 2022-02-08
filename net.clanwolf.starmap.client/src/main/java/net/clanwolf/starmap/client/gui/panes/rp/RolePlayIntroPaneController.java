@@ -137,9 +137,8 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 		}
 
 		switch (action) {
-			case START_ROLEPLAY:
-				if(ROLEPLAYENTRYTYPES.C3_RP_STORY == o.getObject() ||
-						ROLEPLAYENTRYTYPES.C3_RP_CHAPTER == o.getObject()) {
+			case START_ROLEPLAY -> {
+				if (ROLEPLAYENTRYTYPES.C3_RP_STORY == o.getObject() || ROLEPLAYENTRYTYPES.C3_RP_CHAPTER == o.getObject()) {
 					logger.debug("RolePlayIntroPaneController -> START_ROLEPLAY");
 
 					// set current step of story
@@ -166,17 +165,15 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 							animationPlayedMap.put(getCurrentRP().getId(), true);
 						}
 					});
-				} else if(ROLEPLAYENTRYTYPES.C3_RP_STEP_V1 == o.getObject()){
+				} else if (ROLEPLAYENTRYTYPES.C3_RP_STEP_V1 == o.getObject()) {
 					// set current step of story
 					getStoryValues(getCurrentRP());
 				}
 				buttonPressed = false;
-				break;
-			case FINALIZE_ROUND:
-				checkToCancelInvasion();
-				break;
-			default:
-				break;
+			}
+			case FINALIZE_ROUND -> checkToCancelInvasion();
+			default -> {
+			}
 		}
 		return true;
 	}
@@ -189,14 +186,13 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 	}
 
 	/******************************** FXML ********************************/
-	@FXML
-	private void handleOnMouseClicked(){
-		handleOnActionBtPreview();
-	}
+//	@FXML
+//	private void handleOnMouseClicked(){
+//		handleOnActionBtPreview();
+//	}
 
 	@FXML
 	private void handleOnActionBtPreview(){
-
 		btPreview.setDisable(true);
 		buttonPressed = true;
 

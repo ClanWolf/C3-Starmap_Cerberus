@@ -1,6 +1,16 @@
 C3 version history
 --------------------------------
 
+Version 6.5.0 (08.02.2022)
+- FIXED: Invasion sound samples did not play after the first round
+- FIXED: Icons restored if a player switches from invasion to map and back
+- FIXED: A click on the background in IntroPane switched to next step
+- FIXED: Character stats do store the correct attackId now
+- FIXED: Entering password (login) should now work as expected
+- CHANGED: Order of settings tabs
+- CHANGED: Caption of general settings changed
+- CHANGED: Finalize round only works while on map pane now
+
 Version 6.4.3 (06.02.2022)
 - FIXED: Download of client installer crashes the app if installer does not exist on server
 

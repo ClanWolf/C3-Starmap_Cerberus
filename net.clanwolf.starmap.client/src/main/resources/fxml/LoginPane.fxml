@@ -41,7 +41,7 @@
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
     </TextField>
-    <PasswordField fx:id="tfPassword" disable="false" layoutX="510.0" layoutY="143.0" prefWidth="200.0">
+    <PasswordField fx:id="tfPassword" disable="false" layoutX="510.0" layoutY="143.0" onMouseClicked="#passwordFieldAction" prefWidth="200.0">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>

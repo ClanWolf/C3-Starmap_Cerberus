@@ -422,14 +422,13 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 		}
 	}
 
+	@FXML
+	public void passwordFieldAction() {
+		tfPassword.selectAll();
+	}
+
 	private boolean checkTextFieldsForContent() {
-		boolean bothFieldsContainValues = false;
-
-		if ((!"".equals(tfUserName.getText())) && (!"".equals(tfPassword.getText()))) {
-			bothFieldsContainValues = true;
-		}
-
-		return bothFieldsContainValues;
+		return (!"".equals(tfUserName.getText())) && (!"".equals(tfPassword.getText()));
 	}
 
 	private void createListeners() {
@@ -445,24 +444,13 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 			public void changed(ObservableValue<? extends String> ov, String old_val, String new_val) {
 				buttonLogin.setDisable(!checkTextFieldsForContent());
 				if (!cbGuestAccount.isSelected()) {
-					if (!"".equals(old_val)) {
-						if (password_encrypted) {
-//							logger.debug(old_val);
-//							logger.debug(new_val);
-
-							if (!"".equals(new_val)) {
-								ActionManager.getAction(ACTIONS.CLEAR_PASSWORD_FIELD).execute();
-							}
-						} else {
-							pass = tfPassword.getText();
-							password_encrypted = false;
-							// logger.debug("Reseting encryption / taking new pw");
-						}
-					}
+					pass = tfPassword.getText();
+					password_encrypted = false;
 				}
 			}
 		};
 	}
+
 
 	// @SuppressWarnings("unchecked")
 	private void enableListeners(boolean enableListerners) {
@@ -543,22 +531,22 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 				// logger.info("Result of message (user interaction): " + result);
 				break;
 
-			case CLEAR_PASSWORD_FIELD:
-				C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
-				C3Message m1 = new C3Message(C3MESSAGES.ERROR_NO_EDITING_ALLOWED);
-				m1.setText("Stored password cannot be edited. Reseting.");
-				m1.setType(C3MESSAGETYPES.CLOSE);
-				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(m1);
-
-				enableListeners(false);
-				Platform.runLater(() -> {
-					tfPassword.clear();
-				});
-				enableListeners(true);
-				pass = "";
-				password_encrypted = false;
-				// logger.debug("Reseting encryption / setting back [encrypted pw cannot be edited in field]");
-				break;
+//			case CLEAR_PASSWORD_FIELD:
+//				C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
+//				C3Message m1 = new C3Message(C3MESSAGES.ERROR_NO_EDITING_ALLOWED);
+//				m1.setText("Stored password cannot be edited. Reseting.");
+//				m1.setType(C3MESSAGETYPES.CLOSE);
+//				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(m1);
+//
+//				enableListeners(false);
+//				Platform.runLater(() -> {
+//					tfPassword.clear();
+//				});
+//				enableListeners(true);
+//				pass = "";
+//				password_encrypted = false;
+//				// logger.debug("Reseting encryption / setting back [encrypted pw cannot be edited in field]");
+//				break;
 
 			default:
 				break;
