@@ -189,6 +189,7 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 
 	public static void main(String[] args) {
 		System.setProperty("javafx.preloader", C3_Preloader.class.getCanonicalName());
+		System.setProperty("file.encoding", "UTF-8");
 
 		// This is not written to a logger in order to see it even if the logger is not correctly initialized
 		System.out.println("...");

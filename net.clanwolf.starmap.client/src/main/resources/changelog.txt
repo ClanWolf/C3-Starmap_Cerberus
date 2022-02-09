@@ -1,6 +1,12 @@
 C3 version history
 --------------------------------
 
+Version 6.5.1 (09.02.2022)
+- FIXED: Horizontal scrollbar in chat pane
+- FIXED: Color coding of chat entries
+- FIXED: Userlist reworked
+- FIXED: Umlaut problem in chat fixed
+
 Version 6.5.0 (08.02.2022)
 - FIXED: Invasion sound samples did not play after the first round
 - FIXED: Icons restored if a player switches from invasion to map and back

@@ -112,15 +112,12 @@
 			<version>22.0.0</version>
 			<scope>compile</scope>
 		</dependency>
+
+		<!-- IRC +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 		<dependency>
-			<!-- https://github.com/migzai/irc-api -->
-			<!-- https://mvnrepository.com/artifact/org.jitsi/irc-api -->
 			<groupId>com.ircclouds.irc</groupId>
 			<artifactId>irc-api</artifactId>
 			<version>1.0-0014</version>
-<!--			<groupId>org.jitsi</groupId>-->
-<!--			<artifactId>irc-api</artifactId>-->
-<!--			<version>1.0-0015-jitsi-1</version>-->
 			<exclusions>
 				<exclusion>
 					<groupId>com.googlecode.jmockit</groupId>
@@ -132,6 +129,14 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+
+<!--		&lt;!&ndash; https://mvnrepository.com/artifact/org.jitsi/irc-api &ndash;&gt;-->
+<!--		<dependency>-->
+<!--			<groupId>org.jitsi</groupId>-->
+<!--			<artifactId>irc-api</artifactId>-->
+<!--			<version>1.0-0015-jitsi-1</version>-->
+<!--		</dependency>-->
+
 		<dependency>
 			<groupId>net.coobird</groupId>
 			<artifactId>thumbnailator</artifactId>
