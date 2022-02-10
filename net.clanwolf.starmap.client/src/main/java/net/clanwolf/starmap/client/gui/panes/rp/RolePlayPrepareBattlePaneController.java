@@ -282,6 +282,12 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 	public void handleContinueButtonClick() {
 		RolePlayStoryDTO nextStep = Nexus.getBoUniverse().getAttackStoriesByID(Nexus.getCurrentAttackOfUser().getStoryId().longValue());
 		Nexus.setStoryBeforeSaving(Nexus.getCurrentAttackOfUser().getStoryId().longValue());
+
+		// Drops have been started here! Mark the attack as locked for other users to join
+		BOAttack a = Nexus.getCurrentAttackOfUser();
+		a.setAttackFightsHaveBeenStarted(true);
+		logger.info("Attack drops have started, planet is now locked for new users to join!");
+
 		saveNextStep(nextStep.getNextStepID());
 	}
 

@@ -48,7 +48,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 
+import java.io.File;
 import java.lang.invoke.MethodHandles;
+import java.util.ArrayList;
+import java.util.Objects;
 
 // https://stackoverflow.com/questions/39366828/add-a-simple-row-to-javafx-tableview
 
@@ -177,15 +180,28 @@ public class LogPaneController implements ActionCallBackListener {
 		FTP ftpClient = new FTP(C3FTPTYPES.FTP_LOGUPLOAD);
 		try {
 			ftpClient.upload(C3Properties.getProperty(C3PROPS.LOGFILE) + ".0", logfilename);
+
+			String serverUrl = C3Properties.getProperty(C3PROPS.SERVER_URL);
+			String formattedBody = "Error in C3 client!\n\nUploaded log:\n" + serverUrl + "/errorlogs/" + logfilename + "\n\nAdd description:\n\n";
+			Tools.sendMailToAdminGroup(formattedBody);
 		} catch(Exception e) {
 			e.printStackTrace();
-			logger.info("Exception during ftp upload!");
+			logger.info("Exception during ftp upload, trying to attach log to mail!");
+
+			// Read the latest log and put the content into the mail body itself, because uploading failed
+			ArrayList<File> logfiles = new ArrayList<>();
+			File dir = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3");
+			if (dir.exists() && dir.isDirectory()) {
+				for (File f : Objects.requireNonNull(dir.listFiles())) {
+					if (f.getAbsolutePath().contains("starmap.log")) {
+						logfiles.add(f);
+					}
+				}
+			}
+
+			String formattedBody = "Error in C3 client!\n\n";
+			Tools.sendMailToAdminGroup(formattedBody, logfiles);
 		}
-
-		String serverUrl = C3Properties.getProperty(C3PROPS.SERVER_URL);
-		String formattedBody = "Error in C3 client!\n\nUploaded log:\n" + serverUrl + "/errorlogs/" + logfilename + "\n\nAdd description:\n\n";
-		Tools.sendMailToAdminGroup(formattedBody);
-
 		ftpClient.disconnect();
 	}
 

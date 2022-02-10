@@ -320,7 +320,6 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 				confirmAttacker4.setVisible(true);
 				confirmDefender4.setVisible(true);
 
-
 				btChoice4.setLayoutX(x);
 				btChoice4.setLayoutY(y);
 

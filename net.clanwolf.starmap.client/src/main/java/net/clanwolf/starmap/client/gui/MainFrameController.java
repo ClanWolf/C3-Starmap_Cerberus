@@ -2069,7 +2069,13 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		if (!com.startsWith("*!!!*")) {
 			if (!"".equals(com)) {
 				logger.info("Received command: '" + com + "'");
-				if (!Nexus.commandHistory.getLast().equals(com)) {
+				String lastEntry = null;
+				if (Nexus.commandHistory.size() > 0) {
+					lastEntry = Nexus.commandHistory.getLast();
+				}
+				if (lastEntry == null) {
+					Nexus.commandHistory.add(com);
+				} else if (!Nexus.commandHistory.getLast().equals(com)) {
 					Nexus.commandHistory.add(com);
 				}
 				if (Nexus.commandHistory.size() > 50) {

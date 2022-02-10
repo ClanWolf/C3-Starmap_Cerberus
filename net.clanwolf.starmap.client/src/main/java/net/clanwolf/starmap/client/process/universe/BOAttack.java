@@ -36,14 +36,13 @@ import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.util.Compressor;
 
 import java.lang.invoke.MethodHandles;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 public class BOAttack {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	private AttackDTO attackDTO;
+	private boolean fightsHaveBeenStarted = false;
 
 	@SuppressWarnings("unused")
 	public BOAttack(AttackDTO attackDTO) {
@@ -85,6 +84,7 @@ public class BOAttack {
 			for (AttackCharacterDTO ac : a.getAttackCharList()) {
 				if (ac.getCharacterID().equals(Nexus.getCurrentUser().getCurrentCharacter().getId())) {
 					charHasAnotherActiveAttack = true;
+					break;
 				}
 			}
 		}
@@ -129,8 +129,8 @@ public class BOAttack {
 	@SuppressWarnings("unused")
 	public Integer getAttackerFactionId() {
 		BOJumpship j = Nexus.getBoUniverse().getJumpshipByID(attackDTO.getJumpshipID());
-		Long id = j.getJumpshipFaction();
-		return id.intValue();
+		long id = j.getJumpshipFaction();
+		return (int) id;
 	}
 
 	@SuppressWarnings("unused")
@@ -164,6 +164,17 @@ public class BOAttack {
 			}
 		}
 		return attackHasBeenStarted;
+	}
+
+	@SuppressWarnings("unused")
+	public void setAttackFightsHaveBeenStarted(boolean value) {
+		fightsHaveBeenStarted = value;
+		attackDTO.setFightsStarted(value);
+	}
+
+	@SuppressWarnings("unused")
+	public boolean attackFightsHaveBeenStarted() {
+		return fightsHaveBeenStarted;
 	}
 
 	@SuppressWarnings("unused")

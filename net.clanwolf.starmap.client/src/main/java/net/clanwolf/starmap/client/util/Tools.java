@@ -55,6 +55,8 @@ import java.io.*;
 import java.lang.invoke.MethodHandles;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -101,17 +103,43 @@ public final class Tools {
 	}
 
 	@SuppressWarnings("unused")
-	public static void sendMailToAdminGroup(String message) {
-		sendMailToAdminGroup("C3 Message", message);
+	public static void sendMailToAdminGroup(String message, ArrayList<File> logfiles) {
+		sendMailToAdminGroup("C3 Message", message, logfiles);
 	}
 
 	@SuppressWarnings("unused")
-	public static void sendMailToAdminGroup(String subject, String message) {
+	public static void sendMailToAdminGroup(String message) {
+		sendMailToAdminGroup("C3 Message", message, null);
+	}
+
+	@SuppressWarnings("unused")
+	public static void sendMailToAdminGroup(String subject, String message, ArrayList<File> logfiles) {
 		try {
 			Desktop desktop;
 			if (Desktop.isDesktopSupported() && (desktop = Desktop.getDesktop()).isSupported(Desktop.Action.MAIL)) {
 				URI mailto;
-				mailto = new URI("mailto:c3@clanwolf.net?subject=" + encodeValue(addUserName(subject)) + "&body=" + encodeValue(message));
+				String content = "mailto:c3@clanwolf.net?subject=" + encodeValue(addUserName(subject)) + "&body=" + encodeValue(message);
+
+				File latestFile = null;
+				if (logfiles != null && !logfiles.isEmpty()) {
+					for (File f : logfiles) {
+						if (f.isFile()) {
+							if (latestFile == null) {
+								latestFile = f;
+							}
+							if (f.lastModified() > latestFile.lastModified()) {
+								latestFile = f;
+							}
+						}
+					}
+				}
+				if (latestFile != null) {
+					Path path = latestFile.toPath();
+					String log = Files.readString(path);
+					content = content + encodeValue(log);
+				}
+
+				mailto = new URI(content);
 				desktop.mail(mailto);
 			} else {
 				logger.warn("Desktop does not support mailto!");

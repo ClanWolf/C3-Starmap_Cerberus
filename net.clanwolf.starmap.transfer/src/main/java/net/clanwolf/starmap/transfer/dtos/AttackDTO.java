@@ -45,6 +45,7 @@ public class AttackDTO extends Dto {
 	private Long characterID;
 	private Long storyID;
 	private Long factionID_Winner;
+	private Boolean fightsStarted;
 	private String remarks;
 	private String forumThreadLink;
 	private List<AttackVarsDTO> attackVarList = new ArrayList<>();
@@ -208,6 +209,16 @@ public class AttackDTO extends Dto {
 	@SuppressWarnings("unused")
 	public void setAttackCharList(List<AttackCharacterDTO> attackCharList) {
 		this.attackCharList = attackCharList;
+	}
+
+	@SuppressWarnings("unused")
+	public Boolean getFightsStarted() {
+		return fightsStarted;
+	}
+
+	@SuppressWarnings("unused")
+	public void setFightsStarted(Boolean fightsStarted) {
+		this.fightsStarted = fightsStarted;
 	}
 
 	public AttackDTO() {

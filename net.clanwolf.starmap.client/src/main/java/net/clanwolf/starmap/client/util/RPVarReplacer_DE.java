@@ -44,13 +44,13 @@ public class RPVarReplacer_DE {
 	// Wessen Buch ist es? Des Bruders (Genitiv)
 
 	private static final HashMap<String, HashMap<String, String>> factionNameCases = new HashMap<>();
-	private static final HashMap<String, String> dc = new HashMap<String, String>();
-	private static final HashMap<String, String> la = new HashMap<String, String>();
-	private static final HashMap<String, String> frr = new HashMap<String, String>();
-	private static final HashMap<String, String> cs = new HashMap<String, String>();
-	private static final HashMap<String, String> cw = new HashMap<String, String>();
-	private static final HashMap<String, String> cjf = new HashMap<String, String>();
-	private static final HashMap<String, String> cgb = new HashMap<String, String>();
+	private static final HashMap<String, String> dc = new HashMap<>();
+	private static final HashMap<String, String> la = new HashMap<>();
+	private static final HashMap<String, String> frr = new HashMap<>();
+	private static final HashMap<String, String> cs = new HashMap<>();
+	private static final HashMap<String, String> cw = new HashMap<>();
+	private static final HashMap<String, String> cjf = new HashMap<>();
+	private static final HashMap<String, String> cgb = new HashMap<>();
 
 	public static void fillLists() {
 		dc.put("nom", "das Draconis Kombinat");                  // 1. Nominativ (wer)

@@ -84,6 +84,9 @@ public class AttackPOJO extends Pojo {
 	@Column(name = "FactionID_Winner")
 	private Long factionID_Winner;
 
+	@Column(name = "FightsStarted")
+	private Boolean fightsStarted;
+
 	@Column(name = "Remarks")
 	private String remarks;
 
@@ -248,6 +251,16 @@ public class AttackPOJO extends Pojo {
 	@SuppressWarnings("unused")
 	public void setAttackVarList(List<AttackVarsPOJO> attackVarList) {
 		this.attackVarList = attackVarList;
+	}
+
+	@SuppressWarnings("unused")
+	public Boolean getFightsStarted() {
+		return fightsStarted;
+	}
+
+	@SuppressWarnings("unused")
+	public void setFightsStarted(Boolean fightsStarted) {
+		this.fightsStarted = fightsStarted;
 	}
 
 	@SuppressWarnings("unused")
