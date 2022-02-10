@@ -47,7 +47,7 @@ import net.clanwolf.starmap.client.gui.panes.AbstractC3RolePlayController;
 import net.clanwolf.starmap.client.process.universe.BOAttack;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.Internationalization;
-import net.clanwolf.starmap.client.util.RPVarReplacer;
+import net.clanwolf.starmap.client.util.RPVarReplacer_DE;
 import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.transfer.dtos.AttackCharacterDTO;
 import org.slf4j.Logger;
@@ -58,7 +58,6 @@ import net.clanwolf.starmap.transfer.dtos.RolePlayStoryDTO;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
 import java.lang.invoke.MethodHandles;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Objects;
@@ -260,12 +259,7 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 			taStoryText.setVisible(true);
 			labHeader.setVisible(false);
 
-			String storyStepText = rpStory.getStoryText();
-			storyStepText = storyStepText.replaceAll("@@ATTACKER@@", RPVarReplacer.getValueForKey("@@ATTACKER@@"));
-			storyStepText = storyStepText.replaceAll("@@DEFENDER@@", RPVarReplacer.getValueForKey("@@DEFENDER@@"));
-			storyStepText = storyStepText.replaceAll("@@PLANET@@", RPVarReplacer.getValueForKey("@@PLANET@@"));
-
-			taStoryText.setText(storyStepText);
+			taStoryText.setText(RPVarReplacer_DE.replaceVars(rpStory.getStoryText()));
 		} else {
 			taStoryText.setVisible(false);
 
@@ -279,9 +273,7 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 
 			String storyName = rpStory.getStoryName();
 			if (storyName != null) {
-				storyName = storyName.replaceAll("@@ATTACKER@@", RPVarReplacer.getValueForKey("@@ATTACKER@@"));
-				storyName = storyName.replaceAll("@@DEFENDER@@", RPVarReplacer.getValueForKey("@@DEFENDER@@"));
-				storyName = storyName.replaceAll("@@PLANET@@", RPVarReplacer.getValueForKey("@@PLANET@@"));
+				storyName = RPVarReplacer_DE.replaceVars(storyName);
 			}
 
 			labHeader.setText(storyName);

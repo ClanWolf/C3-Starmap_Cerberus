@@ -56,7 +56,7 @@ import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.C3PROPS;
 import net.clanwolf.starmap.client.util.C3Properties;
 import net.clanwolf.starmap.client.util.Internationalization;
-import net.clanwolf.starmap.client.util.RPVarReplacer;
+import net.clanwolf.starmap.client.util.RPVarReplacer_DE;
 import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.transfer.dtos.*;
 import org.slf4j.Logger;
@@ -124,15 +124,20 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 	@FXML
 	private ImageView ivAttackerWaiting;
 
+	Image imageRadar = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/gui/static.gif")));
+
 	@FXML
 	private Circle circleScore01, circleScore02, circleScore03, circleScore04, circleScore05;
 	ArrayList<Circle> scoreCircles = null;
+	@FXML
+	private ImageView ivPlanet, ivLocation;
 
 	private Integer attackerDropVictories = 0;
 	private Integer defenderDropVictories = 0;
 
 	Image imageUnselected = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/check.png")));
 	Image imageSelected = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/checked.png")));
+	private Image im2;
 
 	public RolePlayInvasionPaneController() {
 	}
@@ -195,6 +200,9 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 		Image attackerLogo = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logos/factions/" + attacker.getLogo())));
 		Image defenderLogo = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logos/factions/" + defender.getLogo())));
 
+		ivPlanet.setImage(Nexus.getBoUniverse().starSystemBOs.get(a.getStarSystemId()).getSystemImage());
+		ivPlanet.toFront();
+		ivLocation.toFront();
 		attackerHeader.setImage(attackerLogo);
 		defenderHeader.setImage(defenderLogo);
 		attackerButtonIcon.setImage(attackerLogo);
@@ -263,70 +271,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 		ActionManager.addActionCallbackListener(ACTIONS.MWO_DROPSTATS_RECEIVED, this);
 		ActionManager.addActionCallbackListener(ACTIONS.UPDATE_USERS_FOR_ATTACK, this);
 		ActionManager.addActionCallbackListener(ACTIONS.ROLEPLAY_NEXT_STEP_CHANGE_PANE, this);
-	}
-
-	public void scoreAnimation(int attackerWins, int defenderWins) {
-		Platform.runLater(() -> {
-			if (scoreCircles == null) {
-				scoreCircles = new ArrayList<>();
-				scoreCircles.add(circleScore01);
-				scoreCircles.add(circleScore02);
-				scoreCircles.add(circleScore03);
-				scoreCircles.add(circleScore04);
-				scoreCircles.add(circleScore05);
-			}
-
-			SequentialTransition sequentialTransition = new SequentialTransition();
-
-			int count = 1;
-			for (Circle c : scoreCircles) {
-				FadeTransition fadeInTransition = new FadeTransition(Duration.millis(250), c);
-				fadeInTransition.setFromValue(0.0);
-				fadeInTransition.setToValue(1.0);
-				fadeInTransition.setCycleCount(1);
-
-				if (count <= attackerWins) {
-					// color this circle red
-					c.setStroke(Color.web("#a2270c"));
-					c.setFill(Color.web("#511d14"));
-				} else if (count > 5 - defenderWins) {
-					// color this circle blue
-					c.setStroke(Color.web("#6292a4"));
-					c.setFill(Color.web("#113544"));
-				} else {
-					// color this circle gray
-					c.setStroke(Color.web("#ffffff"));
-					c.setFill(Color.web("#5d6165"));
-				}
-				sequentialTransition.getChildren().add(fadeInTransition);
-				count++;
-			}
-			sequentialTransition.setCycleCount(1);
-			sequentialTransition.setOnFinished((ActionEvent event) -> {
-				for (AttackCharacterDTO ac : Nexus.getCurrentAttackOfUser().getAttackCharList()) {
-					if (ac.getCharacterID().equals(Nexus.getCurrentChar().getId())) {
-						// this is my own attackchar
-						if (ac.getType().equals(Constants.ROLE_ATTACKER_COMMANDER) || ac.getType().equals(Constants.ROLE_DEFENDER_COMMANDER)) {
-							// I am defender commander or attacker commander
-							btChoice1.setDisable(false);
-							btChoice2.setDisable(false);
-							btChoice3.setDisable(false);
-							btChoice4.setDisable(false);
-						} else {
-							btChoice1.setTooltip(new Tooltip(Internationalization.getString("app_rp_invasion_waiting_for_confirmation")));
-							btChoice2.setTooltip(new Tooltip(Internationalization.getString("app_rp_invasion_waiting_for_confirmation")));
-							btChoice3.setTooltip(new Tooltip(Internationalization.getString("app_rp_invasion_waiting_for_confirmation")));
-							btChoice4.setTooltip(new Tooltip(Internationalization.getString("app_rp_invasion_waiting_for_confirmation")));
-						}
-					}
-				}
-				ivAttackerWaiting.setVisible(true);
-				ivDefenderWaiting.setVisible(true);
-
-				statusUpdate();
-			});
-			sequentialTransition.play();
-		});
+		ActionManager.addActionCallbackListener(ACTIONS.PANE_CREATION_BEGINS, this);
 	}
 
 	/******************************** THIS ********************************/
@@ -339,8 +284,8 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 			backgroundImage.setImage(im);
 
 			//set story image
-			Image im2 = BORolePlayStory.getRPG_Image(rpStory);
-			rpImage.setImage(im2);
+			im2 = BORolePlayStory.getRPG_Image(rpStory);
+			rpImage.toFront();
 		}
 
 		// play sound
@@ -348,14 +293,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 		audioStartedOnce = true;
 
 		// REPLACE VARS!
-		String storyStepText = rpStory.getStoryText();
-
-		storyStepText = storyStepText.replaceAll("@@ATTACKER@@", RPVarReplacer.getValueForKey("@@ATTACKER@@"));
-		storyStepText = storyStepText.replaceAll("@@DEFENDER@@", RPVarReplacer.getValueForKey("@@DEFENDER@@"));
-		storyStepText = storyStepText.replaceAll("@@PLANET@@", RPVarReplacer.getValueForKey("@@PLANET@@"));
-
-		//TODO: append single chars step by step until the whole text is displaying
-		taRpText.setText(storyStepText);
+		taRpText.setText(RPVarReplacer_DE.replaceVars(rpStory.getStoryText()));
 
 		if (rpStory.getVar9ID() != null) {
 			RolePlayStoryVar9DTO rpVar9 = rpStory.getVar9ID();
@@ -471,40 +409,11 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 
 			paneCurrentScore.setLayoutY(yPos);
 
-			String button01Text = btChoice1.getText();
-			String button02Text = btChoice2.getText();
-			String button03Text = btChoice3.getText();
-			String button04Text = btChoice4.getText();
-
-			button01Text = button01Text.replaceAll("@@ATTACKER@@", RPVarReplacer.getValueForKey("@@ATTACKER@@"));
-			button01Text = button01Text.replaceAll("@@DEFENDER@@", RPVarReplacer.getValueForKey("@@DEFENDER@@"));
-			button01Text = button01Text.replaceAll("@@PLANET@@", RPVarReplacer.getValueForKey("@@PLANET@@"));
-
-			button02Text = button02Text.replaceAll("@@ATTACKER@@", RPVarReplacer.getValueForKey("@@ATTACKER@@"));
-			button02Text = button02Text.replaceAll("@@DEFENDER@@", RPVarReplacer.getValueForKey("@@DEFENDER@@"));
-			button02Text = button02Text.replaceAll("@@PLANET@@", RPVarReplacer.getValueForKey("@@PLANET@@"));
-
-			button03Text = button03Text.replaceAll("@@ATTACKER@@", RPVarReplacer.getValueForKey("@@ATTACKER@@"));
-			button03Text = button03Text.replaceAll("@@DEFENDER@@", RPVarReplacer.getValueForKey("@@DEFENDER@@"));
-			button03Text = button03Text.replaceAll("@@PLANET@@", RPVarReplacer.getValueForKey("@@PLANET@@"));
-
-			button04Text = button04Text.replaceAll("@@ATTACKER@@", RPVarReplacer.getValueForKey("@@ATTACKER@@"));
-			button04Text = button04Text.replaceAll("@@DEFENDER@@", RPVarReplacer.getValueForKey("@@DEFENDER@@"));
-			button04Text = button04Text.replaceAll("@@PLANET@@", RPVarReplacer.getValueForKey("@@PLANET@@"));
-
-			btChoice1.setText(button01Text);
-			btChoice2.setText(button02Text);
-			btChoice3.setText(button03Text);
-			btChoice4.setText(button04Text);
+			btChoice1.setText(RPVarReplacer_DE.replaceVars(btChoice1.getText()));
+			btChoice2.setText(RPVarReplacer_DE.replaceVars(btChoice2.getText()));
+			btChoice3.setText(RPVarReplacer_DE.replaceVars(btChoice3.getText()));
+			btChoice4.setText(RPVarReplacer_DE.replaceVars(btChoice4.getText()));
 		}
-	}
-
-	@Override
-	public void initialize(URL url, ResourceBundle rb) {
-		super.initialize(url, rb);
-
-		init();
-
 	}
 
 	/**
@@ -521,6 +430,10 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 		if(anchorPane != null && !anchorPane.isVisible()) return true;
 		logger.debug("Flag for CharRP" + isCharRP);
 		switch (action) {
+
+		case PANE_CREATION_BEGINS:
+			rpImage.setImage(imageRadar);
+			break;
 
 		case FINALIZE_ROUND:
 			checkToCancelInvasion();
@@ -578,6 +491,81 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 			break;
 		}
 		return true;
+	}
+
+	@Override
+	public void initialize(URL url, ResourceBundle rb) {
+		super.initialize(url, rb);
+
+		init();
+
+	}
+
+	public void scoreAnimation(int attackerWins, int defenderWins) {
+		Platform.runLater(() -> {
+			if (scoreCircles == null) {
+				scoreCircles = new ArrayList<>();
+				scoreCircles.add(circleScore01);
+				scoreCircles.add(circleScore02);
+				scoreCircles.add(circleScore03);
+				scoreCircles.add(circleScore04);
+				scoreCircles.add(circleScore05);
+			}
+
+			rpImage.setImage(imageRadar);
+
+			SequentialTransition sequentialTransition = new SequentialTransition();
+
+			int count = 1;
+			for (Circle c : scoreCircles) {
+				FadeTransition fadeInTransition = new FadeTransition(Duration.millis(250), c);
+				fadeInTransition.setFromValue(0.0);
+				fadeInTransition.setToValue(1.0);
+				fadeInTransition.setCycleCount(1);
+
+				if (count <= attackerWins) {
+					// color this circle red
+					c.setStroke(Color.web("#a2270c"));
+					c.setFill(Color.web("#511d14"));
+				} else if (count > 5 - defenderWins) {
+					// color this circle blue
+					c.setStroke(Color.web("#6292a4"));
+					c.setFill(Color.web("#113544"));
+				} else {
+					// color this circle gray
+					c.setStroke(Color.web("#ffffff"));
+					c.setFill(Color.web("#5d6165"));
+				}
+				sequentialTransition.getChildren().add(fadeInTransition);
+				count++;
+			}
+			sequentialTransition.setCycleCount(1);
+			sequentialTransition.setOnFinished((ActionEvent event) -> {
+				for (AttackCharacterDTO ac : Nexus.getCurrentAttackOfUser().getAttackCharList()) {
+					if (ac.getCharacterID().equals(Nexus.getCurrentChar().getId())) {
+						// this is my own attackchar
+						if (ac.getType().equals(Constants.ROLE_ATTACKER_COMMANDER) || ac.getType().equals(Constants.ROLE_DEFENDER_COMMANDER)) {
+							// I am defender commander or attacker commander
+							btChoice1.setDisable(false);
+							btChoice2.setDisable(false);
+							btChoice3.setDisable(false);
+							btChoice4.setDisable(false);
+						} else {
+							btChoice1.setTooltip(new Tooltip(Internationalization.getString("app_rp_invasion_waiting_for_confirmation")));
+							btChoice2.setTooltip(new Tooltip(Internationalization.getString("app_rp_invasion_waiting_for_confirmation")));
+							btChoice3.setTooltip(new Tooltip(Internationalization.getString("app_rp_invasion_waiting_for_confirmation")));
+							btChoice4.setTooltip(new Tooltip(Internationalization.getString("app_rp_invasion_waiting_for_confirmation")));
+						}
+					}
+				}
+				ivAttackerWaiting.setVisible(true);
+				ivDefenderWaiting.setVisible(true);
+				rpImage.setImage(im2);
+
+				statusUpdate();
+			});
+			sequentialTransition.play();
+		});
 	}
 
 	public void saveNextInvasionStep(Long rp, boolean attackerWon, boolean defenderWon) {

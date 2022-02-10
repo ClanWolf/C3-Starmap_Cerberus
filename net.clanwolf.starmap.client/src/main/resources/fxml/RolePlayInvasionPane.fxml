@@ -12,13 +12,22 @@
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="RolePlayStartPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/17" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.RolePlayInvasionPaneController">
     <children>
+      <ImageView fx:id="ivLocation" fitHeight="24.0" fitWidth="56.0" layoutX="116.0" layoutY="250.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/map/selectionIndicator.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="ivPlanet" fitHeight="100.0" fitWidth="100.0" layoutX="66.0" layoutY="202.0" pickOnBounds="true" preserveRatio="true" />
       <ImageView fx:id="templateBackground" fitHeight="567.0" fitWidth="944.0" layoutX="-70.0" layoutY="-22.0" mouseTransparent="true" opacity="0.74" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
             <Image url="@../images/template_bg.png" />
          </image>
       </ImageView>
       <ImageView fx:id="backgroundImage" fitHeight="490.0" fitWidth="785.0" layoutX="58.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="rpImage" fitHeight="292.0" fitWidth="187.0" layoutX="60.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="rpImage" fitHeight="292.0" fitWidth="187.0" layoutX="60.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/gui/static.gif" />
+         </image></ImageView>
       <TextArea fx:id="taRpText" layoutX="251.0" layoutY="8.0" prefHeight="318.0" prefWidth="592.0" styleClass="contentTextAreaBlock" stylesheets="@../styles/MainFrameStyle.css" wrapText="true" />
       <Button fx:id="btChoice1" alignment="CENTER_RIGHT" layoutX="58.0" layoutY="344.0" mnemonicParsing="false" onAction="#handleOnActionbtChoice1" opacity="0.8" prefHeight="37.0" prefWidth="703.0" styleClass="contentButtonRed" stylesheets="@../styles/MainFrameStyle.css" text="btChoice1" />
       <Button fx:id="btChoice2" alignment="CENTER_RIGHT" layoutX="58.0" layoutY="382.0" mnemonicParsing="false" onAction="#handleOnActionbtChoice2" opacity="0.8" prefHeight="37.0" prefWidth="703.0" styleClass="contentButtonBlue" stylesheets="@../styles/MainFrameStyle.css" text="btChoice2" />

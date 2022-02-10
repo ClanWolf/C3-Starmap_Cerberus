@@ -1,7 +1,8 @@
 C3 version history
 --------------------------------
 
-Version 6.5.1 (09.02.2022)
+Version 6.5.2 (09.02.2022)
+- ADDED: Enhanced text replacer for variables in invasion texts
 - FIXED: Horizontal scrollbar in chat pane
 - FIXED: Color coding of chat entries
 - FIXED: Userlist reworked

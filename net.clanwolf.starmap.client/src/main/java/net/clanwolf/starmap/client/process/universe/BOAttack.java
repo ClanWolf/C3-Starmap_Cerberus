@@ -112,7 +112,13 @@ public class BOAttack {
 	public String getAttackerFactionName() { return Nexus.getBoUniverse().getFactionByID((getAttackerFactionId().longValue())).getLocalizedName(); }
 
 	@SuppressWarnings("unused")
+	public String getAttackerFactionShortName() { return Nexus.getBoUniverse().getFactionByID((getAttackerFactionId().longValue())).getShortName(); }
+
+	@SuppressWarnings("unused")
 	public String getDefenderFactionName() { return Nexus.getBoUniverse().getFactionByID(attackDTO.getFactionID_Defender()).getLocalizedName(); }
+
+	@SuppressWarnings("unused")
+	public String getDefenderFactionShortName() { return Nexus.getBoUniverse().getFactionByID(attackDTO.getFactionID_Defender()).getShortName(); }
 
 	@SuppressWarnings("unused")
 	public Long getAttackedFromStarSystem() { return attackDTO.getAttackedFromStarSystemID(); }
