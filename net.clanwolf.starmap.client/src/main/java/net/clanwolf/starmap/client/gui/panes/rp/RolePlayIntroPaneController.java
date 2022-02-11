@@ -101,6 +101,29 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 		buttonPressed = false;
 	}
 
+	private void fadeInContent() {
+		Platform.runLater(() -> {
+			Boolean animationPlayed = animationPlayedMap.get(getCurrentRP().getId());
+			if (animationPlayed == null || !animationPlayed) {
+				FadeTransition fadeInTransition_01 = new FadeTransition(Duration.millis(800), backgroundImage);
+				fadeInTransition_01.setFromValue(0.0);
+				fadeInTransition_01.setToValue(1.0);
+				fadeInTransition_01.setCycleCount(1);
+
+				FadeTransition fadeInTransition_03 = new FadeTransition(Duration.millis(1500), labHeader);
+				fadeInTransition_03.setFromValue(0.0);
+				fadeInTransition_03.setToValue(1.0);
+				fadeInTransition_03.setCycleCount(1);
+
+				SequentialTransition sequentialTransition = new SequentialTransition();
+				sequentialTransition.getChildren().addAll(fadeInTransition_01, fadeInTransition_03);
+				sequentialTransition.setCycleCount(1);
+				sequentialTransition.play();
+
+				animationPlayedMap.put(getCurrentRP().getId(), true);
+			}
+		});
+	}
 	/**
 	 * Handle Actions
 	 *
@@ -130,7 +153,7 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 				} else {
 					btPreview.setDisable(false);
 				}
-			} else if (getCurrentRP().getNextStepID() == null) {
+			} else if (getCurrentRP() != null && getCurrentRP().getNextStepID() == null) {
 				btPreview.setDisable(false);
 			}
 		}
@@ -139,34 +162,13 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 			case START_ROLEPLAY -> {
 				if (ROLEPLAYENTRYTYPES.C3_RP_STORY == o.getObject() || ROLEPLAYENTRYTYPES.C3_RP_CHAPTER == o.getObject()) {
 					logger.debug("RolePlayIntroPaneController -> START_ROLEPLAY");
-
 					// set current step of story
 					getStoryValues(getCurrentRP());
-
-					Platform.runLater(() -> {
-						Boolean animationPlayed = animationPlayedMap.get(getCurrentRP().getId());
-						if (animationPlayed == null || !animationPlayed) {
-							FadeTransition fadeInTransition_01 = new FadeTransition(Duration.millis(800), backgroundImage);
-							fadeInTransition_01.setFromValue(0.0);
-							fadeInTransition_01.setToValue(1.0);
-							fadeInTransition_01.setCycleCount(1);
-
-							FadeTransition fadeInTransition_03 = new FadeTransition(Duration.millis(1500), labHeader);
-							fadeInTransition_03.setFromValue(0.0);
-							fadeInTransition_03.setToValue(1.0);
-							fadeInTransition_03.setCycleCount(1);
-
-							SequentialTransition sequentialTransition = new SequentialTransition();
-							sequentialTransition.getChildren().addAll(fadeInTransition_01, fadeInTransition_03);
-							sequentialTransition.setCycleCount(1);
-							sequentialTransition.play();
-
-							animationPlayedMap.put(getCurrentRP().getId(), true);
-						}
-					});
+					fadeInContent();
 				} else if (ROLEPLAYENTRYTYPES.C3_RP_STEP_V1 == o.getObject()) {
 					// set current step of story
 					getStoryValues(getCurrentRP());
+					fadeInContent();
 				}
 				buttonPressed = false;
 			}
