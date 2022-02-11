@@ -1,8 +1,11 @@
 C3 version history
 --------------------------------
 
+Version 6.5.7 (11.02.2022)
+- ADDED: Flag to DB to show if drops of an invasion have started
+- ADDED: Some visual things in invasion panel
+
 Version 6.5.6 (10.02.2022)
-- ADDED: Flag to show if drops of an invasion have started
 - FIXED: Chat pane behaviour if command history list is empty
 - FIXED: If log upload with ftp does not work, the content of the latest log is taken into the mail body text
 

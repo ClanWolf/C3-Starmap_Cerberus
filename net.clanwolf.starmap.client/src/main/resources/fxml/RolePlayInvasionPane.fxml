@@ -24,10 +24,12 @@
          </image>
       </ImageView>
       <ImageView fx:id="backgroundImage" fitHeight="490.0" fitWidth="785.0" layoutX="58.0" layoutY="6.0" pickOnBounds="true" preserveRatio="true" />
-      <ImageView fx:id="rpImage" fitHeight="292.0" fitWidth="187.0" layoutX="60.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="rpImage" fitHeight="292.0" fitWidth="187.0" layoutX="60.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fitHeight="30.0" fitWidth="25.0" layoutX="211.0" layoutY="211.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/gui/static.gif" />
-         </image></ImageView>
+            <Image url="@../images/map/union.png" />
+         </image>
+      </ImageView>
       <TextArea fx:id="taRpText" layoutX="251.0" layoutY="8.0" prefHeight="318.0" prefWidth="592.0" styleClass="contentTextAreaBlock" stylesheets="@../styles/MainFrameStyle.css" wrapText="true" />
       <Button fx:id="btChoice1" alignment="CENTER_RIGHT" layoutX="58.0" layoutY="344.0" mnemonicParsing="false" onAction="#handleOnActionbtChoice1" opacity="0.8" prefHeight="37.0" prefWidth="703.0" styleClass="contentButtonRed" stylesheets="@../styles/MainFrameStyle.css" text="btChoice1" />
       <Button fx:id="btChoice2" alignment="CENTER_RIGHT" layoutX="58.0" layoutY="382.0" mnemonicParsing="false" onAction="#handleOnActionbtChoice2" opacity="0.8" prefHeight="37.0" prefWidth="703.0" styleClass="contentButtonBlue" stylesheets="@../styles/MainFrameStyle.css" text="btChoice2" />
@@ -132,6 +134,11 @@
          <effect>
             <DropShadow />
          </effect>
+      </ImageView>
+      <ImageView fx:id="ivStatic" fitHeight="292.0" fitWidth="187.0" layoutX="60.0" layoutY="10.0" opacity="0.4" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/gui/static.gif" />
+         </image>
       </ImageView>
     </children>
     <stylesheets>

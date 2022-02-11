@@ -27,6 +27,7 @@
 package net.clanwolf.starmap.client.gui.panes.rp;
 
 import javafx.animation.FadeTransition;
+import javafx.animation.PathTransition;
 import javafx.animation.SequentialTransition;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
@@ -40,7 +41,7 @@ import javafx.scene.input.Clipboard;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
+import javafx.scene.shape.*;
 import javafx.util.Duration;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
@@ -124,7 +125,8 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 	@FXML
 	private ImageView ivAttackerWaiting;
 
-	Image imageRadar = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/gui/static.gif")));
+	private final Image imageUnselected = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/check.png")));
+	private final Image imageSelected = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/checked.png")));
 
 	@FXML
 	private Circle circleScore01, circleScore02, circleScore03, circleScore04, circleScore05;
@@ -134,9 +136,10 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 
 	private Integer attackerDropVictories = 0;
 	private Integer defenderDropVictories = 0;
+	Image imageStatic = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/gui/static.gif")));
+	@FXML
+	private ImageView ivStatic;
 
-	Image imageUnselected = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/check.png")));
-	Image imageSelected = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/checked.png")));
 	private Image im2;
 
 	public RolePlayInvasionPaneController() {
@@ -285,7 +288,12 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 
 			//set story image
 			im2 = BORolePlayStory.getRPG_Image(rpStory);
+			rpImage.setImage(im2);
 			rpImage.toFront();
+			ivStatic.setOpacity(0.65);
+			ivStatic.toFront();
+
+			paneCurrentScore.setVisible(false);
 		}
 
 		// play sound
@@ -431,7 +439,9 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 		switch (action) {
 
 		case PANE_CREATION_BEGINS:
-			rpImage.setImage(imageRadar);
+			ivStatic.setOpacity(0.65);
+			ivStatic.setImage(imageStatic);
+			paneCurrentScore.setVisible(false);
 			break;
 
 		case FINALIZE_ROUND:
@@ -511,7 +521,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 				scoreCircles.add(circleScore05);
 			}
 
-			rpImage.setImage(imageRadar);
+			paneCurrentScore.setVisible(true);
 
 			SequentialTransition sequentialTransition = new SequentialTransition();
 
@@ -538,6 +548,12 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 				sequentialTransition.getChildren().add(fadeInTransition);
 				count++;
 			}
+			FadeTransition fadeInTransitionStatic = new FadeTransition(Duration.millis(2500), ivStatic);
+			fadeInTransitionStatic.setFromValue(0.75);
+			fadeInTransitionStatic.setToValue(0.0);
+			fadeInTransitionStatic.setCycleCount(1);
+			sequentialTransition.getChildren().add(fadeInTransitionStatic);
+
 			sequentialTransition.setCycleCount(1);
 			sequentialTransition.setOnFinished((ActionEvent event) -> {
 				for (AttackCharacterDTO ac : Nexus.getCurrentAttackOfUser().getAttackCharList()) {
@@ -563,7 +579,36 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 
 				statusUpdate();
 			});
+
+			// move location marker for some time and flash it 10 times at the end (on the planet image)
+			SequentialTransition sequentialTransition2 = new SequentialTransition();
+			Path path = new Path();
+			MoveTo moveTo = new MoveTo(10.0f,10.0f);
+			LineTo lineTo1 = new LineTo(20.0f,0.0f);
+			LineTo lineTo2 = new LineTo(5.0f,25.0f);
+			LineTo lineTo3 = new LineTo(-15.0f,-5.0f);
+			path.getElements().add(moveTo);
+			path.getElements().add(lineTo1);
+			path.getElements().add(lineTo2);
+			path.getElements().add(lineTo3);
+			PathTransition pathTransition = new PathTransition();
+			pathTransition.setDuration(Duration.millis(1000));
+			pathTransition.setPath(path);
+			pathTransition.setNode(ivLocation);
+			pathTransition.setOrientation(PathTransition.OrientationType.NONE);
+			pathTransition.setCycleCount(2);
+			pathTransition.setAutoReverse(true);
+			sequentialTransition2.getChildren().add(pathTransition);
+
+			FadeTransition fadeInTransitionLocation = new FadeTransition(Duration.millis(120), ivLocation);
+			fadeInTransitionLocation.setFromValue(1.0);
+			fadeInTransitionLocation.setToValue(0.0);
+			fadeInTransitionLocation.setCycleCount(12);
+			fadeInTransitionLocation.setOnFinished(event -> ivLocation.setOpacity(1.0));
+			sequentialTransition2.getChildren().add(fadeInTransitionLocation);
+
 			sequentialTransition.play();
+			sequentialTransition2.play();
 		});
 	}
 
