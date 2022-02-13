@@ -66,10 +66,7 @@ import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
 import java.lang.invoke.MethodHandles;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.ResourceBundle;
-import java.util.Timer;
+import java.util.*;
 
 /**
  * @author Undertaker
@@ -584,13 +581,18 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 			SequentialTransition sequentialTransition2 = new SequentialTransition();
 			Path path = new Path();
 			MoveTo moveTo = new MoveTo(10.0f,10.0f);
-			LineTo lineTo1 = new LineTo(20.0f,0.0f);
-			LineTo lineTo2 = new LineTo(5.0f,25.0f);
-			LineTo lineTo3 = new LineTo(-15.0f,-5.0f);
 			path.getElements().add(moveTo);
-			path.getElements().add(lineTo1);
-			path.getElements().add(lineTo2);
-			path.getElements().add(lineTo3);
+
+			for (int i = 1; i < 4; i++) {
+				int min = 0;
+				int max = 50;
+				Random random = new Random();
+				int value1 = (random.nextInt(max + min) + min) - 25;
+				int value2 = (random.nextInt(max + min) + min) - 25;
+				LineTo lineTo = new LineTo(value1,value2);
+				path.getElements().add(lineTo);
+			}
+
 			PathTransition pathTransition = new PathTransition();
 			pathTransition.setDuration(Duration.millis(1000));
 			pathTransition.setPath(path);
