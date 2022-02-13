@@ -56,6 +56,10 @@ import java.util.HashMap;
 public class EventCommunications {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
+	private static Boolean mwoStatsSaved = null;
+	private static Boolean attackStatsSaved = null;
+	private static Boolean charStatsSaved = null;
+
 	public static void onDataIn(Session session, Event event) {
 		logger.info("EventCommunications.onDataIn: " + event.getType());
 
@@ -230,31 +234,61 @@ public class EventCommunications {
 
 				case STATS_MWO_SAVE_RESPONSE:
 					if (state.isAction_successfully()) {
+						mwoStatsSaved = true;
 						logger.info("MWO stats saved!");
-						C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_MwoApiRequestSuccessfull"));
 					} else {
+						mwoStatsSaved = false;
 						logger.info("MWO stats NOT saved!");
-						C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_MwoApiRequestFailed"));
+					}
+					if (mwoStatsSaved != null && attackStatsSaved != null && charStatsSaved != null) {
+						if (mwoStatsSaved && attackStatsSaved && charStatsSaved) {
+							C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_AttackStatsStoreSuccessfull"));
+						} else {
+							C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_AttackStatsStoreFailed"));
+						}
+						mwoStatsSaved = null;
+						attackStatsSaved = null;
+						charStatsSaved = null;
 					}
 					break;
 
 				case ATTACK_STATS_SAVE_RESPONSE:
 					if (state.isAction_successfully()) {
+						attackStatsSaved = true;
 						logger.info("Attack stats saved!");
-						C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_AttackStatsStoreSuccessfull"));
 					} else {
+						attackStatsSaved = false;
 						logger.info("Attack stats NOT saved!");
-						C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_AttackStatsStoreFailed"));
+					}
+					if (mwoStatsSaved != null && attackStatsSaved != null && charStatsSaved != null) {
+						if (mwoStatsSaved && attackStatsSaved && charStatsSaved) {
+							C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_AttackStatsStoreSuccessfull"));
+						} else {
+							C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_AttackStatsStoreFailed"));
+						}
+						mwoStatsSaved = null;
+						attackStatsSaved = null;
+						charStatsSaved = null;
 					}
 					break;
 
 				case CHARACTER_STATS_SAVE_RESPONSE:
 					if (state.isAction_successfully()) {
+						charStatsSaved = true;
 						logger.info("Character stats saved!");
-						C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_CharacterStatsStoreSuccessfull"));
 					} else {
+						charStatsSaved = false;
 						logger.info("Character stats NOT saved!");
-						C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_CharacterStatsStoreFailed"));
+					}
+					if (mwoStatsSaved != null && attackStatsSaved != null && charStatsSaved != null) {
+						if (mwoStatsSaved && attackStatsSaved && charStatsSaved) {
+							C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_AttackStatsStoreSuccessfull"));
+						} else {
+							C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_AttackStatsStoreFailed"));
+						}
+						mwoStatsSaved = null;
+						attackStatsSaved = null;
+						charStatsSaved = null;
 					}
 					break;
 

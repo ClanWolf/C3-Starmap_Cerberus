@@ -157,4 +157,20 @@ public class AttackDAO extends GenericDAO {
 
 		return lRPS;
 	}
+
+	public ArrayList<AttackPOJO> getAllAttacksOfASeasonForNextRound(Long season, Long round){
+		CriteriaHelper crit = new CriteriaHelper(AttackPOJO.class);
+
+		crit.addCriteria("season", season);
+		crit.addCriteria("round", round + 1);
+
+		List<Object> lRes = crit.getResultList();
+
+		Iterator<Object> iter = lRes.iterator();
+		ArrayList<AttackPOJO> lRPS = new ArrayList<>();
+
+		while (iter.hasNext()) lRPS.add((AttackPOJO) iter.next());
+
+		return lRPS;
+	}
 }

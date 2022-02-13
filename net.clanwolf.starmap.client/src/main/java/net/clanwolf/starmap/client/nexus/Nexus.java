@@ -382,7 +382,7 @@ public class Nexus {
 
 	@SuppressWarnings("unused")
 	public static BOAttack getCurrentAttackOfUser() {
-		if (currentAttackOfUser == null) {
+		if (currentAttackOfUser == null || currentAttackOfUser.getAttackDTO().getFactionID_Winner() != null) {
 			userHasAttack(); // to set currentAttack to user
 		}
 		return currentAttackOfUser;

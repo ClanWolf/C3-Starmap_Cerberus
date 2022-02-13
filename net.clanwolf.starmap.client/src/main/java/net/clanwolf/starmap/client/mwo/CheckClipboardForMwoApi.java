@@ -105,7 +105,8 @@ public class CheckClipboardForMwoApi extends TimerTask {
 				if (currentContent != null) {
 					if (!"".equals(currentContent)) {
 						//logger.info("From clipboard: " + currentContent + " (Length: " + currentContent.length() + ")");
-						if (currentContent.matches("[0-9]+") && currentContent.length() == 15) {
+						if (currentContent.matches("[0-9]+") // && currentContent.length() == 15
+						) {
 							MWOMatchResult results = getMWOGameStats(currentContent);
 							if (results != null) {
 								results.setGameID(currentContent);

@@ -409,7 +409,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 						l.toBack();
 					}
 
-					FadeTransition fadeOut = new FadeTransition(Duration.millis(6000), js.routeLines);
+					FadeTransition fadeOut = new FadeTransition(Duration.millis(8000), js.routeLines);
 					fadeOut.setFromValue(1.0);
 					fadeOut.setToValue(0.0);
 					fadeOut.setOnFinished(event -> js.routeLines.getChildren().clear());
@@ -968,7 +968,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				attacksPane = new Pane();
 				canvas.setAttacksPane(attacksPane);
 
-				for (BOAttack attack : boUniverse.attackBOsOpenInThisRound.values()) {
+				for (BOAttack attack : boUniverse.attackBOsAllInThisRound.values()) {
 					if (attack.getSeason().equals(boUniverse.currentSeason) &&
 							(attack.getRound().equals(boUniverse.currentRound + 1)) || (attack.getRound().equals(boUniverse.currentRound))
 					) {

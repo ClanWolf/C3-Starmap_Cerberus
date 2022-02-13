@@ -28,10 +28,7 @@ package net.clanwolf.starmap.server.persistence.daos.jpadaoimpl;
 
 import net.clanwolf.starmap.server.persistence.CriteriaHelper;
 import net.clanwolf.starmap.server.persistence.daos.GenericDAO;
-import net.clanwolf.starmap.server.persistence.pojos.RoutePointPOJO;
-import net.clanwolf.starmap.server.persistence.pojos.SeasonPOJO;
-import net.clanwolf.starmap.server.persistence.pojos.StarSystemPOJO;
-import net.clanwolf.starmap.server.persistence.pojos.StatsMwoPOJO;
+import net.clanwolf.starmap.server.persistence.pojos.*;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -72,5 +69,12 @@ public class StatsMwoDAO extends GenericDAO {
 	@Override
 	public StatsMwoPOJO update(Long statsMwoId, Object entity) {
 		return (StatsMwoPOJO) super.update(statsMwoId, entity);
+	}
+
+	public StatsMwoPOJO findByMatchId(String matchId) {
+		CriteriaHelper crit = new CriteriaHelper(AttackStatsPOJO.class);
+
+		crit.addCriteria("gameId", matchId);
+		return (StatsMwoPOJO) crit.getSingleResult();
 	}
 }

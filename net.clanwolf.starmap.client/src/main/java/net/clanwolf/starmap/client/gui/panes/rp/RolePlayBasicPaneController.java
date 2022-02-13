@@ -156,6 +156,7 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 
 		logger.debug("Pane: " + this + " Flag isCharacterPane: " + isCharacterPane);
 
+
 		if( myType != null) {
 			switch (myType) {
 				case C3_RP_STORY:

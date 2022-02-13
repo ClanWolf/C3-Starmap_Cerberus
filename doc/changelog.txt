@@ -1,7 +1,9 @@
 C3 version history
 --------------------------------
+Version 6.5.9 (13.02.2022)
+- FIXED: No display of next round attacks
 
-Version 6.5.7 (11.02.2022)
+Version 6.5.8 (11.02.2022)
 - ADDED: Flag to DB to show if drops of an invasion have started
 - ADDED: Some visual things in invasion panel
 

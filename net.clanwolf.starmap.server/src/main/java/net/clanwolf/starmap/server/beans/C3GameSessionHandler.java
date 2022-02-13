@@ -194,6 +194,12 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			ArrayList<RolePlayCharacterStatsPOJO> list = (ArrayList<RolePlayCharacterStatsPOJO>)state.getObject();
 			for (RolePlayCharacterStatsPOJO charStats : list) {
 				logger.debug("Saving character stats for game id: " + charStats.getMwoMatchId() + ", rpCharId: " + charStats.getRoleplayCharacterId());
+
+				RolePlayCharacterStatsPOJO p = dao.findbyCharIdAndMatchId(charStats.getRoleplayCharacterId(), charStats.getMwoMatchId());
+				if (p != null) {
+					break;
+				}
+
 				if(charStats.getId() != null) {
 					logger.debug("rolePlayCharacterStats.getId() != null");
 					dao.update(getC3UserID(session), charStats);
@@ -224,11 +230,17 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		AttackStatsDAO dao = AttackStatsDAO.getInstance();
 
 		try {
-			EntityManagerHelper.beginTransaction(getC3UserID(session));
-
 			AttackStatsPOJO attackStats = (AttackStatsPOJO) state.getObject();
 			logger.debug("Saving attack stats for game id: " + attackStats.getMwoMatchId());
 
+			AttackStatsPOJO checkStats = dao.findByMatchId(attackStats.getMwoMatchId());
+			if (checkStats != null) {
+				// already saved, do nothing
+				logger.debug("Stats with the given MWO Match-ID have been detected, DO NOTHING!");
+				return;
+			}
+
+			EntityManagerHelper.beginTransaction(getC3UserID(session));
 			if(attackStats.getId() != null) {
 				logger.debug("attackStats.getId() != null");
 				dao.update(getC3UserID(session), attackStats);
@@ -257,11 +269,17 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		StatsMwoDAO dao = StatsMwoDAO.getInstance();
 
 		try {
-			EntityManagerHelper.beginTransaction(getC3UserID(session));
-
 			StatsMwoPOJO statsMwo = (StatsMwoPOJO) state.getObject();
 			logger.debug("Saving MWO stats for game id: " + statsMwo.getGameId());
 
+			StatsMwoPOJO checkStats = dao.findByMatchId(statsMwo.getGameId());
+			if (checkStats != null) {
+				// already saved, do nothing
+				logger.debug("Stats with the given MWO Match-ID have been detected, DO NOTHING!");
+				return;
+			}
+
+			EntityManagerHelper.beginTransaction(getC3UserID(session));
 			if (statsMwo.getId() != null) {
 				logger.debug("attack.getId() != null");
 				dao.update(getC3UserID(session), statsMwo);

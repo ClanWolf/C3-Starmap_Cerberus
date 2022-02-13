@@ -221,8 +221,32 @@ public class WebDataInterface {
 		RoundPOJO roundPOJO = RoundDAO.getInstance().findBySeasonId(seasonId);
 
 		AttackDAO dao = AttackDAO.getInstance();
-		//ArrayList<AttackPOJO> pojoList = dao.getOpenAttacksOfASeason(seasonId);
+
+
+
+
+
+
+
+
+
+
+
+
+//		ArrayList<AttackPOJO> pojoList = dao.getOpenAttacksOfASeason(seasonId);
 		ArrayList<AttackPOJO> pojoList = dao.getAllAttacksOfASeasonForRound(seasonId, roundPOJO.getRound());
+		ArrayList<AttackPOJO> pojoList2 = dao.getAllAttacksOfASeasonForNextRound(seasonId, roundPOJO.getRound());
+		pojoList.addAll(pojoList2);
+
+
+
+
+
+
+
+
+
+
 		Iterator<AttackPOJO> iter = pojoList.iterator();
 		StringBuilder jsonString = new StringBuilder();
 

@@ -97,7 +97,7 @@ public class C3SoundPlayer {
 		if (mediaPlayer == null) {
 			String fn = "/music/DireWolf.mp3";
 
-			URL u = ((C3SoundPlayer)getInstance()).getClass().getResource(fn);
+			URL u = getInstance().getClass().getResource(fn);
 
 			playBackgroundMusic(u);
 		} else {
@@ -256,7 +256,7 @@ public class C3SoundPlayer {
 	 * @param url      File to play
 	 * @param isSpeech Flag to indicate speech
 	 */
-	public static void play(final URL url, final boolean isSpeech) {
+	public synchronized static void play(final URL url, final boolean isSpeech) {
 		if (url != null) {
 			// Prevent more than one speech sample at a time
 			if ((isSpeech) && (speechPlayer != null)) {
