@@ -102,20 +102,20 @@ public class ResultAnalyzer {
 		logger.info("Team 2 score : " + md.getTeam2Score());
 		logger.info("Winner       : Team " + winner);
 		logger.info("------------------------------------------------------------------------------------------------------------");
-		logger.info("Team                  MWO Username      Unit           Mech (ton.)      K/A    Damage          C3 User");
+		logger.info("Team                  MWO Username      Unit           Mech (ton.)      K/A    Damage    Repaircost          C3 User");
 
 		HashMap<UserDetail, RolePlayCharacterDTO> userMatchList = new HashMap<>();
 		ArrayList<RolePlayCharacterStatsDTO> characterStatsList = new ArrayList<>();
 
 		for (UserDetail ud : result.getUserDetails()) {
-			MechIdInfo mechInfo = new MechIdInfo();
+			MechIdInfo mechInfo = new MechIdInfo(ud.getMechItemID());
 
 			String team = ud.getTeam() == null ? "/" : ud.getTeam();
 			String userName = ud.getUsername();
 			String mech = ud.getMechName();
 			boolean leadingPosition = false;
-			String mechFullName = mechInfo.getFullname(ud.getMechItemID());
-			int tonnage = mechInfo.getTonnage(ud.getMechItemID());
+			String mechFullName = mechInfo.getFullname();
+			int tonnage = mechInfo.getTonnage();
 			String unit = ud.getUnitTag();
 			Integer kills = ud.getKills();
 			Integer killsMostDamage = ud.getKillsMostDamage();
@@ -187,6 +187,7 @@ public class ResultAnalyzer {
 					+ "(" + String.format("%2s %n", tonnage) + "t) "
 					+ killsFormatted + " "
 					+ damageFormatted + " "
+					+ mechInfo.getRepairCost(healthPercentage) + "C-Bills"
 					+ foundUser).replaceAll("\r\n", ""));
 
 			RolePlayCharacterDTO rpchar = userMatchList.get(ud);
