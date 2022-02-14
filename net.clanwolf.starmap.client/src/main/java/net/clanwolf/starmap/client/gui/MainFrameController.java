@@ -2107,24 +2107,30 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		// find
 		// ---------------------------------
 		if (com.toLowerCase().startsWith("find")) {
-			StatusTextEntryActionObject ste = new StatusTextEntryActionObject(Internationalization.getString("general_only_works_on_map"), true);
-			ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(ste);
+			if (!currentlyDisplayedPane.getPaneName().equals("MapPane")) {
+				StatusTextEntryActionObject ste = new StatusTextEntryActionObject(Internationalization.getString("general_only_works_on_map"), true);
+				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(ste);
+			}
 		}
 
 		// ---------------------------------
 		// force finalize round
 		// ---------------------------------
 		if (com.toLowerCase().startsWith("finalize round")) {
-			StatusTextEntryActionObject ste = new StatusTextEntryActionObject(Internationalization.getString("general_only_works_on_map"), true);
-			ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(ste);
+			if (!currentlyDisplayedPane.getPaneName().equals("MapPane")) {
+				StatusTextEntryActionObject ste = new StatusTextEntryActionObject(Internationalization.getString("general_only_works_on_map"), true);
+				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(ste);
+			}
 		}
 
 		// ---------------------------------
 		// re-create universe
 		// ---------------------------------
 		if (com.toLowerCase().startsWith("create universe")) {
-			StatusTextEntryActionObject ste = new StatusTextEntryActionObject(Internationalization.getString("general_only_works_on_map"), true);
-			ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(ste);
+			if (!currentlyDisplayedPane.getPaneName().equals("MapPane")) {
+				StatusTextEntryActionObject ste = new StatusTextEntryActionObject(Internationalization.getString("general_only_works_on_map"), true);
+				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(ste);
+			}
 		}
 
 		if (com.toLowerCase().startsWith("test popup")) {

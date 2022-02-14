@@ -618,10 +618,12 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 					String installerName = "";
 					if (dir.exists() && dir.isDirectory()) {
 						File[] files = Objects.requireNonNull(dir.listFiles());
-						Arrays.sort(files);
+						Arrays.sort(files, (File a, File b) -> -Long.compare(a.lastModified(), b.lastModified()));
+
 						for (File f : files) {
 							if (f.getName().startsWith("C3-Client-") && f.getName().endsWith("_install.exe")) {
 								installerName = f.getName();
+								break;
 							}
 						}
 						if (!"".equals(installerName)) {

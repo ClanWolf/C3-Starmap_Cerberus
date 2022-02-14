@@ -1605,6 +1605,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		ActionManager.addActionCallbackListener(ACTIONS.TERMINAL_COMMAND, this);
 		ActionManager.addActionCallbackListener(ACTIONS.SYSTEM_WAS_SELECTED, this);
 		ActionManager.addActionCallbackListener(ACTIONS.REPAINT_MAP, this);
+		ActionManager.addActionCallbackListener(ACTIONS.FINALIZE_ROUND, this);
 	}
 
 	/**
@@ -1616,112 +1617,6 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		super.initialize(url, rb);
-	}
-
-	public void handleCommand(String com) {
-		if (!com.startsWith("*!!!*")) {
-			if (!"".equals(com)) {
-				logger.info("Received command: '" + com + "'");
-				String lastEntry = null;
-				if (Nexus.commandHistory.size() > 0) {
-					lastEntry = Nexus.commandHistory.getLast();
-				}
-				if (lastEntry == null) {
-					Nexus.commandHistory.add(com);
-				} else if (!Nexus.commandHistory.getLast().equals(com)) {
-					Nexus.commandHistory.add(com);
-				}
-				if (Nexus.commandHistory.size() > 50) {
-					Nexus.commandHistory.remove(0);
-				}
-				Nexus.commandHistoryIndex = Nexus.commandHistory.size();
-			}
-		}
-
-		if ("*!!!*historyBack".equals(com)) {
-			if (Nexus.commandHistoryIndex > 0) {
-				Nexus.commandHistoryIndex--;
-				logger.info("History back to index: " + Nexus.commandHistoryIndex);
-				String histCom = Nexus.commandHistory.get(Nexus.commandHistoryIndex);
-				ActionManager.getAction(ACTIONS.SET_TERMINAL_TEXT).execute(histCom);
-			}
-		}
-
-		if ("*!!!*historyForward".equals(com)) {
-			if (Nexus.commandHistoryIndex < Nexus.commandHistory.size() - 1) {
-				Nexus.commandHistoryIndex++;
-				logger.info("History forward to index: " + Nexus.commandHistoryIndex);
-				String histCom = Nexus.commandHistory.get(Nexus.commandHistoryIndex);
-				ActionManager.getAction(ACTIONS.SET_TERMINAL_TEXT).execute(histCom);
-			}
-		}
-
-		// ---------------------------------
-		// find
-		// ---------------------------------
-		if (com.toLowerCase().startsWith("find ")) {
-			String value = com.substring(5);
-			if (!"".equals(value)) {
-				logger.info("Searching for '" + value + "'");
-			}
-			logger.info("Searching starsystems...");
-			for (BOStarSystem ss : boUniverse.starSystemBOs.values()) {
-				if (ss.getName().equalsIgnoreCase(value)) {
-					logger.info("Found starsystem '" + value + "'");
-					moveMapToPosition(ss);
-				}
-			}
-			logger.info("Searching jumpships...");
-			for (BOJumpship js : boUniverse.jumpshipBOs.values()) {
-				if (js.getJumpshipName().equalsIgnoreCase(value)) {
-					logger.info("Found jumpship '" + value + "'");
-					moveMapToJumpship(js);
-				}
-			}
-			Nexus.storeCommandHistory();
-		}
-
-		// ---------------------------------
-		// force finalize round
-		// ---------------------------------
-		if (com.toLowerCase().startsWith("finalize round")) {
-			if (Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN)) {
-				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_success"), false));
-				GameState s = new GameState();
-				s.setMode(GAMESTATEMODES.FORCE_FINALIZE_ROUND);
-				Nexus.fireNetworkEvent(s);
-				Nexus.storeCommandHistory();
-			} else {
-				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_notallowed"), false));
-				C3Message message = new C3Message(C3MESSAGES.ERROR_NOT_ALLOWED);
-				message.setType(C3MESSAGETYPES.CLOSE);
-				message.setText(Internationalization.getString("general_notallowed"));
-				C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
-				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
-			}
-			Nexus.storeCommandHistory();
-		}
-
-		// ---------------------------------
-		// re-create universe
-		// ---------------------------------
-		if (com.toLowerCase().startsWith("create universe")) {
-			if (Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN)) {
-				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_success"), false));
-				GameState s = new GameState();
-				s.setMode(GAMESTATEMODES.FORCE_NEW_UNIVERSE);
-				Nexus.fireNetworkEvent(s);
-				Nexus.storeCommandHistory();
-			} else {
-				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_notallowed"), false));
-				C3Message message = new C3Message(C3MESSAGES.ERROR_NOT_ALLOWED);
-				message.setType(C3MESSAGETYPES.CLOSE);
-				message.setText(Internationalization.getString("general_notallowed"));
-				C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
-				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
-			}
-			Nexus.storeCommandHistory();
-		}
 	}
 
 	/**
@@ -1746,6 +1641,18 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				logger.info("Received new universe, repainting map.");
 				refreshUniverseMap();
 				ActionManager.getAction(ACTIONS.UPDATE_GAME_INFO).execute();
+				break;
+
+			case FINALIZE_ROUND:
+				logger.info("Server did finalize round.");
+				ActionManager.getAction(ACTIONS.FINALIZE_ROUND).execute();
+
+
+
+
+
+
+
 				break;
 
 			case CHANGE_LANGUAGE:
@@ -1908,6 +1815,13 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 										sequentialTransition.setCycleCount(Animation.INDEFINITE);
 										sequentialTransition.play();
 									}
+									if (a.getAttackDTO().getFightsStarted()) {
+										// Drops for this fight have started already, joining now is not possible.
+										// Too late.
+										logger.info("Fights have started already. You can not get there in time!");
+										mapButton06.setDisable(true);
+										ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("attack_fightsHaveStartedAlready"), true));
+									}
 								}
 							}
 						}
@@ -1963,5 +1877,130 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				break;
 		}
 		return true;
+	}
+
+	public void handleCommand(String com) {
+		if (!com.startsWith("*!!!*")) {
+			if (!"".equals(com)) {
+				logger.info("Received command: '" + com + "'");
+				String lastEntry = null;
+				if (Nexus.commandHistory.size() > 0) {
+					lastEntry = Nexus.commandHistory.getLast();
+				}
+				if (lastEntry == null) {
+					Nexus.commandHistory.add(com);
+				} else if (!Nexus.commandHistory.getLast().equals(com)) {
+					Nexus.commandHistory.add(com);
+				}
+				if (Nexus.commandHistory.size() > 50) {
+					Nexus.commandHistory.remove(0);
+				}
+				Nexus.commandHistoryIndex = Nexus.commandHistory.size();
+			}
+		}
+
+		if ("*!!!*historyBack".equals(com)) {
+			if (Nexus.commandHistoryIndex > 0) {
+				Nexus.commandHistoryIndex--;
+				logger.info("History back to index: " + Nexus.commandHistoryIndex);
+				String histCom = Nexus.commandHistory.get(Nexus.commandHistoryIndex);
+				ActionManager.getAction(ACTIONS.SET_TERMINAL_TEXT).execute(histCom);
+			}
+		}
+
+		if ("*!!!*historyForward".equals(com)) {
+			if (Nexus.commandHistoryIndex < Nexus.commandHistory.size() - 1) {
+				Nexus.commandHistoryIndex++;
+				logger.info("History forward to index: " + Nexus.commandHistoryIndex);
+				String histCom = Nexus.commandHistory.get(Nexus.commandHistoryIndex);
+				ActionManager.getAction(ACTIONS.SET_TERMINAL_TEXT).execute(histCom);
+			}
+		}
+
+		// ---------------------------------
+		// find
+		// ---------------------------------
+		if (com.toLowerCase().startsWith("find ")) {
+			String value = com.substring(5);
+			if (!"".equals(value)) {
+				logger.info("Searching for '" + value + "'");
+			}
+			logger.info("Searching starsystems...");
+			for (BOStarSystem ss : boUniverse.starSystemBOs.values()) {
+				if (ss.getName().equalsIgnoreCase(value)) {
+					logger.info("Found starsystem '" + value + "'");
+					moveMapToPosition(ss);
+				}
+			}
+			logger.info("Searching jumpships...");
+			for (BOJumpship js : boUniverse.jumpshipBOs.values()) {
+				if (js.getJumpshipName().equalsIgnoreCase(value)) {
+					logger.info("Found jumpship '" + value + "'");
+					moveMapToJumpship(js);
+				}
+			}
+			Nexus.storeCommandHistory();
+		}
+
+		// ---------------------------------
+		// force finalize round
+		// ---------------------------------
+		if (com.toLowerCase().startsWith("finalize round")) {
+			if (Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN)) {
+
+				// TODO: Check if there are any routepoints that have not been saved yet!
+				boolean unsavedRoutesFound = false;
+				for (BOJumpship js : boUniverse.getJumpshipList()) {
+					if (js.getJumpshipFaction() == Nexus.getCurrentUser().getCurrentCharacter().getFactionId()) {
+						// My own jumpship. May have been moved and may have an unsaved route
+						if (Nexus.getBoUniverse().routesList.get(js.getJumpshipId()) != null &&	js.isAttackReady()) {
+							// There might be an unsaved route
+							unsavedRoutesFound = true;
+							break;
+						}
+					}
+				}
+
+				if (unsavedRoutesFound) {
+					// stop action here, save routes first!
+					ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_saveRoutesBeforeFinalizeRound"), true));
+				} else {
+					ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_success"), false));
+					GameState s = new GameState();
+					s.setMode(GAMESTATEMODES.FORCE_FINALIZE_ROUND);
+					Nexus.fireNetworkEvent(s);
+					Nexus.storeCommandHistory();
+				}
+			} else {
+				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_notallowed"), false));
+				C3Message message = new C3Message(C3MESSAGES.ERROR_NOT_ALLOWED);
+				message.setType(C3MESSAGETYPES.CLOSE);
+				message.setText(Internationalization.getString("general_notallowed"));
+				C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
+				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
+			}
+//			Nexus.storeCommandHistory();
+		}
+
+		// ---------------------------------
+		// re-create universe
+		// ---------------------------------
+		if (com.toLowerCase().startsWith("create universe")) {
+			if (Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN)) {
+				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_success"), false));
+				GameState s = new GameState();
+				s.setMode(GAMESTATEMODES.FORCE_NEW_UNIVERSE);
+				Nexus.fireNetworkEvent(s);
+				Nexus.storeCommandHistory();
+			} else {
+				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_notallowed"), false));
+				C3Message message = new C3Message(C3MESSAGES.ERROR_NOT_ALLOWED);
+				message.setType(C3MESSAGETYPES.CLOSE);
+				message.setText(Internationalization.getString("general_notallowed"));
+				C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
+				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
+			}
+//			Nexus.storeCommandHistory();
+		}
 	}
 }

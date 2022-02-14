@@ -1,5 +1,13 @@
 C3 version history
 --------------------------------
+
+Version 6.5.12 (14.02.2022)
+- FIXED: Map command doubled in history
+- FIXED: Replacement of vars in invasion texts
+- FIXED: Use the correct setup after download to install
+- CHANGED: Invasion cannot be joined after drops have started
+- CHANGED: Forcing to finalize round will check on unsaved routes before
+
 Version 6.5.10 (13.02.2022)
 - FIXED: No display of next round attacks
 - CHANGED: Randomized movement of location marker
