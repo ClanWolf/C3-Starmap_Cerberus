@@ -100,14 +100,14 @@ public class RPVarReplacer_DE {
 		text = text.replace("@@PLANET@@", RPVarReplacer_DE.getValueForKey("@@PLANET@@"));
 		text = text.replace("@@ATTACKER@@", RPVarReplacer_DE.getValueForKey("@@ATTACKER@@"));
 		text = text.replace("@@DEFENDER@@", RPVarReplacer_DE.getValueForKey("@@DEFENDER@@"));
-		text = text.replace("[@@ATTACKER|nom@@]", RPVarReplacer_DE.getValueForKey("@@ATTACKER|nom@@"));
-		text = text.replace("[@@ATTACKER|dat@@]", RPVarReplacer_DE.getValueForKey("@@ATTACKER|dat@@"));
-		text = text.replace("[@@ATTACKER|akk@@]", RPVarReplacer_DE.getValueForKey("@@ATTACKER|akk@@"));
-		text = text.replace("[@@ATTACKER|gen@@]", RPVarReplacer_DE.getValueForKey("@@ATTACKER|gen@@"));
-		text = text.replace("[@@DEFENDER|nom@@]", RPVarReplacer_DE.getValueForKey("@@DEFENDER|nom@@"));
-		text = text.replace("[@@DEFENDER|dat@@]", RPVarReplacer_DE.getValueForKey("@@DEFENDER|dat@@"));
-		text = text.replace("[@@DEFENDER|akk@@]", RPVarReplacer_DE.getValueForKey("@@DEFENDER|akk@@"));
-		text = text.replace("[@@DEFENDER|gen@@]", RPVarReplacer_DE.getValueForKey("@@DEFENDER|gen@@"));
+		text = text.replace("@@ATTACKER|nom@@", RPVarReplacer_DE.getValueForKey("@@ATTACKER|nom@@"));
+		text = text.replace("@@ATTACKER|dat@@", RPVarReplacer_DE.getValueForKey("@@ATTACKER|dat@@"));
+		text = text.replace("@@ATTACKER|akk@@", RPVarReplacer_DE.getValueForKey("@@ATTACKER|akk@@"));
+		text = text.replace("@@ATTACKER|gen@@", RPVarReplacer_DE.getValueForKey("@@ATTACKER|gen@@"));
+		text = text.replace("@@DEFENDER|nom@@", RPVarReplacer_DE.getValueForKey("@@DEFENDER|nom@@"));
+		text = text.replace("@@DEFENDER|dat@@", RPVarReplacer_DE.getValueForKey("@@DEFENDER|dat@@"));
+		text = text.replace("@@DEFENDER|akk@@", RPVarReplacer_DE.getValueForKey("@@DEFENDER|akk@@"));
+		text = text.replace("@@DEFENDER|gen@@", RPVarReplacer_DE.getValueForKey("@@DEFENDER|gen@@"));
 
 		if (text.contains("Beschreibung:")) {
 			String part1 = text.substring(0, text.indexOf("Beschreibung:") + 14);

@@ -287,7 +287,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 			im2 = BORolePlayStory.getRPG_Image(rpStory);
 			rpImage.setImage(im2);
 			rpImage.toFront();
-			ivStatic.setOpacity(0.65);
+			ivStatic.setOpacity(0.45);
 			ivStatic.toFront();
 
 			paneCurrentScore.setVisible(false);
@@ -436,7 +436,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 		switch (action) {
 
 		case PANE_CREATION_BEGINS:
-			ivStatic.setOpacity(0.65);
+			ivStatic.setOpacity(0.45);
 			ivStatic.setImage(imageStatic);
 			paneCurrentScore.setVisible(false);
 			break;
@@ -546,7 +546,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 				count++;
 			}
 			FadeTransition fadeInTransitionStatic = new FadeTransition(Duration.millis(2500), ivStatic);
-			fadeInTransitionStatic.setFromValue(0.75);
+			fadeInTransitionStatic.setFromValue(0.45);
 			fadeInTransitionStatic.setToValue(0.0);
 			fadeInTransitionStatic.setCycleCount(1);
 			sequentialTransition.getChildren().add(fadeInTransitionStatic);
