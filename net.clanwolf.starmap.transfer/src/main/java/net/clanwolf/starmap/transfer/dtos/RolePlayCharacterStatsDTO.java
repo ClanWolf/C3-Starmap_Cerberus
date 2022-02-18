@@ -60,6 +60,9 @@ public class RolePlayCharacterStatsDTO extends Dto {
 //	@Column(name = "MwoMatchId")
 	private String mwoMatchId;
 
+//	@Column(name = "MechItemId")
+	private Long mechItemId;
+
 //	@Column(name = "MwoKills")
 	private Long mwoKills;
 
@@ -174,5 +177,15 @@ public class RolePlayCharacterStatsDTO extends Dto {
 	@SuppressWarnings("unused")
 	public void setMwoSurvivalPercentage(Long mwoSurvivalPercentage) {
 		this.mwoSurvivalPercentage = mwoSurvivalPercentage;
+	}
+
+	@SuppressWarnings("unused")
+	public Long getMechItemId() {
+		return mechItemId;
+	}
+
+	@SuppressWarnings("unused")
+	public void setMechItemId(Long mechItemId) {
+		this.mechItemId = mechItemId;
 	}
 }

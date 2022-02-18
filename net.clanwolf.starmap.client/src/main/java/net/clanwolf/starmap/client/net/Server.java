@@ -77,10 +77,8 @@ public class Server {
 			value = new String(HTTP.get(url));
 //			logger.debug("Connection URL: " + url);
 //			logger.debug("Connection Result: " + value);
-		} catch (MalformedURLException e) {
+		} catch (IOException e) {
 			logger.error(null, e);
-		} catch (IOException ioe) {
-			logger.error( null,ioe);
 		}
 		logger.info("Client version check done.");
 //		logger.info("Client version available: " + value);
@@ -118,10 +116,8 @@ public class Server {
 					logger.debug("Connection Result: " + value);
 					// use "endswith" here, in case debugging in PHP is enabled!
 					r = value.equals("online");
-				} catch (MalformedURLException e) {
+				} catch (IOException e) {
 					logger.error(null, e);
-				} catch (IOException ioe) {
-					logger.error(null, ioe);
 				}
 				logger.info("Database connection check done.");
 				if (r) {
@@ -200,10 +196,8 @@ public class Server {
 			URL url = new URL(u);
 			logger.debug(url + "");
 			checkresult = new String(HTTP.get(url));
-		} catch (MalformedURLException e) {
+		} catch (IOException e) {
 			logger.error(null, e);
-		} catch (IOException ioe) {
-			logger.error( null,ioe);
 		}
 		checkresult = checkresult.replaceAll("\\n", "");
 		checkresult = checkresult.replaceAll("\\r", "");
@@ -267,10 +261,8 @@ public class Server {
 			logger.info("Checking: " + url.toString());
 			value = new String(HTTP.get(url));
 			r = "online".equals(value);
-		} catch (MalformedURLException e) {
+		} catch (IOException e) {
 			logger.error(null, e);
-		} catch (IOException ioe) {
-			logger.error( null,ioe);
 		}
 		if (r) {
 			logger.info("Onlinestatus: online");

@@ -113,6 +113,7 @@ public class ResultAnalyzer {
 			String team = ud.getTeam() == null ? "/" : ud.getTeam();
 			String userName = ud.getUsername();
 			String mech = ud.getMechName();
+			Long mechItemId = ud.getMechItemID().longValue();
 			boolean leadingPosition = false;
 			String mechFullName = mechInfo.getFullname(ud.getMechItemID());
 			int tonnage = mechInfo.getTonnage(ud.getMechItemID());
@@ -201,6 +202,7 @@ public class ResultAnalyzer {
 				charStats.setMwoDamage(damage.longValue());
 				charStats.setMwoKills(kills.longValue());
 				charStats.setMwoSurvivalPercentage(healthPercentage.longValue());
+				charStats.setMechItemId(mechItemId);
 
 				logger.info("Storing stats data for character: " + Nexus.getCurrentUser().getCurrentCharacter());
 				characterStatsList.add(charStats);
