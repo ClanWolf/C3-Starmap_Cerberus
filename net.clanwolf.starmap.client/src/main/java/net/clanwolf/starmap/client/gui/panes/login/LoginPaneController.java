@@ -46,6 +46,7 @@ import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
 import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
 import net.clanwolf.starmap.client.net.GameSessionHeartBeatTimer;
+import net.clanwolf.starmap.client.net.Server;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import org.slf4j.Logger;
@@ -171,7 +172,12 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 		String username = tfUserName.getText();
 		// String factionKey = tfFactionKey.getText();
 
-		Login.login(username, pass, tfFactionKey.getText(), password_encrypted);
+		if (Server.checkServerStatus()) {
+			Login.login(username, pass, tfFactionKey.getText(), password_encrypted);
+		} else {
+			logger.error("Server seems to be offline, show error message!");
+			ActionManager.getAction(ACTIONS.ONLINECHECK_FINISHED).execute(false);
+		}
 	}
 
 	@FXML

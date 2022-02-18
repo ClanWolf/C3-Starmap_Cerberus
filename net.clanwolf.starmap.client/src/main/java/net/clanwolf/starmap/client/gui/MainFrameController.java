@@ -1819,7 +1819,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					sourceIdRN = o.getText();
 				}
 				decrementCounter();
-				// logger.info("Requesting NORMAL cursor (" + counterWaitCursor + "). --> " + sourceIdRN);
+				logger.info("Requesting NORMAL cursor (" + counterWaitCursor + "). --> " + sourceIdRN);
 				if (counterWaitCursor == 0) {
 					Platform.runLater(() -> {
 						mouseStopper.toFront();
@@ -1850,7 +1850,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				final String str = sourceIdRW;
 				Nexus.setMainFrameEnabled(false);
 				incrementCounter();
-				// logger.info("Requesting WAIT cursor (" + counterWaitCursor + "). --> " + sourceIdRW);
+				logger.info("Requesting WAIT cursor (" + counterWaitCursor + "). --> " + sourceIdRW);
 				Platform.runLater(() -> {
 					mouseStopper.toFront();
 					paneVolumeControl.toFront();
@@ -1925,6 +1925,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					C3Message message = (C3Message) o.getObject();
 					closeMessage(message);
 				}
+				ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("1114");
 				break;
 
 			case UPDATE_GAME_INFO:

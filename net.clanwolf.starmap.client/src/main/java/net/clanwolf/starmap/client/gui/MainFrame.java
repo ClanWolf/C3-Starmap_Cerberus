@@ -155,19 +155,33 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 
 	public boolean newerVersionAvailable(String v1) {
 		// return true if the given version is higher than the currently used one
-		boolean givenVersionIsHigher = false;
+		boolean givenLocalVersionIsHigherOrEqual = false;
 		String v2 = Tools.getVersionNumber();
+
+//		v1 = "6.6.0";
+//		v2 = "6.6.0";
+
+		if (v1.equals(v2)) {
+			givenLocalVersionIsHigherOrEqual = true;
+			return givenLocalVersionIsHigherOrEqual;
+		}
+
 		String[] v1Parts = v1.split(Pattern.quote("."));
 		String[] v2Parts = v2.split(Pattern.quote("."));
 		for (int i=0; i < 3; i++) {
 			int v1i = Integer.parseInt(v1Parts[i]);
 			int v2i = Integer.parseInt(v2Parts[i]);
-			if (v1i > v2i) {
-				givenVersionIsHigher = true;
+			if (v2i > v1i) {
+				givenLocalVersionIsHigherOrEqual = true;
 				break;
 			}
 		}
-		return givenVersionIsHigher;
+		if (givenLocalVersionIsHigherOrEqual) {
+			logger.info("Currently used " + v2 + " is higher than " + v1 + " available on serverside");
+		} else {
+			logger.info("Server version " + v1 + " is higher than the currently used " + v2);
+		}
+		return givenLocalVersionIsHigherOrEqual;
 	}
 
 	/**
@@ -297,7 +311,7 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 					logger.info("Currently used client version: " + Tools.getVersionNumber());
 
 					// if (availableClientVersion.equals(Tools.getVersionNumber())) {
-					if (!newerVersionAvailable(availableClientVersion)) {
+					if (newerVersionAvailable(availableClientVersion)) {
 						logger.info("Currently used client version is the latest.");
 					} else {
 						logger.info("Difference detected: Prompt to download new version.");

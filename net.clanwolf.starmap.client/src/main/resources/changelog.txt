@@ -1,6 +1,12 @@
 C3 version history
 --------------------------------
 
+Version 6.6.1 (18.02.2022)
+- UPDATED: All dependencies
+- FIXED: Cursor deadlock when server is offline
+- FIXED: Loginbutton checks first to make sure server is online
+- CHANGED: New server ip (hosting)
+
 Version 6.5.12 (14.02.2022)
 - FIXED: Map command doubled in history
 - FIXED: Replacement of vars in invasion texts

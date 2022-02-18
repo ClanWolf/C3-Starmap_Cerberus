@@ -263,7 +263,8 @@ public class Server {
 		String value;
 		boolean r = false;
 		try {
-			URL url = new URL(serverURL + "/server/php/C3-OnlineStatus_Server.php");
+			URL url = new URL(serverURL + "server/php/C3-OnlineStatus_Server.php");
+			logger.info("Checking: " + url.toString());
 			value = new String(HTTP.get(url));
 			r = "online".equals(value);
 		} catch (MalformedURLException e) {

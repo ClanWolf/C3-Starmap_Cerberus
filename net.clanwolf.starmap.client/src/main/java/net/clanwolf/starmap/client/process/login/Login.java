@@ -131,7 +131,7 @@ public class Login {
 		if(Nexus.isDevelopmentPC()){
 			builder = new LoginHelper.LoginBuilder().username(used_username).password(used_password).connectionKey("C3GameRoomForNettyClient").nadronTcpHostName("localhost").tcpPort(18090);
 		} else {
-			// 217.160.60.129
+			// neu: 82.165.244.122 (alt: 217.160.60.129)
 			builder = new LoginHelper.LoginBuilder().username(used_username).password(used_password).connectionKey("C3GameRoomForNettyClient").nadronTcpHostName(tcphostname).tcpPort(tcpPort);
 		}
 		LoginHelper loginHelper = builder.build();
