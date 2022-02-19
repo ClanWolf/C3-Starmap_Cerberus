@@ -12,6 +12,25 @@ import java.util.ArrayList;
 
 public class CalcBalance {
 
+    private double AttackerCost;
+    private double DefenderCost;
+
+    public double getDefenderCost() {
+        return DefenderCost;
+    }
+
+    public void setDefenderCost(double defenderCost) {
+        DefenderCost = defenderCost;
+    }
+
+    public double getAttackerCost() {
+        return AttackerCost;
+    }
+
+    public void setAttackerCost(double attackerCost) {
+        AttackerCost = attackerCost;
+    }
+
     public static void calc(AttackStatsPOJO rpcs){
         String mwomatchid = rpcs.getMwoMatchId();
         RolePlayCharacterStatsDAO DAO = RolePlayCharacterStatsDAO.getInstance();
@@ -24,8 +43,12 @@ public class CalcBalance {
 
             RolePlayCharacterPOJO character = CharacterDAO.findById(Nexus.DUMMY_USERID, pojo.getRoleplayCharacterId());
 
+            MechIdInfo MI = new MechIdInfo(pojo.getMwoMatchId());
+
             //Attacker
             if(rpcs.getAttackerFactionId()== character.getFactionId().longValue()){
+
+
 
                 //pojo.getMechItemId()
                 //pojo.getMwoSurvivalPercentage()
