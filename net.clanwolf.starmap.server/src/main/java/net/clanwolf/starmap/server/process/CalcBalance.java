@@ -12,60 +12,55 @@ import java.util.ArrayList;
 
 public class CalcBalance {
 
-    private double AttackerCost;
-    private double DefenderCost;
+    private double AttackerRepairCost;
+    private double DefenderRepairCost;
+    private ArrayList<RolePlayCharacterStatsPOJO> DefenderPlayerRepairCost;
+    private ArrayList<RolePlayCharacterStatsPOJO> attackerPlayerRepaiCost;
+
 
     public double getDefenderCost() {
-        return DefenderCost;
+        return DefenderRepairCost;
     }
 
     public void setDefenderCost(double defenderCost) {
-        DefenderCost = defenderCost;
+        DefenderRepairCost = defenderCost;
     }
 
     public double getAttackerCost() {
-        return AttackerCost;
+        return AttackerRepairCost;
     }
 
     public void setAttackerCost(double attackerCost) {
-        AttackerCost = attackerCost;
+        AttackerRepairCost = attackerCost;
     }
 
-    public static void calc(AttackStatsPOJO rpcs){
+    public   CalcBalance(AttackStatsPOJO rpcs){
+
         String mwomatchid = rpcs.getMwoMatchId();
         RolePlayCharacterStatsDAO DAO = RolePlayCharacterStatsDAO.getInstance();
-        RolePlayCharacterDAO CharacterDAO =RolePlayCharacterDAO.getInstance();
+        RolePlayCharacterDAO CharacterDAO = RolePlayCharacterDAO.getInstance();
         ArrayList<RolePlayCharacterStatsPOJO> list = DAO.findByMatchId(mwomatchid);
-
 
         for(RolePlayCharacterStatsPOJO pojo:list){
 
-
             RolePlayCharacterPOJO character = CharacterDAO.findById(Nexus.DUMMY_USERID, pojo.getRoleplayCharacterId());
-
-            MechIdInfo MI = new MechIdInfo(pojo.getMwoMatchId());
+            MechIdInfo MI = new MechIdInfo(Math.toIntExact(pojo.getMechItemId()));
 
             //Attacker
-            if(rpcs.getAttackerFactionId()== character.getFactionId().longValue()){
+            if(rpcs.getAttackerFactionId() == character.getFactionId().longValue()){
 
 
-
-                //pojo.getMechItemId()
-                //pojo.getMwoSurvivalPercentage()
+                AttackerRepairCost = AttackerRepairCost + MI.getRepairCost(Math.toIntExact(pojo.getMwoSurvivalPercentage()));
 
             }
 
-            //Defnder
-            if(rpcs.getDefenderFactionId()== character.getFactionId().longValue()){
+            //Defender
+            if(rpcs.getDefenderFactionId() == character.getFactionId().longValue()){
 
-                //pojo.getMechItemId()
-                //pojo.getMwoSurvivalPercentage()
+                DefenderRepairCost = DefenderRepairCost + MI.getRepairCost(Math.toIntExact(pojo.getMwoSurvivalPercentage()));
 
             }
         }
-
-        // rpcs.getMechItemId()
-        //rpcs.getMwoSurvivalPercentage()
 
     }
 
