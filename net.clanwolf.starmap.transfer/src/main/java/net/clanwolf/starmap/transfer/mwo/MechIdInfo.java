@@ -24,7 +24,7 @@
  * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.client.mwo;
+package net.clanwolf.starmap.transfer.mwo;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -30,6 +30,7 @@ import net.clanwolf.starmap.server.persistence.CriteriaHelper;
 import net.clanwolf.starmap.server.persistence.daos.GenericDAO;
 import net.clanwolf.starmap.server.persistence.pojos.AttackStatsPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.RolePlayCharacterStatsPOJO;
+import net.clanwolf.starmap.server.persistence.pojos.UserSessionPOJO;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -79,4 +80,19 @@ public class RolePlayCharacterStatsDAO extends GenericDAO {
 		crit.addCriteria("mwoMatchId", matchId);
 		return (RolePlayCharacterStatsPOJO) crit.getSingleResult();
 	}
+
+	public ArrayList<RolePlayCharacterStatsPOJO> findByMatchId(String matchId) {
+
+			CriteriaHelper crit = new CriteriaHelper(RolePlayCharacterStatsPOJO.class);
+			crit.addCriteria("mwoMatchId",matchId);
+			List<Object> lRes = crit.getResultList();
+
+			ArrayList<RolePlayCharacterStatsPOJO> lUserSessions = new ArrayList<>();
+			for (Object lRe : lRes) {
+				RolePlayCharacterStatsPOJO us = (RolePlayCharacterStatsPOJO) lRe;
+				lUserSessions.add(us);
+			}
+
+			return lUserSessions;
+		}
 }

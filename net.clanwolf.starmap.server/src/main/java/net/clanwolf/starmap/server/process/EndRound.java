@@ -255,6 +255,8 @@ public class EndRound {
 							}
 							foughtAttacks.append("Attacker fielded ").append(asp.getAttackerNumberOfPilots()).append(" Mechs (").append(asp.getAttackerTonnage()).append("t) and lost ").append(asp.getDefenderKillCount()).append(" Mechs (").append(asp.getAttackerLostTonnage()).append("t)").append("\r\n");
 							foughtAttacks.append("Defender fielded ").append(asp.getDefenderNumberOfPilots()).append(" Mechs (").append(asp.getDefenderTonnage()).append("t) and lost ").append(asp.getAttackerKillCount()).append(" Mechs (").append(asp.getDefenderLostTonnage()).append("t)").append("\r\n");
+						//Calculate
+							CalcBalance.calc( asp);
 						}
 					} else {
 						// no statistics found
