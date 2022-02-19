@@ -170,9 +170,9 @@ public class LogPaneController implements ActionCallBackListener {
 		}
 		String logfilename = "";
 		if (!"".equals(username)) {
-			logfilename = "clientlog_" + username + "_" + ip + "-" + timestamp + ".log";
+			logfilename = timestamp + "_" + ip + "-" + username + ".c3log";
 		} else {
-			logfilename = "clientlog_" + ip + "-" + timestamp + ".log";
+			logfilename = timestamp + "_" + ip + ".c3log";
 		}
 
 		StatusTextEntryActionObject o = new StatusTextEntryActionObject("Uploading logfile...", false);

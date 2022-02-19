@@ -1645,7 +1645,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 			case FINALIZE_ROUND:
 				logger.info("Server did finalize round.");
-				ActionManager.getAction(ACTIONS.FINALIZE_ROUND).execute();
+
 
 
 
@@ -1953,10 +1953,12 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				for (BOJumpship js : boUniverse.getJumpshipList()) {
 					if (js.getJumpshipFaction() == Nexus.getCurrentUser().getCurrentCharacter().getFactionId()) {
 						// My own jumpship. May have been moved and may have an unsaved route
-						if (Nexus.getBoUniverse().routesList.get(js.getJumpshipId()) != null &&	js.isAttackReady()) {
-							// There might be an unsaved route
+
+						if (js.routeLines.getChildren().size() > 0) {
+							logger.info("There are routepoints to store.");
 							unsavedRoutesFound = true;
-							break;
+						} else {
+							logger.info("NO routepoints.");
 						}
 					}
 				}

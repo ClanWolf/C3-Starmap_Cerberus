@@ -1,7 +1,10 @@
 C3 version history
 --------------------------------
 
-Version 6.6.1 (18.02.2022)
+Version 6.6.4 (19.02.2022)
+- FIXED: Upload of screenshots and logs
+
+Version 6.6.3 (18.02.2022)
 - UPDATED: All dependencies
 - FIXED: Cursor deadlock when server is offline
 - FIXED: Loginbutton checks first to make sure server is online
