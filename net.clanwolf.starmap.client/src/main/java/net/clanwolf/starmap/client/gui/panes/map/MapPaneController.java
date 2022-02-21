@@ -1041,13 +1041,14 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 								String colorString1 = boUniverse.factionBOs.get(attackerStartedFromSystem.getAffiliation()).getColor();
 								Color c1 = Color.web(colorString1);
-								String colorString2 = boUniverse.factionBOs.get(attackedSystem.getAffiliation()).getColor();
-								Color c2 = Color.web(colorString2);
+								//String colorString2 = boUniverse.factionBOs.get(attackedSystem.getAffiliation()).getColor();
+								//Color c2 = Color.web(colorString2);
+								Color c2 = Color.web("#ffffff");
 
-								Stop[] stops = new Stop[]{new Stop(0.8, c1), new Stop(0.8, c2)};
+								Stop[] stops = new Stop[] {new Stop(0.8, c1), new Stop(0.8, c2)};
 								LinearGradient lg = new LinearGradient(0, 0, 10, 10, false, CycleMethod.REPEAT, stops);
 								systemBackground.setFill(lg);
-								systemBackground.setOpacity(0.2);
+								systemBackground.setOpacity(0.5);
 
 								systemBackground.setId("attackFinishedInThisRoundVisuals" + attackedSystem.getName());
 								canvas.getChildren().add(systemBackground);
@@ -1954,11 +1955,13 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					if (js.getJumpshipFaction() == Nexus.getCurrentUser().getCurrentCharacter().getFactionId()) {
 						// My own jumpship. May have been moved and may have an unsaved route
 
-						if (js.routeLines.getChildren().size() > 0) {
-							logger.info("There are routepoints to store.");
-							unsavedRoutesFound = true;
-						} else {
-							logger.info("NO routepoints.");
+						if (js.routeLines != null) {
+							if (js.routeLines.getChildren().size() > 0) {
+								logger.info("There are routepoints to store.");
+								unsavedRoutesFound = true;
+							} else {
+								logger.info("NO routepoints.");
+							}
 						}
 					}
 				}

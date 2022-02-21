@@ -74,7 +74,7 @@ public class RolePlayCharacterStatsDAO extends GenericDAO {
 	}
 
 	public RolePlayCharacterStatsPOJO findbyCharIdAndMatchId(Long charId, String matchId) {
-		CriteriaHelper crit = new CriteriaHelper(AttackStatsPOJO.class);
+		CriteriaHelper crit = new CriteriaHelper(RolePlayCharacterStatsPOJO.class);
 
 		crit.addCriteria("roleplayCharacterId", charId);
 		crit.addCriteria("mwoMatchId", matchId);
