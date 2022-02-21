@@ -109,15 +109,15 @@ public class ResultAnalyzer {
 		ArrayList<RolePlayCharacterStatsDTO> characterStatsList = new ArrayList<>();
 
 		for (UserDetail ud : result.getUserDetails()) {
-			MechIdInfo mechInfo = new MechIdInfo();
+			MechIdInfo mechInfo = new MechIdInfo(ud.getMechItemID());
 
 			String team = ud.getTeam() == null ? "/" : ud.getTeam();
 			String userName = ud.getUsername();
 			String mech = ud.getMechName();
 			Long mechItemId = ud.getMechItemID().longValue();
 			boolean leadingPosition = false;
-			String mechFullName = mechInfo.getFullname(ud.getMechItemID());
-			int tonnage = mechInfo.getTonnage(ud.getMechItemID());
+			String mechFullName = mechInfo.getFullname();
+			int tonnage = mechInfo.getTonnage();
 			String unit = ud.getUnitTag();
 			Integer kills = ud.getKills();
 			Integer killsMostDamage = ud.getKillsMostDamage();
