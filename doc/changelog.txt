@@ -1,6 +1,12 @@
 C3 version history
 --------------------------------
 
+Version 6.7.2 (25.02.2022)
+- CHANGED: A system is locked if a jumpship is present
+
+Version 6.7.1 (22.02.2022)
+- FIXED: Version check
+
 Version 6.7.0 (21.02.2022)
 - FIXED: Nullpointer while storing character stats
 - FIXED: Exception while checking if an invasion has been started already

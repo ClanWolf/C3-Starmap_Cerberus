@@ -38,6 +38,7 @@ import org.kynosarges.tektosyne.geometry.PolygonGrid;
 import org.kynosarges.tektosyne.geometry.RegularPolygon;
 import org.kynosarges.tektosyne.graph.*;
 
+import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +46,7 @@ import java.util.Map;
 import java.util.function.Predicate;
 
 public class GraphManager<T> implements GraphAgent<T> {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	private final Graph<T> graph;
 	private final int maxCost;
@@ -156,9 +158,25 @@ public class GraphManager<T> implements GraphAgent<T> {
 		double distance = graph.getDistance(source, target) / Config.MAP_COORDINATES_MULTIPLICATOR;
 		boolean inRange = distance < 30;
 		boolean isAttacked = (boUniverse.getStarSystemByPoint((PointD)target)).isCurrentlyUnderAttack();
+		boolean isAttackedNextRound = (boUniverse.getStarSystemByPoint((PointD)target)).isNextRoundUnderAttack();
 		boolean isActiveInPhase = (boUniverse.getStarSystemByPoint((PointD)target)).isActiveInPhase(Nexus.getCurrentSeasonMetaPhase());
+		boolean isLockedByJumpship = (boUniverse.getStarSystemByPoint((PointD)target)).isLockedByJumpship();
 		// boolean withinCosts = nodeCosts.get(target) < maxCost;
-		return inRange && isActiveInPhase && !isAttacked;
+
+		boolean canMakeJump = inRange
+				&& isActiveInPhase
+				&& !isAttacked
+				&& !isAttackedNextRound
+				&& !isLockedByJumpship;
+
+		if (canMakeJump) {
+			// return to normal
+//			logger.info("Possible jump");
+		} else {
+			// show indicator "jump can not be made"
+//			logger.info("Impossible jump");
+		}
+		return canMakeJump;
 	}
 
 	@Override

@@ -57,7 +57,11 @@ public class BOStarSystem {
 	private Point2D coord;
 	private ImageView marker = null;
 	private ImageView industryMarker = null;
+
+	private boolean isLockedByJumpship = false;
 	private boolean isCurrentlyUnderAttack = false;
+	private boolean isNextRoundUnderAttack = false;
+//	private boolean wasLastRoundUnderAttack = false;
 
 	@SuppressWarnings("unused")
 	public void setStarSystemDataDTO(StarSystemDataDTO hh_starSystemDataDTO) {
@@ -263,6 +267,36 @@ public class BOStarSystem {
 	public boolean isCurrentlyUnderAttack() {
 		return this.isCurrentlyUnderAttack;
 	}
+
+	@SuppressWarnings("unused")
+	public boolean isNextRoundUnderAttack() {
+		return this.isNextRoundUnderAttack;
+	}
+
+	@SuppressWarnings("unused")
+	public void setNextRoundUnderAttack(boolean nextRoundUnderAttack) {
+		isNextRoundUnderAttack = nextRoundUnderAttack;
+	}
+
+	@SuppressWarnings("unused")
+	public boolean isLockedByJumpship() {
+		return isLockedByJumpship;
+	}
+
+	@SuppressWarnings("unused")
+	public void setLockedByJumpship(boolean lockedByJumpship) {
+		this.isLockedByJumpship = lockedByJumpship;
+	}
+
+//	@SuppressWarnings("unused")
+//	public boolean wasLastRoundUnderAttack() {
+//		return wasLastRoundUnderAttack;
+//	}
+//
+//	@SuppressWarnings("unused")
+//	public void setLastRoundUnderAttack(boolean wasLastRoundUnderAttack) {
+//		this.wasLastRoundUnderAttack = wasLastRoundUnderAttack;
+//	}
 
 	@SuppressWarnings("unused")
 	public String getDescription() {

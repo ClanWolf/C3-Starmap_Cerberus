@@ -266,9 +266,13 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	private void handleConfirmButtonClick() {
 		// Store jumproutes
 		for (BOJumpship js : Nexus.getBoUniverse().jumpshipBOs.values()) {
-			if (js.getJumpshipFaction() == Nexus.getCurrentUser().getCurrentCharacter().getFactionId() &&
-				Nexus.getBoUniverse().routesList.get(js.getJumpshipId()) != null &&
-				js.isAttackReady()) {
+
+			BOStarSystem s3 = boUniverse.starSystemBOs.get(js.getCurrentSystemID());
+			s3.setLockedByJumpship(true);
+
+			if (js.getJumpshipFaction() == Nexus.getCurrentUser().getCurrentCharacter().getFactionId()
+					&& Nexus.getBoUniverse().routesList.get(js.getJumpshipId()) != null
+					&& js.isAttackReady()) {
 
 				logger.info("Storing route to database");
 				ArrayList<RoutePointDTO> route = Nexus.getBoUniverse().routesList.get(js.getJumpshipId());
@@ -304,6 +308,10 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					attackedSystem = boUniverse.starSystemBOs.get(boAttack.getStarSystemId());
 					attackedSystem.setCurrentlyUnderAttack(true);
 					attackerStartedFromSystem = boUniverse.starSystemBOs.get(boAttack.getAttackedFromStarSystem());
+
+					if ((boAttack.getRound().equals(boUniverse.currentRound + 1))) {
+						attackedSystem.setNextRoundUnderAttack(true);
+					}
 
 					// Remove old attack visuals
 					ArrayList<Node> lineElementsToRemove = new ArrayList<>();
@@ -488,6 +496,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					starSystem.getStarSystemCircle().setStroke(c.deriveColor(1, 1, 1, 0.8));
 					starSystem.getStarSystemCircle().setFill(c.deriveColor(1, 1, 1, 0.4));
 
+					starSystem.setLockedByJumpship(false); // will be set later for each ship
+
 					BOAttack a = starSystem.getAttack();
 					Image attackMarker;
 					if (a != null) {
@@ -534,6 +544,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					Long currentSystemID = js.getCurrentSystemID();
 					boolean myOwnShip = js.getJumpshipFaction() == Nexus.getCurrentUser().getCurrentCharacter().getFactionId();
 					ImageView jumpshipImage = js.getJumpshipImageView();
+
+					BOStarSystem s3 = boUniverse.starSystemBOs.get(js.getCurrentSystemID());
+					s3.setLockedByJumpship(true);
 
 					Long targetSystemId = null;
 					Long fallbackToSystemId = null;
@@ -611,6 +624,10 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 						attackedSystem = boUniverse.starSystemBOs.get(boAttack.getStarSystemId());
 						attackedSystem.setCurrentlyUnderAttack(true);
 						attackerStartedFromSystem = boUniverse.starSystemBOs.get(boAttack.getAttackedFromStarSystem());
+
+						if ((boAttack.getRound().equals(boUniverse.currentRound + 1))) {
+							attackedSystem.setNextRoundUnderAttack(true);
+						}
 
 						if (attackedSystem != null && attackerStartedFromSystem != null) {
 							if (Config.MAP_FLASH_ATTACKED_SYSTEMS) {
@@ -854,6 +871,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 						starSystemLabel.toFront();
 					}
 
+					starSystem.setLockedByJumpship(false); // will be set later for each ship
+
 					// Industrial worlds
 					ImageView industryImage = null;
 					if (starSystem.getType().equals(1L)) {
@@ -969,8 +988,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				canvas.setAttacksPane(attacksPane);
 
 				for (BOAttack attack : boUniverse.attackBOsAllInThisRound.values()) {
-					if (attack.getSeason().equals(boUniverse.currentSeason) &&
-							(attack.getRound().equals(boUniverse.currentRound + 1)) || (attack.getRound().equals(boUniverse.currentRound))
+					if (attack.getSeason().equals(boUniverse.currentSeason)
+							&& (attack.getRound().equals(boUniverse.currentRound + 1))
+							|| (attack.getRound().equals(boUniverse.currentRound))
 					) {
 						BOStarSystem attackedSystem;
 						BOStarSystem attackerStartedFromSystem;
@@ -978,6 +998,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 						attackedSystem = boUniverse.starSystemBOs.get(attack.getStarSystemId());
 						attackedSystem.setCurrentlyUnderAttack(true);
+						if ((attack.getRound().equals(boUniverse.currentRound + 1))) {
+							attackedSystem.setNextRoundUnderAttack(true);
+						}
 						attackerStartedFromSystem = boUniverse.starSystemBOs.get(attack.getAttackedFromStarSystem());
 
 						if (attackedSystem != null && attackerStartedFromSystem != null) {
@@ -1065,6 +1088,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				for (BOJumpship js : boUniverse.jumpshipBOs.values()) {
 					Long currentSystemID = js.getCurrentSystemID();
 					boolean myOwnShip = js.getJumpshipFaction() == Nexus.getCurrentUser().getCurrentCharacter().getFactionId();
+
+					BOStarSystem s3 = boUniverse.starSystemBOs.get(js.getCurrentSystemID());
+					s3.setLockedByJumpship(true);
 
 					if (Nexus.getCurrentChar().getJumpshipId().intValue() == js.getJumpshipId()) {
 						// This is my own personal unit, move map to this ship

@@ -158,8 +158,8 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 		boolean givenLocalVersionIsHigherOrEqual = false;
 		String v2 = Tools.getVersionNumber();
 
-//		v1 = "6.6.0";
-//		v2 = "6.6.0";
+//		v1 = "6.6.4";
+//		v2 = "6.7.0";
 
 		if (v1.equals(v2)) {
 			givenLocalVersionIsHigherOrEqual = true;
@@ -175,13 +175,17 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 				givenLocalVersionIsHigherOrEqual = true;
 				break;
 			}
+			if (v2i < v1i) {
+				givenLocalVersionIsHigherOrEqual = false;
+				break;
+			}
 		}
 		if (givenLocalVersionIsHigherOrEqual) {
 			logger.info("Currently used " + v2 + " is higher than " + v1 + " available on serverside");
 		} else {
 			logger.info("Server version " + v1 + " is higher than the currently used " + v2);
 		}
-		return givenLocalVersionIsHigherOrEqual;
+		return !givenLocalVersionIsHigherOrEqual;
 	}
 
 	/**
@@ -311,7 +315,7 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 					logger.info("Currently used client version: " + Tools.getVersionNumber());
 
 					// if (availableClientVersion.equals(Tools.getVersionNumber())) {
-					if (newerVersionAvailable(availableClientVersion)) {
+					if (!newerVersionAvailable(availableClientVersion)) {
 						logger.info("Currently used client version is the latest.");
 					} else {
 						logger.info("Difference detected: Prompt to download new version.");
