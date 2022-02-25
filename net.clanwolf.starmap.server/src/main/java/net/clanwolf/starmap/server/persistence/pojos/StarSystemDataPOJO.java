@@ -79,6 +79,19 @@ public class StarSystemDataPOJO extends Pojo {
 	@Column(name = "Level")
 	private Long level;
 
+	@Column(name = "LockedUntilRound")
+	private long lockedUntilRound;
+
+	@SuppressWarnings("unused")
+	public long getLockedUntilRound() {
+		return lockedUntilRound;
+	}
+
+	@SuppressWarnings("unused")
+	public void setLockedUntilRound(long lockedUntilRound) {
+		this.lockedUntilRound = lockedUntilRound;
+	}
+
 	@SuppressWarnings("unused")
 	public Long getId() {
 		return id;

@@ -1,7 +1,7 @@
 C3 version history
 --------------------------------
 
-Version 6.7.2 (25.02.2022)
+Version 6.7.3 (25.02.2022)
 - CHANGED: A system is locked if a jumpship is present
 
 Version 6.7.1 (22.02.2022)
