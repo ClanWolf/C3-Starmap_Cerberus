@@ -26,6 +26,11 @@
  */
 package net.clanwolf.starmap.client.mwo;
 
+import net.clanwolf.starmap.client.action.ACTIONS;
+import net.clanwolf.starmap.client.action.ActionManager;
+import net.clanwolf.starmap.client.enums.C3MESSAGES;
+import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
+import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.universe.BOAttackStats;
 import net.clanwolf.starmap.client.process.universe.BORolePlayCharacterStats;
@@ -164,7 +169,15 @@ public class ResultAnalyzer {
 				}
 			}
 
-			if (team.equals("1")) {
+			if (attackerTeam != null && attackerTeam.equals(defenderTeam)) {
+				// Same teams cannot be right! Raise error
+				C3Message m = new C3Message(C3MESSAGES.WARNING_BLACKBOX_TEAMS_INVALID);
+				m.setType(C3MESSAGETYPES.CLOSE);
+				m.setText("Teams seem to be ivalid!");
+				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(m);
+			}
+
+			if (team != null && team.equals("1")) {
 				team1NumberOfPilots++;
 				team1SurvivingPercentage += healthPercentage;
 				team1Tonnage += tonnage;
@@ -172,7 +185,7 @@ public class ResultAnalyzer {
 					team2LostTonnage += tonnage;
 					team2KillCount++;
 				}
-			} else if (team.equals("2")) {
+			} else if (team != null && team.equals("2")) {
 				team2NumberOfPilots++;
 				team2SurvivingPercentage += healthPercentage;
 				team2Tonnage += tonnage;

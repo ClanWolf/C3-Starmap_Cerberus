@@ -161,13 +161,15 @@ public class GraphManager<T> implements GraphAgent<T> {
 		boolean isAttackedNextRound = (boUniverse.getStarSystemByPoint((PointD)target)).isNextRoundUnderAttack();
 		boolean isActiveInPhase = (boUniverse.getStarSystemByPoint((PointD)target)).isActiveInPhase(Nexus.getCurrentSeasonMetaPhase());
 		boolean isLockedByJumpship = (boUniverse.getStarSystemByPoint((PointD)target)).isLockedByJumpship();
+		boolean isLockedByPreviousAttackCooldown = (boUniverse.getStarSystemByPoint((PointD)target)).isLockedByPreviousAttackCooldown();
 		// boolean withinCosts = nodeCosts.get(target) < maxCost;
 
 		boolean canMakeJump = inRange
 				&& isActiveInPhase
 				&& !isAttacked
 				&& !isAttackedNextRound
-				&& !isLockedByJumpship;
+				&& !isLockedByJumpship
+				&& !isLockedByPreviousAttackCooldown;
 
 		if (canMakeJump) {
 			// return to normal

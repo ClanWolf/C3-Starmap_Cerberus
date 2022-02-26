@@ -35,9 +35,7 @@ import io.nadron.event.impl.SessionMessageHandler;
 import io.nadron.service.GameStateManagerService;
 import net.clanwolf.client.mail.MailManager;
 import net.clanwolf.starmap.server.GameServer;
-import net.clanwolf.starmap.transfer.dtos.AttackCharacterDTO;
-import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterStatsDTO;
-import net.clanwolf.starmap.transfer.dtos.StatsMwoDTO;
+import net.clanwolf.starmap.transfer.dtos.*;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
@@ -50,7 +48,6 @@ import net.clanwolf.starmap.server.process.EndRound;
 import net.clanwolf.starmap.server.util.HeartBeatTimer;
 import net.clanwolf.starmap.server.util.WebDataInterface;
 import net.clanwolf.starmap.transfer.GameState;
-import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.util.Compressor;
 
@@ -308,6 +305,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 	private synchronized void saveAttack(PlayerSession session, GameState state) {
 		AttackDAO dao = AttackDAO.getInstance();
 		AttackCharacterDAO daoAC = AttackCharacterDAO.getInstance();
+		StarSystemDataDAO daoSS = StarSystemDataDAO.getInstance();
 
 		try {
 			EntityManagerHelper.beginTransaction(getC3UserID(session));
@@ -318,6 +316,10 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			logger.debug("-- Attacker (jumpshipID): " + attack.getJumpshipID());
 			logger.debug("-- Attacking from: " + attack.getAttackedFromStarSystemID());
 			logger.debug("-- Attacked system: " + attack.getStarSystemID());
+
+			StarSystemDataPOJO s = StarSystemDataDAO.getInstance().findById(getC3UserID(session), attack.getStarSystemDataID());
+			s.setLockedUntilRound(attack.getRound() + 3);
+			daoSS.update(getC3UserID(session), s);
 
 			ArrayList<AttackCharacterPOJO> newAttackCharacters = new ArrayList<AttackCharacterPOJO>();
 			if( attack.getAttackCharList() != null) {

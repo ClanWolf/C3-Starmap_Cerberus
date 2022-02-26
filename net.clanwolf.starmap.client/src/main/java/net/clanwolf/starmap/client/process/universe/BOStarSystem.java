@@ -91,6 +91,10 @@ public class BOStarSystem {
 		return coord;
 	}
 
+	public void setLockedUntilRound(Long v) {
+		hh_starSystemDataDTO.setLockedUntilRound(v);
+	}
+
 	@SuppressWarnings("unused")
 	public void setIndustryMarker(ImageView v) {
 		this.industryMarker = v;
@@ -281,6 +285,14 @@ public class BOStarSystem {
 	@SuppressWarnings("unused")
 	public boolean isLockedByJumpship() {
 		return isLockedByJumpship;
+	}
+
+	public boolean isLockedByPreviousAttackCooldown() {
+		Long lockedUntil = hh_starSystemDataDTO.getLockedUntilRound();
+		if (lockedUntil == null) {
+			return false;
+		}
+		return Nexus.getCurrentRound() < lockedUntil.intValue();
 	}
 
 	@SuppressWarnings("unused")
