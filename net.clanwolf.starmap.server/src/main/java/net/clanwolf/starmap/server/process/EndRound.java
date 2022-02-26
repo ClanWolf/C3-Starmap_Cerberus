@@ -270,7 +270,7 @@ public class EndRound {
 							}
 
 							logger.info("────────────────────────────────────────────────────");
-							logger.info("Defender total repair cost: (" + String.valueOf(calcB.getDefenderRepairCost()) + "C-Bills)");
+							logger.info("Defender total repair cost: (" + calcB.getDefenderRepairCost() + "C-Bills)");
 							logger.info("════════════════════════════════════════════════════");
 							logger.info("===[CALCULATE MECH REPAIR COST FOR THE ATTACKERS]===");
 
@@ -282,7 +282,7 @@ public class EndRound {
 							}
 
 							logger.info("────────────────────────────────────────────────────");
-							logger.info("Attacker total repair cost: (" + String.valueOf(calcB.getAttackerRepairCost()) + "C-Bills)");
+							logger.info("Attacker total repair cost: (" + calcB.getAttackerRepairCost() + "C-Bills)");
 							logger.info("════════════════════════════════════════════════════");
 
 						}
