@@ -1,3 +1,29 @@
+/* ---------------------------------------------------------------- |
+ *    ____ _____                                                    |
+ *   / ___|___ /                   Communicate - Command - Control  |
+ *  | |     |_ \                   MK V "Cerberus"                  |
+ *  | |___ ___) |                                                   |
+ *   \____|____/                                                    |
+ *                                                                  |
+ * ---------------------------------------------------------------- |
+ * Info        : https://www.clanwolf.net                           |
+ * GitHub      : https://github.com/ClanWolf                        |
+ * ---------------------------------------------------------------- |
+ * Licensed under the Apache License, Version 2.0 (the "License");  |
+ * you may not use this file except in compliance with the License. |
+ * You may obtain a copy of the License at                          |
+ * http://www.apache.org/licenses/LICENSE-2.0                       |
+ *                                                                  |
+ * Unless required by applicable law or agreed to in writing,       |
+ * software distributed under the License is distributed on an "AS  |
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either  |
+ * express or implied. See the License for the specific language    |
+ * governing permissions and limitations under the License.         |
+ *                                                                  |
+ * C3 includes libraries and source code by various authors.        |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
+ * ---------------------------------------------------------------- |
+ */
 package net.clanwolf.starmap.server.process;
 
 import net.clanwolf.starmap.server.Nexus.Nexus;
@@ -9,64 +35,109 @@ import net.clanwolf.starmap.server.persistence.pojos.RolePlayCharacterStatsPOJO;
 import net.clanwolf.starmap.transfer.mwo.MechIdInfo;
 
 import java.util.ArrayList;
-
+import java.util.HashMap;
+import java.util.Map;
+/**
+ * Diese Klasse berechnet die Reparaturkosten der jeweiligen Mechs.
+ *
+ * @author KERNREAKTOR
+ * @version 1.0.2
+ */
 public class CalcBalance {
 
-    private double AttackerCost;
-    private double DefenderCost;
+    private double attackerRepairCost;
+    private double defenderRepairCost;
+    private final Map<RolePlayCharacterPOJO, Double> defenderPlayerRepairCost = new HashMap<>();
+    private final Map<RolePlayCharacterPOJO, Double> attackerPlayerRepairCost = new HashMap<>();
 
-    public double getDefenderCost() {
-        return DefenderCost;
+    /**
+     * Es werden alle Reparaturkosten für den Angreifer wird zurückgegeben,
+     * die bei {@link #CalcBalance(AttackStatsPOJO rpcs)} berechnet wurde.
+     * @return Gibt einen (double) Wert zurück.
+     */
+    public double getAttackerRepairCost() {
+        return attackerRepairCost;
     }
 
-    public void setDefenderCost(double defenderCost) {
-        DefenderCost = defenderCost;
+    /**
+     * Legt einen neuen Wert fest für die gesamten Reparaturkosten für die Angreifer.
+     * @param attackerRepairCost Der Neue (double) Wert für die gesamten Reparaturkosten der Angreifer.
+     */
+    public void setAttackerRepairCost(double attackerRepairCost) {
+        this.attackerRepairCost = attackerRepairCost;
     }
 
-    public double getAttackerCost() {
-        return AttackerCost;
+    /**
+     * Es werden alle Reparaturkosten für den Verteidiger wird zurückgegeben,
+     * die bei {@link #CalcBalance(AttackStatsPOJO rpcs)} berechnet wurde.
+     * @return Gibt einen (double) Wert zurück.
+     */
+    public double getDefenderRepairCost() {
+        return defenderRepairCost;
     }
 
-    public void setAttackerCost(double attackerCost) {
-        AttackerCost = attackerCost;
+    /**
+     * Legt einen neuen Wert fest für die gesamten Reparaturkosten für die Verteidiger.
+     * @param defenderRepairCost Der Neue (double) Wert für die gesamten Reparaturkosten der Verteidiger.
+     */
+    public void setDefenderRepairCost(double defenderRepairCost) {
+        this.defenderRepairCost = defenderRepairCost;
     }
 
-    public static void calc(AttackStatsPOJO rpcs){
+    /**
+     * Es werden die Reparaturkosten der jeweiligen Spieler,
+     * die auf der Verteidiger Seite sind zurückgegeben,
+     * die bei {@link #CalcBalance(AttackStatsPOJO rpcs)} berechnet wurde.
+     * @return Gibt einen (HashMap(RolePlayCharacterPOJO, Double)) Wert zurück.
+     */
+    public Map<RolePlayCharacterPOJO, Double> getDefenderPlayerRepairCost() {
+        return defenderPlayerRepairCost;
+    }
+
+    /**
+     * Es werden die Reparaturkosten der jeweiligen Spieler,
+     * die auf der Angreifer Seite sind zurückgegeben,
+     * die bei {@link #CalcBalance(AttackStatsPOJO rpcs)} berechnet wurde.
+     * @return Gibt einen (HashMap(RolePlayCharacterPOJO, Double)) Wert zurück.
+     */
+    public Map<RolePlayCharacterPOJO, Double> getAttackerPlayerRepairCost() {
+        return attackerPlayerRepairCost;
+    }
+
+    /**
+     * Berechnet die Reparaturkosten der jeweiligen Seite,
+     * die bei {@link #getAttackerPlayerRepairCost()}, {@link #getDefenderPlayerRepairCost()},
+     * {@link #getAttackerRepairCost()} und {@link #getDefenderRepairCost()} abgefragt
+     * werden können.
+     * @param rpcs AttackStatsPOJO
+     */
+    public   CalcBalance(AttackStatsPOJO rpcs){
+
         String mwomatchid = rpcs.getMwoMatchId();
         RolePlayCharacterStatsDAO DAO = RolePlayCharacterStatsDAO.getInstance();
-        RolePlayCharacterDAO CharacterDAO =RolePlayCharacterDAO.getInstance();
+        RolePlayCharacterDAO CharacterDAO = RolePlayCharacterDAO.getInstance();
         ArrayList<RolePlayCharacterStatsPOJO> list = DAO.findByMatchId(mwomatchid);
 
-
-        for(RolePlayCharacterStatsPOJO pojo:list){
-
+        for(RolePlayCharacterStatsPOJO pojo : list){
 
             RolePlayCharacterPOJO character = CharacterDAO.findById(Nexus.DUMMY_USERID, pojo.getRoleplayCharacterId());
-
-            MechIdInfo MI = new MechIdInfo(pojo.getMwoMatchId());
+            MechIdInfo MI = new MechIdInfo(Math.toIntExact(pojo.getMechItemId()));
 
             //Attacker
-            if(rpcs.getAttackerFactionId()== character.getFactionId().longValue()){
+            if(rpcs.getAttackerFactionId() == character.getFactionId().longValue()){
 
-
-
-                //pojo.getMechItemId()
-                //pojo.getMwoSurvivalPercentage()
+                attackerPlayerRepairCost.put(character, MI.getRepairCost(Math.toIntExact(pojo.getMwoSurvivalPercentage())));
+                attackerRepairCost = attackerRepairCost + MI.getRepairCost(Math.toIntExact(pojo.getMwoSurvivalPercentage()));
 
             }
 
-            //Defnder
-            if(rpcs.getDefenderFactionId()== character.getFactionId().longValue()){
+            //Defender
+            if(rpcs.getDefenderFactionId() == character.getFactionId().longValue()){
 
-                //pojo.getMechItemId()
-                //pojo.getMwoSurvivalPercentage()
+                defenderPlayerRepairCost.put(character, MI.getRepairCost(Math.toIntExact(pojo.getMwoSurvivalPercentage())));
+                defenderRepairCost = defenderRepairCost + MI.getRepairCost(Math.toIntExact(pojo.getMwoSurvivalPercentage()));
 
             }
         }
-
-        // rpcs.getMechItemId()
-        //rpcs.getMwoSurvivalPercentage()
-
     }
-
 }

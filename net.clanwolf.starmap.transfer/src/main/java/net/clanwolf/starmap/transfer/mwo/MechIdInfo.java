@@ -61,6 +61,7 @@ public class MechIdInfo {
 
     private void InitializeMechIds(){
 
+        this.mechids.clear();
         this.mechids.put(1,new MechIdInfo(EFaction.INNERSPHERE,"HUNCHBACK",50,EMechclass.MEDIUM, "Standard","HUNCHBACK HBK-4G","HBK-4G"));
         this.mechids.put(2,new MechIdInfo(EFaction.INNERSPHERE,"HUNCHBACK",50,EMechclass.MEDIUM, "Standard","HUNCHBACK HBK-4P","HBK-4P"));
         this.mechids.put(3,new MechIdInfo(EFaction.INNERSPHERE,"JENNER",35,EMechclass.LIGHT, "Standard","JENNER JR7-D","JR7-D"));
@@ -968,7 +969,6 @@ public class MechIdInfo {
     public MechIdInfo(Integer MechItemId) {
 
         this.MechItemId = MechItemId;
-
         InitializeMechIds();
 
     }
@@ -1049,12 +1049,24 @@ public class MechIdInfo {
 
     }
 
+    /**
+     * Gibt die MechItemId (Integer) zurück, die bei {@link MechIdInfo} angegeben wurde.
+     * @return Gibt die MechItemId zurück.
+     */
     public Integer getMechItemId() {
+
         return MechItemId;
+
     }
 
+    /**
+     * Hiermit wird eine Neue MechItemId (Integer) festgelegt.
+     * @param mechItemId Die Neue MechItemId.
+     */
     public void setMechItemId(Integer mechItemId) {
-        MechItemId = mechItemId;
+
+        InitializeMechIds();
+
     }
 
     /**
@@ -1138,7 +1150,7 @@ public class MechIdInfo {
         return getTonnage() * 200000 * Multiply;
     }
 
-    double getRepairCost(Integer HealthPercentage){
+    public double getRepairCost(Integer HealthPercentage){
 
         return (100 - HealthPercentage) * getMechCost() / 100;
 
