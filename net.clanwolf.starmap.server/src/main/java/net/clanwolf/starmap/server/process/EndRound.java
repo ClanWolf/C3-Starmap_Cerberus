@@ -48,6 +48,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class EndRound {
@@ -255,8 +256,33 @@ public class EndRound {
 							}
 							foughtAttacks.append("Attacker fielded ").append(asp.getAttackerNumberOfPilots()).append(" Mechs (").append(asp.getAttackerTonnage()).append("t) and lost ").append(asp.getDefenderKillCount()).append(" Mechs (").append(asp.getAttackerLostTonnage()).append("t)").append("\r\n");
 							foughtAttacks.append("Defender fielded ").append(asp.getDefenderNumberOfPilots()).append(" Mechs (").append(asp.getDefenderTonnage()).append("t) and lost ").append(asp.getAttackerKillCount()).append(" Mechs (").append(asp.getDefenderLostTonnage()).append("t)").append("\r\n");
-						//Calculate
-							CalcBalance.calc( asp);
+							//Calculate repair cost
+							logger.info("===[CALCULATE MECH REPAIR COST FOR THE DEFENDERS]===");
+
+							CalcBalance calcB = new CalcBalance(asp);
+
+							for(Map.Entry<RolePlayCharacterPOJO, Double> defuser : calcB.getDefenderPlayerRepairCost().entrySet()){
+
+								logger.info("Charname: " + defuser.getKey().getName() +
+										" Mech repair cost: " + defuser.getValue() + " C-Bills");
+
+							}
+
+							logger.info("────────────────────────────────────────────────────");
+							logger.info("Defender total repair cost: (" + calcB.getDefenderRepairCost() + " C-Bills)");
+							logger.info("════════════════════════════════════════════════════");
+							logger.info("===[CALCULATE MECH REPAIR COST FOR THE ATTACKERS]===");
+
+							for(Map.Entry<RolePlayCharacterPOJO, Double> attuser : calcB.getAttackerPlayerRepairCost().entrySet()){
+
+								logger.info("Charname: " + attuser.getKey().getName() +
+										" Mech repair cost: " + attuser.getValue() + " C-Bills");
+
+							}
+
+							logger.info("────────────────────────────────────────────────────");
+							logger.info("Attacker total repair cost: (" + calcB.getAttackerRepairCost() + " C-Bills)");
+							logger.info("════════════════════════════════════════════════════");
 						}
 					} else {
 						// no statistics found
