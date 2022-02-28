@@ -26,7 +26,10 @@
  */
 package net.clanwolf.starmap.client.gui.panes.map.tools;
 
+import javafx.scene.Node;
 import javafx.scene.layout.Pane;
+import net.clanwolf.starmap.client.action.ACTIONS;
+import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.gui.panes.map.Config;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.universe.BOStarSystem;
@@ -170,14 +173,6 @@ public class GraphManager<T> implements GraphAgent<T> {
 				&& !isAttackedNextRound
 				&& !isLockedByJumpship
 				&& !isLockedByPreviousAttackCooldown;
-
-		if (canMakeJump) {
-			// return to normal
-//			logger.info("Possible jump");
-		} else {
-			// show indicator "jump can not be made"
-//			logger.info("Impossible jump");
-		}
 		return canMakeJump;
 	}
 

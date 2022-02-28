@@ -117,6 +117,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	@FXML
 	ImageView labelJumpshipFactionImage;
 	@FXML
+	ImageView ivForbidden;
+	@FXML
 	Label labelMouseCoords;
 	@FXML
 	Button mapButton01; // confirm
@@ -1633,6 +1635,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		ActionManager.addActionCallbackListener(ACTIONS.SYSTEM_WAS_SELECTED, this);
 		ActionManager.addActionCallbackListener(ACTIONS.REPAINT_MAP, this);
 		ActionManager.addActionCallbackListener(ACTIONS.FINALIZE_ROUND, this);
+		ActionManager.addActionCallbackListener(ACTIONS.SHOW_FORBIDDEN_ICON_MAP, this);
 	}
 
 	/**
@@ -1898,6 +1901,15 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 						}
 					}
 				}
+				break;
+
+			case SHOW_FORBIDDEN_ICON_MAP:
+				boolean b = (Boolean)o.getObject();
+				logger.info("" + b);
+				Platform.runLater(() -> {
+					ivForbidden.toFront();
+					ivForbidden.setVisible(b);
+				});
 				break;
 
 			default:

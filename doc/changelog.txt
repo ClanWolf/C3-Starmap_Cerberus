@@ -1,9 +1,13 @@
 C3 version history
 --------------------------------
 
+Version 6.8.0 (28.02.2022)
+- ADDED: Marker showing if a system can not be jumped to
+- FIXED: An error in the node connection in the invasion tree
+
 Version 6.7.6 (26.02.2022)
-- CHANGED: A system is locked if a jumpship is present
 - ADDED: A new column to lock systems after they were attacked
+- CHANGED: A system is locked if a jumpship is present
 
 Version 6.7.1 (22.02.2022)
 - FIXED: Version check
