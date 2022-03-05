@@ -1150,6 +1150,14 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		Thread textTopRightThread = new Thread(r);
 		textTopRightThread.start();
 	}
+
+	private void createNewPaneObjects() {
+		mapPane = new MapPane();
+		mapPane.setShowsMouseFollow(false);
+		mapPane.setShowsPlanetRotation(false);
+		mapPane.setCacheHint(CacheHint.SPEED);
+		mapPane.getController().addActionCallBackListeners();
+	}
 	/**
 	 * @param url url
 	 * @param rb resource bundle
@@ -1230,16 +1238,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		confirmAppClosePane.setCacheHint(CacheHint.SPEED);
 		confirmAppClosePane.getController().addActionCallBackListeners();
 
-		confirmAppClosePane = new ConfirmAppClosePane();
-		confirmAppClosePane.setCache(true);
-		confirmAppClosePane.setCacheHint(CacheHint.SPEED);
-		confirmAppClosePane.getController().addActionCallBackListeners();
-
-		mapPane = new MapPane();
-		mapPane.setShowsMouseFollow(false);
-		mapPane.setShowsPlanetRotation(false);
-		mapPane.setCacheHint(CacheHint.SPEED);
-		mapPane.getController().addActionCallBackListeners();
+		createNewPaneObjects(); // re-create Map pane. This method is also used if user loggs off to create a new map pane (to avoid problems with user privs)
 
 		chatPane = new ChatPane();
 		chatPane.setShowsMouseFollow(false);
@@ -1560,7 +1559,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			case LOGGING_OFF:
 				Platform.runLater(() -> {
 					Nexus.setLoggedInStatus(false);
-					Platform.runLater(() -> enableMainMenuButtons(Nexus.isLoggedIn(), false));
+					enableMainMenuButtons(Nexus.isLoggedIn(), false);
+
+					createNewPaneObjects();
 				});
 				break;
 
@@ -2224,7 +2225,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			slVolumeControl.toFront();
 			slVolumeControl.setMin(0.0d);
 			slVolumeControl.setMax(1.0d);
-			slVolumeControl.setValue(0.5d);
+			slVolumeControl.setValue(0.1d);
 			Nexus.setMainFrameVolumeSlider(slVolumeControl);
 		});
 	}

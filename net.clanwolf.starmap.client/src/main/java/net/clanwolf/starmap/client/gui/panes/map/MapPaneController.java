@@ -584,6 +584,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 							jumpshipImage.setImage(i);
 						}
 					} else {
+						jumpshipImage.removeEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
+						jumpshipImage.removeEventFilter(MouseEvent.DRAG_DETECTED, nodeGestures.getOnMouseDragDetectedEventHandler());
+
 						if (js.isAttackReady()) {
 							//Image right_red = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_right_red.png")));
 
@@ -889,7 +892,6 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 						industryImage.setOpacity(0.9d);
 						industryImage.toFront();
 						industryImage.setVisible(true);
-						industryImage.setMouseTransparent(true);
 						industryImage.setTranslateX(starSystem.getScreenX() + 6);
 						industryImage.setTranslateY(starSystem.getScreenY() - 5);
 						starSystem.setIndustryMarker(industryImage);

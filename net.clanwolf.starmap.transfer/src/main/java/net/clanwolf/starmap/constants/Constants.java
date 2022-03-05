@@ -32,6 +32,7 @@ public class Constants implements java.io.Serializable {
 	@Serial
 	private static final long serialVersionUID = 1L;
 
+	// Cost
 	public static final long REGULAR_SYSTEM_GENERAL_INCOME = 250;
 	public static final long INDUSTRIAL_SYSTEM_GENERAL_INCOME = 1_500;
 	public static final long CAPITAL_SYSTEM_GENERAL_INCOME = 5_000;
@@ -56,6 +57,10 @@ public class Constants implements java.io.Serializable {
 	public static final long FACTION_CAPITAL_SYSTEM_ATTACK_COST = 20_000;
 	public static final long TERRA_ATTACK_COST = 100_000;
 
+	// Game - Meta
+	public static final long ROUNDS_TO_LOCK_SYSTEM_AFTER_ATTACK = 3;
+
+	// Game - Invasion
 	public static final long ROLE_ATTACKER_WARRIOR = 0L; // 0L Attacker Warrior
 	public static final long ROLE_ATTACKER_COMMANDER = 1L; // 1L Attacker Commander
 	public static final long ROLE_DEFENDER_WARRIOR = 2L; // 2L Defender

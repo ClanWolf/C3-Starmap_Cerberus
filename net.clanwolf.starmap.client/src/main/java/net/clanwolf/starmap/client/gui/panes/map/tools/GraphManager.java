@@ -139,10 +139,9 @@ public class GraphManager<T> implements GraphAgent<T> {
 
 	@SuppressWarnings("unused")
 	boolean setVertexNeighbors(boolean value) {
-		if (!(graph instanceof PolygonGrid))
+		if (!(graph instanceof final PolygonGrid grid))
 			return false;
 
-		final PolygonGrid grid = (PolygonGrid) graph;
 		final RegularPolygon element = grid.element();
 		if (element.sides != 4 || element.vertexNeighbors == value)
 			return false;
@@ -167,13 +166,12 @@ public class GraphManager<T> implements GraphAgent<T> {
 		boolean isLockedByPreviousAttackCooldown = (boUniverse.getStarSystemByPoint((PointD)target)).isLockedByPreviousAttackCooldown();
 		// boolean withinCosts = nodeCosts.get(target) < maxCost;
 
-		boolean canMakeJump = inRange
+		return inRange
 				&& isActiveInPhase
 				&& !isAttacked
 				&& !isAttackedNextRound
 				&& !isLockedByJumpship
 				&& !isLockedByPreviousAttackCooldown;
-		return canMakeJump;
 	}
 
 	@Override

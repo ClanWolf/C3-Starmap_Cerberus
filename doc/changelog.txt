@@ -1,6 +1,10 @@
 C3 version history
 --------------------------------
 
+Version 6.8.1 (04.03.2022)
+- FIXED: Wrong sound in the beginning of second invasion
+- FIXED: A number of wrong behaviours when a user logged off and another user logged into the same client
+
 Version 6.8.0 (28.02.2022)
 - ADDED: Marker showing if a system can not be jumped to
 - FIXED: An error in the node connection in the invasion tree

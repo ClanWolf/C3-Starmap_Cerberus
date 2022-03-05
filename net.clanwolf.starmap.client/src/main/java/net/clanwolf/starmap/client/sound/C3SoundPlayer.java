@@ -214,14 +214,14 @@ public class C3SoundPlayer {
 			if (!lastRolePlaySampleURL.equals(urlString)) {
 				// This is a new sample. Another step was activated
 				// The old sample is outdated and the new one must be loaded
-				// TODO: Should it be started right away to make the user aware of this?
 				rpPlayer.stop();
+				rpPlayer = null;
 			}
-			if (rpPlayer.getStatus().equals(MediaPlayer.Status.PAUSED)) {
+			if (rpPlayer != null && rpPlayer.getStatus().equals(MediaPlayer.Status.PAUSED)) {
 				playerPaused = true;
 				rpPlayer.play(); // continue the last sample that was paused by changing the pane
 				return;
-			} else {
+			} else if (rpPlayer != null) {
 				rpPlayer.stop();
 				rpPlayer = null;
 			}
@@ -244,7 +244,7 @@ public class C3SoundPlayer {
 			if (Nexus.mainframeVolumeSlider != null) {
 				rpPlayer.volumeProperty().bindBidirectional(Nexus.mainframeVolumeSlider.valueProperty());
 			}
-			//		rpPlayer.setOnEndOfMedia( () -> ActionManager.getAction(ACTIONS.STOP_SPEECH_SPECTRUM).execute() );
+			// rpPlayer.setOnEndOfMedia( () -> ActionManager.getAction(ACTIONS.STOP_SPEECH_SPECTRUM).execute() );
 			lastRolePlaySampleURL = url.toString();
 			rpPlayer.play();
 		}

@@ -26,12 +26,12 @@
 
 		<!-- C3 Revision -->
 		<!-- https://stackoverflow.com/questions/10582054/maven-project-version-inheritance-do-i-have-to-specify-the-parent-version -->
-		<revision>6.8.0</revision>
+		<revision>6.8.1</revision>
 
 		<!-- Versions -->
 		<version.java>17</version.java>
 		<version.javafx>17.0.2</version.javafx>
-		<version.maven-compiler-plugin>3.8.1</version.maven-compiler-plugin>
+		<version.maven-compiler-plugin>3.10.0</version.maven-compiler-plugin>
 		<version.exec-maven-plugin>3.0.0</version.exec-maven-plugin>
 		<version.asm>9.2</version.asm>                                              <!-- 7.3.1       <-> 9.2         -->
 		<version.netty>4.1.72.Final</version.netty>

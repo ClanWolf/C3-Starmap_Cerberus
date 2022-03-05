@@ -34,6 +34,7 @@ import io.nadron.event.Events;
 import io.nadron.event.impl.SessionMessageHandler;
 import io.nadron.service.GameStateManagerService;
 import net.clanwolf.client.mail.MailManager;
+import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.server.GameServer;
 import net.clanwolf.starmap.transfer.dtos.*;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
@@ -318,7 +319,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			logger.debug("-- Attacked system: " + attack.getStarSystemID());
 
 			StarSystemDataPOJO s = StarSystemDataDAO.getInstance().findById(getC3UserID(session), attack.getStarSystemDataID());
-			s.setLockedUntilRound(attack.getRound() + 3);
+			s.setLockedUntilRound(attack.getRound() + Constants.ROUNDS_TO_LOCK_SYSTEM_AFTER_ATTACK);
 			daoSS.update(getC3UserID(session), s);
 
 			ArrayList<AttackCharacterPOJO> newAttackCharacters = new ArrayList<AttackCharacterPOJO>();

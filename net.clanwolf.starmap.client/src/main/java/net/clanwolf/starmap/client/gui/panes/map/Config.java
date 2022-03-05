@@ -27,8 +27,6 @@
 package net.clanwolf.starmap.client.gui.panes.map;
 
 import javafx.scene.paint.Color;
-import net.clanwolf.starmap.client.util.C3PROPS;
-import net.clanwolf.starmap.client.util.C3Properties;
 
 public class Config {
 	public static final double CLIP_X = 776;
