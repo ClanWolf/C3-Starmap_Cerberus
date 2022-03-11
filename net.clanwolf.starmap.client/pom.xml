@@ -109,7 +109,7 @@
 		<dependency>
 			<groupId>org.jetbrains</groupId>
 			<artifactId>annotations</artifactId>
-			<version>22.0.0</version>
+			<version>23.0.0</version>
 			<scope>compile</scope>
 		</dependency>
 
@@ -140,7 +140,7 @@
 		<dependency>
 			<groupId>net.coobird</groupId>
 			<artifactId>thumbnailator</artifactId>
-			<version>0.4.16</version>
+			<version>0.4.17</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.kwhat</groupId>
@@ -408,7 +408,7 @@
 									<artifact>
 										<groupId>net.coobird</groupId>
 										<artifactId>thumbnailator</artifactId>
-										<version>0.4.16</version>
+										<version>0.4.17</version>
 									</artifact>
 									<moduleInfoSource>
 										module thumbnailator {
@@ -771,7 +771,7 @@
 									<artifact>
 										<groupId>com.fasterxml.jackson.core</groupId>
 										<artifactId>jackson-annotations</artifactId>
-										<version>2.13.1</version>
+										<version>2.13.2</version>
 									</artifact>
 									<moduleInfoSource>
 										module com.fasterxml.jackson.annotation {

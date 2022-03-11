@@ -1009,24 +1009,29 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 						if (attackedSystem != null && attackerStartedFromSystem != null) {
 							if (Config.MAP_FLASH_ATTACKED_SYSTEMS) {
-								PointD[] points = attackedSystem.getVoronoiRegion();
-								if (points != null) {
-									Circle circle = new Circle(attackedSystem.getScreenX(), attackedSystem.getScreenY(), Config.MAP_BACKGROUND_AREA_RADIUS);
-									circle.setVisible(false);
-									Shape systemBackground = Shape.intersect(new Polygon(PointD.toDoubles(points)), circle);
-									String colorString = boUniverse.factionBOs.get(attackerStartedFromSystem.getAffiliation()).getColor();
-									Color c = Color.web(colorString);
-									systemBackground.setFill(c);
-									FadeTransition fadeTransition = new FadeTransition(Duration.seconds(1.0), (systemBackground));
-									fadeTransition.setFromValue(0.5);
-									fadeTransition.setToValue(0.0);
-									fadeTransition.setAutoReverse(true);
-									fadeTransition.setCycleCount(Animation.INDEFINITE);
-									fadeTransition.play();
-									systemBackground.setId("attackVisuals" + jumpship.getJumpshipName());
-									canvas.getChildren().add(systemBackground);
-									systemBackground.setVisible(true);
-									systemBackground.toBack();
+								if (attack.getAttackDTO().getFactionID_Winner() == null) {
+									PointD[] points = attackedSystem.getVoronoiRegion();
+									if (points != null) {
+										Circle circle = new Circle(attackedSystem.getScreenX(), attackedSystem.getScreenY(), Config.MAP_BACKGROUND_AREA_RADIUS);
+										circle.setVisible(false);
+										Shape systemBackground = Shape.intersect(new Polygon(PointD.toDoubles(points)), circle);
+										String colorString = boUniverse.factionBOs.get(attackerStartedFromSystem.getAffiliation()).getColor();
+										Color c = Color.web(colorString);
+										systemBackground.setFill(c);
+										FadeTransition fadeTransition = new FadeTransition(Duration.seconds(1.0), (systemBackground));
+										fadeTransition.setFromValue(0.5);
+										fadeTransition.setToValue(0.0);
+										fadeTransition.setAutoReverse(true);
+										fadeTransition.setCycleCount(Animation.INDEFINITE);
+										fadeTransition.play();
+										systemBackground.setId("attackVisuals" + jumpship.getJumpshipName());
+										canvas.getChildren().add(systemBackground);
+										systemBackground.setVisible(true);
+										systemBackground.toBack();
+									}
+								} else {
+									// The fight has been finished here, so no flashing.
+									// The system will be marked with stripes later.
 								}
 							}
 

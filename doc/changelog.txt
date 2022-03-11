@@ -1,6 +1,10 @@
 C3 version history
 --------------------------------
 
+Version 6.8.2 (07.03.2022)
+- UPDATED: All dependencies
+- FIXED: Display of changing owner in current round (ended invasions do not flash anymore)
+
 Version 6.8.1 (04.03.2022)
 - FIXED: Wrong sound in the beginning of second invasion
 - FIXED: A number of wrong behaviours when a user logged off and another user logged into the same client
