@@ -4,6 +4,7 @@ C3 version history
 Version 6.8.3 (12.03.2022)
 - UPDATED: All dependencies
 - FIXED: Display of changing owner in current round (ended invasions do not flash anymore)
+- FIXED: Removed illegal char in string for Netty (resource of sound sample, space char)
 
 Version 6.8.1 (04.03.2022)
 - FIXED: Wrong sound in the beginning of second invasion
