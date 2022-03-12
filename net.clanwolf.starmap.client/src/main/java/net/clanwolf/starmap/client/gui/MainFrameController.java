@@ -2233,8 +2233,12 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private void showMessage(C3Message message) {
 		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("5");
 
-		messagePane = new C3MessagePane(message);
 		Platform.runLater(() -> {
+			if (mouseStopper.getChildren().contains(messagePane)) {
+				mouseStopper.getChildren().remove(mouseStopper);
+			}
+
+			messagePane = new C3MessagePane(message);
 			Tools.playGUICreationSound();
 			mouseStopper.getChildren().add(messagePane);
 			messagePane.fadeIn();

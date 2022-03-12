@@ -1,7 +1,7 @@
 C3 version history
 --------------------------------
 
-Version 6.8.2 (07.03.2022)
+Version 6.8.3 (12.03.2022)
 - UPDATED: All dependencies
 - FIXED: Display of changing owner in current round (ended invasions do not flash anymore)
 

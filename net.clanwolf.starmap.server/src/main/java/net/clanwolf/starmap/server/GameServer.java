@@ -85,6 +85,7 @@ public class GameServer {
 	public static Long getCurrentSeason() {
 		return currentSeason;
 	}
+
 	public static void setCurrentSeason(Long s) {
 		currentSeason = s;
 	}

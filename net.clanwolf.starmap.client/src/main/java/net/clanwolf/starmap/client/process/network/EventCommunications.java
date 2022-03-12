@@ -148,7 +148,7 @@ public class EventCommunications {
 					break;
 
 				case ATTACK_SAVE_RESPONSE:
-					logger.info("Attack has been started.");
+					logger.info("Attack has been saved.");
 					AttackDTO attack = (AttackDTO) state.getObject();
 
 					//RolePlayStoryDTO rpOldDTO = Nexus.getBoUniverse().getAttackStories().get(Nexus.getCurrentAttackOfUser().getAttackDTO().getStoryID());
