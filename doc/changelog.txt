@@ -1,6 +1,19 @@
 C3 version history
 --------------------------------
 
+Version 6.8.4 (14.03.2022)
+- ADDED: Button to open log in external editor application
+- FIXED: Wrong Audio mission time in final step 6B
+- FIXED: CSS Error on log pane
+- FIXED: IRC client disconnects if c3 disconnects
+- CHANGED: Extention for logfiles is now "*.c3log" (instead of "*.log")
+- CHANGED: Formatted timestamp on uploaded logs
+- CHANGED: Log file name contains local computer name for ease of identification
+- CHANGED: Color coding for SEVERE lof entries
+- CHANGED: Manual improved
+- REMOVED: Some log texts that should not be necessary anymore (debug)
+- STARTED: A new scenario definition for IS vs. Clan
+
 Version 6.8.3 (12.03.2022)
 - UPDATED: All dependencies
 - FIXED: Display of changing owner in current round (ended invasions do not flash anymore)

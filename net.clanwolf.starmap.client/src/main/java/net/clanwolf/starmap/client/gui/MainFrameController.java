@@ -1121,6 +1121,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		ActionManager.addActionCallbackListener(ACTIONS.SWITCH_TO_MAP, this);
 		ActionManager.addActionCallbackListener(ACTIONS.TERMINAL_COMMAND, this);
 		ActionManager.addActionCallbackListener(ACTIONS.FLASH_MWO_LOGO_ONCE, this);
+
+		ActionManager.addActionCallbackListener(ACTIONS.IRC_DISCONNECT_NOW, this);
 	}
 
 	private void setToLevelLoggedOutText() {
@@ -1950,6 +1952,17 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 						C3SoundPlayer.play("sound/fx/beep_electric_3.mp3", false);
 					}
 				}
+				break;
+
+			case IRC_DISCONNECT_NOW:
+				Platform.runLater(() -> {
+//					chatPane = null;
+//					chatPane = new ChatPane();
+//					chatPane.setShowsMouseFollow(false);
+//					chatPane.setShowsPlanetRotation(false);
+//					chatPane.setCacheHint(CacheHint.SPEED);
+//					chatPane.getController().addActionCallBackListeners();
+				});
 				break;
 
 			case FLASH_MWO_LOGO_ONCE:

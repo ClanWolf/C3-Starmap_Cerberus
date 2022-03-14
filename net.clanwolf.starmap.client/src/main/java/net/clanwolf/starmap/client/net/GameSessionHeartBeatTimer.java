@@ -48,7 +48,7 @@ public class GameSessionHeartBeatTimer extends TimerTask {
 
 	@Override
 	public void run() {
-		logger.info("Sending keepalive heartbeat.");
+//		logger.info("Sending keepalive heartbeat.");
 		GameState heartbeatState = new GameState();
 		heartbeatState.setMode(GAMESTATEMODES.SESSION_KEEPALIVE);
 		heartbeatState.addObject(null);

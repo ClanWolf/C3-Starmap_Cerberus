@@ -46,6 +46,7 @@ import net.clanwolf.starmap.client.util.Internationalization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.swing.*;
 import java.lang.invoke.MethodHandles;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -148,6 +149,7 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 		ActionManager.addActionCallbackListener(ACTIONS.IRC_CHANGE_NICK, this);
 		ActionManager.addActionCallbackListener(ACTIONS.IRC_SENDING_ACTION, this);
 		ActionManager.addActionCallbackListener(ACTIONS.IRC_UPDATED_USERLIST_RECEIVED, this);
+		ActionManager.addActionCallbackListener(ACTIONS.IRC_DISCONNECT_NOW, this);
 	}
 
 	private static ChatPaneController instance = null;
@@ -409,6 +411,17 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 
 			case IRC_CONNECTED:
 				C3SoundPlayer.getTTSFile(Internationalization.getString("C3_IRC_Connected"));
+				break;
+
+			case IRC_DISCONNECT_NOW:
+				Platform.runLater(() -> {
+					addChatLine(null, "**");
+					addChatLine(null, "**");
+					addChatLine(null, "** " + Internationalization.getString("C3_IRC_DisconnectedByC3Logout"));
+					addChatLine(null, "**");
+					addChatLine(null, "**");
+					ActionManager.getAction(ACTIONS.HIDE_IRC_INDICATOR).execute();
+				});
 				break;
 
 			case IRC_USER_JOINED:

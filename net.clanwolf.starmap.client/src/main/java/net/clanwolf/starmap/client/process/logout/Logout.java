@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 
+import javax.swing.*;
 import java.lang.invoke.MethodHandles;
 
 /**
@@ -63,5 +64,7 @@ public class Logout {
 		} else {
 			ActionManager.getAction(ACTIONS.LOGGED_OFF_COMPLETE).execute();
 		}
+
+		ActionManager.getAction(ACTIONS.IRC_DISCONNECT_NOW).execute();
 	}
 }
