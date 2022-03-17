@@ -69,6 +69,9 @@ public class RolePlayCharacterStatsPOJO extends Pojo {
 	@Column(name = "MechItemId")
 	private Long mechItemId;
 
+	@Column(name = "MWOTeam")
+	private Long mwoTeam;
+
 	@Column(name = "MwoKills")
 	private Long mwoKills;
 
@@ -193,5 +196,15 @@ public class RolePlayCharacterStatsPOJO extends Pojo {
 	@SuppressWarnings("unused")
 	public void setMechItemId(Long mechItemId) {
 		this.mechItemId = mechItemId;
+	}
+
+	@SuppressWarnings("unused")
+	public Long getMwoTeam() {
+		return mwoTeam;
+	}
+
+	@SuppressWarnings("unused")
+	public void setMwoTeam(Long mwoTeam) {
+		this.mwoTeam = mwoTeam;
 	}
 }

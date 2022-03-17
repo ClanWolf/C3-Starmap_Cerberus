@@ -1,6 +1,9 @@
 C3 version history
 --------------------------------
 
+Version 6.8.5 (17.03.2022)
+- ADDED: Team to char stats table
+
 Version 6.8.4 (14.03.2022)
 - ADDED: Button to open log in external editor application
 - FIXED: Wrong Audio mission time in final step 6B
