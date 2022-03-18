@@ -70,10 +70,10 @@ public class ResultAnalyzer {
 
 		Integer team1NumberOfPilots = 0;
 		Integer team2NumberOfPilots = 0;
-		Long team1Tonnage = 0L;
-		Long team2Tonnage = 0L;
-		Long team1LostTonnage = 0L;
-		Long team2LostTonnage = 0L;
+		long team1Tonnage = 0L;
+		long team2Tonnage = 0L;
+		long team1LostTonnage = 0L;
+		long team2LostTonnage = 0L;
 		Long team1KillCount = 0L;
 		Long team2KillCount = 0L;
 		Integer team1SurvivingPercentage = 0;
@@ -82,18 +82,16 @@ public class ResultAnalyzer {
 		String attackerTeam = null;
 		String defenderTeam = null;
 
-		// 2018-03-30T01:41:51+00:00
-		Timestamp timestampFromMWOGame = null;
 		double hours = 0.0;
 		try {
 			String isoDatePattern = "yyyy-MM-dd'T'HH:mm:ssXXX";
 			DateFormat dateFormat = new SimpleDateFormat(isoDatePattern);
 			Date parsedDate = dateFormat.parse(md.getCompleteTime());
-			timestampFromMWOGame = new java.sql.Timestamp(parsedDate.getTime());
+			Timestamp timestampFromMWOGame = new java.sql.Timestamp(parsedDate.getTime());
 
 			Timestamp timestampNow = Timestamp.from(Instant.now());
 			long difference = timestampNow.getTime() - timestampFromMWOGame.getTime();
-			hours = ((difference / 1000) / 60) / 60;
+			hours = ((difference / 1000.0) / 60.0) / 60.0;
 		} catch(Exception e) {
 			e.printStackTrace();
 		}
@@ -121,15 +119,17 @@ public class ResultAnalyzer {
 			String mech = ud.getMechName();
 			Long mechItemId = ud.getMechItemID().longValue();
 			boolean leadingPosition = false;
+
 			String mechFullName = mechInfo.getFullname();
+			Integer killsMostDamage = ud.getKillsMostDamage();
+			Integer teamDamage = ud.getTeamDamage();
+			Integer componentsDestroyed = ud.getComponentsDestroyed();
+
 			int tonnage = mechInfo.getTonnage();
 			String unit = ud.getUnitTag();
 			Integer kills = ud.getKills();
-			Integer killsMostDamage = ud.getKillsMostDamage();
 			Integer assists = ud.getAssists();
 			Integer damage = ud.getDamage();
-			Integer teamDamage = ud.getTeamDamage();
-			Integer componentsDestroyed = ud.getComponentsDestroyed();
 			Integer matchScore = ud.getMatchScore();
 			Integer healthPercentage = ud.getHealthPercentage();
 			String userNameFormatted = String.format("%30s %n", userName);

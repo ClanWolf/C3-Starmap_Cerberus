@@ -158,8 +158,8 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 		boolean givenLocalVersionIsHigherOrEqual = false;
 		String v2 = Tools.getVersionNumber();
 
-		v1 = "6.7.3";
-		v2 = "6.7.3";
+//		v1 = "6.7.3";
+//		v2 = "6.7.3";
 
 		if (v1.equals(v2)) {
 			givenLocalVersionIsHigherOrEqual = true;

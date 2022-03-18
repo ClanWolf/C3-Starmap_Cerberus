@@ -1,6 +1,9 @@
 C3 version history
 --------------------------------
 
+Version 6.9.1 (18.03.2022)
+- Statistics data from MWO API is processed when round is finalized
+
 Version 6.8.5 (17.03.2022)
 - ADDED: Team to char stats table
 
