@@ -30,6 +30,9 @@ import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.*;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import net.clanwolf.starmap.client.action.*;
@@ -48,8 +51,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.slf4j.event.Level;
 
+import java.awt.*;
 import java.io.File;
+import java.io.IOException;
 import java.lang.invoke.MethodHandles;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -71,7 +79,7 @@ public class LogPaneController implements ActionCallBackListener {
 	@FXML
 	ComboBox<Level> cbLevel;
 	@FXML
-	Button btnReport, btnClose, btnRefresh;
+	Button btnReport, btnClose, btnRefresh, btnEditor;
 
 	public static boolean logAutoscrolldown = true;
 	private static LogPaneController instance = null;
@@ -142,6 +150,16 @@ public class LogPaneController implements ActionCallBackListener {
 	}
 
 	@FXML
+	public void btnEditLogFile() {
+		File logFile = new File(C3Properties.getProperty(C3PROPS.LOGFILE) + ".0");
+		try {
+			Desktop.getDesktop().open(logFile);
+		} catch (IOException e) {
+			logger.error("Could not open local log file for editing!", e);
+		}
+	}
+
+	@FXML
 	public void btnCloseClicked() {
 		if (btnClose.getScene() != null) {
 			Stage stage = (Stage) btnClose.getScene().getWindow();
@@ -162,17 +180,24 @@ public class LogPaneController implements ActionCallBackListener {
 		// https://www.softwaretestinghelp.com/github-rest-api-tutorial/#Labels_Milestones_Issues
 		// https://stackoverflow.com/questions/13324052/github-issue-creation-api
 
+		String serverName = "";
+		try {
+			serverName = InetAddress.getLocalHost().getHostName();
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		}
+
 		String ip = IP.getExternalIP();
-		String timestamp = "" + System.currentTimeMillis();
+		String formattedTimestamp = new SimpleDateFormat("yyyyMMdd-HH:mm:ss").format(System.currentTimeMillis());
 		String username = "";
 		if (Nexus.getCurrentUser() != null) {
 			username = Nexus.getCurrentUser().getUserName();
 		}
 		String logfilename = "";
 		if (!"".equals(username)) {
-			logfilename = timestamp + "_" + ip + "-" + username + ".c3log";
+			logfilename = formattedTimestamp + "_" + serverName + "(" + ip + ")-" + username + ".c3log";
 		} else {
-			logfilename = timestamp + "_" + ip + ".c3log";
+			logfilename = formattedTimestamp + "_" + serverName + "(" + ip + ").c3log";
 		}
 
 		StatusTextEntryActionObject o = new StatusTextEntryActionObject("Uploading logfile...", false);
@@ -206,11 +231,7 @@ public class LogPaneController implements ActionCallBackListener {
 	}
 
 	public void init() {
-		labelDescription.setText(Internationalization.getString("LogDescription"));
-		tabClientLog.setText(Internationalization.getString("LogClientTab"));
-		tabServerLog.setText(Internationalization.getString("LogServerTab"));
-		btnReport.setText(Internationalization.getString("LogButtonReport"));
-		btnClose.setText(Internationalization.getString("LogButtonClose"));
+		setStrings();
 
 		Nexus.getLogWatcher().run();
 		instance = this;
@@ -242,19 +263,19 @@ public class LogPaneController implements ActionCallBackListener {
 						if (i == 0) {                   // column 0
 							switch (item.getLevel()) {
 								case "WARNING" -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:darkgray;" : "-fx-background-color:#ffe6c5;-fx-text-fill:darkgray;");
-								case "ERROR" -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:darkgray;" : "-fx-background-color:#ff6547;-fx-text-fill:darkgray;");
+								case "SEVERE", "ERROR" -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:darkgray;" : "-fx-background-color:#ff6547;-fx-text-fill:darkgray;");
 								default -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:darkgray;" : "-fx-background-color:#e0f7fe;-fx-text-fill:darkgray;");
 							}
 						} else if (i == 1) {            // column 1
 							switch (item.getLevel()) {
 								case "WARNING" -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:purple;" : "-fx-background-color:#ffe6c5;-fx-text-fill:purple;");
-								case "ERROR" -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:purple;" : "-fx-background-color:#ff6547;-fx-text-fill:purple;");
+								case "SEVERE", "ERROR" -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:purple;" : "-fx-background-color:#ff6547;-fx-text-fill:purple;");
 								default -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:purple;" : "-fx-background-color:#e0f7fe;-fx-text-fill:purple;");
 							}
 						} else if (i == 2) {            // column 2
 							switch (item.getLevel()) {
 								case "WARNING" -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:black;" : "-fx-background-color:#ffe6c5;-fx-text-fill:black;");
-								case "ERROR" -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:black;" : "-fx-background-color:#ff6547;-fx-text-fill:black;");
+								case "SEVERE", "ERROR" -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:purple;" : "-fx-background-color:#ff6547;-fx-text-fill:purple;");
 								default -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:black;" : "-fx-background-color:#e0f7fe;-fx-text-fill:black;");
 							}
 						}
@@ -303,19 +324,19 @@ public class LogPaneController implements ActionCallBackListener {
 						if (i == 0) {                   // column 0
 							switch (item.getLevel()) {
 								case "WARNING" -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:darkgray;" : "-fx-background-color:#ffe6c5;-fx-text-fill:darkgray;");
-								case "ERROR" -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:darkgray;" : "-fx-background-color:#ff6547;-fx-text-fill:darkgray;");
+								case "SEVERE", "ERROR" -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:darkgray;" : "-fx-background-color:#ff6547;-fx-text-fill:darkgray;");
 								default -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:darkgray;" : "-fx-background-color:#e0f7fe;-fx-text-fill:darkgray;");
 							}
 						} else if (i == 1) {            // column 1
 							switch (item.getLevel()) {
 								case "WARNING" -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:purple;" : "-fx-background-color:#ffe6c5;-fx-text-fill:purple;");
-								case "ERROR" -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:purple;" : "-fx-background-color:#ff6547;-fx-text-fill:purple;");
+								case "SEVERE", "ERROR" -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:purple;" : "-fx-background-color:#ff6547;-fx-text-fill:purple;");
 								default -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:purple;" : "-fx-background-color:#e0f7fe;-fx-text-fill:purple;");
 							}
 						} else if (i == 2) {            // column 2
 							switch (item.getLevel()) {
 								case "WARNING" -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:black;" : "-fx-background-color:#ffe6c5;-fx-text-fill:black;");
-								case "ERROR" -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:black;" : "-fx-background-color:#ff6547;-fx-text-fill:black;");
+								case "SEVERE", "ERROR" -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:purple;" : "-fx-background-color:#ff6547;-fx-text-fill:purple;");
 								default -> style += (isSelected() ? "-fx-background-color:#96d35f;-fx-text-fill:black;" : "-fx-background-color:#e0f7fe;-fx-text-fill:black;");
 							}
 						}
@@ -366,6 +387,8 @@ public class LogPaneController implements ActionCallBackListener {
 		tabServerLog.setText(Internationalization.getString("LogServerTab"));
 		btnReport.setText(Internationalization.getString("LogButtonReport"));
 		btnClose.setText(Internationalization.getString("LogButtonClose"));
+		btnEditor.setText(Internationalization.getString("LogButtonEditorCaption"));
+		btnEditor.setTooltip(new Tooltip(Internationalization.getString("LogButtonEditorToolTip")));
 	}
 
 	/**

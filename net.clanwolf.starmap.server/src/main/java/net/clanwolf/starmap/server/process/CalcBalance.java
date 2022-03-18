@@ -37,6 +37,7 @@ import net.clanwolf.starmap.transfer.mwo.MechIdInfo;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+
 /**
  * Diese Klasse berechnet die Reparaturkosten der jeweiligen Mechs.
  *
@@ -47,8 +48,8 @@ public class CalcBalance {
 
     private double attackerRepairCost;
     private double defenderRepairCost;
-    private final Map<RolePlayCharacterPOJO, Double> defenderPlayerRepairCost = new HashMap<>();
-    private final Map<RolePlayCharacterPOJO, Double> attackerPlayerRepairCost = new HashMap<>();
+    private final Map<RolePlayCharacterStatsPOJO, Double> defenderPlayerRepairCost = new HashMap<>();
+    private final Map<RolePlayCharacterStatsPOJO, Double> attackerPlayerRepairCost = new HashMap<>();
 
     /**
      * Es werden alle Reparaturkosten für den Angreifer wird zurückgegeben,
@@ -90,7 +91,7 @@ public class CalcBalance {
      * die bei {@link #CalcBalance(AttackStatsPOJO rpcs)} berechnet wurde.
      * @return Gibt einen (HashMap(RolePlayCharacterPOJO, Double)) Wert zurück.
      */
-    public Map<RolePlayCharacterPOJO, Double> getDefenderPlayerRepairCost() {
+    public Map<RolePlayCharacterStatsPOJO, Double> getDefenderPlayerRepairCost() {
         return defenderPlayerRepairCost;
     }
 
@@ -100,7 +101,7 @@ public class CalcBalance {
      * die bei {@link #CalcBalance(AttackStatsPOJO rpcs)} berechnet wurde.
      * @return Gibt einen (HashMap(RolePlayCharacterPOJO, Double)) Wert zurück.
      */
-    public Map<RolePlayCharacterPOJO, Double> getAttackerPlayerRepairCost() {
+    public Map<RolePlayCharacterStatsPOJO, Double> getAttackerPlayerRepairCost() {
         return attackerPlayerRepairCost;
     }
 
@@ -114,29 +115,46 @@ public class CalcBalance {
     public   CalcBalance(AttackStatsPOJO rpcs){
 
         String mwomatchid = rpcs.getMwoMatchId();
-        RolePlayCharacterStatsDAO DAO = RolePlayCharacterStatsDAO.getInstance();
-        RolePlayCharacterDAO CharacterDAO = RolePlayCharacterDAO.getInstance();
-        ArrayList<RolePlayCharacterStatsPOJO> list = DAO.findByMatchId(mwomatchid);
+        RolePlayCharacterStatsDAO dao = RolePlayCharacterStatsDAO.getInstance();
+        RolePlayCharacterDAO characterDAO = RolePlayCharacterDAO.getInstance();
+        ArrayList<RolePlayCharacterStatsPOJO> list = dao.findByMatchId(mwomatchid);
+        Long attackerTeam = 0L;
+        Long defenderTeam =0L;
 
         for(RolePlayCharacterStatsPOJO pojo : list){
 
-            RolePlayCharacterPOJO character = CharacterDAO.findById(Nexus.DUMMY_USERID, pojo.getRoleplayCharacterId());
-            MechIdInfo MI = new MechIdInfo(Math.toIntExact(pojo.getMechItemId()));
+            RolePlayCharacterPOJO character = characterDAO.findById(Nexus.DUMMY_USERID, pojo.getRoleplayCharacterId());
 
-            //Attacker
-            if(rpcs.getAttackerFactionId() == character.getFactionId().longValue()){
-
-                attackerPlayerRepairCost.put(character, MI.getRepairCost(Math.toIntExact(pojo.getMwoSurvivalPercentage())));
-                attackerRepairCost = attackerRepairCost + MI.getRepairCost(Math.toIntExact(pojo.getMwoSurvivalPercentage()));
-
+            //Get Attacker Droplead
+            if(rpcs.getAttackerFactionId() == character.getFactionId().longValue()) {
+                if(pojo.getLeadingPosition()){
+                    attackerTeam = pojo.getMwoTeam();
+                }
             }
 
-            //Defender
+            //Get Defender Droplead
             if(rpcs.getDefenderFactionId() == character.getFactionId().longValue()){
+                if(pojo.getLeadingPosition()){
+                    defenderTeam = pojo.getMwoTeam();
+                }
+            }
+        }
 
-                defenderPlayerRepairCost.put(character, MI.getRepairCost(Math.toIntExact(pojo.getMwoSurvivalPercentage())));
-                defenderRepairCost = defenderRepairCost + MI.getRepairCost(Math.toIntExact(pojo.getMwoSurvivalPercentage()));
+        if(!(attackerTeam == 0L) && !(defenderTeam == 0L)){
 
+            for(RolePlayCharacterStatsPOJO pojo : list){
+                RolePlayCharacterPOJO character = characterDAO.findById(Nexus.DUMMY_USERID, pojo.getRoleplayCharacterId());
+                MechIdInfo MI = new MechIdInfo(Math.toIntExact(pojo.getMechItemId()));
+
+                if(attackerTeam.equals(pojo.getMwoTeam())){
+                    attackerPlayerRepairCost.put(pojo, MI.getRepairCost(Math.toIntExact(pojo.getMwoSurvivalPercentage())));
+                    attackerRepairCost = attackerRepairCost + MI.getRepairCost(Math.toIntExact(pojo.getMwoSurvivalPercentage()));
+                }
+
+                if(defenderTeam.equals(pojo.getMwoTeam())){
+                    defenderPlayerRepairCost.put(pojo, MI.getRepairCost(Math.toIntExact(pojo.getMwoSurvivalPercentage())));
+                    defenderRepairCost = defenderRepairCost + MI.getRepairCost(Math.toIntExact(pojo.getMwoSurvivalPercentage()));
+                }
             }
         }
     }

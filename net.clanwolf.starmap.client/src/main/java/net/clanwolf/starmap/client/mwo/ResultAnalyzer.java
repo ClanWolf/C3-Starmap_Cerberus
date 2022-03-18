@@ -70,12 +70,12 @@ public class ResultAnalyzer {
 
 		Integer team1NumberOfPilots = 0;
 		Integer team2NumberOfPilots = 0;
-		Long team1Tonnage = 0l;
-		Long team2Tonnage = 0l;
-		Long team1LostTonnage = 0l;
-		Long team2LostTonnage = 0l;
-		Long team1KillCount = 0l;
-		Long team2KillCount = 0l;
+		Long team1Tonnage = 0L;
+		Long team2Tonnage = 0L;
+		Long team1LostTonnage = 0L;
+		Long team2LostTonnage = 0L;
+		Long team1KillCount = 0L;
+		Long team2KillCount = 0L;
 		Integer team1SurvivingPercentage = 0;
 		Integer team2SurvivingPercentage = 0;
 
@@ -213,6 +213,11 @@ public class ResultAnalyzer {
 				charStats.setMwoMatchId(gameId);
 				charStats.setLeadingPosition(leadingPosition);
 				charStats.setMwoMatchScore(matchScore.longValue());
+				if ("1".equals(team)){
+					charStats.setMwoTeam(1L);
+				} else if ("2".equals(team)){
+					charStats.setMwoTeam(2L);
+				}
 				charStats.setMwoDamage(damage.longValue());
 				charStats.setMwoKills(kills.longValue());
 				charStats.setMwoSurvivalPercentage(healthPercentage.longValue());

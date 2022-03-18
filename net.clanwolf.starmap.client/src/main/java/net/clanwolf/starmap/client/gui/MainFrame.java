@@ -268,7 +268,7 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 		boolean res = dir.mkdirs();
 		if (res || dir.exists()) {
 
-			String logFileName = dir + File.separator + "starmap.log";
+			String logFileName = dir + File.separator + "starmap.c3log";
 			prepareLogging(logFileName);
 
 			C3Properties.setProperty(C3PROPS.LOGFILE, logFileName);

@@ -64,7 +64,18 @@ public class IRCClient implements ActionCallBackListener {
 		ActionManager.addActionCallbackListener(ACTIONS.IRC_SEND_MESSAGE, this);
 		ActionManager.addActionCallbackListener(ACTIONS.IRC_CHANGE_NICK, this);
 		ActionManager.addActionCallbackListener(ACTIONS.IRC_SENDING_ACTION, this);
+		ActionManager.addActionCallbackListener(ACTIONS.IRC_DISCONNECT_NOW, this);
 //		ActionManager.addActionCallbackListener(ACTIONS.IRC_GET_NAMELIST, this);
+	}
+
+	public void disconnect() {
+		if (connected) {
+			_api.disconnect();
+			connected = false;
+			logger.info("IRC client disconnected!");
+		} else {
+			logger.info("IRC was not connected, nothing to do.");
+		}
 	}
 
 	public void connect() {
@@ -199,6 +210,10 @@ public class IRCClient implements ActionCallBackListener {
 			case IRC_SENDING_ACTION:
 				String t = (String)o.getText();
 				_api.act(ircServerChannel, t);
+				break;
+
+			case IRC_DISCONNECT_NOW:
+				disconnect();
 				break;
 
 //			case IRC_GET_NAMELIST:
