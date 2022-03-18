@@ -28,6 +28,7 @@ package net.clanwolf.starmap.server.process;
 
 import net.clanwolf.client.mail.MailManager;
 import net.clanwolf.starmap.constants.Constants;
+import net.clanwolf.starmap.transfer.mwo.MechIdInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.server.GameServer;
@@ -241,48 +242,108 @@ public class EndRound {
 							StarSystemDataPOJO starSystemDataPOJO = StarSystemDataDAO.getInstance().findById(Nexus.DUMMY_USERID, asp.getStarSystemDataId());
 							StarSystemPOJO starSystemPOJO = StarSystemDAO.getInstance().findById(Nexus.DUMMY_USERID, starSystemDataPOJO.getStarSystemID().getId());
 
-							logger.info("--- found stats for attack: " + asp.getAttackId());
-							foughtAttacks.append("MWO Match ID: ").append(asp.getMwoMatchId()).append("\r\n");
-							foughtAttacks.append("Map: ").append(asp.getMap()).append("\r\n");
-							foughtAttacks.append("Mode: ").append(asp.getMode()).append("\r\n");
-							foughtAttacks.append("Time: ").append(asp.getDropEnded()).append("\r\n");
-							foughtAttacks.append("Faction '").append(factionAttacker.getShortName()).append("' attacked on System '").append(starSystemPOJO.getName()).append("'. ").append("System is defended by ").append(factionDefender.getShortName()).append(". ").append("\r\n");
-							if (factionAttacker.equals(factionWinner)) {
-								// Attacker won, planet will change hands
-								foughtAttacks.append("Attacking faction (").append(asp.getAttackerFactionId()).append(") won! The system will change the owner.").append("\r\n");
-							} else {
-								// Defender won, planet will stay with the original faction
-								foughtAttacks.append("Defending faction (").append(asp.getDefenderFactionId()).append(") won! The system will stay with them.").append("\r\n");
-							}
-							foughtAttacks.append("Attacker fielded ").append(asp.getAttackerNumberOfPilots()).append(" Mechs (").append(asp.getAttackerTonnage()).append("t) and lost ").append(asp.getDefenderKillCount()).append(" Mechs (").append(asp.getAttackerLostTonnage()).append("t)").append("\r\n");
-							foughtAttacks.append("Defender fielded ").append(asp.getDefenderNumberOfPilots()).append(" Mechs (").append(asp.getDefenderTonnage()).append("t) and lost ").append(asp.getAttackerKillCount()).append(" Mechs (").append(asp.getDefenderLostTonnage()).append("t)").append("\r\n");
-							//Calculate repair cost
-							logger.info("===[CALCULATE MECH REPAIR COST FOR THE DEFENDERS]===");
+							String[] receivers = { "keshik@googlegroups.com" };
+							boolean sent;
 
-							CalcBalance calcB = new CalcBalance(asp);
 
-							for(Map.Entry<RolePlayCharacterPOJO, Double> defuser : calcB.getDefenderPlayerRepairCost().entrySet()){
+									CalcBalance calcB = new CalcBalance(asp);
+									StringBuilder message = new StringBuilder();
+									message.append(String.format("%-15.15s","Round Id:") + asp.getRoundId() + "\r\n");
+									message.append(String.format("%-15.15s","Season Id:") + asp.getSeasonId() + "\r\n");
+									message.append(String.format("%-15.15s","Attack Id:") + asp.getAttackId() + "\r\n");
+									message.append(String.format("%-15.15s","Map:") + asp.getMap() + "\r\n");
+									message.append(String.format("%-15.15s","MWO Match Id:") + asp.getMwoMatchId() + "\r\n");
+									message.append(String.format("%-15.15s","Game mode:") + asp.getMode() + "\r\n\r\n");
+									message.append("Repair cost for defender:\r\n\r\n");
+									message.append("------------------------------");
+									message.append("------------------------------");
+									message.append("------------------------------");
+									message.append("\r\n");
+									message.append("MWO Username                  ").append("Mechname                      ").append(String.format("%30.30s","Repaircost"));
+									message.append("\r\n");
+									message.append("------------------------------");
+									message.append("------------------------------");
+									message.append("------------------------------");
+									message.append("\r\n");
 
-								logger.info("Charname: " + defuser.getKey().getName() +
-										" Mech repair cost: " + defuser.getValue() + " C-Bills");
+									for(Map.Entry<RolePlayCharacterStatsPOJO, Double> defuser : calcB.getDefenderPlayerRepairCost().entrySet()){
 
-							}
+										RolePlayCharacterDAO characterDAO = RolePlayCharacterDAO.getInstance();
+										RolePlayCharacterPOJO character = characterDAO.findById(Nexus.DUMMY_USERID, defuser.getKey().getRoleplayCharacterId());
 
-							logger.info("────────────────────────────────────────────────────");
-							logger.info("Defender total repair cost: (" + calcB.getDefenderRepairCost() + " C-Bills)");
-							logger.info("════════════════════════════════════════════════════");
-							logger.info("===[CALCULATE MECH REPAIR COST FOR THE ATTACKERS]===");
+										message.append(String.format("%-30.30s",character.getMwoUsername()));
+										MechIdInfo MI = new MechIdInfo(Math.toIntExact(defuser.getKey().getMechItemId()));
+										message.append(String.format("%-30.30s",MI.getFullname()));
+										message.append(String.format("%30.30s",defuser.getValue().longValue() + " C-Bills"));
+										message.append("\r\n");
 
-							for(Map.Entry<RolePlayCharacterPOJO, Double> attuser : calcB.getAttackerPlayerRepairCost().entrySet()){
+									}
+									message.append("------------------------------");
+									message.append("------------------------------");
+									message.append("------------------------------");
+									message.append("\r\n");
+									message.append(String.format("%-60.60s","Total:"));
+									message.append(String.format("%30.30s",(long) calcB.getDefenderRepairCost() + " C-Bills"));
 
-								logger.info("Charname: " + attuser.getKey().getName() +
-										" Mech repair cost: " + attuser.getValue() + " C-Bills");
+									message.append("\r\n");
+									message.append("==============================");
+									message.append("==============================");
+									message.append("==============================");
+									message.append("\r\n\r\n");
 
-							}
+									message.append("Repair cost for attacker:\r\n\r\n");
+									message.append("------------------------------");
+									message.append("------------------------------");
+									message.append("------------------------------");
+									message.append("\r\n");
+									message.append("MWO Username                  ").append("Mechname                      ").append(String.format("%30.30s","Repaircost"));
+									message.append("\r\n");
+									message.append("------------------------------");
+									message.append("------------------------------");
+									message.append("------------------------------");
+									message.append("\r\n");
 
-							logger.info("────────────────────────────────────────────────────");
-							logger.info("Attacker total repair cost: (" + calcB.getAttackerRepairCost() + " C-Bills)");
-							logger.info("════════════════════════════════════════════════════");
+									for(Map.Entry<RolePlayCharacterStatsPOJO, Double> attuser : calcB.getAttackerPlayerRepairCost().entrySet()){
+
+										RolePlayCharacterDAO characterDAO = RolePlayCharacterDAO.getInstance();
+										RolePlayCharacterPOJO character = characterDAO.findById(Nexus.DUMMY_USERID, attuser.getKey().getRoleplayCharacterId());
+
+										message.append(String.format("%-30.30s",character.getMwoUsername()));
+										MechIdInfo MI = new MechIdInfo(Math.toIntExact(attuser.getKey().getMechItemId()));
+										message.append(String.format("%-30.30s",MI.getFullname()));
+										message.append(String.format("%30.30s",attuser.getValue().longValue() + " C-Bills"));
+										message.append("\r\n");
+
+									}
+
+									message.append("------------------------------");
+									message.append("------------------------------");
+									message.append("------------------------------");
+									message.append("\r\n");
+									message.append(String.format("%-60.60s","Total:"));
+									message.append(String.format("%30.30s",(long) calcB.getAttackerRepairCost() + " C-Bills"));
+									message.append("\r\n");
+									message.append("==============================");
+									message.append("==============================");
+									message.append("==============================");
+									message.append("\r\n");
+
+									StringBuilder subject = new StringBuilder();
+									subject.append("Repair cost calculation for roundId ").append(asp.getRoundId());
+
+									if(!GameServer.isDevelopmentPC) {
+										sent = MailManager.sendMail("c3@clanwolf.net", receivers, subject.toString(), message.toString(), false);
+
+										if (sent) {
+											// sent
+											logger.info("Mail sent. [5]");
+										} else {
+											// error during email sending
+											logger.info("Error during mail dispatch. [5]");
+										}
+									} else {
+										logger.info("Mail was not sent out because this is a dev computer.");
+									}
 						}
 					} else {
 						// no statistics found
@@ -531,7 +592,122 @@ public class EndRound {
 		}
 		return foughtAttacks + "\r\n" + resolvedAttacks + "\r\n" + movedJumpships;
 	}
+/*
+	public static void main(String[] args) {
+		ArrayList<AttackStatsPOJO> statisticsList = AttackStatsDAO.getInstance().getStatisticsForAttack(1L, 92L);
 
+		//String[] receivers = { "mail-an-kernreaktor@web.de" };
+		String[] receivers = { "keshik@googlegroups.com" };
+		boolean sent;
+
+
+
+		if (!statisticsList.isEmpty()) {
+			// log stats
+			for (AttackStatsPOJO asp : statisticsList) {
+
+				CalcBalance calcB = new CalcBalance(asp);
+				StringBuilder message = new StringBuilder();
+				message.append(String.format("%-15.15s","Round Id:") + asp.getRoundId() + "\r\n");
+				message.append(String.format("%-15.15s","Season Id:") + asp.getSeasonId() + "\r\n");
+				message.append(String.format("%-15.15s","Attack Id:") + asp.getAttackId() + "\r\n");
+				message.append(String.format("%-15.15s","Map:") + asp.getMap() + "\r\n");
+				message.append(String.format("%-15.15s","MWO Match Id:") + asp.getMwoMatchId() + "\r\n");
+				message.append(String.format("%-15.15s","Game mode:") + asp.getMode() + "\r\n\r\n");
+				message.append("Repair cost for defender:\r\n\r\n");
+				message.append("------------------------------");
+				message.append("------------------------------");
+				message.append("------------------------------");
+				message.append("\r\n");
+				message.append("MWO Username                  ").append("Mechname                      ").append(String.format("%30.30s","Repaircost"));
+				message.append("\r\n");
+				message.append("------------------------------");
+				message.append("------------------------------");
+				message.append("------------------------------");
+				message.append("\r\n");
+
+				for(Map.Entry<RolePlayCharacterStatsPOJO, Double> defuser : calcB.getDefenderPlayerRepairCost().entrySet()){
+
+					RolePlayCharacterDAO characterDAO = RolePlayCharacterDAO.getInstance();
+					RolePlayCharacterPOJO character = characterDAO.findById(Nexus.DUMMY_USERID, defuser.getKey().getRoleplayCharacterId());
+
+					message.append(String.format("%-30.30s",character.getMwoUsername()));
+					MechIdInfo MI = new MechIdInfo(Math.toIntExact(defuser.getKey().getMechItemId()));
+					message.append(String.format("%-30.30s",MI.getFullname()));
+					message.append(String.format("%30.30s",defuser.getValue().longValue() + " C-Bills"));
+					message.append("\r\n");
+
+				}
+				message.append("------------------------------");
+				message.append("------------------------------");
+				message.append("------------------------------");
+				message.append("\r\n");
+				message.append(String.format("%-60.60s","Total:"));
+				message.append(String.format("%30.30s",(long) calcB.getDefenderRepairCost() + " C-Bills"));
+
+				message.append("\r\n");
+				message.append("==============================");
+				message.append("==============================");
+				message.append("==============================");
+				message.append("\r\n\r\n");
+
+				message.append("Repair cost for attacker:\r\n\r\n");
+				message.append("------------------------------");
+				message.append("------------------------------");
+				message.append("------------------------------");
+				message.append("\r\n");
+				message.append("MWO Username                  ").append("Mechname                      ").append(String.format("%30.30s","Repaircost"));
+				message.append("\r\n");
+				message.append("------------------------------");
+				message.append("------------------------------");
+				message.append("------------------------------");
+				message.append("\r\n");
+
+				for(Map.Entry<RolePlayCharacterStatsPOJO, Double> attuser : calcB.getAttackerPlayerRepairCost().entrySet()){
+
+					RolePlayCharacterDAO characterDAO = RolePlayCharacterDAO.getInstance();
+					RolePlayCharacterPOJO character = characterDAO.findById(Nexus.DUMMY_USERID, attuser.getKey().getRoleplayCharacterId());
+
+					message.append(String.format("%-30.30s",character.getMwoUsername()));
+					MechIdInfo MI = new MechIdInfo(Math.toIntExact(attuser.getKey().getMechItemId()));
+					message.append(String.format("%-30.30s",MI.getFullname()));
+					message.append(String.format("%30.30s",attuser.getValue().longValue() + " C-Bills"));
+					message.append("\r\n");
+
+
+				}
+				message.append("------------------------------");
+				message.append("------------------------------");
+				message.append("------------------------------");
+				message.append("\r\n");
+				message.append(String.format("%-60.60s","Total:"));
+				message.append(String.format("%30.30s",(long) calcB.getAttackerRepairCost() + " C-Bills"));
+				message.append("\r\n");
+				message.append("==============================");
+				message.append("==============================");
+				message.append("==============================");
+				message.append("\r\n");
+
+				StringBuilder subject = new StringBuilder();
+				subject.append("Repair cost calculation for roundId ").append(asp.getRoundId());
+				if(!GameServer.isDevelopmentPC) {
+					sent = MailManager.sendMail("c3@clanwolf.net", receivers, subject.toString(), message.toString(), false);
+
+					if (sent) {
+						// sent
+						logger.info("Mail sent. [5]");
+					} else {
+						// error during email sending
+						logger.info("Error during mail dispatch. [5]");
+					}
+				} else {
+					logger.info("Mail was not sent out because this is a dev computer.");
+				}
+
+			}
+
+		}
+	}*/
 //	public static void main(String[] args) {
 //		// 3052 - 2021 = 1031 Jahre Differenz
 //		// 1031 Jahre * 365,25 Tage = 376.572,75 Tage Differenz
