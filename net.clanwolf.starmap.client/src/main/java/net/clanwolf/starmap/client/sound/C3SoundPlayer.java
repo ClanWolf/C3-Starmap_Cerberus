@@ -202,8 +202,8 @@ public class C3SoundPlayer {
 		}
 	}
 
-	public static void stopSpeechPlayer(){
-		if(speechPlayer != null){
+	public static void stopSpeechPlayer() {
+		if(speechPlayer != null) {
 			speechPlayer.stop();
 			speechPlayer = null;
 		}
