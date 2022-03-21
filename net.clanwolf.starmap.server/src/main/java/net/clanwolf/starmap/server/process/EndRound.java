@@ -217,7 +217,8 @@ public class EndRound {
 			// list all attacks that were fought in this round
 			logger.info("--- Attacks that have been fought in this round:");
 			for (AttackPOJO attackPOJO : allAttacksForRound) {
-				if (!openAttacksInRoundList.contains(attackPOJO)) {
+				logger.info("--- Attack: " + attackPOJO.getId() + "(StarSystem: " + attackPOJO.getStarSystemID() + ")");
+				if (!openAttacksInRoundList.contains(attackPOJO)) { // because the list of openAttacks is empty since line 215, this will run for ALL attacks
 					// This attack was not resolved by automation but was fought
 					// There should be stats entries in the database that could be displayed (partially) here
 					Long winnerId = attackPOJO.getFactionID_Winner();
@@ -272,6 +273,8 @@ public class EndRound {
 						// no statistics found
 						logger.info("--- no statistics found for attackId: " + attackPOJO.getId());
 					}
+				} else {
+					logger.info("--- This attack was still open (this should not happen anymore!).");
 				}
 			}
 

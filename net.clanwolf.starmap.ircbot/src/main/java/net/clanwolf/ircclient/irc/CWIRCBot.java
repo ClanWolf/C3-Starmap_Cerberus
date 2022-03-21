@@ -368,6 +368,9 @@ public class CWIRCBot extends ListenerAdapter {
 				.addServer(ircServerUrl)
 				.addAutoJoinChannel(ircServerChannel)
 				.addListener(new CWIRCBot())
+				.setAutoReconnect(true)
+				.setAutoReconnectAttempts(10)
+				.setAutoReconnectDelay(30)
 				.buildConfiguration();
 		pIrcBot = new PircBotX(configuration);
 		pIrcBot.startBot();

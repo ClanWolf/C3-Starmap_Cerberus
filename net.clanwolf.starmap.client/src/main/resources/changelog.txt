@@ -1,6 +1,10 @@
 C3 version history
 --------------------------------
 
+Version 6.9.4 (21.03.2022)
+- FIXED: IRCBot auto reconnect
+- FIXED: A bug where the client needed to be restartet after each invasion drop for the buttons to work
+
 Version 6.9.2 (18.03.2022)
 - ADDED: Statistics data from MWO API is processed when round is finalized
 - FIXED: Sound replay while storing statistic data

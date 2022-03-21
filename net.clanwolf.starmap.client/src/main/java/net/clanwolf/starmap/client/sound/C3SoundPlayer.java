@@ -162,7 +162,7 @@ public class C3SoundPlayer {
 				logger.info("Creating cache folder for voice files: " + success);
 			}
 			String fn = s.replace("%20", "_");
-			String fn1 = s.replace("%20", " ");
+			fn = fn.replace(" ", "_");
 
 			String f = cacheFolderName + File.separator + fn + ".mp3";
 			File f1 = new File(f);
@@ -178,16 +178,9 @@ public class C3SoundPlayer {
 					logger.info("TTS sound file missing, VoiceTTS failed.");
 					logger.info("Looking for TTS sound file in packaged resources... ");
 					URL u = null;
-					String voicePath;
-					String voicePath1 = "/sound/voice/" + lang + "/" + fn + ".mp3";
-					String voicePath2 = "/sound/voice/" + lang + "/" + fn1 + ".mp3";
-					u = ((C3SoundPlayer)getInstance()).getClass().getResource(voicePath1);
-					if (u == null) {
-						u = ((C3SoundPlayer)getInstance()).getClass().getResource(voicePath2);
-						voicePath = voicePath2;
-					} else {
-						voicePath = voicePath1;
-					}
+					String voicePath = "/sound/voice/" + lang + "/" + fn + ".mp3";
+					u = (getInstance()).getClass().getResource(voicePath);
+
 					if (u != null) {
 						play(voicePath, true);
 						logger.info("TTS sound file was found in resources.");
@@ -423,7 +416,7 @@ public class C3SoundPlayer {
 			String apikey = C3Properties.getProperty(C3PROPS.VOICERSSAPIKEY);
 
 			if (apikey != null && ("unknown".equals(apikey) || "".equals(apikey))) {
-				logger.warn("Error getting voice file from VoiceRSS! VoiceRSS API-Key is missing! Check property file and make sure a key is specified!");
+				logger.warn("Can not get voice files from VoiceRSS! VoiceRSS API-Key is missing! Check property file and make sure a key is specified!");
 				return false;
 			} else {
 				apikey = "?key=" + apikey;
@@ -437,6 +430,7 @@ public class C3SoundPlayer {
 				logger.info("Creating cache folder for voice files: " + success);
 			}
 			String fn = s.replace("%20", "_");
+			fn = fn.replace(" ", "_");
 			String f = cacheFolderName + File.separator + fn + ".mp3";
 			File f1 = new File(f);
 
