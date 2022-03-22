@@ -84,6 +84,10 @@ public class FTP implements IFileTransfer {
 			ftp_port = 21;
 		}
 
+		if ("".equals(C3Properties.getProperty(C3PROPS.FTP_SERVER)) || "unknown".equals(C3Properties.getProperty(C3PROPS.FTP_SERVER))) {
+			throw new Exception("No server specified!");
+		}
+
 		try {
 			if (!"".equals(user) && !"".equals(password)) {
 				logger.info("#########################################################");

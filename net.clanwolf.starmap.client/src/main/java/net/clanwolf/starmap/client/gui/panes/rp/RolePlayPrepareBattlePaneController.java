@@ -404,8 +404,8 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 				&& lvDropleadDefender.getItems().size() == 1
 				&& !"...".equals(lvDropleadAttacker.getItems().get(0).getName())
 				&& !"...".equals(lvDropleadDefender.getItems().get(0).getName())
-				&& lvAttacker.getItems().size() >= 2
-				&& lvDefender.getItems().size() >= 2
+//				&& lvAttacker.getItems().size() >= 2 // Check the minimum number of fighting pilots, may be disabled for testing
+//				&& lvDefender.getItems().size() >= 2 // Check the minimum number of fighting pilots, may be disabled for testing
 				&& lvAttacker.getItems().size() == lvDefender.getItems().size()
 		) {
 			// Enable "continue"
@@ -421,7 +421,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 			}
 		}
 
-		Platform.runLater(() -> btNext.setDisable(false));
+//		Platform.runLater(() -> btNext.setDisable(false)); // this ALWAYS enabled the next button for testing purposes
 
 		Platform.runLater(() -> lvAttacker.requestFocus());
 		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("1");
