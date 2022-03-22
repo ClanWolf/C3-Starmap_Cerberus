@@ -239,9 +239,9 @@ public class EndRound {
 						for (AttackStatsPOJO asp : statisticsList) {
 							FactionPOJO factionAttacker = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, asp.getAttackerFactionId());
 							FactionPOJO factionDefender = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, asp.getDefenderFactionId());
-							FactionPOJO factionWinner = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, asp.getWinnerFactionId());
-							StarSystemDataPOJO starSystemDataPOJO = StarSystemDataDAO.getInstance().findById(Nexus.DUMMY_USERID, asp.getStarSystemDataId());
-							StarSystemPOJO starSystemPOJO = StarSystemDAO.getInstance().findById(Nexus.DUMMY_USERID, starSystemDataPOJO.getStarSystemID().getId());
+							//FactionPOJO factionWinner = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, asp.getWinnerFactionId());
+							//StarSystemDataPOJO starSystemDataPOJO = StarSystemDataDAO.getInstance().findById(Nexus.DUMMY_USERID, asp.getStarSystemDataId());
+							//StarSystemPOJO starSystemPOJO = StarSystemDAO.getInstance().findById(Nexus.DUMMY_USERID, starSystemDataPOJO.getStarSystemID().getId());
 
 							logger.info("---Calculate the repair costs of the attacker " +
 									factionAttacker.getName_en() +
