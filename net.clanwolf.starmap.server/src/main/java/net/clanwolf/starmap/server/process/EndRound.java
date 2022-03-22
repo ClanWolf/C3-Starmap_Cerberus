@@ -234,6 +234,7 @@ public class EndRound {
 					logger.info("2");
 					if (!statisticsList.isEmpty()) {
 						// log stats
+						logger.info("--- Statistics found for attackId: " + attackPOJO.getId());
 
 						for (AttackStatsPOJO asp : statisticsList) {
 							FactionPOJO factionAttacker = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, asp.getAttackerFactionId());

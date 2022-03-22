@@ -59,6 +59,7 @@ public class Constants implements java.io.Serializable {
 
 	// Game - Meta
 	public static final long ROUNDS_TO_LOCK_SYSTEM_AFTER_ATTACK = 3;
+	public static final long MINIMUM_PILOTS_PER_SIDE_IN_INVASION_DROP = 1;
 
 	// Game - Invasion
 	public static final long ROLE_ATTACKER_WARRIOR = 0L; // 0L Attacker Warrior

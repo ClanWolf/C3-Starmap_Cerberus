@@ -404,8 +404,8 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 				&& lvDropleadDefender.getItems().size() == 1
 				&& !"...".equals(lvDropleadAttacker.getItems().get(0).getName())
 				&& !"...".equals(lvDropleadDefender.getItems().get(0).getName())
-//				&& lvAttacker.getItems().size() >= 2 // Check the minimum number of fighting pilots, may be disabled for testing
-//				&& lvDefender.getItems().size() >= 2 // Check the minimum number of fighting pilots, may be disabled for testing
+				&& lvAttacker.getItems().size() >= Constants.MINIMUM_PILOTS_PER_SIDE_IN_INVASION_DROP // Check the minimum number of fighting pilots, may be disabled for testing
+				&& lvDefender.getItems().size() >= Constants.MINIMUM_PILOTS_PER_SIDE_IN_INVASION_DROP // Check the minimum number of fighting pilots, may be disabled for testing
 				&& lvAttacker.getItems().size() == lvDefender.getItems().size()
 		) {
 			// Enable "continue"
