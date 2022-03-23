@@ -34,7 +34,7 @@ import java.util.Map;
  * in dem Spiel angezeigten Kartennamen.
  *
  * @author KERNREAKTOR
- * @version 14-12-2021
+ * @version 23-03-2022
  */
 public class MapInfo {
 

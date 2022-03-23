@@ -33,7 +33,7 @@ import java.util.Map;
  * einen Mech' zu und diese Eigenschaften des Mech's können ausgelesen werden.
  *
  * @author KERNREAKTOR
- * @version 22-02-2022
+ * @version 23-03-2022
  */
 public class MechIdInfo {
 
