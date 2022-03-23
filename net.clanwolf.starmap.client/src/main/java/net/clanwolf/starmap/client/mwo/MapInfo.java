@@ -54,6 +54,7 @@ public class MapInfo {
         map.put("Crater2","Rubellite Oasis");
         map.put("CrimsonStrait","Crimson Strait");
         map.put("EmeraldTaiga","Emerald Taiga");
+        map.put("EmeraldTaigaQP","Emerald Vale");
         map.put("ForestColony","Forest Colony");
         map.put("ForestColonyClassic","Forest Colony (Classic)");
         map.put("ForestColonySnow","Forest Colony Snow (Classic)");
@@ -84,6 +85,7 @@ public class MapInfo {
         map.put("TourmalineDesert","Tourmaline Desert");
         map.put("ViridianBog","Viridian Bog");
         map.put("VitricForge","Vitric Forge");
+
 
     }
 

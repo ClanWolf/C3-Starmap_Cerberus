@@ -938,6 +938,10 @@ public class MechIdInfo {
         this.mechids.put(875,new MechIdInfo(EFaction.CLAN,"HUNCHBACKIIC",50,EMechclass.MEDIUM, "Special","HUNCHBACK IIC HBK-IIC-B(P)","HBK-IIC-B(P)"));
         this.mechids.put(876,new MechIdInfo(EFaction.CLAN,"ORIONIIC",75,EMechclass.HEAVY, "Special","ORION IIC ON1-IIC-A(P)","ON1-IIC-A(P)"));
         this.mechids.put(877,new MechIdInfo(EFaction.CLAN,"HIGHLANDERIIC",90,EMechclass.ASSAULT, "Special","HIGHLANDER IIC HGN-IIC-B(P)","HGN-IIC-B(P)"));
+        this.mechids.put(878,new MechIdInfo(EFaction.CLAN,"KITFOX",30,EMechclass.LIGHT, "Standard","KIT FOX KFX-P","KFX-P"));
+        this.mechids.put(879,new MechIdInfo(EFaction.CLAN,"KITFOX",30,EMechclass.LIGHT, "Special","KIT FOX KFX-P(S)","KFX-P(S)"));
+        this.mechids.put(880,new MechIdInfo(EFaction.CLAN,"SUMMONER",70,EMechclass.HEAVY, "Standard","SUMMONER SMN-G","SMN-G"));
+        this.mechids.put(881,new MechIdInfo(EFaction.CLAN,"SUMMONER",70,EMechclass.HEAVY, "Special","SUMMONER SMN-G(S)","SMN-G(S)"));
         this.mechids.put(990,new MechIdInfo(EFaction.INNERSPHERE,"ATLAS",100,EMechclass.ASSAULT, "Standard","ATLAS AS7-D-DC","AS7-D-DC"));
         this.mechids.put(996,new MechIdInfo(EFaction.INNERSPHERE,"JENNER",35,EMechclass.LIGHT, "Founder","JENNER JR7-D(F)","JR7-D(F)"));
         this.mechids.put(997,new MechIdInfo(EFaction.INNERSPHERE,"CATAPULT",65,EMechclass.HEAVY, "Founder","CATAPULT CPLT-C1(F)","CPLT-C1(F)"));
