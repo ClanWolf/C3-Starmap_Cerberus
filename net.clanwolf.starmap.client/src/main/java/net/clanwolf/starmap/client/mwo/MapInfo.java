@@ -86,7 +86,6 @@ public class MapInfo {
         map.put("ViridianBog","Viridian Bog");
         map.put("VitricForge","Vitric Forge");
 
-
     }
 
     /**
