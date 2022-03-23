@@ -34,7 +34,7 @@ import java.util.Map;
  * in dem Spiel angezeigten Kartennamen.
  *
  * @author KERNREAKTOR
- * @version 14-12-2021
+ * @version 23-03-2022
  */
 public class MapInfo {
 
@@ -54,6 +54,7 @@ public class MapInfo {
         map.put("Crater2","Rubellite Oasis");
         map.put("CrimsonStrait","Crimson Strait");
         map.put("EmeraldTaiga","Emerald Taiga");
+        map.put("EmeraldTaigaQP","Emerald Vale");
         map.put("ForestColony","Forest Colony");
         map.put("ForestColonyClassic","Forest Colony (Classic)");
         map.put("ForestColonySnow","Forest Colony Snow (Classic)");
