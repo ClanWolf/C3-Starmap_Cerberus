@@ -137,6 +137,7 @@ public class CalcBalance {
 
         String columnWidthDefault = "%-20.20s";
 
+        mailMessage.append("---Start of repair cost report---").append("\r\n\r\n");
         mailMessage.append("Repair cost evaluations between the attacker ");
         mailMessage.append(factionAttacker.getName_en());
         mailMessage.append(" and the defender ");
@@ -168,33 +169,34 @@ public class CalcBalance {
 
         }
 
-        mailMessage.append("─".repeat(50)).append("\r\n");
+        mailMessage.append("─".repeat(60)).append("\r\n");
         mailMessage.append(String.format(columnWidthDefault,""));
         mailMessage.append(String.format(columnWidthDefault,"Attacker"));
         mailMessage.append(String.format(columnWidthDefault,"Defender")).append("\r\n");
 
 
-        mailMessage.append("─".repeat(50)).append("\r\n");
+        mailMessage.append("─".repeat(60)).append("\r\n");
         mailMessage.append(String.format(columnWidthDefault,"Tonnage:"));
         mailMessage.append(String.format(columnWidthDefault,rpcs.getAttackerTonnage()));
         mailMessage.append(String.format(columnWidthDefault,rpcs.getDefenderTonnage())).append("\r\n");
 
-        mailMessage.append("─".repeat(50)).append("\r\n");
+        mailMessage.append("─".repeat(60)).append("\r\n");
         mailMessage.append(String.format(columnWidthDefault,"Lost Tonnage:"));
         mailMessage.append(String.format(columnWidthDefault,rpcs.getAttackerLostTonnage()));
         mailMessage.append(String.format(columnWidthDefault,rpcs.getDefenderLostTonnage())).append("\r\n");
 
-        mailMessage.append("─".repeat(50)).append("\r\n");
+        mailMessage.append("─".repeat(60)).append("\r\n");
         mailMessage.append(String.format(columnWidthDefault,"Kills:"));
         mailMessage.append(String.format(columnWidthDefault,rpcs.getAttackerKillCount()));
         mailMessage.append(String.format(columnWidthDefault,rpcs.getDefenderKillCount())).append("\r\n");
 
-        mailMessage.append("─".repeat(50)).append("\r\n");
+        mailMessage.append("─".repeat(60)).append("\r\n");
         mailMessage.append(String.format(columnWidthDefault,"Number of pilots:"));
         mailMessage.append(String.format(columnWidthDefault,rpcs.getAttackerNumberOfPilots()));
         mailMessage.append(String.format(columnWidthDefault,rpcs.getDefenderNumberOfPilots())).append("\r\n");
 
-        mailMessage.append("─".repeat(50)).append("\r\n\r\n");
+        String attackerDropleadName = "";
+        String defenderDropleadName = "";
 
         for(RolePlayCharacterStatsPOJO pojo : list){
 
@@ -204,6 +206,7 @@ public class CalcBalance {
             if(rpcs.getAttackerFactionId() == character.getFactionId().longValue()) {
                 if(pojo.getLeadingPosition()){
                     attackerTeam = pojo.getMwoTeam();
+                    attackerDropleadName = character.getMwoUsername();
                 }
             }
 
@@ -211,11 +214,19 @@ public class CalcBalance {
             if(rpcs.getDefenderFactionId() == character.getFactionId().longValue()){
                 if(pojo.getLeadingPosition()){
                     defenderTeam = pojo.getMwoTeam();
+                    defenderDropleadName = character.getMwoUsername();
                 }
             }
         }
 
         if(!(attackerTeam == 0L) && !(defenderTeam == 0L)){
+
+            mailMessage.append("─".repeat(60)).append("\r\n");
+            mailMessage.append(String.format(columnWidthDefault,"Droplead:"));
+            mailMessage.append(String.format(columnWidthDefault,attackerDropleadName));
+            mailMessage.append(String.format(columnWidthDefault,defenderDropleadName)).append("\r\n");
+
+            mailMessage.append("─".repeat(60)).append("\r\n\r\n");
 
             for(RolePlayCharacterStatsPOJO pojo : list){
 
@@ -303,7 +314,8 @@ public class CalcBalance {
             mailMessage.append("\r\n");
             mailMessage.append("═".repeat(95));
             mailMessage.append("\r\n");
-
+            mailMessage.append("---End of repair cost report---");
+            mailMessage.append("\r\n\r\n");
 
         }
     }

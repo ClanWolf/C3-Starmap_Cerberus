@@ -185,6 +185,7 @@ public class EndRound {
 		StringBuilder foughtAttacks = new StringBuilder();
 		StringBuilder resolvedAttacks = new StringBuilder();
 		StringBuilder movedJumpships = new StringBuilder();
+		//forceFinalize.set(true);
 
 		if ((jumpshipsLeftToMove || attacksLeftToResolveInRound) && !(timeForThisRoundIsOver(seasonId)) && !forceFinalize.get()) {
 			// round is still active
@@ -235,6 +236,7 @@ public class EndRound {
 					if (!statisticsList.isEmpty()) {
 						// log stats
 						logger.info("--- Statistics found for attackId: " + attackPOJO.getId());
+						StringBuilder repairCostReport = new StringBuilder();
 
 						for (AttackStatsPOJO asp : statisticsList) {
 							FactionPOJO factionAttacker = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, asp.getAttackerFactionId());
@@ -251,24 +253,27 @@ public class EndRound {
 
 							CalcBalance calcB = new CalcBalance(asp);
 
-							String[] receivers = { "keshik@googlegroups.com" };
-							boolean sent;
-							StringBuilder subject = new StringBuilder();
-							subject.append("Repair cost calculation for roundId ").append(asp.getRoundId());
+							repairCostReport.append(calcB.getMailMessage());
 
-							if(!GameServer.isDevelopmentPC) {
-								sent = MailManager.sendMail("c3@clanwolf.net", receivers, subject.toString(), calcB.getMailMessage().toString(), false);
 
-								if (sent) {
-									// sent
-									logger.info("Mail sent. [5]");
-								} else 	{
-									// error during email sending
-									logger.info("Error during mail dispatch. [5]");
-								}
-							} else {
-								logger.info("Mail was not sent out because this is a dev computer.");
+						}
+						String[] receivers = { "keshik@googlegroups.com" };
+						boolean sent;
+						StringBuilder subject = new StringBuilder();
+						subject.append("Repair cost calculation for roundId ").append(attackPOJO.getId());
+
+						if(!GameServer.isDevelopmentPC) {
+							sent = MailManager.sendMail("c3@clanwolf.net", receivers, subject.toString(), repairCostReport.toString(), false);
+
+							if (sent) {
+								// sent
+								logger.info("Mail sent. [5]");
+							} else 	{
+								// error during email sending
+								logger.info("Error during mail dispatch. [5]");
 							}
+						} else {
+							logger.info("Mail was not sent out because this is a dev computer.");
 						}
 					} else {
 						// no statistics found
