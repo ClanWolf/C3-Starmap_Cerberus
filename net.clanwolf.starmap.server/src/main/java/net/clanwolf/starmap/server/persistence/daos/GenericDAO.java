@@ -60,8 +60,8 @@ public abstract class GenericDAO implements IDAO {
 			getEntityManager(userID).persist(entity);
 			logger.info("Save successful");
 		} catch (Exception re) {
-			logger.info("Save failed");
-			re.printStackTrace();
+			logger.error("Save failed", re);
+			// re.printStackTrace();
 			// getEntityManager().clear();
 			throw re;
 		}
@@ -76,8 +76,8 @@ public abstract class GenericDAO implements IDAO {
 			logger.info("Update successful");
 			return result;
 		} catch (Exception re) {
-			logger.info("Update failed");
-			re.printStackTrace();
+			logger.error("Update failed", re);
+			// re.printStackTrace();
 			// getEntityManager().clear();
 			throw re;
 		}
@@ -106,8 +106,8 @@ public abstract class GenericDAO implements IDAO {
 			}
 			return query.getResultList();
 		} catch (Exception re) {
-			logger.info("Find by property name failed");
-			re.printStackTrace();
+			logger.error("Find by property name failed", re);
+			// re.printStackTrace();
 			// getEntityManager().clear();
 			throw re;
 		}
@@ -135,8 +135,8 @@ public abstract class GenericDAO implements IDAO {
 			}
 			return query.getResultList();
 		} catch (Exception re) {
-			logger.info("Find all failed");
-			re.printStackTrace();
+			logger.error("Find all failed", re);
+			// re.printStackTrace();
 			// getEntityManager().clear();
 			throw re;
 		}
@@ -153,8 +153,8 @@ public abstract class GenericDAO implements IDAO {
 			getEntityManager(userID).remove(entity);
 			logger.info("Delete successful");
 		} catch (Exception re) {
-			logger.info("Delete failed");
-			re.printStackTrace();
+			logger.error("Delete failed", re);
+			// re.printStackTrace();
 			// getEntityManager().clear();
 			throw re;
 		}
@@ -166,8 +166,8 @@ public abstract class GenericDAO implements IDAO {
 			getEntityManager(userID).refresh(entity);
 			logger.info("Refresh successful");
 		} catch (Exception re) {
-			logger.info("Refresh failed");
-			re.printStackTrace();
+			logger.error("Refresh failed", re);
+			// re.printStackTrace();
 			throw re;
 		}
 	}
@@ -178,8 +178,8 @@ public abstract class GenericDAO implements IDAO {
 		try {
 			return getEntityManager(userID).find(clazz, id);
 		} catch (Exception re) {
-			logger.info("Find failed");
-			re.printStackTrace();
+			logger.error("Find failed", re);
+			// re.printStackTrace();
 			// getEntityManager().clear();
 			throw re;
 		}

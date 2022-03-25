@@ -28,8 +28,6 @@ package net.clanwolf.starmap.server.process;
 
 import net.clanwolf.client.mail.MailManager;
 import net.clanwolf.starmap.constants.Constants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.server.GameServer;
 import net.clanwolf.starmap.server.Nexus.Nexus;
 import net.clanwolf.starmap.server.beans.C3Room;
@@ -38,6 +36,8 @@ import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.*;
 import net.clanwolf.starmap.server.persistence.pojos.*;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityTransaction;
 import java.io.PrintWriter;
@@ -134,9 +134,9 @@ public class EndRound {
 
 		int diff = (int) Math.abs((seasonStartYear - currentYear) * 365.243); // Days in year and Schaltjahr factor
 
-//		LocalDateTime date1 = new Timestamp(seasonStartDate.getTime()).toLocalDateTime();
-//		LocalDateTime date2 = new Timestamp(date.getTime()).toLocalDateTime();
-//		Long diff = Duration.between(date1, date2).toDays();
+		//		LocalDateTime date1 = new Timestamp(seasonStartDate.getTime()).toLocalDateTime();
+		//		LocalDateTime date2 = new Timestamp(date.getTime()).toLocalDateTime();
+		//		Long diff = Duration.between(date1, date2).toDays();
 
 		return addDaysToDate(date, diff);
 	}
@@ -159,8 +159,8 @@ public class EndRound {
 		ArrayList<AttackPOJO> openAttacksInRoundList = new ArrayList<>();
 		ArrayList<AttackPOJO> allAttacksForRound = AttackDAO.getInstance().getAllAttacksOfASeasonForRound(seasonId, round);
 
-		for(AttackPOJO attackPojoDummy : allAttacksForRound){
-			if(attackPojoDummy.getFactionID_Winner() == null){
+		for (AttackPOJO attackPojoDummy : allAttacksForRound) {
+			if (attackPojoDummy.getFactionID_Winner() == null) {
 				openAttacksInRoundList.add(attackPojoDummy);
 			}
 		}
@@ -211,7 +211,6 @@ public class EndRound {
 				FactionPOJO fJumpshipPOJO = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, jsPojo.getJumpshipFactionID());
 
 				resolvedAttacks.append("Jumpship '").append(jsPojo.getJumpshipName()).append("' (").append(jsPojo.getId()).append(") of ").append(fJumpshipPOJO.getShortName()).append(" (").append(fJumpshipPOJO.getId()).append(") attacked system '").append(ssPojo.getName()).append("' (").append(ssPojo.getId()).append(") ").append("--> resolved to winner: ").append(fWinnerPojo.getShortName() + " (" + attackPOJO.getFactionID_Winner() + ").").append("\r\n");
-
 			}
 			openAttacksInRoundList.clear();
 
@@ -219,68 +218,54 @@ public class EndRound {
 			logger.info("--- Attacks that have been fought in this round:");
 			for (AttackPOJO attackPOJO : allAttacksForRound) {
 				logger.info("--- Attack: " + attackPOJO.getId() + "(StarSystem: " + attackPOJO.getStarSystemID() + ")");
-				if (!openAttacksInRoundList.contains(attackPOJO)) { // because the list of openAttacks is empty since line 215, this will run for ALL attacks
-					// This attack was not resolved by automation but was fought
-					// There should be stats entries in the database that could be displayed (partially) here
-					Long winnerId = attackPOJO.getFactionID_Winner();
 
-					JumpshipPOJO jsPojo = JumpshipDAO.getInstance().findById(Nexus.DUMMY_USERID, attackPOJO.getJumpshipID());
-					StarSystemPOJO ssPojo = StarSystemDAO.getInstance().findById(Nexus.DUMMY_USERID, attackPOJO.getStarSystemID());
-					FactionPOJO fWinnerPojo = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, winnerId);
-					FactionPOJO fJumpshipPOJO = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, jsPojo.getJumpshipFactionID());
+				Long winnerId = attackPOJO.getFactionID_Winner();
 
-					logger.info("1");
-					// Get statistics for this attack
-					ArrayList<AttackStatsPOJO> statisticsList = AttackStatsDAO.getInstance().getStatisticsForAttack(seasonId, attackPOJO.getId());
-					logger.info("2");
-					if (!statisticsList.isEmpty()) {
-						// log stats
-						logger.info("--- Statistics found for attackId: " + attackPOJO.getId());
-						StringBuilder repairCostReport = new StringBuilder();
+				JumpshipPOJO jsPojo = JumpshipDAO.getInstance().findById(Nexus.DUMMY_USERID, attackPOJO.getJumpshipID());
+				StarSystemPOJO ssPojo = StarSystemDAO.getInstance().findById(Nexus.DUMMY_USERID, attackPOJO.getStarSystemID());
+				FactionPOJO fWinnerPojo = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, winnerId);
+				FactionPOJO fJumpshipPOJO = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, jsPojo.getJumpshipFactionID());
 
-						for (AttackStatsPOJO asp : statisticsList) {
-							FactionPOJO factionAttacker = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, asp.getAttackerFactionId());
-							FactionPOJO factionDefender = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, asp.getDefenderFactionId());
-							//FactionPOJO factionWinner = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, asp.getWinnerFactionId());
-							//StarSystemDataPOJO starSystemDataPOJO = StarSystemDataDAO.getInstance().findById(Nexus.DUMMY_USERID, asp.getStarSystemDataId());
-							//StarSystemPOJO starSystemPOJO = StarSystemDAO.getInstance().findById(Nexus.DUMMY_USERID, starSystemDataPOJO.getStarSystemID().getId());
+				logger.info("1");
+				// Get statistics for this attack
+				ArrayList<AttackStatsPOJO> statisticsList = AttackStatsDAO.getInstance().getStatisticsForAttack(seasonId, attackPOJO.getId());
+				logger.info("2");
+				if (!statisticsList.isEmpty()) {
+					// log stats
+					logger.info("--- Statistics found for attackId: " + attackPOJO.getId());
+					StringBuilder repairCostReport = new StringBuilder();
 
-							logger.info("---Calculate the repair costs of the attacker " +
-									factionAttacker.getName_en() +
-									" and the defender " +
-									factionDefender.getName_en() +
-									".");
+					for (AttackStatsPOJO asp : statisticsList) {
+						FactionPOJO factionAttacker = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, asp.getAttackerFactionId());
+						FactionPOJO factionDefender = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, asp.getDefenderFactionId());
 
-							CalcBalance calcB = new CalcBalance(asp);
+						logger.info("---Calculate the repair costs of the attacker " + factionAttacker.getName_en() + " and the defender " + factionDefender.getName_en() + ".");
 
-							repairCostReport.append(calcB.getMailMessage());
+						CalcBalance calcB = new CalcBalance(asp);
 
+						repairCostReport.append(calcB.getMailMessage());
+					}
+					String[] receivers = {"keshik@googlegroups.com"};
+					boolean sent;
+					StringBuilder subject = new StringBuilder();
+					subject.append("Repair cost calculation for roundId ").append(attackPOJO.getId());
 
-						}
-						String[] receivers = { "keshik@googlegroups.com" };
-						boolean sent;
-						StringBuilder subject = new StringBuilder();
-						subject.append("Repair cost calculation for roundId ").append(attackPOJO.getId());
+					if (!GameServer.isDevelopmentPC) {
+						sent = MailManager.sendMail("c3@clanwolf.net", receivers, subject.toString(), repairCostReport.toString(), false);
 
-						if(!GameServer.isDevelopmentPC) {
-							sent = MailManager.sendMail("c3@clanwolf.net", receivers, subject.toString(), repairCostReport.toString(), false);
-
-							if (sent) {
-								// sent
-								logger.info("Mail sent. [5]");
-							} else 	{
-								// error during email sending
-								logger.info("Error during mail dispatch. [5]");
-							}
+						if (sent) {
+							// sent
+							logger.info("Mail sent. [5]");
 						} else {
-							logger.info("Mail was not sent out because this is a dev computer.");
+							// error during email sending
+							logger.info("Error during mail dispatch. [5]");
 						}
 					} else {
-						// no statistics found
-						logger.info("--- no statistics found for attackId: " + attackPOJO.getId());
+						logger.info("Mail was not sent out because this is a dev computer.");
 					}
 				} else {
-					logger.info("--- This attack was still open (this should not happen anymore!).");
+					// no statistics found
+					logger.info("--- no statistics found for attackId: " + attackPOJO.getId());
 				}
 			}
 
@@ -319,7 +304,7 @@ public class EndRound {
 				}
 			}
 
-//			roundPOJO.setCurrentRoundStartDate(getNextRoundDate(seasonId));
+			//			roundPOJO.setCurrentRoundStartDate(getNextRoundDate(seasonId));
 			// TODO: Check this! Set start date of a new round always to NOW, not a calculated date in future, because there the dates run apart over time
 			roundPOJO.setCurrentRoundStartDate(translateRealDateToSeasonTime(new Date(System.currentTimeMillis()), seasonId));
 
@@ -341,7 +326,7 @@ public class EndRound {
 				EntityManagerHelper.clear(Nexus.DUMMY_USERID);
 				roundDAO.update(Nexus.DUMMY_USERID, roundPOJO);
 				for (JumpshipPOJO jumpshipPOJO : jumpshipList) {
-//					jumpshipDAO.refresh(Nexus.DUMMY_USERID, jumpshipPOJO);
+					//					jumpshipDAO.refresh(Nexus.DUMMY_USERID, jumpshipPOJO);
 					jumpshipDAO.update(Nexus.DUMMY_USERID, jumpshipPOJO);
 				}
 				//for (AttackPOJO attackPOJO : openAttacksInRoundList) {
@@ -479,7 +464,7 @@ public class EndRound {
 
 			// Sending mail with information about the last round
 			logger.info("Sending mail about finalized round.");
-			String[] receivers = { "keshik@googlegroups.com" };
+			String[] receivers = {"keshik@googlegroups.com"};
 			boolean sent;
 
 			StringBuilder subject = new StringBuilder();
@@ -508,7 +493,7 @@ public class EndRound {
 				message.append(s);
 			}
 
-			if(!GameServer.isDevelopmentPC) {
+			if (!GameServer.isDevelopmentPC) {
 				sent = MailManager.sendMail("c3@clanwolf.net", receivers, subject.toString(), message.toString(), false);
 
 				if (sent) {
@@ -539,19 +524,19 @@ public class EndRound {
 
 		}
 	}*/
-//	public static void main(String[] args) {
-//		// 3052 - 2021 = 1031 Jahre Differenz
-//		// 1031 Jahre * 365,25 Tage = 376.572,75 Tage Differenz
-//		int currentYear = 2021;
-//		Long season = 1L;
-//		int round = 1;
-//
-//		int seasonStartYear = 3052;
-//		int diff = (int) Math.abs((seasonStartYear - currentYear) * 365.243); // Days in year and Schaltjahr factor
-//
-//		System.out.println("Current date: " + new Date(System.currentTimeMillis()));
-//		System.out.println("Translated: " + addDaysToDate(new Date(System.currentTimeMillis()), diff));
-//		// Current date: 2021-05-06
-//		// Translated:   3052-05-06
-//	}
+	//	public static void main(String[] args) {
+	//		// 3052 - 2021 = 1031 Jahre Differenz
+	//		// 1031 Jahre * 365,25 Tage = 376.572,75 Tage Differenz
+	//		int currentYear = 2021;
+	//		Long season = 1L;
+	//		int round = 1;
+	//
+	//		int seasonStartYear = 3052;
+	//		int diff = (int) Math.abs((seasonStartYear - currentYear) * 365.243); // Days in year and Schaltjahr factor
+	//
+	//		System.out.println("Current date: " + new Date(System.currentTimeMillis()));
+	//		System.out.println("Translated: " + addDaysToDate(new Date(System.currentTimeMillis()), diff));
+	//		// Current date: 2021-05-06
+	//		// Translated:   3052-05-06
+	//	}
 }

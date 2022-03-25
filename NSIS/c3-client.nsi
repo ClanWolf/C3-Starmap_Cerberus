@@ -25,7 +25,7 @@ Function .onInstSuccess
     ;                 SMPROGRAMS: $SMPROGRAMS  $\r$\n \
     ;                 Start Menu Folder: $STARTMENU_FOLDER $\r$\n \
     ;                 InstallDirectory: $INSTDIR "
-    ExecShell "" "https://www.clanwolf.net/apps/C3/changelog.txt?refresh=true&r=1648051379974"
+    ExecShell "" "https://www.clanwolf.net/apps/C3/changelog.txt?refresh=true&r=1648246526046"
     ExecShell "" "$INSTDIR\bin\C3-Starmap_Cerberus.exe"
 FunctionEnd
 
