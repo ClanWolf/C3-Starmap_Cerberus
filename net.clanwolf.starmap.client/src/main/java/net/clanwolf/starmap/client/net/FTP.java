@@ -90,13 +90,13 @@ public class FTP implements IFileTransfer {
 
 		try {
 			if (!"".equals(user) && !"".equals(password)) {
-				logger.info("#########################################################");
-				logger.info("Trying to connect to FTP");
-				logger.info("Server   : " + C3Properties.getProperty(C3PROPS.FTP_SERVER));
-				logger.info("Port     : " + ftp_port);
-				logger.info("User     : " + user);
-				logger.info("Password : " + "****" + password.substring(password.length() - 2));
-				logger.info("#########################################################");
+//				logger.info("#########################################################");
+//				logger.info("Trying to connect to FTP");
+//				logger.info("Server   : " + C3Properties.getProperty(C3PROPS.FTP_SERVER));
+//				logger.info("Port     : " + ftp_port);
+//				logger.info("User     : " + user);
+//				logger.info("Password : " + "****" + password.substring(password.length() - 2));
+//				logger.info("#########################################################");
 
 				ftpClient.connect(C3Properties.getProperty(C3PROPS.FTP_SERVER), ftp_port);
 				logger.info(ftpClient.getReplyString().trim().replaceAll("(\\r|\\n)", ""));

@@ -107,7 +107,7 @@ public class EntityManagerHelper {
 			emMap.put(userID, manager);
 
 		} else {
-			logger.info("Find EntityManager for UserPOJO ID: " + userID);
+//			logger.info("Found EntityManager for UserPOJO ID: " + userID);
 		}
 		return manager;
 	}

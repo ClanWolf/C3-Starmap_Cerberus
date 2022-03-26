@@ -400,13 +400,27 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 		// Check conditions
 		Platform.runLater(() -> btNext.setDisable(true));
+
+		int attackerCount = 0;
+		for (RolePlayCharacterDTO c : lvAttacker.getItems()) {
+			if (!"...".equals(c.getName())) {
+				attackerCount++;
+			}
+		}
+		int defenderCount = 0;
+		for (RolePlayCharacterDTO c : lvDefender.getItems()) {
+			if (!"...".equals(c.getName())) {
+				defenderCount++;
+			}
+		}
+
 		if (lvDropleadAttacker.getItems().size() == 1
 				&& lvDropleadDefender.getItems().size() == 1
 				&& !"...".equals(lvDropleadAttacker.getItems().get(0).getName())
 				&& !"...".equals(lvDropleadDefender.getItems().get(0).getName())
-				&& lvAttacker.getItems().size() >= Constants.MINIMUM_PILOTS_PER_SIDE_IN_INVASION_DROP // Check the minimum number of fighting pilots, may be disabled for testing
-				&& lvDefender.getItems().size() >= Constants.MINIMUM_PILOTS_PER_SIDE_IN_INVASION_DROP // Check the minimum number of fighting pilots, may be disabled for testing
-				&& lvAttacker.getItems().size() == lvDefender.getItems().size()
+				&& attackerCount >= Constants.MINIMUM_PILOTS_PER_SIDE_IN_INVASION_DROP - 1 // Check the minimum number of fighting pilots, may be disabled for testing, -1 because of the droplead
+				&& defenderCount >= Constants.MINIMUM_PILOTS_PER_SIDE_IN_INVASION_DROP - 1 // Check the minimum number of fighting pilots, may be disabled for testing, -1 because of the droplead
+				&& attackerCount == defenderCount
 		) {
 			// Enable "continue"
 			BOAttack a = Nexus.getCurrentAttackOfUser();

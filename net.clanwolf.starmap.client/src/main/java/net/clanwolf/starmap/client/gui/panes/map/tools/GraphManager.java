@@ -26,20 +26,17 @@
  */
 package net.clanwolf.starmap.client.gui.panes.map.tools;
 
-import javafx.scene.Node;
 import javafx.scene.layout.Pane;
-import net.clanwolf.starmap.client.action.ACTIONS;
-import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.gui.panes.map.Config;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.universe.BOStarSystem;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.kynosarges.tektosyne.geometry.PointD;
 import org.kynosarges.tektosyne.geometry.PolygonGrid;
 import org.kynosarges.tektosyne.geometry.RegularPolygon;
 import org.kynosarges.tektosyne.graph.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
@@ -55,11 +52,9 @@ public class GraphManager<T> implements GraphAgent<T> {
 	private final int maxCost;
 	private final PointD maxWorld;
 	private final double scaleCost;
-
-	private BOUniverse boUniverse = Nexus.getBoUniverse();
-
 	private final List<T> highlights = new ArrayList<>(2);
 	private final Map<T, Integer> nodeCosts;
+	private BOUniverse boUniverse = Nexus.getBoUniverse();
 
 	GraphManager(Graph<T> graph, int maxCost, Pane output) {
 		this.graph = graph;
@@ -139,12 +134,10 @@ public class GraphManager<T> implements GraphAgent<T> {
 
 	@SuppressWarnings("unused")
 	boolean setVertexNeighbors(boolean value) {
-		if (!(graph instanceof final PolygonGrid grid))
-			return false;
+		if (!(graph instanceof final PolygonGrid grid)) return false;
 
 		final RegularPolygon element = grid.element();
-		if (element.sides != 4 || element.vertexNeighbors == value)
-			return false;
+		if (element.sides != 4 || element.vertexNeighbors == value) return false;
 
 		grid.setElement(new RegularPolygon(element.length, 4, element.orientation, value));
 		return true;
@@ -159,19 +152,25 @@ public class GraphManager<T> implements GraphAgent<T> {
 	public boolean canMakeStep(T source, T target) {
 		double distance = graph.getDistance(source, target) / Config.MAP_COORDINATES_MULTIPLICATOR;
 		boolean inRange = distance < 30;
-		boolean isAttacked = (boUniverse.getStarSystemByPoint((PointD)target)).isCurrentlyUnderAttack();
-		boolean isAttackedNextRound = (boUniverse.getStarSystemByPoint((PointD)target)).isNextRoundUnderAttack();
-		boolean isActiveInPhase = (boUniverse.getStarSystemByPoint((PointD)target)).isActiveInPhase(Nexus.getCurrentSeasonMetaPhase());
-		boolean isLockedByJumpship = (boUniverse.getStarSystemByPoint((PointD)target)).isLockedByJumpship();
-		boolean isLockedByPreviousAttackCooldown = (boUniverse.getStarSystemByPoint((PointD)target)).isLockedByPreviousAttackCooldown();
+		boolean isAttacked = (boUniverse.getStarSystemByPoint((PointD) target)).isCurrentlyUnderAttack();
+		boolean isAttackedNextRound = (boUniverse.getStarSystemByPoint((PointD) target)).isNextRoundUnderAttack();
+		boolean isActiveInPhase = (boUniverse.getStarSystemByPoint((PointD) target)).isActiveInPhase(Nexus.getCurrentSeasonMetaPhase());
+		boolean isLockedByJumpship = (boUniverse.getStarSystemByPoint((PointD) target)).isLockedByJumpship();
+		boolean isLockedByPreviousAttackCooldown = (boUniverse.getStarSystemByPoint((PointD) target)).isLockedByPreviousAttackCooldown();
 		// boolean withinCosts = nodeCosts.get(target) < maxCost;
 
-		return inRange
-				&& isActiveInPhase
-				&& !isAttacked
-				&& !isAttackedNextRound
-				&& !isLockedByJumpship
-				&& !isLockedByPreviousAttackCooldown;
+		boolean r = inRange && isActiveInPhase && !isAttacked && !isAttackedNextRound && !isLockedByJumpship && !isLockedByPreviousAttackCooldown;
+
+		if (!r) {
+			logger.info("In range: " + inRange + " / "
+					+ "Active in phase: " + isActiveInPhase + " / "
+					+ "Attacked: " + isAttacked + " / "
+					+ "Attacked next round: " + isAttackedNextRound + " / "
+					+ "Locked by jumpship: " + isLockedByJumpship + " / "
+					+ "Locked by previous attack: " + isLockedByPreviousAttackCooldown);
+		}
+
+		return r;
 	}
 
 	@Override
@@ -198,10 +197,15 @@ public class GraphManager<T> implements GraphAgent<T> {
 		 *    between any two nodes makes pathfinding sensitive only to assigned step costs.
 		 *    This effectively replicates the behavior on a PolygonGrid.
 		 */
-//		double distance = graph.getDistance(source, target);
-//		return (distance * (nodeCosts.get(source) + nodeCosts.get(target)) / 2);
+		//		double distance = graph.getDistance(source, target);
+		//		return (distance * (nodeCosts.get(source) + nodeCosts.get(target)) / 2);
 		return (30 * (nodeCosts.get(source) + nodeCosts.get(target)) / 2);
-//		return scaleCost * nodeCosts.get(target);
+		//		return scaleCost * nodeCosts.get(target);
+	}
+
+	@Override
+	public boolean isNearTarget(T source, T target, double distance) {
+		return (distance == 0);
 	}
 
 	private T findNode(BOStarSystem ss) {
@@ -221,10 +225,5 @@ public class GraphManager<T> implements GraphAgent<T> {
 		highlights.add(source);
 
 		return source;
-	}
-
-	@Override
-	public boolean isNearTarget(T source, T target, double distance) {
-		return (distance == 0);
 	}
 }

@@ -1912,7 +1912,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 			case SHOW_FORBIDDEN_ICON_MAP:
 				boolean b = (Boolean)o.getObject();
-				logger.info("" + b);
+				// logger.info("Forbidden: " + b);
 				Platform.runLater(() -> {
 					ivForbidden.toFront();
 					ivForbidden.setVisible(b);
