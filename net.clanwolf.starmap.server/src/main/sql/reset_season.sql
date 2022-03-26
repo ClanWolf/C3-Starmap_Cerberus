@@ -13,6 +13,8 @@
 -- * Set systems factionid to factionid_start   DONE
 
 -- --- Script -----
+
+SET autocommit=0;
 -- --- Reset starting date to new value (in round / Season)
 update _HH_ROUND set round = 1, CurrentRoundStartDate = (select startdate from _HH_SEASON where id = 1) where season = 1;
 
@@ -22,20 +24,21 @@ delete from _HH_ROUTEPOINT where seasonID = 1;
 -- --- Delete all attacks, attack_characters , attack_vars -----
 delete from _HH_ATTACK where season = 1;                                   -- column is season here, NOT seasonId!
 delete from _HH_ATTACK_CHARACTER; // where season = 1 over attack          -- TODO check season
-delete from _HH_ATTACKVARS; // where season = 1 over attack                -- TODO check season
+delete from _HH_ATTACK_VARS; // where season = 1 over attack                -- TODO check season
 
 delete from _HH_ATTACK_STATS where seasonId = 1;                           -- Should stats be kept?
 delete from ROLEPLAY_CHARACTER_STATS where seasonId = 1;                   -- Should stats be kept?
 delete from STATS_MWO where seasonId = 1;                                  -- Should stats be kept?
 
 -- --- StarSystemData -----
-update _HH_STARSYSTEMDATA set factionid = factionID_start;                 -- StarSystemData is there only once,
+update _HH_STARSYSTEMDATA set factionid = factionID_start,
+ LockedUntilRound = null;                                                  -- StarSystemData is there only once,
                                                                            -- no relation to season,
                                                                            -- there is only one season active at a time
 
 -- --- Set level for all ships to 1 -----
 -- --- Set all ships to attack ready status -----
 -- --- Move all ships to their home systems -----
-update _HH_JUMPSHIP j set j.level = 1, j.attackready = 1, StarSystemHistory = FORMAT(HomeSystemID, 0));
+update _HH_JUMPSHIP j set j.level = 1, j.attackready = 1, StarSystemHistory = CAST(HomeSystemID AS CHAR);
 
 commit;
