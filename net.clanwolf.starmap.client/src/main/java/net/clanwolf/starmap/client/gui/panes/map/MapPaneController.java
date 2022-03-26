@@ -219,6 +219,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 		BOAttack a = Nexus.getCurrentlySelectedStarSystem().getAttack();
 
+		logger.info("Starting or joining attack on " + a.getStarSystemName() + " with Character: " + Nexus.getCurrentChar().getName());
+
 		AttackCharacterDTO ac = new AttackCharacterDTO();
 		ac.setAttackID(a.getAttackDTO().getId());
 		ac.setCharacterID(Nexus.getCurrentChar().getId());
@@ -261,9 +263,10 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			a.storeAttackCharacters(ac, Boolean.FALSE);
 		}
 
-		Nexus.getBoUniverse().attackBOsOpenInThisRound.put(a.getAttackDTO().getId(), a);
+		// Nexus.getBoUniverse().attackBOsOpenInThisRound.put(a.getAttackDTO().getId(), a); // kann weg!
 
-		ActionManager.getAction(ACTIONS.SWITCH_TO_INVASION).execute();
+		// Das hier erst feuern, wenn das Event vom Speichern des Angriffs vom Server zurückkommt
+		// ActionManager.getAction(ACTIONS.SWITCH_TO_INVASION).execute();
 	}
 
 	@FXML

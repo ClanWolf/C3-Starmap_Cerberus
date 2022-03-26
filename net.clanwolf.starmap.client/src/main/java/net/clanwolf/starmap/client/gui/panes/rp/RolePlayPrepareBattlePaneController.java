@@ -320,24 +320,32 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 			}
 		}
 
-		if(!lvDropleadAttacker.getItems().get(0).getName().equals("...")) {
-			AttackCharacterDTO acDTODropLeadAttacker = new AttackCharacterDTO();
-			acDTODropLeadAttacker.setCharacterID(lvDropleadAttacker.getItems().get(0).getId());
-			acDTODropLeadAttacker.setAttackID(a.getAttackDTO().getId());
-			acDTODropLeadAttacker.setType(characterRoleMap.get(lvDropleadAttacker.getItems().get(0).getId()).getType());
-			if (acDTODropLeadAttacker.getType() != null) {
-				charList.add(acDTODropLeadAttacker);
+		if (lvDropleadAttacker.getItems().size() > 0) {
+			if (!lvDropleadAttacker.getItems().get(0).getName().equals("...")) {
+				AttackCharacterDTO acDTODropLeadAttacker = new AttackCharacterDTO();
+				acDTODropLeadAttacker.setCharacterID(lvDropleadAttacker.getItems().get(0).getId());
+				acDTODropLeadAttacker.setAttackID(a.getAttackDTO().getId());
+				acDTODropLeadAttacker.setType(characterRoleMap.get(lvDropleadAttacker.getItems().get(0).getId()).getType());
+				if (acDTODropLeadAttacker.getType() != null) {
+					charList.add(acDTODropLeadAttacker);
+				}
 			}
+		} else {
+			logger.error("This list should never be empty!");
 		}
 
-		if(!lvDropleadDefender.getItems().get(0).getName().equals("...")) {
-			AttackCharacterDTO acDTODropLeadDefender = new AttackCharacterDTO();
-			acDTODropLeadDefender.setCharacterID(lvDropleadDefender.getItems().get(0).getId());
-			acDTODropLeadDefender.setAttackID(a.getAttackDTO().getId());
-			acDTODropLeadDefender.setType(characterRoleMap.get(lvDropleadDefender.getItems().get(0).getId()).getType());
-			if (acDTODropLeadDefender.getType() != null) {
-				charList.add(acDTODropLeadDefender);
+		if (lvDropleadDefender.getItems().size() > 0) {
+			if (!lvDropleadDefender.getItems().get(0).getName().equals("...")) {
+				AttackCharacterDTO acDTODropLeadDefender = new AttackCharacterDTO();
+				acDTODropLeadDefender.setCharacterID(lvDropleadDefender.getItems().get(0).getId());
+				acDTODropLeadDefender.setAttackID(a.getAttackDTO().getId());
+				acDTODropLeadDefender.setType(characterRoleMap.get(lvDropleadDefender.getItems().get(0).getId()).getType());
+				if (acDTODropLeadDefender.getType() != null) {
+					charList.add(acDTODropLeadDefender);
+				}
 			}
+		} else {
+			logger.error("This list should never be empty!");
 		}
 
 		a.getAttackDTO().setAttackCharList(charList) ;
@@ -573,7 +581,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 	@Override
 	public void getStoryValues(RolePlayStoryDTO rpStory){
 		// play sound
-		if (rpStory.getStory().getStoryMP3() != null) {
+		if (rpStory != null && rpStory.getStory().getStoryMP3() != null) {
 			C3SoundPlayer.playRPSound(Objects.requireNonNull(BORolePlayStory.getRPG_Soundfile(rpStory)), audioStartedOnce);
 			audioStartedOnce = true;
 		}

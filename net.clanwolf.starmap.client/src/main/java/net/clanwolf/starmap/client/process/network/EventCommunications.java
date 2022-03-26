@@ -197,6 +197,9 @@ public class EventCommunications {
 						// Obviously I have been kicked and need to be moved from the lobby
 						Nexus.setCurrentAttackOfUserToNull();
 						ActionManager.getAction(ACTIONS.SWITCH_TO_MAP).execute();
+					} else {
+						// I am in the list, check if the invasion pane is already open
+						ActionManager.getAction(ACTIONS.SWITCH_TO_INVASION).execute();
 					}
 
 					if(storyWasChanged) {
