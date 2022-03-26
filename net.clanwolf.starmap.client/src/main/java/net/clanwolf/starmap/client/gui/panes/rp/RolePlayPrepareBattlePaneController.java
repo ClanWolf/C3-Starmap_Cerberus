@@ -864,152 +864,155 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		dummy.setName("...");
 
 		BOAttack a = Nexus.getCurrentAttackOfUser();
-		Nexus.setStoryBeforeSaving(a.getStoryId().longValue());
-		updateLists(a);
-		lvAttacker.getSelectionModel().clearSelection();
-		lvDefender.getSelectionModel().clearSelection();
-		btnKick.setDisable(true);
-		btnPromote.setDisable(true);
-		btnToLeft.setDisable(true);
-		btnToRight.setDisable(true);
-		btNext.setDisable(true);
 
-		backgroundImage.setOpacity(0.0f);
-		vbLeft.setOpacity(0.0f);
-		vbRight.setOpacity(0.0f);
-		apCenter.setOpacity(0.0f);
-		hbButtons.setOpacity(0.0f);
+		if (a != null) {
+			Nexus.setStoryBeforeSaving(a.getStoryId().longValue());
+			updateLists(a);
+			lvAttacker.getSelectionModel().clearSelection();
+			lvDefender.getSelectionModel().clearSelection();
+			btnKick.setDisable(true);
+			btnPromote.setDisable(true);
+			btnToLeft.setDisable(true);
+			btnToRight.setDisable(true);
+			btNext.setDisable(true);
 
-		lSystemName.setText(a.getStarSystemName());
-		String attackerShortName = Nexus.getBoUniverse().getFactionByID(a.getAttackerFactionId().longValue()).getShortName();
-		String defenderShortName = Nexus.getBoUniverse().getFactionByID(a.getDefenderFactionId().longValue()).getShortName();
-		lAttacker.setText(a.getAttackerFactionName());
-		lAttackerShortname.setText("(" + attackerShortName + ")");
-		lDefender.setText(a.getDefenderFactionName());
-		lDefenderShortname.setText("(" + defenderShortName + ")");
+			backgroundImage.setOpacity(0.0f);
+			vbLeft.setOpacity(0.0f);
+			vbRight.setOpacity(0.0f);
+			apCenter.setOpacity(0.0f);
+			hbButtons.setOpacity(0.0f);
 
-		String attackerlogo = Nexus.getBoUniverse().getFactionByID(a.getAttackerFactionId().longValue()).getLogo();
-		Image imageAttackerLogo = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logos/factions/" + attackerlogo)));
-		String defenderlogo = Nexus.getBoUniverse().getFactionByID(a.getDefenderFactionId().longValue()).getLogo();
-		Image imageDefenderLogo = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logos/factions/" + defenderlogo)));
-		ivAttackerLogo.setImage(imageAttackerLogo);
-		ivDefenderLogo.setImage(imageDefenderLogo);
-		ivPlanet.setImage(Nexus.getBoUniverse().starSystemBOs.get(a.getStarSystemId()).getSystemImage());
+			lSystemName.setText(a.getStarSystemName());
+			String attackerShortName = Nexus.getBoUniverse().getFactionByID(a.getAttackerFactionId().longValue()).getShortName();
+			String defenderShortName = Nexus.getBoUniverse().getFactionByID(a.getDefenderFactionId().longValue()).getShortName();
+			lAttacker.setText(a.getAttackerFactionName());
+			lAttackerShortname.setText("(" + attackerShortName + ")");
+			lDefender.setText(a.getDefenderFactionName());
+			lDefenderShortname.setText("(" + defenderShortName + ")");
 
-		String attackerRankName = "";
-		if (a.getAttackerFactionId().equals(36)) { // CW
-			attackerRankName = attackerRankName + "CW/SCapt.png";
-		} else if (a.getAttackerFactionId().equals(30)) { // CGB
-			attackerRankName = attackerRankName + "CGB/SCapt.png";
-		} else if (a.getAttackerFactionId().equals(32)) { // CJF
-			attackerRankName = attackerRankName + "CJF/SCapt.png";
-		} else if (a.getAttackerFactionId().equals(11)) { // LA
-			attackerRankName = attackerRankName + "LA/Hauptmann.png";
-		} else if (a.getAttackerFactionId().equals(7)) { // FRR
-			attackerRankName = attackerRankName + "FRR/Kapten.png";
-		} else if (a.getAttackerFactionId().equals(5)) { // DC
-			attackerRankName = attackerRankName + "DC/Tai-i.png";
-		}
+			String attackerlogo = Nexus.getBoUniverse().getFactionByID(a.getAttackerFactionId().longValue()).getLogo();
+			Image imageAttackerLogo = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logos/factions/" + attackerlogo)));
+			String defenderlogo = Nexus.getBoUniverse().getFactionByID(a.getDefenderFactionId().longValue()).getLogo();
+			Image imageDefenderLogo = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logos/factions/" + defenderlogo)));
+			ivAttackerLogo.setImage(imageAttackerLogo);
+			ivDefenderLogo.setImage(imageDefenderLogo);
+			ivPlanet.setImage(Nexus.getBoUniverse().starSystemBOs.get(a.getStarSystemId()).getSystemImage());
 
-		String defenderRankName = "";
-		if (a.getDefenderFactionId().equals(36)) { // CW
-			defenderRankName = defenderRankName + "CW/SCapt.png";
-		} else if (a.getDefenderFactionId().equals(30)) { // CGB
-			defenderRankName = defenderRankName + "CGB/SCapt.png";
-		} else if (a.getDefenderFactionId().equals(32)) { // CJF
-			defenderRankName = defenderRankName + "CJF/SCapt.png";
-		} else if (a.getDefenderFactionId().equals(9)) { // LA
-			defenderRankName = defenderRankName + "LA/Hauptmann.png";
-		} else if (a.getDefenderFactionId().equals(7)) { // FRR
-			defenderRankName = defenderRankName + "FRR/Kapten.png";
-		} else if (a.getDefenderFactionId().equals(5)) { // DC
-			defenderRankName = defenderRankName + "DC/Tai-i.png";
-		}
+			String attackerRankName = "";
+			if (a.getAttackerFactionId().equals(36)) { // CW
+				attackerRankName = attackerRankName + "CW/SCapt.png";
+			} else if (a.getAttackerFactionId().equals(30)) { // CGB
+				attackerRankName = attackerRankName + "CGB/SCapt.png";
+			} else if (a.getAttackerFactionId().equals(32)) { // CJF
+				attackerRankName = attackerRankName + "CJF/SCapt.png";
+			} else if (a.getAttackerFactionId().equals(11)) { // LA
+				attackerRankName = attackerRankName + "LA/Hauptmann.png";
+			} else if (a.getAttackerFactionId().equals(7)) { // FRR
+				attackerRankName = attackerRankName + "FRR/Kapten.png";
+			} else if (a.getAttackerFactionId().equals(5)) { // DC
+				attackerRankName = attackerRankName + "DC/Tai-i.png";
+			}
 
-		if (!"".equals(attackerRankName)) {
-			Image attackerRank = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/ranks/" + attackerRankName)));
-			ivAttackerRank.setImage(attackerRank);
-		}
-		if (!"".equals(defenderRankName)) {
-			Image defenderRank = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/ranks/" + defenderRankName)));
-			ivDefenderRank.setImage(defenderRank);
-		}
+			String defenderRankName = "";
+			if (a.getDefenderFactionId().equals(36)) { // CW
+				defenderRankName = defenderRankName + "CW/SCapt.png";
+			} else if (a.getDefenderFactionId().equals(30)) { // CGB
+				defenderRankName = defenderRankName + "CGB/SCapt.png";
+			} else if (a.getDefenderFactionId().equals(32)) { // CJF
+				defenderRankName = defenderRankName + "CJF/SCapt.png";
+			} else if (a.getDefenderFactionId().equals(9)) { // LA
+				defenderRankName = defenderRankName + "LA/Hauptmann.png";
+			} else if (a.getDefenderFactionId().equals(7)) { // FRR
+				defenderRankName = defenderRankName + "FRR/Kapten.png";
+			} else if (a.getDefenderFactionId().equals(5)) { // DC
+				defenderRankName = defenderRankName + "DC/Tai-i.png";
+			}
 
-		Callback<ListView<RolePlayCharacterDTO>, ListCell<RolePlayCharacterDTO>> renderer = new Callback<>() {
-			@Override
-			public ListCell<RolePlayCharacterDTO> call(ListView<RolePlayCharacterDTO> param) {
-				return new ListCell<>() {
-					@Override
-					protected void updateItem(RolePlayCharacterDTO item, boolean empty) {
-						super.updateItem(item, empty);
-						if (item != null) {
-							boolean online = Nexus.getUserIsOnline(item.getId());
+			if (!"".equals(attackerRankName)) {
+				Image attackerRank = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/ranks/" + attackerRankName)));
+				ivAttackerRank.setImage(attackerRank);
+			}
+			if (!"".equals(defenderRankName)) {
+				Image defenderRank = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/ranks/" + defenderRankName)));
+				ivDefenderRank.setImage(defenderRank);
+			}
 
-							if (online) {
-								Platform.runLater(() -> {
-									BOFaction faction = Nexus.getBoUniverse().getFactionByID(item.getFactionId().longValue());
-									String t = "[" + faction.getShortName() + "] " + item.getName();
-									if (t.length() > 25) {
-										t = t.substring(1, 22) + "...";
-									}
-									setText(t);
-									setTooltip(null);
-									setStyle("-fx-text-fill: white;");
+			Callback<ListView<RolePlayCharacterDTO>, ListCell<RolePlayCharacterDTO>> renderer = new Callback<>() {
+				@Override
+				public ListCell<RolePlayCharacterDTO> call(ListView<RolePlayCharacterDTO> param) {
+					return new ListCell<>() {
+						@Override
+						protected void updateItem(RolePlayCharacterDTO item, boolean empty) {
+							super.updateItem(item, empty);
+							if (item != null) {
+								boolean online = Nexus.getUserIsOnline(item.getId());
 
-									for (Node n : getChildren()) {
-										if (n instanceof Text) {
-											n.setStyle("-fx-strikethrough:false;");
-										}
-									}
-								});
-							} else {
-								if (!"...".equals(item.getName())) {
+								if (online) {
 									Platform.runLater(() -> {
 										BOFaction faction = Nexus.getBoUniverse().getFactionByID(item.getFactionId().longValue());
-										String t = "[" + faction.getShortName() + "] " + item.getName() + ""; // offline
-										if (t.length() > 25) {
-											t = t.substring(1, 22) + "...";
-										}
-										setText(t);
-										setTooltip(new Tooltip("Offline"));
-										setStyle("-fx-text-fill:cyan;");
-
-										for (Node n : getChildren()) {
-											if (n instanceof Text) {
-												n.setStyle("-fx-strikethrough:true;");
-											}
-										}
-									});
-								} else {
-									Platform.runLater(() -> {
-										String t = item.getName();
+										String t = "[" + faction.getShortName() + "] " + item.getName();
 										if (t.length() > 25) {
 											t = t.substring(1, 22) + "...";
 										}
 										setText(t);
 										setTooltip(null);
-										setStyle("-fx-text-fill:white;");
+										setStyle("-fx-text-fill: white;");
+
+										for (Node n : getChildren()) {
+											if (n instanceof Text) {
+												n.setStyle("-fx-strikethrough:false;");
+											}
+										}
 									});
+								} else {
+									if (!"...".equals(item.getName())) {
+										Platform.runLater(() -> {
+											BOFaction faction = Nexus.getBoUniverse().getFactionByID(item.getFactionId().longValue());
+											String t = "[" + faction.getShortName() + "] " + item.getName() + ""; // offline
+											if (t.length() > 25) {
+												t = t.substring(1, 22) + "...";
+											}
+											setText(t);
+											setTooltip(new Tooltip("Offline"));
+											setStyle("-fx-text-fill:cyan;");
+
+											for (Node n : getChildren()) {
+												if (n instanceof Text) {
+													n.setStyle("-fx-strikethrough:true;");
+												}
+											}
+										});
+									} else {
+										Platform.runLater(() -> {
+											String t = item.getName();
+											if (t.length() > 25) {
+												t = t.substring(1, 22) + "...";
+											}
+											setText(t);
+											setTooltip(null);
+											setStyle("-fx-text-fill:white;");
+										});
+									}
 								}
+							} else {
+								Platform.runLater(() -> {
+									setText(null);
+									setGraphic(null);
+								});
 							}
-						} else {
-							Platform.runLater(() -> {
-								setText(null);
-								setGraphic(null);
-							});
 						}
-					}
-				};
-			}
-		};
+					};
+				}
+			};
 
-		lvAttacker.setCellFactory(renderer);
-		lvDefender.setCellFactory(renderer);
-		lvDropleadAttacker.setCellFactory(renderer);
-		lvDropleadDefender.setCellFactory(renderer);
+			lvAttacker.setCellFactory(renderer);
+			lvDefender.setCellFactory(renderer);
+			lvDropleadAttacker.setCellFactory(renderer);
+			lvDropleadDefender.setCellFactory(renderer);
 
-		setStrings();
-		buildGuiEffect();
-		checkConditionsToStartDrop(null);
+			setStrings();
+			buildGuiEffect();
+			checkConditionsToStartDrop(null);
+		}
 	}
 }

@@ -261,6 +261,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			a.storeAttackCharacters(ac, Boolean.FALSE);
 		}
 
+		Nexus.getBoUniverse().attackBOsOpenInThisRound.put(a.getAttackDTO().getId(), a);
+
 		ActionManager.getAction(ACTIONS.SWITCH_TO_INVASION).execute();
 	}
 
