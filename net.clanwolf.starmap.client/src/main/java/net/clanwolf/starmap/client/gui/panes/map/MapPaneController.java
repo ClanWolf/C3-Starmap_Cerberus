@@ -260,7 +260,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			a.getAttackDTO().setStoryID(19L);    // TODO: Hier müssen wir die Einstiegs-Story ID irgendwie definieren
 			a.storeAttack();
 		} else {
-			a.storeAttackCharacters(ac, Boolean.FALSE);
+			//a.storeAttackCharacters(ac, Boolean.FALSE);
+			a.storeAttack();
 		}
 
 		// Nexus.getBoUniverse().attackBOsOpenInThisRound.put(a.getAttackDTO().getId(), a); // kann weg!
