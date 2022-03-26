@@ -258,16 +258,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		if (a.getCharacterId() == null || a.getStoryId() == null) {
 			a.getAttackDTO().setCharacterID(Nexus.getCurrentChar().getId());
 			a.getAttackDTO().setStoryID(19L);    // TODO: Hier müssen wir die Einstiegs-Story ID irgendwie definieren
-			a.storeAttack();
-		} else {
-			//a.storeAttackCharacters(ac, Boolean.FALSE);
-			a.storeAttack();
 		}
-
-		// Nexus.getBoUniverse().attackBOsOpenInThisRound.put(a.getAttackDTO().getId(), a); // kann weg!
-
-		// Das hier erst feuern, wenn das Event vom Speichern des Angriffs vom Server zurückkommt
-		// ActionManager.getAction(ACTIONS.SWITCH_TO_INVASION).execute();
+		a.storeAttack();
 	}
 
 	@FXML

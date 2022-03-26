@@ -65,6 +65,7 @@ public class BOAttack {
 	}
 
 	@SuppressWarnings("unused")
+	@Deprecated
 	public void storeAttackCharacters(AttackCharacterDTO attackCharacterDTO, Boolean bRemoveAttackChar) {
 		GameState saveAttackCharacterState = new GameState();
 		saveAttackCharacterState.setMode(GAMESTATEMODES.ATTACK_CHARACTER_SAVE);

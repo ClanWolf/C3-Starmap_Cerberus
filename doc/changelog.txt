@@ -2,7 +2,7 @@ C3 version history
 --------------------------------
 
 Version 6.9.9 (25.03.2022)
--
+- FIXED: Lobby handling of user lists
 
 Version 6.9.8 (23.03.2022)
 - ADDED: New scenario (for IS vs Clan)
