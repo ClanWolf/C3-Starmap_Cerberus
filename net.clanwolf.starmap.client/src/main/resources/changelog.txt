@@ -1,6 +1,9 @@
 C3 version history
 --------------------------------
 
+Version 7.0.0 (28.03.2022)
+- UPDATED: All dependencies
+
 Version 6.9.9 (25.03.2022)
 - FIXED: Lobby handling of user lists
 

@@ -17,7 +17,7 @@ module net.clanwolf.starmap.client {
 	requires javafx.swing;
 	requires irc.api;
 	requires thumbnailator;
-	requires jnativehook;
+	requires com.github.kwhat.jnativehook;
 	requires com.google.gson;
 	requires java.sql;
 	requires org.slf4j;

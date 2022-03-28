@@ -26,7 +26,7 @@
 
 		<!-- C3 Revision -->
 		<!-- https://stackoverflow.com/questions/10582054/maven-project-version-inheritance-do-i-have-to-specify-the-parent-version -->
-		<revision>6.9.9</revision>
+		<revision>7.0.0</revision>
 
 		<!-- Versions -->
 		<version.java>17</version.java>
@@ -34,10 +34,10 @@
 		<version.maven-compiler-plugin>3.10.0</version.maven-compiler-plugin>
 		<version.exec-maven-plugin>3.0.0</version.exec-maven-plugin>
 		<version.asm>9.2</version.asm>                                              <!-- 7.3.1       <-> 9.2         -->
-		<version.netty>4.1.74.Final</version.netty>
-		<version.spring>5.3.16</version.spring>                                     <!-- 5.3.11      <-> 5.3.13      -->
+		<version.netty>4.1.75.Final</version.netty>
+		<version.spring>5.3.17</version.spring>                                     <!-- 5.3.11      <-> 5.3.13      -->
 		<version.spring-security-config>5.6.2</version.spring-security-config>
-		<version.hibernate>5.6.5.Final</version.hibernate>
+		<version.hibernate>5.6.7.Final</version.hibernate>
 		<version.mysql-connector>8.0.28</version.mysql-connector>
 		<version.slf4j>2.0.0-alpha6</version.slf4j>
 		<!-- hikariCP and hikari jars are on the server next to the server jar. -->
@@ -45,7 +45,7 @@
 		<!-- IF this version is changed:                                        -->
 		<!-- * ENTER the new versions into the manifest (server.pom)            -->
 		<!-- and upload the files manually!                                     -->
-		<version.hibernate_hikaricp>5.6.5.Final</version.hibernate_hikaricp>
+		<version.hibernate_hikaricp>5.6.7.Final</version.hibernate_hikaricp>
 		<version.hikaricp>5.0.1</version.hikaricp>
 	</properties>
 
