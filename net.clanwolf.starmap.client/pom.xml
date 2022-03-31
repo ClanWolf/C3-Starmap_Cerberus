@@ -244,8 +244,8 @@
 				<version>${version.maven-compiler-plugin}</version>
 				<configuration>
 					<release>${version.java}</release>
-					<source>17</source>
-					<target>17</target>
+					<source>${version.java}</source>
+					<target>${version.java}</target>
 					<!--<compilerArgs>-->
 						<!--<compilerArg>&#45;&#45;module-path</compilerArg>-->
 						<!--<compilerArg>${project.build.directory}/modules</compilerArg>-->
@@ -300,7 +300,7 @@
 			</plugin>
 			<plugin>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.2.0</version>
+				<version>3.2.2</version>
 				<configuration>
 					<outputDirectory>${project.build.directory}/modules</outputDirectory>
 				</configuration>
