@@ -150,73 +150,76 @@ public class EventCommunications {
 				case ATTACK_SAVE_RESPONSE:
 					logger.info("Attack has been saved.");
 					AttackDTO attack = (AttackDTO) state.getObject();
+					BOAttack a2 = Nexus.getCurrentAttackOfUser();
 
-					//RolePlayStoryDTO rpOldDTO = Nexus.getBoUniverse().getAttackStories().get(Nexus.getCurrentAttackOfUser().getAttackDTO().getStoryID());
-					boolean storyWasChanged = false;
-					if(	Nexus.getStoryBeforeSaving() != null && !attack.getStoryID().equals(Nexus.getStoryBeforeSaving())){
-						storyWasChanged = true;
-					};
+					if (a2 != null && a2.getAttackDTO().getId().equals(attack.getId())) {
+						//RolePlayStoryDTO rpOldDTO = Nexus.getBoUniverse().getAttackStories().get(Nexus.getCurrentAttackOfUser().getAttackDTO().getStoryID());
+						boolean storyWasChanged = false;
+						if (Nexus.getStoryBeforeSaving() != null && !attack.getStoryID().equals(Nexus.getStoryBeforeSaving())) {
+							storyWasChanged = true;
+						}
 
-					String userIDOfSavingUser = (String) state.getObject2(); // --> session.getId();
-					if (userIDOfSavingUser == null) {
-						// My attack was saved
-						// If I was the one who saved this attack, in my universe I already have the attack without an id
-						// this needs to be removed and replaced with the one that comes back from the server (this one has
-						// the id that was persisted.
-						BOAttack attackToBeRemoved = null;
-						for (BOAttack boa : Nexus.getBoUniverse().attackBOsOpenInThisRound.values()) {
-							if (boa.getAttackDTO().getId() == null) {
-								attackToBeRemoved = boa;
-								break;
+						String userIDOfSavingUser = (String) state.getObject2(); // --> session.getId();
+						if (userIDOfSavingUser == null) {
+							// My attack was saved
+							// If I was the one who saved this attack, in my universe I already have the attack without an id
+							// this needs to be removed and replaced with the one that comes back from the server (this one has
+							// the id that was persisted.
+							BOAttack attackToBeRemoved = null;
+							for (BOAttack boa : Nexus.getBoUniverse().attackBOsOpenInThisRound.values()) {
+								if (boa.getAttackDTO().getId() == null) {
+									attackToBeRemoved = boa;
+									break;
+								}
+							}
+							if (attackToBeRemoved != null) {
+								Nexus.getBoUniverse().attackBOsOpenInThisRound.remove(attackToBeRemoved.getAttackDTO().getId());
+							}
+						} else {
+							// Someone else moved this jumpship and managed to save faster than I did, no luck!
+						}
+
+						BOAttack boa = new BOAttack(attack);
+						Nexus.getBoUniverse().attackBOsOpenInThisRound.put(boa.getAttackDTO().getId(), boa);
+						RolePlayStoryDTO rpDTO = (RolePlayStoryDTO) state.getObject3();
+						if (rpDTO != null) {
+							Nexus.getBoUniverse().getAttackStories().put(rpDTO.getId(), rpDTO);
+						}
+
+						ActionManager.getAction(ACTIONS.ENABLE_MAIN_MENU_BUTTONS).execute();
+						ActionManager.getAction(ACTIONS.UPDATE_USERS_FOR_ATTACK).execute();
+
+						boolean currentCharInList = false;
+						for (AttackCharacterDTO c : attack.getAttackCharList()) {
+							if (c.getCharacterID().equals(Nexus.getCurrentChar().getId())) {
+								currentCharInList = true;
 							}
 						}
-						if (attackToBeRemoved != null) {
-							Nexus.getBoUniverse().attackBOsOpenInThisRound.remove(attackToBeRemoved.getAttackDTO().getId());
+						if (!currentCharInList) {
+							// Obviously I have been kicked and need to be moved from the lobby
+							Nexus.setCurrentAttackOfUserToNull();
+							ActionManager.getAction(ACTIONS.SWITCH_TO_MAP).execute();
+						} else {
+							// I am in the list, check if the invasion pane is already open
+							ActionManager.getAction(ACTIONS.SWITCH_TO_INVASION).execute();
 						}
-					} else {
-						// Someone else moved this jumpship and managed to save faster than I did, no luck!
-					}
 
-					BOAttack boa = new BOAttack(attack);
-					Nexus.getBoUniverse().attackBOsOpenInThisRound.put(boa.getAttackDTO().getId(), boa);
-					RolePlayStoryDTO rpDTO = (RolePlayStoryDTO) state.getObject3();
-					if(rpDTO != null) {
-						Nexus.getBoUniverse().getAttackStories().put(rpDTO.getId(), rpDTO);
-					}
-
-					ActionManager.getAction(ACTIONS.ENABLE_MAIN_MENU_BUTTONS).execute();
-					ActionManager.getAction(ACTIONS.UPDATE_USERS_FOR_ATTACK).execute();
-
-					boolean currentCharInList = false;
-					for (AttackCharacterDTO c : attack.getAttackCharList()) {
-						if (c.getCharacterID().equals(Nexus.getCurrentChar().getId())) {
-							currentCharInList = true;
+						if (storyWasChanged) {
+							ActionManager.getAction(ACTIONS.ROLEPLAY_NEXT_STEP_CHANGE_PANE).execute(state.getObject());
+							BOAttack a = Nexus.getCurrentAttackOfUser();
+							if (a == null) {
+								a = Nexus.getFinishedAttackInThisRoundForUser();
+							}
+							if (a != null) {
+								Nexus.setStoryBeforeSaving(a.getStoryId().longValue());
+							}
 						}
-					}
-					if (!currentCharInList) {
-						// Obviously I have been kicked and need to be moved from the lobby
-						Nexus.setCurrentAttackOfUserToNull();
-						ActionManager.getAction(ACTIONS.SWITCH_TO_MAP).execute();
-					} else {
-						// I am in the list, check if the invasion pane is already open
-						ActionManager.getAction(ACTIONS.SWITCH_TO_INVASION).execute();
-					}
 
-					if(storyWasChanged) {
-						ActionManager.getAction(ACTIONS.ROLEPLAY_NEXT_STEP_CHANGE_PANE).execute(state.getObject());
-						BOAttack a = Nexus.getCurrentAttackOfUser();
-						if (a == null) {
-							a = Nexus.getFinishedAttackInThisRoundForUser();
+						// Wenn Kampf beendet wurde dann den aktuellen Kampf des Users auf Null setzen
+						Long factionWinnerId = attack.getFactionID_Winner();
+						if (factionWinnerId != null) {
+							Nexus.setCurrentAttackOfUserToNull();
 						}
-						if (a != null) {
-							Nexus.setStoryBeforeSaving(a.getStoryId().longValue());
-						}
-					}
-
-					// Wenn Kampf beendet wurde dann den aktuellen Kampf des Users auf Null setzen
-					Long factionWinnerId = attack.getFactionID_Winner();
-					if (factionWinnerId != null) {
-						Nexus.setCurrentAttackOfUserToNull();
 					}
 					break;
 

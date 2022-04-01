@@ -294,62 +294,64 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 	public synchronized void saveAttack() {
 		BOAttack a = Nexus.getCurrentAttackOfUser();
 
-		ArrayList<AttackCharacterDTO> charList = new ArrayList<AttackCharacterDTO>();
+		if (a != null) {
+			ArrayList<AttackCharacterDTO> charList = new ArrayList<AttackCharacterDTO>();
 
-		for(RolePlayCharacterDTO attacker : lvAttacker.getItems() ){
-			if(!attacker.getName().equals("...")) {
-				AttackCharacterDTO acDTO = new AttackCharacterDTO();
-				acDTO.setCharacterID(attacker.getId());
-				acDTO.setAttackID(a.getAttackDTO().getId());
-				acDTO.setType(characterRoleMap.get(attacker.getId()).getType());
-				if (acDTO.getType() != null) {
-					charList.add(acDTO);
+			for (RolePlayCharacterDTO attacker : lvAttacker.getItems()) {
+				if (!attacker.getName().equals("...")) {
+					AttackCharacterDTO acDTO = new AttackCharacterDTO();
+					acDTO.setCharacterID(attacker.getId());
+					acDTO.setAttackID(a.getAttackDTO().getId());
+					acDTO.setType(characterRoleMap.get(attacker.getId()).getType());
+					if (acDTO.getType() != null) {
+						charList.add(acDTO);
+					}
 				}
 			}
-		}
 
-		for(RolePlayCharacterDTO defender : lvDefender.getItems() ){
-			if(!defender.getName().equals("...")) {
-				AttackCharacterDTO acDTO = new AttackCharacterDTO();
-				acDTO.setCharacterID(defender.getId());
-				acDTO.setAttackID(a.getAttackDTO().getId());
-				acDTO.setType(characterRoleMap.get(defender.getId()).getType());
-				if (acDTO.getType() != null) {
-					charList.add(acDTO);
+			for (RolePlayCharacterDTO defender : lvDefender.getItems()) {
+				if (!defender.getName().equals("...")) {
+					AttackCharacterDTO acDTO = new AttackCharacterDTO();
+					acDTO.setCharacterID(defender.getId());
+					acDTO.setAttackID(a.getAttackDTO().getId());
+					acDTO.setType(characterRoleMap.get(defender.getId()).getType());
+					if (acDTO.getType() != null) {
+						charList.add(acDTO);
+					}
 				}
 			}
-		}
 
-		if (lvDropleadAttacker.getItems().size() > 0) {
-			if (!lvDropleadAttacker.getItems().get(0).getName().equals("...")) {
-				AttackCharacterDTO acDTODropLeadAttacker = new AttackCharacterDTO();
-				acDTODropLeadAttacker.setCharacterID(lvDropleadAttacker.getItems().get(0).getId());
-				acDTODropLeadAttacker.setAttackID(a.getAttackDTO().getId());
-				acDTODropLeadAttacker.setType(characterRoleMap.get(lvDropleadAttacker.getItems().get(0).getId()).getType());
-				if (acDTODropLeadAttacker.getType() != null) {
-					charList.add(acDTODropLeadAttacker);
+			if (lvDropleadAttacker.getItems().size() > 0) {
+				if (!lvDropleadAttacker.getItems().get(0).getName().equals("...")) {
+					AttackCharacterDTO acDTODropLeadAttacker = new AttackCharacterDTO();
+					acDTODropLeadAttacker.setCharacterID(lvDropleadAttacker.getItems().get(0).getId());
+					acDTODropLeadAttacker.setAttackID(a.getAttackDTO().getId());
+					acDTODropLeadAttacker.setType(characterRoleMap.get(lvDropleadAttacker.getItems().get(0).getId()).getType());
+					if (acDTODropLeadAttacker.getType() != null) {
+						charList.add(acDTODropLeadAttacker);
+					}
 				}
+			} else {
+				logger.error("This list should never be empty!");
 			}
-		} else {
-			logger.error("This list should never be empty!");
-		}
 
-		if (lvDropleadDefender.getItems().size() > 0) {
-			if (!lvDropleadDefender.getItems().get(0).getName().equals("...")) {
-				AttackCharacterDTO acDTODropLeadDefender = new AttackCharacterDTO();
-				acDTODropLeadDefender.setCharacterID(lvDropleadDefender.getItems().get(0).getId());
-				acDTODropLeadDefender.setAttackID(a.getAttackDTO().getId());
-				acDTODropLeadDefender.setType(characterRoleMap.get(lvDropleadDefender.getItems().get(0).getId()).getType());
-				if (acDTODropLeadDefender.getType() != null) {
-					charList.add(acDTODropLeadDefender);
+			if (lvDropleadDefender.getItems().size() > 0) {
+				if (!lvDropleadDefender.getItems().get(0).getName().equals("...")) {
+					AttackCharacterDTO acDTODropLeadDefender = new AttackCharacterDTO();
+					acDTODropLeadDefender.setCharacterID(lvDropleadDefender.getItems().get(0).getId());
+					acDTODropLeadDefender.setAttackID(a.getAttackDTO().getId());
+					acDTODropLeadDefender.setType(characterRoleMap.get(lvDropleadDefender.getItems().get(0).getId()).getType());
+					if (acDTODropLeadDefender.getType() != null) {
+						charList.add(acDTODropLeadDefender);
+					}
 				}
+			} else {
+				logger.error("This list should never be empty!");
 			}
-		} else {
-			logger.error("This list should never be empty!");
-		}
 
-		a.getAttackDTO().setAttackCharList(charList) ;
-		a.storeAttack();
+			a.getAttackDTO().setAttackCharList(charList);
+			a.storeAttack();
+		}
 	}
 
 	public synchronized void checkConditionsToStartDrop(AttackCharacterDTO ac) {
@@ -364,8 +366,6 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		/*if (ac != null) {
 			a.storeAttackCharacters(ac, (ac.getType() == null));
 		}*/
-
-
 
 		boolean attackersOnline = true;
 		boolean defendersOnline = true;

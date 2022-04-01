@@ -972,43 +972,45 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	}
 
 	private void setStatusText(String t, boolean flash, String color, boolean justUpdate) {
-		if (fadeTransition_flash == null) {
-			fadeTransition_flash = new FadeTransition(Duration.millis(200), statuslabel);
-			fadeTransition_flash.setFromValue(1.0);
-			fadeTransition_flash.setToValue(0.0);
-			fadeTransition_flash.setAutoReverse(true);
-			fadeTransition_flash.setCycleCount(FadeTransition.INDEFINITE);
-		}
-
-		if (fadeTransition_fadein == null) {
-			fadeTransition_fadein = new FadeTransition(Duration.millis(100), statuslabel);
-			fadeTransition_fadein.setFromValue(0.0);
-			fadeTransition_fadein.setToValue(1.0);
-			fadeTransition_fadein.setAutoReverse(true);
-			fadeTransition_fadein.setCycleCount(3);
-		}
-
-		statuslabel.setText(t);
-		if (!"".equals(color)) {
-			statuslabel.setTextFill(Color.web(color));
-		}
-
-		if (flash) {
-			if ("".equals(color)) {
-				statuslabel.setTextFill(Color.web("#ff8080"));
+		Platform.runLater(() -> {
+			if (fadeTransition_flash == null) {
+				fadeTransition_flash = new FadeTransition(Duration.millis(200), statuslabel);
+				fadeTransition_flash.setFromValue(1.0);
+				fadeTransition_flash.setToValue(0.0);
+				fadeTransition_flash.setAutoReverse(true);
+				fadeTransition_flash.setCycleCount(FadeTransition.INDEFINITE);
 			}
-			fadeTransition_flash.play();
-		} else {
-			if ("".equals(color)) {
-				statuslabel.setTextFill(Color.web("#667288"));
-			}
-			if (justUpdate) {
 
+			if (fadeTransition_fadein == null) {
+				fadeTransition_fadein = new FadeTransition(Duration.millis(100), statuslabel);
+				fadeTransition_fadein.setFromValue(0.0);
+				fadeTransition_fadein.setToValue(1.0);
+				fadeTransition_fadein.setAutoReverse(true);
+				fadeTransition_fadein.setCycleCount(3);
+			}
+
+			statuslabel.setText(t);
+			if (!"".equals(color)) {
+				statuslabel.setTextFill(Color.web(color));
+			}
+
+			if (flash) {
+				if ("".equals(color)) {
+					statuslabel.setTextFill(Color.web("#ff8080"));
+				}
+				fadeTransition_flash.play();
 			} else {
-				fadeTransition_flash.stop();
-				fadeTransition_fadein.play();
+				if ("".equals(color)) {
+					statuslabel.setTextFill(Color.web("#667288"));
+				}
+				if (justUpdate) {
+
+				} else {
+					fadeTransition_flash.stop();
+					fadeTransition_fadein.play();
+				}
 			}
-		}
+		});
 	}
 
 	private boolean openTargetPane(AbstractC3Pane targetPane, String sm) {

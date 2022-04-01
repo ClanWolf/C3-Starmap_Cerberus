@@ -124,24 +124,28 @@ public class RPVarReplacer_DE {
 			fillLists();
 		}
 		BOAttack attack = Nexus.getCurrentAttackOfUser();
-		String attackerShortName = attack.getAttackerFactionShortName();
-		String defenderShortName = attack.getDefenderFactionShortName();
-		HashMap<String, String> attackerNameCases = factionNameCases.get(attackerShortName);
-		HashMap<String, String> defenderNameCases = factionNameCases.get(defenderShortName);
+		if (attack != null) {
+			String attackerShortName = attack.getAttackerFactionShortName();
+			String defenderShortName = attack.getDefenderFactionShortName();
+			HashMap<String, String> attackerNameCases = factionNameCases.get(attackerShortName);
+			HashMap<String, String> defenderNameCases = factionNameCases.get(defenderShortName);
 
-		return switch (key) {
-			case "@@PLANET@@" -> attack.getStarSystemName();
-			case "@@ATTACKER@@" -> attack.getAttackerFactionName();
-			case "@@DEFENDER@@" -> attack.getDefenderFactionName();
-			case "@@ATTACKER|nom@@" -> attackerNameCases.get("nom");
-			case "@@ATTACKER|dat@@" -> attackerNameCases.get("dat");
-			case "@@ATTACKER|akk@@" -> attackerNameCases.get("akk");
-			case "@@ATTACKER|gen@@" -> attackerNameCases.get("gen");
-			case "@@DEFENDER|nom@@" -> defenderNameCases.get("nom");
-			case "@@DEFENDER|dat@@" -> defenderNameCases.get("dat");
-			case "@@DEFENDER|akk@@" -> defenderNameCases.get("akk");
-			case "@@DEFENDER|gen@@" -> defenderNameCases.get("gen");
-			default -> "";
-		};
+			return switch (key) {
+				case "@@PLANET@@" -> attack.getStarSystemName();
+				case "@@ATTACKER@@" -> attack.getAttackerFactionName();
+				case "@@DEFENDER@@" -> attack.getDefenderFactionName();
+				case "@@ATTACKER|nom@@" -> attackerNameCases.get("nom");
+				case "@@ATTACKER|dat@@" -> attackerNameCases.get("dat");
+				case "@@ATTACKER|akk@@" -> attackerNameCases.get("akk");
+				case "@@ATTACKER|gen@@" -> attackerNameCases.get("gen");
+				case "@@DEFENDER|nom@@" -> defenderNameCases.get("nom");
+				case "@@DEFENDER|dat@@" -> defenderNameCases.get("dat");
+				case "@@DEFENDER|akk@@" -> defenderNameCases.get("akk");
+				case "@@DEFENDER|gen@@" -> defenderNameCases.get("gen");
+				default -> "";
+			};
+		} else {
+			return "ERROR: Attack is null!";
+		}
 	}
 }

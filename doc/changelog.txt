@@ -1,6 +1,13 @@
 C3 version history
 --------------------------------
 
+Version 7.0.1 (01.04.2022)
+- UPDATED: Some additional dependencies to current versions
+- FIXED: A number of exceptions in case a user left an attack and still gets the events from server
+- FIXED: Error while running multiple lobbies at once
+- CHANGED: The link in the error log mail into an actual link
+- CHANGED: Using the version variable for java version in all poms
+
 Version 7.0.0 (28.03.2022)
 - UPDATED: All dependencies
 
