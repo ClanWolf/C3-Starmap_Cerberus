@@ -190,10 +190,13 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		try {
 			EntityManagerHelper.beginTransaction(getC3UserID(session));
 
+			Long attackId = null;
+
 			ArrayList<RolePlayCharacterStatsPOJO> list = (ArrayList<RolePlayCharacterStatsPOJO>)state.getObject();
 			for (RolePlayCharacterStatsPOJO charStats : list) {
 				logger.debug("Saving character stats for game id: " + charStats.getMwoMatchId() + ", rpCharId: " + charStats.getRoleplayCharacterId());
 
+				attackId = charStats.getAttackId();
 				RolePlayCharacterStatsPOJO p = dao.findbyCharIdAndMatchId(charStats.getRoleplayCharacterId(), charStats.getMwoMatchId());
 				if (p != null) {
 					break;
@@ -211,6 +214,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 			GameState response = new GameState(GAMESTATEMODES.CHARACTER_STATS_SAVE_RESPONSE);
 			response.setAction_successfully(Boolean.TRUE);
+			response.addObject(attackId);
 			C3GameSessionHandler.sendBroadCast(room, response);
 		} catch (RuntimeException re) {
 			re.printStackTrace();
@@ -250,6 +254,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 			GameState response = new GameState(GAMESTATEMODES.ATTACK_STATS_SAVE_RESPONSE);
 			response.setAction_successfully(Boolean.TRUE);
+			response.addObject(attackStats.getAttackId());
 			C3GameSessionHandler.sendBroadCast(room, response);
 		} catch (RuntimeException re) {
 			re.printStackTrace();
@@ -289,6 +294,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 			GameState response = new GameState(GAMESTATEMODES.STATS_MWO_SAVE_RESPONSE);
 			response.setAction_successfully(Boolean.TRUE);
+			response.addObject(statsMwo.getAttackId());
 			C3GameSessionHandler.sendBroadCast(room, response);
 		} catch (RuntimeException re) {
 			re.printStackTrace();

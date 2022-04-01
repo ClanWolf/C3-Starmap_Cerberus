@@ -150,9 +150,14 @@ public class EventCommunications {
 				case ATTACK_SAVE_RESPONSE:
 					logger.info("Attack has been saved.");
 					AttackDTO attack = (AttackDTO) state.getObject();
-					BOAttack a2 = Nexus.getCurrentAttackOfUser();
+					boolean iAmInAttack = false;
+					for (AttackCharacterDTO ac : attack.getAttackCharList()) {
+						if (ac.getCharacterID().equals(Nexus.getCurrentChar().getId())) {
+							iAmInAttack = true;
+						}
+					}
 
-					if (a2 != null && a2.getAttackDTO().getId().equals(attack.getId())) {
+					if (iAmInAttack) {
 						//RolePlayStoryDTO rpOldDTO = Nexus.getBoUniverse().getAttackStories().get(Nexus.getCurrentAttackOfUser().getAttackDTO().getStoryID());
 						boolean storyWasChanged = false;
 						if (Nexus.getStoryBeforeSaving() != null && !attack.getStoryID().equals(Nexus.getStoryBeforeSaving())) {
@@ -239,62 +244,74 @@ public class EventCommunications {
 //					break;
 
 				case STATS_MWO_SAVE_RESPONSE:
-					if (state.isAction_successfully()) {
-						mwoStatsSaved = true;
-						logger.info("MWO stats saved!");
-					} else {
-						mwoStatsSaved = false;
-						logger.info("MWO stats NOT saved!");
-					}
-					if (mwoStatsSaved != null && attackStatsSaved != null && charStatsSaved != null) {
-						if (mwoStatsSaved && attackStatsSaved && charStatsSaved) {
-							C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_AttackStatsStoreSuccessfull"));
+					BOAttack attack1 = Nexus.getCurrentAttackOfUser();
+					Long attackId1 = (Long) state.getObject();
+					if (attack1 != null && attack1.getAttackDTO().getId().equals(attackId1)) {
+						if (state.isAction_successfully()) {
+							mwoStatsSaved = true;
+							logger.info("MWO stats saved!");
 						} else {
-							C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_AttackStatsStoreFailed"));
+							mwoStatsSaved = false;
+							logger.info("MWO stats NOT saved!");
 						}
-						mwoStatsSaved = null;
-						attackStatsSaved = null;
-						charStatsSaved = null;
+						if (mwoStatsSaved != null && attackStatsSaved != null && charStatsSaved != null) {
+							if (mwoStatsSaved && attackStatsSaved && charStatsSaved) {
+								C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_AttackStatsStoreSuccessfull"));
+							} else {
+								C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_AttackStatsStoreFailed"));
+							}
+							mwoStatsSaved = null;
+							attackStatsSaved = null;
+							charStatsSaved = null;
+						}
 					}
 					break;
 
 				case ATTACK_STATS_SAVE_RESPONSE:
-					if (state.isAction_successfully()) {
-						attackStatsSaved = true;
-						logger.info("Attack stats saved!");
-					} else {
-						attackStatsSaved = false;
-						logger.info("Attack stats NOT saved!");
-					}
-					if (mwoStatsSaved != null && attackStatsSaved != null && charStatsSaved != null) {
-						if (mwoStatsSaved && attackStatsSaved && charStatsSaved) {
-							C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_AttackStatsStoreSuccessfull"));
+					BOAttack attack2 = Nexus.getCurrentAttackOfUser();
+					Long attackId2 = (Long) state.getObject();
+					if (attack2 != null && attack2.getAttackDTO().getId().equals(attackId2)) {
+						if (state.isAction_successfully()) {
+							attackStatsSaved = true;
+							logger.info("Attack stats saved!");
 						} else {
-							C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_AttackStatsStoreFailed"));
+							attackStatsSaved = false;
+							logger.info("Attack stats NOT saved!");
 						}
-						mwoStatsSaved = null;
-						attackStatsSaved = null;
-						charStatsSaved = null;
+						if (mwoStatsSaved != null && attackStatsSaved != null && charStatsSaved != null) {
+							if (mwoStatsSaved && attackStatsSaved && charStatsSaved) {
+								C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_AttackStatsStoreSuccessfull"));
+							} else {
+								C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_AttackStatsStoreFailed"));
+							}
+							mwoStatsSaved = null;
+							attackStatsSaved = null;
+							charStatsSaved = null;
+						}
 					}
 					break;
 
 				case CHARACTER_STATS_SAVE_RESPONSE:
-					if (state.isAction_successfully()) {
-						charStatsSaved = true;
-						logger.info("Character stats saved!");
-					} else {
-						charStatsSaved = false;
-						logger.info("Character stats NOT saved!");
-					}
-					if (mwoStatsSaved != null && attackStatsSaved != null && charStatsSaved != null) {
-						if (mwoStatsSaved && attackStatsSaved && charStatsSaved) {
-							C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_AttackStatsStoreSuccessfull"));
+					BOAttack attack3 = Nexus.getCurrentAttackOfUser();
+					Long attackId3 = (Long) state.getObject();
+					if (attack3 != null && attack3.getAttackDTO().getId().equals(attackId3)) {
+						if (state.isAction_successfully()) {
+							charStatsSaved = true;
+							logger.info("Character stats saved!");
 						} else {
-							C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_AttackStatsStoreFailed"));
+							charStatsSaved = false;
+							logger.info("Character stats NOT saved!");
 						}
-						mwoStatsSaved = null;
-						attackStatsSaved = null;
-						charStatsSaved = null;
+						if (mwoStatsSaved != null && attackStatsSaved != null && charStatsSaved != null) {
+							if (mwoStatsSaved && attackStatsSaved && charStatsSaved) {
+								C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_AttackStatsStoreSuccessfull"));
+							} else {
+								C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_AttackStatsStoreFailed"));
+							}
+							mwoStatsSaved = null;
+							attackStatsSaved = null;
+							charStatsSaved = null;
+						}
 					}
 					break;
 
