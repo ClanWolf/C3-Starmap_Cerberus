@@ -1151,7 +1151,7 @@ public class MechIdInfo {
 
         };
 
-        return getTonnage() * 200000 * Multiply;
+        return getTonnage() * -100000 * Multiply;
     }
 
     public double getRepairCost(Integer HealthPercentage){

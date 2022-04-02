@@ -26,11 +26,13 @@
  */
 package net.clanwolf.starmap.server.process;
 
+import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.server.Nexus.Nexus;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.*;
 import net.clanwolf.starmap.server.persistence.pojos.*;
 import net.clanwolf.starmap.transfer.mwo.MechIdInfo;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,7 +43,7 @@ import java.util.Map;
  * Diese Klasse berechnet die Reparaturkosten der jeweiligen Mechs.
  *
  * @author KERNREAKTOR
- * @version 1.0.3
+ * @version 1.0.4
  */
 public class CalcBalance {
 
@@ -49,6 +51,7 @@ public class CalcBalance {
     private double defenderRepairCost;
     private final Map<RolePlayCharacterStatsPOJO, Double> defenderPlayerRepairCost = new HashMap<>();
     private final Map<RolePlayCharacterStatsPOJO, Double> attackerPlayerRepairCost = new HashMap<>();
+    private final AttackStatsPOJO aSPOJO;
 
 /**
  * Erstellt einen Reparaturbericht, die als Nachricht versendet werden kann.
@@ -74,7 +77,7 @@ public class CalcBalance {
      * @param attackerRepairCost Der Neue (double) Wert für die gesamten Reparaturkosten der Angreifer.
      */
     public void setAttackerRepairCost(double attackerRepairCost) {
-        this.attackerRepairCost = attackerRepairCost;
+        this.attackerRepairCost = this.attackerRepairCost + attackerRepairCost;
     }
 
     /**
@@ -91,7 +94,7 @@ public class CalcBalance {
      * @param defenderRepairCost Der Neue (double) Wert für die gesamten Reparaturkosten der Verteidiger.
      */
     public void setDefenderRepairCost(double defenderRepairCost) {
-        this.defenderRepairCost = defenderRepairCost;
+        this.defenderRepairCost = this.defenderRepairCost + defenderRepairCost;
     }
 
     /**
@@ -132,10 +135,14 @@ public class CalcBalance {
         FactionPOJO factionDefender = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, rpcs.getDefenderFactionId());
         FactionPOJO factionWinner = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, rpcs.getWinnerFactionId());
 
+        aSPOJO = rpcs;
+
         Long attackerTeam = 0L;
         Long defenderTeam =0L;
 
         String columnWidthDefault = "%-20.20s";
+
+        DecimalFormat nf = new DecimalFormat();
 
         mailMessage.append("---Start of repair cost report---").append("\r\n\r\n");
         mailMessage.append("Repair cost evaluations between the attacker ");
@@ -195,6 +202,7 @@ public class CalcBalance {
         mailMessage.append(String.format(columnWidthDefault,rpcs.getAttackerNumberOfPilots()));
         mailMessage.append(String.format(columnWidthDefault,rpcs.getDefenderNumberOfPilots())).append("\r\n");
 
+
         String attackerDropleadName = "";
         String defenderDropleadName = "";
 
@@ -203,22 +211,47 @@ public class CalcBalance {
             RolePlayCharacterPOJO character = characterDAO.findById(Nexus.DUMMY_USERID, pojo.getRoleplayCharacterId());
 
             //Get Attacker Droplead
-            if(rpcs.getAttackerFactionId() == character.getFactionId().longValue()) {
-                if(pojo.getLeadingPosition()){
+            if(pojo.getLeadingPosition()){
+                if(rpcs.getDefenderFactionId().equals(character.getFactionId().longValue())){
+                    defenderTeam = pojo.getMwoTeam();
+                    defenderDropleadName = character.getMwoUsername();
+                }
+                if(rpcs.getAttackerFactionId().equals(character.getFactionId().longValue())){
                     attackerTeam = pojo.getMwoTeam();
                     attackerDropleadName = character.getMwoUsername();
                 }
             }
+        }
 
-            //Get Defender Droplead
-            if(rpcs.getDefenderFactionId() == character.getFactionId().longValue()){
-                if(pojo.getLeadingPosition()){
-                    defenderTeam = pojo.getMwoTeam();
-                    defenderDropleadName = character.getMwoUsername();
+        //Wenn noch kein Attacker Droplead gefunden wurde.
+        if(attackerTeam == 0L && defenderTeam > 0){
+            for(RolePlayCharacterStatsPOJO pojo : list){
+
+                RolePlayCharacterPOJO character = characterDAO.findById(Nexus.DUMMY_USERID, pojo.getRoleplayCharacterId());
+
+                if(pojo.getLeadingPosition() && !(defenderTeam.equals(pojo.getMwoTeam()))){
+
+                        attackerTeam = pojo.getMwoTeam();
+                        attackerDropleadName = character.getMwoUsername();
+                        break;
                 }
             }
         }
 
+        //Wenn noch kein Defender Droplead gefunden wurde.
+        if(defenderTeam == 0L && attackerTeam > 0){
+            for(RolePlayCharacterStatsPOJO pojo : list){
+
+                RolePlayCharacterPOJO character = characterDAO.findById(Nexus.DUMMY_USERID, pojo.getRoleplayCharacterId());
+
+                if(pojo.getLeadingPosition() && !(attackerTeam.equals(pojo.getMwoTeam()))){
+
+                    defenderTeam = pojo.getMwoTeam();
+                    defenderDropleadName = character.getMwoUsername();
+                    break;
+                }
+            }
+        }
         if(!(attackerTeam == 0L) && !(defenderTeam == 0L)){
 
             mailMessage.append("─".repeat(60)).append("\r\n");
@@ -249,7 +282,7 @@ public class CalcBalance {
             String columnWidthRepairCost = "%20.20s";
             String columnWidthTotal = "%-75.75s";
 
-            mailMessage.append("Repair cost for defender:\r\n\r\n");
+            mailMessage.append("Repair cost for defender " + factionDefender.getName_en() +":\r\n\r\n");
             mailMessage.append("─".repeat(95));
             mailMessage.append("\r\n");
             mailMessage.append(String.format(columnWidthMWOUsername,"MWO Username"));
@@ -270,20 +303,35 @@ public class CalcBalance {
 
                 mailMessage.append(String.format(columnWidthMechname,MI.getFullname()));
                 mailMessage.append(String.format(columnWidthPercentToRepair,(100L - defuser.getKey().getMwoSurvivalPercentage() + "%")));
-                mailMessage.append(String.format(columnWidthRepairCost,defuser.getValue().longValue() + " C-Bills"));
+                mailMessage.append(String.format(columnWidthRepairCost,nf.format(defuser.getValue().longValue()) + " C-Bills"));
                 mailMessage.append("\r\n");
 
             }
+            mailMessage.append("─".repeat(95));
+            mailMessage.append("\r\n");
+            mailMessage.append(String.format(columnWidthTotal,"Defend cost:"));
+            mailMessage.append(String.format(columnWidthRepairCost,nf.format(getDefendCost(rpcs.getStarSystemDataId())) + " C-Bills"));
+            mailMessage.append("\r\n");
+
+            setDefenderRepairCost(getDefendCost(rpcs.getStarSystemDataId()) );
+
+            mailMessage.append("─".repeat(95));
+            mailMessage.append("\r\n");
+            mailMessage.append(String.format(columnWidthTotal,"Income:"));
+            mailMessage.append(String.format(columnWidthRepairCost,nf.format(getIncome(factionDefender.getId())) + " C-Bills"));
+            mailMessage.append("\r\n");
+
+            setDefenderRepairCost(getIncome(factionDefender.getId()));
 
             mailMessage.append("─".repeat(95));
             mailMessage.append("\r\n");
             mailMessage.append(String.format(columnWidthTotal,"Total:"));
-            mailMessage.append(String.format(columnWidthRepairCost,(long) getDefenderRepairCost() + " C-Bills"));
+            mailMessage.append(String.format(columnWidthRepairCost,nf.format((long) getDefenderRepairCost()) + " C-Bills"));
             mailMessage.append("\r\n");
             mailMessage.append("═".repeat(95));
             mailMessage.append("\r\n\r\n");
 
-            mailMessage.append("Repair cost for attacker:\r\n\r\n");
+            mailMessage.append("Repair cost for attacker " + factionAttacker.getName_en() +":\r\n\r\n");
             mailMessage.append("─".repeat(95));
             mailMessage.append("\r\n");
             mailMessage.append(String.format(columnWidthMWOUsername,"MWO Username"));
@@ -302,15 +350,32 @@ public class CalcBalance {
                 MechIdInfo MI = new MechIdInfo(Math.toIntExact(attuser.getKey().getMechItemId()));
                 mailMessage.append(String.format(columnWidthMechname,MI.getFullname()));
                 mailMessage.append(String.format(columnWidthPercentToRepair,(100L - attuser.getKey().getMwoSurvivalPercentage()) + "%"));
-                mailMessage.append(String.format(columnWidthRepairCost,attuser.getValue().longValue() + " C-Bills"));
+                mailMessage.append(String.format(columnWidthRepairCost,nf.format(attuser.getValue().longValue()) + " C-Bills"));
                 mailMessage.append("\r\n");
 
             }
 
             mailMessage.append("─".repeat(95));
             mailMessage.append("\r\n");
+            mailMessage.append(String.format(columnWidthTotal,"Attack cost:"));
+            mailMessage.append(String.format(columnWidthRepairCost,nf.format(getAttackCost(rpcs.getStarSystemDataId())) + " C-Bills"));
+            mailMessage.append("\r\n");
+
+            setAttackerRepairCost(getAttackCost(rpcs.getStarSystemDataId()) );
+
+
+            mailMessage.append("─".repeat(95));
+            mailMessage.append("\r\n");
+            mailMessage.append(String.format(columnWidthTotal,"Income:"));
+            mailMessage.append(String.format(columnWidthRepairCost,nf.format(getIncome(factionAttacker.getId())) + " C-Bills"));
+            mailMessage.append("\r\n");
+
+            setAttackerRepairCost(getIncome(factionAttacker.getId()));
+
+            mailMessage.append("─".repeat(95));
+            mailMessage.append("\r\n");
             mailMessage.append(String.format(columnWidthTotal,"Total:"));
-            mailMessage.append(String.format(columnWidthRepairCost,(long) getAttackerRepairCost() + " C-Bills"));
+            mailMessage.append(String.format(columnWidthRepairCost,nf.format((long) getAttackerRepairCost()) + " C-Bills"));
             mailMessage.append("\r\n");
             mailMessage.append("═".repeat(95));
             mailMessage.append("\r\n");
@@ -318,5 +383,92 @@ public class CalcBalance {
             mailMessage.append("\r\n\r\n");
 
         }
+    }
+
+    /**
+     * Berechnet die Kosten, um den Planeten zu verteidigen.
+     * @param starSystemDataId Die StarSystemID, wo aktuell verteidigt wird.
+     * @return Die Kosten werden zurückgegeben, wenn man diesen Planeten verteidigt.
+     */
+    public long getDefendCost(long starSystemDataId){
+        long cost = 0L;
+        ArrayList<StarSystemDataPOJO> starsystemdataListHH = StarSystemDataDAO.getInstance().getAll_HH_StarSystemData();
+
+        for (StarSystemDataPOJO starsystemdata : starsystemdataListHH) {
+            if(starsystemdata.getStarSystemID().getId().equals(starSystemDataId)){
+                switch (starsystemdata.getLevel().intValue()) {
+                    case 1 -> // Regular world
+                            cost = cost + Constants.REGULAR_SYSTEM_DEFEND_COST;
+                    case 2 -> // Industrial world
+                            cost = cost + Constants.INDUSTRIAL_SYSTEM_DEFEND_COST;
+                    case 3 -> // Captial world
+                            cost = cost + Constants.CAPITAL_SYSTEM_DEFEND_COST;
+                }
+                break;
+            }
+        }
+        return cost * 1000;
+    }
+
+    /**
+     * Berechnet die Kosten, für die Angreifer.
+     * @param starSystemDataId Die StarSystemID, wo aktuell der angegriffen wird.
+     * @return Die Kosten werden zurückgegeben, wenn man diesen Planeten angreift.
+     */
+    public long getAttackCost(long starSystemDataId){
+
+        long cost = 0L;
+        ArrayList<StarSystemDataPOJO> starsystemdataListHH = StarSystemDataDAO.getInstance().getAll_HH_StarSystemData();
+
+        for (StarSystemDataPOJO starsystemdata : starsystemdataListHH) {
+            if(starsystemdata.getStarSystemID().getId().equals(starSystemDataId)){
+                switch (starsystemdata.getLevel().intValue()) {
+                    case 1 -> // Regular world
+                            cost = cost + Constants.REGULAR_SYSTEM_ATTACK_COST;
+                    case 2 -> // Industrial world
+                            cost = cost + Constants.INDUSTRIAL_SYSTEM_ATTACK_COST;
+                    case 3 -> // Captial world
+                            cost = cost + Constants.CAPITAL_SYSTEM_ATTACK_COST;
+                }
+                break;
+            }
+        }
+        return cost * 1000;
+    }
+
+    /**
+     * Berechnet die Einnahmen und Ausgaben von jedem Planeten, den man erobert hat.
+     * @param userFactionId Die FactionID von dem jeweiligen Spieler.
+     * @return Gibt die Einnahmen und Ausgaben zurück.
+     */
+    public long getIncome(long userFactionId){
+
+        long income = 0L;
+        long cost = 0L;
+
+        ArrayList<StarSystemDataPOJO> starsystemdataListHH = StarSystemDataDAO.getInstance().getAll_HH_StarSystemData();
+        for (StarSystemDataPOJO starsystemdata : starsystemdataListHH) {
+            if (starsystemdata.getFactionID().getId().equals(userFactionId)) {
+
+                switch (starsystemdata.getLevel().intValue()) {
+                    case 1 -> { // Regular
+
+                        income = income + Constants.REGULAR_SYSTEM_GENERAL_INCOME;
+                        cost = cost + Constants.REGULAR_SYSTEM_GENERAL_COST;
+                    }
+                    case 2 -> { // Industrial
+
+                        income = income + Constants.INDUSTRIAL_SYSTEM_GENERAL_INCOME;
+                        cost = cost + Constants.INDUSTRIAL_SYSTEM_GENERAL_COST;
+                    }
+                    case 3 -> { // Capital
+
+                        income = income + Constants.CAPITAL_SYSTEM_GENERAL_INCOME;
+                        cost = cost + Constants.CAPITAL_SYSTEM_GENERAL_COST;
+                    }
+                }
+            }
+        }
+        return (income + cost) * 1000;
     }
 }

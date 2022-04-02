@@ -429,7 +429,7 @@ public class EndRound {
 					s += "Defending: " + countDefending + "\r\n";
 					s += "Income: " + income + " k₵\r\n";
 					s += "Cost: " + cost + " k₵\r\n";
-					s += "Balance: " + (income - cost) + " k₵\r\n";
+					s += "Balance: " + (income + cost) + " k₵\r\n";
 					factionStatistics.add(s);
 
 					systemCostMap.put(faction.getId(), cost);
