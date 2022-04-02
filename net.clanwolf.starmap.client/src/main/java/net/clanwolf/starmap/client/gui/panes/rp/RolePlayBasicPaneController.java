@@ -206,7 +206,7 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 							changePaneAndController(ROLEPLAYENTRYTYPES.C3_RP_STEP_V9, "/fxml/RolePlayInvasionPane.fxml");
 						}
 					});
-					C3SoundPlayer.play("sound/fx/beep_electric_2.mp3", false);
+					C3SoundPlayer.play("sound/fx/beep_03.mp3", false);
 					new Thread(sleeper).start();
 					break;
 				default:

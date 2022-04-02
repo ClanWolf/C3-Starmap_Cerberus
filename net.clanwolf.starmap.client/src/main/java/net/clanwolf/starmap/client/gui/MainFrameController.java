@@ -2002,9 +2002,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				break;
 
 			case SWITCH_TO_MAP:
-				C3SoundPlayer.play("sound/fx/readout_beep.mp3", false);
-
 				if (attackPane.isDisplayed()) {
+					C3SoundPlayer.play("sound/fx/cursor_selection_07.mp3", false);
 					openTargetPane(mapPane, "");
 					if (!adminMenuActive) {
 						showMenuIndicator(true);
