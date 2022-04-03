@@ -239,7 +239,8 @@ public class EndRound {
 						FactionPOJO factionAttacker = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, asp.getAttackerFactionId());
 						FactionPOJO factionDefender = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, asp.getDefenderFactionId());
 
-						logger.info("---Calculate the repair costs of the attacker " + factionAttacker.getName_en() + " and the defender " + factionDefender.getName_en() + ".");
+
+						logger.info("--- Calculate the balace costs [" + factionAttacker.getShortName() + "] versus [" + factionDefender.getShortName() + "] (MatchID: " + asp.getMwoMatchId() + " )---");
 
 						CalcBalance calcB = new CalcBalance(asp);
 
