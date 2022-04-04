@@ -12,6 +12,8 @@ This project is transporting the C3 client and server to module based Java 9+ de
 For the first time, server and client reside in the same project as different modules and thus make it easier to handle the project.
 Also the transfer classes do exist in their own separate module only one time now.
 
+[Manual (german)](https://www.clanwolf.net/apps/C3/C3_Manual_de.pdf "Manual (german)")
+
 # C3
 C3 is a Server/Client application to simulate a part of the Inner Sphere (BattleTech). Factions can move units to planets and attack them. In case attackers win, the planet will change its color on the starmap. The fights itself are conducted not in C3, but in a number of external games that are interfaced to C3 to get back the actual results of the fight. The games include BATTLETECH, MWO, MegaMek or, basically, anything you can come up with (including to let the client decide by dice-roll who wins).
 
