@@ -76,13 +76,15 @@ public class StoryEditorPane extends Application {
 			InputStream is = this.getClass().getResourceAsStream("/icons/C3_Icon2.png");
 			stage.getIcons().add(new Image(is));
 
-			stage.setMinWidth(1200);
-			stage.setMinHeight(700);
-
 			controller = fxmlLoader.getController();
 			controller.initialize();
 
 			stage.showAndWait();
+
+			stage.setWidth(1400);
+			stage.setMinWidth(1400);
+			stage.setHeight(900);
+			stage.setMinHeight(900);
 		}
 		catch (Exception e) {
 			e.printStackTrace();

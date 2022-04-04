@@ -332,7 +332,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 					}
 				}
 			} else {
-				logger.error("This list should never be empty!");
+				logger.error("CHECK: This list should never be empty!");
 			}
 
 			if (lvDropleadDefender.getItems().size() > 0) {
@@ -346,7 +346,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 					}
 				}
 			} else {
-				logger.error("This list should never be empty!");
+				logger.error("CHECK: This list should never be empty!");
 			}
 
 			a.getAttackDTO().setAttackCharList(charList);

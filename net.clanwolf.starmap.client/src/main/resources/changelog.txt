@@ -1,8 +1,25 @@
 C3 version history
 --------------------------------
 
-Version 7.0.4 (xx.04.2022)
-- UPDATED: Some dependencies
+Version 7.0.5 (04.04.2022)
+- CHANGED: Dimensions of the story editor at start
+
+Version 7.0.4 (04.04.2022)
+- UPDATED: Project to Java 18 GA
+- UPDATED: OpenJFX to Version 18
+- UPDATED: Some other dependencies
+- ADDED: FactionId to char stats (database)
+--- PR#57 (KERNREAKTOR):
+- UPDATED: An unused variable has been removed.
+- UPDATED: Variables have been renamed to make them easier to read.
+- UPDATED: Income, defense and attack costs for each player are now calculated.
+- UPDATED: In the log file the names of the faction are abbreviated and the MatchID is output.
+- UPDATED: Constant for expenses have been provided with a minus sign, in order to only need to add when calculating costs.
+- UPDATED: The cost multiplier for the repairs of the mech, was set down.
+- ADDED: Methods have been added in CalcBalance to calculate revenues and expenses.
+- ADDED: The cost report is now displayed with thousands separator.
+- ADDED: The cost report now shows income, defense and attack costs.
+- FIXED: Fixed a bug that a droplead could not be found during calculation. This is probably because the faction to which it belongs was changed in between.
 
 Version 7.0.3 (01.04.2022)
 - UPDATED: Some additional dependencies to current versions
@@ -475,3 +492,5 @@ Started changelog with version 5.3.0.
 06 REMOVED
 07 STARTED
 08 PREPARED
+
+--- PR#xx (user)  --> github Pullrequest number xx by user "user"

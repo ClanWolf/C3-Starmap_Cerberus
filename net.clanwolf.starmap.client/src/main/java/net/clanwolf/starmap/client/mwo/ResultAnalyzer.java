@@ -210,6 +210,7 @@ public class ResultAnalyzer {
 				charStats.setSeasonId(Nexus.getCurrentAttackOfUser().getSeason().longValue());
 				charStats.setAttackId(Nexus.getCurrentAttackOfUser().getAttackDTO().getId());
 				charStats.setRoleplayCharacterId(rpchar.getId());
+				charStats.setRoleplayCharacterFactionId(rpchar.getFactionId().longValue());
 				charStats.setMwoMatchId(gameId);
 				charStats.setLeadingPosition(leadingPosition);
 				charStats.setMwoMatchScore(matchScore.longValue());

@@ -48,6 +48,9 @@ public class RolePlayCharacterStatsDTO extends Dto {
 //	@Column(name = "RoleplayCharacterId")
 	private Long roleplayCharacterId;
 
+//	@Column(name = "RoleplayCharacterFactionId")
+	private Long roleplayCharacterFactionId;
+
 //	@Column(name = "SeasonId")
 	private Long seasonId;
 
@@ -100,6 +103,16 @@ public class RolePlayCharacterStatsDTO extends Dto {
 	@SuppressWarnings("unused")
 	public void setRoleplayCharacterId(Long roleplayCharacterId) {
 		this.roleplayCharacterId = roleplayCharacterId;
+	}
+
+	@SuppressWarnings("unused")
+	public Long getRoleplayCharacterFactionId() {
+		return roleplayCharacterFactionId;
+	}
+
+	@SuppressWarnings("unused")
+	public void setRoleplayCharacterFactionId(Long roleplayCharacterFactionId) {
+		this.roleplayCharacterFactionId = roleplayCharacterFactionId;
 	}
 
 	@SuppressWarnings("unused")
