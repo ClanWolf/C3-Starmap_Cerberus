@@ -43,7 +43,7 @@ import java.util.Map;
  * Diese Klasse berechnet die Reparaturkosten der jeweiligen Mechs.
  *
  * @author KERNREAKTOR
- * @version 1.0.4
+ * @version 1.0.5
  */
 public class CalcBalance {
 
@@ -51,8 +51,42 @@ public class CalcBalance {
     private double defenderRepairCost;
     private final Map<RolePlayCharacterStatsPOJO, Double> defenderPlayerRepairCost = new HashMap<>();
     private final Map<RolePlayCharacterStatsPOJO, Double> attackerPlayerRepairCost = new HashMap<>();
+    private boolean hasError;
+    private String errorMessage;
 
-/**
+    /**
+     * Gibt ein Wahrheitswert zurück, ob in der Klasse CalcBalance einen Fehler vorliegt.
+     * @return Der Wahrheitswert, ob einen Fehler vorliegt
+     */
+    public boolean getHasError() {
+        return hasError;
+    }
+
+    /**
+     * Setzt eine Meldung, das in der Klasse CalcBalance einen Fehler vorliegt.
+     * @param hasError Der Wahrheitswert, das in CalcBalance einen Fehler vorliegt.
+     */
+    public void setHasError(boolean hasError) {
+        this.hasError = hasError;
+    }
+
+    /**
+     * Ruft die Fehlermeldung ab, die in der Klasse CalcBalance vorliegt.
+     * @return Die Fehlermeldung in der Klasse CalcBalance.
+     */
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    /**
+     * Legt die Fehlermeldung fest, die in der Klasse CalcBalance vorliegt.
+     * @param errorMessage Die Beschreibung der Fehlermeldung in der Klasse CalcBalance.
+     */
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
+    /**
  * Erstellt einen Reparaturbericht, die als Nachricht versendet werden kann.
  * @return Der (StringBuilder) Reparaturbericht wird zurückgegeben.
  */
@@ -145,64 +179,9 @@ public class CalcBalance {
         String columnWidthDefault = "%-20.20s";
 
         DecimalFormat nf = new DecimalFormat();
-
-        mailMessage.append("---Start of repair cost report---").append("\r\n\r\n");
-        mailMessage.append("Repair cost evaluations between the attacker ");
-        mailMessage.append(factionAttacker.getName_en());
-        mailMessage.append(" and the defender ");
-        mailMessage.append(factionDefender.getName_en());
-        mailMessage.append(".\r\n\r\n");
-
-        mailMessage.append(String.format(columnWidthDefault, "Round Id: ")).append(AttackStats.getRoundId()).append("\r\n");
-        mailMessage.append(String.format(columnWidthDefault, "Season Id: ")).append(AttackStats.getSeasonId()).append("\r\n");
-        mailMessage.append(String.format(columnWidthDefault, "Attack Id: ")).append(AttackStats.getAttackId()).append("\r\n");
-        mailMessage.append(String.format(columnWidthDefault, "Id: ")).append(AttackStats.getId()).append("\r\n");
-        mailMessage.append(String.format(columnWidthDefault, "Drop Id: ")).append(AttackStats.getDropId()).append("\r\n");
-        mailMessage.append(String.format(columnWidthDefault, "MWO Match Id: ")).append(AttackStats.getMwoMatchId()).append("\r\n");
-        mailMessage.append(String.format(columnWidthDefault, "Map: ")).append(AttackStats.getMap()).append("\r\n");
-        mailMessage.append(String.format(columnWidthDefault, "Game mode: ")).append(AttackStats.getMode()).append("\r\n");
-        mailMessage.append(String.format(columnWidthDefault, "Winner: ")).append(factionWinner.getName_en()).append("\r\n");
-
-        try {
-
-            String isoDatePattern = "yyyy-MM-dd'T'HH:mm:ssXXX";
-            DateFormat dateFormat = new SimpleDateFormat(isoDatePattern);
-            Date parsedDate = dateFormat.parse(AttackStats.getDropEnded());
-
-            mailMessage.append(String.format(columnWidthDefault, "Drop ended: ")).append(parsedDate).append("\r\n\r\n");
-
-        }
-        catch(Exception e) {
-
-            e.printStackTrace();
-
-        }
-
-        mailMessage.append("─".repeat(60)).append("\r\n");
-        mailMessage.append(String.format(columnWidthDefault,""));
-        mailMessage.append(String.format(columnWidthDefault,"Attacker"));
-        mailMessage.append(String.format(columnWidthDefault,"Defender")).append("\r\n");
+        setHasError(false);
 
 
-        mailMessage.append("─".repeat(60)).append("\r\n");
-        mailMessage.append(String.format(columnWidthDefault,"Tonnage:"));
-        mailMessage.append(String.format(columnWidthDefault,AttackStats.getAttackerTonnage()));
-        mailMessage.append(String.format(columnWidthDefault,AttackStats.getDefenderTonnage())).append("\r\n");
-
-        mailMessage.append("─".repeat(60)).append("\r\n");
-        mailMessage.append(String.format(columnWidthDefault,"Lost Tonnage:"));
-        mailMessage.append(String.format(columnWidthDefault,AttackStats.getAttackerLostTonnage()));
-        mailMessage.append(String.format(columnWidthDefault,AttackStats.getDefenderLostTonnage())).append("\r\n");
-
-        mailMessage.append("─".repeat(60)).append("\r\n");
-        mailMessage.append(String.format(columnWidthDefault,"Kills:"));
-        mailMessage.append(String.format(columnWidthDefault,AttackStats.getAttackerKillCount()));
-        mailMessage.append(String.format(columnWidthDefault,AttackStats.getDefenderKillCount())).append("\r\n");
-
-        mailMessage.append("─".repeat(60)).append("\r\n");
-        mailMessage.append(String.format(columnWidthDefault,"Number of pilots:"));
-        mailMessage.append(String.format(columnWidthDefault,AttackStats.getAttackerNumberOfPilots()));
-        mailMessage.append(String.format(columnWidthDefault,AttackStats.getDefenderNumberOfPilots())).append("\r\n");
 
 
         String attackerDropleadName = "";
@@ -255,25 +234,104 @@ public class CalcBalance {
                 }
             }
         }
-        if(!(attackerTeam == 0L) && !(defenderTeam == 0L)){
+
+        if(defenderTeam == 0L && attackerTeam == 0L) {
+            for (RolePlayCharacterStatsPOJO pojo : list) {
+
+                RolePlayCharacterPOJO character = characterDAO.findById(Nexus.DUMMY_USERID, pojo.getRoleplayCharacterId());
+
+                //Get Droplead
+                if (pojo.getLeadingPosition()) {
+
+                    if (AttackStats.getDefenderFactionId().equals(pojo.getRoleplayCharacterFactionId())) {
+                        defenderTeam = pojo.getMwoTeam();
+                        defenderDropleadName = character.getMwoUsername();
+                    }
+                    if (AttackStats.getAttackerFactionId().equals(pojo.getRoleplayCharacterFactionId())) {
+                        attackerTeam = pojo.getMwoTeam();
+                        attackerDropleadName = character.getMwoUsername();
+                    }
+                }
+            }
+        }
+
+        if(!(attackerTeam == 0L) && !(defenderTeam == 0L)) {
+            mailMessage.append("---Start of repair cost report---").append("\r\n\r\n");
+            mailMessage.append("Repair cost evaluations between the attacker ");
+            mailMessage.append(factionAttacker.getName_en());
+            mailMessage.append(" and the defender ");
+            mailMessage.append(factionDefender.getName_en());
+            mailMessage.append(".\r\n\r\n");
+
+            mailMessage.append(String.format(columnWidthDefault, "Round Id: ")).append(AttackStats.getRoundId()).append("\r\n");
+            mailMessage.append(String.format(columnWidthDefault, "Season Id: ")).append(AttackStats.getSeasonId()).append("\r\n");
+            mailMessage.append(String.format(columnWidthDefault, "Attack Id: ")).append(AttackStats.getAttackId()).append("\r\n");
+            mailMessage.append(String.format(columnWidthDefault, "Id: ")).append(AttackStats.getId()).append("\r\n");
+            mailMessage.append(String.format(columnWidthDefault, "Drop Id: ")).append(AttackStats.getDropId()).append("\r\n");
+            mailMessage.append(String.format(columnWidthDefault, "MWO Match Id: ")).append(AttackStats.getMwoMatchId()).append("\r\n");
+            mailMessage.append(String.format(columnWidthDefault, "Map: ")).append(AttackStats.getMap()).append("\r\n");
+            mailMessage.append(String.format(columnWidthDefault, "Game mode: ")).append(AttackStats.getMode()).append("\r\n");
+            mailMessage.append(String.format(columnWidthDefault, "Winner: ")).append(factionWinner.getName_en()).append("\r\n");
+
+            try {
+
+                String isoDatePattern = "yyyy-MM-dd'T'HH:mm:ssXXX";
+                DateFormat dateFormat = new SimpleDateFormat(isoDatePattern);
+                Date parsedDate = dateFormat.parse(AttackStats.getDropEnded());
+
+                mailMessage.append(String.format(columnWidthDefault, "Drop ended: ")).append(parsedDate).append("\r\n\r\n");
+
+            }
+            catch(Exception e) {
+
+                setHasError(true);
+                setErrorMessage(e.getMessage());
+
+            }
 
             mailMessage.append("─".repeat(60)).append("\r\n");
-            mailMessage.append(String.format(columnWidthDefault,"Droplead:"));
-            mailMessage.append(String.format(columnWidthDefault,attackerDropleadName));
-            mailMessage.append(String.format(columnWidthDefault,defenderDropleadName)).append("\r\n");
+            mailMessage.append(String.format(columnWidthDefault,""));
+            mailMessage.append(String.format(columnWidthDefault,"Attacker"));
+            mailMessage.append(String.format(columnWidthDefault,"Defender")).append("\r\n");
+
+
+            mailMessage.append("─".repeat(60)).append("\r\n");
+            mailMessage.append(String.format(columnWidthDefault,"Tonnage:"));
+            mailMessage.append(String.format(columnWidthDefault,AttackStats.getAttackerTonnage()));
+            mailMessage.append(String.format(columnWidthDefault,AttackStats.getDefenderTonnage())).append("\r\n");
+
+            mailMessage.append("─".repeat(60)).append("\r\n");
+            mailMessage.append(String.format(columnWidthDefault,"Lost Tonnage:"));
+            mailMessage.append(String.format(columnWidthDefault,AttackStats.getAttackerLostTonnage()));
+            mailMessage.append(String.format(columnWidthDefault,AttackStats.getDefenderLostTonnage())).append("\r\n");
+
+            mailMessage.append("─".repeat(60)).append("\r\n");
+            mailMessage.append(String.format(columnWidthDefault,"Kills:"));
+            mailMessage.append(String.format(columnWidthDefault,AttackStats.getAttackerKillCount()));
+            mailMessage.append(String.format(columnWidthDefault,AttackStats.getDefenderKillCount())).append("\r\n");
+
+            mailMessage.append("─".repeat(60)).append("\r\n");
+            mailMessage.append(String.format(columnWidthDefault,"Number of pilots:"));
+            mailMessage.append(String.format(columnWidthDefault,AttackStats.getAttackerNumberOfPilots()));
+            mailMessage.append(String.format(columnWidthDefault,AttackStats.getDefenderNumberOfPilots())).append("\r\n");
+
+            mailMessage.append("─".repeat(60)).append("\r\n");
+            mailMessage.append(String.format(columnWidthDefault, "Droplead:"));
+            mailMessage.append(String.format(columnWidthDefault, attackerDropleadName));
+            mailMessage.append(String.format(columnWidthDefault, defenderDropleadName)).append("\r\n");
 
             mailMessage.append("─".repeat(60)).append("\r\n\r\n");
 
-            for(RolePlayCharacterStatsPOJO pojo : list){
+            for (RolePlayCharacterStatsPOJO pojo : list) {
 
                 MechIdInfo MI = new MechIdInfo(Math.toIntExact(pojo.getMechItemId()));
 
-                if(attackerTeam.equals(pojo.getMwoTeam())){
+                if (attackerTeam.equals(pojo.getMwoTeam())) {
                     attackerPlayerRepairCost.put(pojo, MI.getRepairCost(Math.toIntExact(pojo.getMwoSurvivalPercentage())));
                     attackerRepairCost = attackerRepairCost + MI.getRepairCost(Math.toIntExact(pojo.getMwoSurvivalPercentage()));
                 }
 
-                if(defenderTeam.equals(pojo.getMwoTeam())){
+                if (defenderTeam.equals(pojo.getMwoTeam())) {
                     defenderPlayerRepairCost.put(pojo, MI.getRepairCost(Math.toIntExact(pojo.getMwoSurvivalPercentage())));
                     defenderRepairCost = defenderRepairCost + MI.getRepairCost(Math.toIntExact(pojo.getMwoSurvivalPercentage()));
                 }
@@ -288,38 +346,38 @@ public class CalcBalance {
             mailMessage.append("Repair cost for defender ").append(factionDefender.getName_en()).append(":\r\n\r\n");
             mailMessage.append("─".repeat(95));
             mailMessage.append("\r\n");
-            mailMessage.append(String.format(columnWidthMWOUsername,"Username"));
-            mailMessage.append(String.format(columnWidthMechName,"Description"));
-            mailMessage.append(String.format(columnWidthPercentToRepair," "));
-            mailMessage.append(String.format(columnWidthRepairCost,"Income expenses"));
+            mailMessage.append(String.format(columnWidthMWOUsername, "Username"));
+            mailMessage.append(String.format(columnWidthMechName, "Description"));
+            mailMessage.append(String.format(columnWidthPercentToRepair, " "));
+            mailMessage.append(String.format(columnWidthRepairCost, "Income expenses"));
             mailMessage.append("\r\n");
             mailMessage.append("─".repeat(95));
             mailMessage.append("\r\n");
 
-            for(Map.Entry<RolePlayCharacterStatsPOJO, Double> defUser : getDefenderPlayerRepairCost().entrySet()){
+            for (Map.Entry<RolePlayCharacterStatsPOJO, Double> defUser : getDefenderPlayerRepairCost().entrySet()) {
 
                 RolePlayCharacterPOJO character = characterDAO.findById(Nexus.DUMMY_USERID, defUser.getKey().getRoleplayCharacterId());
 
-                mailMessage.append(String.format(columnWidthMWOUsername,character.getMwoUsername()));
+                mailMessage.append(String.format(columnWidthMWOUsername, character.getMwoUsername()));
 
                 MechIdInfo MI = new MechIdInfo(Math.toIntExact(defUser.getKey().getMechItemId()));
 
-                mailMessage.append(String.format(columnWidthMechName,MI.getFullname()));
-                mailMessage.append(String.format(columnWidthPercentToRepair,"Repair(" + (100L - defUser.getKey().getMwoSurvivalPercentage() + "%)") ));
-                mailMessage.append(String.format(columnWidthRepairCost,nf.format(defUser.getValue().longValue()) + " C-Bills"));
+                mailMessage.append(String.format(columnWidthMechName, MI.getFullname()));
+                mailMessage.append(String.format(columnWidthPercentToRepair, "Repair(" + (100L - defUser.getKey().getMwoSurvivalPercentage() + "%)")));
+                mailMessage.append(String.format(columnWidthRepairCost, nf.format(defUser.getValue().longValue()) + " C-Bills"));
                 mailMessage.append("\r\n");
 
                 mailMessage.append(String.format(columnWidthMWOUsername, character.getMwoUsername()));
-                mailMessage.append(String.format(columnWidthMechName,"Income from " + getPlayerFaction((long) character.getFactionId()).getShortName()));
-                mailMessage.append(String.format(columnWidthPercentToRepair," "));
-                mailMessage.append(String.format(columnWidthRepairCost,nf.format(getIncome(character.getFactionId())) + " C-Bills"));
+                mailMessage.append(String.format(columnWidthMechName, "Income from " + getPlayerFaction((long) character.getFactionId()).getShortName()));
+                mailMessage.append(String.format(columnWidthPercentToRepair, " "));
+                mailMessage.append(String.format(columnWidthRepairCost, nf.format(getIncome(character.getFactionId())) + " C-Bills"));
                 mailMessage.append("\r\n");
                 setDefenderRepairCost(getIncome(character.getFactionId()));
 
                 mailMessage.append(String.format(columnWidthMWOUsername, character.getMwoUsername()));
-                mailMessage.append(String.format(columnWidthMechName,"Defend cost"));
-                mailMessage.append(String.format(columnWidthPercentToRepair," "));
-                mailMessage.append(String.format(columnWidthRepairCost,nf.format(getDefendCost(AttackStats.getStarSystemDataId())) + " C-Bills"));
+                mailMessage.append(String.format(columnWidthMechName, "Defend cost"));
+                mailMessage.append(String.format(columnWidthPercentToRepair, " "));
+                mailMessage.append(String.format(columnWidthRepairCost, nf.format(getDefendCost(AttackStats.getStarSystemDataId())) + " C-Bills"));
                 mailMessage.append("\r\n");
                 setDefenderRepairCost(getDefendCost(AttackStats.getStarSystemDataId()));
 
@@ -327,8 +385,8 @@ public class CalcBalance {
 
             mailMessage.append("─".repeat(95));
             mailMessage.append("\r\n");
-            mailMessage.append(String.format(columnWidthTotal,"Total:"));
-            mailMessage.append(String.format(columnWidthRepairCost,nf.format((long) getDefenderRepairCost()) + " C-Bills"));
+            mailMessage.append(String.format(columnWidthTotal, "Total:"));
+            mailMessage.append(String.format(columnWidthRepairCost, nf.format((long) getDefenderRepairCost()) + " C-Bills"));
             mailMessage.append("\r\n");
             mailMessage.append("═".repeat(95));
             mailMessage.append("\r\n\r\n");
@@ -336,36 +394,36 @@ public class CalcBalance {
             mailMessage.append("Repair cost for attacker ").append(factionAttacker.getName_en()).append(":\r\n\r\n");
             mailMessage.append("─".repeat(95));
             mailMessage.append("\r\n");
-            mailMessage.append(String.format(columnWidthMWOUsername,"Username"));
-            mailMessage.append(String.format(columnWidthMechName,"Description"));
-            mailMessage.append(String.format(columnWidthPercentToRepair," "));
-            mailMessage.append(String.format(columnWidthRepairCost,"Income expenses"));
+            mailMessage.append(String.format(columnWidthMWOUsername, "Username"));
+            mailMessage.append(String.format(columnWidthMechName, "Description"));
+            mailMessage.append(String.format(columnWidthPercentToRepair, " "));
+            mailMessage.append(String.format(columnWidthRepairCost, "Income expenses"));
             mailMessage.append("\r\n");
             mailMessage.append("─".repeat(95));
             mailMessage.append("\r\n");
 
-            for(Map.Entry<RolePlayCharacterStatsPOJO, Double> attUser : getAttackerPlayerRepairCost().entrySet()){
+            for (Map.Entry<RolePlayCharacterStatsPOJO, Double> attUser : getAttackerPlayerRepairCost().entrySet()) {
 
                 RolePlayCharacterPOJO character = characterDAO.findById(Nexus.DUMMY_USERID, attUser.getKey().getRoleplayCharacterId());
 
-                mailMessage.append(String.format(columnWidthMWOUsername,character.getMwoUsername()));
+                mailMessage.append(String.format(columnWidthMWOUsername, character.getMwoUsername()));
                 MechIdInfo MI = new MechIdInfo(Math.toIntExact(attUser.getKey().getMechItemId()));
-                mailMessage.append(String.format(columnWidthMechName,MI.getFullname()));
-                mailMessage.append(String.format(columnWidthPercentToRepair,"Repair(" + (100L - attUser.getKey().getMwoSurvivalPercentage()) + "%)"));
-                mailMessage.append(String.format(columnWidthRepairCost,nf.format(attUser.getValue().longValue()) + " C-Bills"));
+                mailMessage.append(String.format(columnWidthMechName, MI.getFullname()));
+                mailMessage.append(String.format(columnWidthPercentToRepair, "Repair(" + (100L - attUser.getKey().getMwoSurvivalPercentage()) + "%)"));
+                mailMessage.append(String.format(columnWidthRepairCost, nf.format(attUser.getValue().longValue()) + " C-Bills"));
                 mailMessage.append("\r\n");
 
                 mailMessage.append(String.format(columnWidthMWOUsername, character.getMwoUsername()));
-                mailMessage.append(String.format(columnWidthMechName,"Income from " + getPlayerFaction((long) character.getFactionId()).getShortName()));
-                mailMessage.append(String.format(columnWidthPercentToRepair," "));
-                mailMessage.append(String.format(columnWidthRepairCost,nf.format(getIncome(character.getFactionId())) + " C-Bills"));
+                mailMessage.append(String.format(columnWidthMechName, "Income from " + getPlayerFaction((long) character.getFactionId()).getShortName()));
+                mailMessage.append(String.format(columnWidthPercentToRepair, " "));
+                mailMessage.append(String.format(columnWidthRepairCost, nf.format(getIncome(character.getFactionId())) + " C-Bills"));
                 mailMessage.append("\r\n");
                 setAttackerRepairCost(getIncome(character.getFactionId()));
 
                 mailMessage.append(String.format(columnWidthMWOUsername, character.getMwoUsername()));
-                mailMessage.append(String.format(columnWidthMechName,"Attack cost"));
-                mailMessage.append(String.format(columnWidthPercentToRepair," "));
-                mailMessage.append(String.format(columnWidthRepairCost,nf.format(getAttackCost(AttackStats.getStarSystemDataId())) + " C-Bills"));
+                mailMessage.append(String.format(columnWidthMechName, "Attack cost"));
+                mailMessage.append(String.format(columnWidthPercentToRepair, " "));
+                mailMessage.append(String.format(columnWidthRepairCost, nf.format(getAttackCost(AttackStats.getStarSystemDataId())) + " C-Bills"));
                 mailMessage.append("\r\n");
                 setAttackerRepairCost(getAttackCost(AttackStats.getStarSystemDataId()));
 
@@ -373,13 +431,17 @@ public class CalcBalance {
 
             mailMessage.append("─".repeat(95));
             mailMessage.append("\r\n");
-            mailMessage.append(String.format(columnWidthTotal,"Total:"));
-            mailMessage.append(String.format(columnWidthRepairCost,nf.format((long) getAttackerRepairCost()) + " C-Bills"));
+            mailMessage.append(String.format(columnWidthTotal, "Total:"));
+            mailMessage.append(String.format(columnWidthRepairCost, nf.format((long) getAttackerRepairCost()) + " C-Bills"));
             mailMessage.append("\r\n");
             mailMessage.append("═".repeat(95));
             mailMessage.append("\r\n");
             mailMessage.append("---End of repair cost report---");
             mailMessage.append("\r\n\r\n");
+        } else {
+
+            setHasError(true);
+            setErrorMessage("Round cannot be calculated, no droplead was found.");
 
         }
     }

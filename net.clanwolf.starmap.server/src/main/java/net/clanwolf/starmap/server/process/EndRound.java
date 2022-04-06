@@ -44,6 +44,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.invoke.MethodHandles;
 import java.sql.Date;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -234,6 +235,9 @@ public class EndRound {
 					// log stats
 					logger.info("--- Statistics found for attackId: " + attackPOJO.getId());
 					StringBuilder repairCostReport = new StringBuilder();
+					long balanceAttacker = 0L;
+					long balanceDefender = 0L;
+					DecimalFormat nf = new DecimalFormat();
 
 					for (AttackStatsPOJO asp : statisticsList) {
 						FactionPOJO factionAttacker = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, asp.getAttackerFactionId());
@@ -244,7 +248,18 @@ public class EndRound {
 
 						CalcBalance calcB = new CalcBalance(asp);
 
-						repairCostReport.append(calcB.getMailMessage());
+						if(calcB.getHasError()) {
+
+							logger.error(calcB.getErrorMessage());
+
+						}else{
+
+							balanceAttacker += calcB.getAttackerRepairCost();
+							balanceDefender += calcB.getDefenderRepairCost();
+							repairCostReport.append(calcB.getMailMessage());
+							logger.info("Current Balance Attacker: " + nf.format(balanceAttacker) + " --- Current Balance Defender: " + nf.format(balanceDefender));
+
+						}
 					}
 					String[] receivers = {"keshik@googlegroups.com"};
 					boolean sent;
