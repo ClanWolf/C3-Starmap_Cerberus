@@ -26,13 +26,21 @@
  */
 package net.clanwolf.starmap.client.net;
 
+import net.clanwolf.starmap.client.action.ACTIONS;
+import net.clanwolf.starmap.client.action.ActionManager;
+import net.clanwolf.starmap.client.enums.C3MESSAGES;
+import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
+import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
 import net.clanwolf.starmap.client.nexus.Nexus;
+import net.clanwolf.starmap.client.process.logout.Logout;
+import net.clanwolf.starmap.client.util.Internationalization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 
 import java.lang.invoke.MethodHandles;
+import java.sql.Timestamp;
 import java.util.TimerTask;
 
 /**
@@ -48,7 +56,26 @@ public class GameSessionHeartBeatTimer extends TimerTask {
 
 	@Override
 	public void run() {
-//		logger.info("Sending keepalive heartbeat.");
+		// Checking the last heartbeat (pong) from the server and see how old it is
+		Timestamp tsServerHeartbeat = Nexus.getLastServerHeartbeatTimestamp();
+		Timestamp tsNow = new Timestamp(System.currentTimeMillis());
+		long diff = 0l;
+		if (tsServerHeartbeat != null) {
+			diff = (tsNow.getTime() - tsServerHeartbeat.getTime()) * 1000; // difference in seconds
+		}
+
+		if (diff > (diff * 60 * 6)) {
+			// Server did not responded for longer than 6 Minutes
+			// - may be offline
+			// - connection could have been reseted
+
+			ActionManager.getAction(ACTIONS.SERVER_CONNECTION_LOST).execute();
+			logger.info("An exception in the connection was caught, closing!");
+
+			return;
+		}
+
+		logger.info("Sending keepalive signal to server (ping).");
 		GameState heartbeatState = new GameState();
 		heartbeatState.setMode(GAMESTATEMODES.SESSION_KEEPALIVE);
 		heartbeatState.addObject(null);

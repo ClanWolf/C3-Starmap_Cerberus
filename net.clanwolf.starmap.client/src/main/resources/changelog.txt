@@ -1,6 +1,13 @@
 C3 version history
 --------------------------------
 
+Version 7.0.9 (07.04.2022)
+- ADDED: Handling of connection loss
+
+Version 7.0.6 (06.04.2022)
+- ADDED: Client logs out if server sends event SERVER_GOES_DOWN
+- ADDED: Server will send a heartbeat message every couple of minutes
+
 Version 7.0.5 (04.04.2022)
 - CHANGED: Dimensions of the story editor at start
 

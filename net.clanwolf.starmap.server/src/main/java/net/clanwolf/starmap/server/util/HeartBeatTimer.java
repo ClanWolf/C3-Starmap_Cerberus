@@ -125,5 +125,10 @@ public class HeartBeatTimer extends TimerTask {
 
 			currentlyRunning = false;
 		}
+
+		// Broadcast new version of the universe to the clients
+		logger.info("Send server heartbeat event to all clients (server is still up) (pong).");
+		GameState heartbeat = new GameState(GAMESTATEMODES.SERVER_HEARTBEAT);
+		C3Room.sendBroadcastMessage(heartbeat);
 	}
 }

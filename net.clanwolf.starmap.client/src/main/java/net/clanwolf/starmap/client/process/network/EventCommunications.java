@@ -47,6 +47,8 @@ import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.util.Compressor;
 
 import java.lang.invoke.MethodHandles;
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -63,9 +65,8 @@ public class EventCommunications {
 	public static void onDataIn(Session session, Event event) {
 		logger.info("EventCommunications.onDataIn: " + event.getType());
 
-		if (event.getSource() instanceof GameState) {
-			GameState state = (GameState) event.getSource();
-//			logger.info("Event received: " + state.getMode());
+		if (event.getSource() instanceof GameState state) {
+			// logger.info("Event received: " + state.getMode());
 
 			showErrorMessage(state);
 
@@ -410,6 +411,15 @@ public class EventCommunications {
 				case FINALIZE_ROUND:
 					logger.info("Server did finalize round.");
 					ActionManager.getAction(ACTIONS.FINALIZE_ROUND).execute();
+					break;
+				case SERVER_HEARTBEAT:
+					Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+					Nexus.setLastServerHeartbeatTimestamp(timestamp);
+					logger.info("Server heartbeat received (" + timestamp + "), Server still up and running! No further action (pong).");
+					break;
+				case SERVER_GOES_DOWN:
+					logger.info("Server goes down, need to disconnect if connected!");
+					ActionManager.getAction(ACTIONS.SERVER_CONNECTION_LOST).execute();
 					break;
 				default:
 					break;

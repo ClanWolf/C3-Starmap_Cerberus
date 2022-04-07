@@ -45,6 +45,7 @@ import net.clanwolf.starmap.transfer.dtos.UserDTO;
 import java.io.*;
 import java.lang.invoke.MethodHandles;
 import java.nio.charset.StandardCharsets;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -99,6 +100,8 @@ public class Nexus {
 
 	public static Long storyID_beforeSavingRespones;
 	public static Slider mainframeVolumeSlider = null;
+
+	public static java.sql.Timestamp lastServerHeartbeatTimestamp = null;
 
 	public static void setMainFrameVolumeSlider(Slider slider) {
 		mainframeVolumeSlider = slider;
@@ -504,5 +507,15 @@ public class Nexus {
 	@SuppressWarnings("unused")
 	public static Long getStoryBeforeSaving(){
 		return storyID_beforeSavingRespones;
+	}
+
+	@SuppressWarnings("unused")
+	public static Timestamp getLastServerHeartbeatTimestamp() {
+		return lastServerHeartbeatTimestamp;
+	}
+
+	@SuppressWarnings("unused")
+	public static void setLastServerHeartbeatTimestamp(java.sql.Timestamp lastServerHeartbeatTimestamp) {
+		Nexus.lastServerHeartbeatTimestamp = lastServerHeartbeatTimestamp;
 	}
 }

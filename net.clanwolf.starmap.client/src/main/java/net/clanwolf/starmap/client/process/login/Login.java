@@ -252,6 +252,8 @@ public class Login {
 			public synchronized void onException(Event event) {
 				super.onException(event);
 				logger.debug("##### EXCEPTION!");
+				ActionManager.getAction(ACTIONS.SERVER_CONNECTION_LOST).execute();
+				logger.info("An exception in the connection was caught, closing!");
 			}
 		};
 		logger.info("Adding SessionEventHandler to session.");

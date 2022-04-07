@@ -66,6 +66,7 @@ import net.clanwolf.starmap.client.gui.panes.settings.SettingsPane;
 import net.clanwolf.starmap.client.gui.panes.userinfo.UserInfoPane;
 import net.clanwolf.starmap.client.gui.popuppanes.C3PopupPane;
 import net.clanwolf.starmap.client.mwo.CheckClipboardForMwoApi;
+import net.clanwolf.starmap.client.process.logout.Logout;
 import net.clanwolf.starmap.client.process.universe.BOJumpship;
 import net.clanwolf.starmap.client.process.universe.BOStarSystem;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
@@ -106,6 +107,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private boolean openAdministrationPane = false;
 	private boolean openLogPane = false;
 	private boolean openEditorPane = false;
+	private boolean messageIsShowing = false;
 	private AbstractC3Pane currentlyDisplayedPane = null;
 	private AbstractC3Pane nextToDisplayPane = null;
 	private LoginPane loginPane = null;
@@ -607,7 +609,13 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				setStatusText(Internationalization.getString("app_login_indicator_message_LOGGED_OFF"), false);
 				break;
 			case "LOGGED_ON":
-				setStatusText(Internationalization.getString("app_login_indicator_message_LOGGED_ON"), false);
+				String t = Internationalization.getString("app_login_indicator_message_LOGGED_ON");
+				if (Nexus.getLastServerHeartbeatTimestamp() != null) {
+					t += " (HB: " + Nexus.getLastServerHeartbeatTimestamp() + ")";
+				} else {
+					t += " (HB: -)";
+				}
+				setStatusText(t, false);
 				break;
 			case "LOGON_RUNNING":
 				setStatusText(Internationalization.getString("app_login_indicator_message_LOGON_RUNNING"), false);
@@ -1124,6 +1132,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		ActionManager.addActionCallbackListener(ACTIONS.TERMINAL_COMMAND, this);
 		ActionManager.addActionCallbackListener(ACTIONS.FLASH_MWO_LOGO_ONCE, this);
 		ActionManager.addActionCallbackListener(ACTIONS.IRC_DISCONNECT_NOW, this);
+
+		ActionManager.addActionCallbackListener(ACTIONS.SERVER_CONNECTION_LOST, this);
 	}
 
 	private void setToLevelLoggedOutText() {
@@ -1475,6 +1485,20 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	@Override
 	public boolean handleAction(ACTIONS action, ActionObject o) {
 		switch (action) {
+			case SERVER_CONNECTION_LOST:
+
+				// logout
+				Logout.doLogout();
+
+				// raise error message
+				C3Message message23 = new C3Message(C3MESSAGES.ERROR_SERVER_OFFLINE);
+				String m = Internationalization.getString("general_server_connection_lost");
+				message23.setText(m);
+				message23.setType(C3MESSAGETYPES.CLOSE);
+				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message23);
+
+				break;
+
 			case CHANGE_LANGUAGE:
 				if (currentlyDisplayedPane != null) {
 					ActionManager.getAction(ACTIONS.NOISE).execute();
@@ -1817,33 +1841,35 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				break;
 
 			case CURSOR_REQUEST_NORMAL:
-				Nexus.setMainFrameEnabled(true);
-				String sourceIdRN = "";
-				if (o.getText() != null && !"".equals(o.getText())) {
-					sourceIdRN = o.getText();
-				}
-				decrementCounter();
-				logger.info("Requesting NORMAL cursor (" + counterWaitCursor + "). --> " + sourceIdRN);
-				if (counterWaitCursor == 0) {
+				if (!messageIsShowing) {
+					Nexus.setMainFrameEnabled(true);
+					String sourceIdRN = "";
+					if (o.getText() != null && !"".equals(o.getText())) {
+						sourceIdRN = o.getText();
+					}
+					decrementCounter();
+					logger.info("Requesting NORMAL cursor (" + counterWaitCursor + "). --> " + sourceIdRN);
+					if (counterWaitCursor == 0) {
+						Platform.runLater(() -> {
+							mouseStopper.toFront();
+							paneVolumeControl.toFront();
+							slVolumeControl.toFront();
+							ivMuteToggle.toFront();
+							// mouseStopper.setBackground(null);
+							waitAnimationPane.showCircleAnimation(false);
+							mouseStopper.setMouseTransparent(true);
+							//labelWaitText.setContentDisplay(ContentDisplay.CENTER);
+							labelWaitText.setText("");
+							labelWaitText.setVisible(false);
+						});
+					}
 					Platform.runLater(() -> {
-						mouseStopper.toFront();
 						paneVolumeControl.toFront();
 						slVolumeControl.toFront();
 						ivMuteToggle.toFront();
-						// mouseStopper.setBackground(null);
-						waitAnimationPane.showCircleAnimation(false);
-						mouseStopper.setMouseTransparent(true);
-						//labelWaitText.setContentDisplay(ContentDisplay.CENTER);
-						labelWaitText.setText("");
-						labelWaitText.setVisible(false);
 					});
+					ActionManager.getAction(ACTIONS.ACTION_SUCCESSFULLY_EXECUTED).execute(o);
 				}
-				Platform.runLater(() -> {
-					paneVolumeControl.toFront();
-					slVolumeControl.toFront();
-					ivMuteToggle.toFront();
-				});
-				ActionManager.getAction(ACTIONS.ACTION_SUCCESSFULLY_EXECUTED).execute(o);
 				break;
 
 			case CURSOR_REQUEST_WAIT:
@@ -1876,6 +1902,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				break;
 
 			case SHOW_MESSAGE:
+				messageIsShowing = true;
 				if ((o != null) && (o.getObject() instanceof C3Message message)) {
 					showMessage(message);
 				}
@@ -1925,6 +1952,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				break;
 
 			case SHOW_MESSAGE_WAS_ANSWERED:
+				messageIsShowing = false;
 				if ((o != null) && (o.getObject() instanceof C3Message)) {
 					C3Message message = (C3Message) o.getObject();
 					closeMessage(message);
