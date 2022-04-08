@@ -257,7 +257,20 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 		if (a.getCharacterId() == null || a.getStoryId() == null) {
 			a.getAttackDTO().setCharacterID(Nexus.getCurrentChar().getId());
-			a.getAttackDTO().setStoryID(19L);    // TODO: Hier müssen wir die Einstiegs-Story ID irgendwie definieren
+			//a.getAttackDTO().setStoryID(19L);    // TODO: Hier müssen wir die Einstiegs-Story ID irgendwie definieren
+
+			Long factionTypeAttacker = Nexus.getBoUniverse().getFactionType(a.getAttackerFactionId().longValue());
+			Long factionTypeDefender = Nexus.getBoUniverse().getFactionType(a.getDefenderFactionId().longValue());
+
+			if (factionTypeAttacker == 2 && factionTypeDefender == 1) { // Attacker = 2: Clan, Defender = 1: IS
+				a.getAttackDTO().setStoryID(-1L); // Clan vs IS
+			} else if (factionTypeAttacker == 2 && factionTypeDefender == 2) { // Attacker = 2: Clan, Defender = 2: Clan
+				a.getAttackDTO().setStoryID(-2L); // Clan vs Clan
+			} else if (factionTypeAttacker == 1 && factionTypeDefender == 2) { // Attacker = 1: IS, Defender = 2: Clan
+				a.getAttackDTO().setStoryID(-3L); // IS vs Clan
+			} else if (factionTypeAttacker == 1 && factionTypeDefender == 1) { // Attacker = 1: IS, Defender = 1: IS
+				a.getAttackDTO().setStoryID(-4L); // IS vs IS
+			}
 		}
 		a.storeAttack();
 	}

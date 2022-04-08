@@ -319,10 +319,41 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 			AttackPOJO existingAttack = null;
 			AttackPOJO attack = (AttackPOJO) state.getObject();
+
 			logger.debug("Saving attack: " + attack);
 			logger.debug("-- Attacker (jumpshipID): " + attack.getJumpshipID());
 			logger.debug("-- Attacking from: " + attack.getAttackedFromStarSystemID());
 			logger.debug("-- Attacked system: " + attack.getStarSystemID());
+
+			// -1L: Clan vs IS
+			// -2L: Clan vs Clan
+			// -3L: IS vs Clan
+			// -4L: IS vs IS
+			if (attack.getStoryID().equals(-1L)) {
+				AttackTypesPOJO at = AttackTypesDAO.getInstance().findByShortName(getC3UserID(session), "PA");
+				String ids = at.getCLAN_IS_StoryIds();
+				String[] s = ids.split(";");
+				Integer num = (int) (Math.random() * s.length);
+				attack.setStoryID(num.longValue());
+			} else if (attack.getStoryID().equals(-2L)) {
+				AttackTypesPOJO at = AttackTypesDAO.getInstance().findByShortName(getC3UserID(session), "PA");
+				String ids = at.getCLAN_vs_CLAN_StoryIds();
+				String[] s = ids.split(";");
+				Integer num = (int) (Math.random() * s.length);
+				attack.setStoryID(num.longValue());
+			} else if (attack.getStoryID().equals(-3L)) {
+				AttackTypesPOJO at = AttackTypesDAO.getInstance().findByShortName(getC3UserID(session), "PA");
+				String ids = at.getIS_vs_CLAN_StoryIds();
+				String[] s = ids.split(";");
+				Integer num = (int) (Math.random() * s.length);
+				attack.setStoryID(num.longValue());
+			} else if (attack.getStoryID().equals(-4L)) {
+				AttackTypesPOJO at = AttackTypesDAO.getInstance().findByShortName(getC3UserID(session), "PA");
+				String ids = at.getIS_vs_IS_StoryIds();
+				String[] s = ids.split(";");
+				Integer num = (int) (Math.random() * s.length);
+				attack.setStoryID(num.longValue());
+			}
 
 			StarSystemDataPOJO s = StarSystemDataDAO.getInstance().findById(getC3UserID(session), attack.getStarSystemDataID());
 			s.setLockedUntilRound(attack.getRound() + Constants.ROUNDS_TO_LOCK_SYSTEM_AFTER_ATTACK);

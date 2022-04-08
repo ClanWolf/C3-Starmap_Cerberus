@@ -29,6 +29,7 @@ package net.clanwolf.starmap.server.persistence.daos.jpadaoimpl;
 import net.clanwolf.starmap.server.persistence.CriteriaHelper;
 import net.clanwolf.starmap.server.persistence.daos.GenericDAO;
 import net.clanwolf.starmap.server.persistence.pojos.AttackStatsPOJO;
+import net.clanwolf.starmap.server.persistence.pojos.AttackTypesPOJO;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -40,55 +41,36 @@ import java.util.List;
  * by senders of these methods or must be manually added to each of these methods for data to be
  * persisted to the JPA datastore.
  */
-public class AttackStatsDAO extends GenericDAO {
+public class AttackTypesDAO extends GenericDAO {
 
-	private static AttackStatsDAO instance;
+	private static AttackTypesDAO instance;
 
-	private AttackStatsDAO() {
+	private AttackTypesDAO() {
 		// Empty constructor
 	}
 
-	public static AttackStatsDAO getInstance() {
+	public static AttackTypesDAO getInstance() {
 		if (instance == null) {
-			instance = new AttackStatsDAO();
-			instance.className = "AttackStatsPOJO";
+			instance = new AttackTypesDAO();
+			instance.className = "AttackTypesPOJO";
 		}
 		return instance;
 	}
 
-	@Override
-	public void delete(Long userId, Object entity) {
-		super.delete(userId, entity, ((AttackStatsPOJO) entity).getId());
+	public AttackTypesPOJO findByShortName(Long userId, String shortname) {
+		CriteriaHelper crit = new CriteriaHelper(AttackTypesPOJO.class);
+
+		crit.addCriteria("AttackTypeShort", shortname);
+		return (AttackTypesPOJO) crit.getSingleResult();
 	}
 
 	@Override
-	public AttackStatsPOJO findById(Long userId, Long id) {
-		return (AttackStatsPOJO) super.findById(userId, AttackStatsPOJO.class, id);
+	public void delete(Long userID, Object entity) {
+		super.delete(userID, entity, ((AttackTypesPOJO) entity).getId());
 	}
 
 	@Override
-	public AttackStatsPOJO update(Long attackStatsId, Object entity) {
-		return (AttackStatsPOJO) super.update(attackStatsId, entity);
-	}
-
-	public AttackStatsPOJO findByMatchId(String matchId) {
-		CriteriaHelper crit = new CriteriaHelper(AttackStatsPOJO.class);
-
-		crit.addCriteria("mwoMatchId", matchId);
-		return (AttackStatsPOJO) crit.getSingleResult();
-	}
-
-	public ArrayList<AttackStatsPOJO> getStatisticsForAttack(Long seasonId, Long attackId) {
-		CriteriaHelper crit = new CriteriaHelper(AttackStatsPOJO.class);
-
-		crit.addCriteria("seasonId", seasonId);
-		crit.addCriteria("attackId", attackId);
-		List<Object> res = crit.getResultList();
-
-		Iterator<Object> iter = res.iterator();
-		ArrayList<AttackStatsPOJO> l = new ArrayList<>();
-		while (iter.hasNext()) l.add((AttackStatsPOJO) iter.next());
-
-		return l;
+	public Object findById(Long userID, Long id) {
+		return (AttackTypesPOJO) super.findById(userID, AttackTypesPOJO.class, id);
 	}
 }

@@ -83,6 +83,18 @@ public class BOUniverse {
 		return null;
 	}
 
+	public Long getFactionType(Long factionId) {
+		FactionDTO faction;
+		for (FactionDTO factionDTO : universeDTO.factions.values()) {
+			BOFaction boFaction = new BOFaction(factionDTO);
+			if (boFaction.getID().equals(factionId)) {
+				faction = factionDTO;
+				return faction.getFactionTypeID();
+			}
+		}
+		return null;
+	}
+
 	public TreeSet<BOJumpship> getJumpshipListSorted() {
 		if (jumpshipListSorted == null) {
 			jumpshipListSorted = new TreeSet<>();
