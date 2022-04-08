@@ -76,12 +76,13 @@ public class Nexus {
 	private static HashMap<Long, RolePlayCharacterDTO> characterList;
 	private static LogWatcher logWatcher;
 
+	private static Timer serverHeartBeatTimer = null;
+
 	private static BOFaction currentFaction;
 	private static int currentSeason;
 	private static int currentRound;
 	private static int currentSeasonMetaPhase;
 	private static String currentDate;
-
 	private static String lastAvailableClientVersion = "not checked yet";
 
 	private static AbstractC3Pane currentlyOpenedPane = null;
@@ -517,5 +518,15 @@ public class Nexus {
 	@SuppressWarnings("unused")
 	public static void setLastServerHeartbeatTimestamp(java.sql.Timestamp lastServerHeartbeatTimestamp) {
 		Nexus.lastServerHeartbeatTimestamp = lastServerHeartbeatTimestamp;
+	}
+
+	@SuppressWarnings("unused")
+	public static Timer getServerHeartBeatTimer() {
+		return serverHeartBeatTimer;
+	}
+
+	@SuppressWarnings("unused")
+	public static void setServerHeartBeatTimer(Timer serverHeartBeatTimer) {
+		Nexus.serverHeartBeatTimer = serverHeartBeatTimer;
 	}
 }

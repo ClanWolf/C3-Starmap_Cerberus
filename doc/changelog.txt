@@ -1,6 +1,9 @@
 C3 version history
 --------------------------------
 
+Version 7.0.10 (08.04.2022)
+- CHANGED: Stopped heartbeat timer if server connection is lost
+
 Version 7.0.9 (07.04.2022)
 - ADDED: Handling of connection loss
 

@@ -1491,12 +1491,15 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				Logout.doLogout();
 
 				// raise error message
-				C3Message message23 = new C3Message(C3MESSAGES.ERROR_SERVER_OFFLINE);
+				C3Message messageServerConnectionLost = new C3Message(C3MESSAGES.ERROR_SERVER_OFFLINE);
 				String m = Internationalization.getString("general_server_connection_lost");
-				message23.setText(m);
-				message23.setType(C3MESSAGETYPES.CLOSE);
-				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message23);
+				messageServerConnectionLost.setText(m);
+				messageServerConnectionLost.setType(C3MESSAGETYPES.CLOSE);
+				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(messageServerConnectionLost);
 
+				// Stop heartbeat timer
+				Nexus.getServerHeartBeatTimer().cancel();
+				Nexus.getServerHeartBeatTimer().purge();
 				break;
 
 			case CHANGE_LANGUAGE:

@@ -69,16 +69,20 @@ public class GameSessionHeartBeatTimer extends TimerTask {
 			// - may be offline
 			// - connection could have been reseted
 
+			logger.info("Server did not respond for at least 5 minutes!");
 			ActionManager.getAction(ACTIONS.SERVER_CONNECTION_LOST).execute();
-			logger.info("An exception in the connection was caught, closing!");
 
 			return;
 		}
 
-		logger.info("Sending keepalive signal to server (ping).");
-		GameState heartbeatState = new GameState();
-		heartbeatState.setMode(GAMESTATEMODES.SESSION_KEEPALIVE);
-		heartbeatState.addObject(null);
-		Nexus.fireNetworkEvent(heartbeatState);
+		if (Nexus.isLoggedIn()) {
+			logger.info("Sending keepalive signal to server (ping).");
+			GameState heartbeatState = new GameState();
+			heartbeatState.setMode(GAMESTATEMODES.SESSION_KEEPALIVE);
+			heartbeatState.addObject(null);
+			Nexus.fireNetworkEvent(heartbeatState);
+		} else {
+			logger.info("Not sending keepalive, because client is not logged in.");
+		}
 	}
 }

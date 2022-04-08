@@ -54,45 +54,22 @@ public abstract class AbstractSessionEventHandler implements SessionEventHandler
 	public void doEventHandlerMethodLookup(Event event) {
 		int eventType = event.getType();
 		switch (eventType) {
-		case Events.SESSION_MESSAGE:
-			onDataIn(event);
-			break;
-		case Events.NETWORK_MESSAGE:
-			onNetworkMessage((NetworkEvent) event);
-			break;
-		case Events.LOG_IN_SUCCESS:
-			onLoginSuccess(event);
-			break;
-		case Events.LOG_IN_FAILURE:
-			onLoginFailure(event);
-			break;
-		case Events.START:
-			onStart(event);
-			break;
-		case Events.STOP:
-			onStart(event);
-			break;
-		case Events.GAME_ROOM_JOIN_SUCCESS:
-			onGameRoomJoin(event);
-			break;
-		case Events.CONNECT_FAILED:
-			onConnectFailed(event);
-			break;
-		case Events.DISCONNECT:
-			onDisconnect(event);
-			break;
-		case Events.CHANGE_ATTRIBUTE:
-			onChangeAttribute(event);
-			break;
-		case Events.EXCEPTION:
-			onException(event);
-			break;
-//		case Events.LOG_OUT:
-//			onLogout(event);
-//			break;
-		default:
-			onCustomEvent(event);
-			break;
+			case Events.SESSION_MESSAGE -> onDataIn(event);
+			case Events.NETWORK_MESSAGE -> onNetworkMessage((NetworkEvent) event);
+			case Events.LOG_IN_SUCCESS -> onLoginSuccess(event);
+			case Events.LOG_IN_FAILURE -> onLoginFailure(event);
+			case Events.START -> onStart(event);
+			case Events.STOP -> onStart(event);
+			case Events.GAME_ROOM_JOIN_SUCCESS -> onGameRoomJoin(event);
+			case Events.CONNECT_FAILED -> onConnectFailed(event);
+			case Events.DISCONNECT -> onDisconnect(event);
+			case Events.CHANGE_ATTRIBUTE -> onChangeAttribute(event);
+			case Events.EXCEPTION -> onException(event);
+
+			//		case Events.LOG_OUT:
+			//			onLogout(event);
+			//			break;
+			default -> onCustomEvent(event);
 		}
 	}
 

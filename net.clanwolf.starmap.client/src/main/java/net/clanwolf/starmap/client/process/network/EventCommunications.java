@@ -160,10 +160,7 @@ public class EventCommunications {
 
 					if (iAmInAttack) {
 						//RolePlayStoryDTO rpOldDTO = Nexus.getBoUniverse().getAttackStories().get(Nexus.getCurrentAttackOfUser().getAttackDTO().getStoryID());
-						boolean storyWasChanged = false;
-						if (Nexus.getStoryBeforeSaving() != null && !attack.getStoryID().equals(Nexus.getStoryBeforeSaving())) {
-							storyWasChanged = true;
-						}
+						boolean storyWasChanged = Nexus.getStoryBeforeSaving() != null && !attack.getStoryID().equals(Nexus.getStoryBeforeSaving());
 
 						String userIDOfSavingUser = (String) state.getObject2(); // --> session.getId();
 						if (userIDOfSavingUser == null) {

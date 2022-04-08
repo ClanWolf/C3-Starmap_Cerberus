@@ -521,6 +521,7 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 				logger.info("Starting Timer to send NettySession keepalive heartbeat.");
 				Timer serverHeartBeat = new Timer();
 				serverHeartBeat.schedule(new GameSessionHeartBeatTimer(), 1000, 1000 * 60 * 1);
+				Nexus.setServerHeartBeatTimer(serverHeartBeat);
 
 				break;
 
