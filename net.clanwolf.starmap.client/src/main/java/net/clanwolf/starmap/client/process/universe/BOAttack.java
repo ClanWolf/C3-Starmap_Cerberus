@@ -61,6 +61,7 @@ public class BOAttack {
 		byte[] compressedAttackDTO = Compressor.compress(attackDTO);
 		logger.info("Compressed AttackDTO size: " + compressedAttackDTO.length);
 		saveAttackState.addObject(compressedAttackDTO);
+		saveAttackState.addObject2(getAttackType());
 		Nexus.fireNetworkEvent(saveAttackState);
 	}
 
@@ -181,5 +182,21 @@ public class BOAttack {
 	@SuppressWarnings("unused")
 	public List<AttackCharacterDTO> getAttackCharList() {
 		return attackDTO.getAttackCharList();
+	}
+
+	private Long getAttackType(){
+		Long factionTypeAttacker = Nexus.getBoUniverse().getFactionType(this.getAttackerFactionId().longValue());
+		Long factionTypeDefender = Nexus.getBoUniverse().getFactionType(this.getDefenderFactionId().longValue());
+
+		if (factionTypeAttacker == 2 && factionTypeDefender == 1) { // Attacker = 2: Clan, Defender = 1: IS
+			 return -1L; // Clan vs IS
+		} else if (factionTypeAttacker == 2 && factionTypeDefender == 2) { // Attacker = 2: Clan, Defender = 2: Clan
+			return -2L; // Clan vs Clan
+		} else if (factionTypeAttacker == 1 && factionTypeDefender == 2) { // Attacker = 1: IS, Defender = 2: Clan
+			return -3L; // IS vs Clan
+		} else if (factionTypeAttacker == 1 && factionTypeDefender == 1) { // Attacker = 1: IS, Defender = 1: IS
+			return -4L; // IS vs IS
+		}
+		return -1L; // TODO: Sollte nochmal überdacht werden
 	}
 }

@@ -277,6 +277,13 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 				RolePlayStoryDTO rps = (RolePlayStoryDTO) gs.getObject();
 				ArrayList<RolePlayCharacterDTO> rpcList = (ArrayList<RolePlayCharacterDTO>) gs.getObject2();
 
+
+				if(boRP.getStoryByID(rps.getId()) == null && rps.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STORY) {
+					cbStorySelection.getItems().add(rps);
+					cbStorySelection.getSelectionModel().select(rps);
+					boRP.getStoryList().add(rps);
+				}
+
 				// Only need after an insert. It is not necessary after an update
 				// If the RolePlayStoryDTO is new, we need this to get the object with ID from the database.
 				selected.setValue(rps);

@@ -1498,9 +1498,12 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(messageServerConnectionLost);
 
 				// Stop heartbeat timer
-				Nexus.getServerHeartBeatTimer().cancel();
-				Nexus.getServerHeartBeatTimer().purge();
+				if(Nexus.getServerHeartBeatTimer() != null) {
+					Nexus.getServerHeartBeatTimer().cancel();
+					Nexus.getServerHeartBeatTimer().purge();
+				}
 				break;
+
 
 			case CHANGE_LANGUAGE:
 				if (currentlyDisplayedPane != null) {

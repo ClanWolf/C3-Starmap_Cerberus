@@ -43,7 +43,7 @@ import static javax.persistence.GenerationType.IDENTITY;
 		generator=ObjectIdGenerators.PropertyGenerator.class,
 		property = "id")
 @Entity
-@Table(name = "_HH_ATTACK_TYPES", catalog = "C3")
+@Table(name = "_HH_ATTACK_TYPE", catalog = "C3")
 public class AttackTypesPOJO extends Pojo {
 
 	@Id

@@ -60,7 +60,7 @@ public class AttackTypesDAO extends GenericDAO {
 	public AttackTypesPOJO findByShortName(Long userId, String shortname) {
 		CriteriaHelper crit = new CriteriaHelper(AttackTypesPOJO.class);
 
-		crit.addCriteria("AttackTypeShort", shortname);
+		crit.addCriteria("attackTypeShort", shortname);
 		return (AttackTypesPOJO) crit.getSingleResult();
 	}
 
