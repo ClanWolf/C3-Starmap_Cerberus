@@ -271,6 +271,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 			if (js.getJumpshipFaction() == Nexus.getCurrentUser().getCurrentCharacter().getFactionId()
 					&& Nexus.getBoUniverse().routesList.get(js.getJumpshipId()) != null
+					&& Nexus.getBoUniverse().routesList.get(js.getJumpshipId()).size() > 1 // routepoint 1 is the starting system. if there is no second system in the route, this will fail
 					&& js.isAttackReady()) {
 
 				logger.info("Storing route to database");
