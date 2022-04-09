@@ -1,8 +1,10 @@
 C3 version history
 --------------------------------
 
-Version 7.0.11 (08.04.2022)
-- ADDED: Storing of different story ids depending on who attacks
+Version 7.0.12 (09.04.2022)
+- ADDED: Storing of different story ids depending on who attacks (introducing different invasion trees)
+- FIXED: Mechanism to check if an invasion may be started
+- FIXED: Updating offline status of users in lobby
 - CHANGED: Stopped heartbeat timer if server connection is lost
 
 Version 7.0.9 (07.04.2022)

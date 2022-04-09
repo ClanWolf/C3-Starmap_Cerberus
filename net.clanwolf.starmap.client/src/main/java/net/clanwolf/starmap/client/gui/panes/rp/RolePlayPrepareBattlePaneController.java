@@ -369,12 +369,18 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 		boolean attackersOnline = true;
 		boolean defendersOnline = true;
+		boolean dropleadAttackerUserOnline = true;
+		boolean dropleadDefenderUserOnline = true;
 		boolean allOnline = false;
 
 		for (RolePlayCharacterDTO rpc : lvAttacker.getItems()) {
 			boolean online = false;
 			for (UserDTO u : Nexus.getCurrentlyOnlineUserList()) {
 				if (u.getCurrentCharacter().getId().equals(rpc.getId())) {
+					online = true;
+					break;
+				}
+				if ("...".equals(rpc.getName())) {
 					online = true;
 					break;
 				}
@@ -386,14 +392,53 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		}
 
 		for (RolePlayCharacterDTO rpc : lvDefender.getItems()) {
-			if (rpc.getName().endsWith("(offline)")) {
+			boolean online = false;
+			for (UserDTO u : Nexus.getCurrentlyOnlineUserList()) {
+				if (u.getCurrentCharacter().getId().equals(rpc.getId())) {
+					online = true;
+					break;
+				}
+				if ("...".equals(rpc.getName())) {
+					online = true;
+					break;
+				}
+			}
+			if (!online) {
 				defendersOnline = false;
 				break;
 			}
 		}
 
-		if (!lvDropleadAttacker.getItems().get(0).getName().endsWith("(offline)")
-			&& !lvDropleadDefender.getItems().get(0).getName().endsWith("(offline)")
+		for (RolePlayCharacterDTO rpc : lvDropleadAttacker.getItems()) {
+			boolean online = false;
+			for (UserDTO u : Nexus.getCurrentlyOnlineUserList()) {
+				if (u.getCurrentCharacter().getId().equals(rpc.getId())) {
+					online = true;
+					break;
+				}
+			}
+			if (!online) {
+				dropleadAttackerUserOnline = false;
+				break;
+			}
+		}
+
+		for (RolePlayCharacterDTO rpc : lvDropleadDefender.getItems()) {
+			boolean online = false;
+			for (UserDTO u : Nexus.getCurrentlyOnlineUserList()) {
+				if (u.getCurrentCharacter().getId().equals(rpc.getId())) {
+					online = true;
+					break;
+				}
+			}
+			if (!online) {
+				dropleadDefenderUserOnline = false;
+				break;
+			}
+		}
+
+		if (dropleadAttackerUserOnline
+			&& dropleadDefenderUserOnline
 			&& attackersOnline
 			&& defendersOnline) {
 			allOnline = true;
@@ -429,6 +474,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 				&& attackerCount >= Constants.MINIMUM_PILOTS_PER_SIDE_IN_INVASION_DROP - 1 // Check the minimum number of fighting pilots, may be disabled for testing, -1 because of the droplead
 				&& defenderCount >= Constants.MINIMUM_PILOTS_PER_SIDE_IN_INVASION_DROP - 1 // Check the minimum number of fighting pilots, may be disabled for testing, -1 because of the droplead
 				&& attackerCount == defenderCount
+				&& allOnline
 		) {
 			// Enable "continue"
 			BOAttack a = Nexus.getCurrentAttackOfUser();
@@ -815,9 +861,12 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 				break;
 
 			case NEW_PLAYERLIST_RECEIVED:
-				// This should happen in UPDATE_USERS_FOR_ATTACK
-				// TODO: Remove listener and this case here if it is not needed!
-				// updateLists(Nexus.getCurrentAttackOfUser());
+				// This should happen if a user goes offline
+				checkConditionsToStartDrop(null);
+				lvDropleadAttacker.refresh();
+				lvDropleadDefender.refresh();
+				lvAttacker.refresh();
+				lvDefender.refresh();
 				break;
 
 			default:
