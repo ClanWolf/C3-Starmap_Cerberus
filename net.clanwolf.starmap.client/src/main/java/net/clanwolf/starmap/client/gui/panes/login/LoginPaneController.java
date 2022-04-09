@@ -506,7 +506,9 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 
 			case PANE_DESTRUCTION_FINISHED:
 				if (o.getObject().getClass() == LoginPane.class) {
-					sequentialTransition.stop();
+					if (sequentialTransition != null) {
+						sequentialTransition.stop();
+					}
 					sequentialTransition = null;
 					timeline01 = null;
 					// recScanner.setOpacity(0.0);

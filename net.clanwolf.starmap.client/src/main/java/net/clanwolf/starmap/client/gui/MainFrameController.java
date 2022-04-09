@@ -1486,12 +1486,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	public boolean handleAction(ACTIONS action, ActionObject o) {
 		switch (action) {
 			case SERVER_CONNECTION_LOST:
-
-				// logout
-				Logout.doLogout();
-
 				// raise error message
-				C3Message messageServerConnectionLost = new C3Message(C3MESSAGES.ERROR_SERVER_OFFLINE);
+				C3Message messageServerConnectionLost = new C3Message(C3MESSAGES.ERROR_SERVER_CONNECTION_LOST);
 				String m = Internationalization.getString("general_server_connection_lost");
 				messageServerConnectionLost.setText(m);
 				messageServerConnectionLost.setType(C3MESSAGETYPES.CLOSE);
@@ -1847,12 +1843,12 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				break;
 
 			case CURSOR_REQUEST_NORMAL:
-				if (!messageIsShowing) {
+				String sourceIdRN = "";
+				if (o.getText() != null && !"".equals(o.getText())) {
+					sourceIdRN = o.getText();
+				}
+//				if (!messageIsShowing) {
 					Nexus.setMainFrameEnabled(true);
-					String sourceIdRN = "";
-					if (o.getText() != null && !"".equals(o.getText())) {
-						sourceIdRN = o.getText();
-					}
 					decrementCounter();
 					logger.info("Requesting NORMAL cursor (" + counterWaitCursor + "). --> " + sourceIdRN);
 					if (counterWaitCursor == 0) {
@@ -1875,7 +1871,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 						ivMuteToggle.toFront();
 					});
 					ActionManager.getAction(ACTIONS.ACTION_SUCCESSFULLY_EXECUTED).execute(o);
-				}
+//				} else {
+//					logger.info("!!! SUPPRESSED: Requesting NORMAL cursor (" + counterWaitCursor + "). --> " + sourceIdRN);
+//				}
 				break;
 
 			case CURSOR_REQUEST_WAIT:
@@ -2338,6 +2336,10 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			} else if (C3MESSAGERESULTS.NO.equals(userReactionResult)) {
 				logger.info("The latest version should be installed in any situation!");
 			}
+		}
+
+		if (message.getMessage() == C3MESSAGES.ERROR_SERVER_CONNECTION_LOST) {
+			Logout.doLogout();
 		}
 
 		Platform.runLater(() -> mouseStopper.getChildren().remove(messagePane));
