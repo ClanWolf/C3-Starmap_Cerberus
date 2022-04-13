@@ -367,21 +367,21 @@ public class CalcBalance {
                 mailMessage.append(String.format(columnWidthRepairCost, nf.format(defUser.getValue().longValue()) + " C-Bills"));
                 mailMessage.append("\r\n");
 
-                mailMessage.append(String.format(columnWidthMWOUsername, character.getMwoUsername()));
-                mailMessage.append(String.format(columnWidthMechName, "Income from " + getPlayerFaction((long) character.getFactionId()).getShortName()));
-                mailMessage.append(String.format(columnWidthPercentToRepair, " "));
-                mailMessage.append(String.format(columnWidthRepairCost, nf.format(getIncome(character.getFactionId())) + " C-Bills"));
-                mailMessage.append("\r\n");
-                setDefenderRepairCost(getIncome(character.getFactionId()));
-
-                mailMessage.append(String.format(columnWidthMWOUsername, character.getMwoUsername()));
-                mailMessage.append(String.format(columnWidthMechName, "Defend cost"));
-                mailMessage.append(String.format(columnWidthPercentToRepair, " "));
-                mailMessage.append(String.format(columnWidthRepairCost, nf.format(getDefendCost(AttackStats.getStarSystemDataId())) + " C-Bills"));
-                mailMessage.append("\r\n");
-                setDefenderRepairCost(getDefendCost(AttackStats.getStarSystemDataId()));
-
             }
+
+            mailMessage.append(String.format(columnWidthMWOUsername, getPlayerFaction(AttackStats.getDefenderFactionId()).getName_en()));
+            mailMessage.append(String.format(columnWidthMechName, "Income" ));
+            mailMessage.append(String.format(columnWidthPercentToRepair, " "));
+            mailMessage.append(String.format(columnWidthRepairCost, nf.format(getIncome(AttackStats.getDefenderFactionId())) + " C-Bills"));
+            mailMessage.append("\r\n");
+            setDefenderRepairCost(getIncome(AttackStats.getDefenderFactionId()));
+
+            mailMessage.append(String.format(columnWidthMWOUsername, getPlayerFaction(AttackStats.getDefenderFactionId()).getName_en()));
+            mailMessage.append(String.format(columnWidthMechName, "Defend cost"));
+            mailMessage.append(String.format(columnWidthPercentToRepair, " "));
+            mailMessage.append(String.format(columnWidthRepairCost, nf.format(getDefendCost(AttackStats.getStarSystemDataId())) + " C-Bills"));
+            mailMessage.append("\r\n");
+            setDefenderRepairCost(getDefendCost(AttackStats.getStarSystemDataId()));
 
             mailMessage.append("─".repeat(95));
             mailMessage.append("\r\n");
@@ -413,21 +413,22 @@ public class CalcBalance {
                 mailMessage.append(String.format(columnWidthRepairCost, nf.format(attUser.getValue().longValue()) + " C-Bills"));
                 mailMessage.append("\r\n");
 
-                mailMessage.append(String.format(columnWidthMWOUsername, character.getMwoUsername()));
-                mailMessage.append(String.format(columnWidthMechName, "Income from " + getPlayerFaction((long) character.getFactionId()).getShortName()));
-                mailMessage.append(String.format(columnWidthPercentToRepair, " "));
-                mailMessage.append(String.format(columnWidthRepairCost, nf.format(getIncome(character.getFactionId())) + " C-Bills"));
-                mailMessage.append("\r\n");
-                setAttackerRepairCost(getIncome(character.getFactionId()));
-
-                mailMessage.append(String.format(columnWidthMWOUsername, character.getMwoUsername()));
-                mailMessage.append(String.format(columnWidthMechName, "Attack cost"));
-                mailMessage.append(String.format(columnWidthPercentToRepair, " "));
-                mailMessage.append(String.format(columnWidthRepairCost, nf.format(getAttackCost(AttackStats.getStarSystemDataId())) + " C-Bills"));
-                mailMessage.append("\r\n");
-                setAttackerRepairCost(getAttackCost(AttackStats.getStarSystemDataId()));
-
             }
+
+            mailMessage.append(String.format(columnWidthMWOUsername, getPlayerFaction(AttackStats.getAttackerFactionId()).getName_en()));
+            mailMessage.append(String.format(columnWidthMechName, "Income" ));
+            mailMessage.append(String.format(columnWidthPercentToRepair, " "));
+            mailMessage.append(String.format(columnWidthRepairCost, nf.format(getIncome(AttackStats.getAttackerFactionId())) + " C-Bills"));
+            mailMessage.append("\r\n");
+            setAttackerRepairCost(getIncome(AttackStats.getAttackerFactionId()));
+
+            mailMessage.append(String.format(columnWidthMWOUsername, getPlayerFaction(AttackStats.getAttackerFactionId()).getName_en()));
+            mailMessage.append(String.format(columnWidthMechName, "Attack cost"));
+            mailMessage.append(String.format(columnWidthPercentToRepair, " "));
+            mailMessage.append(String.format(columnWidthRepairCost, nf.format(getAttackCost(AttackStats.getStarSystemDataId())) + " C-Bills"));
+            mailMessage.append("\r\n");
+            setAttackerRepairCost(getAttackCost(AttackStats.getStarSystemDataId()));
+
 
             mailMessage.append("─".repeat(95));
             mailMessage.append("\r\n");
