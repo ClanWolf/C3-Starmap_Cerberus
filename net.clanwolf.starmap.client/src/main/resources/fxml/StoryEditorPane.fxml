@@ -22,7 +22,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="StoryEditorPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/17" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.StoryEditorPaneController">
+<AnchorPane id="StoryEditorPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="900.0" prefWidth="1400.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.StoryEditorPaneController">
   <children>
       <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <bottom>
@@ -59,7 +59,7 @@
                         <Button id="btn_dark-blue" fx:id="btRemove" mnemonicParsing="false" onAction="#handleDeleteSeletedTreeItem" prefHeight="36.0" prefWidth="30.0" styleClass="RPDeleteButton" />
                     </items>
                   </ToolBar>
-                  <ComboBox fx:id="cbStorySelection" onAction="#handleOnAction_StorySelection" prefHeight="23.0" prefWidth="250.0" />
+                  <ComboBox fx:id="cbStorySelection" onAction="#handleOnAction_StorySelection" prefHeight="27.0" prefWidth="399.0" />
                   <TreeView fx:id="treeStory" onMouseClicked="#handleSelectTreeItem" prefHeight="375.0" prefWidth="298.0" VBox.vgrow="ALWAYS" />
                </children>
             </VBox>

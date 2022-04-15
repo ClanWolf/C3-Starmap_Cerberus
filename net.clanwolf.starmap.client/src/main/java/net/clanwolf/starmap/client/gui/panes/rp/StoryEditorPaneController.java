@@ -941,7 +941,8 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 		}
 
 		// Tab for simple step
-		if (selected != null && cbStoryVarianten.getSelectionModel().getSelectedItem() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1) {
+		if (selected != null && cbStoryVarianten.getSelectionModel().getSelectedItem() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1 ||
+				cbStoryVarianten.getSelectionModel().getSelectedItem() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V8) {
 			if (!tabPaneStory.getTabs().contains(tabBasic7)) {
 				tabPaneStory.getTabs().add(tabBasic7);
 			}
@@ -1413,7 +1414,8 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 			doDeleteMovie = false;
 
 			// set data for story variante 1
-			if (selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1 ) {
+			if (selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1 ||
+					selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V8) {
 				if(selected.getValue().getNextStepID() != null){
 					cbNextStep_V1.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getNextStepID()));
 				}
@@ -1649,7 +1651,8 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 		}
 
 		// set data for variante 1
-		if (rp.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1) {
+		if (rp.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1 ||
+				selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V8) {
 
 
 			if (cbNextStep_V1.getValue() != null) {
