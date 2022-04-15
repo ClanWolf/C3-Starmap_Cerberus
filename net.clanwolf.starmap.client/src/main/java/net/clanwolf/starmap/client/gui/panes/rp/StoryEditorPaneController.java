@@ -192,6 +192,10 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 	private boolean doUploadImage, doUploadSound, doUploadMovie;
 	private boolean doDeleteImage, doDeleteSound, doDeleteMovie;
 
+	private String lastImagePath;
+	private String lastSoundFilePath;
+	private String lastVideoFilePath;
+
 	private int mode = 0;
 	private static final int MODE_IS_INIT = -1;
 	private static final int MODE_IS_DEFAULT = 0;
@@ -653,13 +657,14 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 
 	@FXML
 	private void handleSelectImageFile() {
-		File file = callFileChooser("Bilddatei (*.png)", "*.png");
+		File file = callFileChooser(lastImagePath, "Bilddatei (*.png)", "*.png");
 
 		if (file != null) {
 			logger.info("File ausgewählt");
 			tfImage.setText(file.getAbsolutePath());
 			doUploadImage = true;
 			doDeleteImage = false;
+			lastImagePath = file.getParent();
 
 		}
 	}
@@ -707,13 +712,14 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 
 	@FXML
 	private void handleSelectVoiceFile() {
-		File file = callFileChooser("Bilddatei (*.mp3)", "*.mp3");
+		File file = callFileChooser(lastSoundFilePath, "Bilddatei (*.mp3)", "*.mp3");
 
 		if (file != null) {
 			logger.info("File ausgewählt");
 			tfVoice.setText(file.getAbsolutePath());
 			doUploadSound = true;
 			doDeleteSound = false;
+			lastSoundFilePath = file.getParent();
 		}
 	}
 
@@ -749,13 +755,15 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 
 	@FXML
 	private void handleSelectMovieFile() {
-		File file = callFileChooser("Bilddatei (*.mp4)", "*.mp4");
+		File file = callFileChooser(lastVideoFilePath,"Bilddatei (*.mp4)", "*.mp4");
 
 		if (file != null) {
 			logger.info("File ausgewählt");
 			tfMovie.setText(file.getAbsolutePath());
 			doUploadMovie = true;
 			doDeleteMovie = false;
+
+			lastVideoFilePath = file.getParent();
 		}
 	}
 
@@ -906,6 +914,19 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 
 		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(filterName, filter);
 		chooser.getExtensionFilters().add(extFilter);
+
+		return chooser.showOpenDialog(treeStory.getScene().getWindow());
+	}
+
+	private File callFileChooser(String dir, String filterName, String filter) {
+		FileChooser chooser = new FileChooser();
+		chooser.setTitle("Open File");
+
+		FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter(filterName, filter);
+		chooser.getExtensionFilters().add(extFilter);
+		if(dir != null) {
+			chooser.setInitialDirectory(new File(dir));
+		}
 
 		return chooser.showOpenDialog(treeStory.getScene().getWindow());
 	}
