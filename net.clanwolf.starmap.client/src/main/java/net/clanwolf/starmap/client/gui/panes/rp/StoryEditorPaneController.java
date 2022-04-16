@@ -222,7 +222,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 		addActionCallBackListeners();
 
 		// Register actions from BORolePlayStory
-		boRP.registerActions(this);
+		//boRP.registerActions(this);
 		mode = StoryEditorPaneController.MODE_IS_INIT;
 
 		initTreeView();
@@ -274,7 +274,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 	public boolean handleAction(ACTIONS action, ActionObject object) {
 		switch (action) {
 			case SAVE_ROLEPLAY_STORY_OK:
-				logger.info("SAVE_ROLEPLAY_STORY_OK");
+				logger.info("SAVE_ROLEPLAY_STORY_OK -> " + this.toString());
 
 				GameState gs = (GameState) object.getObject();
 
@@ -908,7 +908,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 
 	/* ----------------- FXML end ----------------- */
 
-	private File callFileChooser(String filterName, String filter) {
+	/*private File callFileChooser(String filterName, String filter) {
 		FileChooser chooser = new FileChooser();
 		chooser.setTitle("Open File");
 
@@ -916,7 +916,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 		chooser.getExtensionFilters().add(extFilter);
 
 		return chooser.showOpenDialog(treeStory.getScene().getWindow());
-	}
+	}*/
 
 	private File callFileChooser(String dir, String filterName, String filter) {
 		FileChooser chooser = new FileChooser();

@@ -77,7 +77,6 @@ public class StoryEditorPane extends Application {
 			stage.getIcons().add(new Image(is));
 
 			controller = fxmlLoader.getController();
-			controller.initialize();
 
 			stage.showAndWait();
 
