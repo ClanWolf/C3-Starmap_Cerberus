@@ -1386,6 +1386,15 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		}
 	}
 
+	private static void resetCounter(){
+		counterWaitCursorLock.lock();
+		try {
+			counterWaitCursor = 0;
+		} finally{
+			counterWaitCursorLock.unlock();
+		}
+	}
+
 	private void NoiseAnimation() {
 		Platform.runLater(() -> {
 			int COLUMNS = 2;
@@ -1847,10 +1856,14 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				if (o.getText() != null && !"".equals(o.getText())) {
 					sourceIdRN = o.getText();
 				}
-//				if (!messageIsShowing) {
+				if (!messageIsShowing) {
 					Nexus.setMainFrameEnabled(true);
 					decrementCounter();
-					logger.info("Requesting NORMAL cursor (" + counterWaitCursor + "). --> " + sourceIdRN);
+					logger.info("Requesting NORMAL CURSOR (" + counterWaitCursor + "). --> " + sourceIdRN);
+					if ("forceNormal".equals(sourceIdRN)) {
+						logger.info("Forcing NORMAL CURSOR");
+						resetCounter();
+					}
 					if (counterWaitCursor == 0) {
 						Platform.runLater(() -> {
 							mouseStopper.toFront();
@@ -1871,9 +1884,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 						ivMuteToggle.toFront();
 					});
 					ActionManager.getAction(ACTIONS.ACTION_SUCCESSFULLY_EXECUTED).execute(o);
-//				} else {
-//					logger.info("!!! SUPPRESSED: Requesting NORMAL cursor (" + counterWaitCursor + "). --> " + sourceIdRN);
-//				}
+				} else {
+					logger.info("!!! SUPPRESSED: Requesting NORMAL cursor (" + counterWaitCursor + "). --> " + sourceIdRN);
+				}
 				break;
 
 			case CURSOR_REQUEST_WAIT:
@@ -1961,7 +1974,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					C3Message message = (C3Message) o.getObject();
 					closeMessage(message);
 				}
-				ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("1114");
+				ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("forceNormal");
 				break;
 
 			case UPDATE_GAME_INFO:
