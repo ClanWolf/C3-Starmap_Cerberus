@@ -560,6 +560,8 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 			enableListeners(true);
 		}
 
+		handleTabs();
+
 		boolean foundTab = false;
 		for (Tab t : tabPaneStory.getTabs()) {
 			if(t.getText().equals(currentSelectedTab)){
@@ -573,7 +575,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 			tabPaneStory.getSelectionModel().select(0);
 		}
 
-		handleTabs();
+		//handleTabs();
 	}
 
 	@FXML
