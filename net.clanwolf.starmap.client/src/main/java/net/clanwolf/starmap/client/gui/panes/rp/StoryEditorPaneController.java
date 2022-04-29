@@ -44,6 +44,7 @@ import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
 import net.clanwolf.starmap.client.process.universe.BOFaction;
+import net.clanwolf.starmap.client.process.universe.BOJumpship;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
@@ -531,7 +532,16 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 	@FXML
 	private void handleSelectTreeItem() {
 		logger.info("handleSelectTreeItem");
+
+		String currentSelectedTab = null;
+		if( tabPaneStory.getSelectionModel().getSelectedItem() != null) {
+			currentSelectedTab = tabPaneStory.getSelectionModel().getSelectedItem().getText();
+
+		}
+		logger.info("currentSelectedTab: " + currentSelectedTab);
 		if (mode == StoryEditorPaneController.MODE_IS_DEFAULT) {
+
+
 			selected = treeStory.getSelectionModel().getSelectedItem();
 			logger.info(treeStory.getTreeItemLevel(selected) + "");
 
@@ -550,7 +560,18 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 			enableListeners(true);
 		}
 
-		tabPaneStory.getSelectionModel().select(0);
+		boolean foundTab = false;
+		for (Tab t : tabPaneStory.getTabs()) {
+			if(t.getText().equals(currentSelectedTab)){
+				tabPaneStory.getSelectionModel().select(t);
+				foundTab = true;
+				break;
+			}
+		}
+
+		if(!foundTab) {
+			tabPaneStory.getSelectionModel().select(0);
+		}
 
 		handleTabs();
 	}
