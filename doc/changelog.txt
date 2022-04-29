@@ -1,6 +1,12 @@
 C3 version history
 --------------------------------
 
+Version 7.0.17 (25.04.2022)
+- UPDATED: JavaFX to 18.0.1
+- FIXED: Version variables in build files
+- FIXED: Sorted deleted comments in notes plugin and added as TODOs
+- FIXED: Story editor remembers the tab to open when switching nodes
+
 Version 7.0.15 (15.04.2022)
 - UPDATED: Second Scenario (IS vs Clan) Tree: maps added
 - UPDATED: Story editor will remember the last path used while adding sound files

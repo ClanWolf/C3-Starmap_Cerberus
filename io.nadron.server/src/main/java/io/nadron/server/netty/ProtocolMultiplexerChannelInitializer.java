@@ -8,11 +8,9 @@ import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.timeout.IdleStateHandler;
 
-
 public class ProtocolMultiplexerChannelInitializer extends
 	ChannelInitializer<SocketChannel>
 {
-	// TODO make this configurable from spring.
 	private static final int MAX_IDLE_SECONDS = 60;
 	private int bytesForProtocolCheck;
 	private LoginProtocol loginProtocol;

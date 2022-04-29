@@ -1,0 +1,37 @@
+TODO_C3:    !!! Banner am Ende der Invasion entsprechend der Fraktion
+TODO_C3:    !!! PowerPoint Dateien für die Invasionstypen CL vs CL und IS vs IS
+TODO_C3:    !!! Implementieren: Ein Sieg bei einem Angriff gibt Siegpunkte (z.B. 5SP), bei Verlust 2SP. Zum Levelaufstieg braucht das Schiff 15SP.
+TODO_C3:    !!! Beim Angriff checken, ob der Mindestlevel des Sprungschiffs für den Angriff reicht
+
+TODO_C3:    TEST: Was ist mit den panes der invasion oder des rollenspiels? resetten beim abmelden
+TODO_C3:    TEST: Wenn man einem Kampf joined, der schon gestartet wurde, fliegen fehler... kein joinen mehr, wenn gestartet wurde
+TODO_C3:    TEST: sprung button nur enablen, wenn rechte gegeben sind. nur enablen, wenn es aktive offene sprungrouten gibt
+TODO_C3:    TEST: Planeten, die letzte Runde umkämpft waren, dürfen nicht angegriffen werden
+TODO_C3:    TEST: Wenn Attack gestartet wurde, sollte joinen auf den Kampf disabled sein
+TODO_C3:    TEST: currentPlayerRoleInInvasion am Kampfende zurücksetzen ???
+TODO_C3:    TEST: MWO API Loop war noch aktiv nach einer Invasion
+
+TODO_C3:    Was passiert, wenn ein Kampf ausgewürfelt wird mit dem Bergegut, Kosten, Abschüssen, Mechs, Statistiken und XP
+TODO_C3:    Torben konnte sich nicht anmelden trotz syncen des passwords.
+TODO_C3:    log level filter im server log ausprogrammieren
+TODO_C3:    zeilenumbrüche im log für stacktraces. wrap in table cell aktivieren!
+TODO_C3:    Global shortcut buttons (for "continue" while ingame e.g.)
+TODO_C3:    Navigate the client from outside the process (global shortcuts)
+TODO_C3:    Navigate the client if the mouse is not present
+
+TODO_C3:    TeamSpeak API
+
+TODO_C3:    Sehen in der Karte ob Lobby offen ist
+TODO_C3:    Planeten mit Sprungschiff dürfen nicht angegriffen werden
+TODO_C3:    Kampf beendet: anderes bild
+
+TODO_C3:    If the attacker commander leaves the lobby, all attackcharacters are deleted and removed from the lobby (lobby closed)
+TODO_C3:    Es treffen sich Sprungschiffe verschiedener Fraktionen auf einem System (möglich?)
+TODO_C3:    Gibt es Diplomatie (d.h. kann man eine Fraktion bewusst nicht angreifen, wenn man auf das System springt)?
+TODO_C3:    Unentschieden 0zu0 ist anders als z.B. 4zu4, da kein mindest damage unterschied
+
+TODO_C3:    Kosten für Mechs: - Light: 150k - Medium: 250k - Heavy: 400k - Assault: 600k ?
+    Gewinner:   15-25% Bergegut aller zerstörten Mechs (auch die der Verteidiger)
+    Verlierer:  10-15% Bergegut der eigenen zerstörten Mechs
+    Reparaturkosten für die % zerstörte Mechs (jeder Mech nur einmal, nicht 3-5 Mal!!!)
+    Salvage (Würfeln der Prozente) ?
