@@ -6,7 +6,7 @@ C:
 CD \
 CD C:\C3\projects\C3-Starmap_Cerberus
 
-REM SET VERSION=7.0.17
+REM SET VERSION=7.0.19
 FOR /f "delims== tokens=1,2" %%G in (C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\target\classes\version.number) do set %%G=%%H
 ECHO Found version: %VERSION%
 REM PAUSE
@@ -15,9 +15,9 @@ ECHO Copying launcher exe
 COPY C:\c3\projects\C3-Starmap_Cerberus\NSIS\client_launcher_executable\C3-Starmap_Cerberus.exe_ C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\target\jlink-image\bin\C3-Starmap_Cerberus.exe
 REM PAUSE
 
-IF EXIST "C:\Program Files\Java\jdk-17\bin\java.exe" (
+IF EXIST "C:\Program Files\Java\jdk-18.0.1.1\bin\java.exe" (
   ECHO Java found
-  "C:\Program Files\Java\jdk-17\bin\java.exe" -jar C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client.packager\target\net.clanwolf.starmap.client.packager-%VERSION%.jar
+  "C:\Program Files\Java\jdk-18.0.1.1\bin\java.exe" -jar C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client.packager\target\net.clanwolf.starmap.client.packager-%VERSION%.jar
 ) ELSE (
   ECHO Java NOT found
   GOTO END

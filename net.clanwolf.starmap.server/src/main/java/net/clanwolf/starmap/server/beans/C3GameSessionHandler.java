@@ -439,8 +439,8 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			attack = dao.findById(getC3UserID(session), attack.getId());
 			dao.refresh(getC3UserID(session), attack);
 
-			JumpshipPOJO jsHelp =daoJJ.findById(getC3UserID(session), attack.getJumpshipID());
-			daoJJ.refresh(getC3UserID(session), jsHelp);
+//			JumpshipPOJO jsHelp =daoJJ.findById(getC3UserID(session), attack.getJumpshipID());
+//			daoJJ.refresh(getC3UserID(session), jsHelp);
 
 			GameState response = new GameState(GAMESTATEMODES.ATTACK_SAVE_RESPONSE);
 			response.addObject(attack);
