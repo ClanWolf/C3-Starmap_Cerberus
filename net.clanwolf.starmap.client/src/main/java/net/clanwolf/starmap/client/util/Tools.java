@@ -417,7 +417,7 @@ public final class Tools {
 
 		DialogPane dialogPane = alert.getDialogPane();
 		dialogPane.getScene().getStylesheets().clear();
-		dialogPane.getScene().getStylesheets().add("/styles/C3Alerts.css");
+//		dialogPane.getScene().getStylesheets().add("/styles/C3Alerts.css");
 
 		return alert;
 	}

@@ -1,6 +1,9 @@
 C3 version history
 --------------------------------
 
+Version 7.0.18 (06.05.2022)
+- UPDATED: Several libs, switched to Java 18
+
 Version 7.0.17 (25.04.2022)
 - UPDATED: JavaFX to 18.0.1
 - FIXED: Version variables in build files
