@@ -73,7 +73,7 @@ public class BOJumpship implements Comparable<BOJumpship> {
 
 	@SuppressWarnings("unused")
 	public Long getLevel() {
-		return jumpshipDTO.getLevel();
+		return jumpshipDTO.getUnitXP();
 	}
 
 	@SuppressWarnings("unused")

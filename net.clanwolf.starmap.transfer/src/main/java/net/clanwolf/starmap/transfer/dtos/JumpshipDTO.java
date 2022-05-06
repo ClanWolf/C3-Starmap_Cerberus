@@ -57,8 +57,8 @@ public class JumpshipDTO extends Dto {
 	//@JoinColumn(name = "JumpshipID")
 	private List<RoutePointDTO> routepointList = new ArrayList<>();
 
-	//@Column(name = "Level")
-	private Long level;
+	//@Column(name = "UnitXP")
+	private Long unitXP;
 
 	@SuppressWarnings("unused")
 	public Long getId() {
@@ -131,13 +131,13 @@ public class JumpshipDTO extends Dto {
 	}
 
 	@SuppressWarnings("unused")
-	public Long getLevel() {
-		return level;
+	public Long getUnitXP() {
+		return unitXP;
 	}
 
 	@SuppressWarnings("unused")
-	public void setLevel(Long level) {
-		this.level = level;
+	public void setUnitXP(Long unitXP) {
+		this.unitXP = unitXP;
 	}
 
 	/*public ArrayList<Long> getStarSystemHistoryArray() {

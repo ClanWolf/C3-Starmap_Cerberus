@@ -68,8 +68,8 @@ public class JumpshipPOJO extends Pojo {
 	@JoinColumn(name = "JumpshipID")
 	private List<RoutePointPOJO> routepointList = new ArrayList<>();
 
-	@Column(name = "Level")
-	private Long level;
+	@Column(name = "UnitXP")
+	private Long unitXP;
 
 /*@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = RoutePointPOJO.class)
 	@JoinColumn(name = "AttackidID")
@@ -152,12 +152,12 @@ public class JumpshipPOJO extends Pojo {
 	}
 
 	@SuppressWarnings("unused")
-	public Long getLevel() {
-		return level;
+	public Long getUnitXP() {
+		return unitXP;
 	}
 
 	@SuppressWarnings("unused")
-	public void setLevel(Long level) {
-		this.level = level;
+	public void setUnitXP(Long unitXP) {
+		this.unitXP = unitXP;
 	}
 }
