@@ -69,4 +69,11 @@ public class Constants implements java.io.Serializable {
 	public static final long ROLE_SUPPORTER = 4L; // 4L Attacker Supporter
 	public static final long ROLE_ATTACKER_SUPPORTER = 5L; // 4L Attacker Supporter
 	public static final long ROLE_DEFENDER_SUPPORTER = 6L; // 5L Defender Supporter
+
+	// Game - Jumpship XP
+	public static final long JUMPSHIP_XP_ATTACK_VICTORY = 100;
+	public static final long JUMPSHIP_XP_ATTACK_DEFEAT = 50;
+	public static final long JUMPSHIP_XP_ATTACK_VICTORY_AUTOMATION = 10;
+	public static final long JUMPSHIP_XP_ATTACK_DEFEAT_AUTOMATION = 5;
+
 }

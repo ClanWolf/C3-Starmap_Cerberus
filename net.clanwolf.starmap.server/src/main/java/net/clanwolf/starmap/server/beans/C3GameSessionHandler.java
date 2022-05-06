@@ -313,6 +313,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		AttackDAO dao = AttackDAO.getInstance();
 		AttackCharacterDAO daoAC = AttackCharacterDAO.getInstance();
 		StarSystemDataDAO daoSS = StarSystemDataDAO.getInstance();
+		JumpshipDAO daoJJ = JumpshipDAO.getInstance();
 
 		try {
 			EntityManagerHelper.beginTransaction(getC3UserID(session));
@@ -351,16 +352,23 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 					rpPojo = RolePlayStoryDAO.getInstance().findById(getC3UserID(session), attackerCommanderNextStoryId);
 
 					if(rpPojo.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1) {
+
+						JumpshipPOJO jpWinner = JumpshipDAO.getInstance().findById(getC3UserID(session),attack.getJumpshipID());
+						long unitXP = 0;
+
 						if( rpPojo.getAttackerWins()){
-							JumpshipPOJO jpWinner = JumpshipDAO.getInstance().findById(getC3UserID(session),attack.getJumpshipID());
 							attack.setFactionID_Winner(jpWinner.getJumpshipFactionID());
-//							StarSystemDAO systemDao = StarSystemDAO.getInstance();
-//							StarSystemPOJO ss = systemDao.findById(getC3UserID(session), attack.getStarSystemID());
-//							ss.setFactionID(jpWinner.getJumpshipFactionID());
-//							systemDao.update(getC3UserID(session), ss);
+
+							unitXP = Constants.JUMPSHIP_XP_ATTACK_VICTORY;
+
 						} else if ( rpPojo.getDefenderWins()){
 							attack.setFactionID_Winner(attack.getFactionID_Defender());
+
+							unitXP = Constants.JUMPSHIP_XP_ATTACK_DEFEAT;
 						}
+
+						jpWinner.setUnitXP(jpWinner.getUnitXP() + unitXP);
+						daoJJ.save(getC3UserID(session), jpWinner);
 					}
 				} else {
 					rpPojo = RolePlayStoryDAO.getInstance().findById(getC3UserID(session), attack.getStoryID());
@@ -428,17 +436,11 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 			EntityManagerHelper.commit(getC3UserID(session));
 
-			// remove old and set new attack character
-			/*EntityManagerHelper.beginTransaction(getC3UserID(session));
-			daoAC.deleteByAttackId(getC3UserID(session));
-			if(newAttackCharacters.size() > 0) {
-				attack.setAttackCharList(newAttackCharacters);
-			}
-			dao.update(getC3UserID(session), attack);
-			EntityManagerHelper.commit(getC3UserID(session));*/
-
 			attack = dao.findById(getC3UserID(session), attack.getId());
-			dao.refresh(C3GameSessionHandler.getC3UserID(session), attack);
+			dao.refresh(getC3UserID(session), attack);
+
+			JumpshipPOJO jsHelp =daoJJ.findById(getC3UserID(session), attack.getJumpshipID());
+			daoJJ.refresh(getC3UserID(session), jsHelp);
 
 			GameState response = new GameState(GAMESTATEMODES.ATTACK_SAVE_RESPONSE);
 			response.addObject(attack);
