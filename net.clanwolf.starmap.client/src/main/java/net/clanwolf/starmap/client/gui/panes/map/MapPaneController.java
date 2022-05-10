@@ -28,6 +28,7 @@ package net.clanwolf.starmap.client.gui.panes.map;
 
 import javafx.animation.*;
 import javafx.application.Platform;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.CacheHint;
@@ -48,6 +49,9 @@ import javafx.scene.paint.CycleMethod;
 import javafx.scene.paint.LinearGradient;
 import javafx.scene.paint.Stop;
 import javafx.scene.shape.*;
+import javafx.scene.shape.Polygon;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -62,10 +66,7 @@ import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
 import net.clanwolf.starmap.client.gui.panes.map.tools.VoronoiDelaunay;
 import net.clanwolf.starmap.client.nexus.Nexus;
-import net.clanwolf.starmap.client.process.universe.BOAttack;
-import net.clanwolf.starmap.client.process.universe.BOJumpship;
-import net.clanwolf.starmap.client.process.universe.BOStarSystem;
-import net.clanwolf.starmap.client.process.universe.BOUniverse;
+import net.clanwolf.starmap.client.process.universe.*;
 import net.clanwolf.starmap.client.security.Security;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.C3PROPS;
@@ -82,9 +83,12 @@ import net.clanwolf.starmap.transfer.enums.MEDALS;
 import net.clanwolf.starmap.transfer.enums.POPUPS;
 import org.kynosarges.tektosyne.geometry.PointD;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.lang.invoke.MethodHandles;
 import java.net.URL;
 import java.util.*;
+import java.util.List;
 
 /**
  * The controller for the starmap panel.
@@ -1122,14 +1126,16 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 						}
 					}
 
-					// js.getLevel();
+					Long jsLevel = js.getLevel();
+					BOFaction f = Nexus.getBoUniverse().getFactionByID(js.getJumpshipFaction());
+
+					javafx.scene.control.Label levelLabel = Tools.getLevelLabel(jsLevel + "", f.getColor());
+					levelLabel.setMouseTransparent(true);
 
 					if (currentSystemID != null) {
 						ImageView jumpshipImage;
 						if (myOwnShip) {
 							if (js.isAttackReady()) {
-
-								//TODO: Add level to the jumpship
 								String imageName = "jumpship_Faction" + js.getJumpshipFaction() + ".png";
 								Image i = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/" + imageName)));
 								jumpshipImage = new ImageView(i);
@@ -1165,17 +1171,23 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 							}
 						} else {
 							if (js.isAttackReady()) {
-								//TODO: Add level to the jumpship
 								String imageName = "jumpship_Faction" + js.getJumpshipFaction() + ".png";
 								Image i = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/" + imageName)));
 								jumpshipImage = new ImageView(i);
 							} else {
-								//TODO: Add level to the jumpship
 								String imageName = "jumpship_Faction" + js.getJumpshipFaction() + ".png";
 								Image i = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/" + imageName)));
 								jumpshipImage = new ImageView(i);
 							}
 						}
+
+						levelLabel.setId(js.getJumpshipName() + "LEVEL");
+						levelLabel.setTranslateX(boUniverse.starSystemBOs.get(currentSystemID).getScreenX() - 27);
+						levelLabel.setTranslateY(boUniverse.starSystemBOs.get(currentSystemID).getScreenY() - 10);
+						levelLabel.setMouseTransparent(false);
+						levelLabel.toFront();
+						levelLabel.setVisible(true);
+						canvas.getChildren().add(levelLabel);
 
 						jumpshipImage.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMousePressedEventHandler());
 						jumpshipImage.addEventFilter(MouseEvent.MOUSE_RELEASED, nodeGestures.getOnMouseReleasedEventHandler());
@@ -1194,6 +1206,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 						canvas.getChildren().add(jumpshipImage);
 
 						js.setJumpshipImageView(jumpshipImage);
+						js.setJumpshipLevelLabel(levelLabel);
 						js.setRoute(boUniverse.routesList.get(js.getJumpshipId()));
 					} else {
 						String m = "Jumpship '" + js.getJumpshipName() + "' has no current system. Needs to be checked!";

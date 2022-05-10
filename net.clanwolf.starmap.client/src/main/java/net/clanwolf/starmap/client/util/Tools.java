@@ -27,6 +27,9 @@
 package net.clanwolf.starmap.client.util;
 
 import javafx.embed.swing.SwingFXUtils;
+import javafx.geometry.Pos;
+import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.DialogPane;
@@ -424,6 +427,18 @@ public final class Tools {
 
 	public static IFileTransfer getFileTransfer() {
 		return new FTP();
+	}
+
+	public static javafx.scene.control.Label getLevelLabel(String text, String color) {
+		javafx.scene.control.Label label = new javafx.scene.control.Label(text);
+		label.setMinSize(8, 10);
+		label.setMaxSize(8, 10);
+		label.setPrefSize(8, 10);
+		label.setAlignment(Pos.CENTER);
+		label.setFont(new javafx.scene.text.Font("Arial", 6));
+		label.setStyle("-fx-background-color:" + color + ";-fx-border-color:black;-fx-text-fill:black;-fx-padding: -1 0 0 0;");
+		label.setWrapText(false);
+		return label;
 	}
 
 	public static void cleanDirectory(File dir, long numberOfDays) {

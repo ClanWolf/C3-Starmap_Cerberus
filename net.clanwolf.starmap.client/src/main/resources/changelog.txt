@@ -1,6 +1,12 @@
 C3 version history
 --------------------------------
 
+Version 7.0.20 (09.05.2022)
+- ADDED: Jumpship / Unit level to map view
+- ADDED: User history panel (top right)
+- FIXED: Missing flag information in scenario 2 (IS vs Clan)
+- FIXED: Sometimes the name of the logged in user gets lost (top right panel)
+
 Version 7.0.19 (06.05.2022)
 - UPDATED: Several libs, switched to Java 18
 - ADDED: Level progression for units / jumpships

@@ -138,6 +138,10 @@ public class NodeGestures {
 		if (node instanceof ImageView) {
 			BOJumpship js = boUniverse.jumpshipBOs.get(node.getId());
 			if (js != null) {
+				js.getJumpshipLevelLabel().setTranslateX(js.getJumpshipImageView().getTranslateX() + 8);
+				js.getJumpshipLevelLabel().setTranslateY(js.getJumpshipImageView().getTranslateY() - 2);
+				js.getJumpshipLevelLabel().setVisible(true);
+
 				if (moveJumpShipToDragStart) {
 					ImageView s = js.getJumpshipImageView();
 					s.setTranslateX(draggedStartedX - 35);
@@ -463,6 +467,7 @@ public class NodeGestures {
 			if (node instanceof ImageView) { // may be a jumpship
 				String name = node.getId();
 				BOJumpship ship = boUniverse.jumpshipBOs.get(name);
+				ship.getJumpshipLevelLabel().setVisible(false);
 
 				// Is the dragged node a ship (?) and does it belong to my faction (?)
 				if (ship != null && ship.getJumpshipFaction() == Nexus.getCurrentUser().getCurrentCharacter().getFactionId()) {

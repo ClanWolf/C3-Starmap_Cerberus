@@ -145,7 +145,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private static int counterWaitCursor = 0; // a global counter
 	private static ReentrantLock counterWaitCursorLock = new ReentrantLock(true); // enable fairness policy
 
-	private boolean cycleTopRightTexts = true;
+	private AtomicBoolean cycleTopRightTexts = new AtomicBoolean(true);
 
 	@FXML
 	private Label statuslabel;
@@ -258,6 +258,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private VBox TFSInfo;
 
 	@FXML
+	private VBox UserHistoryInfo;
+
+	@FXML
 	private Label labelTFSProgress;
 
 	@FXML
@@ -269,6 +272,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	@FXML
 	Pane paneVolumeControl;
 
+	private Thread textTopRightThread;
 	// -------------------------------------------------------------------------
 	//
 	// Button hovering
@@ -308,6 +312,22 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		helpLabel.setGraphic(view);
 		helpLabel.setText("");
 		setStatusText("", false);
+	}
+
+	@FXML
+	private void handleUserInfoEntered() {
+		logger.info("Entered");
+
+		UserHistoryInfo.toFront();
+		UserHistoryInfo.setVisible(true);
+	}
+
+	@FXML
+	private void handleUserInfoExited() {
+		logger.info("Exited");
+
+		UserHistoryInfo.toFront();
+		UserHistoryInfo.setVisible(false);
 	}
 
 	@FXML
@@ -1140,12 +1160,12 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		final String[] topTexts = {"1// Communicate", "", "2// Command", "", "3// Control", ""};
 		Runnable r = () -> {
 			int i = 0;
-			while (!Nexus.isLoggedIn() && cycleTopRightTexts) {
+			while (!Nexus.isLoggedIn() && cycleTopRightTexts.get()) {
 				if (i == topTexts.length) {
 					i = 0;
 				}
 				final int ii = i;
-				if (cycleTopRightTexts) {
+				if (cycleTopRightTexts.get()) {
 					Platform.runLater(() -> toplabel.setText(topTexts[ii]));
 				}
 				try {
@@ -1160,7 +1180,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				i++;
 			}
 		};
-		Thread textTopRightThread = new Thread(r);
+		textTopRightThread = new Thread(r);
 		textTopRightThread.start();
 	}
 
@@ -1171,6 +1191,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		mapPane.setCacheHint(CacheHint.SPEED);
 		mapPane.getController().addActionCallBackListeners();
 	}
+
 	/**
 	 * @param url url
 	 * @param rb resource bundle
@@ -1667,15 +1688,16 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					int tcpPort = Integer.parseInt(C3Properties.getProperty(C3PROPS.TCP_PORT));
 
 					Nexus.setLoggedInStatus(true);
-					cycleTopRightTexts = false;
+					cycleTopRightTexts.set(false);
+					textTopRightThread.interrupt();
 
 					if (Nexus.getCurrentUser() != null) {
-						if (Nexus.getCurrentUser().getUserName().length() > 10) {
+						if (Nexus.getCurrentUser().getUserName().length() > 15) {
 							toplabel.setText(Nexus.getCurrentUser().getUserName());
 						} else {
 							toplabel.setText(Nexus.getCurrentUser().getUserName() + " @ " + tcphostname + ":" + tcpPort);
 						}
-						toplabel.setTooltip(new Tooltip(tcphostname + ":" + tcpPort));
+						toplabel.setTooltip(new Tooltip(Nexus.getCurrentUser().getUserName() + " - " + tcphostname + ":" + tcpPort));
 					} else {
 						toplabel.setText("Con // " + tcphostname + ":" + tcpPort);
 					}
@@ -1689,6 +1711,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					TFSProgress.setVisible(true);
 					TFSProgress.toFront();
 					TFSInfo.setVisible(false);
+					UserHistoryInfo.setVisible(false);
 				});
 				ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("5");
 				break;

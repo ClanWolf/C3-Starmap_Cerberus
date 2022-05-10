@@ -27,6 +27,7 @@
 package net.clanwolf.starmap.client.process.universe;
 
 import javafx.scene.Group;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -49,6 +50,7 @@ public class BOJumpship implements Comparable<BOJumpship> {
 
 	private JumpshipDTO jumpshipDTO;
 	private ImageView jumpshipImage;
+	private Label jumpshipLevelLabel;
 	private Line predictedRouteLine = null;
 	private List<BOStarSystem> routeSystems = null;
 	private ArrayList<RoutePointDTO> route = null;
@@ -150,6 +152,16 @@ public class BOJumpship implements Comparable<BOJumpship> {
 	@SuppressWarnings("unused")
 	public ImageView getJumpshipImageView() {
 		return jumpshipImage;
+	}
+
+	@SuppressWarnings("unused")
+	public Label getJumpshipLevelLabel() {
+		return jumpshipLevelLabel;
+	}
+
+	@SuppressWarnings("unused")
+	public void setJumpshipLevelLabel(Label jumpshipLevelLabel) {
+		this.jumpshipLevelLabel = jumpshipLevelLabel;
 	}
 
 	@SuppressWarnings("unused")
