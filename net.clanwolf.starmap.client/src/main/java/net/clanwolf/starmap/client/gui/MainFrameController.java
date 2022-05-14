@@ -46,6 +46,7 @@ import net.clanwolf.starmap.client.enums.C3MESSAGES;
 import net.clanwolf.starmap.client.gui.panes.chat.ChatPane;
 import net.clanwolf.starmap.client.gui.panes.dice.DicePane;
 import net.clanwolf.starmap.client.gui.panes.logging.LogPane;
+import net.clanwolf.starmap.client.gui.panes.map.MapPaneController;
 import net.clanwolf.starmap.client.gui.panes.security.AdminPane;
 import net.clanwolf.starmap.client.action.*;
 import net.clanwolf.starmap.client.enums.C3MESSAGERESULTS;
@@ -1184,13 +1185,21 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		textTopRightThread.start();
 	}
 
-	private void createNewPaneObjects() {
-		mapPane = new MapPane();
-		mapPane.setShowsMouseFollow(false);
-		mapPane.setShowsPlanetRotation(false);
-		mapPane.setCacheHint(CacheHint.SPEED);
-		mapPane.getController().addActionCallBackListeners();
-	}
+//	private void createNewPaneObjects() {
+//
+//		logger.info("Marker 03");
+//
+////		if (mapPane != null) {
+////			((MapPaneController)mapPane.getController()).removeActionCallBackListeners();
+////			mapPane = null;
+////		}
+//
+////		mapPane = new MapPane();
+////		mapPane.setShowsMouseFollow(false);
+////		mapPane.setShowsPlanetRotation(false);
+////		mapPane.setCacheHint(CacheHint.SPEED);
+////		mapPane.getController().addActionCallBackListeners();
+//	}
 
 	/**
 	 * @param url url
@@ -1272,7 +1281,12 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		confirmAppClosePane.setCacheHint(CacheHint.SPEED);
 		confirmAppClosePane.getController().addActionCallBackListeners();
 
-		createNewPaneObjects(); // re-create Map pane. This method is also used if user loggs off to create a new map pane (to avoid problems with user privs)
+//		createNewPaneObjects(); // re-create Map pane. This method is also used if user loggs off to create a new map pane (to avoid problems with user privs)
+		mapPane = new MapPane();
+		mapPane.setShowsMouseFollow(false);
+		mapPane.setShowsPlanetRotation(false);
+		mapPane.setCacheHint(CacheHint.SPEED);
+		mapPane.getController().addActionCallBackListeners();
 
 		chatPane = new ChatPane();
 		chatPane.setShowsMouseFollow(false);
@@ -1620,7 +1634,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					Nexus.setLoggedInStatus(false);
 					enableMainMenuButtons(Nexus.isLoggedIn(), false);
 
-					createNewPaneObjects();
+//					createNewPaneObjects();
 				});
 				break;
 

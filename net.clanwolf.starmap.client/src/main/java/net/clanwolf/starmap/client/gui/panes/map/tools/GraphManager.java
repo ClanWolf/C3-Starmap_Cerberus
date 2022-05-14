@@ -157,10 +157,14 @@ public class GraphManager<T> implements GraphAgent<T> {
 		boolean isActiveInPhase = (boUniverse.getStarSystemByPoint((PointD) target)).isActiveInPhase(Nexus.getCurrentSeasonMetaPhase());
 		boolean isLockedByJumpship = (boUniverse.getStarSystemByPoint((PointD) target)).isLockedByJumpship();
 		boolean isLockedByPreviousAttackCooldown = (boUniverse.getStarSystemByPoint((PointD) target)).isLockedByPreviousAttackCooldown();
-		// boolean withinCosts = nodeCosts.get(target) < maxCost;
 		Long minJumpshipLevel = (boUniverse.getStarSystemByPoint((PointD) target)).getLevel();
 		Long currentJumpshipLevel = Nexus.getBoUniverse().currentlyDraggedJumpship.getLevel();
-		boolean isLevelAllowed = minJumpshipLevel <= currentJumpshipLevel;
+		Long currentJumpshipFactionId = Nexus.getBoUniverse().currentlyDraggedJumpship.getJumpshipFaction();
+		Long currentlyHoveredSystemFactionId = (boUniverse.getStarSystemByPoint((PointD) target)).getFactionId();
+
+		boolean isLevelAllowed = (minJumpshipLevel <= currentJumpshipLevel) || currentJumpshipFactionId.equals(currentlyHoveredSystemFactionId);
+
+		// boolean withinCosts = nodeCosts.get(target) < maxCost;
 
 		logger.info("minJumpshipLevel: " + minJumpshipLevel);
 		logger.info("currentJumpshipLevel: " + currentJumpshipLevel);

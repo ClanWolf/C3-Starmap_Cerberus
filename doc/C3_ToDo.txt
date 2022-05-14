@@ -1,7 +1,15 @@
+TODO_C3:    !!! Es wird kein neues Mappane mehr erzeugt beim Neuanmelden! Prüfen, ob das mit den Rechten alles passt nach Ab- und Anmeldung
+
 TODO_C3:    !!! Banner am Ende der Invasion entsprechend der Fraktion
+TODO_C3:    !!! Kampf beendet: anderes bild
 TODO_C3:    !!! PowerPoint Dateien für die Invasionstypen CL vs CL und IS vs IS
-TODO_C3:    !!! Implementieren: Ein Sieg bei einem Angriff gibt Siegpunkte (z.B. 5SP), bei Verlust 2SP. Zum Levelaufstieg braucht das Schiff 15SP.
-TODO_C3:    !!! Beim Angriff checken, ob der Mindestlevel des Sprungschiffs für den Angriff reicht
+TODO_C3:    !!! Anmelden, abmelden und dann wieder anmelden und dann die Karte öffnen führt zu extrem langer Zeit, die die Karte braucht. Möglicherweise sind Objekte noch nicht zurückgesetzt nach der Abmeldung.
+TODO_C3:    !!! KERNREAKTOR: Wenn ein User in einer Invasion bei einem Drop nicht mehr da ist (offline), sollte er nicht die XP bekommen
+TODO_C3:    !!! KERNREAKTOR: In diesem Fall kann der zusätzliche Spieler über den MWO_Namen identifiziert werden und die Punkte könne diesem Spieler gutgeschrieben werden.
+
+TODO_C3:    FERTIG (?): Beim Angriff checken, ob der Mindestlevel des Sprungschiffs für den Angriff reicht
+TODO_C3:    FERTIG (?): Planeten mit Sprungschiff dürfen nicht angegriffen werden
+TODO_C3:    FERTIG (?): Implementieren: Ein Sieg bei einem Angriff gibt Siegpunkte (z.B. 5SP), bei Verlust 2SP. Zum Levelaufstieg braucht das Schiff 15SP.
 
 TODO_C3:    TEST: Was ist mit den panes der invasion oder des rollenspiels? resetten beim abmelden
 TODO_C3:    TEST: Wenn man einem Kampf joined, der schon gestartet wurde, fliegen fehler... kein joinen mehr, wenn gestartet wurde
@@ -22,8 +30,6 @@ TODO_C3:    Navigate the client if the mouse is not present
 TODO_C3:    TeamSpeak API
 
 TODO_C3:    Sehen in der Karte ob Lobby offen ist
-TODO_C3:    Planeten mit Sprungschiff dürfen nicht angegriffen werden
-TODO_C3:    Kampf beendet: anderes bild
 
 TODO_C3:    If the attacker commander leaves the lobby, all attackcharacters are deleted and removed from the lobby (lobby closed)
 TODO_C3:    Es treffen sich Sprungschiffe verschiedener Fraktionen auf einem System (möglich?)

@@ -993,6 +993,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				attacksPane = new Pane();
 				canvas.setAttacksPane(attacksPane);
 
+				logger.info("Marker 01");
+
 				for (BOAttack attack : boUniverse.attackBOsAllInThisRound.values()) {
 					if (attack.getSeason().equals(boUniverse.currentSeason)
 							&& (attack.getRound().equals(boUniverse.currentRound + 1))
@@ -1058,6 +1060,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 						}
 					}
 				}
+
+				logger.info("Marker 02");
 
 				for (BOAttack boAttack : boUniverse.attackBOsFinishedInThisRound.values()) {
 					BOStarSystem attackedSystem;
@@ -1631,6 +1635,10 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	public void warningOffAction() {
 		//
 	}
+
+//	public void removeActionCallBackListeners() {
+//		ActionManager.removeActionCallbackListener(this);
+//	}
 
 	/**
 	 * Adds action callback listeners.

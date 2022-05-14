@@ -6,6 +6,7 @@ Version 7.0.20 (09.05.2022)
 - ADDED: User history panel (top right)
 - FIXED: Missing flag information in scenario 2 (IS vs Clan)
 - FIXED: Sometimes the name of the logged in user gets lost (top right panel)
+- FIXED: Jumpships can now access systems of their own faction regardless of their level
 
 Version 7.0.19 (06.05.2022)
 - UPDATED: Several libs, switched to Java 18

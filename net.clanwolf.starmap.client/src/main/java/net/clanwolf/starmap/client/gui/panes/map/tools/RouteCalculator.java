@@ -36,7 +36,6 @@ import org.kynosarges.tektosyne.geometry.PointD;
 
 import java.lang.invoke.MethodHandles;
 import java.util.*;
-import java.util.logging.Level;
 
 public class RouteCalculator {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -74,7 +73,7 @@ public class RouteCalculator {
 				boolean destinationReached = false;
 				do {
 					BOStarSystem st1 = boUniverse.getStarSystemByPoint(pt1);
-					if (st1.getId() == destination.getId()) {
+					if (Objects.equals(st1.getId(), destination.getId())) {
 						destinationReached = true;
 					} else {
 						logger.info("Starting from " + st1.getName());
