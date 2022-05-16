@@ -1175,7 +1175,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					if ("".equals(topTexts[i])) {
 						TimeUnit.SECONDS.sleep(1);
 					} else {
-						TimeUnit.SECONDS.sleep(5);
+						TimeUnit.SECONDS.sleep(3);
 					}
 				} catch (InterruptedException e) {
 					//
