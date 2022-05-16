@@ -146,8 +146,6 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private static int counterWaitCursor = 0; // a global counter
 	private static ReentrantLock counterWaitCursorLock = new ReentrantLock(true); // enable fairness policy
 
-	private AtomicBoolean cycleTopRightTexts = new AtomicBoolean(true);
-
 	@FXML
 	private Label statuslabel;
 	@FXML
@@ -264,16 +262,14 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	@FXML
 	private Label labelTFSProgress;
 
+	private static String[] topTexts = { "1// Communicate", "", "2// Command", "", "3// Control", "" };
 	@FXML
-	Slider slVolumeControl;
-
+	private Slider slVolumeControl;
 	@FXML
-	ImageView ivMuteToggle;
-
+	private ImageView ivMuteToggle;
 	@FXML
-	Pane paneVolumeControl;
+	private Pane paneVolumeControl;
 
-	private Thread textTopRightThread;
 	// -------------------------------------------------------------------------
 	//
 	// Button hovering
@@ -1158,17 +1154,23 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	}
 
 	private void setToLevelLoggedOutText() {
-		final String[] topTexts = {"1// Communicate", "", "2// Command", "", "3// Control", ""};
 		Runnable r = () -> {
 			int i = 0;
-			while (!Nexus.isLoggedIn() && cycleTopRightTexts.get()) {
+			while (true) {
+				if (Nexus.isLoggedIn()) {
+					String tcphostname = C3Properties.getProperty(C3PROPS.TCP_HOSTNAME);
+					int tcpPort = Integer.parseInt(C3Properties.getProperty(C3PROPS.TCP_PORT));
+					topTexts = new String[] { Nexus.getCurrentUser().getUserName(), "", tcphostname + ":" + tcpPort, "", Nexus.getCurrentUser().getLastLogin().toString(), "" };
+				} else {
+					topTexts = new String[] { "1// Communicate", "", "2// Command", "", "3// Control", "" };
+				}
+
 				if (i == topTexts.length) {
 					i = 0;
 				}
 				final int ii = i;
-				if (cycleTopRightTexts.get()) {
-					Platform.runLater(() -> toplabel.setText(topTexts[ii]));
-				}
+				Platform.runLater(() -> toplabel.setText(topTexts[ii]));
+
 				try {
 					if ("".equals(topTexts[i])) {
 						TimeUnit.SECONDS.sleep(1);
@@ -1181,25 +1183,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				i++;
 			}
 		};
-		textTopRightThread = new Thread(r);
+		Thread textTopRightThread = new Thread(r);
 		textTopRightThread.start();
 	}
-
-//	private void createNewPaneObjects() {
-//
-//		logger.info("Marker 03");
-//
-////		if (mapPane != null) {
-////			((MapPaneController)mapPane.getController()).removeActionCallBackListeners();
-////			mapPane = null;
-////		}
-//
-////		mapPane = new MapPane();
-////		mapPane.setShowsMouseFollow(false);
-////		mapPane.setShowsPlanetRotation(false);
-////		mapPane.setCacheHint(CacheHint.SPEED);
-////		mapPane.getController().addActionCallBackListeners();
-//	}
 
 	/**
 	 * @param url url
@@ -1702,8 +1688,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					int tcpPort = Integer.parseInt(C3Properties.getProperty(C3PROPS.TCP_PORT));
 
 					Nexus.setLoggedInStatus(true);
-					cycleTopRightTexts.set(false);
-					textTopRightThread.interrupt();
+//					cycleTopRightTexts.set(false);
+//					textTopRightThread.interrupt();
 
 					if (Nexus.getCurrentUser() != null) {
 						if (Nexus.getCurrentUser().getUserName().length() > 15) {
