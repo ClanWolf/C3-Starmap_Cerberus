@@ -248,18 +248,11 @@ public class EndRound {
 
 						CalcBalance calcB = new CalcBalance(asp);
 
-						if(calcB.getHasError()) {
+						balanceAttacker += calcB.getAttackerRepairCost();
+						balanceDefender += calcB.getDefenderRepairCost();
+						repairCostReport.append(calcB.getMailMessage());
+						logger.info("Current Balance Attacker: " + nf.format(balanceAttacker) + " --- Current Balance Defender: " + nf.format(balanceDefender));
 
-							logger.error(calcB.getErrorMessage());
-
-						}else{
-
-							balanceAttacker += calcB.getAttackerRepairCost();
-							balanceDefender += calcB.getDefenderRepairCost();
-							repairCostReport.append(calcB.getMailMessage());
-							logger.info("Current Balance Attacker: " + nf.format(balanceAttacker) + " --- Current Balance Defender: " + nf.format(balanceDefender));
-
-						}
 					}
 					String[] receivers = {"keshik@googlegroups.com"};
 					boolean sent;

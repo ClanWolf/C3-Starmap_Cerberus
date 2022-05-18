@@ -31,6 +31,10 @@ import net.clanwolf.starmap.server.Nexus.Nexus;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.*;
 import net.clanwolf.starmap.server.persistence.pojos.*;
 import net.clanwolf.starmap.transfer.mwo.MechIdInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.invoke.MethodHandles;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -51,40 +55,8 @@ public class CalcBalance {
     private double defenderRepairCost;
     private final Map<RolePlayCharacterStatsPOJO, Double> defenderPlayerRepairCost = new HashMap<>();
     private final Map<RolePlayCharacterStatsPOJO, Double> attackerPlayerRepairCost = new HashMap<>();
-    private boolean hasError;
-    private String errorMessage;
+    private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    /**
-     * Gibt ein Wahrheitswert zurück, ob in der Klasse CalcBalance einen Fehler vorliegt.
-     * @return Der Wahrheitswert, ob einen Fehler vorliegt
-     */
-    public boolean getHasError() {
-        return hasError;
-    }
-
-    /**
-     * Setzt eine Meldung, das in der Klasse CalcBalance einen Fehler vorliegt.
-     * @param hasError Der Wahrheitswert, das in CalcBalance einen Fehler vorliegt.
-     */
-    public void setHasError(boolean hasError) {
-        this.hasError = hasError;
-    }
-
-    /**
-     * Ruft die Fehlermeldung ab, die in der Klasse CalcBalance vorliegt.
-     * @return Die Fehlermeldung in der Klasse CalcBalance.
-     */
-    public String getErrorMessage() {
-        return errorMessage;
-    }
-
-    /**
-     * Legt die Fehlermeldung fest, die in der Klasse CalcBalance vorliegt.
-     * @param errorMessage Die Beschreibung der Fehlermeldung in der Klasse CalcBalance.
-     */
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
-    }
 
     /**
  * Erstellt einen Reparaturbericht, die als Nachricht versendet werden kann.
@@ -176,13 +148,9 @@ public class CalcBalance {
         Long attackerTeam = 0L;
         Long defenderTeam =0L;
 
-        String columnWidthDefault = "%-20.20s";
+        String columnWidthDefault = "%-35.35s";
 
         DecimalFormat nf = new DecimalFormat();
-        setHasError(false);
-
-
-
 
         String attackerDropleadName = "";
         String defenderDropleadName = "";
@@ -194,14 +162,50 @@ public class CalcBalance {
             //Get Droplead
             if(pojo.getLeadingPosition()){
 
-                if(AttackStats.getDefenderFactionId().equals(character.getFactionId().longValue())){
-                    defenderTeam = pojo.getMwoTeam();
-                    defenderDropleadName = character.getMwoUsername();
+                if (pojo.getMwoTeam() == null){
+
+                    logger.error("Costs could not be calculated because the droplead " + character.getMwoUsername() + " was in spectator mode.");
+
+                    mailMessage.append("An error occurred while calculating the costs.").append("\r\n");
+                    mailMessage.append("Droplead ").append(character.getMwoUsername()).append(" was in spectator mode.").append("\r\n");
+                    mailMessage.append("But it is tried to perform the calculation.").append("\r\n\r\n");
+
+                    if(AttackStats.getDefenderFactionId().equals(character.getFactionId().longValue())){
+
+                        defenderDropleadName = character.getMwoUsername();
+                    }
+                    if(AttackStats.getAttackerFactionId().equals(character.getFactionId().longValue())){
+
+                        attackerDropleadName = character.getMwoUsername();
+                    }
+
+                    }else{
+
+                    if(AttackStats.getDefenderFactionId().equals(character.getFactionId().longValue())){
+                        defenderTeam = pojo.getMwoTeam();
+                        defenderDropleadName = character.getMwoUsername();
+                    }
+                    if(AttackStats.getAttackerFactionId().equals(character.getFactionId().longValue())){
+                        attackerTeam = pojo.getMwoTeam();
+                        attackerDropleadName = character.getMwoUsername();
+                    }
                 }
-                if(AttackStats.getAttackerFactionId().equals(character.getFactionId().longValue())){
-                    attackerTeam = pojo.getMwoTeam();
-                    attackerDropleadName = character.getMwoUsername();
-                }
+            }
+        }
+        if(attackerTeam == 0L){
+            if(defenderTeam == 1L){
+                attackerTeam = 2L;
+            }
+            if(defenderTeam == 2L){
+                attackerTeam = 1L;
+            }
+        }
+        if(defenderTeam == 0L){
+            if(attackerTeam == 1L){
+                defenderTeam = 2L;
+            }
+            if(attackerTeam == 2L){
+                defenderTeam = 1L;
             }
         }
 
@@ -211,11 +215,13 @@ public class CalcBalance {
 
                 RolePlayCharacterPOJO character = characterDAO.findById(Nexus.DUMMY_USERID, pojo.getRoleplayCharacterId());
 
-                if(pojo.getLeadingPosition() && !(defenderTeam.equals(pojo.getMwoTeam()))){
+                if (pojo.getMwoTeam()!= null){
+                    if(pojo.getLeadingPosition() && !(defenderTeam.equals(pojo.getMwoTeam()))){
 
                         attackerTeam = pojo.getMwoTeam();
                         attackerDropleadName = character.getMwoUsername();
                         break;
+                    }
                 }
             }
         }
@@ -226,12 +232,15 @@ public class CalcBalance {
 
                 RolePlayCharacterPOJO character = characterDAO.findById(Nexus.DUMMY_USERID, pojo.getRoleplayCharacterId());
 
-                if(pojo.getLeadingPosition() && !(attackerTeam.equals(pojo.getMwoTeam()))){
+                if (pojo.getMwoTeam() != null){
+                    if(pojo.getLeadingPosition() && !(attackerTeam.equals(pojo.getMwoTeam()))){
 
-                    defenderTeam = pojo.getMwoTeam();
-                    defenderDropleadName = character.getMwoUsername();
-                    break;
+                        defenderTeam = pojo.getMwoTeam();
+                        defenderDropleadName = character.getMwoUsername();
+                        break;
+                    }
                 }
+
             }
         }
 
@@ -240,16 +249,19 @@ public class CalcBalance {
 
                 RolePlayCharacterPOJO character = characterDAO.findById(Nexus.DUMMY_USERID, pojo.getRoleplayCharacterId());
 
-                //Get Droplead
-                if (pojo.getLeadingPosition()) {
 
-                    if (AttackStats.getDefenderFactionId().equals(pojo.getRoleplayCharacterFactionId())) {
-                        defenderTeam = pojo.getMwoTeam();
-                        defenderDropleadName = character.getMwoUsername();
-                    }
-                    if (AttackStats.getAttackerFactionId().equals(pojo.getRoleplayCharacterFactionId())) {
-                        attackerTeam = pojo.getMwoTeam();
-                        attackerDropleadName = character.getMwoUsername();
+                if (pojo.getMwoTeam() != null) {
+                    //Get Droplead
+                    if (pojo.getLeadingPosition()) {
+
+                        if (AttackStats.getDefenderFactionId().equals(pojo.getRoleplayCharacterFactionId())) {
+                            defenderTeam = pojo.getMwoTeam();
+                            defenderDropleadName = character.getMwoUsername();
+                        }
+                        if (AttackStats.getAttackerFactionId().equals(pojo.getRoleplayCharacterFactionId())) {
+                            attackerTeam = pojo.getMwoTeam();
+                            attackerDropleadName = character.getMwoUsername();
+                        }
                     }
                 }
             }
@@ -284,56 +296,58 @@ public class CalcBalance {
             }
             catch(Exception e) {
 
-                setHasError(true);
-                setErrorMessage(e.getMessage());
+                logger.error(e.getMessage());
 
             }
 
-            mailMessage.append("─".repeat(60)).append("\r\n");
+            mailMessage.append("─".repeat(105)).append("\r\n");
             mailMessage.append(String.format(columnWidthDefault,""));
             mailMessage.append(String.format(columnWidthDefault,"Attacker"));
             mailMessage.append(String.format(columnWidthDefault,"Defender")).append("\r\n");
 
 
-            mailMessage.append("─".repeat(60)).append("\r\n");
+            mailMessage.append("─".repeat(105)).append("\r\n");
             mailMessage.append(String.format(columnWidthDefault,"Tonnage:"));
             mailMessage.append(String.format(columnWidthDefault,AttackStats.getAttackerTonnage()));
             mailMessage.append(String.format(columnWidthDefault,AttackStats.getDefenderTonnage())).append("\r\n");
 
-            mailMessage.append("─".repeat(60)).append("\r\n");
+            mailMessage.append("─".repeat(105)).append("\r\n");
             mailMessage.append(String.format(columnWidthDefault,"Lost Tonnage:"));
             mailMessage.append(String.format(columnWidthDefault,AttackStats.getAttackerLostTonnage()));
             mailMessage.append(String.format(columnWidthDefault,AttackStats.getDefenderLostTonnage())).append("\r\n");
 
-            mailMessage.append("─".repeat(60)).append("\r\n");
+            mailMessage.append("─".repeat(105)).append("\r\n");
             mailMessage.append(String.format(columnWidthDefault,"Kills:"));
             mailMessage.append(String.format(columnWidthDefault,AttackStats.getAttackerKillCount()));
             mailMessage.append(String.format(columnWidthDefault,AttackStats.getDefenderKillCount())).append("\r\n");
 
-            mailMessage.append("─".repeat(60)).append("\r\n");
+            mailMessage.append("─".repeat(105)).append("\r\n");
             mailMessage.append(String.format(columnWidthDefault,"Number of pilots:"));
             mailMessage.append(String.format(columnWidthDefault,AttackStats.getAttackerNumberOfPilots()));
             mailMessage.append(String.format(columnWidthDefault,AttackStats.getDefenderNumberOfPilots())).append("\r\n");
 
-            mailMessage.append("─".repeat(60)).append("\r\n");
+            mailMessage.append("─".repeat(105)).append("\r\n");
             mailMessage.append(String.format(columnWidthDefault, "Droplead:"));
+
             mailMessage.append(String.format(columnWidthDefault, attackerDropleadName));
             mailMessage.append(String.format(columnWidthDefault, defenderDropleadName)).append("\r\n");
 
-            mailMessage.append("─".repeat(60)).append("\r\n\r\n");
+            mailMessage.append("─".repeat(105)).append("\r\n\r\n");
 
             for (RolePlayCharacterStatsPOJO pojo : list) {
 
-                MechIdInfo MI = new MechIdInfo(Math.toIntExact(pojo.getMechItemId()));
+                if(pojo.getMwoTeam() != null) {
+                    MechIdInfo MI = new MechIdInfo(Math.toIntExact(pojo.getMechItemId()));
 
-                if (attackerTeam.equals(pojo.getMwoTeam())) {
-                    attackerPlayerRepairCost.put(pojo, MI.getRepairCost(Math.toIntExact(pojo.getMwoSurvivalPercentage())));
-                    attackerRepairCost = attackerRepairCost + MI.getRepairCost(Math.toIntExact(pojo.getMwoSurvivalPercentage()));
-                }
+                    if (attackerTeam.equals(pojo.getMwoTeam())) {
+                        attackerPlayerRepairCost.put(pojo, MI.getRepairCost(Math.toIntExact(pojo.getMwoSurvivalPercentage())));
+                        attackerRepairCost = attackerRepairCost + MI.getRepairCost(Math.toIntExact(pojo.getMwoSurvivalPercentage()));
+                    }
 
-                if (defenderTeam.equals(pojo.getMwoTeam())) {
-                    defenderPlayerRepairCost.put(pojo, MI.getRepairCost(Math.toIntExact(pojo.getMwoSurvivalPercentage())));
-                    defenderRepairCost = defenderRepairCost + MI.getRepairCost(Math.toIntExact(pojo.getMwoSurvivalPercentage()));
+                    if (defenderTeam.equals(pojo.getMwoTeam())) {
+                        defenderPlayerRepairCost.put(pojo, MI.getRepairCost(Math.toIntExact(pojo.getMwoSurvivalPercentage())));
+                        defenderRepairCost = defenderRepairCost + MI.getRepairCost(Math.toIntExact(pojo.getMwoSurvivalPercentage()));
+                    }
                 }
             }
 
@@ -429,7 +443,6 @@ public class CalcBalance {
             mailMessage.append("\r\n");
             setAttackerRepairCost(getAttackCost(AttackStats.getStarSystemDataId()));
 
-
             mailMessage.append("─".repeat(95));
             mailMessage.append("\r\n");
             mailMessage.append(String.format(columnWidthTotal, "Total:"));
@@ -439,11 +452,6 @@ public class CalcBalance {
             mailMessage.append("\r\n");
             mailMessage.append("---End of repair cost report---");
             mailMessage.append("\r\n\r\n");
-        } else {
-
-            setHasError(true);
-            setErrorMessage("Round cannot be calculated, no droplead was found.");
-
         }
     }
 
