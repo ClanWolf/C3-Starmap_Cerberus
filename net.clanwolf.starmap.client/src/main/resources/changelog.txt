@@ -1,11 +1,14 @@
 C3 version history
 --------------------------------
 
+Version 7.0.21 (16.05.2022)
+- FIXED: Sometimes the name of the logged in user gets lost (top right panel)
+- FIXED: NullPointer while analysing stats if droplead in c3 lobby was spectator in game (MWO)
+
 Version 7.0.20 (09.05.2022)
 - ADDED: Jumpship / Unit level to map view
 - ADDED: User history panel (top right)
 - FIXED: Missing flag information in scenario 2 (IS vs Clan)
-- FIXED: Sometimes the name of the logged in user gets lost (top right panel)
 - FIXED: Jumpships can now access systems of their own faction regardless of their level
 
 Version 7.0.19 (06.05.2022)

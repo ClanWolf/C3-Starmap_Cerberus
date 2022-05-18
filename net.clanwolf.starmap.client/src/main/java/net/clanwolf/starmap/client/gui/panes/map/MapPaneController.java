@@ -569,8 +569,6 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					if (myOwnShip) {
 						if (js.isAttackReady()) {
 							//Image left_blue = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_left_blue_1.png")));
-
-							//TODO: Add level to the jumpship
 							String imageName = "jumpship_Faction" + js.getJumpshipFaction() + ".png";
 							Image i = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/" + imageName)));
 
@@ -579,7 +577,6 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 							jumpshipImage.addEventFilter(MouseEvent.DRAG_DETECTED, nodeGestures.getOnMouseDragDetectedEventHandler());
 						} else {
 							//Image left_neutral = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_left_neutral.png")));
-
 							String imageName = "jumpship_Faction" + js.getJumpshipFaction() + "_disabled.png";
 							Image i = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/" + imageName)));
 
@@ -591,16 +588,12 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 						if (js.isAttackReady()) {
 							//Image right_red = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_right_red.png")));
-
-							//TODO: Add level to the jumpship
 							String imageName = "jumpship_Faction" + js.getJumpshipFaction() + ".png";
 							Image i = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/" + imageName)));
 
 							jumpshipImage.setImage(i);
 						} else {
 							//Image right_red = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_right_red.png")));
-
-							//TODO: Add level to the jumpship
 							String imageName = "jumpship_Faction" + js.getJumpshipFaction() + ".png";
 							Image i = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/" + imageName)));
 
