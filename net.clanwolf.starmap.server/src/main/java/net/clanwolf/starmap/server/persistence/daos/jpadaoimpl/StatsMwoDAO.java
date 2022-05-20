@@ -71,7 +71,7 @@ public class StatsMwoDAO extends GenericDAO {
 		return (StatsMwoPOJO) super.update(statsMwoId, entity);
 	}
 
-	public StatsMwoPOJO findByMatchId(String matchId) {
+	public StatsMwoPOJO findByMWOGameId(String matchId) {
 		CriteriaHelper crit = new CriteriaHelper(StatsMwoPOJO.class);
 
 		crit.addCriteria("gameId", matchId);

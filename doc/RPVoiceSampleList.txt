@@ -1,3 +1,26 @@
+
+Maps and Modes (for the sample templates):
+- One long template with 3 Minutes duration with start signal, dropship background, alarm signals to the end
+- Timetickers escalating towards the drop countdown in the end
+- About the end the reminder to check map and gamemode
+
+- Add a motivator commanding officer in case of a loss or a win (depending on what happened). This can be generic samples in client regardless of step data
+  Verloren:
+    rp_sample_lost_01_de_general.mp3 "Wir müssen uns mehr anstrengen!"
+    rp_sample_lost_02_de_general.mp3 "Was war das denn? So werden sie uns zerreissen!"
+    rp_sample_lost_03_de_general.mp3 "Strengt euch mehr an, Mechkrieger!"
+    rp_sample_lost_04_de_general.mp3 "Lasst Euch nicht entmutigen, Leute!"
+    rp_sample_lost_05_de_general.mp3 "Kopf hoch, wir sind noch nicht fertig!"
+
+  Gewonnen:
+    rp_sample_won_01_de_general.mp3 "Gute Arbeit, Leute!"
+    rp_sample_won_02_de_general.mp3 "Das ist mal gut gelaufen!"
+    rp_sample_won_03_de_general.mp3 "Gut gemacht!"
+    rp_sample_won_04_de_general.mp3 "Weiter so!"
+    rp_sample_won_05_de_general.mp3 "Ich bin stolz auf Euch!"
+
+- In the beginnig of the long samples add neutral texts describing situation (CNBC = Comstar News Broadcast):
+
 S1V1: Clan vs IS
 - S1V1_1A: ""
 - S1V1_2A: ""

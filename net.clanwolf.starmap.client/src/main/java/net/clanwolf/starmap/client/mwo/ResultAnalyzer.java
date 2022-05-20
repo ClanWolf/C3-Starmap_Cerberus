@@ -39,7 +39,7 @@ import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.transfer.dtos.*;
-import net.clanwolf.starmap.transfer.mwo.MechIdInfo;
+import net.clanwolf.starmap.transfer.mwo.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

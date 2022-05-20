@@ -227,10 +227,10 @@ public class EndRound {
 				FactionPOJO fWinnerPojo = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, winnerId);
 				FactionPOJO fJumpshipPOJO = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, jsPojo.getJumpshipFactionID());
 
-				logger.info("1");
+//				logger.info("1");
 				// Get statistics for this attack
 				ArrayList<AttackStatsPOJO> statisticsList = AttackStatsDAO.getInstance().getStatisticsForAttack(seasonId, attackPOJO.getId());
-				logger.info("2");
+//				logger.info("2");
 				if (!statisticsList.isEmpty()) {
 					// log stats
 					logger.info("--- Statistics found for attackId: " + attackPOJO.getId());

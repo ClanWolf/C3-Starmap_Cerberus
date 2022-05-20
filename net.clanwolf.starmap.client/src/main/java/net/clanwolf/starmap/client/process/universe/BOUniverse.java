@@ -26,6 +26,7 @@
  */
 package net.clanwolf.starmap.client.process.universe;
 
+import javafx.scene.image.ImageView;
 import net.clanwolf.starmap.client.gui.panes.map.tools.GraphManager;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.transfer.dtos.*;
@@ -156,6 +157,18 @@ public class BOUniverse {
 	}
 
 	public synchronized void setUniverseDTO(UniverseDTO uniDTO) {
+
+		// Secure the images from the old universe
+		HashMap<String, ImageView> oldJumpshipImages = new HashMap<>();
+		HashMap<String, javafx.scene.control.Label> oldJumpshipLevelLabels = new HashMap<>();
+		for (JumpshipDTO jumpshipDTO : universeDTO.jumpships.values()) {
+			BOJumpship boJumpship = jumpshipBOs.get(jumpshipDTO.getJumpshipName());
+			oldJumpshipImages.put(jumpshipDTO.getJumpshipName(), boJumpship.getJumpshipImageView());
+			oldJumpshipLevelLabels.put(jumpshipDTO.getJumpshipName(), boJumpship.getJumpshipLevelLabel());
+		}
+
+		// --------------------------------------
+
 		// Insert refreshed universe
 		this.universeDTO = uniDTO;
 		this.currentSeason = this.universeDTO.currentSeason;
@@ -184,6 +197,8 @@ public class BOUniverse {
 		for (JumpshipDTO jumpshipDTO : universeDTO.jumpships.values()) {
 			BOJumpship boJumpship = jumpshipBOs.get(jumpshipDTO.getJumpshipName());
 			boJumpship.setJumpshipDTO(jumpshipDTO);
+			boJumpship.setJumpshipImageView(oldJumpshipImages.get(boJumpship.getJumpshipName()));
+			boJumpship.setJumpshipLevelLabel(oldJumpshipLevelLabels.get(boJumpship.getJumpshipName()));
 		}
 	}
 

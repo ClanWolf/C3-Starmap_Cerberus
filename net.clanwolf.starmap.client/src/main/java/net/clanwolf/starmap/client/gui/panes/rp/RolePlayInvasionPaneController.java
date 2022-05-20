@@ -60,6 +60,7 @@ import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.client.util.RPVarReplacer_DE;
 import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.transfer.dtos.*;
+import net.clanwolf.starmap.transfer.mwo.MWOMatchResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;

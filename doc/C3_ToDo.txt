@@ -1,4 +1,5 @@
 TODO_C3:    !!! Es wird kein neues Mappane mehr erzeugt beim Neuanmelden! Prüfen, ob das mit den Rechten alles passt nach Ab- und Anmeldung
+TODO_C3:    !!! Meldet man sich an, dann ab und wieder an, sind einige Member der Jumpship Objekte im universe null (image...)
 
 TODO_C3:    !!! Banner am Ende der Invasion entsprechend der Fraktion
 TODO_C3:    !!! Kampf beendet: anderes bild

@@ -1160,12 +1160,12 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				if (Nexus.isLoggedIn()) {
 					String tcphostname = C3Properties.getProperty(C3PROPS.TCP_HOSTNAME);
 					int tcpPort = Integer.parseInt(C3Properties.getProperty(C3PROPS.TCP_PORT));
-					topTexts = new String[] { Nexus.getCurrentUser().getUserName(), "", tcphostname + ":" + tcpPort, "", Nexus.getCurrentUser().getLastLogin().toString(), "" };
+					topTexts = new String[] { Nexus.getCurrentUser().getUserName(), tcphostname + ":" + tcpPort, "" };
 				} else {
 					topTexts = new String[] { "1// Communicate", "", "2// Command", "", "3// Control", "" };
 				}
 
-				if (i == topTexts.length) {
+				if (i >= topTexts.length) {
 					i = 0;
 				}
 				final int ii = i;
@@ -1175,7 +1175,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					if ("".equals(topTexts[i])) {
 						TimeUnit.SECONDS.sleep(1);
 					} else {
-						TimeUnit.SECONDS.sleep(3);
+						TimeUnit.SECONDS.sleep(2);
 					}
 				} catch (InterruptedException e) {
 					//

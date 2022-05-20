@@ -26,11 +26,14 @@
  */
 package net.clanwolf.starmap.server.process;
 
+import com.google.gson.Gson;
 import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.server.Nexus.Nexus;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.*;
 import net.clanwolf.starmap.server.persistence.pojos.*;
+import net.clanwolf.starmap.transfer.mwo.MWOMatchResult;
 import net.clanwolf.starmap.transfer.mwo.MechIdInfo;
+import net.clanwolf.starmap.transfer.mwo.UserDetail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -138,12 +141,21 @@ public class CalcBalance {
         String mwoMatchID = AttackStats.getMwoMatchId();
         RolePlayCharacterStatsDAO dao = RolePlayCharacterStatsDAO.getInstance();
         RolePlayCharacterDAO characterDAO = RolePlayCharacterDAO.getInstance();
+		StatsMwoDAO statsMwoDAO = StatsMwoDAO.getInstance();
         ArrayList<RolePlayCharacterStatsPOJO> list = dao.findByMatchId(mwoMatchID);
 
         FactionPOJO factionAttacker = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, AttackStats.getAttackerFactionId());
         FactionPOJO factionDefender = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, AttackStats.getDefenderFactionId());
         FactionPOJO factionWinner = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, AttackStats.getWinnerFactionId());
 
+	    StatsMwoPOJO statsMwoPOJO = statsMwoDAO.findByMWOGameId(mwoMatchID);
+	    String rawJSONstatsData = statsMwoPOJO.getRawData();
+
+	    MWOMatchResult matchDetails = new Gson().fromJson(rawJSONstatsData, MWOMatchResult.class);
+
+	    for (UserDetail detail : matchDetails.getUserDetails()) {
+			logger.info("!!!!!!!!!!!!!! User: " + detail.getUsername());
+	    }
 
         Long attackerTeam = 0L;
         Long defenderTeam =0L;

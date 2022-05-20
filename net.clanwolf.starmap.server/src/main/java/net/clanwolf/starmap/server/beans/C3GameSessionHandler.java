@@ -276,7 +276,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			StatsMwoPOJO statsMwo = (StatsMwoPOJO) state.getObject();
 			logger.debug("Saving MWO stats for game id: " + statsMwo.getGameId());
 
-			StatsMwoPOJO checkStats = dao.findByMatchId(statsMwo.getGameId());
+			StatsMwoPOJO checkStats = dao.findByMWOGameId(statsMwo.getGameId());
 			if (checkStats != null) {
 				// already saved, do nothing
 				logger.debug("Stats with the given MWO Match-ID have been detected, DO NOTHING!");

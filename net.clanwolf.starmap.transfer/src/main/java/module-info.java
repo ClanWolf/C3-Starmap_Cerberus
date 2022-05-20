@@ -3,6 +3,7 @@ module net.clanwolf.starmap.transfer {
 	requires com.fasterxml.jackson.databind;
 	requires com.fasterxml.jackson.annotation;
 	requires java.sql;
+	requires com.google.gson;
 
 	exports net.clanwolf.starmap.transfer;
 	exports net.clanwolf.starmap.transfer.enums;

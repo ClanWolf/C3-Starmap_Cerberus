@@ -19,6 +19,7 @@ module net.clanwolf.starmap.server {
 	requires com.fasterxml.jackson.databind;
 	requires java.instrument;
 	requires org.slf4j;
+	requires com.google.gson;
 
 	opens net.clanwolf.starmap.server to spring.core;
 	opens net.clanwolf.starmap.server.persistence.pojos to org.hibernate.orm.core, com.fasterxml.jackson.databind;

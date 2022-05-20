@@ -986,7 +986,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				attacksPane = new Pane();
 				canvas.setAttacksPane(attacksPane);
 
-				logger.info("Marker 01");
+//				logger.info("Marker 01");
 
 				for (BOAttack attack : boUniverse.attackBOsAllInThisRound.values()) {
 					if (attack.getSeason().equals(boUniverse.currentSeason)
@@ -1054,7 +1054,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					}
 				}
 
-				logger.info("Marker 02");
+//				logger.info("Marker 02");
 
 				for (BOAttack boAttack : boUniverse.attackBOsFinishedInThisRound.values()) {
 					BOStarSystem attackedSystem;
