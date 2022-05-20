@@ -1,7 +1,7 @@
 C3 version history
 --------------------------------
 
-Version 7.0.22 (20.05.2022)
+Version 7.0.23 (20.05.2022)
 - UPDATED: Replacement pilots are enabled to also receive XP if they help out in an invasion (if they have an C3 account)
 - FIXED: Exception due to missing imageView objects in case a user has disconnected and reconnected one or more times (in starmap)
 
