@@ -1,3 +1,7 @@
+
+TODO_C3:    Spalte anlegen: Level beim Character, XP beim Character
+
+
 TODO_C3:    !!! Es wird kein neues Mappane mehr erzeugt beim Neuanmelden! Prüfen, ob das mit den Rechten alles passt nach Ab- und Anmeldung
 TODO_C3:    !!! Meldet man sich an, dann ab und wieder an, sind einige Member der Jumpship Objekte im universe null (image...)
 
