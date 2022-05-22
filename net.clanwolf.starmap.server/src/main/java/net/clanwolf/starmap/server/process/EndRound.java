@@ -235,6 +235,7 @@ public class EndRound {
 					// log stats
 					logger.info("--- Statistics found for attackId: " + attackPOJO.getId());
 					StringBuilder repairCostReport = new StringBuilder();
+					StringBuilder xpReport = new StringBuilder();
 					long balanceAttacker = 0L;
 					long balanceDefender = 0L;
 					DecimalFormat nf = new DecimalFormat();
@@ -251,7 +252,10 @@ public class EndRound {
 						balanceAttacker += calcB.getAttackerRepairCost();
 						balanceDefender += calcB.getDefenderRepairCost();
 						repairCostReport.append(calcB.getMailMessage());
-						logger.info("Current Balance Attacker: " + nf.format(balanceAttacker) + " --- Current Balance Defender: " + nf.format(balanceDefender));
+						logger.info("Current Balance Attacker[" + factionAttacker.getShortName() +"]:" + nf.format(balanceAttacker) +
+								" --- Current Balance Defender[ " + factionDefender.getShortName()+ "]" + nf.format(balanceDefender));
+						CalcXP calcXP = new CalcXP(asp);
+						xpReport.append(calcXP.getMailMessage());
 
 					}
 					String[] receivers = {"keshik@googlegroups.com"};
@@ -261,6 +265,19 @@ public class EndRound {
 
 					if (!GameServer.isDevelopmentPC) {
 						sent = MailManager.sendMail("c3@clanwolf.net", receivers, subject.toString(), repairCostReport.toString(), false);
+
+						if (sent) {
+							// sent
+							logger.info("Mail sent. [5]");
+						} else {
+							// error during email sending
+							logger.info("Error during mail dispatch. [5]");
+						}
+					} else {
+						logger.info("Mail was not sent out because this is a dev computer.");
+					}
+					if (!GameServer.isDevelopmentPC) {
+						sent = MailManager.sendMail("c3@clanwolf.net", receivers, "XP calculation for roundId " + attackPOJO.getId(), xpReport.toString(), false);
 
 						if (sent) {
 							// sent

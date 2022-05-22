@@ -32,6 +32,23 @@ public class Constants implements java.io.Serializable {
 	@Serial
 	private static final long serialVersionUID = 1L;
 
+	//XP rewards during an invasion
+	public static final long XP_REWARD_VICTORY = 5;
+	public static final long XP_REWARD_LOSS = 2;
+	public static final long XP_REWARD_COMPONENT_DESTROYED = 1;
+	public static final long XP_REWARD_EACH_MATCH_SCORE = 1;
+	public static final long XP_REWARD_EACH_MATCH_SCORE_RANGE = 150;
+	public static final long XP_REWARD_EACH_DAMAGE = 1;
+	public static final long XP_REWARD_EACH_DAMAGE_RANGE = 200;
+
+
+	//Reward payments when calculating the cost
+	public static final long REWARD_EACH_COMPONENT_DESTROYED = 250_000;
+	public static final long REWARD_EACH_MACHT_SCORE = 2_500;
+	public static final long REWARD_EACH_DAMAGE = 1_500;
+	public static final long REWARD_EACH_TEAM_DAMAGE = -10_000;
+	public static final long REWARD_EACH_KILL = 450_000;
+
 	// Cost
 	public static final long REGULAR_SYSTEM_GENERAL_INCOME = 250;
 	public static final long INDUSTRIAL_SYSTEM_GENERAL_INCOME = 1_500;
