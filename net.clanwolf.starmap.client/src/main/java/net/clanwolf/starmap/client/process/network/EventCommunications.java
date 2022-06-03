@@ -30,10 +30,12 @@ import io.nadron.client.app.Session;
 import io.nadron.client.event.Event;
 import io.nadron.client.event.Events;
 import io.nadron.client.event.NetworkEvent;
+import net.clanwolf.starmap.client.gui.panes.map.tools.GraphManager;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.process.universe.BOAttack;
+import net.clanwolf.starmap.client.process.universe.BOJumpship;
 import net.clanwolf.starmap.client.process.universe.BOStarSystem;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
@@ -100,8 +102,11 @@ public class EventCommunications {
 					logger.info("EventCommunications.onDataIn: myPlayerSessionID: -> " + Nexus.getMyPlayerSessionID());
 
 					UniverseDTO uni = (UniverseDTO) Compressor.deCompress((byte[]) state.getObject2());
-					Nexus.setBOUniverse(new BOUniverse(uni));
-					//Nexus.setBOUniverse(new BOUniverse((UniverseDTO) state.getObject2()));
+					if (Nexus.getBoUniverse() == null) {
+						Nexus.setBOUniverse(new BOUniverse(uni));
+					} else {
+						Nexus.getBoUniverse().setUniverseDTO(uni);
+					}
 
 					ActionManager.getAction(ACTIONS.UPDATE_GAME_INFO).execute();
 

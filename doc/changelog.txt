@@ -1,6 +1,16 @@
 C3 version history
 --------------------------------
 
+Version 7.0.26 (04.06.2022)
+- ADDED: Calculation of XP points for players joining as replacements (missing from the original list of attackCharacter objects)
+- ADDED: Storing of XP points for chars into database
+- ADDED: New table to hold character level progression
+- FIXED: Error if a user logged off and on again and tried to calculate a route (missing data in boUniverse)
+
+Version 7.0.24 (24.05.2022)
+- ADDED: Voice samples depending on the performance (and faction) at the end of invasion drops (preparations)
+- FIXED: Reworked calculations in finalize round routine (KERNREAKTOR)
+
 Version 7.0.23 (20.05.2022)
 - UPDATED: Replacement pilots are enabled to also receive XP if they help out in an invasion (if they have an C3 account)
 - FIXED: Exception due to missing imageView objects in case a user has disconnected and reconnected one or more times (in starmap)

@@ -26,7 +26,7 @@
 
 		<!-- C3 Revision -->
 		<!-- https://stackoverflow.com/questions/10582054/maven-project-version-inheritance-do-i-have-to-specify-the-parent-version -->
-		<revision>7.0.23</revision>
+		<revision>7.0.26</revision>
 
 		<!-- Versions -->
 		<version.java>18</version.java> <!-- Maven compiler plugin 3.10.1 does not support Java18 -->
@@ -34,8 +34,8 @@
 		<version.maven-compiler-plugin>3.10.1</version.maven-compiler-plugin>
 		<version.exec-maven-plugin>3.0.0</version.exec-maven-plugin>
 		<version.asm>9.3</version.asm>
-		<version.netty>4.1.76.Final</version.netty>
-		<version.spring>5.3.19</version.spring>
+		<version.netty>4.1.77.Final</version.netty>
+		<version.spring>5.3.20</version.spring>
 		<version.spring-security-config>5.6.3</version.spring-security-config>
 		<!-- version.hibernate.core>5.6.8</version.hibernate.core -->
 		<version.hibernate>5.6.8.Final</version.hibernate>

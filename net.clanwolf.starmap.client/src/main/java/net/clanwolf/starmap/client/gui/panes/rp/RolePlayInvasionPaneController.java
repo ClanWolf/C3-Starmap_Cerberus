@@ -469,11 +469,15 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 				AttackDTO a = (AttackDTO) o.getObject();
 				boolean attackerWon = false;
 				boolean defenderWon = false;
+				boolean iAmDefender = false;
 				for (AttackCharacterDTO c : a.getAttackCharList()) {
 					if (c.getSelectedAttackerWon() != null && c.getSelectedAttackerWon()) {
 						attackerWon = true;
 					} else if (c.getSelectedDefenderWon() != null && c.getSelectedDefenderWon()) {
 						defenderWon = true;
+					}
+					if (Nexus.getCurrentUser().getCurrentCharacter().getFactionId().equals(a.getFactionID_Defender().intValue())) {
+						iAmDefender = true;
 					}
 				}
 				if (attackerWon) {
@@ -491,6 +495,29 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 					btChoice3.setDisable(true);
 					btChoice4.setDisable(true);
 				}
+
+				// Here we play the motivation voice for the last fight
+				// Generic or faction specific
+				if (iAmDefender) { // I am defender
+					logger.info("We are defender!");
+					if (defenderWon) {
+						logger.info("We won!");
+						C3SoundPlayer.play("sound/fx/device_3.mp3", false);
+					} else {
+						logger.info("We lost!");
+						C3SoundPlayer.play("sound/fx/device_3.mp3", false);
+					}
+				} else { // I am attacker
+					logger.info("We are attacker!");
+					if (attackerWon) {
+						logger.info("We won!");
+						C3SoundPlayer.play("sound/fx/device_3.mp3", false);
+					} else {
+						logger.info("We lost!");
+						C3SoundPlayer.play("sound/fx/device_3.mp3", false);
+					}
+				}
+
 				audioStartedOnce = false;
 			});
 			break;
