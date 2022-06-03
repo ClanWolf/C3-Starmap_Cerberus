@@ -128,10 +128,12 @@ public class CalcXP {
         }
 
         boolean bFound;
+        long currentUserXP;
 
         for (UserDetail userDetail : matchDetails.getUserDetails()) {
 
             bFound = false;
+            currentUserXP =0L;
 
             for(RolePlayCharacterPOJO currentCharacter : allCharacter){
                 if (bFound){
@@ -155,11 +157,13 @@ public class CalcXP {
 
                                     //Spieler befindet sich im Gewinner Team
                                     mailMessage.append(String.format(columnWidthDefault, "Victory")).append(XP_REWARD_VICTORY).append(" XP").append("\r\n");
+                                    currentUserXP = currentUserXP + XP_REWARD_VICTORY;
 
                                 }else{
 
                                     //Spieler befindet sich im Verlierer Team
                                     mailMessage.append(String.format(columnWidthDefault, "Loss")).append(XP_REWARD_LOSS).append(" XP").append("\r\n");
+                                    currentUserXP = currentUserXP + XP_REWARD_LOSS;
 
                                 }
 
@@ -169,6 +173,7 @@ public class CalcXP {
                                 mailMessage.append(" XP ");
                                 mailMessage.append("(").append(XP_REWARD_COMPONENT_DESTROYED).append(" XP * ");
                                 mailMessage.append(userDetail.getComponentsDestroyed()).append(" Component destroyed)").append("\r\n");
+                                currentUserXP = currentUserXP + XP_REWARD_COMPONENT_DESTROYED * userDetail.getComponentsDestroyed();
 
 
                                 mailMessage.append(String.format(columnWidthDefault, "Match score"));
@@ -179,6 +184,7 @@ public class CalcXP {
                                 mailMessage.append(" per reached ").append(XP_REWARD_EACH_MATCH_SCORE_RANGE);
                                 mailMessage.append(" Match score");
                                 mailMessage.append(" [User match score: ").append(userDetail.getMatchScore()).append("]) ").append("\r\n");
+                                currentUserXP = currentUserXP +CalcRange(userDetail.getMatchScore().longValue(),XP_REWARD_EACH_MATCH_SCORE_RANGE) * XP_REWARD_EACH_MATCH_SCORE;
 
                                 mailMessage.append(String.format(columnWidthDefault, "Damage"));
                                 mailMessage.append(CalcRange(userDetail.getDamage().longValue(),XP_REWARD_EACH_DAMAGE_RANGE) * XP_REWARD_EACH_DAMAGE);
@@ -188,6 +194,12 @@ public class CalcXP {
                                 mailMessage.append(" per reached ").append(XP_REWARD_EACH_DAMAGE_RANGE);
                                 mailMessage.append(" Damage");
                                 mailMessage.append(" [User Damage: ").append(userDetail.getDamage()).append("]) ").append("\r\n");
+                                currentUserXP = currentUserXP + CalcRange(userDetail.getDamage().longValue(),XP_REWARD_EACH_DAMAGE_RANGE);
+
+                                mailMessage.append(String.format(columnWidthDefault, "XP total:"));
+                                mailMessage.append(currentUserXP);
+                                mailMessage.append(" XP ");
+                                mailMessage.append("\r\n");
 
                                 mailMessage.append("\r\n");
                             }

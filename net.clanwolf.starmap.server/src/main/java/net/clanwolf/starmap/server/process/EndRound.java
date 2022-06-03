@@ -245,15 +245,15 @@ public class EndRound {
 						FactionPOJO factionDefender = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, asp.getDefenderFactionId());
 
 
-						logger.info("--- Calculate the balace costs [" + factionAttacker.getShortName() + "] versus [" + factionDefender.getShortName() + "] (MatchID: " + asp.getMwoMatchId() + " )---");
+						logger.info("--- Calculate the balance costs [" + factionAttacker.getShortName() + "] versus [" + factionDefender.getShortName() + "] (MatchID: " + asp.getMwoMatchId() + " )---");
 
 						CalcBalance calcB = new CalcBalance(asp);
 
 						balanceAttacker += calcB.getAttackerRepairCost();
 						balanceDefender += calcB.getDefenderRepairCost();
 						repairCostReport.append(calcB.getMailMessage());
-						logger.info("Current Balance Attacker[" + factionAttacker.getShortName() +"]:" + nf.format(balanceAttacker) +
-								" --- Current Balance Defender[ " + factionDefender.getShortName()+ "]" + nf.format(balanceDefender));
+						logger.info("Current balance attacker[" + factionAttacker.getShortName() +"]:" + nf.format(balanceAttacker) +
+								" --- Current balance defender[ " + factionDefender.getShortName()+ "]" + nf.format(balanceDefender));
 						CalcXP calcXP = new CalcXP(asp);
 						xpReport.append(calcXP.getMailMessage());
 
@@ -261,7 +261,7 @@ public class EndRound {
 					String[] receivers = {"keshik@googlegroups.com"};
 					boolean sent;
 					StringBuilder subject = new StringBuilder();
-					subject.append("Repair cost calculation for roundId ").append(attackPOJO.getId());
+					subject.append("Repair cost calculation for attackId ").append(attackPOJO.getId());
 
 					if (!GameServer.isDevelopmentPC) {
 						sent = MailManager.sendMail("c3@clanwolf.net", receivers, subject.toString(), repairCostReport.toString(), false);
@@ -277,7 +277,7 @@ public class EndRound {
 						logger.info("Mail was not sent out because this is a dev computer.");
 					}
 					if (!GameServer.isDevelopmentPC) {
-						sent = MailManager.sendMail("c3@clanwolf.net", receivers, "XP calculation for roundId " + attackPOJO.getId(), xpReport.toString(), false);
+						sent = MailManager.sendMail("c3@clanwolf.net", receivers, "XP calculation for attackId " + attackPOJO.getId(), xpReport.toString(), false);
 
 						if (sent) {
 							// sent
