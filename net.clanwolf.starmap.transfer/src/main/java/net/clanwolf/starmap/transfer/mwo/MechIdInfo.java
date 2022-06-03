@@ -33,7 +33,7 @@ import java.util.Map;
  * einen Mech' zu und diese Eigenschaften des Mech's können ausgelesen werden.
  *
  * @author KERNREAKTOR
- * @version 23-03-2022
+ * @version 31-05-2022
  */
 public class MechIdInfo {
 
@@ -942,6 +942,22 @@ public class MechIdInfo {
         this.mechids.put(879,new MechIdInfo(EFaction.CLAN,"KITFOX",30,EMechclass.LIGHT, "Special","KIT FOX KFX-P(S)","KFX-P(S)"));
         this.mechids.put(880,new MechIdInfo(EFaction.CLAN,"SUMMONER",70,EMechclass.HEAVY, "Standard","SUMMONER SMN-G","SMN-G"));
         this.mechids.put(881,new MechIdInfo(EFaction.CLAN,"SUMMONER",70,EMechclass.HEAVY, "Special","SUMMONER SMN-G(S)","SMN-G(S)"));
+        this.mechids.put(885,new MechIdInfo(EFaction.INNERSPHERE,"WOLFHOUND",35,EMechclass.LIGHT,"Special", "WOLFHOUND WLF-1A(P)","WLF-1A(P)"));
+        this.mechids.put(886,new MechIdInfo(EFaction.INNERSPHERE,"CRAB",50,EMechclass.MEDIUM,"Special","CRAB CRB-27SL(P)","CRB-27SL(P)"));
+        this.mechids.put(887,new MechIdInfo(EFaction.INNERSPHERE,"BLACKKNIGHT",75,EMechclass.HEAVY,"Special","BLACK KNIGHT BL-6B-KNT(P)","BL-6B-KNT(P)"));
+        this.mechids.put(888,new MechIdInfo(EFaction.INNERSPHERE,"MAULER",90,EMechclass.ASSAULT,"Special","MAULER MAL-MX90(P)","MAL-MX90(P)"));
+        this.mechids.put(889,new MechIdInfo(EFaction.CLAN,"COUGAR",35,EMechclass.LIGHT,"Special","COUGAR COU-H(P)","COU-H(P)"));
+        this.mechids.put(890,new MechIdInfo(EFaction.CLAN, "ARCTIC WOLF",40,EMechclass.MEDIUM,"Special","ARCTIC WOLF ACW-A(P)","ACW-A(P)"));
+        this.mechids.put(891,new MechIdInfo(EFaction.CLAN,"NOVA CAT",70,EMechclass.HEAVY,"Special","NOVA CAT NCT-B(P)","NCT-B(P)"));
+        this.mechids.put(892,new MechIdInfo(EFaction.CLAN,"MAD CAT",90,EMechclass.ASSAULT,"Special","MAD CAT MK II MCII-B(P)","MCII-B(P)"));
+        this.mechids.put(900,new MechIdInfo(EFaction.INNERSPHERE,"SPIDER",30,EMechclass.LIGHT,"Special","SPIDER SDR-5D(P)","SDR-5D(P)"));
+        this.mechids.put(901,new MechIdInfo(EFaction.INNERSPHERE,"CICADA",40, EMechclass.MEDIUM,"Special","CICADA CDA-3M(P)","CDA-3M(P)"));
+        this.mechids.put(902,new MechIdInfo(EFaction.INNERSPHERE,"JAGERMECH",65,EMechclass.HEAVY,"Special","JAGERMECH JM6-DD(P)","JM6-DD(P)"));
+        this.mechids.put(903,new MechIdInfo(EFaction.INNERSPHERE,"KING CRAB",100,EMechclass.HEAVY,"Special","KING CRAB KGC-000(P)","KGC-000(P)"));
+        this.mechids.put(904,new MechIdInfo(EFaction.CLAN,"INCUBUS",30,EMechclass.LIGHT,"Special","INCUBUS INC-4(P)","INC-4(P)"));
+        this.mechids.put(905,new MechIdInfo(EFaction.CLAN,"VAPOR EAGLE",55,EMechclass.MEDIUM,"Special","VAPOR EAGLE VGL-3(P)","VGL-3(P)"));
+        this.mechids.put(906,new MechIdInfo(EFaction.CLAN,"HELLFIRE",60,EMechclass.HEAVY,"Special","HELLFIRE HLF-A(P)","HLF-A(P)"));
+        this.mechids.put(907,new MechIdInfo(EFaction.CLAN,"KODIAK",100,EMechclass.ASSAULT,"Special","KODIAK KDK-3(P)","KDK-3(P)"));
         this.mechids.put(990,new MechIdInfo(EFaction.INNERSPHERE,"ATLAS",100,EMechclass.ASSAULT, "Standard","ATLAS AS7-D-DC","AS7-D-DC"));
         this.mechids.put(996,new MechIdInfo(EFaction.INNERSPHERE,"JENNER",35,EMechclass.LIGHT, "Founder","JENNER JR7-D(F)","JR7-D(F)"));
         this.mechids.put(997,new MechIdInfo(EFaction.INNERSPHERE,"CATAPULT",65,EMechclass.HEAVY, "Founder","CATAPULT CPLT-C1(F)","CPLT-C1(F)"));
