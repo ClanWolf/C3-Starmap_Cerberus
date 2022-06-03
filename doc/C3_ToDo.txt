@@ -1,26 +1,16 @@
 
-TODO_C3:    Spalte anlegen: Level beim Character, XP beim Character
-
-
-TODO_C3:    !!! Es wird kein neues Mappane mehr erzeugt beim Neuanmelden! Prüfen, ob das mit den Rechten alles passt nach Ab- und Anmeldung
-TODO_C3:    !!! Meldet man sich an, dann ab und wieder an, sind einige Member der Jumpship Objekte im universe null (image...)
 
 TODO_C3:    !!! Banner am Ende der Invasion entsprechend der Fraktion
 TODO_C3:    !!! Kampf beendet: anderes bild
 TODO_C3:    !!! PowerPoint Dateien für die Invasionstypen CL vs CL und IS vs IS
-TODO_C3:    !!! Anmelden, abmelden und dann wieder anmelden und dann die Karte öffnen führt zu extrem langer Zeit, die die Karte braucht. Möglicherweise sind Objekte noch nicht zurückgesetzt nach der Abmeldung.
-TODO_C3:    !!! KERNREAKTOR: Wenn ein User in einer Invasion bei einem Drop nicht mehr da ist (offline), sollte er nicht die XP bekommen
-TODO_C3:    !!! KERNREAKTOR: In diesem Fall kann der zusätzliche Spieler über den MWO_Namen identifiziert werden und die Punkte könne diesem Spieler gutgeschrieben werden.
 
+TODO_C3:    FERTIG (?): Es wird kein neues Mappane mehr erzeugt beim Neuanmelden! Prüfen, ob das mit den Rechten alles passt nach Ab- und Anmeldung
 TODO_C3:    FERTIG (?): Beim Angriff checken, ob der Mindestlevel des Sprungschiffs für den Angriff reicht
 TODO_C3:    FERTIG (?): Planeten mit Sprungschiff dürfen nicht angegriffen werden
 TODO_C3:    FERTIG (?): Implementieren: Ein Sieg bei einem Angriff gibt Siegpunkte (z.B. 5SP), bei Verlust 2SP. Zum Levelaufstieg braucht das Schiff 15SP.
 
 TODO_C3:    TEST: Was ist mit den panes der invasion oder des rollenspiels? resetten beim abmelden
-TODO_C3:    TEST: Wenn man einem Kampf joined, der schon gestartet wurde, fliegen fehler... kein joinen mehr, wenn gestartet wurde
 TODO_C3:    TEST: sprung button nur enablen, wenn rechte gegeben sind. nur enablen, wenn es aktive offene sprungrouten gibt
-TODO_C3:    TEST: Planeten, die letzte Runde umkämpft waren, dürfen nicht angegriffen werden
-TODO_C3:    TEST: Wenn Attack gestartet wurde, sollte joinen auf den Kampf disabled sein
 TODO_C3:    TEST: currentPlayerRoleInInvasion am Kampfende zurücksetzen ???
 TODO_C3:    TEST: MWO API Loop war noch aktiv nach einer Invasion
 
