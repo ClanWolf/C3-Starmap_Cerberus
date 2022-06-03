@@ -74,6 +74,9 @@ public class RolePlayCharacterPOJO extends Pojo {
 	@Column(name = "JumpshipID")
 	private Integer jumpshipId;
 
+	@Column(name = "XP")
+	private Integer xp;
+
 	public RolePlayCharacterPOJO(){
 		//
 	}
@@ -186,5 +189,15 @@ public class RolePlayCharacterPOJO extends Pojo {
 	@SuppressWarnings("unused")
 	public void setMwoUsername(String mwoUsername) {
 		this.mwoUsername = mwoUsername;
+	}
+
+	@SuppressWarnings("unused")
+	public Integer getXp() {
+		return xp;
+	}
+
+	@SuppressWarnings("unused")
+	public void setXp(Integer xp) {
+		this.xp = xp;
 	}
 }

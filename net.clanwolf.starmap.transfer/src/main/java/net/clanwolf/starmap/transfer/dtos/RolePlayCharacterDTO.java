@@ -56,6 +56,8 @@ public class RolePlayCharacterDTO extends Dto {
 	private Integer starSystemId;
 	//@Column(name = "JumpshipID")
 	private Integer jumpshipId;
+	//@Column(name = "XP")
+	private Integer xp;
 
 	public RolePlayCharacterDTO(){
 		 
@@ -163,6 +165,16 @@ public class RolePlayCharacterDTO extends Dto {
 	@SuppressWarnings("unused")
 	public void setMwoUsername(String mwoUsername) {
 		this.mwoUsername = mwoUsername;
+	}
+
+	@SuppressWarnings("unused")
+	public Integer getXp() {
+		return xp;
+	}
+
+	@SuppressWarnings("unused")
+	public void setXp(Integer xp) {
+		this.xp = xp;
 	}
 
 	@Override
