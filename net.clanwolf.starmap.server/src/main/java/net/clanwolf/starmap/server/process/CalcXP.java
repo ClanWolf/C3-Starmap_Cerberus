@@ -28,6 +28,7 @@ package net.clanwolf.starmap.server.process;
 
 import com.google.gson.Gson;
 import net.clanwolf.starmap.server.Nexus.Nexus;
+import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.FactionDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.RolePlayCharacterDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.StatsMwoDAO;
@@ -36,6 +37,8 @@ import net.clanwolf.starmap.transfer.mwo.MWOMatchResult;
 import net.clanwolf.starmap.transfer.mwo.UserDetail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.persistence.EntityTransaction;
 import java.lang.invoke.MethodHandles;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -202,6 +205,26 @@ public class CalcXP {
                                 mailMessage.append("\r\n");
 
                                 mailMessage.append("\r\n");
+
+                                if(currentCharacter.getXp() != null){
+
+                                    currentUserXP = currentUserXP + currentCharacter.getXp();
+
+                                }
+
+                                EntityTransaction transaction = EntityManagerHelper.getEntityManager(Nexus.DUMMY_USERID).getTransaction();
+                                try {
+                                    transaction.begin();
+                                    EntityManagerHelper.clear(Nexus.DUMMY_USERID);
+
+                                    currentCharacter.setXp((int) currentUserXP);
+                                    characterDAO.update(Nexus.DUMMY_USERID,currentCharacter);
+
+                                    transaction.commit();
+
+                                }catch (RuntimeException re) {
+                                    logger.error(re.getMessage());
+                                }
                             }
                         }
                     }
