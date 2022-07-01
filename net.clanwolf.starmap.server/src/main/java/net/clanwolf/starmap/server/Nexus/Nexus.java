@@ -28,6 +28,7 @@ package net.clanwolf.starmap.server.Nexus;
 
 public class Nexus {
 	public static Long DUMMY_USERID = -1L;
+	public static Long END_ROUND = -2L;
 
 	public static String mailServer = "";
 	public static String mailUser = "";

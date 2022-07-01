@@ -46,6 +46,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import static net.clanwolf.starmap.constants.Constants.*;
+
 /**
  * Diese Klasse berechnet die XP
  *
@@ -56,8 +57,10 @@ public class CalcXP {
     private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     private final StringBuilder mailMessage = new StringBuilder();
+
     /**
      * Erstellt einen Bericht, die als Nachricht versendet werden kann.
+     *
      * @return Der (StringBuilder) Bericht wird zurückgegeben.
      */
     public StringBuilder getMailMessage() {
@@ -66,11 +69,12 @@ public class CalcXP {
 
     /**
      * Berechnet, wie viele zahlen in eine Zahl reinpassen.
+     *
      * @param value
      * @param range
      * @return Gibt den Wert zurück, wie viele Zahlen reinpassen.
      */
-    public Long CalcRange(Long value, Long range){
+    public Long CalcRange(Long value, Long range) {
 
         Long rest = value % range;
 
@@ -79,9 +83,10 @@ public class CalcXP {
 
     /**
      * Berechnet die XP der jeweiligen Spieler
+     *
      * @param attackStats
      */
-    public   CalcXP(AttackStatsPOJO attackStats){
+    public CalcXP(AttackStatsPOJO attackStats) throws RuntimeException{
         String mwoMatchID = attackStats.getMwoMatchId();
         StatsMwoDAO statsMwoDAO = net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.StatsMwoDAO.getInstance();
         StatsMwoPOJO statsMwoPOJO = statsMwoDAO.findByMWOGameId(mwoMatchID);
@@ -123,8 +128,7 @@ public class CalcXP {
 
             mailMessage.append(String.format(columnWidthDefault, "Drop ended: ")).append(parsedDate).append("\r\n\r\n");
 
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
 
             logger.error(e.getMessage());
 
@@ -133,110 +137,113 @@ public class CalcXP {
         boolean bFound;
         long currentUserXP;
 
-        for (UserDetail userDetail : matchDetails.getUserDetails()) {
+        /*EntityTransaction transaction = EntityManagerHelper.getEntityManager(Nexus.DUMMY_USERID).getTransaction();
+        try {
+            transaction.begin();
+            EntityManagerHelper.clear(Nexus.DUMMY_USERID);*/
 
-            bFound = false;
-            currentUserXP =0L;
+            for (UserDetail userDetail : matchDetails.getUserDetails()) {
 
-            for(RolePlayCharacterPOJO currentCharacter : allCharacter){
-                if (bFound){
-                    break;
-                }else {
-                    if(currentCharacter.getMwoUsername() !=null){
-                        if(userDetail.getUsername().equals(currentCharacter.getMwoUsername())){
+                bFound = false;
+                currentUserXP = 0L;
 
-                            bFound = true;
+                for (RolePlayCharacterPOJO currentCharacter : allCharacter) {
+                    if (bFound) {
+                        break;
+                    } else {
+                        if (currentCharacter.getMwoUsername() != null) {
+                            if (userDetail.getUsername().equals(currentCharacter.getMwoUsername())) {
 
-                            if(userDetail.getTeam() == null){
+                                bFound = true;
 
-                                //Spieler befindet sich im Spectator
-                                logger.error(userDetail.getUsername() + " was there as a spectator and does not get XP.");
-                                mailMessage.append(userDetail.getUsername()).append(" was there as a spectator and does not get XP.").append("\r\n\r\n");
+                                if (userDetail.getTeam() == null) {
 
-                            } else {
-                                mailMessage.append("XP distribution for the user ");
-                                mailMessage.append(userDetail.getUsername()).append("\r\n");
-                                if(matchDetails.getMatchDetails().getWinningTeam().equals(userDetail.getTeam())){
+                                    //Spieler befindet sich im Spectator
+                                    logger.error(userDetail.getUsername() + " was there as a spectator and does not get XP.");
+                                    mailMessage.append(userDetail.getUsername()).append(" was there as a spectator and does not get XP.").append("\r\n\r\n");
 
-                                    //Spieler befindet sich im Gewinner Team
-                                    mailMessage.append(String.format(columnWidthDefault, "Victory")).append(XP_REWARD_VICTORY).append(" XP").append("\r\n");
-                                    currentUserXP = currentUserXP + XP_REWARD_VICTORY;
+                                } else {
+                                    mailMessage.append("XP distribution for the user ");
+                                    mailMessage.append(userDetail.getUsername()).append("\r\n");
+                                    if (matchDetails.getMatchDetails().getWinningTeam().equals(userDetail.getTeam())) {
 
-                                }else{
+                                        //Spieler befindet sich im Gewinner Team
+                                        mailMessage.append(String.format(columnWidthDefault, "Victory")).append(XP_REWARD_VICTORY).append(" XP").append("\r\n");
+                                        currentUserXP = currentUserXP + XP_REWARD_VICTORY;
 
-                                    //Spieler befindet sich im Verlierer Team
-                                    mailMessage.append(String.format(columnWidthDefault, "Loss")).append(XP_REWARD_LOSS).append(" XP").append("\r\n");
-                                    currentUserXP = currentUserXP + XP_REWARD_LOSS;
+                                    } else {
 
-                                }
+                                        //Spieler befindet sich im Verlierer Team
+                                        mailMessage.append(String.format(columnWidthDefault, "Loss")).append(XP_REWARD_LOSS).append(" XP").append("\r\n");
+                                        currentUserXP = currentUserXP + XP_REWARD_LOSS;
 
-                                //
-                                mailMessage.append(String.format(columnWidthDefault, "Component destroyed"));
-                                mailMessage.append(XP_REWARD_COMPONENT_DESTROYED * userDetail.getComponentsDestroyed());
-                                mailMessage.append(" XP ");
-                                mailMessage.append("(").append(XP_REWARD_COMPONENT_DESTROYED).append(" XP * ");
-                                mailMessage.append(userDetail.getComponentsDestroyed()).append(" Component destroyed)").append("\r\n");
-                                currentUserXP = currentUserXP + XP_REWARD_COMPONENT_DESTROYED * userDetail.getComponentsDestroyed();
+                                    }
+
+                                    //
+                                    mailMessage.append(String.format(columnWidthDefault, "Component destroyed"));
+                                    mailMessage.append(XP_REWARD_COMPONENT_DESTROYED * userDetail.getComponentsDestroyed());
+                                    mailMessage.append(" XP ");
+                                    mailMessage.append("(").append(XP_REWARD_COMPONENT_DESTROYED).append(" XP * ");
+                                    mailMessage.append(userDetail.getComponentsDestroyed()).append(" Component destroyed)").append("\r\n");
+                                    currentUserXP = currentUserXP + XP_REWARD_COMPONENT_DESTROYED * userDetail.getComponentsDestroyed();
 
 
-                                mailMessage.append(String.format(columnWidthDefault, "Match score"));
-                                mailMessage.append(CalcRange(userDetail.getMatchScore().longValue(),XP_REWARD_EACH_MATCH_SCORE_RANGE) * XP_REWARD_EACH_MATCH_SCORE);
-                                mailMessage.append(" XP ");
-                                mailMessage.append("(").append(XP_REWARD_EACH_MATCH_SCORE).append(" XP * ");
-                                mailMessage.append(CalcRange(userDetail.getMatchScore().longValue(),XP_REWARD_EACH_MATCH_SCORE_RANGE));
-                                mailMessage.append(" per reached ").append(XP_REWARD_EACH_MATCH_SCORE_RANGE);
-                                mailMessage.append(" Match score");
-                                mailMessage.append(" [User match score: ").append(userDetail.getMatchScore()).append("]) ").append("\r\n");
-                                currentUserXP = currentUserXP +CalcRange(userDetail.getMatchScore().longValue(),XP_REWARD_EACH_MATCH_SCORE_RANGE) * XP_REWARD_EACH_MATCH_SCORE;
+                                    mailMessage.append(String.format(columnWidthDefault, "Match score"));
+                                    mailMessage.append(CalcRange(userDetail.getMatchScore().longValue(), XP_REWARD_EACH_MATCH_SCORE_RANGE) * XP_REWARD_EACH_MATCH_SCORE);
+                                    mailMessage.append(" XP ");
+                                    mailMessage.append("(").append(XP_REWARD_EACH_MATCH_SCORE).append(" XP * ");
+                                    mailMessage.append(CalcRange(userDetail.getMatchScore().longValue(), XP_REWARD_EACH_MATCH_SCORE_RANGE));
+                                    mailMessage.append(" per reached ").append(XP_REWARD_EACH_MATCH_SCORE_RANGE);
+                                    mailMessage.append(" Match score");
+                                    mailMessage.append(" [User match score: ").append(userDetail.getMatchScore()).append("]) ").append("\r\n");
+                                    currentUserXP = currentUserXP + CalcRange(userDetail.getMatchScore().longValue(), XP_REWARD_EACH_MATCH_SCORE_RANGE) * XP_REWARD_EACH_MATCH_SCORE;
 
-                                mailMessage.append(String.format(columnWidthDefault, "Damage"));
-                                mailMessage.append(CalcRange(userDetail.getDamage().longValue(),XP_REWARD_EACH_DAMAGE_RANGE) * XP_REWARD_EACH_DAMAGE);
-                                mailMessage.append(" XP ");
-                                mailMessage.append("(").append(XP_REWARD_EACH_DAMAGE).append(" XP * ");
-                                mailMessage.append(CalcRange(userDetail.getDamage().longValue(),XP_REWARD_EACH_DAMAGE_RANGE));
-                                mailMessage.append(" per reached ").append(XP_REWARD_EACH_DAMAGE_RANGE);
-                                mailMessage.append(" Damage");
-                                mailMessage.append(" [User Damage: ").append(userDetail.getDamage()).append("]) ").append("\r\n");
-                                currentUserXP = currentUserXP + CalcRange(userDetail.getDamage().longValue(),XP_REWARD_EACH_DAMAGE_RANGE);
+                                    mailMessage.append(String.format(columnWidthDefault, "Damage"));
+                                    mailMessage.append(CalcRange(userDetail.getDamage().longValue(), XP_REWARD_EACH_DAMAGE_RANGE) * XP_REWARD_EACH_DAMAGE);
+                                    mailMessage.append(" XP ");
+                                    mailMessage.append("(").append(XP_REWARD_EACH_DAMAGE).append(" XP * ");
+                                    mailMessage.append(CalcRange(userDetail.getDamage().longValue(), XP_REWARD_EACH_DAMAGE_RANGE));
+                                    mailMessage.append(" per reached ").append(XP_REWARD_EACH_DAMAGE_RANGE);
+                                    mailMessage.append(" Damage");
+                                    mailMessage.append(" [User Damage: ").append(userDetail.getDamage()).append("]) ").append("\r\n");
+                                    currentUserXP = currentUserXP + CalcRange(userDetail.getDamage().longValue(), XP_REWARD_EACH_DAMAGE_RANGE);
 
-                                mailMessage.append(String.format(columnWidthDefault, "XP total:"));
-                                mailMessage.append(currentUserXP);
-                                mailMessage.append(" XP ");
-                                mailMessage.append("\r\n");
+                                    mailMessage.append(String.format(columnWidthDefault, "XP total:"));
+                                    mailMessage.append(currentUserXP);
+                                    mailMessage.append(" XP ");
+                                    mailMessage.append("\r\n");
 
-                                mailMessage.append("\r\n");
+                                    mailMessage.append("\r\n");
 
-                                if(currentCharacter.getXp() != null){
+                                    if (currentCharacter.getXp() != null) {
 
-                                    currentUserXP = currentUserXP + currentCharacter.getXp();
+                                        currentUserXP = currentUserXP + currentCharacter.getXp();
 
-                                }
-
-                                EntityTransaction transaction = EntityManagerHelper.getEntityManager(Nexus.DUMMY_USERID).getTransaction();
-                                try {
-                                    transaction.begin();
-                                    EntityManagerHelper.clear(Nexus.DUMMY_USERID);
+                                    }
 
                                     currentCharacter.setXp((int) currentUserXP);
-                                    characterDAO.update(Nexus.DUMMY_USERID,currentCharacter);
+                                    characterDAO.update(Nexus.DUMMY_USERID, currentCharacter);
 
-                                    transaction.commit();
-
-                                }catch (RuntimeException re) {
-                                    logger.error(re.getMessage());
                                 }
                             }
                         }
                     }
                 }
+
+                if (!bFound) {
+
+                    logger.info("User " + userDetail.getUsername() + " does not receive XP because his MWO username was not found in the C3 database.");
+
+                    mailMessage.append("User ").append(userDetail.getUsername()).append(" does not receive XP because his MWO username was not found in the C3 database.").append("\r\n\r\n");
+
+                }
             }
+            /*transaction.commit();
 
-            if (!bFound){
-
-                logger.info("User " + userDetail.getUsername() + " does not receive XP because his MWO username was not found in the C3 database.");
-
-            }
-        }
+        } catch (RuntimeException re) {
+            logger.error(re.getMessage());
+            transaction.rollback();
+        }*/
         mailMessage.append("---End from the report of XP distribution---").append("\r\n");
     }
 }
