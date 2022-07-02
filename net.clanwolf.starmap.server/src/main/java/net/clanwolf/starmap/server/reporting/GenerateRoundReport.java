@@ -30,6 +30,10 @@ import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.element.Paragraph;
+import com.itextpdf.io.image.ImageData;
+import com.itextpdf.io.image.ImageDataFactory;
+import com.itextpdf.layout.element.Image;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,6 +57,18 @@ public class GenerateRoundReport {
 
 		String line = "Hello! Welcome to iTextPdf";
 		doc.add(new Paragraph(line));
+
+		// Creating an ImageData object
+		String imageFile = "C:\\Users\\Christian\\.ClanWolf.net_C3\\history\\C3_S1_R1_map_history.png";
+		ImageData data = ImageDataFactory.create(imageFile);
+
+		// Creating an Image object
+		Image img = new Image(data);
+
+		// Adding image to the document
+		doc.add(img);
+
+
 		doc.close();
 
 		System.out.println("Awesome PDF just got created.");
