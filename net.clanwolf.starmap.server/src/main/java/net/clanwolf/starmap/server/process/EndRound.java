@@ -186,7 +186,7 @@ public class EndRound {
 		StringBuilder foughtAttacks = new StringBuilder();
 		StringBuilder resolvedAttacks = new StringBuilder();
 		StringBuilder movedJumpships = new StringBuilder();
-		forceFinalize.set(true);
+		//forceFinalize.set(true);
 
 		if ((jumpshipsLeftToMove || attacksLeftToResolveInRound) && !(timeForThisRoundIsOver(seasonId)) && !forceFinalize.get()) {
 			// round is still active
@@ -206,154 +206,147 @@ public class EndRound {
 			try {
 				transaction.begin();
 				EntityManagerHelper.clear(Nexus.END_ROUND);
-			// here is no ship left to move AND no attack left open OR the time for the round is up
-			logger.info("Finalizing the round:");
-			logger.info("--- There is NO time left for this round!");
+				// here is no ship left to move AND no attack left open OR the time for the round is up
+				logger.info("Finalizing the round:");
+				logger.info("--- There is NO time left for this round!");
 
-			// set all open attacks to resolved (decide on a winner in the process!)
-			logger.info("--- Resolved attacks that were still open:");
-			for (AttackPOJO attackPOJO : openAttacksInRoundList) {
-				Long winnerId = findAWinner(attackPOJO);
+				// set all open attacks to resolved (decide on a winner in the process!)
+				logger.info("--- Resolved attacks that were still open:");
+				for (AttackPOJO attackPOJO : openAttacksInRoundList) {
+					Long winnerId = findAWinner(attackPOJO);
 
-				JumpshipPOJO jsPojo = JumpshipDAO.getInstance().findById(Nexus.END_ROUND, attackPOJO.getJumpshipID());
-				StarSystemPOJO ssPojo = StarSystemDAO.getInstance().findById(Nexus.END_ROUND, attackPOJO.getStarSystemID());
-				FactionPOJO fWinnerPojo = FactionDAO.getInstance().findById(Nexus.END_ROUND, winnerId);
-				FactionPOJO fJumpshipPOJO = FactionDAO.getInstance().findById(Nexus.END_ROUND, jsPojo.getJumpshipFactionID());
+					JumpshipPOJO jsPojo = JumpshipDAO.getInstance().findById(Nexus.END_ROUND, attackPOJO.getJumpshipID());
+					StarSystemPOJO ssPojo = StarSystemDAO.getInstance().findById(Nexus.END_ROUND, attackPOJO.getStarSystemID());
+					FactionPOJO fWinnerPojo = FactionDAO.getInstance().findById(Nexus.END_ROUND, winnerId);
+					FactionPOJO fJumpshipPOJO = FactionDAO.getInstance().findById(Nexus.END_ROUND, jsPojo.getJumpshipFactionID());
 
-				resolvedAttacks.append("Jumpship '").append(jsPojo.getJumpshipName()).append("' (").append(jsPojo.getId()).append(") of ").append(fJumpshipPOJO.getShortName()).append(" (").append(fJumpshipPOJO.getId()).append(") attacked system '").append(ssPojo.getName()).append("' (").append(ssPojo.getId()).append(") ").append("--> resolved to winner: ").append(fWinnerPojo.getShortName() + " (" + attackPOJO.getFactionID_Winner() + ").").append("\r\n");
-			}
-			openAttacksInRoundList.clear();
+					resolvedAttacks.append("Jumpship '").append(jsPojo.getJumpshipName()).append("' (").append(jsPojo.getId()).append(") of ").append(fJumpshipPOJO.getShortName()).append(" (").append(fJumpshipPOJO.getId()).append(") attacked system '").append(ssPojo.getName()).append("' (").append(ssPojo.getId()).append(") ").append("--> resolved to winner: ").append(fWinnerPojo.getShortName() + " (" + attackPOJO.getFactionID_Winner() + ").").append("\r\n");
+				}
+				openAttacksInRoundList.clear();
 
-			// list all attacks that were fought in this round
-			logger.info("--- Attacks that have been fought in this round:");
-			for (AttackPOJO attackPOJO : allAttacksForRound) {
-				logger.info("--- Attack: " + attackPOJO.getId() + "(StarSystem: " + attackPOJO.getStarSystemID() + ")");
+				// list all attacks that were fought in this round
+				logger.info("--- Attacks that have been fought in this round:");
+				for (AttackPOJO attackPOJO : allAttacksForRound) {
+					logger.info("--- Attack: " + attackPOJO.getId() + "(StarSystem: " + attackPOJO.getStarSystemID() + ")");
 
-				Long winnerId = attackPOJO.getFactionID_Winner();
+					Long winnerId = attackPOJO.getFactionID_Winner();
 
-				JumpshipPOJO jsPojo = JumpshipDAO.getInstance().findById(Nexus.END_ROUND, attackPOJO.getJumpshipID());
-				StarSystemPOJO ssPojo = StarSystemDAO.getInstance().findById(Nexus.END_ROUND, attackPOJO.getStarSystemID());
-				FactionPOJO fWinnerPojo = FactionDAO.getInstance().findById(Nexus.END_ROUND, winnerId);
-				FactionPOJO fJumpshipPOJO = FactionDAO.getInstance().findById(Nexus.END_ROUND, jsPojo.getJumpshipFactionID());
+					JumpshipPOJO jsPojo = JumpshipDAO.getInstance().findById(Nexus.END_ROUND, attackPOJO.getJumpshipID());
+					StarSystemPOJO ssPojo = StarSystemDAO.getInstance().findById(Nexus.END_ROUND, attackPOJO.getStarSystemID());
+					FactionPOJO fWinnerPojo = FactionDAO.getInstance().findById(Nexus.END_ROUND, winnerId);
+					FactionPOJO fJumpshipPOJO = FactionDAO.getInstance().findById(Nexus.END_ROUND, jsPojo.getJumpshipFactionID());
 
-//				logger.info("1");
-				// Get statistics for this attack
-				ArrayList<AttackStatsPOJO> statisticsList = AttackStatsDAO.getInstance().getStatisticsForAttack(seasonId, attackPOJO.getId());
-//				logger.info("2");
-				if (!statisticsList.isEmpty()) {
-					// log stats
-					logger.info("--- Statistics found for attackId: " + attackPOJO.getId());
-					StringBuilder repairCostReport = new StringBuilder();
-					StringBuilder xpReport = new StringBuilder();
-					long balanceAttacker = 0L;
-					long balanceDefender = 0L;
-					DecimalFormat nf = new DecimalFormat();
+					//				logger.info("1");
+					// Get statistics for this attack
+					ArrayList<AttackStatsPOJO> statisticsList = AttackStatsDAO.getInstance().getStatisticsForAttack(seasonId, attackPOJO.getId());
+					//				logger.info("2");
+					if (!statisticsList.isEmpty()) {
+						// log stats
+						logger.info("--- Statistics found for attackId: " + attackPOJO.getId());
+						StringBuilder repairCostReport = new StringBuilder();
+						StringBuilder xpReport = new StringBuilder();
+						long balanceAttacker = 0L;
+						long balanceDefender = 0L;
+						DecimalFormat nf = new DecimalFormat();
 
-					for (AttackStatsPOJO asp : statisticsList) {
-						FactionPOJO factionAttacker = FactionDAO.getInstance().findById(Nexus.END_ROUND, asp.getAttackerFactionId());
-						FactionPOJO factionDefender = FactionDAO.getInstance().findById(Nexus.END_ROUND, asp.getDefenderFactionId());
+						for (AttackStatsPOJO asp : statisticsList) {
+							FactionPOJO factionAttacker = FactionDAO.getInstance().findById(Nexus.END_ROUND, asp.getAttackerFactionId());
+							FactionPOJO factionDefender = FactionDAO.getInstance().findById(Nexus.END_ROUND, asp.getDefenderFactionId());
 
+							logger.info("--- Calculate the balance costs [" + factionAttacker.getShortName() + "] versus [" + factionDefender.getShortName() + "] (MatchID: " + asp.getMwoMatchId() + " )---");
 
-						logger.info("--- Calculate the balance costs [" + factionAttacker.getShortName() + "] versus [" + factionDefender.getShortName() + "] (MatchID: " + asp.getMwoMatchId() + " )---");
+							CalcBalance calcB = new CalcBalance(asp);
 
-						CalcBalance calcB = new CalcBalance(asp);
+							balanceAttacker += calcB.getAttackerRepairCost();
+							balanceDefender += calcB.getDefenderRepairCost();
+							repairCostReport.append(calcB.getMailMessage());
+							logger.info("Current balance attacker[" + factionAttacker.getShortName() + "]:" + nf.format(balanceAttacker) + " --- Current balance defender[ " + factionDefender.getShortName() + "]" + nf.format(balanceDefender));
+							CalcXP calcXP = new CalcXP(asp);
+							xpReport.append(calcXP.getMailMessage());
+						}
+						String[] receivers = {"keshik@googlegroups.com"};
+						boolean sent;
+						StringBuilder subject = new StringBuilder();
+						subject.append("Repair cost calculation for attackId ").append(attackPOJO.getId());
 
-						balanceAttacker += calcB.getAttackerRepairCost();
-						balanceDefender += calcB.getDefenderRepairCost();
-						repairCostReport.append(calcB.getMailMessage());
-						logger.info("Current balance attacker[" + factionAttacker.getShortName() +"]:" + nf.format(balanceAttacker) +
-								" --- Current balance defender[ " + factionDefender.getShortName()+ "]" + nf.format(balanceDefender));
-						CalcXP calcXP = new CalcXP(asp);
-						xpReport.append(calcXP.getMailMessage());
+						if (!GameServer.isDevelopmentPC) {
+							sent = MailManager.sendMail("c3@clanwolf.net", receivers, subject.toString(), repairCostReport.toString(), false);
 
-					}
-					String[] receivers = {"keshik@googlegroups.com"};
-					boolean sent;
-					StringBuilder subject = new StringBuilder();
-					subject.append("Repair cost calculation for attackId ").append(attackPOJO.getId());
-
-					if (!GameServer.isDevelopmentPC) {
-						sent = MailManager.sendMail("c3@clanwolf.net", receivers, subject.toString(), repairCostReport.toString(), false);
-
-						if (sent) {
-							// sent
-							logger.info("Mail sent. [5]");
+							if (sent) {
+								// sent
+								logger.info("Mail sent. [5]");
+							} else {
+								// error during email sending
+								logger.info("Error during mail dispatch. [5]");
+							}
 						} else {
-							// error during email sending
-							logger.info("Error during mail dispatch. [5]");
+							logger.info("Mail was not sent out because this is a dev computer.");
+						}
+						if (!GameServer.isDevelopmentPC) {
+							sent = MailManager.sendMail("c3@clanwolf.net", receivers, "XP calculation for attackId " + attackPOJO.getId(), xpReport.toString(), false);
+
+							if (sent) {
+								// sent
+								logger.info("Mail sent. [5]");
+							} else {
+								// error during email sending
+								logger.info("Error during mail dispatch. [5]");
+							}
+						} else {
+							logger.info("Mail was not sent out because this is a dev computer.");
 						}
 					} else {
-						logger.info("Mail was not sent out because this is a dev computer.");
+						// no statistics found
+						logger.info("--- no statistics found for attackId: " + attackPOJO.getId());
 					}
-					if (!GameServer.isDevelopmentPC) {
-						sent = MailManager.sendMail("c3@clanwolf.net", receivers, "XP calculation for attackId " + attackPOJO.getId(), xpReport.toString(), false);
+				}
 
-						if (sent) {
-							// sent
-							logger.info("Mail sent. [5]");
-						} else {
-							// error during email sending
-							logger.info("Error during mail dispatch. [5]");
+				// move all jumpships to their next waypoint
+				logger.info("--- Moving all jumpships to their next waypoints.");
+				// Jumpships do not need to be moved, because the waypoints have a round indicator
+
+				// Count the round indicator up once
+				newRound = (long) (round + 1);
+				logger.info("--- Finally increase the round indicator to: " + newRound);
+				RoundPOJO roundPOJO = RoundDAO.getInstance().findBySeasonId(seasonId);
+				roundPOJO.setRound(newRound);
+
+				// Set all jumpships to attackReady again
+				// Add the next system (according to the new round) from the current route to StarSystemHistory column
+				logger.info("--- Setting all jumpships to attackReady again.");
+				for (JumpshipPOJO js : jumpshipList) {
+					boolean jumpshipHasAnOpenAttack = false;
+					for (AttackPOJO a : AttackDAO.getInstance().getOpenAttacksOfASeasonForRound(GameServer.getCurrentSeason(), newRound.intValue())) {
+						if (a.getJumpshipID().equals(js.getId())) {
+							jumpshipHasAnOpenAttack = true;
+							break;
 						}
-					} else {
-						logger.info("Mail was not sent out because this is a dev computer.");
 					}
-				} else {
-					// no statistics found
-					logger.info("--- no statistics found for attackId: " + attackPOJO.getId());
-				}
-			}
+					js.setAttackReady(!jumpshipHasAnOpenAttack);
 
-			// move all jumpships to their next waypoint
-			logger.info("--- Moving all jumpships to their next waypoints.");
-			// Jumpships do not need to be moved, because the waypoints have a round indicator
+					for (RoutePointPOJO p : js.getRoutepointList()) {
+						if (p.getRoundId().equals(newRound)) {
+							String ssh = js.getStarSystemHistory();
+							ssh = ssh + ";" + p.getSystemId();
+							js.setStarSystemHistory(ssh);
 
-			// Count the round indicator up once
-			 newRound = (long) (round + 1);
-			logger.info("--- Finally increase the round indicator to: " + newRound);
-			RoundPOJO roundPOJO = RoundDAO.getInstance().findBySeasonId(seasonId);
-			roundPOJO.setRound(newRound);
-
-			// Set all jumpships to attackReady again
-			// Add the next system (according to the new round) from the current route to StarSystemHistory column
-			logger.info("--- Setting all jumpships to attackReady again.");
-			for (JumpshipPOJO js : jumpshipList) {
-				boolean jumpshipHasAnOpenAttack = false;
-				for (AttackPOJO a : AttackDAO.getInstance().getOpenAttacksOfASeasonForRound(GameServer.getCurrentSeason(), newRound.intValue())) {
-					if (a.getJumpshipID().equals(js.getId())) {
-						jumpshipHasAnOpenAttack = true;
-						break;
+							StarSystemPOJO ssPojo = StarSystemDAO.getInstance().findById(Nexus.END_ROUND, p.getSystemId());
+							movedJumpships.append("Jumpship '").append(js.getJumpshipName()).append("' moved to ").append(ssPojo.getName()).append(" (").append(ssPojo.getId()).append(").\r\n");
+						}
 					}
 				}
-				js.setAttackReady(!jumpshipHasAnOpenAttack);
 
-				for (RoutePointPOJO p : js.getRoutepointList()) {
-					if (p.getRoundId().equals(newRound)) {
-						String ssh = js.getStarSystemHistory();
-						ssh = ssh + ";" + p.getSystemId();
-						js.setStarSystemHistory(ssh);
+				//			roundPOJO.setCurrentRoundStartDate(getNextRoundDate(seasonId));
+				// TODO: Check this! Set start date of a new round always to NOW, not a calculated date in future, because there the dates run apart over time
+				roundPOJO.setCurrentRoundStartDate(translateRealDateToSeasonTime(new Date(System.currentTimeMillis()), seasonId));
 
-						StarSystemPOJO ssPojo = StarSystemDAO.getInstance().findById(Nexus.END_ROUND, p.getSystemId());
-						movedJumpships.append("Jumpship '").append(js.getJumpshipName()).append("' moved to ").append(ssPojo.getName()).append(" (").append(ssPojo.getId()).append(").\r\n");
-					}
-				}
-			}
+				// Save everything to the database
 
-			//			roundPOJO.setCurrentRoundStartDate(getNextRoundDate(seasonId));
-			// TODO: Check this! Set start date of a new round always to NOW, not a calculated date in future, because there the dates run apart over time
-			roundPOJO.setCurrentRoundStartDate(translateRealDateToSeasonTime(new Date(System.currentTimeMillis()), seasonId));
-
-			// Save everything to the database
-
-
-
-			AttackDAO attackDAO = AttackDAO.getInstance();
-			JumpshipDAO jumpshipDAO = JumpshipDAO.getInstance();
-			RoundDAO roundDAO = RoundDAO.getInstance();
-			StarSystemDataDAO ssdDAO = StarSystemDataDAO.getInstance();
-			FactionDAO fDAO = FactionDAO.getInstance();
-
-
+				AttackDAO attackDAO = AttackDAO.getInstance();
+				JumpshipDAO jumpshipDAO = JumpshipDAO.getInstance();
+				RoundDAO roundDAO = RoundDAO.getInstance();
+				StarSystemDataDAO ssdDAO = StarSystemDataDAO.getInstance();
+				FactionDAO fDAO = FactionDAO.getInstance();
 
 				roundDAO.update(Nexus.END_ROUND, roundPOJO);
 				for (JumpshipPOJO jumpshipPOJO : jumpshipList) {

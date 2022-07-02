@@ -1,0 +1,14 @@
+Verloren:
+rp_sample_lost_drop_01_general.mp3 "Wir müssen uns mehr anstrengen!"
+rp_sample_lost_drop_02_general.mp3 "Was war das denn? So werden sie uns zerreissen!"
+rp_sample_lost_drop_03_general.mp3 "Strengt euch mehr an, Mechkrieger!" (<-- gesprochen "Mek-Krieger")
+rp_sample_lost_drop_04_general.mp3 "Reißt euch zusammen, Leute!"
+rp_sample_lost_invasion_01_general.mp3 "Wir haben das System verloren! Das ist ein schwarzer Tag!"
+rp_sample_lost_invasion_02_general.mp3 "Der Feind kontrolliert jetzt diesen Planeten!"
+
+Gewonnen:
+rp_sample_won_drop_01_general.mp3 "Gute Arbeit, Leute!"
+rp_sample_won_drop_02_general.mp3 "Das war ein guter Kampf!"
+rp_sample_won_drop_03_general.mp3 "Gut gemacht! Weiter so!"
+rp_sample_won_invasion_01_general.mp3 "Das war gute Arbeit, der Planet gehört uns!"
+rp_sample_won_invasion_02_general.mp3 "Ich bin stolz auf Euch! Heute haben wir Geschichte gemacht!"

@@ -1,6 +1,10 @@
 C3 version history
 --------------------------------
 
+Version 7.0.27 (01.07.2022)
+- ADDED: iText lib for reporting
+- CHANGED: End round refactored into one transaction.
+
 Version 7.0.26 (04.06.2022)
 - ADDED: Calculation of XP points for players joining as replacements (missing from the original list of attackCharacter objects)
 - ADDED: Storing of XP points for chars into database
