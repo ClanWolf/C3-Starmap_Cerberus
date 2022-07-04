@@ -28,6 +28,6 @@ This software is a completely free fan project that makes no claim to ownership 
 See additional information on the [BattleTech - The Board Game](https://bg.battletech.com/?page_id=34) Website.
 
 # Support
-If you want to support C3, consider to donate via paypal or become a patreon:
+If you want to support C3, consider to donate via liberapay or paypal:
 * [Liberapay](https://liberapay.com/WarWolfen "Liberapay")
 * [Paypal](https://www.paypal.com/donate?token=AwC5gorl98THoYU4nCfwClErqsySjRleA5PRrgjHXiQcCSSz5unSHbdSnpHQbJDjqzzZVSO6r7Ngv9Vw "Paypal")
