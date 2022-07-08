@@ -522,7 +522,6 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 							randomNum = ThreadLocalRandom.current().nextInt(1, 3 + 1);
 							sampleName = "rp_sample_won_drop_0" + randomNum + "_general.mp3";
 						}
-						C3SoundPlayer.play("sound/voice/" + Internationalization.getLanguage() + "/rp_invasion/" + sampleName, false);
 					} else {
 						logger.info("We lost!");
 						if (defWon) { // Invasion is over, defender (we) lost the invasion
@@ -535,7 +534,6 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 							randomNum = ThreadLocalRandom.current().nextInt(1, 4 + 1);
 							sampleName = "rp_sample_lost_drop_0" + randomNum + "_general.mp3";
 						}
-						C3SoundPlayer.play("sound/voice/" + Internationalization.getLanguage() + "/rp_invasion/" + sampleName, false);
 					}
 				} else { // I am attacker
 					logger.info("We are attacker!");
@@ -551,7 +549,6 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 							randomNum = ThreadLocalRandom.current().nextInt(1, 3 + 1);
 							sampleName = "rp_sample_won_drop_0" + randomNum + "_general.mp3";
 						}
-						C3SoundPlayer.play("sound/voice/" + Internationalization.getLanguage() + "/rp_invasion/" + sampleName, false);
 					} else {
 						logger.info("We lost!");
 						if (defWon) { // Invasion is over, defender (we) lost the invasion
@@ -564,9 +561,9 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 							randomNum = ThreadLocalRandom.current().nextInt(1, 4 + 1);
 							sampleName = "rp_sample_lost_drop_0" + randomNum + "_general.mp3";
 						}
-						C3SoundPlayer.play("sound/voice/" + Internationalization.getLanguage() + "/rp_invasion/" + sampleName, false);
 					}
 				}
+				C3SoundPlayer.play("sound/voice/" + Internationalization.getLanguage() + "/rp_invasion/" + sampleName, false);
 
 				audioStartedOnce = false;
 			});

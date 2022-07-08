@@ -26,9 +26,7 @@
  */
 package net.clanwolf.starmap.client.sound;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
+import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
@@ -248,7 +246,12 @@ public class C3SoundPlayer {
 			}
 			// rpPlayer.setOnEndOfMedia( () -> ActionManager.getAction(ACTIONS.STOP_SPEECH_SPECTRUM).execute() );
 			lastRolePlaySampleURL = url.toString();
-			rpPlayer.play();
+
+			PauseTransition pause = new PauseTransition(Duration.seconds(3));
+			pause.setOnFinished(event -> {
+				rpPlayer.play();
+			});
+			pause.play();
 		}
 	}
 

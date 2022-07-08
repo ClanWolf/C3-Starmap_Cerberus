@@ -173,6 +173,11 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 				buttonPressed = false;
 			}
 			case FINALIZE_ROUND -> checkToCancelInvasion();
+
+			case ROLEPLAY_NEXT_STEP_CHANGE_PANE -> {
+				// This event is not handled here, motivation sounds are played in RolePlayInvasionPaneController !!!
+			}
+
 			default -> {
 			}
 		}
