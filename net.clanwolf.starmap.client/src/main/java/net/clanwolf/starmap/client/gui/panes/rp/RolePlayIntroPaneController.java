@@ -147,6 +147,10 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 								if (c.getCharacterID().equals(Nexus.getCurrentChar().getId())) {
 									btPreview.setDisable(!c.getType().equals(Constants.ROLE_ATTACKER_COMMANDER));
 								}
+								if( (getCurrentRP().getAttackerWins() != null && getCurrentRP().getAttackerWins()) ||
+										(getCurrentRP().getDefenderWins() != null && getCurrentRP().getDefenderWins())){
+									btPreview.setDisable(false);
+								}
 							}
 						}
 					}
