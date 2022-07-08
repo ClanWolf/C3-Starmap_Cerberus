@@ -26,9 +26,7 @@
  */
 package net.clanwolf.starmap.client.gui.panes.rp;
 
-import javafx.animation.FadeTransition;
-import javafx.animation.PathTransition;
-import javafx.animation.SequentialTransition;
+import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -563,8 +561,15 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 						}
 					}
 				}
-				C3SoundPlayer.fadeOutRPSound();
-				C3SoundPlayer.play("sound/voice/" + Internationalization.getLanguage() + "/rp_invasion/" + sampleName, false);
+				String finalSampleName = sampleName;
+				double volume = C3SoundPlayer.getRpPlayer().getVolume();
+				Timeline timeline = new Timeline(new KeyFrame(Duration.millis(700), new KeyValue(C3SoundPlayer.getRpPlayer().volumeProperty(), 0)));
+				timeline.setOnFinished(event -> {
+					C3SoundPlayer.getRpPlayer().stop();
+					C3SoundPlayer.getRpPlayer().setVolume(volume);
+					C3SoundPlayer.play("sound/voice/" + Internationalization.getLanguage() + "/rp_invasion/" + finalSampleName, false);
+				});
+				timeline.play();
 
 				audioStartedOnce = false;
 			});

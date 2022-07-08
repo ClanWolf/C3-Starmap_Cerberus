@@ -218,6 +218,10 @@ public class C3SoundPlayer {
 		}
 	}
 
+	public static MediaPlayer getRpPlayer() {
+		return rpPlayer;
+	}
+
 	public static void playRPSound(final URL url, boolean audioStartedOnce) {
 		boolean playerPaused = false;
 		String urlString = url.toString();
