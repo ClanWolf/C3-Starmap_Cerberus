@@ -505,14 +505,17 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 				int randomNum = 0;
 				String sampleName = "";
 
+				boolean defWon = story.getDefenderWins() != null && story.getDefenderWins();
+				boolean attWon = story.getAttackerWins() != null && story.getAttackerWins();
+
 				if (iAmDefender) { // I am defender
 					logger.info("We are defender!");
 					if (defenderWon) {
 						logger.info("We won!");
-						if (story.getDefenderWins()) { // Invasion is over, defender (we) won the invasion
+						if (defWon) { // Invasion is over, defender (we) won the invasion
 							randomNum = ThreadLocalRandom.current().nextInt(1, 2 + 1);
 							sampleName = "rp_sample_won_invasion_0" + randomNum + "_general.mp3";
-						} else if (story.getAttackerWins()) { // Invasion is over, attacker (the others) won the invasion
+						} else if (attWon) { // Invasion is over, attacker (the others) won the invasion
 							randomNum = ThreadLocalRandom.current().nextInt(1, 2 + 1);
 							sampleName = "rp_sample_lost_invasion_0" + randomNum + "_general.mp3";
 						} else { // no side did win the invasion yet, still fighting
@@ -522,10 +525,10 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 						C3SoundPlayer.play("sound/voice/" + Internationalization.getLanguage() + "/rp_invasion/" + sampleName, false);
 					} else {
 						logger.info("We lost!");
-						if (story.getDefenderWins()) { // Invasion is over, defender (we) lost the invasion
+						if (defWon) { // Invasion is over, defender (we) lost the invasion
 							randomNum = ThreadLocalRandom.current().nextInt(1, 2 + 1);
 							sampleName = "rp_sample_lost_invasion_0" + randomNum + "_general.mp3";
-						} else if (story.getAttackerWins()) { // Invasion is over, wo won, attacker (the others) lost the invasion
+						} else if (attWon) { // Invasion is over, wo won, attacker (the others) lost the invasion
 							randomNum = ThreadLocalRandom.current().nextInt(1, 2 + 1);
 							sampleName = "rp_sample_won_invasion_0" + randomNum + "_general.mp3";
 						} else { // no side did win the invasion yet, still fighting
@@ -538,10 +541,10 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 					logger.info("We are attacker!");
 					if (attackerWon) {
 						logger.info("We won!");
-						if (story.getDefenderWins()) { // Invasion is over, defender (we) won the invasion
+						if (defWon) { // Invasion is over, defender (we) won the invasion
 							randomNum = ThreadLocalRandom.current().nextInt(1, 2 + 1);
 							sampleName = "rp_sample_won_invasion_0" + randomNum + "_general.mp3";
-						} else if (story.getAttackerWins()) { // Invasion is over, attacker (the others) won the invasion
+						} else if (attWon) { // Invasion is over, attacker (the others) won the invasion
 							randomNum = ThreadLocalRandom.current().nextInt(1, 2 + 1);
 							sampleName = "rp_sample_lost_invasion_0" + randomNum + "_general.mp3";
 						} else { // no side did win the invasion yet, still fighting
@@ -551,10 +554,10 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 						C3SoundPlayer.play("sound/voice/" + Internationalization.getLanguage() + "/rp_invasion/" + sampleName, false);
 					} else {
 						logger.info("We lost!");
-						if (story.getDefenderWins()) { // Invasion is over, defender (we) lost the invasion
+						if (defWon) { // Invasion is over, defender (we) lost the invasion
 							randomNum = ThreadLocalRandom.current().nextInt(1, 2 + 1);
 							sampleName = "rp_sample_lost_invasion_0" + randomNum + "_general.mp3";
-						} else if (story.getAttackerWins()) { // Invasion is over, wo won, attacker (the others) lost the invasion
+						} else if (attWon) { // Invasion is over, wo won, attacker (the others) lost the invasion
 							randomNum = ThreadLocalRandom.current().nextInt(1, 2 + 1);
 							sampleName = "rp_sample_won_invasion_0" + randomNum + "_general.mp3";
 						} else { // no side did win the invasion yet, still fighting
