@@ -40,6 +40,10 @@ public class Constants implements java.io.Serializable {
 	public static final long XP_REWARD_EACH_MATCH_SCORE_RANGE = 150;
 	public static final long XP_REWARD_EACH_DAMAGE = 1;
 	public static final long XP_REWARD_EACH_DAMAGE_RANGE = 200;
+	public static final long XP_REWARD_EACH_SURVIVAL_PERCENTAGE = 1;
+	public static final long XP_REWARD_EACH_SURVIVAL_PERCENTAGE_RANGE = 10;
+	public static final long XP_REWARD_EACH_TEAM_DAMAGE = 1;
+	public static final long XP_REWARD_EACH_TEAM_DAMAGE_RANGE = 1;
 
 
 	//Reward payments when calculating the cost
