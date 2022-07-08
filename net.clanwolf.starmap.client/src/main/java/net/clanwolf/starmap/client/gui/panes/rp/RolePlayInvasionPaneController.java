@@ -53,6 +53,7 @@ import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
 import net.clanwolf.starmap.client.process.universe.BOAttack;
 import net.clanwolf.starmap.client.process.universe.BOFaction;
+import net.clanwolf.starmap.client.process.universe.BOUniverse;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.C3PROPS;
 import net.clanwolf.starmap.client.util.C3Properties;
@@ -68,6 +69,7 @@ import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 import java.lang.invoke.MethodHandles;
 import java.net.URL;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * @author Undertaker
@@ -496,25 +498,70 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 					btChoice4.setDisable(true);
 				}
 
+				RolePlayStoryDTO story = Nexus.getBoUniverse().getAttackStoriesByID(a.getStoryID());
+
 				// Here we play the motivation voice for the last fight
 				// Generic or faction specific
+				int randomNum = 0;
+				String sampleName = "";
+
 				if (iAmDefender) { // I am defender
 					logger.info("We are defender!");
 					if (defenderWon) {
 						logger.info("We won!");
-						C3SoundPlayer.play("sound/fx/device_3.mp3", false);
+						if (story.getDefenderWins()) { // Invasion is over, defender (we) won the invasion
+							randomNum = ThreadLocalRandom.current().nextInt(1, 2 + 1);
+							sampleName = "rp_sample_won_invasion_0" + randomNum + "_general.mp3";
+						} else if (story.getAttackerWins()) { // Invasion is over, attacker (the others) won the invasion
+							randomNum = ThreadLocalRandom.current().nextInt(1, 2 + 1);
+							sampleName = "rp_sample_lost_invasion_0" + randomNum + "_general.mp3";
+						} else { // no side did win the invasion yet, still fighting
+							randomNum = ThreadLocalRandom.current().nextInt(1, 3 + 1);
+							sampleName = "rp_sample_won_drop_0" + randomNum + "_general.mp3";
+						}
+						C3SoundPlayer.play("sound/voice/" + Internationalization.getLanguage() + "/rp_invasion/" + sampleName, false);
 					} else {
 						logger.info("We lost!");
-						C3SoundPlayer.play("sound/fx/device_3.mp3", false);
+						if (story.getDefenderWins()) { // Invasion is over, defender (we) lost the invasion
+							randomNum = ThreadLocalRandom.current().nextInt(1, 2 + 1);
+							sampleName = "rp_sample_lost_invasion_0" + randomNum + "_general.mp3";
+						} else if (story.getAttackerWins()) { // Invasion is over, wo won, attacker (the others) lost the invasion
+							randomNum = ThreadLocalRandom.current().nextInt(1, 2 + 1);
+							sampleName = "rp_sample_won_invasion_0" + randomNum + "_general.mp3";
+						} else { // no side did win the invasion yet, still fighting
+							randomNum = ThreadLocalRandom.current().nextInt(1, 4 + 1);
+							sampleName = "rp_sample_lost_drop_0" + randomNum + "_general.mp3";
+						}
+						C3SoundPlayer.play("sound/voice/" + Internationalization.getLanguage() + "/rp_invasion/" + sampleName, false);
 					}
 				} else { // I am attacker
 					logger.info("We are attacker!");
 					if (attackerWon) {
 						logger.info("We won!");
-						C3SoundPlayer.play("sound/fx/device_3.mp3", false);
+						if (story.getDefenderWins()) { // Invasion is over, defender (we) won the invasion
+							randomNum = ThreadLocalRandom.current().nextInt(1, 2 + 1);
+							sampleName = "rp_sample_won_invasion_0" + randomNum + "_general.mp3";
+						} else if (story.getAttackerWins()) { // Invasion is over, attacker (the others) won the invasion
+							randomNum = ThreadLocalRandom.current().nextInt(1, 2 + 1);
+							sampleName = "rp_sample_lost_invasion_0" + randomNum + "_general.mp3";
+						} else { // no side did win the invasion yet, still fighting
+							randomNum = ThreadLocalRandom.current().nextInt(1, 3 + 1);
+							sampleName = "rp_sample_won_drop_0" + randomNum + "_general.mp3";
+						}
+						C3SoundPlayer.play("sound/voice/" + Internationalization.getLanguage() + "/rp_invasion/" + sampleName, false);
 					} else {
 						logger.info("We lost!");
-						C3SoundPlayer.play("sound/fx/device_3.mp3", false);
+						if (story.getDefenderWins()) { // Invasion is over, defender (we) lost the invasion
+							randomNum = ThreadLocalRandom.current().nextInt(1, 2 + 1);
+							sampleName = "rp_sample_lost_invasion_0" + randomNum + "_general.mp3";
+						} else if (story.getAttackerWins()) { // Invasion is over, wo won, attacker (the others) lost the invasion
+							randomNum = ThreadLocalRandom.current().nextInt(1, 2 + 1);
+							sampleName = "rp_sample_won_invasion_0" + randomNum + "_general.mp3";
+						} else { // no side did win the invasion yet, still fighting
+							randomNum = ThreadLocalRandom.current().nextInt(1, 4 + 1);
+							sampleName = "rp_sample_lost_drop_0" + randomNum + "_general.mp3";
+						}
+						C3SoundPlayer.play("sound/voice/" + Internationalization.getLanguage() + "/rp_invasion/" + sampleName, false);
 					}
 				}
 

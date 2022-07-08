@@ -40,6 +40,8 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.lang.invoke.MethodHandles;
 
+// https://www.tutorialspoint.com/itext/itext_adding_paragraph.htm
+
 public class GenerateRoundReport {
 	public static final String DEST = "c:\\temp\\simple_table.pdf";
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -68,9 +70,6 @@ public class GenerateRoundReport {
 		// Adding image to the document
 		doc.add(img);
 
-
 		doc.close();
-
-		System.out.println("Awesome PDF just got created.");
 	}
 }

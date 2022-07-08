@@ -1,6 +1,9 @@
 C3 version history
 --------------------------------
 
+Version 7.0.28 (08.07.2022)
+- ADDED: Motivation samples
+
 Version 7.0.27 (01.07.2022)
 - ADDED: iText lib for reporting
 - CHANGED: End round refactored into one transaction.
