@@ -563,7 +563,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 				}
 				String finalSampleName = sampleName;
 				double volume = C3SoundPlayer.getRpPlayer().getVolume();
-				Timeline timeline = new Timeline(new KeyFrame(Duration.millis(700), new KeyValue(C3SoundPlayer.getRpPlayer().volumeProperty(), 0)));
+				Timeline timeline = new Timeline(new KeyFrame(Duration.millis(750), new KeyValue(C3SoundPlayer.getRpPlayer().volumeProperty(), 0)));
 				timeline.setOnFinished(event -> {
 					C3SoundPlayer.getRpPlayer().stop();
 					C3SoundPlayer.getRpPlayer().setVolume(volume);
