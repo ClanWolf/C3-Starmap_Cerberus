@@ -206,6 +206,18 @@ public class C3SoundPlayer {
 		}
 	}
 
+	public static void fadeOutRPSound() {
+		if (rpPlayer != null) {
+			double volume = rpPlayer.getVolume();
+			Timeline timeline = new Timeline(new KeyFrame(Duration.millis(700), new KeyValue(rpPlayer.volumeProperty(), 0)));
+			timeline.setOnFinished(event -> {
+				rpPlayer.stop();
+				rpPlayer.setVolume(volume);
+//				rpPlayer.dispose();
+			});
+		}
+	}
+
 	public static void playRPSound(final URL url, boolean audioStartedOnce) {
 		boolean playerPaused = false;
 		String urlString = url.toString();

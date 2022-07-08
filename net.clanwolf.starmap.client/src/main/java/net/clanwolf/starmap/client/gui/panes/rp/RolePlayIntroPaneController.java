@@ -202,7 +202,7 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 		btPreview.setDisable(true);
 		buttonPressed = true;
 
-		//TODO: Change the methods for C3_RP_STORY and C3_RP_CHAPTER of attack, otherwise it dosen't works
+		//TODO: Change the methods for C3_RP_STORY and C3_RP_CHAPTER of attack, otherwise it dosen't work
 		RolePlayCharacterDTO currentChar = Nexus.getCurrentChar();
 		if (getCurrentRP() != null) {
 			if (getCurrentRP().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STORY) {

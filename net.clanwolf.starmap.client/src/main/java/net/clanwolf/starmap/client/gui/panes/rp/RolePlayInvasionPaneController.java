@@ -563,6 +563,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 						}
 					}
 				}
+				C3SoundPlayer.fadeOutRPSound();
 				C3SoundPlayer.play("sound/voice/" + Internationalization.getLanguage() + "/rp_invasion/" + sampleName, false);
 
 				audioStartedOnce = false;
