@@ -59,6 +59,8 @@ public class BOUniverse {
 	public Integer currentSeasonMetaPhase;
 	public Integer currentRound;
 	public String currentDate;
+	public Integer maxNumberOfRoundsForSeason;
+	public Integer numberOfDaysInRound;
 
 	public VoronoiResults voronoiResults = null;
 	public Subdivision delaunaySubdivision = null;
@@ -154,6 +156,8 @@ public class BOUniverse {
 		currentSeasonMetaPhase = universeDTO.currentSeasonMetaPhase;
 		currentRound = universeDTO.currentRound;
 		currentDate = universeDTO.currentDate;
+		maxNumberOfRoundsForSeason = universeDTO.maxNumberOfRoundsForSeason;
+		numberOfDaysInRound = universeDTO.numberOfDaysInRound;
 	}
 
 	public synchronized void setUniverseDTO(UniverseDTO uniDTO) {
@@ -175,6 +179,8 @@ public class BOUniverse {
 		this.currentSeasonMetaPhase = this.universeDTO.currentSeasonMetaPhase;
 		this.currentRound = this.universeDTO.currentRound;
 		this.currentDate = this.universeDTO.currentDate;
+		this.maxNumberOfRoundsForSeason = this.universeDTO.maxNumberOfRoundsForSeason;
+		numberOfDaysInRound = universeDTO.numberOfDaysInRound;
 
 		for (StarSystemDataDTO starSystemDataDTO : universeDTO.starSystems.values()) {
 			BOStarSystem ss = starSystemBOs.get(starSystemDataDTO.getStarSystemID().getId());

@@ -84,6 +84,8 @@ public class WebDataInterface {
 		universe.currentSeasonMetaPhase = seasonMetaPhase.intValue();
 		universe.currentRound = round.intValue();
 		universe.currentDate = dateS;
+		universe.maxNumberOfRoundsForSeason = seasonPOJO.getSerpentArrivalRound().intValue();
+		universe.numberOfDaysInRound = seasonPOJO.getDaysInRound().intValue();
 		return universe;
 	}
 
