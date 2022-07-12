@@ -188,11 +188,12 @@ public class GenerateRoundReport {
         AreaBreak aB = new AreaBreak();
         doc.add(aB);
 
-        /*
-        FactionPOJO factionOfCurrentChar = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, attackStats.getAttackerFactionId());
-        Image imageFaction = new Image((PdfImageXObject) Objects.requireNonNull(getClass().getResourceAsStream("/images/logos/factions/" + factionOfCurrentChar.getLogo())));
-
-        doc.add(imageFaction);*/
+	    // Creating an ImageData object
+	    FactionPOJO factionOfCurrentChar = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, attackStats.getAttackerFactionId());
+	    String imageFactionFile = "/images/logos/factions/" + factionOfCurrentChar.getLogo();
+	    ImageData imageFactionData = ImageDataFactory.create(imageFactionFile);
+	    Image imageFaction = new Image(imageFactionData);
+	    doc.add(imageFaction);
 
         try {
 
