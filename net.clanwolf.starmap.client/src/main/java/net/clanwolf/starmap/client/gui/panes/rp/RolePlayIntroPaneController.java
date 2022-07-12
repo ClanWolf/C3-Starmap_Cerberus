@@ -138,7 +138,7 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 		if(anchorPane != null && !anchorPane.isVisible()) return true;
 
 		if (!buttonPressed) {
-			if (ROLEPLAYENTRYTYPES.C3_RP_STEP_V1 != o.getObject()) { // NOT a Normal story step (so likely intro or invasion pane)
+			if (ROLEPLAYENTRYTYPES.C3_RP_STEP_V1 != o.getObject()) { // NOT a Normal story step (so likely intro or invasion pane, outro of an invasion)
 				if (!isCharRP) {
 					BOAttack attack = Nexus.getCurrentAttackOfUser();
 					if (attack != null) {
@@ -147,8 +147,13 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 								if (c.getCharacterID().equals(Nexus.getCurrentChar().getId())) {
 									btPreview.setDisable(!c.getType().equals(Constants.ROLE_ATTACKER_COMMANDER));
 								}
-								if( (getCurrentRP().getAttackerWins() != null && getCurrentRP().getAttackerWins()) ||
-										(getCurrentRP().getDefenderWins() != null && getCurrentRP().getDefenderWins())){
+
+								// TODO: This could happen outside the loop at the very start (?)
+								// This controller is used for the first pane of an invasion (intro) AND the last one
+								// (outro). In the first, the continue button may only be enabled for dropleadAttacker
+								// in the last, it should be enabled for everyone... so everyone can decide for themselves
+								// to leave the current invasion.
+								if ((getCurrentRP().getAttackerWins() != null && getCurrentRP().getAttackerWins()) || (getCurrentRP().getDefenderWins() != null && getCurrentRP().getDefenderWins())) {
 									btPreview.setDisable(false);
 								}
 							}

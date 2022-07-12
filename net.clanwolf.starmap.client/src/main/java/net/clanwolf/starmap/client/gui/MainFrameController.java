@@ -329,23 +329,29 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 	@FXML
 	private void handleTFSProgressEntered() {
-		double tfsProgress = (100d / 60d * Nexus.getBoUniverse().currentRound) / 100;
-		String progString = Nexus.getBoUniverse().currentRound + " / 60";
+		double tfsProgress = (100d / Nexus.getBoUniverse().maxNumberOfRoundsForSeason * Nexus.getBoUniverse().currentRound) / 100;
+		String progString = Nexus.getBoUniverse().currentRound + " / " + Nexus.getBoUniverse().maxNumberOfRoundsForSeason;
 		labelTFSProgress.setText(progString);
 		TFSInfo.toFront();
 		TFSProgress.toFront();
 		TFSProgress.setProgress(tfsProgress);
+		if (tfsProgress > 1) {
+			TFSProgress.lookup(".bar").setStyle("-fx-background-color: -fx-box-border, #ff0000");
+		}
 		TFSInfo.setVisible(true);
 	}
 
 	@FXML
 	private void handleTFSProgressExited() {
-		double tfsProgress = (100d / 60d * Nexus.getBoUniverse().currentRound) / 100;
-		String progString = Nexus.getBoUniverse().currentRound + " / 60";
+		double tfsProgress = (100d / Nexus.getBoUniverse().maxNumberOfRoundsForSeason * Nexus.getBoUniverse().currentRound) / 100;
+		String progString = Nexus.getBoUniverse().currentRound + " / " + Nexus.getBoUniverse().maxNumberOfRoundsForSeason;
 		labelTFSProgress.setText(progString);
 		TFSInfo.toFront();
 		TFSProgress.toFront();
 		TFSProgress.setProgress(tfsProgress);
+		if (tfsProgress > 1) {
+			TFSProgress.lookup(".bar").setStyle("-fx-background-color: -fx-box-border, #ff0000");
+		}
 		TFSInfo.setVisible(false);
 	}
 
@@ -1703,14 +1709,19 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					}
 					enableMainMenuButtons(Nexus.isLoggedIn(), Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN));
 					BOUniverse boUniverse = Nexus.getBoUniverse();
-					gameInfoLabel.setText("S" + boUniverse.currentSeason + " R" + boUniverse.currentRound + "/60 " + Tools.getRomanNumber(boUniverse.currentSeasonMetaPhase) + " - " + boUniverse.currentDate);
+					gameInfoLabel.setText("S" + boUniverse.currentSeason + " R" + boUniverse.currentRound + "/" + boUniverse.maxNumberOfRoundsForSeason + " " + Tools.getRomanNumber(boUniverse.currentSeasonMetaPhase) + " - " + boUniverse.currentDate);
 
-					labelTFSProgress.setText(boUniverse.currentRound + " / 60");
-					double tfsProgress = (100d / 60d * Nexus.getBoUniverse().currentRound) / 100;
+					labelTFSProgress.setText(boUniverse.currentRound + " / " + boUniverse.maxNumberOfRoundsForSeason);
+
+					double tfsProgress = (100d / Nexus.getBoUniverse().maxNumberOfRoundsForSeason * Nexus.getBoUniverse().currentRound) / 100;
 					TFSProgress.setProgress(tfsProgress);
 					TFSProgress.setVisible(true);
 					TFSProgress.toFront();
 					TFSInfo.setVisible(false);
+					if (tfsProgress > 1) {
+						TFSProgress.lookup(".bar").setStyle("-fx-background-color: -fx-box-border, #ff0000");
+					}
+
 					UserHistoryInfo.setVisible(false);
 				});
 				ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("5");
@@ -2005,8 +2016,11 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					BOUniverse boUniverse = Nexus.getBoUniverse();
 					gameInfoLabel.setText("S" + boUniverse.currentSeason + "*" + Tools.getRomanNumber(boUniverse.currentSeasonMetaPhase) + "/R" + boUniverse.currentRound + " - " + boUniverse.currentDate);
 
-					double tfsProgress = (100d / 60d * Nexus.getBoUniverse().currentRound) / 100;
+					double tfsProgress = (100d / Nexus.getBoUniverse().maxNumberOfRoundsForSeason * Nexus.getBoUniverse().currentRound) / 100;
 					TFSProgress.setProgress(tfsProgress);
+					if (tfsProgress > 1) {
+						TFSProgress.lookup(".bar").setStyle("-fx-background-color: -fx-box-border, #ff0000");
+					}
 				});
 				break;
 

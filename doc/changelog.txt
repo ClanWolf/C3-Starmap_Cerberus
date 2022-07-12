@@ -1,6 +1,9 @@
 C3 version history
 --------------------------------
 
+Version 7.0.31 (11.07.2022)
+- FIXED: Max number of rounds for a season taken from DB
+
 Version 7.0.28 (08.07.2022)
 - ADDED: Motivation samples
 - FIXED: Bug where Close button was not enabled at the end of an invasion
