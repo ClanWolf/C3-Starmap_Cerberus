@@ -40,6 +40,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityTransaction;
+import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.invoke.MethodHandles;
@@ -482,6 +483,9 @@ public class EndRound {
 
 				endRoundInfo.addObject(re.getMessage());
 				endRoundInfo.setAction_successfully(Boolean.FALSE);
+			} catch (Exception e) {
+				e.printStackTrace();
+				logger.error("Finalize round", e);
 			} finally {
 				C3Room.sendBroadcastMessage(endRoundInfo);
 			}

@@ -33,12 +33,14 @@ import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.FactionDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.RolePlayCharacterDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.StatsMwoDAO;
 import net.clanwolf.starmap.server.persistence.pojos.*;
+import net.clanwolf.starmap.server.reporting.GenerateRoundReport;
 import net.clanwolf.starmap.transfer.mwo.MWOMatchResult;
 import net.clanwolf.starmap.transfer.mwo.UserDetail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
+import java.io.FileNotFoundException;
 import java.lang.invoke.MethodHandles;
 
 import java.util.ArrayList;
@@ -56,6 +58,8 @@ public class CalcXP {
     private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     private final TextFormattingHelper tfh = new TextFormattingHelper();
+    private final GenerateRoundReport report = new GenerateRoundReport();
+
 
     /**
      * Erstellt einen Bericht, die als Nachricht versendet werden kann.
@@ -85,12 +89,13 @@ public class CalcXP {
      *
      * @param attackStats Die AttackStatsPOJO
      */
-    public CalcXP(AttackStatsPOJO attackStats) throws RuntimeException {
+    public CalcXP(AttackStatsPOJO attackStats) throws Exception {
         String mwoMatchID = attackStats.getMwoMatchId();
         StatsMwoDAO statsMwoDAO = net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.StatsMwoDAO.getInstance();
         StatsMwoPOJO statsMwoPOJO = statsMwoDAO.findByMWOGameId(mwoMatchID);
         String rawJSONstatsData = statsMwoPOJO.getRawData();
         MWOMatchResult matchDetails = new Gson().fromJson(rawJSONstatsData, MWOMatchResult.class);
+
 
         RolePlayCharacterDAO characterDAO = RolePlayCharacterDAO.getInstance();
         ArrayList<RolePlayCharacterPOJO> allCharacter = characterDAO.getAllCharacter();
@@ -98,11 +103,11 @@ public class CalcXP {
         FactionPOJO factionAttacker = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, attackStats.getAttackerFactionId());
         FactionPOJO factionDefender = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, attackStats.getDefenderFactionId());
 
-        String columnWidthDefault = "%-20.20s";
         logger.info("--- Calculate the XP [" + factionAttacker.getShortName() + "] versus [" + factionDefender.getShortName() + "] (MatchID: " + mwoMatchID + " )---");
 
         tfh.startXPReport();
         tfh.addGameInfo(attackStats);
+        report.addGameInfo(attackStats, matchDetails);
 
         boolean bFound;
         long currentUserXP;
