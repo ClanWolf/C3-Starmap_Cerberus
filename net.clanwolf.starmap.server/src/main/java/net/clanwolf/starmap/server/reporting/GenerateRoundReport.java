@@ -42,7 +42,6 @@ import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.borders.SolidBorder;
 import com.itextpdf.layout.element.*;
 
-
 import com.itextpdf.layout.properties.HorizontalAlignment;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
@@ -195,7 +194,7 @@ public class GenerateRoundReport {
 	    Image imageFaction = new Image(imageFactionData);
 	    doc.add(imageFaction);
 
-        try {
+	    try {
 
             String isoDatePattern = "yyyy-MM-dd'T'HH:mm:ssXXX";
             DateFormat dateFormat = new SimpleDateFormat(isoDatePattern);
