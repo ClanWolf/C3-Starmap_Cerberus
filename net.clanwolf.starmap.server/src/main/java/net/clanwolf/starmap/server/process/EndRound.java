@@ -34,6 +34,7 @@ import net.clanwolf.starmap.server.beans.C3Room;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.*;
 import net.clanwolf.starmap.server.persistence.pojos.*;
+import net.clanwolf.starmap.server.reporting.GenerateRoundReport;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import org.slf4j.Logger;
@@ -250,6 +251,8 @@ public class EndRound {
 						long balanceDefender = 0L;
 						DecimalFormat nf = new DecimalFormat();
 
+						GenerateRoundReport report = new GenerateRoundReport(attackPOJO);
+
 						for (AttackStatsPOJO asp : statisticsList) {
 							FactionPOJO factionAttacker = FactionDAO.getInstance().findById(Nexus.END_ROUND, asp.getAttackerFactionId());
 							FactionPOJO factionDefender = FactionDAO.getInstance().findById(Nexus.END_ROUND, asp.getDefenderFactionId());
@@ -262,9 +265,10 @@ public class EndRound {
 							balanceDefender += calcB.getDefenderRepairCost();
 							repairCostReport.append(calcB.getMailMessage());
 							logger.info("Current balance attacker[" + factionAttacker.getShortName() + "]:" + nf.format(balanceAttacker) + " --- Current balance defender[ " + factionDefender.getShortName() + "]" + nf.format(balanceDefender));
-							CalcXP calcXP = new CalcXP(asp);
+							CalcXP calcXP = new CalcXP(asp,report);
 							xpReport.append(calcXP.getMailMessage());
 						}
+						report.saveReport();
 						String[] receivers = {"keshik@googlegroups.com"};
 						boolean sent;
 						StringBuilder subject = new StringBuilder();

@@ -40,7 +40,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 
-import java.io.FileNotFoundException;
 import java.lang.invoke.MethodHandles;
 
 import java.util.ArrayList;
@@ -52,14 +51,146 @@ import static net.clanwolf.starmap.constants.Constants.*;
  * Diese Klasse berechnet die XP
  *
  * @author KERNREAKTOR
- * @version 1.0.1
+ * @version 1.0.2
  */
 public class CalcXP {
     private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     private final TextFormattingHelper tfh = new TextFormattingHelper();
-    private final GenerateRoundReport report = new GenerateRoundReport();
 
+    private String userName;
+    private Long userXPVictoryLoss;
+    private Long userXPComponentsDestroyed;
+    private String descriptionComponentDestroyed;
+    private Long userXPMatchScore;
+    private  String descriptionMatchScore;
+    private Long userXPDamage;
+    private String descriptionDamage;
+
+    public String getDescriptionComponentDestroyed() {
+        descriptionComponentDestroyed = XP_REWARD_COMPONENT_DESTROYED * userDetail.getComponentsDestroyed() +
+                " XP (" +  getUserXPComponentsDestroyed() +
+                " Component destroyed)";
+        return descriptionComponentDestroyed;
+    }
+
+    public void setDescriptionComponentDestroyed(String descriptionComponentDestroyed) {
+        this.descriptionComponentDestroyed = descriptionComponentDestroyed;
+    }
+
+    public String getDescriptionMatchScore() {
+        descriptionMatchScore = getUserXPMatchScore() + " XP (Match-score: " + userDetail.getMatchScore() + ")";
+        return descriptionMatchScore;
+    }
+
+    public void setDescriptionMatchScore(String descriptionMatchScore) {
+        this.descriptionMatchScore = descriptionMatchScore;
+    }
+
+    public String getDescriptionDamage() {
+        descriptionDamage = getUserXPDamage() + " XP (Damage: " + userDetail.getDamage() + ")";
+        return descriptionDamage;
+    }
+
+    public void setDescriptionDamage(String descriptionDamage) {
+        this.descriptionDamage = descriptionDamage;
+    }
+
+    private UserDetail userDetail;
+    private MWOMatchResult matchResult;
+    private Long userXPBeforeCalc;
+    private Long userXPCurrent = 0L;
+    private Long userXPTotal;
+    private RolePlayCharacterPOJO currentCharacter;
+
+    public Long getUserXPCurrent() {
+        return userXPCurrent;
+    }
+
+    public void setUserXPCurrent(Long userXPCurrent) {
+        this.userXPCurrent = userXPCurrent;
+    }
+
+    public Long getUserXPTotal() {
+        userXPTotal = userXPCurrent + userXPBeforeCalc;
+        return userXPTotal;
+    }
+
+    public void setUserXPTotal(Long userXPTotal) {
+        this.userXPTotal = userXPTotal;
+    }
+
+    public Long getUserXPBeforeCalc() {
+        if(currentCharacter.getXp() == null){
+            userXPBeforeCalc = 0L;
+        } else {
+            userXPBeforeCalc = Long.valueOf(currentCharacter.getXp());
+        }
+        return userXPBeforeCalc;
+    }
+
+    public void setUserXPBeforeCalc(Long userXPBeforeCalc) {
+        this.userXPBeforeCalc = userXPBeforeCalc;
+    }
+
+    public String getUserName() {
+        userName = userDetail.getUsername();
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public Long getUserXPVictoryLoss() {
+        if (this.matchResult.getMatchDetails().getWinningTeam().equals(userDetail.getTeam())) {
+
+            //Spieler befindet sich im Gewinner Team
+            userXPVictoryLoss = XP_REWARD_VICTORY;
+
+        } else {
+
+            //Spieler befindet sich im Verlierer Team
+            userXPVictoryLoss = XP_REWARD_LOSS;
+
+        }
+        userXPCurrent = userXPCurrent +userXPVictoryLoss;
+        return userXPVictoryLoss;
+    }
+
+    public void setUserXPVictoryLoss(Long userXPVictoryLoss) {
+        this.userXPVictoryLoss = userXPVictoryLoss;
+    }
+
+    public Long getUserXPComponentsDestroyed() {
+        userXPComponentsDestroyed = XP_REWARD_COMPONENT_DESTROYED * userDetail.getComponentsDestroyed();
+        userXPCurrent = userXPCurrent + userXPComponentsDestroyed;
+        return userXPComponentsDestroyed;
+    }
+
+    public void setUserXPComponentsDestroyed(Long userXPComponentsDestroyed) {
+        this.userXPComponentsDestroyed = userXPComponentsDestroyed;
+    }
+
+    public Long getUserXPMatchScore() {
+        userXPMatchScore = CalcRange(userDetail.getMatchScore().longValue(), XP_REWARD_EACH_MATCH_SCORE_RANGE) * XP_REWARD_EACH_MATCH_SCORE;
+        userXPCurrent = userXPCurrent + userXPMatchScore;
+        return userXPMatchScore;
+    }
+
+    public void setUserXPMatchScore(Long userXPMatchScore) {
+        this.userXPMatchScore = userXPMatchScore;
+    }
+
+    public Long getUserXPDamage() {
+        userXPDamage = CalcRange(userDetail.getDamage().longValue(), XP_REWARD_EACH_DAMAGE_RANGE);
+        userXPCurrent = userXPCurrent + userXPDamage;
+        return userXPDamage;
+    }
+
+    public void setUserXPDamage(Long userXPDamage) {
+        this.userXPDamage = userXPDamage;
+    }
 
     /**
      * Erstellt einen Bericht, die als Nachricht versendet werden kann.
@@ -84,12 +215,18 @@ public class CalcXP {
         return (value - rest) / range;
     }
 
+    public CalcXP(UserDetail userDetail, MWOMatchResult matchResult, RolePlayCharacterPOJO currentCharacter) {
+        this.userDetail = userDetail;
+        this.matchResult = matchResult;
+        this.currentCharacter = currentCharacter;
+    }
+
     /**
      * Berechnet die XP der jeweiligen Spieler
      *
      * @param attackStats Die AttackStatsPOJO
      */
-    public CalcXP(AttackStatsPOJO attackStats) throws Exception {
+    public CalcXP(AttackStatsPOJO attackStats, GenerateRoundReport report) throws Exception {
         String mwoMatchID = attackStats.getMwoMatchId();
         StatsMwoDAO statsMwoDAO = net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.StatsMwoDAO.getInstance();
         StatsMwoPOJO statsMwoPOJO = statsMwoDAO.findByMWOGameId(mwoMatchID);
@@ -139,6 +276,7 @@ public class CalcXP {
 
                             } else {
 
+                                report.addXPForTeam(userDetail,matchDetails,currentCharacter);
                                 tfh.addAppendText("XP distribution for the user " + userDetail.getUsername());
                                 if (matchDetails.getMatchDetails().getWinningTeam().equals(userDetail.getTeam())) {
 
@@ -153,6 +291,7 @@ public class CalcXP {
                                     currentUserXP = currentUserXP + XP_REWARD_LOSS;
 
                                 }
+
 
                                 tfh.addXPComponentDestroyed(userDetail.getComponentsDestroyed());
                                 currentUserXP = currentUserXP + XP_REWARD_COMPONENT_DESTROYED * userDetail.getComponentsDestroyed();
@@ -193,6 +332,7 @@ public class CalcXP {
             logger.error(re.getMessage());
             transaction.rollback();
         }*/
+        report.finishXPReport();
         tfh.addAppendText("---End from the report of XP distribution---");
     }
 }
