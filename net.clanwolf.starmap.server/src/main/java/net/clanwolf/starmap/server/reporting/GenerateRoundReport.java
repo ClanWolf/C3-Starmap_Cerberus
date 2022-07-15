@@ -70,7 +70,6 @@ import java.util.Objects;
 
 import static net.clanwolf.starmap.constants.Constants.*;
 
-
 // https://www.tutorialspoint.com/itext/itext_adding_paragraph.htm
 
 public class GenerateRoundReport {
