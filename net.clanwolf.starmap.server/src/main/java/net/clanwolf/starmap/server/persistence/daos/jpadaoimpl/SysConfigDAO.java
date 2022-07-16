@@ -26,7 +26,9 @@
  */
 package net.clanwolf.starmap.server.persistence.daos.jpadaoimpl;
 
+import net.clanwolf.starmap.server.persistence.CriteriaHelper;
 import net.clanwolf.starmap.server.persistence.daos.GenericDAO;
+import net.clanwolf.starmap.server.persistence.pojos.StatsMwoPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.SysConfigPOJO;
 
 /**
@@ -64,5 +66,12 @@ public class SysConfigDAO extends GenericDAO {
 	@Override
 	public SysConfigPOJO findById(Long userID, Long id) {
 		return (SysConfigPOJO) super.findById(userID, SysConfigPOJO.class, id);
+	}
+
+	public SysConfigPOJO findByKey(Long userID, String key) {
+		CriteriaHelper crit = new CriteriaHelper(SysConfigPOJO.class);
+
+		crit.addCriteria("key", key);
+		return (SysConfigPOJO) crit.getSingleResult();
 	}
 }

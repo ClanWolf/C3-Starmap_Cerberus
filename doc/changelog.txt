@@ -1,6 +1,10 @@
 C3 version history
 --------------------------------
 
+Version 7.1.0 (15.07.2022)
+- CHANGED: Season reset on DB
+- ADDED: PDF Round report
+
 Version 7.0.31 (11.07.2022)
 - FIXED: Max number of rounds for a season taken from DB
 

@@ -1,4 +1,5 @@
 
+TODO_C3:    Runde wird in Phasen unterteilt
 
 TODO_C3:    !!! Banner am Ende der Invasion entsprechend der Fraktion
 TODO_C3:    !!! Kampf beendet: anderes bild

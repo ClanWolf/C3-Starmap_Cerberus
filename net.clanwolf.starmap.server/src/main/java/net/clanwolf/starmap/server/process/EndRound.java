@@ -190,7 +190,28 @@ public class EndRound {
 		StringBuilder movedJumpships = new StringBuilder();
 		//forceFinalize.set(true);
 
-		if ((jumpshipsLeftToMove || attacksLeftToResolveInRound) && !(timeForThisRoundIsOver(seasonId)) && !forceFinalize.get()) {
+		//TODO_C3: Runde-Phasen
+//		Runde wird in Phasen unterteilt:
+//		1 = Bewegung
+//		2 = Kampf
+//      Wenn Runde beendet wird und es ist grade Bewegungsphase, dann kommt die Kampfphase und der Sprungbutton wird deaktiviert
+//      Wenn die Runde dann wieder beendet wird, kommt nächste Runde und wieder Bewegungsphase und der Sprungbutton wird wieder aktiviert
+//      Die aktuelle Phase wird im Client angezeigt
+
+		// Festlegen, wie lange dauert die Bewegungsphase
+		// Festlegen, wie lange dauert die Kampfphase
+
+		// Spalte anlegen in Season:
+		// - Days in Movement phase (DaysInRound umbenennen (?))
+		// - Days in Combat phase
+
+		// sonst würde man beim automatischen Runde beenden und 7 Tage Dauer immer 2 Wochen warten, wenn ein Kampf
+		// offen bleibt
+
+
+
+
+		if ((jumpshipsLeftToMove || attacksLeftToResolveInRound) &&	!(timeForThisRoundIsOver(seasonId)) && !forceFinalize.get()) {
 			// round is still active
 			logger.info("Round is still active.");
 			logger.info("--- " + jscount + " jumpship have not moved.");
