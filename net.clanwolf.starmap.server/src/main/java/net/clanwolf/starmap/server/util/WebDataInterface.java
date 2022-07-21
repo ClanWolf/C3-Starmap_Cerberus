@@ -67,6 +67,7 @@ public class WebDataInterface {
 
 		Long season = GameServer.getCurrentSeason();
 		Long round = RoundDAO.getInstance().findBySeasonId(season).getRound();
+		Long roundPhase = RoundDAO.getInstance().findBySeasonId(season).getRoundPhase();
 		Date date = RoundDAO.getInstance().findBySeasonId(season).getCurrentRoundStartDate();
 		String dateS = simpleDateFormat.format(date);
 
@@ -83,9 +84,12 @@ public class WebDataInterface {
 		universe.currentSeason = season.intValue();
 		universe.currentSeasonMetaPhase = seasonMetaPhase.intValue();
 		universe.currentRound = round.intValue();
+		universe.currentRoundPhase = roundPhase.intValue();
 		universe.currentDate = dateS;
 		universe.maxNumberOfRoundsForSeason = seasonPOJO.getSerpentArrivalRound().intValue();
 		universe.numberOfDaysInRound = seasonPOJO.getDaysInRound().intValue();
+		universe.numberOfDaysInRoundMovementPhase = seasonPOJO.getDaysInRoundMovementPhase().intValue();
+		universe.numberOfDaysInRoundCombatPhase = seasonPOJO.getDaysInRoundCombatPhase().intValue();
 		return universe;
 	}
 

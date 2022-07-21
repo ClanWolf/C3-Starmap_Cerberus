@@ -1,6 +1,9 @@
 C3 version history
 --------------------------------
 
+Version 7.1.2 (19.07.2022)
+- PREPARED: Round phases (movement and combat)
+
 Version 7.1.0 (15.07.2022)
 - CHANGED: Season reset on DB
 - ADDED: PDF Round report

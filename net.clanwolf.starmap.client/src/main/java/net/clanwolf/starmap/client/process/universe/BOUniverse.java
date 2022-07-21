@@ -58,9 +58,12 @@ public class BOUniverse {
 	public Integer currentSeason;
 	public Integer currentSeasonMetaPhase;
 	public Integer currentRound;
+	public Integer currentRoundPhase;
 	public String currentDate;
 	public Integer maxNumberOfRoundsForSeason;
 	public Integer numberOfDaysInRound;
+	public Integer numberOfDaysInRoundMovementPhase;
+	public Integer numberOfDaysInRoundCombatPhase;
 
 	public VoronoiResults voronoiResults = null;
 	public Subdivision delaunaySubdivision = null;
@@ -155,9 +158,12 @@ public class BOUniverse {
 		currentSeason = universeDTO.currentSeason;
 		currentSeasonMetaPhase = universeDTO.currentSeasonMetaPhase;
 		currentRound = universeDTO.currentRound;
+		currentRoundPhase = universeDTO.currentRoundPhase;
 		currentDate = universeDTO.currentDate;
 		maxNumberOfRoundsForSeason = universeDTO.maxNumberOfRoundsForSeason;
 		numberOfDaysInRound = universeDTO.numberOfDaysInRound;
+		numberOfDaysInRoundMovementPhase = universeDTO.numberOfDaysInRoundMovementPhase;
+		numberOfDaysInRoundCombatPhase = universeDTO.numberOfDaysInRoundCombatPhase;
 	}
 
 	public synchronized void setUniverseDTO(UniverseDTO uniDTO) {
@@ -178,9 +184,12 @@ public class BOUniverse {
 		this.currentSeason = this.universeDTO.currentSeason;
 		this.currentSeasonMetaPhase = this.universeDTO.currentSeasonMetaPhase;
 		this.currentRound = this.universeDTO.currentRound;
+		this.currentRoundPhase = this.universeDTO.currentRoundPhase;
 		this.currentDate = this.universeDTO.currentDate;
 		this.maxNumberOfRoundsForSeason = this.universeDTO.maxNumberOfRoundsForSeason;
-		numberOfDaysInRound = universeDTO.numberOfDaysInRound;
+		this.numberOfDaysInRound = this.universeDTO.numberOfDaysInRound;
+		this.numberOfDaysInRoundMovementPhase = this.universeDTO.numberOfDaysInRoundMovementPhase;
+		this.numberOfDaysInRoundCombatPhase = this.universeDTO.numberOfDaysInRoundCombatPhase;
 
 		for (StarSystemDataDTO starSystemDataDTO : universeDTO.starSystems.values()) {
 			BOStarSystem ss = starSystemBOs.get(starSystemDataDTO.getStarSystemID().getId());

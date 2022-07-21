@@ -26,7 +26,7 @@
 
 		<!-- C3 Revision -->
 		<!-- https://stackoverflow.com/questions/10582054/maven-project-version-inheritance-do-i-have-to-specify-the-parent-version -->
-		<revision>7.1.0</revision>
+		<revision>7.1.2</revision>
 
 		<!-- Versions -->
 		<version.java>18</version.java> <!-- Maven compiler plugin 3.10.1 does not support Java18 -->
@@ -46,7 +46,7 @@
 		<!-- IF this version is changed:                                        -->
 		<!-- * ENTER the new versions into the manifest (server.pom)            -->
 		<!-- and upload the files manually!                                     -->
-		<version.hibernate_hikaricp>6.0.0.Final</version.hibernate_hikaricp>
+		<version.hibernate_hikaricp>6.1.1.Final</version.hibernate_hikaricp>
 		<version.hikaricp>5.0.1</version.hikaricp>
 		<itext.version>7.2.2</itext.version>
 	</properties>

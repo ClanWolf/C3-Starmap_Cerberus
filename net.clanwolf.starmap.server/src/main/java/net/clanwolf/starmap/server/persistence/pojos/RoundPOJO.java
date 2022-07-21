@@ -51,6 +51,9 @@ public class RoundPOJO extends Pojo {
 	@Column(name = "Round")
 	private Long round;
 
+	@Column(name = "RoundPhase")
+	private Long roundPhase;
+
 	@Column(name = "Season")
 	private Long season;
 
@@ -88,6 +91,16 @@ public class RoundPOJO extends Pojo {
 	@SuppressWarnings("unused")
 	public void setRound(Long round) {
 		this.round = round;
+	}
+
+	@SuppressWarnings("unused")
+	public Long getRoundPhase() {
+		return roundPhase;
+	}
+
+	@SuppressWarnings("unused")
+	public void setRoundPhase(Long roundPhase) {
+		this.roundPhase = roundPhase;
 	}
 
 	@SuppressWarnings("unused")

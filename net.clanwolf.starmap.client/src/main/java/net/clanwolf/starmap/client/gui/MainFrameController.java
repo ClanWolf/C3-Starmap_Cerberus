@@ -1709,7 +1709,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					}
 					enableMainMenuButtons(Nexus.isLoggedIn(), Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN));
 					BOUniverse boUniverse = Nexus.getBoUniverse();
-					gameInfoLabel.setText("S" + boUniverse.currentSeason + " R" + boUniverse.currentRound + "/" + boUniverse.maxNumberOfRoundsForSeason + " " + Tools.getRomanNumber(boUniverse.currentSeasonMetaPhase) + " - " + boUniverse.currentDate);
+					gameInfoLabel.setText("S" + boUniverse.currentSeason + " R" + boUniverse.currentRound + "[" + (boUniverse.currentRoundPhase == 1 ? "." : ":") + "]" + "/" + boUniverse.maxNumberOfRoundsForSeason + " " + Tools.getRomanNumber(boUniverse.currentSeasonMetaPhase) + " - " + boUniverse.currentDate);
 
 					labelTFSProgress.setText(boUniverse.currentRound + " / " + boUniverse.maxNumberOfRoundsForSeason);
 
@@ -2014,7 +2014,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			case UPDATE_GAME_INFO:
 				Platform.runLater(() -> {
 					BOUniverse boUniverse = Nexus.getBoUniverse();
-					gameInfoLabel.setText("S" + boUniverse.currentSeason + "*" + Tools.getRomanNumber(boUniverse.currentSeasonMetaPhase) + "/R" + boUniverse.currentRound + " - " + boUniverse.currentDate);
+
+					gameInfoLabel.setText("S" + boUniverse.currentSeason + " R" + boUniverse.currentRound + "[" + (boUniverse.currentRoundPhase == 1 ? "." : ":") + "]" + "/" + boUniverse.maxNumberOfRoundsForSeason + " " + Tools.getRomanNumber(boUniverse.currentSeasonMetaPhase) + " - " + boUniverse.currentDate);
+//					gameInfoLabel.setText("S" + boUniverse.currentSeason + "*" + Tools.getRomanNumber(boUniverse.currentSeasonMetaPhase) + "/R" + boUniverse.currentRound + " - " + boUniverse.currentDate);
 
 					double tfsProgress = (100d / Nexus.getBoUniverse().maxNumberOfRoundsForSeason * Nexus.getBoUniverse().currentRound) / 100;
 					TFSProgress.setProgress(tfsProgress);
