@@ -166,6 +166,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private Label databaseAccessibleIndicatorLabelHoverHelper;
 	@FXML
 	private Label versionLabel;
+
 	@FXML
 	private Label labelWaitText;
 	// @FXML

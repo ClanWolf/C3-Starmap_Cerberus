@@ -7,8 +7,9 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="LoginPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/17" fx:controller="net.clanwolf.starmap.client.gui.panes.map.MapPaneController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="LoginPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/18" fx:controller="net.clanwolf.starmap.client.gui.panes.map.MapPaneController">
 	<children>
       <ImageView fx:id="templateBackground" fitHeight="567.0" fitWidth="944.0" layoutX="-70.0" layoutY="-22.0" mouseTransparent="true" opacity="0.74" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
@@ -47,6 +48,11 @@
             <Button fx:id="mapButton05" alignment="CENTER_RIGHT" layoutX="78.0" layoutY="103.0" mnemonicParsing="false" onAction="#handleNextJumpshipButtonClick" prefHeight="37.0" prefWidth="62.0" styleClass="contentButtonClean" stylesheets="@../styles/MainFrameStyle.css" text="&gt;" />
          </children>
       </Pane>
+      <Label fx:id="roundPhaseLabel" layoutX="93.0" layoutY="35.0" prefHeight="37.0" prefWidth="209.0" text="..." textFill="#eaf548">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
 	</children>
 	<stylesheets>
 		<URL value="@../styles/MainFrameStyle.css" />

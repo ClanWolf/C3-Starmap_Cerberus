@@ -109,6 +109,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	@FXML
 	Label labelSystemName;
 	@FXML
+	private Label roundPhaseLabel;
+	@FXML
 	ImageView labelSystemImage;
 	@FXML
 	ImageView labelFactionImage;
@@ -1264,6 +1266,12 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			setStrings();
 			logger.info("Finished to build the starmap.");
 
+			if (boUniverse.currentRoundPhase == 1) {
+				roundPhaseLabel.setText("Movement Phase");
+			} else {
+				roundPhaseLabel.setText("Combat Phase");
+			}
+
 			ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("12");
 			ActionManager.getAction(ACTIONS.MAP_CREATION_FINISHED).execute();
 		}
@@ -1655,6 +1663,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		ActionManager.addActionCallbackListener(ACTIONS.REPAINT_MAP, this);
 		ActionManager.addActionCallbackListener(ACTIONS.FINALIZE_ROUND, this);
 		ActionManager.addActionCallbackListener(ACTIONS.SHOW_FORBIDDEN_ICON_MAP, this);
+		ActionManager.addActionCallbackListener(ACTIONS.UPDATE_GAME_INFO, this);
 	}
 
 	/**
@@ -1929,6 +1938,14 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					ivForbidden.toFront();
 					ivForbidden.setVisible(b);
 				});
+				break;
+
+			case UPDATE_GAME_INFO:
+				if (boUniverse.currentRoundPhase == 1) {
+					roundPhaseLabel.setText("Movement Phase");
+				} else {
+					roundPhaseLabel.setText("Combat Phase");
+				}
 				break;
 
 			default:
