@@ -88,8 +88,8 @@ public class WebDataInterface {
 		universe.currentDate = dateS;
 		universe.maxNumberOfRoundsForSeason = seasonPOJO.getSerpentArrivalRound().intValue();
 		universe.numberOfDaysInRound = seasonPOJO.getDaysInRound().intValue();
-		universe.numberOfDaysInRoundMovementPhase = seasonPOJO.getDaysInRoundMovementPhase().intValue();
-		universe.numberOfDaysInRoundCombatPhase = seasonPOJO.getDaysInRoundCombatPhase().intValue();
+//		universe.numberOfDaysInRoundMovementPhase = seasonPOJO.getDaysInRoundMovementPhase().intValue();
+//		universe.numberOfDaysInRoundCombatPhase = seasonPOJO.getDaysInRoundCombatPhase().intValue();
 		return universe;
 	}
 

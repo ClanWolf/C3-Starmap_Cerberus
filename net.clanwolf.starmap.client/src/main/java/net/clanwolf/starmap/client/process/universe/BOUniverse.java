@@ -162,8 +162,8 @@ public class BOUniverse {
 		currentDate = universeDTO.currentDate;
 		maxNumberOfRoundsForSeason = universeDTO.maxNumberOfRoundsForSeason;
 		numberOfDaysInRound = universeDTO.numberOfDaysInRound;
-		numberOfDaysInRoundMovementPhase = universeDTO.numberOfDaysInRoundMovementPhase;
-		numberOfDaysInRoundCombatPhase = universeDTO.numberOfDaysInRoundCombatPhase;
+//		numberOfDaysInRoundMovementPhase = universeDTO.numberOfDaysInRoundMovementPhase;
+//		numberOfDaysInRoundCombatPhase = universeDTO.numberOfDaysInRoundCombatPhase;
 	}
 
 	public synchronized void setUniverseDTO(UniverseDTO uniDTO) {
@@ -188,8 +188,8 @@ public class BOUniverse {
 		this.currentDate = this.universeDTO.currentDate;
 		this.maxNumberOfRoundsForSeason = this.universeDTO.maxNumberOfRoundsForSeason;
 		this.numberOfDaysInRound = this.universeDTO.numberOfDaysInRound;
-		this.numberOfDaysInRoundMovementPhase = this.universeDTO.numberOfDaysInRoundMovementPhase;
-		this.numberOfDaysInRoundCombatPhase = this.universeDTO.numberOfDaysInRoundCombatPhase;
+//		this.numberOfDaysInRoundMovementPhase = this.universeDTO.numberOfDaysInRoundMovementPhase;
+//		this.numberOfDaysInRoundCombatPhase = this.universeDTO.numberOfDaysInRoundCombatPhase;
 
 		for (StarSystemDataDTO starSystemDataDTO : universeDTO.starSystems.values()) {
 			BOStarSystem ss = starSystemBOs.get(starSystemDataDTO.getStarSystemID().getId());
