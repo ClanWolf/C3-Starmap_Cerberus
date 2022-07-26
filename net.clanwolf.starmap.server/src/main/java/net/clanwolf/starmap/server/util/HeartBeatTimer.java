@@ -98,17 +98,18 @@ public class HeartBeatTimer extends TimerTask {
 
 			String resultProtocol = EndRound.finalizeRound(seasonId, round);
 
-			logger.info("Calling list creation (Factions)...");
+			logger.info("Calling list creation methods...");
+//			logger.info("Calling list creation (Factions)...");
 			WebDataInterface.createSystemList(SystemListTypes.Factions);
-			logger.info("Calling list creation (HH_StarSystems)...");
+//			logger.info("Calling list creation (HH_StarSystems)...");
 			WebDataInterface.createSystemList(SystemListTypes.HH_StarSystems);
-			logger.info("Calling list creation (HH_Attacks)...");
+//			logger.info("Calling list creation (HH_Attacks)...");
 			WebDataInterface.createSystemList(SystemListTypes.HH_Attacks);
-			logger.info("Calling list creation (HH_Jumpships)...");
+//			logger.info("Calling list creation (HH_Jumpships)...");
 			WebDataInterface.createSystemList(SystemListTypes.HH_Jumpships);
-			logger.info("Calling list creation (HH_Routepoints)...");
+//			logger.info("Calling list creation (HH_Routepoints)...");
 			WebDataInterface.createSystemList(SystemListTypes.HH_Routepoints);
-			logger.info("Calling list creation (CM_StarSystems)...");
+//			logger.info("Calling list creation (CM_StarSystems)...");
 			WebDataInterface.createSystemList(SystemListTypes.CM_StarSystems);
 
 			if (!"".equals(resultProtocol)) {

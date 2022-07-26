@@ -41,13 +41,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityTransaction;
-import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.invoke.MethodHandles;
 import java.sql.Date;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -62,31 +66,40 @@ public class EndRound {
 		forceFinalize.set(v);
 	}
 
+	private static LocalDateTime convertToLocalDateTime(Date dateToConvert) {
+		return new java.sql.Timestamp(dateToConvert.getTime()).toLocalDateTime();
+	}
+
+	// BOTH methods are needed!
+	public static LocalDateTime addDaysToDate(LocalDateTime localDateTime, int daysToAdd) {
+		return localDateTime.plusDays(daysToAdd);
+	}
+
+	// BOTH methods are needed!
 	public static Date addDaysToDate(Date date, int daysToAdd) {
 		Calendar c = Calendar.getInstance();
 		c.setTime(date);
 		c.add(Calendar.DAY_OF_MONTH, daysToAdd);
-
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		String newDateString = sdf.format(c.getTime());
 
 		return Date.valueOf(newDateString);
 	}
 
-	public static Date getRoundDate(Long seasonId, int additionalRounds) {
+	public static LocalDateTime getRoundDate(Long seasonId, int additionalRounds) {
 		SeasonDAO dao = SeasonDAO.getInstance();
 		SeasonPOJO season = (SeasonPOJO) dao.findById(SeasonPOJO.class, seasonId);
 		Date seasonStartDate = season.getStartDate();
 
 		RoundDAO roundDAO = RoundDAO.getInstance();
 		RoundPOJO roundPOJO = roundDAO.findBySeasonId(seasonId);
-		Date currentRoundStartDate = roundPOJO.getCurrentRoundStartDate();
+		LocalDateTime currentRoundStartDate = roundPOJO.getCurrentRoundStartDate();
 
 		if (currentRoundStartDate == null) {
 			// this seems to be the first round in this season (?)
 			logger.info("Round date for current round is null! Setting round date to season start date.");
 
-			roundPOJO.setCurrentRoundStartDate(seasonStartDate);
+			roundPOJO.setCurrentRoundStartDate(convertToLocalDateTime(seasonStartDate));
 
 			EntityTransaction transaction = EntityManagerHelper.getEntityManager(Nexus.DUMMY_USERID).getTransaction();
 			try {
@@ -98,31 +111,46 @@ public class EndRound {
 				transaction.rollback();
 				logger.error("Setting round date to season start date", re);
 			}
-			currentRoundStartDate = seasonStartDate;
+			currentRoundStartDate = convertToLocalDateTime(seasonStartDate);
 		}
 
 		int daysToAdd = additionalRounds * season.getDaysInRound().intValue();
 		return addDaysToDate(currentRoundStartDate, daysToAdd);
 	}
 
-	public static Date getCurrentRoundDate(Long seasonId) {
+	public static LocalDateTime getCurrentRoundDate(Long seasonId) {
 		return getRoundDate(seasonId, 0); // current round, no additional rounds
 	}
 
-	public static Date getNextRoundDate(Long seasonId) {
+	public static LocalDateTime getNextRoundDate(Long seasonId) {
 		return getRoundDate(seasonId, 1); // adding one round (x days) to get the start of next round
 	}
 
 	private static boolean timeForThisRoundIsOver(Long seasonId) {
-		Date nextRoundDate = getNextRoundDate(seasonId);
-		Date translatedNowDate = translateRealDateToSeasonTime(new Date(System.currentTimeMillis()), 1L);
+		LocalDateTime translatedNowDateWithTime = null;
+		LocalDateTime nextRoundDate = null;
+		try {
+			nextRoundDate = getNextRoundDate(seasonId);
+			Date translatedNowDate = translateRealDateToSeasonTime(new Date(System.currentTimeMillis()), 1L);
 
-		SimpleDateFormat dateFormatter = new SimpleDateFormat("E yyyy.MM.dd 'at' hh:mm:ss a zzz");
-		logger.info("nextRoundDate: " + dateFormatter.format(nextRoundDate));
-		logger.info("translatedNowDate: " + dateFormatter.format(translatedNowDate));
+			LocalDate localDate = new java.util.Date(translatedNowDate.getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			LocalTime now = LocalTime.now();
+			translatedNowDateWithTime = LocalDateTime.of(localDate, now);
 
-		// round is officially over
-		return !nextRoundDate.after(translatedNowDate); // the end of the round has not been reached on the calendar
+			DateTimeFormatter dateTimeformatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss");
+
+			logger.info("Next round date: " + dateTimeformatter.format(nextRoundDate));
+			logger.info("Translated now date: " + dateTimeformatter.format(translatedNowDateWithTime));
+		} catch (Exception e) {
+			logger.error("Error in date check.", e);
+		}
+		// round is officially over?
+		if (nextRoundDate != null && translatedNowDateWithTime != null) {
+			// the end of the round has not been reached on the calendar
+			return !nextRoundDate.isAfter(translatedNowDateWithTime);
+		} else {
+			return false;
+		}
 	}
 
 	public static Date translateRealDateToSeasonTime(Date date, Long seasonId) {
@@ -135,7 +163,7 @@ public class EndRound {
 		int seasonStartYear = c.get(Calendar.YEAR);
 		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
 
-		int diff = (int) Math.abs((seasonStartYear - currentYear) * 365.243); // Days in year and Schaltjahr factor
+		int diff = (int) Math.abs((seasonStartYear - currentYear) * 365.243); // Days in year + leap year factor
 
 		//		LocalDateTime date1 = new Timestamp(seasonStartDate.getTime()).toLocalDateTime();
 		//		LocalDateTime date2 = new Timestamp(date.getTime()).toLocalDateTime();
@@ -168,10 +196,16 @@ public class EndRound {
 			}
 		}
 
-		logger.debug("Current date: " + new Date(System.currentTimeMillis()));
-		logger.debug("Translated current date: " + translateRealDateToSeasonTime(new Date(System.currentTimeMillis()), 1L));
-		logger.debug("Current round date: " + getCurrentRoundDate(seasonId));
-		logger.debug("Next round date: " + getNextRoundDate(seasonId));
+//		try {
+//			DateTimeFormatter dateTimeformatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss");
+//			logger.debug("Current date: " + new Date(System.currentTimeMillis()));
+//			logger.debug("Translated current date: " + translateRealDateToSeasonTime(new Date(System.currentTimeMillis()), 1L));
+//			logger.debug("Current round date: " + dateTimeformatter.format(getCurrentRoundDate(seasonId)));
+//			logger.debug("Next round date: " + dateTimeformatter.format(getNextRoundDate(seasonId)));
+//		} catch (Exception e) {
+//			System.out.println(e.getMessage());
+//			logger.error("Date conversion error.", e);
+//		}
 
 		boolean jumpshipsLeftToMove = false;
 		int jscount = 0;
@@ -188,7 +222,11 @@ public class EndRound {
 		StringBuilder foughtAttacks = new StringBuilder();
 		StringBuilder resolvedAttacks = new StringBuilder();
 		StringBuilder movedJumpships = new StringBuilder();
+
+		// ---------------------------------------------------------------------------------
+		// Uncomment this only, if you need the end to be finalized anyway for local tests!
 		//forceFinalize.set(true);
+		// ---------------------------------------------------------------------------------
 
 		//TODO_C3: Runde-Phasen
 //		Runde wird in Phasen unterteilt:
@@ -208,9 +246,7 @@ public class EndRound {
 		// sonst würde man beim automatischen Runde beenden und 7 Tage Dauer immer 2 Wochen warten, wenn ein Kampf
 		// offen bleibt
 
-
-
-
+		logger.info("Checking if current round needs to be finalized.");
 		if ((jumpshipsLeftToMove || attacksLeftToResolveInRound) &&	!(timeForThisRoundIsOver(seasonId)) && !forceFinalize.get()) {
 			// round is still active
 			logger.info("Round is still active.");
@@ -218,6 +254,7 @@ public class EndRound {
 			logger.info("--- " + openAttacksInRoundList.size() + " attacks still to be resolved.");
 			logger.info("--- There is still time left to make moves for this round!");
 		} else {
+			logger.info("Finalizing the round:");
 			forceFinalize.set(false);
 
 			EntityTransaction transaction = EntityManagerHelper.getEntityManager(Nexus.END_ROUND).getTransaction();
@@ -230,7 +267,6 @@ public class EndRound {
 				transaction.begin();
 				EntityManagerHelper.clear(Nexus.END_ROUND);
 				// here is no ship left to move AND no attack left open OR the time for the round is up
-				logger.info("Finalizing the round:");
 				logger.info("--- There is NO time left for this round!");
 
 				// set all open attacks to resolved (decide on a winner in the process!)
@@ -362,12 +398,17 @@ public class EndRound {
 					}
 				}
 
+				// TODO_C3: Check this! Set start date of a new round always to NOW, not a calculated date in future, because there the dates run apart over time
+				// We might set the time to 00:00 on sundays and 12:00 on wednesdays if this was not a forced end of round ???
+
 				//			roundPOJO.setCurrentRoundStartDate(getNextRoundDate(seasonId));
-				// TODO: Check this! Set start date of a new round always to NOW, not a calculated date in future, because there the dates run apart over time
-				roundPOJO.setCurrentRoundStartDate(translateRealDateToSeasonTime(new Date(System.currentTimeMillis()), seasonId));
+				Date d = translateRealDateToSeasonTime(new Date(System.currentTimeMillis()), seasonId);
+				LocalDate localDate = new java.util.Date(d.getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+				LocalTime now = LocalTime.now(); // 00:00 for regular and now for forced ???
+				LocalDateTime translatedNowDateWithTime = LocalDateTime.of(localDate, now);
+				roundPOJO.setCurrentRoundStartDate(translatedNowDateWithTime);
 
 				// Save everything to the database
-
 				AttackDAO attackDAO = AttackDAO.getInstance();
 				JumpshipDAO jumpshipDAO = JumpshipDAO.getInstance();
 				RoundDAO roundDAO = RoundDAO.getInstance();
@@ -376,7 +417,7 @@ public class EndRound {
 
 				roundDAO.update(Nexus.END_ROUND, roundPOJO);
 				for (JumpshipPOJO jumpshipPOJO : jumpshipList) {
-					//					jumpshipDAO.refresh(Nexus.END_ROUND, jumpshipPOJO);
+					// jumpshipDAO.refresh(Nexus.END_ROUND, jumpshipPOJO);
 					jumpshipDAO.update(Nexus.END_ROUND, jumpshipPOJO);
 				}
 				//for (AttackPOJO attackPOJO : openAttacksInRoundList) {

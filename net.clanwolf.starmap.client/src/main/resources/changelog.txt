@@ -1,8 +1,14 @@
 C3 version history
 --------------------------------
 
-Version 7.1.3 (22.07.2022)
+Version 7.1.15 (26.07.2022)
+- CHANGED: Round dates to use time in addition to the date
+
+Version 7.1.4 (22.07.2022)
+- UPDATED: Manual
+- UPDATED: Round reports further improved
 - ADDED: Motivational sounds english versions
+- ADDED: Tree scheme for Clan vs. Clan invasion
 - PREPARED: Round phases (movement and combat)
 
 Version 7.1.0 (15.07.2022)
@@ -10,7 +16,7 @@ Version 7.1.0 (15.07.2022)
 - ADDED: PDF Round report
 
 Version 7.0.31 (11.07.2022)
-- FIXED: Max number of rounds for a season taken from DB
+- FIXED: Max number of rounds for a season used from DB
 
 Version 7.0.28 (08.07.2022)
 - ADDED: Motivation samples

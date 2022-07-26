@@ -37,7 +37,6 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.invoke.MethodHandles;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -47,7 +46,6 @@ import java.util.Properties;
  */
 public class EntityManagerHelper {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-
 	private static final EntityManagerFactory emf;
 	private static final HashMap<Object, EntityManager> emMap = new HashMap<>();
 
@@ -82,7 +80,7 @@ public class EntityManagerHelper {
 		return emf.createEntityManager();
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unused")
 	public static void clearCache() {
 		logger.info("Clearing hibernate cache.");
 		try {
@@ -101,7 +99,7 @@ public class EntityManagerHelper {
 		EntityManager manager = emMap.get(userID);
 
 		if (manager == null || !manager.isOpen()) {
-			logger.info("Create new EntityManager for UserPOJO ID: " + userID);
+//			logger.info("Create new EntityManager for UserPOJO ID: " + userID);
 
 			manager = emf.createEntityManager();
 			emMap.put(userID, manager);
@@ -122,7 +120,7 @@ public class EntityManagerHelper {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings("unused")
 	public void refresh(Object entity) {
 		logger.info("Refreshing instance (" + entity.getClass().getName() + ")");
 		try {

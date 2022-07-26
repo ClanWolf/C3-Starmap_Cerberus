@@ -1952,20 +1952,22 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				break;
 
 			case UPDATE_GAME_INFO:
-				if (boUniverse.currentRoundPhase == 1) {
-					roundPhaseLabel.setText(Internationalization.getString("app_map_phase_movement"));
-					//TODO_C3: Enable / disable jump and attack buttons
-					mapButton01.setTooltip(new Tooltip(Internationalization.getString("app_map_phase_movement"))); // confirm
-//					mapButton01.setDisable(false);
-					mapButton06.setTooltip(new Tooltip(Internationalization.getString("app_map_phase_movement"))); // Attack / join battle
-//					mapButton06.setDisable(true);
-				} else {
-					roundPhaseLabel.setText(Internationalization.getString("app_map_phase_combat"));
-					//TODO_C3: Enable / disable jump and attack buttons
-					mapButton01.setTooltip(new Tooltip(Internationalization.getString("app_map_phase_combat"))); // confirm
-//					mapButton01.setDisable(true);
-					mapButton06.setTooltip(new Tooltip(Internationalization.getString("app_map_phase_combat"))); // Attack / join battle
-//					mapButton06.setDisable(false);
+				if (boUniverse != null) {
+					if (boUniverse.currentRoundPhase == 1) {
+						roundPhaseLabel.setText(Internationalization.getString("app_map_phase_movement"));
+						//TODO_C3: Enable / disable jump and attack buttons
+						mapButton01.setTooltip(new Tooltip(Internationalization.getString("app_map_phase_movement"))); // confirm
+						//					mapButton01.setDisable(false);
+						mapButton06.setTooltip(new Tooltip(Internationalization.getString("app_map_phase_movement"))); // Attack / join battle
+						//					mapButton06.setDisable(true);
+					} else {
+						roundPhaseLabel.setText(Internationalization.getString("app_map_phase_combat"));
+						//TODO_C3: Enable / disable jump and attack buttons
+						mapButton01.setTooltip(new Tooltip(Internationalization.getString("app_map_phase_combat"))); // confirm
+						//					mapButton01.setDisable(true);
+						mapButton06.setTooltip(new Tooltip(Internationalization.getString("app_map_phase_combat"))); // Attack / join battle
+						//					mapButton06.setDisable(false);
+					}
 				}
 				break;
 

@@ -40,15 +40,15 @@ import net.clanwolf.starmap.transfer.dtos.*;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig.Feature;
 import org.hibernate.Session;
-import org.hibernate.jdbc.ReturningWork;
 import org.json.simple.JSONValue;
 
 import javax.persistence.EntityManager;
 import java.io.*;
 import java.lang.invoke.MethodHandles;
 import java.sql.*;
-import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 /**
@@ -62,14 +62,15 @@ public class WebDataInterface {
 	private static boolean initialized = false;
 
 	public static UniverseDTO getUniverse() {
-		String pattern = "dd.MM.yyyy";
+		String pattern = "dd.MM.yyyy HH:mm:ss";
+		DateTimeFormatter dateTimeformatter = DateTimeFormatter.ofPattern(pattern);
 		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 
 		Long season = GameServer.getCurrentSeason();
 		Long round = RoundDAO.getInstance().findBySeasonId(season).getRound();
 		Long roundPhase = RoundDAO.getInstance().findBySeasonId(season).getRoundPhase();
-		Date date = RoundDAO.getInstance().findBySeasonId(season).getCurrentRoundStartDate();
-		String dateS = simpleDateFormat.format(date);
+		LocalDateTime date = RoundDAO.getInstance().findBySeasonId(season).getCurrentRoundStartDate();
+		String dateS = dateTimeformatter.format(date);
 
 		SeasonDAO dao = SeasonDAO.getInstance();
 		SeasonPOJO seasonPOJO = (SeasonPOJO) dao.findById(SeasonPOJO.class, season);
@@ -88,8 +89,6 @@ public class WebDataInterface {
 		universe.currentDate = dateS;
 		universe.maxNumberOfRoundsForSeason = seasonPOJO.getSerpentArrivalRound().intValue();
 		universe.numberOfDaysInRound = seasonPOJO.getDaysInRound().intValue();
-//		universe.numberOfDaysInRoundMovementPhase = seasonPOJO.getDaysInRoundMovementPhase().intValue();
-//		universe.numberOfDaysInRoundCombatPhase = seasonPOJO.getDaysInRoundCombatPhase().intValue();
 		return universe;
 	}
 
@@ -355,19 +354,19 @@ public class WebDataInterface {
 
 		if (type == SystemListTypes.HH_Attacks) {
 			systemsList = loadAttacks();
-			logger.info("Created universe classes (Attacks)...");
+//			logger.info("Created universe classes (Attacks)...");
 		}
 		if (type == SystemListTypes.HH_Jumpships) {
 			systemsList = loadJumpshipsAndRoutePoints();
-			logger.info("Created universe classes (Jumpships)...");
+//			logger.info("Created universe classes (Jumpships)...");
 		}
 		if (type == SystemListTypes.Factions) {
 			systemsList = loadFactions();
-			logger.info("Created universe classes (Factions)...");
+//			logger.info("Created universe classes (Factions)...");
 		}
 		if (type == SystemListTypes.HH_StarSystems) {
 			systemsList = load_HH_StarSystemData();
-			logger.info("Created universe classes (HH_StarSystems)...");
+//			logger.info("Created universe classes (HH_StarSystems)...");
 		}
 
 		if (type == SystemListTypes.CM_StarSystems) {
@@ -382,7 +381,7 @@ public class WebDataInterface {
 				String systemsList1 = null;
 				try (PreparedStatement stmt = conn.prepareStatement(selects.get(type.name()), ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE)) {
 					rs = stmt.executeQuery();
-					logger.info("Select done...");
+//					logger.info("Select done...");
 
 					// create JSON representation
 					rs.beforeFirst();
@@ -437,8 +436,8 @@ public class WebDataInterface {
 
 			if (!(pathHH == null || pathCM == null)) {
 
-				logger.info("Writing json files for ChaosMarch to: " + pathCM);
-				logger.info("Writing json files for HammerHead to: " + pathHH);
+//				logger.info("Writing json files for ChaosMarch to: " + pathCM);
+//				logger.info("Writing json files for HammerHead to: " + pathHH);
 
 //				decodedPath = URLDecoder.decode(path, "UTF-8");
 //				File f = new File(decodedPath);
@@ -456,8 +455,8 @@ public class WebDataInterface {
 				mapDataFileCM.getParentFile().mkdirs();
 
 //				logger.info("Wrote file: " + filename);
-				logger.info("Wrote file: " + filenameHH);
-				logger.info("Wrote file: " + filenameCM);
+//				logger.info("Wrote file: " + filenameHH);
+//				logger.info("Wrote file: " + filenameCM);
 			}
 		} catch (Exception e) {
 			logger.error("Error creating mapdata file", e);

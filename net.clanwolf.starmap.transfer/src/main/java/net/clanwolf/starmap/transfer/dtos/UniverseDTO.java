@@ -30,7 +30,6 @@ import net.clanwolf.starmap.transfer.Dto;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
 public class UniverseDTO extends Dto {
 	public HashMap<Long, StarSystemDataDTO> starSystems = new HashMap<>();
@@ -49,6 +48,4 @@ public class UniverseDTO extends Dto {
 	public String currentDate;
 	public Integer numberOfDaysInRound;
 	public Integer maxNumberOfRoundsForSeason;
-//	public Integer numberOfDaysInRoundMovementPhase;
-//	public Integer numberOfDaysInRoundCombatPhase;
 }

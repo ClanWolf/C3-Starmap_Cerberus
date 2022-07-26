@@ -31,7 +31,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import net.clanwolf.starmap.server.persistence.Pojo;
 
 import javax.persistence.*;
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 import static javax.persistence.GenerationType.IDENTITY;
 
@@ -57,19 +57,16 @@ public class RoundPOJO extends Pojo {
 	@Column(name = "Season")
 	private Long season;
 
-//	@Column(name = "CurrentPhase")
-//	private Long currentPhase;
-
 	@Column(name = "CurrentRoundStartDate")
-	private Date currentRoundStartDate;
+	private LocalDateTime currentRoundStartDate;
 
 	@SuppressWarnings("unused")
-	public Date getCurrentRoundStartDate() {
+	public LocalDateTime getCurrentRoundStartDate() {
 		return currentRoundStartDate;
 	}
 
 	@SuppressWarnings("unused")
-	public void setCurrentRoundStartDate(Date currentRoundStartDate) {
+	public void setCurrentRoundStartDate(LocalDateTime currentRoundStartDate) {
 		this.currentRoundStartDate = currentRoundStartDate;
 	}
 
@@ -112,14 +109,4 @@ public class RoundPOJO extends Pojo {
 	public void setSeason(Long season) {
 		this.season = season;
 	}
-
-//	@SuppressWarnings("unused")
-//	public Long getCurrentPhase() {
-//		return currentPhase;
-//	}
-//
-//	@SuppressWarnings("unused")
-//	public void setCurrentPhase(Long currentPhase) {
-//		this.currentPhase = currentPhase;
-//	}
 }

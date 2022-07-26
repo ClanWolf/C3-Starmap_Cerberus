@@ -70,41 +70,15 @@ public class SeasonPOJO extends Pojo {
 	@Column(name = "DaysInRound")
 	private Long daysInRound;
 
-//	@Column(name = "DaysInRoundMovementPhase")
-//	private Long daysInRoundMovementPhase;
-//
-//	@Column(name = "DaysInRoundCombatPhase")
-//	private Long daysInRoundCombatPhase;
-
 	@SuppressWarnings("unused")
 	public Long getDaysInRound() {
 		return daysInRound;
 	}
 
-//	@SuppressWarnings("unused")
-//	public Long getDaysInRoundMovementPhase() {
-//		return daysInRoundMovementPhase;
-//	}
-//
-//	@SuppressWarnings("unused")
-//	public void setDaysInRoundMovementPhase(Long daysInRoundMovementPhase) {
-//		this.daysInRoundMovementPhase = daysInRoundMovementPhase;
-//	}
-
 	@SuppressWarnings("unused")
 	public void setDaysInRound(Long daysInRound) {
 		this.daysInRound = daysInRound;
 	}
-
-//	@SuppressWarnings("unused")
-//	public Long getDaysInRoundCombatPhase() {
-//		return daysInRoundCombatPhase;
-//	}
-//
-//	@SuppressWarnings("unused")
-//	public void setDaysInRoundComvatPhase(Long daysInRoundCombatPhase) {
-//		this.daysInRoundCombatPhase = daysInRoundCombatPhase;
-//	}
 
 	@SuppressWarnings("unused")
 	public Long getId() {
