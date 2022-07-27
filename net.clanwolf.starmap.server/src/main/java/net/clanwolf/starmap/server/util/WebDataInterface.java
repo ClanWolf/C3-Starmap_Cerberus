@@ -88,7 +88,7 @@ public class WebDataInterface {
 		universe.currentRoundPhase = roundPhase.intValue();
 		universe.currentDate = dateS;
 		universe.maxNumberOfRoundsForSeason = seasonPOJO.getSerpentArrivalRound().intValue();
-		universe.numberOfDaysInRound = seasonPOJO.getDaysInRound().intValue();
+		universe.numberOfDaysInRound = seasonPOJO.getDaysInRound();
 		return universe;
 	}
 
@@ -348,7 +348,7 @@ public class WebDataInterface {
 	public static void createSystemList(SystemListTypes type) {
 		initialize();
 		String systemsList = "";
-		logger.info("Creating universe lists: " + type.name());
+//		logger.info("Creating universe lists: " + type.name());
 
 		getUniverse();
 

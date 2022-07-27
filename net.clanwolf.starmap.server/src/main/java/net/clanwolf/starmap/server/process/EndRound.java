@@ -71,8 +71,12 @@ public class EndRound {
 	}
 
 	// BOTH methods are needed!
-	public static LocalDateTime addDaysToDate(LocalDateTime localDateTime, int daysToAdd) {
-		return localDateTime.plusDays(daysToAdd);
+	public static LocalDateTime addDaysToDate(LocalDateTime localDateTime, double daysToAdd) {
+		double hoursToAdd = daysToAdd * 24;
+		LocalDateTime newTime = localDateTime.plusHours((int) hoursToAdd);
+		logger.info("Number of hours to add until end of next round: " + hoursToAdd);
+		logger.info("New time for next round to end: " + newTime);
+		return newTime; // removes anything behind decimal point -> rounded hours
 	}
 
 	// BOTH methods are needed!
@@ -114,8 +118,8 @@ public class EndRound {
 			currentRoundStartDate = convertToLocalDateTime(seasonStartDate);
 		}
 
-		int daysToAdd = additionalRounds * season.getDaysInRound().intValue();
-		return addDaysToDate(currentRoundStartDate, daysToAdd);
+		double daysToAdd = additionalRounds * season.getDaysInRound();
+		return addDaysToDate(currentRoundStartDate, daysToAdd); // this calculates hours and adds hours
 	}
 
 	public static LocalDateTime getCurrentRoundDate(Long seasonId) {
@@ -185,6 +189,7 @@ public class EndRound {
 	}
 
 	public synchronized static String finalizeRound(Long seasonId, int round) {
+		logger.info("**********************************************************************************************");
 		logger.info("Checking on end of round.");
 		ArrayList<JumpshipPOJO> jumpshipList = JumpshipDAO.getInstance().getAllJumpships();
 		ArrayList<AttackPOJO> openAttacksInRoundList = new ArrayList<>();
@@ -227,24 +232,6 @@ public class EndRound {
 		// Uncomment this only, if you need the end to be finalized anyway for local tests!
 		//forceFinalize.set(true);
 		// ---------------------------------------------------------------------------------
-
-		//TODO_C3: Runde-Phasen
-//		Runde wird in Phasen unterteilt:
-//		1 = Bewegung
-//		2 = Kampf
-//      Wenn Runde beendet wird und es ist grade Bewegungsphase, dann kommt die Kampfphase und der Sprungbutton wird deaktiviert
-//      Wenn die Runde dann wieder beendet wird, kommt nächste Runde und wieder Bewegungsphase und der Sprungbutton wird wieder aktiviert
-//      Die aktuelle Phase wird im Client angezeigt
-
-		// Festlegen, wie lange dauert die Bewegungsphase
-		// Festlegen, wie lange dauert die Kampfphase
-
-		// Spalte anlegen in Season:
-		// - Days in Movement phase (DaysInRound umbenennen (?))
-		// - Days in Combat phase
-
-		// sonst würde man beim automatischen Runde beenden und 7 Tage Dauer immer 2 Wochen warten, wenn ein Kampf
-		// offen bleibt
 
 		logger.info("Checking if current round needs to be finalized.");
 		if ((jumpshipsLeftToMove || attacksLeftToResolveInRound) &&	!(timeForThisRoundIsOver(seasonId)) && !forceFinalize.get()) {
@@ -398,13 +385,9 @@ public class EndRound {
 					}
 				}
 
-				// TODO_C3: Check this! Set start date of a new round always to NOW, not a calculated date in future, because there the dates run apart over time
-				// We might set the time to 00:00 on sundays and 12:00 on wednesdays if this was not a forced end of round ???
-
-				//			roundPOJO.setCurrentRoundStartDate(getNextRoundDate(seasonId));
 				Date d = translateRealDateToSeasonTime(new Date(System.currentTimeMillis()), seasonId);
 				LocalDate localDate = new java.util.Date(d.getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-				LocalTime now = LocalTime.now(); // 00:00 for regular and now for forced ???
+				LocalTime now = LocalTime.now();
 				LocalDateTime translatedNowDateWithTime = LocalDateTime.of(localDate, now);
 				roundPOJO.setCurrentRoundStartDate(translatedNowDateWithTime);
 

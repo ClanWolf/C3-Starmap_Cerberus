@@ -1,6 +1,9 @@
 C3 version history
 --------------------------------
 
+Version 7.1.17 (27.07.2022)
+- UPDATED: Calculations of round timing
+
 Version 7.1.15 (26.07.2022)
 - CHANGED: Round dates to use time in addition to the date
 

@@ -46,6 +46,6 @@ public class UniverseDTO extends Dto {
 	public Integer currentRound;
 	public Integer currentRoundPhase;
 	public String currentDate;
-	public Integer numberOfDaysInRound;
+	public Double numberOfDaysInRound;
 	public Integer maxNumberOfRoundsForSeason;
 }
