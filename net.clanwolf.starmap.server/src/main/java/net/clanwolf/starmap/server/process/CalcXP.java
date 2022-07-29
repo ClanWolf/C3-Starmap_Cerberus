@@ -242,8 +242,8 @@ public class CalcXP {
 
         logger.info("--- Calculate the XP [" + factionAttacker.getShortName() + "] versus [" + factionDefender.getShortName() + "] (MatchID: " + mwoMatchID + " )---");
 
-        tfh.startXPReport();
-        tfh.addGameInfo(attackStats);
+        //tfh.startXPReport();
+        //tfh.addGameInfo(attackStats);
         report.addGameInfo(attackStats, matchDetails);
 
         boolean bFound;
@@ -272,37 +272,38 @@ public class CalcXP {
 
                                 //Spieler befindet sich im Spectator
                                 logger.error(userDetail.getUsername() + " was there as a spectator and does not get XP.");
-                                tfh.addAppendText(userDetail.getUsername() + " was there as a spectator and does not get XP.");
+                                report.addXPWarning(userDetail.getUsername() + " was there as a spectator and does not get XP.");
+                                //tfh.addAppendText(userDetail.getUsername() + " was there as a spectator and does not get XP.");
 
                             } else {
 
                                 report.addXPForTeam(userDetail,matchDetails,currentCharacter);
-                                tfh.addAppendText("XP distribution for the user " + userDetail.getUsername());
+                                //tfh.addAppendText("XP distribution for the user " + userDetail.getUsername());
                                 if (matchDetails.getMatchDetails().getWinningTeam().equals(userDetail.getTeam())) {
 
                                     //Spieler befindet sich im Gewinner Team
-                                    tfh.addTwoColumnsText("Victory", XP_REWARD_VICTORY + " XP");
+                                    //tfh.addTwoColumnsText("Victory", XP_REWARD_VICTORY + " XP");
                                     currentUserXP = currentUserXP + XP_REWARD_VICTORY;
 
                                 } else {
 
                                     //Spieler befindet sich im Verlierer Team
-                                    tfh.addTwoColumnsText("Loss", XP_REWARD_LOSS + " XP");
+                                    //tfh.addTwoColumnsText("Loss", XP_REWARD_LOSS + " XP");
                                     currentUserXP = currentUserXP + XP_REWARD_LOSS;
 
                                 }
 
 
-                                tfh.addXPComponentDestroyed(userDetail.getComponentsDestroyed());
+                                //tfh.addXPComponentDestroyed(userDetail.getComponentsDestroyed());
                                 currentUserXP = currentUserXP + XP_REWARD_COMPONENT_DESTROYED * userDetail.getComponentsDestroyed();
 
-                                tfh.addXPMatchScore(userDetail.getMatchScore());
+                                //tfh.addXPMatchScore(userDetail.getMatchScore());
                                 currentUserXP = currentUserXP + CalcRange(userDetail.getMatchScore().longValue(), XP_REWARD_EACH_MATCH_SCORE_RANGE) * XP_REWARD_EACH_MATCH_SCORE;
 
-                                tfh.addXPDamage(userDetail.getDamage());
+                                //tfh.addXPDamage(userDetail.getDamage());
                                 currentUserXP = currentUserXP + CalcRange(userDetail.getDamage().longValue(), XP_REWARD_EACH_DAMAGE_RANGE);
 
-                                tfh.addTwoColumnsText("XP total:", currentUserXP + " XP\r\n");
+                                //tfh.addTwoColumnsText("XP total:", currentUserXP + " XP\r\n");
 
                                 if (currentCharacter.getXp() != null) {
 
@@ -322,7 +323,8 @@ public class CalcXP {
             if (!bFound) {
 
                 logger.info("User " + userDetail.getUsername() + " does not receive XP because his MWO username was not found in the C3 database.");
-                tfh.addAppendText("User " + userDetail.getUsername() + " does not receive XP because his MWO username was not found in the C3 database.\r\n");
+                report.addXPWarning("User " + userDetail.getUsername() + " does not receive XP because his MWO username was not found in the C3 database.");
+                //tfh.addAppendText("User " + userDetail.getUsername() + " does not receive XP because his MWO username was not found in the C3 database.\r\n");
 
             }
         }
@@ -333,6 +335,6 @@ public class CalcXP {
             transaction.rollback();
         }*/
         report.finishXPReport();
-        tfh.addAppendText("---End from the report of XP distribution---");
+        //tfh.addAppendText("---End from the report of XP distribution---");
     }
 }
