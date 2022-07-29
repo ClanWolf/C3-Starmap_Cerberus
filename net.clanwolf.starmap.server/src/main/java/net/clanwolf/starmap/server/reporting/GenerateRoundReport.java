@@ -34,23 +34,25 @@ import com.itextpdf.kernel.colors.DeviceRgb;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
 import com.itextpdf.kernel.geom.PageSize;
+import com.itextpdf.kernel.geom.Rectangle;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
+import com.itextpdf.kernel.pdf.action.PdfAction;
+import com.itextpdf.kernel.pdf.annot.PdfAnnotation;
+import com.itextpdf.kernel.pdf.annot.PdfLinkAnnotation;
+import com.itextpdf.kernel.pdf.navigation.PdfExplicitDestination;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.borders.SolidBorder;
 import com.itextpdf.layout.element.*;
 
-import com.itextpdf.layout.properties.HorizontalAlignment;
-import com.itextpdf.layout.properties.TextAlignment;
-import com.itextpdf.layout.properties.UnitValue;
-import com.itextpdf.layout.properties.VerticalAlignment;
+import com.itextpdf.layout.properties.*;
 import net.clanwolf.starmap.server.Nexus.Nexus;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.FactionDAO;
-import net.clanwolf.starmap.server.persistence.pojos.AttackPOJO;
-import net.clanwolf.starmap.server.persistence.pojos.AttackStatsPOJO;
-import net.clanwolf.starmap.server.persistence.pojos.FactionPOJO;
-import net.clanwolf.starmap.server.persistence.pojos.RolePlayCharacterPOJO;
+import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.StarSystemDAO;
+import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.SysConfigDAO;
+import net.clanwolf.starmap.server.persistence.pojos.*;
+import net.clanwolf.starmap.server.process.BalanceUserInfo;
 import net.clanwolf.starmap.server.process.CalcXP;
 import net.clanwolf.starmap.transfer.mwo.MWOMatchResult;
 import net.clanwolf.starmap.transfer.mwo.MatchDetails;
@@ -64,6 +66,7 @@ import java.lang.invoke.MethodHandles;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
@@ -79,13 +82,159 @@ public class GenerateRoundReport {
     private Integer team1Counter = 0;
     private Integer team2Counter = 0;
     private boolean factionTableAdded = false;
-    private Table tableXPTeam1 = new Table(new float[6]).useAllAvailableWidth();
-    private Table tableXPTeam2 = new Table(new float[6]).useAllAvailableWidth();
-    private final Border whiteBorder = new SolidBorder(new DeviceRgb(255, 255, 255), 1);
+    private Table tableXPTeam1;
+    private Table tableXPTeam2;
+    private List xpWarning;
+    private List costWarning;
+    private final Long starSystemID;
+    private final DecimalFormat nf = new DecimalFormat();
+    private Table tableXPTeam1Header;
+    private Table tableXPTeam2Header;
+    private final float[] columnWidthsXP = {2, 1, 2, 2, 1, 1,};
+    private final float[] columnWidthCost = {3, 1};
+    private Table tableCostDefender;
+    private Table tableCostAttacker;
+    private Cell cellCostDefender = new Cell();
+    private PdfDocument pdfDoc;
+    private final Border whiteBorder = new SolidBorder(new DeviceRgb(255, 255, 255), 0);
+    private int pageNumber = 2;
 
-    public GenerateRoundReport(AttackPOJO ap) throws IOException {
-        PdfDocument pdfDoc = new PdfDocument(new PdfWriter(DEST + "C3_S" + ap.getSeason() + "_R" + ap.getRound() + ".pdf"));
-        doc = new Document(pdfDoc, PageSize.A4.rotate());
+
+    public void addCostDefender(String description, Long amount) throws Exception {
+
+        if (tableCostDefender == null) {
+            team1Counter = 0;
+            tableCostDefender = new Table(UnitValue.createPercentArray(columnWidthCost))
+                    .setBorderBottom(whiteBorder)
+                    .setBorderLeft(whiteBorder)
+                    .setBorderRight(whiteBorder)
+                    .setBorderTop(whiteBorder)
+                    .useAllAvailableWidth()
+                    .setHorizontalAlignment(HorizontalAlignment.CENTER)
+                    .addCell(addTeam1Cell("Description"))
+                    .addCell(addTeam1Cell("Amount"));
+            team1Counter = 1;
+        }
+        switch (team1Counter) {
+            case -1 -> {
+                team1Counter=0;
+                tableCostDefender.addCell(addTeam1Cell(description).setTextAlignment(TextAlignment.LEFT))
+                        .addCell(addTeam1Cell(nf.format(amount) + " C-Bills").setTextAlignment(TextAlignment.RIGHT).setBold());
+                team1Counter = team1Counter + 1;
+            }
+            case 1 -> {
+                team1Counter = 0;
+                tableCostDefender.addCell(addTeam1Cell(description))
+                        .addCell(addTeam1Cell(" "));
+                team1Counter = 2;
+            }
+            default -> {
+                tableCostDefender.addCell(addTeam1Cell(description).setTextAlignment(TextAlignment.LEFT))
+                        .addCell(addTeam1Cell(nf.format(amount) + " C-Bills").setTextAlignment(TextAlignment.RIGHT));
+                team1Counter = team1Counter + 1;
+            }
+        }
+    }
+
+    public void addCostAttacker(String description, Long amount) throws Exception {
+
+        if (tableCostAttacker == null) {
+            team2Counter = 0;
+            tableCostAttacker = new Table(UnitValue.createPercentArray(columnWidthCost))
+                    .setBorderBottom(whiteBorder)
+                    .setBorderLeft(whiteBorder)
+                    .setBorderRight(whiteBorder)
+                    .setBorderTop(whiteBorder)
+                    .useAllAvailableWidth()
+                    .setHorizontalAlignment(HorizontalAlignment.CENTER)
+                    .addCell(addTeam2Cell("Description"))
+                    .addCell(addTeam2Cell("Amount"));
+            team2Counter = 1;
+        }
+        switch (team2Counter) {
+            case -1 -> {
+                team2Counter = 0;
+                tableCostAttacker.addCell(addTeam2Cell(description).setTextAlignment(TextAlignment.LEFT))
+                        .addCell(addTeam2Cell(nf.format(amount) + " C-Bills").setTextAlignment(TextAlignment.RIGHT).setBold());
+                team2Counter = team2Counter + 1;
+            }
+            case 1 -> {
+                team2Counter = 0;
+                tableCostAttacker.addCell(addTeam2Cell(description))
+                        .addCell(addTeam2Cell(" "));
+                team2Counter = 2;
+            }
+            default -> {
+                tableCostAttacker.addCell(addTeam2Cell(description).setTextAlignment(TextAlignment.LEFT))
+                        .addCell(addTeam2Cell(nf.format(amount) + " C-Bills").setTextAlignment(TextAlignment.RIGHT));
+                team2Counter = team2Counter + 1;
+            }
+        }
+    }
+
+    public void addXPWarning(String text) {
+        if (xpWarning == null) {
+            xpWarning = new List();
+        }
+        xpWarning.add(text).setFontSize(8).setFontColor(new DeviceRgb(255, 51, 0));
+    }
+
+    public void addCostWarning(String text) {
+        if (costWarning == null) {
+            costWarning = new List();
+        }
+
+        costWarning.add(text).setFontSize(8).setFontColor(new DeviceRgb(255, 51, 0));
+    }
+
+    public String getFactionType(Long factionType) {
+        String strType = null;
+        if (factionType == 1) {
+            strType = "Inner Sphere";
+        } else if (factionType == 2) {
+            strType = "Clan";
+        } else if (factionType == 3) {
+            strType = "Mercenary";
+        } else if (factionType == 4) {
+            strType = "Periphery";
+        } else if (factionType == 5) {
+            strType = "Pirate";
+        } else if (factionType == 6) {
+            strType = "Chaos March";
+        } else if (factionType == 7) {
+            strType = "ComStar";
+        } else if (factionType == 8) {
+            strType = "Republic of the Sphere";
+        } else if (factionType == 9) {
+            strType = "Neutral";
+        } else if (factionType == 10) {
+            strType = "Rebel";
+        } else if (factionType == 11) {
+            strType = "Trader";
+        }
+
+        return strType;
+    }
+
+    public GenerateRoundReport(AttackPOJO ap) throws Exception {
+        starSystemID = ap.getStarSystemID();
+        pdfDoc = new PdfDocument(new PdfWriter(DEST + "C3_S" + ap.getSeason() + "_R" + ap.getRound() + "_SSID" + ap.getStarSystemDataID() + ".pdf"));
+
+        tableXPTeam1 = new Table(UnitValue.createPercentArray(columnWidthsXP))
+                .useAllAvailableWidth()
+                .setHorizontalAlignment(HorizontalAlignment.CENTER);
+
+        tableXPTeam2 = new Table(UnitValue.createPercentArray(columnWidthsXP))
+                .useAllAvailableWidth()
+                .setHorizontalAlignment(HorizontalAlignment.CENTER);
+
+        tableCostDefender = new Table(UnitValue.createPercentArray(columnWidthCost))
+                .useAllAvailableWidth()
+                .setHorizontalAlignment(HorizontalAlignment.CENTER);
+
+        doc = new Document(pdfDoc, PageSize.A4);
+
+
     }
 
     static boolean urlExists(java.lang.String URL) {
@@ -105,43 +254,131 @@ public class GenerateRoundReport {
             return false;
         }
     }
-    public void saveReport() {
+
+    public void saveReport() throws IOException {
+
         doc.close();
     }
 
-    public void finishXPReport() {
+    public void finishCostReport() throws Exception {
+        if (!(costWarning == null)) {
+            doc.add(new Paragraph("The costs could not be calculated for the following players:").setFontSize(8).setBold())
+                    .add(costWarning)
+                    .add(new Paragraph());
+            costWarning = null;
+        }
+
+
+        doc.add(tableXPTeam1Header)
+                .add(tableCostDefender);
+
+        tableCostDefender = new Table(UnitValue.createPercentArray(columnWidthCost))
+                .setBorderBottom(whiteBorder)
+                .setBorderLeft(whiteBorder)
+                .setBorderRight(whiteBorder)
+                .setBorderTop(whiteBorder)
+                .useAllAvailableWidth()
+                .setHorizontalAlignment(HorizontalAlignment.CENTER);
+        tableCostAttacker = new Table(UnitValue.createPercentArray(columnWidthCost))
+                .setBorderBottom(whiteBorder)
+                .setBorderLeft(whiteBorder)
+                .setBorderRight(whiteBorder)
+                .setBorderTop(whiteBorder)
+                .useAllAvailableWidth()
+                .setHorizontalAlignment(HorizontalAlignment.CENTER);
         team1Counter = 0;
         team2Counter = 0;
-        doc.add(tableXPTeam1);
-        doc.add(new Paragraph());
-        doc.add(tableXPTeam2);
-        tableXPTeam2 = new Table(new float[6]).useAllAvailableWidth();
-        tableXPTeam1 = new Table(new float[6]).useAllAvailableWidth();
+
     }
 
-    public void addXPForTeam(UserDetail userDetail,MWOMatchResult matchResult, RolePlayCharacterPOJO currentCharacter) throws Exception {
-        CalcXP calcXP = new CalcXP(userDetail,matchResult,currentCharacter);
+    private void addTableOfContents(String description) {
+        PdfLinkAnnotation linkAnnotation = new PdfLinkAnnotation(new Rectangle(0, 0, 0, 0))
+                .setDestination(PdfExplicitDestination.createFit(pdfDoc.getPage(pageNumber)))
+                .setHighlightMode(PdfAnnotation.STYLE_UNDERLINE)
+                .setBorderStyle(PdfAnnotation.STYLE_UNDERLINE);
+
+        Link link = new Link(description, linkAnnotation);
+
+        doc.add(new Paragraph()
+                .add(link));
+        pageNumber = pageNumber + 1;
+
+    }
+
+    public void finishXPReport() throws Exception {
+
+        doc.add(new Paragraph("Calculation for XP distribution:").setFontSize(8).setBold());
+
+        List calcInfo = new List()
+                .setFontSize(8)
+                .add("Loss/Victory = " + XP_REWARD_VICTORY + " XP victory = " + XP_REWARD_LOSS + " XP loss")
+                .add("Components destroyed: " + XP_REWARD_COMPONENT_DESTROYED + " XP per destroyed component")
+                .add("Match-score: " + XP_REWARD_EACH_MATCH_SCORE + " XP for each reach " + XP_REWARD_EACH_MATCH_SCORE_RANGE + " match score")
+                .add("Damage: " + XP_REWARD_EACH_DAMAGE + " XP for ech reach " + XP_REWARD_EACH_DAMAGE_RANGE + " damage");
+
+        doc.add(calcInfo)
+                .add(new Paragraph());
+
+        Integer curCount = team1Counter;
+        for (int i = curCount; i < 13; i++) {
+
+            for (int j = 0; j < 6; j++) {
+                tableXPTeam1.addCell(addTeam1Cell("-"));
+            }
+            team1Counter = team1Counter + 1;
+        }
+        curCount = team2Counter;
+        for (int i = curCount; i < 13; i++) {
+
+            for (int j = 0; j < 6; j++) {
+                tableXPTeam2.addCell(addTeam2Cell("-"));
+            }
+            team2Counter = team2Counter + 1;
+        }
+
+        team1Counter = 0;
+        team2Counter = 0;
+
+        if (!(xpWarning == null)) {
+            doc.add(new Paragraph("The following players do not get XP:").setFontSize(8).setBold())
+                    .add(xpWarning)
+                    .add(new Paragraph());
+            xpWarning = null;
+        }
+
+        doc.add(tableXPTeam1Header)
+                .add(tableXPTeam1)
+                .add(new Paragraph())
+                .add(tableXPTeam2Header)
+                .add(tableXPTeam2);
+
+        tableXPTeam1 = new Table(UnitValue.createPercentArray(columnWidthsXP))
+                .useAllAvailableWidth()
+                .setHorizontalAlignment(HorizontalAlignment.CENTER);
+
+        tableXPTeam2 = new Table(UnitValue.createPercentArray(columnWidthsXP))
+                .useAllAvailableWidth()
+                .setHorizontalAlignment(HorizontalAlignment.CENTER);
+    }
+
+    public void addXPForTeam(UserDetail userDetail, MWOMatchResult matchResult, RolePlayCharacterPOJO currentCharacter) throws Exception {
+        CalcXP calcXP = new CalcXP(userDetail, matchResult, currentCharacter);
+
+
         if (Objects.equals(userDetail.getTeam(), "1")) {
             if (team1Counter == 0) {
 
-                Cell cell = new Cell(1, 6)
-                        .setBorder(whiteBorder)
-                        .add(addTeam1Cell("Team 1"));
-
                 tableXPTeam1
-                        .addCell(cell)
                         .addCell(addTeam1Cell("Username"))
-                        .addCell(addTeam1Cell("Victory = " + XP_REWARD_VICTORY + " XP\r\nLoss = " + XP_REWARD_LOSS + " XP"))
-                        .addCell(addTeam1Cell("Components destroyed\r\n" + XP_REWARD_COMPONENT_DESTROYED + " XP  per destroyed component"))
-                        .addCell(addTeam1Cell("Match-score\r\n" + XP_REWARD_EACH_MATCH_SCORE +
-                                " XP for each reach " + XP_REWARD_EACH_MATCH_SCORE_RANGE + " match score."))
-                        .addCell(addTeam1Cell("Damage\r\n" + XP_REWARD_EACH_DAMAGE +
-                                " XP for ech reach " + XP_REWARD_EACH_DAMAGE_RANGE + " damage"))
+                        .addCell(addTeam1Cell("Loss/Victory"))
+                        .addCell(addTeam1Cell("Components destroyed"))
+                        .addCell(addTeam1Cell("Match-score"))
+                        .addCell(addTeam1Cell("Damage"))
                         .addCell(addTeam1Cell("Earned XP"));
 
                 team1Counter = 1;
-
             }
+
             tableXPTeam1
                     .addCell(addTeam1Cell(calcXP.getUserName()))
                     .addCell(addTeam1Cell(calcXP.getUserXPVictoryLoss().toString() + " XP"))
@@ -154,19 +391,12 @@ public class GenerateRoundReport {
         if (Objects.equals(userDetail.getTeam(), "2")) {
             if (team2Counter == 0) {
 
-                Cell cell = new Cell(1, 6)
-                        .setBorder(whiteBorder)
-                        .add(addTeam2Cell("Team 2"));
-
                 tableXPTeam2
-                        .addCell(cell)
                         .addCell(addTeam2Cell("Username"))
-                        .addCell(addTeam2Cell("Victory = " + XP_REWARD_VICTORY + " XP\r\nLoss = " + XP_REWARD_LOSS + " XP"))
-                        .addCell(addTeam2Cell("Components destroyed\r\n" + XP_REWARD_COMPONENT_DESTROYED + " XP  per destroyed component"))
-                        .addCell(addTeam2Cell("Match-score\r\n" + XP_REWARD_EACH_MATCH_SCORE +
-                                " XP for each reach " + XP_REWARD_EACH_MATCH_SCORE_RANGE + " match score."))
-                        .addCell(addTeam2Cell("Damage\r\n" + XP_REWARD_EACH_DAMAGE +
-                                " XP for ech reach " + XP_REWARD_EACH_DAMAGE_RANGE + " damage"))
+                        .addCell(addTeam2Cell("Loss/Victory"))
+                        .addCell(addTeam2Cell("Components destroyed"))
+                        .addCell(addTeam2Cell("Match-score"))
+                        .addCell(addTeam2Cell("Damage"))
                         .addCell(addTeam2Cell("Earned XP"));
 
                 team2Counter = 1;
@@ -183,11 +413,60 @@ public class GenerateRoundReport {
         }
     }
 
-    public static void main(String[] args) {
-        File file = new File(DEST);
+    public static void main(String[] args) throws FileNotFoundException {
+        File file = new File("C:/itextExamples/textAnnotation.pdf");
         file.getParentFile().mkdirs();
+        // Creating a PdfWriter
+        String dest = "C:/itextExamples/textAnnotation.pdf";
+        PdfWriter writer = new PdfWriter(dest);
+
+        // Creating a PdfDocument
+        PdfDocument pdf = new PdfDocument(writer);
+
+        // Creating a Document
+        Document document = new Document(pdf);
 
 
+        Table t = new Table(new float[]{1, 1}).useAllAvailableWidth();
+        Table tableDef = new Table(new float[]{1, 1}).useAllAvailableWidth();
+        Table tableAtt = new Table(new float[]{1, 1}).useAllAvailableWidth();
+        //t.addCell(cell1);
+
+        Cell attCell = new Cell();
+        Cell defCell = new Cell();
+
+
+        Cell test = new Cell()
+                .add(tableAtt);
+
+        t.addCell(test);
+        test = new Cell()
+                .add(tableDef);
+        t.addCell(test);
+        document.add(t);
+        test = new Cell(2, 2)
+                .add(new Paragraph("1"))
+                .add(new Paragraph("2"))
+                .add(new Paragraph("3"));
+        t.addCell(test);
+        document.add(t);
+
+        // Closing the document
+        document.close();
+
+        System.out.println("Annotation added successfully");
+
+
+    }
+
+    private static Cell create2Cells(String description, String amount, Table t) {
+        Cell attCell = new Cell()
+                .add(new Paragraph(description));
+        t.addCell(attCell);
+
+        attCell = new Cell()
+                .add(new Paragraph(amount));
+        return attCell;
     }
 
     protected Boolean istGeradeZahl(Integer value) {
@@ -202,7 +481,7 @@ public class GenerateRoundReport {
 
         return new Cell()
                 .setFont(f)
-                .setFontSize(9)
+                .setFontSize(5)
                 .setTextAlignment(TextAlignment.CENTER)
                 .add(new Paragraph(Text))
                 .setBackgroundColor(new DeviceRgb(242, 242, 242))
@@ -213,7 +492,7 @@ public class GenerateRoundReport {
     }
 
     protected Cell addTeam1Cell(String Text) throws Exception {
-        Border whiteBorder = new SolidBorder(new DeviceRgb(255, 255, 255), 1);
+
         PdfFont f;
 
         DeviceRgb red;
@@ -236,7 +515,7 @@ public class GenerateRoundReport {
 
         return new Cell()
                 .setFont(f)
-                .setFontSize(8)
+                .setFontSize(5)
                 .setFontColor(fontColor)
                 .setTextAlignment(TextAlignment.CENTER)
                 .add(new Paragraph(Text))
@@ -247,15 +526,31 @@ public class GenerateRoundReport {
                 .setBorderTop(whiteBorder);
     }
 
-    protected Cell addWhiteCell(String Text) throws Exception {
-        Border whiteBorder = new SolidBorder(new DeviceRgb(255, 255, 255), 1);
+    protected Cell addWhiteCell(List list) throws Exception {
+
         PdfFont f;
 
         f = PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD);
 
         return new Cell()
                 .setFont(f)
-                .setFontSize(19)
+                .setFontSize(8)
+                .add(list)
+                .setBorderBottom(whiteBorder)
+                .setBorderLeft(whiteBorder)
+                .setBorderRight(whiteBorder)
+                .setBorderTop(whiteBorder);
+    }
+
+    protected Cell addWhiteCell(String Text) throws Exception {
+
+        PdfFont f;
+
+        f = PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD);
+
+        return new Cell()
+                .setFont(f)
+                .setFontSize(8)
                 .setTextAlignment(TextAlignment.CENTER)
                 .setHorizontalAlignment(HorizontalAlignment.CENTER)
                 .setVerticalAlignment(VerticalAlignment.MIDDLE)
@@ -267,7 +562,7 @@ public class GenerateRoundReport {
     }
 
     protected Cell addWhiteCell(Image image) {
-        Border whiteBorder = new SolidBorder(new DeviceRgb(255, 255, 255), 1);
+
 
         return new Cell()
                 .setHorizontalAlignment(HorizontalAlignment.CENTER)
@@ -280,7 +575,7 @@ public class GenerateRoundReport {
     }
 
     protected Cell addTeam2Cell(String Text) throws Exception {
-        Border whiteBorder = new SolidBorder(new DeviceRgb(255, 255, 255), 1);
+
         PdfFont f;
 
         DeviceRgb red;
@@ -294,15 +589,15 @@ public class GenerateRoundReport {
             f = PdfFontFactory.createFont(StandardFonts.HELVETICA);
             fontColor = new DeviceRgb(0, 0, 0);
             if (istGeradeZahl(team2Counter)) {
-                red = new DeviceRgb(217, 225, 242);
-            } else {
                 red = new DeviceRgb(180, 198, 231);
+            } else {
+                red = new DeviceRgb(217, 225, 242);
             }
         }
 
         return new Cell()
                 .setFont(f)
-                .setFontSize(8)
+                .setFontSize(5)
                 .setFontColor(fontColor)
                 .setTextAlignment(TextAlignment.CENTER)
                 .add(new Paragraph(Text))
@@ -313,114 +608,101 @@ public class GenerateRoundReport {
                 .setBorderTop(whiteBorder);
     }
 
-    public Table addFactionTable(FactionPOJO factionAttacker, FactionPOJO factionDefender) throws Exception {
-        Table tableFactionInfo = new Table(new float[3]).useAllAvailableWidth();
+    protected void createLine(DeviceRgb color) {
+        Table table = new Table(new float[1]).useAllAvailableWidth();
+        table.setBorder(whiteBorder)
+                .setBorderTop(new SolidBorder(color, 1));
+        doc.add(table);
 
-        String imageFactionFile = "https://www.clanwolf.net/static/images/logos/factions/";
+    }
 
-        tableFactionInfo.addCell(addWhiteCell("Attacker"))
-                .addCell(addWhiteCell(""))
-                .addCell(addWhiteCell("Defender"));
+    public Paragraph createLink(String text, String url) {
+        // Creating a PdfLinkAnnotation object
+        Rectangle rect = new Rectangle(0, 0);
+        PdfLinkAnnotation annotation = new PdfLinkAnnotation(rect);
 
-        if(urlExists(imageFactionFile + factionAttacker.getLogo())){
-            ImageData imageFactionData = ImageDataFactory.create(new URL( imageFactionFile + factionAttacker.getLogo()));
-            Image imageFactionAttacker = new Image(imageFactionData);
-            tableFactionInfo.addCell(addWhiteCell(imageFactionAttacker));
-        }else{
-            tableFactionInfo.addCell(addWhiteCell(factionAttacker.getShortName()));
-        }
+        // Setting action of the annotation
+        PdfAction action = PdfAction.createURI(url);
+        annotation.setAction(action);
 
-                tableFactionInfo.addCell(addWhiteCell("VERSUS"));
+        // Creating a link
+        Link link = new Link(text, annotation);
 
-        if(urlExists(imageFactionFile + factionDefender.getLogo())){
-            ImageData imageFactionData = ImageDataFactory.create(new URL( imageFactionFile + factionDefender.getLogo()));
-            Image imageFactionAttacker = new Image(imageFactionData);
-            tableFactionInfo.addCell(addWhiteCell(imageFactionAttacker));
-        }else{
-            tableFactionInfo.addCell(addWhiteCell(factionDefender.getShortName()));
-        }
+        // Creating a paragraph
+        Paragraph paragraph = new Paragraph("");
 
-                tableFactionInfo.addCell(addWhiteCell(factionAttacker.getName_en()))
-                .addCell(addWhiteCell(""))
-                .addCell(addWhiteCell(factionDefender.getName_en()));
-        factionTableAdded = true;
-
-        return tableFactionInfo;
+        // Adding link to paragraph
+        paragraph.add(link.setUnderline());
+        return paragraph;
     }
 
     public void addGameInfo(AttackStatsPOJO attackStats, MWOMatchResult matchDetails) throws Exception {
-
-        Table tableGameInfo = new Table(new float[5]).useAllAvailableWidth();
-        Table tableHeaderInfo = new Table(new float[]{2}).useAllAvailableWidth()
-                .addCell(addGreyCell("Battle report created with the C3 client version: "));
 
         FactionPOJO factionAttacker = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, attackStats.getAttackerFactionId());
         FactionPOJO factionDefender = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, attackStats.getDefenderFactionId());
 
         if (!factionTableAdded) {
-            doc.add(tableHeaderInfo);
-            doc.add(new Paragraph("Test")
-                            .setTextAlignment(TextAlignment.CENTER))
-                    .setFontSize(8);
-            doc.add(addFactionTable(factionAttacker, factionDefender));
-            doc.add(new AreaBreak());
-            String seasonHistoryURL = "https://www.clanwolf.net/apps/C3/seasonhistory/S" + attackStats.getSeasonId() +
-                    "/C3_S" +attackStats.getSeasonId() + "_R" + attackStats.getRoundId() + "_map_history.png" ;
-            logger.info("Download season history map: " + seasonHistoryURL);
-            ImageData imgSeasonData = ImageDataFactory.create(new URL( seasonHistoryURL));
-            Image imSeason = new Image(imgSeasonData);
-            imSeason.setAutoScale(true);
 
-            doc.add(imSeason);
+            createC3Header("Test");
+            createPlanetInfo();
+            createSeasonHistoryMap(attackStats.getSeasonId(), attackStats.getRoundId());
+
             doc.add(new AreaBreak());
 
         } else {
             doc.add(new AreaBreak());
         }
 
-        // Creating an ImageData object
-	    /*FactionPOJO factionOfCurrentChar = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, attackStats.getAttackerFactionId());
-	    String imageFactionFile = "/images/logos/factions/" + factionOfCurrentChar.getLogo();
-	    ImageData imageFactionData = ImageDataFactory.create(imageFactionFile);
-	    Image imageFaction = new Image(imageFactionData);
-	    doc.add(imageFaction);*/
+        createFactionInfo(factionAttacker, factionDefender);
 
-        try {
+        createVictoryDefeatTable(matchDetails, factionAttacker, factionDefender);
+        createMatchInfo(matchDetails.getMatchDetails(), attackStats);
+        createTableMatchResult(matchDetails, factionAttacker, factionDefender);
 
-            String isoDatePattern = "yyyy-MM-dd'T'HH:mm:ssXXX";
-            DateFormat dateFormat = new SimpleDateFormat(isoDatePattern);
-            Date parsedDate = dateFormat.parse(attackStats.getDropEnded());
-            tableGameInfo.addCell(addGreyCell("Drop ended: " + parsedDate));
+        doc.add(new AreaBreak());
+    }
 
-        } catch (Exception e) {
-            logger.error(e.getMessage());
+    private void createVictoryDefeatTable(MWOMatchResult matchDetails, FactionPOJO factionAttacker, FactionPOJO factionDefender) throws Exception {
+        Table tableResult = new Table(UnitValue.createPercentArray(new float[]{50, 50})).useAllAvailableWidth()
+                .setHorizontalAlignment(HorizontalAlignment.CENTER)
+                .addCell(addTeam2Cell(factionAttacker.getName_en()).setFontSize(20))
+                .addCell(addTeam1Cell(factionDefender.getName_en()).setFontSize(20));
+
+        doc.add(tableResult);
+        tableResult = new Table(UnitValue.createPercentArray(new float[]{25, 25, 25, 25})).useAllAvailableWidth()
+                .setHorizontalAlignment(HorizontalAlignment.CENTER);
+
+        if (matchDetails.getMatchDetails().getWinningTeam().equals("2")) {
+            tableResult.addCell(addTeam2Cell("VICTORY").setFontSize(20));
+        } else {
+
+            tableResult.addCell(addTeam2Cell("DEFEAT").setFontSize(20));
         }
-        MatchDetails md = matchDetails.getMatchDetails();
+        tableResult.addCell(addTeam2Cell(matchDetails.getMatchDetails().getTeam2Score().toString()).setFontSize(20))
+                .addCell(addTeam1Cell(matchDetails.getMatchDetails().getTeam1Score().toString()).setFontSize(20));
 
-        tableGameInfo.setVerticalAlignment(VerticalAlignment.BOTTOM);
-        tableGameInfo.addCell(addGreyCell("Server Region: " + md.getRegion()))
-                .addCell(addGreyCell("Duration: " + md.getMatchDuration()))
-                .addCell(addGreyCell("View Mode: " + md.getViewMode()))
-                .addCell(addGreyCell("Game Mode: " + md.getGameMode()))
+        if (matchDetails.getMatchDetails().getWinningTeam().equals("1")) {
+            tableResult.addCell(addTeam1Cell("VICTORY").setFontSize(20));
+        } else {
 
-                .addCell(addGreyCell("Map: " + attackStats.getMap()))
-                .addCell(addGreyCell("Map Time of Day: " + md.getTimeOfDay()))
-                .addCell(addGreyCell("MWO Match ID: " + attackStats.getMwoMatchId()))
-                .addCell(addGreyCell("Round ID: " + attackStats.getRoundId()))
-                .addCell(addGreyCell("Attack ID: " + attackStats.getAttackId()));
+            tableResult.addCell(addTeam1Cell("DEFEAT").setFontSize(20));
+        }
 
-        doc.add(tableGameInfo);
+        doc.add(tableResult);
+        doc.add(new Paragraph(""));
+    }
+
+    private void createTableMatchResult(MWOMatchResult matchDetails, FactionPOJO factionAttacker, FactionPOJO factionDefender) throws Exception {
+        tableXPTeam1Header = new Table(new float[1]).useAllAvailableWidth().addHeaderCell(addTeam1Cell(factionDefender.getName_en()));
+        tableXPTeam2Header = new Table(new float[1]).useAllAvailableWidth().addHeaderCell(addTeam2Cell(factionAttacker.getName_en()));
+
+
         doc.add(new Paragraph(""));
         float[] columnWidthsFaction = {1, 4, 2, 1, 2, 1, 1, 1, 1, 1, 2};
 
-        Table tableTeam1 = new Table(UnitValue.createPercentArray(columnWidthsFaction));
-        tableTeam1.setHorizontalAlignment(HorizontalAlignment.CENTER);
+        Table tableTeam1 = new Table(UnitValue.createPercentArray(columnWidthsFaction)).useAllAvailableWidth()
+                .setHorizontalAlignment(HorizontalAlignment.CENTER);
 
-        Cell cell = new Cell(1, 11)
-                .setBorder(whiteBorder)
-                .add(addTeam1Cell("Team 1"));
-
-        tableTeam1.addCell(cell);
         team1Counter = 0;
         tableTeam1.addCell(addTeam1Cell("Unit"))
                 .addCell(addTeam1Cell("Player"))
@@ -434,9 +716,7 @@ public class GenerateRoundReport {
                 .addCell(addTeam1Cell("CD"))
                 .addCell(addTeam1Cell("Team Damage"));
 
-
         team1Counter = team1Counter + 1;
-
 
         for (UserDetail userDetail : matchDetails.getUserDetails()) {
             if ("1".equals(userDetail.getTeam())) {
@@ -457,7 +737,7 @@ public class GenerateRoundReport {
 
         Integer curCount = team1Counter;
 
-        for (int i = curCount; i < 12; i++) {
+        for (int i = curCount; i < 13; i++) {
             tableTeam1.addCell(addTeam1Cell("-"))
                     .addCell(addTeam1Cell("-"))
                     .addCell(addTeam1Cell("-"))
@@ -472,15 +752,12 @@ public class GenerateRoundReport {
             team1Counter = team1Counter + 1;
         }
 
-        cell = new Cell(1, 11)
-                .setBorder(whiteBorder);
-        cell.add(addWhiteCell(""));
-        tableTeam1.addCell(cell);
-        cell.add(addTeam2Cell("Team 2"));
 
-        tableTeam1.addCell(cell);
+        Table tableTeam2 = new Table(UnitValue.createPercentArray(columnWidthsFaction)).useAllAvailableWidth()
+                .setHorizontalAlignment(HorizontalAlignment.CENTER);
         team2Counter = 0;
-        tableTeam1.addCell(addTeam2Cell("Unit"))
+
+        tableTeam2.addCell(addTeam2Cell("Unit"))
                 .addCell(addTeam2Cell("Player"))
                 .addCell(addTeam2Cell("Mech"))
                 .addCell(addTeam2Cell("Health"))
@@ -495,7 +772,7 @@ public class GenerateRoundReport {
         team2Counter = team2Counter + 1;
         for (UserDetail userDetail : matchDetails.getUserDetails()) {
             if ("2".equals(userDetail.getTeam())) {
-                tableTeam1.addCell(addTeam2Cell(userDetail.getUnitTag()))
+                tableTeam2.addCell(addTeam2Cell(userDetail.getUnitTag()))
                         .addCell(addTeam2Cell(userDetail.getUsername()))
                         .addCell(addTeam2Cell(new MechIdInfo(userDetail.getMechItemID()).getShortname()))
                         .addCell(addTeam2Cell(userDetail.getHealthPercentage().toString()))
@@ -512,8 +789,8 @@ public class GenerateRoundReport {
 
         curCount = team2Counter;
 
-        for (int i = curCount; i < 12; i++) {
-            tableTeam1.addCell(addTeam2Cell("-"))
+        for (int i = curCount; i < 13; i++) {
+            tableTeam2.addCell(addTeam2Cell("-"))
                     .addCell(addTeam2Cell("-"))
                     .addCell(addTeam2Cell("-"))
                     .addCell(addTeam2Cell("-"))
@@ -529,8 +806,172 @@ public class GenerateRoundReport {
         team1Counter = 0;
         team2Counter = 0;
 
+        doc.add(tableXPTeam1Header);
         doc.add(tableTeam1);
-        doc.add(new AreaBreak());
+        doc.add(tableXPTeam2Header);
+        doc.add(tableTeam2);
+    }
+
+    private void createMatchInfo(MatchDetails matchDetails, AttackStatsPOJO attackStats) throws Exception {
+        float[] columnWidth = {1, 1, 1, 1};
+
+        Table tableGameInfo = new Table(UnitValue.createPercentArray(columnWidth)).useAllAvailableWidth()
+                .setVerticalAlignment(VerticalAlignment.BOTTOM)
+                .addCell(addGreyCell("Server Region: " + matchDetails.getRegion()))
+                .addCell(addGreyCell("Duration: " + matchDetails.getMatchDuration()))
+                .addCell(addGreyCell("View Mode: " + matchDetails.getViewMode()))
+                .addCell(addGreyCell("Game Mode: " + matchDetails.getGameMode()))
+                .addCell(addGreyCell("Map Time of Day: " + matchDetails.getTimeOfDay()))
+
+                .addCell(addGreyCell("Match time in minutes: " + matchDetails.getMatchTimeMinutes()))
+                .addCell(addGreyCell("Map: " + attackStats.getMap()))
+                .addCell(addGreyCell("MWO Match ID: " + attackStats.getMwoMatchId()))
+                .addCell(addGreyCell("Round: " + attackStats.getRoundId()))
+                .addCell(addGreyCell("Attack ID: " + attackStats.getAttackId()))
+                .addCell(addGreyCell("C3 ID:" + attackStats.id));
+
+        try {
+
+            String isoDatePattern = "yyyy-MM-dd'T'HH:mm:ssXXX";
+            DateFormat dateFormat = new SimpleDateFormat(isoDatePattern);
+            Date parsedDate = dateFormat.parse(attackStats.getDropEnded());
+            tableGameInfo.addCell(addGreyCell("Drop ended: " + parsedDate));
+
+        } catch (Exception e) {
+            tableGameInfo.addCell(addGreyCell("Drop ended: " + attackStats.getDropEnded()));
+            logger.error(e.getMessage());
+        }
+
+        doc.add(tableGameInfo);
+
+    }
+
+    private void createFactionInfo(FactionPOJO factionAttacker, FactionPOJO factionDefender) throws Exception {
+
+        doc.add(new Paragraph("Information about the attacker and defender:").setFontSize(8).setBold());
+        Table tableFactionInfo = new Table(new float[3])
+                .addCell(addWhiteCell("Attacker").setFontSize(10))
+                .addCell(addWhiteCell(""))
+                .addCell(addWhiteCell("Defender").setFontSize(10));
+
+        tableFactionInfo.setHorizontalAlignment(HorizontalAlignment.CENTER);
+
+        String imageFactionFile = "https://www.clanwolf.net/static/images/logos/factions/";
+
+        if (urlExists(imageFactionFile + factionAttacker.getLogo())) {
+            ImageData imageFactionData = ImageDataFactory.create(new URL(imageFactionFile + factionAttacker.getLogo()));
+            Image imageFactionAttacker = new Image(imageFactionData);
+            imageFactionAttacker.scaleAbsolute(100, 100);
+            tableFactionInfo.addCell(addWhiteCell(imageFactionAttacker)).setVerticalAlignment(VerticalAlignment.MIDDLE);
+        } else {
+            tableFactionInfo.addCell(addWhiteCell(factionAttacker.getShortName()));
+        }
+
+        tableFactionInfo.addCell(addWhiteCell("VS").setFontSize(45).setWidth(150));
+
+        if (urlExists(imageFactionFile + factionDefender.getLogo())) {
+            ImageData imageFactionData = ImageDataFactory.create(new URL(imageFactionFile + factionDefender.getLogo()));
+            Image imageFactionDefender = new Image(imageFactionData);
+            imageFactionDefender.scaleAbsolute(100, 100);
+            tableFactionInfo.addCell(addWhiteCell(imageFactionDefender)).setVerticalAlignment(VerticalAlignment.MIDDLE);
+        } else {
+            tableFactionInfo.addCell(addWhiteCell(factionDefender.getShortName()));
+        }
+
+        List attackerInfo = new List()
+                .add("Name: " + factionAttacker.getName_en())
+                .add("Main system :" + factionAttacker.getMainSystem())
+                .add("Faction type: " + getFactionType(factionAttacker.getFactionTypeID()));
+
+        List defenderInfo = new List()
+                .add("Name: " + factionDefender.getName_en())
+                .add("Main system :" + factionDefender.getMainSystem())
+                .add("Faction type: " + getFactionType(factionDefender.getFactionTypeID()));
+
+        tableFactionInfo
+
+                .addCell(addWhiteCell(attackerInfo))
+                .addCell(addWhiteCell(""))
+                .addCell(addWhiteCell(defenderInfo));
+        factionTableAdded = true;
+
+        doc.add(tableFactionInfo)
+                .add(new Paragraph(""));
+
+
+        logger.info("---Faction info created---");
+
+    }
+
+    private void createSeasonHistoryMap(Long seasonId, Long roundId) throws MalformedURLException {
+        String seasonHistoryURL = "https://www.clanwolf.net/apps/C3/seasonhistory/S" + seasonId +
+                "/C3_S" + seasonId + "_R" + roundId + "_map_history.png";
+
+        if (urlExists(seasonHistoryURL)) {
+            logger.info("Download season history map: " + seasonHistoryURL);
+            ImageData imgSeasonData = ImageDataFactory.create(new URL(seasonHistoryURL));
+            Image imSeason = new Image(imgSeasonData);
+            imSeason.setAutoScale(true);
+
+            doc.add(imSeason);
+            doc.add(createLink("Link to season history map", seasonHistoryURL));
+        } else {
+
+            logger.error("Season history map not found on: " + seasonHistoryURL);
+            ImageData imgSeasonData = ImageDataFactory.create("C:\\Users\\Stefan\\Downloads\\Bilder\\Wallpaper\\C3_S1_R86_map_history.png");
+            Image imSeason = new Image(imgSeasonData);
+            imSeason.setAutoScale(true);
+            doc.add(imSeason);
+            doc.add(createLink("Link to season history map", seasonHistoryURL));
+        }
+    }
+
+    private void createPlanetInfo() {
+        doc.add(new Paragraph("Information about the planet being attacked:").setFontSize(8).setBold());
+        StarSystemPOJO planet = StarSystemDAO.getInstance().findById(Nexus.DUMMY_USERID, starSystemID);
+        List planetInfo = new List();
+
+        planetInfo
+                .setFontSize(8)
+                .add("Planet name: " + planet.getName())
+                .add("X and Y coordinates: X: " + planet.getX() + ", Y: " + planet.getY())
+                .add("Star type: " + planet.getStarType1())
+                .add("Planet ID:" + planet.getId())
+                .add("Population: " + nf.format(planet.getPopulation()))
+                .add("Resources: " + nf.format(planet.getResources()));
+
+
+        doc.add(planetInfo)
+                .add(createLink("Link to Sarna.net to get more information about the planet " + planet.getName() + ".", planet.getSarnaLinkSystem()).setFontSize(8))
+                .add(new Paragraph(""));
+    }
+
+    private void createC3Header(String title) throws Exception {
+        String c3Logo = "https://www.clanwolf.net/static/images/logos/c3_logo.png";
+        SysConfigPOJO clientVersion = SysConfigDAO.getInstance().findById(Nexus.DUMMY_USERID, 2L);
+
+        Table tableC3Header = new Table(new float[]{1, 5, 5}).useAllAvailableWidth();
+
+        if (urlExists(c3Logo)) {
+            ImageData imgC3LogoData = ImageDataFactory.create(new URL(c3Logo));
+            Image imgC3Logo = new Image(imgC3LogoData);
+
+            imgC3Logo.scaleAbsolute(35, 35);
+            tableC3Header.addCell(addWhiteCell(imgC3Logo));
+        }
+        Cell cell = new Cell();
+        cell
+                .setBorder(whiteBorder)
+                .add(addWhiteCell("C3 invasion report")
+                        .setBold()
+                        .setTextAlignment(TextAlignment.LEFT))
+                .add(addWhiteCell("Created with version: " + clientVersion.getValue())
+                        .setTextAlignment(TextAlignment.LEFT));
+        tableC3Header
+                .addCell(cell)
+                .addCell(addWhiteCell("test"));
+        doc.add(tableC3Header);
+        createLine(new DeviceRgb(0, 0, 0));
     }
 
     protected void manipulatePdf(String dest) throws Exception {
@@ -558,6 +999,7 @@ public class GenerateRoundReport {
                     new Cell().setBackgroundColor(new DeviceGray(0.75f)).add(new Paragraph("Value"))
             };
 
+
             for (Cell hfCell : headerFooter) {
                 if (i == 0) {
                     table.addHeaderCell(hfCell);
@@ -575,6 +1017,66 @@ public class GenerateRoundReport {
 
         doc.add(table);
 
+
         doc.close();
+    }
+
+    public void createCalcReport(java.util.List<BalanceUserInfo> attacker, java.util.List<BalanceUserInfo> defender) throws Exception {
+
+        Long defCostTotal = 0L;
+        Long attCostTotal = 0L;
+        tableCostDefender = null;
+        tableCostAttacker = null;
+        for (BalanceUserInfo def : defender) {
+            team1Counter = 1;
+            addCostDefender("Costs and rewards for the pilot " + def.userName, 0L);
+            addCostDefender(def.mechName + " repair costs (" + (100 - def.mechHealth) + "% to repair)", def.mechRepairCost);
+            addCostDefender("Reward Damage (" + def.damage + " Damage gone)", def.rewardDamage);
+            addCostDefender("Reward component destroyed (" + def.componentDestroyed + " destroyed)", def.rewardComponentsDestroyed);
+            addCostDefender("Reward kills (" + def.kills + " kills)", def.rewardKill);
+            addCostDefender("Reward Match-score (" + def.matchScore + " Match-score)", def.rewardMatchScore);
+            team1Counter = -1;
+            addCostDefender("Subtotal", def.subTotal);
+            team1Counter = 0;
+            defCostTotal = defCostTotal + def.subTotal;
+        }
+        team1Counter = -1;
+        addCostDefender("Total", defCostTotal);
+
+
+        for (BalanceUserInfo att : attacker) {
+            team2Counter = 1;
+            addCostAttacker("Costs and rewards for the pilot " + att.userName, 0L);
+            addCostAttacker(att.mechName + " repair costs (" + (100 - att.mechHealth) + "% to repair)", att.mechRepairCost);
+            addCostAttacker("Reward Damage (" + att.damage + " Damage gone)", att.rewardDamage);
+            addCostAttacker("Reward component destroyed (" + att.componentDestroyed + " destroyed)", att.rewardComponentsDestroyed);
+            addCostAttacker("Reward kills (" + att.kills + " kills)", att.rewardKill);
+            addCostAttacker("Reward Match-score (" + att.matchScore + " Match-score)", att.rewardMatchScore);
+            team2Counter = -1;
+            addCostAttacker("Subtotal", att.subTotal);
+            team2Counter = 0;
+            attCostTotal = attCostTotal + att.subTotal;
+        }
+        team2Counter = -1;
+        addCostAttacker("Total", attCostTotal);
+
+        Table t = new Table(new float[]{1, 1}).useAllAvailableWidth()
+                .setBorderBottom(whiteBorder)
+                .setBorderLeft(whiteBorder)
+                .setBorderRight(whiteBorder)
+                .setBorderTop(whiteBorder)
+                .setBorder(whiteBorder)
+
+
+                .addHeaderCell(tableXPTeam1Header)
+                .addHeaderCell(tableXPTeam2Header)
+                .addCell(tableCostDefender)
+                .addCell(tableCostAttacker);
+        doc.add(new AreaBreak())
+                .add(t);
+        tableCostDefender = null;
+        tableCostAttacker = null;
+        team1Counter = 0;
+        team2Counter = 0;
     }
 }

@@ -231,7 +231,7 @@ public class EndRound {
 
 		// ---------------------------------------------------------------------------------
 		// Uncomment this only, if you need the end to be finalized anyway for local tests!
-		//forceFinalize.set(true);
+		// forceFinalize.set(true);
 		// ---------------------------------------------------------------------------------
 
 		logger.info("Checking if current round needs to be finalized.");
@@ -303,14 +303,15 @@ public class EndRound {
 							FactionPOJO factionDefender = FactionDAO.getInstance().findById(Nexus.END_ROUND, asp.getDefenderFactionId());
 
 							logger.info("--- Calculate the balance costs [" + factionAttacker.getShortName() + "] versus [" + factionDefender.getShortName() + "] (MatchID: " + asp.getMwoMatchId() + " )---");
-
-							CalcBalance calcB = new CalcBalance(asp);
+							CalcXP calcXP = new CalcXP(asp,report);
+							CalcBalance calcB = new CalcBalance(asp.getMwoMatchId(),report);
 
 							balanceAttacker += calcB.getAttackerRepairCost();
 							balanceDefender += calcB.getDefenderRepairCost();
 							repairCostReport.append(calcB.getMailMessage());
 							logger.info("Current balance attacker[" + factionAttacker.getShortName() + "]:" + nf.format(balanceAttacker) + " --- Current balance defender[ " + factionDefender.getShortName() + "]" + nf.format(balanceDefender));
-							CalcXP calcXP = new CalcXP(asp,report);
+
+
 							xpReport.append(calcXP.getMailMessage());
 						}
 						report.saveReport();
