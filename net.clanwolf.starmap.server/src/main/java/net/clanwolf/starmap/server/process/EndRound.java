@@ -52,6 +52,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -73,10 +74,10 @@ public class EndRound {
 	// BOTH methods are needed!
 	public static LocalDateTime addDaysToDate(LocalDateTime localDateTime, double daysToAdd) {
 		double hoursToAdd = daysToAdd * 24;
-		LocalDateTime newTime = localDateTime.plusHours((int) hoursToAdd);
+		LocalDateTime newTime = localDateTime.plusHours((int) hoursToAdd); // casting to int removes anything behind decimal point -> rounded hours
 		logger.info("Number of hours to add until end of next round: " + hoursToAdd);
 		logger.info("New time for next round to end: " + newTime);
-		return newTime; // removes anything behind decimal point -> rounded hours
+		return newTime;
 	}
 
 	// BOTH methods are needed!
@@ -387,7 +388,7 @@ public class EndRound {
 
 				Date d = translateRealDateToSeasonTime(new Date(System.currentTimeMillis()), seasonId);
 				LocalDate localDate = new java.util.Date(d.getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-				LocalTime now = LocalTime.now();
+				LocalTime now = LocalTime.now().truncatedTo(ChronoUnit.MINUTES);
 				LocalDateTime translatedNowDateWithTime = LocalDateTime.of(localDate, now);
 				roundPOJO.setCurrentRoundStartDate(translatedNowDateWithTime);
 

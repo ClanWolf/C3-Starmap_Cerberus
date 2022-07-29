@@ -1,6 +1,10 @@
 C3 version history
 --------------------------------
 
+Version 7.1.19 (29.07.2022)
+- UPDATED: Hibernate dependency
+- FIXED: Truncate round start datetime to minutes
+
 Version 7.1.17 (27.07.2022)
 - UPDATED: Calculations of round timing
 
