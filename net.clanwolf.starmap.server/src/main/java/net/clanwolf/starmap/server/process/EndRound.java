@@ -45,7 +45,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.invoke.MethodHandles;
 import java.sql.Date;
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -292,11 +291,11 @@ public class EndRound {
 					if (!statisticsList.isEmpty()) {
 						// log stats
 						logger.info("--- Statistics found for attackId: " + attackPOJO.getId());
-						StringBuilder repairCostReport = new StringBuilder();
-						StringBuilder xpReport = new StringBuilder();
-						long balanceAttacker = 0L;
-						long balanceDefender = 0L;
-						DecimalFormat nf = new DecimalFormat();
+						//StringBuilder repairCostReport = new StringBuilder();
+						//StringBuilder xpReport = new StringBuilder();
+						//long balanceAttacker = 0L;
+						//long balanceDefender = 0L;
+						//DecimalFormat nf = new DecimalFormat();
 
 						GenerateRoundReport report = new GenerateRoundReport(attackPOJO);
 
@@ -308,16 +307,16 @@ public class EndRound {
 							CalcXP calcXP = new CalcXP(asp,report);
 							CalcBalance calcB = new CalcBalance(asp.getMwoMatchId(),report);
 
-							balanceAttacker += calcB.getAttackerRepairCost();
-							balanceDefender += calcB.getDefenderRepairCost();
-							repairCostReport.append(calcB.getMailMessage());
+							//balanceAttacker += calcB.getAttackerRepairCost();
+							//balanceDefender += calcB.getDefenderRepairCost();
+							//repairCostReport.append(calcB.getMailMessage());
 							//logger.info("Current balance attacker[" + factionAttacker.getShortName() + "]:" + nf.format(balanceAttacker) + " --- Current balance defender[ " + factionDefender.getShortName() + "]" + nf.format(balanceDefender));
 
 
-							xpReport.append(calcXP.getMailMessage());
+							//xpReport.append(calcXP.getMailMessage());
 						}
 						report.saveReport();
-						String[] receivers = {"keshik@googlegroups.com"};
+						/*String[] receivers = {"keshik@googlegroups.com"};
 						boolean sent;
 						StringBuilder subject = new StringBuilder();
 						subject.append("Repair cost calculation for attackId ").append(attackPOJO.getId());
@@ -347,7 +346,7 @@ public class EndRound {
 							}
 						} else {
 							logger.info("Mail was not sent out because this is a dev computer.");
-						}
+						}*/
 					} else {
 						// no statistics found
 						logger.info("--- no statistics found for attackId: " + attackPOJO.getId());

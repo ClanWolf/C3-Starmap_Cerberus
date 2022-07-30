@@ -47,6 +47,8 @@ import com.itextpdf.layout.properties.HorizontalAlignment;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 import com.itextpdf.layout.properties.VerticalAlignment;
+import net.clanwolf.client.mail.MailManager;
+import net.clanwolf.starmap.server.GameServer;
 import net.clanwolf.starmap.server.Nexus.Nexus;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.FactionDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.StarSystemDAO;
@@ -81,7 +83,7 @@ import static net.clanwolf.starmap.constants.Constants.*;
 public class GenerateRoundReport {
 
 
-    public static String DEST ;
+    public static String DEST;
     private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private final Document doc;
     private Integer team1Counter = 0;
@@ -102,6 +104,7 @@ public class GenerateRoundReport {
     private final Border whiteBorder = new SolidBorder(new DeviceRgb(255, 255, 255), 0);
     public FactionPOJO factionAttacker;
     public FactionPOJO factionDefender;
+    private final AttackPOJO attackPOJO;
 
 
     public void addCostDefender(String description, Long amount) throws Exception {
@@ -222,11 +225,11 @@ public class GenerateRoundReport {
 
     public GenerateRoundReport(AttackPOJO ap) throws Exception {
         starSystemID = ap.getStarSystemID();
-
-        OSCheck.OSType osType=OSCheck.getOperatingSystemType();
-        switch (osType){
+        attackPOJO = ap;
+        OSCheck.OSType osType = OSCheck.getOperatingSystemType();
+        switch (osType) {
             case Linux -> DEST = "/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/seasonhistory/S1/Reports/";
-            case Windows -> DEST="c:\\temp\\";
+            case Windows -> DEST = "c:\\temp\\";
         }
         PdfDocument pdfDoc = new PdfDocument(new PdfWriter(DEST + "C3_S" + ap.getSeason() + "_R" + ap.getRound() + "_SSID" + ap.getStarSystemDataID() + ".pdf"));
 
@@ -266,6 +269,47 @@ public class GenerateRoundReport {
     public void saveReport() {
 
         doc.close();
+
+        String[] receivers = {"keshik@googlegroups.com"};
+        boolean sent;
+
+
+        if (!GameServer.isDevelopmentPC) {
+            StarSystemPOJO planet = StarSystemDAO.getInstance().findById(Nexus.DUMMY_USERID, starSystemID);
+
+            String subject = "PDF report created for season:" +
+                    attackPOJO.getSeason() +
+                    " round:" +
+                    attackPOJO.getRound() +
+                    " planet:" +
+                    planet.getName();
+
+            String message = "PDF report successfully created." +
+                    "\r\n" +
+                    "Season:" +
+                    attackPOJO.getSeason() +
+                    "\r\n" +
+                    "Round:" +
+                    attackPOJO.getRound() +
+                    "\r\n" +
+                    "Planet:" +
+                    planet.getName() +
+                    "\r\n" +
+                    "File path to the report:" +
+                    DEST;
+
+            sent = MailManager.sendMail("c3@clanwolf.net", receivers, subject, message, false);
+
+            if (sent) {
+                // sent
+                logger.info("Mail sent.");
+            } else {
+                // error during email sending
+                logger.info("Error during mail dispatch.");
+            }
+        } else {
+            logger.info("Mail was not sent out because this is a dev computer.");
+        }
     }
 
     public void finishCostReport() {
@@ -426,7 +470,7 @@ public class GenerateRoundReport {
         Table tableAtt = new Table(new float[]{1, 1}).useAllAvailableWidth();
         //t.addCell(cell1);
 
-       // Cell attCell = new Cell();
+        // Cell attCell = new Cell();
         //Cell defCell = new Cell();
 
 
@@ -622,8 +666,8 @@ public class GenerateRoundReport {
 
     public void addGameInfo(AttackStatsPOJO attackStats, MWOMatchResult matchDetails) throws Exception {
 
-         factionAttacker = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, attackStats.getAttackerFactionId());
-         factionDefender = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, attackStats.getDefenderFactionId());
+        factionAttacker = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, attackStats.getAttackerFactionId());
+        factionDefender = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, attackStats.getDefenderFactionId());
 
         if (!factionTableAdded) {
 
