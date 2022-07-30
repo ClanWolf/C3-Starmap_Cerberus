@@ -38,15 +38,15 @@ import com.itextpdf.kernel.geom.Rectangle;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.kernel.pdf.action.PdfAction;
-import com.itextpdf.kernel.pdf.annot.PdfAnnotation;
 import com.itextpdf.kernel.pdf.annot.PdfLinkAnnotation;
-import com.itextpdf.kernel.pdf.navigation.PdfExplicitDestination;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.borders.SolidBorder;
 import com.itextpdf.layout.element.*;
-
-import com.itextpdf.layout.properties.*;
+import com.itextpdf.layout.properties.HorizontalAlignment;
+import com.itextpdf.layout.properties.TextAlignment;
+import com.itextpdf.layout.properties.UnitValue;
+import com.itextpdf.layout.properties.VerticalAlignment;
 import net.clanwolf.starmap.server.Nexus.Nexus;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.FactionDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.StarSystemDAO;
@@ -54,6 +54,7 @@ import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.SysConfigDAO;
 import net.clanwolf.starmap.server.persistence.pojos.*;
 import net.clanwolf.starmap.server.process.BalanceUserInfo;
 import net.clanwolf.starmap.server.process.CalcXP;
+import net.clanwolf.starmap.server.util.OSCheck;
 import net.clanwolf.starmap.transfer.mwo.MWOMatchResult;
 import net.clanwolf.starmap.transfer.mwo.MatchDetails;
 import net.clanwolf.starmap.transfer.mwo.MechIdInfo;
@@ -61,7 +62,9 @@ import net.clanwolf.starmap.transfer.mwo.UserDetail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -76,7 +79,9 @@ import static net.clanwolf.starmap.constants.Constants.*;
 // https://www.tutorialspoint.com/itext/itext_adding_paragraph.htm
 
 public class GenerateRoundReport {
-    public static final String DEST = "c:\\temp\\";
+
+
+    public static String DEST ;
     private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
     private final Document doc;
     private Integer team1Counter = 0;
@@ -94,10 +99,9 @@ public class GenerateRoundReport {
     private final float[] columnWidthCost = {3, 1};
     private Table tableCostDefender;
     private Table tableCostAttacker;
-    private Cell cellCostDefender = new Cell();
-    private PdfDocument pdfDoc;
     private final Border whiteBorder = new SolidBorder(new DeviceRgb(255, 255, 255), 0);
-    private int pageNumber = 2;
+    public FactionPOJO factionAttacker;
+    public FactionPOJO factionDefender;
 
 
     public void addCostDefender(String description, Long amount) throws Exception {
@@ -117,7 +121,7 @@ public class GenerateRoundReport {
         }
         switch (team1Counter) {
             case -1 -> {
-                team1Counter=0;
+                team1Counter = 0;
                 tableCostDefender.addCell(addTeam1Cell(description).setTextAlignment(TextAlignment.LEFT))
                         .addCell(addTeam1Cell(nf.format(amount) + " C-Bills").setTextAlignment(TextAlignment.RIGHT).setBold());
                 team1Counter = team1Counter + 1;
@@ -218,7 +222,13 @@ public class GenerateRoundReport {
 
     public GenerateRoundReport(AttackPOJO ap) throws Exception {
         starSystemID = ap.getStarSystemID();
-        pdfDoc = new PdfDocument(new PdfWriter(DEST + "C3_S" + ap.getSeason() + "_R" + ap.getRound() + "_SSID" + ap.getStarSystemDataID() + ".pdf"));
+
+        OSCheck.OSType osType=OSCheck.getOperatingSystemType();
+        switch (osType){
+            case Linux -> DEST = "/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/seasonhistory/S1/Reports/";
+            case Windows -> DEST="c:\\temp\\";
+        }
+        PdfDocument pdfDoc = new PdfDocument(new PdfWriter(DEST + "C3_S" + ap.getSeason() + "_R" + ap.getRound() + "_SSID" + ap.getStarSystemDataID() + ".pdf"));
 
         tableXPTeam1 = new Table(UnitValue.createPercentArray(columnWidthsXP))
                 .useAllAvailableWidth()
@@ -233,8 +243,6 @@ public class GenerateRoundReport {
                 .setHorizontalAlignment(HorizontalAlignment.CENTER);
 
         doc = new Document(pdfDoc, PageSize.A4);
-
-
     }
 
     static boolean urlExists(java.lang.String URL) {
@@ -255,19 +263,18 @@ public class GenerateRoundReport {
         }
     }
 
-    public void saveReport() throws IOException {
+    public void saveReport() {
 
         doc.close();
     }
 
-    public void finishCostReport() throws Exception {
+    public void finishCostReport() {
         if (!(costWarning == null)) {
             doc.add(new Paragraph("The costs could not be calculated for the following players:").setFontSize(8).setBold())
                     .add(costWarning)
                     .add(new Paragraph());
             costWarning = null;
         }
-
 
         doc.add(tableXPTeam1Header)
                 .add(tableCostDefender);
@@ -279,6 +286,7 @@ public class GenerateRoundReport {
                 .setBorderTop(whiteBorder)
                 .useAllAvailableWidth()
                 .setHorizontalAlignment(HorizontalAlignment.CENTER);
+
         tableCostAttacker = new Table(UnitValue.createPercentArray(columnWidthCost))
                 .setBorderBottom(whiteBorder)
                 .setBorderLeft(whiteBorder)
@@ -286,23 +294,9 @@ public class GenerateRoundReport {
                 .setBorderTop(whiteBorder)
                 .useAllAvailableWidth()
                 .setHorizontalAlignment(HorizontalAlignment.CENTER);
+
         team1Counter = 0;
         team2Counter = 0;
-
-    }
-
-    private void addTableOfContents(String description) {
-        PdfLinkAnnotation linkAnnotation = new PdfLinkAnnotation(new Rectangle(0, 0, 0, 0))
-                .setDestination(PdfExplicitDestination.createFit(pdfDoc.getPage(pageNumber)))
-                .setHighlightMode(PdfAnnotation.STYLE_UNDERLINE)
-                .setBorderStyle(PdfAnnotation.STYLE_UNDERLINE);
-
-        Link link = new Link(description, linkAnnotation);
-
-        doc.add(new Paragraph()
-                .add(link));
-        pageNumber = pageNumber + 1;
-
     }
 
     public void finishXPReport() throws Exception {
@@ -432,8 +426,8 @@ public class GenerateRoundReport {
         Table tableAtt = new Table(new float[]{1, 1}).useAllAvailableWidth();
         //t.addCell(cell1);
 
-        Cell attCell = new Cell();
-        Cell defCell = new Cell();
+       // Cell attCell = new Cell();
+        //Cell defCell = new Cell();
 
 
         Cell test = new Cell()
@@ -457,16 +451,6 @@ public class GenerateRoundReport {
         System.out.println("Annotation added successfully");
 
 
-    }
-
-    private static Cell create2Cells(String description, String amount, Table t) {
-        Cell attCell = new Cell()
-                .add(new Paragraph(description));
-        t.addCell(attCell);
-
-        attCell = new Cell()
-                .add(new Paragraph(amount));
-        return attCell;
     }
 
     protected Boolean istGeradeZahl(Integer value) {
@@ -638,8 +622,8 @@ public class GenerateRoundReport {
 
     public void addGameInfo(AttackStatsPOJO attackStats, MWOMatchResult matchDetails) throws Exception {
 
-        FactionPOJO factionAttacker = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, attackStats.getAttackerFactionId());
-        FactionPOJO factionDefender = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, attackStats.getDefenderFactionId());
+         factionAttacker = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, attackStats.getAttackerFactionId());
+         factionDefender = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, attackStats.getDefenderFactionId());
 
         if (!factionTableAdded) {
 
@@ -950,7 +934,7 @@ public class GenerateRoundReport {
         String c3Logo = "https://www.clanwolf.net/static/images/logos/c3_logo.png";
         SysConfigPOJO clientVersion = SysConfigDAO.getInstance().findById(Nexus.DUMMY_USERID, 2L);
 
-        Table tableC3Header = new Table(new float[]{1, 5, 5}).useAllAvailableWidth();
+        Table tableC3Header = new Table(new float[]{1, 5, 15}).useAllAvailableWidth();
 
         if (urlExists(c3Logo)) {
             ImageData imgC3LogoData = ImageDataFactory.create(new URL(c3Logo));
@@ -969,7 +953,7 @@ public class GenerateRoundReport {
                         .setTextAlignment(TextAlignment.LEFT));
         tableC3Header
                 .addCell(cell)
-                .addCell(addWhiteCell("test"));
+                .addCell(addWhiteCell(title));
         doc.add(tableC3Header);
         createLine(new DeviceRgb(0, 0, 0));
     }
@@ -1022,9 +1006,9 @@ public class GenerateRoundReport {
     }
 
     public void createCalcReport(java.util.List<BalanceUserInfo> attacker, java.util.List<BalanceUserInfo> defender) throws Exception {
-
-        Long defCostTotal = 0L;
-        Long attCostTotal = 0L;
+        logger.info("--- Generate balance report ---");
+        long defCostTotal = 0L;
+        long attCostTotal = 0L;
         tableCostDefender = null;
         tableCostAttacker = null;
         for (BalanceUserInfo def : defender) {
@@ -1037,9 +1021,9 @@ public class GenerateRoundReport {
             addCostDefender("Reward Match-score (" + def.matchScore + " Match-score)", def.rewardMatchScore);
             team1Counter = -1;
             addCostDefender("Subtotal", def.subTotal);
-            team1Counter = 0;
             defCostTotal = defCostTotal + def.subTotal;
         }
+
         team1Counter = -1;
         addCostDefender("Total", defCostTotal);
 
@@ -1054,7 +1038,6 @@ public class GenerateRoundReport {
             addCostAttacker("Reward Match-score (" + att.matchScore + " Match-score)", att.rewardMatchScore);
             team2Counter = -1;
             addCostAttacker("Subtotal", att.subTotal);
-            team2Counter = 0;
             attCostTotal = attCostTotal + att.subTotal;
         }
         team2Counter = -1;
@@ -1078,5 +1061,6 @@ public class GenerateRoundReport {
         tableCostAttacker = null;
         team1Counter = 0;
         team2Counter = 0;
+        logger.info("--- Balance report finished ---");
     }
 }
