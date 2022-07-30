@@ -242,7 +242,9 @@ public class EndRound {
 			logger.info("--- " + openAttacksInRoundList.size() + " attacks still to be resolved.");
 			logger.info("--- There is still time left to make moves for this round!");
 		} else {
+			boolean roundFinalizedByAdmin = forceFinalize.get();
 			logger.info("Finalizing the round:");
+			logger.info("Admin finalized this round: " + roundFinalizedByAdmin);
 			forceFinalize.set(false);
 
 			EntityTransaction transaction = EntityManagerHelper.getEntityManager(Nexus.END_ROUND).getTransaction();
