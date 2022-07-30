@@ -301,17 +301,17 @@ public class EndRound {
 						GenerateRoundReport report = new GenerateRoundReport(attackPOJO);
 
 						for (AttackStatsPOJO asp : statisticsList) {
-							FactionPOJO factionAttacker = FactionDAO.getInstance().findById(Nexus.END_ROUND, asp.getAttackerFactionId());
-							FactionPOJO factionDefender = FactionDAO.getInstance().findById(Nexus.END_ROUND, asp.getDefenderFactionId());
+							//FactionPOJO factionAttacker = FactionDAO.getInstance().findById(Nexus.END_ROUND, asp.getAttackerFactionId());
+							//FactionPOJO factionDefender = FactionDAO.getInstance().findById(Nexus.END_ROUND, asp.getDefenderFactionId());
 
-							logger.info("--- Calculate the balance costs [" + factionAttacker.getShortName() + "] versus [" + factionDefender.getShortName() + "] (MatchID: " + asp.getMwoMatchId() + " )---");
+							//logger.info("--- Calculate the balance costs [" + factionAttacker.getShortName() + "] versus [" + factionDefender.getShortName() + "] (MatchID: " + asp.getMwoMatchId() + " )---");
 							CalcXP calcXP = new CalcXP(asp,report);
 							CalcBalance calcB = new CalcBalance(asp.getMwoMatchId(),report);
 
 							balanceAttacker += calcB.getAttackerRepairCost();
 							balanceDefender += calcB.getDefenderRepairCost();
 							repairCostReport.append(calcB.getMailMessage());
-							logger.info("Current balance attacker[" + factionAttacker.getShortName() + "]:" + nf.format(balanceAttacker) + " --- Current balance defender[ " + factionDefender.getShortName() + "]" + nf.format(balanceDefender));
+							//logger.info("Current balance attacker[" + factionAttacker.getShortName() + "]:" + nf.format(balanceAttacker) + " --- Current balance defender[ " + factionDefender.getShortName() + "]" + nf.format(balanceDefender));
 
 
 							xpReport.append(calcXP.getMailMessage());

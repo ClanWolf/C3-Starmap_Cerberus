@@ -27,7 +27,6 @@
 package net.clanwolf.starmap.server.process;
 
 import com.google.gson.Gson;
-import com.google.gson.annotations.Expose;
 import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.server.Nexus.Nexus;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.*;
@@ -60,13 +59,9 @@ public class CalcBalance {
 
     private double defenderRepairCost;
 
-    //private final ArrayList<String> attackerUserName = new ArrayList<>();
-    //private final ArrayList<String> defenderUsername = new ArrayList<>();
-
     public List<BalanceUserInfo> getDefender() {
         return defender;
     }
-
     public List<BalanceUserInfo> getAttacker() {
         return attacker;
     }
@@ -80,21 +75,21 @@ public class CalcBalance {
 
     public CalcBalance(String mwoMatchID, GenerateRoundReport report) throws Exception {
 
-
         StatsMwoDAO statsMwoDAO = net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.StatsMwoDAO.getInstance();
         StatsMwoPOJO statsMwoPOJO = statsMwoDAO.findByMWOGameId(String.valueOf(mwoMatchID));
         String rawJSONstatsData = statsMwoPOJO.getRawData();
         MWOMatchResult matchDetails = new Gson().fromJson(rawJSONstatsData, MWOMatchResult.class);
 
-        BalanceUserInfo defInfo = new BalanceUserInfo();
-        BalanceUserInfo attInfo = new BalanceUserInfo();
+        BalanceUserInfo defInfo ;
+        BalanceUserInfo attInfo ;
         MechIdInfo mechIdInfo;
 
+        logger.info("Calculating balance...");
 
         for (UserDetail detail : matchDetails.getUserDetails()) {
             switch (detail.getTeam()) {
                 case "1" -> {
-                    defInfo = new BalanceUserInfo();
+                    defInfo = new BalanceUserInfo(report.factionDefender.getId());
                     defInfo.userName = detail.getUsername();
                     defInfo.damage = detail.getDamage().longValue();
                     defInfo.componentDestroyed = detail.getComponentsDestroyed().longValue();
@@ -117,11 +112,12 @@ public class CalcBalance {
                             defInfo.rewardMatchScore +
                             defInfo.mechRepairCost;
 
+
                     defender.add(defInfo);
                 }
 
                 case "2" -> {
-                    attInfo = new BalanceUserInfo();
+                    attInfo = new BalanceUserInfo(report.factionAttacker.getId());
                     attInfo.userName = (detail.getUsername());
                     attInfo.damage = (detail.getDamage().longValue());
                     attInfo.componentDestroyed = (detail.getComponentsDestroyed().longValue());
@@ -147,16 +143,12 @@ public class CalcBalance {
 
                     attacker.add(attInfo);
                 }
-
             }
-
-
         }
-
         report.createCalcReport(attacker, defender);
+        logger.info("--- Balance calculating finished ---");
 
     }
-
 
     /**
      * Erstellt einen Reparaturbericht, die als Nachricht versendet werden kann.
