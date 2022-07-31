@@ -28,21 +28,17 @@ package net.clanwolf.starmap.server.process;
 
 import com.google.gson.Gson;
 import net.clanwolf.starmap.constants.Constants;
-import net.clanwolf.starmap.server.Nexus.Nexus;
-import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.*;
-import net.clanwolf.starmap.server.persistence.pojos.*;
+import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.StarSystemDataDAO;
+import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.StatsMwoDAO;
+import net.clanwolf.starmap.server.persistence.pojos.StarSystemDataPOJO;
+import net.clanwolf.starmap.server.persistence.pojos.StatsMwoPOJO;
 import net.clanwolf.starmap.server.reporting.GenerateRoundReport;
 import net.clanwolf.starmap.transfer.mwo.MWOMatchResult;
-import net.clanwolf.starmap.transfer.mwo.MechIdInfo;
-import net.clanwolf.starmap.transfer.mwo.UserDetail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
-import java.util.List;
-
-import static net.clanwolf.starmap.constants.Constants.*;
 
 
 /**

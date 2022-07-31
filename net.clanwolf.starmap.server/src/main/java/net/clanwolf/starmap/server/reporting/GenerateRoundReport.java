@@ -1045,7 +1045,7 @@ public class GenerateRoundReport {
         for (BalanceUserInfo def : defender) {
             team1Counter = 1;
             addCostDefender("Costs and rewards for the pilot " + def.userName, 0L);
-            addCostDefender(def.mechName + " repair costs (" + (100 - def.mechHealth) + "% to repair)", def.mechRepairCost);
+            addCostDefender(def.mechName.getShortname() + " repair costs (" + (100 - def.mechHealth) + "% to repair)", def.mechRepairCost);
             addCostDefender("Reward damage (" + def.damage + " Damage gone)", def.rewardDamage);
             addCostDefender("Reward component destroyed (" + def.componentDestroyed + " destroyed)", def.rewardComponentsDestroyed);
             addCostDefender("Reward kills (" + def.kills + " kills)", def.rewardKill);
@@ -1062,7 +1062,7 @@ public class GenerateRoundReport {
         for (BalanceUserInfo att : attacker) {
             team2Counter = 1;
             addCostAttacker("Costs and rewards for the pilot " + att.userName, 0L);
-            addCostAttacker(att.mechName + " repair costs (" + (100 - att.mechHealth) + "% to repair)", att.mechRepairCost);
+            addCostAttacker(att.mechName.getShortname() + " repair costs (" + (100 - att.mechHealth) + "% to repair)", att.mechRepairCost);
             addCostAttacker("Reward Damage (" + att.damage + " Damage gone)", att.rewardDamage);
             addCostAttacker("Reward component destroyed (" + att.componentDestroyed + " destroyed)", att.rewardComponentsDestroyed);
             addCostAttacker("Reward kills (" + att.kills + " kills)", att.rewardKill);

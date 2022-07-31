@@ -10,27 +10,80 @@ import java.util.List;
 import static net.clanwolf.starmap.constants.Constants.*;
 
 public class BalanceUserInfo {
+    /**
+     * Der Benutzername, wie er in MWO angezeigt wird.
+     */
     public String userName;
+    /**
+     * Die Anzahl des Schadens, den Spieler mit dem Mech erzielt hat.
+     */
     public long damage;
+    /**
+     * Anzahl der Komponenten, die der Spieler zerstört hat.
+     */
     public long componentDestroyed;
+    /**
+     * Die Anzahl kills, die der Spieler erreicht hat.
+     */
     public long kills;
+    /**
+     * Dia Anzahl an Match-score, den der Spieler erreicht hat.
+     */
     public long matchScore;
+    /**
+     * Der Gesundheit zustand des Mechs, am Ende des Kampfes.
+     */
     public long mechHealth;
-    public String mechName;
+    /**
+     * Mech-Informationen über den Spieler.
+     */
+    public MechIdInfo mechName;
+    /**
+     * Mech-Reparaturkosten in C-Bills.
+     */
     public long mechRepairCost;
+    /**
+     * Die Belohnung für zerstöre Komponenten in C-Bills.
+     */
     public long rewardComponentsDestroyed;
+    /**
+     * Die Belohnung für den Match-score in C-Bills.
+     */
     public long rewardMatchScore;
+    /**
+     * Die Belohnung für Schaden in C-Bills
+     */
     public long rewardDamage;
+    /**
+     * Die Bestrafung für den Spieler, dass er ein Teammitglied angeschossen hat in C-Bills.
+     */
     public long rewardTeamDamage;
+    /**
+     * Den Schaden an einem Teammitglied, den der Spieler angerichtet hat.
+     */
     public long teamDamage;
+    /**
+     * Die Belohnung für die kills, den der Spieler erreicht hat in C-Bills.
+     */
     public long rewardKill;
+    /**
+     * Die Summe aller Belohnungen und Kosten für den Spieler.
+     */
     public Long subTotal;
     private final MWOMatchResult mwomatchResult;
 
+    /**
+     *Berechnet die kosten für den Angreifer und den Verteidiger.
+     * @param mwomatchResult MWOMachtResult
+     */
     public BalanceUserInfo(MWOMatchResult mwomatchResult) {
         this.mwomatchResult = mwomatchResult;
     }
 
+    /**
+     * Listet die kosten für den Angreifer auf.
+     * @return Gibt ein ArrayList für die kosten für den Angreifer zurück.
+     */
     public List<BalanceUserInfo> GetAttackerInfo() {
         List<BalanceUserInfo> attacker = new ArrayList<>();
 
@@ -43,6 +96,10 @@ public class BalanceUserInfo {
         return attacker;
     }
 
+    /**
+     * Listet die kosten für den Verteidiger auf.
+     * @return Gibt ein ArrayList für die kosten für den Verteidiger zurück.
+     */
     public List<BalanceUserInfo> GetDefenderInfo() {
         List<BalanceUserInfo> defender = new ArrayList<>();
 
@@ -67,7 +124,7 @@ public class BalanceUserInfo {
         balanceUserInfo.matchScore = (detail.getMatchScore().longValue());
         balanceUserInfo.mechHealth = (detail.getHealthPercentage().longValue());
         mechIdInfo = new MechIdInfo(detail.getMechItemID());
-        balanceUserInfo.mechName = (mechIdInfo.getShortname());
+        balanceUserInfo.mechName = (mechIdInfo);
         balanceUserInfo.mechRepairCost = ((long) mechIdInfo.getRepairCost(detail.getHealthPercentage()));
         balanceUserInfo.rewardComponentsDestroyed = (detail.getComponentsDestroyed() * REWARD_EACH_COMPONENT_DESTROYED);
         balanceUserInfo.rewardMatchScore = (detail.getMatchScore() * REWARD_EACH_MACHT_SCORE);
