@@ -1,6 +1,10 @@
 C3 version history
 --------------------------------
 
+Version 7.1.22 (02.08.2022)
+- ADDED: A countdown to round end
+- ADDED: Stories for ATTACK_TYPE Clan vs Clan
+
 Version 7.1.20 (29.07.2022)
 - UPDATED: Hibernate dependency
 - FIXED: Truncate round start datetime to minutes

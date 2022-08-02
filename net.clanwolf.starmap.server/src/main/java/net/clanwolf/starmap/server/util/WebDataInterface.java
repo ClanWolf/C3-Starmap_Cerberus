@@ -69,8 +69,8 @@ public class WebDataInterface {
 		Long season = GameServer.getCurrentSeason();
 		Long round = RoundDAO.getInstance().findBySeasonId(season).getRound();
 		Long roundPhase = RoundDAO.getInstance().findBySeasonId(season).getRoundPhase();
-		LocalDateTime date = RoundDAO.getInstance().findBySeasonId(season).getCurrentRoundStartDate();
-		String dateS = dateTimeformatter.format(date);
+		LocalDateTime currentRoundStartDateTime = RoundDAO.getInstance().findBySeasonId(season).getCurrentRoundStartDate();
+		String dateS = dateTimeformatter.format(currentRoundStartDateTime);
 
 		SeasonDAO dao = SeasonDAO.getInstance();
 		SeasonPOJO seasonPOJO = (SeasonPOJO) dao.findById(SeasonPOJO.class, season);
@@ -86,9 +86,13 @@ public class WebDataInterface {
 		universe.currentSeasonMetaPhase = seasonMetaPhase.intValue();
 		universe.currentRound = round.intValue();
 		universe.currentRoundPhase = roundPhase.intValue();
+		universe.numberOfDaysInRound = seasonPOJO.getDaysInRound();
+		universe.currentRoundStartDateTime = currentRoundStartDateTime;
+		universe.currentRoundEndDateTime = currentRoundStartDateTime.plusHours((int) (seasonPOJO.getDaysInRound() * 24));
+		universe.currentSeasonStartDate = seasonPOJO.getStartDate();
 		universe.currentDate = dateS;
 		universe.maxNumberOfRoundsForSeason = seasonPOJO.getSerpentArrivalRound().intValue();
-		universe.numberOfDaysInRound = seasonPOJO.getDaysInRound();
+
 		return universe;
 	}
 

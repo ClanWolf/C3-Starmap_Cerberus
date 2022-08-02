@@ -388,21 +388,25 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 					String ids = at.getCLAN_IS_StoryIds();
 					String[] s1 = ids.split(";");
 					Integer num = (int) (Math.random() * s1.length);
+					if ("".equals(s1[num])) { logger.info("!!!!!!!!!!!!!!!!! Missing story-ID in _HH_ATTACK_TYPE for Attack Type CLAN vs IS"); }
 					rpID = Long.parseLong(s1[num]);
 				} else if (attackType.equals(-2L)) {
 					String ids = at.getCLAN_vs_CLAN_StoryIds();
 					String[] s1 = ids.split(";");
 					Integer num = (int) (Math.random() * s1.length);
+					if ("".equals(s1[num])) { logger.info("!!!!!!!!!!!!!!!!! Missing story-ID in _HH_ATTACK_TYPE for Attack Type CLAN vs CLAN"); }
 					rpID = Long.parseLong(s1[num]);
 				} else if (attackType.equals(-3L)) {
 					String ids = at.getIS_vs_CLAN_StoryIds();
 					String[] s1 = ids.split(";");
 					Integer num = (int) (Math.random() * s1.length);
+					if ("".equals(s1[num])) { logger.info("!!!!!!!!!!!!!!!!! Missing story-ID in _HH_ATTACK_TYPE for Attack Type IS vs CLAN"); }
 					rpID = Long.parseLong(s1[num]);
 				} else if (attackType.equals(-4L)) {
 					String ids = at.getIS_vs_IS_StoryIds();
 					String[] s1 = ids.split(";");
 					Integer num = (int) (Math.random() * s1.length);
+					if ("".equals(s1[num])) { logger.info("!!!!!!!!!!!!!!!!! Missing story-ID in _HH_ATTACK_TYPE for Attack Type IS vs IS"); }
 					rpID = Long.parseLong(s1[num]);
 				}
 

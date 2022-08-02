@@ -87,6 +87,15 @@ import net.clanwolf.starmap.transfer.enums.POPUPS;
 import java.io.*;
 import java.lang.invoke.MethodHandles;
 import java.net.URL;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalUnit;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -1119,9 +1128,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		ActionManager.addActionCallbackListener(ACTIONS.LOGGED_OFF_AFTER_DOUBLE_LOGIN_COMPLETE, this);
 		ActionManager.addActionCallbackListener(ACTIONS.LOGGED_ON, this);
 		ActionManager.addActionCallbackListener(ACTIONS.LOGON_RUNNING, this);
-
 		ActionManager.addActionCallbackListener(ACTIONS.LOGON_FINISHED_SUCCESSFULL, this);
-
 		ActionManager.addActionCallbackListener(ACTIONS.PANE_CREATION_FINISHED, this);
 		ActionManager.addActionCallbackListener(ACTIONS.PANE_CREATION_BEGINS, this);
 		ActionManager.addActionCallbackListener(ACTIONS.PANE_DESTRUCTION_FINISHED, this);
@@ -1147,7 +1154,6 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		ActionManager.addActionCallbackListener(ACTIONS.SHOW_MEDAL, this);
 		ActionManager.addActionCallbackListener(ACTIONS.SHOW_POPUP, this);
 		ActionManager.addActionCallbackListener(ACTIONS.SET_TERMINAL_TEXT, this);
-//		ActionManager.addActionCallbackListener(ACTIONS.NEW_UNIVERSE_RECEIVED, this);
 		ActionManager.addActionCallbackListener(ACTIONS.HIDE_IRC_INDICATOR, this);
 		ActionManager.addActionCallbackListener(ACTIONS.SHOW_IRC_INDICATOR, this);
 		ActionManager.addActionCallbackListener(ACTIONS.ENABLE_MAIN_MENU_BUTTONS, this);
@@ -1156,8 +1162,27 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		ActionManager.addActionCallbackListener(ACTIONS.TERMINAL_COMMAND, this);
 		ActionManager.addActionCallbackListener(ACTIONS.FLASH_MWO_LOGO_ONCE, this);
 		ActionManager.addActionCallbackListener(ACTIONS.IRC_DISCONNECT_NOW, this);
-
 		ActionManager.addActionCallbackListener(ACTIONS.SERVER_CONNECTION_LOST, this);
+	}
+
+	public static Date addDaysToDate(Date date, int daysToAdd) {
+		Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		c.add(Calendar.DAY_OF_MONTH, daysToAdd);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String newDateString = sdf.format(c.getTime());
+
+		return Date.valueOf(newDateString);
+	}
+
+	public static Date translateRealDateToSeasonDate(Date date, Long seasonId) {
+		Calendar c = Calendar.getInstance();
+		c.setTime(Nexus.getBoUniverse().currentSeasonStartDate);
+		int seasonStartYear = c.get(Calendar.YEAR);
+		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+		int diff = (int) Math.abs((seasonStartYear - currentYear) * 365.243); // Days in year + leap year factor
+
+		return addDaysToDate(date, diff);
 	}
 
 	private void setToLevelLoggedOutText() {
@@ -1178,11 +1203,34 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				final int ii = i;
 				Platform.runLater(() -> toplabel.setText(topTexts[ii]));
 
+				if (Nexus.isLoggedIn()) {
+					if (Nexus.getBoUniverse() != null && Nexus.getCurrentRound() != 0) {
+						Date nowDate = new Date(System.currentTimeMillis());
+						Date translatedNowDate = translateRealDateToSeasonDate(nowDate, (long)Nexus.getCurrentSeason());
+						LocalDate translatedLocalDate = new java.util.Date(translatedNowDate.getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+						LocalTime nowLocalTime = LocalTime.now();
+						LocalDateTime now = LocalDateTime.of(translatedLocalDate, nowLocalTime);
+						LocalDateTime endTime = Nexus.getBoUniverse().currentRoundEndDateTime;
+
+						long diff = java.time.Duration.between(now, endTime).toMinutes();
+						long days = diff / 24 / 60;
+						long hours = diff / 60 % 24;
+						long minutes = diff % 60;
+
+						String daysString = days == 1 ? Internationalization.getString("general_day") : Internationalization.getString("general_days");
+						String hourString = hours == 1 ? Internationalization.getString("general_hour") : Internationalization.getString("general_hours");
+						String minuteString = minutes == 1 ? Internationalization.getString("general_minute") : Internationalization.getString("general_minutes");
+
+						String timeString = days + " " + daysString + ", " + hours + " " + hourString + " " + Internationalization.getString("general_and") + " " + minutes + " " + minuteString + " " + Internationalization.getString("general_left_in_round") + " " + Nexus.getCurrentRound() + ".";
+						ActionManager.getAction(ACTIONS.UPDATE_ROUND_COUNTDOWN).execute(timeString);
+					}
+				}
+
 				try {
 					if ("".equals(topTexts[i])) {
 						TimeUnit.SECONDS.sleep(1);
 					} else {
-						TimeUnit.SECONDS.sleep(2);
+						TimeUnit.SECONDS.sleep(5);
 					}
 				} catch (InterruptedException e) {
 					//
@@ -1710,7 +1758,17 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					}
 					enableMainMenuButtons(Nexus.isLoggedIn(), Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN));
 					BOUniverse boUniverse = Nexus.getBoUniverse();
-					gameInfoLabel.setText("S" + boUniverse.currentSeason + " R" + boUniverse.currentRound + "[" + (boUniverse.currentRoundPhase == 1 ? "." : ":") + "]" + "/" + boUniverse.maxNumberOfRoundsForSeason + " " + Tools.getRomanNumber(boUniverse.currentSeasonMetaPhase) + " - " + boUniverse.currentDate);
+
+					Date nowDate = new Date(System.currentTimeMillis());
+					Date translatedNowDate = translateRealDateToSeasonDate(nowDate, (long)Nexus.getCurrentSeason());
+					LocalDate translatedLocalDate = new java.util.Date(translatedNowDate.getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+					LocalTime nowLocalTime = LocalTime.now();
+					LocalDateTime now = LocalDateTime.of(translatedLocalDate, nowLocalTime);
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Internationalization.getString("general_date"));
+					String formatDateTime = now.format(formatter);
+
+//					gameInfoLabel.setText("S" + boUniverse.currentSeason + " R" + boUniverse.currentRound + "[" + (boUniverse.currentRoundPhase == 1 ? "." : ":") + "]" + "/" + boUniverse.maxNumberOfRoundsForSeason + " " + Tools.getRomanNumber(boUniverse.currentSeasonMetaPhase) + " - " + boUniverse.currentDate);
+					gameInfoLabel.setText("S" + boUniverse.currentSeason + "*" + Tools.getRomanNumber(boUniverse.currentSeasonMetaPhase) + "/R" + boUniverse.currentRound + " - " + formatDateTime);
 
 					labelTFSProgress.setText(boUniverse.currentRound + " / " + boUniverse.maxNumberOfRoundsForSeason);
 
@@ -2016,8 +2074,16 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				Platform.runLater(() -> {
 					BOUniverse boUniverse = Nexus.getBoUniverse();
 
-					gameInfoLabel.setText("S" + boUniverse.currentSeason + " R" + boUniverse.currentRound + "[" + (boUniverse.currentRoundPhase == 1 ? "." : ":") + "]" + "/" + boUniverse.maxNumberOfRoundsForSeason + " " + Tools.getRomanNumber(boUniverse.currentSeasonMetaPhase) + " - " + boUniverse.currentDate);
-//					gameInfoLabel.setText("S" + boUniverse.currentSeason + "*" + Tools.getRomanNumber(boUniverse.currentSeasonMetaPhase) + "/R" + boUniverse.currentRound + " - " + boUniverse.currentDate);
+					Date nowDate = new Date(System.currentTimeMillis());
+					Date translatedNowDate = translateRealDateToSeasonDate(nowDate, (long)Nexus.getCurrentSeason());
+					LocalDate translatedLocalDate = new java.util.Date(translatedNowDate.getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+					LocalTime nowLocalTime = LocalTime.now();
+					LocalDateTime now = LocalDateTime.of(translatedLocalDate, nowLocalTime);
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Internationalization.getString("general_date"));
+					String formatDateTime = now.format(formatter);
+
+//					gameInfoLabel.setText("S" + boUniverse.currentSeason + " R" + boUniverse.currentRound + "[" + (boUniverse.currentRoundPhase == 1 ? "." : ":") + "]" + "/" + boUniverse.maxNumberOfRoundsForSeason + " " + Tools.getRomanNumber(boUniverse.currentSeasonMetaPhase) + " - " + boUniverse.currentDate);
+					gameInfoLabel.setText("S" + boUniverse.currentSeason + "*" + Tools.getRomanNumber(boUniverse.currentSeasonMetaPhase) + "/R" + boUniverse.currentRound + " - " + formatDateTime);
 
 					double tfsProgress = (100d / Nexus.getBoUniverse().maxNumberOfRoundsForSeason * Nexus.getBoUniverse().currentRound) / 100;
 					TFSProgress.setProgress(tfsProgress);

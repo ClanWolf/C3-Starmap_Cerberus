@@ -28,7 +28,9 @@ package net.clanwolf.starmap.transfer.dtos;
 
 import net.clanwolf.starmap.transfer.Dto;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 public class UniverseDTO extends Dto {
@@ -39,6 +41,9 @@ public class UniverseDTO extends Dto {
 	public ArrayList<RoutePointDTO> routepoints = new ArrayList<>();
 	public HashMap<Long, RolePlayStoryDTO> attackStorys = new HashMap<>();
 
+	public Date currentSeasonStartDate;
+	public LocalDateTime currentRoundStartDateTime;
+	public LocalDateTime currentRoundEndDateTime;
 	public String lastRoundResultProtocol;
 
 	public Integer currentSeason;

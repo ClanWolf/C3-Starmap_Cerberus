@@ -135,7 +135,7 @@ public class EndRound {
 		LocalDateTime nextRoundDate = null;
 		try {
 			nextRoundDate = getNextRoundDate(seasonId);
-			Date translatedNowDate = translateRealDateToSeasonTime(new Date(System.currentTimeMillis()), 1L);
+			Date translatedNowDate = translateRealDateToSeasonDate(new Date(System.currentTimeMillis()), 1L);
 
 			LocalDate localDate = new java.util.Date(translatedNowDate.getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 			LocalTime now = LocalTime.now();
@@ -157,7 +157,7 @@ public class EndRound {
 		}
 	}
 
-	public static Date translateRealDateToSeasonTime(Date date, Long seasonId) {
+	public static Date translateRealDateToSeasonDate(Date date, Long seasonId) {
 		SeasonDAO dao = SeasonDAO.getInstance();
 		SeasonPOJO season = (SeasonPOJO) dao.findById(SeasonPOJO.class, seasonId);
 		Date seasonStartDate = season.getStartDate();
@@ -166,12 +166,7 @@ public class EndRound {
 		c.setTime(seasonStartDate);
 		int seasonStartYear = c.get(Calendar.YEAR);
 		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-
 		int diff = (int) Math.abs((seasonStartYear - currentYear) * 365.243); // Days in year + leap year factor
-
-		//		LocalDateTime date1 = new Timestamp(seasonStartDate.getTime()).toLocalDateTime();
-		//		LocalDateTime date2 = new Timestamp(date.getTime()).toLocalDateTime();
-		//		Long diff = Duration.between(date1, date2).toDays();
 
 		return addDaysToDate(date, diff);
 	}
@@ -388,7 +383,7 @@ public class EndRound {
 					}
 				}
 
-				Date d = translateRealDateToSeasonTime(new Date(System.currentTimeMillis()), seasonId);
+				Date d = translateRealDateToSeasonDate(new Date(System.currentTimeMillis()), seasonId);
 				LocalDate localDate = new java.util.Date(d.getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 				LocalTime now = LocalTime.now().truncatedTo(ChronoUnit.MINUTES);
 				LocalDateTime translatedNowDateWithTime = LocalDateTime.of(localDate, now);

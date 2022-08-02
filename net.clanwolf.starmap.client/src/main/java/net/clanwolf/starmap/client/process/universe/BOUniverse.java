@@ -36,10 +36,8 @@ import org.kynosarges.tektosyne.geometry.PolygonLocation;
 import org.kynosarges.tektosyne.geometry.VoronoiResults;
 import org.kynosarges.tektosyne.subdivision.Subdivision;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.TreeSet;
+import java.time.LocalDateTime;
+import java.util.*;
 
 public class BOUniverse {
 
@@ -58,6 +56,9 @@ public class BOUniverse {
 	public Integer currentSeason;
 	public Integer currentSeasonMetaPhase;
 	public Integer currentRound;
+	public Date currentSeasonStartDate;
+	public LocalDateTime currentRoundStartDateTime;
+	public LocalDateTime currentRoundEndDateTime;
 	public Integer currentRoundPhase;
 	public String currentDate;
 	public Integer maxNumberOfRoundsForSeason;
@@ -157,6 +158,9 @@ public class BOUniverse {
 		currentSeasonMetaPhase = universeDTO.currentSeasonMetaPhase;
 		currentRound = universeDTO.currentRound;
 		currentRoundPhase = universeDTO.currentRoundPhase;
+		currentRoundStartDateTime = universeDTO.currentRoundStartDateTime;
+		currentRoundEndDateTime = universeDTO.currentRoundEndDateTime;
+		currentSeasonStartDate = universeDTO.currentSeasonStartDate;
 		currentDate = universeDTO.currentDate;
 		maxNumberOfRoundsForSeason = universeDTO.maxNumberOfRoundsForSeason;
 		numberOfDaysInRound = universeDTO.numberOfDaysInRound;
@@ -181,6 +185,9 @@ public class BOUniverse {
 		this.currentSeasonMetaPhase = this.universeDTO.currentSeasonMetaPhase;
 		this.currentRound = this.universeDTO.currentRound;
 		this.currentRoundPhase = this.universeDTO.currentRoundPhase;
+		this.currentRoundStartDateTime = universeDTO.currentRoundStartDateTime;
+		this.currentRoundEndDateTime = universeDTO.currentRoundEndDateTime;
+		this.currentSeasonStartDate = universeDTO.currentSeasonStartDate;
 		this.currentDate = this.universeDTO.currentDate;
 		this.maxNumberOfRoundsForSeason = this.universeDTO.maxNumberOfRoundsForSeason;
 		this.numberOfDaysInRound = this.universeDTO.numberOfDaysInRound;

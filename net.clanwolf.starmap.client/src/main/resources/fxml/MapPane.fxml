@@ -48,9 +48,9 @@
             <Button fx:id="mapButton05" alignment="CENTER_RIGHT" layoutX="78.0" layoutY="103.0" mnemonicParsing="false" onAction="#handleNextJumpshipButtonClick" prefHeight="37.0" prefWidth="62.0" styleClass="contentButtonClean" stylesheets="@../styles/MainFrameStyle.css" text="&gt;" />
          </children>
       </Pane>
-      <Label fx:id="roundPhaseLabel" layoutX="93.0" layoutY="35.0" prefHeight="37.0" prefWidth="209.0" text="..." textFill="#eaf548">
+      <Label fx:id="roundPhaseLabel" layoutX="74.0" layoutY="16.0" mouseTransparent="true" prefHeight="37.0" prefWidth="596.0" textFill="#e4a513">
          <font>
-            <Font size="18.0" />
+            <Font name="System Bold" size="12.0" />
          </font>
       </Label>
 	</children>
