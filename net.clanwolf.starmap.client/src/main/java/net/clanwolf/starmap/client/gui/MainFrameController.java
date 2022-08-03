@@ -1192,7 +1192,11 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				if (Nexus.isLoggedIn()) {
 					String tcphostname = C3Properties.getProperty(C3PROPS.TCP_HOSTNAME);
 					int tcpPort = Integer.parseInt(C3Properties.getProperty(C3PROPS.TCP_PORT));
-					topTexts = new String[] { Nexus.getCurrentUser().getUserName(), tcphostname + ":" + tcpPort, "" };
+					if (Nexus.getHoursLeftInThisRound() != 0) {
+						topTexts = new String[]{Nexus.getCurrentUser().getUserName(), tcphostname + ":" + tcpPort, "", "T-" + Nexus.getHoursLeftInThisRound() + "h in R" + Nexus.getCurrentRound(), "" };
+					} else {
+						topTexts = new String[]{Nexus.getCurrentUser().getUserName(), tcphostname + ":" + tcpPort, "" };
+					}
 				} else {
 					topTexts = new String[] { "1// Communicate", "", "2// Command", "", "3// Control", "" };
 				}
@@ -1212,6 +1216,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 						LocalDateTime now = LocalDateTime.of(translatedLocalDate, nowLocalTime);
 						LocalDateTime endTime = Nexus.getBoUniverse().currentRoundEndDateTime;
 
+						Nexus.setHoursLeftInThisRound(java.time.Duration.between(now, endTime).toHours());
+
 						long diff = java.time.Duration.between(now, endTime).toMinutes();
 						long days = diff / 24 / 60;
 						long hours = diff / 60 % 24;
@@ -1221,7 +1227,18 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 						String hourString = hours == 1 ? Internationalization.getString("general_hour") : Internationalization.getString("general_hours");
 						String minuteString = minutes == 1 ? Internationalization.getString("general_minute") : Internationalization.getString("general_minutes");
 
-						String timeString = days + " " + daysString + ", " + hours + " " + hourString + " " + Internationalization.getString("general_and") + " " + minutes + " " + minuteString + " " + Internationalization.getString("general_left_in_round") + " " + Nexus.getCurrentRound() + ".";
+						String timeString;
+						if (days != 0) {
+							if (hours != 0) {
+								timeString = days + " " + daysString + ", " + hours + " " + hourString + " " + Internationalization.getString("general_and") + " " + minutes + " " + minuteString + " " + Internationalization.getString("general_left_in_round") + " " + Nexus.getCurrentRound() + ".";
+							} else {
+								timeString = days + " " + daysString + " " + Internationalization.getString("general_and") + " " + minutes + " " + minuteString + " " + Internationalization.getString("general_left_in_round") + " " + Nexus.getCurrentRound() + ".";
+							}
+						} else if (hours != 0) {
+							timeString = hours + " " + hourString + " " + Internationalization.getString("general_and") + " " + minutes + " " + minuteString + " " + Internationalization.getString("general_left_in_round") + " " + Nexus.getCurrentRound() + ".";
+						} else {
+							timeString = minutes + " " + minuteString + " " + Internationalization.getString("general_left_in_round") + " " + Nexus.getCurrentRound() + ".";
+						}
 						ActionManager.getAction(ACTIONS.UPDATE_ROUND_COUNTDOWN).execute(timeString);
 					}
 				}

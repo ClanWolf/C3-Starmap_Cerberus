@@ -87,6 +87,8 @@ public class Nexus {
 	private static int currentRound;
 	private static int currentSeasonMetaPhase;
 	private static String currentDate;
+
+	private static long hoursLeftInThisRound;
 	private static String lastAvailableClientVersion = "not checked yet";
 
 	private static AbstractC3Pane currentlyOpenedPane = null;
@@ -532,5 +534,15 @@ public class Nexus {
 	@SuppressWarnings("unused")
 	public static void setServerHeartBeatTimer(Timer serverHeartBeatTimer) {
 		Nexus.serverHeartBeatTimer = serverHeartBeatTimer;
+	}
+
+	@SuppressWarnings("unused")
+	public static long getHoursLeftInThisRound() {
+		return hoursLeftInThisRound;
+	}
+
+	@SuppressWarnings("unused")
+	public static void setHoursLeftInThisRound(long hoursLeftInThisRoundV) {
+		hoursLeftInThisRound = hoursLeftInThisRoundV;
 	}
 }

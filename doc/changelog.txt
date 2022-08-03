@@ -1,6 +1,11 @@
 C3 version history
 --------------------------------
 
+Version 7.1.23 (03.08.2022)
+- UPDATED: A number of fixed were made to the pdf end round report
+- FIXED: Countdown display
+- FIXED: Story relations for Clan vs Clan
+
 Version 7.1.22 (02.08.2022)
 - ADDED: A countdown to round end
 - ADDED: Stories for ATTACK_TYPE Clan vs Clan
