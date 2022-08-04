@@ -1267,21 +1267,19 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			setStrings();
 			logger.info("Finished to build the starmap.");
 
-			if (boUniverse.currentRoundPhase == 1) {
+//			if (boUniverse.currentRoundPhase == 1) {
 //				roundPhaseLabel.setText(Internationalization.getString("app_map_phase_movement"));
-				//TODO_C3: Enable / disable jump and attack buttons
 //				mapButton01.setTooltip(new Tooltip(Internationalization.getString("app_map_phase_movement"))); // confirm
 //				mapButton01.setDisable(false);
 //				mapButton06.setTooltip(new Tooltip(Internationalization.getString("app_map_phase_movement"))); // Attack / join battle
 //				mapButton06.setDisable(true);
-			} else {
+//			} else {
 //				roundPhaseLabel.setText(Internationalization.getString("app_map_phase_combat"));
-				//TODO_C3: Enable / disable jump and attack buttons
 //				mapButton01.setTooltip(new Tooltip(Internationalization.getString("app_map_phase_combat"))); // confirm
 //				mapButton01.setDisable(true);
 //				mapButton06.setTooltip(new Tooltip(Internationalization.getString("app_map_phase_combat"))); // Attack / join battle
 //				mapButton06.setDisable(false);
-			}
+//			}
 
 			ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("12");
 			ActionManager.getAction(ACTIONS.MAP_CREATION_FINISHED).execute();

@@ -1,9 +1,6 @@
 
-TODO_C3:    Runde wird in Phasen unterteilt
-
 TODO_C3:    !!! Banner am Ende der Invasion entsprechend der Fraktion
 TODO_C3:    !!! Kampf beendet: anderes bild
-TODO_C3:    !!! PowerPoint Dateien für die Invasionstypen CL vs CL und IS vs IS
 
 TODO_C3:    FERTIG (?): Es wird kein neues Mappane mehr erzeugt beim Neuanmelden! Prüfen, ob das mit den Rechten alles passt nach Ab- und Anmeldung
 TODO_C3:    FERTIG (?): Beim Angriff checken, ob der Mindestlevel des Sprungschiffs für den Angriff reicht
@@ -24,8 +21,6 @@ TODO_C3:    Navigate the client from outside the process (global shortcuts)
 TODO_C3:    Navigate the client if the mouse is not present
 
 TODO_C3:    TeamSpeak API
-
-TODO_C3:    Sehen in der Karte ob Lobby offen ist
 
 TODO_C3:    If the attacker commander leaves the lobby, all attackcharacters are deleted and removed from the lobby (lobby closed)
 TODO_C3:    Es treffen sich Sprungschiffe verschiedener Fraktionen auf einem System (möglich?)
