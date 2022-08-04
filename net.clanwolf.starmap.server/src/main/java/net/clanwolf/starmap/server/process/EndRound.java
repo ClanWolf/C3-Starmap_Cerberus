@@ -385,7 +385,7 @@ public class EndRound {
 
 				Date d = translateRealDateToSeasonDate(new Date(System.currentTimeMillis()), seasonId);
 				LocalDate localDate = new java.util.Date(d.getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-				LocalTime now = LocalTime.now().truncatedTo(ChronoUnit.MINUTES);
+				LocalTime now = LocalTime.now().truncatedTo(ChronoUnit.HOURS);
 				LocalDateTime translatedNowDateWithTime = LocalDateTime.of(localDate, now);
 				roundPOJO.setCurrentRoundStartDate(translatedNowDateWithTime);
 
