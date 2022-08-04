@@ -64,24 +64,19 @@ public class WebDataInterface {
 	public static UniverseDTO getUniverse() {
 		String pattern = "dd.MM.yyyy HH:mm:ss";
 		DateTimeFormatter dateTimeformatter = DateTimeFormatter.ofPattern(pattern);
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
 
 		Long season = GameServer.getCurrentSeason();
 		Long round = RoundDAO.getInstance().findBySeasonId(season).getRound();
 		Long roundPhase = RoundDAO.getInstance().findBySeasonId(season).getRoundPhase();
 		LocalDateTime currentRoundStartDateTime = RoundDAO.getInstance().findBySeasonId(season).getCurrentRoundStartDate();
 		String dateS = dateTimeformatter.format(currentRoundStartDateTime);
-
-		SeasonDAO dao = SeasonDAO.getInstance();
-		SeasonPOJO seasonPOJO = (SeasonPOJO) dao.findById(SeasonPOJO.class, season);
+		SeasonPOJO seasonPOJO = (SeasonPOJO) SeasonDAO.getInstance().findById(SeasonPOJO.class, season);
 		Long seasonMetaPhase = seasonPOJO.getMetaPhase();
 
-		if (universe != null) {
-			universe.currentRound = round.intValue();
-			return universe;
+		if (universe == null) {
+			universe = new UniverseDTO();
 		}
 
-		universe = new UniverseDTO();
 		universe.currentSeason = season.intValue();
 		universe.currentSeasonMetaPhase = seasonMetaPhase.intValue();
 		universe.currentRound = round.intValue();

@@ -1,8 +1,12 @@
 C3 version history
 --------------------------------
 
+Version 7.1.24 (04.08.2022)
+- ADDED: New scenario IS vs IS
+- FIXED: Error in finalizing of rounds (missing updates on values on universe object)
+
 Version 7.1.23 (03.08.2022)
-- UPDATED: A number of fixed were made to the pdf end round report
+- UPDATED: A number of fixes were made to the pdf end round report
 - FIXED: Countdown display
 - FIXED: Story relations for Clan vs Clan
 
