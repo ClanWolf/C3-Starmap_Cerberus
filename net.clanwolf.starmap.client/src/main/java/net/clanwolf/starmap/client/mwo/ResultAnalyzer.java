@@ -120,7 +120,7 @@ public class ResultAnalyzer {
 			Long mechItemId = ud.getMechItemID().longValue();
 			boolean leadingPosition = false;
 
-			String mechFullName = mechInfo.getFullname();
+			String mechFullName = mechInfo.getFullName();
 			Integer killsMostDamage = ud.getKillsMostDamage();
 			Integer teamDamage = ud.getTeamDamage();
 			Integer componentsDestroyed = ud.getComponentsDestroyed();
