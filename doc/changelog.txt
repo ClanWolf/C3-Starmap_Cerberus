@@ -1,6 +1,10 @@
 C3 version history
 --------------------------------
 
+Version 7.1.26 (08.08.2022)
+- ADDED: 8 new Mechs: pnt-9rp, bsw-x2p, ghr-5pp, anh-1xp, mlx-gp, scr-bp, hbr-bp, gar-ep
+- CHANGED: Variables renamed
+
 Version 7.1.25 (04.08.2022)
 - ADDED: New scenario IS vs IS
 - FIXED: Error in finalizing of rounds (missing updates on values on universe object)
@@ -11,7 +15,7 @@ Version 7.1.23 (03.08.2022)
 - FIXED: Story relations for Clan vs Clan
 
 Version 7.1.22 (02.08.2022)
-- ADDED: A countdown to round end
+- ADDED: A 'countdown' to round end
 - ADDED: Stories for ATTACK_TYPE Clan vs Clan
 
 Version 7.1.20 (29.07.2022)

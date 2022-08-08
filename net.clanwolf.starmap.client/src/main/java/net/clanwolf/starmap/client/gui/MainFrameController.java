@@ -1230,15 +1230,16 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 						String timeString;
 						if (days != 0) {
 							if (hours != 0) {
-								timeString = days + " " + daysString + ", " + hours + " " + hourString + " " + Internationalization.getString("general_and") + " " + minutes + " " + minuteString + " " + Internationalization.getString("general_left_in_round") + " " + Nexus.getCurrentRound() + ".";
+								timeString = days + " " + daysString + ", " + hours + " " + hourString + " " + Internationalization.getString("general_and") + " " + minutes + " " + minuteString + " " + Internationalization.getString("general_left_in_round") + " " + Nexus.getCurrentRound();
 							} else {
-								timeString = days + " " + daysString + " " + Internationalization.getString("general_and") + " " + minutes + " " + minuteString + " " + Internationalization.getString("general_left_in_round") + " " + Nexus.getCurrentRound() + ".";
+								timeString = days + " " + daysString + " " + Internationalization.getString("general_and") + " " + minutes + " " + minuteString + " " + Internationalization.getString("general_left_in_round") + " " + Nexus.getCurrentRound();
 							}
 						} else if (hours != 0) {
-							timeString = hours + " " + hourString + " " + Internationalization.getString("general_and") + " " + minutes + " " + minuteString + " " + Internationalization.getString("general_left_in_round") + " " + Nexus.getCurrentRound() + ".";
+							timeString = hours + " " + hourString + " " + Internationalization.getString("general_and") + " " + minutes + " " + minuteString + " " + Internationalization.getString("general_left_in_round") + " " + Nexus.getCurrentRound();
 						} else {
 							timeString = minutes + " " + minuteString + " " + Internationalization.getString("general_left_in_round") + " " + Nexus.getCurrentRound() + ".";
 						}
+						timeString = timeString + " (" + java.time.Duration.between(now, endTime).toHours() + "h).";
 						ActionManager.getAction(ACTIONS.UPDATE_ROUND_COUNTDOWN).execute(timeString);
 					}
 				}

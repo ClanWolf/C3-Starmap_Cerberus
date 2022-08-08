@@ -46,7 +46,6 @@ import javax.persistence.EntityManager;
 import java.io.*;
 import java.lang.invoke.MethodHandles;
 import java.sql.*;
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -77,15 +76,15 @@ public class WebDataInterface {
 			universe = new UniverseDTO();
 		}
 
+		universe.currentDate = dateS;
 		universe.currentSeason = season.intValue();
 		universe.currentSeasonMetaPhase = seasonMetaPhase.intValue();
+		universe.currentSeasonStartDate = seasonPOJO.getStartDate();
 		universe.currentRound = round.intValue();
 		universe.currentRoundPhase = roundPhase.intValue();
-		universe.numberOfDaysInRound = seasonPOJO.getDaysInRound();
 		universe.currentRoundStartDateTime = currentRoundStartDateTime;
 		universe.currentRoundEndDateTime = currentRoundStartDateTime.plusHours((int) (seasonPOJO.getDaysInRound() * 24));
-		universe.currentSeasonStartDate = seasonPOJO.getStartDate();
-		universe.currentDate = dateS;
+		universe.numberOfDaysInRound = seasonPOJO.getDaysInRound();
 		universe.maxNumberOfRoundsForSeason = seasonPOJO.getSerpentArrivalRound().intValue();
 
 		return universe;
@@ -406,8 +405,8 @@ public class WebDataInterface {
 		String decodedPath = "";
 //		String systemsList = result.getResultList();
 //		String filename = "";
-		String filenameHH = "";
-		String filenameCM = "";
+		String filenameHH;
+		String filenameCM;
 
 		try {
 //			String path = WebDataInterface.class.getProtectionDomain().getCodeSource().getLocation().getPath();
@@ -552,7 +551,7 @@ public class WebDataInterface {
 
 		ObjectMapper mapper = new ObjectMapper();
 		mapper.enable(Feature.INDENT_OUTPUT);
-		Object mappedJson = null;
+		Object mappedJson;
 		try {
 			mappedJson = mapper.readValue(result, Object.class);
 			prettyPrintedResult = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(mappedJson);
