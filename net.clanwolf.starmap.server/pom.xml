@@ -26,7 +26,7 @@
 		<dependency>
 			<groupId>com.itextpdf</groupId>
 			<artifactId>itext7-core</artifactId>
-			<version>7.2.2</version>
+			<version>${itext.version}</version>
 			<type>pom</type>
 		</dependency>
 
@@ -202,7 +202,7 @@
 		<dependency>
 			<groupId>net.bytebuddy</groupId>
 			<artifactId>byte-buddy</artifactId>
-			<version>1.12.10</version>
+			<version>1.12.12</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.xml.bind</groupId>

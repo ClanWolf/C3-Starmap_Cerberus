@@ -26,19 +26,19 @@
 
 		<!-- C3 Revision -->
 		<!-- https://stackoverflow.com/questions/10582054/maven-project-version-inheritance-do-i-have-to-specify-the-parent-version -->
-		<revision>7.1.26</revision>
+		<revision>7.1.27</revision>
 
 		<!-- Versions -->
 		<version.java>18</version.java> <!-- Maven compiler plugin 3.10.1 does not support Java18 -->
-		<version.javafx>18.0.1</version.javafx>
+		<version.javafx>18.0.2</version.javafx>
 		<version.maven-compiler-plugin>3.10.1</version.maven-compiler-plugin>
 		<version.exec-maven-plugin>3.0.0</version.exec-maven-plugin>
 		<version.asm>9.3</version.asm>
-		<version.netty>4.1.77.Final</version.netty>
-		<version.spring>5.3.20</version.spring>
-		<version.spring-security-config>5.7.1</version.spring-security-config>
+		<version.netty>4.1.79.Final</version.netty>
+		<version.spring>5.3.22</version.spring>
+		<version.spring-security-config>5.7.2</version.spring-security-config>
 		<!-- version.hibernate.core>5.6.8</version.hibernate.core -->
-		<version.hibernate>5.6.8.Final</version.hibernate>
+		<version.hibernate>5.6.10.Final</version.hibernate>
 		<version.mysql-connector>8.0.29</version.mysql-connector>
 		<version.slf4j>2.0.0-alpha7</version.slf4j>
 		<!-- hikariCP and hikari jars are on the server next to the server jar. -->
@@ -48,7 +48,7 @@
 		<!-- and upload the files manually!                                     -->
 		<version.hibernate_hikaricp>6.1.1.Final</version.hibernate_hikaricp>
 		<version.hikaricp>5.0.1</version.hikaricp>
-		<itext.version>7.2.2</itext.version>
+		<itext.version>7.2.3</itext.version>
 	</properties>
 
 	<repositories>

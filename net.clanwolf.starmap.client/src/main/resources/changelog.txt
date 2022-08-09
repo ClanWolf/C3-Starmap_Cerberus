@@ -1,6 +1,9 @@
 C3 version history
 --------------------------------
 
+Version 7.1.27 (09.08.2022)
+- UPDATED: Java, JavaFX and dependencies
+
 Version 7.1.26 (08.08.2022)
 - ADDED: 8 new Mechs: pnt-9rp, bsw-x2p, ghr-5pp, anh-1xp, mlx-gp, scr-bp, hbr-bp, gar-ep
 - CHANGED: Variables renamed
