@@ -1712,7 +1712,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				break;
 
 			case FINALIZE_ROUND:
-//				logger.info("Server did finalize round.");
+				logger.info("Client-MappaneController: Server did finalize round.");
+				logger.info("Current round (after finalizing): " + Nexus.getBoUniverse().currentRound);
+				ActionManager.getAction(ACTIONS.UPDATE_GAME_INFO).execute();
 				break;
 
 			case CHANGE_LANGUAGE:

@@ -35,6 +35,7 @@ import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.*;
 import net.clanwolf.starmap.server.persistence.pojos.*;
 import net.clanwolf.starmap.server.reporting.GenerateRoundReport;
+import net.clanwolf.starmap.server.util.HeartBeatTimer;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import org.slf4j.Logger;
@@ -55,6 +56,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.Timer;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class EndRound {
@@ -582,6 +584,12 @@ public class EndRound {
 				logger.info("Mail was not sent out because this is a dev computer.");
 			}
 		}
+
+		// Send the new version of the universe to all clients that are still open somewhere
+		Timer serverHeartBeat;
+		serverHeartBeat = new Timer();
+		serverHeartBeat.schedule(new HeartBeatTimer(true), 10);
+
 		return foughtAttacks + "\r\n" + resolvedAttacks + "\r\n" + movedJumpships;
 	}
 

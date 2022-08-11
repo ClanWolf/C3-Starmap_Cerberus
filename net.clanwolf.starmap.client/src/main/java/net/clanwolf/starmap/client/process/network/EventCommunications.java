@@ -410,9 +410,9 @@ public class EventCommunications {
 					break;
 				case ROLEPLAY_REQUEST_ALLCHARACTER:
 					break;
-				case FINALIZE_ROUND:
+				case FINALIZE_ROUND: // This is the gamestatemode coming from the server!
 					logger.info("Server did finalize round.");
-					ActionManager.getAction(ACTIONS.FINALIZE_ROUND).execute();
+					ActionManager.getAction(ACTIONS.FINALIZE_ROUND).execute(); // This is the local event fired!
 					break;
 				case SERVER_HEARTBEAT:
 					Timestamp timestamp = new Timestamp(System.currentTimeMillis());
