@@ -26,16 +26,14 @@
  */
 package net.clanwolf.starmap.server.util;
 
+import net.clanwolf.starmap.server.Nexus.Nexus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.server.GameServer;
-import net.clanwolf.starmap.server.beans.C3GameSessionHandler;
 import net.clanwolf.starmap.server.beans.C3Room;
 import net.clanwolf.starmap.server.enums.SystemListTypes;
-import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.RoundDAO;
 import net.clanwolf.starmap.server.persistence.pojos.RoundPOJO;
-import net.clanwolf.starmap.server.persistence.pojos.UserPOJO;
 import net.clanwolf.starmap.server.process.EndRound;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
@@ -46,7 +44,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
-import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.TimerTask;
 
@@ -116,18 +113,22 @@ public class HeartBeatTimer extends TimerTask {
 				WebDataInterface.getUniverse().lastRoundResultProtocol = resultProtocol;
 			}
 
-			if (informClients) {
+			if (informClients || Nexus.sendUniverseToClients == true) {
 				// Broadcast new version of the universe to the clients
 				logger.info("Send updated universe to all clients.");
 				GameState response = new GameState(GAMESTATEMODES.GET_UNIVERSE_DATA);
 				response.addObject(Compressor.compress(WebDataInterface.getUniverse()));
 				C3Room.sendBroadcastMessage(response);
+
+				if (Nexus.sendUniverseToClients) {
+					Nexus.sendUniverseToClients = false;
+				}
 			}
 
 			currentlyRunning = false;
 		}
 
-		// Broadcast new version of the universe to the clients
+		// Broadcast heartbeat to the clients
 		logger.info("Send server heartbeat event to all clients (server is still up) (pong).");
 		GameState heartbeat = new GameState(GAMESTATEMODES.SERVER_HEARTBEAT);
 		C3Room.sendBroadcastMessage(heartbeat);

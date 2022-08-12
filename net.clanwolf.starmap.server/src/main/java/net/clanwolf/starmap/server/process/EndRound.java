@@ -585,10 +585,8 @@ public class EndRound {
 			}
 		}
 
-		// Send the new version of the universe to all clients that are still open somewhere
-		Timer serverHeartBeat;
-		serverHeartBeat = new Timer();
-		serverHeartBeat.schedule(new HeartBeatTimer(true), 10);
+		// Create and send the new version of the universe to all clients that are currently open
+		Nexus.sendUniverseToClients = true;
 
 		return foughtAttacks + "\r\n" + resolvedAttacks + "\r\n" + movedJumpships;
 	}

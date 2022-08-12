@@ -1,7 +1,7 @@
 C3 version history
 --------------------------------
 
-Version 7.1.28 (11.08.2022)
+Version 7.1.30 (11.08.2022)
 - UPDATED: Universe data will be broadcasted to clients after server finalized round
 
 Version 7.1.27 (09.08.2022)
