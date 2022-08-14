@@ -1045,7 +1045,7 @@ public class GenerateRoundReport {
         for (BalanceUserInfo def : defender) {
             team1Counter = 1;
             addCostDefender("Costs and rewards for the pilot " + def.userName, 0L);
-            addCostDefender(def.mechName.getShortname() + " repair costs (" + (100 - def.mechHealth) + "% to repair)", def.mechRepairCost);
+            addCostDefender(def.mechName.getFullName() + " repair costs (" + (100 - def.mechHealth) + "% to repair)", def.mechRepairCost);
             addCostDefender("Reward damage (" + def.damage + " Damage gone)", def.rewardDamage);
             addCostDefender("Reward component destroyed (" + def.componentDestroyed + " destroyed)", def.rewardComponentsDestroyed);
             addCostDefender("Reward kills (" + def.kills + " kills)", def.rewardKill);
@@ -1063,7 +1063,7 @@ public class GenerateRoundReport {
         for (BalanceUserInfo att : attacker) {
             team2Counter = 1;
             addCostAttacker("Costs and rewards for the pilot " + att.userName, 0L);
-            addCostAttacker(att.mechName.getShortname() + " repair costs (" + (100 - att.mechHealth) + "% to repair)", att.mechRepairCost);
+            addCostAttacker(att.mechName.getFullName() + " repair costs (" + (100 - att.mechHealth) + "% to repair)", att.mechRepairCost);
             addCostAttacker("Reward Damage (" + att.damage + " Damage gone)", att.rewardDamage);
             addCostAttacker("Reward component destroyed (" + att.componentDestroyed + " destroyed)", att.rewardComponentsDestroyed);
             addCostAttacker("Reward kills (" + att.kills + " kills)", att.rewardKill);
@@ -1112,7 +1112,7 @@ public class GenerateRoundReport {
                 .add("Match-score: " + nf.format(REWARD_EACH_MACHT_SCORE) + " C-Bills each match-score.")
                 .add("Team damage: " + nf.format(REWARD_EACH_TEAM_DAMAGE) + " C-Bills each team damage.");
 
-        doc.add(new Paragraph("Information about the planet being attacked:")
+        doc.add(new Paragraph("Cost calculation:")
                         .setFontSize(8)
                         .setBold())
                 .add(calcInf);
