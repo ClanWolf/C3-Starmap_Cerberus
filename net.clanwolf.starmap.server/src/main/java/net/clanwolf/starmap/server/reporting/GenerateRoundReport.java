@@ -39,7 +39,6 @@ import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
 import com.itextpdf.kernel.pdf.action.PdfAction;
 import com.itextpdf.kernel.pdf.annot.PdfLinkAnnotation;
-import com.itextpdf.kernel.pdf.canvas.PdfCanvas;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.borders.Border;
 import com.itextpdf.layout.borders.SolidBorder;
@@ -1045,12 +1044,13 @@ public class GenerateRoundReport {
         for (BalanceUserInfo def : defender) {
             team1Counter = 1;
             addCostDefender("Costs and rewards for the pilot " + def.userName, 0L);
-            addCostDefender(def.mechName.getFullName() + " repair costs (" + (100 - def.mechHealth) + "% to repair)", def.mechRepairCost);
-            addCostDefender("Reward damage (" + def.damage + " Damage gone)", def.rewardDamage);
-            addCostDefender("Reward component destroyed (" + def.componentDestroyed + " destroyed)", def.rewardComponentsDestroyed);
-            addCostDefender("Reward kills (" + def.kills + " kills)", def.rewardKill);
-            addCostDefender("Reward Match-score (" + def.matchScore + " Match-score)", def.rewardMatchScore);
-            addCostDefender("Team damage (" + def.teamDamage + " Team damage)", def.rewardTeamDamage);
+            addCostDefender(def.playerMechName.getFullName() + " repair costs (" + (100 - def.playerMechHealth) + "% to repair)", def.mechRepairCost);
+            addCostDefender("Reward damage (" + def.playerDamage + " Damage gone)", def.rewardDamage);
+            addCostDefender("Reward component destroyed (" + def.playerComponentDestroyed + " destroyed)", def.rewardComponentsDestroyed);
+            addCostDefender("Reward kills (" + def.playerKills + " kills)", def.rewardKill);
+            addCostDefender("Reward assist (" + def.playerAssist + " assists)", def.rewardAssist);
+            addCostDefender("Reward Match-score (" + def.playerMatchScore + " Match-score)", def.rewardMatchScore);
+            addCostDefender("Team damage (" + def.playerTeamDamage + " Team damage)", def.rewardTeamDamage);
             addCostDefender(def.rewardLossVictoryDescription, def.rewardLossVictory);
             team1Counter = -1;
             addCostDefender("Subtotal", def.subTotal);
@@ -1063,12 +1063,13 @@ public class GenerateRoundReport {
         for (BalanceUserInfo att : attacker) {
             team2Counter = 1;
             addCostAttacker("Costs and rewards for the pilot " + att.userName, 0L);
-            addCostAttacker(att.mechName.getFullName() + " repair costs (" + (100 - att.mechHealth) + "% to repair)", att.mechRepairCost);
-            addCostAttacker("Reward Damage (" + att.damage + " Damage gone)", att.rewardDamage);
-            addCostAttacker("Reward component destroyed (" + att.componentDestroyed + " destroyed)", att.rewardComponentsDestroyed);
-            addCostAttacker("Reward kills (" + att.kills + " kills)", att.rewardKill);
-            addCostAttacker("Reward Match-score (" + att.matchScore + " Match-score)", att.rewardMatchScore);
-            addCostAttacker("Team damage (" + att.teamDamage + " Team damage)", att.rewardTeamDamage);
+            addCostAttacker(att.playerMechName.getFullName() + " repair costs (" + (100 - att.playerMechHealth) + "% to repair)", att.mechRepairCost);
+            addCostAttacker("Reward Damage (" + att.playerDamage + " Damage gone)", att.rewardDamage);
+            addCostAttacker("Reward component destroyed (" + att.playerComponentDestroyed + " destroyed)", att.rewardComponentsDestroyed);
+            addCostAttacker("Reward kills (" + att.playerKills + " kills)", att.rewardKill);
+            addCostAttacker("Reward assist (" + att.playerAssist + " assists)", att.rewardAssist);
+            addCostAttacker("Reward Match-score (" + att.playerMatchScore + " Match-score)", att.rewardMatchScore);
+            addCostAttacker("Team damage (" + att.playerTeamDamage + " Team damage)", att.rewardTeamDamage);
             addCostAttacker(att.rewardLossVictoryDescription, att.rewardLossVictory);
             team2Counter = -1;
             addCostAttacker("Subtotal", att.subTotal);
@@ -1110,7 +1111,9 @@ public class GenerateRoundReport {
                 .add("Components destroyed: " + nf.format(REWARD_EACH_COMPONENT_DESTROYED) + " C-Bills each component destroyed.")
                 .add("Kills: " + nf.format(REWARD_EACH_KILL) + " C-Bills each kill.")
                 .add("Match-score: " + nf.format(REWARD_EACH_MACHT_SCORE) + " C-Bills each match-score.")
-                .add("Team damage: " + nf.format(REWARD_EACH_TEAM_DAMAGE) + " C-Bills each team damage.");
+                .add("Team damage: " + nf.format(REWARD_EACH_TEAM_DAMAGE) + " C-Bills each team damage.")
+                .add("Assist: " + nf.format(REWARD_ASSIST) + " C-Bills each assist.")
+                .add("No team damage: " + nf.format(REWARD_NO_TEAM_DAMAGE) + " C-Bills if the player does not cause team damage.");
 
         doc.add(new Paragraph("Cost calculation:")
                         .setFontSize(8)

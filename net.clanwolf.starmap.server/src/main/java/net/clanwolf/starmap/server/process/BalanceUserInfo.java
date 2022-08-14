@@ -18,30 +18,32 @@ public class BalanceUserInfo {
 
     public long rewardLossVictory;
     public String rewardLossVictoryDescription;
+    public long rewardAssist;
+    public long playerAssist;
     /**
      * Die Anzahl des Schadens, den Spieler mit dem Mech erzielt hat.
      */
-    public long damage;
+    public long playerDamage;
     /**
      * Anzahl der Komponenten, die der Spieler zerstört hat.
      */
-    public long componentDestroyed;
+    public long playerComponentDestroyed;
     /**
      * Die Anzahl kills, die der Spieler erreicht hat.
      */
-    public long kills;
+    public long playerKills;
     /**
      * Dia Anzahl an Match-score, den der Spieler erreicht hat.
      */
-    public long matchScore;
+    public long playerMatchScore;
     /**
      * Der Gesundheit zustand des Mechs, am Ende des Kampfes.
      */
-    public long mechHealth;
+    public long playerMechHealth;
     /**
      * Mech-Informationen über den Spieler.
      */
-    public MechIdInfo mechName;
+    public MechIdInfo playerMechName;
     /**
      * Mech-Reparaturkosten in C-Bills.
      */
@@ -65,7 +67,7 @@ public class BalanceUserInfo {
     /**
      * Den Schaden an einem Teammitglied, den der Spieler angerichtet hat.
      */
-    public long teamDamage;
+    public long playerTeamDamage;
     /**
      * Die Belohnung für die kills, den der Spieler erreicht hat in C-Bills.
      */
@@ -128,35 +130,44 @@ public class BalanceUserInfo {
         balanceUserInfo = new BalanceUserInfo(mwomatchResult);
         if (Objects.equals(winningTeam, detail.getTeam())) {
             balanceUserInfo.rewardLossVictory = REWARD_VICTORY;
-            balanceUserInfo.rewardLossVictoryDescription ="Victory";
+            balanceUserInfo.rewardLossVictoryDescription = "Victory";
         } else {
             balanceUserInfo.rewardLossVictory = REWARD_LOSS;
-            balanceUserInfo.rewardLossVictoryDescription ="Loss";
+            balanceUserInfo.rewardLossVictoryDescription = "Loss";
         }
 
-        balanceUserInfo.userName = (detail.getUsername());
-        balanceUserInfo.damage = (detail.getDamage().longValue());
-        balanceUserInfo.componentDestroyed = (detail.getComponentsDestroyed().longValue());
-        balanceUserInfo.kills = (detail.getKills().longValue());
-        balanceUserInfo.matchScore = (detail.getMatchScore().longValue());
-        balanceUserInfo.mechHealth = (detail.getHealthPercentage().longValue());
+        balanceUserInfo.rewardAssist = detail.getAssists() * REWARD_ASSIST;
+        balanceUserInfo.playerAssist = detail.getAssists();
+        balanceUserInfo.userName = detail.getUsername();
+        balanceUserInfo.playerDamage = detail.getDamage().longValue();
+        balanceUserInfo.playerComponentDestroyed = detail.getComponentsDestroyed().longValue();
+        balanceUserInfo.playerKills = detail.getKills().longValue();
+        balanceUserInfo.playerMatchScore = detail.getMatchScore().longValue();
+        balanceUserInfo.playerMechHealth = detail.getHealthPercentage().longValue();
         mechIdInfo = new MechIdInfo(detail.getMechItemID());
-        balanceUserInfo.mechName = (mechIdInfo);
+        balanceUserInfo.playerMechName = mechIdInfo;
         balanceUserInfo.mechRepairCost = ((long) mechIdInfo.getRepairCost(detail.getHealthPercentage()));
-        balanceUserInfo.rewardComponentsDestroyed = (detail.getComponentsDestroyed() * REWARD_EACH_COMPONENT_DESTROYED);
-        balanceUserInfo.rewardMatchScore = (detail.getMatchScore() * REWARD_EACH_MACHT_SCORE);
-        balanceUserInfo.rewardDamage = (detail.getDamage() * REWARD_EACH_DAMAGE);
-        balanceUserInfo.rewardTeamDamage = (detail.getTeamDamage() * REWARD_EACH_TEAM_DAMAGE);
-        balanceUserInfo.teamDamage = (detail.getTeamDamage().longValue());
-        balanceUserInfo.rewardKill = (detail.getKills() * REWARD_EACH_KILL);
-        balanceUserInfo.kills = (detail.getKills().longValue());
+        balanceUserInfo.rewardComponentsDestroyed = detail.getComponentsDestroyed() * REWARD_EACH_COMPONENT_DESTROYED;
+        balanceUserInfo.rewardMatchScore = detail.getMatchScore() * REWARD_EACH_MACHT_SCORE;
+        balanceUserInfo.rewardDamage = detail.getDamage() * REWARD_EACH_DAMAGE;
+
+        if (detail.getTeamDamage() == 0) {
+            balanceUserInfo.rewardTeamDamage = REWARD_NO_TEAM_DAMAGE;
+        } else {
+            balanceUserInfo.rewardTeamDamage = detail.getTeamDamage() * REWARD_EACH_TEAM_DAMAGE;
+        }
+
+        balanceUserInfo.playerTeamDamage = detail.getTeamDamage().longValue();
+        balanceUserInfo.rewardKill = detail.getKills() * REWARD_EACH_KILL;
+        balanceUserInfo.playerKills = detail.getKills().longValue();
         balanceUserInfo.subTotal = balanceUserInfo.rewardComponentsDestroyed +
                 balanceUserInfo.rewardKill +
                 balanceUserInfo.rewardDamage +
                 balanceUserInfo.rewardTeamDamage +
                 balanceUserInfo.rewardMatchScore +
                 balanceUserInfo.mechRepairCost +
-                balanceUserInfo.rewardLossVictory;
+                balanceUserInfo.rewardLossVictory +
+                balanceUserInfo.rewardAssist;
 
         userInfos.add(balanceUserInfo);
     }
