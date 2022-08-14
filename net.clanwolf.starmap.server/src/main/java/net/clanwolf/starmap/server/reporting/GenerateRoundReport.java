@@ -367,7 +367,7 @@ public class GenerateRoundReport {
     private void createCalcInfoXP() {
         List calcInfo = new List()
                 .setFontSize(8)
-                .add("Loss/Victory: " + XP_REWARD_VICTORY + " XP victory = " + XP_REWARD_LOSS + " XP loss")
+                .add("Victory = " + XP_REWARD_VICTORY + " XP / Loss = " + XP_REWARD_LOSS + " XP loss")
                 .add("Components destroyed: " + XP_REWARD_COMPONENT_DESTROYED + " XP per destroyed component")
                 .add("Match-score: " + XP_REWARD_EACH_MATCH_SCORE + " XP for each reach " + XP_REWARD_EACH_MATCH_SCORE_RANGE + " match score")
                 .add("Damage: " + XP_REWARD_EACH_DAMAGE + " XP for ech reach " + XP_REWARD_EACH_DAMAGE_RANGE + " damage");
@@ -1051,6 +1051,7 @@ public class GenerateRoundReport {
             addCostDefender("Reward kills (" + def.kills + " kills)", def.rewardKill);
             addCostDefender("Reward Match-score (" + def.matchScore + " Match-score)", def.rewardMatchScore);
             addCostDefender("Team damage (" + def.teamDamage + " Team damage)", def.rewardTeamDamage);
+            addCostDefender(def.rewardLossVictoryDescription, def.rewardLossVictory);
             team1Counter = -1;
             addCostDefender("Subtotal", def.subTotal);
             defCostTotal = defCostTotal + def.subTotal;
@@ -1068,6 +1069,7 @@ public class GenerateRoundReport {
             addCostAttacker("Reward kills (" + att.kills + " kills)", att.rewardKill);
             addCostAttacker("Reward Match-score (" + att.matchScore + " Match-score)", att.rewardMatchScore);
             addCostAttacker("Team damage (" + att.teamDamage + " Team damage)", att.rewardTeamDamage);
+            addCostAttacker(att.rewardLossVictoryDescription, att.rewardLossVictory);
             team2Counter = -1;
             addCostAttacker("Subtotal", att.subTotal);
             attCostTotal = attCostTotal + att.subTotal;
@@ -1089,7 +1091,8 @@ public class GenerateRoundReport {
         doc.add(new AreaBreak());
         createC3Header("Costs and rewards for drop " + dropCounter);
         createCalcInfoCost();
-        doc.add(t);
+        doc.add(new Paragraph(""))
+                .add(t);
 
         tableCostDefender = null;
         tableCostAttacker = null;
@@ -1102,6 +1105,7 @@ public class GenerateRoundReport {
     private void createCalcInfoCost() {
         List calcInf = new List()
                 .setFontSize(8)
+                .add("Victory = " + nf.format(REWARD_VICTORY) + " C-Bills / Loss = " + nf.format(REWARD_LOSS) + " C-Bills")
                 .add("Damage: " + nf.format(REWARD_EACH_DAMAGE) + " C-Bills each damage done.")
                 .add("Components destroyed: " + nf.format(REWARD_EACH_COMPONENT_DESTROYED) + " C-Bills each component destroyed.")
                 .add("Kills: " + nf.format(REWARD_EACH_KILL) + " C-Bills each kill.")

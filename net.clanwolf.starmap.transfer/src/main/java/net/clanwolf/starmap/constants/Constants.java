@@ -47,6 +47,8 @@ public class Constants implements java.io.Serializable {
 
 
 	//Reward payments when calculating the cost
+	public static final long REWARD_VICTORY = 250_000;
+	public static final long REWARD_LOSS = 125_000;
 	public static final long REWARD_EACH_COMPONENT_DESTROYED = 250_000;
 	public static final long REWARD_EACH_MACHT_SCORE = 2_500;
 	public static final long REWARD_EACH_DAMAGE = 1_500;

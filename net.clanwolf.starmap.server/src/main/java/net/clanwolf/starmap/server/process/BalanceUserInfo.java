@@ -6,6 +6,7 @@ import net.clanwolf.starmap.transfer.mwo.UserDetail;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static net.clanwolf.starmap.constants.Constants.*;
 
@@ -14,6 +15,9 @@ public class BalanceUserInfo {
      * Der Benutzername, wie er in MWO angezeigt wird.
      */
     public String userName;
+
+    public long rewardLossVictory;
+    public String rewardLossVictoryDescription;
     /**
      * Die Anzahl des Schadens, den Spieler mit dem Mech erzielt hat.
      */
@@ -73,7 +77,8 @@ public class BalanceUserInfo {
     private final MWOMatchResult mwomatchResult;
 
     /**
-     *Berechnet die kosten für den Angreifer und den Verteidiger.
+     * Berechnet die kosten für den Angreifer und den Verteidiger.
+     *
      * @param mwomatchResult MWOMachtResult
      */
     public BalanceUserInfo(MWOMatchResult mwomatchResult) {
@@ -82,6 +87,7 @@ public class BalanceUserInfo {
 
     /**
      * Listet die kosten für den Angreifer auf.
+     *
      * @return Gibt ein ArrayList für die kosten für den Angreifer zurück.
      */
     public List<BalanceUserInfo> GetAttackerInfo() {
@@ -98,6 +104,7 @@ public class BalanceUserInfo {
 
     /**
      * Listet die kosten für den Verteidiger auf.
+     *
      * @return Gibt ein ArrayList für die kosten für den Verteidiger zurück.
      */
     public List<BalanceUserInfo> GetDefenderInfo() {
@@ -116,7 +123,17 @@ public class BalanceUserInfo {
         BalanceUserInfo balanceUserInfo;
         MechIdInfo mechIdInfo;
 
+        String winningTeam = mwomatchResult.getMatchDetails().getWinningTeam();
+
         balanceUserInfo = new BalanceUserInfo(mwomatchResult);
+        if (Objects.equals(winningTeam, detail.getTeam())) {
+            balanceUserInfo.rewardLossVictory = REWARD_VICTORY;
+            balanceUserInfo.rewardLossVictoryDescription ="Victory";
+        } else {
+            balanceUserInfo.rewardLossVictory = REWARD_LOSS;
+            balanceUserInfo.rewardLossVictoryDescription ="Loss";
+        }
+
         balanceUserInfo.userName = (detail.getUsername());
         balanceUserInfo.damage = (detail.getDamage().longValue());
         balanceUserInfo.componentDestroyed = (detail.getComponentsDestroyed().longValue());
@@ -138,7 +155,8 @@ public class BalanceUserInfo {
                 balanceUserInfo.rewardDamage +
                 balanceUserInfo.rewardTeamDamage +
                 balanceUserInfo.rewardMatchScore +
-                balanceUserInfo.mechRepairCost;
+                balanceUserInfo.mechRepairCost +
+                balanceUserInfo.rewardLossVictory;
 
         userInfos.add(balanceUserInfo);
     }
