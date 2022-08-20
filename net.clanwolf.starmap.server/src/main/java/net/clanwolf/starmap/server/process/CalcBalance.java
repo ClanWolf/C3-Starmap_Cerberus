@@ -58,6 +58,7 @@ public class CalcBalance {
         String rawJSONstatsData = statsMwoPOJO.getRawData();
         MWOMatchResult matchDetails = new Gson().fromJson(rawJSONstatsData, MWOMatchResult.class);
 
+        matchDetails.setGameID(mwoMatchID);
         logger.info("Calculating balance...");
 
         BalanceUserInfo balanceUserInfo;

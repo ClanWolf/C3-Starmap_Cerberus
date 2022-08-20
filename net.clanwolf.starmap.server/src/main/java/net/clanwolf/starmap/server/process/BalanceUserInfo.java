@@ -1,5 +1,35 @@
+/* ---------------------------------------------------------------- |
+ *    ____ _____                                                    |
+ *   / ___|___ /                   Communicate - Command - Control  |
+ *  | |     |_ \                   MK V "Cerberus"                  |
+ *  | |___ ___) |                                                   |
+ *   \____|____/                                                    |
+ *                                                                  |
+ * ---------------------------------------------------------------- |
+ * Info        : https://www.clanwolf.net                           |
+ * GitHub      : https://github.com/ClanWolf                        |
+ * ---------------------------------------------------------------- |
+ * Licensed under the Apache License, Version 2.0 (the "License");  |
+ * you may not use this file except in compliance with the License. |
+ * You may obtain a copy of the License at                          |
+ * http://www.apache.org/licenses/LICENSE-2.0                       |
+ *                                                                  |
+ * Unless required by applicable law or agreed to in writing,       |
+ * software distributed under the License is distributed on an "AS  |
+ * IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either  |
+ * express or implied. See the License for the specific language    |
+ * governing permissions and limitations under the License.         |
+ *                                                                  |
+ * C3 includes libraries and source code by various authors.        |
+ * Copyright (c) 2001-2022, ClanWolf.net                            |
+ * ---------------------------------------------------------------- |
+ */
 package net.clanwolf.starmap.server.process;
 
+import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.AttackStatsDAO;
+import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.RolePlayCharacterStatsDAO;
+import net.clanwolf.starmap.server.persistence.pojos.AttackStatsPOJO;
+import net.clanwolf.starmap.server.persistence.pojos.RolePlayCharacterStatsPOJO;
 import net.clanwolf.starmap.transfer.mwo.MWOMatchResult;
 import net.clanwolf.starmap.transfer.mwo.MechIdInfo;
 import net.clanwolf.starmap.transfer.mwo.UserDetail;
@@ -76,7 +106,9 @@ public class BalanceUserInfo {
      * Die Summe aller Belohnungen und Kosten für den Spieler.
      */
     public Long subTotal;
+
     private final MWOMatchResult mwomatchResult;
+    private final Long defenderFactionID, attackerFactionID;
 
     /**
      * Berechnet die kosten für den Angreifer und den Verteidiger.
@@ -84,6 +116,12 @@ public class BalanceUserInfo {
      * @param mwomatchResult MWOMachtResult
      */
     public BalanceUserInfo(MWOMatchResult mwomatchResult) {
+
+        AttackStatsDAO attackStatsDAO = AttackStatsDAO.getInstance();
+        AttackStatsPOJO attackStatsPOJO = attackStatsDAO.findByMatchId(mwomatchResult.getGameID());
+        defenderFactionID = attackStatsPOJO.getDefenderFactionId();
+        attackerFactionID = attackStatsPOJO.getAttackerFactionId();
+
         this.mwomatchResult = mwomatchResult;
     }
 
@@ -96,9 +134,10 @@ public class BalanceUserInfo {
         List<BalanceUserInfo> attacker = new ArrayList<>();
 
         for (UserDetail detail : mwomatchResult.getUserDetails()) {
-            if ("2".equals(detail.getTeam()) && detail.getTeam() != null) {
-
-                getUserInfo(attacker, detail);
+            if(detail.getTeam()!=null){
+                if (Objects.equals(getAttackerTeam(), detail.getTeam())){
+                    getUserInfo(attacker, detail);
+                }
             }
         }
         return attacker;
@@ -113,12 +152,47 @@ public class BalanceUserInfo {
         List<BalanceUserInfo> defender = new ArrayList<>();
 
         for (UserDetail detail : mwomatchResult.getUserDetails()) {
-            if ("1".equals(detail.getTeam()) && detail.getTeam() != null) {
-
-                getUserInfo(defender, detail);
+            if(detail.getTeam()!=null){
+                if (Objects.equals(getDefenderTeam(), detail.getTeam())){
+                    getUserInfo(defender, detail);
+                }
             }
         }
         return defender;
+    }
+
+    private String getDefenderTeam() {
+
+        RolePlayCharacterStatsDAO rolePlayCharacterStatsDAO = RolePlayCharacterStatsDAO.getInstance();
+        ArrayList<RolePlayCharacterStatsPOJO> rolePlayCharacterStatsPOJO = rolePlayCharacterStatsDAO.findByMatchId(mwomatchResult.getGameID());
+        String defTeam = null;
+
+        for (RolePlayCharacterStatsPOJO rpChar : rolePlayCharacterStatsPOJO) {
+            if (rpChar.getMwoTeam() != null) {
+                if (Objects.equals(defenderFactionID, rpChar.getRoleplayCharacterFactionId())) {
+                    defTeam = String.valueOf(rpChar.getMwoTeam());
+                    break;
+                }
+            }
+        }
+        return defTeam;
+    }
+
+    private String getAttackerTeam() {
+
+        RolePlayCharacterStatsDAO rolePlayCharacterStatsDAO = RolePlayCharacterStatsDAO.getInstance();
+        ArrayList<RolePlayCharacterStatsPOJO> rolePlayCharacterStatsPOJO = rolePlayCharacterStatsDAO.findByMatchId(mwomatchResult.getGameID());
+        String attTeam = null;
+
+        for (RolePlayCharacterStatsPOJO rpChar : rolePlayCharacterStatsPOJO) {
+            if (rpChar.getMwoTeam() != null) {
+                if (Objects.equals(attackerFactionID, rpChar.getRoleplayCharacterFactionId())) {
+                    attTeam = String.valueOf(rpChar.getMwoTeam());
+                    break;
+                }
+            }
+        }
+        return attTeam;
     }
 
     private void getUserInfo(List<BalanceUserInfo> userInfos, UserDetail detail) {
