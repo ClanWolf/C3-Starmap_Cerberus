@@ -298,7 +298,7 @@ public class CalcXP {
                                 }
 
                                 currentCharacter.setXp((int) currentUserXP);
-                                characterDAO.update(Nexus.END_ROUND, currentCharacter);
+                                characterDAO.update(Nexus.END_ROUND_USERID, currentCharacter);
 
                             }
                         }

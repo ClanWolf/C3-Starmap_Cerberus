@@ -316,9 +316,9 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 
 			valueCharName.setText(character.getName());
 			valueCharAge.setText("");
-			valueCharRank.setText("");
+			if (character.getRank() != null) { valueCharRank.setText(character.getRank()); } else { valueCharRank.setText(""); }
 			valueCharLocation.setText("");
-			valueCharXP.setText("");
+			valueCharXP.setText(character.getXp() + "");
 			valueBalance.setText("");
 			valueIncome.setText("");
 			valueSystems.setText("");

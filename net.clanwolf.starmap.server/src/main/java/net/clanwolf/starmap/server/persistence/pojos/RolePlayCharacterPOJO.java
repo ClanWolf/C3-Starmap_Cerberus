@@ -51,6 +51,9 @@ public class RolePlayCharacterPOJO extends Pojo {
 	@Column(name = "ID")
 	public Long id;
 
+	@Column(name = "Rank")
+	private String rank;
+
 	@Column(name = "CharName")
 	private String name;
 
@@ -115,6 +118,22 @@ public class RolePlayCharacterPOJO extends Pojo {
 	@SuppressWarnings("unused")
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	/**
+	 * @return the rank
+	 */
+	@SuppressWarnings("unused")
+	public String getRank() {
+		return rank;
+	}
+
+	/**
+	 * @param rank the name to set
+	 */
+	@SuppressWarnings("unused")
+	public void setRank(String rank) {
+		this.rank = rank;
 	}
 
 	/**

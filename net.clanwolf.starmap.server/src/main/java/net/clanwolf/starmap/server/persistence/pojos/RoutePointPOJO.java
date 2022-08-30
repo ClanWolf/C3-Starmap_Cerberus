@@ -58,6 +58,9 @@ public class RoutePointPOJO extends Pojo {
 	@Column(name = "SystemID")
 	private Long systemId;
 
+	@Column(name = "CharacterID")
+	private Long characterID;
+
 	@SuppressWarnings("unused")
 	public Long getId() {
 		return id;
@@ -106,5 +109,15 @@ public class RoutePointPOJO extends Pojo {
 	@SuppressWarnings("unused")
 	public void setSystemId(Long systemId) {
 		this.systemId = systemId;
+	}
+
+	@SuppressWarnings("unused")
+	public Long getCharacterID() {
+		return characterID;
+	}
+
+	@SuppressWarnings("unused")
+	public void setCharacterID(Long characterID) {
+		this.characterID = characterID;
 	}
 }

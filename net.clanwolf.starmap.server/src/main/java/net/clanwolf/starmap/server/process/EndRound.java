@@ -243,7 +243,7 @@ public class EndRound {
 			logger.info("Admin finalized this round: " + roundFinalizedByAdmin);
 			forceFinalize.set(false);
 
-			EntityTransaction transaction = EntityManagerHelper.getEntityManager(Nexus.END_ROUND).getTransaction();
+			EntityTransaction transaction = EntityManagerHelper.getEntityManager(Nexus.END_ROUND_USERID).getTransaction();
 			String exceptionWhileSaving = "";
 			Long newRound = null;
 			GameState endRoundInfo = new GameState(GAMESTATEMODES.FINALIZE_ROUND);
@@ -251,7 +251,7 @@ public class EndRound {
 
 			try {
 				transaction.begin();
-				EntityManagerHelper.clear(Nexus.END_ROUND);
+				EntityManagerHelper.clear(Nexus.END_ROUND_USERID);
 				// here is no ship left to move AND no attack left open OR the time for the round is up
 				logger.info("--- There is NO time left for this round!");
 
@@ -260,10 +260,10 @@ public class EndRound {
 				for (AttackPOJO attackPOJO : openAttacksInRoundList) {
 					Long winnerId = findAWinner(attackPOJO);
 
-					JumpshipPOJO jsPojo = JumpshipDAO.getInstance().findById(Nexus.END_ROUND, attackPOJO.getJumpshipID());
-					StarSystemPOJO ssPojo = StarSystemDAO.getInstance().findById(Nexus.END_ROUND, attackPOJO.getStarSystemID());
-					FactionPOJO fWinnerPojo = FactionDAO.getInstance().findById(Nexus.END_ROUND, winnerId);
-					FactionPOJO fJumpshipPOJO = FactionDAO.getInstance().findById(Nexus.END_ROUND, jsPojo.getJumpshipFactionID());
+					JumpshipPOJO jsPojo = JumpshipDAO.getInstance().findById(Nexus.END_ROUND_USERID, attackPOJO.getJumpshipID());
+					StarSystemPOJO ssPojo = StarSystemDAO.getInstance().findById(Nexus.END_ROUND_USERID, attackPOJO.getStarSystemID());
+					FactionPOJO fWinnerPojo = FactionDAO.getInstance().findById(Nexus.END_ROUND_USERID, winnerId);
+					FactionPOJO fJumpshipPOJO = FactionDAO.getInstance().findById(Nexus.END_ROUND_USERID, jsPojo.getJumpshipFactionID());
 
 					resolvedAttacks.append("Jumpship '").append(jsPojo.getJumpshipName()).append("' (").append(jsPojo.getId()).append(") of ").append(fJumpshipPOJO.getShortName()).append(" (").append(fJumpshipPOJO.getId()).append(") attacked system '").append(ssPojo.getName()).append("' (").append(ssPojo.getId()).append(") ").append("--> resolved to winner: ").append(fWinnerPojo.getShortName() + " (" + attackPOJO.getFactionID_Winner() + ").").append("\r\n");
 				}
@@ -272,14 +272,20 @@ public class EndRound {
 				// list all attacks that were fought in this round
 				logger.info("--- Attacks that have been fought in this round:");
 				for (AttackPOJO attackPOJO : allAttacksForRound) {
-					logger.info("--- Attack: " + attackPOJO.getId() + "(StarSystem: " + attackPOJO.getStarSystemID() + ")");
+
+					RolePlayCharacterPOJO rpcPojo = RolePlayCharacterDAO.getInstance().findById(Nexus.END_ROUND_USERID, attackPOJO.getCharacterID());
+					String rank = rpcPojo.getRank();
+					String name = rpcPojo.getName();
+					String rpCharacter = (rank != null ? rank + " " : "") + name;
+
+					logger.info("--- Attack: " + attackPOJO.getId() + "(StarSystem: " + attackPOJO.getStarSystemID() + " / Authorized by " + rpCharacter + ")");
 
 					Long winnerId = attackPOJO.getFactionID_Winner();
 
-					JumpshipPOJO jsPojo = JumpshipDAO.getInstance().findById(Nexus.END_ROUND, attackPOJO.getJumpshipID());
-					StarSystemPOJO ssPojo = StarSystemDAO.getInstance().findById(Nexus.END_ROUND, attackPOJO.getStarSystemID());
-					FactionPOJO fWinnerPojo = FactionDAO.getInstance().findById(Nexus.END_ROUND, winnerId);
-					FactionPOJO fJumpshipPOJO = FactionDAO.getInstance().findById(Nexus.END_ROUND, jsPojo.getJumpshipFactionID());
+					JumpshipPOJO jsPojo = JumpshipDAO.getInstance().findById(Nexus.END_ROUND_USERID, attackPOJO.getJumpshipID());
+					StarSystemPOJO ssPojo = StarSystemDAO.getInstance().findById(Nexus.END_ROUND_USERID, attackPOJO.getStarSystemID());
+					FactionPOJO fWinnerPojo = FactionDAO.getInstance().findById(Nexus.END_ROUND_USERID, winnerId);
+					FactionPOJO fJumpshipPOJO = FactionDAO.getInstance().findById(Nexus.END_ROUND_USERID, jsPojo.getJumpshipFactionID());
 
 					//				logger.info("1");
 					// Get statistics for this attack
@@ -379,8 +385,13 @@ public class EndRound {
 							ssh = ssh + ";" + p.getSystemId();
 							js.setStarSystemHistory(ssh);
 
-							StarSystemPOJO ssPojo = StarSystemDAO.getInstance().findById(Nexus.END_ROUND, p.getSystemId());
-							movedJumpships.append("Jumpship '").append(js.getJumpshipName()).append("' moved to ").append(ssPojo.getName()).append(" (").append(ssPojo.getId()).append(").\r\n");
+							RolePlayCharacterPOJO rpcPojo = RolePlayCharacterDAO.getInstance().findById(Nexus.END_ROUND_USERID, p.getCharacterID());
+							String rank = rpcPojo.getRank();
+							String name = rpcPojo.getName();
+							String rpCharacter = (rank != null ? rank + " " : "") + name;
+
+							StarSystemPOJO ssPojo = StarSystemDAO.getInstance().findById(Nexus.END_ROUND_USERID, p.getSystemId());
+							movedJumpships.append("Jumpship '").append(js.getJumpshipName()).append("' moved to ").append(ssPojo.getName()).append(" (").append(ssPojo.getId()).append(" / Authorized by ").append(rpCharacter).append(").\r\n");
 						}
 					}
 				}
@@ -398,10 +409,10 @@ public class EndRound {
 				StarSystemDataDAO ssdDAO = StarSystemDataDAO.getInstance();
 				FactionDAO fDAO = FactionDAO.getInstance();
 
-				roundDAO.update(Nexus.END_ROUND, roundPOJO);
+				roundDAO.update(Nexus.END_ROUND_USERID, roundPOJO);
 				for (JumpshipPOJO jumpshipPOJO : jumpshipList) {
 					// jumpshipDAO.refresh(Nexus.END_ROUND, jumpshipPOJO);
-					jumpshipDAO.update(Nexus.END_ROUND, jumpshipPOJO);
+					jumpshipDAO.update(Nexus.END_ROUND_USERID, jumpshipPOJO);
 				}
 				//for (AttackPOJO attackPOJO : openAttacksInRoundList) {
 				//	attackDAO.update(Nexus.END_ROUND, attackPOJO);
@@ -409,13 +420,13 @@ public class EndRound {
 				for (AttackPOJO attackPOJO : allAttacksForRound) {
 					Long winnerId = attackPOJO.getFactionID_Winner();
 
-					StarSystemDataPOJO ssdPojo = ssdDAO.findById(Nexus.END_ROUND, attackPOJO.getStarSystemDataID());
-					FactionPOJO fPojo = fDAO.findById(Nexus.END_ROUND, winnerId);
+					StarSystemDataPOJO ssdPojo = ssdDAO.findById(Nexus.END_ROUND_USERID, attackPOJO.getStarSystemDataID());
+					FactionPOJO fPojo = fDAO.findById(Nexus.END_ROUND_USERID, winnerId);
 					ssdPojo.setFactionID(fPojo);
 					logger.debug("**** Storing winner for attack " + attackPOJO.getId() + " to be " + winnerId + ".");
 
-					ssdDAO.update(Nexus.END_ROUND, ssdPojo);
-					attackDAO.update(Nexus.END_ROUND, attackPOJO);
+					ssdDAO.update(Nexus.END_ROUND_USERID, ssdPojo);
+					attackDAO.update(Nexus.END_ROUND_USERID, attackPOJO);
 				}
 				transaction.commit();
 

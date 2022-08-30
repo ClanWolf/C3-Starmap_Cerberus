@@ -1,6 +1,10 @@
 C3 version history
 --------------------------------
 
+Version 7.1.36 (30.08.2022)
+- ADDED: Rank field to characters
+- ADDED: CharacterId to stored jump points
+
 Version 7.1.33 (29.08.2022)
 - UPDATED: Dependencies
 

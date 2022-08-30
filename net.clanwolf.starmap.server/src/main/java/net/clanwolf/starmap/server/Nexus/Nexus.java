@@ -30,7 +30,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Nexus {
 	public static Long DUMMY_USERID = -1L;
-	public static Long END_ROUND = -2L;
+	public static Long END_ROUND_USERID = -2L;
 
 	public static boolean sendUniverseToClients = false;
 

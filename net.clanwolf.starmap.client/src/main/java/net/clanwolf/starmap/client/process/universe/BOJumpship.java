@@ -106,6 +106,7 @@ public class BOJumpship implements Comparable<BOJumpship> {
 				rp.setJumpshipId(jumpshipDTO.getId());
 				rp.setSeasonId(Long.valueOf(Nexus.getBoUniverse().currentSeason));
 				rp.setRoundId((long) round);
+				rp.setCharacterID(Nexus.getCurrentChar().getId());
 				route.add(rp);
 				logger.info("--- RoutePoint: " + s.getName() + " (in round " + round + ")");
 				dist++;

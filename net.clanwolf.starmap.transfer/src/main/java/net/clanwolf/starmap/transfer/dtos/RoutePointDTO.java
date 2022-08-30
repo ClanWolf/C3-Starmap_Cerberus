@@ -34,6 +34,7 @@ public class RoutePointDTO extends Dto {
 	private Long roundId;
 	private Long jumpshipId;
 	private Long systemId;
+	private Long characterID;
 
 	@SuppressWarnings("unused")
 	public Long getId() {
@@ -83,5 +84,15 @@ public class RoutePointDTO extends Dto {
 	@SuppressWarnings("unused")
 	public void setSystemId(Long systemId) {
 		this.systemId = systemId;
+	}
+
+	@SuppressWarnings("unused")
+	public Long getCharacterID() {
+		return characterID;
+	}
+
+	@SuppressWarnings("unused")
+	public void setCharacterID(Long characterID) {
+		this.characterID = characterID;
 	}
 }

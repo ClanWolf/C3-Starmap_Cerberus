@@ -42,8 +42,10 @@ public class RolePlayCharacterDTO extends Dto {
 
     //@Column(name = "ID")
     public Long id;
-    //@Column(name = "CharName")
-    private String name;
+    //@Column(name = "Rank")
+    private String rank;
+	//@Column(name = "CharName")
+	private String name;
 	//@Column(name = "MWOUsername")
 	private String mwoUsername;
     //@JoinColumn(name = "UserID")
@@ -59,8 +61,8 @@ public class RolePlayCharacterDTO extends Dto {
 	//@Column(name = "XP")
 	private Integer xp;
 
-	public RolePlayCharacterDTO(){
-		 
+	public RolePlayCharacterDTO() {
+		//
 	}
 
 	/**
@@ -77,6 +79,22 @@ public class RolePlayCharacterDTO extends Dto {
 	@SuppressWarnings("unused")
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	/**
+	 * @return the rank
+	 */
+	@SuppressWarnings("unused")
+	public String getRank() {
+		return rank;
+	}
+
+	/**
+	 * @param rank the name to set
+	 */
+	@SuppressWarnings("unused")
+	public void setRank(String rank) {
+		this.rank = rank;
 	}
 
 	/**
