@@ -385,10 +385,13 @@ public class EndRound {
 							ssh = ssh + ";" + p.getSystemId();
 							js.setStarSystemHistory(ssh);
 
-							RolePlayCharacterPOJO rpcPojo = RolePlayCharacterDAO.getInstance().findById(Nexus.END_ROUND_USERID, p.getCharacterID());
-							String rank = rpcPojo.getRank();
-							String name = rpcPojo.getName();
-							String rpCharacter = (rank != null ? rank + " " : "") + name;
+							String rpCharacter = "-- no data --";
+							if (p.getCharacterID() != null) {
+								RolePlayCharacterPOJO rpcPojo = RolePlayCharacterDAO.getInstance().findById(Nexus.END_ROUND_USERID, p.getCharacterID());
+								String rank = rpcPojo.getRank();
+								String name = rpcPojo.getName();
+								rpCharacter = (rank != null ? rank + " " : "") + name;
+							}
 
 							StarSystemPOJO ssPojo = StarSystemDAO.getInstance().findById(Nexus.END_ROUND_USERID, p.getSystemId());
 							movedJumpships.append("Jumpship '").append(js.getJumpshipName()).append("' moved to ").append(ssPojo.getName()).append(" (").append(ssPojo.getId()).append(" / Authorized by ").append(rpCharacter).append(").\r\n");

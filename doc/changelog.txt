@@ -1,6 +1,9 @@
 C3 version history
 --------------------------------
 
+Version 7.1.37 (01.09.2022)
+- FIXED: A bug while ending the round due to the charId on the routepoint (being null for old entries)
+
 Version 7.1.36 (30.08.2022)
 - ADDED: Rank field to characters
 - ADDED: CharacterId to stored jump points
