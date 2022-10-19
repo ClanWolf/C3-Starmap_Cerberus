@@ -91,6 +91,29 @@ public class CWIRCBot extends ListenerAdapter {
 //			logger.info("IRCBot startet.");
 	}
 
+
+
+
+
+
+
+//	static {
+//		ArrayList<String> ar = new ArrayList<>();
+//		for (int i=1; i<10000; i++) {
+//			String m = Internationalization.getString("msg" + String.format("%04d", i));
+//			if (!m.equalsIgnoreCase("resourceNotFound")) {
+//				ar.add(m);
+//			}
+//		}
+//
+//		final String[] message = ar.toArray(new String[0]);
+//	}
+
+
+
+
+
+
 	private static final String[] message = {
 		Internationalization.getString("msg0001"),
 		Internationalization.getString("msg0002"),
@@ -268,98 +291,31 @@ public class CWIRCBot extends ListenerAdapter {
 		saveUserList(null, ucd);
 	}
 
-	@Override
-	public void onGenericMessage(GenericMessageEvent event) {
-		if (server) {
-			try {
-				// Check for a command ---------------------------------------------------------------------------------
-				String m = event.getMessage().toLowerCase();
-				if (m.contains("!" + ircUserName.toLowerCase())) {
-					if (m.contains("list status".toLowerCase())) {
-						listStatus();
-					} else if (m.contains("help".toLowerCase())) {
-						send("You can use the following commands:");
-						send("- !" + ircUserName + ", help!");
-						send("- !" + ircUserName + ", list status!");
-						send("- !" + ircUserName + ", check database connection!");
-						send("- !" + ircUserName + ", check server heartbeat!");
-						send("- !" + ircUserName + ", toggle debug!");
-						send("- !" + ircUserName + ", switch lang to en!");
-						send("- !" + ircUserName + ", switch lang to de!");
-//						send("- !" + ircUserName + ", !");
-//						send("- !" + ircUserName + ", !");
-//						send("- !" + ircUserName + ", !");
-//						send("- !" + ircUserName + ", !");
-//						send("- !" + ircUserName + ", !");
-//						send("- !" + ircUserName + ", !");
-//						send("- !" + ircUserName + ", !");
-//						send("- !" + ircUserName + ", !");
-//						send("- !" + ircUserName + ", !");
-//						send("- !" + ircUserName + ", !");
-//						send("- !" + ircUserName + ", !");
-					} else if (m.contains("check database connection".toLowerCase())
-							|| m.contains("check connection".toLowerCase())
-							|| m.contains("check database".toLowerCase())) {
-						checkDB();
-					} else if (m.contains("check server heartbeat".toLowerCase())
-							|| m.contains("check heartbeat".toLowerCase())
-							|| m.contains("check server".toLowerCase())) {
-						checkServerHeartbeat();
-					} else if (m.contains("toggle debug".toLowerCase())) {
-						dropDebugStrings = !dropDebugStrings;
-						send("Debug mode was toggled to " + dropDebugStrings + "!");
-					} else if (m.contains("switch lang to en")) {
-						lang = "en";
-						Internationalization.setLocale(Locale.ENGLISH);
-						send("Switched to english!");
-					} else if (m.contains("switch lang to de")) {
-						lang = "de";
-						Internationalization.setLocale(Locale.GERMAN);
-						send("Ich spreche jetzt deutsch!");
-					}
-//					else if (m.contains("list status")) {
-//
-//					}
-//					else if (m.contains("list status")) {
-//
-//					}
-//					else if (m.contains("list status")) {
-//
-//					}
-//					else if (m.contains("list status")) {
-//
-//					}
-//					else if (m.contains("list status")) {
-//
-//					}
-//					else if (m.contains("list status")) {
-//
-//					}
-//					else if (m.contains("list status")) {
-//
-//					}
-				} else {
-					// Responses ---------------------------------------------------------------------------------------
-					for (String c : answerableMessages.keySet()) {
-						if ((event.getMessage().toLowerCase()).startsWith(c.toLowerCase())) {
-							send(answerableMessages.get(c));
-						}
-					}
-				}
+	public static void main(String[] args) throws Exception {
+		int oneMinute = 1000 * 60;
+		dbc = new DBConnection();
 
-				// Random sentences ------------------------------------------------------------------------------------
-				int num1 = (int) (Math.random() * 100);
-				if (num1 > 90) {
-					dropRandomLine();
-				}
+		prepareLogging();
 
-				// Drop user list --------------------------------------------------------------------------------------
-				saveUserList(event, null);
-			} catch (Exception e) {
-				e.printStackTrace();
-				send(e.getMessage());
-			}
-		}
+		Timer userlistDropTimer = new Timer();
+		UserListDrop userlistDrop = new UserListDrop();
+		userlistDropTimer.schedule(userlistDrop, 1000, 7 * oneMinute);
+
+		Timer randomTextDropTimer = new Timer();
+		RandomTextDrop randomTextDrop = new RandomTextDrop();
+		randomTextDropTimer.schedule(randomTextDrop, 1000, 5 * oneMinute);
+
+		Timer checkShutdownFlag = new Timer();
+		checkShutdownFlag.schedule(new CheckShutdownFlagTimer(serverBaseDir), 1000, 1000 * 10);
+
+		CWIRCBot cwBot = new CWIRCBot();
+		cwBot.botJoinedMail();
+		userlistDrop.setBot(cwBot);
+		randomTextDrop.setBot(cwBot);
+		Internationalization.setBot(cwBot);
+		dbc.setBot(cwBot);
+		started = true;
+		cwBot.start();
 	}
 
 	public void start() throws Exception {
@@ -433,30 +389,107 @@ public class CWIRCBot extends ListenerAdapter {
 		}
 	}
 
-	public static void main(String[] args) throws Exception {
-		int oneMinute = 1000 * 60;
-		dbc = new DBConnection();
+	@Override
+	public void onGenericMessage(GenericMessageEvent event) {
+		if (server) {
+			try {
+				// Check for a command ---------------------------------------------------------------------------------
+				String m = event.getMessage().toLowerCase();
+				if (m.contains("!" + ircUserName.toLowerCase())) {
+					if (m.contains("list status".toLowerCase())) {
+						listStatus();
+					} else if (m.contains("help".toLowerCase())) {
+						send("You can use the following commands:");
+						send("- !" + ircUserName + ", help!");
+						send("- !" + ircUserName + ", list status!");
+						send("- !" + ircUserName + ", check database connection!");
+						send("- !" + ircUserName + ", check server heartbeat!");
+						send("- !" + ircUserName + ", toggle debug!");
+						send("- !" + ircUserName + ", switch lang to en!");
+						send("- !" + ircUserName + ", switch lang to de!");
+//						send("- !" + ircUserName + ", !");
+//						send("- !" + ircUserName + ", !");
+//						send("- !" + ircUserName + ", !");
+//						send("- !" + ircUserName + ", !");
+//						send("- !" + ircUserName + ", !");
+//						send("- !" + ircUserName + ", !");
+//						send("- !" + ircUserName + ", !");
+//						send("- !" + ircUserName + ", !");
+//						send("- !" + ircUserName + ", !");
+//						send("- !" + ircUserName + ", !");
+//						send("- !" + ircUserName + ", !");
 
-		prepareLogging();
+						// status!
+						// version!
+						// heartbeat!
+						// > en!
+						// > de!
+						// > tdebug!
 
-		Timer userlistDropTimer = new Timer();
-		UserListDrop userlistDrop = new UserListDrop();
-		userlistDropTimer.schedule(userlistDrop, 1000, 5 * oneMinute);
 
-		Timer randomTextDropTimer = new Timer();
-		RandomTextDrop randomTextDrop = new RandomTextDrop();
-		randomTextDropTimer.schedule(randomTextDrop, 1000, 3 * oneMinute);
 
-		Timer checkShutdownFlag = new Timer();
-		checkShutdownFlag.schedule(new CheckShutdownFlagTimer(serverBaseDir), 1000, 1000 * 10);
+					} else if (m.contains("check database connection".toLowerCase())
+							|| m.contains("check connection".toLowerCase())
+							|| m.contains("check database".toLowerCase())) {
+						checkDB();
+					} else if (m.contains("check server heartbeat".toLowerCase())
+							|| m.contains("check heartbeat".toLowerCase())
+							|| m.contains("check server".toLowerCase())) {
+						checkServerHeartbeat();
+					} else if (m.contains("toggle debug".toLowerCase())) {
+						dropDebugStrings = !dropDebugStrings;
+						send("Debug mode was toggled to " + dropDebugStrings + "!");
+					} else if (m.contains("switch lang to en")) {
+						lang = "en";
+						Internationalization.setLocale(Locale.ENGLISH);
+						send("Switched to english!");
+					} else if (m.contains("switch lang to de")) {
+						lang = "de";
+						Internationalization.setLocale(Locale.GERMAN);
+						send("Ich spreche jetzt deutsch!");
+					}
+//					else if (m.contains("list status")) {
+//
+//					}
+//					else if (m.contains("list status")) {
+//
+//					}
+//					else if (m.contains("list status")) {
+//
+//					}
+//					else if (m.contains("list status")) {
+//
+//					}
+//					else if (m.contains("list status")) {
+//
+//					}
+//					else if (m.contains("list status")) {
+//
+//					}
+//					else if (m.contains("list status")) {
+//
+//					}
+				} else {
+					// Responses ---------------------------------------------------------------------------------------
+					for (String c : answerableMessages.keySet()) {
+						if ((event.getMessage().toLowerCase()).startsWith(c.toLowerCase())) {
+							send(answerableMessages.get(c));
+						}
+					}
+				}
 
-		CWIRCBot cwBot = new CWIRCBot();
-		cwBot.botJoinedMail();
-		userlistDrop.setBot(cwBot);
-		randomTextDrop.setBot(cwBot);
-		Internationalization.setBot(cwBot);
-		dbc.setBot(cwBot);
-		started = true;
-		cwBot.start();
+				// Random sentences ------------------------------------------------------------------------------------
+				int num1 = (int) (Math.random() * 100);
+				if (num1 > 90) {
+					dropRandomLine();
+				}
+
+				// Drop user list --------------------------------------------------------------------------------------
+				saveUserList(event, null);
+			} catch (Exception e) {
+				e.printStackTrace();
+				send(e.getMessage());
+			}
+		}
 	}
 }

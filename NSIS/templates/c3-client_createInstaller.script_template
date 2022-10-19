@@ -16,6 +16,10 @@ COPY C:\c3\projects\C3-Starmap_Cerberus\NSIS\client_launcher_executable\C3-Starm
 REM PAUSE
 
 REM ###JAVA_VERSION_PATH### is set in NRICreator.java
+REM !!!
+REM ATTENTION:
+REM "c3_client_createInstaller.cmd" might need to be changed manually for the first run!
+REM !!!
 
 IF EXIST "C:\Program Files\Java\jdk-###JAVA_VERSION_PATH###\bin\java.exe" (
   ECHO Java found
