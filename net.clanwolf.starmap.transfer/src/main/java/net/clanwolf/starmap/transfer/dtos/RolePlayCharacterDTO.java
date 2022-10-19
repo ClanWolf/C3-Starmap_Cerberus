@@ -46,8 +46,14 @@ public class RolePlayCharacterDTO extends Dto {
     private String rank;
 	//@Column(name = "CharName")
 	private String name;
+	//@Column(name = "CharImage")
+	private String charImage;
 	//@Column(name = "MWOUsername")
 	private String mwoUsername;
+	//@Column(name = "LastName")
+	private String lastName;
+	//@Column(name = "AgeAtCreation")
+	private Integer ageAtCreation;
     //@JoinColumn(name = "UserID")
     private UserDTO user;
     //@JoinColumn(name = "StoryID")
@@ -103,6 +109,36 @@ public class RolePlayCharacterDTO extends Dto {
 	@SuppressWarnings("unused")
 	public String getName() {
 		return name;
+	}
+
+	@SuppressWarnings("unused")
+	public String getCharImage() {
+		return charImage;
+	}
+
+	@SuppressWarnings("unused")
+	public void setCharImage(String img) {
+		this.charImage = img;
+	}
+
+	@SuppressWarnings("unused")
+	public String getLastName() {
+		return lastName;
+	}
+
+	@SuppressWarnings("unused")
+	public void setLastName(String ln) {
+		this.lastName = ln;
+	}
+
+	@SuppressWarnings("unused")
+	public Integer getAgeAtCreation() {
+		return ageAtCreation;
+	}
+
+	@SuppressWarnings("unused")
+	public void setAgeAtCreation(Integer a) {
+		this.ageAtCreation = a;
 	}
 
 	/**

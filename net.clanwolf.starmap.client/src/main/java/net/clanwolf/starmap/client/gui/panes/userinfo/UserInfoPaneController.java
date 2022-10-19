@@ -306,13 +306,18 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 		// set logos
 
 		Platform.runLater(() -> {
-			// TODO: Save image for every character in database
-			//		Image charImage = new Image(character.getImage());
-			//		ivCharacterPortrait.setImage(charImage);
+			Image charImage = null;
+			try {
+				charImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(character.getCharImage())));
+			} catch(Exception e) {
+				// image not found
+				charImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/chars/no_avatar.png")));
+			}
+			if (charImage != null) {
+				ivCharacterPortrait.setImage(charImage);
+			} else {
 
-			// set values
-			//		Image img = new Image("UIControls/logo.png");
-			//		ivFactionLogo.setImage();
+			}
 
 			valueCharName.setText(character.getName());
 			valueCharAge.setText("");

@@ -128,7 +128,13 @@ public class CWIRCBot extends ListenerAdapter {
 		Internationalization.getString("msg0011"),
 		Internationalization.getString("msg0012"),
 		Internationalization.getString("msg0013"),
-		Internationalization.getString("msg0014")
+		Internationalization.getString("msg0014"),
+		Internationalization.getString("msg0015"),
+		Internationalization.getString("msg0016"),
+		Internationalization.getString("msg0017"),
+		Internationalization.getString("msg0018"),
+		Internationalization.getString("msg0019"),
+		Internationalization.getString("msg0020")
 	};
 
 	private static final String[] welcomeMessage = {
@@ -139,7 +145,9 @@ public class CWIRCBot extends ListenerAdapter {
 		Internationalization.getString("wel0005"),
 		Internationalization.getString("wel0006"),
 		Internationalization.getString("wel0007"),
-		Internationalization.getString("wel0008")
+		Internationalization.getString("wel0008"),
+		Internationalization.getString("wel0009"),
+		Internationalization.getString("wel0010")
 	};
 
 	private static final HashMap<String, String> answerableMessages = new HashMap<>();

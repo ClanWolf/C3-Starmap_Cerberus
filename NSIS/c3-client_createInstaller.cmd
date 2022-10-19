@@ -6,7 +6,7 @@ C:
 CD \
 CD C:\C3\projects\C3-Starmap_Cerberus
 
-REM SET VERSION=7.1.39
+REM SET VERSION=7.1.41
 FOR /f "delims== tokens=1,2" %%G in (C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\target\classes\version.number) do set %%G=%%H
 ECHO Found version: %VERSION%
 REM PAUSE
@@ -16,6 +16,10 @@ COPY C:\c3\projects\C3-Starmap_Cerberus\NSIS\client_launcher_executable\C3-Starm
 REM PAUSE
 
 REM 19 is set in NRICreator.java
+REM !!!
+REM ATTENTION:
+REM "c3_client_createInstaller.cmd" might need to be changed manually for the first run!
+REM !!!
 
 IF EXIST "C:\Program Files\Java\jdk-19\bin\java.exe" (
   ECHO Java found
