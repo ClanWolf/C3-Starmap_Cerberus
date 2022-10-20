@@ -35,7 +35,6 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
-import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.action.*;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
@@ -173,7 +172,7 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 	}
 
 	@FXML
-	private void handleLogoutButtonClick() throws Exception {
+	private void handleLogoutButtonClick() {
 		cancelWarning = true;
 		ActionManager.getAction(ACTIONS.SET_CONSOLE_OPACITY).execute(0.4);
 		Logout.doLogout();
@@ -182,7 +181,7 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 	@FXML
 	private void handleLogoutButtonHoverEnter() {
 		setWarningOn(false);
-		Platform.runLater(() -> { labelWarningIcon.setVisible(true); });
+		Platform.runLater(() -> labelWarningIcon.setVisible(true));
 		if (warningActive) {
 			labelWarningText.setText(Internationalization.getString("app_user_info_panel_logoutWarning"));
 			ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_warning"), true));
@@ -246,7 +245,7 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 		if (enableExitEvent) {
 			labelWarningText.setText("");
 			ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject("", false));
-			Platform.runLater(() -> { labelWarningIcon.setVisible(false); });
+			Platform.runLater(() -> labelWarningIcon.setVisible(false));
 		}
 	}
 
@@ -306,19 +305,14 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 		// set logos
 
 		Platform.runLater(() -> {
-			Image charImage = null;
+			Image charImage;
 			try {
 				charImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(character.getCharImage())));
 			} catch(Exception e) {
 				// image not found
 				charImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/chars/no_avatar.png")));
 			}
-			if (charImage != null) {
-				ivCharacterPortrait.setImage(charImage);
-			} else {
-				charImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/chars/no_avatar.png")));
-				ivCharacterPortrait.setImage(charImage);
-			}
+			ivCharacterPortrait.setImage(charImage);
 
 			valueCharName.setText(character.getName());
 			valueCharAge.setText("");
@@ -342,42 +336,11 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 	}
 
 	/**
-	 * Initializes the controller class.
 	 *
-	 * @param url Link
-	 * @param rb ResourceBundle
 	 */
 	@Override
-	public void initialize(URL url, ResourceBundle rb) {
-		super.initialize(url, rb);
-
-		buttonLogout.setDisable(true);
-		if(Nexus.getCurrentUser().getAvatar() != null) {
-			Image imageAvatar = new Image(Nexus.getCurrentUser().getAvatar(), 84, 84, false, false);
-			labelAvatar.setGraphic(new ImageView(imageAvatar));
-		}
-
-		cbCharChooser.setEditable(false);
-//		if (Nexus.getCurrentUser().getCharacterList() != null) {
-//			cbCharChooser.getItems().setAll(Nexus.getCurrentUser().getCharacterList());
-//		}
-		if (Nexus.getCurrentChar() != null) {
-			cbCharChooser.getSelectionModel().select(Nexus.getCurrentChar());
-			setCharValues(Nexus.getCurrentChar());
-		}
-
-		// find the currently selected character.
-		// either there is only one here in the list --> select it
-		// or there are more but there was one selected previously --> select this one
-		// or there are more but none has ever been selected --> wait for selection
-
-		// Image imageFactionLogo = new Image(Nexus.getCurrentChar().getImage(), 100, 100, false, false);
-
-		setValues();
-		saveLastLogin(Nexus.getCurrentUser());
-
-		createListeners();
-		enableListeners(true);
+	public void warningOnAction() {
+		Platform.runLater(() -> buttonLogout.setDisable(false));
 	}
 
 	/**
@@ -444,15 +407,15 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 	}
 
 //	@SuppressWarnings("unchecked")
-	private void enableListeners(boolean enableListerners) {
-		// if (enableListerners) {
-		// tfUserName.textProperty().addListener(userNameFieldChangeListener);
-		// tfPassword.textProperty().addListener(userPassFieldChangeListener);
-		// } else {
-		// tfUserName.textProperty().removeListener(userNameFieldChangeListener);
-		// tfPassword.textProperty().removeListener(userPassFieldChangeListener);
-		// }
-	}
+//	private void enableListeners(boolean enableListerners) {
+//		if (enableListerners) {
+//			// tfUserName.textProperty().addListener(userNameFieldChangeListener);
+//			// tfPassword.textProperty().addListener(userPassFieldChangeListener);
+//		} else {
+//			// tfUserName.textProperty().removeListener(userNameFieldChangeListener);
+//			// tfPassword.textProperty().removeListener(userPassFieldChangeListener);
+//		}
+//	}
 
 	private void setLogoutButtonText(String t) {
 		Platform.runLater(() -> buttonLogout.setText(t));
@@ -460,6 +423,53 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 
 	private void enableLogoutButton() {
 		Platform.runLater(() -> buttonLogout.setDisable(false));
+	}
+
+	/**
+	 *
+	 */
+	@Override
+	public void warningOffAction() {
+		Platform.runLater(() -> buttonLogout.setDisable(true));
+	}
+
+	/**
+	 * Initializes the controller class.
+	 *
+	 * @param url Link
+	 * @param rb ResourceBundle
+	 */
+	@Override
+	public void initialize(URL url, ResourceBundle rb) {
+		super.initialize(url, rb);
+
+		buttonLogout.setDisable(true);
+		if(Nexus.getCurrentUser().getAvatar() != null) {
+			Image imageAvatar = new Image(Nexus.getCurrentUser().getAvatar(), 84, 84, false, false);
+			labelAvatar.setGraphic(new ImageView(imageAvatar));
+		}
+
+		cbCharChooser.setEditable(false);
+//		if (Nexus.getCurrentUser().getCharacterList() != null) {
+//			cbCharChooser.getItems().setAll(Nexus.getCurrentUser().getCharacterList());
+//		}
+		if (Nexus.getCurrentChar() != null) {
+			cbCharChooser.getSelectionModel().select(Nexus.getCurrentChar());
+			setCharValues(Nexus.getCurrentChar());
+		}
+
+		// find the currently selected character.
+		// either there is only one here in the list --> select it
+		// or there are more but there was one selected previously --> select this one
+		// or there are more but none has ever been selected --> wait for selection
+
+		// Image imageFactionLogo = new Image(Nexus.getCurrentChar().getImage(), 100, 100, false, false);
+
+		setValues();
+		saveLastLogin(Nexus.getCurrentUser());
+
+		createListeners();
+		//enableListeners(true);
 	}
 
 	/**
@@ -486,13 +496,13 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 							if (buttonLogout != null) {
 								String caption = buttonLogout.getText();
 								try {
-									Platform.runLater(() -> { setLogoutButtonText(caption + " - 3"); });
+									Platform.runLater(() -> setLogoutButtonText(caption + " - 3"));
 									Thread.sleep(500);
-									Platform.runLater(() -> { setLogoutButtonText(caption + " - 2"); });
+									Platform.runLater(() -> setLogoutButtonText(caption + " - 2"));
 									Thread.sleep(500);
-									Platform.runLater(() -> { setLogoutButtonText(caption + " - 1"); });
+									Platform.runLater(() -> setLogoutButtonText(caption + " - 1"));
 									Thread.sleep(500);
-									Platform.runLater(() -> { setLogoutButtonText(caption); });
+									Platform.runLater(() -> setLogoutButtonText(caption));
 									enableLogoutButton();
 								} catch (InterruptedException e) {
 									logger.debug("UserInfoPanelException [1254]");
@@ -524,25 +534,5 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 
 		}
 		return true;
-	}
-
-	/**
-	 *
-	 */
-	@Override
-	public void warningOnAction() {
-		Platform.runLater(() -> {
-			buttonLogout.setDisable(false);
-		});
-	}
-
-	/**
-	 *
-	 */
-	@Override
-	public void warningOffAction() {
-		Platform.runLater(() -> {
-			buttonLogout.setDisable(true);
-		});
 	}
 }
