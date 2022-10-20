@@ -75,9 +75,7 @@ public class BOJumpship implements Comparable<BOJumpship> {
 
 	@SuppressWarnings("unused")
 	public Long getLevel() {
-
-		Long calculatedLevel = ((Double)Math.ceil(jumpshipDTO.getUnitXP() / 300)).longValue();
-
+		long calculatedLevel = ((Double)Math.ceil(jumpshipDTO.getUnitXP() / 300.0)).longValue();
 		return calculatedLevel + 1;
 	}
 
