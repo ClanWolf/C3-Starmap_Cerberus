@@ -316,7 +316,8 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 			if (charImage != null) {
 				ivCharacterPortrait.setImage(charImage);
 			} else {
-
+				charImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/chars/no_avatar.png")));
+				ivCharacterPortrait.setImage(charImage);
 			}
 
 			valueCharName.setText(character.getName());
