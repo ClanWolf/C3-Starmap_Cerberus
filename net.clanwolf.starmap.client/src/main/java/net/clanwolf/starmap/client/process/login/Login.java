@@ -115,11 +115,11 @@ public class Login {
 			}
 		}
 
-		logger.debug("Used username: " + used_username + " (enable output in source to debug credentials).");
-//		logger.debug("Used password: " + password);
-//		logger.debug("Used (encrypted) password: " + used_password);
-//		logger.debug("PW1: " + Encryptor.getPasswordFromPair("first", used_password));
-//		logger.debug("PW2: " + Encryptor.getPasswordFromPair("second", used_password));
+		logger.info("Used username: " + used_username + " (enable output in source to debug credentials).");
+//		logger.info("Used password: " + password);
+//		logger.info("Used (encrypted) password: " + used_password);
+//		logger.info("PW1: " + Encryptor.getPasswordFromPair("first", used_password));
+//		logger.info("PW2: " + Encryptor.getPasswordFromPair("second", used_password));
 
 		/*
 		 * BEGIN Server Login
@@ -204,7 +204,7 @@ public class Login {
 			@Override
 			public void onGameRoomJoin(Event event) {
 				super.onGameRoomJoin(event);
-				logger.debug("##### Gameroom join!");
+				logger.info("##### Gameroom join!");
 			}
 
 			@Override
@@ -219,19 +219,19 @@ public class Login {
 			@Override
 			public void onStart(Event event) {
 				super.onStart(event);
-				logger.debug("##### Session started!");
+				logger.info("##### Session started!");
 			}
 
 			@Override
 			public void onStop(Event event) {
 				super.onStop(event);
-				logger.debug("##### Session stopped!");
+				logger.info("##### Session stopped!");
 			}
 
 			@Override
 			public void onConnectFailed(Event event) {
 				super.onConnectFailed(event);
-				logger.debug("##### Connect failed!");
+				logger.info("##### Connect failed!");
 			}
 
 			@Override
@@ -245,13 +245,13 @@ public class Login {
 			@Override
 			public void onChangeAttribute(Event event) {
 				super.onChangeAttribute(event);
-				logger.debug("##### Attribute changed!");
+				logger.info("##### Attribute changed!");
 			}
 
 			@Override
 			public synchronized void onException(Event event) {
 				super.onException(event);
-				logger.debug("##### EXCEPTION!");
+				logger.info("##### EXCEPTION!");
 				ActionManager.getAction(ACTIONS.SERVER_CONNECTION_LOST).execute();
 				logger.info("An exception in the connection was caught, closing!");
 			}

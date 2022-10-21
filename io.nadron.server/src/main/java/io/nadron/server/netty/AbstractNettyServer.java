@@ -46,7 +46,7 @@ public abstract class AbstractNettyServer implements NettyServer {
 	
 	@Override
 	public void stopServer() throws Exception {
-		logger.debug("In stopServer method of class: " + this.getClass()
+		logger.info("In stopServer method of class: " + this.getClass()
 				.getName());
 		ChannelGroupFuture future = ALL_CHANNELS.close();
 		try 

@@ -91,7 +91,7 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 	public boolean handleAction(ACTIONS action, ActionObject o) {
 		switch (action) {
 			case PANE_CREATION_FINISHED:
-				// logger.debug("PANE_CREATION_FINISHED Object: " + o.getObject().toString());
+				// logger.info("PANE_CREATION_FINISHED Object: " + o.getObject().toString());
 				if(o.getObject() instanceof RolePlayBasicPane){
 					RolePlayBasicPane rpbp = (RolePlayBasicPane)o.getObject();
 					// do this for the right pane
@@ -101,7 +101,7 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 				}
 				break;
 			case ROLEPLAY_NEXT_STEP_CHANGE_PANE:
-				logger.debug("Choose now the next step of story!");
+				logger.info("Choose now the next step of story!");
 				loadScreen(2000);
 				break;
 			case FINALIZE_ROUND:
@@ -154,7 +154,7 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 			myType = Nexus.getCurrentChar().getStory().getVariante();
 		}
 
-		logger.debug("Pane: " + this + " Flag isCharacterPane: " + isCharacterPane);
+		logger.info("Pane: " + this + " Flag isCharacterPane: " + isCharacterPane);
 
 
 		if( myType != null) {
@@ -239,7 +239,7 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 
 						storyPanes.put(myType, pane);
 						storyController.put(myType, controller);
-						logger.debug("changePaneAndController -> create new Pane: " + pane);
+						logger.info("changePaneAndController -> create new Pane: " + pane);
 
 						ActionManager.getAction(ACTIONS.START_ROLEPLAY).execute(myType);
 					} catch (IOException ioe) {
@@ -249,7 +249,7 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 			});
 		} else {
 			Platform.runLater(() -> {
-				logger.debug("changePaneAndController -> found Pane: " + myPane);
+				logger.info("changePaneAndController -> found Pane: " + myPane);
 				anchorPane.getChildren().clear();
 
 				AbstractC3RolePlayController rpController = storyController.get(myType);

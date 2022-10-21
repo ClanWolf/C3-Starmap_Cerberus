@@ -55,8 +55,8 @@ public class NettyTCPMessageSender implements Reliable {
 		logger.info("Going to close TCP connection in class: " + this + getClass().getName());
 		Event event = Events.event(null, Events.DISCONNECT);
 
-//		logger.debug("##### Channel is open: " + channel.isOpen());
-//		logger.debug("##### Channel is active: " + channel.isActive());
+//		logger.info("##### Channel is open: " + channel.isOpen());
+//		logger.info("##### Channel is active: " + channel.isActive());
 
 		if (channel.isActive()) {
 			channel.write(event).addListener(ChannelFutureListener.CLOSE);

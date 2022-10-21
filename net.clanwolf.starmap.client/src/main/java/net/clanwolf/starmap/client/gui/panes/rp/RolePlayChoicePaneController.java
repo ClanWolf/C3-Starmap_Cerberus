@@ -122,12 +122,12 @@ public class RolePlayChoicePaneController extends AbstractC3RolePlayController i
 	@Override
 	public boolean handleAction(ACTIONS action, ActionObject o) {
 		if(anchorPane != null && !anchorPane.isVisible()) return true;
-		logger.debug("Flag for CharRP" + isCharRP);
+		logger.info("Flag for CharRP" + isCharRP);
 		switch (action) {
 		case START_ROLEPLAY:
 			if(ROLEPLAYENTRYTYPES.C3_RP_STEP_V2 == o.getObject() ||
 					ROLEPLAYENTRYTYPES.C3_RP_STEP_V5 == o.getObject()) {
-				logger.debug("RolePlayChoicePaneController -> START_ROLEPLAY");
+				logger.info("RolePlayChoicePaneController -> START_ROLEPLAY");
 
 				init();
 

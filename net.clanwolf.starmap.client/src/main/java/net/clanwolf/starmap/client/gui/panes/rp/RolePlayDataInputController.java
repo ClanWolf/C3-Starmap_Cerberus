@@ -130,7 +130,7 @@ public class RolePlayDataInputController extends AbstractC3RolePlayController im
 		switch (action) {
 		case START_ROLEPLAY:
 			if(ROLEPLAYENTRYTYPES.C3_RP_STEP_V3 == o.getObject()) {
-				logger.debug("RolePlayChoicePaneController -> START_ROLEPLAY");
+				logger.info("RolePlayChoicePaneController -> START_ROLEPLAY");
 
 				init();
 

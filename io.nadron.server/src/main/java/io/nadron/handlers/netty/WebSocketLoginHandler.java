@@ -76,7 +76,7 @@ public class WebSocketLoginHandler extends SimpleChannelInboundHandler<TextWebSo
 		}
 		else
 		{
-			logger.debug("Invalid event {} sent from remote address {}. "
+			logger.info("Invalid event {} sent from remote address {}. "
 							+ "Going to close channel " +
 					new Object[] { event.getType(),
 							channel.remoteAddress(), channel });

@@ -527,7 +527,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 					if (starSystem.isActive()) {
 						if (starSystem.isActiveInPhase(Nexus.getCurrentSeasonMetaPhase())) {
-							// logger.debug("System is active in the current MetaPhase!");
+							// logger.info("System is active in the current MetaPhase!");
 							starSystem.getStarSystemGroup().setOpacity(1.0d);
 							starSystem.getLevelLabel().setOpacity(1.0d);
 							if (starSystem.getIndustryImage() != null) {
@@ -535,7 +535,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 							}
 							starSystem.getStarSystemGroup().setMouseTransparent(false);
 						} else {
-							// logger.debug("System is NOT active in the current MetaPhase!");
+							// logger.info("System is NOT active in the current MetaPhase!");
 							starSystem.getStarSystemGroup().setOpacity(0.2d);
 							starSystem.getLevelLabel().setOpacity(0.2d);
 							if (starSystem.getIndustryImage() != null) {
@@ -947,7 +947,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 					if (starSystem.isActive()) {
 						if (starSystem.isActiveInPhase(Nexus.getCurrentSeasonMetaPhase())) {
-							// logger.debug("System is active in the current MetaPhase!");
+							// logger.info("System is active in the current MetaPhase!");
 						} else {
 							starSystemGroup.setOpacity(0.2d);
 							levelLabel.setOpacity(0.2d);

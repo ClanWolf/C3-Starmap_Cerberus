@@ -554,7 +554,7 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 //				enableListeners(true);
 //				pass = "";
 //				password_encrypted = false;
-//				// logger.debug("Reseting encryption / setting back [encrypted pw cannot be edited in field]");
+//				// logger.info("Reseting encryption / setting back [encrypted pw cannot be edited in field]");
 //				break;
 
 			default:

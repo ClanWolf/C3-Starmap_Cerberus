@@ -200,10 +200,10 @@ public class EndRound {
 
 //		try {
 //			DateTimeFormatter dateTimeformatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss");
-//			logger.debug("Current date: " + new Date(System.currentTimeMillis()));
-//			logger.debug("Translated current date: " + translateRealDateToSeasonTime(new Date(System.currentTimeMillis()), 1L));
-//			logger.debug("Current round date: " + dateTimeformatter.format(getCurrentRoundDate(seasonId)));
-//			logger.debug("Next round date: " + dateTimeformatter.format(getNextRoundDate(seasonId)));
+//			logger.info("Current date: " + new Date(System.currentTimeMillis()));
+//			logger.info("Translated current date: " + translateRealDateToSeasonTime(new Date(System.currentTimeMillis()), 1L));
+//			logger.info("Current round date: " + dateTimeformatter.format(getCurrentRoundDate(seasonId)));
+//			logger.info("Next round date: " + dateTimeformatter.format(getNextRoundDate(seasonId)));
 //		} catch (Exception e) {
 //			System.out.println(e.getMessage());
 //			logger.error("Date conversion error.", e);
@@ -426,7 +426,7 @@ public class EndRound {
 					StarSystemDataPOJO ssdPojo = ssdDAO.findById(Nexus.END_ROUND_USERID, attackPOJO.getStarSystemDataID());
 					FactionPOJO fPojo = fDAO.findById(Nexus.END_ROUND_USERID, winnerId);
 					ssdPojo.setFactionID(fPojo);
-					logger.debug("**** Storing winner for attack " + attackPOJO.getId() + " to be " + winnerId + ".");
+					logger.info("**** Storing winner for attack " + attackPOJO.getId() + " to be " + winnerId + ".");
 
 					ssdDAO.update(Nexus.END_ROUND_USERID, ssdPojo);
 					attackDAO.update(Nexus.END_ROUND_USERID, attackPOJO);

@@ -674,7 +674,7 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 //								builder.append(System.getProperty("line.separator"));
 //							}
 //							String result = builder.toString();
-//							logger.debug(result);
+//							logger.info(result);
 //							logger.info("--- Output end ---");
 
 							logger.info("Closing C3 client for installation...");

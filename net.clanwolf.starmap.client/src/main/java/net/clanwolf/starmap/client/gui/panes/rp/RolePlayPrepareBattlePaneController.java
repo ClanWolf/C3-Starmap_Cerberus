@@ -444,12 +444,12 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 			allOnline = true;
 		}
 
-		logger.debug("Droplead Attacker: " + (lvDropleadAttacker.getItems().size() == 1 && !"...".equals(lvDropleadAttacker.getItems().get(0).getName())));
-		logger.debug("Droplead Defender: " + (lvDropleadDefender.getItems().size() == 1 && !"...".equals(lvDropleadDefender.getItems().get(0).getName())));
-		logger.debug("Count Attacker: " + (lvAttacker.getItems().size() >= 2));
-		logger.debug("Count Defender: " + (lvDefender.getItems().size() >= 2));
-		logger.debug("Equal pilot count: " + (lvAttacker.getItems().size() == lvDefender.getItems().size() && lvAttacker.getItems().size() >= 2));
-		logger.debug("Everybody online: " + allOnline);
+		logger.info("Droplead Attacker: " + (lvDropleadAttacker.getItems().size() == 1 && !"...".equals(lvDropleadAttacker.getItems().get(0).getName())));
+		logger.info("Droplead Defender: " + (lvDropleadDefender.getItems().size() == 1 && !"...".equals(lvDropleadDefender.getItems().get(0).getName())));
+		logger.info("Count Attacker: " + (lvAttacker.getItems().size() >= 2));
+		logger.info("Count Defender: " + (lvDefender.getItems().size() >= 2));
+		logger.info("Equal pilot count: " + (lvAttacker.getItems().size() == lvDefender.getItems().size() && lvAttacker.getItems().size() >= 2));
+		logger.info("Everybody online: " + allOnline);
 
 		// Check conditions
 		Platform.runLater(() -> btNext.setDisable(true));
@@ -665,7 +665,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 				potentialDropleadersDefender.put(ac, c);
 				l = l + "(potential droplead for defender) ";
 			}
-			logger.debug(l);
+			logger.info(l);
 
 			characterRoleMap.put(ac.getCharacterID(), ac);
 
@@ -748,7 +748,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 			}
 		}
 		// are defender droplead still empty?
-		logger.debug("Size" + lvDropleadDefender.getItems().size());
+		logger.info("Size" + lvDropleadDefender.getItems().size());
 		if (lvDropleadDefender.getItems().size() == 1 && "...".equals(lvDropleadDefender.getItems().get(0).getName())) {
 			for (AttackCharacterDTO ac : potentialDropleadersDefender.keySet()) {
 				lvDropleadDefender.getItems().remove(0);
@@ -798,7 +798,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 			case START_ROLEPLAY:
 				if(ROLEPLAYENTRYTYPES.C3_RP_STEP_V8 == o.getObject()) {
-					logger.debug("RolePlayIntroPaneController -> START_ROLEPLAY");
+					logger.info("RolePlayIntroPaneController -> START_ROLEPLAY");
 					if(bOnlyOneSave) {
 						bOnlyOneSave = false;
 						saveAttack();
@@ -837,9 +837,9 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 			case UPDATE_USERS_FOR_ATTACK:
 				logger.info("The userlist has changed. Update information on the listboxes.");
-				logger.debug("##### Userlist update event received.");
+				logger.info("##### Userlist update event received.");
 				if (Nexus.getCurrentAttackOfUser() != null) {
-					logger.debug("##### I have an attack.");
+					logger.info("##### I have an attack.");
 					List<AttackCharacterDTO> l = Nexus.getCurrentAttackOfUser().getAttackCharList();
 					boolean kicked = true;
 					for (AttackCharacterDTO ac : l) {
@@ -849,14 +849,14 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 					}
 					if (kicked) {
 						// I have been kicked from the lobby, need to change the currently displayed pane
-						logger.debug("##### I have been kicked...");
+						logger.info("##### I have been kicked...");
 						ActionManager.getAction(ACTIONS.SWITCH_TO_MAP).execute();
 					} else {
-						logger.debug("##### Updating lists...");
+						logger.info("##### Updating lists...");
 						updateLists(Nexus.getCurrentAttackOfUser());
 					}
 				} else {
-					logger.debug("##### I do NOT have an attack.");
+					logger.info("##### I do NOT have an attack.");
 				}
 				break;
 

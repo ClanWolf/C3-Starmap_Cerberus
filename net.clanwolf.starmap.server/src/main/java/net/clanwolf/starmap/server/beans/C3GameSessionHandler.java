@@ -89,7 +89,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 	@Override
 	public void onEvent(Event event) {
-		logger.debug("C3GameSessionHandler.onEvent");
+		logger.info("C3GameSessionHandler.onEvent");
 		GameState state = null;
 
 		if (event.getSource() instanceof GameState) {
@@ -194,7 +194,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 			ArrayList<RolePlayCharacterStatsPOJO> list = (ArrayList<RolePlayCharacterStatsPOJO>)state.getObject();
 			for (RolePlayCharacterStatsPOJO charStats : list) {
-				logger.debug("Saving character stats for game id: " + charStats.getMwoMatchId() + ", rpCharId: " + charStats.getRoleplayCharacterId());
+				logger.info("Saving character stats for game id: " + charStats.getMwoMatchId() + ", rpCharId: " + charStats.getRoleplayCharacterId());
 
 				attackId = charStats.getAttackId();
 				RolePlayCharacterStatsPOJO p = dao.findbyCharIdAndMatchId(charStats.getRoleplayCharacterId(), charStats.getMwoMatchId());
@@ -203,7 +203,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				}
 
 				if(charStats.getId() != null) {
-					logger.debug("rolePlayCharacterStats.getId() != null");
+					logger.info("rolePlayCharacterStats.getId() != null");
 					dao.update(getC3UserID(session), charStats);
 				} else {
 					dao.save(getC3UserID(session), charStats);
@@ -234,18 +234,18 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 		try {
 			AttackStatsPOJO attackStats = (AttackStatsPOJO) state.getObject();
-			logger.debug("Saving attack stats for game id: " + attackStats.getMwoMatchId());
+			logger.info("Saving attack stats for game id: " + attackStats.getMwoMatchId());
 
 			AttackStatsPOJO checkStats = dao.findByMatchId(attackStats.getMwoMatchId());
 			if (checkStats != null) {
 				// already saved, do nothing
-				logger.debug("Stats with the given MWO Match-ID have been detected, DO NOTHING!");
+				logger.info("Stats with the given MWO Match-ID have been detected, DO NOTHING!");
 				return;
 			}
 
 			EntityManagerHelper.beginTransaction(getC3UserID(session));
 			if(attackStats.getId() != null) {
-				logger.debug("attackStats.getId() != null");
+				logger.info("attackStats.getId() != null");
 				dao.update(getC3UserID(session), attackStats);
 			} else {
 				dao.save(getC3UserID(session), attackStats);
@@ -274,18 +274,18 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 		try {
 			StatsMwoPOJO statsMwo = (StatsMwoPOJO) state.getObject();
-			logger.debug("Saving MWO stats for game id: " + statsMwo.getGameId());
+			logger.info("Saving MWO stats for game id: " + statsMwo.getGameId());
 
 			StatsMwoPOJO checkStats = dao.findByMWOGameId(statsMwo.getGameId());
 			if (checkStats != null) {
 				// already saved, do nothing
-				logger.debug("Stats with the given MWO Match-ID have been detected, DO NOTHING!");
+				logger.info("Stats with the given MWO Match-ID have been detected, DO NOTHING!");
 				return;
 			}
 
 			EntityManagerHelper.beginTransaction(getC3UserID(session));
 			if (statsMwo.getId() != null) {
-				logger.debug("attack.getId() != null");
+				logger.info("attack.getId() != null");
 				dao.update(getC3UserID(session), statsMwo);
 			} else {
 				dao.save(getC3UserID(session), statsMwo);
@@ -321,10 +321,10 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			AttackPOJO existingAttack = null;
 			AttackPOJO attack = (AttackPOJO) state.getObject();
 
-			logger.debug("Saving attack: " + attack);
-			logger.debug("-- Attacker (jumpshipID): " + attack.getJumpshipID());
-			logger.debug("-- Attacking from: " + attack.getAttackedFromStarSystemID());
-			logger.debug("-- Attacked system: " + attack.getStarSystemID());
+			logger.info("Saving attack: " + attack);
+			logger.info("-- Attacker (jumpshipID): " + attack.getJumpshipID());
+			logger.info("-- Attacking from: " + attack.getAttackedFromStarSystemID());
+			logger.info("-- Attacked system: " + attack.getStarSystemID());
 
 			StarSystemDataPOJO s = StarSystemDataDAO.getInstance().findById(getC3UserID(session), attack.getStarSystemDataID());
 			s.setLockedUntilRound(attack.getRound() + Constants.ROUNDS_TO_LOCK_SYSTEM_AFTER_ATTACK);
@@ -415,7 +415,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			attack.setStoryID(rpPojo.getId());
 
 			if(attack.getId() != null) {
-				logger.debug("attack.getId() != null");
+				logger.info("attack.getId() != null");
 				dao.update(getC3UserID(session), attack);
 			} else {
 				// Check if attack exits
@@ -423,10 +423,10 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				existingAttack = dao.findOpenAttackByRound(getC3UserID(session),attack.getJumpshipID(), attack.getSeason(), attack.getRound());
 
 				if(existingAttack == null){
-					logger.debug("SAVE: if(existingAttack == null)");
+					logger.info("SAVE: if(existingAttack == null)");
 					dao.save(getC3UserID(session), attack);
 				} else {
-					logger.debug("ELSE -> if(existingAttack == null)");
+					logger.info("ELSE -> if(existingAttack == null)");
 					attack = existingAttack;
 				}
 			}
@@ -479,10 +479,10 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				dao.delete(getC3UserID(session), attackCharacter);
 			} else {
 				if (attackCharacter.getId() != null) {
-					logger.debug("??? updating attackcharacter (id: " + attackCharacter.getId() + ")");
+					logger.info("??? updating attackcharacter (id: " + attackCharacter.getId() + ")");
 					dao.update(getC3UserID(session), attackCharacter);
 				} else {
-					logger.debug("??? saving new attackcharacter (id: " + attackCharacter.getId() + ")");
+					logger.info("??? saving new attackcharacter (id: " + attackCharacter.getId() + ")");
 					dao.save(getC3UserID(session), attackCharacter);
 				}
 			}
@@ -594,12 +594,12 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 	}
 
 	private synchronized void checkDoubleLogin(PlayerSession session, GameRoom gm) {
-		logger.debug("C3Room.afterSessionConnect");
+		logger.info("C3Room.afterSessionConnect");
 
 		// get the actual user
 		UserPOJO newUser = ((C3Player) session.getPlayer()).getUser();
 
-		logger.debug("C3Room.afterSessionConnect -> search wrong session");
+		logger.info("C3Room.afterSessionConnect -> search wrong session");
 		if (newUser != null) {
 			for (PlayerSession plSession : gm.getSessions()) {
 
@@ -607,7 +607,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 				// find a other session from the user of the actual player session and send an USER_LOGOUT_AFTER_DOUBLE_LOGIN event
 				if (userID.equals(newUser.getUserId()) && session != plSession) {
-					logger.debug("C3Room.afterSessionConnect -> find wrong session");
+					logger.info("C3Room.afterSessionConnect -> find wrong session");
 
 					GameState state_broadcast_login = new GameState(GAMESTATEMODES.USER_LOGOUT_AFTER_DOUBLE_LOGIN);
 					state_broadcast_login.setReceiver(plSession.getId());
@@ -630,7 +630,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		UniverseDTO uni = WebDataInterface.getUniverse();
 
 		byte[] myByte = Compressor.compress(uni);
-		logger.debug("Size of UniverseDTO: " + myByte.length + " byte.");
+		logger.info("Size of UniverseDTO: " + myByte.length + " byte.");
 
 		GameState state_userdata = new GameState(GAMESTATEMODES.USER_LOGGED_IN_DATA);
 		state_userdata.addObject(user);
@@ -719,7 +719,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 	}
 
 	private void executeCommand(PlayerSession session, GameState state) {
-		logger.debug("C3GameSessionHandler.executeCommand: " + state.getMode().toString());
+		logger.info("C3GameSessionHandler.executeCommand: " + state.getMode().toString());
 		EntityConverter.convertGameStateToPOJO(state);
 
 		Timer serverHeartBeat;

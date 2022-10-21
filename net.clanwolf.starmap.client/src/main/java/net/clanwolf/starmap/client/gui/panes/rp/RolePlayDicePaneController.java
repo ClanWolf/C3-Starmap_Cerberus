@@ -124,7 +124,7 @@ public class RolePlayDicePaneController extends AbstractC3RolePlayController imp
 
 		case START_ROLEPLAY:
 			if(ROLEPLAYENTRYTYPES.C3_RP_STEP_V4 == o.getObject()) {
-				logger.debug("RolePlayDicePaneController -> START_ROLEPLAY");
+				logger.info("RolePlayDicePaneController -> START_ROLEPLAY");
 
 				init();
 

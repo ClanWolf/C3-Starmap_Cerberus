@@ -130,7 +130,7 @@ public class RolePlayChoice2PaneController extends AbstractC3RolePlayController 
 		switch (action) {
 		case START_ROLEPLAY:
 			if(ROLEPLAYENTRYTYPES.C3_RP_STEP_V3 == o.getObject()) {
-				logger.debug("RolePlayChoice2PaneController -> START_ROLEPLAY");
+				logger.info("RolePlayChoice2PaneController -> START_ROLEPLAY");
 
 				init();
 

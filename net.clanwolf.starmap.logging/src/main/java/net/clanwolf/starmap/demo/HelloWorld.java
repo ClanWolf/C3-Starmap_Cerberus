@@ -70,10 +70,10 @@ public class HelloWorld {
 
 		prepareLogging();
 
-		logger.trace("sdjkj");
-		logger.debug("Temperature set to {}. Old temperature was {}.", 1, 12);
-		logger.info("Hello World");
-		logger.warn("test");
-		logger.error("jkjkjkj");
+//		logger.trace("sdjkj");
+//		logger.info("Temperature set to {}. Old temperature was {}.", 1, 12);
+//		logger.info("Hello World");
+//		logger.warn("test");
+//		logger.error("jkjkjkj");
 	}
 }

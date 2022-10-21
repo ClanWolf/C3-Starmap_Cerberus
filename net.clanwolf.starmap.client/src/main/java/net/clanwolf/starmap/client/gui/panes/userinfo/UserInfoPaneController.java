@@ -505,7 +505,7 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 									Platform.runLater(() -> setLogoutButtonText(caption));
 									enableLogoutButton();
 								} catch (InterruptedException e) {
-									logger.debug("UserInfoPanelException [1254]");
+									logger.info("UserInfoPanelException [1254]");
 									e.printStackTrace();
 								}
 							}

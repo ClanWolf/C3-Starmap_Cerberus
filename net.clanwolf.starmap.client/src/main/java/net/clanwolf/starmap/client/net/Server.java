@@ -75,8 +75,8 @@ public class Server {
 		try {
 			URL url = new URL(serverURL + "server/php/C3-LatestClientVersion.php");
 			value = new String(HTTP.get(url));
-//			logger.debug("Connection URL: " + url);
-//			logger.debug("Connection Result: " + value);
+//			logger.info("Connection URL: " + url);
+//			logger.info("Connection Result: " + value);
 		} catch (IOException e) {
 			logger.error(null, e);
 		}
@@ -109,11 +109,11 @@ public class Server {
 				online = true;
 				// Server online check ok, testing db
 				try {
-					logger.debug(serverURL + "server/php/C3-OnlineStatus_Database.php?p1=" + C3Properties.getProperty(C3PROPS.LOGIN_DATABASE));
+					logger.info(serverURL + "server/php/C3-OnlineStatus_Database.php?p1=" + C3Properties.getProperty(C3PROPS.LOGIN_DATABASE));
 					URL url = new URL(serverURL + "server/php/C3-OnlineStatus_Database.php?p1=" + C3Properties.getProperty(C3PROPS.LOGIN_DATABASE));
 					value = new String(HTTP.get(url));
-					logger.debug("Connection URL: " + url);
-					logger.debug("Connection Result: " + value);
+					logger.info("Connection URL: " + url);
+					logger.info("Connection Result: " + value);
 					// use "endswith" here, in case debugging in PHP is enabled!
 					r = value.equals("online");
 				} catch (IOException e) {
@@ -194,7 +194,7 @@ public class Server {
 		try {
 			String u = serverURL + "C3_CheckUserLogin.php?cps1=" + username + "&cus4=" + password + "&db_database=" + database;
 			URL url = new URL(u);
-			logger.debug(url + "");
+			logger.info(url + "");
 			checkresult = new String(HTTP.get(url));
 		} catch (IOException e) {
 			logger.error(null, e);
@@ -208,7 +208,7 @@ public class Server {
 				finalResult = resultLine.substring(3, resultLine.lastIndexOf("]"));
 			}
 		}
-		logger.debug("Result: " + finalResult);
+		logger.info("Result: " + finalResult);
 		return Integer.parseInt(finalResult);
 	}
 

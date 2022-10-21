@@ -66,7 +66,7 @@ public class C3LookupService extends SimpleLookupService {
 	@Override
 	public Player playerLookup(Credentials c) {
 
-		logger.debug("C3LookupService.playerLookup");
+		logger.info("C3LookupService.playerLookup");
 		C3Player player = new C3Player();
 		EntityManager em = EntityManagerHelper.getNewEntityManager();
 

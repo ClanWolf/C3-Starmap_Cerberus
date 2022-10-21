@@ -139,7 +139,7 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 		switch (action) {
 		case START_ROLEPLAY:
 			if(ROLEPLAYENTRYTYPES.C3_RP_STEP_V6 == o.getObject()) {
-				logger.debug("RolePlayChoicePaneController -> START_ROLEPLAY");
+				logger.info("RolePlayChoicePaneController -> START_ROLEPLAY");
 
 				init();
 

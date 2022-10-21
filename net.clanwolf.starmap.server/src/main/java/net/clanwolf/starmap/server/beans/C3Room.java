@@ -116,7 +116,7 @@ public class C3Room extends GameRoomSession {
 			int counter = 50;
 
 //			try {
-//				logger.debug("##### Waiting some time no matter what...");
+//				logger.info("##### Waiting some time no matter what...");
 //				TimeUnit.MILLISECONDS.sleep(2000);
 //			} catch (InterruptedException interruptedException) {
 //				interruptedException.printStackTrace();
@@ -124,8 +124,8 @@ public class C3Room extends GameRoomSession {
 
 			do {
 				ready = getSessionReadyMap().containsKey(playerSession.getId().toString()) && getSessionReadyMap().get(playerSession.getId().toString());
-//				logger.debug("##### COUNTER: " + counter);
-//				logger.debug("##### READY: " + ready);
+//				logger.info("##### COUNTER: " + counter);
+//				logger.info("##### READY: " + ready);
 				if (ready || counter == 0) {
 					break;
 				} else {
@@ -153,7 +153,7 @@ public class C3Room extends GameRoomSession {
 //			Iterator it = getSessionReadyMap().keySet().iterator();
 //			while(it.hasNext()) {
 //				String s = (String)it.next();
-//				logger.debug("Session in sessionReadyMap: " + s + " (Value: " + getSessionReadyMap().get(s) + ")");
+//				logger.info("Session in sessionReadyMap: " + s + " (Value: " + getSessionReadyMap().get(s) + ")");
 //			}
 
 			playerSession.onEvent(e);

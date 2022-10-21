@@ -1151,7 +1151,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 	}
 
 	private void fillComboBoxWithDataInputTypes(){
-		logger.debug("fillComboBoxWithDataInputTypes");
+		logger.info("fillComboBoxWithDataInputTypes");
 		ArrayList<ROLEPLAYINPUTDATATYPES> dataList = new ArrayList<>();
 
 		for(ROLEPLAYINPUTDATATYPES t : ROLEPLAYINPUTDATATYPES.values()) {
@@ -1176,7 +1176,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 	}
 
 	private void fillComboboxWithStories() {
-		logger.debug("fillComboboxWithStories");
+		logger.info("fillComboboxWithStories");
 		if (selected != null) {
 			cbStoryPath1.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
 			cbStoryPath2.getItems().setAll(boRP.getStoriesFromChapter(selected.getValue().getParentStory()));
@@ -1550,7 +1550,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 
 			// set data for story variante 3
 			if (selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V3 && selected.getValue().getVar3ID() != null) {
-				logger.debug("setData");
+				logger.info("setData");
 
 				if (selected.getValue().getVar3ID().getDataSet1() != null) {
 					cbroleplayinputdatatypes.getSelectionModel().select(selected.getValue().getVar3ID().getDataSet1().types);
@@ -1975,7 +1975,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 				bOK = boRP.deleteVideo(selected.getValue());
 			}
 
-			if (!bOK) logger.debug("Error while upload!");
+			if (!bOK) logger.info("Error while upload!");
 		} catch(Exception e) {
 			e.printStackTrace();
 			logger.info("Exception during ftp upload!");

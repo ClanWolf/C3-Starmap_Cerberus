@@ -123,7 +123,7 @@ public class RolePlayMessagePaneController extends AbstractC3RolePlayController 
 
 		case START_ROLEPLAY:
 			if(ROLEPLAYENTRYTYPES.C3_RP_STEP_V7 == o.getObject()) {
-				logger.debug("RolePlayIntroPaneController -> START_ROLEPLAY");
+				logger.info("RolePlayIntroPaneController -> START_ROLEPLAY");
 
 				// set current step of story
 				getStoryValues(getCurrentRP());

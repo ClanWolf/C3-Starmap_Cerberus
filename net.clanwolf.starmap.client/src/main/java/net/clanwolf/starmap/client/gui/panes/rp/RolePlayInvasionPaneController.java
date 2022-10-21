@@ -433,7 +433,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 	@Override
 	public boolean handleAction(ACTIONS action, ActionObject o) {
 		if(anchorPane != null && !anchorPane.isVisible()) return true;
-		logger.debug("Flag for CharRP" + isCharRP);
+		logger.info("Flag for CharRP" + isCharRP);
 		switch (action) {
 
 		case PANE_CREATION_BEGINS:
@@ -448,7 +448,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 
 		case START_ROLEPLAY:
 			if(ROLEPLAYENTRYTYPES.C3_RP_STEP_V9 == o.getObject()) {
-				logger.debug("RolePlayChoicePaneController -> START_ROLEPLAY");
+				logger.info("RolePlayChoicePaneController -> START_ROLEPLAY");
 
 				init();
 

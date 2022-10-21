@@ -170,7 +170,7 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 		switch (action) {
 			case START_ROLEPLAY -> {
 				if (ROLEPLAYENTRYTYPES.C3_RP_STORY == o.getObject() || ROLEPLAYENTRYTYPES.C3_RP_CHAPTER == o.getObject()) {
-					logger.debug("RolePlayIntroPaneController -> START_ROLEPLAY");
+					logger.info("RolePlayIntroPaneController -> START_ROLEPLAY");
 					// set current step of story
 					getStoryValues(getCurrentRP());
 					fadeInContent();

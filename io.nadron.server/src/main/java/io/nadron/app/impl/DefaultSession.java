@@ -186,9 +186,9 @@ public class DefaultSession implements Session
 	public void onEvent(Event event) {
 		if(!isShuttingDown){
 			eventDispatcher.fireEvent(event);
-//			logger.debug("isShuttingDown: false");
+//			logger.info("isShuttingDown: false");
 		} else {
-//			logger.debug("isShuttingDown: true");
+//			logger.info("isShuttingDown: true");
 		}
 	}
 

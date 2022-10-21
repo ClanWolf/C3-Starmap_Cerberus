@@ -877,11 +877,11 @@ public class BORolePlayStory {
 
 	public Long getFirstStepOfChapter(RolePlayStoryDTO rpDTO){
 
-		logger.debug(rpDTO.getStoryName());
+		logger.info(rpDTO.getStoryName());
 
 		for(RolePlayStoryDTO rp : Nexus.getBoUniverse().getAttackStories().values()){
 			if( rpDTO.getId().equals(rp.getParentStory().getId()) && rp.getSortOrder() == 1){
-				logger.debug(rp.getStoryName());
+				logger.info(rp.getStoryName());
 				return rp.getId();
 			}
 		}

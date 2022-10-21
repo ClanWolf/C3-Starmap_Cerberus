@@ -42,7 +42,7 @@ public class DefaultToServerHandler extends SimpleChannelInboundHandler<Event> {
 
 	@Override
 	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
-		logger.debug("Netty Channel " + ctx.channel() + " is closed.");
+		logger.info("Netty Channel " + ctx.channel() + " is closed.");
 		if (!playerSession.isShuttingDown()) {
 			// Should not send close to session, since reconnection/other
 			// business logic might be in place.
