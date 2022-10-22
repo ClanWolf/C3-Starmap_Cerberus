@@ -16,7 +16,11 @@
 error_reporting(E_ALL);
 ini_set("display_errors", 1);
 
-require_once('./db.php');
+include('config.php');
+$conn = new mysqli($db_host_C3, $db_user_C3, $db_pass_C3);
+if ($conn->connect_error) {
+	die("Connection failed: " . $conn->connect_error);
+}
 ?>
 
 <html>

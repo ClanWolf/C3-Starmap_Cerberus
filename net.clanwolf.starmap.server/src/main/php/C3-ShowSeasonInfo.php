@@ -1,6 +1,6 @@
 <?php
  /**
-  * DB check online status
+  * Get latest C3 users
   * PHP version 7.2.10
   *
   * @category Servercomponents
@@ -19,18 +19,18 @@ if ($conn->connect_error) {
 }
 
 $sql = "SELECT * FROM C3.SYSCONFIG";
-$result = mysqli_query($conn, $sql);
+$result = mysqli_query($connC3, $sql);
 if (mysqli_num_rows($result) > 0) {
-    while ($row = mysqli_fetch_assoc($result)) {
-        $key = $row["Key"];
-        $value = $row["Value"];
+	while($row = mysqli_fetch_assoc($result)) {
+		$key = $row["Key"];
+		$value = $row["Value"];
 
-        if ($key === "VERSION DB") {
-            echo "online";
-        }
-    }
+		if ($key === "VERSION CLIENT") {
+			echo $value;
+		}
+	}
 } else {
-    echo "offline";
+	echo "No data...";
 }
 
 ?>

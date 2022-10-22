@@ -1,7 +1,3 @@
-/C3-SynchronizeUsers.php
-/C3-ShowSeasonInfo.php
-/C3-ShowLatestC3Users.php
-/C3-ShowOpenAttacks.php
 /config.php
 /config_clanwolf.php
-/insert_new_attack_forumthreads.php
+/config_readonly.php

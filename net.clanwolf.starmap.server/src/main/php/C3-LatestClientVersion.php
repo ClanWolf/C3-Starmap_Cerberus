@@ -11,7 +11,12 @@
   * @link     https://www.clanwolf.net
   */
 
-require_once './db.php';
+error_reporting(E_ALL);
+include('config.php');
+$conn = new mysqli($db_host_C3, $db_user_C3, $db_pass_C3);
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 
 $sql = "SELECT * FROM C3.SYSCONFIG";
 $result = mysqli_query($conn, $sql);
@@ -25,7 +30,7 @@ if (mysqli_num_rows($result) > 0) {
         }
     }
 } else {
-    echo "ERROR: DB offline";
+	echo "No data...";
 }
 
 ?>

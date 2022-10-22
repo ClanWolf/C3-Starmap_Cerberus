@@ -1,7 +1,7 @@
 C3 version history
 --------------------------------
 
-Version 7.1.44 (22.10.2022)
+Version 7.1.45 (22.10.2022)
 - UPDATED: fasterxml.jackson-databind due to security warning
 - ADDED: Some new lines to Ulric
 
