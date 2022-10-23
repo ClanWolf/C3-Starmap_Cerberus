@@ -18,6 +18,19 @@ if ($conn_clanwolf_ro->connect_error) {
     die("Connection failed: " . $conn_clanwolf_ro->connect_error);
 }
 
+$round = 0;
+
+$sql5 = "";
+$sql5 = $sql5 . "SELECT r.Round, r.Season from C3._HH_ROUND r where r.Season = 1 ";
+
+$result5 = mysqli_query($conn_clanwolf_ro, $sql5);
+if (mysqli_num_rows($result5) > 0) {
+	while($row5 = mysqli_fetch_assoc($result5)) {
+		$round = $row5["Round"];
+	}
+}
+echo " (R " . $round . ")</center><br>";
+
 $sql11 = "";
 $sql11 = $sql11 . "SELECT U.ID, U.UserName, US.UserId, US.LoginTime, US.ClientVersion ";
 $sql11 = $sql11 . "FROM C3.USER U, C3.USER_SESSION US WHERE U.ID = US.UserId ";
