@@ -18,14 +18,43 @@ if ($conn_clanwolf_ro->connect_error) {
     die("Connection failed: " . $conn_clanwolf_ro->connect_error);
 }
 
-$sql12 = "SELECT A.Round, A.StarSystemID FROM C3._HH_ATTACK A WHERE A.FactionID_Winner is null ORDER BY ID DESC ";
+$sql12 = "";
+$sql12 = $sql12 . "select ha.Season, ha.Round, ha.JumpshipID, hj.JumpshipName, hj.JumpshipFactionID, ss.Name, f.ShortName ";
+$sql12 = $sql12 . "from C3._HH_ATTACK ha, C3.STARSYSTEM ss, C3._HH_STARSYSTEMDATA ssd, C3.FACTION f, C3._HH_JUMPSHIP hj ";
+$sql12 = $sql12 . "where ss.ID = ha.StarSystemID ";
+$sql12 = $sql12 . "and ssd.StarSystemID = ss.ID ";
+$sql12 = $sql12 . "and ha.FactionID_Defender = f.ID ";
+$sql12 = $sql12 . "and hj.ID = ha.JumpshipID ";
+$sql12 = $sql12 . "and ha.Season = 1 ";
+$sql12 = $sql12 . "and ha.FactionID_Winner is null ";
+$sql12 = $sql12 . "ORDER BY ha.ID DESC ";
+
 $result12 = mysqli_query($conn_clanwolf_ro, $sql12);
 if (mysqli_num_rows($result12) > 0) {
 	echo "<table width=100% cellspacing=0 cellpadding=0>";
 	while($row = mysqli_fetch_assoc($result12)) {
 		$round = $row["Round"];
-		$starSystem = $row["StarSystemID"];
-		echo "<tr><td align='left' style='font-size:8px;'>&nbsp;&nbsp;&nbsp;&nbsp;- R" . $round . "</td><td align='right' style='font-size:8px;'>" . $starSystem . "&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>";
+		$jumpshipName = $row["JumpshipName"];
+		$jumpshipFactionID = $row["JumpshipFactionID"];
+		$starSystemID = $row["StarSystemID"];
+		$starSystemName = $row["Name"];
+		$starSystemFaction = $row["ShortName"];
+		$attackingFaction = "?";
+
+		$sql14 = "select f.ShortName from C3.FACTION f where f.ID = " . $jumpshipFactionID;
+		$result14 = mysqli_query($conn_clanwolf_ro, $sql14);
+		if (mysqli_num_rows($result12) > 0) {
+			while($row14 = mysqli_fetch_assoc($result14)) {
+				$attackingFaction = $row14["ShortName"];
+			}
+		}
+
+		echo "<tr>";
+		echo "<td align='left' width='30%' style='font-size:8px;'>&nbsp;&nbsp;&nbsp;&nbsp;R " . $round . "</td>";
+		echo "<td align='left' width='10%' style='font-size:8px;'>&nbsp;&nbsp;" . $attackingFaction . "</td>";
+		echo "<td align='center' width='30%' style='font-size:8px;'>>></td>";
+		echo "<td align='right' width='30%' style='font-size:8px;'>" . $starSystemName . " [" . $starSystemFaction . "]&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+		echo "</tr>";
 	}
 	echo "</table>";
 } else {

@@ -18,7 +18,12 @@ if ($conn_clanwolf_ro->connect_error) {
     die("Connection failed: " . $conn_clanwolf_ro->connect_error);
 }
 
-$sql11 = "SELECT U.ID, U.UserName, US.UserId, US.LoginTime, US.ClientVersion FROM C3.USER U, C3.USER_SESSION US WHERE U.ID = US.UserId ORDER BY LoginTime DESC LIMIT 5 ";
+$sql11 = "";
+$sql11 = $sql11 . "SELECT U.ID, U.UserName, US.UserId, US.LoginTime, US.ClientVersion ";
+$sql11 = $sql11 . "FROM C3.USER U, C3.USER_SESSION US WHERE U.ID = US.UserId ";
+$sql11 = $sql11 . "ORDER BY LoginTime DESC ";
+$sql11 = $sql11 . "LIMIT 5 ";
+
 $result11 = mysqli_query($conn_clanwolf_ro, $sql11);
 $tsNow = strtotime("now");
 if (mysqli_num_rows($result11) > 0) {
@@ -28,7 +33,9 @@ if (mysqli_num_rows($result11) > 0) {
 		$version = $row["ClientVersion"];
 		if ($timestamp < 5) { $timestamp = "<span style='color:#00ff00;'>online</span>"; }
 		if ($timestamp >= 5 && $timestamp <= 60) { $timestamp = "<span style='color:#ffff00;'>" . $timestamp . 'm</span>'; }
-		if ($timestamp > 60) { $timestamp = "<span style='color:#777;'>> 60m</span>"; }
+		if ($timestamp > 60 && $timestamp <= (12 * 60)) { $timestamp = "<span style='color:#777;'>> 60m</span>"; }
+		if ($timestamp > (12 * 60) && $timestamp < (48 * 60)) { $timestamp = "<span style='color:#777;'>> 12h</span>"; }
+		if ($timestamp > (48 * 60)) { $timestamp = "<span style='color:#777;'>> 2d</span>"; }
 
 		$name = $row["UserName"];
 		echo "<tr><td align='left' style='font-size:8px;'>&nbsp;&nbsp;&nbsp;&nbsp;- " . $name . "</td><td align='right' style='font-size:8px;'>" . $version . "</td><td align='right' style='font-size:8px;'>" . $timestamp . "&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>";
