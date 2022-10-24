@@ -62,9 +62,9 @@ if (mysqli_num_rows($result12) > 0) {
 			}
 		}
 
-		$style = "style='font-size:8px;'";
+		$style = "style='font-size:10px;'";
 		if ($round != $attackRound) {
-			$style = "style='font-size:8px;color:#999;'";
+			$style = "style='font-size:10px;color:#999;'";
 		}
 
 		echo "<tr>";

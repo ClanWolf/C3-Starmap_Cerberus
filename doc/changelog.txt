@@ -1,6 +1,9 @@
 C3 version history
 --------------------------------
 
+Version 7.1.48 (xx.10.2022)
+-
+
 Version 7.1.47 (24.10.2022)
 - FIXED: Error if a chassis is not represented in the enmumeration (match statistics mwo)
 

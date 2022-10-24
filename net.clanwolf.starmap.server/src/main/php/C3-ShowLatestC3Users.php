@@ -52,7 +52,7 @@ if (mysqli_num_rows($result11) > 0) {
 		if ($timestamp > (48 * 60)) { $timestamp = "<span style='color:#777;'>> 2d</span>"; }
 
 		$name = $row["UserName"];
-		echo "<tr><td align='left' style='font-size:8px;' title='" . $IP . "'>&nbsp;&nbsp;&nbsp;&nbsp;- " . $name . "</td><td align='right' style='font-size:8px;'>" . $version . "</td><td align='right' style='font-size:8px;'>" . $timestamp . "&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>";
+		echo "<tr><td align='left' style='font-size:10px;' title='" . $IP . "'>&nbsp;&nbsp;&nbsp;&nbsp;- " . $name . "</td><td align='right' style='font-size:10px;'>" . $version . "</td><td align='right' style='font-size:10px;'>" . $timestamp . "&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>";
 	}
 	echo "</table>";
 } else {
