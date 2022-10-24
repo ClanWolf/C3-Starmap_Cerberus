@@ -32,7 +32,7 @@ if (mysqli_num_rows($result5) > 0) {
 echo " (R " . $round . ")</center><br>";
 
 $sql11 = "";
-$sql11 = $sql11 . "SELECT U.ID, U.UserName, US.UserId, US.LoginTime, US.ClientVersion ";
+$sql11 = $sql11 . "SELECT U.ID, U.UserName, US.IP, US.UserId, US.LoginTime, US.ClientVersion ";
 $sql11 = $sql11 . "FROM C3.USER U, C3.USER_SESSION US WHERE U.ID = US.UserId ";
 $sql11 = $sql11 . "ORDER BY LoginTime DESC ";
 $sql11 = $sql11 . "LIMIT 5 ";
@@ -44,6 +44,7 @@ if (mysqli_num_rows($result11) > 0) {
 	while($row = mysqli_fetch_assoc($result11)) {
 		$timestamp = floor(($tsNow - strtotime($row["LoginTime"])) / 60);
 		$version = $row["ClientVersion"];
+		$IP = $row["IP"];
 		if ($timestamp < 5) { $timestamp = "<span style='color:#00ff00;'>online</span>"; }
 		if ($timestamp >= 5 && $timestamp <= 60) { $timestamp = "<span style='color:#ffff00;'>" . $timestamp . 'm</span>'; }
 		if ($timestamp > 60 && $timestamp <= (12 * 60)) { $timestamp = "<span style='color:#777;'>> 60m</span>"; }
@@ -51,7 +52,7 @@ if (mysqli_num_rows($result11) > 0) {
 		if ($timestamp > (48 * 60)) { $timestamp = "<span style='color:#777;'>> 2d</span>"; }
 
 		$name = $row["UserName"];
-		echo "<tr><td align='left' style='font-size:8px;'>&nbsp;&nbsp;&nbsp;&nbsp;- " . $name . "</td><td align='right' style='font-size:8px;'>" . $version . "</td><td align='right' style='font-size:8px;'>" . $timestamp . "&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>";
+		echo "<tr><td align='left' style='font-size:8px;' title='" . $IP . "'>&nbsp;&nbsp;&nbsp;&nbsp;- " . $name . "</td><td align='right' style='font-size:8px;'>" . $version . "</td><td align='right' style='font-size:8px;'>" . $timestamp . "&nbsp;&nbsp;&nbsp;&nbsp;</td></tr>";
 	}
 	echo "</table>";
 } else {

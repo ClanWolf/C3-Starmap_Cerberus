@@ -30,6 +30,10 @@ import net.clanwolf.starmap.transfer.dtos.UserDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 
 import java.io.Serializable;
+import java.net.DatagramSocket;
+import java.net.InetAddress;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 
 /**
  * The state of a game room is held in this object. Multiple remote client
@@ -43,6 +47,8 @@ public class GameState implements Serializable {
 	 *
 	 */
 	private static final long serialVersionUID = 1L;
+
+	private String ipAdressSender = "";
 
 	private Object obj;
 	private Object obj2;
@@ -59,22 +65,42 @@ public class GameState implements Serializable {
 
 	public GameState() {
 		super();
+		try(final DatagramSocket socket = new DatagramSocket()){
+			InetAddress IP = InetAddress.getLocalHost();
+			ipAdressSender = IP.getHostAddress();
+		} catch (SocketException | UnknownHostException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public GameState(GAMESTATEMODES mode) {
 		super();
 		this.mode = mode;
+		try(final DatagramSocket socket = new DatagramSocket()){
+			InetAddress IP = InetAddress.getLocalHost();
+			ipAdressSender = IP.getHostAddress();
+		} catch (SocketException | UnknownHostException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public GameState(GAMESTATEMODES mode, UserDTO user) {
 		super();
 		this.mode = mode;
 		this.obj = user;
+		try(final DatagramSocket socket = new DatagramSocket()){
+			InetAddress IP = InetAddress.getLocalHost();
+			ipAdressSender = IP.getHostAddress();
+		} catch (SocketException | UnknownHostException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	public GAMESTATEMODES getMode() {
 		return mode;
 	}
+
+	public String getIpAdressSender() { return ipAdressSender; }
 
 	public void setMode(GAMESTATEMODES mode) {
 		this.mode = mode;

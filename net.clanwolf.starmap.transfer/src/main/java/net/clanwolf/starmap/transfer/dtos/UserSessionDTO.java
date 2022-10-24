@@ -58,9 +58,17 @@ public class UserSessionDTO extends Dto {
 //	@Column(name = "ClientVersion")
 	private String clientVersion;
 
+//	@Column(name = "IP")
+	private String ip;
+
+//	@Column(name = "lastActivity")
+	private Timestamp lastActivity;
+
 //	@Column(name = "LoginTime", nullable = true)
 	private Timestamp loginTime;
 
+//	@Column(name = "LogoutTime", nullable = false)
+	private Timestamp logoutTime;
 	// Constructors
 
 	/** default constructor */
@@ -90,6 +98,16 @@ public class UserSessionDTO extends Dto {
 	}
 
 	@SuppressWarnings("unused")
+	public String getIp() {
+		return ip;
+	}
+
+	@SuppressWarnings("unused")
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
+
+	@SuppressWarnings("unused")
 	public Timestamp getLoginTime() {
 		return loginTime;
 	}
@@ -97,6 +115,26 @@ public class UserSessionDTO extends Dto {
 	@SuppressWarnings("unused")
 	public void setLoginTime(Timestamp loginTime) {
 		this.loginTime = loginTime;
+	}
+
+	@SuppressWarnings("unused")
+	public Timestamp getLogoutTime() {
+		return logoutTime;
+	}
+
+	@SuppressWarnings("unused")
+	public void setLogoutTime(Timestamp logoutTime) {
+		this.logoutTime = logoutTime;
+	}
+
+	@SuppressWarnings("unused")
+	public Timestamp getLastActivity() {
+		return lastActivity;
+	}
+
+	@SuppressWarnings("unused")
+	public void setLastActivity(Timestamp lastActivity) {
+		this.lastActivity = lastActivity;
 	}
 
 	@SuppressWarnings("unused")

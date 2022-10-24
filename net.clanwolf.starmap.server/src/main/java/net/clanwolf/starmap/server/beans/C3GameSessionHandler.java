@@ -38,7 +38,6 @@ import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.server.GameServer;
 import net.clanwolf.starmap.transfer.dtos.*;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
-import org.hibernate.exception.ConstraintViolationException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.server.persistence.EntityConverter;
@@ -55,7 +54,6 @@ import net.clanwolf.starmap.transfer.util.Compressor;
 import java.lang.invoke.MethodHandles;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Timer;
 
 import static net.clanwolf.starmap.constants.Constants.*;
@@ -106,7 +104,11 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		staticRoom.sendBroadcast(Events.networkEvent(response));
 	}
 
-	private void storeUserSession(PlayerSession session, String clientVersion) {
+	private void storeUserSession(PlayerSession session, String clientVersion, String ipAdressSender, boolean logout) {
+
+	}
+
+	private void storeUserSession(PlayerSession session, String clientVersion, String ipAdressSender) {
 		UserSessionDAO dao = UserSessionDAO.getInstance();
 		GameState response = new GameState(GAMESTATEMODES.USER_SESSION_SAVE);
 
@@ -122,10 +124,14 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				userSessionPOJO = new UserSessionPOJO();
 				userSessionPOJO.setUserId(user.getUserId());
 				userSessionPOJO.setClientVersion(clientVersion);
+				userSessionPOJO.setIp(ipAdressSender);
+				userSessionPOJO.setLastActivity(new Timestamp(System.currentTimeMillis()));
 				userSessionPOJO.setLoginTime(new Timestamp(System.currentTimeMillis()));
 				dao.save(getC3UserID(session), userSessionPOJO);
 			} else {
 				userSessionPOJO.setClientVersion(clientVersion);
+				userSessionPOJO.setIp(ipAdressSender);
+				userSessionPOJO.setLastActivity(new Timestamp(System.currentTimeMillis()));
 				userSessionPOJO.setLoginTime(new Timestamp(System.currentTimeMillis()));
 				dao.update(getC3UserID(session), userSessionPOJO);
 			}
@@ -723,6 +729,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		EntityConverter.convertGameStateToPOJO(state);
 
 		Timer serverHeartBeat;
+		String ipAdressSender = state.getIpAdressSender();
 
 		switch (state.getMode()) {
 			case BROADCAST_SEND_NEW_PLAYERLIST:
@@ -733,7 +740,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				if (state.getObject() instanceof String) {
 					clientVersion = (String) state.getObject();
 				}
-				storeUserSession(session, clientVersion);
+				storeUserSession(session, clientVersion, ipAdressSender);
 				getLoggedInUserData(session);
 				break;
 			case USER_CHECK_DOUBLE_LOGIN:
@@ -741,6 +748,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				break;
 			case USER_LOG_OUT:
 				session.getPlayer().logout(session);
+				storeUserSession(session, null, ipAdressSender, true);
 				sendNewPlayerList();
 				break;
 			case ROLEPLAY_SAVE_STORY:

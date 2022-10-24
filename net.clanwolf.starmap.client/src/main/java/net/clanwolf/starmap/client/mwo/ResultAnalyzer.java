@@ -126,6 +126,18 @@ public class ResultAnalyzer {
 			Integer componentsDestroyed = ud.getComponentsDestroyed();
 
 			int tonnage = mechInfo.getTonnage();
+			if (tonnage == 999) {
+				// Mech has not been found in MWO EChassis Enumeration --> Manual FIX!
+				logger.error("Mech Chassis not found in Enumeration! MechItemId: " + mechItemId);
+				if (mechItemId == 0) {
+					logger.info("MechItemId=0 --> No Mech, Spectator!");
+				} else {
+					logger.info("Rawdata MWO API Stats:");
+					logger.info("-------------------------------------------------------------------");
+					logger.info(jsonString);
+					logger.info("-------------------------------------------------------------------");
+				}
+			}
 			String unit = ud.getUnitTag();
 			Integer kills = ud.getKills();
 			Integer assists = ud.getAssists();

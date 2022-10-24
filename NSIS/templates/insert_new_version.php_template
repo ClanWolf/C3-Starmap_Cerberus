@@ -13,7 +13,12 @@
 
 error_reporting(E_ALL);
 include('config.php');
-$conn = new mysqli($db_host_c3, $db_user_c3, $db_pass_c3);
+
+// echo "host: " . $db_host_C3 . "<br>";
+// echo "user: " . $db_user_C3 . "<br>";
+// echo "pass: " . $db_pass_C3 . "<br>";
+
+$conn = new mysqli($db_host_C3, $db_user_C3, $db_pass_C3);
 if ($conn->connect_error) {
 	die("Connection failed: " . $conn->connect_error);
 }

@@ -13,15 +13,20 @@
 
 error_reporting(E_ALL);
 include('config.php');
+
+// echo "host: " . $db_host_C3 . "<br>";
+// echo "user: " . $db_user_C3 . "<br>";
+// echo "pass: " . $db_pass_C3 . "<br>";
+
 $conn = new mysqli($db_host_C3, $db_user_C3, $db_pass_C3);
 if ($conn->connect_error) {
 	die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "UPDATE C3.SYSCONFIG SET VALUE='7.1.45' WHERE SYSCONFIG.KEY='VERSION CLIENT'";
+$sql = "UPDATE C3.SYSCONFIG SET VALUE='7.1.47' WHERE SYSCONFIG.KEY='VERSION CLIENT'";
 
 if ($conn->query($sql) === TRUE) {
-  echo "Record updated successfully to 7.1.45.";
+  echo "Record updated successfully to 7.1.47.";
 } else {
   echo "Error updating record: " . $conn->error;
 }

@@ -26,6 +26,7 @@
  */
 package net.clanwolf.starmap.transfer.mwo;
 
+import java.lang.invoke.MethodHandles;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,7 +38,6 @@ import java.util.Map;
  * @version 13-08-2022
  */
 public class MechIdInfo {
-
     private final Map<Integer, MechIdInfo> mechID = new HashMap<>();
     private final String msgInvalidID = "Invalid MechItemID";
     private EFaction faction;
@@ -1113,25 +1113,30 @@ public class MechIdInfo {
      * @return Gibt die (int) Tonnage des Mech's zurück.
      */
     public Integer getTonnage() {
-        return switch (getChassis()) {
-            case LOCUST, PIRANHA, FLEA -> 20;
-            case COMMANDO, MISTLYNX -> 25;
-            case SPIDER, KITFOX, URBANMECH, ARCTICCHEETAH, JAVELIN, OSIRIS, INCUBUS -> 30;
-            case JENNER, RAVEN, FIRESTARTER, ADDER, PANTHER, WOLFHOUND, JENNERIIC, COUGAR -> 35;
-            case CICADA, VIPER, ASSASSIN, ARCTICWOLF, VULCAN -> 40;
-            case BLACKJACK, VINDICATOR, ICEFERRET, SHADOWCAT, PHOENIXHAWK, HELLSPAWN -> 45;
-            case HUNCHBACK, CENTURION, TREBUCHET, NOVA, ENFORCER, CRAB, HUNCHBACKIIC, HUNTSMAN, UZIEL -> 50;
-            case KINTARO, SHADOWHAWK, GRIFFIN, WOLVERINE, STORMCROW, BUSHWACKER, BLACKLANNER, VAPOREAGLE, DERVISH -> 55;
-            case DRAGON, QUICKDRAW, MADDOG, RIFLEMAN, HELLFIRE, CHAMPION -> 60;
-            case CATAPULT, JAGERMECH, THUNDERBOLT, HELLBRINGER, EBONJAGUAR, LINEBACKER, ROUGHNECK, RIFLEMANIIC, CRUSADER -> 65;
-            case CATAPHRACT, SUMMONER, GRASSHOPPER, WARHAMMER, ARCHER, NOVACAT, SUNSPIDER -> 70;
-            case ORION, TIMBERWOLF, BLACKKNIGHT, MARAUDER, ORIONIIC, NIGHTGYR, THANATOS -> 75;
-            case AWESOME, VICTOR, GARGOYLE, ZEUS, CHARGER, HATAMOTOCHI, WARHAMMERIIC -> 80;
-            case STALKER, BATTLEMASTER, WARHAWK, MARAUDERIIC -> 85;
-            case HIGHLANDER, MAULER, HIGHLANDERIIC, CYCLOPS, SUPERNOVA, MADCATMKII, BLOODASP -> 90;
-            case BANSHEE, EXECUTIONER, NIGHTSTAR, CORSAIR -> 95;
-            case ATLAS, DIREWOLF, KINGCRAB, KODIAK, ANNIHILATOR, FAFNIR, MARAUDERII -> 100;
-        };
+		if (getChassis() == null) {
+			// MechItemId might be '0' (no Mech --> Spectator)
+			return 999;
+		} else {
+			return switch (getChassis()) {
+				case LOCUST, PIRANHA, FLEA -> 20;
+				case COMMANDO, MISTLYNX -> 25;
+				case SPIDER, KITFOX, URBANMECH, ARCTICCHEETAH, JAVELIN, OSIRIS, INCUBUS -> 30;
+				case JENNER, RAVEN, FIRESTARTER, ADDER, PANTHER, WOLFHOUND, JENNERIIC, COUGAR -> 35;
+				case CICADA, VIPER, ASSASSIN, ARCTICWOLF, VULCAN -> 40;
+				case BLACKJACK, VINDICATOR, ICEFERRET, SHADOWCAT, PHOENIXHAWK, HELLSPAWN -> 45;
+				case HUNCHBACK, CENTURION, TREBUCHET, NOVA, ENFORCER, CRAB, HUNCHBACKIIC, HUNTSMAN, UZIEL -> 50;
+				case KINTARO, SHADOWHAWK, GRIFFIN, WOLVERINE, STORMCROW, BUSHWACKER, BLACKLANNER, VAPOREAGLE, DERVISH -> 55;
+				case DRAGON, QUICKDRAW, MADDOG, RIFLEMAN, HELLFIRE, CHAMPION -> 60;
+				case CATAPULT, JAGERMECH, THUNDERBOLT, HELLBRINGER, EBONJAGUAR, LINEBACKER, ROUGHNECK, RIFLEMANIIC, CRUSADER -> 65;
+				case CATAPHRACT, SUMMONER, GRASSHOPPER, WARHAMMER, ARCHER, NOVACAT, SUNSPIDER -> 70;
+				case ORION, TIMBERWOLF, BLACKKNIGHT, MARAUDER, ORIONIIC, NIGHTGYR, THANATOS -> 75;
+				case AWESOME, VICTOR, GARGOYLE, ZEUS, CHARGER, HATAMOTOCHI, WARHAMMERIIC -> 80;
+				case STALKER, BATTLEMASTER, WARHAWK, MARAUDERIIC -> 85;
+				case HIGHLANDER, MAULER, HIGHLANDERIIC, CYCLOPS, SUPERNOVA, MADCATMKII, BLOODASP -> 90;
+				case BANSHEE, EXECUTIONER, NIGHTSTAR, CORSAIR -> 95;
+				case ATLAS, DIREWOLF, KINGCRAB, KODIAK, ANNIHILATOR, FAFNIR, MARAUDERII -> 100;
+			};
+		}
     }
 
     /**
@@ -1173,9 +1178,11 @@ public class MechIdInfo {
      * @return Gibt die (String) Chassis des Mech's zurück.
      */
     public EChassie getChassis() {
-
-        return this.mechID.get(this.mechItemId).chassis;
-
+		if (this.mechID.get(this.mechItemId) == null) {
+			return null;
+		} else {
+			return this.mechID.get(this.mechItemId).chassis;
+		}
     }
 
     /**
