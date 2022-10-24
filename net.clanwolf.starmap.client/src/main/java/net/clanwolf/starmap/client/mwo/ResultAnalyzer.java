@@ -135,6 +135,7 @@ public class ResultAnalyzer {
 				logger.error("Mech Chassis not found in Enumeration! MechItemId: " + mechItemId);
 				if (mechItemId == 0) {
 					logger.info("MechItemId=0 --> No Mech, Spectator!");
+					tonnage = 0;
 				} else {
 					logger.info("Rawdata MWO API Stats:");
 					logger.info("-------------------------------------------------------------------");

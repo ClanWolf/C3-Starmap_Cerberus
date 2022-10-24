@@ -67,7 +67,7 @@ public class UserSessionDTO extends Dto {
 //	@Column(name = "LoginTime", nullable = true)
 	private Timestamp loginTime;
 
-//	@Column(name = "LogoutTime", nullable = false)
+//	@Column(name = "LogoutTime", nullable = true)
 	private Timestamp logoutTime;
 	// Constructors
 

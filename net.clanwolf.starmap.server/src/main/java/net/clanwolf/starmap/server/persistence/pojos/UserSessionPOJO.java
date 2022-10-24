@@ -70,7 +70,7 @@ public class UserSessionPOJO extends Pojo {
 	@Column(name = "LoginTime", nullable = false)
 	private Timestamp loginTime;
 
-	@Column(name = "LogoutTime", nullable = false)
+	@Column(name = "LogoutTime", nullable = true)
 	private Timestamp logoutTime;
 
 	// Constructors
