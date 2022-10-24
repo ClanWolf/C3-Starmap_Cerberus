@@ -117,7 +117,7 @@ public class ResultAnalyzer {
 			String team = ud.getTeam() == null ? "/" : ud.getTeam();
 			String userName = ud.getUsername();
 			String mech = ud.getMechName();
-			Long mechItemId = ud.getMechItemID().longValue();
+			long mechItemId = ud.getMechItemID().longValue();
 			boolean leadingPosition = false;
 
 			String mechFullName = mechInfo.getFullName();
