@@ -104,11 +104,11 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		staticRoom.sendBroadcast(Events.networkEvent(response));
 	}
 
-	private void storeUserSession(PlayerSession session, String clientVersion, String ipAdressSender, boolean logout) {
-
+	private void storeUserSession(PlayerSession session, String clientVersion, String ipAdressSender) {
+		storeUserSession(session, clientVersion, ipAdressSender, false);
 	}
 
-	private void storeUserSession(PlayerSession session, String clientVersion, String ipAdressSender) {
+	private void storeUserSession(PlayerSession session, String clientVersion, String ipAdressSender, boolean logout) {
 		UserSessionDAO dao = UserSessionDAO.getInstance();
 		GameState response = new GameState(GAMESTATEMODES.USER_SESSION_SAVE);
 
@@ -123,16 +123,32 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			if (userSessionPOJO == null) {
 				userSessionPOJO = new UserSessionPOJO();
 				userSessionPOJO.setUserId(user.getUserId());
-				userSessionPOJO.setClientVersion(clientVersion);
+				if (clientVersion != null) {
+					userSessionPOJO.setClientVersion(clientVersion);
+				}
 				userSessionPOJO.setIp(ipAdressSender);
 				userSessionPOJO.setLastActivity(new Timestamp(System.currentTimeMillis()));
-				userSessionPOJO.setLoginTime(new Timestamp(System.currentTimeMillis()));
+				if (logout) {
+					userSessionPOJO.setLoginTime(new Timestamp(System.currentTimeMillis()));
+					userSessionPOJO.setLogoutTime(new Timestamp(System.currentTimeMillis()));
+				} else {
+					userSessionPOJO.setLoginTime(new Timestamp(System.currentTimeMillis()));
+					userSessionPOJO.setLogoutTime(null);
+				}
 				dao.save(getC3UserID(session), userSessionPOJO);
 			} else {
-				userSessionPOJO.setClientVersion(clientVersion);
+				if (clientVersion != null) {
+					userSessionPOJO.setClientVersion(clientVersion);
+				}
 				userSessionPOJO.setIp(ipAdressSender);
 				userSessionPOJO.setLastActivity(new Timestamp(System.currentTimeMillis()));
-				userSessionPOJO.setLoginTime(new Timestamp(System.currentTimeMillis()));
+				if (logout) {
+					// leave logintime alone here
+					userSessionPOJO.setLogoutTime(new Timestamp(System.currentTimeMillis()));
+				} else {
+					userSessionPOJO.setLoginTime(new Timestamp(System.currentTimeMillis()));
+					userSessionPOJO.setLogoutTime(null);
+				}
 				dao.update(getC3UserID(session), userSessionPOJO);
 			}
 			EntityManagerHelper.commit(getC3UserID(session));

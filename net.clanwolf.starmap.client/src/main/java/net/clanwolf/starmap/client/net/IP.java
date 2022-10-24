@@ -21,10 +21,6 @@ public class IP {
 			BufferedReader in = new BufferedReader(new InputStreamReader(ipAdress.openStream()));
 			ip = in.readLine();
 			logger.info("External IP adress: " + ip);
-		} catch (MalformedURLException e) {
-			ip = "noip";
-			logger.warn("Error while getting external IP adress.");
-			e.printStackTrace();
 		} catch (IOException e) {
 			ip = "noip";
 			logger.warn("Error while getting external IP adress.");
