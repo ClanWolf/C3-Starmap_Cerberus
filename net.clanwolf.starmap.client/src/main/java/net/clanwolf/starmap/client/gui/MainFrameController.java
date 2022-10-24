@@ -2354,7 +2354,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		Server.checkServerStatusTask();
 		Server.checkDatabaseConnectionTask();
 
-		setConsoleEntry("Setting controll elements");
+		setConsoleEntry("Setting control elements");
 
 		enableMainMenuButtons(Nexus.isLoggedIn(), Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN));
 
