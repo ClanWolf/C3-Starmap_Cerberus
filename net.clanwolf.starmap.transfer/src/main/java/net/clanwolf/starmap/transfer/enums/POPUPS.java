@@ -27,7 +27,8 @@
 package net.clanwolf.starmap.transfer.enums;
 
 public enum POPUPS {
-	Orders_Confirmed (1, "001_OrdersConfirmed");
+	Orders_Confirmed (1, "001_OrdersConfirmed"),
+	Orders_None(2,"002_OrdersNone");
 
 	private final Integer id;
 	private final String name;

@@ -1,6 +1,9 @@
 C3 version history
 --------------------------------
 
+Version 7.1.50 (25.10.2022)
+- ADDED: Check on jump button for existing routes
+
 Version 7.1.49 (24.10.2022)
 - FIXED: Error if a chassis is not represented in the enmumeration (match statistics mwo)
 

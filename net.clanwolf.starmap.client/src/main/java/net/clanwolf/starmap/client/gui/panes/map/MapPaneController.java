@@ -270,6 +270,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 	@FXML
 	private void handleConfirmButtonClick() {
+
+		boolean somethingToSend = false;
+
 		// Store jumproutes
 		for (BOJumpship js : Nexus.getBoUniverse().jumpshipBOs.values()) {
 
@@ -280,6 +283,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					&& Nexus.getBoUniverse().routesList.get(js.getJumpshipId()) != null
 					&& Nexus.getBoUniverse().routesList.get(js.getJumpshipId()).size() > 1 // routepoint 1 is the starting system. if there is no second system in the route, this will fail
 					&& js.isAttackReady()) {
+
+				somethingToSend = true;
 
 				logger.info("Storing route to database");
 				ArrayList<RoutePointDTO> route = Nexus.getBoUniverse().routesList.get(js.getJumpshipId());
@@ -443,11 +448,18 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					transition.setToY(boUniverse.starSystemBOs.get(currentSystemID).getScreenY() - 8);
 //					transition.setOnFinished(event -> ActionManager.getAction(ACTIONS.SHOW_POPUP).execute(POPUPS.Orders_Confirmed));
 					transition.playFromStart();
+
 					ActionManager.getAction(ACTIONS.SHOW_POPUP).execute(POPUPS.Orders_Confirmed);
 				});
 			} else {
 				logger.info(js.getJumpshipName() + " is not attack ready, nothing happens.");
+				ActionManager.getAction(ACTIONS.SHOW_POPUP).execute(POPUPS.Orders_None);
 			}
+		}
+
+		if (!somethingToSend) {
+			// Warning the user that there were no routes stored!
+			logger.info("!!!!!! No routes to store, no orders have been sent !!!!!!");
 		}
 	}
 

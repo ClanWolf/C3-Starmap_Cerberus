@@ -2058,11 +2058,20 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 			case SHOW_POPUP:
 				if ((o != null) && (o.getObject() instanceof POPUPS)) {
-					// Integer id = ((POPUPS)o.getObject()).getId();
+					Integer id = ((POPUPS)o.getObject()).getId();
+					String colorCode = "green";
+					switch(id) {
+						case 1:
+							colorCode = "green";
+							break;
+						case 2:
+							colorCode = "orange";
+							break;
+					}
 					String imageName = o.getObject().toString();
 					String desc = Internationalization.getString("POPUPS_" + imageName + "_desc");
 					Image pop = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/gui/popups/" + imageName + ".png")));
-					showPopup(pop, desc);
+					showPopup(pop, desc, colorCode);
 				}
 				Platform.runLater(() -> {
 					paneVolumeControl.toFront();
@@ -2452,11 +2461,12 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	public void warningOffAction() {
 	}
 
-	private void showPopup(Image image, String desc) {
-		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("7");
-
-		popupPane = new C3PopupPane(image, desc);
+	private void showPopup(Image image, String desc, String colorCode) {
 		Platform.runLater(() -> {
+			ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("7");
+			mouseStopper.getChildren().remove(popupPane);
+
+			popupPane = new C3PopupPane(image, desc, colorCode);
 			Tools.playGUICreationSound();
 			mouseStopper.getChildren().add(popupPane);
 			popupPane.fadeIn();

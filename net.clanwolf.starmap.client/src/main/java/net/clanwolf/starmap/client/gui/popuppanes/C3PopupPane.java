@@ -49,10 +49,28 @@ public class C3PopupPane extends Pane {
 	private final Rectangle rectBorder;
 	private final ImageView view;
 
-	public C3PopupPane(Image image, String desc) {
+	public C3PopupPane(Image image, String desc, String colorCode) {
+
+		Color strokeColor;
+		Color fillColor;
+
+		switch (colorCode) {
+			case "green" -> {
+				strokeColor = Color.rgb(130, 170, 20, 1.0);
+				fillColor = Color.rgb(54, 75, 10, 0.95);
+			}
+			case "orange" -> {
+				strokeColor = Color.rgb(255, 187, 49, 1.0);
+				fillColor = Color.rgb(174, 73, 0, 0.85);
+			}
+			default -> { // green
+				strokeColor = Color.rgb(130, 170, 20, 1.0);
+				fillColor = Color.rgb(54, 75, 10, 0.95);
+			}
+		}
 
 		rectBorder = new Rectangle(600, 400);
-		rectBorder.setStroke(Color.rgb(130, 170, 20, 1.0));
+		rectBorder.setStroke(strokeColor);
 		rectBorder.setStrokeWidth(3.0);
 		rectBorder.setFill(Color.TRANSPARENT);
 		rectBorder.setOpacity(1.0);
@@ -63,7 +81,7 @@ public class C3PopupPane extends Pane {
 		rectBorder.setMouseTransparent(true);
 
 		rect = new Rectangle(100, 100);
-		rect.setFill(Color.rgb(54, 75, 10, 0.95));
+		rect.setFill(fillColor);
 
 		view = new ImageView();
 		view.setImage(image);
@@ -177,7 +195,7 @@ public class C3PopupPane extends Pane {
 	}
 
 	public void fadeOut() {
-		FadeTransition FadeOutTransition = new FadeTransition(Duration.millis(1500), this);
+		FadeTransition FadeOutTransition = new FadeTransition(Duration.millis(2500), this);
 		FadeOutTransition.setFromValue(1.0);
 		FadeOutTransition.setToValue(0.0);
 		FadeOutTransition.setCycleCount(1);
