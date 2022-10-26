@@ -19,17 +19,19 @@ if ($conn_clanwolf_ro->connect_error) {
 }
 
 $round = 0;
+$currentRoundStartDateTimeStamp = 0;
 
 $sql5 = "";
-$sql5 = $sql5 . "SELECT r.Round, r.Season from C3._HH_ROUND r where r.Season = 1 ";
+$sql5 = $sql5 . "SELECT r.Round, r.Season, r.CurrentRoundStartDate from C3._HH_ROUND r where r.Season = 1 ";
 
 $result5 = mysqli_query($conn_clanwolf_ro, $sql5);
 if (mysqli_num_rows($result5) > 0) {
 	while($row5 = mysqli_fetch_assoc($result5)) {
 		$round = $row5["Round"];
+		$currentRoundStartDateTimeStamp = $row5["CurrentRoundStartDate"];
 	}
 }
-echo " (R " . $round . ")</center><br>";
+echo "<center><div style='font-size:8px;'>S1 / R" . $round . " [-7h]</div></center><br>";
 
 $sql11 = "";
 $sql11 = $sql11 . "SELECT U.ID, U.UserName, US.IP, US.UserId, US.LoginTime, US.ClientVersion ";

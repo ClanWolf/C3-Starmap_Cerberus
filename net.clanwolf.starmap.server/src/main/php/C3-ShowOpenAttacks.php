@@ -72,7 +72,7 @@ if (mysqli_num_rows($result12) > 0) {
 
 		if ($winner == null) {
 			echo "<tr>";
-			echo "<td align='left' width='20%' " . $style . ">&nbsp;&nbsp;&nbsp;&nbsp;R " . $attackRound . "</td>";
+			echo "<td align='left' width='20%' " . $style . ">&nbsp;&nbsp;&nbsp;&nbsp;R" . $attackRound . "</td>";
 			echo "<td align='left' width='10%' " . $style . ">&nbsp;" . $icon . "</td>";
 			echo "<td align='left' width='10%' " . $style . ">&nbsp;&nbsp;" . $attackingFaction . "</td>";
 			echo "<td align='center' width='30%' " . $style . ">>></td>";
@@ -80,7 +80,7 @@ if (mysqli_num_rows($result12) > 0) {
 			echo "</tr>";
 		} else {
 			echo "<tr>";
-			echo "<td align='left' width='20%' " . $style . ">&nbsp;&nbsp;&nbsp;&nbsp;R " . $attackRound . "</td>";
+			echo "<td align='left' width='20%' " . $style . ">&nbsp;&nbsp;&nbsp;&nbsp;R" . $attackRound . "</td>";
 			echo "<td align='left' width='10%' " . $style . ">&nbsp;<img src='https://www.clanwolf.net/images/check_icon.png' width='8px'></td>";
 			echo "<td align='right' width='70%' colspan='3'" . $style . ">&nbsp;&nbsp;" . $starSystemName . "&nbsp;&nbsp;&nbsp;>>&nbsp;&nbsp;&nbsp;" . $starSystemFaction . "&nbsp;&nbsp;&nbsp;&nbsp;</td>";
 			echo "</tr>";

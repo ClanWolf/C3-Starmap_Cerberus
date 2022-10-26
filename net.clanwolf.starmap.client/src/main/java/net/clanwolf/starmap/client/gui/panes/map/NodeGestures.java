@@ -322,6 +322,7 @@ public class NodeGestures {
 		boUniverse.currentlyDraggedJumpship.getJumpshipImageView().toFront();
 
 		canvas.getChildren().add(boUniverse.currentlyDraggedJumpship.routeLines);
+		ActionManager.getAction(ACTIONS.ENABLE_JUMP_BUTTON).execute();
 	};
 
 	private final EventHandler<MouseDragEvent> onStarSystemDragExitedEventHandler = event -> {

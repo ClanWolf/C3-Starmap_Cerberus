@@ -268,6 +268,24 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		a.storeAttack();
 	}
 
+	private void checkForOrdersToSend() {
+		Platform.runLater(() -> {
+			boolean somethingToSend = false;
+
+			for (BOJumpship js : Nexus.getBoUniverse().jumpshipBOs.values()) {
+				if (js.getJumpshipFaction() == Nexus.getCurrentUser().getCurrentCharacter().getFactionId()
+						&& Nexus.getBoUniverse().routesList.get(js.getJumpshipId()) != null
+						&& Nexus.getBoUniverse().routesList.get(js.getJumpshipId()).size() > 1 // routepoint 1 is the starting system
+						&& js.isAttackReady()) {
+
+					somethingToSend = true;
+				}
+			}
+
+			mapButton01.setDisable(!somethingToSend);
+		});
+	}
+
 	@FXML
 	private void handleConfirmButtonClick() {
 
@@ -453,13 +471,13 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				});
 			} else {
 				logger.info(js.getJumpshipName() + " is not attack ready, nothing happens.");
-				ActionManager.getAction(ACTIONS.SHOW_POPUP).execute(POPUPS.Orders_None);
 			}
 		}
 
 		if (!somethingToSend) {
 			// Warning the user that there were no routes stored!
 			logger.info("!!!!!! No routes to store, no orders have been sent !!!!!!");
+			ActionManager.getAction(ACTIONS.SHOW_POPUP).execute(POPUPS.Orders_None);
 		}
 	}
 
@@ -1424,7 +1442,10 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		move.setOnFinished(event -> {
 			addMouseFilters();
 			boolean mayMoveJumpships = Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.FACTIONLEAD_MOVE_JUMPSHIP);
-			if (mayMoveJumpships) { mapButton01.setDisable(false); }
+			if (mayMoveJumpships) {
+				mapButton01.setDisable(false);
+				checkForOrdersToSend();
+			}
 			mapButton02.setDisable(false);
 			mapButton03.setDisable(false);
 			mapButton04.setDisable(false);
@@ -1475,7 +1496,10 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		seq.setOnFinished(event -> {
 			addMouseFilters();
 			boolean mayMoveJumpships = Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.FACTIONLEAD_MOVE_JUMPSHIP);
-			if (mayMoveJumpships) { mapButton01.setDisable(false); }
+			if (mayMoveJumpships) {
+				mapButton01.setDisable(false);
+				checkForOrdersToSend();
+			}
 			mapButton02.setDisable(false);
 			mapButton03.setDisable(false);
 			mapButton04.setDisable(false);
@@ -1686,6 +1710,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		ActionManager.addActionCallbackListener(ACTIONS.SHOW_FORBIDDEN_ICON_MAP, this);
 		ActionManager.addActionCallbackListener(ACTIONS.UPDATE_GAME_INFO, this);
 		ActionManager.addActionCallbackListener(ACTIONS.UPDATE_ROUND_COUNTDOWN, this);
+		ActionManager.addActionCallbackListener(ACTIONS.ENABLE_JUMP_BUTTON, this);
 	}
 
 	/**
@@ -1982,6 +2007,10 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 //						mapButton06.setDisable(false);
 //					}
 //				}
+				break;
+
+			case ENABLE_JUMP_BUTTON:
+				checkForOrdersToSend();
 				break;
 
 			default:
