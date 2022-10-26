@@ -1,7 +1,7 @@
 C3 version history
 --------------------------------
 
-Version 7.1.51 (26.10.2022)
+Version 7.1.52 (27.10.2022)
 - ADDED: Check on jump button for existing routes
 
 Version 7.1.49 (24.10.2022)

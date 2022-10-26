@@ -74,7 +74,7 @@ if (mysqli_num_rows($result12) > 0) {
 			echo "<tr>";
 			echo "<td align='left' width='20%' " . $style . ">&nbsp;&nbsp;&nbsp;&nbsp;R" . $attackRound . "</td>";
 			echo "<td align='left' width='10%' " . $style . ">&nbsp;" . $icon . "</td>";
-			echo "<td align='left' width='10%' " . $style . ">&nbsp;&nbsp;" . $attackingFaction . "</td>";
+			echo "<td align='left' width='10%' " . $style . " title='" . $jumpshipName . "'>&nbsp;&nbsp;" . $attackingFaction . "</td>";
 			echo "<td align='center' width='30%' " . $style . ">>></td>";
 			echo "<td align='right' width='30%' " . $style . ">" . $starSystemName . " [" . $starSystemFaction . "]&nbsp;&nbsp;&nbsp;&nbsp;</td>";
 			echo "</tr>";

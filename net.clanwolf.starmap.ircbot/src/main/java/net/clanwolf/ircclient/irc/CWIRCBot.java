@@ -345,7 +345,7 @@ public class CWIRCBot extends ListenerAdapter {
 			dbc = new DBConnection();
 		}
 		if (!dbc.connected()) {
-			send(Internationalization.getString("sbConnectError"));                                        // [e004]
+			send(Internationalization.getString("dbConnectError"));                                        // [e004]
 		} else {
 			send(Internationalization.getString("dbConnected"));                                           // [i001]
 		}

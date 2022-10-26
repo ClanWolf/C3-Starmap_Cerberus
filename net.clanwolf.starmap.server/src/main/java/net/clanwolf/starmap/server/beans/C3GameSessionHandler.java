@@ -36,6 +36,7 @@ import io.nadron.service.GameStateManagerService;
 import net.clanwolf.client.mail.MailManager;
 import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.server.GameServer;
+import net.clanwolf.starmap.server.util.ForumDatabaseTools;
 import net.clanwolf.starmap.transfer.dtos.*;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 import org.slf4j.Logger;
@@ -467,6 +468,10 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 //			JumpshipPOJO jsHelp =daoJJ.findById(getC3UserID(session), attack.getJumpshipID());
 //			daoJJ.refresh(getC3UserID(session), jsHelp);
+
+			// Create forum thread for this attack
+			ForumDatabaseTools t = new ForumDatabaseTools();
+			t.createNewAttackEntries(1L, 29L, "Terra", "LA", "CW");
 
 			GameState response = new GameState(GAMESTATEMODES.ATTACK_SAVE_RESPONSE);
 			response.addObject(attack);

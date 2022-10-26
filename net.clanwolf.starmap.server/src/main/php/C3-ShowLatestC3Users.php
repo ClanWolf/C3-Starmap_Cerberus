@@ -31,7 +31,7 @@ if (mysqli_num_rows($result5) > 0) {
 		$currentRoundStartDateTimeStamp = $row5["CurrentRoundStartDate"];
 	}
 }
-echo "<center><div style='font-size:8px;'>S1 / R" . $round . " [-7h]</div></center><br>";
+echo "<center><div style='font-size:10px;'>S1 / R" . $round . " [-7h]</div></center><br>";
 
 $sql11 = "";
 $sql11 = $sql11 . "SELECT U.ID, U.UserName, US.IP, US.UserId, US.LoginTime, US.ClientVersion ";
