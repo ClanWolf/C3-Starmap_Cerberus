@@ -100,7 +100,7 @@ public class ForumDatabaseTools {
 		sql += "INSERT INTO cwfusion_threads ";
 		sql += "(forum_id, site_id, thread_subject, thread_author, thread_views, thread_lastpost_id, thread_lastpost, thread_lastpost_snippet, thread_lastuser, thread_sticky, thread_locked, thread_replies) ";
 		sql += "values ";
-		sql += "(65, 1, 'Angriff auf " + system + " (" + defender + ")', 702, 1, 1, '" + unixTime + "', 'Training $training_calendarweek ($training_modul)', 702, 0, 0, 0)";
+		sql += "(65, 1, '[C3] Angriff auf " + system + " (" + defender + ")', 702, 1, 1, '" + unixTime + "', '[C3] Angriff auf " + system + "', 702, 0, 0, 0)";
 		long id1 = insert(sql);
 
 		// Post
@@ -108,7 +108,7 @@ public class ForumDatabaseTools {
 		sql += "INSERT INTO cwfusion_posts ";
 		sql += "(forum_id, thread_id, site_id, post_subject, post_message, post_showsig, post_smileys, post_author, post_datestamp, post_ip, post_edituser, post_edittime) ";
 		sql += "values ";
-		sql += "(65, " + id1 + ", 1, 'Angriff auf " + system + " (" + defender  + ")', '" + text + "', 0, 0, 702, '" + unixTime + "', '0.0.0.0', 0, 0)";
+		sql += "(65, " + id1 + ", 1, '[C3] Angriff auf " + system + " (" + defender  + ")', '" + text + "', 0, 0, 702, '" + unixTime + "', '0.0.0.0', 0, 0)";
 		insert(sql);
 	}
 }
