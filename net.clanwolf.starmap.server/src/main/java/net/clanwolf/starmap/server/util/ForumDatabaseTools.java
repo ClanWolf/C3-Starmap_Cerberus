@@ -65,9 +65,9 @@ public class ForumDatabaseTools {
 			String password = auth.getProperty("password");
 
 			Class.forName("com.mysql.jdbc.Driver");
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/clanwolf",user,password);
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/clanwolf", user, password);
 			Statement stmt = con.createStatement();
-			stmt.executeUpdate(sql);
+			stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
 
 			try (ResultSet generatedKeys = stmt.getGeneratedKeys()) {
 				if (generatedKeys.next()) {

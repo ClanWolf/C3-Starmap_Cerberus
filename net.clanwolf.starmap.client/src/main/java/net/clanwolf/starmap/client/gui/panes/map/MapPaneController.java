@@ -28,7 +28,6 @@ package net.clanwolf.starmap.client.gui.panes.map;
 
 import javafx.animation.*;
 import javafx.application.Platform;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.CacheHint;
@@ -36,7 +35,6 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseDragEvent;
@@ -80,12 +78,9 @@ import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.transfer.dtos.*;
-import net.clanwolf.starmap.transfer.enums.MEDALS;
 import net.clanwolf.starmap.transfer.enums.POPUPS;
 import org.kynosarges.tektosyne.geometry.PointD;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.lang.invoke.MethodHandles;
 import java.net.URL;
 import java.util.*;
@@ -276,7 +271,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				if (js.getJumpshipFaction() == Nexus.getCurrentUser().getCurrentCharacter().getFactionId()
 						&& Nexus.getBoUniverse().routesList.get(js.getJumpshipId()) != null
 						&& Nexus.getBoUniverse().routesList.get(js.getJumpshipId()).size() > 1 // routepoint 1 is the starting system
-						&& js.isAttackReady()) {
+						&& js.isAttackReady()
+						&& Nexus.getBoUniverse().currentlyDraggedJumpship != null) {
 
 					somethingToSend = true;
 				}
@@ -300,7 +296,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			if (js.getJumpshipFaction() == Nexus.getCurrentUser().getCurrentCharacter().getFactionId()
 					&& Nexus.getBoUniverse().routesList.get(js.getJumpshipId()) != null
 					&& Nexus.getBoUniverse().routesList.get(js.getJumpshipId()).size() > 1 // routepoint 1 is the starting system. if there is no second system in the route, this will fail
-					&& js.isAttackReady()) {
+					&& js.isAttackReady()
+					&& Nexus.getBoUniverse().currentlyDraggedJumpship != null) {
 
 				somethingToSend = true;
 

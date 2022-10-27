@@ -20,18 +20,20 @@ if ($conn_clanwolf_ro->connect_error) {
 
 $round = 0;
 $currentRoundStartDateTimeStamp = 0;
+$tsNow = strtotime("now");
 
 $sql5 = "";
-$sql5 = $sql5 . "SELECT r.Round, r.Season, r.CurrentRoundStartDate from C3._HH_ROUND r where r.Season = 1 ";
+$sql5 = $sql5 . "SELECT r.Round, r.Season, r.CurrentRoundStartDate, r.Updated from C3._HH_ROUND r where r.Season = 1 ";
 
 $result5 = mysqli_query($conn_clanwolf_ro, $sql5);
 if (mysqli_num_rows($result5) > 0) {
 	while($row5 = mysqli_fetch_assoc($result5)) {
 		$round = $row5["Round"];
-		$currentRoundStartDateTimeStamp = $row5["CurrentRoundStartDate"];
+		$currentRoundStartDateTimeStamp = $row5["Updated"];
 	}
 }
-echo "<center><div style='font-size:10px;'>S1 / R" . $round . " [-7h]</div></center><br>";
+$hoursLeft = 84 - floor(($tsNow - strtotime($currentRoundStartDateTimeStamp)) / (60 * 60));
+echo "<center><div style='font-size:10px;'>S1 / R" . $round . " [-".$hoursLeft."h]</div></center><br>";
 
 $sql11 = "";
 $sql11 = $sql11 . "SELECT U.ID, U.UserName, US.IP, US.UserId, US.LoginTime, US.ClientVersion ";
@@ -40,7 +42,6 @@ $sql11 = $sql11 . "ORDER BY LoginTime DESC ";
 $sql11 = $sql11 . "LIMIT 5 ";
 
 $result11 = mysqli_query($conn_clanwolf_ro, $sql11);
-$tsNow = strtotime("now");
 if (mysqli_num_rows($result11) > 0) {
 	echo "<table width=100% cellspacing=0 cellpadding=0>";
 	while($row = mysqli_fetch_assoc($result11)) {
