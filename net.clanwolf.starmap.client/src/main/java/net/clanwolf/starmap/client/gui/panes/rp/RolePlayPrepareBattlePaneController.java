@@ -473,7 +473,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 				&& !"...".equals(lvDropleadDefender.getItems().get(0).getName())
 				&& attackerCount >= Constants.MINIMUM_PILOTS_PER_SIDE_IN_INVASION_DROP - 1 // Check the minimum number of fighting pilots, may be disabled for testing, -1 because of the droplead
 				&& defenderCount >= Constants.MINIMUM_PILOTS_PER_SIDE_IN_INVASION_DROP - 1 // Check the minimum number of fighting pilots, may be disabled for testing, -1 because of the droplead
-				&& attackerCount == defenderCount
+				// && attackerCount == defenderCount
 				&& allOnline
 		) {
 			// Enable "continue"

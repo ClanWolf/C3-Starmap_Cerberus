@@ -57,6 +57,30 @@ public class ForumDatabaseTools {
 		}
 	}
 
+	private Long selectLong(String sql, String columnName) {
+		long number = -1;
+		try {
+			String user = auth.getProperty("user");
+			String password = auth.getProperty("password");
+
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/clanwolf", user, password);
+			Statement stmt = con.createStatement();
+			ResultSet resultSet = stmt.executeQuery(sql);
+
+			while (resultSet.next()) {
+				number = resultSet.getLong(columnName);
+			}
+
+			stmt.close();
+			con.close();
+		} catch(Exception e) {
+			logger.error("Exception while direct db access", e);
+		}
+
+		return number;
+	}
+
 	private long insert(String sql) {
 		long generatedId = -1L;
 
@@ -84,8 +108,26 @@ public class ForumDatabaseTools {
 		return generatedId;
 	}
 
-	public void createNewAttackEntries(Long season, Long round, String system, String attacker, String defender) {
+	private void update(String sql) {
+		try {
+			String user = auth.getProperty("user");
+			String password = auth.getProperty("password");
+
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/clanwolf", user, password);
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate(sql);
+
+			stmt.close();
+			con.close();
+		} catch(Exception e) {
+			logger.error("Exception while direct db access", e);
+		}
+	}
+
+	public void createNewAttackEntries(Long season, Long round, String system, String attacker, String defender, Long attackType, Long attackId) {
 		String sql = "";
+		String attackThreadUrl = "";
 
 		// Forum-ID: 65
 		// "ClanWolf Netzwerk > Rollenspiel ->> C3 / HammerHead - Season 1"
@@ -99,22 +141,87 @@ public class ForumDatabaseTools {
 		sql = "";
 		sql += "INSERT INTO cwfusion_threads ";
 		sql += "(forum_id, site_id, thread_subject, thread_author, thread_views, thread_lastpost_id, thread_lastpost, thread_lastpost_snippet, thread_lastuser, thread_sticky, thread_locked, thread_replies) ";
-		sql += "values ";
-		sql += "(65, 1, '[C3] Angriff auf " + system + " (" + defender + ")', 702, 1, 1, '" + unixTime + "', '[C3] Angriff auf " + system + "', 702, 0, 0, 0)";
+		sql += "VALUES ";
+		sql += "(65, 1, '[C3] Angriff auf " + system + " (" + defender + ")', 702, 1, 1, '" + unixTime + "', '[C3] Angriff auf " + system + "', 702, 0, 0, 0) ";
 		long threadId = insert(sql);
+
+		attackThreadUrl = "https://www.clanwolf.net/forum/viewthread.php?thread_id=" + threadId;
 
 		// Post
 		sql = "";
 		sql += "INSERT INTO cwfusion_posts ";
 		sql += "(forum_id, thread_id, site_id, post_subject, post_message, post_showsig, post_smileys, post_author, post_datestamp, post_ip, post_edituser, post_edittime) ";
-		sql += "values ";
-		sql += "(65, " + threadId + ", 1, '[C3] Angriff auf " + system + " (" + defender  + ")', '" + text + "', 0, 0, 702, '" + unixTime + "', '0.0.0.0', 0, 0)";
+		sql += "VALUES ";
+		sql += "(65, " + threadId + ", 1, '[C3] Angriff auf " + system + " (" + defender  + ")', '" + text + "', 0, 0, 702, '" + unixTime + "', '0.0.0.0', 0, 0) ";
 		long postId = insert(sql);
 
-		// cwfusion_forums ->
-		// forum_lastpost, forum_lastuser, forum_threads, forum_posts, forum_lastthread
+		// Get Postcount
+		sql = "";
+		sql += "SELECT forum_posts ";
+		sql += "FROM cwfusion_forums ";
+		sql += "WHERE forum_id=65 ";
+		long postCount = selectLong(sql, "forum_posts") + 1;
 
-		// cwfusion_threads ->
-		// thread_lastpost_id
+		// Get Threadcount
+		sql = "";
+		sql += "SELECT forum_threads ";
+		sql += "FROM cwfusion_forums ";
+		sql += "WHERE forum_id=65 ";
+		long threadCount = selectLong(sql, "forum_threads") + 1;
+
+		// Forums
+		sql = "";
+		sql += "UPDATE cwfusion_forums ";
+		sql += "SET forum_lastpost=" + postId + ", forum_lastuser=702, forum_threads=" + threadCount + ", forum_posts=" + postCount + ", forum_lastthread=" + threadId + " ";
+		sql += "WHERE forum_id=65 ";
+		update(sql);
+
+		// Threads
+		sql = "";
+		sql += "UPDATE cwfusion_threads ";
+		sql += "SET thread_lastpost_id=" + postId + " ";
+		sql += "WHERE thread_id= " + threadId;
+		update(sql);
+
+		// Update attack and add threadlink
+		sql = "";
+		sql += "UPDATE C3._HH_ATTACK ";
+		sql += "SET ForumThreadLink='" + attackThreadUrl + "' ";
+		sql += "WHERE ID= " + attackId;
+		update(sql);
+
+		// 1: Clan vs IS
+		// 2: Clan vs Clan
+		// 3: IS vs Clan
+		// 4: IS vs IS
+		logger.info("--------------------------------------------------------- AttackType: " + attackType);
+		String image = "";
+		if (attackType != null) {
+			 image = switch (attackType.intValue()) {
+				case 1 -> "https://www.clanwolf.net/images/C3_RP_Header_01.png";
+				case 2 -> "https://www.clanwolf.net/images/C3_RP_Header_01.png";
+				case 3 -> "https://www.clanwolf.net/images/C3_RP_Header_01.png";
+				case 4 -> "https://www.clanwolf.net/images/C3_RP_Header_01.png";
+				default -> "";
+			};
+		} else {
+			image = "https://www.clanwolf.net/images/C3_RP_Header_01.png";
+		}
+
+		// Roleplay thread
+		sql = "";
+		sql += "INSERT INTO codax_W7_RP_threads ";
+		sql += "(threadid, title, imagelink, closed) ";
+		sql += "VALUES ";
+		sql += "(" + threadId + ", '[C3] Angriff auf " + system + " (" + defender  + ")', '" + image + "', 0) ";
+		insert(sql);
+
+		// Ticker
+//		sql = "";
+//		sql += "INSERT INTO clanwolf_ticker ";
+//		sql += "(tickernumber, tickermessage, tickerurl, tickertarget) ";
+//		sql += "VALUES ";
+//		sql += "(" + threadId + ", '[C3] Angriff auf " + system + " (" + defender  + ")', '" + image + "', 0) ";
+//		insert(sql);
 	}
 }

@@ -337,6 +337,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		AttackCharacterDAO daoAC = AttackCharacterDAO.getInstance();
 		StarSystemDataDAO daoSS = StarSystemDataDAO.getInstance();
 		JumpshipDAO daoJJ = JumpshipDAO.getInstance();
+		Long attackType = null;
 
 		try {
 			EntityManagerHelper.beginTransaction(getC3UserID(session));
@@ -350,6 +351,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			logger.info("-- Attacked system: " + attack.getStarSystemID());
 
 			StarSystemDataPOJO s = StarSystemDataDAO.getInstance().findById(getC3UserID(session), attack.getStarSystemDataID());
+			StarSystemPOJO starSystem = StarSystemDAO.getInstance().findById(getC3UserID(session), attack.getStarSystemID());
 			s.setLockedUntilRound(attack.getRound() + Constants.ROUNDS_TO_LOCK_SYSTEM_AFTER_ATTACK);
 			daoSS.update(getC3UserID(session), s);
 
@@ -358,6 +360,12 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				newAttackCharacters.addAll(attack.getAttackCharList());
 				attack.getAttackCharList().clear();
 			}
+
+			// -1L: Clan vs IS
+			// -2L: Clan vs Clan
+			// -3L: IS vs Clan
+			// -4L: IS vs IS
+			attackType = (Long) state.getObject2();
 
 			RolePlayStoryPOJO rpPojo = null;
 			Long attackerCommanderNextStoryId = null;
@@ -398,13 +406,6 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				}
 				attack.setStoryID(rpPojo.getId());
 			} else {
-
-				Long attackType = (Long) state.getObject2();
-				// -1L: Clan vs IS
-				// -2L: Clan vs Clan
-				// -3L: IS vs Clan
-				// -4L: IS vs IS
-
 				AttackTypesPOJO at = AttackTypesDAO.getInstance().findByShortName(getC3UserID(session), "PA");
 				Long rpID = null;
 				if (attackType.equals(-1L)) {
@@ -471,7 +472,17 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 			// Create forum thread for this attack
 			ForumDatabaseTools t = new ForumDatabaseTools();
-			t.createNewAttackEntries(1L, 29L, "Terra", "LA", "CW");
+			long season = attack.getSeason();
+			long round = attack.getRound();
+
+			// -1L: Clan vs IS
+			// -2L: Clan vs Clan
+			// -3L: IS vs Clan
+			// -4L: IS vs IS
+			JumpshipPOJO attackerJumpship = JumpshipDAO.getInstance().findById(getC3UserID(session), attack.getJumpshipID());
+			FactionPOJO defender = FactionDAO.getInstance().findById(getC3UserID(session), attack.getFactionID_Defender());
+			FactionPOJO attacker = FactionDAO.getInstance().findById(getC3UserID(session), attackerJumpship.getJumpshipFactionID());
+			t.createNewAttackEntries(season, round, starSystem.getName(), attacker.getShortName(), defender.getShortName(), attackType, attack.getId());
 
 			GameState response = new GameState(GAMESTATEMODES.ATTACK_SAVE_RESPONSE);
 			response.addObject(attack);
