@@ -31,7 +31,7 @@ if (mysqli_num_rows($result5) > 0) {
 }
 
 $sql12 = "";
-$sql12 = $sql12 . "select ha.Season, ha.Round, ha.JumpshipID, ha.FactionID_Winner, hj.JumpshipName, hj.JumpshipFactionID, ss.Name, f.ShortName ";
+$sql12 = $sql12 . "select ha.Season, ha.Round, ha.JumpshipID, ha.FactionID_Winner, ha.ForumThreadLink, hj.JumpshipName, hj.JumpshipFactionID, ss.Name, f.ShortName ";
 $sql12 = $sql12 . "from C3._HH_ATTACK ha, C3.STARSYSTEM ss, C3._HH_STARSYSTEMDATA ssd, C3.FACTION f, C3._HH_JUMPSHIP hj ";
 $sql12 = $sql12 . "where ss.ID = ha.StarSystemID ";
 $sql12 = $sql12 . "and ssd.StarSystemID = ss.ID ";
@@ -54,6 +54,7 @@ if (mysqli_num_rows($result12) > 0) {
 		$starSystemFaction = $row["ShortName"];
 		$winner = $row["FactionID_Winner"];
 		$attackingFaction = "?";
+		$threadLink = $row["ForumThreadLink"];
 
 		$sql14 = "select f.ShortName from C3.FACTION f where f.ID = " . $jumpshipFactionID;
 		$result14 = mysqli_query($conn_clanwolf_ro, $sql14);
@@ -76,13 +77,21 @@ if (mysqli_num_rows($result12) > 0) {
 			echo "<td align='left' width='10%' " . $style . ">&nbsp;" . $icon . "</td>";
 			echo "<td align='left' width='10%' " . $style . " title='" . $jumpshipName . "'>&nbsp;&nbsp;" . $attackingFaction . "</td>";
 			echo "<td align='center' width='30%' " . $style . ">>></td>";
-			echo "<td align='right' width='30%' " . $style . ">" . $starSystemName . " [" . $starSystemFaction . "]&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+			if (is_null($threadLink)) {
+				echo "<td align='right' width='30%' " . $style . ">" . $starSystemName . " [" . $starSystemFaction . "]&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+			} else {
+				echo "<td align='right' width='30%' " . $style . "><a href='" . $threadLink . "'>" . $starSystemName . "</a> [" . $starSystemFaction . "]&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+			}
 			echo "</tr>";
 		} else {
 			echo "<tr>";
 			echo "<td align='left' width='20%' " . $style . ">&nbsp;&nbsp;&nbsp;&nbsp;R" . $attackRound . "</td>";
 			echo "<td align='left' width='10%' " . $style . ">&nbsp;<img src='https://www.clanwolf.net/images/check_icon.png' width='8px'></td>";
-			echo "<td align='right' width='70%' colspan='3'" . $style . ">&nbsp;&nbsp;" . $starSystemName . "&nbsp;&nbsp;&nbsp;>>&nbsp;&nbsp;&nbsp;" . $starSystemFaction . "&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+			if (is_null($threadLink)) {
+				echo "<td align='right' width='70%' colspan='3'" . $style . ">&nbsp;&nbsp;" . $starSystemName . "&nbsp;&nbsp;&nbsp;>>&nbsp;&nbsp;&nbsp;" . $starSystemFaction . "&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+			} else {
+				echo "<td align='right' width='70%' colspan='3'" . $style . ">&nbsp;&nbsp;<a href='" . $threadLink . "'>" . $starSystemName . "</a>&nbsp;&nbsp;&nbsp;>>&nbsp;&nbsp;&nbsp;" . $starSystemFaction . "&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+			}
 			echo "</tr>";
 		}
 	}

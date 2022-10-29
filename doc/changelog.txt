@@ -1,7 +1,7 @@
 C3 version history
 --------------------------------
 
-Version 7.1.58 (28.10.2022)
+Version 7.1.67 (29.10.2022)
 - FIXED: Creating of forum threads
 
 Version 7.1.53 (27.10.2022)
