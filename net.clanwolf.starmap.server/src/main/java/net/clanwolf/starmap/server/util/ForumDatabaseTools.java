@@ -140,11 +140,11 @@ public class ForumDatabaseTools {
 		String subject = "[C3] " + attacker + " greift " + system + " (" + defender + ") an";
 		String text = "";
 		text += "<table width=\"100%\"><tr><td align=\"left\"><img src=\"https://www.clanwolf.net/images/Logos/JadeFalcon.png\" width=\"70px\"></td><td align=\"center\" valign=\"top\">[b][size=12][color=#ffcc00]System:[/color][/size]<br>[size=24][color=#ffcc00]Rasalgethi[/color][/size][/b]</td><td align=\"right\"><img src=\"https://www.clanwolf.net/images/Logos/LyranCommonwealth.png\" width=\"70px\"></td></tr></table>";
-		text += "Season: " + season;
-		text += "Runde: " + round;
-		text += "Angreifer: " + attacker;
-		text += "Verteidiger: " + defender;
-		text += "Typ: Planetare Invasion";
+		text += "Season: " + season + "<br>";
+		text += "Runde: " + round + "<br>";
+		text += "Angreifer: " + attacker + "<br>";
+		text += "Verteidiger: " + defender + "<br>";
+		text += "Typ: Planetare Invasion" + "<br>";
 		text += "<br>";
 
 		// -1: Clan vs IS
@@ -153,16 +153,16 @@ public class ForumDatabaseTools {
 		// -4: IS vs IS
 		if (attackType != null) {
 			text += switch (attackType.intValue()) {
-				case -1 -> "Der Clan befindet sich im Anflug auf " + system + ". Während des Anflugs wird das Batchall übertragen...";
-				case -2 -> "Der Clan befindet sich im Anflug auf " + system + ". Während des Anflugs wird das Batchall übertragen...";
-				case -3 -> "Die Streitkräfte der Invasoren fliegen zur Hauptwelt des Systems. Sie werden bereits erwartet.";
-				case -4 -> "Die angreifenden Kräfte werden sehr bald auf dem Planeten landen. Eine Verteidigung wird bereits organisiert.";
+				case -1 -> "Der Clan befindet sich im Anflug auf " + system + ". Während des Anflugs wird das Batchall übertragen..." + "<br>";
+				case -2 -> "Der Clan befindet sich im Anflug auf " + system + ". Während des Anflugs wird das Batchall übertragen..." + "<br>";
+				case -3 -> "Die Streitkräfte der Invasoren fliegen zur Hauptwelt des Systems. Sie werden bereits erwartet." + "<br>";
+				case -4 -> "Die angreifenden Kräfte werden sehr bald auf dem Planeten landen. Eine Verteidigung wird bereits organisiert." + "<br>";
 				default -> "FEHLER: Angriffstyp ist leer!";
 			};
 		} else {
-			text += "FEHLER: Angriffstyp ist leer!";
+			text += "FEHLER: Angriffstyp ist leer!" + "<br>";
 		}
-		text += "footer";
+		text += "footer" + "<br>";
 
 		// -------------------------------------------------------------------------------------------------------------
 
