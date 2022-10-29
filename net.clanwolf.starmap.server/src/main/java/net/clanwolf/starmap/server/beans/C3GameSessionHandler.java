@@ -482,7 +482,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			JumpshipPOJO attackerJumpship = JumpshipDAO.getInstance().findById(getC3UserID(session), attack.getJumpshipID());
 			FactionPOJO defender = FactionDAO.getInstance().findById(getC3UserID(session), attack.getFactionID_Defender());
 			FactionPOJO attacker = FactionDAO.getInstance().findById(getC3UserID(session), attackerJumpship.getJumpshipFactionID());
-			t.createNewAttackEntries(season, round, starSystem.getName(), attacker.getShortName(), defender.getShortName(), attackType, attack.getId());
+			t.createNewAttackEntries(season, round, starSystem.getName(), attacker.getShortName(), defender.getShortName(), attackType, attack.getId(), starSystem.getSystemImageName());
 
 			GameState response = new GameState(GAMESTATEMODES.ATTACK_SAVE_RESPONSE);
 			response.addObject(attack);

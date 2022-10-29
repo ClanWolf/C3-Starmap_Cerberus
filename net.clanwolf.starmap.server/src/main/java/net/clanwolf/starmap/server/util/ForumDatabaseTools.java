@@ -125,7 +125,7 @@ public class ForumDatabaseTools {
 		}
 	}
 
-	public void createNewAttackEntries(Long season, Long round, String system, String attacker, String defender, Long attackType, Long attackId) {
+	public void createNewAttackEntries(Long season, Long round, String system, String attacker, String defender, Long attackType, Long attackId, String systemImageName) {
 		String sql = "";
 		String attackThreadUrl = "";
 
@@ -137,15 +137,35 @@ public class ForumDatabaseTools {
 
 		// -------------------------------------------------------------------------------------------------------------
 
+		String attackerLogoLink = "https://www.clanwolf.net/apps/C3/static/logos/factions/" + attacker + ".png";
+		String defenderLogoLink = "https://www.clanwolf.net/apps/C3/static/logos/factions/" + defender + ".png";
+		if (systemImageName.length() == 2) {
+			systemImageName = "0" + systemImageName;
+		} else if (systemImageName.length() == 1) {
+			systemImageName = "00" + systemImageName;
+		}
+		String planetImage = "https://www.clanwolf.net/apps/C3/static/planets/" + systemImageName + ".png";
+
 		String subject = "[C3] " + attacker + " greift " + system + " (" + defender + ") an";
 		String text = "";
-		text += "<table width=\"100%\"><tr><td align=\"left\"><img src=\"https://www.clanwolf.net/images/Logos/JadeFalcon.png\" width=\"70px\"></td><td align=\"center\" valign=\"top\">[b][size=12][color=#ffcc00]System:[/color][/size]<br>[size=24][color=#ffcc00]Rasalgethi[/color][/size][/b]</td><td align=\"right\"><img src=\"https://www.clanwolf.net/images/Logos/LyranCommonwealth.png\" width=\"70px\"></td></tr></table>";
-		text += "Season: " + season + "<br>";
-		text += "Runde: " + round + "<br>";
-		text += "Angreifer: " + attacker + "<br>";
-		text += "Verteidiger: " + defender + "<br>";
-		text += "Typ: Planetare Invasion" + "<br>";
+
+		text += "<table width=\"100%\">";
+		text += "<tr>";
+		text += "<td align=\"right\"><img src=\"" + attackerLogoLink + "\" width=\"70px\"></td>";
+		text += "<td align=\"center\" valign=\"top\">[b][size=12][color=#ffcc00]System:[/color][/size]<br>[size=24][color=#ffcc00]" + system + "[/color][/size][/b]</td>";
+		text += "<td align=\"left\"><img src=\"" + defenderLogoLink + "\" width=\"70px\"></td>";
+		text += "</tr><tr><td colspan=\"3\" align=\"center\"><img src=\"" + planetImage + "\" width=\"90px\"></td></tr>";
+		text += "<tr><td></td><td width=\"40%\" align=\"center\">";
 		text += "<br>";
+		text += "<table cellspacing=\"1\" width=\"100%\">";
+		text += "<tr><td align=\"right\" width=\"50%\">Season:</td><td align=\"left\" width=\"50%\">" + season + "</td></tr>";
+		text += "<tr><td align=\"right\">Runde:</td><td align=\"left\">" + round + "</td></tr>";
+		text += "<tr><td align=\"right\">Angreifer:</td><td align=\"left\">" + attacker + "</td></tr>";
+		text += "<tr><td align=\"right\">Verteidiger:</td><td align=\"left\">" + defender + "</td></tr>";
+		text += "<tr><td align=\"right\">Typ:</td><td align=\"left\">Planetare Invasion</td></tr>";
+		text += "</table>";
+		text += "</td><td></td></tr>";
+		text += "<tr><td></td><td><br>[color=#ffcc00]";
 
 		// -1: Clan vs IS
 		// -2: Clan vs Clan
@@ -162,7 +182,7 @@ public class ForumDatabaseTools {
 		} else {
 			text += "FEHLER: Angriffstyp ist leer!" + "<br>";
 		}
-		text += "footer" + "<br>";
+		text += "[/color]<br><br><br></td><td></td></tr></table>";
 
 		// -------------------------------------------------------------------------------------------------------------
 

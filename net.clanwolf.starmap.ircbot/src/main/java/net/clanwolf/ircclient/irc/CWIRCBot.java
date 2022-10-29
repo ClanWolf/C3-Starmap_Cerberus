@@ -202,7 +202,9 @@ public class CWIRCBot extends ListenerAdapter {
 			ImmutableSortedSet<User> userList = channel.getAllUsers();
 			for (User user : userList) {
 				String userName = user.getNick();
-				userListString.append(userName).append("\r\n");
+				if (!"Q".equalsIgnoreCase(userName) && !"D".equalsIgnoreCase(userName) && !ircUserName.equalsIgnoreCase(userName)) {
+					userListString.append(userName).append("\r\n");
+				}
 			}
 
 			File f = new File(ircUserListFileName);
