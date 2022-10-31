@@ -37,6 +37,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.time.LocalDateTime;
 import java.util.Properties;
 
 public class ForumDatabaseTools {
@@ -125,7 +126,10 @@ public class ForumDatabaseTools {
 		}
 	}
 
-	public void createNewAttackEntries(Long season, Long round, String system, String attacker, String defender, Long attackType, Long attackId, String systemImageName) {
+	public void createNewAttackEntries(Long season, Long round, String system, String attacker, String defender, Long attackType, Long attackId,
+	                                   String systemImageName, String rank, String name, String unit, LocalDateTime startDate,
+	                                   String dropshipName
+	) {
 		String sql = "";
 		String attackThreadUrl = "";
 
@@ -188,22 +192,22 @@ public class ForumDatabaseTools {
 		// -4: IS vs IS
 		if (attackType != null) {
 			text += switch (attackType.intValue()) {
-				case -1 -> "Der Clan befindet sich im Anflug auf " + system + ". Während des Anflugs wird das Batchall übertragen..." + "<br>";
-				case -2 -> "Der Clan befindet sich im Anflug auf " + system + ". Während des Anflugs wird das Batchall übertragen..." + "<br>";
-				case -3 -> "Die Streitkräfte der Invasoren fliegen zur Hauptwelt des Systems. Sie werden bereits erwartet." + "<br>";
-				case -4 -> "Die angreifenden Kräfte werden sehr bald auf dem Planeten landen. Eine Verteidigung wird bereits organisiert." + "<br>";
+				case -1 -> "<i>" + system + "<br>Landungsschiff der Union-C-Klasse \"" + dropshipName + "\"<br>" + startDate + "</i><br><br>" + unit + "(" + attacker + ") befindet sich im Anflug auf " + system + ". Während des Anfluges wird das Batchall übertragen." + "<br>";
+				case -2 -> "<i>" + system + "<br>Landungsschiff der Union-C-Klasse \"" + dropshipName + "\"<br>" + startDate + "</i><br><br>" + unit + "(" + attacker + ") befindet sich im Anflug auf " + system + ". Während des Anfluges wird das Batchall übertragen." + "<br>";
+				case -3 -> "<i>" + system + "<br>Landungsschiff der Union-Klasse \"" + dropshipName + "\"<br>" + startDate + "</i><br><br>" + unit + "(" + attacker + ") ist auf dem Weg Hauptwelt des Systems. Sie werden bereits erwartet." + "<br>";
+				case -4 -> "<i>" + system + "<br>Landungsschiff der Union-Klasse \"" + dropshipName + "\"<br>" + startDate + "</i><br><br>" + unit + "(" + attacker + ") werden sehr bald auf dem Planeten landen. Eine Verteidigung wird bereits organisiert." + "<br>";
 				default -> "Landungsschiffe nähern sich " + system + "!";
 			};
 		} else {
 			text += "FEHLER: Angriffstyp ist leer!" + "<br>";
 		}
 
-		String image_url = "https://www.clanwolf.net/apps/C3/seasonhistory/S1/C3_S1_R" + round + "_map_history.png";
+		String image_url = "https://www.clanwolf.net/apps/C3/seasonhistory/S" + season + "/C3_S1_R" + round + "_map_history.png";
 		String image_url_alternative = "https://www.clanwolf.net/images/map.png";
 
 		text += "[/color]<br><br></td><td></td></tr></table>";
 		text += "<center>";
-		text += "<a href=\"https://www.clanwolf.net/apps/C3/seasonhistory/S1/starmap_frame.php\" target=\"_BLANK\">";
+		text += "<a href=\"https://www.clanwolf.net/apps/C3/seasonhistory/S" + season + "/starmap_frame.php\" target=\"_BLANK\">";
 		text += "<img src=\"" + image_url + "\" width=\"600px\" onError=\"this.src=&#39;" + image_url_alternative + "&#39;;this.style.width=&#39;25px&#39;;\">";
 		text += "</a>";
 		text += "</center>";

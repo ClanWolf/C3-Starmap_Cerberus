@@ -52,6 +52,12 @@ public class JumpshipPOJO extends Pojo {
 	@Column(name = "JumpshipName")
 	private String jumpshipName;
 
+	@Column(name = "UnitName")
+	private String unitName;
+
+	@Column(name = "DropshipNames")
+	private String dropshipNames;
+
 	@Column(name = "JumpshipFactionID")
 	private Long jumpshipFactionID;
 
@@ -99,6 +105,26 @@ public class JumpshipPOJO extends Pojo {
 	@SuppressWarnings("unused")
 	public void setJumpshipName(String jumpshipName) {
 		this.jumpshipName = jumpshipName;
+	}
+
+	@SuppressWarnings("unused")
+	public String getUnitName() {
+		return unitName;
+	}
+
+	@SuppressWarnings("unused")
+	public void setUnitName(String unitName) {
+		this.unitName = unitName;
+	}
+
+	@SuppressWarnings("unused")
+	public String getDropshipNames() {
+		return dropshipNames;
+	}
+
+	@SuppressWarnings("unused")
+	public void setDropshipNames(String dropshipNames) {
+		this.dropshipNames = dropshipNames;
 	}
 
 	@SuppressWarnings("unused")

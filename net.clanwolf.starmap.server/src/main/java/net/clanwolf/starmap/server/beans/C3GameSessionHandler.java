@@ -55,6 +55,7 @@ import net.clanwolf.starmap.transfer.util.Compressor;
 import java.lang.invoke.MethodHandles;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.Timer;
 
 import static net.clanwolf.starmap.constants.Constants.*;
@@ -482,7 +483,27 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			JumpshipPOJO attackerJumpship = JumpshipDAO.getInstance().findById(getC3UserID(session), attack.getJumpshipID());
 			FactionPOJO defender = FactionDAO.getInstance().findById(getC3UserID(session), attack.getFactionID_Defender());
 			FactionPOJO attacker = FactionDAO.getInstance().findById(getC3UserID(session), attackerJumpship.getJumpshipFactionID());
-			t.createNewAttackEntries(season, round, starSystem.getName(), attacker.getShortName(), defender.getShortName(), attackType, attack.getId(), starSystem.getSystemImageName());
+			RolePlayCharacterPOJO rpChar = RolePlayCharacterDAO.getInstance().findById(getC3UserID(session), attack.getCharacterID());
+
+			String[] dropships = attackerJumpship.getDropshipNames().split(",");
+			int rnd = new Random().nextInt(dropships.length);
+			String dropshipName = dropships[rnd].trim();
+
+			RoundPOJO roundPOJO = RoundDAO.getInstance().findById(getC3UserID(session), attack.getRound());
+					t.createNewAttackEntries(season,
+					round,
+					starSystem.getName(),
+					attacker.getShortName(),
+					defender.getShortName(),
+					attackType,
+					attack.getId(),
+					starSystem.getSystemImageName(),
+					rpChar.getRank(),
+					rpChar.getName(),
+					attackerJumpship.getUnitName(),
+					roundPOJO.getCurrentRoundStartDate(),
+					dropshipName
+			);
 
 			GameState response = new GameState(GAMESTATEMODES.ATTACK_SAVE_RESPONSE);
 			response.addObject(attack);
