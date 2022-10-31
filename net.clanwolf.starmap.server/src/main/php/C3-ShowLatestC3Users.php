@@ -41,10 +41,12 @@ $sql11 = $sql11 . "FROM C3.USER U, C3.USER_SESSION US WHERE U.ID = US.UserId ";
 $sql11 = $sql11 . "ORDER BY LoginTime DESC ";
 // $sql11 = $sql11 . "LIMIT 5 ";
 
+$minimumRowCount = 0;
 $result11 = mysqli_query($conn_clanwolf_ro, $sql11);
 if (mysqli_num_rows($result11) > 0) {
 	echo "<table width=100% cellspacing=0 cellpadding=0>";
 	while($row = mysqli_fetch_assoc($result11)) {
+		$minimumRowCount = $minimumRowCount + 1;
 		$timestamp = floor(($tsNow - strtotime($row["LoginTime"])) / 60);
 		$version = $row["ClientVersion"];
 		$IP = $row["IP"];
@@ -55,7 +57,9 @@ if (mysqli_num_rows($result11) > 0) {
 		if ($timestamp > (12 * 60) && $timestamp < (48 * 60)) { $timestamp = "<span style='color:#777;'>> 12h</span>"; }
 		if ($timestamp > (48 * 60)) {
 			$timestamp = "<span style='color:#777;'>> 2d</span>";
-			$show = 0;
+			if ($minimumRowCount > 2) {
+				$show = 0;
+			}
 		}
 
 		if ($show == 1) {

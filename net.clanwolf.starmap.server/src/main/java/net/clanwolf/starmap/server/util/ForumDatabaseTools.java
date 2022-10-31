@@ -158,11 +158,26 @@ public class ForumDatabaseTools {
 		text += "<tr><td></td><td width=\"40%\" align=\"center\">";
 		text += "<br>";
 		text += "<table cellspacing=\"1\" width=\"100%\">";
-		text += "<tr><td align=\"right\" width=\"50%\">Season:</td><td align=\"left\" width=\"50%\">" + season + "</td></tr>";
-		text += "<tr><td align=\"right\">Runde:</td><td align=\"left\">" + round + "</td></tr>";
-		text += "<tr><td align=\"right\">Angreifer:</td><td align=\"left\">" + attacker + "</td></tr>";
-		text += "<tr><td align=\"right\">Verteidiger:</td><td align=\"left\">" + defender + "</td></tr>";
-		text += "<tr><td align=\"right\">Typ:</td><td align=\"left\">Planetare Invasion</td></tr>";
+		text += "<tr><td align=\"right\" width=\"50%\">[color=#ffffff]Season:</td><td align=\"left\" width=\"50%\">[color=#ffffff]" + season + "[/color]</td></tr>";
+		text += "<tr><td align=\"right\">[color=#ffffff]Runde:[/color]</td><td align=\"left\">[color=#ffffff]" + round + "[/color]</td></tr>";
+		text += "<tr><td align=\"right\">[color=#ffffff]Angreifer:[/color]</td><td align=\"left\">[color=#ffffff]" + attacker + "[/color]</td></tr>";
+		text += "<tr><td align=\"right\">[color=#ffffff]Verteidiger:[/color]</td><td align=\"left\">[color=#ffffff]" + defender + "[/color]</td></tr>";
+
+		// -1: Clan vs IS
+		// -2: Clan vs Clan
+		// -3: IS vs Clan
+		// -4: IS vs IS
+		if (attackType != null) {
+			text += switch (attackType.intValue()) {
+				case -1 -> "<tr><td align=\"right\" valign=\"top\">[color=#ffffff]Typ:[/color]</td><td align=\"left\" valign=\"top\">[color=#ffffff]Planetare Invasion[/color]<br>(<a href=\"https://www.clanwolf.net/apps/C3/static/scenarios/CWG_S001_var01_v4-PlanetareInvasion_CLAN_vs_IS.png\" target=\"_BLANK\">Clan vs IS</a>)[/color]</td></tr>";
+				case -2 -> "<tr><td align=\"right\" valign=\"top\">[color=#ffffff]Typ:[/color]</td><td align=\"left\" valign=\"top\">[color=#ffffff]Planetare Invasion[/color]<br>(<a href=\"https://www.clanwolf.net/apps/C3/static/scenarios/CWG_S003_var01_v1-PlanetareInvasion_CLAN_vs_CLAN.png\" target=\"_BLANK\">Clan vs Clan)[/color]</td></tr>";
+				case -3 -> "<tr><td align=\"right\" valign=\"top\">[color=#ffffff]Typ:[/color]</td><td align=\"left\" valign=\"top\">[color=#ffffff]Planetare Invasion[/color]<br>(<a href=\"https://www.clanwolf.net/apps/C3/static/scenarios/CWG_S002_var01_v5-PlanetareInvasion_IS_vs_CLAN.png\" target=\"_BLANK\">IS vs Clan)[/color]</td></tr>";
+				case -4 -> "<tr><td align=\"right\" valign=\"top\">[color=#ffffff]Typ:[/color]</td><td align=\"left\" valign=\"top\">[color=#ffffff]Planetare Invasion[/color]<br>(<a href=\"https://www.clanwolf.net/apps/C3/static/scenarios/CWG_S004_var01_v1-PlanetareInvasion_IS_vs_IS.png\" target=\"_BLANK\">IS vs IS)[/color]</td></tr>";
+				default -> "<tr><td align=\"right\" valign=\"top\">[color=#ffffff]Typ:[/color]</td><td align=\"left\" valign=\"top\">[color=#ffffff]Planetare Invasion[/color]</td></tr>";
+			};
+		} else {
+			text += "FEHLER: Angriffstyp ist leer!" + "<br>";
+		}
 		text += "</table>";
 		text += "</td><td></td></tr>";
 		text += "<tr><td></td><td><br>[color=#ffcc00]";
@@ -177,12 +192,22 @@ public class ForumDatabaseTools {
 				case -2 -> "Der Clan befindet sich im Anflug auf " + system + ". Während des Anflugs wird das Batchall übertragen..." + "<br>";
 				case -3 -> "Die Streitkräfte der Invasoren fliegen zur Hauptwelt des Systems. Sie werden bereits erwartet." + "<br>";
 				case -4 -> "Die angreifenden Kräfte werden sehr bald auf dem Planeten landen. Eine Verteidigung wird bereits organisiert." + "<br>";
-				default -> "FEHLER: Angriffstyp ist leer!";
+				default -> "Landungsschiffe nähern sich " + system + "!";
 			};
 		} else {
 			text += "FEHLER: Angriffstyp ist leer!" + "<br>";
 		}
-		text += "[/color]<br><br><br></td><td></td></tr></table>";
+
+		String image_url = "https://www.clanwolf.net/apps/C3/seasonhistory/S1/C3_S1_R" + round + "_map_history.png";
+		String image_url_alternative = "https://www.clanwolf.net/images/map.png";
+
+		text += "[/color]<br><br></td><td></td></tr></table>";
+		text += "<center>";
+		text += "<a href=\"https://www.clanwolf.net/apps/C3/seasonhistory/S1/starmap_frame.php\" target=\"_BLANK\">";
+		text += "<img src=\"" + image_url + "\" width=\"600px\" onError=\"this.src=&#39;" + image_url_alternative + "&#39;;this.style.width=&#39;25px&#39;;\">";
+		text += "</a>";
+		text += "</center>";
+		text += "<br><br>";
 
 		// -------------------------------------------------------------------------------------------------------------
 

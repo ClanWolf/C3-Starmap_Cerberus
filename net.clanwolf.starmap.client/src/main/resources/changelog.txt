@@ -1,6 +1,9 @@
 C3 version history
 --------------------------------
 
+Version 7.1.76 (30.10.2022)
+- CHANGED: Fixes to the forum entries
+
 Version 7.1.69 (29.10.2022)
 - FIXED: Display of IRC userlist (removed Ulric, Q and D)
 - FIXED: Content of attack forum posts

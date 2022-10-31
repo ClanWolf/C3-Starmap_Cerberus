@@ -97,7 +97,7 @@ if (mysqli_num_rows($result12) > 0) {
 	}
 	echo "</table>";
 } else {
-	echo "No data...";
+	echo "<p style='font-size:10px;'>&nbsp;&nbsp;&nbsp;&nbsp;Keine Angriffe...</p>";
 }
 
 ?>
