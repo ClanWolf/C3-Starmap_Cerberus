@@ -37,7 +37,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Properties;
 
 public class ForumDatabaseTools {
@@ -127,7 +130,7 @@ public class ForumDatabaseTools {
 	}
 
 	public void createNewAttackEntries(Long season, Long round, String system, String attacker, String defender, Long attackType, Long attackId,
-	                                   String systemImageName, String rank, String name, String unit, LocalDateTime startDate,
+	                                   String systemImageName, String rank, String name, String unit,
 	                                   String dropshipName
 	) {
 		String sql = "";
@@ -158,7 +161,12 @@ public class ForumDatabaseTools {
 		text += "<td align=\"right\"><img src=\"" + attackerLogoLink + "\" width=\"70px\"></td>";
 		text += "<td align=\"center\" valign=\"top\">[b][size=12][color=#ffcc00]System:[/color][/size]<br>[size=24][color=#ffcc00]" + system + "[/color][/size][/b]</td>";
 		text += "<td align=\"left\"><img src=\"" + defenderLogoLink + "\" width=\"70px\"></td>";
-		text += "</tr><tr><td colspan=\"3\" align=\"center\"><img src=\"" + planetImage + "\" width=\"90px\"></td></tr>";
+		text += "</tr>";
+		text += "<tr>";
+		text += "<td align=\"right\">" + unit + "<br>" + rank + " " + name + " (CO)</td>";
+		text += "<td align=\"center\"><img src=\"" + planetImage + "\" width=\"90px\"></td>";
+		text += "<td align=\"left\">Planetare<br>Verteidigungstreitkräfte</td>";
+		text += "</tr>";
 		text += "<tr><td></td><td width=\"40%\" align=\"center\">";
 		text += "<br>";
 		text += "<table cellspacing=\"1\" width=\"100%\">";
@@ -186,16 +194,21 @@ public class ForumDatabaseTools {
 		text += "</td><td></td></tr>";
 		text += "<tr><td></td><td><br>[color=#ffcc00]";
 
+		SimpleDateFormat dtf = new SimpleDateFormat("dd.MM.yyyy");
+		Calendar calendar = Calendar.getInstance();
+		Date dateObj = calendar.getTime();
+		String formattedDate = dtf.format(dateObj);
+
 		// -1: Clan vs IS
 		// -2: Clan vs Clan
 		// -3: IS vs Clan
 		// -4: IS vs IS
 		if (attackType != null) {
 			text += switch (attackType.intValue()) {
-				case -1 -> "<i>" + system + "<br>Landungsschiff der Union-C-Klasse \"" + dropshipName + "\"<br>" + startDate + "</i><br><br>" + unit + "(" + attacker + ") befindet sich im Anflug auf " + system + ". Während des Anfluges wird das Batchall übertragen." + "<br>";
-				case -2 -> "<i>" + system + "<br>Landungsschiff der Union-C-Klasse \"" + dropshipName + "\"<br>" + startDate + "</i><br><br>" + unit + "(" + attacker + ") befindet sich im Anflug auf " + system + ". Während des Anfluges wird das Batchall übertragen." + "<br>";
-				case -3 -> "<i>" + system + "<br>Landungsschiff der Union-Klasse \"" + dropshipName + "\"<br>" + startDate + "</i><br><br>" + unit + "(" + attacker + ") ist auf dem Weg Hauptwelt des Systems. Sie werden bereits erwartet." + "<br>";
-				case -4 -> "<i>" + system + "<br>Landungsschiff der Union-Klasse \"" + dropshipName + "\"<br>" + startDate + "</i><br><br>" + unit + "(" + attacker + ") werden sehr bald auf dem Planeten landen. Eine Verteidigung wird bereits organisiert." + "<br>";
+				case -1 -> "<i>" + system + "<br>Landungsschiff der Union-C-Klasse \"" + dropshipName + "\"<br>Im Anflug</i><br><br>" + unit + " (" + attacker + ") befindet sich im Anflug auf " + system + ". Während des Anfluges wird das Batchall übertragen." + "<br>";
+				case -2 -> "<i>" + system + "<br>Landungsschiff der Union-C-Klasse \"" + dropshipName + "\"<br>Im Anflug</i><br><br>" + unit + " (" + attacker + ") befindet sich im Anflug auf " + system + ". Während des Anfluges wird das Batchall übertragen." + "<br>";
+				case -3 -> "<i>" + system + "<br>Landungsschiff der Union-Klasse \"" + dropshipName + "\"<br>Im Anflug</i><br><br>" + unit + " (" + attacker + ") ist auf dem Weg Hauptwelt des Systems. Sie werden bereits erwartet." + "<br>";
+				case -4 -> "<i>" + system + "<br>Landungsschiff der Union-Klasse \"" + dropshipName + "\"<br>Im Anflug</i><br><br>" + unit + " (" + attacker + ") werden sehr bald auf dem Planeten landen. Eine Verteidigung wird bereits organisiert." + "<br>";
 				default -> "Landungsschiffe nähern sich " + system + "!";
 			};
 		} else {
@@ -208,7 +221,7 @@ public class ForumDatabaseTools {
 		text += "[/color]<br><br></td><td></td></tr></table>";
 		text += "<center>";
 		text += "<a href=\"https://www.clanwolf.net/apps/C3/seasonhistory/S" + season + "/starmap_frame.php\" target=\"_BLANK\">";
-		text += "<img src=\"" + image_url + "\" width=\"600px\" onError=\"this.src=&#39;" + image_url_alternative + "&#39;;this.style.width=&#39;25px&#39;;\">";
+		text += "<img src=\"" + image_url + "\" width=\"400px\" onError=\"this.src=&#39;" + image_url_alternative + "&#39;;this.style.width=&#39;35px&#39;;\">";
 		text += "</a>";
 		text += "</center>";
 		text += "<br><br>";

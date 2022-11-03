@@ -489,20 +489,18 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			int rnd = new Random().nextInt(dropships.length);
 			String dropshipName = dropships[rnd].trim();
 
-			RoundPOJO roundPOJO = RoundDAO.getInstance().findById(getC3UserID(session), attack.getRound());
-					t.createNewAttackEntries(season,
-					round,
-					starSystem.getName(),
-					attacker.getShortName(),
-					defender.getShortName(),
-					attackType,
-					attack.getId(),
-					starSystem.getSystemImageName(),
-					rpChar.getRank(),
-					rpChar.getName(),
-					attackerJumpship.getUnitName(),
-					roundPOJO.getCurrentRoundStartDate(),
-					dropshipName
+			t.createNewAttackEntries(season,
+				round,
+				starSystem.getName(),
+				attacker.getShortName(),
+				defender.getShortName(),
+				attackType,
+				attack.getId(),
+				starSystem.getSystemImageName(),
+				rpChar.getRank(),
+				rpChar.getName(),
+				attackerJumpship.getUnitName(),
+				dropshipName
 			);
 
 			GameState response = new GameState(GAMESTATEMODES.ATTACK_SAVE_RESPONSE);

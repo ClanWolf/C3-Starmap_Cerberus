@@ -140,7 +140,7 @@
 		<dependency>
 			<groupId>net.coobird</groupId>
 			<artifactId>thumbnailator</artifactId>
-			<version>0.4.17</version>
+			<version>0.4.18</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.kwhat</groupId>
@@ -405,7 +405,7 @@
 									<artifact>
 										<groupId>net.coobird</groupId>
 										<artifactId>thumbnailator</artifactId>
-										<version>0.4.17</version>
+										<version>0.4.18</version>
 									</artifact>
 									<moduleInfoSource>
 										module thumbnailator {
