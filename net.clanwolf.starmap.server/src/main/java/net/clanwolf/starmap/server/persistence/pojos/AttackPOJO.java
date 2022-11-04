@@ -93,6 +93,9 @@ public class AttackPOJO extends Pojo {
 	@Column(name = "ForumThreadLink")
 	private String forumThreadLink;
 
+	@Column(name = "ForumThreadId")
+	private Long forumThreadId;
+
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE, targetEntity = AttackVarsPOJO.class)
 	@JoinColumn(name = "AttackID")
 	private List<AttackVarsPOJO> attackVarList = new ArrayList<>();
@@ -123,6 +126,16 @@ public class AttackPOJO extends Pojo {
 	@SuppressWarnings("unused")
 	public void setForumThreadLink(String forumThreadLink) {
 		this.forumThreadLink = forumThreadLink;
+	}
+
+	@SuppressWarnings("unused")
+	public Long getForumThreadId() {
+		return forumThreadId;
+	}
+
+	@SuppressWarnings("unused")
+	public void setForumThreadId(Long forumThreadId) {
+		this.forumThreadId = forumThreadId;
 	}
 
 	@SuppressWarnings("unused")

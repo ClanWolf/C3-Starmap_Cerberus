@@ -129,6 +129,10 @@ public class ForumDatabaseTools {
 		}
 	}
 
+	public void createFinalizingEntryForAttack(Long attackId, Long season, Long round, String system, String attacker, String defender) {
+
+	}
+
 	public void createNewAttackEntries(Long season, Long round, String system, String attacker, String defender, Long attackType, Long attackId,
 	                                   String systemImageName, String rank, String name, String unit,
 	                                   String dropshipName
@@ -277,7 +281,7 @@ public class ForumDatabaseTools {
 		// Update attack and add threadlink
 		sql = "";
 		sql += "UPDATE C3._HH_ATTACK ";
-		sql += "SET ForumThreadLink='" + attackThreadUrl + "' ";
+		sql += "SET ForumThreadLink='" + attackThreadUrl + "', ForumThreadId=" + threadId + " ";
 		sql += "WHERE ID= " + attackId;
 		update(sql);
 

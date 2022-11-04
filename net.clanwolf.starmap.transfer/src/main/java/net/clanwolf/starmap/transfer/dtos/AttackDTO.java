@@ -48,6 +48,7 @@ public class AttackDTO extends Dto {
 	private Boolean fightsStarted;
 	private String remarks;
 	private String forumThreadLink;
+	private Long forumThreadId;
 	private List<AttackVarsDTO> attackVarList = new ArrayList<>();
 	private List<AttackCharacterDTO> attackCharList;
 
@@ -99,6 +100,16 @@ public class AttackDTO extends Dto {
 	@SuppressWarnings("unused")
 	public void setForumThreadLink(String forumThreadLink) {
 		this.forumThreadLink = forumThreadLink;
+	}
+
+	@SuppressWarnings("unused")
+	public Long getForumThreadId() {
+		return forumThreadId;
+	}
+
+	@SuppressWarnings("unused")
+	public void setForumThreadId(Long forumThreadId) {
+		this.forumThreadId = forumThreadId;
 	}
 
 	@SuppressWarnings("unused")

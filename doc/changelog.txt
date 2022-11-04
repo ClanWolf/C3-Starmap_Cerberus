@@ -1,6 +1,9 @@
 C3 version history
 --------------------------------
 
+Version 7.1.80 (04.11.2022)
+- ADDED: Thread id to attack data
+
 Version 7.1.79 (03.11.2022)
 - CHANGED: Fixes to the forum entries
 
