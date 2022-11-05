@@ -489,19 +489,21 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			int rnd = new Random().nextInt(dropships.length);
 			String dropshipName = dropships[rnd].trim();
 
-			t.createNewAttackEntries(season,
-				round,
-				starSystem.getName(),
-				attacker.getShortName(),
-				defender.getShortName(),
-				attackType,
-				attack.getId(),
-				starSystem.getSystemImageName(),
-				rpChar.getRank(),
-				rpChar.getName(),
-				attackerJumpship.getUnitName(),
-				dropshipName
-			);
+			// nur einmal eintragen, nicht bei jedem Speichern
+			if (attack.getForumThreadId() == null) {
+				t.createNewAttackEntries(season,
+					round,
+					starSystem.getName(),
+					attacker.getShortName(),
+					defender.getShortName(),
+					attackType, attack.getId(),
+					starSystem.getSystemImageName(),
+					rpChar.getRank(),
+					rpChar.getName(),
+					attackerJumpship.getUnitName(),
+					dropshipName
+				);
+			}
 
 			GameState response = new GameState(GAMESTATEMODES.ATTACK_SAVE_RESPONSE);
 			response.addObject(attack);

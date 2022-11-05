@@ -84,13 +84,26 @@ if (mysqli_num_rows($result12) > 0) {
 			}
 			echo "</tr>";
 		} else {
+			$winnerFaction = "";
+			$sql45 = "";
+			$sql45 = $sql45 . "select f.ShortName ";
+			$sql45 = $sql45 . "from C3.FACTION f ";
+			$sql45 = $sql45 . "where f.ID = " . $winner . " ";
+
+			$result45 = mysqli_query($conn_clanwolf_ro, $sql45);
+			if (mysqli_num_rows($result45) > 0) {
+				while($row45 = mysqli_fetch_assoc($result45)) {
+					$winnerFaction = $row45["ShortName"];
+				}
+			}
+
 			echo "<tr>";
 			echo "<td align='left' width='20%' " . $style . ">&nbsp;&nbsp;&nbsp;&nbsp;R" . $attackRound . "</td>";
 			echo "<td align='left' width='10%' " . $style . ">&nbsp;<img src='https://www.clanwolf.net/images/check_icon.png' width='8px'></td>";
 			if (is_null($threadLink)) {
-				echo "<td align='right' width='70%' colspan='3'" . $style . ">&nbsp;&nbsp;" . $starSystemName . "&nbsp;&nbsp;&nbsp;>>&nbsp;&nbsp;&nbsp;" . $starSystemFaction . "&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+				echo "<td align='right' width='70%' colspan='3'" . $style . ">&nbsp;&nbsp;" . $starSystemName . "&nbsp;&nbsp;&nbsp;>>&nbsp;&nbsp;&nbsp;" . $winnerFaction . "&nbsp;&nbsp;&nbsp;&nbsp;</td>";
 			} else {
-				echo "<td align='right' width='70%' colspan='3'" . $style . ">&nbsp;&nbsp;<a href='" . $threadLink . "'>" . $starSystemName . "</a>&nbsp;&nbsp;&nbsp;>>&nbsp;&nbsp;&nbsp;" . $starSystemFaction . "&nbsp;&nbsp;&nbsp;&nbsp;</td>";
+				echo "<td align='right' width='70%' colspan='3'" . $style . ">&nbsp;&nbsp;<a href='" . $threadLink . "'>" . $starSystemName . "</a>&nbsp;&nbsp;&nbsp;>>&nbsp;&nbsp;&nbsp;" . $winnerFaction . "&nbsp;&nbsp;&nbsp;&nbsp;</td>";
 			}
 			echo "</tr>";
 		}
