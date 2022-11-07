@@ -74,7 +74,7 @@
     <dependency>
       <groupId>org.hibernate</groupId>
       <artifactId>hibernate-hikaricp</artifactId>
-      <version>6.1.4.Final</version>
+      <version>6.1.5.Final</version>
       <scope>compile</scope>
     </dependency>
   </dependencies>

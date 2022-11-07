@@ -179,10 +179,10 @@ public class NSICreator {
 
 			System.out.println("-------------------------------------------------------------");
 			System.out.println("Writing ircbot start script:");
-			File fout6 = new File("net.clanwolf.starmap.server\\src\\main\\shell\\checkprocess_cwircbot.sh");
+			File fout6 = new File("net.clanwolf.starmap.server\\src\\main\\shell\\checkprocess_ircbot.sh");
 			FileOutputStream fos6 = new FileOutputStream(fout6);
 			BufferedWriter bw6 = new BufferedWriter(new OutputStreamWriter(fos6));
-			BufferedReader br6 = new BufferedReader(new FileReader("NSIS\\templates\\checkprocess_cwircbot.script_template"));
+			BufferedReader br6 = new BufferedReader(new FileReader("NSIS\\templates\\checkprocess_ircbot.script_template"));
 			String line6;
 			while ((line6 = br6.readLine()) != null) {
 				if (line6.contains("###VERSION###")) {
@@ -195,6 +195,25 @@ public class NSICreator {
 			}
 			br6.close();
 			bw6.close();
+
+			System.out.println("-------------------------------------------------------------");
+			System.out.println("Writing ts3bot start script:");
+			File fout61 = new File("net.clanwolf.starmap.server\\src\\main\\shell\\checkprocess_ts3bot.sh");
+			FileOutputStream fos61 = new FileOutputStream(fout61);
+			BufferedWriter bw61 = new BufferedWriter(new OutputStreamWriter(fos61));
+			BufferedReader br61 = new BufferedReader(new FileReader("NSIS\\templates\\checkprocess_ts3bot.script_template"));
+			String line61;
+			while ((line61 = br61.readLine()) != null) {
+				if (line61.contains("###VERSION###")) {
+					line61 = line61.replace("###VERSION###", version);
+				}
+				if (line61.contains("###JAVA_VERSION_PATH###")) {
+					line61 = line61.replace("###JAVA_VERSION_PATH###", java_version_path);
+				}
+				writeLineLinux(bw61, line61);
+			}
+			br61.close();
+			bw61.close();
 
 			System.out.println("-------------------------------------------------------------");
 			System.out.println("Writing version update script:");

@@ -79,7 +79,7 @@ ECHO +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ECHO Upload Client installer? (y/n)
 SET /p chc=
 IF '%chc%'=='y' GOTO UPLOADINSTALLER
-IF '%chc%'=='n' GOTO REQUEST_IRCBOT
+IF '%chc%'=='n' GOTO REQUEST_BOTS
 GOTO REQUEST_INSTALLER
 
 :UPLOADINSTALLER
@@ -107,8 +107,20 @@ IF '%chc2%'=='n' GOTO END
 GOTO REQUEST_IRCBOT
 
 :UPLOADIRCBOT
-REM Upload server
+REM Upload IRCBot
 "C:\Program Files (x86)\WinSCP\winscp.com" /ini=nul /script=C:\C3\projects\C3-Starmap_Cerberus\NSIS\scripts\upload_ircbot.script
+
+:REQUEST_TS3BOT
+ECHO ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ECHO Upload TS3Bot? (y/n)
+SET /p chc2=
+IF '%chc2%'=='y' GOTO UPLOADTS3BOT
+IF '%chc2%'=='n' GOTO END
+GOTO REQUEST_TS3BOT
+
+:UPLOADTS3BOT
+REM Upload TS3Bot
+"C:\Program Files (x86)\WinSCP\winscp.com" /ini=nul /script=C:\C3\projects\C3-Starmap_Cerberus\NSIS\scripts\upload_ts3bot.script
 
 REM ###############################################
 REM PAUSE

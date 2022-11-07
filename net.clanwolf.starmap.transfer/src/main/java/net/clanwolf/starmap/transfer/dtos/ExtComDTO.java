@@ -24,30 +24,53 @@
  * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.logging;
+package net.clanwolf.starmap.transfer.dtos;
 
-import org.slf4j.LoggerFactory;
+import net.clanwolf.starmap.transfer.Dto;
 
-import java.io.IOException;
-import java.lang.invoke.MethodHandles;
-import java.util.logging.FileHandler;
+public class ExtComDTO extends Dto {
+	private Long id;
+	private String text;
+	private Boolean processedIRC;
+	private Boolean processedTS3;
 
-public class C3LogUtil {
+	@SuppressWarnings("unused")
+	public Long getId() {
+		return id;
+	}
 
-	public static void loadConfigurationAndSetLogFile(String logFileName) {
-		try {
-			int FILE_SIZE_LIMIT = 4 * 1024 * 1024;
-			java.util.logging.LogManager.getLogManager().readConfiguration(MethodHandles.lookup().lookupClass().getClassLoader().getResourceAsStream("logging.properties"));
-			if (logFileName != null) {
-				FileHandler fileHandler = new FileHandler(logFileName, FILE_SIZE_LIMIT, 3, false);
-				fileHandler.setEncoding("UTF-8");
-				//fileHandler.setFormatter(new C3LogFormatter());
+	@SuppressWarnings("unused")
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-				java.util.logging.Logger julLogger = java.util.logging.Logger.getLogger("");
-				julLogger.addHandler(fileHandler);
-			}
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-		}
+	@SuppressWarnings("unused")
+	public String getText() {
+		return text;
+	}
+
+	@SuppressWarnings("unused")
+	public void setText(String text) {
+		this.text = text;
+	}
+
+	@SuppressWarnings("unused")
+	public Boolean getProcessedIRC() {
+		return processedIRC;
+	}
+
+	@SuppressWarnings("unused")
+	public void setProcessedIRC(Boolean processedIRC) {
+		this.processedIRC = processedIRC;
+	}
+
+	@SuppressWarnings("unused")
+	public Boolean getProcessedTS3() {
+		return processedTS3;
+	}
+
+	@SuppressWarnings("unused")
+	public void setProcessedTS3(Boolean processedTS3) {
+		this.processedTS3 = processedTS3;
 	}
 }

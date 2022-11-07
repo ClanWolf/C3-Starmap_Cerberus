@@ -24,30 +24,62 @@
  * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.logging;
+package net.clanwolf.util;
 
+import net.clanwolf.client.mail.MailManager;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
+import java.io.File;
 import java.lang.invoke.MethodHandles;
-import java.util.logging.FileHandler;
+import java.util.TimerTask;
 
-public class C3LogUtil {
+/**
+ * @author Meldric
+ */
+public class CheckShutdownFlagTimer extends TimerTask {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	public static void loadConfigurationAndSetLogFile(String logFileName) {
-		try {
-			int FILE_SIZE_LIMIT = 4 * 1024 * 1024;
-			java.util.logging.LogManager.getLogManager().readConfiguration(MethodHandles.lookup().lookupClass().getClassLoader().getResourceAsStream("logging.properties"));
-			if (logFileName != null) {
-				FileHandler fileHandler = new FileHandler(logFileName, FILE_SIZE_LIMIT, 3, false);
-				fileHandler.setEncoding("UTF-8");
-				//fileHandler.setFormatter(new C3LogFormatter());
+	private String dir = "";
+	private String botName = "";
 
-				java.util.logging.Logger julLogger = java.util.logging.Logger.getLogger("");
-				julLogger.addHandler(fileHandler);
+	private void cleanupFlagFiles() {
+		File shutdownFlagFile = new File(dir + File.separator + "C3-IRCBot_shutdown.flag");
+		if (shutdownFlagFile.isFile()) {
+			boolean deleted = shutdownFlagFile.delete();
+		}
+	}
+
+	public CheckShutdownFlagTimer(String path, String botName) {
+		this.dir = path;
+		this.botName = botName;
+		// Cleanup the flags once before the timer starts in case there were flags left from a previous time
+		cleanupFlagFiles();
+	}
+
+	@Override
+	public void run() {
+		File shutdownFlagFile = new File(dir + File.separator + "C3-" + botName + "_shutdown.flag");
+		if (shutdownFlagFile.exists() && shutdownFlagFile.isFile() && shutdownFlagFile.canRead()) {
+			// On the server, a script checks if the server is running every couple of minutes.
+			// If this methods shuts the server down, it will be going up by the script shortly after.
+			// This is used in case a new version of the jar file was uploaded.
+//			logger.info("Cleaning up flag files.");
+//			cleanupFlagFiles();
+
+//			logger.info("Sending info mail.");
+			String[] receivers = { "keshik@googlegroups.com" };
+			boolean sent = false;
+			sent = MailManager.sendMail("c3@clanwolf.net", receivers, botName + " goes down after flag request", botName + " is shutting down...", false);
+			if (sent) {
+				// sent
+				logger.info("Mail sent. [1]");
+			} else {
+				// error during email sending
+				logger.info("Error during mail dispatch. [1]");
 			}
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
+
+			System.exit(5);
 		}
 	}
 }

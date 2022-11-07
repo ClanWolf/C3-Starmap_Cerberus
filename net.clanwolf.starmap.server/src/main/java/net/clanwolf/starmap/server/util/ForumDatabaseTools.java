@@ -162,9 +162,9 @@ public class ForumDatabaseTools {
 
 		text += "<table width=\"100%\">";
 		text += "<tr>";
-		text += "<td align=\"right\"><img src=\"" + attackerLogoLink + "\" width=\"70px\"></td>";
-		text += "<td align=\"center\" valign=\"top\">[b][size=12][color=#ffcc00]System:[/color][/size]<br>[size=24][color=#ffcc00]" + system + "[/color][/size][/b]</td>";
-		text += "<td align=\"left\"><img src=\"" + defenderLogoLink + "\" width=\"70px\"></td>";
+		text += "<td width=\"30\" align=\"right\"><img src=\"" + attackerLogoLink + "\" width=\"70px\"></td>";
+		text += "<td width=\"40\" align=\"center\" valign=\"top\">[b][size=12][color=#ffcc00]System:[/color][/size]<br>[size=24][color=#ffcc00]" + system + "[/color][/size][/b]</td>";
+		text += "<td width=\"30\" align=\"left\"><img src=\"" + defenderLogoLink + "\" width=\"70px\"></td>";
 		text += "</tr>";
 		text += "<tr>";
 		text += "<td align=\"right\">" + unit + "<br>" + rank + " " + name + " (CO)</td>";
@@ -222,12 +222,13 @@ public class ForumDatabaseTools {
 		String image_url = "https://www.clanwolf.net/apps/C3/seasonhistory/S" + season + "/C3_S1_R" + round + "_map_history.png";
 		String image_url_alternative = "https://www.clanwolf.net/images/map.png";
 
-		text += "[/color]<br><br></td><td></td></tr></table>";
-		text += "<center>";
+		text += "[/color]<br><br></td><td></td></tr>";
+		text += "<tr><td colspan=\"3\" align=\"center\">";
 		text += "<a href=\"https://www.clanwolf.net/apps/C3/seasonhistory/S" + season + "/starmap_frame.php\" target=\"_BLANK\">";
 		text += "<img src=\"" + image_url + "\" width=\"400px\" onError=\"this.src=&#39;" + image_url_alternative + "&#39;;this.style.width=&#39;35px&#39;;\">";
 		text += "</a>";
-		text += "</center>";
+		text += "</td></tr>";
+		text += "</table>";
 		text += "<br><br>";
 
 		// -------------------------------------------------------------------------------------------------------------

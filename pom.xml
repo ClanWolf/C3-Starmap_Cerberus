@@ -26,7 +26,7 @@
 
 		<!-- C3 Revision -->
 		<!-- https://stackoverflow.com/questions/10582054/maven-project-version-inheritance-do-i-have-to-specify-the-parent-version -->
-		<revision>7.1.81</revision>
+		<revision>7.1.85</revision>
 
 		<!-- Versions -->
 		<version.java>19</version.java>
@@ -46,7 +46,7 @@
 		<!-- IF this version is changed:                                        -->
 		<!-- * ENTER the new versions into the manifest (server.pom)            -->
 		<!-- * upload the files manually!                                       -->
-		<version.hibernate_hikaricp>6.1.4.Final</version.hibernate_hikaricp>
+		<version.hibernate_hikaricp>6.1.5.Final</version.hibernate_hikaricp>
 		<version.hikaricp>5.0.1</version.hikaricp>
 		<itext.version>7.2.3</itext.version>
 	</properties>
@@ -87,7 +87,7 @@
 		<module>net.clanwolf.starmap.client</module>
 		<module>net.clanwolf.starmap.client.preloader</module>
 		<module>net.clanwolf.starmap.client.packager</module>
-		<module>net.clanwolf.starmap.ircbot</module>
+		<module>net.clanwolf.starmap.bots</module>
 		<module>net.clanwolf.starmap.mail</module>
 	</modules>
 

@@ -21,33 +21,26 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2022, ClanWolf.net                            |
+ * Copyright (c) 2001-2020, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.logging;
+package net.clanwolf.ircclient;
 
-import org.slf4j.LoggerFactory;
+import java.util.TimerTask;
 
-import java.io.IOException;
-import java.lang.invoke.MethodHandles;
-import java.util.logging.FileHandler;
+public class UserListDrop extends TimerTask {
 
-public class C3LogUtil {
+	private IRCBot bot = null;
 
-	public static void loadConfigurationAndSetLogFile(String logFileName) {
-		try {
-			int FILE_SIZE_LIMIT = 4 * 1024 * 1024;
-			java.util.logging.LogManager.getLogManager().readConfiguration(MethodHandles.lookup().lookupClass().getClassLoader().getResourceAsStream("logging.properties"));
-			if (logFileName != null) {
-				FileHandler fileHandler = new FileHandler(logFileName, FILE_SIZE_LIMIT, 3, false);
-				fileHandler.setEncoding("UTF-8");
-				//fileHandler.setFormatter(new C3LogFormatter());
+	public void setBot(IRCBot bot) {
+		this.bot = bot;
+	}
 
-				java.util.logging.Logger julLogger = java.util.logging.Logger.getLogger("");
-				julLogger.addHandler(fileHandler);
-			}
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
+	@Override
+	public void run() {
+		if (bot != null) {
+			if (IRCBot.dropDebugStrings) bot.send("Dropping user list.");
+			bot.saveUserList();
 		}
 	}
 }

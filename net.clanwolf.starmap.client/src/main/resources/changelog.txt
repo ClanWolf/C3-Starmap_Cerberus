@@ -1,6 +1,10 @@
 C3 version history
 --------------------------------
 
+Version 7.1.85 (07.11.2022)
+- ADDED: TS3 Bot implementation
+- ADDED: Interface to IRC and TS3 (DB)
+
 Version 7.1.81 (04.11.2022)
 - ADDED: Thread id to attack data
 

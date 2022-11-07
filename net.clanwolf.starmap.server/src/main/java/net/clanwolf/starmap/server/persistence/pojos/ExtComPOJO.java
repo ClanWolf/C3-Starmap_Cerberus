@@ -24,30 +24,76 @@
  * Copyright (c) 2001-2022, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.logging;
+package net.clanwolf.starmap.server.persistence.pojos;
 
-import org.slf4j.LoggerFactory;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import net.clanwolf.starmap.server.persistence.Pojo;
 
-import java.io.IOException;
-import java.lang.invoke.MethodHandles;
-import java.util.logging.FileHandler;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
-public class C3LogUtil {
+import static javax.persistence.GenerationType.IDENTITY;
 
-	public static void loadConfigurationAndSetLogFile(String logFileName) {
-		try {
-			int FILE_SIZE_LIMIT = 4 * 1024 * 1024;
-			java.util.logging.LogManager.getLogManager().readConfiguration(MethodHandles.lookup().lookupClass().getClassLoader().getResourceAsStream("logging.properties"));
-			if (logFileName != null) {
-				FileHandler fileHandler = new FileHandler(logFileName, FILE_SIZE_LIMIT, 3, false);
-				fileHandler.setEncoding("UTF-8");
-				//fileHandler.setFormatter(new C3LogFormatter());
+@JsonIdentityInfo(
+		scope= ExtComPOJO.class,
+		generator= ObjectIdGenerators.PropertyGenerator.class,
+		property = "id")
+@Entity
+@Table(name = "EXT_COM", catalog = "C3")
+public class ExtComPOJO extends Pojo {
 
-				java.util.logging.Logger julLogger = java.util.logging.Logger.getLogger("");
-				julLogger.addHandler(fileHandler);
-			}
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
-		}
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "ID")
+	private Long id;
+
+	@Column(name = "Text")
+	private String text;
+
+	@Column(name = "ProcessedIRC")
+	private Boolean processedIRC;
+
+	@Column(name = "ProcessedTS3")
+	private Boolean processedTS3;
+
+	@SuppressWarnings("unused")
+	public Long getId() {
+		return id;
+	}
+
+	@SuppressWarnings("unused")
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	@SuppressWarnings("unused")
+	public String getText() {
+		return text;
+	}
+
+	@SuppressWarnings("unused")
+	public void setText(String text) {
+		this.text = text;
+	}
+
+	@SuppressWarnings("unused")
+	public Boolean getProcessedIRC() {
+		return processedIRC;
+	}
+
+	@SuppressWarnings("unused")
+	public void setProcessedIRC(Boolean processedIRC) {
+		this.processedIRC = processedIRC;
+	}
+
+	@SuppressWarnings("unused")
+	public Boolean getProcessedTS3() {
+		return processedTS3;
+	}
+
+	@SuppressWarnings("unused")
+	public void setProcessedTS3(Boolean processedTS3) {
+		this.processedTS3 = processedTS3;
 	}
 }

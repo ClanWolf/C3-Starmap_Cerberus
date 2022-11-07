@@ -10,7 +10,7 @@ net.clanwolf.starmap.client.preloader/target/*
 net.clanwolf.starmap.logging/target/*
 net.clanwolf.starmap.server/target/*
 net.clanwolf.starmap.transfer/target/*
-net.clanwolf.starmap.ircbot/target/*
+net.clanwolf.starmap.bots/target/*
 net.clanwolf.starmap.mail/target/*
 net.clanwolf.starmap.administration/target/*
 net.clanwolf.starmap.security/target/*
