@@ -320,7 +320,7 @@ public class C3SoundPlayer {
 				if ("true".equals(C3Properties.getProperty(C3PROPS.PLAY_SOUND))) {
 					final AudioClip soundClip;
 					if (audioClipCache.get(url.toString()) != null) {
-						// Log.info("Playing sound from cache...");
+						//logger.info("Playing sound from cache...");
 						soundClip = audioClipCache.get(url.toString());
 						soundClip.stop();
 					} else {

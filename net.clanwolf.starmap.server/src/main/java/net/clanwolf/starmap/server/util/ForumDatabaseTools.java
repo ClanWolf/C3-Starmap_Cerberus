@@ -162,9 +162,9 @@ public class ForumDatabaseTools {
 
 		text += "<table width=\"100%\">";
 		text += "<tr>";
-		text += "<td width=\"30\" align=\"right\"><img src=\"" + attackerLogoLink + "\" width=\"70px\"></td>";
-		text += "<td width=\"40\" align=\"center\" valign=\"top\">[b][size=12][color=#ffcc00]System:[/color][/size]<br>[size=24][color=#ffcc00]" + system + "[/color][/size][/b]</td>";
-		text += "<td width=\"30\" align=\"left\"><img src=\"" + defenderLogoLink + "\" width=\"70px\"></td>";
+		text += "<td width=\"30%\" align=\"right\"><img src=\"" + attackerLogoLink + "\" width=\"70px\"></td>";
+		text += "<td width=\"40%\" align=\"center\" valign=\"top\">[b][size=12][color=#ffcc00]System:[/color][/size]<br>[size=24][color=#ffcc00]" + system + "[/color][/size][/b]</td>";
+		text += "<td width=\"30%\" align=\"left\"><img src=\"" + defenderLogoLink + "\" width=\"70px\"></td>";
 		text += "</tr>";
 		text += "<tr>";
 		text += "<td align=\"right\">" + unit + "<br>" + rank + " " + name + " (CO)</td>";

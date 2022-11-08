@@ -129,9 +129,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	@FXML
 	Button mapButton03;
 	@FXML
-	Button mapButton04;
+	Button mapButton04; // previous Jumpship
 	@FXML
-	Button mapButton05;
+	Button mapButton05; // next Jumpship
 	@FXML
 	Button mapButton06; // Attack / join battle
 
@@ -188,6 +188,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		}
 		if (found) {
 			handleCenterJumpshipButtonClick();
+		} else {
+			mapButton04.setDisable(true);
+			mapButton05.setDisable(false);
 		}
 	}
 
@@ -210,6 +213,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		}
 		if (found) {
 			handleCenterJumpshipButtonClick();
+		} else {
+			mapButton04.setDisable(false);
+			mapButton05.setDisable(true);
 		}
 	}
 

@@ -166,8 +166,8 @@ public class GraphManager<T> implements GraphAgent<T> {
 
 		// boolean withinCosts = nodeCosts.get(target) < maxCost;
 
-		logger.info("minJumpshipLevel: " + minJumpshipLevel);
-		logger.info("currentJumpshipLevel: " + currentJumpshipLevel);
+		//logger.info("minJumpshipLevel: " + minJumpshipLevel);
+		//logger.info("currentJumpshipLevel: " + currentJumpshipLevel);
 
 		boolean r = inRange && isActiveInPhase && !isAttacked && !isAttackedNextRound && !isLockedByJumpship && !isLockedByPreviousAttackCooldown && isLevelAllowed;
 
