@@ -46,7 +46,6 @@ import net.clanwolf.starmap.client.enums.C3MESSAGES;
 import net.clanwolf.starmap.client.gui.panes.chat.ChatPane;
 import net.clanwolf.starmap.client.gui.panes.dice.DicePane;
 import net.clanwolf.starmap.client.gui.panes.logging.LogPane;
-import net.clanwolf.starmap.client.gui.panes.map.MapPaneController;
 import net.clanwolf.starmap.client.gui.panes.security.AdminPane;
 import net.clanwolf.starmap.client.action.*;
 import net.clanwolf.starmap.client.enums.C3MESSAGERESULTS;
@@ -66,10 +65,7 @@ import net.clanwolf.starmap.client.gui.panes.rp.StoryEditorPane;
 import net.clanwolf.starmap.client.gui.panes.settings.SettingsPane;
 import net.clanwolf.starmap.client.gui.panes.userinfo.UserInfoPane;
 import net.clanwolf.starmap.client.gui.popuppanes.C3PopupPane;
-import net.clanwolf.starmap.client.mwo.CheckClipboardForMwoApi;
 import net.clanwolf.starmap.client.process.logout.Logout;
-import net.clanwolf.starmap.client.process.universe.BOJumpship;
-import net.clanwolf.starmap.client.process.universe.BOStarSystem;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,9 +74,7 @@ import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.security.Security;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.*;
-import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.UserDTO;
-import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.enums.MEDALS;
 import net.clanwolf.starmap.transfer.enums.POPUPS;
 
@@ -94,8 +88,6 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoUnit;
-import java.time.temporal.TemporalUnit;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -319,6 +311,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		helpLabel.setGraphic(view);
 		helpLabel.setText("");
 		setStatusText("", false);
+
+		C3SoundPlayer.play("sound/voice/" + Internationalization.getLanguage() + "/rp_invasion/rp_sample_lost_drop_02_general.mp3", false);
 	}
 
 	@FXML
