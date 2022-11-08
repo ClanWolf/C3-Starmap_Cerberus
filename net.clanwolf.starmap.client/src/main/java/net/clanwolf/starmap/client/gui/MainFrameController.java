@@ -312,7 +312,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		helpLabel.setText("");
 		setStatusText("", false);
 
-		C3SoundPlayer.play("sound/voice/" + Internationalization.getLanguage() + "/rp_invasion/rp_sample_lost_drop_02_general.mp3", false);
+		//C3SoundPlayer.play("sound/voice/" + Internationalization.getLanguage() + "/rp_invasion/rp_sample_lost_drop_02_general.mp3", false);
 	}
 
 	@FXML
