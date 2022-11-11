@@ -490,6 +490,10 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			String dropshipName = dropships[rnd].trim();
 
 			// nur einmal eintragen, nicht bei jedem Speichern
+			String rank = rpChar.getRank();
+			if (rank == null || "null".equalsIgnoreCase(rank)) {
+				rank = "[kein Rang]";
+			}
 			if (attack.getForumThreadId() == null) {
 				t.createNewAttackEntries(season,
 					round,
@@ -498,7 +502,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 					defender.getShortName(),
 					attackType, attack.getId(),
 					starSystem.getSystemImageName(),
-					rpChar.getRank(),
+					rank,
 					rpChar.getName(),
 					attackerJumpship.getUnitName(),
 					dropshipName

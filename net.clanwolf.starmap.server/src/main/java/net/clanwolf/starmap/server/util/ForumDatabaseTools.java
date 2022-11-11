@@ -26,6 +26,9 @@
  */
 package net.clanwolf.starmap.server.util;
 
+import net.clanwolf.starmap.server.Nexus.Nexus;
+import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.AttackDAO;
+import net.clanwolf.starmap.server.persistence.pojos.AttackPOJO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -130,7 +133,59 @@ public class ForumDatabaseTools {
 	}
 
 	public void createFinalizingEntryForAttack(Long attackId, Long season, Long round, String system, String attacker, String defender) {
+		AttackPOJO attack = AttackDAO.getInstance().findById(Nexus.DUMMY_USERID, attackId);
+		Long threadId = attack.getForumThreadId();
 
+		if (threadId != null) {
+			String sql;
+			long unixTime = System.currentTimeMillis() / 1000L;
+
+			String subject = "";
+			String text = "";
+
+			// Post
+			sql = "";
+			sql += "INSERT INTO cwfusion_posts ";
+			sql += "(forum_id, thread_id, site_id, post_subject, post_message, post_showsig, post_smileys, post_author, post_datestamp, post_ip, post_edituser, post_edittime) ";
+			sql += "VALUES ";
+			sql += "(65, " + threadId + ", 1, '" + subject + "', '" + text + "', 0, 0, 702, '" + unixTime + "', '0.0.0.0', 0, 0) ";
+			long postId = insert(sql);
+
+			// Get Postcount
+			sql = "";
+			sql += "SELECT forum_posts ";
+			sql += "FROM cwfusion_forums ";
+			sql += "WHERE forum_id=65 ";
+			long postCount = selectLong(sql, "forum_posts") + 1;
+
+			// Get Threadcount
+			sql = "";
+			sql += "SELECT forum_threads ";
+			sql += "FROM cwfusion_forums ";
+			sql += "WHERE forum_id=65 ";
+			long threadCount = selectLong(sql, "forum_threads") + 1;
+
+			// Forums
+			sql = "";
+			sql += "UPDATE cwfusion_forums ";
+			sql += "SET forum_lastpost=" + postId + ", forum_lastuser=702, forum_threads=" + threadCount + ", forum_posts=" + postCount + ", forum_lastthread=" + threadId + " ";
+			sql += "WHERE forum_id=65 ";
+			update(sql);
+
+			// Threads
+			sql = "";
+			sql += "UPDATE cwfusion_threads ";
+			sql += "SET thread_lastpost_id=" + postId + " ";
+			sql += "WHERE thread_id= " + threadId;
+			update(sql);
+
+			// Roleplay thread
+			sql = "";
+			sql += "UPDATE codax_W7_RP_threads ";
+			sql += "SET closed=1 ";
+			sql += "WHERE threadid=" + threadId;
+			update(sql);
+		}
 	}
 
 	public void createNewAttackEntries(Long season, Long round, String system, String attacker, String defender, Long attackType, Long attackId,
@@ -211,8 +266,8 @@ public class ForumDatabaseTools {
 			text += switch (attackType.intValue()) {
 				case -1 -> "<i>" + system + "<br>Landungsschiff der Union-C-Klasse \"" + dropshipName + "\"<br>Im Anflug</i><br><br>" + unit + " (" + attacker + ") befindet sich im Anflug auf " + system + ". Während des Anfluges wird das Batchall übertragen." + "<br>";
 				case -2 -> "<i>" + system + "<br>Landungsschiff der Union-C-Klasse \"" + dropshipName + "\"<br>Im Anflug</i><br><br>" + unit + " (" + attacker + ") befindet sich im Anflug auf " + system + ". Während des Anfluges wird das Batchall übertragen." + "<br>";
-				case -3 -> "<i>" + system + "<br>Landungsschiff der Union-Klasse \"" + dropshipName + "\"<br>Im Anflug</i><br><br>" + unit + " (" + attacker + ") ist auf dem Weg Hauptwelt des Systems. Sie werden bereits erwartet." + "<br>";
-				case -4 -> "<i>" + system + "<br>Landungsschiff der Union-Klasse \"" + dropshipName + "\"<br>Im Anflug</i><br><br>" + unit + " (" + attacker + ") werden sehr bald auf dem Planeten landen. Eine Verteidigung wird bereits organisiert." + "<br>";
+				case -3 -> "<i>" + system + "<br>Landungsschiff der Union-Klasse \"" + dropshipName + "\"<br>Im Anflug</i><br><br>" + unit + " (" + attacker + ") ist auf dem Weg nach " + system + ", der Hauptwelt des Systems. Sie werden bereits erwartet." + "<br>";
+				case -4 -> "<i>" + system + "<br>Landungsschiff der Union-Klasse \"" + dropshipName + "\"<br>Im Anflug</i><br><br>" + unit + " (" + attacker + ") werden sehr bald auf " + system + " landen. Eine Verteidigung wird bereits organisiert." + "<br>";
 				default -> "Landungsschiffe nähern sich " + system + "!";
 			};
 		} else {
@@ -224,7 +279,7 @@ public class ForumDatabaseTools {
 
 		text += "[/color]<br><br></td><td></td></tr>";
 		text += "<tr><td colspan=\"3\" align=\"center\">";
-		text += "<a href=\"https://www.clanwolf.net/apps/C3/seasonhistory/S" + season + "/starmap_frame.php\" target=\"_BLANK\">";
+		text += "<a href=\"https://www.clanwolf.net/apps/C3/seasonhistory/S" + season + "/starmap.php\" target=\"_BLANK\">";
 		text += "<img src=\"" + image_url + "\" width=\"400px\" onError=\"this.src=&#39;" + image_url_alternative + "&#39;;this.style.width=&#39;35px&#39;;\">";
 		text += "</a>";
 		text += "</td></tr>";

@@ -1,10 +1,14 @@
 C3 version history
 --------------------------------
 
-Version 7.1.86 (08.11.2022)
+Version 7.1.88 (11.11.2022)
+-
+
+Version 7.1.87 (10.11.2022)
 - FIXED: Issue with motivational speech sounds at the end of invasion drops (resampled)
 - FIXED: Buttons to iterate Jumpships now disable at the start/end of the list
 - FIXED: Layout issue of invasion thread initial post
+- CHANGED: Started to rework the rp sound background after invasion drops
 
 Version 7.1.85 (08.11.2022)
 - ADDED: TS3 Bot implementation
