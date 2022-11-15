@@ -35,6 +35,7 @@ import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.*;
 import net.clanwolf.starmap.server.persistence.pojos.*;
 import net.clanwolf.starmap.server.reporting.GenerateRoundReport;
+import net.clanwolf.starmap.server.util.ForumDatabaseTools;
 import net.clanwolf.starmap.server.util.HeartBeatTimer;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
@@ -256,6 +257,7 @@ public class EndRound {
 				logger.info("--- There is NO time left for this round!");
 
 				// set all open attacks to resolved (decide on a winner in the process!)
+				ForumDatabaseTools databaseTools = new ForumDatabaseTools();
 				logger.info("--- Resolved attacks that were still open:");
 				for (AttackPOJO attackPOJO : openAttacksInRoundList) {
 					Long winnerId = findAWinner(attackPOJO);
@@ -266,6 +268,13 @@ public class EndRound {
 					FactionPOJO fJumpshipPOJO = FactionDAO.getInstance().findById(Nexus.END_ROUND_USERID, jsPojo.getJumpshipFactionID());
 
 					resolvedAttacks.append("Jumpship '").append(jsPojo.getJumpshipName()).append("' (").append(jsPojo.getId()).append(") of ").append(fJumpshipPOJO.getShortName()).append(" (").append(fJumpshipPOJO.getId()).append(") attacked system '").append(ssPojo.getName()).append("' (").append(ssPojo.getId()).append(") ").append("--> resolved to winner: ").append(fWinnerPojo.getShortName() + " (" + attackPOJO.getFactionID_Winner() + ").").append("\r\n");
+
+					// Enter final post into attack thread in Forum
+					Long attackId = attackPOJO.getId();
+					String starsystemName = ssPojo.getName();
+					String attacker = fJumpshipPOJO.getShortName();
+					String winner = fWinnerPojo.getShortName();
+					databaseTools.createFinalizingEntryForAttack(attackId, seasonId, (long) round, starsystemName, attacker, winner, true);
 				}
 				openAttacksInRoundList.clear();
 

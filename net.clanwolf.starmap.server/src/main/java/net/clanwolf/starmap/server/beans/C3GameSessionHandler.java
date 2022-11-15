@@ -507,6 +507,14 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 					attackerJumpship.getUnitName(),
 					dropshipName
 				);
+			} else {
+				if (attack.getFactionID_Winner() != null) {
+					// Enter final post into attack thread in Forum
+					// Only if the RP thread is not closed yet
+					// and the close the thread
+					FactionPOJO winner = FactionDAO.getInstance().findById(getC3UserID(session), attack.getFactionID_Winner());
+					t.createFinalizingEntryForAttack(attack.getId(), season, round, starSystem.getName(), attacker.getShortName(), winner.getShortName(), false);
+				}
 			}
 
 			GameState response = new GameState(GAMESTATEMODES.ATTACK_SAVE_RESPONSE);

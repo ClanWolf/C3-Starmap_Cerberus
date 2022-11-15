@@ -499,11 +499,28 @@ public final class Tools {
 				logger.info("Created updates folder");
 			}
 
+			// Remove old update files (save disk space, they are not needed)
+			File[] dirList = dir.listFiles();
+			assert dirList != null;
+			for (File f : dirList) {
+				logger.info("###### Checking for installer to delete: " + f.getName());
+				if (f.getName().startsWith("C3-Client-") && f.getName().endsWith("_install.exe") && !f.getName().equalsIgnoreCase(updateName)) {
+					// This is an old update to be deleted from the cache folder
+					logger.info("###### Deleting old setup file: " + f.getName());
+					boolean d = f.delete();
+					if (d) {
+					   logger.info("###### Deleted");
+					} else {
+					   logger.info("###### Could not delete older setup files!");
+					}
+				}
+			}
+
 			File existingUpdate = new File(dir + File.separator + updateName);
 			if (existingUpdate.exists() && existingUpdate.isFile() && existingUpdate.canWrite()) {
 				boolean deleted = existingUpdate.delete();
 				if (!deleted) {
-					logger.info("Could not delete old version of the update!");
+					logger.info("Could not delete old version of this update!");
 					return; // ends the thread
 				}
 			}

@@ -132,7 +132,7 @@ public class ForumDatabaseTools {
 		}
 	}
 
-	public void createFinalizingEntryForAttack(Long attackId, Long season, Long round, String system, String attacker, String defender) {
+	public void createFinalizingEntryForAttack(Long attackId, Long season, Long round, String system, String attacker, String winner, boolean serverPickedRandomWinner) {
 		AttackPOJO attack = AttackDAO.getInstance().findById(Nexus.DUMMY_USERID, attackId);
 		Long threadId = attack.getForumThreadId();
 
@@ -140,51 +140,58 @@ public class ForumDatabaseTools {
 			String sql;
 			long unixTime = System.currentTimeMillis() / 1000L;
 
-			String subject = "";
-			String text = "";
-
-			// Post
-			sql = "";
-			sql += "INSERT INTO cwfusion_posts ";
-			sql += "(forum_id, thread_id, site_id, post_subject, post_message, post_showsig, post_smileys, post_author, post_datestamp, post_ip, post_edituser, post_edittime) ";
-			sql += "VALUES ";
-			sql += "(65, " + threadId + ", 1, '" + subject + "', '" + text + "', 0, 0, 702, '" + unixTime + "', '0.0.0.0', 0, 0) ";
-			long postId = insert(sql);
-
-			// Get Postcount
-			sql = "";
-			sql += "SELECT forum_posts ";
-			sql += "FROM cwfusion_forums ";
-			sql += "WHERE forum_id=65 ";
-			long postCount = selectLong(sql, "forum_posts") + 1;
-
-			// Get Threadcount
-			sql = "";
-			sql += "SELECT forum_threads ";
-			sql += "FROM cwfusion_forums ";
-			sql += "WHERE forum_id=65 ";
-			long threadCount = selectLong(sql, "forum_threads") + 1;
-
-			// Forums
-			sql = "";
-			sql += "UPDATE cwfusion_forums ";
-			sql += "SET forum_lastpost=" + postId + ", forum_lastuser=702, forum_threads=" + threadCount + ", forum_posts=" + postCount + ", forum_lastthread=" + threadId + " ";
-			sql += "WHERE forum_id=65 ";
-			update(sql);
-
-			// Threads
-			sql = "";
-			sql += "UPDATE cwfusion_threads ";
-			sql += "SET thread_lastpost_id=" + postId + " ";
-			sql += "WHERE thread_id= " + threadId;
-			update(sql);
-
 			// Roleplay thread
 			sql = "";
-			sql += "UPDATE codax_W7_RP_threads ";
-			sql += "SET closed=1 ";
+			sql += "SELECT closed from codax_W7_RP_threads ";
 			sql += "WHERE threadid=" + threadId;
-			update(sql);
+			long threadClosed = selectLong(sql, "closed");
+			if (threadClosed == 0) { // thread has not been closed before
+				String subject = "test subject";
+				String text = "test content text";
+
+				// Post
+				sql = "";
+				sql += "INSERT INTO cwfusion_posts ";
+				sql += "(forum_id, thread_id, site_id, post_subject, post_message, post_showsig, post_smileys, post_author, post_datestamp, post_ip, post_edituser, post_edittime) ";
+				sql += "VALUES ";
+				sql += "(65, " + threadId + ", 1, '" + subject + "', '" + text + "', 0, 0, 702, '" + unixTime + "', '0.0.0.0', 0, 0) ";
+				long postId = insert(sql);
+
+				// Get Postcount
+				sql = "";
+				sql += "SELECT forum_posts ";
+				sql += "FROM cwfusion_forums ";
+				sql += "WHERE forum_id=65 ";
+				long postCount = selectLong(sql, "forum_posts") + 1;
+
+				// Get Threadcount
+				sql = "";
+				sql += "SELECT forum_threads ";
+				sql += "FROM cwfusion_forums ";
+				sql += "WHERE forum_id=65 ";
+				long threadCount = selectLong(sql, "forum_threads") + 1;
+
+				// Forums
+				sql = "";
+				sql += "UPDATE cwfusion_forums ";
+				sql += "SET forum_lastpost=" + postId + ", forum_lastuser=702, forum_threads=" + threadCount + ", forum_posts=" + postCount + ", forum_lastthread=" + threadId + " ";
+				sql += "WHERE forum_id=65 ";
+				update(sql);
+
+				// Threads
+				sql = "";
+				sql += "UPDATE cwfusion_threads ";
+				sql += "SET thread_lastpost_id=" + postId + " ";
+				sql += "WHERE thread_id= " + threadId;
+				update(sql);
+
+				// Roleplay thread
+				sql = "";
+				sql += "UPDATE codax_W7_RP_threads ";
+				sql += "SET closed=1 ";
+				sql += "WHERE threadid=" + threadId;
+				update(sql);
+			}
 		}
 	}
 
@@ -212,7 +219,7 @@ public class ForumDatabaseTools {
 		}
 		String planetImage = "https://www.clanwolf.net/apps/C3/static/planets/" + systemImageName + ".png";
 
-		String subject = "[C3] " + attacker + " greift " + system + " (" + defender + ") an";
+		String subject = "[C3] R" + round + ": " + attacker + " greift " + system + " (" + defender + ") an";
 		String text = "";
 
 		text += "<table width=\"100%\">";
@@ -264,10 +271,10 @@ public class ForumDatabaseTools {
 		// -4: IS vs IS
 		if (attackType != null) {
 			text += switch (attackType.intValue()) {
-				case -1 -> "<i>" + system + "<br>Landungsschiff der Union-C-Klasse \"" + dropshipName + "\"<br>Im Anflug</i><br><br>" + unit + " (" + attacker + ") befindet sich im Anflug auf " + system + ". Während des Anfluges wird das Batchall übertragen." + "<br>";
-				case -2 -> "<i>" + system + "<br>Landungsschiff der Union-C-Klasse \"" + dropshipName + "\"<br>Im Anflug</i><br><br>" + unit + " (" + attacker + ") befindet sich im Anflug auf " + system + ". Während des Anfluges wird das Batchall übertragen." + "<br>";
-				case -3 -> "<i>" + system + "<br>Landungsschiff der Union-Klasse \"" + dropshipName + "\"<br>Im Anflug</i><br><br>" + unit + " (" + attacker + ") ist auf dem Weg nach " + system + ", der Hauptwelt des Systems. Sie werden bereits erwartet." + "<br>";
-				case -4 -> "<i>" + system + "<br>Landungsschiff der Union-Klasse \"" + dropshipName + "\"<br>Im Anflug</i><br><br>" + unit + " (" + attacker + ") werden sehr bald auf " + system + " landen. Eine Verteidigung wird bereits organisiert." + "<br>";
+				case -1 -> "<i>" + system + "<br>Landungsschiff der Union-C-Klasse \"" + dropshipName + "\"<br>Im Anflug auf " + system + "</i><br><br>" + unit + " (" + attacker + ") befindet sich im Anflug auf " + system + ". Während des Anfluges wird das Batchall übertragen." + "<br>";
+				case -2 -> "<i>" + system + "<br>Landungsschiff der Union-C-Klasse \"" + dropshipName + "\"<br>Im Anflug auf " + system + "</i><br><br>" + unit + " (" + attacker + ") befindet sich im Anflug auf " + system + ". Während des Anfluges wird das Batchall übertragen." + "<br>";
+				case -3 -> "<i>" + system + "<br>Landungsschiff der Union-Klasse \"" + dropshipName + "\"<br>Im Anflug auf " + system + "</i><br><br>" + unit + " (" + attacker + ") ist auf dem Weg nach " + system + ", der Hauptwelt des Systems. Sie werden bereits erwartet." + "<br>";
+				case -4 -> "<i>" + system + "<br>Landungsschiff der Union-Klasse \"" + dropshipName + "\"<br>Im Anflug auf " + system + "</i><br><br>" + unit + " (" + attacker + ") werden sehr bald auf " + system + " landen. Eine Verteidigung wird bereits organisiert." + "<br>";
 				default -> "Landungsschiffe nähern sich " + system + "!";
 			};
 		} else {
@@ -341,23 +348,48 @@ public class ForumDatabaseTools {
 		sql += "WHERE ID= " + attackId;
 		update(sql);
 
-		// -1: Clan vs IS
-		// -2: Clan vs Clan
-		// -3: IS vs Clan
-		// -4: IS vs IS
-		logger.info("--------------------------------------------------------- AttackType: " + attackType);
+		// attacker:
+		// - LA  : Lyran Alliance
+		// - DC  : Draconis Combine
+		// - FRR : Free Rasalhague Republic
+		// - CS  : ComStar
+		// - CW  : Clan Wolf
+		// - CJF : Clan Jade Falcon
+		// - CGB : Clan Ghost Bear
+		logger.info("---------------------------------------------------------   Attacker: " + attacker);
 		String image = "";
-		if (attackType != null) {
-			 image = switch (attackType.intValue()) {
-				case -1 -> "https://www.clanwolf.net/images/C3_RP_Header_01.png";
-				case -2 -> "https://www.clanwolf.net/images/C3_RP_Header_02.png";
-				case -3 -> "https://www.clanwolf.net/images/C3_RP_Header_03.png";
-				case -4 -> "https://www.clanwolf.net/images/C3_RP_Header_04.png";
-				default -> "";
+		if (attacker != null) {
+			image = switch (attacker) {
+				case "LA" -> "https://www.clanwolf.net/images/C3_RP_Header_LA.png";
+				case "DC" -> "https://www.clanwolf.net/images/C3_RP_Header_DC.png";
+				case "CS" -> "https://www.clanwolf.net/images/C3_RP_Header_CS.png";
+				case "CW" -> "https://www.clanwolf.net/images/C3_RP_Header_CW.png";
+				case "FRR" -> "https://www.clanwolf.net/images/C3_RP_Header_FRR.png";
+				case "CJF" -> "https://www.clanwolf.net/images/C3_RP_Header_CJF.png";
+				case "CGB" -> "https://www.clanwolf.net/images/C3_RP_Header_CGB.png";
+				default -> "https://www.clanwolf.net/images/C3_RP_Header_01.png";
 			};
 		} else {
 			image = "https://www.clanwolf.net/images/C3_RP_Header_01.png";
 		}
+
+		// attackType:
+		// -1: Clan vs IS
+		// -2: Clan vs Clan
+		// -3: IS vs Clan
+		// -4: IS vs IS
+//		logger.info("--------------------------------------------------------- AttackType: " + attackType);
+//		if (attackType != null) {
+//			 image = switch (attackType.intValue()) {
+//				case -1 -> "https://www.clanwolf.net/images/C3_RP_Header_01.png";
+//				case -2 -> "https://www.clanwolf.net/images/C3_RP_Header_02.png";
+//				case -3 -> "https://www.clanwolf.net/images/C3_RP_Header_03.png";
+//				case -4 -> "https://www.clanwolf.net/images/C3_RP_Header_04.png";
+//				default -> "";
+//			};
+//		} else {
+//			image = "https://www.clanwolf.net/images/C3_RP_Header_01.png";
+//		}
 
 		// Roleplay thread
 		sql = "";

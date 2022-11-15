@@ -1,6 +1,15 @@
 C3 version history
 --------------------------------
 
+Version 7.1.92 (15.11.2022)
+- ADDED: Cleanup of setup files while downloading latest setup (save diskspace)
+- ADDED: Round information to the thread title in the forums
+- CHANGED: Log level for system libs
+- CHANGED: Log formatting
+
+Version 7.1.89 (14.11.2022)
+- UPDATED: Dependencies
+
 Version 7.1.88 (11.11.2022)
 - CHANGED: Started to rework the rp sound background after invasion drops
 
