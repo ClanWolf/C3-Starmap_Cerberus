@@ -47,6 +47,9 @@ public class C3LogHandler extends StreamHandler {
 		C3LogEntry entry = new C3LogEntry(rowCounter, level, logEntry);
 		logHistory.add(entry);
 		rowCounter++;
+//		if (Level.INFO == record.getLevel()) {
+//			record.setLevel(Level.FINE);
+//		}
 		super.publish(record);
 		flush();
 	}

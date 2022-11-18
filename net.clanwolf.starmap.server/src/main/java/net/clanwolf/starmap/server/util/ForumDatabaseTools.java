@@ -136,6 +136,7 @@ public class ForumDatabaseTools {
 		AttackPOJO attack = AttackDAO.getInstance().findById(Nexus.DUMMY_USERID, attackId);
 		Long threadId = attack.getForumThreadId();
 
+		logger.info("Finalizing invasion thread...");
 		if (threadId != null) {
 			String sql;
 			long unixTime = System.currentTimeMillis() / 1000L;
@@ -157,6 +158,13 @@ public class ForumDatabaseTools {
 				sql += "(65, " + threadId + ", 1, '" + subject + "', '" + text + "', 0, 0, 702, '" + unixTime + "', '0.0.0.0', 0, 0) ";
 				long postId = insert(sql);
 
+				// Get Postdatestamp
+				sql = "";
+				sql += "SELECT post_datestamp ";
+				sql += "FROM cwfusion_posts ";
+				sql += "WHERE post_id=" + postId + " ";
+				long postDatestamp = selectLong(sql, "post_datestamp") + 1;
+
 				// Get Postcount
 				sql = "";
 				sql += "SELECT forum_posts ";
@@ -171,18 +179,27 @@ public class ForumDatabaseTools {
 				sql += "WHERE forum_id=65 ";
 				long threadCount = selectLong(sql, "forum_threads") + 1;
 
-				// Forums
+				// Get Replycount
 				sql = "";
-				sql += "UPDATE cwfusion_forums ";
-				sql += "SET forum_lastpost=" + postId + ", forum_lastuser=702, forum_threads=" + threadCount + ", forum_posts=" + postCount + ", forum_lastthread=" + threadId + " ";
-				sql += "WHERE forum_id=65 ";
-				update(sql);
+				sql += "SELECT thread_replies ";
+				sql += "FROM cwfusion_threads ";
+				sql += "WHERE thread_id=" + threadId + " ";
+				long replyCount = selectLong(sql, "thread_replies") + 1;
 
 				// Threads
 				sql = "";
 				sql += "UPDATE cwfusion_threads ";
 				sql += "SET thread_lastpost_id=" + postId + " ";
-				sql += "WHERE thread_id= " + threadId;
+				sql += "SET thread_lastpost=" + postDatestamp + " ";
+				sql += "SET thread_replies=" + replyCount + " ";
+				sql += "WHERE thread_id=" + threadId + " ";
+				update(sql);
+
+				// Forums
+				sql = "";
+				sql += "UPDATE cwfusion_forums ";
+				sql += "SET forum_lastpost=" + postId + ", forum_lastuser=702, forum_threads=" + threadCount + ", forum_posts=" + postCount + ", forum_lastthread=" + threadId + " ";
+				sql += "WHERE forum_id=65 ";
 				update(sql);
 
 				// Roleplay thread
@@ -219,7 +236,7 @@ public class ForumDatabaseTools {
 		}
 		String planetImage = "https://www.clanwolf.net/apps/C3/static/planets/" + systemImageName + ".png";
 
-		String subject = "[C3] R" + round + ": " + attacker + " greift " + system + " (" + defender + ") an";
+		String subject = "R" + round + ": " + attacker + " greift " + system + " (" + defender + ") an";
 		String text = "";
 
 		text += "<table width=\"100%\">";

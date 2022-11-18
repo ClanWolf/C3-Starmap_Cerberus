@@ -1,6 +1,10 @@
 C3 version history
 --------------------------------
 
+Version 7.1.94 (17.11.2022)
+- ADDED: User overview list
+- CHANGED: Some details in user manual
+
 Version 7.1.92 (15.11.2022)
 - ADDED: Cleanup of setup files while downloading latest setup (save diskspace)
 - ADDED: Round information to the thread title in the forums

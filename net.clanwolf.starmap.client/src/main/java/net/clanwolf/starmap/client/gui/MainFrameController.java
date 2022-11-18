@@ -43,6 +43,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import net.clanwolf.starmap.client.enums.C3MESSAGES;
+import net.clanwolf.starmap.client.gui.panes.chat.ChatEntry;
 import net.clanwolf.starmap.client.gui.panes.chat.ChatPane;
 import net.clanwolf.starmap.client.gui.panes.dice.DicePane;
 import net.clanwolf.starmap.client.gui.panes.logging.LogPane;
@@ -66,7 +67,10 @@ import net.clanwolf.starmap.client.gui.panes.settings.SettingsPane;
 import net.clanwolf.starmap.client.gui.panes.userinfo.UserInfoPane;
 import net.clanwolf.starmap.client.gui.popuppanes.C3PopupPane;
 import net.clanwolf.starmap.client.process.logout.Logout;
+import net.clanwolf.starmap.client.process.universe.BOFaction;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
+import net.clanwolf.starmap.transfer.dtos.FactionDTO;
+import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.client.net.Server;
@@ -272,6 +276,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	@FXML
 	private Pane paneVolumeControl;
 
+	@FXML
+	private TableView<UserHistoryEntry> tblUserHistory;
+
 	// -------------------------------------------------------------------------
 	//
 	// Button hovering
@@ -315,18 +322,45 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 	@FXML
 	private void handleUserInfoEntered() {
-		logger.info("Entered");
+		if (Nexus.isLoggedIn()) {
+			ArrayList<UserDTO> userList = Nexus.getCurrentlyOnlineUserList();
 
-		UserHistoryInfo.toFront();
-		UserHistoryInfo.setVisible(true);
+			Iterator iter = userList.iterator();
+			while (iter.hasNext()) {
+				UserDTO u = (UserDTO) iter.next();
+				BOFaction f = null;
+				Iterator i = Nexus.getBoUniverse().factionBOs.values().iterator();
+				while (i.hasNext()) {
+					BOFaction fa = (BOFaction) i.next();
+					if (fa.getID() == u.getCurrentCharacter().getFactionId().longValue()) {
+						f = fa;
+					}
+				}
+				String factionShortName = "";
+				if (f != null) {
+					factionShortName = f.getShortName();
+				} else {
+					factionShortName = "/";
+				}
+
+				UserHistoryEntry entry = new UserHistoryEntry(u.getUserName(), factionShortName, "", "");
+				tblUserHistory.getItems().add(entry);
+			}
+
+			tblUserHistory.sort();
+			UserHistoryInfo.toFront();
+			UserHistoryInfo.setVisible(true);
+		}
 	}
 
 	@FXML
 	private void handleUserInfoExited() {
-		logger.info("Exited");
+		if (Nexus.isLoggedIn()) {
+			tblUserHistory.getItems().clear();
 
-		UserHistoryInfo.toFront();
-		UserHistoryInfo.setVisible(false);
+			UserHistoryInfo.toFront();
+			UserHistoryInfo.setVisible(false);
+		}
 	}
 
 	@FXML
@@ -1404,6 +1438,40 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		slVolumeControl.toFront();
 		ivMuteToggle.toFront();
 		addActionCallBackListeners();
+
+		tblUserHistory.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+		tblUserHistory.getStyleClass().add("noheader");
+		TableColumn<UserHistoryEntry, String> userColumn = new TableColumn<>("");
+		userColumn.setCellValueFactory(data -> data.getValue().getUser());
+		userColumn.setPrefWidth(202);
+		userColumn.setMaxWidth(205);
+		userColumn.setMinWidth(200);
+		TableColumn<UserHistoryEntry, String> factionColumn = new TableColumn<>("");
+		factionColumn.setCellValueFactory(data -> data.getValue().getFaction());
+		factionColumn.setPrefWidth(32);
+		factionColumn.setMaxWidth(35);
+		factionColumn.setMinWidth(30);
+//		TableColumn<UserHistoryEntry, String> versionColumn = new TableColumn<>("");
+//		versionColumn.setCellValueFactory(data -> data.getValue().getVersion());
+//		versionColumn.setPrefWidth(250);
+//		TableColumn<UserHistoryEntry, String> timeColumn = new TableColumn<>("");
+//		timeColumn.setCellValueFactory(data -> data.getValue().getTime());
+//		timeColumn.setPrefWidth(102);
+//		timeColumn.setMaxWidth(105);
+//		timeColumn.setMinWidth(100);
+		tblUserHistory.getColumns().addAll( userColumn,
+											factionColumn
+											//versionColumn
+											//timeColumn
+		);
+		tblUserHistory.getSortOrder().add(userColumn);
+
+		tblUserHistory.setRowFactory(tblUserHistory -> new TableRow<UserHistoryEntry>() {
+			@Override
+			protected void updateItem(UserHistoryEntry item, boolean empty) {
+				super.updateItem(item, empty);
+			}
+		});
 	}
 
 	/**

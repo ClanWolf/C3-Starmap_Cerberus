@@ -495,6 +495,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				rank = "[kein Rang]";
 			}
 			if (attack.getForumThreadId() == null) {
+				logger.info("Inserting new invasion thread");
 				t.createNewAttackEntries(season,
 					round,
 					starSystem.getName(),
@@ -509,11 +510,18 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				);
 			} else {
 				if (attack.getFactionID_Winner() != null) {
+					logger.info("Finalizing invasion thread");
 					// Enter final post into attack thread in Forum
 					// Only if the RP thread is not closed yet
 					// and the close the thread
 					FactionPOJO winner = FactionDAO.getInstance().findById(getC3UserID(session), attack.getFactionID_Winner());
-					t.createFinalizingEntryForAttack(attack.getId(), season, round, starSystem.getName(), attacker.getShortName(), winner.getShortName(), false);
+					t.createFinalizingEntryForAttack(attack.getId(),
+							season,
+							round,
+							starSystem.getName(),
+							attacker.getShortName(),
+							winner.getShortName(),
+							false);
 				}
 			}
 
