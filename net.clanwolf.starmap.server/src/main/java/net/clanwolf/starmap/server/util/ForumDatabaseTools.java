@@ -236,7 +236,7 @@ public class ForumDatabaseTools {
 		}
 		String planetImage = "https://www.clanwolf.net/apps/C3/static/planets/" + systemImageName + ".png";
 
-		String subject = "R" + round + ": " + attacker + " greift " + system + " (" + defender + ") an";
+		String subject = "[R" + round + "] " + attacker + " greift " + system + " (" + defender + ") an";
 		String text = "";
 
 		text += "<table width=\"100%\">";
