@@ -278,6 +278,11 @@ public class EndRound {
 				}
 				openAttacksInRoundList.clear();
 
+				// Delete all ticker entries for the round that was finalized
+				databaseTools.clearTickerEntriesForRound((long) round);
+				databaseTools.clearTickerEntriesForRound((long) round - 1);
+				databaseTools.clearTickerEntriesForRound((long) round - 2);
+
 				// list all attacks that were fought in this round
 				logger.info("--- Attacks that have been fought in this round:");
 				for (AttackPOJO attackPOJO : allAttacksForRound) {

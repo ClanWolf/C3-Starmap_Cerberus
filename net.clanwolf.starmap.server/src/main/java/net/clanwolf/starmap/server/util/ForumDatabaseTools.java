@@ -132,6 +132,31 @@ public class ForumDatabaseTools {
 		}
 	}
 
+	private void delete(String sql) {
+		try {
+			String user = auth.getProperty("user");
+			String password = auth.getProperty("password");
+
+			Class.forName("com.mysql.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/clanwolf", user, password);
+			Statement stmt = con.createStatement();
+			stmt.executeUpdate(sql);
+
+			stmt.close();
+			con.close();
+		} catch(Exception e) {
+			logger.error("Exception while direct db access", e);
+		}
+	}
+
+	public void clearTickerEntriesForRound(Long round) {
+		String sql;
+		sql = "";
+		sql += "DELETE from clanwolf_ticker ";
+		sql += "WHERE tickerNumber='R" + round + "' ";
+		delete(sql);
+	}
+
 	public void createFinalizingEntryForAttack(Long attackId, Long season, Long round, String system, String attacker, String winner, boolean serverPickedRandomWinner) {
 		AttackPOJO attack = AttackDAO.getInstance().findById(Nexus.DUMMY_USERID, attackId);
 		Long threadId = attack.getForumThreadId();
@@ -140,6 +165,7 @@ public class ForumDatabaseTools {
 		if (threadId != null) {
 			String sql;
 			long unixTime = System.currentTimeMillis() / 1000L;
+			String attackThreadUrl = "https://www.clanwolf.net/forum/viewthread.php?thread_id=" + threadId;
 
 			// Roleplay thread
 			sql = "";
@@ -208,6 +234,16 @@ public class ForumDatabaseTools {
 				sql += "SET closed=1 ";
 				sql += "WHERE threadid=" + threadId;
 				update(sql);
+
+				// Ticker
+				String roundS = "R" + round;
+				String subjectS = system + " gehört jetzt " + winner;
+				sql = "";
+				sql += "INSERT INTO clanwolf_ticker ";
+				sql += "(tickernumber, tickermessage, tickerurl, tickertarget) ";
+				sql += "VALUES ";
+				sql += "('" + roundS + "', '" + subjectS + "', '" + attackThreadUrl + "', '_BLANK') ";
+				insert(sql);
 			}
 		}
 	}
@@ -429,11 +465,13 @@ public class ForumDatabaseTools {
 		}
 
 		// Ticker
+		String roundS = "R" + round;
+		String subjectS = subject.replaceFirst("[R" + round + "] ", "");
 		sql = "";
 		sql += "INSERT INTO clanwolf_ticker ";
 		sql += "(tickernumber, tickermessage, tickerurl, tickertarget) ";
 		sql += "VALUES ";
-		sql += "('" + tickerId + "', '" + subject + "', '" + attackThreadUrl + "', '_BLANK') ";
+		sql += "('" + roundS + "', '" + subjectS + "', '" + attackThreadUrl + "', '_BLANK') ";
 		insert(sql);
 	}
 }

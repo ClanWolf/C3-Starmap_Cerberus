@@ -1,3 +1,4 @@
+TODO_C3:    Wenn man sich neu anmeldet, funktioniert das Bewegen der Schiffe nicht mehr (Rechte?)
 
 TODO_C3:    !!! Banner am Ende der Invasion entsprechend der Fraktion
 TODO_C3:    !!! Kampf beendet: anderes bild
@@ -8,7 +9,6 @@ TODO_C3:    FERTIG (?): Planeten mit Sprungschiff dürfen nicht angegriffen werd
 TODO_C3:    FERTIG (?): Implementieren: Ein Sieg bei einem Angriff gibt Siegpunkte (z.B. 5SP), bei Verlust 2SP. Zum Levelaufstieg braucht das Schiff 15SP.
 
 TODO_C3:    TEST: Was ist mit den panes der invasion oder des rollenspiels? resetten beim abmelden
-TODO_C3:    TEST: sprung button nur enablen, wenn rechte gegeben sind. nur enablen, wenn es aktive offene sprungrouten gibt
 TODO_C3:    TEST: currentPlayerRoleInInvasion am Kampfende zurücksetzen ???
 TODO_C3:    TEST: MWO API Loop war noch aktiv nach einer Invasion
 
@@ -19,8 +19,6 @@ TODO_C3:    zeilenumbrüche im log für stacktraces. wrap in table cell aktivier
 TODO_C3:    Global shortcut buttons (for "continue" while ingame e.g.)
 TODO_C3:    Navigate the client from outside the process (global shortcuts)
 TODO_C3:    Navigate the client if the mouse is not present
-
-TODO_C3:    TeamSpeak API
 
 TODO_C3:    If the attacker commander leaves the lobby, all attackcharacters are deleted and removed from the lobby (lobby closed)
 TODO_C3:    Es treffen sich Sprungschiffe verschiedener Fraktionen auf einem System (möglich?)

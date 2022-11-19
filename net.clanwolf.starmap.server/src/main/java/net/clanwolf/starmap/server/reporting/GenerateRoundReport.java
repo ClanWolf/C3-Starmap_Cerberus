@@ -234,7 +234,9 @@ public class GenerateRoundReport {
             case Linux -> DEST = "/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/seasonhistory/S1/Reports/";
             case Windows -> DEST = "c:\\temp\\";
         }
-        PdfDocument pdfDoc = new PdfDocument(new PdfWriter(DEST + "C3_S" + ap.getSeason() + "_R" + ap.getRound() + "_SSID" + ap.getStarSystemDataID() + ".pdf"));
+
+	    StarSystemPOJO ssPojo = StarSystemDAO.getInstance().findById(Nexus.END_ROUND_USERID, attackPOJO.getStarSystemID());
+        PdfDocument pdfDoc = new PdfDocument(new PdfWriter(DEST + "C3-InvasionReport_S" + ap.getSeason() + "_R" + ap.getRound() + "_" + ssPojo.getName() + ".pdf"));
 
         tableXPTeam1 = new Table(UnitValue.createPercentArray(columnWidthsXP))
                 .useAllAvailableWidth()
