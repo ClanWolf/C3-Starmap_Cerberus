@@ -1,8 +1,14 @@
 C3 version history
 --------------------------------
 
-Version 7.1.96 (18.11.2022)
+Version 7.2.01 (20.11.2022)
+-
+
+Version 7.2.00 (19.11.2022)
 - CHANGED: Clear ticker on finalized round
+- CHANGED: Invasion thread details
+- ADDED: Data protection info
+- ADDED: Audio samples for all invasion types
 
 Version 7.1.94 (17.11.2022)
 - ADDED: User overview list

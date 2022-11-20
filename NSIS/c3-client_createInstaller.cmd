@@ -6,7 +6,7 @@ C:
 CD \
 CD C:\C3\projects\C3-Starmap_Cerberus
 
-REM SET VERSION=7.1.96
+REM SET VERSION=7.2.00
 FOR /f "delims== tokens=1,2" %%G in (C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\target\classes\version.number) do set %%G=%%H
 ECHO Found version: %VERSION%
 REM PAUSE
@@ -79,7 +79,7 @@ ECHO +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ECHO Upload Client installer? (y/n)
 SET /p chc=
 IF '%chc%'=='y' GOTO UPLOADINSTALLER
-IF '%chc%'=='n' GOTO REQUEST_BOTS
+IF '%chc%'=='n' GOTO REQUEST_IRCBOT
 GOTO REQUEST_INSTALLER
 
 :UPLOADINSTALLER
@@ -103,7 +103,7 @@ ECHO +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ECHO Upload IRCBot? (y/n)
 SET /p chc2=
 IF '%chc2%'=='y' GOTO UPLOADIRCBOT
-IF '%chc2%'=='n' GOTO END
+IF '%chc2%'=='n' GOTO REQUEST_TS3BOT
 GOTO REQUEST_IRCBOT
 
 :UPLOADIRCBOT
