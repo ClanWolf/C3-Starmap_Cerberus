@@ -36,7 +36,6 @@ import net.clanwolf.starmap.server.persistence.pojos.*;
 import net.clanwolf.starmap.server.reporting.GenerateRoundReport;
 import net.clanwolf.starmap.transfer.mwo.MWOMatchResult;
 import net.clanwolf.starmap.transfer.mwo.UserDetail;
-import net.clanwolf.starmap.transfer.util.UserXPInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -313,5 +312,6 @@ public class CalcXP {
             }
         }
         report.finishXPReport();
+        logger.info("✅ XP calculating finished");
     }
 }

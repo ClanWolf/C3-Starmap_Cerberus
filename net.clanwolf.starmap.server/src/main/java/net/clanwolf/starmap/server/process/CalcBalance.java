@@ -59,12 +59,12 @@ public class CalcBalance {
         MWOMatchResult matchDetails = new Gson().fromJson(rawJSONstatsData, MWOMatchResult.class);
 
         matchDetails.setGameID(mwoMatchID);
-        logger.info("Calculating balance...");
+        logger.info("--- Calculating balance");
 
         BalanceUserInfo balanceUserInfo;
         balanceUserInfo = new BalanceUserInfo(matchDetails);
         report.createCalcReport(balanceUserInfo.GetAttackerInfo(), balanceUserInfo.GetDefenderInfo());
-        logger.info("--- Balance calculating finished ---");
+        logger.info("✅ Balance calculating finished");
 
     }
 

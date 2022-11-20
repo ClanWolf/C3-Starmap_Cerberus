@@ -227,16 +227,20 @@ public class GenerateRoundReport {
     }
 
     public GenerateRoundReport(AttackPOJO ap) throws Exception {
+        String pdfFileName;
         starSystemID = ap.getStarSystemID();
         attackPOJO = ap;
+
         OSCheck.OSType osType = OSCheck.getOperatingSystemType();
         switch (osType) {
             case Linux -> DEST = "/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/seasonhistory/S1/Reports/";
             case Windows -> DEST = "c:\\temp\\";
         }
+        StarSystemPOJO ssPojo = StarSystemDAO.getInstance().findById(Nexus.END_ROUND_USERID, attackPOJO.getStarSystemID());
+        pdfFileName = "C3-InvasionReport_S" + ap.getSeason() + "_R" + ap.getRound() + "_" + ssPojo.getName() + ".pdf";
 
-	    StarSystemPOJO ssPojo = StarSystemDAO.getInstance().findById(Nexus.END_ROUND_USERID, attackPOJO.getStarSystemID());
-        PdfDocument pdfDoc = new PdfDocument(new PdfWriter(DEST + "C3-InvasionReport_S" + ap.getSeason() + "_R" + ap.getRound() + "_" + ssPojo.getName() + ".pdf"));
+        logger.info("--- Genrate PDF report for attackId: " + ap.getId());
+        PdfDocument pdfDoc = new PdfDocument(new PdfWriter(DEST + pdfFileName));
 
         tableXPTeam1 = new Table(UnitValue.createPercentArray(columnWidthsXP))
                 .useAllAvailableWidth()
@@ -274,6 +278,7 @@ public class GenerateRoundReport {
     public void saveReport() {
 
         doc.close();
+        logger.info("✅ PDF report created");
         dropCounter = 1;
         String[] receivers = {"keshik@googlegroups.com"};
         boolean sent;
@@ -907,7 +912,7 @@ public class GenerateRoundReport {
                 .add(new Paragraph(""));
 
 
-        logger.info("---Faction info created---");
+        //logger.info("---Faction info created---");
 
     }
 
@@ -918,10 +923,10 @@ public class GenerateRoundReport {
         if (urlExists(seasonHistoryURL)) {
             logger.info("Download season history map: " + seasonHistoryURL);
             ImageData imgSeasonData = ImageDataFactory.create(new URL(seasonHistoryURL));
-            Image imSeason = new Image(imgSeasonData);
-            imSeason.setAutoScale(true);
+            Image imgSeason = new Image(imgSeasonData);
+            imgSeason.setAutoScale(true);
 
-            doc.add(imSeason);
+            doc.add(imgSeason);
             doc.add(createLink("Link to season history map", seasonHistoryURL));
         } else {
 
@@ -1038,7 +1043,6 @@ public class GenerateRoundReport {
 
     public void createCalcReport(java.util.List<BalanceUserInfo> attacker, java.util.List<BalanceUserInfo> defender) throws Exception {
 
-        logger.info("--- Generate balance report ---");
         long defCostTotal = 0L;
         long attCostTotal = 0L;
         tableCostDefender = null;
@@ -1101,7 +1105,7 @@ public class GenerateRoundReport {
         tableCostAttacker = null;
         team1Counter = 0;
         team2Counter = 0;
-        logger.info("--- Balance report finished ---");
+        //logger.info("--- Balance report finished ---");
         dropCounter = dropCounter + 1;
     }
 
