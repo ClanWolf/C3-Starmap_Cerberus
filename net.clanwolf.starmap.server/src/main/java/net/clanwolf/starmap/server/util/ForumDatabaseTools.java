@@ -215,9 +215,7 @@ public class ForumDatabaseTools {
 				// Threads
 				sql = "";
 				sql += "UPDATE cwfusion_threads ";
-				sql += "SET thread_lastpost_id=" + postId + " ";
-				sql += "SET thread_lastpost=" + postDatestamp + " ";
-				sql += "SET thread_replies=" + replyCount + " ";
+				sql += "SET thread_lastpost_id=" + postId + ", thread_lastpost=" + postDatestamp + ", thread_replies=" + replyCount + " ";
 				sql += "WHERE thread_id=" + threadId + " ";
 				update(sql);
 
