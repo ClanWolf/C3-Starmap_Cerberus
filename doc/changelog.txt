@@ -1,8 +1,11 @@
 C3 version history
 --------------------------------
 
+Version 7.2.02 (21.11.2022)
+- ADDED: Faction logo on top left
+
 Version 7.2.01 (20.11.2022)
--
+- FIXED: Error in sql update
 
 Version 7.2.00 (19.11.2022)
 - CHANGED: Clear ticker on finalized round

@@ -245,6 +245,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private ImageView ivMWOLogo;
 
 	@FXML
+	private ImageView ivFactionLogo;
+
+	@FXML
 	private Label helpLabel;
 
 	@FXML
@@ -1189,6 +1192,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		ActionManager.addActionCallbackListener(ACTIONS.FLASH_MWO_LOGO_ONCE, this);
 		ActionManager.addActionCallbackListener(ACTIONS.IRC_DISCONNECT_NOW, this);
 		ActionManager.addActionCallbackListener(ACTIONS.SERVER_CONNECTION_LOST, this);
+		ActionManager.addActionCallbackListener(ACTIONS.SET_FACTION_LOGO, this);
+		ActionManager.addActionCallbackListener(ACTIONS.SET_FACTION_LOGO_INVISIBLE, this);
 	}
 
 	public static Date addDaysToDate(Date date, int daysToAdd) {
@@ -1775,6 +1780,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 //				GameState state = new GameState(GAMESTATEMODES.USER_LOG_OUT);
 //				Nexus.fireNetworkEvent(state);
 
+				ActionManager.getAction(ACTIONS.SET_FACTION_LOGO_INVISIBLE).execute();
 				break;
 
 			case LOGGED_OFF_AFTER_DOUBLE_LOGIN_COMPLETE:
@@ -1860,8 +1866,20 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					}
 
 					UserHistoryInfo.setVisible(false);
+					ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("5");
 				});
-				ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("5");
+				break;
+
+			case SET_FACTION_LOGO:
+				Image factionLogo = Nexus.getFactionLogo();
+				if (factionLogo != null) {
+					ivFactionLogo.setImage(factionLogo);
+				}
+				ivFactionLogo.setVisible(true);
+				break;
+
+			case SET_FACTION_LOGO_INVISIBLE:
+				ivFactionLogo.setVisible(false);
 				break;
 
 			case LOGON_RUNNING:

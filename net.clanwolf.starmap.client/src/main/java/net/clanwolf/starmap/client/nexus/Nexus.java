@@ -30,6 +30,7 @@ import io.nadron.client.app.Session;
 import io.nadron.client.event.Events;
 import io.nadron.client.event.NetworkEvent;
 import javafx.scene.control.Slider;
+import javafx.scene.image.Image;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
 import net.clanwolf.starmap.client.gui.panes.logging.LogWatcher;
 import net.clanwolf.starmap.client.gui.panes.map.MapPaneController;
@@ -121,6 +122,8 @@ public class Nexus {
 		return checkSystemClipboardForMWOResultTimer;
 	}
 
+	public static Image factionLogo;
+
 	public static void setCheckSystemClipboardForMWOResultTimer(Timer checkSystemClipboardForMWOResultTimerV) {
 		checkSystemClipboardForMWOResultTimer = checkSystemClipboardForMWOResultTimerV;
 	}
@@ -130,6 +133,14 @@ public class Nexus {
 	 */
 	private Nexus() {
 
+	}
+
+	public static Image getFactionLogo() {
+		return factionLogo;
+	}
+
+	public static void setFactionLogo(Image logo) {
+		factionLogo = logo;
 	}
 
 	public static void setMWOCheckingActive(boolean value) {

@@ -274,6 +274,8 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 				}
 				Image imageFaction = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logos/factions/" + factionOfCurrentChar.getLogo())));
 				ivFactionLogo.setImage(imageFaction);
+				Nexus.setFactionLogo(imageFaction);
+				ActionManager.getAction(ACTIONS.SET_FACTION_LOGO).execute();
 				labelFaction.setText(factionOfCurrentChar.getLocalizedName()); // left panel
 				labelFactionName.setText(factionOfCurrentChar.getLocalizedName()); // right panel
 				valueSystems.setText("" + factionOfCurrentChar.getSystemCountAll());

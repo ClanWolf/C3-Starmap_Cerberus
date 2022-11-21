@@ -173,8 +173,16 @@ public class ForumDatabaseTools {
 			sql += "WHERE threadid=" + threadId;
 			long threadClosed = selectLong(sql, "closed");
 			if (threadClosed == 0) { // thread has not been closed before
-				String subject = "test subject";
-				String text = "test content text";
+				String logo = "https://www.clanwolf.net/apps/C3/static/logos/factions/banner/Banner_" + winner + ".png";
+				String subject = "Der Kampf um " + system + "ist entschieden.";
+				String text = "";
+				text += "<table width=\"100%\">";
+				text += "<tr>";
+				text += "<td align=\"right\"> </td>";
+				text += "<td align=\"center\"><img src=\"" + logo + "\" width=\"90px\"></td>";
+				text += "<td align=\"left\"> </td>";
+				text += "</tr>";
+				text += "</table>";
 
 				// Post
 				sql = "";

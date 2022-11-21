@@ -237,6 +237,11 @@
             <Image url="@../icons/teal-circle.png" />
          </image>
       </ImageView>
+      <ImageView fx:id="ivFactionLogo" cache="true" cacheHint="QUALITY" fitHeight="60.0" fitWidth="60.0" layoutX="58.0" layoutY="86.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+         <effect>
+            <DropShadow />
+         </effect>
+      </ImageView>
     </children>
     <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />

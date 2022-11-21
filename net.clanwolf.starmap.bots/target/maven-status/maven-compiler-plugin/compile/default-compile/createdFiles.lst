@@ -1,0 +1,9 @@
+net\clanwolf\util\Internationalization.class
+net\clanwolf\ircclient\IRCBot.class
+net\clanwolf\ircclient\RandomTextDrop.class
+net\clanwolf\ircclient\UserListDrop.class
+net\clanwolf\ts3client\TS3Bot$1.class
+module-info.class
+net\clanwolf\db\DBConnection.class
+net\clanwolf\ts3client\TS3Bot.class
+net\clanwolf\util\CheckShutdownFlagTimer.class
