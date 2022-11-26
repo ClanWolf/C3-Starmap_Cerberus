@@ -1,6 +1,12 @@
 C3 version history
 --------------------------------
 
+Version 7.2.04 (26.11.2022)
+- UPDATED: Database connector
+- ADDED: Faction logo on login, fixed flickering
+- FIXED: Audio playback
+- FIXED: Marking of attacked systems in current round (dashed background)
+
 Version 7.2.02 (21.11.2022)
 - ADDED: Faction logo on top left
 

@@ -183,6 +183,9 @@ public class ForumDatabaseTools {
 				text += "<td align=\"left\"> </td>";
 				text += "</tr>";
 				text += "</table>";
+				if (serverPickedRandomWinner) {
+					text += "\r\n[center][b][color=#ffcc00]Dieser Kampf wurde ausgewürfelt.[/color][/b][/center]";
+				}
 
 				// Post
 				sql = "";

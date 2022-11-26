@@ -26,7 +26,7 @@
 
 		<!-- C3 Revision -->
 		<!-- https://stackoverflow.com/questions/10582054/maven-project-version-inheritance-do-i-have-to-specify-the-parent-version -->
-		<revision>7.2.02</revision>
+		<revision>7.2.04</revision>
 
 		<!-- Versions -->
 		<version.java>19</version.java>
@@ -39,8 +39,9 @@
 		<version.spring-security-config>5.7.3</version.spring-security-config>
 		<!-- version.hibernate.core>5.6.8</version.hibernate.core -->
 		<version.hibernate>5.6.14.Final</version.hibernate>
-		<version.mysql-connector>8.0.30</version.mysql-connector>
-		<version.slf4j>2.0.3</version.slf4j>
+		<version.mysql-connector>8.0.31</version.mysql-connector>
+		<version.mariadb-connector>3.1.0</version.mariadb-connector>
+		<version.slf4j>2.0.4</version.slf4j>
 		<!-- hikariCP and hikari jars are on the server next to the server jar. -->
 		<!-- Path is in the manifest file!                                      -->
 		<!-- IF this version is changed:                                        -->

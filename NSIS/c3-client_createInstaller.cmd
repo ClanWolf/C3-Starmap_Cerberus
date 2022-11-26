@@ -6,13 +6,18 @@ C:
 CD \
 CD C:\C3\projects\C3-Starmap_Cerberus
 
-REM SET VERSION=7.2.02
+REM SET VERSION=7.2.04
 FOR /f "delims== tokens=1,2" %%G in (C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\target\classes\version.number) do set %%G=%%H
 ECHO Found version: %VERSION%
 REM PAUSE
 
 ECHO Copying launcher exe
 COPY C:\c3\projects\C3-Starmap_Cerberus\NSIS\client_launcher_executable\C3-Starmap_Cerberus.exe_ C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\target\jlink-image\bin\C3-Starmap_Cerberus.exe
+REM PAUSE
+
+ECHO Copying TTS samples from cache into project
+COPY %UserProfile%\.ClanWolf.net_C3\cache\voice\de\*.* C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\src\main\resources\sound\voice\de /Y /V
+COPY %UserProfile%\.ClanWolf.net_C3\cache\voice\en\*.* C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\src\main\resources\sound\voice\en /Y /V
 REM PAUSE
 
 REM 19 is set in NRICreator.java

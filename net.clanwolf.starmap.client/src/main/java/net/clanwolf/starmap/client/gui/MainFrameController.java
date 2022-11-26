@@ -107,6 +107,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class MainFrameController extends AbstractC3Controller implements ActionCallBackListener {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
+	private boolean factionLogoVisible = false;
 	private boolean enableLanguageSwitch = true;
 	private boolean buttonsAreMoving = false;
 	private boolean adminMenuActive = false;
@@ -246,6 +247,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 	@FXML
 	private ImageView ivFactionLogo;
+
+	@FXML
+	private ImageView ivFactionLogoShield;
 
 	@FXML
 	private Label helpLabel;
@@ -1871,15 +1875,42 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				break;
 
 			case SET_FACTION_LOGO:
-				Image factionLogo = Nexus.getFactionLogo();
-				if (factionLogo != null) {
-					ivFactionLogo.setImage(factionLogo);
-				}
-				ivFactionLogo.setVisible(true);
+				Platform.runLater(() -> {
+					if (!factionLogoVisible) {
+						Image factionLogo = Nexus.getFactionLogo();
+						if (factionLogo != null) {
+							ivFactionLogoShield.setVisible(true);
+							ivFactionLogo.setVisible(false);
+							ivFactionLogo.setImage(factionLogo);
+							FadeTransition fadeInTransition = new FadeTransition(Duration.millis(400), ivFactionLogoShield);
+							fadeInTransition.setFromValue(0.0);
+							fadeInTransition.setToValue(1.0);
+							fadeInTransition.setCycleCount(1);
+							fadeInTransition.setOnFinished(event -> {
+								ivFactionLogo.setVisible(true);
+							});
+							fadeInTransition.play();
+						}
+						factionLogoVisible = true;
+					}
+				});
 				break;
 
 			case SET_FACTION_LOGO_INVISIBLE:
-				ivFactionLogo.setVisible(false);
+				Platform.runLater(() -> {
+					if (factionLogoVisible) {
+						ivFactionLogo.setVisible(false);
+						FadeTransition fadeOutTransition = new FadeTransition(Duration.millis(400), ivFactionLogoShield);
+						fadeOutTransition.setFromValue(1.0);
+						fadeOutTransition.setToValue(0.0);
+						fadeOutTransition.setCycleCount(1);
+						fadeOutTransition.setOnFinished(event -> {
+							ivFactionLogoShield.setVisible(false);
+						});
+						fadeOutTransition.play();
+						factionLogoVisible = false;
+					}
+				});
 				break;
 
 			case LOGON_RUNNING:

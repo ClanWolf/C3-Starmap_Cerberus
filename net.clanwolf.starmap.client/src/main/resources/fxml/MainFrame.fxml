@@ -17,7 +17,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="AnchorPane" fx:id="rootAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="630.0" prefWidth="1030.0" xmlns="http://javafx.com/javafx/18" fx:controller="net.clanwolf.starmap.client.gui.MainFrameController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="AnchorPane" fx:id="rootAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="630.0" prefWidth="1030.0" xmlns="http://javafx.com/javafx/19" fx:controller="net.clanwolf.starmap.client.gui.MainFrameController">
     <children>
         <Pane fx:id="mouseStopper" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="1.0" prefHeight="630.0" prefWidth="1030.0" styleClass="AnchorPane" visible="true">
             <stylesheets>
@@ -237,7 +237,15 @@
             <Image url="@../icons/teal-circle.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="ivFactionLogo" cache="true" cacheHint="QUALITY" fitHeight="60.0" fitWidth="60.0" layoutX="58.0" layoutY="86.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="ivFactionLogoShield" cache="true" cacheHint="QUALITY" fitHeight="110.0" fitWidth="110.0" layoutX="33.0" layoutY="55.0" mouseTransparent="true" pickOnBounds="true" visible="false">
+         <effect>
+            <DropShadow />
+         </effect>
+         <image>
+            <Image url="@../images/gui/shield.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="ivFactionLogo" cache="true" cacheHint="QUALITY" fitHeight="60.0" fitWidth="66.0" layoutX="58.0" layoutY="80.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
          <effect>
             <DropShadow />
          </effect>
