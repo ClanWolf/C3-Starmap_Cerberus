@@ -179,7 +179,7 @@ public class ForumDatabaseTools {
 				text += "<table width=\"100%\">";
 				text += "<tr>";
 				text += "<td align=\"right\"> </td>";
-				text += "<td align=\"center\"><img src=\"" + logo + "\" width=\"90px\"></td>";
+				text += "<td align=\"center\"><img src=\"" + logo + "\" width=\"190px\"></td>";
 				text += "<td align=\"left\"> </td>";
 				text += "</tr>";
 				text += "</table>";

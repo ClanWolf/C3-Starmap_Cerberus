@@ -79,6 +79,9 @@ public class ResultAnalyzer {
 		Integer team1SurvivingPercentage = 0;
 		Integer team2SurvivingPercentage = 0;
 
+		Integer team1Damage = 0;
+		Integer team2Damage = 0;
+
 		String attackerTeam = null;
 		String defenderTeam = null;
 
@@ -198,6 +201,7 @@ public class ResultAnalyzer {
 				team1NumberOfPilots++;
 				team1SurvivingPercentage += healthPercentage;
 				team1Tonnage += tonnage;
+				team1Damage += damage;
 				if (healthPercentage == 0) {
 					team2LostTonnage += tonnage;
 					team2KillCount++;
@@ -206,6 +210,7 @@ public class ResultAnalyzer {
 				team2NumberOfPilots++;
 				team2SurvivingPercentage += healthPercentage;
 				team2Tonnage += tonnage;
+				team2Damage += damage;
 				if (healthPercentage == 0) {
 					team1LostTonnage += tonnage;
 					team1KillCount++;
@@ -307,6 +312,22 @@ public class ResultAnalyzer {
 							attackStats.setWinnerFactionId(Nexus.getCurrentAttackOfUser().getAttackerFactionId().longValue());
 						} else if ("2".equals(winner)) { // Defender won
 							attackStats.setWinnerFactionId(Nexus.getCurrentAttackOfUser().getDefenderFactionId().longValue());
+						} else {
+							if (team1Damage > team2Damage) {
+								if (team1Damage - team2Damage >= 500) {
+									attackStats.setWinnerFactionId(Nexus.getCurrentAttackOfUser().getAttackerFactionId().longValue());
+								} else {
+									// Damage difference below 500! It is a draw!
+									//TODO: What do we do here?
+								}
+							} else {
+								if (team2Damage - team1Damage >= 500) {
+									attackStats.setWinnerFactionId(Nexus.getCurrentAttackOfUser().getDefenderFactionId().longValue());
+								} else {
+									// Damage difference below 500! It is a draw!
+									//TODO: What do we do here?
+								}
+							}
 						}
 					} else if ("2".equals(attackerTeam) && "1".equals(defenderTeam)) {
 						attackStats.setAttackerNumberOfPilots(team1NumberOfPilots.longValue());
@@ -321,6 +342,22 @@ public class ResultAnalyzer {
 							attackStats.setWinnerFactionId(Nexus.getCurrentAttackOfUser().getDefenderFactionId().longValue());
 						} else if ("2".equals(winner)) { // Attacker won
 							attackStats.setWinnerFactionId(Nexus.getCurrentAttackOfUser().getAttackerFactionId().longValue());
+						} else {
+							if (team2Damage > team1Damage) {
+								if (team2Damage - team1Damage >= 500) {
+									attackStats.setWinnerFactionId(Nexus.getCurrentAttackOfUser().getAttackerFactionId().longValue());
+								} else {
+									// Damage difference below 500! It is a draw!
+									//TODO: What do we do here?
+								}
+							} else {
+								if (team1Damage - team2Damage >= 500) {
+									attackStats.setWinnerFactionId(Nexus.getCurrentAttackOfUser().getDefenderFactionId().longValue());
+								} else {
+									// Damage difference below 500! It is a draw!
+									//TODO: What do we do here?
+								}
+							}
 						}
 					}
 
