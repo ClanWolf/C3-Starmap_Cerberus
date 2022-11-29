@@ -1,9 +1,10 @@
 C3 version history
 --------------------------------
 
-Version 7.2.7 (29.11.2022)
+Version 7.2.8 (29.11.2022)
 - FIXED: Login problem (inserting null value for birthdate)
 - FIXED: Default date values tweaked to prevent problems with null values
+- FIXED: Dashed background additional fix
 
 Version 7.2.6 (28.11.2022)
 - UPDATED: Database connector

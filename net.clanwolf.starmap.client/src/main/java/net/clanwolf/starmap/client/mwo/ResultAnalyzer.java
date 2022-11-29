@@ -299,7 +299,7 @@ public class ResultAnalyzer {
 					attackStats.setDropEnded(md.getCompleteTime());
 					attackStats.setAttackerFactionId(Nexus.getCurrentAttackOfUser().getAttackerFactionId().longValue());
 					attackStats.setDefenderFactionId(Nexus.getCurrentAttackOfUser().getDefenderFactionId().longValue());
-					if ("1".equals(attackerTeam) && "2".equals(defenderTeam)) {
+					if ("1".equals(attackerTeam) && "2".equals(defenderTeam)) { // Attacker: 1 / Defender: 2
 						attackStats.setAttackerNumberOfPilots(team1NumberOfPilots.longValue());
 						attackStats.setDefenderNumberOfPilots(team2NumberOfPilots.longValue());
 						attackStats.setAttackerTonnage(team1Tonnage);
@@ -313,23 +313,26 @@ public class ResultAnalyzer {
 						} else if ("2".equals(winner)) { // Defender won
 							attackStats.setWinnerFactionId(Nexus.getCurrentAttackOfUser().getDefenderFactionId().longValue());
 						} else {
-							if (team1Damage > team2Damage) {
-								if (team1Damage - team2Damage >= 500) {
-									attackStats.setWinnerFactionId(Nexus.getCurrentAttackOfUser().getAttackerFactionId().longValue());
+							// Gamemode (mode) Skirmish will be decided by damage in case it is a draw
+							if ("Skirmish".equalsIgnoreCase(mode)) { // Skirmish
+								if (team1Damage > team2Damage) {
+									if (team1Damage - team2Damage >= 50) {
+										attackStats.setWinnerFactionId(Nexus.getCurrentAttackOfUser().getAttackerFactionId().longValue());
+									} else {
+										// Damage difference below 50! It is a draw!
+										// attackStatsWinnerId will be set to NULL
+									}
 								} else {
-									// Damage difference below 500! It is a draw!
-									//TODO: What do we do here?
-								}
-							} else {
-								if (team2Damage - team1Damage >= 500) {
-									attackStats.setWinnerFactionId(Nexus.getCurrentAttackOfUser().getDefenderFactionId().longValue());
-								} else {
-									// Damage difference below 500! It is a draw!
-									//TODO: What do we do here?
+									if (team2Damage - team1Damage >= 50) {
+										attackStats.setWinnerFactionId(Nexus.getCurrentAttackOfUser().getDefenderFactionId().longValue());
+									} else {
+										// Damage difference below 50! It is a draw!
+										// attackStatsWinnerId will be set to NULL
+									}
 								}
 							}
 						}
-					} else if ("2".equals(attackerTeam) && "1".equals(defenderTeam)) {
+					} else if ("2".equals(attackerTeam) && "1".equals(defenderTeam)) { // Attacker: 2 / Defender: 1
 						attackStats.setAttackerNumberOfPilots(team1NumberOfPilots.longValue());
 						attackStats.setDefenderNumberOfPilots(team2NumberOfPilots.longValue());
 						attackStats.setAttackerTonnage(team2Tonnage);
@@ -343,19 +346,22 @@ public class ResultAnalyzer {
 						} else if ("2".equals(winner)) { // Attacker won
 							attackStats.setWinnerFactionId(Nexus.getCurrentAttackOfUser().getAttackerFactionId().longValue());
 						} else {
-							if (team2Damage > team1Damage) {
-								if (team2Damage - team1Damage >= 500) {
-									attackStats.setWinnerFactionId(Nexus.getCurrentAttackOfUser().getAttackerFactionId().longValue());
+							// Gamemode (mode) Skirmish will be decided by damage in case it is a draw
+							if ("Skirmish".equalsIgnoreCase(mode)) { // Skirmish
+								if (team2Damage > team1Damage) {
+									if (team2Damage - team1Damage >= 50) {
+										attackStats.setWinnerFactionId(Nexus.getCurrentAttackOfUser().getAttackerFactionId().longValue());
+									} else {
+										// Damage difference below 50! It is a draw!
+										// attackStatsWinnerId will be set to NULL
+									}
 								} else {
-									// Damage difference below 500! It is a draw!
-									//TODO: What do we do here?
-								}
-							} else {
-								if (team1Damage - team2Damage >= 500) {
-									attackStats.setWinnerFactionId(Nexus.getCurrentAttackOfUser().getDefenderFactionId().longValue());
-								} else {
-									// Damage difference below 500! It is a draw!
-									//TODO: What do we do here?
+									if (team1Damage - team2Damage >= 50) {
+										attackStats.setWinnerFactionId(Nexus.getCurrentAttackOfUser().getDefenderFactionId().longValue());
+									} else {
+										// Damage difference below 50! It is a draw!
+										// attackStatsWinnerId will be set to NULL
+									}
 								}
 							}
 						}

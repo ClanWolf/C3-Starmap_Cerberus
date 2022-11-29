@@ -286,7 +286,7 @@ public class GenerateRoundReport {
         if (!GameServer.isDevelopmentPC) {
             StarSystemPOJO planet = StarSystemDAO.getInstance().findById(Nexus.DUMMY_USERID, starSystemID);
 
-            String subject = "PDF report created for season:" +
+            String subject = "PDF report created for season: " +
                     attackPOJO.getSeason() +
                     " round:" +
                     attackPOJO.getRound() +
@@ -295,16 +295,16 @@ public class GenerateRoundReport {
 
             String message = "PDF report successfully created." +
                     "\r\n" +
-                    "Season:" +
+                    "Season: " +
                     attackPOJO.getSeason() +
                     "\r\n" +
-                    "Round:" +
+                    "Round: " +
                     attackPOJO.getRound() +
                     "\r\n" +
-                    "Planet:" +
+                    "Planet: " +
                     planet.getName() +
                     "\r\n" +
-                    "File path to the report:" +
+                    "File path to the report: " +
                     DEST;
 
             sent = MailManager.sendMail("c3@clanwolf.net", receivers, subject, message, false);
@@ -325,12 +325,12 @@ public class GenerateRoundReport {
 
         createC3Header("XP award for drop " + dropCounter);
         if (!(xpWarning == null)) {
-            doc.add(new Paragraph("The following players do not get XP:").setFontSize(8).setBold())
+            doc.add(new Paragraph("The following players do not get XP: ").setFontSize(8).setBold())
                     .add(xpWarning)
                     .add(new Paragraph());
             xpWarning = null;
         }
-        doc.add(new Paragraph("Calculation for XP distribution:").setFontSize(8).setBold());
+        doc.add(new Paragraph("Calculation for XP distribution: ").setFontSize(8).setBold());
 
         createCalcInfoXP();
 
@@ -840,7 +840,7 @@ public class GenerateRoundReport {
                 .addCell(addGreyCell("MWO Match ID: " + attackStats.getMwoMatchId()))
                 .addCell(addGreyCell("Round: " + attackStats.getRoundId()))
                 .addCell(addGreyCell("Attack ID: " + attackStats.getAttackId()))
-                .addCell(addGreyCell("C3 ID:" + attackStats.id));
+                .addCell(addGreyCell("C3 ID: " + attackStats.id));
 
         try {
 
@@ -854,7 +854,7 @@ public class GenerateRoundReport {
             logger.error(e.getMessage());
         }
 
-        doc.add(new Paragraph("Lobby setting:").setFontSize(8).setBold());
+        doc.add(new Paragraph("Lobby setting: ").setFontSize(8).setBold());
         doc.add(tableGameInfo);
 
     }
@@ -893,12 +893,12 @@ public class GenerateRoundReport {
 
         List attackerInfo = new List()
                 .add("Name: " + factionAttacker.getName_en())
-                .add("Main system :" + factionAttacker.getMainSystem())
+                .add("Main system: " + factionAttacker.getMainSystem())
                 .add("Faction type: " + getFactionType(factionAttacker.getFactionTypeID()));
 
         List defenderInfo = new List()
                 .add("Name: " + factionDefender.getName_en())
-                .add("Main system :" + factionDefender.getMainSystem())
+                .add("Main system: " + factionDefender.getMainSystem())
                 .add("Faction type: " + getFactionType(factionDefender.getFactionTypeID()));
 
         tableFactionInfo
@@ -940,7 +940,7 @@ public class GenerateRoundReport {
     }
 
     private void createPlanetInfo() {
-        doc.add(new Paragraph("Information about the planet being attacked:").setFontSize(8).setBold());
+        doc.add(new Paragraph("Information about the planet being attacked: ").setFontSize(8).setBold());
         StarSystemPOJO planet = StarSystemDAO.getInstance().findById(Nexus.DUMMY_USERID, starSystemID);
         List planetInfo = new List();
 
@@ -949,7 +949,7 @@ public class GenerateRoundReport {
                 .add("Planet name: " + planet.getName())
                 .add("X and Y coordinates: X: " + planet.getX() + ", Y: " + planet.getY())
                 .add("Star type: " + planet.getStarType1())
-                .add("Planet ID:" + planet.getId())
+                .add("Planet ID: " + planet.getId())
                 .add("Population: " + nf.format(planet.getPopulation()))
                 .add("Resources: " + nf.format(planet.getResources()));
 

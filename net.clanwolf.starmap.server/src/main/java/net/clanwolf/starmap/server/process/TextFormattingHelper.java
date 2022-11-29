@@ -86,7 +86,7 @@ public class TextFormattingHelper {
      * @throws RuntimeException ruft die Fehlerbehandlung ab.
      */
     public void startXPReport() throws RuntimeException {
-        mailMessage.append("---Begin from the report of XP distribution---").append("\r\n\r\n");
+        mailMessage.append("--- Begin from the report of XP distribution ---").append("\r\n\r\n");
     }
 
     /**
@@ -95,7 +95,7 @@ public class TextFormattingHelper {
      * @throws RuntimeException ruft die Fehlerbehandlung ab.
      */
     public void addXPComponentDestroyed(Integer countComponentDestroyed) throws RuntimeException {
-        addTwoColumnsText("Component destroyed:", XP_REWARD_COMPONENT_DESTROYED * countComponentDestroyed +
+        addTwoColumnsText("Component destroyed: ", XP_REWARD_COMPONENT_DESTROYED * countComponentDestroyed +
                 " XP (" + XP_REWARD_COMPONENT_DESTROYED + " XP * " + countComponentDestroyed +
                 " Component destroyed)");
     }
@@ -106,7 +106,7 @@ public class TextFormattingHelper {
      * @throws RuntimeException ruft die Fehlerbehandlung ab.
      */
     public void addXPMatchScore(Integer matchScore) throws RuntimeException {
-        addTwoColumnsText("Match score:", CalcRange(matchScore.longValue(), XP_REWARD_EACH_MATCH_SCORE_RANGE) * XP_REWARD_EACH_MATCH_SCORE +
+        addTwoColumnsText("Match score: ", CalcRange(matchScore.longValue(), XP_REWARD_EACH_MATCH_SCORE_RANGE) * XP_REWARD_EACH_MATCH_SCORE +
                 " XP (" + XP_REWARD_EACH_MATCH_SCORE + " XP * " +
                 CalcRange(matchScore.longValue(), XP_REWARD_EACH_MATCH_SCORE_RANGE)+
                 " per reached " + XP_REWARD_EACH_MATCH_SCORE_RANGE + " Match score [User match score: " +
@@ -119,7 +119,7 @@ public class TextFormattingHelper {
      * @throws RuntimeException ruft die Fehlerbehandlung ab.
      */
     public void addXPDamage(Integer damage) throws RuntimeException {
-        addTwoColumnsText("Damage:",CalcRange(damage.longValue(), XP_REWARD_EACH_DAMAGE_RANGE) * XP_REWARD_EACH_DAMAGE +
+        addTwoColumnsText("Damage: ",CalcRange(damage.longValue(), XP_REWARD_EACH_DAMAGE_RANGE) * XP_REWARD_EACH_DAMAGE +
                 " XP (" + XP_REWARD_EACH_DAMAGE + " XP * " +
                 CalcRange(damage.longValue(), XP_REWARD_EACH_DAMAGE_RANGE) + " per reached " +
                 XP_REWARD_EACH_DAMAGE_RANGE + " Damage [User damage: " + damage + "])");
@@ -135,15 +135,19 @@ public class TextFormattingHelper {
         FactionPOJO factionDefender = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, attackStats.getDefenderFactionId());
         FactionPOJO factionWinner = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, attackStats.getWinnerFactionId());
 
-        addTwoColumnsText("Attacker:", factionAttacker.getName_en());
-        addTwoColumnsText("Defender:", factionDefender.getName_en());
-        addTwoColumnsText("Round Id: ", attackStats.getRoundId().toString());
-        addTwoColumnsText("Attack Id:", attackStats.getAttackId().toString());
-        addTwoColumnsText("ID:", attackStats.getId().toString());
-        addTwoColumnsText("MWO Match Id:", attackStats.getMwoMatchId());
-        addTwoColumnsText("Map:", attackStats.getMap());
-        addTwoColumnsText("Game mode:", attackStats.getMode());
-        addTwoColumnsText("Winner:", factionWinner.getName_en());
+        addTwoColumnsText("Attacker: ", factionAttacker.getName_en());
+        addTwoColumnsText("Defender: ", factionDefender.getName_en());
+        addTwoColumnsText("Round ID: ", attackStats.getRoundId().toString());
+        addTwoColumnsText("Attack ID: ", attackStats.getAttackId().toString());
+        addTwoColumnsText("ID: ", attackStats.getId().toString());
+        addTwoColumnsText("MWO Match ID: ", attackStats.getMwoMatchId());
+        addTwoColumnsText("Map: ", attackStats.getMap());
+        addTwoColumnsText("Game mode: ", attackStats.getMode());
+		if (factionWinner != null) {
+			addTwoColumnsText("Winner: ", factionWinner.getName_en());
+		} else {
+			addTwoColumnsText("Winner: ", "None / Undecided");
+		}
 
         try {
 
@@ -151,7 +155,7 @@ public class TextFormattingHelper {
             DateFormat dateFormat = new SimpleDateFormat(isoDatePattern);
             Date parsedDate = dateFormat.parse(attackStats.getDropEnded());
 
-            addTwoColumnsText("Drop ended:", parsedDate.toString());
+            addTwoColumnsText("Drop ended: ", parsedDate.toString());
 
         } catch (Exception e) {
             logger.error(e.getMessage());
