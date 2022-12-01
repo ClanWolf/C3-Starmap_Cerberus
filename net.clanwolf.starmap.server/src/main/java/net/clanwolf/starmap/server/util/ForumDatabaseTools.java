@@ -176,7 +176,11 @@ public class ForumDatabaseTools {
 				String logo = "https://www.clanwolf.net/apps/C3/static/logos/factions/banner/Banner_" + winner + ".png";
 				String subject = "Der Kampf um " + system + " ist entschieden.";
 				String text = "";
-				text += "<p>" + winner + " ist der Besitzer von " + system + ".</p>";
+				if (winner.equalsIgnoreCase(attacker)) {
+					text += "[center][b][size=16][color=#ff9900]" + winner + " ist jetzt der Besitzer von " + system + ".[/color][/size][/b][/center]\r\n";
+				} else {
+					text += "[center][b][size=16][color=#ff9900]" + winner + " bleibt der Besitzer von " + system + ".[/color][/size][/b][/center]\r\n";
+				}
 				text += "<table width=\"100%\">";
 				text += "<tr>";
 				text += "<td align=\"right\"> </td>";
@@ -185,7 +189,7 @@ public class ForumDatabaseTools {
 				text += "</tr>";
 				text += "</table>";
 				if (serverPickedRandomWinner) {
-					text += "\r\n[center][b][color=#ffcc00]Dieser Kampf wurde ausgewürfelt.[/color][/b][/center]";
+					text += "\r\n<hr>\r\n[center][b][color=#ffcc00]Dieser Kampf wurde ausgewürfelt.[/color][/b][/center]";
 				}
 
 				// Post
