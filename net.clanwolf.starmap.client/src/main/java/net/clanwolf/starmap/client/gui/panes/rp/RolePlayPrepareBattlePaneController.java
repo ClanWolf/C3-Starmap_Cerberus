@@ -723,6 +723,8 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 					lvAttacker.getItems().remove(dummy);
 					ac.setType(Constants.ROLE_ATTACKER_SUPPORTER);
 				}
+			} else {
+				logger.info("What happened with this character here?");
 			}
 		}
 
