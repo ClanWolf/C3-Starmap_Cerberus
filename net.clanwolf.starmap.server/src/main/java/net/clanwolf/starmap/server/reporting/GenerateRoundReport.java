@@ -151,10 +151,7 @@ public class GenerateRoundReport {
         if (tableCostAttacker == null) {
             team2Counter = 0;
             tableCostAttacker = new Table(UnitValue.createPercentArray(columnWidthCost))
-                    .setBorderBottom(whiteBorder)
-                    .setBorderLeft(whiteBorder)
-                    .setBorderRight(whiteBorder)
-                    .setBorderTop(whiteBorder)
+
                     .useAllAvailableWidth()
                     .setHorizontalAlignment(HorizontalAlignment.CENTER)
                     .addCell(addTeam2Cell("Description"))
@@ -502,6 +499,13 @@ public class GenerateRoundReport {
                 .setBorderTop(greyBorder);
     }
 
+    protected Cell addTable(Table table) throws Exception {
+
+        return new Cell()
+
+                .add(table)
+                .setBorder(Border.NO_BORDER);
+    }
     protected Cell addTeam1Cell(String Text) throws Exception {
 
         PdfFont f;
@@ -591,6 +595,7 @@ public class GenerateRoundReport {
 
         DeviceRgb red;
         DeviceRgb fontColor;
+
 
         if (team2Counter == 0) {
             red = new DeviceRgb(68, 114, 196);
@@ -939,9 +944,17 @@ public class GenerateRoundReport {
         }
     }
 
-    private void createPlanetInfo() {
+    private String getPlanetImg(StarSystemPOJO starSystemPOJO){
+        String linkImgPlanet = "https://www.clanwolf.net/apps/C3/static/planets/";
+
+        String formatted = String.format("%03d", Integer.valueOf(starSystemPOJO.getSystemImageName()));
+        return linkImgPlanet + formatted + ".png";
+
+    }
+    private void createPlanetInfo() throws Exception {
         doc.add(new Paragraph("Information about the planet being attacked:").setFontSize(8).setBold());
         StarSystemPOJO planet = StarSystemDAO.getInstance().findById(Nexus.DUMMY_USERID, starSystemID);
+
         List planetInfo = new List();
 
         planetInfo
@@ -953,10 +966,33 @@ public class GenerateRoundReport {
                 .add("Population: " + nf.format(planet.getPopulation()))
                 .add("Resources: " + nf.format(planet.getResources()));
 
+        String LinkImgPlanet = getPlanetImg(planet);
 
-        doc.add(planetInfo)
-                .add(createLink("Link to Sarna.net to get more information about the planet " + planet.getName() + ".", planet.getSarnaLinkSystem()).setFontSize(8))
-                .add(new Paragraph(""));
+        if (urlExists(LinkImgPlanet)) {
+
+            logger.info("Download planet image: " + LinkImgPlanet);
+            ImageData imgPlanetData = ImageDataFactory.create(new URL(LinkImgPlanet));
+            Image imgPlanet = new Image(imgPlanetData);
+
+            imgPlanet.scaleAbsolute(100, 100)
+                    .setHorizontalAlignment(HorizontalAlignment.LEFT);
+
+            Table tablePlanetInfo = new Table(new float[]{1, 5});
+
+            tablePlanetInfo.addCell(addWhiteCell(imgPlanet))
+                    .addCell(addWhiteCell(planetInfo));
+
+            doc.add(tablePlanetInfo)
+                    .add(createLink("Link to Sarna.net to get more information about the planet " + planet.getName() + ".", planet.getSarnaLinkSystem()).setFontSize(8))
+                    .add(new Paragraph(""));
+        }else {
+
+            logger.error("Planet image not found on: " + LinkImgPlanet);
+            doc.add(addWhiteCell(planetInfo))
+                    .add(createLink("Link to Sarna.net to get more information about the planet " + planet.getName() + ".", planet.getSarnaLinkSystem()).setFontSize(8))
+                    .add(new Paragraph(""));
+
+        }
     }
 
     private void createC3Header(String title) throws Exception {
@@ -1092,8 +1128,8 @@ public class GenerateRoundReport {
 
         t.addCell(addTeam1Cell(factionDefender.getName_en()))
                 .addCell(addTeam2Cell(factionAttacker.getName_en()))
-                .addCell(tableCostDefender)
-                .addCell(tableCostAttacker);
+                .addCell(addTable(tableCostDefender))
+                .addCell(addTable(tableCostAttacker));
 
         doc.add(new AreaBreak());
         createC3Header("Costs and rewards for drop " + dropCounter);
