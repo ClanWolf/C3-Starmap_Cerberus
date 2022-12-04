@@ -9,7 +9,7 @@ Name "C3-Client_Installer"
 Caption "C3 Client Installer"
 Icon "c3.ico"
 UninstallIcon "c3.ico"
-OutFile "C3-Client-7.2.02_install.exe"
+OutFile "C3-Client-7.2.8_install.exe"
 BrandingText /TRIMRIGHT "ClanWolf.net"
 
 InstallDir $PROGRAMFILES64\C3-Client
@@ -25,7 +25,7 @@ Function .onInstSuccess
     ;                 SMPROGRAMS: $SMPROGRAMS  $\r$\n \
     ;                 Start Menu Folder: $STARTMENU_FOLDER $\r$\n \
     ;                 InstallDirectory: $INSTDIR "
-    ExecShell "" "https://www.clanwolf.net/apps/C3/changelog.txt?refresh=true&r=1669071589854"
+    ExecShell "" "https://www.clanwolf.net/apps/C3/changelog.txt?refresh=true&r=1669718827937"
     ExecShell "" "$INSTDIR\bin\C3-Starmap_Cerberus.exe"
 FunctionEnd
 
@@ -83,14 +83,14 @@ FunctionEnd
 ;--------------------------------
 
 LoadLanguageFile "${NSISDIR}\Contrib\Language files\English.nlf"
-VIProductVersion "7.2.02.0"
+VIProductVersion "7.2.8.0"
 VIAddVersionKey /LANG=0 "ProductName" "C3 Client"
 VIAddVersionKey /LANG=0 "Comments" "StarMap"
 VIAddVersionKey /LANG=0 "CompanyName" "ClanWolf.net [CWG]"
 VIAddVersionKey /LANG=0 "LegalTrademarks" "StarMap of the Inner Sphere and Clan Space."
 VIAddVersionKey /LANG=0 "LegalCopyright" "© ClanWolf.net"
 VIAddVersionKey /LANG=0 "FileDescription" "StarMap"
-VIAddVersionKey /LANG=0 "FileVersion" "7.2.02"
+VIAddVersionKey /LANG=0 "FileVersion" "7.2.8"
 
 ;--------------------------------
 
@@ -285,6 +285,7 @@ Section "C3-Client (required)"
 
 	CreateDirectory $INSTDIR\include
 	SetOutpath $INSTDIR\include
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\include\sizecalc.h"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\include\jvmticmlr.h"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\include\jvmti.h"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\include\jni.h"
@@ -409,7 +410,7 @@ Section "C3-Client (required)"
 	; Write the uninstall keys for Windows
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayName" "C3-Client"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayIcon" "$INSTDIR\c3.ico"
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayVersion" "7.2.02"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayVersion" "7.2.8"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "Publisher" "ClanWolf.net [CWG], Christian Bartel"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "InstallSource" "$EXEDIR\"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "UninstallString" '"$INSTDIR\uninstall.exe"'
@@ -535,6 +536,7 @@ Section "Uninstall"
 	Delete $INSTDIR\legal\java.base\asm.md
 	Delete $INSTDIR\legal\java.base\aes.md
 	Delete $INSTDIR\legal\java.base\ADDITIONAL_LICENSE_INFO
+	Delete $INSTDIR\include\sizecalc.h
 	Delete $INSTDIR\include\jvmticmlr.h
 	Delete $INSTDIR\include\jvmti.h
 	Delete $INSTDIR\include\jni.h

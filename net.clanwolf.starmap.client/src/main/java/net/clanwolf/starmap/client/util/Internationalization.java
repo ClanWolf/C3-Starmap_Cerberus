@@ -26,13 +26,12 @@
  */
 package net.clanwolf.starmap.client.util;
 
+import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.invoke.MethodHandles;
-import java.util.Locale;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * Get internationalized strings for C3
@@ -134,5 +133,26 @@ public abstract class Internationalization {
 			// logger.warn("Resource <" + key + "> can't be found in bundle: " + bundle);
 		}
 		return key;
+	}
+
+	private static void getVoiceSamples(Locale locale) {
+		ResourceBundle sMessagesDE = ResourceBundle.getBundle("MessagesBundle", locale);
+		Iterator<String> keyIterator = sMessagesDE.getKeys().asIterator();
+		while (keyIterator.hasNext()) {
+			String key = keyIterator.next();
+			if (key.startsWith("C3_Speech_") || key.startsWith("C3_IRC_")) {
+				String value = sMessagesDE.getString(key);
+				logger.info("Getting voice (TTS) sample: " + key + " : " + value);
+				C3SoundPlayer.getTTSFile(value);
+			}
+		}
+	}
+
+	public static void getAllVoiceSamples() {
+		Internationalization.setLocale(Locale.GERMAN);
+		getVoiceSamples(Locale.GERMAN);
+
+		Internationalization.setLocale(Locale.ENGLISH);
+		getVoiceSamples(Locale.ENGLISH);
 	}
 }

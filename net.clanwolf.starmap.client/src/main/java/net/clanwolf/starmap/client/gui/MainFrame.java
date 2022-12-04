@@ -465,7 +465,10 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 
 		stage.show();
 
-		logger.info("Mail dispatch disabled in source code.");
+		// Get all voice sample files from TTS (only do this at build time before release!)
+		//Internationalization.getAllVoiceSamples();
+
+		logger.info("Client mail dispatch disabled in source code!");
 //		String[] receivers = {"warwolfen@gmail.com", "werner.kewenig@arcor.de"};
 //		boolean sent = false;
 //		sent = MailManager.sendMail("starmap@clanwolf.net", receivers, "C3 Client (" + Tools.getVersionNumber() + ")", "C3 Client (" + Tools.getVersionNumber() + ") was successfully started.", false, false);

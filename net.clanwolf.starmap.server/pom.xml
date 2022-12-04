@@ -91,6 +91,12 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>${version.mysql-connector}</version>
 		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.mariadb.jdbc</groupId>-->
+<!--			<artifactId>mariadb-java-client</artifactId>-->
+<!--			<version>${version.mariadb-connector}</version>-->
+<!--		</dependency>-->
+
 
 		<!-- Hibernate +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 		<dependency>
@@ -117,7 +123,7 @@
 		<dependency>
 			<groupId>org.hibernate.common</groupId>
 			<artifactId>hibernate-commons-annotations</artifactId>
-			<version>6.0.4.Final</version>
+			<version>6.0.5.Final</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.transaction</groupId>
@@ -202,7 +208,7 @@
 		<dependency>
 			<groupId>net.bytebuddy</groupId>
 			<artifactId>byte-buddy</artifactId>
-			<version>1.12.18</version>
+			<version>1.12.19</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.xml.bind</groupId>

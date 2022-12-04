@@ -79,6 +79,9 @@ public class ResultAnalyzer {
 		Integer team1SurvivingPercentage = 0;
 		Integer team2SurvivingPercentage = 0;
 
+		Integer team1Damage = 0;
+		Integer team2Damage = 0;
+
 		String attackerTeam = null;
 		String defenderTeam = null;
 
@@ -198,6 +201,7 @@ public class ResultAnalyzer {
 				team1NumberOfPilots++;
 				team1SurvivingPercentage += healthPercentage;
 				team1Tonnage += tonnage;
+				team1Damage += damage;
 				if (healthPercentage == 0) {
 					team2LostTonnage += tonnage;
 					team2KillCount++;
@@ -206,6 +210,7 @@ public class ResultAnalyzer {
 				team2NumberOfPilots++;
 				team2SurvivingPercentage += healthPercentage;
 				team2Tonnage += tonnage;
+				team2Damage += damage;
 				if (healthPercentage == 0) {
 					team1LostTonnage += tonnage;
 					team1KillCount++;
@@ -294,7 +299,7 @@ public class ResultAnalyzer {
 					attackStats.setDropEnded(md.getCompleteTime());
 					attackStats.setAttackerFactionId(Nexus.getCurrentAttackOfUser().getAttackerFactionId().longValue());
 					attackStats.setDefenderFactionId(Nexus.getCurrentAttackOfUser().getDefenderFactionId().longValue());
-					if ("1".equals(attackerTeam) && "2".equals(defenderTeam)) {
+					if ("1".equals(attackerTeam) && "2".equals(defenderTeam)) { // Attacker: 1 / Defender: 2
 						attackStats.setAttackerNumberOfPilots(team1NumberOfPilots.longValue());
 						attackStats.setDefenderNumberOfPilots(team2NumberOfPilots.longValue());
 						attackStats.setAttackerTonnage(team1Tonnage);
@@ -307,8 +312,27 @@ public class ResultAnalyzer {
 							attackStats.setWinnerFactionId(Nexus.getCurrentAttackOfUser().getAttackerFactionId().longValue());
 						} else if ("2".equals(winner)) { // Defender won
 							attackStats.setWinnerFactionId(Nexus.getCurrentAttackOfUser().getDefenderFactionId().longValue());
+						} else {
+							// Gamemode (mode) Skirmish will be decided by damage in case it is a draw
+							if ("Skirmish".equalsIgnoreCase(mode)) { // Skirmish
+								if (team1Damage > team2Damage) {
+									if (team1Damage - team2Damage >= 50) {
+										attackStats.setWinnerFactionId(Nexus.getCurrentAttackOfUser().getAttackerFactionId().longValue());
+									} else {
+										// Damage difference below 50! It is a draw!
+										// attackStatsWinnerId will be set to NULL
+									}
+								} else {
+									if (team2Damage - team1Damage >= 50) {
+										attackStats.setWinnerFactionId(Nexus.getCurrentAttackOfUser().getDefenderFactionId().longValue());
+									} else {
+										// Damage difference below 50! It is a draw!
+										// attackStatsWinnerId will be set to NULL
+									}
+								}
+							}
 						}
-					} else if ("2".equals(attackerTeam) && "1".equals(defenderTeam)) {
+					} else if ("2".equals(attackerTeam) && "1".equals(defenderTeam)) { // Attacker: 2 / Defender: 1
 						attackStats.setAttackerNumberOfPilots(team1NumberOfPilots.longValue());
 						attackStats.setDefenderNumberOfPilots(team2NumberOfPilots.longValue());
 						attackStats.setAttackerTonnage(team2Tonnage);
@@ -321,6 +345,25 @@ public class ResultAnalyzer {
 							attackStats.setWinnerFactionId(Nexus.getCurrentAttackOfUser().getDefenderFactionId().longValue());
 						} else if ("2".equals(winner)) { // Attacker won
 							attackStats.setWinnerFactionId(Nexus.getCurrentAttackOfUser().getAttackerFactionId().longValue());
+						} else {
+							// Gamemode (mode) Skirmish will be decided by damage in case it is a draw
+							if ("Skirmish".equalsIgnoreCase(mode)) { // Skirmish
+								if (team2Damage > team1Damage) {
+									if (team2Damage - team1Damage >= 50) {
+										attackStats.setWinnerFactionId(Nexus.getCurrentAttackOfUser().getAttackerFactionId().longValue());
+									} else {
+										// Damage difference below 50! It is a draw!
+										// attackStatsWinnerId will be set to NULL
+									}
+								} else {
+									if (team1Damage - team2Damage >= 50) {
+										attackStats.setWinnerFactionId(Nexus.getCurrentAttackOfUser().getDefenderFactionId().longValue());
+									} else {
+										// Damage difference below 50! It is a draw!
+										// attackStatsWinnerId will be set to NULL
+									}
+								}
+							}
 						}
 					}
 

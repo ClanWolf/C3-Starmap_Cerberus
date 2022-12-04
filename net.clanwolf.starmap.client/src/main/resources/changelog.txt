@@ -1,13 +1,40 @@
 C3 version history
---------------------------------
+[ https://www.clanwolf.net | https://github.com/ClanWolf ]
+----------------------------------------------------------------
 
-Version 7.2.02 (21.11.2022)
+CURRENTLY IN PROGRESS:
+- P1: Fixing lobby problems (users can not see other users sometimes)
+- P2: Updating to latest Hibernate version
+- P3: Web-View of the Starmap (ongoing, ~15%)
+- P3: Updating the manual (ongoing)
+
+https://www.clanwolf.net/apps/C3/C3_Manual_de.pdf
+
+----------------------------------------------------------------
+
+Version 7.2.9 (01.12.2022)
+- FIXED: Minor forum entry changes
+
+Version 7.2.8 (29.11.2022)
+- FIXED: Login problem (inserting null value for birthdate)
+- FIXED: Default date values tweaked to prevent problems with null values
+- FIXED: Dashed background additional fix
+- FIXED: Minor forum entry typos
+- FIXED: It is now possible to store an invasion drop with no winner (undecided in drop)
+
+Version 7.2.6 (28.11.2022)
+- UPDATED: Database connector
+- ADDED: Faction logo on login, fixed flickering
+- FIXED: Audio playback
+- FIXED: Marking of attacked systems in current round (dashed background)
+
+Version 7.2.2 (21.11.2022)
 - ADDED: Faction logo on top left
 
-Version 7.2.01 (20.11.2022)
+Version 7.2.1 (20.11.2022)
 - FIXED: Error in sql update
 
-Version 7.2.00 (19.11.2022)
+Version 7.2.0 (19.11.2022)
 - CHANGED: Clear ticker on finalized round
 - CHANGED: Invasion thread details
 - ADDED: Data protection info
@@ -682,6 +709,8 @@ Version: 5.3.0 (10.09.2021)
 ---
 
 Started changelog with version 5.3.0.
+
+P1-3: Priorities
 
 01 CREATED
 02 UPDATED

@@ -4,9 +4,9 @@ module net.clanwolf.starmap.bots {
 	requires guava;
 	requires java.sql;
 	requires java.naming;
-	requires net.clanwolf.starmap.logging;
-	requires org.slf4j;
-	requires org.slf4j.jul;
+	requires transitive net.clanwolf.starmap.logging;
+	requires transitive org.slf4j;
+	requires transitive org.slf4j.jul;
 	requires com.github.theholywaffle.teamspeak3;
-	requires mysql.connector.java;
+	requires mysql.connector.j;
 }

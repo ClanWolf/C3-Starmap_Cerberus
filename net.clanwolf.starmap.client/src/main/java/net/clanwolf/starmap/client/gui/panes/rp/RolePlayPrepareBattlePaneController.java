@@ -669,12 +669,6 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 			characterRoleMap.put(ac.getCharacterID(), ac);
 
-//			if (c.getId().equals(Nexus.getCurrentChar().getId())) {
-//				if (ac.getType().equals(Constants.ROLE_ATTACKER_COMMANDER) || ac.getType().equals(Constants.ROLE_DEFENDER_COMMANDER)) {
-//					iamdroplead = true;
-//				}
-//			}
-
 			if (ac.getType().equals(Constants.ROLE_ATTACKER_COMMANDER) || ac.getType().equals(Constants.ROLE_ATTACKER_WARRIOR) || ac.getType().equals(Constants.ROLE_ATTACKER_SUPPORTER)) { // Attacker
 				if (ac.getType().equals(Constants.ROLE_ATTACKER_COMMANDER)) { // Droplead
 					// Put this dropleader into upper list
@@ -729,6 +723,8 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 					lvAttacker.getItems().remove(dummy);
 					ac.setType(Constants.ROLE_ATTACKER_SUPPORTER);
 				}
+			} else {
+				logger.info("What happened with this character here?");
 			}
 		}
 
@@ -837,9 +833,9 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 			case UPDATE_USERS_FOR_ATTACK:
 				logger.info("The userlist has changed. Update information on the listboxes.");
-				logger.info("##### Userlist update event received.");
+				logger.info("###### Userlist update event received.");
 				if (Nexus.getCurrentAttackOfUser() != null) {
-					logger.info("##### I have an attack.");
+					logger.info("###### I have an attack.");
 					List<AttackCharacterDTO> l = Nexus.getCurrentAttackOfUser().getAttackCharList();
 					boolean kicked = true;
 					for (AttackCharacterDTO ac : l) {
@@ -849,14 +845,14 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 					}
 					if (kicked) {
 						// I have been kicked from the lobby, need to change the currently displayed pane
-						logger.info("##### I have been kicked...");
+						logger.info("###### I have been kicked...");
 						ActionManager.getAction(ACTIONS.SWITCH_TO_MAP).execute();
 					} else {
-						logger.info("##### Updating lists...");
+						logger.info("###### Updating lists...");
 						updateLists(Nexus.getCurrentAttackOfUser());
 					}
 				} else {
-					logger.info("##### I do NOT have an attack.");
+					logger.info("###### I do NOT have an attack.");
 				}
 				break;
 

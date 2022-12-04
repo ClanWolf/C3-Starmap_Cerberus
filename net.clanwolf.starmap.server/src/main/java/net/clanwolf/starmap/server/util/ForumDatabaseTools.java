@@ -174,15 +174,23 @@ public class ForumDatabaseTools {
 			long threadClosed = selectLong(sql, "closed");
 			if (threadClosed == 0) { // thread has not been closed before
 				String logo = "https://www.clanwolf.net/apps/C3/static/logos/factions/banner/Banner_" + winner + ".png";
-				String subject = "Der Kampf um " + system + "ist entschieden.";
+				String subject = "Der Kampf um " + system + " ist entschieden.";
 				String text = "";
+				if (winner.equalsIgnoreCase(attacker)) {
+					text += "[center][b][size=16][color=#ff9900]" + winner + " ist jetzt der Besitzer von " + system + ".[/color][/size][/b][/center]\r\n";
+				} else {
+					text += "[center][b][size=16][color=#ff9900]" + winner + " bleibt der Besitzer von " + system + ".[/color][/size][/b][/center]\r\n";
+				}
 				text += "<table width=\"100%\">";
 				text += "<tr>";
 				text += "<td align=\"right\"> </td>";
-				text += "<td align=\"center\"><img src=\"" + logo + "\" width=\"90px\"></td>";
+				text += "<td align=\"center\"><img src=\"" + logo + "\" width=\"190px\"></td>";
 				text += "<td align=\"left\"> </td>";
 				text += "</tr>";
 				text += "</table>";
+				if (serverPickedRandomWinner) {
+					text += "\r\n<hr>\r\n[center][b][color=#ffcc00]Dieser Kampf wurde ausgewürfelt.[/color][/b][/center]";
+				}
 
 				// Post
 				sql = "";

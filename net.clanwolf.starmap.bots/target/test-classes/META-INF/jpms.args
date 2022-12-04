@@ -1,4 +1,0 @@
---patch-module
-net.clanwolf.starmap.bots=_
---add-reads
-net.clanwolf.starmap.bots=ALL-UNNAMED
