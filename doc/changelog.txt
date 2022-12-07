@@ -12,7 +12,7 @@ https://www.clanwolf.net/apps/C3/C3_Manual_de.pdf
 
 ----------------------------------------------------------------
 
-Version 7.2.9 (01.12.2022)
+Version 7.2.9 (07.12.2022)
 - UPDATED: Dependencies
 - FIXED: Minor forum entry changes
 - FIXED: Removed unnecessary files from git
