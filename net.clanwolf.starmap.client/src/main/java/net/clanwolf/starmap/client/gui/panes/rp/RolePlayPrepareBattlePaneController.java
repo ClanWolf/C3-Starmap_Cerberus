@@ -650,8 +650,10 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 		characterRoleMap.clear();
 
+		logger.info("----------------------------------------------------");
+		logger.info("Chars in: " + a.getAttackCharList().size());
 		for (AttackCharacterDTO ac : a.getAttackCharList()) {
-			String l = "###### ";
+			String l = "# --- ";
 			RolePlayCharacterDTO c = Nexus.getCharacterById(ac.getCharacterID());
 
 			l = l + c.getName() + " (Type: " + ac.getType() + ") ";
@@ -741,6 +743,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 				if (lvDefender.getItems().size() == 0) {
 					lvDefender.getItems().add(dummy);
 				}
+				break; // do this only for the first potential droplead or the list will be empty!
 			}
 		}
 		// are defender droplead still empty?
@@ -757,6 +760,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 				if (lvAttacker.getItems().size() == 0) {
 					lvAttacker.getItems().add(dummy);
 				}
+				break; // do this only for the first potential droplead or the list will be empty!
 			}
 		}
 
