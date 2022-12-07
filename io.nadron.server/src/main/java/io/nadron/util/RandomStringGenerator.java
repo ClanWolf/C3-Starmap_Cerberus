@@ -37,7 +37,6 @@ public class RandomStringGenerator
 		}
 		catch (NoSuchAlgorithmException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

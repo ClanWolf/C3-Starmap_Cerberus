@@ -726,7 +726,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 					ac.setType(Constants.ROLE_ATTACKER_SUPPORTER);
 				}
 			} else {
-				logger.info("What happened with this character here?");
+				logger.info("ERROR: A user was lost during lobby refresh of user lists");
 			}
 		}
 
@@ -907,7 +907,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 	@FXML
 	private void handleOnActionBtPreview(){
-		//TODO: Get and save next step of the story
+		//TODO_C3: Get and save next step of the story
 		/*
 		if(currentChar.getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1 ){
 			Long rp = getCurrentRP().getNextStepID();

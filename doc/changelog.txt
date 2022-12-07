@@ -3,7 +3,6 @@ C3 version history
 ----------------------------------------------------------------
 
 CURRENTLY IN PROGRESS:
-- P1: Fixing lobby problems (users can not see other users sometimes)
 - P2: Updating to latest Hibernate version
 - P3: Web-View of the Starmap (ongoing, ~15%)
 - P3: Updating the manual (ongoing)
@@ -11,6 +10,9 @@ CURRENTLY IN PROGRESS:
 https://www.clanwolf.net/apps/C3/C3_Manual_de.pdf
 
 ----------------------------------------------------------------
+
+Version 7.2.10 ( ... )
+- FIXED: First attempt to fix the lobby problem
 
 Version 7.2.9 (07.12.2022)
 - UPDATED: Dependencies

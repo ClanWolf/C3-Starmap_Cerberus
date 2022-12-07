@@ -195,7 +195,7 @@ public class RolePlayChoicePaneController extends AbstractC3RolePlayController i
 				audioStartedOnce = true;
 			}
 
-			//TODO: append single chars step by step until the whole text is displaying
+			// TODO_C3: append single chars step by step until the whole text is displaying
 			taRpText.setText(rpStory.getStoryText());
 
 			if (rpStory.getVar2ID() != null) {

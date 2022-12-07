@@ -151,7 +151,7 @@ public class RolePlayMessagePaneController extends AbstractC3RolePlayController 
 
 	@FXML
 	private void handleOnActionBtPreview(){
-		//TODO: Get and save next step of the story
+		// TODO_C3: Get and save next step of the story
 		saveNextStep(getCurrentRP().getVar7ID().getNextStepID());
 
 	}

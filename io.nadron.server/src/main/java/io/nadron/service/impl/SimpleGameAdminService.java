@@ -22,21 +22,18 @@ public class SimpleGameAdminService implements GameAdminService
 	@Override
 	public Object loadGame(long gameId, String gameName)
 	{
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Object loadGameRoom(Game game, long gameRoomId, String gameRoomName)
 	{
-		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
 	public Object unLoadGame(long gameId, String gameName)
 	{
-		// TODO Auto-generated method stub
 		return null;
 	}
 

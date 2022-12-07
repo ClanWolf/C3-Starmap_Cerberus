@@ -594,9 +594,9 @@ public class BORolePlayStory {
 	 */
 	public boolean checkBeforeDelete(RolePlayStoryDTO story) {
 
-		//TODO: DELETE STORY: delete all sub entries from chapter
-		//TODO: DELETE STORY: delete complete story with all sub entries
-		//TODO: DELETE STORY: check if the story used by another step
+		// TODO_C3: DELETE STORY: delete all sub entries from chapter
+		// TODO_C3: DELETE STORY: delete complete story with all sub entries
+		// TODO_C3: DELETE STORY: check if the story used by another step
 		boolean ret = true;
 
 		for (RolePlayStoryDTO allStory : allStories) {

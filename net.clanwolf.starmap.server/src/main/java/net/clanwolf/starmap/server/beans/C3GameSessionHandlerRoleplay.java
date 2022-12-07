@@ -66,7 +66,7 @@ public class C3GameSessionHandlerRoleplay {
 		try {
 			EntityManagerHelper.beginTransaction(C3GameSessionHandler.getC3UserID(session));
 
-			//TODO: Save RolePlayCharacter
+			//TODO_C3: Save RolePlayCharacter
 			if(rp.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STORY) {
 
 				for (Long aLong1 : rp.getNewCharIDs()) {
@@ -250,7 +250,7 @@ public class C3GameSessionHandlerRoleplay {
 			RolePlayStoryPOJO newStep = dao.getChapterFromStoryBySortOrder(story, sortOrder);
 			rpChar.setStory(newStep);
 
-			//TODO: Save RolePlayCharacterPOJO
+			//TODO_C3: Save RolePlayCharacterPOJO
 
 			EntityManagerHelper.beginTransaction(C3GameSessionHandler.getC3UserID(session));
 			daoRPC.update(C3GameSessionHandler.getC3UserID(session), rpChar);
@@ -334,7 +334,7 @@ public class C3GameSessionHandlerRoleplay {
 
 		try {
 
-			//TODO: Save RolePlayCharacterPOJO
+			//TODO_C3: Save RolePlayCharacterPOJO
 			EntityManagerHelper.beginTransaction(C3GameSessionHandler.getC3UserID(session));
 			RolePlayStoryPOJO storyPojo = daoStory.findById(C3GameSessionHandler.getC3UserID(session), storyID);
 			rpChar.setStory(storyPojo);

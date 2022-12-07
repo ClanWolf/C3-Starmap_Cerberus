@@ -148,7 +148,7 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 									btPreview.setDisable(!c.getType().equals(Constants.ROLE_ATTACKER_COMMANDER));
 								}
 
-								// TODO: This could happen outside the loop at the very start (?)
+								// TODO_C3: This could happen outside the loop at the very start (?)
 								// This controller is used for the first pane of an invasion (intro) AND the last one
 								// (outro). In the first, the continue button may only be enabled for dropleadAttacker
 								// in the last, it should be enabled for everyone... so everyone can decide for themselves
@@ -211,7 +211,7 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 		btPreview.setDisable(true);
 		buttonPressed = true;
 
-		//TODO: Change the methods for C3_RP_STORY and C3_RP_CHAPTER of attack, otherwise it dosen't work
+		// TODO_C3: Change the methods for C3_RP_STORY and C3_RP_CHAPTER of attack, otherwise it dosen't work
 		RolePlayCharacterDTO currentChar = Nexus.getCurrentChar();
 		if (getCurrentRP() != null) {
 			if (getCurrentRP().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STORY) {

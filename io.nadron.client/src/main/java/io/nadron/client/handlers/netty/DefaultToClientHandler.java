@@ -37,9 +37,7 @@ public class DefaultToClientHandler extends SimpleChannelInboundHandler<Event> {
 	public void channelRead0(ChannelHandlerContext ctx, Event event) throws Exception {
 		session.onEvent(event);
 	}
-	
-	// TODO check what other methods need to be caught.
-	
+
 	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws Exception {
 		NettyTCPClient.ALL_CHANNELS.add(ctx.channel());
@@ -53,7 +51,6 @@ public class DefaultToClientHandler extends SimpleChannelInboundHandler<Event> {
 		session.onEvent(event);
 	}
 
-	// TODO see if this causes reconnection failure
 	@Override
 	public void channelInactive(ChannelHandlerContext ctx) throws Exception {
 		if (!session.isShuttingDown())

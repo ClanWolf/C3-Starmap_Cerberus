@@ -13,9 +13,7 @@ public class EventObjectDecoder extends MessageToMessageDecoder<ByteBuf>
 {
 
 	@Override
-	protected void decode(ChannelHandlerContext ctx, ByteBuf in,
-			List<Object> out) throws Exception 
-	{
+	protected void decode(ChannelHandlerContext ctx, ByteBuf in, List<Object> out) throws Exception {
 		if(null != in)
 		{
 			byte opcode = in.readByte();
@@ -24,7 +22,6 @@ public class EventObjectDecoder extends MessageToMessageDecoder<ByteBuf>
 				opcode = Events.SESSION_MESSAGE;
 			}
 			ByteBuf data = in.readBytes(in.readableBytes());
-			// TODO check if creating a new object is necessary each time
 			Object obj = new SourceDecoder().decode(ctx, data);
 			out.add(Events.event(obj, opcode));
 		}

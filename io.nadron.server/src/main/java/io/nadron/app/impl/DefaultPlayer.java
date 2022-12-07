@@ -24,7 +24,7 @@ public class DefaultPlayer implements Player
 
 	/**
 	 * One player can be connected to multiple games at the same time. Each
-	 * session in this set defines a connection to a game. TODO, each player
+	 * session in this set defines a connection to a game. Each player
 	 * should not have multiple sessions to the same game.
 	 */
 	private Set<PlayerSession> playerSessions;

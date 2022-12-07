@@ -79,7 +79,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		this.roomSession = session;
 		GameStateManagerService manager = room.getStateManager();
 
-		// TODO: Die beiden States hier wurden nie benutzt (auch in alten Versionen der Klasse nicht)!
+		// TODO_C3: Die beiden States hier wurden nie benutzt (auch in alten Versionen der Klasse nicht)!
 		//		state = (GameState) manager.getState();
 		//		// Initialize the room state_login.
 		//		state = new GameState();

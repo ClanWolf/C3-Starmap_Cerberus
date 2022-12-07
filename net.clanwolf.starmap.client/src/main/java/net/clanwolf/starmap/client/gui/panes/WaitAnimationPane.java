@@ -42,13 +42,11 @@ import javafx.util.Duration;
 /**
  * This provides a opague pane to block all mouse and keyboard operations on the client in case a long actions is going on and gui interaction needs to be blocked.
  *
- * // http://docs.oracle.com/javafx/2/canvas/jfxpub-canvas.htm
- *
- * TODO: Check for keyboard entrys!
- *
  * @author Meldric
  */
 public class WaitAnimationPane extends Pane {
+
+	// TODO_C3: Check for keyboard entrys
 
 	private boolean animationPlaying = false;
 	private final double centerX = 0.0f;

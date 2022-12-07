@@ -197,6 +197,6 @@ public class BOAttack {
 		} else if (factionTypeAttacker == 1 && factionTypeDefender == 1) { // Attacker = 1: IS, Defender = 1: IS
 			return -4L; // IS vs IS
 		}
-		return -1L; // TODO: Sollte nochmal überdacht werden
+		return -1L; // TODO_C3: Sollte nochmal überdacht werden
 	}
 }
