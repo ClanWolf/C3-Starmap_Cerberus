@@ -680,6 +680,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 					lvDropleadAttacker.getSelectionModel().clearSelection();
 					if (ac.getCharacterID().equals(Nexus.getCurrentChar().getId())) {
 						iamdroplead = true;
+						C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_YouAreLobbyOwner"));
 					}
 				} else { // Warrior
 					// Put this warrior into lower list (not a droplead)
@@ -730,7 +731,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 			}
 		}
 
-		// are attacker droplead still empty?
+		// Is attacker droplead still empty?
 		if (lvDropleadAttacker.getItems().size() == 1 && "...".equals(lvDropleadAttacker.getItems().get(0).getName())) {
 			for (AttackCharacterDTO ac : potentialDropleadersAttacker.keySet()) {
 				lvDropleadAttacker.getItems().remove(0);
@@ -743,11 +744,10 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 				if (lvDefender.getItems().size() == 0) {
 					lvDefender.getItems().add(dummy);
 				}
-				break; // do this only for the first potential droplead or the list will be empty!
+				break; // do this only for the first potential droplead or the list will be reduced to one entry
 			}
 		}
-		// are defender droplead still empty?
-		logger.info("Size" + lvDropleadDefender.getItems().size());
+		// Is defender droplead still empty?
 		if (lvDropleadDefender.getItems().size() == 1 && "...".equals(lvDropleadDefender.getItems().get(0).getName())) {
 			for (AttackCharacterDTO ac : potentialDropleadersDefender.keySet()) {
 				lvDropleadDefender.getItems().remove(0);
@@ -760,7 +760,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 				if (lvAttacker.getItems().size() == 0) {
 					lvAttacker.getItems().add(dummy);
 				}
-				break; // do this only for the first potential droplead or the list will be empty!
+				break; // do this only for the first potential droplead or the list will be reduced to one entry
 			}
 		}
 

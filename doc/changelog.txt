@@ -11,7 +11,7 @@ https://www.clanwolf.net/apps/C3/C3_Manual_de.pdf
 
 ----------------------------------------------------------------
 
-Version 7.2.10 ( ... )
+Version 7.2.10 (08.12.2022)
 - FIXED: First attempt to fix the lobby problem
 
 Version 7.2.9 (07.12.2022)
