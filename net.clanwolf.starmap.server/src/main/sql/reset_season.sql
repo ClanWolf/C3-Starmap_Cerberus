@@ -23,8 +23,8 @@ delete from _HH_ROUTEPOINT where seasonID = 1;
 
 -- --- Delete all attacks, attack_characters, attack_vars -----
 delete from _HH_ATTACK where season = 1;                                   -- column is season here, NOT seasonId!
-delete from _HH_ATTACK_CHARACTER; -- where season = 1 over attack          -- TODO check season
-delete from _HH_ATTACK_VARS; -- where season = 1 over attack               -- TODO check season
+delete from _HH_ATTACK_CHARACTER; -- where season = 1 over attack          -- TODO_C3 check season
+delete from _HH_ATTACK_VARS; -- where season = 1 over attack               -- TODO_C3 check season
 
 delete from _HH_ATTACK_STATS where seasonId = 1;                           -- Should stats be kept?
 delete from ROLEPLAY_CHARACTER_STATS where seasonId = 1;                   -- Should stats be kept?

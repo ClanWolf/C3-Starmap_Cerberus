@@ -45,7 +45,6 @@ public class NettyUDPMessageSender implements Fast {
 
 	@Override
 	public Object sendMessage(Object message) {
-		// TODO this might overwrite valid context, check for better design
 		if(message instanceof Event){
 			((Event)message).setEventContext(eventContext);
 		}

@@ -236,7 +236,7 @@ public class Login {
 
 			@Override
 			public void onDisconnect(Event event) {
-				// TODO: Implement a new Action for disconnect from server
+				// TODO_C3: Implement a new Action for disconnect from server
 				super.onDisconnect(event);
 				logger.info("onDisconnect");
 				loginInProgress = false;

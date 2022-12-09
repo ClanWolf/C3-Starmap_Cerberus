@@ -197,7 +197,7 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 			File dir = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3");
 			boolean showEditProperties = C3Properties.loadUserProperties(dir.toString());
 			if (showEditProperties) {
-				// TODO: Show scene to initially edit settings
+				// TODO_C3: Show scene to initially edit settings
 				logger.info("Showing first welcome.");
 			}
 		} catch (IOException e) {
@@ -409,8 +409,7 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 				posX = stage.getX();
 				posY = stage.getY();
 			}
-			// TODO: Add check for the resize control and perform resize of the
-			// window
+			// TODO_C3: Add check for the resize control and perform resize of the window
 			if (mouseEvent.getTarget().toString().equals("Label[id=ResizerControl, styleClassLabel]")) {
 				logger.info("ReSIZE");
 			}
@@ -439,7 +438,7 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 		assert is != null;
 		stage.getIcons().add(new Image(is));
 		stage.setTitle(Internationalization.getString("app_headline"));
-		// TODO: Resize the window (outcomment the initStyle StageStyle)
+		// TODO_C3: Resize the window (outcomment the initStyle StageStyle)
 		stage.initStyle(StageStyle.TRANSPARENT);
 		// stage.setResizable(true);
 		stage.setScene(scene);

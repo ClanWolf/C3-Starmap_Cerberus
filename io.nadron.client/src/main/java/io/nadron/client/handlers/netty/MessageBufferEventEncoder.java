@@ -20,7 +20,6 @@ import java.util.List;
  * @author Abraham Menacherry.
  * 
  */
-// TODO check if MessageToMessageEncoder can be replaced with MessageToByteEncoder
 @Sharable
 public class MessageBufferEventEncoder extends MessageToMessageEncoder<Event>
 {

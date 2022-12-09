@@ -650,8 +650,10 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 		characterRoleMap.clear();
 
+		logger.info("----------------------------------------------------");
+		logger.info("Chars in: " + a.getAttackCharList().size());
 		for (AttackCharacterDTO ac : a.getAttackCharList()) {
-			String l = "###### ";
+			String l = "# --- ";
 			RolePlayCharacterDTO c = Nexus.getCharacterById(ac.getCharacterID());
 
 			l = l + c.getName() + " (Type: " + ac.getType() + ") ";
@@ -678,6 +680,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 					lvDropleadAttacker.getSelectionModel().clearSelection();
 					if (ac.getCharacterID().equals(Nexus.getCurrentChar().getId())) {
 						iamdroplead = true;
+						C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_YouAreLobbyOwner"));
 					}
 				} else { // Warrior
 					// Put this warrior into lower list (not a droplead)
@@ -724,11 +727,11 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 					ac.setType(Constants.ROLE_ATTACKER_SUPPORTER);
 				}
 			} else {
-				logger.info("What happened with this character here?");
+				logger.info("ERROR: A user was lost during lobby refresh of user lists");
 			}
 		}
 
-		// are attacker droplead still empty?
+		// Is attacker droplead still empty?
 		if (lvDropleadAttacker.getItems().size() == 1 && "...".equals(lvDropleadAttacker.getItems().get(0).getName())) {
 			for (AttackCharacterDTO ac : potentialDropleadersAttacker.keySet()) {
 				lvDropleadAttacker.getItems().remove(0);
@@ -741,10 +744,10 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 				if (lvDefender.getItems().size() == 0) {
 					lvDefender.getItems().add(dummy);
 				}
+				break; // do this only for the first potential droplead or the list will be reduced to one entry
 			}
 		}
-		// are defender droplead still empty?
-		logger.info("Size" + lvDropleadDefender.getItems().size());
+		// Is defender droplead still empty?
 		if (lvDropleadDefender.getItems().size() == 1 && "...".equals(lvDropleadDefender.getItems().get(0).getName())) {
 			for (AttackCharacterDTO ac : potentialDropleadersDefender.keySet()) {
 				lvDropleadDefender.getItems().remove(0);
@@ -757,6 +760,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 				if (lvAttacker.getItems().size() == 0) {
 					lvAttacker.getItems().add(dummy);
 				}
+				break; // do this only for the first potential droplead or the list will be reduced to one entry
 			}
 		}
 
@@ -903,7 +907,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 	@FXML
 	private void handleOnActionBtPreview(){
-		//TODO: Get and save next step of the story
+		//TODO_C3: Get and save next step of the story
 		/*
 		if(currentChar.getStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1 ){
 			Long rp = getCurrentRP().getNextStepID();

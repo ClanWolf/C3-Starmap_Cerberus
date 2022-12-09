@@ -185,7 +185,7 @@ public abstract class GameRoomSession extends DefaultSession implements GameRoom
 			playerSession.setStatus(Session.Status.CONNECTED);
 			afterSessionConnect(playerSession);
 			return true;
-			// TODO send event to all other sessions?
+			// TODO_C3 send event to all other sessions?
 		} else {
 			logger.info("Game Room is shutting down, playerSession: " + playerSession + " will not be connected!");
 			return false;

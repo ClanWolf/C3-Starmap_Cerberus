@@ -353,14 +353,14 @@ public class ResultAnalyzer {
 										attackStats.setWinnerFactionId(Nexus.getCurrentAttackOfUser().getAttackerFactionId().longValue());
 									} else {
 										// Damage difference below 50! It is a draw!
-										// attackStatsWinnerId will be set to NULL
+										// attackStatsWinnerId is set to NULL (ok)
 									}
 								} else {
 									if (team1Damage - team2Damage >= 50) {
 										attackStats.setWinnerFactionId(Nexus.getCurrentAttackOfUser().getDefenderFactionId().longValue());
 									} else {
 										// Damage difference below 50! It is a draw!
-										// attackStatsWinnerId will be set to NULL
+										// attackStatsWinnerId is set to NULL (ok)
 									}
 								}
 							}

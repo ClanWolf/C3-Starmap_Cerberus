@@ -771,9 +771,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					}
 
 					if (currentSystemID != null && targetSystemId != null) {
-						// TODO: Check if the attack succeeded or if the unit lost (then move backwards and delete route)
-						// TODO: If the fallback system has been taken by the enemy, trigger a new event here. Scenario "Fighting retreat"?
-						// TODO: Check what faction owns the target system
+						// TODO_C3: Check if the attack succeeded or if the unit lost (then move backwards and delete route)
+						// TODO_C3: If the fallback system has been taken by the enemy, trigger a new event here. Scenario "Fighting retreat"?
+						// TODO_C3: Check what faction owns the target system
 						if (!currentSystemID.equals(targetSystemId)) {
 							ImageView jsi = js.getJumpshipImageView();
 							jsi.setMouseTransparent(true);
@@ -2120,7 +2120,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		if (com.toLowerCase().startsWith("finalize round")) {
 			if (Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN)) {
 
-				// TODO: Check if there are any routepoints that have not been saved yet!
+				// Check if there are any routepoints that have not been saved yet!
 				boolean unsavedRoutesFound = false;
 				for (BOJumpship js : boUniverse.getJumpshipList()) {
 					if (js.getJumpshipFaction() == Nexus.getCurrentUser().getCurrentCharacter().getFactionId()) {

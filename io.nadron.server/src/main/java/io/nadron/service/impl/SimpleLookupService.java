@@ -38,7 +38,6 @@ public class SimpleLookupService implements LookupService
 	@Override
 	public Game gameLookup(Object gameContextKey)
 	{
-		// TODO Auto-generated method stub
 		return null;
 	}
 

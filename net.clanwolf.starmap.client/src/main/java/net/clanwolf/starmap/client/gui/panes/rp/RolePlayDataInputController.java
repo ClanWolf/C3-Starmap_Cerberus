@@ -207,7 +207,7 @@ public class RolePlayDataInputController extends AbstractC3RolePlayController im
 			audioStartedOnce = true;
 		}
 
-		//TODO: append single chars step by step until the whole text is displaying
+		// TODO_C3: append single chars step by step until the whole text is displaying
 		taStoryText.setText(rpStory.getStoryText());
 
 		if(!bInit && rpStory.getVar3ID() != null) {

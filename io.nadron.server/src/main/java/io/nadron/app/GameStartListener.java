@@ -21,7 +21,7 @@ public interface GameStartListener
 	 * 
 	 * @param isInitialized
 	 *            If this is a persisted instance, then restarts would be called
-	 *            with isInitialized set to true. TODO current version does not
+	 *            with isInitialized set to true. Current version does not
 	 *            support persistence and hence this parameter will always be
 	 *            false.
 	 * @param properties

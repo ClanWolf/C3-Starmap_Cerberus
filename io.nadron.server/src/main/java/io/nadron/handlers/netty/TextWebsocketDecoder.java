@@ -45,7 +45,6 @@ public class TextWebsocketDecoder extends
 	{
 		// Get the existing class from the context. If not available, then
 		// default to DefaultEvent.class
-		// TODO: Check this if it works! Changed deprecated call
 		// Attribute<Class<? extends Event>> attr = ctx.attr(eventClass);
 		Attribute<Class<? extends Event>> attr = ctx.channel().attr(eventClass);
 		Class<? extends Event> theClass = attr.get();
