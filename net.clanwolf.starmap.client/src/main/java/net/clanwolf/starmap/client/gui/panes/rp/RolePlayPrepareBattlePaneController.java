@@ -75,6 +75,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 	private boolean firstCreationDone = false;
 	private boolean creating = false;
 	private boolean bOnlyOneSave = true;
+	private boolean announcedLobbyOwner = false;
 
 	@FXML
 	private AnchorPane anchorPane;
@@ -275,6 +276,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		saveAttack();
 		checkConditionsToStartDrop(ac);
 		Nexus.setCurrentAttackOfUserToNull();
+		announcedLobbyOwner = false;
 		ActionManager.getAction(ACTIONS.SWITCH_TO_MAP).execute();
 	}
 
@@ -680,7 +682,10 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 					lvDropleadAttacker.getSelectionModel().clearSelection();
 					if (ac.getCharacterID().equals(Nexus.getCurrentChar().getId())) {
 						iamdroplead = true;
-						C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_YouAreLobbyOwner"));
+						if (!announcedLobbyOwner) {
+							C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_YouAreLobbyOwner"));
+							announcedLobbyOwner = true;
+						}
 					}
 				} else { // Warrior
 					// Put this warrior into lower list (not a droplead)
@@ -776,6 +781,17 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 		checkConditionsToStartDrop(null);
 
+		if (!lvDropleadAttacker.getItems().get(0).getName().equals("...")) { // there is a droplead (attacker)
+			if (!lvDropleadAttacker.getItems().get(0).getId().equals(Nexus.getCurrentChar().getId())) { // the droplead is not me
+				announcedLobbyOwner = false;
+			}
+			if (!Nexus.getUserIsOnline(lvDropleadAttacker.getItems().get(0).getId())) {
+				// The lobby owner (droplead of the attacker) seems to be offline
+				//TODO_C3: Lobby owner left the lobby!
+				logger.info("The lobby owner is offline!");
+			}
+		}
+
 		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("2");
 	}
 
@@ -841,13 +857,13 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 				if (Nexus.getCurrentAttackOfUser() != null) {
 					logger.info("###### I have an attack.");
 					List<AttackCharacterDTO> l = Nexus.getCurrentAttackOfUser().getAttackCharList();
-					boolean kicked = true;
+					boolean stillIn = false;
 					for (AttackCharacterDTO ac : l) {
 						if (ac.getCharacterID().equals(Nexus.getCurrentChar().getId())) {
-							kicked = false;
+							stillIn = true;
 						}
 					}
-					if (kicked) {
+					if (!stillIn) {
 						// I have been kicked from the lobby, need to change the currently displayed pane
 						logger.info("###### I have been kicked...");
 						ActionManager.getAction(ACTIONS.SWITCH_TO_MAP).execute();

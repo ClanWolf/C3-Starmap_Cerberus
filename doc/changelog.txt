@@ -3,16 +3,22 @@ C3 version history
 ----------------------------------------------------------------
 
 CURRENTLY IN PROGRESS:
+- P1: If a droplead (attacker) closes client the char should be also kicked from the attack or it is stuck
 - P2: Updating to latest Hibernate version
-- P3: Web-View of the Starmap (ongoing, ~15%)
+- P3: Web-View of the Starmap (ongoing, ~45%)
 - P3: Updating the manual (ongoing)
 
 https://www.clanwolf.net/apps/C3/C3_Manual_de.pdf
 
 ----------------------------------------------------------------
 
+Version 7.2.11 (10.12.2022)
+- FIXED: Kicked users were not actually kicked, only removed from the other players views
+- FIXED: The announcement of being lobby owner should be played only once
+- CHANGED: Made some progress on the online version of the starmap (html)
+
 Version 7.2.10 (08.12.2022)
-- FIXED: First attempt to fix the lobby problem
+- FIXED: First attempt to fix the lobby problem (invisible users)
 
 Version 7.2.9 (07.12.2022)
 - UPDATED: Dependencies
