@@ -3,7 +3,8 @@ C3 version history
 ----------------------------------------------------------------
 
 CURRENTLY IN PROGRESS:
-- P1: If a droplead (attacker) closes client the char should be also kicked from the attack or it is stuck
+- P1: If a droplead (attacker) closes client the char should be also kicked from the attack or it is stuck [RolePlayPrepareBattlePaneController, L.791]
+- P1: Motivational speechsamples sometimes are wrong (to be tested) [RolePlayInvasionPaneController, L.511]
 - P2: Updating to latest Hibernate version
 - P3: Web-View of the Starmap (ongoing, ~45%)
 - P3: Updating the manual (ongoing)
@@ -11,6 +12,12 @@ CURRENTLY IN PROGRESS:
 https://www.clanwolf.net/apps/C3/C3_Manual_de.pdf
 
 ----------------------------------------------------------------
+
+Version 7.2.12 (12.12.2022)
+- FIXED: Overview information for invasion forum entries
+- FIXED: Typo in Scenarion "IS vs Clan"
+- FIXED: Droplead of faction LA now should have the correct rank insignia (Hauptmann)
+- FIXED: Server connection lost error on login (if user did not have an active attack)
 
 Version 7.2.11 (10.12.2022)
 - FIXED: Kicked users were not actually kicked, only removed from the other players views

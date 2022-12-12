@@ -23,10 +23,10 @@
 		#content {
 			/* background-image: url(https://www.clanwolf.net/themes/ClanWolf/images/body-bg.png); */
 			background-color: coral;
-			margin-top: 10px;
-			margin-bottom: 10px;
-			margin-left: 10px;
-			margin-right: 10px;
+			margin-top: 0px;
+			margin-bottom: 0px;
+			margin-left: 0px;
+			margin-right: 0px;
 		}
 		#myContainer {
 			margin:0px;
@@ -51,9 +51,6 @@
 	</style>
 
 	<script type='text/javascript' src='https://www.clanwolf.net/jscripts/ZoomifyImageViewerExpress-min.js'></script>
-	<script type='text/javascript'>
-		Z.showImage('myContainer', 'https://www.clanwolf.net/apps/C3/seasonhistory/C3_map_3059.zif', 'zSkinPath=https://www.clanwolf.net/jscripts/zoomify/Assets/Skins/Default&zNavigatorVisible=0&zInitialX=5545&zInitialY=8150&zInitialZoom=175&zMaxZoom=300&zToolbarVisible=0&zToolbarBackgroundVisible=0&zNavigatorVisible=0&zLogoVisible=0&zMinimizeVisible=0&zHelpVisible=0');
-	</script>
 	<script>
 		function magnify(imgID, zoom) {
 			var img, glass, w, h, bw;
@@ -154,10 +151,14 @@
 	</div>
 
 	<script>
-		magnify("myimage", 3);
-		hideMagnifier();
-		document.getElementById("magnifier").onmouseover=showMagnifier;
-		document.getElementById("magnifier").onmouseout=hideMagnifier;
+	    window.onload = function () {
+			magnify("myimage", 3);
+			hideMagnifier();
+			document.getElementById("magnifier").onmouseover=showMagnifier;
+			document.getElementById("magnifier").onmouseout=hideMagnifier;
+
+			Z.showImage('myContainer', 'https://www.clanwolf.net/apps/C3/seasonhistory/C3_map_3059.zif', 'zSkinPath=https://www.clanwolf.net/jscripts/zoomify/Assets/Skins/Default&zNavigatorVisible=0&zInitialX=5545&zInitialY=8150&zInitialZoom=175&zMaxZoom=300&zToolbarVisible=0&zToolbarBackgroundVisible=0&zNavigatorVisible=0&zLogoVisible=0&zMinimizeVisible=0&zHelpVisible=0');
+        }
 	</script>
 </body>
 

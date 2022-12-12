@@ -788,7 +788,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 			if (!Nexus.getUserIsOnline(lvDropleadAttacker.getItems().get(0).getId())) {
 				// The lobby owner (droplead of the attacker) seems to be offline
 				//TODO_C3: Lobby owner left the lobby!
-				logger.info("The lobby owner is offline!");
+				logger.info("The lobby owner is offline! Inform the server to kick him from the lobby! and promote someone else to be droplead (if possible).");
 			}
 		}
 
@@ -978,7 +978,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 				attackerRankName = attackerRankName + "CGB/SCapt.png";
 			} else if (a.getAttackerFactionId().equals(32)) { // CJF
 				attackerRankName = attackerRankName + "CJF/SCapt.png";
-			} else if (a.getAttackerFactionId().equals(11)) { // LA
+			} else if (a.getAttackerFactionId().equals(9)) { // LA
 				attackerRankName = attackerRankName + "LA/Hauptmann.png";
 			} else if (a.getAttackerFactionId().equals(7)) { // FRR
 				attackerRankName = attackerRankName + "FRR/Kapten.png";
