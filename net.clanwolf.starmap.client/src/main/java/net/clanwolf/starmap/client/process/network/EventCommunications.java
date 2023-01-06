@@ -228,6 +228,17 @@ public class EventCommunications {
 						if (factionWinnerId != null) {
 							Nexus.setCurrentAttackOfUserToNull();
 						}
+					} else {
+						// I am not in this attack
+						// Is the attack id the same as the attack I have been in? Then I was kicked!
+						if (Nexus.getCurrentAttackOfUser() != null) {
+							if (attack.getId().equals(Nexus.getCurrentAttackOfUser().getAttackDTO().getId())) {
+								ActionManager.getAction(ACTIONS.ENABLE_MAIN_MENU_BUTTONS).execute();
+								ActionManager.getAction(ACTIONS.UPDATE_USERS_FOR_ATTACK).execute();
+								Nexus.setCurrentAttackOfUserToNull();
+								ActionManager.getAction(ACTIONS.SWITCH_TO_MAP).execute();
+							}
+						}
 					}
 					break;
 

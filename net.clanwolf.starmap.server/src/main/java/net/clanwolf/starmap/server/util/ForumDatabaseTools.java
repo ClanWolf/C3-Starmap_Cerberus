@@ -231,14 +231,14 @@ public class ForumDatabaseTools {
 				// Threads
 				sql = "";
 				sql += "UPDATE cwfusion_threads ";
-				sql += "SET thread_lastpost_id=" + postId + ", thread_lastpost=" + postDatestamp + ", thread_replies=" + replyCount + " ";
+				sql += "SET thread_lastpost_id=" + postId + ", thread_lastpost_snippet='" + subject + "', thread_lastuser=702, thread_lastpost=" + postDatestamp + ", thread_replies=" + replyCount + " ";
 				sql += "WHERE thread_id=" + threadId + " ";
 				update(sql);
 
 				// Forums
 				sql = "";
 				sql += "UPDATE cwfusion_forums ";
-				sql += "SET forum_lastpost=" + postId + ", forum_lastuser=702, forum_threads=" + threadCount + ", forum_posts=" + postCount + ", forum_lastthread=" + threadId + " ";
+				sql += "SET forum_lastpost=" + postId + ", forum_lastuser=702, forum_lastpost_datestamp=" + postDatestamp + ", forum_threads=" + threadCount + ", forum_posts=" + postCount + ", forum_lastthread=" + threadId + " ";
 				sql += "WHERE forum_id=65 ";
 				update(sql);
 

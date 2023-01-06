@@ -3,16 +3,31 @@ C3 version history
 ----------------------------------------------------------------
 
 CURRENTLY IN PROGRESS:
-- P2: Updating to latest Hibernate version
-- P3: Web-View of the Starmap (ongoing, ~15%)
-- P3: Updating the manual (ongoing)
-
-https://www.clanwolf.net/apps/C3/C3_Manual_de.pdf
+- P1: If a droplead (attacker) closes client the char should be also kicked from the attack or it is stuck [RolePlayPrepareBattlePaneController, L.791]
+- P1: Motivational speechsamples sometimes are wrong (to be tested) [RolePlayInvasionPaneController, L.511]
+- P2: Migration to latest Spring / Hibernate / JPA version(s)
+- P3: Web-View of the Starmap (ongoing, ~45%)
+---
+- P3: Updating the manual (ongoing): https://www.clanwolf.net/apps/C3/C3_Manual_de.pdf
 
 ----------------------------------------------------------------
 
+Version 7.2.15 (17.12.2022)
+- UPDATED: Dependencies (Netty)
+
+Version 7.2.12 (12.12.2022)
+- FIXED: Overview information for invasion forum entries
+- FIXED: Typo in Scenarion "IS vs Clan"
+- FIXED: Droplead of faction LA now should have the correct rank insignia (Hauptmann)
+- FIXED: Server connection lost error on login (if user did not have an active attack)
+
+Version 7.2.11 (10.12.2022)
+- FIXED: Kicked users were not actually kicked, only removed from the other players views
+- FIXED: The announcement of being lobby owner should be played only once
+- CHANGED: Made some progress on the online version of the starmap (html)
+
 Version 7.2.10 (08.12.2022)
-- FIXED: First attempt to fix the lobby problem
+- FIXED: First attempt to fix the lobby problem (invisible users)
 
 Version 7.2.9 (07.12.2022)
 - UPDATED: Dependencies
