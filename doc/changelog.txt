@@ -12,6 +12,10 @@ CURRENTLY IN PROGRESS:
 
 ----------------------------------------------------------------
 
+Version 7.2.16 (20.12.2022)
+- UPDATED: Adapted copyright notice for the new year
+-
+
 Version 7.2.15 (17.12.2022)
 - UPDATED: Dependencies (Netty)
 
