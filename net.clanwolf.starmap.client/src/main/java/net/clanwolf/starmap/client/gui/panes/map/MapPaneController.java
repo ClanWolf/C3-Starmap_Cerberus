@@ -2118,7 +2118,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		// force finalize round
 		// ---------------------------------
 		if (com.toLowerCase().startsWith("finalize round")) {
-			if (Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN)) {
+			if (Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_FINALIZE_ROUND)) {
 
 				// Check if there are any routepoints that have not been saved yet!
 				boolean unsavedRoutesFound = false;
