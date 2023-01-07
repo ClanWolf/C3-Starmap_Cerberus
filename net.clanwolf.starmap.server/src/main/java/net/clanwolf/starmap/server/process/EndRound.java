@@ -621,50 +621,47 @@ public class EndRound {
 		return foughtAttacks + "\r\n" + resolvedAttacks + "\r\n" + movedJumpships;
 	}
 
-	/*public static void main(String[] args) {
-		ArrayList<AttackStatsPOJO> statisticsList = AttackStatsDAO.getInstance().getStatisticsForAttack(1L, 92L);
-
-		if (!statisticsList.isEmpty()) {
-			// log stats
-			for (AttackStatsPOJO asp : statisticsList) {
-
-				CalcBalance calcB = new CalcBalance(asp);
-				System.out.println(calcB.getMailMessage().toString());
-
-			}
-
-		}
-	}*/
-
-		public static void main(String[] args) {
-//			// 3052 - 2021 = 1031 Jahre Differenz
-//			// 1031 Jahre * 365,25 Tage = 376.572,75 Tage Differenz
-//			int currentYear = 2021;
-//			Long season = 1L;
-//			int round = 1;
+//	public static void main(String[] args) {
+//		ArrayList<AttackStatsPOJO> statisticsList = AttackStatsDAO.getInstance().getStatisticsForAttack(1L, 92L);
 //
-//			int seasonStartYear = 3060;
-//			int diff = (int) Math.abs((seasonStartYear - currentYear) * 365.243); // Days in year and Schaltjahr factor
+//		if (!statisticsList.isEmpty()) {
+//			// log stats
+//			for (AttackStatsPOJO asp : statisticsList) {
+//				CalcBalance calcB = new CalcBalance(asp);
+//				System.out.println(calcB.getMailMessage().toString());
+//			}
+//		}
+//	}
+
+//		public static void main(String[] args) {
+////			// 3052 - 2021 = 1031 Jahre Differenz
+////			// 1031 Jahre * 365,25 Tage = 376.572,75 Tage Differenz
+////			int currentYear = 2021;
+////			Long season = 1L;
+////			int round = 1;
+////
+////			int seasonStartYear = 3060;
+////			int diff = (int) Math.abs((seasonStartYear - currentYear) * 365.243); // Days in year and Schaltjahr factor
+////
+////			System.out.println("Current date: " + new Date(System.currentTimeMillis()));
+////			System.out.println("Translated: " + addDaysToDate(new Date(System.currentTimeMillis()), diff));
+////			// Current date: 2021-05-06
+////			// Translated:   3052-05-06
 //
-//			System.out.println("Current date: " + new Date(System.currentTimeMillis()));
-//			System.out.println("Translated: " + addDaysToDate(new Date(System.currentTimeMillis()), diff));
-//			// Current date: 2021-05-06
-//			// Translated:   3052-05-06
-
-
-			Date date = new Date(System.currentTimeMillis());
-			//Date date = Date.valueOf("2022-12-30");
-			Date seasonStartDate = Date.valueOf("3060-01-01");
-			Integer seasonStartDateRealYear = 2022;
-
-			Calendar c = Calendar.getInstance();
-			c.setTime(seasonStartDate);
-			int seasonStartYear = c.get(Calendar.YEAR);
-			int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-			int diff = (int) Math.abs((seasonStartYear - currentYear + (currentYear - seasonStartDateRealYear)) * 365.243); // Days in year + leap year factor
-
-			Date result = addDaysToDate(date, diff);
-
-			System.out.println(result);
-		}
+//
+//			Date date = new Date(System.currentTimeMillis());
+//			//Date date = Date.valueOf("2022-12-30");
+//			Date seasonStartDate = Date.valueOf("3060-01-01");
+//			Integer seasonStartDateRealYear = 2022;
+//
+//			Calendar c = Calendar.getInstance();
+//			c.setTime(seasonStartDate);
+//			int seasonStartYear = c.get(Calendar.YEAR);
+//			int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+//			int diff = (int) Math.abs((seasonStartYear - currentYear + (currentYear - seasonStartDateRealYear)) * 365.243); // Days in year + leap year factor
+//
+//			Date result = addDaysToDate(date, diff);
+//
+//			System.out.println(result);
+//		}
 }

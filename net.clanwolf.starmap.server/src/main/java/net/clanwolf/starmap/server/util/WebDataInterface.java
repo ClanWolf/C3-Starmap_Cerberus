@@ -80,6 +80,7 @@ public class WebDataInterface {
 		universe.currentSeason = season.intValue();
 		universe.currentSeasonMetaPhase = seasonMetaPhase.intValue();
 		universe.currentSeasonStartDate = seasonPOJO.getStartDate();
+		universe.currentSeasonStartDateRealYear = seasonPOJO.getStartDateRealYear();
 		universe.currentRound = round.intValue();
 		universe.currentRoundPhase = roundPhase.intValue();
 		universe.currentRoundStartDateTime = currentRoundStartDateTime;

@@ -1214,8 +1214,11 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		Calendar c = Calendar.getInstance();
 		c.setTime(Nexus.getBoUniverse().currentSeasonStartDate);
 		int seasonStartYear = c.get(Calendar.YEAR);
+		Long seasonStartDateRealYear = Nexus.getBoUniverse().currentSeasonStartDateRealYear;
+
 		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-		int diff = (int) Math.abs((seasonStartYear - currentYear) * 365.243); // Days in year + leap year factor
+		//int diff = (int) Math.abs((seasonStartYear - currentYear) * 365.243); // Days in year + leap year factor
+		int diff = (int) Math.abs((seasonStartYear - currentYear + (currentYear - seasonStartDateRealYear)) * 365.243); // Days in year + leap year factor
 
 		return addDaysToDate(date, diff);
 	}

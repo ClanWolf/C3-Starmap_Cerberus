@@ -42,6 +42,7 @@ public class UniverseDTO extends Dto {
 	public HashMap<Long, RolePlayStoryDTO> attackStorys = new HashMap<>();
 
 	public Date currentSeasonStartDate;
+	public Long currentSeasonStartDateRealYear;
 	public LocalDateTime currentRoundStartDateTime;
 	public LocalDateTime currentRoundEndDateTime;
 	public String lastRoundResultProtocol;

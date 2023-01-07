@@ -57,6 +57,7 @@ public class BOUniverse {
 	public Integer currentSeasonMetaPhase;
 	public Integer currentRound;
 	public Date currentSeasonStartDate;
+	public Long currentSeasonStartDateRealYear;
 	public LocalDateTime currentRoundStartDateTime;
 	public LocalDateTime currentRoundEndDateTime;
 	public Integer currentRoundPhase;
@@ -161,6 +162,7 @@ public class BOUniverse {
 		currentRoundStartDateTime = universeDTO.currentRoundStartDateTime;
 		currentRoundEndDateTime = universeDTO.currentRoundEndDateTime;
 		currentSeasonStartDate = universeDTO.currentSeasonStartDate;
+		currentSeasonStartDateRealYear = universeDTO.currentSeasonStartDateRealYear;
 		currentDate = universeDTO.currentDate;
 		maxNumberOfRoundsForSeason = universeDTO.maxNumberOfRoundsForSeason;
 		numberOfDaysInRound = universeDTO.numberOfDaysInRound;
