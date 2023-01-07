@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2022, ClanWolf.net                            |
+ * Copyright (c) 2001-2023, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.server.persistence.pojos;
@@ -66,6 +66,9 @@ public class SeasonPOJO extends Pojo {
 
 	@Column(name = "StartDate")
 	private Date startDate;
+
+	@Column(name = "StartDateRealYear")
+	private Long startDateRealYear;
 
 	@Column(name = "DaysInRound")
 	private Double daysInRound;
@@ -129,6 +132,18 @@ public class SeasonPOJO extends Pojo {
 	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
+
+
+	@SuppressWarnings("unused")
+	public Long getStartDateRealYear() {
+		return startDateRealYear;
+	}
+
+	@SuppressWarnings("unused")
+	public void setStartDateRealYear(Long startDateRealYear) {
+		this.startDateRealYear = startDateRealYear;
+	}
+
 
 	@SuppressWarnings("unused")
 	public Long getMetaPhase() {

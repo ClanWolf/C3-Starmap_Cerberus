@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2022, ClanWolf.net                            |
+ * Copyright (c) 2001-2023, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.client.gui.panes.map;
@@ -2118,7 +2118,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		// force finalize round
 		// ---------------------------------
 		if (com.toLowerCase().startsWith("finalize round")) {
-			if (Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN)) {
+			if (Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_FINALIZE_ROUND)) {
 
 				// Check if there are any routepoints that have not been saved yet!
 				boolean unsavedRoutesFound = false;

@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2022, ClanWolf.net                            |
+ * Copyright (c) 2001-2023, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.transfer.dtos;
@@ -42,6 +42,7 @@ public class UniverseDTO extends Dto {
 	public HashMap<Long, RolePlayStoryDTO> attackStorys = new HashMap<>();
 
 	public Date currentSeasonStartDate;
+	public Long currentSeasonStartDateRealYear;
 	public LocalDateTime currentRoundStartDateTime;
 	public LocalDateTime currentRoundEndDateTime;
 	public String lastRoundResultProtocol;

@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2022, ClanWolf.net                            |
+ * Copyright (c) 2001-2023, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.server.util;
@@ -80,6 +80,7 @@ public class WebDataInterface {
 		universe.currentSeason = season.intValue();
 		universe.currentSeasonMetaPhase = seasonMetaPhase.intValue();
 		universe.currentSeasonStartDate = seasonPOJO.getStartDate();
+		universe.currentSeasonStartDateRealYear = seasonPOJO.getStartDateRealYear();
 		universe.currentRound = round.intValue();
 		universe.currentRoundPhase = roundPhase.intValue();
 		universe.currentRoundStartDateTime = currentRoundStartDateTime;
