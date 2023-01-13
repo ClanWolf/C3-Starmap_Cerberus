@@ -14,7 +14,7 @@
 
 -- --- Script -----
 
-SET autocommit=0;
+set autocommit=0;
 -- --- Reset starting date to new value (in round / Season)
 update _HH_ROUND set round = 1, roundphase = 1, CurrentRoundStartDate = (select startdate from _HH_SEASON where id = 1) where season = 1;
 
@@ -43,5 +43,7 @@ update _HH_JUMPSHIP j set j.attackready = 1, UnitXP = 0, StarSystemHistory = CAS
 
 -- --- Set the XP for the roleplay characters to 0 (CHECK THIS! We might want to keep the XP for a char between seasons)
 update ROLEPLAY_CHARACTER set XP = 0;
+
+update _HH_SEASON set StartDateRealYear = YEAR(CURDATE()) where ID = 1;
 
 commit;

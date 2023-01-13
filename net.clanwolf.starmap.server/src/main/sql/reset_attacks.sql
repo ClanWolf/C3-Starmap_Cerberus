@@ -13,6 +13,8 @@
 -- * Set systems factionid to factionid_start   DONE
 
 -- --- Script -----
+
+set autocommit=0;
 -- --- Reset starting date to new value (in round / Season)
 update _HH_ROUND set round = 1, CurrentRoundStartDate = (select startdate from _HH_SEASON where id = 1) where season = 1;
 

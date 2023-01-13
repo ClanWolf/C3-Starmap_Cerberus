@@ -24,7 +24,6 @@ $tsNow = strtotime("now");
 
 $sql5 = "";
 $sql5 = $sql5 . "SELECT r.Round, r.Season, r.CurrentRoundStartDate, r.Updated from C3._HH_ROUND r where r.Season = 1 ";
-
 $result5 = mysqli_query($conn_clanwolf_ro, $sql5);
 if (mysqli_num_rows($result5) > 0) {
 	while($row5 = mysqli_fetch_assoc($result5)) {
@@ -32,6 +31,20 @@ if (mysqli_num_rows($result5) > 0) {
 		$currentRoundStartDateTimeStamp = $row5["Updated"];
 	}
 }
+
+// !!! Damit die Stundenanzeige auf der Webseite funktioniert,
+// muss in "Updated" die Zeit drin stehen, als die Runde
+// !!! gestartet wurde!
+
+//$sql6 = "";
+//$sql6 = $sql6 . "SELECT s.StartDateRealYear from C3._HH_SEASON s where s.ID = 1 ";
+//$result6 = mysqli_query($conn_clanwolf_ro, $sql6);
+//if (mysqli_num_rows($result6) > 0) {
+//	while($row6 = mysqli_fetch_assoc($result6)) {
+//		$seasonStartDateRealYear = $row6["StartDateRealYear"];
+//	}
+//}
+
 $hoursLeft = 83 - floor(($tsNow - strtotime($currentRoundStartDateTimeStamp)) / (60 * 60));
 echo "<center><div style='font-size:10px;'>S1 / R" . $round . " [~".$hoursLeft."h]</div></center><br>";
 
