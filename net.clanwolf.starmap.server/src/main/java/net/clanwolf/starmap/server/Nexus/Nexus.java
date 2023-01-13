@@ -34,6 +34,8 @@ public class Nexus {
 
 	public static boolean sendUniverseToClients = false;
 
+	public static String patternTimestamp = "yyyy-MM-dd HH:mm:ss";
+
 	public static String mailServer = "";
 	public static String mailUser = "";
 	public static String mailPw = "";

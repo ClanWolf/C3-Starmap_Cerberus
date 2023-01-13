@@ -77,6 +77,8 @@ public class StarSystemDataDAO extends GenericDAO {
 	public ArrayList<StarSystemDataPOJO> getAll_HH_StarSystemData(){
 		CriteriaHelper crit = new CriteriaHelper(StarSystemDataPOJO.class);
 
+		crit.addCriteriaIsNotNull("id");
+
 		List<Object> lRes = crit.getResultList();
 
 		Iterator<Object> iter = lRes.iterator();
@@ -89,6 +91,8 @@ public class StarSystemDataDAO extends GenericDAO {
 
 	public ArrayList<Long> getAll_HH_FactionIds(){
 		CriteriaHelper crit = new CriteriaHelper(StarSystemDataPOJO.class);
+
+		crit.addCriteriaIsNotNull("id");
 
 		List<Object> lRes = crit.getResultList();
 

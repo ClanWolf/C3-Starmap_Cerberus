@@ -26,12 +26,14 @@
  */
 package net.clanwolf.starmap.server.persistence;
 
-import javax.persistence.NoResultException;
-import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+
+import jakarta.persistence.NoResultException;
+import jakarta.persistence.Query;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +45,7 @@ import java.util.List;
 public class CriteriaHelper {
 
 	private CriteriaBuilder cb;
-	private CriteriaQuery query;	
+	private CriteriaQuery query;
 	private Class clazz;
 	private ArrayList<Predicate> alPredicate;
 	private Root root;

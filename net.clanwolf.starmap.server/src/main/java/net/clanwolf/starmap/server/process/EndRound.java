@@ -26,6 +26,7 @@
  */
 package net.clanwolf.starmap.server.process;
 
+import jakarta.persistence.EntityTransaction;
 import net.clanwolf.client.mail.MailManager;
 import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.server.GameServer;
@@ -42,11 +43,11 @@ import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.persistence.EntityTransaction;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.lang.invoke.MethodHandles;
 import java.sql.Date;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -100,13 +101,22 @@ public class EndRound {
 
 		RoundDAO roundDAO = RoundDAO.getInstance();
 		RoundPOJO roundPOJO = roundDAO.findBySeasonId(seasonId);
-		LocalDateTime currentRoundStartDate = roundPOJO.getCurrentRoundStartDate();
 
-		if (currentRoundStartDate == null) {
+		LocalDateTime currentRoundStartDate = null;
+		String currentRoundStartDateString = roundPOJO.getCurrentRoundStartDate();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Nexus.patternTimestamp);
+		if(!currentRoundStartDateString.isEmpty()) {
+			currentRoundStartDate = LocalDateTime.parse(currentRoundStartDateString, formatter);
+		}
+
+
+		/*if (currentRoundStartDate == null) {
 			// this seems to be the first round in this season (?)
 			logger.info("Round date for current round is null! Setting round date to season start date.");
 
-			roundPOJO.setCurrentRoundStartDate(convertToLocalDateTime(seasonStartDate));
+			//roundPOJO.setCurrentRoundStartDate(Timestamp.valueOf(convertToLocalDateTime(seasonStartDate)));
+			roundPOJO.setCurrentRoundStartDate( new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(Timestamp.valueOf(convertToLocalDateTime(seasonStartDate))));
+
 
 			EntityTransaction transaction = EntityManagerHelper.getEntityManager(Nexus.DUMMY_USERID).getTransaction();
 			try {
@@ -119,7 +129,7 @@ public class EndRound {
 				logger.error("Setting round date to season start date", re);
 			}
 			currentRoundStartDate = convertToLocalDateTime(seasonStartDate);
-		}
+		}*/
 
 		double daysToAdd = additionalRounds * season.getDaysInRound();
 		return addDaysToDate(currentRoundStartDate, daysToAdd); // this calculates hours and adds hours
@@ -419,7 +429,23 @@ public class EndRound {
 				LocalDate localDate = new java.util.Date(d.getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 				LocalTime now = LocalTime.now().truncatedTo(ChronoUnit.HOURS);
 				LocalDateTime translatedNowDateWithTime = LocalDateTime.of(localDate, now);
-				roundPOJO.setCurrentRoundStartDate(translatedNowDateWithTime);
+
+
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Nexus.patternTimestamp);
+
+				Timestamp c3Now = Timestamp.valueOf(formatter.format(translatedNowDateWithTime));
+
+				//String c3NowString = formatter.format(c3Now);
+
+
+				String c3NowString = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(c3Now);
+
+				logger.debug(translatedNowDateWithTime.toString());
+
+				//Timestamp c3Now = new Timestamp(137,11,12,12,0,0,0);
+				//Timestamp c3Now2 = new Timestamp(c3Now.getTime());
+				logger.debug(c3NowString);
+				roundPOJO.setCurrentRoundStartDate(c3NowString);
 
 				// Save everything to the database
 				AttackDAO attackDAO = AttackDAO.getInstance();

@@ -27,6 +27,7 @@
 package net.clanwolf.starmap.server.persistence.daos.jpadaoimpl;
 
 import io.nadron.util.Credentials;
+import jakarta.persistence.EntityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.server.persistence.CriteriaHelper;
@@ -36,7 +37,7 @@ import net.clanwolf.starmap.server.persistence.pojos.UserPOJO;
 import net.clanwolf.starmap.server.util.Encryptor;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
-import javax.persistence.EntityManager;
+
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Iterator;
@@ -81,6 +82,7 @@ public class UserDAO extends GenericDAO {
 
 	public ArrayList<UserPOJO> getUserList() {
 		CriteriaHelper crit = new CriteriaHelper(UserPOJO.class);
+		crit.addCriteriaIsNotNull("id");
 		List<Object> lRes = crit.getResultList();
 
 		ArrayList<UserPOJO> lUser = new ArrayList<>();

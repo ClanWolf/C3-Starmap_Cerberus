@@ -30,12 +30,13 @@ import io.nadron.app.GameRoom;
 import io.nadron.app.Player;
 import io.nadron.service.impl.SimpleLookupService;
 import io.nadron.util.Credentials;
+import jakarta.persistence.EntityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
 import net.clanwolf.starmap.server.persistence.pojos.UserPOJO;
 
-import javax.persistence.EntityManager;
+
 import java.lang.invoke.MethodHandles;
 import java.util.HashMap;
 import java.util.Map;

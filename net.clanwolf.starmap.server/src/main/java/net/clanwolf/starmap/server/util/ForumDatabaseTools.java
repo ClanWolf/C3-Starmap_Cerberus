@@ -26,6 +26,7 @@
  */
 package net.clanwolf.starmap.server.util;
 
+import net.clanwolf.starmap.server.GameServer;
 import net.clanwolf.starmap.server.Nexus.Nexus;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.AttackDAO;
 import net.clanwolf.starmap.server.persistence.pojos.AttackPOJO;
@@ -70,7 +71,7 @@ public class ForumDatabaseTools {
 			String user = auth.getProperty("user");
 			String password = auth.getProperty("password");
 
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/clanwolf", user, password);
 			Statement stmt = con.createStatement();
 			ResultSet resultSet = stmt.executeQuery(sql);
@@ -95,7 +96,7 @@ public class ForumDatabaseTools {
 			String user = auth.getProperty("user");
 			String password = auth.getProperty("password");
 
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/clanwolf", user, password);
 			Statement stmt = con.createStatement();
 			stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
@@ -120,7 +121,7 @@ public class ForumDatabaseTools {
 			String user = auth.getProperty("user");
 			String password = auth.getProperty("password");
 
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/clanwolf", user, password);
 			Statement stmt = con.createStatement();
 			stmt.executeUpdate(sql);
@@ -137,7 +138,7 @@ public class ForumDatabaseTools {
 			String user = auth.getProperty("user");
 			String password = auth.getProperty("password");
 
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.mysql.cj.jdbc.Driver");
 			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/clanwolf", user, password);
 			Statement stmt = con.createStatement();
 			stmt.executeUpdate(sql);
@@ -150,6 +151,7 @@ public class ForumDatabaseTools {
 	}
 
 	public void clearTickerEntriesForRound(Long round) {
+		if(GameServer.isDevelopmentPC){ return; };
 		String sql;
 		sql = "";
 		sql += "DELETE from clanwolf_ticker ";
@@ -158,6 +160,8 @@ public class ForumDatabaseTools {
 	}
 
 	public void createFinalizingEntryForAttack(Long attackId, Long season, Long round, String system, String attacker, String winner, boolean serverPickedRandomWinner) {
+		if(GameServer.isDevelopmentPC){ return; };
+
 		AttackPOJO attack = AttackDAO.getInstance().findById(Nexus.DUMMY_USERID, attackId);
 		Long threadId = attack.getForumThreadId();
 
@@ -266,6 +270,8 @@ public class ForumDatabaseTools {
 	                                   String systemImageName, String rank, String name, String unit,
 	                                   String dropshipName
 	) {
+		if(GameServer.isDevelopmentPC){ return; };
+
 		String sql = "";
 		String attackThreadUrl = "";
 

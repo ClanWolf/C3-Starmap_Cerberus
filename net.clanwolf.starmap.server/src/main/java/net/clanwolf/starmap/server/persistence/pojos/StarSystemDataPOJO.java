@@ -28,9 +28,8 @@ package net.clanwolf.starmap.server.persistence.pojos;
 
 import net.clanwolf.starmap.server.persistence.Pojo;
 
-import javax.persistence.*;
-
-import static javax.persistence.GenerationType.IDENTITY;
+import jakarta.persistence.*;
+import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
 @Table(name = "_HH_STARSYSTEMDATA", catalog = "C3")

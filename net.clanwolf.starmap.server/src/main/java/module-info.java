@@ -24,6 +24,7 @@ module net.clanwolf.starmap.server {
 	requires layout;
 	requires io;
 	requires mysql.connector.j;
+	requires jakarta.persistence;
 
 	opens net.clanwolf.starmap.server to spring.core;
 	opens net.clanwolf.starmap.server.persistence.pojos to org.hibernate.orm.core, com.fasterxml.jackson.databind;

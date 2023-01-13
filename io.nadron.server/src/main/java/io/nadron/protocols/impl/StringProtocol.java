@@ -11,8 +11,7 @@ import io.netty.handler.codec.Delimiters;
 import io.netty.handler.codec.TooLongFrameException;
 import io.netty.handler.codec.string.StringDecoder;
 import io.netty.handler.codec.string.StringEncoder;
-
-import org.springframework.beans.factory.annotation.Required;
+import org.springframework.beans.factory.annotation.Autowired;
 
 
 public class StringProtocol extends AbstractNettyProtocol
@@ -77,7 +76,7 @@ public class StringProtocol extends AbstractNettyProtocol
 		return frameSize;
 	}
 
-	@Required
+	@Autowired
 	public void setFrameSize(int frameSize)
 	{
 		this.frameSize = frameSize;
@@ -88,7 +87,7 @@ public class StringProtocol extends AbstractNettyProtocol
 		return nulEncoder;
 	}
 
-	@Required
+	@Autowired
 	public void setNulEncoder(NulEncoder nulEncoder)
 	{
 		this.nulEncoder = nulEncoder;
@@ -99,7 +98,7 @@ public class StringProtocol extends AbstractNettyProtocol
 		return stringDecoder;
 	}
 
-	@Required
+	@Autowired
 	public void setStringDecoder(StringDecoder stringDecoder)
 	{
 		this.stringDecoder = stringDecoder;
@@ -110,7 +109,7 @@ public class StringProtocol extends AbstractNettyProtocol
 		return stringEncoder;
 	}
 
-	@Required
+	@Autowired
 	public void setStringEncoder(StringEncoder stringEncoder)
 	{
 		this.stringEncoder = stringEncoder;

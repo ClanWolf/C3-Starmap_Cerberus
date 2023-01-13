@@ -32,12 +32,12 @@ import net.clanwolf.starmap.server.persistence.Pojo;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
+import static jakarta.persistence.GenerationType.IDENTITY;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static javax.persistence.GenerationType.IDENTITY;
 
 @JsonIdentityInfo(
 		scope= AttackPOJO.class,

@@ -98,17 +98,17 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
-			<version>${version.spring}</version>
+			<version>6.0.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>${version.spring}</version>
+			<version>6.0.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
-			<version>${version.spring}</version>
+			<version>6.0.2</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>

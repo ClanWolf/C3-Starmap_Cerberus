@@ -32,10 +32,7 @@ import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.server.persistence.CriteriaHelper;
 import net.clanwolf.starmap.server.persistence.daos.GenericDAO;
 import net.clanwolf.starmap.server.persistence.pojos.RoutePointPOJO;
-import net.clanwolf.starmap.server.persistence.pojos.UserPOJO;
-import net.clanwolf.starmap.server.util.Encryptor;
 
-import javax.persistence.EntityManager;
 import java.lang.invoke.MethodHandles;
 import java.util.Iterator;
 import java.util.List;
