@@ -12,6 +12,9 @@ CURRENTLY IN PROGRESS:
 
 ----------------------------------------------------------------
 
+Version 7.2.19 (13.01.2023)
+- FIXED: Motivational voice samples should now match the drop results in invasion drops
+
 Version 7.2.17 (07.01.2023)
 - UPDATED: Adapted copyright notice for the new year
 - FIXED: Date issue while finalizing the round
