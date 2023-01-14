@@ -78,6 +78,7 @@ public class FactionDAO extends GenericDAO {
 	public ArrayList<FactionPOJO> getAllFactions(){
 		CriteriaHelper crit = new CriteriaHelper(FactionPOJO.class);
 
+		crit.addCriteriaIsNotNull("id");
 		List<Object> lRes = crit.getResultList();
 
 		Iterator<Object> iter = lRes.iterator();
@@ -90,6 +91,8 @@ public class FactionDAO extends GenericDAO {
 
 	public ArrayList<FactionPOJO> getAll_HH_Factions(){
 		CriteriaHelper crit = new CriteriaHelper(FactionPOJO.class);
+
+		crit.addCriteriaIsNotNull("id");
 
 		ArrayList<Long> factionIdsHH = StarSystemDataDAO.getInstance().getAll_HH_FactionIds();
 		List<Object> lRes = crit.getResultList();

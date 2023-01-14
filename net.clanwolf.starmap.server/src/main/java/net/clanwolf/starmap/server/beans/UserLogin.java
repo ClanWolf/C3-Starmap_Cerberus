@@ -27,10 +27,11 @@
 package net.clanwolf.starmap.server.beans;
 
 import io.nadron.util.Credentials;
+import jakarta.persistence.EntityManager;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.UserDAO;
 import net.clanwolf.starmap.server.persistence.pojos.UserPOJO;
 
-import javax.persistence.EntityManager;
+
 
 /**
  * @author Undertaker

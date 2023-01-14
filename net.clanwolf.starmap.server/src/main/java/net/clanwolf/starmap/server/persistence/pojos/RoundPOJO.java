@@ -28,12 +28,12 @@ package net.clanwolf.starmap.server.persistence.pojos;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import jakarta.persistence.*;
 import net.clanwolf.starmap.server.persistence.Pojo;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
-import static javax.persistence.GenerationType.IDENTITY;
+import static jakarta.persistence.GenerationType.IDENTITY;
 
 @JsonIdentityInfo(
 		scope= RoundPOJO.class,
@@ -58,15 +58,15 @@ public class RoundPOJO extends Pojo {
 	private Long season;
 
 	@Column(name = "CurrentRoundStartDate")
-	private LocalDateTime currentRoundStartDate;
+	private String currentRoundStartDate;
 
 	@SuppressWarnings("unused")
-	public LocalDateTime getCurrentRoundStartDate() {
+	public String getCurrentRoundStartDate() {
 		return currentRoundStartDate;
 	}
 
 	@SuppressWarnings("unused")
-	public void setCurrentRoundStartDate(LocalDateTime currentRoundStartDate) {
+	public void setCurrentRoundStartDate(String currentRoundStartDate) {
 		this.currentRoundStartDate = currentRoundStartDate;
 	}
 

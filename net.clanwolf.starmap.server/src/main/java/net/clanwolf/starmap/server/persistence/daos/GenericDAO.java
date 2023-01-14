@@ -26,12 +26,13 @@
  */
 package net.clanwolf.starmap.server.persistence.daos;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
 
-import javax.persistence.EntityManager;
-import javax.persistence.Query;
+
 import java.lang.invoke.MethodHandles;
 import java.util.List;
 import java.util.logging.Level;

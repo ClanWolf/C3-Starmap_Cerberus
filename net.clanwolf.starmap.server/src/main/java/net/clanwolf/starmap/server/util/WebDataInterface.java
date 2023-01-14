@@ -26,6 +26,7 @@
  */
 package net.clanwolf.starmap.server.util;
 
+import jakarta.persistence.EntityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.server.GameServer;
@@ -42,7 +43,7 @@ import org.codehaus.jackson.map.SerializationConfig.Feature;
 import org.hibernate.Session;
 import org.json.simple.JSONValue;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 import java.io.*;
 import java.lang.invoke.MethodHandles;
 import java.sql.*;
@@ -67,7 +68,15 @@ public class WebDataInterface {
 		Long season = GameServer.getCurrentSeason();
 		Long round = RoundDAO.getInstance().findBySeasonId(season).getRound();
 		Long roundPhase = RoundDAO.getInstance().findBySeasonId(season).getRoundPhase();
-		LocalDateTime currentRoundStartDateTime = RoundDAO.getInstance().findBySeasonId(season).getCurrentRoundStartDate();
+		//LocalDateTime currentRoundStartDateTime = RoundDAO.getInstance().findBySeasonId(season).getCurrentRoundStartDate().toLocalDateTime();
+
+		LocalDateTime currentRoundStartDateTime = null;
+		String currentRoundStartDateString = RoundDAO.getInstance().findBySeasonId(season).getCurrentRoundStartDate();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Nexus.patternTimestamp);
+		currentRoundStartDateTime = LocalDateTime.parse(currentRoundStartDateString, formatter);
+
+
+
 		String dateS = dateTimeformatter.format(currentRoundStartDateTime);
 		SeasonPOJO seasonPOJO = (SeasonPOJO) SeasonDAO.getInstance().findById(SeasonPOJO.class, season);
 		Long seasonMetaPhase = seasonPOJO.getMetaPhase();

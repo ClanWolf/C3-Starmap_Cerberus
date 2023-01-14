@@ -84,6 +84,8 @@ public class JumpshipDAO extends GenericDAO {
 	public ArrayList<JumpshipPOJO> getAllJumpships(){
 		CriteriaHelper crit = new CriteriaHelper(JumpshipPOJO.class);
 
+		crit.addCriteriaIsNotNull("id");
+
 		List<Object> lRes = crit.getResultList();
 
 		Iterator<Object> iter = lRes.iterator();

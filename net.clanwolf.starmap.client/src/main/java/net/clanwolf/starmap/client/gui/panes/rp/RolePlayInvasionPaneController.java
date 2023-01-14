@@ -476,8 +476,22 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 					} else if (c.getSelectedDefenderWon() != null && c.getSelectedDefenderWon()) {
 						defenderWon = true;
 					}
-					if (Nexus.getCurrentUser().getCurrentCharacter().getFactionId().equals(a.getFactionID_Defender().intValue())) {
-						iAmDefender = true;
+
+					if (Nexus.getCurrentUser().getCurrentCharacter().getId().equals(c.getCharacterID())) {
+						// This is my own (logged in) user
+
+						// 0L Attacker Warrior
+						// 1L Attacker Commander
+						// 2L Defender
+						// 3L Defender Commander
+						// 4L Supporter
+						// 5L Attacker Supporter
+						// 6L Defender Supporter
+						if (c.getType() == 0L || c.getType() == 1L || c.getType() == 5L) {
+							iAmDefender = false;
+						} else if (c.getType() == 2L || c.getType() == 3L || c.getType() == 6L) {
+							iAmDefender = true;
+						}
 					}
 				}
 				if (attackerWon) {

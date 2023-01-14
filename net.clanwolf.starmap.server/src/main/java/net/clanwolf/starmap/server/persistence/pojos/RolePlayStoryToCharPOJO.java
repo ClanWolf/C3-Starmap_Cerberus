@@ -31,9 +31,8 @@ import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import net.clanwolf.starmap.server.persistence.Pojo;
 
-import javax.persistence.*;
-
-import static javax.persistence.GenerationType.IDENTITY;
+import jakarta.persistence.*;
+import static jakarta.persistence.GenerationType.IDENTITY;
 
 /**
  * @author Undertaker

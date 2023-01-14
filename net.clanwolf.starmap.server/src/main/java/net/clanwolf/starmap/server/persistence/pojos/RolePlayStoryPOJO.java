@@ -31,11 +31,10 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import net.clanwolf.starmap.server.persistence.Pojo;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
-import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.List;
 
-import static javax.persistence.GenerationType.IDENTITY;
+import jakarta.persistence.*;
+import static jakarta.persistence.GenerationType.IDENTITY;
 
 @JsonIdentityInfo(
 		scope= RolePlayStoryPOJO.class,

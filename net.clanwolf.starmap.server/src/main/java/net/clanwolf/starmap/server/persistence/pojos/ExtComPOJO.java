@@ -30,10 +30,8 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import net.clanwolf.starmap.server.persistence.Pojo;
 
-import javax.persistence.*;
-import java.time.LocalDateTime;
-
-import static javax.persistence.GenerationType.IDENTITY;
+import jakarta.persistence.*;
+import static jakarta.persistence.GenerationType.IDENTITY;
 
 @JsonIdentityInfo(
 		scope= ExtComPOJO.class,
