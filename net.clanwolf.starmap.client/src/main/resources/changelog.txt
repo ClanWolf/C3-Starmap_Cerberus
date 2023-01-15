@@ -11,6 +11,9 @@ CURRENTLY IN PROGRESS:
 
 ----------------------------------------------------------------
 
+Version 7.2.21 (15.01.2023)
+- FIXED: Error in db selection
+
 Version 7.2.20 (13.01.2023)
 - UPDATED: Migration to latest Spring / Hibernate / JPA version(s)
 - FIXED: Motivational voice samples should now match the drop results in invasion drops
