@@ -73,16 +73,16 @@ public class AttackStatsDAO extends GenericDAO {
 
 	public AttackStatsPOJO findByMatchId(String matchId) {
 		CriteriaHelper crit = new CriteriaHelper(AttackStatsPOJO.class);
-
 		crit.addCriteria("mwoMatchId", matchId);
+
 		return (AttackStatsPOJO) crit.getSingleResult();
 	}
 
 	public ArrayList<AttackStatsPOJO> getStatisticsForAttack(Long seasonId, Long attackId) {
 		CriteriaHelper crit = new CriteriaHelper(AttackStatsPOJO.class);
-
 		crit.addCriteria("seasonId", seasonId);
 		crit.addCriteria("attackId", attackId);
+
 		List<Object> res = crit.getResultList();
 
 		Iterator<Object> iter = res.iterator();

@@ -75,13 +75,14 @@ public class RolePlayCharacterDAO extends GenericDAO {
 		Iterator<Object> iter = lRes.iterator();
 		ArrayList<RolePlayCharacterPOJO> lRPS = new ArrayList<>();
 
-		while (iter.hasNext()) lRPS.add((RolePlayCharacterPOJO) iter.next());
+		while (iter.hasNext()) {
+			lRPS.add((RolePlayCharacterPOJO) iter.next());
+		}
 
 		return lRPS;
 	}
 	public ArrayList<RolePlayCharacterPOJO> getCharactersOfUser(UserPOJO user) {
 		CriteriaHelper crit = new CriteriaHelper(RolePlayCharacterPOJO.class);
-
 		crit.addCriteria("user", user);
 
 		List<Object> lRes = crit.getResultList();

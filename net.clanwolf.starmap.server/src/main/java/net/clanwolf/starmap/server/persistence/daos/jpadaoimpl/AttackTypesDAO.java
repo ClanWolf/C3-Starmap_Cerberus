@@ -59,8 +59,8 @@ public class AttackTypesDAO extends GenericDAO {
 
 	public AttackTypesPOJO findByShortName(Long userId, String shortname) {
 		CriteriaHelper crit = new CriteriaHelper(AttackTypesPOJO.class);
-
 		crit.addCriteria("attackTypeShort", shortname);
+
 		return (AttackTypesPOJO) crit.getSingleResult();
 	}
 
@@ -71,6 +71,6 @@ public class AttackTypesDAO extends GenericDAO {
 
 	@Override
 	public Object findById(Long userID, Long id) {
-		return (AttackTypesPOJO) super.findById(userID, AttackTypesPOJO.class, id);
+		return super.findById(userID, AttackTypesPOJO.class, id);
 	}
 }

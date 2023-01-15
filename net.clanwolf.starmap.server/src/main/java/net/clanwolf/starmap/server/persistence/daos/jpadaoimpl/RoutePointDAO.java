@@ -26,7 +26,6 @@
  */
 package net.clanwolf.starmap.server.persistence.daos.jpadaoimpl;
 
-import io.nadron.util.Credentials;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.server.persistence.CriteriaHelper;
@@ -66,9 +65,8 @@ public class RoutePointDAO extends GenericDAO {
 
 		List<Object> objectList = crit.getResultList();
 
-		Iterator i = objectList.iterator();
-		while(i.hasNext()) {
-			RoutePointPOJO p = (RoutePointPOJO) i.next();
+		for (Object o : objectList) {
+			RoutePointPOJO p = (RoutePointPOJO) o;
 			logger.info("Deleting: " + p.getId());
 			delete(userID, p);
 		}
@@ -80,9 +78,8 @@ public class RoutePointDAO extends GenericDAO {
 
 		List<Object> objectList = crit.getResultList();
 
-		Iterator i = objectList.iterator();
-		while(i.hasNext()) {
-			RoutePointPOJO p = (RoutePointPOJO) i.next();
+		for (Object o : objectList) {
+			RoutePointPOJO p = (RoutePointPOJO) o;
 			logger.info("Deleting: " + p.getId());
 			delete(userID, p);
 		}

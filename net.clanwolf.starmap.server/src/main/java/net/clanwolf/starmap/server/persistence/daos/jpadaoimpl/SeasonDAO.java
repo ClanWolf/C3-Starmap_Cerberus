@@ -81,13 +81,16 @@ public class SeasonDAO extends GenericDAO {
 	 */
 	public ArrayList<SeasonPOJO> getAllSeasons(){
 		CriteriaHelper crit = new CriteriaHelper(SeasonPOJO.class);
+		crit.addCriteriaIsNotNull("id");
 
 		List<Object> lRes = crit.getResultList();
 
 		Iterator<Object> iter = lRes.iterator();
 		ArrayList<SeasonPOJO> lRPS = new ArrayList<>();
 
-		while (iter.hasNext()) lRPS.add((SeasonPOJO) iter.next());
+		while (iter.hasNext()) {
+			lRPS.add((SeasonPOJO) iter.next());
+		}
 
 		return lRPS;
 	}

@@ -82,9 +82,9 @@ public class RolePlayCharacterStatsDAO extends GenericDAO {
 	}
 
 	public ArrayList<RolePlayCharacterStatsPOJO> findByMatchId(String matchId) {
-
 			CriteriaHelper crit = new CriteriaHelper(RolePlayCharacterStatsPOJO.class);
 			crit.addCriteria("mwoMatchId",matchId);
+
 			List<Object> lRes = crit.getResultList();
 
 			ArrayList<RolePlayCharacterStatsPOJO> lUserSessions = new ArrayList<>();

@@ -70,8 +70,8 @@ public class SysConfigDAO extends GenericDAO {
 
 	public SysConfigPOJO findByKey(Long userID, String key) {
 		CriteriaHelper crit = new CriteriaHelper(SysConfigPOJO.class);
-
 		crit.addCriteria("key", key);
+
 		return (SysConfigPOJO) crit.getSingleResult();
 	}
 }

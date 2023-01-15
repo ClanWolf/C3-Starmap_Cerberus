@@ -77,13 +77,16 @@ public class StarSystemDAO extends GenericDAO {
 	 */
 	public ArrayList<StarSystemPOJO> getAllSystems(){
 		CriteriaHelper crit = new CriteriaHelper(StarSystemPOJO.class);
+		crit.addCriteriaIsNotNull("id");
 
 		List<Object> lRes = crit.getResultList();
 
 		Iterator<Object> iter = lRes.iterator();
 		ArrayList<StarSystemPOJO> lRPS = new ArrayList<>();
 
-		while (iter.hasNext()) lRPS.add((StarSystemPOJO) iter.next());
+		while (iter.hasNext()) {
+			lRPS.add((StarSystemPOJO) iter.next());
+		}
 
 		return lRPS;
 	}

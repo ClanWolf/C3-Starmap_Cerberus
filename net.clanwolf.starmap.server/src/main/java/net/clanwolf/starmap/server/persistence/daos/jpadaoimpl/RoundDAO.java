@@ -95,13 +95,16 @@ public class RoundDAO extends GenericDAO {
 	 */
 	public ArrayList<RoundPOJO> getAllRounds(){
 		CriteriaHelper crit = new CriteriaHelper(RoundPOJO.class);
+		crit.addCriteriaIsNotNull("id");
 
 		List<Object> lRes = crit.getResultList();
 
 		Iterator<Object> iter = lRes.iterator();
 		ArrayList<RoundPOJO> lRPS = new ArrayList<>();
 
-		while (iter.hasNext()) lRPS.add((RoundPOJO) iter.next());
+		while (iter.hasNext()) {
+			lRPS.add((RoundPOJO) iter.next());
+		}
 
 		return lRPS;
 	}

@@ -73,8 +73,8 @@ public class StatsMwoDAO extends GenericDAO {
 
 	public StatsMwoPOJO findByMWOGameId(String matchId) {
 		CriteriaHelper crit = new CriteriaHelper(StatsMwoPOJO.class);
-
 		crit.addCriteria("gameId", matchId);
+
 		return (StatsMwoPOJO) crit.getSingleResult();
 	}
 }
