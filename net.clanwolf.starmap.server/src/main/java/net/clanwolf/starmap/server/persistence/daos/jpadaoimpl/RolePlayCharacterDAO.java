@@ -68,6 +68,7 @@ public class RolePlayCharacterDAO extends GenericDAO {
 
 	public ArrayList<RolePlayCharacterPOJO> getAllCharacter(){
 		CriteriaHelper crit = new CriteriaHelper(RolePlayCharacterPOJO.class);
+		crit.addCriteriaIsNotNull("id");
 
 		List<Object> lRes = crit.getResultList();
 
