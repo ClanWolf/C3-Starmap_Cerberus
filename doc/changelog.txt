@@ -11,6 +11,9 @@ CURRENTLY IN PROGRESS:
 
 ----------------------------------------------------------------
 
+Version 7.2.22 (16.01.2023)
+- FIXED: Winning and losing players were mixed up in invasion report
+
 Version 7.2.21 (15.01.2023)
 - FIXED: Error in db selection
 
