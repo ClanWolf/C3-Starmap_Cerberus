@@ -82,7 +82,6 @@ public class AttackCharacterDAO extends GenericDAO {
 	 */
 	public ArrayList<AttackCharacterPOJO> getCharacterFromAttack(Long attackID){
 		CriteriaHelper crit = new CriteriaHelper(AttackCharacterPOJO.class);
-
 		crit.addCriteria("attackID", attackID );
 
 		List<Object> lRes = crit.getResultList();

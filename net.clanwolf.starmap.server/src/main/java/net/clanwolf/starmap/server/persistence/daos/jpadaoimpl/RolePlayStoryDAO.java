@@ -79,7 +79,6 @@ public class RolePlayStoryDAO extends GenericDAO {
 	 */
 	public ArrayList<RolePlayStoryPOJO> getAllStoriesAndChapters() {
 		CriteriaHelper crit = new CriteriaHelper(RolePlayStoryPOJO.class);
-
 		crit.addCriteriaOR(crit.createPredicate("type", ROLEPLAYENTRYTYPES.C3_RP_STORY), crit.createPredicate("type", ROLEPLAYENTRYTYPES.C3_RP_CHAPTER));
 
 		List<Object> lRes = crit.getResultList();
@@ -100,7 +99,6 @@ public class RolePlayStoryDAO extends GenericDAO {
 	 */
 	public ArrayList<RolePlayStoryPOJO> getAllStoriesByStory(RolePlayStoryPOJO rp) {
 		CriteriaHelper crit = new CriteriaHelper(RolePlayStoryPOJO.class);
-
 		crit.addCriteriaOR(crit.createPredicate("story", rp));
 
 		List<Object> lRes = crit.getResultList();
@@ -121,7 +119,6 @@ public class RolePlayStoryDAO extends GenericDAO {
 	 */
 	public ArrayList<RolePlayStoryPOJO> getAllMainStories() {
 		CriteriaHelper crit = new CriteriaHelper(RolePlayStoryPOJO.class);
-
 		crit.addCriteria("type", ROLEPLAYENTRYTYPES.C3_RP_STORY);
 
 		List<Object> lRes = crit.getResultList();
@@ -145,7 +142,6 @@ public class RolePlayStoryDAO extends GenericDAO {
 	 */
 	public RolePlayStoryPOJO getChapterFromStoryBySortOrder(RolePlayStoryPOJO rp, Integer sortOrder){
 		CriteriaHelper crit = getStepBySortOrder(rp, sortOrder);
-
 		crit.addCriteria("type", ROLEPLAYENTRYTYPES.C3_RP_CHAPTER);
 
 		return (RolePlayStoryPOJO)crit.getSingleResult();
@@ -161,7 +157,6 @@ public class RolePlayStoryDAO extends GenericDAO {
 	 */
 	public RolePlayStoryPOJO getStepFromStoryBySortOrder(RolePlayStoryPOJO rp, Integer sortOrder){
 		CriteriaHelper crit = getStepBySortOrder(rp, sortOrder);
-
 		crit.addCriteriaOR(crit.createPredicate("type", ROLEPLAYENTRYTYPES.C3_RP_STEP_V1),
 				crit.createPredicate("type", ROLEPLAYENTRYTYPES.C3_RP_STEP_V2),
 				crit.createPredicate("type", ROLEPLAYENTRYTYPES.C3_RP_STEP_V3),

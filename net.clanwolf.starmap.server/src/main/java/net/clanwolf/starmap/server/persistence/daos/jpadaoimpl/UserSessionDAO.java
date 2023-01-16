@@ -78,6 +78,8 @@ public class UserSessionDAO extends GenericDAO {
 
 	public ArrayList<UserSessionPOJO> getUserSessionList() {
 		CriteriaHelper crit = new CriteriaHelper(UserSessionPOJO.class);
+		crit.addCriteriaIsNotNull("id");
+
 		List<Object> lRes = crit.getResultList();
 
 		ArrayList<UserSessionPOJO> lUserSessions = new ArrayList<>();

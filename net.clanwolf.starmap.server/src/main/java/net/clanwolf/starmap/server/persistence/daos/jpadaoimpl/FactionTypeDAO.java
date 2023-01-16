@@ -78,13 +78,16 @@ public class FactionTypeDAO extends GenericDAO {
 	 */
 	public ArrayList<FactionTypePOJO> getAllFactionTypes(){
 		CriteriaHelper crit = new CriteriaHelper(FactionTypePOJO.class);
+		crit.addCriteriaIsNotNull("id");
 
 		List<Object> lRes = crit.getResultList();
 
 		Iterator<Object> iter = lRes.iterator();
 		ArrayList<FactionTypePOJO> lRPS = new ArrayList<>();
 
-		while (iter.hasNext()) lRPS.add((FactionTypePOJO) iter.next());
+		while (iter.hasNext()) {
+			lRPS.add((FactionTypePOJO) iter.next());
+		}
 
 		return lRPS;
 	}

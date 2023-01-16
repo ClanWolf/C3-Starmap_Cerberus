@@ -76,13 +76,16 @@ public class RolePlayCharacterLevelDAO extends GenericDAO {
 	 */
 	public ArrayList<RolePlayCharacterLevelPOJO> getAllLevel(){
 		CriteriaHelper crit = new CriteriaHelper(RolePlayCharacterLevelPOJO.class);
+		crit.addCriteriaIsNotNull("id");
 
 		List<Object> lRes = crit.getResultList();
 
 		Iterator<Object> iter = lRes.iterator();
 		ArrayList<RolePlayCharacterLevelPOJO> lRPS = new ArrayList<>();
 
-		while (iter.hasNext()) lRPS.add((RolePlayCharacterLevelPOJO) iter.next());
+		while (iter.hasNext()) {
+			lRPS.add((RolePlayCharacterLevelPOJO) iter.next());
+		}
 
 		return lRPS;
 	}
