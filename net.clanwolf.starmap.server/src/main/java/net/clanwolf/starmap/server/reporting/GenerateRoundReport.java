@@ -56,6 +56,7 @@ import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.SysConfigDAO;
 import net.clanwolf.starmap.server.persistence.pojos.*;
 import net.clanwolf.starmap.server.process.BalanceUserInfo;
 import net.clanwolf.starmap.server.process.CalcXP;
+import net.clanwolf.starmap.server.process.FactionInfo;
 import net.clanwolf.starmap.server.util.OSCheck;
 import net.clanwolf.starmap.transfer.mwo.MWOMatchResult;
 import net.clanwolf.starmap.transfer.mwo.MatchDetails;
@@ -107,6 +108,7 @@ public class GenerateRoundReport {
     public FactionPOJO factionDefender;
     private final AttackPOJO attackPOJO;
     private int dropCounter = 1;
+    private String MWOMatchID;
 
 
     public void addCostDefender(String description, Long amount) throws Exception {
@@ -499,7 +501,7 @@ public class GenerateRoundReport {
                 .setBorderTop(greyBorder);
     }
 
-    protected Cell addTable(Table table) throws Exception {
+    protected Cell addTable(Table table) {
 
         return new Cell()
 
@@ -679,6 +681,7 @@ public class GenerateRoundReport {
         doc.add(new AreaBreak());
     }
 
+
     private void createVictoryDefeatTable(MWOMatchResult matchDetails, FactionPOJO factionAttacker, FactionPOJO factionDefender) throws Exception {
         Table tableResult = new Table(UnitValue.createPercentArray(new float[]{50, 50})).useAllAvailableWidth()
                 .setHorizontalAlignment(HorizontalAlignment.CENTER)
@@ -689,16 +692,22 @@ public class GenerateRoundReport {
         tableResult = new Table(UnitValue.createPercentArray(new float[]{25, 25, 25, 25})).useAllAvailableWidth()
                 .setHorizontalAlignment(HorizontalAlignment.CENTER);
 
-        if (matchDetails.getMatchDetails().getWinningTeam().equals("2")) {
+        FactionInfo factionAttackerInfo = new FactionInfo(factionAttacker.getId());
+        FactionInfo factionDefenderInfo = new FactionInfo(factionDefender.getId());
+
+
+
+        if (matchDetails.getMatchDetails().getWinningTeam().equals(factionAttackerInfo.getTeam(MWOMatchID))) {
             tableResult.addCell(addTeam2Cell("VICTORY").setFontSize(20));
         } else {
 
             tableResult.addCell(addTeam2Cell("DEFEAT").setFontSize(20));
         }
+
         tableResult.addCell(addTeam2Cell(matchDetails.getMatchDetails().getTeam2Score().toString()).setFontSize(20))
                 .addCell(addTeam1Cell(matchDetails.getMatchDetails().getTeam1Score().toString()).setFontSize(20));
 
-        if (matchDetails.getMatchDetails().getWinningTeam().equals("1")) {
+        if (matchDetails.getMatchDetails().getWinningTeam().equals(factionDefenderInfo.getTeam(MWOMatchID))) {
             tableResult.addCell(addTeam1Cell("VICTORY").setFontSize(20));
         } else {
 
@@ -831,6 +840,8 @@ public class GenerateRoundReport {
 
     private void createMatchInfo(MatchDetails matchDetails, AttackStatsPOJO attackStats) throws Exception {
         float[] columnWidth = {1, 1, 1, 1};
+
+        MWOMatchID = attackStats.getMwoMatchId();
 
         Table tableGameInfo = new Table(UnitValue.createPercentArray(columnWidth)).useAllAvailableWidth()
                 .setVerticalAlignment(VerticalAlignment.BOTTOM)
