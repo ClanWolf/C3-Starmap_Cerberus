@@ -81,6 +81,7 @@ public class RolePlayCharacterDAO extends GenericDAO {
 
 		return lRPS;
 	}
+
 	public ArrayList<RolePlayCharacterPOJO> getCharactersOfUser(UserPOJO user) {
 		CriteriaHelper crit = new CriteriaHelper(RolePlayCharacterPOJO.class);
 		crit.addCriteria("user", user);

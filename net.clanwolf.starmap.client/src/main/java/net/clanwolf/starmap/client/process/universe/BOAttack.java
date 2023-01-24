@@ -40,7 +40,6 @@ import java.util.List;
 
 public class BOAttack {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-
 	private AttackDTO attackDTO;
 	private boolean fightsHaveBeenStarted = false;
 

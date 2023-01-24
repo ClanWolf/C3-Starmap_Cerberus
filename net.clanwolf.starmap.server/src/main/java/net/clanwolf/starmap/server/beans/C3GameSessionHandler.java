@@ -36,6 +36,7 @@ import io.nadron.service.GameStateManagerService;
 import net.clanwolf.client.mail.MailManager;
 import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.server.GameServer;
+import net.clanwolf.starmap.server.Nexus.Nexus;
 import net.clanwolf.starmap.server.util.ForumDatabaseTools;
 import net.clanwolf.starmap.transfer.dtos.*;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
@@ -54,9 +55,7 @@ import net.clanwolf.starmap.transfer.util.Compressor;
 
 import java.lang.invoke.MethodHandles;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Timer;
+import java.util.*;
 
 import static net.clanwolf.starmap.constants.Constants.*;
 
@@ -769,17 +768,68 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 	/**
 	 * Sends a list of players to all clients
 	 */
-	private void sendNewPlayerList() {
+	private void sendNewPlayerList(PlayerSession session) {
 		ArrayList<UserPOJO> userList = new ArrayList<>();
+		ArrayList<Long> userIdList = new ArrayList<>();
 		for (PlayerSession playerSession : room.getSessions()) {
 			C3Player pl = (C3Player) playerSession.getPlayer();
 			userList.add(pl.getUser());
+			userIdList.add(pl.getUser().getUserId());
 		}
+
+		checkAttackerDropleaderIsOffline(session, userList, userIdList);
 
 		GameState state_broadcast_login = new GameState(GAMESTATEMODES.USER_GET_NEW_PLAYERLIST);
 		state_broadcast_login.addObject(userList);
 
 		C3GameSessionHandler.sendBroadCast(room, state_broadcast_login);
+	}
+
+	private void checkAttackerDropleaderIsOffline(PlayerSession session, ArrayList<UserPOJO> userList, ArrayList<Long> userIdList) {
+
+		// TODO_C3: missing droplead, kill lobby
+		// Ist bei den Usern einer dabei, der gerade in einem Kampf Droplead/Attacker ist?
+
+		AttackDAO attackDAO = AttackDAO.getInstance();
+		ArrayList<AttackPOJO> openAttacks = attackDAO.getOpenAttacksOfASeason(Nexus.currentSeason);
+
+		for (AttackPOJO ap : openAttacks) {
+			AttackCharacterDAO dao = AttackCharacterDAO.getInstance();
+			ArrayList<AttackCharacterPOJO> acpl = dao.getCharactersFromAttack(ap.getId());
+			for (AttackCharacterPOJO acp : acpl) {
+				if (acp.getType().equals(Constants.ROLE_ATTACKER_COMMANDER)) {
+					RolePlayCharacterDAO rpDAO = RolePlayCharacterDAO.getInstance();
+					RolePlayCharacterPOJO character = rpDAO.findById(getC3UserID(session), acp.getCharacterID());
+					UserPOJO user = character.getUser();
+
+					boolean userContainedInList = false;
+					for (Long l : userIdList) {
+						if (Objects.equals(l, user.getUserId())) {
+							userContainedInList = true;
+							break;
+						}
+					}
+
+					if (!userContainedInList) {
+						logger.info("Lobby owner (" + user.getUserName() + ") is offline. Attacker commander left!");
+						logger.info(user.getUserName() + " has role " + acp.getType());
+// Save attack and delete all players???!??
+
+//						// Here the user of an attacker commander is offline.
+//						// The corresponding lobby is probably stuck.
+//						// This user is demoted to warrior to allow the drop to proceed.
+//						EntityManagerHelper.beginTransaction(getC3UserID(session));
+//
+//						acp.setType(null);
+//						dao.update(getC3UserID(session), acp);
+//						dao.refresh(getC3UserID(session), acp);
+//						attackDAO.refresh(getC3UserID(session), ap);
+//
+//						EntityManagerHelper.commit(getC3UserID(session));
+					}
+				}
+			}
+		}
 	}
 
 	static Long getC3UserID(PlayerSession session) {
@@ -806,7 +856,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 		switch (state.getMode()) {
 			case BROADCAST_SEND_NEW_PLAYERLIST:
-				sendNewPlayerList();
+				sendNewPlayerList(session);
 				break;
 			case USER_REQUEST_LOGGED_IN_DATA:
 				String clientVersion = "-";
@@ -822,7 +872,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			case USER_LOG_OUT:
 				session.getPlayer().logout(session);
 				storeUserSession(session, null, ipAdressSender, true);
-				sendNewPlayerList();
+				sendNewPlayerList(session);
 				break;
 			case ROLEPLAY_SAVE_STORY:
 				C3GameSessionHandlerRoleplay.saveRolePlayStory(session, state);

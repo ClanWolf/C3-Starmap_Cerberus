@@ -2523,12 +2523,22 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		}
 
 		Platform.runLater(() -> {
+			Double v = 0.1d;
+			String speechVolume = C3Properties.getProperty(C3PROPS.SPEECHVOLUME);
+			if (speechVolume != null && !"unknown".equals(speechVolume) && !"".equals(speechVolume)) {
+				try {
+					v = Double.parseDouble(speechVolume);
+				} catch(Exception e) {
+					// do nothing, value could not be set
+				}
+			}
+
 			paneVolumeControl.toFront();
 			ivMuteToggle.toFront();
 			slVolumeControl.toFront();
 			slVolumeControl.setMin(0.0d);
 			slVolumeControl.setMax(1.0d);
-			slVolumeControl.setValue(0.1d);
+			slVolumeControl.setValue(v);
 			Nexus.setMainFrameVolumeSlider(slVolumeControl);
 		});
 	}

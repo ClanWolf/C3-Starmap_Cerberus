@@ -3,13 +3,19 @@ C3 version history
 ----------------------------------------------------------------
 
 CURRENTLY IN PROGRESS:
-- P1: If a droplead (attacker) closes client the char should be also kicked from the attack or it is stuck [RolePlayPrepareBattlePaneController, L.791]
-- P1: Motivational speechsamples sometimes are wrong (to be tested) [RolePlayInvasionPaneController, L.511]
+- P1: If a droplead (attacker) leaves lobby, closes client or loses connection the lobby will be ended
 - P3: Web-View of the Starmap (ongoing, ~45%)
 ---
 - P3: Updating the manual (ongoing): https://www.clanwolf.net/apps/C3/C3_Manual_de.pdf
 
 ----------------------------------------------------------------
+
+Version 7.2.29 (25.01.2023)
+- FIXED: Attacker commander can now leave a lobby correctly
+
+Version 7.2.28 (24.01.2023)
+- UPDATED: Manual changes
+- FIXED: Initialized rp volume slider with speech volume from settings
 
 Version 7.2.22 (16.01.2023)
 - FIXED: Winning and losing players were mixed up in invasion report

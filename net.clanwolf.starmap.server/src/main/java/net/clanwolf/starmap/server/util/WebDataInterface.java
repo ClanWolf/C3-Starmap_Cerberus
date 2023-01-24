@@ -286,7 +286,7 @@ public class WebDataInterface {
 		AttackCharacterDAO dao = AttackCharacterDAO.getInstance();
 		ArrayList<AttackCharacterDTO> dtoList = new ArrayList<AttackCharacterDTO>();
 
-		ArrayList<AttackCharacterPOJO> myList = dao.getCharacterFromAttack(attack.getId());
+		ArrayList<AttackCharacterPOJO> myList = dao.getCharactersFromAttack(attack.getId());
 		for (AttackCharacterPOJO attackCharacterPOJO : myList) {
 			AttackCharacterDTO dto = EntityConverter.convertpojo2dto(attackCharacterPOJO, AttackCharacterDTO.class);
 			attack.getAttackCharList().add(dto);

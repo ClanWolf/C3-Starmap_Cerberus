@@ -273,6 +273,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 	public synchronized void handleLeaveButtonClick() {
 		AttackCharacterDTO ac = characterRoleMap.get(Nexus.getCurrentChar().getId());
 		ac.setType(null);
+		updateLists(Nexus.getCurrentAttackOfUser());
 		saveAttack();
 		checkConditionsToStartDrop(ac);
 		Nexus.setCurrentAttackOfUserToNull();
@@ -334,7 +335,8 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 					}
 				}
 			} else {
-				logger.error("CHECK: This list should never be empty!");
+				//logger.error("CHECK: This list should never be empty!");
+				// This list may be empty, if one of the dropleads decides to leave the lobby or loses connection
 			}
 
 			if (lvDropleadDefender.getItems().size() > 0) {
@@ -348,7 +350,8 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 					}
 				}
 			} else {
-				logger.error("CHECK: This list should never be empty!");
+				//logger.error("CHECK: This list should never be empty!");
+				// This list may be empty, if one of the dropleads decides to leave the lobby or loses connection
 			}
 
 			a.getAttackDTO().setAttackCharList(charList);
@@ -483,7 +486,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 			RolePlayCharacterDTO rpc = Nexus.getCurrentChar();
 			for (AttackCharacterDTO atc : a.getAttackCharList()) {
 				if (atc.getCharacterID().equals(rpc.getId())) {
-					if (atc.getType().equals(Constants.ROLE_ATTACKER_COMMANDER)) {
+					if (atc.getType() != null && atc.getType().equals(Constants.ROLE_ATTACKER_COMMANDER)) {
 						Platform.runLater(() -> btNext.setDisable(false));
 						break;
 					}
@@ -673,67 +676,75 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 			characterRoleMap.put(ac.getCharacterID(), ac);
 
-			if (ac.getType().equals(Constants.ROLE_ATTACKER_COMMANDER) || ac.getType().equals(Constants.ROLE_ATTACKER_WARRIOR) || ac.getType().equals(Constants.ROLE_ATTACKER_SUPPORTER)) { // Attacker
-				if (ac.getType().equals(Constants.ROLE_ATTACKER_COMMANDER)) { // Droplead
-					// Put this dropleader into upper list
-					lvDropleadAttacker.getItems().clear();
-					lvDropleadAttacker.getItems().add(Nexus.getCharacterById(ac.getCharacterID()));
-					lvDropleadAttacker.getItems().remove(dummy);
-					lvDropleadAttacker.getSelectionModel().clearSelection();
-					if (ac.getCharacterID().equals(Nexus.getCurrentChar().getId())) {
-						iamdroplead = true;
-						if (!announcedLobbyOwner) {
-							C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_YouAreLobbyOwner"));
-							announcedLobbyOwner = true;
-						}
-					}
-				} else { // Warrior
-					// Put this warrior into lower list (not a droplead)
-					lvAttacker.getItems().add(Nexus.getCharacterById(ac.getCharacterID()));
-					lvAttacker.getItems().remove(dummy);
-				}
-			} else if (ac.getType().equals(Constants.ROLE_DEFENDER_COMMANDER) || ac.getType().equals(Constants.ROLE_DEFENDER_WARRIOR) || ac.getType().equals(Constants.ROLE_DEFENDER_SUPPORTER)) {
-				if (ac.getType().equals(Constants.ROLE_DEFENDER_COMMANDER)) { // Droplead
-					// Put this dropleader into upper list
-					lvDropleadDefender.getItems().clear();
-					lvDropleadDefender.getItems().add(Nexus.getCharacterById(ac.getCharacterID()));
-					lvDropleadAttacker.getItems().remove(dummy);
-					lvDropleadDefender.getSelectionModel().clearSelection();
-				} else { // Warrior
-					// Put this warrior into lower list (not a droplead)
-					lvDefender.getItems().add(Nexus.getCharacterById(ac.getCharacterID()));
-					lvDefender.getItems().remove(dummy);
-				}
-			} else if (ac.getType().equals(Constants.ROLE_SUPPORTER)) {
-				// This warrior will help out, not coming from attacker OR defender factions
-				// Cannot be a droplead on either side
-				// Will be assigned to the side with fewer pilots or the attacker in case of same number of pilots
-				int atts = lvAttacker.getItems().size();
-				int defs = lvDefender.getItems().size();
-
-				if (lvDropleadAttacker.getItems().size() > 0 && !lvDropleadAttacker.getItems().get(0).getName().equals("...")) {
-					atts++;
-				}
-				if (lvDropleadDefender.getItems().size() > 0 && !lvDropleadDefender.getItems().get(0).getName().equals("...")) {
-					defs++;
-				}
-
-				if (atts > defs) {
-					lvDefender.getItems().add(Nexus.getCharacterById(ac.getCharacterID()));
-					lvDefender.getItems().remove(dummy);
-					ac.setType(Constants.ROLE_DEFENDER_SUPPORTER);
-				} else if (atts < defs) {
-					lvAttacker.getItems().add(Nexus.getCharacterById(ac.getCharacterID()));
-					lvAttacker.getItems().remove(dummy);
-					ac.setType(Constants.ROLE_ATTACKER_SUPPORTER);
-				} else {
-					lvAttacker.getItems().add(Nexus.getCharacterById(ac.getCharacterID()));
-					lvAttacker.getItems().remove(dummy);
-					ac.setType(Constants.ROLE_ATTACKER_SUPPORTER);
-				}
+			if (ac.getType() == null) {
+				// The user has type null, I (!) have left the lobby or lost connection
 			} else {
-				logger.info("ERROR: A user was lost during lobby refresh of user lists");
+				if (ac.getType().equals(Constants.ROLE_ATTACKER_COMMANDER) || ac.getType().equals(Constants.ROLE_ATTACKER_WARRIOR) || ac.getType().equals(Constants.ROLE_ATTACKER_SUPPORTER)) { // Attacker
+					if (ac.getType().equals(Constants.ROLE_ATTACKER_COMMANDER)) { // Droplead
+						// Put this dropleader into upper list
+						lvDropleadAttacker.getItems().clear();
+						lvDropleadAttacker.getItems().add(Nexus.getCharacterById(ac.getCharacterID()));
+						lvDropleadAttacker.getItems().remove(dummy);
+						lvDropleadAttacker.getSelectionModel().clearSelection();
+						if (ac.getCharacterID().equals(Nexus.getCurrentChar().getId())) {
+							iamdroplead = true;
+							if (!announcedLobbyOwner) {
+								C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_YouAreLobbyOwner"));
+								announcedLobbyOwner = true;
+							}
+						}
+					} else { // Warrior
+						// Put this warrior into lower list (not a droplead)
+						lvAttacker.getItems().add(Nexus.getCharacterById(ac.getCharacterID()));
+						lvAttacker.getItems().remove(dummy);
+					}
+				} else if (ac.getType().equals(Constants.ROLE_DEFENDER_COMMANDER) || ac.getType().equals(Constants.ROLE_DEFENDER_WARRIOR) || ac.getType().equals(Constants.ROLE_DEFENDER_SUPPORTER)) {
+					if (ac.getType().equals(Constants.ROLE_DEFENDER_COMMANDER)) { // Droplead
+						// Put this dropleader into upper list
+						lvDropleadDefender.getItems().clear();
+						lvDropleadDefender.getItems().add(Nexus.getCharacterById(ac.getCharacterID()));
+						lvDropleadAttacker.getItems().remove(dummy);
+						lvDropleadDefender.getSelectionModel().clearSelection();
+					} else { // Warrior
+						// Put this warrior into lower list (not a droplead)
+						lvDefender.getItems().add(Nexus.getCharacterById(ac.getCharacterID()));
+						lvDefender.getItems().remove(dummy);
+					}
+				} else if (ac.getType().equals(Constants.ROLE_SUPPORTER)) {
+					// This warrior will help out, not coming from attacker OR defender factions
+					// Cannot be a droplead on either side
+					// Will be assigned to the side with fewer pilots or the attacker in case of same number of pilots
+					int atts = lvAttacker.getItems().size();
+					int defs = lvDefender.getItems().size();
+
+					if (lvDropleadAttacker.getItems().size() > 0 && !lvDropleadAttacker.getItems().get(0).getName().equals("...")) {
+						atts++;
+					}
+					if (lvDropleadDefender.getItems().size() > 0 && !lvDropleadDefender.getItems().get(0).getName().equals("...")) {
+						defs++;
+					}
+
+					if (atts > defs) {
+						lvDefender.getItems().add(Nexus.getCharacterById(ac.getCharacterID()));
+						lvDefender.getItems().remove(dummy);
+						ac.setType(Constants.ROLE_DEFENDER_SUPPORTER);
+					} else if (atts < defs) {
+						lvAttacker.getItems().add(Nexus.getCharacterById(ac.getCharacterID()));
+						lvAttacker.getItems().remove(dummy);
+						ac.setType(Constants.ROLE_ATTACKER_SUPPORTER);
+					} else {
+						lvAttacker.getItems().add(Nexus.getCharacterById(ac.getCharacterID()));
+						lvAttacker.getItems().remove(dummy);
+						ac.setType(Constants.ROLE_ATTACKER_SUPPORTER);
+					}
+				} else {
+					logger.info("ERROR: A user was lost during lobby refresh of user lists");
+				}
 			}
+		}
+
+		if (lvDropleadAttacker.getItems().size() == 0) {
+			lvDropleadAttacker.getItems().add(dummy);
 		}
 
 		// Is attacker droplead still empty?
@@ -781,19 +792,35 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 		checkConditionsToStartDrop(null);
 
-		if (!lvDropleadAttacker.getItems().get(0).getName().equals("...")) { // there is a droplead (attacker)
-			if (!lvDropleadAttacker.getItems().get(0).getId().equals(Nexus.getCurrentChar().getId())) { // the droplead is not me
-				announcedLobbyOwner = false;
+		if (lvDropleadAttacker.getItems().size() > 0) {
+			if (lvDropleadAttacker.getItems().get(0) != null && !lvDropleadAttacker.getItems().get(0).getName().equals("...")) { // there is a droplead (attacker)
+				if (!lvDropleadAttacker.getItems().get(0).getId().equals(Nexus.getCurrentChar().getId())) { // the droplead is not me
+					announcedLobbyOwner = false;
+				}
+				if (!Nexus.getUserIsOnline(lvDropleadAttacker.getItems().get(0).getId())) {
+					// The lobby owner (droplead of the attacker) seems to be offline
+					// TODO_C3: Lobby owner left the lobby!
+					logger.info("The lobby owner is offline! Inform the server to remove.");
+					//	removeUser();
+				}
 			}
-			if (!Nexus.getUserIsOnline(lvDropleadAttacker.getItems().get(0).getId())) {
-				// The lobby owner (droplead of the attacker) seems to be offline
-				//TODO_C3: Lobby owner left the lobby!
-				logger.info("The lobby owner is offline! Inform the server to kick him from the lobby! and promote someone else to be droplead (if possible).");
-			}
+		} else {
+			// There is no lobbyowner left!
 		}
 
 		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("2");
 	}
+
+//	public synchronized void removeUser() {
+//		// Das hier wird 15 mal gemacht, wenn es 15 user gibt, die angemeldet sind... Es sollte auf dem Server passieren!
+//		// C3GameSessionHandler: removeOfflineAttackerDropleaderFromActiveLobby()
+//
+//		RolePlayCharacterDTO rpc = lvDropleadAttacker.getItems().get(0);
+//		AttackCharacterDTO ac = characterRoleMap.get(rpc.getId());
+//		ac.setType(null);
+//		saveAttack();
+//		checkConditionsToStartDrop(ac);
+//	}
 
 	/**
 	 * Handle Actions
@@ -878,11 +905,12 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 			case NEW_PLAYERLIST_RECEIVED:
 				// This should happen if a user goes offline
-				checkConditionsToStartDrop(null);
-				lvDropleadAttacker.refresh();
-				lvDropleadDefender.refresh();
-				lvAttacker.refresh();
-				lvDefender.refresh();
+//				checkConditionsToStartDrop(null);
+//				lvDropleadAttacker.refresh();
+//				lvDropleadDefender.refresh();
+//				lvAttacker.refresh();
+//				lvDefender.refresh();
+				updateLists(Nexus.getCurrentAttackOfUser());
 				break;
 
 			default:

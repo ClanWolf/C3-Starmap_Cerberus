@@ -80,7 +80,7 @@ public class AttackCharacterDAO extends GenericDAO {
 	/*
 	 * Give all open attacks of a season back
 	 */
-	public ArrayList<AttackCharacterPOJO> getCharacterFromAttack(Long attackID){
+	public ArrayList<AttackCharacterPOJO> getCharactersFromAttack(Long attackID){
 		CriteriaHelper crit = new CriteriaHelper(AttackCharacterPOJO.class);
 		crit.addCriteria("attackID", attackID );
 
