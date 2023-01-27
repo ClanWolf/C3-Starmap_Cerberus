@@ -799,13 +799,13 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 				}
 				if (!Nexus.getUserIsOnline(lvDropleadAttacker.getItems().get(0).getId())) {
 					// The lobby owner (droplead of the attacker) seems to be offline
-					// TODO_C3: Lobby owner left the lobby!
-					logger.info("The lobby owner is offline! Inform the server to remove.");
+					logger.info("The lobby owner is offline! Needs to be removed on serverside.");
 					//	removeUser();
 				}
 			}
 		} else {
 			// There is no lobbyowner left!
+			logger.info("There is no lobby owner (attacker commander)!");
 		}
 
 		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("2");

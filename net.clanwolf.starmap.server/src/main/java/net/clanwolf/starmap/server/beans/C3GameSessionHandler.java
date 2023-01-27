@@ -768,7 +768,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 	/**
 	 * Sends a list of players to all clients
 	 */
-	private void sendNewPlayerList(PlayerSession session) {
+	private synchronized void sendNewPlayerList(PlayerSession session) {
 		ArrayList<UserPOJO> userList = new ArrayList<>();
 		ArrayList<Long> userIdList = new ArrayList<>();
 		for (PlayerSession playerSession : room.getSessions()) {
@@ -785,7 +785,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		C3GameSessionHandler.sendBroadCast(room, state_broadcast_login);
 	}
 
-	private void checkAttackerDropleaderIsOffline(PlayerSession session, ArrayList<UserPOJO> userList, ArrayList<Long> userIdList) {
+	private synchronized void checkAttackerDropleaderIsOffline(PlayerSession session, ArrayList<UserPOJO> userList, ArrayList<Long> userIdList) {
 
 		// TODO_C3: missing droplead, kill lobby
 		// Ist bei den Usern einer dabei, der gerade in einem Kampf Droplead/Attacker ist?
