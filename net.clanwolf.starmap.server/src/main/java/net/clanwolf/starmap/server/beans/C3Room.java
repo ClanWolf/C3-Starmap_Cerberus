@@ -27,12 +27,22 @@
 package net.clanwolf.starmap.server.beans;
 
 import io.nadron.app.GameRoom;
+import io.nadron.app.Player;
 import io.nadron.app.PlayerSession;
 import io.nadron.app.impl.GameRoomSession;
 import io.nadron.event.Event;
+import io.nadron.event.EventContext;
 import io.nadron.event.Events;
 import io.nadron.event.impl.DefaultEventContext;
 import io.nadron.event.impl.DefaultSessionEventHandler;
+import net.clanwolf.starmap.constants.Constants;
+import net.clanwolf.starmap.server.Nexus.Nexus;
+import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.AttackDAO;
+import net.clanwolf.starmap.server.persistence.pojos.AttackCharacterPOJO;
+import net.clanwolf.starmap.server.persistence.pojos.AttackPOJO;
+import net.clanwolf.starmap.server.persistence.pojos.RolePlayCharacterPOJO;
+import net.clanwolf.starmap.server.persistence.pojos.UserPOJO;
+import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.server.persistence.EntityConverter;
@@ -41,6 +51,7 @@ import net.clanwolf.starmap.transfer.GameState;
 
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -164,15 +175,60 @@ public class C3Room extends GameRoomSession {
 	@Override
 	public synchronized boolean disconnectSession(PlayerSession playerSession) {
 		logger.info("disconnectSession: disconnected session -> " + playerSession.getId());
+
 		// remove player session from list with the wrong sessions
 		wrongPlayerSessions.remove(playerSession.getId());
 		getSessionReadyMap().remove(playerSession.getId().toString());
+
+		C3Player p = (C3Player) playerSession.getPlayer();
+		UserPOJO u = p.getUser();
+		RolePlayCharacterPOJO character = u.getCurrentCharacter();
+
+		AttackDAO attackDAO = AttackDAO.getInstance();
+		ArrayList<AttackPOJO> openAttacks = attackDAO.getOpenAttacksOfASeason(Nexus.currentSeason);
+
+		for (AttackPOJO ap : openAttacks) {
+			for (AttackCharacterPOJO acp : ap.getAttackCharList()) {
+				logger.info("Is the disconnecting char the lobbyowner? " + acp.getCharacterID() + " : " + character.getId());
+				if (Objects.equals(acp.getCharacterID(), character.getId())) {
+					if (acp.getType() == Constants.ROLE_ATTACKER_COMMANDER) {
+						acp.setType(null);
+
+						GameState s = new GameState();
+						s.addObject(ap);
+						s.addObject2(ap.getAttackTypeID());
+						s.addObject3(acp);
+
+						Nexus.gmSessionHandler.saveAttack(playerSession, s);
+						break;
+					}
+				}
+			}
+		}
+
+		boolean ret = super.disconnectSession(playerSession);
+		sendNewPlayerList();
 
 		// EntityManager for room session must be closed on disconnect
 		if(playerSession.getPlayer().getId() != null) {
 			EntityManagerHelper.closeEntityManager((Long) playerSession.getPlayer().getId());
 		}
-			
-		return super.disconnectSession(playerSession);
+
+		return ret;
+	}
+
+	private synchronized void sendNewPlayerList() {
+		ArrayList<UserPOJO> userList = new ArrayList<>();
+		ArrayList<Long> userIdList = new ArrayList<>();
+		for (PlayerSession playerSession : this.getSessions()) {
+			C3Player pl = (C3Player) playerSession.getPlayer();
+			userList.add(pl.getUser());
+			userIdList.add(pl.getUser().getUserId());
+		}
+
+		GameState state_broadcast_login = new GameState(GAMESTATEMODES.USER_GET_NEW_PLAYERLIST);
+		state_broadcast_login.addObject(userList);
+
+		C3GameSessionHandler.sendBroadCast(this, state_broadcast_login);
 	}
 }
