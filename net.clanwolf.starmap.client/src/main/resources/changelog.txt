@@ -10,8 +10,11 @@ CURRENTLY IN PROGRESS:
 
 ----------------------------------------------------------------
 
-Version 7.2.29 (27.01.2023)
+Version 7.2.30 (27.01.2023)
+- CREATED: New tab in admin area for financial overview (to assist balancing of economy)
+- UPDATED: Libraries
 - FIXED: Attacker commander can now leave a lobby correctly
+- FIXED: Server disconnects sessions of clients that lose connection without proper logout
 
 Version 7.2.28 (24.01.2023)
 - UPDATED: Manual changes

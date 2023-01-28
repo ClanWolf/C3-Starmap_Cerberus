@@ -355,9 +355,18 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			s.setLockedUntilRound(attack.getRound() + Constants.ROUNDS_TO_LOCK_SYSTEM_AFTER_ATTACK);
 			daoSS.update(getC3UserID(session), s);
 
-			ArrayList<AttackCharacterPOJO> newAttackCharacters = new ArrayList<AttackCharacterPOJO>();
+			Long acpId = -1L;
+			if (state.getObject3() != null) {
+				acpId = ((AttackCharacterPOJO) state.getObject3()).getId();
+			}
+
+			ArrayList<AttackCharacterPOJO> newAttackCharacters = new ArrayList<>();
 			if( attack.getAttackCharList() != null) {
-				newAttackCharacters.addAll(attack.getAttackCharList());
+				for (AttackCharacterPOJO p : attack.getAttackCharList()) {
+					if (!Objects.equals(p.getId(), acpId)) {
+						newAttackCharacters.add(p);
+					}
+				}
 				attack.getAttackCharList().clear();
 			}
 
@@ -813,19 +822,15 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 					if (!userContainedInList) {
 						logger.info("Lobby owner (" + user.getUserName() + ") is offline. Attacker commander left!");
 						logger.info(user.getUserName() + " has role " + acp.getType());
-// Save attack and delete all players???!??
 
-//						// Here the user of an attacker commander is offline.
-//						// The corresponding lobby is probably stuck.
-//						// This user is demoted to warrior to allow the drop to proceed.
-//						EntityManagerHelper.beginTransaction(getC3UserID(session));
-//
-//						acp.setType(null);
-//						dao.update(getC3UserID(session), acp);
-//						dao.refresh(getC3UserID(session), acp);
-//						attackDAO.refresh(getC3UserID(session), ap);
-//
-//						EntityManagerHelper.commit(getC3UserID(session));
+						acp.setType(null);
+
+						GameState s = new GameState();
+						s.addObject(ap);
+						s.addObject2(ap.getAttackTypeID());
+						s.addObject3(acp);
+
+						saveAttack(session, s);
 					}
 				}
 			}
