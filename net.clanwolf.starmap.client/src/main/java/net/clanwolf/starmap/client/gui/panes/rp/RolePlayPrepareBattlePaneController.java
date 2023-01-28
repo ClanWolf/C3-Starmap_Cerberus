@@ -44,6 +44,7 @@ import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
+import net.clanwolf.starmap.client.gui.MainFrame;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3RolePlayController;
 import net.clanwolf.starmap.client.nexus.Nexus;
@@ -277,7 +278,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		saveAttack();
 		checkConditionsToStartDrop(ac);
 		Nexus.setCurrentAttackOfUserToNull();
-		announcedLobbyOwner = false;
+//		announcedLobbyOwner = false;
 		ActionManager.getAction(ACTIONS.SWITCH_TO_MAP).execute();
 	}
 
@@ -760,6 +761,9 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 				if (lvDefender.getItems().size() == 0) {
 					lvDefender.getItems().add(dummy);
 				}
+//				ac.setType(Constants.ROLE_ATTACKER_COMMANDER);
+
+
 				break; // do this only for the first potential droplead or the list will be reduced to one entry
 			}
 		}
@@ -776,6 +780,10 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 				if (lvAttacker.getItems().size() == 0) {
 					lvAttacker.getItems().add(dummy);
 				}
+//				ac.setType(Constants.ROLE_DEFENDER_COMMANDER);
+
+
+
 				break; // do this only for the first potential droplead or the list will be reduced to one entry
 			}
 		}
@@ -797,15 +805,15 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 				if (!lvDropleadAttacker.getItems().get(0).getId().equals(Nexus.getCurrentChar().getId())) { // the droplead is not me
 					announcedLobbyOwner = false;
 				}
-				if (!Nexus.getUserIsOnline(lvDropleadAttacker.getItems().get(0).getId())) {
-					// The lobby owner (droplead of the attacker) seems to be offline
-					logger.info("The lobby owner is offline! Needs to be removed on serverside.");
-					//	removeUser();
-				}
+//				if (!Nexus.getUserIsOnline(lvDropleadAttacker.getItems().get(0).getId())) {
+//					// The lobby owner (droplead of the attacker) seems to be offline
+//					logger.info("The lobby owner is offline! Needs to be removed on serverside.");
+//					//	removeUser();
+//				}
 			}
-		} else {
-			// There is no lobbyowner left!
-			logger.info("There is no lobby owner (attacker commander)!");
+//		} else {
+//			// There is no lobbyowner left!
+//			logger.info("There is no lobby owner (attacker commander)!");
 		}
 
 		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("2");
