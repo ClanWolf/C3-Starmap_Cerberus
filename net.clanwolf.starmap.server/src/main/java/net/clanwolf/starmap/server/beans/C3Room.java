@@ -30,9 +30,13 @@ import io.nadron.app.GameRoom;
 import io.nadron.app.PlayerSession;
 import io.nadron.app.impl.GameRoomSession;
 import io.nadron.event.Event;
+import io.nadron.event.EventContext;
 import io.nadron.event.Events;
 import io.nadron.event.impl.DefaultEventContext;
 import io.nadron.event.impl.DefaultSessionEventHandler;
+import net.clanwolf.starmap.server.Nexus.Nexus;
+import net.clanwolf.starmap.server.persistence.pojos.UserPOJO;
+import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.server.persistence.EntityConverter;
@@ -164,6 +168,7 @@ public class C3Room extends GameRoomSession {
 	@Override
 	public synchronized boolean disconnectSession(PlayerSession playerSession) {
 		logger.info("disconnectSession: disconnected session -> " + playerSession.getId());
+
 		// remove player session from list with the wrong sessions
 		wrongPlayerSessions.remove(playerSession.getId());
 		getSessionReadyMap().remove(playerSession.getId().toString());
@@ -172,7 +177,26 @@ public class C3Room extends GameRoomSession {
 		if(playerSession.getPlayer().getId() != null) {
 			EntityManagerHelper.closeEntityManager((Long) playerSession.getPlayer().getId());
 		}
-			
-		return super.disconnectSession(playerSession);
+
+		//TODO: Für DICH !!!!! :)
+		//Nexus.gmSessionHandler.saveAttack(playerSession, );
+		boolean ret = super.disconnectSession(playerSession);
+		sendNewPlayerList();
+		return ret;
+	}
+
+	private synchronized void sendNewPlayerList() {
+		ArrayList<UserPOJO> userList = new ArrayList<>();
+		ArrayList<Long> userIdList = new ArrayList<>();
+		for (PlayerSession playerSession : this.getSessions()) {
+			C3Player pl = (C3Player) playerSession.getPlayer();
+			userList.add(pl.getUser());
+			userIdList.add(pl.getUser().getUserId());
+		}
+
+		GameState state_broadcast_login = new GameState(GAMESTATEMODES.USER_GET_NEW_PLAYERLIST);
+		state_broadcast_login.addObject(userList);
+
+		C3GameSessionHandler.sendBroadCast(this, state_broadcast_login);
 	}
 }

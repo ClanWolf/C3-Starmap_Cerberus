@@ -84,6 +84,8 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		//		state = new GameState();
 		state = new GameState();
 		manager.setState(state); // set it back on the room
+
+		Nexus.gmSessionHandler = this;
 	}
 
 	@Override
@@ -332,7 +334,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		}
 	}
 
-	private synchronized void saveAttack(PlayerSession session, GameState state) {
+	public synchronized void saveAttack(PlayerSession session, GameState state) {
 		AttackDAO dao = AttackDAO.getInstance();
 		AttackCharacterDAO daoAC = AttackCharacterDAO.getInstance();
 		StarSystemDataDAO daoSS = StarSystemDataDAO.getInstance();
@@ -777,7 +779,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 	/**
 	 * Sends a list of players to all clients
 	 */
-	private synchronized void sendNewPlayerList(PlayerSession session) {
+	public synchronized void sendNewPlayerList(PlayerSession session) {
 		ArrayList<UserPOJO> userList = new ArrayList<>();
 		ArrayList<Long> userIdList = new ArrayList<>();
 		for (PlayerSession playerSession : room.getSessions()) {

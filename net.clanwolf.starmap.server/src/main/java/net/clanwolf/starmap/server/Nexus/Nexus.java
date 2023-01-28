@@ -26,6 +26,8 @@
  */
 package net.clanwolf.starmap.server.Nexus;
 
+import net.clanwolf.starmap.server.beans.C3GameSessionHandler;
+
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Nexus {
@@ -37,4 +39,8 @@ public class Nexus {
 	public static String mailServer = "";
 	public static String mailUser = "";
 	public static String mailPw = "";
+
+	public static C3GameSessionHandler gmSessionHandler;
+
+
 }
