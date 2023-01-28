@@ -34,9 +34,13 @@ import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import net.clanwolf.starmap.client.nexus.Nexus;
+import net.clanwolf.starmap.client.process.universe.BOAttack;
+import net.clanwolf.starmap.client.process.universe.BOFaction;
+import net.clanwolf.starmap.client.process.universe.BOJumpship;
 import net.clanwolf.starmap.client.security.Security;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.client.enums.PRIVILEGES;
+import net.clanwolf.starmap.transfer.dtos.AttackDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.transfer.GameState;
@@ -69,6 +73,9 @@ public class AdminPaneController {
 
 	@FXML
 	ComboBox cbUser;
+
+	@FXML
+	ComboBox cbFaction;
 
 	@FXML
 	public void btnSaveClicked() {
@@ -263,5 +270,16 @@ public class AdminPaneController {
 		cbUser.setItems(data);
 		cbUser.getSelectionModel().select(0);
 		setCheckBoxesForUser((String)cbUser.getSelectionModel().getSelectedItem());
+
+		//Finances
+		ObservableList <String> activeFactions = FXCollections.observableArrayList();
+		ArrayList<BOJumpship> allJumpship = Nexus.getBoUniverse().getJumpshipList();
+
+		allJumpship.forEach((key) -> {
+			activeFactions.add(key.getJumpshipDTO().getUnitName());
+		});
+
+		cbFaction.setItems(activeFactions);
+		cbFaction.getSelectionModel().select(0);
 	}
 }
