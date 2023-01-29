@@ -33,19 +33,16 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import net.clanwolf.starmap.client.enums.PRIVILEGES;
 import net.clanwolf.starmap.client.nexus.Nexus;
-import net.clanwolf.starmap.client.process.universe.BOAttack;
-import net.clanwolf.starmap.client.process.universe.BOFaction;
 import net.clanwolf.starmap.client.process.universe.BOJumpship;
 import net.clanwolf.starmap.client.security.Security;
 import net.clanwolf.starmap.client.util.Internationalization;
-import net.clanwolf.starmap.client.enums.PRIVILEGES;
-import net.clanwolf.starmap.transfer.dtos.AttackDTO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.UserDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.invoke.MethodHandles;
 import java.util.*;
@@ -72,10 +69,13 @@ public class AdminPaneController {
 	ScrollPane srollPane;
 
 	@FXML
-	ComboBox cbUser;
+	ComboBox cbUser, cbFaction;
 
 	@FXML
-	ComboBox cbFaction;
+	TableColumn tblCIncome, TblCCost;
+
+	@FXML
+	TableView tableFaction;
 
 	@FXML
 	public void btnSaveClicked() {
@@ -117,6 +117,11 @@ public class AdminPaneController {
 	@FXML
 	public void userSelectionChanged() {
 		setCheckBoxesForUser((String)cbUser.getSelectionModel().getSelectedItem());
+	}
+
+	@FXML
+	public void cbFactionSelectionChanged() {
+		//Hier werden die Daten für die Einnahmen und Kosten gefüllt.
 	}
 
 	private void calculatePrivCode() {
@@ -275,8 +280,9 @@ public class AdminPaneController {
 		ObservableList <String> activeFactions = FXCollections.observableArrayList();
 		ArrayList<BOJumpship> allJumpship = Nexus.getBoUniverse().getJumpshipList();
 
-		allJumpship.forEach((key) -> {
-			activeFactions.add(key.getJumpshipDTO().getUnitName());
+		allJumpship.forEach((jumpship) -> {
+			activeFactions.add(Nexus.getBoUniverse().getFactionByID(jumpship.getJumpshipDTO().getJumpshipFactionID()).getName() +
+					" - " + jumpship.getJumpshipDTO().getUnitName());
 		});
 
 		cbFaction.setItems(activeFactions);

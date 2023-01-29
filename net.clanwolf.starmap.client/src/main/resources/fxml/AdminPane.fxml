@@ -43,6 +43,16 @@
                            <children>
                               <Label layoutX="11.0" layoutY="25.0" text="Select Unit:" />
                               <ComboBox fx:id="cbFaction" layoutX="76.0" layoutY="18.0" prefHeight="30.0" prefWidth="441.0" />
+                              <ScrollPane layoutX="76.0" prefHeight="400.0" prefWidth="400.0" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="18.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="70.0">
+                                 <content>
+                                    <TableView fx:id="tableFinances" prefHeight="350.0" prefWidth="762.0">
+                                      <columns>
+                                        <TableColumn fx:id="tblCIncome" prefWidth="380.0" text="Income" />
+                                        <TableColumn fx:id="TblCCost" prefWidth="380.0" text="Cost" />
+                                      </columns>
+                                    </TableView>
+                                 </content>
+                              </ScrollPane>
                            </children></AnchorPane>
                      </content>
                   </Tab>
