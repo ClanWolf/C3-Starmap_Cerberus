@@ -293,6 +293,7 @@ public class ForumDatabaseTools {
 		String planetImage = "https://www.clanwolf.net/apps/C3/static/planets/" + systemImageName + ".png";
 
 		String subject = "[R" + round + "] " + attacker + " greift " + system + " (" + defender + ") an";
+		String tickerText = attacker + " greift " + system + " (" + defender + ") an";
 		String text = "";
 
 		text += "<table width=\"100%\">";
@@ -486,12 +487,11 @@ public class ForumDatabaseTools {
 
 		// Ticker
 		String roundS = "R" + round;
-		String subjectS = subject.replaceFirst("[R" + round + "] ", "");
 		sql = "";
 		sql += "INSERT INTO clanwolf_ticker ";
 		sql += "(tickernumber, tickermessage, tickerurl, tickertarget) ";
 		sql += "VALUES ";
-		sql += "('" + roundS + "', '" + subjectS + "', '" + attackThreadUrl + "', '_BLANK') ";
+		sql += "('" + roundS + "', '" + tickerText + "', '" + attackThreadUrl + "', '_BLANK') ";
 		insert(sql);
 	}
 }

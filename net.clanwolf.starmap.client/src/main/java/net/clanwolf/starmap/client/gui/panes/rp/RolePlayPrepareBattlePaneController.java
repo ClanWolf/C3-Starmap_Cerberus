@@ -724,7 +724,6 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 					if (lvDropleadDefender.getItems().size() > 0 && !lvDropleadDefender.getItems().get(0).getName().equals("...")) {
 						defs++;
 					}
-
 					if (atts > defs) {
 						lvDefender.getItems().add(Nexus.getCharacterById(ac.getCharacterID()));
 						lvDefender.getItems().remove(dummy);
@@ -748,6 +747,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 			lvDropleadAttacker.getItems().add(dummy);
 		}
 
+		boolean saveAttack = false;
 		// Is attacker droplead still empty?
 		if (lvDropleadAttacker.getItems().size() == 1 && "...".equals(lvDropleadAttacker.getItems().get(0).getName())) {
 			for (AttackCharacterDTO ac : potentialDropleadersAttacker.keySet()) {
@@ -761,9 +761,8 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 				if (lvDefender.getItems().size() == 0) {
 					lvDefender.getItems().add(dummy);
 				}
-//				ac.setType(Constants.ROLE_ATTACKER_COMMANDER);
-
-
+				ac.setType(Constants.ROLE_ATTACKER_COMMANDER);
+				saveAttack = true;
 				break; // do this only for the first potential droplead or the list will be reduced to one entry
 			}
 		}
@@ -780,11 +779,17 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 				if (lvAttacker.getItems().size() == 0) {
 					lvAttacker.getItems().add(dummy);
 				}
-//				ac.setType(Constants.ROLE_DEFENDER_COMMANDER);
-
-
-
+				ac.setType(Constants.ROLE_DEFENDER_COMMANDER);
+				saveAttack = true;
 				break; // do this only for the first potential droplead or the list will be reduced to one entry
+			}
+		}
+
+		if (lvDropleadAttacker.getItems().size() > 0) {
+			if (lvDropleadAttacker.getItems().get(0) != null && !lvDropleadAttacker.getItems().get(0).getName().equals("...")) { // there is a droplead (attacker)
+				if (!lvDropleadAttacker.getItems().get(0).getId().equals(Nexus.getCurrentChar().getId())) { // the droplead is not me
+					announcedLobbyOwner = false;
+				}
 			}
 		}
 
@@ -800,35 +805,12 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 
 		checkConditionsToStartDrop(null);
 
-		if (lvDropleadAttacker.getItems().size() > 0) {
-			if (lvDropleadAttacker.getItems().get(0) != null && !lvDropleadAttacker.getItems().get(0).getName().equals("...")) { // there is a droplead (attacker)
-				if (!lvDropleadAttacker.getItems().get(0).getId().equals(Nexus.getCurrentChar().getId())) { // the droplead is not me
-					announcedLobbyOwner = false;
-				}
-//				if (!Nexus.getUserIsOnline(lvDropleadAttacker.getItems().get(0).getId())) {
-//					// The lobby owner (droplead of the attacker) seems to be offline
-//					logger.info("The lobby owner is offline! Needs to be removed on serverside.");
-//					//	removeUser();
-//				}
-			}
-//		} else {
-//			// There is no lobbyowner left!
-//			logger.info("There is no lobby owner (attacker commander)!");
+		if (saveAttack) {
+			saveAttack();
 		}
 
 		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("2");
 	}
-
-//	public synchronized void removeUser() {
-//		// Das hier wird 15 mal gemacht, wenn es 15 user gibt, die angemeldet sind... Es sollte auf dem Server passieren!
-//		// C3GameSessionHandler: removeOfflineAttackerDropleaderFromActiveLobby()
-//
-//		RolePlayCharacterDTO rpc = lvDropleadAttacker.getItems().get(0);
-//		AttackCharacterDTO ac = characterRoleMap.get(rpc.getId());
-//		ac.setType(null);
-//		saveAttack();
-//		checkConditionsToStartDrop(ac);
-//	}
 
 	/**
 	 * Handle Actions

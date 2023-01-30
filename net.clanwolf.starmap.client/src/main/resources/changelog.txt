@@ -10,6 +10,9 @@ CURRENTLY IN PROGRESS:
 
 ----------------------------------------------------------------
 
+Version 7.2.32 (31.01.2023)
+- FIXED: Redundant display of round identifier in ticker text (website)
+
 Version 7.2.31 (28.01.2023)
 - CREATED: New tab in admin area for financial overview (to assist balancing of economy)
 - UPDATED: Libraries
