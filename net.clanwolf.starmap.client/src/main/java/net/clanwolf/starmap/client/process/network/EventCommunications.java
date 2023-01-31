@@ -131,10 +131,9 @@ public class EventCommunications {
 					logger.info("EventCommunications.onDataIn: myPlayerSessionID: -> " + Nexus.getMyPlayerSessionID());
 
 					// Send new playerlist
-					GameState stateSendPlayList = new GameState(GAMESTATEMODES.BROADCAST_SEND_NEW_PLAYERLIST);
-
-					NetworkEvent networkEventPlayList = Events.networkEvent(stateSendPlayList);
-					session.onEvent(networkEventPlayList);
+					GameState stateSendPlayerList = new GameState(GAMESTATEMODES.BROADCAST_SEND_NEW_PLAYERLIST);
+					NetworkEvent networkEventPlayerList = Events.networkEvent(stateSendPlayerList);
+					session.onEvent(networkEventPlayerList);
 
 					// Check for double logins
 					GameState stateCheckDoubleLogin = new GameState(GAMESTATEMODES.USER_CHECK_DOUBLE_LOGIN);

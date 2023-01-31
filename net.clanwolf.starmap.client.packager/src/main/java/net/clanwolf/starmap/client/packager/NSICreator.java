@@ -31,7 +31,7 @@ import java.io.*;
 public class NSICreator {
 	public static void main(String[] args) {
 		String version = null;
-		String java_version_path = "19"; // this is the java version installed on the server for the path in scripts!
+		String java_version_path = "19.0.2"; // this is the java version installed on the server for the path in scripts!
 
 		try {
 			BufferedReader brProps = new BufferedReader(new FileReader("C:\\C3\\projects\\C3-Starmap_Cerberus\\net.clanwolf.starmap.client\\target\\classes\\c3.properties"));

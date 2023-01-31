@@ -26,28 +26,24 @@
  */
 package net.clanwolf.starmap.server.beans;
 
-import io.nadron.app.GameRoom;
-import io.nadron.app.Player;
 import io.nadron.app.PlayerSession;
 import io.nadron.app.impl.GameRoomSession;
 import io.nadron.event.Event;
-import io.nadron.event.EventContext;
 import io.nadron.event.Events;
 import io.nadron.event.impl.DefaultEventContext;
 import io.nadron.event.impl.DefaultSessionEventHandler;
 import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.server.Nexus.Nexus;
+import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.AttackDAO;
 import net.clanwolf.starmap.server.persistence.pojos.AttackCharacterPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.AttackPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.RolePlayCharacterPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.UserPOJO;
+import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import net.clanwolf.starmap.server.persistence.EntityConverter;
-import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
-import net.clanwolf.starmap.transfer.GameState;
 
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
@@ -59,7 +55,6 @@ import java.util.concurrent.TimeUnit;
  * logic and state_login. In more real-world scenarios, the session handler can have its own logic, for e.g. say validation to prevent cheating, filtering, pre-processing of event etc.
  *
  * @author Werner Kewenig
- *
  */
 public class C3Room extends GameRoomSession {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -78,6 +73,10 @@ public class C3Room extends GameRoomSession {
 		for (C3Room r : c3Rooms) {
 			C3GameSessionHandler.sendBroadCast(r, state);
 		}
+	}
+
+	static Long getC3UserID(PlayerSession session) {
+		return (Long) session.getPlayer().getId();
 	}
 
 	@Override
@@ -122,54 +121,56 @@ public class C3Room extends GameRoomSession {
 			}
 		});
 
-		( new Thread() { public void run() {
-			boolean ready;
-			int counter = 50;
+		(new Thread() {
+			public void run() {
+				boolean ready;
+				int counter = 50;
 
-//			try {
-//				logger.info("##### Waiting some time no matter what...");
-//				TimeUnit.MILLISECONDS.sleep(2000);
-//			} catch (InterruptedException interruptedException) {
-//				interruptedException.printStackTrace();
-//			}
+				//			try {
+				//				logger.info("##### Waiting some time no matter what...");
+				//				TimeUnit.MILLISECONDS.sleep(2000);
+				//			} catch (InterruptedException interruptedException) {
+				//				interruptedException.printStackTrace();
+				//			}
 
-			do {
-				ready = getSessionReadyMap().containsKey(playerSession.getId().toString()) && getSessionReadyMap().get(playerSession.getId().toString());
-//				logger.info("##### COUNTER: " + counter);
-//				logger.info("##### READY: " + ready);
-				if (ready || counter == 0) {
-					break;
-				} else {
-					try {
-						logger.info("Waiting a moment before send the login result event...");
-						TimeUnit.MILLISECONDS.sleep(250);
-						counter--;
-					} catch (InterruptedException interruptedException) {
-						interruptedException.printStackTrace();
+				do {
+					ready = getSessionReadyMap().containsKey(playerSession.getId().toString()) && getSessionReadyMap().get(playerSession.getId().toString());
+					//				logger.info("##### COUNTER: " + counter);
+					//				logger.info("##### READY: " + ready);
+					if (ready || counter == 0) {
+						break;
+					} else {
+						try {
+							logger.info("Waiting a moment before send the login result event...");
+							TimeUnit.MILLISECONDS.sleep(250);
+							counter--;
+						} catch (InterruptedException interruptedException) {
+							interruptedException.printStackTrace();
+						}
 					}
+				} while (!ready);
+
+				Event e;
+				if (((C3Player) playerSession.getPlayer()).getUser() == null) {
+					// Send error message if user is null
+					logger.info("C3Room.onLogin: no user found -> send Events.LOG_IN_FAILURE");
+
+					e = Events.event(null, Events.LOG_IN_FAILURE);
+				} else {
+					logger.info("C3Room.onLogin: -> sending LOG_IN_SUCCESS Event. Session: " + playerSession.getId());
+					e = Events.event(null, Events.LOG_IN_SUCCESS);
 				}
-			} while(!ready);
 
-			Event e;
-			if (((C3Player) playerSession.getPlayer()).getUser() == null) {
-				// Send error message if user is null
-				logger.info("C3Room.onLogin: no user found -> send Events.LOG_IN_FAILURE");
+				//			Iterator it = getSessionReadyMap().keySet().iterator();
+				//			while(it.hasNext()) {
+				//				String s = (String)it.next();
+				//				logger.info("Session in sessionReadyMap: " + s + " (Value: " + getSessionReadyMap().get(s) + ")");
+				//			}
 
-				e = Events.event(null, Events.LOG_IN_FAILURE);
-			} else {
-				logger.info("C3Room.onLogin: -> sending LOG_IN_SUCCESS Event. Session: " + playerSession.getId());
-				e = Events.event(null, Events.LOG_IN_SUCCESS);
+				playerSession.onEvent(e);
+				getSessionReadyMap().remove(playerSession.getId().toString());
 			}
-
-//			Iterator it = getSessionReadyMap().keySet().iterator();
-//			while(it.hasNext()) {
-//				String s = (String)it.next();
-//				logger.info("Session in sessionReadyMap: " + s + " (Value: " + getSessionReadyMap().get(s) + ")");
-//			}
-
-			playerSession.onEvent(e);
-			getSessionReadyMap().remove(playerSession.getId().toString());
-		} } ).start();
+		}).start();
 	}
 
 	@Override
@@ -210,7 +211,7 @@ public class C3Room extends GameRoomSession {
 		sendNewPlayerList();
 
 		// EntityManager for room session must be closed on disconnect
-		if(playerSession.getPlayer().getId() != null) {
+		if (playerSession.getPlayer().getId() != null) {
 			EntityManagerHelper.closeEntityManager((Long) playerSession.getPlayer().getId());
 		}
 
@@ -219,16 +220,14 @@ public class C3Room extends GameRoomSession {
 
 	private synchronized void sendNewPlayerList() {
 		ArrayList<UserPOJO> userList = new ArrayList<>();
-		ArrayList<Long> userIdList = new ArrayList<>();
 		for (PlayerSession playerSession : this.getSessions()) {
 			C3Player pl = (C3Player) playerSession.getPlayer();
 			userList.add(pl.getUser());
-			userIdList.add(pl.getUser().getUserId());
 		}
 
-		GameState state_broadcast_login = new GameState(GAMESTATEMODES.USER_GET_NEW_PLAYERLIST);
-		state_broadcast_login.addObject(userList);
+		GameState stateNewPlayerList = new GameState(GAMESTATEMODES.USER_GET_NEW_PLAYERLIST);
+		stateNewPlayerList.addObject(userList);
 
-		C3GameSessionHandler.sendBroadCast(this, state_broadcast_login);
+		C3GameSessionHandler.sendBroadCast(this, stateNewPlayerList);
 	}
 }

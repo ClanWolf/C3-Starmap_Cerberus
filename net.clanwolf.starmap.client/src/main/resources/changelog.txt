@@ -10,7 +10,8 @@ CURRENTLY IN PROGRESS:
 
 ----------------------------------------------------------------
 
-Version 7.2.32 (31.01.2023)
+Version 7.2.33 (31.01.2023)
+- UPDATED: To Java 19.0.2
 - FIXED: Redundant display of round identifier in ticker text (website)
 
 Version 7.2.31 (28.01.2023)

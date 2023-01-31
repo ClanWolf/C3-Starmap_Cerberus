@@ -26,6 +26,8 @@
  */
 package net.clanwolf.starmap.client.gui.panes.rp;
 
+import io.nadron.client.event.Events;
+import io.nadron.client.event.NetworkEvent;
 import javafx.animation.FadeTransition;
 import javafx.animation.SequentialTransition;
 import javafx.application.Platform;
@@ -54,6 +56,8 @@ import net.clanwolf.starmap.client.process.universe.BOFaction;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.constants.Constants;
+import net.clanwolf.starmap.transfer.GameState;
+import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.transfer.dtos.*;
@@ -651,8 +655,8 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		lvDropleadAttacker.getSelectionModel().clearSelection();
 		lvDropleadDefender.getSelectionModel().clearSelection();
 
-		HashMap<AttackCharacterDTO, RolePlayCharacterDTO> potentialDropleadersAttacker = new HashMap<>();
-		HashMap<AttackCharacterDTO, RolePlayCharacterDTO> potentialDropleadersDefender = new HashMap<>();
+//		HashMap<AttackCharacterDTO, RolePlayCharacterDTO> potentialDropleadersAttacker = new HashMap<>();
+//		HashMap<AttackCharacterDTO, RolePlayCharacterDTO> potentialDropleadersDefender = new HashMap<>();
 
 		characterRoleMap.clear();
 
@@ -663,16 +667,16 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 			RolePlayCharacterDTO c = Nexus.getCharacterById(ac.getCharacterID());
 
 			l = l + c.getName() + " (Type: " + ac.getType() + ") ";
-			if (a.getAttackerFactionId().equals(c.getFactionId())) {
-				// this user belongs to the attacker faction
-				potentialDropleadersAttacker.put(ac, c);
-				l = l + "(potential droplead for attacker) ";
-			}
-			if (a.getDefenderFactionId().equals(Nexus.getCharacterById(ac.getCharacterID()).getFactionId())) {
-				// this user belongs to the defender faction
-				potentialDropleadersDefender.put(ac, c);
-				l = l + "(potential droplead for defender) ";
-			}
+//			if (a.getAttackerFactionId().equals(c.getFactionId())) {
+//				// this user belongs to the attacker faction
+//				potentialDropleadersAttacker.put(ac, c);
+//				l = l + "(potential droplead for attacker) ";
+//			}
+//			if (a.getDefenderFactionId().equals(Nexus.getCharacterById(ac.getCharacterID()).getFactionId())) {
+//				// this user belongs to the defender faction
+//				potentialDropleadersDefender.put(ac, c);
+//				l = l + "(potential droplead for defender) ";
+//			}
 			logger.info(l);
 
 			characterRoleMap.put(ac.getCharacterID(), ac);
@@ -743,47 +747,60 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 			}
 		}
 
+		boolean triggerNewCommanderPromotion = false;
 		if (lvDropleadAttacker.getItems().size() == 0) {
 			lvDropleadAttacker.getItems().add(dummy);
+			triggerNewCommanderPromotion = true;
+		}
+		if (lvDropleadDefender.getItems().size() == 0) {
+			lvDropleadDefender.getItems().add(dummy);
+			triggerNewCommanderPromotion = true;
+		}
+		if (triggerNewCommanderPromotion) {
+			// Send new playerlist
+//			GameState stateSendPlayerList = new GameState(GAMESTATEMODES.BROADCAST_SEND_NEW_PLAYERLIST);
+//			NetworkEvent networkEventPlayerList = Events.networkEvent(stateSendPlayerList);
+//			session.onEvent(networkEventPlayerList);
 		}
 
-		boolean saveAttack = false;
-		// Is attacker droplead still empty?
-		if (lvDropleadAttacker.getItems().size() == 1 && "...".equals(lvDropleadAttacker.getItems().get(0).getName())) {
-			for (AttackCharacterDTO ac : potentialDropleadersAttacker.keySet()) {
-				lvDropleadAttacker.getItems().remove(0);
-				lvDropleadAttacker.getItems().add(potentialDropleadersAttacker.get(ac));
-				lvAttacker.getItems().remove(potentialDropleadersAttacker.get(ac));
-				lvDefender.getItems().remove(potentialDropleadersAttacker.get(ac));
-				if (lvAttacker.getItems().size() == 0) {
-					lvAttacker.getItems().add(dummy);
-				}
-				if (lvDefender.getItems().size() == 0) {
-					lvDefender.getItems().add(dummy);
-				}
-				ac.setType(Constants.ROLE_ATTACKER_COMMANDER);
-				saveAttack = true;
-				break; // do this only for the first potential droplead or the list will be reduced to one entry
-			}
-		}
-		// Is defender droplead still empty?
-		if (lvDropleadDefender.getItems().size() == 1 && "...".equals(lvDropleadDefender.getItems().get(0).getName())) {
-			for (AttackCharacterDTO ac : potentialDropleadersDefender.keySet()) {
-				lvDropleadDefender.getItems().remove(0);
-				lvDropleadDefender.getItems().add(potentialDropleadersDefender.get(ac));
-				lvDefender.getItems().remove(potentialDropleadersDefender.get(ac));
-				lvAttacker.getItems().remove(potentialDropleadersDefender.get(ac));
-				if (lvDefender.getItems().size() == 0) {
-					lvDefender.getItems().add(dummy);
-				}
-				if (lvAttacker.getItems().size() == 0) {
-					lvAttacker.getItems().add(dummy);
-				}
-				ac.setType(Constants.ROLE_DEFENDER_COMMANDER);
-				saveAttack = true;
-				break; // do this only for the first potential droplead or the list will be reduced to one entry
-			}
-		}
+		// SERVER needs to do this!
+
+//		// Is attacker droplead still empty?
+//		if (lvDropleadAttacker.getItems().size() == 1 && "...".equals(lvDropleadAttacker.getItems().get(0).getName())) {
+//			for (AttackCharacterDTO ac : potentialDropleadersAttacker.keySet()) {
+//				lvDropleadAttacker.getItems().remove(0);
+//				lvDropleadAttacker.getItems().add(potentialDropleadersAttacker.get(ac));
+//				lvAttacker.getItems().remove(potentialDropleadersAttacker.get(ac));
+//				lvDefender.getItems().remove(potentialDropleadersAttacker.get(ac));
+//				if (lvAttacker.getItems().size() == 0) {
+//					lvAttacker.getItems().add(dummy);
+//				}
+//				if (lvDefender.getItems().size() == 0) {
+//					lvDefender.getItems().add(dummy);
+//				}
+//				ac.setType(Constants.ROLE_ATTACKER_COMMANDER);
+//				saveAttack = true;
+//				break; // do this only for the first potential droplead or the list will be reduced to one entry
+//			}
+//		}
+//		// Is defender droplead still empty?
+//		if (lvDropleadDefender.getItems().size() == 1 && "...".equals(lvDropleadDefender.getItems().get(0).getName())) {
+//			for (AttackCharacterDTO ac : potentialDropleadersDefender.keySet()) {
+//				lvDropleadDefender.getItems().remove(0);
+//				lvDropleadDefender.getItems().add(potentialDropleadersDefender.get(ac));
+//				lvDefender.getItems().remove(potentialDropleadersDefender.get(ac));
+//				lvAttacker.getItems().remove(potentialDropleadersDefender.get(ac));
+//				if (lvDefender.getItems().size() == 0) {
+//					lvDefender.getItems().add(dummy);
+//				}
+//				if (lvAttacker.getItems().size() == 0) {
+//					lvAttacker.getItems().add(dummy);
+//				}
+//				ac.setType(Constants.ROLE_DEFENDER_COMMANDER);
+//				saveAttack = true;
+//				break; // do this only for the first potential droplead or the list will be reduced to one entry
+//			}
+//		}
 
 		if (lvDropleadAttacker.getItems().size() > 0) {
 			if (lvDropleadAttacker.getItems().get(0) != null && !lvDropleadAttacker.getItems().get(0).getName().equals("...")) { // there is a droplead (attacker)
@@ -803,13 +820,8 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		lvAttacker.getSelectionModel().clearSelection();
 		lvDefender.getSelectionModel().clearSelection();
 
-		checkConditionsToStartDrop(null);
-
-		if (saveAttack) {
-			saveAttack();
-		}
-
 		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("2");
+		checkConditionsToStartDrop(null);
 	}
 
 	/**
