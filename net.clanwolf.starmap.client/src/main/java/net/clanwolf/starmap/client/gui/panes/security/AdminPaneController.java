@@ -48,6 +48,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.lang.invoke.MethodHandles;
+import java.text.DecimalFormat;
 import java.util.*;
 
 public class AdminPaneController {
@@ -59,8 +60,8 @@ public class AdminPaneController {
 	private ArrayList userList = new ArrayList<UserDTO>();
 	private HashMap<String, Long> originalPrivileges = new HashMap<String, Long>();
 	private ObservableList<FinancesInfo> financesInfos = FXCollections.observableArrayList();
-
 	private final ArrayList<BOJumpship> activeJumpships = Nexus.getBoUniverse().getJumpshipList();
+	private final DecimalFormat nf = new DecimalFormat();
 
 	@FXML
 	Label labelDescription, labelUser, labelPrivCode, labelPrivCodeBinary;
@@ -85,6 +86,9 @@ public class AdminPaneController {
 
 	@FXML
 	TableView<FinancesInfo> tableFinances;
+
+	@FXML
+	Label lCurrentBalance;
 
 	@FXML
 	public void btnSaveClicked() {
@@ -135,7 +139,7 @@ public class AdminPaneController {
 
 	private void getIncomeByIndex(int index){
 
-		Long factionId = activeJumpships.get(index).getJumpshipFaction();
+		Long factionId = activeJumpships.get(index).getJumpshipFaction(), balance = 0L;
 		long lIncome = 0L;
 		String incomeDes = null;
 		financesInfos.clear();
@@ -159,9 +163,12 @@ public class AdminPaneController {
 						incomeDes = value.getName() + " - Capital System";
 					}
 				}
-				financesInfos.add(new FinancesInfo(Long.toString(lIncome),incomeDes));
+				balance = balance + lIncome;
+				financesInfos.add(new FinancesInfo(nf.format(lIncome),incomeDes));
 			}
 		}
+
+		lCurrentBalance.setText("Current Blanace: " + nf.format(balance));
 	}
 
 	private void calculatePrivCode() {

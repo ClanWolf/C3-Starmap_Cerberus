@@ -43,18 +43,19 @@
                            <children>
                               <Label layoutX="11.0" layoutY="25.0" text="Select Unit:" />
                               <ComboBox fx:id="cbFaction" layoutX="76.0" layoutY="18.0" onAction="#cbFactionSelectionChanged" prefHeight="30.0" prefWidth="441.0" />
-                              <ScrollPane layoutX="76.0" prefHeight="400.0" prefWidth="400.0" AnchorPane.bottomAnchor="18.0" AnchorPane.leftAnchor="18.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="70.0">
+                              <ScrollPane layoutX="76.0" prefHeight="281.0" prefWidth="764.0" AnchorPane.bottomAnchor="102.0" AnchorPane.leftAnchor="18.0" AnchorPane.rightAnchor="18.0" AnchorPane.topAnchor="70.0">
                                  <content>
-                                    <TableView fx:id="tableFinances" prefHeight="350.0" prefWidth="762.0">
+                                    <TableView fx:id="tableFinances" prefHeight="277.0" prefWidth="762.0">
                                       <columns>
-                                        <TableColumn fx:id="tblCIncome" prefWidth="90.0" text="Income" />
-                                          <TableColumn fx:id="tblCIncomeDescription" prefWidth="190.0" text="Income description" />
-                                        <TableColumn fx:id="TblCCost" prefWidth="90.0" text="Cost" />
-                                          <TableColumn fx:id="tblCCostDescription" prefWidth="190.0" text="Cost description" />
+                                        <TableColumn fx:id="tblCIncome" editable="false" prefWidth="90.0" text="Income" />
+                                          <TableColumn fx:id="tblCIncomeDescription" editable="false" prefWidth="190.0" text="Income description" />
+                                        <TableColumn fx:id="TblCCost" editable="false" prefWidth="90.0" text="Cost" />
+                                          <TableColumn fx:id="tblCCostDescription" editable="false" prefWidth="190.0" text="Cost description" />
                                       </columns>
                                     </TableView>
                                  </content>
                               </ScrollPane>
+                              <Label fx:id="lCurrentBalance" layoutX="530.0" layoutY="18.0" prefHeight="30.0" prefWidth="243.0" text="Current Balance: " />
                            </children></AnchorPane>
                      </content>
                   </Tab>
