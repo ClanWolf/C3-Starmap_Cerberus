@@ -84,6 +84,9 @@ public class AttackPOJO extends Pojo {
 	@Column(name = "FactionID_Winner")
 	private Long factionID_Winner;
 
+	@Column(name = "AttackCost")
+	private Long attackCost;
+
 	@Column(name = "FightsStarted")
 	private Boolean fightsStarted;
 
@@ -214,6 +217,16 @@ public class AttackPOJO extends Pojo {
 	@SuppressWarnings("unused")
 	public void setStarSystemDataID(Long starSystemDataID) {
 		this.starSystemDataID = starSystemDataID;
+	}
+
+	@SuppressWarnings("unused")
+	public Long getAttackCost() {
+		return this.attackCost;
+	}
+
+	@SuppressWarnings("unused")
+	public void setAttackCost(Long cost) {
+		this.attackCost = cost;
 	}
 
 	@SuppressWarnings("unused")

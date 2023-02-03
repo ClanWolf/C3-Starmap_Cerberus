@@ -46,6 +46,7 @@ public class AttackDTO extends Dto {
 	private Long storyID;
 	private Long factionID_Winner;
 	private Boolean fightsStarted;
+	private Long attackCost;
 	private String remarks;
 	private String forumThreadLink;
 	private Long forumThreadId;
@@ -185,6 +186,16 @@ public class AttackDTO extends Dto {
 	@SuppressWarnings("unused")
 	public Long getStarSystemDataID() {
 		return starSystemDataID;
+	}
+
+	@SuppressWarnings("unused")
+	public Long getAttackCost() {
+		return this.attackCost;
+	}
+
+	@SuppressWarnings("unused")
+	public void setAttackCost(Long cost) {
+		this.attackCost = cost;
 	}
 
 	@SuppressWarnings("unused")

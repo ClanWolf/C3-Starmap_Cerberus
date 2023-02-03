@@ -10,6 +10,9 @@ CURRENTLY IN PROGRESS:
 
 ----------------------------------------------------------------
 
+Version 7.2.34 (04.02.2023)
+- ADDED: Economy statistic classes added
+
 Version 7.2.33 (31.01.2023)
 - UPDATED: To Java 19.0.2
 - FIXED: Redundant display of round identifier in ticker text (website)
