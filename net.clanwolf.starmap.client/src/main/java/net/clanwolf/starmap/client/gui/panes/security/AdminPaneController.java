@@ -36,8 +36,11 @@ import javafx.stage.Stage;
 import net.clanwolf.starmap.client.enums.PRIVILEGES;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.universe.BOJumpship;
+import net.clanwolf.starmap.client.process.universe.BOStarSystem;
+import net.clanwolf.starmap.client.security.FinancesInfo;
 import net.clanwolf.starmap.client.security.Security;
 import net.clanwolf.starmap.client.util.Internationalization;
+import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.UserDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
@@ -55,6 +58,9 @@ public class AdminPaneController {
 	private UserDTO currentUser = null;
 	private ArrayList userList = new ArrayList<UserDTO>();
 	private HashMap<String, Long> originalPrivileges = new HashMap<String, Long>();
+	private ObservableList<FinancesInfo> financesInfos = FXCollections.observableArrayList();
+
+	private final ArrayList<BOJumpship> activeJumpships = Nexus.getBoUniverse().getJumpshipList();
 
 	@FXML
 	Label labelDescription, labelUser, labelPrivCode, labelPrivCodeBinary;
@@ -72,10 +78,13 @@ public class AdminPaneController {
 	ComboBox cbUser, cbFaction;
 
 	@FXML
-	TableColumn tblCIncome, TblCCost;
+	TableColumn<FinancesInfo,String> tblCIncome, tblCIncomeDescription;
 
 	@FXML
-	TableView tableFaction;
+	TableColumn<FinancesInfo,String> TblCCost;
+
+	@FXML
+	TableView<FinancesInfo> tableFinances;
 
 	@FXML
 	public void btnSaveClicked() {
@@ -121,7 +130,38 @@ public class AdminPaneController {
 
 	@FXML
 	public void cbFactionSelectionChanged() {
-		//Hier werden die Daten für die Einnahmen und Kosten gefüllt.
+		getIncomeByIndex(cbFaction.getSelectionModel().getSelectedIndex());
+	}
+
+	private void getIncomeByIndex(int index){
+
+		Long factionId = activeJumpships.get(index).getJumpshipFaction();
+		long lIncome = 0L;
+		String incomeDes = null;
+		financesInfos.clear();
+
+		for(Map.Entry<Long, BOStarSystem> entry : Nexus.getBoUniverse().starSystemBOs.entrySet()) {
+			Long key = entry.getKey();
+			BOStarSystem value = entry.getValue();
+
+			if(Objects.equals(value.getFactionId(), factionId)){
+				switch ((int) value.getLevel().longValue()) {
+					case 1 -> {
+						lIncome = Constants.REGULAR_SYSTEM_GENERAL_INCOME * 1000;
+						incomeDes = value.getName() + " - Regular System";
+					}
+					case 2 -> {
+						lIncome = Constants.INDUSTRIAL_SYSTEM_GENERAL_INCOME * 1000;
+						incomeDes = value.getName() + " - Industrial System";
+					}
+					case 3 -> {
+						lIncome = Constants.CAPITAL_SYSTEM_GENERAL_INCOME * 1000;
+						incomeDes = value.getName() + " - Capital System";
+					}
+				}
+				financesInfos.add(new FinancesInfo(Long.toString(lIncome),incomeDes));
+			}
+		}
 	}
 
 	private void calculatePrivCode() {
@@ -278,14 +318,21 @@ public class AdminPaneController {
 
 		//Finances
 		ObservableList <String> activeFactions = FXCollections.observableArrayList();
-		ArrayList<BOJumpship> allJumpship = Nexus.getBoUniverse().getJumpshipList();
+		String factionName, unitName;
 
-		allJumpship.forEach((jumpship) -> {
-			activeFactions.add(Nexus.getBoUniverse().getFactionByID(jumpship.getJumpshipDTO().getJumpshipFactionID()).getName() +
-					" - " + jumpship.getJumpshipDTO().getUnitName());
-		});
+		for (BOJumpship jumpship: activeJumpships)
+		{
+			factionName = Nexus.getBoUniverse().getFactionByID(jumpship.getJumpshipDTO().getJumpshipFactionID()).getName();
+			unitName = jumpship.getJumpshipDTO().getUnitName();
+			activeFactions.add(factionName + " - " + unitName);
+		}
 
 		cbFaction.setItems(activeFactions);
 		cbFaction.getSelectionModel().select(0);
+
+		tblCIncome.setCellValueFactory(cellData -> cellData.getValue().incomeProperty());
+		tblCIncomeDescription.setCellValueFactory(cellData -> cellData.getValue().incomeDescriptionProperty());
+		tableFinances.setItems(financesInfos);
+		getIncomeByIndex(0);
 	}
 }
