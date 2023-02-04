@@ -164,7 +164,7 @@ public class EventCommunications {
 
 					BOAttack attackToBeReplaced = null;
 					for (BOAttack boa : Nexus.getBoUniverse().attackBOsOpenInThisRound.values()) {
-						if (boa.getAttackDTO().getId() == attack.getId().intValue()) {
+						if (boa.getAttackDTO().getId().equals(attack.getId())) {
 							// An attack was saved that already existed in my universe
 							// It needs to be replaced with the one that was returned from the
 							// save event

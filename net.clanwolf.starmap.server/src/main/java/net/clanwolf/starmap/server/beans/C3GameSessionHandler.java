@@ -371,12 +371,12 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				for (AttackCharacterPOJO p : attack.getAttackCharList()) {
 					if (!Objects.equals(p.getId(), acpId)) {
 						if (attackerCommanderCandidate != null) {
-							if (p.getId() == attackerCommanderCandidate.getId().intValue()) {
+							if (p.getId().intValue() == attackerCommanderCandidate.getId().intValue()) {
 								p.setType(Constants.ROLE_ATTACKER_COMMANDER);
 							}
 						}
 						if (defenderCommanderCandidate != null) {
-							if (p.getId() == defenderCommanderCandidate.getId().intValue()) {
+							if (p.getId().intValue() == defenderCommanderCandidate.getId().intValue()) {
 								p.setType(Constants.ROLE_DEFENDER_COMMANDER);
 							}
 						}
@@ -839,7 +839,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				JumpshipPOJO attackerJumpship = jsDAO.findById(getC3UserID(session), ap.getJumpshipID());
 				FactionPOJO attackerFaction = fDAO.findById(getC3UserID(session), attackerJumpship.getJumpshipFactionID());
 
-				if (character.getFactionId() == attackerFaction.getId().intValue()) {
+				if (character.getFactionId().intValue() == attackerFaction.getId().intValue()) {
 					// current user is attacker
 					if (acp.getType() != Constants.ROLE_ATTACKER_COMMANDER) {
 						// he is not the attacker commander
@@ -847,7 +847,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 							attackerCommanderCandidate = acp;
 						}
 					}
-				} else if (character.getFactionId() == ap.getFactionID_Defender().intValue()) {
+				} else if (character.getFactionId().intValue() == ap.getFactionID_Defender().intValue()) {
 					// current user is defender
 					if (acp.getType() != Constants.ROLE_DEFENDER_COMMANDER) {
 						// he is not the defender commander
