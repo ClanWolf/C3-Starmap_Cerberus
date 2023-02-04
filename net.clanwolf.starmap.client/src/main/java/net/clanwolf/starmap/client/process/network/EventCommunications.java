@@ -162,6 +162,19 @@ public class EventCommunications {
 						}
 					}
 
+					BOAttack attackToBeReplaced = null;
+					for (BOAttack boa : Nexus.getBoUniverse().attackBOsOpenInThisRound.values()) {
+						if (boa.getAttackDTO().getId() == attack.getId().intValue()) {
+							// An attack was saved that already existed in my universe
+							// It needs to be replaced with the one that was returned from the
+							// save event
+							attackToBeReplaced = boa;
+						}
+					}
+					if (attackToBeReplaced != null) {
+						attackToBeReplaced.setAttackDTO(attack);
+					}
+
 					if (iAmInAttack) {
 						//RolePlayStoryDTO rpOldDTO = Nexus.getBoUniverse().getAttackStories().get(Nexus.getCurrentAttackOfUser().getAttackDTO().getStoryID());
 						boolean storyWasChanged = Nexus.getStoryBeforeSaving() != null && !attack.getStoryID().equals(Nexus.getStoryBeforeSaving());

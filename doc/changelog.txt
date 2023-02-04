@@ -10,8 +10,9 @@ CURRENTLY IN PROGRESS:
 
 ----------------------------------------------------------------
 
-Version 7.2.34 (04.02.2023)
+Version 7.2.36 (04.02.2023)
 - ADDED: Economy statistic classes added
+- FIXED: Lobby handling if droplead leaves or loses connection
 
 Version 7.2.33 (31.01.2023)
 - UPDATED: To Java 19.0.2

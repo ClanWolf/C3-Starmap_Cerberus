@@ -335,6 +335,10 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 	}
 
 	public synchronized void saveAttack(PlayerSession session, GameState state) {
+		saveAttack(session, state, null, null);
+	}
+
+	public synchronized void saveAttack(PlayerSession session, GameState state, AttackCharacterPOJO attackerCommanderCandidate, AttackCharacterPOJO defenderCommanderCandidate) {
 		AttackDAO dao = AttackDAO.getInstance();
 		AttackCharacterDAO daoAC = AttackCharacterDAO.getInstance();
 		StarSystemDataDAO daoSS = StarSystemDataDAO.getInstance();
@@ -363,9 +367,19 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			}
 
 			ArrayList<AttackCharacterPOJO> newAttackCharacters = new ArrayList<>();
-			if( attack.getAttackCharList() != null) {
+			if(attack.getAttackCharList() != null) {
 				for (AttackCharacterPOJO p : attack.getAttackCharList()) {
 					if (!Objects.equals(p.getId(), acpId)) {
+						if (attackerCommanderCandidate != null) {
+							if (p.getId() == attackerCommanderCandidate.getId().intValue()) {
+								p.setType(Constants.ROLE_ATTACKER_COMMANDER);
+							}
+						}
+						if (defenderCommanderCandidate != null) {
+							if (p.getId() == defenderCommanderCandidate.getId().intValue()) {
+								p.setType(Constants.ROLE_DEFENDER_COMMANDER);
+							}
+						}
 						newAttackCharacters.add(p);
 					}
 				}
@@ -800,12 +814,12 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		ArrayList<AttackPOJO> openAttacks = attackDAO.getOpenAttacksOfASeason(Nexus.currentSeason);
 
 		for (AttackPOJO ap : openAttacks) {
-			AttackCharacterDAO acDAOdao = AttackCharacterDAO.getInstance();
+			AttackCharacterDAO acDAO = AttackCharacterDAO.getInstance();
 			RolePlayCharacterDAO rpDAO = RolePlayCharacterDAO.getInstance();
 			JumpshipDAO jsDAO = JumpshipDAO.getInstance();
 			FactionDAO fDAO = FactionDAO.getInstance();
 
-			ArrayList<AttackCharacterPOJO> acpl = acDAOdao.getCharactersFromAttack(ap.getId());
+			ArrayList<AttackCharacterPOJO> acpl = acDAO.getCharactersFromAttack(ap.getId());
 
 			boolean foundAttackerCommander = false;
 			boolean foundDefenderCommander = false;
@@ -873,7 +887,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				GameState s = new GameState();
 				s.addObject(ap);
 				s.addObject2(ap.getAttackTypeID());
-				saveAttack(session, s);
+				saveAttack(session, s, attackerCommanderCandidate, defenderCommanderCandidate);
 			}
 		}
 	}
