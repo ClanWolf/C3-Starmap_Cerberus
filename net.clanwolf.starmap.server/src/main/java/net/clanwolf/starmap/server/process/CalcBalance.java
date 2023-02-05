@@ -39,6 +39,7 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
+import java.util.List;
 
 
 /**
@@ -50,6 +51,7 @@ import java.util.ArrayList;
 public class CalcBalance {
 
     private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    final private BalanceUserInfo balanceUserInfo;
 
     public CalcBalance(String mwoMatchID, GenerateRoundReport report) throws Exception {
 
@@ -59,13 +61,19 @@ public class CalcBalance {
         MWOMatchResult matchDetails = new Gson().fromJson(rawJSONstatsData, MWOMatchResult.class);
 
         matchDetails.setGameID(mwoMatchID);
-        logger.info("--- Calculating balance");
-
-        BalanceUserInfo balanceUserInfo;
+        logger.info("--- Calculating balance ---");
         balanceUserInfo = new BalanceUserInfo(matchDetails);
         report.createCalcReport(balanceUserInfo.GetAttackerInfo(), balanceUserInfo.GetDefenderInfo());
         logger.info("✅ Balance calculating finished");
 
+    }
+
+    public List<BalanceUserInfo> getAttackerInfo() {
+        return balanceUserInfo.GetAttackerInfo();
+    }
+
+    public List<BalanceUserInfo> getDefenderInfo() {
+        return balanceUserInfo.GetDefenderInfo();
     }
 
     /**
@@ -127,14 +135,14 @@ public class CalcBalance {
      * @param userFactionId Die FactionID von dem jeweiligen Spieler.
      * @return Gibt die Einnahmen und Ausgaben zurück.
      */
-    public long getIncome(long userFactionId) {
+    public long getIncome(long userFactionId, long currentStarSystemId) {
 
         long income = 0L;
         long cost = 0L;
 
         ArrayList<StarSystemDataPOJO> starSystemDataListHH = StarSystemDataDAO.getInstance().getAll_HH_StarSystemData();
         for (StarSystemDataPOJO starSystemData : starSystemDataListHH) {
-            if (starSystemData.getFactionID().getId().equals(userFactionId)) {
+            if (starSystemData.getFactionID().getId().equals(userFactionId) && currentStarSystemId != starSystemData.getStarSystemID().getId()) {
 
                 switch (starSystemData.getLevel().intValue()) {
                     case 1 -> { // Regular
