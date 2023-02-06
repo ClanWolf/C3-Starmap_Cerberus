@@ -43,10 +43,10 @@ public class StatsEconomyPOJO extends Pojo {
 	@Column(name = "ID")
 	private Long id;
 
-	@Column(name = "Season")
+	@Column(name = "SeasonId")
 	private Long season;
 
-	@Column(name = "Round")
+	@Column(name = "RoundId")
 	private Long round;
 
 	@Column(name = "FactionId")
