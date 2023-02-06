@@ -10,6 +10,11 @@ CURRENTLY IN PROGRESS:
 
 ----------------------------------------------------------------
 
+Version 7.2.38 (06.02.2023)
+- ADDED: Generation of universe data on serverside after an attack was saved
+- FIXED: Nullpointer while saving attack
+- UPDATED: Manual with jumpship information
+
 Version 7.2.36 (04.02.2023)
 - ADDED: Economy statistic classes added
 - FIXED: Lobby handling if droplead leaves or loses connection

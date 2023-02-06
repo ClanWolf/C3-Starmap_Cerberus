@@ -888,6 +888,10 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				s.addObject(ap);
 				s.addObject2(ap.getAttackTypeID());
 				saveAttack(session, s, attackerCommanderCandidate, defenderCommanderCandidate);
+
+				Timer serverHeartBeat;
+				serverHeartBeat = new Timer();
+				serverHeartBeat.schedule(new HeartBeatTimer(false), 10);
 			}
 		}
 	}

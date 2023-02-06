@@ -40,6 +40,7 @@ import net.clanwolf.starmap.server.persistence.pojos.AttackCharacterPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.AttackPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.RolePlayCharacterPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.UserPOJO;
+import net.clanwolf.starmap.server.util.HeartBeatTimer;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import org.slf4j.Logger;
@@ -48,6 +49,7 @@ import org.slf4j.LoggerFactory;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.Objects;
+import java.util.Timer;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -188,11 +190,13 @@ public class C3Room extends GameRoomSession {
 		AttackDAO attackDAO = AttackDAO.getInstance();
 		ArrayList<AttackPOJO> openAttacks = attackDAO.getOpenAttacksOfASeason(Nexus.currentSeason);
 
+		boolean savedChanges = false;
 		for (AttackPOJO ap : openAttacks) {
 			for (AttackCharacterPOJO acp : ap.getAttackCharList()) {
 				logger.info("Is the disconnecting char the lobbyowner? " + acp.getCharacterID() + " : " + character.getId());
 				if (Objects.equals(acp.getCharacterID(), character.getId())) {
 					if (acp.getType() == Constants.ROLE_ATTACKER_COMMANDER) {
+						logger.info("Lobbyowner left, will be removed!");
 						acp.setType(null);
 
 						GameState s = new GameState();
@@ -201,10 +205,16 @@ public class C3Room extends GameRoomSession {
 						s.addObject3(acp);
 
 						Nexus.gmSessionHandler.saveAttack(playerSession, s);
+						savedChanges = true;
 						break;
 					}
 				}
 			}
+		}
+		if (savedChanges) {
+			Timer serverHeartBeat;
+			serverHeartBeat = new Timer();
+			serverHeartBeat.schedule(new HeartBeatTimer(false), 10);
 		}
 
 		boolean ret = super.disconnectSession(playerSession);
