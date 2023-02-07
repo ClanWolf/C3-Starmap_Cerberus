@@ -30,4 +30,4 @@ See additional information on the [BattleTech - The Board Game](https://bg.battl
 # Support
 If you want to support C3, consider to donate via liberapay or paypal:
 * [Liberapay](https://liberapay.com/WarWolfen "Liberapay")
-* [Paypal](https://www.paypal.com/donate?token=AwC5gorl98THoYU4nCfwClErqsySjRleA5PRrgjHXiQcCSSz5unSHbdSnpHQbJDjqzzZVSO6r7Ngv9Vw "Paypal")
+* [Paypal](https://www.paypal.com/paypalme/ClanWolf?country.x=DE&locale.x=de_DE "Paypal")
