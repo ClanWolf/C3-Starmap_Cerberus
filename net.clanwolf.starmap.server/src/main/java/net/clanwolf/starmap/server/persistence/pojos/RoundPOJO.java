@@ -60,6 +60,9 @@ public class RoundPOJO extends Pojo {
 	@Column(name = "CurrentRoundStartDate")
 	private String currentRoundStartDate;
 
+	@Column(name = "CurrentRoundStartDateRealTime")
+	private String currentRoundStartDateRealTime;
+
 	@SuppressWarnings("unused")
 	public String getCurrentRoundStartDate() {
 		return currentRoundStartDate;
@@ -68,6 +71,16 @@ public class RoundPOJO extends Pojo {
 	@SuppressWarnings("unused")
 	public void setCurrentRoundStartDate(String currentRoundStartDate) {
 		this.currentRoundStartDate = currentRoundStartDate;
+	}
+
+	@SuppressWarnings("unused")
+	public String getCurrentRoundStartDateRealTime() {
+		return currentRoundStartDateRealTime;
+	}
+
+	@SuppressWarnings("unused")
+	public void setCurrentRoundStartDateRealTime(String currentRoundStartDateRealTime) {
+		this.currentRoundStartDateRealTime = currentRoundStartDateRealTime;
 	}
 
 	@SuppressWarnings("unused")

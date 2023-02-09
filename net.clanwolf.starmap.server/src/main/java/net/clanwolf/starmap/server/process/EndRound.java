@@ -465,26 +465,23 @@ public class EndRound {
                 LocalTime now = LocalTime.now().truncatedTo(ChronoUnit.HOURS);
                 LocalDateTime translatedNowDateWithTime = LocalDateTime.of(localDate, now);
 
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Nexus.patternTimestamp);
+				Timestamp c3Now = Timestamp.valueOf(formatter.format(translatedNowDateWithTime));
 
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Nexus.patternTimestamp);
+	            String realNowString = new SimpleDateFormat(Nexus.patternTimestamp).format(now);
+                String c3NowString = new SimpleDateFormat(Nexus.patternTimestamp).format(c3Now);
 
-                Timestamp c3Now = Timestamp.valueOf(formatter.format(translatedNowDateWithTime));
+				logger.info("Timestamp c3Now: " + c3Now);
+				logger.info("Translated Now date with time: " + translatedNowDateWithTime);
+	            logger.info("Now date with time RealTime: " + now);
+				logger.info("Formatted now c3NowString: " + c3NowString);
 
-                //String c3NowString = formatter.format(c3Now);
+				roundPOJO.setCurrentRoundStartDateRealTime(realNowString);
+				roundPOJO.setCurrentRoundStartDate(c3NowString);
 
-
-                String c3NowString = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(c3Now);
-
-                logger.debug(translatedNowDateWithTime.toString());
-
-                //Timestamp c3Now = new Timestamp(137,11,12,12,0,0,0);
-                //Timestamp c3Now2 = new Timestamp(c3Now.getTime());
-                logger.debug(c3NowString);
-                roundPOJO.setCurrentRoundStartDate(c3NowString);
-
-                // Save everything to the database
-                AttackDAO attackDAO = AttackDAO.getInstance();
-                JumpshipDAO jumpshipDAO = JumpshipDAO.getInstance();
+				// Save everything to the database
+				AttackDAO attackDAO = AttackDAO.getInstance();
+				JumpshipDAO jumpshipDAO = JumpshipDAO.getInstance();
                 RoundDAO roundDAO = RoundDAO.getInstance();
                 StarSystemDataDAO ssdDAO = StarSystemDataDAO.getInstance();
                 FactionDAO fDAO = FactionDAO.getInstance();

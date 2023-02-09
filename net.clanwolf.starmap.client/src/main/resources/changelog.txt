@@ -10,6 +10,9 @@ CURRENTLY IN PROGRESS:
 
 ----------------------------------------------------------------
 
+Version 7.2.39 (09.02.2023)
+- FIXED: Wrong time conversion string while ending round
+
 Version 7.2.38 (06.02.2023)
 - ADDED: Generation of universe data on serverside after an attack was saved
 - FIXED: Nullpointer while saving attack
