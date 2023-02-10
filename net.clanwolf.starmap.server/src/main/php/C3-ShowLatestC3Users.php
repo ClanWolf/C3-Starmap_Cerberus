@@ -23,18 +23,15 @@ $currentRoundStartDateTimeStamp = 0;
 $tsNow = strtotime("now");
 
 $sql5 = "";
-$sql5 = $sql5 . "SELECT r.Round, r.Season, r.CurrentRoundStartDate, r.Updated from C3._HH_ROUND r where r.Season = 1 ";
+// $sql5 = $sql5 . "SELECT r.Round, r.Season, r.CurrentRoundStartDate, r.Updated from C3._HH_ROUND r where r.Season = 1 ";
+$sql5 = $sql5 . "SELECT r.Round, r.Season, r.CurrentRoundStartDate, r.CurrentRoundStartDateRealTime from C3._HH_ROUND r where r.Season = 1 ";
 $result5 = mysqli_query($conn_clanwolf_ro, $sql5);
 if (mysqli_num_rows($result5) > 0) {
 	while($row5 = mysqli_fetch_assoc($result5)) {
 		$round = $row5["Round"];
-		$currentRoundStartDateTimeStamp = $row5["Updated"];
+		$currentRoundStartDateTimeStamp = $row5["CurrentRoundStartDateRealTime"];
 	}
 }
-
-// !!! Damit die Stundenanzeige auf der Webseite funktioniert,
-// muss in "Updated" die Zeit drin stehen, als die Runde
-// !!! gestartet wurde!
 
 //$sql6 = "";
 //$sql6 = $sql6 . "SELECT s.StartDateRealYear from C3._HH_SEASON s where s.ID = 1 ";
