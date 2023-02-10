@@ -10,6 +10,9 @@ CURRENTLY IN PROGRESS:
 
 ----------------------------------------------------------------
 
+Version 7.2.40 (10.02.2023)
+- FIXED: Lobby handling if droplead leaves or loses connection
+
 Version 7.2.39 (09.02.2023)
 - FIXED: Wrong time conversion string while ending round
 

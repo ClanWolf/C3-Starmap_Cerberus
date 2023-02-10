@@ -195,7 +195,7 @@ public class C3Room extends GameRoomSession {
 			for (AttackCharacterPOJO acp : ap.getAttackCharList()) {
 				logger.info("Is the disconnecting char the lobbyowner? " + acp.getCharacterID() + " : " + character.getId());
 				if (Objects.equals(acp.getCharacterID(), character.getId())) {
-					if (acp.getType() == Constants.ROLE_ATTACKER_COMMANDER) {
+					if (acp.getType() == Constants.ROLE_ATTACKER_COMMANDER || acp.getType() == Constants.ROLE_DEFENDER_COMMANDER) {
 						logger.info("Lobbyowner left, will be removed!");
 						acp.setType(null);
 

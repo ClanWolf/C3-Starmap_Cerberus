@@ -813,6 +813,10 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		AttackDAO attackDAO = AttackDAO.getInstance();
 		ArrayList<AttackPOJO> openAttacks = attackDAO.getOpenAttacksOfASeason(Nexus.currentSeason);
 
+		C3Player p = (C3Player) session.getPlayer();
+		UserPOJO u = p.getUser();
+		RolePlayCharacterPOJO characterParameter = u.getCurrentCharacter();
+
 		for (AttackPOJO ap : openAttacks) {
 			AttackCharacterDAO acDAO = AttackCharacterDAO.getInstance();
 			RolePlayCharacterDAO rpDAO = RolePlayCharacterDAO.getInstance();
@@ -833,6 +837,12 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				}
 				if (acp.getType().equals(Constants.ROLE_DEFENDER_COMMANDER)) {
 					foundDefenderCommander = true;
+				}
+
+				if (Objects.equals(acp.getCharacterID(), characterParameter.getId())) {
+					if (acp.getType() == Constants.ROLE_ATTACKER_COMMANDER || acp.getType() == Constants.ROLE_DEFENDER_COMMANDER) {
+						acp.setType(null);
+					}
 				}
 
 				RolePlayCharacterPOJO character = rpDAO.findById(getC3UserID(session), acp.getCharacterID());
