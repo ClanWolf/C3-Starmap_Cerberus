@@ -460,6 +460,7 @@ public class EndRound {
                     }
                 }
 
+                Timestamp realNow = new Timestamp(System.currentTimeMillis());
                 Date d = translateRealDateToSeasonDate(new Date(System.currentTimeMillis()), seasonId);
                 LocalDate localDate = new java.util.Date(d.getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
                 LocalTime now = LocalTime.now().truncatedTo(ChronoUnit.HOURS);
@@ -468,7 +469,7 @@ public class EndRound {
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Nexus.patternTimestamp);
 				Timestamp c3Now = Timestamp.valueOf(formatter.format(translatedNowDateWithTime));
 
-	            String realNowString = new SimpleDateFormat(Nexus.patternTimestamp).format(now);
+	            String realNowString = new SimpleDateFormat(Nexus.patternTimestamp).format(realNow);
                 String c3NowString = new SimpleDateFormat(Nexus.patternTimestamp).format(c3Now);
 
 				logger.info("Timestamp c3Now: " + c3Now);

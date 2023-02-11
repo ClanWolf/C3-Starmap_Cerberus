@@ -71,9 +71,6 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 	private GameState state;
 	private GameRoomSession roomSession;
 
-	AttackCharacterPOJO attackerCommanderCandidate = null;
-	AttackCharacterPOJO defenderCommanderCandidate = null;
-
 	public C3GameSessionHandler(GameRoomSession session) {
 		super(session);
 		staticRoom = session;
@@ -488,8 +485,6 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			if(newAttackCharacters.size() > 0) {
 				attack.setAttackCharList(newAttackCharacters);
 			}
-			checkAttackForMissingDropleads(session, attack);
-
 			dao.update(getC3UserID(session), attack);
 
 			EntityManagerHelper.commit(getC3UserID(session));
@@ -526,16 +521,16 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			if (attack.getForumThreadId() == null) {
 				logger.info("Inserting new invasion thread");
 				t.createNewAttackEntries(season,
-					round,
-					starSystem.getName(),
-					attacker.getShortName(),
-					defender.getShortName(),
-					attackType, attack.getId(),
-					starSystem.getSystemImageName(),
-					rank,
-					rpChar.getName(),
-					attackerJumpship.getUnitName(),
-					dropshipName
+						round,
+						starSystem.getName(),
+						attacker.getShortName(),
+						defender.getShortName(),
+						attackType, attack.getId(),
+						starSystem.getSystemImageName(),
+						rank,
+						rpChar.getName(),
+						attackerJumpship.getUnitName(),
+						dropshipName
 				);
 			} else {
 				if (attack.getFactionID_Winner() != null) {
@@ -654,7 +649,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			// https://stackoverflow.com/questions/5832415/entitymanager-refresh
 			//entityManager().flush(); // -> maybe not the best idea, better not use this
 			//entityManager.clear();
-			
+
 			// https://stackoverflow.com/questions/27905148/force-hibernate-to-read-database-and-not-return-cached-entity
 			//session.refresh(entity); // -> hibernate session!
 
@@ -813,95 +808,90 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		C3GameSessionHandler.sendBroadCast(room, stateNewPlayerList);
 	}
 
-	private synchronized boolean checkAttackForMissingDropleads(PlayerSession session, AttackPOJO attack) {
-		AttackCharacterDAO acDAO = AttackCharacterDAO.getInstance();
-		RolePlayCharacterDAO rpDAO = RolePlayCharacterDAO.getInstance();
-		JumpshipDAO jsDAO = JumpshipDAO.getInstance();
-		FactionDAO fDAO = FactionDAO.getInstance();
-
-		C3Player p = (C3Player) session.getPlayer();
-		UserPOJO u = p.getUser();
-		RolePlayCharacterPOJO characterParameter = u.getCurrentCharacter();
-
-		ArrayList<AttackCharacterPOJO> acpl = acDAO.getCharactersFromAttack(attack.getId());
-
-		boolean foundAttackerCommander = false;
-		boolean foundDefenderCommander = false;
-
-		for (AttackCharacterPOJO acp : acpl) {
-			if (acp.getType().equals(Constants.ROLE_ATTACKER_COMMANDER)) {
-				foundAttackerCommander = true;
-			}
-			if (acp.getType().equals(Constants.ROLE_DEFENDER_COMMANDER)) {
-				foundDefenderCommander = true;
-			}
-
-			if (Objects.equals(acp.getCharacterID(), characterParameter.getId())) {
-				if (acp.getType() == Constants.ROLE_ATTACKER_COMMANDER || acp.getType() == Constants.ROLE_DEFENDER_COMMANDER) {
-					acp.setType(null);
-				}
-			}
-
-			RolePlayCharacterPOJO character = rpDAO.findById(getC3UserID(session), acp.getCharacterID());
-			JumpshipPOJO attackerJumpship = jsDAO.findById(getC3UserID(session), attack.getJumpshipID());
-			FactionPOJO attackerFaction = fDAO.findById(getC3UserID(session), attackerJumpship.getJumpshipFactionID());
-
-			if (character.getFactionId().intValue() == attackerFaction.getId().intValue()) {
-				// current user is attacker
-				if (acp.getType() != Constants.ROLE_ATTACKER_COMMANDER) {
-					// he is not the attacker commander
-					if (attackerCommanderCandidate == null) {
-						attackerCommanderCandidate = acp;
-					}
-				}
-			} else if (character.getFactionId().intValue() == attack.getFactionID_Defender().intValue()) {
-				// current user is defender
-				if (acp.getType() != Constants.ROLE_DEFENDER_COMMANDER) {
-					// he is not the defender commander
-					if (defenderCommanderCandidate == null) {
-						defenderCommanderCandidate = acp;
-					}
-				}
-			}
-		}
-
-		// Check the results
-		boolean saveAttack = false;
-		if (!foundAttackerCommander) {
-			// No attacker commander found
-			if (attackerCommanderCandidate != null) {
-				// There is a candidate to promote
-				attackerCommanderCandidate.setType(Constants.ROLE_ATTACKER_COMMANDER);
-				RolePlayCharacterPOJO character = rpDAO.findById(getC3UserID(session), attackerCommanderCandidate.getCharacterID());
-				UserPOJO user = character.getUser();
-				logger.info(user.getUserName() + " has new role " + attackerCommanderCandidate.getType());
-				saveAttack = true;
-			}
-		}
-		if (!foundDefenderCommander) {
-			// No defender commander found
-			if (defenderCommanderCandidate != null) {
-				// There is a candidate to promote
-				defenderCommanderCandidate.setType(Constants.ROLE_DEFENDER_COMMANDER);
-				RolePlayCharacterPOJO character = rpDAO.findById(getC3UserID(session), defenderCommanderCandidate.getCharacterID());
-				UserPOJO user = character.getUser();
-				logger.info(user.getUserName() + " has new role " + defenderCommanderCandidate.getType());
-				saveAttack = true;
-			}
-		}
-		return saveAttack;
-	}
-
-
 	private synchronized void checkIfDropleadsAreEmpty(PlayerSession session) {
 
 		AttackDAO attackDAO = AttackDAO.getInstance();
 		ArrayList<AttackPOJO> openAttacks = attackDAO.getOpenAttacksOfASeason(Nexus.currentSeason);
 
+		C3Player p = (C3Player) session.getPlayer();
+		UserPOJO u = p.getUser();
+		RolePlayCharacterPOJO characterParameter = u.getCurrentCharacter();
+
 		for (AttackPOJO ap : openAttacks) {
-			attackerCommanderCandidate = null;
-			defenderCommanderCandidate = null;
-			boolean saveAttack = checkAttackForMissingDropleads(session, ap);
+			AttackCharacterDAO acDAO = AttackCharacterDAO.getInstance();
+			RolePlayCharacterDAO rpDAO = RolePlayCharacterDAO.getInstance();
+			JumpshipDAO jsDAO = JumpshipDAO.getInstance();
+			FactionDAO fDAO = FactionDAO.getInstance();
+
+			ArrayList<AttackCharacterPOJO> acpl = acDAO.getCharactersFromAttack(ap.getId());
+
+			boolean foundAttackerCommander = false;
+			boolean foundDefenderCommander = false;
+
+			AttackCharacterPOJO attackerCommanderCandidate = null;
+			AttackCharacterPOJO defenderCommanderCandidate = null;
+
+			for (AttackCharacterPOJO acp : acpl) {
+				if (acp.getType().equals(Constants.ROLE_ATTACKER_COMMANDER)) {
+					foundAttackerCommander = true;
+				}
+				if (acp.getType().equals(Constants.ROLE_DEFENDER_COMMANDER)) {
+					foundDefenderCommander = true;
+				}
+
+				if (Objects.equals(acp.getCharacterID(), characterParameter.getId())) {
+					if (acp.getType() == Constants.ROLE_ATTACKER_COMMANDER || acp.getType() == Constants.ROLE_DEFENDER_COMMANDER) {
+						acp.setType(null);
+					}
+				}
+
+				RolePlayCharacterPOJO character = rpDAO.findById(getC3UserID(session), acp.getCharacterID());
+				JumpshipPOJO attackerJumpship = jsDAO.findById(getC3UserID(session), ap.getJumpshipID());
+				FactionPOJO attackerFaction = fDAO.findById(getC3UserID(session), attackerJumpship.getJumpshipFactionID());
+
+				if (character.getFactionId().intValue() == attackerFaction.getId().intValue()) {
+					// current user is attacker
+					if (acp.getType() != Constants.ROLE_ATTACKER_COMMANDER) {
+						// he is not the attacker commander
+						if (attackerCommanderCandidate == null) {
+							attackerCommanderCandidate = acp;
+						}
+					}
+				} else if (character.getFactionId().intValue() == ap.getFactionID_Defender().intValue()) {
+					// current user is defender
+					if (acp.getType() != Constants.ROLE_DEFENDER_COMMANDER) {
+						// he is not the defender commander
+						if (defenderCommanderCandidate == null) {
+							defenderCommanderCandidate = acp;
+						}
+					}
+				}
+			}
+
+			// Check the results
+			boolean saveAttack = false;
+			if (!foundAttackerCommander) {
+				// No attacker commander found
+				if (attackerCommanderCandidate != null) {
+					// There is a candidate to promote
+					attackerCommanderCandidate.setType(Constants.ROLE_ATTACKER_COMMANDER);
+					RolePlayCharacterPOJO character = rpDAO.findById(getC3UserID(session), attackerCommanderCandidate.getCharacterID());
+					UserPOJO user = character.getUser();
+					logger.info(user.getUserName() + " has new role " + attackerCommanderCandidate.getType());
+					saveAttack = true;
+				}
+			}
+			if (!foundDefenderCommander) {
+				// No defender commander found
+				if (defenderCommanderCandidate != null) {
+					// There is a candidate to promote
+					defenderCommanderCandidate.setType(Constants.ROLE_DEFENDER_COMMANDER);
+					RolePlayCharacterPOJO character = rpDAO.findById(getC3UserID(session), defenderCommanderCandidate.getCharacterID());
+					UserPOJO user = character.getUser();
+					logger.info(user.getUserName() + " has new role " + defenderCommanderCandidate.getType());
+					saveAttack = true;
+				}
+			}
 
 			if (saveAttack) {
 				GameState s = new GameState();
@@ -1044,4 +1034,93 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		gsErrorMessage.setAction_successfully(Boolean.FALSE);
 		C3GameSessionHandler.sendNetworkEvent(session, gsErrorMessage);
 	}
+
+	private synchronized boolean checkAttackForMissingDropleads(PlayerSession session, AttackPOJO attack) {
+		AttackCharacterDAO acDAO = AttackCharacterDAO.getInstance();
+		RolePlayCharacterDAO rpDAO = RolePlayCharacterDAO.getInstance();
+		JumpshipDAO jsDAO = JumpshipDAO.getInstance();
+		FactionDAO fDAO = FactionDAO.getInstance();
+
+		C3Player p = (C3Player) session.getPlayer();
+		UserPOJO u = p.getUser();
+		RolePlayCharacterPOJO characterParameter = u.getCurrentCharacter();
+
+		ArrayList<AttackCharacterPOJO> acpl = acDAO.getCharactersFromAttack(attack.getId());
+
+		boolean foundAttackerCommander = false;
+		boolean foundDefenderCommander = false;
+		boolean foundInList = false;
+
+		AttackCharacterPOJO dropLeadA = null;
+		AttackCharacterPOJO dropLeadD = null;
+		AttackCharacterPOJO dropLeadCandidateA = null;
+		AttackCharacterPOJO dropLeadCandidateD = null;
+
+
+		for (AttackCharacterPOJO acp : acpl) {
+			if (acp.getType().equals(Constants.ROLE_ATTACKER_COMMANDER)) {
+				dropLeadA = acp;
+			}
+			if (acp.getType().equals(Constants.ROLE_DEFENDER_COMMANDER)) {
+				dropLeadD = acp;
+			}
+
+			RolePlayCharacterPOJO character = rpDAO.findById(getC3UserID(session), acp.getCharacterID());
+			JumpshipPOJO attackerJumpship = jsDAO.findById(getC3UserID(session), attack.getJumpshipID());
+			FactionPOJO attackerFaction = fDAO.findById(getC3UserID(session), attackerJumpship.getJumpshipFactionID());
+
+			if(dropLeadA == null){
+				if (character.getFactionId().intValue() == attackerFaction.getId().intValue()) {
+					dropLeadCandidateA = acp;
+				}
+			} else {
+				dropLeadCandidateA = null;
+			}
+
+			if(dropLeadD == null){
+				if (character.getFactionId().intValue() == attackerFaction.getId().intValue()) {
+					dropLeadCandidateD = acp;
+				}
+			} else {
+				dropLeadCandidateD = null;
+			}
+		}
+
+		if(dropLeadCandidateA != null){
+			dropLeadCandidateA.setType(Constants.ROLE_ATTACKER_COMMANDER);
+		}
+
+		if(dropLeadCandidateD != null){
+			dropLeadCandidateD.setType(Constants.ROLE_DEFENDER_COMMANDER);
+		}
+
+
+		// Check the results
+		boolean saveAttack = false;
+
+		/* if (!foundAttackerCommander) {
+			// No attacker commander found
+			if (attackerCommanderCandidate != null) {
+				// There is a candidate to promote
+				attackerCommanderCandidate.setType(Constants.ROLE_ATTACKER_COMMANDER);
+				RolePlayCharacterPOJO character = rpDAO.findById(getC3UserID(session), attackerCommanderCandidate.getCharacterID());
+				UserPOJO user = character.getUser();
+				logger.info(user.getUserName() + " has new role " + attackerCommanderCandidate.getType());
+				saveAttack = true;
+			}
+		}
+		if (!foundDefenderCommander) {
+			// No defender commander found
+			if (defenderCommanderCandidate != null) {
+				// There is a candidate to promote
+				defenderCommanderCandidate.setType(Constants.ROLE_DEFENDER_COMMANDER);
+				RolePlayCharacterPOJO character = rpDAO.findById(getC3UserID(session), defenderCommanderCandidate.getCharacterID());
+				UserPOJO user = character.getUser();
+				logger.info(user.getUserName() + " has new role " + defenderCommanderCandidate.getType());
+				saveAttack = true;
+			}
+		}*/
+		return saveAttack;
+	}
+
 }
