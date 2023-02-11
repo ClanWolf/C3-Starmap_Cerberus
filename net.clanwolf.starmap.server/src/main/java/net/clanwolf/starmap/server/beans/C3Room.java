@@ -197,7 +197,7 @@ public class C3Room extends GameRoomSession {
 				if (Objects.equals(acp.getCharacterID(), character.getId())) {
 					if (acp.getType() == Constants.ROLE_ATTACKER_COMMANDER || acp.getType() == Constants.ROLE_DEFENDER_COMMANDER) {
 						logger.info("Lobbyowner left, will be removed!");
-						acp.setType(null);
+						acp.setType(Constants.ROLE_DROPLEAD_LEFT);
 
 						GameState s = new GameState();
 						s.addObject(ap);
@@ -218,7 +218,6 @@ public class C3Room extends GameRoomSession {
 		}
 
 		boolean ret = super.disconnectSession(playerSession);
-		sendNewPlayerList();
 
 		// EntityManager for room session must be closed on disconnect
 		if (playerSession.getPlayer().getId() != null) {
@@ -226,18 +225,5 @@ public class C3Room extends GameRoomSession {
 		}
 
 		return ret;
-	}
-
-	private synchronized void sendNewPlayerList() {
-		ArrayList<UserPOJO> userList = new ArrayList<>();
-		for (PlayerSession playerSession : this.getSessions()) {
-			C3Player pl = (C3Player) playerSession.getPlayer();
-			userList.add(pl.getUser());
-		}
-
-		GameState stateNewPlayerList = new GameState(GAMESTATEMODES.USER_GET_NEW_PLAYERLIST);
-		stateNewPlayerList.addObject(userList);
-
-		C3GameSessionHandler.sendBroadCast(this, stateNewPlayerList);
 	}
 }
