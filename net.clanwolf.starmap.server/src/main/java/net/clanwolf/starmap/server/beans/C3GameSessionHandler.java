@@ -919,7 +919,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 	}
 
 	static public void sendErrorMessageToClient(PlayerSession session, Exception re){
-		EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
+		//EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
 		GameState gsErrorMessage = new GameState(GAMESTATEMODES.ERROR_MESSAGE);
 		gsErrorMessage.addObject(re.getMessage());
 		gsErrorMessage.setAction_successfully(Boolean.FALSE);
@@ -960,7 +960,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				}
 			}
 			if(dropLeadD == null && acp.getType().equals(ROLE_DEFENDER_WARRIOR) && !acp.getType().equals(ROLE_DROPLEAD_LEFT)){
-				if (character.getFactionId().intValue() == attackerFaction.getId().intValue()) {
+				if (character.getFactionId().intValue() == attack.getFactionID_Defender().intValue()) {
 					dropLeadCandidateD = acp;
 				}
 			}
