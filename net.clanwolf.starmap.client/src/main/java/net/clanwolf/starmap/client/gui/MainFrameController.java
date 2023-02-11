@@ -172,6 +172,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private Label databaseAccessibleIndicatorLabelHoverHelper;
 	@FXML
 	private Label versionLabel;
+	@FXML
+	private Label lbUserSelf;
 
 	@FXML
 	private Label labelWaitText;
@@ -350,8 +352,14 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					factionShortName = "/";
 				}
 
-				UserHistoryEntry entry = new UserHistoryEntry(u.getUserName(), factionShortName, "", "");
-				tblUserHistory.getItems().add(entry);
+				if (Nexus.getCurrentUser().getUserId().equals(u.getUserId())) {
+					lbUserSelf.setText(u.getUserName());
+				} else {
+					String userString = "";
+					userString += u.getUserName();
+					UserHistoryEntry entry = new UserHistoryEntry(userString, factionShortName, "", "");
+					tblUserHistory.getItems().add(entry);
+				}
 			}
 
 			tblUserHistory.sort();
