@@ -27,6 +27,7 @@
 package net.clanwolf.starmap.server.util;
 
 import net.clanwolf.starmap.server.Nexus.Nexus;
+import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.server.GameServer;
@@ -116,8 +117,10 @@ public class HeartBeatTimer extends TimerTask {
 			if (informClients || Nexus.sendUniverseToClients == true) {
 				// Broadcast new version of the universe to the clients
 				logger.info("Send updated universe to all clients.");
+				UniverseDTO universe = WebDataInterface.getUniverse();
+
 				GameState response = new GameState(GAMESTATEMODES.GET_UNIVERSE_DATA);
-				response.addObject(Compressor.compress(WebDataInterface.getUniverse()));
+				response.addObject(Compressor.compress(universe));
 				C3Room.sendBroadcastMessage(response);
 
 				if (Nexus.sendUniverseToClients) {

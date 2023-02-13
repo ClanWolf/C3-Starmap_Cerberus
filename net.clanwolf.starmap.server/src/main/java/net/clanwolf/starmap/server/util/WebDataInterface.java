@@ -56,12 +56,11 @@ import java.util.*;
  */
 public class WebDataInterface {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-
 	private static Map<String, String> selects = new HashMap<>();
 	private static UniverseDTO universe;
 	private static boolean initialized = false;
 
-	public static UniverseDTO getUniverse() {
+	public static synchronized UniverseDTO getUniverse() {
 		String pattern = "dd.MM.yyyy HH:mm:ss";
 		DateTimeFormatter dateTimeformatter = DateTimeFormatter.ofPattern(pattern);
 
@@ -74,8 +73,6 @@ public class WebDataInterface {
 		String currentRoundStartDateString = RoundDAO.getInstance().findBySeasonId(season).getCurrentRoundStartDate();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Nexus.patternTimestamp);
 		currentRoundStartDateTime = LocalDateTime.parse(currentRoundStartDateString, formatter);
-
-
 
 		String dateS = dateTimeformatter.format(currentRoundStartDateTime);
 		SeasonPOJO seasonPOJO = (SeasonPOJO) SeasonDAO.getInstance().findById(SeasonPOJO.class, season);
