@@ -932,46 +932,49 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		JumpshipDAO jsDAO = JumpshipDAO.getInstance();
 		FactionDAO fDAO = FactionDAO.getInstance();
 
-		ArrayList<AttackCharacterPOJO> acpl = new ArrayList(attack.getAttackCharList());
+		ArrayList<AttackCharacterPOJO> acpl = null;
+		if (attack.getAttackCharList() != null) {
+			acpl = new ArrayList<>(attack.getAttackCharList());
 
-		AttackCharacterPOJO dropLeadA = null;
-		AttackCharacterPOJO dropLeadD = null;
-		AttackCharacterPOJO dropLeadCandidateA = null;
-		AttackCharacterPOJO dropLeadCandidateD = null;
+			AttackCharacterPOJO dropLeadA = null;
+			AttackCharacterPOJO dropLeadD = null;
+			AttackCharacterPOJO dropLeadCandidateA = null;
+			AttackCharacterPOJO dropLeadCandidateD = null;
 
-		for (AttackCharacterPOJO acp : acpl) {
+			for (AttackCharacterPOJO acp : acpl) {
 
-			if (acp.getType().equals(Constants.ROLE_ATTACKER_COMMANDER)) {
-				dropLeadA = acp;
-				dropLeadCandidateA = null;
-			}
-			if (acp.getType().equals(Constants.ROLE_DEFENDER_COMMANDER)) {
-				dropLeadD = acp;
-				dropLeadCandidateD = null;
-			}
+				if (acp.getType().equals(Constants.ROLE_ATTACKER_COMMANDER)) {
+					dropLeadA = acp;
+					dropLeadCandidateA = null;
+				}
+				if (acp.getType().equals(Constants.ROLE_DEFENDER_COMMANDER)) {
+					dropLeadD = acp;
+					dropLeadCandidateD = null;
+				}
 
-			RolePlayCharacterPOJO character = rpDAO.findById(getC3UserID(session), acp.getCharacterID());
-			JumpshipPOJO attackerJumpship = jsDAO.findById(getC3UserID(session), attack.getJumpshipID());
-			FactionPOJO attackerFaction = fDAO.findById(getC3UserID(session), attackerJumpship.getJumpshipFactionID());
+				RolePlayCharacterPOJO character = rpDAO.findById(getC3UserID(session), acp.getCharacterID());
+				JumpshipPOJO attackerJumpship = jsDAO.findById(getC3UserID(session), attack.getJumpshipID());
+				FactionPOJO attackerFaction = fDAO.findById(getC3UserID(session), attackerJumpship.getJumpshipFactionID());
 
-			if(dropLeadA == null && acp.getType().equals(ROLE_ATTACKER_WARRIOR) && !acp.getType().equals(ROLE_DROPLEAD_LEFT)){
-				if (character.getFactionId().intValue() == attackerFaction.getId().intValue()) {
-					dropLeadCandidateA = acp;
+				if(dropLeadA == null && acp.getType().equals(ROLE_ATTACKER_WARRIOR) && !acp.getType().equals(ROLE_DROPLEAD_LEFT)){
+					if (character.getFactionId().intValue() == attackerFaction.getId().intValue()) {
+						dropLeadCandidateA = acp;
+					}
+				}
+				if(dropLeadD == null && acp.getType().equals(ROLE_DEFENDER_WARRIOR) && !acp.getType().equals(ROLE_DROPLEAD_LEFT)){
+					if (character.getFactionId().intValue() == attack.getFactionID_Defender().intValue()) {
+						dropLeadCandidateD = acp;
+					}
 				}
 			}
-			if(dropLeadD == null && acp.getType().equals(ROLE_DEFENDER_WARRIOR) && !acp.getType().equals(ROLE_DROPLEAD_LEFT)){
-				if (character.getFactionId().intValue() == attack.getFactionID_Defender().intValue()) {
-					dropLeadCandidateD = acp;
-				}
+
+			if(dropLeadCandidateA != null){
+				dropLeadCandidateA.setType(Constants.ROLE_ATTACKER_COMMANDER);
 			}
-		}
 
-		if(dropLeadCandidateA != null){
-			dropLeadCandidateA.setType(Constants.ROLE_ATTACKER_COMMANDER);
-		}
-
-		if(dropLeadCandidateD != null){
-			dropLeadCandidateD.setType(Constants.ROLE_DEFENDER_COMMANDER);
+			if(dropLeadCandidateD != null){
+				dropLeadCandidateD.setType(Constants.ROLE_DEFENDER_COMMANDER);
+			}
 		}
 	}
 }

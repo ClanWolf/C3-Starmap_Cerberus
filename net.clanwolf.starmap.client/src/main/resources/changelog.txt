@@ -3,14 +3,14 @@ C3 version history
 ----------------------------------------------------------------
 
 CURRENTLY IN PROGRESS:
-- P1: If lobby owner leaves another warrior from that faction should be promoted automatically and take over the lobby
+- P1: If lobby owner leaves, the new lobby owner must not be offline
 - P3: Web-View of the Starmap (ongoing, ~45%)
 ---
 - P3: Updating the manual (ongoing): https://www.clanwolf.net/apps/C3/C3_Manual_de.pdf
 
 ----------------------------------------------------------------
 
-Version 7.2.42 (11.02.2023)
+Version 7.2.43 (11.02.2023)
 - FIXED: Lobby handling if droplead leaves or loses connection
 
 Version 7.2.39 (09.02.2023)
