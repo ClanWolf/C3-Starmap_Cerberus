@@ -309,6 +309,9 @@
 	                <showDeprecation>true</showDeprecation>
 	                <source>${version.java}</source>
 	                <target>${version.java}</target>
+			<compilerArgs>
+				<arg>-parameters</arg>
+			</compilerArgs>
                 </configuration>
             </plugin>
         </plugins>
