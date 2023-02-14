@@ -57,8 +57,8 @@ import java.util.*;
 public class WebDataInterface {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	private static Map<String, String> selects = new HashMap<>();
-	private static UniverseDTO universe;
-	private static boolean initialized = false;
+	private static volatile UniverseDTO universe;
+	private static volatile boolean initialized = false;
 
 	public static synchronized UniverseDTO getUniverse() {
 		String pattern = "dd.MM.yyyy HH:mm:ss";
