@@ -34,7 +34,7 @@ public class Nexus {
 	public static Long currentSeason = 1L;
 	public static Long DUMMY_USERID = -1L;
 	public static Long END_ROUND_USERID = -2L;
-	public static boolean sendUniverseToClients = false;
+	public static volatile boolean sendUniverseToClients = false;
 	public static String patternTimestamp = "yyyy-MM-dd HH:mm:ss";
 	public static String mailServer = "";
 	public static String mailUser = "";

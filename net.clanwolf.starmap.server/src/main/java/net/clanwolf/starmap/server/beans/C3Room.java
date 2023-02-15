@@ -214,7 +214,7 @@ public class C3Room extends GameRoomSession {
 		if (savedChanges) {
 			Timer serverHeartBeat;
 			serverHeartBeat = new Timer();
-			serverHeartBeat.schedule(new HeartBeatTimer(false), 10);
+			serverHeartBeat.schedule(new HeartBeatTimer(false, null), 0);
 		}
 
 		boolean ret = super.disconnectSession(playerSession);

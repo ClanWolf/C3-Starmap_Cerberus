@@ -154,6 +154,7 @@ public class EndRound {
 
             DateTimeFormatter dateTimeformatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss");
 
+			logger.info("Check if round is over:");
             logger.info("Next round date: " + dateTimeformatter.format(nextRoundDate));
             logger.info("Translated now date: " + dateTimeformatter.format(translatedNowDateWithTime));
         } catch (Exception e) {
@@ -162,6 +163,7 @@ public class EndRound {
         // round is officially over?
         if (nextRoundDate != null && translatedNowDateWithTime != null) {
             // the end of the round has not been reached on the calendar
+	        logger.info(nextRoundDate + " is NOT after " + translatedNowDateWithTime + " is " + !nextRoundDate.isAfter(translatedNowDateWithTime));
             return !nextRoundDate.isAfter(translatedNowDateWithTime);
         } else {
             return false;
@@ -474,7 +476,7 @@ public class EndRound {
 
 				logger.info("Timestamp c3Now: " + c3Now);
 				logger.info("Translated Now date with time: " + translatedNowDateWithTime);
-	            logger.info("Now date with time RealTime: " + now);
+	            logger.info("Now date with time RealTime: " + realNowString);
 				logger.info("Formatted now c3NowString: " + c3NowString);
 
 				roundPOJO.setCurrentRoundStartDateRealTime(realNowString);

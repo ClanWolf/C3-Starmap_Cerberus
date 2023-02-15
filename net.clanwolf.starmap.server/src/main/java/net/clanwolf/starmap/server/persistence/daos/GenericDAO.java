@@ -70,11 +70,11 @@ public abstract class GenericDAO implements IDAO {
 
 	@Override
 	public Object update(Long userID, Object entity) {
-		logger.info("Updating instance (" + entity.getClass().getName() + ")");
+//		logger.info("Updating instance (" + entity.getClass().getName() + ")");
 		try {
 			Object result = null;
 			result = getEntityManager(userID).merge(entity);
-			logger.info("Update successful");
+//			logger.info("Update successful");
 			return result;
 		} catch (Exception re) {
 			logger.error("Update failed", re);
@@ -174,7 +174,7 @@ public abstract class GenericDAO implements IDAO {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public Object findById(Long userID, Class clazz, Long id) {
+	public synchronized Object findById(Long userID, Class clazz, Long id) {
 //		logger.info("Finding object instance with id: " + id);
 		try {
 			return getEntityManager(userID).find(clazz, id);

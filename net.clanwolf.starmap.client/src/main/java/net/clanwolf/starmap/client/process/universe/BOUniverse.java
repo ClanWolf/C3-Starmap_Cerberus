@@ -41,7 +41,7 @@ import java.util.*;
 
 public class BOUniverse {
 
-	private UniverseDTO universeDTO;
+	private volatile UniverseDTO universeDTO;
 
 	public HashMap<Long, BOStarSystem> starSystemBOs = new HashMap<>();
 	public HashMap<String, BOFaction> factionBOs = new HashMap<>();

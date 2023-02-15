@@ -412,7 +412,11 @@ public class EventCommunications {
 					logger.info("Re-created universe received from server!");
 					ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("13");
 					UniverseDTO universeDTO = (UniverseDTO) Compressor.deCompress((byte[])state.getObject());
-					Nexus.injectNewUniverseDTO(universeDTO);
+					if (universeDTO != null) {
+						Nexus.injectNewUniverseDTO(universeDTO);
+					} else {
+						logger.error("****************** RECEIVED A BROKEN (EMPTY) UNIVERSE! ******************");
+					}
 					ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("13_33");
 					ActionManager.getAction(ACTIONS.NEW_UNIVERSE_RECEIVED).execute();
 					break;

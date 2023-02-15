@@ -160,7 +160,7 @@ public class GameServer {
 
 			// write heartbeat file every some minutes
 			Timer serverHeartBeat = new Timer();
-			serverHeartBeat.schedule(new HeartBeatTimer(), 1000, 1000 * 60 * 5);
+			serverHeartBeat.schedule(new HeartBeatTimer(true, null), 1000, 1000 * 60 * 5);
 
 			// check shutdown flagfile every some seconds
 			Timer checkShutdownFlag = new Timer();

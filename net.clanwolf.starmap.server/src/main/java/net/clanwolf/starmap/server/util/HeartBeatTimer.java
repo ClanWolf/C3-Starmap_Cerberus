@@ -32,7 +32,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.server.GameServer;
 import net.clanwolf.starmap.server.beans.C3Room;
-import net.clanwolf.starmap.server.enums.SystemListTypes;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.RoundDAO;
 import net.clanwolf.starmap.server.persistence.pojos.RoundPOJO;
 import net.clanwolf.starmap.server.process.EndRound;
@@ -47,27 +46,30 @@ import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.util.Calendar;
 import java.util.TimerTask;
+import java.util.concurrent.CountDownLatch;
 
 /**
  * @author Undertaker
+ * @author Meldric
  *
  */
 public class HeartBeatTimer extends TimerTask {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+	private volatile boolean informClients = false;
+//	private String tempDir = "";
+	private volatile boolean currentlyRunning = false;
+	private volatile CountDownLatch latch;
 
-	private boolean informClients = false;
-	private String tempDir = "";
-	private boolean currentlyRunning = false;
+//	public HeartBeatTimer() {
+////		String property = "java.io.tmpdir";
+////		tempDir = System.getProperty(property);
+//	}
 
-	public HeartBeatTimer() {
-		String property = "java.io.tmpdir";
-		tempDir = System.getProperty(property);
-	}
-
-	public HeartBeatTimer(boolean informClients) {
-		String property = "java.io.tmpdir";
-		tempDir = System.getProperty(property);
+	public HeartBeatTimer(boolean informClients, CountDownLatch latch) {
+//		String property = "java.io.tmpdir";
+//		tempDir = System.getProperty(property);
 		this.informClients = informClients;
+		this.latch = latch;
 	}
 
 	@Override
@@ -96,28 +98,31 @@ public class HeartBeatTimer extends TimerTask {
 
 			String resultProtocol = EndRound.finalizeRound(seasonId, round);
 
-			logger.info("Calling list creation methods...");
-//			logger.info("Calling list creation (Factions)...");
-			WebDataInterface.createSystemList(SystemListTypes.Factions);
-//			logger.info("Calling list creation (HH_StarSystems)...");
-			WebDataInterface.createSystemList(SystemListTypes.HH_StarSystems);
-//			logger.info("Calling list creation (HH_Attacks)...");
-			WebDataInterface.createSystemList(SystemListTypes.HH_Attacks);
-//			logger.info("Calling list creation (HH_Jumpships)...");
-			WebDataInterface.createSystemList(SystemListTypes.HH_Jumpships);
-//			logger.info("Calling list creation (HH_Routepoints)...");
-			WebDataInterface.createSystemList(SystemListTypes.HH_Routepoints);
-//			logger.info("Calling list creation (CM_StarSystems)...");
-			WebDataInterface.createSystemList(SystemListTypes.CM_StarSystems);
+			UniverseDTO universe = WebDataInterface.initUniverse();
+			universe.lastRoundResultProtocol = resultProtocol;
 
-			if (!"".equals(resultProtocol)) {
-				WebDataInterface.getUniverse().lastRoundResultProtocol = resultProtocol;
-			}
+			WebDataInterface.loadFactions();
+			WebDataInterface.load_HH_StarSystemData();
+			WebDataInterface.loadAttacks();
+			WebDataInterface.loadJumpshipsAndRoutePoints();
 
-			if (informClients || Nexus.sendUniverseToClients == true) {
+//			logger.info("Calling list creation methods...");
+////			logger.info("Calling list creation (Factions)...");
+//			WebDataInterface.createSystemList(SystemListTypes.Factions);
+////			logger.info("Calling list creation (HH_StarSystems)...");
+//			WebDataInterface.createSystemList(SystemListTypes.HH_StarSystems);
+////			logger.info("Calling list creation (HH_Attacks)...");
+//			WebDataInterface.createSystemList(SystemListTypes.HH_Attacks);
+////			logger.info("Calling list creation (HH_Jumpships)...");
+//			WebDataInterface.createSystemList(SystemListTypes.HH_Jumpships);
+////			logger.info("Calling list creation (HH_Routepoints)...");
+//			WebDataInterface.createSystemList(SystemListTypes.HH_Routepoints);
+////			logger.info("Calling list creation (CM_StarSystems)...");
+////			WebDataInterface.createSystemList(SystemListTypes.CM_StarSystems);
+
+			if (informClients || Nexus.sendUniverseToClients) {
 				// Broadcast new version of the universe to the clients
 				logger.info("Send updated universe to all clients.");
-				UniverseDTO universe = WebDataInterface.getUniverse();
 
 				GameState response = new GameState(GAMESTATEMODES.GET_UNIVERSE_DATA);
 				response.addObject(Compressor.compress(universe));
@@ -135,5 +140,9 @@ public class HeartBeatTimer extends TimerTask {
 		logger.info("Send server heartbeat event to all clients (server is still up) (pong).");
 		GameState heartbeat = new GameState(GAMESTATEMODES.SERVER_HEARTBEAT);
 		C3Room.sendBroadcastMessage(heartbeat);
+
+		if (latch != null) {
+			latch.countDown();
+		}
 	}
 }

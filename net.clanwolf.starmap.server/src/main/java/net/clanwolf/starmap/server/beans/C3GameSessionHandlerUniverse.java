@@ -28,6 +28,7 @@ package net.clanwolf.starmap.server.beans;
 
 import io.nadron.app.GameRoom;
 import io.nadron.app.PlayerSession;
+import net.clanwolf.starmap.server.util.HeartBeatTimer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.server.util.WebDataInterface;
@@ -41,6 +42,7 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.lang.invoke.MethodHandles;
 import java.util.Iterator;
+import java.util.Timer;
 import java.util.zip.GZIPOutputStream;
 
 class C3GameSessionHandlerUniverse {
@@ -48,10 +50,13 @@ class C3GameSessionHandlerUniverse {
 
 	static void getUniverseData(PlayerSession session, GameRoom gm) {
 		logger.info("Getting universe data on request of a client.");
-		UniverseDTO universe = WebDataInterface.getUniverse();
 
-		GameState state_universe = new GameState(GAMESTATEMODES.GET_UNIVERSE_DATA);
-		state_universe.addObject(Compressor.compress(universe));
-		C3GameSessionHandler.sendBroadCast(gm, state_universe);
+		Timer serverHeartBeat = new Timer();
+		serverHeartBeat.schedule(new HeartBeatTimer(true, null), 0);
+
+//		UniverseDTO universe = WebDataInterface.getUniverse();
+//		GameState state_universe = new GameState(GAMESTATEMODES.GET_UNIVERSE_DATA);
+//		state_universe.addObject(Compressor.compress(universe));
+//		C3GameSessionHandler.sendBroadCast(gm, state_universe);
 	}
 }

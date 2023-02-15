@@ -56,6 +56,7 @@ import net.clanwolf.starmap.transfer.util.Compressor;
 import java.lang.invoke.MethodHandles;
 import java.sql.Timestamp;
 import java.util.*;
+import java.util.concurrent.CountDownLatch;
 
 import static net.clanwolf.starmap.constants.Constants.*;
 
@@ -719,6 +720,14 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		logger.info("Sending userdata/universe back after login...");
 		ArrayList<UserPOJO> userlist = UserDAO.getInstance().getUserList();
 
+		final CountDownLatch latch = new CountDownLatch(1);
+		Timer serverHeartBeat = new Timer();
+		serverHeartBeat.schedule(new HeartBeatTimer(false, latch), 0);
+		try {
+			latch.await();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		UniverseDTO uni = WebDataInterface.getUniverse();
 
 		byte[] myByte = Compressor.compress(uni);
@@ -864,12 +873,12 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			case JUMPSHIP_SAVE:
 				saveJumpship(session, state);
 				serverHeartBeat = new Timer();
-				serverHeartBeat.schedule(new HeartBeatTimer(true), 10);
+				serverHeartBeat.schedule(new HeartBeatTimer(true, null), 0);
 				break;
 			case ATTACK_SAVE:
 				saveAttack(session, state);
 				serverHeartBeat = new Timer();
-				serverHeartBeat.schedule(new HeartBeatTimer(true), 1000);
+				serverHeartBeat.schedule(new HeartBeatTimer(true, null), 100);
 				break;
 			case STATS_MWO_SAVE:
 				saveStatsMwo(session, state);
@@ -907,11 +916,11 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			case FORCE_FINALIZE_ROUND:
 				EndRound.setForceFinalize(true);
 				serverHeartBeat = new Timer();
-				serverHeartBeat.schedule(new HeartBeatTimer(true), 10);
+				serverHeartBeat.schedule(new HeartBeatTimer(true, null), 0);
 				break;
 			case FORCE_NEW_UNIVERSE:
 				serverHeartBeat = new Timer();
-				serverHeartBeat.schedule(new HeartBeatTimer(true), 10);
+				serverHeartBeat.schedule(new HeartBeatTimer(true, null), 0);
 				break;
 			default:
 				break;
