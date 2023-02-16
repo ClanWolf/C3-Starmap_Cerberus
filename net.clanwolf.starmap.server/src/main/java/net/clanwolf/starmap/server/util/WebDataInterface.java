@@ -231,11 +231,10 @@ public class WebDataInterface {
 //		}
 //	}
 
-	static synchronized void loadAttacks(){
+	static synchronized void loadAttacks(Long seasonId){
 		universe.attacks.clear();
 		universe.attackStorys.clear();
 
-		Long seasonId = 1L;
 		RoundPOJO roundPOJO = RoundDAO.getInstance().findBySeasonId(seasonId);
 
 		AttackDAO dao = AttackDAO.getInstance();

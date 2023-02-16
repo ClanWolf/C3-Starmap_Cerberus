@@ -101,7 +101,15 @@ public class LogWatcher {
 							int rowCount = 1;
 							for (byte[] line : lines) {
 								String s = new String(line, StandardCharsets.UTF_8);
-								String level = s.substring(20, 27).trim();
+								String level = "";
+								try {
+									level = s.substring(21, 27).trim();
+									if (!"WARNING".equalsIgnoreCase(level) && !"ERROR".equalsIgnoreCase(level) && !"SEVERE".equalsIgnoreCase(level)) {
+										level = "";
+									}
+								} catch(IndexOutOfBoundsException e) {
+									level = "";
+								}
 								C3LogEntry entry = new C3LogEntry(rowCount, level, s);
 								LogPaneController.addServerLine(entry);
 								rowCount++;
@@ -115,7 +123,7 @@ public class LogWatcher {
 								if (LogPaneController.logAutoscrolldown) {
 									LogPaneController.scrollServerDown();
 								}
-								Thread.sleep(1000);
+								Thread.sleep(500);
 								LogPaneController.setCountdownValue(i);
 							}
 						} while (!this.isInterrupted());

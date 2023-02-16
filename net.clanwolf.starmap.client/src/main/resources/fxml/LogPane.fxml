@@ -16,7 +16,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="800.0" minWidth="1400.0" snapToPixel="false" xmlns="http://javafx.com/javafx/17" fx:controller="net.clanwolf.starmap.client.gui.panes.logging.LogPaneController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="800.0" minWidth="1400.0" snapToPixel="false" xmlns="http://javafx.com/javafx/19" fx:controller="net.clanwolf.starmap.client.gui.panes.logging.LogPaneController">
    <children>
       <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <center>
@@ -57,12 +57,12 @@
                                                 <Insets left="10.0" />
                                              </HBox.margin>
                                           </Button>
-                                          <Label text="Level:">
+                                          <Label text="Level:" visible="false">
                                              <padding>
                                                 <Insets left="60.0" />
                                              </padding>
                                           </Label>
-                                          <ComboBox fx:id="cbLevel" prefWidth="150.0">
+                                          <ComboBox fx:id="cbLevel" prefWidth="150.0" visible="false">
                                              <HBox.margin>
                                                 <Insets left="10.0" />
                                              </HBox.margin>

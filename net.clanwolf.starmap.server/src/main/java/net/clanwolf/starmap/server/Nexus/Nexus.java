@@ -28,8 +28,6 @@ package net.clanwolf.starmap.server.Nexus;
 
 import net.clanwolf.starmap.server.beans.C3GameSessionHandler;
 
-import java.util.concurrent.atomic.AtomicBoolean;
-
 public class Nexus {
 	public static Long currentSeason = 1L;
 	public static Long DUMMY_USERID = -1L;
@@ -41,6 +39,4 @@ public class Nexus {
 	public static String mailPw = "";
 
 	public static C3GameSessionHandler gmSessionHandler;
-
-
 }

@@ -54,22 +54,20 @@ public abstract class GenericDAO implements IDAO {
 	}
 
 	@Override
-	public void save(Long userID, Object entity) {
+	public synchronized void save(Long userID, Object entity) {
 		logger.info("Saving instance (" + entity.getClass().getName() + ")");
 		try {
-			//getEntityManager(userID).
 			getEntityManager(userID).persist(entity);
 			logger.info("Save successful");
 		} catch (Exception re) {
 			logger.error("Save failed", re);
-			// re.printStackTrace();
 			// getEntityManager().clear();
 			throw re;
 		}
 	}
 
 	@Override
-	public Object update(Long userID, Object entity) {
+	public synchronized Object update(Long userID, Object entity) {
 //		logger.info("Updating instance (" + entity.getClass().getName() + ")");
 		try {
 			Object result = null;
@@ -78,7 +76,6 @@ public abstract class GenericDAO implements IDAO {
 			return result;
 		} catch (Exception re) {
 			logger.error("Update failed", re);
-			// re.printStackTrace();
 			// getEntityManager().clear();
 			throw re;
 		}
@@ -86,7 +83,7 @@ public abstract class GenericDAO implements IDAO {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<Object> findByProperty(Long userID, String propertyName, final Object value, final int... rowStartIdxAndCount) {
+	public synchronized List<Object> findByProperty(Long userID, String propertyName, final Object value, final int... rowStartIdxAndCount) {
 		logger.info("Finding instance (" + this.className + ") with property: " + propertyName + ", value: " + value);
 		try {
 			final String queryString = "select model from " + this.className + " model where model." + propertyName + "= :propertyValue order by sortOrder";
@@ -108,7 +105,6 @@ public abstract class GenericDAO implements IDAO {
 			return query.getResultList();
 		} catch (Exception re) {
 			logger.error("Find by property name failed", re);
-			// re.printStackTrace();
 			// getEntityManager().clear();
 			throw re;
 		}
@@ -116,7 +112,7 @@ public abstract class GenericDAO implements IDAO {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public List<Object> findAll(Long userID, final int... rowStartIdxAndCount) {
+	public synchronized List<Object> findAll(Long userID, final int... rowStartIdxAndCount) {
 		logger.info("Finding all instances (" + this.className + ")");
 		try {
 			final String queryString = "select model from " + this.className + " model";
@@ -137,17 +133,16 @@ public abstract class GenericDAO implements IDAO {
 			return query.getResultList();
 		} catch (Exception re) {
 			logger.error("Find all failed", re);
-			// re.printStackTrace();
 			// getEntityManager().clear();
 			throw re;
 		}
 	}
 
-	public Object findById(Class clazz, Long id) {
+	public synchronized Object findById(Class clazz, Long id) {
 		return findById(null, clazz, id);
 	}
 
-	public void delete(Long userID, Object entity, Long id) {
+	public synchronized void delete(Long userID, Object entity, Long id) {
 		logger.info("Deleting instance (" + entity.getClass().getName() + ")");
 		try {
 			entity = getEntityManager(userID).getReference(entity.getClass(), id);
@@ -155,20 +150,18 @@ public abstract class GenericDAO implements IDAO {
 			logger.info("Delete successful");
 		} catch (Exception re) {
 			logger.error("Delete failed", re);
-			// re.printStackTrace();
 			// getEntityManager().clear();
 			throw re;
 		}
 	}
 
-	public void refresh(Long userID, Object entity) {
+	public synchronized void refresh(Long userID, Object entity) {
 		logger.info("Refreshing instance (" + entity.getClass().getName() + ")");
 		try {
 			getEntityManager(userID).refresh(entity);
 			logger.info("Refresh successful");
 		} catch (Exception re) {
 			logger.error("Refresh failed", re);
-			// re.printStackTrace();
 			throw re;
 		}
 	}
@@ -180,7 +173,6 @@ public abstract class GenericDAO implements IDAO {
 			return getEntityManager(userID).find(clazz, id);
 		} catch (Exception re) {
 			logger.error("Find failed", re);
-			// re.printStackTrace();
 			// getEntityManager().clear();
 			throw re;
 		}

@@ -91,10 +91,12 @@
 
 	<!-- Netty options for server bootstrap -->
 	<util:map id="tcpChannelOptions" map-class="java.util.HashMap">
+		<!--
 		<entry>
 			<key><util:constant static-field="io.netty.channel.ChannelOption.SO_KEEPALIVE"/></key>
 			<value type="java.lang.Boolean">${so.keepalive}</value>
 		</entry>
+		-->
 		<entry>
 			<key><util:constant static-field="io.netty.channel.ChannelOption.SO_BACKLOG"/></key>
 			<value type="java.lang.Integer">${so.backlog}</value>

@@ -44,6 +44,13 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.attribute.BasicFileAttributes;
+import java.nio.file.attribute.FileTime;
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.TimerTask;
 import java.util.concurrent.CountDownLatch;
@@ -56,14 +63,8 @@ import java.util.concurrent.CountDownLatch;
 public class HeartBeatTimer extends TimerTask {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	private volatile boolean informClients = false;
-//	private String tempDir = "";
 	private volatile boolean currentlyRunning = false;
 	private volatile CountDownLatch latch;
-
-//	public HeartBeatTimer() {
-////		String property = "java.io.tmpdir";
-////		tempDir = System.getProperty(property);
-//	}
 
 	public HeartBeatTimer(boolean informClients, CountDownLatch latch) {
 //		String property = "java.io.tmpdir";
@@ -77,18 +78,32 @@ public class HeartBeatTimer extends TimerTask {
 		if (!currentlyRunning) {
 			currentlyRunning = true;
 
-			//logger.info("Writing heartbeat ping to " + tempDir);
-			logger.info("Writing heartbeat ping to " + "/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/c3.heartbeat");
+			String heartBeatFileName = "/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/c3.heartbeat";
 
 			Calendar calendar = Calendar.getInstance();
 			java.util.Date now = calendar.getTime();
 			java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(now.getTime());
 
-			File heartbeatfile = new File("/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/c3.heartbeat");
-			try (BufferedWriter br = new BufferedWriter(new FileWriter(heartbeatfile))) {
-				br.write("" + currentTimestamp.getTime());
-			} catch (IOException ioe) {
-				logger.error("Error writing heartbeat file", ioe);
+			try {
+				File heartbeatfile = new File(heartBeatFileName);
+				BasicFileAttributes attr = Files.readAttributes(Paths.get(heartBeatFileName), BasicFileAttributes.class);
+
+				FileTime t = attr.lastModifiedTime();
+				Long fileTimeStamp = t.toMillis();
+				Long systemTimeStamp = System.currentTimeMillis();
+				long diff = systemTimeStamp - fileTimeStamp;
+
+				if (diff > (1000 * 60)) { // every 60 seconds there is a heartbeat
+					try (BufferedWriter br = new BufferedWriter(new FileWriter(heartbeatfile))) {
+						logger.info("Writing heartbeat ping to " + heartBeatFileName);
+						br.write("" + currentTimestamp.getTime());
+					} catch (IOException ioe) {
+						logger.error("Exception while writing heartbeat file [001].", ioe);
+					}
+				}
+			} catch (IOException e) {
+				logger.error("Exception while writing heartbeat file [002].");
+				throw new RuntimeException(e);
 			}
 
 			Long seasonId = GameServer.getCurrentSeason();
@@ -103,7 +118,7 @@ public class HeartBeatTimer extends TimerTask {
 
 			WebDataInterface.loadFactions();
 			WebDataInterface.load_HH_StarSystemData();
-			WebDataInterface.loadAttacks();
+			WebDataInterface.loadAttacks(seasonId);
 			WebDataInterface.loadJumpshipsAndRoutePoints();
 
 //			logger.info("Calling list creation methods...");
@@ -132,17 +147,16 @@ public class HeartBeatTimer extends TimerTask {
 					Nexus.sendUniverseToClients = false;
 				}
 			}
-
 			currentlyRunning = false;
+		}
+
+		if (latch != null) {
+			latch.countDown();
 		}
 
 		// Broadcast heartbeat to the clients
 		logger.info("Send server heartbeat event to all clients (server is still up) (pong).");
 		GameState heartbeat = new GameState(GAMESTATEMODES.SERVER_HEARTBEAT);
 		C3Room.sendBroadcastMessage(heartbeat);
-
-		if (latch != null) {
-			latch.countDown();
-		}
 	}
 }

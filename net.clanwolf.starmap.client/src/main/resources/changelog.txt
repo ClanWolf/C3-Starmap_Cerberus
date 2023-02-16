@@ -10,7 +10,13 @@ CURRENTLY IN PROGRESS:
 
 ----------------------------------------------------------------
 
-Version 7.2.48 (15.02.2023)
+Version 7.2.56 (16.02.2023)
+- UPDATED: Libraries
+- CHANGED: Log format
+- REMOVED: Not working filter options in log pane
+
+Version 7.2.50 (15.02.2023)
+- FIXED: NPE due to empty incoming universe
 - FIXED: Lobby handling if droplead leaves or loses connection
 
 Version 7.2.39 (09.02.2023)

@@ -142,6 +142,8 @@ public class EndRound {
     }
 
     private static boolean timeForThisRoundIsOver(Long seasonId) {
+	    DateTimeFormatter dateTimeformatter = DateTimeFormatter.ofPattern(Nexus.patternTimestamp);
+
         LocalDateTime translatedNowDateWithTime = null;
         LocalDateTime nextRoundDate = null;
         try {
@@ -152,8 +154,6 @@ public class EndRound {
             LocalTime now = LocalTime.now();
             translatedNowDateWithTime = LocalDateTime.of(localDate, now);
 
-            DateTimeFormatter dateTimeformatter = DateTimeFormatter.ofPattern("yyyy.MM.dd HH:mm:ss");
-
 			logger.info("Check if round is over:");
             logger.info("Next round date: " + dateTimeformatter.format(nextRoundDate));
             logger.info("Translated now date: " + dateTimeformatter.format(translatedNowDateWithTime));
@@ -163,8 +163,13 @@ public class EndRound {
         // round is officially over?
         if (nextRoundDate != null && translatedNowDateWithTime != null) {
             // the end of the round has not been reached on the calendar
-	        logger.info(nextRoundDate + " is NOT after " + translatedNowDateWithTime + " is " + !nextRoundDate.isAfter(translatedNowDateWithTime));
-            return !nextRoundDate.isAfter(translatedNowDateWithTime);
+	        boolean result = nextRoundDate.isBefore(translatedNowDateWithTime);
+			if (result) {
+				logger.info(dateTimeformatter.format(nextRoundDate) + " is before " + dateTimeformatter.format(translatedNowDateWithTime));
+			} else {
+				logger.info(dateTimeformatter.format(nextRoundDate) + " is NOT before " + dateTimeformatter.format(translatedNowDateWithTime));
+			}
+            return result;
         } else {
             return false;
         }
@@ -650,7 +655,7 @@ public class EndRound {
             }
 
             message.append("Round ").append(round).append(" finalized.\r\n\r\n");
-            message.append("Current date is: ").append(getCurrentRoundDate(seasonId));
+            message.append("Current date is: ").append(getCurrentRoundDate(seasonId)).append(" ");
             message.append("The new round ").append(newRound).append(" will last until ").append(getNextRoundDate(seasonId)).append(".\r\n\r\n");
             message.append("Resolved attacks:\r\n");
             message.append(resolvedAttacks).append("\r\n");

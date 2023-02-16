@@ -65,7 +65,6 @@ import java.util.Objects;
 
 public class LogPaneController implements ActionCallBackListener {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-
 	public static boolean instantRefresh = false;
 	public static boolean clientScrolledDown = false;
 	@FXML
@@ -365,8 +364,6 @@ public class LogPaneController implements ActionCallBackListener {
 		//	WARN – the log level that indicates that something unexpected happened in the application. For example a problem, or a situation that might disturb one of the processes, but the whole application is still working.
 		//	ERROR – the log level that should be used when the application hits an issue preventing one or more functionalities from properly functioning. The ERROR log level can be used when one of the payment systems is not available, but there is still the option to check out the basket in the e-commerce application or when your social media logging option is not working for some reason. You can also see the ERROR log level associated with exceptions.
 
-		cbLevel.getItems().add(Level.TRACE);
-		cbLevel.getItems().add(Level.DEBUG);
 		cbLevel.getItems().add(Level.INFO);
 		cbLevel.getItems().add(Level.WARN);
 		cbLevel.getItems().add(Level.ERROR);

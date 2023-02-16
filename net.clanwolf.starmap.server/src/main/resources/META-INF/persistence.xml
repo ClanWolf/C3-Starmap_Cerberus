@@ -26,10 +26,37 @@
 			<!-- autoReconnect=true&amp; removed from url -->
 
 			<property name="hibernate.hikari.dataSource.user" value="C3_Workbench"/>
-			<property name="hibernate.hikari.maximumPoolSize" value="10" />
+			<property name="hibernate.hikari.maximumPoolSize" value="15" />
 			<property name="hibernate.hikari.minimumIdle" value="5" />
 			<property name="hibernate.hikari.idleTimeout" value="30000" />
-			<property name="hibernate.hikari.connectionTimeout" value="1000" />
+			<property name="hibernate.hikari.connectionTimeout" value="25000" />
+			<property name="hibernate.hikari.MaxLifetime" value="1800000" />
+
+<!--			https://stackoverflow.com/questions/28180562/hikaricp-and-maxlifetime-->
+
+<!--			mariadb wait timeout: 28.800-->
+
+<!--			2023.02.16 12:50:43 [INFO       ] net.clanwolf.starmap.server.beans.C3Room                          Waiting a moment before send the login result event...-->
+<!--			2023.02.16 12:50:43 [INFO       ] net.clanwolf.starmap.server.beans.C3Room                          Waiting a moment before send the login result event...-->
+<!--			2023.02.16 12:50:43 [INFO       ] net.clanwolf.starmap.server.beans.C3Room                          Waiting a moment before send the login result event...-->
+<!--			2023.02.16 12:50:43 [INFO       ] net.clanwolf.starmap.server.beans.C3Room                          Waiting a moment before send the login result event...-->
+<!--			2023.02.16 12:50:44 [INFO       ] net.clanwolf.starmap.server.beans.C3Room                          C3Room.onLogin: -> sending LOG_IN_SUCCESS Event. Session: DefaultSession45-->
+<!--			2023.02.16 13:19:01 [FINE       ] com.zaxxer.hikari.pool.PoolBase                                   HikariPool-1 - Closing connection com.mysql.cj.jdbc.ConnectionImpl@56caf870: (connection has passed maxLifetime)-->
+<!--			2023.02.16 13:19:24 [FINE       ] com.zaxxer.hikari.pool.PoolBase                                   HikariPool-1 - Closing connection com.mysql.cj.jdbc.ConnectionImpl@2e6e38: (connection has passed maxLifetime)-->
+<!--			2023.02.16 13:19:24 [FINE       ] com.zaxxer.hikari.pool.HikariPool                                 HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3b219944-->
+<!--			2023.02.16 13:19:28 [FINE       ] com.zaxxer.hikari.pool.PoolBase                                   HikariPool-1 - Closing connection com.mysql.cj.jdbc.ConnectionImpl@5b026ac2: (connection has passed maxLifetime)-->
+<!--			2023.02.16 13:19:31 [FINE       ] com.zaxxer.hikari.pool.HikariPool                                 HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7a1c937f-->
+<!--			2023.02.16 13:19:32 [FINE       ] com.zaxxer.hikari.pool.PoolBase                                   HikariPool-1 - Closing connection com.mysql.cj.jdbc.ConnectionImpl@2566133f: (connection has passed maxLifetime)-->
+<!--			2023.02.16 13:19:32 [FINE       ] com.zaxxer.hikari.pool.HikariPool                                 HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@7cf0c785-->
+<!--			2023.02.16 13:19:48 [FINE       ] com.zaxxer.hikari.pool.PoolBase                                   HikariPool-1 - Closing connection com.mysql.cj.jdbc.ConnectionImpl@2c3a7ee: (connection has passed maxLifetime)-->
+<!--			2023.02.16 13:19:48 [FINE       ] com.zaxxer.hikari.pool.HikariPool                                 HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@21842b49-->
+<!--			2023.02.16 13:19:59 [FINE       ] com.zaxxer.hikari.pool.HikariPool                                 HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@461965a6-->
+<!--			2023.02.16 13:19:59 [FINE       ] com.zaxxer.hikari.pool.PoolBase                                   HikariPool-1 - Closing connection com.mysql.cj.jdbc.ConnectionImpl@470dddfa: (connection has passed maxLifetime)-->
+<!--			2023.02.16 13:48:51 [FINE       ] com.zaxxer.hikari.pool.PoolBase                                   HikariPool-1 - Closing connection com.mysql.cj.jdbc.ConnectionImpl@3b219944: (connection has passed maxLifetime)-->
+<!--			2023.02.16 13:48:54 [FINE       ] com.zaxxer.hikari.pool.HikariPool                                 HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@5969ff19-->
+<!--			2023.02.16 13:49:12 [FINE       ] com.zaxxer.hikari.pool.HikariPool                                 HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@5512cde5-->
+<!--			2023.02.16 13:49:12 [FINE       ] com.zaxxer.hikari.pool.PoolBase                                   HikariPool-1 - Closing connection com.mysql.cj.jdbc.ConnectionImpl@7cf0c785: (connection has passed maxLifetime)-->
+<!--			2023.02.16 13:49:12 [FINE       ] com.zaxxer.hikari.pool.HikariPool                                 HikariPool-1 - Add connection elided, waiting=0, adders pending/running=1-->
 
 			<property name="hibernate.hikari.dataSource.cachePrepStmts" value="true" />
 			<property name="hibernate.hikari.dataSource.prepStmtCacheSize" value="250" />

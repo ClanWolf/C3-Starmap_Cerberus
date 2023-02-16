@@ -44,12 +44,12 @@ public class C3LogHandler extends StreamHandler {
 	public void publish(LogRecord record) {
 		String logEntry = new java.util.logging.SimpleFormatter().format(record).replaceAll("\r\n", "");
 		String level = record.getLevel().getName();
+		if (!"WARNING".equalsIgnoreCase(level) && !"ERROR".equalsIgnoreCase(level) && !"SEVERE".equalsIgnoreCase(level)) {
+			level = "";
+		}
 		C3LogEntry entry = new C3LogEntry(rowCounter, level, logEntry);
 		logHistory.add(entry);
 		rowCounter++;
-//		if (Level.INFO == record.getLevel()) {
-//			record.setLevel(Level.FINE);
-//		}
 		super.publish(record);
 		flush();
 	}

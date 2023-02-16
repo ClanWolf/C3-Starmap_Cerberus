@@ -1770,14 +1770,22 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				break;
 
 			case REPAINT_MAP:
-				logger.info("Map will be repainted.");
-				refreshUniverseMap();
+				if (Nexus.isLoggedIn()) {
+					logger.info("Map will be repainted.");
+					refreshUniverseMap();
+				} else {
+					logger.info("Map not repainting, no user logged in!");
+				}
 				break;
 
 			case NEW_UNIVERSE_RECEIVED:
-				logger.info("Received new universe, repainting map.");
-				refreshUniverseMap();
-				ActionManager.getAction(ACTIONS.UPDATE_GAME_INFO).execute();
+				if (Nexus.isLoggedIn()) {
+					logger.info("Received new universe, repainting map.");
+					refreshUniverseMap();
+					ActionManager.getAction(ACTIONS.UPDATE_GAME_INFO).execute();
+				} else {
+					logger.info("Map not repainting, no user logged in!");
+				}
 				break;
 
 			case FINALIZE_ROUND:
