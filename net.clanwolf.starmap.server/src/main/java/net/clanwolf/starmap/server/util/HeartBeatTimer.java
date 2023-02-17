@@ -58,7 +58,6 @@ import java.util.concurrent.CountDownLatch;
 /**
  * @author Undertaker
  * @author Meldric
- *
  */
 public class HeartBeatTimer extends TimerTask {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -67,8 +66,6 @@ public class HeartBeatTimer extends TimerTask {
 	private volatile CountDownLatch latch;
 
 	public HeartBeatTimer(boolean informClients, CountDownLatch latch) {
-//		String property = "java.io.tmpdir";
-//		tempDir = System.getProperty(property);
 		this.informClients = informClients;
 		this.latch = latch;
 	}
@@ -152,11 +149,11 @@ public class HeartBeatTimer extends TimerTask {
 
 		if (latch != null) {
 			latch.countDown();
+		} else {
+			// Broadcast heartbeat to the clients
+			logger.info("Send server heartbeat event to all clients (server is still up) (pong).");
+			GameState heartbeat = new GameState(GAMESTATEMODES.SERVER_HEARTBEAT);
+			C3Room.sendBroadcastMessage(heartbeat);
 		}
-
-		// Broadcast heartbeat to the clients
-		logger.info("Send server heartbeat event to all clients (server is still up) (pong).");
-		GameState heartbeat = new GameState(GAMESTATEMODES.SERVER_HEARTBEAT);
-		C3Room.sendBroadcastMessage(heartbeat);
 	}
 }

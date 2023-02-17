@@ -720,6 +720,8 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		logger.info("Sending userdata/universe back after login...");
 		ArrayList<UserPOJO> userlist = UserDAO.getInstance().getUserList();
 
+		// Trigger the creation of a new universe... but wait until it is ready before
+		// sending it back
 		final CountDownLatch latch = new CountDownLatch(1);
 		Timer serverHeartBeat = new Timer();
 		serverHeartBeat.schedule(new HeartBeatTimer(false, latch), 0);
