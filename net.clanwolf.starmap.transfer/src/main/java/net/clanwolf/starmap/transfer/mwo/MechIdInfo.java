@@ -26,7 +26,12 @@
  */
 package net.clanwolf.starmap.transfer.mwo;
 
-import java.lang.invoke.MethodHandles;
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,6 +58,36 @@ public class MechIdInfo {
         this.variantType = variantType;
         this.fullName = fullName;
         this.shortname = shortName;
+    }
+
+    public static void main(String[] args) throws IOException {
+        URL urlMechList = new URL("https://mwomercs.com/static/api/mechs/list/dict.json");
+        InputStreamReader rMechList = new InputStreamReader(urlMechList.openStream());
+
+        Gson gson = new Gson();
+        JsonObject jsonObject = gson.fromJson(rMechList, JsonObject.class);
+
+        String mechName = jsonObject.get("Mechs").getAsJsonObject().get("8").getAsString();
+
+
+        URL urlMechView = new URL("https://mwomercs.com/static/api/mechs/view/" + mechName + ".json");
+        InputStreamReader rMechView = new InputStreamReader(urlMechView.openStream());
+        jsonObject = gson.fromJson(rMechView, JsonObject.class);
+        Integer MechID = jsonObject.get("MechID").getAsInt();
+        //String mechnName = jsonObject.get("Name").getAsString();
+        String mechClass = jsonObject.get("Class").getAsString();
+        String mechIcon = jsonObject.get("Icon").getAsString();
+        Integer mechMaxToons = jsonObject.get("MaxTons").getAsInt();
+        Integer mechTotalTons = jsonObject.get("TotalTons").getAsInt();
+        Integer mechBaseTons = jsonObject.get("BaseTons").getAsInt();
+        Integer mechTotalArmor = jsonObject.get("TotalArmor").getAsInt();
+        Integer mechMaxArmor  = jsonObject.get("MaxArmor").getAsInt();
+        Integer mechMaxJumpJets = jsonObject.get("MaxJumpJets").getAsInt();
+        Boolean mechCanEquipECM = jsonObject.get("CanEquipECM").getAsBoolean();
+        String mechChassis = jsonObject.get("Chassis").getAsString();
+
+
+                System.out.println("Name for ID 8: " + mechName + " Class " + mechClass);
     }
 
     private void InitializeMechIds() {
