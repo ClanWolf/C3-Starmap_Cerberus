@@ -943,6 +943,14 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		JumpshipDAO jsDAO = JumpshipDAO.getInstance();
 		FactionDAO fDAO = FactionDAO.getInstance();
 
+		// all online user
+		//ArrayList<UserPOJO> userList = new ArrayList<>();
+		ArrayList<Long> characterOnlineList = new ArrayList<>();
+		for (PlayerSession playerSession : room.getSessions()) {
+			C3Player pl = (C3Player) playerSession.getPlayer();
+			characterOnlineList.add(pl.getUser().getCurrentCharacter().getId());
+		}
+
 		ArrayList<AttackCharacterPOJO> acpl = null;
 		if (attack.getAttackCharList() != null) {
 			acpl = new ArrayList<>(attack.getAttackCharList());
@@ -967,14 +975,16 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				JumpshipPOJO attackerJumpship = jsDAO.findById(getC3UserID(session), attack.getJumpshipID());
 				FactionPOJO attackerFaction = fDAO.findById(getC3UserID(session), attackerJumpship.getJumpshipFactionID());
 
-				if(dropLeadA == null && acp.getType().equals(ROLE_ATTACKER_WARRIOR) && !acp.getType().equals(ROLE_DROPLEAD_LEFT)){
-					if (character.getFactionId().intValue() == attackerFaction.getId().intValue()) {
-						dropLeadCandidateA = acp;
+				if(characterOnlineList.contains(character.getId())) {
+					if (dropLeadA == null && acp.getType().equals(ROLE_ATTACKER_WARRIOR) && !acp.getType().equals(ROLE_DROPLEAD_LEFT)) {
+						if (character.getFactionId().intValue() == attackerFaction.getId().intValue()) {
+							dropLeadCandidateA = acp;
+						}
 					}
-				}
-				if(dropLeadD == null && acp.getType().equals(ROLE_DEFENDER_WARRIOR) && !acp.getType().equals(ROLE_DROPLEAD_LEFT)){
-					if (character.getFactionId().intValue() == attack.getFactionID_Defender().intValue()) {
-						dropLeadCandidateD = acp;
+					if (dropLeadD == null && acp.getType().equals(ROLE_DEFENDER_WARRIOR) && !acp.getType().equals(ROLE_DROPLEAD_LEFT)) {
+						if (character.getFactionId().intValue() == attack.getFactionID_Defender().intValue()) {
+							dropLeadCandidateD = acp;
+						}
 					}
 				}
 			}
