@@ -84,8 +84,19 @@ public class AttackPOJO extends Pojo {
 	@Column(name = "FactionID_Winner")
 	private Long factionID_Winner;
 
-	@Column(name = "AttackCost")
-	private Long attackCost;
+	@Column(name = "AttackCostAttacker")
+	private Long attackCostAttacker;
+
+	public Long getAttackCostDefender() {
+		return attackCostDefender;
+	}
+
+	public void setAttackCostDefender(Long attackCostDefender) {
+		this.attackCostDefender = attackCostDefender;
+	}
+
+	@Column(name = "AttackCostDefender")
+	private Long attackCostDefender;
 
 	@Column(name = "FightsStarted")
 	private Boolean fightsStarted;
@@ -220,13 +231,13 @@ public class AttackPOJO extends Pojo {
 	}
 
 	@SuppressWarnings("unused")
-	public Long getAttackCost() {
-		return this.attackCost;
+	public Long getAttackCostAttacker() {
+		return this.attackCostAttacker;
 	}
 
 	@SuppressWarnings("unused")
-	public void setAttackCost(Long cost) {
-		this.attackCost = cost;
+	public void setAttackCostAttacker(Long cost) {
+		this.attackCostAttacker = cost;
 	}
 
 	@SuppressWarnings("unused")

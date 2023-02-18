@@ -46,7 +46,17 @@ public class AttackDTO extends Dto {
 	private Long storyID;
 	private Long factionID_Winner;
 	private Boolean fightsStarted;
-	private Long attackCost;
+	private Long attackCostAttacker;
+
+	public Long getAttackCostDefender() {
+		return attackCostDefender;
+	}
+
+	public void setAttackCostDefender(Long attackCostDefender) {
+		this.attackCostDefender = attackCostDefender;
+	}
+
+	private Long attackCostDefender;
 	private String remarks;
 	private String forumThreadLink;
 	private Long forumThreadId;
@@ -189,13 +199,13 @@ public class AttackDTO extends Dto {
 	}
 
 	@SuppressWarnings("unused")
-	public Long getAttackCost() {
-		return this.attackCost;
+	public Long getAttackCostAttacker() {
+		return this.attackCostAttacker;
 	}
 
 	@SuppressWarnings("unused")
-	public void setAttackCost(Long cost) {
-		this.attackCost = cost;
+	public void setAttackCostAttacker(Long cost) {
+		this.attackCostAttacker = cost;
 	}
 
 	@SuppressWarnings("unused")
