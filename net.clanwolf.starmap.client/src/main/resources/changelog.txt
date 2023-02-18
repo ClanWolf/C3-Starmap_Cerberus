@@ -10,6 +10,9 @@ CURRENTLY IN PROGRESS:
 
 ----------------------------------------------------------------
 
+Version 7.2.57 (17.02.2023)
+- FIXED: Offline users are not considered to take over lobby if dropleads disconnect
+
 Version 7.2.56 (16.02.2023)
 - UPDATED: Libraries
 - CHANGED: Log format
