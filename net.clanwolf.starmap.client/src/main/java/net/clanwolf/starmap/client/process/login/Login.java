@@ -251,9 +251,11 @@ public class Login {
 			@Override
 			public synchronized void onException(Event event) {
 				super.onException(event);
-				logger.info("##### EXCEPTION!");
+				logger.info("##### EXCEPTION (in connection)!");
+				logger.info("Event type: " + event.getType());
+				logger.info("Event source: " + event.getSource());
+				logger.info("Event time: " + event.getTimeStamp());
 				ActionManager.getAction(ACTIONS.SERVER_CONNECTION_LOST).execute();
-				logger.info("An exception in the connection was caught, closing!");
 			}
 		};
 		logger.info("Adding SessionEventHandler to session.");
