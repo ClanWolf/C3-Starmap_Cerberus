@@ -348,10 +348,10 @@ public class EndRound {
                                 statsEconomyAttackerPOJO.setFactionID(asp.getAttackerFactionId());
                                 statsEconomyDefenderPOJO.setFactionID(asp.getDefenderFactionId());
 
-                                attackerIncome = attackerIncome + calcB.getIncome(asp.getAttackerFactionId(), asp.getStarSystemDataId());
+                                //attackerIncome = attackerIncome + calcB.getIncome(asp.getAttackerFactionId(), asp.getStarSystemDataId());
                                 attackerCost = attackerCost + calcB.getAttackCost(asp.getStarSystemDataId());
 
-                                defenderIncome = defenderIncome + calcB.getIncome(asp.getDefenderFactionId(), asp.getStarSystemDataId());
+                                //defenderIncome = defenderIncome + calcB.getIncome(asp.getDefenderFactionId(), asp.getStarSystemDataId());
                                 defenderCost = defenderCost + calcB.getDefendCost(asp.getStarSystemDataId());
                             }
                             for (BalanceUserInfo attackerPlayerInfo : calcB.getAttackerInfo()) {
@@ -368,18 +368,21 @@ public class EndRound {
                             }
                         }
 
+                        FactionInfo defInfo = new FactionInfo(statsEconomyDefenderPOJO.getFactionID()),
+                                attInfo = new FactionInfo(statsEconomyAttackerPOJO.getFactionID());
+
                         statsEconomyAttackerPOJO.setSeason(attackPOJO.getSeason());
                         statsEconomyAttackerPOJO.setRound(attackPOJO.getRound());
-                        statsEconomyAttackerPOJO.setCost(attackerCost + attackerMechCost);
-                        statsEconomyAttackerPOJO.setIncome(attackerIncome + attackerRewardFromMatch);
+                        statsEconomyAttackerPOJO.setCost(attInfo.getSystemCost(attackPOJO.getStarSystemDataID()));
+                        statsEconomyAttackerPOJO.setIncome(attInfo.getSystemIncome(attackPOJO.getStarSystemDataID()));
                         statsEconomyAttackerPOJO.setAttackID(attackPOJO.getId());
                         statsEconomyAttackerPOJO.setStarSystemDataID(attackPOJO.getStarSystemDataID());
                         statsEconomyAttackerPOJO.setCostEnhancement(0L);
 
                         statsEconomyDefenderPOJO.setSeason(attackPOJO.getSeason());
                         statsEconomyDefenderPOJO.setRound(attackPOJO.getRound());
-                        statsEconomyDefenderPOJO.setCost(defenderCost + defenderMechCost);
-                        statsEconomyDefenderPOJO.setIncome(defenderIncome + defenderRewardFromMatch);
+                        statsEconomyDefenderPOJO.setCost(defInfo.getSystemCost(attackPOJO.getStarSystemDataID()));
+                        statsEconomyDefenderPOJO.setIncome(defInfo.getSystemIncome(attackPOJO.getStarSystemDataID()));
                         statsEconomyDefenderPOJO.setAttackID(attackPOJO.getId());
                         statsEconomyDefenderPOJO.setStarSystemDataID(attackPOJO.getStarSystemDataID());
                         statsEconomyDefenderPOJO.setCostEnhancement(0L);
