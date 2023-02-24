@@ -26,12 +26,6 @@
  */
 package net.clanwolf.starmap.transfer.mwo;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,7 +54,7 @@ public class MechIdInfo {
         this.shortname = shortName;
     }
 
-    public static void main(String[] args) throws IOException {
+   /* public static void main(String[] args) throws IOException {
         URL urlMechList = new URL("https://mwomercs.com/static/api/mechs/list/dict.json");
         InputStreamReader rMechList = new InputStreamReader(urlMechList.openStream());
 
@@ -88,7 +82,7 @@ public class MechIdInfo {
 
 
                 System.out.println("Name for ID 8: " + mechName + " Class " + mechClass);
-    }
+    }*/
 
     private void InitializeMechIds() {
 
@@ -1012,6 +1006,10 @@ public class MechIdInfo {
         this.mechID.put(921, new MechIdInfo(EFaction.CLAN, EChassie.SHADOWCAT, EVariantType.SPECIAL, "SHADOW CAT SHC-B(P)", "SHC-B(P)"));
         this.mechID.put(922, new MechIdInfo(EFaction.CLAN, EChassie.TIMBERWOLF, EVariantType.SPECIAL, "TIMBER WOLF TBR-S(P)", "TBR-S(P)"));
         this.mechID.put(923, new MechIdInfo(EFaction.CLAN, EChassie.SUPERNOVA, EVariantType.SPECIAL, "SUPERNOVA SNV-B(P)", "SNV-B(P)"));
+        this.mechID.put(924, new MechIdInfo(EFaction.INNERSPHERE, EChassie.WARHAMMER,EVariantType.SPECIAL,"WARHAMMER WHM-7S(P)", "WHM-7S(P)"));
+        this.mechID.put(925, new MechIdInfo(EFaction.INNERSPHERE, EChassie.MARAUDER, EVariantType.SPECIAL, "MARAUDER MAD-5M(P)","MAD-5M(P)"));
+        this.mechID.put(926, new MechIdInfo(EFaction.INNERSPHERE, EChassie.RIFLEMAN,EVariantType.SPECIAL, "RIFLEMAN RFL-5D(P)", "RFL-5D(P)"));
+        this.mechID.put(927, new MechIdInfo(EFaction.INNERSPHERE, EChassie.ARCHER, EVariantType.SPECIAL, "ARCHER ARC-5W(P)", "ARC-5W(P)"));
         this.mechID.put(990, new MechIdInfo(EFaction.INNERSPHERE, EChassie.ATLAS, EVariantType.SPECIAL, "ATLAS AS7-D-DC", "AS7-D-DC"));
         this.mechID.put(996, new MechIdInfo(EFaction.INNERSPHERE, EChassie.JENNER, EVariantType.FOUNDER, "JENNER JR7-D(F)", "JR7-D(F)"));
         this.mechID.put(997, new MechIdInfo(EFaction.INNERSPHERE, EChassie.CATAPULT, EVariantType.FOUNDER, "CATAPULT CPLT-C1(F)", "CPLT-C1(F)"));
