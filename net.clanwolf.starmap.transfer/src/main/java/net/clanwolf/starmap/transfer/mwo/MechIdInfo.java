@@ -1038,6 +1038,12 @@ public class MechIdInfo {
         this.mechID.put(953, new MechIdInfo(EFaction.INNERSPHERE, EChassie.CRUSADER, EVariantType.SPECIAL, "CRUSADER CRD-6T(P)", "CRD-6T(P)"));
         this.mechID.put(954, new MechIdInfo(EFaction.INNERSPHERE, EChassie.ROUGHNECK, EVariantType.SPECIAL, "ROUGHNECK RGH-3A(P)", "RGH-3A(P)"));
         this.mechID.put(955, new MechIdInfo(EFaction.INNERSPHERE, EChassie.CORSAIR, EVariantType.SPECIAL, "CORSAIR COR-7A(P)", "COR-7A(P)"));
+        this.mechID.put(956, new MechIdInfo(EFaction.CLAN, EChassie.KITFOX, EVariantType.SPECIAL, "KITFOX KFX-D(P)", "KFX-D(P)"));
+        this.mechID.put(957, new MechIdInfo(EFaction.CLAN, EChassie.VIPER, EVariantType.SPECIAL, "VIPER VPR-B(P)", "VPR-B(P)"));
+        this.mechID.put(958, new MechIdInfo(EFaction.CLAN, EChassie.LINEBACKER, EVariantType.SPECIAL, "LINEBACKER LBK-D(P)", "LBK-D(P)"));
+        this.mechID.put(959, new MechIdInfo(EFaction.CLAN, EChassie.EXECUTIONER, EVariantType.SPECIAL, "EXECUTIONER EXE-A(P)", "EXE-A(P)"));
+        this.mechID.put(961, new MechIdInfo(EFaction.CLAN, EChassie.HUNTSMAN, EVariantType.SPECIAL, "HUNTSMAN HMN-P(P)", "HMN-P(P)"));
+        this.mechID.put(962, new MechIdInfo(EFaction.CLAN, EChassie.SUNSPIDER, EVariantType.SPECIAL, "SUNSPIDER SNS-D(P)", "SNS-D(P)"));
         this.mechID.put(990, new MechIdInfo(EFaction.INNERSPHERE, EChassie.ATLAS, EVariantType.SPECIAL, "ATLAS AS7-D-DC", "AS7-D-DC"));
         this.mechID.put(996, new MechIdInfo(EFaction.INNERSPHERE, EChassie.JENNER, EVariantType.FOUNDER, "JENNER JR7-D(F)", "JR7-D(F)"));
         this.mechID.put(997, new MechIdInfo(EFaction.INNERSPHERE, EChassie.CATAPULT, EVariantType.FOUNDER, "CATAPULT CPLT-C1(F)", "CPLT-C1(F)"));
