@@ -561,53 +561,6 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		}
 	}
 
-	/*private synchronized void saveAttackCharacter(PlayerSession session, GameState state) {
-		AttackCharacterDAO dao = AttackCharacterDAO.getInstance();
-
-		try {
-			EntityManagerHelper.beginTransaction(getC3UserID(session));
-			AttackCharacterPOJO attackCharacter = (AttackCharacterPOJO) state.getObject();
-
-			if((Boolean) state.getObject2()) {
-				dao.delete(getC3UserID(session), attackCharacter);
-			} else {
-				if (attackCharacter.getId() != null) {
-					logger.info("??? updating attackcharacter (id: " + attackCharacter.getId() + ")");
-					dao.update(getC3UserID(session), attackCharacter);
-				} else {
-					logger.info("??? saving new attackcharacter (id: " + attackCharacter.getId() + ")");
-					dao.save(getC3UserID(session), attackCharacter);
-				}
-			}
-
-			EntityManagerHelper.commit(getC3UserID(session));
-
-			EntityManagerHelper.clear(getC3UserID(session));
-
-			AttackDAO attackDAO = AttackDAO.getInstance();
-			AttackPOJO attackPOJO = attackDAO.findById(getC3UserID(session), attackCharacter.getAttackID());
-
-			AttackDAO daoAttack = AttackDAO.getInstance();
-			daoAttack.refresh(C3GameSessionHandler.getC3UserID(session), attackPOJO);
-
-			GameState response = new GameState(GAMESTATEMODES.ATTACK_CHARACTER_SAVE_RESPONSE);
-			response.addObject(attackPOJO);
-			response.setAction_successfully(Boolean.TRUE);
-			C3GameSessionHandler.sendBroadCast(room, response);
-
-		} catch (RuntimeException re) {
-			re.printStackTrace();
-			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
-
-			GameState response = new GameState(GAMESTATEMODES.ERROR_MESSAGE);
-			response.addObject(re.getMessage());
-			response.setAction_successfully(Boolean.FALSE);
-			C3GameSessionHandler.sendNetworkEvent(session, response);
-
-			logger.error("Attack character save", re);
-		}
-	}*/
-
 	private synchronized void saveJumpship(PlayerSession session, GameState state) {
 		JumpshipDAO daoJS = JumpshipDAO.getInstance();
 		RoutePointDAO daoRP = RoutePointDAO.getInstance();
