@@ -1,9 +1,7 @@
 module io.nadron.server {
 	requires com.fasterxml.jackson.core;
 	requires com.fasterxml.jackson.databind;
-	requires jackson.core.asl;
 	requires net.clanwolf.starmap.logging;
-	requires jackson.mapper.asl;
 	requires jetlang;
 	requires spring.beans;
 	requires spring.context;

@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:util="http://www.springframework.org/schema/util"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd 
-	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
 	http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.2.xsd">
 
-	<import resource="service-beans.xml" />
+	<import resource="service-beans.xml_" />
 
 
 	<!-- Netty and decoders encoders and handlers -->
@@ -28,7 +29,7 @@
 		<constructor-arg type="int" index="4" value="2" />
 	</bean>
 	<bean id="flashPolicyServerDecoder" class="io.nadron.handlers.netty.FlashPolicyServerDecoder" />
-	<bean id="flashPolicyServerHandler" class="io.nadron.handlers.netty.FlashPolicyServerHandler" 
+	<bean id="flashPolicyServerHandler" class="io.nadron.handlers.netty.FlashPolicyServerHandler"
 		scope="prototype">
 		<constructor-arg value="${tcp.port}" />
 	</bean>
@@ -69,7 +70,7 @@
 	<bean id="msgPackEncoder" class="io.nadron.handlers.netty.MsgPackEncoder">
 		<property name="msgPack" ref="msgPack" />
 	</bean>
-	
+
 	<bean id="bossGroup" class="io.netty.channel.nio.NioEventLoopGroup" destroy-method="shutdownGracefully">
 		<constructor-arg type="int" index="0" value="${bossThreadCount}" />
 		<constructor-arg index="1" ref="bossThreadFactory" />
@@ -91,12 +92,10 @@
 
 	<!-- Netty options for server bootstrap -->
 	<util:map id="tcpChannelOptions" map-class="java.util.HashMap">
-		<!--
 		<entry>
 			<key><util:constant static-field="io.netty.channel.ChannelOption.SO_KEEPALIVE"/></key>
 			<value type="java.lang.Boolean">${so.keepalive}</value>
 		</entry>
-		-->
 		<entry>
 			<key><util:constant static-field="io.netty.channel.ChannelOption.SO_BACKLOG"/></key>
 			<value type="java.lang.Integer">${so.backlog}</value>
@@ -117,25 +116,25 @@
 			<value type="java.lang.Boolean">${so.broadcast}</value>
 		</entry>
 	</util:map>
-	
+
 	<bean id="tcpConfig" class="io.nadron.server.netty.NettyConfig">
 		<property name="channelOptions" ref="tcpChannelOptions"/>
 		<property name="bossGroup" ref="bossGroup"/>
 		<property name="workerGroup" ref="workerGroup"/>
 		<property name="portNumber" value="${tcp.port}"/>
 	</bean>
-	
+
 	<bean id="udpConfig" class="io.nadron.server.netty.NettyConfig">
 		<property name="channelOptions" ref="udpChannelOptions"/>
 		<property name="bossGroup" ref="bossGroup"/>
 		<property name="portNumber" value="${udp.port}"/>
 	</bean>
-	
+
 	<bean id="flashConfig" class="io.nadron.server.netty.NettyConfig">
 		<property name="channelOptions" ref="tcpChannelOptions"/>
 		<property name="bossGroup" ref="bossGroup"/>
 		<property name="workerGroup" ref="workerGroup"/>
 		<property name="portNumber" value="${flash.policyport}"/>
 	</bean>
-	
+
 </beans>

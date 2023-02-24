@@ -91,7 +91,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 	@Override
 	public void onEvent(Event event) {
-		logger.info("C3GameSessionHandler.onEvent");
+//		logger.info("C3GameSessionHandler.onEvent");
 		GameState state = null;
 
 		if (event.getSource() instanceof GameState) {
@@ -765,6 +765,9 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			logger.info("Name: " + user.getUserName());
 			logger.info("Timestamp: " + new Timestamp(System.currentTimeMillis()));
 			logger.info("--------------------");
+
+			Nexus.getEci().sendExtCom(user.getUserName() + " logged in");
+
 			if( !GameServer.isDevelopmentPC) {
 
 				boolean sent = false;
@@ -846,6 +849,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				checkDoubleLogin(session, room);
 				break;
 			case USER_LOG_OUT:
+				Nexus.getEci().sendExtCom(session.getPlayer().getName() + " left");
 				session.getPlayer().logout(session);
 				storeUserSession(session, null, ipAdressSender, true);
 				sendNewPlayerList(session);

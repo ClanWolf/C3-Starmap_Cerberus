@@ -49,8 +49,10 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
+import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimerTask;
 import java.util.concurrent.CountDownLatch;
@@ -62,11 +64,14 @@ import java.util.concurrent.CountDownLatch;
 public class HeartBeatTimer extends TimerTask {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	private volatile boolean informClients = false;
+	private String tempDir = "";
 	private volatile boolean currentlyRunning = false;
 	private volatile CountDownLatch latch;
 
 	public HeartBeatTimer(boolean informClients, CountDownLatch latch) {
 		this.informClients = informClients;
+		String property = "java.io.tmpdir";
+		tempDir = System.getProperty(property);
 		this.latch = latch;
 	}
 
@@ -75,7 +80,12 @@ public class HeartBeatTimer extends TimerTask {
 		if (!currentlyRunning) {
 			currentlyRunning = true;
 
-			String heartBeatFileName = "/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/c3.heartbeat";
+			String heartBeatFileName;
+			if (Nexus.isDevelopmentPC) {
+				heartBeatFileName = tempDir + File.separator + "c3.heartbeat";
+			} else {
+				heartBeatFileName = "/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/c3.heartbeat";
+			}
 
 			Calendar calendar = Calendar.getInstance();
 			java.util.Date now = calendar.getTime();
@@ -149,11 +159,27 @@ public class HeartBeatTimer extends TimerTask {
 
 		if (latch != null) {
 			latch.countDown();
-		} else {
-			// Broadcast heartbeat to the clients
-			logger.info("Send server heartbeat event to all clients (server is still up) (pong).");
-			GameState heartbeat = new GameState(GAMESTATEMODES.SERVER_HEARTBEAT);
-			C3Room.sendBroadcastMessage(heartbeat);
 		}
+
+		// log server uptime
+		Timestamp now = new Timestamp(System.currentTimeMillis());
+		Date firstParsedDate = new Date(now.getTime());
+		Date secondParsedDate = new Date(Nexus.serverStartTime.getTime());
+		long diffmilliseconds = firstParsedDate.getTime() - secondParsedDate.getTime();
+		long hours = diffmilliseconds/(1000*60*60);
+		long minutes = (diffmilliseconds-hours*1000*60*60)/(1000*60);
+		long seconds = (diffmilliseconds-hours*1000*60*60-minutes*1000*60)/10000;
+		long days = hours / 24;
+		String uptime = "Uptime: " + String.format("%02d", hours) + ":" + String.format("%02d", minutes) + ":" + String.format("%02d", seconds);
+		logger.info(uptime + " (" + days + " days)");
+
+		// Send uptime message to bots (irc and ts3)
+		Nexus.getEci().sendExtCom(uptime);
+
+		// Broadcast heartbeat to the clients
+		logger.info("Send server heartbeat event to all clients (server is still up) (pong).");
+		GameState heartbeatState = new GameState(GAMESTATEMODES.SERVER_HEARTBEAT);
+		heartbeatState.addObject(uptime);
+		C3Room.sendBroadcastMessage(heartbeatState);
 	}
 }

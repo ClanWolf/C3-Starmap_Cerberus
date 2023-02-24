@@ -83,7 +83,7 @@ public class ForumDatabaseTools {
 			stmt.close();
 			con.close();
 		} catch(Exception e) {
-			logger.error("Exception while direct db access", e);
+			logger.error("Exception during direct db access", e);
 		}
 
 		return number;
@@ -110,7 +110,7 @@ public class ForumDatabaseTools {
 			stmt.close();
 			con.close();
 		} catch(Exception e) {
-			logger.error("Exception while direct db access", e);
+			logger.error("Exception during direct db access", e);
 		}
 
 		return generatedId;
@@ -129,7 +129,7 @@ public class ForumDatabaseTools {
 			stmt.close();
 			con.close();
 		} catch(Exception e) {
-			logger.error("Exception while direct db access", e);
+			logger.error("Exception during direct db access", e);
 		}
 	}
 
@@ -146,7 +146,7 @@ public class ForumDatabaseTools {
 			stmt.close();
 			con.close();
 		} catch(Exception e) {
-			logger.error("Exception while direct db access", e);
+			logger.error("Exception during direct db access", e);
 		}
 	}
 

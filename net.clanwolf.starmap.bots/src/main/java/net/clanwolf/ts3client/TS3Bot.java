@@ -37,7 +37,7 @@ import com.github.theholywaffle.teamspeak3.api.wrapper.ServerGroup;
 import net.clanwolf.client.mail.MailManager;
 import net.clanwolf.db.DBConnection;
 import net.clanwolf.starmap.logging.C3LogUtil;
-import net.clanwolf.util.CheckShutdownFlagTimer;
+import net.clanwolf.util.CheckShutdownFlagTimerTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -60,7 +60,7 @@ public class TS3Bot {
 		prepareLogging();
 
 		Timer checkShutdownFlag = new Timer();
-		checkShutdownFlag.schedule(new CheckShutdownFlagTimer(serverBaseDir, "TS3Bot"), 1000, 1000 * 10);
+		checkShutdownFlag.schedule(new CheckShutdownFlagTimerTask(serverBaseDir, "TS3Bot"), 1000, 1000 * 10);
 
 		final Properties auth = new Properties();
 		try {

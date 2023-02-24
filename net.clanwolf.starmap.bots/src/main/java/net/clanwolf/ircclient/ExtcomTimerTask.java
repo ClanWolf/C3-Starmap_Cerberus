@@ -24,29 +24,53 @@
  * Copyright (c) 2001-2023, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.server.Nexus;
+package net.clanwolf.ircclient;
 
-import net.clanwolf.starmap.server.beans.C3GameSessionHandler;
-import net.clanwolf.starmap.server.util.ExternalCommunicationInterface;
+import net.clanwolf.db.DBConnection;
+import net.clanwolf.db.ExtcomMonitor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.sql.Timestamp;
+import java.lang.invoke.MethodHandles;
+import java.util.ArrayList;
+import java.util.TimerTask;
 
-public class Nexus {
-	public static Long currentSeason = 1L;
-	public static Long DUMMY_USERID = -1L;
-	public static Long END_ROUND_USERID = -2L;
-	public static volatile boolean sendUniverseToClients = false;
-	public static String patternTimestamp = "yyyy-MM-dd HH:mm:ss";
-	public static String mailServer = "";
-	public static String mailUser = "";
-	public static String mailPw = "";
-	private static final ExternalCommunicationInterface eci = new ExternalCommunicationInterface();
-	public static String jarName = "";
-	public static C3GameSessionHandler gmSessionHandler;
-	public static boolean isDevelopmentPC = false;
-	public static Timestamp serverStartTime;
+/**
+ * @author Meldric
+ */
+public class ExtcomTimerTask extends TimerTask {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+	private final ExtcomMonitor extcomMonitor = new ExtcomMonitor();
+	private IRCBot bot = null;
+	private DBConnection dbc = null;
 
-	public static ExternalCommunicationInterface getEci() {
-		return eci;
+	public ExtcomTimerTask(DBConnection dbc) {
+		this.dbc = dbc;
+	}
+
+	public void setBot(IRCBot bot) {
+		this.bot = bot;
+	}
+
+	@Override
+	public void run() {
+		if (bot != null) {
+			if (bot.connected) {
+				ArrayList<String> m = extcomMonitor.getMessages(dbc);
+
+				String lastMessage = "";
+				if (m.size() > 1) {
+					lastMessage = "[...] ";
+				}
+
+				if (m.size() > 0) {
+					lastMessage += m.get(m.size() - 1);
+					for (String s : m) {
+						// Send string to irc
+						bot.send(lastMessage);
+					}
+				}
+			}
+		}
 	}
 }

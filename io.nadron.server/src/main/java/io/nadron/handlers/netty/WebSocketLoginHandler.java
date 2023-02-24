@@ -1,5 +1,6 @@
 package io.nadron.handlers.netty;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.nadron.app.GameRoom;
 import io.nadron.app.Player;
 import io.nadron.app.PlayerSession;
@@ -15,29 +16,22 @@ import io.nadron.service.impl.ReconnectSessionRegistry;
 import io.nadron.util.Credentials;
 import io.nadron.util.NadronConfig;
 import io.nadron.util.SimpleCredentials;
-import io.netty.channel.Channel;
-import io.netty.channel.ChannelFuture;
-import io.netty.channel.ChannelFutureListener;
+import io.netty.channel.*;
 import io.netty.channel.ChannelHandler.Sharable;
-import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.invoke.MethodHandles;
 import java.util.List;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.codehaus.jackson.map.ObjectMapper;
 
 /**
  * This login handler will parse incoming login events to get the
  * {@link Credentials} and lookup {@link Player} and {@link GameRoom} objects.
  * It kicks of the session creation process and will then send the
  * {@link Events#START} event object to websocket client.
- * 
+ *
  * @author Abraham Menacherry
- * 
  */
 @Sharable
 public class WebSocketLoginHandler extends SimpleChannelInboundHandler<TextWebSocketFrame> {
@@ -46,87 +40,66 @@ public class WebSocketLoginHandler extends SimpleChannelInboundHandler<TextWebSo
 	private LookupService lookupService;
 	protected ReconnectSessionRegistry reconnectRegistry;
 	protected UniqueIDGeneratorService idGeneratorService;
-	
+
 	private ObjectMapper jackson;
 
-	@SuppressWarnings({ "rawtypes", "unchecked" })
+	@SuppressWarnings({"rawtypes", "unchecked"})
 	@Override
-	public void channelRead0(ChannelHandlerContext ctx,
-			TextWebSocketFrame frame) throws Exception
-	{
+	public void channelRead0(ChannelHandlerContext ctx, TextWebSocketFrame frame) throws Exception {
 		Channel channel = ctx.channel();
 		String data = frame.text();
 		logger.info("From websocket: " + data);
 		Event event = jackson.readValue(data, DefaultEvent.class);
 		int type = event.getType();
-		if (Events.LOG_IN == type)
-		{
+		if (Events.LOG_IN == type) {
 			logger.info("Login attempt from " + channel.remoteAddress());
 			List<String> credList = null;
 			credList = (List) event.getSource();
 			Player player = lookupPlayer(credList.get(0), credList.get(1));
 			handleLogin(player, channel);
 			handleGameRoomJoin(player, channel, credList.get(2));
-		}
-		else if (type == Events.RECONNECT)
-		{
+		} else if (type == Events.RECONNECT) {
 			logger.info("Reconnect attempt from " + channel.remoteAddress());
-			PlayerSession playerSession = lookupSession((String)event.getSource());
+			PlayerSession playerSession = lookupSession((String) event.getSource());
 			handleReconnect(playerSession, channel);
-		}
-		else
-		{
-			logger.info("Invalid event {} sent from remote address {}. "
-							+ "Going to close channel " +
-					new Object[] { event.getType(),
-							channel.remoteAddress(), channel });
+		} else {
+			logger.info("Invalid event {} sent from remote address {}. " + "Going to close channel " + new Object[]{event.getType(), channel.remoteAddress(), channel});
 			closeChannelWithLoginFailure(channel);
 		}
 	}
-	
-	public PlayerSession lookupSession(final String reconnectKey)
-	{
-		PlayerSession playerSession = (PlayerSession)reconnectRegistry.getSession(reconnectKey);
-		if(null != playerSession)
-		{
-			synchronized(playerSession){
+
+	public PlayerSession lookupSession(final String reconnectKey) {
+		PlayerSession playerSession = (PlayerSession) reconnectRegistry.getSession(reconnectKey);
+		if (null != playerSession) {
+			synchronized (playerSession) {
 				// if its an already active session then do not allow a
 				// reconnect. So the only state in which a client is allowed to
 				// reconnect is if it is "NOT_CONNECTED"
-				if(playerSession.getStatus() == Session.Status.NOT_CONNECTED)
-				{
+				if (playerSession.getStatus() == Session.Status.NOT_CONNECTED) {
 					playerSession.setStatus(Session.Status.CONNECTING);
-				}
-				else
-				{
+				} else {
 					playerSession = null;
 				}
 			}
 		}
 		return playerSession;
 	}
-	
-	protected void handleReconnect(PlayerSession playerSession, Channel channel) throws Exception
-	{
-		if (null != playerSession)
-		{
+
+	protected void handleReconnect(PlayerSession playerSession, Channel channel) throws Exception {
+		if (null != playerSession) {
 			channel.writeAndFlush(eventToFrame(Events.LOG_IN_SUCCESS, null));
 			GameRoom gameRoom = playerSession.getGameRoom();
 			gameRoom.disconnectSession(playerSession);
-			if (null != playerSession.getTcpSender())
-				playerSession.getTcpSender().close();
+			if (null != playerSession.getTcpSender()) playerSession.getTcpSender().close();
 
 			handleReJoin(playerSession, gameRoom, channel);
-		}
-		else
-		{
+		} else {
 			// Write future and close channel
 			closeChannelWithLoginFailure(channel);
 		}
 	}
-	
-	protected void handleReJoin(PlayerSession playerSession, GameRoom gameRoom, Channel channel)
-	{
+
+	protected void handleReJoin(PlayerSession playerSession, GameRoom gameRoom, Channel channel) {
 		// Set the tcp channel on the session. 
 		NettyTCPMessageSender sender = new NettyTCPMessageSender(channel);
 		playerSession.setTcpSender(sender);
@@ -137,43 +110,35 @@ public class WebSocketLoginHandler extends SimpleChannelInboundHandler<TextWebSo
 		// Send the re-connect event so that it will in turn send the START event.
 		playerSession.onEvent(new ReconnetEvent(sender));
 	}
-	
-	public Player lookupPlayer(String username, String password) throws Exception
-	{
+
+	public Player lookupPlayer(String username, String password) throws Exception {
 		Credentials credentials = new SimpleCredentials(username, password);
 		Player player = lookupService.playerLookup(credentials);
-		if (null == player)
-		{
+		if (null == player) {
 			logger.warn("Invalid credentials provided by user: " + credentials);
 		}
 		return player;
 	}
 
-	public void handleLogin(Player player, Channel channel) throws Exception
-	{
-		if (null != player)
-		{
+	public void handleLogin(Player player, Channel channel) throws Exception {
+		if (null != player) {
 			channel.writeAndFlush(eventToFrame(Events.LOG_IN_SUCCESS, null));
-		}
-		else
-		{
+		} else {
 			// Write future and close channel
 			closeChannelWithLoginFailure(channel);
 		}
 	}
 
-	protected void closeChannelWithLoginFailure(Channel channel) throws Exception
-	{
+	protected void closeChannelWithLoginFailure(Channel channel) throws Exception {
 		// Close the connection as soon as the error message is sent.
-		channel.writeAndFlush(eventToFrame(Events.LOG_IN_FAILURE, null)).addListener(
-				ChannelFutureListener.CLOSE);
+		channel.writeAndFlush(eventToFrame(Events.LOG_IN_FAILURE, null)).addListener(ChannelFutureListener.CLOSE);
 	}
 
 	public void handleGameRoomJoin(Player player, Channel channel, String refKey) throws Exception {
 		GameRoom gameRoom = lookupService.gameRoomLookup(refKey);
 		if (null != gameRoom) {
 			PlayerSession playerSession = gameRoom.createPlayerSession(player);
-			String reconnectKey = (String)idGeneratorService.generateFor(playerSession.getClass());
+			String reconnectKey = (String) idGeneratorService.generateFor(playerSession.getClass());
 			playerSession.setAttribute(NadronConfig.RECONNECT_KEY, reconnectKey);
 			playerSession.setAttribute(NadronConfig.RECONNECT_REGISTRY, reconnectRegistry);
 			logger.info("Sending GAME_ROOM_JOIN_SUCCESS to channel " + channel);
@@ -219,39 +184,31 @@ public class WebSocketLoginHandler extends SimpleChannelInboundHandler<TextWebSo
 		return lookupService;
 	}
 
-	public void setLookupService(LookupService lookupService)
-	{
+	public void setLookupService(LookupService lookupService) {
 		this.lookupService = lookupService;
 	}
 
-	public ReconnectSessionRegistry getReconnectRegistry()
-	{
+	public ReconnectSessionRegistry getReconnectRegistry() {
 		return reconnectRegistry;
 	}
 
-	public void setReconnectRegistry(ReconnectSessionRegistry reconnectRegistry)
-	{
+	public void setReconnectRegistry(ReconnectSessionRegistry reconnectRegistry) {
 		this.reconnectRegistry = reconnectRegistry;
 	}
 
-	public UniqueIDGeneratorService getIdGeneratorService()
-	{
+	public UniqueIDGeneratorService getIdGeneratorService() {
 		return idGeneratorService;
 	}
 
-	public void setIdGeneratorService(UniqueIDGeneratorService idGeneratorService)
-	{
+	public void setIdGeneratorService(UniqueIDGeneratorService idGeneratorService) {
 		this.idGeneratorService = idGeneratorService;
 	}
 
-	public ObjectMapper getJackson()
-	{
+	public ObjectMapper getJackson() {
 		return jackson;
 	}
 
-	public void setJackson(ObjectMapper jackson)
-	{
+	public void setJackson(ObjectMapper jackson) {
 		this.jackson = jackson;
 	}
-
 }

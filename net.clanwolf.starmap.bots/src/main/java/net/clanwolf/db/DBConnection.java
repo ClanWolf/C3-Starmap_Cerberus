@@ -83,16 +83,7 @@ public class DBConnection {
 		this.ircBot = ircBot;
 	}
 
-//	public void getValue() {
-//		try {
-//			Statement stmt = conn.createStatement();
-//			ResultSet rs = stmt.executeQuery("SELECT ID FROM USERS");
-//
-//			rs.close();
-//			stmt.close();
-//			conn.close();
-//		} catch (SQLException e) {
-//			e.printStackTrace();
-//		}
-//	}
+	public Connection getConnection() {
+		return this.conn;
+	}
 }

@@ -90,7 +90,7 @@ public class C3Room extends GameRoomSession {
 
 			@Override
 			protected void onDataIn(Event event) {
-				logger.info("C3Room.onLogin.DefaultSessionEventHandler.onDataIn - PlayerSessionID -> " + playerSession.getId());
+//				logger.info("C3Room.onLogin.DefaultSessionEventHandler.onDataIn - PlayerSessionID -> " + playerSession.getId());
 
 				if (null != event.getSource()) {
 					// Pass the player session in the event context so that the
@@ -123,55 +123,45 @@ public class C3Room extends GameRoomSession {
 			}
 		});
 
-		(new Thread() {
-			public void run() {
-				boolean ready;
-				int counter = 50;
+		new Thread(() -> {
+			boolean ready;
+			int counter = 30;
 
-				//			try {
-				//				logger.info("##### Waiting some time no matter what...");
-				//				TimeUnit.MILLISECONDS.sleep(2000);
-				//			} catch (InterruptedException interruptedException) {
-				//				interruptedException.printStackTrace();
-				//			}
+			do {
+				ready = getSessionReadyMap().containsKey(playerSession.getId().toString()) && getSessionReadyMap().get(playerSession.getId().toString());
+				try {
+					logger.info("Waiting a moment before send the login result event...");
+//						logger.info("Session map cointains key: " + getSessionReadyMap().containsKey(playerSession.getId().toString()));
+//						logger.info("Session is ready: " + getSessionReadyMap().get(playerSession.getId().toString()));
+//						logger.info("Ready eval: " + (getSessionReadyMap().containsKey(playerSession.getId().toString()) && getSessionReadyMap().get(playerSession.getId().toString())));
+//						logger.info("Ready var: " + ready);
 
-				do {
-					ready = getSessionReadyMap().containsKey(playerSession.getId().toString()) && getSessionReadyMap().get(playerSession.getId().toString());
-					//				logger.info("##### COUNTER: " + counter);
-					//				logger.info("##### READY: " + ready);
-					if (ready || counter == 0) {
-						break;
-					} else {
-						try {
-							logger.info("Waiting a moment before send the login result event...");
-							TimeUnit.MILLISECONDS.sleep(250);
-							counter--;
-						} catch (InterruptedException interruptedException) {
-							interruptedException.printStackTrace();
-						}
-					}
-				} while (!ready);
-
-				Event e;
-				if (((C3Player) playerSession.getPlayer()).getUser() == null) {
-					// Send error message if user is null
-					logger.info("C3Room.onLogin: no user found -> send Events.LOG_IN_FAILURE");
-
-					e = Events.event(null, Events.LOG_IN_FAILURE);
-				} else {
-					logger.info("C3Room.onLogin: -> sending LOG_IN_SUCCESS Event. Session: " + playerSession.getId());
-					e = Events.event(null, Events.LOG_IN_SUCCESS);
+					TimeUnit.MILLISECONDS.sleep(100);
+					counter--;
+				} catch (InterruptedException interruptedException) {
+					interruptedException.printStackTrace();
 				}
+			} while (!ready && counter > 0);
 
-				//			Iterator it = getSessionReadyMap().keySet().iterator();
-				//			while(it.hasNext()) {
-				//				String s = (String)it.next();
-				//				logger.info("Session in sessionReadyMap: " + s + " (Value: " + getSessionReadyMap().get(s) + ")");
-				//			}
+			Event e;
+			if (((C3Player) playerSession.getPlayer()).getUser() == null) {
+				// Send error message if user is null
+				logger.info("C3Room.onLogin: no user found -> send Events.LOG_IN_FAILURE");
 
-				playerSession.onEvent(e);
-				getSessionReadyMap().remove(playerSession.getId().toString());
+				e = Events.event(null, Events.LOG_IN_FAILURE);
+			} else {
+				logger.info("C3Room.onLogin: -> sending LOG_IN_SUCCESS Event. Session: " + playerSession.getId());
+				e = Events.event(null, Events.LOG_IN_SUCCESS);
 			}
+
+			//			Iterator it = getSessionReadyMap().keySet().iterator();
+			//			while(it.hasNext()) {
+			//				String s = (String)it.next();
+			//				logger.info("Session in sessionReadyMap: " + s + " (Value: " + getSessionReadyMap().get(s) + ")");
+			//			}
+
+			playerSession.onEvent(e);
+			getSessionReadyMap().remove(playerSession.getId().toString());
 		}).start();
 	}
 
@@ -186,6 +176,8 @@ public class C3Room extends GameRoomSession {
 		C3Player p = (C3Player) playerSession.getPlayer();
 		UserPOJO u = p.getUser();
 		RolePlayCharacterPOJO character = u.getCurrentCharacter();
+
+		Nexus.getEci().sendExtCom(p.getName() + " lost connection (disconnected)");
 
 		AttackDAO attackDAO = AttackDAO.getInstance();
 		ArrayList<AttackPOJO> openAttacks = attackDAO.getOpenAttacksOfASeason(Nexus.currentSeason);

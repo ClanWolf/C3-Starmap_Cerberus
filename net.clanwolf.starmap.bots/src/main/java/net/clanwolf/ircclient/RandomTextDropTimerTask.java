@@ -26,10 +26,10 @@
  */
 package net.clanwolf.ircclient;
 
+import java.util.Random;
 import java.util.TimerTask;
 
-public class UserListDrop extends TimerTask {
-
+public class RandomTextDropTimerTask extends TimerTask {
 	private IRCBot bot = null;
 
 	public void setBot(IRCBot bot) {
@@ -39,8 +39,26 @@ public class UserListDrop extends TimerTask {
 	@Override
 	public void run() {
 		if (bot != null) {
-			if (IRCBot.dropDebugStrings) bot.send("Dropping user list.");
-			bot.saveUserList();
+			String users = bot.getUserListString();
+			if (users != null) {
+				users = users.replaceAll("@Meldric\r\n", "");
+				users = users.replaceAll("@Q\r\n", "");
+				users = users.replaceAll("D\r\n", "");
+				users = users.replaceAll("Ulric\r\n", "");
+				users = users.replaceAll("Topic:.*\r\n", "");
+				users = users.trim();
+
+				if (!"".contentEquals(users)) {
+					Random r = new Random();
+					int randomInt = r.nextInt(25) + 1;
+					if (randomInt <= 2) {
+						if (IRCBot.dropDebugStrings) {
+							bot.send("Users currently present (topics and admins stripped): #" + users + "#");
+						}
+						bot.dropRandomLine();
+					}
+				}
+			}
 		}
 	}
 }

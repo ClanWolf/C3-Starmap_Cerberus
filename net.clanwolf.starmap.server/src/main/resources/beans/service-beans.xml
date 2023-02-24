@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
@@ -27,7 +29,7 @@
 
 	<bean id="simpleUniqueIdGenerator" class="io.nadron.service.impl.SimpleUniqueIdGenerator"/>
 
-	<bean id="jackson" class="org.codehaus.jackson.map.ObjectMapper"/>
+	<bean id="jackson" class="com.fasterxml.jackson.databind.ObjectMapper"/>
 
 	<bean id="msgPack" class="org.msgpack.MessagePack"/>
 

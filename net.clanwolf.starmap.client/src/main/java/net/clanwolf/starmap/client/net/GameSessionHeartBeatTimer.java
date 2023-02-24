@@ -59,7 +59,7 @@ public class GameSessionHeartBeatTimer extends TimerTask {
 		// Checking the last heartbeat (pong) from the server and see how old it is
 		Timestamp tsServerHeartbeat = Nexus.getLastServerHeartbeatTimestamp();
 		Timestamp tsNow = new Timestamp(System.currentTimeMillis());
-		long diff = 0l;
+		long diff = 0L;
 		if (tsServerHeartbeat != null) {
 			diff = (tsNow.getTime() - tsServerHeartbeat.getTime()) * 1000; // difference in seconds
 		}
