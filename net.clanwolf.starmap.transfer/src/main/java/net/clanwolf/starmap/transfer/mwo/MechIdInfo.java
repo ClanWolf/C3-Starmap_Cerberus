@@ -1026,6 +1026,10 @@ public class MechIdInfo {
         this.mechID.put(941, new MechIdInfo(EFaction.INNERSPHERE, EChassie.ASSASSIN, EVariantType.SPECIAL, "ASSASSIN ASN-27(P)", "ASN-27(P)"));
         this.mechID.put(942, new MechIdInfo(EFaction.INNERSPHERE, EChassie.HELLSPAWN, EVariantType.SPECIAL, "HELLSPAWN HSN-8P(P)", "HSN-8P(P)"));
         this.mechID.put(943, new MechIdInfo(EFaction.INNERSPHERE, EChassie.STALKER, EVariantType.SPECIAL, "STALKER STK-5M(P)", "STK-5M(P)"));
+        this.mechID.put(944, new MechIdInfo(EFaction.CLAN, EChassie.ARCTICCHEETAH, EVariantType.SPECIAL, "ARCTICCHEETAH ACH-E(P)", "ACH-E(P)"));
+        this.mechID.put(945, new MechIdInfo(EFaction.CLAN, EChassie.BLACKLANNER, EVariantType.SPECIAL, "BLACKLANNER BKL-D(P)", "BKL-D(P)"));
+        this.mechID.put(946, new MechIdInfo(EFaction.CLAN, EChassie.NIGHTGYR, EVariantType.SPECIAL, "NIGHTGYR NTG-C(P)", "NTG-C(P)"));
+        this.mechID.put(947, new MechIdInfo(EFaction.CLAN, EChassie.WARHAWK, EVariantType.SPECIAL, "WARHAWK WHK-B(P)", "WHK-B(P)"));
         this.mechID.put(990, new MechIdInfo(EFaction.INNERSPHERE, EChassie.ATLAS, EVariantType.SPECIAL, "ATLAS AS7-D-DC", "AS7-D-DC"));
         this.mechID.put(996, new MechIdInfo(EFaction.INNERSPHERE, EChassie.JENNER, EVariantType.FOUNDER, "JENNER JR7-D(F)", "JR7-D(F)"));
         this.mechID.put(997, new MechIdInfo(EFaction.INNERSPHERE, EChassie.CATAPULT, EVariantType.FOUNDER, "CATAPULT CPLT-C1(F)", "CPLT-C1(F)"));
