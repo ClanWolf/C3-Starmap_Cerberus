@@ -29,16 +29,13 @@ package net.clanwolf.ircclient;
 import com.google.common.collect.ImmutableSortedSet;
 import net.clanwolf.db.DBConnection;
 import net.clanwolf.client.mail.MailManager;
-import net.clanwolf.util.CheckShutdownFlagTimer;
+import net.clanwolf.util.CheckShutdownFlagTimerTask;
 import net.clanwolf.util.Internationalization;
 import net.clanwolf.starmap.logging.C3LogUtil;
 import org.pircbotx.*;
 import org.pircbotx.exception.DaoException;
 import org.pircbotx.hooks.ListenerAdapter;
-import org.pircbotx.hooks.events.JoinEvent;
-import org.pircbotx.hooks.events.NickChangeEvent;
-import org.pircbotx.hooks.events.PartEvent;
-import org.pircbotx.hooks.events.QuitEvent;
+import org.pircbotx.hooks.events.*;
 import org.pircbotx.hooks.types.GenericMessageEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -71,6 +68,7 @@ public class IRCBot extends ListenerAdapter {
 	private static UserChannelDao<User, Channel> channel = null;
 	private static final boolean server = true;
 	private static boolean started = false;
+	public boolean connected = false;
 	private static final String ircUserName = "Ulric";
 	//private static final String ircServerUrl = "port80a.se.quakenet.org";
 	private static final String ircServerUrl = "datapacket.hk.quakenet.org";
@@ -224,6 +222,40 @@ public class IRCBot extends ListenerAdapter {
 		send(message[num]);
 	}
 
+	public static void main(String[] args) throws Exception {
+		int oneMinute = 1000 * 60;
+		dbc = new DBConnection();
+
+		prepareLogging();
+
+		Timer userlistDropTimer = new Timer();
+		UserListDropTimerTask userListDropTimerTask = new UserListDropTimerTask();
+
+		Timer randomTextDropTimer = new Timer();
+		RandomTextDropTimerTask randomTextDropTimerTask = new RandomTextDropTimerTask();
+
+		Timer extcomTimer = new Timer();
+		ExtcomTimerTask extcomTimerTask = new ExtcomTimerTask(dbc);
+
+		Timer checkShutdownFlagTimer = new Timer();
+		checkShutdownFlagTimer.schedule(new CheckShutdownFlagTimerTask(serverBaseDir, "IRCBot"), 1000, 1000 * 10);
+
+		userlistDropTimer.schedule(userListDropTimerTask, 1000, 7 * oneMinute);
+		randomTextDropTimer.schedule(randomTextDropTimerTask, 1000, 5 * oneMinute);
+		extcomTimer.schedule(extcomTimerTask, 1000, 5000);
+
+		IRCBot ircBot = new IRCBot();
+		ircBot.botJoinedMail();
+		userListDropTimerTask.setBot(ircBot);
+		randomTextDropTimerTask.setBot(ircBot);
+		extcomTimerTask.setBot(ircBot);
+
+		Internationalization.setBot(ircBot);
+		dbc.setIrcBot(ircBot);
+		started = true;
+		ircBot.start(); // This must be the last command!
+	}
+
 	@Override
 	public void onJoin(JoinEvent event) {
 		String user = Objects.requireNonNull(event.getUser()).getNick();
@@ -265,9 +297,8 @@ public class IRCBot extends ListenerAdapter {
 	}
 
 	@Override
-	public void onQuit(QuitEvent event) {
-		UserChannelDao<User, Channel> ucd = event.getBot().getUserChannelDao();
-		saveUserList(null, ucd);
+	public void onConnect(ConnectEvent event) {
+		connected = true;
 	}
 
 	@Override
@@ -276,31 +307,11 @@ public class IRCBot extends ListenerAdapter {
 		saveUserList(null, ucd);
 	}
 
-	public static void main(String[] args) throws Exception {
-		int oneMinute = 1000 * 60;
-		dbc = new DBConnection();
-
-		prepareLogging();
-
-		Timer userlistDropTimer = new Timer();
-		UserListDrop userlistDrop = new UserListDrop();
-		userlistDropTimer.schedule(userlistDrop, 1000, 7 * oneMinute);
-
-		Timer randomTextDropTimer = new Timer();
-		RandomTextDrop randomTextDrop = new RandomTextDrop();
-		randomTextDropTimer.schedule(randomTextDrop, 1000, 5 * oneMinute);
-
-		Timer checkShutdownFlag = new Timer();
-		checkShutdownFlag.schedule(new CheckShutdownFlagTimer(serverBaseDir, "IRCBot"), 1000, 1000 * 10);
-
-		IRCBot ircBot = new IRCBot();
-		ircBot.botJoinedMail();
-		userlistDrop.setBot(ircBot);
-		randomTextDrop.setBot(ircBot);
-		Internationalization.setBot(ircBot);
-		dbc.setIrcBot(ircBot);
-		started = true;
-		ircBot.start();
+	@Override
+	public void onQuit(QuitEvent event) {
+		UserChannelDao<User, Channel> ucd = event.getBot().getUserChannelDao();
+		saveUserList(null, ucd);
+		connected = false;
 	}
 
 	public void start() throws Exception {

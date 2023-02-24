@@ -41,6 +41,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.net.URISyntaxException;
+import java.sql.Timestamp;
 import java.util.Properties;
 import java.util.Timer;
 
@@ -97,6 +98,7 @@ public class GameServer {
 		if(args.length > 0) {
 			for (String a : args) {
 				isDevelopmentPC = a.equals("IDE");
+				Nexus.isDevelopmentPC = a.equals("IDE");;
 				if (a.toLowerCase().startsWith("season=")) {
 					try {
 						// Season is defaulting to 1, can be set by a parameter
@@ -105,6 +107,7 @@ public class GameServer {
 						setCurrentSeason(s);
 					} catch(NumberFormatException e) {
 						logger.info("Parameter for Season could not be parsed to a number! Defaulting to 1.");
+						System.out.println("Parameter for Season could not be parsed to a number! Defaulting to 1.");
 					}
 				}
 			}
@@ -132,6 +135,8 @@ public class GameServer {
 		}
 		logger.info("Started servers");
 		startGames(ctx);
+
+		Nexus.serverStartTime = new Timestamp(System.currentTimeMillis());
 	}
 
 	public static AbstractApplicationContext getApplicationContext() {
@@ -142,7 +147,15 @@ public class GameServer {
 		try {
 			// EntityManagerHelper.getEntityManager();
 			// Log.print("EntityManager initialized");
-			logger.info("Server ready");
+
+			String jarPath = GameServer.class
+					.getProtectionDomain()
+					.getCodeSource()
+					.getLocation()
+					.toURI()
+					.getPath();
+			String jarName = jarPath.substring(jarPath.lastIndexOf("/") + 1);
+			Nexus.jarName = jarName;
 
 			if( !isDevelopmentPC) {
 				logger.info("Sending info mail.");
@@ -160,11 +173,14 @@ public class GameServer {
 
 			// write heartbeat file every some minutes
 			Timer serverHeartBeat = new Timer();
-			serverHeartBeat.schedule(new HeartBeatTimer(true, null), 1000, 1000 * 60 * 5);
+			serverHeartBeat.schedule(new HeartBeatTimer(true, null), 1000, 1000 * 60 * 3);
 
 			// check shutdown flagfile every some seconds
 			Timer checkShutdownFlag = new Timer();
 			checkShutdownFlag.schedule(new CheckShutdownFlagTimer(serverBaseDir), 1000, 1000 * 5);
+
+			logger.info("Server '" + jarName + "' is up and ready");
+			Nexus.getEci().sendExtCom("Server " + jarName + " is up and ready");
 
 			// World world = ctx.getBean(World.class);
 			// GameRoom room1 = (GameRoom)ctx.getBean("Zombie_ROOM_1");
@@ -178,5 +194,4 @@ public class GameServer {
 			e.printStackTrace();
 		}
 	}
-
 }

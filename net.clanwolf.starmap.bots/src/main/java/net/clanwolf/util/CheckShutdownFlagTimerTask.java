@@ -37,7 +37,7 @@ import java.util.TimerTask;
 /**
  * @author Meldric
  */
-public class CheckShutdownFlagTimer extends TimerTask {
+public class CheckShutdownFlagTimerTask extends TimerTask {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	private String dir = "";
@@ -50,7 +50,7 @@ public class CheckShutdownFlagTimer extends TimerTask {
 		}
 	}
 
-	public CheckShutdownFlagTimer(String path, String botName) {
+	public CheckShutdownFlagTimerTask(String path, String botName) {
 		this.dir = path;
 		this.botName = botName;
 		// Cleanup the flags once before the timer starts in case there were flags left from a previous time

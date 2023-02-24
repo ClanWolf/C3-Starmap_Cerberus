@@ -10,9 +10,9 @@ import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 import io.netty.util.Attribute;
 import io.netty.util.AttributeKey;
 
-import java.util.List;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
-import org.codehaus.jackson.map.ObjectMapper;
+import java.util.List;
 
 /**
  * This class will convert an incoming {@link TextWebSocketFrame} to an

@@ -3,12 +3,26 @@ C3 version history
 ----------------------------------------------------------------
 
 CURRENTLY IN PROGRESS:
-- P1: If lobby owner leaves, the new lobby owner must not be offline
+- P2: If user logs out and another logs in without closing the client, not all user related data is adapted to the new user
 - P3: Web-View of the Starmap (ongoing, ~45%)
 ---
 - P3: Updating the manual (ongoing): https://www.clanwolf.net/apps/C3/C3_Manual_de.pdf
 
 ----------------------------------------------------------------
+
+Version 7.2.70 (23.02.2023)
+- CHANGED: Removed unnecessary parts from nadron server
+- CHANGED: Logging server uptime value now
+
+Version 7.2.65 (22.02.2023)
+- FIXED: If lobby owner leaves, the new lobby owner must not be offline (will not be promoted if offline)
+- CHANGED: Removed version variables from parent pom file (does not work with ide integration)
+
+Version 7.2.63 (22.02.2023)
+- UPDATED: Libraries
+- UPDATED: JavaFX to 19.0.2.1
+- CHANGED: MySQL dialect setting
+- CHANGED: Waiting loop on returning session to user on login (fixing login errors)
 
 Version 7.2.57 (17.02.2023)
 - FIXED: Offline users are not considered to take over lobby if dropleads disconnect

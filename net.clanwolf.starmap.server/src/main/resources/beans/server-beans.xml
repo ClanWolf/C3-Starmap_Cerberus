@@ -28,17 +28,17 @@
 		<property name="gameAdminService" ref="gameAdminService"/>
 	</bean>
 
-	<!-- Configure the Flash policy server. By default it runs at 843 -->
-	<bean id="flashPolicyServer" class="io.nadron.server.netty.NettyTCPServer" destroy-method="stopServer">
-		<constructor-arg ref="flashConfig"/>
-		<constructor-arg ref="flashPolicyServerChannelInitializer"/>
-		<property name="gameAdminService" ref="gameAdminService"/>
-	</bean>
+<!--	&lt;!&ndash; Configure the Flash policy server. By default it runs at 843 &ndash;&gt;-->
+<!--	<bean id="flashPolicyServer" class="io.nadron.server.netty.NettyTCPServer" destroy-method="stopServer">-->
+<!--		<constructor-arg ref="flashConfig"/>-->
+<!--		<constructor-arg ref="flashPolicyServerChannelInitializer"/>-->
+<!--		<property name="gameAdminService" ref="gameAdminService"/>-->
+<!--	</bean>-->
 
-	<!-- All the pipeline factory beans are now defined -->
-	<bean id="flashPolicyServerChannelInitializer" class="io.nadron.server.netty.FlashPolicyServerChannelInitalizer">
-		<lookup-method name="getFlashPolicyServerHandler" bean="flashPolicyServerHandler"/>
-	</bean>
+<!--	&lt;!&ndash; All the pipeline factory beans are now defined &ndash;&gt;-->
+<!--	<bean id="flashPolicyServerChannelInitializer" class="io.nadron.server.netty.FlashPolicyServerChannelInitalizer">-->
+<!--		<lookup-method name="getFlashPolicyServerHandler" bean="flashPolicyServerHandler"/>-->
+<!--	</bean>-->
 
 	<bean id="udpChannelInitializer" class="io.nadron.server.netty.UDPChannelInitializer">
 		<property name="udpEventEncoder" ref="udpEventEncoder"/>

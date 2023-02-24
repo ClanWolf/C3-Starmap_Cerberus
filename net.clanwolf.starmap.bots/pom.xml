@@ -56,7 +56,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>${version.mysql-connector}</version>
+			<version>8.0.32</version>
 		</dependency>
 <!--		<dependency>-->
 <!--			<groupId>org.mariadb.jdbc</groupId>-->

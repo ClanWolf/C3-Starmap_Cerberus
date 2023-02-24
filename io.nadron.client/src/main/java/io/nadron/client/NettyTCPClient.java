@@ -96,8 +96,8 @@ public class NettyTCPClient
 		this.boss = boss;
 		this.bootstrap = new Bootstrap();
 		bootstrap.group(boss).channel(NioSocketChannel.class)
-				.option(ChannelOption.TCP_NODELAY, true);
-				//.option(ChannelOption.SO_KEEPALIVE, true);
+				.option(ChannelOption.TCP_NODELAY, true)
+				.option(ChannelOption.SO_KEEPALIVE, true);
 		this.maxShutdownWaitTime = maxShutdownWaitTime;
 		Runtime.getRuntime().addShutdownHook(new Thread()
 		{

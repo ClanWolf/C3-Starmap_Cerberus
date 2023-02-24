@@ -1,5 +1,6 @@
 package io.nadron.handlers.netty;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.nadron.event.Event;
 import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
@@ -7,8 +8,6 @@ import io.netty.handler.codec.MessageToMessageEncoder;
 import io.netty.handler.codec.http.websocketx.TextWebSocketFrame;
 
 import java.util.List;
-
-import org.codehaus.jackson.map.ObjectMapper;
 
 /**
  * This encoder will convert an incoming object (mostly expected to be an

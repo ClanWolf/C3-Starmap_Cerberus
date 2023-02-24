@@ -26,7 +26,7 @@ public class AppContext implements ApplicationContextAware
 	public static final String SERVER_MANAGER = "serverManager";
 	public static final String TCP_SERVER = "tcpServer";
 	public static final String UDP_SERVER = "udpServer";
-	public static final String FLASH_POLICY_SERVER = "flashPolicyServer";
+//	public static final String FLASH_POLICY_SERVER = "flashPolicyServer";
 	
 	// Services with default implementations
 	public static final String HANDSHAKE_SERVICE = "handshakeSerivce";
@@ -58,8 +58,8 @@ public class AppContext implements ApplicationContextAware
 	public static final String IDLE_CHECK_HANDLER = "idleCheckHandler";
 	public static final String BYTE_ARRAY_STREAM_DECODER = "byteArrayStreamDecoder";
 	public static final String BYTE_ARRAY_DECODER = "byteArrayDecoder";
-	public static final String FLASH_POLICY_SERVER_DECODER = "flashPolicyServerDecoder";
-	public static final String FLASH_POLICY_SERVER_HANDLER = "flashPolicyServerHandler";
+//	public static final String FLASH_POLICY_SERVER_DECODER = "flashPolicyServerDecoder";
+//	public static final String FLASH_POLICY_SERVER_HANDLER = "flashPolicyServerHandler";
 	public static final String AMF3_TO_JAVA_DECODER = "AMF3ToJavaObjectDecoder";
 	public static final String JAVA_TO_AMF3_ENCODER = "javaToAMF3Encoder";
 	public static final String PREVENT_SERIALIZATION_HANDLER = "preventSerializationHandler";
