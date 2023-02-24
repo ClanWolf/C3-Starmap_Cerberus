@@ -1006,18 +1006,22 @@ public class MechIdInfo {
         this.mechID.put(921, new MechIdInfo(EFaction.CLAN, EChassie.SHADOWCAT, EVariantType.SPECIAL, "SHADOW CAT SHC-B(P)", "SHC-B(P)"));
         this.mechID.put(922, new MechIdInfo(EFaction.CLAN, EChassie.TIMBERWOLF, EVariantType.SPECIAL, "TIMBER WOLF TBR-S(P)", "TBR-S(P)"));
         this.mechID.put(923, new MechIdInfo(EFaction.CLAN, EChassie.SUPERNOVA, EVariantType.SPECIAL, "SUPERNOVA SNV-B(P)", "SNV-B(P)"));
-        this.mechID.put(924, new MechIdInfo(EFaction.INNERSPHERE, EChassie.WARHAMMER,EVariantType.SPECIAL,"WARHAMMER WHM-7S(P)", "WHM-7S(P)"));
-        this.mechID.put(925, new MechIdInfo(EFaction.INNERSPHERE, EChassie.MARAUDER, EVariantType.SPECIAL, "MARAUDER MAD-5M(P)","MAD-5M(P)"));
-        this.mechID.put(926, new MechIdInfo(EFaction.INNERSPHERE, EChassie.RIFLEMAN,EVariantType.SPECIAL, "RIFLEMAN RFL-5D(P)", "RFL-5D(P)"));
+        this.mechID.put(924, new MechIdInfo(EFaction.INNERSPHERE, EChassie.WARHAMMER, EVariantType.SPECIAL, "WARHAMMER WHM-7S(P)", "WHM-7S(P)"));
+        this.mechID.put(925, new MechIdInfo(EFaction.INNERSPHERE, EChassie.MARAUDER, EVariantType.SPECIAL, "MARAUDER MAD-5M(P)", "MAD-5M(P)"));
+        this.mechID.put(926, new MechIdInfo(EFaction.INNERSPHERE, EChassie.RIFLEMAN, EVariantType.SPECIAL, "RIFLEMAN RFL-5D(P)", "RFL-5D(P)"));
         this.mechID.put(927, new MechIdInfo(EFaction.INNERSPHERE, EChassie.ARCHER, EVariantType.SPECIAL, "ARCHER ARC-5W(P)", "ARC-5W(P)"));
-        this.mechID.put(928, new MechIdInfo(EFaction.CLAN,EChassie.WARHAMMERIIC,EVariantType.SPECIAL, "WARHAMMER IIC WHM-IIC-A(P)", "WHM-IIC-A(P)"));
-        this.mechID.put(929, new MechIdInfo(EFaction.CLAN,EChassie.MARAUDERIIC,EVariantType.SPECIAL,"MARAUDER IIC MAD-IIC-D(P)","MAD-IIC-D(P)"));
-        this.mechID.put(930, new MechIdInfo(EFaction.CLAN,EChassie.RIFLEMANIIC,EVariantType.SPECIAL,"RIFLEMAN IIC RFL-IIC-2(P)","RFL-IIC-2(P)"));
-        this.mechID.put(931, new MechIdInfo(EFaction.CLAN,EChassie.MADDOG,EVariantType.SPECIAL,"MADDOG MDD-C(P)","MDD-C(P)"));
-        this.mechID.put(932, new MechIdInfo(EFaction.INNERSPHERE,EChassie.RAVEN,EVariantType.SPECIAL,"RAVEN RVN-2X(P)","RVN-2X(P)"));
-        this.mechID.put(933, new MechIdInfo(EFaction.INNERSPHERE,EChassie.BLACKJACK,EVariantType.SPECIAL,"BLACKJACK BJ-3(P)","BJ-3(P)"));
-        this.mechID.put(934,new MechIdInfo(EFaction.INNERSPHERE,EChassie.THANATOS,EVariantType.SPECIAL,"THANATOS TNS-5S(P)","TNS-5S(P)"));
-        this.mechID.put(935, new MechIdInfo(EFaction.INNERSPHERE, EChassie.FAFNIR,EVariantType.SPECIAL,"FAFNIR FNR-5B(P)","FNR-5B(P)"));
+        this.mechID.put(928, new MechIdInfo(EFaction.CLAN, EChassie.WARHAMMERIIC, EVariantType.SPECIAL, "WARHAMMER IIC WHM-IIC-A(P)", "WHM-IIC-A(P)"));
+        this.mechID.put(929, new MechIdInfo(EFaction.CLAN, EChassie.MARAUDERIIC, EVariantType.SPECIAL, "MARAUDER IIC MAD-IIC-D(P)", "MAD-IIC-D(P)"));
+        this.mechID.put(930, new MechIdInfo(EFaction.CLAN, EChassie.RIFLEMANIIC, EVariantType.SPECIAL, "RIFLEMAN IIC RFL-IIC-2(P)", "RFL-IIC-2(P)"));
+        this.mechID.put(931, new MechIdInfo(EFaction.CLAN, EChassie.MADDOG, EVariantType.SPECIAL, "MADDOG MDD-C(P)", "MDD-C(P)"));
+        this.mechID.put(932, new MechIdInfo(EFaction.INNERSPHERE, EChassie.RAVEN, EVariantType.SPECIAL, "RAVEN RVN-2X(P)", "RVN-2X(P)"));
+        this.mechID.put(933, new MechIdInfo(EFaction.INNERSPHERE, EChassie.BLACKJACK, EVariantType.SPECIAL, "BLACKJACK BJ-3(P)", "BJ-3(P)"));
+        this.mechID.put(934, new MechIdInfo(EFaction.INNERSPHERE, EChassie.THANATOS, EVariantType.SPECIAL, "THANATOS TNS-5S(P)", "TNS-5S(P)"));
+        this.mechID.put(935, new MechIdInfo(EFaction.INNERSPHERE, EChassie.FAFNIR, EVariantType.SPECIAL, "FAFNIR FNR-5B(P)", "FNR-5B(P)"));
+        this.mechID.put(936, new MechIdInfo(EFaction.CLAN, EChassie.PIRANHA, EVariantType.SPECIAL, "PIRANHA PIR-2(P)", "PIR-2(P)"));
+        this.mechID.put(937, new MechIdInfo(EFaction.CLAN, EChassie.ICEFERRET, EVariantType.SPECIAL, "ICEFERRET IFR-P(P)", "IFR-P(P)"));
+        this.mechID.put(938, new MechIdInfo(EFaction.CLAN, EChassie.EBONJAGUAR, EVariantType.SPECIAL, "EBONJAGUAR EBJ-A(P)", "EBJ-A(P)"));
+        this.mechID.put(939, new MechIdInfo(EFaction.CLAN, EChassie.BLOODASP, EVariantType.SPECIAL, "BLOODASP BAS-B(P)", "BAS-B(P)"));
         this.mechID.put(990, new MechIdInfo(EFaction.INNERSPHERE, EChassie.ATLAS, EVariantType.SPECIAL, "ATLAS AS7-D-DC", "AS7-D-DC"));
         this.mechID.put(996, new MechIdInfo(EFaction.INNERSPHERE, EChassie.JENNER, EVariantType.FOUNDER, "JENNER JR7-D(F)", "JR7-D(F)"));
         this.mechID.put(997, new MechIdInfo(EFaction.INNERSPHERE, EChassie.CATAPULT, EVariantType.FOUNDER, "CATAPULT CPLT-C1(F)", "CPLT-C1(F)"));
@@ -1154,30 +1158,32 @@ public class MechIdInfo {
      * @return Gibt die (int) Tonnage des Mech's zurück.
      */
     public Integer getTonnage() {
-		if (getChassis() == null) {
-			// MechItemId might be '0' (no Mech --> Spectator)
-			return 999;
-		} else {
-			return switch (getChassis()) {
-				case LOCUST, PIRANHA, FLEA -> 20;
-				case COMMANDO, MISTLYNX -> 25;
-				case SPIDER, KITFOX, URBANMECH, ARCTICCHEETAH, JAVELIN, OSIRIS, INCUBUS -> 30;
-				case JENNER, RAVEN, FIRESTARTER, ADDER, PANTHER, WOLFHOUND, JENNERIIC, COUGAR -> 35;
-				case CICADA, VIPER, ASSASSIN, ARCTICWOLF, VULCAN -> 40;
-				case BLACKJACK, VINDICATOR, ICEFERRET, SHADOWCAT, PHOENIXHAWK, HELLSPAWN -> 45;
-				case HUNCHBACK, CENTURION, TREBUCHET, NOVA, ENFORCER, CRAB, HUNCHBACKIIC, HUNTSMAN, UZIEL -> 50;
-				case KINTARO, SHADOWHAWK, GRIFFIN, WOLVERINE, STORMCROW, BUSHWACKER, BLACKLANNER, VAPOREAGLE, DERVISH -> 55;
-				case DRAGON, QUICKDRAW, MADDOG, RIFLEMAN, HELLFIRE, CHAMPION -> 60;
-				case CATAPULT, JAGERMECH, THUNDERBOLT, HELLBRINGER, EBONJAGUAR, LINEBACKER, ROUGHNECK, RIFLEMANIIC, CRUSADER -> 65;
-				case CATAPHRACT, SUMMONER, GRASSHOPPER, WARHAMMER, ARCHER, NOVACAT, SUNSPIDER -> 70;
-				case ORION, TIMBERWOLF, BLACKKNIGHT, MARAUDER, ORIONIIC, NIGHTGYR, THANATOS -> 75;
-				case AWESOME, VICTOR, GARGOYLE, ZEUS, CHARGER, HATAMOTOCHI, WARHAMMERIIC -> 80;
-				case STALKER, BATTLEMASTER, WARHAWK, MARAUDERIIC -> 85;
-				case HIGHLANDER, MAULER, HIGHLANDERIIC, CYCLOPS, SUPERNOVA, MADCATMKII, BLOODASP -> 90;
-				case BANSHEE, EXECUTIONER, NIGHTSTAR, CORSAIR -> 95;
-				case ATLAS, DIREWOLF, KINGCRAB, KODIAK, ANNIHILATOR, FAFNIR, MARAUDERII -> 100;
-			};
-		}
+        if (getChassis() == null) {
+            // MechItemId might be '0' (no Mech --> Spectator)
+            return 999;
+        } else {
+            return switch (getChassis()) {
+                case LOCUST, PIRANHA, FLEA -> 20;
+                case COMMANDO, MISTLYNX -> 25;
+                case SPIDER, KITFOX, URBANMECH, ARCTICCHEETAH, JAVELIN, OSIRIS, INCUBUS -> 30;
+                case JENNER, RAVEN, FIRESTARTER, ADDER, PANTHER, WOLFHOUND, JENNERIIC, COUGAR -> 35;
+                case CICADA, VIPER, ASSASSIN, ARCTICWOLF, VULCAN -> 40;
+                case BLACKJACK, VINDICATOR, ICEFERRET, SHADOWCAT, PHOENIXHAWK, HELLSPAWN -> 45;
+                case HUNCHBACK, CENTURION, TREBUCHET, NOVA, ENFORCER, CRAB, HUNCHBACKIIC, HUNTSMAN, UZIEL -> 50;
+                case KINTARO, SHADOWHAWK, GRIFFIN, WOLVERINE, STORMCROW, BUSHWACKER, BLACKLANNER, VAPOREAGLE, DERVISH ->
+                        55;
+                case DRAGON, QUICKDRAW, MADDOG, RIFLEMAN, HELLFIRE, CHAMPION -> 60;
+                case CATAPULT, JAGERMECH, THUNDERBOLT, HELLBRINGER, EBONJAGUAR, LINEBACKER, ROUGHNECK, RIFLEMANIIC, CRUSADER ->
+                        65;
+                case CATAPHRACT, SUMMONER, GRASSHOPPER, WARHAMMER, ARCHER, NOVACAT, SUNSPIDER -> 70;
+                case ORION, TIMBERWOLF, BLACKKNIGHT, MARAUDER, ORIONIIC, NIGHTGYR, THANATOS -> 75;
+                case AWESOME, VICTOR, GARGOYLE, ZEUS, CHARGER, HATAMOTOCHI, WARHAMMERIIC -> 80;
+                case STALKER, BATTLEMASTER, WARHAWK, MARAUDERIIC -> 85;
+                case HIGHLANDER, MAULER, HIGHLANDERIIC, CYCLOPS, SUPERNOVA, MADCATMKII, BLOODASP -> 90;
+                case BANSHEE, EXECUTIONER, NIGHTSTAR, CORSAIR -> 95;
+                case ATLAS, DIREWOLF, KINGCRAB, KODIAK, ANNIHILATOR, FAFNIR, MARAUDERII -> 100;
+            };
+        }
     }
 
     /**
@@ -1219,11 +1225,11 @@ public class MechIdInfo {
      * @return Gibt die (String) Chassis des Mech's zurück.
      */
     public EChassie getChassis() {
-		if (this.mechID.get(this.mechItemId) == null) {
-			return null;
-		} else {
-			return this.mechID.get(this.mechItemId).chassis;
-		}
+        if (this.mechID.get(this.mechItemId) == null) {
+            return null;
+        } else {
+            return this.mechID.get(this.mechItemId).chassis;
+        }
     }
 
     /**
