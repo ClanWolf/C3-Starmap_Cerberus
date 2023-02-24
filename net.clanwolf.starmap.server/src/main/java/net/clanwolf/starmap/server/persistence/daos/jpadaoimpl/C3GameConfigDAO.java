@@ -69,28 +69,28 @@ public class C3GameConfigDAO extends GenericDAO {
 	}
 
 	@Override
-	public SysConfigPOJO findById(Long userID, Long id) {
-		return (SysConfigPOJO) super.findById(userID, C3GameConfigPOJO.class, id);
+	public C3GameConfigPOJO findById(Long userID, Long id) {
+		return (C3GameConfigPOJO) super.findById(userID, C3GameConfigPOJO.class, id);
 	}
 
-	public SysConfigPOJO findByKey(Long userID, String key) {
+	public C3GameConfigPOJO findByKey(Long userID, String key) {
 		CriteriaHelper crit = new CriteriaHelper(C3GameConfigPOJO.class);
 		crit.addCriteria("key", key);
 
-		return (SysConfigPOJO) crit.getSingleResult();
+		return (C3GameConfigPOJO) crit.getSingleResult();
 	}
 
-	public ArrayList<SysConfigPOJO> getAllGameConfigValues(){
-		CriteriaHelper crit = new CriteriaHelper(SysConfigPOJO.class);
+	public ArrayList<C3GameConfigPOJO> getAllGameConfigValues(){
+		CriteriaHelper crit = new CriteriaHelper(C3GameConfigPOJO.class);
 		crit.addCriteriaIsNotNull("id");
 
 		List<Object> lRes = crit.getResultList();
 
 		Iterator<Object> iter = lRes.iterator();
-		ArrayList<SysConfigPOJO> lRPS = new ArrayList<>();
+		ArrayList<C3GameConfigPOJO> lRPS = new ArrayList<>();
 
 		while (iter.hasNext()) {
-			lRPS.add((SysConfigPOJO) iter.next());
+			lRPS.add((C3GameConfigPOJO) iter.next());
 		}
 
 		return lRPS;
