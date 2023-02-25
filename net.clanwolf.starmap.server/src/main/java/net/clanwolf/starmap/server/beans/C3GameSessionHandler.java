@@ -719,7 +719,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			logger.info("Timestamp: " + new Timestamp(System.currentTimeMillis()));
 			logger.info("--------------------");
 
-			Nexus.getEci().sendExtCom(user.getUserName() + " logged in");
+			Nexus.getEci().sendExtCom(user.getUserName() + " logged in to C3-Client");
 
 			if( !GameServer.isDevelopmentPC) {
 
@@ -802,7 +802,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				checkDoubleLogin(session, room);
 				break;
 			case USER_LOG_OUT:
-				Nexus.getEci().sendExtCom(session.getPlayer().getName() + " left");
+				Nexus.getEci().sendExtCom(session.getPlayer().getName() + " left C3-Client");
 				session.getPlayer().logout(session);
 				storeUserSession(session, null, ipAdressSender, true);
 				sendNewPlayerList(session);

@@ -179,8 +179,8 @@ public class GameServer {
 			Timer checkShutdownFlag = new Timer();
 			checkShutdownFlag.schedule(new CheckShutdownFlagTimer(serverBaseDir), 1000, 1000 * 5);
 
-			logger.info("Server '" + jarName + "' is up and ready");
-			Nexus.getEci().sendExtCom("Server " + jarName + " is up and ready");
+			logger.info(jarName + " is up and ready");
+			Nexus.getEci().sendExtCom(jarName + " is up and ready");
 
 			// World world = ctx.getBean(World.class);
 			// GameRoom room1 = (GameRoom)ctx.getBean("Zombie_ROOM_1");

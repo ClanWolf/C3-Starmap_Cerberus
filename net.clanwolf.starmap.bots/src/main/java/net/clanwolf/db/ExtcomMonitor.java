@@ -34,23 +34,24 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 public class ExtcomMonitor {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	public synchronized ArrayList<String> getMessages(DBConnection dbc) {
+	public synchronized LinkedList<String> getMessages(DBConnection dbc) {
 		// get messages from database
 		// mark message as processed by IRCBot in database
 		Statement stmt_select = null;
 		Statement stmt_update = null;
 		ResultSet rs_select = null;
-		ArrayList<String> messages = new ArrayList<>();
+		LinkedList<String> messages = new LinkedList<>();
 
 		try {
 			StringBuilder sql_select = new StringBuilder();
 			sql_select.append("SELECT Text, ProcessedIRC, Updated FROM EXT_COM ");
-			sql_select.append("WHERE ProcessedIRC = 0 ");
-			sql_select.append("AND Updated > now() - interval 1 MINUTE; ");
+			sql_select.append("WHERE ProcessedIRC = 0; ");
+//			sql_select.append("AND Updated > now() - interval 1 MINUTE; ");
 
 			stmt_select = dbc.getConnection().createStatement();
 			rs_select = stmt_select.executeQuery(sql_select.toString());

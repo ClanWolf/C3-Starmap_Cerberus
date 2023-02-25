@@ -68,7 +68,7 @@ public class IRCBot extends ListenerAdapter {
 	private static UserChannelDao<User, Channel> channel = null;
 	private static final boolean server = true;
 	private static boolean started = false;
-	public boolean connected = false;
+	public static volatile boolean connected = false;
 	private static final String ircUserName = "Ulric";
 	//private static final String ircServerUrl = "port80a.se.quakenet.org";
 	private static final String ircServerUrl = "datapacket.hk.quakenet.org";
@@ -280,6 +280,8 @@ public class IRCBot extends ListenerAdapter {
 				send("Im Augenblick spreche ich deutsch.");
 			}
 			//			send("---------------------------------------------------------------");
+		} else {
+			connected = true;
 		}
 
 		checkDB();
@@ -294,11 +296,6 @@ public class IRCBot extends ListenerAdapter {
 	public void onPart(PartEvent event) {
 		UserChannelDao<User, Channel> ucd = event.getBot().getUserChannelDao();
 		saveUserList(null, ucd);
-	}
-
-	@Override
-	public void onConnect(ConnectEvent event) {
-		connected = true;
 	}
 
 	@Override

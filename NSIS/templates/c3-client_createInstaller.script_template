@@ -82,9 +82,9 @@ REM Upload server
 :REQUEST_INSTALLER
 ECHO ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ECHO Upload Client installer? (y/n)
-SET /p chc=
-IF '%chc%'=='y' GOTO UPLOADINSTALLER
-IF '%chc%'=='n' GOTO REQUEST_IRCBOT
+SET /p chc2=
+IF '%chc2%'=='y' GOTO UPLOADINSTALLER
+IF '%chc2%'=='n' GOTO REQUEST_IRCBOT
 GOTO REQUEST_INSTALLER
 
 :UPLOADINSTALLER
@@ -106,9 +106,9 @@ START "" "https://www.clanwolf.net/apps/C3/server/php/insert_new_version.php"
 :REQUEST_IRCBOT
 ECHO ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ECHO Upload IRCBot? (y/n)
-SET /p chc2=
-IF '%chc2%'=='y' GOTO UPLOADIRCBOT
-IF '%chc2%'=='n' GOTO REQUEST_TS3BOT
+SET /p chc3=
+IF '%chc3%'=='y' GOTO UPLOADIRCBOT
+IF '%chc3%'=='n' GOTO REQUEST_TS3BOT
 GOTO REQUEST_IRCBOT
 
 :UPLOADIRCBOT
@@ -118,14 +118,49 @@ REM Upload IRCBot
 :REQUEST_TS3BOT
 ECHO ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ECHO Upload TS3Bot? (y/n)
-SET /p chc2=
-IF '%chc2%'=='y' GOTO UPLOADTS3BOT
-IF '%chc2%'=='n' GOTO END
+SET /p chc4=
+IF '%chc4%'=='y' GOTO UPLOADTS3BOT
+IF '%chc4%'=='n' GOTO END
 GOTO REQUEST_TS3BOT
 
 :UPLOADTS3BOT
 REM Upload TS3Bot
 "C:\Program Files (x86)\WinSCP\winscp.com" /ini=nul /script=C:\C3\projects\C3-Starmap_Cerberus\NSIS\scripts\upload_ts3bot.script
+
+
+ECHO .
+ECHO .
+ECHO .
+ECHO Waiting for some time before removing flag request
+timeout /t 1 /nobreak >nul
+ECHO 7
+timeout /t 1 /nobreak >nul
+ECHO 6
+timeout /t 1 /nobreak >nul
+ECHO 5
+timeout /t 1 /nobreak >nul
+ECHO 4
+timeout /t 1 /nobreak >nul
+ECHO 3
+timeout /t 1 /nobreak >nul
+ECHO 2
+timeout /t 1 /nobreak >nul
+ECHO 1
+timeout /t 1 /nobreak >nul
+ECHO 0
+
+
+:REQUEST_REMOVE_BOT_FLAGS
+ECHO ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ECHO Remove flags to restart BOTs (did they have time enough to shut down)? (y/n)
+SET /p chc5=
+IF '%chc5%'=='y' GOTO REMOVE_BOT_FLAGS
+IF '%chc5%'=='n' GOTO END
+GOTO REQUEST_REMOVE_BOT_FLAGS
+
+:REMOVE_BOT_FLAGS
+REM Remove flags so that the bots can startup again
+"C:\Program Files (x86)\WinSCP\winscp.com" /ini=nul /script=C:\C3\projects\C3-Starmap_Cerberus\NSIS\scripts\remove_bot_flags.script
 
 REM ###############################################
 REM PAUSE

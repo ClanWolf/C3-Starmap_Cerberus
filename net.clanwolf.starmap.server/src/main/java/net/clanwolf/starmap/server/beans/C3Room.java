@@ -177,7 +177,7 @@ public class C3Room extends GameRoomSession {
 		UserPOJO u = p.getUser();
 		RolePlayCharacterPOJO character = u.getCurrentCharacter();
 
-		Nexus.getEci().sendExtCom(p.getName() + " lost connection (disconnected)");
+		Nexus.getEci().sendExtCom(p.getName() + " lost connection to C3-Client (disconnected)");
 
 		AttackDAO attackDAO = AttackDAO.getInstance();
 		ArrayList<AttackPOJO> openAttacks = attackDAO.getOpenAttacksOfASeason(Nexus.currentSeason);

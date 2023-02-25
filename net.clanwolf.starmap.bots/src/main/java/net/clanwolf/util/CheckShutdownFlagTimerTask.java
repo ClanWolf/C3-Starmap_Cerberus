@@ -43,18 +43,18 @@ public class CheckShutdownFlagTimerTask extends TimerTask {
 	private String dir = "";
 	private String botName = "";
 
-	private void cleanupFlagFiles() {
-		File shutdownFlagFile = new File(dir + File.separator + "C3-IRCBot_shutdown.flag");
-		if (shutdownFlagFile.isFile()) {
-			boolean deleted = shutdownFlagFile.delete();
-		}
-	}
-
 	public CheckShutdownFlagTimerTask(String path, String botName) {
 		this.dir = path;
 		this.botName = botName;
 		// Cleanup the flags once before the timer starts in case there were flags left from a previous time
-		cleanupFlagFiles();
+		cleanupFlagFiles(botName);
+	}
+
+	private void cleanupFlagFiles(String botname) {
+		File shutdownFlagFile = new File(dir + File.separator + "C3-" + botname + "_shutdown.flag");
+		if (shutdownFlagFile.isFile()) {
+			boolean deleted = shutdownFlagFile.delete();
+		}
 	}
 
 	@Override

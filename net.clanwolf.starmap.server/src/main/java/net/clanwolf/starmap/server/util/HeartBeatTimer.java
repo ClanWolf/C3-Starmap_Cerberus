@@ -67,6 +67,7 @@ public class HeartBeatTimer extends TimerTask {
 	private String tempDir = "";
 	private volatile boolean currentlyRunning = false;
 	private volatile CountDownLatch latch;
+	private volatile long lastReportedHour = 0;
 
 	public HeartBeatTimer(boolean informClients, CountDownLatch latch) {
 		this.informClients = informClients;
@@ -173,8 +174,11 @@ public class HeartBeatTimer extends TimerTask {
 		String uptime = "Uptime: " + String.format("%02d", hours) + ":" + String.format("%02d", minutes) + ":" + String.format("%02d", seconds);
 		logger.info(uptime + " (" + days + " days)");
 
-		// Send uptime message to bots (irc and ts3)
-		Nexus.getEci().sendExtCom(uptime);
+		// Send uptime message to bots (irc and ts3), only once an hour
+		if (hours > lastReportedHour) {
+			Nexus.getEci().sendExtCom(uptime);
+			lastReportedHour = hours;
+		}
 
 		// Broadcast heartbeat to the clients
 		logger.info("Send server heartbeat event to all clients (server is still up) (pong).");

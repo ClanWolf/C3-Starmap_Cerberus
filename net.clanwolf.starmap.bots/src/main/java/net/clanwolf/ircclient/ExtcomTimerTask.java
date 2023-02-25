@@ -33,6 +33,8 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.NoSuchElementException;
 import java.util.TimerTask;
 
 /**
@@ -40,35 +42,36 @@ import java.util.TimerTask;
  */
 public class ExtcomTimerTask extends TimerTask {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-	private final ExtcomMonitor extcomMonitor = new ExtcomMonitor();
-	private IRCBot bot = null;
-	private DBConnection dbc = null;
+	private static final ExtcomMonitor extcomMonitor = new ExtcomMonitor();
+	private static IRCBot bot = null;
+	private static DBConnection dbc = null;
 
-	public ExtcomTimerTask(DBConnection dbc) {
-		this.dbc = dbc;
+	public ExtcomTimerTask(DBConnection dbcp) {
+		dbc = dbcp;
 	}
 
 	public void setBot(IRCBot bot) {
-		this.bot = bot;
+		ExtcomTimerTask.bot = bot;
 	}
 
 	@Override
 	public void run() {
-		if (bot != null) {
-			if (bot.connected) {
-				ArrayList<String> m = extcomMonitor.getMessages(dbc);
+		if (bot != null && IRCBot.connected) {
+			LinkedList<String> msgs = extcomMonitor.getMessages(dbc);
 
-				String lastMessage = "";
-				if (m.size() > 1) {
-					lastMessage = "[...] ";
+			String[] msgscut = { "...", "...", "...", "...", "..." };
+
+			for (int i=4; i>=0; i--) {
+				try {
+					msgscut[i] = msgs.getLast();
+					msgs.removeLast();
+				} catch (NoSuchElementException nsee) {
+					break;
 				}
-
-				if (m.size() > 0) {
-					lastMessage += m.get(m.size() - 1);
-					for (String s : m) {
-						// Send string to irc
-						bot.send(lastMessage);
-					}
+			}
+			for (String s : msgscut) {
+				if (!"...".equalsIgnoreCase(s)) {
+					bot.send("C3-Server: " + s);
 				}
 			}
 		}
