@@ -370,7 +370,7 @@ public class EndRound {
                         }
                         //Update Attack Table
                         AttackDAO attackDAO = AttackDAO.getInstance();
-                        AttackPOJO currentAttackPOJO = attackDAO.findById(Nexus.END_ROUND_USERID, attackPOJO.getId());
+
                         attackPOJO.setAttackCostDefender(defenderMechCost + defenderRewardFromMatch);
                         attackPOJO.setAttackCostAttacker(attackerMechCost + attackerRewardFromMatch);
 
