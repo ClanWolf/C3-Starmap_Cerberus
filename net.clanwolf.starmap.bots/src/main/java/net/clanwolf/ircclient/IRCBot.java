@@ -33,6 +33,7 @@ import net.clanwolf.util.CheckShutdownFlagTimerTask;
 import net.clanwolf.util.Internationalization;
 import net.clanwolf.starmap.logging.C3LogUtil;
 import org.pircbotx.*;
+import org.pircbotx.delay.StaticDelay;
 import org.pircbotx.exception.DaoException;
 import org.pircbotx.hooks.ListenerAdapter;
 import org.pircbotx.hooks.events.*;
@@ -58,11 +59,7 @@ public class IRCBot extends ListenerAdapter {
 	// - euroserv.fr.quakenet.org
 	// - port80a.se.quakenet.org
 
-	// TS3:
-	// https://github.com/TheHolyWaffle/TeamSpeak-3-Java-API
-
 	public static boolean dropDebugStrings = false;
-
 	private static PircBotX pIrcBot;
 	private static DBConnection dbc;
 	private static UserChannelDao<User, Channel> channel = null;
@@ -73,12 +70,10 @@ public class IRCBot extends ListenerAdapter {
 	//private static final String ircServerUrl = "port80a.se.quakenet.org";
 	private static final String ircServerUrl = "datapacket.hk.quakenet.org";
 	private static final String ircServerChannel = "#c3.clanwolf.net";
-
-	private static String serverBaseDir = new File("/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/server").getAbsolutePath();
+	private static final String serverBaseDir = new File("/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/server").getAbsolutePath();
 	private static final String ircUserListFileName = serverBaseDir + "/ircUser.lst";
 	private static final String heartbeatFileName = "/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/c3.heartbeat";
 	private static StringBuilder userListString = null;
-
 	private static String lang = "de";
 
 	// This needs to be done in the main class once at startup to set the file handler for the logger
@@ -228,6 +223,8 @@ public class IRCBot extends ListenerAdapter {
 
 		prepareLogging();
 
+		logger.info("IRC Bot started.");
+
 		Timer userlistDropTimer = new Timer();
 		UserListDropTimerTask userListDropTimerTask = new UserListDropTimerTask();
 
@@ -319,7 +316,7 @@ public class IRCBot extends ListenerAdapter {
 				.addListener(new IRCBot())
 				.setAutoReconnect(true)
 				.setAutoReconnectAttempts(10)
-				.setAutoReconnectDelay(30)
+				.setAutoReconnectDelay(new StaticDelay(1000))
 				.buildConfiguration();
 		pIrcBot = new PircBotX(configuration);
 		pIrcBot.startBot();
@@ -367,7 +364,7 @@ public class IRCBot extends ListenerAdapter {
 
 	public void send(String message) {
 		if (started) {
-			pIrcBot.send().message(ircServerChannel, message);
+			pIrcBot.sendIRC().message(ircServerChannel, message);
 		}
 	}
 
