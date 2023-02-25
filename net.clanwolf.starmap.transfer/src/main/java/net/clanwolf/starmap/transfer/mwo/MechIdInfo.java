@@ -26,8 +26,19 @@
  */
 package net.clanwolf.starmap.transfer.mwo;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
+
 
 /**
  * Diese Klasse weist der MechItemId die von der MWO Api ausgelesen wird,
@@ -46,6 +57,7 @@ public class MechIdInfo {
     private String shortname;
     private Integer mechItemId;
 
+
     private MechIdInfo(EFaction faction, EChassie chassis, EVariantType variantType, String fullName, String shortName) {
         this.faction = faction;
         this.chassis = chassis;
@@ -54,35 +66,24 @@ public class MechIdInfo {
         this.shortname = shortName;
     }
 
-   /* public static void main(String[] args) throws IOException {
-        URL urlMechList = new URL("https://mwomercs.com/static/api/mechs/list/dict.json");
-        InputStreamReader rMechList = new InputStreamReader(urlMechList.openStream());
+    public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
+        Document doc = DocumentBuilderFactory.newInstance()
+                .newDocumentBuilder().parse(new File(Objects.requireNonNull(MechIdInfo.class.getResource("/Mechs.xml")).getFile()));
+        doc.getDocumentElement().normalize();
 
-        Gson gson = new Gson();
-        JsonObject jsonObject = gson.fromJson(rMechList, JsonObject.class);
-
-        String mechName = jsonObject.get("Mechs").getAsJsonObject().get("8").getAsString();
-
-
-        URL urlMechView = new URL("https://mwomercs.com/static/api/mechs/view/" + mechName + ".json");
-        InputStreamReader rMechView = new InputStreamReader(urlMechView.openStream());
-        jsonObject = gson.fromJson(rMechView, JsonObject.class);
-        Integer MechID = jsonObject.get("MechID").getAsInt();
-        //String mechnName = jsonObject.get("Name").getAsString();
-        String mechClass = jsonObject.get("Class").getAsString();
-        String mechIcon = jsonObject.get("Icon").getAsString();
-        Integer mechMaxToons = jsonObject.get("MaxTons").getAsInt();
-        Integer mechTotalTons = jsonObject.get("TotalTons").getAsInt();
-        Integer mechBaseTons = jsonObject.get("BaseTons").getAsInt();
-        Integer mechTotalArmor = jsonObject.get("TotalArmor").getAsInt();
-        Integer mechMaxArmor  = jsonObject.get("MaxArmor").getAsInt();
-        Integer mechMaxJumpJets = jsonObject.get("MaxJumpJets").getAsInt();
-        Boolean mechCanEquipECM = jsonObject.get("CanEquipECM").getAsBoolean();
-        String mechChassis = jsonObject.get("Chassis").getAsString();
-
-
-                System.out.println("Name for ID 8: " + mechName + " Class " + mechClass);
-    }*/
+        NodeList mechNodes = doc.getElementsByTagName("Mech");
+        for (int i = 0; i < mechNodes.getLength(); i++) {
+            Element mech = (Element) mechNodes.item(i);
+            String chassisName = mech.getAttribute("chassis");
+            Mech chassis = Mech.getMech(chassisName);
+            if (chassis == null) {
+                System.out.println("Unknown chassis: " + chassisName);
+                continue;
+            }
+            System.out.println("Mech " + mech.getAttribute("name") + " (" +
+                    chassis + ") has " + chassis.getTonnage() + " tons.");
+        }
+    }
 
     private void InitializeMechIds() {
 
@@ -1333,17 +1334,87 @@ public class MechIdInfo {
 
     }
 
-  /*  public static void main(String[] args) {
-        MechIdInfo mi = new MechIdInfo(899);
-        System.out.println(mi.IsValidId());
-        System.out.println(mi.getChassis());
-        System.out.println(mi.getFaction());
-        System.out.println(mi.getMechClass());
-        System.out.println(mi.getFullName());
-        System.out.println(mi.getShortname());
-        System.out.println(mi.getMechCost());
-        System.out.println(mi.getTonnage());
-        System.out.println(mi.getVariantType());
-    }*/
+    /*  public static void main(String[] args) {
+          MechIdInfo mi = new MechIdInfo(899);
+          System.out.println(mi.IsValidId());
+          System.out.println(mi.getChassis());
+          System.out.println(mi.getFaction());
+          System.out.println(mi.getMechClass());
+          System.out.println(mi.getFullName());
+          System.out.println(mi.getShortname());
+          System.out.println(mi.getMechCost());
+          System.out.println(mi.getTonnage());
+          System.out.println(mi.getVariantType());
+      }*/
+    static class Mech {
+        private final String chassisName;
+        private final int tonnage;
+        private final EMechclass mechClass;
+
+        private Mech(String chassisName, int tonnage, EMechclass mechClass) {
+            this.chassisName = chassisName;
+            this.tonnage = tonnage;
+            this.mechClass = mechClass;
+        }
+
+        public static Mech getMech(String chassisName) {
+            return switch (chassisName) {
+
+                //Light Chassies
+                case "piranha", "locust", "flea" ->
+                        new Mech(chassisName, 20, EMechclass.LIGHT);
+                case "mistlynx", "commando" ->
+                        new Mech(chassisName, 25, EMechclass.LIGHT);
+                case "arcticcheetah", "incubus", "kitfox", "javelin", "osiris", "spider", "urbanmech" ->
+                        new Mech(chassisName, 30, EMechclass.LIGHT);
+                case "adder", "cougar", "jenneriic", "jenner", "panther", "raven", "wolfhound", "firestarter" ->
+                        new Mech(chassisName, 35, EMechclass.LIGHT);
+
+                // Medium Chassies
+                case "arcticwolf", "viper", "assassin", "cicada", "vulcan" ->
+                        new Mech(chassisName, 40, EMechclass.MEDIUM);
+                case "iceferret", "shadowcat", "blackjack", "hatchetman", "hellspawn", "phoenixhawk", "vindicator" ->
+                        new Mech(chassisName, 45, EMechclass.MEDIUM);
+                case "hunchbackiic", "huntsman", "nova", "centurion", "crab", "enforcer", "hunchback", "trebuchet", "uziel" ->
+                        new Mech(chassisName, 50, EMechclass.MEDIUM);
+                case "blacklanner", "stormcrow", "vaporeagle", "bushwacker", "dervish", "griffin", "kintaro", "shadowhawk", "wolverine" ->
+                        new Mech(chassisName, 55, EMechclass.MEDIUM);
+
+                //Heavy Chassies
+                case "hellfire", "maddog", "champion", "dragon", "quickdraw", "rifleman" ->
+                        new Mech(chassisName, 60, EMechclass.HEAVY);
+                case "ebonjaguar", "hellbringer", "linebacker", "riflemaniic", "catapult", "crusader", "jagermech", "roughneck", "thunderbolt" ->
+                        new Mech(chassisName, 65, EMechclass.HEAVY);
+                case "novacat", "summoner", "sunspider", "archer", "cataphract", "grasshopper", "warhammer" ->
+                        new Mech(chassisName, 70, EMechclass.HEAVY);
+                case "nightgyr", "orioniic", "timberwolf", "blackknight", "marauder", "orion", "thanatos" ->
+                        new Mech(chassisName, 75, EMechclass.HEAVY);
+
+                //Assault Chassies
+                case "gargoyle", "warhammeriic", "awesome", "charger", "hatamotochi", "victor", "zeus" ->
+                        new Mech(chassisName, 80, EMechclass.ASSAULT);
+                case "marauderiic", "warhawk", "battlemaster", "stalker" ->
+                        new Mech(chassisName, 85, EMechclass.ASSAULT);
+                case "bloodasp", "highlanderiic", "madcatmkii", "supernova", "cyclops", "highlander", "mauler" ->
+                        new Mech(chassisName, 90, EMechclass.ASSAULT);
+                case "executioner", "banshee", "corsair", "nightstar" -> new Mech(chassisName, 95, EMechclass.ASSAULT);
+                case "direwolf", "kodiak", "annihilator", "atlas", "fafnir", "kingcrab", "marauderii" ->
+                        new Mech(chassisName, 100, EMechclass.ASSAULT);
+                default -> null;
+            };
+        }
+
+        public int getTonnage() {
+            return tonnage;
+        }
+
+        public EMechclass getMechClass() {
+            return mechClass;
+        }
+
+        public String toString() {
+            return mechClass + " " + chassisName;
+        }
+    }
 
 }

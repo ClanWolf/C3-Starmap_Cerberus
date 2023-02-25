@@ -142,7 +142,7 @@ public class EndRound {
     }
 
     private static boolean timeForThisRoundIsOver(Long seasonId) {
-	    DateTimeFormatter dateTimeformatter = DateTimeFormatter.ofPattern(Nexus.patternTimestamp);
+        DateTimeFormatter dateTimeformatter = DateTimeFormatter.ofPattern(Nexus.patternTimestamp);
 
         LocalDateTime translatedNowDateWithTime = null;
         LocalDateTime nextRoundDate = null;
@@ -154,7 +154,7 @@ public class EndRound {
             LocalTime now = LocalTime.now();
             translatedNowDateWithTime = LocalDateTime.of(localDate, now);
 
-			logger.info("Check if round is over:");
+            logger.info("Check if round is over:");
             logger.info("Next round date: " + dateTimeformatter.format(nextRoundDate));
             logger.info("Translated now date: " + dateTimeformatter.format(translatedNowDateWithTime));
         } catch (Exception e) {
@@ -163,12 +163,12 @@ public class EndRound {
         // round is officially over?
         if (nextRoundDate != null && translatedNowDateWithTime != null) {
             // the end of the round has not been reached on the calendar
-	        boolean result = nextRoundDate.isBefore(translatedNowDateWithTime);
-			if (result) {
-				logger.info(dateTimeformatter.format(nextRoundDate) + " is before " + dateTimeformatter.format(translatedNowDateWithTime));
-			} else {
-				logger.info(dateTimeformatter.format(nextRoundDate) + " is NOT before " + dateTimeformatter.format(translatedNowDateWithTime));
-			}
+            boolean result = nextRoundDate.isBefore(translatedNowDateWithTime);
+            if (result) {
+                logger.info(dateTimeformatter.format(nextRoundDate) + " is before " + dateTimeformatter.format(translatedNowDateWithTime));
+            } else {
+                logger.info(dateTimeformatter.format(nextRoundDate) + " is NOT before " + dateTimeformatter.format(translatedNowDateWithTime));
+            }
             return result;
         } else {
             return false;
@@ -332,8 +332,8 @@ public class EndRound {
                         //DecimalFormat nf = new DecimalFormat();
 
                         GenerateRoundReport report = new GenerateRoundReport(attackPOJO);
-                        long defenderIncome = 0L, defenderCost = 0L, defenderMechCost = 0L, defenderRewardFromMatch = 0L,
-                                attackerIncome = 0L, attackerCost = 0L, attackerMechCost = 0L, attackerRewardFromMatch = 0L;
+                        long defenderSystemCost = 0L, defenderMechCost = 0L, defenderRewardFromMatch = 0L,
+                                attackerSystemCost = 0L, attackerMechCost = 0L, attackerRewardFromMatch = 0L;
                         StatsEconomyDAO statsEconomyDAO = StatsEconomyDAO.getInstance();
                         StatsEconomyPOJO statsEconomyAttackerPOJO = new StatsEconomyPOJO();
                         StatsEconomyPOJO statsEconomyDefenderPOJO = new StatsEconomyPOJO();
@@ -344,15 +344,16 @@ public class EndRound {
                             CalcXP calcXP = new CalcXP(asp, report);
                             CalcBalance calcB = new CalcBalance(asp.getMwoMatchId(), report);
 
+
                             if (statsEconomyAttackerPOJO.getFactionID() == null) {
                                 statsEconomyAttackerPOJO.setFactionID(asp.getAttackerFactionId());
                                 statsEconomyDefenderPOJO.setFactionID(asp.getDefenderFactionId());
 
                                 //attackerIncome = attackerIncome + calcB.getIncome(asp.getAttackerFactionId(), asp.getStarSystemDataId());
-                                attackerCost = attackerCost + calcB.getAttackCost(asp.getStarSystemDataId());
+                                attackerSystemCost = attackerSystemCost + calcB.getAttackCost(asp.getStarSystemDataId());
 
                                 //defenderIncome = defenderIncome + calcB.getIncome(asp.getDefenderFactionId(), asp.getStarSystemDataId());
-                                defenderCost = defenderCost + calcB.getDefendCost(asp.getStarSystemDataId());
+                                defenderSystemCost = defenderSystemCost + calcB.getDefendCost(asp.getStarSystemDataId());
                             }
                             for (BalanceUserInfo attackerPlayerInfo : calcB.getAttackerInfo()) {
                                 attackerMechCost = attackerMechCost + attackerPlayerInfo.mechRepairCost + attackerPlayerInfo.playerTeamDamage;
@@ -367,7 +368,15 @@ public class EndRound {
                                         + defenderPlayerInfo.rewardLossVictory;
                             }
                         }
+                        //Update Attack Table
+                        AttackDAO attackDAO = AttackDAO.getInstance();
 
+                        attackPOJO.setAttackCostDefender(defenderMechCost + defenderRewardFromMatch);
+                        attackPOJO.setAttackCostAttacker(attackerMechCost + attackerRewardFromMatch);
+
+                        attackDAO.update(Nexus.END_ROUND_USERID, attackPOJO);
+
+                        //Update Economy Table
                         FactionInfo defInfo = new FactionInfo(statsEconomyDefenderPOJO.getFactionID()),
                                 attInfo = new FactionInfo(statsEconomyAttackerPOJO.getFactionID());
 
@@ -476,23 +485,23 @@ public class EndRound {
                 LocalTime now = LocalTime.now().truncatedTo(ChronoUnit.HOURS);
                 LocalDateTime translatedNowDateWithTime = LocalDateTime.of(localDate, now);
 
-				DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Nexus.patternTimestamp);
-				Timestamp c3Now = Timestamp.valueOf(formatter.format(translatedNowDateWithTime));
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Nexus.patternTimestamp);
+                Timestamp c3Now = Timestamp.valueOf(formatter.format(translatedNowDateWithTime));
 
-	            String realNowString = new SimpleDateFormat(Nexus.patternTimestamp).format(realNow);
+                String realNowString = new SimpleDateFormat(Nexus.patternTimestamp).format(realNow);
                 String c3NowString = new SimpleDateFormat(Nexus.patternTimestamp).format(c3Now);
 
-				logger.info("Timestamp c3Now: " + c3Now);
-				logger.info("Translated Now date with time: " + translatedNowDateWithTime);
-	            logger.info("Now date with time RealTime: " + realNowString);
-				logger.info("Formatted now c3NowString: " + c3NowString);
+                logger.info("Timestamp c3Now: " + c3Now);
+                logger.info("Translated Now date with time: " + translatedNowDateWithTime);
+                logger.info("Now date with time RealTime: " + realNowString);
+                logger.info("Formatted now c3NowString: " + c3NowString);
 
-				roundPOJO.setCurrentRoundStartDateRealTime(realNowString);
-				roundPOJO.setCurrentRoundStartDate(c3NowString);
+                roundPOJO.setCurrentRoundStartDateRealTime(realNowString);
+                roundPOJO.setCurrentRoundStartDate(c3NowString);
 
-				// Save everything to the database
-				AttackDAO attackDAO = AttackDAO.getInstance();
-				JumpshipDAO jumpshipDAO = JumpshipDAO.getInstance();
+                // Save everything to the database
+                AttackDAO attackDAO = AttackDAO.getInstance();
+                JumpshipDAO jumpshipDAO = JumpshipDAO.getInstance();
                 RoundDAO roundDAO = RoundDAO.getInstance();
                 StarSystemDataDAO ssdDAO = StarSystemDataDAO.getInstance();
                 FactionDAO fDAO = FactionDAO.getInstance();
