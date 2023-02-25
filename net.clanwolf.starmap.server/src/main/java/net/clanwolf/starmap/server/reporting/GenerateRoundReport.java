@@ -947,11 +947,11 @@ public class GenerateRoundReport {
         } else {
 
             logger.error("Season history map not found on: " + seasonHistoryURL);
-            ImageData imgSeasonData = ImageDataFactory.create("C:\\Users\\Stefan\\Downloads\\Bilder\\Wallpaper\\C3_S1_R86_map_history.png");
+           /* ImageData imgSeasonData = ImageDataFactory.create("C:\\Users\\Stefan\\Downloads\\Bilder\\Wallpaper\\C3_S1_R86_map_history.png");
             Image imSeason = new Image(imgSeasonData);
             imSeason.setAutoScale(true);
             doc.add(imSeason);
-            doc.add(createLink("Link to season history map", seasonHistoryURL));
+            doc.add(createLink("Link to season history map", seasonHistoryURL));*/
         }
     }
 
