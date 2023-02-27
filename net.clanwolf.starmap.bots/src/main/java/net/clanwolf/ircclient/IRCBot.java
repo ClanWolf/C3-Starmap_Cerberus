@@ -239,7 +239,7 @@ public class IRCBot extends ListenerAdapter {
 
 		userlistDropTimer.schedule(userListDropTimerTask, 1000, 7 * oneMinute);
 		randomTextDropTimer.schedule(randomTextDropTimerTask, 1000, 5 * oneMinute);
-		extcomTimer.schedule(extcomTimerTask, 1000, 5000);
+		extcomTimer.schedule(extcomTimerTask, 1000, 15000);
 
 		IRCBot ircBot = new IRCBot();
 		ircBot.botJoinedMail();
@@ -256,20 +256,22 @@ public class IRCBot extends ListenerAdapter {
 	@Override
 	public void onJoin(JoinEvent event) {
 		String user = Objects.requireNonNull(event.getUser()).getNick();
-		String sender = "c3@clanwolf.net";
-		String[] receivers = { "keshik@googlegroups.com" };
-		String subject = "New user (" + user + ") entered #c3.clanwolf.net (EoM)";
-		String content = "A user has entered the Clan IRC channel on QuakeNet. Do not reply to this message.";
-		boolean success = MailManager.sendMail(sender, receivers, subject, content, false);
-		if (!success) {
-			send("Mail could not be sent to inform about new users!");
-		}
+
+//		String sender = "c3@clanwolf.net";
+//		String[] receivers = { "keshik@googlegroups.com" };
+//		String subject = "New user (" + user + ") entered #c3.clanwolf.net (EoM)";
+//		String content = "A user has entered the Clan IRC channel on QuakeNet. Do not reply to this message.";
+//		boolean success = MailManager.sendMail(sender, receivers, subject, content, false);
+//		if (!success) {
+//			send("Mail could not be sent to inform about new users!");
+//		}
 
 		// Welcome -----------------------------------------------------------------------------------------------------
 		if (!"Ulric".equals(user)) {
 			int num = (int) (Math.random() * welcomeMessage.length);
 			send("---------------------------------------------------------------");
 			send(welcomeMessage[num] + " " + user + "!");
+			send("This channel is dedicated to BATTLETECH, a game of armored combat.");
 			send("Use '!" + ircUserName + ", help' to see list of commands!");
 			if (lang.equals("en")) {
 				send("I currently speak english.");
