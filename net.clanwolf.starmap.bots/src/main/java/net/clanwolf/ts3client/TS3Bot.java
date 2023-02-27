@@ -52,7 +52,7 @@ public class TS3Bot {
 	//private static String serverBaseDir = new File("c:\\temp").getAbsolutePath();
 	private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	private static final Random RANDOM = new Random();
-	private static String serverBaseDir = new File("/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/server").getAbsolutePath();
+	private static final String serverBaseDir = new File("/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/server").getAbsolutePath();
 	private static TS3Api api = null;
 	final TS3Query query;
 
@@ -77,8 +77,8 @@ public class TS3Bot {
 
 		logger.info("!!! Enable loggin in CWTS3Bot, L.81 !!!");
 		final TS3Config config = new TS3Config();
-		config.setHost(auth.getProperty("ts3botip").toString());
-		config.setEnableCommunicationsLogging(false);
+		config.setHost(auth.getProperty("ts3botip"));
+		config.setEnableCommunicationsLogging(true);
 
 		query = new TS3Query(config);
 		query.connect();

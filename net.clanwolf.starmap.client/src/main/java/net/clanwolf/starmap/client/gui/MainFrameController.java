@@ -1461,6 +1461,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 		tblUserHistory.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 		tblUserHistory.getStyleClass().add("noheader");
+		tblUserHistory.setPlaceholder(new Label("..."));
 		TableColumn<UserHistoryEntry, String> userColumn = new TableColumn<>("");
 		userColumn.setCellValueFactory(data -> data.getValue().getUser());
 		userColumn.setPrefWidth(202);
@@ -1837,7 +1838,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					setConsoleEntry("Verifying privileges");
 					setConsoleEntry("Applying security level");
 
-					// Print information about the server logged in to to gui
+					// Print information about the server logged in gui
 					String tcphostname = C3Properties.getProperty(C3PROPS.TCP_HOSTNAME);
 					int tcpPort = Integer.parseInt(C3Properties.getProperty(C3PROPS.TCP_PORT));
 

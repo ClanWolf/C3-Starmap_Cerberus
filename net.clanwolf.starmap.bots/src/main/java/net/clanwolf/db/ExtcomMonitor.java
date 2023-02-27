@@ -33,13 +33,12 @@ import java.lang.invoke.MethodHandles;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class ExtcomMonitor {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	public synchronized LinkedList<String> getMessages(DBConnection dbc) {
+	public synchronized static LinkedList<String> getMessages(DBConnection dbc) {
 		// get messages from database
 		// mark message as processed by IRCBot in database
 		Statement stmt_select = null;
@@ -48,13 +47,14 @@ public class ExtcomMonitor {
 		LinkedList<String> messages = new LinkedList<>();
 
 		try {
-			StringBuilder sql_select = new StringBuilder();
-			sql_select.append("SELECT Text, ProcessedIRC, Updated FROM EXT_COM ");
-			sql_select.append("WHERE ProcessedIRC = 0; ");
-//			sql_select.append("AND Updated > now() - interval 1 MINUTE; ");
+			String sql_select = "SELECT Text, ProcessedIRC, Updated FROM EXT_COM WHERE ProcessedIRC = 0; ";
+			// sql_select.append("AND Updated > now() - interval 1 MINUTE; ");
 
+			if (dbc.getConnection() == null) {
+				logger.info("Reconnecting database");
+			}
 			stmt_select = dbc.getConnection().createStatement();
-			rs_select = stmt_select.executeQuery(sql_select.toString());
+			rs_select = stmt_select.executeQuery(sql_select);
 			if (rs_select.next()) {
 				do {
 					messages.add(rs_select.getString("Text"));
@@ -64,15 +64,18 @@ public class ExtcomMonitor {
 			stmt_select.close();
 
 			// Update to set processed to 1
-			StringBuilder sql_update = new StringBuilder();
-			sql_update.append("UPDATE EXT_COM set ProcessedIRC = 1;");
-
+			if (dbc.getConnection() == null) {
+				logger.info("Reconnecting database");
+			}
 			stmt_update = dbc.getConnection().createStatement();
-			stmt_update.executeUpdate(sql_update.toString());
+			stmt_update.executeUpdate("UPDATE EXT_COM set ProcessedIRC = 1;"); // Update all lines to be processed
 
 			stmt_update.close();
 		} catch (SQLException e) {
 			logger.error("Exception while extracting extcom messages from db.", e);
+			e.printStackTrace();
+		} catch (Exception e) {
+			logger.error("Exception while extracting extcom messages from db. [12]", e);
 			e.printStackTrace();
 		} finally {
 			if (rs_select != null) {

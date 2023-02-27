@@ -42,7 +42,6 @@ import java.util.TimerTask;
  */
 public class ExtcomTimerTask extends TimerTask {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-	private static final ExtcomMonitor extcomMonitor = new ExtcomMonitor();
 	private static IRCBot bot = null;
 	private static DBConnection dbc = null;
 
@@ -57,7 +56,9 @@ public class ExtcomTimerTask extends TimerTask {
 	@Override
 	public void run() {
 		if (bot != null && IRCBot.connected) {
-			LinkedList<String> msgs = extcomMonitor.getMessages(dbc);
+			logger.info("Requesting new entries from ext_com table");
+
+			LinkedList<String> msgs = ExtcomMonitor.getMessages(dbc);
 
 			String[] msgscut = { "...", "...", "...", "...", "..." };
 

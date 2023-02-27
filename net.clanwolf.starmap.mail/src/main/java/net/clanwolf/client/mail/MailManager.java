@@ -66,7 +66,7 @@ public class MailManager {
 //		return valid;
 //	}
 
-	private static boolean dispatch(Mail mail) {
+	private static synchronized boolean dispatch(Mail mail) {
 		boolean result = false;
 
 		javax.mail.Session session;
@@ -142,7 +142,7 @@ public class MailManager {
 		return result;
 	}
 
-	public static boolean sendMail(String sender, String[] receivers, String subject, String content, boolean html) {
+	public static synchronized boolean sendMail(String sender, String[] receivers, String subject, String content, boolean html) {
 		if (mailServer == null || mailUser == null || mailPassword == null) {
 			Properties mProperties = new Properties();
 			try {

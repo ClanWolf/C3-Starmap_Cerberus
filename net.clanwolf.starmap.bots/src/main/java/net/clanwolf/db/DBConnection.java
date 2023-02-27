@@ -44,6 +44,10 @@ public class DBConnection {
 	private IRCBot ircBot = null;
 
 	public DBConnection() {
+		getDBConnection();
+	}
+
+	public void getDBConnection() {
 		final Properties auth = new Properties();
 		try {
 			final String authFileName = "auth.properties";
@@ -84,6 +88,9 @@ public class DBConnection {
 	}
 
 	public Connection getConnection() {
+		if (this.conn == null) {
+			this.getConnection();
+		}
 		return this.conn;
 	}
 }

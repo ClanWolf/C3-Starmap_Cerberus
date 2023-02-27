@@ -120,7 +120,7 @@ public class ExternalCommunicationInterface {
 				sql_delete += "DELETE from EXT_COM ";
 				sql_delete += "WHERE ProcessedIRC > 0 ";
 				sql_delete += "AND ProcessedTS3 > 0 ";
-				sql_delete += "AND Updated < now() - interval 1 DAY; ";
+				sql_delete += "OR Updated < now() - interval 1 DAY; ";
 				delete(sql_delete);
 			} catch(Exception e) {
 				logger.error("Error inserting extcom entry.", e);

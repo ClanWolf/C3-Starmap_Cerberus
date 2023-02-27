@@ -10,7 +10,7 @@ CURRENTLY IN PROGRESS:
 
 ----------------------------------------------------------------
 
-Version 7.2.72 (25.02.2023)
+Version 7.2.75 (27.02.2023)
 - ADDED: New constant table for economy calculations
 
 Version 7.2.70 (23.02.2023)

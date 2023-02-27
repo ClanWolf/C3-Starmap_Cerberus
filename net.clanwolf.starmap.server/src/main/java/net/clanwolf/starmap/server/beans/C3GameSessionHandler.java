@@ -719,7 +719,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			logger.info("Timestamp: " + new Timestamp(System.currentTimeMillis()));
 			logger.info("--------------------");
 
-			Nexus.getEci().sendExtCom(user.getUserName() + " logged in to C3-Client");
+			Nexus.getEci().sendExtCom(user.getUserName() + " logged into C3-Client");
 
 			if( !GameServer.isDevelopmentPC) {
 
