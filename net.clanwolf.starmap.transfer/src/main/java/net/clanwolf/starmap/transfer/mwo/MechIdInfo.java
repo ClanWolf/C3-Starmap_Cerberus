@@ -35,6 +35,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -57,7 +58,6 @@ public class MechIdInfo {
     private String shortname;
     private Integer mechItemId;
 
-
     private MechIdInfo(EFaction faction, EChassie chassis, EVariantType variantType, String fullName, String shortName) {
         this.faction = faction;
         this.chassis = chassis;
@@ -73,15 +73,27 @@ public class MechIdInfo {
 
         NodeList mechNodes = doc.getElementsByTagName("Mech");
         for (int i = 0; i < mechNodes.getLength(); i++) {
-            Element mech = (Element) mechNodes.item(i);
-            String chassisName = mech.getAttribute("chassis");
-            Mech chassis = Mech.getMech(chassisName);
-            if (chassis == null) {
-                System.out.println("Unknown chassis: " + chassisName);
+            Element xmlMechList = (Element) mechNodes.item(i);
+            String mechChassie = xmlMechList.getAttribute("chassis");
+            String mechItemId = xmlMechList.getAttribute("id");
+            String mechFaction = xmlMechList.getAttribute("faction");
+            String mechName = xmlMechList.getAttribute("name");
+            String mechMaxTons = xmlMechList.getAttribute("MaxTons");
+            String mechBaseTons = xmlMechList.getAttribute("BaseTons");
+            String mechMaxJumpJets = xmlMechList.getAttribute("MaxJumpJets");
+            String mechMinEngineRating = xmlMechList.getAttribute("MinEngineRating");
+            String mechMaxEngineRating = xmlMechList.getAttribute("MaxEngineRating");
+            String mechVariantType = xmlMechList.getAttribute("VariantType");
+            String[] variant = {"Standard", "Special", "Hero", "Champion"};
+            Mech mechInfo = Mech.getMech(mechChassie, mechFaction, mechItemId, mechName);
+            if (mechInfo == null) {
+                System.out.println("Unknown Mech: " + mechChassie);
                 continue;
             }
-            System.out.println("Mech " + mech.getAttribute("name") + " (" +
-                    chassis + ") has " + chassis.getTonnage() + " tons.");
+            if (!Arrays.asList(variant).contains(mechVariantType)) {
+                System.out.println(mechVariantType);
+            }
+
         }
     }
 
@@ -1334,72 +1346,67 @@ public class MechIdInfo {
 
     }
 
-    /*  public static void main(String[] args) {
-          MechIdInfo mi = new MechIdInfo(899);
-          System.out.println(mi.IsValidId());
-          System.out.println(mi.getChassis());
-          System.out.println(mi.getFaction());
-          System.out.println(mi.getMechClass());
-          System.out.println(mi.getFullName());
-          System.out.println(mi.getShortname());
-          System.out.println(mi.getMechCost());
-          System.out.println(mi.getTonnage());
-          System.out.println(mi.getVariantType());
-      }*/
     static class Mech {
-        private final String chassisName;
         private final int tonnage;
         private final EMechclass mechClass;
+        private final EFaction mechFaction;
+        private final String mechItemId;
+        private final String mechName;
+        private final String mechChassie;
 
-        private Mech(String chassisName, int tonnage, EMechclass mechClass) {
-            this.chassisName = chassisName;
+        private Mech(String chassisName, int tonnage, EMechclass mechClass, String mechFaction, String mechItemId, String mechName) {
             this.tonnage = tonnage;
             this.mechClass = mechClass;
+            this.mechFaction = EFaction.valueOf(mechFaction.toUpperCase());
+            this.mechItemId = mechItemId;
+            this.mechName = mechName;
+            this.mechChassie = chassisName.toUpperCase();
         }
 
-        public static Mech getMech(String chassisName) {
+        public static Mech getMech(String chassisName, String mechFaction, String mechItemId, String mechName) {
             return switch (chassisName) {
 
                 //Light Chassies
                 case "piranha", "locust", "flea" ->
-                        new Mech(chassisName, 20, EMechclass.LIGHT);
+                        new Mech(chassisName, 20, EMechclass.LIGHT, mechFaction, mechItemId, mechName);
                 case "mistlynx", "commando" ->
-                        new Mech(chassisName, 25, EMechclass.LIGHT);
+                        new Mech(chassisName, 25, EMechclass.LIGHT, mechFaction, mechItemId, mechName);
                 case "arcticcheetah", "incubus", "kitfox", "javelin", "osiris", "spider", "urbanmech" ->
-                        new Mech(chassisName, 30, EMechclass.LIGHT);
+                        new Mech(chassisName, 30, EMechclass.LIGHT, mechFaction, mechItemId, mechName);
                 case "adder", "cougar", "jenneriic", "jenner", "panther", "raven", "wolfhound", "firestarter" ->
-                        new Mech(chassisName, 35, EMechclass.LIGHT);
+                        new Mech(chassisName, 35, EMechclass.LIGHT, mechFaction, mechItemId, mechName);
 
                 // Medium Chassies
                 case "arcticwolf", "viper", "assassin", "cicada", "vulcan" ->
-                        new Mech(chassisName, 40, EMechclass.MEDIUM);
+                        new Mech(chassisName, 40, EMechclass.MEDIUM, mechFaction, mechItemId, mechName);
                 case "iceferret", "shadowcat", "blackjack", "hatchetman", "hellspawn", "phoenixhawk", "vindicator" ->
-                        new Mech(chassisName, 45, EMechclass.MEDIUM);
+                        new Mech(chassisName, 45, EMechclass.MEDIUM, mechFaction, mechItemId, mechName);
                 case "hunchbackiic", "huntsman", "nova", "centurion", "crab", "enforcer", "hunchback", "trebuchet", "uziel" ->
-                        new Mech(chassisName, 50, EMechclass.MEDIUM);
+                        new Mech(chassisName, 50, EMechclass.MEDIUM, mechFaction, mechItemId, mechName);
                 case "blacklanner", "stormcrow", "vaporeagle", "bushwacker", "dervish", "griffin", "kintaro", "shadowhawk", "wolverine" ->
-                        new Mech(chassisName, 55, EMechclass.MEDIUM);
+                        new Mech(chassisName, 55, EMechclass.MEDIUM, mechFaction, mechItemId, mechName);
 
                 //Heavy Chassies
                 case "hellfire", "maddog", "champion", "dragon", "quickdraw", "rifleman" ->
-                        new Mech(chassisName, 60, EMechclass.HEAVY);
+                        new Mech(chassisName, 60, EMechclass.HEAVY, mechFaction, mechItemId, mechName);
                 case "ebonjaguar", "hellbringer", "linebacker", "riflemaniic", "catapult", "crusader", "jagermech", "roughneck", "thunderbolt" ->
-                        new Mech(chassisName, 65, EMechclass.HEAVY);
+                        new Mech(chassisName, 65, EMechclass.HEAVY, mechFaction, mechItemId, mechName);
                 case "novacat", "summoner", "sunspider", "archer", "cataphract", "grasshopper", "warhammer" ->
-                        new Mech(chassisName, 70, EMechclass.HEAVY);
+                        new Mech(chassisName, 70, EMechclass.HEAVY, mechFaction, mechItemId, mechName);
                 case "nightgyr", "orioniic", "timberwolf", "blackknight", "marauder", "orion", "thanatos" ->
-                        new Mech(chassisName, 75, EMechclass.HEAVY);
+                        new Mech(chassisName, 75, EMechclass.HEAVY, mechFaction, mechItemId, mechName);
 
                 //Assault Chassies
                 case "gargoyle", "warhammeriic", "awesome", "charger", "hatamotochi", "victor", "zeus" ->
-                        new Mech(chassisName, 80, EMechclass.ASSAULT);
+                        new Mech(chassisName, 80, EMechclass.ASSAULT, mechFaction, mechItemId, mechName);
                 case "marauderiic", "warhawk", "battlemaster", "stalker" ->
-                        new Mech(chassisName, 85, EMechclass.ASSAULT);
+                        new Mech(chassisName, 85, EMechclass.ASSAULT, mechFaction, mechItemId, mechName);
                 case "bloodasp", "highlanderiic", "madcatmkii", "supernova", "cyclops", "highlander", "mauler" ->
-                        new Mech(chassisName, 90, EMechclass.ASSAULT);
-                case "executioner", "banshee", "corsair", "nightstar" -> new Mech(chassisName, 95, EMechclass.ASSAULT);
+                        new Mech(chassisName, 90, EMechclass.ASSAULT, mechFaction, mechItemId, mechName);
+                case "executioner", "banshee", "corsair", "nightstar" ->
+                        new Mech(chassisName, 95, EMechclass.ASSAULT, mechFaction, mechItemId, mechName);
                 case "direwolf", "kodiak", "annihilator", "atlas", "fafnir", "kingcrab", "marauderii" ->
-                        new Mech(chassisName, 100, EMechclass.ASSAULT);
+                        new Mech(chassisName, 100, EMechclass.ASSAULT, mechFaction, mechItemId, mechName);
                 default -> null;
             };
         }
@@ -1413,8 +1420,206 @@ public class MechIdInfo {
         }
 
         public String toString() {
-            return mechClass + " " + chassisName;
+            return "MechitemID: " + getMechItemId() + " " + getMechChassie() + " " + getMechName() + " is a " + getMechFaction() + " " + getMechClass() + " Mech an have " + getTonnage() + " tons";
+        }
+
+        public EFaction getMechFaction() {
+            return mechFaction;
+        }
+
+        public String getMechItemId() {
+            return mechItemId;
+        }
+
+        private String addParenthesisToLastCharacter(String text) {
+            if (text != null && !text.isEmpty()) {
+                int lastIndex = text.length() - 1;
+                char lastChar = text.charAt(lastIndex);
+                return text.substring(0, lastIndex) + "(" + lastChar + ")";
+            } else {
+                return text;
+            }
+        }
+
+        public String getMechName() {
+
+            String newMachName = this.mechName.toUpperCase();
+            if (
+                    (193 < Integer.parseInt(mechItemId)) && (203 > Integer.parseInt(mechItemId)) ||
+                            (348 < Integer.parseInt(mechItemId)) && (362 > Integer.parseInt(mechItemId)) ||
+                            (397 < Integer.parseInt(mechItemId)) && (406 > Integer.parseInt(mechItemId)) ||
+                            (447 < Integer.parseInt(mechItemId)) && (457 > Integer.parseInt(mechItemId)) ||
+                            (462 < Integer.parseInt(mechItemId)) && (470 > Integer.parseInt(mechItemId)) ||
+                            (483 < Integer.parseInt(mechItemId)) && (493 > Integer.parseInt(mechItemId)) ||
+                            (525 < Integer.parseInt(mechItemId)) && (535 > Integer.parseInt(mechItemId)) ||
+                            (752 < Integer.parseInt(mechItemId)) && (758 > Integer.parseInt(mechItemId)) ||
+                            (818 < Integer.parseInt(mechItemId)) && (825 > Integer.parseInt(mechItemId)) ||
+                            (852 < Integer.parseInt(mechItemId)) && (878 > Integer.parseInt(mechItemId)) ||
+                            (881 < Integer.parseInt(mechItemId)) && (894 > Integer.parseInt(mechItemId)) ||
+                            (899 < Integer.parseInt(mechItemId)) && (962 > Integer.parseInt(mechItemId)) ||
+                            (967 < Integer.parseInt(mechItemId)) && (979 > Integer.parseInt(mechItemId)) ||
+                            (980 < Integer.parseInt(mechItemId)) && (996 > Integer.parseInt(mechItemId)) ||
+                            (3600 < Integer.parseInt(mechItemId)) && (3605 > Integer.parseInt(mechItemId))
+            ) {
+                newMachName = addParenthesisToLastCharacter(this.mechName).toUpperCase();
+            }
+            return switch (this.mechName) {
+
+                case "cn9-ah" -> "CN9-AH(L)";
+                case "cn9-ancix" -> "CN9-A(NCIX)";
+                case "as7-s" -> "AS7-S(L)";
+                case "as7-d-dc-escort" -> "AS7-D-DC";
+                case "jr7-d-founder" -> "JR7-D(F)";
+                case "cplt-c1-founder" -> "CPLT-C1(F)";
+                case "hbk-4g-founder" -> "HBK-4G(F)";
+                case "as7-d-founder" -> "AS7-D(F)";
+                case "drg-5nc",
+                        "hbk-4pc",
+                        "jr7-fc",
+                        "jr7-ds",
+                        "cplt-a1c",
+                        "as7-rsc",
+                        "cn9-ac",
+                        "sdr-5kc",
+                        "lct-1vp",
+                        "shd-2hp",
+                        "tdr-5sp",
+                        "blr-1gp",
+                        "bj-1c",
+                        "hgn-733cc",
+                        "grf-1np",
+                        "wvr-6rp",
+                        "cda-2ac",
+                        "stk-3fc",
+                        "ctf-3dc",
+                        "vtr-9sc",
+                        "on1-kc",
+                        "fs9-sc",
+                        "shd-2hc",
+                        "tbr-primei",
+                        "adr-primei",
+                        "dwf-primei",
+                        "kfx-primei",
+                        "nva-primei",
+                        "scr-primei",
+                        "smn-primei",
+                        "whk-primei",
+                        "qkd-4gc",
+                        "mdd-primei",
+                        "tbt-7mc",
+                        "tdr-9sec",
+                        "ifr-primei",
+                        "mlx-primei",
+                        "rvn-3lc",
+                        "hbr-primei",
+                        "gar-primei",
+                        "kgc-000l",
+                        "enf-5dr",
+                        "bnc-3mc",
+                        "ghr-5jr",
+                        "zeu-6sr",
+                        "grf-1sc",
+                        "wvr-6kc",
+                        "um-r63s",
+                        "jm6-ac",
+                        "ebj-primei",
+                        "exe-primei",
+                        "ach-primei",
+                        "shc-primei",
+                        "enf-4rc",
+                        "tbr-cc",
+                        "bl-6-kntr",
+                        "mal-1rr",
+                        "crb-27r",
+                        "wlf-2r",
+                        "cda-3fl",
+                        "wvr-7dl",
+                        "zeu-9s2l",
+                        "nva-dl",
+                        "exe-cl",
+                        "mad-3rs",
+                        "hbk-iico",
+                        "on1-iico",
+                        "hgn-iico",
+                        "whm-6rs",
+                        "rfl-3ns",
+                        "arc-2rs",
+                        "lct-1ec",
+                        "kdk-1s",
+                        "pxh-1s",
+                        "vpr-primes",
+                        "cp-11-as",
+                        "ntg-primes",
+                        "bsw-x1s",
+                        "snv-1s",
+                        "asn-21s",
+                        "jvn-10ns",
+                        "uzl-3ss",
+                        "anh-2as",
+                        "cou-primes",
+                        "mcii-1s",
+                        "osr-3ds",
+                        "nsr-9js",
+                        "acw-primes",
+                        "nct-primes",
+                        "tns-4ss",
+                        "um-r68l",
+                        "grf-5ml",
+                        "vtr-9a1l",
+                        "kfx-gl",
+                        "lbk-hl",
+                        "hsn-7ds",
+                        "pir-1s",
+                        "bkl-primes",
+                        "sns-primes",
+                        "fnr-5s",
+                        "nsr-9pc",
+                        "rgh-1ac",
+                        "bsw-s2c",
+                        "asn-101c",
+                        "osr-1vc",
+                        "uzl-3pc",
+                        "mdd-cc",
+                        "bas-primes",
+                        "fle-17s",
+                        "hlf-1s",
+                        "vl-2ts",
+                        "inc-1s",
+                        "chp-1ns",
+                        "vgl-1s",
+                        "htm-27ts",
+                        "whm-iics",
+                        "cor-5rs",
+                        "mad-4as",
+                        "rfl-iics",
+                        "cplt-c2s",
+                        "whm-9ds",
+                        "mad-9ms",
+                        "kgc-001s",
+                        "dv-6ms",
+                        "um-r60ls",
+                        "pxh-1ks",
+                        "tdr-10ses",
+                        "drg-1gs",
+                        "tbr-bhs",
+                        "dwf-cs",
+                        "pxh-7ss",
+                        "stk-7ds",
+                        "um-r80l",
+                        "vpr-fl",
+                        "as7-k3l",
+                        "ntg-dcs",
+                        "mal-2ps",
+                        "mad-iic-as",
+                        "bas-es",
+                        "kfx-ps" -> addParenthesisToLastCharacter(this.mechName).toUpperCase();
+                default -> newMachName;
+            };
+
+        }
+
+        public String getMechChassie() {
+            return mechChassie;
         }
     }
-
 }
