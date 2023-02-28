@@ -21,60 +21,73 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2023, ClanWolf.net                            |
+ * Copyright (c) 2001-2020, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.ircclient;
+package net.clanwolf.starmap.bots.db;
 
-import net.clanwolf.db.DBConnection;
-import net.clanwolf.db.ExtcomMonitor;
+import com.mysql.cj.jdbc.MysqlDataSource;
+import net.clanwolf.starmap.bots.ircclient.IRCBot;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.invoke.MethodHandles;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.NoSuchElementException;
-import java.util.TimerTask;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.Properties;
 
-/**
- * @author Meldric
- */
-public class ExtcomTimerTask extends TimerTask {
+public class DBConnection {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-	private static IRCBot bot = null;
-	private static DBConnection dbc = null;
+	private Connection conn = null;
 
-	public ExtcomTimerTask(DBConnection dbcp) {
-		dbc = dbcp;
+	public DBConnection() {
+		getNewDBConnection();
 	}
 
-	public void setBot(IRCBot bot) {
-		ExtcomTimerTask.bot = bot;
-	}
-
-	@Override
-	public void run() {
-		if (bot != null && IRCBot.connected) {
-			logger.info("Requesting new entries from ext_com table");
-
-			LinkedList<String> msgs = ExtcomMonitor.getMessages(dbc);
-
-			String[] msgscut = { "...", "...", "...", "...", "..." };
-
-			for (int i=4; i>=0; i--) {
-				try {
-					msgscut[i] = msgs.getLast();
-					msgs.removeLast();
-				} catch (NoSuchElementException nsee) {
-					break;
-				}
+	public void getNewDBConnection() {
+		final Properties auth = new Properties();
+		try {
+			final String authFileName = "auth.properties";
+			InputStream inputStream = DBConnection.class.getClassLoader().getResourceAsStream(authFileName);
+			if (inputStream != null) {
+				auth.load(inputStream);
+			} else {
+				throw new FileNotFoundException("Auth-Property file '" + authFileName + "' not found in classpath.");
 			}
-			for (String s : msgscut) {
-				if (!"...".equalsIgnoreCase(s)) {
-					bot.send("C3-Server: " + s);
-				}
-			}
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
 		}
+
+		try {
+			Context context = new InitialContext();
+			MysqlDataSource dataSource = new MysqlDataSource();
+			dataSource.setUser(auth.getProperty("user"));
+			dataSource.setPassword(auth.getProperty("password"));
+			dataSource.setServerName("localhost");
+			dataSource.setDatabaseName("C3");
+			dataSource.setServerTimezone("CET");
+
+			conn = dataSource.getConnection();
+		} catch (NamingException | SQLException e) {
+			e.printStackTrace();
+			logger.error("Exception in IRCBot getting DB connection", e);
+		}
+	}
+
+	public boolean connected() throws SQLException {
+		return conn != null && !conn.isClosed();
+	}
+
+	public Connection getConnection() throws SQLException {
+		if (this.conn == null || this.conn.isClosed()) {
+			this.getNewDBConnection();
+		}
+		return this.conn;
 	}
 }

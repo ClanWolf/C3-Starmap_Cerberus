@@ -26,14 +26,8 @@
  */
 package net.clanwolf.starmap.server.util;
 
-import io.nadron.app.PlayerSession;
-import net.clanwolf.client.mail.MailManager;
+import net.clanwolf.starmap.mail.MailManager;
 import net.clanwolf.starmap.server.beans.C3GameSessionHandler;
-import net.clanwolf.starmap.server.beans.C3Player;
-import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
-import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.UserSessionDAO;
-import net.clanwolf.starmap.server.persistence.pojos.UserPOJO;
-import net.clanwolf.starmap.server.persistence.pojos.UserSessionPOJO;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import org.slf4j.Logger;
@@ -42,7 +36,6 @@ import net.clanwolf.starmap.server.GameServer;
 
 import java.io.File;
 import java.lang.invoke.MethodHandles;
-import java.sql.Timestamp;
 import java.util.TimerTask;
 
 /**

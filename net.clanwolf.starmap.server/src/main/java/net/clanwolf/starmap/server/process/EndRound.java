@@ -27,7 +27,7 @@
 package net.clanwolf.starmap.server.process;
 
 import jakarta.persistence.EntityTransaction;
-import net.clanwolf.client.mail.MailManager;
+import net.clanwolf.starmap.mail.MailManager;
 import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.server.GameServer;
 import net.clanwolf.starmap.server.Nexus.Nexus;

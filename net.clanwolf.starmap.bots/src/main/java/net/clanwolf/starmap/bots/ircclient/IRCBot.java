@@ -24,13 +24,13 @@
  * Copyright (c) 2001-2020, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.ircclient;
+package net.clanwolf.starmap.bots.ircclient;
 
 import com.google.common.collect.ImmutableSortedSet;
-import net.clanwolf.db.DBConnection;
-import net.clanwolf.client.mail.MailManager;
-import net.clanwolf.util.CheckShutdownFlagTimerTask;
-import net.clanwolf.util.Internationalization;
+import net.clanwolf.starmap.bots.db.DBConnection;
+import net.clanwolf.starmap.bots.util.CheckShutdownFlagTimerTask;
+import net.clanwolf.starmap.bots.util.Internationalization;
+import net.clanwolf.starmap.mail.MailManager;
 import net.clanwolf.starmap.logging.C3LogUtil;
 import org.pircbotx.*;
 import org.pircbotx.delay.StaticDelay;
@@ -48,6 +48,7 @@ import java.io.PrintWriter;
 import java.lang.invoke.MethodHandles;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -61,7 +62,6 @@ public class IRCBot extends ListenerAdapter {
 
 	public static boolean dropDebugStrings = false;
 	private static PircBotX pIrcBot;
-	private static DBConnection dbc;
 	private static UserChannelDao<User, Channel> channel = null;
 	private static final boolean server = true;
 	private static boolean started = false;
@@ -219,7 +219,6 @@ public class IRCBot extends ListenerAdapter {
 
 	public static void main(String[] args) throws Exception {
 		int oneMinute = 1000 * 60;
-		dbc = new DBConnection();
 
 		prepareLogging();
 
@@ -232,14 +231,14 @@ public class IRCBot extends ListenerAdapter {
 		RandomTextDropTimerTask randomTextDropTimerTask = new RandomTextDropTimerTask();
 
 		Timer extcomTimer = new Timer();
-		ExtcomTimerTask extcomTimerTask = new ExtcomTimerTask(dbc);
+		ExtcomTimerTask extcomTimerTask = new ExtcomTimerTask();
 
 		Timer checkShutdownFlagTimer = new Timer();
 		checkShutdownFlagTimer.schedule(new CheckShutdownFlagTimerTask(serverBaseDir, "IRCBot"), 1000, 1000 * 10);
 
 		userlistDropTimer.schedule(userListDropTimerTask, 1000, 7 * oneMinute);
 		randomTextDropTimer.schedule(randomTextDropTimerTask, 1000, 5 * oneMinute);
-		extcomTimer.schedule(extcomTimerTask, 1000, 15000);
+		extcomTimer.schedule(extcomTimerTask, 1000, 25000);
 
 		IRCBot ircBot = new IRCBot();
 		ircBot.botJoinedMail();
@@ -248,7 +247,6 @@ public class IRCBot extends ListenerAdapter {
 		extcomTimerTask.setBot(ircBot);
 
 		Internationalization.setBot(ircBot);
-		dbc.setIrcBot(ircBot);
 		started = true;
 		ircBot.start(); // This must be the last command!
 	}
@@ -271,8 +269,9 @@ public class IRCBot extends ListenerAdapter {
 			int num = (int) (Math.random() * welcomeMessage.length);
 			send("---------------------------------------------------------------");
 			send(welcomeMessage[num] + " " + user + "!");
-			send("This channel is dedicated to BATTLETECH, a game of armored combat.");
-			send("Use '!" + ircUserName + ", help' to see list of commands!");
+			send(Internationalization.getString("dedicated"));
+
+			send("'!" + ircUserName + ", help' " + Internationalization.getString("commandhelp"));
 			if (lang.equals("en")) {
 				send("I currently speak english.");
 			} else if (lang.equals("de")) {
@@ -307,7 +306,7 @@ public class IRCBot extends ListenerAdapter {
 	public void onQuit(QuitEvent event) {
 		UserChannelDao<User, Channel> ucd = event.getBot().getUserChannelDao();
 		saveUserList(null, ucd);
-		connected = false;
+//		logger.info(event.getUser().getNick() + " left");
 	}
 
 	public void start() throws Exception {
@@ -325,13 +324,15 @@ public class IRCBot extends ListenerAdapter {
 	}
 
 	public synchronized void checkDB() {
-		if (dbc == null) {
-			dbc = new DBConnection();
-		}
-		if (!dbc.connected()) {
-			send(Internationalization.getString("dbConnectError"));                                        // [e004]
-		} else {
-			send(Internationalization.getString("dbConnected"));                                           // [i001]
+		try {
+			DBConnection dbc = new DBConnection();
+			if (!dbc.connected()) {
+				send(Internationalization.getString("dbConnectError"));                                        // [e004]
+			} else {
+				send(Internationalization.getString("dbConnected"));                                           // [i001]
+			}
+		} catch(SQLException e) {
+			logger.error("Error in checking db.", e);
 		}
 	}
 

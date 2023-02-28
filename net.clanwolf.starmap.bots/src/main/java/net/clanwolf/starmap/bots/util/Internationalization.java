@@ -24,73 +24,74 @@
  * Copyright (c) 2001-2020, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.db;
+package net.clanwolf.starmap.bots.util;
 
-import com.mysql.cj.jdbc.MysqlDataSource;
-import net.clanwolf.ircclient.IRCBot;
+import net.clanwolf.starmap.bots.ircclient.IRCBot;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.util.Properties;
+import java.text.MessageFormat;
+import java.util.Locale;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
-public class DBConnection {
-	private Connection conn = null;
-	private IRCBot ircBot = null;
+public abstract class Internationalization {
 
-	public DBConnection() {
-		getDBConnection();
+	private static ResourceBundle sMessages;
+	private static Locale sCurrentLocale;
+
+	private static IRCBot ircBot = null;
+
+	static {
+		Locale l = Locale.GERMAN;
+		try {
+			setLocale(l);
+		} catch (MissingResourceException mre) {
+			setLocale(Locale.ENGLISH);
+		}
 	}
 
-	public void getDBConnection() {
-		final Properties auth = new Properties();
-		try {
-			final String authFileName = "auth.properties";
-			InputStream inputStream = DBConnection.class.getClassLoader().getResourceAsStream(authFileName);
-			if (inputStream != null) {
-				auth.load(inputStream);
-			} else {
-				throw new FileNotFoundException("Auth-Property file '" + authFileName + "' not found in classpath.");
-			}
-		} catch (IOException ioe) {
-			ioe.printStackTrace();
+	public static void setLocale(Locale locale) throws MissingResourceException {
+		sMessages = ResourceBundle.getBundle("MessagesBundle", locale);
+		sCurrentLocale = locale;
+		Locale.setDefault(sCurrentLocale);
+	}
+
+	public static void setBot(IRCBot b) {
+		ircBot = b;
+	}
+
+	public static Locale getLocale() {
+		return sCurrentLocale;
+	}
+
+	public static String getLanguage() {
+		return sCurrentLocale.getLanguage();
+	}
+
+	public static String getString(String key) {
+		return getStringSaveFromBundle(key, sMessages);
+	}
+
+	public static String getString(String key, String... args) {
+		String msg = getStringSaveFromBundle(key, sMessages);
+		if (msg != null) {
+			MessageFormat formatter = new MessageFormat("");
+			formatter.applyPattern(msg);
+			return formatter.format(args);
 		}
+		return null;
+	}
 
+	private static String getStringSaveFromBundle(String key, ResourceBundle bundle) {
 		try {
-			Context context = new InitialContext();
-			MysqlDataSource dataSource = new MysqlDataSource();
-			dataSource.setUser(auth.getProperty("user"));
-			dataSource.setPassword(auth.getProperty("password"));
-			dataSource.setServerName("localhost");
-			dataSource.setDatabaseName("C3");
-			dataSource.setServerTimezone("CET");
-
-			conn = dataSource.getConnection();
-		} catch (NamingException | SQLException e) {
-			e.printStackTrace();
+			if (key == null) {
+				return null;
+			}
+			return bundle.getString(key);
+		} catch (MissingResourceException mre) {
 			if (ircBot != null) {
-				if (IRCBot.dropDebugStrings) ircBot.send(e.getMessage());
+				ircBot.send(Internationalization.getString("resourceNotFound", key, "" + bundle)); // [e001]
 			}
 		}
-	}
-
-	public boolean connected() {
-		return conn != null;
-	}
-
-	public void setIrcBot(IRCBot ircBot) {
-		this.ircBot = ircBot;
-	}
-
-	public Connection getConnection() {
-		if (this.conn == null) {
-			this.getConnection();
-		}
-		return this.conn;
+		return key;
 	}
 }

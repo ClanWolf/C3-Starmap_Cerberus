@@ -21,26 +21,64 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2020, ClanWolf.net                            |
+ * Copyright (c) 2001-2023, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.ircclient;
+package net.clanwolf.starmap.bots.ircclient;
 
+import net.clanwolf.starmap.bots.db.DBConnection;
+import net.clanwolf.starmap.bots.db.ExtcomMonitor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.invoke.MethodHandles;
+import java.util.LinkedList;
+import java.util.NoSuchElementException;
 import java.util.TimerTask;
 
-public class UserListDropTimerTask extends TimerTask {
+/**
+ * @author Meldric
+ */
+public class ExtcomTimerTask extends TimerTask {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+	private static IRCBot bot = null;
 
-	private IRCBot bot = null;
+	public ExtcomTimerTask() {
+	}
 
 	public void setBot(IRCBot bot) {
-		this.bot = bot;
+		ExtcomTimerTask.bot = bot;
 	}
 
 	@Override
 	public void run() {
-		if (bot != null) {
-			if (IRCBot.dropDebugStrings) bot.send("Dropping user list.");
-			bot.saveUserList();
+		try {
+//			logger.info("bot: " + (bot == null ? "null" : bot.getUserListString()));
+//			logger.info("Connected: " + bot.connected);
+
+			if (bot != null && IRCBot.connected) {
+//				logger.info("Requesting new entries from ext_com table");
+
+				LinkedList<String> msgs = ExtcomMonitor.getMessages();
+
+				String[] msgscut = { "...", "...", "...", "...", "..." };
+
+				for (int i = 4; i >= 0; i--) {
+					try {
+						msgscut[i] = msgs.getLast();
+						msgs.removeLast();
+					} catch (NoSuchElementException nsee) {
+						break;
+					}
+				}
+				for (String s : msgscut) {
+					if (!"...".equalsIgnoreCase(s)) {
+						bot.send("C3-Server: " + s);
+					}
+				}
+			}
+		} catch(Exception e) {
+			logger.error("Exception in IRCBot message pickup", e);
 		}
 	}
 }

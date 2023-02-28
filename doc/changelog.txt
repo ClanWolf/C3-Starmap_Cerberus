@@ -10,6 +10,10 @@ CURRENTLY IN PROGRESS:
 
 ----------------------------------------------------------------
 
+Version 7.2.78 (28.02.2023)
+- CHANGED: Package structure for logging purposes
+- FIXED: IRC related problems
+
 Version 7.2.76 (28.02.2023)
 - ADDED: New constant table for economy calculations
 - FIXED: Couple of exceptions from testsession (27.02.2023)

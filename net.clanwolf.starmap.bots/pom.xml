@@ -129,7 +129,7 @@
 									<resource>META-INF/spring.schemas</resource>
 								</transformer>
 								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>net.clanwolf.ircclient.IRCBot</mainClass>
+									<mainClass>net.clanwolf.starmap.bots.ircclient.IRCBot</mainClass>
 									<manifestEntries>
 										<Multi-Release>true</Multi-Release>
 										<Built-By>ClanWolf.net (Christian Bartel)</Built-By>
@@ -165,7 +165,7 @@
 									<resource>META-INF/spring.schemas</resource>
 								</transformer>
 								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-									<mainClass>net.clanwolf.ts3client.TS3Bot</mainClass>
+									<mainClass>net.clanwolf.starmap.bots.ts3client.TS3Bot</mainClass>
 									<manifestEntries>
 										<Multi-Release>true</Multi-Release>
 										<Built-By>ClanWolf.net (Christian Bartel)</Built-By>

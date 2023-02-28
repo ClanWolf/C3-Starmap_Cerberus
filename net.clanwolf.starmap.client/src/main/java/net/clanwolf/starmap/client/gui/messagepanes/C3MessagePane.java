@@ -61,11 +61,11 @@ public class C3MessagePane extends Pane {
 	private Image icon = null;
 	private ImageView view;
 
-	private Button yesButton = new Button(Internationalization.getString("general_yes"));
-	private Button noButton = new Button(Internationalization.getString("general_no"));
-	private Button okButton = new Button("OK");
-	private Button closeButton = new Button(Internationalization.getString("general_close"));
-	private Button cancelButton = new Button(Internationalization.getString("general_cancel"));
+	private final Button yesButton = new Button(Internationalization.getString("general_yes"));
+	private final Button noButton = new Button(Internationalization.getString("general_no"));
+	private final Button okButton = new Button("OK");
+	private final Button closeButton = new Button(Internationalization.getString("general_close"));
+	private final Button cancelButton = new Button(Internationalization.getString("general_cancel"));
 
 	private Rectangle rect;
 	private Rectangle rectBorder;

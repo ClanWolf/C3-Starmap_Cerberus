@@ -24,7 +24,7 @@
  * Copyright (c) 2001-2023, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.demo;
+package net.clanwolf.starmap.logging.demo;
 
 import java.io.File;
 import java.lang.invoke.MethodHandles;

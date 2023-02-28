@@ -47,7 +47,7 @@ import com.itextpdf.layout.properties.HorizontalAlignment;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 import com.itextpdf.layout.properties.VerticalAlignment;
-import net.clanwolf.client.mail.MailManager;
+import net.clanwolf.starmap.mail.MailManager;
 import net.clanwolf.starmap.server.GameServer;
 import net.clanwolf.starmap.server.Nexus.Nexus;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.FactionDAO;

@@ -24,7 +24,7 @@
  * Copyright (c) 2001-2020, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.ts3client;
+package net.clanwolf.starmap.bots.ts3client;
 
 import com.github.theholywaffle.teamspeak3.TS3Api;
 import com.github.theholywaffle.teamspeak3.TS3Config;
@@ -34,10 +34,10 @@ import com.github.theholywaffle.teamspeak3.api.event.TS3EventAdapter;
 import com.github.theholywaffle.teamspeak3.api.event.TS3EventType;
 import com.github.theholywaffle.teamspeak3.api.wrapper.Client;
 import com.github.theholywaffle.teamspeak3.api.wrapper.ServerGroup;
-import net.clanwolf.client.mail.MailManager;
-import net.clanwolf.db.DBConnection;
+import net.clanwolf.starmap.bots.db.DBConnection;
+import net.clanwolf.starmap.mail.MailManager;
 import net.clanwolf.starmap.logging.C3LogUtil;
-import net.clanwolf.util.CheckShutdownFlagTimerTask;
+import net.clanwolf.starmap.bots.util.CheckShutdownFlagTimerTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -24,7 +24,7 @@
  * Copyright (c) 2001-2020, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.ircclient;
+package net.clanwolf.starmap.bots.ircclient;
 
 import java.util.Random;
 import java.util.TimerTask;

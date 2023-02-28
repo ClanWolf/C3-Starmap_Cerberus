@@ -24,7 +24,7 @@
  * Copyright (c) 2001-2020, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.client.mail;
+package net.clanwolf.starmap.mail;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

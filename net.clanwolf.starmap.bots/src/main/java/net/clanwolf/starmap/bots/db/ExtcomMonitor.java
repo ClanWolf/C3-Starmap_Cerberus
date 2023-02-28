@@ -24,7 +24,7 @@
  * Copyright (c) 2001-2020, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.db;
+package net.clanwolf.starmap.bots.db;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,7 +38,7 @@ import java.util.LinkedList;
 public class ExtcomMonitor {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	public synchronized static LinkedList<String> getMessages(DBConnection dbc) {
+	public synchronized static LinkedList<String> getMessages() throws Exception {
 		// get messages from database
 		// mark message as processed by IRCBot in database
 		Statement stmt_select = null;
@@ -46,13 +46,12 @@ public class ExtcomMonitor {
 		ResultSet rs_select = null;
 		LinkedList<String> messages = new LinkedList<>();
 
+//		logger.info("Getting Messages from DB");
+		DBConnection dbc = new DBConnection();
 		try {
 			String sql_select = "SELECT Text, ProcessedIRC, Updated FROM EXT_COM WHERE ProcessedIRC = 0; ";
 			// sql_select.append("AND Updated > now() - interval 1 MINUTE; ");
 
-			if (dbc.getConnection() == null) {
-				logger.info("Reconnecting database");
-			}
 			stmt_select = dbc.getConnection().createStatement();
 			rs_select = stmt_select.executeQuery(sql_select);
 			if (rs_select.next()) {
@@ -64,9 +63,6 @@ public class ExtcomMonitor {
 			stmt_select.close();
 
 			// Update to set processed to 1
-			if (dbc.getConnection() == null) {
-				logger.info("Reconnecting database");
-			}
 			stmt_update = dbc.getConnection().createStatement();
 			stmt_update.executeUpdate("UPDATE EXT_COM set ProcessedIRC = 1;"); // Update all lines to be processed
 
@@ -96,6 +92,11 @@ public class ExtcomMonitor {
 				} catch (Exception ignored) {
 				}
 			}
+			if (!dbc.getConnection().getAutoCommit()) {
+				dbc.getConnection().commit();
+			}
+			dbc.getConnection().close();
+			dbc = null;
 		}
 		return messages;
 	}

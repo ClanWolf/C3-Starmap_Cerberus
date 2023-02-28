@@ -24,74 +24,23 @@
  * Copyright (c) 2001-2020, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.util;
+package net.clanwolf.starmap.bots.ircclient;
 
-import net.clanwolf.ircclient.IRCBot;
+import java.util.TimerTask;
 
-import java.text.MessageFormat;
-import java.util.Locale;
-import java.util.MissingResourceException;
-import java.util.ResourceBundle;
+public class UserListDropTimerTask extends TimerTask {
 
-public abstract class Internationalization {
+	private IRCBot bot = null;
 
-	private static ResourceBundle sMessages;
-	private static Locale sCurrentLocale;
+	public void setBot(IRCBot bot) {
+		this.bot = bot;
+	}
 
-	private static IRCBot ircBot = null;
-
-	static {
-		Locale l = Locale.GERMAN;
-		try {
-			setLocale(l);
-		} catch (MissingResourceException mre) {
-			setLocale(Locale.ENGLISH);
+	@Override
+	public void run() {
+		if (bot != null) {
+			if (IRCBot.dropDebugStrings) bot.send("Dropping user list.");
+			bot.saveUserList();
 		}
-	}
-
-	public static void setLocale(Locale locale) throws MissingResourceException {
-		sMessages = ResourceBundle.getBundle("MessagesBundle", locale);
-		sCurrentLocale = locale;
-		Locale.setDefault(sCurrentLocale);
-	}
-
-	public static void setBot(IRCBot b) {
-		ircBot = b;
-	}
-
-	public static Locale getLocale() {
-		return sCurrentLocale;
-	}
-
-	public static String getLanguage() {
-		return sCurrentLocale.getLanguage();
-	}
-
-	public static String getString(String key) {
-		return getStringSaveFromBundle(key, sMessages);
-	}
-
-	public static String getString(String key, String... args) {
-		String msg = getStringSaveFromBundle(key, sMessages);
-		if (msg != null) {
-			MessageFormat formatter = new MessageFormat("");
-			formatter.applyPattern(msg);
-			return formatter.format(args);
-		}
-		return null;
-	}
-
-	private static String getStringSaveFromBundle(String key, ResourceBundle bundle) {
-		try {
-			if (key == null) {
-				return null;
-			}
-			return bundle.getString(key);
-		} catch (MissingResourceException mre) {
-			if (ircBot != null) {
-				ircBot.send(Internationalization.getString("resourceNotFound", key, "" + bundle)); // [e001]
-			}
-		}
-		return key;
 	}
 }
