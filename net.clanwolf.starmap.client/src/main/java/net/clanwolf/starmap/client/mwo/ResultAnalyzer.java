@@ -193,7 +193,7 @@ public class ResultAnalyzer {
 				// Same teams cannot be right! Raise error
 				C3Message m = new C3Message(C3MESSAGES.WARNING_BLACKBOX_TEAMS_INVALID);
 				m.setType(C3MESSAGETYPES.CLOSE);
-				m.setText("Teams seem to be ivalid!");
+				m.setText("Teams seem to be invalid!");
 				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(m);
 			}
 

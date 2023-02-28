@@ -75,6 +75,7 @@ import net.clanwolf.starmap.client.util.Tools;
 import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
+import net.clanwolf.starmap.transfer.enums.MEDALS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.transfer.dtos.*;

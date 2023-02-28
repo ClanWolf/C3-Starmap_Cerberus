@@ -2009,8 +2009,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 						handleCommand(com);
 					}
 				}
-				if (com.contains("test popup")
-				|| com.contains("test medal")) {
+				if (com.startsWith("test ")) {
 					handleCommand(com);
 				}
 				if (com.startsWith("*!!!*")) {
@@ -2447,14 +2446,24 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			}
 		}
 
-		if (com.toLowerCase().startsWith("test popup")) {
-			ActionManager.getAction(ACTIONS.SHOW_POPUP).execute(POPUPS.Orders_Confirmed);
-			Nexus.storeCommandHistory();
-		}
+		// Terminal commands with "test (something)" end up here (if godadmin)
+		if (Security.isGodAdmin(Nexus.getCurrentUser())) {
+			if (com.toLowerCase().startsWith("test popup")) {
+				ActionManager.getAction(ACTIONS.SHOW_POPUP).execute(POPUPS.Orders_Confirmed);
+				Nexus.storeCommandHistory();
+			}
 
-		if (com.toLowerCase().startsWith("test medal")) {
-			ActionManager.getAction(ACTIONS.SHOW_MEDAL).execute(MEDALS.First_Blood);
-			Nexus.storeCommandHistory();
+			if (com.toLowerCase().startsWith("test medal")) {
+				ActionManager.getAction(ACTIONS.SHOW_MEDAL).execute(MEDALS.First_Blood);
+				Nexus.storeCommandHistory();
+			}
+
+			if (com.toLowerCase().startsWith("test error")) {
+				C3Message m = new C3Message(C3MESSAGES.WARNING_BLACKBOX_TEAMS_INVALID);
+				m.setType(C3MESSAGETYPES.CLOSE);
+				m.setText("Teams seem to be invalid!");
+				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(m);
+			}
 		}
 	}
 

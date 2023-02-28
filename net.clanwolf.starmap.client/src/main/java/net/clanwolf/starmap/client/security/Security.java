@@ -54,7 +54,7 @@ public class Security {
 	 * @param user user
 	 * @return isGodAdmin
 	 */
-	private static boolean isGodAdmin(UserDTO user) {
+	public static boolean isGodAdmin(UserDTO user) {
 		boolean isGodAdmin = false;
 		long privs = user.getPrivileges();
 		if (privs < 0) {

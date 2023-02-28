@@ -10,8 +10,9 @@ CURRENTLY IN PROGRESS:
 
 ----------------------------------------------------------------
 
-Version 7.2.75 (27.02.2023)
+Version 7.2.76 (28.02.2023)
 - ADDED: New constant table for economy calculations
+- FIXED: Couple of exceptions from testsession (27.02.2023)
 
 Version 7.2.70 (23.02.2023)
 - CHANGED: Removed unnecessary parts from nadron server

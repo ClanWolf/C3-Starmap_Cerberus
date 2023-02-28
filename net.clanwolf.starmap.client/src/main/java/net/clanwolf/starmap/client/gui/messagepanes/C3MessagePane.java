@@ -50,6 +50,8 @@ import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.client.util.Tools;
 
+import java.util.Objects;
+
 public class C3MessagePane extends Pane {
 
 	private C3Message message = null;
@@ -168,7 +170,7 @@ public class C3MessagePane extends Pane {
 		rect = new Rectangle(100, 100);
 		rect.setFill(Color.rgb(97, 9, 9, 0.95));
 
-		icon  = new Image(getClass().getResourceAsStream("/icons/message_error_red.png"));
+		icon  = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/message_error_red.png")));
 
 		view = new ImageView();
 		view.setImage(icon);

@@ -663,21 +663,25 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		logger.info("----------------------------------------------------");
 		logger.info("Chars in: " + a.getAttackCharList().size());
 		for (AttackCharacterDTO ac : a.getAttackCharList()) {
-			String l = "# --- ";
 			RolePlayCharacterDTO c = Nexus.getCharacterById(ac.getCharacterID());
 
-			l = l + c.getName() + " (Type: " + ac.getType() + ") ";
-//			if (a.getAttackerFactionId().equals(c.getFactionId())) {
-//				// this user belongs to the attacker faction
-//				potentialDropleadersAttacker.put(ac, c);
-//				l = l + "(potential droplead for attacker) ";
-//			}
-//			if (a.getDefenderFactionId().equals(Nexus.getCharacterById(ac.getCharacterID()).getFactionId())) {
-//				// this user belongs to the defender faction
-//				potentialDropleadersDefender.put(ac, c);
-//				l = l + "(potential droplead for defender) ";
-//			}
-			logger.info(l);
+			if (c != null) {
+				String l = "# --- ";
+				l = l + c.getName() + " (Type: " + ac.getType() + ") ";
+				//			if (a.getAttackerFactionId().equals(c.getFactionId())) {
+				//				// this user belongs to the attacker faction
+				//				potentialDropleadersAttacker.put(ac, c);
+				//				l = l + "(potential droplead for attacker) ";
+				//			}
+				//			if (a.getDefenderFactionId().equals(Nexus.getCharacterById(ac.getCharacterID()).getFactionId())) {
+				//				// this user belongs to the defender faction
+				//				potentialDropleadersDefender.put(ac, c);
+				//				l = l + "(potential droplead for defender) ";
+				//			}
+				logger.info(l);
+			} else {
+				logger.info("AttackCharacter with rpchar id " + ac.getCharacterID() + " is potential droplead, but char was null");
+			}
 
 			characterRoleMap.put(ac.getCharacterID(), ac);
 
