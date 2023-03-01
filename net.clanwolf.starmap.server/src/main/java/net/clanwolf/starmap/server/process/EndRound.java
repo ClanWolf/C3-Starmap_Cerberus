@@ -343,7 +343,7 @@ public class EndRound {
 
                             CalcXP calcXP = new CalcXP(asp, report);
                             CalcBalance calcB = new CalcBalance(asp.getMwoMatchId(), report);
-
+                            long curAttackerCost = 0, curAttackerIncome = 0, curDefenderCost = 0, curDefenderIncome = 0;
 
                             if (statsEconomyAttackerPOJO.getFactionID() == null) {
                                 statsEconomyAttackerPOJO.setFactionID(asp.getAttackerFactionId());
@@ -356,17 +356,25 @@ public class EndRound {
                                 defenderSystemCost = defenderSystemCost + calcB.getDefendCost(asp.getStarSystemDataId());
                             }
                             for (BalanceUserInfo attackerPlayerInfo : calcB.getAttackerInfo()) {
-                                attackerMechCost = attackerMechCost + attackerPlayerInfo.mechRepairCost + attackerPlayerInfo.playerTeamDamage;
-                                attackerRewardFromMatch = attackerRewardFromMatch + attackerPlayerInfo.rewardAssist + attackerPlayerInfo.rewardDamage
+                                curAttackerCost = curAttackerCost + attackerPlayerInfo.mechRepairCost + attackerPlayerInfo.playerTeamDamage;
+                                curAttackerIncome = curAttackerIncome + attackerPlayerInfo.rewardAssist + attackerPlayerInfo.rewardDamage
                                         + attackerPlayerInfo.rewardKill + attackerPlayerInfo.rewardMatchScore + attackerPlayerInfo.rewardComponentsDestroyed
                                         + attackerPlayerInfo.rewardLossVictory;
                             }
+
+                            //Einkommen und Ausgaben zuerst auf einem Spieler runter rechen und danach auf 12 Spieler hochrechnen.
+                            attackerMechCost = attackerMechCost + ((curAttackerCost / asp.getAttackerNumberOfPilots()) * 12);
+                            attackerRewardFromMatch = attackerRewardFromMatch + ((curAttackerIncome / asp.getAttackerNumberOfPilots()) * 12);
+
                             for (BalanceUserInfo defenderPlayerInfo : calcB.getDefenderInfo()) {
-                                defenderMechCost = defenderMechCost + defenderPlayerInfo.mechRepairCost + defenderPlayerInfo.playerTeamDamage;
-                                defenderRewardFromMatch = defenderRewardFromMatch + defenderPlayerInfo.rewardAssist + defenderPlayerInfo.rewardDamage
+                                curDefenderCost = curDefenderCost + defenderPlayerInfo.mechRepairCost + defenderPlayerInfo.playerTeamDamage;
+                                curDefenderIncome = curDefenderIncome + defenderPlayerInfo.rewardAssist + defenderPlayerInfo.rewardDamage
                                         + defenderPlayerInfo.rewardKill + defenderPlayerInfo.rewardMatchScore + defenderPlayerInfo.rewardComponentsDestroyed
                                         + defenderPlayerInfo.rewardLossVictory;
                             }
+                            //Einkommen und Ausgaben zuerst auf einem Spieler runter rechen und danach auf 12 Spieler hochrechnen.
+                            defenderMechCost = defenderMechCost + ((curDefenderCost / asp.getDefenderNumberOfPilots()) * 12);
+                            defenderRewardFromMatch = defenderRewardFromMatch + ((curDefenderIncome / asp.getDefenderNumberOfPilots()) * 12);
                         }
                         //Update Attack Table
                         AttackDAO attackDAO = AttackDAO.getInstance();
