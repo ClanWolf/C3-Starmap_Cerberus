@@ -82,7 +82,7 @@ public class DropLeadCheckTimerTask extends TimerTask {
 			}
 		}
 		if (brokenAttacks.size() > 0) {
-			logger.info("Found " + brokenAttacks.size() + " broken attacks. Informing clients!");
+			logger.info("Found " + brokenAttacks.size() + " broken attacks (drops started but one or both dropleads are offline). Informing clients!");
 			for (AttackPOJO a : brokenAttacks) {
 				// send broadcastmessage for each broken attack
 				GameState response = new GameState(GAMESTATEMODES.FOUND_BROKEN_ATTACK);

@@ -3,6 +3,8 @@ C3 version history
 ----------------------------------------------------------------
 
 CURRENTLY IN PROGRESS:
+- P1: Show current fight for each user in the user list
+- P1: Show the information if broken fights were found to user
 - P2: If user logs out and another logs in without closing the client, not all user related data is adapted to the new user
 - P3: Web-View of the Starmap (ongoing, ~45%)
 ---

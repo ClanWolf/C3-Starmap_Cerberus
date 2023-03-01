@@ -73,6 +73,28 @@ public class EventCommunications {
 			showErrorMessage(state);
 
 			switch (state.getMode()) {
+				case FOUND_BROKEN_ATTACK:
+					logger.info("Broken attack (drops started but one or both dropleads are offline) was found");
+					AttackDTO attackDTO = (AttackDTO) state.getObject();
+					if (attackDTO.getId().equals(Nexus.getCurrentAttackOfUser().getAttackDTO().getId())) {
+						// this is the attack I am in currently
+						logger.info("My attack is broken");
+						// TODO: handle the situation
+
+						// Show the info to the user, wait for the server to inform that the cancel countdown for the
+						// invasion ran out
+
+
+
+
+
+
+
+
+
+					}
+					break;
+
 				case USER_GET_NEW_PLAYERLIST:
 					logger.info("EventCommunications.onDataIn: neue Playerliste ->" + state.getObject());
 
