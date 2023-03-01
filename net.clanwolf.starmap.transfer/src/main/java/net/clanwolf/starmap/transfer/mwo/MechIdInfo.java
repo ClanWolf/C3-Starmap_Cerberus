@@ -68,21 +68,21 @@ public class MechIdInfo {
 
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
         Document doc = DocumentBuilderFactory.newInstance()
-                .newDocumentBuilder().parse(new File(Objects.requireNonNull(MechIdInfo.class.getResource("/Mechs.xml")).getFile()));
+                .newDocumentBuilder().parse(new File(Objects.requireNonNull(MechIdInfo.class.getResource("/mechinfo/allmechs.xml")).getFile()));
         doc.getDocumentElement().normalize();
 
         NodeList mechNodes = doc.getElementsByTagName("Mech");
         for (int i = 0; i < mechNodes.getLength(); i++) {
             Element xmlMechList = (Element) mechNodes.item(i);
             String mechChassie = xmlMechList.getAttribute("chassis");
-            String mechItemId = xmlMechList.getAttribute("id");
+            Integer mechItemId = Integer.valueOf(xmlMechList.getAttribute("id"));
             String mechFaction = xmlMechList.getAttribute("faction");
             String mechName = xmlMechList.getAttribute("name");
-            String mechMaxTons = xmlMechList.getAttribute("MaxTons");
-            String mechBaseTons = xmlMechList.getAttribute("BaseTons");
-            String mechMaxJumpJets = xmlMechList.getAttribute("MaxJumpJets");
-            String mechMinEngineRating = xmlMechList.getAttribute("MinEngineRating");
-            String mechMaxEngineRating = xmlMechList.getAttribute("MaxEngineRating");
+            Double mechMaxTons = Double.valueOf(xmlMechList.getAttribute("MaxTons"));
+            Integer mechBaseTons = Integer.valueOf(xmlMechList.getAttribute("BaseTons"));
+            Integer mechMaxJumpJets = Integer.valueOf(xmlMechList.getAttribute("MaxJumpJets"));
+            Integer mechMinEngineRating = Integer.valueOf(xmlMechList.getAttribute("MinEngineRating"));
+            Integer mechMaxEngineRating = Integer.valueOf(xmlMechList.getAttribute("MaxEngineRating"));
             String mechVariantType = xmlMechList.getAttribute("VariantType");
             String[] variant = {"Standard", "Special", "Hero", "Champion"};
             Mech mechInfo = Mech.getMech(mechChassie, mechFaction, mechItemId, mechName);
@@ -1350,20 +1350,21 @@ public class MechIdInfo {
         private final int tonnage;
         private final EMechclass mechClass;
         private final EFaction mechFaction;
-        private final String mechItemId;
+        private final Integer mechItemId;
         private final String mechName;
         private final String mechChassie;
 
-        private Mech(String chassisName, int tonnage, EMechclass mechClass, String mechFaction, String mechItemId, String mechName) {
+        private Mech(String chassisName, int tonnage, EMechclass mechClass, String mechFaction, Integer mechItemId, String mechName) {
             this.tonnage = tonnage;
             this.mechClass = mechClass;
             this.mechFaction = EFaction.valueOf(mechFaction.toUpperCase());
             this.mechItemId = mechItemId;
             this.mechName = mechName;
             this.mechChassie = chassisName.toUpperCase();
+
         }
 
-        public static Mech getMech(String chassisName, String mechFaction, String mechItemId, String mechName) {
+        public static Mech getMech(String chassisName, String mechFaction, Integer mechItemId, String mechName) {
             return switch (chassisName) {
 
                 //Light Chassies
@@ -1427,7 +1428,7 @@ public class MechIdInfo {
             return mechFaction;
         }
 
-        public String getMechItemId() {
+        public Integer getMechItemId() {
             return mechItemId;
         }
 
@@ -1445,21 +1446,20 @@ public class MechIdInfo {
 
             String newMachName = this.mechName.toUpperCase();
             if (
-                    (193 < Integer.parseInt(mechItemId)) && (203 > Integer.parseInt(mechItemId)) ||
-                            (348 < Integer.parseInt(mechItemId)) && (362 > Integer.parseInt(mechItemId)) ||
-                            (397 < Integer.parseInt(mechItemId)) && (406 > Integer.parseInt(mechItemId)) ||
-                            (447 < Integer.parseInt(mechItemId)) && (457 > Integer.parseInt(mechItemId)) ||
-                            (462 < Integer.parseInt(mechItemId)) && (470 > Integer.parseInt(mechItemId)) ||
-                            (483 < Integer.parseInt(mechItemId)) && (493 > Integer.parseInt(mechItemId)) ||
-                            (525 < Integer.parseInt(mechItemId)) && (535 > Integer.parseInt(mechItemId)) ||
-                            (752 < Integer.parseInt(mechItemId)) && (758 > Integer.parseInt(mechItemId)) ||
-                            (818 < Integer.parseInt(mechItemId)) && (825 > Integer.parseInt(mechItemId)) ||
-                            (852 < Integer.parseInt(mechItemId)) && (878 > Integer.parseInt(mechItemId)) ||
-                            (881 < Integer.parseInt(mechItemId)) && (894 > Integer.parseInt(mechItemId)) ||
-                            (899 < Integer.parseInt(mechItemId)) && (962 > Integer.parseInt(mechItemId)) ||
-                            (967 < Integer.parseInt(mechItemId)) && (979 > Integer.parseInt(mechItemId)) ||
-                            (980 < Integer.parseInt(mechItemId)) && (996 > Integer.parseInt(mechItemId)) ||
-                            (3600 < Integer.parseInt(mechItemId)) && (3605 > Integer.parseInt(mechItemId))
+                    (193 < mechItemId) && (203 > mechItemId) ||
+                            (348 < mechItemId) && (362 > mechItemId) ||
+                            (397 < mechItemId) && (406 > mechItemId) ||
+                            (447 < mechItemId) && (457 > mechItemId) ||
+                            (462 < mechItemId) && (470 > mechItemId) ||
+                            (483 < mechItemId) && (493 > mechItemId) ||
+                            (752 < mechItemId) && (758 > mechItemId) ||
+                            (818 < mechItemId) && (825 > mechItemId) ||
+                            (852 < mechItemId) && (878 > mechItemId) ||
+                            (881 < mechItemId) && (894 > mechItemId) ||
+                            (899 < mechItemId) && (962 > mechItemId) ||
+                            (967 < mechItemId) && (979 > mechItemId) ||
+                            (980 < mechItemId) && (996 > mechItemId) ||
+                            (3600 < mechItemId) && (3605 > mechItemId)
             ) {
                 newMachName = addParenthesisToLastCharacter(this.mechName).toUpperCase();
             }
