@@ -41,7 +41,6 @@ import java.util.List;
 public class BOAttack {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	private AttackDTO attackDTO;
-	private boolean fightsHaveBeenStarted = false;
 
 	@SuppressWarnings("unused")
 	public BOAttack(AttackDTO attackDTO) {
@@ -169,13 +168,12 @@ public class BOAttack {
 
 	@SuppressWarnings("unused")
 	public void setAttackFightsHaveBeenStarted(boolean value) {
-		fightsHaveBeenStarted = value;
 		attackDTO.setFightsStarted(value);
 	}
 
 	@SuppressWarnings("unused")
 	public boolean attackFightsHaveBeenStarted() {
-		return fightsHaveBeenStarted;
+		return attackDTO.getFightsStarted();
 	}
 
 	@SuppressWarnings("unused")

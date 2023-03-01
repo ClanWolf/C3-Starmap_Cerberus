@@ -10,6 +10,9 @@ CURRENTLY IN PROGRESS:
 
 ----------------------------------------------------------------
 
+Version 7.2.79 (01.03.2023)
+- CHANGED: Removed a warning from netty channel (unknown channel option)
+
 Version 7.2.78 (28.02.2023)
 - CHANGED: Package structure for logging purposes
 - FIXED: IRC related problems

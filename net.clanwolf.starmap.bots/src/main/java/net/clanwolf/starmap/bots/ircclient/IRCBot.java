@@ -358,6 +358,7 @@ public class IRCBot extends ListenerAdapter {
 				Date d = new Date(Long.parseLong(timestamp));
 				send(Internationalization.getString("lastReportTime", formatter.format(d)));               // [i002]
 			} catch (IOException e) {
+				logger.error("Exception while heartbeat", e);
 				e.printStackTrace();
 			}
 		} else {

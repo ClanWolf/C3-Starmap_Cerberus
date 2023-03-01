@@ -9,9 +9,10 @@
 		<properties>
 			<property name="packagesToScan" value="net.clanwolf.starmap.server.persistence.pojos" />
 			<property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
-			<!-- <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" /> -->
 			<property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/C3?useUnicode=yes&amp;characterEncoding=UTF-8&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Berlin&amp;useSSL=false" />
-			<!-- autoReconnect=true&amp; removed from url -->
+
+			<!-- <property name="hibernate.dialect" value="org.hibernate.dialect.MySQLDialect" /> -->
+			<property name="hibernate.dialect" value="org.hibernate.dialect.MariaDBDialect" />
 
 			<property name="current_session_context_class" value="thread" />
 
@@ -23,21 +24,19 @@
 			<!-- Hikari connection pool -->
 			<!-- property name="hibernate.hikari.dataSource.url" value="jdbc:mysql://localhost:3306/C3?useUnicode=yes&amp;characterEncoding=UTF-8" /-->
 			<property name="hibernate.hikari.dataSource.url" value="jdbc:mysql://localhost:3306/C3?useUnicode=yes&amp;characterEncoding=UTF-8&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Berlin&amp;useSSL=false" />
-			<!-- autoReconnect=true&amp; removed from url -->
+			<property name="hibernate.hikari.dataSource.user" value="C3_Workbench" />
+			<property name="hibernate.hikari.dataSource.cachePrepStmts" value="true" />
+			<property name="hibernate.hikari.dataSource.prepStmtCacheSize" value="250" />
+			<property name="hibernate.hikari.dataSource.prepStmtCacheSqlLimit" value="2048" />
+			<property name="hibernate.hikari.dataSource.useServerPrepStmts" value="true" />
 
-			<property name="hibernate.hikari.dataSource.user" value="C3_Workbench"/>
 			<property name="hibernate.hikari.maximumPoolSize" value="10" />
 			<property name="hibernate.hikari.minimumIdle" value="5" />
 			<property name="hibernate.hikari.idleTimeout" value="30000" />
 			<property name="hibernate.hikari.connectionTimeout" value="1000" />
 			<property name="hibernate.hikari.MaxLifetime" value="500000" />
 
-			<property name="hibernate.hikari.dataSource.cachePrepStmts" value="true" />
-			<property name="hibernate.hikari.dataSource.prepStmtCacheSize" value="250" />
-			<property name="hibernate.hikari.dataSource.prepStmtCacheSqlLimit" value="2048" />
-			<property name="hibernate.hikari.dataSource.useServerPrepStmts" value="true" />
-
-			<!-- <property name="hibernate.show_sql" value="true"/>: Done in logging.properties! -->
+			<!-- <property name="hibernate.show_sql" value="true" /> Done in logging.properties! -->
 			<property name="hibernate.format_sql" value="true" />
 			<property name="hibernate.use_sql_comments" value="false" />
 		</properties>

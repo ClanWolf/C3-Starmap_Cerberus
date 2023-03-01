@@ -363,8 +363,9 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				acpId = ((AttackCharacterPOJO) state.getObject3()).getId();
 			}
 
-
-			checkAttackForMissingDropleads(session, attack);
+			if (!attack.getFightsStarted()) {
+				checkAttackForMissingDropleads(session, attack);
+			}
 
 			ArrayList<AttackCharacterPOJO> newAttackCharacters = new ArrayList<>();
 			if(attack.getAttackCharList() != null) {

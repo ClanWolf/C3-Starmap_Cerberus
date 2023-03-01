@@ -75,7 +75,7 @@ public class TS3Bot {
 			ioe.printStackTrace();
 		}
 
-		logger.info("!!! Enable loggin in CWTS3Bot, L.81 !!!");
+//		logger.info("!!! Enable loggin in CWTS3Bot, L.81 !!!");
 		final TS3Config config = new TS3Config();
 		config.setHost(auth.getProperty("ts3botip"));
 		config.setEnableCommunicationsLogging(true);

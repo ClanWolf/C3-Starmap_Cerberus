@@ -7,11 +7,10 @@ module net.clanwolf.starmap.server {
 	requires io.nadron.server;
 	requires com.fasterxml.jackson.annotation;
 	requires java.sql;
-	requires java.persistence;
+	requires jakarta.persistence;
 	requires net.clanwolf.starmap.transfer;
 	requires net.clanwolf.starmap.logging;
 	requires net.clanwolf.starmap.mail;
-//	requires jackson.mapper.asl;
 	requires json.simple;
 	requires net.bytebuddy;
 	requires java.xml.bind;
@@ -24,7 +23,6 @@ module net.clanwolf.starmap.server {
 	requires layout;
 	requires io;
 	requires mysql.connector.j;
-	requires jakarta.persistence;
 
 	opens net.clanwolf.starmap.server to spring.core;
 	opens net.clanwolf.starmap.server.persistence.pojos to org.hibernate.orm.core, com.fasterxml.jackson.databind;

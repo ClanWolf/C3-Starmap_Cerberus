@@ -184,21 +184,23 @@ public class C3Room extends GameRoomSession {
 
 		boolean savedChanges = false;
 		for (AttackPOJO ap : openAttacks) {
-			for (AttackCharacterPOJO acp : ap.getAttackCharList()) {
-				logger.info("Is the disconnecting char the lobbyowner? " + acp.getCharacterID() + " : " + character.getId());
-				if (Objects.equals(acp.getCharacterID(), character.getId())) {
-					if (acp.getType() == Constants.ROLE_ATTACKER_COMMANDER || acp.getType() == Constants.ROLE_DEFENDER_COMMANDER) {
-						logger.info("Lobbyowner left, will be removed!");
-						acp.setType(Constants.ROLE_DROPLEAD_LEFT);
+			if (!ap.getFightsStarted()) {
+				for (AttackCharacterPOJO acp : ap.getAttackCharList()) {
+					logger.info("Is the disconnecting char the lobbyowner? " + acp.getCharacterID() + " : " + character.getId());
+					if (Objects.equals(acp.getCharacterID(), character.getId())) {
+						if (acp.getType() == Constants.ROLE_ATTACKER_COMMANDER || acp.getType() == Constants.ROLE_DEFENDER_COMMANDER) {
+							logger.info("Lobbyowner left, will be removed!");
+							acp.setType(Constants.ROLE_DROPLEAD_LEFT);
 
-						GameState s = new GameState();
-						s.addObject(ap);
-						s.addObject2(ap.getAttackTypeID());
-						s.addObject3(acp);
+							GameState s = new GameState();
+							s.addObject(ap);
+							s.addObject2(ap.getAttackTypeID());
+							s.addObject3(acp);
 
-						Nexus.gmSessionHandler.saveAttack(playerSession, s);
-						savedChanges = true;
-						break;
+							Nexus.gmSessionHandler.saveAttack(playerSession, s);
+							savedChanges = true;
+							break;
+						}
 					}
 				}
 			}
