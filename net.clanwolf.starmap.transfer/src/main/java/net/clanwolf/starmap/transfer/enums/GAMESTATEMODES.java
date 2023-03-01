@@ -60,7 +60,7 @@ public enum GAMESTATEMODES {
 	ATTACK_STATS_SAVE_RESPONSE,
 
 	BROADCAST_SEND_NEW_PLAYERLIST,              /* Inform all clients after a successfull login */
-
+	FOUND_BROKEN_ATTACK,
 	ROLEPLAY_GET_ALLSTORIES,                    /* OBJECT: null */
 	ROLEPLAY_REQUEST_ALLSTORIES,                /* OBJECT: Arraylist<RolePlayStoryDTO> - Gets a list with storys and chapters and steps*/
 	ROLEPLAY_GET_STORYANDCHAPTER,               /* OBJECT: null */

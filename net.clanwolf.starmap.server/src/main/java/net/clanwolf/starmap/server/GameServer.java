@@ -30,10 +30,11 @@ import io.nadron.server.ServerManager;
 import net.clanwolf.starmap.mail.MailManager;
 import net.clanwolf.starmap.logging.C3LogUtil;
 import net.clanwolf.starmap.server.Nexus.Nexus;
+import net.clanwolf.starmap.server.timertasks.DropLeadCheckTimerTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import net.clanwolf.starmap.server.util.HeartBeatTimer;
-import net.clanwolf.starmap.server.util.CheckShutdownFlagTimer;
+import net.clanwolf.starmap.server.timertasks.HeartBeatTimerTask;
+import net.clanwolf.starmap.server.timertasks.CheckShutdownFlagTimerTask;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 
@@ -167,13 +168,18 @@ public class GameServer {
 				}
 			}
 
+			// run regular checks if attacks missing dropleads
+			Timer checkOpenAttacksForDropleadsTimer = new Timer();
+			DropLeadCheckTimerTask dropLeadCheck = new DropLeadCheckTimerTask();
+			checkOpenAttacksForDropleadsTimer.schedule(dropLeadCheck, 15000, 20000);
+
 			// write heartbeat file every some minutes
 			Timer serverHeartBeat = new Timer();
-			serverHeartBeat.schedule(new HeartBeatTimer(true, null), 1000, 1000 * 60 * 3);
+			serverHeartBeat.schedule(new HeartBeatTimerTask(true, null), 1000, 1000 * 60 * 3);
 
 			// check shutdown flagfile every some seconds
 			Timer checkShutdownFlag = new Timer();
-			checkShutdownFlag.schedule(new CheckShutdownFlagTimer(serverBaseDir), 1000, 1000 * 5);
+			checkShutdownFlag.schedule(new CheckShutdownFlagTimerTask(serverBaseDir), 1000, 1000 * 5);
 
 			logger.info(jarName + " is up and ready");
 			Nexus.getEci().sendExtCom(jarName + " is up and ready");

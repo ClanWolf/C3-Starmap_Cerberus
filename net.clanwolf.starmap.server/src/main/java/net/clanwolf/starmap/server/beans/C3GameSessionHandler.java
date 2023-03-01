@@ -47,7 +47,7 @@ import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.*;
 import net.clanwolf.starmap.server.persistence.pojos.*;
 import net.clanwolf.starmap.server.process.EndRound;
-import net.clanwolf.starmap.server.util.HeartBeatTimer;
+import net.clanwolf.starmap.server.timertasks.HeartBeatTimerTask;
 import net.clanwolf.starmap.server.util.WebDataInterface;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
@@ -678,7 +678,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		// sending it back
 		final CountDownLatch latch = new CountDownLatch(1);
 		Timer serverHeartBeat = new Timer();
-		serverHeartBeat.schedule(new HeartBeatTimer(false, latch), 0);
+		serverHeartBeat.schedule(new HeartBeatTimerTask(false, latch), 0);
 		try {
 			latch.await();
 		} catch (InterruptedException e) {
@@ -833,12 +833,12 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			case JUMPSHIP_SAVE:
 				saveJumpship(session, state);
 				serverHeartBeat = new Timer();
-				serverHeartBeat.schedule(new HeartBeatTimer(true, null), 0);
+				serverHeartBeat.schedule(new HeartBeatTimerTask(true, null), 0);
 				break;
 			case ATTACK_SAVE:
 				saveAttack(session, state);
 				serverHeartBeat = new Timer();
-				serverHeartBeat.schedule(new HeartBeatTimer(true, null), 100);
+				serverHeartBeat.schedule(new HeartBeatTimerTask(true, null), 100);
 				break;
 			case STATS_MWO_SAVE:
 				saveStatsMwo(session, state);
@@ -876,11 +876,11 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			case FORCE_FINALIZE_ROUND:
 				EndRound.setForceFinalize(true);
 				serverHeartBeat = new Timer();
-				serverHeartBeat.schedule(new HeartBeatTimer(true, null), 0);
+				serverHeartBeat.schedule(new HeartBeatTimerTask(true, null), 0);
 				break;
 			case FORCE_NEW_UNIVERSE:
 				serverHeartBeat = new Timer();
-				serverHeartBeat.schedule(new HeartBeatTimer(true, null), 0);
+				serverHeartBeat.schedule(new HeartBeatTimerTask(true, null), 0);
 				break;
 			default:
 				break;

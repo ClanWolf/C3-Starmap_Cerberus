@@ -24,9 +24,10 @@
  * Copyright (c) 2001-2023, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.server.util;
+package net.clanwolf.starmap.server.timertasks;
 
 import net.clanwolf.starmap.server.Nexus.Nexus;
+import net.clanwolf.starmap.server.util.WebDataInterface;
 import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,14 +46,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
 import java.sql.Date;
-import java.sql.Time;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimerTask;
 import java.util.concurrent.CountDownLatch;
@@ -61,7 +59,7 @@ import java.util.concurrent.CountDownLatch;
  * @author Undertaker
  * @author Meldric
  */
-public class HeartBeatTimer extends TimerTask {
+public class HeartBeatTimerTask extends TimerTask {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	private volatile boolean informClients = false;
 	private String tempDir = "";
@@ -69,7 +67,7 @@ public class HeartBeatTimer extends TimerTask {
 	private volatile CountDownLatch latch;
 	private volatile long lastReportedHour = 0;
 
-	public HeartBeatTimer(boolean informClients, CountDownLatch latch) {
+	public HeartBeatTimerTask(boolean informClients, CountDownLatch latch) {
 		this.informClients = informClients;
 		String property = "java.io.tmpdir";
 		tempDir = System.getProperty(property);

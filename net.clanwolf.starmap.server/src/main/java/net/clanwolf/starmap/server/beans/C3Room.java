@@ -40,9 +40,8 @@ import net.clanwolf.starmap.server.persistence.pojos.AttackCharacterPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.AttackPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.RolePlayCharacterPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.UserPOJO;
-import net.clanwolf.starmap.server.util.HeartBeatTimer;
+import net.clanwolf.starmap.server.timertasks.HeartBeatTimerTask;
 import net.clanwolf.starmap.transfer.GameState;
-import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -208,7 +207,7 @@ public class C3Room extends GameRoomSession {
 		if (savedChanges) {
 			Timer serverHeartBeat;
 			serverHeartBeat = new Timer();
-			serverHeartBeat.schedule(new HeartBeatTimer(false, null), 0);
+			serverHeartBeat.schedule(new HeartBeatTimerTask(false, null), 0);
 		}
 
 		boolean ret = super.disconnectSession(playerSession);

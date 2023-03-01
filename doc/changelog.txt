@@ -10,6 +10,10 @@ CURRENTLY IN PROGRESS:
 
 ----------------------------------------------------------------
 
+Version 7.2.80 (02.03.2023)
+- FIXED: Playerlist is not altered after drops were started
+- STARTED: A timertask to check if open attacks lack dropleads to confirm results
+
 Version 7.2.79 (01.03.2023)
 - CHANGED: Removed a warning from netty channel (unknown channel option)
 

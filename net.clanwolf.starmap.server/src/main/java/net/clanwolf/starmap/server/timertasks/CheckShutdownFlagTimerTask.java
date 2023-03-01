@@ -24,7 +24,7 @@
  * Copyright (c) 2001-2023, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.server.util;
+package net.clanwolf.starmap.server.timertasks;
 
 import net.clanwolf.starmap.mail.MailManager;
 import net.clanwolf.starmap.server.beans.C3GameSessionHandler;
@@ -41,7 +41,7 @@ import java.util.TimerTask;
 /**
  * @author Meldric
  */
-public class CheckShutdownFlagTimer extends TimerTask {
+public class CheckShutdownFlagTimerTask extends TimerTask {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	private String dir = "";
@@ -53,7 +53,7 @@ public class CheckShutdownFlagTimer extends TimerTask {
 		}
 	}
 
-	public CheckShutdownFlagTimer(String path) {
+	public CheckShutdownFlagTimerTask(String path) {
 		this.dir = path;
 		// Cleanup the flags once before the timer starts in case there were flags left from a previous time
 		cleanupFlagFiles();

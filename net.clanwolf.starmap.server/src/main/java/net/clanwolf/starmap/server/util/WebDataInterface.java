@@ -220,7 +220,7 @@ public class WebDataInterface {
 	//		}
 	//	}
 
-	static synchronized void loadAttacks(Long seasonId) {
+	public static synchronized void loadAttacks(Long seasonId) {
 		universe.attacks.clear();
 		universe.attackStorys.clear();
 
@@ -265,7 +265,7 @@ public class WebDataInterface {
 	//		}
 	//	}
 
-	static synchronized void loadJumpshipsAndRoutePoints() {
+	public static synchronized void loadJumpshipsAndRoutePoints() {
 		universe.jumpships.clear();
 		universe.routepoints.clear();
 
@@ -288,7 +288,7 @@ public class WebDataInterface {
 		//		return jsonString.toString();
 	}
 
-	static synchronized void loadFactions() {
+	public static synchronized void loadFactions() {
 		universe.factions.clear();
 
 		FactionDAO dao = FactionDAO.getInstance();
@@ -303,7 +303,7 @@ public class WebDataInterface {
 		//		return jsonString.toString();
 	}
 
-	static synchronized void load_HH_StarSystemData() {
+	public static synchronized void load_HH_StarSystemData() {
 		universe.starSystems.clear();
 
 		StarSystemDataDAO dao = StarSystemDataDAO.getInstance();

@@ -28,22 +28,12 @@ package net.clanwolf.starmap.server.beans;
 
 import io.nadron.app.GameRoom;
 import io.nadron.app.PlayerSession;
-import net.clanwolf.starmap.server.util.HeartBeatTimer;
+import net.clanwolf.starmap.server.timertasks.HeartBeatTimerTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import net.clanwolf.starmap.server.util.WebDataInterface;
-import net.clanwolf.starmap.transfer.GameState;
-import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
-import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
-import net.clanwolf.starmap.transfer.util.Compressor;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.lang.invoke.MethodHandles;
-import java.util.Iterator;
 import java.util.Timer;
-import java.util.zip.GZIPOutputStream;
 
 class C3GameSessionHandlerUniverse {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -52,7 +42,7 @@ class C3GameSessionHandlerUniverse {
 		logger.info("Getting universe data on request of a client.");
 
 		Timer serverHeartBeat = new Timer();
-		serverHeartBeat.schedule(new HeartBeatTimer(true, null), 0);
+		serverHeartBeat.schedule(new HeartBeatTimerTask(true, null), 0);
 
 //		UniverseDTO universe = WebDataInterface.getUniverse();
 //		GameState state_universe = new GameState(GAMESTATEMODES.GET_UNIVERSE_DATA);
