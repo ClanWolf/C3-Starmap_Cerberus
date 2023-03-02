@@ -29,7 +29,7 @@ package net.clanwolf.starmap.server;
 import io.nadron.server.ServerManager;
 import net.clanwolf.starmap.mail.MailManager;
 import net.clanwolf.starmap.logging.C3LogUtil;
-import net.clanwolf.starmap.server.Nexus.Nexus;
+import net.clanwolf.starmap.server.nexus2.Nexus;
 import net.clanwolf.starmap.server.timertasks.DropLeadCheckTimerTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -28,6 +28,7 @@ package net.clanwolf.starmap.server.timertasks;
 
 import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.server.GameServer;
+import net.clanwolf.starmap.server.nexus2.Nexus;
 import net.clanwolf.starmap.server.beans.C3GameSessionHandler;
 import net.clanwolf.starmap.server.beans.C3Room;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.AttackDAO;
@@ -59,34 +60,80 @@ public class DropLeadCheckTimerTask extends TimerTask {
 		Long roundId = RoundDAO.getInstance().findBySeasonId(seasonId).getRound();
 		ArrayList<AttackPOJO> allAttacksForRound = AttackDAO.getInstance().getAllAttacksOfASeasonForRound(seasonId, roundId);
 
-		boolean attackerCommanderFound = false;
-		boolean defenderCommanderFound = false;
-
 		ArrayList<AttackPOJO> brokenAttacks = new ArrayList<>();
+		ArrayList<AttackPOJO> attacksToBeKilled = new ArrayList<>();
+		ArrayList<Long> currentlyOnlineCharacterIds = C3GameSessionHandler.getCurrentlyOnlineCharIds();
+
+		// check if there is a countdown for any broken attack that is finished,
+		// close the attack and remove the chars
+		for (Long aid : Nexus.brokenAttackTimers.keySet()) {
+			Long now = System.currentTimeMillis();
+			Long timerstart = Nexus.brokenAttackTimers.get(aid);
+			long diff = now - timerstart;
+			if (diff > 1000 * 60 * 5) { // after 5 minutes send a warning
+				// send broadcastmessage for broken attack where countdown has ended --> 5 Minute Warning
+				GameState response = new GameState(GAMESTATEMODES.BROKEN_ATTACK_KILL_FIVE_MINUTE_WARNING);
+				response.addObject(aid);
+				response.addObject2(Nexus.brokenAttackTimers.get(aid));
+				response.setAction_successfully(Boolean.TRUE);
+				C3Room.sendBroadcastMessage(response);
+			}
+			if (diff > 1000 * 60 * 10) { // after 10 minutes
+				// send broadcastmessage for broken attack where countdown has ended --> kill attack
+				GameState response = new GameState(GAMESTATEMODES.BROKEN_ATTACK_KILL_AFTER_TIMEOUT);
+				response.addObject(aid);
+				response.addObject2(Nexus.brokenAttackTimers.get(aid));
+				response.setAction_successfully(Boolean.TRUE);
+				C3Room.sendBroadcastMessage(response);
+
+				// TODO: KILL attack
+				//Nexus.brokenAttackTimers.remove(aid);
+
+				//Send new universe!!!
+			}
+		}
 
 		for (AttackPOJO a : allAttacksForRound) {
+			boolean attackerCommanderFoundAndOnline = false;
+			boolean defenderCommanderFoundAndOnline = false;
+
 			if (a.getFactionID_Winner() == null) { // no winner yet -> open
 				List<AttackCharacterPOJO> acl = a.getAttackCharList();
 				for (AttackCharacterPOJO acp : acl) {
 					if (acp.getType().equals(Constants.ROLE_ATTACKER_COMMANDER)) {
-						attackerCommanderFound = true;
+						if (currentlyOnlineCharacterIds.contains(acp.getCharacterID())) {
+							attackerCommanderFoundAndOnline = true;
+						}
 					}
 					if (acp.getType().equals(Constants.ROLE_DEFENDER_COMMANDER)) {
-						defenderCommanderFound = true;
+						if (currentlyOnlineCharacterIds.contains(acp.getCharacterID())) {
+							defenderCommanderFoundAndOnline = true;
+						}
 					}
 				}
-				if (!(attackerCommanderFound && defenderCommanderFound)) {
+				if (!(attackerCommanderFoundAndOnline && defenderCommanderFoundAndOnline)) {
 					// Attack is broken
 					brokenAttacks.add(a);
+				} else {
+					// Attack is ok, remove countdown
+					Nexus.brokenAttackTimers.remove(a.getId());
 				}
 			}
 		}
 		if (brokenAttacks.size() > 0) {
 			logger.info("Found " + brokenAttacks.size() + " broken attacks (drops started but one or both dropleads are offline). Informing clients!");
 			for (AttackPOJO a : brokenAttacks) {
+				// check if there is a timer for this attack already
+				// if not, create one
+				Long timerStartTime = System.currentTimeMillis();
+				if (!Nexus.brokenAttackTimers.containsKey(a.getId())) {
+					Nexus.brokenAttackTimers.put(a.getId(), timerStartTime);
+				}
+
 				// send broadcastmessage for each broken attack
 				GameState response = new GameState(GAMESTATEMODES.FOUND_BROKEN_ATTACK);
-				response.addObject(a);
+				response.addObject(a.getId());
+				response.addObject2(timerStartTime);
 				response.setAction_successfully(Boolean.TRUE);
 				C3Room.sendBroadcastMessage(response);
 			}

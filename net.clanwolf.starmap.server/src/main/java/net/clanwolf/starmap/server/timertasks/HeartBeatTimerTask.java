@@ -26,7 +26,7 @@
  */
 package net.clanwolf.starmap.server.timertasks;
 
-import net.clanwolf.starmap.server.Nexus.Nexus;
+import net.clanwolf.starmap.server.nexus2.Nexus;
 import net.clanwolf.starmap.server.util.WebDataInterface;
 import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
 import org.slf4j.Logger;

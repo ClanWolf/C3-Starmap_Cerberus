@@ -36,7 +36,7 @@ import io.nadron.service.GameStateManagerService;
 import net.clanwolf.starmap.mail.MailManager;
 import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.server.GameServer;
-import net.clanwolf.starmap.server.Nexus.Nexus;
+import net.clanwolf.starmap.server.nexus2.Nexus;
 import net.clanwolf.starmap.server.util.ForumDatabaseTools;
 import net.clanwolf.starmap.transfer.dtos.*;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
@@ -895,19 +895,23 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		C3GameSessionHandler.sendNetworkEvent(session, gsErrorMessage);
 	}
 
+	public static synchronized ArrayList<Long> getCurrentlyOnlineCharIds() {
+		ArrayList<Long> characterOnlineList = new ArrayList<>();
+		for (PlayerSession playerSession : staticRoom.getSessions()) {
+			C3Player pl = (C3Player) playerSession.getPlayer();
+			characterOnlineList.add(pl.getUser().getCurrentCharacter().getId());
+		}
+		return characterOnlineList;
+	}
+
 	private synchronized void checkAttackForMissingDropleads(PlayerSession session, AttackPOJO attack) {
 
 		RolePlayCharacterDAO rpDAO = RolePlayCharacterDAO.getInstance();
 		JumpshipDAO jsDAO = JumpshipDAO.getInstance();
 		FactionDAO fDAO = FactionDAO.getInstance();
 
-		// all online user
-		//ArrayList<UserPOJO> userList = new ArrayList<>();
-		ArrayList<Long> characterOnlineList = new ArrayList<>();
-		for (PlayerSession playerSession : room.getSessions()) {
-			C3Player pl = (C3Player) playerSession.getPlayer();
-			characterOnlineList.add(pl.getUser().getCurrentCharacter().getId());
-		}
+		// all online characters
+		ArrayList<Long> characterOnlineList = getCurrentlyOnlineCharIds();
 
 		ArrayList<AttackCharacterPOJO> acpl = null;
 		if (attack.getAttackCharList() != null) {

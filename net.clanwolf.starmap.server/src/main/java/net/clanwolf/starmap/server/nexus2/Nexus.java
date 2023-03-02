@@ -24,12 +24,13 @@
  * Copyright (c) 2001-2023, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.server.Nexus;
+package net.clanwolf.starmap.server.nexus2;
 
 import net.clanwolf.starmap.server.beans.C3GameSessionHandler;
 import net.clanwolf.starmap.server.util.ExternalCommunicationInterface;
 
 import java.sql.Timestamp;
+import java.util.HashMap;
 
 public class Nexus {
 	public static Long currentSeason = 1L;
@@ -45,6 +46,7 @@ public class Nexus {
 	public static C3GameSessionHandler gmSessionHandler;
 	public static boolean isDevelopmentPC = false;
 	public static Timestamp serverStartTime;
+	public static HashMap<Long, Long> brokenAttackTimers = new HashMap<>();
 
 	public static ExternalCommunicationInterface getEci() {
 		return eci;

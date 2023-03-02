@@ -49,7 +49,7 @@ import com.itextpdf.layout.properties.UnitValue;
 import com.itextpdf.layout.properties.VerticalAlignment;
 import net.clanwolf.starmap.mail.MailManager;
 import net.clanwolf.starmap.server.GameServer;
-import net.clanwolf.starmap.server.Nexus.Nexus;
+import net.clanwolf.starmap.server.nexus2.Nexus;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.FactionDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.StarSystemDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.SysConfigDAO;

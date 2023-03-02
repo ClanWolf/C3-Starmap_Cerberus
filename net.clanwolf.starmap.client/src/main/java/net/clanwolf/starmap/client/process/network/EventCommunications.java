@@ -74,11 +74,14 @@ public class EventCommunications {
 
 			switch (state.getMode()) {
 				case FOUND_BROKEN_ATTACK:
-					logger.info("Broken attack (drops started but one or both dropleads are offline) was found");
-					AttackDTO attackDTO = (AttackDTO) state.getObject();
-					if (attackDTO.getId().equals(Nexus.getCurrentAttackOfUser().getAttackDTO().getId())) {
+					logger.info("Broken attack was found (drops started but one or both dropleads are offline)");
+					if (state.getObject() != null && ((Long) state.getObject()).equals(Nexus.getCurrentAttackOfUser().getAttackDTO().getId())) {
 						// this is the attack I am in currently
 						logger.info("My attack is broken");
+
+						Long attackId = (Long) state.getObject();
+						Long timerStartMillis = (Long) state.getObject2();
+
 						// TODO: handle the situation
 
 						// Show the info to the user, wait for the server to inform that the cancel countdown for the
@@ -92,6 +95,27 @@ public class EventCommunications {
 
 
 
+					}
+					break;
+
+				case BROKEN_ATTACK_KILL_FIVE_MINUTE_WARNING:
+					if (state.getObject() != null && ((Long) state.getObject()).equals(Nexus.getCurrentAttackOfUser().getAttackDTO().getId())) {
+						// this is the attack I am in currently
+						logger.info("My broken attack will be killed by the server, FIVE MINUTE WARNING");
+
+						Long attackId = (Long) state.getObject();
+						Long timerStartMillis = (Long) state.getObject2();
+					}
+					break;
+
+				case BROKEN_ATTACK_KILL_AFTER_TIMEOUT:
+					// My attack will be killed, because a droplead went missing and did not reconnect after 10 mins
+					if (state.getObject() != null && ((Long) state.getObject()).equals(Nexus.getCurrentAttackOfUser().getAttackDTO().getId())) {
+						// this is the attack I am in currently
+						logger.info("My broken attack was killed by the server");
+
+						Long attackId = (Long) state.getObject();
+						Long timerStartMillis = (Long) state.getObject2();
 					}
 					break;
 

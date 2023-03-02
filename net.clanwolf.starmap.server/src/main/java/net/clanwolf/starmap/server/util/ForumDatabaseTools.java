@@ -27,7 +27,7 @@
 package net.clanwolf.starmap.server.util;
 
 import net.clanwolf.starmap.server.GameServer;
-import net.clanwolf.starmap.server.Nexus.Nexus;
+import net.clanwolf.starmap.server.nexus2.Nexus;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.AttackDAO;
 import net.clanwolf.starmap.server.persistence.pojos.AttackPOJO;
 import org.slf4j.Logger;
@@ -42,7 +42,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
