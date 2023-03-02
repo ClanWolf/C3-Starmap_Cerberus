@@ -38,20 +38,24 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.Clipboard;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.*;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.LineTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.util.Duration;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3RolePlayController;
-import net.clanwolf.starmap.client.mwo.*;
+import net.clanwolf.starmap.client.mwo.CheckClipboardForMwoApi;
+import net.clanwolf.starmap.client.mwo.ResultAnalyzer;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
 import net.clanwolf.starmap.client.process.universe.BOAttack;
 import net.clanwolf.starmap.client.process.universe.BOFaction;
-import net.clanwolf.starmap.client.process.universe.BOUniverse;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.C3PROPS;
 import net.clanwolf.starmap.client.util.C3Properties;
@@ -59,10 +63,10 @@ import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.client.util.RPVarReplacer_DE;
 import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.transfer.dtos.*;
+import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 import net.clanwolf.starmap.transfer.mwo.MWOMatchResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
 import java.lang.invoke.MethodHandles;
 import java.net.URL;
@@ -137,13 +141,15 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 	Image imageStatic = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/gui/static.gif")));
 	@FXML
 	private ImageView ivStatic;
+	@FXML
+	private VBox VBoxError;
 
 	private Image im2;
 
 	public RolePlayInvasionPaneController() {
 	}
 
-	private void init(){
+	private void init() {
 		taRpText.setStyle("-fx-opacity: 1");
 		taRpText.setEditable(false);
 
@@ -273,6 +279,10 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 		ActionManager.addActionCallbackListener(ACTIONS.UPDATE_USERS_FOR_ATTACK, this);
 		ActionManager.addActionCallbackListener(ACTIONS.ROLEPLAY_NEXT_STEP_CHANGE_PANE, this);
 		ActionManager.addActionCallbackListener(ACTIONS.PANE_CREATION_BEGINS, this);
+		ActionManager.addActionCallbackListener(ACTIONS.CURRENT_ATTACK_IS_BROKEN, this);
+		ActionManager.addActionCallbackListener(ACTIONS.CURRENT_ATTACK_IS_BROKEN_WARNING, this);
+		ActionManager.addActionCallbackListener(ACTIONS.CURRENT_ATTACK_IS_BROKEN_KILLED, this);
+		ActionManager.addActionCallbackListener(ACTIONS.CURRENT_ATTACK_IS_HEALED, this);
 	}
 
 	/******************************** THIS ********************************/
@@ -374,7 +384,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 				confirmDefender2.setLayoutY(y);
 
 				defenderButtonIcon.setLayoutY(y + 4);
-//					defenderButtonIcon.setVisible(true);
+				//					defenderButtonIcon.setVisible(true);
 
 				y = y - offset;
 
@@ -398,7 +408,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 				btChoice1.setText(rpVar9.getOption1Text());
 
 				attackerButtonIcon.setLayoutY(y + 4);
-//					attackerButtonIcon.setVisible(true);
+				//					attackerButtonIcon.setVisible(true);
 			}
 
 			double yPos = y - offset - 5;
@@ -424,172 +434,188 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 	/**
 	 * Handle Actions
 	 *
-	 * @param action
-	 *            Action
-	 * @param o
-	 *            Action object
+	 * @param action Action
+	 * @param o      Action object
 	 * @return true
 	 */
 	@Override
 	public boolean handleAction(ACTIONS action, ActionObject o) {
-		if(anchorPane != null && !anchorPane.isVisible()) return true;
+		if (anchorPane != null && !anchorPane.isVisible()) return true;
 		logger.info("Flag for CharRP" + isCharRP);
 		switch (action) {
+			case CURRENT_ATTACK_IS_BROKEN:
+//				Long timerStart = (Long) o.getObject();
+				VBoxError.setVisible(true);
+				break;
 
-		case PANE_CREATION_BEGINS:
-			ivStatic.setOpacity(0.45);
-			ivStatic.setImage(imageStatic);
-			paneCurrentScore.setVisible(false);
-			break;
+			case CURRENT_ATTACK_IS_BROKEN_WARNING:
+//				Long timerStart = (Long) o.getObject();
+				VBoxError.setVisible(true);
+				break;
 
-		case FINALIZE_ROUND:
-			checkToCancelInvasion();
-			break;
+			case CURRENT_ATTACK_IS_BROKEN_KILLED:
+//				Long timerStart = (Long) o.getObject();
+				VBoxError.setVisible(false);
+				break;
 
-		case START_ROLEPLAY:
-			if(ROLEPLAYENTRYTYPES.C3_RP_STEP_V9 == o.getObject()) {
-				logger.info("RolePlayChoicePaneController -> START_ROLEPLAY");
+			case CURRENT_ATTACK_IS_HEALED:
+				VBoxError.setVisible(false);
+				break;
 
-				init();
+			case PANE_CREATION_BEGINS:
+				ivStatic.setOpacity(0.45);
+				ivStatic.setImage(imageStatic);
+				paneCurrentScore.setVisible(false);
+				break;
 
-				// set current step of story
-				getStoryValues(getCurrentRP());
-			}
-			break;
-		case MWO_DROPSTATS_RECEIVED:
-			MWOMatchResult result = (MWOMatchResult) o.getObject();
-			ResultAnalyzer.analyseAndStoreMWOResult(result, true);
-			break;
-		case UPDATE_USERS_FOR_ATTACK:
-			statusUpdate();
-			break;
-		case ROLEPLAY_NEXT_STEP_CHANGE_PANE:
-			Platform.runLater(() -> {
-				Image imageSelected = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/checked_confirmed.png")));
-				AttackDTO a = (AttackDTO) o.getObject();
-				boolean attackerWon = false;
-				boolean defenderWon = false;
-				boolean iAmDefender = false;
-				for (AttackCharacterDTO c : a.getAttackCharList()) {
-					if (c.getSelectedAttackerWon() != null && c.getSelectedAttackerWon()) {
-						attackerWon = true;
-					} else if (c.getSelectedDefenderWon() != null && c.getSelectedDefenderWon()) {
-						defenderWon = true;
-					}
+			case FINALIZE_ROUND:
+				checkToCancelInvasion();
+				break;
 
-					if (Nexus.getCurrentUser().getCurrentCharacter().getId().equals(c.getCharacterID())) {
-						// This is my own (logged in) user
+			case START_ROLEPLAY:
+				if (ROLEPLAYENTRYTYPES.C3_RP_STEP_V9 == o.getObject()) {
+					logger.info("RolePlayChoicePaneController -> START_ROLEPLAY");
 
-						// 0L Attacker Warrior
-						// 1L Attacker Commander
-						// 2L Defender
-						// 3L Defender Commander
-						// 4L Supporter
-						// 5L Attacker Supporter
-						// 6L Defender Supporter
-						if (c.getType() == 0L || c.getType() == 1L || c.getType() == 5L) {
-							iAmDefender = false;
-						} else if (c.getType() == 2L || c.getType() == 3L || c.getType() == 6L) {
-							iAmDefender = true;
-						}
-					}
+					init();
+
+					// set current step of story
+					getStoryValues(getCurrentRP());
 				}
-				if (attackerWon) {
-					confirmAttacker1.setImage(imageSelected);
-					confirmDefender1.setImage(imageSelected);
-					btChoice1.setDisable(true);
-					btChoice2.setDisable(true);
-					btChoice3.setDisable(true);
-					btChoice4.setDisable(true);
-				} else if (defenderWon) {
-					confirmAttacker2.setImage(imageSelected);
-					confirmDefender2.setImage(imageSelected);
-					btChoice1.setDisable(true);
-					btChoice2.setDisable(true);
-					btChoice3.setDisable(true);
-					btChoice4.setDisable(true);
-				}
-
-				RolePlayStoryDTO story = Nexus.getBoUniverse().getAttackStoriesByID(a.getStoryID());
-
-				// Here we play the motivation voice for the last fight
-				// Generic or faction specific
-				int randomNum = 0;
-				String sampleName = "";
-
-				boolean defWon = story.getDefenderWins() != null && story.getDefenderWins();
-				boolean attWon = story.getAttackerWins() != null && story.getAttackerWins();
-
-				if (iAmDefender) { // I am defender
-					logger.info("We are defender!");
-					if (defenderWon) {
-						logger.info("We won!");
-						if (defWon) { // Invasion is over, defender (we) won the invasion
-							randomNum = ThreadLocalRandom.current().nextInt(1, 2 + 1);
-							sampleName = "rp_sample_won_invasion_0" + randomNum + "_general.mp3";
-						} else if (attWon) { // Invasion is over, attacker (the others) won the invasion
-							randomNum = ThreadLocalRandom.current().nextInt(1, 2 + 1);
-							sampleName = "rp_sample_lost_invasion_0" + randomNum + "_general.mp3";
-						} else { // no side did win the invasion yet, still fighting
-							randomNum = ThreadLocalRandom.current().nextInt(1, 3 + 1);
-							sampleName = "rp_sample_won_drop_0" + randomNum + "_general.mp3";
+				break;
+			case MWO_DROPSTATS_RECEIVED:
+				MWOMatchResult result = (MWOMatchResult) o.getObject();
+				ResultAnalyzer.analyseAndStoreMWOResult(result, true);
+				break;
+			case UPDATE_USERS_FOR_ATTACK:
+				statusUpdate();
+				break;
+			case ROLEPLAY_NEXT_STEP_CHANGE_PANE:
+				Platform.runLater(() -> {
+					Image imageSelected = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/checked_confirmed.png")));
+					AttackDTO a = (AttackDTO) o.getObject();
+					boolean attackerWon = false;
+					boolean defenderWon = false;
+					boolean iAmDefender = false;
+					for (AttackCharacterDTO c : a.getAttackCharList()) {
+						if (c.getSelectedAttackerWon() != null && c.getSelectedAttackerWon()) {
+							attackerWon = true;
+						} else if (c.getSelectedDefenderWon() != null && c.getSelectedDefenderWon()) {
+							defenderWon = true;
 						}
-					} else {
-						logger.info("We lost!");
-						if (defWon) { // Invasion is over, defender (we) lost the invasion
-							randomNum = ThreadLocalRandom.current().nextInt(1, 2 + 1);
-							sampleName = "rp_sample_lost_invasion_0" + randomNum + "_general.mp3";
-						} else if (attWon) { // Invasion is over, we won, attacker (the others) lost the invasion
-							randomNum = ThreadLocalRandom.current().nextInt(1, 2 + 1);
-							sampleName = "rp_sample_won_invasion_0" + randomNum + "_general.mp3";
-						} else { // no side did win the invasion yet, still fighting
-							randomNum = ThreadLocalRandom.current().nextInt(1, 4 + 1);
-							sampleName = "rp_sample_lost_drop_0" + randomNum + "_general.mp3";
+
+						if (Nexus.getCurrentUser().getCurrentCharacter().getId().equals(c.getCharacterID())) {
+							// This is my own (logged in) user
+
+							// 0L Attacker Warrior
+							// 1L Attacker Commander
+							// 2L Defender
+							// 3L Defender Commander
+							// 4L Supporter
+							// 5L Attacker Supporter
+							// 6L Defender Supporter
+							if (c.getType() == 0L || c.getType() == 1L || c.getType() == 5L) {
+								iAmDefender = false;
+							} else if (c.getType() == 2L || c.getType() == 3L || c.getType() == 6L) {
+								iAmDefender = true;
+							}
 						}
 					}
-				} else { // I am attacker
-					logger.info("We are attacker!");
 					if (attackerWon) {
-						logger.info("We won!");
-						if (defWon) { // Invasion is over, defender (we) won the invasion
-							randomNum = ThreadLocalRandom.current().nextInt(1, 2 + 1);
-							sampleName = "rp_sample_lost_invasion_0" + randomNum + "_general.mp3";
-						} else if (attWon) { // Invasion is over, attacker (the others) won the invasion
-							randomNum = ThreadLocalRandom.current().nextInt(1, 2 + 1);
-							sampleName = "rp_sample_won_invasion_0" + randomNum + "_general.mp3";
-						} else { // no side did win the invasion yet, still fighting
-							randomNum = ThreadLocalRandom.current().nextInt(1, 3 + 1);
-							sampleName = "rp_sample_won_drop_0" + randomNum + "_general.mp3";
+						confirmAttacker1.setImage(imageSelected);
+						confirmDefender1.setImage(imageSelected);
+						btChoice1.setDisable(true);
+						btChoice2.setDisable(true);
+						btChoice3.setDisable(true);
+						btChoice4.setDisable(true);
+					} else if (defenderWon) {
+						confirmAttacker2.setImage(imageSelected);
+						confirmDefender2.setImage(imageSelected);
+						btChoice1.setDisable(true);
+						btChoice2.setDisable(true);
+						btChoice3.setDisable(true);
+						btChoice4.setDisable(true);
+					}
+
+					RolePlayStoryDTO story = Nexus.getBoUniverse().getAttackStoriesByID(a.getStoryID());
+
+					// Here we play the motivation voice for the last fight
+					// Generic or faction specific
+					int randomNum = 0;
+					String sampleName = "";
+
+					boolean defWon = story.getDefenderWins() != null && story.getDefenderWins();
+					boolean attWon = story.getAttackerWins() != null && story.getAttackerWins();
+
+					if (iAmDefender) { // I am defender
+						logger.info("We are defender!");
+						if (defenderWon) {
+							logger.info("We won!");
+							if (defWon) { // Invasion is over, defender (we) won the invasion
+								randomNum = ThreadLocalRandom.current().nextInt(1, 2 + 1);
+								sampleName = "rp_sample_won_invasion_0" + randomNum + "_general.mp3";
+							} else if (attWon) { // Invasion is over, attacker (the others) won the invasion
+								randomNum = ThreadLocalRandom.current().nextInt(1, 2 + 1);
+								sampleName = "rp_sample_lost_invasion_0" + randomNum + "_general.mp3";
+							} else { // no side did win the invasion yet, still fighting
+								randomNum = ThreadLocalRandom.current().nextInt(1, 3 + 1);
+								sampleName = "rp_sample_won_drop_0" + randomNum + "_general.mp3";
+							}
+						} else {
+							logger.info("We lost!");
+							if (defWon) { // Invasion is over, defender (we) lost the invasion
+								randomNum = ThreadLocalRandom.current().nextInt(1, 2 + 1);
+								sampleName = "rp_sample_lost_invasion_0" + randomNum + "_general.mp3";
+							} else if (attWon) { // Invasion is over, we won, attacker (the others) lost the invasion
+								randomNum = ThreadLocalRandom.current().nextInt(1, 2 + 1);
+								sampleName = "rp_sample_won_invasion_0" + randomNum + "_general.mp3";
+							} else { // no side did win the invasion yet, still fighting
+								randomNum = ThreadLocalRandom.current().nextInt(1, 4 + 1);
+								sampleName = "rp_sample_lost_drop_0" + randomNum + "_general.mp3";
+							}
 						}
-					} else {
-						logger.info("We lost!");
-						if (defWon) { // Invasion is over, defender (we) lost the invasion
-							randomNum = ThreadLocalRandom.current().nextInt(1, 2 + 1);
-							sampleName = "rp_sample_lost_invasion_0" + randomNum + "_general.mp3";
-						} else if (attWon) { // Invasion is over, we won, attacker (the others) lost the invasion
-							randomNum = ThreadLocalRandom.current().nextInt(1, 2 + 1);
-							sampleName = "rp_sample_won_invasion_0" + randomNum + "_general.mp3";
-						} else { // no side did win the invasion yet, still fighting
-							randomNum = ThreadLocalRandom.current().nextInt(1, 4 + 1);
-							sampleName = "rp_sample_lost_drop_0" + randomNum + "_general.mp3";
+					} else { // I am attacker
+						logger.info("We are attacker!");
+						if (attackerWon) {
+							logger.info("We won!");
+							if (defWon) { // Invasion is over, defender (we) won the invasion
+								randomNum = ThreadLocalRandom.current().nextInt(1, 2 + 1);
+								sampleName = "rp_sample_lost_invasion_0" + randomNum + "_general.mp3";
+							} else if (attWon) { // Invasion is over, attacker (the others) won the invasion
+								randomNum = ThreadLocalRandom.current().nextInt(1, 2 + 1);
+								sampleName = "rp_sample_won_invasion_0" + randomNum + "_general.mp3";
+							} else { // no side did win the invasion yet, still fighting
+								randomNum = ThreadLocalRandom.current().nextInt(1, 3 + 1);
+								sampleName = "rp_sample_won_drop_0" + randomNum + "_general.mp3";
+							}
+						} else {
+							logger.info("We lost!");
+							if (defWon) { // Invasion is over, defender (we) lost the invasion
+								randomNum = ThreadLocalRandom.current().nextInt(1, 2 + 1);
+								sampleName = "rp_sample_lost_invasion_0" + randomNum + "_general.mp3";
+							} else if (attWon) { // Invasion is over, we won, attacker (the others) lost the invasion
+								randomNum = ThreadLocalRandom.current().nextInt(1, 2 + 1);
+								sampleName = "rp_sample_won_invasion_0" + randomNum + "_general.mp3";
+							} else { // no side did win the invasion yet, still fighting
+								randomNum = ThreadLocalRandom.current().nextInt(1, 4 + 1);
+								sampleName = "rp_sample_lost_drop_0" + randomNum + "_general.mp3";
+							}
 						}
 					}
-				}
-				String finalSampleName = sampleName;
-				double volume = C3SoundPlayer.getRpPlayer().getVolume();
-				Timeline timeline = new Timeline(new KeyFrame(Duration.millis(750), new KeyValue(C3SoundPlayer.getRpPlayer().volumeProperty(), 0)));
-				timeline.setOnFinished(event -> {
-					C3SoundPlayer.getRpPlayer().stop();
-					C3SoundPlayer.getRpPlayer().setVolume(volume);
-					C3SoundPlayer.play("sound/voice/" + Internationalization.getLanguage() + "/rp_invasion/" + finalSampleName, false);
-				});
-				timeline.play();
+					String finalSampleName = sampleName;
+					double volume = C3SoundPlayer.getRpPlayer().getVolume();
+					Timeline timeline = new Timeline(new KeyFrame(Duration.millis(750), new KeyValue(C3SoundPlayer.getRpPlayer().volumeProperty(), 0)));
+					timeline.setOnFinished(event -> {
+						C3SoundPlayer.getRpPlayer().stop();
+						C3SoundPlayer.getRpPlayer().setVolume(volume);
+						C3SoundPlayer.play("sound/voice/" + Internationalization.getLanguage() + "/rp_invasion/" + finalSampleName, false);
+					});
+					timeline.play();
 
-				audioStartedOnce = false;
-			});
-			break;
-		default:
-			break;
+					audioStartedOnce = false;
+				});
+				break;
+			default:
+				break;
 		}
 		return true;
 	}
@@ -599,7 +625,6 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 		super.initialize(url, rb);
 
 		init();
-
 	}
 
 	public void scoreAnimation(int attackerWins, int defenderWins) {
@@ -675,7 +700,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 			// move location marker for some time and flash it 10 times at the end (on the planet image)
 			SequentialTransition sequentialTransition2 = new SequentialTransition();
 			Path path = new Path();
-			MoveTo moveTo = new MoveTo(10.0f,10.0f);
+			MoveTo moveTo = new MoveTo(10.0f, 10.0f);
 			path.getElements().add(moveTo);
 
 			for (int i = 1; i < 4; i++) {
@@ -684,7 +709,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 				Random random = new Random();
 				int value1 = (random.nextInt(max + min) + min) - 25;
 				int value2 = (random.nextInt(max + min) + min) - 25;
-				LineTo lineTo = new LineTo(value1,value2);
+				LineTo lineTo = new LineTo(value1, value2);
 				path.getElements().add(lineTo);
 			}
 
@@ -713,13 +738,13 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 		BOAttack a = Nexus.getCurrentAttackOfUser();
 		RolePlayCharacterDTO rpc = Nexus.getCurrentChar();
 
-//		public static final long ROLE_ATTACKER_WARRIOR = 0L; // 0L Attacker Warrior
-//		public static final long ROLE_ATTACKER_COMMANDER = 1L; // 1L Attacker Commander
-//		public static final long ROLE_DEFENDER_WARRIOR = 2L; // 2L Defender
-//		public static final long ROLE_DEFENDER_COMMANDER = 3L; // 3L Defender Commander
-//		public static final long ROLE_SUPPORTER = 4L; // 4L Attacker Supporter
-//		public static final long ROLE_ATTACKER_SUPPORTER = 5L; // 4L Attacker Supporter
-//		public static final long ROLE_DEFENDER_SUPPORTER = 6L; // 5L Defender Supporter
+		//		public static final long ROLE_ATTACKER_WARRIOR = 0L; // 0L Attacker Warrior
+		//		public static final long ROLE_ATTACKER_COMMANDER = 1L; // 1L Attacker Commander
+		//		public static final long ROLE_DEFENDER_WARRIOR = 2L; // 2L Defender
+		//		public static final long ROLE_DEFENDER_COMMANDER = 3L; // 3L Defender Commander
+		//		public static final long ROLE_SUPPORTER = 4L; // 4L Attacker Supporter
+		//		public static final long ROLE_ATTACKER_SUPPORTER = 5L; // 4L Attacker Supporter
+		//		public static final long ROLE_DEFENDER_SUPPORTER = 6L; // 5L Defender Supporter
 
 		Long myType = -1L;
 		for (AttackCharacterDTO ac : a.getAttackCharList()) {
@@ -749,27 +774,27 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 	/******************************** FXML ********************************/
 
 	@FXML
-	private void handleOnActionbtChoice1(){
+	private void handleOnActionbtChoice1() {
 		Long rp = getCurrentRP().getVar9ID().getOption1StoryID();
 		saveNextInvasionStep(rp, true, false);
 		logger.info("Choice1: Attacker won, defender lost. Target rp id: " + rp);
 	}
 
 	@FXML
-	private void handleOnActionbtChoice2(){
+	private void handleOnActionbtChoice2() {
 		Long rp = getCurrentRP().getVar9ID().getOption2StoryID();
 		saveNextInvasionStep(rp, false, true);
 		logger.info("Choice2: Attacker lost, defender won. Target rp id: " + rp);
 	}
 
 	@FXML
-	private void handleOnActionbtChoice3(){
+	private void handleOnActionbtChoice3() {
 		Long rp = getCurrentRP().getVar9ID().getOption3StoryID();
 		saveNextInvasionStep(rp, false, false);
 	}
 
 	@FXML
-	private void handleOnActionbtChoice4(){
+	private void handleOnActionbtChoice4() {
 		Long rp = getCurrentRP().getVar9ID().getOption4StoryID();
 		saveNextInvasionStep(rp, false, false);
 	}

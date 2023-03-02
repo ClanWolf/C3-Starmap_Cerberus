@@ -248,7 +248,14 @@ public class IRCBot extends ListenerAdapter {
 
 		Internationalization.setBot(ircBot);
 		started = true;
-		ircBot.start(); // This must be the last command!
+		try {
+			ircBot.start(); // This must be the last command!
+		} catch(Exception e) {
+			// If an exception occurs, the client will likely not work properly anymore.
+			// In this case, we exit here. The scheduled task will restart the bot within 5 minutes.
+			logger.info("Exception caught, exiting...");
+			System.exit(2);
+		}
 	}
 
 	@Override

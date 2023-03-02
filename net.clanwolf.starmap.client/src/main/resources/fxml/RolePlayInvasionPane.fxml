@@ -2,16 +2,28 @@
 
 <?import java.net.URL?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="RolePlayStartPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/17" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.RolePlayInvasionPaneController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="RolePlayStartPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/19" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.RolePlayInvasionPaneController">
     <children>
+      <VBox fx:id="VBoxError" layoutX="400.0" layoutY="67.0" prefHeight="200.0" prefWidth="100.0">
+         <children>
+            <ImageView fx:id="ImageViewError" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../icons/message_error_red.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="labelError" alignment="CENTER" prefHeight="14.0" prefWidth="202.0" text="Label" />
+         </children>
+      </VBox>
       <ImageView fx:id="ivLocation" fitHeight="24.0" fitWidth="56.0" layoutX="116.0" layoutY="250.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/map/selectionIndicator.png" />

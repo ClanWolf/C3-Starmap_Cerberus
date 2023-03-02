@@ -30,26 +30,22 @@ import io.nadron.client.app.Session;
 import io.nadron.client.event.Event;
 import io.nadron.client.event.Events;
 import io.nadron.client.event.NetworkEvent;
-import net.clanwolf.starmap.client.gui.panes.map.tools.GraphManager;
-import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionManager;
+import net.clanwolf.starmap.client.nexus.Nexus;
+import net.clanwolf.starmap.client.process.logout.Logout;
 import net.clanwolf.starmap.client.process.universe.BOAttack;
-import net.clanwolf.starmap.client.process.universe.BOJumpship;
-import net.clanwolf.starmap.client.process.universe.BOStarSystem;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.Internationalization;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import net.clanwolf.starmap.client.process.logout.Logout;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.*;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.util.Compressor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.invoke.MethodHandles;
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -78,23 +74,8 @@ public class EventCommunications {
 					if (state.getObject() != null && ((Long) state.getObject()).equals(Nexus.getCurrentAttackOfUser().getAttackDTO().getId())) {
 						// this is the attack I am in currently
 						logger.info("My attack is broken");
-
-						Long attackId = (Long) state.getObject();
 						Long timerStartMillis = (Long) state.getObject2();
-
-						// TODO: handle the situation
-
-						// Show the info to the user, wait for the server to inform that the cancel countdown for the
-						// invasion ran out
-
-
-
-
-
-
-
-
-
+						ActionManager.getAction(ACTIONS.CURRENT_ATTACK_IS_BROKEN).execute(timerStartMillis);
 					}
 					break;
 
@@ -102,9 +83,8 @@ public class EventCommunications {
 					if (state.getObject() != null && ((Long) state.getObject()).equals(Nexus.getCurrentAttackOfUser().getAttackDTO().getId())) {
 						// this is the attack I am in currently
 						logger.info("My broken attack will be killed by the server, FIVE MINUTE WARNING");
-
-						Long attackId = (Long) state.getObject();
 						Long timerStartMillis = (Long) state.getObject2();
+						ActionManager.getAction(ACTIONS.CURRENT_ATTACK_IS_BROKEN_WARNING).execute(timerStartMillis);
 					}
 					break;
 
@@ -113,17 +93,24 @@ public class EventCommunications {
 					if (state.getObject() != null && ((Long) state.getObject()).equals(Nexus.getCurrentAttackOfUser().getAttackDTO().getId())) {
 						// this is the attack I am in currently
 						logger.info("My broken attack was killed by the server");
-
-						Long attackId = (Long) state.getObject();
 						Long timerStartMillis = (Long) state.getObject2();
+						ActionManager.getAction(ACTIONS.CURRENT_ATTACK_IS_BROKEN_KILLED).execute(timerStartMillis);
+					}
+					break;
+
+				case BROKEN_ATTACK_HEALED:
+					// My attack was healed, dropleads did reconnect
+					if (state.getObject() != null && ((Long) state.getObject()).equals(Nexus.getCurrentAttackOfUser().getAttackDTO().getId())) {
+						// this is the attack I am in currently
+						logger.info("My attack was healed");
+						ActionManager.getAction(ACTIONS.CURRENT_ATTACK_IS_HEALED).execute();
 					}
 					break;
 
 				case USER_GET_NEW_PLAYERLIST:
 					logger.info("EventCommunications.onDataIn: neue Playerliste ->" + state.getObject());
 
-					@SuppressWarnings("unchecked")
-					ArrayList<UserDTO> userList = (ArrayList<UserDTO>) state.getObject();
+					@SuppressWarnings("unchecked") ArrayList<UserDTO> userList = (ArrayList<UserDTO>) state.getObject();
 
 					for (UserDTO anUserList : userList) {
 						logger.info(anUserList.getUserName() + " from UserDTO object");
@@ -212,7 +199,7 @@ public class EventCommunications {
 					for (BOAttack boa : Nexus.getBoUniverse().attackBOsOpenInThisRound.values()) {
 						//if (boa.getAttackDTO().getId() != null && boa.getAttackDTO().getId().equals(attack.getId())) {
 
-						if(boa.getAttackDTO().getJumpshipID().equals(attack.getJumpshipID())){
+						if (boa.getAttackDTO().getJumpshipID().equals(attack.getJumpshipID())) {
 							// An attack was saved that already existed in my universe
 							// It needs to be replaced with the one that was returned from the
 							// save event
@@ -302,20 +289,20 @@ public class EventCommunications {
 					}
 					break;
 
-//				case ATTACK_CHARACTER_SAVE_RESPONSE:
-//					logger.info("Attack has changed, a user joined or left.");
-//					AttackDTO attackDTO = (AttackDTO) state.getObject();
-////					ArrayList<RolePlayCharacterDTO> rpCharList = (ArrayList<RolePlayCharacterDTO>)state.getObject2();
-//
-//					for (BOAttack a : Nexus.getBoUniverse().attackBOsOpenInThisRound.values()) {
-//						if (attackDTO.getId().equals(a.getAttackDTO().getId())) {
-//							a.setAttackDTO(attackDTO);
-//							ActionManager.getAction(ACTIONS.UPDATE_USERS_FOR_ATTACK).execute(a);
-//							break;
-//						}
-//					}
-//
-//					break;
+				//				case ATTACK_CHARACTER_SAVE_RESPONSE:
+				//					logger.info("Attack has changed, a user joined or left.");
+				//					AttackDTO attackDTO = (AttackDTO) state.getObject();
+				////					ArrayList<RolePlayCharacterDTO> rpCharList = (ArrayList<RolePlayCharacterDTO>)state.getObject2();
+				//
+				//					for (BOAttack a : Nexus.getBoUniverse().attackBOsOpenInThisRound.values()) {
+				//						if (attackDTO.getId().equals(a.getAttackDTO().getId())) {
+				//							a.setAttackDTO(attackDTO);
+				//							ActionManager.getAction(ACTIONS.UPDATE_USERS_FOR_ATTACK).execute(a);
+				//							break;
+				//						}
+				//					}
+				//
+				//					break;
 
 				case STATS_MWO_SAVE_RESPONSE:
 					BOAttack attack1 = Nexus.getCurrentAttackOfUser();
@@ -405,29 +392,23 @@ public class EventCommunications {
 				case ROLEPLAY_SAVE_STORY:
 					if (state.isAction_successfully() == null) {
 						logger.info("ROLEPLAY_SAVE_STORY: No action state: " + state.getObject().toString());
-
 					} else if (state.isAction_successfully()) {
 						logger.info("ROLEPLAY_SAVE_STORY: Speichern erfolgreich! - " + state.getObject().toString());
 						ActionManager.getAction(ACTIONS.SAVE_ROLEPLAY_STORY_OK).execute(state);
-
 					} else if (!state.isAction_successfully()) {
 						logger.info("ROLEPLAY_SAVE_STORY: Fehler beim Speichern: " + state.getObject().toString());
 						ActionManager.getAction(ACTIONS.SAVE_ROLEPLAY_STORY_ERR).execute(state.getObject());
-
 					}
 					break;
 				case ROLEPLAY_DELETE_STORY:
 					if (state.isAction_successfully() == null) {
 						logger.info("ROLEPLAY_DELETE_STORY: No action state: " + state.getObject().toString());
-
 					} else if (state.isAction_successfully()) {
 						logger.info("ROLEPLAY_DELETE_STORY_OK");
 						ActionManager.getAction(ACTIONS.DELETE_ROLEPLAY_STORY_OK).execute();
-
 					} else if (!state.isAction_successfully()) {
 						logger.info("ROLEPLAY_DELETE_STORY_ERR");
 						ActionManager.getAction(ACTIONS.DELETE_ROLEPLAY_STORY_ERR).execute(state.getObject());
-
 					}
 					break;
 				case ROLEPLAY_GET_ALLSTORIES:
@@ -457,7 +438,7 @@ public class EventCommunications {
 				case GET_UNIVERSE_DATA:
 					logger.info("Re-created universe received from server!");
 					ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("13");
-					UniverseDTO universeDTO = (UniverseDTO) Compressor.deCompress((byte[])state.getObject());
+					UniverseDTO universeDTO = (UniverseDTO) Compressor.deCompress((byte[]) state.getObject());
 					if (universeDTO != null) {
 						Nexus.injectNewUniverseDTO(universeDTO);
 					} else {
@@ -473,8 +454,8 @@ public class EventCommunications {
 				case USER_REQUEST_LOGGED_IN_DATA:
 					break;
 
-//				case USER_SAVE:
-//					break;
+				//				case USER_SAVE:
+				//					break;
 				case BROADCAST_SEND_NEW_PLAYERLIST:
 					break;
 				case ROLEPLAY_REQUEST_ALLSTORIES:
@@ -504,8 +485,8 @@ public class EventCommunications {
 		}
 	}
 
-	public static void showErrorMessage(GameState g){
-		if(g.isAction_successfully() != null && !g.isAction_successfully()){
+	public static void showErrorMessage(GameState g) {
+		if (g.isAction_successfully() != null && !g.isAction_successfully()) {
 			logger.error((String) g.getObject());
 		}
 	}

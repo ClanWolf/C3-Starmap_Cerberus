@@ -61,7 +61,7 @@ public class DropLeadCheckTimerTask extends TimerTask {
 		ArrayList<AttackPOJO> allAttacksForRound = AttackDAO.getInstance().getAllAttacksOfASeasonForRound(seasonId, roundId);
 
 		ArrayList<AttackPOJO> brokenAttacks = new ArrayList<>();
-		ArrayList<AttackPOJO> attacksToBeKilled = new ArrayList<>();
+		ArrayList<Long> attacksToBeKilled = new ArrayList<>();
 		ArrayList<Long> currentlyOnlineCharacterIds = C3GameSessionHandler.getCurrentlyOnlineCharIds();
 
 		// check if there is a countdown for any broken attack that is finished,
@@ -86,12 +86,15 @@ public class DropLeadCheckTimerTask extends TimerTask {
 				response.setAction_successfully(Boolean.TRUE);
 				C3Room.sendBroadcastMessage(response);
 
-				// TODO: KILL attack
-				//Nexus.brokenAttackTimers.remove(aid);
-
-				//Send new universe!!!
+				attacksToBeKilled.add(aid);
 			}
 		}
+
+		for (Long aid : attacksToBeKilled) {
+			Nexus.gmSessionHandler.resetAttack(aid);
+			Nexus.brokenAttackTimers.remove(aid);
+		}
+		attacksToBeKilled.clear();
 
 		for (AttackPOJO a : allAttacksForRound) {
 			boolean attackerCommanderFoundAndOnline = false;
@@ -116,7 +119,13 @@ public class DropLeadCheckTimerTask extends TimerTask {
 					brokenAttacks.add(a);
 				} else {
 					// Attack is ok, remove countdown
-					Nexus.brokenAttackTimers.remove(a.getId());
+					if (Nexus.brokenAttackTimers.remove(a.getId()) != null) { // a formerly broken attack was removed --> healed
+						// send broadcastmessage for attack that has been healed
+						GameState response = new GameState(GAMESTATEMODES.BROKEN_ATTACK_HEALED);
+						response.addObject(a.getId());
+						response.setAction_successfully(Boolean.TRUE);
+						C3Room.sendBroadcastMessage(response);
+					}
 				}
 			}
 		}

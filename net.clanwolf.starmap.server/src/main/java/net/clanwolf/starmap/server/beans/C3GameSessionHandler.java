@@ -335,6 +335,24 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		}
 	}
 
+	public synchronized void resetAttack(Long attackId) {
+		try {
+
+
+			// remove all characters from attack and reset the "fights started" flag
+
+
+
+//			GameState s = new GameState();
+//			s.addObject(ap);
+//			s.addObject2(ap.getAttackTypeID());
+
+//			Nexus.gmSessionHandler.saveAttack(roomSession, s);
+		} catch (Exception e) {
+			logger.error("Error reseting attack", e);
+		}
+	}
+
 	public synchronized void saveAttack(PlayerSession session, GameState state) {
 		AttackDAO dao = AttackDAO.getInstance();
 		AttackCharacterDAO daoAC = AttackCharacterDAO.getInstance();
