@@ -184,7 +184,7 @@ public class CalcXP {
                             if (userDetail.getTeam() == null) {
 
                                 //Spieler befindet sich im Spectator
-                                logger.error(userDetail.getUsername() + " was there as a spectator and does not get XP.");
+                                logger.info(userDetail.getUsername() + " was there as a spectator and does not get XP.");
                                 report.addXPWarning(userDetail.getUsername() + " was there as a spectator and does not get XP.");
 
                             } else {
