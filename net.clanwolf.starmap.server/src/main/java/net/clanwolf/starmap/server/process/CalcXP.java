@@ -142,20 +142,100 @@ public class CalcXP {
         this.userName = userName;
     }
 
-    public Long getUserXPVictoryLoss() {
-        if (this.matchResult.getMatchDetails().getWinningTeam().equals(userDetail.getTeam())) {
+    /**
+     * Berechnet die XP der jeweiligen Spieler
+     *
+     * @param attackStats Die AttackStatsPOJO
+     */
+    public CalcXP(AttackStatsPOJO attackStats, GenerateRoundReport report) throws Exception {
+        String mwoMatchID = attackStats.getMwoMatchId();
+        StatsMwoDAO statsMwoDAO = net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.StatsMwoDAO.getInstance();
+        StatsMwoPOJO statsMwoPOJO = statsMwoDAO.findByMWOGameId(mwoMatchID);
+        String rawJSONstatsData = statsMwoPOJO.getRawData();
+        MWOMatchResult matchDetails = new Gson().fromJson(rawJSONstatsData, MWOMatchResult.class);
 
-            //Spieler befindet sich im Gewinner Team
-            userXPVictoryLoss = XP_REWARD_VICTORY;
+        RolePlayCharacterDAO characterDAO = RolePlayCharacterDAO.getInstance();
+        ArrayList<RolePlayCharacterPOJO> allCharacter = characterDAO.getAllCharacter();
 
-        } else {
+        FactionPOJO factionAttacker = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, attackStats.getAttackerFactionId());
+        FactionPOJO factionDefender = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, attackStats.getDefenderFactionId());
 
-            //Spieler befindet sich im Verlierer Team
-            userXPVictoryLoss = XP_REWARD_LOSS;
+        logger.info("--- Calculate the XP [" + factionAttacker.getShortName() + "] versus [" + factionDefender.getShortName() + "] (MatchID: " + mwoMatchID + " )---");
 
+        report.addGameInfo(attackStats, matchDetails);
+
+        boolean bFound;
+        long currentUserXP;
+
+        for (UserDetail userDetail : matchDetails.getUserDetails()) {
+
+            bFound = false;
+            currentUserXP = 0L;
+
+            for (RolePlayCharacterPOJO currentCharacter : allCharacter) {
+                if (bFound) {
+                    break;
+                } else {
+                    if (currentCharacter.getMwoUsername() != null) {
+                        if (userDetail.getUsername().equals(currentCharacter.getMwoUsername())) {
+
+                            bFound = true;
+
+                            if (userDetail.getTeam() == null) {
+
+                                //Spieler befindet sich im Spectator
+                                logger.error(userDetail.getUsername() + " was there as a spectator and does not get XP.");
+                                report.addXPWarning(userDetail.getUsername() + " was there as a spectator and does not get XP.");
+
+                            } else {
+
+                                report.addXPForTeam(userDetail, matchDetails, currentCharacter);
+
+								if (matchDetails.getMatchDetails().getWinningTeam() != null) {
+									if (matchDetails.getMatchDetails().getWinningTeam().equals(userDetail.getTeam())) {
+
+										//Spieler befindet sich im Gewinner Team
+										currentUserXP = currentUserXP + XP_REWARD_VICTORY;
+									} else {
+
+										//Spieler befindet sich im Verlierer Team
+										currentUserXP = currentUserXP + XP_REWARD_LOSS;
+									}
+								} else {
+									currentUserXP = currentUserXP + XP_REWARD_TIE;
+								}
+
+                                currentUserXP = currentUserXP + XP_REWARD_COMPONENT_DESTROYED * userDetail.getComponentsDestroyed();
+                                currentUserXP = currentUserXP + CalcRange(userDetail.getMatchScore().longValue(), XP_REWARD_EACH_MATCH_SCORE_RANGE) * XP_REWARD_EACH_MATCH_SCORE;
+                                currentUserXP = currentUserXP + CalcRange(userDetail.getDamage().longValue(), XP_REWARD_EACH_DAMAGE_RANGE);
+
+                                if (currentCharacter.getXp() != null) {
+                                    // ****************************************************************************************
+                                    // Klasse nur für Testzwecke eingebaut
+                                    // UserXPInfo calcLevel = new UserXPInfo(currentCharacter.getXp());
+                                    // logger.info(currentCharacter.getName() + " current xp: " + currentCharacter.getXp() + " current Level: " + calcLevel.getPlayerLevel());
+                                    //*****************************************************************************************
+                                    currentUserXP = currentUserXP + currentCharacter.getXp();
+
+                                }
+
+                                currentCharacter.setXp((int) currentUserXP);
+                                characterDAO.update(Nexus.END_ROUND_USERID, currentCharacter);
+
+                            }
+                        }
+                    }
+                }
+            }
+            if (!bFound) {
+
+                logger.info("User " + userDetail.getUsername() + " does not receive XP because his MWO username was not found in the C3 database.");
+                report.addXPWarning("User " + userDetail.getUsername() + " does not receive XP because his MWO username was not found in the C3 database.");
+
+            }
         }
-        userXPCurrent = userXPCurrent + userXPVictoryLoss;
-        return userXPVictoryLoss;
+        report.finishXPReport();
+        logger.info("✅ XP calculating finished");
     }
 
     public void setUserXPVictoryLoss(Long userXPVictoryLoss) {
@@ -221,97 +301,19 @@ public class CalcXP {
         this.currentCharacter = currentCharacter;
     }
 
-    /**
-     * Berechnet die XP der jeweiligen Spieler
-     *
-     * @param attackStats Die AttackStatsPOJO
-     */
-    public CalcXP(AttackStatsPOJO attackStats, GenerateRoundReport report) throws Exception {
-        String mwoMatchID = attackStats.getMwoMatchId();
-        StatsMwoDAO statsMwoDAO = net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.StatsMwoDAO.getInstance();
-        StatsMwoPOJO statsMwoPOJO = statsMwoDAO.findByMWOGameId(mwoMatchID);
-        String rawJSONstatsData = statsMwoPOJO.getRawData();
-        MWOMatchResult matchDetails = new Gson().fromJson(rawJSONstatsData, MWOMatchResult.class);
-
-        RolePlayCharacterDAO characterDAO = RolePlayCharacterDAO.getInstance();
-        ArrayList<RolePlayCharacterPOJO> allCharacter = characterDAO.getAllCharacter();
-
-        FactionPOJO factionAttacker = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, attackStats.getAttackerFactionId());
-        FactionPOJO factionDefender = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, attackStats.getDefenderFactionId());
-
-        logger.info("--- Calculate the XP [" + factionAttacker.getShortName() + "] versus [" + factionDefender.getShortName() + "] (MatchID: " + mwoMatchID + " )---");
-
-        report.addGameInfo(attackStats, matchDetails);
-
-        boolean bFound;
-        long currentUserXP;
-
-        for (UserDetail userDetail : matchDetails.getUserDetails()) {
-
-            bFound = false;
-            currentUserXP = 0L;
-
-            for (RolePlayCharacterPOJO currentCharacter : allCharacter) {
-                if (bFound) {
-                    break;
-                } else {
-                    if (currentCharacter.getMwoUsername() != null) {
-                        if (userDetail.getUsername().equals(currentCharacter.getMwoUsername())) {
-
-                            bFound = true;
-
-                            if (userDetail.getTeam() == null) {
-
-                                //Spieler befindet sich im Spectator
-                                logger.error(userDetail.getUsername() + " was there as a spectator and does not get XP.");
-                                report.addXPWarning(userDetail.getUsername() + " was there as a spectator and does not get XP.");
-
-                            } else {
-
-                                report.addXPForTeam(userDetail, matchDetails, currentCharacter);
-
-                                if (matchDetails.getMatchDetails().getWinningTeam().equals(userDetail.getTeam())) {
-
-                                    //Spieler befindet sich im Gewinner Team
-                                    currentUserXP = currentUserXP + XP_REWARD_VICTORY;
-
-                                } else {
-
-                                    //Spieler befindet sich im Verlierer Team
-                                    currentUserXP = currentUserXP + XP_REWARD_LOSS;
-
-                                }
-
-                                currentUserXP = currentUserXP + XP_REWARD_COMPONENT_DESTROYED * userDetail.getComponentsDestroyed();
-                                currentUserXP = currentUserXP + CalcRange(userDetail.getMatchScore().longValue(), XP_REWARD_EACH_MATCH_SCORE_RANGE) * XP_REWARD_EACH_MATCH_SCORE;
-                                currentUserXP = currentUserXP + CalcRange(userDetail.getDamage().longValue(), XP_REWARD_EACH_DAMAGE_RANGE);
-
-                                if (currentCharacter.getXp() != null) {
-                                    // ****************************************************************************************
-                                    // Klasse nur für Testzwecke eingebaut
-                                    // UserXPInfo calcLevel = new UserXPInfo(currentCharacter.getXp());
-                                    // logger.info(currentCharacter.getName() + " current xp: " + currentCharacter.getXp() + " current Level: " + calcLevel.getPlayerLevel());
-                                    //*****************************************************************************************
-                                    currentUserXP = currentUserXP + currentCharacter.getXp();
-
-                                }
-
-                                currentCharacter.setXp((int) currentUserXP);
-                                characterDAO.update(Nexus.END_ROUND_USERID, currentCharacter);
-
-                            }
-                        }
-                    }
-                }
-            }
-            if (!bFound) {
-
-                logger.info("User " + userDetail.getUsername() + " does not receive XP because his MWO username was not found in the C3 database.");
-                report.addXPWarning("User " + userDetail.getUsername() + " does not receive XP because his MWO username was not found in the C3 database.");
-
-            }
-        }
-        report.finishXPReport();
-        logger.info("✅ XP calculating finished");
+    public Long getUserXPVictoryLoss() {
+		if (this.matchResult.getMatchDetails().getWinningTeam() != null) {
+			if (this.matchResult.getMatchDetails().getWinningTeam().equals(userDetail.getTeam())) {
+				//Spieler befindet sich im Gewinner Team
+				userXPVictoryLoss = XP_REWARD_VICTORY;
+			} else {
+				//Spieler befindet sich im Verlierer Team
+				userXPVictoryLoss = XP_REWARD_LOSS;
+			}
+		} else {
+			userXPVictoryLoss = XP_REWARD_TIE;
+		}
+        userXPCurrent = userXPCurrent + userXPVictoryLoss;
+        return userXPVictoryLoss;
     }
 }

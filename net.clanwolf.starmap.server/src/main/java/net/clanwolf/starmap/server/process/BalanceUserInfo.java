@@ -200,15 +200,20 @@ public class BalanceUserInfo {
         MechIdInfo mechIdInfo;
 
         String winningTeam = mwomatchResult.getMatchDetails().getWinningTeam();
+	    balanceUserInfo = new BalanceUserInfo(mwomatchResult);
 
-        balanceUserInfo = new BalanceUserInfo(mwomatchResult);
-        if (Objects.equals(winningTeam, detail.getTeam())) {
-            balanceUserInfo.rewardLossVictory = REWARD_VICTORY;
-            balanceUserInfo.rewardLossVictoryDescription = "Victory";
-        } else {
-            balanceUserInfo.rewardLossVictory = REWARD_LOSS;
-            balanceUserInfo.rewardLossVictoryDescription = "Loss";
-        }
+		if (winningTeam != null) {
+			if (Objects.equals(winningTeam, detail.getTeam())) {
+				balanceUserInfo.rewardLossVictory = REWARD_VICTORY;
+				balanceUserInfo.rewardLossVictoryDescription = "Victory";
+			} else {
+				balanceUserInfo.rewardLossVictory = REWARD_LOSS;
+				balanceUserInfo.rewardLossVictoryDescription = "Loss";
+			}
+		} else {
+			balanceUserInfo.rewardLossVictory = REWARD_TIE;
+			balanceUserInfo.rewardLossVictoryDescription = "Tie";
+		}
 
         balanceUserInfo.rewardAssist = detail.getAssists() * REWARD_ASSIST;
         balanceUserInfo.playerAssist = detail.getAssists();

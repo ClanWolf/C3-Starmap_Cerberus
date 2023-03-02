@@ -35,6 +35,7 @@ public class Constants implements java.io.Serializable {
     //XP rewards during an invasion
     public static final long XP_REWARD_VICTORY = 5;
     public static final long XP_REWARD_LOSS = 2;
+	public static final long XP_REWARD_TIE = 1;
     public static final long XP_REWARD_COMPONENT_DESTROYED = 1;
     public static final long XP_REWARD_EACH_MATCH_SCORE = 1;
     public static final long XP_REWARD_EACH_MATCH_SCORE_RANGE = 150;
@@ -49,6 +50,7 @@ public class Constants implements java.io.Serializable {
     //Reward payments when calculating the cost
     public static final long REWARD_VICTORY = 250_000;
     public static final long REWARD_LOSS = 125_000;
+	public static final long REWARD_TIE = 50_000;
     public static final long REWARD_ASSIST = 75_000;
     public static final long REWARD_EACH_COMPONENT_DESTROYED = 250_000;
     public static final long REWARD_EACH_MACHT_SCORE = 2_500;

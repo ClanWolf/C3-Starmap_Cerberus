@@ -696,23 +696,29 @@ public class GenerateRoundReport {
         FactionInfo factionDefenderInfo = new FactionInfo(factionDefender.getId());
 
 
-
-        if (matchDetails.getMatchDetails().getWinningTeam().equals(factionAttackerInfo.getTeam(MWOMatchID))) {
-            tableResult.addCell(addTeam2Cell("VICTORY").setFontSize(20));
-        } else {
-
-            tableResult.addCell(addTeam2Cell("DEFEAT").setFontSize(20));
-        }
-
+		// Es kann ein Unentschieden geben im Drop, d.h. "getWinningTeam()" könnte null liefern!
+		if (matchDetails.getMatchDetails().getWinningTeam() != null) {
+			if (matchDetails.getMatchDetails().getWinningTeam().equals(factionAttackerInfo.getTeam(MWOMatchID))) {
+				tableResult.addCell(addTeam2Cell("VICTORY").setFontSize(20));
+			} else {
+				tableResult.addCell(addTeam2Cell("DEFEAT").setFontSize(20));
+			}
+		} else {
+			tableResult.addCell(addTeam2Cell("TIE").setFontSize(20));
+		}
         tableResult.addCell(addTeam2Cell(matchDetails.getMatchDetails().getTeam2Score().toString()).setFontSize(20))
                 .addCell(addTeam1Cell(matchDetails.getMatchDetails().getTeam1Score().toString()).setFontSize(20));
 
-        if (matchDetails.getMatchDetails().getWinningTeam().equals(factionDefenderInfo.getTeam(MWOMatchID))) {
-            tableResult.addCell(addTeam1Cell("VICTORY").setFontSize(20));
-        } else {
-
-            tableResult.addCell(addTeam1Cell("DEFEAT").setFontSize(20));
-        }
+	    // Es kann ein Unentschieden geben im Drop, d.h. "getWinningTeam()" könnte null liefern!
+	    if (matchDetails.getMatchDetails().getWinningTeam() != null) {
+		    if (matchDetails.getMatchDetails().getWinningTeam().equals(factionDefenderInfo.getTeam(MWOMatchID))) {
+			    tableResult.addCell(addTeam1Cell("VICTORY").setFontSize(20));
+		    } else {
+			    tableResult.addCell(addTeam1Cell("DEFEAT").setFontSize(20));
+		    }
+	    } else {
+		    tableResult.addCell(addTeam2Cell("TIE").setFontSize(20));
+	    }
 
         doc.add(tableResult);
         doc.add(new Paragraph(""));
