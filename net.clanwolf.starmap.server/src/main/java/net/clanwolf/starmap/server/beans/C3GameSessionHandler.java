@@ -346,15 +346,16 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			EntityManagerHelper.beginTransaction(Nexus.DUMMY_USERID);
 
 			// Remove all characters from attack and reset the "fights started" flag
-			Long startStoryId = getStartStoryId();
 			RolePlayStoryDAO rpsdao = RolePlayStoryDAO.getInstance();
-			RolePlayStoryPOJO rpstory = rpsdao.findById(Nexus.DUMMY_USERID, startStoryId);
 
 			AttackDAO adao = AttackDAO.getInstance();
 			AttackPOJO ap = adao.findById(Nexus.DUMMY_USERID,attackId);
+
+			RolePlayStoryPOJO lobbyRPreset = rpsdao.getLobbyRPFromAttackRP(ap.getStoryID());
+
 			ap.setFightsStarted(false);
 			ap.setAttackCharList(emptyCharList);
-			ap.setStoryID(startStoryId);
+			ap.setStoryID(lobbyRPreset.getId());
 			adao.update(Nexus.DUMMY_USERID, ap);
 
 			EntityManagerHelper.commit(Nexus.DUMMY_USERID);
@@ -362,7 +363,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			// Send the reset attack to the clients
 			GameState response = new GameState(GAMESTATEMODES.ATTACK_SAVE_RESPONSE);
 			response.addObject(ap);
-			response.addObject3(rpstory);
+			response.addObject3(lobbyRPreset);
 
 			response.setAction_successfully(Boolean.TRUE);
 			C3GameSessionHandler.sendBroadCast(room, response);
