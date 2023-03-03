@@ -71,7 +71,7 @@ public class EventCommunications {
 			switch (state.getMode()) {
 				case FOUND_BROKEN_ATTACK:
 					logger.info("Broken attack was found (drops started but one or both dropleads are offline)");
-					if (state.getObject() != null && ((Long) state.getObject()).equals(Nexus.getCurrentAttackOfUser().getAttackDTO().getId())) {
+					if (state.getObject() != null && Nexus.getCurrentAttackOfUser() != null && ((Long) state.getObject()).equals(Nexus.getCurrentAttackOfUser().getAttackDTO().getId())) {
 						// this is the attack I am in currently
 						logger.info("My attack is broken");
 						Long timerStartMillis = (Long) state.getObject2();
@@ -80,7 +80,7 @@ public class EventCommunications {
 					break;
 
 				case BROKEN_ATTACK_KILL_FIVE_MINUTE_WARNING:
-					if (state.getObject() != null && ((Long) state.getObject()).equals(Nexus.getCurrentAttackOfUser().getAttackDTO().getId())) {
+					if (state.getObject() != null && Nexus.getCurrentAttackOfUser() != null && ((Long) state.getObject()).equals(Nexus.getCurrentAttackOfUser().getAttackDTO().getId())) {
 						// this is the attack I am in currently
 						logger.info("My broken attack will be killed by the server, FIVE MINUTE WARNING");
 						Long timerStartMillis = (Long) state.getObject2();
@@ -90,7 +90,7 @@ public class EventCommunications {
 
 				case BROKEN_ATTACK_KILL_AFTER_TIMEOUT:
 					// My attack will be killed, because a droplead went missing and did not reconnect after 10 mins
-					if (state.getObject() != null && ((Long) state.getObject()).equals(Nexus.getCurrentAttackOfUser().getAttackDTO().getId())) {
+					if (state.getObject() != null && Nexus.getCurrentAttackOfUser() != null && ((Long) state.getObject()).equals(Nexus.getCurrentAttackOfUser().getAttackDTO().getId())) {
 						// this is the attack I am in currently
 						logger.info("My broken attack was killed by the server");
 						Long timerStartMillis = (Long) state.getObject2();
@@ -100,7 +100,7 @@ public class EventCommunications {
 
 				case BROKEN_ATTACK_HEALED:
 					// My attack was healed, dropleads did reconnect
-					if (state.getObject() != null && ((Long) state.getObject()).equals(Nexus.getCurrentAttackOfUser().getAttackDTO().getId())) {
+					if (state.getObject() != null && Nexus.getCurrentAttackOfUser() != null && ((Long) state.getObject()).equals(Nexus.getCurrentAttackOfUser().getAttackDTO().getId())) {
 						// this is the attack I am in currently
 						logger.info("My attack was healed");
 						ActionManager.getAction(ACTIONS.CURRENT_ATTACK_IS_HEALED).execute();

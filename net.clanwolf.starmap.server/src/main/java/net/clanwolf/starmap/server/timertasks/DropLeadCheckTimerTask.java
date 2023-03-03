@@ -114,7 +114,7 @@ public class DropLeadCheckTimerTask extends TimerTask {
 						}
 					}
 				}
-				if (!(attackerCommanderFoundAndOnline && defenderCommanderFoundAndOnline)) {
+				if (!(attackerCommanderFoundAndOnline && defenderCommanderFoundAndOnline) && a.getFightsStarted()) {
 					// Attack is broken
 					brokenAttacks.add(a);
 				} else {

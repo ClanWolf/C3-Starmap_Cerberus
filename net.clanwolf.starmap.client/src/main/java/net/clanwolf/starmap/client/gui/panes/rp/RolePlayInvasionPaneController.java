@@ -450,6 +450,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 					Long timerStart = (Long) o.getObject();
 					Platform.runLater(() -> {
 						labelError.setText("...");
+						VBoxError.toFront();
 						VBoxError.setVisible(true);
 					});
 				}
@@ -460,6 +461,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 					Long timerStart = (Long) o.getObject();
 					Platform.runLater(() -> {
 						labelError.setText("...");
+						VBoxError.toFront();
 						VBoxError.setVisible(true);
 					});
 				}
@@ -470,6 +472,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 					Long timerStart = (Long) o.getObject();
 					Platform.runLater(() -> {
 						labelError.setText("...");
+						VBoxError.toFront();
 						VBoxError.setVisible(true);
 					});
 				}
@@ -480,6 +483,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 					Long timerStart = (Long) o.getObject();
 					Platform.runLater(() -> {
 						labelError.setText("...");
+						VBoxError.toFront();
 						VBoxError.setVisible(false);
 					});
 				}

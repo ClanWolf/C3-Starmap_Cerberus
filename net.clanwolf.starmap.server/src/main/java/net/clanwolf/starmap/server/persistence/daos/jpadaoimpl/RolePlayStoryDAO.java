@@ -188,11 +188,18 @@ public class RolePlayStoryDAO extends GenericDAO {
 
 		CriteriaHelper crit = new CriteriaHelper(RolePlayStoryPOJO.class);
 
-		crit.addCriteria("story", rpID);
-		crit.addCriteria("type", ROLEPLAYENTRYTYPES.C3_RP_STEP_V8);
+		crit.addCriteria("id", rpID);
+		//crit.addCriteria("type", ROLEPLAYENTRYTYPES.C3_RP_STEP_V8);
 		//crit.addCriteria("sortOrder",1);
 
-		return (RolePlayStoryPOJO)crit.getSingleResult();
+		RolePlayStoryPOJO rp1 = (RolePlayStoryPOJO)crit.getSingleResult();
+
+		CriteriaHelper crit2 = new CriteriaHelper(RolePlayStoryPOJO.class);
+
+		crit2.addCriteria("story", rp1.getStory().getId());
+		crit2.addCriteria("type", ROLEPLAYENTRYTYPES.C3_RP_STEP_V8);
+
+		return (RolePlayStoryPOJO)crit2.getSingleResult();
 	}
 
 

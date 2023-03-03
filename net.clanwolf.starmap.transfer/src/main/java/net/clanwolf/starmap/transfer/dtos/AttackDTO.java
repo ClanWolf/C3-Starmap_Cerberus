@@ -44,6 +44,7 @@ public class AttackDTO extends Dto {
 	private Long jumpshipID;
 	private Long characterID;
 	private Long storyID;
+	private Long lastStoryID;
 	private Long factionID_Winner;
 	private Boolean fightsStarted;
 	private Long attackCostAttacker;
@@ -253,6 +254,16 @@ public class AttackDTO extends Dto {
 		this.fightsStarted = fightsStarted;
 	}
 
+
+	@SuppressWarnings("unused")
+	public Long getLastStoryID() {
+		return lastStoryID;
+	}
+
+	@SuppressWarnings("unused")
+	public void setLastStoryID(Long lastStoryID) {
+		this.lastStoryID = lastStoryID;
+	}
 	public AttackDTO() {
 		// empty constructor
 	}

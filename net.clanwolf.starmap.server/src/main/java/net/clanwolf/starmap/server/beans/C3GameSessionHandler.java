@@ -457,6 +457,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				} else {
 					rpPojo = RolePlayStoryDAO.getInstance().findById(getC3UserID(session), attack.getStoryID());
 				}
+				attack.setLastStoryID(rpPojo.getId());
 				attack.setStoryID(rpPojo.getId());
 			} else {
 				AttackTypesPOJO at = AttackTypesDAO.getInstance().findByShortName(getC3UserID(session), "PA");
@@ -489,6 +490,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 				rpPojo = RolePlayStoryDAO.getInstance().findById(getC3UserID(session), rpID);
 			}
+			attack.setLastStoryID(rpPojo.getId());
 			attack.setStoryID(rpPojo.getId());
 
 			if(attack.getId() != null) {

@@ -81,6 +81,9 @@ public class AttackPOJO extends Pojo {
 	@JoinColumn(name = "StoryID")
 	private Long storyID;
 
+	@JoinColumn(name = "LastStoryID")
+	private Long lastStoryID;
+
 	@Column(name = "FactionID_Winner")
 	private Long factionID_Winner;
 
@@ -293,6 +296,16 @@ public class AttackPOJO extends Pojo {
 	@SuppressWarnings("unused")
 	public Boolean getFightsStarted() {
 		return fightsStarted;
+	}
+
+	@SuppressWarnings("unused")
+	public Long getLastStoryID() {
+		return lastStoryID;
+	}
+
+	@SuppressWarnings("unused")
+	public void setLastStoryID(Long lastStoryID) {
+		this.lastStoryID = lastStoryID;
 	}
 
 	@SuppressWarnings("unused")
