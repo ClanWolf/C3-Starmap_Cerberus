@@ -61,7 +61,7 @@ public class DropLeadCheckTimerTask extends TimerTask {
 		ArrayList<AttackPOJO> allAttacksForRound = AttackDAO.getInstance().getAllAttacksOfASeasonForRound(seasonId, roundId);
 
 		ArrayList<AttackPOJO> brokenAttacks = new ArrayList<>();
-		ArrayList<Long> attacksToBeKilled = new ArrayList<>();
+		ArrayList<Long> attacksToReset = new ArrayList<>();
 		ArrayList<Long> currentlyOnlineCharacterIds = C3GameSessionHandler.getCurrentlyOnlineCharIds();
 
 		// check if there is a countdown for any broken attack that is finished,
@@ -86,15 +86,15 @@ public class DropLeadCheckTimerTask extends TimerTask {
 				response.setAction_successfully(Boolean.TRUE);
 				C3Room.sendBroadcastMessage(response);
 
-				attacksToBeKilled.add(aid);
+				attacksToReset.add(aid); // remove all players from the lobby, reset started flag,...
 			}
 		}
 
-		for (Long aid : attacksToBeKilled) {
+		for (Long aid : attacksToReset) {
 			Nexus.gmSessionHandler.resetAttack(aid);
 			Nexus.brokenAttackTimers.remove(aid);
 		}
-		attacksToBeKilled.clear();
+		attacksToReset.clear();
 
 		for (AttackPOJO a : allAttacksForRound) {
 			boolean attackerCommanderFoundAndOnline = false;

@@ -31,6 +31,7 @@ import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
@@ -143,7 +144,8 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 	private ImageView ivStatic;
 	@FXML
 	private VBox VBoxError;
-
+	@FXML
+	private Label labelError;
 	private Image im2;
 
 	public RolePlayInvasionPaneController() {
@@ -444,22 +446,43 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 		logger.info("Flag for CharRP" + isCharRP);
 		switch (action) {
 			case CURRENT_ATTACK_IS_BROKEN:
-//				Long timerStart = (Long) o.getObject();
-				VBoxError.setVisible(true);
+				if (o.getObject() instanceof Long) {
+					Long timerStart = (Long) o.getObject();
+					Platform.runLater(() -> {
+						labelError.setText("...");
+						VBoxError.setVisible(true);
+					});
+				}
 				break;
 
 			case CURRENT_ATTACK_IS_BROKEN_WARNING:
-//				Long timerStart = (Long) o.getObject();
-				VBoxError.setVisible(true);
+				if (o.getObject() instanceof Long) {
+					Long timerStart = (Long) o.getObject();
+					Platform.runLater(() -> {
+						labelError.setText("...");
+						VBoxError.setVisible(true);
+					});
+				}
 				break;
 
 			case CURRENT_ATTACK_IS_BROKEN_KILLED:
-//				Long timerStart = (Long) o.getObject();
-				VBoxError.setVisible(false);
+				if (o.getObject() instanceof Long) {
+					Long timerStart = (Long) o.getObject();
+					Platform.runLater(() -> {
+						labelError.setText("...");
+						VBoxError.setVisible(true);
+					});
+				}
 				break;
 
 			case CURRENT_ATTACK_IS_HEALED:
-				VBoxError.setVisible(false);
+				if (o.getObject() instanceof Long) {
+					Long timerStart = (Long) o.getObject();
+					Platform.runLater(() -> {
+						labelError.setText("...");
+						VBoxError.setVisible(false);
+					});
+				}
 				break;
 
 			case PANE_CREATION_BEGINS:

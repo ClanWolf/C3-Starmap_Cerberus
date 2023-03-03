@@ -335,19 +335,37 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		}
 	}
 
+	private synchronized Long getStartStoryId() {
+		return 1L;
+	}
+
 	public synchronized void resetAttack(Long attackId) {
 		try {
+			List<AttackCharacterPOJO> emptyCharList = new ArrayList<AttackCharacterPOJO>();
 
+			EntityManagerHelper.beginTransaction(Nexus.DUMMY_USERID);
 
-			// remove all characters from attack and reset the "fights started" flag
+			// Remove all characters from attack and reset the "fights started" flag
+			Long startStoryId = getStartStoryId();
+			RolePlayStoryDAO rpsdao = RolePlayStoryDAO.getInstance();
+			RolePlayStoryPOJO rpstory = rpsdao.findById(Nexus.DUMMY_USERID, startStoryId);
 
+			AttackDAO adao = AttackDAO.getInstance();
+			AttackPOJO ap = adao.findById(Nexus.DUMMY_USERID,attackId);
+			ap.setFightsStarted(false);
+			ap.setAttackCharList(emptyCharList);
+			ap.setStoryID(startStoryId);
+			adao.update(Nexus.DUMMY_USERID, ap);
 
+			EntityManagerHelper.commit(Nexus.DUMMY_USERID);
 
-//			GameState s = new GameState();
-//			s.addObject(ap);
-//			s.addObject2(ap.getAttackTypeID());
+			// Send the reset attack to the clients
+			GameState response = new GameState(GAMESTATEMODES.ATTACK_SAVE_RESPONSE);
+			response.addObject(ap);
+			response.addObject3(rpstory);
 
-//			Nexus.gmSessionHandler.saveAttack(roomSession, s);
+			response.setAction_successfully(Boolean.TRUE);
+			C3GameSessionHandler.sendBroadCast(room, response);
 		} catch (Exception e) {
 			logger.error("Error reseting attack", e);
 		}
