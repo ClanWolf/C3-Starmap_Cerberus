@@ -335,10 +335,6 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		}
 	}
 
-	private synchronized Long getStartStoryId() {
-		return 1L;
-	}
-
 	public synchronized void resetAttack(Long attackId) {
 		try {
 			List<AttackCharacterPOJO> emptyCharList = new ArrayList<AttackCharacterPOJO>();

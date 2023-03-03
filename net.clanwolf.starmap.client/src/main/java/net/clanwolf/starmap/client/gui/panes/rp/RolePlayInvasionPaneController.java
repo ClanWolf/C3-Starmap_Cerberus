@@ -447,9 +447,12 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 		switch (action) {
 			case CURRENT_ATTACK_IS_BROKEN:
 				if (o.getObject() instanceof Long) {
-					Long timerStart = (Long) o.getObject();
 					Platform.runLater(() -> {
-						labelError.setText("...");
+						Long timerStart = (Long) o.getObject();
+						Long now = System.currentTimeMillis();
+						long diff = now - timerStart;
+						long diffMinutes = diff / 60_000;
+						labelError.setText("Droplead has been offline for " + diffMinutes + " Minutes!");
 						VBoxError.toFront();
 						VBoxError.setVisible(true);
 					});
@@ -458,9 +461,12 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 
 			case CURRENT_ATTACK_IS_BROKEN_WARNING:
 				if (o.getObject() instanceof Long) {
-					Long timerStart = (Long) o.getObject();
 					Platform.runLater(() -> {
-						labelError.setText("...");
+						Long timerStart = (Long) o.getObject();
+						Long now = System.currentTimeMillis();
+						long diff = now - timerStart;
+						long diffMinutes = diff / 60_000;
+						labelError.setText("Droplead has been offline for " + diffMinutes + " Minutes! WARNING, Fight will be suspended in less than 5 minutes!");
 						VBoxError.toFront();
 						VBoxError.setVisible(true);
 					});
@@ -469,9 +475,12 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 
 			case CURRENT_ATTACK_IS_BROKEN_KILLED:
 				if (o.getObject() instanceof Long) {
-					Long timerStart = (Long) o.getObject();
 					Platform.runLater(() -> {
-						labelError.setText("...");
+						Long timerStart = (Long) o.getObject();
+						Long now = System.currentTimeMillis();
+						long diff = now - timerStart;
+						long diffMinutes = diff / 60_000;
+						labelError.setText("Droplead has been offline for " + diffMinutes + " Minutes! Fight is suspended!");
 						VBoxError.toFront();
 						VBoxError.setVisible(true);
 					});
@@ -479,14 +488,11 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 				break;
 
 			case CURRENT_ATTACK_IS_HEALED:
-				if (o.getObject() instanceof Long) {
-					Long timerStart = (Long) o.getObject();
-					Platform.runLater(() -> {
-						labelError.setText("...");
-						VBoxError.toFront();
-						VBoxError.setVisible(false);
-					});
-				}
+				Platform.runLater(() -> {
+					labelError.setText("Your attack has been activated, both dropleads reconnected!");
+					VBoxError.toBack();
+					VBoxError.setVisible(false);
+				});
 				break;
 
 			case PANE_CREATION_BEGINS:
