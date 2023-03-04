@@ -452,7 +452,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 						Long now = System.currentTimeMillis();
 						long diff = now - timerStart;
 						long diffMinutes = diff / 60_000;
-						labelError.setText("Droplead has been offline for " + diffMinutes + " Minutes!");
+						labelError.setText("Droplead offline for " + diffMinutes + " Minutes!");
 						VBoxError.toFront();
 						VBoxError.setVisible(true);
 					});
@@ -466,7 +466,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 						Long now = System.currentTimeMillis();
 						long diff = now - timerStart;
 						long diffMinutes = diff / 60_000;
-						labelError.setText("Droplead has been offline for " + diffMinutes + " Minutes! WARNING, Fight will be suspended in less than 5 minutes!");
+						labelError.setText("Droplead offline for " + diffMinutes + " Minutes! WARNING!");
 						VBoxError.toFront();
 						VBoxError.setVisible(true);
 					});
@@ -480,7 +480,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 						Long now = System.currentTimeMillis();
 						long diff = now - timerStart;
 						long diffMinutes = diff / 60_000;
-						labelError.setText("Droplead has been offline for " + diffMinutes + " Minutes! Fight is suspended!");
+						labelError.setText("Droplead offline for " + diffMinutes + " Minutes! Fight suspended!");
 						VBoxError.toFront();
 						VBoxError.setVisible(true);
 					});
@@ -489,7 +489,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 
 			case CURRENT_ATTACK_IS_HEALED:
 				Platform.runLater(() -> {
-					labelError.setText("Your attack has been activated, both dropleads reconnected!");
+					labelError.setText("Your attack has been resumed!");
 					VBoxError.toBack();
 					VBoxError.setVisible(false);
 				});

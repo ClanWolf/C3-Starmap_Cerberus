@@ -3,6 +3,7 @@ C3 version history
 ----------------------------------------------------------------
 
 CURRENTLY IN PROGRESS:
+- P1: If an invasion is broken and the lobby is created again, after the lobby it should continue with the next step that was not finished before
 - P1: Show current fight for each user in the user list
 - P1: Show the information if broken fights were found to user
 - P2: If user logs out and another logs in without closing the client, not all user related data is adapted to the new user
@@ -12,9 +13,10 @@ CURRENTLY IN PROGRESS:
 
 ----------------------------------------------------------------
 
-Version 7.2.82 (03.03.2023)
+Version 7.2.83 (04.03.2023)
+- ADDED: A timertask to check if open attacks lack dropleads to confirm results
+- ADDED: An error message to inform the player that one of the dropleaders left the invasion
 - FIXED: Playerlist is not altered after drops were started
-- STARTED: A timertask to check if open attacks lack dropleads to confirm results
 
 Version 7.2.79 (01.03.2023)
 - CHANGED: Removed a warning from netty channel (unknown channel option)
