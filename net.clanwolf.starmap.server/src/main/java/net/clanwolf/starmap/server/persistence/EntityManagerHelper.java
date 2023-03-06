@@ -29,6 +29,7 @@ package net.clanwolf.starmap.server.persistence;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Persistence;
 import jakarta.persistence.Query;
+import net.clanwolf.starmap.server.nexus2.Nexus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -140,6 +141,10 @@ public class EntityManagerHelper {
 	@SuppressWarnings("unused")
 	public static void beginTransaction(Long userID) {
 		getEntityManager(userID).getTransaction().begin();
+
+		//if(userID.equals(Nexus.DUMMY_USERID)){
+		//	getEntityManager(userID).clear();
+		//}
 	}
 
 	@SuppressWarnings("unused")

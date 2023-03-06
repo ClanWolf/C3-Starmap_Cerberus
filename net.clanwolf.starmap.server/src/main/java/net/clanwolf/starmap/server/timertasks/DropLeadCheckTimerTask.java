@@ -64,13 +64,20 @@ public class DropLeadCheckTimerTask extends TimerTask {
 		ArrayList<Long> attacksToReset = new ArrayList<>();
 		ArrayList<Long> currentlyOnlineCharacterIds = C3GameSessionHandler.getCurrentlyOnlineCharIds();
 
+		int warning = 5;
+		int kill = 10;
+		if(Nexus.isDevelopmentPC){
+			warning = 1;
+			kill = 1;
+		}
+
 		// check if there is a countdown for any broken attack that is finished,
 		// close the attack and remove the chars
 		for (Long aid : Nexus.brokenAttackTimers.keySet()) {
 			Long now = System.currentTimeMillis();
 			Long timerstart = Nexus.brokenAttackTimers.get(aid);
 			long diff = now - timerstart;
-			if (diff > 1000 * 60 * 5) { // after 5 minutes send a warning
+			if (diff > 1000 * 60 * warning) { // after 5 minutes send a warning
 				// send broadcastmessage for broken attack where countdown has ended --> 5 Minute Warning
 				GameState response = new GameState(GAMESTATEMODES.BROKEN_ATTACK_KILL_FIVE_MINUTE_WARNING);
 				response.addObject(aid);
@@ -78,7 +85,7 @@ public class DropLeadCheckTimerTask extends TimerTask {
 				response.setAction_successfully(Boolean.TRUE);
 				C3Room.sendBroadcastMessage(response);
 			}
-			if (diff > 1000 * 60 * 10) { // after 10 minutes
+			if (diff > 1000 * 60 * kill) { // after 10 minutes
 				// send broadcastmessage for broken attack where countdown has ended --> kill attack
 				GameState response = new GameState(GAMESTATEMODES.BROKEN_ATTACK_KILL_AFTER_TIMEOUT);
 				response.addObject(aid);

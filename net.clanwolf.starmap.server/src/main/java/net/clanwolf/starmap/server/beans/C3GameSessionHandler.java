@@ -337,9 +337,10 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 	public synchronized void resetAttack(Long attackId) {
 		try {
-			List<AttackCharacterPOJO> emptyCharList = new ArrayList<AttackCharacterPOJO>();
+			//List<AttackCharacterPOJO> emptyCharList = new ArrayList<AttackCharacterPOJO>();
 
 			EntityManagerHelper.beginTransaction(Nexus.DUMMY_USERID);
+			EntityManagerHelper.clear(Nexus.DUMMY_USERID);
 
 			// Remove all characters from attack and reset the "fights started" flag
 			RolePlayStoryDAO rpsdao = RolePlayStoryDAO.getInstance();
@@ -350,7 +351,8 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			RolePlayStoryPOJO lobbyRPreset = rpsdao.getLobbyRPFromAttackRP(ap.getStoryID());
 
 			ap.setFightsStarted(false);
-			ap.setAttackCharList(emptyCharList);
+			//ap.setAttackCharList(emptyCharList);
+			ap.getAttackCharList().clear();
 			ap.setStoryID(lobbyRPreset.getId());
 			adao.update(Nexus.DUMMY_USERID, ap);
 
@@ -417,6 +419,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			attackType = (Long) state.getObject2();
 
 			RolePlayStoryPOJO rpPojo = null;
+			RolePlayStoryPOJO rpLastPojo = null;
 			Long attackerCommanderNextStoryId = null;
 			Long defenderCommanderNextStoryId = null;
 			if(attack.getStoryID() != null) {
@@ -453,7 +456,9 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				} else {
 					rpPojo = RolePlayStoryDAO.getInstance().findById(getC3UserID(session), attack.getStoryID());
 				}
-				attack.setLastStoryID(rpPojo.getId());
+				if(rpPojo.getVariante() != ROLEPLAYENTRYTYPES.C3_RP_STEP_V8) {
+					attack.setLastStoryID(rpPojo.getId());
+				}
 				attack.setStoryID(rpPojo.getId());
 			} else {
 				AttackTypesPOJO at = AttackTypesDAO.getInstance().findByShortName(getC3UserID(session), "PA");
@@ -486,7 +491,9 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 				rpPojo = RolePlayStoryDAO.getInstance().findById(getC3UserID(session), rpID);
 			}
-			attack.setLastStoryID(rpPojo.getId());
+			if(rpPojo.getVariante() != ROLEPLAYENTRYTYPES.C3_RP_STEP_V8) {
+				attack.setLastStoryID(rpPojo.getId());
+			}
 			attack.setStoryID(rpPojo.getId());
 
 			if(attack.getId() != null) {

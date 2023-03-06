@@ -289,6 +289,15 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 	@FXML
 	public void handleContinueButtonClick() {
 		RolePlayStoryDTO nextStep = Nexus.getBoUniverse().getAttackStoriesByID(Nexus.getCurrentAttackOfUser().getStoryId().longValue());
+		RolePlayStoryDTO lastStep = Nexus.getBoUniverse().getAttackStoriesByID(Nexus.getCurrentAttackOfUser().getAttackDTO().getLastStoryID());
+		Long nextStepID = nextStep.getNextStepID();
+
+		if (lastStep != null &&
+				!Objects.equals(lastStep.getId(), nextStep.getId())){
+			//nextStep = lastStep;
+			nextStepID = lastStep.getId();
+		}
+
 		Nexus.setStoryBeforeSaving(Nexus.getCurrentAttackOfUser().getStoryId().longValue());
 
 		// Drops have been started here! Mark the attack as locked for other users to join
@@ -296,7 +305,8 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		a.setAttackFightsHaveBeenStarted(true);
 		logger.info("Attack drops have started, planet is now locked for new users to join!");
 
-		saveNextStep(nextStep.getNextStepID());
+		//saveNextStep(nextStep.getNextStepID());
+		saveNextStep(nextStepID);
 	}
 
 	public synchronized void saveAttack() {
