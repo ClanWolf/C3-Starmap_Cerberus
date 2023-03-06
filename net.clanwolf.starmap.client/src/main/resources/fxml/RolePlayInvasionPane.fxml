@@ -14,14 +14,14 @@
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="RolePlayStartPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/19" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.RolePlayInvasionPaneController">
     <children>
-      <VBox fx:id="VBoxError" layoutX="400.0" layoutY="67.0" prefHeight="200.0" prefWidth="100.0">
+      <VBox fx:id="VBoxError" alignment="CENTER" layoutX="87.0" layoutY="67.0" prefHeight="200.0" prefWidth="716.0" styleClass="contentButtonYellow" stylesheets="@../styles/MainFrameStyle.css">
          <children>
             <ImageView fx:id="ImageViewError" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../icons/message_error_red.png" />
+                  <Image url="@../images/gui/hud_circle.gif" />
                </image>
             </ImageView>
-            <Label fx:id="labelError" alignment="CENTER" prefHeight="14.0" prefWidth="202.0" text="Label" />
+            <Label fx:id="labelError" alignment="CENTER" prefHeight="14.0" prefWidth="202.0" text="..." />
          </children>
       </VBox>
       <ImageView fx:id="ivLocation" fitHeight="24.0" fitWidth="56.0" layoutX="116.0" layoutY="250.0" pickOnBounds="true" preserveRatio="true">
