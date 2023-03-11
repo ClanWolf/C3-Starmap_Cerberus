@@ -33,7 +33,10 @@ import net.clanwolf.starmap.server.persistence.pojos.RolePlayCharacterStatsPOJO;
 import net.clanwolf.starmap.transfer.mwo.MWOMatchResult;
 import net.clanwolf.starmap.transfer.mwo.MechIdInfo;
 import net.clanwolf.starmap.transfer.mwo.UserDetail;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -130,7 +133,7 @@ public class BalanceUserInfo {
      *
      * @return Gibt ein ArrayList für die kosten für den Angreifer zurück.
      */
-    public List<BalanceUserInfo> GetAttackerInfo() {
+    public List<BalanceUserInfo> GetAttackerInfo() throws ParserConfigurationException, IOException, SAXException {
         List<BalanceUserInfo> attacker = new ArrayList<>();
 
         for (UserDetail detail : mwomatchResult.getUserDetails()) {
@@ -148,7 +151,7 @@ public class BalanceUserInfo {
      *
      * @return Gibt ein ArrayList für die kosten für den Verteidiger zurück.
      */
-    public List<BalanceUserInfo> GetDefenderInfo() {
+    public List<BalanceUserInfo> GetDefenderInfo() throws ParserConfigurationException, IOException, SAXException {
         List<BalanceUserInfo> defender = new ArrayList<>();
 
         for (UserDetail detail : mwomatchResult.getUserDetails()) {
@@ -195,7 +198,7 @@ public class BalanceUserInfo {
         return attTeam;
     }
 
-    private void getUserInfo(List<BalanceUserInfo> userInfos, UserDetail detail) {
+    private void getUserInfo(List<BalanceUserInfo> userInfos, UserDetail detail) throws ParserConfigurationException, IOException, SAXException {
         BalanceUserInfo balanceUserInfo;
         MechIdInfo mechIdInfo;
 

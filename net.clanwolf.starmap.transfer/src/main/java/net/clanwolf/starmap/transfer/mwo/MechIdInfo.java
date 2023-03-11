@@ -35,9 +35,6 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 
 
@@ -49,26 +46,75 @@ import java.util.Objects;
  * @version 13-08-2022
  */
 public class MechIdInfo {
-    private final Map<Integer, MechIdInfo> mechID = new HashMap<>();
-    private final String msgInvalidID = "Invalid MechItemID";
-    private EFaction faction;
-    private EChassie chassis;
-    private EVariantType variantType;
-    private String fullName;
-    private String shortname;
-    private Integer mechItemId;
+    //private final Map<Integer, MechIdInfo> mechID = new HashMap<>();
+    //private final String msgInvalidID = "Invalid MechItemID";
+    private String mechFaction;
+    private String mechChassis;
+    private String mechVariantType;
 
-    private MechIdInfo(EFaction faction, EChassie chassis, EVariantType variantType, String fullName, String shortName) {
+    private Integer mechItemId;
+    private Integer mechMaxTons;
+    private Double mechBaseTons;
+    private String mechName;
+    private Integer mechMaxJumpJets;
+    private Integer mechMinEngineRating;
+
+    public Double getMechBaseTons() {
+        return mechBaseTons;
+    }
+
+    public void setMechBaseTons(Double mechBaseTons) {
+        this.mechBaseTons = mechBaseTons;
+    }
+
+    public String getMechName() {
+        return mechName;
+    }
+
+    public void setMechName(String mechName) {
+        this.mechName = mechName;
+    }
+
+    public Integer getMechMaxJumpJets() {
+        return mechMaxJumpJets;
+    }
+
+    public void setMechMaxJumpJets(Integer mechMaxJumpJets) {
+        this.mechMaxJumpJets = mechMaxJumpJets;
+    }
+
+    public Integer getMechMinEngineRating() {
+        return mechMinEngineRating;
+    }
+
+    public void setMechMinEngineRating(Integer mechMinEngineRating) {
+        this.mechMinEngineRating = mechMinEngineRating;
+    }
+
+    public Integer getMechMaxEngineRating() {
+        return mechMaxEngineRating;
+    }
+
+    public void setMechMaxEngineRating(Integer mechMaxEngineRating) {
+        this.mechMaxEngineRating = mechMaxEngineRating;
+    }
+
+    private Integer mechMaxEngineRating;
+    private String mechLongName;
+    private String mechShortName;
+    private Boolean mechValid;
+
+    /*private MechIdInfo(EFaction faction, EChassie chassis, EVariantType variantType, String fullName, String shortName) {
         this.faction = faction;
         this.chassis = chassis;
         this.variantType = variantType;
         this.fullName = fullName;
         this.shortname = shortName;
-    }
+    }*/
 
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
         Document doc = DocumentBuilderFactory.newInstance()
-                .newDocumentBuilder().parse(new File(Objects.requireNonNull(MechIdInfo.class.getResource("/mechinfo/allmechs.xml")).getFile()));
+                .newDocumentBuilder().parse(new File(Objects.requireNonNull(MechIdInfo.class.getResource("/mechinfo/AllMechs.xml")).getFile()));
         doc.getDocumentElement().normalize();
 
         NodeList mechNodes = doc.getElementsByTagName("Mech");
@@ -78,25 +124,27 @@ public class MechIdInfo {
             Integer mechItemId = Integer.valueOf(xmlMechList.getAttribute("id"));
             String mechFaction = xmlMechList.getAttribute("faction");
             String mechName = xmlMechList.getAttribute("name");
-            Double mechMaxTons = Double.valueOf(xmlMechList.getAttribute("MaxTons"));
-            Integer mechBaseTons = Integer.valueOf(xmlMechList.getAttribute("BaseTons"));
+            Integer mechMaxTons = Integer.valueOf(xmlMechList.getAttribute("MaxTons"));
+            Double mechBaseTons = Double.valueOf(xmlMechList.getAttribute("BaseTons"));
             Integer mechMaxJumpJets = Integer.valueOf(xmlMechList.getAttribute("MaxJumpJets"));
             Integer mechMinEngineRating = Integer.valueOf(xmlMechList.getAttribute("MinEngineRating"));
             Integer mechMaxEngineRating = Integer.valueOf(xmlMechList.getAttribute("MaxEngineRating"));
             String mechVariantType = xmlMechList.getAttribute("VariantType");
-            String[] variant = {"Standard", "Special", "Hero", "Champion"};
-            Mech mechInfo = Mech.getMech(mechChassie, mechFaction, mechItemId, mechName);
+            MechIdInfo mechIdInfo = new MechIdInfo(mechItemId);
+            System.out.println(mechIdInfo);
+            //String[] variant = {"Standard", "Special", "Hero", "Champion"};
+           /* Mech mechInfo = Mech.getMech(mechChassie, mechFaction, mechItemId, mechName);
             if (mechInfo == null) {
                 System.out.println("Unknown Mech: " + mechChassie);
                 continue;
             }
             if (!Arrays.asList(variant).contains(mechVariantType)) {
                 System.out.println(mechVariantType);
-            }
+            }*/
 
         }
     }
-
+/*
     private void InitializeMechIds() {
 
         this.mechID.clear();
@@ -1065,6 +1113,7 @@ public class MechIdInfo {
 
 
     }
+*/
 
     /**
      * Mechklassen die es in MWO gibt.
@@ -1087,6 +1136,14 @@ public class MechIdInfo {
         STANDARD, SPECIAL, HERO, CHAMPION,
         SARAH, PHOENIX, FOUNDER
 
+    }
+
+    public String toString() {
+        try {
+            return "MechitemID: " + getMechItemId() + " " + getMechChassis() + " " + getFullName() + " is a " + getMechFaction() + " " + getMechClass() + " Mech an have " + getTonnage() + " tons";
+        } catch (ParserConfigurationException | IOException | SAXException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     /**
@@ -1126,11 +1183,34 @@ public class MechIdInfo {
      *
      * @param mechItemId Die Mech ID die in der API ausgegeben wird.
      */
-    public MechIdInfo(Integer mechItemId) {
+    public MechIdInfo(Integer mechItemId) throws ParserConfigurationException, IOException, SAXException {
 
         this.mechItemId = mechItemId;
-        InitializeMechIds();
+        this.mechValid = false;
+        // InitializeMechIds();
+        Document doc = DocumentBuilderFactory.newInstance()
+                .newDocumentBuilder().parse(new File(Objects.requireNonNull(MechIdInfo.class.getResource("/mechinfo/AllMechs.xml")).getFile()));
+        doc.getDocumentElement().normalize();
 
+        NodeList mechNodes = doc.getElementsByTagName("Mech");
+        for (int i = 0; i < mechNodes.getLength(); i++) {
+            Element xmlMechList = (Element) mechNodes.item(i);
+            if (Objects.equals(mechItemId, Integer.valueOf(xmlMechList.getAttribute("id")))) {
+                this.mechChassis = xmlMechList.getAttribute("chassis");
+                this.mechFaction = xmlMechList.getAttribute("faction");
+                this.mechName = xmlMechList.getAttribute("name");
+                this.mechBaseTons = Double.valueOf(xmlMechList.getAttribute("BaseTons"));
+                this.mechMaxTons = Integer.valueOf(xmlMechList.getAttribute("MaxTons"));
+                this.mechMaxJumpJets = Integer.valueOf(xmlMechList.getAttribute("MaxJumpJets"));
+                this.mechMaxEngineRating = Integer.valueOf(xmlMechList.getAttribute("MinEngineRating"));
+                this.mechMinEngineRating = Integer.valueOf(xmlMechList.getAttribute("MaxEngineRating"));
+                this.mechVariantType = xmlMechList.getAttribute("VariantType").toUpperCase();
+                this.mechLongName = xmlMechList.getAttribute("longname");
+                this.mechShortName = xmlMechList.getAttribute("shortname");
+                this.mechValid = true;
+                break;
+            }
+        }
     }
 
     private Integer Base24IndexTable(char firstchar, char secondchar) {
@@ -1161,7 +1241,7 @@ public class MechIdInfo {
      *
      * @param MBC Der Code wenn man in MWO das Loadout exportiert und in die Zwischenablage kopiert.
      */
-    public MechIdInfo(String MBC) {
+/*    public MechIdInfo(String MBC) {
 
         if (MBC.charAt(0) == 'A') {
 
@@ -1175,7 +1255,7 @@ public class MechIdInfo {
 
         InitializeMechIds();
 
-    }
+    }*/
 
     /**
      * Überprüft, ob es eine gültige MechItemId ist.
@@ -1184,7 +1264,7 @@ public class MechIdInfo {
      */
     public Boolean IsValidId() {
 
-        return this.mechID.containsKey(this.mechItemId);
+        return this.mechValid;
     }
 
     /**
@@ -1193,7 +1273,7 @@ public class MechIdInfo {
      * @return Gibt die (int) Tonnage des Mech's zurück.
      */
     public Integer getTonnage() {
-        if (getChassis() == null) {
+       /* if (getChassis() == null) {
             // MechItemId might be '0' (no Mech --> Spectator)
             return 999;
         } else {
@@ -1218,7 +1298,8 @@ public class MechIdInfo {
                 case BANSHEE, EXECUTIONER, NIGHTSTAR, CORSAIR -> 95;
                 case ATLAS, DIREWOLF, KINGCRAB, KODIAK, ANNIHILATOR, FAFNIR, MARAUDERII -> 100;
             };
-        }
+        }*/
+        return this.mechMaxTons;
     }
 
     /**
@@ -1226,9 +1307,9 @@ public class MechIdInfo {
      *
      * @return Gibt die (Enum) Fraktion des Mech's zurück.
      */
-    public EFaction getFaction() {
+    public String getMechFaction() {
 
-        return IsValidId() ? this.mechID.get(this.mechItemId).faction : EFaction.UNKNOWN;
+        return this.mechFaction;
 
     }
 
@@ -1259,12 +1340,10 @@ public class MechIdInfo {
      *
      * @return Gibt die (String) Chassis des Mech's zurück.
      */
-    public EChassie getChassis() {
-        if (this.mechID.get(this.mechItemId) == null) {
-            return null;
-        } else {
-            return this.mechID.get(this.mechItemId).chassis;
-        }
+    public String getMechChassis() {
+
+        return this.mechChassis;
+
     }
 
     /**
@@ -1272,7 +1351,7 @@ public class MechIdInfo {
      *
      * @return Gibt die (Enum) Mechklasse zurück.
      */
-    public EMechclass getMechClass() {
+    public EMechclass getMechClass() throws ParserConfigurationException, IOException, SAXException {
         MechIdInfo n = new MechIdInfo(mechItemId);
         return switch (n.getTonnage()) {
             case 20, 25, 30, 35 -> EMechclass.LIGHT;
@@ -1290,9 +1369,9 @@ public class MechIdInfo {
      *
      * @return Gibt die (String) Variante zurück.
      */
-    public EVariantType getVariantType() {
+    public String getMechVariantType() {
 
-        return this.mechID.get(this.mechItemId).variantType;
+        return this.mechVariantType;
 
     }
 
@@ -1305,7 +1384,8 @@ public class MechIdInfo {
      */
     public String getFullName() {
 
-        return IsValidId() ? this.mechID.get(this.mechItemId).fullName : this.msgInvalidID;
+        //return IsValidId() ? this.mechID.get(this.mechItemId).fullName : this.msgInvalidID;
+        return this.mechLongName;
 
     }
 
@@ -1318,7 +1398,8 @@ public class MechIdInfo {
      */
     public String getShortname() {
 
-        return IsValidId() ? this.mechID.get(this.mechItemId).shortname : this.msgInvalidID;
+        //return IsValidId() ? this.mechID.get(this.mechItemId).shortname : this.msgInvalidID;
+        return this.mechShortName;
 
     }
 
@@ -1330,10 +1411,10 @@ public class MechIdInfo {
     public double getMechCost() {
 
         //Multiplikator festlegen, wenn es sich um eine Spezial Variante handelt.
-        double Multiply = switch (getVariantType()) {
-            case SPECIAL, FOUNDER, PHOENIX, SARAH -> 1.25;
-            case HERO -> 1.15;
-            case CHAMPION -> 1.2;
+        double Multiply = switch (getMechVariantType()) {
+            case "SPECIAL", "FOUNDER", "PHOENIX", "SARAH" -> 1.25;
+            case "HERO" -> 1.15;
+            case "CHAMPION" -> 1.2;
             default -> 1.0;
 
         };
@@ -1346,7 +1427,7 @@ public class MechIdInfo {
 
     }
 
-    static class Mech {
+    /*static class Mech {
         private final int tonnage;
         private final EMechclass mechClass;
         private final EFaction mechFaction;
@@ -1621,5 +1702,5 @@ public class MechIdInfo {
         public String getMechChassie() {
             return mechChassie;
         }
-    }
+    }*/
 }

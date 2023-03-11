@@ -42,7 +42,10 @@ import net.clanwolf.starmap.transfer.dtos.*;
 import net.clanwolf.starmap.transfer.mwo.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -55,7 +58,7 @@ import java.util.HashMap;
 public class ResultAnalyzer {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	public static void analyseAndStoreMWOResult(MWOMatchResult result, boolean store) {
+	public static void analyseAndStoreMWOResult(MWOMatchResult result, boolean store) throws ParserConfigurationException, IOException, SAXException {
 		MapInfo mapInfo = new MapInfo();
 
 		MatchDetails md = result.getMatchDetails();
