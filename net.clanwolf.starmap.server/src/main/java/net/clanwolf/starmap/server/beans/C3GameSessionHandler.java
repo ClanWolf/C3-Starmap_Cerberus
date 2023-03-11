@@ -333,7 +333,6 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				gameRepeated = true;
 			}
 
-
 			if (statsMwo.getId() != null) {
 				logger.info("attack.getId() != null");
 				dao.update(getC3UserID(session), statsMwo);

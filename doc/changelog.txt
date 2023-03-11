@@ -17,12 +17,14 @@ TODO:
 - Integrate Discord bot (bots)
 ----------------------------------------------------------------
 
-Version 7.2.88 (10.03.2023)
+Version 7.2.88 (11.03.2023)
 - UPDATED: javax.el-api -> jakarta
 - UPDATED: xml-bind -> jakarta
 - UPDATED: IRC client to 15
 - UPDATED: Version vars in master pom
 - ADDED: Discord API
+- ADDED: If a drop is done twice while the result has not been confirmed in C3 client, always the latest statistics will be used
+- ADDED: Missing mechs identified in testsession, will be added in upcoming version
 
 Version 7.2.84 (06.03.2023)
 - CHANGED: If an invasion is broken and suspended, if the lobby is re-created again, fights will start at the point they were stopped
