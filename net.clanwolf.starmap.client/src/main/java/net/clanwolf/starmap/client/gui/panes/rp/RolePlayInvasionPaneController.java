@@ -452,7 +452,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 						Long now = System.currentTimeMillis();
 						long diff = now - timerStart;
 						long diffMinutes = diff / 60_000;
-						labelError.setText("Droplead offline for " + diffMinutes + " Minutes!");
+						labelError.setText((Internationalization.getString("C3_Lobby_DropleadOfflineSince")).replace("####", diffMinutes + ""));
 						VBoxError.toFront();
 						VBoxError.setVisible(true);
 					});
@@ -466,7 +466,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 						Long now = System.currentTimeMillis();
 						long diff = now - timerStart;
 						long diffMinutes = diff / 60_000;
-						labelError.setText("Droplead offline for " + diffMinutes + " Minutes! WARNING!");
+						labelError.setText((Internationalization.getString("C3_Lobby_DropleadOfflineSinceWARNING")).replace("####", diffMinutes + ""));
 						VBoxError.toFront();
 						VBoxError.setVisible(true);
 					});
@@ -480,7 +480,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 						Long now = System.currentTimeMillis();
 						long diff = now - timerStart;
 						long diffMinutes = diff / 60_000;
-						labelError.setText("Droplead offline for " + diffMinutes + " Minutes! Fight suspended!");
+						labelError.setText((Internationalization.getString("C3_Lobby_DropleadOfflineSinceKICK")).replace("####", diffMinutes + ""));
 						VBoxError.toFront();
 						VBoxError.setVisible(true);
 					});
@@ -489,7 +489,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 
 			case CURRENT_ATTACK_IS_HEALED:
 				Platform.runLater(() -> {
-					labelError.setText("Your attack has been resumed!");
+					labelError.setText((Internationalization.getString("C3_Lobby_DropleadOfflineSinceHEALED")));
 					VBoxError.toBack();
 					VBoxError.setVisible(false);
 				});

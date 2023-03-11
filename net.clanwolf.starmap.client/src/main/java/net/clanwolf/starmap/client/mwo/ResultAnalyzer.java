@@ -275,6 +275,7 @@ public class ResultAnalyzer {
 					StatsMwoDTO stats = new StatsMwoDTO();
 					stats.setSeasonId(Nexus.getCurrentAttackOfUser().getSeason().longValue());
 					stats.setAttackId(Nexus.getCurrentAttackOfUser().getAttackDTO().getId());
+					stats.setRoleplayId(Nexus.getCurrentAttackOfUser().getAttackDTO().getStoryID());
 					stats.setGameId(gameId);
 					stats.setRawData(jsonString);
 

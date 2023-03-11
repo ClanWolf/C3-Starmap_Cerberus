@@ -4,24 +4,8 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-	            <version>${version.maven-compiler-plugin}</version>
-	            <configuration>
-		            <release>${version.java}</release>
-		            <showWarnings>true</showWarnings>
-		            <showDeprecation>true</showDeprecation>
-		            <source>${version.java}</source>
-		            <target>${version.java}</target>
-	            </configuration>
-            </plugin>
-        </plugins>
-    </build>
 
-    <parent>
+	<parent>
 		<artifactId>C3-Starmap_Cerberus</artifactId>
 		<groupId>net.clanwolf.starmap</groupId>
 		<version>${revision}</version>
@@ -42,22 +26,48 @@
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
-			<version>2.14.2</version>
+			<version>${version.jackson-databind}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-annotations</artifactId>
-			<version>2.14.2</version>
+			<version>${version.jackson-annotations}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.voodoodyne.jackson.jsog</groupId>
 			<artifactId>jackson-jsog</artifactId>
-			<version>1.1.2</version>
+			<version>${version.jackson-jsog}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.google.code.gson</groupId>
 			<artifactId>gson</artifactId>
-			<version>2.10.1</version>
+			<version>${version.gson}</version>
 		</dependency>
 	</dependencies>
+
+	<!-- ########################################################################################################### -->
+	<!-- ##                                                                                                       ## -->
+	<!-- ##                                                                                                       ## -->
+	<!-- ## BUILD                                                                                                 ## -->
+	<!-- ##                                                                                                       ## -->
+	<!-- ##                                                                                                       ## -->
+	<!-- ########################################################################################################### -->
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${version.maven-compiler-plugin}</version>
+				<configuration>
+					<release>${version.java}</release>
+					<showWarnings>true</showWarnings>
+					<showDeprecation>true</showDeprecation>
+					<source>${version.java}</source>
+					<target>${version.java}</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
 </project>

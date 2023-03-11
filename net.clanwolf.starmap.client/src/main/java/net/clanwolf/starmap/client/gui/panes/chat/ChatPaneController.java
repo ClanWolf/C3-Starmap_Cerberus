@@ -46,11 +46,13 @@ import net.clanwolf.starmap.client.util.Internationalization;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.swing.*;
 import java.lang.invoke.MethodHandles;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 public class ChatPaneController extends AbstractC3Controller implements ActionCallBackListener {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -78,7 +80,7 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 					if (chatUser.equalsIgnoreCase("Ulric".toLowerCase())) {
 						c = "-fx-background-color:#1d374b;";
 					} else if (chatUser.contains("[" + Internationalization.getString("C3_IRC_Priv") + "]")) {
-//						c = "-fx-background-color:#294d69;";
+						//						c = "-fx-background-color:#294d69;";
 						c = "-fx-background-color:#125a2f;";
 					}
 				}
@@ -93,7 +95,7 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 							line = line + word + " ";
 						} else {
 							if (firstLineDone) {
-								entry = new ChatEntry(c,null, null, line);
+								entry = new ChatEntry(c, null, null, line);
 							} else {
 								entry = new ChatEntry(c, chatTime, chatUser, line);
 							}
@@ -104,7 +106,7 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 					}
 					if (!"".equals(line)) {
 						if (firstLineDone) {
-							entry = new ChatEntry(c,null, null, line);
+							entry = new ChatEntry(c, null, null, line);
 						} else {
 							entry = new ChatEntry(c, chatTime, chatUser, line);
 						}
@@ -164,8 +166,7 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 				} else {
 					selectedUser = (String) lvUsers.getSelectionModel().getSelectedItems().get(0);
 				}
-				if (lvUsers.getSelectionModel().getSelectedItems().get(0).equals("C3\\" + Nexus.getCurrentUser().getUserName())
-					|| lvUsers.getSelectionModel().getSelectedItems().get(0).equals("-----")) {
+				if (lvUsers.getSelectionModel().getSelectedItems().get(0).equals("C3\\" + Nexus.getCurrentUser().getUserName()) || lvUsers.getSelectionModel().getSelectedItems().get(0).equals("-----")) {
 					lvUsers.getSelectionModel().clearSelection();
 					selectedUser = "";
 				}
@@ -227,11 +228,11 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 			Nexus.storeCommandHistory();
 		}
 
-//		if (com.startsWith("/names")) {
-//			ActionManager.getAction(ACTIONS.IRC_GET_NAMELIST).execute();
-//			sendingString = false;
-//  		Nexus.storeCommandHistory();
-//		}
+		//		if (com.startsWith("/names")) {
+		//			ActionManager.getAction(ACTIONS.IRC_GET_NAMELIST).execute();
+		//			sendingString = false;
+		//  		Nexus.storeCommandHistory();
+		//		}
 
 		if (com.startsWith("/me ")) {
 			com = com.substring(4);
@@ -249,11 +250,7 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 				MessageActionObject mo = new MessageActionObject();
 				if (lvUsers.getSelectionModel().getSelectedItems().size() > 0) {
 					String tar = lvUsers.getSelectionModel().getSelectedItems().get(0);
-					if (tar.startsWith("@")
-							|| tar.startsWith("+")
-							|| tar.startsWith("-")
-							|| tar.startsWith("!")
-							|| tar.startsWith("<")) {
+					if (tar.startsWith("@") || tar.startsWith("+") || tar.startsWith("-") || tar.startsWith("!") || tar.startsWith("<")) {
 						tar = tar.substring(1);
 					}
 					mo.setTarget(tar);
@@ -304,11 +301,8 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 		chatUserColumn.setMinWidth(100);
 		TableColumn<ChatEntry, String> chatTextColumn = new TableColumn<>("");
 		chatTextColumn.setCellValueFactory(data -> data.getValue().getChatText());
-//		chatTextColumn.setPrefWidth(250);
-		tableViewChat.getColumns().addAll(  chatTimeColumn,
-											chatUserColumn,
-											chatTextColumn
-		);
+		//		chatTextColumn.setPrefWidth(250);
+		tableViewChat.getColumns().addAll(chatTimeColumn, chatUserColumn, chatTextColumn);
 
 		tableViewChat.setRowFactory(tableViewChat -> new TableRow<ChatEntry>() {
 			@Override
@@ -356,7 +350,7 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 			boolean found = false;
 			while (i.hasNext()) {
 				s = i.next();
-//				if (s.endsWith(userName) || s.startsWith(userName)) {
+				//				if (s.endsWith(userName) || s.startsWith(userName)) {
 				if (s.replace("@", "").equals(userName)) {
 					found = true;
 					break;
@@ -378,195 +372,206 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 	 */
 	@Override
 	public boolean handleAction(ACTIONS action, ActionObject o) {
-		switch (action) {
-			case LOGON_FINISHED_SUCCESSFULL:
-				ircClient = new IRCClient(); // Does NOT connect in constructor (!) - Connecting when pane is opened!
-				break;
 
-			case CHANGE_LANGUAGE:
-				setStrings();
-				break;
+		if (o.getObject() instanceof UnknownMessage) {
+			UnknownMessage msg2 = (UnknownMessage) o.getObject();
+			// addChatLine("" + "[" + Internationalization.getString("C3_IRC_General") + "] ", msg2.asRaw());
+		} else {
+			switch (action) {
+				case LOGON_FINISHED_SUCCESSFULL:
+					ircClient = new IRCClient(); // Does NOT connect in constructor (!) - Connecting when pane is opened!
+					break;
 
-			case PANE_DESTROY_CURRENT:
-				break;
+				case CHANGE_LANGUAGE:
+					setStrings();
+					break;
 
-			case PANE_CREATION_BEGINS:
-				break;
+				case PANE_DESTROY_CURRENT:
+					break;
 
-			case PANE_CREATION_FINISHED:
-				if (o.getObject().getClass() == ChatPane.class) {
-					logger.info("Chat window opened.");
-					if (ircClient != null && !IRCClient.connected) {
-						logger.info("Connecting to IRC...");
-						ircClient.connect();
-					}
-					if (ircClient != null && !initStarted) {
-						logger.info("Initializing IRC panel.");
-						init();
-					}
-					ActionManager.getAction(ACTIONS.HIDE_IRC_INDICATOR).execute();
-//					ActionManager.getAction(ACTIONS.SHOW_IRC_INDICATOR).execute();
-				}
-				break;
+				case PANE_CREATION_BEGINS:
+					break;
 
-			case IRC_CONNECTED:
-				C3SoundPlayer.getTTSFile(Internationalization.getString("C3_IRC_Connected"));
-				break;
-
-			case IRC_DISCONNECT_NOW:
-				Platform.runLater(() -> {
-					addChatLine(null, "**");
-					addChatLine(null, "**");
-					addChatLine(null, "** " + Internationalization.getString("C3_IRC_DisconnectedByC3Logout"));
-					addChatLine(null, "**");
-					addChatLine(null, "**");
-					ActionManager.getAction(ACTIONS.HIDE_IRC_INDICATOR).execute();
-				});
-				break;
-
-			case IRC_USER_JOINED:
-				Platform.runLater(() -> {
-					ChanJoinMessage cjm = (ChanJoinMessage) o.getObject();
-					if (!lvUsers.getItems().contains(cjm.getSource().getNick())) {
-						lvUsers.getItems().add(cjm.getSource().getNick());
-						addChatLine(null, cjm.getSource().getNick() + " " + Internationalization.getString("C3_IRC_Joined"));
-					}
-				});
-				break;
-
-			case IRC_USER_LEFT:
-				break;
-
-			case IRC_ERROR:
-				Platform.runLater(() -> {
-					String eMsg = o.getText();
-					addChatLine(null, Internationalization.getString("C3_Speech_Failure") + " " + eMsg);
-				});
-				break;
-
-			case IRC_USER_PART:
-				Platform.runLater(() -> {
-					ChanPartMessage pmsg = (ChanPartMessage) o.getObject();
-					removeUser(pmsg.getSource().getNick());
-					addChatLine(null, pmsg.getSource().getNick() + " " + Internationalization.getString("C3_IRC_Left"));
-				});
-				break;
-
-			case IRC_USER_KICKED:
-				Platform.runLater(() -> {
-					ChannelKick kmsg = (ChannelKick) o.getObject();
-					removeUser(kmsg.getKickedNickname());
-					addChatLine(null, kmsg.getKickedNickname() + " " + Internationalization.getString("C3_IRC_WasKicked"));
-				});
-				break;
-
-			case IRC_USER_QUIT:
-				Platform.runLater(() -> {
-					QuitMessage qmsg = (QuitMessage) o.getObject();
-					removeUser(qmsg.getSource().getNick());
-					addChatLine(null, qmsg.getSource().getNick() + " " + Internationalization.getString("C3_IRC_Quit") + " " + qmsg.getQuitMsg());
-				});
-				break;
-
-			case IRC_USER_NICKCHANGE:
-				Platform.runLater(() -> {
-					NickChangeObject nco = (NickChangeObject) o.getObject();
-					Iterator<String> i = lvUsers.getItems().iterator();
-					int c = 0;
-					String s = null;
-					boolean found = false;
-					while (i.hasNext()) {
-						s = (String) i.next();
-						if (s.endsWith(nco.getOldNick()) || s.startsWith(nco.getOldNick())) {
-							s = s.replace(nco.getOldNick(), nco.getNewNick());
-							found = true;
-							break;
+				case PANE_CREATION_FINISHED:
+					if (o.getObject().getClass() == ChatPane.class) {
+						logger.info("Chat window opened.");
+						if (ircClient != null && !IRCClient.connected) {
+							logger.info("Connecting to IRC...");
+							ircClient.connect();
 						}
-						c++;
+						if (ircClient != null && !initStarted) {
+							logger.info("Initializing IRC panel.");
+							init();
+						}
+						ActionManager.getAction(ACTIONS.HIDE_IRC_INDICATOR).execute();
+						//					ActionManager.getAction(ACTIONS.SHOW_IRC_INDICATOR).execute();
 					}
-					if (s != null && found) {
-						lvUsers.getItems().set(c, s);
-					}
-					String v = Internationalization.getString("C3_IRC_IsNowKnownAs");
-					addChatLine(null, nco.getOldNick() + " " + v + " " + nco.getNewNick());
-				});
-				break;
+					break;
 
-			case IRC_UPDATED_USERLIST_RECEIVED:
-				ArrayList<String> list = (ArrayList<String>) o.getObject();
-				String myOwnEntry = null;
-				for (String s : list) {
-					if (s.equals("C3\\" + Nexus.getCurrentUser().getUserName())) {
-						myOwnEntry = s;
-					}
-				}
-				list.remove(myOwnEntry);
-				list.remove("@Q");
-				list.remove("D");
-				Collections.sort(list);
-				String finalMyOwnEntry = myOwnEntry;
+				case IRC_CONNECTED:
+					C3SoundPlayer.getTTSFile(Internationalization.getString("C3_IRC_Connected"));
+					break;
 
-				Platform.runLater(() -> {
-					String selectedItem = lvUsers.getSelectionModel().getSelectedItem();
-					lvUsers.getItems().clear();
-					lvUsers.getItems().add(finalMyOwnEntry);
-					lvUsers.getItems().add("-----");
-					lvUsers.getItems().addAll(list);
-					lvUsers.getSelectionModel().clearSelection();
-					if (selectedItem != null) {
-						lvUsers.getSelectionModel().select(selectedItem);
-					}
-				});
-				break;
+				case IRC_DISCONNECT_NOW:
+					Platform.runLater(() -> {
+						addChatLine(null, "**");
+						addChatLine(null, "**");
+						addChatLine(null, "** " + Internationalization.getString("C3_IRC_DisconnectedByC3Logout"));
+						addChatLine(null, "**");
+						addChatLine(null, "**");
+						ActionManager.getAction(ACTIONS.HIDE_IRC_INDICATOR).execute();
+					});
+					break;
 
-			case IRC_MESSAGE_IN_PRIVATE:
-				Platform.runLater(() -> {
-					UserPrivMsg msg = (UserPrivMsg) o.getObject();
-					addChatLine(msg.getSource().getNick() + " [" + Internationalization.getString("C3_IRC_Priv") + "] ", "(-> " + msg.getToUser() + ") " + msg.getText());
-				});
-				break;
+				case IRC_USER_JOINED:
+					Platform.runLater(() -> {
+						ChanJoinMessage cjm = (ChanJoinMessage) o.getObject();
+						if (!lvUsers.getItems().contains(cjm.getSource().getNick())) {
+							lvUsers.getItems().add(cjm.getSource().getNick());
+							addChatLine(null, cjm.getSource().getNick() + " " + Internationalization.getString("C3_IRC_Joined"));
+						}
+					});
+					break;
 
-			case IRC_MESSAGE_IN_GENERAL:
-				Platform.runLater(() -> {
-					ChannelPrivMsg msg2 = (ChannelPrivMsg) o.getObject();
-					addChatLine(msg2.getSource().getNick() + "[" + Internationalization.getString("C3_IRC_General") + "] ", msg2.getText());
-				});
-				break;
+				case IRC_USER_LEFT:
+					break;
 
-			case IRC_SENDING_ACTION:
-				Platform.runLater(() -> {
-					String com2 = o.getText();
-					addChatLine(IRCClient.myNick, com2);
-				});
-				break;
+				case IRC_ERROR:
+					Platform.runLater(() -> {
+						String eMsg = o.getText();
+						addChatLine(null, Internationalization.getString("C3_Speech_Failure") + " " + eMsg);
+					});
+					break;
 
-			case IRC_CHANGE_NICK:
-//				NickChangeObject nco2 = (NickChangeObject)o.getObject();
-//				String v = Internationalization.getString("C3_IRC_IsNowKnownAs");
-//				addText("#aaaaaa", nco2.getOldNick() + " " + v + " " + nco2.getNewNick() + System.getProperty("line.separator"));
-				break;
+				case IRC_USER_PART:
+					Platform.runLater(() -> {
+						ChanPartMessage pmsg = (ChanPartMessage) o.getObject();
+						removeUser(pmsg.getSource().getNick());
+						addChatLine(null, pmsg.getSource().getNick() + " " + Internationalization.getString("C3_IRC_Left"));
+					});
+					break;
 
-			case IRC_MESSAGE_IN_CHANNEL:
-				Platform.runLater(() -> {
-					ChannelPrivMsg msg3 = (ChannelPrivMsg) o.getObject();
-					addChatLine(msg3.getSource().getNick(), msg3.getText());
-				});
-				break;
+				case IRC_USER_KICKED:
+					Platform.runLater(() -> {
+						ChannelKick kmsg = (ChannelKick) o.getObject();
+						removeUser(kmsg.getKickedNickname());
+						addChatLine(null, kmsg.getKickedNickname() + " " + Internationalization.getString("C3_IRC_WasKicked"));
+					});
+					break;
 
-			case TERMINAL_COMMAND:
-				String com1 = o.getText();
-				if (Nexus.isLoggedIn()) {
-					if (Nexus.getCurrentlyOpenedPane() instanceof ChatPane) {
-						if (!com1.startsWith("*!!!*")) {
-							handleCommand(com1);
+				case IRC_USER_QUIT:
+					Platform.runLater(() -> {
+						QuitMessage qmsg = (QuitMessage) o.getObject();
+						removeUser(qmsg.getSource().getNick());
+						addChatLine(null, qmsg.getSource().getNick() + " " + Internationalization.getString("C3_IRC_Quit") + " " + qmsg.getQuitMsg());
+					});
+					break;
+
+				case IRC_USER_NICKCHANGE:
+					Platform.runLater(() -> {
+						NickChangeObject nco = (NickChangeObject) o.getObject();
+						Iterator<String> i = lvUsers.getItems().iterator();
+						int c = 0;
+						String s = null;
+						boolean found = false;
+						while (i.hasNext()) {
+							s = (String) i.next();
+							if (s.endsWith(nco.getOldNick()) || s.startsWith(nco.getOldNick())) {
+								s = s.replace(nco.getOldNick(), nco.getNewNick());
+								found = true;
+								break;
+							}
+							c++;
+						}
+						if (s != null && found) {
+							lvUsers.getItems().set(c, s);
+						}
+						String v = Internationalization.getString("C3_IRC_IsNowKnownAs");
+						addChatLine(null, nco.getOldNick() + " " + v + " " + nco.getNewNick());
+					});
+					break;
+
+				case IRC_UPDATED_USERLIST_RECEIVED:
+					ArrayList<String> list = (ArrayList<String>) o.getObject();
+					String myOwnEntry = null;
+					for (String s : list) {
+						if (s.equals("C3\\" + Nexus.getCurrentUser().getUserName())) {
+							myOwnEntry = s;
 						}
 					}
-				}
-				break;
+					list.remove(myOwnEntry);
+					list.remove("@Q");
+					list.remove("D");
+					Collections.sort(list);
+					String finalMyOwnEntry = myOwnEntry;
 
-			default:
-				Collections.sort(lvUsers.getItems());
-				break;
+					Platform.runLater(() -> {
+						String selectedItem = lvUsers.getSelectionModel().getSelectedItem();
+						lvUsers.getItems().clear();
+						lvUsers.getItems().add(finalMyOwnEntry);
+						lvUsers.getItems().add("-----");
+						lvUsers.getItems().addAll(list);
+						lvUsers.getSelectionModel().clearSelection();
+						if (selectedItem != null) {
+							lvUsers.getSelectionModel().select(selectedItem);
+						}
+					});
+					break;
+
+				case IRC_MESSAGE_IN_PRIVATE:
+					Platform.runLater(() -> {
+						UserPrivMsg msg = (UserPrivMsg) o.getObject();
+						addChatLine(msg.getSource().getNick() + " [" + Internationalization.getString("C3_IRC_Priv") + "] ", "(-> " + msg.getToUser() + ") " + msg.getText());
+					});
+					break;
+
+				case IRC_MESSAGE_IN_GENERAL:
+					Platform.runLater(() -> {
+						if (o.getObject() instanceof ChannelPrivMsg msg2) {
+							addChatLine(msg2.getSource().getNick() + "[" + Internationalization.getString("C3_IRC_General") + "] ", msg2.getText());
+						}
+						//						else if (o.getObject() instanceof UnknownMessage) {
+						//							UnknownMessage msg2 = (UnknownMessage) o.getObject();
+						//							addChatLine("" + "[" + Internationalization.getString("C3_IRC_General") + "] ", msg2.asRaw());
+						//						}
+					});
+					break;
+
+				case IRC_SENDING_ACTION:
+					Platform.runLater(() -> {
+						String com2 = o.getText();
+						addChatLine(IRCClient.myNick, com2);
+					});
+					break;
+
+				case IRC_CHANGE_NICK:
+					//				NickChangeObject nco2 = (NickChangeObject)o.getObject();
+					//				String v = Internationalization.getString("C3_IRC_IsNowKnownAs");
+					//				addText("#aaaaaa", nco2.getOldNick() + " " + v + " " + nco2.getNewNick() + System.getProperty("line.separator"));
+					break;
+
+				case IRC_MESSAGE_IN_CHANNEL:
+					Platform.runLater(() -> {
+						ChannelPrivMsg msg3 = (ChannelPrivMsg) o.getObject();
+						addChatLine(msg3.getSource().getNick(), msg3.getText());
+					});
+					break;
+
+				case TERMINAL_COMMAND:
+					String com1 = o.getText();
+					if (Nexus.isLoggedIn()) {
+						if (Nexus.getCurrentlyOpenedPane() instanceof ChatPane) {
+							if (!com1.startsWith("*!!!*")) {
+								handleCommand(com1);
+							}
+						}
+					}
+					break;
+
+				default:
+					Collections.sort(lvUsers.getItems());
+					break;
+			}
 		}
 		return true;
 	}

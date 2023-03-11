@@ -3,7 +3,6 @@ C3 version history
 ----------------------------------------------------------------
 
 CURRENTLY IN PROGRESS:
-- P1: If an invasion is broken and the lobby is created again, after the lobby it should continue with the next step that was not finished before
 - P1: Show current fight for each user in the user list
 - P1: Show the information if broken fights were found to user
 - P2: If user logs out and another logs in without closing the client, not all user related data is adapted to the new user
@@ -11,12 +10,27 @@ CURRENTLY IN PROGRESS:
 ---
 - P3: Updating the manual (ongoing): https://www.clanwolf.net/apps/C3/C3_Manual_de.pdf
 
+TODO:
+- Update msgpack (io.nadron.server)
+- Check warning hibernate dialect (server)
+- Switch to MariaDB client (client, bots)
+- Integrate Discord bot (bots)
 ----------------------------------------------------------------
+
+Version 7.2.88 (10.03.2023)
+- UPDATED: javax.el-api -> jakarta
+- UPDATED: xml-bind -> jakarta
+- UPDATED: IRC client to 15
+- UPDATED: Version vars in master pom
+- ADDED: Discord API
+
+Version 7.2.84 (06.03.2023)
+- CHANGED: If an invasion is broken and suspended, if the lobby is re-created again, fights will start at the point they were stopped
 
 Version 7.2.83 (04.03.2023)
 - ADDED: A timertask to check if open attacks lack dropleads to confirm results
 - ADDED: An error message to inform the player that one of the dropleaders left the invasion
-- FIXED: Playerlist is not altered after drops were started
+- FIXED: Playerlist may not be altered after the first drop of an invasion was started
 
 Version 7.2.79 (01.03.2023)
 - CHANGED: Removed a warning from netty channel (unknown channel option)

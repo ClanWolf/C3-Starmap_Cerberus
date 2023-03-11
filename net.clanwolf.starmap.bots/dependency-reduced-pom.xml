@@ -23,7 +23,7 @@
       </plugin>
       <plugin>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>3.3.0</version>
+        <version>${version.maven-shade-plugin}</version>
         <executions>
           <execution>
             <id>shade-ircbot</id>

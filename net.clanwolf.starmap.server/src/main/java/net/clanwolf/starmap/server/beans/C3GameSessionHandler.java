@@ -297,6 +297,8 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 	private synchronized void saveStatsMwo(PlayerSession session, GameState state) {
 		StatsMwoDAO dao = StatsMwoDAO.getInstance();
+		RolePlayCharacterStatsDAO daoRPCStats = RolePlayCharacterStatsDAO.getInstance();
+		AttackStatsDAO daoAttackStats = AttackStatsDAO.getInstance();
 
 		try {
 			StatsMwoPOJO statsMwo = (StatsMwoPOJO) state.getObject();
@@ -307,6 +309,27 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				// already saved, do nothing
 				logger.info("Stats with the given MWO Match-ID have been detected, DO NOTHING!");
 				return;
+			}
+
+			Boolean gameRepeated = false;
+			StatsMwoPOJO checkStats2 = dao.findByAttackIdAndRoleplayID(statsMwo.getAttackId(), statsMwo.getRoleplayId());
+			if (checkStats2 != null) {
+				// The drop was repeated here, so we update the mwo stats entry, and DELETE both other statistics
+				// They will be written again by the following methods
+				ArrayList<RolePlayCharacterStatsPOJO> rpcStatsList = daoRPCStats.findByMatchId(checkStats2.getGameId());
+				for (RolePlayCharacterStatsPOJO p : rpcStatsList) {
+					daoRPCStats.delete(getC3UserID(session), p);
+				}
+
+				// The drop was repeated here, so we update the mwo stats entry, and DELETE both other statistics
+				// They will be written again by the following methods
+				AttackStatsPOJO attackStats = daoAttackStats.findByMatchId(checkStats2.getGameId());
+				daoAttackStats.delete(getC3UserID(session), attackStats);
+
+				checkStats2.setGameId(statsMwo.getGameId());
+				checkStats2.setRawData(statsMwo.getRawData());
+				statsMwo = checkStats2;
+				gameRepeated = true;
 			}
 
 			EntityManagerHelper.beginTransaction(getC3UserID(session));
@@ -321,6 +344,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			GameState response = new GameState(GAMESTATEMODES.STATS_MWO_SAVE_RESPONSE);
 			response.setAction_successfully(Boolean.TRUE);
 			response.addObject(statsMwo.getAttackId());
+			response.addObject2(gameRepeated);
 			C3GameSessionHandler.sendBroadCast(room, response);
 		} catch (RuntimeException re) {
 			re.printStackTrace();

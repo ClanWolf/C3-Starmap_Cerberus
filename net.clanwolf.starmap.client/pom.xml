@@ -94,82 +94,58 @@
 		<dependency>
 			<groupId>org.kynosarges</groupId>
 			<artifactId>tektosyne</artifactId>
-			<version>6.2.0</version>
+			<version>${version.tektosyne}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-collections4</artifactId>
-			<version>4.4</version>
+			<version>${version.apache.commons-collections4}</version>
 		</dependency>
 		<dependency>
 			<groupId>commons-net</groupId>
 			<artifactId>commons-net</artifactId>
-			<version>3.9.0</version>
+			<version>${version.apache.commons-net}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jetbrains</groupId>
 			<artifactId>annotations</artifactId>
-			<version>23.1.0</version>
-			<scope>compile</scope>
+			<version>${version.jetbrains-annotations}</version>
 		</dependency>
 
 		<!-- IRC +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
+		<!--		DELETE-->
+		<!--		<dependency>-->
+		<!--			<groupId>com.ircclouds.irc</groupId>-->
+		<!--			<artifactId>irc-api</artifactId>-->
+		<!--			<version>1.0-0014</version>-->
+		<!--			<exclusions>-->
+		<!--				<exclusion>-->
+		<!--					<groupId>com.googlecode.jmockit</groupId>-->
+		<!--					<artifactId>jmockit</artifactId>-->
+		<!--				</exclusion>-->
+		<!--				<exclusion>-->
+		<!--					<groupId>junit</groupId>-->
+		<!--					<artifactId>junit</artifactId>-->
+		<!--				</exclusion>-->
+		<!--			</exclusions>-->
+		<!--		</dependency>-->
+
 		<dependency>
-			<groupId>com.ircclouds.irc</groupId>
+			<groupId>org.jitsi</groupId>
 			<artifactId>irc-api</artifactId>
-			<version>1.0-0014</version>
-			<exclusions>
-				<exclusion>
-					<groupId>com.googlecode.jmockit</groupId>
-					<artifactId>jmockit</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>junit</groupId>
-					<artifactId>junit</artifactId>
-				</exclusion>
-			</exclusions>
+			<version>${version.irc-api}</version>
 		</dependency>
-
-<!--		&lt;!&ndash; https://mvnrepository.com/artifact/org.jitsi/irc-api &ndash;&gt;-->
-<!--		<dependency>-->
-<!--			<groupId>org.jitsi</groupId>-->
-<!--			<artifactId>irc-api</artifactId>-->
-<!--			<version>1.0-0015-jitsi-1</version>-->
-<!--		</dependency>-->
-
 		<dependency>
 			<groupId>net.coobird</groupId>
 			<artifactId>thumbnailator</artifactId>
-			<version>0.4.19</version>
+			<version>${version.thumbnailator}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.github.kwhat</groupId>
 			<artifactId>jnativehook</artifactId>
-			<version>2.2.2</version>
+			<version>${version.jnativehook}</version>
 		</dependency>
-<!--		<dependency>-->
-<!--			<groupId>de.dfki.mary</groupId>-->
-<!--			<artifactId>voice-cmu-slt-hsmm</artifactId>-->
-<!--			<version>5.2</version>-->
-<!--			<exclusions>-->
-<!--				<exclusion>-->
-<!--					<groupId>org.codehaus.groovy</groupId>-->
-<!--					<artifactId>groovy-all</artifactId>-->
-<!--				</exclusion>-->
-<!--			</exclusions>-->
-<!--		</dependency>-->
-<!--		<dependency>-->
-<!--			<groupId>org.codehaus.groovy</groupId>-->
-<!--			<artifactId>groovy-all</artifactId>-->
-<!--			<version>3.0.7</version>-->
-<!--			<type>pom</type>-->
-<!--			<exclusions>-->
-<!--				<exclusion>-->
-<!--					<groupId>org.apache.ant</groupId>-->
-<!--					<artifactId>ant</artifactId>-->
-<!--				</exclusion>-->
-<!--			</exclusions>-->
-<!--		</dependency>-->
 	</dependencies>
 
 	<!-- ########################################################################################################### -->
@@ -223,9 +199,10 @@
 							<target>
 								<echo>Copying manuals...</echo>
 								<echo>C3_Manual_de.pdf</echo>
-								<copy file="../doc/manual/C3_Manual_de.pdf" tofile="${basedir}/src/main/resources/C3_Manual_de.pdf"/>
-<!--								<echo>C3_Manual_en.pdf</echo>-->
-<!--								<copy file="../doc/manual/C3_Manual_en.pdf" tofile="${basedir}/src/main/resources/C3_Manual_en.pdf"/>-->
+								<copy file="../doc/manual/C3_Manual_de.pdf"
+								      tofile="${basedir}/src/main/resources/C3_Manual_de.pdf"/>
+								<!--								<echo>C3_Manual_en.pdf</echo>-->
+								<!--								<copy file="../doc/manual/C3_Manual_en.pdf" tofile="${basedir}/src/main/resources/C3_Manual_en.pdf"/>-->
 								<echo>changelog.txt</echo>
 								<copy file="../doc/changelog.txt" tofile="${basedir}/src/main/resources/changelog.txt"/>
 							</target>
@@ -244,8 +221,8 @@
 					<source>${version.java}</source>
 					<target>${version.java}</target>
 					<!--<compilerArgs>-->
-						<!--<compilerArg>&#45;&#45;module-path</compilerArg>-->
-						<!--<compilerArg>${project.build.directory}/modules</compilerArg>-->
+					<!--<compilerArg>&#45;&#45;module-path</compilerArg>-->
+					<!--<compilerArg>${project.build.directory}/modules</compilerArg>-->
 					<!--</compilerArgs>-->
 				</configuration>
 				<dependencies>
@@ -309,41 +286,41 @@
 				<extensions>true</extensions>
 				<executions>
 
-				<!-- BEGIN: Generate module info for legacy jars-->
+					<!-- BEGIN: Generate module info for legacy jars-->
 
-<!--					<execution>-->
-<!--						<id>generate-module-info</id>-->
-<!--						<phase>generate-sources</phase>-->
-<!--						<goals>-->
-<!--							<goal>generate-module-info</goal>-->
-<!--						</goals>-->
-<!--						<configuration>-->
-<!--							<jdepsExtraArgs>-->
-<!--								<arg>&#45;&#45;multi-release</arg>-->
-<!--								<arg>9</arg>-->
-<!--								<arg>&#45;&#45;ignore-missing-deps</arg>-->
-<!--							</jdepsExtraArgs>-->
-<!--							<modules>-->
-<!--								<module>-->
-<!--									<artifact>-->
-<!--										<groupId>commons-net</groupId>-->
-<!--										<artifactId>commons-net</artifactId>-->
-<!--										<version>3.8.0</version>-->
-<!--&lt;!&ndash;										<groupId>org.apache.logging.log4j</groupId>&ndash;&gt;-->
-<!--&lt;!&ndash;										<artifactId>log4j-slf4j-impl</artifactId>&ndash;&gt;-->
-<!--&lt;!&ndash;										<version>2.15.0</version>&ndash;&gt;-->
-<!--									</artifact>-->
-<!--&lt;!&ndash;									<additionalDependencies>&ndash;&gt;-->
-<!--&lt;!&ndash;										<dependency>&ndash;&gt;-->
-<!--&lt;!&ndash;											<groupId>org.jboss.marshalling</groupId>&ndash;&gt;-->
-<!--&lt;!&ndash;											<artifactId>jboss-marshalling</artifactId>&ndash;&gt;-->
-<!--&lt;!&ndash;											<version>2.0.6.Final</version>&ndash;&gt;-->
-<!--&lt;!&ndash;										</dependency>&ndash;&gt;-->
-<!--&lt;!&ndash;									</additionalDependencies>&ndash;&gt;-->
-<!--								</module>-->
-<!--							</modules>-->
-<!--						</configuration>-->
-<!--					</execution>-->
+					<!--					<execution>-->
+					<!--						<id>generate-module-info</id>-->
+					<!--						<phase>generate-sources</phase>-->
+					<!--						<goals>-->
+					<!--							<goal>generate-module-info</goal>-->
+					<!--						</goals>-->
+					<!--						<configuration>-->
+					<!--							<jdepsExtraArgs>-->
+					<!--								<arg>&#45;&#45;multi-release</arg>-->
+					<!--								<arg>9</arg>-->
+					<!--								<arg>&#45;&#45;ignore-missing-deps</arg>-->
+					<!--							</jdepsExtraArgs>-->
+					<!--							<modules>-->
+					<!--								<module>-->
+					<!--									<artifact>-->
+					<!--										<groupId>commons-net</groupId>-->
+					<!--										<artifactId>commons-net</artifactId>-->
+					<!--										<version>3.8.0</version>-->
+					<!--&lt;!&ndash;										<groupId>org.apache.logging.log4j</groupId>&ndash;&gt;-->
+					<!--&lt;!&ndash;										<artifactId>log4j-slf4j-impl</artifactId>&ndash;&gt;-->
+					<!--&lt;!&ndash;										<version>2.15.0</version>&ndash;&gt;-->
+					<!--									</artifact>-->
+					<!--&lt;!&ndash;									<additionalDependencies>&ndash;&gt;-->
+					<!--&lt;!&ndash;										<dependency>&ndash;&gt;-->
+					<!--&lt;!&ndash;											<groupId>org.jboss.marshalling</groupId>&ndash;&gt;-->
+					<!--&lt;!&ndash;											<artifactId>jboss-marshalling</artifactId>&ndash;&gt;-->
+					<!--&lt;!&ndash;											<version>2.0.6.Final</version>&ndash;&gt;-->
+					<!--&lt;!&ndash;										</dependency>&ndash;&gt;-->
+					<!--&lt;!&ndash;									</additionalDependencies>&ndash;&gt;-->
+					<!--								</module>-->
+					<!--							</modules>-->
+					<!--						</configuration>-->
+					<!--					</execution>-->
 
 					<!-- END: Generate module info for legacy jars-->
 
@@ -372,14 +349,14 @@
 									</artifact>
 									<moduleInfoSource>
 										module compress.lzf {
-											requires java.management;
-											requires transitive jdk.unsupported;
-											exports com.ning.compress;
-											exports com.ning.compress.gzip;
-											exports com.ning.compress.lzf;
-											exports com.ning.compress.lzf.impl;
-											exports com.ning.compress.lzf.parallel;
-											exports com.ning.compress.lzf.util;
+										requires java.management;
+										requires transitive jdk.unsupported;
+										exports com.ning.compress;
+										exports com.ning.compress.gzip;
+										exports com.ning.compress.lzf;
+										exports com.ning.compress.lzf.impl;
+										exports com.ning.compress.lzf.parallel;
+										exports com.ning.compress.lzf.util;
 										}
 									</moduleInfoSource>
 								</module>
@@ -391,13 +368,13 @@
 									</artifact>
 									<moduleInfoSource>
 										module jnativehook {
-											requires transitive java.desktop;
-											requires transitive java.logging;
-											exports com.github.kwhat.jnativehook;
-											exports com.github.kwhat.jnativehook.dispatcher;
-											exports com.github.kwhat.jnativehook.example;
-											exports com.github.kwhat.jnativehook.keyboard;
-											exports com.github.kwhat.jnativehook.mouse;
+										requires transitive java.desktop;
+										requires transitive java.logging;
+										exports com.github.kwhat.jnativehook;
+										exports com.github.kwhat.jnativehook.dispatcher;
+										exports com.github.kwhat.jnativehook.example;
+										exports com.github.kwhat.jnativehook.keyboard;
+										exports com.github.kwhat.jnativehook.mouse;
 										}
 									</moduleInfoSource>
 								</module>
@@ -409,74 +386,77 @@
 									</artifact>
 									<moduleInfoSource>
 										module net.coobird.thumbnailator {
-											requires java.xml;
-											requires transitive java.desktop;
-											exports net.coobird.thumbnailator;
-											exports net.coobird.thumbnailator.builders;
-											exports net.coobird.thumbnailator.filters;
-											exports net.coobird.thumbnailator.geometry;
-											exports net.coobird.thumbnailator.makers;
-											exports net.coobird.thumbnailator.name;
-											exports net.coobird.thumbnailator.resizers;
-											exports net.coobird.thumbnailator.resizers.configurations;
-											exports net.coobird.thumbnailator.tasks;
-											exports net.coobird.thumbnailator.tasks.io;
-											exports net.coobird.thumbnailator.util;
-											exports net.coobird.thumbnailator.util.exif;
+										requires java.xml;
+										requires transitive java.desktop;
+										exports net.coobird.thumbnailator;
+										exports net.coobird.thumbnailator.builders;
+										exports net.coobird.thumbnailator.filters;
+										exports net.coobird.thumbnailator.geometry;
+										exports net.coobird.thumbnailator.makers;
+										exports net.coobird.thumbnailator.name;
+										exports net.coobird.thumbnailator.resizers;
+										exports net.coobird.thumbnailator.resizers.configurations;
+										exports net.coobird.thumbnailator.tasks;
+										exports net.coobird.thumbnailator.tasks.io;
+										exports net.coobird.thumbnailator.util;
+										exports net.coobird.thumbnailator.util.exif;
 										}
 									</moduleInfoSource>
 								</module>
-<!--								<module>-->
-<!--									<artifact>-->
-<!--										<groupId>org.jitsi</groupId>-->
-<!--										<artifactId>irc-api</artifactId>-->
-<!--										<version>1.0-0015-jitsi-1</version>-->
-<!--									</artifact>-->
-<!--									<moduleInfoSource>-->
-<!--										module irc.api {-->
-<!--											requires org.apache.commons.codec;-->
-<!--											requires org.slf4j;-->
-<!--											exports com.ircclouds.irc.api;-->
-<!--											exports com.ircclouds.irc.api.commands;-->
-<!--											exports com.ircclouds.irc.api.comms;-->
-<!--											exports com.ircclouds.irc.api.ctcp;-->
-<!--											exports com.ircclouds.irc.api.domain;-->
-<!--											exports com.ircclouds.irc.api.domain.messages;-->
-<!--											exports com.ircclouds.irc.api.domain.messages.interfaces;-->
-<!--											exports com.ircclouds.irc.api.filters;-->
-<!--											exports com.ircclouds.irc.api.listeners;-->
-<!--											exports com.ircclouds.irc.api.negotiators;-->
-<!--											exports com.ircclouds.irc.api.negotiators.api;-->
-<!--											exports com.ircclouds.irc.api.negotiators.capabilities;-->
-<!--											exports com.ircclouds.irc.api.om;-->
-<!--											exports com.ircclouds.irc.api.state;-->
-<!--											exports com.ircclouds.irc.api.utils;-->
-<!--											exports nl.dannyvanheumen.nio;-->
-<!--										}-->
-<!--									</moduleInfoSource>-->
-<!--								</module>-->
+								<!--								<module>-->
+								<!--									<artifact>-->
+								<!--										<groupId>org.jitsi</groupId>-->
+								<!--										<artifactId>irc-api</artifactId>-->
+								<!--										<version>1.0-0015-jitsi-1</version>-->
+								<!--									</artifact>-->
+								<!--									<moduleInfoSource>-->
+								<!--										module irc.api {-->
+								<!--											requires org.apache.commons.codec;-->
+								<!--											requires org.slf4j;-->
+								<!--											exports com.ircclouds.irc.api;-->
+								<!--											exports com.ircclouds.irc.api.commands;-->
+								<!--											exports com.ircclouds.irc.api.comms;-->
+								<!--											exports com.ircclouds.irc.api.ctcp;-->
+								<!--											exports com.ircclouds.irc.api.domain;-->
+								<!--											exports com.ircclouds.irc.api.domain.messages;-->
+								<!--											exports com.ircclouds.irc.api.domain.messages.interfaces;-->
+								<!--											exports com.ircclouds.irc.api.filters;-->
+								<!--											exports com.ircclouds.irc.api.listeners;-->
+								<!--											exports com.ircclouds.irc.api.negotiators;-->
+								<!--											exports com.ircclouds.irc.api.negotiators.api;-->
+								<!--											exports com.ircclouds.irc.api.negotiators.capabilities;-->
+								<!--											exports com.ircclouds.irc.api.om;-->
+								<!--											exports com.ircclouds.irc.api.state;-->
+								<!--											exports com.ircclouds.irc.api.utils;-->
+								<!--											exports nl.dannyvanheumen.nio;-->
+								<!--										}-->
+								<!--									</moduleInfoSource>-->
+								<!--								</module>-->
 								<module>
 									<artifact>
-										<groupId>com.ircclouds.irc</groupId>
+										<!-- <groupId>com.ircclouds.irc</groupId>-->
+										<!-- <artifactId>irc-api</artifactId>-->
+										<!-- <version>1.0-0014</version> -->
+										<groupId>org.jitsi</groupId>
 										<artifactId>irc-api</artifactId>
-										<version>1.0-0014</version>
+										<version>1.0-0015-jitsi-1</version>
 									</artifact>
 									<moduleInfoSource>
 										module irc.api {
-											requires org.slf4j;
-<!--										requires slf4j.log4j12;-->
-											exports com.ircclouds.irc.api;
-											exports com.ircclouds.irc.api.commands;
-											exports com.ircclouds.irc.api.comms;
-											exports com.ircclouds.irc.api.ctcp;
-											exports com.ircclouds.irc.api.domain;
-											exports com.ircclouds.irc.api.domain.messages;
-											exports com.ircclouds.irc.api.domain.messages.interfaces;
-											exports com.ircclouds.irc.api.filters;
-											exports com.ircclouds.irc.api.listeners;
-											exports com.ircclouds.irc.api.om;
-											exports com.ircclouds.irc.api.state;
-											exports com.ircclouds.irc.api.utils;
+										requires org.slf4j;
+										<!-- requires slf4j.log4j12;-->
+										exports com.ircclouds.irc.api;
+										exports com.ircclouds.irc.api.commands;
+										exports com.ircclouds.irc.api.comms;
+										exports com.ircclouds.irc.api.ctcp;
+										exports com.ircclouds.irc.api.domain;
+										exports com.ircclouds.irc.api.domain.messages;
+										exports com.ircclouds.irc.api.domain.messages.interfaces;
+										exports com.ircclouds.irc.api.filters;
+										exports com.ircclouds.irc.api.listeners;
+										exports com.ircclouds.irc.api.om;
+										exports com.ircclouds.irc.api.state;
+										exports com.ircclouds.irc.api.utils;
 										}
 									</moduleInfoSource>
 								</module>
@@ -488,22 +468,22 @@
 									</artifact>
 									<moduleInfoSource>
 										module jboss.modules {
-											requires java.management;
-											requires java.prefs;
-											requires transitive java.desktop;
-											requires transitive java.instrument;
-											requires transitive java.logging;
-											requires transitive java.xml;
-											exports __redirected;
-											exports org.jboss.modules;
-											exports org.jboss.modules._private;
-											exports org.jboss.modules.filter;
-											exports org.jboss.modules.log;
-											exports org.jboss.modules.management;
-											exports org.jboss.modules.maven;
-											exports org.jboss.modules.ref;
-											exports org.jboss.modules.security;
-											exports org.jboss.modules.xml;
+										requires java.management;
+										requires java.prefs;
+										requires transitive java.desktop;
+										requires transitive java.instrument;
+										requires transitive java.logging;
+										requires transitive java.xml;
+										exports __redirected;
+										exports org.jboss.modules;
+										exports org.jboss.modules._private;
+										exports org.jboss.modules.filter;
+										exports org.jboss.modules.log;
+										exports org.jboss.modules.management;
+										exports org.jboss.modules.maven;
+										exports org.jboss.modules.ref;
+										exports org.jboss.modules.security;
+										exports org.jboss.modules.xml;
 										}
 									</moduleInfoSource>
 								</module>
@@ -515,7 +495,7 @@
 									</artifact>
 									<moduleInfoSource>
 										module protobuf.java {
-											exports org.spark_project.protobuf;
+										exports org.spark_project.protobuf;
 										}
 									</moduleInfoSource>
 								</module>
@@ -527,13 +507,13 @@
 									</artifact>
 									<moduleInfoSource>
 										module jboss.marshalling {
-											requires transitive jboss.modules;
-											requires transitive jdk.unsupported;
-											exports org.jboss.marshalling;
-											exports org.jboss.marshalling._private;
-											exports org.jboss.marshalling.cloner;
-											exports org.jboss.marshalling.reflect;
-											exports org.jboss.marshalling.util;
+										requires transitive jboss.modules;
+										requires transitive jdk.unsupported;
+										exports org.jboss.marshalling;
+										exports org.jboss.marshalling._private;
+										exports org.jboss.marshalling.cloner;
+										exports org.jboss.marshalling.reflect;
+										exports org.jboss.marshalling.util;
 										}
 									</moduleInfoSource>
 								</module>
@@ -545,7 +525,7 @@
 									</artifact>
 									<moduleInfoSource>
 										module protobuf.javanano {
-											exports com.google.protobuf.nano;
+										exports com.google.protobuf.nano;
 										}
 									</moduleInfoSource>
 								</module>
@@ -557,10 +537,10 @@
 									</artifact>
 									<moduleInfoSource>
 										module lz4 {
-											requires jdk.unsupported;
-											exports net.jpountz.lz4;
-											exports net.jpountz.util;
-											exports net.jpountz.xxhash;
+										requires jdk.unsupported;
+										exports net.jpountz.lz4;
+										exports net.jpountz.util;
+										exports net.jpountz.xxhash;
 										}
 									</moduleInfoSource>
 								</module>
@@ -572,12 +552,12 @@
 									</artifact>
 									<moduleInfoSource>
 										module lzma.java {
-											exports lzma.sdk;
-											exports lzma.sdk.lz;
-											exports lzma.sdk.lzma;
-											exports lzma.sdk.rangecoder;
-											exports lzma.streams;
-											exports org.cservenak.streams;
+										exports lzma.sdk;
+										exports lzma.sdk.lz;
+										exports lzma.sdk.lzma;
+										exports lzma.sdk.rangecoder;
+										exports lzma.streams;
+										exports org.cservenak.streams;
 										}
 									</moduleInfoSource>
 								</module>
@@ -589,7 +569,7 @@
 									</artifact>
 									<moduleInfoSource>
 										module jzlib {
-											exports com.jcraft.jzlib;
+										exports com.jcraft.jzlib;
 										}
 									</moduleInfoSource>
 								</module>
@@ -601,12 +581,12 @@
 									</artifact>
 									<moduleInfoSource>
 										module activation {
-											requires java.logging;
-											requires transitive java.datatransfer;
-											requires transitive java.desktop;
-											exports com.sun.activation.registries;
-											exports com.sun.activation.viewers;
-											exports javax.activation;
+										requires java.logging;
+										requires transitive java.datatransfer;
+										requires transitive java.desktop;
+										exports com.sun.activation.registries;
+										exports com.sun.activation.viewers;
+										exports javax.activation;
 										}
 									</moduleInfoSource>
 								</module>
@@ -618,10 +598,10 @@
 									</artifact>
 									<moduleInfoSource>
 										module tektosyne {
-											exports org.kynosarges.tektosyne;
-											exports org.kynosarges.tektosyne.geometry;
-											exports org.kynosarges.tektosyne.graph;
-											exports org.kynosarges.tektosyne.subdivision;
+										exports org.kynosarges.tektosyne;
+										exports org.kynosarges.tektosyne.geometry;
+										exports org.kynosarges.tektosyne.graph;
+										exports org.kynosarges.tektosyne.subdivision;
 										}
 									</moduleInfoSource>
 								</module>
@@ -633,26 +613,26 @@
 									</artifact>
 									<moduleInfoSource>
 										module org.apache.commons.net {
-											exports org.apache.commons.net;
-											exports org.apache.commons.net.bsd;
-											exports org.apache.commons.net.chargen;
-											exports org.apache.commons.net.daytime;
-											exports org.apache.commons.net.discard;
-											exports org.apache.commons.net.echo;
-											exports org.apache.commons.net.finger;
-											exports org.apache.commons.net.ftp;
-											exports org.apache.commons.net.ftp.parser;
-											exports org.apache.commons.net.imap;
-											exports org.apache.commons.net.io;
-											exports org.apache.commons.net.nntp;
-											exports org.apache.commons.net.ntp;
-											exports org.apache.commons.net.pop3;
-											exports org.apache.commons.net.smtp;
-											exports org.apache.commons.net.telnet;
-											exports org.apache.commons.net.tftp;
-											exports org.apache.commons.net.time;
-											exports org.apache.commons.net.util;
-											exports org.apache.commons.net.whois;
+										exports org.apache.commons.net;
+										exports org.apache.commons.net.bsd;
+										exports org.apache.commons.net.chargen;
+										exports org.apache.commons.net.daytime;
+										exports org.apache.commons.net.discard;
+										exports org.apache.commons.net.echo;
+										exports org.apache.commons.net.finger;
+										exports org.apache.commons.net.ftp;
+										exports org.apache.commons.net.ftp.parser;
+										exports org.apache.commons.net.imap;
+										exports org.apache.commons.net.io;
+										exports org.apache.commons.net.nntp;
+										exports org.apache.commons.net.ntp;
+										exports org.apache.commons.net.pop3;
+										exports org.apache.commons.net.smtp;
+										exports org.apache.commons.net.telnet;
+										exports org.apache.commons.net.tftp;
+										exports org.apache.commons.net.time;
+										exports org.apache.commons.net.util;
+										exports org.apache.commons.net.whois;
 										}
 									</moduleInfoSource>
 								</module>
@@ -664,91 +644,91 @@
 									</artifact>
 									<moduleInfoSource>
 										module org.apache.commons.collections4 {
-											requires java.xml;
-											exports org.apache.commons.collections4;
-											exports org.apache.commons.collections4.bag;
-											exports org.apache.commons.collections4.bidimap;
-											exports org.apache.commons.collections4.collection;
-											exports org.apache.commons.collections4.comparators;
-											exports org.apache.commons.collections4.functors;
-											exports org.apache.commons.collections4.iterators;
-											exports org.apache.commons.collections4.keyvalue;
-											exports org.apache.commons.collections4.list;
-											exports org.apache.commons.collections4.map;
-											exports org.apache.commons.collections4.multimap;
-											exports org.apache.commons.collections4.multiset;
-											exports org.apache.commons.collections4.properties;
-											exports org.apache.commons.collections4.queue;
-											exports org.apache.commons.collections4.sequence;
-											exports org.apache.commons.collections4.set;
-											exports org.apache.commons.collections4.splitmap;
-											exports org.apache.commons.collections4.trie;
-											exports org.apache.commons.collections4.trie.analyzer;
+										requires java.xml;
+										exports org.apache.commons.collections4;
+										exports org.apache.commons.collections4.bag;
+										exports org.apache.commons.collections4.bidimap;
+										exports org.apache.commons.collections4.collection;
+										exports org.apache.commons.collections4.comparators;
+										exports org.apache.commons.collections4.functors;
+										exports org.apache.commons.collections4.iterators;
+										exports org.apache.commons.collections4.keyvalue;
+										exports org.apache.commons.collections4.list;
+										exports org.apache.commons.collections4.map;
+										exports org.apache.commons.collections4.multimap;
+										exports org.apache.commons.collections4.multiset;
+										exports org.apache.commons.collections4.properties;
+										exports org.apache.commons.collections4.queue;
+										exports org.apache.commons.collections4.sequence;
+										exports org.apache.commons.collections4.set;
+										exports org.apache.commons.collections4.splitmap;
+										exports org.apache.commons.collections4.trie;
+										exports org.apache.commons.collections4.trie.analyzer;
 										}
 									</moduleInfoSource>
 								</module>
-<!--								<module>-->
-<!--									<artifact>-->
-<!--										<groupId>com.fasterxml.jackson.core</groupId>-->
-<!--										<artifactId>jackson-databind</artifactId>-->
-<!--										<version>2.10.5.1</version>-->
-<!--									</artifact>-->
-<!--									<moduleInfoSource>-->
-<!--										module com.fasterxml.jackson.databind {-->
-<!--											requires java.desktop;-->
-<!--											requires java.logging;-->
-<!--											requires transitive com.fasterxml.jackson.core;-->
-<!--											requires transitive com.fasterxml.jackson.annotation;-->
-<!--											requires transitive java.sql;-->
-<!--											requires transitive java.xml;-->
-<!--											exports com.fasterxml.jackson.databind;-->
-<!--											exports com.fasterxml.jackson.databind.annotation;-->
-<!--											exports com.fasterxml.jackson.databind.cfg;-->
-<!--											exports com.fasterxml.jackson.databind.deser;-->
-<!--											exports com.fasterxml.jackson.databind.deser.impl;-->
-<!--											exports com.fasterxml.jackson.databind.deser.std;-->
-<!--											exports com.fasterxml.jackson.databind.exc;-->
-<!--											exports com.fasterxml.jackson.databind.ext;-->
-<!--											exports com.fasterxml.jackson.databind.introspect;-->
-<!--											exports com.fasterxml.jackson.databind.jsonFormatVisitors;-->
-<!--											exports com.fasterxml.jackson.databind.jsonschema;-->
-<!--											exports com.fasterxml.jackson.databind.jsontype;-->
-<!--											exports com.fasterxml.jackson.databind.jsontype.impl;-->
-<!--											exports com.fasterxml.jackson.databind.module;-->
-<!--											exports com.fasterxml.jackson.databind.node;-->
-<!--											exports com.fasterxml.jackson.databind.ser;-->
-<!--											exports com.fasterxml.jackson.databind.ser.impl;-->
-<!--											exports com.fasterxml.jackson.databind.ser.std;-->
-<!--											exports com.fasterxml.jackson.databind.type;-->
-<!--											exports com.fasterxml.jackson.databind.util;-->
-<!--											provides com.fasterxml.jackson.core.ObjectCodec with-->
-<!--											com.fasterxml.jackson.databind.ObjectMapper;-->
-<!--										}-->
-<!--									</moduleInfoSource>-->
-<!--								</module>-->
-<!--								<module>-->
-<!--									<artifact>-->
-<!--										<groupId>com.fasterxml.jackson.core</groupId>-->
-<!--										<artifactId>jackson-core</artifactId>-->
-<!--										<version>2.10.5</version>-->
-<!--									</artifact>-->
-<!--									<moduleInfoSource>-->
-<!--										module com.fasterxml.jackson.core {-->
-<!--											exports com.fasterxml.jackson.core;-->
-<!--											exports com.fasterxml.jackson.core.async;-->
-<!--											exports com.fasterxml.jackson.core.base;-->
-<!--											exports com.fasterxml.jackson.core.filter;-->
-<!--											exports com.fasterxml.jackson.core.format;-->
-<!--											exports com.fasterxml.jackson.core.io;-->
-<!--											exports com.fasterxml.jackson.core.json;-->
-<!--											exports com.fasterxml.jackson.core.json.async;-->
-<!--											exports com.fasterxml.jackson.core.sym;-->
-<!--											exports com.fasterxml.jackson.core.type;-->
-<!--											exports com.fasterxml.jackson.core.util;-->
-<!--											provides com.fasterxml.jackson.core.JsonFactory with com.fasterxml.jackson.core.JsonFactory;-->
-<!--										}-->
-<!--									</moduleInfoSource>-->
-<!--								</module>-->
+								<!--								<module>-->
+								<!--									<artifact>-->
+								<!--										<groupId>com.fasterxml.jackson.core</groupId>-->
+								<!--										<artifactId>jackson-databind</artifactId>-->
+								<!--										<version>2.10.5.1</version>-->
+								<!--									</artifact>-->
+								<!--									<moduleInfoSource>-->
+								<!--										module com.fasterxml.jackson.databind {-->
+								<!--											requires java.desktop;-->
+								<!--											requires java.logging;-->
+								<!--											requires transitive com.fasterxml.jackson.core;-->
+								<!--											requires transitive com.fasterxml.jackson.annotation;-->
+								<!--											requires transitive java.sql;-->
+								<!--											requires transitive java.xml;-->
+								<!--											exports com.fasterxml.jackson.databind;-->
+								<!--											exports com.fasterxml.jackson.databind.annotation;-->
+								<!--											exports com.fasterxml.jackson.databind.cfg;-->
+								<!--											exports com.fasterxml.jackson.databind.deser;-->
+								<!--											exports com.fasterxml.jackson.databind.deser.impl;-->
+								<!--											exports com.fasterxml.jackson.databind.deser.std;-->
+								<!--											exports com.fasterxml.jackson.databind.exc;-->
+								<!--											exports com.fasterxml.jackson.databind.ext;-->
+								<!--											exports com.fasterxml.jackson.databind.introspect;-->
+								<!--											exports com.fasterxml.jackson.databind.jsonFormatVisitors;-->
+								<!--											exports com.fasterxml.jackson.databind.jsonschema;-->
+								<!--											exports com.fasterxml.jackson.databind.jsontype;-->
+								<!--											exports com.fasterxml.jackson.databind.jsontype.impl;-->
+								<!--											exports com.fasterxml.jackson.databind.module;-->
+								<!--											exports com.fasterxml.jackson.databind.node;-->
+								<!--											exports com.fasterxml.jackson.databind.ser;-->
+								<!--											exports com.fasterxml.jackson.databind.ser.impl;-->
+								<!--											exports com.fasterxml.jackson.databind.ser.std;-->
+								<!--											exports com.fasterxml.jackson.databind.type;-->
+								<!--											exports com.fasterxml.jackson.databind.util;-->
+								<!--											provides com.fasterxml.jackson.core.ObjectCodec with-->
+								<!--											com.fasterxml.jackson.databind.ObjectMapper;-->
+								<!--										}-->
+								<!--									</moduleInfoSource>-->
+								<!--								</module>-->
+								<!--								<module>-->
+								<!--									<artifact>-->
+								<!--										<groupId>com.fasterxml.jackson.core</groupId>-->
+								<!--										<artifactId>jackson-core</artifactId>-->
+								<!--										<version>2.10.5</version>-->
+								<!--									</artifact>-->
+								<!--									<moduleInfoSource>-->
+								<!--										module com.fasterxml.jackson.core {-->
+								<!--											exports com.fasterxml.jackson.core;-->
+								<!--											exports com.fasterxml.jackson.core.async;-->
+								<!--											exports com.fasterxml.jackson.core.base;-->
+								<!--											exports com.fasterxml.jackson.core.filter;-->
+								<!--											exports com.fasterxml.jackson.core.format;-->
+								<!--											exports com.fasterxml.jackson.core.io;-->
+								<!--											exports com.fasterxml.jackson.core.json;-->
+								<!--											exports com.fasterxml.jackson.core.json.async;-->
+								<!--											exports com.fasterxml.jackson.core.sym;-->
+								<!--											exports com.fasterxml.jackson.core.type;-->
+								<!--											exports com.fasterxml.jackson.core.util;-->
+								<!--											provides com.fasterxml.jackson.core.JsonFactory with com.fasterxml.jackson.core.JsonFactory;-->
+								<!--										}-->
+								<!--									</moduleInfoSource>-->
+								<!--								</module>-->
 								<module>
 									<artifact>
 										<groupId>com.voodoodyne.jackson.jsog</groupId>
@@ -757,10 +737,10 @@
 									</artifact>
 									<moduleInfoSource>
 										module jackson.jsog {
-											requires com.fasterxml.jackson.core;
-											requires com.fasterxml.jackson.databind;
-											requires com.fasterxml.jackson.annotation;
-											exports com.voodoodyne.jackson.jsog;
+										requires com.fasterxml.jackson.core;
+										requires com.fasterxml.jackson.databind;
+										requires com.fasterxml.jackson.annotation;
+										exports com.voodoodyne.jackson.jsog;
 										}
 									</moduleInfoSource>
 								</module>
@@ -772,7 +752,7 @@
 									</artifact>
 									<moduleInfoSource>
 										module com.fasterxml.jackson.annotation {
-											exports com.fasterxml.jackson.annotation;
+										exports com.fasterxml.jackson.annotation;
 										}
 									</moduleInfoSource>
 								</module>
@@ -782,25 +762,25 @@
 										<artifactId>netty-common</artifactId>
 										<version>4.1.89.Final</version>
 									</artifact>
-<!--									<moduleInfo>-->
-<!--										<name>io.netty.common</name>-->
-<!--									</moduleInfo>-->
+									<!--									<moduleInfo>-->
+									<!--										<name>io.netty.common</name>-->
+									<!--									</moduleInfo>-->
 									<moduleInfoSource>
 										module io.netty.common {
-											requires static commons.logging;
-											requires java.logging;
-											requires static log4j;
-											requires static log4j.api;
-											requires static slf4j.api;
-											requires jdk.unsupported;
-											exports io.netty.util;
-											exports io.netty.util.collection;
-											exports io.netty.util.concurrent;
-											exports io.netty.util.internal;
-											exports io.netty.util.internal.logging;
-											exports io.netty.util.internal.shaded.org.jctools.queues;
-											exports io.netty.util.internal.shaded.org.jctools.queues.atomic;
-											exports io.netty.util.internal.shaded.org.jctools.util;
+										requires static commons.logging;
+										requires java.logging;
+										requires static log4j;
+										requires static log4j.api;
+										requires static slf4j.api;
+										requires jdk.unsupported;
+										exports io.netty.util;
+										exports io.netty.util.collection;
+										exports io.netty.util.concurrent;
+										exports io.netty.util.internal;
+										exports io.netty.util.internal.logging;
+										exports io.netty.util.internal.shaded.org.jctools.queues;
+										exports io.netty.util.internal.shaded.org.jctools.queues.atomic;
+										exports io.netty.util.internal.shaded.org.jctools.util;
 										}
 									</moduleInfoSource>
 								</module>
@@ -810,26 +790,26 @@
 										<artifactId>netty-transport</artifactId>
 										<version>4.1.89.Final</version>
 									</artifact>
-<!--									<moduleInfo>-->
-<!--										<name>io.netty.transport</name>-->
-<!--									</moduleInfo>-->
+									<!--									<moduleInfo>-->
+									<!--										<name>io.netty.transport</name>-->
+									<!--									</moduleInfo>-->
 									<moduleInfoSource>
 										module io.netty.transport {
-											requires io.netty.buffer;
-											requires io.netty.common;
-											requires io.netty.resolver;
-											exports io.netty.bootstrap;
-											exports io.netty.channel;
-											exports io.netty.channel.embedded;
-											exports io.netty.channel.group;
-											exports io.netty.channel.internal;
-											exports io.netty.channel.local;
-											exports io.netty.channel.nio;
-											exports io.netty.channel.oio;
-											exports io.netty.channel.pool;
-											exports io.netty.channel.socket;
-											exports io.netty.channel.socket.nio;
-											exports io.netty.channel.socket.oio;
+										requires io.netty.buffer;
+										requires io.netty.common;
+										requires io.netty.resolver;
+										exports io.netty.bootstrap;
+										exports io.netty.channel;
+										exports io.netty.channel.embedded;
+										exports io.netty.channel.group;
+										exports io.netty.channel.internal;
+										exports io.netty.channel.local;
+										exports io.netty.channel.nio;
+										exports io.netty.channel.oio;
+										exports io.netty.channel.pool;
+										exports io.netty.channel.socket;
+										exports io.netty.channel.socket.nio;
+										exports io.netty.channel.socket.oio;
 										}
 									</moduleInfoSource>
 								</module>
@@ -841,8 +821,8 @@
 									</artifact>
 									<moduleInfoSource>
 										module io.netty.buffer {
-											requires io.netty.common;
-											exports io.netty.buffer;
+										requires io.netty.common;
+										exports io.netty.buffer;
 										}
 									</moduleInfoSource>
 								</module>
@@ -852,31 +832,31 @@
 										<artifactId>netty-codec</artifactId>
 										<version>4.1.89.Final</version>
 									</artifact>
-<!--									<moduleInfo>-->
-<!--										<name>io.netty.codec</name>-->
-<!--									</moduleInfo>-->
+									<!--									<moduleInfo>-->
+									<!--										<name>io.netty.codec</name>-->
+									<!--									</moduleInfo>-->
 									<moduleInfoSource>
 										module io.netty.codec {
-											requires compress.lzf;
-											requires jzlib;
-											requires lzma.java;
-											requires transitive io.netty.buffer;
-											requires transitive io.netty.common;
-											requires transitive io.netty.transport;
-											requires transitive jboss.marshalling;
-											requires transitive lz4;
-											requires transitive protobuf.java;
-											requires transitive protobuf.javanano;
-											exports io.netty.handler.codec;
-											exports io.netty.handler.codec.base64;
-											exports io.netty.handler.codec.bytes;
-											exports io.netty.handler.codec.compression;
-											exports io.netty.handler.codec.json;
-											exports io.netty.handler.codec.marshalling;
-											exports io.netty.handler.codec.protobuf;
-											exports io.netty.handler.codec.serialization;
-											exports io.netty.handler.codec.string;
-											exports io.netty.handler.codec.xml;
+										requires compress.lzf;
+										requires jzlib;
+										requires lzma.java;
+										requires transitive io.netty.buffer;
+										requires transitive io.netty.common;
+										requires transitive io.netty.transport;
+										requires transitive jboss.marshalling;
+										requires transitive lz4;
+										requires transitive protobuf.java;
+										requires transitive protobuf.javanano;
+										exports io.netty.handler.codec;
+										exports io.netty.handler.codec.base64;
+										exports io.netty.handler.codec.bytes;
+										exports io.netty.handler.codec.compression;
+										exports io.netty.handler.codec.json;
+										exports io.netty.handler.codec.marshalling;
+										exports io.netty.handler.codec.protobuf;
+										exports io.netty.handler.codec.serialization;
+										exports io.netty.handler.codec.string;
+										exports io.netty.handler.codec.xml;
 										}
 									</moduleInfoSource>
 								</module>
@@ -888,8 +868,8 @@
 									</artifact>
 									<moduleInfoSource>
 										module io.netty.resolver {
-											requires io.netty.common;
-											exports io.netty.resolver;
+										requires io.netty.common;
+										exports io.netty.resolver;
 										}
 									</moduleInfoSource>
 								</module>
@@ -901,26 +881,26 @@
 									</artifact>
 									<moduleInfoSource>
 										module io.netty.handler {
-											requires static alpn.api;
-											requires static bcpkix.jdk15on;
-											requires static bcprov.jdk15on;
-											requires static conscrypt.openjdk.uber;
-											requires static netty.tcnative;
-											requires static npn.api;
-											requires io.netty.buffer;
-											requires io.netty.codec;
-											requires io.netty.common;
-											requires io.netty.transport;
-											exports io.netty.handler.flow;
-											exports io.netty.handler.flush;
-											exports io.netty.handler.ipfilter;
-											exports io.netty.handler.logging;
-											exports io.netty.handler.ssl;
-											exports io.netty.handler.ssl.ocsp;
-											exports io.netty.handler.ssl.util;
-											exports io.netty.handler.stream;
-											exports io.netty.handler.timeout;
-											exports io.netty.handler.traffic;
+										requires static alpn.api;
+										requires static bcpkix.jdk15on;
+										requires static bcprov.jdk15on;
+										requires static conscrypt.openjdk.uber;
+										requires static netty.tcnative;
+										requires static npn.api;
+										requires io.netty.buffer;
+										requires io.netty.codec;
+										requires io.netty.common;
+										requires io.netty.transport;
+										exports io.netty.handler.flow;
+										exports io.netty.handler.flush;
+										exports io.netty.handler.ipfilter;
+										exports io.netty.handler.logging;
+										exports io.netty.handler.ssl;
+										exports io.netty.handler.ssl.ocsp;
+										exports io.netty.handler.ssl.util;
+										exports io.netty.handler.stream;
+										exports io.netty.handler.timeout;
+										exports io.netty.handler.traffic;
 										}
 									</moduleInfoSource>
 								</module>

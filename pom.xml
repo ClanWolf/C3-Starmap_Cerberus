@@ -26,14 +26,50 @@
 
 		<!-- C3 Revision -->
 		<!-- https://stackoverflow.com/questions/10582054/maven-project-version-inheritance-do-i-have-to-specify-the-parent-version -->
-		<revision>7.2.83</revision>
+		<revision>7.2.88</revision>
 
 		<!-- Versions -->
 		<version.java>19</version.java>
 		<version.javafx>19.0.2.1</version.javafx>
 		<version.maven-compiler-plugin>3.10.1</version.maven-compiler-plugin>
+		<version.maven-shade-plugin>3.3.0</version.maven-shade-plugin>
 		<version.exec-maven-plugin>3.0.0</version.exec-maven-plugin>
 		<version.asm>9.3</version.asm>
+
+		<version.apache.commons-collections4>4.4</version.apache.commons-collections4>
+		<version.apache.commons-net>3.9.0</version.apache.commons-net>
+		<version.bind-api>3.0.1</version.bind-api>
+		<version.blazeds-core>3.2.0.3978</version.blazeds-core>
+		<version.byte-buddy>1.14.1</version.byte-buddy>
+		<version.collections-generic>4.01</version.collections-generic>
+		<version.discord-api>5.0.0-beta.5</version.discord-api>
+		<version.dom4j>2.1.4</version.dom4j>
+		<version.el-api>5.0.1</version.el-api>
+		<version.gson>2.10.1</version.gson>
+		<version.irc-api>1.0-0015-jitsi-1</version.irc-api>
+		<version.iText-core>7.2.5</version.iText-core>
+		<version.jackson-core>2.14.2</version.jackson-core>
+		<version.jackson-databind>2.14.2</version.jackson-databind>
+		<version.jackson-annotations>2.14.2</version.jackson-annotations>
+		<version.jackson-jsog>1.1.2</version.jackson-jsog>
+		<version.javassist>3.29.2-GA</version.javassist>
+		<version.jetbrains-annotations>23.1.0</version.jetbrains-annotations>
+		<version.jetlang>0.2.23</version.jetlang>
+		<version.jnativehook>2.2.2</version.jnativehook>
+		<version.mariadb-connector></version.mariadb-connector>
+		<version.mchange-commons-java>0.2.20</version.mchange-commons-java>
+		<version.msgpack>0.6.12</version.msgpack>
+		<version.mysql>8.0.32</version.mysql>
+		<version.netty>4.1.89.Final</version.netty>
+		<version.persistence-api>3.1.0</version.persistence-api>
+		<version.pircbotx>2.2</version.pircbotx>
+		<version.slf4j>2.0.6</version.slf4j>
+		<version.springframework>6.0.5</version.springframework>
+		<version.springframework-security-config>6.0.2</version.springframework-security-config>
+		<version.teamspeak3-api>1.3.0</version.teamspeak3-api>
+		<version.tektosyne>6.2.0</version.tektosyne>
+		<version.thumbnailator>0.4.19</version.thumbnailator>
+		<version.transaction-api>2.0.1</version.transaction-api>
 	</properties>
 
 	<repositories>
@@ -94,9 +130,9 @@
 					<release>${version.java}</release>
 					<showWarnings>true</showWarnings>
 					<showDeprecation>true</showDeprecation>
-                    <source>${version.java}</source>
-                    <target>${version.java}</target>
-                </configuration>
+					<source>${version.java}</source>
+					<target>${version.java}</target>
+				</configuration>
 				<dependencies>
 					<dependency>
 						<groupId>org.ow2.asm</groupId>

@@ -77,4 +77,20 @@ public class StatsMwoDAO extends GenericDAO {
 
 		return (StatsMwoPOJO) crit.getSingleResult();
 	}
+
+	public StatsMwoPOJO findByMWOGameIdAndRoleplayID(String matchId, Long roleplayId) {
+		CriteriaHelper crit = new CriteriaHelper(StatsMwoPOJO.class);
+		crit.addCriteria("roleplayId", roleplayId);
+		crit.addCriteria("gameId", matchId);
+
+		return (StatsMwoPOJO) crit.getSingleResult();
+	}
+
+	public StatsMwoPOJO findByAttackIdAndRoleplayID(Long attackId, Long roleplayId) {
+		CriteriaHelper crit = new CriteriaHelper(StatsMwoPOJO.class);
+		crit.addCriteria("roleplayId", roleplayId);
+		crit.addCriteria("attackId", attackId);
+
+		return (StatsMwoPOJO) crit.getSingleResult();
+	}
 }

@@ -4,24 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-	            <version>${version.maven-compiler-plugin}</version>
-                <configuration>
-	                <release>${version.java}</release>
-	                <showWarnings>true</showWarnings>
-	                <showDeprecation>true</showDeprecation>
-	                <source>${version.java}</source>
-	                <target>${version.java}</target>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 
-    <parent>
+
+	<parent>
 		<artifactId>C3-Starmap_Cerberus</artifactId>
 		<groupId>net.clanwolf.starmap</groupId>
 		<version>${revision}</version>
@@ -51,10 +36,15 @@
 			<version>${project.version}</version>
 		</dependency>
 		<!-- Mail ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+		<!--		<dependency>-->
+		<!--			<groupId>com.sun.mail</groupId>-->
+		<!--			<artifactId>javax.mail</artifactId>-->
+		<!--			<version>1.6.2</version>-->
+		<!--		</dependency>-->
 		<dependency>
 			<groupId>com.sun.mail</groupId>
-			<artifactId>javax.mail</artifactId>
-			<version>1.6.2</version>
+			<artifactId>jakarta.mail</artifactId>
+			<version>2.0.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.sun.activation</groupId>
@@ -62,4 +52,30 @@
 			<version>2.0.1</version>
 		</dependency>
 	</dependencies>
+
+	<!-- ########################################################################################################### -->
+	<!-- ##                                                                                                       ## -->
+	<!-- ##                                                                                                       ## -->
+	<!-- ## BUILD                                                                                                 ## -->
+	<!-- ##                                                                                                       ## -->
+	<!-- ##                                                                                                       ## -->
+	<!-- ########################################################################################################### -->
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${version.maven-compiler-plugin}</version>
+				<configuration>
+					<release>${version.java}</release>
+					<showWarnings>true</showWarnings>
+					<showDeprecation>true</showDeprecation>
+					<source>${version.java}</source>
+					<target>${version.java}</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
 </project>

@@ -26,7 +26,7 @@
 		<dependency>
 			<groupId>com.itextpdf</groupId>
 			<artifactId>itext7-core</artifactId>
-			<version>7.2.5</version>
+			<version>${version.iText-core}</version>
 			<type>pom</type>
 		</dependency>
 
@@ -45,51 +45,18 @@
 			<groupId>net.clanwolf.starmap</groupId>
 			<artifactId>net.clanwolf.starmap.mail</artifactId>
 			<version>${project.version}</version>
-			<exclusions>
-				<exclusion>
-					<groupId>javax.activation</groupId>
-					<artifactId>activation</artifactId>
-				</exclusion>
-<!--				<exclusion>-->
-<!--					<groupId>com.sun.activation</groupId>-->
-<!--					<artifactId>jakarta.activation</artifactId>-->
-<!--				</exclusion>-->
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>net.clanwolf.starmap</groupId>
 			<artifactId>io.nadron.server</artifactId>
 			<version>${project.version}</version>
-			<!--			<scope>compile</scope>-->
-			<!--			<exclusions>-->
-			<!--				<exclusion>-->
-			<!--					<groupId>io.netty</groupId>-->
-			<!--					<artifactId>netty-common</artifactId>-->
-			<!--				</exclusion>-->
-			<!--				<exclusion>-->
-			<!--					<groupId>io.netty</groupId>-->
-			<!--					<artifactId>netty-transport</artifactId>-->
-			<!--				</exclusion>-->
-			<!--				<exclusion>-->
-			<!--					<groupId>io.netty</groupId>-->
-			<!--					<artifactId>netty-buffer</artifactId>-->
-			<!--				</exclusion>-->
-			<!--				<exclusion>-->
-			<!--					<groupId>io.netty</groupId>-->
-			<!--					<artifactId>netty-codec</artifactId>-->
-			<!--				</exclusion>-->
-			<!--				<exclusion>-->
-			<!--					<groupId>io.netty</groupId>-->
-			<!--					<artifactId>netty-handler</artifactId>-->
-			<!--				</exclusion>-->
-			<!--			</exclusions>-->
 		</dependency>
 
 		<!-- MySQL +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 		<dependency>
 			<groupId>com.mysql</groupId>
 			<artifactId>mysql-connector-j</artifactId>
-			<version>8.0.32</version>
+			<version>${version.mysql}</version>
 		</dependency>
 
 		<!-- Hibernate +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
@@ -98,21 +65,15 @@
 			<artifactId>hibernate-core</artifactId>
 			<version>6.2.0.CR2</version>
 		</dependency>
-<!--		<dependency>-->
-<!--			<groupId>org.hibernate</groupId>-->
-<!--			<artifactId>hibernate-ehcache</artifactId>-->
-<!--			<version>5.6.15.Final</version>-->
-<!--		</dependency>-->
-		<dependency>
-			<groupId>org.hibernate.orm</groupId>
-			<artifactId>hibernate-ehcache</artifactId>
-			<version>6.0.0.Alpha7</version>
-		</dependency>
-
 		<dependency>
 			<groupId>org.hibernate.common</groupId>
 			<artifactId>hibernate-commons-annotations</artifactId>
 			<version>6.0.6.Final</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate.orm</groupId>
+			<artifactId>hibernate-ehcache</artifactId>
+			<version>6.0.0.Alpha7</version>
 		</dependency>
 
 		<!-- Hikari ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
@@ -139,76 +100,71 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
-			<version>6.0.5</version>
+			<version>${version.springframework}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-			<version>6.0.5</version>
+			<version>${version.springframework}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-tx</artifactId>
-			<version>6.0.5</version>
+			<version>${version.springframework}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-config</artifactId>
-			<version>6.0.2</version>
+			<version>${version.springframework-security-config}</version>
 		</dependency>
 
+		<!-- Jakarta +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 		<dependency>
 			<groupId>jakarta.transaction</groupId>
 			<artifactId>jakarta.transaction-api</artifactId>
-			<version>2.0.1</version>
+			<version>${version.transaction-api}</version>
 		</dependency>
 		<dependency>
 			<groupId>jakarta.persistence</groupId>
 			<artifactId>jakarta.persistence-api</artifactId>
-			<version>3.1.0</version>
+			<version>${version.persistence-api}</version>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.el</groupId>
+			<artifactId>jakarta.el-api</artifactId>
+			<version>${version.el-api}</version>
 		</dependency>
 
 		<!-- Other +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 		<dependency>
 			<groupId>org.dom4j</groupId>
 			<artifactId>dom4j</artifactId>
-			<version>2.1.4</version>
-			<exclusions>
-				<exclusion>
-					<groupId>xml-apis</groupId>
-					<artifactId>xml-apis</artifactId>
-				</exclusion>
-			</exclusions>
+			<version>${version.dom4j}</version>
+		</dependency>
+		<dependency>
+			<groupId>jakarta.xml.bind</groupId>
+			<artifactId>jakarta.xml.bind-api</artifactId>
+			<version>${version.bind-api}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.javassist</groupId>
 			<artifactId>javassist</artifactId>
-			<version>3.29.2-GA</version>
+			<version>${version.javassist}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.mchange</groupId>
 			<artifactId>mchange-commons-java</artifactId>
-			<version>0.2.20</version>
+			<version>${version.mchange-commons-java}</version>
 		</dependency>
 		<dependency>
 			<groupId>net.bytebuddy</groupId>
 			<artifactId>byte-buddy</artifactId>
-			<version>1.14.0</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.xml.bind</groupId>
-			<artifactId>jaxb-api</artifactId>
-			<version>2.4.0-b180830.0359</version>
+			<version>${version.byte-buddy}</version>
 		</dependency>
 		<dependency>
 			<groupId>net.sourceforge.collections</groupId>
 			<artifactId>collections-generic</artifactId>
-			<version>4.01</version>
-		</dependency>
-		<dependency>
-			<groupId>javax.el</groupId>
-			<artifactId>javax.el-api</artifactId>
-			<version>3.0.1-b06</version>
+			<version>${version.collections-generic}</version>
 		</dependency>
 	</dependencies>
 
@@ -226,7 +182,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-shade-plugin</artifactId>
-				<version>3.3.0</version>
+				<version>${version.maven-shade-plugin}</version>
 				<executions>
 					<execution>
 						<phase>package</phase>
@@ -245,13 +201,16 @@
 								</filter>
 							</filters>
 							<transformers>
-								<transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+								<transformer
+										implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
 									<resource>META-INF/spring.handlers</resource>
 								</transformer>
-								<transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
+								<transformer
+										implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
 									<resource>META-INF/spring.schemas</resource>
 								</transformer>
-								<transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+								<transformer
+										implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
 									<mainClass>net.clanwolf.starmap.server.GameServer</mainClass>
 									<manifestEntries>
 										<Multi-Release>true</Multi-Release>
@@ -264,22 +223,22 @@
 					</execution>
 				</executions>
 			</plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-	            <version>${version.maven-compiler-plugin}</version>
-                <configuration>
-	                <release>${version.java}</release>
-	                <showWarnings>true</showWarnings>
-	                <showDeprecation>true</showDeprecation>
-	                <source>${version.java}</source>
-	                <target>${version.java}</target>
-			<compilerArgs>
-				<arg>-parameters</arg>
-			</compilerArgs>
-                </configuration>
-            </plugin>
-        </plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${version.maven-compiler-plugin}</version>
+				<configuration>
+					<release>${version.java}</release>
+					<showWarnings>true</showWarnings>
+					<showDeprecation>true</showDeprecation>
+					<source>${version.java}</source>
+					<target>${version.java}</target>
+					<compilerArgs>
+						<arg>-parameters</arg>
+					</compilerArgs>
+				</configuration>
+			</plugin>
+		</plugins>
 	</build>
 
 </project>

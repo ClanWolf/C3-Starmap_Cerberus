@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2020, ClanWolf.net                            |
+ * Copyright (c) 2001-2023, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.mail;
@@ -29,9 +29,9 @@ package net.clanwolf.starmap.mail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
+import jakarta.mail.*;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.util.Date;
@@ -69,7 +69,7 @@ public class MailManager {
 	private static synchronized boolean dispatch(Mail mail) {
 		boolean result = false;
 
-		javax.mail.Session session;
+		jakarta.mail.Session session;
 		Properties props;
 		InternetAddress to;
 		InternetAddress from;

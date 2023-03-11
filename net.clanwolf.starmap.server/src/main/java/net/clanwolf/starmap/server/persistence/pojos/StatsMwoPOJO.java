@@ -55,6 +55,9 @@ public class StatsMwoPOJO extends Pojo {
 	@Column(name = "GameId")
 	private String gameId;
 
+	@Column(name = "RoleplayId")
+	private Long roleplayId;
+
 	@Column(name = "RawData")
 	private String rawData;
 
@@ -106,5 +109,15 @@ public class StatsMwoPOJO extends Pojo {
 	@SuppressWarnings("unused")
 	public void setRawData(String rawData) {
 		this.rawData = rawData;
+	}
+
+	@SuppressWarnings("unused")
+	public Long getRoleplayId() {
+		return roleplayId;
+	}
+
+	@SuppressWarnings("unused")
+	public void setRoleplayId(Long roleplayId) {
+		this.roleplayId = roleplayId;
 	}
 }

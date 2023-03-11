@@ -13,7 +13,7 @@ module net.clanwolf.starmap.server {
 	requires net.clanwolf.starmap.mail;
 	requires json.simple;
 	requires net.bytebuddy;
-	requires java.xml.bind;
+	requires jakarta.xml.bind;
 	requires com.fasterxml.jackson.core;
 	requires com.fasterxml.jackson.databind;
 	requires java.instrument;
