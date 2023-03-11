@@ -311,6 +311,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				return;
 			}
 
+			EntityManagerHelper.beginTransaction(getC3UserID(session));
 			Boolean gameRepeated = false;
 			StatsMwoPOJO checkStats2 = dao.findByAttackIdAndRoleplayID(statsMwo.getAttackId(), statsMwo.getRoleplayId());
 			if (checkStats2 != null) {
@@ -332,7 +333,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				gameRepeated = true;
 			}
 
-			EntityManagerHelper.beginTransaction(getC3UserID(session));
+
 			if (statsMwo.getId() != null) {
 				logger.info("attack.getId() != null");
 				dao.update(getC3UserID(session), statsMwo);
