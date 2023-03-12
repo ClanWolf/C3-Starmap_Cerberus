@@ -57,6 +57,15 @@ public class MechIdInfo {
     private Integer mechMaxEngineRating;
     private String mechLongName;
     private String mechShortName;
+    private Integer HP;
+
+    public Integer getHP() {
+        return HP;
+    }
+
+    public void setHP(Integer HP) {
+        this.HP = HP;
+    }
 
     public Double getMechBaseTons() {
         return mechBaseTons;
@@ -118,7 +127,7 @@ public class MechIdInfo {
             Integer mechMaxEngineRating = Integer.valueOf(xmlMechList.getAttribute("MaxEngineRating"));
             String mechVariantType = xmlMechList.getAttribute("VariantType");
             MechIdInfo mechIdInfo = new MechIdInfo(mechItemId);
-            System.out.println(mechIdInfo);
+            System.out.println(mechIdInfo.getFullName() + "|" + mechIdInfo.getShortname() + "|" + mechIdInfo.getMechVariantType() + "|" + mechIdInfo.getTonnage() + "|" + mechIdInfo.getRepairCost(0));
             //String[] variant = {"Standard", "Special", "Hero", "Champion"};
            /* Mech mechInfo = Mech.getMech(mechChassie, mechFaction, mechItemId, mechName);
             if (mechInfo == null) {
@@ -175,6 +184,7 @@ public class MechIdInfo {
                 this.mechVariantType = xmlMechList.getAttribute("VariantType").toUpperCase();
                 this.mechLongName = xmlMechList.getAttribute("longname");
                 this.mechShortName = xmlMechList.getAttribute("shortname");
+                this.HP = Integer.valueOf(xmlMechList.getAttribute("HP"));
                 break;
             }
         }
@@ -293,6 +303,7 @@ public class MechIdInfo {
      * @return Kosten des Mechs in (double)
      */
     public double getMechCost() throws ParserConfigurationException, IOException, SAXException {
+        Integer sumCost=0;
 
         //Multiplikator für die Mechvariante festlegen
         double Multiply = switch (getMechVariantType()) {
@@ -309,10 +320,17 @@ public class MechIdInfo {
             case HEAVY -> Multiply = Multiply + 0.2;
             case ASSAULT -> Multiply = Multiply + 0.25;
         }
-        return getTonnage() * -50000 * Multiply;
+        sumCost = (int) (getTonnage() * -100_000 * Multiply);
+
+        sumCost = sumCost + (getMechMaxEngineRating() * 500);
+        sumCost = sumCost + (getMechMinEngineRating() * 500);
+        sumCost = (int) (sumCost + (getMechBaseTons()* 1_000));
+        sumCost = sumCost + (getMechMaxJumpJets() * 10_000);
+        sumCost = sumCost + (getHP() * 1_000);
+        return sumCost;
     }
 
-    public double getRepairCost(Integer HealthPercentage) throws ParserConfigurationException, IOException, SAXException {
-        return (100 - HealthPercentage) * getMechCost() / 100;
+    public int getRepairCost(Integer HealthPercentage) throws ParserConfigurationException, IOException, SAXException {
+        return (int) ((100 - HealthPercentage) * getMechCost() / 100);
     }
 }
