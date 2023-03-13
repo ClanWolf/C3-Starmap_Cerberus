@@ -26,7 +26,7 @@
 
 		<!-- C3 Revision -->
 		<!-- https://stackoverflow.com/questions/10582054/maven-project-version-inheritance-do-i-have-to-specify-the-parent-version -->
-		<revision>7.2.89</revision>
+		<revision>7.2.91</revision>
 
 		<!-- Versions -->
 		<version.java>19</version.java>
@@ -52,6 +52,8 @@
 		<version.jackson-databind>2.14.2</version.jackson-databind>
 		<version.jackson-annotations>2.14.2</version.jackson-annotations>
 		<version.jackson-jsog>1.1.2</version.jackson-jsog>
+		<version.jakarta.activation>2.0.1</version.jakarta.activation>                 <!-- net.clanwolf.starmap.mail -->
+		<version.jakarta.mail>2.0.1</version.jakarta.mail>                             <!-- net.clanwolf.starmap.mail -->
 		<version.javassist>3.29.2-GA</version.javassist>
 		<version.jetbrains-annotations>23.1.0</version.jetbrains-annotations>
 		<version.jetlang>0.2.23</version.jetlang>

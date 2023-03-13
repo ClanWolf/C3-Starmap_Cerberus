@@ -965,7 +965,9 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		ArrayList<Long> characterOnlineList = new ArrayList<>();
 		for (PlayerSession playerSession : staticRoom.getSessions()) {
 			C3Player pl = (C3Player) playerSession.getPlayer();
-			characterOnlineList.add(pl.getUser().getCurrentCharacter().getId());
+			if (pl.getUser() != null) {
+				characterOnlineList.add(pl.getUser().getCurrentCharacter().getId());
+			}
 		}
 		return characterOnlineList;
 	}
