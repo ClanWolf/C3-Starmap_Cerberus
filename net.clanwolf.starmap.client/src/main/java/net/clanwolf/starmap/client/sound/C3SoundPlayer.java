@@ -169,25 +169,44 @@ public class C3SoundPlayer {
 				logger.info("TTS sound file was found in cache: " + f1.getAbsolutePath() + ".");
 				play(f1, true);
 			} else {
-				//getSpeechFromMary(fn); // the old way with MaryTTS
-				boolean gotSpeechFile = getSpeechFromVoiceRSS(fn); // the new way with VoiceRSS
+				logger.info("TTS sound file NOT in cache. Checking packaged resources... ");
+				URL u = null;
+				String voicePath = "/sound/voice/" + lang + "/" + fn + ".mp3";
+				u = (getInstance()).getClass().getResource(voicePath);
 
-				if (!gotSpeechFile) {
-					logger.info("TTS sound file missing, VoiceTTS failed.");
-					logger.info("Looking for TTS sound file in packaged resources... ");
-					URL u = null;
-					String voicePath = "/sound/voice/" + lang + "/" + fn + ".mp3";
-					u = (getInstance()).getClass().getResource(voicePath);
-
-					if (u != null) {
-						play(voicePath, true);
-						logger.info("TTS sound file was found in resources.");
-					} else {
-						logger.info("TTS sound file was NOT found in resources.");
-					}
+				if (u != null) {
+					logger.info("TTS sound file was found in packaged resources.");
+					play(voicePath, true);
 				} else {
-					logger.info("Got file from VoiceTTS.");
+					logger.info("TTS sound file was NOT found in packaged resources, requesting from VoiceTTS.");
+					boolean gotSpeechFile = getSpeechFromVoiceRSS(fn); // the new way with VoiceRSS
+
+					if (!gotSpeechFile) {
+						logger.info("Requesting file from VoiceTTS failed. Sound can not be played.");
+					} else {
+						logger.info("Got file from VoiceTTS.");
+					}
 				}
+
+				//				//getSpeechFromMary(fn); // the old way with MaryTTS
+				//				boolean gotSpeechFile = getSpeechFromVoiceRSS(fn); // the new way with VoiceRSS
+				//
+				//				if (!gotSpeechFile) {
+				//					logger.info("TTS sound file missing, VoiceTTS failed.");
+				//					logger.info("Looking for TTS sound file in packaged resources... ");
+				//					URL u = null;
+				//					String voicePath = "/sound/voice/" + lang + "/" + fn + ".mp3";
+				//					u = (getInstance()).getClass().getResource(voicePath);
+				//
+				//					if (u != null) {
+				//						play(voicePath, true);
+				//						logger.info("TTS sound file was found in resources.");
+				//					} else {
+				//						logger.info("TTS sound file was NOT found in resources.");
+				//					}
+				//				} else {
+				//					logger.info("Got file from VoiceTTS.");
+				//				}
 			}
 			play("/sound/fx/beep_02.mp3", false);
 		}

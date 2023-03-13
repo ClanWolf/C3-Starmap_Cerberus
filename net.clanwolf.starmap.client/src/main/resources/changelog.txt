@@ -17,13 +17,21 @@ TODO:
 - Integrate Discord bot (bots)
 ----------------------------------------------------------------
 
-Version 7.2.88 (10.03.2023)
+Version 7.2.89 (12.03.2023)
+- FIXED: Order during request of Text-To-Speech sample (prefer packaged resource)
+- FIXED: Missing mechs added to statistics context
+- FIXED: Automation of mech listing
+ -- ADDED: HP in der AllMechs.xml eingetragen
+ -- ADDED: Neue Funktionen in der Klasse MechIdInfo hinzugefügt (GetHP & SetHP)
+ -- ADDED: Es wurde neue Reparaturkosten hinzugefügt (anhand der MechMaxEngineRating, MechMinEngineRating, MechBaseTons, MechMaxJumpJets, HP und MechKlasse)
+
+Version 7.2.88 (11.03.2023)
 - UPDATED: javax.el-api -> jakarta
 - UPDATED: xml-bind -> jakarta
 - UPDATED: IRC client to 15
 - UPDATED: Version vars in master pom
 - ADDED: Discord API
-- ADDED: If a drop is done twice while the result has not been confirmed in C3 client, always the last statistics will be used
+- ADDED: If a drop is done twice while the result has not been confirmed in C3 client, always the latest statistics will be used
 - ADDED: Missing mechs identified in testsession, will be added in upcoming version
 
 Version 7.2.84 (06.03.2023)

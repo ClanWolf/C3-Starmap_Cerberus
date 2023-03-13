@@ -107,9 +107,58 @@ public class MechIdInfo {
         this.mechMaxEngineRating = mechMaxEngineRating;
     }
 
+    /**
+     * Erzeugt ein neues Objekt, anhand der MechItemId
+     *
+     * @param mechItemId Die Mech ID die in der API ausgegeben wird.
+     */
+    public MechIdInfo(Integer mechItemId) throws ParserConfigurationException, IOException, SAXException {
+
+        this.mechItemId = mechItemId;
+
+        Document doc = DocumentBuilderFactory.newInstance()
+                .newDocumentBuilder().parse(Objects.requireNonNull(MechIdInfo.class.getResourceAsStream("/mechinfo/AllMechs.xml")));
+        doc.getDocumentElement().normalize();
+
+        NodeList mechNodes = doc.getElementsByTagName("Mech");
+        for (int i = 0; i < mechNodes.getLength(); i++) {
+            Element xmlMechList = (Element) mechNodes.item(i);
+            if (Objects.equals(mechItemId, Integer.valueOf(xmlMechList.getAttribute("id")))) {
+                this.mechChassis = xmlMechList.getAttribute("chassis");
+                this.mechFaction = xmlMechList.getAttribute("faction");
+                this.mechName = xmlMechList.getAttribute("name");
+                this.mechBaseTons = Double.valueOf(xmlMechList.getAttribute("BaseTons"));
+                this.mechMaxTons = Integer.valueOf(xmlMechList.getAttribute("MaxTons"));
+                this.mechMaxJumpJets = Integer.valueOf(xmlMechList.getAttribute("MaxJumpJets"));
+                this.mechMaxEngineRating = Integer.valueOf(xmlMechList.getAttribute("MinEngineRating"));
+                this.mechMinEngineRating = Integer.valueOf(xmlMechList.getAttribute("MaxEngineRating"));
+                this.mechVariantType = xmlMechList.getAttribute("VariantType").toUpperCase();
+                this.mechLongName = xmlMechList.getAttribute("longname");
+                this.mechShortName = xmlMechList.getAttribute("shortname");
+                this.HP = Integer.valueOf(xmlMechList.getAttribute("HP"));
+                break;
+            }
+        }
+    }
+
+    /**
+     * Mechklassen die es in MWO gibt.
+     */
+    public enum EMechclass {
+        LIGHT, MEDIUM, HEAVY, ASSAULT, UNKNOWN
+    }
+
+    public String toString() {
+        try {
+            return "MechitemID: " + getMechItemId() + " " + getMechChassis() + " " + getFullName() + " is a " + getMechFaction() + " " + getMechClass() + " Mech an have " + getTonnage() + " tons";
+        } catch (ParserConfigurationException | IOException | SAXException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
         Document doc = DocumentBuilderFactory.newInstance()
-                .newDocumentBuilder().parse(new File(Objects.requireNonNull(MechIdInfo.class.getResource("/mechinfo/AllMechs.xml")).getFile()));
+                .newDocumentBuilder().parse(Objects.requireNonNull(MechIdInfo.class.getResourceAsStream("/mechinfo/AllMechs.xml")));
         doc.getDocumentElement().normalize();
 
         NodeList mechNodes = doc.getElementsByTagName("Mech");
@@ -138,55 +187,6 @@ public class MechIdInfo {
                 System.out.println(mechVariantType);
             }*/
 
-        }
-    }
-
-    /**
-     * Mechklassen die es in MWO gibt.
-     */
-    public enum EMechclass {
-        LIGHT, MEDIUM, HEAVY, ASSAULT, UNKNOWN
-    }
-
-    public String toString() {
-        try {
-            return "MechitemID: " + getMechItemId() + " " + getMechChassis() + " " + getFullName() + " is a " + getMechFaction() + " " + getMechClass() + " Mech an have " + getTonnage() + " tons";
-        } catch (ParserConfigurationException | IOException | SAXException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    /**
-     * Erzeugt ein neues Objekt, anhand der MechItemId
-     *
-     * @param mechItemId Die Mech ID die in der API ausgegeben wird.
-     */
-    public MechIdInfo(Integer mechItemId) throws ParserConfigurationException, IOException, SAXException {
-
-        this.mechItemId = mechItemId;
-
-        Document doc = DocumentBuilderFactory.newInstance()
-                .newDocumentBuilder().parse(new File(Objects.requireNonNull(MechIdInfo.class.getResource("/mechinfo/AllMechs.xml")).getFile()));
-        doc.getDocumentElement().normalize();
-
-        NodeList mechNodes = doc.getElementsByTagName("Mech");
-        for (int i = 0; i < mechNodes.getLength(); i++) {
-            Element xmlMechList = (Element) mechNodes.item(i);
-            if (Objects.equals(mechItemId, Integer.valueOf(xmlMechList.getAttribute("id")))) {
-                this.mechChassis = xmlMechList.getAttribute("chassis");
-                this.mechFaction = xmlMechList.getAttribute("faction");
-                this.mechName = xmlMechList.getAttribute("name");
-                this.mechBaseTons = Double.valueOf(xmlMechList.getAttribute("BaseTons"));
-                this.mechMaxTons = Integer.valueOf(xmlMechList.getAttribute("MaxTons"));
-                this.mechMaxJumpJets = Integer.valueOf(xmlMechList.getAttribute("MaxJumpJets"));
-                this.mechMaxEngineRating = Integer.valueOf(xmlMechList.getAttribute("MinEngineRating"));
-                this.mechMinEngineRating = Integer.valueOf(xmlMechList.getAttribute("MaxEngineRating"));
-                this.mechVariantType = xmlMechList.getAttribute("VariantType").toUpperCase();
-                this.mechLongName = xmlMechList.getAttribute("longname");
-                this.mechShortName = xmlMechList.getAttribute("shortname");
-                this.HP = Integer.valueOf(xmlMechList.getAttribute("HP"));
-                break;
-            }
         }
     }
 
@@ -234,7 +234,7 @@ public class MechIdInfo {
     public String getMechChassis() throws ParserConfigurationException, IOException, SAXException {
         String mechChassi = null;
         Document doc = DocumentBuilderFactory.newInstance()
-                .newDocumentBuilder().parse(new File(Objects.requireNonNull(MechIdInfo.class.getResource("/mechinfo/AllMechsChassis.xml")).getFile()));
+                .newDocumentBuilder().parse(Objects.requireNonNull(MechIdInfo.class.getResourceAsStream("/mechinfo/AllMechsChassis.xml")));
         doc.getDocumentElement().normalize();
 
         NodeList mechNodes = doc.getElementsByTagName("Mech");

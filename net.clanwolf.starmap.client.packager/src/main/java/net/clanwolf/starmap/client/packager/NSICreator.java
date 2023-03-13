@@ -216,6 +216,25 @@ public class NSICreator {
 			bw61.close();
 
 			System.out.println("-------------------------------------------------------------");
+			System.out.println("Writing discord bot start script:");
+			File fout999 = new File("net.clanwolf.starmap.server\\src\\main\\shell\\checkprocess_discordbot.sh");
+			FileOutputStream fos999 = new FileOutputStream(fout999);
+			BufferedWriter bw999 = new BufferedWriter(new OutputStreamWriter(fos999));
+			BufferedReader br999 = new BufferedReader(new FileReader("NSIS\\templates\\checkprocess_discordbot.script_template"));
+			String line999;
+			while ((line999 = br999.readLine()) != null) {
+				if (line999.contains("###VERSION###")) {
+					line999 = line999.replace("###VERSION###", version);
+				}
+				if (line999.contains("###JAVA_VERSION_PATH###")) {
+					line999 = line999.replace("###JAVA_VERSION_PATH###", java_version_path);
+				}
+				writeLineLinux(bw999, line999);
+			}
+			br999.close();
+			bw999.close();
+
+			System.out.println("-------------------------------------------------------------");
 			System.out.println("Writing version update script:");
 			File fout7 = new File("net.clanwolf.starmap.server\\src\\main\\php\\insert_new_version.php");
 			FileOutputStream fos7 = new FileOutputStream(fout7);

@@ -17,6 +17,14 @@ TODO:
 - Integrate Discord bot (bots)
 ----------------------------------------------------------------
 
+Version 7.2.89 (12.03.2023)
+- FIXED: Order during request of Text-To-Speech sample (prefer packaged resource)
+- FIXED: Missing mechs added to statistics context
+- FIXED: Automation of mech listing
+ -- ADDED: HP in der AllMechs.xml eingetragen
+ -- ADDED: Neue Funktionen in der Klasse MechIdInfo hinzugefügt (GetHP & SetHP)
+ -- ADDED: Es wurde neue Reparaturkosten hinzugefügt (anhand der MechMaxEngineRating, MechMinEngineRating, MechBaseTons, MechMaxJumpJets, HP und MechKlasse)
+
 Version 7.2.88 (11.03.2023)
 - UPDATED: javax.el-api -> jakarta
 - UPDATED: xml-bind -> jakarta

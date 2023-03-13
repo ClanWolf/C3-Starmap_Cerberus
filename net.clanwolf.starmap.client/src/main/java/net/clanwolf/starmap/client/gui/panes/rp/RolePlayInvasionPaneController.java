@@ -194,7 +194,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 				cb.clear();
 
 				Timer checkSystemClipboardForMWOResultTimer = new Timer();
-				checkSystemClipboardForMWOResultTimer.schedule(new CheckClipboardForMwoApi(), 0, 2000);
+				checkSystemClipboardForMWOResultTimer.schedule(new CheckClipboardForMwoApi(), 0, 3000);
 				Nexus.setCheckSystemClipboardForMWOResultTimer(checkSystemClipboardForMWOResultTimer);
 				Nexus.setMWOCheckingActive(true);
 			} else {
@@ -517,7 +517,11 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 				break;
 			case MWO_DROPSTATS_RECEIVED:
 				MWOMatchResult result = (MWOMatchResult) o.getObject();
-				ResultAnalyzer.analyseAndStoreMWOResult(result, true);
+				try {
+					ResultAnalyzer.analyseAndStoreMWOResult(result, true);
+				} catch(Exception e) {
+					logger.error("Error while analyse MWO Results", e);
+				}
 				break;
 			case UPDATE_USERS_FOR_ATTACK:
 				statusUpdate();

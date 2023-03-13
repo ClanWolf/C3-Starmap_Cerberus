@@ -44,6 +44,9 @@ import com.google.gson.Gson;
 import net.clanwolf.starmap.transfer.mwo.MWOMatchResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
 
 /**
  * @author Meldric
@@ -124,7 +127,7 @@ public class CheckClipboardForMwoApi extends TimerTask {
 		});
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
 		// 420332911230604
 		// 421333638615793
 		// 419705846001647

@@ -6,7 +6,7 @@ C:
 CD \
 CD C:\C3\projects\C3-Starmap_Cerberus
 
-REM SET VERSION=7.2.88
+REM SET VERSION=7.2.89
 FOR /f "delims== tokens=1,2" %%G in (C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\target\classes\version.number) do set %%G=%%H
 ECHO Found version: %VERSION%
 REM PAUSE
@@ -108,12 +108,24 @@ ECHO +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ECHO Upload IRCBot? (y/n)
 SET /p chc3=
 IF '%chc3%'=='y' GOTO UPLOADIRCBOT
-IF '%chc3%'=='n' GOTO REQUEST_TS3BOT
+IF '%chc3%'=='n' GOTO REQUEST_DISCORDBOT
 GOTO REQUEST_IRCBOT
 
 :UPLOADIRCBOT
 REM Upload IRCBot
 "C:\Program Files (x86)\WinSCP\winscp.com" /ini=nul /script=C:\C3\projects\C3-Starmap_Cerberus\NSIS\scripts\upload_ircbot.script
+
+:REQUEST_DISCORDBOT
+ECHO ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ECHO Upload DiscordBot? (y/n)
+SET /p chc3=
+IF '%chc3%'=='y' GOTO UPLOADDISCORDBOT
+IF '%chc3%'=='n' GOTO REQUEST_TS3BOT
+GOTO REQUEST_DISCORDBOT
+
+:UPLOADDISCORDBOT
+REM Upload DiscordBot
+"C:\Program Files (x86)\WinSCP\winscp.com" /ini=nul /script=C:\C3\projects\C3-Starmap_Cerberus\NSIS\scripts\upload_discordbot.script
 
 :REQUEST_TS3BOT
 ECHO ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

@@ -307,6 +307,10 @@ public class EventCommunications {
 				case STATS_MWO_SAVE_RESPONSE:
 					BOAttack attack1 = Nexus.getCurrentAttackOfUser();
 					Long attackId1 = (Long) state.getObject();
+					Boolean attackHasBeenRepeated = false;
+					if (state.getObject2() != null && state.getObject2() instanceof Boolean) {
+						attackHasBeenRepeated = (Boolean) state.getObject2();
+					}
 					if (attack1 != null && attack1.getAttackDTO().getId().equals(attackId1)) {
 						if (state.isAction_successfully()) {
 							mwoStatsSaved = true;
@@ -317,7 +321,11 @@ public class EventCommunications {
 						}
 						if (mwoStatsSaved != null && attackStatsSaved != null && charStatsSaved != null) {
 							if (mwoStatsSaved && attackStatsSaved && charStatsSaved) {
-								C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_AttackStatsStoreSuccessfull"));
+								if (attackHasBeenRepeated) {
+									C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_AttackStatsStoreSuccessfull_Repeated"));
+								} else {
+									C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_AttackStatsStoreSuccessfull"));
+								}
 							} else {
 								C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_AttackStatsStoreFailed"));
 							}
