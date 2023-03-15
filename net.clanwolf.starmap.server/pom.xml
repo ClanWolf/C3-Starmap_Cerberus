@@ -144,7 +144,7 @@
 		<dependency>
 			<groupId>jakarta.xml.bind</groupId>
 			<artifactId>jakarta.xml.bind-api</artifactId>
-			<version>${version.bind-api}</version>
+			<version>${version.jakarta.xml.bind-api}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.javassist</groupId>

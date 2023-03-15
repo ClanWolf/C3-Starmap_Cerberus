@@ -49,8 +49,8 @@ public class Config {
 	public static final boolean MAP_FLASH_ATTACKED_SYSTEMS = true;
 	public static final double MAP_MAX_SCALE = 3.0d;
 	public static final double MAP_MIN_SCALE = .2d;
-	public static final double MAP_BACKGROUND_AREA_RADIUS = 115;
-	public static final double MAP_BACKGROUND_AREA_RADIUS_BORDER_WIDTH = 3;
+	public static final double MAP_BACKGROUND_AREA_RADIUS = 140;
+	public static final double MAP_BACKGROUND_AREA_RADIUS_BORDER_WIDTH = 5;
 
 	// Hide on zoom
 	public static final double zoomLevelToHideGrid1 = 0.4;
