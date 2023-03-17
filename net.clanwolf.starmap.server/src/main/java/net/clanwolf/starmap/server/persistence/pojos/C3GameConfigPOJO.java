@@ -26,11 +26,17 @@
  */
 package net.clanwolf.starmap.server.persistence.pojos;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import net.clanwolf.starmap.server.persistence.Pojo;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
+@JsonIdentityInfo(
+		scope= C3GameConfigPOJO.class,
+		generator= ObjectIdGenerators.PropertyGenerator.class,
+		property = "id")
 @Entity
 @Table(name = "C3GAMECONFIG", catalog = "C3")
 
@@ -41,11 +47,11 @@ public class C3GameConfigPOJO extends Pojo {
 	@Column(name = "ID")
 	private Long id;
 
-	@Column(name = "Key")
-	private String Key;
+	@Column(name = "ConfigKey")
+	private String key;
 
-	@Column(name = "Value")
-	private String Value;
+	@Column(name = "ConfigValue")
+	private Long value;
 
 	public C3GameConfigPOJO() {
 		// do nothing
@@ -70,7 +76,7 @@ public class C3GameConfigPOJO extends Pojo {
 	 * @return the key
 	 */
 	public String getKey() {
-		return Key;
+		return this.key;
 	}
 
 	/**
@@ -78,21 +84,21 @@ public class C3GameConfigPOJO extends Pojo {
 	 *            the key to set
 	 */
 	public void setKey(String key) {
-		Key = key;
+		this.key = key;
 	}
 
 	/**
 	 * @return the value
 	 */
-	public String getValue() {
-		return Value;
+	public Long getValue() {
+		return this.value;
 	}
 
 	/**
 	 * @param value
 	 *            the value to set
 	 */
-	public void setValue(String value) {
-		Value = value;
+	public void setValue(Long value) {
+		this.value = value;
 	}
 }

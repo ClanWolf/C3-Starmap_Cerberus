@@ -35,8 +35,8 @@ import net.clanwolf.starmap.transfer.Dto;
 public class C3GameConfigDTO extends Dto {
 
 	private Long id;
-	private String Key;
-	private String Value;
+	private String key;
+	private Long value;
 
 	public C3GameConfigDTO() {
 		// do nothing
@@ -60,27 +60,27 @@ public class C3GameConfigDTO extends Dto {
 	 * @return the key
 	 */
 	public String getKey() {
-		return Key;
+		return this.key;
 	}
 
 	/**
 	 * @param key the key to set
 	 */
 	public void setKey(String key) {
-		Key = key;
+		this.key = key;
 	}
 
 	/**
 	 * @return the value
 	 */
-	public String getValue() {
-		return Value;
+	public Long getValue() {
+		return this.value;
 	}
 
 	/**
 	 * @param value the value to set
 	 */
-	public void setValue(String value) {
-		Value = value;
+	public void setValue(Long value) {
+		this.value = value;
 	}
 }
