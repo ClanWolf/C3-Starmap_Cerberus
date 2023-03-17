@@ -126,23 +126,32 @@ public class GameServer {
 		constantValues.put("C3_" + "REWARD_NO_TEAM_DAMAGE",REWARD_NO_TEAM_DAMAGE);
 		constantValues.put("C3_" + "REWARD_EACH_KILL",REWARD_EACH_KILL);
 
+		Map<String,Long> addConstantValues = new HashMap<>();
+		boolean bFound ;
+
 		//Suche nach der Konstanze in der DB.
 		//Wird eine Konstanze gefunden, wird diese aus der constantValues entfernt.
-		for (Map.Entry<String, Long> entry : constantValues.entrySet()) {
-			String constantName = entry.getKey();
-			for (C3GameConfigPOJO config : c3GameConfigPOJO) {
-				if (config.getKey().equals(constantName)) {
-					constantValues.remove(entry.getKey(),entry.getValue());
-					break;
+		logger.info("Checking for Const in the Database");
+			for (Map.Entry<String, Long> entry : constantValues.entrySet()) {
+				bFound = false;
+				String constantName = entry.getKey();
+				for (C3GameConfigPOJO config : c3GameConfigPOJO) {
+					if (config.getKey().equals(constantName)) {
+						//constantValues.remove(entry.getKey(),entry.getValue());
+						bFound = true;
+						break;
+					}
+				}
+				if (!bFound){
+					addConstantValues.put(entry.getKey(),entry.getValue());
 				}
 			}
-		}
 
 		EntityTransaction transaction = EntityManagerHelper.getEntityManager(Nexus.END_ROUND_USERID).getTransaction();
 		transaction.begin();
 
 		//Fehlende Konstanzen werden in der DB eingetragen.
-		for (Map.Entry<String, Long> entry : constantValues.entrySet()) {
+		for (Map.Entry<String, Long> entry : addConstantValues.entrySet()) {
 			C3GameConfigPOJO addC3ConfigPOJO = new C3GameConfigPOJO();
 			addC3ConfigPOJO.setKey(entry.getKey());
 			addC3ConfigPOJO.setValue(entry.getValue());
