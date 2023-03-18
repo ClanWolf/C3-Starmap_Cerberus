@@ -83,6 +83,7 @@ public class C3LookupService extends SimpleLookupService {
 
 		} else {
 			player.setUser(null);
+			//player = null;
 		}
 
 		return player;

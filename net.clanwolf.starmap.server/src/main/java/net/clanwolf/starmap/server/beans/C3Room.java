@@ -174,40 +174,43 @@ public class C3Room extends GameRoomSession {
 
 		C3Player p = (C3Player) playerSession.getPlayer();
 		UserPOJO u = p.getUser();
-		RolePlayCharacterPOJO character = u.getCurrentCharacter();
+		if(u!= null) {
+			RolePlayCharacterPOJO character = u.getCurrentCharacter();
 
-		Nexus.getEci().sendExtCom(p.getName() + " lost connection to C3-Client (disconnected)");
+			Nexus.getEci().sendExtCom(p.getName() + " lost connection to C3-Client (disconnected)");
 
-		AttackDAO attackDAO = AttackDAO.getInstance();
-		ArrayList<AttackPOJO> openAttacks = attackDAO.getOpenAttacksOfASeason(Nexus.currentSeason);
+			AttackDAO attackDAO = AttackDAO.getInstance();
+			ArrayList<AttackPOJO> openAttacks = attackDAO.getOpenAttacksOfASeason(Nexus.currentSeason);
 
-		boolean savedChanges = false;
-		for (AttackPOJO ap : openAttacks) {
-			if (!ap.getFightsStarted()) {
-				for (AttackCharacterPOJO acp : ap.getAttackCharList()) {
-					logger.info("Is the disconnecting char the lobbyowner? " + acp.getCharacterID() + " : " + character.getId());
-					if (Objects.equals(acp.getCharacterID(), character.getId())) {
-						if (acp.getType() == Constants.ROLE_ATTACKER_COMMANDER || acp.getType() == Constants.ROLE_DEFENDER_COMMANDER) {
-							logger.info("Lobbyowner left, will be removed!");
-							acp.setType(Constants.ROLE_DROPLEAD_LEFT);
+			boolean savedChanges = false;
+			for (AttackPOJO ap : openAttacks) {
+				if (!ap.getFightsStarted()) {
+					for (AttackCharacterPOJO acp : ap.getAttackCharList()) {
+						logger.info("Is the disconnecting char the lobbyowner? " + acp.getCharacterID() + " : " + character.getId());
+						if (Objects.equals(acp.getCharacterID(), character.getId())) {
+							if (acp.getType() == Constants.ROLE_ATTACKER_COMMANDER || acp.getType() == Constants.ROLE_DEFENDER_COMMANDER) {
+								logger.info("Lobbyowner left, will be removed!");
+								acp.setType(Constants.ROLE_DROPLEAD_LEFT);
 
-							GameState s = new GameState();
-							s.addObject(ap);
-							s.addObject2(ap.getAttackTypeID());
-							s.addObject3(acp);
+								GameState s = new GameState();
+								s.addObject(ap);
+								s.addObject2(ap.getAttackTypeID());
+								s.addObject3(acp);
 
-							Nexus.gmSessionHandler.saveAttack(playerSession, s);
-							savedChanges = true;
-							break;
+								Nexus.gmSessionHandler.saveAttack(playerSession, s);
+								savedChanges = true;
+								break;
+							}
 						}
 					}
 				}
 			}
-		}
-		if (savedChanges) {
-			Timer serverHeartBeat;
-			serverHeartBeat = new Timer();
-			serverHeartBeat.schedule(new HeartBeatTimerTask(false, null), 0);
+
+			if (savedChanges) {
+				Timer serverHeartBeat;
+				serverHeartBeat = new Timer();
+				serverHeartBeat.schedule(new HeartBeatTimerTask(false, null), 0);
+			}
 		}
 
 		boolean ret = super.disconnectSession(playerSession);

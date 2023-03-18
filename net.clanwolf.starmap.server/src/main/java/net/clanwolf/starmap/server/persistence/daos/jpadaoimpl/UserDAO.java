@@ -38,6 +38,7 @@ import net.clanwolf.starmap.server.util.Encryptor;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
 
+import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Iterator;
@@ -50,6 +51,8 @@ import java.util.List;
  * persisted to the JPA datastore.
  */
 public class UserDAO extends GenericDAO {
+
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	private static UserDAO instance;
 
