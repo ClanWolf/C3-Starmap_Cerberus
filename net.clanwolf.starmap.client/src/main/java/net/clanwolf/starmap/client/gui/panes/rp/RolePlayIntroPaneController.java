@@ -36,6 +36,9 @@ import javafx.scene.control.TextArea;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import net.clanwolf.starmap.client.nexus.Nexus;
@@ -57,7 +60,9 @@ import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
 import net.clanwolf.starmap.transfer.dtos.RolePlayStoryDTO;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
+import java.io.File;
 import java.lang.invoke.MethodHandles;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Objects;
@@ -82,6 +87,9 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 
 	@FXML
 	private TextArea taStoryText;
+
+	@FXML
+	private MediaView backgroundMediaView;
 
 	private boolean buttonPressed = false;
 
@@ -309,6 +317,29 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 		if (rpStory.getStoryMP3() != null) {
 			C3SoundPlayer.playRPSound(Objects.requireNonNull(BORolePlayStory.getRPG_Soundfile(rpStory)), audioStartedOnce);
 			audioStartedOnce = true;
+		}
+
+		if (rpStory.getStoryIntro() != null) {
+			Platform.runLater(() -> {
+				try {
+					Media video = BORolePlayStory.getRPG_Videofile(rpStory);
+					if (video != null) {
+						MediaPlayer mp = new MediaPlayer(video);
+
+						backgroundMediaView.setMediaPlayer(mp);
+						backgroundMediaView.setFitHeight(video.getHeight());
+						backgroundMediaView.toFront();
+						backgroundMediaView.setVisible(true);
+
+						labHeader.toFront();
+
+						mp.play();
+					}
+				} catch (Exception e) {
+					backgroundMediaView.toBack();
+					backgroundMediaView.setVisible(false);
+				}
+			});
 		}
 	} //getStoryValues
 }

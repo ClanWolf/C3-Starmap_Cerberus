@@ -27,6 +27,7 @@
 package net.clanwolf.starmap.client.net;
 
 import javafx.scene.image.Image;
+import javafx.scene.media.Media;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.client.util.C3PROPS;
@@ -291,12 +292,34 @@ public abstract class HTTP {
 
 			HTTP.download(serverUrl + subPath + s, imageFileName);
 		}
+		return new Image(String.valueOf(f1.toURI()));
+	}
 
-		String url = f1.getAbsolutePath();
-		File f = new File(f1.toURI());
+	public static Media getCachedVideo(String s, String subPath) throws Exception {
+		logger.info("Looking for video for string: " + s);
 
-		Image i = new Image(String.valueOf(f1.toURI()));
-		return i;
+		String cacheFolderName = System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "cache" + File.separator + "video" + File.separator + subPath;
+		File cacheFolder = new File(cacheFolderName);
+		if (!cacheFolder.isDirectory()) {
+			boolean success = cacheFolder.mkdirs();
+			logger.info("Creating cache folder for video files: " + success);
+		}
+
+		String videoFileName = cacheFolderName + File.separator + s;
+		File f1 = new File(videoFileName);
+
+		if (!f1.isFile()) {
+			String serverUrl = C3Properties.getProperty(C3PROPS.SERVER_URL);
+			if (!s.startsWith("/")) {
+				s = "/" + s;
+			}
+			if (!subPath.startsWith("/")) {
+				subPath = "/" + subPath;
+			}
+
+			HTTP.download(serverUrl + subPath + s, videoFileName);
+		}
+		return new Media(f1.toURI().toURL().toExternalForm());
 	}
 
 	public static void main(String[] args) {

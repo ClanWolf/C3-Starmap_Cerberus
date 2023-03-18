@@ -113,7 +113,9 @@ public class EventCommunications {
 					@SuppressWarnings("unchecked") ArrayList<UserDTO> userList = (ArrayList<UserDTO>) state.getObject();
 
 					for (UserDTO anUserList : userList) {
-						logger.info(anUserList.getUserName() + " from UserDTO object");
+						if (anUserList != null) {
+							logger.info(anUserList.getUserName() + " from UserDTO object");
+						}
 					}
 					Nexus.setCurrentlyOnlineUserList(userList);
 					ActionManager.getAction(ACTIONS.NEW_PLAYERLIST_RECEIVED).execute();

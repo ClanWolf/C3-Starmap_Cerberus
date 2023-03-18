@@ -50,6 +50,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Objects;
 
 public class PannableCanvas extends Pane {
 	private DoubleProperty myScale = new SimpleDoubleProperty(1.0);
@@ -142,13 +143,13 @@ public class PannableCanvas extends Pane {
 		double h = Config.MAP_HEIGHT;
 
 		if (imageNebula == null) {
-			imageNebula = new Image(getClass().getResourceAsStream("/images/map/nebula6.png"));
+			imageNebula = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/nebula6.png")));
 			ivNebula = new ImageView(imageNebula);
 			ivNebula.setTranslateX((w / 2) - (w / 4));
 			ivNebula.setTranslateY((h / 2) - (h / 4));
 			ivNebula.setFitWidth(w / 2);
 			ivNebula.setFitHeight(h / 2);
-			ivNebula.setOpacity(0.3);
+			ivNebula.setOpacity(0.2);
 			ivNebula.setMouseTransparent(true);
 		}
 
@@ -175,7 +176,7 @@ public class PannableCanvas extends Pane {
 
 				Circle c = new Circle(x, y, size);
 				c.setStrokeWidth(0);
-				c.setFill(Color.WHITESMOKE.deriveColor(1, 1, 1, 0.6));
+				c.setFill(Color.WHITESMOKE.deriveColor(1, 1, 1, 0.40));
 				l.add(c);
 				l2.add(new Point2D(x,y));
 				starPane.getChildren().add(c);

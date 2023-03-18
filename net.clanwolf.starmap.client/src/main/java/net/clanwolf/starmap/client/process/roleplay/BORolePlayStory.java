@@ -27,6 +27,7 @@
 package net.clanwolf.starmap.client.process.roleplay;
 
 import javafx.scene.image.Image;
+import javafx.scene.media.Media;
 import net.clanwolf.starmap.client.net.HTTP;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.action.ACTIONS;
@@ -211,6 +212,22 @@ public class BORolePlayStory {
 			return new URL(serverUrl + "/" + soundPath + "/" + rp.getStoryMP3());
 		} catch (MalformedURLException e) {
 			logger.info("Error by loading RPG image! " + e.getMessage());
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public static Media getRPG_Videofile(RolePlayStoryDTO rp) {
+		String videoPath = getRPG_ResourceURL() + "/" + rp.getId();
+		try {
+			// if no video exists return null
+			if(rp == null || rp.getStoryIntro() == null || "".equals(rp.getStoryIntro())) {
+				return null;
+			}
+			// load rpg video
+			return HTTP.getCachedVideo(rp.getStoryIntro(), videoPath);
+		} catch (Exception e) {
+			logger.info("Error by loading RPG video! " + e.getMessage());
 			e.printStackTrace();
 			return null;
 		}

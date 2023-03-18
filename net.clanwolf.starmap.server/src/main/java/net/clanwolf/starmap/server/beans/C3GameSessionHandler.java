@@ -79,10 +79,10 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		this.roomSession = session;
 		GameStateManagerService manager = room.getStateManager();
 
-		// TODO_C3: Die beiden States hier wurden nie benutzt (auch in alten Versionen der Klasse nicht)!
-		//		state = (GameState) manager.getState();
-		//		// Initialize the room state_login.
-		//		state = new GameState();
+		// TODO_C3: Dieser State hier wurde nie benutzt (auch in alten Versionen der Klasse nicht)!
+		// state = (GameState) manager.getState();
+
+		// Initialize the room state_login.
 		state = new GameState();
 		manager.setState(state); // set it back on the room
 
@@ -788,20 +788,19 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 			Nexus.getEci().sendExtCom(user.getUserName() + " logged into C3-Client");
 
-			if( !GameServer.isDevelopmentPC) {
-
-				boolean sent = false;
-				String[] receivers = {"keshik@googlegroups.com"};
-				sent = MailManager.sendMail("c3@clanwolf.net", receivers, user.getUserName() + " logged into C3 client", "User logged into C3 client.", false);
-				if (sent) {
-					// sent
-					logger.info("User logged in information mail sent. [4]");
-				} else {
-					// error during email sending
-					logger.info("Error during mail dispatch. [4]");
-				}
-			}
-			logger.info("--------------------");
+//			if( !GameServer.isDevelopmentPC) {
+//				boolean sent = false;
+//				String[] receivers = {"keshik@googlegroups.com"};
+//				sent = MailManager.sendMail("c3@clanwolf.net", receivers, user.getUserName() + " logged into C3 client", "User logged into C3 client.", false);
+//				if (sent) {
+//					// sent
+//					logger.info("User logged in information mail sent. [4]");
+//				} else {
+//					// error during email sending
+//					logger.info("Error during mail dispatch. [4]");
+//				}
+//			}
+//			logger.info("--------------------");
 			EntityManagerHelper.commit(C3GameSessionHandler.getC3UserID(session));
 		} catch (Exception re) {
 			logger.error("User save", re);
@@ -821,6 +820,15 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		for (PlayerSession playerSession : room.getSessions()) {
 			C3Player pl = (C3Player) playerSession.getPlayer();
 			userList.add(pl.getUser());
+			if (pl.getUser() == null) {
+				String name = "";
+				try {
+					name = pl.getName();
+				} catch(Exception e) {
+					logger.error("Error in PlayerSession." , e);
+				}
+				logger.info("----------------------- Found C3Player with NO USER: " + name);
+			}
 		}
 
 		GameState stateNewPlayerList = new GameState(GAMESTATEMODES.USER_GET_NEW_PLAYERLIST);

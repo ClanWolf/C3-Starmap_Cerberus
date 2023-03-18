@@ -14,10 +14,19 @@ TODO:
 - Update msgpack (io.nadron.server)
 - Check warning hibernate dialect (server)
 - Switch to MariaDB client (client, bots)
+- More user information on current user in user list overlay
 - Integrate Discord bot (bots)
 ----------------------------------------------------------------
 
-Version 7.2.92 (15.03.2023)
+Version 7.2.96 (18.03.2023)
+- ADDED: BG-Video for invasion intro pane
+- FIXED: Column name for config values
+- FIXED: Exception while disconnecting users
+
+Version 7.2.94 (16.03.2023)
+- ADDED: Check for null users in list that is broadcasted
+
+Version 7.2.93 (15.03.2023)
 - ADDED: A number of worlds
 - ADDED: Jumpships for CS and FRR
 - FIXED: Map drawing issues
