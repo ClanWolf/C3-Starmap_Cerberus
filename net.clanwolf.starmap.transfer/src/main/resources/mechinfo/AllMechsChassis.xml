@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<MechList>
+  <Mech chassis="warhammer" ingamechassis="WARHAMMER"/>
+  <Mech chassis="incubus" ingamechassis="INCUBUS"/>
+  <Mech chassis="atlas" ingamechassis="ATLAS"/>
+  <Mech chassis="dragon" ingamechassis="DRAGON"/>
+  <Mech chassis="assassin" ingamechassis="ASSASSIN"/>
+  <Mech chassis="warhammeriic" ingamechassis="WARHAMMER IIC"/>
+  <Mech chassis="marauderii" ingamechassis="MARAUDER II"/>
+  <Mech chassis="supernova" ingamechassis="SUPERNOVA"/>
+  <Mech chassis="orion" ingamechassis="ORION"/>
+  <Mech chassis="victor" ingamechassis="VICTOR"/>
+  <Mech chassis="osiris" ingamechassis="OSIRIS"/>
+  <Mech chassis="hatamotochi" ingamechassis="HATAMOTO-CHI"/>
+  <Mech chassis="huntsman" ingamechassis="HUNTSMAN"/>
+  <Mech chassis="nova" ingamechassis="NOVA"/>
+  <Mech chassis="nightstar" ingamechassis="NIGHTSTAR"/>
+  <Mech chassis="dervish" ingamechassis="DERVISH"/>
+  <Mech chassis="javelin" ingamechassis="JAVELIN"/>
+  <Mech chassis="cicada" ingamechassis="CICADA"/>
+  <Mech chassis="highlander" ingamechassis="HIGHLANDER"/>
+  <Mech chassis="jagermech" ingamechassis="JAGERMECH"/>
+  <Mech chassis="executioner" ingamechassis="EXECUTIONER"/>
+  <Mech chassis="novacat" ingamechassis="NOVA CAT"/>
+  <Mech chassis="thanatos" ingamechassis="THANATOS"/>
+  <Mech chassis="blackjack" ingamechassis="BLACKJACK"/>
+  <Mech chassis="vindicator" ingamechassis="VINDICATOR"/>
+  <Mech chassis="zeus" ingamechassis="ZEUS"/>
+  <Mech chassis="kodiak" ingamechassis="KODIAK"/>
+  <Mech chassis="charger" ingamechassis="CHARGER"/>
+  <Mech chassis="urbanmech" ingamechassis="URBANMECH"/>
+  <Mech chassis="viper" ingamechassis="VIPER"/>
+  <Mech chassis="quickdraw" ingamechassis="QUICKDRAW"/>
+  <Mech chassis="champion" ingamechassis="CHAMPION"/>
+  <Mech chassis="wolverine" ingamechassis="WOLVERINE"/>
+  <Mech chassis="cataphract" ingamechassis="CATAPHRACT"/>
+  <Mech chassis="thunderbolt" ingamechassis="THUNDERBOLT"/>
+  <Mech chassis="nightgyr" ingamechassis="NIGHT GYR"/>
+  <Mech chassis="battlemaster" ingamechassis="BATTLEMASTER"/>
+  <Mech chassis="hellfire" ingamechassis="HELLFIRE"/>
+  <Mech chassis="stormcrow" ingamechassis="STORMCROW"/>
+  <Mech chassis="vaporeagle" ingamechassis="VAPOR EAGLE"/>
+  <Mech chassis="raven" ingamechassis="RAVEN"/>
+  <Mech chassis="stalker" ingamechassis="STALKER"/>
+  <Mech chassis="grasshopper" ingamechassis="GRASSHOPPER"/>
+  <Mech chassis="hunchbackiic" ingamechassis="HUNCHBACK IIC"/>
+  <Mech chassis="maddog" ingamechassis="Mad Dog"/>
+  <Mech chassis="bushwacker" ingamechassis="BUSHWACKER"/>
+  <Mech chassis="centurion" ingamechassis="CENTURION"/>
+  <Mech chassis="awesome" ingamechassis="AWESOME"/>
+  <Mech chassis="highlanderiic" ingamechassis="HIGHLANDER IIC"/>
+  <Mech chassis="hunchback" ingamechassis="HUNCHBACK"/>
+  <Mech chassis="rifleman" ingamechassis="RIFLEMAN"/>
+  <Mech chassis="warhawk" ingamechassis="WARHAWK"/>
+  <Mech chassis="annihilator" ingamechassis="ANNIHILATOR"/>
+  <Mech chassis="archer" ingamechassis="ARCHER"/>
+  <Mech chassis="direwolf" ingamechassis="DIRE WOLF"/>
+  <Mech chassis="orioniic" ingamechassis="ORION IIC"/>
+  <Mech chassis="spider" ingamechassis="SPIDER"/>
+  <Mech chassis="hellbringer" ingamechassis="HELLBRINGER"/>
+  <Mech chassis="marauderiic" ingamechassis="MARAUDER IIC"/>
+  <Mech chassis="jenneriic" ingamechassis="JENNER IIC"/>
+  <Mech chassis="madcatmkii" ingamechassis="MAD CAT MK II"/>
+  <Mech chassis="adder" ingamechassis="ADDER"/>
+  <Mech chassis="jenner" ingamechassis="JENNER"/>
+  <Mech chassis="marauder" ingamechassis="MARAUDER"/>
+  <Mech chassis="kintaro" ingamechassis="KINTARO"/>
+  <Mech chassis="commando" ingamechassis="COMMANDO"/>
+  <Mech chassis="mauler" ingamechassis="MAULER"/>
+  <Mech chassis="roughneck" ingamechassis="ROUGHNECK"/>
+  <Mech chassis="shadowhawk" ingamechassis="SHADOW HAWK"/>
+  <Mech chassis="uziel" ingamechassis="UZIEL"/>
+  <Mech chassis="piranha" ingamechassis="PIRANHA"/>
+  <Mech chassis="banshee" ingamechassis="BANSHEE"/>
+  <Mech chassis="linebacker" ingamechassis="LINEBACKER"/>
+  <Mech chassis="kitfox" ingamechassis="KIT FOX"/>
+  <Mech chassis="mistlynx" ingamechassis="MIST LYNX"/>
+  <Mech chassis="iceferret" ingamechassis="ICE FERRET"/>
+  <Mech chassis="ebonjaguar" ingamechassis="EBON JAGUAR"/>
+  <Mech chassis="fafnir" ingamechassis="FAFNIR"/>
+  <Mech chassis="panther" ingamechassis="PANTHER"/>
+  <Mech chassis="blacklanner" ingamechassis="Black Lanner"/>
+  <Mech chassis="locust" ingamechassis="LOCUST"/>
+  <Mech chassis="arcticwolf" ingamechassis="ARCTIC WOLF"/>
+  <Mech chassis="hellspawn" ingamechassis="HELLSPAWN"/>
+  <Mech chassis="flea" ingamechassis="FLEA"/>
+  <Mech chassis="gargoyle" ingamechassis="GARGOYLE"/>
+  <Mech chassis="phoenixhawk" ingamechassis="PHOENIX HAWK"/>
+  <Mech chassis="catapult" ingamechassis="CATAPULT"/>
+  <Mech chassis="blackknight" ingamechassis="BLACK KNIGHT"/>
+  <Mech chassis="summoner" ingamechassis="SUMMONER"/>
+  <Mech chassis="shadowcat" ingamechassis="SHADOW CAT"/>
+  <Mech chassis="cyclops" ingamechassis="CYCLOPS"/>
+  <Mech chassis="vulcan" ingamechassis="VULCAN"/>
+  <Mech chassis="griffin" ingamechassis="GRIFFIN"/>
+  <Mech chassis="firestarter" ingamechassis="FIRESTARTER"/>
+  <Mech chassis="arcticcheetah" ingamechassis="ARCTIC CHEETAH"/>
+  <Mech chassis="riflemaniic" ingamechassis="RIFLEMAN IIC"/>
+  <Mech chassis="cougar" ingamechassis="COUGAR"/>
+  <Mech chassis="enforcer" ingamechassis="ENFORCER"/>
+  <Mech chassis="trebuchet" ingamechassis="TREBUCHET"/>
+  <Mech chassis="timberwolf" ingamechassis="TIMBER WOLF"/>
+  <Mech chassis="kingcrab" ingamechassis="KING CRAB"/>
+  <Mech chassis="wolfhound" ingamechassis="WOLFHOUND"/>
+  <Mech chassis="crab" ingamechassis="CRAB"/>
+</MechList>

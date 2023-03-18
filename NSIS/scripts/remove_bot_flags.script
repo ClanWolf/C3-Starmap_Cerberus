@@ -2,5 +2,6 @@ open sftp://root:17E7OP%26Ec%24@82.165.244.122/ -hostkey="ssh-ed25519 255 3rYYeS
 
 rm /var/www/vhosts/clanwolf.net/httpdocs/apps/C3/server/C3-IRCBot_shutdown.flag
 rm /var/www/vhosts/clanwolf.net/httpdocs/apps/C3/server/C3-TS3Bot_shutdown.flag
+rm /var/www/vhosts/clanwolf.net/httpdocs/apps/C3/server/C3-DiscordBot_shutdown.flag
 
 exit

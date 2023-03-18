@@ -27,9 +27,15 @@
 package net.clanwolf.starmap.server;
 
 import io.nadron.server.ServerManager;
+import jakarta.persistence.EntityTransaction;
+import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.mail.MailManager;
 import net.clanwolf.starmap.logging.C3LogUtil;
 import net.clanwolf.starmap.server.nexus2.Nexus;
+import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
+import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.C3GameConfigDAO;
+import net.clanwolf.starmap.server.persistence.pojos.AttackPOJO;
+import net.clanwolf.starmap.server.persistence.pojos.C3GameConfigPOJO;
 import net.clanwolf.starmap.server.timertasks.DropLeadCheckTimerTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -42,8 +48,10 @@ import java.io.File;
 import java.lang.invoke.MethodHandles;
 import java.net.URISyntaxException;
 import java.sql.Timestamp;
-import java.util.Properties;
-import java.util.Timer;
+import java.util.*;
+import java.util.stream.Collectors;
+
+import static net.clanwolf.starmap.constants.Constants.*;
 
 public class GameServer {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -88,6 +96,70 @@ public class GameServer {
 		currentSeason = s;
 	}
 
+	public static void checkDBConst(){
+		ArrayList<C3GameConfigPOJO> c3GameConfigPOJO = C3GameConfigDAO.getInstance().getAllGameConfigValues();
+		Map<String,Long> constantValues = new HashMap<>();
+
+		//XP rewards during an invasion
+		constantValues.put("C3_" + "XP_REWARD_VICTORY",  XP_REWARD_VICTORY);
+		constantValues.put("C3_" + "XP_REWARD_LOSS", XP_REWARD_LOSS);
+		constantValues.put("C3_" + "XP_REWARD_TIE",XP_REWARD_TIE);
+		constantValues.put("C3_" + "XP_REWARD_COMPONENT_DESTROYED",XP_REWARD_COMPONENT_DESTROYED);
+		constantValues.put("C3_" + "XP_REWARD_EACH_MATCH_SCORE",XP_REWARD_EACH_MATCH_SCORE);
+		constantValues.put("C3_" + "XP_REWARD_EACH_MATCH_SCORE_RANGE",XP_REWARD_EACH_MATCH_SCORE_RANGE);
+		constantValues.put("C3_" + "XP_REWARD_EACH_DAMAGE",XP_REWARD_EACH_DAMAGE);
+		constantValues.put("C3_" + "XP_REWARD_EACH_DAMAGE_RANGE",XP_REWARD_EACH_DAMAGE_RANGE);
+		constantValues.put("C3_" + "XP_REWARD_EACH_SURVIVAL_PERCENTAGE",XP_REWARD_EACH_SURVIVAL_PERCENTAGE);
+		constantValues.put("C3_" + "XP_REWARD_EACH_SURVIVAL_PERCENTAGE_RANGE",XP_REWARD_EACH_SURVIVAL_PERCENTAGE_RANGE);
+		constantValues.put("C3_" + "XP_REWARD_EACH_TEAM_DAMAGE",XP_REWARD_EACH_TEAM_DAMAGE);
+		constantValues.put("C3_" + "XP_REWARD_EACH_TEAM_DAMAGE_RANGE",XP_REWARD_EACH_TEAM_DAMAGE_RANGE);
+
+		//Reward payments when calculating the cost
+		constantValues.put("C3_" + "REWARD_VICTORY",REWARD_VICTORY);
+		constantValues.put("C3_" + "REWARD_LOSS",REWARD_LOSS);
+		constantValues.put("C3_" + "REWARD_TIE",REWARD_TIE);
+		constantValues.put("C3_" + "REWARD_ASSIST",REWARD_ASSIST);
+		constantValues.put("C3_" + "REWARD_EACH_COMPONENT_DESTROYED",REWARD_EACH_COMPONENT_DESTROYED);
+		constantValues.put("C3_" + "REWARD_EACH_MACHT_SCORE",REWARD_EACH_MACHT_SCORE);
+		constantValues.put("C3_" + "REWARD_EACH_DAMAGE",REWARD_EACH_DAMAGE);
+		constantValues.put("C3_" + "REWARD_EACH_TEAM_DAMAGE",REWARD_EACH_TEAM_DAMAGE);
+		constantValues.put("C3_" + "REWARD_NO_TEAM_DAMAGE",REWARD_NO_TEAM_DAMAGE);
+		constantValues.put("C3_" + "REWARD_EACH_KILL",REWARD_EACH_KILL);
+
+		Map<String,Long> addConstantValues = new HashMap<>();
+		boolean bFound ;
+
+		//Suche nach der Konstanze in der DB.
+		//Wird eine Konstanze gefunden, wird diese aus der constantValues entfernt.
+		logger.info("Checking for Const in the Database");
+			for (Map.Entry<String, Long> entry : constantValues.entrySet()) {
+				bFound = false;
+				String constantName = entry.getKey();
+				for (C3GameConfigPOJO config : c3GameConfigPOJO) {
+					if (config.getKey().equals(constantName)) {
+						//constantValues.remove(entry.getKey(),entry.getValue());
+						bFound = true;
+						break;
+					}
+				}
+				if (!bFound){
+					addConstantValues.put(entry.getKey(),entry.getValue());
+				}
+			}
+
+		EntityTransaction transaction = EntityManagerHelper.getEntityManager(Nexus.END_ROUND_USERID).getTransaction();
+		transaction.begin();
+
+		//Fehlende Konstanzen werden in der DB eingetragen.
+		for (Map.Entry<String, Long> entry : addConstantValues.entrySet()) {
+			C3GameConfigPOJO addC3ConfigPOJO = new C3GameConfigPOJO();
+			addC3ConfigPOJO.setKey(entry.getKey());
+			addC3ConfigPOJO.setValue(entry.getValue());
+			C3GameConfigDAO.getInstance().update(Nexus.END_ROUND_USERID,addC3ConfigPOJO);
+		}
+
+		transaction.commit();
+	}
 	public static void main(String[] args) {
 		Properties props = System.getProperties();
 		props.setProperty("org.jboss.logging.provider", "slf4j");
@@ -126,14 +198,15 @@ public class GameServer {
 
 		try {
 			serverManager.startServers();
+
 			// serverManager.startServers(18090,843,8081);
 		} catch (Exception e) {
 			logger.error("Unable to start servers cleanly.", e);
 		}
 		logger.info("Started servers");
 		startGames(ctx);
-
-		Nexus.serverStartTime = new Timestamp(System.currentTimeMillis());
+		checkDBConst();
+	Nexus.serverStartTime = new Timestamp(System.currentTimeMillis());
 	}
 
 	public static AbstractApplicationContext getApplicationContext() {

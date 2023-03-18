@@ -33,6 +33,12 @@
             </goals>
             <configuration>
               <outputFile>target/C3-Bot-IRC.jar</outputFile>
+              <artifactSet>
+                <excludes>
+                  <exclude>com.github.theholywaffle:*</exclude>
+                  <exclude>net.dv8tion:*</exclude>
+                </excludes>
+              </artifactSet>
               <filters>
                 <filter>
                   <artifact>*:*</artifact>
@@ -68,6 +74,12 @@
             </goals>
             <configuration>
               <outputFile>target/C3-Bot-TS3.jar</outputFile>
+              <artifactSet>
+                <excludes>
+                  <exclude>com.github.pircbotx:*</exclude>
+                  <exclude>net.dv8tion:*</exclude>
+                </excludes>
+              </artifactSet>
               <filters>
                 <filter>
                   <artifact>*:*</artifact>
@@ -95,11 +107,64 @@
               </transformers>
             </configuration>
           </execution>
+          <execution>
+            <id>shade-discordbot</id>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <outputFile>target/C3-Bot-Discord.jar</outputFile>
+              <artifactSet>
+                <excludes>
+                  <exclude>com.github.pircbotx:*</exclude>
+                  <exclude>com.github.theholywaffle:*</exclude>
+                </excludes>
+              </artifactSet>
+              <filters>
+                <filter>
+                  <artifact>*:*</artifact>
+                  <excludes>
+                    <exclude>META-INF/*.SF</exclude>
+                    <exclude>META-INF/*.DSA</exclude>
+                    <exclude>META-INF/*.RSA</exclude>
+                  </excludes>
+                </filter>
+              </filters>
+              <transformers>
+                <transformer>
+                  <resource>META-INF/spring.handlers</resource>
+                </transformer>
+                <transformer>
+                  <resource>META-INF/spring.schemas</resource>
+                </transformer>
+                <transformer>
+                  <mainClass>net.clanwolf.starmap.bots.discordclient.DiscordBot</mainClass>
+                  <manifestEntries>
+                    <Multi-Release>true</Multi-Release>
+                    <Built-By>ClanWolf.net (Christian Bartel)</Built-By>
+                  </manifestEntries>
+                </transformer>
+              </transformers>
+            </configuration>
+          </execution>
         </executions>
       </plugin>
     </plugins>
   </build>
   <dependencies>
+    <dependency>
+      <groupId>com.github.pircbotx</groupId>
+      <artifactId>pircbotx</artifactId>
+      <version>2.2</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.github.theholywaffle</groupId>
+      <artifactId>teamspeak3-api</artifactId>
+      <version>1.3.0</version>
+      <scope>compile</scope>
+    </dependency>
     <dependency>
       <groupId>mysql</groupId>
       <artifactId>mysql-connector-java</artifactId>

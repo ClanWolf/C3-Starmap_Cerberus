@@ -17,12 +17,32 @@ TODO:
 - Integrate Discord bot (bots)
 ----------------------------------------------------------------
 
-Version 7.2.88 (10.03.2023)
+Version 7.2.92 (15.03.2023)
+- ADDED: A number of worlds
+- ADDED: Jumpships for CS and FRR
+- FIXED: Map drawing issues
+
+Version 7.2.91 (14.03.2023)
+- FIXED: Mechdata not found on serverside in resourceloader
+- FIXED: Nullpointer in ResultAnalyzer
+- FIXED: Nullpointer in C3GameSessionHandler
+
+Version 7.2.89 (12.03.2023)
+- FIXED: Order during request of Text-To-Speech sample (prefer packaged resource)
+- FIXED: Missing mechs added to statistics context
+- FIXED: Automation of mech listing
+ -- ADDED: HP in to AllMechs.xml
+ -- ADDED: new methods in MechIdInfo (getHP, setHP)
+ -- ADDED: new cost for repairs (using MechMaxEngineRating, MechMinEngineRating, MechBaseTons, MechMaxJumpJets, HP and class)
+
+Version 7.2.88 (11.03.2023)
 - UPDATED: javax.el-api -> jakarta
 - UPDATED: xml-bind -> jakarta
 - UPDATED: IRC client to 15
 - UPDATED: Version vars in master pom
 - ADDED: Discord API
+- ADDED: If a drop is done twice while the result has not been confirmed in C3 client, always the latest statistics will be used
+- ADDED: Missing mechs identified in testsession, will be added in upcoming version
 
 Version 7.2.84 (06.03.2023)
 - CHANGED: If an invasion is broken and suspended, if the lobby is re-created again, fights will start at the point they were stopped

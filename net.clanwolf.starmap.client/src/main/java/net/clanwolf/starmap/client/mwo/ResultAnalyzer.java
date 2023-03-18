@@ -39,10 +39,16 @@ import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.transfer.dtos.*;
-import net.clanwolf.starmap.transfer.mwo.*;
+import net.clanwolf.starmap.transfer.mwo.MWOMatchResult;
+import net.clanwolf.starmap.transfer.mwo.MatchDetails;
+import net.clanwolf.starmap.transfer.mwo.MechIdInfo;
+import net.clanwolf.starmap.transfer.mwo.UserDetail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.sql.Timestamp;
 import java.text.DateFormat;
@@ -55,7 +61,7 @@ import java.util.HashMap;
 public class ResultAnalyzer {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	public static void analyseAndStoreMWOResult(MWOMatchResult result, boolean store) {
+	public static void analyseAndStoreMWOResult(MWOMatchResult result, boolean store) throws ParserConfigurationException, IOException, SAXException {
 		MapInfo mapInfo = new MapInfo();
 
 		MatchDetails md = result.getMatchDetails();
@@ -95,7 +101,7 @@ public class ResultAnalyzer {
 			Timestamp timestampNow = Timestamp.from(Instant.now());
 			long difference = timestampNow.getTime() - timestampFromMWOGame.getTime();
 			hours = ((difference / 1000.0) / 60.0) / 60.0;
-		} catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
@@ -115,139 +121,130 @@ public class ResultAnalyzer {
 		ArrayList<RolePlayCharacterStatsDTO> characterStatsList = new ArrayList<>();
 
 		for (UserDetail ud : result.getUserDetails()) {
-			MechIdInfo mechInfo = new MechIdInfo(ud.getMechItemID());
+			if (!ud.getIsSpectator()) {
+				MechIdInfo mechInfo = new MechIdInfo(ud.getMechItemID());
 
-			String team = ud.getTeam() == null ? "/" : ud.getTeam();
-			String userName = ud.getUsername();
-			String mech = ud.getMechName();
-			long mechItemId = ud.getMechItemID().longValue();
-			boolean leadingPosition = false;
+				String team = ud.getTeam() == null ? "/" : ud.getTeam();
+				String userName = ud.getUsername();
+				String mech = ud.getMechName();
+				long mechItemId = ud.getMechItemID().longValue();
+				boolean leadingPosition = false;
 
-			if (ud.getIsSpectator()) {
+				String mechFullName = mechInfo.getFullName();
+				Integer killsMostDamage = ud.getKillsMostDamage();
+				Integer teamDamage = ud.getTeamDamage();
+				Integer componentsDestroyed = ud.getComponentsDestroyed();
 
-			}
-
-			String mechFullName = mechInfo.getFullName();
-			Integer killsMostDamage = ud.getKillsMostDamage();
-			Integer teamDamage = ud.getTeamDamage();
-			Integer componentsDestroyed = ud.getComponentsDestroyed();
-
-			int tonnage = mechInfo.getTonnage();
-			if (tonnage == 999) {
-				// Mech has not been found in MWO EChassis Enumeration --> Manual FIX!
-				logger.error("Mech Chassis not found in Enumeration! MechItemId: " + mechItemId);
-				if (mechItemId == 0) {
-					logger.info("MechItemId=0 --> No Mech, Spectator!");
-					tonnage = 0;
-				} else {
-					logger.info("Rawdata MWO API Stats:");
-					logger.info("-------------------------------------------------------------------");
-					logger.info(jsonString);
-					logger.info("-------------------------------------------------------------------");
+				int tonnage = mechInfo.getTonnage();
+				if (tonnage == 999) {
+					// Mech has not been found in MWO EChassis Enumeration --> Manual FIX!
+					logger.error("Mech Chassis not found in Enumeration! MechItemId: " + mechItemId);
+					if (mechItemId == 0) {
+						logger.info("MechItemId=0 --> No Mech, Spectator!");
+						tonnage = 0;
+					} else {
+						logger.info("Rawdata MWO API Stats:");
+						logger.info("-------------------------------------------------------------------");
+						logger.info(jsonString);
+						logger.info("-------------------------------------------------------------------");
+					}
 				}
-			}
-			String unit = ud.getUnitTag();
-			Integer kills = ud.getKills();
-			Integer assists = ud.getAssists();
-			Integer damage = ud.getDamage();
-			Integer matchScore = ud.getMatchScore();
-			Integer healthPercentage = ud.getHealthPercentage();
-			String userNameFormatted = String.format("%30s %n", userName);
-			String unitFormatted = String.format("%6s %n", unit);
-			String mechFormatted = mech != null ? String.format("%15s %n", mech) : String.format("%15s %n", "-");
-			String killsFormatted = String.format("%10s %n", " (" + kills + "/" + assists + ")");
-			String damageFormatted = String.format("%6s %n", damage);
+				String unit = ud.getUnitTag();
+				Integer kills = ud.getKills();
+				Integer assists = ud.getAssists();
+				Integer damage = ud.getDamage();
+				Integer matchScore = ud.getMatchScore();
+				Integer healthPercentage = ud.getHealthPercentage();
+				String userNameFormatted = String.format("%30s %n", userName);
+				String unitFormatted = String.format("%6s %n", unit);
+				String mechFormatted = mech != null ? String.format("%15s %n", mech) : String.format("%15s %n", "-");
+				String killsFormatted = String.format("%10s %n", " (" + kills + "/" + assists + ")");
+				String damageFormatted = String.format("%6s %n", damage);
 
-			String foundUser = String.format("%15s %n", "-");
-			if (Nexus.getCurrentAttackOfUser() != null) {
-				for (AttackCharacterDTO ac : Nexus.getCurrentAttackOfUser().getAttackCharList()) {
-					RolePlayCharacterDTO rpc = Nexus.getCharacterById(ac.getCharacterID());
-					String mwoName = rpc.getMwoUsername();
-					if (userName.equals(mwoName)) {
-						foundUser = String.format("%15s %n", "(" + rpc.getName() + ")");
-						userMatchList.put(ud, rpc);
-						if (ac.getType().equals(Constants.ROLE_ATTACKER_COMMANDER)) {
-							leadingPosition = true;
-							attackerTeam = team;
-						} else if (ac.getType().equals(Constants.ROLE_DEFENDER_COMMANDER)) {
-							leadingPosition = true;
-							defenderTeam = team;
-						} else if (ac.getType().equals(Constants.ROLE_ATTACKER_WARRIOR)) {
-							leadingPosition = false;
-							attackerTeam = team;
-						} else if (ac.getType().equals(Constants.ROLE_DEFENDER_WARRIOR)) {
-							leadingPosition = false;
-							defenderTeam = team;
-						} else if (ac.getType().equals(Constants.ROLE_ATTACKER_SUPPORTER)) {
-							leadingPosition = false;
-							attackerTeam = team;
-						} else if (ac.getType().equals(Constants.ROLE_DEFENDER_SUPPORTER)) {
-							leadingPosition = false;
-							defenderTeam = team;
+				String foundUser = String.format("%15s %n", "-");
+				if (Nexus.getCurrentAttackOfUser() != null) {
+					for (AttackCharacterDTO ac : Nexus.getCurrentAttackOfUser().getAttackCharList()) {
+						RolePlayCharacterDTO rpc = Nexus.getCharacterById(ac.getCharacterID());
+						String mwoName = rpc.getMwoUsername();
+						if (userName.equals(mwoName)) {
+							foundUser = String.format("%15s %n", "(" + rpc.getName() + ")");
+							userMatchList.put(ud, rpc);
+							if (ac.getType().equals(Constants.ROLE_ATTACKER_COMMANDER)) {
+								leadingPosition = true;
+								attackerTeam = team;
+							} else if (ac.getType().equals(Constants.ROLE_DEFENDER_COMMANDER)) {
+								leadingPosition = true;
+								defenderTeam = team;
+							} else if (ac.getType().equals(Constants.ROLE_ATTACKER_WARRIOR)) {
+								leadingPosition = false;
+								attackerTeam = team;
+							} else if (ac.getType().equals(Constants.ROLE_DEFENDER_WARRIOR)) {
+								leadingPosition = false;
+								defenderTeam = team;
+							} else if (ac.getType().equals(Constants.ROLE_ATTACKER_SUPPORTER)) {
+								leadingPosition = false;
+								attackerTeam = team;
+							} else if (ac.getType().equals(Constants.ROLE_DEFENDER_SUPPORTER)) {
+								leadingPosition = false;
+								defenderTeam = team;
+							}
 						}
 					}
 				}
-			}
 
-			if (attackerTeam != null && attackerTeam.equals(defenderTeam)) {
-				// Same teams cannot be right! Raise error
-				C3Message m = new C3Message(C3MESSAGES.WARNING_BLACKBOX_TEAMS_INVALID);
-				m.setType(C3MESSAGETYPES.CLOSE);
-				m.setText("Teams seem to be invalid!");
-				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(m);
-			}
-
-			if (team != null && team.equals("1")) {
-				team1NumberOfPilots++;
-				team1SurvivingPercentage += healthPercentage;
-				team1Tonnage += tonnage;
-				team1Damage += damage;
-				if (healthPercentage == 0) {
-					team2LostTonnage += tonnage;
-					team2KillCount++;
+				if (attackerTeam != null && attackerTeam.equals(defenderTeam)) {
+					// Same teams cannot be right! Raise error
+					C3Message m = new C3Message(C3MESSAGES.WARNING_BLACKBOX_TEAMS_INVALID);
+					m.setType(C3MESSAGETYPES.CLOSE);
+					m.setText("Teams seem to be invalid!");
+					ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(m);
 				}
-			} else if (team != null && team.equals("2")) {
-				team2NumberOfPilots++;
-				team2SurvivingPercentage += healthPercentage;
-				team2Tonnage += tonnage;
-				team2Damage += damage;
-				if (healthPercentage == 0) {
-					team1LostTonnage += tonnage;
-					team1KillCount++;
+
+				if (team != null && team.equals("1")) {
+					team1NumberOfPilots++;
+					team1SurvivingPercentage += healthPercentage;
+					team1Tonnage += tonnage;
+					team1Damage += damage;
+					if (healthPercentage == 0) {
+						team2LostTonnage += tonnage;
+						team2KillCount++;
+					}
+				} else if (team != null && team.equals("2")) {
+					team2NumberOfPilots++;
+					team2SurvivingPercentage += healthPercentage;
+					team2Tonnage += tonnage;
+					team2Damage += damage;
+					if (healthPercentage == 0) {
+						team1LostTonnage += tonnage;
+						team1KillCount++;
+					}
 				}
-			}
 
-			logger.info(("- " + team + " "
-					+ userNameFormatted
-					+ "[" + unitFormatted + "]"
-					+ mechFormatted.toUpperCase()
-					+ "(" + String.format("%2s %n", tonnage) + "t) "
-					+ killsFormatted + " "
-					+ damageFormatted + " "
-					+ foundUser).replaceAll("\r\n", ""));
+				logger.info(("- " + team + " " + userNameFormatted + "[" + unitFormatted + "]" + mechFormatted.toUpperCase() + "(" + String.format("%2s %n", tonnage) + "t) " + killsFormatted + " " + damageFormatted + " " + foundUser).replaceAll("\r\n", ""));
 
-			RolePlayCharacterDTO rpchar = userMatchList.get(ud);
-			if (rpchar != null) {
-				RolePlayCharacterStatsDTO charStats = new RolePlayCharacterStatsDTO();
-				charStats.setSeasonId(Nexus.getCurrentAttackOfUser().getSeason().longValue());
-				charStats.setAttackId(Nexus.getCurrentAttackOfUser().getAttackDTO().getId());
-				charStats.setRoleplayCharacterId(rpchar.getId());
-				charStats.setRoleplayCharacterFactionId(rpchar.getFactionId().longValue());
-				charStats.setMwoMatchId(gameId);
-				charStats.setLeadingPosition(leadingPosition);
-				charStats.setMwoMatchScore(matchScore.longValue());
-				if ("1".equals(team)){
-					charStats.setMwoTeam(1L);
-				} else if ("2".equals(team)){
-					charStats.setMwoTeam(2L);
+				RolePlayCharacterDTO rpchar = userMatchList.get(ud);
+				if (rpchar != null) {
+					RolePlayCharacterStatsDTO charStats = new RolePlayCharacterStatsDTO();
+					charStats.setSeasonId(Nexus.getCurrentAttackOfUser().getSeason().longValue());
+					charStats.setAttackId(Nexus.getCurrentAttackOfUser().getAttackDTO().getId());
+					charStats.setRoleplayCharacterId(rpchar.getId());
+					charStats.setRoleplayCharacterFactionId(rpchar.getFactionId().longValue());
+					charStats.setMwoMatchId(gameId);
+					charStats.setLeadingPosition(leadingPosition);
+					charStats.setMwoMatchScore(matchScore.longValue());
+					if ("1".equals(team)) {
+						charStats.setMwoTeam(1L);
+					} else if ("2".equals(team)) {
+						charStats.setMwoTeam(2L);
+					}
+					charStats.setMwoDamage(damage.longValue());
+					charStats.setMwoKills(kills.longValue());
+					charStats.setMwoSurvivalPercentage(healthPercentage.longValue());
+					charStats.setMechItemId(mechItemId);
+
+					logger.info("Storing stats data for character: " + Nexus.getCurrentUser().getCurrentCharacter());
+					characterStatsList.add(charStats);
 				}
-				charStats.setMwoDamage(damage.longValue());
-				charStats.setMwoKills(kills.longValue());
-				charStats.setMwoSurvivalPercentage(healthPercentage.longValue());
-				charStats.setMechItemId(mechItemId);
-
-				logger.info("Storing stats data for character: " + Nexus.getCurrentUser().getCurrentCharacter());
-				characterStatsList.add(charStats);
 			}
 
 			// Tonnage by adding the mech weights from a lookup table?

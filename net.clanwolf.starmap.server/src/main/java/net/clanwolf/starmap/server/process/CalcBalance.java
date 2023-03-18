@@ -36,7 +36,10 @@ import net.clanwolf.starmap.server.reporting.GenerateRoundReport;
 import net.clanwolf.starmap.transfer.mwo.MWOMatchResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
@@ -68,11 +71,11 @@ public class CalcBalance {
 
     }
 
-    public List<BalanceUserInfo> getAttackerInfo() {
+    public List<BalanceUserInfo> getAttackerInfo() throws ParserConfigurationException, IOException, SAXException {
         return balanceUserInfo.GetAttackerInfo();
     }
 
-    public List<BalanceUserInfo> getDefenderInfo() {
+    public List<BalanceUserInfo> getDefenderInfo() throws ParserConfigurationException, IOException, SAXException {
         return balanceUserInfo.GetDefenderInfo();
     }
 
