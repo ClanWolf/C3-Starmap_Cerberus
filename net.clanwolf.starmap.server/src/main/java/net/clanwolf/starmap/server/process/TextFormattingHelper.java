@@ -27,6 +27,7 @@
 package net.clanwolf.starmap.server.process;
 
 import net.clanwolf.starmap.server.nexus2.Nexus;
+import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.C3GameConfigDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.FactionDAO;
 import net.clanwolf.starmap.server.persistence.pojos.AttackStatsPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.FactionPOJO;
@@ -37,8 +38,6 @@ import java.lang.invoke.MethodHandles;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import static net.clanwolf.starmap.constants.Constants.*;
 
 /**
  * Text-Formatierungshelfer, um Berichte zu erstellen.
@@ -95,8 +94,8 @@ public class TextFormattingHelper {
      * @throws RuntimeException ruft die Fehlerbehandlung ab.
      */
     public void addXPComponentDestroyed(Integer countComponentDestroyed) throws RuntimeException {
-        addTwoColumnsText("Component destroyed: ", XP_REWARD_COMPONENT_DESTROYED * countComponentDestroyed +
-                " XP (" + XP_REWARD_COMPONENT_DESTROYED + " XP * " + countComponentDestroyed +
+        addTwoColumnsText("Component destroyed: ", C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID,"C3_XP_REWARD_COMPONENT_DESTROYED").getValue() * countComponentDestroyed +
+                " XP (" + C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID,"C3_XP_REWARD_COMPONENT_DESTROYED").getValue() + " XP * " + countComponentDestroyed +
                 " Component destroyed)");
     }
 
@@ -106,10 +105,11 @@ public class TextFormattingHelper {
      * @throws RuntimeException ruft die Fehlerbehandlung ab.
      */
     public void addXPMatchScore(Integer matchScore) throws RuntimeException {
-        addTwoColumnsText("Match score: ", CalcRange(matchScore.longValue(), XP_REWARD_EACH_MATCH_SCORE_RANGE) * XP_REWARD_EACH_MATCH_SCORE +
-                " XP (" + XP_REWARD_EACH_MATCH_SCORE + " XP * " +
-                CalcRange(matchScore.longValue(), XP_REWARD_EACH_MATCH_SCORE_RANGE)+
-                " per reached " + XP_REWARD_EACH_MATCH_SCORE_RANGE + " Match score [User match score: " +
+        addTwoColumnsText("Match score: ", CalcRange(matchScore.longValue(), C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID,"C3_XP_REWARD_EACH_MATCH_SCORE_RANGE").getValue()) *
+                C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID,"C3_XP_REWARD_EACH_MATCH_SCORE").getValue() +
+                " XP (" + C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID,"C3_XP_REWARD_EACH_MATCH_SCORE").getValue() + " XP * " +
+                CalcRange(matchScore.longValue(), C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID,"C3_XP_REWARD_EACH_MATCH_SCORE_RANGE").getValue())+
+                " per reached " + C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID,"C3_XP_REWARD_EACH_MATCH_SCORE_RANGE").getValue() + " Match score [User match score: " +
                 matchScore + "])");
     }
 
@@ -119,10 +119,11 @@ public class TextFormattingHelper {
      * @throws RuntimeException ruft die Fehlerbehandlung ab.
      */
     public void addXPDamage(Integer damage) throws RuntimeException {
-        addTwoColumnsText("Damage: ",CalcRange(damage.longValue(), XP_REWARD_EACH_DAMAGE_RANGE) * XP_REWARD_EACH_DAMAGE +
-                " XP (" + XP_REWARD_EACH_DAMAGE + " XP * " +
-                CalcRange(damage.longValue(), XP_REWARD_EACH_DAMAGE_RANGE) + " per reached " +
-                XP_REWARD_EACH_DAMAGE_RANGE + " Damage [User damage: " + damage + "])");
+        addTwoColumnsText("Damage: ",CalcRange(damage.longValue(), C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID,"C3_XP_REWARD_EACH_DAMAGE_RANGE").getValue()) *
+                C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID,"C3_XP_REWARD_EACH_DAMAGE").getValue() +
+                " XP (" + C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID,"C3_XP_REWARD_EACH_DAMAGE").getValue() + " XP * " +
+                CalcRange(damage.longValue(), C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID,"C3_XP_REWARD_EACH_DAMAGE_RANGE").getValue()) + " per reached " +
+                C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID,"XP_REWARD_EACH_DAMAGE_RANGE").getValue() + " Damage [User damage: " + damage + "])");
     }
 
     /**

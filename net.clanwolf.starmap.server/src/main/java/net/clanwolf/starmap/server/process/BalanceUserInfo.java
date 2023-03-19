@@ -26,7 +26,9 @@
  */
 package net.clanwolf.starmap.server.process;
 
+import net.clanwolf.starmap.server.nexus2.Nexus;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.AttackStatsDAO;
+import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.C3GameConfigDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.RolePlayCharacterStatsDAO;
 import net.clanwolf.starmap.server.persistence.pojos.AttackStatsPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.RolePlayCharacterStatsPOJO;
@@ -40,8 +42,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
-import static net.clanwolf.starmap.constants.Constants.*;
 
 public class BalanceUserInfo {
     /**
@@ -137,8 +137,8 @@ public class BalanceUserInfo {
         List<BalanceUserInfo> attacker = new ArrayList<>();
 
         for (UserDetail detail : mwomatchResult.getUserDetails()) {
-            if(detail.getTeam()!=null){
-                if (Objects.equals(getAttackerTeam(), detail.getTeam())){
+            if (detail.getTeam() != null) {
+                if (Objects.equals(getAttackerTeam(), detail.getTeam())) {
                     getUserInfo(attacker, detail);
                 }
             }
@@ -155,8 +155,8 @@ public class BalanceUserInfo {
         List<BalanceUserInfo> defender = new ArrayList<>();
 
         for (UserDetail detail : mwomatchResult.getUserDetails()) {
-            if(detail.getTeam()!=null){
-                if (Objects.equals(getDefenderTeam(), detail.getTeam())){
+            if (detail.getTeam() != null) {
+                if (Objects.equals(getDefenderTeam(), detail.getTeam())) {
                     getUserInfo(defender, detail);
                 }
             }
@@ -203,22 +203,22 @@ public class BalanceUserInfo {
         MechIdInfo mechIdInfo;
 
         String winningTeam = mwomatchResult.getMatchDetails().getWinningTeam();
-	    balanceUserInfo = new BalanceUserInfo(mwomatchResult);
+        balanceUserInfo = new BalanceUserInfo(mwomatchResult);
 
-		if (winningTeam != null) {
-			if (Objects.equals(winningTeam, detail.getTeam())) {
-				balanceUserInfo.rewardLossVictory = REWARD_VICTORY;
-				balanceUserInfo.rewardLossVictoryDescription = "Victory";
-			} else {
-				balanceUserInfo.rewardLossVictory = REWARD_LOSS;
-				balanceUserInfo.rewardLossVictoryDescription = "Loss";
-			}
-		} else {
-			balanceUserInfo.rewardLossVictory = REWARD_TIE;
-			balanceUserInfo.rewardLossVictoryDescription = "Tie";
-		}
+        if (winningTeam != null) {
+            if (Objects.equals(winningTeam, detail.getTeam())) {
+                balanceUserInfo.rewardLossVictory = C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_REWARD_VICTORY").getValue();
+                balanceUserInfo.rewardLossVictoryDescription = "Victory";
+            } else {
+                balanceUserInfo.rewardLossVictory = C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_REWARD_LOSS").getValue();
+                balanceUserInfo.rewardLossVictoryDescription = "Loss";
+            }
+        } else {
+            balanceUserInfo.rewardLossVictory = C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_REWARD_TIE").getValue();
+            balanceUserInfo.rewardLossVictoryDescription = "Tie";
+        }
 
-        balanceUserInfo.rewardAssist = detail.getAssists() * REWARD_ASSIST;
+        balanceUserInfo.rewardAssist = detail.getAssists() * C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_REWARD_ASSIST").getValue();
         balanceUserInfo.playerAssist = detail.getAssists();
         balanceUserInfo.userName = detail.getUsername();
         balanceUserInfo.playerDamage = detail.getDamage().longValue();
@@ -228,19 +228,19 @@ public class BalanceUserInfo {
         balanceUserInfo.playerMechHealth = detail.getHealthPercentage().longValue();
         mechIdInfo = new MechIdInfo(detail.getMechItemID());
         balanceUserInfo.playerMechName = mechIdInfo;
-        balanceUserInfo.mechRepairCost = ((long) mechIdInfo.getRepairCost(detail.getHealthPercentage()));
-        balanceUserInfo.rewardComponentsDestroyed = detail.getComponentsDestroyed() * REWARD_EACH_COMPONENT_DESTROYED;
-        balanceUserInfo.rewardMatchScore = detail.getMatchScore() * REWARD_EACH_MACHT_SCORE;
-        balanceUserInfo.rewardDamage = detail.getDamage() * REWARD_EACH_DAMAGE;
+        balanceUserInfo.mechRepairCost = mechIdInfo.getRepairCost(detail.getHealthPercentage());
+        balanceUserInfo.rewardComponentsDestroyed = detail.getComponentsDestroyed() * C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_REWARD_EACH_COMPONENT_DESTROYED").getValue();
+        balanceUserInfo.rewardMatchScore = detail.getMatchScore() * C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_REWARD_EACH_MACHT_SCORE").getValue();
+        balanceUserInfo.rewardDamage = detail.getDamage() * C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_REWARD_EACH_DAMAGE").getValue();
 
         if (detail.getTeamDamage() == 0) {
-            balanceUserInfo.rewardTeamDamage = REWARD_NO_TEAM_DAMAGE;
+            balanceUserInfo.rewardTeamDamage = C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_REWARD_NO_TEAM_DAMAGE").getValue();
         } else {
-            balanceUserInfo.rewardTeamDamage = detail.getTeamDamage() * REWARD_EACH_TEAM_DAMAGE;
+            balanceUserInfo.rewardTeamDamage = detail.getTeamDamage() * C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_REWARD_EACH_TEAM_DAMAGE").getValue();
         }
 
         balanceUserInfo.playerTeamDamage = detail.getTeamDamage().longValue();
-        balanceUserInfo.rewardKill = detail.getKills() * REWARD_EACH_KILL;
+        balanceUserInfo.rewardKill = detail.getKills() * C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_REWARD_EACH_KILL").getValue();
         balanceUserInfo.playerKills = detail.getKills().longValue();
         balanceUserInfo.subTotal = balanceUserInfo.rewardComponentsDestroyed +
                 balanceUserInfo.rewardKill +

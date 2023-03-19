@@ -50,6 +50,7 @@ import com.itextpdf.layout.properties.VerticalAlignment;
 import net.clanwolf.starmap.mail.MailManager;
 import net.clanwolf.starmap.server.GameServer;
 import net.clanwolf.starmap.server.nexus2.Nexus;
+import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.C3GameConfigDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.FactionDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.StarSystemDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.SysConfigDAO;
@@ -76,8 +77,6 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
-
-import static net.clanwolf.starmap.constants.Constants.*;
 
 // https://www.tutorialspoint.com/itext/itext_adding_paragraph.htm
 
@@ -372,10 +371,13 @@ public class GenerateRoundReport {
     private void createCalcInfoXP() {
         List calcInfo = new List()
                 .setFontSize(8)
-                .add("Victory = " + XP_REWARD_VICTORY + " XP / Loss = " + XP_REWARD_LOSS + " XP loss")
-                .add("Components destroyed: " + XP_REWARD_COMPONENT_DESTROYED + " XP per destroyed component")
-                .add("Match-score: " + XP_REWARD_EACH_MATCH_SCORE + " XP for each reach " + XP_REWARD_EACH_MATCH_SCORE_RANGE + " match score")
-                .add("Damage: " + XP_REWARD_EACH_DAMAGE + " XP for ech reach " + XP_REWARD_EACH_DAMAGE_RANGE + " damage");
+                .add("Victory = " + C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_XP_REWARD_VICTORY").getValue() +
+                        " XP / Loss = " + C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_XP_REWARD_LOSS").getValue() + " XP loss")
+                .add("Components destroyed: " + C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_XP_REWARD_COMPONENT_DESTROYED").getValue() + " XP per destroyed component")
+                .add("Match-score: " + C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_XP_REWARD_EACH_MATCH_SCORE").getValue() + " XP for each reach " +
+                        C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_XP_REWARD_EACH_MATCH_SCORE_RANGE").getValue() + " match score")
+                .add("Damage: " + C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_XP_REWARD_EACH_DAMAGE").getValue() + " XP for ech reach " +
+                        C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_XP_REWARD_EACH_DAMAGE_RANGE").getValue() + " damage");
 
         doc.add(calcInfo)
                 .add(new Paragraph());
@@ -508,6 +510,7 @@ public class GenerateRoundReport {
                 .add(table)
                 .setBorder(Border.NO_BORDER);
     }
+
     protected Cell addTeam1Cell(String Text) throws Exception {
 
         PdfFont f;
@@ -696,29 +699,29 @@ public class GenerateRoundReport {
         FactionInfo factionDefenderInfo = new FactionInfo(factionDefender.getId());
 
 
-		// Es kann ein Unentschieden geben im Drop, d.h. "getWinningTeam()" könnte null liefern!
-		if (matchDetails.getMatchDetails().getWinningTeam() != null) {
-			if (matchDetails.getMatchDetails().getWinningTeam().equals(factionAttackerInfo.getTeam(MWOMatchID))) {
-				tableResult.addCell(addTeam2Cell("VICTORY").setFontSize(20));
-			} else {
-				tableResult.addCell(addTeam2Cell("DEFEAT").setFontSize(20));
-			}
-		} else {
-			tableResult.addCell(addTeam2Cell("TIE").setFontSize(20));
-		}
+        // Es kann ein Unentschieden geben im Drop, d.h. "getWinningTeam()" könnte null liefern!
+        if (matchDetails.getMatchDetails().getWinningTeam() != null) {
+            if (matchDetails.getMatchDetails().getWinningTeam().equals(factionAttackerInfo.getTeam(MWOMatchID))) {
+                tableResult.addCell(addTeam2Cell("VICTORY").setFontSize(20));
+            } else {
+                tableResult.addCell(addTeam2Cell("DEFEAT").setFontSize(20));
+            }
+        } else {
+            tableResult.addCell(addTeam2Cell("TIE").setFontSize(20));
+        }
         tableResult.addCell(addTeam2Cell(matchDetails.getMatchDetails().getTeam2Score().toString()).setFontSize(20))
                 .addCell(addTeam1Cell(matchDetails.getMatchDetails().getTeam1Score().toString()).setFontSize(20));
 
-	    // Es kann ein Unentschieden geben im Drop, d.h. "getWinningTeam()" könnte null liefern!
-	    if (matchDetails.getMatchDetails().getWinningTeam() != null) {
-		    if (matchDetails.getMatchDetails().getWinningTeam().equals(factionDefenderInfo.getTeam(MWOMatchID))) {
-			    tableResult.addCell(addTeam1Cell("VICTORY").setFontSize(20));
-		    } else {
-			    tableResult.addCell(addTeam1Cell("DEFEAT").setFontSize(20));
-		    }
-	    } else {
-		    tableResult.addCell(addTeam2Cell("TIE").setFontSize(20));
-	    }
+        // Es kann ein Unentschieden geben im Drop, d.h. "getWinningTeam()" könnte null liefern!
+        if (matchDetails.getMatchDetails().getWinningTeam() != null) {
+            if (matchDetails.getMatchDetails().getWinningTeam().equals(factionDefenderInfo.getTeam(MWOMatchID))) {
+                tableResult.addCell(addTeam1Cell("VICTORY").setFontSize(20));
+            } else {
+                tableResult.addCell(addTeam1Cell("DEFEAT").setFontSize(20));
+            }
+        } else {
+            tableResult.addCell(addTeam2Cell("TIE").setFontSize(20));
+        }
 
         doc.add(tableResult);
         doc.add(new Paragraph(""));
@@ -961,13 +964,14 @@ public class GenerateRoundReport {
         }
     }
 
-    private String getPlanetImg(StarSystemPOJO starSystemPOJO){
+    private String getPlanetImg(StarSystemPOJO starSystemPOJO) {
         String linkImgPlanet = "https://www.clanwolf.net/apps/C3/static/planets/";
 
         String formatted = String.format("%03d", Integer.valueOf(starSystemPOJO.getSystemImageName()));
         return linkImgPlanet + formatted + ".png";
 
     }
+
     private void createPlanetInfo() throws Exception {
         doc.add(new Paragraph("Information about the planet being attacked:").setFontSize(8).setBold());
         StarSystemPOJO planet = StarSystemDAO.getInstance().findById(Nexus.DUMMY_USERID, starSystemID);
@@ -1002,7 +1006,7 @@ public class GenerateRoundReport {
             doc.add(tablePlanetInfo)
                     .add(createLink("Link to Sarna.net to get more information about the planet " + planet.getName() + ".", planet.getSarnaLinkSystem()).setFontSize(8))
                     .add(new Paragraph(""));
-        }else {
+        } else {
 
             logger.error("Planet image not found on: " + LinkImgPlanet);
             doc.add(addWhiteCell(planetInfo))
@@ -1165,14 +1169,16 @@ public class GenerateRoundReport {
     private void createCalcInfoCost() {
         List calcInf = new List()
                 .setFontSize(8)
-                .add("Victory = " + nf.format(REWARD_VICTORY) + " C-Bills / Loss = " + nf.format(REWARD_LOSS) + " C-Bills")
-                .add("Damage: " + nf.format(REWARD_EACH_DAMAGE) + " C-Bills each damage done.")
-                .add("Components destroyed: " + nf.format(REWARD_EACH_COMPONENT_DESTROYED) + " C-Bills each component destroyed.")
-                .add("Kills: " + nf.format(REWARD_EACH_KILL) + " C-Bills each kill.")
-                .add("Match-score: " + nf.format(REWARD_EACH_MACHT_SCORE) + " C-Bills each match-score.")
-                .add("Team damage: " + nf.format(REWARD_EACH_TEAM_DAMAGE) + " C-Bills each team damage.")
-                .add("Assist: " + nf.format(REWARD_ASSIST) + " C-Bills each assist.")
-                .add("No team damage: " + nf.format(REWARD_NO_TEAM_DAMAGE) + " C-Bills if the player does not cause team damage.");
+                .add("Victory = " + nf.format(C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_REWARD_VICTORY").getValue()) +
+                        " C-Bills / Loss = " + nf.format(C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_REWARD_LOSS").getValue()) +
+                        " C-Bills / Tie = " + nf.format(C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_REWARD_TIE").getValue()) + " C-Bills")
+                .add("Damage: " + nf.format(C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_REWARD_EACH_DAMAGE").getValue()) + " C-Bills each damage done.")
+                .add("Components destroyed: " + nf.format(C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_REWARD_EACH_COMPONENT_DESTROYED").getValue()) + " C-Bills each component destroyed.")
+                .add("Kills: " + nf.format(C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_REWARD_EACH_KILL").getValue()) + " C-Bills each kill.")
+                .add("Match-score: " + nf.format(C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_REWARD_EACH_MACHT_SCORE").getValue()) + " C-Bills each match-score.")
+                .add("Team damage: " + nf.format(C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_REWARD_EACH_TEAM_DAMAGE").getValue()) + " C-Bills each team damage.")
+                .add("Assist: " + nf.format(C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_REWARD_ASSIST").getValue()) + " C-Bills each assist.")
+                .add("No team damage: " + nf.format(C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_REWARD_NO_TEAM_DAMAGE").getValue()) + " C-Bills if the player does not cause team damage.");
 
         doc.add(new Paragraph("Cost calculation:")
                         .setFontSize(8)

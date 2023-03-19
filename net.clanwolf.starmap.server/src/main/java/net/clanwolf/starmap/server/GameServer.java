@@ -28,19 +28,17 @@ package net.clanwolf.starmap.server;
 
 import io.nadron.server.ServerManager;
 import jakarta.persistence.EntityTransaction;
-import net.clanwolf.starmap.constants.Constants;
-import net.clanwolf.starmap.mail.MailManager;
 import net.clanwolf.starmap.logging.C3LogUtil;
+import net.clanwolf.starmap.mail.MailManager;
 import net.clanwolf.starmap.server.nexus2.Nexus;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.C3GameConfigDAO;
-import net.clanwolf.starmap.server.persistence.pojos.AttackPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.C3GameConfigPOJO;
+import net.clanwolf.starmap.server.timertasks.CheckShutdownFlagTimerTask;
 import net.clanwolf.starmap.server.timertasks.DropLeadCheckTimerTask;
+import net.clanwolf.starmap.server.timertasks.HeartBeatTimerTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import net.clanwolf.starmap.server.timertasks.HeartBeatTimerTask;
-import net.clanwolf.starmap.server.timertasks.CheckShutdownFlagTimerTask;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 
@@ -49,7 +47,6 @@ import java.lang.invoke.MethodHandles;
 import java.net.URISyntaxException;
 import java.sql.Timestamp;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static net.clanwolf.starmap.constants.Constants.*;
 
@@ -136,7 +133,7 @@ public class GameServer {
 				bFound = false;
 				String constantName = entry.getKey();
 				for (C3GameConfigPOJO config : c3GameConfigPOJO) {
-					if (config.getKey().equals(constantName)) {
+					if (Objects.equals(config.getKey(), constantName)) {
 						//constantValues.remove(entry.getKey(),entry.getValue());
 						bFound = true;
 						break;

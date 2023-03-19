@@ -28,24 +28,22 @@ package net.clanwolf.starmap.server.process;
 
 import com.google.gson.Gson;
 import net.clanwolf.starmap.server.nexus2.Nexus;
-
+import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.C3GameConfigDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.FactionDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.RolePlayCharacterDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.StatsMwoDAO;
-import net.clanwolf.starmap.server.persistence.pojos.*;
+import net.clanwolf.starmap.server.persistence.pojos.AttackStatsPOJO;
+import net.clanwolf.starmap.server.persistence.pojos.FactionPOJO;
+import net.clanwolf.starmap.server.persistence.pojos.RolePlayCharacterPOJO;
+import net.clanwolf.starmap.server.persistence.pojos.StatsMwoPOJO;
 import net.clanwolf.starmap.server.reporting.GenerateRoundReport;
 import net.clanwolf.starmap.transfer.mwo.MWOMatchResult;
 import net.clanwolf.starmap.transfer.mwo.UserDetail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 import java.lang.invoke.MethodHandles;
-
 import java.util.ArrayList;
-
-
-import static net.clanwolf.starmap.constants.Constants.*;
 
 /**
  * Diese Klasse berechnet die XP
@@ -68,7 +66,7 @@ public class CalcXP {
     private String descriptionDamage;
 
     public String getDescriptionComponentDestroyed() {
-        descriptionComponentDestroyed = XP_REWARD_COMPONENT_DESTROYED * userDetail.getComponentsDestroyed() +
+        descriptionComponentDestroyed = C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_XP_REWARD_COMPONENT_DESTROYED").getValue() * userDetail.getComponentsDestroyed() +
                 " XP (" + getUserXPComponentsDestroyed() +
                 " Component destroyed)";
         return descriptionComponentDestroyed;
@@ -191,23 +189,24 @@ public class CalcXP {
 
                                 report.addXPForTeam(userDetail, matchDetails, currentCharacter);
 
-								if (matchDetails.getMatchDetails().getWinningTeam() != null) {
-									if (matchDetails.getMatchDetails().getWinningTeam().equals(userDetail.getTeam())) {
+                                if (matchDetails.getMatchDetails().getWinningTeam() != null) {
+                                    if (matchDetails.getMatchDetails().getWinningTeam().equals(userDetail.getTeam())) {
 
-										//Spieler befindet sich im Gewinner Team
-										currentUserXP = currentUserXP + XP_REWARD_VICTORY;
-									} else {
+                                        //Spieler befindet sich im Gewinner Team
+                                        currentUserXP = currentUserXP + C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_XP_REWARD_VICTORY").getValue();
+                                    } else {
 
-										//Spieler befindet sich im Verlierer Team
-										currentUserXP = currentUserXP + XP_REWARD_LOSS;
-									}
-								} else {
-									currentUserXP = currentUserXP + XP_REWARD_TIE;
-								}
+                                        //Spieler befindet sich im Verlierer Team
+                                        currentUserXP = currentUserXP + C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_XP_REWARD_LOSS").getValue();
+                                    }
+                                } else {
+                                    currentUserXP = currentUserXP + C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_XP_REWARD_TIE").getValue();
+                                }
 
-                                currentUserXP = currentUserXP + XP_REWARD_COMPONENT_DESTROYED * userDetail.getComponentsDestroyed();
-                                currentUserXP = currentUserXP + CalcRange(userDetail.getMatchScore().longValue(), XP_REWARD_EACH_MATCH_SCORE_RANGE) * XP_REWARD_EACH_MATCH_SCORE;
-                                currentUserXP = currentUserXP + CalcRange(userDetail.getDamage().longValue(), XP_REWARD_EACH_DAMAGE_RANGE);
+                                currentUserXP = currentUserXP + C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_XP_REWARD_COMPONENT_DESTROYED").getValue() * userDetail.getComponentsDestroyed();
+                                currentUserXP = currentUserXP + CalcRange(userDetail.getMatchScore().longValue(), C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_XP_REWARD_EACH_MATCH_SCORE_RANGE").getValue()) *
+                                        C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_XP_REWARD_EACH_MATCH_SCORE").getValue();
+                                currentUserXP = currentUserXP + CalcRange(userDetail.getDamage().longValue(), C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_XP_REWARD_EACH_DAMAGE_RANGE").getValue());
 
                                 if (currentCharacter.getXp() != null) {
                                     // ****************************************************************************************
@@ -243,7 +242,7 @@ public class CalcXP {
     }
 
     public Long getUserXPComponentsDestroyed() {
-        userXPComponentsDestroyed = XP_REWARD_COMPONENT_DESTROYED * userDetail.getComponentsDestroyed();
+        userXPComponentsDestroyed = C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_XP_REWARD_COMPONENT_DESTROYED").getValue() * userDetail.getComponentsDestroyed();
         userXPCurrent = userXPCurrent + userXPComponentsDestroyed;
         return userXPComponentsDestroyed;
     }
@@ -253,7 +252,8 @@ public class CalcXP {
     }
 
     public Long getUserXPMatchScore() {
-        userXPMatchScore = CalcRange(userDetail.getMatchScore().longValue(), XP_REWARD_EACH_MATCH_SCORE_RANGE) * XP_REWARD_EACH_MATCH_SCORE;
+        userXPMatchScore = CalcRange(userDetail.getMatchScore().longValue(), C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_XP_REWARD_EACH_MATCH_SCORE_RANGE").getValue()) *
+                C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_XP_REWARD_EACH_MATCH_SCORE").getValue();
         userXPCurrent = userXPCurrent + userXPMatchScore;
         return userXPMatchScore;
     }
@@ -263,7 +263,7 @@ public class CalcXP {
     }
 
     public Long getUserXPDamage() {
-        userXPDamage = CalcRange(userDetail.getDamage().longValue(), XP_REWARD_EACH_DAMAGE_RANGE);
+        userXPDamage = CalcRange(userDetail.getDamage().longValue(), C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_XP_REWARD_EACH_DAMAGE_RANGE").getValue());
         userXPCurrent = userXPCurrent + userXPDamage;
         return userXPDamage;
     }
@@ -302,17 +302,17 @@ public class CalcXP {
     }
 
     public Long getUserXPVictoryLoss() {
-		if (this.matchResult.getMatchDetails().getWinningTeam() != null) {
-			if (this.matchResult.getMatchDetails().getWinningTeam().equals(userDetail.getTeam())) {
-				//Spieler befindet sich im Gewinner Team
-				userXPVictoryLoss = XP_REWARD_VICTORY;
-			} else {
-				//Spieler befindet sich im Verlierer Team
-				userXPVictoryLoss = XP_REWARD_LOSS;
-			}
-		} else {
-			userXPVictoryLoss = XP_REWARD_TIE;
-		}
+        if (this.matchResult.getMatchDetails().getWinningTeam() != null) {
+            if (this.matchResult.getMatchDetails().getWinningTeam().equals(userDetail.getTeam())) {
+                //Spieler befindet sich im Gewinner Team
+                userXPVictoryLoss = C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_XP_REWARD_VICTORY").getValue();
+            } else {
+                //Spieler befindet sich im Verlierer Team
+                userXPVictoryLoss = C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_XP_REWARD_LOSS").getValue();
+            }
+        } else {
+            userXPVictoryLoss = C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_XP_REWARD_TIE").getValue();
+        }
         userXPCurrent = userXPCurrent + userXPVictoryLoss;
         return userXPVictoryLoss;
     }
