@@ -26,6 +26,7 @@
  */
 package net.clanwolf.starmap.bots.discordclient;
 
+import net.clanwolf.starmap.bots.db.DBConnection;
 import net.clanwolf.starmap.bots.util.CheckShutdownFlagTimerTask;
 import net.clanwolf.starmap.logging.C3LogUtil;
 import net.dv8tion.jda.api.JDA;
@@ -41,9 +42,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.invoke.MethodHandles;
 import java.util.EnumSet;
 import java.util.Locale;
+import java.util.Properties;
 import java.util.Timer;
 
 import static net.dv8tion.jda.api.interactions.commands.OptionType.*;
@@ -68,8 +73,22 @@ public class DiscordBot extends ListenerAdapter {
 
 		Locale.setDefault(new Locale("en", "EN"));
 
-		// MTA4NzM3NjAxMDAzMjQ0NzU2OQ.GWCNQM.SkCZyjWHCqlxw_QdayP-xJ_mYz1tp1ZiINekTw
-		JDA jda = JDABuilder.createLight("MTA4NzM3NjAxMDAzMjQ0NzU2OQ.GWCNQM.SkCZyjWHCqlxw_QdayP-xJ_mYz1tp1ZiINekTw", EnumSet.noneOf(GatewayIntent.class)) // slash commands don't need any intents
+		final Properties auth = new Properties();
+		try {
+			final String authFileName = "auth.properties";
+			InputStream inputStream = DBConnection.class.getClassLoader().getResourceAsStream(authFileName);
+			if (inputStream != null) {
+				auth.load(inputStream);
+			} else {
+				throw new FileNotFoundException("Auth-Property file '" + authFileName + "' not found in classpath.");
+			}
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
+
+		String token = auth.getProperty("discordbottoken");
+
+		JDA jda = JDABuilder.createLight(token, EnumSet.noneOf(GatewayIntent.class)) // slash commands don't need any intents
 				.addEventListeners(new DiscordBot()).build();
 
 		// These commands might take a few minutes to be active after creation/update/delete
