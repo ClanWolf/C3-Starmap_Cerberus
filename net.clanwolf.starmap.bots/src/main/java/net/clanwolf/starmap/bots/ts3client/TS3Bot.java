@@ -142,6 +142,7 @@ public class TS3Bot {
 	}
 
 	public static void main(String[] args) {
+		Locale.setDefault(new Locale("en", "EN"));
 		TS3Bot ts3bot = new TS3Bot();
 		ts3bot.botJoinedMail();
 	}

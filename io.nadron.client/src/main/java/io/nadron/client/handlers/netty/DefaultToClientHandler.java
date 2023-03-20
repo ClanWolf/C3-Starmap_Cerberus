@@ -47,6 +47,7 @@ public class DefaultToClientHandler extends SimpleChannelInboundHandler<Event> {
 	@Override
 	public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
 		logger.error("Class: DefaultToClientHandler: Exception occurred in tcp channel: " + cause, cause);
+		logger.error("Exception", cause);
 		Event event = Events.event(cause, Events.EXCEPTION);
 		session.onEvent(event);
 	}

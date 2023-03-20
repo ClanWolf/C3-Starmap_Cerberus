@@ -10,4 +10,5 @@ module net.clanwolf.starmap.bots {
 	requires com.github.theholywaffle.teamspeak3;
 //	requires org.mariadb.jdbc;
 	requires mysql.connector.j;
+	requires net.dv8tion.jda;
 }

@@ -98,10 +98,12 @@ public class FlashPolicyServerHandler extends SimpleChannelInboundHandler<Object
 		if (cause instanceof ReadTimeoutException)
 		{
 			logger.warn("Connection timed out. Going to close channel");
+			logger.error("Exception", cause);
 		}
 		else
 		{
 			logger.warn("Exception in FlashPolicyFileHanlder " + cause);
+			logger.error("Exception", cause);
 		}
 		ctx.channel().close();
     }

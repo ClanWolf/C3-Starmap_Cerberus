@@ -66,6 +66,7 @@ public class DefaultToServerHandler extends SimpleChannelInboundHandler<Event> {
 			throws Exception
 	{
 		logger.warn("Exception during network communication: " + cause + ".");
+		logger.error("Exception", cause);
 		Event event = Events.event(cause, Events.EXCEPTION);
 		playerSession.onEvent(event);
 	}

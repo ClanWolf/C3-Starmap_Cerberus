@@ -89,7 +89,8 @@ public class LoginHandler extends SimpleChannelInboundHandler<Event> {
 			throws Exception
 	{
 		Channel channel = ctx.channel();
-		logger.warn("Exception " + cause + " occurred during log in process, going to close channel " +  channel);
+		logger.warn("Exception " + cause + " occurred during login process, going to close channel " +  channel);
+		logger.error("Exception", cause);
 		channel.close();
 	}
 	

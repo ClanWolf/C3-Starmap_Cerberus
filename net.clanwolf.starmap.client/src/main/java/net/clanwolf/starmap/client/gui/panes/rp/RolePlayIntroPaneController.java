@@ -29,6 +29,7 @@ package net.clanwolf.starmap.client.gui.panes.rp;
 import javafx.animation.FadeTransition;
 import javafx.animation.SequentialTransition;
 import javafx.application.Platform;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -332,13 +333,39 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 						backgroundMediaView.setVisible(true);
 
 						labHeader.toFront();
+						taStoryText.toFront();
 
+						// mp.statusProperty().addListener((observable, oldValue, newValue) -> infoLabel.setText(newValue.toString()));
+						mp.setOnEndOfMedia(() -> {
+							FadeTransition FadeOutTransition = new FadeTransition(Duration.millis(800), backgroundMediaView);
+							FadeOutTransition.setFromValue(1.0);
+							FadeOutTransition.setToValue(0.0);
+							FadeOutTransition.setCycleCount(1);
+							FadeOutTransition.setOnFinished((ActionEvent event) -> {
+								backgroundMediaView.setVisible(false);
+								backgroundMediaView.setMediaPlayer(null);
+								backgroundMediaView.toBack();
+								backgroundMediaView.setOpacity(1.0);
+								logger.info("Stopped video playback");
+							});
+							FadeOutTransition.play();
+						});
 						mp.play();
 					}
 				} catch (Exception e) {
 					backgroundMediaView.toBack();
 					backgroundMediaView.setVisible(false);
+					backgroundMediaView.setMediaPlayer(null);
 				}
+			});
+		} else {
+			Platform.runLater(() -> {
+				backgroundMediaView.toBack();
+				backgroundMediaView.setVisible(false);
+				backgroundMediaView.setMediaPlayer(null);
+				backgroundImage.toFront();
+				taStoryText.toFront();
+				labHeader.toFront();
 			});
 		}
 	} //getStoryValues

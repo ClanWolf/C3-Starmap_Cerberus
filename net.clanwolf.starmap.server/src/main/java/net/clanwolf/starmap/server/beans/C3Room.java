@@ -174,7 +174,8 @@ public class C3Room extends GameRoomSession {
 
 		C3Player p = (C3Player) playerSession.getPlayer();
 		UserPOJO u = p.getUser();
-		if(u!= null) {
+
+		if (u != null) {
 			RolePlayCharacterPOJO character = u.getCurrentCharacter();
 
 			Nexus.getEci().sendExtCom(p.getName() + " lost connection to C3-Client (disconnected)");
