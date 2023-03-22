@@ -26,16 +26,19 @@
  */
 package net.clanwolf.starmap.client.gui.panes.map.tools;
 
-import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.gui.panes.map.Config;
+import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.universe.BOStarSystem;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
+import org.kynosarges.tektosyne.geometry.PointD;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.kynosarges.tektosyne.geometry.PointD;
 
 import java.lang.invoke.MethodHandles;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Objects;
 
 public class RouteCalculator {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -43,10 +46,12 @@ public class RouteCalculator {
 	public static List<BOStarSystem> calculateRoute(BOStarSystem source, BOStarSystem destination) {
 		BOUniverse boUniverse = Nexus.getBoUniverse();
 		List<BOStarSystem> calculatedRoute = new ArrayList<>();
+		List<BOStarSystem> finalizedCalculatedRoute = new ArrayList<>();
 
 		List<PointD> route = boUniverse.graphManager.runAStar(source, destination);
 		if (route.size() > 0) {
 			PointD p1 = route.get(0);
+			PointD startPoint = route.get(0);
 			BOStarSystem s1 = boUniverse.getStarSystemByPoint(p1);
 			calculatedRoute.add(s1);
 			logger.info("--------------------------- [ Start Optimizing route ]");
@@ -64,13 +69,21 @@ public class RouteCalculator {
 				LinkedList<PointD> routeList = new LinkedList<PointD>(route);
 				LinkedList<PointD> routeCleaned = new LinkedList<PointD>();
 
-				// neuer versuch
 				PointD jumpToPoint = null;
 				LinkedList<PointD> removeList = new LinkedList<>();
 
 				PointD pt1 = routeList.get(0);
 				int cc = 1;
 				boolean destinationReached = false;
+
+				//				if (boUniverse.graphManager.canMakeStep(routeList.getFirst(), routeList.getLast())) {
+				//					BOStarSystem ssSource = boUniverse.getStarSystemByPoint(routeList.getFirst());
+				//					BOStarSystem ssTarget = boUniverse.getStarSystemByPoint(routeList.getLast());
+				//					boUniverse.graphManager.runVisibility(ssSource, 0.0d);
+				//					// logger.info("Start: " + ssSource.getName() + " | Target: " + ssTarget.getName());
+				//				}
+
+				int count = 0;
 				do {
 					BOStarSystem st1 = boUniverse.getStarSystemByPoint(pt1);
 					if (Objects.equals(st1.getId(), destination.getId())) {
@@ -81,8 +94,8 @@ public class RouteCalculator {
 							PointD pt = routeList.get(c);
 							double distance = boUniverse.delaunaySubdivision.getDistance(pt1, pt) / Config.MAP_COORDINATES_MULTIPLICATOR;
 
-							logger.info("Considering: " + boUniverse.getStarSystemByPoint(pt).getName());
-							if (distance < 30) {
+							logger.info("Considering: " + boUniverse.getStarSystemByPoint(pt).getName() + ". Distance to " + boUniverse.getStarSystemByPoint(pt1).getName() + ": " + distance);
+							if (distance <= 30) {
 								removeList.add(pt);
 								jumpToPoint = pt;
 								logger.info("-- Removing: " + boUniverse.getStarSystemByPoint(jumpToPoint).getName());
@@ -101,12 +114,29 @@ public class RouteCalculator {
 						calculatedRoute.add(st);
 						cc++;
 					}
-				} while (!destinationReached);
 
-				logger.info("--------------------------- [ End Optimizing route ]");
+					count++;
+				} while (!destinationReached && count < 50);
+
+				if (calculatedRoute.size() == 3) {
+					double dist = boUniverse.graphManager.getDistance(calculatedRoute.get(0), calculatedRoute.get(2));
+					if (dist <= 30) {
+						calculatedRoute.remove(1);
+					}
+				}
+
+				if (calculatedRoute.size() > 5) {
+					for (int r = 0; r < calculatedRoute.size(); r++) {
+						finalizedCalculatedRoute.add(calculatedRoute.get(r));
+						if (r == 4) {
+							break;
+						}
+					}
+					calculatedRoute = finalizedCalculatedRoute;
+				}
 			}
+			logger.info("--------------------------- [ End Optimizing route ]");
 		}
-
 		return calculatedRoute;
 	}
 

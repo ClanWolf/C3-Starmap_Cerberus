@@ -89,6 +89,10 @@ public class GraphManager<T> implements GraphAgent<T> {
 		return locations;
 	}
 
+	Double getDistance(BOStarSystem sourceSystem, BOStarSystem targetSystem) {
+		return graph.getDistance(findNode(sourceSystem), findNode(targetSystem)) / Config.MAP_COORDINATES_MULTIPLICATOR;
+	}
+
 	@SuppressWarnings("unused")
 	List<T> runCoverage(BOStarSystem ss) {
 		List<T> locations;
@@ -126,6 +130,7 @@ public class GraphManager<T> implements GraphAgent<T> {
 		final Visibility<T> visibility = new Visibility<>(graph);
 		visibility.setThreshold(threshold);
 		final Predicate<T> isOpaque = (p -> nodeCosts.get(p) >= maxCost);
+		//		final Predicate<T> isOpaque = (p -> false);
 		final boolean success = visibility.findVisible(isOpaque, source, 0);
 		locations = visibility.nodes();
 
@@ -150,8 +155,13 @@ public class GraphManager<T> implements GraphAgent<T> {
 
 	@Override
 	public boolean canMakeStep(T source, T target) {
+
+		// If this return false, the System can not be jumped to... but it also triggers a "visibility" barrier for
+		// future jump calculations where the ship tries to "jump around" conflict areas where it could easily just
+		// jump through... therefore, this needs to be solved by costs (see below)!
+
 		double distance = graph.getDistance(source, target) / Config.MAP_COORDINATES_MULTIPLICATOR;
-		boolean inRange = distance < 30;
+		boolean inRange = distance <= 30;
 		boolean isAttacked = (boUniverse.getStarSystemByPoint((PointD) target)).isCurrentlyUnderAttack();
 		boolean isAttackedNextRound = (boUniverse.getStarSystemByPoint((PointD) target)).isNextRoundUnderAttack();
 		boolean isActiveInPhase = (boUniverse.getStarSystemByPoint((PointD) target)).isActiveInPhase(Nexus.getCurrentSeasonMetaPhase());
@@ -162,22 +172,17 @@ public class GraphManager<T> implements GraphAgent<T> {
 		Long currentJumpshipFactionId = boUniverse.currentlyDraggedJumpship.getJumpshipFaction();
 		Long currentlyHoveredSystemFactionId = (boUniverse.getStarSystemByPoint((PointD) target)).getFactionId();
 
-		boolean isLevelAllowed = (minJumpshipLevel <= currentJumpshipLevel) || currentJumpshipFactionId.equals(currentlyHoveredSystemFactionId);
+		//		BOStarSystem ssSource = boUniverse.getStarSystemByPoint((PointD) source);
+		//		BOStarSystem ssTarget = boUniverse.getStarSystemByPoint((PointD) target);
+		//		logger.info("Start: " + ssSource.getName() + " | Target: " + ssTarget.getName() + " (Distance: " + distance + ")");
+		//		logger.info("minJumpshipLevel: " + minJumpshipLevel + " currentJumpshipLevel: " + currentJumpshipLevel);
 
+		boolean isLevelAllowed = (minJumpshipLevel <= currentJumpshipLevel) || currentJumpshipFactionId.equals(currentlyHoveredSystemFactionId);
+		boolean r = inRange && isActiveInPhase && !isAttacked && !isAttackedNextRound && !isLockedByJumpship && !isLockedByPreviousAttackCooldown && isLevelAllowed;
 		// boolean withinCosts = nodeCosts.get(target) < maxCost;
 
-		//logger.info("minJumpshipLevel: " + minJumpshipLevel);
-		//logger.info("currentJumpshipLevel: " + currentJumpshipLevel);
-
-		boolean r = inRange && isActiveInPhase && !isAttacked && !isAttackedNextRound && !isLockedByJumpship && !isLockedByPreviousAttackCooldown && isLevelAllowed;
-
 		if (!r) {
-			logger.info("In range: " + inRange + " / "
-					+ "Active in phase: " + isActiveInPhase + " / "
-					+ "Attacked: " + isAttacked + " / "
-					+ "Attacked next round: " + isAttackedNextRound + " / "
-					+ "Locked by jumpship: " + isLockedByJumpship + " / "
-					+ "Locked by previous attack: " + isLockedByPreviousAttackCooldown);
+			logger.info("In range: " + inRange + " / " + "Active in phase: " + isActiveInPhase + " / " + "Attacked: " + isAttacked + " / " + "Attacked next round: " + isAttackedNextRound + " / " + "Locked by jumpship: " + isLockedByJumpship + " / " + "Locked by previous attack: " + isLockedByPreviousAttackCooldown + " / " + "Level allowed: " + isLevelAllowed);
 		}
 
 		return r;
@@ -209,12 +214,45 @@ public class GraphManager<T> implements GraphAgent<T> {
 		 */
 		//		double distance = graph.getDistance(source, target);
 		//		return (distance * (nodeCosts.get(source) + nodeCosts.get(target)) / 2);
-		return (30 * (nodeCosts.get(source) + nodeCosts.get(target)) / 2);
+				return (30 * (nodeCosts.get(source) + nodeCosts.get(target)) / 2);
 		//		return scaleCost * nodeCosts.get(target);
+
+//		double distance = graph.getDistance(source, target) / Config.MAP_COORDINATES_MULTIPLICATOR;
+//		boolean inRange = distance <= 30;
+//		boolean isAttacked = (boUniverse.getStarSystemByPoint((PointD) target)).isCurrentlyUnderAttack();
+//		boolean isAttackedNextRound = (boUniverse.getStarSystemByPoint((PointD) target)).isNextRoundUnderAttack();
+//		boolean isActiveInPhase = (boUniverse.getStarSystemByPoint((PointD) target)).isActiveInPhase(Nexus.getCurrentSeasonMetaPhase());
+//		boolean isLockedByJumpship = (boUniverse.getStarSystemByPoint((PointD) target)).isLockedByJumpship();
+//		boolean isLockedByPreviousAttackCooldown = (boUniverse.getStarSystemByPoint((PointD) target)).isLockedByPreviousAttackCooldown();
+//		Long minJumpshipLevel = (boUniverse.getStarSystemByPoint((PointD) target)).getLevel();
+//		Long currentJumpshipLevel = boUniverse.currentlyDraggedJumpship.getLevel();
+//		Long currentJumpshipFactionId = boUniverse.currentlyDraggedJumpship.getJumpshipFaction();
+//		Long currentlyHoveredSystemFactionId = (boUniverse.getStarSystemByPoint((PointD) target)).getFactionId();
+//
+//		//		BOStarSystem ssSource = boUniverse.getStarSystemByPoint((PointD) source);
+//		//		BOStarSystem ssTarget = boUniverse.getStarSystemByPoint((PointD) target);
+//		//		logger.info("Start: " + ssSource.getName() + " | Target: " + ssTarget.getName() + " (Distance: " + distance + ")");
+//		//		logger.info("minJumpshipLevel: " + minJumpshipLevel + " currentJumpshipLevel: " + currentJumpshipLevel);
+//
+//		boolean isLevelAllowed = (minJumpshipLevel <= currentJumpshipLevel) || currentJumpshipFactionId.equals(currentlyHoveredSystemFactionId);
+//		boolean r = inRange && isActiveInPhase && !isAttacked && !isAttackedNextRound && !isLockedByJumpship && !isLockedByPreviousAttackCooldown && isLevelAllowed;
+//		// boolean withinCosts = nodeCosts.get(target) < maxCost;
+//
+//		if (!r) {
+//			logger.info("In range: " + inRange + " / " + "Active in phase: " + isActiveInPhase + " / " + "Attacked: " + isAttacked + " / " + "Attacked next round: " + isAttackedNextRound + " / " + "Locked by jumpship: " + isLockedByJumpship + " / " + "Locked by previous attack: " + isLockedByPreviousAttackCooldown + " / " + "Level allowed: " + isLevelAllowed);
+//		}
+//
+//		if (r) {
+//			return 1.0d; // The system is jumpable, return default costs
+//		} else {
+//			return 90.0d; // The system is locked, try to prevent ships from jumping there by setting costs high (but below max to prevent visibility barrier!)
+//		}
 	}
 
 	@Override
 	public boolean isNearTarget(T source, T target, double distance) {
+//		double dist = graph.getDistance(source, target) / Config.MAP_COORDINATES_MULTIPLICATOR;
+//		return (distance < 30);
 		return (distance == 0);
 	}
 

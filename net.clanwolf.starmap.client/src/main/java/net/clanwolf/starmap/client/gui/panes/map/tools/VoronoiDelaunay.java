@@ -192,7 +192,7 @@ public class VoronoiDelaunay {
 //		}
 
 		boUniverse.delaunaySubdivision = boUniverse.voronoiResults.toDelaunaySubdivision(clip, true);
-		boUniverse.graphManager = new GraphManager<>(boUniverse.delaunaySubdivision, 8, borderPane);
+		boUniverse.graphManager = new GraphManager<>(boUniverse.delaunaySubdivision, 100, borderPane);
 
 		return borderPane;
 	}

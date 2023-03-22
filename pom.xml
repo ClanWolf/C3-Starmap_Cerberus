@@ -26,7 +26,7 @@
 
 		<!-- C3 Revision -->
 		<!-- https://stackoverflow.com/questions/10582054/maven-project-version-inheritance-do-i-have-to-specify-the-parent-version -->
-		<revision>7.2.99</revision>
+		<revision>7.2.100</revision>
 
 		<!-- Versions -->
 		<version.java>19</version.java>

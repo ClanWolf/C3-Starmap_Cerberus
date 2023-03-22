@@ -18,6 +18,9 @@ TODO:
 - Integrate Discord bot (bots)
 ----------------------------------------------------------------
 
+Version 7.2.100 (22.03.2023)
+- FIXED: Issue with route calculation where sometimes the jumpship needed 2 jumps where only 1 was necessary
+
 Version 7.2.99 (20.03.2023)
 - CHANGED: The way the mediaplayer is handled once the video has ended
 
