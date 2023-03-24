@@ -68,7 +68,6 @@
 		<!--			<artifactId>mariadb-java-client</artifactId>-->
 		<!--			<version>${version.mariadb-connector}</version>-->
 		<!--		</dependency>-->
-
 	</dependencies>
 
 	<!-- ########################################################################################################### -->

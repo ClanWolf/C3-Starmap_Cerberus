@@ -14,9 +14,13 @@ TODO:
 - Update msgpack (io.nadron.server)
 - Check warning hibernate dialect (server)
 - Switch to MariaDB client (client, bots)
-- More user information on current user in user list overlay
 - Integrate Discord bot (bots)
 ----------------------------------------------------------------
+
+Version 7.2.101 (24.03.2023)
+- UPDATED: libraries
+- ADDED: More user information on current user in user list overlay
+- CHANGED: Background music is muted whenever a roleplay pane is displayed
 
 Version 7.2.100 (22.03.2023)
 - FIXED: Issue with route calculation where sometimes the jumpship needed 2 jumps where only 1 was necessary

@@ -48,94 +48,106 @@ public class RouteCalculator {
 		List<BOStarSystem> calculatedRoute = new ArrayList<>();
 		List<BOStarSystem> finalizedCalculatedRoute = new ArrayList<>();
 
-		List<PointD> route = boUniverse.graphManager.runAStar(source, destination);
-		if (route.size() > 0) {
-			PointD p1 = route.get(0);
-			PointD startPoint = route.get(0);
-			BOStarSystem s1 = boUniverse.getStarSystemByPoint(p1);
-			calculatedRoute.add(s1);
-			logger.info("--------------------------- [ Start Optimizing route ]");
-			logger.info("### Starting from " + s1.getName() + " (" + s1.getId() + ")");
+		if (boUniverse.graphManager.getDistance(source, destination) <= 30) {
+			logger.info("--------------------------- [ Direct jump ]");
 
-			if (route.size() == 2) {
-				PointD p2 = route.get(1);
-				BOStarSystem s2 = boUniverse.getStarSystemByPoint(p2);
-				double distance12 = boUniverse.delaunaySubdivision.getDistance(p1, p2) / Config.MAP_COORDINATES_MULTIPLICATOR;
-				calculatedRoute.add(s2);
-			} else if (route.size() > 2) {
-				// The route is here cleaned up
-				// If there are multiple jumps within a range of 30 LY, they are reduced to one jump in order
-				// to optimize the travel
-				LinkedList<PointD> routeList = new LinkedList<PointD>(route);
-				LinkedList<PointD> routeCleaned = new LinkedList<PointD>();
+			if (boUniverse.graphManager.canMakeStepSystems(source, destination)) {
+				calculatedRoute.add(source);
+				calculatedRoute.add(destination);
+			}
+		} else {
+			List<PointD> route = boUniverse.graphManager.runAStar(source, destination);
+			if (route.size() > 0) {
+				PointD p1 = route.get(0);
+				BOStarSystem s1 = boUniverse.getStarSystemByPoint(p1);
+				calculatedRoute.add(s1);
+				logger.info("--------------------------- [ Start Optimizing route ]");
+				logger.info("### Starting from " + s1.getName() + " (" + s1.getId() + ")");
 
-				PointD jumpToPoint = null;
-				LinkedList<PointD> removeList = new LinkedList<>();
+				if (route.size() == 2) {
+					PointD p2 = route.get(1);
+					BOStarSystem s2 = boUniverse.getStarSystemByPoint(p2);
+					// double distance12 = boUniverse.delaunaySubdivision.getDistance(p1, p2) / Config.MAP_COORDINATES_MULTIPLICATOR;
+					calculatedRoute.add(s2);
+				} else if (route.size() > 2) {
+					// The route is here cleaned up
+					// If there are multiple jumps within a range of 30 LY, they are reduced to one jump in order
+					// to optimize the travel
+					LinkedList<PointD> routeList = new LinkedList<PointD>(route);
 
-				PointD pt1 = routeList.get(0);
-				int cc = 1;
-				boolean destinationReached = false;
+					PointD jumpToPoint = null;
+					LinkedList<PointD> removeList = new LinkedList<>();
 
-				//				if (boUniverse.graphManager.canMakeStep(routeList.getFirst(), routeList.getLast())) {
-				//					BOStarSystem ssSource = boUniverse.getStarSystemByPoint(routeList.getFirst());
-				//					BOStarSystem ssTarget = boUniverse.getStarSystemByPoint(routeList.getLast());
-				//					boUniverse.graphManager.runVisibility(ssSource, 0.0d);
-				//					// logger.info("Start: " + ssSource.getName() + " | Target: " + ssTarget.getName());
-				//				}
+					PointD pt1 = routeList.get(0);
+					int cc = 1;
+					boolean destinationReached = false;
 
-				int count = 0;
-				do {
-					BOStarSystem st1 = boUniverse.getStarSystemByPoint(pt1);
-					if (Objects.equals(st1.getId(), destination.getId())) {
-						destinationReached = true;
-					} else {
-						logger.info("Starting from " + st1.getName());
-						for (int c = cc; c < routeList.size(); c++) {
-							PointD pt = routeList.get(c);
-							double distance = boUniverse.delaunaySubdivision.getDistance(pt1, pt) / Config.MAP_COORDINATES_MULTIPLICATOR;
+					//				if (boUniverse.graphManager.canMakeStep(routeList.getFirst(), routeList.getLast())) {
+					//					BOStarSystem ssSource = boUniverse.getStarSystemByPoint(routeList.getFirst());
+					//					BOStarSystem ssTarget = boUniverse.getStarSystemByPoint(routeList.getLast());
+					//					boUniverse.graphManager.runVisibility(ssSource, 0.0d);
+					//					// logger.info("Start: " + ssSource.getName() + " | Target: " + ssTarget.getName());
+					//				}
 
-							logger.info("Considering: " + boUniverse.getStarSystemByPoint(pt).getName() + ". Distance to " + boUniverse.getStarSystemByPoint(pt1).getName() + ": " + distance);
-							if (distance <= 30) {
-								removeList.add(pt);
-								jumpToPoint = pt;
-								logger.info("-- Removing: " + boUniverse.getStarSystemByPoint(jumpToPoint).getName());
-							} else {
-								removeList.remove(jumpToPoint);
-								logger.info("-- Keeping: " + boUniverse.getStarSystemByPoint(jumpToPoint).getName());
+					int count = 0;
+					do {
+						BOStarSystem st1 = boUniverse.getStarSystemByPoint(pt1);
+						if (Objects.equals(st1.getId(), destination.getId())) {
+							destinationReached = true;
+						} else {
+							logger.info("Starting from " + st1.getName());
+							for (int c = cc; c < routeList.size(); c++) {
+								PointD pt = routeList.get(c);
+								double distance = boUniverse.delaunaySubdivision.getDistance(pt1, pt) / Config.MAP_COORDINATES_MULTIPLICATOR;
+
+								logger.info("Considering: " + boUniverse.getStarSystemByPoint(pt).getName() + ". Distance to " + boUniverse.getStarSystemByPoint(pt1).getName() + ": " + distance);
+								if (distance <= 30) {
+									removeList.add(pt);
+									jumpToPoint = pt;
+									logger.info("-- Removing: " + boUniverse.getStarSystemByPoint(jumpToPoint).getName());
+								} else {
+									removeList.remove(jumpToPoint);
+									logger.info("-- Keeping: " + boUniverse.getStarSystemByPoint(jumpToPoint).getName());
+									break;
+								}
+							}
+						}
+						if (!destinationReached) {
+							routeList.removeAll(removeList);
+							removeList.clear();
+							pt1 = jumpToPoint;
+							BOStarSystem st = boUniverse.getStarSystemByPoint(jumpToPoint);
+							calculatedRoute.add(st);
+							cc++;
+						}
+
+						count++;
+					} while (!destinationReached && count < 50);
+
+					if (!destinationReached) {
+						// No route was found. What now?
+						logger.info("No route was found!");
+					}
+
+					if (calculatedRoute.size() == 3) {
+						double dist = boUniverse.graphManager.getDistance(calculatedRoute.get(0), calculatedRoute.get(2));
+						if (dist <= 30) {
+							calculatedRoute.remove(1);
+						}
+					}
+
+					if (calculatedRoute.size() > 5) {
+						for (int r = 0; r < calculatedRoute.size(); r++) {
+							finalizedCalculatedRoute.add(calculatedRoute.get(r));
+							if (r == 4) {
 								break;
 							}
 						}
-					}
-					if (!destinationReached) {
-						routeList.removeAll(removeList);
-						removeList.clear();
-						pt1 = jumpToPoint;
-						BOStarSystem st = boUniverse.getStarSystemByPoint(jumpToPoint);
-						calculatedRoute.add(st);
-						cc++;
-					}
-
-					count++;
-				} while (!destinationReached && count < 50);
-
-				if (calculatedRoute.size() == 3) {
-					double dist = boUniverse.graphManager.getDistance(calculatedRoute.get(0), calculatedRoute.get(2));
-					if (dist <= 30) {
-						calculatedRoute.remove(1);
+						calculatedRoute = finalizedCalculatedRoute;
 					}
 				}
-
-				if (calculatedRoute.size() > 5) {
-					for (int r = 0; r < calculatedRoute.size(); r++) {
-						finalizedCalculatedRoute.add(calculatedRoute.get(r));
-						if (r == 4) {
-							break;
-						}
-					}
-					calculatedRoute = finalizedCalculatedRoute;
-				}
+				logger.info("--------------------------- [ End Optimizing route ]");
 			}
-			logger.info("--------------------------- [ End Optimizing route ]");
 		}
 		return calculatedRoute;
 	}

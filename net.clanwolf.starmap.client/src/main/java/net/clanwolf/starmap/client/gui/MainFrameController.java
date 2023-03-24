@@ -281,10 +281,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	@FXML
 	private Slider slVolumeControl;
 	@FXML
-	private ImageView ivMuteToggle;
+	private ImageView ivMuteToggle, ivCharacterImage, ivCharacterFaction;
 	@FXML
 	private Pane paneVolumeControl;
-
 	@FXML
 	private TableView<UserHistoryEntry> tblUserHistory;
 
@@ -353,7 +352,20 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				}
 
 				if (Nexus.getCurrentUser().getUserId().equals(u.getUserId())) {
-					lbUserSelf.setText(u.getUserName());
+					Platform.runLater(() -> {
+						lbUserSelf.setText(u.getUserName());
+						Image charImage;
+						try {
+							charImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(Nexus.getCurrentChar().getCharImage())));
+						} catch(Exception e) {
+							// image not found
+							charImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/chars/no_avatar.png")));
+						}
+						ivCharacterImage.setImage(charImage);
+						if (Nexus.getFactionLogo() != null) {
+							ivCharacterFaction.setImage(Nexus.getFactionLogo());
+						}
+					});
 				} else {
 					String userString = "";
 					userString += u.getUserName();
@@ -1949,10 +1961,18 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 						paneVolumeControl.setVisible(true);
 						slVolumeControl.setVisible(true);
 						ivMuteToggle.setVisible(true);
+
+						if ("true".equals(C3Properties.getProperty(C3PROPS.PLAY_MUSIC))) {
+							C3SoundPlayer.pauseMusic();
+						}
 					} else {
 						paneVolumeControl.setVisible(false);
 						slVolumeControl.setVisible(false);
 						ivMuteToggle.setVisible(false);
+
+						if ("true".equals(C3Properties.getProperty(C3PROPS.PLAY_MUSIC))) {
+							C3SoundPlayer.startMusic();
+						}
 					}
 				});
 				break;
