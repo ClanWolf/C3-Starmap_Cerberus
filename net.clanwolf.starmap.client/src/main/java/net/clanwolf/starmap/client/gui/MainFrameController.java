@@ -43,7 +43,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import net.clanwolf.starmap.client.enums.C3MESSAGES;
-import net.clanwolf.starmap.client.gui.panes.chat.ChatEntry;
 import net.clanwolf.starmap.client.gui.panes.chat.ChatPane;
 import net.clanwolf.starmap.client.gui.panes.dice.DicePane;
 import net.clanwolf.starmap.client.gui.panes.logging.LogPane;
@@ -68,9 +67,9 @@ import net.clanwolf.starmap.client.gui.panes.userinfo.UserInfoPane;
 import net.clanwolf.starmap.client.gui.popuppanes.C3PopupPane;
 import net.clanwolf.starmap.client.process.logout.Logout;
 import net.clanwolf.starmap.client.process.universe.BOFaction;
+import net.clanwolf.starmap.client.process.universe.BOStarSystem;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
-import net.clanwolf.starmap.transfer.dtos.FactionDTO;
-import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
+import net.clanwolf.starmap.transfer.dtos.AttackDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.client.net.Server;
@@ -368,8 +367,18 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					});
 				} else {
 					String userString = "";
+					String attackedSystem = "/";
+
+					AttackDTO a = Nexus.getCurrentAttackForUser(u);
+					if (a != null) {
+						BOStarSystem s = Nexus.getBoUniverse().starSystemBOs.get(a.getStarSystemID());
+						if (s != null) {
+							attackedSystem = s.getName();
+						}
+					}
+
 					userString += u.getUserName();
-					UserHistoryEntry entry = new UserHistoryEntry(userString, factionShortName, "", "");
+					UserHistoryEntry entry = new UserHistoryEntry(userString, factionShortName, "", "", attackedSystem);
 					tblUserHistory.getItems().add(entry);
 				}
 			}
@@ -1492,11 +1501,16 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 //		timeColumn.setPrefWidth(102);
 //		timeColumn.setMaxWidth(105);
 //		timeColumn.setMinWidth(100);
+		TableColumn<UserHistoryEntry, String> attackColumn = new TableColumn<>("");
+		attackColumn.setCellValueFactory(data -> data.getValue().getInFightForPlanet());
+		attackColumn.setPrefWidth(250);
 		tblUserHistory.getColumns().addAll( userColumn,
-											factionColumn
+											factionColumn,
 											//versionColumn
 											//timeColumn
+											attackColumn
 		);
+		tblUserHistory.getSortOrder().add(attackColumn);
 		tblUserHistory.getSortOrder().add(userColumn);
 
 		tblUserHistory.setRowFactory(tblUserHistory -> new TableRow<UserHistoryEntry>() {

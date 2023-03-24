@@ -26,7 +26,7 @@
 
 		<!-- C3 Revision -->
 		<!-- https://stackoverflow.com/questions/10582054/maven-project-version-inheritance-do-i-have-to-specify-the-parent-version -->
-		<revision>7.2.101</revision>
+		<revision>7.2.102</revision>
 
 		<!-- Versions -->
 		<version.java>19</version.java>
@@ -66,7 +66,7 @@
 		<version.persistence-api>3.1.0</version.persistence-api>
 		<version.pircbotx>2.2</version.pircbotx>
 		<version.slf4j>2.0.6</version.slf4j>
-		<version.springframework>6.0.5</version.springframework>
+		<version.springframework>6.0.6</version.springframework>
 		<version.springframework-security-config>6.0.2</version.springframework-security-config>
 		<version.teamspeak3-api>1.3.1</version.teamspeak3-api>
 		<version.tektosyne>6.2.0</version.tektosyne>

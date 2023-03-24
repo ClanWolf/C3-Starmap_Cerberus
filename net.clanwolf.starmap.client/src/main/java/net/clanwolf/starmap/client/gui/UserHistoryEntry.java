@@ -34,12 +34,14 @@ public class UserHistoryEntry {
     private final StringProperty faction;
     private final StringProperty version;
     private final StringProperty time;
+	private final StringProperty inFightForPlanet;
 
-    public UserHistoryEntry(String user, String faction, String version, String time) {
+    public UserHistoryEntry(String user, String faction, String version, String time, String inFightForPlanet) {
     	this.user = new SimpleStringProperty(user);
         this.faction = new SimpleStringProperty(faction);
         this.version = new SimpleStringProperty(version);
         this.time = new SimpleStringProperty(time);
+	    this.inFightForPlanet = new SimpleStringProperty(inFightForPlanet);
     }
 
 	@SuppressWarnings("unused")
@@ -59,4 +61,12 @@ public class UserHistoryEntry {
     public StringProperty getTime() {
         return this.time;
     }
+
+	@SuppressWarnings("unused")
+	public StringProperty getInFightForPlanet() {
+		if (this.inFightForPlanet == null) {
+			this.inFightForPlanet.toString();
+		}
+		return this.inFightForPlanet;
+	}
 }

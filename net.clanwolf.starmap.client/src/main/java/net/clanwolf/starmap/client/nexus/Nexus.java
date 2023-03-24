@@ -37,15 +37,12 @@ import net.clanwolf.starmap.client.gui.panes.map.MapPaneController;
 import net.clanwolf.starmap.client.gui.panes.map.tools.GraphManager;
 import net.clanwolf.starmap.client.process.login.Login;
 import net.clanwolf.starmap.client.process.universe.*;
+import net.clanwolf.starmap.transfer.dtos.*;
 import org.kynosarges.tektosyne.geometry.VoronoiResults;
 import org.kynosarges.tektosyne.subdivision.Subdivision;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.transfer.GameState;
-import net.clanwolf.starmap.transfer.dtos.AttackCharacterDTO;
-import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
-import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
-import net.clanwolf.starmap.transfer.dtos.UserDTO;
 
 import java.io.*;
 import java.lang.invoke.MethodHandles;
@@ -415,6 +412,30 @@ public class Nexus {
 			userHasFinishedAttackInCurrentRound(); // to set currentAttack to user
 		}
 		return finishedAttackOfUser;
+	}
+
+	public static AttackDTO getCurrentAttackForUser(UserDTO user) {
+		AttackDTO r = null;
+
+		RolePlayCharacterDTO ch = null;
+		for (RolePlayCharacterDTO rpc : Nexus.characterList.values()) {
+			if (rpc.getUser().getUserId().equals(user.getUserId())) {
+				ch = rpc;
+				break;
+			}
+		}
+
+		if (ch != null) {
+			for (BOAttack a : boUniverse.attackBOsAllInThisRound.values()) {
+				for (AttackCharacterDTO ac : a.getAttackCharList()) {
+					if (ac.getCharacterID().equals(ch.getId())) {
+						r = a.getAttackDTO();
+						break;
+					}
+				}
+			}
+		}
+		return r;
 	}
 
 	@SuppressWarnings("unused")
