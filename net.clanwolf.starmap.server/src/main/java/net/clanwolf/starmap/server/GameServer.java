@@ -37,6 +37,7 @@ import net.clanwolf.starmap.server.persistence.pojos.C3GameConfigPOJO;
 import net.clanwolf.starmap.server.timertasks.CheckShutdownFlagTimerTask;
 import net.clanwolf.starmap.server.timertasks.DropLeadCheckTimerTask;
 import net.clanwolf.starmap.server.timertasks.HeartBeatTimerTask;
+import net.clanwolf.starmap.server.timertasks.SendInformationToBotsTimerTask;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -238,10 +239,14 @@ public class GameServer {
 				}
 			}
 
+			Timer sendInformationToBotsTimer = new Timer();
+			SendInformationToBotsTimerTask sendInformationToBotsTimerTask = new SendInformationToBotsTimerTask();
+			sendInformationToBotsTimer.schedule(sendInformationToBotsTimerTask, 15000, 6 * 60 * 60_000);
+
 			// run regular checks if attacks missing dropleads
 			Timer checkOpenAttacksForDropleadsTimer = new Timer();
-			DropLeadCheckTimerTask dropLeadCheck = new DropLeadCheckTimerTask();
-			checkOpenAttacksForDropleadsTimer.schedule(dropLeadCheck, 15000, 20000);
+			DropLeadCheckTimerTask dropLeadCheckTimerTask = new DropLeadCheckTimerTask();
+			checkOpenAttacksForDropleadsTimer.schedule(dropLeadCheckTimerTask, 15000, 20000);
 
 			// write heartbeat file every some minutes
 			Timer serverHeartBeat = new Timer();
@@ -252,7 +257,8 @@ public class GameServer {
 			checkShutdownFlag.schedule(new CheckShutdownFlagTimerTask(serverBaseDir), 1000, 1000 * 5);
 
 			logger.info(jarName + " is up and ready");
-			Nexus.getEci().sendExtCom(jarName + " is up and ready");
+			Nexus.getEci().sendExtCom(jarName + " is up and ready", "en",true, true, true);
+			Nexus.getEci().sendExtCom(jarName + " ist gestartet und bereit", "de",true, true, true);
 
 			// World world = ctx.getBean(World.class);
 			// GameRoom room1 = (GameRoom)ctx.getBean("Zombie_ROOM_1");

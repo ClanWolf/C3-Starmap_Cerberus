@@ -12,8 +12,12 @@ TODO:
 - Update msgpack (io.nadron.server)
 - Check warning hibernate dialect (server)
 - Switch to MariaDB client (client, bots)
-- Integrate Discord bot (bots)
 ----------------------------------------------------------------
+
+Version 7.2.106 (25.03.2023)
+- UPDATED: libraries
+- ADDED: Integrate Discord bot (bots)
+- ADDED: Messages to Discord bot
 
 Version 7.2.102 (24.03.2023)
 - ADDED: Show current fight for each user in the user list

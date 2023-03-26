@@ -26,6 +26,7 @@
  */
 package net.clanwolf.starmap.bots.db;
 
+import net.clanwolf.starmap.bots.Bots;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -38,7 +39,7 @@ import java.util.LinkedList;
 public class ExtcomMonitor {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	public synchronized static LinkedList<String> getMessages() throws Exception {
+	public synchronized static LinkedList<String> getMessages(Bots botType, String lang) throws Exception {
 		// get messages from database
 		// mark message as processed by IRCBot in database
 		Statement stmt_select = null;
@@ -49,7 +50,18 @@ public class ExtcomMonitor {
 //		logger.info("Getting Messages from DB");
 		DBConnection dbc = new DBConnection();
 		try {
-			String sql_select = "SELECT Text, ProcessedIRC, Updated FROM EXT_COM WHERE ProcessedIRC = 0; ";
+			String processedColumn = "";
+			switch (botType) {
+				case IRCBot -> processedColumn = "ProcessedIRC";
+				case TS3Bot -> processedColumn = "ProcessedTS3";
+				case DiscordBot -> processedColumn = "ProcessedDiscord";
+			}
+
+			String sql_select = "SELECT Text, ProcessedIRC, Updated FROM EXT_COM WHERE " + processedColumn + " = 0 ";
+			if (lang != null && !"".equalsIgnoreCase(lang)) {
+				sql_select += "AND lang = '" + lang + "'";
+			}
+			sql_select += "; ";
 			// sql_select.append("AND Updated > now() - interval 1 MINUTE; ");
 
 			stmt_select = dbc.getConnection().createStatement();
@@ -64,7 +76,7 @@ public class ExtcomMonitor {
 
 			// Update to set processed to 1
 			stmt_update = dbc.getConnection().createStatement();
-			stmt_update.executeUpdate("UPDATE EXT_COM set ProcessedIRC = 1;"); // Update all lines to be processed
+			stmt_update.executeUpdate("UPDATE EXT_COM set " + processedColumn + " = 1; "); // Update all lines to be processed
 
 			stmt_update.close();
 		} catch (SQLException e) {

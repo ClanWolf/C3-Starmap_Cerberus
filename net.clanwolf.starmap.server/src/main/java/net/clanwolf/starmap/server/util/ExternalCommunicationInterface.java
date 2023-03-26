@@ -103,16 +103,24 @@ public class ExternalCommunicationInterface {
 		}
 	}
 
-	public synchronized void sendExtCom(String message) {
+	public synchronized void sendExtCom(String message, String lang, boolean sendToIRC, boolean sendToTS3, boolean sendToDiscord) {
 		message = message.replace("'", "\"");
+
+		int pvIRC = 0;
+		int pvTS3 = 0;
+		int pvDiscord = 0;
+		if (!sendToIRC) { pvIRC = 1; }
+		if (!sendToTS3) { pvTS3 = 1; }
+		if (!sendToDiscord) { pvDiscord = 1; }
+
 		if (!GameServer.isDevelopmentPC) {
 			try {
 				// Insert message for IRC and TS3 Bots to process
 				String sql_insert = "";
 				sql_insert += "INSERT INTO EXT_COM ";
-				sql_insert += "(Text,ServerVersion) ";
+				sql_insert += "(Text,lang,ServerVersion,ProcessedIRC,ProcessedTS3,ProcessedDiscord) ";
 				sql_insert += "VALUES ";
-				sql_insert += "('" + message + "', '" + Nexus.jarName + "'); ";
+				sql_insert += "('" + message + "','" + lang + "','" + Nexus.jarName + "'," + pvIRC + "," + pvTS3 + "," + pvDiscord + "); ";
 				long extcomid = insert(sql_insert);
 
 				// Delete all old entries, check if they have been processed
@@ -120,6 +128,7 @@ public class ExternalCommunicationInterface {
 				sql_delete += "DELETE from EXT_COM ";
 				sql_delete += "WHERE ProcessedIRC > 0 ";
 				sql_delete += "AND ProcessedTS3 > 0 ";
+				sql_delete += "AND ProcessedDiscord > 0 ";
 				sql_delete += "OR Updated < now() - interval 1 DAY; ";
 				delete(sql_delete);
 			} catch(Exception e) {

@@ -528,7 +528,9 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				//existingAttack = dao.findOpenAttackByRound(getC3UserID(session),attack.getJumpshipID(), attack.getSeason(), attack.getRound());
 				existingAttack = dao.findOpenAttackByRound(getC3UserID(session),attack.getJumpshipID(), attack.getSeason(), attack.getRound());
 
-				if(existingAttack == null){
+				if(existingAttack == null) {
+					Nexus.getEci().sendExtCom(starSystem + " is attacked!", "en",true, true, true);
+					Nexus.getEci().sendExtCom(starSystem + " wird angegriffen!", "de",true, true, true);
 					logger.info("SAVE: if(existingAttack == null)");
 					dao.save(getC3UserID(session), attack);
 				} else {
@@ -786,7 +788,8 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			logger.info("Timestamp: " + new Timestamp(System.currentTimeMillis()));
 			logger.info("--------------------");
 
-			Nexus.getEci().sendExtCom(user.getUserName() + " logged into C3-Client");
+			Nexus.getEci().sendExtCom(user.getUserName() + " logged into C3-Client.", "en",true, true, false);
+			Nexus.getEci().sendExtCom(user.getUserName() + " hat sich im C3-Client angemeldet.", "de",true, true, false);
 
 //			if( !GameServer.isDevelopmentPC) {
 //				boolean sent = false;
@@ -877,7 +880,8 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				checkDoubleLogin(session, room);
 				break;
 			case USER_LOG_OUT:
-				Nexus.getEci().sendExtCom(session.getPlayer().getName() + " left C3-Client");
+				Nexus.getEci().sendExtCom(session.getPlayer().getName() + " left C3-Client", "en",true, true, false);
+				Nexus.getEci().sendExtCom(session.getPlayer().getName() + " hat den C3-Client verlassen", "de",true, true, false);
 				session.getPlayer().logout(session);
 				storeUserSession(session, null, ipAdressSender, true);
 				sendNewPlayerList(session);

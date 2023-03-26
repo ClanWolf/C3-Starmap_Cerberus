@@ -231,21 +231,21 @@ public class IRCBot extends ListenerAdapter {
 		Timer randomTextDropTimer = new Timer();
 		RandomTextDropTimerTask randomTextDropTimerTask = new RandomTextDropTimerTask();
 
-		Timer extcomTimer = new Timer();
-		ExtcomTimerTask extcomTimerTask = new ExtcomTimerTask();
+		Timer extcomIRCTimer = new Timer();
+		ExtcomIRCTimerTask extcomIRCTimerTask = new ExtcomIRCTimerTask();
 
 		Timer checkShutdownFlagTimer = new Timer();
 		checkShutdownFlagTimer.schedule(new CheckShutdownFlagTimerTask(serverBaseDir, "IRCBot"), 1000, 1000 * 10);
 
 		userlistDropTimer.schedule(userListDropTimerTask, 1000, 7 * oneMinute);
 		randomTextDropTimer.schedule(randomTextDropTimerTask, 1000, 5 * oneMinute);
-		extcomTimer.schedule(extcomTimerTask, 1000, 25000);
+		extcomIRCTimer.schedule(extcomIRCTimerTask, 1000, 25000);
 
 		IRCBot ircBot = new IRCBot();
 		ircBot.botJoinedMail();
 		userListDropTimerTask.setBot(ircBot);
 		randomTextDropTimerTask.setBot(ircBot);
-		extcomTimerTask.setBot(ircBot);
+		extcomIRCTimerTask.setBot(ircBot);
 
 		Internationalization.setBot(ircBot);
 		started = true;

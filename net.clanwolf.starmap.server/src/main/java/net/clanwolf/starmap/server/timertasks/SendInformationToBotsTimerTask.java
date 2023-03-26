@@ -26,75 +26,42 @@
  */
 package net.clanwolf.starmap.server.timertasks;
 
-import net.clanwolf.starmap.mail.MailManager;
+import net.clanwolf.starmap.constants.Constants;
+import net.clanwolf.starmap.server.GameServer;
 import net.clanwolf.starmap.server.beans.C3GameSessionHandler;
+import net.clanwolf.starmap.server.beans.C3Room;
 import net.clanwolf.starmap.server.nexus2.Nexus;
+import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.AttackDAO;
+import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.RoundDAO;
+import net.clanwolf.starmap.server.persistence.pojos.AttackCharacterPOJO;
+import net.clanwolf.starmap.server.persistence.pojos.AttackPOJO;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import net.clanwolf.starmap.server.GameServer;
 
-import java.io.File;
 import java.lang.invoke.MethodHandles;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TimerTask;
 
 /**
  * @author Meldric
  */
-public class CheckShutdownFlagTimerTask extends TimerTask {
+public class SendInformationToBotsTimerTask extends TimerTask {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	private String dir = "";
-
-	private void cleanupFlagFiles() {
-		File shutdownFlagFile = new File(dir + File.separator + "C3-Server_shutdown.flag");
-		if (shutdownFlagFile.isFile()) {
-			boolean deleted = shutdownFlagFile.delete();
-		}
-	}
-
-	public CheckShutdownFlagTimerTask(String path) {
-		this.dir = path;
-		// Cleanup the flags once before the timer starts in case there were flags left from a previous time
-		cleanupFlagFiles();
+	public SendInformationToBotsTimerTask() {
 	}
 
 	@Override
 	public void run() {
-		File shutdownFlagFile = new File(dir + File.separator + "C3-Server_shutdown.flag");
-		if (shutdownFlagFile.exists() && shutdownFlagFile.isFile() && shutdownFlagFile.canRead()) {
-			// On the server, a script checks if the server is running every couple of minutes.
-			// If this methods shuts the server down, it will be going up by the script shortly after.
-			// This is used in case a new version of the jar file was uploaded.
-//			logger.info("Cleaning up flag files.");
-//			cleanupFlagFiles();
+		Long seasonId = GameServer.getCurrentSeason();
+		Long roundId = RoundDAO.getInstance().findBySeasonId(seasonId).getRound();
+		ArrayList<AttackPOJO> allAttacksForRound = AttackDAO.getInstance().getAllAttacksOfASeasonForRound(seasonId, roundId);
+		ArrayList<Long> currentlyOnlineCharacterIds = C3GameSessionHandler.getCurrentlyOnlineCharIds();
 
-			if(!GameServer.isDevelopmentPC) {
-				Nexus.getEci().sendExtCom("Server is going down after flag request.", "en",true, true, true);
-				Nexus.getEci().sendExtCom("Server fährt herunter nach Flag-Anfrage.", "de",true, true, true);
-
-				logger.info("Sending info mail.");
-				String[] receivers = { "keshik@googlegroups.com" };
-				boolean sent = false;
-				sent = MailManager.sendMail("c3@clanwolf.net", receivers, "C3 Server goes down after flag request", "C3 Server is shutting down...", false);
-				if (sent) {
-					// sent
-					logger.info("Mail sent. [6]");
-				} else {
-					// error during email sending
-					logger.info("Error during mail dispatch. [6]");
-				}
-			}
-
-			// Informing clients about the shutdown
-			GameState gameStateShutdownMessage = new GameState(GAMESTATEMODES.SERVER_GOES_DOWN);
-			gameStateShutdownMessage.addObject(null);
-			gameStateShutdownMessage.setAction_successfully(Boolean.TRUE);
-			C3GameSessionHandler.sendBroadCast(gameStateShutdownMessage);
-
-			logger.info("Exiting server.");
-			System.exit(5);
-		}
+		Nexus.getEci().sendExtCom("Open fights: ", "en", true, true, true);
+		Nexus.getEci().sendExtCom("Offene Kämpfe: ", "de", true, true, true);
 	}
 }

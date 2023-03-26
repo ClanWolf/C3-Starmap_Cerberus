@@ -26,7 +26,7 @@
  */
 package net.clanwolf.starmap.bots.ircclient;
 
-import net.clanwolf.starmap.bots.db.DBConnection;
+import net.clanwolf.starmap.bots.Bots;
 import net.clanwolf.starmap.bots.db.ExtcomMonitor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,29 +39,29 @@ import java.util.TimerTask;
 /**
  * @author Meldric
  */
-public class ExtcomTimerTask extends TimerTask {
+public class ExtcomIRCTimerTask extends TimerTask {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	private static IRCBot bot = null;
 
-	public ExtcomTimerTask() {
+	public ExtcomIRCTimerTask() {
 	}
 
 	public void setBot(IRCBot bot) {
-		ExtcomTimerTask.bot = bot;
+		ExtcomIRCTimerTask.bot = bot;
 	}
 
 	@Override
 	public void run() {
 		try {
-//			logger.info("bot: " + (bot == null ? "null" : bot.getUserListString()));
-//			logger.info("Connected: " + bot.connected);
+			//			logger.info("bot: " + (bot == null ? "null" : bot.getUserListString()));
+			//			logger.info("Connected: " + bot.connected);
 
 			if (bot != null && IRCBot.connected) {
-//				logger.info("Requesting new entries from ext_com table");
+				//				logger.info("Requesting new entries from ext_com table");
 
-				LinkedList<String> msgs = ExtcomMonitor.getMessages();
+				LinkedList<String> msgs = ExtcomMonitor.getMessages(Bots.IRCBot, null);
 
-				String[] msgscut = { "...", "...", "...", "...", "..." };
+				String[] msgscut = {"...", "...", "...", "...", "..."};
 
 				for (int i = 4; i >= 0; i--) {
 					try {
@@ -77,7 +77,7 @@ public class ExtcomTimerTask extends TimerTask {
 					}
 				}
 			}
-		} catch(Exception e) {
+		} catch (Exception e) {
 			logger.error("Exception in IRCBot message pickup", e);
 		}
 	}
