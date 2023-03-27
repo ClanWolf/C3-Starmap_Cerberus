@@ -30,6 +30,14 @@
 			<type>pom</type>
 		</dependency>
 
+		<dependency>
+			<groupId>com.squareup</groupId>
+			<artifactId>gifencoder</artifactId>
+			<version>0.10.1</version>
+		</dependency>
+
+		<!-- https://genuinecoder.com/how-to-create-gif-from-multiple-images-in-java/ -->
+
 		<!-- C3 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 		<dependency>
 			<groupId>net.clanwolf.starmap</groupId>

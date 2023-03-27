@@ -59,7 +59,7 @@ public class ExtcomIRCTimerTask extends TimerTask {
 			if (bot != null && IRCBot.connected) {
 				//				logger.info("Requesting new entries from ext_com table");
 
-				LinkedList<String> msgs = ExtcomMonitor.getMessages(Bots.IRCBot, null);
+				LinkedList<String> msgs = ExtcomMonitor.getMessages(Bots.IRCBot, IRCBot.getLang());
 
 				String[] msgscut = {"...", "...", "...", "...", "..."};
 

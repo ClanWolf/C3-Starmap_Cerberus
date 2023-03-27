@@ -14,6 +14,10 @@ TODO:
 - Switch to MariaDB client (client, bots)
 ----------------------------------------------------------------
 
+Version 7.2.107 (27.03.2023)
+- UPDATED: Ulric announcment of open fights in discord
+- FIXED: Language selection for IRC client (Ulric)
+
 Version 7.2.106 (25.03.2023)
 - UPDATED: libraries
 - ADDED: Integrate Discord bot (bots)

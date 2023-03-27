@@ -31,10 +31,8 @@ import net.clanwolf.starmap.server.GameServer;
 import net.clanwolf.starmap.server.beans.C3GameSessionHandler;
 import net.clanwolf.starmap.server.beans.C3Room;
 import net.clanwolf.starmap.server.nexus2.Nexus;
-import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.AttackDAO;
-import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.RoundDAO;
-import net.clanwolf.starmap.server.persistence.pojos.AttackCharacterPOJO;
-import net.clanwolf.starmap.server.persistence.pojos.AttackPOJO;
+import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.*;
+import net.clanwolf.starmap.server.persistence.pojos.*;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import org.slf4j.Logger;
@@ -58,10 +56,23 @@ public class SendInformationToBotsTimerTask extends TimerTask {
 	public void run() {
 		Long seasonId = GameServer.getCurrentSeason();
 		Long roundId = RoundDAO.getInstance().findBySeasonId(seasonId).getRound();
-		ArrayList<AttackPOJO> allAttacksForRound = AttackDAO.getInstance().getAllAttacksOfASeasonForRound(seasonId, roundId);
-		ArrayList<Long> currentlyOnlineCharacterIds = C3GameSessionHandler.getCurrentlyOnlineCharIds();
+		ArrayList<AttackPOJO> allAttacksForRound = AttackDAO.getInstance().getOpenAttacksOfASeasonForRound(seasonId, roundId.intValue());
+		String fs_de = "- ";
+		String fs_en = "- ";
+		for (AttackPOJO a : allAttacksForRound) {
+			StarSystemDataPOJO ssd = StarSystemDataDAO.getInstance().findById(Nexus.DUMMY_USERID, a.getStarSystemDataID());
+			StarSystemPOJO ss = StarSystemDAO.getInstance().findById(Nexus.DUMMY_USERID, a.getStarSystemID());
+			JumpshipPOJO js = JumpshipDAO.getInstance().findById(Nexus.DUMMY_USERID, a.getJumpshipID());
+			FactionPOJO defender = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, a.getFactionID_Defender());
+			FactionPOJO attacker = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, js.getJumpshipFactionID());
 
-		Nexus.getEci().sendExtCom("Open fights: ", "en", true, true, true);
-		Nexus.getEci().sendExtCom("Offene Kämpfe: ", "de", true, true, true);
+			fs_de += ss.getName() + " (" + defender.getShortName() + ") wird von " + attacker.getShortName() + " angegriffen!\r\n";
+			fs_en += ss.getName() + " (" + defender.getShortName() + ") is attacked by " + attacker.getShortName() + "!\r\n";
+		}
+		fs_de += "Noch x Stunden in Runde " + roundId + " der Season " + seasonId + ".";
+		fs_en += "x hours left in round " + roundId + " of season " + seasonId + ".";
+
+		Nexus.getEci().sendExtCom("Round " + roundId + "\r\n" + "Open fights:\r\n" + fs_en, "en", true, true, true);
+		Nexus.getEci().sendExtCom("Runde " + roundId + "\r\n" + "Offene Kämpfe:\r\n" + fs_de, "de", true, true, true);
 	}
 }

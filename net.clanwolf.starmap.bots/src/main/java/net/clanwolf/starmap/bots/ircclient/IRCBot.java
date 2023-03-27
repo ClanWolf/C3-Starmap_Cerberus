@@ -82,6 +82,10 @@ public class IRCBot extends ListenerAdapter {
 			C3LogUtil.loadConfigurationAndSetLogFile(logFileName);
 	}
 
+	public static String getLang() {
+		return lang;
+	}
+
 	private static final String[] message = {
 		Internationalization.getString("msg0001"),
 		Internationalization.getString("msg0002"),
