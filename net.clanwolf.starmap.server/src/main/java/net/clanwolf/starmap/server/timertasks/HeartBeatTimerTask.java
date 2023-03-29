@@ -26,7 +26,7 @@
  */
 package net.clanwolf.starmap.server.timertasks;
 
-import net.clanwolf.starmap.server.nexus2.Nexus;
+import net.clanwolf.starmap.server.servernexus.ServerNexus;
 import net.clanwolf.starmap.server.util.WebDataInterface;
 import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
 import org.slf4j.Logger;
@@ -80,7 +80,7 @@ public class HeartBeatTimerTask extends TimerTask {
 			currentlyRunning = true;
 
 			String heartBeatFileName;
-			if (Nexus.isDevelopmentPC) {
+			if (ServerNexus.isDevelopmentPC) {
 				heartBeatFileName = tempDir + File.separator + "c3.heartbeat";
 			} else {
 				heartBeatFileName = "/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/c3.heartbeat";
@@ -141,7 +141,7 @@ public class HeartBeatTimerTask extends TimerTask {
 ////			logger.info("Calling list creation (CM_StarSystems)...");
 ////			WebDataInterface.createSystemList(SystemListTypes.CM_StarSystems);
 
-			if (informClients || Nexus.sendUniverseToClients) {
+			if (informClients || ServerNexus.sendUniverseToClients) {
 				// Broadcast new version of the universe to the clients
 				logger.info("Send updated universe to all clients.");
 
@@ -149,8 +149,8 @@ public class HeartBeatTimerTask extends TimerTask {
 				response.addObject(Compressor.compress(universe));
 				C3Room.sendBroadcastMessage(response);
 
-				if (Nexus.sendUniverseToClients) {
-					Nexus.sendUniverseToClients = false;
+				if (ServerNexus.sendUniverseToClients) {
+					ServerNexus.sendUniverseToClients = false;
 				}
 			}
 			currentlyRunning = false;
@@ -163,7 +163,7 @@ public class HeartBeatTimerTask extends TimerTask {
 		// log server uptime
 		Timestamp now = new Timestamp(System.currentTimeMillis());
 		Date firstParsedDate = new Date(now.getTime());
-		Date secondParsedDate = new Date(Nexus.serverStartTime.getTime());
+		Date secondParsedDate = new Date(ServerNexus.serverStartTime.getTime());
 		long diffmilliseconds = firstParsedDate.getTime() - secondParsedDate.getTime();
 		long hours = diffmilliseconds/(1000*60*60);
 		long minutes = (diffmilliseconds-hours*1000*60*60)/(1000*60);
@@ -173,9 +173,9 @@ public class HeartBeatTimerTask extends TimerTask {
 		logger.info(uptime + " (" + days + " days)");
 
 		// Send uptime message to bots (irc, ts3 and discord), only once an hour
-		if (hours > lastReportedHour + 1) {
-			Nexus.getEci().sendExtCom("Server is up since " + hours + " hours.", "en",true, true, true);
-			Nexus.getEci().sendExtCom("Server ist online seit " + hours + " Stunden.", "de",true, true, true);
+		if (hours > lastReportedHour + 3) {
+			ServerNexus.getEci().sendExtCom("Server is up since " + hours + " hours.", "en",true, true, true);
+			ServerNexus.getEci().sendExtCom("Server ist online seit " + hours + " Stunden.", "de",true, true, true);
 			lastReportedHour = hours;
 		}
 

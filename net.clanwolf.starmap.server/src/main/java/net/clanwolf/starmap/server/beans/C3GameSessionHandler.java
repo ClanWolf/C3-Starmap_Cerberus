@@ -33,10 +33,8 @@ import io.nadron.event.Event;
 import io.nadron.event.Events;
 import io.nadron.event.impl.SessionMessageHandler;
 import io.nadron.service.GameStateManagerService;
-import net.clanwolf.starmap.mail.MailManager;
 import net.clanwolf.starmap.constants.Constants;
-import net.clanwolf.starmap.server.GameServer;
-import net.clanwolf.starmap.server.nexus2.Nexus;
+import net.clanwolf.starmap.server.servernexus.ServerNexus;
 import net.clanwolf.starmap.server.util.ForumDatabaseTools;
 import net.clanwolf.starmap.transfer.dtos.*;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
@@ -86,7 +84,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		state = new GameState();
 		manager.setState(state); // set it back on the room
 
-		Nexus.gmSessionHandler = this;
+		ServerNexus.gmSessionHandler = this;
 	}
 
 	@Override
@@ -363,14 +361,14 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		try {
 			//List<AttackCharacterPOJO> emptyCharList = new ArrayList<AttackCharacterPOJO>();
 
-			EntityManagerHelper.beginTransaction(Nexus.DUMMY_USERID);
-			EntityManagerHelper.clear(Nexus.DUMMY_USERID);
+			EntityManagerHelper.beginTransaction(ServerNexus.DUMMY_USERID);
+			EntityManagerHelper.clear(ServerNexus.DUMMY_USERID);
 
 			// Remove all characters from attack and reset the "fights started" flag
 			RolePlayStoryDAO rpsdao = RolePlayStoryDAO.getInstance();
 
 			AttackDAO adao = AttackDAO.getInstance();
-			AttackPOJO ap = adao.findById(Nexus.DUMMY_USERID,attackId);
+			AttackPOJO ap = adao.findById(ServerNexus.DUMMY_USERID,attackId);
 
 			RolePlayStoryPOJO lobbyRPreset = rpsdao.getLobbyRPFromAttackRP(ap.getStoryID());
 
@@ -378,9 +376,9 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			//ap.setAttackCharList(emptyCharList);
 			ap.getAttackCharList().clear();
 			ap.setStoryID(lobbyRPreset.getId());
-			adao.update(Nexus.DUMMY_USERID, ap);
+			adao.update(ServerNexus.DUMMY_USERID, ap);
 
-			EntityManagerHelper.commit(Nexus.DUMMY_USERID);
+			EntityManagerHelper.commit(ServerNexus.DUMMY_USERID);
 
 			// Send the reset attack to the clients
 			GameState response = new GameState(GAMESTATEMODES.ATTACK_SAVE_RESPONSE);
@@ -529,8 +527,9 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				existingAttack = dao.findOpenAttackByRound(getC3UserID(session),attack.getJumpshipID(), attack.getSeason(), attack.getRound());
 
 				if(existingAttack == null) {
-					Nexus.getEci().sendExtCom(starSystem + " is attacked!", "en",true, true, true);
-					Nexus.getEci().sendExtCom(starSystem + " wird angegriffen!", "de",true, true, true);
+					JumpshipPOJO js = daoJJ.findById(getC3UserID(session), attack.getJumpshipID());
+					ServerNexus.getEci().sendExtCom(starSystem.getName() + " is attacked by " + js.getJumpshipName() + " in round " + attack.getRound() + "!", "en",true, true, true);
+					ServerNexus.getEci().sendExtCom(starSystem.getName() + " wird in Runde " + attack.getRound() + " von " + js.getJumpshipName() + " angegriffen!", "de",true, true, true);
 					logger.info("SAVE: if(existingAttack == null)");
 					dao.save(getC3UserID(session), attack);
 				} else {
@@ -788,8 +787,8 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			logger.info("Timestamp: " + new Timestamp(System.currentTimeMillis()));
 			logger.info("--------------------");
 
-			Nexus.getEci().sendExtCom(user.getUserName() + " logged into C3-Client.", "en",true, true, false);
-			Nexus.getEci().sendExtCom(user.getUserName() + " hat sich im C3-Client angemeldet.", "de",true, true, false);
+			ServerNexus.getEci().sendExtCom(user.getUserName() + " logged into C3-Client.", "en",true, true, false);
+			ServerNexus.getEci().sendExtCom(user.getUserName() + " hat sich im C3-Client angemeldet.", "de",true, true, false);
 
 //			if( !GameServer.isDevelopmentPC) {
 //				boolean sent = false;
@@ -880,8 +879,8 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				checkDoubleLogin(session, room);
 				break;
 			case USER_LOG_OUT:
-				Nexus.getEci().sendExtCom(session.getPlayer().getName() + " left C3-Client", "en",true, true, false);
-				Nexus.getEci().sendExtCom(session.getPlayer().getName() + " hat den C3-Client verlassen", "de",true, true, false);
+				ServerNexus.getEci().sendExtCom(session.getPlayer().getName() + " left C3-Client", "en",true, true, false);
+				ServerNexus.getEci().sendExtCom(session.getPlayer().getName() + " hat den C3-Client verlassen", "de",true, true, false);
 				session.getPlayer().logout(session);
 				storeUserSession(session, null, ipAdressSender, true);
 				sendNewPlayerList(session);

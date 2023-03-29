@@ -33,7 +33,7 @@ import io.nadron.event.Events;
 import io.nadron.event.impl.DefaultEventContext;
 import io.nadron.event.impl.DefaultSessionEventHandler;
 import net.clanwolf.starmap.constants.Constants;
-import net.clanwolf.starmap.server.nexus2.Nexus;
+import net.clanwolf.starmap.server.servernexus.ServerNexus;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.AttackDAO;
 import net.clanwolf.starmap.server.persistence.pojos.AttackCharacterPOJO;
@@ -178,11 +178,11 @@ public class C3Room extends GameRoomSession {
 		if (u != null) {
 			RolePlayCharacterPOJO character = u.getCurrentCharacter();
 
-			Nexus.getEci().sendExtCom(p.getName() + " lost connection to C3-Client (disconnected)", "en", true, true, false);
-			Nexus.getEci().sendExtCom(p.getName() + " hat Verbindung zum C3-Client abgebrochen (disconnected)", "de", true, true, false);
+			ServerNexus.getEci().sendExtCom(p.getName() + " lost connection to C3-Client (disconnected)", "en", true, true, false);
+			ServerNexus.getEci().sendExtCom(p.getName() + " hat Verbindung zum C3-Client abgebrochen (disconnected)", "de", true, true, false);
 
 			AttackDAO attackDAO = AttackDAO.getInstance();
-			ArrayList<AttackPOJO> openAttacks = attackDAO.getOpenAttacksOfASeason(Nexus.currentSeason);
+			ArrayList<AttackPOJO> openAttacks = attackDAO.getOpenAttacksOfASeason(ServerNexus.currentSeason);
 
 			boolean savedChanges = false;
 			for (AttackPOJO ap : openAttacks) {
@@ -199,7 +199,7 @@ public class C3Room extends GameRoomSession {
 								s.addObject2(ap.getAttackTypeID());
 								s.addObject3(acp);
 
-								Nexus.gmSessionHandler.saveAttack(playerSession, s);
+								ServerNexus.gmSessionHandler.saveAttack(playerSession, s);
 								savedChanges = true;
 								break;
 							}

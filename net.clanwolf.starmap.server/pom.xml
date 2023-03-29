@@ -33,7 +33,7 @@
 		<dependency>
 			<groupId>com.squareup</groupId>
 			<artifactId>gifencoder</artifactId>
-			<version>0.10.1</version>
+			<version>${version.gifencoder}</version>
 		</dependency>
 
 		<!-- https://genuinecoder.com/how-to-create-gif-from-multiple-images-in-java/ -->
@@ -71,17 +71,17 @@
 		<dependency>
 			<groupId>org.hibernate.orm</groupId>
 			<artifactId>hibernate-core</artifactId>
-			<version>6.2.0.CR2</version>
+			<version>${version.hibernate-core}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate.common</groupId>
 			<artifactId>hibernate-commons-annotations</artifactId>
-			<version>6.0.6.Final</version>
+			<version>${version.hibernate-commons-annotations}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate.orm</groupId>
 			<artifactId>hibernate-ehcache</artifactId>
-			<version>6.0.0.Alpha7</version>
+			<version>${version.hibernate-ehcache}</version>
 		</dependency>
 
 		<!-- Hikari ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
@@ -91,7 +91,7 @@
 		<dependency>
 			<groupId>com.zaxxer</groupId>
 			<artifactId>HikariCP</artifactId>
-			<version>5.0.1</version> <!-- !!! Edit number below / Upload file !!! -->
+			<version>${version.hikaricp}</version> <!-- !!! 5.0.1 - Edit number below / Upload file !!! -->
 			<type>jar</type>
 		</dependency>
 		<!-- hikariCP and hikari jars are on the server next to the server jar. Path is in the manifest file -->
@@ -100,7 +100,7 @@
 		<dependency>
 			<groupId>org.hibernate.orm</groupId>
 			<artifactId>hibernate-hikaricp</artifactId>
-			<version>6.2.0.CR2</version> <!-- !!! Edit number below / Upload file !!! -->
+			<version>${version.hibernate-hikaricp}</version> <!-- !!! 6.2.0.CR3 - Edit number below / Upload file !!! -->
 			<type>jar</type>
 		</dependency>
 
@@ -222,7 +222,7 @@
 									<mainClass>net.clanwolf.starmap.server.GameServer</mainClass>
 									<manifestEntries>
 										<Multi-Release>true</Multi-Release>
-										<Class-Path>hibernate-hikaricp-6.2.0.CR2.jar HikariCP-5.0.1.jar</Class-Path>
+										<Class-Path>hibernate-hikaricp-${version.hibernate-hikaricp}.jar HikariCP-${version.hikaricp}.jar</Class-Path>
 										<Built-By>ClanWolf.net (Christian Bartel)</Built-By>
 									</manifestEntries>
 								</transformer>

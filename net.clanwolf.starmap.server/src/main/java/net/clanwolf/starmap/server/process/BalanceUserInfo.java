@@ -26,7 +26,7 @@
  */
 package net.clanwolf.starmap.server.process;
 
-import net.clanwolf.starmap.server.nexus2.Nexus;
+import net.clanwolf.starmap.server.servernexus.ServerNexus;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.AttackStatsDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.C3GameConfigDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.RolePlayCharacterStatsDAO;
@@ -207,18 +207,18 @@ public class BalanceUserInfo {
 
         if (winningTeam != null) {
             if (Objects.equals(winningTeam, detail.getTeam())) {
-                balanceUserInfo.rewardLossVictory = C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_REWARD_VICTORY").getValue();
+                balanceUserInfo.rewardLossVictory = C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_VICTORY").getValue();
                 balanceUserInfo.rewardLossVictoryDescription = "Victory";
             } else {
-                balanceUserInfo.rewardLossVictory = C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_REWARD_LOSS").getValue();
+                balanceUserInfo.rewardLossVictory = C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_LOSS").getValue();
                 balanceUserInfo.rewardLossVictoryDescription = "Loss";
             }
         } else {
-            balanceUserInfo.rewardLossVictory = C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_REWARD_TIE").getValue();
+            balanceUserInfo.rewardLossVictory = C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_TIE").getValue();
             balanceUserInfo.rewardLossVictoryDescription = "Tie";
         }
 
-        balanceUserInfo.rewardAssist = detail.getAssists() * C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_REWARD_ASSIST").getValue();
+        balanceUserInfo.rewardAssist = detail.getAssists() * C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_ASSIST").getValue();
         balanceUserInfo.playerAssist = detail.getAssists();
         balanceUserInfo.userName = detail.getUsername();
         balanceUserInfo.playerDamage = detail.getDamage().longValue();
@@ -229,18 +229,18 @@ public class BalanceUserInfo {
         mechIdInfo = new MechIdInfo(detail.getMechItemID());
         balanceUserInfo.playerMechName = mechIdInfo;
         balanceUserInfo.mechRepairCost = mechIdInfo.getRepairCost(detail.getHealthPercentage());
-        balanceUserInfo.rewardComponentsDestroyed = detail.getComponentsDestroyed() * C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_REWARD_EACH_COMPONENT_DESTROYED").getValue();
-        balanceUserInfo.rewardMatchScore = detail.getMatchScore() * C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_REWARD_EACH_MACHT_SCORE").getValue();
-        balanceUserInfo.rewardDamage = detail.getDamage() * C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_REWARD_EACH_DAMAGE").getValue();
+        balanceUserInfo.rewardComponentsDestroyed = detail.getComponentsDestroyed() * C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_EACH_COMPONENT_DESTROYED").getValue();
+        balanceUserInfo.rewardMatchScore = detail.getMatchScore() * C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_EACH_MACHT_SCORE").getValue();
+        balanceUserInfo.rewardDamage = detail.getDamage() * C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_EACH_DAMAGE").getValue();
 
         if (detail.getTeamDamage() == 0) {
-            balanceUserInfo.rewardTeamDamage = C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_REWARD_NO_TEAM_DAMAGE").getValue();
+            balanceUserInfo.rewardTeamDamage = C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_NO_TEAM_DAMAGE").getValue();
         } else {
-            balanceUserInfo.rewardTeamDamage = detail.getTeamDamage() * C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_REWARD_EACH_TEAM_DAMAGE").getValue();
+            balanceUserInfo.rewardTeamDamage = detail.getTeamDamage() * C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_EACH_TEAM_DAMAGE").getValue();
         }
 
         balanceUserInfo.playerTeamDamage = detail.getTeamDamage().longValue();
-        balanceUserInfo.rewardKill = detail.getKills() * C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_REWARD_EACH_KILL").getValue();
+        balanceUserInfo.rewardKill = detail.getKills() * C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_EACH_KILL").getValue();
         balanceUserInfo.playerKills = detail.getKills().longValue();
         balanceUserInfo.subTotal = balanceUserInfo.rewardComponentsDestroyed +
                 balanceUserInfo.rewardKill +

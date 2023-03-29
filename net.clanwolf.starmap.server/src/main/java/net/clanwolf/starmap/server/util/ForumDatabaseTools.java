@@ -27,7 +27,7 @@
 package net.clanwolf.starmap.server.util;
 
 import net.clanwolf.starmap.server.GameServer;
-import net.clanwolf.starmap.server.nexus2.Nexus;
+import net.clanwolf.starmap.server.servernexus.ServerNexus;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.AttackDAO;
 import net.clanwolf.starmap.server.persistence.pojos.AttackPOJO;
 import org.slf4j.Logger;
@@ -161,7 +161,7 @@ public class ForumDatabaseTools {
 	public void createFinalizingEntryForAttack(Long attackId, Long season, Long round, String system, String attacker, String winner, boolean serverPickedRandomWinner) {
 		if(GameServer.isDevelopmentPC){ return; };
 
-		AttackPOJO attack = AttackDAO.getInstance().findById(Nexus.DUMMY_USERID, attackId);
+		AttackPOJO attack = AttackDAO.getInstance().findById(ServerNexus.DUMMY_USERID, attackId);
 		Long threadId = attack.getForumThreadId();
 
 		logger.info("Finalizing invasion thread...");

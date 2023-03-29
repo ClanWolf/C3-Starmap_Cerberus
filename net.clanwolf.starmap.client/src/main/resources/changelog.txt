@@ -14,6 +14,13 @@ TODO:
 - Switch to MariaDB client (client, bots)
 ----------------------------------------------------------------
 
+Version 7.3.1 (29.03.2023)
+- FIXED: Output of attack info on discord
+
+Version 7.3.0 (29.03.2023)
+- UPDATED: Java -> 20
+- UPDATED: JavaFX -> 20
+
 Version 7.2.107 (27.03.2023)
 - UPDATED: Ulric announcment of open fights in discord
 - FIXED: Language selection for IRC client (Ulric)

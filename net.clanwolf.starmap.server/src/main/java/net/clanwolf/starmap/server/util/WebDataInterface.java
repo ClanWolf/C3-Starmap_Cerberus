@@ -27,7 +27,7 @@
 package net.clanwolf.starmap.server.util;
 
 import net.clanwolf.starmap.server.GameServer;
-import net.clanwolf.starmap.server.nexus2.Nexus;
+import net.clanwolf.starmap.server.servernexus.ServerNexus;
 import net.clanwolf.starmap.server.persistence.EntityConverter;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.*;
 import net.clanwolf.starmap.server.persistence.pojos.*;
@@ -67,7 +67,7 @@ public class WebDataInterface {
 
 		LocalDateTime currentRoundStartDateTime = null;
 		String currentRoundStartDateString = RoundDAO.getInstance().findBySeasonId(season).getCurrentRoundStartDate();
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Nexus.patternTimestamp);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(ServerNexus.patternTimestamp);
 		currentRoundStartDateTime = LocalDateTime.parse(currentRoundStartDateString, formatter);
 
 		String dateS = dateTimeformatter.format(currentRoundStartDateTime);
@@ -243,7 +243,7 @@ public class WebDataInterface {
 
 			assert dto != null;
 			if (dto.getStoryID() != null) {
-				RolePlayStoryPOJO rpPojo = RolePlayStoryDAO.getInstance().findById(Nexus.DUMMY_USERID, dto.getStoryID());
+				RolePlayStoryPOJO rpPojo = RolePlayStoryDAO.getInstance().findById(ServerNexus.DUMMY_USERID, dto.getStoryID());
 				ArrayList<RolePlayStoryPOJO> storyList = RolePlayStoryDAO.getInstance().getAllStoriesByStory(rpPojo.getStory());
 				for (RolePlayStoryPOJO p : storyList) {
 					RolePlayStoryDTO dtoStory = EntityConverter.convertpojo2dto(p, RolePlayStoryDTO.class);

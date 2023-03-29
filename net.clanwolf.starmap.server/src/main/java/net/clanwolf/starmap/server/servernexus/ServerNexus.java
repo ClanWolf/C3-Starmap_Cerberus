@@ -24,7 +24,7 @@
  * Copyright (c) 2001-2023, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.server.nexus2;
+package net.clanwolf.starmap.server.servernexus;
 
 import net.clanwolf.starmap.server.beans.C3GameSessionHandler;
 import net.clanwolf.starmap.server.util.ExternalCommunicationInterface;
@@ -32,7 +32,7 @@ import net.clanwolf.starmap.server.util.ExternalCommunicationInterface;
 import java.sql.Timestamp;
 import java.util.HashMap;
 
-public class Nexus {
+public class ServerNexus {
 	public static Long currentSeason = 1L;
 	public static Long DUMMY_USERID = -1L;
 	public static Long END_ROUND_USERID = -2L;

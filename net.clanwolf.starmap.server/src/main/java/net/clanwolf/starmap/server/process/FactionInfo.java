@@ -27,7 +27,7 @@
 package net.clanwolf.starmap.server.process;
 
 import net.clanwolf.starmap.constants.Constants;
-import net.clanwolf.starmap.server.nexus2.Nexus;
+import net.clanwolf.starmap.server.servernexus.ServerNexus;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.FactionDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.RolePlayCharacterStatsDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.StarSystemDataDAO;
@@ -56,7 +56,7 @@ public class FactionInfo {
     public String getFactionLongName_en() {
 
         FactionPOJO factionName;
-        factionName = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, myFactionId);
+        factionName = FactionDAO.getInstance().findById(ServerNexus.DUMMY_USERID, myFactionId);
 
         return factionName.getName_en();
     }
@@ -64,7 +64,7 @@ public class FactionInfo {
     public String getFactionLongName_de() {
 
         FactionPOJO factionName;
-        factionName = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, myFactionId);
+        factionName = FactionDAO.getInstance().findById(ServerNexus.DUMMY_USERID, myFactionId);
 
         return factionName.getName_de();
     }

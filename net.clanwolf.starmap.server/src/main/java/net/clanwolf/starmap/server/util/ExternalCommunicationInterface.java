@@ -27,7 +27,7 @@
 package net.clanwolf.starmap.server.util;
 
 import net.clanwolf.starmap.server.GameServer;
-import net.clanwolf.starmap.server.nexus2.Nexus;
+import net.clanwolf.starmap.server.servernexus.ServerNexus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -120,7 +120,7 @@ public class ExternalCommunicationInterface {
 				sql_insert += "INSERT INTO EXT_COM ";
 				sql_insert += "(Text,lang,ServerVersion,ProcessedIRC,ProcessedTS3,ProcessedDiscord) ";
 				sql_insert += "VALUES ";
-				sql_insert += "('" + message + "','" + lang + "','" + Nexus.jarName + "'," + pvIRC + "," + pvTS3 + "," + pvDiscord + "); ";
+				sql_insert += "('" + message + "','" + lang + "','" + ServerNexus.jarName + "'," + pvIRC + "," + pvTS3 + "," + pvDiscord + "); ";
 				long extcomid = insert(sql_insert);
 
 				// Delete all old entries, check if they have been processed

@@ -28,7 +28,7 @@ package net.clanwolf.starmap.server.timertasks;
 
 import net.clanwolf.starmap.mail.MailManager;
 import net.clanwolf.starmap.server.beans.C3GameSessionHandler;
-import net.clanwolf.starmap.server.nexus2.Nexus;
+import net.clanwolf.starmap.server.servernexus.ServerNexus;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import org.slf4j.Logger;
@@ -71,8 +71,8 @@ public class CheckShutdownFlagTimerTask extends TimerTask {
 //			cleanupFlagFiles();
 
 			if(!GameServer.isDevelopmentPC) {
-				Nexus.getEci().sendExtCom("Server is going down after flag request.", "en",true, true, true);
-				Nexus.getEci().sendExtCom("Server fährt herunter nach Flag-Anfrage.", "de",true, true, true);
+				ServerNexus.getEci().sendExtCom("Server is going down after flag request.", "en",true, true, true);
+				ServerNexus.getEci().sendExtCom("Server fährt herunter nach Flag-Anfrage.", "de",true, true, true);
 
 				logger.info("Sending info mail.");
 				String[] receivers = { "keshik@googlegroups.com" };

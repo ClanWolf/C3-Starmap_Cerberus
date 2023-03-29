@@ -30,7 +30,7 @@ import jakarta.persistence.EntityTransaction;
 import net.clanwolf.starmap.mail.MailManager;
 import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.server.GameServer;
-import net.clanwolf.starmap.server.nexus2.Nexus;
+import net.clanwolf.starmap.server.servernexus.ServerNexus;
 import net.clanwolf.starmap.server.beans.C3Room;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.*;
@@ -102,7 +102,7 @@ public class EndRound {
 
         LocalDateTime currentRoundStartDate = null;
         String currentRoundStartDateString = roundPOJO.getCurrentRoundStartDate();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Nexus.patternTimestamp);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(ServerNexus.patternTimestamp);
         if (!currentRoundStartDateString.isEmpty()) {
             currentRoundStartDate = LocalDateTime.parse(currentRoundStartDateString, formatter);
         }
@@ -142,7 +142,7 @@ public class EndRound {
     }
 
     private static boolean timeForThisRoundIsOver(Long seasonId) {
-        DateTimeFormatter dateTimeformatter = DateTimeFormatter.ofPattern(Nexus.patternTimestamp);
+        DateTimeFormatter dateTimeformatter = DateTimeFormatter.ofPattern(ServerNexus.patternTimestamp);
 
         LocalDateTime translatedNowDateWithTime = null;
         LocalDateTime nextRoundDate = null;
@@ -261,7 +261,7 @@ public class EndRound {
             logger.info("Admin finalized this round: " + roundFinalizedByAdmin);
             forceFinalize.set(false);
 
-            EntityTransaction transaction = EntityManagerHelper.getEntityManager(Nexus.END_ROUND_USERID).getTransaction();
+            EntityTransaction transaction = EntityManagerHelper.getEntityManager(ServerNexus.END_ROUND_USERID).getTransaction();
             String exceptionWhileSaving = "";
             Long newRound = null;
             GameState endRoundInfo = new GameState(GAMESTATEMODES.FINALIZE_ROUND);
@@ -269,7 +269,7 @@ public class EndRound {
 
             try {
                 transaction.begin();
-                EntityManagerHelper.clear(Nexus.END_ROUND_USERID);
+                EntityManagerHelper.clear(ServerNexus.END_ROUND_USERID);
                 // here is no ship left to move AND no attack left open OR the time for the round is up
                 logger.info("--- There is NO time left for this round!");
 
@@ -279,10 +279,10 @@ public class EndRound {
                 for (AttackPOJO attackPOJO : openAttacksInRoundList) {
                     Long winnerId = findAWinner(attackPOJO);
 
-                    JumpshipPOJO jsPojo = JumpshipDAO.getInstance().findById(Nexus.END_ROUND_USERID, attackPOJO.getJumpshipID());
-                    StarSystemPOJO ssPojo = StarSystemDAO.getInstance().findById(Nexus.END_ROUND_USERID, attackPOJO.getStarSystemID());
-                    FactionPOJO fWinnerPojo = FactionDAO.getInstance().findById(Nexus.END_ROUND_USERID, winnerId);
-                    FactionPOJO fJumpshipPOJO = FactionDAO.getInstance().findById(Nexus.END_ROUND_USERID, jsPojo.getJumpshipFactionID());
+                    JumpshipPOJO jsPojo = JumpshipDAO.getInstance().findById(ServerNexus.END_ROUND_USERID, attackPOJO.getJumpshipID());
+                    StarSystemPOJO ssPojo = StarSystemDAO.getInstance().findById(ServerNexus.END_ROUND_USERID, attackPOJO.getStarSystemID());
+                    FactionPOJO fWinnerPojo = FactionDAO.getInstance().findById(ServerNexus.END_ROUND_USERID, winnerId);
+                    FactionPOJO fJumpshipPOJO = FactionDAO.getInstance().findById(ServerNexus.END_ROUND_USERID, jsPojo.getJumpshipFactionID());
 
                     resolvedAttacks.append("Jumpship '").append(jsPojo.getJumpshipName()).append("' (").append(jsPojo.getId()).append(") of ").append(fJumpshipPOJO.getShortName()).append(" (").append(fJumpshipPOJO.getId()).append(") attacked system '").append(ssPojo.getName()).append("' (").append(ssPojo.getId()).append(") ").append("--> resolved to winner: ").append(fWinnerPojo.getShortName() + " (" + attackPOJO.getFactionID_Winner() + ").").append("\r\n");
 
@@ -304,7 +304,7 @@ public class EndRound {
                 logger.info("--- Attacks that have been fought in this round:");
                 for (AttackPOJO attackPOJO : allAttacksForRound) {
 
-                    RolePlayCharacterPOJO rpcPojo = RolePlayCharacterDAO.getInstance().findById(Nexus.END_ROUND_USERID, attackPOJO.getCharacterID());
+                    RolePlayCharacterPOJO rpcPojo = RolePlayCharacterDAO.getInstance().findById(ServerNexus.END_ROUND_USERID, attackPOJO.getCharacterID());
                     String rank = rpcPojo.getRank();
                     String name = rpcPojo.getName();
                     String rpCharacter = (rank != null ? rank + " " : "") + name;
@@ -313,10 +313,10 @@ public class EndRound {
 
                     Long winnerId = attackPOJO.getFactionID_Winner();
 
-                    JumpshipPOJO jsPojo = JumpshipDAO.getInstance().findById(Nexus.END_ROUND_USERID, attackPOJO.getJumpshipID());
-                    StarSystemPOJO ssPojo = StarSystemDAO.getInstance().findById(Nexus.END_ROUND_USERID, attackPOJO.getStarSystemID());
-                    FactionPOJO fWinnerPojo = FactionDAO.getInstance().findById(Nexus.END_ROUND_USERID, winnerId);
-                    FactionPOJO fJumpshipPOJO = FactionDAO.getInstance().findById(Nexus.END_ROUND_USERID, jsPojo.getJumpshipFactionID());
+                    JumpshipPOJO jsPojo = JumpshipDAO.getInstance().findById(ServerNexus.END_ROUND_USERID, attackPOJO.getJumpshipID());
+                    StarSystemPOJO ssPojo = StarSystemDAO.getInstance().findById(ServerNexus.END_ROUND_USERID, attackPOJO.getStarSystemID());
+                    FactionPOJO fWinnerPojo = FactionDAO.getInstance().findById(ServerNexus.END_ROUND_USERID, winnerId);
+                    FactionPOJO fJumpshipPOJO = FactionDAO.getInstance().findById(ServerNexus.END_ROUND_USERID, jsPojo.getJumpshipFactionID());
 
                     //				logger.info("1");
                     // Get statistics for this attack
@@ -382,7 +382,7 @@ public class EndRound {
                         attackPOJO.setAttackCostDefender(defenderMechCost + defenderRewardFromMatch);
                         attackPOJO.setAttackCostAttacker(attackerMechCost + attackerRewardFromMatch);
 
-                        attackDAO.update(Nexus.END_ROUND_USERID, attackPOJO);
+                        attackDAO.update(ServerNexus.END_ROUND_USERID, attackPOJO);
 
                         //Update Economy Table
                         FactionInfo defInfo = new FactionInfo(statsEconomyDefenderPOJO.getFactionID()),
@@ -404,8 +404,8 @@ public class EndRound {
                         statsEconomyDefenderPOJO.setStarSystemDataID(attackPOJO.getStarSystemDataID());
                         statsEconomyDefenderPOJO.setCostEnhancement(0L);
 
-                        statsEconomyDAO.update(Nexus.END_ROUND_USERID, statsEconomyAttackerPOJO);
-                        statsEconomyDAO.update(Nexus.END_ROUND_USERID, statsEconomyDefenderPOJO);
+                        statsEconomyDAO.update(ServerNexus.END_ROUND_USERID, statsEconomyAttackerPOJO);
+                        statsEconomyDAO.update(ServerNexus.END_ROUND_USERID, statsEconomyDefenderPOJO);
                         report.saveReport();
 						/*String[] receivers = {"keshik@googlegroups.com"};
 						boolean sent;
@@ -475,13 +475,13 @@ public class EndRound {
 
                             String rpCharacter = "-- no data --";
                             if (p.getCharacterID() != null) {
-                                RolePlayCharacterPOJO rpcPojo = RolePlayCharacterDAO.getInstance().findById(Nexus.END_ROUND_USERID, p.getCharacterID());
+                                RolePlayCharacterPOJO rpcPojo = RolePlayCharacterDAO.getInstance().findById(ServerNexus.END_ROUND_USERID, p.getCharacterID());
                                 String rank = rpcPojo.getRank();
                                 String name = rpcPojo.getName();
                                 rpCharacter = (rank != null ? rank + " " : "") + name;
                             }
 
-                            StarSystemPOJO ssPojo = StarSystemDAO.getInstance().findById(Nexus.END_ROUND_USERID, p.getSystemId());
+                            StarSystemPOJO ssPojo = StarSystemDAO.getInstance().findById(ServerNexus.END_ROUND_USERID, p.getSystemId());
                             movedJumpships.append("Jumpship '").append(js.getJumpshipName()).append("' moved to ").append(ssPojo.getName()).append(" (").append(ssPojo.getId()).append(" / Authorized by ").append(rpCharacter).append(").\r\n");
                         }
                     }
@@ -493,11 +493,11 @@ public class EndRound {
                 LocalTime now = LocalTime.now().truncatedTo(ChronoUnit.HOURS);
                 LocalDateTime translatedNowDateWithTime = LocalDateTime.of(localDate, now);
 
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Nexus.patternTimestamp);
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern(ServerNexus.patternTimestamp);
                 Timestamp c3Now = Timestamp.valueOf(formatter.format(translatedNowDateWithTime));
 
-                String realNowString = new SimpleDateFormat(Nexus.patternTimestamp).format(realNow);
-                String c3NowString = new SimpleDateFormat(Nexus.patternTimestamp).format(c3Now);
+                String realNowString = new SimpleDateFormat(ServerNexus.patternTimestamp).format(realNow);
+                String c3NowString = new SimpleDateFormat(ServerNexus.patternTimestamp).format(c3Now);
 
                 logger.info("Timestamp c3Now: " + c3Now);
                 logger.info("Translated Now date with time: " + translatedNowDateWithTime);
@@ -514,10 +514,10 @@ public class EndRound {
                 StarSystemDataDAO ssdDAO = StarSystemDataDAO.getInstance();
                 FactionDAO fDAO = FactionDAO.getInstance();
 
-                roundDAO.update(Nexus.END_ROUND_USERID, roundPOJO);
+                roundDAO.update(ServerNexus.END_ROUND_USERID, roundPOJO);
                 for (JumpshipPOJO jumpshipPOJO : jumpshipList) {
                     // jumpshipDAO.refresh(Nexus.END_ROUND, jumpshipPOJO);
-                    jumpshipDAO.update(Nexus.END_ROUND_USERID, jumpshipPOJO);
+                    jumpshipDAO.update(ServerNexus.END_ROUND_USERID, jumpshipPOJO);
                 }
                 //for (AttackPOJO attackPOJO : openAttacksInRoundList) {
                 //	attackDAO.update(Nexus.END_ROUND, attackPOJO);
@@ -525,13 +525,13 @@ public class EndRound {
                 for (AttackPOJO attackPOJO : allAttacksForRound) {
                     Long winnerId = attackPOJO.getFactionID_Winner();
 
-                    StarSystemDataPOJO ssdPojo = ssdDAO.findById(Nexus.END_ROUND_USERID, attackPOJO.getStarSystemDataID());
-                    FactionPOJO fPojo = fDAO.findById(Nexus.END_ROUND_USERID, winnerId);
+                    StarSystemDataPOJO ssdPojo = ssdDAO.findById(ServerNexus.END_ROUND_USERID, attackPOJO.getStarSystemDataID());
+                    FactionPOJO fPojo = fDAO.findById(ServerNexus.END_ROUND_USERID, winnerId);
                     ssdPojo.setFactionID(fPojo);
                     logger.info("**** Storing winner for attack " + attackPOJO.getId() + " to be " + winnerId + ".");
 
-                    ssdDAO.update(Nexus.END_ROUND_USERID, ssdPojo);
-                    attackDAO.update(Nexus.END_ROUND_USERID, attackPOJO);
+                    ssdDAO.update(ServerNexus.END_ROUND_USERID, ssdPojo);
+                    attackDAO.update(ServerNexus.END_ROUND_USERID, attackPOJO);
                 }
                 transaction.commit();
 
@@ -702,7 +702,7 @@ public class EndRound {
         }
 
         // Create and send the new version of the universe to all clients that are currently open
-        Nexus.sendUniverseToClients = true;
+        ServerNexus.sendUniverseToClients = true;
 
         return foughtAttacks + "\r\n" + resolvedAttacks + "\r\n" + movedJumpships;
     }

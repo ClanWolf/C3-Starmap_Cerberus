@@ -28,7 +28,7 @@ package net.clanwolf.starmap.server.timertasks;
 
 import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.server.GameServer;
-import net.clanwolf.starmap.server.nexus2.Nexus;
+import net.clanwolf.starmap.server.servernexus.ServerNexus;
 import net.clanwolf.starmap.server.beans.C3GameSessionHandler;
 import net.clanwolf.starmap.server.beans.C3Room;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.AttackDAO;
@@ -66,22 +66,22 @@ public class DropLeadCheckTimerTask extends TimerTask {
 
 		int warning = 5;
 		int kill = 10;
-		if(Nexus.isDevelopmentPC){
+		if(ServerNexus.isDevelopmentPC){
 			warning = 1;
 			kill = 1;
 		}
 
 		// check if there is a countdown for any broken attack that is finished,
 		// close the attack and remove the chars
-		for (Long aid : Nexus.brokenAttackTimers.keySet()) {
+		for (Long aid : ServerNexus.brokenAttackTimers.keySet()) {
 			Long now = System.currentTimeMillis();
-			Long timerstart = Nexus.brokenAttackTimers.get(aid);
+			Long timerstart = ServerNexus.brokenAttackTimers.get(aid);
 			long diff = now - timerstart;
 			if (diff > 1000 * 60 * warning) { // after 5 minutes send a warning
 				// send broadcastmessage for broken attack where countdown has ended --> 5 Minute Warning
 				GameState response = new GameState(GAMESTATEMODES.BROKEN_ATTACK_KILL_FIVE_MINUTE_WARNING);
 				response.addObject(aid);
-				response.addObject2(Nexus.brokenAttackTimers.get(aid));
+				response.addObject2(ServerNexus.brokenAttackTimers.get(aid));
 				response.setAction_successfully(Boolean.TRUE);
 				C3Room.sendBroadcastMessage(response);
 			}
@@ -89,7 +89,7 @@ public class DropLeadCheckTimerTask extends TimerTask {
 				// send broadcastmessage for broken attack where countdown has ended --> kill attack
 				GameState response = new GameState(GAMESTATEMODES.BROKEN_ATTACK_KILL_AFTER_TIMEOUT);
 				response.addObject(aid);
-				response.addObject2(Nexus.brokenAttackTimers.get(aid));
+				response.addObject2(ServerNexus.brokenAttackTimers.get(aid));
 				response.setAction_successfully(Boolean.TRUE);
 				C3Room.sendBroadcastMessage(response);
 
@@ -98,8 +98,8 @@ public class DropLeadCheckTimerTask extends TimerTask {
 		}
 
 		for (Long aid : attacksToReset) {
-			Nexus.gmSessionHandler.resetAttack(aid);
-			Nexus.brokenAttackTimers.remove(aid);
+			ServerNexus.gmSessionHandler.resetAttack(aid);
+			ServerNexus.brokenAttackTimers.remove(aid);
 		}
 		attacksToReset.clear();
 
@@ -126,7 +126,7 @@ public class DropLeadCheckTimerTask extends TimerTask {
 					brokenAttacks.add(a);
 				} else {
 					// Attack is ok, remove countdown
-					if (Nexus.brokenAttackTimers.remove(a.getId()) != null) { // a formerly broken attack was removed --> healed
+					if (ServerNexus.brokenAttackTimers.remove(a.getId()) != null) { // a formerly broken attack was removed --> healed
 						// send broadcastmessage for attack that has been healed
 						GameState response = new GameState(GAMESTATEMODES.BROKEN_ATTACK_HEALED);
 						response.addObject(a.getId());
@@ -142,8 +142,8 @@ public class DropLeadCheckTimerTask extends TimerTask {
 				// check if there is a timer for this attack already
 				// if not, create one
 				Long timerStartTime = System.currentTimeMillis();
-				if (!Nexus.brokenAttackTimers.containsKey(a.getId())) {
-					Nexus.brokenAttackTimers.put(a.getId(), timerStartTime);
+				if (!ServerNexus.brokenAttackTimers.containsKey(a.getId())) {
+					ServerNexus.brokenAttackTimers.put(a.getId(), timerStartTime);
 				}
 
 				// send broadcastmessage for each broken attack

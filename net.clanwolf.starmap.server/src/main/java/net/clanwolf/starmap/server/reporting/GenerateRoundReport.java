@@ -49,7 +49,7 @@ import com.itextpdf.layout.properties.UnitValue;
 import com.itextpdf.layout.properties.VerticalAlignment;
 import net.clanwolf.starmap.mail.MailManager;
 import net.clanwolf.starmap.server.GameServer;
-import net.clanwolf.starmap.server.nexus2.Nexus;
+import net.clanwolf.starmap.server.servernexus.ServerNexus;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.C3GameConfigDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.FactionDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.StarSystemDAO;
@@ -234,7 +234,7 @@ public class GenerateRoundReport {
             case Linux -> DEST = "/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/seasonhistory/S1/Reports/";
             case Windows -> DEST = "c:\\temp\\";
         }
-        StarSystemPOJO ssPojo = StarSystemDAO.getInstance().findById(Nexus.END_ROUND_USERID, attackPOJO.getStarSystemID());
+        StarSystemPOJO ssPojo = StarSystemDAO.getInstance().findById(ServerNexus.END_ROUND_USERID, attackPOJO.getStarSystemID());
         pdfFileName = "C3-InvasionReport_S" + ap.getSeason() + "_R" + ap.getRound() + "_" + ssPojo.getName() + ".pdf";
 
         logger.info("--- Genrate PDF report for attackId: " + ap.getId());
@@ -282,7 +282,7 @@ public class GenerateRoundReport {
         boolean sent;
 
         if (!GameServer.isDevelopmentPC) {
-            StarSystemPOJO planet = StarSystemDAO.getInstance().findById(Nexus.DUMMY_USERID, starSystemID);
+            StarSystemPOJO planet = StarSystemDAO.getInstance().findById(ServerNexus.DUMMY_USERID, starSystemID);
 
             String subject = "PDF report created for season:" +
                     attackPOJO.getSeason() +
@@ -371,13 +371,13 @@ public class GenerateRoundReport {
     private void createCalcInfoXP() {
         List calcInfo = new List()
                 .setFontSize(8)
-                .add("Victory = " + C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_XP_REWARD_VICTORY").getValue() +
-                        " XP / Loss = " + C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_XP_REWARD_LOSS").getValue() + " XP loss")
-                .add("Components destroyed: " + C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_XP_REWARD_COMPONENT_DESTROYED").getValue() + " XP per destroyed component")
-                .add("Match-score: " + C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_XP_REWARD_EACH_MATCH_SCORE").getValue() + " XP for each reach " +
-                        C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_XP_REWARD_EACH_MATCH_SCORE_RANGE").getValue() + " match score")
-                .add("Damage: " + C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_XP_REWARD_EACH_DAMAGE").getValue() + " XP for ech reach " +
-                        C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_XP_REWARD_EACH_DAMAGE_RANGE").getValue() + " damage");
+                .add("Victory = " + C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_VICTORY").getValue() +
+                        " XP / Loss = " + C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_LOSS").getValue() + " XP loss")
+                .add("Components destroyed: " + C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_COMPONENT_DESTROYED").getValue() + " XP per destroyed component")
+                .add("Match-score: " + C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_EACH_MATCH_SCORE").getValue() + " XP for each reach " +
+                        C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_EACH_MATCH_SCORE_RANGE").getValue() + " match score")
+                .add("Damage: " + C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_EACH_DAMAGE").getValue() + " XP for ech reach " +
+                        C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_EACH_DAMAGE_RANGE").getValue() + " damage");
 
         doc.add(calcInfo)
                 .add(new Paragraph());
@@ -659,8 +659,8 @@ public class GenerateRoundReport {
 
     public void addGameInfo(AttackStatsPOJO attackStats, MWOMatchResult matchDetails) throws Exception {
 
-        factionAttacker = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, attackStats.getAttackerFactionId());
-        factionDefender = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, attackStats.getDefenderFactionId());
+        factionAttacker = FactionDAO.getInstance().findById(ServerNexus.DUMMY_USERID, attackStats.getAttackerFactionId());
+        factionDefender = FactionDAO.getInstance().findById(ServerNexus.DUMMY_USERID, attackStats.getDefenderFactionId());
 
         if (!factionTableAdded) {
 
@@ -974,7 +974,7 @@ public class GenerateRoundReport {
 
     private void createPlanetInfo() throws Exception {
         doc.add(new Paragraph("Information about the planet being attacked:").setFontSize(8).setBold());
-        StarSystemPOJO planet = StarSystemDAO.getInstance().findById(Nexus.DUMMY_USERID, starSystemID);
+        StarSystemPOJO planet = StarSystemDAO.getInstance().findById(ServerNexus.DUMMY_USERID, starSystemID);
 
         List planetInfo = new List();
 
@@ -1018,7 +1018,7 @@ public class GenerateRoundReport {
 
     private void createC3Header(String title) throws Exception {
         String c3Logo = "https://www.clanwolf.net/static/images/logos/c3_logo.png";
-        SysConfigPOJO clientVersion = SysConfigDAO.getInstance().findById(Nexus.DUMMY_USERID, 2L);
+        SysConfigPOJO clientVersion = SysConfigDAO.getInstance().findById(ServerNexus.DUMMY_USERID, 2L);
 
         Table tableC3Header = new Table(new float[]{1, 5, 15});
 
@@ -1169,16 +1169,16 @@ public class GenerateRoundReport {
     private void createCalcInfoCost() {
         List calcInf = new List()
                 .setFontSize(8)
-                .add("Victory = " + nf.format(C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_REWARD_VICTORY").getValue()) +
-                        " C-Bills / Loss = " + nf.format(C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_REWARD_LOSS").getValue()) +
-                        " C-Bills / Tie = " + nf.format(C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_REWARD_TIE").getValue()) + " C-Bills")
-                .add("Damage: " + nf.format(C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_REWARD_EACH_DAMAGE").getValue()) + " C-Bills each damage done.")
-                .add("Components destroyed: " + nf.format(C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_REWARD_EACH_COMPONENT_DESTROYED").getValue()) + " C-Bills each component destroyed.")
-                .add("Kills: " + nf.format(C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_REWARD_EACH_KILL").getValue()) + " C-Bills each kill.")
-                .add("Match-score: " + nf.format(C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_REWARD_EACH_MACHT_SCORE").getValue()) + " C-Bills each match-score.")
-                .add("Team damage: " + nf.format(C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_REWARD_EACH_TEAM_DAMAGE").getValue()) + " C-Bills each team damage.")
-                .add("Assist: " + nf.format(C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_REWARD_ASSIST").getValue()) + " C-Bills each assist.")
-                .add("No team damage: " + nf.format(C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID, "C3_REWARD_NO_TEAM_DAMAGE").getValue()) + " C-Bills if the player does not cause team damage.");
+                .add("Victory = " + nf.format(C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_VICTORY").getValue()) +
+                        " C-Bills / Loss = " + nf.format(C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_LOSS").getValue()) +
+                        " C-Bills / Tie = " + nf.format(C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_TIE").getValue()) + " C-Bills")
+                .add("Damage: " + nf.format(C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_EACH_DAMAGE").getValue()) + " C-Bills each damage done.")
+                .add("Components destroyed: " + nf.format(C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_EACH_COMPONENT_DESTROYED").getValue()) + " C-Bills each component destroyed.")
+                .add("Kills: " + nf.format(C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_EACH_KILL").getValue()) + " C-Bills each kill.")
+                .add("Match-score: " + nf.format(C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_EACH_MACHT_SCORE").getValue()) + " C-Bills each match-score.")
+                .add("Team damage: " + nf.format(C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_EACH_TEAM_DAMAGE").getValue()) + " C-Bills each team damage.")
+                .add("Assist: " + nf.format(C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_ASSIST").getValue()) + " C-Bills each assist.")
+                .add("No team damage: " + nf.format(C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_NO_TEAM_DAMAGE").getValue()) + " C-Bills if the player does not cause team damage.");
 
         doc.add(new Paragraph("Cost calculation:")
                         .setFontSize(8)

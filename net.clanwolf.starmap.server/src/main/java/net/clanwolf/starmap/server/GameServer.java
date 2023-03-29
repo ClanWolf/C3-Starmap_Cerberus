@@ -30,7 +30,7 @@ import io.nadron.server.ServerManager;
 import jakarta.persistence.EntityTransaction;
 import net.clanwolf.starmap.logging.C3LogUtil;
 import net.clanwolf.starmap.mail.MailManager;
-import net.clanwolf.starmap.server.nexus2.Nexus;
+import net.clanwolf.starmap.server.servernexus.ServerNexus;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.C3GameConfigDAO;
 import net.clanwolf.starmap.server.persistence.pojos.C3GameConfigPOJO;
@@ -145,7 +145,7 @@ public class GameServer {
 				}
 			}
 
-		EntityTransaction transaction = EntityManagerHelper.getEntityManager(Nexus.END_ROUND_USERID).getTransaction();
+		EntityTransaction transaction = EntityManagerHelper.getEntityManager(ServerNexus.END_ROUND_USERID).getTransaction();
 		transaction.begin();
 
 		//Fehlende Konstanzen werden in der DB eingetragen.
@@ -153,7 +153,7 @@ public class GameServer {
 			C3GameConfigPOJO addC3ConfigPOJO = new C3GameConfigPOJO();
 			addC3ConfigPOJO.setKey(entry.getKey());
 			addC3ConfigPOJO.setValue(entry.getValue());
-			C3GameConfigDAO.getInstance().update(Nexus.END_ROUND_USERID,addC3ConfigPOJO);
+			C3GameConfigDAO.getInstance().update(ServerNexus.END_ROUND_USERID,addC3ConfigPOJO);
 		}
 
 		transaction.commit();
@@ -165,7 +165,7 @@ public class GameServer {
 		if(args.length > 0) {
 			for (String a : args) {
 				isDevelopmentPC = a.equals("IDE");
-				Nexus.isDevelopmentPC = a.equals("IDE");;
+				ServerNexus.isDevelopmentPC = a.equals("IDE");;
 				if (a.toLowerCase().startsWith("season=")) {
 					try {
 						// Season is defaulting to 1, can be set by a parameter
@@ -204,7 +204,7 @@ public class GameServer {
 		logger.info("Started servers");
 		startGames(ctx);
 		checkDBConst();
-	Nexus.serverStartTime = new Timestamp(System.currentTimeMillis());
+	ServerNexus.serverStartTime = new Timestamp(System.currentTimeMillis());
 	}
 
 	public static AbstractApplicationContext getApplicationContext() {
@@ -223,25 +223,7 @@ public class GameServer {
 					.toURI()
 					.getPath();
 			String jarName = jarPath.substring(jarPath.lastIndexOf("/") + 1);
-			Nexus.jarName = jarName;
-
-			if( !isDevelopmentPC) {
-				logger.info("Sending info mail.");
-				String[] receivers = { "keshik@googlegroups.com" };
-				boolean sent = false;
-				sent = MailManager.sendMail("c3@clanwolf.net", receivers, "C3 Server is up again", "C3 Server started.", false);
-				if (sent) {
-					// sent
-					logger.info("Mail sent. [3]");
-				} else {
-					// error during email sending
-					logger.info("Error during mail dispatch. [3]");
-				}
-			}
-
-			Timer sendInformationToBotsTimer = new Timer();
-			SendInformationToBotsTimerTask sendInformationToBotsTimerTask = new SendInformationToBotsTimerTask();
-			sendInformationToBotsTimer.schedule(sendInformationToBotsTimerTask, 15000, 6 * 60 * 60_000);
+			ServerNexus.jarName = jarName;
 
 			// run regular checks if attacks missing dropleads
 			Timer checkOpenAttacksForDropleadsTimer = new Timer();
@@ -257,8 +239,29 @@ public class GameServer {
 			checkShutdownFlag.schedule(new CheckShutdownFlagTimerTask(serverBaseDir), 1000, 1000 * 5);
 
 			logger.info(jarName + " is up and ready");
-			Nexus.getEci().sendExtCom(jarName + " is up and ready", "en",true, true, true);
-			Nexus.getEci().sendExtCom(jarName + " ist gestartet und bereit", "de",true, true, true);
+			if( !isDevelopmentPC) {
+				logger.info("Sending info mail.");
+				String[] receivers = { "keshik@googlegroups.com" };
+				boolean sent = false;
+				sent = MailManager.sendMail("c3@clanwolf.net", receivers, "C3 Server is up again", "C3 Server started.", false);
+				if (sent) {
+					// sent
+					logger.info("Mail sent. [3]");
+				} else {
+					// error during email sending
+					logger.info("Error during mail dispatch. [3]");
+				}
+
+				Timer sendInformationToBotsTimer = new Timer();
+				SendInformationToBotsTimerTask sendInformationToBotsTimerTask = new SendInformationToBotsTimerTask();
+				sendInformationToBotsTimer.schedule(sendInformationToBotsTimerTask, 15000, 8 * 60 * 60_000);
+
+				String t_de = "https://www.clanwolf.net/apps/C3/changelog.txt";
+				String t_en = "https://www.clanwolf.net/apps/C3/changelog.txt";
+
+				ServerNexus.getEci().sendExtCom(jarName + " is up and ready.\r\n" + t_en, "en", true, true, true);
+				ServerNexus.getEci().sendExtCom(jarName + " ist gestartet und bereit.\r\n" + t_de, "de", true, true, true);
+			}
 
 			// World world = ctx.getBean(World.class);
 			// GameRoom room1 = (GameRoom)ctx.getBean("Zombie_ROOM_1");
@@ -270,6 +273,7 @@ public class GameServer {
 			// taskManager.scheduleWithFixedDelay(monitor2, 2000, 5000, TimeUnit.MILLISECONDS);
 		} catch(Exception e) {
 			e.printStackTrace();
+			logger.error("Server error.", e);
 		}
 	}
 }

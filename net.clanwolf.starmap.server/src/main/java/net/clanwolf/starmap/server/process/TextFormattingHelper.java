@@ -26,7 +26,7 @@
  */
 package net.clanwolf.starmap.server.process;
 
-import net.clanwolf.starmap.server.nexus2.Nexus;
+import net.clanwolf.starmap.server.servernexus.ServerNexus;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.C3GameConfigDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.FactionDAO;
 import net.clanwolf.starmap.server.persistence.pojos.AttackStatsPOJO;
@@ -94,8 +94,8 @@ public class TextFormattingHelper {
      * @throws RuntimeException ruft die Fehlerbehandlung ab.
      */
     public void addXPComponentDestroyed(Integer countComponentDestroyed) throws RuntimeException {
-        addTwoColumnsText("Component destroyed: ", C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID,"C3_XP_REWARD_COMPONENT_DESTROYED").getValue() * countComponentDestroyed +
-                " XP (" + C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID,"C3_XP_REWARD_COMPONENT_DESTROYED").getValue() + " XP * " + countComponentDestroyed +
+        addTwoColumnsText("Component destroyed: ", C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID,"C3_XP_REWARD_COMPONENT_DESTROYED").getValue() * countComponentDestroyed +
+                " XP (" + C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID,"C3_XP_REWARD_COMPONENT_DESTROYED").getValue() + " XP * " + countComponentDestroyed +
                 " Component destroyed)");
     }
 
@@ -105,11 +105,11 @@ public class TextFormattingHelper {
      * @throws RuntimeException ruft die Fehlerbehandlung ab.
      */
     public void addXPMatchScore(Integer matchScore) throws RuntimeException {
-        addTwoColumnsText("Match score: ", CalcRange(matchScore.longValue(), C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID,"C3_XP_REWARD_EACH_MATCH_SCORE_RANGE").getValue()) *
-                C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID,"C3_XP_REWARD_EACH_MATCH_SCORE").getValue() +
-                " XP (" + C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID,"C3_XP_REWARD_EACH_MATCH_SCORE").getValue() + " XP * " +
-                CalcRange(matchScore.longValue(), C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID,"C3_XP_REWARD_EACH_MATCH_SCORE_RANGE").getValue())+
-                " per reached " + C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID,"C3_XP_REWARD_EACH_MATCH_SCORE_RANGE").getValue() + " Match score [User match score: " +
+        addTwoColumnsText("Match score: ", CalcRange(matchScore.longValue(), C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID,"C3_XP_REWARD_EACH_MATCH_SCORE_RANGE").getValue()) *
+                C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID,"C3_XP_REWARD_EACH_MATCH_SCORE").getValue() +
+                " XP (" + C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID,"C3_XP_REWARD_EACH_MATCH_SCORE").getValue() + " XP * " +
+                CalcRange(matchScore.longValue(), C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID,"C3_XP_REWARD_EACH_MATCH_SCORE_RANGE").getValue())+
+                " per reached " + C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID,"C3_XP_REWARD_EACH_MATCH_SCORE_RANGE").getValue() + " Match score [User match score: " +
                 matchScore + "])");
     }
 
@@ -119,11 +119,11 @@ public class TextFormattingHelper {
      * @throws RuntimeException ruft die Fehlerbehandlung ab.
      */
     public void addXPDamage(Integer damage) throws RuntimeException {
-        addTwoColumnsText("Damage: ",CalcRange(damage.longValue(), C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID,"C3_XP_REWARD_EACH_DAMAGE_RANGE").getValue()) *
-                C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID,"C3_XP_REWARD_EACH_DAMAGE").getValue() +
-                " XP (" + C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID,"C3_XP_REWARD_EACH_DAMAGE").getValue() + " XP * " +
-                CalcRange(damage.longValue(), C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID,"C3_XP_REWARD_EACH_DAMAGE_RANGE").getValue()) + " per reached " +
-                C3GameConfigDAO.getInstance().findByKey(Nexus.END_ROUND_USERID,"XP_REWARD_EACH_DAMAGE_RANGE").getValue() + " Damage [User damage: " + damage + "])");
+        addTwoColumnsText("Damage: ",CalcRange(damage.longValue(), C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID,"C3_XP_REWARD_EACH_DAMAGE_RANGE").getValue()) *
+                C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID,"C3_XP_REWARD_EACH_DAMAGE").getValue() +
+                " XP (" + C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID,"C3_XP_REWARD_EACH_DAMAGE").getValue() + " XP * " +
+                CalcRange(damage.longValue(), C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID,"C3_XP_REWARD_EACH_DAMAGE_RANGE").getValue()) + " per reached " +
+                C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID,"XP_REWARD_EACH_DAMAGE_RANGE").getValue() + " Damage [User damage: " + damage + "])");
     }
 
     /**
@@ -132,9 +132,9 @@ public class TextFormattingHelper {
      * @throws RuntimeException ruft die Fehlerbehandlung ab.
      */
     public void addGameInfo(AttackStatsPOJO attackStats) throws RuntimeException {
-        FactionPOJO factionAttacker = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, attackStats.getAttackerFactionId());
-        FactionPOJO factionDefender = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, attackStats.getDefenderFactionId());
-        FactionPOJO factionWinner = FactionDAO.getInstance().findById(Nexus.DUMMY_USERID, attackStats.getWinnerFactionId());
+        FactionPOJO factionAttacker = FactionDAO.getInstance().findById(ServerNexus.DUMMY_USERID, attackStats.getAttackerFactionId());
+        FactionPOJO factionDefender = FactionDAO.getInstance().findById(ServerNexus.DUMMY_USERID, attackStats.getDefenderFactionId());
+        FactionPOJO factionWinner = FactionDAO.getInstance().findById(ServerNexus.DUMMY_USERID, attackStats.getWinnerFactionId());
 
         addTwoColumnsText("Attacker: ", factionAttacker.getName_en());
         addTwoColumnsText("Defender: ", factionDefender.getName_en());
