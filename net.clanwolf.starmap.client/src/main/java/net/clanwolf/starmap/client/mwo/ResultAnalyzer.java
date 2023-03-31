@@ -38,6 +38,7 @@ import net.clanwolf.starmap.client.process.universe.BOStatsMwo;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.constants.Constants;
+import net.clanwolf.starmap.exceptions.MechNotFoundException;
 import net.clanwolf.starmap.transfer.dtos.*;
 import net.clanwolf.starmap.transfer.mwo.MWOMatchResult;
 import net.clanwolf.starmap.transfer.mwo.MatchDetails;
@@ -122,33 +123,29 @@ public class ResultAnalyzer {
 
 		for (UserDetail ud : result.getUserDetails()) {
 			if (!ud.getIsSpectator()) {
-				MechIdInfo mechInfo = new MechIdInfo(ud.getMechItemID());
-
 				String team = ud.getTeam() == null ? "/" : ud.getTeam();
 				String userName = ud.getUsername();
-				String mech = ud.getMechName();
-				long mechItemId = ud.getMechItemID().longValue();
 				boolean leadingPosition = false;
+				String mech = ud.getMechName();
+				// Integer killsMostDamage = ud.getKillsMostDamage();
+				// Integer teamDamage = ud.getTeamDamage();
+				// Integer componentsDestroyed = ud.getComponentsDestroyed();
 
-				String mechFullName = mechInfo.getFullName();
-				Integer killsMostDamage = ud.getKillsMostDamage();
-				Integer teamDamage = ud.getTeamDamage();
-				Integer componentsDestroyed = ud.getComponentsDestroyed();
+				long mechItemId = ud.getMechItemID().longValue();
+				int tonnage = -1;
 
-				int tonnage = mechInfo.getTonnage();
-				if (tonnage == 999) {
-					// Mech has not been found in MWO EChassis Enumeration --> Manual FIX!
-					logger.error("Mech Chassis not found in Enumeration! MechItemId: " + mechItemId);
-					if (mechItemId == 0) {
-						logger.info("MechItemId=0 --> No Mech, Spectator!");
-						tonnage = 0;
-					} else {
-						logger.info("Rawdata MWO API Stats:");
-						logger.info("-------------------------------------------------------------------");
-						logger.info(jsonString);
-						logger.info("-------------------------------------------------------------------");
-					}
+				try {
+					MechIdInfo mechInfo = new MechIdInfo(ud.getMechItemID());
+					tonnage = mechInfo.getTonnage();
+				} catch (MechNotFoundException e) {
+					logger.error("Mech not found with id: " + ud.getMechItemID(), e);
 				}
+
+				// logger.info("Rawdata MWO API Stats:");
+				// logger.info("-------------------------------------------------------------------");
+				// logger.info(jsonString);
+				// logger.info("-------------------------------------------------------------------");
+
 				String unit = ud.getUnitTag();
 				Integer kills = ud.getKills();
 				Integer assists = ud.getAssists();

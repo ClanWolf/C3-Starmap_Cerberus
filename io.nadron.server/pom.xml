@@ -101,6 +101,14 @@
 			<artifactId>msgpack</artifactId>
 			<version>${version.msgpack}</version>
 		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.msgpack/msgpack-core -->
+<!--		<dependency>-->
+<!--			<groupId>org.msgpack</groupId>-->
+<!--			<artifactId>msgpack-core</artifactId>-->
+<!--			<version>0.9.3</version>-->
+<!--		</dependency>-->
+
 	</dependencies>
 
 	<!-- ########################################################################################################### -->

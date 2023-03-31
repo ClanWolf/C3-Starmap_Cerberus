@@ -2,14 +2,13 @@ package io.nadron.handlers.netty;
 
 import java.util.List;
 
-import org.msgpack.MessagePack;
-
 import io.nadron.event.Event;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelHandler.Sharable;
-import io.netty.handler.codec.MessageToMessageEncoder;;
+import io.netty.handler.codec.MessageToMessageEncoder;
+import org.msgpack.MessagePack;
 
 @Sharable
 public class MsgPackEncoder extends MessageToMessageEncoder<Event> {

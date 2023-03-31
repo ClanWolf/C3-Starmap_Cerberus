@@ -70,6 +70,7 @@ import net.clanwolf.starmap.client.process.universe.BOFaction;
 import net.clanwolf.starmap.client.process.universe.BOStarSystem;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
 import net.clanwolf.starmap.transfer.dtos.AttackDTO;
+import net.clanwolf.starmap.transfer.mwo.MechIdInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.client.net.Server;
@@ -80,7 +81,9 @@ import net.clanwolf.starmap.client.util.*;
 import net.clanwolf.starmap.transfer.dtos.UserDTO;
 import net.clanwolf.starmap.transfer.enums.MEDALS;
 import net.clanwolf.starmap.transfer.enums.POPUPS;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.lang.invoke.MethodHandles;
 import java.net.URL;

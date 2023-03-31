@@ -26,231 +26,232 @@
  */
 package net.clanwolf.starmap.server.process;
 
-import net.clanwolf.starmap.server.servernexus.ServerNexus;
+import net.clanwolf.starmap.exceptions.MechNotFoundException;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.AttackStatsDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.C3GameConfigDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.RolePlayCharacterStatsDAO;
 import net.clanwolf.starmap.server.persistence.pojos.AttackStatsPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.RolePlayCharacterStatsPOJO;
+import net.clanwolf.starmap.server.servernexus.ServerNexus;
 import net.clanwolf.starmap.transfer.mwo.MWOMatchResult;
 import net.clanwolf.starmap.transfer.mwo.MechIdInfo;
 import net.clanwolf.starmap.transfer.mwo.UserDetail;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class BalanceUserInfo {
-    /**
-     * Der Benutzername, wie er in MWO angezeigt wird.
-     */
-    public String userName;
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+	private final MWOMatchResult mwomatchResult;
+	private final Long defenderFactionID, attackerFactionID;
+	/**
+	 * Der Benutzername, wie er in MWO angezeigt wird.
+	 */
+	public String userName;
+	public long rewardLossVictory;
+	public String rewardLossVictoryDescription;
+	public long rewardAssist;
+	public long playerAssist;
+	/**
+	 * Die Anzahl des Schadens, den Spieler mit dem Mech erzielt hat.
+	 */
+	public long playerDamage;
+	/**
+	 * Anzahl der Komponenten, die der Spieler zerstört hat.
+	 */
+	public long playerComponentDestroyed;
+	/**
+	 * Die Anzahl kills, die der Spieler erreicht hat.
+	 */
+	public long playerKills;
+	/**
+	 * Dia Anzahl an Match-score, den der Spieler erreicht hat.
+	 */
+	public long playerMatchScore;
+	/**
+	 * Der Gesundheit zustand des Mechs, am Ende des Kampfes.
+	 */
+	public long playerMechHealth;
+	/**
+	 * Mech-Informationen über den Spieler.
+	 */
+	public MechIdInfo playerMechName;
+	/**
+	 * Mech-Reparaturkosten in C-Bills.
+	 */
+	public long mechRepairCost;
+	/**
+	 * Die Belohnung für zerstöre Komponenten in C-Bills.
+	 */
+	public long rewardComponentsDestroyed;
+	/**
+	 * Die Belohnung für den Match-score in C-Bills.
+	 */
+	public long rewardMatchScore;
+	/**
+	 * Die Belohnung für Schaden in C-Bills
+	 */
+	public long rewardDamage;
+	/**
+	 * Die Bestrafung für den Spieler, dass er ein Teammitglied angeschossen hat in C-Bills.
+	 */
+	public long rewardTeamDamage;
+	/**
+	 * Den Schaden an einem Teammitglied, den der Spieler angerichtet hat.
+	 */
+	public long playerTeamDamage;
+	/**
+	 * Die Belohnung für die kills, den der Spieler erreicht hat in C-Bills.
+	 */
+	public long rewardKill;
+	/**
+	 * Die Summe aller Belohnungen und Kosten für den Spieler.
+	 */
+	public Long subTotal;
 
-    public long rewardLossVictory;
-    public String rewardLossVictoryDescription;
-    public long rewardAssist;
-    public long playerAssist;
-    /**
-     * Die Anzahl des Schadens, den Spieler mit dem Mech erzielt hat.
-     */
-    public long playerDamage;
-    /**
-     * Anzahl der Komponenten, die der Spieler zerstört hat.
-     */
-    public long playerComponentDestroyed;
-    /**
-     * Die Anzahl kills, die der Spieler erreicht hat.
-     */
-    public long playerKills;
-    /**
-     * Dia Anzahl an Match-score, den der Spieler erreicht hat.
-     */
-    public long playerMatchScore;
-    /**
-     * Der Gesundheit zustand des Mechs, am Ende des Kampfes.
-     */
-    public long playerMechHealth;
-    /**
-     * Mech-Informationen über den Spieler.
-     */
-    public MechIdInfo playerMechName;
-    /**
-     * Mech-Reparaturkosten in C-Bills.
-     */
-    public long mechRepairCost;
-    /**
-     * Die Belohnung für zerstöre Komponenten in C-Bills.
-     */
-    public long rewardComponentsDestroyed;
-    /**
-     * Die Belohnung für den Match-score in C-Bills.
-     */
-    public long rewardMatchScore;
-    /**
-     * Die Belohnung für Schaden in C-Bills
-     */
-    public long rewardDamage;
-    /**
-     * Die Bestrafung für den Spieler, dass er ein Teammitglied angeschossen hat in C-Bills.
-     */
-    public long rewardTeamDamage;
-    /**
-     * Den Schaden an einem Teammitglied, den der Spieler angerichtet hat.
-     */
-    public long playerTeamDamage;
-    /**
-     * Die Belohnung für die kills, den der Spieler erreicht hat in C-Bills.
-     */
-    public long rewardKill;
-    /**
-     * Die Summe aller Belohnungen und Kosten für den Spieler.
-     */
-    public Long subTotal;
+	/**
+	 * Berechnet die kosten für den Angreifer und den Verteidiger.
+	 *
+	 * @param mwomatchResult MWOMachtResult
+	 */
+	public BalanceUserInfo(MWOMatchResult mwomatchResult) {
 
-    private final MWOMatchResult mwomatchResult;
-    private final Long defenderFactionID, attackerFactionID;
+		AttackStatsDAO attackStatsDAO = AttackStatsDAO.getInstance();
+		AttackStatsPOJO attackStatsPOJO = attackStatsDAO.findByMatchId(mwomatchResult.getGameID());
+		defenderFactionID = attackStatsPOJO.getDefenderFactionId();
+		attackerFactionID = attackStatsPOJO.getAttackerFactionId();
 
-    /**
-     * Berechnet die kosten für den Angreifer und den Verteidiger.
-     *
-     * @param mwomatchResult MWOMachtResult
-     */
-    public BalanceUserInfo(MWOMatchResult mwomatchResult) {
+		this.mwomatchResult = mwomatchResult;
+	}
 
-        AttackStatsDAO attackStatsDAO = AttackStatsDAO.getInstance();
-        AttackStatsPOJO attackStatsPOJO = attackStatsDAO.findByMatchId(mwomatchResult.getGameID());
-        defenderFactionID = attackStatsPOJO.getDefenderFactionId();
-        attackerFactionID = attackStatsPOJO.getAttackerFactionId();
+	/**
+	 * Listet die kosten für den Angreifer auf.
+	 *
+	 * @return Gibt ein ArrayList für die kosten für den Angreifer zurück.
+	 */
+	public List<BalanceUserInfo> GetAttackerInfo() throws ParserConfigurationException, IOException, SAXException {
+		List<BalanceUserInfo> attacker = new ArrayList<>();
 
-        this.mwomatchResult = mwomatchResult;
-    }
+		for (UserDetail detail : mwomatchResult.getUserDetails()) {
+			if (detail.getTeam() != null) {
+				if (Objects.equals(getAttackerTeam(), detail.getTeam())) {
+					getUserInfo(attacker, detail);
+				}
+			}
+		}
+		return attacker;
+	}
 
-    /**
-     * Listet die kosten für den Angreifer auf.
-     *
-     * @return Gibt ein ArrayList für die kosten für den Angreifer zurück.
-     */
-    public List<BalanceUserInfo> GetAttackerInfo() throws ParserConfigurationException, IOException, SAXException {
-        List<BalanceUserInfo> attacker = new ArrayList<>();
+	/**
+	 * Listet die kosten für den Verteidiger auf.
+	 *
+	 * @return Gibt ein ArrayList für die kosten für den Verteidiger zurück.
+	 */
+	public List<BalanceUserInfo> GetDefenderInfo() throws ParserConfigurationException, IOException, SAXException {
+		List<BalanceUserInfo> defender = new ArrayList<>();
 
-        for (UserDetail detail : mwomatchResult.getUserDetails()) {
-            if (detail.getTeam() != null) {
-                if (Objects.equals(getAttackerTeam(), detail.getTeam())) {
-                    getUserInfo(attacker, detail);
-                }
-            }
-        }
-        return attacker;
-    }
+		for (UserDetail detail : mwomatchResult.getUserDetails()) {
+			if (detail.getTeam() != null) {
+				if (Objects.equals(getDefenderTeam(), detail.getTeam())) {
+					getUserInfo(defender, detail);
+				}
+			}
+		}
+		return defender;
+	}
 
-    /**
-     * Listet die kosten für den Verteidiger auf.
-     *
-     * @return Gibt ein ArrayList für die kosten für den Verteidiger zurück.
-     */
-    public List<BalanceUserInfo> GetDefenderInfo() throws ParserConfigurationException, IOException, SAXException {
-        List<BalanceUserInfo> defender = new ArrayList<>();
+	private String getDefenderTeam() {
 
-        for (UserDetail detail : mwomatchResult.getUserDetails()) {
-            if (detail.getTeam() != null) {
-                if (Objects.equals(getDefenderTeam(), detail.getTeam())) {
-                    getUserInfo(defender, detail);
-                }
-            }
-        }
-        return defender;
-    }
+		RolePlayCharacterStatsDAO rolePlayCharacterStatsDAO = RolePlayCharacterStatsDAO.getInstance();
+		ArrayList<RolePlayCharacterStatsPOJO> rolePlayCharacterStatsPOJO = rolePlayCharacterStatsDAO.findByMatchId(mwomatchResult.getGameID());
+		String defTeam = null;
 
-    private String getDefenderTeam() {
+		for (RolePlayCharacterStatsPOJO rpChar : rolePlayCharacterStatsPOJO) {
+			if (rpChar.getMwoTeam() != null) {
+				if (Objects.equals(defenderFactionID, rpChar.getRoleplayCharacterFactionId())) {
+					defTeam = String.valueOf(rpChar.getMwoTeam());
+					break;
+				}
+			}
+		}
+		return defTeam;
+	}
 
-        RolePlayCharacterStatsDAO rolePlayCharacterStatsDAO = RolePlayCharacterStatsDAO.getInstance();
-        ArrayList<RolePlayCharacterStatsPOJO> rolePlayCharacterStatsPOJO = rolePlayCharacterStatsDAO.findByMatchId(mwomatchResult.getGameID());
-        String defTeam = null;
+	private String getAttackerTeam() {
 
-        for (RolePlayCharacterStatsPOJO rpChar : rolePlayCharacterStatsPOJO) {
-            if (rpChar.getMwoTeam() != null) {
-                if (Objects.equals(defenderFactionID, rpChar.getRoleplayCharacterFactionId())) {
-                    defTeam = String.valueOf(rpChar.getMwoTeam());
-                    break;
-                }
-            }
-        }
-        return defTeam;
-    }
+		RolePlayCharacterStatsDAO rolePlayCharacterStatsDAO = RolePlayCharacterStatsDAO.getInstance();
+		ArrayList<RolePlayCharacterStatsPOJO> rolePlayCharacterStatsPOJO = rolePlayCharacterStatsDAO.findByMatchId(mwomatchResult.getGameID());
+		String attTeam = null;
 
-    private String getAttackerTeam() {
+		for (RolePlayCharacterStatsPOJO rpChar : rolePlayCharacterStatsPOJO) {
+			if (rpChar.getMwoTeam() != null) {
+				if (Objects.equals(attackerFactionID, rpChar.getRoleplayCharacterFactionId())) {
+					attTeam = String.valueOf(rpChar.getMwoTeam());
+					break;
+				}
+			}
+		}
+		return attTeam;
+	}
 
-        RolePlayCharacterStatsDAO rolePlayCharacterStatsDAO = RolePlayCharacterStatsDAO.getInstance();
-        ArrayList<RolePlayCharacterStatsPOJO> rolePlayCharacterStatsPOJO = rolePlayCharacterStatsDAO.findByMatchId(mwomatchResult.getGameID());
-        String attTeam = null;
+	private void getUserInfo(List<BalanceUserInfo> userInfos, UserDetail detail) throws ParserConfigurationException, IOException, SAXException {
+		try {
+			BalanceUserInfo balanceUserInfo;
+			MechIdInfo mechIdInfo;
 
-        for (RolePlayCharacterStatsPOJO rpChar : rolePlayCharacterStatsPOJO) {
-            if (rpChar.getMwoTeam() != null) {
-                if (Objects.equals(attackerFactionID, rpChar.getRoleplayCharacterFactionId())) {
-                    attTeam = String.valueOf(rpChar.getMwoTeam());
-                    break;
-                }
-            }
-        }
-        return attTeam;
-    }
+			String winningTeam = mwomatchResult.getMatchDetails().getWinningTeam();
+			balanceUserInfo = new BalanceUserInfo(mwomatchResult);
 
-    private void getUserInfo(List<BalanceUserInfo> userInfos, UserDetail detail) throws ParserConfigurationException, IOException, SAXException {
-        BalanceUserInfo balanceUserInfo;
-        MechIdInfo mechIdInfo;
+			if (winningTeam != null) {
+				if (Objects.equals(winningTeam, detail.getTeam())) {
+					balanceUserInfo.rewardLossVictory = C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_VICTORY").getValue();
+					balanceUserInfo.rewardLossVictoryDescription = "Victory";
+				} else {
+					balanceUserInfo.rewardLossVictory = C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_LOSS").getValue();
+					balanceUserInfo.rewardLossVictoryDescription = "Loss";
+				}
+			} else {
+				balanceUserInfo.rewardLossVictory = C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_TIE").getValue();
+				balanceUserInfo.rewardLossVictoryDescription = "Tie";
+			}
 
-        String winningTeam = mwomatchResult.getMatchDetails().getWinningTeam();
-        balanceUserInfo = new BalanceUserInfo(mwomatchResult);
+			balanceUserInfo.rewardAssist = detail.getAssists() * C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_ASSIST").getValue();
+			balanceUserInfo.playerAssist = detail.getAssists();
+			balanceUserInfo.userName = detail.getUsername();
+			balanceUserInfo.playerDamage = detail.getDamage().longValue();
+			balanceUserInfo.playerComponentDestroyed = detail.getComponentsDestroyed().longValue();
+			balanceUserInfo.playerKills = detail.getKills().longValue();
+			balanceUserInfo.playerMatchScore = detail.getMatchScore().longValue();
+			balanceUserInfo.playerMechHealth = detail.getHealthPercentage().longValue();
 
-        if (winningTeam != null) {
-            if (Objects.equals(winningTeam, detail.getTeam())) {
-                balanceUserInfo.rewardLossVictory = C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_VICTORY").getValue();
-                balanceUserInfo.rewardLossVictoryDescription = "Victory";
-            } else {
-                balanceUserInfo.rewardLossVictory = C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_LOSS").getValue();
-                balanceUserInfo.rewardLossVictoryDescription = "Loss";
-            }
-        } else {
-            balanceUserInfo.rewardLossVictory = C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_TIE").getValue();
-            balanceUserInfo.rewardLossVictoryDescription = "Tie";
-        }
+			mechIdInfo = new MechIdInfo(detail.getMechItemID());
+			balanceUserInfo.playerMechName = mechIdInfo;
+			balanceUserInfo.mechRepairCost = mechIdInfo.getRepairCost(detail.getHealthPercentage());
+			balanceUserInfo.rewardComponentsDestroyed = detail.getComponentsDestroyed() * C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_EACH_COMPONENT_DESTROYED").getValue();
+			balanceUserInfo.rewardMatchScore = detail.getMatchScore() * C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_EACH_MACHT_SCORE").getValue();
+			balanceUserInfo.rewardDamage = detail.getDamage() * C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_EACH_DAMAGE").getValue();
 
-        balanceUserInfo.rewardAssist = detail.getAssists() * C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_ASSIST").getValue();
-        balanceUserInfo.playerAssist = detail.getAssists();
-        balanceUserInfo.userName = detail.getUsername();
-        balanceUserInfo.playerDamage = detail.getDamage().longValue();
-        balanceUserInfo.playerComponentDestroyed = detail.getComponentsDestroyed().longValue();
-        balanceUserInfo.playerKills = detail.getKills().longValue();
-        balanceUserInfo.playerMatchScore = detail.getMatchScore().longValue();
-        balanceUserInfo.playerMechHealth = detail.getHealthPercentage().longValue();
-        mechIdInfo = new MechIdInfo(detail.getMechItemID());
-        balanceUserInfo.playerMechName = mechIdInfo;
-        balanceUserInfo.mechRepairCost = mechIdInfo.getRepairCost(detail.getHealthPercentage());
-        balanceUserInfo.rewardComponentsDestroyed = detail.getComponentsDestroyed() * C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_EACH_COMPONENT_DESTROYED").getValue();
-        balanceUserInfo.rewardMatchScore = detail.getMatchScore() * C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_EACH_MACHT_SCORE").getValue();
-        balanceUserInfo.rewardDamage = detail.getDamage() * C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_EACH_DAMAGE").getValue();
+			if (detail.getTeamDamage() == 0) {
+				balanceUserInfo.rewardTeamDamage = C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_NO_TEAM_DAMAGE").getValue();
+			} else {
+				balanceUserInfo.rewardTeamDamage = detail.getTeamDamage() * C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_EACH_TEAM_DAMAGE").getValue();
+			}
 
-        if (detail.getTeamDamage() == 0) {
-            balanceUserInfo.rewardTeamDamage = C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_NO_TEAM_DAMAGE").getValue();
-        } else {
-            balanceUserInfo.rewardTeamDamage = detail.getTeamDamage() * C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_EACH_TEAM_DAMAGE").getValue();
-        }
+			balanceUserInfo.playerTeamDamage = detail.getTeamDamage().longValue();
+			balanceUserInfo.rewardKill = detail.getKills() * C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_EACH_KILL").getValue();
+			balanceUserInfo.playerKills = detail.getKills().longValue();
+			balanceUserInfo.subTotal = balanceUserInfo.rewardComponentsDestroyed + balanceUserInfo.rewardKill + balanceUserInfo.rewardDamage + balanceUserInfo.rewardTeamDamage + balanceUserInfo.rewardMatchScore + balanceUserInfo.mechRepairCost + balanceUserInfo.rewardLossVictory + balanceUserInfo.rewardAssist;
 
-        balanceUserInfo.playerTeamDamage = detail.getTeamDamage().longValue();
-        balanceUserInfo.rewardKill = detail.getKills() * C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_EACH_KILL").getValue();
-        balanceUserInfo.playerKills = detail.getKills().longValue();
-        balanceUserInfo.subTotal = balanceUserInfo.rewardComponentsDestroyed +
-                balanceUserInfo.rewardKill +
-                balanceUserInfo.rewardDamage +
-                balanceUserInfo.rewardTeamDamage +
-                balanceUserInfo.rewardMatchScore +
-                balanceUserInfo.mechRepairCost +
-                balanceUserInfo.rewardLossVictory +
-                balanceUserInfo.rewardAssist;
-
-        userInfos.add(balanceUserInfo);
-    }
+			userInfos.add(balanceUserInfo);
+		} catch (MechNotFoundException e) {
+			logger.info("Mech not found for id: " + detail.getMechItemID());
+		}
+	}
 }

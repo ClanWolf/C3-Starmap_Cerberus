@@ -639,15 +639,16 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 						}
 					}
 					String finalSampleName = sampleName;
-					double volume = C3SoundPlayer.getRpPlayer().getVolume();
-					Timeline timeline = new Timeline(new KeyFrame(Duration.millis(750), new KeyValue(C3SoundPlayer.getRpPlayer().volumeProperty(), 0)));
-					timeline.setOnFinished(event -> {
-						C3SoundPlayer.getRpPlayer().stop();
-						C3SoundPlayer.getRpPlayer().setVolume(volume);
-						C3SoundPlayer.play("sound/voice/" + Internationalization.getLanguage() + "/rp_invasion/" + finalSampleName, false);
-					});
-					timeline.play();
-
+					if (defWon != attWon) {
+						double volume = C3SoundPlayer.getRpPlayer().getVolume();
+						Timeline timeline = new Timeline(new KeyFrame(Duration.millis(750), new KeyValue(C3SoundPlayer.getRpPlayer().volumeProperty(), 0)));
+						timeline.setOnFinished(event -> {
+							C3SoundPlayer.getRpPlayer().stop();
+							C3SoundPlayer.getRpPlayer().setVolume(volume);
+							C3SoundPlayer.play("sound/voice/" + Internationalization.getLanguage() + "/rp_invasion/" + finalSampleName, false);
+						});
+						timeline.play();
+					}
 					audioStartedOnce = false;
 				});
 				break;

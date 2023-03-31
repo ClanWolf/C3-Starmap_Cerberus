@@ -4,6 +4,7 @@ module net.clanwolf.starmap.transfer {
 	requires com.fasterxml.jackson.annotation;
 	requires java.sql;
 	requires com.google.gson;
+	requires org.slf4j;
 
 	exports net.clanwolf.starmap.transfer;
 	exports net.clanwolf.starmap.transfer.enums;
@@ -16,4 +17,5 @@ module net.clanwolf.starmap.transfer {
 
 	opens net.clanwolf.starmap.transfer.enums.catalogObjects to com.fasterxml.jackson.databind;
 	opens net.clanwolf.starmap.transfer.mwo to com.google.gson;
+	exports net.clanwolf.starmap.exceptions;
 }

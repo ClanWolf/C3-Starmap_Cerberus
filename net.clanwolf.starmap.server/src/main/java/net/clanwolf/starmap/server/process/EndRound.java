@@ -454,7 +454,10 @@ public class EndRound {
                 RoundPOJO roundPOJO = RoundDAO.getInstance().findBySeasonId(seasonId);
                 roundPOJO.setRound(newRound);
 
-                // Set all jumpships to attackReady again
+				ServerNexus.getEci().sendExtCom("Round finalized.", "en", true, true, true);
+				ServerNexus.getEci().sendExtCom("Runde beendet.", "de", true, true, true);
+
+	            // Set all jumpships to attackReady again
                 // Add the next system (according to the new round) from the current route to StarSystemHistory column
                 logger.info("--- Setting all jumpships to attackReady again.");
                 for (JumpshipPOJO js : jumpshipList) {
@@ -704,7 +707,7 @@ public class EndRound {
         // Create and send the new version of the universe to all clients that are currently open
         ServerNexus.sendUniverseToClients = true;
 
-        return foughtAttacks + "\r\n" + resolvedAttacks + "\r\n" + movedJumpships;
+	    return foughtAttacks + "\r\n" + resolvedAttacks + "\r\n" + movedJumpships;
     }
 
 //	public static void main(String[] args) {
