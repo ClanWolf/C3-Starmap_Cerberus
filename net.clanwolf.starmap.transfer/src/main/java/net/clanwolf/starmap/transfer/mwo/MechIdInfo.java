@@ -33,7 +33,6 @@ import org.xml.sax.SAXException;
 
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -42,7 +41,7 @@ import java.util.Objects;
  * einen Mech' zu und diese Eigenschaften des Mech's können ausgelesen werden.
  *
  * @author KERNREAKTOR
- * @version 12-03-2023
+ * @version 31-03-2023
  */
 public class MechIdInfo {
     private String mechFaction;
@@ -58,6 +57,72 @@ public class MechIdInfo {
     private String mechLongName;
     private String mechShortName;
     private Integer HP;
+
+    /**
+     * Erzeugt ein neues Objekt, anhand der MechItemId
+     *
+     * @param mechItemId Die Mech ID die in der API ausgegeben wird.
+     */
+    public MechIdInfo(Integer mechItemId) throws ParserConfigurationException, IOException, SAXException {
+
+        this.mechItemId = mechItemId;
+
+        Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(Objects.requireNonNull(MechIdInfo.class.getResourceAsStream("/mechinfo/AllMechs.xml")));
+        doc.getDocumentElement().normalize();
+
+        NodeList mechNodes = doc.getElementsByTagName("Mech");
+        for (int i = 0; i < mechNodes.getLength(); i++) {
+            Element xmlMechList = (Element) mechNodes.item(i);
+            if (Objects.equals(mechItemId, Integer.valueOf(xmlMechList.getAttribute("id")))) {
+                this.mechChassis = xmlMechList.getAttribute("chassis");
+                this.mechFaction = xmlMechList.getAttribute("faction");
+                this.mechName = xmlMechList.getAttribute("name");
+                this.mechBaseTons = Double.valueOf(xmlMechList.getAttribute("BaseTons"));
+                this.mechMaxTons = Integer.valueOf(xmlMechList.getAttribute("MaxTons"));
+                this.mechMaxJumpJets = Integer.valueOf(xmlMechList.getAttribute("MaxJumpJets"));
+                this.mechMaxEngineRating = Integer.valueOf(xmlMechList.getAttribute("MinEngineRating"));
+                this.mechMinEngineRating = Integer.valueOf(xmlMechList.getAttribute("MaxEngineRating"));
+                this.mechVariantType = xmlMechList.getAttribute("VariantType").toUpperCase();
+                this.mechLongName = xmlMechList.getAttribute("longname");
+                this.mechShortName = xmlMechList.getAttribute("shortname");
+                this.HP = Integer.valueOf(xmlMechList.getAttribute("HP"));
+                break;
+            }
+        }
+    }
+
+    public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
+        Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(Objects.requireNonNull(MechIdInfo.class.getResourceAsStream("/mechinfo/AllMechs.xml")));
+        doc.getDocumentElement().normalize();
+
+        NodeList mechNodes = doc.getElementsByTagName("Mech");
+
+        for (int i = 0; i < mechNodes.getLength(); i++) {
+            Element xmlMechList = (Element) mechNodes.item(i);
+            String mechChassie = xmlMechList.getAttribute("chassis");
+            Integer mechItemId = Integer.valueOf(xmlMechList.getAttribute("id"));
+            String mechFaction = xmlMechList.getAttribute("faction");
+            String mechName = xmlMechList.getAttribute("name");
+            Integer mechMaxTons = Integer.valueOf(xmlMechList.getAttribute("MaxTons"));
+            Double mechBaseTons = Double.valueOf(xmlMechList.getAttribute("BaseTons"));
+            Integer mechMaxJumpJets = Integer.valueOf(xmlMechList.getAttribute("MaxJumpJets"));
+            Integer mechMinEngineRating = Integer.valueOf(xmlMechList.getAttribute("MinEngineRating"));
+            Integer mechMaxEngineRating = Integer.valueOf(xmlMechList.getAttribute("MaxEngineRating"));
+            String mechVariantType = xmlMechList.getAttribute("VariantType");
+            MechIdInfo mechIdInfo = new MechIdInfo(mechItemId);
+            System.out.println(mechIdInfo.getFullName() + "|" + mechIdInfo.getShortname() + "|" + mechIdInfo.getMechVariantType() + "|" + mechIdInfo.getTonnage() + "|" + mechIdInfo.getRepairCost(0));
+            //String[] variant = {"Standard", "Special", "Hero", "Champion"};
+           /* Mech mechInfo = Mech.getMech(mechChassie, mechFaction, mechItemId, mechName);
+            if (mechInfo == null) {
+                System.out.println("Unknown Mech: " + mechChassie);
+                continue;
+            }
+            if (!Arrays.asList(variant).contains(mechVariantType)) {
+                System.out.println(mechVariantType);
+            }*/
+
+        }
+    }
 
     public Integer getHP() {
         return HP;
@@ -107,86 +172,11 @@ public class MechIdInfo {
         this.mechMaxEngineRating = mechMaxEngineRating;
     }
 
-    /**
-     * Erzeugt ein neues Objekt, anhand der MechItemId
-     *
-     * @param mechItemId Die Mech ID die in der API ausgegeben wird.
-     */
-    public MechIdInfo(Integer mechItemId) throws ParserConfigurationException, IOException, SAXException {
-
-        this.mechItemId = mechItemId;
-
-        Document doc = DocumentBuilderFactory.newInstance()
-                .newDocumentBuilder().parse(Objects.requireNonNull(MechIdInfo.class.getResourceAsStream("/mechinfo/AllMechs.xml")));
-        doc.getDocumentElement().normalize();
-
-        NodeList mechNodes = doc.getElementsByTagName("Mech");
-        for (int i = 0; i < mechNodes.getLength(); i++) {
-            Element xmlMechList = (Element) mechNodes.item(i);
-            if (Objects.equals(mechItemId, Integer.valueOf(xmlMechList.getAttribute("id")))) {
-                this.mechChassis = xmlMechList.getAttribute("chassis");
-                this.mechFaction = xmlMechList.getAttribute("faction");
-                this.mechName = xmlMechList.getAttribute("name");
-                this.mechBaseTons = Double.valueOf(xmlMechList.getAttribute("BaseTons"));
-                this.mechMaxTons = Integer.valueOf(xmlMechList.getAttribute("MaxTons"));
-                this.mechMaxJumpJets = Integer.valueOf(xmlMechList.getAttribute("MaxJumpJets"));
-                this.mechMaxEngineRating = Integer.valueOf(xmlMechList.getAttribute("MinEngineRating"));
-                this.mechMinEngineRating = Integer.valueOf(xmlMechList.getAttribute("MaxEngineRating"));
-                this.mechVariantType = xmlMechList.getAttribute("VariantType").toUpperCase();
-                this.mechLongName = xmlMechList.getAttribute("longname");
-                this.mechShortName = xmlMechList.getAttribute("shortname");
-                this.HP = Integer.valueOf(xmlMechList.getAttribute("HP"));
-                break;
-            }
-        }
-    }
-
-    /**
-     * Mechklassen die es in MWO gibt.
-     */
-    public enum EMechclass {
-        LIGHT, MEDIUM, HEAVY, ASSAULT, UNKNOWN
-    }
-
     public String toString() {
         try {
             return "MechitemID: " + getMechItemId() + " " + getMechChassis() + " " + getFullName() + " is a " + getMechFaction() + " " + getMechClass() + " Mech an have " + getTonnage() + " tons";
         } catch (ParserConfigurationException | IOException | SAXException e) {
             throw new RuntimeException(e);
-        }
-    }
-
-    public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
-        Document doc = DocumentBuilderFactory.newInstance()
-                .newDocumentBuilder().parse(Objects.requireNonNull(MechIdInfo.class.getResourceAsStream("/mechinfo/AllMechs.xml")));
-        doc.getDocumentElement().normalize();
-
-        NodeList mechNodes = doc.getElementsByTagName("Mech");
-
-        for (int i = 0; i < mechNodes.getLength(); i++) {
-            Element xmlMechList = (Element) mechNodes.item(i);
-            String mechChassie = xmlMechList.getAttribute("chassis");
-            Integer mechItemId = Integer.valueOf(xmlMechList.getAttribute("id"));
-            String mechFaction = xmlMechList.getAttribute("faction");
-            String mechName = xmlMechList.getAttribute("name");
-            Integer mechMaxTons = Integer.valueOf(xmlMechList.getAttribute("MaxTons"));
-            Double mechBaseTons = Double.valueOf(xmlMechList.getAttribute("BaseTons"));
-            Integer mechMaxJumpJets = Integer.valueOf(xmlMechList.getAttribute("MaxJumpJets"));
-            Integer mechMinEngineRating = Integer.valueOf(xmlMechList.getAttribute("MinEngineRating"));
-            Integer mechMaxEngineRating = Integer.valueOf(xmlMechList.getAttribute("MaxEngineRating"));
-            String mechVariantType = xmlMechList.getAttribute("VariantType");
-            MechIdInfo mechIdInfo = new MechIdInfo(mechItemId);
-            System.out.println(mechIdInfo.getFullName() + "|" + mechIdInfo.getShortname() + "|" + mechIdInfo.getMechVariantType() + "|" + mechIdInfo.getTonnage() + "|" + mechIdInfo.getRepairCost(0));
-            //String[] variant = {"Standard", "Special", "Hero", "Champion"};
-           /* Mech mechInfo = Mech.getMech(mechChassie, mechFaction, mechItemId, mechName);
-            if (mechInfo == null) {
-                System.out.println("Unknown Mech: " + mechChassie);
-                continue;
-            }
-            if (!Arrays.asList(variant).contains(mechVariantType)) {
-                System.out.println(mechVariantType);
-            }*/
-
         }
     }
 
@@ -233,8 +223,7 @@ public class MechIdInfo {
      */
     public String getMechChassis() throws ParserConfigurationException, IOException, SAXException {
         String mechChassi = null;
-        Document doc = DocumentBuilderFactory.newInstance()
-                .newDocumentBuilder().parse(Objects.requireNonNull(MechIdInfo.class.getResourceAsStream("/mechinfo/AllMechsChassis.xml")));
+        Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(Objects.requireNonNull(MechIdInfo.class.getResourceAsStream("/mechinfo/AllMechsChassis.xml")));
         doc.getDocumentElement().normalize();
 
         NodeList mechNodes = doc.getElementsByTagName("Mech");
@@ -303,34 +292,42 @@ public class MechIdInfo {
      * @return Kosten des Mechs in (double)
      */
     public double getMechCost() throws ParserConfigurationException, IOException, SAXException {
-        Integer sumCost=0;
+        int sumCost ;
 
         //Multiplikator für die Mechvariante festlegen
-        double Multiply = switch (getMechVariantType()) {
-            case "SPECIAL", "FOUNDER", "PHOENIX", "SARAH" -> 1.25;
-            case "HERO" -> 1.15;
-            case "CHAMPION" -> 1.2;
-            default -> 1.0;
+        int mechVariant = switch (getMechVariantType()) {
+            case "SPECIAL", "FOUNDER", "PHOENIX", "SARAH" -> -1_000_000;
+            case "HERO" -> -500_000;
+            case "CHAMPION" -> -250_000;
+            default -> -100_000;
         };
 
         //Multiplikator für die Mechklasse festlegen
-        switch (getMechClass()) {
-            case LIGHT -> Multiply = Multiply + 0.1;
-            case MEDIUM -> Multiply = Multiply + 0.15;
-            case HEAVY -> Multiply = Multiply + 0.2;
-            case ASSAULT -> Multiply = Multiply + 0.25;
-        }
-        sumCost = (int) (getTonnage() * -100_000 * Multiply);
+        int mechClass = switch (getMechClass()) {
+            case LIGHT -> -100_000;
+            case MEDIUM -> -250_000;
+            case HEAVY -> -500_000;
+            case ASSAULT -> -1_000_000;
+            case UNKNOWN -> 0;
 
-        sumCost = sumCost + (getMechMaxEngineRating() * 500);
-        sumCost = sumCost + (getMechMinEngineRating() * 500);
-        sumCost = (int) (sumCost + (getMechBaseTons()* 1_000));
-        sumCost = sumCost + (getMechMaxJumpJets() * 10_000);
-        sumCost = sumCost + (getHP() * 1_000);
+        };
+        sumCost = (getTonnage() * -100_000) + mechVariant + mechClass;
+        sumCost = sumCost + (getMechMaxEngineRating() * -1_000);
+        sumCost = sumCost + (getMechMinEngineRating() * -1_000);
+        sumCost = (int) (sumCost + (getMechBaseTons() * -1_000));
+        sumCost = sumCost + (getMechMaxJumpJets() * -10_000);
+        sumCost = sumCost + (getHP() * -1_500);
         return sumCost;
     }
 
     public int getRepairCost(Integer HealthPercentage) throws ParserConfigurationException, IOException, SAXException {
         return (int) ((100 - HealthPercentage) * getMechCost() / 100);
+    }
+
+    /**
+     * Mechklassen die es in MWO gibt.
+     */
+    public enum EMechclass {
+        LIGHT, MEDIUM, HEAVY, ASSAULT, UNKNOWN
     }
 }
