@@ -601,10 +601,10 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 							logger.info("We lost!");
 							if (defWon) { // Invasion is over, defender (we) lost the invasion
 								randomNum = ThreadLocalRandom.current().nextInt(1, 2 + 1);
-								sampleName = "rp_sample_lost_invasion_0" + randomNum + "_general.mp3";
+								sampleName = "rp_sample_won_invasion_0" + randomNum + "_general.mp3";
 							} else if (attWon) { // Invasion is over, we won, attacker (the others) lost the invasion
 								randomNum = ThreadLocalRandom.current().nextInt(1, 2 + 1);
-								sampleName = "rp_sample_won_invasion_0" + randomNum + "_general.mp3";
+								sampleName = "rp_sample_lost_invasion_0" + randomNum + "_general.mp3";
 							} else { // no side did win the invasion yet, still fighting
 								randomNum = ThreadLocalRandom.current().nextInt(1, 4 + 1);
 								sampleName = "rp_sample_lost_drop_0" + randomNum + "_general.mp3";
@@ -639,7 +639,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 						}
 					}
 					String finalSampleName = sampleName;
-					if (defWon != attWon) {
+					if (defenderWon != attackerWon) {
 						double volume = C3SoundPlayer.getRpPlayer().getVolume();
 						Timeline timeline = new Timeline(new KeyFrame(Duration.millis(750), new KeyValue(C3SoundPlayer.getRpPlayer().volumeProperty(), 0)));
 						timeline.setOnFinished(event -> {
