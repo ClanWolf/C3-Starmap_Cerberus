@@ -14,7 +14,7 @@ TODO:
 - Switch to MariaDB client (client, bots)
 ----------------------------------------------------------------
 
-Version 7.3.4 (31.02.2023)
+Version 7.3.5 (31.02.2023)
 - ADDED: Logger into transfer module
 - FIXED: Motivational voice samples error fixed
 
