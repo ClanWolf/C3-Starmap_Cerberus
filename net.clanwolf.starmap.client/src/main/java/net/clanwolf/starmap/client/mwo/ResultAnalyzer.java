@@ -38,7 +38,7 @@ import net.clanwolf.starmap.client.process.universe.BOStatsMwo;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.constants.Constants;
-import net.clanwolf.starmap.exceptions.MechNotFoundException;
+import net.clanwolf.starmap.exceptions.MechItemIdNotFoundException;
 import net.clanwolf.starmap.transfer.dtos.*;
 import net.clanwolf.starmap.transfer.mwo.MWOMatchResult;
 import net.clanwolf.starmap.transfer.mwo.MatchDetails;
@@ -137,8 +137,8 @@ public class ResultAnalyzer {
 				try {
 					MechIdInfo mechInfo = new MechIdInfo(ud.getMechItemID());
 					tonnage = mechInfo.getTonnage();
-				} catch (MechNotFoundException e) {
-					logger.error("Mech not found with id: " + ud.getMechItemID(), e);
+				} catch (MechItemIdNotFoundException e) {
+					logger.error("MechItemIdNotFoundException", e);
 				}
 
 				// logger.info("Rawdata MWO API Stats:");

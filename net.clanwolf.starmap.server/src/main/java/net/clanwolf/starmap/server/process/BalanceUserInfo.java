@@ -26,7 +26,7 @@
  */
 package net.clanwolf.starmap.server.process;
 
-import net.clanwolf.starmap.exceptions.MechNotFoundException;
+import net.clanwolf.starmap.exceptions.MechItemIdNotFoundException;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.AttackStatsDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.C3GameConfigDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.RolePlayCharacterStatsDAO;
@@ -201,13 +201,14 @@ public class BalanceUserInfo {
         return attTeam;
     }
 
-    public Long getMechCost(Integer MechItemID, Integer HealthPercentage) throws ParserConfigurationException, IOException, SAXException, MechNotFoundException {
+    public Long getMechCost(Integer mechItemID, Integer HealthPercentage) throws ParserConfigurationException, IOException, SAXException, MechItemIdNotFoundException {
+
         long sumCost;
 
-        MechIdInfo mechInfo = new MechIdInfo(MechItemID);
+        MechIdInfo mechInfo = new MechIdInfo(mechItemID);
 
         //Kosten für die Mechvariante festlegen
-        Long mechVariantCost;
+        Long mechVariantCost = -1L;
         switch (mechInfo.getMechVariantType()) {
             case "SPECIAL", "FOUNDER", "PHOENIX", "SARAH" ->
                     mechVariantCost = C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_MECH_REPAIR_COST_VARIANT_IS_SPECIAL").getValue();
@@ -217,14 +218,14 @@ public class BalanceUserInfo {
                     mechVariantCost = C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_MECH_REPAIR_COST_VARIANT_IS_CHAMPION").getValue();
             case "STANDARD" ->
                     mechVariantCost = C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_MECH_REPAIR_COST_VARIANT_IS_STANDARD").getValue();
-            default -> {
+            case "Unknown" -> {
                 mechVariantCost = C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_MECH_REPAIR_COST_VARIANT_IS_UNKNOWN").getValue();
                 logger.error("Unknown Mech variant");
             }
         }
 
         //Kosten für die Mechklasse festlegen
-        Long mechClass = null;
+        Long mechClass = -1L;
         switch (mechInfo.getMechClass()) {
             case LIGHT ->
                     mechClass = C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_MECH_REPAIR_COST_CLASS_IS_LIGHT").getValue();
@@ -300,8 +301,8 @@ public class BalanceUserInfo {
             balanceUserInfo.subTotal = balanceUserInfo.rewardComponentsDestroyed + balanceUserInfo.rewardKill + balanceUserInfo.rewardDamage + balanceUserInfo.rewardTeamDamage + balanceUserInfo.rewardMatchScore + balanceUserInfo.mechRepairCost + balanceUserInfo.rewardLossVictory + balanceUserInfo.rewardAssist;
 
             userInfos.add(balanceUserInfo);
-        } catch (MechNotFoundException e) {
-            logger.info("Mech not found for id: " + detail.getMechItemID());
+        } catch (MechItemIdNotFoundException e) {
+            logger.error("MechItemIdNotFoundException", e);
         }
     }
 }

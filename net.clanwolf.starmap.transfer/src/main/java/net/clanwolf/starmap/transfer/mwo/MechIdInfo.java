@@ -26,7 +26,7 @@
  */
 package net.clanwolf.starmap.transfer.mwo;
 
-import net.clanwolf.starmap.exceptions.MechNotFoundException;
+import net.clanwolf.starmap.exceptions.MechItemIdNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -49,11 +49,10 @@ import java.util.Objects;
  */
 public class MechIdInfo {
     private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-
+    private final Integer mechItemId;
     private String mechFaction;
     private String mechChassis;
     private String mechVariantType;
-    private Integer mechItemId;
     private Integer mechMaxTons;
     private Double mechBaseTons;
     private String mechName;
@@ -69,7 +68,7 @@ public class MechIdInfo {
      *
      * @param mechItemId Die Mech ID die in der API ausgegeben wird.
      */
-    public MechIdInfo(Integer mechItemId) throws ParserConfigurationException, IOException, SAXException, MechNotFoundException {
+    public MechIdInfo(Integer mechItemId) throws ParserConfigurationException, IOException, SAXException, MechItemIdNotFoundException {
 
         this.mechItemId = mechItemId;
 
@@ -98,28 +97,40 @@ public class MechIdInfo {
             }
         }
         if (!mechfound) {
-            throw new MechNotFoundException("Mech not found exception");
+            this.mechChassis = "Unknown";
+            this.mechFaction = "Unknown";
+            this.mechName = "Unknown";
+            this.mechBaseTons = -1.0;
+            this.mechMaxTons = -1;
+            this.mechMaxJumpJets = -1;
+            this.mechMaxEngineRating = -1;
+            this.mechMinEngineRating = -1;
+            this.mechVariantType = "Unknown";
+            this.mechLongName = "Unknown";
+            this.mechShortName = "Unknown";
+            this.HP = -1;
+
+            throw new MechItemIdNotFoundException("Mech ID: " + mechItemId + " not found in the xml file.");
         }
     }
 
-    public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException {
+    public static void main(String[] args) throws ParserConfigurationException, IOException, SAXException, MechItemIdNotFoundException {
         Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(Objects.requireNonNull(MechIdInfo.class.getResourceAsStream("/mechinfo/AllMechs.xml")));
         doc.getDocumentElement().normalize();
-
         NodeList mechNodes = doc.getElementsByTagName("Mech");
 
         for (int i = 0; i < mechNodes.getLength(); i++) {
             Element xmlMechList = (Element) mechNodes.item(i);
-            String mechChassie = xmlMechList.getAttribute("chassis");
             Integer mechItemId = Integer.valueOf(xmlMechList.getAttribute("id"));
-            String mechFaction = xmlMechList.getAttribute("faction");
-            String mechName = xmlMechList.getAttribute("name");
-            Integer mechMaxTons = Integer.valueOf(xmlMechList.getAttribute("MaxTons"));
-            Double mechBaseTons = Double.valueOf(xmlMechList.getAttribute("BaseTons"));
-            Integer mechMaxJumpJets = Integer.valueOf(xmlMechList.getAttribute("MaxJumpJets"));
-            Integer mechMinEngineRating = Integer.valueOf(xmlMechList.getAttribute("MinEngineRating"));
-            Integer mechMaxEngineRating = Integer.valueOf(xmlMechList.getAttribute("MaxEngineRating"));
-            String mechVariantType = xmlMechList.getAttribute("VariantType");
+//            String mechChassie = xmlMechList.getAttribute("chassis");
+//            String mechFaction = xmlMechList.getAttribute("faction");
+//            String mechName = xmlMechList.getAttribute("name");
+//            Integer mechMaxTons = Integer.valueOf(xmlMechList.getAttribute("MaxTons"));
+//            Double mechBaseTons = Double.valueOf(xmlMechList.getAttribute("BaseTons"));
+//            Integer mechMaxJumpJets = Integer.valueOf(xmlMechList.getAttribute("MaxJumpJets"));
+//            Integer mechMinEngineRating = Integer.valueOf(xmlMechList.getAttribute("MinEngineRating"));
+//            Integer mechMaxEngineRating = Integer.valueOf(xmlMechList.getAttribute("MaxEngineRating"));
+//            String mechVariantType = xmlMechList.getAttribute("VariantType");
 
             try {
                 MechIdInfo mechIdInfo;
@@ -136,8 +147,8 @@ public class MechIdInfo {
 	            if (!Arrays.asList(variant).contains(mechVariantType)) {
 	                System.out.println(mechVariantType);
 	            }*/
-            } catch (MechNotFoundException e) {
-                logger.info("Mech mit dieser id wurde nicht gefunden!");
+            } catch (MechItemIdNotFoundException e) {
+                logger.error("MechItemIdNotFoundException", e);
             }
         }
     }
@@ -146,48 +157,20 @@ public class MechIdInfo {
         return HP;
     }
 
-    public void setHP(Integer HP) {
-        this.HP = HP;
-    }
-
     public Double getMechBaseTons() {
         return mechBaseTons;
-    }
-
-    public void setMechBaseTons(Double mechBaseTons) {
-        this.mechBaseTons = mechBaseTons;
-    }
-
-    public String getMechName() {
-        return mechName;
-    }
-
-    public void setMechName(String mechName) {
-        this.mechName = mechName;
     }
 
     public Integer getMechMaxJumpJets() {
         return mechMaxJumpJets;
     }
 
-    public void setMechMaxJumpJets(Integer mechMaxJumpJets) {
-        this.mechMaxJumpJets = mechMaxJumpJets;
-    }
-
     public Integer getMechMinEngineRating() {
         return mechMinEngineRating;
     }
 
-    public void setMechMinEngineRating(Integer mechMinEngineRating) {
-        this.mechMinEngineRating = mechMinEngineRating;
-    }
-
     public Integer getMechMaxEngineRating() {
         return mechMaxEngineRating;
-    }
-
-    public void setMechMaxEngineRating(Integer mechMaxEngineRating) {
-        this.mechMaxEngineRating = mechMaxEngineRating;
     }
 
     public String toString() {
@@ -226,15 +209,6 @@ public class MechIdInfo {
     }
 
     /**
-     * Hiermit wird eine Neue MechItemId (Integer) festgelegt.
-     *
-     * @param mechItemId Die Neue MechItemId.
-     */
-    public void setMechItemId(Integer mechItemId) {
-        this.mechItemId = mechItemId;
-    }
-
-    /**
      * Die (String) Chassis des Mech's wird zurückgegeben.
      *
      * @return Gibt die (String) Chassis des Mech's zurück.
@@ -262,13 +236,18 @@ public class MechIdInfo {
      * @return Gibt die (Enum) Mechklasse zurück.
      */
     public EMechclass getMechClass() throws ParserConfigurationException, IOException, SAXException {
-        return switch (mechMaxTons) {
-            case 20, 25, 30, 35 -> EMechclass.LIGHT;
-            case 40, 45, 50, 55 -> EMechclass.MEDIUM;
-            case 60, 65, 70, 75 -> EMechclass.HEAVY;
-            case 80, 85, 90, 95, 100 -> EMechclass.ASSAULT;
-            default -> EMechclass.UNKNOWN;
-        };
+        EMechclass mechclass = null;
+        switch (mechMaxTons) {
+            case 20, 25, 30, 35 -> mechclass = EMechclass.LIGHT;
+            case 40, 45, 50, 55 -> mechclass = EMechclass.MEDIUM;
+            case 60, 65, 70, 75 -> mechclass = EMechclass.HEAVY;
+            case 80, 85, 90, 95, 100 -> mechclass = EMechclass.ASSAULT;
+            case -1 -> {
+                mechclass = EMechclass.UNKNOWN;
+                logger.error("Unknown mech class");
+            }
+        }
+        return mechclass;
     }
 
     /**
@@ -304,42 +283,9 @@ public class MechIdInfo {
         return this.mechShortName;
     }
 
-//    /**
-//     * Die Kosten des Mechs werden anhand der Tonnage und der Variante berechnet und als (double) zurück gegeben.
-//     *
-//     * @return Kosten des Mechs in (double)
-//     */
-//	public double getMechCost() throws ParserConfigurationException, IOException, SAXException {
-//		int sumCost;
-//
-//		//Multiplikator für die Mechvariante festlegen
-//		int mechVariant = switch (getMechVariantType()) {
-//			case "SPECIAL", "FOUNDER", "PHOENIX", "SARAH" -> -1_000_000;
-//			case "HERO" -> -500_000;
-//			case "CHAMPION" -> -250_000;
-//			default -> -100_000;
-//		};
-//
-//		//Multiplikator für die Mechklasse festlegen
-//		int mechClass = switch (getMechClass()) {
-//			case LIGHT -> -100_000;
-//			case MEDIUM -> -250_000;
-//			case HEAVY -> -500_000;
-//			case ASSAULT -> -1_000_000;
-//			case UNKNOWN -> 0;
-//		};
-//		sumCost = (getTonnage() * -100_000) + mechVariant + mechClass;
-//		sumCost = sumCost + (getMechMaxEngineRating() * -1_000);
-//		sumCost = sumCost + (getMechMinEngineRating() * -1_000);
-//		sumCost = (int) (sumCost + (getMechBaseTons() * -1_000));
-//		sumCost = sumCost + (getMechMaxJumpJets() * -10_000);
-//		sumCost = sumCost + (getHP() * -1_500);
-//		return sumCost;
-//	}
-//
-//	public int getRepairCost(Integer HealthPercentage) throws ParserConfigurationException, IOException, SAXException {
-//		return (int) ((100 - HealthPercentage) * getMechCost() / 100);
-//	}
+    public String getMechName() {
+        return mechName;
+    }
 
     /**
      * Mechklassen die es in MWO gibt.
