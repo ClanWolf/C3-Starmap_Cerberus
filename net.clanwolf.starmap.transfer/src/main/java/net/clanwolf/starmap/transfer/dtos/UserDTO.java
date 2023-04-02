@@ -47,6 +47,7 @@ public class UserDTO extends Dto {
 
 	public Long id;
 	private String userName;
+	private String mwoUsername;
 	private String userPassword;
 	private String userEMail;
 	private String userAvatar;
@@ -249,6 +250,14 @@ public class UserDTO extends Dto {
 
 	public void setUserPasswordWebsite(String userPasswordWebsite) {
 		this.userPasswordWebsite = userPasswordWebsite;
+	}
+
+	public String getMwoUsername() {
+		return mwoUsername;
+	}
+
+	public void setMwoUsername(String mwoUsername) {
+		this.mwoUsername = mwoUsername;
 	}
 
 	@Override

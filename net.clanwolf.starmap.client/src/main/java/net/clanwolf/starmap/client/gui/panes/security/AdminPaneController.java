@@ -64,10 +64,10 @@ public class AdminPaneController {
 	private final DecimalFormat nf = new DecimalFormat();
 
 	@FXML
-	Label labelDescription, labelUser, labelPrivCode, labelPrivCodeBinary;
+	Label labelUser, labelPrivCode, labelPrivCodeBinary;
 
 	@FXML
-	Tab tabPrivileges;
+	Tab tabUser, tabPrivileges, tabFinances;
 
 	@FXML
 	Button btnSave, btnCancel;
@@ -89,6 +89,15 @@ public class AdminPaneController {
 
 	@FXML
 	Label lCurrentBalance;
+
+	// User Edit Tab
+	@FXML
+	Label lblName, lblPassword, lblPasswordConfirm, lblMail, lblMWOUser;
+
+	@FXML
+	TextField tfName, tfPassword, tfPasswordConfirm, tfMail, tfMWOUser;
+
+
 
 	@FXML
 	public void btnSaveClicked() {
@@ -272,11 +281,28 @@ public class AdminPaneController {
 			originalPrivileges.put(u.getUserName(), u.getPrivileges());
 		}
 
-		labelDescription.setText(Internationalization.getString("AdminSecurityDescription"));
+//		labelDescription.setText(Internationalization.getString("AdminSecurityDescription"));
 		tabPrivileges.setText(Internationalization.getString("AdminSecurityTabPrivileges"));
 		labelUser.setText(Internationalization.getString("AdminSecurityUserLabel"));
 		btnSave.setText(Internationalization.getString("AdminSecurityButtonSave"));
 		btnCancel.setText(Internationalization.getString("AdminSecurityButtonCancel"));
+
+		lblName.setText(Internationalization.getString("AdminUserLabelName"));
+		lblPassword.setText(Internationalization.getString("AdminUserLabelPassword"));
+		lblPasswordConfirm.setText(Internationalization.getString("AdminUserLabelPasswordConfirm"));
+		lblMail.setText(Internationalization.getString("AdminUserLabelMail"));
+		lblMWOUser.setText(Internationalization.getString("AdminUserLabelMWOUser"));
+
+		if (Nexus.getCurrentUser() != null) {
+			tfName.setText(Nexus.getCurrentUser().getUserName());
+			tfPassword.setText(Nexus.getCurrentUser().getUserPassword());
+			tfPasswordConfirm.setText("");
+			tfMail.setText(Nexus.getCurrentUser().getUserEMail());
+			tfMWOUser.setText(Nexus.getCurrentUser().getMwoUsername());
+		}
+
+		tfPassword.setDisable(true);
+		tfPasswordConfirm.setDisable(true);
 
 		sMessagesPrivileges = ResourceBundle.getBundle("MessagesPrivilegeBundle", locale);
 

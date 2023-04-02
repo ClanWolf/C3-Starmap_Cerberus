@@ -58,6 +58,9 @@ public class UserPOJO extends Pojo {
 	@Column(name = "UserName", nullable = false, length = 45)
 	private String userName;
 
+	@Column(name = "MWOUsername", nullable = false, length = 100)
+	private String mwoUsername;
+
 	@Column(name = "UserPassword", nullable = true, length = 45)
 	private String userPassword;
 
@@ -373,6 +376,14 @@ public class UserPOJO extends Pojo {
 	@SuppressWarnings("unused")
 	public void setActive(int active) {
 		this.active = active;
+	}
+
+	public String getMwoUsername() {
+		return mwoUsername;
+	}
+
+	public void setMwoUsername(String mwoUsername) {
+		this.mwoUsername = mwoUsername;
 	}
 
 	@Override
