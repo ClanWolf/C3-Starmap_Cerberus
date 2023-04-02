@@ -133,8 +133,22 @@ public class EventCommunications {
 					// - Die Daten müssen aufgeteilt werden, bis sie wieder in die Pakete passen!
 
 					// set current user
-					//TODO: Hier musste noch was machen Christian, da weißte bescheid
-					Nexus.setUser((UserDTO) state.getObject());
+					UserDTO us = null;
+					if (state.getObject() != null && state.getObject() instanceof UserDTO) {
+						us = (UserDTO) state.getObject();
+						if (us.getActive() == 0) {
+							// User ist in der Registrierung, kann sich noch nicht anmelden
+							//TODO: Hier musste noch was machen Christian, da weißte bescheid
+
+							// Registrierungsmeldung:
+							// Du hast Dich registriert, ein Admin muss Deinen Account noch freigeben
+
+							ActionManager.getAction(ACTIONS.LOGON_FINISHED_WITH_ERROR).execute();
+							break;
+						}
+					}
+
+					Nexus.setUser(us);
 					logger.info("EventCommunications.onDataIn: myPlayerSessionID: -> " + Nexus.getMyPlayerSessionID());
 
 					UniverseDTO uni = (UniverseDTO) Compressor.deCompress((byte[]) state.getObject2());
