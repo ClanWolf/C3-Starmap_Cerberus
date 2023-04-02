@@ -14,10 +14,12 @@ TODO:
 - Switch to MariaDB client (client, bots)
 
 - User avatar is not displayed after login (?) - UserInfoPaneController, L.445
+- User avatar remove? Character has avatar, that should be enough
 - Error message if login returns an inactive user (still in registration) - EventCommunications, L.141
 - User admin pane "active" checkbox
-- Send a mail to admins if a new user registrated
+- Send a mail to admins if a new user registered
 - If an account has been activated, a character needs to be created
+- Clan vs Clan zeigt das Video nach der Lobby nicht an (?)
 ----------------------------------------------------------------
 
 Version 7.3.6 ( ACHTUNG INKOMPATIBEL BIS USERREG FERTIG
