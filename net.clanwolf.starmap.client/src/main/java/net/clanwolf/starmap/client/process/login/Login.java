@@ -74,18 +74,20 @@ public class Login {
 		// Prevent Instantiation
 	}
 
-	public static void savePassword() {
+	public static void savePassword(boolean registerMode) {
 		if (!guestLogin) {
-			C3Properties.setProperty(C3PROPS.LOGIN_USER, username, true);
-			if (storePassword) {
-				if (passwordEncrypted) {
-					C3Properties.setProperty(C3PROPS.LOGIN_PASSWORD, password, true);
+			if (!registerMode) {
+				C3Properties.setProperty(C3PROPS.LOGIN_USER, username, true);
+				if (storePassword) {
+					if (passwordEncrypted) {
+						C3Properties.setProperty(C3PROPS.LOGIN_PASSWORD, password, true);
+					} else {
+						String encrypted_pass = Encryptor.createPasswordPair(password);
+						C3Properties.setProperty(C3PROPS.LOGIN_PASSWORD, encrypted_pass, true);
+					}
 				} else {
-					String encrypted_pass = Encryptor.createPasswordPair(password);
-					C3Properties.setProperty(C3PROPS.LOGIN_PASSWORD, encrypted_pass, true);
+					C3Properties.setProperty(C3PROPS.LOGIN_PASSWORD, "", true);
 				}
-			} else {
-				C3Properties.setProperty(C3PROPS.LOGIN_PASSWORD, "", true);
 			}
 		}
 	}
@@ -266,7 +268,7 @@ public class Login {
 		Nexus.fireNetworkEvent(s);
 	}
 
-	public static void login(String username, String password, String factionKey, boolean passwordEncrypted) throws Exception {
+	public static void login(String username, String password, String factionKey, boolean passwordEncrypted, boolean registerMode) throws Exception {
 
 		if (loginInProgress) {
 			logger.info("Login rejected, already logging in...");
@@ -284,7 +286,7 @@ public class Login {
 //		logger.info("password: " + password);
 //		logger.info("encrypted:" + passwordEncrypted);
 
-		savePassword();
+		savePassword(registerMode);
 		doLogin();
 	}
 }

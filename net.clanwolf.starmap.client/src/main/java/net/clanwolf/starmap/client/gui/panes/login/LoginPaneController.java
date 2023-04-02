@@ -192,7 +192,7 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 		username += registerModeString + "#" + username.length();
 
 		if (Server.checkServerStatus()) {
-			Login.login(username, pass, tfFactionKey.getText(), password_encrypted);
+			Login.login(username, pass, tfFactionKey.getText(), password_encrypted, registerMode);
 		} else {
 			logger.error("Server seems to be offline, show error message!");
 			ActionManager.getAction(ACTIONS.ONLINECHECK_FINISHED).execute(false);
@@ -297,6 +297,129 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 		ActionManager.addActionCallbackListener(ACTIONS.CLEAR_PASSWORD_FIELD, this);
 	}
 
+	@FXML
+	public void handelEnableRegisterButtonClick() {
+		if (!registerMode) {
+			registerMode = true;
+
+			labelUsername.setDisable(true);
+			labelPassword.setDisable(true);
+			tfUserName.setDisable(true);
+			tfPassword.setDisable(true);
+			cbDoAutoLogin.setDisable(true);
+			cbStorePassword.setDisable(true);
+
+			labelUsernameRegister.setVisible(true);
+			labelPasswordRegister.setVisible(true);
+			labelMailRegister.setVisible(true);
+			tfUserNameRegister.setVisible(true);
+			tfPasswordRegister.setVisible(true);
+			tfMailRegister.setVisible(true);
+
+			btRegister.setText(Internationalization.getString("app_pane_login_RegisterButton_Login"));
+			buttonLogin.setText(Internationalization.getString("app_pane_login_LoginButton_Register"));
+		} else {
+			registerMode = false;
+
+			labelUsername.setDisable(false);
+			labelPassword.setDisable(false);
+			tfUserName.setDisable(false);
+			tfPassword.setDisable(false);
+			cbDoAutoLogin.setDisable(false);
+			cbStorePassword.setDisable(false);
+
+			labelUsernameRegister.setVisible(false);
+			labelPasswordRegister.setVisible(false);
+			labelMailRegister.setVisible(false);
+			tfUserNameRegister.setVisible(false);
+			tfPasswordRegister.setVisible(false);
+			tfMailRegister.setVisible(false);
+
+			btRegister.setText(Internationalization.getString("app_pane_login_RegisterButton_Register"));
+			buttonLogin.setText(Internationalization.getString("app_pane_login_LoginButton_Login"));
+		}
+	}
+
+	/**
+	 * Set the strings on the gui (on initialize and on language change).
+	 */
+	@Override
+	public void setStrings() {
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				panelHeadline.setText(Internationalization.getString("app_pane_login_headline"));
+				cbGuestAccount.setText(Internationalization.getString("app_pane_login_ToggleGuestAccount"));
+				cbStorePassword.setText(Internationalization.getString("app_pane_login_ToggleStorePassword"));
+				cbDoAutoLogin.setText(Internationalization.getString("app_pane_login_ToggleDoAutoLogin"));
+				labelUsername.setText(Internationalization.getString("general_username"));
+				labelPassword.setText(Internationalization.getString("general_password"));
+				labelFactionKey.setText(Internationalization.getString("app_pane_login_FactionKey"));
+
+				buttonCancel.setText(Internationalization.getString("general_cancel"));
+
+				if (registerMode) {
+					buttonLogin.setText(Internationalization.getString("app_pane_login_RegisterButton_Register"));
+					btRegister.setText(Internationalization.getString("app_pane_login_RegisterButton_Login"));
+				} else {
+					buttonLogin.setText(Internationalization.getString("general_login"));
+					btRegister.setText(Internationalization.getString("app_pane_login_RegisterButton_Register"));
+				}
+				labelUsernameRegister.setText(Internationalization.getString("app_pane_login_NameRegisterLabel"));
+				labelPasswordRegister.setText(Internationalization.getString("app_pane_login_PasswordRegisterlabel"));
+				labelMailRegister.setText(Internationalization.getString("app_pane_login_MailRegisterLabel"));
+
+				if (cbGuestAccount.isSelected()) {
+					tfUserName.setText(Internationalization.getString("app_pane_login_GuestAccountName"));
+					tfPassword.setText(Internationalization.getString("app_pane_login_GuestAccountPWName"));
+				}
+			}
+		});
+	}
+
+	/**
+	 * Transition to fade in the scanner object.
+	 */
+	public void fadeInScanner() {
+
+		// Fade in transition 01 (ScannerArea)
+		fadeInTransition_01 = new FadeTransition(Duration.millis(150), recScanner);
+		fadeInTransition_01.setFromValue(0.0);
+		fadeInTransition_01.setToValue(0.75);
+		fadeInTransition_01.setCycleCount(4);
+
+		// Fade in transition 02 (Fingerprint)
+		fadeInTransition_02 = new FadeTransition(Duration.millis(500), labelFingerprint);
+		fadeInTransition_02.setFromValue(0.0);
+		fadeInTransition_02.setToValue(0.75);
+		fadeInTransition_02.setCycleCount(1);
+
+		// Fade in transition 03 (Moving Scanner)
+		fadeInTransition_03 = new FadeTransition(Duration.millis(750), recScannerFingerprint);
+		fadeInTransition_03.setFromValue(0.0);
+		fadeInTransition_03.setToValue(0.75);
+		fadeInTransition_03.setCycleCount(1);
+
+		// Move up and down 04 (Scanner movement)
+		timeline01 = new Timeline();
+		timeline01.setCycleCount(Timeline.INDEFINITE);
+		timeline01.setAutoReverse(true);
+		KeyValue kv = new KeyValue(recScannerFingerprint.yProperty(), 195);
+		KeyFrame kf = new KeyFrame(Duration.millis(1800), kv);
+		timeline01.getKeyFrames().add(kf);
+
+		// Transition sequence
+		sequentialTransition = new SequentialTransition();
+		sequentialTransition.setOnFinished((ActionEvent event) -> {
+		});
+		sequentialTransition.getChildren().addAll(fadeInTransition_01, fadeInTransition_02, fadeInTransition_03, timeline01);
+		sequentialTransition.setCycleCount(1);
+		sequentialTransition.play();
+
+		tfUserName.requestFocus();
+		tfUserName.selectEnd();
+	}
+
 	/**
 	 * Initializes the controller class.
 	 *
@@ -381,6 +504,11 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 			btRegister.setDisable(true);
 		}
 
+		btRegister.setText(Internationalization.getString("app_pane_login_RegisterButton_Register"));
+		labelUsernameRegister.setText(Internationalization.getString("app_pane_login_NameRegisterLabel"));
+		labelPasswordRegister.setText(Internationalization.getString("app_pane_login_PasswordRegisterlabel"));
+		labelMailRegister.setText(Internationalization.getString("app_pane_login_MailRegisterLabel"));
+
 		labelUsernameRegister.setVisible(false);
 		labelPasswordRegister.setVisible(false);
 		labelMailRegister.setVisible(false);
@@ -393,119 +521,6 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 	}
 
 	@FXML
-	public void handelEnableRegisterButtonClick() {
-		if (!registerMode) {
-			registerMode = true;
-
-			labelUsername.setDisable(true);
-			labelPassword.setDisable(true);
-			tfUserName.setDisable(true);
-			tfPassword.setDisable(true);
-			cbDoAutoLogin.setDisable(true);
-			cbStorePassword.setDisable(true);
-
-			labelUsernameRegister.setVisible(true);
-			labelPasswordRegister.setVisible(true);
-			labelMailRegister.setVisible(true);
-			tfUserNameRegister.setVisible(true);
-			tfPasswordRegister.setVisible(true);
-			tfMailRegister.setVisible(true);
-
-			btRegister.setText("Anmelden");
-			buttonLogin.setText("Register");
-		} else {
-			registerMode = false;
-
-			labelUsername.setDisable(false);
-			labelPassword.setDisable(false);
-			tfUserName.setDisable(false);
-			tfPassword.setDisable(false);
-			cbDoAutoLogin.setDisable(false);
-			cbStorePassword.setDisable(false);
-
-			labelUsernameRegister.setVisible(false);
-			labelPasswordRegister.setVisible(false);
-			labelMailRegister.setVisible(false);
-			tfUserNameRegister.setVisible(false);
-			tfPasswordRegister.setVisible(false);
-			tfMailRegister.setVisible(false);
-
-			btRegister.setText("Register");
-			buttonLogin.setText("Anmelden");
-		}
-	}
-
-	/**
-	 * Transition to fade in the scanner object.
-	 */
-	public void fadeInScanner() {
-
-		// Fade in transition 01 (ScannerArea)
-		fadeInTransition_01 = new FadeTransition(Duration.millis(150), recScanner);
-		fadeInTransition_01.setFromValue(0.0);
-		fadeInTransition_01.setToValue(0.75);
-		fadeInTransition_01.setCycleCount(4);
-
-		// Fade in transition 02 (Fingerprint)
-		fadeInTransition_02 = new FadeTransition(Duration.millis(500), labelFingerprint);
-		fadeInTransition_02.setFromValue(0.0);
-		fadeInTransition_02.setToValue(0.75);
-		fadeInTransition_02.setCycleCount(1);
-
-		// Fade in transition 03 (Moving Scanner)
-		fadeInTransition_03 = new FadeTransition(Duration.millis(750), recScannerFingerprint);
-		fadeInTransition_03.setFromValue(0.0);
-		fadeInTransition_03.setToValue(0.75);
-		fadeInTransition_03.setCycleCount(1);
-
-		// Move up and down 04 (Scanner movement)
-		timeline01 = new Timeline();
-		timeline01.setCycleCount(Timeline.INDEFINITE);
-		timeline01.setAutoReverse(true);
-		KeyValue kv = new KeyValue(recScannerFingerprint.yProperty(), 195);
-		KeyFrame kf = new KeyFrame(Duration.millis(1800), kv);
-		timeline01.getKeyFrames().add(kf);
-
-		// Transition sequence
-		sequentialTransition = new SequentialTransition();
-		sequentialTransition.setOnFinished((ActionEvent event) -> {
-		});
-		sequentialTransition.getChildren().addAll(fadeInTransition_01, fadeInTransition_02, fadeInTransition_03, timeline01);
-		sequentialTransition.setCycleCount(1);
-		sequentialTransition.play();
-
-		tfUserName.requestFocus();
-		tfUserName.selectEnd();
-	}
-
-	/**
-	 * Set the strings on the gui (on initialize and on language change).
-	 */
-	@Override
-	public void setStrings() {
-		Platform.runLater(new Runnable() {
-			@Override
-			public void run() {
-				panelHeadline.setText(Internationalization.getString("app_pane_login_headline"));
-				cbGuestAccount.setText(Internationalization.getString("app_pane_login_ToggleGuestAccount"));
-				cbStorePassword.setText(Internationalization.getString("app_pane_login_ToggleStorePassword"));
-				cbDoAutoLogin.setText(Internationalization.getString("app_pane_login_ToggleDoAutoLogin"));
-				labelUsername.setText(Internationalization.getString("general_username"));
-				labelPassword.setText(Internationalization.getString("general_password"));
-				labelFactionKey.setText(Internationalization.getString("app_pane_login_FactionKey"));
-
-				buttonLogin.setText(Internationalization.getString("general_login"));
-				buttonCancel.setText(Internationalization.getString("general_cancel"));
-			}
-		});
-
-		if (cbGuestAccount.isSelected()) {
-			tfUserName.setText(Internationalization.getString("app_pane_login_GuestAccountName"));
-			tfPassword.setText(Internationalization.getString("app_pane_login_GuestAccountPWName"));
-		}
-	}
-
-	@FXML
 	public void passwordFieldAction() {
 		tfPassword.selectAll();
 	}
@@ -515,7 +530,15 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 	}
 
 	private boolean checkRegisterTextFieldsForContent() {
-		return (!"".equals(tfUserNameRegister.getText()) && !"".equals(tfPasswordRegister.getText()) && !"".equals(tfMailRegister.getText()));
+		return (
+				!"".equals(tfUserNameRegister.getText())
+						&& !"".equals(tfPasswordRegister.getText())
+						&& !"".equals(tfMailRegister.getText())
+						&& tfUserNameRegister.getText().length() >= 3
+						&& tfMailRegister.getText().contains("@")
+						&& tfMailRegister.getText().contains(".")
+						&& tfMailRegister.getText().indexOf(".") > tfMailRegister.getText().indexOf("@")
+		);
 	}
 
 	private void createListeners() {
@@ -537,8 +560,17 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 			}
 		};
 		tfUserNameRegisterChangeListener = new ChangeListener<String>() {
+			private boolean ignore;
 			@Override
 			public void changed(ObservableValue<? extends String> ov, String old_val, String new_val) {
+				if (ignore || new_val == null) {
+					return;
+				}
+				if (new_val.endsWith("#")) {
+					ignore = true;
+					tfUserNameRegister.setText(new_val.substring(0, new_val.length() - 1));
+					ignore = false;
+				}
 				buttonLogin.setDisable(!checkRegisterTextFieldsForContent());
 			}
 		};

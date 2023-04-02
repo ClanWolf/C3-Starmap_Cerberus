@@ -127,7 +127,7 @@
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>
       </Label>
-      <Button fx:id="btRegister" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="703.0" layoutY="68.0" mnemonicParsing="false" onAction="#handelEnableRegisterButtonClick" prefHeight="37.0" prefWidth="121.0" styleClass="contentButtonYellow" stylesheets="@../styles/MainFrameStyle.css" text="Registrieren" />
+      <Button fx:id="btRegister" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="693.0" layoutY="68.0" mnemonicParsing="false" onAction="#handelEnableRegisterButtonClick" prefHeight="37.0" prefWidth="140.0" styleClass="contentButtonYellow" stylesheets="@../styles/MainFrameStyle.css" text="Registrieren" />
       <TextField fx:id="tfMailRegister" layoutX="483.0" layoutY="280.0" prefWidth="200.0">
          <stylesheets>
             <URL value="@../styles/MainFrameStyle.css" />
