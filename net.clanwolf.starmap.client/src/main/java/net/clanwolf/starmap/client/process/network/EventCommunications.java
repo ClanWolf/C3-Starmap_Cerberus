@@ -133,6 +133,7 @@ public class EventCommunications {
 					// - Die Daten müssen aufgeteilt werden, bis sie wieder in die Pakete passen!
 
 					// set current user
+					//TODO: Hier musste noch was machen Christian, da weißte bescheid
 					Nexus.setUser((UserDTO) state.getObject());
 					logger.info("EventCommunications.onDataIn: myPlayerSessionID: -> " + Nexus.getMyPlayerSessionID());
 

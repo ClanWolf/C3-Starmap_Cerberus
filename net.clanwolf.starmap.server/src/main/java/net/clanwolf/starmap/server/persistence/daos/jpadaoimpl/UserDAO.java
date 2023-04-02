@@ -109,6 +109,7 @@ public class UserDAO extends GenericDAO {
 		CriteriaHelper crit1 = new CriteriaHelper(UserPOJO.class);
 		crit1.addCriteria("userName", c.getUsername());
 		crit1.addCriteria("userPassword", pw1);
+		//crit1.addCriteria("active",1);
 
 		Object o = crit1.getSingleResult();
 

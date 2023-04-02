@@ -181,15 +181,18 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 	@FXML
 	private void handleLoginButtonClick() throws Exception {
 		String registerModeString = "";
+		String username = tfUserName.getText();
+
 		if (registerMode) {
-			registerModeString += "###" + tfMailRegister.getText();
+			username = tfUserNameRegister.getText();
+			registerModeString += "###" + tfMailRegister.getText() + "#" + username.length();
 			password_encrypted = false;
 			pass = tfPasswordRegister.getText();
 		}
 
 		ActionManager.getAction(ACTIONS.SET_CONSOLE_OPACITY).execute(0.4);
-		String username = tfUserName.getText();
-		username += registerModeString + "#" + username.length();
+		//String username = tfUserName.getText();
+		username += registerModeString;
 
 		if (Server.checkServerStatus()) {
 			Login.login(username, pass, tfFactionKey.getText(), password_encrypted, registerMode);

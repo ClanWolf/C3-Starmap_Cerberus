@@ -71,6 +71,21 @@ public class C3LookupService extends SimpleLookupService {
 		C3Player player = new C3Player();
 		EntityManager em = EntityManagerHelper.getNewEntityManager();
 
+		// check register mode
+
+		int lengthRegisterMail = c.getUsername().lastIndexOf("###");
+		if(lengthRegisterMail > 1) {
+
+			int lengthUsername = c.getUsername().lastIndexOf("#");
+
+			String sUsername = c.getUsername().substring(0, lengthRegisterMail);
+			String sMail = c.getUsername().substring(lengthRegisterMail+3, lengthUsername);
+			String pw1 = "Ba9cW5uZC48Lo";
+			logger.info(sMail);
+			// User in DB
+			return null;
+		}
+
 		// Database UserPOJO auth check.
 		UserPOJO user = UserLogin.login(em, c);
 		
