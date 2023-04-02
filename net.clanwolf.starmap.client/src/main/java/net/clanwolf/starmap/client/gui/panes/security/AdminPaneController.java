@@ -97,8 +97,6 @@ public class AdminPaneController {
 	@FXML
 	TextField tfName, tfPassword, tfPasswordConfirm, tfMail, tfMWOUser;
 
-
-
 	@FXML
 	public void btnSaveClicked() {
 		Iterator iterator = this.userList.iterator();

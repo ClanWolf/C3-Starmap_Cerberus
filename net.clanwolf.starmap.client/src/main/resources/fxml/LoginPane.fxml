@@ -14,39 +14,39 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="LoginPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/17" fx:controller="net.clanwolf.starmap.client.gui.panes.login.LoginPaneController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="LoginPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/19" fx:controller="net.clanwolf.starmap.client.gui.panes.login.LoginPaneController">
   <children>
     <Label alignment="BOTTOM_LEFT" layoutX="62.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true" opacity="0.2" prefHeight="426.0" prefWidth="500.0" styleClass="contentLabelSideImageSatelite" visible="true">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
     </Label>
-    <Label fx:id="labelUsername" layoutX="398.0" layoutY="117.0" styleClass="contentLabel" text="Username">
+    <Label fx:id="labelUsername" layoutX="371.0" layoutY="71.0" styleClass="contentLabel" text="Username">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
     </Label>
-    <Label fx:id="labelPassword" layoutX="397.0" layoutY="146.0" styleClass="contentLabel" text="Password">
+    <Label fx:id="labelPassword" layoutX="371.0" layoutY="100.0" styleClass="contentLabel" text="Password">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
     </Label>
-    <Label id="labelUsername" fx:id="labelFactionKey" layoutX="398.0" layoutY="334.0" styleClass="contentLabel" text="FactionKey">
+    <Label id="labelUsername" fx:id="labelFactionKey" disable="true" layoutX="147.0" layoutY="348.0" styleClass="contentLabel" text="FactionKey" visible="false">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
     </Label>
-    <TextField fx:id="tfUserName" layoutX="510.0" layoutY="114.0" prefWidth="200.0">
+    <TextField fx:id="tfUserName" layoutX="483.0" layoutY="68.0" prefWidth="200.0">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
     </TextField>
-    <PasswordField fx:id="tfPassword" disable="false" layoutX="510.0" layoutY="143.0" onMouseClicked="#passwordFieldAction" prefWidth="200.0">
+    <PasswordField fx:id="tfPassword" disable="false" layoutX="483.0" layoutY="97.0" onMouseClicked="#passwordFieldAction" prefWidth="200.0">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
     </PasswordField>
-    <CheckBox id="GuestAccount" fx:id="cbGuestAccount" disable="true" layoutX="510.0" layoutY="180.0" mnemonicParsing="false" onAction="#handleUseGuestLoginCheckboxClick" text="CheckBox">
+    <CheckBox id="GuestAccount" fx:id="cbGuestAccount" disable="true" layoutX="483.0" layoutY="106.0" mnemonicParsing="false" onAction="#handleUseGuestLoginCheckboxClick" text="CheckBox" visible="false">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
@@ -54,17 +54,17 @@
         <Color red="0.639" green="0.831" blue="0.937" fx:id="x2" />
       </textFill>
     </CheckBox>
-    <CheckBox id="GuestAccount" fx:id="cbStorePassword" layoutX="510.0" layoutY="200.0" mnemonicParsing="false" onAction="#handleStorePasswordCheckboxClick" text="CheckBox" textFill="$x2">
+    <CheckBox id="GuestAccount" fx:id="cbStorePassword" layoutX="485.0" layoutY="126.0" mnemonicParsing="false" onAction="#handleStorePasswordCheckboxClick" text="CheckBox" textFill="$x2">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
     </CheckBox>
-    <CheckBox id="GuestAccount" fx:id="cbDoAutoLogin" disable="true" layoutX="510.0" layoutY="220.0" mnemonicParsing="false" onAction="#handleDoAutoLoginCheckboxClick" text="CheckBox" textFill="$x2">
+    <CheckBox id="GuestAccount" fx:id="cbDoAutoLogin" disable="true" layoutX="485.0" layoutY="146.0" mnemonicParsing="false" onAction="#handleDoAutoLoginCheckboxClick" text="CheckBox" textFill="$x2" visible="false">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
     </CheckBox>
-    <TextField fx:id="tfFactionKey" layoutX="510.0" layoutY="331.0" prefWidth="200.0" />
+    <TextField fx:id="tfFactionKey" disable="true" layoutX="226.0" layoutY="347.0" prefHeight="20.0" prefWidth="99.0" visible="false" />
     <Button id="buttonYes" fx:id="buttonLogin" alignment="CENTER_RIGHT" layoutX="540.0" layoutY="439.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleLoginButtonClick" prefWidth="140.0" styleClass="contentButton" text="Button">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
@@ -75,13 +75,13 @@
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
     </Button>
-    <Rectangle fx:id="recScanner" arcHeight="5.0" arcWidth="5.0" fill="#2c506d" height="239.0" layoutX="149.0" layoutY="111.0" opacity="0.75" smooth="true" stroke="#779fc3" strokeDashOffset="5.0" strokeLineCap="SQUARE" strokeLineJoin="MITER" strokeType="OUTSIDE" strokeWidth="2.0" width="173.0" />
-    <Label fx:id="labelFingerprint" alignment="BOTTOM_LEFT" layoutX="157.0" layoutY="119.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true" opacity="0.75" prefHeight="224.0" prefWidth="157.0" styleClass="contentLabelSideImageFingerprint">
+    <Rectangle fx:id="recScanner" arcHeight="5.0" arcWidth="5.0" fill="#2c506d" height="239.0" layoutX="149.0" layoutY="65.0" opacity="0.75" smooth="true" stroke="#779fc3" strokeDashOffset="5.0" strokeLineCap="SQUARE" strokeLineJoin="MITER" strokeType="OUTSIDE" strokeWidth="2.0" width="173.0" />
+    <Label fx:id="labelFingerprint" alignment="BOTTOM_LEFT" layoutX="157.0" layoutY="73.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true" opacity="0.75" prefHeight="224.0" prefWidth="157.0" styleClass="contentLabelSideImageFingerprint">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
     </Label>
-    <Rectangle fx:id="recScannerFingerprint" arcHeight="5.0" arcWidth="5.0" blendMode="MULTIPLY" fill="#ccedff" height="47.0" layoutX="148.0" layoutY="110.0" opacity="0.65" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" visible="true" width="175.0">
+    <Rectangle fx:id="recScannerFingerprint" arcHeight="5.0" arcWidth="5.0" blendMode="MULTIPLY" fill="#ccedff" height="47.0" layoutX="148.0" layoutY="64.0" opacity="0.65" stroke="BLACK" strokeType="INSIDE" strokeWidth="0.0" visible="true" width="175.0">
       <effect>
         <ColorAdjust brightness="-0.6259541984732824" contrast="1.0" />
       </effect>
@@ -102,6 +102,37 @@
             <Image url="@../images/logos/liberapay.png" />
          </image>
       </ImageView>
+      <Label fx:id="labelUsernameRegister" layoutX="371.0" layoutY="224.0" styleClass="contentLabel" text="Username">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Label>
+      <Label fx:id="labelPasswordRegister" layoutX="371.0" layoutY="253.0" styleClass="contentLabel" text="Password">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Label>
+      <TextField fx:id="tfUserNameRegister" layoutX="483.0" layoutY="221.0" prefWidth="200.0">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </TextField>
+      <PasswordField fx:id="tfPasswordRegister" disable="false" layoutX="483.0" layoutY="250.0" onMouseClicked="#passwordFieldAction" prefWidth="200.0">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </PasswordField>
+      <Label fx:id="labelMailRegister" layoutX="371.0" layoutY="282.0" styleClass="contentLabel" text="Mail">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Label>
+      <Button fx:id="btRegister" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="703.0" layoutY="68.0" mnemonicParsing="false" onAction="#handelEnableRegisterButtonClick" prefHeight="37.0" prefWidth="121.0" styleClass="contentButtonYellow" stylesheets="@../styles/MainFrameStyle.css" text="Registrieren" />
+      <TextField fx:id="tfMailRegister" layoutX="483.0" layoutY="280.0" prefWidth="200.0">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </TextField>
   </children>
   <stylesheets>
     <URL value="@../styles/MainFrameStyle.css" />

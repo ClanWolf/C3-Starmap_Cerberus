@@ -103,6 +103,13 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 	@FXML
 	private Label labelFactionKey;
 
+	@FXML
+	Label labelUsernameRegister, labelPasswordRegister, labelMailRegister;
+	@FXML
+	TextField tfUserNameRegister, tfPasswordRegister, tfMailRegister;
+	@FXML
+	Button btRegister;
+
 	private FadeTransition fadeInTransition_01 = null;
 	private FadeTransition fadeInTransition_02 = null;
 	private FadeTransition fadeInTransition_03 = null;
@@ -111,12 +118,17 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 	private double initialPositionY;
 	private ChangeListener<? super String> userNameFieldChangeListener;
 	private ChangeListener<? super String> userPassFieldChangeListener;
+
+	private ChangeListener<? super String> tfUserNameRegisterChangeListener;
+	private ChangeListener<? super String> tfPasswordRegisterChangeListener;
+	private ChangeListener<? super String> tfMailRegisterChangeListener;
+
 	private boolean StorePassword_OldValue = false;
 	private boolean AutoStart_OldValue = false;
 	private boolean password_encrypted = false;
 	private String user = "";
 	private String pass = "";
-
+	private boolean registerMode;
 	private boolean autologin = false;
 
 	@FXML
@@ -168,9 +180,16 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 
 	@FXML
 	private void handleLoginButtonClick() throws Exception {
+		String registerModeString = "";
+		if (registerMode) {
+			registerModeString += "###" + tfMailRegister.getText();
+			password_encrypted = false;
+			pass = tfPasswordRegister.getText();
+		}
+
 		ActionManager.getAction(ACTIONS.SET_CONSOLE_OPACITY).execute(0.4);
 		String username = tfUserName.getText();
-		// String factionKey = tfFactionKey.getText();
+		username += registerModeString + "#" + username.length();
 
 		if (Server.checkServerStatus()) {
 			Login.login(username, pass, tfFactionKey.getText(), password_encrypted);
@@ -354,8 +373,66 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 
 		StorePassword_OldValue = "true".equals(C3Properties.getProperty(C3PROPS.STORE_LOGIN_PASSWORD));
 
+		if ("".equalsIgnoreCase(tfUserName.getText())) {
+			btRegister.setVisible(true);
+			btRegister.setDisable(false);
+		} else {
+			btRegister.setVisible(false);
+			btRegister.setDisable(true);
+		}
+
+		labelUsernameRegister.setVisible(false);
+		labelPasswordRegister.setVisible(false);
+		labelMailRegister.setVisible(false);
+		tfUserNameRegister.setVisible(false);
+		tfPasswordRegister.setVisible(false);
+		tfMailRegister.setVisible(false);
+
 		createListeners();
 		enableListeners(true);
+	}
+
+	@FXML
+	public void handelEnableRegisterButtonClick() {
+		if (!registerMode) {
+			registerMode = true;
+
+			labelUsername.setDisable(true);
+			labelPassword.setDisable(true);
+			tfUserName.setDisable(true);
+			tfPassword.setDisable(true);
+			cbDoAutoLogin.setDisable(true);
+			cbStorePassword.setDisable(true);
+
+			labelUsernameRegister.setVisible(true);
+			labelPasswordRegister.setVisible(true);
+			labelMailRegister.setVisible(true);
+			tfUserNameRegister.setVisible(true);
+			tfPasswordRegister.setVisible(true);
+			tfMailRegister.setVisible(true);
+
+			btRegister.setText("Anmelden");
+			buttonLogin.setText("Register");
+		} else {
+			registerMode = false;
+
+			labelUsername.setDisable(false);
+			labelPassword.setDisable(false);
+			tfUserName.setDisable(false);
+			tfPassword.setDisable(false);
+			cbDoAutoLogin.setDisable(false);
+			cbStorePassword.setDisable(false);
+
+			labelUsernameRegister.setVisible(false);
+			labelPasswordRegister.setVisible(false);
+			labelMailRegister.setVisible(false);
+			tfUserNameRegister.setVisible(false);
+			tfPasswordRegister.setVisible(false);
+			tfMailRegister.setVisible(false);
+
+			btRegister.setText("Register");
+			buttonLogin.setText("Anmelden");
+		}
 	}
 
 	/**
@@ -434,7 +511,11 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 	}
 
 	private boolean checkTextFieldsForContent() {
-		return (!"".equals(tfUserName.getText())) && (!"".equals(tfPassword.getText()));
+		return (!"".equals(tfUserName.getText()) && !"".equals(tfPassword.getText()));
+	}
+
+	private boolean checkRegisterTextFieldsForContent() {
+		return (!"".equals(tfUserNameRegister.getText()) && !"".equals(tfPasswordRegister.getText()) && !"".equals(tfMailRegister.getText()));
 	}
 
 	private void createListeners() {
@@ -455,6 +536,24 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 				}
 			}
 		};
+		tfUserNameRegisterChangeListener = new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> ov, String old_val, String new_val) {
+				buttonLogin.setDisable(!checkRegisterTextFieldsForContent());
+			}
+		};
+		tfPasswordRegisterChangeListener = new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> ov, String old_val, String new_val) {
+				buttonLogin.setDisable(!checkRegisterTextFieldsForContent());
+			}
+		};
+		tfMailRegisterChangeListener = new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> ov, String old_val, String new_val) {
+				buttonLogin.setDisable(!checkRegisterTextFieldsForContent());
+			}
+		};
 	}
 
 
@@ -463,9 +562,17 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 		if (enableListerners) {
 			tfUserName.textProperty().addListener(userNameFieldChangeListener);
 			tfPassword.textProperty().addListener(userPassFieldChangeListener);
+
+			tfUserNameRegister.textProperty().addListener(tfUserNameRegisterChangeListener);
+			tfPasswordRegister.textProperty().addListener(tfPasswordRegisterChangeListener);
+			tfMailRegister.textProperty().addListener(tfMailRegisterChangeListener);
 		} else {
 			tfUserName.textProperty().removeListener(userNameFieldChangeListener);
 			tfPassword.textProperty().removeListener(userPassFieldChangeListener);
+
+			tfUserNameRegister.textProperty().removeListener(tfUserNameRegisterChangeListener);
+			tfPasswordRegister.textProperty().removeListener(tfPasswordRegisterChangeListener);
+			tfMailRegister.textProperty().removeListener(tfMailRegisterChangeListener);
 		}
 	}
 
