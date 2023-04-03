@@ -78,7 +78,7 @@ public class Encryptor {
 			byte[] digest = md.digest();
 			for (int i = 0; i < digest.length; i++) {
 				if ((0xff & digest[i]) < 0x10) {
-					myHash.append("0" + Integer.toHexString((0xFF & digest[i])));
+					myHash.append("0").append(Integer.toHexString((0xFF & digest[i])));
 				} else {
 					myHash.append(Integer.toHexString(0xFF & digest[i]));
 				}
@@ -102,7 +102,7 @@ public class Encryptor {
 	}
 
 	public static String createSinglePassword(String pw) {
-		return Encryptor.hash(pw);
+		return Encryptor.hash(Encryptor.hash(pw));
 	}
 
 	public static String getPasswordFromPair(String indicator, String passwordPair) {

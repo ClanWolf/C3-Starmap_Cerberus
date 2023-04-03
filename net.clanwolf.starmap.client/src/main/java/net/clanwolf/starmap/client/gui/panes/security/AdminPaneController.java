@@ -55,10 +55,12 @@ public class AdminPaneController {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	private static ResourceBundle sMessagesPrivileges;
-	private HashMap<Integer, CheckBox> privilegeBoxes = new HashMap<Integer, CheckBox>();
+	@FXML
+	CheckBox cbActiveUser;
 	private UserDTO currentUser = null;
-	private ArrayList userList = new ArrayList<UserDTO>();
-	private HashMap<String, Long> originalPrivileges = new HashMap<String, Long>();
+	private HashMap<Integer, CheckBox> privilegeBoxes = new HashMap<>();
+	private ArrayList<UserDTO> userList = new ArrayList<>();
+	private HashMap<String, Long> originalPrivileges = new HashMap<>();
 	private ObservableList<FinancesInfo> financesInfos = FXCollections.observableArrayList();
 	private final ArrayList<BOJumpship> activeJumpships = Nexus.getBoUniverse().getJumpshipList();
 	private final DecimalFormat nf = new DecimalFormat();
@@ -96,20 +98,25 @@ public class AdminPaneController {
 
 	@FXML
 	TextField tfName, tfPassword, tfPasswordConfirm, tfMail, tfMWOUser;
+	private HashMap<String, Integer> originalActivatedStatus = new HashMap<>();
 
 	@FXML
 	public void btnSaveClicked() {
-		Iterator iterator = this.userList.iterator();
-		while (iterator.hasNext()) {
-			UserDTO u = (UserDTO) iterator.next();
-			logger.info("User " + u.getUserName() + ": " + u.getPrivileges());
-		}
+//		Iterator iterator = this.userList.iterator();
+//		while (iterator.hasNext()) {
+//			UserDTO u = iterator.next();
+//			logger.info("User " + u.getUserName() + ": " + u.getPrivileges());
+//		}
 
 		ArrayList<UserDTO> usersToSave = new ArrayList<>();
-		Iterator it = this.userList.iterator();
+		Iterator<UserDTO> it = this.userList.iterator();
 		while (it.hasNext()) {
-			UserDTO u = (UserDTO)it.next();
+			UserDTO u = it.next();
+			logger.info("User " + u.getUserName() + ": " + u.getPrivileges());
 			if (!(originalPrivileges.get(u.getUserName())).equals(u.getPrivileges())) {
+				usersToSave.add(u);
+			}
+			if (!(originalActivatedStatus.get(u.getUserName())).equals(u.getActive())) {
 				usersToSave.add(u);
 			}
 		}
@@ -124,11 +131,13 @@ public class AdminPaneController {
 
 	@FXML
 	public void btnCancelClicked() {
-		Iterator iterator = this.userList.iterator();
+		Iterator<UserDTO> iterator = this.userList.iterator();
 		while (iterator.hasNext()) {
-			UserDTO u = (UserDTO) iterator.next();
+			UserDTO u = iterator.next();
 			long privs = originalPrivileges.get(u.getUserName());
+			Integer as = originalActivatedStatus.get(u.getUserName());
 			u.setPrivileges(privs);
+			u.setActive(as);
 		}
 		Stage stage = (Stage) btnSave.getScene().getWindow();
 		stage.close();
@@ -238,6 +247,8 @@ public class AdminPaneController {
 						String binCode = String.format("%64.64s", b).replace(' ', '0');
 						labelPrivCode.setText("" + privs);
 						labelPrivCodeBinary.setText("" + binCode);
+
+						cbActiveUser.setSelected(user.getActive() == 1);
 					});
 				}
 			} catch (Exception e) {
@@ -277,6 +288,7 @@ public class AdminPaneController {
 		while (iterator.hasNext()) {
 			UserDTO u = (UserDTO) iterator.next();
 			originalPrivileges.put(u.getUserName(), u.getPrivileges());
+			originalActivatedStatus.put(u.getUserName(), u.getActive());
 		}
 
 //		labelDescription.setText(Internationalization.getString("AdminSecurityDescription"));
@@ -357,6 +369,8 @@ public class AdminPaneController {
 			unitName = jumpship.getJumpshipDTO().getUnitName();
 			activeFactions.add(factionName + " - " + unitName);
 		}
+
+		cbActiveUser.setText(Internationalization.getString("general_user_is_active_checkbox"));
 
 		cbFaction.setItems(activeFactions);
 		cbFaction.getSelectionModel().select(0);

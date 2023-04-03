@@ -87,7 +87,7 @@
                                     <Font size="10.0" />
                                  </font>
                               </Label>
-                              <CheckBox fx:id="cbActive" layoutX="114.0" layoutY="63.0" mnemonicParsing="false" text="Active" />
+                              <CheckBox fx:id="cbActiveUser" layoutX="114.0" layoutY="63.0" mnemonicParsing="false" text="Active" />
                            </children>
                         </AnchorPane>
                   </content>
