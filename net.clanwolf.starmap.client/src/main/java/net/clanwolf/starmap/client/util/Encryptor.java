@@ -101,6 +101,10 @@ public class Encryptor {
 		return used_password;
 	}
 
+	public static String createSinglePassword(String pw) {
+		return Encryptor.hash(pw);
+	}
+
 	public static String getPasswordFromPair(String indicator, String passwordPair) {
 		String pw = "";
 		String[] pws = passwordPair.split("#");

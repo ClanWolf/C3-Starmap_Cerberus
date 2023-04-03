@@ -97,7 +97,7 @@ public class Login {
 	 *
 	 * @throws Exception
 	 */
-	public static void doLogin() throws Exception {
+	public static void doLogin(boolean registerMode) throws Exception {
 		// Upon login, get the values from the textfields and set the
 		// properties. The database comes from the settings!
 
@@ -113,7 +113,13 @@ public class Login {
 			if (passwordEncrypted) {
 				used_password = password;
 			} else {
-				used_password = Encryptor.createPasswordPair(password);
+				if (!registerMode) {
+					// Normal operation -> login
+					used_password = Encryptor.createPasswordPair(password);
+				} else {
+					// This is registration process, send only 2nd pw
+					used_password = Encryptor.createSinglePassword(password);
+				}
 			}
 		}
 
@@ -287,6 +293,6 @@ public class Login {
 //		logger.info("encrypted:" + passwordEncrypted);
 
 		savePassword(registerMode);
-		doLogin();
+		doLogin(registerMode);
 	}
 }

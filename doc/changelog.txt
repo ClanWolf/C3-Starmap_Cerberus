@@ -18,6 +18,7 @@ TODO:
 - Error message if login returns an inactive user (still in registration) - EventCommunications, L.141
 - User admin pane "active" checkbox
 - Send a mail to admins if a new user registered
+- Send correct password to store in registration process
 - If an account has been activated, a character needs to be created
 - Clan vs Clan zeigt das Video nach der Lobby nicht an (?)
 ----------------------------------------------------------------

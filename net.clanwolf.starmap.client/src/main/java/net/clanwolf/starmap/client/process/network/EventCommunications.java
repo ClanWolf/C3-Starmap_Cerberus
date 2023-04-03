@@ -32,6 +32,9 @@ import io.nadron.client.event.Events;
 import io.nadron.client.event.NetworkEvent;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionManager;
+import net.clanwolf.starmap.client.enums.C3MESSAGES;
+import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
+import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.logout.Logout;
 import net.clanwolf.starmap.client.process.universe.BOAttack;
@@ -137,11 +140,12 @@ public class EventCommunications {
 					if (state.getObject() != null && state.getObject() instanceof UserDTO) {
 						us = (UserDTO) state.getObject();
 						if (us.getActive() == 0) {
-							// User ist in der Registrierung, kann sich noch nicht anmelden
-							//TODO: Hier musste noch was machen Christian, da weißte bescheid
-
-							// Registrierungsmeldung:
-							// Du hast Dich registriert, ein Admin muss Deinen Account noch freigeben
+							// User is in registration, can not be logged in yet
+							C3Message messageUserIsInRegistration = new C3Message(C3MESSAGES.ERROR_USER_IS_IN_REGISTRATION);
+							String m = Internationalization.getString("general_user_is_in_registration");
+							messageUserIsInRegistration.setText(m);
+							messageUserIsInRegistration.setType(C3MESSAGETYPES.CLOSE);
+							ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(messageUserIsInRegistration);
 
 							ActionManager.getAction(ACTIONS.LOGON_FINISHED_WITH_ERROR).execute();
 							break;
