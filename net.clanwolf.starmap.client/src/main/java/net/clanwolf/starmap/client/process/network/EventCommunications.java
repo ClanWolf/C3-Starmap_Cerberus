@@ -137,6 +137,7 @@ public class EventCommunications {
 							messageUserIsInRegistration.setType(C3MESSAGETYPES.CLOSE);
 							ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(messageUserIsInRegistration);
 
+							// TODO_C3: Is this second call necessary?
 							// ???
 							ActionManager.getAction(ACTIONS.LOGON_FINISHED_WITH_ERROR).execute();
 							break;

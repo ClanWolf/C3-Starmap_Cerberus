@@ -689,12 +689,12 @@
   -fx-control-inner-background: transparent;
 }
 
-.text-area .scroll-pane .viewport{
+.text-area .scroll-pane .viewport {
   -fx-background-color: transparent;
   -fx-control-inner-background: transparent;
 }
 
-.text-area .scroll-pane .content{
+.text-area .scroll-pane .content {
   -fx-background-color: transparent;
   -fx-control-inner-background: transparent;
 }
@@ -1101,3 +1101,92 @@
 #btn_blue:hover {}
 #btn_blue:disabled {}
 #btn_blue:focused {}
+
+/* ComboBox */
+.combo-box .list-cell {
+  -fx-background: white;
+  -fx-background-color: white;
+  -fx-text-fill: black;
+  -fx-padding: 3 0 2 7;
+  -fx-cell-size: 1.66667em;
+}
+
+.combo-box .scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.combo-box-popup .list-view {
+  -fx-background-color: white, white;
+  -fx-background-insets: 0, 0;
+  /* -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 8, 0.0 , 0 , 0 ); */
+}
+
+.combo-box-popup .list-view .list-cell {
+  -fx-padding: 4 0 4 5;
+
+  /* No alternate highlighting */
+  -fx-background-color: white;
+}
+
+.combo-box-popup .list-view .list-cell, .combo-box-popup .list-view .list-cell {
+  -fx-background: white;
+  -fx-background-color: white;
+  -fx-text-fill: black;
+}
+
+.combo-box-popup .list-view .list-cell:filled:hover {
+  -fx-background: white;
+  -fx-background-color: blue;
+  -fx-text-fill: yellow;
+}
+
+.combo-box .scroll-bar:horizontal ,
+.combo-box .scroll-bar:vertical{
+    -fx-background-color:transparent;
+ }
+
+.combo-box .scroll-bar:horizontal .track,
+.combo-box .scroll-bar:vertical .track {
+  -fx-background-color: green;
+  -fx-border-color: transparent;
+  -fx-background-radius: 0;
+}
+
+.combo-box .scroll-bar:horizontal .thumb,
+.combo-box .scroll-bar:vertical .thumb {
+  -fx-background-color: green;
+  -fx-border-color: transparent;
+  -fx-background-insets: 0, 0, 0;
+  -fx-background-radius: 0em;
+}
+
+.combo-box-popup .list-view .list-cell:filled:selected, .combo-box-popup .list-view .list-cell:filled:selected {
+  -fx-background: white;
+  -fx-background-color: white;
+  -fx-text-fill: black;
+}
+
+.combo-box-base {
+  -fx-background-color: white, white, white, white;
+  -fx-background-radius: 0, 0, 0, 0;
+  -fx-background-insets: 0 0 0 0, 0, 0, 0;
+  -fx-padding: 0;
+}
+
+.combo-box-base:hover {
+  -fx-color: blue;
+}
+
+.combo-box-base:showing {
+  -fx-color: blue;
+}
+
+.combo-box-base:focused {
+  -fx-background-color: white, white, white, white;
+  -fx-background-radius: 0.0, 0.0, 0.0, 0.0;
+  -fx-background-insets: 0, 0, 0, 0;
+}
+
+.combo-box-base:disabled {
+  -fx-opacity: .4;
+}

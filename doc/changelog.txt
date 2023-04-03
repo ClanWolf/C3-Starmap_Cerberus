@@ -21,6 +21,9 @@ TODO:
 - Send correct password to store in registration process
 - If an account has been activated, a character needs to be created
 - Clan vs Clan zeigt das Video nach der Lobby nicht an (?)
+- Beim Setzen des Active Flag müsste man einen user löschen können
+- Ein nicht aktivierter User wird nach 7 (?) Tagen gelöscht?
+- Beim Invasionpane soundboard von rp funksprüchen? Je nach Fraktion und Gegner?
 ----------------------------------------------------------------
 
 Version 7.3.6 ( ACHTUNG INKOMPATIBEL BIS USERREG FERTIG

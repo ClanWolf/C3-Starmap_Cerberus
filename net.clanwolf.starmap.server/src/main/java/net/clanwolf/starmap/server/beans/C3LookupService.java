@@ -76,10 +76,14 @@ public class C3LookupService extends SimpleLookupService {
 		int lengthRegisterMail = c.getUsername().lastIndexOf("###");
 		if(lengthRegisterMail > 1) {
 
+			String faction = c.getUsername().substring(c.getUsername().lastIndexOf("#"));
+
+			// Hier muss noch die Faction rausgeschnitten werden!!!
+
 			int lengthUsername = c.getUsername().lastIndexOf("#");
 
 			String sUsername = c.getUsername().substring(0, lengthRegisterMail);
-			String sMail = c.getUsername().substring(lengthRegisterMail+3, lengthUsername);
+			String sMail = c.getUsername().substring(lengthRegisterMail + 3, lengthUsername);
 			String pw1 = "Ba9cW5uZC48Lo";
 			logger.info(sMail);
 			// User in DB
@@ -88,7 +92,7 @@ public class C3LookupService extends SimpleLookupService {
 
 		// Database UserPOJO auth check.
 		UserPOJO user = UserLogin.login(em, c);
-		
+
 		em.close();
 
 		if (user != null) {

@@ -32,10 +32,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Rectangle;
@@ -104,11 +101,13 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 	private Label labelFactionKey;
 
 	@FXML
-	Label labelUsernameRegister, labelPasswordRegister, labelMailRegister;
+	Label labelUsernameRegister, labelPasswordRegister, labelMailRegister, labelFactionRegister;
 	@FXML
 	TextField tfUserNameRegister, tfPasswordRegister, tfMailRegister;
 	@FXML
 	Button btRegister;
+	@FXML
+	ComboBox<String> comboboxFactionRegister;
 
 	private FadeTransition fadeInTransition_01 = null;
 	private FadeTransition fadeInTransition_02 = null;
@@ -185,7 +184,10 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 
 		if (registerMode) {
 			username = tfUserNameRegister.getText();
-			registerModeString += "###" + tfMailRegister.getText() + "#" + username.length();
+			String faction = comboboxFactionRegister.getSelectionModel().getSelectedItem();
+			String[] sh = faction.split("-");
+			String fss = sh[0].trim();
+			registerModeString += "###" + tfMailRegister.getText() + "#" + username.length() + "#" + fss;
 			password_encrypted = false;
 			pass = tfPasswordRegister.getText();
 		}
@@ -315,9 +317,11 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 			labelUsernameRegister.setVisible(true);
 			labelPasswordRegister.setVisible(true);
 			labelMailRegister.setVisible(true);
+			labelFactionRegister.setVisible(true);
 			tfUserNameRegister.setVisible(true);
 			tfPasswordRegister.setVisible(true);
 			tfMailRegister.setVisible(true);
+			comboboxFactionRegister.setVisible(true);
 
 			btRegister.setText(Internationalization.getString("app_pane_login_RegisterButton_Login"));
 			buttonLogin.setText(Internationalization.getString("app_pane_login_LoginButton_Register"));
@@ -334,9 +338,11 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 			labelUsernameRegister.setVisible(false);
 			labelPasswordRegister.setVisible(false);
 			labelMailRegister.setVisible(false);
+			labelFactionRegister.setVisible(false);
 			tfUserNameRegister.setVisible(false);
 			tfPasswordRegister.setVisible(false);
 			tfMailRegister.setVisible(false);
+			comboboxFactionRegister.setVisible(false);
 
 			btRegister.setText(Internationalization.getString("app_pane_login_RegisterButton_Register"));
 			buttonLogin.setText(Internationalization.getString("app_pane_login_LoginButton_Login"));
@@ -371,6 +377,7 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 				labelUsernameRegister.setText(Internationalization.getString("app_pane_login_NameRegisterLabel"));
 				labelPasswordRegister.setText(Internationalization.getString("app_pane_login_PasswordRegisterlabel"));
 				labelMailRegister.setText(Internationalization.getString("app_pane_login_MailRegisterLabel"));
+				labelFactionRegister.setText(Internationalization.getString("app_user_info_panel_faction"));
 
 				if (cbGuestAccount.isSelected()) {
 					tfUserName.setText(Internationalization.getString("app_pane_login_GuestAccountName"));
@@ -511,14 +518,28 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 		labelUsernameRegister.setText(Internationalization.getString("app_pane_login_NameRegisterLabel"));
 		labelPasswordRegister.setText(Internationalization.getString("app_pane_login_PasswordRegisterlabel"));
 		labelMailRegister.setText(Internationalization.getString("app_pane_login_MailRegisterLabel"));
+		labelFactionRegister.setText(Internationalization.getString("app_user_info_panel_faction"));
 
 		labelUsernameRegister.setVisible(false);
 		labelPasswordRegister.setVisible(false);
 		labelMailRegister.setVisible(false);
+		labelFactionRegister.setVisible(false);
 		tfUserNameRegister.setVisible(false);
 		tfPasswordRegister.setVisible(false);
 		tfMailRegister.setVisible(false);
+		comboboxFactionRegister.setVisible(false);
 
+		comboboxFactionRegister.getItems().add("CS - Comstar");
+		comboboxFactionRegister.getItems().add("FRR - Free Rasalhague Republic");
+		comboboxFactionRegister.getItems().add("LA - Lyran Alliance");
+		comboboxFactionRegister.getItems().add("DC - Draconis Combine");
+		comboboxFactionRegister.getItems().add("CJF - Clan Jadefalcon");
+		comboboxFactionRegister.getItems().add("CW - Clan Wolf");
+		comboboxFactionRegister.getItems().add("CGB - Clan Ghostbear");
+
+		comboboxFactionRegister.setVisibleRowCount(5);
+
+		comboboxFactionRegister.getSelectionModel().select("CJF - Clan Jadefalcon");
 		createListeners();
 		enableListeners(true);
 	}
