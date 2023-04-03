@@ -125,16 +125,6 @@ public class EventCommunications {
 					break;
 
 				case USER_LOGGED_IN_DATA:
-
-					// ACHTUNG:
-					// Wenn das Event hier geschickt wird, aber im Client nichts ankommt und nirgends eine Fehlermeldung
-					// auftaucht, dann ist wahrscheinlich das UniverseDTO zu groß für Netty (Paketgröße 65kB).
-					// Dann wird entweder das UniverseDTO immer größer, weil irgendwo ein .clear() fehlt (Mai 2021), oder
-					// es sind zu viele Daten in dem Objekt, weil das Spiel an sich zu groß geworden ist.
-					// Lösung:
-					// - Das Universe darf nicht durch ein fehlendes clear() immer weiter wachsen!
-					// - Die Daten müssen aufgeteilt werden, bis sie wieder in die Pakete passen!
-
 					// set current user
 					UserDTO us = null;
 					if (state.getObject() != null && state.getObject() instanceof UserDTO) {
@@ -147,6 +137,7 @@ public class EventCommunications {
 							messageUserIsInRegistration.setType(C3MESSAGETYPES.CLOSE);
 							ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(messageUserIsInRegistration);
 
+							// ???
 							ActionManager.getAction(ACTIONS.LOGON_FINISHED_WITH_ERROR).execute();
 							break;
 						}
@@ -154,6 +145,15 @@ public class EventCommunications {
 
 					Nexus.setUser(us);
 					logger.info("EventCommunications.onDataIn: myPlayerSessionID: -> " + Nexus.getMyPlayerSessionID());
+
+					// ACHTUNG:
+					// Wenn das Event hier geschickt wird, aber im Client nichts ankommt und nirgends eine Fehlermeldung
+					// auftaucht, dann ist wahrscheinlich das UniverseDTO zu groß für Netty (Paketgröße 65kB).
+					// Dann wird entweder das UniverseDTO immer größer, weil irgendwo ein .clear() fehlt (Mai 2021), oder
+					// es sind zu viele Daten in dem Objekt, weil das Spiel an sich zu groß geworden ist.
+					// Lösung:
+					// - Das Universe darf nicht durch ein fehlendes clear() immer weiter wachsen!
+					// - Die Daten müssen aufgeteilt werden, bis sie wieder in die Pakete passen!
 
 					UniverseDTO uni = (UniverseDTO) Compressor.deCompress((byte[]) state.getObject2());
 					if (Nexus.getBoUniverse() == null) {
