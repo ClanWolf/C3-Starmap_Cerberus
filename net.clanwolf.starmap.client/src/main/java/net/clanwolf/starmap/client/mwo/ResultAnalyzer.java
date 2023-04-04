@@ -138,7 +138,7 @@ public class ResultAnalyzer {
 					MechIdInfo mechInfo = new MechIdInfo(ud.getMechItemID());
 					tonnage = mechInfo.getTonnage();
 				} catch (MechItemIdNotFoundException e) {
-					logger.error("MechItemIdNotFoundException", e);
+					logger.error("The tonnage of the 'Mech could not be determined.", e);
 				}
 
 				// logger.info("Rawdata MWO API Stats:");

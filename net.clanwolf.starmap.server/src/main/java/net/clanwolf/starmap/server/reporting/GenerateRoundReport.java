@@ -47,9 +47,9 @@ import com.itextpdf.layout.properties.HorizontalAlignment;
 import com.itextpdf.layout.properties.TextAlignment;
 import com.itextpdf.layout.properties.UnitValue;
 import com.itextpdf.layout.properties.VerticalAlignment;
+import net.clanwolf.starmap.exceptions.MechItemIdNotFoundException;
 import net.clanwolf.starmap.mail.MailManager;
 import net.clanwolf.starmap.server.GameServer;
-import net.clanwolf.starmap.server.servernexus.ServerNexus;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.C3GameConfigDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.FactionDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.StarSystemDAO;
@@ -58,6 +58,7 @@ import net.clanwolf.starmap.server.persistence.pojos.*;
 import net.clanwolf.starmap.server.process.BalanceUserInfo;
 import net.clanwolf.starmap.server.process.CalcXP;
 import net.clanwolf.starmap.server.process.FactionInfo;
+import net.clanwolf.starmap.server.servernexus.ServerNexus;
 import net.clanwolf.starmap.server.util.OSCheck;
 import net.clanwolf.starmap.transfer.mwo.MWOMatchResult;
 import net.clanwolf.starmap.transfer.mwo.MatchDetails;
@@ -65,7 +66,9 @@ import net.clanwolf.starmap.transfer.mwo.MechIdInfo;
 import net.clanwolf.starmap.transfer.mwo.UserDetail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -83,9 +86,18 @@ import java.util.Objects;
 public class GenerateRoundReport {
 
 
-    public static String DEST;
     private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    public static String DEST;
     private final Document doc;
+    private final Long starSystemID;
+    private final DecimalFormat nf = new DecimalFormat();
+    private final float[] columnWidthsXP = {2, 1, 2, 2, 1, 1,};
+    private final float[] columnWidthCost = {3, 1};
+    private final Border whiteBorder = new SolidBorder(new DeviceRgb(255, 255, 255), 0);
+    private final Border blackBorder = new SolidBorder(new DeviceRgb(0, 0, 0), 1);
+    private final AttackPOJO attackPOJO;
+    public FactionPOJO factionAttacker;
+    public FactionPOJO factionDefender;
     private Integer team1Counter = 0;
     private Integer team2Counter = 0;
     private boolean factionTableAdded = false;
@@ -93,22 +105,118 @@ public class GenerateRoundReport {
     private Table tableXPTeam2;
     private List xpWarning;
     private List costWarning;
-    private final Long starSystemID;
-    private final DecimalFormat nf = new DecimalFormat();
     private Table tableXPTeam1Header;
     private Table tableXPTeam2Header;
-    private final float[] columnWidthsXP = {2, 1, 2, 2, 1, 1,};
-    private final float[] columnWidthCost = {3, 1};
     private Table tableCostDefender;
     private Table tableCostAttacker;
-    private final Border whiteBorder = new SolidBorder(new DeviceRgb(255, 255, 255), 0);
-    private final Border blackBorder = new SolidBorder(new DeviceRgb(0, 0, 0), 1);
-    public FactionPOJO factionAttacker;
-    public FactionPOJO factionDefender;
-    private final AttackPOJO attackPOJO;
     private int dropCounter = 1;
     private String MWOMatchID;
 
+
+    public GenerateRoundReport(AttackPOJO ap) throws Exception {
+        String pdfFileName;
+        starSystemID = ap.getStarSystemID();
+        attackPOJO = ap;
+
+        OSCheck.OSType osType = OSCheck.getOperatingSystemType();
+        switch (osType) {
+            case Linux -> DEST = "/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/seasonhistory/S1/Reports/";
+            case Windows -> DEST = "c:\\temp\\";
+        }
+        StarSystemPOJO ssPojo = StarSystemDAO.getInstance().findById(ServerNexus.END_ROUND_USERID, attackPOJO.getStarSystemID());
+        pdfFileName = "C3-InvasionReport_S" + ap.getSeason() + "_R" + ap.getRound() + "_" + ssPojo.getName() + ".pdf";
+
+        logger.info("--- Genrate PDF report for attackId: " + ap.getId());
+        PdfDocument pdfDoc = new PdfDocument(new PdfWriter(DEST + pdfFileName));
+
+        tableXPTeam1 = new Table(UnitValue.createPercentArray(columnWidthsXP))
+                .useAllAvailableWidth()
+                .setHorizontalAlignment(HorizontalAlignment.CENTER);
+
+        tableXPTeam2 = new Table(UnitValue.createPercentArray(columnWidthsXP))
+                .useAllAvailableWidth()
+                .setHorizontalAlignment(HorizontalAlignment.CENTER);
+
+        tableCostDefender = new Table(UnitValue.createPercentArray(columnWidthCost))
+                .useAllAvailableWidth()
+                .setHorizontalAlignment(HorizontalAlignment.CENTER);
+
+        doc = new Document(pdfDoc, PageSize.A4);
+    }
+
+    static boolean urlExists(java.lang.String URL) {
+        java.net.URL url;
+
+        try {
+            url = new URL(URL);
+        } catch (MalformedURLException e) {
+            logger.error(e.getMessage());
+            return false;
+        }
+        try {
+            url.openStream().close();
+            return true;
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+            return false;
+        }
+    }
+
+    public static void main(String[] args) throws FileNotFoundException {
+        File file = new File("C:/itextExamples/textAnnotation.pdf");
+        file.getParentFile().mkdirs();
+        // Creating a PdfWriter
+        String dest = "C:/itextExamples/textAnnotation.pdf";
+        PdfWriter writer = new PdfWriter(dest);
+
+        // Creating a PdfDocument
+        PdfDocument pdf = new PdfDocument(writer);
+
+        // Creating a Document
+        Document document = new Document(pdf);
+
+
+        Table t = new Table(new float[]{1, 1}).useAllAvailableWidth();
+        Table tableDef = new Table(new float[]{1, 1}).useAllAvailableWidth();
+        Table tableAtt = new Table(new float[]{1, 1}).useAllAvailableWidth();
+        //t.addCell(cell1);
+
+        // Cell attCell = new Cell();
+        //Cell defCell = new Cell();
+
+
+        Cell test = new Cell()
+                .add(tableAtt);
+
+        t.addCell(test);
+        test = new Cell()
+                .add(tableDef);
+        t.addCell(test);
+        document.add(t);
+        test = new Cell(2, 2)
+                .add(new Paragraph("1"))
+                .add(new Paragraph("2"))
+                .add(new Paragraph("3"));
+        t.addCell(test);
+        document.add(t);
+
+        // Closing the document
+        document.close();
+
+        System.out.println("Annotation added successfully");
+
+
+    }
+
+    private static String getMechName(UserDetail userDetail) throws ParserConfigurationException, IOException, SAXException {
+        String mechName = "<UNKNOWN MECH>";
+        try {
+            mechName = new MechIdInfo(userDetail.getMechItemID()).getShortname();
+        } catch (MechItemIdNotFoundException e) {
+            logger.error("The 'Mech's name could not be determined.");
+        }
+        return mechName;
+    }
 
     public void addCostDefender(String description, Long amount) throws Exception {
 
@@ -222,55 +330,6 @@ public class GenerateRoundReport {
         }
 
         return strType;
-    }
-
-    public GenerateRoundReport(AttackPOJO ap) throws Exception {
-        String pdfFileName;
-        starSystemID = ap.getStarSystemID();
-        attackPOJO = ap;
-
-        OSCheck.OSType osType = OSCheck.getOperatingSystemType();
-        switch (osType) {
-            case Linux -> DEST = "/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/seasonhistory/S1/Reports/";
-            case Windows -> DEST = "c:\\temp\\";
-        }
-        StarSystemPOJO ssPojo = StarSystemDAO.getInstance().findById(ServerNexus.END_ROUND_USERID, attackPOJO.getStarSystemID());
-        pdfFileName = "C3-InvasionReport_S" + ap.getSeason() + "_R" + ap.getRound() + "_" + ssPojo.getName() + ".pdf";
-
-        logger.info("--- Genrate PDF report for attackId: " + ap.getId());
-        PdfDocument pdfDoc = new PdfDocument(new PdfWriter(DEST + pdfFileName));
-
-        tableXPTeam1 = new Table(UnitValue.createPercentArray(columnWidthsXP))
-                .useAllAvailableWidth()
-                .setHorizontalAlignment(HorizontalAlignment.CENTER);
-
-        tableXPTeam2 = new Table(UnitValue.createPercentArray(columnWidthsXP))
-                .useAllAvailableWidth()
-                .setHorizontalAlignment(HorizontalAlignment.CENTER);
-
-        tableCostDefender = new Table(UnitValue.createPercentArray(columnWidthCost))
-                .useAllAvailableWidth()
-                .setHorizontalAlignment(HorizontalAlignment.CENTER);
-
-        doc = new Document(pdfDoc, PageSize.A4);
-    }
-
-    static boolean urlExists(java.lang.String URL) {
-        java.net.URL url;
-
-        try {
-            url = new URL(URL);
-        } catch (MalformedURLException e) {
-            logger.error(e.getMessage());
-            return false;
-        }
-        try {
-            url.openStream().close();
-            return true;
-        } catch (IOException e) {
-            logger.error(e.getMessage());
-            return false;
-        }
     }
 
     public void saveReport() {
@@ -433,52 +492,6 @@ public class GenerateRoundReport {
                     .addCell(addTeam2Cell(calcXP.getUserXPCurrent().toString() + " XP"));
             team2Counter = team2Counter + 1;
         }
-    }
-
-    public static void main(String[] args) throws FileNotFoundException {
-        File file = new File("C:/itextExamples/textAnnotation.pdf");
-        file.getParentFile().mkdirs();
-        // Creating a PdfWriter
-        String dest = "C:/itextExamples/textAnnotation.pdf";
-        PdfWriter writer = new PdfWriter(dest);
-
-        // Creating a PdfDocument
-        PdfDocument pdf = new PdfDocument(writer);
-
-        // Creating a Document
-        Document document = new Document(pdf);
-
-
-        Table t = new Table(new float[]{1, 1}).useAllAvailableWidth();
-        Table tableDef = new Table(new float[]{1, 1}).useAllAvailableWidth();
-        Table tableAtt = new Table(new float[]{1, 1}).useAllAvailableWidth();
-        //t.addCell(cell1);
-
-        // Cell attCell = new Cell();
-        //Cell defCell = new Cell();
-
-
-        Cell test = new Cell()
-                .add(tableAtt);
-
-        t.addCell(test);
-        test = new Cell()
-                .add(tableDef);
-        t.addCell(test);
-        document.add(t);
-        test = new Cell(2, 2)
-                .add(new Paragraph("1"))
-                .add(new Paragraph("2"))
-                .add(new Paragraph("3"));
-        t.addCell(test);
-        document.add(t);
-
-        // Closing the document
-        document.close();
-
-        System.out.println("Annotation added successfully");
-
-
     }
 
     protected Boolean istGeradeZahl(Integer value) {
@@ -684,7 +697,6 @@ public class GenerateRoundReport {
         doc.add(new AreaBreak());
     }
 
-
     private void createVictoryDefeatTable(MWOMatchResult matchDetails, FactionPOJO factionAttacker, FactionPOJO factionDefender) throws Exception {
         Table tableResult = new Table(UnitValue.createPercentArray(new float[]{50, 50})).useAllAvailableWidth()
                 .setHorizontalAlignment(HorizontalAlignment.CENTER)
@@ -754,9 +766,11 @@ public class GenerateRoundReport {
 
         for (UserDetail userDetail : matchDetails.getUserDetails()) {
             if ("1".equals(userDetail.getTeam())) {
+                String mechName;
+                mechName = getMechName(userDetail);
                 tableTeam1.addCell(addTeam1Cell(userDetail.getUnitTag()))
                         .addCell(addTeam1Cell(userDetail.getUsername()))
-                        .addCell(addTeam1Cell(new MechIdInfo(userDetail.getMechItemID()).getShortname()))
+                        .addCell(addTeam1Cell(mechName))
                         .addCell(addTeam1Cell(userDetail.getHealthPercentage().toString()))
                         .addCell(addTeam1Cell(userDetail.getMatchScore().toString()))
                         .addCell(addTeam1Cell(userDetail.getDamage().toString()))
@@ -1107,7 +1121,7 @@ public class GenerateRoundReport {
         for (BalanceUserInfo def : defender) {
             team1Counter = 1;
             addCostDefender("Costs and rewards for the pilot " + def.userName, 0L);
-            addCostDefender(def.playerMechName.getFullName() + " repair costs (" + (100 - def.playerMechHealth) + "% to repair)", def.mechRepairCost);
+            addCostDefender(def.playerMechName + " repair costs (" + (100 - def.playerMechHealth) + "% to repair)", def.mechRepairCost);
             addCostDefender("Reward damage (" + def.playerDamage + " Damage gone)", def.rewardDamage);
             addCostDefender("Reward component destroyed (" + def.playerComponentDestroyed + " destroyed)", def.rewardComponentsDestroyed);
             addCostDefender("Reward kills (" + def.playerKills + " kills)", def.rewardKill);
@@ -1126,7 +1140,7 @@ public class GenerateRoundReport {
         for (BalanceUserInfo att : attacker) {
             team2Counter = 1;
             addCostAttacker("Costs and rewards for the pilot " + att.userName, 0L);
-            addCostAttacker(att.playerMechName.getFullName() + " repair costs (" + (100 - att.playerMechHealth) + "% to repair)", att.mechRepairCost);
+            addCostAttacker(att.playerMechName + " repair costs (" + (100 - att.playerMechHealth) + "% to repair)", att.mechRepairCost);
             addCostAttacker("Reward Damage (" + att.playerDamage + " Damage gone)", att.rewardDamage);
             addCostAttacker("Reward component destroyed (" + att.playerComponentDestroyed + " destroyed)", att.rewardComponentsDestroyed);
             addCostAttacker("Reward kills (" + att.playerKills + " kills)", att.rewardKill);

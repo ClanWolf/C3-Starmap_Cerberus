@@ -82,7 +82,7 @@ public class BalanceUserInfo {
     /**
      * Mech-Informationen über den Spieler.
      */
-    public MechIdInfo playerMechName;
+    public String playerMechName;
     /**
      * Mech-Reparaturkosten in C-Bills.
      */
@@ -129,6 +129,15 @@ public class BalanceUserInfo {
         attackerFactionID = attackStatsPOJO.getAttackerFactionId();
 
         this.mwomatchResult = mwomatchResult;
+    }
+
+    private static void setMechName(UserDetail detail, BalanceUserInfo balanceUserInfo) throws ParserConfigurationException, IOException, SAXException {
+        balanceUserInfo.playerMechName = "<UNKNOWN MECH>";
+        try {
+            balanceUserInfo.playerMechName = new MechIdInfo(detail.getMechItemID()).getFullName();
+        } catch (MechItemIdNotFoundException e) {
+            logger.error("The 'Mech's name could not be determined.");
+        }
     }
 
     /**
@@ -201,15 +210,19 @@ public class BalanceUserInfo {
         return attTeam;
     }
 
-    public Long getMechCost(Integer mechItemID, Integer HealthPercentage) throws ParserConfigurationException, IOException, SAXException, MechItemIdNotFoundException {
+    public Long getMechCost(Integer mechItemID, Integer HealthPercentage) throws ParserConfigurationException, IOException, SAXException {
 
         long sumCost;
 
-        MechIdInfo mechInfo = new MechIdInfo(mechItemID);
-
         //Kosten für die Mechvariante festlegen
         Long mechVariantCost = -1L;
-        switch (mechInfo.getMechVariantType()) {
+        String mechVariant = "Unknown";
+        try {
+            mechVariant = new MechIdInfo(mechItemID).getMechVariantType();
+        } catch (MechItemIdNotFoundException e) {
+            logger.error("The variant of the mech could not be determined.");
+        }
+        switch (mechVariant) {
             case "SPECIAL", "FOUNDER", "PHOENIX", "SARAH" ->
                     mechVariantCost = C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_MECH_REPAIR_COST_VARIANT_IS_SPECIAL").getValue();
             case "HERO" ->
@@ -226,7 +239,14 @@ public class BalanceUserInfo {
 
         //Kosten für die Mechklasse festlegen
         Long mechClass = -1L;
-        switch (mechInfo.getMechClass()) {
+        MechIdInfo.EMechclass mechclass = MechIdInfo.EMechclass.UNKNOWN;
+        try {
+            mechclass = new MechIdInfo(mechItemID).getMechClass();
+        } catch (MechItemIdNotFoundException e) {
+            logger.error("The class of the mech could not be determined.");
+        }
+
+        switch (mechclass) {
             case LIGHT ->
                     mechClass = C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_MECH_REPAIR_COST_CLASS_IS_LIGHT").getValue();
             case MEDIUM ->
@@ -242,21 +262,39 @@ public class BalanceUserInfo {
             }
         }
 
+
         //Sonderkosten
-        sumCost = ((mechInfo.getTonnage() * C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_MECH_REPAIR_COST_OTHER_PER_TONS").getValue()) + mechVariantCost + mechClass);
-        sumCost = sumCost + (mechInfo.getMechMaxEngineRating() * C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_MECH_REPAIR_COST_OTHER_MAX_ENGINE_RATING").getValue());
-        sumCost = sumCost + (mechInfo.getMechMinEngineRating() * C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_MECH_REPAIR_COST_OTHER_MIN_ENGINE_RATING").getValue());
-        sumCost = (long) (sumCost + (mechInfo.getMechBaseTons() * C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_MECH_REPAIR_COST_OTHER_PER_BASE_TONS").getValue()));
-        sumCost = sumCost + (mechInfo.getMechMaxJumpJets() * C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_MECH_REPAIR_COST_OTHER_MAX_JUMP_JETS").getValue());
-        sumCost = sumCost + (mechInfo.getHP() * C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_MECH_REPAIR_COST_OTHER_PER_HP").getValue());
+        Integer getTonnage = -1;
+        Integer getMechMaxEngineRating = -1;
+        Integer getMechMinEngineRating = -1;
+        Double getMechBaseTons = -1.0;
+        Integer getMechMaxJumpJets = -1;
+        Integer getHP = -1;
+
+        try {
+            MechIdInfo mechInfo = new MechIdInfo(mechItemID);
+            getTonnage = mechInfo.getTonnage();
+            getMechMaxEngineRating = mechInfo.getMechMaxEngineRating();
+            getMechMinEngineRating = mechInfo.getMechMinEngineRating();
+            getMechBaseTons = mechInfo.getMechBaseTons();
+            getMechMaxJumpJets = mechInfo.getMechMaxJumpJets();
+            getHP = mechInfo.getHP();
+        } catch (MechItemIdNotFoundException ignored) {
+
+        }
+
+
+        sumCost = ((getTonnage * C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_MECH_REPAIR_COST_OTHER_PER_TONS").getValue()) + mechVariantCost + mechClass);
+        sumCost = sumCost + (getMechMaxEngineRating * C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_MECH_REPAIR_COST_OTHER_MAX_ENGINE_RATING").getValue());
+        sumCost = sumCost + (getMechMinEngineRating * C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_MECH_REPAIR_COST_OTHER_MIN_ENGINE_RATING").getValue());
+        sumCost = (long) (sumCost + (getMechBaseTons * C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_MECH_REPAIR_COST_OTHER_PER_BASE_TONS").getValue()));
+        sumCost = sumCost + (getMechMaxJumpJets * C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_MECH_REPAIR_COST_OTHER_MAX_JUMP_JETS").getValue());
+        sumCost = sumCost + (getHP * C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_MECH_REPAIR_COST_OTHER_PER_HP").getValue());
         return (long) (100 - HealthPercentage) * sumCost / 100;
     }
 
     private void getUserInfo(List<BalanceUserInfo> userInfos, UserDetail detail) throws ParserConfigurationException, IOException, SAXException {
-        try {
             BalanceUserInfo balanceUserInfo;
-            MechIdInfo mechIdInfo;
-
             String winningTeam = mwomatchResult.getMatchDetails().getWinningTeam();
             balanceUserInfo = new BalanceUserInfo(mwomatchResult);
 
@@ -282,8 +320,8 @@ public class BalanceUserInfo {
             balanceUserInfo.playerMatchScore = detail.getMatchScore().longValue();
             balanceUserInfo.playerMechHealth = detail.getHealthPercentage().longValue();
 
-            mechIdInfo = new MechIdInfo(detail.getMechItemID());
-            balanceUserInfo.playerMechName = mechIdInfo;
+            setMechName(detail, balanceUserInfo);
+
             balanceUserInfo.mechRepairCost = getMechCost(detail.getMechItemID(), detail.getHealthPercentage());
             balanceUserInfo.rewardComponentsDestroyed = detail.getComponentsDestroyed() * C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_EACH_COMPONENT_DESTROYED").getValue();
             balanceUserInfo.rewardMatchScore = detail.getMatchScore() * C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_EACH_MACHT_SCORE").getValue();
@@ -301,8 +339,5 @@ public class BalanceUserInfo {
             balanceUserInfo.subTotal = balanceUserInfo.rewardComponentsDestroyed + balanceUserInfo.rewardKill + balanceUserInfo.rewardDamage + balanceUserInfo.rewardTeamDamage + balanceUserInfo.rewardMatchScore + balanceUserInfo.mechRepairCost + balanceUserInfo.rewardLossVictory + balanceUserInfo.rewardAssist;
 
             userInfos.add(balanceUserInfo);
-        } catch (MechItemIdNotFoundException e) {
-            logger.error("MechItemIdNotFoundException", e);
-        }
     }
 }

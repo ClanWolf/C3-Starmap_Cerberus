@@ -136,19 +136,8 @@ public class MechIdInfo {
                 MechIdInfo mechIdInfo;
                 mechIdInfo = new MechIdInfo(mechItemId);
                 System.out.println(mechIdInfo.getFullName() + "|" + mechIdInfo.getShortname() + "|" + mechIdInfo.getMechVariantType() + "|" + mechIdInfo.getTonnage());
-
-                //String[] variant = {"Standard", "Special", "Hero", "Champion"};
-
-	           /* Mech mechInfo = Mech.getMech(mechChassie, mechFaction, mechItemId, mechName);
-	            if (mechInfo == null) {
-	                System.out.println("Unknown Mech: " + mechChassie);
-	                continue;
-	            }
-	            if (!Arrays.asList(variant).contains(mechVariantType)) {
-	                System.out.println(mechVariantType);
-	            }*/
             } catch (MechItemIdNotFoundException e) {
-                logger.error("MechItemIdNotFoundException", e);
+                logger.error("The 'Mech's name could not be determined.");
             }
         }
     }
