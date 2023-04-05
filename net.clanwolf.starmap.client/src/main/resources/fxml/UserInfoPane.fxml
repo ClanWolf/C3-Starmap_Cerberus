@@ -18,7 +18,7 @@
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="UserInfoPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/19" fx:controller="net.clanwolf.starmap.client.gui.panes.userinfo.UserInfoPaneController">
   <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2c506d" height="104.0" layoutX="76.0" layoutY="31.0" opacity="0.75" stroke="#779fc3" strokeType="INSIDE" strokeWidth="2.0" width="533.0" />
-    <Label fx:id="panelHeadline" alignment="BASELINE_RIGHT" contentDisplay="CENTER" layoutX="14.0" layoutY="375.0" opacity="0.12" prefWidth="794.0" text="USERINFO">
+    <Label fx:id="panelHeadline" alignment="BASELINE_RIGHT" contentDisplay="CENTER" focusTraversable="false" layoutX="14.0" layoutY="375.0" opacity="0.12" prefWidth="794.0" text="USERINFO">
       <font>
         <Font name="Arial Bold" size="80.0" />
       </font>
@@ -36,28 +36,29 @@
             <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-          <Label fx:id="labelUsername" prefHeight="17.0" prefWidth="96.0" styleClass="contentLabel" text="Username:">
+          <Label fx:id="labelUsername" focusTraversable="false" prefHeight="17.0" prefWidth="96.0" styleClass="contentLabel" text="Username:">
             <stylesheets>
               <URL value="@../styles/MainFrameStyle.css" />
             </stylesheets>
           </Label>
-          <Label id="labelUsername" fx:id="labelCreated" prefHeight="17.0" prefWidth="97.0" styleClass="contentLabel" text="Created:" GridPane.rowIndex="1">
+          <Label id="labelUsername" fx:id="labelCreated" focusTraversable="false" prefHeight="17.0" prefWidth="97.0" styleClass="contentLabel" text="Created:" GridPane.rowIndex="1">
             <stylesheets>
               <URL value="@../styles/MainFrameStyle.css" />
             </stylesheets>
           </Label>
-            <Label fx:id="valueUsername" prefHeight="16.0" prefWidth="295.0" styleClass="contentLabel" text="Username" GridPane.columnIndex="1">
+            <Label fx:id="valueUsername" focusTraversable="false" prefHeight="16.0" prefWidth="295.0" styleClass="contentLabel" text="Username" GridPane.columnIndex="1">
                <stylesheets>
                   <URL value="@../styles/MainFrameStyle.css" />
                </stylesheets>
             </Label>
-            <Label fx:id="valueCreated" prefHeight="16.0" prefWidth="295.0" styleClass="contentLabel" text="Created" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <Label fx:id="valueCreated" focusTraversable="false" prefHeight="16.0" prefWidth="295.0" styleClass="contentLabel" text="Created" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <stylesheets>
                   <URL value="@../styles/MainFrameStyle.css" />
                </stylesheets>
             </Label>
          </children>
       </GridPane>
+      <ComboBox fx:id="cbCharChooser" layoutX="203.0" layoutY="162.0" onAction="#handleCharSelection" onShowing="#handleOpenCharList" prefHeight="23.0" prefWidth="392.0" stylesheets="@../styles/MainFrameStyle.css" />
     <Button id="buttonYes" fx:id="buttonLogout" alignment="CENTER_RIGHT" layoutX="540.0" layoutY="439.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleLogoutButtonClick" onMouseEntered="#handleLogoutButtonHoverEnter" onMouseExited="#handleLogoutButtonHoverExit" prefWidth="140.0" styleClass="contentButton" text="Logout">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
@@ -69,13 +70,13 @@
       </stylesheets>
     </Button>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2c506d" height="282.0" layoutX="76.0" layoutY="147.0" opacity="0.75" stroke="#779fc3" strokeType="INSIDE" strokeWidth="2.0" width="533.0" AnchorPane.topAnchor="147.0" />
-      <Label id="labelUsername" fx:id="labelCharacterChooser" layoutX="89.0" layoutY="166.0" prefHeight="17.0" prefWidth="108.0" styleClass="contentLabel" text="Charakter:">
+      <Label id="labelUsername" fx:id="labelCharacterChooser" focusTraversable="false" layoutX="89.0" layoutY="166.0" prefHeight="17.0" prefWidth="108.0" styleClass="contentLabel" text="Charakter:">
          <stylesheets>
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>
       </Label>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2c506d" height="397.0" layoutX="617.0" layoutY="31.0" opacity="0.75" stroke="#779fc3" strokeType="INSIDE" strokeWidth="2.0" width="212.0" />
-      <Label id="labelThingsToChange" fx:id="labelAvatar" layoutX="515.0" layoutY="41.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="84.0" prefWidth="84.0" styleClass="userImageLabel">
+      <Label id="labelThingsToChange" fx:id="labelAvatar" focusTraversable="false" layoutX="515.0" layoutY="41.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="84.0" prefWidth="84.0" styleClass="userImageLabel">
          <stylesheets>
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>
@@ -109,64 +110,64 @@
 	        <RowConstraints minHeight="10.0" prefHeight="18.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Label fx:id="labelBalance" styleClass="contentLabel" text="Balance:" GridPane.rowIndex="4">
+            <Label fx:id="labelBalance" focusTraversable="false" styleClass="contentLabel" text="Balance:" GridPane.rowIndex="4">
                <stylesheets>
                   <URL value="@../styles/MainFrameStyle.css" />
                </stylesheets>
             </Label>
-            <Label fx:id="labelIncome" styleClass="contentLabel" text="Income:" GridPane.rowIndex="2">
+            <Label fx:id="labelIncome" focusTraversable="false" styleClass="contentLabel" text="Income:" GridPane.rowIndex="2">
                <stylesheets>
                   <URL value="@../styles/MainFrameStyle.css" />
                </stylesheets>
             </Label>
-	         <Label fx:id="labelCost" styleClass="contentLabel" text="Cost:" GridPane.rowIndex="3">
+	         <Label fx:id="labelCost" focusTraversable="false" styleClass="contentLabel" text="Cost:" GridPane.rowIndex="3">
 		         <stylesheets>
 			         <URL value="@../styles/MainFrameStyle.css" />
 		         </stylesheets>
 	         </Label>
-            <Label fx:id="labelSystems" styleClass="contentLabel" text="Systems:">
+            <Label fx:id="labelSystems" focusTraversable="false" styleClass="contentLabel" text="Systems:">
                <stylesheets>
                   <URL value="@../styles/MainFrameStyle.css" />
                </stylesheets>
             </Label>
-            <Label fx:id="labelAtWar" styleClass="contentLabel" text="Contested:" GridPane.rowIndex="1">
+            <Label fx:id="labelAtWar" focusTraversable="false" styleClass="contentLabel" text="Contested:" GridPane.rowIndex="1">
                <stylesheets>
                   <URL value="@../styles/MainFrameStyle.css" />
                </stylesheets>
             </Label>
-            <Label fx:id="valueBalance" alignment="TOP_RIGHT" contentDisplay="RIGHT" prefHeight="16.0" prefWidth="84.0" styleClass="contentLabel" text="Balance" GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <Label fx:id="valueBalance" alignment="TOP_RIGHT" contentDisplay="RIGHT" focusTraversable="false" prefHeight="16.0" prefWidth="84.0" styleClass="contentLabel" text="Balance" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <stylesheets>
                   <URL value="@../styles/MainFrameStyle.css" />
                </stylesheets>
             </Label>
-            <Label fx:id="valueIncome" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="16.0" prefWidth="84.0" styleClass="contentLabel" text="Income" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <Label fx:id="valueIncome" alignment="CENTER_RIGHT" contentDisplay="RIGHT" focusTraversable="false" prefHeight="16.0" prefWidth="84.0" styleClass="contentLabel" text="Income" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <stylesheets>
                   <URL value="@../styles/MainFrameStyle.css" />
                </stylesheets>
             </Label>
-	         <Label fx:id="valueCost" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="16.0" prefWidth="84.0" styleClass="contentLabel" text="Cost" GridPane.columnIndex="1" GridPane.rowIndex="3">
+	         <Label fx:id="valueCost" alignment="CENTER_RIGHT" contentDisplay="RIGHT" focusTraversable="false" prefHeight="16.0" prefWidth="84.0" styleClass="contentLabel" text="Cost" GridPane.columnIndex="1" GridPane.rowIndex="3">
 		         <stylesheets>
 			         <URL value="@../styles/MainFrameStyle.css" />
 		         </stylesheets>
 	         </Label>
-            <Label fx:id="valueSystems" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="16.0" prefWidth="84.0" styleClass="contentLabel" text="Systems" GridPane.columnIndex="1">
+            <Label fx:id="valueSystems" alignment="CENTER_RIGHT" contentDisplay="RIGHT" focusTraversable="false" prefHeight="16.0" prefWidth="84.0" styleClass="contentLabel" text="Systems" GridPane.columnIndex="1">
                <stylesheets>
                   <URL value="@../styles/MainFrameStyle.css" />
                </stylesheets>
             </Label>
-            <Label fx:id="valueAtWar" alignment="CENTER_RIGHT" contentDisplay="RIGHT" prefHeight="16.0" prefWidth="84.0" styleClass="contentLabel" text="Contested" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <Label fx:id="valueAtWar" alignment="CENTER_RIGHT" contentDisplay="RIGHT" focusTraversable="false" prefHeight="16.0" prefWidth="84.0" styleClass="contentLabel" text="Contested" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <stylesheets>
                   <URL value="@../styles/MainFrameStyle.css" />
                </stylesheets>
             </Label>
          </children>
       </GridPane>
-      <Label id="labelUsername" fx:id="labelLastLogin" layoutX="88.0" layoutY="452.0" prefHeight="17.0" prefWidth="154.0" styleClass="contentLabel" text="Last Login:">
+      <Label id="labelUsername" fx:id="labelLastLogin" focusTraversable="false" layoutX="88.0" layoutY="452.0" prefHeight="17.0" prefWidth="154.0" styleClass="contentLabel" text="Last Login:">
          <stylesheets>
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>
       </Label>
-      <Label fx:id="valueLastLogin" layoutX="253.0" layoutY="452.0" prefHeight="17.0" prefWidth="280.0" styleClass="contentLabel" text="yesterday">
+      <Label fx:id="valueLastLogin" focusTraversable="false" layoutX="253.0" layoutY="452.0" prefHeight="17.0" prefWidth="280.0" styleClass="contentLabel" text="yesterday">
          <stylesheets>
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>
@@ -186,80 +187,79 @@
             <RowConstraints maxHeight="18.0" minHeight="10.0" vgrow="SOMETIMES" />
          </rowConstraints>
          <children>
-            <Label fx:id="labelCharName" styleClass="contentLabel" text="Name:">
+            <Label fx:id="labelCharName" focusTraversable="false" styleClass="contentLabel" text="Name:">
                <stylesheets>
                   <URL value="@../styles/MainFrameStyle.css" />
                </stylesheets>
             </Label>
-            <Label fx:id="labelCharAge" styleClass="contentLabel" text="Age:" GridPane.rowIndex="1">
+            <Label fx:id="labelCharAge" focusTraversable="false" styleClass="contentLabel" text="Age:" GridPane.rowIndex="1">
                <stylesheets>
                   <URL value="@../styles/MainFrameStyle.css" />
                </stylesheets>
             </Label>
-            <Label fx:id="labelCharRank" styleClass="contentLabel" text="Rank:" GridPane.rowIndex="4">
+            <Label fx:id="labelCharRank" focusTraversable="false" styleClass="contentLabel" text="Rank:" GridPane.rowIndex="4">
                <stylesheets>
                   <URL value="@../styles/MainFrameStyle.css" />
                </stylesheets>
             </Label>
-            <Label fx:id="labelCharLocation" styleClass="contentLabel" text="Location:" GridPane.rowIndex="5">
+            <Label fx:id="labelCharLocation" focusTraversable="false" styleClass="contentLabel" text="Location:" GridPane.rowIndex="5">
                <stylesheets>
                   <URL value="@../styles/MainFrameStyle.css" />
                </stylesheets>
             </Label>
-            <Label fx:id="valueCharName" prefHeight="16.0" prefWidth="286.0" styleClass="contentLabel" text="CharName" GridPane.columnIndex="1">
+            <Label fx:id="valueCharName" focusTraversable="false" prefHeight="16.0" prefWidth="286.0" styleClass="contentLabel" text="CharName" GridPane.columnIndex="1">
                <stylesheets>
                   <URL value="@../styles/MainFrameStyle.css" />
                </stylesheets>
             </Label>
-            <Label fx:id="valueCharAge" prefHeight="16.0" prefWidth="286.0" styleClass="contentLabel" text="CharAge" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <Label fx:id="valueCharAge" focusTraversable="false" prefHeight="16.0" prefWidth="286.0" styleClass="contentLabel" text="CharAge" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <stylesheets>
                   <URL value="@../styles/MainFrameStyle.css" />
                </stylesheets>
             </Label>
-            <Label fx:id="valueCharRank" prefHeight="16.0" prefWidth="286.0" styleClass="contentLabel" text="CharRank" GridPane.columnIndex="1" GridPane.rowIndex="4">
+            <Label fx:id="valueCharRank" focusTraversable="false" prefHeight="16.0" prefWidth="286.0" styleClass="contentLabel" text="CharRank" GridPane.columnIndex="1" GridPane.rowIndex="4">
                <stylesheets>
                   <URL value="@../styles/MainFrameStyle.css" />
                </stylesheets>
             </Label>
-            <Label fx:id="valueCharLocation" prefHeight="17.0" prefWidth="286.0" styleClass="contentLabel" text="CharLocation" GridPane.columnIndex="1" GridPane.rowIndex="5">
+            <Label fx:id="valueCharLocation" focusTraversable="false" prefHeight="17.0" prefWidth="286.0" styleClass="contentLabel" text="CharLocation" GridPane.columnIndex="1" GridPane.rowIndex="5">
                <stylesheets>
                   <URL value="@../styles/MainFrameStyle.css" />
                </stylesheets>
             </Label>
-            <Label fx:id="labelCharXP" styleClass="contentLabel" text="XP:" GridPane.rowIndex="6">
+            <Label fx:id="labelCharXP" focusTraversable="false" styleClass="contentLabel" text="XP:" GridPane.rowIndex="6">
                <stylesheets>
                   <URL value="@../styles/MainFrameStyle.css" />
                </stylesheets>
             </Label>
-            <Label fx:id="valueCharXP" prefHeight="17.0" prefWidth="286.0" styleClass="contentLabel" text="CharXP" GridPane.columnIndex="1" GridPane.rowIndex="6">
+            <Label fx:id="valueCharXP" focusTraversable="false" prefHeight="17.0" prefWidth="286.0" styleClass="contentLabel" text="CharXP" GridPane.columnIndex="1" GridPane.rowIndex="6">
                <stylesheets>
                   <URL value="@../styles/MainFrameStyle.css" />
                </stylesheets>
             </Label>
-	         <Label fx:id="labelUnit" prefHeight="16.0" prefWidth="76.0" styleClass="contentLabel" text="Unit:" GridPane.rowIndex="3">
+	         <Label fx:id="labelUnit" focusTraversable="false" prefHeight="16.0" prefWidth="76.0" styleClass="contentLabel" text="Unit:" GridPane.rowIndex="3">
 		         <stylesheets>
 			         <URL value="@../styles/MainFrameStyle.css" />
 		         </stylesheets>
 	         </Label>
-	         <Label fx:id="valueUnit" prefHeight="17.0" prefWidth="286.0" styleClass="contentLabel" text="Unit" GridPane.columnIndex="1" GridPane.rowIndex="3">
+	         <Label fx:id="valueUnit" focusTraversable="false" prefHeight="17.0" prefWidth="286.0" styleClass="contentLabel" text="Unit" GridPane.columnIndex="1" GridPane.rowIndex="3">
 		         <stylesheets>
 			         <URL value="@../styles/MainFrameStyle.css" />
 		         </stylesheets>
 	         </Label>
-          <Label fx:id="labelFaction" prefHeight="16.0" prefWidth="76.0" styleClass="contentLabel" text="Faction:" GridPane.rowIndex="2">
+          <Label fx:id="labelFaction" focusTraversable="false" prefHeight="16.0" prefWidth="76.0" styleClass="contentLabel" text="Faction:" GridPane.rowIndex="2">
             <stylesheets>
               <URL value="@../styles/MainFrameStyle.css" />
             </stylesheets>
           </Label>
-            <Label fx:id="valueFaction" prefHeight="17.0" prefWidth="286.0" styleClass="contentLabel" text="Faction" GridPane.columnIndex="1" GridPane.rowIndex="2">
+            <Label fx:id="valueFaction" focusTraversable="false" prefHeight="17.0" prefWidth="286.0" styleClass="contentLabel" text="Faction" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <stylesheets>
                   <URL value="@../styles/MainFrameStyle.css" />
                </stylesheets>
             </Label>
          </children>
       </GridPane>
-      <ComboBox fx:id="cbCharChooser" layoutX="203.0" layoutY="162.0" onAction="#handleCharSelection" onShowing="#handleOpenCharList" prefHeight="23.0" prefWidth="392.0" stylesheets="@../styles/MainFrameStyle.css" />
-      <Label fx:id="labelFactionName" layoutX="633.0" layoutY="288.0" prefHeight="17.0" prefWidth="181.0" styleClass="contentLabel" text="Clan Wolf">
+      <Label fx:id="labelFactionName" focusTraversable="false" layoutX="633.0" layoutY="288.0" prefHeight="17.0" prefWidth="181.0" styleClass="contentLabel" text="Clan Wolf">
          <stylesheets>
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>

@@ -101,13 +101,15 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 	private Label labelFactionKey;
 
 	@FXML
-	Label labelUsernameRegister, labelPasswordRegister, labelMailRegister, labelFactionRegister;
+	Label labelUsernameRegister, labelPasswordRegister, labelMailRegister, labelFactionRegister, labelPasswordConfirmRegister;
 	@FXML
-	TextField tfUserNameRegister, tfPasswordRegister, tfMailRegister;
+	TextField tfUserNameRegister, tfPasswordRegister, tfPasswordConfirmRegister,tfMailRegister;
 	@FXML
 	Button btRegister;
 	@FXML
 	ComboBox<String> comboboxFactionRegister;
+	@FXML
+	ImageView ivFactionLogo, ivAlarmMail, ivAlarmPW, ivAlarmPWConfirm, ivAlarmUsername;
 
 	private FadeTransition fadeInTransition_01 = null;
 	private FadeTransition fadeInTransition_02 = null;
@@ -120,6 +122,7 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 
 	private ChangeListener<? super String> tfUserNameRegisterChangeListener;
 	private ChangeListener<? super String> tfPasswordRegisterChangeListener;
+	private ChangeListener<? super String> tfPasswordConfirmRegisterChangeListener;
 	private ChangeListener<? super String> tfMailRegisterChangeListener;
 
 	private boolean StorePassword_OldValue = false;
@@ -167,6 +170,12 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 	}
 
 	@FXML
+	private void handleFactionSelection() {
+		String p[] = comboboxFactionRegister.getSelectionModel().getSelectedItem().split("-");
+		Image imageFaction = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logos/factions/" + p[0].trim().toUpperCase() + ".png")));
+		ivFactionLogo.setImage(imageFaction);
+	}
+	@FXML
 	private void handleCancelButtonHoverExit() {
 		// warningLabel.setText("");
 	}
@@ -187,7 +196,7 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 			String faction = comboboxFactionRegister.getSelectionModel().getSelectedItem();
 			String[] sh = faction.split("-");
 			String fss = sh[0].trim();
-			registerModeString += "###" + tfMailRegister.getText() + "#" + username.length() + "#" + fss;
+			registerModeString += "#" + tfMailRegister.getText() + "#" + username.length() + "#" + fss;
 			password_encrypted = false;
 			pass = tfPasswordRegister.getText();
 		}
@@ -316,12 +325,24 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 
 			labelUsernameRegister.setVisible(true);
 			labelPasswordRegister.setVisible(true);
+			labelPasswordConfirmRegister.setVisible(true);
 			labelMailRegister.setVisible(true);
 			labelFactionRegister.setVisible(true);
 			tfUserNameRegister.setVisible(true);
 			tfPasswordRegister.setVisible(true);
+			tfPasswordConfirmRegister.setVisible(true);
 			tfMailRegister.setVisible(true);
 			comboboxFactionRegister.setVisible(true);
+			ivFactionLogo.setVisible(true);
+
+			tfUserNameRegister.setText(tfUserName.getText());
+			tfPasswordRegister.setText(tfPassword.getText());
+
+			ivAlarmUsername.setVisible(false);
+			ivAlarmPW.setVisible(false);
+			ivAlarmPWConfirm.setVisible(false);
+			ivAlarmMail.setVisible(false);
+			setAlarms();
 
 			btRegister.setText(Internationalization.getString("app_pane_login_RegisterButton_Login"));
 			buttonLogin.setText(Internationalization.getString("app_pane_login_LoginButton_Register"));
@@ -337,12 +358,25 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 
 			labelUsernameRegister.setVisible(false);
 			labelPasswordRegister.setVisible(false);
+			labelPasswordConfirmRegister.setVisible(false);
 			labelMailRegister.setVisible(false);
 			labelFactionRegister.setVisible(false);
 			tfUserNameRegister.setVisible(false);
 			tfPasswordRegister.setVisible(false);
+			tfPasswordConfirmRegister.setVisible(false);
 			tfMailRegister.setVisible(false);
 			comboboxFactionRegister.setVisible(false);
+			ivFactionLogo.setVisible(false);
+
+			tfUserName.setText(tfUserNameRegister.getText());
+			tfPassword.setText(tfPasswordRegister.getText());
+			tfUserNameRegister.setText("");
+			tfPasswordRegister.setText("");
+
+			ivAlarmUsername.setVisible(false);
+			ivAlarmPW.setVisible(false);
+			ivAlarmPWConfirm.setVisible(false);
+			ivAlarmMail.setVisible(false);
 
 			btRegister.setText(Internationalization.getString("app_pane_login_RegisterButton_Register"));
 			buttonLogin.setText(Internationalization.getString("app_pane_login_LoginButton_Login"));
@@ -376,6 +410,7 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 				}
 				labelUsernameRegister.setText(Internationalization.getString("app_pane_login_NameRegisterLabel"));
 				labelPasswordRegister.setText(Internationalization.getString("app_pane_login_PasswordRegisterlabel"));
+				labelPasswordConfirmRegister.setText(Internationalization.getString("app_pane_login_PasswordConfirmRegisterlabel"));
 				labelMailRegister.setText(Internationalization.getString("app_pane_login_MailRegisterLabel"));
 				labelFactionRegister.setText(Internationalization.getString("app_user_info_panel_faction"));
 
@@ -517,17 +552,26 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 		btRegister.setText(Internationalization.getString("app_pane_login_RegisterButton_Register"));
 		labelUsernameRegister.setText(Internationalization.getString("app_pane_login_NameRegisterLabel"));
 		labelPasswordRegister.setText(Internationalization.getString("app_pane_login_PasswordRegisterlabel"));
+		labelPasswordConfirmRegister.setText(Internationalization.getString("app_pane_login_PasswordConfirmRegisterlabel"));
 		labelMailRegister.setText(Internationalization.getString("app_pane_login_MailRegisterLabel"));
 		labelFactionRegister.setText(Internationalization.getString("app_user_info_panel_faction"));
 
 		labelUsernameRegister.setVisible(false);
 		labelPasswordRegister.setVisible(false);
+		labelPasswordConfirmRegister.setVisible(false);
 		labelMailRegister.setVisible(false);
 		labelFactionRegister.setVisible(false);
 		tfUserNameRegister.setVisible(false);
 		tfPasswordRegister.setVisible(false);
+		tfPasswordConfirmRegister.setVisible(false);
 		tfMailRegister.setVisible(false);
 		comboboxFactionRegister.setVisible(false);
+		ivFactionLogo.setVisible(false);
+
+		ivAlarmUsername.setVisible(false);
+		ivAlarmPW.setVisible(false);
+		ivAlarmPWConfirm.setVisible(false);
+		ivAlarmMail.setVisible(false);
 
 		comboboxFactionRegister.getItems().add("CS - Comstar");
 		comboboxFactionRegister.getItems().add("FRR - Free Rasalhague Republic");
@@ -540,6 +584,9 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 		comboboxFactionRegister.setVisibleRowCount(5);
 
 		comboboxFactionRegister.getSelectionModel().select("CJF - Clan Jadefalcon");
+		Image imageFaction = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logos/factions/CJF.png")));
+		ivFactionLogo.setImage(imageFaction);
+
 		createListeners();
 		enableListeners(true);
 	}
@@ -553,15 +600,27 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 		return (!"".equals(tfUserName.getText()) && !"".equals(tfPassword.getText()));
 	}
 
+	private void setAlarms() {
+		ivAlarmUsername.setVisible(!(!"".equals(tfUserNameRegister.getText()) && tfUserNameRegister.getText().length() >= 3));
+		ivAlarmPW.setVisible(!(!"".equals(tfPasswordRegister.getText()) && tfPasswordRegister.getText().length() >= 5));
+		ivAlarmPWConfirm.setVisible("".equals(tfPasswordConfirmRegister.getText()) || !tfPasswordRegister.getText().equals(tfPasswordConfirmRegister.getText()));
+		ivAlarmMail.setVisible("".equals(tfMailRegister.getText()) || !tfMailRegister.getText().contains("@") || !tfMailRegister.getText().contains(".") || tfMailRegister.getText().indexOf(".") <= tfMailRegister.getText().indexOf("@") || tfMailRegister.getText().endsWith("."));
+	}
+
 	private boolean checkRegisterTextFieldsForContent() {
+		setAlarms();
+
 		return (
-				!"".equals(tfUserNameRegister.getText())
-						&& !"".equals(tfPasswordRegister.getText())
-						&& !"".equals(tfMailRegister.getText())
-						&& tfUserNameRegister.getText().length() >= 3
-						&& tfMailRegister.getText().contains("@")
-						&& tfMailRegister.getText().contains(".")
-						&& tfMailRegister.getText().indexOf(".") > tfMailRegister.getText().indexOf("@")
+			   !"".equals(tfUserNameRegister.getText())
+			&& !"".equals(tfPasswordRegister.getText())
+			&& tfPasswordRegister.getText().equals(tfPasswordConfirmRegister.getText())
+			&& !"".equals(tfMailRegister.getText())
+			&& tfUserNameRegister.getText().length() >= 3
+			&& tfPasswordRegister.getText().length() >= 5
+			&& tfMailRegister.getText().contains("@")
+			&& tfMailRegister.getText().contains(".")
+			&& tfMailRegister.getText().indexOf(".") > tfMailRegister.getText().indexOf("@")
+			&& !tfMailRegister.getText().endsWith(".")
 		);
 	}
 
@@ -604,6 +663,12 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 				buttonLogin.setDisable(!checkRegisterTextFieldsForContent());
 			}
 		};
+		tfPasswordConfirmRegisterChangeListener = new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> ov, String old_val, String new_val) {
+				buttonLogin.setDisable(!checkRegisterTextFieldsForContent());
+			}
+		};
 		tfMailRegisterChangeListener = new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> ov, String old_val, String new_val) {
@@ -621,6 +686,7 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 
 			tfUserNameRegister.textProperty().addListener(tfUserNameRegisterChangeListener);
 			tfPasswordRegister.textProperty().addListener(tfPasswordRegisterChangeListener);
+			tfPasswordConfirmRegister.textProperty().addListener(tfPasswordConfirmRegisterChangeListener);
 			tfMailRegister.textProperty().addListener(tfMailRegisterChangeListener);
 		} else {
 			tfUserName.textProperty().removeListener(userNameFieldChangeListener);
@@ -628,6 +694,7 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 
 			tfUserNameRegister.textProperty().removeListener(tfUserNameRegisterChangeListener);
 			tfPasswordRegister.textProperty().removeListener(tfPasswordRegisterChangeListener);
+			tfPasswordConfirmRegister.textProperty().removeListener(tfPasswordConfirmRegisterChangeListener);
 			tfMailRegister.textProperty().removeListener(tfMailRegisterChangeListener);
 		}
 	}

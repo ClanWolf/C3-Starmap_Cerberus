@@ -14,9 +14,9 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="SettingsPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/17" fx:controller="net.clanwolf.starmap.client.gui.panes.settings.SettingsPaneController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="SettingsPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/19" fx:controller="net.clanwolf.starmap.client.gui.panes.settings.SettingsPaneController">
   <children>
-    <Label fx:id="panelHeadline" alignment="BASELINE_RIGHT" contentDisplay="CENTER" layoutX="14.0" layoutY="375.0" mouseTransparent="true" opacity="0.12" prefWidth="794.0" text="SETTINGS">
+    <Label fx:id="panelHeadline" alignment="BASELINE_RIGHT" contentDisplay="CENTER" focusTraversable="false" layoutX="14.0" layoutY="375.0" mouseTransparent="true" opacity="0.12" prefWidth="794.0" text="SETTINGS">
       <font>
         <Font name="Arial Bold" size="80.0" />
       </font>
@@ -36,7 +36,7 @@
                <content>
                   <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                      <children>
-                        <Label alignment="BOTTOM_LEFT" mouseTransparent="true" opacity="0.2" prefHeight="382.0" prefWidth="252.0" styleClass="contentLabelSideImage">
+                        <Label alignment="BOTTOM_LEFT" focusTraversable="false" mouseTransparent="true" opacity="0.2" prefHeight="382.0" prefWidth="252.0" styleClass="contentLabelSideImage">
                            <stylesheets>
                               <URL value="@../styles/MainFrameStyle.css" />
                            </stylesheets>
@@ -62,22 +62,22 @@
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="contentTabAnchorPane">
               <children>
-                <Label alignment="BOTTOM_LEFT" mouseTransparent="true" opacity="0.2" prefHeight="382.0" prefWidth="252.0" styleClass="contentLabelSideImage">
+                <Label alignment="BOTTOM_LEFT" focusTraversable="false" mouseTransparent="true" opacity="0.2" prefHeight="382.0" prefWidth="252.0" styleClass="contentLabelSideImage">
                   <stylesheets>
                     <URL value="@../styles/MainFrameStyle.css" />
                   </stylesheets>
                 </Label>
-                <Label fx:id="serverURL" layoutX="118.0" layoutY="34.0" styleClass="contentLabel" text="Server_URL">
+                <Label fx:id="serverURL" focusTraversable="false" layoutX="118.0" layoutY="34.0" styleClass="contentLabel" text="Server_URL">
                   <stylesheets>
                     <URL value="@../styles/MainFrameStyle.css" />
                   </stylesheets>
                 </Label>
-                <Label fx:id="databaseName" layoutX="118.0" layoutY="74.0" styleClass="contentLabel" text="Database_Name">
+                <Label fx:id="databaseName" focusTraversable="false" layoutX="118.0" layoutY="74.0" styleClass="contentLabel" text="Database_Name">
                   <stylesheets>
                     <URL value="@../styles/MainFrameStyle.css" />
                   </stylesheets>
                 </Label>
-                <Label fx:id="resultIcon" layoutX="465.0" layoutY="122.0" maxHeight="20.0" maxWidth="20.0" prefHeight="20.0" prefWidth="20.0" styleClass="resultIconLabel_Undetermined" text="">
+                <Label fx:id="resultIcon" focusTraversable="false" layoutX="465.0" layoutY="122.0" maxHeight="20.0" maxWidth="20.0" prefHeight="20.0" prefWidth="20.0" styleClass="resultIconLabel_Undetermined" text="">
                   <stylesheets>
                     <URL value="@../styles/MainFrameStyle.css" />
                   </stylesheets>
@@ -108,32 +108,32 @@
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="contentTabAnchorPane">
               <children>
-                <Label alignment="BOTTOM_LEFT" mouseTransparent="true" opacity="0.2" prefHeight="382.0" prefWidth="252.0" styleClass="contentLabelSideImage">
+                <Label alignment="BOTTOM_LEFT" focusTraversable="false" mouseTransparent="true" opacity="0.2" prefHeight="382.0" prefWidth="252.0" styleClass="contentLabelSideImage">
                   <stylesheets>
                     <URL value="@../styles/MainFrameStyle.css" />
                   </stylesheets>
                 </Label>
-                <Label id="labelProxyURL" fx:id="label_ProxyURL" layoutX="142.0" layoutY="77.0" styleClass="contentLabel" text="ProxyURL">
+                <Label id="labelProxyURL" fx:id="label_ProxyURL" focusTraversable="false" layoutX="142.0" layoutY="77.0" styleClass="contentLabel" text="ProxyURL">
                   <stylesheets>
                     <URL value="@../styles/MainFrameStyle.css" />
                   </stylesheets>
                 </Label>
-                <Label fx:id="label_ProxyPort" layoutX="142.0" layoutY="116.0" styleClass="contentLabel" text="ProxyPort">
+                <Label fx:id="label_ProxyPort" focusTraversable="false" layoutX="142.0" layoutY="116.0" styleClass="contentLabel" text="ProxyPort">
                   <stylesheets>
                     <URL value="@../styles/MainFrameStyle.css" />
                   </stylesheets>
                 </Label>
-                <Label id="label_ProxyAuthServer" fx:id="label_ProxyAuthUser" layoutX="240.0" layoutY="194.0" styleClass="contentLabel" text="ProxyUser">
+                <Label id="label_ProxyAuthServer" fx:id="label_ProxyAuthUser" focusTraversable="false" layoutX="240.0" layoutY="194.0" styleClass="contentLabel" text="ProxyUser">
                   <stylesheets>
                     <URL value="@../styles/MainFrameStyle.css" />
                   </stylesheets>
                 </Label>
-                <Label fx:id="label_ProxyAuthPassword" layoutX="240.0" layoutY="233.0" styleClass="contentLabel" text="ProxyPassword">
+                <Label fx:id="label_ProxyAuthPassword" focusTraversable="false" layoutX="240.0" layoutY="233.0" styleClass="contentLabel" text="ProxyPassword">
                   <stylesheets>
                     <URL value="@../styles/MainFrameStyle.css" />
                   </stylesheets>
                 </Label>
-                <Label fx:id="label_ProxyAuthDomain" layoutX="240.0" layoutY="272.0" styleClass="contentLabel" text="ProxyDomain">
+                <Label fx:id="label_ProxyAuthDomain" focusTraversable="false" layoutX="240.0" layoutY="272.0" styleClass="contentLabel" text="ProxyDomain">
                   <stylesheets>
                     <URL value="@../styles/MainFrameStyle.css" />
                   </stylesheets>
@@ -202,22 +202,22 @@
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
               <children>
-                <Label alignment="BOTTOM_LEFT" mouseTransparent="true" opacity="0.2" prefHeight="382.0" prefWidth="252.0" styleClass="contentLabelSideImage">
+                <Label alignment="BOTTOM_LEFT" focusTraversable="false" mouseTransparent="true" opacity="0.2" prefHeight="382.0" prefWidth="252.0" styleClass="contentLabelSideImage">
                   <stylesheets>
                     <URL value="@../styles/MainFrameStyle.css" />
                   </stylesheets>
                 </Label>
-                <Label id="playMusic" fx:id="mediaLabel" layoutX="118.0" layoutY="34.0" styleClass="contentLabel" text="Media_Label">
+                <Label id="playMusic" fx:id="mediaLabel" focusTraversable="false" layoutX="118.0" layoutY="34.0" styleClass="contentLabel" text="Media_Label">
                   <stylesheets>
                     <URL value="@../styles/MainFrameStyle.css" />
                   </stylesheets>
                 </Label>
-                <Label fx:id="volumeLabel" layoutX="483.0" layoutY="34.0" styleClass="contentLabel" text="Volume_Label" textFill="$x3">
+                <Label fx:id="volumeLabel" focusTraversable="false" layoutX="483.0" layoutY="34.0" styleClass="contentLabel" text="Volume_Label" textFill="$x3">
                   <stylesheets>
                     <URL value="@../styles/MainFrameStyle.css" />
                   </stylesheets>
                 </Label>
-                <Label fx:id="musicLabel" layoutX="118.0" layoutY="171.0" styleClass="contentLabel" text="Music_Label">
+                <Label fx:id="musicLabel" focusTraversable="false" layoutX="118.0" layoutY="171.0" styleClass="contentLabel" text="Music_Label">
                   <stylesheets>
                     <URL value="@../styles/MainFrameStyle.css" />
                   </stylesheets>

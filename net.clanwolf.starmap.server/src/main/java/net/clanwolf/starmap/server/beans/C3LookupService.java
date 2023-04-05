@@ -72,23 +72,48 @@ public class C3LookupService extends SimpleLookupService {
 		EntityManager em = EntityManagerHelper.getNewEntityManager();
 
 		// check register mode
+		if (c.getUsername().contains("#")) {
+			// 0: Username
+			// 1: Mail
+			// 2: Username Länge
+			// 3: Faction short (CW, CJF, FRR,...)
 
-		int lengthRegisterMail = c.getUsername().lastIndexOf("###");
-		if(lengthRegisterMail > 1) {
+			String p[] = c.getUsername().split("#");
+			String sUsername = p[0];
+			String sMail = p[1];
+			String sLengthUsername = p[2];
+			String sFactionShort = p[3];
 
-			String faction = c.getUsername().substring(c.getUsername().lastIndexOf("#"));
+			int lengthUsernameReal = c.getUsername().indexOf("#");
+			int lengthUsernameTransmitted = Integer.parseInt(sLengthUsername);
 
-			// Hier muss noch die Faction rausgeschnitten werden!!!
-
-			int lengthUsername = c.getUsername().lastIndexOf("#");
-
-			String sUsername = c.getUsername().substring(0, lengthRegisterMail);
-			String sMail = c.getUsername().substring(lengthRegisterMail + 3, lengthUsername);
 			String pw1 = "Ba9cW5uZC48Lo";
+			String pw2 = c.getPassword();
+
+			logger.info("++++ Registering new user ++++");
+			logger.info(sUsername);
 			logger.info(sMail);
-			// User in DB
+			logger.info(sFactionShort);
+			logger.info("++++++++++++++++++++++++++++++");
+
+			// Save user
 			return null;
 		}
+
+//		int lengthRegisterMail = c.getUsername().lastIndexOf("###");
+//		if(lengthRegisterMail > 1) {
+//
+//			String faction = c.getUsername().substring(c.getUsername().lastIndexOf("#"));
+//
+//			int lengthUsername = c.getUsername().lastIndexOf("#");
+//
+//			String sUsername = c.getUsername().substring(0, lengthRegisterMail);
+//			String sMail = c.getUsername().substring(lengthRegisterMail + 3, lengthUsername);
+//			String pw1 = "Ba9cW5uZC48Lo";
+//			logger.info(sMail);
+//			// User in DB
+//			return null;
+//		}
 
 		// Database UserPOJO auth check.
 		UserPOJO user = UserLogin.login(em, c);

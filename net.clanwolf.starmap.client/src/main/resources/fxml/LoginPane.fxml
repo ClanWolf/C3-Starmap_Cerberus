@@ -17,17 +17,17 @@
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="LoginPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/19" fx:controller="net.clanwolf.starmap.client.gui.panes.login.LoginPaneController">
   <children>
-    <Label alignment="BOTTOM_LEFT" layoutX="62.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true" opacity="0.2" prefHeight="426.0" prefWidth="500.0" styleClass="contentLabelSideImageSatelite" visible="true">
+    <Label alignment="BOTTOM_LEFT" focusTraversable="false" layoutX="62.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true" opacity="0.2" prefHeight="426.0" prefWidth="500.0" styleClass="contentLabelSideImageSatelite" visible="true">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
     </Label>
-    <Label fx:id="labelUsername" layoutX="371.0" layoutY="71.0" styleClass="contentLabel" text="Username">
+    <Label fx:id="labelUsername" focusTraversable="false" layoutX="371.0" layoutY="71.0" styleClass="contentLabel" text="Username">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
     </Label>
-    <Label fx:id="labelPassword" layoutX="371.0" layoutY="100.0" styleClass="contentLabel" text="Password">
+    <Label fx:id="labelPassword" focusTraversable="false" layoutX="371.0" layoutY="100.0" styleClass="contentLabel" text="Password">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
@@ -65,19 +65,46 @@
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
     </CheckBox>
-    <TextField fx:id="tfFactionKey" disable="true" layoutX="226.0" layoutY="347.0" prefHeight="20.0" prefWidth="99.0" visible="false" />
-    <Button id="buttonYes" fx:id="buttonLogin" alignment="CENTER_RIGHT" layoutX="540.0" layoutY="439.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleLoginButtonClick" prefWidth="140.0" styleClass="contentButton" text="Button">
+      <Button fx:id="btRegister" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="693.0" layoutY="68.0" mnemonicParsing="false" onAction="#handelEnableRegisterButtonClick" prefHeight="37.0" prefWidth="140.0" styleClass="contentButtonYellow" stylesheets="@../styles/MainFrameStyle.css" text="Registrieren" />
+    <TextField fx:id="tfFactionKey" disable="true" focusTraversable="false" layoutX="226.0" layoutY="347.0" prefHeight="20.0" prefWidth="99.0" visible="false" />
+      <TextField fx:id="tfUserNameRegister" layoutX="483.0" layoutY="220.0" prefWidth="200.0">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </TextField>
+      <PasswordField fx:id="tfPasswordRegister" disable="false" layoutX="483.0" layoutY="250.0" onMouseClicked="#passwordFieldAction" prefWidth="200.0">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </PasswordField>
+      <PasswordField fx:id="tfPasswordConfirmRegister" disable="false" layoutX="483.0" layoutY="280.0" onMouseClicked="#passwordFieldAction" prefWidth="200.0">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </PasswordField>
+      <TextField fx:id="tfMailRegister" layoutX="483.0" layoutY="311.0" prefWidth="200.0">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </TextField>
+      <ComboBox fx:id="comboboxFactionRegister" layoutX="483.0" layoutY="341.0" onAction="#handleFactionSelection" prefHeight="22.0" prefWidth="347.0" stylesheets="@../styles/MainFrameStyle.css" visibleRowCount="7" />
+      <ImageView fx:id="patreonButton" fitHeight="37.0" fitWidth="39.0" layoutX="490.0" layoutY="439.0" onMouseEntered="#patreonButtonOnMouseEntered" onMouseExited="#patreonButtonOnMouseExited" onMousePressed="#patreonButtonPressed" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/logos/liberapay.png" />
+         </image>
+      </ImageView>
+    <Button id="buttonYes" fx:id="buttonLogin" alignment="CENTER_RIGHT" defaultButton="true" layoutX="540.0" layoutY="439.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleLoginButtonClick" prefWidth="140.0" styleClass="contentButton" text="Button">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
     </Button>
-    <Button id="buttonNo" fx:id="buttonCancel" alignment="CENTER_RIGHT" layoutX="689.0" layoutY="439.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleCancelButtonClick" onMouseEntered="#handleCancelButtonHoverEnter" onMouseExited="#handleCancelButtonHoverExit" prefWidth="140.0" styleClass="contentButton" text="Button">
+    <Button id="buttonNo" fx:id="buttonCancel" alignment="CENTER_RIGHT" cancelButton="true" layoutX="689.0" layoutY="439.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleCancelButtonClick" onMouseEntered="#handleCancelButtonHoverEnter" onMouseExited="#handleCancelButtonHoverExit" prefWidth="140.0" styleClass="contentButton" text="Button">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
     </Button>
     <Rectangle fx:id="recScanner" arcHeight="5.0" arcWidth="5.0" fill="#2c506d" height="239.0" layoutX="149.0" layoutY="65.0" opacity="0.75" smooth="true" stroke="#779fc3" strokeDashOffset="5.0" strokeLineCap="SQUARE" strokeLineJoin="MITER" strokeType="OUTSIDE" strokeWidth="2.0" width="173.0" />
-    <Label fx:id="labelFingerprint" alignment="BOTTOM_LEFT" layoutX="157.0" layoutY="73.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true" opacity="0.75" prefHeight="224.0" prefWidth="157.0" styleClass="contentLabelSideImageFingerprint">
+    <Label fx:id="labelFingerprint" alignment="BOTTOM_LEFT" focusTraversable="false" layoutX="157.0" layoutY="73.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true" opacity="0.75" prefHeight="224.0" prefWidth="157.0" styleClass="contentLabelSideImageFingerprint">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
@@ -98,48 +125,52 @@
             <Color red="0.412" green="0.620" blue="0.804" fx:id="x1" />
          </textFill>
       </Label>
-      <ImageView fx:id="patreonButton" fitHeight="37.0" fitWidth="39.0" layoutX="490.0" layoutY="439.0" onMouseEntered="#patreonButtonOnMouseEntered" onMouseExited="#patreonButtonOnMouseExited" onMousePressed="#patreonButtonPressed" pickOnBounds="true" preserveRatio="true">
+      <Label fx:id="labelUsernameRegister" focusTraversable="false" layoutX="371.0" layoutY="224.0" styleClass="contentLabel" text="Username">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Label>
+      <Label fx:id="labelPasswordRegister" focusTraversable="false" layoutX="371.0" layoutY="253.0" styleClass="contentLabel" text="Password">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Label>
+      <Label fx:id="labelMailRegister" focusTraversable="false" layoutX="371.0" layoutY="314.0" styleClass="contentLabel" text="Mail">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Label>
+      <Label fx:id="labelFactionRegister" focusTraversable="false" layoutX="371.0" layoutY="344.0" styleClass="contentLabel" text="Faction">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Label>
+      <Label fx:id="labelPasswordConfirmRegister" focusTraversable="false" layoutX="371.0" layoutY="283.0" styleClass="contentLabel" text="PW Confirm">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Label>
+      <ImageView fx:id="ivFactionLogo" fitHeight="111.0" fitWidth="111.0" layoutX="718.0" layoutY="221.0" pickOnBounds="true" preserveRatio="true" />
+      <ImageView fx:id="ivAlarmUsername" fitHeight="21.0" fitWidth="22.0" layoutX="685.0" layoutY="219.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/logos/liberapay.png" />
+            <Image url="@../icons/alert.png" />
          </image>
       </ImageView>
-      <Label fx:id="labelUsernameRegister" layoutX="371.0" layoutY="224.0" styleClass="contentLabel" text="Username">
-         <stylesheets>
-            <URL value="@../styles/MainFrameStyle.css" />
-         </stylesheets>
-      </Label>
-      <Label fx:id="labelPasswordRegister" layoutX="371.0" layoutY="253.0" styleClass="contentLabel" text="Password">
-         <stylesheets>
-            <URL value="@../styles/MainFrameStyle.css" />
-         </stylesheets>
-      </Label>
-      <TextField fx:id="tfUserNameRegister" layoutX="483.0" layoutY="221.0" prefWidth="200.0">
-         <stylesheets>
-            <URL value="@../styles/MainFrameStyle.css" />
-         </stylesheets>
-      </TextField>
-      <PasswordField fx:id="tfPasswordRegister" disable="false" layoutX="483.0" layoutY="250.0" onMouseClicked="#passwordFieldAction" prefWidth="200.0">
-         <stylesheets>
-            <URL value="@../styles/MainFrameStyle.css" />
-         </stylesheets>
-      </PasswordField>
-      <Label fx:id="labelMailRegister" layoutX="371.0" layoutY="282.0" styleClass="contentLabel" text="Mail">
-         <stylesheets>
-            <URL value="@../styles/MainFrameStyle.css" />
-         </stylesheets>
-      </Label>
-      <Button fx:id="btRegister" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="693.0" layoutY="68.0" mnemonicParsing="false" onAction="#handelEnableRegisterButtonClick" prefHeight="37.0" prefWidth="140.0" styleClass="contentButtonYellow" stylesheets="@../styles/MainFrameStyle.css" text="Registrieren" />
-      <TextField fx:id="tfMailRegister" layoutX="483.0" layoutY="279.0" prefWidth="200.0">
-         <stylesheets>
-            <URL value="@../styles/MainFrameStyle.css" />
-         </stylesheets>
-      </TextField>
-      <Label fx:id="labelFactionRegister" layoutX="371.0" layoutY="311.0" styleClass="contentLabel" text="Faction">
-         <stylesheets>
-            <URL value="@../styles/MainFrameStyle.css" />
-         </stylesheets>
-      </Label>
-      <ComboBox fx:id="comboboxFactionRegister" layoutX="483.0" layoutY="309.0" prefHeight="22.0" prefWidth="253.0" stylesheets="@../styles/MainFrameStyle.css" visibleRowCount="7" />
+      <ImageView fx:id="ivAlarmPW" fitHeight="21.0" fitWidth="22.0" layoutX="685.0" layoutY="249.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icons/alert.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="ivAlarmPWConfirm" fitHeight="21.0" fitWidth="22.0" layoutX="685.0" layoutY="279.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icons/alert.png" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="ivAlarmMail" fitHeight="21.0" fitWidth="22.0" layoutX="685.0" layoutY="310.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icons/alert.png" />
+         </image>
+      </ImageView>
   </children>
   <stylesheets>
     <URL value="@../styles/MainFrameStyle.css" />
