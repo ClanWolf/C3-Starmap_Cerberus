@@ -766,8 +766,7 @@ public class GenerateRoundReport {
 
         for (UserDetail userDetail : matchDetails.getUserDetails()) {
             if ("1".equals(userDetail.getTeam())) {
-                String mechName;
-                mechName = getMechName(userDetail);
+                String mechName = getMechName(userDetail);
                 tableTeam1.addCell(addTeam1Cell(userDetail.getUnitTag()))
                         .addCell(addTeam1Cell(userDetail.getUsername()))
                         .addCell(addTeam1Cell(mechName))
@@ -820,9 +819,10 @@ public class GenerateRoundReport {
         team2Counter = team2Counter + 1;
         for (UserDetail userDetail : matchDetails.getUserDetails()) {
             if ("2".equals(userDetail.getTeam())) {
+                String mechName = getMechName(userDetail);
                 tableTeam2.addCell(addTeam2Cell(userDetail.getUnitTag()))
                         .addCell(addTeam2Cell(userDetail.getUsername()))
-                        .addCell(addTeam2Cell(new MechIdInfo(userDetail.getMechItemID()).getShortname()))
+                        .addCell(addTeam2Cell(mechName))
                         .addCell(addTeam2Cell(userDetail.getHealthPercentage().toString()))
                         .addCell(addTeam2Cell(userDetail.getMatchScore().toString()))
                         .addCell(addTeam2Cell(userDetail.getDamage().toString()))
