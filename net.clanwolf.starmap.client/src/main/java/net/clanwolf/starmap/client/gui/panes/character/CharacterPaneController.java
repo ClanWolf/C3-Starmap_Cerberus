@@ -180,6 +180,13 @@ public class CharacterPaneController extends AbstractC3Controller implements Act
 		});
 	}
 
+	@Override
+	public void setFocus() {
+		Platform.runLater(() -> {
+			//
+		});
+	}
+
 	private void resetFields() {
 		char_selection.getSelectionModel().clearSelection();
 		char_owner.getSelectionModel().clearSelection();

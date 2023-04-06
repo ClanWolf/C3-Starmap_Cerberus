@@ -39,4 +39,9 @@ public final class DicePane extends AbstractC3Pane {
 		super("/fxml/DicePane.fxml", false, false);
 		paneName = "DicePane";
 	}
+
+	@Override
+	public void setFocus() {
+		controller.setFocus();
+	}
 }

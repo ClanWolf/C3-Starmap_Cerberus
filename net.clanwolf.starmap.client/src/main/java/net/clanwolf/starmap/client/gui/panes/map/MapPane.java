@@ -39,4 +39,9 @@ public final class MapPane extends AbstractC3Pane {
 		super("/fxml/MapPane.fxml", false, false);
 		paneName = "MapPane";
 	}
+
+	@Override
+	public void setFocus() {
+		controller.setFocus();
+	}
 }

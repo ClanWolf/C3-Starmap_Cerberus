@@ -39,4 +39,9 @@ public class LoginPane extends AbstractC3Pane {
 		super("/fxml/LoginPane.fxml", false, true);
 		paneName = "LoginPane";
 	}
+
+	@Override
+	public void setFocus() {
+		controller.setFocus();
+	}
 }

@@ -39,4 +39,9 @@ public class UserInfoPane extends AbstractC3Pane {
 		super("/fxml/UserInfoPane.fxml", false, true);
 		paneName = "UserInfoPane";
 	}
+
+	@Override
+	public void setFocus() {
+		controller.setFocus();
+	}
 }

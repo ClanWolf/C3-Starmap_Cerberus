@@ -159,7 +159,7 @@
                 <URL value="@../styles/MainFrameStyle.css" />
             </stylesheets>
         </Button>
-      <Button fx:id="adminButton" layoutX="68.0" layoutY="265.0" maxHeight="20.0" maxWidth="40.0" minHeight="20.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleAdminButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="20.0" prefWidth="40.0" textAlignment="CENTER">
+      <Button id="btn_switch" fx:id="adminButton" layoutX="68.0" layoutY="265.0" maxHeight="20.0" maxWidth="40.0" minHeight="20.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleAdminButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="20.0" prefWidth="40.0" styleClass="adminSwitcherButton" textAlignment="CENTER">
          <stylesheets>
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>

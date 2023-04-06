@@ -126,6 +126,13 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 	}
 
 	@Override
+	public void setFocus() {
+		Platform.runLater(() -> {
+			//
+		});
+	}
+
+	@Override
 	public void warningOnAction() {
 		// here is nothing to do
 	}

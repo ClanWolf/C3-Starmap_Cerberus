@@ -27,12 +27,12 @@
         <Color red="0.412" green="0.620" blue="0.804" fx:id="x1" />
       </textFill>
     </Label>
-    <Button fx:id="buttonYes" alignment="CENTER_RIGHT" defaultButton="true" layoutX="540.0" layoutY="439.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#handleConfirmButtonClick" prefWidth="140.0" styleClass="contentButton" text="Button">
+    <Button fx:id="buttonYes" alignment="CENTER_RIGHT" defaultButton="true" layoutX="540.0" layoutY="439.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleConfirmButtonClick" prefWidth="140.0" styleClass="contentButton" text="Button">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
     </Button>
-    <Button fx:id="buttonNo" alignment="CENTER_RIGHT" cancelButton="true" layoutX="689.0" layoutY="439.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#handleCancelButtonClick" prefWidth="140.0" styleClass="contentButton" text="Button">
+    <Button fx:id="buttonNo" alignment="CENTER_RIGHT" cancelButton="true" layoutX="689.0" layoutY="439.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#handleCancelButtonClick" prefWidth="140.0" styleClass="contentButton" text="Button">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>

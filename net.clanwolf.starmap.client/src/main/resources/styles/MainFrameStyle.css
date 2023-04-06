@@ -318,6 +318,14 @@
   -fx-background-position: center;
 }
 
+.adminSwitcherButton {
+}
+
+.adminSwitcherButton:hover {
+  -fx-border-color: #777777;
+  -fx-border-width: 1;
+}
+
 .mapButton {
   -fx-background-image: url("../images/buttons/map.png");
   -fx-background-repeat: no-repeat;
@@ -1076,7 +1084,7 @@
 #btn_dark-blue:hover {}
 #btn_dark-blue:disabled {}
 #btn_dark-blue:focused {
-  -fx-border-color: #ffffff;
+  -fx-border-color: #777777;
   -fx-border-width: 1;
 }
 
@@ -1092,7 +1100,7 @@
 #btn_dark-red:hover {}
 #btn_dark-red:disabled {}
 #btn_dark-red:focused {
-  -fx-border-color: #ffffff;
+  -fx-border-color: #777777;
   -fx-border-width: 1;
 }
 
@@ -1107,7 +1115,14 @@
 #btn_blue:hover {}
 #btn_blue:disabled {}
 #btn_blue:focused {
-  -fx-border-color: #ffffff;
+  -fx-border-color: #777777;
+  -fx-border-width: 1;
+}
+
+#btn_switch {
+}
+#btn_switch:focused {
+  -fx-border-color: #777777;
   -fx-border-width: 1;
 }
 

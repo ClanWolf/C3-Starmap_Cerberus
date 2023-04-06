@@ -841,6 +841,13 @@ public class SettingsPaneController extends AbstractC3Controller implements Acti
 		});
 	}
 
+	@Override
+	public void setFocus() {
+		Platform.runLater(() -> {
+			//
+		});
+	}
+
 	/**
 	 * Handle Actions
 	 */
@@ -866,7 +873,7 @@ public class SettingsPaneController extends AbstractC3Controller implements Acti
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	@Override
 	public void warningOnAction() {
@@ -874,7 +881,7 @@ public class SettingsPaneController extends AbstractC3Controller implements Acti
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	@Override
 	public void warningOffAction() {

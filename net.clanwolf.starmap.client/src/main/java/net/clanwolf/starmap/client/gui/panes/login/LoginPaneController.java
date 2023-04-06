@@ -418,7 +418,23 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 					tfUserName.setText(Internationalization.getString("app_pane_login_GuestAccountName"));
 					tfPassword.setText(Internationalization.getString("app_pane_login_GuestAccountPWName"));
 				}
+
+				Tooltip ttUserNameRegister = new Tooltip(Internationalization.getString("app_pane_register_tooltip_name"));
+				Tooltip ttUserPasswordRegister = new Tooltip(Internationalization.getString("app_pane_register_tooltip_pw"));
+				Tooltip ttUserPasswordConfirmRegister = new Tooltip(Internationalization.getString("app_pane_register_tooltip_pwconfirm"));
+				Tooltip ttUserMailRegister = new Tooltip(Internationalization.getString("app_pane_register_tooltip_mail"));
+				tfUserNameRegister.setTooltip(ttUserNameRegister);
+				tfPasswordRegister.setTooltip(ttUserPasswordRegister);
+				tfPasswordConfirmRegister.setTooltip(ttUserPasswordConfirmRegister);
+				tfMailRegister.setTooltip(ttUserMailRegister);
 			}
+		});
+	}
+
+	@Override
+	public void setFocus() {
+		Platform.runLater(() -> {
+			//
 		});
 	}
 
@@ -572,6 +588,16 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 		ivAlarmPW.setVisible(false);
 		ivAlarmPWConfirm.setVisible(false);
 		ivAlarmMail.setVisible(false);
+
+		Tooltip ttUserNameRegister = new Tooltip(Internationalization.getString("app_pane_register_tooltip_name"));
+		Tooltip ttUserPasswordRegister = new Tooltip(Internationalization.getString("app_pane_register_tooltip_pw"));
+		Tooltip ttUserPasswordConfirmRegister = new Tooltip(Internationalization.getString("app_pane_register_tooltip_pwconfirm"));
+		Tooltip ttUserMailRegister = new Tooltip(Internationalization.getString("app_pane_register_tooltip_mail"));
+
+		tfUserNameRegister.setTooltip(ttUserNameRegister);
+		tfPasswordRegister.setTooltip(ttUserPasswordRegister);
+		tfPasswordConfirmRegister.setTooltip(ttUserPasswordConfirmRegister);
+		tfMailRegister.setTooltip(ttUserMailRegister);
 
 		comboboxFactionRegister.getItems().add("CS - Comstar");
 		comboboxFactionRegister.getItems().add("FRR - Free Rasalhague Republic");

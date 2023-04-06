@@ -78,7 +78,7 @@ public class C3LookupService extends SimpleLookupService {
 			// 2: Username Länge
 			// 3: Faction short (CW, CJF, FRR,...)
 
-			String p[] = c.getUsername().split("#");
+			String[] p = c.getUsername().split("#");
 			String sUsername = p[0];
 			String sMail = p[1];
 			String sLengthUsername = p[2];
@@ -92,11 +92,21 @@ public class C3LookupService extends SimpleLookupService {
 
 			logger.info("++++ Registering new user ++++");
 			logger.info(sUsername);
+			// logger.info(pw1);
+			// logger.info(pw2);
 			logger.info(sMail);
 			logger.info(sFactionShort);
 			logger.info("++++++++++++++++++++++++++++++");
 
 			// Save user
+			UserPOJO u = new UserPOJO();
+			u.setActive(0);
+			u.setPrivileges(0);
+			u.setUserName(sUsername);
+			u.setUserEMail(sMail);
+			u.setUserPassword(pw1);
+			u.setUserPasswordWebsite(pw2);
+
 			return null;
 		}
 

@@ -28,6 +28,8 @@ package net.clanwolf.starmap.client.gui;
 
 import javafx.animation.*;
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
@@ -117,6 +119,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private boolean openLogPane = false;
 	private boolean openEditorPane = false;
 	private boolean messageIsShowing = false;
+	private static boolean adminButtonHasFocus = false;
 	private AbstractC3Pane currentlyDisplayedPane = null;
 	private AbstractC3Pane nextToDisplayPane = null;
 	private LoginPane loginPane = null;
@@ -147,6 +150,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 	private final Image imageAdminButtonOff = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/adminOff.png")));
 	private final Image imageAdminButtonOn = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/adminOn.png")));
+	private final Image imageAdminButtonOff_Focus = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/adminOff_focus.png")));
+	private final Image imageAdminButtonOn_Focus = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/adminOn_focus.png")));
 	private final Image muteButtonImageHover = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/mute_hover.png")));
 	private final Image muteButtonImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/mute.png")));
 	private boolean helpvoiceplayedonce = false;
@@ -1014,10 +1019,18 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 		Runnable r = () -> {
 			buttonsAreMoving = true;
-			if (adminMenuActive) {
-				Platform.runLater(() -> adminButton.setGraphic(new ImageView(imageAdminButtonOn)));
+			if (adminButtonHasFocus) {
+				if (adminMenuActive) {
+					Platform.runLater(() -> adminButton.setGraphic(new ImageView(imageAdminButtonOn_Focus)));
+				} else {
+					Platform.runLater(() -> adminButton.setGraphic(new ImageView(imageAdminButtonOff_Focus)));
+				}
 			} else {
-				Platform.runLater(() -> adminButton.setGraphic(new ImageView(imageAdminButtonOff)));
+				if (adminMenuActive) {
+					Platform.runLater(() -> adminButton.setGraphic(new ImageView(imageAdminButtonOn)));
+				} else {
+					Platform.runLater(() -> adminButton.setGraphic(new ImageView(imageAdminButtonOff)));
+				}
 			}
 			for (int i = 0; i < distance; i++) {
 
@@ -1330,6 +1343,21 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		textTopRightThread.start();
 	}
 
+	@Override
+	public void setFocus() {
+		Platform.runLater(() -> {
+			//
+		});
+	}
+
+	/**
+	 * Set Strings for GUI (on initialization and on change of language.
+	 */
+	@Override
+	public void setStrings() {
+		//
+	}
+
 	/**
 	 * @param url url
 	 * @param rb resource bundle
@@ -1522,14 +1550,29 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				super.updateItem(item, empty);
 			}
 		});
-	}
 
-	/**
-	 * Set Strings for GUI (on initialization and on change of language.
-	 */
-	@Override
-	public void setStrings() {
-		//
+		adminButton.focusedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) {
+				if (newPropertyValue) {
+					// Change image on admin switcher to reflect that there is focus
+					adminButtonHasFocus = true;
+					if (adminMenuActive) {
+						Platform.runLater(() -> adminButton.setGraphic(new ImageView(imageAdminButtonOn_Focus)));
+					} else {
+						Platform.runLater(() -> adminButton.setGraphic(new ImageView(imageAdminButtonOff_Focus)));
+					}
+				} else {
+					// Change image on admin switcher to reflect that there is no focus
+					adminButtonHasFocus = false;
+					if (adminMenuActive) {
+						Platform.runLater(() -> adminButton.setGraphic(new ImageView(imageAdminButtonOn)));
+					} else {
+						Platform.runLater(() -> adminButton.setGraphic(new ImageView(imageAdminButtonOff)));
+					}
+				}
+			}
+		});
 	}
 
 	/**
@@ -1991,6 +2034,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 							C3SoundPlayer.startMusic();
 						}
 					}
+					currentlyDisplayedPane.setFocus();
 				});
 				break;
 

@@ -39,4 +39,9 @@ public class CharacterPane extends AbstractC3Pane {
 		super("/fxml/CharacterPane.fxml", false, true);
 		paneName = "CharacterPane";
 	}
+
+	@Override
+	public void setFocus() {
+		controller.setFocus();
+	}
 }

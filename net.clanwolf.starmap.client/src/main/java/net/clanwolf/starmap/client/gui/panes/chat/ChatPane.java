@@ -39,5 +39,10 @@ public final class ChatPane extends AbstractC3Pane {
 		super("/fxml/ChatPane.fxml", false, false);
 		paneName = "ChatPane";
 	}
+
+	@Override
+	public void setFocus() {
+		controller.setFocus();
+	}
 }
 

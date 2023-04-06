@@ -97,14 +97,18 @@ public class ConfirmAppClosePaneController extends AbstractC3Controller implemen
 	 */
 	@Override
 	public void setStrings() {
-		Platform.runLater(new Runnable() {
-			@Override
-			public void run() {
-				panelHeadline.setText(Internationalization.getString("app_pane_confirm_close_headline"));
-				shutdownMessageArea.setText(Internationalization.getString("app_pane_confirm_close_message"));
-				buttonNo.setText(Internationalization.getString("general_no"));
-				buttonYes.setText(Internationalization.getString("general_yes"));
-			}
+		Platform.runLater(() -> {
+			panelHeadline.setText(Internationalization.getString("app_pane_confirm_close_headline"));
+			shutdownMessageArea.setText(Internationalization.getString("app_pane_confirm_close_message"));
+			buttonNo.setText(Internationalization.getString("general_no"));
+			buttonYes.setText(Internationalization.getString("general_yes"));
+		});
+	}
+
+	@Override
+	public void setFocus() {
+		Platform.runLater(() -> {
+			buttonYes.requestFocus();
 		});
 	}
 
@@ -130,14 +134,14 @@ public class ConfirmAppClosePaneController extends AbstractC3Controller implemen
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	@Override
 	public void warningOnAction() {
 	}
 
 	/**
-	 * 
+	 *
 	 */
 	@Override
 	public void warningOffAction() {

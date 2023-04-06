@@ -102,6 +102,8 @@ public abstract class AbstractC3Controller implements Initializable, ActionCallB
 	 */
 	public abstract void setStrings();
 
+	public abstract void setFocus();
+
 	protected void setWarningOn(boolean setModal) {
 		if (!warningActive) {
 			Platform.runLater(() -> { labelWarningIcon.setVisible(true); });

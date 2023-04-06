@@ -1699,6 +1699,13 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		});
 	}
 
+	@Override
+	public void setFocus() {
+		Platform.runLater(() -> {
+			//
+		});
+	}
+
 	/**
 	 * If a warning is active, this is what happens if the warning is on.
 	 */

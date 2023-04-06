@@ -39,4 +39,9 @@ public class ConfirmAppClosePane extends AbstractC3Pane {
 		super("/fxml/ConfirmAppClosePane.fxml", true, true);
 		paneName = "ConfirmAppClosePane";
 	}
+
+	@Override
+	public void setFocus() {
+		controller.setFocus();
+	}
 }

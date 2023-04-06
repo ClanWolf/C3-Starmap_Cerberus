@@ -39,4 +39,9 @@ public class SettingsPane extends AbstractC3Pane {
 		super("/fxml/SettingsPane.fxml", false, true);
 		paneName = "SettingsPane";
 	}
+
+	@Override
+	public void setFocus() {
+		controller.setFocus();
+	}
 }

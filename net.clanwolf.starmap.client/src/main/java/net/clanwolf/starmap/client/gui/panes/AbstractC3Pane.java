@@ -293,4 +293,6 @@ public abstract class AbstractC3Pane extends Pane {
 		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("42");
 		ActionManager.getAction(ACTIONS.PANE_DESTRUCTION_FINISHED).execute(this);
 	}
+
+	public abstract void setFocus();
 }

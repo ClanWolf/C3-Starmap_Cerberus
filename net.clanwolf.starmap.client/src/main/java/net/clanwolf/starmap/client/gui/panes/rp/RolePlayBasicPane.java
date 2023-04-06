@@ -44,4 +44,9 @@ public final class RolePlayBasicPane extends AbstractC3Pane {
 		super("/fxml/RolePlayBasicPane.fxml", false, true);
 		paneName = name;
 	}
+
+	@Override
+	public void setFocus() {
+		controller.setFocus();
+	}
 }

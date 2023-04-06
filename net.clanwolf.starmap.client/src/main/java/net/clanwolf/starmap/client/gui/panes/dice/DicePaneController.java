@@ -26,6 +26,7 @@
  */
 package net.clanwolf.starmap.client.gui.panes.dice;
 
+import javafx.application.Platform;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
@@ -47,6 +48,13 @@ public class DicePaneController extends AbstractC3Controller implements ActionCa
 	@Override
 	public void setStrings() {
 
+	}
+
+	@Override
+	public void setFocus() {
+		Platform.runLater(() -> {
+			//
+		});
 	}
 
 	@Override

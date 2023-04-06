@@ -13,6 +13,9 @@ TODO:
 - Check warning hibernate dialect (server)
 - Switch to MariaDB client (client, bots)
 
+- Check tab order in login and register
+- Add Return to Login/Register button
+
 - User avatar is not displayed after login (?) - UserInfoPaneController, L.445
 - User avatar remove? Character has avatar, that should be enough
 - Error message if login returns an inactive user (still in registration) - EventCommunications, L.141

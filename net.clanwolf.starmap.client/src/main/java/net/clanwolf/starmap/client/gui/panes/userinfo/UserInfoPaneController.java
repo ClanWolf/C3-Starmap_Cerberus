@@ -375,6 +375,13 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 		});
 	}
 
+	@Override
+	public void setFocus() {
+		Platform.runLater(() -> {
+			//
+		});
+	}
+
 	private void createListeners() {
 		// userNameFieldChangeListener = new ChangeListener<String>() {
 		// @Override

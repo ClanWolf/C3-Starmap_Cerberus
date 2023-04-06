@@ -128,6 +128,13 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 	}
 
 	@Override
+	public void setFocus() {
+		Platform.runLater(() -> {
+			//
+		});
+	}
+
+	@Override
 	public void addActionCallBackListeners() {
 		ActionManager.addActionCallbackListener(ACTIONS.CHANGE_LANGUAGE, this);
 		ActionManager.addActionCallbackListener(ACTIONS.PANE_DESTROY_CURRENT, this);
