@@ -13,7 +13,7 @@ TODO:
 - Check warning hibernate dialect (server)
 - Switch to MariaDB client (client, bots)
 
-- Check tab order in login and register
+- Check tab order
 - Add Return to Login/Register button
 
 - User avatar is not displayed after login (?) - UserInfoPaneController, L.445

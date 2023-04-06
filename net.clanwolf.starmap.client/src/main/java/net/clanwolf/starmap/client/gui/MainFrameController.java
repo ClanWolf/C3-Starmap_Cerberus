@@ -1067,6 +1067,17 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					attackButton.setVisible(false);
 					diceButton.setVisible(false);
 					chatButton.setVisible(false);
+
+					rolePlayButton.setFocusTraversable(false);
+					mapButton.setFocusTraversable(false);
+					attackButton.setFocusTraversable(false);
+					diceButton.setFocusTraversable(false);
+					chatButton.setFocusTraversable(false);
+					storyEditorButton.setFocusTraversable(true);
+					adminPaneButton.setFocusTraversable(true);
+					renameMeButton3.setFocusTraversable(true);
+					renameMeButton4.setFocusTraversable(true);
+					logButton.setFocusTraversable(true);
 				});
 			} else {
 				Platform.runLater(() -> {
@@ -1075,6 +1086,17 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					renameMeButton3.setVisible(false);
 					renameMeButton4.setVisible(false);
 					logButton.setVisible(false);
+
+					rolePlayButton.setFocusTraversable(true);
+					mapButton.setFocusTraversable(true);
+					attackButton.setFocusTraversable(true);
+					diceButton.setFocusTraversable(true);
+					chatButton.setFocusTraversable(true);
+					storyEditorButton.setFocusTraversable(false);
+					adminPaneButton.setFocusTraversable(false);
+					renameMeButton3.setFocusTraversable(false);
+					renameMeButton4.setFocusTraversable(false);
+					logButton.setFocusTraversable(false);
 				});
 			}
 		};

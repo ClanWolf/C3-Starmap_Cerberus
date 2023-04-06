@@ -31,6 +31,12 @@ import io.nadron.app.Player;
 import io.nadron.service.impl.SimpleLookupService;
 import io.nadron.util.Credentials;
 import jakarta.persistence.EntityManager;
+import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.AttackDAO;
+import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.RolePlayStoryDAO;
+import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.UserDAO;
+import net.clanwolf.starmap.server.persistence.pojos.AttackPOJO;
+import net.clanwolf.starmap.server.persistence.pojos.RolePlayStoryPOJO;
+import net.clanwolf.starmap.server.servernexus.ServerNexus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
@@ -99,13 +105,23 @@ public class C3LookupService extends SimpleLookupService {
 			logger.info("++++++++++++++++++++++++++++++");
 
 			// Save user
-			UserPOJO u = new UserPOJO();
-			u.setActive(0);
-			u.setPrivileges(0);
-			u.setUserName(sUsername);
-			u.setUserEMail(sMail);
-			u.setUserPassword(pw1);
-			u.setUserPasswordWebsite(pw2);
+			try {
+				UserDAO userDAO = UserDAO.getInstance();
+				EntityManagerHelper.beginTransaction(ServerNexus.DUMMY_USERID);
+
+				UserPOJO u = new UserPOJO();
+				u.setActive(0);
+				u.setPrivileges(0);
+				u.setUserName(sUsername);
+				u.setUserEMail(sMail);
+				u.setUserPassword(pw1);
+				u.setUserPasswordWebsite(pw2);
+
+				//userDAO.save(ServerNexus.DUMMY_USERID, u);
+				EntityManagerHelper.commit(ServerNexus.DUMMY_USERID);
+			} catch (Exception e) {
+				logger.error("Exception while saving new user.", e);
+			}
 
 			return null;
 		}
