@@ -31,6 +31,8 @@ import io.nadron.app.Player;
 import io.nadron.service.impl.SimpleLookupService;
 import io.nadron.util.Credentials;
 import jakarta.persistence.EntityManager;
+import net.clanwolf.starmap.mail.MailManager;
+import net.clanwolf.starmap.server.GameServer;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.*;
 import net.clanwolf.starmap.server.persistence.pojos.*;
 import net.clanwolf.starmap.server.servernexus.ServerNexus;
@@ -142,6 +144,9 @@ public class C3LookupService extends SimpleLookupService {
 
 				c.setUsername(u.getUserName());
 
+				sendMail(u);
+
+
 			} catch (Exception e) {
 				logger.error("Exception while saving new user.", e);
 				EntityManagerHelper.rollback(ServerNexus.DUMMY_USERID);
@@ -169,4 +174,19 @@ public class C3LookupService extends SimpleLookupService {
 		return player;
 	}
 
+	private void sendMail(UserPOJO u){
+		if(!GameServer.isDevelopmentPC) {
+			logger.info("Sending info mail.");
+			String[] receivers = {"keshik@googlegroups.com"};
+			boolean sent = false;
+			sent = MailManager.sendMail("c3@clanwolf.net", receivers, "New C3 user ", u.getUserName() + " is waiting for activation.", false);
+			if (sent) {
+				// sent
+				logger.info("Mail sent. [3]");
+			} else {
+				// error during email sending
+				logger.info("Error during mail dispatch. [3]");
+			}
+		}
+	}
 }
