@@ -77,37 +77,76 @@ public class MechIdInfo {
 
         boolean mechfound = false;
         NodeList mechNodes = doc.getElementsByTagName("Mech");
-        for (int i = 0; i < mechNodes.getLength(); i++) {
-            Element xmlMechList = (Element) mechNodes.item(i);
-            if (Objects.equals(mechItemId, Integer.valueOf(xmlMechList.getAttribute("id")))) {
-                mechfound = true;
-                this.mechChassis = xmlMechList.getAttribute("chassis");
-                this.mechFaction = xmlMechList.getAttribute("faction");
-                this.mechName = xmlMechList.getAttribute("name");
-                this.mechBaseTons = Double.valueOf(xmlMechList.getAttribute("BaseTons"));
-                this.mechMaxTons = Integer.valueOf(xmlMechList.getAttribute("MaxTons"));
-                this.mechMaxJumpJets = Integer.valueOf(xmlMechList.getAttribute("MaxJumpJets"));
-                this.mechMaxEngineRating = Integer.valueOf(xmlMechList.getAttribute("MinEngineRating"));
-                this.mechMinEngineRating = Integer.valueOf(xmlMechList.getAttribute("MaxEngineRating"));
-                this.mechVariantType = xmlMechList.getAttribute("VariantType").toUpperCase();
-                this.mechLongName = xmlMechList.getAttribute("longname");
-                this.mechShortName = xmlMechList.getAttribute("shortname");
-                this.HP = Integer.valueOf(xmlMechList.getAttribute("HP"));
-                break;
+        int mechCount = mechNodes.getLength();
+
+        //Wenn mechItemId -1 ist, dann den Mittelwert ermitteln.
+        if (mechItemId == -1) {
+            logger.info("---Start the calculation of the mean value---");
+            this.mechBaseTons = 0.0;
+            this.mechMaxTons = 0;
+            this.mechMaxJumpJets = 0;
+            this.mechMaxEngineRating = 0;
+            this.mechMinEngineRating = 0;
+            this.HP = 0;
+
+            for (int i = 0; i < mechNodes.getLength(); i++) {
+                Element xmlMechList = (Element) mechNodes.item(i);
+                this.mechBaseTons = this.mechBaseTons + Double.parseDouble(xmlMechList.getAttribute("BaseTons"));
+                this.mechMaxTons = this.mechMaxTons + Integer.parseInt(xmlMechList.getAttribute("MaxTons"));
+                this.mechMaxJumpJets = this.mechMaxJumpJets + Integer.parseInt(xmlMechList.getAttribute("MaxJumpJets"));
+                this.mechMaxEngineRating = this.mechMaxEngineRating + Integer.parseInt(xmlMechList.getAttribute("MinEngineRating"));
+                this.mechMinEngineRating = this.mechMinEngineRating + Integer.parseInt(xmlMechList.getAttribute("MaxEngineRating"));
+                this.HP = this.HP + Integer.parseInt(xmlMechList.getAttribute("HP"));
+            }
+
+            this.mechBaseTons = this.mechBaseTons / mechCount;
+            this.mechMaxTons = this.mechMaxTons / mechCount;
+            this.mechMaxJumpJets = this.mechMaxJumpJets / mechCount;
+            this.mechMaxEngineRating = this.mechMaxEngineRating / mechCount;
+            this.mechMinEngineRating = this.mechMinEngineRating / mechCount;
+            this.HP = this.HP / mechCount;
+
+            this.mechChassis = "<Unknown chassis>";
+            this.mechFaction = "<Unknown faction>";
+            this.mechName = "<Unknown name>";
+            this.mechVariantType = "<Unknown variant>";
+            this.mechLongName = "<Unknown name>";
+            this.mechShortName = "<Unknown name>";
+            logger.info("--The calculation of the mean value is completed---");
+            mechfound = true;
+        } else {
+            for (int i = 0; i < mechNodes.getLength(); i++) {
+                Element xmlMechList = (Element) mechNodes.item(i);
+                if (Objects.equals(mechItemId, Integer.valueOf(xmlMechList.getAttribute("id")))) {
+                    mechfound = true;
+                    this.mechChassis = xmlMechList.getAttribute("chassis");
+                    this.mechFaction = xmlMechList.getAttribute("faction");
+                    this.mechName = xmlMechList.getAttribute("name");
+                    this.mechBaseTons = Double.valueOf(xmlMechList.getAttribute("BaseTons"));
+                    this.mechMaxTons = Integer.valueOf(xmlMechList.getAttribute("MaxTons"));
+                    this.mechMaxJumpJets = Integer.valueOf(xmlMechList.getAttribute("MaxJumpJets"));
+                    this.mechMaxEngineRating = Integer.valueOf(xmlMechList.getAttribute("MinEngineRating"));
+                    this.mechMinEngineRating = Integer.valueOf(xmlMechList.getAttribute("MaxEngineRating"));
+                    this.mechVariantType = xmlMechList.getAttribute("VariantType").toUpperCase();
+                    this.mechLongName = xmlMechList.getAttribute("longname");
+                    this.mechShortName = xmlMechList.getAttribute("shortname");
+                    this.HP = Integer.valueOf(xmlMechList.getAttribute("HP"));
+                    break;
+                }
             }
         }
         if (!mechfound) {
-            this.mechChassis = "Unknown";
-            this.mechFaction = "Unknown";
-            this.mechName = "Unknown";
+            this.mechChassis = "<Unknown chassis>";
+            this.mechFaction = "<Unknown faction>";
+            this.mechName = "<Unknown name>";
             this.mechBaseTons = -1.0;
             this.mechMaxTons = -1;
             this.mechMaxJumpJets = -1;
             this.mechMaxEngineRating = -1;
             this.mechMinEngineRating = -1;
-            this.mechVariantType = "Unknown";
-            this.mechLongName = "Unknown";
-            this.mechShortName = "Unknown";
+            this.mechVariantType = "<Unknown variant>";
+            this.mechLongName = "<Unknown name>";
+            this.mechShortName = "<Unknown name>";
             this.HP = -1;
 
             throw new MechItemIdNotFoundException("Mech ID: " + mechItemId + " not found in the xml file.");
@@ -137,7 +176,7 @@ public class MechIdInfo {
                 mechIdInfo = new MechIdInfo(mechItemId);
                 System.out.println(mechIdInfo.getFullName() + "|" + mechIdInfo.getShortname() + "|" + mechIdInfo.getMechVariantType() + "|" + mechIdInfo.getTonnage());
             } catch (MechItemIdNotFoundException e) {
-                logger.error("The 'Mech's name could not be determined.");
+                logger.error("The 'Mech's name could not be determined.", e);
             }
         }
     }
@@ -203,19 +242,23 @@ public class MechIdInfo {
      * @return Gibt die (String) Chassis des Mech's zurück.
      */
     public String getMechChassis() throws ParserConfigurationException, IOException, SAXException {
-        String mechChassi = null;
-        Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(Objects.requireNonNull(MechIdInfo.class.getResourceAsStream("/mechinfo/AllMechsChassis.xml")));
-        doc.getDocumentElement().normalize();
+        String mechChassi = "<Unknown chassis>";
+        if (!(Objects.equals(this.mechChassis, "<Unknown chassis>"))) {
 
-        NodeList mechNodes = doc.getElementsByTagName("Mech");
+            Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(Objects.requireNonNull(MechIdInfo.class.getResourceAsStream("/mechinfo/AllMechsChassis.xml")));
+            doc.getDocumentElement().normalize();
 
-        for (int i = 0; i < mechNodes.getLength(); i++) {
-            Element xmlMechList = (Element) mechNodes.item(i);
-            if (Objects.equals(this.mechChassis, xmlMechList.getAttribute("chassis"))) {
-                mechChassi = xmlMechList.getAttribute("ingamechassis");
-                break;
+            NodeList mechNodes = doc.getElementsByTagName("Mech");
+
+            for (int i = 0; i < mechNodes.getLength(); i++) {
+                Element xmlMechList = (Element) mechNodes.item(i);
+                if (Objects.equals(this.mechChassis, xmlMechList.getAttribute("chassis"))) {
+                    mechChassi = xmlMechList.getAttribute("ingamechassis");
+                    break;
+                }
             }
         }
+
         return mechChassi;
     }
 

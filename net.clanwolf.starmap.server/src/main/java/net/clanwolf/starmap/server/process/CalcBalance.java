@@ -28,6 +28,7 @@ package net.clanwolf.starmap.server.process;
 
 import com.google.gson.Gson;
 import net.clanwolf.starmap.constants.Constants;
+import net.clanwolf.starmap.exceptions.MechItemIdNotFoundException;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.StarSystemDataDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.StatsMwoDAO;
 import net.clanwolf.starmap.server.persistence.pojos.StarSystemDataPOJO;
@@ -71,11 +72,11 @@ public class CalcBalance {
 
     }
 
-    public List<BalanceUserInfo> getAttackerInfo() throws ParserConfigurationException, IOException, SAXException {
+    public List<BalanceUserInfo> getAttackerInfo() throws ParserConfigurationException, IOException, SAXException, MechItemIdNotFoundException {
         return balanceUserInfo.GetAttackerInfo();
     }
 
-    public List<BalanceUserInfo> getDefenderInfo() throws ParserConfigurationException, IOException, SAXException {
+    public List<BalanceUserInfo> getDefenderInfo() throws ParserConfigurationException, IOException, SAXException, MechItemIdNotFoundException {
         return balanceUserInfo.GetDefenderInfo();
     }
 

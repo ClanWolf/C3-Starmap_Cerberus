@@ -213,7 +213,7 @@ public class GenerateRoundReport {
         try {
             mechName = new MechIdInfo(userDetail.getMechItemID()).getShortname();
         } catch (MechItemIdNotFoundException e) {
-            logger.error("The 'Mech's name could not be determined.");
+            logger.error("The 'Mech's name could not be determined.", e);
         }
         return mechName;
     }
