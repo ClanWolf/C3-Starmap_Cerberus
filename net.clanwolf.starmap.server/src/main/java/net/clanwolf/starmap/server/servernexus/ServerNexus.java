@@ -29,8 +29,12 @@ package net.clanwolf.starmap.server.servernexus;
 import net.clanwolf.starmap.server.beans.C3GameSessionHandler;
 import net.clanwolf.starmap.server.util.ExternalCommunicationInterface;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Timestamp;
 import java.util.HashMap;
+import java.util.Properties;
 
 public class ServerNexus {
 	public static Long currentSeason = 1L;
@@ -50,5 +54,23 @@ public class ServerNexus {
 
 	public static ExternalCommunicationInterface getEci() {
 		return eci;
+	}
+
+	public static String authProperties(String key){
+		final Properties auth = new Properties();
+		try {
+			final String authFileName = "auth.properties";
+			InputStream inputStream = ServerNexus.class.getClassLoader().getResourceAsStream(authFileName);
+			if (inputStream != null) {
+				auth.load(inputStream);
+				return auth.getProperty(key);
+			} else {
+				throw new FileNotFoundException("Auth-Property file '" + authFileName + "' not found in classpath.");
+			}
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
+
+		return null;
 	}
 }

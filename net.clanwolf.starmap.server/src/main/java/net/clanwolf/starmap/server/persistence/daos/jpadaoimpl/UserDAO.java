@@ -98,8 +98,18 @@ public class UserDAO extends GenericDAO {
 	}
 
 	public UserPOJO findByCredentials(EntityManager em, Credentials c) {
-		String pw1 = Encryptor.getPasswordFromPair("first", c.getPassword());
-		String pw2 = Encryptor.getPasswordFromPair("second", c.getPassword());
+
+		String pw1 = "";
+		String pw2 = "";
+
+		// Nur bei Regestrierung sinnvoll
+		if(!c.getPassword().contains("#")){
+			pw2 = c.getPassword();
+		} else {
+			pw1 = Encryptor.getPasswordFromPair("first", c.getPassword());
+			pw2 = Encryptor.getPasswordFromPair("second", c.getPassword());
+		}
+
 
 //		logger.info("---- User: " + c.getUsername());
 //		logger.info("---- Complete PW String: " + c.getPassword());

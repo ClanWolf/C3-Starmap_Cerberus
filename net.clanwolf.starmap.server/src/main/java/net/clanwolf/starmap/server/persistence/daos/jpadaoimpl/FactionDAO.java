@@ -26,10 +26,12 @@
  */
 package net.clanwolf.starmap.server.persistence.daos.jpadaoimpl;
 
+import jakarta.persistence.EntityManager;
 import net.clanwolf.starmap.server.persistence.CriteriaHelper;
 import net.clanwolf.starmap.server.persistence.daos.GenericDAO;
 import net.clanwolf.starmap.server.persistence.pojos.AttackPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.FactionPOJO;
+import net.clanwolf.starmap.server.persistence.pojos.UserPOJO;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -107,5 +109,16 @@ public class FactionDAO extends GenericDAO {
 		}
 
 		return lRPS;
+	}
+
+	public FactionPOJO getFactionByShortText(String shortText){
+
+		CriteriaHelper crit1 = new CriteriaHelper(FactionPOJO.class);
+		crit1.addCriteria("shortName", shortText);
+
+		Object o = crit1.getSingleResult();
+
+		return (FactionPOJO)o;
+
 	}
 }

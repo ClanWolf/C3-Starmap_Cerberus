@@ -101,6 +101,19 @@ public class AdminPaneController {
 	private HashMap<String, Integer> originalActivatedStatus = new HashMap<>();
 
 	@FXML
+	public void handleSetActiveUser(){
+		Iterator<UserDTO> it = this.userList.iterator();
+		while (it.hasNext()) {
+
+			UserDTO u = (UserDTO)it.next();
+
+			if(u.getUserName().equals( cbUser.getSelectionModel().getSelectedItem())) {
+				u.setActive(cbActiveUser.isSelected() ? 1 : 0);
+			}
+		}
+	}
+
+	@FXML
 	public void btnSaveClicked() {
 //		Iterator iterator = this.userList.iterator();
 //		while (iterator.hasNext()) {

@@ -31,19 +31,16 @@ import io.nadron.app.Player;
 import io.nadron.service.impl.SimpleLookupService;
 import io.nadron.util.Credentials;
 import jakarta.persistence.EntityManager;
-import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.AttackDAO;
-import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.RolePlayStoryDAO;
-import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.UserDAO;
-import net.clanwolf.starmap.server.persistence.pojos.AttackPOJO;
-import net.clanwolf.starmap.server.persistence.pojos.RolePlayStoryPOJO;
+import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.*;
+import net.clanwolf.starmap.server.persistence.pojos.*;
 import net.clanwolf.starmap.server.servernexus.ServerNexus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
-import net.clanwolf.starmap.server.persistence.pojos.UserPOJO;
 
 
 import java.lang.invoke.MethodHandles;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -90,10 +87,13 @@ public class C3LookupService extends SimpleLookupService {
 			String sLengthUsername = p[2];
 			String sFactionShort = p[3];
 
+			FactionDAO fDAO = FactionDAO.getInstance();
+			FactionPOJO factionPOJO = fDAO.getFactionByShortText(sFactionShort);
+
 			int lengthUsernameReal = c.getUsername().indexOf("#");
 			int lengthUsernameTransmitted = Integer.parseInt(sLengthUsername);
 
-			String pw1 = "Ba9cW5uZC48Lo";
+			String pw1 = ServerNexus.authProperties("c3Admin");
 			String pw2 = c.getPassword();
 
 			logger.info("++++ Registering new user ++++");
@@ -117,29 +117,39 @@ public class C3LookupService extends SimpleLookupService {
 				u.setUserPassword(pw1);
 				u.setUserPasswordWebsite(pw2);
 
-				//userDAO.save(ServerNexus.DUMMY_USERID, u);
+				userDAO.save(ServerNexus.DUMMY_USERID, u);
+
+				RolePlayCharacterDAO rpCharDAO = RolePlayCharacterDAO.getInstance();
+
+				RolePlayCharacterPOJO rpChar = new RolePlayCharacterPOJO();
+				rpChar.setName(sUsername);
+				rpChar.setUser(u);
+				rpChar.setFactionId(factionPOJO.getId().intValue());
+
+				JumpshipDAO jsDAO = JumpshipDAO.getInstance();
+				ArrayList<JumpshipPOJO> js = jsDAO.getJumpshipsForFaction(factionPOJO.getId());
+
+				if(js.size() > 0) {
+					rpChar.setJumpshipId(js.get(0).getId().intValue());
+				}
+
+				rpCharDAO.save(ServerNexus.DUMMY_USERID, rpChar);
+
+				u.setCurrentCharacter(rpChar);
+				userDAO.save(ServerNexus.DUMMY_USERID, u);
+
 				EntityManagerHelper.commit(ServerNexus.DUMMY_USERID);
+
+				c.setUsername(u.getUserName());
+
 			} catch (Exception e) {
 				logger.error("Exception while saving new user.", e);
+				EntityManagerHelper.rollback(ServerNexus.DUMMY_USERID);
 			}
 
-			return null;
+			//player.setUser(null);
+			//return player;
 		}
-
-//		int lengthRegisterMail = c.getUsername().lastIndexOf("###");
-//		if(lengthRegisterMail > 1) {
-//
-//			String faction = c.getUsername().substring(c.getUsername().lastIndexOf("#"));
-//
-//			int lengthUsername = c.getUsername().lastIndexOf("#");
-//
-//			String sUsername = c.getUsername().substring(0, lengthRegisterMail);
-//			String sMail = c.getUsername().substring(lengthRegisterMail + 3, lengthUsername);
-//			String pw1 = "Ba9cW5uZC48Lo";
-//			logger.info(sMail);
-//			// User in DB
-//			return null;
-//		}
 
 		// Database UserPOJO auth check.
 		UserPOJO user = UserLogin.login(em, c);

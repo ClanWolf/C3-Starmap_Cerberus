@@ -4,7 +4,7 @@ import io.netty.buffer.ByteBuf;
 
 public class SimpleCredentials implements Credentials
 {
-	private final String username;
+	private String username;
 	private final String password;
 	
 	public SimpleCredentials(String username, String password)
@@ -29,6 +29,11 @@ public class SimpleCredentials implements Credentials
 	public String getPassword()
 	{
 		return password;
+	}
+
+	@Override
+	public void setUsername(String username) {
+		this.username = username;
 	}
 
 	@Override

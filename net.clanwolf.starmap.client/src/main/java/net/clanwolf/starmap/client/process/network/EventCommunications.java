@@ -135,11 +135,11 @@ public class EventCommunications {
 							String m = Internationalization.getString("general_user_is_in_registration");
 							messageUserIsInRegistration.setText(m);
 							messageUserIsInRegistration.setType(C3MESSAGETYPES.CLOSE);
-							ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(messageUserIsInRegistration);
 
-							// TODO_C3: Is this second call necessary?
-							// ???
-							ActionManager.getAction(ACTIONS.LOGON_FINISHED_WITH_ERROR).execute();
+							ActionManager.getAction(ACTIONS.SET_CONSOLE_OPACITY).execute(0.4);
+							Logout.doLogout();
+
+							ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(messageUserIsInRegistration);
 							break;
 						}
 					}
@@ -466,16 +466,18 @@ public class EventCommunications {
 					break;
 
 				case GET_UNIVERSE_DATA:
-					logger.info("Re-created universe received from server!");
-					ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("13");
-					UniverseDTO universeDTO = (UniverseDTO) Compressor.deCompress((byte[]) state.getObject());
-					if (universeDTO != null) {
-						Nexus.injectNewUniverseDTO(universeDTO);
-					} else {
-						logger.error("****************** RECEIVED A BROKEN (EMPTY) UNIVERSE! ******************");
+					if(Nexus.isLoggedIn()) {
+						logger.info("Re-created universe received from server!");
+						ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("13");
+						UniverseDTO universeDTO = (UniverseDTO) Compressor.deCompress((byte[]) state.getObject());
+						if (universeDTO != null) {
+							Nexus.injectNewUniverseDTO(universeDTO);
+						} else {
+							logger.error("****************** RECEIVED A BROKEN (EMPTY) UNIVERSE! ******************");
+						}
+						ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("13_33");
+						ActionManager.getAction(ACTIONS.NEW_UNIVERSE_RECEIVED).execute();
 					}
-					ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("13_33");
-					ActionManager.getAction(ACTIONS.NEW_UNIVERSE_RECEIVED).execute();
 					break;
 
 				case USER_CHECK_DOUBLE_LOGIN:
