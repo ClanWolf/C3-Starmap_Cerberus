@@ -284,7 +284,7 @@ public class BalanceUserInfo {
         }
         if (getTonnage == -1) {
 
-            //TODO: Einen wert festlegen, wenn die Mech nicht gefunden wurde, um die Berechnung der Reparaturkosten fortzuführen.
+            //Den Mittelwert für die Kostenberechnung ermitteln.
             MechIdInfo mechIdInfo = new MechIdInfo(-1);
             getTonnage = mechIdInfo.getTonnage();
             getMechMaxEngineRating = mechIdInfo.getMechMaxEngineRating();
