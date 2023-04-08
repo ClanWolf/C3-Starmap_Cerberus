@@ -76,11 +76,6 @@
          </stylesheets>
       </Label>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2c506d" height="397.0" layoutX="617.0" layoutY="31.0" opacity="0.75" stroke="#779fc3" strokeType="INSIDE" strokeWidth="2.0" width="212.0" />
-      <Label id="labelThingsToChange" fx:id="labelAvatar" focusTraversable="false" layoutX="515.0" layoutY="41.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="84.0" prefWidth="84.0" styleClass="userImageLabel">
-         <stylesheets>
-            <URL value="@../styles/MainFrameStyle.css" />
-         </stylesheets>
-      </Label>
       <ImageView fx:id="ivCharacterPortrait" fitHeight="104.0" fitWidth="103.0" layoutX="90.0" layoutY="212.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/chars/male/1022.png" />
@@ -92,7 +87,7 @@
                </color></DropShadow>
          </effect>
       </ImageView>
-      <ImageView fx:id="ivFactionLogo" fitHeight="222.0" fitWidth="194.0" layoutX="626.0" layoutY="43.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="ivFactionLogo" fitHeight="222.0" fitWidth="194.0" layoutX="626.0" layoutY="43.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/logos/factions/CW.png" />
          </image>

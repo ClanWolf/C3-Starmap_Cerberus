@@ -13,24 +13,22 @@ TODO:
 - Check warning hibernate dialect (server)
 - Switch to MariaDB client (client, bots)
 
-- Check tab order
-- Add Return to Login/Register button
-
-- User avatar is not displayed after login (?) - UserInfoPaneController, L.445
-- User avatar remove? Character has avatar, that should be enough
-- Error message if login returns an inactive user (still in registration) - EventCommunications, L.141
-- User admin pane "active" checkbox
-- Send a mail to admins if a new user registered
-- Send correct password to store in registration process
-- If an account has been activated, a character needs to be created
-- Clan vs Clan zeigt das Video nach der Lobby nicht an (?)
-- Beim Setzen des Active Flag müsste man einen user löschen können
-- Ein nicht aktivierter User wird nach 7 (?) Tagen gelöscht?
-- Beim Invasionpane soundboard von rp funksprüchen? Je nach Fraktion und Gegner?
+- Add link to forum in list of open attacks (discord/IRC)
+- Add faction to attacking unit in discord attack announcement
+- Send a mail/IRC/discord if a new user registered
+- Delete user in admin pane (?)
+- Auto-delete not activated user (?)
+- Soundboard for invasion pane (?)
+- ERROR: Clan vs Clan does not show video
 ----------------------------------------------------------------
 
-Version 7.3.6 ( ACHTUNG INKOMPATIBEL BIS USERREG FERTIG
+Version 7.3.7 (08.04.2023)
 - ADDED: User registration/management in client
+- ADDED: A character needs to be created for a new user
+- ADDED: Message on login with inactive user
+- ADDED: User admin pane "active" checkbox
+- FIXED: Check tab order (login / register)
+- FIXED: Add Return to Login/Register button (default button)
 
 Version 7.3.5 (31.02.2023)
 - ADDED: Logger into transfer module

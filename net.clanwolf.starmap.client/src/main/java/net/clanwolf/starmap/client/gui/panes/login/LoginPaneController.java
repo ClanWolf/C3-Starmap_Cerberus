@@ -211,6 +211,10 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 			logger.error("Server seems to be offline, show error message!");
 			ActionManager.getAction(ACTIONS.ONLINECHECK_FINISHED).execute(false);
 		}
+		if (registerMode) {
+			handelEnableRegisterButtonClick();
+			registerMode = false;
+		}
 	}
 
 	@FXML
@@ -309,6 +313,7 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 		ActionManager.addActionCallbackListener(ACTIONS.LOGON_FINISHED_SUCCESSFULL, this);
 		ActionManager.addActionCallbackListener(ACTIONS.LOGON_FINISHED_WITH_ERROR, this);
 		ActionManager.addActionCallbackListener(ACTIONS.CLEAR_PASSWORD_FIELD, this);
+		ActionManager.addActionCallbackListener(ACTIONS.DISABLE_REGISTRATION, this);
 	}
 
 	@FXML
@@ -557,12 +562,13 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 
 		StorePassword_OldValue = "true".equals(C3Properties.getProperty(C3PROPS.STORE_LOGIN_PASSWORD));
 
+		btRegister.setVisible(false);
+		btRegister.setDisable(true);
 		if ("".equalsIgnoreCase(tfUserName.getText())) {
-			btRegister.setVisible(true);
-			btRegister.setDisable(false);
-		} else {
-			btRegister.setVisible(false);
-			btRegister.setDisable(true);
+			if (!"disabled".equals(C3Properties.getProperty(C3PROPS.REGISTRATION))) {
+				btRegister.setVisible(true);
+				btRegister.setDisable(false);
+			}
 		}
 
 		btRegister.setText(Internationalization.getString("app_pane_login_RegisterButton_Register"));
@@ -796,6 +802,10 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 				// logger.info("Result of message (user interaction): " + result);
 				break;
 
+			case DISABLE_REGISTRATION:
+				disableRegistration();
+				break;
+
 //			case CLEAR_PASSWORD_FIELD:
 //				C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
 //				C3Message m1 = new C3Message(C3MESSAGES.ERROR_NO_EDITING_ALLOWED);
@@ -818,6 +828,16 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 
 		}
 		return true;
+	}
+
+	private void disableRegistration() {
+		btRegister.setVisible(false);
+		btRegister.setDisable(true);
+		C3Properties.setProperty(C3PROPS.REGISTRATION, "disabled", true);
+
+		if (!"".equals(tfUserName.getText()) && !"".equals(tfPassword.getText())) {
+			buttonLogin.setDisable(false);
+		}
 	}
 
 	/**

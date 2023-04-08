@@ -130,6 +130,7 @@ public class EventCommunications {
 					if (state.getObject() != null && state.getObject() instanceof UserDTO) {
 						us = (UserDTO) state.getObject();
 						if (us.getActive() == 0) {
+							ActionManager.getAction(ACTIONS.DISABLE_REGISTRATION).execute();
 							// User is in registration, can not be logged in yet
 							C3Message messageUserIsInRegistration = new C3Message(C3MESSAGES.ERROR_USER_IS_IN_REGISTRATION);
 							String m = Internationalization.getString("general_user_is_in_registration");

@@ -71,8 +71,6 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 	private boolean cooledOff = false;
 
 	@FXML
-	private Label labelAvatar;
-	@FXML
 	private ImageView ivFactionLogo;
 	@FXML
 	private ImageView ivCharacterPortrait;
@@ -257,9 +255,6 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 		Platform.runLater(() -> {
 			UserDTO user = Nexus.getCurrentUser();
 			if (user != null) {
-				// set logos
-				labelAvatar.setText("");
-
 				// set values
 				valueUsername.setText(user.getUserName());
 				valueLastLogin.setText(new SimpleDateFormat("dd.MM.yyyy HH:mm").format(user.getLastLogin()));
@@ -453,10 +448,14 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 		super.initialize(url, rb);
 
 		buttonLogout.setDisable(true);
-		if(Nexus.getCurrentUser().getAvatar() != null) {
-			Image imageAvatar = new Image(Nexus.getCurrentUser().getAvatar(), 84, 84, false, false);
-			labelAvatar.setGraphic(new ImageView(imageAvatar));
-		}
+//		if(Nexus.getCurrentUser().getAvatar() != null) {
+//			Platform.runLater(() -> {
+//				Image imageAvatar = new Image(Nexus.getCurrentUser().getAvatar(), 84, 84, false, false);
+//				//ivUAvatar.setImage(imageAvatar);
+//				ivUAvatar.toFront();
+//				labelAvatar.setGraphic(new ImageView(imageAvatar));
+//			});
+//		}
 
 		cbCharChooser.setEditable(false);
 //		if (Nexus.getCurrentUser().getCharacterList() != null) {
