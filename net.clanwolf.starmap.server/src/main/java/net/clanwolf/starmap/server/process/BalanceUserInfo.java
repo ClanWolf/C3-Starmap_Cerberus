@@ -176,10 +176,8 @@ public class BalanceUserInfo {
         return defender;
     }
 
-    private String getDefenderTeam() {
-
-        RolePlayCharacterStatsDAO rolePlayCharacterStatsDAO = RolePlayCharacterStatsDAO.getInstance();
-        ArrayList<RolePlayCharacterStatsPOJO> rolePlayCharacterStatsPOJO = rolePlayCharacterStatsDAO.findByMatchId(mwomatchResult.getGameID());
+    public String getDefenderTeam() {
+        ArrayList<RolePlayCharacterStatsPOJO> rolePlayCharacterStatsPOJO = RolePlayCharacterStatsDAO.getInstance().findByMatchId(mwomatchResult.getGameID());
         String defTeam = null;
 
         for (RolePlayCharacterStatsPOJO rpChar : rolePlayCharacterStatsPOJO) {
@@ -193,10 +191,8 @@ public class BalanceUserInfo {
         return defTeam;
     }
 
-    private String getAttackerTeam() {
-
-        RolePlayCharacterStatsDAO rolePlayCharacterStatsDAO = RolePlayCharacterStatsDAO.getInstance();
-        ArrayList<RolePlayCharacterStatsPOJO> rolePlayCharacterStatsPOJO = rolePlayCharacterStatsDAO.findByMatchId(mwomatchResult.getGameID());
+    public String getAttackerTeam() {
+        ArrayList<RolePlayCharacterStatsPOJO> rolePlayCharacterStatsPOJO = RolePlayCharacterStatsDAO.getInstance().findByMatchId(mwomatchResult.getGameID());
         String attTeam = null;
 
         for (RolePlayCharacterStatsPOJO rpChar : rolePlayCharacterStatsPOJO) {

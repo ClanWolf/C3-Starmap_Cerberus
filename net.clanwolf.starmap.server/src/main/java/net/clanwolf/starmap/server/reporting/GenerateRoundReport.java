@@ -50,10 +50,7 @@ import com.itextpdf.layout.properties.VerticalAlignment;
 import net.clanwolf.starmap.exceptions.MechItemIdNotFoundException;
 import net.clanwolf.starmap.mail.MailManager;
 import net.clanwolf.starmap.server.GameServer;
-import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.C3GameConfigDAO;
-import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.FactionDAO;
-import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.StarSystemDAO;
-import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.SysConfigDAO;
+import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.*;
 import net.clanwolf.starmap.server.persistence.pojos.*;
 import net.clanwolf.starmap.server.process.BalanceUserInfo;
 import net.clanwolf.starmap.server.process.CalcXP;
@@ -78,6 +75,7 @@ import java.net.URL;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 
@@ -98,42 +96,42 @@ public class GenerateRoundReport {
     private final AttackPOJO attackPOJO;
     public FactionPOJO factionAttacker;
     public FactionPOJO factionDefender;
-    private Integer team1Counter = 0;
-    private Integer team2Counter = 0;
+    private Integer attackerCounter = 0;
+    private Integer defenderCounter = 0;
     private boolean factionTableAdded = false;
-    private Table tableXPTeam1;
-    private Table tableXPTeam2;
+    private Table tableXPAttacker;
+    private Table tableXPDefender;
     private List xpWarning;
     private List costWarning;
-    private Table tableXPTeam1Header;
-    private Table tableXPTeam2Header;
+    private Table tableXPAttackerHeader;
+    private Table tableXPDefenderHeader;
     private Table tableCostDefender;
     private Table tableCostAttacker;
     private int dropCounter = 1;
     private String MWOMatchID;
 
-
-    public GenerateRoundReport(AttackPOJO ap) throws Exception {
+    public GenerateRoundReport(AttackPOJO attackPOJO) throws Exception {
         String pdfFileName;
-        starSystemID = ap.getStarSystemID();
-        attackPOJO = ap;
+        starSystemID = attackPOJO.getStarSystemID();
+        this.attackPOJO = attackPOJO;
 
         OSCheck.OSType osType = OSCheck.getOperatingSystemType();
         switch (osType) {
             case Linux -> DEST = "/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/seasonhistory/S1/Reports/";
             case Windows -> DEST = "c:\\temp\\";
         }
-        StarSystemPOJO ssPojo = StarSystemDAO.getInstance().findById(ServerNexus.END_ROUND_USERID, attackPOJO.getStarSystemID());
-        pdfFileName = "C3-InvasionReport_S" + ap.getSeason() + "_R" + ap.getRound() + "_" + ssPojo.getName() + ".pdf";
 
-        logger.info("--- Genrate PDF report for attackId: " + ap.getId());
+        StarSystemPOJO ssPojo = StarSystemDAO.getInstance().findById(ServerNexus.END_ROUND_USERID, this.attackPOJO.getStarSystemID());
+        pdfFileName = "C3-InvasionReport_S" + attackPOJO.getSeason() + "_R" + attackPOJO.getRound() + "_" + ssPojo.getName() + ".pdf";
+
+        logger.info("--- Genrate PDF report for attackId: " + attackPOJO.getId());
         PdfDocument pdfDoc = new PdfDocument(new PdfWriter(DEST + pdfFileName));
 
-        tableXPTeam1 = new Table(UnitValue.createPercentArray(columnWidthsXP))
+        tableXPAttacker = new Table(UnitValue.createPercentArray(columnWidthsXP))
                 .useAllAvailableWidth()
                 .setHorizontalAlignment(HorizontalAlignment.CENTER);
 
-        tableXPTeam2 = new Table(UnitValue.createPercentArray(columnWidthsXP))
+        tableXPDefender = new Table(UnitValue.createPercentArray(columnWidthsXP))
                 .useAllAvailableWidth()
                 .setHorizontalAlignment(HorizontalAlignment.CENTER);
 
@@ -167,6 +165,7 @@ public class GenerateRoundReport {
         file.getParentFile().mkdirs();
         // Creating a PdfWriter
         String dest = "C:/itextExamples/textAnnotation.pdf";
+
         PdfWriter writer = new PdfWriter(dest);
 
         // Creating a PdfDocument
@@ -175,16 +174,9 @@ public class GenerateRoundReport {
         // Creating a Document
         Document document = new Document(pdf);
 
-
         Table t = new Table(new float[]{1, 1}).useAllAvailableWidth();
         Table tableDef = new Table(new float[]{1, 1}).useAllAvailableWidth();
         Table tableAtt = new Table(new float[]{1, 1}).useAllAvailableWidth();
-        //t.addCell(cell1);
-
-        // Cell attCell = new Cell();
-        //Cell defCell = new Cell();
-
-
         Cell test = new Cell()
                 .add(tableAtt);
 
@@ -204,8 +196,6 @@ public class GenerateRoundReport {
         document.close();
 
         System.out.println("Annotation added successfully");
-
-
     }
 
     private static String getMechName(UserDetail userDetail) throws ParserConfigurationException, IOException, SAXException {
@@ -218,10 +208,40 @@ public class GenerateRoundReport {
         return mechName;
     }
 
+    public String getDefenderTeam() {
+        ArrayList<RolePlayCharacterStatsPOJO> rolePlayCharacterStatsPOJO = RolePlayCharacterStatsDAO.getInstance().findByMatchId(MWOMatchID);
+        String defTeam = null;
+
+        for (RolePlayCharacterStatsPOJO rpChar : rolePlayCharacterStatsPOJO) {
+            if (rpChar.getMwoTeam() != null) {
+                if (Objects.equals(factionDefender.getId(), rpChar.getRoleplayCharacterFactionId())) {
+                    defTeam = String.valueOf(rpChar.getMwoTeam());
+                    break;
+                }
+            }
+        }
+        return defTeam;
+    }
+
+    public String getAttackerTeam() {
+        ArrayList<RolePlayCharacterStatsPOJO> rolePlayCharacterStatsPOJO = RolePlayCharacterStatsDAO.getInstance().findByMatchId(MWOMatchID);
+        String attTeam = null;
+
+        for (RolePlayCharacterStatsPOJO rpChar : rolePlayCharacterStatsPOJO) {
+            if (rpChar.getMwoTeam() != null) {
+                if (Objects.equals(factionAttacker.getId(), rpChar.getRoleplayCharacterFactionId())) {
+                    attTeam = String.valueOf(rpChar.getMwoTeam());
+                    break;
+                }
+            }
+        }
+        return attTeam;
+    }
+
     public void addCostDefender(String description, Long amount) throws Exception {
 
         if (tableCostDefender == null) {
-            team1Counter = 0;
+            defenderCounter = 0;
             tableCostDefender = new Table(UnitValue.createPercentArray(columnWidthCost))
                     .setBorderBottom(whiteBorder)
                     .setBorderLeft(whiteBorder)
@@ -230,27 +250,27 @@ public class GenerateRoundReport {
                     .setBorder(Border.NO_BORDER)
                     .useAllAvailableWidth()
                     .setHorizontalAlignment(HorizontalAlignment.CENTER)
-                    .addCell(addTeam1Cell("Description"))
-                    .addCell(addTeam1Cell("Amount"));
-            team1Counter = 1;
+                    .addCell(addDefenderCell("Description"))
+                    .addCell(addDefenderCell("Amount"));
+            defenderCounter = 1;
         }
-        switch (team1Counter) {
+        switch (defenderCounter) {
             case -1 -> {
-                team1Counter = 0;
-                tableCostDefender.addCell(addTeam1Cell(description).setTextAlignment(TextAlignment.LEFT))
-                        .addCell(addTeam1Cell(nf.format(amount) + " C-Bills").setTextAlignment(TextAlignment.RIGHT));
-                team1Counter = team1Counter + 1;
+                defenderCounter = 0;
+                tableCostDefender.addCell(addDefenderCell(description).setTextAlignment(TextAlignment.LEFT))
+                        .addCell(addDefenderCell(nf.format(amount) + " C-Bills").setTextAlignment(TextAlignment.RIGHT));
+                defenderCounter = defenderCounter + 1;
             }
             case 1 -> {
-                team1Counter = 0;
-                tableCostDefender.addCell(addTeam1Cell(description))
-                        .addCell(addTeam1Cell(" "));
-                team1Counter = 2;
+                defenderCounter = 0;
+                tableCostDefender.addCell(addDefenderCell(description))
+                        .addCell(addDefenderCell(" "));
+                defenderCounter = 2;
             }
             default -> {
-                tableCostDefender.addCell(addTeam1Cell(description).setTextAlignment(TextAlignment.LEFT))
-                        .addCell(addTeam1Cell(nf.format(amount) + " C-Bills").setTextAlignment(TextAlignment.RIGHT));
-                team1Counter = team1Counter + 1;
+                tableCostDefender.addCell(addDefenderCell(description).setTextAlignment(TextAlignment.LEFT))
+                        .addCell(addDefenderCell(nf.format(amount) + " C-Bills").setTextAlignment(TextAlignment.RIGHT));
+                defenderCounter = defenderCounter + 1;
             }
         }
     }
@@ -258,32 +278,32 @@ public class GenerateRoundReport {
     public void addCostAttacker(String description, Long amount) throws Exception {
 
         if (tableCostAttacker == null) {
-            team2Counter = 0;
+            attackerCounter = 0;
             tableCostAttacker = new Table(UnitValue.createPercentArray(columnWidthCost))
 
                     .useAllAvailableWidth()
                     .setHorizontalAlignment(HorizontalAlignment.CENTER)
-                    .addCell(addTeam2Cell("Description"))
-                    .addCell(addTeam2Cell("Amount"));
-            team2Counter = 1;
+                    .addCell(addAttackerCell("Description"))
+                    .addCell(addAttackerCell("Amount"));
+            attackerCounter = 1;
         }
-        switch (team2Counter) {
+        switch (attackerCounter) {
             case -1 -> {
-                team2Counter = 0;
-                tableCostAttacker.addCell(addTeam2Cell(description).setTextAlignment(TextAlignment.LEFT))
-                        .addCell(addTeam2Cell(nf.format(amount) + " C-Bills").setTextAlignment(TextAlignment.RIGHT));
-                team2Counter = team2Counter + 1;
+                attackerCounter = 0;
+                tableCostAttacker.addCell(addAttackerCell(description).setTextAlignment(TextAlignment.LEFT))
+                        .addCell(addAttackerCell(nf.format(amount) + " C-Bills").setTextAlignment(TextAlignment.RIGHT));
+                attackerCounter = attackerCounter + 1;
             }
             case 1 -> {
-                team2Counter = 0;
-                tableCostAttacker.addCell(addTeam2Cell(description))
-                        .addCell(addTeam2Cell(" "));
-                team2Counter = 2;
+                attackerCounter = 0;
+                tableCostAttacker.addCell(addAttackerCell(description))
+                        .addCell(addAttackerCell(" "));
+                attackerCounter = 2;
             }
             default -> {
-                tableCostAttacker.addCell(addTeam2Cell(description).setTextAlignment(TextAlignment.LEFT))
-                        .addCell(addTeam2Cell(nf.format(amount) + " C-Bills").setTextAlignment(TextAlignment.RIGHT));
-                team2Counter = team2Counter + 1;
+                tableCostAttacker.addCell(addAttackerCell(description).setTextAlignment(TextAlignment.LEFT))
+                        .addCell(addAttackerCell(nf.format(amount) + " C-Bills").setTextAlignment(TextAlignment.RIGHT));
+                attackerCounter = attackerCounter + 1;
             }
         }
     }
@@ -304,36 +324,11 @@ public class GenerateRoundReport {
     }
 
     public String getFactionType(Long factionType) {
-        String strType = null;
-        if (factionType == 1) {
-            strType = "Inner Sphere";
-        } else if (factionType == 2) {
-            strType = "Clan";
-        } else if (factionType == 3) {
-            strType = "Mercenary";
-        } else if (factionType == 4) {
-            strType = "Periphery";
-        } else if (factionType == 5) {
-            strType = "Pirate";
-        } else if (factionType == 6) {
-            strType = "Chaos March";
-        } else if (factionType == 7) {
-            strType = "ComStar";
-        } else if (factionType == 8) {
-            strType = "Republic of the Sphere";
-        } else if (factionType == 9) {
-            strType = "Neutral";
-        } else if (factionType == 10) {
-            strType = "Rebel";
-        } else if (factionType == 11) {
-            strType = "Trader";
-        }
-
-        return strType;
+        FactionTypePOJO factionTypePOJO = FactionTypeDAO.getInstance().findById(ServerNexus.END_ROUND_USERID, factionType);
+        return factionTypePOJO.getName_en() + " (" + factionTypePOJO.getShortName() + ")";
     }
 
     public void saveReport() {
-
         doc.close();
         logger.info("✅ PDF report created");
         dropCounter = 1;
@@ -379,7 +374,6 @@ public class GenerateRoundReport {
     }
 
     public void finishXPReport() throws Exception {
-
         createC3Header("XP award for drop " + dropCounter);
         if (!(xpWarning == null)) {
             doc.add(new Paragraph("The following players do not get XP:").setFontSize(8).setBold())
@@ -391,38 +385,38 @@ public class GenerateRoundReport {
 
         createCalcInfoXP();
 
-        Integer curCount = team1Counter;
+        Integer curCount = attackerCounter;
         for (int i = curCount; i < 13; i++) {
 
             for (int j = 0; j < 6; j++) {
-                tableXPTeam1.addCell(addTeam1Cell("-"));
+                tableXPAttacker.addCell(addAttackerCell("-"));
             }
-            team1Counter = team1Counter + 1;
+            attackerCounter = attackerCounter + 1;
         }
-        curCount = team2Counter;
+        curCount = defenderCounter;
         for (int i = curCount; i < 13; i++) {
 
             for (int j = 0; j < 6; j++) {
-                tableXPTeam2.addCell(addTeam2Cell("-"));
+                tableXPDefender.addCell(addDefenderCell("-"));
             }
-            team2Counter = team2Counter + 1;
+            defenderCounter = defenderCounter + 1;
         }
 
-        team1Counter = 0;
-        team2Counter = 0;
+        attackerCounter = 0;
+        defenderCounter = 0;
 
 
-        doc.add(tableXPTeam1Header)
-                .add(tableXPTeam1)
+        doc.add(tableXPAttackerHeader)
+                .add(tableXPAttacker)
                 .add(new Paragraph())
-                .add(tableXPTeam2Header)
-                .add(tableXPTeam2);
+                .add(tableXPDefenderHeader)
+                .add(tableXPDefender);
 
-        tableXPTeam1 = new Table(UnitValue.createPercentArray(columnWidthsXP))
+        tableXPAttacker = new Table(UnitValue.createPercentArray(columnWidthsXP))
                 .useAllAvailableWidth()
                 .setHorizontalAlignment(HorizontalAlignment.CENTER);
 
-        tableXPTeam2 = new Table(UnitValue.createPercentArray(columnWidthsXP))
+        tableXPDefender = new Table(UnitValue.createPercentArray(columnWidthsXP))
                 .useAllAvailableWidth()
                 .setHorizontalAlignment(HorizontalAlignment.CENTER);
     }
@@ -431,7 +425,8 @@ public class GenerateRoundReport {
         List calcInfo = new List()
                 .setFontSize(8)
                 .add("Victory = " + C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_VICTORY").getValue() +
-                        " XP / Loss = " + C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_LOSS").getValue() + " XP loss")
+                        " XP | Loss = " + C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_LOSS").getValue() + " XP | Tie = " +
+                        C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_TIE").getValue() + " XP")
                 .add("Components destroyed: " + C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_COMPONENT_DESTROYED").getValue() + " XP per destroyed component")
                 .add("Match-score: " + C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_EACH_MATCH_SCORE").getValue() + " XP for each reach " +
                         C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_EACH_MATCH_SCORE_RANGE").getValue() + " match score")
@@ -446,51 +441,51 @@ public class GenerateRoundReport {
         CalcXP calcXP = new CalcXP(userDetail, matchResult, currentCharacter);
 
 
-        if (Objects.equals(userDetail.getTeam(), "1")) {
-            if (team1Counter == 0) {
+        if (Objects.equals(userDetail.getTeam(), getAttackerTeam())) {
+            if (attackerCounter == 0) {
 
-                tableXPTeam1
-                        .addCell(addTeam1Cell("Username"))
-                        .addCell(addTeam1Cell("Loss/Victory"))
-                        .addCell(addTeam1Cell("Components destroyed"))
-                        .addCell(addTeam1Cell("Match-score"))
-                        .addCell(addTeam1Cell("Damage"))
-                        .addCell(addTeam1Cell("Earned XP"));
+                tableXPAttacker
+                        .addCell(addAttackerCell("Username"))
+                        .addCell(addAttackerCell("Loss/Victory"))
+                        .addCell(addAttackerCell("Components destroyed"))
+                        .addCell(addAttackerCell("Match-score"))
+                        .addCell(addAttackerCell("Damage"))
+                        .addCell(addAttackerCell("Earned XP"));
 
-                team1Counter = 1;
+                attackerCounter = 1;
             }
 
-            tableXPTeam1
-                    .addCell(addTeam1Cell(calcXP.getUserName()))
-                    .addCell(addTeam1Cell(calcXP.getUserXPVictoryLoss().toString() + " XP"))
-                    .addCell(addTeam1Cell(calcXP.getDescriptionComponentDestroyed()))
-                    .addCell(addTeam1Cell(calcXP.getDescriptionMatchScore()))
-                    .addCell(addTeam1Cell(calcXP.getDescriptionDamage()))
-                    .addCell(addTeam1Cell(calcXP.getUserXPCurrent().toString() + " XP"));
-            team1Counter = team1Counter + 1;
+            tableXPAttacker
+                    .addCell(addAttackerCell(calcXP.getUserName()))
+                    .addCell(addAttackerCell(calcXP.getUserXPVictoryLoss().toString() + " XP"))
+                    .addCell(addAttackerCell(calcXP.getDescriptionComponentDestroyed()))
+                    .addCell(addAttackerCell(calcXP.getDescriptionMatchScore()))
+                    .addCell(addAttackerCell(calcXP.getDescriptionDamage()))
+                    .addCell(addAttackerCell(calcXP.getUserXPCurrent().toString() + " XP"));
+            attackerCounter = attackerCounter + 1;
         }
-        if (Objects.equals(userDetail.getTeam(), "2")) {
-            if (team2Counter == 0) {
+        if (Objects.equals(userDetail.getTeam(), getDefenderTeam())) {
+            if (defenderCounter == 0) {
 
-                tableXPTeam2
-                        .addCell(addTeam2Cell("Username"))
-                        .addCell(addTeam2Cell("Loss/Victory"))
-                        .addCell(addTeam2Cell("Components destroyed"))
-                        .addCell(addTeam2Cell("Match-score"))
-                        .addCell(addTeam2Cell("Damage"))
-                        .addCell(addTeam2Cell("Earned XP"));
+                tableXPDefender
+                        .addCell(addDefenderCell("Username"))
+                        .addCell(addDefenderCell("Loss/Victory"))
+                        .addCell(addDefenderCell("Components destroyed"))
+                        .addCell(addDefenderCell("Match-score"))
+                        .addCell(addDefenderCell("Damage"))
+                        .addCell(addDefenderCell("Earned XP"));
 
-                team2Counter = 1;
+                defenderCounter = 1;
 
             }
-            tableXPTeam2
-                    .addCell(addTeam2Cell(calcXP.getUserName()))
-                    .addCell(addTeam2Cell(calcXP.getUserXPVictoryLoss().toString() + " XP"))
-                    .addCell(addTeam2Cell(calcXP.getDescriptionComponentDestroyed()))
-                    .addCell(addTeam2Cell(calcXP.getDescriptionMatchScore()))
-                    .addCell(addTeam2Cell(calcXP.getDescriptionDamage()))
-                    .addCell(addTeam2Cell(calcXP.getUserXPCurrent().toString() + " XP"));
-            team2Counter = team2Counter + 1;
+            tableXPDefender
+                    .addCell(addDefenderCell(calcXP.getUserName()))
+                    .addCell(addDefenderCell(calcXP.getUserXPVictoryLoss().toString() + " XP"))
+                    .addCell(addDefenderCell(calcXP.getDescriptionComponentDestroyed()))
+                    .addCell(addDefenderCell(calcXP.getDescriptionMatchScore()))
+                    .addCell(addDefenderCell(calcXP.getDescriptionDamage()))
+                    .addCell(addDefenderCell(calcXP.getUserXPCurrent().toString() + " XP"));
+            defenderCounter = defenderCounter + 1;
         }
     }
 
@@ -524,28 +519,24 @@ public class GenerateRoundReport {
                 .setBorder(Border.NO_BORDER);
     }
 
-    protected Cell addTeam1Cell(String Text) throws Exception {
-
+    protected Cell addDefenderCell(String Text) throws Exception {
         PdfFont f;
-
         DeviceRgb red;
         DeviceRgb fontColor;
 
-        if (team1Counter == 0) {
+        if (defenderCounter == 0) {
             red = new DeviceRgb(237, 125, 49);
             fontColor = new DeviceRgb(255, 255, 255);
             f = PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD);
         } else {
             f = PdfFontFactory.createFont(StandardFonts.HELVETICA);
             fontColor = new DeviceRgb(0, 0, 0);
-            if (istGeradeZahl(team1Counter)) {
+            if (istGeradeZahl(defenderCounter)) {
                 red = new DeviceRgb(248, 203, 173);
             } else {
                 red = new DeviceRgb(252, 228, 214);
             }
         }
-
-
         return new Cell()
                 .setFont(f)
                 .setFontSize(5)
@@ -553,6 +544,38 @@ public class GenerateRoundReport {
                 .setTextAlignment(TextAlignment.CENTER)
                 .add(new Paragraph(Text))
                 .setBackgroundColor(red)
+                .setBorderBottom(whiteBorder)
+                .setBorderLeft(whiteBorder)
+                .setBorderRight(whiteBorder)
+                .setBorderTop(whiteBorder);
+    }
+
+    protected Cell addAttackerCell(String Text) throws Exception {
+        PdfFont f;
+        DeviceRgb blue;
+        DeviceRgb fontColor;
+
+        if (attackerCounter == 0) {
+            blue = new DeviceRgb(68, 114, 196);
+            fontColor = new DeviceRgb(255, 255, 255);
+            f = PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD);
+        } else {
+            f = PdfFontFactory.createFont(StandardFonts.HELVETICA);
+            fontColor = new DeviceRgb(0, 0, 0);
+            if (istGeradeZahl(attackerCounter)) {
+                blue = new DeviceRgb(180, 198, 231);
+            } else {
+                blue = new DeviceRgb(217, 225, 242);
+            }
+        }
+
+        return new Cell()
+                .setFont(f)
+                .setFontSize(5)
+                .setFontColor(fontColor)
+                .setTextAlignment(TextAlignment.CENTER)
+                .add(new Paragraph(Text))
+                .setBackgroundColor(blue)
                 .setBorderBottom(whiteBorder)
                 .setBorderLeft(whiteBorder)
                 .setBorderRight(whiteBorder)
@@ -607,41 +630,6 @@ public class GenerateRoundReport {
                 .setBorderTop(whiteBorder);
     }
 
-    protected Cell addTeam2Cell(String Text) throws Exception {
-
-        PdfFont f;
-
-        DeviceRgb red;
-        DeviceRgb fontColor;
-
-
-        if (team2Counter == 0) {
-            red = new DeviceRgb(68, 114, 196);
-            fontColor = new DeviceRgb(255, 255, 255);
-            f = PdfFontFactory.createFont(StandardFonts.HELVETICA_BOLD);
-        } else {
-            f = PdfFontFactory.createFont(StandardFonts.HELVETICA);
-            fontColor = new DeviceRgb(0, 0, 0);
-            if (istGeradeZahl(team2Counter)) {
-                red = new DeviceRgb(180, 198, 231);
-            } else {
-                red = new DeviceRgb(217, 225, 242);
-            }
-        }
-
-        return new Cell()
-                .setFont(f)
-                .setFontSize(5)
-                .setFontColor(fontColor)
-                .setTextAlignment(TextAlignment.CENTER)
-                .add(new Paragraph(Text))
-                .setBackgroundColor(red)
-                .setBorderBottom(whiteBorder)
-                .setBorderLeft(whiteBorder)
-                .setBorderRight(whiteBorder)
-                .setBorderTop(whiteBorder);
-    }
-
     protected void createLine(DeviceRgb color) {
         Table table = new Table(new float[1]).useAllAvailableWidth();
         table.setBorder(whiteBorder)
@@ -671,7 +659,6 @@ public class GenerateRoundReport {
     }
 
     public void addGameInfo(AttackStatsPOJO attackStats, MWOMatchResult matchDetails) throws Exception {
-
         factionAttacker = FactionDAO.getInstance().findById(ServerNexus.DUMMY_USERID, attackStats.getAttackerFactionId());
         factionDefender = FactionDAO.getInstance().findById(ServerNexus.DUMMY_USERID, attackStats.getDefenderFactionId());
 
@@ -691,7 +678,6 @@ public class GenerateRoundReport {
         createMatchInfo(matchDetails.getMatchDetails(), attackStats);
         createFactionInfo(factionAttacker, factionDefender);
         createVictoryDefeatTable(matchDetails, factionAttacker, factionDefender);
-
         createTableMatchResult(matchDetails, factionAttacker, factionDefender);
 
         doc.add(new AreaBreak());
@@ -700,8 +686,8 @@ public class GenerateRoundReport {
     private void createVictoryDefeatTable(MWOMatchResult matchDetails, FactionPOJO factionAttacker, FactionPOJO factionDefender) throws Exception {
         Table tableResult = new Table(UnitValue.createPercentArray(new float[]{50, 50})).useAllAvailableWidth()
                 .setHorizontalAlignment(HorizontalAlignment.CENTER)
-                .addCell(addTeam2Cell(factionAttacker.getName_en()).setFontSize(20))
-                .addCell(addTeam1Cell(factionDefender.getName_en()).setFontSize(20));
+                .addCell(addAttackerCell(factionAttacker.getName_en()).setFontSize(20))
+                .addCell(addDefenderCell(factionDefender.getName_en()).setFontSize(20));
 
         doc.add(tableResult);
         tableResult = new Table(UnitValue.createPercentArray(new float[]{25, 25, 25, 25})).useAllAvailableWidth()
@@ -714,25 +700,33 @@ public class GenerateRoundReport {
         // Es kann ein Unentschieden geben im Drop, d.h. "getWinningTeam()" könnte null liefern!
         if (matchDetails.getMatchDetails().getWinningTeam() != null) {
             if (matchDetails.getMatchDetails().getWinningTeam().equals(factionAttackerInfo.getTeam(MWOMatchID))) {
-                tableResult.addCell(addTeam2Cell("VICTORY").setFontSize(20));
+                tableResult.addCell(addAttackerCell("VICTORY").setFontSize(20));
             } else {
-                tableResult.addCell(addTeam2Cell("DEFEAT").setFontSize(20));
+                tableResult.addCell(addAttackerCell("DEFEAT").setFontSize(20));
             }
         } else {
-            tableResult.addCell(addTeam2Cell("TIE").setFontSize(20));
+            tableResult.addCell(addAttackerCell("TIE").setFontSize(20));
         }
-        tableResult.addCell(addTeam2Cell(matchDetails.getMatchDetails().getTeam2Score().toString()).setFontSize(20))
-                .addCell(addTeam1Cell(matchDetails.getMatchDetails().getTeam1Score().toString()).setFontSize(20));
+
+        if (Objects.equals(factionAttackerInfo.getTeam(MWOMatchID), "1")) {
+            tableResult.addCell(addAttackerCell(matchDetails.getMatchDetails().getTeam1Score().toString()).setFontSize(20))
+                    .addCell(addDefenderCell(matchDetails.getMatchDetails().getTeam2Score().toString()).setFontSize(20));
+        } else {
+            tableResult.addCell(addAttackerCell(matchDetails.getMatchDetails().getTeam2Score().toString()).setFontSize(20))
+                    .addCell(addDefenderCell(matchDetails.getMatchDetails().getTeam1Score().toString()).setFontSize(20));
+        }
+//        tableResult.addCell(addAttackerCell(matchDetails.getMatchDetails().getTeam2Score().toString()).setFontSize(20))
+//                .addCell(addAttackerCell(matchDetails.getMatchDetails().getTeam1Score().toString()).setFontSize(20));
 
         // Es kann ein Unentschieden geben im Drop, d.h. "getWinningTeam()" könnte null liefern!
         if (matchDetails.getMatchDetails().getWinningTeam() != null) {
             if (matchDetails.getMatchDetails().getWinningTeam().equals(factionDefenderInfo.getTeam(MWOMatchID))) {
-                tableResult.addCell(addTeam1Cell("VICTORY").setFontSize(20));
+                tableResult.addCell(addDefenderCell("VICTORY").setFontSize(20));
             } else {
-                tableResult.addCell(addTeam1Cell("DEFEAT").setFontSize(20));
+                tableResult.addCell(addDefenderCell("DEFEAT").setFontSize(20));
             }
         } else {
-            tableResult.addCell(addTeam2Cell("TIE").setFontSize(20));
+            tableResult.addCell(addDefenderCell("TIE").setFontSize(20));
         }
 
         doc.add(tableResult);
@@ -740,8 +734,8 @@ public class GenerateRoundReport {
     }
 
     private void createTableMatchResult(MWOMatchResult matchDetails, FactionPOJO factionAttacker, FactionPOJO factionDefender) throws Exception {
-        tableXPTeam1Header = new Table(new float[1]).useAllAvailableWidth().addHeaderCell(addTeam1Cell(factionDefender.getName_en()));
-        tableXPTeam2Header = new Table(new float[1]).useAllAvailableWidth().addHeaderCell(addTeam2Cell(factionAttacker.getName_en()));
+        tableXPAttackerHeader = new Table(new float[1]).useAllAvailableWidth().addHeaderCell(addAttackerCell(factionAttacker.getName_en()));
+        tableXPDefenderHeader = new Table(new float[1]).useAllAvailableWidth().addHeaderCell(addDefenderCell(factionDefender.getName_en()));
 
         doc.add(new Paragraph(""));
         float[] columnWidthsFaction = {1, 4, 2, 1, 2, 1, 1, 1, 1, 1, 2};
@@ -749,115 +743,115 @@ public class GenerateRoundReport {
         Table tableTeam1 = new Table(UnitValue.createPercentArray(columnWidthsFaction)).useAllAvailableWidth()
                 .setHorizontalAlignment(HorizontalAlignment.CENTER);
 
-        team1Counter = 0;
-        tableTeam1.addCell(addTeam1Cell("Unit"))
-                .addCell(addTeam1Cell("Player"))
-                .addCell(addTeam1Cell("Mech"))
-                .addCell(addTeam1Cell("Health"))
-                .addCell(addTeam1Cell("Match-score"))
-                .addCell(addTeam1Cell("Damage"))
-                .addCell(addTeam1Cell("Kills"))
-                .addCell(addTeam1Cell("Assist"))
-                .addCell(addTeam1Cell("KM DD"))
-                .addCell(addTeam1Cell("CD"))
-                .addCell(addTeam1Cell("Team Damage"));
+        attackerCounter = 0;
+        tableTeam1.addCell(addAttackerCell("Unit"))
+                .addCell(addAttackerCell("Player"))
+                .addCell(addAttackerCell("Mech"))
+                .addCell(addAttackerCell("Health"))
+                .addCell(addAttackerCell("Match-score"))
+                .addCell(addAttackerCell("Damage"))
+                .addCell(addAttackerCell("Kills"))
+                .addCell(addAttackerCell("Assist"))
+                .addCell(addAttackerCell("KM DD"))
+                .addCell(addAttackerCell("CD"))
+                .addCell(addAttackerCell("Team Damage"));
 
-        team1Counter = team1Counter + 1;
+        attackerCounter = attackerCounter + 1;
 
         for (UserDetail userDetail : matchDetails.getUserDetails()) {
             if ("1".equals(userDetail.getTeam())) {
                 String mechName = getMechName(userDetail);
-                tableTeam1.addCell(addTeam1Cell(userDetail.getUnitTag()))
-                        .addCell(addTeam1Cell(userDetail.getUsername()))
-                        .addCell(addTeam1Cell(mechName))
-                        .addCell(addTeam1Cell(userDetail.getHealthPercentage().toString()))
-                        .addCell(addTeam1Cell(userDetail.getMatchScore().toString()))
-                        .addCell(addTeam1Cell(userDetail.getDamage().toString()))
-                        .addCell(addTeam1Cell(userDetail.getKills().toString()))
-                        .addCell(addTeam1Cell(userDetail.getAssists().toString()))
-                        .addCell(addTeam1Cell(userDetail.getKillsMostDamage().toString()))
-                        .addCell(addTeam1Cell(userDetail.getComponentsDestroyed().toString()))
-                        .addCell(addTeam1Cell(userDetail.getTeamDamage().toString()));
-                team1Counter = team1Counter + 1;
+                tableTeam1.addCell(addAttackerCell(userDetail.getUnitTag()))
+                        .addCell(addAttackerCell(userDetail.getUsername()))
+                        .addCell(addAttackerCell(mechName))
+                        .addCell(addAttackerCell(userDetail.getHealthPercentage().toString()))
+                        .addCell(addAttackerCell(userDetail.getMatchScore().toString()))
+                        .addCell(addAttackerCell(userDetail.getDamage().toString()))
+                        .addCell(addAttackerCell(userDetail.getKills().toString()))
+                        .addCell(addAttackerCell(userDetail.getAssists().toString()))
+                        .addCell(addAttackerCell(userDetail.getKillsMostDamage().toString()))
+                        .addCell(addAttackerCell(userDetail.getComponentsDestroyed().toString()))
+                        .addCell(addAttackerCell(userDetail.getTeamDamage().toString()));
+                attackerCounter = attackerCounter + 1;
             }
         }
 
-        Integer curCount = team1Counter;
+        Integer curCount = attackerCounter;
 
         for (int i = curCount; i < 13; i++) {
-            tableTeam1.addCell(addTeam1Cell("-"))
-                    .addCell(addTeam1Cell("-"))
-                    .addCell(addTeam1Cell("-"))
-                    .addCell(addTeam1Cell("-"))
-                    .addCell(addTeam1Cell("-"))
-                    .addCell(addTeam1Cell("-"))
-                    .addCell(addTeam1Cell("-"))
-                    .addCell(addTeam1Cell("-"))
-                    .addCell(addTeam1Cell("-"))
-                    .addCell(addTeam1Cell("-"))
-                    .addCell(addTeam1Cell("-"));
-            team1Counter = team1Counter + 1;
+            tableTeam1.addCell(addAttackerCell("-"))
+                    .addCell(addAttackerCell("-"))
+                    .addCell(addAttackerCell("-"))
+                    .addCell(addAttackerCell("-"))
+                    .addCell(addAttackerCell("-"))
+                    .addCell(addAttackerCell("-"))
+                    .addCell(addAttackerCell("-"))
+                    .addCell(addAttackerCell("-"))
+                    .addCell(addAttackerCell("-"))
+                    .addCell(addAttackerCell("-"))
+                    .addCell(addAttackerCell("-"));
+            attackerCounter = attackerCounter + 1;
         }
 
 
         Table tableTeam2 = new Table(UnitValue.createPercentArray(columnWidthsFaction)).useAllAvailableWidth()
                 .setHorizontalAlignment(HorizontalAlignment.CENTER);
-        team2Counter = 0;
+        defenderCounter = 0;
 
-        tableTeam2.addCell(addTeam2Cell("Unit"))
-                .addCell(addTeam2Cell("Player"))
-                .addCell(addTeam2Cell("Mech"))
-                .addCell(addTeam2Cell("Health"))
-                .addCell(addTeam2Cell("Match-score"))
-                .addCell(addTeam2Cell("Damage"))
-                .addCell(addTeam2Cell("Kills"))
-                .addCell(addTeam2Cell("Assist"))
-                .addCell(addTeam2Cell("KM DD"))
-                .addCell(addTeam2Cell("CD"))
-                .addCell(addTeam2Cell("Team Damage"));
+        tableTeam2.addCell(addDefenderCell("Unit"))
+                .addCell(addDefenderCell("Player"))
+                .addCell(addDefenderCell("Mech"))
+                .addCell(addDefenderCell("Health"))
+                .addCell(addDefenderCell("Match-score"))
+                .addCell(addDefenderCell("Damage"))
+                .addCell(addDefenderCell("Kills"))
+                .addCell(addDefenderCell("Assist"))
+                .addCell(addDefenderCell("KM DD"))
+                .addCell(addDefenderCell("CD"))
+                .addCell(addDefenderCell("Team Damage"));
 
-        team2Counter = team2Counter + 1;
+        defenderCounter = defenderCounter + 1;
         for (UserDetail userDetail : matchDetails.getUserDetails()) {
             if ("2".equals(userDetail.getTeam())) {
                 String mechName = getMechName(userDetail);
-                tableTeam2.addCell(addTeam2Cell(userDetail.getUnitTag()))
-                        .addCell(addTeam2Cell(userDetail.getUsername()))
-                        .addCell(addTeam2Cell(mechName))
-                        .addCell(addTeam2Cell(userDetail.getHealthPercentage().toString()))
-                        .addCell(addTeam2Cell(userDetail.getMatchScore().toString()))
-                        .addCell(addTeam2Cell(userDetail.getDamage().toString()))
-                        .addCell(addTeam2Cell(userDetail.getKills().toString()))
-                        .addCell(addTeam2Cell(userDetail.getAssists().toString()))
-                        .addCell(addTeam2Cell(userDetail.getKillsMostDamage().toString()))
-                        .addCell(addTeam2Cell(userDetail.getComponentsDestroyed().toString()))
-                        .addCell(addTeam2Cell(userDetail.getTeamDamage().toString()));
-                team2Counter = team2Counter + 1;
+                tableTeam2.addCell(addDefenderCell(userDetail.getUnitTag()))
+                        .addCell(addDefenderCell(userDetail.getUsername()))
+                        .addCell(addDefenderCell(mechName))
+                        .addCell(addDefenderCell(userDetail.getHealthPercentage().toString()))
+                        .addCell(addDefenderCell(userDetail.getMatchScore().toString()))
+                        .addCell(addDefenderCell(userDetail.getDamage().toString()))
+                        .addCell(addDefenderCell(userDetail.getKills().toString()))
+                        .addCell(addDefenderCell(userDetail.getAssists().toString()))
+                        .addCell(addDefenderCell(userDetail.getKillsMostDamage().toString()))
+                        .addCell(addDefenderCell(userDetail.getComponentsDestroyed().toString()))
+                        .addCell(addDefenderCell(userDetail.getTeamDamage().toString()));
+                defenderCounter = defenderCounter + 1;
             }
         }
 
-        curCount = team2Counter;
+        curCount = defenderCounter;
 
         for (int i = curCount; i < 13; i++) {
-            tableTeam2.addCell(addTeam2Cell("-"))
-                    .addCell(addTeam2Cell("-"))
-                    .addCell(addTeam2Cell("-"))
-                    .addCell(addTeam2Cell("-"))
-                    .addCell(addTeam2Cell("-"))
-                    .addCell(addTeam2Cell("-"))
-                    .addCell(addTeam2Cell("-"))
-                    .addCell(addTeam2Cell("-"))
-                    .addCell(addTeam2Cell("-"))
-                    .addCell(addTeam2Cell("-"))
-                    .addCell(addTeam2Cell("-"));
-            team2Counter = team2Counter + 1;
+            tableTeam2.addCell(addDefenderCell("-"))
+                    .addCell(addDefenderCell("-"))
+                    .addCell(addDefenderCell("-"))
+                    .addCell(addDefenderCell("-"))
+                    .addCell(addDefenderCell("-"))
+                    .addCell(addDefenderCell("-"))
+                    .addCell(addDefenderCell("-"))
+                    .addCell(addDefenderCell("-"))
+                    .addCell(addDefenderCell("-"))
+                    .addCell(addDefenderCell("-"))
+                    .addCell(addDefenderCell("-"));
+            defenderCounter = defenderCounter + 1;
         }
-        team1Counter = 0;
-        team2Counter = 0;
+        attackerCounter = 0;
+        defenderCounter = 0;
 
-        doc.add(tableXPTeam1Header);
+        doc.add(tableXPAttackerHeader);
         doc.add(tableTeam1);
         doc.add(new Paragraph(""));
-        doc.add(tableXPTeam2Header);
+        doc.add(tableXPDefenderHeader);
         doc.add(tableTeam2);
     }
 
@@ -1018,13 +1012,13 @@ public class GenerateRoundReport {
                     .addCell(addWhiteCell(planetInfo));
 
             doc.add(tablePlanetInfo)
-                    .add(createLink("Link to Sarna.net to get more information about the planet " + planet.getName() + ".", planet.getSarnaLinkSystem()).setFontSize(8))
+                    .add(createLink("Link to Sarna.net to get more information about the planet " + planet.getName() + ".", planet.getSarnaLinkSystem()))
                     .add(new Paragraph(""));
         } else {
 
             logger.error("Planet image not found on: " + LinkImgPlanet);
             doc.add(addWhiteCell(planetInfo))
-                    .add(createLink("Link to Sarna.net to get more information about the planet " + planet.getName() + ".", planet.getSarnaLinkSystem()).setFontSize(8))
+                    .add(createLink("Link to Sarna.net to get more information about the planet " + planet.getName() + ".", planet.getSarnaLinkSystem()))
                     .add(new Paragraph(""));
 
         }
@@ -1040,7 +1034,7 @@ public class GenerateRoundReport {
             ImageData imgC3LogoData = ImageDataFactory.create(new URL(c3Logo));
             Image imgC3Logo = new Image(imgC3LogoData);
 
-            imgC3Logo.scaleAbsolute(35, 35);
+            imgC3Logo.scaleAbsolute(30, 30);
             tableC3Header.addCell(addWhiteCell(imgC3Logo));
         }
         Cell cell = new Cell();
@@ -1053,8 +1047,9 @@ public class GenerateRoundReport {
                         .setTextAlignment(TextAlignment.LEFT));
         tableC3Header
                 .addCell(cell)
-                .addCell(addWhiteCell("-" + title)
-                        .setFontSize(10)
+                .addCell(addWhiteCell(title)
+                        .setTextAlignment(TextAlignment.RIGHT)
+                        .setFontSize(12)
                         .setBorderLeft(blackBorder));
 
         doc.add(tableC3Header)
@@ -1118,8 +1113,9 @@ public class GenerateRoundReport {
         long attCostTotal = 0L;
         tableCostDefender = null;
         tableCostAttacker = null;
+
         for (BalanceUserInfo def : defender) {
-            team1Counter = 1;
+            defenderCounter = 1;
             addCostDefender("Costs and rewards for the pilot " + def.userName, 0L);
             addCostDefender(def.playerMechName + " repair costs (" + (100 - def.playerMechHealth) + "% to repair)", def.mechRepairCost);
             addCostDefender("Reward damage (" + def.playerDamage + " Damage gone)", def.rewardDamage);
@@ -1129,16 +1125,16 @@ public class GenerateRoundReport {
             addCostDefender("Reward Match-score (" + def.playerMatchScore + " Match-score)", def.rewardMatchScore);
             addCostDefender("Team damage (" + def.playerTeamDamage + " Team damage)", def.rewardTeamDamage);
             addCostDefender(def.rewardLossVictoryDescription, def.rewardLossVictory);
-            team1Counter = -1;
+            defenderCounter = -1;
             addCostDefender("Subtotal", def.subTotal);
             defCostTotal = defCostTotal + def.subTotal;
         }
 
-        team1Counter = -1;
+        defenderCounter = -1;
         addCostDefender("Total", defCostTotal);
 
         for (BalanceUserInfo att : attacker) {
-            team2Counter = 1;
+            attackerCounter = 1;
             addCostAttacker("Costs and rewards for the pilot " + att.userName, 0L);
             addCostAttacker(att.playerMechName + " repair costs (" + (100 - att.playerMechHealth) + "% to repair)", att.mechRepairCost);
             addCostAttacker("Reward Damage (" + att.playerDamage + " Damage gone)", att.rewardDamage);
@@ -1148,21 +1144,21 @@ public class GenerateRoundReport {
             addCostAttacker("Reward Match-score (" + att.playerMatchScore + " Match-score)", att.rewardMatchScore);
             addCostAttacker("Team damage (" + att.playerTeamDamage + " Team damage)", att.rewardTeamDamage);
             addCostAttacker(att.rewardLossVictoryDescription, att.rewardLossVictory);
-            team2Counter = -1;
+            attackerCounter = -1;
             addCostAttacker("Subtotal", att.subTotal);
             attCostTotal = attCostTotal + att.subTotal;
         }
-        team2Counter = -1;
+        attackerCounter = -1;
         addCostAttacker("Total", attCostTotal);
 
         Table t = new Table(new float[]{1, 1}).useAllAvailableWidth()
                 .setBorder(Border.NO_BORDER);
 
-        team1Counter = 0;
-        team2Counter = 0;
+        defenderCounter = 0;
+        attackerCounter = 0;
 
-        t.addCell(addTeam1Cell(factionDefender.getName_en()))
-                .addCell(addTeam2Cell(factionAttacker.getName_en()))
+        t.addCell(addDefenderCell(factionDefender.getName_en()))
+                .addCell(addAttackerCell(factionAttacker.getName_en()))
                 .addCell(addTable(tableCostDefender))
                 .addCell(addTable(tableCostAttacker));
 
@@ -1174,8 +1170,8 @@ public class GenerateRoundReport {
 
         tableCostDefender = null;
         tableCostAttacker = null;
-        team1Counter = 0;
-        team2Counter = 0;
+        attackerCounter = 0;
+        defenderCounter = 0;
         //logger.info("--- Balance report finished ---");
         dropCounter = dropCounter + 1;
     }
@@ -1184,8 +1180,8 @@ public class GenerateRoundReport {
         List calcInf = new List()
                 .setFontSize(8)
                 .add("Victory = " + nf.format(C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_VICTORY").getValue()) +
-                        " C-Bills / Loss = " + nf.format(C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_LOSS").getValue()) +
-                        " C-Bills / Tie = " + nf.format(C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_TIE").getValue()) + " C-Bills")
+                        " C-Bills | Loss = " + nf.format(C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_LOSS").getValue()) +
+                        " C-Bills | Tie = " + nf.format(C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_TIE").getValue()) + " C-Bills")
                 .add("Damage: " + nf.format(C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_EACH_DAMAGE").getValue()) + " C-Bills each damage done.")
                 .add("Components destroyed: " + nf.format(C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_EACH_COMPONENT_DESTROYED").getValue()) + " C-Bills each component destroyed.")
                 .add("Kills: " + nf.format(C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_EACH_KILL").getValue()) + " C-Bills each kill.")

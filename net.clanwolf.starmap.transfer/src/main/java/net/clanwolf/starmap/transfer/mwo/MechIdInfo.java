@@ -38,6 +38,8 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Objects;
 
 /**
@@ -62,6 +64,16 @@ public class MechIdInfo {
     private String mechLongName;
     private String mechShortName;
     private Integer HP;
+
+    public String getMechIconURL() {
+        return mechIconURL;
+    }
+
+    public void setMechIconURL(String mechIconURL) {
+        this.mechIconURL = mechIconURL;
+    }
+
+    private String mechIconURL;
 
     /**
      * Erzeugt ein neues Objekt, anhand der MechItemId
@@ -112,9 +124,12 @@ public class MechIdInfo {
             this.mechVariantType = "<Unknown variant>";
             this.mechLongName = "<Unknown name>";
             this.mechShortName = "<Unknown name>";
+            setMechIconURL("https://www.clanwolf.net/static/mech_icons/unknown/unknown.jpg");
+
             logger.info("--The calculation of the mean value is completed---");
             mechfound = true;
         } else {
+            StringBuilder mechIconURL = new StringBuilder("https://www.clanwolf.net/static/mech_icons/");
             for (int i = 0; i < mechNodes.getLength(); i++) {
                 Element xmlMechList = (Element) mechNodes.item(i);
                 if (Objects.equals(mechItemId, Integer.valueOf(xmlMechList.getAttribute("id")))) {
@@ -131,6 +146,18 @@ public class MechIdInfo {
                     this.mechLongName = xmlMechList.getAttribute("longname");
                     this.mechShortName = xmlMechList.getAttribute("shortname");
                     this.HP = Integer.valueOf(xmlMechList.getAttribute("HP"));
+
+                    mechIconURL.append(xmlMechList.getAttribute("chassis"))
+                            .append("/")
+                            .append(xmlMechList.getAttribute("name"))
+                            .append(".jpg");
+
+                    if (urlExists(mechIconURL.toString())) {
+                        setMechIconURL(mechIconURL.toString());
+                    } else {
+                        setMechIconURL("https://www.clanwolf.net/static/mech_icons/unknown/unknown.jpg");
+                        logger.error("Image not found: " + mechIconURL);
+                    }
                     break;
                 }
             }
@@ -148,8 +175,27 @@ public class MechIdInfo {
             this.mechLongName = "<Unknown name>";
             this.mechShortName = "<Unknown name>";
             this.HP = -1;
+            setMechIconURL("https://www.clanwolf.net/static/mech_icons/unknown/unknown.jpg");
 
             throw new MechItemIdNotFoundException("Mech ID: " + mechItemId + " not found in the xml file.");
+        }
+    }
+
+    static boolean urlExists(java.lang.String URL) {
+        java.net.URL url;
+
+        try {
+            url = new URL(URL);
+        } catch (MalformedURLException e) {
+            System.out.println(e.getMessage());
+            return false;
+        }
+        try {
+            url.openStream().close();
+            return true;
+        } catch (IOException e) {
+            System.out.printf(e.getMessage());
+            return false;
         }
     }
 
