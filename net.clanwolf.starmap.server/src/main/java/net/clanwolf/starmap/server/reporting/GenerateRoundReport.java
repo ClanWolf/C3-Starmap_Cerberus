@@ -29,7 +29,6 @@ package net.clanwolf.starmap.server.reporting;
 import com.itextpdf.io.font.constants.StandardFonts;
 import com.itextpdf.io.image.ImageData;
 import com.itextpdf.io.image.ImageDataFactory;
-import com.itextpdf.kernel.colors.DeviceGray;
 import com.itextpdf.kernel.colors.DeviceRgb;
 import com.itextpdf.kernel.font.PdfFont;
 import com.itextpdf.kernel.font.PdfFontFactory;
@@ -90,7 +89,6 @@ public class GenerateRoundReport {
     private final Long starSystemID;
     private final DecimalFormat nf = new DecimalFormat();
     private final float[] columnWidthsXP = {2, 1, 2, 2, 1, 1,};
-    private final float[] columnWidthCost = {3, 1};
     private final Border whiteBorder = new SolidBorder(new DeviceRgb(255, 255, 255), 0);
     private final Border blackBorder = new SolidBorder(new DeviceRgb(0, 0, 0), 1);
     private final AttackPOJO attackPOJO;
@@ -105,8 +103,6 @@ public class GenerateRoundReport {
     private List costWarning;
     private Table tableXPAttackerHeader;
     private Table tableXPDefenderHeader;
-    private Table tableCostDefender;
-    private Table tableCostAttacker;
     private int dropCounter = 1;
     private String MWOMatchID;
 
@@ -132,10 +128,6 @@ public class GenerateRoundReport {
                 .setHorizontalAlignment(HorizontalAlignment.CENTER);
 
         tableXPDefender = new Table(UnitValue.createPercentArray(columnWidthsXP))
-                .useAllAvailableWidth()
-                .setHorizontalAlignment(HorizontalAlignment.CENTER);
-
-        tableCostDefender = new Table(UnitValue.createPercentArray(columnWidthCost))
                 .useAllAvailableWidth()
                 .setHorizontalAlignment(HorizontalAlignment.CENTER);
 
@@ -236,76 +228,6 @@ public class GenerateRoundReport {
             }
         }
         return attTeam;
-    }
-
-    public void addCostDefender(String description, Long amount) throws Exception {
-
-        if (tableCostDefender == null) {
-            defenderCounter = 0;
-            tableCostDefender = new Table(UnitValue.createPercentArray(columnWidthCost))
-                    .setBorderBottom(whiteBorder)
-                    .setBorderLeft(whiteBorder)
-                    .setBorderRight(whiteBorder)
-                    .setBorderTop(whiteBorder)
-                    .setBorder(Border.NO_BORDER)
-                    .useAllAvailableWidth()
-                    .setHorizontalAlignment(HorizontalAlignment.CENTER)
-                    .addCell(addDefenderCell("Description"))
-                    .addCell(addDefenderCell("Amount"));
-            defenderCounter = 1;
-        }
-        switch (defenderCounter) {
-            case -1 -> {
-                defenderCounter = 0;
-                tableCostDefender.addCell(addDefenderCell(description).setTextAlignment(TextAlignment.LEFT))
-                        .addCell(addDefenderCell(nf.format(amount) + " C-Bills").setTextAlignment(TextAlignment.RIGHT));
-                defenderCounter = defenderCounter + 1;
-            }
-            case 1 -> {
-                defenderCounter = 0;
-                tableCostDefender.addCell(addDefenderCell(description))
-                        .addCell(addDefenderCell(" "));
-                defenderCounter = 2;
-            }
-            default -> {
-                tableCostDefender.addCell(addDefenderCell(description).setTextAlignment(TextAlignment.LEFT))
-                        .addCell(addDefenderCell(nf.format(amount) + " C-Bills").setTextAlignment(TextAlignment.RIGHT));
-                defenderCounter = defenderCounter + 1;
-            }
-        }
-    }
-
-    public void addCostAttacker(String description, Long amount) throws Exception {
-
-        if (tableCostAttacker == null) {
-            attackerCounter = 0;
-            tableCostAttacker = new Table(UnitValue.createPercentArray(columnWidthCost))
-
-                    .useAllAvailableWidth()
-                    .setHorizontalAlignment(HorizontalAlignment.CENTER)
-                    .addCell(addAttackerCell("Description"))
-                    .addCell(addAttackerCell("Amount"));
-            attackerCounter = 1;
-        }
-        switch (attackerCounter) {
-            case -1 -> {
-                attackerCounter = 0;
-                tableCostAttacker.addCell(addAttackerCell(description).setTextAlignment(TextAlignment.LEFT))
-                        .addCell(addAttackerCell(nf.format(amount) + " C-Bills").setTextAlignment(TextAlignment.RIGHT));
-                attackerCounter = attackerCounter + 1;
-            }
-            case 1 -> {
-                attackerCounter = 0;
-                tableCostAttacker.addCell(addAttackerCell(description))
-                        .addCell(addAttackerCell(" "));
-                attackerCounter = 2;
-            }
-            default -> {
-                tableCostAttacker.addCell(addAttackerCell(description).setTextAlignment(TextAlignment.LEFT))
-                        .addCell(addAttackerCell(nf.format(amount) + " C-Bills").setTextAlignment(TextAlignment.RIGHT));
-                attackerCounter = attackerCounter + 1;
-            }
-        }
     }
 
     public void addXPWarning(String text) {
@@ -508,14 +430,6 @@ public class GenerateRoundReport {
                 .setBorderLeft(greyBorder)
                 .setBorderRight(greyBorder)
                 .setBorderTop(greyBorder);
-    }
-
-    protected Cell addTable(Table table) {
-
-        return new Cell()
-
-                .add(table)
-                .setBorder(Border.NO_BORDER);
     }
 
     protected Cell addDefenderCell(String Text) throws Exception {
@@ -1059,59 +973,10 @@ public class GenerateRoundReport {
         doc.add(new Paragraph(""));
     }
 
-    protected void manipulatePdf(String dest) throws Exception {
-        PdfDocument pdfDoc = new PdfDocument(new PdfWriter(dest));
-        Document doc = new Document(pdfDoc, PageSize.A4);
-
-        float[] columnWidths = {1, 5, 5};
-        Table table = new Table(UnitValue.createPercentArray(columnWidths));
-
-        PdfFont f = PdfFontFactory.createFont(StandardFonts.HELVETICA);
-        Cell cell = new Cell(1, 3)
-                .add(new Paragraph("This is a header"))
-                .setFont(f)
-                .setFontSize(13)
-                .setFontColor(DeviceGray.WHITE)
-                .setBackgroundColor(DeviceGray.BLACK)
-                .setTextAlignment(TextAlignment.CENTER);
-
-        table.addHeaderCell(cell);
-
-        for (int i = 0; i < 2; i++) {
-            Cell[] headerFooter = new Cell[]{
-                    new Cell().setBackgroundColor(new DeviceGray(0.75f)).add(new Paragraph("#")),
-                    new Cell().setBackgroundColor(new DeviceGray(0.75f)).add(new Paragraph("Key")),
-                    new Cell().setBackgroundColor(new DeviceGray(0.75f)).add(new Paragraph("Value"))
-            };
-
-
-            for (Cell hfCell : headerFooter) {
-                if (i == 0) {
-                    table.addHeaderCell(hfCell);
-                } else {
-                    table.addFooterCell(hfCell);
-                }
-            }
-        }
-
-        for (int counter = 0; counter < 100; counter++) {
-            table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER).add(new Paragraph(String.valueOf(counter + 1))));
-            table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER).add(new Paragraph("key " + (counter + 1))));
-            table.addCell(new Cell().setTextAlignment(TextAlignment.CENTER).add(new Paragraph("value " + (counter + 1))));
-        }
-
-        doc.add(table);
-
-
-        doc.close();
-    }
-
     public void createCalcReport(java.util.List<BalanceUserInfo> attacker, java.util.List<BalanceUserInfo> defender) throws Exception {
 
         long defCostTotal = 0L;
         long attCostTotal = 0L;
-        tableCostDefender = null;
-        tableCostAttacker = null;
 
         Table defenderTable = new Table(new float[]{1}).useAllAvailableWidth()
                 .setBorder(Border.NO_BORDER)
@@ -1134,13 +999,13 @@ public class GenerateRoundReport {
 
         for (BalanceUserInfo def : defender) {
             defenderCostTable.addCell(addDefenderCell(def.userName))
-                    .addCell(addDefenderCell(nf.format(def.mechRepairCost) + " C-Bills"))
-                    .addCell(addDefenderCell(nf.format(def.rewardDamage) + " C-Bills"))
-                    .addCell(addDefenderCell(nf.format(def.rewardComponentsDestroyed) + " C-Bills"))
-                    .addCell(addDefenderCell(nf.format(def.rewardKill) + " C-Bills"))
-                    .addCell(addDefenderCell(nf.format(def.rewardAssist) + " C-Bills"))
-                    .addCell(addDefenderCell(nf.format(def.rewardMatchScore) + " C-Bills"))
-                    .addCell(addDefenderCell(nf.format(def.rewardTeamDamage) + " C-Bills"))
+                    .addCell(addDefenderCell((100 - def.playerMechHealth) + "% to repair\r\n" + nf.format(def.mechRepairCost) + " C-Bills"))
+                    .addCell(addDefenderCell(def.playerDamage + " Damage gone\r\n" + nf.format(def.rewardDamage) + " C-Bills"))
+                    .addCell(addDefenderCell(def.playerComponentDestroyed + " destroyed\r\n" + nf.format(def.rewardComponentsDestroyed) + " C-Bills"))
+                    .addCell(addDefenderCell(def.playerKills + " kills\r\n" + nf.format(def.rewardKill) + " C-Bills"))
+                    .addCell(addDefenderCell(def.playerAssist + " assists\r\n" + nf.format(def.rewardAssist) + " C-Bills"))
+                    .addCell(addDefenderCell(def.playerMatchScore + " Match-score\r\n" + nf.format(def.rewardMatchScore) + " C-Bills"))
+                    .addCell(addDefenderCell(def.playerTeamDamage + " Team damage\r\n" + nf.format(def.rewardTeamDamage) + " C-Bills"))
                     .addCell(addDefenderCell(nf.format(def.rewardLossVictory) + " C-Bills"))
                     .addCell(addDefenderCell(nf.format(def.subTotal) + " C-Bills"));
 
@@ -1156,22 +1021,22 @@ public class GenerateRoundReport {
 //            defenderCounter = -1;
 //            addCostDefender("Subtotal", def.subTotal);
             defCostTotal = defCostTotal + def.subTotal;
+            defenderCounter = defenderCounter + 1;
         }
         //Restliche Spalten mit - auffüllen
         for (int i = attacker.size(); i < 12; i++) {
             for (int j = 0; j < 10; j++) {
-                defenderCostTable.addCell(addDefenderCell("-"));
+                defenderCostTable.addCell(addDefenderCell("-\r\n-"));
             }
             defenderCounter = defenderCounter + 1;
         }
         defenderCounter = 0;
-
         for (int j = 0; j < 8; j++) {
             defenderCostTable.addCell(addDefenderCell(""));
         }
 
-        defenderCostTable.addCell(addDefenderCell("Total:"));
-        defenderCostTable.addCell(addDefenderCell(nf.format(defCostTotal) + " C-Bills"));
+        defenderCostTable.addCell(addDefenderCell("Total:"))
+                .addCell(addDefenderCell(nf.format(defCostTotal) + " C-Bills"));
 
         defenderCounter = -1;
         //addCostDefender("Total", defCostTotal);
@@ -1197,13 +1062,13 @@ public class GenerateRoundReport {
 
         for (BalanceUserInfo att : attacker) {
             attackercostTable.addCell(addAttackerCell(att.userName))
-                    .addCell(addAttackerCell(nf.format(att.mechRepairCost) + " C-Bills"))
-                    .addCell(addAttackerCell(nf.format(att.rewardDamage) + " C-Bills"))
-                    .addCell(addAttackerCell(nf.format(att.rewardComponentsDestroyed) + " C-Bills"))
-                    .addCell(addAttackerCell(nf.format(att.rewardKill) + " C-Bills"))
-                    .addCell(addAttackerCell(nf.format(att.rewardAssist) + " C-Bills"))
-                    .addCell(addAttackerCell(nf.format(att.rewardMatchScore) + " C-Bills"))
-                    .addCell(addAttackerCell(nf.format(att.rewardTeamDamage) + " C-Bills"))
+                    .addCell(addAttackerCell((100 - att.playerMechHealth) + "% to repair\r\n" + nf.format(att.mechRepairCost) + " C-Bills"))
+                    .addCell(addAttackerCell(att.playerDamage + " Damage gone\r\n" + nf.format(att.rewardDamage) + " C-Bills"))
+                    .addCell(addAttackerCell(att.playerComponentDestroyed + " destroyed\r\n" + nf.format(att.rewardComponentsDestroyed) + " C-Bills"))
+                    .addCell(addAttackerCell(att.playerKills + " kills\r\n" + nf.format(att.rewardKill) + " C-Bills"))
+                    .addCell(addAttackerCell(att.playerAssist + " assists\r\n" + nf.format(att.rewardAssist) + " C-Bills"))
+                    .addCell(addAttackerCell(att.playerMatchScore + " Match-score\r\n" + nf.format(att.rewardMatchScore) + " C-Bills"))
+                    .addCell(addAttackerCell(att.playerTeamDamage + " Team damage\r\n" + nf.format(att.rewardTeamDamage) + " C-Bills"))
                     .addCell(addAttackerCell(nf.format(att.rewardLossVictory) + " C-Bills"))
                     .addCell(addAttackerCell(nf.format(att.subTotal) + " C-Bills"));
 
@@ -1219,25 +1084,23 @@ public class GenerateRoundReport {
 //            attackerCounter = attackerCounter + 1;
 //            addCostAttacker("Subtotal", att.subTotal);
             attCostTotal = attCostTotal + att.subTotal;
+            attackerCounter = attackerCounter + 1;
         }
         //Restliche Spalten mit - auffüllen
         for (int i = attacker.size(); i < 12; i++) {
             for (int j = 0; j < 10; j++) {
-                attackercostTable.addCell(addAttackerCell("-"));
+                attackercostTable.addCell(addAttackerCell("-\r\n-"));
             }
             attackerCounter = attackerCounter + 1;
         }
         attackerCounter = 0;
-
         for (int j = 0; j < 8; j++) {
             attackercostTable.addCell(addAttackerCell(""));
         }
 
-        attackercostTable.addCell(addAttackerCell("Total:"));
-        attackercostTable.addCell(addAttackerCell(nf.format(attCostTotal) + " C-Bills"));
+        attackercostTable.addCell(addAttackerCell("Total:"))
+                .addCell(addAttackerCell(nf.format(attCostTotal) + " C-Bills"));
         //addCostAttacker("Total", attCostTotal);
-
-        attackerCounter = -1;
 
         // Table t = new Table(new float[]{1, 1}).useAllAvailableWidth()
         //         .setBorder(Border.NO_BORDER);
@@ -1262,8 +1125,6 @@ public class GenerateRoundReport {
                 .add(new Paragraph(""));
         // .add(t);
 
-        tableCostDefender = null;
-        tableCostAttacker = null;
         attackerCounter = 0;
         defenderCounter = 0;
         dropCounter = dropCounter + 1;
