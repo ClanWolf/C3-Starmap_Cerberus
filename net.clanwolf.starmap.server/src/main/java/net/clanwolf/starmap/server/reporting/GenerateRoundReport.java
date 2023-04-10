@@ -405,7 +405,6 @@ public class GenerateRoundReport {
         attackerCounter = 0;
         defenderCounter = 0;
 
-
         doc.add(tableXPAttackerHeader)
                 .add(tableXPAttacker)
                 .add(new Paragraph())
@@ -1114,65 +1113,159 @@ public class GenerateRoundReport {
         tableCostDefender = null;
         tableCostAttacker = null;
 
+        Table defenderTable = new Table(new float[]{1}).useAllAvailableWidth()
+                .setBorder(Border.NO_BORDER)
+                .addCell(addDefenderCell(factionDefender.getName_en()));
+
+        Table defenderCostTable = new Table(UnitValue.createPercentArray(new float[]{3, 2, 2, 2, 2, 2, 2, 2, 2, 2})).useAllAvailableWidth()
+                .addCell(addDefenderCell("Username"))
+                .addCell(addDefenderCell("Mech repair"))
+                .addCell(addDefenderCell("Damage"))
+                .addCell(addDefenderCell("Comp. destroyed"))
+                .addCell(addDefenderCell("Kills"))
+                .addCell(addDefenderCell("Assist"))
+                .addCell(addDefenderCell("Match-score"))
+                .addCell(addDefenderCell("Team Damage"))
+                .addCell(addDefenderCell("Loss / Victory"))
+                .addCell(addDefenderCell("Subtotal"))
+                .setBorder(Border.NO_BORDER);
+
+        defenderCounter = 1;
+
         for (BalanceUserInfo def : defender) {
-            defenderCounter = 1;
-            addCostDefender("Costs and rewards for the pilot " + def.userName, 0L);
-            addCostDefender(def.playerMechName + " repair costs (" + (100 - def.playerMechHealth) + "% to repair)", def.mechRepairCost);
-            addCostDefender("Reward damage (" + def.playerDamage + " Damage gone)", def.rewardDamage);
-            addCostDefender("Reward component destroyed (" + def.playerComponentDestroyed + " destroyed)", def.rewardComponentsDestroyed);
-            addCostDefender("Reward kills (" + def.playerKills + " kills)", def.rewardKill);
-            addCostDefender("Reward assist (" + def.playerAssist + " assists)", def.rewardAssist);
-            addCostDefender("Reward Match-score (" + def.playerMatchScore + " Match-score)", def.rewardMatchScore);
-            addCostDefender("Team damage (" + def.playerTeamDamage + " Team damage)", def.rewardTeamDamage);
-            addCostDefender(def.rewardLossVictoryDescription, def.rewardLossVictory);
-            defenderCounter = -1;
-            addCostDefender("Subtotal", def.subTotal);
+            defenderCostTable.addCell(addDefenderCell(def.userName))
+                    .addCell(addDefenderCell(nf.format(def.mechRepairCost) + " C-Bills"))
+                    .addCell(addDefenderCell(nf.format(def.rewardDamage) + " C-Bills"))
+                    .addCell(addDefenderCell(nf.format(def.rewardComponentsDestroyed) + " C-Bills"))
+                    .addCell(addDefenderCell(nf.format(def.rewardKill) + " C-Bills"))
+                    .addCell(addDefenderCell(nf.format(def.rewardAssist) + " C-Bills"))
+                    .addCell(addDefenderCell(nf.format(def.rewardMatchScore) + " C-Bills"))
+                    .addCell(addDefenderCell(nf.format(def.rewardTeamDamage) + " C-Bills"))
+                    .addCell(addDefenderCell(nf.format(def.rewardLossVictory) + " C-Bills"))
+                    .addCell(addDefenderCell(nf.format(def.subTotal) + " C-Bills"));
+
+//            addCostDefender("Costs and rewards for the pilot " + def.userName, 0L);
+//            addCostDefender(def.playerMechName + " repair costs (" + (100 - def.playerMechHealth) + "% to repair)", def.mechRepairCost);
+//            addCostDefender("Reward damage (" + def.playerDamage + " Damage gone)", def.rewardDamage);
+//            addCostDefender("Reward component destroyed (" + def.playerComponentDestroyed + " destroyed)", def.rewardComponentsDestroyed);
+//            addCostDefender("Reward kills (" + def.playerKills + " kills)", def.rewardKill);
+//            addCostDefender("Reward assist (" + def.playerAssist + " assists)", def.rewardAssist);
+//            addCostDefender("Reward Match-score (" + def.playerMatchScore + " Match-score)", def.rewardMatchScore);
+//            addCostDefender("Team damage (" + def.playerTeamDamage + " Team damage)", def.rewardTeamDamage);
+//            addCostDefender(def.rewardLossVictoryDescription, def.rewardLossVictory);
+//            defenderCounter = -1;
+//            addCostDefender("Subtotal", def.subTotal);
             defCostTotal = defCostTotal + def.subTotal;
         }
+        //Restliche Spalten mit - auffüllen
+        for (int i = attacker.size(); i < 12; i++) {
+            for (int j = 0; j < 10; j++) {
+                defenderCostTable.addCell(addDefenderCell("-"));
+            }
+            defenderCounter = defenderCounter + 1;
+        }
+        defenderCounter = 0;
+
+        for (int j = 0; j < 8; j++) {
+            defenderCostTable.addCell(addDefenderCell(""));
+        }
+
+        defenderCostTable.addCell(addDefenderCell("Total:"));
+        defenderCostTable.addCell(addDefenderCell(nf.format(defCostTotal) + " C-Bills"));
 
         defenderCounter = -1;
-        addCostDefender("Total", defCostTotal);
+        //addCostDefender("Total", defCostTotal);
+
+        Table attackerTable = new Table(new float[]{1}).useAllAvailableWidth()
+                .setBorder(Border.NO_BORDER)
+                .addCell(addAttackerCell(factionAttacker.getName_en()));
+
+        Table attackercostTable = new Table(UnitValue.createPercentArray(new float[]{3, 2, 2, 2, 2, 2, 2, 2, 2, 2})).useAllAvailableWidth()
+                .addCell(addAttackerCell("Username"))
+                .addCell(addAttackerCell("Mech repair"))
+                .addCell(addAttackerCell("Damage"))
+                .addCell(addAttackerCell("Comp. destroyed"))
+                .addCell(addAttackerCell("Kills"))
+                .addCell(addAttackerCell("Assist"))
+                .addCell(addAttackerCell("Match-score"))
+                .addCell(addAttackerCell("Team Damage"))
+                .addCell(addAttackerCell("Loss / Victory"))
+                .addCell(addAttackerCell("Subtotal"))
+                .setBorder(Border.NO_BORDER);
+
+        attackerCounter = 1;
 
         for (BalanceUserInfo att : attacker) {
-            attackerCounter = 1;
-            addCostAttacker("Costs and rewards for the pilot " + att.userName, 0L);
-            addCostAttacker(att.playerMechName + " repair costs (" + (100 - att.playerMechHealth) + "% to repair)", att.mechRepairCost);
-            addCostAttacker("Reward Damage (" + att.playerDamage + " Damage gone)", att.rewardDamage);
-            addCostAttacker("Reward component destroyed (" + att.playerComponentDestroyed + " destroyed)", att.rewardComponentsDestroyed);
-            addCostAttacker("Reward kills (" + att.playerKills + " kills)", att.rewardKill);
-            addCostAttacker("Reward assist (" + att.playerAssist + " assists)", att.rewardAssist);
-            addCostAttacker("Reward Match-score (" + att.playerMatchScore + " Match-score)", att.rewardMatchScore);
-            addCostAttacker("Team damage (" + att.playerTeamDamage + " Team damage)", att.rewardTeamDamage);
-            addCostAttacker(att.rewardLossVictoryDescription, att.rewardLossVictory);
-            attackerCounter = -1;
-            addCostAttacker("Subtotal", att.subTotal);
+            attackercostTable.addCell(addAttackerCell(att.userName))
+                    .addCell(addAttackerCell(nf.format(att.mechRepairCost) + " C-Bills"))
+                    .addCell(addAttackerCell(nf.format(att.rewardDamage) + " C-Bills"))
+                    .addCell(addAttackerCell(nf.format(att.rewardComponentsDestroyed) + " C-Bills"))
+                    .addCell(addAttackerCell(nf.format(att.rewardKill) + " C-Bills"))
+                    .addCell(addAttackerCell(nf.format(att.rewardAssist) + " C-Bills"))
+                    .addCell(addAttackerCell(nf.format(att.rewardMatchScore) + " C-Bills"))
+                    .addCell(addAttackerCell(nf.format(att.rewardTeamDamage) + " C-Bills"))
+                    .addCell(addAttackerCell(nf.format(att.rewardLossVictory) + " C-Bills"))
+                    .addCell(addAttackerCell(nf.format(att.subTotal) + " C-Bills"));
+
+//            addCostAttacker("Costs and rewards for the pilot " + att.userName, 0L);
+//            addCostAttacker(att.playerMechName + " repair costs (" + (100 - att.playerMechHealth) + "% to repair)", att.mechRepairCost);
+//            addCostAttacker("Reward Damage (" + att.playerDamage + " Damage gone)", att.rewardDamage);
+//            addCostAttacker("Reward component destroyed (" + att.playerComponentDestroyed + " destroyed)", att.rewardComponentsDestroyed);
+//            addCostAttacker("Reward kills (" + att.playerKills + " kills)", att.rewardKill);
+//            addCostAttacker("Reward assist (" + att.playerAssist + " assists)", att.rewardAssist);
+//            addCostAttacker("Reward Match-score (" + att.playerMatchScore + " Match-score)", att.rewardMatchScore);
+//            addCostAttacker("Team damage (" + att.playerTeamDamage + " Team damage)", att.rewardTeamDamage);
+//            addCostAttacker(att.rewardLossVictoryDescription, att.rewardLossVictory);
+//            attackerCounter = attackerCounter + 1;
+//            addCostAttacker("Subtotal", att.subTotal);
             attCostTotal = attCostTotal + att.subTotal;
         }
-        attackerCounter = -1;
-        addCostAttacker("Total", attCostTotal);
+        //Restliche Spalten mit - auffüllen
+        for (int i = attacker.size(); i < 12; i++) {
+            for (int j = 0; j < 10; j++) {
+                attackercostTable.addCell(addAttackerCell("-"));
+            }
+            attackerCounter = attackerCounter + 1;
+        }
+        attackerCounter = 0;
 
-        Table t = new Table(new float[]{1, 1}).useAllAvailableWidth()
-                .setBorder(Border.NO_BORDER);
+        for (int j = 0; j < 8; j++) {
+            attackercostTable.addCell(addAttackerCell(""));
+        }
+
+        attackercostTable.addCell(addAttackerCell("Total:"));
+        attackercostTable.addCell(addAttackerCell(nf.format(attCostTotal) + " C-Bills"));
+        //addCostAttacker("Total", attCostTotal);
+
+        attackerCounter = -1;
+
+        // Table t = new Table(new float[]{1, 1}).useAllAvailableWidth()
+        //         .setBorder(Border.NO_BORDER);
 
         defenderCounter = 0;
         attackerCounter = 0;
 
-        t.addCell(addDefenderCell(factionDefender.getName_en()))
-                .addCell(addAttackerCell(factionAttacker.getName_en()))
-                .addCell(addTable(tableCostDefender))
-                .addCell(addTable(tableCostAttacker));
+//        t.addCell(addDefenderCell(factionDefender.getName_en()))
+//                .addCell(addAttackerCell(factionAttacker.getName_en()))
+//                .addCell(addTable(tableCostDefender))
+//                .addCell(addTable(tableCostAttacker));
 
         doc.add(new AreaBreak());
         createC3Header("Costs and rewards for drop " + dropCounter);
         createCalcInfoCost();
         doc.add(new Paragraph(""))
-                .add(t);
+                .add(attackerTable)
+                .add(attackercostTable)
+                .add(new Paragraph(""))
+                .add(defenderTable)
+                .add(defenderCostTable)
+                .add(new Paragraph(""));
+        // .add(t);
 
         tableCostDefender = null;
         tableCostAttacker = null;
         attackerCounter = 0;
         defenderCounter = 0;
-        //logger.info("--- Balance report finished ---");
         dropCounter = dropCounter + 1;
     }
 
