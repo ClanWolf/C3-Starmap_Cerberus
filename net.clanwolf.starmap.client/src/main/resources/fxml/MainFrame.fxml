@@ -51,7 +51,7 @@
                </padding>
             </HBox>
             <Separator focusTraversable="false" prefWidth="200.0" />
-            <TableView fx:id="tblUserHistory" prefHeight="200.0" prefWidth="200.0" />
+            <TableView fx:id="tblUserHistory" fixedCellSize="18.0" prefHeight="320.0" prefWidth="285.0" stylesheets="@../styles/MainFrameStyle.css" />
          </children></VBox>
       <VBox fx:id="TFSInfo" alignment="TOP_CENTER" layoutX="176.0" layoutY="38.0" prefHeight="200.0" prefWidth="100.0" styleClass="systemDetailPanelSolid" stylesheets="@../styles/MainFrameStyle.css" visible="false">
          <children>

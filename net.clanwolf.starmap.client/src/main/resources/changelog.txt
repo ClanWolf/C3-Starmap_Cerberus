@@ -13,18 +13,22 @@ TODO:
 - Check warning hibernate dialect (server)
 - Switch to MariaDB client (client, bots)
 
-- Add link to forum in list of open attacks (discord/IRC)
-- Add faction to attacking unit in discord attack announcement
-- Send a mail/IRC/discord if a new user registered
 - Delete user in admin pane (?)
 - Auto-delete not activated user (?)
 - Soundboard for invasion pane (?)
 - ERROR: Clan vs Clan does not show video
 ----------------------------------------------------------------
 
+Version 7.3.11 (10.04.2023)
+- ADDED: Deleting of Ulrics messages older than 5 days from his discord channel
+- ADDED: Links to discord messages
+-- ADDED: link to forum in list of open attacks (discord/IRC)
+-- ADDED: Faction to attacking unit in discord attack announcement
+-- ADDED: A mail/IRC/discord if a new user registered
+
 Version 7.3.7 (08.04.2023)
 - ADDED: User registration/management in client
-- ADDED: A character needs to be created for a new user
+- ADDED: A character for a new user
 - ADDED: Message on login with inactive user
 - ADDED: User admin pane "active" checkbox
 - FIXED: Check tab order (login / register)

@@ -173,9 +173,9 @@ public class HeartBeatTimerTask extends TimerTask {
 		logger.info(uptime + " (" + days + " days)");
 
 		// Send uptime message to bots (irc, ts3 and discord), only once an hour
-		if (hours > lastReportedHour + 7) {
-			ServerNexus.getEci().sendExtCom("Server is up since " + hours + " hours.", "en",true, true, true);
-			ServerNexus.getEci().sendExtCom("Server ist online seit " + hours + " Stunden.", "de",true, true, true);
+		if (hours > lastReportedHour + 23) {
+			ServerNexus.getEci().sendExtCom("Server is up since " + hours + "hours (" + days + " days).", "en",true, true, true);
+			ServerNexus.getEci().sendExtCom("Server ist online seit " + hours + " Stunden (" + days + " Tage).", "de",true, true, true);
 			lastReportedHour = hours;
 		}
 

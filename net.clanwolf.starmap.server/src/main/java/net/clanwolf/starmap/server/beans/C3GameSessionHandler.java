@@ -528,8 +528,9 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 				if(existingAttack == null) {
 					JumpshipPOJO js = daoJJ.findById(getC3UserID(session), attack.getJumpshipID());
-					ServerNexus.getEci().sendExtCom(starSystem.getName() + " is attacked by " + js.getJumpshipName() + " in round " + attack.getRound() + "!", "en",true, true, true);
-					ServerNexus.getEci().sendExtCom(starSystem.getName() + " wird in Runde " + attack.getRound() + " von " + js.getJumpshipName() + " angegriffen!", "de",true, true, true);
+					FactionPOJO factionAttacker = FactionDAO.getInstance().findById(getC3UserID(session), js.getJumpshipFactionID());
+					ServerNexus.getEci().sendExtCom(starSystem.getName() + " is attacked by '" + js.getJumpshipName() + "' (" + factionAttacker.getShortName() + ") in round " + attack.getRound() + "!", "en",true, true, true);
+					ServerNexus.getEci().sendExtCom(starSystem.getName() + " wird in Runde " + attack.getRound() + " von '" + js.getJumpshipName() + "' (" + factionAttacker.getShortName() + ") angegriffen!", "de",true, true, true);
 					logger.info("SAVE: if(existingAttack == null)");
 					dao.save(getC3UserID(session), attack);
 				} else {

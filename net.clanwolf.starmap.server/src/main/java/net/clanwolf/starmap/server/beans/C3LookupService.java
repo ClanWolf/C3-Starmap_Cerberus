@@ -144,8 +144,17 @@ public class C3LookupService extends SimpleLookupService {
 
 				c.setUsername(u.getUserName());
 
-				sendMail(u);
+				if (!ServerNexus.isDevelopmentPC) {
+					sendMail(u);
 
+					StringBuilder fs_de = new StringBuilder();
+					StringBuilder fs_en = new StringBuilder();
+					fs_de.append("Neuer Benutzer ").append(u.getUserName()).append(" (").append(factionPOJO.getShortName()).append(") hat sich registriert! Erwartet Bestätigung...\r\n");
+					fs_en.append("New user ").append(u.getUserName()).append(" (").append(factionPOJO.getShortName()).append(") has registered! Confirmation pending...\r\n");
+
+					ServerNexus.getEci().sendExtCom(fs_en.toString(), "en", true, true, true);
+					ServerNexus.getEci().sendExtCom(fs_de.toString(), "de", true, true, true);
+				}
 
 			} catch (Exception e) {
 				logger.error("Exception while saving new user.", e);

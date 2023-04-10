@@ -391,7 +391,7 @@ public class NodeGestures {
 			StackPane sp = clickedStarSystem.getStarSystemStackPane();
 			Group group = clickedStarSystem.getStarSystemGroup();
 
-			logger.info("System: " + clickedStarSystem.getName() + " (x: " + clickedStarSystem.getX() + " | y: " + clickedStarSystem.getY() + ") - " + "[id:" + clickedStarSystem.getId() + "]");
+			logger.info("System: " + clickedStarSystem.getName() + " (x: " + clickedStarSystem.getX() + " | y: " + clickedStarSystem.getY() + ") - " + "[StarsystemDataID: " + clickedStarSystem.getStarSystemDataId() + ", StarsystemId: " + clickedStarSystem.getStarSystemId() + "]");
 
 			if (event.getTarget() instanceof Circle) {
 				canvas.showStarSystemMarker(clickedStarSystem);

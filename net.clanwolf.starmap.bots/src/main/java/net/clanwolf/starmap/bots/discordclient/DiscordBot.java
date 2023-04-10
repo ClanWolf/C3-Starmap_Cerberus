@@ -31,16 +31,11 @@ import net.clanwolf.starmap.bots.util.CheckShutdownFlagTimerTask;
 import net.clanwolf.starmap.logging.C3LogUtil;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.Role;
-import net.dv8tion.jda.api.entities.User;
+import net.dv8tion.jda.api.entities.MessageHistory;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
-import net.dv8tion.jda.api.entities.channel.middleman.MessageChannel;
-import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
-import net.dv8tion.jda.api.requests.restaction.CommandListUpdateAction;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,11 +44,16 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.invoke.MethodHandles;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.*;
 
 public class DiscordBot extends ListenerAdapter {
 	private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	private static final String serverBaseDir = new File("/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/server").getAbsolutePath();
+	private static String token = "";
 	static JDA jda = null;
 
 	public DiscordBot() {
@@ -72,7 +72,7 @@ public class DiscordBot extends ListenerAdapter {
 			ioe.printStackTrace();
 		}
 
-		String token = auth.getProperty("discordbottoken");
+		token = auth.getProperty("discordbottoken");
 		jda = JDABuilder.createLight(token, EnumSet.noneOf(GatewayIntent.class)).addEventListeners(this).build();
 
 		Timer checkShutdownFlag = new Timer();
@@ -83,8 +83,8 @@ public class DiscordBot extends ListenerAdapter {
 		extcomDiscordTimer.schedule(extcomDiscordTimerTask, 1000, 25000);
 		extcomDiscordTimerTask.setBot(this);
 
-//		// These commands might take a few minutes to be active after creation/update/delete
-//		CommandListUpdateAction commands = jda.updateCommands();
+		//		// These commands might take a few minutes to be active after creation/update/delete
+		//		CommandListUpdateAction commands = jda.updateCommands();
 
 		//		// Moderation commands with required options
 		//		commands.addCommands(Commands.slash("ban", "Ban a user from this server. Requires permission to ban users.").addOptions(new OptionData(USER, "user", "The user to ban") // USER type allows to include members of the server or other users by id
@@ -96,7 +96,7 @@ public class DiscordBot extends ListenerAdapter {
 		//				.setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.BAN_MEMBERS)) // Only members with the BAN_MEMBERS permission are going to see this command
 		//		);
 
-//		// Simple reply commands
+		//		// Simple reply commands
 		//		commands.addCommands(Commands.slash("say", "Makes the bot say what you tell it to").addOption(STRING, "content", "What the bot should say", true) // you can add required options like this too
 		//		);
 		//
@@ -123,23 +123,41 @@ public class DiscordBot extends ListenerAdapter {
 
 	public static void sendMessageToChannel(String message) {
 		List<TextChannel> channels = jda.getTextChannelsByName("c3-ulric", true);
+		LocalDateTime date = LocalDate.now().atStartOfDay();
+		Instant threshhold = Instant.ofEpochSecond(date.minusDays(5).toEpochSecond(ZoneOffset.UTC));
+
 		for (TextChannel ch : channels) {
+//			MessageHistory history = MessageHistory.getHistoryFromBeginning(ch).complete();
+//			List<Message> mess = history.getRetrievedHistory();
+//			logger.info("Found " + mess.size() + " messages.");
+//			for (Message m : mess) {
+//				logger.info(m.getContentDisplay());
+//				Instant time = m.getTimeCreated().toInstant();
+//				if (time.isBefore(threshhold)) {
+//					logger.info("Found message to be deleted.");
+//					if ("Ulric".equals(m.getAuthor().getName())) {
+//						logger.info("Author is Ulric, delete.");
+//						m.delete().queue();
+//					}
+//				}
+//			}
+
 			sendMessage(ch, message);
 		}
 	}
 
-//	@Override
-//	public void onMessageReceived(MessageReceivedEvent event) {
-//		if (event.getAuthor().isBot()) return;
-//
-//		User author = event.getAuthor();
-//		Message message = event.getMessage();
-//		String content = message.getContentRaw();
-//		MessageChannel channel = event.getChannel();
-//		Member member = event.getMember();
-//		String nickname = member.getNickname();
-//		Role role = event.getGuild().getPublicRole();
-//	}
+	//	@Override
+	//	public void onMessageReceived(MessageReceivedEvent event) {
+	//		if (event.getAuthor().isBot()) return;
+	//
+	//		User author = event.getAuthor();
+	//		Message message = event.getMessage();
+	//		String content = message.getContentRaw();
+	//		MessageChannel channel = event.getChannel();
+	//		Member member = event.getMember();
+	//		String nickname = member.getNickname();
+	//		Role role = event.getGuild().getPublicRole();
+	//	}
 
 	public static void main(String[] args) {
 		Locale.setDefault(new Locale("en", "EN"));
