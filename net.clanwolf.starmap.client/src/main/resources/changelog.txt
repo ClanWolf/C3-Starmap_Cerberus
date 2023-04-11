@@ -19,6 +19,9 @@ TODO:
 - ERROR: Clan vs Clan does not show video
 ----------------------------------------------------------------
 
+Version 7.3.12 (11.04.2023)
+- FIXED: Issue with a "." in registration field "email"
+
 Version 7.3.11 (10.04.2023)
 - ADDED: Deleting of Ulrics messages older than 5 days from his discord channel
 - ADDED: Links to discord messages

@@ -42,7 +42,7 @@
             <Image url="@../images/map/union.png" />
          </image>
       </ImageView>
-      <TextArea fx:id="taRpText" layoutX="251.0" layoutY="8.0" prefHeight="318.0" prefWidth="592.0" styleClass="contentTextAreaBlock" stylesheets="@../styles/MainFrameStyle.css" wrapText="true" />
+      <TextArea fx:id="taRpText" layoutX="251.0" layoutY="8.0" prefHeight="318.0" prefWidth="500.0" styleClass="contentTextAreaBlock" stylesheets="@../styles/MainFrameStyle.css" wrapText="true" />
       <Button fx:id="btChoice1" alignment="CENTER_RIGHT" layoutX="58.0" layoutY="344.0" mnemonicParsing="false" onAction="#handleOnActionbtChoice1" opacity="0.8" prefHeight="37.0" prefWidth="703.0" styleClass="contentButtonRed" stylesheets="@../styles/MainFrameStyle.css" text="btChoice1" />
       <Button fx:id="btChoice2" alignment="CENTER_RIGHT" layoutX="58.0" layoutY="382.0" mnemonicParsing="false" onAction="#handleOnActionbtChoice2" opacity="0.8" prefHeight="37.0" prefWidth="703.0" styleClass="contentButtonBlue" stylesheets="@../styles/MainFrameStyle.css" text="btChoice2" />
       <Button fx:id="btChoice3" alignment="CENTER_RIGHT" layoutX="58.0" layoutY="420.0" mnemonicParsing="false" onAction="#handleOnActionbtChoice3" opacity="0.8" prefHeight="37.0" prefWidth="703.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css" text="btChoice3" />
@@ -152,6 +152,9 @@
             <Image url="@../images/gui/static.gif" />
          </image>
       </ImageView>
+      <Button layoutX="755.0" layoutY="8.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="91.0" styleClass="contentButtonBlue" stylesheets="@../styles/MainFrameStyle.css" text="Button" />
+      <Button layoutX="755.0" layoutY="50.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="91.0" styleClass="contentButtonBlue" stylesheets="@../styles/MainFrameStyle.css" text="Button" />
+      <Button layoutX="755.0" layoutY="91.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="91.0" styleClass="contentButtonBlue" stylesheets="@../styles/MainFrameStyle.css" text="Button" />
     </children>
     <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />

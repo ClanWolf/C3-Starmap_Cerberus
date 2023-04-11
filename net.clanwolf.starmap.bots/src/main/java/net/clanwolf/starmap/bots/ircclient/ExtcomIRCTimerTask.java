@@ -73,7 +73,7 @@ public class ExtcomIRCTimerTask extends TimerTask {
 				}
 				for (String s : msgscut) {
 					if (!"...".equalsIgnoreCase(s)) {
-						bot.send("C3-Server: " + s);
+						bot.send("" + s);
 					}
 				}
 			}

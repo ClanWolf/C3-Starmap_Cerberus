@@ -636,7 +636,7 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 		ivAlarmUsername.setVisible(!(!"".equals(tfUserNameRegister.getText()) && tfUserNameRegister.getText().length() >= 3));
 		ivAlarmPW.setVisible(!(!"".equals(tfPasswordRegister.getText()) && tfPasswordRegister.getText().length() >= 5));
 		ivAlarmPWConfirm.setVisible("".equals(tfPasswordConfirmRegister.getText()) || !tfPasswordRegister.getText().equals(tfPasswordConfirmRegister.getText()));
-		ivAlarmMail.setVisible("".equals(tfMailRegister.getText()) || !tfMailRegister.getText().contains("@") || !tfMailRegister.getText().contains(".") || tfMailRegister.getText().indexOf(".") <= tfMailRegister.getText().indexOf("@") || tfMailRegister.getText().endsWith("."));
+		ivAlarmMail.setVisible("".equals(tfMailRegister.getText()) || !tfMailRegister.getText().contains("@") || !tfMailRegister.getText().contains(".") || tfMailRegister.getText().lastIndexOf(".") <= tfMailRegister.getText().indexOf("@") || tfMailRegister.getText().endsWith("."));
 	}
 
 	private boolean checkRegisterTextFieldsForContent() {
@@ -651,7 +651,7 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 			&& tfPasswordRegister.getText().length() >= 5
 			&& tfMailRegister.getText().contains("@")
 			&& tfMailRegister.getText().contains(".")
-			&& tfMailRegister.getText().indexOf(".") > tfMailRegister.getText().indexOf("@")
+			&& tfMailRegister.getText().lastIndexOf(".") > tfMailRegister.getText().indexOf("@")
 			&& !tfMailRegister.getText().endsWith(".")
 		);
 	}

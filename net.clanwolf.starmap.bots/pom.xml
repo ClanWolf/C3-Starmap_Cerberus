@@ -57,23 +57,31 @@
 		</dependency>
 
 		<!-- IRC +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+		<!-- https://jitpack.io/#pircbotx/pircbotx -->
 		<dependency>
 			<groupId>com.github.pircbotx</groupId>
 			<artifactId>pircbotx</artifactId>
 			<version>${version.pircbotx}</version>
 		</dependency>
-<!--		&lt;!&ndash; https://mvnrepository.com/artifact/com.google.guava/guava &ndash;&gt;-->
-<!--		<dependency>-->
-<!--			<groupId>com.google.guava</groupId>-->
-<!--			<artifactId>guava</artifactId>-->
-<!--			<version>31.1-jre</version>-->
-<!--		</dependency>-->
-<!--		&lt;!&ndash; https://mvnrepository.com/artifact/commons-codec/commons-codec &ndash;&gt;-->
-<!--		<dependency>-->
-<!--			<groupId>commons-codec</groupId>-->
-<!--			<artifactId>commons-codec</artifactId>-->
-<!--			<version>1.15</version>-->
-<!--		</dependency>-->
+		<!--		<dependency>-->
+		<!--			<groupId>club.minnced</groupId>-->
+		<!--			<artifactId>discord-webhooks</artifactId>-->
+		<!--			<version>${version.discord-webhooks}</version>-->
+		<!--		</dependency>-->
+
+		<!-- optional try to remove warning from dependencies above -->
+		<!--		&lt;!&ndash; https://mvnrepository.com/artifact/com.google.guava/guava &ndash;&gt;-->
+		<!--		<dependency>-->
+		<!--			<groupId>com.google.guava</groupId>-->
+		<!--			<artifactId>guava</artifactId>-->
+		<!--			<version>31.1-jre</version>-->
+		<!--		</dependency>-->
+		<!--		&lt;!&ndash; https://mvnrepository.com/artifact/commons-codec/commons-codec &ndash;&gt;-->
+		<!--		<dependency>-->
+		<!--			<groupId>commons-codec</groupId>-->
+		<!--			<artifactId>commons-codec</artifactId>-->
+		<!--			<version>1.15</version>-->
+		<!--		</dependency>-->
 
 		<!-- TEAMSPEAK +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 		<dependency>

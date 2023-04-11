@@ -14,7 +14,7 @@
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="ChatPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/15.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.chat.ChatPaneController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="ChatPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/19" fx:controller="net.clanwolf.starmap.client.gui.panes.chat.ChatPaneController">
 	<children>
       <Label alignment="BOTTOM_LEFT" layoutX="40.0" layoutY="70.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mouseTransparent="true" opacity="0.2" prefHeight="375.0" prefWidth="500.0" styleClass="contentLabelSideImageSatelite2" visible="true">
          <stylesheets>
@@ -31,7 +31,7 @@
                            <content>
                               <AnchorPane prefHeight="200.0" prefWidth="200.0" stylesheets="@../styles/MainFrameStyle.css">
                                  <children>
-                                    <TableView fx:id="tableViewChat" prefHeight="200.0" prefWidth="200.0" stylesheets="@../styles/MainFrameStyle.css" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <TableView fx:id="tableViewChat" fixedCellSize="20.0" prefHeight="200.0" prefWidth="200.0" stylesheets="@../styles/MainFrameStyle.css" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <padding>
                                           <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                                        </padding></TableView>

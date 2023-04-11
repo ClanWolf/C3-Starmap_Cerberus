@@ -275,8 +275,8 @@ public class GameServer {
                 SendInformationToBotsTimerTask sendInformationToBotsTimerTask = new SendInformationToBotsTimerTask();
                 sendInformationToBotsTimer.schedule(sendInformationToBotsTimerTask, 15000, 8 * 60 * 60_000);
 
-                String t_de = "Changelog: <https://www.clanwolf.net/apps/C3/changelog.txt>\r\nHandbuch: <https://www.clanwolf.net/apps/C3/C3_Manual_de.pdf>\r\nDownload: <https://www.clanwolf.net/viewpage.php?page_id=1>";
-                String t_en = "Changelog: <https://www.clanwolf.net/apps/C3/changelog.txt>\r\nManual: <https://www.clanwolf.net/apps/C3/C3_Manual_de.pdf>\r\nDownload: <https://www.clanwolf.net/viewpage.php?page_id=1>";
+                String t_de = "Changelog: <https://www.clanwolf.net/apps/C3/changelog.txt> (nur en)\r\nHandbuch: <https://www.clanwolf.net/apps/C3/C3_Manual_de.pdf> (nur de)\r\nDownload: <https://www.clanwolf.net/viewpage.php?page_id=1>";
+                String t_en = "Changelog: <https://www.clanwolf.net/apps/C3/changelog.txt> (en only)\r\nManual: <https://www.clanwolf.net/apps/C3/C3_Manual_de.pdf> (de only)\r\nDownload: <https://www.clanwolf.net/viewpage.php?page_id=1>";
 
                 ServerNexus.getEci().sendExtCom(jarName + " is up and ready.\r\n" + t_en, "en", true, true, true);
                 ServerNexus.getEci().sendExtCom(jarName + " ist gestartet und bereit.\r\n" + t_de, "de", true, true, true);

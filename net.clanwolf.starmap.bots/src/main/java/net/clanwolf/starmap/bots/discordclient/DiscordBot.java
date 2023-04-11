@@ -142,7 +142,27 @@ public class DiscordBot extends ListenerAdapter {
 //				}
 //			}
 
+			// Webhook test to use a SIMPLE link, does not work.
+			//			if (message.contains("https://")) {
+			//				WebhookClientBuilder clientBuilder = new WebhookClientBuilder(token);
+			//				clientBuilder.setThreadFactory((job) -> {
+			//					Thread thread = new Thread(job);
+			//					thread.setName("Hello");
+			//					thread.setDaemon(true);
+			//					return thread;
+			//				});
+			//				clientBuilder.setWait(true);
+			//				WebhookClient webhookClient = clientBuilder.build();
+			//
+			//				WebhookMessageBuilder messageBuilder = new WebhookMessageBuilder();
+			//				messageBuilder.setContent(message);
+			//				WebhookMessage webhookMessage = messageBuilder.build();
+			//				webhookClient.send(webhookMessage);
+			//
+			//				webhookClient.close();
+			//			} else {
 			sendMessage(ch, message);
+			//			}
 		}
 	}
 

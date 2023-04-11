@@ -13,11 +13,19 @@ TODO:
 - Check warning hibernate dialect (server)
 - Switch to MariaDB client (client, bots)
 
+- Jump to thread in forum from the attack in client
+- Userlist needs to stay visible with mousepointer on it to use the scrollbar in the userlist
 - Delete user in admin pane (?)
 - Auto-delete not activated user (?)
-- Soundboard for invasion pane (?)
-- ERROR: Clan vs Clan does not show video
+- Soundboard for invasion pane (?) / Serious radio roleplay samples only
+- ERROR: Clan vs Clan does not show video (sometimes?)
 ----------------------------------------------------------------
+
+Version 7.3.13 (
+- FIXED: Row height of chat lines (IRC)
+
+Version 7.3.12 (11.04.2023)
+- FIXED: Issue with a "." in registration field "email"
 
 Version 7.3.11 (10.04.2023)
 - ADDED: Deleting of Ulrics messages older than 5 days from his discord channel
