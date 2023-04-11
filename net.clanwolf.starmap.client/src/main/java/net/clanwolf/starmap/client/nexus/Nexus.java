@@ -414,6 +414,30 @@ public class Nexus {
 		return finishedAttackOfUser;
 	}
 
+	public static AttackDTO getCurrentOpenAttackForUser(UserDTO user) {
+		AttackDTO r = null;
+
+		RolePlayCharacterDTO ch = null;
+		for (RolePlayCharacterDTO rpc : Nexus.characterList.values()) {
+			if (rpc.getUser().getUserId().equals(user.getUserId())) {
+				ch = rpc;
+				break;
+			}
+		}
+
+		if (ch != null) {
+			for (BOAttack a : boUniverse.attackBOsOpenInThisRound.values()) {
+				for (AttackCharacterDTO ac : a.getAttackCharList()) {
+					if (ac.getCharacterID().equals(ch.getId())) {
+						r = a.getAttackDTO();
+						break;
+					}
+				}
+			}
+		}
+		return r;
+	}
+
 	public static AttackDTO getCurrentAttackForUser(UserDTO user) {
 		AttackDTO r = null;
 

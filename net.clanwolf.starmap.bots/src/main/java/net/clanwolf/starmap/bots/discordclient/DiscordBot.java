@@ -124,25 +124,25 @@ public class DiscordBot extends ListenerAdapter {
 	public static void sendMessageToChannel(String message) {
 		List<TextChannel> channels = jda.getTextChannelsByName("c3-ulric", true);
 		LocalDateTime date = LocalDate.now().atStartOfDay();
-		Instant threshhold = Instant.ofEpochSecond(date.minusDays(5).toEpochSecond(ZoneOffset.UTC));
+		Instant threshhold = Instant.ofEpochSecond(date.minusDays(3).toEpochSecond(ZoneOffset.UTC));
 
 		for (TextChannel ch : channels) {
-//			MessageHistory history = MessageHistory.getHistoryFromBeginning(ch).complete();
-//			List<Message> mess = history.getRetrievedHistory();
-//			logger.info("Found " + mess.size() + " messages.");
-//			for (Message m : mess) {
-//				logger.info(m.getContentDisplay());
-//				Instant time = m.getTimeCreated().toInstant();
-//				if (time.isBefore(threshhold)) {
-//					logger.info("Found message to be deleted.");
-//					if ("Ulric".equals(m.getAuthor().getName())) {
-//						logger.info("Author is Ulric, delete.");
-//						m.delete().queue();
-//					}
-//				}
-//			}
+			MessageHistory history = MessageHistory.getHistoryFromBeginning(ch).complete();
+			List<Message> mess = history.getRetrievedHistory();
+			logger.info("Found " + mess.size() + " messages.");
+			for (Message m : mess) {
+				logger.info(m.getContentDisplay());
+				Instant time = m.getTimeCreated().toInstant();
+				if (time.isBefore(threshhold)) {
+					logger.info("Found message to be deleted.");
+					if ("Ulric".equals(m.getAuthor().getName())) {
+						logger.info("Author is Ulric, delete.");
+						m.delete().queue();
+					}
+				}
+			}
 
-			// Webhook test to use a SIMPLE link, does not work.
+			// Webhook test to use a SIMPLE link (text separated from url), does not work.
 			//			if (message.contains("https://")) {
 			//				WebhookClientBuilder clientBuilder = new WebhookClientBuilder(token);
 			//				clientBuilder.setThreadFactory((job) -> {

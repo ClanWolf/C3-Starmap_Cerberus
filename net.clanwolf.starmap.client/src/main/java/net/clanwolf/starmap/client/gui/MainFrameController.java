@@ -377,7 +377,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					String userString = "";
 					String attackedSystem = "/";
 
-					AttackDTO a = Nexus.getCurrentAttackForUser(u);
+					AttackDTO a = Nexus.getCurrentOpenAttackForUser(u);
 					if (a != null) {
 						BOStarSystem s = Nexus.getBoUniverse().starSystemBOs.get(a.getStarSystemID());
 						if (s != null) {
