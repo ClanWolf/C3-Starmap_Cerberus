@@ -15,7 +15,6 @@ TODO:
 
 - Add messages for "Lobby started", "Invasion endet, Winner is...", "Invasion is in Drop x, currently 2:2",...
 - Jump to thread in forum from the attack in client
-- Userlist needs to stay visible with mousepointer on it to use the scrollbar in the userlist
 - Delete user in admin pane (?)
 - Auto-delete not activated user (?)
 - Soundboard for invasion pane (?) / Serious radio roleplay samples only
@@ -25,6 +24,7 @@ TODO:
 
 Version 7.3.13 (
 - FIXED: Row height of chat lines (IRC)
+- CHANGED: Userlist stays now visible with mousepointer on it
 
 Version 7.3.12 (11.04.2023)
 - FIXED: Issue with a "." in registration field "email"
