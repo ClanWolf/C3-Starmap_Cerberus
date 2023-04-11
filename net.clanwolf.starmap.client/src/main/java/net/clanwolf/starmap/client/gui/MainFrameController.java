@@ -31,6 +31,7 @@ import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.CacheHint;
@@ -120,6 +121,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private boolean openEditorPane = false;
 	private boolean messageIsShowing = false;
 	private static boolean adminButtonHasFocus = false;
+	private static volatile boolean userlistHovered = false;
 	private AbstractC3Pane currentlyDisplayedPane = null;
 	private AbstractC3Pane nextToDisplayPane = null;
 	private LoginPane loginPane = null;
@@ -338,6 +340,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	@FXML
 	private void handleUserInfoEntered() {
 		if (Nexus.isLoggedIn()) {
+			userlistHovered = true;
 			ArrayList<UserDTO> userList = Nexus.getCurrentlyOnlineUserList();
 
 			Iterator iter = userList.iterator();
@@ -391,7 +394,18 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				}
 			}
 
+			TableColumn c1 = tblUserHistory.getColumns().get(0);
+			TableColumn c2 = tblUserHistory.getColumns().get(1);
+			TableColumn c3 = tblUserHistory.getColumns().get(2);
+			c1.setSortable(true);
+			c2.setSortable(true);
+			c3.setSortable(true);
+			tblUserHistory.getSortOrder().addAll(c1, c2, c3);
+			c1.setSortType(TableColumn.SortType.ASCENDING);
+			c2.setSortType(TableColumn.SortType.ASCENDING);
+			c3.setSortType(TableColumn.SortType.ASCENDING);
 			tblUserHistory.sort();
+
 			UserHistoryInfo.toFront();
 			UserHistoryInfo.setVisible(true);
 		}
@@ -400,11 +414,42 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	@FXML
 	private void handleUserInfoExited() {
 		if (Nexus.isLoggedIn()) {
+			userlistHovered = false;
 			tblUserHistory.getItems().clear();
-
 			UserHistoryInfo.toFront();
-			UserHistoryInfo.setVisible(false);
+
+			final Timeline timeline = new Timeline(new KeyFrame(Duration.millis(500), new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent actionEvent) {
+					if (!userlistHovered) {
+						UserHistoryInfo.setVisible(false);
+					}
+				}
+			}));
+			timeline.play();
 		}
+	}
+
+	@FXML
+	private void handleUserListEntered() {
+		UserHistoryInfo.toFront();
+		UserHistoryInfo.setVisible(true);
+		userlistHovered = true;
+	}
+
+	@FXML
+	private void handleUserListExited() {
+		UserHistoryInfo.toFront();
+		final Timeline timeline = new Timeline(new KeyFrame(Duration.millis(500), new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent actionEvent) {
+				if (!userlistHovered) {
+					UserHistoryInfo.setVisible(false);
+				}
+			}
+		}));
+		timeline.play();
+		userlistHovered = false;
 	}
 
 	@FXML
