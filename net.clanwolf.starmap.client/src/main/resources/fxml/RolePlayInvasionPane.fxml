@@ -152,9 +152,9 @@
             <Image url="@../images/gui/static.gif" />
          </image>
       </ImageView>
-      <Button layoutX="755.0" layoutY="8.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="91.0" styleClass="contentButtonBlue" stylesheets="@../styles/MainFrameStyle.css" text="Button" />
-      <Button layoutX="755.0" layoutY="50.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="91.0" styleClass="contentButtonBlue" stylesheets="@../styles/MainFrameStyle.css" text="Button" />
-      <Button layoutX="755.0" layoutY="91.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="91.0" styleClass="contentButtonBlue" stylesheets="@../styles/MainFrameStyle.css" text="Button" />
+      <Button fx:id="buttonSoundBoard01" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="755.0" layoutY="8.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="91.0" styleClass="contentButtonBlue" stylesheets="@../styles/MainFrameStyle.css" text="Button" />
+      <Button fx:id="buttonSoundBoard02" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="755.0" layoutY="50.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="91.0" styleClass="contentButtonBlue" stylesheets="@../styles/MainFrameStyle.css" text="Button" />
+      <Button fx:id="buttonSoundBoard03" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="755.0" layoutY="92.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="91.0" styleClass="contentButtonBlue" stylesheets="@../styles/MainFrameStyle.css" text="Button" />
     </children>
     <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />

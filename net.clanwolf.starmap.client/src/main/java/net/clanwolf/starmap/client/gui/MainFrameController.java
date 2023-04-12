@@ -122,6 +122,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private boolean messageIsShowing = false;
 	private static boolean adminButtonHasFocus = false;
 	private static volatile boolean userlistHovered = false;
+	private static volatile boolean userlistTriggerHovered = false;
 	private AbstractC3Pane currentlyDisplayedPane = null;
 	private AbstractC3Pane nextToDisplayPane = null;
 	private LoginPane loginPane = null;
@@ -340,7 +341,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	@FXML
 	private void handleUserInfoEntered() {
 		if (Nexus.isLoggedIn()) {
-			userlistHovered = true;
+			userlistTriggerHovered = true;
 			ArrayList<UserDTO> userList = Nexus.getCurrentlyOnlineUserList();
 
 			Iterator iter = userList.iterator();
@@ -414,14 +415,16 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	@FXML
 	private void handleUserInfoExited() {
 		if (Nexus.isLoggedIn()) {
-			userlistHovered = false;
+			userlistTriggerHovered = false;
 			tblUserHistory.getItems().clear();
 			UserHistoryInfo.toFront();
 
 			final Timeline timeline = new Timeline(new KeyFrame(Duration.millis(500), new EventHandler<ActionEvent>() {
 				@Override
 				public void handle(ActionEvent actionEvent) {
-					if (!userlistHovered) {
+					if (userlistHovered || userlistTriggerHovered) {
+						//
+					} else {
 						UserHistoryInfo.setVisible(false);
 					}
 				}
@@ -443,7 +446,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		final Timeline timeline = new Timeline(new KeyFrame(Duration.millis(500), new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent actionEvent) {
-				if (!userlistHovered) {
+				if (userlistHovered || userlistTriggerHovered) {
+					//
+				} else {
 					UserHistoryInfo.setVisible(false);
 				}
 			}
@@ -1640,6 +1645,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				}
 			}
 		});
+		toplabel.toFront();
 	}
 
 	/**
