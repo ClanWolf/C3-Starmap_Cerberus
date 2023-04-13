@@ -14,19 +14,25 @@ TODO:
 - Switch to MariaDB client (client, bots)
 
 - Add global keys to the GUI
+- Add keyboard shortcuts for language change and help and open attack forum post
 - Add messages for "Lobby started", "Invasion endet, Winner is...", "Invasion is in Drop x, currently 2:2",...
-- Jump to thread in forum from the attack in client
 - Delete user in admin pane (?)
 - Auto-delete not activated user (?)
-- Soundboard for invasion pane (?) / Serious radio roleplay samples only
 - Check tab order and keyboard control for all panes
-- ERROR: Clan vs Clan does not show video (sometimes?)
+- Video does not show sometimes
 ----------------------------------------------------------------
 
-Version 7.3.13 (
+Version 7.3.14 (12.04.2023)
+- FIXED: Some small issues with userlist panel
+
+Version 7.3.13 (12.04.2023)
 - FIXED: Row height of chat lines (IRC)
 - CHANGED: Userlist stays now visible with mousepointer on it
-- CHANGED: Userlist sorting shows Chars in my own current battle first
+- CHANGED: Userlist sorting
+- CHANGED: Background music is disabled on install
+- REMOVED: Voice sample to indicate help button
+- STARTED: Open attack thread in forum from the attack in client
+- STARTED: Voice radio message system in invasion pane
 
 Version 7.3.12 (11.04.2023)
 - FIXED: Issue with a "." in registration field "email"

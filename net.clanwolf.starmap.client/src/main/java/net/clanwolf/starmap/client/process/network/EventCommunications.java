@@ -72,6 +72,16 @@ public class EventCommunications {
 			showErrorMessage(state);
 
 			switch (state.getMode()) {
+				case PLAY_SOUNDBOARD_SOUND_EVENT_01:
+					ActionManager.getAction(ACTIONS.PLAY_SOUNDBAR_EXECUTE_01).execute();
+					break;
+				case PLAY_SOUNDBOARD_SOUND_EVENT_02:
+					ActionManager.getAction(ACTIONS.PLAY_SOUNDBAR_EXECUTE_02).execute();
+					break;
+				case PLAY_SOUNDBOARD_SOUND_EVENT_03:
+					ActionManager.getAction(ACTIONS.PLAY_SOUNDBAR_EXECUTE_03).execute();
+					break;
+
 				case FOUND_BROKEN_ATTACK:
 					logger.info("Broken attack was found (drops started but one or both dropleads are offline)");
 					if (state.getObject() != null && Nexus.getCurrentAttackOfUser() != null && ((Long) state.getObject()).equals(Nexus.getCurrentAttackOfUser().getAttackDTO().getId())) {

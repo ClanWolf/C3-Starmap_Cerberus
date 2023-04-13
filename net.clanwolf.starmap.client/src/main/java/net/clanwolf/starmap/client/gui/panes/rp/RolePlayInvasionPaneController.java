@@ -29,6 +29,7 @@ package net.clanwolf.starmap.client.gui.panes.rp;
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -63,12 +64,16 @@ import net.clanwolf.starmap.client.util.C3Properties;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.client.util.RPVarReplacer_DE;
 import net.clanwolf.starmap.constants.Constants;
+import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.*;
+import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 import net.clanwolf.starmap.transfer.mwo.MWOMatchResult;
+import net.clanwolf.starmap.transfer.util.Compressor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.InputStream;
 import java.lang.invoke.MethodHandles;
 import java.net.URL;
 import java.util.*;
@@ -86,8 +91,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 	//@FXML
 	//private ImageView rpIBackgroundImage;
 
-	@FXML
-	private ImageView rpImage;
+	private static volatile boolean playingRadioSample;
 
 	@FXML
 	private ImageView confirmAttacker1, confirmAttacker2, confirmAttacker3, confirmAttacker4;
@@ -112,6 +116,8 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 
 	@FXML
 	private Button btChoice4;
+	@FXML
+	private ImageView rpImage, ivRadioSenderImage;
 
 	@FXML
 	private Pane paneCurrentScore;
@@ -141,12 +147,14 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 	private Integer defenderDropVictories = 0;
 	Image imageStatic = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/gui/static.gif")));
 	@FXML
-	private ImageView ivStatic;
+	private Button buttonSoundBoard01, buttonSoundBoard02, buttonSoundBoard03;
 	@FXML
 	private VBox VBoxError;
 	@FXML
 	private Label labelError;
 	private Image im2;
+	@FXML
+	private ImageView ivStatic, ivForumLink;
 
 	public RolePlayInvasionPaneController() {
 	}
@@ -212,6 +220,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 		ivPlanet.setImage(Nexus.getBoUniverse().starSystemBOs.get(a.getStarSystemId()).getSystemImage());
 		ivPlanet.toFront();
 		ivLocation.toFront();
+		ivForumLink.toFront();
 		attackerHeader.setImage(attackerLogo);
 		defenderHeader.setImage(defenderLogo);
 		attackerButtonIcon.setImage(attackerLogo);
@@ -285,6 +294,9 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 		ActionManager.addActionCallbackListener(ACTIONS.CURRENT_ATTACK_IS_BROKEN_WARNING, this);
 		ActionManager.addActionCallbackListener(ACTIONS.CURRENT_ATTACK_IS_BROKEN_KILLED, this);
 		ActionManager.addActionCallbackListener(ACTIONS.CURRENT_ATTACK_IS_HEALED, this);
+		ActionManager.addActionCallbackListener(ACTIONS.PLAY_SOUNDBAR_EXECUTE_01, this);
+		ActionManager.addActionCallbackListener(ACTIONS.PLAY_SOUNDBAR_EXECUTE_02, this);
+		ActionManager.addActionCallbackListener(ACTIONS.PLAY_SOUNDBAR_EXECUTE_03, this);
 	}
 
 	/******************************** THIS ********************************/
@@ -433,6 +445,36 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 		}
 	}
 
+	@Override
+	public void initialize(URL url, ResourceBundle rb) {
+		super.initialize(url, rb);
+
+		Platform.runLater(() -> {
+			buttonSoundBoard01.setText("R1");
+			buttonSoundBoard02.setText("R2");
+			buttonSoundBoard03.setText("R3");
+		});
+
+		buttonSoundBoard01.setDisable(true);
+		buttonSoundBoard02.setDisable(true);
+		buttonSoundBoard03.setDisable(true);
+
+		ivForumLink.toFront();
+
+		AttackDTO a = Nexus.getCurrentAttackOfUser().getAttackDTO();
+		for (AttackCharacterDTO c : a.getAttackCharList()) {
+			if (c.getCharacterID().equals(Nexus.getCurrentUser().getCurrentCharacter().getId())) {
+				// This is me
+				if (c.getType().equals(Constants.ROLE_ATTACKER_COMMANDER) || c.getType().equals(Constants.ROLE_DEFENDER_COMMANDER)) {
+					buttonSoundBoard01.setDisable(false);
+					buttonSoundBoard02.setDisable(false);
+					buttonSoundBoard03.setDisable(false);
+				}
+			}
+		}
+		init();
+	}
+
 	/**
 	 * Handle Actions
 	 *
@@ -445,6 +487,36 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 		if (anchorPane != null && !anchorPane.isVisible()) return true;
 		logger.info("Flag for CharRP" + isCharRP);
 		switch (action) {
+			case PLAY_SOUNDBAR_EXECUTE_01:
+				if (o.getObject() instanceof Long) {
+					// CharacterId
+					Long charId = (Long) o.getObject();
+					if (charId != null) {
+						playSoundboardSound(1, charId);
+					}
+				}
+				break;
+
+			case PLAY_SOUNDBAR_EXECUTE_02:
+				if (o.getObject() instanceof Long) {
+					// CharacterId
+					Long charId = (Long)o.getObject();
+					if (charId != null) {
+						playSoundboardSound(2, charId);
+					}
+				}
+				break;
+
+			case PLAY_SOUNDBAR_EXECUTE_03:
+				if (o.getObject() instanceof Long) {
+					// CharacterId
+					Long charId = (Long)o.getObject();
+					if (charId != null) {
+						playSoundboardSound(3, charId);
+					}
+				}
+				break;
+
 			case CURRENT_ATTACK_IS_BROKEN:
 				if (o.getObject() instanceof Long) {
 					Platform.runLater(() -> {
@@ -662,11 +734,43 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 		return true;
 	}
 
-	@Override
-	public void initialize(URL url, ResourceBundle rb) {
-		super.initialize(url, rb);
+	private void playSoundboardSound(int sampleNumber, Long charId) {
+		if (!playingRadioSample) {
+			logger.info("Play soundboard sound " + sampleNumber);
+			RolePlayCharacterDTO c = Nexus.getCharacterById(charId);
+			Platform.runLater(() -> {
+				buttonSoundBoard01.setDisable(true);
+				buttonSoundBoard02.setDisable(true);
+				buttonSoundBoard03.setDisable(true);
 
-		init();
+				Image charImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(c.getCharImage())));
+				ivRadioSenderImage.setImage(charImage);
+
+				final Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(10), new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent actionEvent) {
+						buttonSoundBoard01.setDisable(false);
+						buttonSoundBoard02.setDisable(false);
+						buttonSoundBoard03.setDisable(false);
+
+						Image neutralImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/radio.png")));
+						ivRadioSenderImage.setImage(neutralImage);
+						playingRadioSample = false;
+						ActionManager.getAction(ACTIONS.STOP_SPEECH_SPECTRUM).execute();
+					}
+				}));
+				timeline.play();
+
+				playingRadioSample = true;
+				ActionManager.getAction(ACTIONS.START_SPEECH_SPECTRUM).execute();
+				switch (sampleNumber) {
+					case 1 -> C3SoundPlayer.play("sound/fx/beep_electric.mp3", false);
+					case 2 -> C3SoundPlayer.play("sound/fx/beep_electric.mp3", false);
+					case 3 -> C3SoundPlayer.play("sound/fx/beep_electric.mp3", false);
+				}
+
+			});
+		}
 	}
 
 	public void scoreAnimation(int attackerWins, int defenderWins) {
@@ -813,7 +917,37 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 		a.storeAttack();
 	}
 
+	private void sendSoundboardEvent(int buttonIndicator) {
+		GameState playSoundboardSound = new GameState();
+		switch (buttonIndicator) {
+			case 1 -> playSoundboardSound.setMode(GAMESTATEMODES.PLAY_SOUNDBOARD_SOUND_EVENT_01);
+			case 2 -> playSoundboardSound.setMode(GAMESTATEMODES.PLAY_SOUNDBOARD_SOUND_EVENT_02);
+			case 3 -> playSoundboardSound.setMode(GAMESTATEMODES.PLAY_SOUNDBOARD_SOUND_EVENT_03);
+		}
+		playSoundboardSound.addObject(Nexus.getCurrentUser().getCurrentCharacter().getId());
+		Nexus.fireNetworkEvent(playSoundboardSound);
+	}
+
 	/******************************** FXML ********************************/
+	@FXML
+	private void handleSoundbarButton01Click() {
+		sendSoundboardEvent(1);
+	}
+
+	@FXML
+	private void handleSoundbarButton02Click() {
+		sendSoundboardEvent(2);
+	}
+
+	@FXML
+	private void handleSoundbarButton03Click() {
+		sendSoundboardEvent(3);
+	}
+
+	@FXML
+	private void handleLinkMouseEventClick() {
+		ActionManager.getAction(ACTIONS.OPEN_ATTACKTHREAT).execute();
+	}
 
 	@FXML
 	private void handleOnActionbtChoice1() {

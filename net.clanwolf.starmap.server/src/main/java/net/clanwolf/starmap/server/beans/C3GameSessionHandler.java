@@ -865,6 +865,12 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		String ipAdressSender = state.getIpAdressSender();
 
 		switch (state.getMode()) {
+//			case PLAY_SOUNDBOARD_SOUND_01:
+//				break;
+//			case PLAY_SOUNDBOARD_SOUND_02:
+//				break;
+//			case PLAY_SOUNDBOARD_SOUND_03:
+//				break;
 			case BROADCAST_SEND_NEW_PLAYERLIST:
 				sendNewPlayerList(session);
 				break;
@@ -966,7 +972,6 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 	}
 
 	static public void sendErrorMessageToClient(PlayerSession session, Exception re){
-		//EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
 		GameState gsErrorMessage = new GameState(GAMESTATEMODES.ERROR_MESSAGE);
 		gsErrorMessage.addObject(re.getMessage());
 		gsErrorMessage.setAction_successfully(Boolean.FALSE);

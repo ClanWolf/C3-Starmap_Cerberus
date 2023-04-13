@@ -321,10 +321,10 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		helpLabel.setText("");
 		setStatusText(Internationalization.getString("app_pane_open_manual_infotext"), false);
 		Tools.playButtonHoverSound();
-		if (!helpvoiceplayedonce) {
-			C3SoundPlayer.getTTSFile(Internationalization.getString("app_web_help"));
-			helpvoiceplayedonce = true;
-		}
+//		if (!helpvoiceplayedonce) {
+//			C3SoundPlayer.getTTSFile(Internationalization.getString("app_web_help"));
+//			helpvoiceplayedonce = true;
+//		}
 	}
 
 	@FXML
@@ -342,6 +342,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private void handleUserInfoEntered() {
 		if (Nexus.isLoggedIn()) {
 			userlistTriggerHovered = true;
+			tblUserHistory.getItems().clear();
 			ArrayList<UserDTO> userList = Nexus.getCurrentlyOnlineUserList();
 
 			Iterator iter = userList.iterator();
@@ -376,6 +377,15 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 						if (Nexus.getFactionLogo() != null) {
 							ivCharacterFaction.setImage(Nexus.getFactionLogo());
 						}
+
+						String attackedSystem = "/";
+						AttackDTO a = Nexus.getCurrentOpenAttackForUser(u);
+						if (a != null) {
+							BOStarSystem s = Nexus.getBoUniverse().starSystemBOs.get(a.getStarSystemID());
+							if (s != null) {
+								attackedSystem = s.getName();
+							}
+						}
 					});
 				} else {
 					String userString = "";
@@ -395,6 +405,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				}
 			}
 
+			// Sort userlist
 			TableColumn c1 = tblUserHistory.getColumns().get(0);
 			TableColumn c2 = tblUserHistory.getColumns().get(1);
 			TableColumn c3 = tblUserHistory.getColumns().get(2);
@@ -416,7 +427,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private void handleUserInfoExited() {
 		if (Nexus.isLoggedIn()) {
 			userlistTriggerHovered = false;
-			tblUserHistory.getItems().clear();
+//			tblUserHistory.getItems().clear();
 			UserHistoryInfo.toFront();
 
 			final Timeline timeline = new Timeline(new KeyFrame(Duration.millis(500), new EventHandler<ActionEvent>() {

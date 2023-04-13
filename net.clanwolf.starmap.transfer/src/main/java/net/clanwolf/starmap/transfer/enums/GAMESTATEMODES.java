@@ -75,13 +75,14 @@ public enum GAMESTATEMODES {
 
 	ROLEPLAY_SAVE_STORY,                        /* OBJECT: RolePlayStoryDTO.class - Save a RolePlayStoryDTO on the database */
 	ROLEPLAY_DELETE_STORY,                      /* OBJECT: RolePlayStoryDTO.class - Delete a RolePlayStoryDTO on the database */
-
 	ROLEPLAY_REQUEST_ALLCHARACTER,              /**/
 	ROLEPLAY_GET_ALLCHARACTER,                  /**/
-
 	ROLEPLAY_REQUEST_STEPSBYSTORY,
 	ROLEPLAY_GET_STEPSBYSTORY,
 
+	PLAY_SOUNDBOARD_SOUND_EVENT_01,
+	PLAY_SOUNDBOARD_SOUND_EVENT_02,
+	PLAY_SOUNDBOARD_SOUND_EVENT_03,
 	GET_UNIVERSE_DATA,                          /* Get all universe data from server */
 	FINALIZE_ROUND,
 	SESSION_KEEPALIVE,

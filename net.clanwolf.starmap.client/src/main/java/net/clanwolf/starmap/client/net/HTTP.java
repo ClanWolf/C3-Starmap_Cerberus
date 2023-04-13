@@ -307,6 +307,7 @@ public abstract class HTTP {
 
 		String videoFileName = cacheFolderName + File.separator + s;
 		File f1 = new File(videoFileName);
+		logger.info("Looking for video file: " + f1.getAbsolutePath());
 
 		if (!f1.isFile()) {
 			String serverUrl = C3Properties.getProperty(C3PROPS.SERVER_URL);
@@ -317,7 +318,10 @@ public abstract class HTTP {
 				subPath = "/" + subPath;
 			}
 
+			logger.info("Downloading video file: " + serverUrl + subPath + s + " to local target: " + videoFileName);
 			HTTP.download(serverUrl + subPath + s, videoFileName);
+		} else {
+			logger.info("Video file " + f1.getAbsolutePath() + "found.");
 		}
 		return new Media(f1.toURI().toURL().toExternalForm());
 	}

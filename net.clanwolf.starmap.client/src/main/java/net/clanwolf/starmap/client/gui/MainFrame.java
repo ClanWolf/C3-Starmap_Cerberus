@@ -147,6 +147,14 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 		hostServices.showDocument(file.getAbsolutePath());
 	}
 
+	private void openAttackThread() {
+		if (Nexus.getCurrentAttackOfUser() != null) {
+			String url = Nexus.getCurrentAttackOfUser().getAttackDTO().getForumThreadLink();
+			HostServices hostServices = getHostServices();
+			hostServices.showDocument(url);
+		}
+	}
+
 	private void openPatreon() {
 		HostServices hostServices = getHostServices();
 		//hostServices.showDocument("https://www.patreon.com/bePatron?u=59537497&redirect_uri=https%3A%2F%2Fwww.clanwolf.net%2Fviewpage.php%3Fpage_id%3D300&utm_medium=widget");
@@ -457,6 +465,7 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 		ActionManager.addActionCallbackListener(ACTIONS.CURSOR_REQUEST_WAIT_MESSAGE, this);
 		ActionManager.addActionCallbackListener(ACTIONS.SHOW_MESSAGE, this);
 		ActionManager.addActionCallbackListener(ACTIONS.OPEN_MANUAL, this);
+		ActionManager.addActionCallbackListener(ACTIONS.OPEN_ATTACKTHREAT, this);
 		ActionManager.addActionCallbackListener(ACTIONS.OPEN_PATREON, this);
 		ActionManager.addActionCallbackListener(ACTIONS.OPEN_CLIENTVERSION_DOWNLOADPAGE, this);
 		ActionManager.addActionCallbackListener(ACTIONS.CLIENT_INSTALLER_DOWNLOAD_COMPLETE, this);
@@ -598,6 +607,9 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 				break;
 			case OPEN_MANUAL:
 				openManual();
+				break;
+			case OPEN_ATTACKTHREAT:
+				openAttackThread();
 				break;
 			case OPEN_PATREON:
 				openPatreon();
