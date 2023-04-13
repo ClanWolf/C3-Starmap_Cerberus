@@ -22,6 +22,13 @@ TODO:
 - Video does not show sometimes
 ----------------------------------------------------------------
 
+Version 7.3.16 (13.04.2023)
+- ADDED: A number of log messages to trace missing videos
+- FIXED: More issues with the userlist
+- CHANGED: Soundboard implementation
+- CHANGED: Shuffled user images
+- CHANGED: Increased frequency of broken invasions check timer
+
 Version 7.3.15 (12.04.2023)
 - FIXED: Some small issues with userlist panel
 
