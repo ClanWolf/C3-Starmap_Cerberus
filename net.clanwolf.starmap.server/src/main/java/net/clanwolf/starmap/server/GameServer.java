@@ -247,7 +247,7 @@ public class GameServer {
             // run regular checks if attacks missing dropleads
             Timer checkOpenAttacksForDropleadsTimer = new Timer();
             DropLeadCheckTimerTask dropLeadCheckTimerTask = new DropLeadCheckTimerTask();
-            checkOpenAttacksForDropleadsTimer.schedule(dropLeadCheckTimerTask, 15000, 20000);
+            checkOpenAttacksForDropleadsTimer.schedule(dropLeadCheckTimerTask, 15000, 5000);
 
             // write heartbeat file every some minutes
             Timer serverHeartBeat = new Timer();

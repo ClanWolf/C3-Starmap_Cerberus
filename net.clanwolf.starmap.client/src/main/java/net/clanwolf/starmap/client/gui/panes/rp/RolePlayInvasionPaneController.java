@@ -527,6 +527,14 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 						labelError.setText((Internationalization.getString("C3_Lobby_DropleadOfflineSince")).replace("####", diffMinutes + ""));
 						VBoxError.toFront();
 						VBoxError.setVisible(true);
+
+						buttonSoundBoard01.setDisable(true);
+						buttonSoundBoard02.setDisable(true);
+						buttonSoundBoard03.setDisable(true);
+						btChoice1.setDisable(true);
+						btChoice2.setDisable(true);
+						btChoice3.setDisable(true);
+						btChoice4.setDisable(true);
 					});
 				}
 				break;
@@ -541,6 +549,14 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 						labelError.setText((Internationalization.getString("C3_Lobby_DropleadOfflineSinceWARNING")).replace("####", diffMinutes + ""));
 						VBoxError.toFront();
 						VBoxError.setVisible(true);
+
+						buttonSoundBoard01.setDisable(true);
+						buttonSoundBoard02.setDisable(true);
+						buttonSoundBoard03.setDisable(true);
+						btChoice1.setDisable(true);
+						btChoice2.setDisable(true);
+						btChoice3.setDisable(true);
+						btChoice4.setDisable(true);
 					});
 				}
 				break;
@@ -555,6 +571,14 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 						labelError.setText((Internationalization.getString("C3_Lobby_DropleadOfflineSinceKICK")).replace("####", diffMinutes + ""));
 						VBoxError.toFront();
 						VBoxError.setVisible(true);
+
+						buttonSoundBoard01.setDisable(true);
+						buttonSoundBoard02.setDisable(true);
+						buttonSoundBoard03.setDisable(true);
+						btChoice1.setDisable(true);
+						btChoice2.setDisable(true);
+						btChoice3.setDisable(true);
+						btChoice4.setDisable(true);
 					});
 				}
 				break;
@@ -564,6 +588,14 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 					labelError.setText((Internationalization.getString("C3_Lobby_DropleadOfflineSinceHEALED")));
 					VBoxError.toBack();
 					VBoxError.setVisible(false);
+
+					buttonSoundBoard01.setDisable(false);
+					buttonSoundBoard02.setDisable(false);
+					buttonSoundBoard03.setDisable(false);
+					btChoice1.setDisable(false);
+					btChoice2.setDisable(false);
+					btChoice3.setDisable(false);
+					btChoice4.setDisable(false);
 				});
 				break;
 
@@ -925,6 +957,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 			case 3 -> playSoundboardSound.setMode(GAMESTATEMODES.PLAY_SOUNDBOARD_SOUND_EVENT_03);
 		}
 		playSoundboardSound.addObject(Nexus.getCurrentUser().getCurrentCharacter().getId());
+		playSoundboardSound.addObject2(Nexus.getCurrentAttackOfUser().getAttackDTO().getId());
 		Nexus.fireNetworkEvent(playSoundboardSound);
 	}
 

@@ -96,20 +96,16 @@ public class BORolePlayStory {
 		allStories = new ArrayList<>();
 	}
 
-	/**
-	 * Registers needed Actions to a ActionCallBackListener.
-	 * 
-	 * @param callBackListener
-	 *          the listener to be added
-	 */
-	public void registerActions(ActionCallBackListener callBackListener) {
-		ActionManager.addActionCallbackListener(ACTIONS.SAVE_ROLEPLAY_STORY_OK, callBackListener);
-		ActionManager.addActionCallbackListener(ACTIONS.SAVE_ROLEPLAY_STORY_ERR, callBackListener);
-		ActionManager.addActionCallbackListener(ACTIONS.GET_ROLEPLAY_ALLSTORIES, callBackListener);
-		ActionManager.addActionCallbackListener(ACTIONS.DELETE_ROLEPLAY_STORY_OK, callBackListener);
-		ActionManager.addActionCallbackListener(ACTIONS.DELETE_ROLEPLAY_STORY_ERR, callBackListener);
-		ActionManager.addActionCallbackListener(ACTIONS.GET_ROLEPLAY_ALLCHARACTER, callBackListener);
-		ActionManager.addActionCallbackListener(ACTIONS.GET_ROLEPLAY_STEPSBYSTORY, callBackListener);
+	public static URL getRPG_Soundfile(RolePlayStoryDTO rp){
+		String serverUrl = C3Properties.getProperty(C3PROPS.SERVER_URL);
+		String soundPath = getRPG_ResourceURL() + "/" + rp.getId();
+		try {
+			return new URL(serverUrl + "/" + soundPath + "/" + rp.getStoryMP3());
+		} catch (MalformedURLException e) {
+			logger.info("Error while loading RPG image! " + e.getMessage());
+			e.printStackTrace();
+			return null;
+		}
 	}
 
 	/**
@@ -205,18 +201,6 @@ public class BORolePlayStory {
 
 	}
 
-	public static URL getRPG_Soundfile(RolePlayStoryDTO rp){
-		String serverUrl = C3Properties.getProperty(C3PROPS.SERVER_URL);
-		String soundPath = getRPG_ResourceURL() + "/" + rp.getId();
-		try {
-			return new URL(serverUrl + "/" + soundPath + "/" + rp.getStoryMP3());
-		} catch (MalformedURLException e) {
-			logger.info("Error by loading RPG image! " + e.getMessage());
-			e.printStackTrace();
-			return null;
-		}
-	}
-
 	public static Media getRPG_Videofile(RolePlayStoryDTO rp) {
 		String videoPath = getRPG_ResourceURL() + "/" + rp.getId();
 		try {
@@ -227,15 +211,31 @@ public class BORolePlayStory {
 			// load rpg video
 			return HTTP.getCachedVideo(rp.getStoryIntro(), videoPath);
 		} catch (Exception e) {
-			logger.info("Error by loading RPG video! " + e.getMessage());
+			logger.info("Error while loading RPG video! " + e.getMessage());
 			e.printStackTrace();
 			return null;
 		}
 	}
 
 	/**
+	 * Registers needed Actions to a ActionCallBackListener.
+	 *
+	 * @param callBackListener
+	 *          the listener to be added
+	 */
+	public void registerActions(ActionCallBackListener callBackListener) {
+		ActionManager.addActionCallbackListener(ACTIONS.SAVE_ROLEPLAY_STORY_OK, callBackListener);
+		ActionManager.addActionCallbackListener(ACTIONS.SAVE_ROLEPLAY_STORY_ERR, callBackListener);
+		ActionManager.addActionCallbackListener(ACTIONS.GET_ROLEPLAY_ALLSTORIES, callBackListener);
+		ActionManager.addActionCallbackListener(ACTIONS.DELETE_ROLEPLAY_STORY_OK, callBackListener);
+		ActionManager.addActionCallbackListener(ACTIONS.DELETE_ROLEPLAY_STORY_ERR, callBackListener);
+		ActionManager.addActionCallbackListener(ACTIONS.GET_ROLEPLAY_ALLCHARACTER, callBackListener);
+		ActionManager.addActionCallbackListener(ACTIONS.GET_ROLEPLAY_STEPSBYSTORY, callBackListener);
+	}
+
+	/**
 	 * Adds a new story.
-	 * 
+	 *
 	 * @return
 	 *          the new story
 	 */
@@ -252,7 +252,7 @@ public class BORolePlayStory {
 
 	/**
 	 * Adds a new chapter for a given story.
-	 * 
+	 *
 	 * @param parentStory
 	 *          the parent to add a chapter to
 	 * @return
@@ -273,7 +273,7 @@ public class BORolePlayStory {
 
 	/**
 	 * Adds a new step for a given chapter.
-	 * 
+	 *
 	 * @param parentChapter
 	 *          the chapter to add a step to
 	 * @return
@@ -294,7 +294,7 @@ public class BORolePlayStory {
 
 	/**
 	 * Adds a new part of the story to the internal list with all selected stories from database.
-	 * 
+	 *
 	 * @param story
 	 *          the story transfer object to be added
 	 */
@@ -324,7 +324,7 @@ public class BORolePlayStory {
 
 	/**
 	 * Sets a list with selected stories.
-	 * 
+	 *
 	 * @param li
 	 *          a list of story transfer objects
 	 */
@@ -364,7 +364,7 @@ public class BORolePlayStory {
 
 	/**
 	 * Sets a list with characters.
-	 * 
+	 *
 	 * @param li the list of character transfer objects
 	 */
 	public void setCharacterList(ArrayList<RolePlayCharacterDTO> li) {
@@ -393,7 +393,7 @@ public class BORolePlayStory {
 
 	/**
 	 * Gets a list with stories from a chapter.
-	 * 
+	 *
 	 * @param chapter
 	 *          the chapter as a story transfer object
 	 * @return
@@ -417,7 +417,7 @@ public class BORolePlayStory {
 
 	/**
 	 * Returns a clone of a story DTO.
-	 * 
+	 *
 	 * @param original
 	 *          the original story transfer object
 	 * @return
@@ -563,13 +563,13 @@ public class BORolePlayStory {
 
 	/**
 	 * Check consistence of the object before save it true -> OK / false -> not ok
-	 * 
+	 *
 	 * @param rpStory RolePlayStoryDTO
 	 * @return boolean
 	 */
 	public boolean checkBeforeSave(RolePlayStoryDTO rpStory) {
 		boolean ret = false;
-		
+
 		if (rpStory.getStoryName() == null || rpStory.getStoryName().isEmpty()) {
 			setErrorText(Internationalization.getString("app_rp_storyeditor_story_check_message1"));
 
@@ -605,7 +605,7 @@ public class BORolePlayStory {
 
 	/**
 	 * Check the object before delete it true -> ok / false -> not ok
-	 * 
+	 *
 	 * @param story RolePlayStoryDTO
 	 * @return boolean
 	 */
@@ -629,7 +629,7 @@ public class BORolePlayStory {
 
 	/**
 	 * Return all RolePlayStoryDTO with type ROLEPLAYENTRYTYPES.C3_RP_STORY
-	 * 
+	 *
 	 * @return ArrayList<RolePlayStoryDTO>
 	 */
 	public ArrayList<RolePlayStoryDTO> getStoriesFromList() {
@@ -645,7 +645,7 @@ public class BORolePlayStory {
 
 	/**
 	 * Return all RolePlayStoryDTO where the parent node is the parameter
-	 * 
+	 *
 	 * @param rpStory RolePlayStoryDTO
 	 * @return ArrayList<RolePlayStoryDTO>
 	 */
@@ -662,21 +662,21 @@ public class BORolePlayStory {
 	}
 
 	/**
-	 * Set the error text
-	 * 
-	 * @param txt String
-	 */
-	private void setErrorText(String txt) {
-		errorText = txt;
-	}
-
-	/**
 	 * Returns the error text
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getErrorText() {
 		return errorText;
+	}
+
+	/**
+	 * Set the error text
+	 *
+	 * @param txt String
+	 */
+	private void setErrorText(String txt) {
+		errorText = txt;
 	}
 
 	/**
@@ -758,7 +758,7 @@ public class BORolePlayStory {
 	 * @return boolean
 	 */
 	public boolean hasNoNextStepEntry(RolePlayStoryDTO story) {
-		
+
 		boolean nextStepFound = false;
 
 		if(story != null && story.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1 &&
@@ -768,13 +768,13 @@ public class BORolePlayStory {
 		} else if(story != null  && story.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V2
 				&& story.getVar2ID().getOption1StoryID() == null ) {
 			nextStepFound = true;
-		
+
 		} else if(story != null  && story.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V3
 				&& story.getVar3ID().getNextStoryID() == null ) {
 			nextStepFound = true;
-		
+
 		} else if(story != null  && story.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V4
-				&& ( story.getVar4ID().getStoryIDScoreEqual() == null 
+				&& ( story.getVar4ID().getStoryIDScoreEqual() == null
 						|| story.getVar4ID().getStoryIDScoreLess() == null
 						|| story.getVar4ID().getStoryIDScoreMore() == null)) {
 			nextStepFound = true;
@@ -807,7 +807,7 @@ public class BORolePlayStory {
 
 	/**
 	 * Save methode for a story/chapter/step
-	 * 
+	 *
 	 * @param story RolePlayStoryDTO
 	 */
 	public void save(RolePlayStoryDTO story) {
@@ -821,7 +821,7 @@ public class BORolePlayStory {
 
 	/**
 	 * Delete methode for a story/chapter/step
-	 * 
+	 *
 	 * @param story RolePlayStoryDTO
 	 */
 	public void delete(RolePlayStoryDTO story) {
@@ -835,7 +835,7 @@ public class BORolePlayStory {
 
 	/**
 	 * Request to the server to give all stories of a user
-	 * 
+	 *
 	 */
 	public void getAllStories() {
 		GameState state = new GameState();
@@ -855,7 +855,7 @@ public class BORolePlayStory {
 
 	/**
 	 * Request to the server to give all characters
-	 * 
+	 *
 	 */
 	public void getAllCharacter() {
 		GameState state = new GameState();
@@ -1002,7 +1002,7 @@ public class BORolePlayStory {
 
 	/**
 	 * Checks if the objects have the same id
-	 * 
+	 *
 	 * @param r1 RolePlayStoryDTO for check
 	 * @param r2 RolePlayStoryDTO for check
 	 * @return return true if both parameters are the same otherwise false

@@ -385,6 +385,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 							if (s != null) {
 								attackedSystem = s.getName();
 							}
+							lbUserSelf.setText(u.getUserName() + "\n(" + attackedSystem + ")");
 						}
 					});
 				} else {
@@ -412,7 +413,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			c1.setSortable(true);
 			c2.setSortable(true);
 			c3.setSortable(true);
-			tblUserHistory.getSortOrder().addAll(c1, c2, c3);
+			tblUserHistory.getSortOrder().addAll(c2, c1, c3);
 			c1.setSortType(TableColumn.SortType.ASCENDING);
 			c2.setSortType(TableColumn.SortType.ASCENDING);
 			c3.setSortType(TableColumn.SortType.ASCENDING);
@@ -1599,14 +1600,10 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		tblUserHistory.setPlaceholder(new Label("..."));
 		TableColumn<UserHistoryEntry, String> userColumn = new TableColumn<>("");
 		userColumn.setCellValueFactory(data -> data.getValue().getUser());
-		userColumn.setPrefWidth(202);
-		userColumn.setMaxWidth(205);
-		userColumn.setMinWidth(200);
+		userColumn.setPrefWidth(140);
 		TableColumn<UserHistoryEntry, String> factionColumn = new TableColumn<>("");
 		factionColumn.setCellValueFactory(data -> data.getValue().getFaction());
-		factionColumn.setPrefWidth(32);
-		factionColumn.setMaxWidth(35);
-		factionColumn.setMinWidth(30);
+		factionColumn.setPrefWidth(50);
 //		TableColumn<UserHistoryEntry, String> versionColumn = new TableColumn<>("");
 //		versionColumn.setCellValueFactory(data -> data.getValue().getVersion());
 //		versionColumn.setPrefWidth(250);
@@ -1617,7 +1614,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 //		timeColumn.setMinWidth(100);
 		TableColumn<UserHistoryEntry, String> attackColumn = new TableColumn<>("");
 		attackColumn.setCellValueFactory(data -> data.getValue().getInFightForPlanet());
-		attackColumn.setPrefWidth(250);
+		attackColumn.setPrefWidth(170);
 		tblUserHistory.getColumns().addAll( userColumn,
 											factionColumn,
 											//versionColumn

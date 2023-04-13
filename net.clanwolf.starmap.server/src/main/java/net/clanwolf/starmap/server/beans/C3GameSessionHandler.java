@@ -865,12 +865,45 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		String ipAdressSender = state.getIpAdressSender();
 
 		switch (state.getMode()) {
-//			case PLAY_SOUNDBOARD_SOUND_01:
-//				break;
-//			case PLAY_SOUNDBOARD_SOUND_02:
-//				break;
-//			case PLAY_SOUNDBOARD_SOUND_03:
-//				break;
+			case PLAY_SOUNDBOARD_SOUND_EVENT_01:
+				if (state.getObject() instanceof Long && state.getObject2() instanceof Long) {
+					logger.info("Play soundboard sound 01.");
+
+					Long charId = (Long) state.getObject();
+					Long attackId = (Long) state.getObject2();
+
+					GameState response = new GameState(GAMESTATEMODES.PLAY_SOUNDBOARD_SOUND_EVENT_01);
+					response.addObject(charId);
+					response.addObject2(attackId);
+					C3GameSessionHandler.sendBroadCast(room, response);
+				}
+				break;
+			case PLAY_SOUNDBOARD_SOUND_EVENT_02:
+				if (state.getObject() instanceof Long && state.getObject2() instanceof Long) {
+					logger.info("Play soundboard sound 02.");
+
+					Long charId = (Long) state.getObject();
+					Long attackId = (Long) state.getObject2();
+
+					GameState response = new GameState(GAMESTATEMODES.PLAY_SOUNDBOARD_SOUND_EVENT_02);
+					response.addObject(charId);
+					response.addObject2(attackId);
+					C3GameSessionHandler.sendBroadCast(room, response);
+				}
+				break;
+			case PLAY_SOUNDBOARD_SOUND_EVENT_03:
+				if (state.getObject() instanceof Long && state.getObject2() instanceof Long) {
+					logger.info("Play soundboard sound 03.");
+
+					Long charId = (Long) state.getObject();
+					Long attackId = (Long) state.getObject2();
+
+					GameState response = new GameState(GAMESTATEMODES.PLAY_SOUNDBOARD_SOUND_EVENT_03);
+					response.addObject(charId);
+					response.addObject2(attackId);
+					C3GameSessionHandler.sendBroadCast(room, response);
+				}
+				break;
 			case BROADCAST_SEND_NEW_PLAYERLIST:
 				sendNewPlayerList(session);
 				break;

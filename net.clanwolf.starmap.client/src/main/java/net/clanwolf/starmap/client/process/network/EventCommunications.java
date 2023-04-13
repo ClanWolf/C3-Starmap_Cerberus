@@ -73,13 +73,40 @@ public class EventCommunications {
 
 			switch (state.getMode()) {
 				case PLAY_SOUNDBOARD_SOUND_EVENT_01:
-					ActionManager.getAction(ACTIONS.PLAY_SOUNDBAR_EXECUTE_01).execute();
+					if (state.getObject() instanceof Long && state.getObject2() instanceof Long) {
+						logger.info("Play soundboard sound 01.");
+
+						Long charId = (Long) state.getObject();
+						Long attackId = (Long) state.getObject2();
+
+						if (Nexus.getCurrentAttackOfUser().getAttackDTO().getId().equals(attackId)) {
+							ActionManager.getAction(ACTIONS.PLAY_SOUNDBAR_EXECUTE_01).execute(charId);
+						}
+					}
 					break;
 				case PLAY_SOUNDBOARD_SOUND_EVENT_02:
-					ActionManager.getAction(ACTIONS.PLAY_SOUNDBAR_EXECUTE_02).execute();
+					if (state.getObject() instanceof Long && state.getObject2() instanceof Long) {
+						logger.info("Play soundboard sound 02.");
+
+						Long charId = (Long) state.getObject();
+						Long attackId = (Long) state.getObject2();
+
+						if (Nexus.getCurrentAttackOfUser().getAttackDTO().getId().equals(attackId)) {
+							ActionManager.getAction(ACTIONS.PLAY_SOUNDBAR_EXECUTE_02).execute(charId);
+						}
+					}
 					break;
 				case PLAY_SOUNDBOARD_SOUND_EVENT_03:
-					ActionManager.getAction(ACTIONS.PLAY_SOUNDBAR_EXECUTE_03).execute();
+					if (state.getObject() instanceof Long && state.getObject2() instanceof Long) {
+						logger.info("Play soundboard sound 03.");
+
+						Long charId = (Long) state.getObject();
+						Long attackId = (Long) state.getObject2();
+
+						if (Nexus.getCurrentAttackOfUser().getAttackDTO().getId().equals(attackId)) {
+							ActionManager.getAction(ACTIONS.PLAY_SOUNDBAR_EXECUTE_03).execute(charId);
+						}
+					}
 					break;
 
 				case FOUND_BROKEN_ATTACK:

@@ -351,8 +351,11 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 							FadeOutTransition.play();
 						});
 						mp.play();
+					} else {
+						logger.info("Video file download attempt resulted in null (no video).");
 					}
 				} catch (Exception e) {
+					logger.error("Error while downloading video file.", e);
 					backgroundMediaView.toBack();
 					backgroundMediaView.setVisible(false);
 					backgroundMediaView.setMediaPlayer(null);

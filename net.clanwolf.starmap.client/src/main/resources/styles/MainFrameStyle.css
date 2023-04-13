@@ -845,6 +845,13 @@
   -fx-padding: 8 8 8 8;
 }
 
+.contentTextAreaBlock3 {
+  -fx-background-color: rgba(53, 89, 119, 1.00);
+  -fx-background-insets: 0, 0, 0, 0;
+  -fx-background-radius: 0, 0, 0, 0;
+  -fx-padding: 8 8 8 8;
+}
+
 .contentButton {
   -fx-border-color: #538b53;
   -fx-background-color: rgba(70, 118, 70, 0.4);

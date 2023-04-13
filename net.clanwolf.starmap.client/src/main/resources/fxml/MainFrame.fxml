@@ -38,12 +38,12 @@
             </ImageView>
          </children>
         </Pane>
-      <VBox fx:id="UserHistoryInfo" layoutX="669.0" layoutY="59.0" onMouseEntered="#handleUserListEntered" onMouseExited="#handleUserListExited" prefHeight="449.0" prefWidth="305.0" styleClass="systemDetailPanelSolid" stylesheets="@../styles/MainFrameStyle.css" visible="false">
+      <VBox fx:id="UserHistoryInfo" layoutX="659.0" layoutY="59.0" onMouseEntered="#handleUserListEntered" onMouseExited="#handleUserListExited" prefHeight="491.0" prefWidth="315.0" styleClass="systemDetailPanelSolid" stylesheets="@../styles/MainFrameStyle.css" visible="false">
          <children>
             <HBox alignment="CENTER">
                <children>
                   <ImageView fx:id="ivCharacterImage" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER" />
-                  <Label fx:id="lbUserSelf" alignment="CENTER" focusTraversable="false" maxWidth="1.7976931348623157E308" text="Label" HBox.hgrow="ALWAYS" />
+                  <Label fx:id="lbUserSelf" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" maxWidth="1.7976931348623157E308" prefHeight="62.0" prefWidth="194.0" text="Label" textAlignment="CENTER" HBox.hgrow="ALWAYS" />
                   <ImageView fx:id="ivCharacterFaction" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER" />
                </children>
                <padding>

@@ -14,14 +14,14 @@
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="RolePlayStartPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/19" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.RolePlayInvasionPaneController">
     <children>
-      <VBox fx:id="VBoxError" alignment="CENTER" layoutX="87.0" layoutY="67.0" prefHeight="200.0" prefWidth="716.0" styleClass="contentTextAreaBlock2" stylesheets="@../styles/MainFrameStyle.css">
+      <VBox fx:id="VBoxError" alignment="CENTER" layoutX="87.0" layoutY="22.0" prefHeight="318.0" prefWidth="731.0" styleClass="contentTextAreaBlock3" stylesheets="@../styles/MainFrameStyle.css">
          <children>
-            <ImageView fx:id="ImageViewError" fitHeight="100.0" fitWidth="140.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="ImageViewError" fitHeight="82.0" fitWidth="62.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../images/gui/hud_circle.gif" />
                </image>
             </ImageView>
-            <Label fx:id="labelError" alignment="CENTER" prefHeight="14.0" prefWidth="202.0" text="..." />
+            <Label fx:id="labelError" alignment="CENTER" prefHeight="14.0" prefWidth="665.0" text="..." />
          </children>
       </VBox>
       <ImageView fx:id="ivLocation" fitHeight="24.0" fitWidth="56.0" layoutX="116.0" layoutY="250.0" pickOnBounds="true" preserveRatio="true">
@@ -152,15 +152,15 @@
             <Image url="@../images/gui/static.gif" />
          </image>
       </ImageView>
-      <Button fx:id="buttonSoundBoard01" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="755.0" layoutY="8.0" mnemonicParsing="false" onAction="#handleSoundbarButton01Click" prefHeight="37.0" prefWidth="81.0" styleClass="contentButtonBlue" stylesheets="@../styles/MainFrameStyle.css" text="Button" />
-      <Button fx:id="buttonSoundBoard02" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="755.0" layoutY="50.0" mnemonicParsing="false" onAction="#handleSoundbarButton02Click" prefHeight="37.0" prefWidth="81.0" styleClass="contentButtonBlue" stylesheets="@../styles/MainFrameStyle.css" text="Button" />
-      <Button fx:id="buttonSoundBoard03" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="755.0" layoutY="92.0" mnemonicParsing="false" onAction="#handleSoundbarButton03Click" prefHeight="37.0" prefWidth="81.0" styleClass="contentButtonBlue" stylesheets="@../styles/MainFrameStyle.css" text="Button" />
+      <Button fx:id="buttonSoundBoard01" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="758.0" layoutY="12.0" mnemonicParsing="false" onAction="#handleSoundbarButton01Click" prefHeight="37.0" prefWidth="81.0" styleClass="contentButtonBlue" stylesheets="@../styles/MainFrameStyle.css" text="Button" />
+      <Button fx:id="buttonSoundBoard02" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="758.0" layoutY="54.0" mnemonicParsing="false" onAction="#handleSoundbarButton02Click" prefHeight="37.0" prefWidth="81.0" styleClass="contentButtonBlue" stylesheets="@../styles/MainFrameStyle.css" text="Button" />
+      <Button fx:id="buttonSoundBoard03" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="758.0" layoutY="96.0" mnemonicParsing="false" onAction="#handleSoundbarButton03Click" prefHeight="37.0" prefWidth="81.0" styleClass="contentButtonBlue" stylesheets="@../styles/MainFrameStyle.css" text="Button" />
       <ImageView fx:id="ivForumLink" fitHeight="25.0" fitWidth="20.0" layoutX="61.0" layoutY="201.0" onMouseClicked="#handleLinkMouseEventClick" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../icons/link.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="ivRadioSenderImage" fitHeight="68.0" fitWidth="81.0" layoutX="760.0" layoutY="149.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="ivRadioSenderImage" fitHeight="68.0" fitWidth="81.0" layoutX="767.0" layoutY="155.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../icons/radio.png" />
          </image>
