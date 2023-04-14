@@ -26,7 +26,10 @@
  */
 package net.clanwolf.starmap.client.sound;
 
-import javafx.animation.*;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.PauseTransition;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
@@ -88,6 +91,7 @@ public class C3SoundPlayer {
 		}
 		return instance;
 	}
+
 	/**
 	 * Start the music.
 	 */
@@ -213,7 +217,7 @@ public class C3SoundPlayer {
 	}
 
 	public static void stopSpeechPlayer() {
-		if(speechPlayer != null) {
+		if (speechPlayer != null) {
 			speechPlayer.stop();
 			speechPlayer = null;
 		}
@@ -232,7 +236,7 @@ public class C3SoundPlayer {
 			timeline.setOnFinished(event -> {
 				rpPlayer.stop();
 				rpPlayer.setVolume(volume);
-//				rpPlayer.dispose();
+				//				rpPlayer.dispose();
 			});
 		}
 	}
@@ -322,13 +326,13 @@ public class C3SoundPlayer {
 
 						speechPlayer = new MediaPlayer(speechClip);
 						speechPlayer.setVolume(voiceVolume);
-//						speechPlayer.setOnEndOfMedia(new Runnable() {
-//							@Override
-//							public void run() {
-//								ActionManager.getAction(ACTIONS.STOP_SPEECH_SPECTRUM).execute();
-//							}
-//						});
-						speechPlayer.setOnEndOfMedia( () -> ActionManager.getAction(ACTIONS.STOP_SPEECH_SPECTRUM).execute() );
+						//						speechPlayer.setOnEndOfMedia(new Runnable() {
+						//							@Override
+						//							public void run() {
+						//								ActionManager.getAction(ACTIONS.STOP_SPEECH_SPECTRUM).execute();
+						//							}
+						//						});
+						speechPlayer.setOnEndOfMedia(() -> ActionManager.getAction(ACTIONS.STOP_SPEECH_SPECTRUM).execute());
 						speechPlayer.play();
 					}
 				} catch (MediaException me) {
@@ -367,7 +371,7 @@ public class C3SoundPlayer {
 			soundPath = "/" + soundPath;
 		}
 
-		URL u = ((C3SoundPlayer)getInstance()).getClass().getResource(soundPath);
+		URL u = ((C3SoundPlayer) getInstance()).getClass().getResource(soundPath);
 
 		if (u == null) {
 			StackTraceElement[] stackTraceElements = Thread.currentThread().getStackTrace();
@@ -400,9 +404,9 @@ public class C3SoundPlayer {
 	public static void setVoiceVolume(double v) {
 		voiceVolume = v;
 		if (speechPlayer != null) {
-//			Platform.runLater(() -> {
-//				speechPlayer.setVolume(voiceVolume);
-//			});
+			//			Platform.runLater(() -> {
+			//				speechPlayer.setVolume(voiceVolume);
+			//			});
 		}
 	}
 
@@ -440,8 +444,45 @@ public class C3SoundPlayer {
 		}
 	}
 
+	public static boolean getSpeechFromNarakeet(String s) {
+		// https://www.narakeet.com
+		// Account: google authentification
+
+		//		try {
+		//			String apiKey = "";
+		//			String voice = "brian";
+		//			String text = "Hello from Java!";
+		//
+		//			String url = String.format("https://api.narakeet.com/text-to-speech/mp3?voice=%s", voice);
+		//			String outputFilePath = "output.mp3";
+		//
+		//			HttpClient httpClient = HttpClientBuilder.create().build();
+		//			HttpPost httpPost = new HttpPost(url);
+		//			httpPost.setHeader("Accept", "application/octet-stream");
+		//			httpPost.setHeader("Content-Type", "text/plain");
+		//			httpPost.setHeader("x-api-key", apiKey);
+		//
+		//			byte[] utf8Bytes = text.getBytes(StandardCharsets.UTF_8);
+		//			ByteArrayEntity requestBody = new ByteArrayEntity(utf8Bytes);
+		//			httpPost.setEntity(requestBody);
+		//
+		//			FileOutputStream outputStream = new FileOutputStream(outputFilePath);
+		//			HttpResponse response = httpClient.execute(httpPost);
+		//			response.getEntity().writeTo(outputStream);
+		//			outputStream.close();
+		//		} catch(Exception e) {
+		//
+		//		}
+
+		// To use this on the fly, apache deps are necessary, conflicting with the build
+		// Use this manually and integrate the finished samples
+
+		return true;
+	}
+
 	/**
 	 * Retrieves a speech file from a string from online mary tts service
+	 *
 	 * @param s The sentence to be spoken by mary online service
 	 */
 	public static boolean getSpeechFromVoiceRSS(String s) {
@@ -524,63 +565,63 @@ public class C3SoundPlayer {
 		return false;
 	}
 
-//	/**
-//	 * Retrieves a speech file from a string from online mary tts service
-//	 * @param s The sentence to be spoken by mary online service
-//	 */
-//	public static void getSpeechFromMary(String s) {
-//
-//		// http://mary.dfki.de:59125/documentation.html
-//
-//		if ("true".equals(C3Properties.getProperty(C3PROPS.PLAY_VOICE))) {
-//			String lang = Internationalization.getLanguage();
-//			String cacheFolderName = System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "cache" + File.separator + lang;
-//			File cacheFolder = new File(cacheFolderName);
-//			if (!cacheFolder.isDirectory()) {
-//				boolean success = cacheFolder.mkdirs();
-//				logger.info("Creating cache folder for voice files: " + success);
-//			}
-//			String fn = s.replace("%20", "_");
-//			String f = cacheFolderName + File.separator + fn + ".mp3";
-//			File f1 = new File(f);
-//
-//			if (!f1.isFile()) {
-//				// use online Mary TTS
-//				logger.info("Online tts (Mary) requested...");
-//
-//				s = s.replace(" ", "%20");
-//				String u = "http://mary.dfki.de:59125/process?INPUT_TEXT=" + s + "&INPUT_TYPE=TEXT&OUTPUT_TYPE=AUDIO&effect_JetPilot_selected=on&AUDIO=WAVE_FILE&LOCALE=";
-//				if ("de".equals(lang)) {
-//					u = u + "de";
-//				} else if ("en".equals(lang)) {
-//					u = u + "en_GB";
-//				}
-//
-//				try {
-//					HTTP.download(u, f);
-//					play(new File(f), true);
-//				} catch (Exception e) {
-//					// Speech could not be retrieved
-//					logger.info("Error getting speech data: " + e.toString());
-//				}
-//			} else {
-//				logger.info("TTS sound file was found in cache: " + f1.getAbsolutePath() + ".");
-//				play(f1, true);
-//			}
-//			play("sound/fx/beep_02.mp3", false);
-//		}
-//	}
+	//	/**
+	//	 * Retrieves a speech file from a string from online mary tts service
+	//	 * @param s The sentence to be spoken by mary online service
+	//	 */
+	//	public static void getSpeechFromMary(String s) {
+	//
+	//		// http://mary.dfki.de:59125/documentation.html
+	//
+	//		if ("true".equals(C3Properties.getProperty(C3PROPS.PLAY_VOICE))) {
+	//			String lang = Internationalization.getLanguage();
+	//			String cacheFolderName = System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "cache" + File.separator + lang;
+	//			File cacheFolder = new File(cacheFolderName);
+	//			if (!cacheFolder.isDirectory()) {
+	//				boolean success = cacheFolder.mkdirs();
+	//				logger.info("Creating cache folder for voice files: " + success);
+	//			}
+	//			String fn = s.replace("%20", "_");
+	//			String f = cacheFolderName + File.separator + fn + ".mp3";
+	//			File f1 = new File(f);
+	//
+	//			if (!f1.isFile()) {
+	//				// use online Mary TTS
+	//				logger.info("Online tts (Mary) requested...");
+	//
+	//				s = s.replace(" ", "%20");
+	//				String u = "http://mary.dfki.de:59125/process?INPUT_TEXT=" + s + "&INPUT_TYPE=TEXT&OUTPUT_TYPE=AUDIO&effect_JetPilot_selected=on&AUDIO=WAVE_FILE&LOCALE=";
+	//				if ("de".equals(lang)) {
+	//					u = u + "de";
+	//				} else if ("en".equals(lang)) {
+	//					u = u + "en_GB";
+	//				}
+	//
+	//				try {
+	//					HTTP.download(u, f);
+	//					play(new File(f), true);
+	//				} catch (Exception e) {
+	//					// Speech could not be retrieved
+	//					logger.info("Error getting speech data: " + e.toString());
+	//				}
+	//			} else {
+	//				logger.info("TTS sound file was found in cache: " + f1.getAbsolutePath() + ".");
+	//				play(f1, true);
+	//			}
+	//			play("sound/fx/beep_02.mp3", false);
+	//		}
+	//	}
 
 	public static void getSamples() {
-//		voiceSwitch = "Lina";
+		//		voiceSwitch = "Lina";
 		voiceSwitch = "Jonas";
 		languageSwitch = "de-de";
-//		getTTSFile("Der Planet wurde erobert. Die Verteidiger haben es nicht geschafft, die Invasion zu verhindern und wurden aufgerieben. Es weht eine neue Fahne über der Hauptstadt");
-//		getTTSFile("Die Invasion wurde zurück geschlagen. Der Planet bleibt im Besitz der bisherigen Fraktion und die stolzen Verteidiger reihen diesen Triumph in ihre Geschichte ein");
+		//		getTTSFile("Der Planet wurde erobert. Die Verteidiger haben es nicht geschafft, die Invasion zu verhindern und wurden aufgerieben. Es weht eine neue Fahne über der Hauptstadt");
+		//		getTTSFile("Die Invasion wurde zurück geschlagen. Der Planet bleibt im Besitz der bisherigen Fraktion und die stolzen Verteidiger reihen diesen Triumph in ihre Geschichte ein");
 
 		voiceSwitch = "Mary";
 		languageSwitch = "en-us";
-//		getTTSFile("Mining Collective");
+		//		getTTSFile("Mining Collective");
 
 		voiceSwitch = null;
 		languageSwitch = null;

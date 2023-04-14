@@ -378,7 +378,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 							ivCharacterFaction.setImage(Nexus.getFactionLogo());
 						}
 
-						String attackedSystem = "/";
+						String attackedSystem = "";
 						AttackDTO a = Nexus.getCurrentOpenAttackForUser(u);
 						if (a != null) {
 							BOStarSystem s = Nexus.getBoUniverse().starSystemBOs.get(a.getStarSystemID());
@@ -390,7 +390,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					});
 				} else {
 					String userString = "";
-					String attackedSystem = "/";
+					String attackedSystem = "";
 
 					AttackDTO a = Nexus.getCurrentOpenAttackForUser(u);
 					if (a != null) {
@@ -405,6 +405,11 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					tblUserHistory.getItems().add(entry);
 				}
 			}
+
+//			for (int i=1; i<50;i++) {
+//				UserHistoryEntry entry = new UserHistoryEntry("test", "CHH", "", "", "Nori");
+//				tblUserHistory.getItems().add(entry);
+//			}
 
 			// Sort userlist
 			TableColumn c1 = tblUserHistory.getColumns().get(0);

@@ -35,6 +35,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import net.clanwolf.starmap.client.enums.PRIVILEGES;
 import net.clanwolf.starmap.client.nexus.Nexus;
+import net.clanwolf.starmap.client.process.universe.BOFaction;
 import net.clanwolf.starmap.client.process.universe.BOJumpship;
 import net.clanwolf.starmap.client.process.universe.BOStarSystem;
 import net.clanwolf.starmap.client.security.FinancesInfo;
@@ -42,6 +43,7 @@ import net.clanwolf.starmap.client.security.Security;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.transfer.GameState;
+import net.clanwolf.starmap.transfer.dtos.FactionDTO;
 import net.clanwolf.starmap.transfer.dtos.UserDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import org.slf4j.Logger;
@@ -79,6 +81,9 @@ public class AdminPaneController {
 
 	@FXML
 	ComboBox cbUser, cbFaction;
+
+	@FXML
+	ComboBox<FactionDTO> cbUserFaction;
 
 	@FXML
 	TableColumn<FinancesInfo,String> tblCIncome, tblCIncomeDescription;
@@ -358,7 +363,7 @@ public class AdminPaneController {
 		srollPane.setContent(root);
 
 		ObservableList<String> data = FXCollections.observableArrayList();
-		Iterator iter = this.userList.iterator();
+		Iterator<UserDTO> iter = this.userList.iterator();
 		while(iter.hasNext()) {
 			try {
 				UserDTO user = (UserDTO) iter.next();
@@ -371,6 +376,12 @@ public class AdminPaneController {
 		cbUser.setItems(data);
 		cbUser.getSelectionModel().select(0);
 		setCheckBoxesForUser((String)cbUser.getSelectionModel().getSelectedItem());
+
+		ObservableList<FactionDTO> factions = FXCollections.observableArrayList();
+		for (BOFaction f : Nexus.getBoUniverse().getFactionList()) {
+			factions.add(f.getFactionDTO());
+		}
+		cbUserFaction.setItems(factions);
 
 		//Finances
 		ObservableList <String> activeFactions = FXCollections.observableArrayList();

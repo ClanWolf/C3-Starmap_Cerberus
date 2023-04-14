@@ -778,7 +778,14 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 				Image charImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(c.getCharImage())));
 				ivRadioSenderImage.setImage(charImage);
 
-				final Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(10), new EventHandler<ActionEvent>() {
+				final Timeline timelineSpectrum = new Timeline(new KeyFrame(Duration.seconds(4), new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent actionEvent) {
+						ActionManager.getAction(ACTIONS.STOP_SPEECH_SPECTRUM).execute();
+					}
+				}));
+
+				final Timeline timelineCooldown = new Timeline(new KeyFrame(Duration.seconds(40), new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent actionEvent) {
 						buttonSoundBoard01.setDisable(false);
@@ -788,17 +795,18 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 						Image neutralImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/radio.png")));
 						ivRadioSenderImage.setImage(neutralImage);
 						playingRadioSample = false;
-						ActionManager.getAction(ACTIONS.STOP_SPEECH_SPECTRUM).execute();
 					}
 				}));
-				timeline.play();
+
+				timelineSpectrum.play();
+				timelineCooldown.play();
 
 				playingRadioSample = true;
 				ActionManager.getAction(ACTIONS.START_SPEECH_SPECTRUM).execute();
 				switch (sampleNumber) {
-					case 1 -> C3SoundPlayer.play("sound/fx/beep_electric.mp3", false);
-					case 2 -> C3SoundPlayer.play("sound/fx/beep_electric.mp3", false);
-					case 3 -> C3SoundPlayer.play("sound/fx/beep_electric.mp3", false);
+					case 1 -> C3SoundPlayer.play("sound/voice/de/soundboard/001.mp3", false);
+					case 2 -> C3SoundPlayer.play("sound/voice/de/soundboard/002.mp3", false);
+					case 3 -> C3SoundPlayer.play("sound/voice/de/soundboard/003.mp3", false);
 				}
 
 			});

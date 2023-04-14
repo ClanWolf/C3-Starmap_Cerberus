@@ -581,6 +581,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				}
 
 				ArrayList<Shape> dashedBackgrounds = new ArrayList<>();
+				ArrayList<Shape> flashingBackgrounds = new ArrayList<>();
 				// Move the ships
 				for (BOJumpship js : boUniverse.jumpshipBOs.values()) {
 					Long currentSystemID = js.getCurrentSystemID();
@@ -687,6 +688,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 									canvas.getChildren().add(systemBackground);
 									systemBackground.setVisible(true);
 									systemBackground.toBack();
+									flashingBackgrounds.add(systemBackground);
 								}
 							}
 						}
@@ -809,6 +811,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				canvas.getChildren().add(borders);
 				borders.toBack();
 				for (Shape s : dashedBackgrounds) {
+					s.toBack();
+				}
+				for (Shape s : flashingBackgrounds) {
 					s.toBack();
 				}
 				ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("10_33");

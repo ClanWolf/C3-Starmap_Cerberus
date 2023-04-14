@@ -223,4 +223,8 @@ public class FactionDTO extends Dto {
 	public void setCanon(Boolean canon) {
 		this.canon = canon;
 	}
+
+	public String toString() {
+		return this.shortName;
+	}
 }

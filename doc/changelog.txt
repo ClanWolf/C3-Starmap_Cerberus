@@ -13,6 +13,10 @@ TODO:
 - Check warning hibernate dialect (server)
 - Switch to MariaDB client (client, bots)
 
+- "Change faction for user" should be a privilege that can be assigned to a user in the admin pane
+- Add ad selection to change the faction for a user (if you have the privilege)
+- Create simple roleplay for "requesting diplomatic status" and "accept" or "decline"
+- Sound volume and Speech volume vs RP volume cleanup
 - Add global keys to the GUI
 - Add keyboard shortcuts for language change and help and open attack forum post
 - Add messages for "Lobby started", "Invasion endet, Winner is...", "Invasion is in Drop x, currently 2:2",...
@@ -21,6 +25,12 @@ TODO:
 - Check tab order and keyboard control for all panes
 - Video does not show sometimes
 ----------------------------------------------------------------
+
+Version 7.3.17 (14.04.2023)
+- ADDED: An alternative TTS source (narakeet)
+- ADDED: New privilege for changing faction (admin)
+- ADDED: New privilege for diplomacy
+- FIXED: Issue with attacked system backgrounds flashing infront of the system border lines
 
 Version 7.3.16 (13.04.2023)
 - ADDED: A number of log messages to trace missing videos
