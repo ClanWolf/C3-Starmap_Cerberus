@@ -26,6 +26,8 @@
  */
 package net.clanwolf.starmap.client.process.universe;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.image.ImageView;
 import net.clanwolf.starmap.client.gui.panes.map.tools.GraphManager;
 import net.clanwolf.starmap.client.nexus.Nexus;
@@ -166,6 +168,17 @@ public class BOUniverse {
 		currentDate = universeDTO.currentDate;
 		maxNumberOfRoundsForSeason = universeDTO.maxNumberOfRoundsForSeason;
 		numberOfDaysInRound = universeDTO.numberOfDaysInRound;
+	}
+
+	public synchronized ObservableList<BOFaction> getActiveFactions() {
+		ObservableList<BOFaction> activeFactions = FXCollections.observableArrayList();
+		String factionName, unitName;
+
+		for (BOJumpship jumpship: Nexus.getBoUniverse().getJumpshipList()) {
+			BOFaction f = Nexus.getBoUniverse().getFactionByID(jumpship.getJumpshipDTO().getJumpshipFactionID());
+			activeFactions.add(f);
+		}
+		return activeFactions;
 	}
 
 	public synchronized void setUniverseDTO(UniverseDTO uniDTO) {

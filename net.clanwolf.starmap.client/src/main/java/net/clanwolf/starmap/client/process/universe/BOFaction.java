@@ -36,7 +36,7 @@ import org.kynosarges.tektosyne.geometry.PointD;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class BOFaction {
+public class BOFaction implements Comparable<BOFaction> {
 
 	private FactionDTO factionDTO;
 	private Path backgroundPath;
@@ -230,6 +230,20 @@ public class BOFaction {
 
 	@Override
 	public String toString() {
-		return getName();
+		return getShortName();
+	}
+
+	@Override
+	public int compareTo(BOFaction f) {
+		if (f.getShortName() == null && this.getShortName() == null) {
+			return 0;
+		}
+		if (this.getShortName() == null) {
+			return 1;
+		}
+		if (f.getShortName() == null) {
+			return -1;
+		}
+		return this.getShortName().compareTo(f.getShortName());
 	}
 }

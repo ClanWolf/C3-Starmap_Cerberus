@@ -63,7 +63,10 @@ public class AdminPaneController {
 	private HashMap<Integer, CheckBox> privilegeBoxes = new HashMap<>();
 	private ArrayList<UserDTO> userList = new ArrayList<>();
 	private HashMap<String, Long> originalPrivileges = new HashMap<>();
-	private ObservableList<FinancesInfo> financesInfos = FXCollections.observableArrayList();
+	@FXML
+	ComboBox<String> cbUser;
+	@FXML
+	ComboBox<BOFaction> cbFaction, cbUserFaction;
 	private final ArrayList<BOJumpship> activeJumpships = Nexus.getBoUniverse().getJumpshipList();
 	private final DecimalFormat nf = new DecimalFormat();
 
@@ -78,12 +81,9 @@ public class AdminPaneController {
 
 	@FXML
 	ScrollPane srollPane;
-
-	@FXML
-	ComboBox cbUser, cbFaction;
-
-	@FXML
-	ComboBox<FactionDTO> cbUserFaction;
+	private HashMap<String, Integer> originalActivatedStatus = new HashMap<>();
+//	private HashMap<String, BOFaction> originalFaction = new HashMap<>();
+	private ObservableList<FinancesInfo> financesInfos = FXCollections.observableArrayList();
 
 	@FXML
 	TableColumn<FinancesInfo,String> tblCIncome, tblCIncomeDescription;
@@ -103,7 +103,6 @@ public class AdminPaneController {
 
 	@FXML
 	TextField tfName, tfPassword, tfPasswordConfirm, tfMail, tfMWOUser;
-	private HashMap<String, Integer> originalActivatedStatus = new HashMap<>();
 
 	@FXML
 	public void handleSetActiveUser(){
@@ -342,7 +341,7 @@ public class AdminPaneController {
 		while (i.hasNext()) {
 			PRIVILEGES p = (PRIVILEGES) i.next();
 
-			String desc = sMessagesPrivileges.getString("" + p);
+			String desc = sMessagesPrivileges.getString(String.valueOf(p));
 			if (!"DUMMY".equals(desc)) {
 				String binVal = Long.toBinaryString(1L << jj);
 
@@ -377,26 +376,15 @@ public class AdminPaneController {
 		cbUser.getSelectionModel().select(0);
 		setCheckBoxesForUser((String)cbUser.getSelectionModel().getSelectedItem());
 
-		ObservableList<FactionDTO> factions = FXCollections.observableArrayList();
-		for (BOFaction f : Nexus.getBoUniverse().getFactionList()) {
-			factions.add(f.getFactionDTO());
-		}
+		ObservableList<BOFaction> factions = FXCollections.observableArrayList();
+		factions.addAll(Nexus.getBoUniverse().getActiveFactions());
+		Collections.sort(factions);
 		cbUserFaction.setItems(factions);
+		cbUserFaction.setDisable(!Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_CHANGE_FACTION_FOR_USER));
 
 		//Finances
-		ObservableList <String> activeFactions = FXCollections.observableArrayList();
-		String factionName, unitName;
-
-		for (BOJumpship jumpship: activeJumpships)
-		{
-			factionName = Nexus.getBoUniverse().getFactionByID(jumpship.getJumpshipDTO().getJumpshipFactionID()).getName();
-			unitName = jumpship.getJumpshipDTO().getUnitName();
-			activeFactions.add(factionName + " - " + unitName);
-		}
-
 		cbActiveUser.setText(Internationalization.getString("general_user_is_active_checkbox"));
-
-		cbFaction.setItems(activeFactions);
+		cbFaction.setItems(factions);
 		cbFaction.getSelectionModel().select(0);
 
 		tblCIncome.setCellValueFactory(cellData -> cellData.getValue().incomeProperty());
