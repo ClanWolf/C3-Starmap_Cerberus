@@ -47,6 +47,10 @@ public class Config {
 	public static final Color MAP_RANGE_CIRCLE_COLOR = Color.LIGHTBLUE;
 	public static final boolean MAP_HIGHLIGHT_HOVERED_STARSYSTEM = true;
 	public static final boolean MAP_FLASH_ATTACKED_SYSTEMS = true;
+	public static final double MAP_FLASH_ATTACKED_SYSTEMS_INTENSITY = 0.5d;
+	public static final long MAP_FLASH_ATTACKED_SYSTEMS_DURATION = 1L;
+	public static final double MAP_FLASH_ATTACKED_SYSTEMS_INTENSITY_NEXTROUND = 0.4d;
+	public static final long MAP_FLASH_ATTACKED_SYSTEMS_DURATION_NEXTROUND = 3L;
 	public static final double MAP_MAX_SCALE = 3.0d;
 	public static final double MAP_MIN_SCALE = .2d;
 	public static final double MAP_BACKGROUND_AREA_RADIUS = 140;

@@ -27,6 +27,7 @@ TODO:
 ----------------------------------------------------------------
 
 Version 7.3.19 (16.04.2023)
+- FIXED: Massive bug in map refresh routine
 - STARTED: Let every user open the editor panel to edit own data
 
 Version 7.3.18 (15.04.2023)

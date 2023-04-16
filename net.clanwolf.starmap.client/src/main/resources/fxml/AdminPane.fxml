@@ -74,7 +74,6 @@
                                  <columnConstraints>
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="372.4285888671875" minWidth="10.0" prefWidth="163.71429443359375" />
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="656.857125418527" minWidth="10.0" prefWidth="556.5714111328125" />
-                                    <ColumnConstraints halignment="RIGHT" hgrow="SOMETIMES" maxWidth="606.857160295759" minWidth="10.0" prefWidth="35.4285888671875" />
                                  </columnConstraints>
                                  <rowConstraints>
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
@@ -84,21 +83,14 @@
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <children>
-                                    <Label fx:id="lblName1" text="Name:" />
+                                    <Label fx:id="lblName1" text="Charaktername:" />
                                     <Label fx:id="lblPassword1" text="Passwort:" GridPane.rowIndex="1" />
                                     <Label fx:id="lblPasswordConfirm1" text="Passwort (Confirm):" GridPane.rowIndex="2" />
                                     <Label fx:id="lblMail1" text="Email-Adresse:" GridPane.rowIndex="3" />
-                                    <Label fx:id="lblMWOUser1" text="MWO Username:" GridPane.rowIndex="4" />
                                     <TextField fx:id="tfName1" GridPane.columnIndex="1" />
                                     <TextField fx:id="tfMail1" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                    <TextField fx:id="tfMWOUser1" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                     <PasswordField fx:id="tfPassword1" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                     <PasswordField fx:id="tfPasswordConfirm1" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                                    <ImageView fx:id="btShowPassword1" fitHeight="28.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.rowIndex="1">
-                                       <image>
-                                          <Image url="@../icons/eye.png" />
-                                       </image>
-                                    </ImageView>
                                  </children>
                               </GridPane>
                            </children>

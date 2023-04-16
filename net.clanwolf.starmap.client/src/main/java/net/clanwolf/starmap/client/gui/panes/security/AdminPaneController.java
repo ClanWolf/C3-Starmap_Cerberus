@@ -43,7 +43,6 @@ import net.clanwolf.starmap.client.security.Security;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.transfer.GameState;
-import net.clanwolf.starmap.transfer.dtos.FactionDTO;
 import net.clanwolf.starmap.transfer.dtos.UserDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import org.slf4j.Logger;
@@ -56,7 +55,6 @@ import java.util.*;
 public class AdminPaneController {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	private static ResourceBundle sMessagesPrivileges;
 	@FXML
 	CheckBox cbActiveUser;
 	private UserDTO currentUser = null;
@@ -82,14 +80,12 @@ public class AdminPaneController {
 	@FXML
 	ScrollPane srollPane;
 	private HashMap<String, Integer> originalActivatedStatus = new HashMap<>();
-//	private HashMap<String, BOFaction> originalFaction = new HashMap<>();
+	@FXML
+	TableColumn<FinancesInfo, String> tblCIncome, tblCIncomeDescription;
+	@FXML
+	TableColumn<FinancesInfo, String> TblCCost;
+	//	private HashMap<String, BOFaction> originalFaction = new HashMap<>();
 	private ObservableList<FinancesInfo> financesInfos = FXCollections.observableArrayList();
-
-	@FXML
-	TableColumn<FinancesInfo,String> tblCIncome, tblCIncomeDescription;
-
-	@FXML
-	TableColumn<FinancesInfo,String> TblCCost;
 
 	@FXML
 	TableView<FinancesInfo> tableFinances;
@@ -105,13 +101,9 @@ public class AdminPaneController {
 	TextField tfName, tfPassword, tfPasswordConfirm, tfMail, tfMWOUser;
 
 	@FXML
-	public void handleSetActiveUser(){
-		Iterator<UserDTO> it = this.userList.iterator();
-		while (it.hasNext()) {
-
-			UserDTO u = (UserDTO)it.next();
-
-			if(u.getUserName().equals( cbUser.getSelectionModel().getSelectedItem())) {
+	public void handleSetActiveUser() {
+		for (UserDTO u : this.userList) {
+			if (u.getUserName().equals(cbUser.getSelectionModel().getSelectedItem())) {
 				u.setActive(cbActiveUser.isSelected() ? 1 : 0);
 			}
 		}
@@ -119,16 +111,14 @@ public class AdminPaneController {
 
 	@FXML
 	public void btnSaveClicked() {
-//		Iterator iterator = this.userList.iterator();
-//		while (iterator.hasNext()) {
-//			UserDTO u = iterator.next();
-//			logger.info("User " + u.getUserName() + ": " + u.getPrivileges());
-//		}
+		//		Iterator iterator = this.userList.iterator();
+		//		while (iterator.hasNext()) {
+		//			UserDTO u = iterator.next();
+		//			logger.info("User " + u.getUserName() + ": " + u.getPrivileges());
+		//		}
 
 		ArrayList<UserDTO> usersToSave = new ArrayList<>();
-		Iterator<UserDTO> it = this.userList.iterator();
-		while (it.hasNext()) {
-			UserDTO u = it.next();
+		for (UserDTO u : this.userList) {
 			logger.info("User " + u.getUserName() + ": " + u.getPrivileges());
 			if (!(originalPrivileges.get(u.getUserName())).equals(u.getPrivileges())) {
 				usersToSave.add(u);
@@ -148,9 +138,7 @@ public class AdminPaneController {
 
 	@FXML
 	public void btnCancelClicked() {
-		Iterator<UserDTO> iterator = this.userList.iterator();
-		while (iterator.hasNext()) {
-			UserDTO u = iterator.next();
+		for (UserDTO u : this.userList) {
 			long privs = originalPrivileges.get(u.getUserName());
 			Integer as = originalActivatedStatus.get(u.getUserName());
 			u.setPrivileges(privs);
@@ -162,7 +150,7 @@ public class AdminPaneController {
 
 	@FXML
 	public void userSelectionChanged() {
-		setCheckBoxesForUser((String)cbUser.getSelectionModel().getSelectedItem());
+		setCheckBoxesForUser((String) cbUser.getSelectionModel().getSelectedItem());
 	}
 
 	@FXML
@@ -170,18 +158,18 @@ public class AdminPaneController {
 		getIncomeByIndex(cbFaction.getSelectionModel().getSelectedIndex());
 	}
 
-	private void getIncomeByIndex(int index){
+	private void getIncomeByIndex(int index) {
 
 		Long factionId = activeJumpships.get(index).getJumpshipFaction(), balance = 0L;
 		long lIncome = 0L;
 		String incomeDes = null;
 		financesInfos.clear();
 
-		for(Map.Entry<Long, BOStarSystem> entry : Nexus.getBoUniverse().starSystemBOs.entrySet()) {
+		for (Map.Entry<Long, BOStarSystem> entry : Nexus.getBoUniverse().starSystemBOs.entrySet()) {
 			Long key = entry.getKey();
 			BOStarSystem value = entry.getValue();
 
-			if(Objects.equals(value.getFactionId(), factionId)){
+			if (Objects.equals(value.getFactionId(), factionId)) {
 				switch ((int) value.getLevel().longValue()) {
 					case 1 -> {
 						lIncome = Constants.REGULAR_SYSTEM_GENERAL_INCOME * 1000;
@@ -197,7 +185,7 @@ public class AdminPaneController {
 					}
 				}
 				balance = balance + lIncome;
-				financesInfos.add(new FinancesInfo(nf.format(lIncome),incomeDes));
+				financesInfos.add(new FinancesInfo(nf.format(lIncome), incomeDes));
 			}
 		}
 
@@ -222,7 +210,7 @@ public class AdminPaneController {
 					}
 					break;
 				}
-				Long tempPrivCode = 1L << key - 1;
+				long tempPrivCode = 1L << key - 1;
 				privCode = privCode | tempPrivCode;
 			} else {
 				if (key == 64) {
@@ -237,18 +225,18 @@ public class AdminPaneController {
 		}
 		String b = Long.toBinaryString(privCode);
 		String binCode = String.format("%64.64s", b).replace(' ', '0');
-		labelPrivCode.setText("" + privCode);
-		labelPrivCodeBinary.setText("" + binCode);
+		labelPrivCode.setText(String.valueOf(privCode));
+		labelPrivCodeBinary.setText(binCode);
 		currentUser.setPrivileges(privCode);
 		currentUser.setLastModifiedByUserID(Nexus.getCurrentUser().getUserId());
 	}
 
 	private void setCheckBoxesForUser(String username) {
-//		logger.info("User changed to: " + username);
+		//		logger.info("User changed to: " + username);
 		boolean godadmin = false;
 
-		Iterator iter = this.userList.iterator();
-		while(iter.hasNext()) {
+		Iterator<UserDTO> iter = this.userList.iterator();
+		while (iter.hasNext()) {
 			try {
 				UserDTO user = (UserDTO) iter.next();
 				if (user.getUserName().equals(username)) {
@@ -258,12 +246,12 @@ public class AdminPaneController {
 						// god admin detected
 						godadmin = true;
 					}
-//					logger.info("User has: " + privs);
+					//					logger.info("User has: " + privs);
 					Platform.runLater(() -> {
 						String b = Long.toBinaryString(privs);
 						String binCode = String.format("%64.64s", b).replace(' ', '0');
-						labelPrivCode.setText("" + privs);
-						labelPrivCodeBinary.setText("" + binCode);
+						labelPrivCode.setText(String.valueOf(privs));
+						labelPrivCodeBinary.setText(binCode);
 
 						cbActiveUser.setSelected(user.getActive() == 1);
 					});
@@ -298,17 +286,14 @@ public class AdminPaneController {
 		}
 	}
 
-	public void init(Locale locale, ArrayList userListFromNexus) {
+	public void init(Locale locale, ArrayList<UserDTO> userListFromNexus) {
 		this.userList = userListFromNexus;
-
-		Iterator iterator = userListFromNexus.iterator();
-		while (iterator.hasNext()) {
-			UserDTO u = (UserDTO) iterator.next();
+		for (UserDTO u : userListFromNexus) {
 			originalPrivileges.put(u.getUserName(), u.getPrivileges());
 			originalActivatedStatus.put(u.getUserName(), u.getActive());
 		}
 
-//		labelDescription.setText(Internationalization.getString("AdminSecurityDescription"));
+		//		labelDescription.setText(Internationalization.getString("AdminSecurityDescription"));
 		tabPrivileges.setText(Internationalization.getString("AdminSecurityTabPrivileges"));
 		labelUser.setText(Internationalization.getString("AdminSecurityUserLabel"));
 		btnSave.setText(Internationalization.getString("AdminSecurityButtonSave"));
@@ -331,13 +316,13 @@ public class AdminPaneController {
 		tfPassword.setDisable(true);
 		tfPasswordConfirm.setDisable(true);
 
-		sMessagesPrivileges = ResourceBundle.getBundle("MessagesPrivilegeBundle", locale);
+		ResourceBundle sMessagesPrivileges = ResourceBundle.getBundle("MessagesPrivilegeBundle", locale);
 
 		VBox root = new VBox();
 
 		int j = 1;
 		int jj = 0;
-		Iterator i = Arrays.stream(PRIVILEGES.values()).sequential().iterator();
+		Iterator<PRIVILEGES> i = Arrays.stream(PRIVILEGES.values()).sequential().iterator();
 		while (i.hasNext()) {
 			PRIVILEGES p = (PRIVILEGES) i.next();
 
@@ -363,7 +348,7 @@ public class AdminPaneController {
 
 		ObservableList<String> data = FXCollections.observableArrayList();
 		Iterator<UserDTO> iter = this.userList.iterator();
-		while(iter.hasNext()) {
+		while (iter.hasNext()) {
 			try {
 				UserDTO user = (UserDTO) iter.next();
 				data.add(user.getUserName());
@@ -374,7 +359,7 @@ public class AdminPaneController {
 		Collections.sort(data);
 		cbUser.setItems(data);
 		cbUser.getSelectionModel().select(0);
-		setCheckBoxesForUser((String)cbUser.getSelectionModel().getSelectedItem());
+		setCheckBoxesForUser((String) cbUser.getSelectionModel().getSelectedItem());
 
 		ObservableList<BOFaction> factions = FXCollections.observableArrayList();
 		factions.addAll(Nexus.getBoUniverse().getActiveFactions());

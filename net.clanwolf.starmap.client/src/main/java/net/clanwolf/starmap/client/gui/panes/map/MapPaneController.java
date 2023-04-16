@@ -511,6 +511,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		// Refresh universe map (GUI)
 		ActionManager.getAction(ACTIONS.NOISE).execute(200);
 		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("10");
+
 		Platform.runLater(() -> {
 			if (boUniverse != null) { // this is the same universe, but the objects have been updated to the returned, new universe
 				Nexus.setCurrentSeason(boUniverse.currentSeason);
@@ -582,6 +583,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 				ArrayList<Shape> dashedBackgrounds = new ArrayList<>();
 				ArrayList<Shape> flashingBackgrounds = new ArrayList<>();
+
 				// Move the ships
 				for (BOJumpship js : boUniverse.jumpshipBOs.values()) {
 					Long currentSystemID = js.getCurrentSystemID();
@@ -658,118 +660,80 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					canvas.getChildren().removeAll(backgroundElementsToRemove);
 
 					for (BOAttack boAttack : boUniverse.attackBOsOpenInThisRound.values()) {
-						BOStarSystem attackedSystem;
-						BOStarSystem attackerStartedFromSystem;
-						attackedSystem = boUniverse.starSystemBOs.get(boAttack.getStarSystemId());
-						attackedSystem.setCurrentlyUnderAttack(true);
-						attackerStartedFromSystem = boUniverse.starSystemBOs.get(boAttack.getAttackedFromStarSystem());
+						if (boAttack.getAttackDTO().getJumpshipID().equals(js.getJumpshipId())) {
+							BOStarSystem attackedSystem;
+							BOStarSystem attackerStartedFromSystem;
+							attackedSystem = boUniverse.starSystemBOs.get(boAttack.getStarSystemId());
+							attackedSystem.setCurrentlyUnderAttack(true);
+							attackerStartedFromSystem = boUniverse.starSystemBOs.get(boAttack.getAttackedFromStarSystem());
 
-						if ((boAttack.getRound().equals(boUniverse.currentRound + 1))) {
-							attackedSystem.setNextRoundUnderAttack(true);
-						}
-
-						if (attackedSystem != null && attackerStartedFromSystem != null) {
-							if (Config.MAP_FLASH_ATTACKED_SYSTEMS) {
-								PointD[] points = attackedSystem.getVoronoiRegion();
-								if (points != null) {
-									Circle circle = new Circle(attackedSystem.getScreenX(), attackedSystem.getScreenY(), Config.MAP_BACKGROUND_AREA_RADIUS);
-									circle.setVisible(false);
-									Shape systemBackground = Shape.intersect(new Polygon(PointD.toDoubles(points)), circle);
-									String colorString = boUniverse.factionBOs.get(attackerStartedFromSystem.getAffiliation()).getColor();
-									Color c = Color.web(colorString);
-									systemBackground.setFill(c);
-									FadeTransition fadeTransition = new FadeTransition(Duration.seconds(1.0), (systemBackground));
-									fadeTransition.setFromValue(0.5);
-									fadeTransition.setToValue(0.0);
-									fadeTransition.setAutoReverse(true);
-									fadeTransition.setCycleCount(Animation.INDEFINITE);
-									fadeTransition.play();
-									systemBackground.setId("attackVisuals" + js.getJumpshipName());
-									canvas.getChildren().add(systemBackground);
-									systemBackground.setVisible(true);
-									systemBackground.toBack();
-									flashingBackgrounds.add(systemBackground);
-								}
+							if ((boAttack.getRound().equals(boUniverse.currentRound + 1))) {
+								attackedSystem.setNextRoundUnderAttack(true);
 							}
-						}
-					}
-					for (BOAttack boAttack : boUniverse.attackBOsAllInThisRound.values()) {
-						BOStarSystem attackedSystem;
-						BOStarSystem attackerStartedFromSystem;
-						attackedSystem = boUniverse.starSystemBOs.get(boAttack.getStarSystemId());
-						attackedSystem.setCurrentlyUnderAttack(true);
-						attackerStartedFromSystem = boUniverse.starSystemBOs.get(boAttack.getAttackedFromStarSystem());
 
-						double attackedSysX = attackedSystem.getScreenX();
-						double attackedSysY = attackedSystem.getScreenY();
-						double attackedFromSysX = attackerStartedFromSystem.getScreenX();
-						double attackedFromSysY = attackerStartedFromSystem.getScreenY();
+							if (attackerStartedFromSystem != null) {
+								if (Config.MAP_FLASH_ATTACKED_SYSTEMS) {
+									PointD[] points = attackedSystem.getVoronoiRegion();
+									if (points != null) {
+										Circle circle = new Circle(attackedSystem.getScreenX(), attackedSystem.getScreenY(), Config.MAP_BACKGROUND_AREA_RADIUS);
+										circle.setVisible(false);
+										Shape systemBackground = Shape.intersect(new Polygon(PointD.toDoubles(points)), circle);
+										String colorString = boUniverse.factionBOs.get(attackerStartedFromSystem.getAffiliation()).getColor();
+										Color c = Color.web(colorString);
+										systemBackground.setFill(c);
 
-						Line line = new Line(attackedSysX, attackedSysY, attackedFromSysX, attackedFromSysY);
-						line.getStrokeDashArray().setAll(50d, 20d, 5d, 20d);
-						line.setStrokeWidth(3);
-						line.setStroke(Color.RED);
-						line.setStrokeLineCap(StrokeLineCap.ROUND);
-						line.setId("attackVisuals" + js.getJumpshipName());
+										double flashIntensity = Config.MAP_FLASH_ATTACKED_SYSTEMS_INTENSITY;
+										long flashDuration = Config.MAP_FLASH_ATTACKED_SYSTEMS_DURATION;
+										if (boAttack.getAttackDTO().getRound().equals(boUniverse.currentRound + 1)) {
+											flashIntensity = Config.MAP_FLASH_ATTACKED_SYSTEMS_INTENSITY_NEXTROUND;
+											flashDuration = Config.MAP_FLASH_ATTACKED_SYSTEMS_DURATION_NEXTROUND;
+										}
 
-						final double maxOffset = line.getStrokeDashArray().stream().reduce(0d, Double::sum);
+										// logger.info("Intensity: " + flashIntensity);
 
-						Timeline timeline = new Timeline(new KeyFrame(Duration.ZERO, new KeyValue(line.strokeDashOffsetProperty(), 0, Interpolator.LINEAR)), new KeyFrame(Duration.seconds(1), new KeyValue(line.strokeDashOffsetProperty(), maxOffset, Interpolator.LINEAR)));
-						timeline.setCycleCount(Timeline.INDEFINITE);
-						timeline.play();
-						attacksPane.getChildren().add(line);
-					}
-
-					for (BOAttack boAttack : boUniverse.attackBOsFinishedInThisRound.values()) {
-						BOStarSystem attackedSystem;
-						BOStarSystem attackerStartedFromSystem;
-						attackedSystem = boUniverse.starSystemBOs.get(boAttack.getStarSystemId());
-						attackerStartedFromSystem = boUniverse.starSystemBOs.get(boAttack.getAttackedFromStarSystem());
-
-						if (attackedSystem != null && attackerStartedFromSystem != null) {
-							PointD[] points = attackedSystem.getVoronoiRegion();
-							if (points != null) {
-								Circle circle = new Circle(attackedSystem.getScreenX(), attackedSystem.getScreenY(), Config.MAP_BACKGROUND_AREA_RADIUS);
-								circle.setVisible(false);
-								Shape systemBackground = Shape.intersect(new Polygon(PointD.toDoubles(points)), circle);
-
-								BOFaction factionAttacker = boUniverse.getFactionByID(boAttack.getAttackerFactionId().longValue());
-								BOFaction factionDefender = boUniverse.getFactionByID(boAttack.getDefenderFactionId().longValue());
-								String colorString1 = boUniverse.factionBOs.get(factionAttacker.getShortName()).getColor();
-								String colorString2 = boUniverse.factionBOs.get(factionDefender.getShortName()).getColor();
-
-								if (boAttack.getAttackerFactionId().equals(boAttack.getAttackDTO().getFactionID_Winner().intValue())) {
-									Color c1 = Color.web(colorString1);
-									Color c2 = Color.web(colorString2);
-									Stop[] stops = new Stop[]{new Stop(0.8, c1), new Stop(0.8, c2)};
-									LinearGradient lg = new LinearGradient(0, 0, 10, 10, false, CycleMethod.REPEAT, stops);
-									systemBackground.setFill(lg);
-									systemBackground.setOpacity(0.5);
-								} else {
-									Color c1 = Color.web(colorString2);
-									Color c2 = Color.web(colorString1);
-									Stop[] stops = new Stop[]{new Stop(0.8, c1), new Stop(0.8, c2)};
-									LinearGradient lg = new LinearGradient(0, 0, 10, 10, false, CycleMethod.REPEAT, stops);
-									systemBackground.setFill(lg);
-									systemBackground.setOpacity(0.16);
-								}
-								systemBackground.setId("attackFinishedInThisRoundVisuals" + attackedSystem.getName());
-
-								Shape oldBG = null;
-								for (Node n : canvas.getChildren()) {
-									if (n.getId() != null && n.getId().equals("attackFinishedInThisRoundVisuals" + attackedSystem.getName())) {
-										oldBG = (Shape) n;
-										break;
+										FadeTransition fadeTransition = new FadeTransition(Duration.seconds(flashDuration), (systemBackground));
+										fadeTransition.setFromValue(flashIntensity);
+										fadeTransition.setToValue(0.0);
+										fadeTransition.setAutoReverse(true);
+										fadeTransition.setCycleCount(Animation.INDEFINITE);
+										fadeTransition.play();
+										systemBackground.setId("attackVisuals" + js.getJumpshipName());
+										canvas.getChildren().add(systemBackground);
+										systemBackground.setVisible(true);
+										systemBackground.toBack();
+										flashingBackgrounds.add(systemBackground);
 									}
 								}
-								if (oldBG != null) {
-									canvas.getChildren().remove(oldBG);
-								}
-								canvas.getChildren().add(systemBackground);
-								systemBackground.setVisible(true);
-								systemBackground.toBack();
-								dashedBackgrounds.add(systemBackground);
 							}
+						}
+					}
+
+					for (BOAttack boAttack : boUniverse.attackBOsAllInThisRound.values()) {
+						if (boAttack.getAttackDTO().getJumpshipID().equals(js.getJumpshipId())) {
+							BOStarSystem attackedSystem;
+							BOStarSystem attackerStartedFromSystem;
+							attackedSystem = boUniverse.starSystemBOs.get(boAttack.getStarSystemId());
+							attackedSystem.setCurrentlyUnderAttack(true);
+							attackerStartedFromSystem = boUniverse.starSystemBOs.get(boAttack.getAttackedFromStarSystem());
+
+							double attackedSysX = attackedSystem.getScreenX();
+							double attackedSysY = attackedSystem.getScreenY();
+							double attackedFromSysX = attackerStartedFromSystem.getScreenX();
+							double attackedFromSysY = attackerStartedFromSystem.getScreenY();
+
+							Line line = new Line(attackedSysX, attackedSysY, attackedFromSysX, attackedFromSysY);
+							line.getStrokeDashArray().setAll(50d, 20d, 5d, 20d);
+							line.setStrokeWidth(3);
+							line.setStroke(Color.RED);
+							line.setStrokeLineCap(StrokeLineCap.ROUND);
+							line.setId("attackVisuals" + js.getJumpshipName());
+
+							final double maxOffset = line.getStrokeDashArray().stream().reduce(0d, Double::sum);
+
+							Timeline timeline = new Timeline(new KeyFrame(Duration.ZERO, new KeyValue(line.strokeDashOffsetProperty(), 0, Interpolator.LINEAR)), new KeyFrame(Duration.seconds(1), new KeyValue(line.strokeDashOffsetProperty(), maxOffset, Interpolator.LINEAR)));
+							timeline.setCycleCount(Timeline.INDEFINITE);
+							timeline.play();
+							attacksPane.getChildren().add(line);
 						}
 					}
 
@@ -806,6 +770,60 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 						ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("11");
 					}
 				}
+
+				for (BOAttack boAttack : boUniverse.attackBOsFinishedInThisRound.values()) {
+					BOStarSystem attackedSystem;
+					BOStarSystem attackerStartedFromSystem;
+					attackedSystem = boUniverse.starSystemBOs.get(boAttack.getStarSystemId());
+					attackerStartedFromSystem = boUniverse.starSystemBOs.get(boAttack.getAttackedFromStarSystem());
+
+					if (attackedSystem != null && attackerStartedFromSystem != null) {
+						PointD[] points = attackedSystem.getVoronoiRegion();
+						if (points != null) {
+							Circle circle = new Circle(attackedSystem.getScreenX(), attackedSystem.getScreenY(), Config.MAP_BACKGROUND_AREA_RADIUS);
+							circle.setVisible(false);
+							Shape systemBackground = Shape.intersect(new Polygon(PointD.toDoubles(points)), circle);
+
+							BOFaction factionAttacker = boUniverse.getFactionByID(boAttack.getAttackerFactionId().longValue());
+							BOFaction factionDefender = boUniverse.getFactionByID(boAttack.getDefenderFactionId().longValue());
+							String colorString1 = boUniverse.factionBOs.get(factionAttacker.getShortName()).getColor();
+							String colorString2 = boUniverse.factionBOs.get(factionDefender.getShortName()).getColor();
+
+							if (boAttack.getAttackerFactionId().equals(boAttack.getAttackDTO().getFactionID_Winner().intValue())) {
+								Color c1 = Color.web(colorString1);
+								Color c2 = Color.web(colorString2);
+								Stop[] stops = new Stop[]{new Stop(0.8, c1), new Stop(0.8, c2)};
+								LinearGradient lg = new LinearGradient(0, 0, 10, 10, false, CycleMethod.REPEAT, stops);
+								systemBackground.setFill(lg);
+								systemBackground.setOpacity(0.5);
+							} else {
+								Color c1 = Color.web(colorString2);
+								Color c2 = Color.web(colorString1);
+								Stop[] stops = new Stop[]{new Stop(0.8, c1), new Stop(0.8, c2)};
+								LinearGradient lg = new LinearGradient(0, 0, 10, 10, false, CycleMethod.REPEAT, stops);
+								systemBackground.setFill(lg);
+								systemBackground.setOpacity(0.16);
+							}
+							systemBackground.setId("attackFinishedInThisRoundVisuals" + attackedSystem.getName());
+
+							Shape oldBG = null;
+							for (Node n : canvas.getChildren()) {
+								if (n.getId() != null && n.getId().equals("attackFinishedInThisRoundVisuals" + attackedSystem.getName())) {
+									oldBG = (Shape) n;
+									break;
+								}
+							}
+							if (oldBG != null) {
+								canvas.getChildren().remove(oldBG);
+							}
+							canvas.getChildren().add(systemBackground);
+							systemBackground.setVisible(true);
+							systemBackground.toBack();
+							dashedBackgrounds.add(systemBackground);
+						}
+					}
+				}
+
 				canvas.getChildren().remove(borders);
 				borders = VoronoiDelaunay.updateAreas();
 				canvas.getChildren().add(borders);
@@ -828,6 +846,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	private void initializeUniverseMap() {
 		boUniverse = Nexus.getBoUniverse();
 		boolean mapCenteredOnJumpship = false;
+
 		if (boUniverse != null) {
 			String dims = C3Properties.getProperty(C3PROPS.MAP_DIMENSIONS);
 			int d = Integer.parseInt(dims);
@@ -976,7 +995,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					starSystemLevelLabel.setStrokeWidth(0);
 					starSystemLevelLabel.setStroke(Color.BLACK);
 					starSystemLevelLabel.setBoundsType(TextBoundsType.LOGICAL_VERTICAL_CENTER);
-					starSystemLevelLabel.setText(starSystem.getLevel() + "");
+					starSystemLevelLabel.setText(String.valueOf(starSystem.getLevel()));
 					starSystemLevelLabel.setMouseTransparent(true);
 					starSystemLevelLabel.setLayoutX(1.2);
 					starSystemLevelLabel.setLayoutY(5.4);
@@ -1068,7 +1087,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 						}
 						attackerStartedFromSystem = boUniverse.starSystemBOs.get(attack.getAttackedFromStarSystem());
 
-						if (attackedSystem != null && attackerStartedFromSystem != null) {
+						if (attackerStartedFromSystem != null) {
 							if (Config.MAP_FLASH_ATTACKED_SYSTEMS) {
 								if (attack.getAttackDTO().getFactionID_Winner() == null) {
 									PointD[] points = attackedSystem.getVoronoiRegion();
@@ -1079,8 +1098,18 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 										String colorString = boUniverse.factionBOs.get(attackerStartedFromSystem.getAffiliation()).getColor();
 										Color c = Color.web(colorString);
 										systemBackground.setFill(c);
-										FadeTransition fadeTransition = new FadeTransition(Duration.seconds(1.0), (systemBackground));
-										fadeTransition.setFromValue(0.5);
+
+										double flashIntensity = Config.MAP_FLASH_ATTACKED_SYSTEMS_INTENSITY;
+										long flashDuration = Config.MAP_FLASH_ATTACKED_SYSTEMS_DURATION;
+										if (attack.getAttackDTO().getRound().equals(boUniverse.currentRound + 1)) {
+											flashIntensity = Config.MAP_FLASH_ATTACKED_SYSTEMS_INTENSITY_NEXTROUND;
+											flashDuration = Config.MAP_FLASH_ATTACKED_SYSTEMS_DURATION_NEXTROUND;
+										}
+
+										// logger.info("Intensity: " + flashIntensity);
+
+										FadeTransition fadeTransition = new FadeTransition(Duration.seconds(flashDuration), (systemBackground));
+										fadeTransition.setFromValue(flashIntensity);
 										fadeTransition.setToValue(0.0);
 										fadeTransition.setAutoReverse(true);
 										fadeTransition.setCycleCount(Animation.INDEFINITE);

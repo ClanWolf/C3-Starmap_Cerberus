@@ -41,53 +41,52 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import net.clanwolf.starmap.client.enums.C3MESSAGES;
-import net.clanwolf.starmap.client.gui.panes.chat.ChatPane;
-import net.clanwolf.starmap.client.gui.panes.dice.DicePane;
-import net.clanwolf.starmap.client.gui.panes.logging.LogPane;
-import net.clanwolf.starmap.client.gui.panes.security.AdminPane;
 import net.clanwolf.starmap.client.action.*;
 import net.clanwolf.starmap.client.enums.C3MESSAGERESULTS;
+import net.clanwolf.starmap.client.enums.C3MESSAGES;
 import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
 import net.clanwolf.starmap.client.enums.PRIVILEGES;
-import net.clanwolf.starmap.client.gui.popuppanes.C3MedalPane;
 import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
 import net.clanwolf.starmap.client.gui.messagepanes.C3MessagePane;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
 import net.clanwolf.starmap.client.gui.panes.WaitAnimationPane;
+import net.clanwolf.starmap.client.gui.panes.chat.ChatPane;
 import net.clanwolf.starmap.client.gui.panes.confirmAppClose.ConfirmAppClosePane;
+import net.clanwolf.starmap.client.gui.panes.dice.DicePane;
+import net.clanwolf.starmap.client.gui.panes.logging.LogPane;
 import net.clanwolf.starmap.client.gui.panes.login.LoginPane;
 import net.clanwolf.starmap.client.gui.panes.map.MapPane;
 import net.clanwolf.starmap.client.gui.panes.rp.RolePlayBasicPane;
 import net.clanwolf.starmap.client.gui.panes.rp.StoryEditorPane;
+import net.clanwolf.starmap.client.gui.panes.security.AdminPane;
 import net.clanwolf.starmap.client.gui.panes.settings.SettingsPane;
 import net.clanwolf.starmap.client.gui.panes.userinfo.UserInfoPane;
+import net.clanwolf.starmap.client.gui.popuppanes.C3MedalPane;
 import net.clanwolf.starmap.client.gui.popuppanes.C3PopupPane;
+import net.clanwolf.starmap.client.net.Server;
+import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.logout.Logout;
 import net.clanwolf.starmap.client.process.universe.BOFaction;
 import net.clanwolf.starmap.client.process.universe.BOStarSystem;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
-import net.clanwolf.starmap.transfer.dtos.AttackDTO;
-import net.clanwolf.starmap.transfer.mwo.MechIdInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import net.clanwolf.starmap.client.net.Server;
-import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.security.Security;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.*;
+import net.clanwolf.starmap.transfer.dtos.AttackDTO;
 import net.clanwolf.starmap.transfer.dtos.UserDTO;
 import net.clanwolf.starmap.transfer.enums.MEDALS;
 import net.clanwolf.starmap.transfer.enums.POPUPS;
-import org.xml.sax.SAXException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.*;
+import java.io.InputStream;
 import java.lang.invoke.MethodHandles;
 import java.net.URL;
 import java.sql.Date;
@@ -287,7 +286,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	@FXML
 	private Label labelTFSProgress;
 
-	private static String[] topTexts = { "1// Communicate", "", "2// Command", "", "3// Control", "" };
+	private static String[] topTexts = {"1// Communicate", "", "2// Command", "", "3// Control", ""};
 	@FXML
 	private Slider slVolumeControl;
 	@FXML
@@ -309,22 +308,17 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		setStatusText(Internationalization.getString("app_pane_confirm_infotext"), false);
 		Tools.playButtonHoverSound();
 	}
-	// Mouse entered
 
-	@FXML
-	private void handleHelpButtonHoverEnter() {
-		Image helpImg = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/help_hover.png")));
-		ImageView view = new ImageView(helpImg);
-		view.setFitHeight(16);
-		view.setPreserveRatio(true);
-		helpLabel.setGraphic(view);
-		helpLabel.setText("");
-		setStatusText(Internationalization.getString("app_pane_open_manual_infotext"), false);
-		Tools.playButtonHoverSound();
-//		if (!helpvoiceplayedonce) {
-//			C3SoundPlayer.getTTSFile(Internationalization.getString("app_web_help"));
-//			helpvoiceplayedonce = true;
-//		}
+	private static void decrementCounter() {
+		counterWaitCursorLock.lock();
+		try {
+			counterWaitCursor--;
+			if (counterWaitCursor < 0) {
+				counterWaitCursor = 0;
+			}
+		} finally {
+			counterWaitCursorLock.unlock();
+		}
 	}
 
 	@FXML
@@ -338,115 +332,21 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		setStatusText("", false);
 	}
 
-	@FXML
-	private void handleUserInfoEntered() {
-		if (Nexus.isLoggedIn()) {
-			userlistTriggerHovered = true;
-			tblUserHistory.getItems().clear();
-			ArrayList<UserDTO> userList = Nexus.getCurrentlyOnlineUserList();
-
-			Iterator iter = userList.iterator();
-			while (iter.hasNext()) {
-				UserDTO u = (UserDTO) iter.next();
-				BOFaction f = null;
-				Iterator i = Nexus.getBoUniverse().factionBOs.values().iterator();
-				while (i.hasNext()) {
-					BOFaction fa = (BOFaction) i.next();
-					if (fa.getID() == u.getCurrentCharacter().getFactionId().longValue()) {
-						f = fa;
-					}
-				}
-				String factionShortName = "";
-				if (f != null) {
-					factionShortName = f.getShortName();
-				} else {
-					factionShortName = "/";
-				}
-
-				if (Nexus.getCurrentUser().getUserId().equals(u.getUserId())) {
-					Platform.runLater(() -> {
-						lbUserSelf.setText(u.getUserName());
-						Image charImage;
-						try {
-							charImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(Nexus.getCurrentChar().getCharImage())));
-						} catch(Exception e) {
-							// image not found
-							charImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/chars/no_avatar.png")));
-						}
-						ivCharacterImage.setImage(charImage);
-						if (Nexus.getFactionLogo() != null) {
-							ivCharacterFaction.setImage(Nexus.getFactionLogo());
-						}
-
-						String attackedSystem = "";
-						AttackDTO a = Nexus.getCurrentOpenAttackForUser(u);
-						if (a != null) {
-							BOStarSystem s = Nexus.getBoUniverse().starSystemBOs.get(a.getStarSystemID());
-							if (s != null) {
-								attackedSystem = s.getName();
-							}
-							lbUserSelf.setText(u.getUserName() + "\n(" + attackedSystem + ")");
-						}
-					});
-				} else {
-					String userString = "";
-					String attackedSystem = "";
-
-					AttackDTO a = Nexus.getCurrentOpenAttackForUser(u);
-					if (a != null) {
-						BOStarSystem s = Nexus.getBoUniverse().starSystemBOs.get(a.getStarSystemID());
-						if (s != null) {
-							attackedSystem = s.getName();
-						}
-					}
-
-					userString += u.getUserName();
-					UserHistoryEntry entry = new UserHistoryEntry(userString, factionShortName, "", "", attackedSystem);
-					tblUserHistory.getItems().add(entry);
-				}
-			}
-
-//			for (int i=1; i<50;i++) {
-//				UserHistoryEntry entry = new UserHistoryEntry("test", "CHH", "", "", "Nori");
-//				tblUserHistory.getItems().add(entry);
-//			}
-
-			// Sort userlist
-			TableColumn c1 = tblUserHistory.getColumns().get(0);
-			TableColumn c2 = tblUserHistory.getColumns().get(1);
-			TableColumn c3 = tblUserHistory.getColumns().get(2);
-			c1.setSortable(true);
-			c2.setSortable(true);
-			c3.setSortable(true);
-			tblUserHistory.getSortOrder().addAll(c2, c1, c3);
-			c1.setSortType(TableColumn.SortType.ASCENDING);
-			c2.setSortType(TableColumn.SortType.ASCENDING);
-			c3.setSortType(TableColumn.SortType.ASCENDING);
-			tblUserHistory.sort();
-
-			UserHistoryInfo.toFront();
-			UserHistoryInfo.setVisible(true);
+	private static void resetCounter() {
+		counterWaitCursorLock.lock();
+		try {
+			counterWaitCursor = 0;
+		} finally {
+			counterWaitCursorLock.unlock();
 		}
 	}
 
-	@FXML
-	private void handleUserInfoExited() {
-		if (Nexus.isLoggedIn()) {
-			userlistTriggerHovered = false;
-//			tblUserHistory.getItems().clear();
-			UserHistoryInfo.toFront();
-
-			final Timeline timeline = new Timeline(new KeyFrame(Duration.millis(500), new EventHandler<ActionEvent>() {
-				@Override
-				public void handle(ActionEvent actionEvent) {
-					if (userlistHovered || userlistTriggerHovered) {
-						//
-					} else {
-						UserHistoryInfo.setVisible(false);
-					}
-				}
-			}));
-			timeline.play();
+	private static void incrementCounter() {
+		counterWaitCursorLock.lock();
+		try {
+			counterWaitCursor++;
+		} finally {
+			counterWaitCursorLock.unlock();
 		}
 	}
 
@@ -508,16 +408,112 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		Tools.playButtonHoverSound();
 	}
 
+	// Mouse entered
 	@FXML
-	private void handleAdminButtonMouseEventEnter() {
-		setStatusText(Internationalization.getString("app_admin_infotext").replace("%20", " "), true);
-//		Tools.playButtonHoverSound();
+	private void handleHelpButtonHoverEnter() {
+		Image helpImg = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/help_hover.png")));
+		ImageView view = new ImageView(helpImg);
+		view.setFitHeight(16);
+		view.setPreserveRatio(true);
+		helpLabel.setGraphic(view);
+		helpLabel.setText("");
+		setStatusText(Internationalization.getString("app_pane_open_manual_infotext"), false);
+		Tools.playButtonHoverSound();
+		//		if (!helpvoiceplayedonce) {
+		//			C3SoundPlayer.getTTSFile(Internationalization.getString("app_web_help"));
+		//			helpvoiceplayedonce = true;
+		//		}
 	}
 
 	@FXML
-	private void handleAdminPaneButtonMouseEventEnter() {
-		setStatusText(Internationalization.getString("app_adminpane_infotext").replace("%20", " "), false);
-		//		Tools.playButtonHoverSound();
+	private void handleUserInfoEntered() {
+		if (Nexus.isLoggedIn()) {
+			userlistTriggerHovered = true;
+			tblUserHistory.getItems().clear();
+			ArrayList<UserDTO> userList = Nexus.getCurrentlyOnlineUserList();
+
+			Iterator iter = userList.iterator();
+			while (iter.hasNext()) {
+				UserDTO u = (UserDTO) iter.next();
+				BOFaction f = null;
+				Iterator i = Nexus.getBoUniverse().factionBOs.values().iterator();
+				while (i.hasNext()) {
+					BOFaction fa = (BOFaction) i.next();
+					if (fa.getID() == u.getCurrentCharacter().getFactionId().longValue()) {
+						f = fa;
+					}
+				}
+				String factionShortName = "";
+				if (f != null) {
+					factionShortName = f.getShortName();
+				} else {
+					factionShortName = "/";
+				}
+
+				if (Nexus.getCurrentUser().getUserId().equals(u.getUserId())) {
+					Platform.runLater(() -> {
+						lbUserSelf.setText(u.getUserName());
+						Image charImage;
+						try {
+							charImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(Nexus.getCurrentChar().getCharImage())));
+						} catch (Exception e) {
+							// image not found
+							charImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/chars/no_avatar.png")));
+						}
+						ivCharacterImage.setImage(charImage);
+						if (Nexus.getFactionLogo() != null) {
+							ivCharacterFaction.setImage(Nexus.getFactionLogo());
+						}
+
+						String attackedSystem = "";
+						AttackDTO a = Nexus.getCurrentOpenAttackForUser(u);
+						if (a != null) {
+							BOStarSystem s = Nexus.getBoUniverse().starSystemBOs.get(a.getStarSystemID());
+							if (s != null) {
+								attackedSystem = s.getName();
+							}
+							lbUserSelf.setText(u.getUserName() + "\n(" + attackedSystem + ")");
+						}
+					});
+				} else {
+					String userString = "";
+					String attackedSystem = "";
+
+					AttackDTO a = Nexus.getCurrentOpenAttackForUser(u);
+					if (a != null) {
+						BOStarSystem s = Nexus.getBoUniverse().starSystemBOs.get(a.getStarSystemID());
+						if (s != null) {
+							attackedSystem = s.getName();
+						}
+					}
+
+					userString += u.getUserName();
+					UserHistoryEntry entry = new UserHistoryEntry(userString, factionShortName, "", "", attackedSystem);
+					tblUserHistory.getItems().add(entry);
+				}
+			}
+
+			//			for (int i=1; i<50;i++) {
+			//				UserHistoryEntry entry = new UserHistoryEntry("test", "CHH", "", "", "Nori");
+			//				tblUserHistory.getItems().add(entry);
+			//			}
+
+			// Sort userlist
+			TableColumn c1 = tblUserHistory.getColumns().get(0);
+			TableColumn c2 = tblUserHistory.getColumns().get(1);
+			TableColumn c3 = tblUserHistory.getColumns().get(2);
+			c1.setSortable(true);
+			c2.setSortable(true);
+			c3.setSortable(true);
+			tblUserHistory.getSortOrder().addAll(c2, c1, c3);
+			c1.setSortType(TableColumn.SortType.ASCENDING);
+			c2.setSortType(TableColumn.SortType.ASCENDING);
+			c3.setSortType(TableColumn.SortType.ASCENDING);
+			tblUserHistory.sort();
+
+			UserHistoryInfo.toFront();
+			UserHistoryInfo.setVisible(true);
+		}
 	}
 
 	@FXML
@@ -525,8 +521,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		setStatusText(Internationalization.getString("app_settings_infotext"), false);
 		Tools.playButtonHoverSound();
 	}
-	// Mouse exited
 
+	// Mouse exited
 	@FXML
 	private void handleLoginButtonMouseEventEnter() {
 		setStatusText(Internationalization.getString("app_login_infotext"), false);
@@ -546,11 +542,11 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		Tools.playButtonHoverSound();
 	}
 
-//	@FXML
-//	private void handleCharacterButtonMouseEventEnter() {
-//		setStatusText(Internationalization.getString("app_character_infotext"), false);
-//		Tools.playButtonHoverSound();
-//	}
+	//	@FXML
+	//	private void handleCharacterButtonMouseEventEnter() {
+	//		setStatusText(Internationalization.getString("app_character_infotext"), false);
+	//		Tools.playButtonHoverSound();
+	//	}
 
 	@FXML
 	private void handleStoryEditorButtonMouseEventEnter() {
@@ -592,9 +588,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private void handleMenuButtonMouseEventExit() {
 		setStatusText("", false);
 	}
+
 	// BUTTON LANGUAGE
 	// Mouse entered
-
 	@FXML
 	private void handleLanguageButtonMouseEventEnter() {
 		setStatusText(Internationalization.getString("app_language_infotext"), false);
@@ -735,15 +731,24 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		enableLanguageSwitch = false;
 	}
 
-	// ONLINE INDICATOR LABEL
-	// Mouse entered
 	@FXML
-	private void handleOnlineIndicatorLabelMouseEventEnter() {
-		switch (C3Properties.getProperty(C3PROPS.CHECK_ONLINE_STATUS)) {
-			case "NOT_STARTED" -> setStatusText(Internationalization.getString("app_online_indicator_message_NOT_STARTED"), false);
-			case "RUNNING_CHECK" -> setStatusText(Internationalization.getString("app_online_indicator_message_RUNNING_CHECK"), false);
-			case "ONLINE" -> setStatusText(Internationalization.getString("app_online_indicator_message_ONLINE"), false);
-			case "OFFLINE" -> setStatusText(Internationalization.getString("app_online_indicator_message_OFFLINE"), false);
+	private void handleUserInfoExited() {
+		if (Nexus.isLoggedIn()) {
+			userlistTriggerHovered = false;
+			// tblUserHistory.getItems().clear();
+			UserHistoryInfo.toFront();
+
+			final Timeline timeline = new Timeline(new KeyFrame(Duration.millis(500), new EventHandler<ActionEvent>() {
+				@Override
+				public void handle(ActionEvent actionEvent) {
+					if (userlistHovered || userlistTriggerHovered) {
+						//
+					} else {
+						UserHistoryInfo.setVisible(false);
+					}
+				}
+			}));
+			timeline.play();
 		}
 	}
 
@@ -754,23 +759,16 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	}
 
 	@FXML
-	private void handleOnlineIndicatorLabelMouseEventClick() {
-		Server.checkServerStatusTask();
-		switch (C3Properties.getProperty(C3PROPS.CHECK_ONLINE_STATUS)) {
-			case "ONLINE" -> C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Server_Status_Online"));
-			case "OFFLINE" -> C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Server_Status_Offline"));
-		}
+	private void handleAdminButtonMouseEventEnter() {
+		setStatusText(Internationalization.getString("app_admin_infotext").replace("%20", " "), true);
+		// Tools.playButtonHoverSound();
 	}
 	// Mouse entered
 
 	@FXML
-	private void handleDatabaseAccessibleIndicatorLabelMouseEventEnter() {
-		switch (C3Properties.getProperty(C3PROPS.CHECK_CONNECTION_STATUS)) {
-			case "NOT_STARTED" -> setStatusText(Internationalization.getString("app_database_indicator_message_NOT_STARTED"), false);
-			case "RUNNING_CHECK" -> setStatusText(Internationalization.getString("app_database_indicator_message_RUNNING_CHECK"), false);
-			case "ONLINE" -> setStatusText(Internationalization.getString("app_database_indicator_message_ONLINE"), false);
-			case "OFFLINE" -> setStatusText(Internationalization.getString("app_database_indicator_message_OFFLINE"), false);
-		}
+	private void handleAdminPaneButtonMouseEventEnter() {
+		setStatusText(Internationalization.getString("app_adminpane_infotext").replace("%20", " "), false);
+		// Tools.playButtonHoverSound();
 	}
 
 	@FXML
@@ -825,10 +823,235 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		hudinfo1.setVisible(show);
 	}
 
+	// ONLINE INDICATOR LABEL
+	// Mouse entered
+	@FXML
+	private void handleOnlineIndicatorLabelMouseEventEnter() {
+		switch (C3Properties.getProperty(C3PROPS.CHECK_ONLINE_STATUS)) {
+			case "NOT_STARTED" ->
+					setStatusText(Internationalization.getString("app_online_indicator_message_NOT_STARTED"), false);
+			case "RUNNING_CHECK" ->
+					setStatusText(Internationalization.getString("app_online_indicator_message_RUNNING_CHECK"), false);
+			case "ONLINE" ->
+					setStatusText(Internationalization.getString("app_online_indicator_message_ONLINE"), false);
+			case "OFFLINE" ->
+					setStatusText(Internationalization.getString("app_online_indicator_message_OFFLINE"), false);
+		}
+	}
+
+	@FXML
+	private void handleOnlineIndicatorLabelMouseEventClick() {
+		Server.checkServerStatusTask();
+		switch (C3Properties.getProperty(C3PROPS.CHECK_ONLINE_STATUS)) {
+			case "ONLINE" -> C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Server_Status_Online"));
+			case "OFFLINE" ->
+					C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Server_Status_Offline"));
+		}
+	}
+
+	@FXML
+	private void handleDatabaseAccessibleIndicatorLabelMouseEventEnter() {
+		switch (C3Properties.getProperty(C3PROPS.CHECK_CONNECTION_STATUS)) {
+			case "NOT_STARTED" ->
+					setStatusText(Internationalization.getString("app_database_indicator_message_NOT_STARTED"), false);
+			case "RUNNING_CHECK" ->
+					setStatusText(Internationalization.getString("app_database_indicator_message_RUNNING_CHECK"), false);
+			case "ONLINE" ->
+					setStatusText(Internationalization.getString("app_database_indicator_message_ONLINE"), false);
+			case "OFFLINE" ->
+					setStatusText(Internationalization.getString("app_database_indicator_message_OFFLINE"), false);
+		}
+	}
+
+	private void setStatusText(String t, boolean flash) {
+		setStatusText(t, flash, "");
+	}
+
+	private void setStatusText(String t, boolean flash, String color) {
+		setStatusText(t, flash, "", false);
+	}
+
+	private void setStatusText(String t, boolean flash, String color, boolean justUpdate) {
+		Platform.runLater(() -> {
+			if (fadeTransition_flash == null) {
+				fadeTransition_flash = new FadeTransition(Duration.millis(200), statuslabel);
+				fadeTransition_flash.setFromValue(1.0);
+				fadeTransition_flash.setToValue(0.0);
+				fadeTransition_flash.setAutoReverse(true);
+				fadeTransition_flash.setCycleCount(FadeTransition.INDEFINITE);
+			}
+
+			if (fadeTransition_fadein == null) {
+				fadeTransition_fadein = new FadeTransition(Duration.millis(100), statuslabel);
+				fadeTransition_fadein.setFromValue(0.0);
+				fadeTransition_fadein.setToValue(1.0);
+				fadeTransition_fadein.setAutoReverse(true);
+				fadeTransition_fadein.setCycleCount(3);
+			}
+
+			statuslabel.setText(t);
+			if (!"".equals(color)) {
+				statuslabel.setTextFill(Color.web(color));
+			}
+
+			if (flash) {
+				if ("".equals(color)) {
+					statuslabel.setTextFill(Color.web("#ff8080"));
+				}
+				fadeTransition_flash.play();
+			} else {
+				if ("".equals(color)) {
+					statuslabel.setTextFill(Color.web("#667288"));
+				}
+				if (justUpdate) {
+
+				} else {
+					fadeTransition_flash.stop();
+					fadeTransition_fadein.play();
+				}
+			}
+		});
+	}
+
+	private boolean openTargetPane(AbstractC3Pane targetPane, String sm) {
+
+		AtomicBoolean changedPane = new AtomicBoolean(false);
+
+		if (currentlyDisplayedPane != null) {
+			// there is a pane showing already
+			if (!currentlyDisplayedPane.isModal()) {
+				// There is another dialog open, so this needs to be closed
+				// first
+				if (currentlyDisplayedPane == targetPane) {
+					// the pane is open already, do nothing
+					setStatusText(Internationalization.getString("app_already_open_warning"), false);
+				} else {
+					// it is a different pane to be opened
+					currentlyDisplayedPane.paneDestruction();
+					nextToDisplayPane = targetPane;
+					changedPane.set(true);
+
+					if (!"".equals(sm)) {
+						C3SoundPlayer.getTTSFile(sm);
+					}
+
+					if (!targetPane.getPaneName().equals("RolePlayBasicPane")) {
+						C3SoundPlayer.pauseRPSound();
+					}
+				}
+			} else {
+				if (currentlyDisplayedPane == targetPane) {
+					// the pane is open already, do nothing
+					setStatusText(Internationalization.getString("app_already_open_warning"), false);
+				} else {
+					// Current pane is modal, so nothing to do here
+					// the pane can be closed by a button on the pane
+					setStatusText(Internationalization.getString("app_modal_warning"), true);
+					C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Warning"));
+					Tools.playAttentionSound();
+				}
+			}
+		} else {
+			// there is no pane open yet
+			// nothing there, fade in
+			Platform.runLater(() -> {
+				if (!rootAnchorPane.getChildren().contains(targetPane)) {
+					rootAnchorPane.getChildren().add(targetPane);
+					targetPane.paneCreation();
+					changedPane.set(true);
+					if (!"".equals(sm)) {
+						C3SoundPlayer.getTTSFile(sm);
+					}
+				}
+			});
+		}
+
+		return changedPane.get();
+	}
+
+	private void createNextPane() {
+		if (!rootAnchorPane.getChildren().contains(nextToDisplayPane)) {
+			rootAnchorPane.getChildren().add(nextToDisplayPane);
+		}
+		nextToDisplayPane.paneCreation();
+		nextToDisplayPane = null;
+	}
+
+	@Override
+	public void addActionCallBackListeners() {
+		ActionManager.addActionCallbackListener(ACTIONS.ONLINECHECK_STARTED, this);
+		ActionManager.addActionCallbackListener(ACTIONS.ONLINECHECK_FINISHED, this);
+		ActionManager.addActionCallbackListener(ACTIONS.LOGGING_OFF, this);
+		ActionManager.addActionCallbackListener(ACTIONS.LOGGED_OFF_COMPLETE, this);
+		ActionManager.addActionCallbackListener(ACTIONS.LOGGED_OFF_AFTER_DOUBLE_LOGIN_COMPLETE, this);
+		ActionManager.addActionCallbackListener(ACTIONS.LOGGED_ON, this);
+		ActionManager.addActionCallbackListener(ACTIONS.LOGON_RUNNING, this);
+		ActionManager.addActionCallbackListener(ACTIONS.LOGON_FINISHED_SUCCESSFULL, this);
+		ActionManager.addActionCallbackListener(ACTIONS.PANE_CREATION_FINISHED, this);
+		ActionManager.addActionCallbackListener(ACTIONS.PANE_CREATION_BEGINS, this);
+		ActionManager.addActionCallbackListener(ACTIONS.PANE_DESTRUCTION_FINISHED, this);
+		ActionManager.addActionCallbackListener(ACTIONS.PANE_DESTROY_CURRENT, this);
+		ActionManager.addActionCallbackListener(ACTIONS.APPLICATION_EXIT_REQUEST, this);
+		ActionManager.addActionCallbackListener(ACTIONS.CURSOR_REQUEST_NORMAL, this);
+		ActionManager.addActionCallbackListener(ACTIONS.CURSOR_REQUEST_WAIT, this);
+		ActionManager.addActionCallbackListener(ACTIONS.SET_STATUS_TEXT, this);
+		ActionManager.addActionCallbackListener(ACTIONS.APPLICATION_STARTUP, this);
+		ActionManager.addActionCallbackListener(ACTIONS.START_SPEECH_SPECTRUM, this);
+		ActionManager.addActionCallbackListener(ACTIONS.STOP_SPEECH_SPECTRUM, this);
+		ActionManager.addActionCallbackListener(ACTIONS.CHANGE_LANGUAGE, this);
+		ActionManager.addActionCallbackListener(ACTIONS.NOISE, this);
+		ActionManager.addActionCallbackListener(ACTIONS.SET_CONSOLE_OPACITY, this);
+		ActionManager.addActionCallbackListener(ACTIONS.SET_CONSOLE_OUTPUT_LINE, this);
+		ActionManager.addActionCallbackListener(ACTIONS.DATABASECONNECTIONCHECK_STARTED, this);
+		ActionManager.addActionCallbackListener(ACTIONS.DATABASECONNECTIONCHECK_FINISHED, this);
+		ActionManager.addActionCallbackListener(ACTIONS.READY_TO_LOGIN, this);
+		ActionManager.addActionCallbackListener(ACTIONS.SHOW_MESSAGE, this);
+		ActionManager.addActionCallbackListener(ACTIONS.SHOW_MESSAGE_WAS_ANSWERED, this);
+		ActionManager.addActionCallbackListener(ACTIONS.START_ROLEPLAY, this);
+		ActionManager.addActionCallbackListener(ACTIONS.UPDATE_GAME_INFO, this);
+		ActionManager.addActionCallbackListener(ACTIONS.SHOW_MEDAL, this);
+		ActionManager.addActionCallbackListener(ACTIONS.SHOW_POPUP, this);
+		ActionManager.addActionCallbackListener(ACTIONS.SET_TERMINAL_TEXT, this);
+		ActionManager.addActionCallbackListener(ACTIONS.HIDE_IRC_INDICATOR, this);
+		ActionManager.addActionCallbackListener(ACTIONS.SHOW_IRC_INDICATOR, this);
+		ActionManager.addActionCallbackListener(ACTIONS.ENABLE_MAIN_MENU_BUTTONS, this);
+		ActionManager.addActionCallbackListener(ACTIONS.SWITCH_TO_INVASION, this);
+		ActionManager.addActionCallbackListener(ACTIONS.SWITCH_TO_MAP, this);
+		ActionManager.addActionCallbackListener(ACTIONS.TERMINAL_COMMAND, this);
+		ActionManager.addActionCallbackListener(ACTIONS.FLASH_MWO_LOGO_ONCE, this);
+		ActionManager.addActionCallbackListener(ACTIONS.IRC_DISCONNECT_NOW, this);
+		ActionManager.addActionCallbackListener(ACTIONS.SERVER_CONNECTION_LOST, this);
+		ActionManager.addActionCallbackListener(ACTIONS.SET_FACTION_LOGO, this);
+		ActionManager.addActionCallbackListener(ACTIONS.SET_FACTION_LOGO_INVISIBLE, this);
+	}
+
+	public static Date addDaysToDate(Date date, int daysToAdd) {
+		Calendar c = Calendar.getInstance();
+		c.setTime(date);
+		c.add(Calendar.DAY_OF_MONTH, daysToAdd);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		String newDateString = sdf.format(c.getTime());
+
+		return Date.valueOf(newDateString);
+	}
+
+	public static Date translateRealDateToSeasonDate(Date date, Long seasonId) {
+		Calendar c = Calendar.getInstance();
+		c.setTime(Nexus.getBoUniverse().currentSeasonStartDate);
+		int seasonStartYear = c.get(Calendar.YEAR);
+		Long seasonStartDateRealYear = Nexus.getBoUniverse().currentSeasonStartDateRealYear;
+
+		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+		//int diff = (int) Math.abs((seasonStartYear - currentYear) * 365.243); // Days in year + leap year factor
+		int diff = (int) Math.abs((seasonStartYear - currentYear + (currentYear - seasonStartDateRealYear)) * 365.243); // Days in year + leap year factor
+
+		return addDaysToDate(date, diff);
+	}
+
 	private void moveMenuIndicator(int pos) {
 		if (!adminMenuActive) {
 			Platform.runLater(() -> {
-//				logger.info("Moving menu indicator to: " + pos);
+				// logger.info("Moving menu indicator to: " + pos);
 				hudinfo1.setOpacity(1.0);
 				hudinfo1.setCache(true);
 				hudinfo1.setCacheHint(CacheHint.SPEED);
@@ -840,6 +1063,21 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				timeline.setOnFinished(event -> hudinfo1.setOpacity(0.7));
 			});
 		}
+	}
+
+	@Override
+	public void setFocus() {
+		Platform.runLater(() -> {
+			//
+		});
+	}
+
+	/**
+	 * Set Strings for GUI (on initialization and on change of language.
+	 */
+	@Override
+	public void setStrings() {
+		//
 	}
 
 	// -------------------------------------------------------------------------
@@ -1015,10 +1253,10 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				Tools.playButtonClickSound();
 			}
 		} else if (!openAdministrationPane && !openEditorPane && !openLogPane) {
-			logger.info("TargetPane not defined!");
+			// logger.info("TargetPane not defined!");
 		}
 		if (openAdministrationPane) {
-			logger.info("Opening administration window!");
+			// logger.info("Opening administration window!");
 
 			ArrayList<UserDTO> userListFromNexus = Nexus.getUserList();
 
@@ -1051,6 +1289,52 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		}
 	}
 
+	/**
+	 * @param contentLine the string to be displayed
+	 */
+	private void setConsoleEntry(String contentLine) {
+		if (exec == null) {
+			exec = Executors.newSingleThreadExecutor();
+		}
+		if (!systemConsole.isCache()) {
+			systemConsole.setCache(true);
+			systemConsole.setCacheHint(CacheHint.SPEED);
+		}
+
+		Runnable r = () -> {
+			try {
+				TimeUnit.SECONDS.sleep(2);
+			} catch (InterruptedException e) {
+				//
+			}
+			rowCount++;
+			Platform.runLater(() -> systemConsole.setText(oldContent));
+			String screenNumber = ("000" + rowCount).substring((rowCount + "").length());
+			StringBuilder typeString = new StringBuilder();
+			try {
+				for (int i = 0; i < contentLine.length(); i++) {
+					char ch = contentLine.charAt(i);
+					typeString.append(ch);
+					final String type = typeString.toString();
+					Platform.runLater(() -> {
+						systemConsoleCurrentLine.setText(type + " < " + screenNumber + "#");
+					});
+					TimeUnit.MILLISECONDS.sleep(60);
+				}
+				Platform.runLater(() -> {
+					systemConsoleCurrentLine.setText(contentLine + " < " + screenNumber + "#");
+				});
+			} catch (InterruptedException e) {
+				//
+			}
+			if (rowCount > 8) {
+				oldContent = oldContent.substring(oldContent.indexOf("#") + 1);
+			}
+			oldContent = oldContent + contentLine + " < " + screenNumber + "#" + "\r\n";
+		};
+		exec.execute(r);
+	}
+
 	private void shiftButtonColumn() {
 		if (buttonsAreMoving) {
 			return;
@@ -1062,7 +1346,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 		final int step;
 		if (adminMenuActive) {
-			 step = 1;
+			step = 1;
 		} else {
 			step = -1;
 		}
@@ -1088,7 +1372,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			}
 		}
 
-		logger.info("Adminmenu: " + adminMenuActive);
+		// logger.info("Adminmenu: " + adminMenuActive);
 
 		Runnable r = () -> {
 			buttonsAreMoving = true;
@@ -1177,192 +1461,6 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		t.start();
 	}
 
-	private void setStatusText(String t, boolean flash) {
-		setStatusText(t, flash, "");
-	}
-
-	private void setStatusText(String t, boolean flash, String color) {
-		setStatusText(t, flash, "", false);
-	}
-
-	private void setStatusText(String t, boolean flash, String color, boolean justUpdate) {
-		Platform.runLater(() -> {
-			if (fadeTransition_flash == null) {
-				fadeTransition_flash = new FadeTransition(Duration.millis(200), statuslabel);
-				fadeTransition_flash.setFromValue(1.0);
-				fadeTransition_flash.setToValue(0.0);
-				fadeTransition_flash.setAutoReverse(true);
-				fadeTransition_flash.setCycleCount(FadeTransition.INDEFINITE);
-			}
-
-			if (fadeTransition_fadein == null) {
-				fadeTransition_fadein = new FadeTransition(Duration.millis(100), statuslabel);
-				fadeTransition_fadein.setFromValue(0.0);
-				fadeTransition_fadein.setToValue(1.0);
-				fadeTransition_fadein.setAutoReverse(true);
-				fadeTransition_fadein.setCycleCount(3);
-			}
-
-			statuslabel.setText(t);
-			if (!"".equals(color)) {
-				statuslabel.setTextFill(Color.web(color));
-			}
-
-			if (flash) {
-				if ("".equals(color)) {
-					statuslabel.setTextFill(Color.web("#ff8080"));
-				}
-				fadeTransition_flash.play();
-			} else {
-				if ("".equals(color)) {
-					statuslabel.setTextFill(Color.web("#667288"));
-				}
-				if (justUpdate) {
-
-				} else {
-					fadeTransition_flash.stop();
-					fadeTransition_fadein.play();
-				}
-			}
-		});
-	}
-
-	private boolean openTargetPane(AbstractC3Pane targetPane, String sm) {
-
-		AtomicBoolean changedPane = new AtomicBoolean(false);
-
-		if (currentlyDisplayedPane != null) {
-			// there is a pane showing already
-			if (!currentlyDisplayedPane.isModal()) {
-				// There is another dialog open, so this needs to be closed
-				// first
-				if (currentlyDisplayedPane == targetPane) {
-					// the pane is open already, do nothing
-					setStatusText(Internationalization.getString("app_already_open_warning"), false);
-				} else {
-					// it is a different pane to be opened
-					currentlyDisplayedPane.paneDestruction();
-					nextToDisplayPane = targetPane;
-					changedPane.set(true);
-
-					if (!"".equals(sm)) {
-						C3SoundPlayer.getTTSFile(sm);
-					}
-
-					if (!targetPane.getPaneName().equals("RolePlayBasicPane")) {
-						C3SoundPlayer.pauseRPSound();
-					}
-
-				}
-			} else {
-				if (currentlyDisplayedPane == targetPane) {
-					// the pane is open already, do nothing
-					setStatusText(Internationalization.getString("app_already_open_warning"), false);
-				} else {
-					// Current pane is modal, so nothing to do here
-					// the pane can be closed by a button on the pane
-					setStatusText(Internationalization.getString("app_modal_warning"), true);
-					C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Warning"));
-					Tools.playAttentionSound();
-				}
-			}
-		} else {
-			// there is no pane open yet
-			// nothing there, fade in
-			Platform.runLater(() -> {
-				if (!rootAnchorPane.getChildren().contains(targetPane)) {
-					rootAnchorPane.getChildren().add(targetPane);
-					targetPane.paneCreation();
-					changedPane.set(true);
-					if (!"".equals(sm)) {
-						C3SoundPlayer.getTTSFile(sm);
-					}
-				}
-			});
-		}
-
-		return changedPane.get();
-	}
-
-	private void createNextPane() {
-		if (!rootAnchorPane.getChildren().contains(nextToDisplayPane)) {
-			rootAnchorPane.getChildren().add(nextToDisplayPane);
-		}
-		nextToDisplayPane.paneCreation();
-		nextToDisplayPane = null;
-	}
-
-	@Override
-	public void addActionCallBackListeners() {
-		ActionManager.addActionCallbackListener(ACTIONS.ONLINECHECK_STARTED, this);
-		ActionManager.addActionCallbackListener(ACTIONS.ONLINECHECK_FINISHED, this);
-		ActionManager.addActionCallbackListener(ACTIONS.LOGGING_OFF, this);
-		ActionManager.addActionCallbackListener(ACTIONS.LOGGED_OFF_COMPLETE, this);
-		ActionManager.addActionCallbackListener(ACTIONS.LOGGED_OFF_AFTER_DOUBLE_LOGIN_COMPLETE, this);
-		ActionManager.addActionCallbackListener(ACTIONS.LOGGED_ON, this);
-		ActionManager.addActionCallbackListener(ACTIONS.LOGON_RUNNING, this);
-		ActionManager.addActionCallbackListener(ACTIONS.LOGON_FINISHED_SUCCESSFULL, this);
-		ActionManager.addActionCallbackListener(ACTIONS.PANE_CREATION_FINISHED, this);
-		ActionManager.addActionCallbackListener(ACTIONS.PANE_CREATION_BEGINS, this);
-		ActionManager.addActionCallbackListener(ACTIONS.PANE_DESTRUCTION_FINISHED, this);
-		ActionManager.addActionCallbackListener(ACTIONS.PANE_DESTROY_CURRENT, this);
-		ActionManager.addActionCallbackListener(ACTIONS.APPLICATION_EXIT_REQUEST, this);
-		ActionManager.addActionCallbackListener(ACTIONS.CURSOR_REQUEST_NORMAL, this);
-		ActionManager.addActionCallbackListener(ACTIONS.CURSOR_REQUEST_WAIT, this);
-		ActionManager.addActionCallbackListener(ACTIONS.SET_STATUS_TEXT, this);
-		ActionManager.addActionCallbackListener(ACTIONS.APPLICATION_STARTUP, this);
-		ActionManager.addActionCallbackListener(ACTIONS.START_SPEECH_SPECTRUM, this);
-		ActionManager.addActionCallbackListener(ACTIONS.STOP_SPEECH_SPECTRUM, this);
-		ActionManager.addActionCallbackListener(ACTIONS.CHANGE_LANGUAGE, this);
-		ActionManager.addActionCallbackListener(ACTIONS.NOISE, this);
-		ActionManager.addActionCallbackListener(ACTIONS.SET_CONSOLE_OPACITY, this);
-		ActionManager.addActionCallbackListener(ACTIONS.SET_CONSOLE_OUTPUT_LINE, this);
-		ActionManager.addActionCallbackListener(ACTIONS.DATABASECONNECTIONCHECK_STARTED, this);
-		ActionManager.addActionCallbackListener(ACTIONS.DATABASECONNECTIONCHECK_FINISHED, this);
-		ActionManager.addActionCallbackListener(ACTIONS.READY_TO_LOGIN, this);
-		ActionManager.addActionCallbackListener(ACTIONS.SHOW_MESSAGE, this);
-		ActionManager.addActionCallbackListener(ACTIONS.SHOW_MESSAGE_WAS_ANSWERED, this);
-		ActionManager.addActionCallbackListener(ACTIONS.START_ROLEPLAY, this);
-		ActionManager.addActionCallbackListener(ACTIONS.UPDATE_GAME_INFO, this);
-		ActionManager.addActionCallbackListener(ACTIONS.SHOW_MEDAL, this);
-		ActionManager.addActionCallbackListener(ACTIONS.SHOW_POPUP, this);
-		ActionManager.addActionCallbackListener(ACTIONS.SET_TERMINAL_TEXT, this);
-		ActionManager.addActionCallbackListener(ACTIONS.HIDE_IRC_INDICATOR, this);
-		ActionManager.addActionCallbackListener(ACTIONS.SHOW_IRC_INDICATOR, this);
-		ActionManager.addActionCallbackListener(ACTIONS.ENABLE_MAIN_MENU_BUTTONS, this);
-		ActionManager.addActionCallbackListener(ACTIONS.SWITCH_TO_INVASION, this);
-		ActionManager.addActionCallbackListener(ACTIONS.SWITCH_TO_MAP, this);
-		ActionManager.addActionCallbackListener(ACTIONS.TERMINAL_COMMAND, this);
-		ActionManager.addActionCallbackListener(ACTIONS.FLASH_MWO_LOGO_ONCE, this);
-		ActionManager.addActionCallbackListener(ACTIONS.IRC_DISCONNECT_NOW, this);
-		ActionManager.addActionCallbackListener(ACTIONS.SERVER_CONNECTION_LOST, this);
-		ActionManager.addActionCallbackListener(ACTIONS.SET_FACTION_LOGO, this);
-		ActionManager.addActionCallbackListener(ACTIONS.SET_FACTION_LOGO_INVISIBLE, this);
-	}
-
-	public static Date addDaysToDate(Date date, int daysToAdd) {
-		Calendar c = Calendar.getInstance();
-		c.setTime(date);
-		c.add(Calendar.DAY_OF_MONTH, daysToAdd);
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-		String newDateString = sdf.format(c.getTime());
-
-		return Date.valueOf(newDateString);
-	}
-
-	public static Date translateRealDateToSeasonDate(Date date, Long seasonId) {
-		Calendar c = Calendar.getInstance();
-		c.setTime(Nexus.getBoUniverse().currentSeasonStartDate);
-		int seasonStartYear = c.get(Calendar.YEAR);
-		Long seasonStartDateRealYear = Nexus.getBoUniverse().currentSeasonStartDateRealYear;
-
-		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-		//int diff = (int) Math.abs((seasonStartYear - currentYear) * 365.243); // Days in year + leap year factor
-		int diff = (int) Math.abs((seasonStartYear - currentYear + (currentYear - seasonStartDateRealYear)) * 365.243); // Days in year + leap year factor
-
-		return addDaysToDate(date, diff);
-	}
-
 	private void setToLevelLoggedOutText() {
 		Runnable r = () -> {
 			int i = 0;
@@ -1371,12 +1469,12 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					String tcphostname = C3Properties.getProperty(C3PROPS.TCP_HOSTNAME);
 					int tcpPort = Integer.parseInt(C3Properties.getProperty(C3PROPS.TCP_PORT));
 					if (Nexus.getHoursLeftInThisRound() != 0) {
-						topTexts = new String[]{Nexus.getCurrentUser().getUserName(), tcphostname + ":" + tcpPort, "", "T-" + Nexus.getHoursLeftInThisRound() + "h in R" + Nexus.getCurrentRound(), "" };
+						topTexts = new String[]{Nexus.getCurrentUser().getUserName(), tcphostname + ":" + tcpPort, "", "T-" + Nexus.getHoursLeftInThisRound() + "h in R" + Nexus.getCurrentRound(), ""};
 					} else {
-						topTexts = new String[]{Nexus.getCurrentUser().getUserName(), tcphostname + ":" + tcpPort, "" };
+						topTexts = new String[]{Nexus.getCurrentUser().getUserName(), tcphostname + ":" + tcpPort, ""};
 					}
 				} else {
-					topTexts = new String[] { "1// Communicate", "", "2// Command", "", "3// Control", "" };
+					topTexts = new String[]{"1// Communicate", "", "2// Command", "", "3// Control", ""};
 				}
 
 				if (i >= topTexts.length) {
@@ -1388,7 +1486,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				if (Nexus.isLoggedIn()) {
 					if (Nexus.getBoUniverse() != null && Nexus.getCurrentRound() != 0) {
 						Date nowDate = new Date(System.currentTimeMillis());
-						Date translatedNowDate = translateRealDateToSeasonDate(nowDate, (long)Nexus.getCurrentSeason());
+						Date translatedNowDate = translateRealDateToSeasonDate(nowDate, (long) Nexus.getCurrentSeason());
 						LocalDate translatedLocalDate = new java.util.Date(translatedNowDate.getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 						LocalTime nowLocalTime = LocalTime.now();
 						LocalDateTime now = LocalDateTime.of(translatedLocalDate, nowLocalTime);
@@ -1436,302 +1534,6 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		};
 		Thread textTopRightThread = new Thread(r);
 		textTopRightThread.start();
-	}
-
-	@Override
-	public void setFocus() {
-		Platform.runLater(() -> {
-			//
-		});
-	}
-
-	/**
-	 * Set Strings for GUI (on initialization and on change of language.
-	 */
-	@Override
-	public void setStrings() {
-		//
-	}
-
-	/**
-	 * @param url url
-	 * @param rb resource bundle
-	 */
-	@Override
-	public void initialize(URL url, ResourceBundle rb) {
-		setToLevelLoggedOutText();
-
-		Runnable rCursor = () -> {
-			//noinspection InfiniteLoopStatement
-			while (true) {
-				try {
-					TimeUnit.MILLISECONDS.sleep(200);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				Platform.runLater(() -> systemConsoleCursor.setText("▂"));
-				try {
-					TimeUnit.MILLISECONDS.sleep(200);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				Platform.runLater(() -> systemConsoleCursor.setText(" "));
-			}
-		};
-		Thread t1 = new Thread(rCursor);
-		t1.start();
-
-		Platform.runLater(() -> adminButton.setGraphic(new ImageView(imageAdminButtonOff)));
-		adminButton.setDisable(false);
-
-		int year = Calendar.getInstance().get(Calendar.YEAR);
-		hudinfo1.setOpacity(0.7);
-		copyrightLabel.setText("©2000-" + year + " - clanwolf.net");
-		spectrumImage.setOpacity(0.1);
-		spectrumImage.setVisible(false);
-		noiseImage.setOpacity(0.0);
-		noiseImage.setVisible(false);
-		noiseImage.toFront();
-
-		Image helpImg = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/help.png")));
-		ImageView view = new ImageView(helpImg);
-		view.setFitHeight(16);
-		view.setPreserveRatio(true);
-		helpLabel.setGraphic(view);
-		helpLabel.setText("");
-
-		enableMainMenuButtons(Nexus.isLoggedIn(), Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN));
-
-		String versionString = "Version: " + Tools.getVersionNumber();
-		versionLabel.setText(versionString);
-
-		onlineIndicatorLabel.setStyle("-fx-background-color: #808000;");
-		loginIndicatorLabel.setStyle("-fx-background-color: #c00000;");
-		databaseAccessibleIndicatorLabel.setStyle("-fx-background-color: #808000;");
-
-		C3Properties.setProperty(C3PROPS.CHECK_ONLINE_STATUS, "NOT_STARTED", false);
-		C3Properties.setProperty(C3PROPS.CHECK_LOGIN_STATUS, "LOGGED_OFF", false);
-
-		languageButton.getStyleClass().add("languageButton_" + Internationalization.getLanguage());
-
-		// ------------------------------------------------------------------------------------------
-		// The ActionCallBackListeners are added here, because otherwise they get lost in the
-		// constructors
-
-		loginPane = new LoginPane();
-		loginPane.setCache(true);
-		loginPane.setCacheHint(CacheHint.SPEED);
-		loginPane.getController().addActionCallBackListeners();
-
-		settingsPane = new SettingsPane();
-		settingsPane.setCache(true);
-		settingsPane.setCacheHint(CacheHint.SPEED);
-		settingsPane.getController().addActionCallBackListeners();
-
-		confirmAppClosePane = new ConfirmAppClosePane();
-		confirmAppClosePane.setCache(true);
-		confirmAppClosePane.setCacheHint(CacheHint.SPEED);
-		confirmAppClosePane.getController().addActionCallBackListeners();
-
-//		createNewPaneObjects(); // re-create Map pane. This method is also used if user loggs off to create a new map pane (to avoid problems with user privs)
-		mapPane = new MapPane();
-		mapPane.setShowsMouseFollow(false);
-		mapPane.setShowsPlanetRotation(false);
-		mapPane.setCacheHint(CacheHint.SPEED);
-		mapPane.getController().addActionCallBackListeners();
-
-		chatPane = new ChatPane();
-		chatPane.setShowsMouseFollow(false);
-		chatPane.setShowsPlanetRotation(false);
-		chatPane.setCacheHint(CacheHint.SPEED);
-		chatPane.getController().addActionCallBackListeners();
-
-		dicePane = new DicePane();
-		dicePane.setShowsMouseFollow(false);
-		dicePane.setShowsPlanetRotation(false);
-		dicePane.setCacheHint(CacheHint.SPEED);
-		dicePane.getController().addActionCallBackListeners();
-
-		String paneNameCharacter = "CharacterPane";
-		rolePlayPane = new RolePlayBasicPane(paneNameCharacter);
-		rolePlayPane.setShowsMouseFollow(false);
-		rolePlayPane.setShowsPlanetRotation(false);
-		rolePlayPane.setCache(true);
-		rolePlayPane.setCacheHint(CacheHint.SPEED);
-		rolePlayPane.getController().addActionCallBackListeners();
-		rolePlayPane.getController().setPaneName(paneNameCharacter);
-		logger.info("RolePlayPane: " + rolePlayPane + " -> Controller: " + rolePlayPane.getController());
-
-		String paneNameAttack = "AttackPane";
-		attackPane = new RolePlayBasicPane(paneNameAttack);
-		attackPane.setShowsMouseFollow(false);
-		attackPane.setShowsPlanetRotation(false);
-		attackPane.setCache(true);
-		attackPane.setCacheHint(CacheHint.SPEED);
-		attackPane.getController().addActionCallBackListeners();
-		attackPane.getController().setPaneName(paneNameAttack);
-		logger.info("AttackPane: " + attackPane + " -> Controller: " + attackPane.getController());
-
-		// infoPane = new InfoPane();
-		// infoPane.getController().addActionCallBackListener();
-
-		// ------------------------------------------------------------------------------------------
-
-		waitAnimationPane = new WaitAnimationPane();
-		waitAnimationPane.setMouseTransparent(true);
-		waitAnimationPane.showCircleAnimation(false);
-		waitAnimationPane.toFront();
-
-		mouseStopper.getChildren().add(waitAnimationPane);
-		mouseStopper.setMouseTransparent(true);
-		mouseStopper.toFront();
-
-		rolePlayButton.setVisible(true);
-		mapButton.setVisible(true);
-		attackButton.setVisible(true);
-		diceButton.setVisible(true);
-		chatButton.setVisible(true);
-
-		storyEditorButton.setVisible(false);
-		adminPaneButton.setVisible(false);
-		renameMeButton3.setVisible(false);
-		renameMeButton4.setVisible(false);
-		logButton.setVisible(false);
-
-		showMenuIndicator(false);
-
-		terminalPrompt.toFront();
-		paneVolumeControl.toFront();
-		slVolumeControl.toFront();
-		ivMuteToggle.toFront();
-		addActionCallBackListeners();
-
-		tblUserHistory.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-		tblUserHistory.getStyleClass().add("noheader");
-		tblUserHistory.setPlaceholder(new Label("..."));
-		TableColumn<UserHistoryEntry, String> userColumn = new TableColumn<>("");
-		userColumn.setCellValueFactory(data -> data.getValue().getUser());
-		userColumn.setPrefWidth(140);
-		TableColumn<UserHistoryEntry, String> factionColumn = new TableColumn<>("");
-		factionColumn.setCellValueFactory(data -> data.getValue().getFaction());
-		factionColumn.setPrefWidth(50);
-//		TableColumn<UserHistoryEntry, String> versionColumn = new TableColumn<>("");
-//		versionColumn.setCellValueFactory(data -> data.getValue().getVersion());
-//		versionColumn.setPrefWidth(250);
-//		TableColumn<UserHistoryEntry, String> timeColumn = new TableColumn<>("");
-//		timeColumn.setCellValueFactory(data -> data.getValue().getTime());
-//		timeColumn.setPrefWidth(102);
-//		timeColumn.setMaxWidth(105);
-//		timeColumn.setMinWidth(100);
-		TableColumn<UserHistoryEntry, String> attackColumn = new TableColumn<>("");
-		attackColumn.setCellValueFactory(data -> data.getValue().getInFightForPlanet());
-		attackColumn.setPrefWidth(170);
-		tblUserHistory.getColumns().addAll( userColumn,
-											factionColumn,
-											//versionColumn
-											//timeColumn
-											attackColumn
-		);
-		tblUserHistory.getSortOrder().add(attackColumn);
-		tblUserHistory.getSortOrder().add(userColumn);
-
-		tblUserHistory.setRowFactory(tblUserHistory -> new TableRow<UserHistoryEntry>() {
-			@Override
-			protected void updateItem(UserHistoryEntry item, boolean empty) {
-				super.updateItem(item, empty);
-			}
-		});
-
-		adminButton.focusedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) {
-				if (newPropertyValue) {
-					// Change image on admin switcher to reflect that there is focus
-					adminButtonHasFocus = true;
-					if (adminMenuActive) {
-						Platform.runLater(() -> adminButton.setGraphic(new ImageView(imageAdminButtonOn_Focus)));
-					} else {
-						Platform.runLater(() -> adminButton.setGraphic(new ImageView(imageAdminButtonOff_Focus)));
-					}
-				} else {
-					// Change image on admin switcher to reflect that there is no focus
-					adminButtonHasFocus = false;
-					if (adminMenuActive) {
-						Platform.runLater(() -> adminButton.setGraphic(new ImageView(imageAdminButtonOn)));
-					} else {
-						Platform.runLater(() -> adminButton.setGraphic(new ImageView(imageAdminButtonOff)));
-					}
-				}
-			}
-		});
-		toplabel.toFront();
-	}
-
-	/**
-	 * @param contentLine the string to be displayed
-	 */
-	private void setConsoleEntry(String contentLine) {
-		if (exec == null) {
-			exec = Executors.newSingleThreadExecutor();
-		}
-		if (!systemConsole.isCache()) {
-			systemConsole.setCache(true);
-			systemConsole.setCacheHint(CacheHint.SPEED);
-		}
-
-		Runnable r = () -> {
-			try {
-				TimeUnit.SECONDS.sleep(2);
-			} catch (InterruptedException e) {
-				//
-			}
-			rowCount++;
-			Platform.runLater(() -> systemConsole.setText(oldContent));
-			String screenNumber = ("000" + rowCount).substring((rowCount + "").length());
-			StringBuilder typeString = new StringBuilder();
-			try {
-				for (int i = 0; i < contentLine.length(); i++) {
-					char ch = contentLine.charAt(i);
-					typeString.append(ch);
-					final String type = typeString.toString();
-					Platform.runLater(() -> {
-						systemConsoleCurrentLine.setText(type + " < " + screenNumber + "#");
-					});
-					TimeUnit.MILLISECONDS.sleep(60);
-				}
-				Platform.runLater(() -> {
-					systemConsoleCurrentLine.setText(contentLine + " < " + screenNumber + "#");
-				});
-			} catch (InterruptedException e) {
-				//
-			}
-			if (rowCount > 8) {
-				oldContent = oldContent.substring(oldContent.indexOf("#") + 1);
-			}
-			oldContent = oldContent + contentLine + " < " + screenNumber + "#" + "\r\n";
-		};
-		exec.execute(r);
-	}
-
-	private static void decrementCounter(){
-		counterWaitCursorLock.lock();
-		try {
-			counterWaitCursor--;
-			if (counterWaitCursor < 0) {
-				counterWaitCursor = 0;
-			}
-		} finally{
-			counterWaitCursorLock.unlock();
-		}
-	}
-
-	private static void resetCounter(){
-		counterWaitCursorLock.lock();
-		try {
-			counterWaitCursor = 0;
-		} finally{
-			counterWaitCursorLock.unlock();
-		}
 	}
 
 	private void NoiseAnimation() {
@@ -1825,10 +1627,222 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	}
 
 	/**
+	 * @param url url
+	 * @param rb  resource bundle
+	 */
+	@Override
+	public void initialize(URL url, ResourceBundle rb) {
+		setToLevelLoggedOutText();
+
+		Runnable rCursor = () -> {
+			//noinspection InfiniteLoopStatement
+			while (true) {
+				try {
+					TimeUnit.MILLISECONDS.sleep(200);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				Platform.runLater(() -> systemConsoleCursor.setText("▂"));
+				try {
+					TimeUnit.MILLISECONDS.sleep(200);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				Platform.runLater(() -> systemConsoleCursor.setText(" "));
+			}
+		};
+		Thread t1 = new Thread(rCursor);
+		t1.start();
+
+		Platform.runLater(() -> adminButton.setGraphic(new ImageView(imageAdminButtonOff)));
+		adminButton.setDisable(false);
+
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		hudinfo1.setOpacity(0.7);
+		copyrightLabel.setText("©2000-" + year + " - clanwolf.net");
+		spectrumImage.setOpacity(0.1);
+		spectrumImage.setVisible(false);
+		noiseImage.setOpacity(0.0);
+		noiseImage.setVisible(false);
+		noiseImage.toFront();
+
+		Image helpImg = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/help.png")));
+		ImageView view = new ImageView(helpImg);
+		view.setFitHeight(16);
+		view.setPreserveRatio(true);
+		helpLabel.setGraphic(view);
+		helpLabel.setText("");
+
+		enableMainMenuButtons(Nexus.isLoggedIn(), Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN));
+
+		String versionString = "Version: " + Tools.getVersionNumber();
+		versionLabel.setText(versionString);
+
+		onlineIndicatorLabel.setStyle("-fx-background-color: #808000;");
+		loginIndicatorLabel.setStyle("-fx-background-color: #c00000;");
+		databaseAccessibleIndicatorLabel.setStyle("-fx-background-color: #808000;");
+
+		C3Properties.setProperty(C3PROPS.CHECK_ONLINE_STATUS, "NOT_STARTED", false);
+		C3Properties.setProperty(C3PROPS.CHECK_LOGIN_STATUS, "LOGGED_OFF", false);
+
+		languageButton.getStyleClass().add("languageButton_" + Internationalization.getLanguage());
+
+		// ------------------------------------------------------------------------------------------
+		// The ActionCallBackListeners are added here, because otherwise they get lost in the
+		// constructors
+
+		loginPane = new LoginPane();
+		loginPane.setCache(true);
+		loginPane.setCacheHint(CacheHint.SPEED);
+		loginPane.getController().addActionCallBackListeners();
+
+		settingsPane = new SettingsPane();
+		settingsPane.setCache(true);
+		settingsPane.setCacheHint(CacheHint.SPEED);
+		settingsPane.getController().addActionCallBackListeners();
+
+		confirmAppClosePane = new ConfirmAppClosePane();
+		confirmAppClosePane.setCache(true);
+		confirmAppClosePane.setCacheHint(CacheHint.SPEED);
+		confirmAppClosePane.getController().addActionCallBackListeners();
+
+		//		createNewPaneObjects(); // re-create Map pane. This method is also used if user loggs off to create a new map pane (to avoid problems with user privs)
+		mapPane = new MapPane();
+		mapPane.setShowsMouseFollow(false);
+		mapPane.setShowsPlanetRotation(false);
+		mapPane.setCacheHint(CacheHint.SPEED);
+		mapPane.getController().addActionCallBackListeners();
+
+		chatPane = new ChatPane();
+		chatPane.setShowsMouseFollow(false);
+		chatPane.setShowsPlanetRotation(false);
+		chatPane.setCacheHint(CacheHint.SPEED);
+		chatPane.getController().addActionCallBackListeners();
+
+		dicePane = new DicePane();
+		dicePane.setShowsMouseFollow(false);
+		dicePane.setShowsPlanetRotation(false);
+		dicePane.setCacheHint(CacheHint.SPEED);
+		dicePane.getController().addActionCallBackListeners();
+
+		String paneNameCharacter = "CharacterPane";
+		rolePlayPane = new RolePlayBasicPane(paneNameCharacter);
+		rolePlayPane.setShowsMouseFollow(false);
+		rolePlayPane.setShowsPlanetRotation(false);
+		rolePlayPane.setCache(true);
+		rolePlayPane.setCacheHint(CacheHint.SPEED);
+		rolePlayPane.getController().addActionCallBackListeners();
+		rolePlayPane.getController().setPaneName(paneNameCharacter);
+		logger.info("RolePlayPane: " + rolePlayPane + " -> Controller: " + rolePlayPane.getController());
+
+		String paneNameAttack = "AttackPane";
+		attackPane = new RolePlayBasicPane(paneNameAttack);
+		attackPane.setShowsMouseFollow(false);
+		attackPane.setShowsPlanetRotation(false);
+		attackPane.setCache(true);
+		attackPane.setCacheHint(CacheHint.SPEED);
+		attackPane.getController().addActionCallBackListeners();
+		attackPane.getController().setPaneName(paneNameAttack);
+		logger.info("AttackPane: " + attackPane + " -> Controller: " + attackPane.getController());
+
+		// infoPane = new InfoPane();
+		// infoPane.getController().addActionCallBackListener();
+
+		// ------------------------------------------------------------------------------------------
+
+		waitAnimationPane = new WaitAnimationPane();
+		waitAnimationPane.setMouseTransparent(true);
+		waitAnimationPane.showCircleAnimation(false);
+		waitAnimationPane.toFront();
+
+		mouseStopper.getChildren().add(waitAnimationPane);
+		mouseStopper.setMouseTransparent(true);
+		mouseStopper.toFront();
+
+		rolePlayButton.setVisible(true);
+		mapButton.setVisible(true);
+		attackButton.setVisible(true);
+		diceButton.setVisible(true);
+		chatButton.setVisible(true);
+
+		storyEditorButton.setVisible(false);
+		adminPaneButton.setVisible(false);
+		renameMeButton3.setVisible(false);
+		renameMeButton4.setVisible(false);
+		logButton.setVisible(false);
+
+		showMenuIndicator(false);
+
+		terminalPrompt.toFront();
+		paneVolumeControl.toFront();
+		slVolumeControl.toFront();
+		ivMuteToggle.toFront();
+		addActionCallBackListeners();
+
+		tblUserHistory.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+		tblUserHistory.getStyleClass().add("noheader");
+		tblUserHistory.setPlaceholder(new Label("..."));
+		TableColumn<UserHistoryEntry, String> userColumn = new TableColumn<>("");
+		userColumn.setCellValueFactory(data -> data.getValue().getUser());
+		userColumn.setPrefWidth(140);
+		TableColumn<UserHistoryEntry, String> factionColumn = new TableColumn<>("");
+		factionColumn.setCellValueFactory(data -> data.getValue().getFaction());
+		factionColumn.setPrefWidth(50);
+		//		TableColumn<UserHistoryEntry, String> versionColumn = new TableColumn<>("");
+		//		versionColumn.setCellValueFactory(data -> data.getValue().getVersion());
+		//		versionColumn.setPrefWidth(250);
+		//		TableColumn<UserHistoryEntry, String> timeColumn = new TableColumn<>("");
+		//		timeColumn.setCellValueFactory(data -> data.getValue().getTime());
+		//		timeColumn.setPrefWidth(102);
+		//		timeColumn.setMaxWidth(105);
+		//		timeColumn.setMinWidth(100);
+		TableColumn<UserHistoryEntry, String> attackColumn = new TableColumn<>("");
+		attackColumn.setCellValueFactory(data -> data.getValue().getInFightForPlanet());
+		attackColumn.setPrefWidth(170);
+		tblUserHistory.getColumns().addAll(userColumn, factionColumn,
+				//versionColumn
+				//timeColumn
+				attackColumn);
+		tblUserHistory.getSortOrder().add(attackColumn);
+		tblUserHistory.getSortOrder().add(userColumn);
+
+		tblUserHistory.setRowFactory(tblUserHistory -> new TableRow<UserHistoryEntry>() {
+			@Override
+			protected void updateItem(UserHistoryEntry item, boolean empty) {
+				super.updateItem(item, empty);
+			}
+		});
+
+		adminButton.focusedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) {
+				if (newPropertyValue) {
+					// Change image on admin switcher to reflect that there is focus
+					adminButtonHasFocus = true;
+					if (adminMenuActive) {
+						Platform.runLater(() -> adminButton.setGraphic(new ImageView(imageAdminButtonOn_Focus)));
+					} else {
+						Platform.runLater(() -> adminButton.setGraphic(new ImageView(imageAdminButtonOff_Focus)));
+					}
+				} else {
+					// Change image on admin switcher to reflect that there is no focus
+					adminButtonHasFocus = false;
+					if (adminMenuActive) {
+						Platform.runLater(() -> adminButton.setGraphic(new ImageView(imageAdminButtonOn)));
+					} else {
+						Platform.runLater(() -> adminButton.setGraphic(new ImageView(imageAdminButtonOff)));
+					}
+				}
+			}
+		});
+		toplabel.toFront();
+	}
+
+	/**
 	 * Handle Actions
 	 *
 	 * @param action action
-	 * @param o action object
+	 * @param o      action object
 	 * @return boolean (always true, ignore)
 	 */
 	@Override
@@ -1843,12 +1857,11 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(messageServerConnectionLost);
 
 				// Stop heartbeat timer
-				if(Nexus.getServerHeartBeatTimer() != null) {
+				if (Nexus.getServerHeartBeatTimer() != null) {
 					Nexus.getServerHeartBeatTimer().cancel();
 					Nexus.getServerHeartBeatTimer().purge();
 				}
 				break;
-
 
 			case CHANGE_LANGUAGE:
 				if (currentlyDisplayedPane != null) {
@@ -1939,7 +1952,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					Nexus.setLoggedInStatus(false);
 					enableMainMenuButtons(Nexus.isLoggedIn(), false);
 
-//					createNewPaneObjects();
+					//					createNewPaneObjects();
 				});
 				break;
 
@@ -1958,8 +1971,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					ActionManager.getAction(ACTIONS.PANE_DESTROY_CURRENT).execute();
 				}
 
-//				GameState state = new GameState(GAMESTATEMODES.USER_LOG_OUT);
-//				Nexus.fireNetworkEvent(state);
+				//				GameState state = new GameState(GAMESTATEMODES.USER_LOG_OUT);
+				//				Nexus.fireNetworkEvent(state);
 
 				ActionManager.getAction(ACTIONS.SET_FACTION_LOGO_INVISIBLE).execute();
 				break;
@@ -1969,8 +1982,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 				// Dialog
 				Platform.runLater(() -> {
-					Alert alert = Tools.C3Dialog(AlertType.ERROR, Internationalization.getString("ACTIONS.LOGGED_OFF_AFTER_DOUBLE_LOGIN_COMPLETE.name"), Internationalization.getString("ACTIONS.LOGGED_OFF_AFTER_DOUBLE_LOGIN_COMPLETE.name"),
-							Internationalization.getString("ACTIONS.LOGGED_OFF_AFTER_DOUBLE_LOGIN_COMPLETE.description"));
+					Alert alert = Tools.C3Dialog(AlertType.ERROR, Internationalization.getString("ACTIONS.LOGGED_OFF_AFTER_DOUBLE_LOGIN_COMPLETE.name"), Internationalization.getString("ACTIONS.LOGGED_OFF_AFTER_DOUBLE_LOGIN_COMPLETE.name"), Internationalization.getString("ACTIONS.LOGGED_OFF_AFTER_DOUBLE_LOGIN_COMPLETE.description"));
 					Optional<ButtonType> r = alert.showAndWait();
 					if (r.isPresent() && ButtonType.OK == r.get()) {
 						logger.info("Message has been confirmed.");
@@ -2008,8 +2020,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					int tcpPort = Integer.parseInt(C3Properties.getProperty(C3PROPS.TCP_PORT));
 
 					Nexus.setLoggedInStatus(true);
-//					cycleTopRightTexts.set(false);
-//					textTopRightThread.interrupt();
+					//					cycleTopRightTexts.set(false);
+					//					textTopRightThread.interrupt();
 
 					if (Nexus.getCurrentUser() != null) {
 						if (Nexus.getCurrentUser().getUserName().length() > 15) {
@@ -2025,14 +2037,14 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					BOUniverse boUniverse = Nexus.getBoUniverse();
 
 					Date nowDate = new Date(System.currentTimeMillis());
-					Date translatedNowDate = translateRealDateToSeasonDate(nowDate, (long)Nexus.getCurrentSeason());
+					Date translatedNowDate = translateRealDateToSeasonDate(nowDate, (long) Nexus.getCurrentSeason());
 					LocalDate translatedLocalDate = new java.util.Date(translatedNowDate.getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 					LocalTime nowLocalTime = LocalTime.now();
 					LocalDateTime now = LocalDateTime.of(translatedLocalDate, nowLocalTime);
 					DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Internationalization.getString("general_date"));
 					String formatDateTime = now.format(formatter);
 
-//					gameInfoLabel.setText("S" + boUniverse.currentSeason + " R" + boUniverse.currentRound + "[" + (boUniverse.currentRoundPhase == 1 ? "." : ":") + "]" + "/" + boUniverse.maxNumberOfRoundsForSeason + " " + Tools.getRomanNumber(boUniverse.currentSeasonMetaPhase) + " - " + boUniverse.currentDate);
+					//					gameInfoLabel.setText("S" + boUniverse.currentSeason + " R" + boUniverse.currentRound + "[" + (boUniverse.currentRoundPhase == 1 ? "." : ":") + "]" + "/" + boUniverse.maxNumberOfRoundsForSeason + " " + Tools.getRomanNumber(boUniverse.currentSeasonMetaPhase) + " - " + boUniverse.currentDate);
 					gameInfoLabel.setText("S" + boUniverse.currentSeason + "*" + Tools.getRomanNumber(boUniverse.currentSeasonMetaPhase) + "/R" + boUniverse.currentRound + " - " + formatDateTime);
 
 					labelTFSProgress.setText(boUniverse.currentRound + " / " + boUniverse.maxNumberOfRoundsForSeason);
@@ -2177,9 +2189,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			case TERMINAL_COMMAND:
 				String com = o.getText();
 				if (Nexus.isLoggedIn()) {
-					if (com.contains("find")
-					|| com.contains("finalize round")
-					|| com.contains("create universe")) {
+					if (com.contains("find") || com.contains("finalize round") || com.contains("create universe")) {
 						handleCommand(com);
 					}
 				}
@@ -2245,8 +2255,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				});
 				break;
 
-//			case APPLICATION_EXIT:
-//				break;
+			//			case APPLICATION_EXIT:
+			//				break;
 
 			case APPLICATION_STARTUP:
 				startup();
@@ -2352,9 +2362,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 			case SHOW_POPUP:
 				if ((o != null) && (o.getObject() instanceof POPUPS)) {
-					Integer id = ((POPUPS)o.getObject()).getId();
+					Integer id = ((POPUPS) o.getObject()).getId();
 					String colorCode = "green";
-					switch(id) {
+					switch (id) {
 						case 1:
 							colorCode = "green";
 							break;
@@ -2396,14 +2406,14 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					BOUniverse boUniverse = Nexus.getBoUniverse();
 
 					Date nowDate = new Date(System.currentTimeMillis());
-					Date translatedNowDate = translateRealDateToSeasonDate(nowDate, (long)Nexus.getCurrentSeason());
+					Date translatedNowDate = translateRealDateToSeasonDate(nowDate, (long) Nexus.getCurrentSeason());
 					LocalDate translatedLocalDate = new java.util.Date(translatedNowDate.getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 					LocalTime nowLocalTime = LocalTime.now();
 					LocalDateTime now = LocalDateTime.of(translatedLocalDate, nowLocalTime);
 					DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Internationalization.getString("general_date"));
 					String formatDateTime = now.format(formatter);
 
-//					gameInfoLabel.setText("S" + boUniverse.currentSeason + " R" + boUniverse.currentRound + "[" + (boUniverse.currentRoundPhase == 1 ? "." : ":") + "]" + "/" + boUniverse.maxNumberOfRoundsForSeason + " " + Tools.getRomanNumber(boUniverse.currentSeasonMetaPhase) + " - " + boUniverse.currentDate);
+					//					gameInfoLabel.setText("S" + boUniverse.currentSeason + " R" + boUniverse.currentRound + "[" + (boUniverse.currentRoundPhase == 1 ? "." : ":") + "]" + "/" + boUniverse.maxNumberOfRoundsForSeason + " " + Tools.getRomanNumber(boUniverse.currentSeasonMetaPhase) + " - " + boUniverse.currentDate);
 					gameInfoLabel.setText("S" + boUniverse.currentSeason + "*" + Tools.getRomanNumber(boUniverse.currentSeasonMetaPhase) + "/R" + boUniverse.currentRound + " - " + formatDateTime);
 
 					double tfsProgress = (100d / Nexus.getBoUniverse().maxNumberOfRoundsForSeason * Nexus.getBoUniverse().currentRound) / 100;
@@ -2429,12 +2439,12 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 			case IRC_DISCONNECT_NOW:
 				Platform.runLater(() -> {
-//					chatPane = null;
-//					chatPane = new ChatPane();
-//					chatPane.setShowsMouseFollow(false);
-//					chatPane.setShowsPlanetRotation(false);
-//					chatPane.setCacheHint(CacheHint.SPEED);
-//					chatPane.getController().addActionCallBackListeners();
+					//					chatPane = null;
+					//					chatPane = new ChatPane();
+					//					chatPane.setShowsMouseFollow(false);
+					//					chatPane.setShowsPlanetRotation(false);
+					//					chatPane.setCacheHint(CacheHint.SPEED);
+					//					chatPane.getController().addActionCallBackListeners();
 				});
 				break;
 
@@ -2443,7 +2453,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					ivMWOLogo.setVisible(true);
 					ivMWOLogo.setOpacity(1.0);
 					ivMWOLogo.toFront();
-//					C3SoundPlayer.play("sound/fx/beep_03.mp3", false);
+					//					C3SoundPlayer.play("sound/fx/beep_03.mp3", false);
 					FadeTransition fadeOutTransition = new FadeTransition(Duration.millis(2000), ivMWOLogo);
 					fadeOutTransition.setFromValue(1.0);
 					fadeOutTransition.setToValue(0.0);
@@ -2499,40 +2509,40 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				ActionManager.getAction(ACTIONS.RESET_STORY_PANES).execute();
 				break;
 
-//			case START_ROLEPLAY:
-//				break;
-//			case LOGINCHECK_STARTED:
-//				break;
-//			case LOGINCHECK_FINISHED:
-//				break;
-//			case LOGON_FINISHED_WITH_ERROR:
-//				break;
-//			case MOUSE_MOVED:
-//				break;
-//			case MUSIC_SELECTION_CHANGED:
-//				break;
-//			case SAVE_ROLEPLAY_STORY_OK:
-//				break;
-//			case SAVE_ROLEPLAY_STORY_ERR:
-//				break;
-//			case DELETE_ROLEPLAY_STORY_OK:
-//				break;
-//			case DELETE_ROLEPLAY_STORY_ERR:
-//				break;
-//			case GET_ROLEPLAY_ALLSTORIES:
-//				break;
-//			case GET_ROLEPLAY_ALLCHARACTER:
-//				break;
-//			case ROLEPLAY_NEXT_STEP:
-//				break;
-//			case ROLEPLAY_NEXT_STEP_CHANGE_PANE:
-//				break;
-//			case ACTION_SUCCESSFULLY_EXECUTED:
-//				break;
-//			case CURSOR_REQUEST_NORMAL_MESSAGE:
-//				break;
-//			case CURSOR_REQUEST_WAIT_MESSAGE:
-//				break;
+			//			case START_ROLEPLAY:
+			//				break;
+			//			case LOGINCHECK_STARTED:
+			//				break;
+			//			case LOGINCHECK_FINISHED:
+			//				break;
+			//			case LOGON_FINISHED_WITH_ERROR:
+			//				break;
+			//			case MOUSE_MOVED:
+			//				break;
+			//			case MUSIC_SELECTION_CHANGED:
+			//				break;
+			//			case SAVE_ROLEPLAY_STORY_OK:
+			//				break;
+			//			case SAVE_ROLEPLAY_STORY_ERR:
+			//				break;
+			//			case DELETE_ROLEPLAY_STORY_OK:
+			//				break;
+			//			case DELETE_ROLEPLAY_STORY_ERR:
+			//				break;
+			//			case GET_ROLEPLAY_ALLSTORIES:
+			//				break;
+			//			case GET_ROLEPLAY_ALLCHARACTER:
+			//				break;
+			//			case ROLEPLAY_NEXT_STEP:
+			//				break;
+			//			case ROLEPLAY_NEXT_STEP_CHANGE_PANE:
+			//				break;
+			//			case ACTION_SUCCESSFULLY_EXECUTED:
+			//				break;
+			//			case CURSOR_REQUEST_NORMAL_MESSAGE:
+			//				break;
+			//			case CURSOR_REQUEST_WAIT_MESSAGE:
+			//				break;
 			case NEW_UNIVERSE_RECEIVED:
 				logger.info("Do something with the new UNIVERSE (here)!!!");
 				break;
@@ -2541,15 +2551,6 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				break;
 		}
 		return true;
-	}
-
-	private static void incrementCounter(){
-		counterWaitCursorLock.lock();
-		try {
-			counterWaitCursor++;
-		} finally{
-			counterWaitCursorLock.unlock();
-		}
 	}
 
 	public void handleCommand(String com) {
@@ -2706,7 +2707,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		if (Nexus.promptNewVersionInstall) {
 			C3Message message = new C3Message(C3MESSAGES.DOWNLOAD_CLIENT);
 			String m = Internationalization.getString("app_new_version_available");
-			m = m.replace("{version}",Nexus.getLastAvailableClientVersion());
+			m = m.replace("{version}", Nexus.getLastAvailableClientVersion());
 			message.setText(m);
 			message.setType(C3MESSAGETYPES.YES_NO);
 			ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
@@ -2720,7 +2721,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			if (speechVolume != null && !"unknown".equals(speechVolume) && !"".equals(speechVolume)) {
 				try {
 					v = Double.parseDouble(speechVolume);
-				} catch(Exception e) {
+				} catch (Exception e) {
 					// do nothing, value could not be set
 				}
 			}
