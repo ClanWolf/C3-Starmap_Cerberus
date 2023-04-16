@@ -912,6 +912,26 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 						Nexus.setHomeWorld(starSystem);
 					}
 
+					BOAttack a = starSystem.getAttack();
+					Image attackMarkerSwords;
+					if (a != null) {
+						if (a.getRound().equals(boUniverse.currentRound) && a.getStarSystemId().equals(starSystem.getStarSystemId())) {
+							attackMarkerSwords = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/attack2.png")));
+							double markerDim = 16.0d;
+							ImageView marker;
+							marker = new ImageView();
+							marker.setFitWidth(markerDim);
+							marker.setFitHeight(markerDim);
+							marker.setImage(attackMarkerSwords);
+							marker.setTranslateX(starSystem.getScreenX() - (markerDim / 2));
+							marker.setTranslateY(starSystem.getScreenY() - (markerDim / 2) - 12);
+							marker.setMouseTransparent(true);
+							marker.toFront();
+							marker.setId("swordsIcon");
+							canvas.getChildren().add(marker);
+						}
+					}
+
 					Group starSystemGroup = new Group();
 					starSystemGroup.setId(id.toString());
 					StackPane stackPane = new StackPane();

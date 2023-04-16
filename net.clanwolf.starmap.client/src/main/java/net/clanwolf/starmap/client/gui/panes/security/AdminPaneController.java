@@ -381,9 +381,11 @@ public class AdminPaneController {
 		boolean privs = Security.hasPrivilege(PRIVILEGES.ADMIN_IS_GOD_ADMIN);
 		boolean finances = Security.hasPrivilege(PRIVILEGES.FACTIONLEAD_HAS_ROLE);
 
-		tabUser.setDisable(false);
-		tabCharacter.setDisable(false);
+		tabUser.setDisable(true);
+		tabCharacter.setDisable(true);
 		tabFinances.setDisable(!finances);
 		tabPrivileges.setDisable(!privs);
+
+		btnSave.setDisable(true);
 	}
 }
