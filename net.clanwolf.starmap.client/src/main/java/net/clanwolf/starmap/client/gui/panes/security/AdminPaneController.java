@@ -74,7 +74,7 @@ public class AdminPaneController {
 	Label labelUser, labelPrivCode, labelPrivCodeBinary;
 
 	@FXML
-	Tab tabUser, tabPrivileges, tabFinances;
+	Tab tabUser, tabCharacter, tabPrivileges, tabFinances;
 
 	@FXML
 	Button btnSave, btnCancel;
@@ -391,5 +391,14 @@ public class AdminPaneController {
 		tblCIncomeDescription.setCellValueFactory(cellData -> cellData.getValue().incomeDescriptionProperty());
 		tableFinances.setItems(financesInfos);
 		getIncomeByIndex(0);
+
+		// Show or hide tabs according to privileges
+		boolean privs = Security.hasPrivilege(PRIVILEGES.ADMIN_IS_GOD_ADMIN);
+		boolean finances = Security.hasPrivilege(PRIVILEGES.FACTIONLEAD_HAS_ROLE);
+
+		tabUser.setDisable(false);
+		tabCharacter.setDisable(false);
+		tabFinances.setDisable(!finances);
+		tabPrivileges.setDisable(!privs);
 	}
 }

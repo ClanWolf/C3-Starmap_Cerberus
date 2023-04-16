@@ -13,6 +13,7 @@ TODO:
 - Check warning hibernate dialect (server)
 - Switch to MariaDB client (client, bots)
 
+- Delete all un-needed columns in user table and in roleplaycharacter table (after registration)
 - Save Faction from new faction combobox (to characters of a user!)
 - Create simple roleplay for "requesting diplomatic status" and "accept" or "decline"
 - Sound volume and Speech volume vs RP volume cleanup
@@ -24,6 +25,9 @@ TODO:
 - Check tab order and keyboard control for all panes
 - Video does not show sometimes
 ----------------------------------------------------------------
+
+Version 7.3.19 (16.04.2023)
+- STARTED: Let every user open the editor panel to edit own data
 
 Version 7.3.18 (15.04.2023)
 - ADDED: An alternative TTS source (narakeet)

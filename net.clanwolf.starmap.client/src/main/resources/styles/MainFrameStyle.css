@@ -291,14 +291,14 @@
 }
 
 .adminButton {
-  -fx-background-image: url("../images/buttons/admin.png");
+  -fx-background-image: url("../images/buttons/storyeditor.png");
   -fx-background-repeat: no-repeat;
   -fx-background-size: 32, 32;
   -fx-background-position: center;
 }
 
 .adminButton:hover {
-  -fx-background-image: url("../images/buttons/admin_hover.png");
+  -fx-background-image: url("../images/buttons/storyeditor_hover.png");
   -fx-background-repeat: no-repeat;
   -fx-background-size: 32, 32;
   -fx-background-position: center;

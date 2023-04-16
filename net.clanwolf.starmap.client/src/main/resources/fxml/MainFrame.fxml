@@ -205,7 +205,7 @@
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>
       </Button>
-      <Button id="btn_dark-blue" fx:id="adminPaneButton" layoutX="114.0" layoutY="349.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" styleClass="adminButton" text="" textAlignment="CENTER">
+      <Button id="btn_dark-blue" fx:id="adminPaneButton" layoutX="114.0" layoutY="349.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleAdminPaneButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" styleClass="editorButton" text="" textAlignment="CENTER">
          <stylesheets>
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>
@@ -220,7 +220,7 @@
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>
       </Button>
-      <Button id="btn_dark-blue" fx:id="storyEditorButton" layoutX="114.0" layoutY="306.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleStoryEditorButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" styleClass="editorButton" text="" textAlignment="CENTER">
+      <Button id="btn_dark-blue" fx:id="storyEditorButton" layoutX="114.0" layoutY="306.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleStoryEditorButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" styleClass="adminButton" text="" textAlignment="CENTER">
          <stylesheets>
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>

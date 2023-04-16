@@ -510,8 +510,14 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 	@FXML
 	private void handleAdminButtonMouseEventEnter() {
-		setStatusText(Internationalization.getString("app_admin_infotext").replace("%20", " ") + ".", true);
+		setStatusText(Internationalization.getString("app_admin_infotext").replace("%20", " "), true);
 //		Tools.playButtonHoverSound();
+	}
+
+	@FXML
+	private void handleAdminPaneButtonMouseEventEnter() {
+		setStatusText(Internationalization.getString("app_adminpane_infotext").replace("%20", " "), false);
+		//		Tools.playButtonHoverSound();
 	}
 
 	@FXML
@@ -858,7 +864,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			if (bn.equals(userButton)) {
 				if (!Nexus.isLoggedIn()) {
 					logger.info("Login opened by user.");
-					setStatusText(Internationalization.getString("app_login_infotext").replace("%20", " ") + ".", false);
+					setStatusText(Internationalization.getString("app_login_infotext").replace("%20", " "), false);
 					targetPane = loginPane;
 					if (!adminMenuActive) {
 						showMenuIndicator(true);
@@ -868,7 +874,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					adminPaneOpen = false;
 				} else {
 					logger.info("Open Userinfo panel for logged in user.");
-					setStatusText(Internationalization.getString("app_open_userinfo").replace("%20", " ") + ".", false);
+					setStatusText(Internationalization.getString("app_open_userinfo").replace("%20", " "), false);
 					targetPane = userInfoPane;
 					if (!adminMenuActive) {
 						showMenuIndicator(true);
@@ -881,7 +887,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			// SETTINGS
 			if (bn.equals(settingsButton)) {
 				logger.info("Settings opened by user.");
-				setStatusText(Internationalization.getString("app_settings_infotext").replace("%20", " ") + ".", false);
+				setStatusText(Internationalization.getString("app_settings_infotext").replace("%20", " "), false);
 				targetPane = settingsPane;
 				if (!adminMenuActive) {
 					showMenuIndicator(true);
@@ -893,7 +899,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			// STARMAP
 			if (bn.equals(mapButton)) {
 				logger.info("Map opened by user.");
-				setStatusText(Internationalization.getString("app_map_infotext").replace("%20", " ") + ".", false);
+				setStatusText(Internationalization.getString("app_map_infotext").replace("%20", " "), false);
 				targetPane = mapPane;
 				if (!adminMenuActive) {
 					showMenuIndicator(true);
@@ -905,7 +911,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			// ATTACK / INVASION
 			if (bn.equals(attackButton)) {
 				logger.info("Attack on a starsystem selected.");
-				setStatusText(Internationalization.getString("app_attack_infotext").replace("%20", " ") + ".", false);
+				setStatusText(Internationalization.getString("app_attack_infotext").replace("%20", " "), false);
 				targetPane = attackPane;
 				if (!adminMenuActive) {
 					showMenuIndicator(true);
@@ -917,7 +923,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			// ROLEPLAY
 			if (bn.equals(rolePlayButton)) {
 				logger.info("RolePlay opened by user.");
-				setStatusText(Internationalization.getString("app_settings_infotext").replace("%20", " ") + ".", false);
+				setStatusText(Internationalization.getString("app_settings_infotext").replace("%20", " "), false);
 				targetPane = rolePlayPane;
 				if (!adminMenuActive) {
 					showMenuIndicator(true);
@@ -931,7 +937,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			// DICE
 			if (bn.equals(diceButton)) {
 				logger.info("Dice opened by user.");
-				setStatusText(Internationalization.getString("app_dice_infotext").replace("%20", " ") + ".", false);
+				setStatusText(Internationalization.getString("app_dice_infotext").replace("%20", " "), false);
 				targetPane = dicePane;
 				if (!adminMenuActive) {
 					showMenuIndicator(true);
@@ -944,7 +950,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			// CHAT
 			if (bn.equals(chatButton)) {
 				logger.info("Chat opened by user.");
-				setStatusText(Internationalization.getString("app_chat_infotext").replace("%20", " ") + ".", false);
+				setStatusText(Internationalization.getString("app_chat_infotext").replace("%20", " "), false);
 				targetPane = chatPane;
 				if (!adminMenuActive) {
 					showMenuIndicator(true);
@@ -958,7 +964,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			// LOG
 			if (bn.equals(logButton)) {
 				logger.info("Log opened by user.");
-				setStatusText(Internationalization.getString("app_log_infotext").replace("%20", " ") + ".", false);
+				setStatusText(Internationalization.getString("app_log_infotext").replace("%20", " "), false);
 
 				openLogPane = true;
 			}
@@ -966,7 +972,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			if (bn.equals(exitButton)) {
 				// logger.info("Application close requested by user.");
 				spokenMessage = Internationalization.getString("C3_Speech_close_warning");
-				setStatusText(Internationalization.getString("C3_Speech_close_warning").replace("%20", " ") + ".", false);
+				setStatusText(Internationalization.getString("C3_Speech_close_warning").replace("%20", " "), false);
 				targetPane = confirmAppClosePane;
 				if (!adminMenuActive) {
 					showMenuIndicator(true);
@@ -980,7 +986,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			// ADMINS
 			if (bn.equals(adminButton)) {
 				logger.info("Admin menu opened by user.");
-				setStatusText(Internationalization.getString("app_admin_infotext").replace("%20", " ") + ".", true);
+				setStatusText(Internationalization.getString("app_admin_infotext").replace("%20", " "), true);
 				shiftButtonColumn();
 				Tools.playButtonClickSound();
 				targetPane = null;
@@ -988,14 +994,14 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			// STORY EDITOR
 			if (bn.equals(storyEditorButton)) {
 				logger.info("Sory editor opened by user.");
-				setStatusText(Internationalization.getString("app_storyeditor_infotext").replace("%20", " ") + ".", false);
+				setStatusText(Internationalization.getString("app_storyeditor_infotext").replace("%20", " "), false);
 				adminPaneOpen = true;
 				openEditorPane = true;
 			}
 			// ADMIN PANE
 			if (bn.equals(adminPaneButton)) {
 				logger.info("Administration pane (Security) opened by user.");
-				setStatusText(Internationalization.getString("app_adminpane_infotext").replace("%20", " ") + ".", false);
+				setStatusText(Internationalization.getString("app_adminpane_infotext").replace("%20", " "), false);
 				adminPaneOpen = true;
 				openAdministrationPane = true;
 			}
@@ -1787,17 +1793,18 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				adminButton.setDisable(false);
 
 				storyEditorButton.setDisable(false);
-				adminPaneButton.setDisable(false);
+				//adminPaneButton.setDisable(false);
 				renameMeButton3.setDisable(true);
 				renameMeButton4.setDisable(true);
 				logButton.setDisable(false);
 			} else {
 				storyEditorButton.setDisable(true);
-				adminPaneButton.setDisable(true);
+				//adminPaneButton.setDisable(true);
 				renameMeButton3.setDisable(true);
 				renameMeButton4.setDisable(true);
 				logButton.setDisable(false);
 			}
+			adminPaneButton.setDisable(false);
 		} else {
 			adminButton.setDisable(false);
 

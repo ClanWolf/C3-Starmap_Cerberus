@@ -28,6 +28,7 @@ package net.clanwolf.starmap.client.security;
 
 //import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.enums.PRIVILEGES;
+import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.transfer.dtos.UserDTO;
 
 /**
@@ -107,6 +108,10 @@ public class Security {
 //	public static boolean hasPrivilege(PRIVILEGES priv) {
 //		return hasPrivilege(Nexus.getCurrentUser(), priv);
 //	}
+
+	public static boolean hasPrivilege(PRIVILEGES priv) {
+		return hasPrivilege(Nexus.getCurrentUser(), priv);
+	}
 
 	/**
 	 * Checks if the current user has a given privilege
