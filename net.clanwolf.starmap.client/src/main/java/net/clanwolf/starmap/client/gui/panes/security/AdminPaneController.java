@@ -27,10 +27,14 @@
 package net.clanwolf.starmap.client.gui.panes.security;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import net.clanwolf.starmap.client.enums.PRIVILEGES;
@@ -40,6 +44,7 @@ import net.clanwolf.starmap.client.process.universe.BOJumpship;
 import net.clanwolf.starmap.client.process.universe.BOStarSystem;
 import net.clanwolf.starmap.client.security.FinancesInfo;
 import net.clanwolf.starmap.client.security.Security;
+import net.clanwolf.starmap.client.util.Encryptor;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.transfer.GameState;
@@ -56,7 +61,7 @@ public class AdminPaneController {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	@FXML
-	CheckBox cbActiveUser;
+	CheckBox cbActiveUser, cbRequestFactionChange;
 	private UserDTO currentUser = null;
 	private HashMap<Integer, CheckBox> privilegeBoxes = new HashMap<>();
 	private ArrayList<UserDTO> userList = new ArrayList<>();
@@ -64,7 +69,7 @@ public class AdminPaneController {
 	@FXML
 	ComboBox<String> cbUser;
 	@FXML
-	ComboBox<BOFaction> cbFaction, cbUserFaction;
+	ComboBox<BOFaction> cbFaction, cbUserFaction, cbRequestedFaction;
 	private final ArrayList<BOJumpship> activeJumpships = Nexus.getBoUniverse().getJumpshipList();
 	private final DecimalFormat nf = new DecimalFormat();
 
@@ -79,26 +84,55 @@ public class AdminPaneController {
 
 	@FXML
 	ScrollPane srollPane;
-	private HashMap<String, Integer> originalActivatedStatus = new HashMap<>();
+
 	@FXML
 	TableColumn<FinancesInfo, String> tblCIncome, tblCIncomeDescription;
 	@FXML
 	TableColumn<FinancesInfo, String> TblCCost;
-	//	private HashMap<String, BOFaction> originalFaction = new HashMap<>();
+	@FXML
+	ImageView btShowPassword, btShowPasswordConfirm;
 	private ObservableList<FinancesInfo> financesInfos = FXCollections.observableArrayList();
+	Image eye, eyeClosed;
+	// User Edit Tab
+	@FXML
+	Label lblName, lblPassword, lblPasswordConfirm, lblMail, lblMWOUser, lblPasswordConfirmClear, lblPasswordClear;
+	//	private HashMap<String, BOFaction> originalFaction = new HashMap<>();
+	private HashMap<String, Integer> originalActivatedStatus = new HashMap<>();
+	private boolean currentUserWasChanged = false;
+	private boolean showPW = false;
+	private boolean usernameOk = true;
+	private boolean pwOk = true;
+	private boolean mailOk = true;
+	private boolean mwoUsernameOk = true;
 
 	@FXML
 	TableView<FinancesInfo> tableFinances;
+	private String originalUsername = "";
+	private String originalMail = "";
 
 	@FXML
 	Label lCurrentBalance;
-
-	// User Edit Tab
-	@FXML
-	Label lblName, lblPassword, lblPasswordConfirm, lblMail, lblMWOUser;
+	private String originalMWOUser = "";
 
 	@FXML
 	TextField tfName, tfPassword, tfPasswordConfirm, tfMail, tfMWOUser;
+
+	@FXML
+	public void showPWButtonClick() {
+		if (showPW) {
+			showPW = false;
+			lblPasswordClear.setText("*****");
+			lblPasswordConfirmClear.setText("*****");
+			btShowPassword.setImage(eyeClosed);
+			btShowPasswordConfirm.setImage(eyeClosed);
+		} else {
+			showPW = true;
+			lblPasswordClear.setText(tfPassword.getText());
+			lblPasswordConfirmClear.setText(tfPasswordConfirm.getText());
+			btShowPassword.setImage(eye);
+			btShowPasswordConfirm.setImage(eye);
+		}
+	}
 
 	@FXML
 	public void handleSetActiveUser() {
@@ -110,27 +144,72 @@ public class AdminPaneController {
 	}
 
 	@FXML
-	public void btnSaveClicked() {
-		//		Iterator iterator = this.userList.iterator();
-		//		while (iterator.hasNext()) {
-		//			UserDTO u = iterator.next();
-		//			logger.info("User " + u.getUserName() + ": " + u.getPrivileges());
-		//		}
+	public void handleRequestFactionChangeClick() {
+		if (cbRequestFactionChange.isSelected()) {
+			cbRequestedFaction.setDisable(false);
+			cbRequestedFaction.getSelectionModel().select(0);
+		} else {
+			cbRequestedFaction.setDisable(true);
+			cbRequestedFaction.getSelectionModel().clearSelection();
+		}
+	}
 
-		ArrayList<UserDTO> usersToSave = new ArrayList<>();
+	@FXML
+	public void btnSaveClicked() {
+		HashSet<UserDTO> usersToSave = new HashSet<>();
 		for (UserDTO u : this.userList) {
-			logger.info("User " + u.getUserName() + ": " + u.getPrivileges());
+			// logger.info("User " + u.getUserName() + ": " + u.getPrivileges());
 			if (!(originalPrivileges.get(u.getUserName())).equals(u.getPrivileges())) {
 				usersToSave.add(u);
 			}
 			if (!(originalActivatedStatus.get(u.getUserName())).equals(u.getActive())) {
 				usersToSave.add(u);
 			}
+			if (u.id.equals(Nexus.getCurrentUser().getUserId())) {
+				if (currentUserWasChanged) {
+					u.setUserName(tfName.getText());
+					u.setUserEMail(tfMail.getText());
+					u.setMwoUsername(tfMWOUser.getText());
+
+					if (tfPassword.getText().length() > 5
+						&& tfPasswordConfirm.getText().length() > 5
+						&& tfPassword.getText().equals(tfPasswordConfirm.getText())
+					) {
+						String pw = Encryptor.createSinglePassword(tfPassword.getText());
+						u.setUserPassword(pw);
+					}
+					usersToSave.add(u);
+				}
+			}
 		}
-		GameState saveUsersState = new GameState();
-		saveUsersState.setMode(GAMESTATEMODES.PRIVILEGE_SAVE);
-		saveUsersState.addObject(usersToSave);
-		Nexus.fireNetworkEvent(saveUsersState);
+
+
+
+
+
+
+
+
+		// TODO_C3: Enable save for anyone if it works ok!
+		if (Security.hasPrivilege(PRIVILEGES.ADMIN_IS_GOD_ADMIN)) {
+			GameState saveUsersState = new GameState();
+			saveUsersState.setMode(GAMESTATEMODES.PRIVILEGE_SAVE);
+			saveUsersState.addObject(usersToSave);
+
+			logger.info("NOONE may actually save for now!");
+			// Nexus.fireNetworkEvent(saveUsersState);
+		} else {
+			logger.info("Only admins may actually save for now!");
+		}
+
+
+
+
+
+
+
+
+		currentUserWasChanged = false;
 
 		Stage stage = (Stage) btnSave.getScene().getWindow();
 		stage.close();
@@ -146,6 +225,8 @@ public class AdminPaneController {
 		}
 		Stage stage = (Stage) btnSave.getScene().getWindow();
 		stage.close();
+
+		showPW = false;
 	}
 
 	@FXML
@@ -286,6 +367,30 @@ public class AdminPaneController {
 		}
 	}
 
+	private void checkUserChanges() {
+		if (!tabUser.getText().endsWith("*")) {
+			tabUser.setText(tabUser.getText() + " *");
+		}
+
+		if (Objects.equals(originalUsername, tfName.getText())
+			&& Objects.equals(originalMail, tfMail.getText())
+			&& Objects.equals(originalMWOUser, tfMWOUser.getText())
+			&& tfPassword.getText().length() == 0
+			&& tfPasswordConfirm.getText().length() == 0
+			&& Objects.equals(tfPassword.getText(), tfPasswordConfirm.getText())
+		) {
+			// All fields are unchanged, pw fields are empty
+			// Nothing to save!
+			if (tabUser.getText().endsWith("*")) {
+				tabUser.setText(tabUser.getText().substring(0, tabUser.getText().length() - 2));
+			}
+			btnSave.setDisable(false);
+			currentUserWasChanged = false;
+		} else {
+			btnSave.setDisable(!usernameOk || !pwOk || !mailOk || !mwoUsernameOk);
+		}
+	}
+
 	public void init(Locale locale, ArrayList<UserDTO> userListFromNexus) {
 		this.userList = userListFromNexus;
 		for (UserDTO u : userListFromNexus) {
@@ -293,8 +398,17 @@ public class AdminPaneController {
 			originalActivatedStatus.put(u.getUserName(), u.getActive());
 		}
 
-		//		labelDescription.setText(Internationalization.getString("AdminSecurityDescription"));
+		eye = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/eye.png")));
+		eyeClosed = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/eye_closed.png")));
+
+		btShowPassword.setImage(eyeClosed);
+		btShowPasswordConfirm.setImage(eyeClosed);
+
+		tabUser.setText(Internationalization.getString("AdminSecurityTabUser"));
+		tabCharacter.setText(Internationalization.getString("AdminSecurityTabCharacter"));
+		tabFinances.setText(Internationalization.getString("AdminSecurityTabFinances"));
 		tabPrivileges.setText(Internationalization.getString("AdminSecurityTabPrivileges"));
+
 		labelUser.setText(Internationalization.getString("AdminSecurityUserLabel"));
 		btnSave.setText(Internationalization.getString("AdminSecurityButtonSave"));
 		btnCancel.setText(Internationalization.getString("AdminSecurityButtonCancel"));
@@ -305,16 +419,18 @@ public class AdminPaneController {
 		lblMail.setText(Internationalization.getString("AdminUserLabelMail"));
 		lblMWOUser.setText(Internationalization.getString("AdminUserLabelMWOUser"));
 
+		cbRequestFactionChange.setText(Internationalization.getString("AdminUserRequestFactionChange"));
+
 		if (Nexus.getCurrentUser() != null) {
 			tfName.setText(Nexus.getCurrentUser().getUserName());
-			tfPassword.setText(Nexus.getCurrentUser().getUserPassword());
 			tfPasswordConfirm.setText("");
 			tfMail.setText(Nexus.getCurrentUser().getUserEMail());
 			tfMWOUser.setText(Nexus.getCurrentUser().getMwoUsername());
 		}
 
-		tfPassword.setDisable(true);
-		tfPasswordConfirm.setDisable(true);
+		originalUsername = tfName.getText();
+		originalMail = tfMail.getText();
+		originalMWOUser = tfMWOUser.getText();
 
 		ResourceBundle sMessagesPrivileges = ResourceBundle.getBundle("MessagesPrivilegeBundle", locale);
 
@@ -372,20 +488,137 @@ public class AdminPaneController {
 		cbFaction.setItems(factions);
 		cbFaction.getSelectionModel().select(0);
 
+		cbRequestedFaction.setItems(factions);
+
 		tblCIncome.setCellValueFactory(cellData -> cellData.getValue().incomeProperty());
 		tblCIncomeDescription.setCellValueFactory(cellData -> cellData.getValue().incomeDescriptionProperty());
 		tableFinances.setItems(financesInfos);
 		getIncomeByIndex(0);
 
+		currentUserWasChanged = false;
+
+		ChangeListener<? super String> userNameFieldChangeListener = new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> ov, String old_val, String new_val) {
+				currentUserWasChanged = true;
+				usernameOk = tfName.getText().length() >= 3;
+				if (usernameOk) {
+					tfName.setStyle("-fx-text-fill:green;");
+					lblName.setStyle("-fx-text-fill:green;");
+				} else {
+					tfName.setStyle("-fx-text-fill:red;");
+					lblName.setStyle("-fx-text-fill:red;");
+				}
+				checkUserChanges();
+			}
+		};
+		ChangeListener<? super String> userPasswordFieldChangeListener = new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> ov, String old_val, String new_val) {
+				currentUserWasChanged = true;
+				if ((tfPassword.getText().length() == 0 || tfPassword.getText().length() > 5) && tfPasswordConfirm.getText().equals(tfPassword.getText())) {
+					tfPassword.setStyle("-fx-text-fill:green;");
+					tfPasswordConfirm.setStyle("-fx-text-fill:green;");
+					lblPassword.setStyle("-fx-text-fill:green;");
+					lblPasswordConfirm.setStyle("-fx-text-fill:green;");
+					pwOk = true;
+				} else {
+					tfPassword.setStyle("-fx-text-fill:red;");
+					tfPasswordConfirm.setStyle("-fx-text-fill:red;");
+					lblPassword.setStyle("-fx-text-fill:red;");
+					lblPasswordConfirm.setStyle("-fx-text-fill:red;");
+					pwOk = false;
+				}
+				if (showPW) {
+					lblPasswordClear.setText(tfPassword.getText());
+					lblPasswordConfirmClear.setText(tfPasswordConfirm.getText());
+				}
+
+				checkUserChanges();
+			}
+		};
+		ChangeListener<? super String> userPasswordConfirmFieldChangeListener = new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> ov, String old_val, String new_val) {
+				currentUserWasChanged = true;
+				if ((tfPassword.getText().length() == 0 || tfPassword.getText().length() > 5) && tfPasswordConfirm.getText().equals(tfPassword.getText())) {
+					tfPassword.setStyle("-fx-text-fill:green;");
+					tfPasswordConfirm.setStyle("-fx-text-fill:green;");
+					lblPassword.setStyle("-fx-text-fill:green;");
+					lblPasswordConfirm.setStyle("-fx-text-fill:green;");
+					pwOk = true;
+				} else {
+					tfPassword.setStyle("-fx-text-fill:red;");
+					tfPasswordConfirm.setStyle("-fx-text-fill:red;");
+					lblPassword.setStyle("-fx-text-fill:red;");
+					lblPasswordConfirm.setStyle("-fx-text-fill:red;");
+					pwOk = false;
+				}
+				if (showPW) {
+					lblPasswordClear.setText(tfPassword.getText());
+					lblPasswordConfirmClear.setText(tfPasswordConfirm.getText());
+				}
+
+				checkUserChanges();
+			}
+		};
+		ChangeListener<? super String> userMailFieldChangeListener = new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> ov, String old_val, String new_val) {
+				currentUserWasChanged = true;
+				mailOk = !"".equals(tfMail.getText()) && tfMail.getText().length() > 5 && tfMail.getText().contains("@") && tfMail.getText().contains(".") && tfMail.getText().lastIndexOf(".") > tfMail.getText().indexOf("@") && !tfMail.getText().endsWith(".");
+				if (mailOk) {
+					tfMail.setStyle("-fx-text-fill:green;");
+					lblMail.setStyle("-fx-text-fill:green;");
+				} else {
+					tfMail.setStyle("-fx-text-fill:red;");
+					lblMail.setStyle("-fx-text-fill:red;");
+				}
+				checkUserChanges();
+			}
+		};
+		ChangeListener<? super String> userMWONameFieldChangeListener = new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> ov, String old_val, String new_val) {
+				currentUserWasChanged = true;
+				mwoUsernameOk = tfMWOUser.getText().length() > 0;
+				if (mwoUsernameOk) {
+					tfMWOUser.setStyle("-fx-text-fill:green;");
+					lblMWOUser.setStyle("-fx-text-fill:green;");
+				} else {
+					tfMWOUser.setStyle("-fx-text-fill:red;");
+					lblMWOUser.setStyle("-fx-text-fill:red;");
+				}
+				checkUserChanges();
+			}
+		};
+
+		tfName.textProperty().addListener(userNameFieldChangeListener);
+		tfPassword.textProperty().addListener(userPasswordFieldChangeListener);
+		tfPasswordConfirm.textProperty().addListener(userPasswordConfirmFieldChangeListener);
+		tfMail.textProperty().addListener(userMailFieldChangeListener);
+		tfMWOUser.textProperty().addListener(userMWONameFieldChangeListener);
+
+		if (showPW) {
+			lblPasswordClear.setText(tfPassword.getText());
+			lblPasswordConfirmClear.setText(tfPasswordConfirm.getText());
+		}
+
+		tfPassword.setStyle("-fx-text-fill:red;");
+		tfPasswordConfirm.setStyle("-fx-text-fill:red;");
+
 		// Show or hide tabs according to privileges
 		boolean privs = Security.hasPrivilege(PRIVILEGES.ADMIN_IS_GOD_ADMIN);
 		boolean finances = Security.hasPrivilege(PRIVILEGES.FACTIONLEAD_HAS_ROLE);
 
-		tabUser.setDisable(true);
+		cbRequestedFaction.setDisable(true);
+		cbRequestedFaction.getSelectionModel().clearSelection();
+
+		tabUser.setDisable(false);
 		tabCharacter.setDisable(true);
 		tabFinances.setDisable(!finances);
 		tabPrivileges.setDisable(!privs);
 
-		btnSave.setDisable(true);
+		// btnSave.setDisable(false);
 	}
 }

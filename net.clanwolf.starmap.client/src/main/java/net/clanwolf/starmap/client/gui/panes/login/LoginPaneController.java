@@ -689,24 +689,9 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 				buttonLogin.setDisable(!checkRegisterTextFieldsForContent());
 			}
 		};
-		tfPasswordRegisterChangeListener = new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> ov, String old_val, String new_val) {
-				buttonLogin.setDisable(!checkRegisterTextFieldsForContent());
-			}
-		};
-		tfPasswordConfirmRegisterChangeListener = new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> ov, String old_val, String new_val) {
-				buttonLogin.setDisable(!checkRegisterTextFieldsForContent());
-			}
-		};
-		tfMailRegisterChangeListener = new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> ov, String old_val, String new_val) {
-				buttonLogin.setDisable(!checkRegisterTextFieldsForContent());
-			}
-		};
+		tfPasswordRegisterChangeListener = (ChangeListener<String>) (ov, old_val, new_val) -> buttonLogin.setDisable(!checkRegisterTextFieldsForContent());
+		tfPasswordConfirmRegisterChangeListener = (ChangeListener<String>) (ov, old_val, new_val) -> buttonLogin.setDisable(!checkRegisterTextFieldsForContent());
+		tfMailRegisterChangeListener = (ChangeListener<String>) (ov, old_val, new_val) -> buttonLogin.setDisable(!checkRegisterTextFieldsForContent());
 	}
 
 

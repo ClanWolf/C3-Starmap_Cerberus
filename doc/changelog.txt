@@ -13,6 +13,7 @@ TODO:
 - Check warning hibernate dialect (server)
 - Switch to MariaDB client (client, bots)
 
+- Check for already existing users while registration
 - Delete all un-needed columns in user table and in roleplaycharacter table (after registration)
 - Save Faction from new faction combobox (to characters of a user!)
 - Create simple roleplay for "requesting diplomatic status" and "accept" or "decline"
@@ -26,8 +27,12 @@ TODO:
 - Video does not show sometimes
 ----------------------------------------------------------------
 
+Version 7.3.21 (17.04.2023)
+- FIXED: Table view in finances tab
+- CHANGED: Editor panel for user implemented
+
 Version 7.3.20 (16.04.2023)
-- FIXED: Massive bug in map refresh routine
+- FIXED: Massive bug in map refresh routine (should be much faster now)
 - STARTED: Let every user open the editor panel to edit own data
 
 Version 7.3.18 (15.04.2023)

@@ -681,7 +681,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		GameState response = new GameState(GAMESTATEMODES.PRIVILEGE_SAVE);
 		try {
 			EntityManagerHelper.beginTransaction(getC3UserID(session));
-			ArrayList<UserPOJO> list = (ArrayList<UserPOJO>) state.getObject();
+			HashSet<UserPOJO> list = (HashSet<UserPOJO>) state.getObject();
 			for (UserPOJO user : list) {
 				user.setLastModified(new Timestamp(System.currentTimeMillis()));
 				if (user.getUserId() == null) {

@@ -705,6 +705,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 									}
 								}
 							}
+
+							break;
 						}
 					}
 
@@ -734,6 +736,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 							timeline.setCycleCount(Timeline.INDEFINITE);
 							timeline.play();
 							attacksPane.getChildren().add(line);
+
+							break;
 						}
 					}
 
