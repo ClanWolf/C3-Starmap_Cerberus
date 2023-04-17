@@ -589,9 +589,17 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 					VBoxError.toBack();
 					VBoxError.setVisible(false);
 
-					buttonSoundBoard01.setDisable(false);
-					buttonSoundBoard02.setDisable(false);
-					buttonSoundBoard03.setDisable(false);
+					AttackDTO a = Nexus.getCurrentAttackOfUser().getAttackDTO();
+					for (AttackCharacterDTO c : a.getAttackCharList()) {
+						if (c.getCharacterID().equals(Nexus.getCurrentUser().getCurrentCharacter().getId())) {
+							// This is me
+							if (c.getType().equals(Constants.ROLE_ATTACKER_COMMANDER) || c.getType().equals(Constants.ROLE_DEFENDER_COMMANDER)) {
+								buttonSoundBoard01.setDisable(false);
+								buttonSoundBoard02.setDisable(false);
+								buttonSoundBoard03.setDisable(false);
+							}
+						}
+					}
 					btChoice1.setDisable(false);
 					btChoice2.setDisable(false);
 					btChoice3.setDisable(false);
@@ -788,9 +796,17 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 				final Timeline timelineCooldown = new Timeline(new KeyFrame(Duration.seconds(40), new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent actionEvent) {
-						buttonSoundBoard01.setDisable(false);
-						buttonSoundBoard02.setDisable(false);
-						buttonSoundBoard03.setDisable(false);
+						AttackDTO a = Nexus.getCurrentAttackOfUser().getAttackDTO();
+						for (AttackCharacterDTO c : a.getAttackCharList()) {
+							if (c.getCharacterID().equals(Nexus.getCurrentUser().getCurrentCharacter().getId())) {
+								// This is me
+								if (c.getType().equals(Constants.ROLE_ATTACKER_COMMANDER) || c.getType().equals(Constants.ROLE_DEFENDER_COMMANDER)) {
+									buttonSoundBoard01.setDisable(false);
+									buttonSoundBoard02.setDisable(false);
+									buttonSoundBoard03.setDisable(false);
+								}
+							}
+						}
 
 						Image neutralImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/icons/radio.png")));
 						ivRadioSenderImage.setImage(neutralImage);

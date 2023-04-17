@@ -201,15 +201,15 @@ public class AdminPaneController {
 		} else {
 			logger.info("Only admins may actually save for now!");
 		}
-
-
-
-
-
-
-
-
 		currentUserWasChanged = false;
+
+
+
+
+
+
+
+
 
 		Stage stage = (Stage) btnSave.getScene().getWindow();
 		stage.close();

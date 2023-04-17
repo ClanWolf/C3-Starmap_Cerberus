@@ -227,7 +227,7 @@
                     <URL value="@../styles/MainFrameStyle.css" />
                   </stylesheets>
                 </CheckBox>
-                <Slider fx:id="slider_SpeechVolume" layoutX="476.0" layoutY="64.0" majorTickUnit="10.0" minorTickCount="1" prefWidth="272.0" snapToTicks="true">
+                <Slider fx:id="slider_SpeechVolume" blockIncrement="1.0" layoutX="476.0" layoutY="64.0" majorTickUnit="1.0" minorTickCount="1" prefWidth="272.0">
                   <stylesheets>
                     <URL value="@../styles/MainFrameStyle.css" />
                   </stylesheets>
@@ -237,7 +237,7 @@
                     <URL value="@../styles/MainFrameStyle.css" />
                   </stylesheets>
                 </CheckBox>
-                <Slider fx:id="slider_SoundVolume" layoutX="476.0" layoutY="102.0" majorTickUnit="10.0" minorTickCount="1" prefWidth="272.0" snapToTicks="true">
+                <Slider fx:id="slider_SoundVolume" blockIncrement="1.0" layoutX="476.0" layoutY="102.0" majorTickUnit="1.0" minorTickCount="1" prefWidth="272.0">
                   <stylesheets>
                     <URL value="@../styles/MainFrameStyle.css" />
                   </stylesheets>
@@ -247,7 +247,7 @@
                     <URL value="@../styles/MainFrameStyle.css" />
                   </stylesheets>
                 </CheckBox>
-                <Slider fx:id="slider_MusicVolume" layoutX="476.0" layoutY="170.0" majorTickUnit="10.0" minorTickCount="1" prefWidth="272.0" snapToTicks="true">
+                <Slider fx:id="slider_MusicVolume" blockIncrement="1.0" layoutX="476.0" layoutY="170.0" majorTickUnit="1.0" max="25.0" minorTickCount="1" prefWidth="272.0">
                   <stylesheets>
                     <URL value="@../styles/MainFrameStyle.css" />
                   </stylesheets>

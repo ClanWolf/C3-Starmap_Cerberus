@@ -72,7 +72,7 @@ public class EventCommunications {
 			showErrorMessage(state);
 
 			switch (state.getMode()) {
-				case PLAY_SOUNDBOARD_SOUND_EVENT_01:
+				case PLAY_SOUNDBOARD_SOUND_EVENT_EXECUTE_01:
 					if (state.getObject() instanceof Long && state.getObject2() instanceof Long) {
 						logger.info("Play soundboard sound 01.");
 
@@ -84,7 +84,7 @@ public class EventCommunications {
 						}
 					}
 					break;
-				case PLAY_SOUNDBOARD_SOUND_EVENT_02:
+				case PLAY_SOUNDBOARD_SOUND_EVENT_EXECUTE_02:
 					if (state.getObject() instanceof Long && state.getObject2() instanceof Long) {
 						logger.info("Play soundboard sound 02.");
 
@@ -96,7 +96,7 @@ public class EventCommunications {
 						}
 					}
 					break;
-				case PLAY_SOUNDBOARD_SOUND_EVENT_03:
+				case PLAY_SOUNDBOARD_SOUND_EVENT_EXECUTE_03:
 					if (state.getObject() instanceof Long && state.getObject2() instanceof Long) {
 						logger.info("Play soundboard sound 03.");
 

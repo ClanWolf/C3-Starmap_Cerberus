@@ -305,7 +305,7 @@ public abstract class HTTP {
 			logger.info("Creating cache folder for video files: " + success);
 		}
 
-		String videoFileName = cacheFolderName + File.separator + s;
+		String videoFileName = (cacheFolderName + File.separator + s).replace("/", "\\");
 		File f1 = new File(videoFileName);
 		logger.info("Looking for video file: " + f1.getAbsolutePath());
 

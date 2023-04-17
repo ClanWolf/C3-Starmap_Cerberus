@@ -872,7 +872,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 					Long charId = (Long) state.getObject();
 					Long attackId = (Long) state.getObject2();
 
-					GameState response = new GameState(GAMESTATEMODES.PLAY_SOUNDBOARD_SOUND_EVENT_01);
+					GameState response = new GameState(GAMESTATEMODES.PLAY_SOUNDBOARD_SOUND_EVENT_EXECUTE_01);
 					response.addObject(charId);
 					response.addObject2(attackId);
 					C3GameSessionHandler.sendBroadCast(room, response);
@@ -885,7 +885,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 					Long charId = (Long) state.getObject();
 					Long attackId = (Long) state.getObject2();
 
-					GameState response = new GameState(GAMESTATEMODES.PLAY_SOUNDBOARD_SOUND_EVENT_02);
+					GameState response = new GameState(GAMESTATEMODES.PLAY_SOUNDBOARD_SOUND_EVENT_EXECUTE_02);
 					response.addObject(charId);
 					response.addObject2(attackId);
 					C3GameSessionHandler.sendBroadCast(room, response);
@@ -898,7 +898,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 					Long charId = (Long) state.getObject();
 					Long attackId = (Long) state.getObject2();
 
-					GameState response = new GameState(GAMESTATEMODES.PLAY_SOUNDBOARD_SOUND_EVENT_03);
+					GameState response = new GameState(GAMESTATEMODES.PLAY_SOUNDBOARD_SOUND_EVENT_EXECUTE_03);
 					response.addObject(charId);
 					response.addObject2(attackId);
 					C3GameSessionHandler.sendBroadCast(room, response);
