@@ -13,6 +13,7 @@ TODO:
 - Check warning hibernate dialect (server)
 - Switch to MariaDB client (client, bots)
 
+- Bot Messages for finished invasions
 - Display current matchscore for active fights in the map
 - Random map cannot be selected in MWO lobby, we need a die there or something
 - Check for already existing users while registration
@@ -28,6 +29,9 @@ TODO:
 - Check tab order and keyboard control for all panes
 - Video does not show sometimes
 ----------------------------------------------------------------
+
+Version 7.3.24 (18.04.2023)
+- FIXED: Bot announce finalized invasions
 
 Version 7.3.23 (18.04.2023)
 - FIXED: Server connection lost due to NPE in SB GameState message

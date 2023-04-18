@@ -154,7 +154,7 @@ public class DropLeadCheckTimerTask extends TimerTask {
 				C3Room.sendBroadcastMessage(response);
 			}
 		} else {
-			logger.info("No broken attacks found.");
+			// logger.info("No broken attacks found.");
 		}
 	}
 }

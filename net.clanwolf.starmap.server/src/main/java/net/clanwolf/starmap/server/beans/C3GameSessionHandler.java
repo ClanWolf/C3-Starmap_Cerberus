@@ -395,6 +395,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 	public synchronized void saveAttack(PlayerSession session, GameState state) {
 		AttackDAO dao = AttackDAO.getInstance();
 		AttackCharacterDAO daoAC = AttackCharacterDAO.getInstance();
+		FactionDAO daoFaction = FactionDAO.getInstance();
 		StarSystemDataDAO daoSS = StarSystemDataDAO.getInstance();
 		JumpshipDAO daoJJ = JumpshipDAO.getInstance();
 		Long attackType = null;
@@ -461,13 +462,24 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 						JumpshipPOJO jpWinner = JumpshipDAO.getInstance().findById(getC3UserID(session),attack.getJumpshipID());
 						long unitXP = 0;
 
-						if( rpPojo.getAttackerWins()){
+						if (rpPojo.getAttackerWins()) {
 							attack.setFactionID_Winner(jpWinner.getJumpshipFactionID());
+
+							String planet = starSystem.getName();
+							JumpshipPOJO jumpship = daoJJ.findById(getC3UserID(session), jpWinner.getJumpshipFactionID());
+							FactionPOJO winnerFaction = daoFaction.findById(getC3UserID(session), jumpship.getJumpshipFactionID());
+							ServerNexus.getEci().sendExtCom("The fight for " + planet + " has been decided. " + winnerFaction.getShortName() + " conquered the system!", "en", true, true, true);
+							ServerNexus.getEci().sendExtCom("Der Kampf um " + planet + " wurde entschieden. " + winnerFaction.getShortName() + " hat das System erobert!", "de", true, true, true);
 
 							unitXP = Constants.JUMPSHIP_XP_ATTACK_VICTORY;
 
-						} else if ( rpPojo.getDefenderWins()){
+						} else if (rpPojo.getDefenderWins()) {
 							attack.setFactionID_Winner(attack.getFactionID_Defender());
+
+							String planet = starSystem.getName();
+							FactionPOJO winnerFaction = daoFaction.findById(getC3UserID(session), attack.getFactionID_Defender());
+							ServerNexus.getEci().sendExtCom("The invasion of " + planet + " has ended. " + winnerFaction.getShortName() + " has defended their world!", "en", true, true, true);
+							ServerNexus.getEci().sendExtCom("Der Kampf um " + planet + " ist vorbei. " + winnerFaction.getShortName() + " hat die Welt verteidigt!", "de", true, true, true);
 
 							unitXP = Constants.JUMPSHIP_XP_ATTACK_DEFEAT;
 						}
@@ -839,8 +851,6 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 		C3GameSessionHandler.sendBroadCast(room, stateNewPlayerList);
 	}
-
-
 
 	static Long getC3UserID(PlayerSession session) {
 		return (Long) session.getPlayer().getId();

@@ -825,7 +825,6 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 					case 2 -> C3SoundPlayer.play("sound/voice/" + lang + "/soundboard/type1/attacker/001.mp3", false);
 					case 3 -> C3SoundPlayer.play("sound/voice/" + lang + "/soundboard/type1/attacker/001.mp3", false);
 				}
-
 			});
 		}
 	}

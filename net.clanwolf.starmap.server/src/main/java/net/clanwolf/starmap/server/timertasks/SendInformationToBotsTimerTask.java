@@ -73,8 +73,8 @@ public class SendInformationToBotsTimerTask extends TimerTask {
 			FactionPOJO defender = FactionDAO.getInstance().findById(ServerNexus.DUMMY_USERID, a.getFactionID_Defender());
 			FactionPOJO attacker = FactionDAO.getInstance().findById(ServerNexus.DUMMY_USERID, js.getJumpshipFactionID());
 
-			fs_de.append("- ").append(ss.getName()).append(" (").append(defender.getShortName()).append(") wird von ").append(attacker.getShortName()).append(" angegriffen:\r\n    <" + forumLink + ">\r\n");
-			fs_en.append("- ").append(ss.getName()).append(" (").append(defender.getShortName()).append(") is attacked by ").append(attacker.getShortName()).append(":\r\n    <" + forumLink + ">\r\n");
+			fs_de.append("- ").append(ss.getName()).append(" (").append(defender.getShortName()).append(") wird von ").append(attacker.getShortName()).append(" angegriffen: (<" + forumLink + ">)\r\n");
+			fs_en.append("- ").append(ss.getName()).append(" (").append(defender.getShortName()).append(") is attacked by ").append(attacker.getShortName()).append(": (<" + forumLink + ">)\r\n");
 		}
 		fs_de.append("Noch ").append(finalHoursLeft).append(" Stunden in Runde ").append(roundId).append(" der Season ").append(seasonId).append(".\r\n");
 		fs_en.append(finalHoursLeft).append(" hours left in round ").append(roundId).append(" of season ").append(seasonId).append(".\r\n");
