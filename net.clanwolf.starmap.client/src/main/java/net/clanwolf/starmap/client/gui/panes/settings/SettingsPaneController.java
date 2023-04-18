@@ -693,7 +693,7 @@ public class SettingsPaneController extends AbstractC3Controller implements Acti
 		};
 		editSliderMusicChangeListener = (ChangeListener<Number>) (ov, old_val, new_val) -> {
 			double volume = (double) new_val / 100;
-			C3SoundPlayer.setBackgroundVolume(volume / 4);
+			C3SoundPlayer.setBackgroundVolume(volume / 10);
 			C3Properties.setDouble(C3PROPS.MUSICVOLUME, volume, true);
 			setWarningOn(true);
 		};

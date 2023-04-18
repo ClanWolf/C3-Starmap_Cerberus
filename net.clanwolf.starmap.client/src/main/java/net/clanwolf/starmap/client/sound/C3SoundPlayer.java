@@ -437,7 +437,7 @@ public class C3SoundPlayer {
 		if ("true".equals(C3Properties.getProperty(C3PROPS.PLAY_MUSIC))) {
 			media = new Media(mediaFile.toString());
 			mediaPlayer = new MediaPlayer(media);
-			mediaPlayer.setVolume(musicVolume / 4);
+			mediaPlayer.setVolume(musicVolume / 10);
 			logger.info("Playing background music.");
 			mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
 			mediaPlayer.play();

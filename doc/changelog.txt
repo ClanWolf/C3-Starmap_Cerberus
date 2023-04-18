@@ -29,6 +29,9 @@ TODO:
 - Video does not show sometimes
 ----------------------------------------------------------------
 
+Version 7.3.23 (18.04.2023)
+- FIXED: Server connection lost due to NPE in SB GameState message
+
 Version 7.3.22 (18.04.2023)
 - FIXED: Radio buttons will be enabled only for the two teamleads
 - FIXED: Video display problem on Windows 7 (?)

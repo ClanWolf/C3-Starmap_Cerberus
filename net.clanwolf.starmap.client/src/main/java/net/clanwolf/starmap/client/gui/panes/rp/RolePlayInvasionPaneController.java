@@ -819,10 +819,11 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 
 				playingRadioSample = true;
 				ActionManager.getAction(ACTIONS.START_SPEECH_SPECTRUM).execute();
+				String lang = Internationalization.getLanguage();
 				switch (sampleNumber) {
-					case 1 -> C3SoundPlayer.play("sound/voice/de/soundboard/001.mp3", false);
-					case 2 -> C3SoundPlayer.play("sound/voice/de/soundboard/002.mp3", false);
-					case 3 -> C3SoundPlayer.play("sound/voice/de/soundboard/003.mp3", false);
+					case 1 -> C3SoundPlayer.play("sound/voice/" + lang + "/soundboard/type1/attacker/001.mp3", false);
+					case 2 -> C3SoundPlayer.play("sound/voice/" + lang + "/soundboard/type1/attacker/001.mp3", false);
+					case 3 -> C3SoundPlayer.play("sound/voice/" + lang + "/soundboard/type1/attacker/001.mp3", false);
 				}
 
 			});

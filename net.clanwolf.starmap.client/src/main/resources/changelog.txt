@@ -13,6 +13,8 @@ TODO:
 - Check warning hibernate dialect (server)
 - Switch to MariaDB client (client, bots)
 
+- Display current matchscore for active fights in the map
+- Random map cannot be selected in MWO lobby, we need a die there or something
 - Check for already existing users while registration
 - Delete all un-needed columns in user table and in roleplaycharacter table (after registration)
 - Save Faction from new faction combobox (to characters of a user!)
@@ -26,6 +28,14 @@ TODO:
 - Check tab order and keyboard control for all panes
 - Video does not show sometimes
 ----------------------------------------------------------------
+
+Version 7.3.23 (18.04.2023)
+- FIXED: Server connection lost due to NPE in SB GameState message
+
+Version 7.3.22 (18.04.2023)
+- FIXED: Radio buttons will be enabled only for the two teamleads
+- FIXED: Video display problem on Windows 7 (?)
+- CHANGED: Reduced overall volume of background music slider, removed steps and tick from all sliders
 
 Version 7.3.21 (17.04.2023)
 - FIXED: Table view in finances tab

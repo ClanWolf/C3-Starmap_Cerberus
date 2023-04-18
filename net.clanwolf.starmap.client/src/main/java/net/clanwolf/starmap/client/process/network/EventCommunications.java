@@ -79,8 +79,10 @@ public class EventCommunications {
 						Long charId = (Long) state.getObject();
 						Long attackId = (Long) state.getObject2();
 
-						if (Nexus.getCurrentAttackOfUser().getAttackDTO().getId().equals(attackId)) {
-							ActionManager.getAction(ACTIONS.PLAY_SOUNDBAR_EXECUTE_01).execute(charId);
+						if (Nexus.getCurrentAttackOfUser() != null) {
+							if (Nexus.getCurrentAttackOfUser().getAttackDTO().getId().equals(attackId)) {
+								ActionManager.getAction(ACTIONS.PLAY_SOUNDBAR_EXECUTE_01).execute(charId);
+							}
 						}
 					}
 					break;
@@ -91,8 +93,10 @@ public class EventCommunications {
 						Long charId = (Long) state.getObject();
 						Long attackId = (Long) state.getObject2();
 
-						if (Nexus.getCurrentAttackOfUser().getAttackDTO().getId().equals(attackId)) {
-							ActionManager.getAction(ACTIONS.PLAY_SOUNDBAR_EXECUTE_02).execute(charId);
+						if (Nexus.getCurrentAttackOfUser() != null) {
+							if (Nexus.getCurrentAttackOfUser().getAttackDTO().getId().equals(attackId)) {
+								ActionManager.getAction(ACTIONS.PLAY_SOUNDBAR_EXECUTE_02).execute(charId);
+							}
 						}
 					}
 					break;
@@ -103,8 +107,10 @@ public class EventCommunications {
 						Long charId = (Long) state.getObject();
 						Long attackId = (Long) state.getObject2();
 
-						if (Nexus.getCurrentAttackOfUser().getAttackDTO().getId().equals(attackId)) {
-							ActionManager.getAction(ACTIONS.PLAY_SOUNDBAR_EXECUTE_03).execute(charId);
+						if (Nexus.getCurrentAttackOfUser() != null) {
+							if (Nexus.getCurrentAttackOfUser().getAttackDTO().getId().equals(attackId)) {
+								ActionManager.getAction(ACTIONS.PLAY_SOUNDBAR_EXECUTE_03).execute(charId);
+							}
 						}
 					}
 					break;
