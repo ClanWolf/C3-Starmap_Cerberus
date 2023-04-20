@@ -65,6 +65,7 @@ public class SendInformationToBotsTimerTask extends TimerTask {
 		ArrayList<AttackPOJO> allAttacksForRound = AttackDAO.getInstance().getOpenAttacksOfASeasonForRound(seasonId, roundId.intValue());
 		StringBuilder fs_de = new StringBuilder();
 		StringBuilder fs_en = new StringBuilder();
+		int co = 0;
 		for (AttackPOJO a : allAttacksForRound) {
 			String forumLink = a.getForumThreadLink();
 			StarSystemDataPOJO ssd = StarSystemDataDAO.getInstance().findById(ServerNexus.DUMMY_USERID, a.getStarSystemDataID());
@@ -73,8 +74,13 @@ public class SendInformationToBotsTimerTask extends TimerTask {
 			FactionPOJO defender = FactionDAO.getInstance().findById(ServerNexus.DUMMY_USERID, a.getFactionID_Defender());
 			FactionPOJO attacker = FactionDAO.getInstance().findById(ServerNexus.DUMMY_USERID, js.getJumpshipFactionID());
 
-			fs_de.append("- ").append(ss.getName()).append(" (").append(defender.getShortName()).append(") wird von ").append(attacker.getShortName()).append(" angegriffen: (<" + forumLink + ">)\r\n");
-			fs_en.append("- ").append(ss.getName()).append(" (").append(defender.getShortName()).append(") is attacked by ").append(attacker.getShortName()).append(": (<" + forumLink + ">)\r\n");
+			fs_de.append("- ").append(ss.getName()).append(" (").append(defender.getShortName()).append(") wird von ").append(attacker.getShortName()).append(" angegriffen (<" + forumLink + ">)\r\n");
+			fs_en.append("- ").append(ss.getName()).append(" (").append(defender.getShortName()).append(") is attacked by ").append(attacker.getShortName()).append(" (<" + forumLink + ">)\r\n");
+			co++;
+		}
+		if (co == 0) {
+			fs_de.append("- keine ...\r\n");
+			fs_en.append("- none ...\r\n");
 		}
 		fs_de.append("Noch ").append(finalHoursLeft).append(" Stunden in Runde ").append(roundId).append(" der Season ").append(seasonId).append(".\r\n");
 		fs_en.append(finalHoursLeft).append(" hours left in round ").append(roundId).append(" of season ").append(seasonId).append(".\r\n");

@@ -34,6 +34,7 @@ import io.nadron.event.Events;
 import io.nadron.event.impl.SessionMessageHandler;
 import io.nadron.service.GameStateManagerService;
 import net.clanwolf.starmap.constants.Constants;
+import net.clanwolf.starmap.server.GameServer;
 import net.clanwolf.starmap.server.servernexus.ServerNexus;
 import net.clanwolf.starmap.server.util.ForumDatabaseTools;
 import net.clanwolf.starmap.transfer.dtos.*;
@@ -531,11 +532,9 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			attack.setStoryID(rpPojo.getId());
 
 			if(attack.getId() != null) {
-				logger.info("attack.getId() != null");
 				dao.update(getC3UserID(session), attack);
 			} else {
 				// Check if attack exits
-				//existingAttack = dao.findOpenAttackByRound(getC3UserID(session),attack.getJumpshipID(), attack.getSeason(), attack.getRound());
 				existingAttack = dao.findOpenAttackByRound(getC3UserID(session),attack.getJumpshipID(), attack.getSeason(), attack.getRound());
 
 				if(existingAttack == null) {
@@ -543,11 +542,60 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 					FactionPOJO factionAttacker = FactionDAO.getInstance().findById(getC3UserID(session), js.getJumpshipFactionID());
 					ServerNexus.getEci().sendExtCom(starSystem.getName() + " is attacked by '" + js.getJumpshipName() + "' (" + factionAttacker.getShortName() + ") in round " + attack.getRound() + "!", "en",true, true, true);
 					ServerNexus.getEci().sendExtCom(starSystem.getName() + " wird in Runde " + attack.getRound() + " von '" + js.getJumpshipName() + "' (" + factionAttacker.getShortName() + ") angegriffen!", "de",true, true, true);
-					logger.info("SAVE: if(existingAttack == null)");
 					dao.save(getC3UserID(session), attack);
 				} else {
-					logger.info("ELSE -> if(existingAttack == null)");
 					attack = existingAttack;
+				}
+			}
+
+			RoundPOJO currentRound = RoundDAO.getInstance().findBySeasonId(GameServer.getCurrentSeason());
+			long currentRoundId = currentRound.getRound();
+			if (attack.getRound().equals(currentRoundId)) {
+				boolean lobbyOpened = false;
+				boolean foundDropleadAttacker = false;
+				boolean foundDropleadDefender = false;
+				int numberOfPilots = 0;
+				if (attack.getAttackCharList() != null) {
+					if (attack.getAttackCharList().size() > 0) {
+						lobbyOpened = true;
+						numberOfPilots = attack.getAttackCharList().size();
+						for (AttackCharacterPOJO ac : attack.getAttackCharList()) {
+							if (ac.getType().equals(ROLE_ATTACKER_COMMANDER)) {
+								if (getCurrentlyOnlineCharIds().contains(ac.getCharacterID())) {
+									foundDropleadAttacker = true;
+								}
+							}
+							if (ac.getType().equals(ROLE_DEFENDER_COMMANDER)) {
+								if (getCurrentlyOnlineCharIds().contains(ac.getCharacterID())) {
+									foundDropleadDefender = true;
+								}
+							}
+						}
+					}
+				}
+				boolean attackBroken = foundDropleadAttacker && foundDropleadDefender;
+
+				if (attack.getFightsStarted() && attack.getFactionID_Winner() == null) {
+					if (!attackBroken) {
+						if (attack.getScoreAttackerVictories() == null || attack.getScoreDefenderVictories() == null) {
+							ServerNexus.getEci().sendExtCom("Attack on " + starSystem.getName() + " is rolling", "en", true, true, true);
+							ServerNexus.getEci().sendExtCom("Angriff auf " + starSystem.getName() + " läuft", "de", true, true, true);
+						} else {
+							ServerNexus.getEci().sendExtCom("Attack on " + starSystem.getName() + " is rolling (" + attack.getScoreAttackerVictories() + " : " + attack.getScoreDefenderVictories() + ")", "en", true, true, true);
+							ServerNexus.getEci().sendExtCom("Angriff auf " + starSystem.getName() + " läuft (" + attack.getScoreAttackerVictories() + " : " + attack.getScoreDefenderVictories() + ")", "de", true, true, true);
+						}
+					} else {
+						ServerNexus.getEci().sendExtCom("Attack on " + starSystem.getName() + " is missing one of the dropleaders. Waiting...", "en", true, true, true);
+						ServerNexus.getEci().sendExtCom("Angriff auf " + starSystem.getName() + " hat einen oder beide Dropleader verloren. Wartet...", "de", true, true, true);
+					}
+				} else {
+					if (lobbyOpened) {
+						ServerNexus.getEci().sendExtCom("Attack on " + starSystem.getName() + " is in preparation, lobby open (" + numberOfPilots + ").", "en", true, true, true);
+						ServerNexus.getEci().sendExtCom("Angriff auf " + starSystem.getName() + " wird vorbereitet, Lobby ist offen (" + numberOfPilots + ").", "de", true, true, true);
+					} else {
+						ServerNexus.getEci().sendExtCom("Attack on " + starSystem.getName() + " is waiting for lobby to be opened.", "en", true, true, true);
+						ServerNexus.getEci().sendExtCom("Angriff auf " + starSystem.getName() + " wartet auf die Lobby.", "de", true, true, true);
+					}
 				}
 			}
 
@@ -875,6 +923,20 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		String ipAdressSender = state.getIpAdressSender();
 
 		switch (state.getMode()) {
+			case ROLL_RANDOM_MAP:
+				if (state.getObject() instanceof Long) {
+					Long attackId = (Long) state.getObject();
+
+					Random ran = new Random();
+					int d1 = ran.nextInt(6) + 1;
+					int d2 = ran.nextInt(6) + 1;
+
+					GameState response = new GameState(GAMESTATEMODES.RETURN_ROLLED_RANDOM_MAP_FOR_INVASION);
+					response.addObject(attackId);
+					response.addObject2(String.valueOf(d1) + d2);
+					C3GameSessionHandler.sendBroadCast(room, response);
+				}
+				break;
 			case PLAY_SOUNDBOARD_SOUND_EVENT_01:
 				if (state.getObject() instanceof Long && state.getObject2() instanceof Long) {
 					logger.info("Play soundboard sound 01.");

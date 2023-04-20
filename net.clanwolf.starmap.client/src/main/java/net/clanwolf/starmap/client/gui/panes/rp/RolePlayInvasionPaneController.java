@@ -51,6 +51,7 @@ import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
+import net.clanwolf.starmap.client.gui.messagepanes.C3MessagePane;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3RolePlayController;
 import net.clanwolf.starmap.client.mwo.CheckClipboardForMwoApi;
 import net.clanwolf.starmap.client.mwo.ResultAnalyzer;
@@ -73,6 +74,8 @@ import net.clanwolf.starmap.transfer.util.Compressor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.invoke.MethodHandles;
 import java.net.URL;
@@ -151,10 +154,10 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 	@FXML
 	private VBox VBoxError;
 	@FXML
-	private Label labelError;
+	private Label labelError, lblRolledMapName;
 	private Image im2;
 	@FXML
-	private ImageView ivStatic, ivForumLink;
+	private ImageView ivStatic, ivForumLink, ivDie1, ivDie2;
 
 	public RolePlayInvasionPaneController() {
 	}
@@ -225,6 +228,16 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 		defenderHeader.setImage(defenderLogo);
 		attackerButtonIcon.setImage(attackerLogo);
 		defenderButtonIcon.setImage(defenderLogo);
+
+		lblRolledMapName.setText(Internationalization.getString("C3_Invasion_RollForMap"));
+	}
+
+	@FXML
+	public void handleRollMapClick() {
+		GameState rollMap = new GameState();
+		rollMap.setMode(GAMESTATEMODES.ROLL_RANDOM_MAP);
+		rollMap.addObject(Nexus.getCurrentAttackOfUser().getAttackDTO().getId());
+		Nexus.fireNetworkEvent(rollMap);
 	}
 
 	public void statusUpdate() {
@@ -278,7 +291,8 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 	@Override
 	public void setStrings() {
 		Platform.runLater(() -> {
-			// set strings
+			lblRolledMapName.setText(Internationalization.getString("C3_Invasion_RollForMap"));
+			// TODO_C3: Set text for buttons!
 		});
 	}
 
@@ -297,6 +311,8 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 		ActionManager.addActionCallbackListener(ACTIONS.PLAY_SOUNDBAR_EXECUTE_01, this);
 		ActionManager.addActionCallbackListener(ACTIONS.PLAY_SOUNDBAR_EXECUTE_02, this);
 		ActionManager.addActionCallbackListener(ACTIONS.PLAY_SOUNDBAR_EXECUTE_03, this);
+		ActionManager.addActionCallbackListener(ACTIONS.CHANGE_LANGUAGE, this);
+		ActionManager.addActionCallbackListener(ACTIONS.DISPLAY_RANDOM_MAP_ROLL, this);
 	}
 
 	/******************************** THIS ********************************/
@@ -343,6 +359,9 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 				logger.error("Current score is not available!");
 				scoreAnimation(1, 1);
 			}
+
+			Nexus.getCurrentAttackOfUser().getAttackDTO().setScoreAttackerVictories(attackerDropVictories.longValue());
+			Nexus.getCurrentAttackOfUser().getAttackDTO().setScoreDefenderVictories(defenderDropVictories.longValue());
 
 			// rpVar9
 			if (rpVar9.getOption4StoryID() != null) {
@@ -445,6 +464,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 		}
 	}
 
+
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		super.initialize(url, rb);
@@ -460,18 +480,6 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 		buttonSoundBoard03.setDisable(true);
 
 		ivForumLink.toFront();
-
-		AttackDTO a = Nexus.getCurrentAttackOfUser().getAttackDTO();
-		for (AttackCharacterDTO c : a.getAttackCharList()) {
-			if (c.getCharacterID().equals(Nexus.getCurrentUser().getCurrentCharacter().getId())) {
-				// This is me
-				if (c.getType().equals(Constants.ROLE_ATTACKER_COMMANDER) || c.getType().equals(Constants.ROLE_DEFENDER_COMMANDER)) {
-					buttonSoundBoard01.setDisable(false);
-					buttonSoundBoard02.setDisable(false);
-					buttonSoundBoard03.setDisable(false);
-				}
-			}
-		}
 		init();
 	}
 
@@ -487,6 +495,95 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 		if (anchorPane != null && !anchorPane.isVisible()) return true;
 		logger.info("Flag for CharRP" + isCharRP);
 		switch (action) {
+			case CHANGE_LANGUAGE:
+				setStrings();
+				break;
+
+			case DISPLAY_RANDOM_MAP_ROLL:
+				if (o.getText() != null && !"".equals(o.getText())) {
+					Platform.runLater(() -> {
+						String dice = o.getText();
+						String d1 = dice.substring(0, 1);
+						String d2 = dice.substring(1);
+						// logger.info("Received dice roll: " + d1 + " and " + d2);
+
+						Image die1 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/dice/d6_1.png")));
+						Image die2 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/dice/d6_2.png")));
+						Image die3 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/dice/d6_3.png")));
+						Image die4 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/dice/d6_4.png")));
+						Image die5 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/dice/d6_5.png")));
+						Image die6 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/dice/d6_6.png")));
+						ArrayList<Image> dieimages = new ArrayList<>();
+						dieimages.add(die1);
+						dieimages.add(die2);
+						dieimages.add(die3);
+						dieimages.add(die4);
+						dieimages.add(die5);
+						dieimages.add(die6);
+
+						final Properties randomMWOMaps = new Properties();
+						try {
+							final String randomMWOMapsFileName = "random_mwo_maps.properties";
+							InputStream inputStream = RolePlayInvasionPaneController.class.getClassLoader().getResourceAsStream(randomMWOMapsFileName);
+							if (inputStream != null) {
+								randomMWOMaps.load(inputStream);
+							} else {
+								throw new FileNotFoundException("Random MWO maps property file '" + randomMWOMapsFileName + "' not found in classpath.");
+							}
+						} catch (IOException ioe) {
+							ioe.printStackTrace();
+						}
+						String mapName = (String) randomMWOMaps.get(dice);
+						String mapImageName = "MWOMap_" + mapName.replace(" ", "") + ".png";
+
+						// logger.info(mapImageName);
+
+						Image newMap = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/mwo_maps/" + mapImageName)));
+						lblRolledMapName.setText("...");
+
+						Random ran = new Random();
+
+						Timeline timelineDie1 = new Timeline();
+						for (int i = 0; i < 25; i++) {
+							int d = ran.nextInt(6) + 1;
+							timelineDie1.getKeyFrames().add(
+								new KeyFrame(
+									Duration.millis(i * 65),
+									new KeyValue(ivDie1.imageProperty(), dieimages.get(d - 1))
+								)
+							);
+						}
+						timelineDie1.setCycleCount(1);
+						timelineDie1.setOnFinished(event -> {
+							ivDie1.setImage(dieimages.get(Integer.parseInt(d1) - 1));
+						});
+
+						Timeline timelineDie2 = new Timeline();
+						for (int i = 0; i < 25; i++) {
+							int d = ran.nextInt(6) + 1;
+							timelineDie2.getKeyFrames().add(
+								new KeyFrame(
+									Duration.millis(i * 65),
+									new KeyValue(ivDie2.imageProperty(), dieimages.get(d - 1))
+								)
+							);
+						}
+						timelineDie2.setCycleCount(1);
+						timelineDie2.setOnFinished(event -> {
+							ivDie2.setImage(dieimages.get(Integer.parseInt(d2) - 1));
+
+							lblRolledMapName.setText(mapName);
+							rpImage.setImage(newMap);
+						});
+
+						C3SoundPlayer.play("sound/fx/dice.mp3", false);
+
+						timelineDie1.play();
+						timelineDie2.play();
+					});
+				}
+				break;
+
 			case PLAY_SOUNDBAR_EXECUTE_01:
 				if (o.getObject() instanceof Long) {
 					// CharacterId
@@ -672,18 +769,17 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 					if (attackerWon) {
 						confirmAttacker1.setImage(imageSelected);
 						confirmDefender1.setImage(imageSelected);
-						btChoice1.setDisable(true);
-						btChoice2.setDisable(true);
-						btChoice3.setDisable(true);
-						btChoice4.setDisable(true);
 					} else if (defenderWon) {
 						confirmAttacker2.setImage(imageSelected);
 						confirmDefender2.setImage(imageSelected);
-						btChoice1.setDisable(true);
-						btChoice2.setDisable(true);
-						btChoice3.setDisable(true);
-						btChoice4.setDisable(true);
 					}
+					btChoice1.setDisable(true);
+					btChoice2.setDisable(true);
+					btChoice3.setDisable(true);
+					btChoice4.setDisable(true);
+					buttonSoundBoard01.setDisable(true);
+					buttonSoundBoard02.setDisable(true);
+					buttonSoundBoard03.setDisable(true);
 
 					RolePlayStoryDTO story = Nexus.getBoUniverse().getAttackStoriesByID(a.getStoryID());
 
@@ -884,6 +980,10 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 							btChoice2.setDisable(false);
 							btChoice3.setDisable(false);
 							btChoice4.setDisable(false);
+
+							buttonSoundBoard01.setDisable(false);
+							buttonSoundBoard02.setDisable(false);
+							buttonSoundBoard03.setDisable(false);
 						} else {
 							btChoice1.setTooltip(new Tooltip(Internationalization.getString("app_rp_invasion_waiting_for_confirmation")));
 							btChoice2.setTooltip(new Tooltip(Internationalization.getString("app_rp_invasion_waiting_for_confirmation")));

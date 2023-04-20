@@ -48,16 +48,9 @@ public class AttackDTO extends Dto {
 	private Long factionID_Winner;
 	private Boolean fightsStarted;
 	private Long attackCostAttacker;
-
-	public Long getAttackCostDefender() {
-		return attackCostDefender;
-	}
-
-	public void setAttackCostDefender(Long attackCostDefender) {
-		this.attackCostDefender = attackCostDefender;
-	}
-
 	private Long attackCostDefender;
+	private Long scoreAttackerVictories;
+	private Long scoreDefenderVictories;
 	private String remarks;
 	private String forumThreadLink;
 	private Long forumThreadId;
@@ -264,6 +257,37 @@ public class AttackDTO extends Dto {
 	public void setLastStoryID(Long lastStoryID) {
 		this.lastStoryID = lastStoryID;
 	}
+
+	@SuppressWarnings("unused")
+	public Long getScoreAttackerVictories() {
+		return scoreAttackerVictories;
+	}
+
+	@SuppressWarnings("unused")
+	public void setScoreAttackerVictories(Long scoreAttackerVictories) {
+		this.scoreAttackerVictories = scoreAttackerVictories;
+	}
+
+	@SuppressWarnings("unused")
+	public Long getScoreDefenderVictories() {
+		return scoreDefenderVictories;
+	}
+
+	@SuppressWarnings("unused")
+	public void setScoreDefenderVictories(Long scoreDefenderVictories) {
+		this.scoreDefenderVictories = scoreDefenderVictories;
+	}
+
+	@SuppressWarnings("unused")
+	public Long getAttackCostDefender() {
+		return attackCostDefender;
+	}
+
+	@SuppressWarnings("unused")
+	public void setAttackCostDefender(Long attackCostDefender) {
+		this.attackCostDefender = attackCostDefender;
+	}
+
 	public AttackDTO() {
 		// empty constructor
 	}

@@ -35,6 +35,8 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseDragEvent;
@@ -87,6 +89,9 @@ import java.net.URL;
 import java.util.*;
 import java.util.List;
 
+import static net.clanwolf.starmap.constants.Constants.ROLE_ATTACKER_COMMANDER;
+import static net.clanwolf.starmap.constants.Constants.ROLE_DEFENDER_COMMANDER;
+
 /**
  * The controller for the starmap panel.
  *
@@ -96,7 +101,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	@FXML
-	AnchorPane anchorPane;
+	AnchorPane anchorPane, paneAttackDetail;
 	@FXML
 	Pane starMapPane;
 	@FXML
@@ -111,6 +116,26 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	ImageView labelSystemImage;
 	@FXML
 	ImageView labelFactionImage;
+
+	@FXML
+	ImageView ivFactionImageAttacker;
+	@FXML
+	ImageView ivFactionImageDefender;
+	@FXML
+	Label lblAttackHeadline;
+	@FXML
+	TextField taAttackDescription;
+	@FXML
+	Circle circleScore1;
+	@FXML
+	Circle circleScore2;
+	@FXML
+	Circle circleScore3;
+	@FXML
+	Circle circleScore4;
+	@FXML
+	Circle circleScore5;
+
 	@FXML
 	Pane paneJumpshipDetail;
 	@FXML
@@ -142,6 +167,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	private Pane borders;
 	private Pane attacksPane;
 	private boolean firstCreationDone = false;
+	private Long currentlyDisplayedAttackDetailsId = null;
 	private SceneGestures sceneGestures;
 	private BOJumpship currentlyCenteredJumpship = null;
 	private NodeGestures nodeGestures;
@@ -882,6 +908,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 //			mapButton05.setOpacity(0.0f);
 			mapButton06.setOpacity(0.0f);
 			paneSystemDetail.setOpacity(0.0f);
+			paneAttackDetail.setOpacity(0.0f);
 			paneJumpshipDetail.setOpacity(0.0f);
 			buttonBackground.setOpacity(0.0f);
 
@@ -1364,6 +1391,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				mapButton06.toFront();
 				paneSystemDetail.toFront();
 				paneSystemDetail.setOpacity(0.0f);
+				paneAttackDetail.toFront();
+				paneAttackDetail.setOpacity(0.0f);
 				paneJumpshipDetail.toFront();
 				paneJumpshipDetail.setOpacity(0.0f);
 				canvas.getChildren().addAll(lines);
@@ -1651,6 +1680,26 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		}
 	}
 
+	public void hideAttackDetail() {
+		if (paneAttackDetail != null) {
+			if (paneAttackDetail.getOpacity() != 0.0) {
+				currentlyDisplayedAttackDetailsId = null;
+
+				// Fade in transition 06 (DetailPane)
+				FadeTransition fadeInTransition_06 = new FadeTransition(Duration.millis(650), paneAttackDetail);
+				fadeInTransition_06.setFromValue(1.0);
+				fadeInTransition_06.setToValue(0.0);
+				fadeInTransition_06.setCycleCount(1);
+
+				// Transition sequence
+				SequentialTransition sequentialTransition = new SequentialTransition();
+				sequentialTransition.getChildren().addAll(fadeInTransition_06);
+				sequentialTransition.setCycleCount(1);
+				sequentialTransition.play();
+			}
+		}
+	}
+
 	public void hideJumpshipDetail() {
 		if (paneJumpshipDetail != null) {
 			if (paneJumpshipDetail.getOpacity() != 0.0) {
@@ -1690,19 +1739,19 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				Double x = sys.getX();
 				Double y = sys.getY();
 				ActionManager.getAction(ACTIONS.UPDATE_COORD_INFO).execute(sys.getName() + " [X:" + String.format("%.2f", x) + "] - [Y:" + String.format("%.2f", y) + "]");
+
+				// Fade in transition 06 (DetailPane)
+				FadeTransition fadeInTransition_06 = new FadeTransition(Duration.millis(200), paneSystemDetail);
+				fadeInTransition_06.setFromValue(0.0);
+				fadeInTransition_06.setToValue(1.0);
+				fadeInTransition_06.setCycleCount(1);
+
+				// Transition sequence
+				SequentialTransition sequentialTransition = new SequentialTransition();
+				sequentialTransition.getChildren().addAll(fadeInTransition_06);
+				sequentialTransition.setCycleCount(1);
+				sequentialTransition.play();
 			});
-
-			// Fade in transition 06 (DetailPane)
-			FadeTransition fadeInTransition_06 = new FadeTransition(Duration.millis(200), paneSystemDetail);
-			fadeInTransition_06.setFromValue(0.0);
-			fadeInTransition_06.setToValue(1.0);
-			fadeInTransition_06.setCycleCount(1);
-
-			// Transition sequence
-			SequentialTransition sequentialTransition = new SequentialTransition();
-			sequentialTransition.getChildren().addAll(fadeInTransition_06);
-			sequentialTransition.setCycleCount(1);
-			sequentialTransition.play();
 		}
 	}
 
@@ -1724,21 +1773,147 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				labelJumpshipName.setText(jumpshipName);
 				labelJumpshipImage.setImage(ship.getJumpshipImageView().getImage());
 				labelJumpshipFactionImage.setImage(imageFaction);
+
+				// Fade in transition 06 (DetailPane)
+				FadeTransition fadeInTransition_06 = new FadeTransition(Duration.millis(200), paneJumpshipDetail);
+				fadeInTransition_06.setFromValue(0.0);
+				fadeInTransition_06.setToValue(1.0);
+				fadeInTransition_06.setCycleCount(1);
+
+				paneJumpshipDetail.setMouseTransparent(false);
+
+				// Transition sequence
+				SequentialTransition sequentialTransition = new SequentialTransition();
+				sequentialTransition.getChildren().addAll(fadeInTransition_06);
+				sequentialTransition.setCycleCount(1);
+				sequentialTransition.play();
 			});
+		}
+	}
 
-			// Fade in transition 06 (DetailPane)
-			FadeTransition fadeInTransition_06 = new FadeTransition(Duration.millis(200), paneJumpshipDetail);
-			fadeInTransition_06.setFromValue(0.0);
-			fadeInTransition_06.setToValue(1.0);
-			fadeInTransition_06.setCycleCount(1);
+	public void updateAttackDetail(BOAttack attack) {
+		updateAttackDetail(attack, "");
+	}
 
-			paneJumpshipDetail.setMouseTransparent(false);
+	public void updateAttackDetail(BOAttack attack, String eventDescription) {
+		if (Nexus.getCurrentRound() == attack.getRound()) {
+			if (currentlyDisplayedAttackDetailsId != null && currentlyDisplayedAttackDetailsId.equals(attack.getAttackDTO().getId())) {
+				boolean fightsStarted = attack.attackFightsHaveBeenStarted();
+				BOFaction factionAttacker = Nexus.getBoUniverse().getFactionByID(attack.getAttackerFactionId().longValue());
+				BOFaction factionDefender = Nexus.getBoUniverse().getFactionByID(attack.getDefenderFactionId().longValue());
 
-			// Transition sequence
-			SequentialTransition sequentialTransition = new SequentialTransition();
-			sequentialTransition.getChildren().addAll(fadeInTransition_06);
-			sequentialTransition.setCycleCount(1);
-			sequentialTransition.play();
+				String attackerlogo = factionAttacker.getLogo();
+				String defenderlogo = factionDefender.getLogo();
+				Image imageAttackerLogo = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logos/factions/" + attackerlogo)));
+				Image imageDefenderLogo = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logos/factions/" + defenderlogo)));
+				ivFactionImageAttacker.setImage(imageAttackerLogo);
+				ivFactionImageDefender.setImage(imageDefenderLogo);
+
+				ArrayList<Circle> scoreCircles = new ArrayList<>();
+				scoreCircles.add(circleScore1);
+				scoreCircles.add(circleScore2);
+				scoreCircles.add(circleScore3);
+				scoreCircles.add(circleScore4);
+				scoreCircles.add(circleScore5);
+
+				boolean lobbyOpened = false;
+				boolean attackBroken = false;
+				int numberOfPilots = 0;
+				if (attack.getAttackCharList() != null) {
+					if (attack.getAttackCharList().size() > 0) {
+						lobbyOpened = true;
+						numberOfPilots = attack.getAttackCharList().size();
+
+						boolean foundOnlineDropleadAttacker = false;
+						boolean foundOnlineDropleadDefender = false;
+
+						for (AttackCharacterDTO ac : attack.getAttackCharList()) {
+							if (ac.getType().equals(ROLE_ATTACKER_COMMANDER)) {
+								for (UserDTO u : Nexus.getCurrentlyOnlineUserList()) {
+									if (Objects.equals(u.getCurrentCharacter().getId(), ac.getCharacterID())) {
+										foundOnlineDropleadAttacker = true;
+										break;
+									}
+								}
+							}
+							if (ac.getType().equals(ROLE_DEFENDER_COMMANDER)) {
+								for (UserDTO u : Nexus.getCurrentlyOnlineUserList()) {
+									if (Objects.equals(u.getCurrentCharacter().getId(), ac.getCharacterID())) {
+										foundOnlineDropleadDefender = true;
+										break;
+									}
+								}
+							}
+						}
+						attackBroken = !foundOnlineDropleadAttacker || !foundOnlineDropleadDefender;
+					}
+				}
+
+				if (fightsStarted) {
+					lblAttackHeadline.setText(Internationalization.getString("starmap_attackinfo_ActiveInvasion") + ": " + attack.getStarSystemName());
+					taAttackDescription.setText(Internationalization.getString("starmap_attackinfo_FightsStarted"));
+					long attackerWins = attack.getAttackDTO().getScoreAttackerVictories();
+					long defenderWins = attack.getAttackDTO().getScoreDefenderVictories();
+
+					int count = 1;
+					for (Circle c : scoreCircles) {
+						if (count <= attackerWins) {
+							// color this circle red
+							c.setStroke(Color.web("#a2270c"));
+							c.setFill(Color.web("#511d14"));
+						} else if (count > 5 - defenderWins) {
+							// color this circle blue
+							c.setStroke(Color.web("#6292a4"));
+							c.setFill(Color.web("#113544"));
+						} else {
+							// color this circle gray
+							c.setStroke(Color.web("#ffffff"));
+							c.setFill(Color.web("#5d6165"));
+						}
+						count++;
+					}
+
+					if (attackBroken) {
+						taAttackDescription.setText(Internationalization.getString("starmap_attackinfo_Broken"));
+					} else {
+						taAttackDescription.setText(Internationalization.getString("starmap_attackinfo_FightsStarted"));
+					}
+				} else {
+					if (lobbyOpened) {
+						taAttackDescription.setText(Internationalization.getString("starmap_attackinfo_LobbyOpen") + " (" + numberOfPilots + ")" );
+					} else {
+						taAttackDescription.setText(Internationalization.getString("starmap_attackinfo_WaitingForLobby"));
+					}
+					for (Circle c : scoreCircles) {
+						// color this circle gray
+						c.setStroke(Color.web("#ffffff"));
+						c.setFill(Color.web("#5d6165"));
+					}
+				}
+			}
+		}
+	}
+
+	public void showAttackDetail(BOAttack attack) {
+		if (paneAttackDetail != null) {
+			C3SoundPlayer.play("sound/fx/beep_electric.mp3", false);
+
+			Platform.runLater(() -> {
+				currentlyDisplayedAttackDetailsId = attack.getAttackDTO().getId();
+				updateAttackDetail(attack);
+
+				// Fade in transition 06 (DetailPane)
+				FadeTransition fadeInTransition_06 = new FadeTransition(Duration.millis(200), paneAttackDetail);
+				fadeInTransition_06.setFromValue(0.0);
+				fadeInTransition_06.setToValue(1.0);
+				fadeInTransition_06.setCycleCount(1);
+
+				// Transition sequence
+				SequentialTransition sequentialTransition = new SequentialTransition();
+				sequentialTransition.getChildren().addAll(fadeInTransition_06);
+				sequentialTransition.setCycleCount(1);
+				sequentialTransition.play();
+			});
 		}
 	}
 
@@ -1809,6 +1984,11 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		ActionManager.addActionCallbackListener(ACTIONS.UPDATE_GAME_INFO, this);
 		ActionManager.addActionCallbackListener(ACTIONS.UPDATE_ROUND_COUNTDOWN, this);
 		ActionManager.addActionCallbackListener(ACTIONS.ENABLE_JUMP_BUTTON, this);
+		ActionManager.addActionCallbackListener(ACTIONS.CURRENT_ATTACK_IS_HEALED, this);
+		ActionManager.addActionCallbackListener(ACTIONS.WATCHED_ATTACK_IS_BROKEN, this);
+		ActionManager.addActionCallbackListener(ACTIONS.WATCHED_ATTACK_IS_BROKEN_WARNING, this);
+		ActionManager.addActionCallbackListener(ACTIONS.WATCHED_ATTACK_IS_BROKEN_KILLED, this);
+		ActionManager.addActionCallbackListener(ACTIONS.WATCHED_ATTACK_IS_HEALED, this);
 	}
 
 	/**
@@ -1831,6 +2011,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	 */
 	@Override
 	public boolean handleAction(ACTIONS action, ActionObject o) {
+		String eventDescription = "";
+
 		switch (action) {
 			case UPDATE_UNIVERSE:
 				break;
@@ -1839,6 +2021,13 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				if (Nexus.isLoggedIn()) {
 					logger.info("Map will be repainted.");
 					refreshUniverseMap();
+					for (BOAttack a : Nexus.getBoUniverse().attackBOsAllInThisRound.values()) {
+						if (a.getAttackDTO().getId().equals(currentlyDisplayedAttackDetailsId)) {
+							updateAttackDetail(a);
+							break;
+						}
+					}
+
 				} else {
 					logger.info("Map not repainting, no user logged in!");
 				}
@@ -1848,9 +2037,44 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				if (Nexus.isLoggedIn()) {
 					logger.info("Received new universe, repainting map.");
 					refreshUniverseMap();
+					for (BOAttack a : Nexus.getBoUniverse().attackBOsAllInThisRound.values()) {
+						if (a.getAttackDTO().getId().equals(currentlyDisplayedAttackDetailsId)) {
+							updateAttackDetail(a);
+							break;
+						}
+					}
+
 					ActionManager.getAction(ACTIONS.UPDATE_GAME_INFO).execute();
 				} else {
 					logger.info("Map not repainting, no user logged in!");
+				}
+				break;
+
+			case WATCHED_ATTACK_IS_BROKEN:
+				eventDescription = "1";
+			case WATCHED_ATTACK_IS_BROKEN_WARNING:
+				eventDescription = "2";
+			case WATCHED_ATTACK_IS_BROKEN_KILLED:
+				eventDescription = "3";
+			case WATCHED_ATTACK_IS_HEALED:
+				eventDescription = "4";
+
+			case CURRENT_ATTACK_IS_BROKEN:
+				eventDescription = "5";
+			case CURRENT_ATTACK_IS_BROKEN_WARNING:
+				eventDescription = "6";
+			case CURRENT_ATTACK_IS_BROKEN_KILLED:
+				eventDescription = "7";
+			case CURRENT_ATTACK_IS_HEALED:
+				eventDescription = "8";
+
+				if (Nexus.isLoggedIn()) {
+					for (BOAttack a : Nexus.getBoUniverse().attackBOsAllInThisRound.values()) {
+						if (a.getAttackDTO().getId().equals(currentlyDisplayedAttackDetailsId)) {
+							updateAttackDetail(a);
+							break;
+						}
+					}
 				}
 				break;
 
@@ -1878,6 +2102,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 						mapButton06.setOpacity(0.0f);
 						paneSystemDetail.setOpacity(0.0f);
 						paneJumpshipDetail.setOpacity(0.0f);
+						paneAttackDetail.setOpacity(0.0f);
 					});
 				}
 				break;
@@ -1928,6 +2153,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					showSystemDetail(ss);
 				} else {
 					hideSystemDetail();
+					hideAttackDetail();
 				}
 				break;
 
@@ -1937,6 +2163,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					boolean hasAttack = false;
 					boolean attackAlreadyStarted;
 					boolean startAttackEnabled = false;
+
+					BOAttack attackOfSelectedSystem = null;
 
 					// Check if the currently logged on char participates in any other attack
 					// if yes, he cannot join this one
@@ -1951,6 +2179,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 								// Clicked star system has an attack going on
 								if (ss.getStarSystemId().equals(a.getStarSystemId())) {
 									hasAttack = true;
+									attackOfSelectedSystem = a;
 
 									mapButton06.getStyleClass().remove("contentButton");
 									mapButton06.getStyleClass().remove("contentButtonRed");
@@ -2035,6 +2264,11 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 							mapButton06.setDisable(true);
 							mapButton06.setVisible(false);
 							ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("attack_planetHasNoAttack"), false));
+						} else {
+							if (attackOfSelectedSystem != null) {
+								showAttackDetail(attackOfSelectedSystem);
+								hideJumpshipDetail();
+							}
 						}
 					} else {
 						// disable attack button
@@ -2047,12 +2281,14 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 			case HIDE_SYSTEM_DETAIL:
 				hideSystemDetail();
+				hideAttackDetail();
 				break;
 
 			case SHOW_JUMPSHIP_DETAIL:
 				logger.info("Showing jumpship detail");
 				if (o.getObject() instanceof BOJumpship js) {
 					showJumpshipDetail(js);
+					hideAttackDetail();
 				} else {
 					hideJumpshipDetail();
 				}

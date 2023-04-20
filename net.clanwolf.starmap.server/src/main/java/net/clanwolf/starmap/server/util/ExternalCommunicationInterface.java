@@ -45,6 +45,8 @@ public class ExternalCommunicationInterface {
 	private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	private static final Properties auth = new Properties();
 	private static final String authFileName = "auth.properties";
+	private static String previousMessage_en = ""; // Will not be repeated if identical
+	private static String previousMessage_de = ""; // Will not be repeated if identical
 
 	public ExternalCommunicationInterface() {
 		try {
@@ -106,6 +108,16 @@ public class ExternalCommunicationInterface {
 	public synchronized void sendExtCom(String message, String lang, boolean sendToIRC, boolean sendToTS3, boolean sendToDiscord) {
 		message = message.replace("'", "\"");
 
+		if ("de".equals(lang)) {
+			if (previousMessage_de.equals(message)) {
+				return;
+			}
+		} else if ("en".equals(lang)) {
+			if (previousMessage_en.equals(message)) {
+				return;
+			}
+		}
+
 		int pvIRC = 0;
 		int pvTS3 = 0;
 		int pvDiscord = 0;
@@ -122,6 +134,11 @@ public class ExternalCommunicationInterface {
 				sql_insert += "VALUES ";
 				sql_insert += "('" + message + "','" + lang + "','" + ServerNexus.jarName + "'," + pvIRC + "," + pvTS3 + "," + pvDiscord + "); ";
 				long extcomid = insert(sql_insert);
+				if ("de".equals(lang)) {
+					previousMessage_de = message;
+				} else if ("en".equals(lang)) {
+					previousMessage_en = message;
+				}
 
 				// Delete all old entries, check if they have been processed
 				String sql_delete = "";

@@ -13,9 +13,14 @@ TODO:
 - Check warning hibernate dialect (server)
 - Switch to MariaDB client (client, bots)
 
-- Bot Messages for finished invasions
-- Display current matchscore for active fights in the map
-- Random map cannot be selected in MWO lobby, we need a die there or something
+- Players can still join fights when the video runs!!!
+- Sometimes score is not stored to attack table
+
+- Make visible from the map if an attack is broken
+- After publish was clicked in MWO, remind to confirm winner in app (!)
+- Userlist needs one more column on what side the char fights
+- Userlist needs one more column to display what role (e.g. droplead) the char has
+- Check Netty exceptions after logout events
 - Check for already existing users while registration
 - Delete all un-needed columns in user table and in roleplaycharacter table (after registration)
 - Save Faction from new faction combobox (to characters of a user!)
@@ -23,12 +28,21 @@ TODO:
 - Sound volume and Speech volume vs RP volume cleanup
 - Add global keys to the GUI
 - Add keyboard shortcuts for language change and help and open attack forum post
-- Add messages for "Lobby started", "Invasion endet, Winner is...", "Invasion is in Drop x, currently 2:2",...
 - Delete user in admin pane (?)
 - Auto-delete not activated user (?)
 - Check tab order and keyboard control for all panes
 - Video does not show sometimes
 ----------------------------------------------------------------
+
+Version 7.3.29 (21.04.2023)
+- FIXED: Doubled entried in extCom
+- CHANGED: The way attack information is displayed (on starmap)
+
+Version 7.3.27 (19.04.2023)
+- ADDED: Messages for "Lobby started"
+- ADDED: Invasion is in Drop x, currently 2:2
+- STARTED: Random map cannot be selected in MWO --> dice (MWOMap_RANDOM.png)
+- STARTED: Display current matchscore for active fights in the map
 
 Version 7.3.24 (18.04.2023)
 - FIXED: Bot announce finalized invasions

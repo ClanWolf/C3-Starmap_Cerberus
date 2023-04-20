@@ -90,19 +90,17 @@ public class AttackPOJO extends Pojo {
 	@Column(name = "AttackCostAttacker")
 	private Long attackCostAttacker;
 
-	public Long getAttackCostDefender() {
-		return attackCostDefender;
-	}
-
-	public void setAttackCostDefender(Long attackCostDefender) {
-		this.attackCostDefender = attackCostDefender;
-	}
-
 	@Column(name = "AttackCostDefender")
 	private Long attackCostDefender;
 
 	@Column(name = "FightsStarted")
 	private Boolean fightsStarted;
+
+	@Column(name = "ScoreAttackerVictories")
+	private Long scoreAttackerVictories;
+
+	@Column(name = "ScoreDefenderVictories")
+	private Long scoreDefenderVictories;
 
 	@Column(name = "Remarks")
 	private String remarks;
@@ -321,5 +319,35 @@ public class AttackPOJO extends Pojo {
 	@SuppressWarnings("unused")
 	public void setAttackCharList(List<AttackCharacterPOJO> attackCharList) {
 		this.attackCharList = attackCharList;
+	}
+
+	@SuppressWarnings("unused")
+	public Long getAttackCostDefender() {
+		return attackCostDefender;
+	}
+
+	@SuppressWarnings("unused")
+	public void setAttackCostDefender(Long attackCostDefender) {
+		this.attackCostDefender = attackCostDefender;
+	}
+
+	@SuppressWarnings("unused")
+	public Long getScoreAttackerVictories() {
+		return scoreAttackerVictories;
+	}
+
+	@SuppressWarnings("unused")
+	public void setScoreAttackerVictories(Long scoreAttackerVictories) {
+		this.scoreAttackerVictories = scoreAttackerVictories;
+	}
+
+	@SuppressWarnings("unused")
+	public Long getScoreDefenderVictories() {
+		return scoreDefenderVictories;
+	}
+
+	@SuppressWarnings("unused")
+	public void setScoreDefenderVictories(Long scoreDefenderVictories) {
+		this.scoreDefenderVictories = scoreDefenderVictories;
 	}
 }

@@ -72,6 +72,18 @@ public class EventCommunications {
 			showErrorMessage(state);
 
 			switch (state.getMode()) {
+				case RETURN_ROLLED_RANDOM_MAP_FOR_INVASION:
+					if (state.getObject() instanceof Long && state.getObject2() instanceof String dice) {
+
+						Long attackId = (Long) state.getObject();
+
+						if (Nexus.getCurrentAttackOfUser() != null) {
+							if (Nexus.getCurrentAttackOfUser().getAttackDTO().getId().equals(attackId)) {
+								ActionManager.getAction(ACTIONS.DISPLAY_RANDOM_MAP_ROLL).execute(dice);
+							}
+						}
+					}
+					break;
 				case PLAY_SOUNDBOARD_SOUND_EVENT_EXECUTE_01:
 					if (state.getObject() instanceof Long && state.getObject2() instanceof Long) {
 						logger.info("Play soundboard sound 01.");
@@ -122,6 +134,10 @@ public class EventCommunications {
 						logger.info("My attack is broken");
 						Long timerStartMillis = (Long) state.getObject2();
 						ActionManager.getAction(ACTIONS.CURRENT_ATTACK_IS_BROKEN).execute(timerStartMillis);
+					} else {
+						// another attack
+						logger.info("Another attack is broken");
+						ActionManager.getAction(ACTIONS.WATCHED_ATTACK_IS_BROKEN).execute();
 					}
 					break;
 
@@ -131,6 +147,10 @@ public class EventCommunications {
 						logger.info("My broken attack will be killed by the server, FIVE MINUTE WARNING");
 						Long timerStartMillis = (Long) state.getObject2();
 						ActionManager.getAction(ACTIONS.CURRENT_ATTACK_IS_BROKEN_WARNING).execute(timerStartMillis);
+					} else {
+						// another attack
+						logger.info("Another attack will be killed by server. FIVE MINUTE WARNING");
+						ActionManager.getAction(ACTIONS.WATCHED_ATTACK_IS_BROKEN_WARNING).execute();
 					}
 					break;
 
@@ -141,6 +161,10 @@ public class EventCommunications {
 						logger.info("My broken attack was killed by the server");
 						Long timerStartMillis = (Long) state.getObject2();
 						ActionManager.getAction(ACTIONS.CURRENT_ATTACK_IS_BROKEN_KILLED).execute(timerStartMillis);
+					} else {
+						// another attack
+						logger.info("Another attack was killed by server");
+						ActionManager.getAction(ACTIONS.WATCHED_ATTACK_IS_BROKEN_KILLED).execute();
 					}
 					break;
 
@@ -150,6 +174,10 @@ public class EventCommunications {
 						// this is the attack I am in currently
 						logger.info("My attack was healed");
 						ActionManager.getAction(ACTIONS.CURRENT_ATTACK_IS_HEALED).execute();
+					} else {
+						// another attack
+						logger.info("Another attack was healed (I am not in that attack, but I might watch it");
+						ActionManager.getAction(ACTIONS.WATCHED_ATTACK_IS_HEALED).execute();
 					}
 					break;
 

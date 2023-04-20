@@ -1,15 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import java.net.URL?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="LoginPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/18" fx:controller="net.clanwolf.starmap.client.gui.panes.map.MapPaneController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="LoginPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/19" fx:controller="net.clanwolf.starmap.client.gui.panes.map.MapPaneController">
 	<children>
       <ImageView fx:id="templateBackground" fitHeight="567.0" fitWidth="944.0" layoutX="-70.0" layoutY="-22.0" mouseTransparent="true" opacity="0.74" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
@@ -22,15 +27,62 @@
                <children>
                   <Label fx:id="labelMouseCoords" layoutX="232.0" layoutY="14.0" prefHeight="23.0" prefWidth="318.0" text="" />
                </children></Pane>
-            <Button fx:id="mapButton02" alignment="CENTER_RIGHT" layoutX="555.0" layoutY="428.0" mnemonicParsing="false" onAction="#handleCenterJumpshipButtonClick" prefHeight="37.0" prefWidth="105.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css" text="Jumpship" />
             <Button fx:id="mapButton01" alignment="CENTER_RIGHT" disable="true" layoutX="7.0" layoutY="428.0" mnemonicParsing="false" onAction="#handleConfirmButtonClick" prefHeight="37.0" prefWidth="100.0" styleClass="contentButtonRed" stylesheets="@../styles/MainFrameStyle.css" text="Confirm" />
-            <Button fx:id="mapButton03" alignment="CENTER_RIGHT" layoutX="666.0" layoutY="428.0" mnemonicParsing="false" onAction="#handleCenterHomeworldButtonClick" prefHeight="37.0" prefWidth="105.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css" text="Homeworld" />
             <Button fx:id="mapButton06" alignment="CENTER_RIGHT" disable="true" layoutX="113.0" layoutY="428.0" mnemonicParsing="false" onAction="#handleAttackButtonClick" prefHeight="37.0" prefWidth="100.0" styleClass="contentButtonRed" stylesheets="@../styles/MainFrameStyle.css" text="Attack" />
+            <Button fx:id="mapButton02" alignment="CENTER_RIGHT" layoutX="555.0" layoutY="428.0" mnemonicParsing="false" onAction="#handleCenterJumpshipButtonClick" prefHeight="37.0" prefWidth="105.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css" text="Jumpship" />
+            <Button fx:id="mapButton03" alignment="CENTER_RIGHT" layoutX="666.0" layoutY="428.0" mnemonicParsing="false" onAction="#handleCenterHomeworldButtonClick" prefHeight="37.0" prefWidth="105.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css" text="Homeworld" />
             <ImageView fx:id="ivForbidden" fitHeight="68.0" fitWidth="86.0" layoutX="31.0" layoutY="326.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" visible="false">
                <image>
                   <Image url="@../images/map/forbidden.png" />
                </image>
             </ImageView>
+            <AnchorPane fx:id="paneAttackDetail" layoutX="6.0" layoutY="267.0" mouseTransparent="true" prefHeight="148.0" prefWidth="763.0" styleClass="systemDetailPanelSolid" stylesheets="@../styles/MainFrameStyle.css">
+               <children>
+                  <VBox alignment="CENTER" maxWidth="1.7976931348623157E308" mouseTransparent="true" prefHeight="94.0" prefWidth="519.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <children>
+                        <Label fx:id="lblAttackHeadline" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" mouseTransparent="true" stylesheets="@../styles/MainFrameStyle.css" text="Label" VBox.vgrow="ALWAYS">
+                           <padding>
+                              <Insets left="5.0" right="5.0" />
+                           </padding>
+                        </Label>
+                        <HBox alignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="-Infinity" mouseTransparent="true" stylesheets="@../styles/MainFrameStyle.css" VBox.vgrow="ALWAYS">
+                           <children>
+                              <ImageView fx:id="ivFactionImageAttacker" fitHeight="60.0" fitWidth="127.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/logos/factions/CGB.png" />
+                                 </image>
+                                 <HBox.margin>
+                                    <Insets left="20.0" right="10.0" />
+                                 </HBox.margin>
+                              </ImageView>
+                              <AnchorPane mouseTransparent="true" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <HBox alignment="CENTER" mouseTransparent="true" spacing="2.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                       <children>
+                                          <Circle fx:id="circleScore1" fill="WHITE" mouseTransparent="true" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+                                          <Circle fx:id="circleScore2" fill="WHITE" mouseTransparent="true" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+                                          <Circle fx:id="circleScore3" fill="WHITE" mouseTransparent="true" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+                                          <Circle fx:id="circleScore4" fill="WHITE" mouseTransparent="true" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+                                          <Circle fx:id="circleScore5" fill="WHITE" mouseTransparent="true" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+                                       </children>
+                                    </HBox>
+                                 </children>
+                              </AnchorPane>
+                              <ImageView fx:id="ivFactionImageDefender" fitHeight="60.0" fitWidth="115.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/logos/factions/DC.png" />
+                                 </image>
+                                 <HBox.margin>
+                                    <Insets left="10.0" right="20.0" />
+                                 </HBox.margin>
+                              </ImageView>
+                           </children>
+                        </HBox>
+                        <TextField fx:id="taAttackDescription" prefHeight="65.0" prefWidth="743.0" styleClass="text-area" stylesheets="@../styles/MainFrameStyle.css" VBox.vgrow="ALWAYS" />
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
          </children></Pane>
       <Pane fx:id="paneSystemDetail" layoutX="683.0" layoutY="22.0" mouseTransparent="true" prefHeight="253.0" prefWidth="149.0" styleClass="systemDetailPanelSolid" stylesheets="@../styles/MainFrameStyle.css">
          <children>
