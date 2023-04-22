@@ -27,7 +27,6 @@
 package net.clanwolf.starmap.server.process;
 
 import com.google.gson.Gson;
-import net.clanwolf.starmap.server.servernexus.ServerNexus;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.C3GameConfigDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.FactionDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.RolePlayCharacterDAO;
@@ -37,6 +36,7 @@ import net.clanwolf.starmap.server.persistence.pojos.FactionPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.RolePlayCharacterPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.StatsMwoPOJO;
 import net.clanwolf.starmap.server.reporting.GenerateRoundReport;
+import net.clanwolf.starmap.server.servernexus.ServerNexus;
 import net.clanwolf.starmap.transfer.mwo.MWOMatchResult;
 import net.clanwolf.starmap.transfer.mwo.UserDetail;
 import org.slf4j.Logger;
@@ -54,16 +54,16 @@ import java.util.ArrayList;
 public class CalcXP {
     private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    private final TextFormattingHelper tfh = new TextFormattingHelper();
-
-    private String userName;
     private Long userXPVictoryLoss;
     private Long userXPComponentsDestroyed;
     private String descriptionComponentDestroyed;
     private Long userXPMatchScore;
-    private String descriptionMatchScore;
     private Long userXPDamage;
-    private String descriptionDamage;
+    private UserDetail userDetail;
+    private MWOMatchResult matchResult;
+    private Long userXPBeforeCalc;
+    private Long userXPCurrent = 0L;
+    private RolePlayCharacterPOJO currentCharacter;
 
     /**
      * Berechnet die XP der jeweiligen Spieler
@@ -82,6 +82,9 @@ public class CalcXP {
 
         FactionPOJO factionAttacker = FactionDAO.getInstance().findById(ServerNexus.DUMMY_USERID, attackStats.getAttackerFactionId());
         FactionPOJO factionDefender = FactionDAO.getInstance().findById(ServerNexus.DUMMY_USERID, attackStats.getDefenderFactionId());
+
+        //Werte für die Berchnung der XP vorher von der DB laden
+        Long xpRewardInvasionInvolvement = C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_INVASION_INVOLVEMENT").getValue();
 
         logger.info("--- Calculate the XP [" + factionAttacker.getShortName() + "] versus [" + factionDefender.getShortName() + "] (MatchID: " + mwoMatchID + " )---");
 
@@ -133,6 +136,9 @@ public class CalcXP {
                                         C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_EACH_MATCH_SCORE").getValue();
                                 currentUserXP = currentUserXP + CalcRange(userDetail.getDamage().longValue(), C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_EACH_DAMAGE_RANGE").getValue());
 
+                                //XP Invasion involvement
+                                currentUserXP = currentUserXP + xpRewardInvasionInvolvement;
+
                                 if (currentCharacter.getXp() != null) {
                                     // ****************************************************************************************
                                     // Klasse nur für Testzwecke eingebaut
@@ -162,50 +168,35 @@ public class CalcXP {
         logger.info("✅ XP calculating finished");
     }
 
-    public void setDescriptionComponentDestroyed(String descriptionComponentDestroyed) {
-        this.descriptionComponentDestroyed = descriptionComponentDestroyed;
+    public CalcXP(UserDetail userDetail, MWOMatchResult matchResult, RolePlayCharacterPOJO currentCharacter) {
+        this.userDetail = userDetail;
+        this.matchResult = matchResult;
+        this.currentCharacter = currentCharacter;
+    }
+
+    public Long getUserXPInvasionInvolvement() {
+        userXPCurrent = userXPCurrent + C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_INVASION_INVOLVEMENT").getValue();
+        return C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_INVASION_INVOLVEMENT").getValue();
+    }
+
+    public String getDescriptionInvasionInvolvement() {
+        return getUserXPInvasionInvolvement() + " XP";
     }
 
     public String getDescriptionMatchScore() {
-        descriptionMatchScore = getUserXPMatchScore() + " XP (Match-score: " + userDetail.getMatchScore() + ")";
-        return descriptionMatchScore;
-    }
-
-    public void setDescriptionMatchScore(String descriptionMatchScore) {
-        this.descriptionMatchScore = descriptionMatchScore;
+        return getUserXPMatchScore() + " XP\r\n(Match-score: " + userDetail.getMatchScore() + ")";
     }
 
     public String getDescriptionDamage() {
-        descriptionDamage = getUserXPDamage() + " XP (Damage: " + userDetail.getDamage() + ")";
-        return descriptionDamage;
+        return getUserXPDamage() + " XP\r\n(Damage: " + userDetail.getDamage() + ")";
     }
-
-    public void setDescriptionDamage(String descriptionDamage) {
-        this.descriptionDamage = descriptionDamage;
-    }
-
-    private UserDetail userDetail;
-    private MWOMatchResult matchResult;
-    private Long userXPBeforeCalc;
-    private Long userXPCurrent = 0L;
-    private Long userXPTotal;
-    private RolePlayCharacterPOJO currentCharacter;
 
     public Long getUserXPCurrent() {
         return userXPCurrent;
     }
 
-    public void setUserXPCurrent(Long userXPCurrent) {
-        this.userXPCurrent = userXPCurrent;
-    }
-
     public Long getUserXPTotal() {
-        userXPTotal = userXPCurrent + userXPBeforeCalc;
-        return userXPTotal;
-    }
-
-    public void setUserXPTotal(Long userXPTotal) {
-        this.userXPTotal = userXPTotal;
+        return userXPCurrent + getUserXPBeforeCalc();
     }
 
     public Long getUserXPBeforeCalc() {
@@ -217,38 +208,22 @@ public class CalcXP {
         return userXPBeforeCalc;
     }
 
-    public void setUserXPBeforeCalc(Long userXPBeforeCalc) {
-        this.userXPBeforeCalc = userXPBeforeCalc;
-    }
 
     public String getUserName() {
-        userName = userDetail.getUsername();
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
+        return userDetail.getUsername();
     }
 
     public String getDescriptionComponentDestroyed() {
         descriptionComponentDestroyed = C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_COMPONENT_DESTROYED").getValue() * userDetail.getComponentsDestroyed() +
-                " XP (" + getUserXPComponentsDestroyed() +
+                " XP\r\n(" + getUserXPComponentsDestroyed() +
                 " Component destroyed)";
         return descriptionComponentDestroyed;
-    }
-
-    public void setUserXPVictoryLoss(Long userXPVictoryLoss) {
-        this.userXPVictoryLoss = userXPVictoryLoss;
     }
 
     public Long getUserXPComponentsDestroyed() {
         userXPComponentsDestroyed = C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_COMPONENT_DESTROYED").getValue() * userDetail.getComponentsDestroyed();
         userXPCurrent = userXPCurrent + userXPComponentsDestroyed;
         return userXPComponentsDestroyed;
-    }
-
-    public void setUserXPComponentsDestroyed(Long userXPComponentsDestroyed) {
-        this.userXPComponentsDestroyed = userXPComponentsDestroyed;
     }
 
     public Long getUserXPMatchScore() {
@@ -258,27 +233,10 @@ public class CalcXP {
         return userXPMatchScore;
     }
 
-    public void setUserXPMatchScore(Long userXPMatchScore) {
-        this.userXPMatchScore = userXPMatchScore;
-    }
-
     public Long getUserXPDamage() {
         userXPDamage = CalcRange(userDetail.getDamage().longValue(), C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_EACH_DAMAGE_RANGE").getValue());
         userXPCurrent = userXPCurrent + userXPDamage;
         return userXPDamage;
-    }
-
-    public void setUserXPDamage(Long userXPDamage) {
-        this.userXPDamage = userXPDamage;
-    }
-
-    /**
-     * Erstellt einen Bericht, die als Nachricht versendet werden kann.
-     *
-     * @return Der (StringBuilder) Bericht wird zurückgegeben.
-     */
-    public StringBuilder getMailMessage() {
-        return tfh.getMailMessage();
     }
 
     /**
@@ -293,12 +251,6 @@ public class CalcXP {
         Long rest = value % range;
 
         return (value - rest) / range;
-    }
-
-    public CalcXP(UserDetail userDetail, MWOMatchResult matchResult, RolePlayCharacterPOJO currentCharacter) {
-        this.userDetail = userDetail;
-        this.matchResult = matchResult;
-        this.currentCharacter = currentCharacter;
     }
 
     public Long getUserXPVictoryLoss() {

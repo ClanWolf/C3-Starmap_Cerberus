@@ -126,7 +126,7 @@ public class MechIdInfo {
             this.mechShortName = "<Unknown name>";
             setMechIconURL("https://www.clanwolf.net/static/mech_icons/unknown/unknown.jpg");
 
-            logger.info("--The calculation of the mean value is completed---");
+            logger.info("---The calculation of the mean value is completed---");
             mechfound = true;
         } else {
             StringBuilder mechIconURL = new StringBuilder("https://www.clanwolf.net/static/mech_icons/");

@@ -110,6 +110,9 @@ public class GameServer {
         constantValues.put("C3_" + "XP_REWARD_EACH_TEAM_DAMAGE", XP_REWARD_EACH_TEAM_DAMAGE);
         constantValues.put("C3_" + "XP_REWARD_EACH_TEAM_DAMAGE_RANGE", XP_REWARD_EACH_TEAM_DAMAGE_RANGE);
 
+        //XP Invasion involvement
+        constantValues.put("C3_XP_REWARD_INVASION_INVOLVEMENT", 10L);
+
         //Reward payments when calculating the cost
         constantValues.put("C3_" + "REWARD_VICTORY", REWARD_VICTORY);
         constantValues.put("C3_" + "REWARD_LOSS", REWARD_LOSS);

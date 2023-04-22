@@ -88,7 +88,7 @@ public class GenerateRoundReport {
     private final Document doc;
     private final Long starSystemID;
     private final DecimalFormat nf = new DecimalFormat();
-    private final float[] columnWidthsXP = {2, 1, 2, 2, 1, 1,};
+    private final float[] columnWidthsXP = {2, 1, 2, 1, 1, 1, 1, 1};
     private final Border whiteBorder = new SolidBorder(new DeviceRgb(255, 255, 255), 0);
     private final Border blackBorder = new SolidBorder(new DeviceRgb(0, 0, 0), 1);
     private final AttackPOJO attackPOJO;
@@ -310,7 +310,7 @@ public class GenerateRoundReport {
         Integer curCount = attackerCounter;
         for (int i = curCount; i < 13; i++) {
 
-            for (int j = 0; j < 6; j++) {
+            for (int j = 0; j < 8; j++) {
                 tableXPAttacker.addCell(addAttackerCell("-"));
             }
             attackerCounter = attackerCounter + 1;
@@ -318,7 +318,7 @@ public class GenerateRoundReport {
         curCount = defenderCounter;
         for (int i = curCount; i < 13; i++) {
 
-            for (int j = 0; j < 6; j++) {
+            for (int j = 0; j < 8; j++) {
                 tableXPDefender.addCell(addDefenderCell("-"));
             }
             defenderCounter = defenderCounter + 1;
@@ -352,7 +352,8 @@ public class GenerateRoundReport {
                 .add("Match-score: " + C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_EACH_MATCH_SCORE").getValue() + " XP for each reach " +
                         C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_EACH_MATCH_SCORE_RANGE").getValue() + " match score")
                 .add("Damage: " + C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_EACH_DAMAGE").getValue() + " XP for ech reach " +
-                        C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_EACH_DAMAGE_RANGE").getValue() + " damage");
+                        C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_EACH_DAMAGE_RANGE").getValue() + " damage")
+                .add("Invasion involvement: " + C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_INVASION_INVOLVEMENT").getValue() + " XP");
 
         doc.add(calcInfo)
                 .add(new Paragraph());
@@ -371,7 +372,9 @@ public class GenerateRoundReport {
                         .addCell(addAttackerCell("Components destroyed"))
                         .addCell(addAttackerCell("Match-score"))
                         .addCell(addAttackerCell("Damage"))
-                        .addCell(addAttackerCell("Earned XP"));
+                        .addCell(addAttackerCell("Invasion involvement"))
+                        .addCell(addAttackerCell("Earned XP"))
+                        .addCell(addAttackerCell("XP Total"));
 
                 attackerCounter = 1;
             }
@@ -382,7 +385,9 @@ public class GenerateRoundReport {
                     .addCell(addAttackerCell(calcXP.getDescriptionComponentDestroyed()))
                     .addCell(addAttackerCell(calcXP.getDescriptionMatchScore()))
                     .addCell(addAttackerCell(calcXP.getDescriptionDamage()))
-                    .addCell(addAttackerCell(calcXP.getUserXPCurrent().toString() + " XP"));
+                    .addCell(addAttackerCell(calcXP.getDescriptionInvasionInvolvement()))
+                    .addCell(addAttackerCell(calcXP.getUserXPCurrent().toString() + " XP"))
+                    .addCell(addAttackerCell(calcXP.getUserXPTotal() + " XP"));
             attackerCounter = attackerCounter + 1;
         }
         if (Objects.equals(userDetail.getTeam(), getDefenderTeam())) {
@@ -394,7 +399,9 @@ public class GenerateRoundReport {
                         .addCell(addDefenderCell("Components destroyed"))
                         .addCell(addDefenderCell("Match-score"))
                         .addCell(addDefenderCell("Damage"))
-                        .addCell(addDefenderCell("Earned XP"));
+                        .addCell(addDefenderCell("Invasion involvement"))
+                        .addCell(addDefenderCell("Earned XP"))
+                        .addCell(addDefenderCell("XP Total"));
 
                 defenderCounter = 1;
 
@@ -405,7 +412,9 @@ public class GenerateRoundReport {
                     .addCell(addDefenderCell(calcXP.getDescriptionComponentDestroyed()))
                     .addCell(addDefenderCell(calcXP.getDescriptionMatchScore()))
                     .addCell(addDefenderCell(calcXP.getDescriptionDamage()))
-                    .addCell(addDefenderCell(calcXP.getUserXPCurrent().toString() + " XP"));
+                    .addCell(addDefenderCell(calcXP.getDescriptionInvasionInvolvement()))
+                    .addCell(addDefenderCell(calcXP.getUserXPCurrent().toString() + " XP"))
+                    .addCell(addDefenderCell(calcXP.getUserXPTotal() + " XP"));
             defenderCounter = defenderCounter + 1;
         }
     }
