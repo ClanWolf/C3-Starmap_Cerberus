@@ -125,6 +125,7 @@ public class DiscordBot extends ListenerAdapter {
 		List<TextChannel> channels = jda.getTextChannelsByName("c3-ulric", true);
 		LocalDateTime date = LocalDate.now().atStartOfDay();
 		Instant threshhold = Instant.ofEpochSecond(date.minusDays(3).toEpochSecond(ZoneOffset.UTC));
+		Instant threshholdRoundAnnouncement = Instant.ofEpochSecond(date.minusMinutes(5).toEpochSecond(ZoneOffset.UTC));
 
 		for (TextChannel ch : channels) {
 			MessageHistory history = MessageHistory.getHistoryFromBeginning(ch).complete();
@@ -138,6 +139,14 @@ public class DiscordBot extends ListenerAdapter {
 					if ("Ulric".equals(m.getAuthor().getName())) {
 						logger.info("Author is Ulric, delete.");
 						m.delete().queue();
+					}
+				}
+				if (time.isBefore(threshholdRoundAnnouncement)) {
+					if ("Ulric".equals(m.getAuthor().getName())) {
+						if ((m.getContentRaw().startsWith("Runde ") && m.getContentRaw().contains("offene Kämpfe:") && m.getContentRaw().contains("Stunden in Runde")) || (m.getContentRaw().startsWith("Round ") && m.getContentRaw().contains("open fights:") && m.getContentRaw().contains("hours left in round"))) {
+							logger.info("Remove older round announcement.");
+							m.delete().queue();
+						}
 					}
 				}
 			}

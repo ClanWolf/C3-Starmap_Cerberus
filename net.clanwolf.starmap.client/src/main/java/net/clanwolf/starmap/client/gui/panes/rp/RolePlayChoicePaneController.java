@@ -95,9 +95,7 @@ public class RolePlayChoicePaneController extends AbstractC3RolePlayController i
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		super.initialize(url, rb);
-
 		init();
-
 	}
 
 	private void init(){

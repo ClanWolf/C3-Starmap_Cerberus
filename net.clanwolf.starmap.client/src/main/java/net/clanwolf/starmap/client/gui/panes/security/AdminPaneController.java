@@ -156,14 +156,18 @@ public class AdminPaneController {
 
 	@FXML
 	public void btnSaveClicked() {
-		HashSet<UserDTO> usersToSave = new HashSet<>();
+		ArrayList<UserDTO> usersToSave = new ArrayList<>();
 		for (UserDTO u : this.userList) {
 			// logger.info("User " + u.getUserName() + ": " + u.getPrivileges());
 			if (!(originalPrivileges.get(u.getUserName())).equals(u.getPrivileges())) {
-				usersToSave.add(u);
+				if (!usersToSave.contains(u)) {
+					usersToSave.add(u);
+				}
 			}
 			if (!(originalActivatedStatus.get(u.getUserName())).equals(u.getActive())) {
-				usersToSave.add(u);
+				if (!usersToSave.contains(u)) {
+					usersToSave.add(u);
+				}
 			}
 			if (u.id.equals(Nexus.getCurrentUser().getUserId())) {
 				if (currentUserWasChanged) {
@@ -171,14 +175,21 @@ public class AdminPaneController {
 					u.setUserEMail(tfMail.getText());
 					u.setMwoUsername(tfMWOUser.getText());
 
+					Nexus.getCurrentUser().setUserName(tfName.getText());
+					Nexus.getCurrentUser().setUserEMail(tfMail.getText());
+					Nexus.getCurrentUser().setMwoUsername(tfMWOUser.getText());
+
 					if (tfPassword.getText().length() > 5
 						&& tfPasswordConfirm.getText().length() > 5
 						&& tfPassword.getText().equals(tfPasswordConfirm.getText())
 					) {
 						String pw = Encryptor.createSinglePassword(tfPassword.getText());
-						u.setUserPassword(pw);
+						u.setUserPasswordWebsite(pw);
+						Nexus.getCurrentUser().setUserPasswordWebsite(pw);
 					}
-					usersToSave.add(u);
+					if (!usersToSave.contains(u)) {
+						usersToSave.add(u);
+					}
 				}
 			}
 		}
@@ -195,9 +206,12 @@ public class AdminPaneController {
 			GameState saveUsersState = new GameState();
 			saveUsersState.setMode(GAMESTATEMODES.PRIVILEGE_SAVE);
 			saveUsersState.addObject(usersToSave);
+			if (cbRequestFactionChange.isSelected()) {
+				saveUsersState.addObject2(cbRequestedFaction.getSelectionModel().getSelectedItem().getFactionDTO().getId()); // BO Faction
+			}
 
-			logger.info("NOONE may actually save for now!");
-			// Nexus.fireNetworkEvent(saveUsersState);
+			//logger.info("NOONE may actually save for now!");
+			Nexus.fireNetworkEvent(saveUsersState);
 		} else {
 			logger.info("Only admins may actually save for now!");
 		}

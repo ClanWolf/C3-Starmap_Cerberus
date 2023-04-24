@@ -70,7 +70,7 @@ public class ExtcomDiscordTimerTask extends TimerTask {
 				}
 				for (String s : msgscut) {
 					if (!"...".equalsIgnoreCase(s)) {
-						DiscordBot.sendMessageToChannel("" + s);
+						DiscordBot.sendMessageToChannel(s);
 					}
 				}
 			}

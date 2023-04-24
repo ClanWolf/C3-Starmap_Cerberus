@@ -60,7 +60,7 @@ public class RolePlayCharacterDTO extends Dto {
     private RolePlayStoryDTO story;
 	//@Column(name = "FactionID")
 	private Integer factionId;
-	//@Column(name = "StarsystemID")
+	private Integer factionTypeId;
 	private Integer starSystemId;
 	//@Column(name = "JumpshipID")
 	private Integer jumpshipId;
@@ -164,7 +164,7 @@ public class RolePlayCharacterDTO extends Dto {
 	public void setUser(UserDTO user) {
 		this.user = user;
 	}
-	
+
 	/**
 	 * @return the story
 	 */
@@ -189,6 +189,16 @@ public class RolePlayCharacterDTO extends Dto {
 	@SuppressWarnings("unused")
 	public void setFactionId(Integer factionId) {
 		this.factionId = factionId;
+	}
+
+	@SuppressWarnings("unused")
+	public Integer getTypeFactionId() {
+		return factionTypeId;
+	}
+
+	@SuppressWarnings("unused")
+	public void setFactionTypeId(Integer factionTypeId) {
+		this.factionTypeId = factionTypeId;
 	}
 
 	@SuppressWarnings("unused")

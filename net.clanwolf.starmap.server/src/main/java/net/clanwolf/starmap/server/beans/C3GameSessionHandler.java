@@ -738,10 +738,28 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 	private synchronized void savePrivileges(PlayerSession session, GameState state) {
 		UserDAO dao = UserDAO.getInstance();
+		RolePlayCharacterDAO rpDAO = RolePlayCharacterDAO.getInstance();
+		FactionDAO factionDAO = FactionDAO.getInstance();
+		JumpshipDAO jsDAO = JumpshipDAO.getInstance();
+
 		GameState response = new GameState(GAMESTATEMODES.PRIVILEGE_SAVE);
 		try {
 			EntityManagerHelper.beginTransaction(getC3UserID(session));
-			HashSet<UserPOJO> list = (HashSet<UserPOJO>) state.getObject();
+			ArrayList<UserPOJO> list = (ArrayList<UserPOJO>) state.getObject();
+			if (state.getObject2() != null && state.getObject2() instanceof Long factionId) {
+				// The requested faction for the user who saved this
+				UserPOJO userRequestingFactionChange = ((C3Player) session.getPlayer()).getUser();
+				FactionPOJO newFaction = factionDAO.findById(getC3UserID(session), factionId);
+				JumpshipPOJO js = jsDAO.getJumpshipsForFaction(factionId).get(0);
+
+				ArrayList<RolePlayCharacterPOJO> charList = rpDAO.getCharactersOfUser(userRequestingFactionChange);
+				for (RolePlayCharacterPOJO ch : charList) {
+					ch.setFactionId(newFaction.getId().intValue());
+					ch.setFactionTypeId(newFaction.getFactionTypeID().intValue());
+					ch.setJumpshipId(js.getId().intValue());
+					rpDAO.update(getC3UserID(session), ch);
+				}
+			}
 			for (UserPOJO user : list) {
 				user.setLastModified(new Timestamp(System.currentTimeMillis()));
 				if (user.getUserId() == null) {
@@ -752,7 +770,6 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 					dao.update(getC3UserID(session), user);
 				}
 			}
-
 			EntityManagerHelper.commit(getC3UserID(session));
 
 			response.addObject(null);

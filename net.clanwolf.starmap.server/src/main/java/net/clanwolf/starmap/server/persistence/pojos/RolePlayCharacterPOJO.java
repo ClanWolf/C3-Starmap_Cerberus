@@ -79,6 +79,9 @@ public class RolePlayCharacterPOJO extends Pojo {
 	@Column(name = "FactionID")
 	private Integer factionId;
 
+	@Column(name = "FactionTypeID")
+	private Integer factionTypeId;
+
 	@Column(name = "StarsystemID")
 	private Integer starSystemId;
 
@@ -100,6 +103,16 @@ public class RolePlayCharacterPOJO extends Pojo {
 	@SuppressWarnings("unused")
 	public void setFactionId(Integer factionId) {
 		this.factionId = factionId;
+	}
+
+	@SuppressWarnings("unused")
+	public Integer getTypeFactionId() {
+		return factionTypeId;
+	}
+
+	@SuppressWarnings("unused")
+	public void setFactionTypeId(Integer factionTypeId) {
+		this.factionTypeId = factionTypeId;
 	}
 
 	@SuppressWarnings("unused")
@@ -205,7 +218,7 @@ public class RolePlayCharacterPOJO extends Pojo {
 	public void setUser(UserPOJO user) {
 		this.user = user;
 	}
-	
+
 	/**
 	 * @return the story
 	 */
