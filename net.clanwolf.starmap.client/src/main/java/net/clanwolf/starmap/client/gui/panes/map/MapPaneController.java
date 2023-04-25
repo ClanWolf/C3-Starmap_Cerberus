@@ -2270,6 +2270,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 							if (attackOfSelectedSystem != null) {
 								showAttackDetail(attackOfSelectedSystem);
 								hideJumpshipDetail();
+								hideSystemDetail();
 							}
 						}
 					} else {
