@@ -17,6 +17,7 @@ TODO:
 - Sometimes score is not stored to attack table
 - Show map dice only for random maps!
 
+- Create animated gif from season history / post to discord
 - Make visible from the map if an attack is broken
 - After publish was clicked in MWO, remind to confirm winner in app (!)
 - Userlist needs one more column on what side the char fights
@@ -35,8 +36,11 @@ TODO:
 - Video does not show sometimes
 ----------------------------------------------------------------
 
-Version 7.3.30 (24.04.2023)
+Version 7.3.38 (25.04.2023)
+- ADDED: Faction key for change requests
 - FIXED: Admin Dialog save
+- FIXED: Login Errors
+- CHANGED: The way old messages are removed in discord
 
 Version 7.3.29 (21.04.2023)
 - FIXED: Doubled entried in extCom (IRC, TS3, Discord)

@@ -124,27 +124,43 @@ public class DiscordBot extends ListenerAdapter {
 	public static void sendMessageToChannel(String message) {
 		List<TextChannel> channels = jda.getTextChannelsByName("c3-ulric", true);
 		LocalDateTime date = LocalDate.now().atStartOfDay();
+		LocalDateTime date2 = LocalDateTime.now();
 		Instant threshhold = Instant.ofEpochSecond(date.minusDays(3).toEpochSecond(ZoneOffset.UTC));
-		Instant threshholdRoundAnnouncement = Instant.ofEpochSecond(date.minusMinutes(5).toEpochSecond(ZoneOffset.UTC));
+		Instant threshholdRoundAnnouncement = Instant.ofEpochSecond(date2.minusMinutes(5).toEpochSecond(ZoneOffset.UTC));
 
 		for (TextChannel ch : channels) {
 			MessageHistory history = MessageHistory.getHistoryFromBeginning(ch).complete();
 			List<Message> mess = history.getRetrievedHistory();
 			logger.info("Found " + mess.size() + " messages.");
 			for (Message m : mess) {
-				logger.info(m.getContentDisplay());
+				//logger.info(m.getContentDisplay());
 				Instant time = m.getTimeCreated().toInstant();
 				if (time.isBefore(threshhold)) {
-					logger.info("Found message to be deleted.");
+					// logger.info("Found message to be deleted.");
 					if ("Ulric".equals(m.getAuthor().getName())) {
-						logger.info("Author is Ulric, delete.");
+						// logger.info("Author is Ulric, delete.");
 						m.delete().queue();
 					}
-				}
-				if (time.isBefore(threshholdRoundAnnouncement)) {
+				} else if (time.isBefore(threshholdRoundAnnouncement)) {
 					if ("Ulric".equals(m.getAuthor().getName())) {
-						if ((m.getContentRaw().startsWith("Runde ") && m.getContentRaw().contains("offene Kämpfe:") && m.getContentRaw().contains("Stunden in Runde")) || (m.getContentRaw().startsWith("Round ") && m.getContentRaw().contains("open fights:") && m.getContentRaw().contains("hours left in round"))) {
-							logger.info("Remove older round announcement.");
+						if ((m.getContentDisplay().startsWith("Runde ") && m.getContentDisplay().contains("offene Kämpfe:") && m.getContentDisplay().contains("Stunden in Runde"))
+								|| (m.getContentDisplay().startsWith("Round ") && m.getContentDisplay().contains("open fights:") && m.getContentDisplay().contains("hours left in round"))) {
+							m.delete().queue();
+						}
+						if ((m.getContentDisplay().startsWith("C3-Server-") && m.getContentDisplay().contains("ist gestartet und bereit.") && m.getContentDisplay().contains("Download:"))
+								|| (m.getContentDisplay().startsWith("C3-Server-") && m.getContentDisplay().contains("is up and ready.") && m.getContentDisplay().contains("Download:"))) {
+							m.delete().queue();
+						}
+						if ((m.getContentDisplay().equals("Server fährt herunter (Flag).")
+								|| m.getContentDisplay().equals("Server is going down (flag)."))) {
+							m.delete().queue();
+						}
+						if ((m.getContentDisplay().equals("Runde beendet.")
+								|| m.getContentDisplay().equals("Round finalized."))) {
+							m.delete().queue();
+						}
+						if ((m.getContentDisplay().equals("Server ist online seit")
+								|| m.getContentDisplay().equals("Server is up since"))) {
 							m.delete().queue();
 						}
 					}

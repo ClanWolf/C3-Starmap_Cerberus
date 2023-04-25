@@ -106,7 +106,7 @@ public class RolePlayCharacterPOJO extends Pojo {
 	}
 
 	@SuppressWarnings("unused")
-	public Integer getTypeFactionId() {
+	public Integer getFactionTypeId() {
 		return factionTypeId;
 	}
 

@@ -69,7 +69,7 @@ public class AdminPaneController {
 	@FXML
 	ComboBox<String> cbUser;
 	@FXML
-	ComboBox<BOFaction> cbFaction, cbUserFaction, cbRequestedFaction;
+	ComboBox<BOFaction> cbFaction, cbRequestedFaction;
 	private final ArrayList<BOJumpship> activeJumpships = Nexus.getBoUniverse().getJumpshipList();
 	private final DecimalFormat nf = new DecimalFormat();
 
@@ -77,7 +77,7 @@ public class AdminPaneController {
 	Label labelUser, labelPrivCode, labelPrivCodeBinary;
 
 	@FXML
-	Tab tabUser, tabCharacter, tabPrivileges, tabFinances;
+	Tab tabUser, tabCharacter, tabFaction, tabPrivileges, tabFinances;
 
 	@FXML
 	Button btnSave, btnCancel;
@@ -104,18 +104,17 @@ public class AdminPaneController {
 	private boolean pwOk = true;
 	private boolean mailOk = true;
 	private boolean mwoUsernameOk = true;
+	@FXML
+	Label lCurrentBalance, lblFactionKey;
 
 	@FXML
 	TableView<FinancesInfo> tableFinances;
 	private String originalUsername = "";
 	private String originalMail = "";
-
 	@FXML
-	Label lCurrentBalance;
+	TextField tfName, tfPassword, tfPasswordConfirm, tfMail, tfMWOUser, tfFactionKey;
 	private String originalMWOUser = "";
-
-	@FXML
-	TextField tfName, tfPassword, tfPasswordConfirm, tfMail, tfMWOUser;
+	private boolean factionkeyOk = false;
 
 	@FXML
 	public void showPWButtonClick() {
@@ -148,9 +147,15 @@ public class AdminPaneController {
 		if (cbRequestFactionChange.isSelected()) {
 			cbRequestedFaction.setDisable(false);
 			cbRequestedFaction.getSelectionModel().select(0);
+			lblFactionKey.setDisable(false);
+			tfFactionKey.setDisable(false);
+			lblFactionKey.setDisable(false);
 		} else {
 			cbRequestedFaction.setDisable(true);
 			cbRequestedFaction.getSelectionModel().clearSelection();
+			lblFactionKey.setDisable(true);
+			tfFactionKey.setDisable(true);
+			lblFactionKey.setDisable(true);
 		}
 	}
 
@@ -208,6 +213,7 @@ public class AdminPaneController {
 			saveUsersState.addObject(usersToSave);
 			if (cbRequestFactionChange.isSelected()) {
 				saveUsersState.addObject2(cbRequestedFaction.getSelectionModel().getSelectedItem().getFactionDTO().getId()); // BO Faction
+				saveUsersState.addObject3(tfFactionKey.getText());
 			}
 
 			//logger.info("NOONE may actually save for now!");
@@ -432,6 +438,7 @@ public class AdminPaneController {
 		lblPasswordConfirm.setText(Internationalization.getString("AdminUserLabelPasswordConfirm"));
 		lblMail.setText(Internationalization.getString("AdminUserLabelMail"));
 		lblMWOUser.setText(Internationalization.getString("AdminUserLabelMWOUser"));
+		lblFactionKey.setText(Internationalization.getString("AdminUserLabelFactionKey"));
 
 		cbRequestFactionChange.setText(Internationalization.getString("AdminUserRequestFactionChange"));
 
@@ -494,8 +501,8 @@ public class AdminPaneController {
 		ObservableList<BOFaction> factions = FXCollections.observableArrayList();
 		factions.addAll(Nexus.getBoUniverse().getActiveFactions());
 		Collections.sort(factions);
-		cbUserFaction.setItems(factions);
-		cbUserFaction.setDisable(!Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_CHANGE_FACTION_FOR_USER));
+//		cbUserFaction.setItems(factions);
+//		cbUserFaction.setDisable(!Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_CHANGE_FACTION_FOR_USER));
 
 		//Finances
 		cbActiveUser.setText(Internationalization.getString("general_user_is_active_checkbox"));
@@ -607,11 +614,28 @@ public class AdminPaneController {
 			}
 		};
 
+		ChangeListener<? super String> factionkeyFieldChangeListener = new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> ov, String old_val, String new_val) {
+				currentUserWasChanged = true;
+				factionkeyOk = tfFactionKey.getText().equals(cbRequestedFaction.getSelectionModel().getSelectedItem().getFactionDTO().getFactionKey());
+				if (factionkeyOk) {
+					tfFactionKey.setStyle("-fx-text-fill:green;");
+					lblFactionKey.setStyle("-fx-text-fill:green;");
+				} else {
+					tfFactionKey.setStyle("-fx-text-fill:red;");
+					lblFactionKey.setStyle("-fx-text-fill:red;");
+				}
+				checkUserChanges();
+			}
+		};
+
 		tfName.textProperty().addListener(userNameFieldChangeListener);
 		tfPassword.textProperty().addListener(userPasswordFieldChangeListener);
 		tfPasswordConfirm.textProperty().addListener(userPasswordConfirmFieldChangeListener);
 		tfMail.textProperty().addListener(userMailFieldChangeListener);
 		tfMWOUser.textProperty().addListener(userMWONameFieldChangeListener);
+		tfFactionKey.textProperty().addListener(factionkeyFieldChangeListener);
 
 		if (showPW) {
 			lblPasswordClear.setText(tfPassword.getText());
@@ -620,6 +644,7 @@ public class AdminPaneController {
 
 		tfPassword.setStyle("-fx-text-fill:red;");
 		tfPasswordConfirm.setStyle("-fx-text-fill:red;");
+		tfFactionKey.setStyle("-fx-text-fill:red;");
 
 		// Show or hide tabs according to privileges
 		boolean privs = Security.hasPrivilege(PRIVILEGES.ADMIN_IS_GOD_ADMIN);
@@ -627,9 +652,13 @@ public class AdminPaneController {
 
 		cbRequestedFaction.setDisable(true);
 		cbRequestedFaction.getSelectionModel().clearSelection();
+		tfFactionKey.setDisable(true);
+		lblFactionKey.setDisable(true);
+		tfFactionKey.setText("");
 
 		tabUser.setDisable(false);
 		tabCharacter.setDisable(true);
+		tabFaction.setDisable(true);
 		tabFinances.setDisable(!finances);
 		tabPrivileges.setDisable(!privs);
 

@@ -7,7 +7,7 @@ import java.util.zip.GZIPOutputStream;
 
 public class Compressor {
 
-	public static byte[] compress( Object o){
+	public static byte[] compress(Object o){
 		ObjectOutputStream objectOut = null;
 		GZIPOutputStream gzipOut = null;
 		ByteArrayOutputStream baos = null;

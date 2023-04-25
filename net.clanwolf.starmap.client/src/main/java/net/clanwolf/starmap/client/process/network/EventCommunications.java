@@ -238,8 +238,11 @@ public class EventCommunications {
 					ActionManager.getAction(ACTIONS.UPDATE_GAME_INFO).execute();
 
 					Object o3 = state.getObject3();
+//					if (o3 != null && o3 instanceof byte[]) {
 					if (o3 instanceof ArrayList) {
 						ArrayList<UserDTO> allUsers = (ArrayList<UserDTO>) state.getObject3();
+//						ArrayList<UserDTO> allUsers = (ArrayList<UserDTO>) Compressor.deCompress((byte[]) state.getObject3());
+
 						Nexus.setUserList(allUsers);
 						HashMap<Long, RolePlayCharacterDTO> allChars = new HashMap<>();
 						for (UserDTO u : allUsers) {

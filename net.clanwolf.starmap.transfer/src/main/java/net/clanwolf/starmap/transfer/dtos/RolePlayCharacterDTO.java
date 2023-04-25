@@ -192,7 +192,7 @@ public class RolePlayCharacterDTO extends Dto {
 	}
 
 	@SuppressWarnings("unused")
-	public Integer getTypeFactionId() {
+	public Integer getFactionTypeId() {
 		return factionTypeId;
 	}
 

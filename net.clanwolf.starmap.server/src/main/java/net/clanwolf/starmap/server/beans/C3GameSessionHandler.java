@@ -35,26 +35,28 @@ import io.nadron.event.impl.SessionMessageHandler;
 import io.nadron.service.GameStateManagerService;
 import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.server.GameServer;
-import net.clanwolf.starmap.server.servernexus.ServerNexus;
-import net.clanwolf.starmap.server.util.ForumDatabaseTools;
-import net.clanwolf.starmap.transfer.dtos.*;
-import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.server.persistence.EntityConverter;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.*;
 import net.clanwolf.starmap.server.persistence.pojos.*;
 import net.clanwolf.starmap.server.process.EndRound;
+import net.clanwolf.starmap.server.servernexus.ServerNexus;
 import net.clanwolf.starmap.server.timertasks.HeartBeatTimerTask;
+import net.clanwolf.starmap.server.util.ForumDatabaseTools;
 import net.clanwolf.starmap.server.util.WebDataInterface;
 import net.clanwolf.starmap.transfer.GameState;
+import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
+import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 import net.clanwolf.starmap.transfer.util.Compressor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.invoke.MethodHandles;
 import java.sql.Timestamp;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.Timer;
 import java.util.concurrent.CountDownLatch;
 
 import static net.clanwolf.starmap.constants.Constants.*;
@@ -736,7 +738,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		}
 	}
 
-	private synchronized void savePrivileges(PlayerSession session, GameState state) {
+	private synchronized void saveChanges(PlayerSession session, GameState state) {
 		UserDAO dao = UserDAO.getInstance();
 		RolePlayCharacterDAO rpDAO = RolePlayCharacterDAO.getInstance();
 		FactionDAO factionDAO = FactionDAO.getInstance();
@@ -746,18 +748,28 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		try {
 			EntityManagerHelper.beginTransaction(getC3UserID(session));
 			ArrayList<UserPOJO> list = (ArrayList<UserPOJO>) state.getObject();
+			String givenFactionKey = null;
+			if (state.getObject3() != null && state.getObject3() instanceof String) {
+				givenFactionKey = (String) state.getObject3();
+			}
+
 			if (state.getObject2() != null && state.getObject2() instanceof Long factionId) {
 				// The requested faction for the user who saved this
 				UserPOJO userRequestingFactionChange = ((C3Player) session.getPlayer()).getUser();
 				FactionPOJO newFaction = factionDAO.findById(getC3UserID(session), factionId);
 				JumpshipPOJO js = jsDAO.getJumpshipsForFaction(factionId).get(0);
 
-				ArrayList<RolePlayCharacterPOJO> charList = rpDAO.getCharactersOfUser(userRequestingFactionChange);
-				for (RolePlayCharacterPOJO ch : charList) {
-					ch.setFactionId(newFaction.getId().intValue());
-					ch.setFactionTypeId(newFaction.getFactionTypeID().intValue());
-					ch.setJumpshipId(js.getId().intValue());
-					rpDAO.update(getC3UserID(session), ch);
+				if (givenFactionKey != null && newFaction.getFactionKey().equals(givenFactionKey)) {
+					// Change faction for all chars of that user
+					ArrayList<RolePlayCharacterPOJO> charList = rpDAO.getCharactersOfUser(userRequestingFactionChange);
+					for (RolePlayCharacterPOJO ch : charList) {
+						ch.setFactionId(newFaction.getId().intValue());
+						ch.setFactionTypeId(newFaction.getFactionTypeID().intValue());
+						ch.setJumpshipId(js.getId().intValue());
+						//					rpDAO.update(getC3UserID(session), ch);
+					}
+				} else {
+					logger.info("No characters have changed factions, faction key wrong or missing!");
 				}
 			}
 			for (UserPOJO user : list) {
@@ -819,6 +831,10 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		logger.info("Sending userdata/universe back after login...");
 		ArrayList<UserPOJO> userlist = UserDAO.getInstance().getUserList();
 
+		//		for (UserPOJO u : userlist) {
+		//			logger.info("+++++++++++++++ Found user: " + u.getUserName());
+		//		}
+
 		// Trigger the creation of a new universe... but wait until it is ready before
 		// sending it back
 		final CountDownLatch latch = new CountDownLatch(1);
@@ -831,13 +847,14 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		}
 		UniverseDTO uni = WebDataInterface.getUniverse();
 
-		byte[] myByte = Compressor.compress(uni);
-		logger.info("Size of UniverseDTO: " + myByte.length + " byte.");
+		byte[] compressedUniverse = Compressor.compress(uni);
+//		byte[] compressedUserList = Compressor.compress(userlist);
+		logger.info("Compressed universe size: " + compressedUniverse.length + " byte.");
+//		logger.info("Compressed userlist size: " + compressedUserList.length + " byte.");
 
 		GameState state_userdata = new GameState(GAMESTATEMODES.USER_LOGGED_IN_DATA);
 		state_userdata.addObject(user);
-		//state_userdata.addObject2(uni);
-		state_userdata.addObject2(myByte);
+		state_userdata.addObject2(compressedUniverse);
 		state_userdata.addObject3(userlist);
 		state_userdata.setReceiver(session.getId());
 		C3GameSessionHandler.sendNetworkEvent(session, state_userdata);
@@ -1034,7 +1051,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				saveUser(session, state);
 				break;
 			case PRIVILEGE_SAVE:
-				savePrivileges(session, state);
+				saveChanges(session, state);
 				break;
 			case JUMPSHIP_SAVE:
 				saveJumpship(session, state);

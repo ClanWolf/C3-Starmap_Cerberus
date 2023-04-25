@@ -39,7 +39,7 @@ public class FactionDTO extends Dto {
 	private String name_de;
 	//@Column(name = "ShortName")
 	private String shortName;
-	//@Column(name = "Color")
+	private String factionKey;
 	private String color;
 	//@Column(name = "Logo")
 	private String logo;
@@ -222,6 +222,16 @@ public class FactionDTO extends Dto {
 	@SuppressWarnings("unused")
 	public void setCanon(Boolean canon) {
 		this.canon = canon;
+	}
+
+	@SuppressWarnings("unused")
+	public String getFactionKey() {
+		return factionKey;
+	}
+
+	@SuppressWarnings("unused")
+	public void setFactionKey(String factionKey) {
+		this.factionKey = factionKey;
 	}
 
 	public String toString() {

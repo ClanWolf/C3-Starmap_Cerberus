@@ -29,6 +29,9 @@ public class FactionPOJO extends Pojo {
 	@Column(name = "ShortName")
 	private String shortName;
 
+	@Column(name = "FactionKey")
+	private String factionKey;
+
 	@Column(name = "Color")
 	private String color;
 
@@ -223,5 +226,15 @@ public class FactionPOJO extends Pojo {
 	@SuppressWarnings("unused")
 	public void setCanon(Boolean canon) {
 		this.canon = canon;
+	}
+
+	@SuppressWarnings("unused")
+	public String getFactionKey() {
+		return factionKey;
+	}
+
+	@SuppressWarnings("unused")
+	public void setFactionKey(String factionKey) {
+		this.factionKey = factionKey;
 	}
 }
