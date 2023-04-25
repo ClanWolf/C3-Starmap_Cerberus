@@ -36,7 +36,7 @@
                   <Image url="@../images/map/forbidden.png" />
                </image>
             </ImageView>
-            <AnchorPane fx:id="paneAttackDetail" layoutX="6.0" layoutY="267.0" mouseTransparent="true" prefHeight="148.0" prefWidth="763.0" styleClass="systemDetailPanelSolid" stylesheets="@../styles/MainFrameStyle.css">
+            <AnchorPane fx:id="paneAttackDetail" layoutX="6.0" layoutY="297.0" mouseTransparent="true" prefHeight="110.0" prefWidth="763.0" styleClass="systemDetailPanelSolid" stylesheets="@../styles/MainFrameStyle.css">
                <children>
                   <VBox alignment="CENTER" maxWidth="1.7976931348623157E308" mouseTransparent="true" prefHeight="94.0" prefWidth="519.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
@@ -47,7 +47,7 @@
                         </Label>
                         <HBox alignment="CENTER" maxWidth="1.7976931348623157E308" minWidth="-Infinity" mouseTransparent="true" stylesheets="@../styles/MainFrameStyle.css" VBox.vgrow="ALWAYS">
                            <children>
-                              <ImageView fx:id="ivFactionImageAttacker" fitHeight="60.0" fitWidth="127.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="ivFactionImageAttacker" fitHeight="50.0" fitWidth="127.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/logos/factions/CGB.png" />
                                  </image>
@@ -59,16 +59,32 @@
                                  <children>
                                     <HBox alignment="CENTER" mouseTransparent="true" spacing="2.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                        <children>
+                                          <ImageView fitHeight="50.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../icons/attack_circle.png" />
+                                             </image>
+                                             <HBox.margin>
+                                                <Insets right="30.0" />
+                                             </HBox.margin>
+                                          </ImageView>
                                           <Circle fx:id="circleScore1" fill="WHITE" mouseTransparent="true" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
                                           <Circle fx:id="circleScore2" fill="WHITE" mouseTransparent="true" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
                                           <Circle fx:id="circleScore3" fill="WHITE" mouseTransparent="true" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
                                           <Circle fx:id="circleScore4" fill="WHITE" mouseTransparent="true" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
                                           <Circle fx:id="circleScore5" fill="WHITE" mouseTransparent="true" radius="12.0" stroke="BLACK" strokeType="INSIDE" />
+                                          <ImageView fitHeight="50.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../icons/defend_circle.png" />
+                                             </image>
+                                             <HBox.margin>
+                                                <Insets left="30.0" />
+                                             </HBox.margin>
+                                          </ImageView>
                                        </children>
                                     </HBox>
                                  </children>
                               </AnchorPane>
-                              <ImageView fx:id="ivFactionImageDefender" fitHeight="60.0" fitWidth="115.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="ivFactionImageDefender" fitHeight="50.0" fitWidth="115.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/logos/factions/DC.png" />
                                  </image>
@@ -78,7 +94,10 @@
                               </ImageView>
                            </children>
                         </HBox>
-                        <TextField fx:id="taAttackDescription" prefHeight="65.0" prefWidth="743.0" styleClass="text-area" stylesheets="@../styles/MainFrameStyle.css" VBox.vgrow="ALWAYS" />
+                        <TextField fx:id="taAttackDescription" editable="false" focusTraversable="false" prefHeight="40.0" prefWidth="743.0" styleClass="text-area" stylesheets="@../styles/MainFrameStyle.css" VBox.vgrow="ALWAYS">
+                           <VBox.margin>
+                              <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                           </VBox.margin></TextField>
                      </children>
                   </VBox>
                </children>
