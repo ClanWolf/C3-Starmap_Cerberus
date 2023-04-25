@@ -358,6 +358,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					attack.setStarSystemDataID(s.getStarSystemDataId());
 					attack.setCharacterID(Nexus.getCurrentChar().getId());
 					attack.setFightsStarted(false);
+					attack.setScoreAttackerVictories(0L);
+					attack.setScoreDefenderVictories(0L);
 
 					BOAttack boAttack = new BOAttack(attack);
 					Nexus.getBoUniverse().attackBOsOpenInThisRound.put(boAttack.getAttackDTO().getId(), boAttack);

@@ -126,7 +126,7 @@ public class DiscordBot extends ListenerAdapter {
 		LocalDateTime date = LocalDate.now().atStartOfDay();
 		LocalDateTime date2 = LocalDateTime.now();
 		Instant threshhold = Instant.ofEpochSecond(date.minusDays(3).toEpochSecond(ZoneOffset.UTC));
-		Instant threshholdRoundAnnouncement = Instant.ofEpochSecond(date2.minusMinutes(5).toEpochSecond(ZoneOffset.UTC));
+		Instant threshholdRoundAnnouncement = Instant.ofEpochSecond(date2.minusMinutes(20).toEpochSecond(ZoneOffset.UTC));
 
 		for (TextChannel ch : channels) {
 			MessageHistory history = MessageHistory.getHistoryFromBeginning(ch).complete();

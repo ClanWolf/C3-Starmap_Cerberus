@@ -39,14 +39,15 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Properties;
 
 public class ExternalCommunicationInterface {
 	private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	private static final Properties auth = new Properties();
 	private static final String authFileName = "auth.properties";
-	private static String previousMessage_en = ""; // Will not be repeated if identical
-	private static String previousMessage_de = ""; // Will not be repeated if identical
+	private static ArrayList<String> previousMessages_en = new ArrayList<>(); // Will not be repeated if identical
+	private static ArrayList<String> previousMessages_de = new ArrayList<>(); // Will not be repeated if identical
 
 	public ExternalCommunicationInterface() {
 		try {
@@ -109,11 +110,11 @@ public class ExternalCommunicationInterface {
 		message = message.replace("'", "\"");
 
 		if ("de".equals(lang)) {
-			if (previousMessage_de.equals(message)) {
+			if (previousMessages_de.contains(message)) {
 				return;
 			}
 		} else if ("en".equals(lang)) {
-			if (previousMessage_en.equals(message)) {
+			if (previousMessages_en.contains(message)) {
 				return;
 			}
 		}
@@ -135,9 +136,15 @@ public class ExternalCommunicationInterface {
 				sql_insert += "('" + message + "','" + lang + "','" + ServerNexus.jarName + "'," + pvIRC + "," + pvTS3 + "," + pvDiscord + "); ";
 				long extcomid = insert(sql_insert);
 				if ("de".equals(lang)) {
-					previousMessage_de = message;
+					previousMessages_de.add(message);
+					if (previousMessages_de.size() > 20) {
+						previousMessages_de.remove(0);
+					}
 				} else if ("en".equals(lang)) {
-					previousMessage_en = message;
+					previousMessages_en.add(message);
+					if (previousMessages_en.size() > 20) {
+						previousMessages_en.remove(0);
+					}
 				}
 
 				// Delete all old entries, check if they have been processed

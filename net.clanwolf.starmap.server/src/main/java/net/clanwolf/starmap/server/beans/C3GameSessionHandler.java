@@ -468,6 +468,8 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 						if (rpPojo.getAttackerWins()) {
 							attack.setFactionID_Winner(jpWinner.getJumpshipFactionID());
 
+							attack.setScoreAttackerVictories(3L);
+
 							String planet = starSystem.getName();
 							JumpshipPOJO jumpship = daoJJ.findById(getC3UserID(session), jpWinner.getJumpshipFactionID());
 							FactionPOJO winnerFaction = daoFaction.findById(getC3UserID(session), jumpship.getJumpshipFactionID());
@@ -478,6 +480,8 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 						} else if (rpPojo.getDefenderWins()) {
 							attack.setFactionID_Winner(attack.getFactionID_Defender());
+
+							attack.setScoreDefenderVictories(3L);
 
 							String planet = starSystem.getName();
 							FactionPOJO winnerFaction = daoFaction.findById(getC3UserID(session), attack.getFactionID_Defender());
@@ -495,6 +499,10 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				}
 				if(rpPojo.getVariante() != ROLEPLAYENTRYTYPES.C3_RP_STEP_V8) {
 					attack.setLastStoryID(rpPojo.getId());
+				}
+				if(rpPojo.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V9) {
+					attack.setScoreAttackerVictories(rpPojo.getVar9ID().getAttackerDropVictories().longValue());
+					attack.setScoreDefenderVictories(rpPojo.getVar9ID().getDefenderDropVictories().longValue());
 				}
 				attack.setStoryID(rpPojo.getId());
 			} else {

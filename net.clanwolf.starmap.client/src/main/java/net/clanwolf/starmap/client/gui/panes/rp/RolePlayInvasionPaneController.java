@@ -360,9 +360,6 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 				scoreAnimation(1, 1);
 			}
 
-			Nexus.getCurrentAttackOfUser().getAttackDTO().setScoreAttackerVictories(attackerDropVictories.longValue());
-			Nexus.getCurrentAttackOfUser().getAttackDTO().setScoreDefenderVictories(defenderDropVictories.longValue());
-
 			// rpVar9
 			if (rpVar9.getOption4StoryID() != null) {
 				btChoice4.setVisible(true);

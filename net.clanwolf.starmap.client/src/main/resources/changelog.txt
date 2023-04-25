@@ -36,7 +36,7 @@ TODO:
 - Video does not show sometimes
 ----------------------------------------------------------------
 
-Version 7.3.38 (25.04.2023)
+Version 7.3.40 (25.04.2023)
 - ADDED: Faction key for change requests
 - FIXED: Admin Dialog save
 - FIXED: Login Errors
