@@ -56,13 +56,12 @@ public class SendInformationToBotsTimerTask extends TimerTask {
 
 		Timestamp d = Timestamp.valueOf(round.getCurrentRoundStartDateRealTime());
 		Timestamp now = new Timestamp(System.currentTimeMillis());
-		long dms = d.getTime();
-		long nowms = now.getTime();
-		long roundage = nowms - dms;
-		long roundAgeMinutes = ((roundage / 1000) / 60);
-		long roundAgeHours = (((roundage / 1000) / 60) / 60);
-		long finalHoursLeft = 84 - roundAgeHours;
-		long finalMinutesLeft = ((((84 - finalHoursLeft) * 60) - roundAgeMinutes));
+
+		long maxRoundAgeMillis = 84 * 60 * 60 * 1000;
+		long roundageMillis = now.getTime() - d.getTime();
+		long minutesLeft = ((maxRoundAgeMillis - roundageMillis) / 1000) / 60;
+		long finalHoursLeft = minutesLeft / 60;
+		long finalMinutesLeft = minutesLeft - finalHoursLeft * 60;
 
 		ArrayList<AttackPOJO> allAttacksForRound = AttackDAO.getInstance().getOpenAttacksOfASeasonForRound(seasonId, roundId.intValue());
 		ArrayList<AttackPOJO> allAttacksForNextRound = AttackDAO.getInstance().getOpenAttacksOfASeasonForRound(seasonId, roundId.intValue() + 1);

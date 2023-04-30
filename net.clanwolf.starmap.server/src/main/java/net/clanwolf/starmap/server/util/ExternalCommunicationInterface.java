@@ -69,8 +69,8 @@ public class ExternalCommunicationInterface {
 			String user = auth.getProperty("user");
 			String password = auth.getProperty("password");
 
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/C3", user, password);
+			Class.forName("org.mariadb.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mariadb://localhost:3306/C3", user, password);
 			Statement stmt = con.createStatement();
 			stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
 
@@ -94,8 +94,8 @@ public class ExternalCommunicationInterface {
 			String user = auth.getProperty("user");
 			String password = auth.getProperty("password");
 
-			Class.forName("com.mysql.cj.jdbc.Driver");
-			Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/C3", user, password);
+			Class.forName("org.mariadb.jdbc.Driver");
+			Connection con = DriverManager.getConnection("jdbc:mariadb://localhost:3306/C3", user, password);
 			Statement stmt = con.createStatement();
 			stmt.executeUpdate(sql);
 

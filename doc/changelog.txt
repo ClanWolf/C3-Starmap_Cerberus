@@ -10,8 +10,6 @@ CURRENTLY IN PROGRESS:
 
 TODO:
 - Update msgpack (io.nadron.server)
-- Check warning hibernate dialect (server)
-- Switch to MariaDB client (client, bots)
 
 - Players can still join fights when the video runs!!!
 - Sometimes score is not stored to attack table
@@ -36,6 +34,11 @@ TODO:
 - Check tab order and keyboard control for all panes
 - Video does not show sometimes
 ----------------------------------------------------------------
+
+Version 7.3.49 (01.05.2023)
+- CHANGED: mySQL -> mariaDB
+- FIXED: Warning hibernate dialect (server)
+- FIXED: Minutes left in round displayed (bots)
 
 Version 7.3.48 (29.04.2023)
 - FIXED: Preserved important messages from being cleaned from discord message history

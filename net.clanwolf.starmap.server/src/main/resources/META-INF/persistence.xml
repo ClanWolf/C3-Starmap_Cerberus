@@ -8,20 +8,15 @@
 
 		<properties>
 			<property name="packagesToScan" value="net.clanwolf.starmap.server.persistence.pojos" />
-			<property name="jakarta.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
-			<property name="jakarta.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/C3?useUnicode=yes&amp;characterEncoding=UTF-8&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Berlin&amp;useSSL=false" />
+			<property name="jakarta.persistence.jdbc.driver" value="org.mariadb.jdbc.Driver" />
+			<property name="jakarta.persistence.jdbc.url" value="jdbc:mariadb://localhost:3306/C3?useUnicode=yes&amp;characterEncoding=UTF-8&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Berlin&amp;useSSL=false" />
 
 			<property name="current_session_context_class" value="thread" />
-
-			<!-- Connection release fix (?) -->
-			<!-- https://docs.jboss.org/hibernate/stable/orm/userguide/html_single/Hibernate_User_Guide.html -->
-			<!-- <property name="hibernate.connection.release_mode" value="after_transaction" /> DEPRECATED WARNING -->
 			<property name="hibernate.connection.handling_mode" value="DELAYED_ACQUISITION_AND_RELEASE_AFTER_TRANSACTION" />
 			<property name="hibernate.dialect" value="org.hibernate.dialect.MariaDBDialect" />
 
 			<!-- Hikari connection pool -->
-			<!-- property name="hibernate.hikari.dataSource.url" value="jdbc:mysql://localhost:3306/C3?useUnicode=yes&amp;characterEncoding=UTF-8" /-->
-			<property name="hibernate.hikari.dataSource.url" value="jdbc:mysql://localhost:3306/C3?useUnicode=yes&amp;characterEncoding=UTF-8&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Berlin&amp;useSSL=false" />
+			<property name="hibernate.hikari.dataSource.url" value="jdbc:mariadb://localhost:3306/C3?useUnicode=yes&amp;characterEncoding=UTF-8&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Berlin&amp;useSSL=false" />
 			<property name="hibernate.hikari.dataSource.user" value="C3_Workbench" />
 			<property name="hibernate.hikari.dataSource.cachePrepStmts" value="true" />
 			<property name="hibernate.hikari.dataSource.prepStmtCacheSize" value="250" />

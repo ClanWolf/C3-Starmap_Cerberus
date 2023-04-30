@@ -7,8 +7,7 @@ module net.clanwolf.starmap.bots {
 	requires transitive org.slf4j;
 	requires transitive org.slf4j.jul;
 	requires com.github.theholywaffle.teamspeak3;
-	//	requires org.mariadb.jdbc;
-	requires mysql.connector.j;
+	requires org.mariadb.jdbc;
 	requires net.dv8tion.jda;
 	requires guava;
 	requires java.desktop;

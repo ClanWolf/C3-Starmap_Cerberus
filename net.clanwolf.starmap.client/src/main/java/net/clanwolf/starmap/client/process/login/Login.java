@@ -37,18 +37,20 @@ import io.nadron.client.event.impl.StartEventHandler;
 import io.nadron.client.protocol.impl.NettyObjectProtocol;
 import io.nadron.client.util.LoginHelper;
 import io.nadron.client.util.LoginHelper.LoginBuilder;
-import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionManager;
-import net.clanwolf.starmap.client.util.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.network.EventCommunications;
+import net.clanwolf.starmap.client.util.C3PROPS;
+import net.clanwolf.starmap.client.util.C3Properties;
+import net.clanwolf.starmap.client.util.Encryptor;
+import net.clanwolf.starmap.client.util.Tools;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.invoke.MethodHandles;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author Meldric
@@ -124,10 +126,10 @@ public class Login {
 		}
 
 		logger.info("Used username: " + used_username + " (enable output in source to debug credentials).");
-//		logger.info("Used password: " + password);
-//		logger.info("Used (encrypted) password: " + used_password);
-//		logger.info("PW1: " + Encryptor.getPasswordFromPair("first", used_password));
-//		logger.info("PW2: " + Encryptor.getPasswordFromPair("second", used_password));
+		//		logger.info("Used password: " + password);
+		//		logger.info("Used (encrypted) password: " + used_password);
+		//		logger.info("PW1: " + Encryptor.getPasswordFromPair("first", used_password));
+		//		logger.info("PW2: " + Encryptor.getPasswordFromPair("second", used_password));
 
 		/*
 		 * BEGIN Server Login
@@ -136,7 +138,7 @@ public class Login {
 		int tcpPort = Integer.parseInt(C3Properties.getProperty(C3PROPS.TCP_PORT));
 
 		LoginBuilder builder;
-		if(Nexus.isDevelopmentPC()){
+		if (Nexus.isDevelopmentPC()) {
 			builder = new LoginHelper.LoginBuilder().username(used_username).password(used_password).connectionKey("C3GameRoomForNettyClient").nadronTcpHostName("localhost").tcpPort(18090);
 		} else {
 			// neu: 82.165.244.122 (alt: 217.160.60.129)
@@ -187,14 +189,14 @@ public class Login {
 		AbstractSessionEventHandler handler = new AbstractSessionEventHandler(session) {
 			@Override
 			public void onDataIn(Event event) {
-				logger.info("OnDataIn source: " + ((GameState)event.getSource()).getModeString());
+				logger.info("OnDataIn source: " + ((GameState) event.getSource()).getModeString());
 				EventCommunications.onDataIn(session, event);
 			}
 
 			@Override
 			public void onNetworkMessage(NetworkEvent networkEvent) {
 				super.onNetworkMessage(networkEvent);
-//				logger.info("Event: " + networkEvent.getType() + ". Source: " + ((GameState)networkEvent.getSource()).getModeString());
+				//				logger.info("Event: " + networkEvent.getType() + ". Source: " + ((GameState)networkEvent.getSource()).getModeString());
 			}
 
 			@Override
@@ -288,9 +290,9 @@ public class Login {
 		Login.password = password;
 		Login.passwordEncrypted = passwordEncrypted;
 
-//		logger.info("username: " + username);
-//		logger.info("password: " + password);
-//		logger.info("encrypted:" + passwordEncrypted);
+		//		logger.info("username: " + username);
+		//		logger.info("password: " + password);
+		//		logger.info("encrypted:" + passwordEncrypted);
 
 		savePassword(registerMode);
 		doLogin(registerMode);

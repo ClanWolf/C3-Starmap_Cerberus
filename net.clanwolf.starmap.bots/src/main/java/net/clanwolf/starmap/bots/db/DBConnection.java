@@ -26,8 +26,9 @@
  */
 package net.clanwolf.starmap.bots.db;
 
-import com.mysql.cj.jdbc.MysqlDataSource;
+//import com.mysql.cj.jdbc.MysqlDataSource;
 import net.clanwolf.starmap.bots.ircclient.IRCBot;
+import org.mariadb.jdbc.MariaDbDataSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,12 +67,10 @@ public class DBConnection {
 
 		try {
 			Context context = new InitialContext();
-			MysqlDataSource dataSource = new MysqlDataSource();
+			MariaDbDataSource dataSource = new MariaDbDataSource();
 			dataSource.setUser(auth.getProperty("user"));
 			dataSource.setPassword(auth.getProperty("password"));
-			dataSource.setServerName("localhost");
-			dataSource.setDatabaseName("C3");
-			dataSource.setServerTimezone("CET");
+			dataSource.setUrl("jdbc:mariadb://localhost/C3?useUnicode=yes&amp;characterEncoding=UTF-8&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Berlin&amp;useSSL=false");
 
 			conn = dataSource.getConnection();
 		} catch (NamingException | SQLException e) {

@@ -26,7 +26,7 @@
 
 		<!-- C3 Revision -->
 		<!-- https://stackoverflow.com/questions/10582054/maven-project-version-inheritance-do-i-have-to-specify-the-parent-version -->
-		<revision>7.3.48</revision>
+		<revision>7.3.49</revision>
 
 		<!-- Versions -->
 		<version.java>20</version.java>
@@ -42,7 +42,6 @@
 		<version.byte-buddy>1.14.2</version.byte-buddy>
 		<version.collections-generic>4.01</version.collections-generic>
 		<version.discord-api>5.0.0-beta.7</version.discord-api>
-		<!-- <version.discord-webhooks>0.8.2</version.discord-webhooks>-->
 		<version.dom4j>2.1.4</version.dom4j>
 		<version.el-api>5.0.1</version.el-api>
 		<version.gifencoder>0.10.1</version.gifencoder>
@@ -65,10 +64,9 @@
 		<version.jetbrains-annotations>24.0.1</version.jetbrains-annotations>
 		<version.jetlang>0.2.23</version.jetlang>
 		<version.jnativehook>2.2.2</version.jnativehook>
-		<version.mariadb-connector></version.mariadb-connector>
+		<version.mariadb-connector>3.1.3</version.mariadb-connector>
 		<version.mchange-commons-java>0.2.20</version.mchange-commons-java>
 		<version.msgpack>0.6.12</version.msgpack> <!-- 0.9.3 -->
-		<version.mysql>8.0.32</version.mysql>
 		<version.netty>4.1.90.Final</version.netty>
 		<version.persistence-api>3.1.0</version.persistence-api>
 		<version.pircbotx>2.2</version.pircbotx>
