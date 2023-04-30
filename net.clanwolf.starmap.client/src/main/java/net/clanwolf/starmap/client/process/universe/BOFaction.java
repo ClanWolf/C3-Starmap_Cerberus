@@ -69,7 +69,7 @@ public class BOFaction implements Comparable<BOFaction> {
 		int i = 0;
 		for (BOStarSystem ss : Nexus.getBoUniverse().starSystemBOs.values()) {
 			if (ss.getFactionId() == Nexus.getCurrentChar().getFactionId().longValue()) {
-				if (ss.isCurrentlyAttacked()) {
+				if (ss.isAttackedThisOrNextRound()) {
 					i++;
 				}
 			}
@@ -137,13 +137,13 @@ public class BOFaction implements Comparable<BOFaction> {
 			if (ss.getFactionId() == Nexus.getCurrentChar().getFactionId().longValue()) {
 				switch (ss.getLevel().intValue()) {
 					case 1 -> { // Regular world
-						if (ss.isCurrentlyAttacked()) cost = cost + Constants.REGULAR_SYSTEM_DEFEND_COST;
+						if (ss.isAttackedThisOrNextRound()) cost = cost + Constants.REGULAR_SYSTEM_DEFEND_COST;
 					}
 					case 2 -> { // Industrial world
-						if (ss.isCurrentlyAttacked()) cost = cost + Constants.INDUSTRIAL_SYSTEM_DEFEND_COST;
+						if (ss.isAttackedThisOrNextRound()) cost = cost + Constants.INDUSTRIAL_SYSTEM_DEFEND_COST;
 					}
 					case 3 -> { // Captial world
-						if (ss.isCurrentlyAttacked()) cost = cost + Constants.CAPITAL_SYSTEM_DEFEND_COST;
+						if (ss.isAttackedThisOrNextRound()) cost = cost + Constants.CAPITAL_SYSTEM_DEFEND_COST;
 					}
 				}
 			}

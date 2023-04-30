@@ -29,6 +29,7 @@ package net.clanwolf.starmap.bots.discordclient;
 import net.clanwolf.starmap.bots.db.DBConnection;
 import net.clanwolf.starmap.bots.util.CheckShutdownFlagTimerTask;
 import net.clanwolf.starmap.logging.C3LogUtil;
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Message;
@@ -39,6 +40,7 @@ import net.dv8tion.jda.api.requests.GatewayIntent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -48,13 +50,14 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.List;
 import java.util.*;
 
 public class DiscordBot extends ListenerAdapter {
 	private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	private static final String serverBaseDir = new File("/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/server").getAbsolutePath();
-	private static String token = "";
-	static JDA jda = null;
+	public static JDA jda = null;
+	private static boolean testEmbed = false;
 
 	public DiscordBot() {
 		prepareLogging();
@@ -72,7 +75,7 @@ public class DiscordBot extends ListenerAdapter {
 			ioe.printStackTrace();
 		}
 
-		token = auth.getProperty("discordbottoken");
+		String token = auth.getProperty("discordbottoken");
 		jda = JDABuilder.createLight(token, EnumSet.noneOf(GatewayIntent.class)).addEventListeners(this).build();
 
 		Timer checkShutdownFlag = new Timer();
@@ -118,76 +121,139 @@ public class DiscordBot extends ListenerAdapter {
 	}
 
 	static void sendMessage(TextChannel ch, String msg) {
-		ch.sendMessage(msg).queue();
+		ch.sendMessage(msg).complete();
+	}
+
+	static void sendMessageEmbed(TextChannel ch, String msg) {
+
+		// https://gist.github.com/zekroTJA/c8ed671204dafbbdf89c36fc3a1827e1
+
+		EmbedBuilder embed = new EmbedBuilder();
+		embed.setTitle("This is a tilte", null);
+		embed.setDescription("This is a description");
+
+		embed.addField("Phrase", "Stuff", true);
+		embed.addField("Phrase", "Stuff", true);
+		embed.addField("Phrase", "Stuff", true);
+
+		embed.addField("Field 1", "Your text here: [link123](https://www.clanwolf.net)", false);
+		embed.addField("Field 2", "Your text here: [link123](https://www.clanwolf.net)", false);
+
+		embed.setColor(Color.RED);
+
+		embed.setImage("https://www.clanwolf.net/apps/C3/static/planets/039.png");
+		embed.setThumbnail("https://www.clanwolf.net/apps/C3/static/logos/factions/FRR.png");
+
+		embed.setFooter("Bot created by person");
+		ch.sendMessageEmbeds(embed.build()).queue();
+		embed.clear();
 	}
 
 	public static void sendMessageToChannel(String message) {
 		List<TextChannel> channels = jda.getTextChannelsByName("c3-ulric", true);
 		LocalDateTime date = LocalDate.now().atStartOfDay();
 		LocalDateTime date2 = LocalDateTime.now();
-		Instant threshhold = Instant.ofEpochSecond(date.minusDays(3).toEpochSecond(ZoneOffset.UTC));
-		Instant threshholdRoundAnnouncement = Instant.ofEpochSecond(date2.minusMinutes(20).toEpochSecond(ZoneOffset.UTC));
+
+		Instant threshhold = Instant.ofEpochSecond(date2.minusMinutes(1).toEpochSecond(ZoneOffset.UTC));
+		Instant threshhold2 = Instant.ofEpochSecond(date.minusDays(4).toEpochSecond(ZoneOffset.UTC));
 
 		for (TextChannel ch : channels) {
+			if (testEmbed) {
+				sendMessageEmbed(ch, "test");
+				testEmbed = false;
+			}
+
+			sendMessage(ch, message);
+
 			MessageHistory history = MessageHistory.getHistoryFromBeginning(ch).complete();
 			List<Message> mess = history.getRetrievedHistory();
 			logger.info("Found " + mess.size() + " messages.");
+
+			LinkedList<Message> messagesRoundAnnouncement = new LinkedList<>();
+			LinkedList<Message> messagesServerStartedAnnouncement = new LinkedList<>();
+			LinkedList<Message> messagesServerOnlineSinceAnnouncement = new LinkedList<>();
+			LinkedList<Message> messagesServerGoesDownAnnouncement = new LinkedList<>();
+			LinkedList<Message> messagesRoundFinalizedAnnouncement = new LinkedList<>();
+
 			for (Message m : mess) {
-				//logger.info(m.getContentDisplay());
 				Instant time = m.getTimeCreated().toInstant();
+
+//				// Delete test embed messages with this information
+//				logger.info("-------- Message -> (" + m.getId() + "): " + m.getContentDisplay());
+//				if (m.getId().equals("1101922616480108586")
+//						|| m.getId().equals("1101902861283098695")
+//						|| m.getId().equals("1101922633655795762")
+//						|| m.getId().equals("1101925636051845130")
+//				) {
+//					m.delete().complete();
+//				}
+
 				if (time.isBefore(threshhold)) {
-					// logger.info("Found message to be deleted.");
 					if ("Ulric".equals(m.getAuthor().getName())) {
-						// logger.info("Author is Ulric, delete.");
-						m.delete().queue();
-					}
-				} else if (time.isBefore(threshholdRoundAnnouncement)) {
-					if ("Ulric".equals(m.getAuthor().getName())) {
-						if ((m.getContentDisplay().startsWith("Runde ") && m.getContentDisplay().contains("offene Kämpfe:") && m.getContentDisplay().contains("Stunden in Runde"))
-								|| (m.getContentDisplay().startsWith("Round ") && m.getContentDisplay().contains("open fights:") && m.getContentDisplay().contains("hours left in round"))) {
-							m.delete().queue();
+						if ((m.getContentDisplay().contains("Runde ") && m.getContentDisplay().contains("Offene Kämpfe:") && m.getContentDisplay().contains("Stunden und") && m.getContentDisplay().contains("Minuten in Runde"))
+								|| (m.getContentDisplay().contains("Round ") && m.getContentDisplay().contains("Open fights:") && m.getContentDisplay().contains("hours and") && m.getContentDisplay().contains("minutes left in round"))) {
+							messagesRoundAnnouncement.push(m);
 						}
-						if ((m.getContentDisplay().startsWith("C3-Server-") && m.getContentDisplay().contains("ist gestartet und bereit.") && m.getContentDisplay().contains("Download:"))
-								|| (m.getContentDisplay().startsWith("C3-Server-") && m.getContentDisplay().contains("is up and ready.") && m.getContentDisplay().contains("Download:"))) {
-							m.delete().queue();
+						if ((m.getContentDisplay().contains("C3-Server-") && m.getContentDisplay().contains("ist gestartet und bereit.") && m.getContentDisplay().contains("Download:")) || (m.getContentDisplay().contains("C3-Server-") && m.getContentDisplay().contains("is up and ready.") && m.getContentDisplay().contains("Download:"))) {
+							messagesServerStartedAnnouncement.push(m);
 						}
-						if ((m.getContentDisplay().equals("Server fährt herunter (Flag).")
-								|| m.getContentDisplay().equals("Server is going down (flag)."))) {
-							m.delete().queue();
+						if ((m.getContentDisplay().contains("Runde beendet.") || m.getContentDisplay().contains("Round finalized."))) {
+							messagesRoundFinalizedAnnouncement.push(m);
 						}
-						if ((m.getContentDisplay().equals("Runde beendet.")
-								|| m.getContentDisplay().equals("Round finalized."))) {
-							m.delete().queue();
+						if ((m.getContentDisplay().contains("Server ist online seit") || m.getContentDisplay().contains("Server is up since"))) {
+							messagesServerOnlineSinceAnnouncement.push(m);
 						}
-						if ((m.getContentDisplay().equals("Server ist online seit")
-								|| m.getContentDisplay().equals("Server is up since"))) {
-							m.delete().queue();
+						if ((m.getContentDisplay().contains("Server fährt herunter") || m.getContentDisplay().contains("Server is going down"))) {
+							messagesServerGoesDownAnnouncement.push(m);
 						}
 					}
 				}
 			}
 
-			// Webhook test to use a SIMPLE link (text separated from url), does not work.
-			//			if (message.contains("https://")) {
-			//				WebhookClientBuilder clientBuilder = new WebhookClientBuilder(token);
-			//				clientBuilder.setThreadFactory((job) -> {
-			//					Thread thread = new Thread(job);
-			//					thread.setName("Hello");
-			//					thread.setDaemon(true);
-			//					return thread;
-			//				});
-			//				clientBuilder.setWait(true);
-			//				WebhookClient webhookClient = clientBuilder.build();
-			//
-			//				WebhookMessageBuilder messageBuilder = new WebhookMessageBuilder();
-			//				messageBuilder.setContent(message);
-			//				WebhookMessage webhookMessage = messageBuilder.build();
-			//				webhookClient.send(webhookMessage);
-			//
-			//				webhookClient.close();
-			//			} else {
-			sendMessage(ch, message);
-			//			}
+			if (messagesRoundAnnouncement.size() > 1) {
+				messagesRoundAnnouncement.removeLast();                   // remove the first (latest) entry of that type
+				for (Message m : messagesRoundAnnouncement) {             // delete all the others
+					m.delete().complete();
+				}
+			}
+			if (messagesServerStartedAnnouncement.size() > 1) {
+				messagesServerStartedAnnouncement.removeLast();           // remove the first (latest) entry of that type
+				for (Message m : messagesServerStartedAnnouncement) {     // delete all the others
+					m.delete().complete();
+				}
+			}
+			if (messagesServerOnlineSinceAnnouncement.size() > 1) {
+				messagesServerOnlineSinceAnnouncement.removeLast();       // remove the first (latest) entry of that type
+				for (Message m : messagesServerOnlineSinceAnnouncement) { // delete all the others
+					m.delete().complete();
+				}
+			}
+			if (messagesRoundFinalizedAnnouncement.size() > 1) {
+				messagesRoundFinalizedAnnouncement.removeLast();          // remove the first (latest) entry of that type
+				for (Message m : messagesRoundFinalizedAnnouncement) {    // delete all the others
+					m.delete().complete();
+				}
+			}
+			if (messagesServerGoesDownAnnouncement.size() > 1) {
+				messagesServerGoesDownAnnouncement.removeLast();          // remove the first (latest) entry of that type
+				for (Message m : messagesServerGoesDownAnnouncement) {    // delete all the others
+					m.delete().complete();
+				}
+			}
+
+			// ----------------------------------------
+
+			MessageHistory history2 = MessageHistory.getHistoryFromBeginning(ch).complete();
+			List<Message> mess2 = history2.getRetrievedHistory();
+
+			for (Message m : mess2) {
+				Instant time = m.getTimeCreated().toInstant();
+				if (time.isBefore(threshhold2)) {
+					if ("Ulric".equals(m.getAuthor().getName())) {
+						m.delete().complete();
+					}
+				}
+			}
 		}
 	}
 
@@ -205,7 +271,7 @@ public class DiscordBot extends ListenerAdapter {
 	//	}
 
 	public static void main(String[] args) {
-		Locale.setDefault(new Locale("en", "EN"));
+		Locale.setDefault(new Locale.Builder().setLanguage("en").setScript("Latn").setRegion("US").build());
 		DiscordBot bot = new DiscordBot();
 	}
 }

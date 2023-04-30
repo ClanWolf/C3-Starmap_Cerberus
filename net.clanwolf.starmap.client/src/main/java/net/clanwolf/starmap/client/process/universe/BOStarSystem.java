@@ -321,7 +321,33 @@ public class BOStarSystem {
 	}
 
 	@SuppressWarnings("unused")
-	public boolean isCurrentlyAttacked() {
+	public boolean isAttackedNextRound() {
+		boolean hasAttack = false;
+		for (BOAttack a : Nexus.getBoUniverse().attackBOsOpenInThisRound.values()) {
+			if (a.getStarSystemId().equals(this.hh_starSystemDataDTO.getStarSystemID().getId())) {
+				if (!a.getRound().equals(Nexus.getCurrentRound())) {
+					hasAttack = true;
+				}
+			}
+		}
+		return hasAttack;
+	}
+
+	@SuppressWarnings("unused")
+	public boolean isAttackedThisRound() {
+		boolean hasAttack = false;
+		for (BOAttack a : Nexus.getBoUniverse().attackBOsOpenInThisRound.values()) {
+			if (a.getStarSystemId().equals(this.hh_starSystemDataDTO.getStarSystemID().getId())) {
+				if (a.getRound().equals(Nexus.getCurrentRound())) {
+					hasAttack = true;
+				}
+			}
+		}
+		return hasAttack;
+	}
+
+	@SuppressWarnings("unused")
+	public boolean isAttackedThisOrNextRound() {
 		boolean hasAttack = false;
 		for (BOAttack a : Nexus.getBoUniverse().attackBOsOpenInThisRound.values()) {
 			if (a.getStarSystemId().equals(this.hh_starSystemDataDTO.getStarSystemID().getId())) {

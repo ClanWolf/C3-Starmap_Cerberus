@@ -71,13 +71,13 @@ public class CheckShutdownFlagTimerTask extends TimerTask {
 //			cleanupFlagFiles();
 
 			if(!GameServer.isDevelopmentPC) {
-				ServerNexus.getEci().sendExtCom("Server is going down (flag).", "en",true, true, true);
-				ServerNexus.getEci().sendExtCom("Server fährt herunter (Flag).", "de",true, true, true);
+				ServerNexus.getEci().sendExtCom("Server is going down.", "en",true, true, true);
+				ServerNexus.getEci().sendExtCom("Server fährt herunter.", "de",true, true, true);
 
 				logger.info("Sending info mail.");
 				String[] receivers = { "keshik@googlegroups.com" };
 				boolean sent = false;
-				sent = MailManager.sendMail("c3@clanwolf.net", receivers, "C3 Server goes down (flag)", "C3 Server is shutting down...", false);
+				sent = MailManager.sendMail("c3@clanwolf.net", receivers, "C3 Server goes down", "C3 Server is shutting down...", false);
 				if (sent) {
 					// sent
 					logger.info("Mail sent. [6]");

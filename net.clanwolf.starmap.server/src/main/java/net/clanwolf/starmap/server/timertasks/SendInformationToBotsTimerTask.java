@@ -59,12 +59,17 @@ public class SendInformationToBotsTimerTask extends TimerTask {
 		long dms = d.getTime();
 		long nowms = now.getTime();
 		long roundage = nowms - dms;
+		long roundAgeMinutes = ((roundage / 1000) / 60);
 		long roundAgeHours = (((roundage / 1000) / 60) / 60);
 		long finalHoursLeft = 84 - roundAgeHours;
+		long finalMinutesLeft = ((((84 - finalHoursLeft) * 60) - roundAgeMinutes));
 
 		ArrayList<AttackPOJO> allAttacksForRound = AttackDAO.getInstance().getOpenAttacksOfASeasonForRound(seasonId, roundId.intValue());
+		ArrayList<AttackPOJO> allAttacksForNextRound = AttackDAO.getInstance().getOpenAttacksOfASeasonForRound(seasonId, roundId.intValue() + 1);
+
 		StringBuilder fs_de = new StringBuilder();
 		StringBuilder fs_en = new StringBuilder();
+
 		int co = 0;
 		for (AttackPOJO a : allAttacksForRound) {
 			String forumLink = a.getForumThreadLink();
@@ -74,18 +79,34 @@ public class SendInformationToBotsTimerTask extends TimerTask {
 			FactionPOJO defender = FactionDAO.getInstance().findById(ServerNexus.DUMMY_USERID, a.getFactionID_Defender());
 			FactionPOJO attacker = FactionDAO.getInstance().findById(ServerNexus.DUMMY_USERID, js.getJumpshipFactionID());
 
-			fs_de.append("- ").append(ss.getName()).append(" (").append(defender.getShortName()).append(") wird von ").append(attacker.getShortName()).append(" angegriffen (<" + forumLink + ">)\r\n");
-			fs_en.append("- ").append(ss.getName()).append(" (").append(defender.getShortName()).append(") is attacked by ").append(attacker.getShortName()).append(" (<" + forumLink + ">)\r\n");
+			fs_de.append("- ").append(ss.getName()).append(" (").append(defender.getShortName()).append(") wird von ").append(attacker.getShortName()).append(" angegriffen (<").append(forumLink).append(">)\r\n");
+			fs_en.append("- ").append(ss.getName()).append(" (").append(defender.getShortName()).append(") is attacked by ").append(attacker.getShortName()).append(" (<").append(forumLink).append(">)\r\n");
 			co++;
 		}
 		if (co == 0) {
 			fs_de.append("- keine ...\r\n");
 			fs_en.append("- none ...\r\n");
 		}
-		fs_de.append("Noch ").append(finalHoursLeft).append(" Stunden in Runde ").append(roundId).append(" der Season ").append(seasonId).append(".\r\n");
-		fs_en.append(finalHoursLeft).append(" hours left in round ").append(roundId).append(" of season ").append(seasonId).append(".\r\n");
+		fs_de.append("\r\nNoch ").append(finalHoursLeft).append(" Stunden und ").append(finalMinutesLeft).append(" Minuten in Runde ").append(roundId).append(" der Season ").append(seasonId).append(".\r\n");
+		fs_en.append("\r\n").append(finalHoursLeft).append(" hours and ").append(finalMinutesLeft).append(" minutes left in round ").append(roundId).append(" of season ").append(seasonId).append(".\r\n");
 
-		ServerNexus.getEci().sendExtCom("Round " + roundId + ",\r\n" + "open fights:\r\n" + fs_en, "en", true, true, true);
-		ServerNexus.getEci().sendExtCom("Runde " + roundId + ",\r\n" + "offene Kämpfe:\r\n" + fs_de, "de", true, true, true);
+		if (allAttacksForNextRound.size() > 0) {
+			int nextRound = roundId.intValue() + 1;
+			fs_de.append("\r\nAngriffe in der nächsten Runde (").append(nextRound).append("): \r\n");
+			fs_en.append("\r\nAttacks in the next round (").append(nextRound).append("): \r\n");
+			for (AttackPOJO a : allAttacksForNextRound) {
+				String forumLink = a.getForumThreadLink();
+				StarSystemDataPOJO ssd = StarSystemDataDAO.getInstance().findById(ServerNexus.DUMMY_USERID, a.getStarSystemDataID());
+				StarSystemPOJO ss = StarSystemDAO.getInstance().findById(ServerNexus.DUMMY_USERID, a.getStarSystemID());
+				JumpshipPOJO js = JumpshipDAO.getInstance().findById(ServerNexus.DUMMY_USERID, a.getJumpshipID());
+				FactionPOJO defender = FactionDAO.getInstance().findById(ServerNexus.DUMMY_USERID, a.getFactionID_Defender());
+				FactionPOJO attacker = FactionDAO.getInstance().findById(ServerNexus.DUMMY_USERID, js.getJumpshipFactionID());
+
+				fs_de.append("- ").append(ss.getName()).append(" (").append(defender.getShortName()).append(") wird von ").append(attacker.getShortName()).append(" angegriffen (<").append(forumLink).append(">)\r\n");
+				fs_en.append("- ").append(ss.getName()).append(" (").append(defender.getShortName()).append(") is attacked by ").append(attacker.getShortName()).append(" (<").append(forumLink).append(">)\r\n");
+			}
+		}
+		ServerNexus.getEci().sendExtCom("Round " + roundId + "\r\n" + "Open fights:\r\n" + fs_en, "en", true, true, true);
+		ServerNexus.getEci().sendExtCom("Runde " + roundId + "\r\n" + "Offene Kämpfe:\r\n" + fs_de, "de", true, true, true);
 	}
 }

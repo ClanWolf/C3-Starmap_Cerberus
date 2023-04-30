@@ -730,7 +730,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 				}
 				break;
 			case UPDATE_USERS_FOR_ATTACK:
-				// Check why waiting does not disappear
+				// Check why waiting icon does not disappear after confirming result
 				statusUpdate();
 				break;
 			case ROLEPLAY_NEXT_STEP_CHANGE_PANE:

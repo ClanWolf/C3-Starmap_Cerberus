@@ -405,7 +405,7 @@ public class NodeGestures {
 					marker.setFitWidth(markerDim);
 					marker.setFitHeight(markerDim);
 
-					if (clickedStarSystem.isCurrentlyAttacked()) {
+					if (clickedStarSystem.isAttackedThisOrNextRound()) {
 						// This system is under attack
 						marker.setImage(attackMarker);
 					} else {

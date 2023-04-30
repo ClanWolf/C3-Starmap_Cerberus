@@ -473,8 +473,8 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 							String planet = starSystem.getName();
 							JumpshipPOJO jumpship = daoJJ.findById(getC3UserID(session), jpWinner.getJumpshipFactionID());
 							FactionPOJO winnerFaction = daoFaction.findById(getC3UserID(session), jumpship.getJumpshipFactionID());
-							ServerNexus.getEci().sendExtCom("The fight for " + planet + " has been decided. " + winnerFaction.getShortName() + " conquered the system!", "en", true, true, true);
-							ServerNexus.getEci().sendExtCom("Der Kampf um " + planet + " wurde entschieden. " + winnerFaction.getShortName() + " hat das System erobert!", "de", true, true, true);
+							ServerNexus.getEci().sendExtCom("Invasion of " + planet + " has been decided. " + winnerFaction.getShortName() + " conquered the system!", "en", true, true, true);
+							ServerNexus.getEci().sendExtCom("Angriff auf " + planet + " wurde entschieden. " + winnerFaction.getShortName() + " hat das System erobert!", "de", true, true, true);
 
 							unitXP = Constants.JUMPSHIP_XP_ATTACK_VICTORY;
 
@@ -485,8 +485,8 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 							String planet = starSystem.getName();
 							FactionPOJO winnerFaction = daoFaction.findById(getC3UserID(session), attack.getFactionID_Defender());
-							ServerNexus.getEci().sendExtCom("The invasion of " + planet + " has ended. " + winnerFaction.getShortName() + " has defended their world!", "en", true, true, true);
-							ServerNexus.getEci().sendExtCom("Der Kampf um " + planet + " ist vorbei. " + winnerFaction.getShortName() + " hat die Welt verteidigt!", "de", true, true, true);
+							ServerNexus.getEci().sendExtCom("Invasion of " + planet + " has been decided. " + winnerFaction.getShortName() + " has defended the system!", "en", true, true, true);
+							ServerNexus.getEci().sendExtCom("Angriff auf " + planet + " wurde entschieden. " + winnerFaction.getShortName() + " hat das System verteidigt!", "de", true, true, true);
 
 							unitXP = Constants.JUMPSHIP_XP_ATTACK_DEFEAT;
 						}
@@ -591,8 +591,12 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 							ServerNexus.getEci().sendExtCom("Attack on " + starSystem.getName() + " is rolling", "en", true, true, true);
 							ServerNexus.getEci().sendExtCom("Angriff auf " + starSystem.getName() + " läuft", "de", true, true, true);
 						} else {
-							ServerNexus.getEci().sendExtCom("Attack on " + starSystem.getName() + " is rolling (" + attack.getScoreAttackerVictories() + " : " + attack.getScoreDefenderVictories() + ")", "en", true, true, true);
-							ServerNexus.getEci().sendExtCom("Angriff auf " + starSystem.getName() + " läuft (" + attack.getScoreAttackerVictories() + " : " + attack.getScoreDefenderVictories() + ")", "de", true, true, true);
+							JumpshipPOJO js = JumpshipDAO.getInstance().findById(getC3UserID(session), attack.getJumpshipID());
+							FactionPOJO attackerFaction = FactionDAO.getInstance().findById(getC3UserID(session), attack.getJumpshipID());
+							FactionPOJO defenderFaction = FactionDAO.getInstance().findById(getC3UserID(session), starSystem.getFactionID());
+
+							ServerNexus.getEci().sendExtCom("Attack on " + starSystem.getName() + " is rolling (" + attackerFaction.getShortName() + " " + attack.getScoreAttackerVictories() + " : " + attack.getScoreDefenderVictories() + " " + defenderFaction.getShortName() + ")", "en", true, true, true);
+							ServerNexus.getEci().sendExtCom("Angriff auf " + starSystem.getName() + " läuft (" +  attackerFaction.getShortName() + " " + attack.getScoreAttackerVictories() + " : " + attack.getScoreDefenderVictories() + " " + defenderFaction.getShortName() + ")", "de", true, true, true);
 						}
 					} else {
 						ServerNexus.getEci().sendExtCom("Attack on " + starSystem.getName() + " is missing one of the dropleaders. Waiting...", "en", true, true, true);

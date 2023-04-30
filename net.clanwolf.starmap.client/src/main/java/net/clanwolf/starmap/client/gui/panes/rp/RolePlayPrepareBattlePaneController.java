@@ -487,6 +487,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 			}
 		}
 
+		// Check lobby conditions
 		if (lvDropleadAttacker.getItems().size() == 1
 				&& lvDropleadDefender.getItems().size() == 1
 				&& !"...".equals(lvDropleadAttacker.getItems().get(0).getName())

@@ -37,6 +37,12 @@ TODO:
 - Video does not show sometimes
 ----------------------------------------------------------------
 
+Version 7.3.48 (29.04.2023)
+- FIXED: Preserved important messages from being cleaned from discord message history
+- FIXED: Only one of each message stays on in discord
+- FIXED: Realtime score display (if clicked on a system with an ongoing invasion) issues
+- FIXED: Display of system info panel on attacked systems
+
 Version 7.3.40 (25.04.2023)
 - ADDED: Faction key for change requests
 - FIXED: Admin Dialog save

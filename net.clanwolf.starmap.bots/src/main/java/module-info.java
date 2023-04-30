@@ -11,4 +11,5 @@ module net.clanwolf.starmap.bots {
 	requires mysql.connector.j;
 	requires net.dv8tion.jda;
 	requires guava;
+	requires java.desktop;
 }

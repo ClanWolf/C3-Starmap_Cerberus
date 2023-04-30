@@ -43,7 +43,7 @@ import java.util.TimerTask;
  */
 public class ExtcomDiscordTimerTask extends TimerTask {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-	private static DiscordBot bot = null;
+	public static DiscordBot bot = null;
 
 	public ExtcomDiscordTimerTask() {
 	}
@@ -75,7 +75,7 @@ public class ExtcomDiscordTimerTask extends TimerTask {
 				}
 			}
 		} catch (Exception e) {
-			logger.error("Exception in IRCBot message pickup", e);
+			logger.error("Exception in Discord bot message pickup", e);
 		}
 	}
 }

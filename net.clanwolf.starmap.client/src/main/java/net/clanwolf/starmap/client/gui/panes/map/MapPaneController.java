@@ -35,7 +35,6 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -77,7 +76,6 @@ import net.clanwolf.starmap.client.util.Tools;
 import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
-import net.clanwolf.starmap.transfer.enums.MEDALS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.transfer.dtos.*;
@@ -2152,7 +2150,10 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 			case SHOW_SYSTEM_DETAIL:
 				if (o.getObject() instanceof BOStarSystem ss) {
-					showSystemDetail(ss);
+					if (!ss.isAttackedThisRound()) {
+						showSystemDetail(ss);
+						hideAttackDetail();
+					}
 				} else {
 					hideSystemDetail();
 					hideAttackDetail();

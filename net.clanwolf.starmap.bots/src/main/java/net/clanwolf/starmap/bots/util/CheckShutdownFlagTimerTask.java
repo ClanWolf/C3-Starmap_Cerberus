@@ -70,7 +70,7 @@ public class CheckShutdownFlagTimerTask extends TimerTask {
 //			logger.info("Sending info mail.");
 			String[] receivers = { "keshik@googlegroups.com" };
 			boolean sent = false;
-			sent = MailManager.sendMail("c3@clanwolf.net", receivers, botName + " goes down after flag request", botName + " is shutting down...", false);
+			sent = MailManager.sendMail("c3@clanwolf.net", receivers, botName + " goes down", botName + " is shutting down...", false);
 			if (sent) {
 				// sent
 				logger.info("Mail sent. [1]");
