@@ -325,7 +325,10 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 				try {
 					Media video = BORolePlayStory.getRPG_Videofile(rpStory);
 					if (video != null) {
+						logger.info("Found video for playback!");
+
 						MediaPlayer mp = new MediaPlayer(video);
+						mp.setOnError(()-> logger.error("Media error: " + mp.getError().toString()));
 
 						backgroundMediaView.setMediaPlayer(mp);
 						backgroundMediaView.setFitHeight(video.getHeight());

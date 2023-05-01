@@ -462,7 +462,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 					if(rpPojo.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1) {
 
-						JumpshipPOJO jpWinner = JumpshipDAO.getInstance().findById(getC3UserID(session),attack.getJumpshipID());
+						JumpshipPOJO jpWinner = JumpshipDAO.getInstance().findById(getC3UserID(session), attack.getJumpshipID());
 						long unitXP = 0;
 
 						if (rpPojo.getAttackerWins()) {
@@ -471,8 +471,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 							attack.setScoreAttackerVictories(3L);
 
 							String planet = starSystem.getName();
-							JumpshipPOJO jumpship = daoJJ.findById(getC3UserID(session), jpWinner.getJumpshipFactionID());
-							FactionPOJO winnerFaction = daoFaction.findById(getC3UserID(session), jumpship.getJumpshipFactionID());
+							FactionPOJO winnerFaction = daoFaction.findById(getC3UserID(session), jpWinner.getJumpshipFactionID());
 							ServerNexus.getEci().sendExtCom("Invasion of " + planet + " has been decided. " + winnerFaction.getShortName() + " conquered the system!", "en", true, true, true);
 							ServerNexus.getEci().sendExtCom("Angriff auf " + planet + " wurde entschieden. " + winnerFaction.getShortName() + " hat das System erobert!", "de", true, true, true);
 

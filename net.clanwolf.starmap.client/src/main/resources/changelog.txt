@@ -35,6 +35,11 @@ TODO:
 - Video does not show sometimes
 ----------------------------------------------------------------
 
+Version 7.3.50 (01.05.2023)
+- ADDED: Addition log information to pin down video problem on Win7
+- FIXED: NPE in saveAttack
+- FIXED: Wrong db connect string for forum entries
+
 Version 7.3.49 (01.05.2023)
 - CHANGED: mySQL -> mariaDB
 - FIXED: Warning hibernate dialect (server)
