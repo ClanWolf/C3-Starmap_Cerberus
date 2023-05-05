@@ -106,16 +106,17 @@ public class AdminPaneController {
 	private boolean mailOk = true;
 	private boolean mwoUsernameOk = true;
 	@FXML
-	Label lCurrentBalance, lblFactionKey;
+	Label lCurrentBalance, lblFactionKey, lblFactionKeyLead;
 
 	@FXML
 	TableView<FinancesInfo> tableFinances;
 	private String originalUsername = "";
 	private String originalMail = "";
 	@FXML
-	TextField tfName, tfPassword, tfPasswordConfirm, tfMail, tfMWOUser, tfFactionKey;
+	TextField tfName, tfPassword, tfPasswordConfirm, tfMail, tfMWOUser, tfFactionKey, tfFactionKeyLead;
 	private String originalMWOUser = "";
 	private boolean factionkeyOk = false;
+	
 
 	@FXML
 	public void showPWButtonClick() {
@@ -202,37 +203,18 @@ public class AdminPaneController {
 			}
 		}
 
-
-
-
-
-
-
-
-		// TODO_C3: Enable save for anyone if it works ok!
-		if (Security.hasPrivilege(PRIVILEGES.ADMIN_IS_GOD_ADMIN)) {
-			GameState saveUsersState = new GameState();
-			saveUsersState.setMode(GAMESTATEMODES.PRIVILEGE_SAVE);
-			saveUsersState.addObject(usersToSave);
-			if (cbRequestFactionChange.isSelected()) {
-				saveUsersState.addObject2(cbRequestedFaction.getSelectionModel().getSelectedItem().getFactionDTO().getId()); // BO Faction
-				saveUsersState.addObject3(tfFactionKey.getText());
-			}
-
-			//logger.info("NOONE may actually save for now!");
-			Nexus.fireNetworkEvent(saveUsersState);
-		} else {
-			logger.info("Only admins may actually save for now!");
+		GameState saveUsersState = new GameState();
+		saveUsersState.setMode(GAMESTATEMODES.PRIVILEGE_SAVE);
+		saveUsersState.addObject(usersToSave);
+		if (cbRequestFactionChange.isSelected()) {
+			saveUsersState.addObject2(cbRequestedFaction.getSelectionModel().getSelectedItem().getFactionDTO().getId()); // BO Faction
+			saveUsersState.addObject3(tfFactionKey.getText());
 		}
+
+		//logger.info("NOONE may actually save for now!");
+		Nexus.fireNetworkEvent(saveUsersState);
+
 		currentUserWasChanged = false;
-
-
-
-
-
-
-
-
 
 		Stage stage = (Stage) btnSave.getScene().getWindow();
 		stage.close();

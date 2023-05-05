@@ -32,6 +32,7 @@ import io.nadron.client.event.Events;
 import io.nadron.client.event.NetworkEvent;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionManager;
+import net.clanwolf.starmap.client.action.StatusTextEntryActionObject;
 import net.clanwolf.starmap.client.enums.C3MESSAGES;
 import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
 import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
@@ -509,6 +510,19 @@ public class EventCommunications {
 						logger.info("onDataIn: LOGOFF_AFTER_DOUBLE_LOGIN: Logout wegen Doppellogin");
 						Logout.doLogout(true);
 					}
+					break;
+				case CLIENT_LOGOUT_AFTER_FACTION_CHANGE:
+					logger.info("onDataIn: CLIENT_LOGOUT_AFTER_FACTION_CHANGE: Logout wegen Fraktionswechsel");
+					Logout.doLogout(false);
+
+					ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute();
+					ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("faction_change_logout_message"), false));
+					C3Message message = new C3Message(C3MESSAGES.WARNING_CLIENT_LOGOUT_AFTER_FACTION_CHANGE);
+					message.setType(C3MESSAGETYPES.CLOSE);
+					message.setText(Internationalization.getString("faction_change_logout_message"));
+					//C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
+					ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
+
 					break;
 				case ROLEPLAY_SAVE_STORY:
 					if (state.isAction_successfully() == null) {

@@ -33,6 +33,8 @@ public enum GAMESTATEMODES {
 	NO_MODE,                                    /* Default mode */
 	CLIENT_READY_FOR_EVENTS,
 
+	CLIENT_LOGOUT_AFTER_FACTION_CHANGE,
+
 	ERROR_MESSAGE,                              /* Send a error message string (Object: String with the error message) */
 
 	USER_LOG_OUT,                               /* UserDTO logout */

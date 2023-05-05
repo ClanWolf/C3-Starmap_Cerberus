@@ -751,7 +751,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		}
 	}
 
-	private synchronized void saveChanges(PlayerSession session, GameState state) {
+	private synchronized void saveUserChanges(PlayerSession session, GameState state) {
 		UserDAO dao = UserDAO.getInstance();
 		RolePlayCharacterDAO rpDAO = RolePlayCharacterDAO.getInstance();
 		FactionDAO factionDAO = FactionDAO.getInstance();
@@ -772,15 +772,18 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				FactionPOJO newFaction = factionDAO.findById(getC3UserID(session), factionId);
 				JumpshipPOJO js = jsDAO.getJumpshipsForFaction(factionId).get(0);
 
-				if (givenFactionKey != null && newFaction.getFactionKey().equals(givenFactionKey)) {
+				if (newFaction.getFactionKey() != null && givenFactionKey != null && newFaction.getFactionKey().equals(givenFactionKey)) {
 					// Change faction for all chars of that user
 					ArrayList<RolePlayCharacterPOJO> charList = rpDAO.getCharactersOfUser(userRequestingFactionChange);
 					for (RolePlayCharacterPOJO ch : charList) {
 						ch.setFactionId(newFaction.getId().intValue());
 						ch.setFactionTypeId(newFaction.getFactionTypeID().intValue());
 						ch.setJumpshipId(js.getId().intValue());
-						//					rpDAO.update(getC3UserID(session), ch);
+						//TODO: Test
+						rpDAO.update(getC3UserID(session), ch);
+
 					}
+					response = new GameState(GAMESTATEMODES.CLIENT_LOGOUT_AFTER_FACTION_CHANGE);
 				} else {
 					logger.info("No characters have changed factions, faction key wrong or missing!");
 				}
@@ -797,8 +800,9 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			}
 			EntityManagerHelper.commit(getC3UserID(session));
 
-			response.addObject(null);
 			response.setAction_successfully(Boolean.TRUE);
+			C3GameSessionHandler.sendNetworkEvent(session, response);
+
 		} catch (RuntimeException re) {
 			logger.error("Privilege save", re);
 			re.printStackTrace();
@@ -1064,7 +1068,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				saveUser(session, state);
 				break;
 			case PRIVILEGE_SAVE:
-				saveChanges(session, state);
+				saveUserChanges(session, state);
 				break;
 			case JUMPSHIP_SAVE:
 				saveJumpship(session, state);

@@ -250,7 +250,7 @@ public class C3GameSessionHandlerRoleplay {
 			RolePlayStoryPOJO newStep = dao.getChapterFromStoryBySortOrder(story, sortOrder);
 			rpChar.setStory(newStep);
 
-			//TODO_C3: Save RolePlayCharacterPOJO
+			// Save RolePlayCharacterPOJO
 
 			EntityManagerHelper.beginTransaction(C3GameSessionHandler.getC3UserID(session));
 			daoRPC.update(C3GameSessionHandler.getC3UserID(session), rpChar);
