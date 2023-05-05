@@ -35,6 +35,8 @@ import org.hibernate.annotations.FetchMode;
 import jakarta.persistence.*;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,6 +112,9 @@ public class AttackPOJO extends Pojo {
 
 	@Column(name = "ForumThreadId")
 	private Long forumThreadId;
+
+	@Column(name = "Updated")
+	private Timestamp updated;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.MERGE, targetEntity = AttackVarsPOJO.class)
 	@JoinColumn(name = "AttackID")
@@ -349,5 +354,15 @@ public class AttackPOJO extends Pojo {
 	@SuppressWarnings("unused")
 	public void setScoreDefenderVictories(Long scoreDefenderVictories) {
 		this.scoreDefenderVictories = scoreDefenderVictories;
+	}
+
+	@SuppressWarnings("unused")
+	public Timestamp getUpdated() {
+		return updated;
+	}
+
+	@SuppressWarnings("unused")
+	public void setUpdated(Timestamp updated) {
+		this.updated = updated;
 	}
 }

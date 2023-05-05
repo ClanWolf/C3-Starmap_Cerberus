@@ -93,9 +93,10 @@ public class AdminPaneController {
 	ImageView btShowPassword, btShowPasswordConfirm;
 	private ObservableList<FinancesInfo> financesInfos = FXCollections.observableArrayList();
 	Image eye, eyeClosed;
+
 	// User Edit Tab
 	@FXML
-	Label lblName, lblPassword, lblPasswordConfirm, lblMail, lblMWOUser, lblPasswordConfirmClear, lblPasswordClear;
+	Label lblName, lblPassword, lblPasswordConfirm, lblMail, lblMWOUser, lblPasswordConfirmClear, lblPasswordClear, lblFacktionKeyHint;
 	//	private HashMap<String, BOFaction> originalFaction = new HashMap<>();
 	private HashMap<String, Integer> originalActivatedStatus = new HashMap<>();
 	private boolean currentUserWasChanged = false;
@@ -150,12 +151,14 @@ public class AdminPaneController {
 			lblFactionKey.setDisable(false);
 			tfFactionKey.setDisable(false);
 			lblFactionKey.setDisable(false);
+			lblFacktionKeyHint.setDisable(false);
 		} else {
 			cbRequestedFaction.setDisable(true);
 			cbRequestedFaction.getSelectionModel().clearSelection();
 			lblFactionKey.setDisable(true);
 			tfFactionKey.setDisable(true);
 			lblFactionKey.setDisable(true);
+			lblFacktionKeyHint.setDisable(true);
 		}
 	}
 
@@ -439,6 +442,7 @@ public class AdminPaneController {
 		lblMail.setText(Internationalization.getString("AdminUserLabelMail"));
 		lblMWOUser.setText(Internationalization.getString("AdminUserLabelMWOUser"));
 		lblFactionKey.setText(Internationalization.getString("AdminUserLabelFactionKey"));
+		lblFacktionKeyHint.setText(Internationalization.getString("AdminUserLabelFactionKeyHint"));
 
 		cbRequestFactionChange.setText(Internationalization.getString("AdminUserRequestFactionChange"));
 
@@ -654,6 +658,7 @@ public class AdminPaneController {
 		cbRequestedFaction.getSelectionModel().clearSelection();
 		tfFactionKey.setDisable(true);
 		lblFactionKey.setDisable(true);
+		lblFacktionKeyHint.setDisable(true);
 		tfFactionKey.setText("");
 
 		tabUser.setDisable(false);

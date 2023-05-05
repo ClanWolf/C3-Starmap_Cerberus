@@ -409,15 +409,18 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			AttackPOJO existingAttack = null;
 			AttackPOJO attack = (AttackPOJO) state.getObject();
 
+			StarSystemDataPOJO starsystemData = StarSystemDataDAO.getInstance().findById(getC3UserID(session), attack.getStarSystemDataID());
+			StarSystemPOJO starSystem = StarSystemDAO.getInstance().findById(getC3UserID(session), attack.getStarSystemID());
+			starsystemData.setLockedUntilRound(attack.getRound() + Constants.ROUNDS_TO_LOCK_SYSTEM_AFTER_ATTACK);
+			daoSS.update(getC3UserID(session), starsystemData);
+
+			FactionPOJO originalFaction = starsystemData.getFactionID();
+
 			logger.info("Saving attack: " + attack);
 			logger.info("-- Attacker (jumpshipID): " + attack.getJumpshipID());
 			logger.info("-- Attacking from: " + attack.getAttackedFromStarSystemID());
-			logger.info("-- Attacked system: " + attack.getStarSystemID());
-
-			StarSystemDataPOJO s = StarSystemDataDAO.getInstance().findById(getC3UserID(session), attack.getStarSystemDataID());
-			StarSystemPOJO starSystem = StarSystemDAO.getInstance().findById(getC3UserID(session), attack.getStarSystemID());
-			s.setLockedUntilRound(attack.getRound() + Constants.ROUNDS_TO_LOCK_SYSTEM_AFTER_ATTACK);
-			daoSS.update(getC3UserID(session), s);
+			logger.info("-- Attacked system: " + attack.getStarSystemID() + " / " + starSystem.getName());
+			logger.info("-- System used to belong to: " + originalFaction.getShortName());
 
 			Long acpId = -1L;
 			if (state.getObject3() != null) {
@@ -591,11 +594,10 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 							ServerNexus.getEci().sendExtCom("Angriff auf " + starSystem.getName() + " läuft", "de", true, true, true);
 						} else {
 							JumpshipPOJO js = JumpshipDAO.getInstance().findById(getC3UserID(session), attack.getJumpshipID());
-							FactionPOJO attackerFaction = FactionDAO.getInstance().findById(getC3UserID(session), attack.getJumpshipID());
-							FactionPOJO defenderFaction = FactionDAO.getInstance().findById(getC3UserID(session), starSystem.getFactionID());
+							FactionPOJO attackerFaction = FactionDAO.getInstance().findById(getC3UserID(session), js.getJumpshipFactionID());
 
-							ServerNexus.getEci().sendExtCom("Attack on " + starSystem.getName() + " is rolling (" + attackerFaction.getShortName() + " " + attack.getScoreAttackerVictories() + " : " + attack.getScoreDefenderVictories() + " " + defenderFaction.getShortName() + ")", "en", true, true, true);
-							ServerNexus.getEci().sendExtCom("Angriff auf " + starSystem.getName() + " läuft (" +  attackerFaction.getShortName() + " " + attack.getScoreAttackerVictories() + " : " + attack.getScoreDefenderVictories() + " " + defenderFaction.getShortName() + ")", "de", true, true, true);
+							ServerNexus.getEci().sendExtCom("Attack on " + starSystem.getName() + " is rolling (" + attackerFaction.getShortName() + " " + attack.getScoreAttackerVictories() + " : " + attack.getScoreDefenderVictories() + " " + originalFaction.getShortName() + ")", "en", true, true, true);
+							ServerNexus.getEci().sendExtCom("Angriff auf " + starSystem.getName() + " läuft (" +  attackerFaction.getShortName() + " " + attack.getScoreAttackerVictories() + " : " + attack.getScoreDefenderVictories() + " " + originalFaction.getShortName() + ")", "de", true, true, true);
 						}
 					} else {
 						ServerNexus.getEci().sendExtCom("Attack on " + starSystem.getName() + " is missing one of the dropleaders. Waiting...", "en", true, true, true);

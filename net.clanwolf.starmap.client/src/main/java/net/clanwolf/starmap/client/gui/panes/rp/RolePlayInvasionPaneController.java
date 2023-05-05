@@ -244,7 +244,23 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 		Platform.runLater(() -> {
 			BOAttack att = Nexus.getCurrentAttackOfUser();
 			if (att == null) {
-				att = Nexus.getFinishedAttackInThisRoundForUser();
+				att = Nexus.getLatestFinishedAttackInThisRoundForUser();
+//				ArrayList<BOAttack> attackBOs = Nexus.getFinishedAttacksInThisRoundForUser();
+//				if (attackBOs.size() > 1) {
+//					logger.info("ATTENTION: User has multiple attacks finished in this current round!");
+//					BOAttack latestAttack = null;
+//					for (BOAttack a : attackBOs) {
+//						if (latestAttack == null) {
+//							latestAttack = a;
+//						}
+//						if (a.getAttackDTO().getUpdated().getTime() > latestAttack.getAttackDTO().getUpdated().getTime()) {
+//							latestAttack = a;
+//						}
+//					}
+//					att = latestAttack;
+//				} else if (attackBOs.size() == 1) {
+//					att = attackBOs.get(0);
+//				}
 			}
 
 			if (att != null && att.getStoryId() != null) {

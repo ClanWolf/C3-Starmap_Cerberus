@@ -360,7 +360,23 @@ public class EventCommunications {
 							ActionManager.getAction(ACTIONS.ROLEPLAY_NEXT_STEP_CHANGE_PANE).execute(state.getObject());
 							BOAttack a = Nexus.getCurrentAttackOfUser();
 							if (a == null) {
-								a = Nexus.getFinishedAttackInThisRoundForUser();
+								a = Nexus.getLatestFinishedAttackInThisRoundForUser();
+//								ArrayList<BOAttack> attackBOs = Nexus.getFinishedAttacksInThisRoundForUser();
+//								if (attackBOs.size() > 1) {
+//									logger.info("ATTENTION: User has multiple attacks finished in this current round!");
+//									BOAttack latestAttack = null;
+//									for (BOAttack at : attackBOs) {
+//										if (latestAttack == null) {
+//											latestAttack = at;
+//										}
+//										if (at.getAttackDTO().getUpdated().getTime() > latestAttack.getAttackDTO().getUpdated().getTime()) {
+//											latestAttack = at;
+//										}
+//									}
+//									a = latestAttack;
+//								} else if (attackBOs.size() == 1) {
+//									a = attackBOs.get(0);
+//								}
 							}
 							if (a != null) {
 								Nexus.setStoryBeforeSaving(a.getStoryId().longValue());

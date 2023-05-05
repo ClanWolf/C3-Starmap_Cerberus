@@ -163,6 +163,7 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 								// in the last, it should be enabled for everyone... so everyone can decide for themselves
 								// to leave the current invasion.
 								if ((getCurrentRP().getAttackerWins() != null && getCurrentRP().getAttackerWins()) || (getCurrentRP().getDefenderWins() != null && getCurrentRP().getDefenderWins())) {
+									logger.info("Enabling the 'Next'-Button on current RP pane!");
 									btPreview.setDisable(false);
 								}
 							}

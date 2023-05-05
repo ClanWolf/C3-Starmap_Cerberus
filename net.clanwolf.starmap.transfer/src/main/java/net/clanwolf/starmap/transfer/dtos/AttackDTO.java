@@ -28,6 +28,8 @@ package net.clanwolf.starmap.transfer.dtos;
 
 import net.clanwolf.starmap.transfer.Dto;
 
+import java.sql.Date;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,6 +56,7 @@ public class AttackDTO extends Dto {
 	private String remarks;
 	private String forumThreadLink;
 	private Long forumThreadId;
+	private Timestamp updated;
 	private List<AttackVarsDTO> attackVarList = new ArrayList<>();
 	private List<AttackCharacterDTO> attackCharList;
 
@@ -286,6 +289,16 @@ public class AttackDTO extends Dto {
 	@SuppressWarnings("unused")
 	public void setAttackCostDefender(Long attackCostDefender) {
 		this.attackCostDefender = attackCostDefender;
+	}
+
+	@SuppressWarnings("unused")
+	public Timestamp getUpdated() {
+		return updated;
+	}
+
+	@SuppressWarnings("unused")
+	public void setUpdated(Timestamp updated) {
+		this.updated = updated;
 	}
 
 	public AttackDTO() {

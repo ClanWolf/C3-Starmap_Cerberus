@@ -46,7 +46,11 @@ import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
 import net.clanwolf.starmap.transfer.dtos.RolePlayStoryDTO;
 
 import java.lang.invoke.MethodHandles;
+import java.lang.reflect.Array;
 import java.net.URL;
+import java.sql.Date;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 /**
@@ -131,7 +135,23 @@ public abstract class AbstractC3RolePlayController implements Initializable, Act
 		} else {
 			BOAttack bo = Nexus.getCurrentAttackOfUser();
 			if (bo == null) {
-				bo = Nexus.getFinishedAttackInThisRoundForUser();
+				bo = Nexus.getLatestFinishedAttackInThisRoundForUser();
+//				ArrayList<BOAttack> attackBOs = Nexus.getFinishedAttacksInThisRoundForUser();
+//				if (attackBOs.size() > 1) {
+//					logger.info("ATTENTION: User has multiple attacks finished in this current round!");
+//					BOAttack latestAttack = null;
+//					for (BOAttack a : attackBOs) {
+//						if (latestAttack == null) {
+//							latestAttack = a;
+//						}
+//						if (a.getAttackDTO().getUpdated().getTime() > latestAttack.getAttackDTO().getUpdated().getTime()) {
+//							latestAttack = a;
+//						}
+//					}
+//					bo = latestAttack;
+//				} else if (attackBOs.size() == 1) {
+//					bo = attackBOs.get(0);
+//				}
 			}
 			if (bo != null) {
 				if (Nexus.getBoUniverse().getAttackStoriesByID(Long.valueOf(bo.getStoryId())) == null) {

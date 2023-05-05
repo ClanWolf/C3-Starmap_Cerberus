@@ -35,6 +35,10 @@ TODO:
 - Video does not show sometimes
 ----------------------------------------------------------------
 
+Version 7.3.52 (02.05.2023)
+- FIXED: Fought attacks in current round for a user can be more than one. Changed several functions to reflect that
+- FIXED: Wrong faction id used for discord info on current score
+
 Version 7.3.50 (01.05.2023)
 - ADDED: Addition log information to pin down video problem on Win7
 - FIXED: NPE in saveAttack

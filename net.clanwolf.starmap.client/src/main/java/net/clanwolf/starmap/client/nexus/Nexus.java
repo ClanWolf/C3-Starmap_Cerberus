@@ -72,7 +72,7 @@ public class Nexus {
 	private static boolean loggedIn = false;
 
 	private static BOAttack currentAttackOfUser;
-	private static BOAttack finishedAttackOfUser;
+	private static ArrayList<BOAttack> finishedAttacksOfUser;
 	private static ArrayList<UserDTO> userList;
 	private static ArrayList<UserDTO> currentlyOnlineUserList;
 	private static HashMap<Long, RolePlayCharacterDTO> characterList;
@@ -379,23 +379,25 @@ public class Nexus {
 	}
 
 	@SuppressWarnings("unused")
-	public static boolean userHasFinishedAttackInCurrentRound() {
-		boolean userHasFinishedAttack = false;
+	public static void userHasFinishedAttacksInCurrentRound() {
+		finishedAttacksOfUser.clear();
+
 		if (Nexus.getBoUniverse() != null) {
 			for (BOAttack a : Nexus.getBoUniverse().attackBOsFinishedInThisRound.values()) {
 				if (a.getAttackCharList() != null) {
 					for (AttackCharacterDTO ac : a.getAttackCharList()) {
 						if (ac.getCharacterID().equals(Nexus.getCurrentUser().getCurrentCharacter().getId())) {
-							// The user currently logged in has joined an attack that was not resolved yet
-							userHasFinishedAttack = true;
-							finishedAttackOfUser = a;
+							// The user currently logged in was part of an attck that is resolved
+							finishedAttacksOfUser.add(a);
 							break;
 						}
 					}
 				}
 			}
+			if (finishedAttacksOfUser.size() > 1) {
+				logger.info("ATTENTION: User has multiple attacks finished in this current round!");
+			}
 		}
-		return userHasFinishedAttack;
 	}
 
 	@SuppressWarnings("unused")
@@ -407,11 +409,32 @@ public class Nexus {
 	}
 
 	@SuppressWarnings("unused")
-	public static BOAttack getFinishedAttackInThisRoundForUser() {
-		if (finishedAttackOfUser == null) {
-			userHasFinishedAttackInCurrentRound(); // to set currentAttack to user
+	public static ArrayList<BOAttack> getFinishedAttacksInThisRoundForUser() {
+		if (finishedAttacksOfUser == null) {
+			userHasFinishedAttacksInCurrentRound(); // to set currentAttack to user
 		}
-		return finishedAttackOfUser;
+		return finishedAttacksOfUser;
+	}
+
+	@SuppressWarnings("unused")
+	public static BOAttack getLatestFinishedAttackInThisRoundForUser() {
+		BOAttack latestAttack = null;
+		ArrayList<BOAttack> attackBOs = getFinishedAttacksInThisRoundForUser();
+		if (attackBOs.size() > 1) {
+			logger.info("ATTENTION: User has multiple attacks finished in this current round!");
+
+			for (BOAttack a : attackBOs) {
+				if (latestAttack == null) {
+					latestAttack = a;
+				}
+				if (a.getAttackDTO().getUpdated().getTime() > latestAttack.getAttackDTO().getUpdated().getTime()) {
+					latestAttack = a;
+				}
+			}
+		} else if (attackBOs.size() == 1) {
+			latestAttack = attackBOs.get(0);
+		}
+		return latestAttack;
 	}
 
 	public static AttackDTO getCurrentOpenAttackForUser(UserDTO user) {

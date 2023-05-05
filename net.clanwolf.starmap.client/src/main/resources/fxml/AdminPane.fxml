@@ -45,6 +45,7 @@
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                 </rowConstraints>
                                  <children>
                                     <Label fx:id="lblName" text="Name:">
@@ -120,6 +121,7 @@
                                           <TextField fx:id="tfFactionKey" HBox.hgrow="ALWAYS" />
                                        </children>
                                     </HBox>
+                                    <Label fx:id="lblFacktionKeyHint" alignment="TOP_RIGHT" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" prefHeight="4.0" text="(Get it from the factions leader)" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="7" />
                                  </children>
                               </GridPane>
                            </children></AnchorPane>
@@ -173,14 +175,8 @@
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <children>
-                                    <Label fx:id="lblName11" text="Charaktername:" />
-                                    <Label fx:id="lblPassword11" text="Passwort:" GridPane.rowIndex="1" />
-                                    <Label fx:id="lblPasswordConfirm11" text="Passwort (Confirm):" GridPane.rowIndex="2" />
-                                    <Label fx:id="lblMail11" text="Email-Adresse:" GridPane.rowIndex="3" />
-                                    <TextField fx:id="tfName11" GridPane.columnIndex="1" />
-                                    <TextField fx:id="tfMail11" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                    <PasswordField fx:id="tfPassword11" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                                    <PasswordField fx:id="tfPasswordConfirm11" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                    <Label fx:id="lblFactionKey" text="Faction key:" />
+                                    <TextField fx:id="tfFactionKey" GridPane.columnIndex="1" />
                                  </children>
                               </GridPane>
                            </children>
