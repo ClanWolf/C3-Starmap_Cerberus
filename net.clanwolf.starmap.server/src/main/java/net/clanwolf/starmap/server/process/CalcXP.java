@@ -27,6 +27,7 @@
 package net.clanwolf.starmap.server.process;
 
 import com.google.gson.Gson;
+import net.clanwolf.starmap.exceptions.MechItemIdNotFoundException;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.C3GameConfigDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.FactionDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.RolePlayCharacterDAO;
@@ -38,10 +39,14 @@ import net.clanwolf.starmap.server.persistence.pojos.StatsMwoPOJO;
 import net.clanwolf.starmap.server.reporting.GenerateRoundReport;
 import net.clanwolf.starmap.server.servernexus.ServerNexus;
 import net.clanwolf.starmap.transfer.mwo.MWOMatchResult;
+import net.clanwolf.starmap.transfer.mwo.MechIdInfo;
 import net.clanwolf.starmap.transfer.mwo.UserDetail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.xml.sax.SAXException;
 
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 
@@ -62,9 +67,9 @@ public class CalcXP {
     private UserDetail userDetail;
     private MWOMatchResult matchResult;
     private Long userXPBeforeCalc;
+    private Long userXPControllingMech;
     private Long userXPCurrent = 0L;
     private RolePlayCharacterPOJO currentCharacter;
-
     /**
      * Berechnet die XP der jeweiligen Spieler
      *
@@ -84,7 +89,7 @@ public class CalcXP {
         FactionPOJO factionDefender = FactionDAO.getInstance().findById(ServerNexus.DUMMY_USERID, attackStats.getDefenderFactionId());
 
         //Werte für die Berchnung der XP vorher von der DB laden
-        Long xpRewardInvasionInvolvement = C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_INVASION_INVOLVEMENT").getValue();
+        Long xpRewardInvasionInvolvement = C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_INVASION_INVOLVEMENT").getValue(), mechControlling;
 
         logger.info("--- Calculate the XP [" + factionAttacker.getShortName() + "] versus [" + factionDefender.getShortName() + "] (MatchID: " + mwoMatchID + " )---");
 
@@ -139,6 +144,25 @@ public class CalcXP {
                                 //XP Invasion involvement
                                 currentUserXP = currentUserXP + xpRewardInvasionInvolvement;
 
+                                //XP controlling a Mech
+                                mechControlling = C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_MECH_CONTROLLING_UNKNOWN").getValue();
+                                try {
+                                    MechIdInfo mechIdInfo = new MechIdInfo(userDetail.getMechItemID());
+                                    switch (mechIdInfo.getMechClass()) {
+                                        case LIGHT ->
+                                                mechControlling = C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_MECH_CONTROLLING_LIGHT").getValue();
+                                        case MEDIUM ->
+                                                mechControlling = C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_MECH_CONTROLLING_MEDIUM").getValue();
+                                        case HEAVY ->
+                                                mechControlling = C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_MECH_CONTROLLING_HEAVY").getValue();
+                                        case ASSAULT ->
+                                                mechControlling = C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_MECH_CONTROLLING_ASSAULT").getValue();
+                                    }
+                                } catch (MechItemIdNotFoundException ignored) {
+
+                                }
+                                currentUserXP = currentUserXP + mechControlling;
+
                                 if (currentCharacter.getXp() != null) {
                                     // ****************************************************************************************
                                     // Klasse nur für Testzwecke eingebaut
@@ -174,6 +198,53 @@ public class CalcXP {
         this.currentCharacter = currentCharacter;
     }
 
+    public Long getUserXPControllingMech() {
+        userXPControllingMech = C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_MECH_CONTROLLING_UNKNOWN").getValue();
+        try {
+            MechIdInfo mechIdInfo = new MechIdInfo(userDetail.getMechItemID());
+            switch (mechIdInfo.getMechClass()) {
+                case LIGHT ->
+                        userXPControllingMech = C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_MECH_CONTROLLING_LIGHT").getValue();
+                case MEDIUM ->
+                        userXPControllingMech = C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_MECH_CONTROLLING_MEDIUM").getValue();
+                case HEAVY ->
+                        userXPControllingMech = C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_MECH_CONTROLLING_HEAVY").getValue();
+                case ASSAULT ->
+                        userXPControllingMech = C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_MECH_CONTROLLING_ASSAULT").getValue();
+            }
+        } catch (MechItemIdNotFoundException | ParserConfigurationException | IOException | SAXException ignored) {
+
+        }
+        return userXPControllingMech;
+    }
+
+    public String getDescriptionMechControl() throws ParserConfigurationException, IOException, SAXException {
+
+        String description = "";
+        try {
+            MechIdInfo mechIdInfo = new MechIdInfo(userDetail.getMechItemID());
+            switch (mechIdInfo.getMechClass()) {
+                case LIGHT ->
+                        description = C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_MECH_CONTROLLING_LIGHT").getValue().toString() + " XP\r\n(" +
+                                mechIdInfo.getMechClass().toString() + ")";
+                case MEDIUM ->
+                        description = C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_MECH_CONTROLLING_MEDIUM").getValue().toString() + " XP\r\n(" +
+                                mechIdInfo.getMechClass().toString() + ")";
+                case HEAVY ->
+                        description = C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_MECH_CONTROLLING_HEAVY").getValue().toString() + " XP\r\n(" +
+                                mechIdInfo.getMechClass().toString() + ")";
+                case ASSAULT ->
+                        description = C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_MECH_CONTROLLING_ASSAULT").getValue().toString() + " XP\r\n(" +
+                                mechIdInfo.getMechClass().toString() + ")";
+            }
+
+        } catch (MechItemIdNotFoundException e) {
+            description = C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_MECH_CONTROLLING_UNKNOWN").getValue().toString() + " XP\r\n(UNKNOWN)";
+        }
+
+        return description;
+    }
+
     public Long getUserXPInvasionInvolvement() {
         userXPCurrent = userXPCurrent + C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_INVASION_INVOLVEMENT").getValue();
         return C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_XP_REWARD_INVASION_INVOLVEMENT").getValue();
@@ -192,7 +263,7 @@ public class CalcXP {
     }
 
     public Long getUserXPCurrent() {
-        return userXPCurrent;
+        return userXPCurrent + getUserXPControllingMech();
     }
 
     public Long getUserXPTotal() {

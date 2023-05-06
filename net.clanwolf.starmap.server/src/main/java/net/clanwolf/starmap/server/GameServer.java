@@ -113,6 +113,13 @@ public class GameServer {
         //XP Invasion involvement
         constantValues.put("C3_XP_REWARD_INVASION_INVOLVEMENT", 10L);
 
+        //XP Mech controlling
+        constantValues.put("C3_XP_REWARD_MECH_CONTROLLING_LIGHT", 10L);
+        constantValues.put("C3_XP_REWARD_MECH_CONTROLLING_MEDIUM", 8L);
+        constantValues.put("C3_XP_REWARD_MECH_CONTROLLING_HEAVY", 6L);
+        constantValues.put("C3_XP_REWARD_MECH_CONTROLLING_ASSAULT", 4L);
+        constantValues.put("C3_XP_REWARD_MECH_CONTROLLING_UNKNOWN", 2L);
+
         //Reward payments when calculating the cost
         constantValues.put("C3_" + "REWARD_VICTORY", REWARD_VICTORY);
         constantValues.put("C3_" + "REWARD_LOSS", REWARD_LOSS);
