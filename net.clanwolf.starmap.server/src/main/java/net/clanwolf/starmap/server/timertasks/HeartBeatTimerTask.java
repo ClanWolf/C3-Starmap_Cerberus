@@ -26,19 +26,19 @@
  */
 package net.clanwolf.starmap.server.timertasks;
 
-import net.clanwolf.starmap.server.servernexus.ServerNexus;
-import net.clanwolf.starmap.server.util.WebDataInterface;
-import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.server.GameServer;
 import net.clanwolf.starmap.server.beans.C3Room;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.RoundDAO;
 import net.clanwolf.starmap.server.persistence.pojos.RoundPOJO;
 import net.clanwolf.starmap.server.process.EndRound;
+import net.clanwolf.starmap.server.servernexus.ServerNexus;
+import net.clanwolf.starmap.server.util.WebDataInterface;
 import net.clanwolf.starmap.transfer.GameState;
+import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.util.Compressor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -60,72 +60,84 @@ import java.util.concurrent.CountDownLatch;
  * @author Meldric
  */
 public class HeartBeatTimerTask extends TimerTask {
-	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-	private volatile boolean informClients = false;
-	private String tempDir = "";
-	private volatile boolean currentlyRunning = false;
-	private volatile CountDownLatch latch;
-	private static volatile long lastReportedHour = 0;
+    private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+    private static volatile long lastReportedHour = 0;
+    private volatile boolean informClients = false;
+    private String tempDir = "";
+    private volatile boolean currentlyRunning = false;
+    private volatile CountDownLatch latch;
 
-	public HeartBeatTimerTask(boolean informClients, CountDownLatch latch) {
-		this.informClients = informClients;
-		String property = "java.io.tmpdir";
-		tempDir = System.getProperty(property);
-		this.latch = latch;
-	}
+    public HeartBeatTimerTask(boolean informClients, CountDownLatch latch) {
+        this.informClients = informClients;
+        String property = "java.io.tmpdir";
+        tempDir = System.getProperty(property);
+        this.latch = latch;
+    }
 
-	@Override
-	public synchronized void run() {
-		if (!currentlyRunning) {
-			currentlyRunning = true;
+    @Override
+    public synchronized void run() {
+        if (!currentlyRunning) {
+            currentlyRunning = true;
 
-			String heartBeatFileName;
-			if (ServerNexus.isDevelopmentPC) {
-				heartBeatFileName = tempDir + File.separator + "c3.heartbeat";
-			} else {
-				heartBeatFileName = "/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/c3.heartbeat";
-			}
+            String heartBeatFileName;
+            if (ServerNexus.isDevelopmentPC) {
+                heartBeatFileName = tempDir + File.separator + "c3.heartbeat";
+            } else {
+                heartBeatFileName = "/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/c3.heartbeat";
+            }
 
-			Calendar calendar = Calendar.getInstance();
-			java.util.Date now = calendar.getTime();
-			java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(now.getTime());
+            Calendar calendar = Calendar.getInstance();
+            java.util.Date now = calendar.getTime();
+            java.sql.Timestamp currentTimestamp = new java.sql.Timestamp(now.getTime());
 
-			try {
-				File heartbeatfile = new File(heartBeatFileName);
-				BasicFileAttributes attr = Files.readAttributes(Paths.get(heartBeatFileName), BasicFileAttributes.class);
+            try {
 
-				FileTime t = attr.lastModifiedTime();
-				Long fileTimeStamp = t.toMillis();
-				Long systemTimeStamp = System.currentTimeMillis();
-				long diff = systemTimeStamp - fileTimeStamp;
+                File heartbeatfile = new File(heartBeatFileName);
 
-				if (diff > (1000 * 60)) { // every 60 seconds there is a heartbeat
-					try (BufferedWriter br = new BufferedWriter(new FileWriter(heartbeatfile))) {
-						logger.info("Writing heartbeat ping to " + heartBeatFileName);
-						br.write("" + currentTimestamp.getTime());
-					} catch (IOException ioe) {
-						logger.error("Exception while writing heartbeat file [001].", ioe);
-					}
-				}
-			} catch (IOException e) {
-				logger.error("Exception while writing heartbeat file [002].");
-				throw new RuntimeException(e);
-			}
+                // Überprüfe, ob die Datei nicht existiert
+                if (!heartbeatfile.exists()) {
+                    // Wenn sie nicht existiert, erstelle sie
+                    if (heartbeatfile.createNewFile()) {
+						logger.info("heartbeat file created: " + heartbeatfile.getAbsolutePath());
+                    } else {
+						logger.error("The heartbeat file could not be created!");
+                    }
+                }
 
-			Long seasonId = GameServer.getCurrentSeason();
-			RoundDAO roundDAO = RoundDAO.getInstance();
-			RoundPOJO r = roundDAO.findBySeasonId(seasonId);
-			int round = r.getRound().intValue();
+                BasicFileAttributes attr = Files.readAttributes(Paths.get(heartBeatFileName), BasicFileAttributes.class);
 
-			String resultProtocol = EndRound.finalizeRound(seasonId, round);
+                FileTime t = attr.lastModifiedTime();
+                Long fileTimeStamp = t.toMillis();
+                Long systemTimeStamp = System.currentTimeMillis();
+                long diff = systemTimeStamp - fileTimeStamp;
 
-			UniverseDTO universe = WebDataInterface.initUniverse();
-			universe.lastRoundResultProtocol = resultProtocol;
+                if (diff > (1000 * 60)) { // every 60 seconds there is a heartbeat
+                    try (BufferedWriter br = new BufferedWriter(new FileWriter(heartbeatfile))) {
+                        logger.info("Writing heartbeat ping to " + heartBeatFileName);
+                        br.write("" + currentTimestamp.getTime());
+                    } catch (IOException ioe) {
+                        logger.error("Exception while writing heartbeat file [001].", ioe);
+                    }
+                }
+            } catch (IOException e) {
+                logger.error("Exception while writing heartbeat file [002].");
+                throw new RuntimeException(e);
+            }
 
-			WebDataInterface.loadFactions();
-			WebDataInterface.load_HH_StarSystemData();
-			WebDataInterface.loadAttacks(seasonId);
-			WebDataInterface.loadJumpshipsAndRoutePoints();
+            Long seasonId = GameServer.getCurrentSeason();
+            RoundDAO roundDAO = RoundDAO.getInstance();
+            RoundPOJO r = roundDAO.findBySeasonId(seasonId);
+            int round = r.getRound().intValue();
+
+            String resultProtocol = EndRound.finalizeRound(seasonId, round);
+
+            UniverseDTO universe = WebDataInterface.initUniverse();
+            universe.lastRoundResultProtocol = resultProtocol;
+
+            WebDataInterface.loadFactions();
+            WebDataInterface.load_HH_StarSystemData();
+            WebDataInterface.loadAttacks(seasonId);
+            WebDataInterface.loadJumpshipsAndRoutePoints();
 
 //			logger.info("Calling list creation methods...");
 ////			logger.info("Calling list creation (Factions)...");
@@ -141,48 +153,48 @@ public class HeartBeatTimerTask extends TimerTask {
 ////			logger.info("Calling list creation (CM_StarSystems)...");
 ////			WebDataInterface.createSystemList(SystemListTypes.CM_StarSystems);
 
-			if (informClients || ServerNexus.sendUniverseToClients) {
-				// Broadcast new version of the universe to the clients
-				logger.info("Send updated universe to all clients.");
+            if (informClients || ServerNexus.sendUniverseToClients) {
+                // Broadcast new version of the universe to the clients
+                logger.info("Send updated universe to all clients.");
 
-				GameState response = new GameState(GAMESTATEMODES.GET_UNIVERSE_DATA);
-				response.addObject(Compressor.compress(universe));
-				C3Room.sendBroadcastMessage(response);
+                GameState response = new GameState(GAMESTATEMODES.GET_UNIVERSE_DATA);
+                response.addObject(Compressor.compress(universe));
+                C3Room.sendBroadcastMessage(response);
 
-				if (ServerNexus.sendUniverseToClients) {
-					ServerNexus.sendUniverseToClients = false;
-				}
-			}
-			currentlyRunning = false;
-		}
+                if (ServerNexus.sendUniverseToClients) {
+                    ServerNexus.sendUniverseToClients = false;
+                }
+            }
+            currentlyRunning = false;
+        }
 
-		if (latch != null) {
-			latch.countDown();
-		}
+        if (latch != null) {
+            latch.countDown();
+        }
 
-		// log server uptime
-		Timestamp now = new Timestamp(System.currentTimeMillis());
-		Date firstParsedDate = new Date(now.getTime());
-		Date secondParsedDate = new Date(ServerNexus.serverStartTime.getTime());
-		long diffmilliseconds = firstParsedDate.getTime() - secondParsedDate.getTime();
-		long hours = diffmilliseconds/(1000*60*60);
-		long minutes = (diffmilliseconds-hours*1000*60*60)/(1000*60);
-		long seconds = (diffmilliseconds-hours*1000*60*60-minutes*1000*60)/10000;
-		long days = hours / 24;
-		String uptime = String.format("%02d", hours) + ":" + String.format("%02d", minutes) + ":" + String.format("%02d", seconds);
-		logger.info(uptime + " (" + days + " days)");
+        // log server uptime
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        Date firstParsedDate = new Date(now.getTime());
+        Date secondParsedDate = new Date(ServerNexus.serverStartTime.getTime());
+        long diffmilliseconds = firstParsedDate.getTime() - secondParsedDate.getTime();
+        long hours = diffmilliseconds / (1000 * 60 * 60);
+        long minutes = (diffmilliseconds - hours * 1000 * 60 * 60) / (1000 * 60);
+        long seconds = (diffmilliseconds - hours * 1000 * 60 * 60 - minutes * 1000 * 60) / 10000;
+        long days = hours / 24;
+        String uptime = String.format("%02d", hours) + ":" + String.format("%02d", minutes) + ":" + String.format("%02d", seconds);
+        logger.info(uptime + " (" + days + " days)");
 
-		// Send uptime message to bots (irc, ts3 and discord), only once an hour
-		if (hours > lastReportedHour + 23) {
-			ServerNexus.getEci().sendExtCom("Server is up since " + hours + "hours (" + days + " days).", "en",true, true, true);
-			ServerNexus.getEci().sendExtCom("Server ist online seit " + hours + " Stunden (" + days + " Tage).", "de",true, true, true);
-			lastReportedHour = hours;
-		}
+        // Send uptime message to bots (irc, ts3 and discord), only once an hour
+        if (hours > lastReportedHour + 23) {
+            ServerNexus.getEci().sendExtCom("Server is up since " + hours + "hours (" + days + " days).", "en", true, true, true);
+            ServerNexus.getEci().sendExtCom("Server ist online seit " + hours + " Stunden (" + days + " Tage).", "de", true, true, true);
+            lastReportedHour = hours;
+        }
 
-		// Broadcast heartbeat to the clients
-		logger.info("Send server heartbeat event to all clients (server is still up) (pong).");
-		GameState heartbeatState = new GameState(GAMESTATEMODES.SERVER_HEARTBEAT);
-		heartbeatState.addObject(uptime);
-		C3Room.sendBroadcastMessage(heartbeatState);
-	}
+        // Broadcast heartbeat to the clients
+        logger.info("Send server heartbeat event to all clients (server is still up) (pong).");
+        GameState heartbeatState = new GameState(GAMESTATEMODES.SERVER_HEARTBEAT);
+        heartbeatState.addObject(uptime);
+        C3Room.sendBroadcastMessage(heartbeatState);
+    }
 }
