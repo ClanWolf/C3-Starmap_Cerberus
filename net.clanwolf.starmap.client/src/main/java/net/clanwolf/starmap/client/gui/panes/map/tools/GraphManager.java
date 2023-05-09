@@ -27,10 +27,14 @@
 package net.clanwolf.starmap.client.gui.panes.map.tools;
 
 import javafx.scene.layout.Pane;
+import net.clanwolf.starmap.client.action.ACTIONS;
+import net.clanwolf.starmap.client.action.ActionManager;
+import net.clanwolf.starmap.client.action.StatusTextEntryActionObject;
 import net.clanwolf.starmap.client.gui.panes.map.Config;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.universe.BOStarSystem;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
+import net.clanwolf.starmap.client.util.Internationalization;
 import org.kynosarges.tektosyne.geometry.PointD;
 import org.kynosarges.tektosyne.geometry.PolygonGrid;
 import org.kynosarges.tektosyne.geometry.RegularPolygon;
@@ -166,30 +170,59 @@ public class GraphManager<T> implements GraphAgent<T> {
 		// future jump calculations where the ship tries to "jump around" conflict areas where it could easily just
 		// jump through... therefore, this needs to be solved by costs (see below)!
 
-		Long minJumpshipLevel = (boUniverse.getStarSystemByPoint((PointD) target)).getLevel();
+		BOStarSystem hoveredSys = boUniverse.getStarSystemByPoint((PointD) target);
+
+		Long minJumpshipLevel = hoveredSys.getLevel();
 		Long currentJumpshipLevel = boUniverse.currentlyDraggedJumpship.getLevel();
 		Long currentJumpshipFactionId = boUniverse.currentlyDraggedJumpship.getJumpshipFaction();
-		Long currentlyHoveredSystemFactionId = (boUniverse.getStarSystemByPoint((PointD) target)).getFactionId();
+		Long currentlyHoveredSystemFactionId = hoveredSys.getFactionId();
 
 		double distance = graph.getDistance(source, target) / Config.MAP_COORDINATES_MULTIPLICATOR;
 		boolean inRange = distance <= 30;
-		boolean isAttacked = (boUniverse.getStarSystemByPoint((PointD) target)).isCurrentlyUnderAttack();
-		boolean isAttackedNextRound = (boUniverse.getStarSystemByPoint((PointD) target)).isNextRoundUnderAttack();
-		boolean isActiveInPhase = (boUniverse.getStarSystemByPoint((PointD) target)).isActiveInPhase(Nexus.getCurrentSeasonMetaPhase());
-		boolean isLockedByJumpship = (boUniverse.getStarSystemByPoint((PointD) target)).isLockedByJumpship();
-		boolean isLockedByPreviousAttackCooldown = (boUniverse.getStarSystemByPoint((PointD) target)).isLockedByPreviousAttackCooldown();
+		boolean isAttacked = hoveredSys.isCurrentlyUnderAttack();
+		boolean isAttackedNextRound = hoveredSys.isNextRoundUnderAttack();
+		boolean isActiveInPhase = hoveredSys.isActiveInPhase(Nexus.getCurrentSeasonMetaPhase());
+		boolean isLockedByJumpship = hoveredSys.isLockedByJumpship();
+		boolean isLockedByPreviousAttackCooldown = hoveredSys.isLockedByPreviousAttackCooldown();
 		boolean isLevelAllowed = (minJumpshipLevel <= currentJumpshipLevel) || currentJumpshipFactionId.equals(currentlyHoveredSystemFactionId);
-		boolean r = inRange && isActiveInPhase && !isAttacked && !isAttackedNextRound && !isLockedByJumpship && !isLockedByPreviousAttackCooldown && isLevelAllowed;
 		// boolean withinCosts = nodeCosts.get(target) < maxCost;
 
-		// if (!r) {
-		// logger.info("In range: " + inRange + " / " + "Active in phase: " + isActiveInPhase + " / " + "Attacked: " + isAttacked + " / " + "Attacked next round: " + isAttackedNextRound + " / " + "Locked by jumpship: " + isLockedByJumpship + " / " + "Locked by previous attack: " + isLockedByPreviousAttackCooldown + " / " + "Level allowed: " + isLevelAllowed);
-		// }
+		boolean r = inRange && isActiveInPhase && !isAttacked && !isAttackedNextRound && !isLockedByJumpship && !isLockedByPreviousAttackCooldown && isLevelAllowed;
+
+		if (!r) {
+			logger.info(hoveredSys.getName() + " is in range: " + inRange
+				+ " / Active (phase): " + isActiveInPhase
+				+ " / Attacked THIS round: " + isAttacked
+				+ " / Attacked next round: " + isAttackedNextRound
+				+ " / Locked by jumpship: " + isLockedByJumpship
+				+ " / Locked by cooldown: " + isLockedByPreviousAttackCooldown
+				+ " / Level allowed: " + isLevelAllowed);
+		}
 
 		//		BOStarSystem ssSource = boUniverse.getStarSystemByPoint((PointD) source);
 		//		BOStarSystem ssTarget = boUniverse.getStarSystemByPoint((PointD) target);
 		//		logger.info("Start: " + ssSource.getName() + " | Target: " + ssTarget.getName() + " (Distance: " + distance + ")");
 		//		logger.info("minJumpshipLevel: " + minJumpshipLevel + " currentJumpshipLevel: " + currentJumpshipLevel);
+
+		if (isLockedByJumpship) {
+			hoveredSys.setBlockReason(1);
+			StatusTextEntryActionObject seo = new StatusTextEntryActionObject(Internationalization.getString("starmap.systeminfo_cannotbeattacked_jumpshiplock"), true);
+			seo.setFlash(true);
+			ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(seo);
+		} else if (isLockedByPreviousAttackCooldown) {
+			hoveredSys.setBlockReason(2);
+			StatusTextEntryActionObject seo = new StatusTextEntryActionObject(Internationalization.getString("starmap.systeminfo_cannotbeattacked_cooldown"), true);
+			seo.setFlash(true);
+			ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(seo);
+		} else if (!isLevelAllowed) {
+			hoveredSys.setBlockReason(3);
+			StatusTextEntryActionObject seo = new StatusTextEntryActionObject(Internationalization.getString("starmap.systeminfo_cannotbeattacked_level"), true);
+			seo.setFlash(true);
+			ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(seo);
+		} else {
+			hoveredSys.setBlockReason(0);
+			ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject("", false));
+		}
 
 		return r;
 	}

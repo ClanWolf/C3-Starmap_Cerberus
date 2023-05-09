@@ -58,6 +58,8 @@ public class BOStarSystem {
 	private ImageView marker = null;
 	private ImageView industryMarker = null;
 
+	private int blockReason = 0;
+
 	private boolean isLockedByJumpship = false;
 	private boolean isCurrentlyUnderAttack = false;
 	private boolean isNextRoundUnderAttack = false;
@@ -66,6 +68,16 @@ public class BOStarSystem {
 	@SuppressWarnings("unused")
 	public void setStarSystemDataDTO(StarSystemDataDTO hh_starSystemDataDTO) {
 		this.hh_starSystemDataDTO = hh_starSystemDataDTO;
+	}
+
+	@SuppressWarnings("unused")
+	public int getBlockReason() {
+		return this.blockReason;
+	}
+
+	@SuppressWarnings("unused")
+	public void setBlockReason(int v) {
+		this.blockReason = v;
 	}
 
 	@SuppressWarnings("unused")

@@ -171,6 +171,11 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	private NodeGestures nodeGestures;
 	private Long currentPlayerRoleInInvasion = 0L;
 
+	private final Image systemForbiddenIcon0 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/forbidden0.png")));
+	private final Image systemForbiddenIcon1 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/forbidden1.png")));
+	private final Image systemForbiddenIcon2 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/forbidden2.png")));
+	private final Image systemForbiddenIcon3 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/forbidden3.png")));
+
 	@FXML
 	private void handleCenterHomeworldButtonClick() {
 		moveMapToPosition(Nexus.getHomeworld());
@@ -1681,9 +1686,10 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	}
 
 	public void hideAttackDetail() {
+		currentlyDisplayedAttackDetailsId = null;
+
 		if (paneAttackDetail != null) {
 			if (paneAttackDetail.getOpacity() != 0.0) {
-				currentlyDisplayedAttackDetailsId = null;
 
 				// Fade in transition 06 (DetailPane)
 				FadeTransition fadeInTransition_06 = new FadeTransition(Duration.millis(650), paneAttackDetail);
@@ -1816,6 +1822,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				scoreCircles.add(circleScore4);
 				scoreCircles.add(circleScore5);
 
+				lblAttackHeadline.setText(Internationalization.getString("starmap_attackinfo_ActiveInvasion") + ": " + attack.getStarSystemName());
+
 				boolean lobbyOpened = false;
 				boolean attackBroken = false;
 				int numberOfPilots = 0;
@@ -1850,7 +1858,6 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				}
 
 				if (fightsStarted) {
-					lblAttackHeadline.setText(Internationalization.getString("starmap_attackinfo_ActiveInvasion") + ": " + attack.getStarSystemName());
 					taAttackDescription.setText(Internationalization.getString("starmap_attackinfo_FightsStarted"));
 					long attackerWins = attack.getAttackDTO().getScoreAttackerVictories();
 					long defenderWins = attack.getAttackDTO().getScoreDefenderVictories();
@@ -2319,11 +2326,28 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				break;
 
 			case SHOW_FORBIDDEN_ICON_MAP:
-				boolean b = (Boolean)o.getObject();
+				Integer i = (Integer)o.getObject();
 				// logger.info("Forbidden: " + b);
 				Platform.runLater(() -> {
 					ivForbidden.toFront();
-					ivForbidden.setVisible(b);
+					switch (i) {
+						case 0 -> {
+							ivForbidden.setImage(systemForbiddenIcon0);
+							ivForbidden.setVisible(false); // hide forbidden icon
+						}
+						case 1 -> {
+							ivForbidden.setImage(systemForbiddenIcon1);
+							ivForbidden.setVisible(true); // locked because of jumpship
+						}
+						case 2 -> {
+							ivForbidden.setImage(systemForbiddenIcon2);
+							ivForbidden.setVisible(true); // locked because previous attack
+						}
+						case 3 -> {
+							ivForbidden.setImage(systemForbiddenIcon3);
+							ivForbidden.setVisible(true); // locked because insufficient level
+						}
+					}
 				});
 				break;
 

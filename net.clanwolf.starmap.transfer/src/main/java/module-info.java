@@ -18,4 +18,5 @@ module net.clanwolf.starmap.transfer {
 	opens net.clanwolf.starmap.transfer.enums.catalogObjects to com.fasterxml.jackson.databind;
 	opens net.clanwolf.starmap.transfer.mwo to com.google.gson;
 	exports net.clanwolf.starmap.exceptions;
+	exports net.clanwolf.starmap.transfer.saveobjects;
 }

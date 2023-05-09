@@ -32,38 +32,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JumpshipDTO extends Dto {
-
-	//@Id
-	//@GeneratedValue(strategy = IDENTITY)
-	//@Column(name = "ID")
 	private Long id;
-
-	//@Column(name = "JumpshipName")
 	private String jumpshipName;
-
-	//@Column(name = "UnitName")
 	private String unitName;
-
-	//@Column(name = "DropshipNames")
 	private String dropshipNames;
-
-	//@Column(name = "JumpshipFactionID")
 	private Long jumpshipFactionID;
-
-	//@Column(name = "HomeSystemID")
 	private Long homeSystemID;
-
-	//@Column(name = "StarSystemHistory")
 	private String starSystemHistory;
-
-	//@Column(name = "AttackReady")
 	private Boolean attackReady;
-
-	//@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, targetEntity = RoutePointPOJO.class)
-	//@JoinColumn(name = "JumpshipID")
 	private List<RoutePointDTO> routepointList = new ArrayList<>();
 
-	//@Column(name = "UnitXP")
 	private Long unitXP;
 
 	@SuppressWarnings("unused")

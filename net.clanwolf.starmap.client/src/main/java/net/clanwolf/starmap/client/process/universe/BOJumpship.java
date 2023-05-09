@@ -114,6 +114,7 @@ public class BOJumpship implements Comparable<BOJumpship> {
 			Nexus.getBoUniverse().routesList.put(jumpshipDTO.getId(), route);
 		} else {
 			logger.info("Route was empty, nothing was set.");
+			Nexus.getBoUniverse().routesList.remove(jumpshipDTO.getId());
 		}
 	}
 

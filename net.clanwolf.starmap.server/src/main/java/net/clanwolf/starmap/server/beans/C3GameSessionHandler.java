@@ -48,6 +48,7 @@ import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
+import net.clanwolf.starmap.transfer.saveobjects.UserSaveObject;
 import net.clanwolf.starmap.transfer.util.Compressor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -760,6 +761,12 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		GameState response = new GameState(GAMESTATEMODES.PRIVILEGE_SAVE);
 		try {
 			EntityManagerHelper.beginTransaction(getC3UserID(session));
+
+			if (state.getObject() != null && state.getObject() instanceof UserSaveObject) {
+				UserSaveObject uso = (UserSaveObject) state.getObject();
+			}
+
+
 			ArrayList<UserPOJO> list = (ArrayList<UserPOJO>) state.getObject();
 			String givenFactionKey = null;
 			if (state.getObject3() != null && state.getObject3() instanceof String) {
@@ -1025,6 +1032,32 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 					response.addObject(charId);
 					response.addObject2(attackId);
 					C3GameSessionHandler.sendBroadCast(room, response);
+				}
+				break;
+			case ATTACK_TEAM_ERROR:
+				if (state.getObject() instanceof AttackPOJO a
+						&& state.getObject2() instanceof Long attackType
+						&& state.getObject3() instanceof String username) {
+
+					Long starsystemId =  a.getStarSystemID();
+					StarSystemPOJO ss = StarSystemDAO.getInstance().findById(getC3UserID(session), starsystemId);
+
+					logger.info("----------------------------------------------");
+					logger.info("Attack: " + ss.getName());
+					logger.info("Type: " + attackType);
+					logger.info("Teams seem to be invalid!");
+					logger.info("User: " + username + " switched teams?");
+					logger.info(username + " is in one team in the lobby, but in another in MWO (?)");
+					logger.info("Users may not switch sides in the middle of an invasion!");
+					logger.info("----------------------------------------------");
+
+					GameState response = new GameState(GAMESTATEMODES.ATTACK_TEAM_ERROR);
+					response.addObject(username);
+					response.addObject2(a.getId());
+					response.addObject3(attackType);
+					C3GameSessionHandler.sendBroadCast(room, response);
+
+					// TODO_C3: Push attack back to lobby here?
 				}
 				break;
 			case BROADCAST_SEND_NEW_PLAYERLIST:

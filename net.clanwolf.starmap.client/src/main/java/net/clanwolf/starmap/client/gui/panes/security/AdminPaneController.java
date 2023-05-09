@@ -50,6 +50,7 @@ import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.UserDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
+import net.clanwolf.starmap.transfer.saveobjects.UserSaveObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -96,7 +97,7 @@ public class AdminPaneController {
 
 	// User Edit Tab
 	@FXML
-	Label lblName, lblPassword, lblPasswordConfirm, lblMail, lblMWOUser, lblPasswordConfirmClear, lblPasswordClear, lblFacktionKeyHint;
+	Label lblName, lblPassword, lblPasswordConfirm, lblMail, lblMWOUser, lblPasswordConfirmClear, lblPasswordClear, lblFacktionKeyHint, lblCurrentFactionKey;
 	//	private HashMap<String, BOFaction> originalFaction = new HashMap<>();
 	private HashMap<String, Integer> originalActivatedStatus = new HashMap<>();
 	private boolean currentUserWasChanged = false;
@@ -116,7 +117,7 @@ public class AdminPaneController {
 	TextField tfName, tfPassword, tfPasswordConfirm, tfMail, tfMWOUser, tfFactionKey, tfFactionKeyLead;
 	private String originalMWOUser = "";
 	private boolean factionkeyOk = false;
-	
+
 
 	@FXML
 	public void showPWButtonClick() {
@@ -203,6 +204,18 @@ public class AdminPaneController {
 			}
 		}
 
+//		UserSaveObject saveObject = new UserSaveObject();
+//		saveObject.setUserlist(usersToSave);
+//		if (cbRequestFactionChange.isSelected()) {
+//			saveObject.setRequestedFactionId(cbRequestedFaction.getSelectionModel().getSelectedItem().getFactionDTO().getId());
+//			saveObject.setFactionKeyForRequestedFaction(tfFactionKey.getText());
+//		}
+//		if (!"".equals(tfFactionKeyLead.getText())) {
+//			// Save changed FactionKey value
+//			Nexus.getCurrentFaction().getFactionDTO().setFactionKey(tfFactionKey.getText());
+//			saveObject.setEditedFaction(Nexus.getCurrentFaction().getFactionDTO());
+//		}
+
 		GameState saveUsersState = new GameState();
 		saveUsersState.setMode(GAMESTATEMODES.PRIVILEGE_SAVE);
 		saveUsersState.addObject(usersToSave);
@@ -210,8 +223,6 @@ public class AdminPaneController {
 			saveUsersState.addObject2(cbRequestedFaction.getSelectionModel().getSelectedItem().getFactionDTO().getId()); // BO Faction
 			saveUsersState.addObject3(tfFactionKey.getText());
 		}
-
-		//logger.info("NOONE may actually save for now!");
 		Nexus.fireNetworkEvent(saveUsersState);
 
 		currentUserWasChanged = false;
@@ -425,6 +436,7 @@ public class AdminPaneController {
 		lblMWOUser.setText(Internationalization.getString("AdminUserLabelMWOUser"));
 		lblFactionKey.setText(Internationalization.getString("AdminUserLabelFactionKey"));
 		lblFacktionKeyHint.setText(Internationalization.getString("AdminUserLabelFactionKeyHint"));
+		lblCurrentFactionKey.setText(Nexus.getCurrentFaction().getFactionDTO().getFactionKey());
 
 		cbRequestFactionChange.setText(Internationalization.getString("AdminUserRequestFactionChange"));
 
@@ -600,20 +612,17 @@ public class AdminPaneController {
 			}
 		};
 
-		ChangeListener<? super String> factionkeyFieldChangeListener = new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> ov, String old_val, String new_val) {
-				currentUserWasChanged = true;
-				factionkeyOk = tfFactionKey.getText().equals(cbRequestedFaction.getSelectionModel().getSelectedItem().getFactionDTO().getFactionKey());
-				if (factionkeyOk) {
-					tfFactionKey.setStyle("-fx-text-fill:green;");
-					lblFactionKey.setStyle("-fx-text-fill:green;");
-				} else {
-					tfFactionKey.setStyle("-fx-text-fill:red;");
-					lblFactionKey.setStyle("-fx-text-fill:red;");
-				}
-				checkUserChanges();
+		ChangeListener<? super String> factionkeyFieldChangeListener = (ChangeListener<String>) (ov, old_val, new_val) -> {
+			currentUserWasChanged = true;
+			factionkeyOk = tfFactionKey.getText().equals(cbRequestedFaction.getSelectionModel().getSelectedItem().getFactionDTO().getFactionKey());
+			if (factionkeyOk) {
+				tfFactionKey.setStyle("-fx-text-fill:green;");
+				lblFactionKey.setStyle("-fx-text-fill:green;");
+			} else {
+				tfFactionKey.setStyle("-fx-text-fill:red;");
+				lblFactionKey.setStyle("-fx-text-fill:red;");
 			}
+			checkUserChanges();
 		};
 
 		tfName.textProperty().addListener(userNameFieldChangeListener);
@@ -635,6 +644,7 @@ public class AdminPaneController {
 		// Show or hide tabs according to privileges
 		boolean privs = Security.hasPrivilege(PRIVILEGES.ADMIN_IS_GOD_ADMIN);
 		boolean finances = Security.hasPrivilege(PRIVILEGES.FACTIONLEAD_HAS_ROLE);
+		boolean factionEdit = Security.hasPrivilege(PRIVILEGES.FACTIONLEAD_HAS_ROLE);
 
 		cbRequestedFaction.setDisable(true);
 		cbRequestedFaction.getSelectionModel().clearSelection();
@@ -645,7 +655,7 @@ public class AdminPaneController {
 
 		tabUser.setDisable(false);
 		tabCharacter.setDisable(true);
-		tabFaction.setDisable(true);
+		tabFaction.setDisable(!factionEdit);
 		tabFinances.setDisable(!finances);
 		tabPrivileges.setDisable(!privs);
 

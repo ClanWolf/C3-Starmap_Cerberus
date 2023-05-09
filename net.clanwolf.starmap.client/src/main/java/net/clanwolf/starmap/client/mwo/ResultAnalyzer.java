@@ -39,11 +39,14 @@ import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.exceptions.MechItemIdNotFoundException;
+import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.*;
+import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.mwo.MWOMatchResult;
 import net.clanwolf.starmap.transfer.mwo.MatchDetails;
 import net.clanwolf.starmap.transfer.mwo.MechIdInfo;
 import net.clanwolf.starmap.transfer.mwo.UserDetail;
+import net.clanwolf.starmap.transfer.util.Compressor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
@@ -190,11 +193,16 @@ public class ResultAnalyzer {
 				}
 
 				if (attackerTeam != null && attackerTeam.equals(defenderTeam)) {
-					// Same teams cannot be right! Raise error
-					C3Message m = new C3Message(C3MESSAGES.WARNING_BLACKBOX_TEAMS_INVALID);
-					m.setType(C3MESSAGETYPES.CLOSE);
-					m.setText("Teams seem to be invalid!");
-					ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(m);
+					GameState teamErrorState = new GameState();
+					teamErrorState.setMode(GAMESTATEMODES.ATTACK_TEAM_ERROR);
+					if (Nexus.getCurrentAttackOfUser() != null) {
+						byte[] compressedAttackDTO = Compressor.compress(Nexus.getCurrentAttackOfUser().getAttackDTO());
+						logger.info("Compressed AttackDTO size: " + compressedAttackDTO.length);
+						teamErrorState.addObject(compressedAttackDTO);
+						teamErrorState.addObject2(Nexus.getCurrentAttackOfUser().getAttackType());
+						teamErrorState.addObject3(ud.getUsername());
+					}
+					Nexus.fireNetworkEvent(teamErrorState);
 				}
 
 				if (team != null && team.equals("1")) {

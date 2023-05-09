@@ -181,7 +181,7 @@ public class BOAttack {
 		return attackDTO.getAttackCharList();
 	}
 
-	private Long getAttackType(){
+	public Long getAttackType(){
 		Long factionTypeAttacker = Nexus.getBoUniverse().getFactionType(this.getAttackerFactionId().longValue());
 		Long factionTypeDefender = Nexus.getBoUniverse().getFactionType(this.getDefenderFactionId().longValue());
 

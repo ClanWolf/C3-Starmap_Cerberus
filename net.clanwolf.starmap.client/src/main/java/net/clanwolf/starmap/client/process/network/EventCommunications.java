@@ -39,6 +39,7 @@ import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.logout.Logout;
 import net.clanwolf.starmap.client.process.universe.BOAttack;
+import net.clanwolf.starmap.client.process.universe.BOStarSystem;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.Internationalization;
@@ -182,6 +183,32 @@ public class EventCommunications {
 					}
 					break;
 
+				case ATTACK_TEAM_ERROR:
+					if (state.getObject() != null
+							&& state.getObject() instanceof String username
+							&& state.getObject2() != null
+							&& Nexus.getCurrentAttackOfUser() != null
+							&& ((Long) state.getObject2()).equals(Nexus.getCurrentAttackOfUser().getAttackDTO().getId())) {
+
+						BOStarSystem ss = Nexus.getBoUniverse().starSystemBOs.get(Nexus.getCurrentAttackOfUser().getStarSystemId());
+						Long attackType = (Long) state.getObject3();
+
+						logger.info("----------------------------------------------");
+						logger.info("Attack: " + ss.getName());
+						logger.info("Type: " + attackType);
+						logger.info("Teams seem to be invalid!");
+						logger.info("User: " + username + " switched teams?");
+						logger.info(username + " is in one team in the lobby, but in another in MWO (?)");
+						logger.info("Users may not switch sides in the middle of an invasion!");
+						logger.info("----------------------------------------------");
+
+						C3Message m = new C3Message(C3MESSAGES.WARNING_BLACKBOX_TEAMS_INVALID);
+						m.setType(C3MESSAGETYPES.CLOSE);
+						m.setText(Internationalization.getString("C3_Lobby_Error_Teams_Invalid"));
+						ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(m);
+					}
+					break;
+
 				case USER_GET_NEW_PLAYERLIST:
 					logger.info("EventCommunications.onDataIn: neue Playerliste ->" + state.getObject());
 
@@ -284,120 +311,124 @@ public class EventCommunications {
 					break;
 
 				case ATTACK_SAVE_RESPONSE:
-					logger.info("Attack has been saved.");
-					AttackDTO attack = (AttackDTO) state.getObject();
-					boolean iAmInAttack = false;
-					for (AttackCharacterDTO ac : attack.getAttackCharList()) {
-						if (ac.getCharacterID().equals(Nexus.getCurrentChar().getId())) {
-							iAmInAttack = true;
-						}
-					}
-
-					BOAttack attackToBeReplaced = null;
-					for (BOAttack boa : Nexus.getBoUniverse().attackBOsOpenInThisRound.values()) {
-						//if (boa.getAttackDTO().getId() != null && boa.getAttackDTO().getId().equals(attack.getId())) {
-
-						if (boa.getAttackDTO().getJumpshipID().equals(attack.getJumpshipID())) {
-							// An attack was saved that already existed in my universe
-							// It needs to be replaced with the one that was returned from the
-							// save event
-							attackToBeReplaced = boa;
-						}
-					}
-					if (attackToBeReplaced != null) {
-						attackToBeReplaced.setAttackDTO(attack);
-					}
-
-					if (iAmInAttack) {
-						//RolePlayStoryDTO rpOldDTO = Nexus.getBoUniverse().getAttackStories().get(Nexus.getCurrentAttackOfUser().getAttackDTO().getStoryID());
-						boolean storyWasChanged = Nexus.getStoryBeforeSaving() != null && !attack.getStoryID().equals(Nexus.getStoryBeforeSaving());
-
-						String userIDOfSavingUser = (String) state.getObject2(); // --> session.getId();
-						if (userIDOfSavingUser == null) {
-							// My attack was saved
-							// If I was the one who saved this attack, in my universe I already have the attack without an id
-							// this needs to be removed and replaced with the one that comes back from the server (this one has
-							// the id that was persisted.
-							BOAttack attackToBeRemoved = null;
-							for (BOAttack boa : Nexus.getBoUniverse().attackBOsOpenInThisRound.values()) {
-								if (boa.getAttackDTO().getId() == null) {
-									attackToBeRemoved = boa;
-									break;
+					if (Nexus.isLoggedIn()) {
+						logger.info("Attack has been saved.");
+						AttackDTO attack = (AttackDTO) state.getObject();
+						boolean iAmInAttack = false;
+						if (Nexus.getCurrentChar() != null) {
+							for (AttackCharacterDTO ac : attack.getAttackCharList()) {
+								if (ac.getCharacterID().equals(Nexus.getCurrentChar().getId())) {
+									iAmInAttack = true;
 								}
 							}
-							if (attackToBeRemoved != null) {
-								Nexus.getBoUniverse().attackBOsOpenInThisRound.remove(attackToBeRemoved.getAttackDTO().getId());
-							}
-						} else {
-							// Someone else moved this jumpship and managed to save faster than I did, no luck!
 						}
 
-						BOAttack boa = new BOAttack(attack);
-						Nexus.getBoUniverse().attackBOsOpenInThisRound.put(boa.getAttackDTO().getId(), boa);
-						RolePlayStoryDTO rpDTO = (RolePlayStoryDTO) state.getObject3();
-						if (rpDTO != null) {
-							Nexus.getBoUniverse().getAttackStories().put(rpDTO.getId(), rpDTO);
-						}
+						BOAttack attackToBeReplaced = null;
+						for (BOAttack boa : Nexus.getBoUniverse().attackBOsOpenInThisRound.values()) {
+							//if (boa.getAttackDTO().getId() != null && boa.getAttackDTO().getId().equals(attack.getId())) {
 
-						ActionManager.getAction(ACTIONS.ENABLE_MAIN_MENU_BUTTONS).execute();
-						ActionManager.getAction(ACTIONS.UPDATE_USERS_FOR_ATTACK).execute();
-
-						boolean currentCharInList = false;
-						for (AttackCharacterDTO c : attack.getAttackCharList()) {
-							if (c.getCharacterID().equals(Nexus.getCurrentChar().getId())) {
-								currentCharInList = true;
+							if (boa.getAttackDTO().getJumpshipID().equals(attack.getJumpshipID())) {
+								// An attack was saved that already existed in my universe
+								// It needs to be replaced with the one that was returned from the
+								// save event
+								attackToBeReplaced = boa;
 							}
 						}
-						if (!currentCharInList) {
-							// Obviously I have been kicked and need to be moved from the lobby
-							Nexus.setCurrentAttackOfUserToNull();
-							ActionManager.getAction(ACTIONS.SWITCH_TO_MAP).execute();
-						} else {
-							// I am in the list, check if the invasion pane is already open
-							ActionManager.getAction(ACTIONS.SWITCH_TO_INVASION).execute();
+						if (attackToBeReplaced != null) {
+							attackToBeReplaced.setAttackDTO(attack);
 						}
 
-						if (storyWasChanged) {
-							ActionManager.getAction(ACTIONS.ROLEPLAY_NEXT_STEP_CHANGE_PANE).execute(state.getObject());
-							BOAttack a = Nexus.getCurrentAttackOfUser();
-							if (a == null) {
-								a = Nexus.getLatestFinishedAttackInThisRoundForUser();
-//								ArrayList<BOAttack> attackBOs = Nexus.getFinishedAttacksInThisRoundForUser();
-//								if (attackBOs.size() > 1) {
-//									logger.info("ATTENTION: User has multiple attacks finished in this current round!");
-//									BOAttack latestAttack = null;
-//									for (BOAttack at : attackBOs) {
-//										if (latestAttack == null) {
-//											latestAttack = at;
-//										}
-//										if (at.getAttackDTO().getUpdated().getTime() > latestAttack.getAttackDTO().getUpdated().getTime()) {
-//											latestAttack = at;
-//										}
-//									}
-//									a = latestAttack;
-//								} else if (attackBOs.size() == 1) {
-//									a = attackBOs.get(0);
-//								}
-							}
-							if (a != null) {
-								Nexus.setStoryBeforeSaving(a.getStoryId().longValue());
-							}
-						}
+						if (iAmInAttack) {
+							//RolePlayStoryDTO rpOldDTO = Nexus.getBoUniverse().getAttackStories().get(Nexus.getCurrentAttackOfUser().getAttackDTO().getStoryID());
+							boolean storyWasChanged = Nexus.getStoryBeforeSaving() != null && !attack.getStoryID().equals(Nexus.getStoryBeforeSaving());
 
-						// Wenn Kampf beendet wurde dann den aktuellen Kampf des Users auf Null setzen
-						Long factionWinnerId = attack.getFactionID_Winner();
-						if (factionWinnerId != null) {
-							Nexus.setCurrentAttackOfUserToNull();
-						}
-					} else {
-						// I am not in this attack
-						// Is the attack id the same as the attack I have been in? Then I was kicked!
-						if (Nexus.getCurrentAttackOfUser() != null) {
-							if (attack.getId().equals(Nexus.getCurrentAttackOfUser().getAttackDTO().getId())) {
-								ActionManager.getAction(ACTIONS.ENABLE_MAIN_MENU_BUTTONS).execute();
-								ActionManager.getAction(ACTIONS.UPDATE_USERS_FOR_ATTACK).execute();
+							String userIDOfSavingUser = (String) state.getObject2(); // --> session.getId();
+							if (userIDOfSavingUser == null) {
+								// My attack was saved
+								// If I was the one who saved this attack, in my universe I already have the attack without an id
+								// this needs to be removed and replaced with the one that comes back from the server (this one has
+								// the id that was persisted.
+								BOAttack attackToBeRemoved = null;
+								for (BOAttack boa : Nexus.getBoUniverse().attackBOsOpenInThisRound.values()) {
+									if (boa.getAttackDTO().getId() == null) {
+										attackToBeRemoved = boa;
+										break;
+									}
+								}
+								if (attackToBeRemoved != null) {
+									Nexus.getBoUniverse().attackBOsOpenInThisRound.remove(attackToBeRemoved.getAttackDTO().getId());
+								}
+							} else {
+								// Someone else moved this jumpship and managed to save faster than I did, no luck!
+							}
+
+							BOAttack boa = new BOAttack(attack);
+							Nexus.getBoUniverse().attackBOsOpenInThisRound.put(boa.getAttackDTO().getId(), boa);
+							RolePlayStoryDTO rpDTO = (RolePlayStoryDTO) state.getObject3();
+							if (rpDTO != null) {
+								Nexus.getBoUniverse().getAttackStories().put(rpDTO.getId(), rpDTO);
+							}
+
+							ActionManager.getAction(ACTIONS.ENABLE_MAIN_MENU_BUTTONS).execute();
+							ActionManager.getAction(ACTIONS.UPDATE_USERS_FOR_ATTACK).execute();
+
+							boolean currentCharInList = false;
+							for (AttackCharacterDTO c : attack.getAttackCharList()) {
+								if (c.getCharacterID().equals(Nexus.getCurrentChar().getId())) {
+									currentCharInList = true;
+								}
+							}
+							if (!currentCharInList) {
+								// Obviously I have been kicked and need to be moved from the lobby
 								Nexus.setCurrentAttackOfUserToNull();
 								ActionManager.getAction(ACTIONS.SWITCH_TO_MAP).execute();
+							} else {
+								// I am in the list, check if the invasion pane is already open
+								ActionManager.getAction(ACTIONS.SWITCH_TO_INVASION).execute();
+							}
+
+							if (storyWasChanged) {
+								ActionManager.getAction(ACTIONS.ROLEPLAY_NEXT_STEP_CHANGE_PANE).execute(state.getObject());
+								BOAttack a = Nexus.getCurrentAttackOfUser();
+								if (a == null) {
+									a = Nexus.getLatestFinishedAttackInThisRoundForUser();
+									//								ArrayList<BOAttack> attackBOs = Nexus.getFinishedAttacksInThisRoundForUser();
+									//								if (attackBOs.size() > 1) {
+									//									logger.info("ATTENTION: User has multiple attacks finished in this current round!");
+									//									BOAttack latestAttack = null;
+									//									for (BOAttack at : attackBOs) {
+									//										if (latestAttack == null) {
+									//											latestAttack = at;
+									//										}
+									//										if (at.getAttackDTO().getUpdated().getTime() > latestAttack.getAttackDTO().getUpdated().getTime()) {
+									//											latestAttack = at;
+									//										}
+									//									}
+									//									a = latestAttack;
+									//								} else if (attackBOs.size() == 1) {
+									//									a = attackBOs.get(0);
+									//								}
+								}
+								if (a != null) {
+									Nexus.setStoryBeforeSaving(a.getStoryId().longValue());
+								}
+							}
+
+							// Wenn Kampf beendet wurde dann den aktuellen Kampf des Users auf Null setzen
+							Long factionWinnerId = attack.getFactionID_Winner();
+							if (factionWinnerId != null) {
+								Nexus.setCurrentAttackOfUserToNull();
+							}
+						} else {
+							// I am not in this attack
+							// Is the attack id the same as the attack I have been in? Then I was kicked!
+							if (Nexus.getCurrentAttackOfUser() != null) {
+								if (attack.getId().equals(Nexus.getCurrentAttackOfUser().getAttackDTO().getId())) {
+									ActionManager.getAction(ACTIONS.ENABLE_MAIN_MENU_BUTTONS).execute();
+									ActionManager.getAction(ACTIONS.UPDATE_USERS_FOR_ATTACK).execute();
+									Nexus.setCurrentAttackOfUserToNull();
+									ActionManager.getAction(ACTIONS.SWITCH_TO_MAP).execute();
+								}
 							}
 						}
 					}
@@ -520,7 +551,6 @@ public class EventCommunications {
 					C3Message message = new C3Message(C3MESSAGES.WARNING_CLIENT_LOGOUT_AFTER_FACTION_CHANGE);
 					message.setType(C3MESSAGETYPES.CLOSE);
 					message.setText(Internationalization.getString("faction_change_logout_message"));
-					//C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
 					ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
 
 					break;

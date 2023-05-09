@@ -85,7 +85,7 @@ public class Constants implements java.io.Serializable {
     public static final long TERRA_ATTACK_COST = -100_000;
 
     // Game - Meta
-    public static final long ROUNDS_TO_LOCK_SYSTEM_AFTER_ATTACK = 3;
+    public static final long ROUNDS_TO_LOCK_SYSTEM_AFTER_ATTACK = 1;
     public static final long MINIMUM_PILOTS_PER_SIDE_IN_INVASION_DROP = 1;
 
     // Game - Invasion

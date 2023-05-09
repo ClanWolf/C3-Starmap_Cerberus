@@ -306,11 +306,12 @@ public class NodeGestures {
 		if (route.contains(hovered)) {
 			// return to normal
 			// logger.info("Possible jump");
-			ActionManager.getAction(ACTIONS.SHOW_FORBIDDEN_ICON_MAP).execute(false);
+			ActionManager.getAction(ACTIONS.SHOW_FORBIDDEN_ICON_MAP).execute(0);
 		} else {
 			// show indicator "jump can not be made"
 			// logger.info("Impossible jump");
-			ActionManager.getAction(ACTIONS.SHOW_FORBIDDEN_ICON_MAP).execute(true);
+			logger.info("Block reason for system: " + hovered.getBlockReason());
+			ActionManager.getAction(ACTIONS.SHOW_FORBIDDEN_ICON_MAP).execute(hovered.getBlockReason());
 		}
 
 		// Add elements all at once in the end to ensure correct z-order
@@ -329,7 +330,7 @@ public class NodeGestures {
 		Node node = (Node) event.getSource();
 		Circle c = (Circle) node;
 		c.setRadius(5);
-		ActionManager.getAction(ACTIONS.SHOW_FORBIDDEN_ICON_MAP).execute(false);
+		ActionManager.getAction(ACTIONS.SHOW_FORBIDDEN_ICON_MAP).execute(0);
 		event.consume();
 	};
 

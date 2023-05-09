@@ -12,9 +12,10 @@ TODO:
 - Update msgpack (io.nadron.server)
 
 - Players can still join fights when the video runs!!!
-- Sometimes score is not stored to attack table
 - Sometimes the hourglass in invasionpane does not disappear after confirming result
 - Show map dice only for random maps!
+
+- Add tables for diplomacy data
 
 - Create animated gif from season history / post to discord
 - Make visible from the map if an attack is broken
@@ -34,6 +35,24 @@ TODO:
 - Check tab order and keyboard control for all panes
 - Video does not show sometimes
 ----------------------------------------------------------------
+
+Version 7.3.56 (10.05.2023)
+- ADDED: Block icons for the different block reasons
+- ADDED: Error handling (and logs) in case a pilot switches sides in the middle of an invasion
+- CHANGED: Reduced cooldown period for attacked starsystems from 3 to 1 round
+- FIXED: Display of system name in score display now shows correct system name
+- FIXED: NPE if an attack was saved while login was not complete
+- FIXED: Sometimes score was not stored to attack table
+
+Version 7.3.55 (08.05.2023)
+- FIXED: Display of information, why a system is locked for attacks
+
+Version 7.3.54 (06.05.2023)
+- FIXED: Sometimes jumpship orders could be confirmed without an actuall route or attack
+
+Version 7.3.53 (06.05.2023)
+- FIXED: Change user data can now be used by any user
+- FIXED: Changing faction works with a faction key
 
 Version 7.3.52 (02.05.2023)
 - FIXED: Fought attacks in current round for a user can be more than one. Changed several functions to reflect that

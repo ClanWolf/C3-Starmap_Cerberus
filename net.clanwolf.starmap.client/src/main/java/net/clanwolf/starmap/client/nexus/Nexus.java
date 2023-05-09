@@ -354,7 +354,9 @@ public class Nexus {
 
 	@SuppressWarnings("unused")
 	public static RolePlayCharacterDTO getCurrentChar() {
-		currentChar = currentUser.getCurrentCharacter();
+		if (currentUser != null) {
+			currentChar = currentUser.getCurrentCharacter();
+		}
 		return currentChar;
 	}
 
