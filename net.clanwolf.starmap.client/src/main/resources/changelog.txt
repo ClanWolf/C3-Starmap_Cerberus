@@ -16,7 +16,7 @@ TODO:
 - Show map dice only for random maps!
 
 - Add tables for diplomacy data
-
+- Upload all past logs in upload (report error), not only the last one
 - Create animated gif from season history / post to discord
 - Make visible from the map if an attack is broken
 - After publish was clicked in MWO, remind to confirm winner in app (!)
@@ -36,7 +36,11 @@ TODO:
 - Video does not show sometimes
 ----------------------------------------------------------------
 
-Version 7.3.56 (10.05.2023)
+Version 7.3.57 (10.05.2023)
+- CHANGED: Upload of logs takes now all logiles to the server instead of just the last one
+- CHANGED. Faction leaders can now change (and store) the faction key for their faction
+
+Version 7.3.56 (09.05.2023)
 - ADDED: Block icons for the different block reasons
 - ADDED: Error handling (and logs) in case a pilot switches sides in the middle of an invasion
 - CHANGED: Reduced cooldown period for attacked starsystems from 3 to 1 round

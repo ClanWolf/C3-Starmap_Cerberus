@@ -50,7 +50,6 @@ import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.UserDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
-import net.clanwolf.starmap.transfer.saveobjects.UserSaveObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -204,20 +203,8 @@ public class AdminPaneController {
 			}
 		}
 
-//		UserSaveObject saveObject = new UserSaveObject();
-//		saveObject.setUserlist(usersToSave);
-//		if (cbRequestFactionChange.isSelected()) {
-//			saveObject.setRequestedFactionId(cbRequestedFaction.getSelectionModel().getSelectedItem().getFactionDTO().getId());
-//			saveObject.setFactionKeyForRequestedFaction(tfFactionKey.getText());
-//		}
-//		if (!"".equals(tfFactionKeyLead.getText())) {
-//			// Save changed FactionKey value
-//			Nexus.getCurrentFaction().getFactionDTO().setFactionKey(tfFactionKey.getText());
-//			saveObject.setEditedFaction(Nexus.getCurrentFaction().getFactionDTO());
-//		}
-
 		GameState saveUsersState = new GameState();
-		saveUsersState.setMode(GAMESTATEMODES.PRIVILEGE_SAVE);
+		saveUsersState.setMode(GAMESTATEMODES.USERDATA_OR_PRIVILEGE_SAVE);
 		saveUsersState.addObject(usersToSave);
 		if (cbRequestFactionChange.isSelected()) {
 			saveUsersState.addObject2(cbRequestedFaction.getSelectionModel().getSelectedItem().getFactionDTO().getId()); // BO Faction
@@ -225,6 +212,15 @@ public class AdminPaneController {
 		}
 		Nexus.fireNetworkEvent(saveUsersState);
 
+		if (!"".equals(tfFactionKeyLead.getText())) {
+			// Save changed FactionKey value
+			Nexus.getCurrentFaction().getFactionDTO().setFactionKey(tfFactionKey.getText());
+
+			GameState saveFactionState = new GameState();
+			saveFactionState.setMode(GAMESTATEMODES.FACTION_SAVE);
+			saveFactionState.addObject(Nexus.getCurrentFaction().getFactionDTO());
+			Nexus.fireNetworkEvent(saveFactionState);
+		}
 		currentUserWasChanged = false;
 
 		Stage stage = (Stage) btnSave.getScene().getWindow();

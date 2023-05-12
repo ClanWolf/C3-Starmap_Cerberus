@@ -14,9 +14,9 @@ import java.lang.invoke.MethodHandles;
 /**
  * A class that transmits messages reliably to remote machines/vm's. Internally
  * this class uses Netty tcp {@link Channel} to transmit the message.
- * 
+ *
  * @author Abraham Menacherry
- * 
+ *
  */
 public class NettyTCPMessageSender implements Reliable {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -48,21 +48,17 @@ public class NettyTCPMessageSender implements Reliable {
 	/**
 	 * Writes an the {@link Events#DISCONNECT} to the client, flushes
 	 * all the pending writes and closes the channel.
-	 * 
+	 *
 	 */
 	@Override
 	public void close() {
 		logger.info("Going to close TCP connection in class: " + this + getClass().getName());
-		Event event = Events.event(null, Events.DISCONNECT);
-
-//		logger.info("##### Channel is open: " + channel.isOpen());
-//		logger.info("##### Channel is active: " + channel.isActive());
-
+		Event disconnectEvent = Events.event(null, Events.DISCONNECT);
 		if (channel.isActive()) {
-			channel.write(event).addListener(ChannelFutureListener.CLOSE);
+			channel.write(disconnectEvent).addListener(ChannelFutureListener.CLOSE);
 		} else {
 			channel.close();
-			logger.error("Unable to write the Event " +  event + " with type " + event.getType() + " to socket.");
+			logger.info("Unable to write the Event " +  disconnectEvent + " (Type: " + disconnectEvent.getType() + ") to socket. Channel is inactive. Closing.");
 		}
 	}
 

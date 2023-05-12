@@ -204,6 +204,8 @@ public class LogPaneController implements ActionCallBackListener {
 		FTP ftpClient = new FTP(C3FTPTYPES.FTP_LOGUPLOAD);
 		try {
 			ftpClient.upload(C3Properties.getProperty(C3PROPS.LOGFILE) + ".0", logfilename);
+			ftpClient.upload(C3Properties.getProperty(C3PROPS.LOGFILE) + ".1", logfilename);
+			ftpClient.upload(C3Properties.getProperty(C3PROPS.LOGFILE) + ".2", logfilename);
 
 			String serverUrl = C3Properties.getProperty(C3PROPS.SERVER_URL);
 			String formattedBody = "Error occured in C3 client.\n\nUploaded log:\n" + serverUrl + "/errorlogs/" + logfilename + "\n\nAdd description:\n\n";

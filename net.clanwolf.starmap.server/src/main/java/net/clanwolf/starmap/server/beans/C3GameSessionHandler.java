@@ -48,7 +48,6 @@ import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
-import net.clanwolf.starmap.transfer.saveobjects.UserSaveObject;
 import net.clanwolf.starmap.transfer.util.Compressor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -752,20 +751,40 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		}
 	}
 
+	private synchronized void saveFactionChanges(PlayerSession session, GameState state) {
+		FactionDAO factionDAO = FactionDAO.getInstance();
+
+		GameState response = new GameState(GAMESTATEMODES.FACTION_SAVE);
+		try {
+			EntityManagerHelper.beginTransaction(getC3UserID(session));
+
+			if (state.getObject() != null && state.getObject() instanceof FactionPOJO factionPOJO) {
+				factionDAO.update(getC3UserID(session), factionPOJO);
+				EntityManagerHelper.commit(getC3UserID(session));
+
+				response.setAction_successfully(Boolean.TRUE);
+				C3GameSessionHandler.sendNetworkEvent(session, response);
+			}
+		} catch (RuntimeException re) {
+			logger.error("Faction save", re);
+			re.printStackTrace();
+			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
+
+			response.addObject(re.getMessage());
+			response.setAction_successfully(Boolean.FALSE);
+			C3GameSessionHandler.sendNetworkEvent(session, response);
+		}
+	}
+
 	private synchronized void saveUserChanges(PlayerSession session, GameState state) {
 		UserDAO dao = UserDAO.getInstance();
 		RolePlayCharacterDAO rpDAO = RolePlayCharacterDAO.getInstance();
 		FactionDAO factionDAO = FactionDAO.getInstance();
 		JumpshipDAO jsDAO = JumpshipDAO.getInstance();
 
-		GameState response = new GameState(GAMESTATEMODES.PRIVILEGE_SAVE);
+		GameState response = new GameState(GAMESTATEMODES.USERDATA_OR_PRIVILEGE_SAVE);
 		try {
 			EntityManagerHelper.beginTransaction(getC3UserID(session));
-
-			if (state.getObject() != null && state.getObject() instanceof UserSaveObject) {
-				UserSaveObject uso = (UserSaveObject) state.getObject();
-			}
-
 
 			ArrayList<UserPOJO> list = (ArrayList<UserPOJO>) state.getObject();
 			String givenFactionKey = null;
@@ -1100,8 +1119,11 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			case USER_SAVE:
 				saveUser(session, state);
 				break;
-			case PRIVILEGE_SAVE:
+			case USERDATA_OR_PRIVILEGE_SAVE:
 				saveUserChanges(session, state);
+				break;
+			case FACTION_SAVE:
+				saveFactionChanges(session, state);
 				break;
 			case JUMPSHIP_SAVE:
 				saveJumpship(session, state);

@@ -35,6 +35,7 @@ import net.clanwolf.starmap.client.util.C3Properties;
 import org.apache.commons.net.ftp.FTPClient;
 import org.apache.commons.net.ftp.FTPFile;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
@@ -222,30 +223,35 @@ public class FTP implements IFileTransfer {
 				connect();
 			}
 
-			fis = new FileInputStream(localSourceFile);
+			File checkFile = new File(localSourceFile);
+			if (checkFile.isFile()) {
+				fis = new FileInputStream(localSourceFile);
 
-			if (ftptype == C3FTPTYPES.FTP_DEFAULT) {
-				ftpClient.storeFile(getFTPSubPath() + remoteResultFile, fis);
-			} else if (ftptype == C3FTPTYPES.FTP_LOGUPLOAD) {
-				ftpClient.storeFile("" + remoteResultFile, fis);
-			} else if (ftptype == C3FTPTYPES.FTP_HISTORYUPLOAD) {
-				boolean subfolderexists = false;
-				FTPFile[] folders = ftpClient.listDirectories();
-				for (FTPFile f : folders) {
-					if (f.getName().equals(subfolder)) {
-						subfolderexists = true;
+				if (ftptype == C3FTPTYPES.FTP_DEFAULT) {
+					ftpClient.storeFile(getFTPSubPath() + remoteResultFile, fis);
+				} else if (ftptype == C3FTPTYPES.FTP_LOGUPLOAD) {
+					ftpClient.storeFile("" + remoteResultFile, fis);
+				} else if (ftptype == C3FTPTYPES.FTP_HISTORYUPLOAD) {
+					boolean subfolderexists = false;
+					FTPFile[] folders = ftpClient.listDirectories();
+					for (FTPFile f : folders) {
+						if (f.getName().equals(subfolder)) {
+							subfolderexists = true;
+						}
+					}
+					if (subfolderexists) {
+						ftpClient.storeFile(subfolder + "/" + remoteResultFile, fis);
+					} else {
+						ftpClient.makeDirectory(subfolder);
+						ftpClient.storeFile(subfolder + "/" + remoteResultFile, fis);
 					}
 				}
-				if (subfolderexists) {
-					ftpClient.storeFile(subfolder + "/" + remoteResultFile, fis);
-				} else {
-					ftpClient.makeDirectory(subfolder);
-					ftpClient.storeFile(subfolder + "/" + remoteResultFile, fis);
-				}
-			}
 
-			logger.info(ftpClient.getReplyString().trim().replaceAll("(\\r|\\n)", ""));
-			ret = true;
+				logger.info(ftpClient.getReplyString().trim().replaceAll("(\\r|\\n)", ""));
+				ret = true;
+			} else {
+				logger.info("Tried to upload " + localSourceFile + ", but file was not found");
+			}
 
 		} catch (IOException ioe) {
 			logger.error(null, ioe);
@@ -254,12 +260,13 @@ public class FTP implements IFileTransfer {
 				if (fis != null) {
 					fis.close();
 				}
-				ftpClient.disconnect();
+				if (ftpClient != null) {
+					ftpClient.disconnect();
+				}
 			} catch (IOException e) {
 				/* nothing to do */
 			}
 		}
-
 		return ret;
 	}
 }
