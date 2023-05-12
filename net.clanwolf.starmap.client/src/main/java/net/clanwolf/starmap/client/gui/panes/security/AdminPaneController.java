@@ -214,7 +214,7 @@ public class AdminPaneController {
 
 		if (!"".equals(tfFactionKeyLead.getText())) {
 			// Save changed FactionKey value
-			Nexus.getCurrentFaction().getFactionDTO().setFactionKey(tfFactionKey.getText());
+			Nexus.getCurrentFaction().getFactionDTO().setFactionKey(tfFactionKeyLead.getText());
 
 			GameState saveFactionState = new GameState();
 			saveFactionState.setMode(GAMESTATEMODES.FACTION_SAVE);
