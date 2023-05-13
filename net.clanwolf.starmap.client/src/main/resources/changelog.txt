@@ -11,34 +11,51 @@ CURRENTLY IN PROGRESS:
 TODO:
 - Update msgpack (io.nadron.server)
 
-- Players can still join fights when the video runs!!!
-- Sometimes the hourglass in invasionpane does not disappear after confirming result
-- Show map dice only for random maps!
-
+- Check for already existing users while registration
+- Auto-delete not activated user
+- Delete all un-needed columns in user table and in roleplaycharacter table (after registration)
+- Show map dice only for random maps
 - Add tables for diplomacy data
-- Upload all past logs in upload (report error), not only the last one
+
+- Channel message if a user successfully changes faction
+- If attack teams are invalid, kick everyone out of the attack and force a new lobby (ResultAnalyzer.java, L.195)
+- List of faction key, where each burns at usetime (one-time faction key)
+- Sometimes the hourglass in invasionpane does not disappear after confirming result
 - Create animated gif from season history / post to discord
 - Make visible from the map if an attack is broken
 - After publish was clicked in MWO, remind to confirm winner in app (!)
 - Userlist needs one more column on what side the char fights
 - Userlist needs one more column to display what role (e.g. droplead) the char has
-- Check Netty exceptions after logout events
-- Check for already existing users while registration
-- Delete all un-needed columns in user table and in roleplaycharacter table (after registration)
-- Save Faction from new faction combobox (to characters of a user!)
 - Create simple roleplay for "requesting diplomatic status" and "accept" or "decline"
 - Sound volume and Speech volume vs RP volume cleanup
 - Add global keys to the GUI
 - Add keyboard shortcuts for language change and help and open attack forum post
 - Delete user in admin pane (?)
-- Auto-delete not activated user (?)
 - Check tab order and keyboard control for all panes
 - Video does not show sometimes
 ----------------------------------------------------------------
 
+MAYBE FIXED:
+- Players can still join fights when the video runs
+
+WATCH OUT FOR WHILE TESTING:
+- People in the Lobby can only be moved by the dropleads
+- Video is playing as intro of an invasion, stops as soon as lobby owner starts the invasion ('Next' button)
+- Join buttons (invasion lobby) is not enabled after the fights startet / Intro is running
+- ...
+- Wrong tab order of buttons and controls (anywhere)
+- Wrong statements in the manual (things might have changed and the manual becomes outdated sometimes)
+- Any exceptions or error in the log. Warnings might be interesting, but probably not urgent
+----------------------------------------------------------------
+
+Version 7.3.58 (13.05.2023)
+- Save faction from new faction combobox
+- Save faction key
+
 Version 7.3.57 (10.05.2023)
 - CHANGED: Upload of logs takes now all logiles to the server instead of just the last one
 - CHANGED. Faction leaders can now change (and store) the faction key for their faction
+- FIXED: Netty exceptions after logout events
 
 Version 7.3.56 (09.05.2023)
 - ADDED: Block icons for the different block reasons

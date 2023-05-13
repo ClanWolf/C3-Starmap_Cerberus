@@ -11,6 +11,13 @@ CURRENTLY IN PROGRESS:
 TODO:
 - Update msgpack (io.nadron.server)
 
+- Check for already existing users while registration
+- Auto-delete not activated user
+- Delete all un-needed columns in user table and in roleplaycharacter table (after registration)
+- Show map dice only for random maps
+- Add tables for diplomacy data
+
+- Channel message if a user successfully changes faction
 - If attack teams are invalid, kick everyone out of the attack and force a new lobby (ResultAnalyzer.java, L.195)
 - List of faction key, where each burns at usetime (one-time faction key)
 - Sometimes the hourglass in invasionpane does not disappear after confirming result
@@ -41,18 +48,9 @@ WATCH OUT FOR WHILE TESTING:
 - Any exceptions or error in the log. Warnings might be interesting, but probably not urgent
 ----------------------------------------------------------------
 
-Version 7.3.58 (12.05.2023)
+Version 7.3.58 (13.05.2023)
 - Save faction from new faction combobox
 - Save faction key
-
-
-- Check for already existing users while registration
-- Auto-delete not activated user
-- Delete all un-needed columns in user table and in roleplaycharacter table (after registration)
-- Show map dice only for random maps!
-- Add tables for diplomacy data
-
-
 
 Version 7.3.57 (10.05.2023)
 - CHANGED: Upload of logs takes now all logiles to the server instead of just the last one
