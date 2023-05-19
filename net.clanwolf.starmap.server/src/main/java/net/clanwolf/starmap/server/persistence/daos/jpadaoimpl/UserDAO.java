@@ -133,4 +133,22 @@ public class UserDAO extends GenericDAO {
 
 		return (UserPOJO) o;
 	}
+
+	public boolean userNameExists(EntityManager em, String userName){
+		CriteriaHelper crit1 = new CriteriaHelper(UserPOJO.class);
+		crit1.addCriteria("userName", userName);
+
+		Object o = crit1.getSingleResult();
+
+		return o != null;
+	}
+
+	public boolean userMailExists(EntityManager em, String userMail){
+		CriteriaHelper crit1 = new CriteriaHelper(UserPOJO.class);
+		crit1.addCriteria("userEMail", userMail);
+
+		Object o = crit1.getSingleResult();
+
+		return o != null;
+	}
 }

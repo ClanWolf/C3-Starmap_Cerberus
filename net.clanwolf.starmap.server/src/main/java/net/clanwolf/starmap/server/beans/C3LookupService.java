@@ -109,60 +109,68 @@ public class C3LookupService extends SimpleLookupService {
 			// Save user
 			try {
 				UserDAO userDAO = UserDAO.getInstance();
-				EntityManagerHelper.beginTransaction(ServerNexus.DUMMY_USERID);
 
-				UserPOJO u = new UserPOJO();
-				u.setActive(0);
-				u.setPrivileges(0);
-				u.setUserName(sUsername);
-				u.setUserEMail(sMail);
-				u.setUserPassword(pw1);
-				u.setUserPasswordWebsite(pw2);
-
-				userDAO.save(ServerNexus.DUMMY_USERID, u);
-
-				RolePlayCharacterDAO rpCharDAO = RolePlayCharacterDAO.getInstance();
-
-				RolePlayCharacterPOJO rpChar = new RolePlayCharacterPOJO();
-				rpChar.setName(sUsername);
-				rpChar.setUser(u);
-				rpChar.setFactionId(factionPOJO.getId().intValue());
-
-				JumpshipDAO jsDAO = JumpshipDAO.getInstance();
-				ArrayList<JumpshipPOJO> js = jsDAO.getJumpshipsForFaction(factionPOJO.getId());
-
-				if(js.size() > 0) {
-					rpChar.setJumpshipId(js.get(0).getId().intValue());
+				if (userDAO.userNameExists(em, sUsername)) {
+					// User with the same username already exists
+					player.setErrorCode(1);
+				} else if (userDAO.userMailExists(em, sMail)) {
+					// User with the same mailadress already exists
+					player.setErrorCode(2);
 				}
 
-				rpCharDAO.save(ServerNexus.DUMMY_USERID, rpChar);
+				if( player.getErrorCode() == 0) {
 
-				u.setCurrentCharacter(rpChar);
-				userDAO.save(ServerNexus.DUMMY_USERID, u);
+					EntityManagerHelper.beginTransaction(ServerNexus.DUMMY_USERID);
 
-				EntityManagerHelper.commit(ServerNexus.DUMMY_USERID);
+					UserPOJO u = new UserPOJO();
+					u.setActive(0);
+					u.setPrivileges(0);
+					u.setUserName(sUsername);
+					u.setUserEMail(sMail);
+					u.setUserPassword(pw1);
+					u.setUserPasswordWebsite(pw2);
 
-				c.setUsername(u.getUserName());
+					userDAO.save(ServerNexus.DUMMY_USERID, u);
 
-				if (!ServerNexus.isDevelopmentPC) {
-					sendMail(u);
+					RolePlayCharacterDAO rpCharDAO = RolePlayCharacterDAO.getInstance();
 
-					StringBuilder fs_de = new StringBuilder();
-					StringBuilder fs_en = new StringBuilder();
-					fs_de.append("Neuer Benutzer ").append(u.getUserName()).append(" (").append(factionPOJO.getShortName()).append(") hat sich registriert! Erwartet Bestätigung...\r\n");
-					fs_en.append("New user ").append(u.getUserName()).append(" (").append(factionPOJO.getShortName()).append(") has registered! Confirmation pending...\r\n");
+					RolePlayCharacterPOJO rpChar = new RolePlayCharacterPOJO();
+					rpChar.setName(sUsername);
+					rpChar.setUser(u);
+					rpChar.setFactionId(factionPOJO.getId().intValue());
 
-					ServerNexus.getEci().sendExtCom(fs_en.toString(), "en", true, true, true);
-					ServerNexus.getEci().sendExtCom(fs_de.toString(), "de", true, true, true);
+					JumpshipDAO jsDAO = JumpshipDAO.getInstance();
+					ArrayList<JumpshipPOJO> js = jsDAO.getJumpshipsForFaction(factionPOJO.getId());
+
+					if (js.size() > 0) {
+						rpChar.setJumpshipId(js.get(0).getId().intValue());
+					}
+
+					rpCharDAO.save(ServerNexus.DUMMY_USERID, rpChar);
+
+					u.setCurrentCharacter(rpChar);
+					userDAO.save(ServerNexus.DUMMY_USERID, u);
+
+					EntityManagerHelper.commit(ServerNexus.DUMMY_USERID);
+
+					c.setUsername(u.getUserName());
+
+					if (!ServerNexus.isDevelopmentPC) {
+						sendMail(u);
+
+						StringBuilder fs_de = new StringBuilder();
+						StringBuilder fs_en = new StringBuilder();
+						fs_de.append("Neuer Benutzer ").append(u.getUserName()).append(" (").append(factionPOJO.getShortName()).append(") hat sich registriert! Erwartet Bestätigung...\r\n");
+						fs_en.append("New user ").append(u.getUserName()).append(" (").append(factionPOJO.getShortName()).append(") has registered! Confirmation pending...\r\n");
+
+						ServerNexus.getEci().sendExtCom(fs_en.toString(), "en", true, true, true);
+						ServerNexus.getEci().sendExtCom(fs_de.toString(), "de", true, true, true);
+					}
 				}
-
 			} catch (Exception e) {
 				logger.error("Exception while saving new user.", e);
 				EntityManagerHelper.rollback(ServerNexus.DUMMY_USERID);
 			}
-
-			//player.setUser(null);
-			//return player;
 		}
 
 		// Database UserPOJO auth check.

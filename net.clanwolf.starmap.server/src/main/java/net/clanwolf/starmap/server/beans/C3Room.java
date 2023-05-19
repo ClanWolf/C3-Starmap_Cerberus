@@ -147,7 +147,12 @@ public class C3Room extends GameRoomSession {
 				// Send error message if user is null
 				logger.info("C3Room.onLogin: no user found -> send Events.LOG_IN_FAILURE");
 
-				e = Events.event(null, Events.LOG_IN_FAILURE);
+				e = switch (((C3Player) playerSession.getPlayer()).getErrorCode()) {
+					case 1 -> Events.event(null, Events.REGISTRATION_FAILURE_USERNAME);
+					case 2 -> Events.event(null, Events.REGISTRATION_FAILURE_USERMAIL);
+					default -> Events.event(null, Events.LOG_IN_FAILURE);
+				};
+
 			} else {
 				logger.info("C3Room.onLogin: -> sending LOG_IN_SUCCESS Event. Session: " + playerSession.getId());
 				e = Events.event(null, Events.LOG_IN_SUCCESS);

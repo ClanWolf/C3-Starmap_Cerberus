@@ -39,12 +39,13 @@ import io.nadron.client.util.LoginHelper;
 import io.nadron.client.util.LoginHelper.LoginBuilder;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionManager;
+import net.clanwolf.starmap.client.enums.C3MESSAGES;
+import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
+import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
 import net.clanwolf.starmap.client.nexus.Nexus;
+import net.clanwolf.starmap.client.process.logout.Logout;
 import net.clanwolf.starmap.client.process.network.EventCommunications;
-import net.clanwolf.starmap.client.util.C3PROPS;
-import net.clanwolf.starmap.client.util.C3Properties;
-import net.clanwolf.starmap.client.util.Encryptor;
-import net.clanwolf.starmap.client.util.Tools;
+import net.clanwolf.starmap.client.util.*;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import org.slf4j.Logger;
@@ -266,6 +267,32 @@ public class Login {
 				logger.info("Event source: " + event.getSource());
 				logger.info("Event time: " + event.getTimeStamp());
 				ActionManager.getAction(ACTIONS.SERVER_CONNECTION_LOST).execute();
+			}
+
+			@Override
+			public void onRegistrationFailedUserName(Event event) {
+				super.onRegistrationFailedUserName(event);
+				loginInProgress = false;
+				// User is in registration, can not be logged in yet
+				C3Message messageUserIsInRegistration = new C3Message(C3MESSAGES.ERROR_USER_IS_IN_REGISTRATION);
+				String m = Internationalization.getString("general_user_registration_username_error");
+				messageUserIsInRegistration.setText(m);
+				messageUserIsInRegistration.setType(C3MESSAGETYPES.CLOSE);
+
+				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(messageUserIsInRegistration);
+			}
+
+			@Override
+			public void onRegistrationFailedUserMail(Event event) {
+				super.onRegistrationFailedUserMail(event);
+				loginInProgress = false;
+				// User is in registration, can not be logged in yet
+				C3Message messageUserIsInRegistration = new C3Message(C3MESSAGES.ERROR_USER_IS_IN_REGISTRATION);
+				String m = Internationalization.getString("general_user_registration_usermail_error");
+				messageUserIsInRegistration.setText(m);
+				messageUserIsInRegistration.setType(C3MESSAGETYPES.CLOSE);
+
+				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(messageUserIsInRegistration);
 			}
 		};
 		logger.info("Adding SessionEventHandler to session.");

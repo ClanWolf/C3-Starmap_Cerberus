@@ -43,6 +43,8 @@ public class Events
 	public static final byte LOG_IN_FAILURE = 0x0c;
 	public static final byte LOG_OUT_SUCCESS = 0x0e;
 	public static final byte LOG_OUT_FAILURE = 0x0f;
+	public static final byte REGISTRATION_FAILURE_USERNAME = 0x0d;
+	public static final byte REGISTRATION_FAILURE_USERMAIL = 0x09;
 	
 	// Metadata events
 	public static final byte GAME_LIST = 0x10;

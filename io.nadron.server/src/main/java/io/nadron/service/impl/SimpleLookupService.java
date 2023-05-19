@@ -48,8 +48,7 @@ public class SimpleLookupService implements LookupService
 	}
 
 	@Override
-	public Player playerLookup(Credentials loginDetail)
-	{
+	public Player playerLookup(Credentials loginDetail){
 		return new DefaultPlayer();
 	}
 

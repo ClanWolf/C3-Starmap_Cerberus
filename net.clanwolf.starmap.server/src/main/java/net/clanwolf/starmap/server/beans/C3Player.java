@@ -43,6 +43,8 @@ public class C3Player implements Player {
 //    private C3_Base_User userC3;
     private UserPOJO user;
 
+    private int errorCode = 0;
+
     /**
      * One player can be connected to multiple games at the same time. Each
      * session in this set defines a connection to a game. Each player
@@ -66,6 +68,14 @@ public class C3Player implements Player {
     
     public UserPOJO getUser() {
         return this.user;
+    }
+
+    public int getErrorCode() {
+        return errorCode;
+    }
+
+    public void setErrorCode(int errorCode) {
+        this.errorCode = errorCode;
     }
 
     @Override

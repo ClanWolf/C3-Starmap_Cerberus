@@ -66,6 +66,10 @@ public class DefaultSessionEventHandler implements SessionEventHandler {
 		case Events.LOG_IN_FAILURE:
 			onLoginFailure(event);
 			break;
+		case Events.REGISTRATION_FAILURE_USERNAME:
+		case Events.REGISTRATION_FAILURE_USERMAIL:
+			onRegistrationFailure(event);
+			break;
 		case Events.CONNECT:
 			onConnect((ConnectEvent)event);
 			break;
@@ -137,7 +141,13 @@ public class DefaultSessionEventHandler implements SessionEventHandler {
 	{
 		getSession().getTcpSender().sendMessage(event);
 	}
-	
+
+	protected void onRegistrationFailure(Event event)
+	{
+		getSession().getTcpSender().sendMessage(event);
+	}
+
+
 	protected void onConnect(ConnectEvent event) {
 		Session session = getSession();
 		if (null != event.getTcpSender()) {

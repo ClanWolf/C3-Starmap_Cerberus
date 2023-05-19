@@ -58,7 +58,9 @@ public class LoginHandler extends SimpleChannelInboundHandler<Event> {
 		if (Events.LOG_IN == type)
 		{
 			logger.warn("Login attempt from " + channel.remoteAddress());
-			Player player = lookupPlayer(buffer, channel);
+			int registrationErrorCode = 0;
+			Player player = null;
+			player = lookupPlayer(buffer, channel);
 			handleLogin(player, ctx, buffer);
 		}
 		else if (Events.RECONNECT == type)
@@ -136,7 +138,6 @@ public class LoginHandler extends SimpleChannelInboundHandler<Event> {
 		}
 		else
 		{
-			// Write future and close channel
 			closeChannelWithLoginFailure(ctx.channel());
 		}
 	}
@@ -175,6 +176,13 @@ public class LoginHandler extends SimpleChannelInboundHandler<Event> {
 	{
 		ChannelFuture future = channel.writeAndFlush(NettyUtils
 				.createBufferForOpcode(Events.LOG_IN_FAILURE));
+		future.addListener(ChannelFutureListener.CLOSE);
+	}
+
+	private void closeChannelWithRegistrationFailure(Channel channel)
+	{
+		ChannelFuture future = channel.writeAndFlush(NettyUtils
+				.createBufferForOpcode(Events.LOG_OUT_SUCCESS));
 		future.addListener(ChannelFutureListener.CLOSE);
 	}
 	

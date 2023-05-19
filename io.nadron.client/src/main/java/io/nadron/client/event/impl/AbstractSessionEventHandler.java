@@ -65,6 +65,8 @@ public abstract class AbstractSessionEventHandler implements SessionEventHandler
 			case Events.DISCONNECT -> onDisconnect(event);
 			case Events.CHANGE_ATTRIBUTE -> onChangeAttribute(event);
 			case Events.EXCEPTION -> onException(event);
+			case Events.REGISTRATION_FAILURE_USERNAME -> onRegistrationFailedUserName(event);
+			case Events.REGISTRATION_FAILURE_USERMAIL -> onRegistrationFailedUserMail(event);
 
 			//		case Events.LOG_OUT:
 			//			onLogout(event);
@@ -126,6 +128,14 @@ public abstract class AbstractSessionEventHandler implements SessionEventHandler
 
 	public void onChangeAttribute(Event event) {
 
+	}
+
+	public void onRegistrationFailedUserName(Event event) {
+		logger.debug("errorcode: UserName");
+	}
+
+	public void onRegistrationFailedUserMail(Event event) {
+		logger.debug("errorcode: UserMail");
 	}
 
 	public synchronized void onException(Event event) {
