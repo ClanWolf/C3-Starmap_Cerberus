@@ -36,6 +36,7 @@ import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.*;
 import net.clanwolf.starmap.server.persistence.pojos.*;
 import net.clanwolf.starmap.server.reporting.GenerateRoundReport;
+import net.clanwolf.starmap.server.util.AnimatedGifCreator;
 import net.clanwolf.starmap.server.util.ForumDatabaseTools;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
@@ -260,6 +261,8 @@ public class EndRound {
             logger.info("Finalizing the round:");
             logger.info("Admin finalized this round: " + roundFinalizedByAdmin);
             forceFinalize.set(false);
+
+			AnimatedGifCreator.createSeasonHistoryAnimation(seasonId);
 
             EntityTransaction transaction = EntityManagerHelper.getEntityManager(ServerNexus.END_ROUND_USERID).getTransaction();
             String exceptionWhileSaving = "";

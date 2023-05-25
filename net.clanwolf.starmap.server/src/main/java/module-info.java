@@ -23,6 +23,8 @@ module net.clanwolf.starmap.server {
 	requires layout;
 	requires io;
 	requires org.mariadb.jdbc;
+	requires com.squareup.gifencoder;
+	requires java.desktop;
 
 	opens net.clanwolf.starmap.server to spring.core;
 	opens net.clanwolf.starmap.server.persistence.pojos to org.hibernate.orm.core, com.fasterxml.jackson.databind;

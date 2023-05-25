@@ -101,12 +101,6 @@
 			<artifactId>msgpack</artifactId>
 			<version>${version.msgpack}</version>
 		</dependency>
-        <dependency>
-            <groupId>net.clanwolf.starmap</groupId>
-            <artifactId>net.clanwolf.starmap.transfer</artifactId>
-            <version>7.3.58</version>
-            <scope>compile</scope>
-        </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.msgpack/msgpack-core -->
 <!--		<dependency>-->
