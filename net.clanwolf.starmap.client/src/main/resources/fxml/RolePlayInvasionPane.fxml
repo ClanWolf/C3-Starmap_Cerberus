@@ -165,17 +165,21 @@
             <Image url="@../icons/radio.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="ivDie2" fitHeight="49.0" fitWidth="47.0" layoutX="691.0" layoutY="20.0" onMouseClicked="#handleRollMapClick" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../images/dice/d6_5.png" />
-         </image>
-      </ImageView>
-      <ImageView fx:id="ivDie1" fitHeight="47.0" fitWidth="55.0" layoutX="648.0" layoutY="20.0" onMouseClicked="#handleRollMapClick" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../images/dice/d6_5.png" />
-         </image>
-      </ImageView>
-      <Label fx:id="lblRolledMapName" alignment="CENTER_RIGHT" contentDisplay="RIGHT" focusTraversable="false" layoutX="404.0" layoutY="68.0" mouseTransparent="true" onMouseClicked="#handleRollMapClick" prefHeight="20.0" prefWidth="330.0" text="Roll for map" />
+      <Pane fx:id="paneMapDice" layoutX="404.0" layoutY="20.0">
+         <children>
+            <ImageView fx:id="ivDie2" fitHeight="49.0" fitWidth="47.0" layoutX="287.0" onMouseClicked="#handleRollMapClick" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/dice/d6_5.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="ivDie1" fitHeight="47.0" fitWidth="55.0" layoutX="244.0" onMouseClicked="#handleRollMapClick" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../images/dice/d6_5.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="lblRolledMapName" alignment="CENTER_RIGHT" contentDisplay="RIGHT" focusTraversable="false" layoutY="48.0" mouseTransparent="true" onMouseClicked="#handleRollMapClick" prefHeight="20.0" prefWidth="330.0" text="Roll for map" />
+         </children>
+      </Pane>
     </children>
     <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />

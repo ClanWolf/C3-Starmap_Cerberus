@@ -3,6 +3,9 @@ C3 version history
 ----------------------------------------------------------------
 
 CURRENTLY IN PROGRESS:
+- P2: Auto-delete not activated user
+- P2: Delete all un-needed columns in user table and in roleplaycharacter table (after registration)
+- P2: Add tables for diplomacy data
 - P2: If user logs out and another logs in without closing the client, not all user related data is adapted to the new user
 - P3: Web-View of the Starmap (ongoing, ~45%)
 ---
@@ -10,18 +13,10 @@ CURRENTLY IN PROGRESS:
 
 TODO:
 - Update msgpack (io.nadron.server)
-
-- Check for already existing users while registration
-- Auto-delete not activated user
-- Delete all un-needed columns in user table and in roleplaycharacter table (after registration)
-- Show map dice only for random maps
-- Add tables for diplomacy data
-
 - Channel message if a user successfully changes faction
 - If attack teams are invalid, kick everyone out of the attack and force a new lobby (ResultAnalyzer.java, L.195)
 - List of faction key, where each burns at usetime (one-time faction key)
 - Sometimes the hourglass in invasionpane does not disappear after confirming result
-- Create animated gif from season history / post to discord
 - Make visible from the map if an attack is broken
 - After publish was clicked in MWO, remind to confirm winner in app (!)
 - Userlist needs one more column on what side the char fights
@@ -35,22 +30,35 @@ TODO:
 - Video does not show sometimes
 ----------------------------------------------------------------
 
-MAYBE FIXED:
-- Players can still join fights when the video runs
+MAYBE FIXED (Needs testing):
+- Players can still join fights when video runs
 
 WATCH OUT FOR WHILE TESTING:
 - People in the Lobby can only be moved by the dropleads
 - Video is playing as intro of an invasion, stops as soon as lobby owner starts the invasion ('Next' button)
-- Join buttons (invasion lobby) is not enabled after the fights startet / Intro is running
-- ...
+- Join buttons (invasion lobby) is correctly disabled after the fights startet / Intro is running
 - Wrong tab order of buttons and controls (anywhere)
 - Wrong statements in the manual (things might have changed and the manual becomes outdated sometimes)
 - Any exceptions or error in the log. Warnings might be interesting, but probably not urgent
 ----------------------------------------------------------------
 
+VERSIONS
+
+Version 7.3.61 (22.05.2023)
+- ADDED: Creation of animated gif from season history / post to discord
+- FIXED: Row height in user list table
+- CHANGED: Appearance of the season history map graphics
+
+Version 7.3.60 (19.05.2023)
+- ADDED: New mechs
+- FIXED: Check for already existing users/mailadresses while registration
+
+Version 7.3.59 (14.05.2023)
+- FIXED: Show map dice only for random maps
+
 Version 7.3.58 (13.05.2023)
-- Save faction from new faction combobox
-- Save faction key
+- FIXED: Save faction from new faction combobox
+- FIXED: Save faction key
 
 Version 7.3.57 (10.05.2023)
 - CHANGED: Upload of logs takes now all logiles to the server instead of just the last one

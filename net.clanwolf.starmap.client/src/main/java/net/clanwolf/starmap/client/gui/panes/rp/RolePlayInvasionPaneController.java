@@ -51,7 +51,6 @@ import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
-import net.clanwolf.starmap.client.gui.messagepanes.C3MessagePane;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3RolePlayController;
 import net.clanwolf.starmap.client.mwo.CheckClipboardForMwoApi;
 import net.clanwolf.starmap.client.mwo.ResultAnalyzer;
@@ -70,7 +69,6 @@ import net.clanwolf.starmap.transfer.dtos.*;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 import net.clanwolf.starmap.transfer.mwo.MWOMatchResult;
-import net.clanwolf.starmap.transfer.util.Compressor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -158,6 +156,8 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 	private Image im2;
 	@FXML
 	private ImageView ivStatic, ivForumLink, ivDie1, ivDie2;
+	@FXML
+	private Pane paneMapDice;
 
 	public RolePlayInvasionPaneController() {
 	}
@@ -230,6 +230,8 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 		defenderButtonIcon.setImage(defenderLogo);
 
 		lblRolledMapName.setText(Internationalization.getString("C3_Invasion_RollForMap"));
+
+		paneMapDice.setVisible(false);
 	}
 
 	@FXML
@@ -245,22 +247,22 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 			BOAttack att = Nexus.getCurrentAttackOfUser();
 			if (att == null) {
 				att = Nexus.getLatestFinishedAttackInThisRoundForUser();
-//				ArrayList<BOAttack> attackBOs = Nexus.getFinishedAttacksInThisRoundForUser();
-//				if (attackBOs.size() > 1) {
-//					logger.info("ATTENTION: User has multiple attacks finished in this current round!");
-//					BOAttack latestAttack = null;
-//					for (BOAttack a : attackBOs) {
-//						if (latestAttack == null) {
-//							latestAttack = a;
-//						}
-//						if (a.getAttackDTO().getUpdated().getTime() > latestAttack.getAttackDTO().getUpdated().getTime()) {
-//							latestAttack = a;
-//						}
-//					}
-//					att = latestAttack;
-//				} else if (attackBOs.size() == 1) {
-//					att = attackBOs.get(0);
-//				}
+				//				ArrayList<BOAttack> attackBOs = Nexus.getFinishedAttacksInThisRoundForUser();
+				//				if (attackBOs.size() > 1) {
+				//					logger.info("ATTENTION: User has multiple attacks finished in this current round!");
+				//					BOAttack latestAttack = null;
+				//					for (BOAttack a : attackBOs) {
+				//						if (latestAttack == null) {
+				//							latestAttack = a;
+				//						}
+				//						if (a.getAttackDTO().getUpdated().getTime() > latestAttack.getAttackDTO().getUpdated().getTime()) {
+				//							latestAttack = a;
+				//						}
+				//					}
+				//					att = latestAttack;
+				//				} else if (attackBOs.size() == 1) {
+				//					att = attackBOs.get(0);
+				//				}
 			}
 
 			if (att != null && att.getStoryId() != null) {
@@ -374,6 +376,12 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 			} else {
 				logger.error("Current score is not available!");
 				scoreAnimation(1, 1);
+			}
+
+			if (rpStory.getStoryImage() != null) {
+				if ("MWOMap_RANDOM.png".equals(rpStory.getStoryImage())) {
+					paneMapDice.setVisible(true);
+				}
 			}
 
 			// rpVar9
@@ -559,12 +567,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 						Timeline timelineDie1 = new Timeline();
 						for (int i = 0; i < 25; i++) {
 							int d = ran.nextInt(6) + 1;
-							timelineDie1.getKeyFrames().add(
-								new KeyFrame(
-									Duration.millis(i * 65),
-									new KeyValue(ivDie1.imageProperty(), dieimages.get(d - 1))
-								)
-							);
+							timelineDie1.getKeyFrames().add(new KeyFrame(Duration.millis(i * 65), new KeyValue(ivDie1.imageProperty(), dieimages.get(d - 1))));
 						}
 						timelineDie1.setCycleCount(1);
 						timelineDie1.setOnFinished(event -> {
@@ -574,12 +577,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 						Timeline timelineDie2 = new Timeline();
 						for (int i = 0; i < 25; i++) {
 							int d = ran.nextInt(6) + 1;
-							timelineDie2.getKeyFrames().add(
-								new KeyFrame(
-									Duration.millis(i * 65),
-									new KeyValue(ivDie2.imageProperty(), dieimages.get(d - 1))
-								)
-							);
+							timelineDie2.getKeyFrames().add(new KeyFrame(Duration.millis(i * 65), new KeyValue(ivDie2.imageProperty(), dieimages.get(d - 1))));
 						}
 						timelineDie2.setCycleCount(1);
 						timelineDie2.setOnFinished(event -> {
@@ -610,7 +608,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 			case PLAY_SOUNDBAR_EXECUTE_02:
 				if (o.getObject() instanceof Long) {
 					// CharacterId
-					Long charId = (Long)o.getObject();
+					Long charId = (Long) o.getObject();
 					if (charId != null) {
 						playSoundboardSound(2, charId);
 					}
@@ -620,7 +618,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 			case PLAY_SOUNDBAR_EXECUTE_03:
 				if (o.getObject() instanceof Long) {
 					// CharacterId
-					Long charId = (Long)o.getObject();
+					Long charId = (Long) o.getObject();
 					if (charId != null) {
 						playSoundboardSound(3, charId);
 					}
@@ -634,7 +632,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 						Long now = System.currentTimeMillis();
 						long diff = now - timerStart;
 						long diffMinutes = diff / 60_000;
-						labelError.setText((Internationalization.getString("C3_Lobby_DropleadOfflineSince")).replace("####", diffMinutes + ""));
+						labelError.setText((Internationalization.getString("C3_Lobby_DropleadOfflineSince")).replace("####", String.valueOf(diffMinutes)));
 						VBoxError.toFront();
 						VBoxError.setVisible(true);
 
@@ -656,7 +654,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 						Long now = System.currentTimeMillis();
 						long diff = now - timerStart;
 						long diffMinutes = diff / 60_000;
-						labelError.setText((Internationalization.getString("C3_Lobby_DropleadOfflineSinceWARNING")).replace("####", diffMinutes + ""));
+						labelError.setText((Internationalization.getString("C3_Lobby_DropleadOfflineSinceWARNING")).replace("####", String.valueOf(diffMinutes)));
 						VBoxError.toFront();
 						VBoxError.setVisible(true);
 
@@ -678,7 +676,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 						Long now = System.currentTimeMillis();
 						long diff = now - timerStart;
 						long diffMinutes = diff / 60_000;
-						labelError.setText((Internationalization.getString("C3_Lobby_DropleadOfflineSinceKICK")).replace("####", diffMinutes + ""));
+						labelError.setText((Internationalization.getString("C3_Lobby_DropleadOfflineSinceKICK")).replace("####", String.valueOf(diffMinutes)));
 						VBoxError.toFront();
 						VBoxError.setVisible(true);
 
@@ -741,7 +739,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 				MWOMatchResult result = (MWOMatchResult) o.getObject();
 				try {
 					ResultAnalyzer.analyseAndStoreMWOResult(result, true);
-				} catch(Exception e) {
+				} catch (Exception e) {
 					logger.error("Error while analyse MWO Results", e);
 				}
 				break;

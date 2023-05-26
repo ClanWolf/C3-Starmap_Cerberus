@@ -32,6 +32,7 @@ import javafx.application.Platform;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Point2D;
+import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
@@ -133,6 +134,28 @@ public class PannableCanvas extends Pane {
 		starSystemMarkerCircle30ly.setVisible(value);
 		starSystemMarkerCircle60ly.setVisible(value);
 		attacksPane.setVisible(value);
+	}
+
+	public void hideElementsForScreenshot(boolean value) {
+		grid_250.setVisible(!value);
+		grid_500.setVisible(!value);
+		grid_center.setVisible(!value);
+		for (Node n : getChildren()) {
+			if ((n.getId() != null)) {
+				if (n.getId().startsWith("attackVisuals")) {
+					n.setVisible(!value);
+				}
+				if (n.getId().startsWith("existingRouteLine")) {
+					n.setVisible(!value);
+				}
+				if (n.getId().endsWith("LEVEL")) {
+					n.setVisible(!value);
+				}
+			}
+		}
+		for (BOJumpship js : Nexus.getBoUniverse().jumpshipBOs.values()) {
+			js.getJumpshipImageView().setVisible(!value);
+		}
 	}
 
 	/**

@@ -2122,12 +2122,15 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					double h = Config.MAP_HEIGHT;
 
 					canvas.show3DStars(false);
+					canvas.hideElementsForScreenshot(true);
 					if (!Nexus.isDevelopmentPC() && C3Properties.getBoolean(C3PROPS.GENERALS_SCREENSHOT_HISTORY)) {
 						Tools.saveMapScreenshot((int) w, (int) h / 2 + 200, canvas);
 						logger.info("Saved history screenshot of the starmap.");
 					} else {
 						logger.info("Saved history screenshot has been disabled.");
 					}
+					canvas.hideElementsForScreenshot(false);
+					canvas.setVisibility();
 					canvas.show3DStars(true);
 
 					buildGuiEffect();
