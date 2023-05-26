@@ -348,7 +348,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				// Is the first coming jump (next round) to an enemy planet (?)
 				RoutePointDTO rp = route.get(1);
 				BOStarSystem s = Nexus.getBoUniverse().starSystemBOs.get(rp.getSystemId());
-				if (s.getFactionId() != js.getJumpshipFaction()) {
+				if (s.getFactionId() != js.getJumpshipFaction()
+						&& !(Nexus.getBoUniverse().getAlliedFactions().contains(s.getFactionId()))
+				) {
 					// This means there is an attack to be stored
 					AttackDTO attack = new AttackDTO();
 					attack.setAttackedFromStarSystemID((route.get(0)).getSystemId());

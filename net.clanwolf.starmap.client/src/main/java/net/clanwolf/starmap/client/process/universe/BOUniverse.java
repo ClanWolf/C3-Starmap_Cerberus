@@ -73,6 +73,26 @@ public class BOUniverse {
 
 	public BOJumpship currentlyDraggedJumpship = null;
 
+	public ArrayList<Long> getAlliedFactions() {
+		ArrayList<Long> factionListAllies = new ArrayList<>();
+		ArrayList<Long> factionRequestedIds = new ArrayList<>();
+		ArrayList<Long> factionAcceptedIds = new ArrayList<>();
+		for (DiplomacyDTO d : universeDTO.diplomacy) {
+			if (d.getFactionID_REQUEST().equals(Nexus.getCurrentChar().getFactionId().longValue())) {
+				factionRequestedIds.add(d.getFactionID_ACCEPTED());
+			}
+			if (d.getFactionID_ACCEPTED().equals(Nexus.getCurrentChar().getFactionId().longValue())) {
+				factionAcceptedIds.add(d.getFactionID_REQUEST());
+			}
+		}
+		for (Long factionId : factionRequestedIds) {
+			if (factionAcceptedIds.contains(factionId)) {
+				factionListAllies.add(factionId);
+			}
+		}
+		return factionListAllies;
+	}
+
 	public BOStarSystem getStarSystemByPoint(PointD p) {
 		PointD[] foundRegion = null;
 		for (PointD[] region : voronoiResults.voronoiRegions()) {

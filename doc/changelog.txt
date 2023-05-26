@@ -5,7 +5,6 @@ C3 version history
 CURRENTLY IN PROGRESS:
 - P2: Auto-delete not activated user
 - P2: Delete all un-needed columns in user table and in roleplaycharacter table (after registration)
-- P2: Add tables for diplomacy data
 - P2: If user logs out and another logs in without closing the client, not all user related data is adapted to the new user
 - P3: Web-View of the Starmap (ongoing, ~45%)
 ---
@@ -43,6 +42,14 @@ WATCH OUT FOR WHILE TESTING:
 ----------------------------------------------------------------
 
 VERSIONS
+
+Version 7.3.64 (27.05.2023)
+- ADDED: Tables for diplomacy data
+- ADDED: Check while jumping if target is allied, so no attack will be created
+
+Version 7.3.62 (26.05.2023)
+- ADDED: Several starsystems, CNC, CSV
+- PREPARED: Diplomacy
 
 Version 7.3.61 (22.05.2023)
 - ADDED: Creation of animated gif from season history / post to discord

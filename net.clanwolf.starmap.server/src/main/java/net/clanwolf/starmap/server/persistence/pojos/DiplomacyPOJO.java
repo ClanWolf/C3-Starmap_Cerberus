@@ -8,7 +8,7 @@ import jakarta.persistence.*;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @JsonIdentityInfo(
-		scope= ExtComPOJO.class,
+		scope= DiplomacyPOJO.class,
 		generator= ObjectIdGenerators.PropertyGenerator.class,
 		property = "id")
 @Entity
@@ -23,11 +23,11 @@ public class DiplomacyPOJO  extends Pojo {
 	@Column(name = "SeasonID")
 	private Long seasonID;
 
-	@Column(name = "SeasonID")
-	private Long FactionID_REQUEST;
+	@Column(name = "FactionID_REQUEST")
+	private Long factionID_REQUEST;
 
-	@Column(name = "SeasonID")
-	private Long FactionID_ACCEPTED;
+	@Column(name = "FactionID_ACCEPTED")
+	private Long factionID_ACCEPTED;
 
 	public Long getId() {
 		return id;
@@ -46,18 +46,18 @@ public class DiplomacyPOJO  extends Pojo {
 	}
 
 	public Long getFactionID_REQUEST() {
-		return FactionID_REQUEST;
+		return factionID_REQUEST;
 	}
 
 	public void setFactionID_REQUEST(Long factionID_REQUEST) {
-		FactionID_REQUEST = factionID_REQUEST;
+		factionID_REQUEST = factionID_REQUEST;
 	}
 
 	public Long getFactionID_ACCEPTED() {
-		return FactionID_ACCEPTED;
+		return factionID_ACCEPTED;
 	}
 
 	public void setFactionID_ACCEPTED(Long factionID_ACCEPTED) {
-		FactionID_ACCEPTED = factionID_ACCEPTED;
+		factionID_ACCEPTED = factionID_ACCEPTED;
 	}
 }

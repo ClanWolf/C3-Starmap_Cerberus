@@ -138,6 +138,7 @@ public class HeartBeatTimerTask extends TimerTask {
             WebDataInterface.load_HH_StarSystemData();
             WebDataInterface.loadAttacks(seasonId);
             WebDataInterface.loadJumpshipsAndRoutePoints();
+	        WebDataInterface.loadDiplomacy(seasonId);
 
 //			logger.info("Calling list creation methods...");
 ////			logger.info("Calling list creation (Factions)...");

@@ -254,9 +254,15 @@ public class NodeGestures {
 			circleS2.setStrokeWidth(s2.getStarSystemCircle().getStrokeWidth());
 			circleS2.setStroke(Color.web(boUniverse.factionBOs.get(s2.getAffiliation()).getColor()));
 			circleS2.setFill(Color.web(boUniverse.factionBOs.get(s2.getAffiliation()).getColor()));
-			if (y == 0 && !("" + Nexus.getCurrentUser().getCurrentCharacter().getFactionId()).equals("" + s2.getFactionId())) {
+			if (Nexus.getBoUniverse().getAlliedFactions().contains(s2.getFactionId())) {
+				circleS2.setFill(Color.GREEN);
+				circleS2.setStroke(Color.WHITE);
+			} else if (y == 0 && !(String.valueOf(Nexus.getCurrentUser().getCurrentCharacter().getFactionId())).equals(String.valueOf(s2.getFactionId()))) {
 				circleS2.setFill(Color.RED);
 				circleS2.setStroke(Color.WHITE);
+			} else if (y == 0 && (String.valueOf(Nexus.getCurrentUser().getCurrentCharacter().getFactionId())).equals(String.valueOf(s2.getFactionId()))) {
+				circleS2.setFill(Color.WHITE);
+				circleS2.setStroke(Color.BLACK);
 			} else {
 				circleS2.setFill(Color.WHITE);
 				circleS2.setStroke(Color.BLACK);
@@ -270,10 +276,16 @@ public class NodeGestures {
 
 			Text text;
 			text = new Text();
-			text.setText("" + thisRound);
-			if (y == 0 && !("" + Nexus.getCurrentUser().getCurrentCharacter().getFactionId()).equals("" + s2.getFactionId())) {
+			text.setText(String.valueOf(thisRound));
+			if (Nexus.getBoUniverse().getAlliedFactions().contains(s2.getFactionId())) {
 				text.setFill(Color.WHITE);
 				text.setStroke(Color.WHITE);
+			} else if (y == 0 && !(String.valueOf(Nexus.getCurrentUser().getCurrentCharacter().getFactionId())).equals(String.valueOf(s2.getFactionId()))) {
+				text.setFill(Color.WHITE);
+				text.setStroke(Color.WHITE);
+			} else if (y == 0 && (String.valueOf(Nexus.getCurrentUser().getCurrentCharacter().getFactionId())).equals(String.valueOf(s2.getFactionId()))) {
+				text.setFill(Color.BLACK);
+				text.setStroke(Color.BLACK);
 			} else {
 				text.setFill(Color.BLACK);
 				text.setStroke(Color.BLACK);
@@ -287,7 +299,10 @@ public class NodeGestures {
 
 			texts.add(text);
 
-			if (y == 0 && !("" + Nexus.getCurrentUser().getCurrentCharacter().getFactionId()).equals("" + s2.getFactionId())) {
+			if (y == 0
+					&& !(String.valueOf(Nexus.getCurrentUser().getCurrentCharacter().getFactionId())).equals(String.valueOf(s2.getFactionId()))
+					&& !(Nexus.getBoUniverse().getAlliedFactions().contains(s2.getFactionId()))
+			) {
 				logger.info("Attacking: " + s2.getName());
 				double markerDim = 36.0d;
 				ImageView marker;

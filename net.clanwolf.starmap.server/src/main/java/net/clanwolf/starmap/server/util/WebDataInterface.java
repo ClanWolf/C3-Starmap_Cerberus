@@ -94,132 +94,6 @@ public class WebDataInterface {
 		return universe;
 	}
 
-	//	private static void initialize() {
-	//		if (!initialized) {
-	//			StringBuilder sb;
-	//
-	//			sb = new StringBuilder();
-	//			sb.append("SELECT \r\n");
-	//			sb.append("         STS.ID              AS sid,              \r\n");
-	//			sb.append("         STS.Name            AS name,             \r\n");
-	//			sb.append("         STS.x               AS x,                \r\n");
-	//			sb.append("         STS.y               AS y,                \r\n");
-	//			//sb.append("         STS.z               AS z,                \r\n");
-	//			sb.append("         STS.StarType1       AS startype1,        \r\n");
-	//			sb.append("         STS.StarType2       AS startype2,        \r\n");
-	//			sb.append("         STS.StarType3       AS startype3,        \r\n");
-	//			sb.append("         STS.SarnaLinkSystem AS link,             \r\n");
-	//			sb.append("         STS.SystemImageName AS systemImageName,  \r\n");
-	//			sb.append("         F.ShortName         AS affiliation,      \r\n");
-	//			//sb.append("         F.Name_en           AS faction_en,       \r\n");
-	//			//sb.append("         F.Name_de           AS faction_de,       \r\n");
-	//			//sb.append("         FT.ShortName        AS factiontype_short,\r\n");
-	//			//sb.append("         FT.Name_en          AS factiontype_en,   \r\n");
-	//			//sb.append("         FT.Name_de          AS factiontype_de,   \r\n");
-	//			//sb.append("         SSD.ID              AS starsystemdataid, \r\n");
-	//			//sb.append("         SSD.StarSystemID    AS starsystemID,     \r\n");
-	//			sb.append("         SSD.FactionID       AS factionid,        \r\n");
-	//			sb.append("         SSD.Infrastructure  AS infrastructure,   \r\n");
-	//			sb.append("         SSD.Wealth          AS wealth,           \r\n");
-	//			sb.append("         SSD.Veternacy       AS veternacy,        \r\n");
-	//			sb.append("         SSD.Type            AS type,             \r\n");
-	//			sb.append("         SSD.Class           AS class,            \r\n");
-	//			sb.append("         SSD.Tonnage         AS tonnage,          \r\n");
-	//			sb.append("         SSD.BattleValue     AS battlevalue,      \r\n");
-	//			sb.append("         SSD.Description     AS description,      \r\n");
-	//			sb.append("         SSD.S1_Map01ID      AS s1map1,           \r\n");
-	//			sb.append("         SSD.S1_Map02ID      AS s1map2,           \r\n");
-	//			sb.append("         SSD.S1_Map03ID      AS s1map3,           \r\n");
-	//			sb.append("         SSD.S1_Map04ID      AS s1map4,           \r\n");
-	//			sb.append("         SSD.S1_Map05ID      AS s1map5,           \r\n");
-	//			sb.append("         SSD.S2_Map01ID      AS s2map1,           \r\n");
-	//			sb.append("         SSD.S2_Map02ID      AS s2map2,           \r\n");
-	//			sb.append("         SSD.S2_Map03ID      AS s2map3,           \r\n");
-	//			sb.append("         SSD.S2_Map04ID      AS s2map4,           \r\n");
-	//			sb.append("         SSD.S2_Map05ID      AS s2map5,           \r\n");
-	//			sb.append("         SSD.S3_Map01ID      AS s3map1,           \r\n");
-	//			sb.append("         SSD.S3_Map02ID      AS s3map2,           \r\n");
-	//			sb.append("         SSD.S3_Map03ID      AS s3map3,           \r\n");
-	//			sb.append("         SSD.S3_Map04ID      AS s3map4,           \r\n");
-	//			sb.append("         SSD.S3_Map05ID      AS s3map5,           \r\n");
-	//			sb.append("         SSD.S4_Map01ID      AS s4map1,           \r\n");
-	//			sb.append("         SSD.S4_Map02ID      AS s4map2,           \r\n");
-	//			sb.append("         SSD.S4_Map03ID      AS s4map3,           \r\n");
-	//			sb.append("         SSD.S4_Map04ID      AS s4map4,           \r\n");
-	//			sb.append("         SSD.S4_Map05ID      AS s4map5            \r\n");
-	//			//sb.append("         SSD.MapfileLink     AS mapfilelink       \r\n");
-	//			sb.append("FROM     STARSYSTEM          STS,                 \r\n");
-	//			sb.append("         _CM_STARSYSTEMDATA  SSD,                 \r\n");
-	//			sb.append("         FACTION             F,                   \r\n");
-	//			sb.append("         FACTIONTYPE         FT                   \r\n");
-	//			sb.append("WHERE    STS.ID              = SSD.StarSystemID   \r\n");
-	//			sb.append("AND      SSD.Active          = 1                  \r\n");
-	//			sb.append("AND      SSD.FactionID       = F.ID               \r\n");
-	//			sb.append("AND      F.FactionTypeID     = FT.ID;");
-	//			selects.put(SystemListTypes.CM_StarSystems.name(), sb.toString());
-	//
-	//			/*sb = new StringBuilder();
-	//			sb.append("SELECT \r\n");
-	//			sb.append("         STS.ID              AS sid,              \r\n");
-	//			sb.append("         STS.Name            AS name,             \r\n");
-	//			sb.append("         STS.x               AS x,                \r\n");
-	//			sb.append("         STS.y               AS y,                \r\n");
-	//			//sb.append("         STS.z               AS z,                \r\n");
-	//			sb.append("         STS.StarType1       AS startype1,        \r\n");
-	//			//sb.append("         STS.StarType2       AS startype2,        \r\n");
-	//			//sb.append("         STS.StarType3       AS startype3,        \r\n");
-	//			sb.append("         STS.SarnaLinkSystem AS link,             \r\n");
-	//			sb.append("         STS.SystemImageName AS systemImageName,  \r\n");
-	//			sb.append("         F.ShortName         AS affiliation,      \r\n");
-	//			//sb.append("         F.Name_en           AS faction_en,       \r\n");
-	//			//sb.append("         F.Name_de           AS faction_de,       \r\n");
-	//			//sb.append("         FT.ShortName        AS factiontype_short,\r\n");
-	//			//sb.append("         FT.Name_en          AS factiontype_en,   \r\n");
-	//			//sb.append("         FT.Name_de          AS factiontype_de,   \r\n");
-	//			sb.append("         SSD.ID              AS starsystemdataid, \r\n");
-	//			//sb.append("         SSD.StarSystemID    AS starsystemID,     \r\n");
-	//			sb.append("         SSD.FactionID       AS factionid,        \r\n");
-	//			sb.append("         SSD.Infrastructure  AS infrastructure,   \r\n");
-	//			sb.append("         SSD.Wealth          AS wealth,           \r\n");
-	//			sb.append("         SSD.Veternacy       AS veternacy,        \r\n");
-	//			sb.append("         SSD.Type            AS type,             \r\n");
-	//			sb.append("         SSD.Class           AS class,            \r\n");
-	//			sb.append("         SSD.Description     AS description,      \r\n");
-	//			//sb.append("         SSD.S1_Map01ID      AS s1map1,           \r\n");
-	//			//sb.append("         SSD.S1_Map02ID      AS s1map2,           \r\n");
-	//			//sb.append("         SSD.S1_Map03ID      AS s1map3,           \r\n");
-	//			//sb.append("         SSD.S2_Map01ID      AS s2map1,           \r\n");
-	//			//sb.append("         SSD.S2_Map02ID      AS s2map2,           \r\n");
-	//			//sb.append("         SSD.S2_Map03ID      AS s2map3,           \r\n");
-	//			//sb.append("         SSD.S3_Map01ID      AS s3map1,           \r\n");
-	//			//sb.append("         SSD.S3_Map02ID      AS s3map2,           \r\n");
-	//			//sb.append("         SSD.S3_Map03ID      AS s3map3,           \r\n");
-	//			sb.append("         SSD.CapitalWorld    AS capital           \r\n");
-	//			sb.append("FROM     STARSYSTEM          STS,                 \r\n");
-	//			sb.append("         _HH_STARSYSTEMDATA  SSD,                 \r\n");
-	//			sb.append("         FACTION             F,                   \r\n");
-	//			sb.append("         FACTIONTYPE         FT                   \r\n");
-	//			sb.append("WHERE    STS.ID              = SSD.StarSystemID   \r\n");
-	//			sb.append("AND      SSD.FactionID       = F.ID               \r\n");
-	//			sb.append("AND      F.FactionTypeID     = FT.ID              \r\n");
-	//			sb.append("AND      SSD.Active          = 1;");
-	//			selects.put(SystemListTypes.HH_StarSystems.name(), sb.toString());*/
-	//		}
-	//	}
-
-	//	private static String getJsonString(Dto dto){
-	//		// Create json string
-	//		ObjectMapper mapper = new ObjectMapper();
-	//		//Convert object to JSON string and pretty print
-	//		try {
-	//			return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(dto);
-	//
-	//		} catch (IOException e){
-	//			logger.info("Error creating JSON string");
-	//			return null;
-	//		}
-	//	}
-
 	public static synchronized void loadAttacks(Long seasonId) {
 		universe.attacks.clear();
 		universe.attackStorys.clear();
@@ -319,14 +193,14 @@ public class WebDataInterface {
 	}
 
 	public static synchronized void loadDiplomacy(Long seasonId) {
-		universe.factions.clear();
+		universe.diplomacy.clear();
 
 		DiplomacyDAO dao = DiplomacyDAO.getInstance();
 		ArrayList<DiplomacyPOJO> pojoList = dao.getDiplomacyForSeason(seasonId);
 
 		for (DiplomacyPOJO f : pojoList) {
 			DiplomacyDTO dto = EntityConverter.convertpojo2dto(f, DiplomacyDTO.class);
-			universe.diplomacy.put(f.getFactionID_REQUEST(), f.getFactionID_ACCEPTED());
+			universe.diplomacy.add(dto);
 		}
 	}
 

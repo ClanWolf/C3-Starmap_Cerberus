@@ -24,35 +24,8 @@
  * Copyright (c) 2001-2023, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.transfer.dtos;
+package net.clanwolf.starmap.server.util;
 
-import net.clanwolf.starmap.transfer.Dto;
+public class PHPMapUpdater {
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-
-public class UniverseDTO extends Dto {
-	public HashMap<Long, StarSystemDataDTO> starSystems = new HashMap<>();
-	public HashMap<String, FactionDTO> factions = new HashMap<>();
-	public ArrayList<DiplomacyDTO> diplomacy = new ArrayList<>();
-	public HashMap<String, JumpshipDTO> jumpships = new HashMap<>();
-	public ArrayList<AttackDTO> attacks = new ArrayList<>();
-	public ArrayList<RoutePointDTO> routepoints = new ArrayList<>();
-	public HashMap<Long, RolePlayStoryDTO> attackStorys = new HashMap<>();
-
-	public Date currentSeasonStartDate;
-	public Long currentSeasonStartDateRealYear;
-	public LocalDateTime currentRoundStartDateTime;
-	public LocalDateTime currentRoundEndDateTime;
-	public String lastRoundResultProtocol;
-
-	public Integer currentSeason;
-	public Integer currentSeasonMetaPhase;
-	public Integer currentRound;
-	public Integer currentRoundPhase;
-	public String currentDate;
-	public Double numberOfDaysInRound;
-	public Integer maxNumberOfRoundsForSeason;
 }
