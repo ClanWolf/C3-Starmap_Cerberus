@@ -318,6 +318,18 @@ public class WebDataInterface {
 		//		return jsonString.toString();
 	}
 
+	public static synchronized void loadDiplomacy(Long seasonId) {
+		universe.factions.clear();
+
+		DiplomacyDAO dao = DiplomacyDAO.getInstance();
+		ArrayList<DiplomacyPOJO> pojoList = dao.getDiplomacyForSeason(seasonId);
+
+		for (DiplomacyPOJO f : pojoList) {
+			DiplomacyDTO dto = EntityConverter.convertpojo2dto(f, DiplomacyDTO.class);
+			universe.diplomacy.put(f.getFactionID_REQUEST(), f.getFactionID_ACCEPTED());
+		}
+	}
+
 	// CALLED FROM HEARTBEATTIMER
 	//	public static synchronized void createSystemList(SystemListTypes type) {
 	//		initialize();

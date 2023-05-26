@@ -36,6 +36,7 @@ import java.util.HashMap;
 public class UniverseDTO extends Dto {
 	public HashMap<Long, StarSystemDataDTO> starSystems = new HashMap<>();
 	public HashMap<String, FactionDTO> factions = new HashMap<>();
+	public HashMap<Long, Long> diplomacy = new HashMap<>();
 	public HashMap<String, JumpshipDTO> jumpships = new HashMap<>();
 	public ArrayList<AttackDTO> attacks = new ArrayList<>();
 	public ArrayList<RoutePointDTO> routepoints = new ArrayList<>();
