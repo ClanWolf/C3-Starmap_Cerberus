@@ -43,8 +43,9 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
-Version 7.3.64 (27.05.2023)
+Version 7.3.65 (27.05.2023)
 - ADDED: Tables for diplomacy data
+- ADDED: Diplomacy pane
 - ADDED: Check while jumping if target is allied, so no attack will be created
 
 Version 7.3.62 (26.05.2023)

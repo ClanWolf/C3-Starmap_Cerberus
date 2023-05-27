@@ -233,6 +233,21 @@
   -fx-background-position: center;
 }
 
+.diplomacyButton {
+  -fx-background-image: url("../images/buttons/diplomacy.png");
+  -fx-background-repeat: no-repeat;
+  -fx-background-size: 32, 32;
+  -fx-background-position: center;
+}
+
+.diplomacyButton:hover {
+  -fx-background-image: url("../images/buttons/diplomacy_hover.png");
+  -fx-background-repeat: no-repeat;
+  -fx-background-size: 32, 32;
+  -fx-background-insets: -20, -20;
+  -fx-background-position: center;
+}
+
 .roleplayButton {
   -fx-background-image: url("../images/buttons/roleplay.png");
   -fx-background-repeat: no-repeat;

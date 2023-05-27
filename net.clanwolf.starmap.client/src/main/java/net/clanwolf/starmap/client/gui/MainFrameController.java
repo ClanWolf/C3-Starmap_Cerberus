@@ -60,6 +60,7 @@ import net.clanwolf.starmap.client.gui.panes.WaitAnimationPane;
 import net.clanwolf.starmap.client.gui.panes.chat.ChatPane;
 import net.clanwolf.starmap.client.gui.panes.confirmAppClose.ConfirmAppClosePane;
 import net.clanwolf.starmap.client.gui.panes.dice.DicePane;
+import net.clanwolf.starmap.client.gui.panes.diplomacy.DiplomacyPane;
 import net.clanwolf.starmap.client.gui.panes.logging.LogPane;
 import net.clanwolf.starmap.client.gui.panes.login.LoginPane;
 import net.clanwolf.starmap.client.gui.panes.map.MapPane;
@@ -131,6 +132,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private RolePlayBasicPane attackPane = null;
 	private ChatPane chatPane = null;
 	private DicePane dicePane = null;
+	private DiplomacyPane diplomacyPane = null;
 	private SettingsPane settingsPane = null;
 	private RolePlayBasicPane rolePlayPane = null;
 	// private InfoPane infoPane = null;
@@ -217,7 +219,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	@FXML
 	private Button mapButton;
 	@FXML
-	private Button diceButton;
+	private Button diplomacyButton;
 	@FXML
 	private Button attackButton;
 	@FXML
@@ -573,7 +575,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	}
 
 	@FXML
-	private void handleDiceButtonMouseEventEnter() {
+	private void handleDiplomacyButtonMouseEventEnter() {
 		setStatusText(Internationalization.getString("app_dice_infotext"), false);
 		Tools.playButtonHoverSound();
 	}
@@ -1172,11 +1174,11 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				adminPaneOpen = false;
 				ActionManager.getAction(ACTIONS.START_ROLEPLAY).execute();
 			}
-			// DICE
-			if (bn.equals(diceButton)) {
-				logger.info("Dice opened by user.");
-				setStatusText(Internationalization.getString("app_dice_infotext").replace("%20", " "), false);
-				targetPane = dicePane;
+			// DIPLOMACY
+			if (bn.equals(diplomacyButton)) {
+				logger.info("Diplomacy opened by user.");
+				setStatusText(Internationalization.getString("app_diplomacy_infotext").replace("%20", " "), false);
+				targetPane = diplomacyPane;
 				if (!adminMenuActive) {
 					showMenuIndicator(true);
 				}
@@ -1364,7 +1366,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			rolePlayButton.setVisible(true);
 			mapButton.setVisible(true);
 			attackButton.setVisible(true);
-			diceButton.setVisible(true);
+			diplomacyButton.setVisible(true);
 			chatButton.setVisible(true);
 			if (!adminPaneOpen && Nexus.getCurrentlyOpenedPane() != null) {
 				showMenuIndicator(true);
@@ -1405,7 +1407,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					rolePlayButton.setLayoutX(newX1);
 					mapButton.setLayoutX(newX1);
 					attackButton.setLayoutX(newX1);
-					diceButton.setLayoutX(newX1);
+					diplomacyButton.setLayoutX(newX1);
 					chatButton.setLayoutX(newX1);
 
 					// Column 2
@@ -1422,13 +1424,13 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					rolePlayButton.setVisible(false);
 					mapButton.setVisible(false);
 					attackButton.setVisible(false);
-					diceButton.setVisible(false);
+					diplomacyButton.setVisible(false);
 					chatButton.setVisible(false);
 
 					rolePlayButton.setFocusTraversable(false);
 					mapButton.setFocusTraversable(false);
 					attackButton.setFocusTraversable(false);
-					diceButton.setFocusTraversable(false);
+					diplomacyButton.setFocusTraversable(false);
 					chatButton.setFocusTraversable(false);
 					storyEditorButton.setFocusTraversable(true);
 					adminPaneButton.setFocusTraversable(true);
@@ -1447,7 +1449,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					rolePlayButton.setFocusTraversable(true);
 					mapButton.setFocusTraversable(true);
 					attackButton.setFocusTraversable(true);
-					diceButton.setFocusTraversable(true);
+					diplomacyButton.setFocusTraversable(true);
 					chatButton.setFocusTraversable(true);
 					storyEditorButton.setFocusTraversable(false);
 					adminPaneButton.setFocusTraversable(false);
@@ -1587,7 +1589,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			rolePlayButton.setDisable(Nexus.getCurrentChar().getStory() == null);
 			mapButton.setDisable(false);
 			attackButton.setDisable(!Nexus.userHasAttack());
-			diceButton.setDisable(true);
+			diplomacyButton.setDisable(false);
 			chatButton.setDisable(false);
 
 			// Column 2
@@ -1614,7 +1616,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			rolePlayButton.setDisable(true);
 			mapButton.setDisable(true);
 			attackButton.setDisable(true);
-			diceButton.setDisable(true);
+			diplomacyButton.setDisable(true);
 			chatButton.setDisable(true);
 
 			// Column 2
@@ -1725,6 +1727,12 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		dicePane.setCacheHint(CacheHint.SPEED);
 		dicePane.getController().addActionCallBackListeners();
 
+		diplomacyPane = new DiplomacyPane();
+		diplomacyPane.setShowsMouseFollow(false);
+		diplomacyPane.setShowsPlanetRotation(false);
+		diplomacyPane.setCacheHint(CacheHint.SPEED);
+		diplomacyPane.getController().addActionCallBackListeners();
+
 		String paneNameCharacter = "CharacterPane";
 		rolePlayPane = new RolePlayBasicPane(paneNameCharacter);
 		rolePlayPane.setShowsMouseFollow(false);
@@ -1762,7 +1770,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		rolePlayButton.setVisible(true);
 		mapButton.setVisible(true);
 		attackButton.setVisible(true);
-		diceButton.setVisible(true);
+		diplomacyButton.setVisible(true);
 		chatButton.setVisible(true);
 
 		storyEditorButton.setVisible(false);
