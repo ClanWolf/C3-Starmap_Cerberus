@@ -1589,7 +1589,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			rolePlayButton.setDisable(Nexus.getCurrentChar().getStory() == null);
 			mapButton.setDisable(false);
 			attackButton.setDisable(!Nexus.userHasAttack());
-			diplomacyButton.setDisable(false);
+			diplomacyButton.setDisable(Security.hasPrivilege(PRIVILEGES.FACTIONLEAD_DIPLOMACY));
 			chatButton.setDisable(false);
 
 			// Column 2
