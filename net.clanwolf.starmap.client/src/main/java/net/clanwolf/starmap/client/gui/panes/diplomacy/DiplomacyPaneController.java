@@ -27,6 +27,8 @@
 package net.clanwolf.starmap.client.gui.panes.diplomacy;
 
 import javafx.application.Platform;
+import javafx.fxml.FXML;
+import javafx.scene.control.CheckBox;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
@@ -35,6 +37,7 @@ import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 
 import java.lang.invoke.MethodHandles;
 import java.net.URL;

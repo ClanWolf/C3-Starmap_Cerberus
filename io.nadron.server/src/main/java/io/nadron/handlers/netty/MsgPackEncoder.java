@@ -14,7 +14,7 @@ import org.msgpack.MessagePack;
 public class MsgPackEncoder extends MessageToMessageEncoder<Event> {
 
 	MessagePack msgPack;
-	
+
 	@Override
 	protected void encode(ChannelHandlerContext ctx, Event event,
 			List<Object> out) throws Exception
@@ -42,5 +42,5 @@ public class MsgPackEncoder extends MessageToMessageEncoder<Event> {
 	public void setMsgPack(MessagePack msgPack) {
 		this.msgPack = msgPack;
 	}
-	
+
 }

@@ -5,16 +5,21 @@
   <parent>
     <groupId>net.clanwolf.starmap</groupId>
     <artifactId>C3-Starmap_Cerberus</artifactId>
-    <version>7.3.65</version>
+    <version>7.3.66</version>
   </parent>
   <groupId>net.clanwolf.starmap</groupId>
   <artifactId>net.clanwolf.starmap.transfer</artifactId>
-  <version>7.3.65</version>
+  <version>7.3.66</version>
   <dependencies>
     <dependency>
       <groupId>net.clanwolf.starmap</groupId>
       <artifactId>net.clanwolf.starmap.logging</artifactId>
       <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-core</artifactId>
+      <version>${version.jackson-core}</version>
     </dependency>
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>

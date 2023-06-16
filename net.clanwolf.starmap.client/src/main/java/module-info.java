@@ -29,6 +29,7 @@ module net.clanwolf.starmap.client {
 	opens net.clanwolf.starmap.client.gui.panes.settings to javafx.fxml;
 	opens net.clanwolf.starmap.client.gui.panes.rp to javafx.fxml;
 	opens net.clanwolf.starmap.client.gui.panes.confirmAppClose to javafx.fxml;
+	opens net.clanwolf.starmap.client.gui.panes.diplomacy to javafx.fxml;
 	opens net.clanwolf.starmap.client.gui.panes.map to javafx.fxml;
 	opens net.clanwolf.starmap.client.gui.panes.userinfo to javafx.fxml;
 	opens net.clanwolf.starmap.client.gui.panes.chat to javafx.fxml;

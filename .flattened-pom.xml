@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>net.clanwolf.starmap</groupId>
   <artifactId>C3-Starmap_Cerberus</artifactId>
-  <version>7.3.65</version>
+  <version>7.3.66</version>
   <packaging>pom</packaging>
   <name>C3-Starmap Cerberus</name>
   <description>Starsystem map of the Inner Sphere, Periphery and Clan space (BattleTech).</description>
@@ -32,24 +32,25 @@
     <version.blazeds-core>3.2.0.3978</version.blazeds-core>
     <version.maven-compiler-plugin>3.10.1</version.maven-compiler-plugin>
     <version.exec-maven-plugin>3.0.0</version.exec-maven-plugin>
-    <version.hibernate-core>6.2.0.CR3</version.hibernate-core>
+    <version.hibernate-core>6.2.3.FINAL</version.hibernate-core>
     <version.byte-buddy>1.14.2</version.byte-buddy>
     <version.mchange-commons-java>0.2.20</version.mchange-commons-java>
     <version.collections-generic>4.01</version.collections-generic>
     <version.gifencoder>0.10.1</version.gifencoder>
     <version.discord-api>5.0.0-beta.7</version.discord-api>
-    <version.jackson-databind>2.14.2</version.jackson-databind>
+    <version.jackson-databind>2.15.1</version.jackson-databind>
     <version.iText-core>7.2.5</version.iText-core>
     <mainClass>net.clanwolf.starmap.client.gui.MainFrame</mainClass>
     <version.persistence-api>3.1.0</version.persistence-api>
-    <version.jackson-annotations>2.14.2</version.jackson-annotations>
+    <version.jackson-annotations>2.15.1</version.jackson-annotations>
     <version.jakarta.xml.bind-api>4.0.0</version.jakarta.xml.bind-api>
     <version.maven-shade-plugin>3.3.0</version.maven-shade-plugin>
     <version.java>20</version.java>
     <version.javafx>20.0.1</version.javafx>
-    <version.jackson-core>2.14.2</version.jackson-core>
+    <version.jackson-core>2.15.0</version.jackson-core>
     <version.jetbrains-annotations>24.0.1</version.jetbrains-annotations>
     <version.apache.commons-net>3.9.0</version.apache.commons-net>
+    <version.springframework-spring-context>6.0.9</version.springframework-spring-context>
     <version.tektosyne>6.2.0</version.tektosyne>
     <version.jetlang>0.2.23</version.jetlang>
     <version.asm>9.3</version.asm>
@@ -62,12 +63,12 @@
     <version.mariadb-connector>3.1.3</version.mariadb-connector>
     <version.hibernate-hikaricp>6.2.0.CR3</version.hibernate-hikaricp>
     <version.hikaricp>5.0.1</version.hikaricp>
-    <version.hibernate-commons-annotations>6.0.6.FINAL</version.hibernate-commons-annotations>
+    <version.hibernate-commons-annotations>6.0.6.Final</version.hibernate-commons-annotations>
     <version.springframework>6.0.6</version.springframework>
     <version.apache.commons-collections4>4.4</version.apache.commons-collections4>
     <version.jakarta.mail>2.0.1</version.jakarta.mail>
     <version.springframework-security-config>6.0.2</version.springframework-security-config>
-    <revision>7.3.65</revision>
+    <revision>7.3.66</revision>
     <version.pircbotx>2.2</version.pircbotx>
     <version.dom4j>2.1.4</version.dom4j>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

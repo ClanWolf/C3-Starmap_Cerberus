@@ -11,6 +11,7 @@ CURRENTLY IN PROGRESS:
 - P3: Updating the manual (ongoing): https://www.clanwolf.net/apps/C3/C3_Manual_de.pdf
 
 TODO:
+- If a jumpship attacks, the icon is moved back to the starting system on save... the jumpship level icon needs to be moved as well
 - Update msgpack (io.nadron.server)
 - Channel message if a user successfully changes faction
 - If attack teams are invalid, kick everyone out of the attack and force a new lobby (ResultAnalyzer.java, L.195)
@@ -42,6 +43,9 @@ WATCH OUT FOR WHILE TESTING:
 ----------------------------------------------------------------
 
 VERSIONS
+
+Version 7.3.66 (14.06.2023)
+- UPDATED: Libraries
 
 Version 7.3.65 (27.05.2023)
 - ADDED: Tables for diplomacy data

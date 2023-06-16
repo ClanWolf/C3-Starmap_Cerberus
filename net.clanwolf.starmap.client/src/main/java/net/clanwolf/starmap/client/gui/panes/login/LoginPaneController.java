@@ -188,6 +188,8 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 
 	@FXML
 	private void handleLoginButtonClick() throws Exception {
+		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("666");
+
 		String registerModeString = "";
 		String username = tfUserName.getText();
 
