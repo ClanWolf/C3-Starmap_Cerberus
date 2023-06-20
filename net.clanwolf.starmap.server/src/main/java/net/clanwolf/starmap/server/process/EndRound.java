@@ -230,11 +230,14 @@ public class EndRound {
 
         boolean jumpshipsLeftToMove = false;
         int jscount = 0;
+		int jsmovedcount = 0;
 
         for (JumpshipPOJO js : jumpshipList) {
             if (js.getAttackReady()) {
                 jumpshipsLeftToMove = true;
                 jscount++;
+            } else {
+				jsmovedcount++;
             }
         }
 
@@ -253,7 +256,8 @@ public class EndRound {
         if ((jumpshipsLeftToMove || attacksLeftToResolveInRound) && !(timeForThisRoundIsOver(seasonId)) && !forceFinalize.get()) {
             // round is still active
             logger.info("Round is still active:");
-            logger.info("--- " + jscount + " jumpship have not moved.");
+			logger.info("--- " + jsmovedcount + " jumpship(s) have moved.");
+            logger.info("--- " + jscount + " jumpship(s) have not moved.");
             logger.info("--- " + openAttacksInRoundList.size() + " attacks still to be resolved.");
             logger.info("--- There is still time left to make moves for this round!");
         } else {

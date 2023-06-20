@@ -73,6 +73,10 @@ public class BOUniverse {
 
 	public BOJumpship currentlyDraggedJumpship = null;
 
+	public ArrayList<DiplomacyDTO> getDiplomacy() {
+		return universeDTO.diplomacy;
+	}
+
 	public ArrayList<Long> getAlliedFactions() {
 		ArrayList<Long> factionListAllies = new ArrayList<>();
 		ArrayList<Long> factionRequestedIds = new ArrayList<>();

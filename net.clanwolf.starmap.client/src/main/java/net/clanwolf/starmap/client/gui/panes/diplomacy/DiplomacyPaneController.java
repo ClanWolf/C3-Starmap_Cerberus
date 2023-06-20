@@ -28,29 +28,75 @@ package net.clanwolf.starmap.client.gui.panes.diplomacy;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
 import net.clanwolf.starmap.client.nexus.Nexus;
+import net.clanwolf.starmap.client.process.universe.BOFaction;
+import net.clanwolf.starmap.client.util.Internationalization;
+import net.clanwolf.starmap.transfer.dtos.DiplomacyDTO;
+import net.clanwolf.starmap.transfer.dtos.FactionDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 import java.lang.invoke.MethodHandles;
 import java.net.URL;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class DiplomacyPaneController extends AbstractC3Controller implements ActionCallBackListener {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
+	@FXML
+	ImageView ivFaction01, ivFaction02, ivFaction03, ivFaction04, ivFaction05, ivFaction06, ivFaction07, ivFaction08;
+
+	@FXML
+	ImageView ivAllied01, ivAllied02, ivAllied03, ivAllied04, ivAllied05, ivAllied06, ivAllied07, ivAllied08;
+
+	@FXML
+	Label labelFactionShort01, labelFactionShort02, labelFactionShort03, labelFactionShort04, labelFactionShort05, labelFactionShort06, labelFactionShort07, labelFactionShort08;
+
+	@FXML
+	Label LabelTheirStatus01, LabelTheirStatus02, LabelTheirStatus03, LabelTheirStatus04, LabelTheirStatus05, LabelTheirStatus06, LabelTheirStatus07, LabelTheirStatus08;
+
+	@FXML
+	RadioButton checkbEnemy01, checkbEnemy02, checkbEnemy03, checkbEnemy04, checkbEnemy05, checkbEnemy06, checkbEnemy07, checkbEnemy08;
+
+	@FXML
+	RadioButton checkbAlly01, checkbAlly02, checkbAlly03, checkbAlly04, checkbAlly05, checkbAlly06, checkbAlly07, checkbAlly08;
+
+	@FXML
+	Button buttonSave, buttonCancel;
+
+	@FXML
+	Label panelHeadline, labelHeadlineTheirStatus, labelHeadlineEnemy, labelHeadlineAlly;
+
+	private ArrayList<BOFaction> factions = new ArrayList<>();
+	private ArrayList<Label> labelShortNameList = new ArrayList<>();
+	private ArrayList<Label> labelTheirStatusList = new ArrayList<>();
+	private ArrayList<ImageView> imageFactionLogoList = new ArrayList<>();
+	private ArrayList<ImageView> imageAlliedLogoList = new ArrayList<>();
+	private ArrayList<RadioButton> radioButtonsEnemyList = new ArrayList<>();
+	private ArrayList<RadioButton> radioButtonsAllyList = new ArrayList<>();
 
 	private static DiplomacyPaneController instance = null;
 
 	@Override
 	public void setStrings() {
+		panelHeadline.setText(Internationalization.getString("app_diplomacy_infotext"));
+		labelHeadlineTheirStatus.setText(Internationalization.getString("app_diplomacy_column_Status"));
+		labelHeadlineEnemy.setText(Internationalization.getString("app_diplomacy_column_StatusEnemy"));
+		labelHeadlineAlly.setText(Internationalization.getString("app_diplomacy_column_StatusAlly"));
 
+		buttonSave.setText(Internationalization.getString("general_save"));
+		buttonCancel.setText(Internationalization.getString("general_cancel"));
 	}
 
 	@Override
@@ -138,6 +184,137 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 
 	private void init() {
 		instance = this;
+
+		factions.clear();
+		for (BOFaction fa : Nexus.getBoUniverse().getActiveFactions()) { // all factions that have a jumpship
+			if (!fa.getFactionDTO().getId().equals(Nexus.getCurrentChar().getFactionId().longValue())) {
+				factions.add(fa);
+			}
+		}
+		Collections.sort(factions);
+
+		labelFactionShort01.setText("");
+		labelFactionShort02.setText("");
+		labelFactionShort03.setText("");
+		labelFactionShort04.setText("");
+		labelFactionShort05.setText("");
+		labelFactionShort06.setText("");
+		labelFactionShort07.setText("");
+		labelFactionShort08.setText("");
+
+		LabelTheirStatus01.setText("");
+		LabelTheirStatus02.setText("");
+		LabelTheirStatus03.setText("");
+		LabelTheirStatus04.setText("");
+		LabelTheirStatus05.setText("");
+		LabelTheirStatus06.setText("");
+		LabelTheirStatus07.setText("");
+		LabelTheirStatus08.setText("");
+
+		labelTheirStatusList.clear();
+		labelTheirStatusList.add(LabelTheirStatus01);
+		labelTheirStatusList.add(LabelTheirStatus02);
+		labelTheirStatusList.add(LabelTheirStatus03);
+		labelTheirStatusList.add(LabelTheirStatus04);
+		labelTheirStatusList.add(LabelTheirStatus05);
+		labelTheirStatusList.add(LabelTheirStatus06);
+		labelTheirStatusList.add(LabelTheirStatus07);
+		labelTheirStatusList.add(LabelTheirStatus08);
+
+		labelShortNameList.clear();
+		labelShortNameList.add(labelFactionShort01);
+		labelShortNameList.add(labelFactionShort02);
+		labelShortNameList.add(labelFactionShort03);
+		labelShortNameList.add(labelFactionShort04);
+		labelShortNameList.add(labelFactionShort05);
+		labelShortNameList.add(labelFactionShort06);
+		labelShortNameList.add(labelFactionShort07);
+		labelShortNameList.add(labelFactionShort08);
+
+		imageFactionLogoList.clear();
+		imageFactionLogoList.add(ivFaction01);
+		imageFactionLogoList.add(ivFaction02);
+		imageFactionLogoList.add(ivFaction03);
+		imageFactionLogoList.add(ivFaction04);
+		imageFactionLogoList.add(ivFaction05);
+		imageFactionLogoList.add(ivFaction06);
+		imageFactionLogoList.add(ivFaction07);
+		imageFactionLogoList.add(ivFaction08);
+
+		imageAlliedLogoList.clear();
+		imageAlliedLogoList.add(ivAllied01);
+		imageAlliedLogoList.add(ivAllied02);
+		imageAlliedLogoList.add(ivAllied03);
+		imageAlliedLogoList.add(ivAllied04);
+		imageAlliedLogoList.add(ivAllied05);
+		imageAlliedLogoList.add(ivAllied06);
+		imageAlliedLogoList.add(ivAllied07);
+		imageAlliedLogoList.add(ivAllied08);
+
+		radioButtonsEnemyList.clear();
+		radioButtonsEnemyList.add(checkbEnemy01);
+		radioButtonsEnemyList.add(checkbEnemy02);
+		radioButtonsEnemyList.add(checkbEnemy03);
+		radioButtonsEnemyList.add(checkbEnemy04);
+		radioButtonsEnemyList.add(checkbEnemy05);
+		radioButtonsEnemyList.add(checkbEnemy06);
+		radioButtonsEnemyList.add(checkbEnemy07);
+		radioButtonsEnemyList.add(checkbEnemy08);
+
+		radioButtonsAllyList.clear();
+		radioButtonsAllyList.add(checkbAlly01);
+		radioButtonsAllyList.add(checkbAlly02);
+		radioButtonsAllyList.add(checkbAlly03);
+		radioButtonsAllyList.add(checkbAlly04);
+		radioButtonsAllyList.add(checkbAlly05);
+		radioButtonsAllyList.add(checkbAlly06);
+		radioButtonsAllyList.add(checkbAlly07);
+		radioButtonsAllyList.add(checkbAlly08);
+
+		Image diplomacyIconNone = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/attack.png")));
+		Image diplomacyIconLeft = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/diplomacy_left.png")));
+		Image diplomacyIconRight = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/diplomacy_right.png")));
+		Image diplomacyIconAllied = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/diplomacy_hover.png")));
+
+		for (int i = 0; i < labelShortNameList.size(); i++) {
+			BOFaction f = factions.get(i);
+
+			labelTheirStatusList.get(i).setVisible(true);
+			radioButtonsEnemyList.get(i).setVisible(true);
+			radioButtonsAllyList.get(i).setVisible(true);
+			imageAlliedLogoList.get(i).setVisible(true);
+			imageAlliedLogoList.get(i).setImage(diplomacyIconNone);
+
+			boolean allianceRequested = false;
+			for (DiplomacyDTO d : Nexus.getBoUniverse().getDiplomacy()) {
+				if (d.getFactionID_REQUEST().equals(f.getID()) && d.getFactionID_ACCEPTED().equals(Nexus.getCurrentChar().getFactionId().longValue())) {
+					allianceRequested = true;
+					labelTheirStatusList.get(i).setText(Internationalization.getString("app_diplomacy_column_StatusFriendly"));
+				}
+				if (d.getFactionID_ACCEPTED().equals(f.getID()) && d.getFactionID_REQUEST().equals(Nexus.getCurrentChar().getFactionId().longValue())) {
+					radioButtonsAllyList.get(i).setSelected(true);
+					radioButtonsEnemyList.get(i).setSelected(false);
+				} else {
+					radioButtonsAllyList.get(i).setSelected(false);
+					radioButtonsEnemyList.get(i).setSelected(true);
+				}
+			}
+			if (!allianceRequested) {
+				labelTheirStatusList.get(i).setText(Internationalization.getString("app_diplomacy_column_StatusEnemy"));
+			}
+
+			// Faction logo
+			String logo = f.getLogo();
+			Image imageFaction = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logos/factions/" + logo)));
+			ImageView iv = imageFactionLogoList.get(i);
+			iv.setImage(imageFaction);
+			iv.setVisible(true);
+
+			// Faction shortname
+			Label l = labelShortNameList.get(i);
+			l.setText(f.getShortName());
+			l.setVisible(true);
+		}
 	}
 
 	private void handleCommand(String com) {

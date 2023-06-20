@@ -44,7 +44,7 @@ import javafx.scene.text.TextBoundsType;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.StatusTextEntryActionObject;
-import net.clanwolf.starmap.client.enums.PRIVILEGES;
+import net.clanwolf.starmap.transfer.enums.PRIVILEGES;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.gui.panes.map.tools.RouteCalculator;
 import net.clanwolf.starmap.client.process.universe.BOJumpship;

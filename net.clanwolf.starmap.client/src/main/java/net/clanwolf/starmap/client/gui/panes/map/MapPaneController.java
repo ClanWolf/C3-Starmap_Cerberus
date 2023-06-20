@@ -60,7 +60,7 @@ import javafx.util.Duration;
 import net.clanwolf.starmap.client.action.*;
 import net.clanwolf.starmap.client.enums.C3MESSAGES;
 import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
-import net.clanwolf.starmap.client.enums.PRIVILEGES;
+import net.clanwolf.starmap.transfer.enums.PRIVILEGES;
 import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;

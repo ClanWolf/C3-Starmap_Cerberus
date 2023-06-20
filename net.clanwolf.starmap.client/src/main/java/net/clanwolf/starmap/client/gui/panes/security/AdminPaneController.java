@@ -37,7 +37,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import net.clanwolf.starmap.client.enums.PRIVILEGES;
+import net.clanwolf.starmap.transfer.enums.PRIVILEGES;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.universe.BOFaction;
 import net.clanwolf.starmap.client.process.universe.BOJumpship;

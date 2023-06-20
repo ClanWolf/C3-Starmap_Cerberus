@@ -11,6 +11,7 @@ CURRENTLY IN PROGRESS:
 - P3: Updating the manual (ongoing): https://www.clanwolf.net/apps/C3/C3_Manual_de.pdf
 
 TODO:
+- Add a function to leave game / delete account
 - If a jumpship attacks, the icon is moved back to the starting system on save... the jumpship level icon needs to be moved as well
 - Update msgpack (io.nadron.server)
 - Channel message if a user successfully changes faction
@@ -44,8 +45,17 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
-Version 7.3.66 (14.06.2023)
+Version 7.3.70 (20.06.2023)
+- FIXED: Error while registering a new user
+
+Version 7.3.67 (20.06.2023)
+- UPDATED: Diplomacy pane
+- CHANGED: Ulric (Discord) now lists all users with faction leader role (for information and contact purposes)
+
+Version 7.3.66 (19.06.2023)
 - UPDATED: Libraries
+- UPDATED: Diplomacy pane
+- UPDATED: Ulric only posts overview every 24h
 
 Version 7.3.65 (27.05.2023)
 - ADDED: Tables for diplomacy data

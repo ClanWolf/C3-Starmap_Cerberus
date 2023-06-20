@@ -42,6 +42,7 @@ import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
 
 
 import java.lang.invoke.MethodHandles;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -129,6 +130,8 @@ public class C3LookupService extends SimpleLookupService {
 					u.setUserEMail(sMail);
 					u.setUserPassword(pw1);
 					u.setUserPasswordWebsite(pw2);
+					u.setCreated(new Timestamp(System.currentTimeMillis()));
+					u.setJoinDate(new Timestamp(System.currentTimeMillis()));
 
 					userDAO.save(ServerNexus.DUMMY_USERID, u);
 

@@ -27,9 +27,11 @@
 package net.clanwolf.starmap.server.timertasks;
 
 import net.clanwolf.starmap.server.GameServer;
+import net.clanwolf.starmap.server.security.Security;
 import net.clanwolf.starmap.server.servernexus.ServerNexus;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.*;
 import net.clanwolf.starmap.server.persistence.pojos.*;
+import net.clanwolf.starmap.transfer.enums.PRIVILEGES;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,6 +39,8 @@ import java.lang.invoke.MethodHandles;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.TimerTask;
 
 /**
@@ -65,6 +69,7 @@ public class SendInformationToBotsTimerTask extends TimerTask {
 
 		ArrayList<AttackPOJO> allAttacksForRound = AttackDAO.getInstance().getOpenAttacksOfASeasonForRound(seasonId, roundId.intValue());
 		ArrayList<AttackPOJO> allAttacksForNextRound = AttackDAO.getInstance().getOpenAttacksOfASeasonForRound(seasonId, roundId.intValue() + 1);
+		ArrayList<RolePlayCharacterPOJO> allCharacters = RolePlayCharacterDAO.getInstance().getAllCharacter();
 
 		StringBuilder fs_de = new StringBuilder();
 		StringBuilder fs_en = new StringBuilder();
@@ -83,8 +88,8 @@ public class SendInformationToBotsTimerTask extends TimerTask {
 			co++;
 		}
 		if (co == 0) {
-			fs_de.append("- keine ...\r\n");
-			fs_en.append("- none ...\r\n");
+			fs_de.append("- keine...\r\n");
+			fs_en.append("- none...\r\n");
 		}
 		fs_de.append("\r\nNoch ").append(finalHoursLeft).append(" Stunden und ").append(finalMinutesLeft).append(" Minuten in Runde ").append(roundId).append(" der Season ").append(seasonId).append(".\r\n");
 		fs_en.append("\r\n").append(finalHoursLeft).append(" hours and ").append(finalMinutesLeft).append(" minutes left in round ").append(roundId).append(" of season ").append(seasonId).append(".\r\n");
@@ -105,6 +110,24 @@ public class SendInformationToBotsTimerTask extends TimerTask {
 				fs_en.append("- ").append(ss.getName()).append(" (").append(defender.getShortName()).append(") is attacked by ").append(attacker.getShortName()).append(" (<").append(forumLink).append(">)\r\n");
 			}
 		}
+
+		fs_de.append("\r\nFraktionskontakte:");
+		fs_en.append("\r\nFaction contacts:");
+		for (RolePlayCharacterPOJO c : allCharacters) {
+			UserPOJO u = UserDAO.getInstance().findById(ServerNexus.DUMMY_USERID, c.getUser().getUserId());
+			if (Security.hasPrivilege(u, PRIVILEGES.FACTIONLEAD_HAS_ROLE)) {
+				FactionPOJO f = FactionDAO.getInstance().findById(ServerNexus.DUMMY_USERID, c.getFactionId().longValue());
+
+				fs_de.append("\r\n- ").append(f.getShortName()).append(": ").append(c.getRank()).append(" ").append(c.getName());
+				fs_en.append("\r\n- ").append(f.getShortName()).append(": ").append(c.getRank()).append(" ").append(c.getName());
+
+				if (Security.isGodAdmin(c.getUser())) {
+					fs_de.append(" (Godadmin)");
+					fs_en.append(" (Godadmin)");
+				}
+			}
+		}
+
 		ServerNexus.getEci().sendExtCom("Round " + roundId + "\r\n" + "Open fights:\r\n" + fs_en, "en", true, true, true);
 		ServerNexus.getEci().sendExtCom("Runde " + roundId + "\r\n" + "Offene Kämpfe:\r\n" + fs_de, "de", true, true, true);
 	}

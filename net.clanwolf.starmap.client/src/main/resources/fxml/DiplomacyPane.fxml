@@ -26,7 +26,7 @@
             <Color red="0.412" green="0.620" blue="0.804" fx:id="x1" />
          </textFill>
       </Label>
-      <GridPane layoutX="249.0" layoutY="62.0">
+      <GridPane layoutX="249.0" layoutY="54.0">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -36,7 +36,7 @@
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="80.0" minWidth="80.0" prefWidth="80.0" />
         </columnConstraints>
         <rowConstraints>
-          <RowConstraints vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="32.0" minHeight="32.0" prefHeight="32.0" valignment="TOP" vgrow="SOMETIMES" />
           <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
           <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
             <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
@@ -47,115 +47,141 @@
             <RowConstraints maxHeight="40.0" minHeight="40.0" prefHeight="40.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <ImageView fitHeight="60.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="5">
-               <image>
-                  <Image url="@../images/buttons/diplomacy_hover.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="35.0" fitWidth="74.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="5">
+            <Label fx:id="labelHeadlineTheirStatus" focusTraversable="false" mouseTransparent="true" text="Status" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" />
+            <Label fx:id="labelHeadlineEnemy" focusTraversable="false" mouseTransparent="true" text="Verfeindet" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" />
+            <Label fx:id="labelHeadlineAlly" focusTraversable="false" mouseTransparent="true" text="Verbündet" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" />
+            <ImageView fx:id="ivFaction01" fitHeight="35.0" fitWidth="74.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="1">
                <image>
                   <Image url="@../images/logos/factions/FS.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="35.0" fitWidth="74.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="4">
-               <image>
-                  <Image url="@../images/logos/factions/FS.png" />
-               </image>
-            </ImageView>
-            <RadioButton contentDisplay="CENTER" mnemonicParsing="false" prefHeight="15.0" prefWidth="15.0" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="5" />
-            <Label text="VS" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-            <Label text="Verfeindet" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="5" />
-            <Label text="Status" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" />
-            <Label text="Verfeindet" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" />
-            <Label text="Verbündet" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" />
-            <RadioButton contentDisplay="CENTER" mnemonicParsing="false" prefHeight="15.0" prefWidth="15.0" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="5" />
-            <ImageView fitHeight="60.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="4">
+            <ImageView fx:id="ivAllied01" fitHeight="60.0" fitWidth="30.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="1">
                <image>
                   <Image url="@../images/buttons/diplomacy_hover.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="60.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="1">
-               <image>
-                  <Image url="@../images/buttons/diplomacy_hover.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="60.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="2">
-               <image>
-                  <Image url="@../images/buttons/diplomacy_hover.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="60.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="3">
-               <image>
-                  <Image url="@../images/buttons/diplomacy_hover.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="60.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="6">
-               <image>
-                  <Image url="@../images/buttons/diplomacy_hover.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="60.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="7">
-               <image>
-                  <Image url="@../images/buttons/diplomacy_hover.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="60.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="8">
-               <image>
-                  <Image url="@../images/buttons/diplomacy_hover.png" />
-               </image>
-            </ImageView>
-            <ImageView fitHeight="35.0" fitWidth="74.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="8">
+            <ImageView fx:id="ivFaction02" fitHeight="35.0" fitWidth="74.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="2">
                <image>
                   <Image url="@../images/logos/factions/FS.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="35.0" fitWidth="74.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="2">
+            <ImageView fx:id="ivAllied02" fitHeight="60.0" fitWidth="30.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="2">
+               <image>
+                  <Image url="@../images/buttons/diplomacy_hover.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="ivFaction03" fitHeight="35.0" fitWidth="74.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="3">
                <image>
                   <Image url="@../images/logos/factions/FS.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="35.0" fitWidth="74.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="3">
+            <ImageView fx:id="ivAllied03" fitHeight="60.0" fitWidth="30.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="3">
+               <image>
+                  <Image url="@../images/buttons/diplomacy_hover.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="ivFaction04" fitHeight="35.0" fitWidth="74.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="4">
                <image>
                   <Image url="@../images/logos/factions/FS.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="35.0" fitWidth="74.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="1">
+            <ImageView fx:id="ivAllied04" fitHeight="60.0" fitWidth="30.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="4">
+               <image>
+                  <Image url="@../images/buttons/diplomacy_hover.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="ivFaction05" fitHeight="35.0" fitWidth="74.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="5">
                <image>
                   <Image url="@../images/logos/factions/FS.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="35.0" fitWidth="74.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="6">
+            <ImageView fx:id="ivAllied05" fitHeight="60.0" fitWidth="30.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="5">
+               <image>
+                  <Image url="@../images/buttons/diplomacy_hover.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="ivFaction06" fitHeight="35.0" fitWidth="74.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="6">
                <image>
                   <Image url="@../images/logos/factions/FS.png" />
                </image>
             </ImageView>
-            <ImageView fitHeight="35.0" fitWidth="74.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="7">
+            <ImageView fx:id="ivAllied06" fitHeight="60.0" fitWidth="30.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="6">
+               <image>
+                  <Image url="@../images/buttons/diplomacy_hover.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="ivFaction07" fitHeight="35.0" fitWidth="74.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="7">
                <image>
                   <Image url="@../images/logos/factions/FS.png" />
                </image>
             </ImageView>
-            <Label text="VS" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <Label text="VS" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <Label text="VS" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <Label text="VS" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-            <Label text="VS" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-            <Label text="VS" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-            <Label text="VS" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+            <ImageView fx:id="ivAllied07" fitHeight="60.0" fitWidth="30.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="7">
+               <image>
+                  <Image url="@../images/buttons/diplomacy_hover.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="ivFaction08" fitHeight="35.0" fitWidth="74.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="8">
+               <image>
+                  <Image url="@../images/logos/factions/FS.png" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="ivAllied08" fitHeight="60.0" fitWidth="30.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="8">
+               <image>
+                  <Image url="@../images/buttons/diplomacy_hover.png" />
+               </image>
+            </ImageView>
+            <Label fx:id="labelFactionShort01" focusTraversable="false" mouseTransparent="true" text="..." visible="false" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            <Label fx:id="LabelTheirStatus01" focusTraversable="false" mouseTransparent="true" text="..." visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="1" />
+            <RadioButton fx:id="checkbEnemy01" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="15.0" prefWidth="15.0" visible="false" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="1" />
+            <RadioButton fx:id="checkbAlly01" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="15.0" prefWidth="15.0" visible="false" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="1" />
+            <Label fx:id="labelFactionShort02" focusTraversable="false" mouseTransparent="true" text="..." visible="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            <Label fx:id="LabelTheirStatus02" focusTraversable="false" mouseTransparent="true" text="..." visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="2" />
+            <RadioButton fx:id="checkbEnemy02" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="15.0" prefWidth="15.0" visible="false" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="2" />
+            <RadioButton fx:id="checkbAlly02" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="15.0" prefWidth="15.0" visible="false" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="2" />
+            <Label fx:id="labelFactionShort03" focusTraversable="false" mouseTransparent="true" text="..." visible="false" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            <Label fx:id="LabelTheirStatus03" focusTraversable="false" mouseTransparent="true" text="..." visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="3" />
+            <RadioButton fx:id="checkbEnemy03" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="15.0" prefWidth="15.0" visible="false" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="3" />
+            <RadioButton fx:id="checkbAlly03" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="15.0" prefWidth="15.0" visible="false" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="3" />
+            <Label fx:id="labelFactionShort04" focusTraversable="false" mouseTransparent="true" text="..." visible="false" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label fx:id="LabelTheirStatus04" focusTraversable="false" mouseTransparent="true" text="..." visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="4" />
+            <RadioButton fx:id="checkbEnemy04" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="15.0" prefWidth="15.0" visible="false" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="4" />
+            <RadioButton fx:id="checkbAlly04" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="15.0" prefWidth="15.0" visible="false" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="4" />
+            <Label fx:id="labelFactionShort05" focusTraversable="false" mouseTransparent="true" text="..." visible="false" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            <Label fx:id="LabelTheirStatus05" focusTraversable="false" mouseTransparent="true" text="..." visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="5" />
+            <RadioButton fx:id="checkbEnemy05" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="15.0" prefWidth="15.0" visible="false" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="5" />
+            <RadioButton fx:id="checkbAlly05" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="15.0" prefWidth="15.0" visible="false" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="5" />
+            <Label fx:id="labelFactionShort06" focusTraversable="false" mouseTransparent="true" text="..." visible="false" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            <Label fx:id="LabelTheirStatus06" focusTraversable="false" mouseTransparent="true" text="..." visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="6" />
+            <RadioButton fx:id="checkbEnemy06" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="15.0" prefWidth="15.0" visible="false" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="6" />
+            <RadioButton fx:id="checkbAlly06" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="15.0" prefWidth="15.0" visible="false" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="6" />
+            <Label fx:id="labelFactionShort07" focusTraversable="false" mouseTransparent="true" text="..." visible="false" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            <Label fx:id="LabelTheirStatus07" focusTraversable="false" mouseTransparent="true" text="..." visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="7" />
+            <RadioButton fx:id="checkbEnemy07" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="15.0" prefWidth="15.0" visible="false" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="7" />
+            <RadioButton fx:id="checkbAlly07" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="15.0" prefWidth="15.0" visible="false" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="7" />
+            <Label fx:id="labelFactionShort08" focusTraversable="false" mouseTransparent="true" text="..." visible="false" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+            <Label fx:id="LabelTheirStatus08" focusTraversable="false" mouseTransparent="true" text="..." visible="false" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="8" />
+            <RadioButton fx:id="checkbEnemy08" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="15.0" prefWidth="15.0" visible="false" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="8" />
+            <RadioButton fx:id="checkbAlly08" contentDisplay="CENTER" mnemonicParsing="false" prefHeight="15.0" prefWidth="15.0" visible="false" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="8" />
          </children>
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
       </GridPane>
+      <Button id="buttonYes" fx:id="buttonSave" alignment="CENTER_RIGHT" defaultButton="true" layoutX="540.0" layoutY="439.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="140.0" styleClass="contentButton" text="Save">
+         <stylesheets>
+            <URL value="@../styles/MainFrameStyle.css" />
+         </stylesheets>
+      </Button>
       <Button id="buttonNo" fx:id="buttonCancel" alignment="CENTER_RIGHT" cancelButton="true" layoutX="689.0" layoutY="439.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="140.0" styleClass="contentButton" text="Cancel">
          <stylesheets>
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>
       </Button>
-      <Button id="buttonYes" fx:id="buttonLogout" alignment="CENTER_RIGHT" defaultButton="true" layoutX="540.0" layoutY="439.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefWidth="140.0" styleClass="contentButton" text="Logout">
-         <stylesheets>
-            <URL value="@../styles/MainFrameStyle.css" />
-         </stylesheets>
-      </Button>
+      <ImageView fitHeight="472.0" fitWidth="183.0" layoutX="85.0" layoutY="14.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/bg_rp/diplomat_01.png" />
+         </image>
+      </ImageView>
 	</children>
 	<stylesheets>
 		<URL value="@../styles/MainFrameStyle.css" />

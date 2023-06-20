@@ -37,7 +37,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 
 /**
  * UserPOJO entity.
- * 
+ *
  * @author MyEclipse Persistence Tools
  */
 @JsonIdentityInfo(
@@ -58,7 +58,7 @@ public class UserPOJO extends Pojo {
 	@Column(name = "UserName", nullable = false, length = 45)
 	private String userName;
 
-	@Column(name = "MWOUsername", nullable = false, length = 100)
+	@Column(name = "MWOUsername", nullable = true, length = 100)
 	private String mwoUsername;
 
 	@Column(name = "UserPassword", nullable = true, length = 45)

@@ -24,12 +24,11 @@
  * Copyright (c) 2001-2023, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.client.security;
+package net.clanwolf.starmap.server.security;
 
-//import net.clanwolf.starmap.client.nexus.Nexus;
-import net.clanwolf.starmap.transfer.enums.PRIVILEGES;
-import net.clanwolf.starmap.client.nexus.Nexus;
+import net.clanwolf.starmap.server.persistence.pojos.UserPOJO;
 import net.clanwolf.starmap.transfer.dtos.UserDTO;
+import net.clanwolf.starmap.transfer.enums.PRIVILEGES;
 
 /**
  * security
@@ -55,7 +54,7 @@ public class Security {
 	 * @param user user
 	 * @return isGodAdmin
 	 */
-	public static boolean isGodAdmin(UserDTO user) {
+	public static boolean isGodAdmin(UserPOJO user) {
 		boolean isGodAdmin = false;
 		long privs = user.getPrivileges();
 		if (privs < 0) {
@@ -99,27 +98,13 @@ public class Security {
 		System.out.println("-------------------------------------" + System.lineSeparator());
 	}
 
-//	/**
-//	 * Checks if the currently logged on user has a given privilege
-//	 *
-//	 * @param priv priv
-//	 * @return haspriv
-//	 */
-//	public static boolean hasPrivilege(PRIVILEGES priv) {
-//		return hasPrivilege(Nexus.getCurrentUser(), priv);
-//	}
-
-	public static boolean hasPrivilege(PRIVILEGES priv) {
-		return hasPrivilege(Nexus.getCurrentUser(), priv);
-	}
-
 	/**
 	 * Checks if the current user has a given privilege
 	 *
 	 * @param priv the privilege to check
 	 * @return boolean
 	 */
-	public static boolean hasPrivilege(UserDTO user, PRIVILEGES priv) {
+	public static boolean hasPrivilege(UserPOJO user, PRIVILEGES priv) {
 		if (user == null) {
 			return false;
 		}

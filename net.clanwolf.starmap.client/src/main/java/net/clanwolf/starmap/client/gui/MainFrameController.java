@@ -51,7 +51,7 @@ import net.clanwolf.starmap.client.action.*;
 import net.clanwolf.starmap.client.enums.C3MESSAGERESULTS;
 import net.clanwolf.starmap.client.enums.C3MESSAGES;
 import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
-import net.clanwolf.starmap.client.enums.PRIVILEGES;
+import net.clanwolf.starmap.transfer.enums.PRIVILEGES;
 import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
 import net.clanwolf.starmap.client.gui.messagepanes.C3MessagePane;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
@@ -2282,7 +2282,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				if (!messageIsShowing) {
 					Nexus.setMainFrameEnabled(true);
 					decrementCounter();
-					logger.info("Requesting NORMAL CURSOR (" + counterWaitCursor + "). --> " + sourceIdRN);
+					//logger.info("Requesting NORMAL CURSOR (" + counterWaitCursor + "). --> " + sourceIdRN);
 					if ("forceNormal".equals(sourceIdRN)) {
 						logger.info("Forcing NORMAL CURSOR");
 						resetCounter();
@@ -2308,7 +2308,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					});
 					ActionManager.getAction(ACTIONS.ACTION_SUCCESSFULLY_EXECUTED).execute(o);
 				} else {
-					logger.info("!!! SUPPRESSED: Requesting NORMAL cursor (" + counterWaitCursor + "). --> " + sourceIdRN);
+					//logger.info("!!! SUPPRESSED: Requesting NORMAL cursor (" + counterWaitCursor + "). --> " + sourceIdRN);
 				}
 				break;
 
@@ -2320,7 +2320,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				final String str = sourceIdRW;
 				Nexus.setMainFrameEnabled(false);
 				incrementCounter();
-				logger.info("Requesting WAIT cursor (" + counterWaitCursor + "). --> " + sourceIdRW);
+				//logger.info("Requesting WAIT cursor (" + counterWaitCursor + "). --> " + sourceIdRW);
 				Platform.runLater(() -> {
 					mouseStopper.toFront();
 					paneVolumeControl.toFront();
