@@ -173,9 +173,11 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 				} else {
 					selectedUser = (String) lvUsers.getSelectionModel().getSelectedItems().get(0);
 				}
-				if (lvUsers.getSelectionModel().getSelectedItems().get(0).equals("C3\\" + Nexus.getCurrentUser().getUserName()) || lvUsers.getSelectionModel().getSelectedItems().get(0).equals("-----")) {
-					lvUsers.getSelectionModel().clearSelection();
-					selectedUser = "";
+				if (lvUsers.getSelectionModel().getSelectedItems().size() >= 1) {
+					if (lvUsers.getSelectionModel().getSelectedItems().get(0).equals("C3\\" + Nexus.getCurrentUser().getUserName()) || lvUsers.getSelectionModel().getSelectedItems().get(0).equals("-----")) {
+						lvUsers.getSelectionModel().clearSelection();
+						selectedUser = "";
+					}
 				}
 			}
 		});
@@ -294,7 +296,7 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 
 	private void init() {
 		initStarted = true;
-		tableViewChat.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+		tableViewChat.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
 		tableViewChat.getStyleClass().add("noheader");
 		TableColumn<ChatEntry, String> chatTimeColumn = new TableColumn<>("");
 		chatTimeColumn.setCellValueFactory(data -> data.getValue().getChatTime());

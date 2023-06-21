@@ -26,22 +26,29 @@
 
 		<!-- C3 Revision -->
 		<!-- https://stackoverflow.com/questions/10582054/maven-project-version-inheritance-do-i-have-to-specify-the-parent-version -->
-		<revision>7.3.70</revision>
+		<revision>7.3.71</revision>
 
 		<!-- Versions -->
 		<version.java>20</version.java>
 		<version.javafx>20.0.1</version.javafx>
-		<version.maven-compiler-plugin>3.10.1</version.maven-compiler-plugin>
-		<version.maven-shade-plugin>3.3.0</version.maven-shade-plugin>
+
+		<version.asm>9.5</version.asm>
+		<version.maven-antrun-plugin>3.1.0</version.maven-antrun-plugin>
+		<version.maven-compiler-plugin>3.11.0</version.maven-compiler-plugin>
+		<version.maven-dependency-plugin>3.6.0</version.maven-dependency-plugin>
+		<version.maven-jar-plugin>3.3.0</version.maven-jar-plugin>
+		<version.maven-resources-plugin>3.3.1</version.maven-resources-plugin>
+		<version.maven-shade-plugin>3.5.0</version.maven-shade-plugin>
 		<version.exec-maven-plugin>3.0.0</version.exec-maven-plugin>
-		<version.asm>9.3</version.asm>
+		<version.flatten-maven-plugin>1.5.0</version.flatten-maven-plugin>
+		<version.moditect-maven-plugin>1.0.0.Final</version.moditect-maven-plugin>
 
 		<version.apache.commons-collections4>4.4</version.apache.commons-collections4>
 		<version.apache.commons-net>3.9.0</version.apache.commons-net>
 		<version.blazeds-core>3.2.0.3978</version.blazeds-core>
 		<version.byte-buddy>1.14.2</version.byte-buddy>
 		<version.collections-generic>4.01</version.collections-generic>
-		<version.discord-api>5.0.0-beta.7</version.discord-api>
+		<version.discord-api>5.0.0-beta.11</version.discord-api>
 		<version.dom4j>2.1.4</version.dom4j>
 		<version.el-api>5.0.1</version.el-api>
 		<version.gifencoder>0.10.1</version.gifencoder>
@@ -133,7 +140,7 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>flatten-maven-plugin</artifactId>
-				<version>1.1.0</version>
+				<version>${version.flatten-maven-plugin}</version>
 				<configuration>
 					<updatePomFile>true</updatePomFile>
 					<flattenMode>resolveCiFriendliesOnly</flattenMode>

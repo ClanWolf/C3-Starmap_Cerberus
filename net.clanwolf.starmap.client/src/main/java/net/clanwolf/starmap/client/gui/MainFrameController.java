@@ -1787,7 +1787,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		ivMuteToggle.toFront();
 		addActionCallBackListeners();
 
-		tblUserHistory.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+		tblUserHistory.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
 		tblUserHistory.getStyleClass().add("noheader");
 		tblUserHistory.setPlaceholder(new Label("..."));
 		TableColumn<UserHistoryEntry, String> userColumn = new TableColumn<>("");

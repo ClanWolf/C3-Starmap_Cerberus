@@ -50,6 +50,8 @@ import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 import java.io.InputStream;
 import java.lang.invoke.MethodHandles;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -100,26 +102,19 @@ public class BORolePlayStory {
 		String serverUrl = C3Properties.getProperty(C3PROPS.SERVER_URL);
 		String soundPath = getRPG_ResourceURL() + "/" + rp.getId();
 		try {
-			return new URL(serverUrl + "/" + soundPath + "/" + rp.getStoryMP3());
+			URI uri = new URI(serverUrl + "/" + soundPath + "/" + rp.getStoryMP3());
+			return uri.toURL();
 		} catch (MalformedURLException e) {
-			logger.info("Error while loading RPG image! " + e.getMessage());
+			logger.error("Error while loading RPG image! " + e.getMessage());
 			e.printStackTrace();
 			return null;
+		} catch (URISyntaxException e) {
+			logger.error("Error while loading RPG image! " + e.getMessage());
+			e.printStackTrace();
+			return null;
+			// throw new RuntimeException(e);
 		}
 	}
-
-	/**
-	 * Get the basic url for rpg. The result depends on if the client is running on a dev system or not.
-	 *
-	 * @return
-	 *          the base url string for rpg
-	 */
-	/*public static String getRPG_BasicURL(){
-		if(Nexus.isDevelopmentPC()){
-			return C3Properties.getProperty(C3PROPS.SERVER_URL) + "/" + BORolePlayStory.URL_RPG_BASIC_DEV;
-		}
-		return C3Properties.getProperty(C3PROPS.SERVER_URL) + "/" + BORolePlayStory.URL_RPG_BASIC;
-	}*/
 
 	/**
 	 * Get the basic url for resources. The result depends on if the client is running on a dev system or not.

@@ -310,6 +310,10 @@ public class EventCommunications {
 				case NO_MODE:
 					break;
 
+				case DIPLOMACY_SAVE_RESPONSE:
+					ActionManager.getAction(ACTIONS.DIPLOMACY_SITUATION_CHANGED).execute();
+					break;
+
 				case ATTACK_SAVE_RESPONSE:
 					if (Nexus.isLoggedIn()) {
 						logger.info("Attack has been saved.");

@@ -56,7 +56,8 @@
 			<version>${version.discord-api}</version>
 		</dependency>
 
-		<!-- IRC +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+		<!-- IRC +++++++++++++++++++++++++++++++++++++++++++++++
+		++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 		<!-- https://jitpack.io/#pircbotx/pircbotx -->
 		<dependency>
 			<groupId>com.github.pircbotx</groupId>
@@ -104,6 +105,14 @@
 					<showDeprecation>true</showDeprecation>
 					<source>${version.java}</source>
 					<target>${version.java}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>${version.maven-resources-plugin}</version>
+				<configuration>
+					<propertiesEncoding>UTF-8</propertiesEncoding>
 				</configuration>
 			</plugin>
 			<plugin>

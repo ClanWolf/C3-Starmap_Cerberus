@@ -26,13 +26,21 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.2.2</version>
+				<version>${version.maven-jar-plugin}</version>
 				<configuration>
 					<archive>
 						<manifest>
 							<mainClass>net.clanwolf.starmap.client.packager.NSICreator</mainClass>
 						</manifest>
 					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>${version.maven-resources-plugin}</version>
+				<configuration>
+					<propertiesEncoding>UTF-8</propertiesEncoding>
 				</configuration>
 			</plugin>
             <plugin>

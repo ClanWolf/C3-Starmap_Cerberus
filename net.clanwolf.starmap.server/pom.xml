@@ -251,6 +251,14 @@
 					</compilerArgs>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>${version.maven-resources-plugin}</version>
+				<configuration>
+					<propertiesEncoding>UTF-8</propertiesEncoding>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 

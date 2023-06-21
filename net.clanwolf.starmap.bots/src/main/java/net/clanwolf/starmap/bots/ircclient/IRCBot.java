@@ -223,7 +223,7 @@ public class IRCBot extends ListenerAdapter {
 
 	public static void main(String[] args) throws Exception {
 		int oneMinute = 1000 * 60;
-		Locale.setDefault(new Locale("en", "EN"));
+		Locale.setDefault(new Locale.Builder().setLanguage("en").setScript("Latn").setRegion("US").build());
 
 		prepareLogging();
 

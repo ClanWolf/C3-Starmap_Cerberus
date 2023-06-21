@@ -17,24 +17,24 @@ public class NettyObjectProtocol extends AbstractNettyProtocol {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	private LengthFieldPrepender lengthFieldPrepender;
-	
+
 	public NettyObjectProtocol()
 	{
 		super("NETTY_OBJECT_PROTOCOL");
 	}
-	
+
 	@Override
 	public void applyProtocol(PlayerSession playerSession) {
 		logger.info("Going to apply " + getProtocolName() + " on session: " + playerSession);
 		ChannelPipeline pipeline = NettyUtils.getPipeLineOfConnection(playerSession);
 		NettyUtils.clearPipeline(pipeline);
-		
+
 		// Upstream handlers or encoders (i.e towards server) are added to
 		// pipeline now.
 		pipeline.addLast("lengthDecoder", createLengthBasedFrameDecoder());
-		pipeline.addLast("eventDecoder",  new EventObjectDecoder());
-		pipeline.addLast("eventHandler",new DefaultToServerHandler(playerSession));
-		
+		pipeline.addLast("eventDecoder", new EventObjectDecoder());
+		pipeline.addLast("eventHandler", new DefaultToServerHandler(playerSession));
+
 		// Downstream handlers - Filter for data which flows from server to
 		// client. Note that the last handler added is actually the first
 		// handler for outgoing data.
@@ -42,12 +42,12 @@ public class NettyObjectProtocol extends AbstractNettyProtocol {
 		pipeline.addLast("eventEncoder", new EventObjectEncoder());
 	}
 
-	public LengthFieldPrepender getLengthFieldPrepender() 
+	public LengthFieldPrepender getLengthFieldPrepender()
 	{
 		return lengthFieldPrepender;
 	}
 
-	public void setLengthFieldPrepender(LengthFieldPrepender lengthFieldPrepender) 
+	public void setLengthFieldPrepender(LengthFieldPrepender lengthFieldPrepender)
 	{
 		this.lengthFieldPrepender = lengthFieldPrepender;
 	}

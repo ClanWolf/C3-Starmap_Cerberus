@@ -39,6 +39,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Objects;
 
@@ -185,12 +187,14 @@ public class MechIdInfo {
         java.net.URL url;
 
         try {
-            url = new URL(URL);
-        } catch (MalformedURLException e) {
-            System.out.println(e.getMessage());
-            return false;
+			URI uri = new URI(URL);
+            url = uri.toURL();
+        } catch (MalformedURLException | URISyntaxException e) {
+			logger.error("Error with mech icon: ", e);
+			System.out.println(e.getMessage());
+			return false;
         }
-        try {
+	    try {
             url.openStream().close();
             return true;
         } catch (IOException e) {

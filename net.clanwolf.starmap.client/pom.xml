@@ -194,7 +194,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
-				<version>1.8</version>
+				<version>${version.maven-antrun-plugin}</version>
 				<executions>
 					<execution>
 						<phase>test</phase>
@@ -241,8 +241,16 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>${version.maven-resources-plugin}</version>
+				<configuration>
+					<propertiesEncoding>UTF-8</propertiesEncoding>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-dependency-plugin</artifactId>
-				<version>3.1.1</version>
+				<version>${version.maven-dependency-plugin}</version>
 				<executions>
 					<execution>
 						<id>copy-dependencies</id>
@@ -279,8 +287,9 @@
 				</executions>
 			</plugin>
 			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
-				<version>3.2.2</version>
+				<version>${version.maven-jar-plugin}</version>
 				<configuration>
 					<outputDirectory>${project.build.directory}/modules</outputDirectory>
 				</configuration>
@@ -288,7 +297,7 @@
 			<plugin>
 				<groupId>org.moditect</groupId>
 				<artifactId>moditect-maven-plugin</artifactId>
-				<version>1.0.0.RC3</version>
+				<version>${version.moditect-maven-plugin}</version>
 				<extensions>true</extensions>
 				<executions>
 

@@ -28,8 +28,11 @@ package net.clanwolf.starmap.transfer;
 
 import net.clanwolf.starmap.transfer.dtos.UserDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.lang.invoke.MethodHandles;
 import java.net.*;
 
 /**
@@ -39,6 +42,8 @@ import java.net.*;
  * @author Werner Kewenig
  */
 public class GameState implements Serializable {
+
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	@Serial
 	private static final long serialVersionUID = 1L;
@@ -80,12 +85,18 @@ public class GameState implements Serializable {
 		URL ipAdress = null;
 		String ip = "noip";
 		try {
-			ipAdress = new URL("http://myexternalip.com/raw");
+			URI uri = new URI("http://myexternalip.com/raw");
+			ipAdress = uri.toURL();
 			BufferedReader in = new BufferedReader(new InputStreamReader(ipAdress.openStream()));
 			ip = in.readLine();
 		} catch (IOException e) {
 			ip = "noip";
 			e.printStackTrace();
+			logger.error("Error getting external ip: ", e);
+		} catch (URISyntaxException e) {
+			ip = "noip";
+			e.printStackTrace();
+			logger.error("Error getting external ip: ", e);
 		}
 		return ip;
 	}

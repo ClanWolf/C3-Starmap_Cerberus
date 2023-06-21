@@ -395,6 +395,20 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		}
 	}
 
+	public synchronized void saveDiplomacy(PlayerSession session, GameState state) {
+		if (state.getObject() instanceof ArrayList<?>) {
+			ArrayList<Long> factionsThePlayerIsNowFriendlyWithList = (ArrayList<Long>) state.getObject();
+
+			for (Long l : factionsThePlayerIsNowFriendlyWithList) {
+				logger.info("Saving Diplomacy state for faction " + l);
+			}
+
+			GameState response = new GameState(GAMESTATEMODES.DIPLOMACY_SAVE_RESPONSE);
+			response.setAction_successfully(Boolean.TRUE);
+			C3GameSessionHandler.sendBroadCast(room, response);
+		}
+	}
+
 	public synchronized void saveAttack(PlayerSession session, GameState state) {
 		AttackDAO dao = AttackDAO.getInstance();
 		AttackCharacterDAO daoAC = AttackCharacterDAO.getInstance();
@@ -1134,6 +1148,9 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				saveAttack(session, state);
 				serverHeartBeat = new Timer();
 				serverHeartBeat.schedule(new HeartBeatTimerTask(true, null), 100);
+				break;
+			case DIPLOMACY_SAVE:
+				saveDiplomacy(session, state);
 				break;
 			case STATS_MWO_SAVE:
 				saveStatsMwo(session, state);

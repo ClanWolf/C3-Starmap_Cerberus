@@ -14,7 +14,7 @@ TODO:
 - Add a function to leave game / delete account
 - If a jumpship attacks, the icon is moved back to the starting system on save... the jumpship level icon needs to be moved as well
 - Update msgpack (io.nadron.server)
-- Channel message if a user successfully changes faction
+- Channel message (discord) if a user successfully changes faction
 - If attack teams are invalid, kick everyone out of the attack and force a new lobby (ResultAnalyzer.java, L.195)
 - List of faction key, where each burns at usetime (one-time faction key)
 - Sometimes the hourglass in invasionpane does not disappear after confirming result
@@ -44,6 +44,14 @@ WATCH OUT FOR WHILE TESTING:
 ----------------------------------------------------------------
 
 VERSIONS
+
+Version 7.3.71 (21.06.2023)
+- UPDATED: Discord API / several maven plugin versions
+- FIXED: Error in IRC-Client when no user is selected
+- FIXED: NPE in diplomacy before init
+- CHANGED: Diplomacy pane behaviour completed
+- CHANGED: A number of dependency versions to variables
+- STARTED: Diplomacy store functionality
 
 Version 7.3.70 (20.06.2023)
 - FIXED: Error while registering a new user
