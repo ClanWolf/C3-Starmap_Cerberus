@@ -3,12 +3,12 @@
   <parent>
     <artifactId>C3-Starmap_Cerberus</artifactId>
     <groupId>net.clanwolf.starmap</groupId>
-    <version>7.3.71</version>
+    <version>7.3.75</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>net.clanwolf.starmap</groupId>
   <artifactId>net.clanwolf.starmap.server</artifactId>
-  <version>7.3.71</version>
+  <version>7.3.75</version>
   <build>
     <finalName>C3-Server-${project.version}</finalName>
     <plugins>
@@ -79,7 +79,7 @@
     <dependency>
       <groupId>com.itextpdf</groupId>
       <artifactId>itext7-core</artifactId>
-      <version>7.2.5</version>
+      <version>8.0.0</version>
       <type>pom</type>
       <scope>compile</scope>
     </dependency>

@@ -29,10 +29,11 @@ package net.clanwolf.starmap.server.persistence.pojos;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import net.clanwolf.starmap.server.persistence.Pojo;
+
+import jakarta.persistence.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
-import jakarta.persistence.*;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 import java.sql.Date;

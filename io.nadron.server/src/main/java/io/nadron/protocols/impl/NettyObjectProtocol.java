@@ -8,6 +8,8 @@ import io.nadron.protocols.AbstractNettyProtocol;
 import io.nadron.util.NettyUtils;
 import io.netty.channel.ChannelPipeline;
 import io.netty.handler.codec.LengthFieldPrepender;
+import io.netty.handler.codec.compression.JZlibDecoder;
+import io.netty.handler.codec.compression.JZlibEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

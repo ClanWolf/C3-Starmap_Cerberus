@@ -9,6 +9,6 @@ module net.clanwolf.starmap.bots {
 	requires com.github.theholywaffle.teamspeak3;
 	requires org.mariadb.jdbc;
 	requires net.dv8tion.jda;
-	requires guava;
 	requires java.desktop;
+	requires com.google.common;
 }

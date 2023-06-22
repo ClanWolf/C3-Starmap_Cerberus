@@ -367,8 +367,9 @@ public final class Tools {
 	@SuppressWarnings("unused")
 	public static void startBrowser(String url) {
 		try {
-			startBrowser(new URL(url));
-		} catch (MalformedURLException e) {
+			URI uri = new URI(url);
+			startBrowser(uri.toURL());
+		} catch (MalformedURLException | URISyntaxException e) {
 			logger.error(null, e);
 		}
 	}
@@ -526,11 +527,13 @@ public final class Tools {
 			}
 
 			boolean exceptionOccured = false;
-			try (BufferedInputStream in = new BufferedInputStream(new URL(link).openStream()); FileOutputStream fileOutputStream = new FileOutputStream(dir + File.separator + updateName)) {
+			//try (BufferedInputStream in = new BufferedInputStream(new URL(link).openStream()); FileOutputStream fileOutputStream = new FileOutputStream(dir + File.separator + updateName)) {
+			try (BufferedInputStream in = new BufferedInputStream((new URI(link)).toURL().openStream()); FileOutputStream fileOutputStream = new FileOutputStream(dir + File.separator + updateName)) {
 				byte[] dataBuffer = new byte[1024];
 				int counter = 0;
 				int bytesRead;
-				int filesize =  new URL(link).openConnection().getContentLength() / 1024;
+				//int filesize =  new URL(link).openConnection().getContentLength() / 1024;
+				int filesize =  (new URI(link)).toURL().openConnection().getContentLength() / 1024;
 				String downloadprogress;
 
 				TxtProgressBar tpb = new TxtProgressBar( filesize,"□","■");
@@ -548,7 +551,7 @@ public final class Tools {
 					o.setJustUpdate(true);
 					ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(o);
 				}
-			} catch (IOException e) {
+			} catch (IOException | URISyntaxException e) {
 				e.printStackTrace();
 				logger.error("Downloading installer.exe failed!", e);
 				exceptionOccured = true;

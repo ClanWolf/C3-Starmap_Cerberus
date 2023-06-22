@@ -70,6 +70,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -138,12 +140,12 @@ public class GenerateRoundReport {
         java.net.URL url;
 
         try {
-            url = new URL(URL);
-        } catch (MalformedURLException e) {
+            url = (new URI(URL)).toURL();
+        } catch (MalformedURLException | URISyntaxException e) {
             logger.error(e.getMessage());
             return false;
         }
-        try {
+	    try {
             url.openStream().close();
             return true;
         } catch (IOException e) {
@@ -835,7 +837,8 @@ public class GenerateRoundReport {
         String imageFactionFile = "https://www.clanwolf.net/static/images/logos/factions/";
 
         if (urlExists(imageFactionFile + factionAttacker.getLogo())) {
-            ImageData imageFactionData = ImageDataFactory.create(new URL(imageFactionFile + factionAttacker.getLogo()));
+			URI uri = new URI(imageFactionFile + factionAttacker.getLogo());
+            ImageData imageFactionData = ImageDataFactory.create(uri.toURL());
             Image imageFactionAttacker = new Image(imageFactionData);
             imageFactionAttacker.scaleAbsolute(100, 100);
             tableFactionInfo.addCell(addWhiteCell(imageFactionAttacker)).setVerticalAlignment(VerticalAlignment.MIDDLE);
@@ -846,7 +849,8 @@ public class GenerateRoundReport {
         tableFactionInfo.addCell(addWhiteCell("VS").setFontSize(45).setWidth(150));
 
         if (urlExists(imageFactionFile + factionDefender.getLogo())) {
-            ImageData imageFactionData = ImageDataFactory.create(new URL(imageFactionFile + factionDefender.getLogo()));
+	        URI uri = new URI(imageFactionFile + factionDefender.getLogo());
+            ImageData imageFactionData = ImageDataFactory.create(uri.toURL());
             Image imageFactionDefender = new Image(imageFactionData);
             imageFactionDefender.scaleAbsolute(100, 100);
             tableFactionInfo.addCell(addWhiteCell(imageFactionDefender)).setVerticalAlignment(VerticalAlignment.MIDDLE);
@@ -879,20 +883,20 @@ public class GenerateRoundReport {
 
     }
 
-    private void createSeasonHistoryMap(Long seasonId, Long roundId) throws MalformedURLException {
+    private void createSeasonHistoryMap(Long seasonId, Long roundId) throws MalformedURLException, URISyntaxException {
         String seasonHistoryURL = "https://www.clanwolf.net/apps/C3/seasonhistory/S" + seasonId +
                 "/C3_S" + seasonId + "_R" + roundId + "_map_history.png";
 
         if (urlExists(seasonHistoryURL)) {
             logger.info("Download season history map: " + seasonHistoryURL);
-            ImageData imgSeasonData = ImageDataFactory.create(new URL(seasonHistoryURL));
+			URI uri = new URI(seasonHistoryURL);
+            ImageData imgSeasonData = ImageDataFactory.create(uri.toURL());
             Image imgSeason = new Image(imgSeasonData);
             imgSeason.setAutoScale(true);
 
             doc.add(imgSeason);
             doc.add(createLink("Link to season history map", seasonHistoryURL));
         } else {
-
             logger.error("Season history map not found on: " + seasonHistoryURL);
            /* ImageData imgSeasonData = ImageDataFactory.create("C:\\Users\\Stefan\\Downloads\\Bilder\\Wallpaper\\C3_S1_R86_map_history.png");
             Image imSeason = new Image(imgSeasonData);
@@ -930,7 +934,8 @@ public class GenerateRoundReport {
         if (urlExists(LinkImgPlanet)) {
 
             logger.info("Download planet image: " + LinkImgPlanet);
-            ImageData imgPlanetData = ImageDataFactory.create(new URL(LinkImgPlanet));
+			URI uri = new URI(LinkImgPlanet);
+            ImageData imgPlanetData = ImageDataFactory.create(uri.toURL());
             Image imgPlanet = new Image(imgPlanetData);
 
             imgPlanet.scaleAbsolute(100, 100)
@@ -961,7 +966,8 @@ public class GenerateRoundReport {
         Table tableC3Header = new Table(new float[]{1, 5, 15});
 
         if (urlExists(c3Logo)) {
-            ImageData imgC3LogoData = ImageDataFactory.create(new URL(c3Logo));
+			URI uri = new URI(c3Logo);
+            ImageData imgC3LogoData = ImageDataFactory.create(uri.toURL());
             Image imgC3Logo = new Image(imgC3LogoData);
 
             imgC3Logo.scaleAbsolute(30, 30);

@@ -75,7 +75,7 @@ public abstract class HTTP {
 	 * @param host The host
 	 * @return String Hostname
 	 */
-	public static byte[] get(String host) throws IOException, MalformedURLException {
+	public static byte[] get(String host) throws IOException, MalformedURLException, URISyntaxException {
 		return get(host, null);
 	}
 
@@ -86,8 +86,9 @@ public abstract class HTTP {
 	 * @param encoding Encoding string
 	 * @return byte[] The result
 	 */
-	public static byte[] get(String host, String encoding) throws IOException, MalformedURLException {
-		return get(new URL(host), encoding);
+	public static byte[] get(String host, String encoding) throws IOException, MalformedURLException, URISyntaxException {
+		URI uri = new URI(host);
+		return get(uri.toURL(), encoding);
 	}
 
 	/**
@@ -204,7 +205,8 @@ public abstract class HTTP {
 		URLConnection conn;
 
 		try {
-			URL url = new URL(address);
+			URI uri = new URI(address);
+			URL url = uri.toURL();
 
 			if (C3Properties.getBoolean(C3PROPS.USE_PROXY)) {
 				String proxyHost = C3Properties.getProperty(C3PROPS.PROXY_SERVER);
@@ -226,7 +228,10 @@ public abstract class HTTP {
 			// long numWritten = 0;
 
 			File f = new File(localFileName);
-			f.getParentFile().mkdirs();
+			boolean success = f.getParentFile().mkdirs();
+			if (!success) {
+				logger.info("Dirs could not be created or existed already.");
+			}
 
 			out = new BufferedOutputStream(new FileOutputStream(localFileName));
 			while ((numRead = in.read(buffer)) != -1) {

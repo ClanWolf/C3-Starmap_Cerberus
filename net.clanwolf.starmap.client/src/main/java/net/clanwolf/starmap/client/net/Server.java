@@ -43,7 +43,10 @@ import net.clanwolf.starmap.client.util.C3Properties;
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.Objects;
 
 /**
  * Provides methods to check the server situation.
@@ -73,11 +76,12 @@ public class Server {
 		}
 		String value = "not found";
 		try {
-			URL url = new URL(serverURL + "server/php/C3-LatestClientVersion.php");
+			URI uri = new URI(serverURL + "server/php/C3-LatestClientVersion.php");
+			URL url = uri.toURL();
 			value = new String(HTTP.get(url));
 //			logger.info("Connection URL: " + url);
 //			logger.info("Connection Result: " + value);
-		} catch (IOException e) {
+		} catch (IOException | URISyntaxException e) {
 			logger.error(null, e);
 		}
 		logger.info("Client version check done.");
@@ -103,21 +107,22 @@ public class Server {
 		boolean online = false;
 
 		while(!online) {
-			if (C3Properties.getProperty(C3PROPS.CHECK_ONLINE_STATUS) == "OFFLINE") {
-
-			} else if (C3Properties.getProperty(C3PROPS.CHECK_ONLINE_STATUS) == "ONLINE") {
+			if (Objects.equals(C3Properties.getProperty(C3PROPS.CHECK_ONLINE_STATUS), "OFFLINE")) {
+				logger.info("offline [8732]");
+			} else if (Objects.equals(C3Properties.getProperty(C3PROPS.CHECK_ONLINE_STATUS), "ONLINE")) {
 				online = true;
 				// Server online check ok, testing db
 				try {
 					logger.info(serverURL + "server/php/C3-OnlineStatus_Database.php?p1=" + C3Properties.getProperty(C3PROPS.LOGIN_DATABASE));
-					URL url = new URL(serverURL + "server/php/C3-OnlineStatus_Database.php?p1=" + C3Properties.getProperty(C3PROPS.LOGIN_DATABASE));
+					URI uri = new URI(serverURL + "server/php/C3-OnlineStatus_Database.php?p1=" + C3Properties.getProperty(C3PROPS.LOGIN_DATABASE));
+					URL url = uri.toURL();
 					value = new String(HTTP.get(url));
 					logger.info("Connection URL: " + url);
 					logger.info("Connection Result: " + value);
 					// use "endswith" here, in case debugging in PHP is enabled!
 					r = value.equals("online");
-				} catch (IOException e) {
-					logger.error(null, e);
+				} catch (IOException | URISyntaxException e) {
+					logger.error("Error while checking online database status.", e);
 				}
 				logger.info("Database connection check done.");
 				if (r) {
@@ -193,11 +198,12 @@ public class Server {
 
 		try {
 			String u = serverURL + "C3_CheckUserLogin.php?cps1=" + username + "&cus4=" + password + "&db_database=" + database;
-			URL url = new URL(u);
-			logger.info(url + "");
+			URI uri = new URI(u);
+			URL url = uri.toURL();
+			logger.info("URL: " + url);
 			checkresult = new String(HTTP.get(url));
-		} catch (IOException e) {
-			logger.error(null, e);
+		} catch (IOException | URISyntaxException e) {
+			logger.error("Error while checking user login.", e);
 		}
 		checkresult = checkresult.replaceAll("\\n", "");
 		checkresult = checkresult.replaceAll("\\r", "");
@@ -257,12 +263,13 @@ public class Server {
 		String value;
 		boolean r = false;
 		try {
-			URL url = new URL(serverURL + "server/php/C3-OnlineStatus_Server.php");
+			URI uri = new URI(serverURL + "server/php/C3-OnlineStatus_Server.php");
+			URL url = uri.toURL();
 			logger.info("Checking: " + url.toString());
 			value = new String(HTTP.get(url));
 			r = "online".equals(value);
-		} catch (IOException e) {
-			logger.error(null, e);
+		} catch (IOException | URISyntaxException e) {
+			logger.error("Error while checking online status.", e);
 		}
 		if (r) {
 			logger.info("Onlinestatus: online");

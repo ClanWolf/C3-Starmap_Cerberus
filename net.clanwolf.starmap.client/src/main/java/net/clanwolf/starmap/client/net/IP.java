@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.invoke.MethodHandles;
 import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 
 public class IP {
@@ -17,11 +19,12 @@ public class IP {
 		URL ipAdress = null;
 		String ip = "noip";
 		try {
-			ipAdress = new URL("http://myexternalip.com/raw");
+			URI uri = new URI("http://myexternalip.com/raw");
+			ipAdress = uri.toURL();
 			BufferedReader in = new BufferedReader(new InputStreamReader(ipAdress.openStream()));
 			ip = in.readLine();
 			logger.info("External IP adress: " + ip);
-		} catch (IOException e) {
+		} catch (IOException | URISyntaxException e) {
 			ip = "noip";
 			logger.warn("Error while getting external IP adress.");
 			e.printStackTrace();

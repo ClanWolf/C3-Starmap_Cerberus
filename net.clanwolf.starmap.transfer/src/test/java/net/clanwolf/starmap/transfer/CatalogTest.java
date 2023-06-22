@@ -24,6 +24,8 @@
  * Copyright (c) 2001-2023, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
+package net.clanwolf.starmap.transfer;
+
 import net.clanwolf.starmap.transfer.enums.catalogObjects.ICatalogObject;
 import net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes.ROLEPLAYINPUTDATATYPES;
 

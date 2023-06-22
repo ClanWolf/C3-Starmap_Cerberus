@@ -775,7 +775,7 @@
 									<artifact>
 										<groupId>io.netty</groupId>
 										<artifactId>netty-common</artifactId>
-										<version>4.1.90.Final</version>
+										<version>4.1.94.Final</version>
 									</artifact>
 									<!--									<moduleInfo>-->
 									<!--										<name>io.netty.common</name>-->
@@ -803,7 +803,7 @@
 									<artifact>
 										<groupId>io.netty</groupId>
 										<artifactId>netty-transport</artifactId>
-										<version>4.1.90.Final</version>
+										<version>4.1.94.Final</version>
 									</artifact>
 									<!--									<moduleInfo>-->
 									<!--										<name>io.netty.transport</name>-->
@@ -832,7 +832,7 @@
 									<artifact>
 										<groupId>io.netty</groupId>
 										<artifactId>netty-buffer</artifactId>
-										<version>4.1.90.Final</version>
+										<version>4.1.94.Final</version>
 									</artifact>
 									<moduleInfoSource>
 										module io.netty.buffer {
@@ -845,7 +845,7 @@
 									<artifact>
 										<groupId>io.netty</groupId>
 										<artifactId>netty-codec</artifactId>
-										<version>4.1.90.Final</version>
+										<version>4.1.94.Final</version>
 									</artifact>
 									<!--									<moduleInfo>-->
 									<!--										<name>io.netty.codec</name>-->
@@ -879,7 +879,7 @@
 									<artifact>
 										<groupId>io.netty</groupId>
 										<artifactId>netty-resolver</artifactId>
-										<version>4.1.90.Final</version>
+										<version>4.1.94.Final</version>
 									</artifact>
 									<moduleInfoSource>
 										module io.netty.resolver {
@@ -892,7 +892,7 @@
 									<artifact>
 										<groupId>io.netty</groupId>
 										<artifactId>netty-handler</artifactId>
-										<version>4.1.90.Final</version>
+										<version>4.1.94.Final</version>
 									</artifact>
 									<moduleInfoSource>
 										module io.netty.handler {

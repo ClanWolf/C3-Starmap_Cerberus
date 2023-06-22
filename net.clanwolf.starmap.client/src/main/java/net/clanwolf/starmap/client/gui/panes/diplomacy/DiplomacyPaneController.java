@@ -189,9 +189,6 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 				factionsWeAreFriendlyWithNowForSaving.add(factions.get(i).getFactionDTO().getId());
 			}
 		}
-//		for (Long id : factionsWeAreFriendlyWithNowForSaving) {
-//			logger.info("Saving: We are friendly with: " + id);
-//		}
 
 		GameState saveDiplomacyState = new GameState();
 		saveDiplomacyState.setMode(GAMESTATEMODES.DIPLOMACY_SAVE);

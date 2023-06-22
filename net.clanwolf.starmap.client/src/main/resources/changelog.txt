@@ -45,7 +45,10 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
-Version 7.3.71 (21.06.2023)
+Version 7.3.75 (22.06.2023)
+- TEST: ZipEncoder Netty
+
+Version 7.3.72 (22.06.2023)
 - UPDATED: Discord API / several maven plugin versions
 - FIXED: Error in IRC-Client when no user is selected
 - FIXED: NPE in diplomacy before init

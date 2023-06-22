@@ -26,7 +26,7 @@
 
 		<!-- C3 Revision -->
 		<!-- https://stackoverflow.com/questions/10582054/maven-project-version-inheritance-do-i-have-to-specify-the-parent-version -->
-		<revision>7.3.71</revision>
+		<revision>7.3.75</revision>
 
 		<!-- Versions -->
 		<version.java>20</version.java>
@@ -46,7 +46,7 @@
 		<version.apache.commons-collections4>4.4</version.apache.commons-collections4>
 		<version.apache.commons-net>3.9.0</version.apache.commons-net>
 		<version.blazeds-core>3.2.0.3978</version.blazeds-core>
-		<version.byte-buddy>1.14.2</version.byte-buddy>
+		<version.byte-buddy>1.14.5</version.byte-buddy>
 		<version.collections-generic>4.01</version.collections-generic>
 		<version.discord-api>5.0.0-beta.11</version.discord-api>
 		<version.dom4j>2.1.4</version.dom4j>
@@ -54,15 +54,15 @@
 		<version.gifencoder>0.10.1</version.gifencoder>
 		<version.gson>2.10.1</version.gson>
 		<version.hikaricp>5.0.1</version.hikaricp>
-		<version.hibernate-core>6.2.3.FINAL</version.hibernate-core>
+		<version.hibernate-core>6.2.4.Final</version.hibernate-core>
 		<version.hibernate-commons-annotations>6.0.6.Final</version.hibernate-commons-annotations>
 		<version.hibernate-ehcache>6.0.0.Alpha7</version.hibernate-ehcache>
-		<version.hibernate-hikaricp>6.2.0.CR3</version.hibernate-hikaricp>
+		<version.hibernate-hikaricp>6.2.5.Final</version.hibernate-hikaricp>
 		<version.irc-api>1.0-0015-jitsi-1</version.irc-api>
-		<version.iText-core>7.2.5</version.iText-core>
-		<version.jackson-core>2.15.0</version.jackson-core>
-		<version.jackson-databind>2.15.1</version.jackson-databind>
-		<version.jackson-annotations>2.15.1</version.jackson-annotations>
+		<version.iText-core>8.0.0</version.iText-core>
+		<version.jackson-core>2.15.2</version.jackson-core>
+		<version.jackson-databind>2.15.2</version.jackson-databind>
+		<version.jackson-annotations>2.15.2</version.jackson-annotations>
 		<version.jackson-jsog>1.1.2</version.jackson-jsog>
 		<version.jakarta.activation>2.0.1</version.jakarta.activation>  <!-- net.clanwolf.starmap.mail -->
 		<version.jakarta.mail>2.0.1</version.jakarta.mail>              <!-- net.clanwolf.starmap.mail -->
@@ -71,16 +71,16 @@
 		<version.jetbrains-annotations>24.0.1</version.jetbrains-annotations>
 		<version.jetlang>0.2.23</version.jetlang>
 		<version.jnativehook>2.2.2</version.jnativehook>
-		<version.mariadb-connector>3.1.3</version.mariadb-connector>
+		<version.mariadb-connector>3.1.4</version.mariadb-connector>
 		<version.mchange-commons-java>0.2.20</version.mchange-commons-java>
 		<version.msgpack>0.6.12</version.msgpack> <!-- 0.9.3 -->
-		<version.netty>4.1.90.Final</version.netty>
+		<version.netty>4.1.94.Final</version.netty>
 		<version.persistence-api>3.1.0</version.persistence-api>
-		<version.pircbotx>2.2</version.pircbotx>
-		<version.slf4j>2.0.6</version.slf4j>
-		<version.springframework>6.0.6</version.springframework>
-		<version.springframework-spring-context>6.0.9</version.springframework-spring-context>
-		<version.springframework-security-config>6.0.2</version.springframework-security-config>
+		<version.pircbotx>2.3.1</version.pircbotx>
+		<version.slf4j>2.0.7</version.slf4j>
+		<version.springframework>6.0.10</version.springframework>
+		<version.springframework-spring-context>6.0.10</version.springframework-spring-context>
+		<version.springframework-security-config>6.1.1</version.springframework-security-config>
 		<version.teamspeak3-api>1.3.1</version.teamspeak3-api>
 		<version.tektosyne>6.2.0</version.tektosyne>
 		<version.thumbnailator>0.4.19</version.thumbnailator>
@@ -91,17 +91,12 @@
 		<repository>
 			<id>central</id>
 			<name>central</name>
-			<url>https://central.sonatype.com/</url>
-		</repository>
-		<repository>
-			<id>central2</id>
-			<name>central2</name>
-			<url>https://repo1.maven.org/maven2/</url>
+			<url>https://repo1.maven.org/maven2</url>
 		</repository>
 		<repository>
 			<id>sonatype</id>
 			<name>sonatype</name>
-			<url>https://oss.sonatype.org/content/repositories/releases/</url>
+			<url>https://oss.sonatype.org/content/repositories/releases</url>
 		</repository>
 		<repository>
 			<id>jcenter</id>
@@ -137,6 +132,11 @@
 
 	<build>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-site-plugin</artifactId>
+				<version>4.0.0-M8</version>
+			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>flatten-maven-plugin</artifactId>

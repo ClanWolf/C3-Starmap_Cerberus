@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>net.clanwolf.starmap</groupId>
   <artifactId>C3-Starmap_Cerberus</artifactId>
-  <version>7.3.71</version>
+  <version>7.3.75</version>
   <packaging>pom</packaging>
   <name>C3-Starmap Cerberus</name>
   <description>Starsystem map of the Inner Sphere, Periphery and Clan space (BattleTech).</description>
@@ -26,50 +26,50 @@
     <module>net.clanwolf.starmap.mail</module>
   </modules>
   <properties>
-    <version.mariadb-connector>3.1.3</version.mariadb-connector>
-    <version.hibernate-hikaricp>6.2.0.CR3</version.hibernate-hikaricp>
+    <version.mariadb-connector>3.1.4</version.mariadb-connector>
+    <version.hibernate-hikaricp>6.2.5.Final</version.hibernate-hikaricp>
     <version.hikaricp>5.0.1</version.hikaricp>
     <version.hibernate-commons-annotations>6.0.6.Final</version.hibernate-commons-annotations>
     <version.jackson-jsog>1.1.2</version.jackson-jsog>
     <version.gson>2.10.1</version.gson>
     <version.thumbnailator>0.4.19</version.thumbnailator>
     <version.blazeds-core>3.2.0.3978</version.blazeds-core>
-    <version.springframework>6.0.6</version.springframework>
+    <version.springframework>6.0.10</version.springframework>
     <version.maven-compiler-plugin>3.11.0</version.maven-compiler-plugin>
     <version.apache.commons-collections4>4.4</version.apache.commons-collections4>
     <version.flatten-maven-plugin>1.5.0</version.flatten-maven-plugin>
     <version.exec-maven-plugin>3.0.0</version.exec-maven-plugin>
-    <version.hibernate-core>6.2.3.FINAL</version.hibernate-core>
+    <version.hibernate-core>6.2.4.Final</version.hibernate-core>
     <version.jakarta.mail>2.0.1</version.jakarta.mail>
-    <version.byte-buddy>1.14.2</version.byte-buddy>
+    <version.byte-buddy>1.14.5</version.byte-buddy>
     <version.mchange-commons-java>0.2.20</version.mchange-commons-java>
     <version.collections-generic>4.01</version.collections-generic>
     <version.gifencoder>0.10.1</version.gifencoder>
-    <version.springframework-security-config>6.0.2</version.springframework-security-config>
-    <revision>7.3.71</revision>
+    <version.springframework-security-config>6.1.1</version.springframework-security-config>
+    <revision>7.3.75</revision>
     <version.moditect-maven-plugin>1.0.0.Final</version.moditect-maven-plugin>
-    <version.pircbotx>2.2</version.pircbotx>
+    <version.pircbotx>2.3.1</version.pircbotx>
     <version.discord-api>5.0.0-beta.11</version.discord-api>
-    <version.jackson-databind>2.15.1</version.jackson-databind>
-    <version.iText-core>7.2.5</version.iText-core>
+    <version.jackson-databind>2.15.2</version.jackson-databind>
+    <version.iText-core>8.0.0</version.iText-core>
     <mainClass>net.clanwolf.starmap.client.gui.MainFrame</mainClass>
     <version.dom4j>2.1.4</version.dom4j>
     <version.persistence-api>3.1.0</version.persistence-api>
-    <version.jackson-annotations>2.15.1</version.jackson-annotations>
+    <version.jackson-annotations>2.15.2</version.jackson-annotations>
     <version.jakarta.xml.bind-api>4.0.0</version.jakarta.xml.bind-api>
     <version.maven-shade-plugin>3.5.0</version.maven-shade-plugin>
     <version.javafx>20.0.1</version.javafx>
     <version.java>20</version.java>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <version.jackson-core>2.15.0</version.jackson-core>
+    <version.jackson-core>2.15.2</version.jackson-core>
     <version.jetbrains-annotations>24.0.1</version.jetbrains-annotations>
     <version.apache.commons-net>3.9.0</version.apache.commons-net>
     <version.el-api>5.0.1</version.el-api>
-    <version.springframework-spring-context>6.0.9</version.springframework-spring-context>
+    <version.springframework-spring-context>6.0.10</version.springframework-spring-context>
     <version.irc-api>1.0-0015-jitsi-1</version.irc-api>
     <version.tektosyne>6.2.0</version.tektosyne>
     <version.jetlang>0.2.23</version.jetlang>
-    <version.netty>4.1.90.Final</version.netty>
+    <version.netty>4.1.94.Final</version.netty>
     <version.asm>9.5</version.asm>
     <version.maven-resources-plugin>3.3.1</version.maven-resources-plugin>
     <version.transaction-api>2.0.1</version.transaction-api>
@@ -81,7 +81,7 @@
     <version.maven-dependency-plugin>3.6.0</version.maven-dependency-plugin>
     <version.jakarta.activation>2.0.1</version.jakarta.activation>
     <version.msgpack>0.6.12</version.msgpack>
-    <version.slf4j>2.0.6</version.slf4j>
+    <version.slf4j>2.0.7</version.slf4j>
     <version.hibernate-ehcache>6.0.0.Alpha7</version.hibernate-ehcache>
     <version.maven-antrun-plugin>3.1.0</version.maven-antrun-plugin>
   </properties>
@@ -89,17 +89,12 @@
     <repository>
       <id>central</id>
       <name>central</name>
-      <url>https://central.sonatype.com/</url>
-    </repository>
-    <repository>
-      <id>central2</id>
-      <name>central2</name>
-      <url>https://repo1.maven.org/maven2/</url>
+      <url>https://repo1.maven.org/maven2</url>
     </repository>
     <repository>
       <id>sonatype</id>
       <name>sonatype</name>
-      <url>https://oss.sonatype.org/content/repositories/releases/</url>
+      <url>https://oss.sonatype.org/content/repositories/releases</url>
     </repository>
     <repository>
       <id>jcenter</id>
@@ -113,6 +108,10 @@
   </repositories>
   <build>
     <plugins>
+      <plugin>
+        <artifactId>maven-site-plugin</artifactId>
+        <version>4.0.0-M8</version>
+      </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>flatten-maven-plugin</artifactId>
