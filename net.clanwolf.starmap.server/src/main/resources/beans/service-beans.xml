@@ -31,6 +31,6 @@
 
 	<bean id="jackson" class="com.fasterxml.jackson.databind.ObjectMapper"/>
 
-	<bean id="msgPack" class="org.msgpack.MessagePack"/>
+<!--	<bean id="msgPack" class="org.msgpack.MessagePack"/>-->
 
 </beans>

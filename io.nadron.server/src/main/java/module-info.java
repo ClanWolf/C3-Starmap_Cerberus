@@ -7,7 +7,7 @@ module io.nadron.server {
 	requires spring.context;
 	requires spring.core;
 	requires blazeds.core;
-	requires msgpack;
+//	requires msgpack;
 	requires io.netty.transport;
 	requires io.netty.codec;
 	requires io.netty.codec.http;

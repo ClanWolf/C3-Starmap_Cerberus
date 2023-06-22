@@ -11,7 +11,6 @@ module net.clanwolf.starmap.server {
 	requires net.clanwolf.starmap.transfer;
 	requires net.clanwolf.starmap.logging;
 	requires net.clanwolf.starmap.mail;
-	requires json.simple;
 	requires net.bytebuddy;
 	requires jakarta.xml.bind;
 	requires com.fasterxml.jackson.core;

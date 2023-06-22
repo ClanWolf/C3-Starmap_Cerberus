@@ -16,10 +16,10 @@ import java.util.List;
 
 /**
  * This class takes a {@link ByteBuf} containing AMF3 object as input and
- * creates a java object from it using the {@link AMFDeSerializer} class. 
- * 
+ * creates a java object from it using the {@link AMFDeSerializer} class.
+ *
  * @author Abraham Menacherry.
- * 
+ *
  */
 public class AMF3ToJavaObjectDecoder extends ByteToMessageDecoder implements Transform<ByteBuf, Object> {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -38,13 +38,13 @@ public class AMF3ToJavaObjectDecoder extends ByteToMessageDecoder implements Tra
 				in.readableBytes()).array());
 		out.add(deSerializeObjectFromStream(bis));
 	}
-	
+
 	@Override
 	public Object convert(ByteBuf buffer) throws Exception {
 		ByteArrayInputStream bis = new ByteArrayInputStream(buffer.array());
 		return deSerializeObjectFromStream(bis);
 	}
-	
+
 	protected Object deSerializeObjectFromStream(ByteArrayInputStream bis) throws Exception
 	{
 		AMFDeSerializer serializer = new AMFDeSerializer(SerializationContext.getSerializationContext());

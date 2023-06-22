@@ -17,9 +17,9 @@ import java.lang.invoke.MethodHandles;
  * This class will convert the incoming java object to Flex AMF3 byte format and
  * put them in a Netty {@link ByteBuf}. It will return this ChannelBuffer
  * to downstream handler.
- * 
+ *
  * @author Abraham Menacherry
- * 
+ *
  */
 @Sharable
 public class JavaObjectToAMF3Encoder extends MessageToByteEncoder<Object> {
@@ -30,20 +30,20 @@ public class JavaObjectToAMF3Encoder extends MessageToByteEncoder<Object> {
 			Object msg, ByteBuf out) throws Exception {
 		SerializationContextProvider contextProvider = new SerializationContextProvider();
 		AMFSerializer serializer = new AMFSerializer(contextProvider.get());
-		ByteArrayOutputStream baos = null;
-		try 
+		ByteArrayOutputStream baos;
+		try
 		{
 			baos = serializer.toAmf(msg);
 			out.writeBytes(baos.toByteArray());
 			baos.close();
-		} 
-		catch (IOException e) 
+		}
+		catch (IOException e)
 		{
 			logger.warn("IO Error: " + e);
 			throw e;
 		}
-		
+
 	}
-	
+
 
 }

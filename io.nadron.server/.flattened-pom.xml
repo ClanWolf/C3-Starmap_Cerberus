@@ -5,11 +5,11 @@
   <parent>
     <groupId>net.clanwolf.starmap</groupId>
     <artifactId>C3-Starmap_Cerberus</artifactId>
-    <version>7.3.75</version>
+    <version>7.3.76</version>
   </parent>
   <groupId>net.clanwolf.starmap</groupId>
   <artifactId>io.nadron.server</artifactId>
-  <version>7.3.75</version>
+  <version>7.3.76</version>
   <dependencies>
     <dependency>
       <groupId>net.clanwolf.starmap</groupId>
@@ -75,11 +75,6 @@
       <groupId>com.adobe.blazeds</groupId>
       <artifactId>blazeds-core</artifactId>
       <version>${version.blazeds-core}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.msgpack</groupId>
-      <artifactId>msgpack</artifactId>
-      <version>${version.msgpack}</version>
     </dependency>
   </dependencies>
   <build>
