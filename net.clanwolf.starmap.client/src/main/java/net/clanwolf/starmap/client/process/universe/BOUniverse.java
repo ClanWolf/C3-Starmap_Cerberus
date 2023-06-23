@@ -77,6 +77,12 @@ public class BOUniverse {
 		return universeDTO.diplomacy;
 	}
 
+	public void setDiplomacy( ArrayList<DiplomacyDTO> dipList ){
+
+		universeDTO.diplomacy = dipList;
+
+	}
+
 	public ArrayList<Long> getAlliedFactions() {
 		ArrayList<Long> factionListAllies = new ArrayList<>();
 		ArrayList<Long> factionRequestedIds = new ArrayList<>();

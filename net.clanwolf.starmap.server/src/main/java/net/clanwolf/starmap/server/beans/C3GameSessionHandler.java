@@ -33,6 +33,7 @@ import io.nadron.event.Event;
 import io.nadron.event.Events;
 import io.nadron.event.impl.SessionMessageHandler;
 import io.nadron.service.GameStateManagerService;
+import net.bytebuddy.dynamic.Nexus;
 import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.server.GameServer;
 import net.clanwolf.starmap.server.persistence.EntityConverter;
@@ -398,14 +399,51 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 	public synchronized void saveDiplomacy(PlayerSession session, GameState state) {
 		if (state.getObject() instanceof ArrayList<?>) {
 			ArrayList<Long> factionsThePlayerIsNowFriendlyWithList = (ArrayList<Long>) state.getObject();
+			Long factionID = (Long)state.getObject2();
 
-			for (Long l : factionsThePlayerIsNowFriendlyWithList) {
-				logger.info("Saving Diplomacy state for faction " + l);
+			ArrayList<DiplomacyPOJO> entriesToDelete = DiplomacyDAO.getInstance().getAllRequestsForFactions(factionID);
+
+			ArrayList<DiplomacyPOJO> newEntries = new ArrayList<>();
+
+			try {
+				EntityManagerHelper.beginTransaction(getC3UserID(session));
+
+				// remove all current entries for the player faction
+				for (DiplomacyPOJO dipPojo : entriesToDelete) {
+					DiplomacyDAO.getInstance().delete(getC3UserID(session), dipPojo);
+				}
+
+				for (Long l : factionsThePlayerIsNowFriendlyWithList) {
+					logger.info("Saving Diplomacy state for faction " + l);
+
+					DiplomacyPOJO dipPojo = new DiplomacyPOJO();
+					dipPojo.setFactionID_REQUEST(factionID);
+					dipPojo.setFactionID_ACCEPTED(l);
+					dipPojo.setSeasonID(ServerNexus.currentSeason);
+
+					DiplomacyDAO.getInstance().update(getC3UserID(session), dipPojo);
+				}
+
+				EntityManagerHelper.commit(getC3UserID(session));
+
+				GameState response = new GameState(GAMESTATEMODES.DIPLOMACY_SAVE_RESPONSE);
+				response.setAction_successfully(Boolean.TRUE);
+				response.addObject(DiplomacyDAO.getInstance().getDiplomacyForSeason(ServerNexus.currentSeason));
+
+
+				C3GameSessionHandler.sendBroadCast(room, response);
+
+			} catch (RuntimeException re) {
+				re.printStackTrace();
+				EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
+
+				GameState response = new GameState(GAMESTATEMODES.ERROR_MESSAGE);
+				response.addObject(re.getMessage());
+				response.setAction_successfully(Boolean.FALSE);
+				C3GameSessionHandler.sendNetworkEvent(session, response);
+
+				logger.error("Diplomacy save", re);
 			}
-
-			GameState response = new GameState(GAMESTATEMODES.DIPLOMACY_SAVE_RESPONSE);
-			response.setAction_successfully(Boolean.TRUE);
-			C3GameSessionHandler.sendBroadCast(room, response);
 		}
 	}
 

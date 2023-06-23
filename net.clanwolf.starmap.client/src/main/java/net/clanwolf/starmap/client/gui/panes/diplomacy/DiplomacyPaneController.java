@@ -193,6 +193,7 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 		GameState saveDiplomacyState = new GameState();
 		saveDiplomacyState.setMode(GAMESTATEMODES.DIPLOMACY_SAVE);
 		saveDiplomacyState.addObject(factionsWeAreFriendlyWithNowForSaving);
+		saveDiplomacyState.addObject2(Nexus.getCurrentChar().getFactionId().longValue());
 		Nexus.fireNetworkEvent(saveDiplomacyState);
 	}
 
@@ -268,164 +269,165 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 			}
 		}
 		Collections.sort(factions);
+		Platform.runLater(() -> {
+			labelFactionShort01.setText("");
+			labelFactionShort02.setText("");
+			labelFactionShort03.setText("");
+			labelFactionShort04.setText("");
+			labelFactionShort05.setText("");
+			labelFactionShort06.setText("");
+			labelFactionShort07.setText("");
+			labelFactionShort08.setText("");
 
-		labelFactionShort01.setText("");
-		labelFactionShort02.setText("");
-		labelFactionShort03.setText("");
-		labelFactionShort04.setText("");
-		labelFactionShort05.setText("");
-		labelFactionShort06.setText("");
-		labelFactionShort07.setText("");
-		labelFactionShort08.setText("");
+			LabelTheirStatus01.setText("");
+			LabelTheirStatus02.setText("");
+			LabelTheirStatus03.setText("");
+			LabelTheirStatus04.setText("");
+			LabelTheirStatus05.setText("");
+			LabelTheirStatus06.setText("");
+			LabelTheirStatus07.setText("");
+			LabelTheirStatus08.setText("");
 
-		LabelTheirStatus01.setText("");
-		LabelTheirStatus02.setText("");
-		LabelTheirStatus03.setText("");
-		LabelTheirStatus04.setText("");
-		LabelTheirStatus05.setText("");
-		LabelTheirStatus06.setText("");
-		LabelTheirStatus07.setText("");
-		LabelTheirStatus08.setText("");
+			labelTheirStatusList.clear();
+			labelTheirStatusList.add(LabelTheirStatus01);
+			labelTheirStatusList.add(LabelTheirStatus02);
+			labelTheirStatusList.add(LabelTheirStatus03);
+			labelTheirStatusList.add(LabelTheirStatus04);
+			labelTheirStatusList.add(LabelTheirStatus05);
+			labelTheirStatusList.add(LabelTheirStatus06);
+			labelTheirStatusList.add(LabelTheirStatus07);
+			labelTheirStatusList.add(LabelTheirStatus08);
 
-		labelTheirStatusList.clear();
-		labelTheirStatusList.add(LabelTheirStatus01);
-		labelTheirStatusList.add(LabelTheirStatus02);
-		labelTheirStatusList.add(LabelTheirStatus03);
-		labelTheirStatusList.add(LabelTheirStatus04);
-		labelTheirStatusList.add(LabelTheirStatus05);
-		labelTheirStatusList.add(LabelTheirStatus06);
-		labelTheirStatusList.add(LabelTheirStatus07);
-		labelTheirStatusList.add(LabelTheirStatus08);
+			labelShortNameList.clear();
+			labelShortNameList.add(labelFactionShort01);
+			labelShortNameList.add(labelFactionShort02);
+			labelShortNameList.add(labelFactionShort03);
+			labelShortNameList.add(labelFactionShort04);
+			labelShortNameList.add(labelFactionShort05);
+			labelShortNameList.add(labelFactionShort06);
+			labelShortNameList.add(labelFactionShort07);
+			labelShortNameList.add(labelFactionShort08);
 
-		labelShortNameList.clear();
-		labelShortNameList.add(labelFactionShort01);
-		labelShortNameList.add(labelFactionShort02);
-		labelShortNameList.add(labelFactionShort03);
-		labelShortNameList.add(labelFactionShort04);
-		labelShortNameList.add(labelFactionShort05);
-		labelShortNameList.add(labelFactionShort06);
-		labelShortNameList.add(labelFactionShort07);
-		labelShortNameList.add(labelFactionShort08);
+			imageFactionLogoList.clear();
+			imageFactionLogoList.add(ivFaction01);
+			imageFactionLogoList.add(ivFaction02);
+			imageFactionLogoList.add(ivFaction03);
+			imageFactionLogoList.add(ivFaction04);
+			imageFactionLogoList.add(ivFaction05);
+			imageFactionLogoList.add(ivFaction06);
+			imageFactionLogoList.add(ivFaction07);
+			imageFactionLogoList.add(ivFaction08);
 
-		imageFactionLogoList.clear();
-		imageFactionLogoList.add(ivFaction01);
-		imageFactionLogoList.add(ivFaction02);
-		imageFactionLogoList.add(ivFaction03);
-		imageFactionLogoList.add(ivFaction04);
-		imageFactionLogoList.add(ivFaction05);
-		imageFactionLogoList.add(ivFaction06);
-		imageFactionLogoList.add(ivFaction07);
-		imageFactionLogoList.add(ivFaction08);
+			imageAlliedLogoList.clear();
+			imageAlliedLogoList.add(ivAllied01);
+			imageAlliedLogoList.add(ivAllied02);
+			imageAlliedLogoList.add(ivAllied03);
+			imageAlliedLogoList.add(ivAllied04);
+			imageAlliedLogoList.add(ivAllied05);
+			imageAlliedLogoList.add(ivAllied06);
+			imageAlliedLogoList.add(ivAllied07);
+			imageAlliedLogoList.add(ivAllied08);
 
-		imageAlliedLogoList.clear();
-		imageAlliedLogoList.add(ivAllied01);
-		imageAlliedLogoList.add(ivAllied02);
-		imageAlliedLogoList.add(ivAllied03);
-		imageAlliedLogoList.add(ivAllied04);
-		imageAlliedLogoList.add(ivAllied05);
-		imageAlliedLogoList.add(ivAllied06);
-		imageAlliedLogoList.add(ivAllied07);
-		imageAlliedLogoList.add(ivAllied08);
+			radioButtonsEnemyList.clear();
+			radioButtonsEnemyList.add(checkbEnemy01);
+			radioButtonsEnemyList.add(checkbEnemy02);
+			radioButtonsEnemyList.add(checkbEnemy03);
+			radioButtonsEnemyList.add(checkbEnemy04);
+			radioButtonsEnemyList.add(checkbEnemy05);
+			radioButtonsEnemyList.add(checkbEnemy06);
+			radioButtonsEnemyList.add(checkbEnemy07);
+			radioButtonsEnemyList.add(checkbEnemy08);
 
-		radioButtonsEnemyList.clear();
-		radioButtonsEnemyList.add(checkbEnemy01);
-		radioButtonsEnemyList.add(checkbEnemy02);
-		radioButtonsEnemyList.add(checkbEnemy03);
-		radioButtonsEnemyList.add(checkbEnemy04);
-		radioButtonsEnemyList.add(checkbEnemy05);
-		radioButtonsEnemyList.add(checkbEnemy06);
-		radioButtonsEnemyList.add(checkbEnemy07);
-		radioButtonsEnemyList.add(checkbEnemy08);
+			radioButtonsAllyList.clear();
+			radioButtonsAllyList.add(checkbAlly01);
+			radioButtonsAllyList.add(checkbAlly02);
+			radioButtonsAllyList.add(checkbAlly03);
+			radioButtonsAllyList.add(checkbAlly04);
+			radioButtonsAllyList.add(checkbAlly05);
+			radioButtonsAllyList.add(checkbAlly06);
+			radioButtonsAllyList.add(checkbAlly07);
+			radioButtonsAllyList.add(checkbAlly08);
 
-		radioButtonsAllyList.clear();
-		radioButtonsAllyList.add(checkbAlly01);
-		radioButtonsAllyList.add(checkbAlly02);
-		radioButtonsAllyList.add(checkbAlly03);
-		radioButtonsAllyList.add(checkbAlly04);
-		radioButtonsAllyList.add(checkbAlly05);
-		radioButtonsAllyList.add(checkbAlly06);
-		radioButtonsAllyList.add(checkbAlly07);
-		radioButtonsAllyList.add(checkbAlly08);
+			ToggleGroup group01 = new ToggleGroup();
+			ToggleGroup group02 = new ToggleGroup();
+			ToggleGroup group03 = new ToggleGroup();
+			ToggleGroup group04 = new ToggleGroup();
+			ToggleGroup group05 = new ToggleGroup();
+			ToggleGroup group06 = new ToggleGroup();
+			ToggleGroup group07 = new ToggleGroup();
+			ToggleGroup group08 = new ToggleGroup();
 
-		ToggleGroup group01 = new ToggleGroup();
-		ToggleGroup group02 = new ToggleGroup();
-		ToggleGroup group03 = new ToggleGroup();
-		ToggleGroup group04 = new ToggleGroup();
-		ToggleGroup group05 = new ToggleGroup();
-		ToggleGroup group06 = new ToggleGroup();
-		ToggleGroup group07 = new ToggleGroup();
-		ToggleGroup group08 = new ToggleGroup();
+			toggleGroupsList.clear();
+			toggleGroupsList.add(group01);
+			toggleGroupsList.add(group02);
+			toggleGroupsList.add(group03);
+			toggleGroupsList.add(group04);
+			toggleGroupsList.add(group05);
+			toggleGroupsList.add(group06);
+			toggleGroupsList.add(group07);
+			toggleGroupsList.add(group08);
 
-		toggleGroupsList.clear();
-		toggleGroupsList.add(group01);
-		toggleGroupsList.add(group02);
-		toggleGroupsList.add(group03);
-		toggleGroupsList.add(group04);
-		toggleGroupsList.add(group05);
-		toggleGroupsList.add(group06);
-		toggleGroupsList.add(group07);
-		toggleGroupsList.add(group08);
+			allianceRequestedByThemList.clear();
 
-		allianceRequestedByThemList.clear();
+			for (int i = 0; i < labelShortNameList.size(); i++) {
+				BOFaction f = factions.get(i);
 
-		for (int i = 0; i < labelShortNameList.size(); i++) {
-			BOFaction f = factions.get(i);
+				labelTheirStatusList.get(i).setVisible(true);
+				radioButtonsEnemyList.get(i).setVisible(true);
+				radioButtonsAllyList.get(i).setVisible(true);
+				imageAlliedLogoList.get(i).setVisible(true);
+				imageAlliedLogoList.get(i).setImage(diplomacyIconNone);
 
-			labelTheirStatusList.get(i).setVisible(true);
-			radioButtonsEnemyList.get(i).setVisible(true);
-			radioButtonsAllyList.get(i).setVisible(true);
-			imageAlliedLogoList.get(i).setVisible(true);
-			imageAlliedLogoList.get(i).setImage(diplomacyIconNone);
+				boolean weRequestedAlliance = false;
+				boolean allianceRequestedByThem = false;
 
-			boolean weRequestedAlliance = false;
-			boolean allianceRequestedByThem = false;
-
-			for (DiplomacyDTO d : Nexus.getBoUniverse().getDiplomacy()) {
-				if (d.getFactionID_REQUEST().equals(f.getID()) && d.getFactionID_ACCEPTED().equals(Nexus.getCurrentChar().getFactionId().longValue())) {
-					allianceRequestedByThem = true;
-					labelTheirStatusList.get(i).setText(Internationalization.getString("app_diplomacy_column_StatusFriendly"));
+				for (DiplomacyDTO d : Nexus.getBoUniverse().getDiplomacy()) {
+					if (d.getFactionID_REQUEST().equals(f.getID()) && d.getFactionID_ACCEPTED().equals(Nexus.getCurrentChar().getFactionId().longValue())) {
+						allianceRequestedByThem = true;
+						labelTheirStatusList.get(i).setText(Internationalization.getString("app_diplomacy_column_StatusFriendly"));
+					}
+					if (d.getFactionID_REQUEST().equals(Nexus.getCurrentChar().getFactionId().longValue()) && d.getFactionID_ACCEPTED().equals(f.getID())) {
+						radioButtonsAllyList.get(i).setSelected(true);
+						radioButtonsEnemyList.get(i).setSelected(false);
+						weRequestedAlliance = true;
+					}
 				}
-				if (d.getFactionID_REQUEST().equals(Nexus.getCurrentChar().getFactionId().longValue()) && d.getFactionID_ACCEPTED().equals(f.getID())) {
-					radioButtonsAllyList.get(i).setSelected(true);
-					radioButtonsEnemyList.get(i).setSelected(false);
-					weRequestedAlliance = true;
+				if (!allianceRequestedByThem) {
+					labelTheirStatusList.get(i).setText(Internationalization.getString("app_diplomacy_column_StatusEnemy"));
 				}
-			}
-			if (!allianceRequestedByThem) {
-				labelTheirStatusList.get(i).setText(Internationalization.getString("app_diplomacy_column_StatusEnemy"));
-			}
-			if (!weRequestedAlliance) {
-				radioButtonsAllyList.get(i).setSelected(false);
-				radioButtonsEnemyList.get(i).setSelected(true);
-			}
-			if (allianceRequestedByThem && !weRequestedAlliance) {
-				imageAlliedLogoList.get(i).setImage(diplomacyIconLeft);
-			}
-			if (!allianceRequestedByThem && weRequestedAlliance) {
-				imageAlliedLogoList.get(i).setImage(diplomacyIconRight);
-			}
-			if (allianceRequestedByThem && weRequestedAlliance) {
-				imageAlliedLogoList.get(i).setImage(diplomacyIconAllied);
-			}
+				if (!weRequestedAlliance) {
+					radioButtonsAllyList.get(i).setSelected(false);
+					radioButtonsEnemyList.get(i).setSelected(true);
+				}
+				if (allianceRequestedByThem && !weRequestedAlliance) {
+					imageAlliedLogoList.get(i).setImage(diplomacyIconLeft);
+				}
+				if (!allianceRequestedByThem && weRequestedAlliance) {
+					imageAlliedLogoList.get(i).setImage(diplomacyIconRight);
+				}
+				if (allianceRequestedByThem && weRequestedAlliance) {
+					imageAlliedLogoList.get(i).setImage(diplomacyIconAllied);
+				}
 
-			allianceRequestedByThemList.add(allianceRequestedByThem);
+				allianceRequestedByThemList.add(allianceRequestedByThem);
 
-			radioButtonsAllyList.get(i).setToggleGroup(toggleGroupsList.get(i));
-			radioButtonsEnemyList.get(i).setToggleGroup(toggleGroupsList.get(i));
+				radioButtonsAllyList.get(i).setToggleGroup(toggleGroupsList.get(i));
+				radioButtonsEnemyList.get(i).setToggleGroup(toggleGroupsList.get(i));
 
-			// Faction logo
-			String logo = f.getLogo();
-			Image imageFaction = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logos/factions/" + logo)));
-			ImageView iv = imageFactionLogoList.get(i);
-			iv.setImage(imageFaction);
-			iv.setVisible(true);
+				// Faction logo
+				String logo = f.getLogo();
+				Image imageFaction = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logos/factions/" + logo)));
+				ImageView iv = imageFactionLogoList.get(i);
+				iv.setImage(imageFaction);
+				iv.setVisible(true);
 
-			// Faction shortname
-			Label l = labelShortNameList.get(i);
-			l.setText(f.getShortName());
-			l.setVisible(true);
-		}
-		buttonSave.setDisable(true);
+				// Faction shortname
+				Label l = labelShortNameList.get(i);
+				l.setText(f.getShortName());
+				l.setVisible(true);
+			}
+			buttonSave.setDisable(true);
+		});
 	}
 
 	private void handleCommand(String com) {

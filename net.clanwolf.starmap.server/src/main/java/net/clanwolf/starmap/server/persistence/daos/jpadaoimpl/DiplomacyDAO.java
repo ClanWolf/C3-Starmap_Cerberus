@@ -62,4 +62,21 @@ public class DiplomacyDAO extends GenericDAO {
 
 		return lRPS;
 	}
+
+	public ArrayList<DiplomacyPOJO> getAllRequestsForFactions(Long factionID){
+
+		CriteriaHelper crit = new CriteriaHelper(DiplomacyPOJO.class);
+		crit.addCriteria("factionID_REQUEST", factionID);
+
+		List<Object> lRes = crit.getResultList();
+
+		Iterator<Object> iter = lRes.iterator();
+		ArrayList<DiplomacyPOJO> lRPS = new ArrayList<>();
+
+		while (iter.hasNext()) {
+			lRPS.add((DiplomacyPOJO) iter.next());
+		}
+
+		return lRPS;
+	}
 }

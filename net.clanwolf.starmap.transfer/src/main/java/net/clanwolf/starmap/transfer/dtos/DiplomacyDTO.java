@@ -39,7 +39,7 @@ public class DiplomacyDTO  extends Dto {
 	}
 
 	public void setFactionID_REQUEST(Long factionID_REQUEST) {
-		FactionID_REQUEST = factionID_REQUEST;
+		this.FactionID_REQUEST = factionID_REQUEST;
 	}
 
 	public Long getFactionID_ACCEPTED() {
@@ -47,6 +47,6 @@ public class DiplomacyDTO  extends Dto {
 	}
 
 	public void setFactionID_ACCEPTED(Long factionID_ACCEPTED) {
-		FactionID_ACCEPTED = factionID_ACCEPTED;
+		this.FactionID_ACCEPTED = factionID_ACCEPTED;
 	}
 }

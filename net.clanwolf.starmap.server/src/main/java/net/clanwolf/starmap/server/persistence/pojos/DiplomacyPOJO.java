@@ -50,7 +50,7 @@ public class DiplomacyPOJO  extends Pojo {
 	}
 
 	public void setFactionID_REQUEST(Long factionID_REQUEST) {
-		factionID_REQUEST = factionID_REQUEST;
+		this.factionID_REQUEST = factionID_REQUEST;
 	}
 
 	public Long getFactionID_ACCEPTED() {
@@ -58,6 +58,6 @@ public class DiplomacyPOJO  extends Pojo {
 	}
 
 	public void setFactionID_ACCEPTED(Long factionID_ACCEPTED) {
-		factionID_ACCEPTED = factionID_ACCEPTED;
+		this.factionID_ACCEPTED = factionID_ACCEPTED;
 	}
 }

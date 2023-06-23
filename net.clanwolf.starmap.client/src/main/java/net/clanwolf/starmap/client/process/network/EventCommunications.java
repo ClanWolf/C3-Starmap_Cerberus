@@ -311,6 +311,10 @@ public class EventCommunications {
 					break;
 
 				case DIPLOMACY_SAVE_RESPONSE:
+					ArrayList<DiplomacyDTO> newDiplomacyList = (ArrayList<DiplomacyDTO>)state.getObject();
+					Nexus.getBoUniverse().setDiplomacy(newDiplomacyList);
+					//l.clear();
+					//l = newDiplomacyList;
 					ActionManager.getAction(ACTIONS.DIPLOMACY_SITUATION_CHANGED).execute();
 					break;
 
