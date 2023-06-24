@@ -47,7 +47,7 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
-Version 7.3.78 (24.06.2023)
+Version 7.3.79 (24.06.2023)
 - CHANGED: Season RESET
 - CHANGED: The logging gui inside the client (Removed tableview in client, removed server log)
 - CHANGED: Diplomacy store functionality finished
