@@ -32,16 +32,30 @@ import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 
 public class C3LogFormatter extends Formatter {
+
+	private final SimpleDateFormat dt1 = new SimpleDateFormat("[yyMMdd HH:mm:ss]");
+
+	private String cutLen(String s, int maxLength) {
+		if (s.length() > maxLength) {
+			s = s.replace("…", "");
+			s = "…" + s.substring(s.length() - maxLength + 1);
+		} else {
+			s = " ".repeat(Math.max(0, (maxLength - s.length()))) + s;
+		}
+		return s;
+	}
+
 	@Override
 	public String format(LogRecord record) {
-		// String id = String.format("%04d", record.getThreadID());
-		SimpleDateFormat dt1 = new SimpleDateFormat("MM/dd*HH:mm:ss.SSS");
-		return ""
-				// + "[" + id + "] "
-				+ dt1.format(new Date(record.getMillis()))
-				+ " " + record.getLevel()
-				+ "/" + record.getSourceClassName().replace("net.clanwolf.starmap.", "...")
-				+ "/" + record.getSourceMethodName()
-				+ " >> " + record.getMessage() + "\n";
+		return dt1.format(new Date(record.getMillis()))
+			+ " "
+			+ cutLen(record.getLevel().getName(), 7)
+			+ " "
+			+ cutLen(record.getSourceClassName().replace("net.clanwolf.starmap.", "…"), 25)
+			+ " / "
+			+ cutLen(record.getSourceMethodName(), 20)
+			+ " > "
+			+ record.getMessage()
+			+ "\n";
 	}
 }

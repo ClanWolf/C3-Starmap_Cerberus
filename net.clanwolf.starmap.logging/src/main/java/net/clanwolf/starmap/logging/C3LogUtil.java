@@ -26,11 +26,10 @@
  */
 package net.clanwolf.starmap.logging;
 
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.util.logging.FileHandler;
+import java.util.logging.Logger;
 
 public class C3LogUtil {
 
@@ -38,10 +37,10 @@ public class C3LogUtil {
 		try {
 			int FILE_SIZE_LIMIT = 4 * 1024 * 1024;
 			java.util.logging.LogManager.getLogManager().readConfiguration(MethodHandles.lookup().lookupClass().getClassLoader().getResourceAsStream("logging.properties"));
+
 			if (logFileName != null) {
 				FileHandler fileHandler = new FileHandler(logFileName, FILE_SIZE_LIMIT, 3, false);
 				fileHandler.setEncoding("UTF-8");
-				//fileHandler.setFormatter(new C3LogFormatter());
 
 				java.util.logging.Logger julLogger = java.util.logging.Logger.getLogger("");
 				julLogger.addHandler(fileHandler);

@@ -32,7 +32,7 @@ import io.nadron.client.event.NetworkEvent;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
-import net.clanwolf.starmap.client.gui.panes.logging.LogWatcher;
+//import net.clanwolf.starmap.client.gui.panes.logging.LogWatcher;
 import net.clanwolf.starmap.client.gui.panes.map.MapPaneController;
 import net.clanwolf.starmap.client.gui.panes.map.tools.GraphManager;
 import net.clanwolf.starmap.client.process.login.Login;
@@ -76,7 +76,7 @@ public class Nexus {
 	private static ArrayList<UserDTO> userList;
 	private static ArrayList<UserDTO> currentlyOnlineUserList;
 	private static HashMap<Long, RolePlayCharacterDTO> characterList;
-	private static LogWatcher logWatcher;
+//	private static LogWatcher logWatcher;
 
 	private static Timer serverHeartBeatTimer = null;
 
@@ -562,15 +562,15 @@ public class Nexus {
 		return lastAvailableClientVersion;
 	}
 
-	@SuppressWarnings("unused")
-	public static LogWatcher getLogWatcher() {
-		return logWatcher;
-	}
-
-	@SuppressWarnings("unused")
-	public static void setLogWatcher(LogWatcher logWatcher) {
-		Nexus.logWatcher = logWatcher;
-	}
+//	@SuppressWarnings("unused")
+//	public static LogWatcher getLogWatcher() {
+//		return logWatcher;
+//	}
+//
+//	@SuppressWarnings("unused")
+//	public static void setLogWatcher(LogWatcher logWatcher) {
+//		Nexus.logWatcher = logWatcher;
+//	}
 
 	@SuppressWarnings("unused")
 	public static RolePlayCharacterDTO getCharacterById(Long id) {

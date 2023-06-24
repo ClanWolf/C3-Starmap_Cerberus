@@ -47,7 +47,7 @@ import net.clanwolf.starmap.client.action.*;
 import net.clanwolf.starmap.client.enums.C3MESSAGES;
 import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
 import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
-import net.clanwolf.starmap.client.gui.panes.logging.LogWatcher;
+//import net.clanwolf.starmap.client.gui.panes.logging.LogWatcher;
 import net.clanwolf.starmap.client.net.Server;
 import net.clanwolf.starmap.logging.C3LogUtil;
 import net.clanwolf.starmap.client.nexus.Nexus;
@@ -69,6 +69,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -216,9 +217,11 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 	public static void main(String[] args) {
 		System.setProperty("javafx.preloader", C3_Preloader.class.getCanonicalName());
 		System.setProperty("file.encoding", "UTF-8");
+		System.setProperty("user.language", "en");
 
 		// This is not written to a logger in order to see it even if the logger is not correctly initialized
-		System.out.println("...");
+		System.out.println(" ");
+		System.out.println(" ");
 		System.out.println("Starting C3 Client.");
 		System.out.println("-----------------------------");
 		System.out.println("Use the version with this console for testing purposes.");
@@ -228,13 +231,11 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 		System.out.println("Module main:         " + System.getProperty("jdk.module.main"));
 		System.out.println("Module main class:   " + System.getProperty("jdk.module.main.class"));
 		System.out.println("Module path:         " + System.getProperty("jdk.module.path"));
-		System.out.println("Module upgrade path: " + System.getProperty("jdk.module.upgrade.path"));
 		System.out.println("Class path:          " + System.getProperty("java.class.path"));
 		System.out.println("-----------------------------");
 		System.out.println("Command line help:");
 		System.out.println("- /IDE        : Running in the development environment.");
 		System.out.println("- /CLEARCACHE : Clear all cached files on startup.");
-//		System.out.println("- /HELP       : This help list.");
 		System.out.println("-----------------------------");
 
 		isDevelopmentPC = false;
@@ -280,8 +281,8 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 			prepareLogging(logFileName);
 
 			C3Properties.setProperty(C3PROPS.LOGFILE, logFileName);
-			LogWatcher logWatcher = new LogWatcher(logFileName);
-			Nexus.setLogWatcher(logWatcher);
+//			LogWatcher logWatcher = new LogWatcher(logFileName);
+//			Nexus.setLogWatcher(logWatcher);
 
 			notifyPreloader(new Preloader.ProgressNotification(50.0));
 

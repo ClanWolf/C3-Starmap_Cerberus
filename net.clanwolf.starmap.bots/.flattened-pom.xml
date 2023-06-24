@@ -1,15 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd"
+    xmlns="http://maven.apache.org/POM/4.0.0">
+  <modelVersion>4.0.0</modelVersion>
   <parent>
-    <artifactId>C3-Starmap_Cerberus</artifactId>
     <groupId>net.clanwolf.starmap</groupId>
+    <artifactId>C3-Starmap_Cerberus</artifactId>
     <version>7.3.78</version>
   </parent>
-  <modelVersion>4.0.0</modelVersion>
   <groupId>net.clanwolf.starmap</groupId>
   <artifactId>net.clanwolf.starmap.bots</artifactId>
-  <name>net.clanwolf.starmap.bots</name>
   <version>7.3.78</version>
+  <name>net.clanwolf.starmap.bots</name>
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+  </properties>
+  <dependencies>
+    <dependency>
+      <groupId>net.clanwolf.starmap</groupId>
+      <artifactId>net.clanwolf.starmap.mail</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>net.clanwolf.starmap</groupId>
+      <artifactId>net.clanwolf.starmap.logging</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>net.dv8tion</groupId>
+      <artifactId>JDA</artifactId>
+      <version>${version.discord-api}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.github.pircbotx</groupId>
+      <artifactId>pircbotx</artifactId>
+      <version>${version.pircbotx}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.github.theholywaffle</groupId>
+      <artifactId>teamspeak3-api</artifactId>
+      <version>${version.teamspeak3-api}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.mariadb.jdbc</groupId>
+      <artifactId>mariadb-java-client</artifactId>
+      <version>${version.mariadb-connector}</version>
+    </dependency>
+  </dependencies>
+  <repositories>
+    <repository>
+      <id>jitpack.io</id>
+      <url>https://jitpack.io</url>
+    </repository>
+  </repositories>
   <build>
     <plugins>
       <plugin>
@@ -59,13 +102,13 @@
                 </filter>
               </filters>
               <transformers>
-                <transformer>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                   <resource>META-INF/spring.handlers</resource>
                 </transformer>
-                <transformer>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                   <resource>META-INF/spring.schemas</resource>
                 </transformer>
-                <transformer>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                   <mainClass>net.clanwolf.starmap.bots.ircclient.IRCBot</mainClass>
                   <manifestEntries>
                     <Multi-Release>true</Multi-Release>
@@ -100,13 +143,13 @@
                 </filter>
               </filters>
               <transformers>
-                <transformer>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                   <resource>META-INF/spring.handlers</resource>
                 </transformer>
-                <transformer>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                   <resource>META-INF/spring.schemas</resource>
                 </transformer>
-                <transformer>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                   <mainClass>net.clanwolf.starmap.bots.ts3client.TS3Bot</mainClass>
                   <manifestEntries>
                     <Multi-Release>true</Multi-Release>
@@ -141,13 +184,13 @@
                 </filter>
               </filters>
               <transformers>
-                <transformer>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                   <resource>META-INF/spring.handlers</resource>
                 </transformer>
-                <transformer>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
                   <resource>META-INF/spring.schemas</resource>
                 </transformer>
-                <transformer>
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
                   <mainClass>net.clanwolf.starmap.bots.discordclient.DiscordBot</mainClass>
                   <manifestEntries>
                     <Multi-Release>true</Multi-Release>
@@ -161,28 +204,4 @@
       </plugin>
     </plugins>
   </build>
-  <repositories>
-    <repository>
-      <id>jitpack.io</id>
-      <url>https://jitpack.io</url>
-    </repository>
-  </repositories>
-  <dependencies>
-    <dependency>
-      <groupId>com.github.pircbotx</groupId>
-      <artifactId>pircbotx</artifactId>
-      <version>2.3.1</version>
-      <scope>compile</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.github.theholywaffle</groupId>
-      <artifactId>teamspeak3-api</artifactId>
-      <version>1.3.1</version>
-      <scope>compile</scope>
-    </dependency>
-  </dependencies>
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-  </properties>
 </project>

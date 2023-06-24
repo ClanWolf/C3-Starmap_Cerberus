@@ -11,6 +11,9 @@ CURRENTLY IN PROGRESS:
 - P3: Updating the manual (ongoing): https://www.clanwolf.net/apps/C3/C3_Manual_de.pdf
 
 TODO:
+
+- Log window contents!
+
 - Add a function to leave game / delete account
 - If a jumpship attacks, the icon is moved back to the starting system on save... the jumpship level icon needs to be moved as well
 - Channel message (discord) if a user successfully changes faction
@@ -43,6 +46,10 @@ WATCH OUT FOR WHILE TESTING:
 ----------------------------------------------------------------
 
 VERSIONS
+
+Version 7.3.78 (24.06.2023)
+- CHANGED: Season RESET
+- CHANGED: The logging gui inside the client (Removed tableview in client, removed server log)
 
 Version 7.3.76 (22.06.2023)
 - UPDATED: Discord API / several maven plugin versions

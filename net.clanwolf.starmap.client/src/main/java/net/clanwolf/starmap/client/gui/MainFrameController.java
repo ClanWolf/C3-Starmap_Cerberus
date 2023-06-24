@@ -1255,6 +1255,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				Tools.playButtonClickSound();
 			}
 		} else if (!openAdministrationPane && !openEditorPane && !openLogPane) {
+		//} else if (!openAdministrationPane && !openEditorPane) {
 			// logger.info("TargetPane not defined!");
 		}
 		if (openAdministrationPane) {

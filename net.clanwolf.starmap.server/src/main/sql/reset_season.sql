@@ -14,9 +14,13 @@
 
 -- --- Script -----
 
+-- SERVER STOPPEN !!!
+
 set autocommit=0;
 -- --- Reset starting date to new value (in round / Season)
-update _HH_ROUND set round = 1, roundphase = 1, CurrentRoundStartDate = (select startdate from _HH_SEASON where id = 1) where season = 1;
+update _HH_ROUND set round = 1, roundphase = 1, CurrentRoundStartDate = ("3060-06-22 12:00:00"), CurrentRoundStartDateRealTime = ("2023-06-22 12:00:06") where season = 1;
+-- CurrentRoundStartDate:         Das Startdate der Season ist heute (22.06.2023 --> 3060-06-22 12:00:00, also aktueller Kalendertag, nur 3060 mit 12:00:00)
+-- CurrentRoundStartDateRealtime: Das Startdate der Season heute (Realzeit)      --> 2023-06-22 12:00:06 (plus ein paar Sekunden wegen >= )
 
 -- --- Delete all routepoints -----
 delete from _HH_ROUTEPOINT where seasonID = 1;
@@ -29,6 +33,8 @@ delete from _HH_ATTACK_VARS; -- where season = 1 over attack               -- TO
 delete from _HH_ATTACK_STATS where seasonId = 1;                           -- Should stats be kept?
 delete from ROLEPLAY_CHARACTER_STATS where seasonId = 1;                   -- Should stats be kept?
 delete from STATS_MWO where seasonId = 1;                                  -- Should stats be kept?
+
+delete from DIPLOMACY where seasonId = 1;
 
 -- --- StarSystemData -----
 update _HH_STARSYSTEMDATA set factionid = factionID_start,
@@ -47,3 +53,5 @@ update ROLEPLAY_CHARACTER set XP = 0;
 update _HH_SEASON set StartDateRealYear = YEAR(CURDATE()) where ID = 1;
 
 commit;
+
+-- SERVER NEU STARTEN !!!

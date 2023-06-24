@@ -106,6 +106,21 @@ public final class Tools {
 	}
 
 	@SuppressWarnings("unused")
+	public static String readLocalFileToString(String file) {
+		String r = "...";
+		File f = new File(file);
+		if (f.isFile() && f.canRead()) {
+			Path filePath = Path.of(file);
+			try {
+				r = Files.readString(filePath);
+			} catch(IOException e) {
+				r = "ERROR READING LOG FILE";
+			}
+		}
+		return r;
+	}
+
+	@SuppressWarnings("unused")
 	public static void sendMailToAdminGroup(String message, ArrayList<File> logfiles) {
 		sendMailToAdminGroup("C3 Message", message, logfiles);
 	}
