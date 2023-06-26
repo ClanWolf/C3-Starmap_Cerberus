@@ -47,6 +47,9 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
+Version 7.3.82 (26.06.2023)
+- FIXED: Rounding error in date calculation (server and client)
+
 Version 7.3.79 (24.06.2023)
 - CHANGED: Season RESET
 - CHANGED: The logging gui inside the client (Removed tableview in client, removed server log)

@@ -1044,8 +1044,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		Long seasonStartDateRealYear = Nexus.getBoUniverse().currentSeasonStartDateRealYear;
 
 		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-		//int diff = (int) Math.abs((seasonStartYear - currentYear) * 365.243); // Days in year + leap year factor
-		int diff = (int) Math.abs((seasonStartYear - currentYear + (currentYear - seasonStartDateRealYear)) * 365.243); // Days in year + leap year factor
+		int diff = (int) Math.round((seasonStartYear - currentYear + (currentYear - seasonStartDateRealYear)) * 365.243); // Days in year + leap year factor
 
 		return addDaysToDate(date, diff);
 	}
@@ -1496,6 +1495,10 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 						LocalDateTime endTime = Nexus.getBoUniverse().currentRoundEndDateTime;
 
 						Nexus.setHoursLeftInThisRound(java.time.Duration.between(now, endTime).toHours());
+
+						logger.info("Now: " + now);
+						logger.info("End time for this round: " + endTime);
+						logger.info("Calculated hours left in this round: " + java.time.Duration.between(now, endTime).toHours());
 
 						long diff = java.time.Duration.between(now, endTime).toMinutes();
 						long days = diff / 24 / 60;

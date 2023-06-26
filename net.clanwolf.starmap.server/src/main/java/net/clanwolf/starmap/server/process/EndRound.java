@@ -186,8 +186,11 @@ public class EndRound {
         c.setTime(seasonStartDate);
         int seasonStartYear = c.get(Calendar.YEAR);
         int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-        //int diff = (int) Math.abs((seasonStartYear - currentYear) * 365.243); // Days in year + leap year factor
-        int diff = (int) Math.abs((seasonStartYear - currentYear + (currentYear - seasonStartDateRealYear)) * 365.243); // Days in year + leap year factor
+	    int diff = (int) Math.round((seasonStartYear - currentYear + (currentYear - seasonStartDateRealYear)) * 365.243); // Days in year + leap year factor
+
+	    logger.info("Calculated diff in days from today to fictional round date: " + (seasonStartYear - currentYear + (currentYear - seasonStartDateRealYear)) * 365.243);
+	    logger.info("Calculated diff in days from today to fictional round date (rounded): " + Math.round((seasonStartYear - currentYear + (currentYear - seasonStartDateRealYear)) * 365.243));
+	    logger.info("Calculated diff in days from today to fictional round date (abs): " + Math.abs((seasonStartYear - currentYear + (currentYear - seasonStartDateRealYear)) * 365.243));
 
         return addDaysToDate(date, diff);
     }
