@@ -11,8 +11,7 @@ CURRENTLY IN PROGRESS:
 - P3: Updating the manual (ongoing): https://www.clanwolf.net/apps/C3/C3_Manual_de.pdf
 
 TODO:
-
-- Log window contents!
+- Allow allied pilots to be droplead in fights for allied factions
 
 - Add a function to leave game / delete account
 - If a jumpship attacks, the icon is moved back to the starting system on save... the jumpship level icon needs to be moved as well
@@ -47,8 +46,10 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
-Version 7.3.82 (26.06.2023)
+Version 7.3.83 (26.06.2023)
+- FIXED: Error while saving gamestats (attackerLostTonnage cannot be null, has not been initialized)
 - FIXED: Rounding error in date calculation (server and client)
+- CHANGED: Enable map die roll at all stages so that each side can veto one map during an invasion
 
 Version 7.3.79 (24.06.2023)
 - CHANGED: Season RESET

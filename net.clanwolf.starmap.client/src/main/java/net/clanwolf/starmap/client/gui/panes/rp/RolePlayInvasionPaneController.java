@@ -379,9 +379,9 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 			}
 
 			if (rpStory.getStoryImage() != null) {
-				if ("MWOMap_RANDOM.png".equals(rpStory.getStoryImage())) {
+//				if ("MWOMap_RANDOM.png".equals(rpStory.getStoryImage())) {
 					paneMapDice.setVisible(true);
-				}
+//				}
 			}
 
 			// rpVar9

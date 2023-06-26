@@ -297,6 +297,12 @@ public class ResultAnalyzer {
 					attackStats.setStarSystemDataId(Nexus.getCurrentAttackOfUser().getStarSystemId());
 					attackStats.setMwoMatchId(gameId);
 					attackStats.setDropId("");
+					attackStats.setAttackerTonnage(0L);
+					attackStats.setDefenderTonnage(0L);
+					attackStats.setAttackerLostTonnage(0L);
+					attackStats.setDefenderLostTonnage(0L);
+					attackStats.setAttackerKillCount(0L);
+					attackStats.setDefenderKillCount(0L);
 					attackStats.setMap(map);
 					attackStats.setMode(mode);
 					attackStats.setDropEnded(md.getCompleteTime());
