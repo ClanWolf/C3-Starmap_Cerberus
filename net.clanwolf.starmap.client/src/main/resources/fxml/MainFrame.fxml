@@ -21,17 +21,17 @@
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="AnchorPane" fx:id="rootAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="630.0" prefWidth="1030.0" xmlns="http://javafx.com/javafx/19" fx:controller="net.clanwolf.starmap.client.gui.MainFrameController">
     <children>
-        <Pane fx:id="mouseStopper" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="1.0" prefHeight="630.0" prefWidth="1030.0" styleClass="AnchorPane" visible="true">
+        <Pane fx:id="mouseStopper" layoutX="63.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="1.0" prefHeight="630.0" prefWidth="941.0" styleClass="AnchorPane" visible="true">
             <stylesheets>
                 <URL value="@../styles/MainFrameStyle.css" />
             </stylesheets>
          <children>
-            <Label fx:id="labelWaitText" alignment="TOP_CENTER" contentDisplay="CENTER" focusTraversable="false" layoutY="168.0" prefHeight="86.0" prefWidth="1030.0">
+            <Label fx:id="labelWaitText" alignment="TOP_CENTER" contentDisplay="CENTER" focusTraversable="false" layoutY="168.0" prefHeight="86.0" prefWidth="914.0">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <ImageView fx:id="ivMWOLogo" fitHeight="34.0" fitWidth="79.0" layoutX="694.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true" visible="false">
+            <ImageView fx:id="ivMWOLogo" fitHeight="34.0" fitWidth="79.0" layoutX="630.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true" visible="false">
                <image>
                   <Image url="@../images/logos/games/mwo_logo.png" />
                </image>

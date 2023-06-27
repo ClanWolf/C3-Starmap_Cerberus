@@ -180,6 +180,11 @@
             <Label fx:id="lblRolledMapName" alignment="CENTER_RIGHT" contentDisplay="RIGHT" focusTraversable="false" layoutY="48.0" mouseTransparent="true" onMouseClicked="#handleRollMapClick" prefHeight="20.0" prefWidth="330.0" text="Roll for map" />
          </children>
       </Pane>
+      <Pane fx:id="paneVetoMap" layoutX="404.0" layoutY="20.0" prefHeight="100.0" prefWidth="334.0">
+         <children>
+            <Button alignment="CENTER" contentDisplay="CENTER" layoutX="167.0" layoutY="14.0" mnemonicParsing="false" onAction="#handleVetoMapButtonClick" prefWidth="150.0" styleClass="contentButtonBlue" stylesheets="@../styles/MainFrameStyle.css" text="VETO MAP" />
+         </children>
+      </Pane>
     </children>
     <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />

@@ -4,7 +4,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>net.clanwolf.starmap</groupId>
   <artifactId>C3-Starmap_Cerberus</artifactId>
-  <version>7.3.83</version>
+  <version>7.3.84</version>
   <packaging>pom</packaging>
   <name>C3-Starmap Cerberus</name>
   <description>Starsystem map of the Inner Sphere, Periphery and Clan space (BattleTech).</description>
@@ -46,7 +46,7 @@
     <version.collections-generic>4.01</version.collections-generic>
     <version.gifencoder>0.10.1</version.gifencoder>
     <version.springframework-security-config>6.1.1</version.springframework-security-config>
-    <revision>7.3.83</revision>
+    <revision>7.3.84</revision>
     <version.moditect-maven-plugin>1.0.0.Final</version.moditect-maven-plugin>
     <version.pircbotx>2.3.1</version.pircbotx>
     <version.discord-api>5.0.0-beta.11</version.discord-api>

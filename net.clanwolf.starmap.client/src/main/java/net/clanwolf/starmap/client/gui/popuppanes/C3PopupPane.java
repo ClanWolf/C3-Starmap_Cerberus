@@ -195,7 +195,7 @@ public class C3PopupPane extends Pane {
 	}
 
 	public void fadeOut() {
-		FadeTransition FadeOutTransition = new FadeTransition(Duration.millis(2500), this);
+		FadeTransition FadeOutTransition = new FadeTransition(Duration.millis(3000), this);
 		FadeOutTransition.setFromValue(1.0);
 		FadeOutTransition.setToValue(0.0);
 		FadeOutTransition.setCycleCount(1);

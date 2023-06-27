@@ -157,7 +157,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 	@FXML
 	private ImageView ivStatic, ivForumLink, ivDie1, ivDie2;
 	@FXML
-	private Pane paneMapDice;
+	private Pane paneMapDice, paneVetoMap;
 
 	public RolePlayInvasionPaneController() {
 	}
@@ -232,6 +232,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 		lblRolledMapName.setText(Internationalization.getString("C3_Invasion_RollForMap"));
 
 		paneMapDice.setVisible(false);
+		paneVetoMap.setVisible(false);
 	}
 
 	@FXML
@@ -240,6 +241,12 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 		rollMap.setMode(GAMESTATEMODES.ROLL_RANDOM_MAP);
 		rollMap.addObject(Nexus.getCurrentAttackOfUser().getAttackDTO().getId());
 		Nexus.fireNetworkEvent(rollMap);
+	}
+
+	@FXML
+	public void handleVetoMapButtonClick() {
+		paneMapDice.setVisible(true);
+		paneVetoMap.setVisible(false);
 	}
 
 	public void statusUpdate() {
@@ -379,9 +386,13 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 			}
 
 			if (rpStory.getStoryImage() != null) {
-//				if ("MWOMap_RANDOM.png".equals(rpStory.getStoryImage())) {
+				if ("MWOMap_RANDOM.png".equals(rpStory.getStoryImage())) {
 					paneMapDice.setVisible(true);
-//				}
+					paneVetoMap.setVisible(false);
+				} else {
+					paneMapDice.setVisible(false);
+					paneVetoMap.setVisible(true);
+				}
 			}
 
 			// rpVar9

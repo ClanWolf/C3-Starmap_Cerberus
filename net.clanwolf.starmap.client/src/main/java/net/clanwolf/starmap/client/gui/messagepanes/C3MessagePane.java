@@ -223,7 +223,7 @@ public class C3MessagePane extends Pane {
 		fadeInTransition_01.setCycleCount(4);
 
 		// Fade in transition 02 (Border)
-		FadeTransition fadeInTransition_02 = new FadeTransition(Duration.millis(240), this);
+		FadeTransition fadeInTransition_02 = new FadeTransition(Duration.millis(350), this);
 		fadeInTransition_02.setFromValue(0.0);
 		fadeInTransition_02.setToValue(1.0);
 		fadeInTransition_02.setCycleCount(2);
@@ -266,6 +266,7 @@ public class C3MessagePane extends Pane {
 				default:
 					break;
 			}
+			ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("5");
 		});
 
 		ActionManager.getAction(ACTIONS.NOISE).execute(600);

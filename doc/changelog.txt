@@ -46,10 +46,13 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
-Version 7.3.83 (26.06.2023)
+Version 7.3.84 (27.06.2023)
+- ADDED: A movement handle on the left side (red), which always allows movement of the window
+- ADDED: Threading to file downloads
+- FIXED: An issue with error messages can not be closed sometimes
 - FIXED: Error while saving gamestats (attackerLostTonnage cannot be null, has not been initialized)
 - FIXED: Rounding error in date calculation (server and client)
-- CHANGED: Enable map die roll at all stages so that each side can veto one map during an invasion
+- CHANGED: Added Button to Veto a map (once in a drop per side)
 
 Version 7.3.79 (24.06.2023)
 - CHANGED: Season RESET

@@ -88,7 +88,7 @@ class SceneGestures {
 
 	private final EventHandler<MouseEvent> onMouseClickedEventHandler = event -> {
 		if (event.getTarget() instanceof Circle || event.getTarget() instanceof ImageView || event.getTarget() instanceof Button) {
-			logger.info("No action.");
+			// logger.info("No action.");
 			// nothing
 		} else {
 			if (event.getButton() == MouseButton.PRIMARY) {

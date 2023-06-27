@@ -52,6 +52,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Timer;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * The Nexus is a central place to hold general information like the currently logged in user and such.
@@ -120,6 +121,8 @@ public class Nexus {
 	}
 
 	public static Image factionLogo;
+
+	public static AtomicBoolean oneOrMoreMessageOpen = new AtomicBoolean(false);
 
 	public static void setCheckSystemClipboardForMWOResultTimer(Timer checkSystemClipboardForMWOResultTimerV) {
 		checkSystemClipboardForMWOResultTimer = checkSystemClipboardForMWOResultTimerV;

@@ -394,7 +394,7 @@ public class NodeGestures {
 	private final EventHandler<MouseEvent> getOnMouseClickedEventHandler = new EventHandler<>() {
 		public void handle(MouseEvent event) {
 			if (event.isSecondaryButtonDown()) {
-				logger.info("RIGHTCLICK");
+				//logger.info("RIGHTCLICK");
 			}
 
 			// left mouse button click

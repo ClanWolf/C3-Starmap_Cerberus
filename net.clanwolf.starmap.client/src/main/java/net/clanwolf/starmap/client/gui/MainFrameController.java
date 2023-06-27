@@ -102,7 +102,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Controlls gui objects for the MainFrame class.
@@ -119,7 +118,6 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private boolean openAdministrationPane = false;
 	private boolean openLogPane = false;
 	private boolean openEditorPane = false;
-	private boolean messageIsShowing = false;
 	private static boolean adminButtonHasFocus = false;
 	private static volatile boolean userlistHovered = false;
 	private static volatile boolean userlistTriggerHovered = false;
@@ -146,7 +144,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private Animation spectrumAnimation = null;
 	private Animation noiseAnimation = null;
 	private ExecutorService exec = null;
-	private C3MessagePane messagePane = null;
+	private LinkedList<C3MessagePane> messagePaneStack = new LinkedList<>();
 	private C3MedalPane medalPane = null;
 	private C3PopupPane popupPane = null;
 	private int menuIndicatorPos = 0;
@@ -160,8 +158,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private final Image muteButtonImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/mute.png")));
 	private boolean helpvoiceplayedonce = false;
 
-	private static int counterWaitCursor = 0; // a global counter
-	private static ReentrantLock counterWaitCursorLock = new ReentrantLock(true); // enable fairness policy
+//	private static int counterWaitCursor = 0; // a global counter
+//	private static ReentrantLock counterWaitCursorLock = new ReentrantLock(true); // enable fairness policy
 
 	@FXML
 	private Label statuslabel;
@@ -311,17 +309,17 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		Tools.playButtonHoverSound();
 	}
 
-	private static void decrementCounter() {
-		counterWaitCursorLock.lock();
-		try {
-			counterWaitCursor--;
-			if (counterWaitCursor < 0) {
-				counterWaitCursor = 0;
-			}
-		} finally {
-			counterWaitCursorLock.unlock();
-		}
-	}
+//	private static void decrementCounter() {
+//		counterWaitCursorLock.lock();
+//		try {
+//			counterWaitCursor--;
+//			if (counterWaitCursor < 0) {
+//				counterWaitCursor = 0;
+//			}
+//		} finally {
+//			counterWaitCursorLock.unlock();
+//		}
+//	}
 
 	@FXML
 	private void handleHelpButtonHoverExit() {
@@ -334,23 +332,23 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		setStatusText("", false);
 	}
 
-	private static void resetCounter() {
-		counterWaitCursorLock.lock();
-		try {
-			counterWaitCursor = 0;
-		} finally {
-			counterWaitCursorLock.unlock();
-		}
-	}
+//	private static void resetCounter() {
+//		counterWaitCursorLock.lock();
+//		try {
+//			counterWaitCursor = 0;
+//		} finally {
+//			counterWaitCursorLock.unlock();
+//		}
+//	}
 
-	private static void incrementCounter() {
-		counterWaitCursorLock.lock();
-		try {
-			counterWaitCursor++;
-		} finally {
-			counterWaitCursorLock.unlock();
-		}
-	}
+//	private static void incrementCounter() {
+//		counterWaitCursorLock.lock();
+//		try {
+//			counterWaitCursor++;
+//		} finally {
+//			counterWaitCursorLock.unlock();
+//		}
+//	}
 
 	@FXML
 	private void handleUserListEntered() {
@@ -576,7 +574,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 	@FXML
 	private void handleDiplomacyButtonMouseEventEnter() {
-		setStatusText(Internationalization.getString("app_dice_infotext"), false);
+		setStatusText(Internationalization.getString("app_diplomacy_infotext"), false);
 		Tools.playButtonHoverSound();
 	}
 
@@ -1496,9 +1494,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 						Nexus.setHoursLeftInThisRound(java.time.Duration.between(now, endTime).toHours());
 
-						logger.info("Now: " + now);
-						logger.info("End time for this round: " + endTime);
-						logger.info("Calculated hours left in this round: " + java.time.Duration.between(now, endTime).toHours());
+//						logger.info("Now: " + now);
+//						logger.info("End time for this round: " + endTime);
+//						logger.info("Calculated hours left in this round: " + java.time.Duration.between(now, endTime).toHours());
 
 						long diff = java.time.Duration.between(now, endTime).toMinutes();
 						long days = diff / 24 / 60;
@@ -1542,7 +1540,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		textTopRightThread.start();
 	}
 
-	private void NoiseAnimation() {
+	private void setupNoiseAnimation() {
 		Platform.runLater(() -> {
 			int COLUMNS = 2;
 			int COUNT = 4;
@@ -1561,7 +1559,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		});
 	}
 
-	private void SpeechSpectrumAnimation() {
+	private void setupSpeechSpectrumAnimation() {
 		if (spectrumAnimation == null) {
 			Platform.runLater(() -> {
 				int COLUMNS = 3;
@@ -2225,14 +2223,18 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 					noiseImage.toFront();
 					noiseImage.setVisible(true);
-					noiseAnimation.play();
+					if (noiseAnimation != null) {
+						noiseAnimation.play();
+					}
 
 					FadeTransition FadeOutTransition = new FadeTransition(Duration.millis(duration), noiseImage);
 					FadeOutTransition.setFromValue(0.4);
 					FadeOutTransition.setToValue(0.0);
 					FadeOutTransition.setCycleCount(1);
 					FadeOutTransition.setOnFinished(event -> {
-						noiseAnimation.stop();
+						if (noiseAnimation != null) {
+							noiseAnimation.stop();
+						}
 						noiseImage.setVisible(false);
 					});
 
@@ -2279,53 +2281,33 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				break;
 
 			case CURSOR_REQUEST_NORMAL:
-				String sourceIdRN = "";
-				if (o.getText() != null && !"".equals(o.getText())) {
-					sourceIdRN = o.getText();
-				}
-				if (!messageIsShowing) {
-					Nexus.setMainFrameEnabled(true);
-					decrementCounter();
-					//logger.info("Requesting NORMAL CURSOR (" + counterWaitCursor + "). --> " + sourceIdRN);
-					if ("forceNormal".equals(sourceIdRN)) {
-						logger.info("Forcing NORMAL CURSOR");
-						resetCounter();
-					}
-					if (counterWaitCursor == 0) {
-						Platform.runLater(() -> {
-							mouseStopper.toFront();
-							paneVolumeControl.toFront();
-							slVolumeControl.toFront();
-							ivMuteToggle.toFront();
-							// mouseStopper.setBackground(null);
-							waitAnimationPane.showCircleAnimation(false);
-							mouseStopper.setMouseTransparent(true);
-							//labelWaitText.setContentDisplay(ContentDisplay.CENTER);
-							labelWaitText.setText("");
-							labelWaitText.setVisible(false);
-						});
-					}
+				if (messagePaneStack.size() == 0 && !Nexus.oneOrMoreMessageOpen.get()) {
 					Platform.runLater(() -> {
+						Nexus.setMainFrameEnabled(true);
+						mouseStopper.toFront();
 						paneVolumeControl.toFront();
 						slVolumeControl.toFront();
 						ivMuteToggle.toFront();
+						waitAnimationPane.showCircleAnimation(false);
+						mouseStopper.setMouseTransparent(true);
+						labelWaitText.setText("");
+						labelWaitText.setVisible(false);
+						paneVolumeControl.toFront();
+						slVolumeControl.toFront();
+						ivMuteToggle.toFront();
+						ActionManager.getAction(ACTIONS.ACTION_SUCCESSFULLY_EXECUTED).execute(o);
 					});
-					ActionManager.getAction(ACTIONS.ACTION_SUCCESSFULLY_EXECUTED).execute(o);
-				} else {
-					//logger.info("!!! SUPPRESSED: Requesting NORMAL cursor (" + counterWaitCursor + "). --> " + sourceIdRN);
 				}
 				break;
 
 			case CURSOR_REQUEST_WAIT:
-				String sourceIdRW = "";
-				if (o.getText() != null && !"".equals(o.getText())) {
-					sourceIdRW = o.getText();
-				}
-				final String str = sourceIdRW;
-				Nexus.setMainFrameEnabled(false);
-				incrementCounter();
-				//logger.info("Requesting WAIT cursor (" + counterWaitCursor + "). --> " + sourceIdRW);
 				Platform.runLater(() -> {
+					String sourceIdRW = "";
+					if (o.getText() != null && !"".equals(o.getText())) {
+						sourceIdRW = o.getText();
+					}
+					Nexus.setMainFrameEnabled(false);
+
 					mouseStopper.toFront();
 					paneVolumeControl.toFront();
 					slVolumeControl.toFront();
@@ -2333,12 +2315,10 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					// mouseStopper.setBackground(new Background(new BackgroundFill(Color.BLUE, new CornerRadii(0), Insets.EMPTY)));
 					waitAnimationPane.showCircleAnimation(true);
 					mouseStopper.setMouseTransparent(false);
-					if (str.length() > 3) {
-						labelWaitText.setText(str);
+					if (sourceIdRW.length() > 3) {
+						labelWaitText.setText(sourceIdRW);
 					}
 					labelWaitText.setVisible(true);
-				});
-				Platform.runLater(() -> {
 					paneVolumeControl.toFront();
 					slVolumeControl.toFront();
 					ivMuteToggle.toFront();
@@ -2346,11 +2326,10 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				break;
 
 			case SHOW_MESSAGE:
-				messageIsShowing = true;
-				if ((o != null) && (o.getObject() instanceof C3Message message)) {
-					showMessage(message);
-				}
 				Platform.runLater(() -> {
+					if ((o != null) && (o.getObject() instanceof C3Message message)) {
+						showMessage(message);
+					}
 					paneVolumeControl.toFront();
 					slVolumeControl.toFront();
 					ivMuteToggle.toFront();
@@ -2358,14 +2337,14 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				break;
 
 			case SHOW_MEDAL:
-				if ((o != null) && (o.getObject() instanceof MEDALS)) {
-					// Integer id = ((MEDALS)o.getObject()).getId();
-					String imageName = o.getObject().toString();
-					String desc = Internationalization.getString("MEDALS_" + imageName + "_desc");
-					Image med = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/gui/rewards/" + imageName + ".png")));
-					showMedal(med, desc);
-				}
 				Platform.runLater(() -> {
+					if ((o != null) && (o.getObject() instanceof MEDALS)) {
+						// Integer id = ((MEDALS)o.getObject()).getId();
+						String imageName = o.getObject().toString();
+						String desc = Internationalization.getString("MEDALS_" + imageName + "_desc");
+						Image med = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/gui/rewards/" + imageName + ".png")));
+						showMedal(med, desc);
+					}
 					paneVolumeControl.toFront();
 					slVolumeControl.toFront();
 					ivMuteToggle.toFront();
@@ -2373,23 +2352,23 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				break;
 
 			case SHOW_POPUP:
-				if ((o != null) && (o.getObject() instanceof POPUPS)) {
-					Integer id = ((POPUPS) o.getObject()).getId();
-					String colorCode = "green";
-					switch (id) {
-						case 1:
-							colorCode = "green";
-							break;
-						case 2:
-							colorCode = "orange";
-							break;
-					}
-					String imageName = o.getObject().toString();
-					String desc = Internationalization.getString("POPUPS_" + imageName + "_desc");
-					Image pop = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/gui/popups/" + imageName + ".png")));
-					showPopup(pop, desc, colorCode);
-				}
 				Platform.runLater(() -> {
+					if ((o != null) && (o.getObject() instanceof POPUPS)) {
+						Integer id = ((POPUPS) o.getObject()).getId();
+						String colorCode = "green";
+						switch (id) {
+							case 1:
+								colorCode = "green";
+								break;
+							case 2:
+								colorCode = "orange";
+								break;
+						}
+						String imageName = o.getObject().toString();
+						String desc = Internationalization.getString("POPUPS_" + imageName + "_desc");
+						Image pop = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/gui/popups/" + imageName + ".png")));
+						showPopup(pop, desc, colorCode);
+					}
 					paneVolumeControl.toFront();
 					slVolumeControl.toFront();
 					ivMuteToggle.toFront();
@@ -2405,12 +2384,10 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				break;
 
 			case SHOW_MESSAGE_WAS_ANSWERED:
-				messageIsShowing = false;
 				if ((o != null) && (o.getObject() instanceof C3Message)) {
 					C3Message message = (C3Message) o.getObject();
 					closeMessage(message);
 				}
-				ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("forceNormal");
 				break;
 
 			case UPDATE_GAME_INFO:
@@ -2658,8 +2635,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	 * Here all the actions go in that need to be performed once the client is started up and showing
 	 */
 	private void startup() {
-		SpeechSpectrumAnimation();
-		NoiseAnimation();
+		setupSpeechSpectrumAnimation();
+		setupNoiseAnimation();
 
 		noiseImage.toFront();
 		noiseImage.setVisible(true);
@@ -2746,31 +2723,44 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			slVolumeControl.setValue(v);
 			Nexus.setMainFrameVolumeSlider(slVolumeControl);
 		});
+
+//		C3Message m1 = new C3Message(C3MESSAGES.WARNING_BLACKBOX_TEAMS_INVALID);
+//		m1.setType(C3MESSAGETYPES.CLOSE);
+//		m1.setText("Test 1");
+//		ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(m1);
+//
+//		C3Message m2 = new C3Message(C3MESSAGES.WARNING_BLACKBOX_TEAMS_INVALID);
+//		m2.setType(C3MESSAGETYPES.CLOSE);
+//		m2.setText("Test 2");
+//		ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(m2);
+//
+//		C3Message m3 = new C3Message(C3MESSAGES.WARNING_BLACKBOX_TEAMS_INVALID);
+//		m3.setType(C3MESSAGETYPES.CLOSE);
+//		m3.setText("Test 3");
+//		ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(m3);
 	}
 
 	private void showMessage(C3Message message) {
 		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("5");
-
+		Nexus.oneOrMoreMessageOpen.set(true);
 		Platform.runLater(() -> {
-			if (mouseStopper.getChildren().contains(messagePane)) {
-				mouseStopper.getChildren().remove(mouseStopper);
-			}
-
-			messagePane = new C3MessagePane(message);
+			C3MessagePane messagePane = new C3MessagePane(message);
 			Tools.playGUICreationSound();
 			mouseStopper.getChildren().add(messagePane);
+			messagePaneStack.add(messagePane);
 			messagePane.fadeIn();
+			ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("5");
 		});
 	}
 
 	private void showMedal(Image image, String desc) {
 		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("6");
-
-		medalPane = new C3MedalPane(image, desc);
 		Platform.runLater(() -> {
+			medalPane = new C3MedalPane(image, desc);
 			Tools.playGUICreationSound();
 			mouseStopper.getChildren().add(medalPane);
 			medalPane.fadeIn();
+			ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("6");
 		});
 	}
 
@@ -2816,7 +2806,12 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			Logout.doLogout();
 		}
 
-		Platform.runLater(() -> mouseStopper.getChildren().remove(messagePane));
+		C3MessagePane topMessage = messagePaneStack.getLast();
+		Platform.runLater(() -> mouseStopper.getChildren().remove(topMessage));
+		messagePaneStack.remove(topMessage);
+		if (messagePaneStack.size() == 0) {
+			Nexus.oneOrMoreMessageOpen.set(false);
+		}
 		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("8");
 	}
 }

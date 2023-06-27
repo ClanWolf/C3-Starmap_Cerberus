@@ -183,7 +183,7 @@ public class EventCommunications {
 					}
 					break;
 
-				case ATTACK_TEAM_ERROR:
+				case ATTACK_TEAM_ERROR_RESPONSE:
 					if (state.getObject() != null
 							&& state.getObject() instanceof String username
 							&& state.getObject2() != null
@@ -204,7 +204,7 @@ public class EventCommunications {
 
 						C3Message m = new C3Message(C3MESSAGES.WARNING_BLACKBOX_TEAMS_INVALID);
 						m.setType(C3MESSAGETYPES.CLOSE);
-						m.setText(Internationalization.getString("C3_Lobby_Error_Teams_Invalid"));
+						m.setText(Internationalization.getString("C3_Lobby_Error_Teams_Invalid") + " [" + username + "]");
 						ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(m);
 					}
 					break;

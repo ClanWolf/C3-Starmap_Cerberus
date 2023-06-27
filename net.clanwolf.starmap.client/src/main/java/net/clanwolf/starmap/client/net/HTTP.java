@@ -41,6 +41,9 @@ import java.security.SecureRandom;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.Properties;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Provides http functionality
@@ -200,58 +203,77 @@ public abstract class HTTP {
 	 * @param localFileName The filename to store the file to
 	 */
 	public static void download(String address, String localFileName) throws Exception {
-		OutputStream out = null;
-		InputStream in = null;
-		URLConnection conn;
+		Runnable runnable = () -> {
+			OutputStream out = null;
+			InputStream in = null;
+			URLConnection conn;
 
-		try {
-			URI uri = new URI(address);
-			URL url = uri.toURL();
-
-			if (C3Properties.getBoolean(C3PROPS.USE_PROXY)) {
-				String proxyHost = C3Properties.getProperty(C3PROPS.PROXY_SERVER);
-				int proxyPort = C3Properties.getInt(C3PROPS.PROXY_PORT);
-				Proxy p = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost, proxyPort));
-				conn = url.openConnection(p);
-			} else {
-				conn = url.openConnection();
-			}
-			// conn.setRequestProperty("referer",
-			// "https://translate.google.com/");
-			conn.setRequestProperty("user-agent",
-					"Mozilla/5.0 (Windows NT 10.0; WOW64; rv:43.0) Gecko/20100101 Firefox/43.0");
-
-			in = conn.getInputStream();
-			byte[] buffer = new byte[1024];
-
-			int numRead;
-			// long numWritten = 0;
-
-			File f = new File(localFileName);
-			boolean success = f.getParentFile().mkdirs();
-			if (!success) {
-				logger.info("Dirs could not be created or existed already.");
-			}
-
-			out = new BufferedOutputStream(new FileOutputStream(localFileName));
-			while ((numRead = in.read(buffer)) != -1) {
-				out.write(buffer, 0, numRead);
-				// numWritten += numRead;
-			}
-		} catch (Exception e) {
-			logger.error(null, e);
-			throw (e);
-		} finally {
 			try {
-				if (in != null) {
-					in.close();
+				logger.info("Downloading: " + address);
+
+				URI uri = new URI(address);
+				URL url = uri.toURL();
+
+				if (C3Properties.getBoolean(C3PROPS.USE_PROXY)) {
+					String proxyHost = C3Properties.getProperty(C3PROPS.PROXY_SERVER);
+					int proxyPort = C3Properties.getInt(C3PROPS.PROXY_PORT);
+					Proxy p = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost, proxyPort));
+					conn = url.openConnection(p);
+				} else {
+					conn = url.openConnection();
 				}
-				if (out != null) {
-					out.close();
+				// conn.setRequestProperty("referer",
+				// "https://translate.google.com/");
+				conn.setRequestProperty("user-agent",
+						"Mozilla/5.0 (Windows NT 10.0; WOW64; rv:43.0) Gecko/20100101 Firefox/43.0");
+
+				in = conn.getInputStream();
+				byte[] buffer = new byte[1024];
+
+				int numRead;
+				// long numWritten = 0;
+
+				File f = new File(localFileName);
+				boolean success = f.getParentFile().mkdirs();
+				if (!success) {
+					logger.info("Dirs could not be created or existed already.");
 				}
-			} catch (IOException ioe) {
+
+				out = new BufferedOutputStream(new FileOutputStream(localFileName));
+				while ((numRead = in.read(buffer)) != -1) {
+					out.write(buffer, 0, numRead);
+					// numWritten += numRead;
+				}
+			} catch (IOException | URISyntaxException ioe) {
 				logger.error(null, ioe);
+			} finally {
+				try {
+					if (in != null) {
+						in.close();
+					}
+					if (out != null) {
+						out.close();
+					}
+				} catch (IOException ioe) {
+					logger.error(null, ioe);
+				}
 			}
+		};
+
+		try (ExecutorService es = Executors.newCachedThreadPool()) {
+			es.execute(runnable);
+			es.shutdown();
+			boolean finished = es.awaitTermination(1, TimeUnit.MINUTES);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.error("Download error", e);
+		}
+
+		File f = new File(localFileName);
+		if (f.isFile() && f.canRead()) {
+			logger.info("Download ok: " + localFileName);
+		} else {
+			throw new RuntimeException("Download error");
 		}
 	}
 

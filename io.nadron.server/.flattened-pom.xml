@@ -5,11 +5,11 @@
   <parent>
     <groupId>net.clanwolf.starmap</groupId>
     <artifactId>C3-Starmap_Cerberus</artifactId>
-    <version>7.3.83</version>
+    <version>7.3.84</version>
   </parent>
   <groupId>net.clanwolf.starmap</groupId>
   <artifactId>io.nadron.server</artifactId>
-  <version>7.3.83</version>
+  <version>7.3.84</version>
   <dependencies>
     <dependency>
       <groupId>net.clanwolf.starmap</groupId>

@@ -850,7 +850,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				FactionPOJO newFaction = factionDAO.findById(getC3UserID(session), factionId);
 				JumpshipPOJO js = jsDAO.getJumpshipsForFaction(factionId).get(0);
 
-				if (newFaction.getFactionKey() != null && givenFactionKey != null && newFaction.getFactionKey().equals(givenFactionKey)) {
+				if (newFaction.getFactionKey() != null && newFaction.getFactionKey().equals(givenFactionKey)) {
 					// Change faction for all chars of that user
 					ArrayList<RolePlayCharacterPOJO> charList = rpDAO.getCharactersOfUser(userRequestingFactionChange);
 					for (RolePlayCharacterPOJO ch : charList) {
@@ -1122,7 +1122,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 					logger.info("Users may not switch sides in the middle of an invasion!");
 					logger.info("----------------------------------------------");
 
-					GameState response = new GameState(GAMESTATEMODES.ATTACK_TEAM_ERROR);
+					GameState response = new GameState(GAMESTATEMODES.ATTACK_TEAM_ERROR_RESPONSE);
 					response.addObject(username);
 					response.addObject2(a.getId());
 					response.addObject3(attackType);
