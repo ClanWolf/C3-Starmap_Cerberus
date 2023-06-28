@@ -51,7 +51,7 @@
                </padding>
             </HBox>
             <Separator focusTraversable="false" prefWidth="200.0" />
-            <TableView fx:id="tblUserHistory" fixedCellSize="20.0" prefHeight="401.0" prefWidth="285.0" stylesheets="@../styles/MainFrameStyle.css" />
+            <TableView fx:id="tblUserHistory" fixedCellSize="20.0" focusTraversable="false" prefHeight="401.0" prefWidth="285.0" stylesheets="@../styles/MainFrameStyle.css" />
          </children></VBox>
       <VBox fx:id="TFSInfo" alignment="TOP_CENTER" layoutX="176.0" layoutY="38.0" prefHeight="200.0" prefWidth="100.0" styleClass="systemDetailPanelSolid" stylesheets="@../styles/MainFrameStyle.css" visible="false">
          <children>
@@ -262,6 +262,11 @@
          <effect>
             <DropShadow />
          </effect>
+      </ImageView>
+      <ImageView fx:id="ivLoggedOnUserImage" fitHeight="37.0" fitWidth="38.0" layoutX="69.0" layoutY="161.0" mouseTransparent="true" pickOnBounds="true" visible="false">
+         <image>
+            <Image url="@../images/chars/male/1045.png" />
+         </image>
       </ImageView>
     </children>
     <stylesheets>

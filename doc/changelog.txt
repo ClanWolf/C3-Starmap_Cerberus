@@ -46,6 +46,9 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
+Version 7.3.85 (28.06.2023)
+- ADDED: Character image on the menu button for character info when logged on
+
 Version 7.3.84 (27.06.2023)
 - ADDED: A movement handle on the left side (red), which always allows movement of the window
 - ADDED: Threading to file downloads

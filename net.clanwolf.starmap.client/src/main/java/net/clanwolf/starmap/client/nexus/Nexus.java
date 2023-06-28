@@ -121,6 +121,7 @@ public class Nexus {
 	}
 
 	public static Image factionLogo;
+	public static Image loggedOnUserImage;
 
 	public static AtomicBoolean oneOrMoreMessageOpen = new AtomicBoolean(false);
 
@@ -139,9 +140,15 @@ public class Nexus {
 		return factionLogo;
 	}
 
+	public static Image getCurrentCharImage() {
+		return loggedOnUserImage;
+	}
+
 	public static void setFactionLogo(Image logo) {
 		factionLogo = logo;
 	}
+
+	public static void setLoggedOnUserImage(Image charImage) { loggedOnUserImage = charImage; }
 
 	public static void setMWOCheckingActive(boolean value) {
 		mwoCheckingActive = value;

@@ -310,12 +310,13 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 				charImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/chars/no_avatar.png")));
 			}
 			ivCharacterPortrait.setImage(charImage);
+			Nexus.setLoggedOnUserImage(charImage);
 
 			valueCharName.setText(character.getName());
 			valueCharAge.setText("");
 			if (character.getRank() != null) { valueCharRank.setText(character.getRank()); } else { valueCharRank.setText(""); }
 			valueCharLocation.setText("");
-			valueCharXP.setText(character.getXp() + "");
+			valueCharXP.setText(String.valueOf(character.getXp()));
 			valueBalance.setText("");
 			valueIncome.setText("");
 			valueSystems.setText("");

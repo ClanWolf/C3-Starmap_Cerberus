@@ -249,40 +249,30 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private ImageView spectrumImage;
 	@FXML
 	private ImageView noiseImage;
-
 	@FXML
 	private ImageView hudinfo1;
-
 	@FXML
 	private ImageView ivMWOLogo;
-
+	@FXML
+	private ImageView ivLoggedOnUserImage;
 	@FXML
 	private ImageView ivFactionLogo;
-
 	@FXML
 	private ImageView ivFactionLogoShield;
-
 	@FXML
 	private Label helpLabel;
-
 	@FXML
 	private Label gameInfoLabel;
-
 	@FXML
 	private TextField terminalPrompt;
-
 	@FXML
 	private ImageView ircIndicator;
-
 	@FXML
 	private ProgressBar TFSProgress;
-
 	@FXML
 	private VBox TFSInfo;
-
 	@FXML
 	private VBox UserHistoryInfo;
-
 	@FXML
 	private Label labelTFSProgress;
 
@@ -2077,18 +2067,36 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				Platform.runLater(() -> {
 					if (!factionLogoVisible) {
 						Image factionLogo = Nexus.getFactionLogo();
+						Image characterImage = Nexus.getCurrentCharImage();
+
 						if (factionLogo != null) {
 							ivFactionLogoShield.setVisible(true);
-							ivFactionLogo.setVisible(false);
+
+							ivFactionLogo.setOpacity(0.0d);
 							ivFactionLogo.setImage(factionLogo);
-							FadeTransition fadeInTransition = new FadeTransition(Duration.millis(400), ivFactionLogoShield);
+							ivFactionLogo.setVisible(true);
+
+							ivLoggedOnUserImage.setOpacity(0.0d);
+							ivLoggedOnUserImage.setImage(characterImage);
+							ivLoggedOnUserImage.setVisible(true);
+
+							FadeTransition fadeInTransition = new FadeTransition(Duration.millis(1500), ivFactionLogo);
 							fadeInTransition.setFromValue(0.0);
 							fadeInTransition.setToValue(1.0);
 							fadeInTransition.setCycleCount(1);
 							fadeInTransition.setOnFinished(event -> {
-								ivFactionLogo.setVisible(true);
+								// ivLoggedOnUserImage.setVisible(true);
 							});
 							fadeInTransition.play();
+
+							FadeTransition fadeInTransitionUserImage = new FadeTransition(Duration.millis(1500), ivLoggedOnUserImage);
+							fadeInTransitionUserImage.setFromValue(0.0);
+							fadeInTransitionUserImage.setToValue(1.0);
+							fadeInTransitionUserImage.setCycleCount(1);
+							fadeInTransitionUserImage.setOnFinished(event -> {
+								// ivLoggedOnUserImage.setVisible(true);
+							});
+							fadeInTransitionUserImage.play();
 						}
 						factionLogoVisible = true;
 					}
@@ -2098,15 +2106,26 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			case SET_FACTION_LOGO_INVISIBLE:
 				Platform.runLater(() -> {
 					if (factionLogoVisible) {
-						ivFactionLogo.setVisible(false);
-						FadeTransition fadeOutTransition = new FadeTransition(Duration.millis(400), ivFactionLogoShield);
+						FadeTransition fadeOutTransition = new FadeTransition(Duration.millis(800), ivFactionLogo);
 						fadeOutTransition.setFromValue(1.0);
 						fadeOutTransition.setToValue(0.0);
 						fadeOutTransition.setCycleCount(1);
 						fadeOutTransition.setOnFinished(event -> {
-							ivFactionLogoShield.setVisible(false);
+							// ivFactionLogoShield.setVisible(false);
+							// ivLoggedOnUserImage.setVisible(false);
 						});
 						fadeOutTransition.play();
+
+						FadeTransition fadeOutTransitionUserImage = new FadeTransition(Duration.millis(800), ivLoggedOnUserImage);
+						fadeOutTransitionUserImage.setFromValue(1.0);
+						fadeOutTransitionUserImage.setToValue(0.0);
+						fadeOutTransitionUserImage.setCycleCount(1);
+						fadeOutTransitionUserImage.setOnFinished(event -> {
+							// ivFactionLogoShield.setVisible(false);
+							// ivLoggedOnUserImage.setVisible(false);
+						});
+						fadeOutTransitionUserImage.play();
+
 						factionLogoVisible = false;
 					}
 				});
