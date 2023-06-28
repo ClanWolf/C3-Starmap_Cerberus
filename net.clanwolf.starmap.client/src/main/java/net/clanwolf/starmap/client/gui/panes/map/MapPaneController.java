@@ -35,6 +35,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -158,6 +159,9 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	Button mapButton05; // next Jumpship
 	@FXML
 	Button mapButton06; // Attack / join battle
+
+	@FXML
+	TextArea taAlliances;
 
 	private boolean universeMapGenerationStarted = false;
 	private BOUniverse boUniverse = null;
@@ -1998,6 +2002,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		ActionManager.addActionCallbackListener(ACTIONS.WATCHED_ATTACK_IS_BROKEN_WARNING, this);
 		ActionManager.addActionCallbackListener(ACTIONS.WATCHED_ATTACK_IS_BROKEN_KILLED, this);
 		ActionManager.addActionCallbackListener(ACTIONS.WATCHED_ATTACK_IS_HEALED, this);
+		ActionManager.addActionCallbackListener(ACTIONS.UPDATE_ALLIANCES_LIST, this);
 	}
 
 	/**
@@ -2169,6 +2174,15 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				} else {
 					hideSystemDetail();
 					hideAttackDetail();
+				}
+				break;
+
+			case UPDATE_ALLIANCES_LIST:
+				if (o.getText() != null) {
+					Platform.runLater(() -> {
+						taAlliances.setText(o.getText());
+						taAlliances.toFront();
+					});
 				}
 				break;
 

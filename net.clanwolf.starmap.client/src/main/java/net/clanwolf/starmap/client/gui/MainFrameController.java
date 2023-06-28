@@ -47,10 +47,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import javafx.util.Pair;
 import net.clanwolf.starmap.client.action.*;
 import net.clanwolf.starmap.client.enums.C3MESSAGERESULTS;
 import net.clanwolf.starmap.client.enums.C3MESSAGES;
 import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
+import net.clanwolf.starmap.transfer.dtos.FactionDTO;
 import net.clanwolf.starmap.transfer.enums.PRIVILEGES;
 import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
 import net.clanwolf.starmap.client.gui.messagepanes.C3MessagePane;
@@ -1866,6 +1868,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			case CHANGE_LANGUAGE:
 				if (currentlyDisplayedPane != null) {
 					ActionManager.getAction(ACTIONS.NOISE).execute();
+					ActionManager.getAction(ACTIONS.UPDATE_GAME_INFO).execute();
 				}
 				break;
 
@@ -2089,7 +2092,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 							});
 							fadeInTransition.play();
 
-							FadeTransition fadeInTransitionUserImage = new FadeTransition(Duration.millis(1500), ivLoggedOnUserImage);
+							FadeTransition fadeInTransitionUserImage = new FadeTransition(Duration.millis(5000), ivLoggedOnUserImage);
 							fadeInTransitionUserImage.setFromValue(0.0);
 							fadeInTransitionUserImage.setToValue(1.0);
 							fadeInTransitionUserImage.setCycleCount(1);
@@ -2428,6 +2431,19 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					TFSProgress.setProgress(tfsProgress);
 					if (tfsProgress > 1) {
 						TFSProgress.lookup(".bar").setStyle("-fx-background-color: -fx-box-border, #ff0000");
+					}
+
+					String alliancesString = "";
+					ArrayList<Pair<BOFaction, BOFaction>> factionAlliencesList = Nexus.getBoUniverse().getFactionAlliencesList();
+					for (Pair<BOFaction, BOFaction> p : factionAlliencesList) {
+						BOFaction f1 = p.getKey();
+						BOFaction f2 = p.getValue();
+
+						logger.info("Alliance found: " + p.getKey() + " allied with " + p.getValue());
+						alliancesString += f1.getFactionDTO().getShortName() + " \uD83E\uDD1D " + f2.getFactionDTO().getShortName() + "\r\n";
+					}
+					if (!"".equals(alliancesString)) {
+						ActionManager.getAction(ACTIONS.UPDATE_ALLIANCES_LIST).execute(Internationalization.getString("general_alliances")+ ":\r\n" + alliancesString);
 					}
 				});
 				break;

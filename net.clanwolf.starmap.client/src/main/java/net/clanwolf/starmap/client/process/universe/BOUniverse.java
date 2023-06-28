@@ -29,6 +29,7 @@ package net.clanwolf.starmap.client.process.universe;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.image.ImageView;
+import javafx.util.Pair;
 import net.clanwolf.starmap.client.gui.panes.map.tools.GraphManager;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.transfer.dtos.*;
@@ -37,11 +38,16 @@ import org.kynosarges.tektosyne.geometry.PointD;
 import org.kynosarges.tektosyne.geometry.PolygonLocation;
 import org.kynosarges.tektosyne.geometry.VoronoiResults;
 import org.kynosarges.tektosyne.subdivision.Subdivision;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.lang.invoke.MethodHandles;
 import java.time.LocalDateTime;
 import java.util.*;
 
 public class BOUniverse {
+
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	private volatile UniverseDTO universeDTO;
 
@@ -101,6 +107,27 @@ public class BOUniverse {
 			}
 		}
 		return factionListAllies;
+	}
+
+	public ArrayList<Pair<BOFaction, BOFaction>> getFactionAlliencesList() {
+		ArrayList<Pair<BOFaction, BOFaction>> factionAlliencesList = new ArrayList<>();
+
+		for (DiplomacyDTO d1 : universeDTO.diplomacy) {
+			long factionIdRequester = d1.getFactionID_REQUEST();
+			for (DiplomacyDTO d2 : universeDTO.diplomacy) {
+				long factionIdAccepter = d2.getFactionID_ACCEPTED();
+				if (factionIdRequester == factionIdAccepter) {
+					BOFaction f1 = getFactionByID(d1.getFactionID_REQUEST());
+					BOFaction f2 = getFactionByID(d1.getFactionID_ACCEPTED());
+					Pair<BOFaction, BOFaction> checkPair = new Pair<>(f2, f1);
+					if (!factionAlliencesList.contains(checkPair)) {
+						factionAlliencesList.add(new Pair<>(f1, f2));
+					}
+				}
+			}
+		}
+
+		return factionAlliencesList;
 	}
 
 	public BOStarSystem getStarSystemByPoint(PointD p) {
