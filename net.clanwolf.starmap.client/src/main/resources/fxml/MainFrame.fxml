@@ -14,6 +14,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
@@ -21,6 +22,23 @@
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="AnchorPane" fx:id="rootAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="630.0" prefWidth="1030.0" xmlns="http://javafx.com/javafx/19" fx:controller="net.clanwolf.starmap.client.gui.MainFrameController">
     <children>
+      <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <top>
+            <Label text="Label" BorderPane.alignment="CENTER" />
+         </top>
+         <left>
+            <Label text="Label" BorderPane.alignment="CENTER" />
+         </left>
+         <center>
+            <Label text="Label" BorderPane.alignment="CENTER" />
+         </center>
+         <right>
+            <Label text="Label" BorderPane.alignment="CENTER" />
+         </right>
+         <bottom>
+            <Label text="Label" BorderPane.alignment="CENTER" />
+         </bottom>
+      </BorderPane>
         <Pane fx:id="mouseStopper" layoutX="63.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="1.0" prefHeight="630.0" prefWidth="941.0" styleClass="AnchorPane" visible="true">
             <stylesheets>
                 <URL value="@../styles/MainFrameStyle.css" />
@@ -195,7 +213,7 @@
             </stylesheets>
         </Label>
         <Label id="onlineIndicatorLabelHoverHelper" fx:id="databaseAccessibleIndicatorLabelHoverHelper" focusTraversable="false" layoutX="390.0" layoutY="576.0" onMouseEntered="#handleDatabaseAccessibleIndicatorLabelMouseEventEnter" onMouseExited="#handleDatabaseAccessibleIndicatorLabelMouseEventExit" prefHeight="31.0" prefWidth="24.9998779296875" />
-      <Label id="ResizerControl" fx:id="labelResizerControl" layoutX="968.0" layoutY="573.0" prefHeight="31.0" prefWidth="33.0" styleClass="statuslabel" stylesheets="@../styles/MainFrameStyle.css">
+      <Label id="ResizerControl" fx:id="labelResizerControl" alignment="TOP_LEFT" focusTraversable="false" layoutX="968.0" layoutY="573.0" prefHeight="35.0" prefWidth="35.0" styleClass="statuslabel" stylesheets="@../styles/MainFrameStyle.css" text="O" AnchorPane.bottomAnchor="25.0" AnchorPane.rightAnchor="25.0">
          <cursor>
             <Cursor fx:constant="NW_RESIZE" />
          </cursor>

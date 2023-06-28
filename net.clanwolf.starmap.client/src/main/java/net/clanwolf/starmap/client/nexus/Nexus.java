@@ -63,6 +63,9 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class Nexus {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
+	private static Double initialWidth = null;
+	private static Double initialHeight = null;
+
 	private static UserDTO currentUser;
 	private static RolePlayCharacterDTO currentChar;
 	private static Object myPlayerSessionID;
@@ -635,5 +638,25 @@ public class Nexus {
 	@SuppressWarnings("unused")
 	public static void setHoursLeftInThisRound(long hoursLeftInThisRoundV) {
 		hoursLeftInThisRound = hoursLeftInThisRoundV;
+	}
+
+	@SuppressWarnings("unused")
+	public static Double getInitialWidth() {
+		return initialWidth;
+	}
+
+	@SuppressWarnings("unused")
+	public static void setInitialWidth(Double initialWidth) {
+		Nexus.initialWidth = initialWidth;
+	}
+
+	@SuppressWarnings("unused")
+	public static Double getInitialHeight() {
+		return initialHeight;
+	}
+
+	@SuppressWarnings("unused")
+	public static void setInitialHeight(Double initialHeight) {
+		Nexus.initialHeight = initialHeight;
 	}
 }

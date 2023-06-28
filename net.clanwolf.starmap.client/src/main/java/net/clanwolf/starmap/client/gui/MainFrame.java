@@ -30,13 +30,18 @@ import javafx.animation.FadeTransition;
 import javafx.application.*;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.event.EventType;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.ImageCursor;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -411,16 +416,21 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 			posY = stage.getY();
 		});
 		scene.setOnMouseDragged((MouseEvent mouseEvent) -> {
-			// Log.print(mouseEvent.getTarget().toString());
 			if (mouseEvent.getTarget().toString().equals("AnchorPane[id=AnchorPane, styleClass=root]")) {
 				stage.setX(mouseEvent.getScreenX() + dragDelta.x);
 				stage.setY(mouseEvent.getScreenY() + dragDelta.y);
 				posX = stage.getX();
 				posY = stage.getY();
 			}
-			// TODO_C3: Add check for the resize control and perform resize of the window
-			if (mouseEvent.getTarget().toString().equals("Label[id=ResizerControl, styleClassLabel]")) {
-				logger.info("ReSIZE");
+		});
+		scene.setOnMouseReleased((MouseEvent mouseEvent) -> {
+			if (Nexus.getInitialHeight() != null && Nexus.getInitialWidth() != null) {
+				if (stage.getHeight() < Nexus.getInitialHeight()) {
+					stage.setHeight(Nexus.getInitialHeight());
+				}
+				if (stage.getWidth() < Nexus.getInitialWidth()) {
+					stage.setWidth(Nexus.getInitialWidth());
+				}
 			}
 		});
 
@@ -447,9 +457,8 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 		assert is != null;
 		stage.getIcons().add(new Image(is));
 		stage.setTitle(Internationalization.getString("app_headline"));
-		// TODO_C3: Resize the window (outcomment the initStyle StageStyle)
 		stage.initStyle(StageStyle.TRANSPARENT);
-		// stage.setResizable(true);
+		stage.setResizable(true);
 		stage.setScene(scene);
 		stage.centerOnScreen();
 		stage.setOnCloseRequest(this);
@@ -472,6 +481,7 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 		ActionManager.addActionCallbackListener(ACTIONS.CLIENT_INSTALLER_DOWNLOAD_COMPLETE, this);
 		ActionManager.addActionCallbackListener(ACTIONS.CLIENT_INSTALLER_DOWNLOAD_ERROR, this);
 
+		ResizeHelper.addResizeListener(stage);
 		stage.show();
 
 		// Get all voice sample files from TTS (only do this at build time before release!)

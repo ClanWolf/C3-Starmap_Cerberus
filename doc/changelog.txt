@@ -46,6 +46,9 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
+Version 7.3.86 (29.06.2023)
+- STARTED: Window resize
+
 Version 7.3.85 (28.06.2023)
 - ADDED: Character image on the menu button for character info when logged on
 - ADDED: A list of alliances on the map (top-left corner)
