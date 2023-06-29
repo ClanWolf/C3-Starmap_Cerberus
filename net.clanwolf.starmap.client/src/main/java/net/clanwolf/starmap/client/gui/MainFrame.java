@@ -423,16 +423,6 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 				posY = stage.getY();
 			}
 		});
-		scene.setOnMouseReleased((MouseEvent mouseEvent) -> {
-			if (Nexus.getInitialHeight() != null && Nexus.getInitialWidth() != null) {
-				if (stage.getHeight() < Nexus.getInitialHeight()) {
-					stage.setHeight(Nexus.getInitialHeight());
-				}
-				if (stage.getWidth() < Nexus.getInitialWidth()) {
-					stage.setWidth(Nexus.getInitialWidth());
-				}
-			}
-		});
 
 		InputStream isImageNormalCursor = this.getClass().getResourceAsStream("/images/C3_Mouse_Cursor.png");
 		InputStream isImageWaitCursor = this.getClass().getResourceAsStream("/images/C3_Mouse_Cursor_WAIT.png");

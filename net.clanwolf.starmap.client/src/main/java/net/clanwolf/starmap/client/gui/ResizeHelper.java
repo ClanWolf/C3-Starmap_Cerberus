@@ -112,12 +112,15 @@ public class ResizeHelper {
 						if (!Cursor.W_RESIZE.equals(cursorEvent) && !Cursor.E_RESIZE.equals(cursorEvent)) {
 							if (Cursor.NW_RESIZE.equals(cursorEvent) || Cursor.N_RESIZE.equals(cursorEvent) || Cursor.NE_RESIZE.equals(cursorEvent)) {
 								if (stage.getHeight() > initialHeight || mouseEventY < 0) {
-									stage.setHeight(stage.getY() - mouseEvent.getScreenY() + stage.getHeight());
-									stage.setY(mouseEvent.getScreenY());
+									if (stage.getY() - mouseEvent.getScreenY() + stage.getHeight() > initialHeight) {
+										stage.setHeight(stage.getY() - mouseEvent.getScreenY() + stage.getHeight());
+									}
 								}
 							} else {
 								if (stage.getHeight() > initialHeight || mouseEventY + startY - stage.getHeight() > 0) {
-									stage.setHeight(mouseEventY + startY);
+									if (mouseEventY + startY > initialHeight) {
+										stage.setHeight(mouseEventY + startY);
+									}
 								}
 							}
 						}
@@ -125,12 +128,15 @@ public class ResizeHelper {
 						if (!Cursor.N_RESIZE.equals(cursorEvent) && !Cursor.S_RESIZE.equals(cursorEvent)) {
 							if (Cursor.NW_RESIZE.equals(cursorEvent) || Cursor.W_RESIZE.equals(cursorEvent) || Cursor.SW_RESIZE.equals(cursorEvent)) {
 								if (stage.getWidth() > initialWidth || mouseEventX < 0) {
-									stage.setWidth(stage.getX() - mouseEvent.getScreenX() + stage.getWidth());
-									stage.setX(mouseEvent.getScreenX());
+									if (stage.getX() - mouseEvent.getScreenX() + stage.getWidth() > initialWidth) {
+										stage.setWidth(stage.getX() - mouseEvent.getScreenX() + stage.getWidth());
+									}
 								}
 							} else {
 								if (stage.getWidth() > initialWidth || mouseEventX + startX - stage.getWidth() > 0) {
-									stage.setWidth(mouseEventX + startX);
+									if (mouseEventX + startX > initialWidth) {
+										stage.setWidth(mouseEventX + startX);
+									}
 								}
 							}
 						}

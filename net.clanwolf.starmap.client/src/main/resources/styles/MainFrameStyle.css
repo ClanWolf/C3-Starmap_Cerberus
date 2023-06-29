@@ -43,8 +43,8 @@
 #AnchorPane {
   -fx-background-color: transparent;
   -fx-background-image: url("../images/gui/C3_Stage_Background.png");
-  -fx-background-repeat: repeat; /* stretch */
-  -fx-background-size: 1015 615;
+  -fx-background-repeat: repeat; /* repeat, stretch */
+  -fx-background-size: 1030 630;
   -fx-background-position: top left;
   -fx-effect: dropshadow(gaussian, black, 14, 0.5, 0, 0);
 }
