@@ -203,7 +203,7 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 			pass = tfPasswordRegister.getText();
 		}
 
-		ActionManager.getAction(ACTIONS.SET_CONSOLE_OPACITY).execute(0.4);
+		ActionManager.getAction(ACTIONS.SET_CONSOLE_OPACITY).execute(0.8);
 		//String username = tfUserName.getText();
 		username += registerModeString;
 

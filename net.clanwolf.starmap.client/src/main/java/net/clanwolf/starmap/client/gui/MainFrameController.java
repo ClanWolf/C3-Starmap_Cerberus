@@ -262,6 +262,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	@FXML
 	private ImageView ivFactionLogoShield;
 	@FXML
+	private ImageView ivSupportButton;
+	@FXML
 	private Label helpLabel;
 	@FXML
 	private Label gameInfoLabel;
@@ -285,6 +287,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private ImageView ivMuteToggle, ivCharacterImage, ivCharacterFaction;
 	@FXML
 	private Pane paneVolumeControl;
+	@FXML
+	private Pane paneWindowMoverHandle;
 	@FXML
 	private TableView<UserHistoryEntry> tblUserHistory;
 
@@ -416,6 +420,34 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		//			helpvoiceplayedonce = true;
 		//		}
 	}
+
+	public static Date translateRealDateToSeasonDate(Date date, Long seasonId) {
+		if (Nexus.isLoggedIn()) {
+			Calendar c = Calendar.getInstance();
+			c.setTime(Nexus.getBoUniverse().currentSeasonStartDate);
+			int seasonStartYear = c.get(Calendar.YEAR);
+			Long seasonStartDateRealYear = Nexus.getBoUniverse().currentSeasonStartDateRealYear;
+
+			int currentYear = Calendar.getInstance().get(Calendar.YEAR);
+			int diff = (int) Math.round((seasonStartYear - currentYear + (currentYear - seasonStartDateRealYear)) * 365.243); // Days in year + leap year factor
+
+			return addDaysToDate(date, diff);
+		}
+		return null;
+	}
+
+	@FXML
+	private void handleSupportMouseEventClick() {
+		logger.info("Support clicked");
+		ActionManager.getAction(ACTIONS.OPEN_SUPPORT_LIBERA).execute();
+	}
+
+	@FXML
+	private void handleSupportButtonHoverEnter() {
+		Image supportImg = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logos/liberapay_hover.png")));
+		ivSupportButton.setImage(supportImg);
+	}
+
 
 	@FXML
 	private void handleUserInfoEntered() {
@@ -1027,16 +1059,10 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		return Date.valueOf(newDateString);
 	}
 
-	public static Date translateRealDateToSeasonDate(Date date, Long seasonId) {
-		Calendar c = Calendar.getInstance();
-		c.setTime(Nexus.getBoUniverse().currentSeasonStartDate);
-		int seasonStartYear = c.get(Calendar.YEAR);
-		Long seasonStartDateRealYear = Nexus.getBoUniverse().currentSeasonStartDateRealYear;
-
-		int currentYear = Calendar.getInstance().get(Calendar.YEAR);
-		int diff = (int) Math.round((seasonStartYear - currentYear + (currentYear - seasonStartDateRealYear)) * 365.243); // Days in year + leap year factor
-
-		return addDaysToDate(date, diff);
+	@FXML
+	private void handleSupportButtonHoverExit() {
+		Image supportImg = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logos/liberapay.png")));
+		ivSupportButton.setImage(supportImg);
 	}
 
 	private void moveMenuIndicator(int pos) {
@@ -2142,8 +2168,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			case PANE_CREATION_BEGINS:
 				Platform.runLater(() -> {
 					paneTransitionInProgress = true;
-					systemConsole.setOpacity(0.1);
-					systemConsoleCurrentLine.setOpacity(0.1);
+					systemConsole.setOpacity(0.3);
+					systemConsoleCurrentLine.setOpacity(0.9);
 					spectrumImage.setOpacity(0.8);
 				});
 				break;
@@ -2190,8 +2216,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 							createNextPane();
 						} else {
 							ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("7");
-							systemConsole.setOpacity(0.4);
-							systemConsoleCurrentLine.setOpacity(0.4);
+							systemConsole.setOpacity(0.8);
+							systemConsoleCurrentLine.setOpacity(0.9);
 							spectrumImage.setOpacity(0.1);
 
 							showMenuIndicator(false);

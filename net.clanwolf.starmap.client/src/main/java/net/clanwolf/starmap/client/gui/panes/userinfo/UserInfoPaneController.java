@@ -172,7 +172,7 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 	@FXML
 	private void handleLogoutButtonClick() {
 		cancelWarning = true;
-		ActionManager.getAction(ACTIONS.SET_CONSOLE_OPACITY).execute(0.4);
+		ActionManager.getAction(ACTIONS.SET_CONSOLE_OPACITY).execute(0.8);
 		Logout.doLogout();
 	}
 

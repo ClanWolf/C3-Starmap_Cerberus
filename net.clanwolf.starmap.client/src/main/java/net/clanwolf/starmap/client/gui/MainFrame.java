@@ -43,6 +43,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.input.DragEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -162,6 +163,12 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 	}
 
 	private void openPatreon() {
+		HostServices hostServices = getHostServices();
+		//hostServices.showDocument("https://www.patreon.com/bePatron?u=59537497&redirect_uri=https%3A%2F%2Fwww.clanwolf.net%2Fviewpage.php%3Fpage_id%3D300&utm_medium=widget");
+		hostServices.showDocument("https://liberapay.com/WarWolfen");
+	}
+
+	private void openLSupportLibera() {
 		HostServices hostServices = getHostServices();
 		//hostServices.showDocument("https://www.patreon.com/bePatron?u=59537497&redirect_uri=https%3A%2F%2Fwww.clanwolf.net%2Fviewpage.php%3Fpage_id%3D300&utm_medium=widget");
 		hostServices.showDocument("https://liberapay.com/WarWolfen");
@@ -416,7 +423,8 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 			posY = stage.getY();
 		});
 		scene.setOnMouseDragged((MouseEvent mouseEvent) -> {
-			if (mouseEvent.getTarget().toString().equals("AnchorPane[id=AnchorPane, styleClass=root]")) {
+			//if (mouseEvent.getTarget().toString().equals("AnchorPane[id=AnchorPane, styleClass=root]")) {
+			if (mouseEvent.getTarget() instanceof Pane pane && pane.getId() != null && pane.getId().equals("paneWindowMoverHandle")) {
 				stage.setX(mouseEvent.getScreenX() + dragDelta.x);
 				stage.setY(mouseEvent.getScreenY() + dragDelta.y);
 				posX = stage.getX();
@@ -467,6 +475,7 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 		ActionManager.addActionCallbackListener(ACTIONS.OPEN_MANUAL, this);
 		ActionManager.addActionCallbackListener(ACTIONS.OPEN_ATTACKTHREAT, this);
 		ActionManager.addActionCallbackListener(ACTIONS.OPEN_PATREON, this);
+		ActionManager.addActionCallbackListener(ACTIONS.OPEN_SUPPORT_LIBERA, this);
 		ActionManager.addActionCallbackListener(ACTIONS.OPEN_CLIENTVERSION_DOWNLOADPAGE, this);
 		ActionManager.addActionCallbackListener(ACTIONS.CLIENT_INSTALLER_DOWNLOAD_COMPLETE, this);
 		ActionManager.addActionCallbackListener(ACTIONS.CLIENT_INSTALLER_DOWNLOAD_ERROR, this);
@@ -614,6 +623,9 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 				break;
 			case OPEN_PATREON:
 				openPatreon();
+				break;
+			case OPEN_SUPPORT_LIBERA:
+				openLSupportLibera();
 				break;
 			case OPEN_CLIENTVERSION_DOWNLOADPAGE:
 				Platform.runLater(() -> {

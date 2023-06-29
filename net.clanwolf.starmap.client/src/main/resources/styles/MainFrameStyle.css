@@ -42,11 +42,41 @@
 
 #AnchorPane {
   -fx-background-color: transparent;
-  -fx-background-image: url("../images/gui/C3_Stage_Background.png");
   -fx-background-repeat: repeat; /* repeat, stretch */
-  -fx-background-size: 1030 630;
+  /*-fx-background-image: url("../images/gui/C3_Stage_Background.png");
+  -fx-background-size: 1030 630;*/
   -fx-background-position: top left;
   -fx-effect: dropshadow(gaussian, black, 14, 0.5, 0, 0);
+}
+
+.backgroundTerminal {
+  -fx-background-color: transparent;
+  -fx-background-repeat: repeat; /* repeat, stretch */
+  -fx-background-image: url("../images/gui/tiles/bg.png");
+}
+
+.gapPaneTop {
+  -fx-background-color: transparent;
+  -fx-background-repeat: repeat; /* repeat, stretch */
+  -fx-background-image: url("../images/gui/tiles/gaptop.png");
+}
+
+.gapPaneBottom {
+  -fx-background-color: transparent;
+  -fx-background-repeat: repeat; /* repeat, stretch */
+  -fx-background-image: url("../images/gui/tiles/gapbottom.png");
+}
+
+.gapPaneLeft {
+  -fx-background-color: transparent;
+  -fx-background-repeat: repeat; /* repeat, stretch */
+  -fx-background-image: url("../images/gui/tiles/gapleft.png");
+}
+
+.gapPaneRight {
+  -fx-background-color: transparent;
+  -fx-background-repeat: repeat; /* repeat, stretch */
+  -fx-background-image: url("../images/gui/tiles/gapright.png");
 }
 
 .mouseStopper {

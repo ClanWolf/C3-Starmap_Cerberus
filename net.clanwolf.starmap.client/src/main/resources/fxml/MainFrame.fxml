@@ -2,6 +2,7 @@
 
 <?import java.net.URL?>
 <?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -20,19 +21,24 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="AnchorPane" fx:id="rootAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="630.0" prefWidth="1030.0" xmlns="http://javafx.com/javafx/19" fx:controller="net.clanwolf.starmap.client.gui.MainFrameController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="AnchorPane" fx:id="rootAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="630.0" prefWidth="1030.0" snapToPixel="false" xmlns="http://javafx.com/javafx/19" fx:controller="net.clanwolf.starmap.client.gui.MainFrameController">
     <children>
-      <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mouseTransparent="true" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <Pane snapToPixel="false" styleClass="backgroundTerminal" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="65.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="35.0">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </Pane>
+      <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mouseTransparent="true" snapToPixel="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
-            <HBox BorderPane.alignment="CENTER">
+            <HBox alignment="BOTTOM_LEFT" maxHeight="279.0" minHeight="279.0" prefHeight="279.0" snapToPixel="false" BorderPane.alignment="CENTER">
                <children>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="279.0" fitWidth="793.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/gui/tiles/northwest.png" />
                      </image>
                   </ImageView>
-                  <Label maxWidth="1.7976931348623157E308" text="Label" HBox.hgrow="ALWAYS" />
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                  <Pane snapToPixel="false" styleClass="gapPaneTop" stylesheets="@../styles/MainFrameStyle.css" HBox.hgrow="ALWAYS" />
+                  <ImageView fitHeight="279.0" fitWidth="237.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/gui/tiles/northeast.png" />
                      </image>
@@ -41,37 +47,42 @@
             </HBox>
          </top>
          <left>
-            <VBox BorderPane.alignment="CENTER">
+            <VBox snapToPixel="false" BorderPane.alignment="BOTTOM_LEFT">
                <children>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="238.0" fitWidth="271.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/gui/tiles/west.png" />
                      </image>
                   </ImageView>
+                  <Pane snapToPixel="false" styleClass="gapPaneLeft" stylesheets="@../styles/MainFrameStyle.css" VBox.vgrow="ALWAYS" />
                </children>
             </VBox>
          </left>
          <right>
-            <VBox BorderPane.alignment="CENTER">
+            <VBox alignment="TOP_RIGHT" snapToPixel="false" BorderPane.alignment="BOTTOM_RIGHT">
                <children>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="238.0" fitWidth="193.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/gui/tiles/east.png" />
                      </image>
                   </ImageView>
+                  <Pane snapToPixel="false" styleClass="gapPaneRight" stylesheets="@../styles/MainFrameStyle.css" VBox.vgrow="ALWAYS" />
                </children>
             </VBox>
          </right>
          <bottom>
-            <HBox BorderPane.alignment="CENTER">
+            <HBox alignment="TOP_RIGHT" snapToPixel="false" BorderPane.alignment="CENTER">
                <children>
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="113.0" fitWidth="793.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
                      <image>
                         <Image url="@../images/gui/tiles/southwest.png" />
                      </image>
+                     <viewport>
+                        <Rectangle2D />
+                     </viewport>
                   </ImageView>
-                  <Label maxWidth="1.7976931348623157E308" text="Label" HBox.hgrow="ALWAYS" />
-                  <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                  <Pane snapToPixel="false" styleClass="gapPaneBottom" stylesheets="@../styles/MainFrameStyle.css" HBox.hgrow="ALWAYS" />
+                  <ImageView fitHeight="113.0" fitWidth="237.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/gui/tiles/southeast.png" />
                      </image>
@@ -80,12 +91,12 @@
             </HBox>
          </bottom>
       </BorderPane>
-        <Pane fx:id="mouseStopper" layoutX="63.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="1.0" prefHeight="630.0" prefWidth="941.0" styleClass="AnchorPane" visible="true">
+        <Pane fx:id="mouseStopper" layoutX="63.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="1.0" prefHeight="630.0" prefWidth="941.0" snapToPixel="false" styleClass="AnchorPane" visible="true">
             <stylesheets>
                 <URL value="@../styles/MainFrameStyle.css" />
             </stylesheets>
          <children>
-            <Label fx:id="labelWaitText" alignment="TOP_CENTER" contentDisplay="CENTER" focusTraversable="false" layoutY="168.0" prefHeight="86.0" prefWidth="914.0">
+            <Label fx:id="labelWaitText" alignment="TOP_CENTER" contentDisplay="CENTER" focusTraversable="false" layoutY="168.0" prefHeight="86.0" prefWidth="914.0" snapToPixel="false">
                <font>
                   <Font size="18.0" />
                </font>
@@ -97,22 +108,22 @@
             </ImageView>
          </children>
         </Pane>
-      <VBox fx:id="UserHistoryInfo" layoutX="659.0" layoutY="59.0" onMouseEntered="#handleUserListEntered" onMouseExited="#handleUserListExited" prefHeight="491.0" prefWidth="315.0" styleClass="systemDetailPanelSolid" stylesheets="@../styles/MainFrameStyle.css" visible="false">
+      <VBox fx:id="UserHistoryInfo" layoutX="659.0" layoutY="59.0" onMouseEntered="#handleUserListEntered" onMouseExited="#handleUserListExited" prefHeight="491.0" prefWidth="315.0" snapToPixel="false" styleClass="systemDetailPanelSolid" stylesheets="@../styles/MainFrameStyle.css" visible="false" AnchorPane.bottomAnchor="125.0" AnchorPane.rightAnchor="56.0" AnchorPane.topAnchor="59.0">
          <children>
-            <HBox alignment="CENTER">
+            <HBox alignment="CENTER" snapToPixel="false">
                <children>
                   <ImageView fx:id="ivCharacterImage" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER" />
-                  <Label fx:id="lbUserSelf" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" maxWidth="1.7976931348623157E308" prefHeight="62.0" prefWidth="194.0" text="Label" textAlignment="CENTER" HBox.hgrow="ALWAYS" />
+                  <Label fx:id="lbUserSelf" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" maxWidth="1.7976931348623157E308" prefHeight="62.0" prefWidth="194.0" snapToPixel="false" text="Label" textAlignment="CENTER" HBox.hgrow="ALWAYS" />
                   <ImageView fx:id="ivCharacterFaction" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER" />
                </children>
                <padding>
                   <Insets bottom="10.0" left="5.0" right="5.0" />
                </padding>
             </HBox>
-            <Separator focusTraversable="false" prefWidth="200.0" />
-            <TableView fx:id="tblUserHistory" fixedCellSize="20.0" focusTraversable="false" prefHeight="401.0" prefWidth="285.0" stylesheets="@../styles/MainFrameStyle.css" />
+            <Separator focusTraversable="false" prefWidth="200.0" snapToPixel="false" />
+            <TableView fx:id="tblUserHistory" fixedCellSize="20.0" focusTraversable="false" prefHeight="401.0" prefWidth="285.0" snapToPixel="false" stylesheets="@../styles/MainFrameStyle.css" />
          </children></VBox>
-      <VBox fx:id="TFSInfo" alignment="TOP_CENTER" layoutX="176.0" layoutY="38.0" prefHeight="200.0" prefWidth="100.0" styleClass="systemDetailPanelSolid" stylesheets="@../styles/MainFrameStyle.css" visible="false">
+      <VBox fx:id="TFSInfo" alignment="TOP_CENTER" layoutX="176.0" layoutY="38.0" prefHeight="200.0" prefWidth="100.0" snapToPixel="false" styleClass="systemDetailPanelSolid" stylesheets="@../styles/MainFrameStyle.css" visible="false">
          <children>
             <ImageView fitHeight="150.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -122,7 +133,7 @@
                   <Insets bottom="25.0" top="15.0" />
                </VBox.margin>
             </ImageView>
-            <Label fx:id="labelTFSProgress" alignment="TOP_CENTER" contentDisplay="CENTER" focusTraversable="false" stylesheets="@../styles/MainFrameStyle.css" text="..." textFill="#aee7ee">
+            <Label fx:id="labelTFSProgress" alignment="TOP_CENTER" contentDisplay="CENTER" focusTraversable="false" snapToPixel="false" stylesheets="@../styles/MainFrameStyle.css" text="..." textFill="#aee7ee">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
@@ -137,16 +148,16 @@
             <DropShadow />
          </effect>
       </ImageView>
-      <Slider fx:id="slVolumeControl" layoutX="148.0" layoutY="346.0" nodeOrientation="LEFT_TO_RIGHT" orientation="VERTICAL" prefHeight="154.0" prefWidth="14.0" visible="false">
+      <Slider fx:id="slVolumeControl" layoutX="148.0" layoutY="346.0" nodeOrientation="LEFT_TO_RIGHT" orientation="VERTICAL" prefHeight="154.0" prefWidth="14.0" snapToPixel="false" visible="false">
          <effect>
             <DropShadow />
          </effect></Slider>
-      <Pane fx:id="paneVolumeControl" layoutX="137.0" layoutY="334.0" prefHeight="209.0" prefWidth="35.0" styleClass="contentTextAreaBlock2" stylesheets="@../styles/MainFrameStyle.css" visible="false" />
-      <ProgressBar fx:id="TFSProgress" focusTraversable="false" layoutX="173.0" layoutY="23.0" onMouseEntered="#handleTFSProgressEntered" onMouseExited="#handleTFSProgressExited" prefHeight="18.0" prefWidth="125.0" progress="0.56" visible="false" />
-      <Label fx:id="gameInfoLabel" focusTraversable="false" layoutX="422.0" layoutY="30.0" mouseTransparent="true" prefHeight="20.0" prefWidth="206.0" />
-      <Label fx:id="terminalLabel" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="567.0" layoutY="556.0" prefHeight="20.0" prefWidth="66.0" text="Terminal:" />
-      <TextField fx:id="terminalPrompt" layoutX="639.0" layoutY="555.0" onKeyPressed="#handleTerminalEnterButton" prefHeight="20.0" prefWidth="305.0" styleClass="text" stylesheets="@../styles/MainFrameStyle.css" />
-      <Label fx:id="helpLabel" focusTraversable="false" layoutX="591.0" layoutY="581.0" onMouseClicked="#handleHelpMouseEventClick" onMouseEntered="#handleHelpButtonHoverEnter" onMouseExited="#handleHelpButtonHoverExit" prefHeight="20.0" prefWidth="12.0" text="Help" />
+      <Pane fx:id="paneVolumeControl" layoutX="137.0" layoutY="334.0" prefHeight="209.0" prefWidth="35.0" snapToPixel="false" styleClass="contentTextAreaBlock2" stylesheets="@../styles/MainFrameStyle.css" visible="false" />
+      <ProgressBar fx:id="TFSProgress" focusTraversable="false" layoutX="173.0" layoutY="23.0" onMouseEntered="#handleTFSProgressEntered" onMouseExited="#handleTFSProgressExited" prefHeight="18.0" prefWidth="125.0" progress="0.56" snapToPixel="false" visible="false" />
+      <Label fx:id="gameInfoLabel" focusTraversable="false" layoutX="422.0" layoutY="30.0" mouseTransparent="true" prefHeight="20.0" prefWidth="206.0" snapToPixel="false" />
+      <Label fx:id="terminalLabel" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="567.0" layoutY="556.0" prefHeight="20.0" prefWidth="66.0" snapToPixel="false" text="Terminal:" AnchorPane.bottomAnchor="54.0" AnchorPane.rightAnchor="395.0" />
+      <TextField fx:id="terminalPrompt" layoutX="639.0" layoutY="555.0" onKeyPressed="#handleTerminalEnterButton" prefHeight="20.0" prefWidth="305.0" snapToPixel="false" styleClass="text" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="55.0" AnchorPane.rightAnchor="86.0" />
+      <Label fx:id="helpLabel" focusTraversable="false" layoutX="585.0" layoutY="581.0" onMouseClicked="#handleHelpMouseEventClick" onMouseEntered="#handleHelpButtonHoverEnter" onMouseExited="#handleHelpButtonHoverExit" prefHeight="20.0" prefWidth="12.0" snapToPixel="false" text="Help" AnchorPane.bottomAnchor="28.0" />
         <ImageView fx:id="noiseImage" fitHeight="523.0" fitWidth="859.0" layoutX="123.0" layoutY="37.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="false">
             <image>
                 <Image url="@../images/noise/noisemap.png" />
@@ -162,14 +173,19 @@
                 <Image url="@../images/spectrum/spectrum.png" />
             </image>
         </ImageView>
-      <Label id="onlineIndicatorLabelHoverHelper" fx:id="exitLabelTopRight" focusTraversable="false" layoutX="982.0" layoutY="28.0" maxHeight="20.0" maxWidth="22.0" minHeight="20.0" minWidth="22.0" onMouseClicked="#handleTopRightExitLabel" onMouseEntered="#handleExitLabelTopRightMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="20.0" prefWidth="22.0" />
-      <Label id="statuslabel" fx:id="copyrightLabel" alignment="CENTER_RIGHT" contentDisplay="RIGHT" focusTraversable="false" layoutX="723.0" layoutY="583.0" minHeight="16.0" minWidth="69.0" mouseTransparent="true" prefHeight="16.0" prefWidth="217.0" styleClass="toplabel">
+      <ImageView fx:id="ivSupportButton" fitHeight="12.0" fitWidth="12.0" layoutX="610.0" onMouseClicked="#handleSupportMouseEventClick" onMouseEntered="#handleSupportButtonHoverEnter" onMouseExited="#handleSupportButtonHoverExit" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="32.0">
+         <image>
+            <Image url="@../images/logos/liberapay.png" />
+         </image>
+      </ImageView>
+      <Label id="onlineIndicatorLabelHoverHelper" fx:id="exitLabelTopRight" focusTraversable="false" layoutX="982.0" layoutY="28.0" maxHeight="20.0" maxWidth="22.0" minHeight="20.0" minWidth="22.0" onMouseClicked="#handleTopRightExitLabel" onMouseEntered="#handleExitLabelTopRightMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="20.0" prefWidth="22.0" snapToPixel="false" AnchorPane.rightAnchor="26.0" AnchorPane.topAnchor="28.0" />
+      <Label id="statuslabel" fx:id="copyrightLabel" alignment="CENTER_RIGHT" contentDisplay="RIGHT" focusTraversable="false" layoutX="723.0" layoutY="583.0" minHeight="16.0" minWidth="69.0" mouseTransparent="true" prefHeight="16.0" prefWidth="217.0" snapToPixel="false" styleClass="toplabel" AnchorPane.bottomAnchor="31.0" AnchorPane.rightAnchor="100.0">
          <stylesheets>
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>
       </Label>
-        <Label fx:id="systemConsoleCurrentLine" alignment="BOTTOM_RIGHT" contentDisplay="RIGHT" disable="true" focusTraversable="false" layoutX="358.0" layoutY="470.0" maxHeight="16.0" maxWidth="593.0" minHeight="16.0" minWidth="593.0" prefHeight="16.0" prefWidth="593.0" stylesheets="@../styles/MainFrameStyle.css" textAlignment="RIGHT" textFill="#f2f5f2" />
-        <Label fx:id="systemConsole" alignment="BOTTOM_RIGHT" contentDisplay="RIGHT" disable="true" focusTraversable="false" layoutX="358.0" layoutY="82.0" maxHeight="404.0" maxWidth="593.0" minHeight="404.0" minWidth="593.0" mouseTransparent="true" prefHeight="404.0" prefWidth="593.0" textAlignment="RIGHT" textFill="#5a5e5b">
+        <Label fx:id="systemConsoleCurrentLine" alignment="BOTTOM_RIGHT" contentDisplay="RIGHT" disable="true" focusTraversable="false" layoutX="358.0" layoutY="470.0" maxHeight="16.0" maxWidth="593.0" minHeight="16.0" minWidth="593.0" prefHeight="16.0" prefWidth="593.0" snapToPixel="false" stylesheets="@../styles/MainFrameStyle.css" textAlignment="RIGHT" textFill="#90ba90" AnchorPane.bottomAnchor="144.0" AnchorPane.rightAnchor="80.0" />
+        <Label fx:id="systemConsole" alignment="BOTTOM_RIGHT" contentDisplay="RIGHT" disable="true" focusTraversable="false" layoutX="358.0" layoutY="82.0" maxHeight="404.0" maxWidth="593.0" minHeight="404.0" minWidth="593.0" mouseTransparent="true" prefHeight="404.0" prefWidth="593.0" snapToPixel="false" textAlignment="RIGHT" textFill="#8f9791" AnchorPane.bottomAnchor="144.0" AnchorPane.rightAnchor="80.0">
             <font>
                 <Font size="12.0" />
             </font>
@@ -177,8 +193,8 @@
                 <URL value="@../styles/MainFrameStyle.css" />
             </stylesheets>
         </Label>
-      <Label fx:id="systemConsoleCursor" alignment="BOTTOM_RIGHT" contentDisplay="RIGHT" disable="true" focusTraversable="false" layoutX="948.0" layoutY="470.0" maxHeight="16.0" maxWidth="593.0" minHeight="16.0" minWidth="12.0" prefHeight="16.0" prefWidth="12.0" stylesheets="@../styles/MainFrameStyle.css" text="_" textAlignment="RIGHT" textFill="#f2f5f2" />
-        <Label id="" fx:id="versionLabel" focusTraversable="false" layoutX="124.0" layoutY="584.0" mouseTransparent="true" prefWidth="212.0" styleClass="versionlabel" text="Version">
+      <Label fx:id="systemConsoleCursor" alignment="BOTTOM_RIGHT" contentDisplay="RIGHT" disable="true" focusTraversable="false" layoutX="948.0" layoutY="470.0" maxHeight="16.0" maxWidth="593.0" minHeight="16.0" minWidth="12.0" prefHeight="16.0" prefWidth="12.0" snapToPixel="false" stylesheets="@../styles/MainFrameStyle.css" text="_" textAlignment="RIGHT" textFill="#8f9791" AnchorPane.bottomAnchor="144.0" AnchorPane.rightAnchor="75.0" />
+        <Label id="" fx:id="versionLabel" focusTraversable="false" layoutX="124.0" layoutY="584.0" mouseTransparent="true" prefWidth="212.0" snapToPixel="false" styleClass="versionlabel" text="Version" AnchorPane.bottomAnchor="32.0">
             <font>
                 <Font name="System Italic" size="10.0" />
             </font>
@@ -186,110 +202,110 @@
                 <URL value="@../styles/MainFrameStyle.css" />
             </stylesheets>
         </Label>
-        <Label fx:id="statuslabel" focusTraversable="false" layoutX="130.0" layoutY="557.0" minHeight="16.0" minWidth="69.0" prefHeight="16.0" prefWidth="426.0" styleClass="statuslabel">
+        <Label fx:id="statuslabel" focusTraversable="false" layoutX="130.0" layoutY="557.0" minHeight="16.0" minWidth="69.0" prefHeight="16.0" prefWidth="426.0" snapToPixel="false" styleClass="statuslabel" AnchorPane.bottomAnchor="55.0" AnchorPane.leftAnchor="130.0">
             <stylesheets>
                 <URL value="@../styles/MainFrameStyle.css" />
             </stylesheets>
         </Label>
-        <Label id="statuslabel" fx:id="toplabel" contentDisplay="RIGHT" focusTraversable="false" layoutX="786.0" layoutY="8.0" minHeight="16.0" minWidth="69.0" onMouseEntered="#handleUserInfoEntered" onMouseExited="#handleUserInfoExited" prefHeight="60.0" prefWidth="189.0" styleClass="toplabel">
+        <Label id="statuslabel" fx:id="toplabel" contentDisplay="RIGHT" focusTraversable="false" layoutX="786.0" layoutY="8.0" minHeight="16.0" minWidth="69.0" onMouseEntered="#handleUserInfoEntered" onMouseExited="#handleUserInfoExited" prefHeight="60.0" prefWidth="189.0" snapToPixel="false" styleClass="toplabel" AnchorPane.rightAnchor="60.0">
             <stylesheets>
                 <URL value="@../styles/MainFrameStyle.css" />
             </stylesheets>
         </Label>
-        <Label fx:id="onlineIndicatorLabel" focusTraversable="false" layoutX="374.0" layoutY="590.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="3.0" minWidth="-Infinity" onMouseEntered="#handleOnlineIndicatorLabelMouseEventEnter" onMouseExited="#handleOnlineIndicatorLabelMouseEventExit" prefHeight="3.0" prefWidth="12.0">
+        <Label fx:id="onlineIndicatorLabel" focusTraversable="false" layoutX="375.0" layoutY="590.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="3.0" minWidth="-Infinity" onMouseEntered="#handleOnlineIndicatorLabelMouseEventEnter" onMouseExited="#handleOnlineIndicatorLabelMouseEventExit" prefHeight="3.0" prefWidth="12.0" snapToPixel="false" AnchorPane.bottomAnchor="37.0">
             <stylesheets>
                 <URL value="@../styles/MainFrameStyle.css" />
             </stylesheets>
         </Label>
-        <Label fx:id="onlineIndicatorLabelHoverHelper" focusTraversable="false" layoutX="366.0" layoutY="577.0" onMouseClicked="#handleOnlineIndicatorLabelMouseEventClick" onMouseEntered="#handleOnlineIndicatorLabelMouseEventEnter" onMouseExited="#handleOnlineIndicatorLabelMouseEventExit" prefHeight="31.0" prefWidth="25.0" />
-        <Label id="onlineIndicatorLabel" fx:id="loginIndicatorLabel" focusTraversable="false" layoutX="420.0" layoutY="590.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="2.9998779296875" minWidth="-Infinity" onMouseEntered="#handleLoginIndicatorLabelMouseEventEnter" onMouseExited="#handleLoginIndicatorLabelMouseEventExit" prefHeight="2.9998779296875" prefWidth="12.0">
+        <Label id="onlineIndicatorLabel" fx:id="databaseAccessibleIndicatorLabel" layoutX="398.0" layoutY="590.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="2.9998779296875" minWidth="-Infinity" onMouseEntered="#handleDatabaseAccessibleIndicatorLabelMouseEventEnter" onMouseExited="#handleDatabaseAccessibleIndicatorLabelMouseEventExit" prefHeight="2.9998779296875" prefWidth="12.0" snapToPixel="false" AnchorPane.bottomAnchor="37.0">
             <stylesheets>
                 <URL value="@../styles/MainFrameStyle.css" />
             </stylesheets>
         </Label>
-        <Label id="onlineIndicatorLabelHoverHelper" fx:id="loginIndicatorLabelHoverHelper" focusTraversable="false" layoutX="413.0" layoutY="577.0" onMouseEntered="#handleLoginIndicatorLabelMouseEventEnter" onMouseExited="#handleLoginIndicatorLabelMouseEventExit" prefHeight="31.0" prefWidth="24.9998779296875" />
-        <Button id="btn_dark-blue" fx:id="userButton" layoutX="68.0" layoutY="160.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleLoginButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" styleClass="loginButton" text="" textAlignment="CENTER">
+        <Label id="onlineIndicatorLabel" fx:id="loginIndicatorLabel" focusTraversable="false" layoutX="420.0" layoutY="590.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="2.9998779296875" minWidth="-Infinity" onMouseEntered="#handleLoginIndicatorLabelMouseEventEnter" onMouseExited="#handleLoginIndicatorLabelMouseEventExit" prefHeight="2.9998779296875" prefWidth="12.0" snapToPixel="false" AnchorPane.bottomAnchor="37.0">
+            <stylesheets>
+                <URL value="@../styles/MainFrameStyle.css" />
+            </stylesheets>
+        </Label>
+        <Label fx:id="onlineIndicatorLabelHoverHelper" focusTraversable="false" layoutX="366.0" layoutY="576.0" onMouseClicked="#handleOnlineIndicatorLabelMouseEventClick" onMouseEntered="#handleOnlineIndicatorLabelMouseEventEnter" onMouseExited="#handleOnlineIndicatorLabelMouseEventExit" prefHeight="31.0" prefWidth="25.0" snapToPixel="false" AnchorPane.bottomAnchor="23.0" />
+        <Label id="onlineIndicatorLabelHoverHelper" fx:id="databaseAccessibleIndicatorLabelHoverHelper" focusTraversable="false" layoutX="390.0" layoutY="576.0" onMouseEntered="#handleDatabaseAccessibleIndicatorLabelMouseEventEnter" onMouseExited="#handleDatabaseAccessibleIndicatorLabelMouseEventExit" prefHeight="31.0" prefWidth="24.9998779296875" snapToPixel="false" AnchorPane.bottomAnchor="23.0" />
+        <Label id="onlineIndicatorLabelHoverHelper" fx:id="loginIndicatorLabelHoverHelper" focusTraversable="false" layoutX="414.0" layoutY="576.0" onMouseEntered="#handleLoginIndicatorLabelMouseEventEnter" onMouseExited="#handleLoginIndicatorLabelMouseEventExit" prefHeight="31.0" prefWidth="24.9998779296875" snapToPixel="false" AnchorPane.bottomAnchor="23.0" />
+        <Button id="btn_dark-blue" fx:id="userButton" layoutX="68.0" layoutY="160.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleLoginButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" snapToPixel="false" styleClass="loginButton" text="" textAlignment="CENTER">
             <stylesheets>
                 <URL value="@../styles/MainFrameStyle.css" />
             </stylesheets>
         </Button>
-        <Button id="btn_dark-blue" fx:id="settingsButton" layoutX="68.0" layoutY="205.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleSettingsButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" styleClass="settingsButton" textAlignment="CENTER">
+        <Button id="btn_dark-blue" fx:id="settingsButton" layoutX="68.0" layoutY="205.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleSettingsButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" snapToPixel="false" styleClass="settingsButton" textAlignment="CENTER">
             <stylesheets>
                 <URL value="@../styles/MainFrameStyle.css" />
             </stylesheets>
         </Button>
-      <Button id="btn_switch" fx:id="adminButton" layoutX="68.0" layoutY="265.0" maxHeight="20.0" maxWidth="40.0" minHeight="20.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleAdminButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="20.0" prefWidth="40.0" styleClass="adminSwitcherButton" textAlignment="CENTER">
+      <Button id="btn_switch" fx:id="adminButton" layoutX="68.0" layoutY="265.0" maxHeight="20.0" maxWidth="40.0" minHeight="20.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleAdminButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="20.0" prefWidth="40.0" snapToPixel="false" styleClass="adminSwitcherButton" textAlignment="CENTER">
          <stylesheets>
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>
       </Button>
-        <Button fx:id="languageButton" focusTraversable="false" layoutX="498.0" layoutY="581.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="17.0" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#handleLanguageButtonMouseEventClick" onMouseEntered="#handleLanguageButtonMouseEventEnter" onMouseExited="#handleLanguageButtonMouseEventExit" prefHeight="17.0" prefWidth="33.0">
+        <Button fx:id="languageButton" focusTraversable="false" layoutX="498.0" layoutY="581.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="17.0" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#handleLanguageButtonMouseEventClick" onMouseEntered="#handleLanguageButtonMouseEventEnter" onMouseExited="#handleLanguageButtonMouseEventExit" prefHeight="17.0" prefWidth="33.0" snapToPixel="false" AnchorPane.bottomAnchor="32.0">
             <stylesheets>
                 <URL value="@../styles/MainFrameStyle.css" />
             </stylesheets>
         </Button>
-        <Button id="btn_dark-blue" fx:id="mapButton" layoutX="68.0" layoutY="306.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleMapButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" styleClass="mapButton" text="" textAlignment="CENTER">
+        <Button id="btn_dark-blue" fx:id="mapButton" layoutX="68.0" layoutY="306.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleMapButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" snapToPixel="false" styleClass="mapButton" text="" textAlignment="CENTER">
             <stylesheets>
                 <URL value="@../styles/MainFrameStyle.css" />
             </stylesheets>
         </Button>
-        <Button id="btn_dark-blue" fx:id="diplomacyButton" layoutX="68.0" layoutY="435.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleDiplomacyButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" styleClass="diplomacyButton" text="" textAlignment="CENTER">
+        <Button id="btn_dark-blue" fx:id="diplomacyButton" layoutX="68.0" layoutY="435.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleDiplomacyButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" snapToPixel="false" styleClass="diplomacyButton" text="" textAlignment="CENTER">
             <stylesheets>
                 <URL value="@../styles/MainFrameStyle.css" />
             </stylesheets>
         </Button>
-        <Button id="btn_dark-blue" fx:id="attackButton" layoutX="68.0" layoutY="349.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleAttackButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" styleClass="attackButton" text="" textAlignment="CENTER">
+        <Button id="btn_dark-blue" fx:id="attackButton" layoutX="68.0" layoutY="349.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleAttackButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" snapToPixel="false" styleClass="attackButton" text="" textAlignment="CENTER">
             <stylesheets>
                 <URL value="@../styles/MainFrameStyle.css" />
             </stylesheets>
         </Button>
-        <Button id="btn_blue" fx:id="chatButton" layoutX="68.0" layoutY="478.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleChatButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" styleClass="chatButton" text="" textAlignment="CENTER">
+        <Button id="btn_blue" fx:id="chatButton" layoutX="68.0" layoutY="478.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleChatButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" snapToPixel="false" styleClass="chatButton" text="" textAlignment="CENTER">
             <stylesheets>
                 <URL value="@../styles/MainFrameStyle.css" />
             </stylesheets>
         </Button>
-        <Label id="onlineIndicatorLabel" fx:id="databaseAccessibleIndicatorLabel" layoutX="397.0" layoutY="590.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="2.9998779296875" minWidth="-Infinity" onMouseEntered="#handleDatabaseAccessibleIndicatorLabelMouseEventEnter" onMouseExited="#handleDatabaseAccessibleIndicatorLabelMouseEventExit" prefHeight="2.9998779296875" prefWidth="12.0">
-            <stylesheets>
-                <URL value="@../styles/MainFrameStyle.css" />
-            </stylesheets>
-        </Label>
-        <Label id="onlineIndicatorLabelHoverHelper" fx:id="databaseAccessibleIndicatorLabelHoverHelper" focusTraversable="false" layoutX="390.0" layoutY="576.0" onMouseEntered="#handleDatabaseAccessibleIndicatorLabelMouseEventEnter" onMouseExited="#handleDatabaseAccessibleIndicatorLabelMouseEventExit" prefHeight="31.0" prefWidth="24.9998779296875" />
-      <Label id="ResizerControl" fx:id="labelResizerControl" alignment="TOP_LEFT" focusTraversable="false" layoutX="968.0" layoutY="573.0" prefHeight="35.0" prefWidth="35.0" styleClass="statuslabel" stylesheets="@../styles/MainFrameStyle.css" text="O" AnchorPane.bottomAnchor="25.0" AnchorPane.rightAnchor="25.0">
+      <Label id="ResizerControl" fx:id="labelResizerControl" alignment="TOP_LEFT" focusTraversable="false" layoutX="968.0" layoutY="573.0" prefHeight="35.0" prefWidth="35.0" snapToPixel="false" styleClass="statuslabel" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="25.0" AnchorPane.rightAnchor="25.0">
          <cursor>
             <Cursor fx:constant="NW_RESIZE" />
          </cursor>
       </Label>
-      <Button id="btn_dark-blue" fx:id="renameMeButton3" layoutX="114.0" layoutY="392.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" prefHeight="40.0" prefWidth="40.0" text="" textAlignment="CENTER">
+      <Button id="btn_dark-blue" fx:id="renameMeButton3" layoutX="114.0" layoutY="392.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" prefHeight="40.0" prefWidth="40.0" snapToPixel="false" text="" textAlignment="CENTER">
          <stylesheets>
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>
       </Button>
-      <Button id="btn_dark-blue" fx:id="adminPaneButton" layoutX="114.0" layoutY="349.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleAdminPaneButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" styleClass="editorButton" text="" textAlignment="CENTER">
+      <Button id="btn_dark-blue" fx:id="adminPaneButton" layoutX="114.0" layoutY="349.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleAdminPaneButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" snapToPixel="false" styleClass="editorButton" text="" textAlignment="CENTER">
          <stylesheets>
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>
       </Button>
-      <Button id="btn_dark-blue" fx:id="renameMeButton4" layoutX="114.0" layoutY="435.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" prefHeight="40.0" prefWidth="40.0" text="" textAlignment="CENTER">
+      <Button id="btn_dark-blue" fx:id="renameMeButton4" layoutX="114.0" layoutY="435.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" prefHeight="40.0" prefWidth="40.0" snapToPixel="false" text="" textAlignment="CENTER">
          <stylesheets>
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>
       </Button>
-      <Button id="btn_blue" fx:id="logButton" layoutX="114.0" layoutY="478.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleLogButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" styleClass="logButton" text="" textAlignment="CENTER">
+      <Button id="btn_blue" fx:id="logButton" layoutX="114.0" layoutY="478.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleLogButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" snapToPixel="false" styleClass="logButton" text="" textAlignment="CENTER">
          <stylesheets>
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>
       </Button>
-      <Button id="btn_dark-blue" fx:id="storyEditorButton" layoutX="114.0" layoutY="306.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleStoryEditorButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" styleClass="adminButton" text="" textAlignment="CENTER">
+      <Button id="btn_dark-blue" fx:id="storyEditorButton" layoutX="114.0" layoutY="306.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleStoryEditorButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" snapToPixel="false" styleClass="adminButton" text="" textAlignment="CENTER">
          <stylesheets>
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>
       </Button>
-      <Button id="btn_dark-blue" fx:id="rolePlayButton" layoutX="68.0" layoutY="392.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handlePersonalRPButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" styleClass="roleplayButton" text="" textAlignment="CENTER">
+      <Button id="btn_dark-blue" fx:id="rolePlayButton" layoutX="68.0" layoutY="392.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handlePersonalRPButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" snapToPixel="false" styleClass="roleplayButton" text="" textAlignment="CENTER">
          <stylesheets>
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>
       </Button>
-        <Button id="btn_dark-red" fx:id="exitButton" layoutX="68.0" layoutY="535.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleExitButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" styleClass="exitButton" textAlignment="CENTER">
+        <Button id="btn_dark-red" fx:id="exitButton" layoutX="68.0" layoutY="535.0" maxHeight="40.0" maxWidth="40.0" minHeight="40.0" minWidth="40.0" onAction="#handleMenuButtonAction" onMouseEntered="#handleExitButtonMouseEventEnter" onMouseExited="#handleMenuButtonMouseEventExit" prefHeight="40.0" prefWidth="40.0" snapToPixel="false" styleClass="exitButton" textAlignment="CENTER">
             <stylesheets>
                 <URL value="@../styles/MainFrameStyle.css" />
             </stylesheets>
@@ -299,7 +315,7 @@
             <Image url="@../images/gui/menuindicator.png" />
          </image>
       </ImageView>
-      <ImageView fx:id="hudinfo" fitHeight="250.0" fitWidth="280.0" layoutX="685.0" layoutY="60.0" mouseTransparent="true" opacity="0.15" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="hudinfo" fitHeight="250.0" fitWidth="280.0" layoutX="685.0" layoutY="60.0" mouseTransparent="true" opacity="0.15" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="65.0" AnchorPane.topAnchor="60.0">
          <image>
             <Image url="@../images/gui/hud.gif" />
          </image>
@@ -327,6 +343,7 @@
             <Image url="@../images/chars/male/1045.png" />
          </image>
       </ImageView>
+      <Pane fx:id="paneWindowMoverHandle" layoutX="18.0" layoutY="21.0" prefHeight="546.0" prefWidth="40.0" snapToPixel="false" />
     </children>
     <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
