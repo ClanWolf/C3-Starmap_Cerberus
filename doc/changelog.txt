@@ -11,12 +11,8 @@ CURRENTLY IN PROGRESS:
 - P3: Updating the manual (ongoing): https://www.clanwolf.net/apps/C3/C3_Manual_de.pdf
 
 TODO:
-
-- Stop listening for MWO stats after an invasion has finished
-- Sound sample of radio language / does not play
-
+- Finish sound samples on the radio buttons (R1-3) on Invasionpane
 - Allow allied pilots to be droplead in fights for allied factions
-
 - Add a function to leave game / delete account
 - If a jumpship attacks, the icon is moved back to the starting system on save... the jumpship level icon needs to be moved as well
 - Channel message (discord) if a user successfully changes faction
@@ -49,6 +45,12 @@ WATCH OUT FOR WHILE TESTING:
 ----------------------------------------------------------------
 
 VERSIONS
+
+Version 7.3.88 (xx)
+- FIXED: No waiting message after the attack was finished
+- FIXED: Client listening for MWO stats after an invasion has finished
+- FIXED: Show dice for all members of the lobby if one side rolls dice for random map
+- FIXED: An error message is not shown if the message text equals an already open message
 
 Version 7.3.87 (30.06.2023)
 - FIXED: Error during invasion with missing localization strings

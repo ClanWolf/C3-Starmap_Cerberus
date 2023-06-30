@@ -612,10 +612,26 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				}
 			}
 
+			// remove old and set new attack character
+			daoAC.deleteByAttackId(getC3UserID(session));
+			if(newAttackCharacters.size() > 0) {
+				attack.setAttackCharList(newAttackCharacters);
+			}
+			dao.update(getC3UserID(session), attack);
+
+			EntityManagerHelper.commit(getC3UserID(session));
+
+			attack = dao.findById(getC3UserID(session), attack.getId());
+			dao.refresh(getC3UserID(session), attack);
+
+//			JumpshipPOJO jsHelp =daoJJ.findById(getC3UserID(session), attack.getJumpshipID());
+//			daoJJ.refresh(getC3UserID(session), jsHelp);
+
 			RoundPOJO currentRound = RoundDAO.getInstance().findBySeasonId(GameServer.getCurrentSeason());
 			long currentRoundId = currentRound.getRound();
 			if (attack.getRound().equals(currentRoundId)) {
 				boolean lobbyOpened = false;
+				boolean invasionFinished = false;
 				boolean foundDropleadAttacker = false;
 				boolean foundDropleadDefender = false;
 				int numberOfPilots = 0;
@@ -637,8 +653,11 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 						}
 					}
 				}
-				boolean attackBroken = foundDropleadAttacker && foundDropleadDefender;
+				if (attack.getFactionID_Winner() != null) {
+					invasionFinished = true;
+				}
 
+				boolean attackBroken = foundDropleadAttacker && foundDropleadDefender;
 				if (attack.getFightsStarted() && attack.getFactionID_Winner() == null) {
 					if (!attackBroken) {
 						if (attack.getScoreAttackerVictories() == null || attack.getScoreDefenderVictories() == null) {
@@ -656,7 +675,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 						ServerNexus.getEci().sendExtCom("Angriff auf " + starSystem.getName() + " hat einen oder beide Dropleader verloren. Wartet...", "de", true, true, true);
 					}
 				} else {
-					if (lobbyOpened) {
+					if (lobbyOpened && !invasionFinished) {
 						ServerNexus.getEci().sendExtCom("Attack on " + starSystem.getName() + " is in preparation, lobby open (" + numberOfPilots + ").", "en", true, true, true);
 						ServerNexus.getEci().sendExtCom("Angriff auf " + starSystem.getName() + " wird vorbereitet, Lobby ist offen (" + numberOfPilots + ").", "de", true, true, true);
 					} else {
@@ -665,21 +684,6 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 					}
 				}
 			}
-
-			// remove old and set new attack character
-			daoAC.deleteByAttackId(getC3UserID(session));
-			if(newAttackCharacters.size() > 0) {
-				attack.setAttackCharList(newAttackCharacters);
-			}
-			dao.update(getC3UserID(session), attack);
-
-			EntityManagerHelper.commit(getC3UserID(session));
-
-			attack = dao.findById(getC3UserID(session), attack.getId());
-			dao.refresh(getC3UserID(session), attack);
-
-//			JumpshipPOJO jsHelp =daoJJ.findById(getC3UserID(session), attack.getJumpshipID());
-//			daoJJ.refresh(getC3UserID(session), jsHelp);
 
 			// Create forum thread for this attack
 			ForumDatabaseTools t = new ForumDatabaseTools();

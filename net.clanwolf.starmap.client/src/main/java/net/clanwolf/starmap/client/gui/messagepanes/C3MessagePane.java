@@ -295,4 +295,8 @@ public class C3MessagePane extends Pane {
 		FadeOutTransition.setOnFinished(event -> ActionManager.getAction(ACTIONS.SHOW_MESSAGE_WAS_ANSWERED).execute(message));
 		FadeOutTransition.play();
 	}
+
+	public String getText() {
+		return text;
+	}
 }

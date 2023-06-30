@@ -12,21 +12,8 @@ net.clanwolf.starmap.server/target/*
 net.clanwolf.starmap.transfer/target/*
 net.clanwolf.starmap.bots/target/*
 net.clanwolf.starmap.mail/target/*
-net.clanwolf.starmap.administration/target/*
-net.clanwolf.starmap.security/target/*
 
-io.nadron.client/.flattened-pom.xml
-io.nadron.server/.flattened-pom.xml
-net.clanwolf.starmap.client/.flattened-pom.xml
-net.clanwolf.starmap.client.packager/.flattened-pom.xml
-net.clanwolf.starmap.client.preloader/.flattened-pom.xml
-net.clanwolf.starmap.logging/.flattened-pom.xml
-net.clanwolf.starmap.server/.flattened-pom.xml
-net.clanwolf.starmap.transfer/.flattened-pom.xml
-net.clanwolf.starmap.bots/.flattened-pom.xml
-net.clanwolf.starmap.mail/.flattened-pom.xml
-net.clanwolf.starmap.administration/.flattened-pom.xml
-net.clanwolf.starmap.security/.flattened-pom.xml
+.flattened-pom.xml
 
 # Compiled class file
 *.class
@@ -62,3 +49,5 @@ hs_err_pid*
 /net.clanwolf.starmap.logging/doc/javadoc/
 /net.clanwolf.starmap.server/doc/javadoc/
 /net.clanwolf.starmap.transfer/doc/javadoc/
+/net.clanwolf.starmap.bots/doc/javadoc/
+/net.clanwolf.starmap.mail/doc/javadoc/

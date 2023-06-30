@@ -54,6 +54,7 @@ import java.lang.invoke.MethodHandles;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Timer;
 
 /**
  * @author Christian
@@ -426,6 +427,7 @@ public class EventCommunications {
 							Long factionWinnerId = attack.getFactionID_Winner();
 							if (factionWinnerId != null) {
 								Nexus.setCurrentAttackOfUserToNull();
+								Nexus.stopMWOTimer();
 							}
 						} else {
 							// I am not in this attack

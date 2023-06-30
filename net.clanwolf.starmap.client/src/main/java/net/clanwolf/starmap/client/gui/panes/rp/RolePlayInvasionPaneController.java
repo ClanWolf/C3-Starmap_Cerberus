@@ -534,6 +534,9 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 			case DISPLAY_RANDOM_MAP_ROLL:
 				if (o.getText() != null && !"".equals(o.getText())) {
 					Platform.runLater(() -> {
+						paneVetoMap.setVisible(false);
+						paneMapDice.setVisible(true);
+
 						String dice = o.getText();
 						String d1 = dice.substring(0, 1);
 						String d2 = dice.substring(1);

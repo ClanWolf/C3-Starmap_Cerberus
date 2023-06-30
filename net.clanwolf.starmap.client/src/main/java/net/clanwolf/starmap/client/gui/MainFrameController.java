@@ -2544,13 +2544,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					}
 					menuIndicatorPos = 147;
 					moveMenuIndicator(menuIndicatorPos);
-
-					if (Nexus.isMwoCheckingActive()) {
-						Timer t = Nexus.getCheckSystemClipboardForMWOResultTimer();
-						t.cancel();
-						t.purge();
-						Nexus.setMWOCheckingActive(false);
-					}
+					Nexus.stopMWOTimer();
 				}
 
 				// If this happens, we have been dropping out of an invasion lobby or game.
@@ -2807,6 +2801,12 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("5");
 		Nexus.oneOrMoreMessageOpen.set(true);
 		Platform.runLater(() -> {
+			for (C3MessagePane mp : messagePaneStack) {
+				if (message.equals(mp.getText())) {
+					return;
+				}
+			}
+
 			C3MessagePane messagePane = new C3MessagePane(message);
 			Tools.playGUICreationSound();
 			mouseStopper.getChildren().add(messagePane);

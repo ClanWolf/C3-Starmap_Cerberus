@@ -161,6 +161,15 @@ public class Nexus {
 		return mwoCheckingActive;
 	}
 
+	public static void stopMWOTimer() {
+		if (isMwoCheckingActive()) {
+			Timer t = getCheckSystemClipboardForMWOResultTimer();
+			t.cancel();
+			t.purge();
+			setMWOCheckingActive(false);
+		}
+	}
+
 	@SuppressWarnings("unused")
 	public static BOFaction getCurrentFaction() {
 		return currentFaction;
