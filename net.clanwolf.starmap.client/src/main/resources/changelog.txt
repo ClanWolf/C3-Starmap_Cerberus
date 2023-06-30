@@ -11,6 +11,10 @@ CURRENTLY IN PROGRESS:
 - P3: Updating the manual (ongoing): https://www.clanwolf.net/apps/C3/C3_Manual_de.pdf
 
 TODO:
+
+- Stop listening for MWO stats after an invasion has finished
+- Sound sample of radio language / does not play
+
 - Allow allied pilots to be droplead in fights for allied factions
 
 - Add a function to leave game / delete account
@@ -45,6 +49,9 @@ WATCH OUT FOR WHILE TESTING:
 ----------------------------------------------------------------
 
 VERSIONS
+
+Version 7.3.87 (30.06.2023)
+- FIXED: Error during invasion with missing localization strings
 
 Version 7.3.86 (29.06.2023)
 - STARTED: Window resize

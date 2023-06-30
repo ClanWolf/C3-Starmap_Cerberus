@@ -28,10 +28,15 @@ package net.clanwolf.starmap.client.util;
 
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.universe.BOAttack;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.lang.invoke.MethodHandles;
 import java.util.HashMap;
 
 public class RPVarReplacer_DE {
+
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	// "Der Jäger jagt den Fuchs"
 	// Wer jagd den Fuchs? Der Jäger (Nominativ)
@@ -51,6 +56,8 @@ public class RPVarReplacer_DE {
 	private static final HashMap<String, String> cw = new HashMap<>();
 	private static final HashMap<String, String> cjf = new HashMap<>();
 	private static final HashMap<String, String> cgb = new HashMap<>();
+	private static final HashMap<String, String> cnc = new HashMap<>();
+	private static final HashMap<String, String> csv = new HashMap<>();
 
 	public static void fillLists() {
 		dc.put("nom", "das Draconis Kombinat");                  // 1. Nominativ (wer)
@@ -94,6 +101,18 @@ public class RPVarReplacer_DE {
 		cgb.put("akk", "die Geisterbären");                      // 3. Akkusativ (wen/was)
 		cgb.put("gen", "den Geisterbären");                      // 4. Genitiv   (wessen)
 		factionNameCases.put("CGB", cgb);
+
+		cnc.put("nom", "Clan Novakatze");                        // 1. Nominativ (wer)
+		cnc.put("dat", "den Novakatzen");                        // 2. Dativ     (wem)
+		cnc.put("akk", "die Novakatzen");                        // 3. Akkusativ (wen/was)
+		cnc.put("gen", "den Novakatzen");                        // 4. Genitiv   (wessen)
+		factionNameCases.put("CNC", cnc);
+
+		csv.put("nom", "Clan Stahlviper");                       // 1. Nominativ (wer)
+		csv.put("dat", "den Stahlvipern");                       // 2. Dativ     (wem)
+		csv.put("akk", "die Stahlvipern");                       // 3. Akkusativ (wen/was)
+		csv.put("gen", "den Stahlvipern");                       // 4. Genitiv   (wessen)
+		factionNameCases.put("CSV", csv);
 	}
 
 	public static String replaceVars(String text) {
@@ -129,6 +148,11 @@ public class RPVarReplacer_DE {
 			String defenderShortName = attack.getDefenderFactionShortName();
 			HashMap<String, String> attackerNameCases = factionNameCases.get(attackerShortName);
 			HashMap<String, String> defenderNameCases = factionNameCases.get(defenderShortName);
+
+			if (attackerNameCases == null || defenderNameCases == null) {
+				logger.error("Faction strings have not been defined!");
+				return "@@NOTFOUND@@";
+			}
 
 			return switch (key) {
 				case "@@PLANET@@" -> attack.getStarSystemName();

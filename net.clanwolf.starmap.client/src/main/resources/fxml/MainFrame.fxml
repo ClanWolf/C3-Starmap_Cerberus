@@ -71,7 +71,7 @@
             </VBox>
          </right>
          <bottom>
-            <HBox alignment="TOP_RIGHT" snapToPixel="false" BorderPane.alignment="CENTER">
+            <HBox alignment="TOP_CENTER" snapToPixel="false" BorderPane.alignment="CENTER">
                <children>
                   <ImageView fitHeight="113.0" fitWidth="793.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
                      <image>
@@ -81,7 +81,7 @@
                         <Rectangle2D />
                      </viewport>
                   </ImageView>
-                  <Pane snapToPixel="false" styleClass="gapPaneBottom" stylesheets="@../styles/MainFrameStyle.css" HBox.hgrow="ALWAYS" />
+                  <Pane minWidth="1.0" snapToPixel="false" styleClass="gapPaneBottom" stylesheets="@../styles/MainFrameStyle.css" HBox.hgrow="ALWAYS" />
                   <ImageView fitHeight="113.0" fitWidth="237.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@../images/gui/tiles/southeast.png" />

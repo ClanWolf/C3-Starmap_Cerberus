@@ -2440,36 +2440,38 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 			case UPDATE_GAME_INFO:
 				Platform.runLater(() -> {
-					BOUniverse boUniverse = Nexus.getBoUniverse();
+					if (Nexus.isLoggedIn()) {
+						BOUniverse boUniverse = Nexus.getBoUniverse();
 
-					Date nowDate = new Date(System.currentTimeMillis());
-					Date translatedNowDate = translateRealDateToSeasonDate(nowDate, (long) Nexus.getCurrentSeason());
-					LocalDate translatedLocalDate = new java.util.Date(translatedNowDate.getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-					LocalTime nowLocalTime = LocalTime.now();
-					LocalDateTime now = LocalDateTime.of(translatedLocalDate, nowLocalTime);
-					DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Internationalization.getString("general_date"));
-					String formatDateTime = now.format(formatter);
+						Date nowDate = new Date(System.currentTimeMillis());
+						Date translatedNowDate = translateRealDateToSeasonDate(nowDate, (long) Nexus.getCurrentSeason());
+						LocalDate translatedLocalDate = new java.util.Date(translatedNowDate.getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+						LocalTime nowLocalTime = LocalTime.now();
+						LocalDateTime now = LocalDateTime.of(translatedLocalDate, nowLocalTime);
+						DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Internationalization.getString("general_date"));
+						String formatDateTime = now.format(formatter);
 
-					//					gameInfoLabel.setText("S" + boUniverse.currentSeason + " R" + boUniverse.currentRound + "[" + (boUniverse.currentRoundPhase == 1 ? "." : ":") + "]" + "/" + boUniverse.maxNumberOfRoundsForSeason + " " + Tools.getRomanNumber(boUniverse.currentSeasonMetaPhase) + " - " + boUniverse.currentDate);
-					gameInfoLabel.setText("S" + boUniverse.currentSeason + "*" + Tools.getRomanNumber(boUniverse.currentSeasonMetaPhase) + "/R" + boUniverse.currentRound + " - " + formatDateTime);
+						//					gameInfoLabel.setText("S" + boUniverse.currentSeason + " R" + boUniverse.currentRound + "[" + (boUniverse.currentRoundPhase == 1 ? "." : ":") + "]" + "/" + boUniverse.maxNumberOfRoundsForSeason + " " + Tools.getRomanNumber(boUniverse.currentSeasonMetaPhase) + " - " + boUniverse.currentDate);
+						gameInfoLabel.setText("S" + boUniverse.currentSeason + "*" + Tools.getRomanNumber(boUniverse.currentSeasonMetaPhase) + "/R" + boUniverse.currentRound + " - " + formatDateTime);
 
-					double tfsProgress = (100d / Nexus.getBoUniverse().maxNumberOfRoundsForSeason * Nexus.getBoUniverse().currentRound) / 100;
-					TFSProgress.setProgress(tfsProgress);
-					if (tfsProgress > 1) {
-						TFSProgress.lookup(".bar").setStyle("-fx-background-color: -fx-box-border, #ff0000");
-					}
+						double tfsProgress = (100d / Nexus.getBoUniverse().maxNumberOfRoundsForSeason * Nexus.getBoUniverse().currentRound) / 100;
+						TFSProgress.setProgress(tfsProgress);
+						if (tfsProgress > 1) {
+							TFSProgress.lookup(".bar").setStyle("-fx-background-color: -fx-box-border, #ff0000");
+						}
 
-					String alliancesString = "";
-					ArrayList<Pair<BOFaction, BOFaction>> factionAlliencesList = Nexus.getBoUniverse().getFactionAlliencesList();
-					for (Pair<BOFaction, BOFaction> p : factionAlliencesList) {
-						BOFaction f1 = p.getKey();
-						BOFaction f2 = p.getValue();
+						String alliancesString = "";
+						ArrayList<Pair<BOFaction, BOFaction>> factionAlliencesList = Nexus.getBoUniverse().getFactionAlliencesList();
+						for (Pair<BOFaction, BOFaction> p : factionAlliencesList) {
+							BOFaction f1 = p.getKey();
+							BOFaction f2 = p.getValue();
 
-						logger.info("Alliance found: " + p.getKey() + " allied with " + p.getValue());
-						alliancesString += f1.getFactionDTO().getShortName() + " \uD83E\uDD1D " + f2.getFactionDTO().getShortName() + "\r\n";
-					}
-					if (!"".equals(alliancesString)) {
-						ActionManager.getAction(ACTIONS.UPDATE_ALLIANCES_LIST).execute(Internationalization.getString("general_alliances")+ ":\r\n" + alliancesString);
+							logger.info("Alliance found: " + p.getKey() + " allied with " + p.getValue());
+							alliancesString += f1.getFactionDTO().getShortName() + " \uD83E\uDD1D " + f2.getFactionDTO().getShortName() + "\r\n";
+						}
+						if (!"".equals(alliancesString)) {
+							ActionManager.getAction(ACTIONS.UPDATE_ALLIANCES_LIST).execute(Internationalization.getString("general_alliances") + ":\r\n" + alliancesString);
+						}
 					}
 				});
 				break;
