@@ -46,11 +46,13 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
-Version 7.3.88 (xx)
+Version 7.3.88 (01.07.2023)
+- FIXED: A sample sound is always played with the radio buttons (invasion), always english for now
 - FIXED: No waiting message after the attack was finished
 - FIXED: Client listening for MWO stats after an invasion has finished
 - FIXED: Show dice for all members of the lobby if one side rolls dice for random map
 - FIXED: An error message is not shown if the message text equals an already open message
+- FIXED: Resizable main window snaps to minimal position
 
 Version 7.3.87 (30.06.2023)
 - FIXED: Error during invasion with missing localization strings

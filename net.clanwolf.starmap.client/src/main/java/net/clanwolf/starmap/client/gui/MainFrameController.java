@@ -1566,6 +1566,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			int OFFSET_Y = 0;
 			int WIDTH = 860;
 			int HEIGHT = 524;
+//			int WIDTH = (int) Math.round(noiseImage.getFitWidth());
+//			int HEIGHT = (int) Math.round(noiseImage.getFitHeight());
 
 			InputStream is = this.getClass().getResourceAsStream("/images/noise/noisemap.png");
 			noiseImage.setImage(new Image(is));

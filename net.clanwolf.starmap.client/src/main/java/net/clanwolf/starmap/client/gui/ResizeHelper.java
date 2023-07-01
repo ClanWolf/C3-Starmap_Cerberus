@@ -37,11 +37,15 @@ import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
 import net.clanwolf.starmap.client.nexus.Nexus;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.lang.invoke.MethodHandles;
 
 //created by Alexander Berg
 
 public class ResizeHelper {
-
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	private static Double initialWidth = null;
 	private static Double initialHeight = null;
 
@@ -112,14 +116,24 @@ public class ResizeHelper {
 						if (!Cursor.W_RESIZE.equals(cursorEvent) && !Cursor.E_RESIZE.equals(cursorEvent)) {
 							if (Cursor.NW_RESIZE.equals(cursorEvent) || Cursor.N_RESIZE.equals(cursorEvent) || Cursor.NE_RESIZE.equals(cursorEvent)) {
 								if (stage.getHeight() > initialHeight || mouseEventY < 0) {
-									if (stage.getY() - mouseEvent.getScreenY() + stage.getHeight() > initialHeight) {
-										stage.setHeight(stage.getY() - mouseEvent.getScreenY() + stage.getHeight());
+									double newHeight = stage.getY() - mouseEvent.getScreenY() + stage.getHeight();
+									if (newHeight >= initialHeight) {
+										if (newHeight > 630 && newHeight < 650) {
+											newHeight = 630;
+										}
+										stage.setHeight(newHeight);
+//										logger.info("h: " + newHeight);
 									}
 								}
 							} else {
 								if (stage.getHeight() > initialHeight || mouseEventY + startY - stage.getHeight() > 0) {
-									if (mouseEventY + startY > initialHeight) {
-										stage.setHeight(mouseEventY + startY);
+									double newHeight = mouseEventY + startY;
+									if (newHeight >= initialHeight) {
+										if (newHeight > 630 && newHeight < 650) {
+											newHeight = 630;
+										}
+										stage.setHeight(newHeight);
+//										logger.info("h: " + newHeight);
 									}
 								}
 							}
@@ -128,14 +142,24 @@ public class ResizeHelper {
 						if (!Cursor.N_RESIZE.equals(cursorEvent) && !Cursor.S_RESIZE.equals(cursorEvent)) {
 							if (Cursor.NW_RESIZE.equals(cursorEvent) || Cursor.W_RESIZE.equals(cursorEvent) || Cursor.SW_RESIZE.equals(cursorEvent)) {
 								if (stage.getWidth() > initialWidth || mouseEventX < 0) {
-									if (stage.getX() - mouseEvent.getScreenX() + stage.getWidth() > initialWidth) {
-										stage.setWidth(stage.getX() - mouseEvent.getScreenX() + stage.getWidth());
+									double newWidth = stage.getX() - mouseEvent.getScreenX() + stage.getWidth();
+									if (newWidth >= initialWidth) {
+										if (newWidth > 1030 && newWidth < 1050) {
+											newWidth = 1030;
+										}
+										stage.setWidth(newWidth);
+//										logger.info("w: " + newWidth);
 									}
 								}
 							} else {
 								if (stage.getWidth() > initialWidth || mouseEventX + startX - stage.getWidth() > 0) {
-									if (mouseEventX + startX > initialWidth) {
-										stage.setWidth(mouseEventX + startX);
+									double newWidth = mouseEventX + startX;
+									if (newWidth > initialWidth) {
+										if (newWidth > 1030 && newWidth < 1050) {
+											newWidth = 1030;
+										}
+										stage.setWidth(newWidth);
+//										logger.info("w: " + newWidth);
 									}
 								}
 							}

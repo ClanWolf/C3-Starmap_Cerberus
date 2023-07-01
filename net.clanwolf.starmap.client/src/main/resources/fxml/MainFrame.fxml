@@ -21,7 +21,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="AnchorPane" fx:id="rootAnchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="630.0" prefWidth="1030.0" snapToPixel="false" xmlns="http://javafx.com/javafx/19" fx:controller="net.clanwolf.starmap.client.gui.MainFrameController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="AnchorPane" fx:id="rootAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="630.0" prefWidth="1030.0" snapToPixel="false" xmlns="http://javafx.com/javafx/19" fx:controller="net.clanwolf.starmap.client.gui.MainFrameController">
     <children>
       <Pane snapToPixel="false" styleClass="backgroundTerminal" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="65.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="35.0">
          <opaqueInsets>
@@ -30,15 +30,15 @@
       </Pane>
       <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mouseTransparent="true" snapToPixel="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
-            <HBox alignment="BOTTOM_LEFT" maxHeight="279.0" minHeight="279.0" prefHeight="279.0" snapToPixel="false" BorderPane.alignment="CENTER">
+            <HBox alignment="BOTTOM_LEFT" maxHeight="279.0" minHeight="279.0" minWidth="1030.0" prefHeight="279.0" snapToPixel="false" BorderPane.alignment="CENTER">
                <children>
-                  <ImageView fitHeight="279.0" fitWidth="793.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="279.0" fitWidth="793.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER">
                      <image>
                         <Image url="@../images/gui/tiles/northwest.png" />
                      </image>
                   </ImageView>
-                  <Pane snapToPixel="false" styleClass="gapPaneTop" stylesheets="@../styles/MainFrameStyle.css" HBox.hgrow="ALWAYS" />
-                  <ImageView fitHeight="279.0" fitWidth="237.0" pickOnBounds="true" preserveRatio="true">
+                  <Pane minWidth="0.0" snapToPixel="false" styleClass="gapPaneTop" stylesheets="@../styles/MainFrameStyle.css" HBox.hgrow="ALWAYS" />
+                  <ImageView fitHeight="279.0" fitWidth="237.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER">
                      <image>
                         <Image url="@../images/gui/tiles/northeast.png" />
                      </image>
@@ -47,33 +47,33 @@
             </HBox>
          </top>
          <left>
-            <VBox snapToPixel="false" BorderPane.alignment="BOTTOM_LEFT">
+            <VBox snapToPixel="false" BorderPane.alignment="CENTER_LEFT">
                <children>
-                  <ImageView fitHeight="238.0" fitWidth="271.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="238.0" fitWidth="271.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="NEVER">
                      <image>
                         <Image url="@../images/gui/tiles/west.png" />
                      </image>
                   </ImageView>
-                  <Pane snapToPixel="false" styleClass="gapPaneLeft" stylesheets="@../styles/MainFrameStyle.css" VBox.vgrow="ALWAYS" />
+                  <Pane minWidth="0.0" snapToPixel="false" styleClass="gapPaneLeft" stylesheets="@../styles/MainFrameStyle.css" VBox.vgrow="ALWAYS" />
                </children>
             </VBox>
          </left>
          <right>
-            <VBox alignment="TOP_RIGHT" snapToPixel="false" BorderPane.alignment="BOTTOM_RIGHT">
+            <VBox alignment="TOP_RIGHT" snapToPixel="false" BorderPane.alignment="CENTER_RIGHT">
                <children>
-                  <ImageView fitHeight="238.0" fitWidth="193.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="238.0" fitWidth="193.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="NEVER">
                      <image>
                         <Image url="@../images/gui/tiles/east.png" />
                      </image>
                   </ImageView>
-                  <Pane snapToPixel="false" styleClass="gapPaneRight" stylesheets="@../styles/MainFrameStyle.css" VBox.vgrow="ALWAYS" />
+                  <Pane minWidth="0.0" snapToPixel="false" styleClass="gapPaneRight" stylesheets="@../styles/MainFrameStyle.css" VBox.vgrow="ALWAYS" />
                </children>
             </VBox>
          </right>
          <bottom>
-            <HBox alignment="TOP_CENTER" snapToPixel="false" BorderPane.alignment="CENTER">
+            <HBox alignment="TOP_CENTER" maxHeight="113.0" minHeight="113.0" minWidth="1030.0" prefHeight="113.0" snapToPixel="false" BorderPane.alignment="CENTER">
                <children>
-                  <ImageView fitHeight="113.0" fitWidth="793.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="ALWAYS">
+                  <ImageView fitHeight="113.0" fitWidth="793.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER">
                      <image>
                         <Image url="@../images/gui/tiles/southwest.png" />
                      </image>
@@ -81,8 +81,8 @@
                         <Rectangle2D />
                      </viewport>
                   </ImageView>
-                  <Pane minWidth="1.0" snapToPixel="false" styleClass="gapPaneBottom" stylesheets="@../styles/MainFrameStyle.css" HBox.hgrow="ALWAYS" />
-                  <ImageView fitHeight="113.0" fitWidth="237.0" pickOnBounds="true" preserveRatio="true">
+                  <Pane minWidth="0.0" snapToPixel="false" styleClass="gapPaneBottom" stylesheets="@../styles/MainFrameStyle.css" HBox.hgrow="ALWAYS" />
+                  <ImageView fitHeight="113.0" fitWidth="237.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER">
                      <image>
                         <Image url="@../images/gui/tiles/southeast.png" />
                      </image>
@@ -90,6 +90,9 @@
                </children>
             </HBox>
          </bottom>
+         <center>
+            <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="0.0" prefWidth="0.0" BorderPane.alignment="CENTER" />
+         </center>
       </BorderPane>
         <Pane fx:id="mouseStopper" layoutX="63.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="1.0" prefHeight="630.0" prefWidth="941.0" snapToPixel="false" styleClass="AnchorPane" visible="true">
             <stylesheets>
@@ -158,7 +161,7 @@
       <Label fx:id="terminalLabel" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="567.0" layoutY="556.0" prefHeight="20.0" prefWidth="66.0" snapToPixel="false" text="Terminal:" AnchorPane.bottomAnchor="54.0" AnchorPane.rightAnchor="395.0" />
       <TextField fx:id="terminalPrompt" layoutX="639.0" layoutY="555.0" onKeyPressed="#handleTerminalEnterButton" prefHeight="20.0" prefWidth="305.0" snapToPixel="false" styleClass="text" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="55.0" AnchorPane.rightAnchor="86.0" />
       <Label fx:id="helpLabel" focusTraversable="false" layoutX="585.0" layoutY="581.0" onMouseClicked="#handleHelpMouseEventClick" onMouseEntered="#handleHelpButtonHoverEnter" onMouseExited="#handleHelpButtonHoverExit" prefHeight="20.0" prefWidth="12.0" snapToPixel="false" text="Help" AnchorPane.bottomAnchor="28.0" />
-        <ImageView fx:id="noiseImage" fitHeight="523.0" fitWidth="859.0" layoutX="123.0" layoutY="37.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="false">
+        <ImageView fx:id="noiseImage" fitHeight="523.0" fitWidth="859.0" layoutX="494.0" layoutY="37.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="false" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="123.0" AnchorPane.rightAnchor="48.0" AnchorPane.topAnchor="37.0">
             <image>
                 <Image url="@../images/noise/noisemap.png" />
             </image>
