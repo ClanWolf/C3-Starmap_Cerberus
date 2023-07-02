@@ -46,6 +46,9 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
+Version 7.3.89 (02.07.2023)
+- CHANGED: Adapted Discord bot to recent changes
+
 Version 7.3.88 (01.07.2023)
 - FIXED: A sample sound is always played with the radio buttons (invasion), always english for now
 - FIXED: No waiting message after the attack was finished

@@ -111,22 +111,22 @@ public class SendInformationToBotsTimerTask extends TimerTask {
 			}
 		}
 
-		fs_de.append("\r\nFraktionskontakte:");
-		fs_en.append("\r\nFaction contacts:");
-		for (RolePlayCharacterPOJO c : allCharacters) {
-			UserPOJO u = UserDAO.getInstance().findById(ServerNexus.DUMMY_USERID, c.getUser().getUserId());
-			if (Security.hasPrivilege(u, PRIVILEGES.FACTIONLEAD_HAS_ROLE)) {
-				FactionPOJO f = FactionDAO.getInstance().findById(ServerNexus.DUMMY_USERID, c.getFactionId().longValue());
-
-				fs_de.append("\r\n- ").append(f.getShortName()).append(": ").append(c.getRank()).append(" ").append(c.getName());
-				fs_en.append("\r\n- ").append(f.getShortName()).append(": ").append(c.getRank()).append(" ").append(c.getName());
-
-				if (Security.isGodAdmin(c.getUser())) {
-					fs_de.append(" (Godadmin)");
-					fs_en.append(" (Godadmin)");
-				}
-			}
-		}
+//		fs_de.append("\r\nFraktionskontakte:");
+//		fs_en.append("\r\nFaction contacts:");
+//		for (RolePlayCharacterPOJO c : allCharacters) {
+//			UserPOJO u = UserDAO.getInstance().findById(ServerNexus.DUMMY_USERID, c.getUser().getUserId());
+//			if (Security.hasPrivilege(u, PRIVILEGES.FACTIONLEAD_HAS_ROLE)) {
+//				FactionPOJO f = FactionDAO.getInstance().findById(ServerNexus.DUMMY_USERID, c.getFactionId().longValue());
+//
+//				if (Security.isGodAdmin(c.getUser())) {
+//					fs_de.append("\r\n- ADMIN: ").append(" ").append(c.getName()).append(" (").append(f.getShortName()).append(")");
+//					fs_en.append("\r\n- ADMIN: ").append(" ").append(c.getName()).append(" (").append(f.getShortName()).append(")");
+//				} else {
+//					fs_de.append("\r\n- ").append(f.getShortName()).append(": ").append(c.getRank()).append(" ").append(c.getName());
+//					fs_en.append("\r\n- ").append(f.getShortName()).append(": ").append(c.getRank()).append(" ").append(c.getName());
+//				}
+//			}
+//		}
 
 		ServerNexus.getEci().sendExtCom("Round " + roundId + "\r\n" + "Open fights:\r\n" + fs_en, "en", true, true, true);
 		ServerNexus.getEci().sendExtCom("Runde " + roundId + "\r\n" + "Offene Kämpfe:\r\n" + fs_de, "de", true, true, true);

@@ -32,8 +32,7 @@ import net.clanwolf.starmap.logging.C3LogUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.entities.Message;
-import net.dv8tion.jda.api.entities.MessageHistory;
+import net.dv8tion.jda.api.entities.*;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
@@ -52,6 +51,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class DiscordBot extends ListenerAdapter {
 	private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -150,7 +150,7 @@ public class DiscordBot extends ListenerAdapter {
 	}
 
 	public static void sendMessageToChannel(String message) {
-		List<TextChannel> channels = jda.getTextChannelsByName("c3-ulric", true);
+		List<TextChannel> channels = jda.getTextChannelsByName("c3-status", true);
 		LocalDateTime date = LocalDate.now().atStartOfDay();
 		LocalDateTime date2 = LocalDateTime.now();
 
@@ -163,6 +163,28 @@ public class DiscordBot extends ListenerAdapter {
 				testEmbed = false;
 			}
 
+//			Guild guild = jda.getGuildById(753193674321690665L);
+//			if (guild != null) {
+//				List<Role> rl = guild.getRolesByName("C3", true);
+//				for (Role r : rl) {
+//					logger.info("Role '" + r + "' - ID: " + r.getId());
+//				}
+//			}
+
+//			jda.retrieveUserById(946206988327616533L).queue(user -> {
+//				if (user != null) {
+//					for (Guild g : user.getMutualGuilds()) {
+//						List<Role> rl2 = g.getRolesByName("C3", true);
+//						for (Role r : rl2) {
+//							logger.info("Role '" + r + "' - ID: " + r.getId());
+//						}
+//					}
+//				} else {
+//					logger.info("User 'Meldric' not found");
+//				}
+//			});
+
+			//sendMessage(ch, "@1081654927635533834 " + message);
 			sendMessage(ch, message);
 
 			MessageHistory history = MessageHistory.getHistoryFromBeginning(ch).complete();
