@@ -3,13 +3,13 @@
   <parent>
     <artifactId>C3-Starmap_Cerberus</artifactId>
     <groupId>net.clanwolf.starmap</groupId>
-    <version>7.3.89</version>
+    <version>7.3.90</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <groupId>net.clanwolf.starmap</groupId>
   <artifactId>net.clanwolf.starmap.bots</artifactId>
   <name>net.clanwolf.starmap.bots</name>
-  <version>7.3.89</version>
+  <version>7.3.90</version>
   <build>
     <plugins>
       <plugin>

@@ -26,6 +26,8 @@
  */
 package net.clanwolf.starmap.logging;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Formatter;
@@ -33,7 +35,7 @@ import java.util.logging.LogRecord;
 
 public class C3LogFormatter extends Formatter {
 
-	private final SimpleDateFormat dt1 = new SimpleDateFormat("[yyMMdd HH:mm:ss]");
+	private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("[yyMMdd HH:mm:ss]");
 
 	private String cutLen(String s, int maxLength) {
 		if (s.length() > maxLength) {
@@ -47,15 +49,29 @@ public class C3LogFormatter extends Formatter {
 
 	@Override
 	public String format(LogRecord record) {
-		return dt1.format(new Date(record.getMillis()))
-			+ " "
-			+ cutLen(record.getLevel().getName(), 7)
-			+ " "
-			+ cutLen(record.getSourceClassName().replace("net.clanwolf.starmap.", "…"), 25)
-			+ " / "
-			+ cutLen(record.getSourceMethodName(), 20)
-			+ " > "
-			+ record.getMessage()
-			+ "\n";
+		StringBuilder message = new StringBuilder();
+
+		message
+				.append(simpleDateFormat.format(new Date(record.getMillis())))
+				.append(" ")
+				.append(cutLen(record.getLevel().getName(), 7))
+				.append(" ")
+				.append(cutLen(record.getSourceClassName().replace("net.clanwolf.starmap.", "…"), 40))
+				.append(" / ")
+				.append(cutLen(record.getSourceMethodName(), 35))
+				.append(" > ")
+				.append(record.getMessage())
+				.append(System.lineSeparator());
+
+		if (record.getThrown() != null) {
+			if (message.length() > 0) {
+				message.append(" - ");
+			}
+			StringWriter stringWriter = new StringWriter();
+			PrintWriter printWriter = new PrintWriter(stringWriter);
+			record.getThrown().printStackTrace(printWriter);
+			message.append(System.lineSeparator()).append(stringWriter.toString());
+		}
+		return message.toString();
 	}
 }

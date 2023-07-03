@@ -11,8 +11,12 @@ CURRENTLY IN PROGRESS:
 - P3: Updating the manual (ongoing): https://www.clanwolf.net/apps/C3/C3_Manual_de.pdf
 
 TODO:
+- Error message for double login to correct error message
+- Rename Threads in Clan Wolf Forum and discord announcement to pattern: CGB ⚔ Odabasi (DC)
+- Insert discord thread for each attack automatically
 - Finish sound samples on the radio buttons (R1-3) on Invasionpane
 - Allow allied pilots to be droplead in fights for allied factions
+- Allied faction leader should see the jump route of allied jumpships
 - Add a function to leave game / delete account
 - If a jumpship attacks, the icon is moved back to the starting system on save... the jumpship level icon needs to be moved as well
 - Channel message (discord) if a user successfully changes faction
@@ -41,10 +45,13 @@ WATCH OUT FOR WHILE TESTING:
 - Join buttons (invasion lobby) is correctly disabled after the fights startet / Intro is running
 - Wrong tab order of buttons and controls (anywhere)
 - Wrong statements in the manual (things might have changed and the manual becomes outdated sometimes)
-- Any exceptions or error in the log. Warnings might be interesting, but probably not urgent
+- Any exceptions or error (ERROR or SEVERE) in the log. Warnings might be interesting, but probably not urgent
 ----------------------------------------------------------------
 
 VERSIONS
+
+Version 7.3.90 (03.07.2023)
+- FIXED: - Server log file does not display stack traces
 
 Version 7.3.89 (02.07.2023)
 - CHANGED: Adapted Discord bot to recent changes

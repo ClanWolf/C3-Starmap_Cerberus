@@ -155,7 +155,7 @@ public class DiscordBot extends ListenerAdapter {
 		LocalDateTime date2 = LocalDateTime.now();
 
 		Instant threshhold = Instant.ofEpochSecond(date2.minusMinutes(1).toEpochSecond(ZoneOffset.UTC));
-		Instant threshhold2 = Instant.ofEpochSecond(date.minusDays(3).toEpochSecond(ZoneOffset.UTC));
+		Instant threshhold2 = Instant.ofEpochSecond(date.minusDays(2).toEpochSecond(ZoneOffset.UTC));
 
 		for (TextChannel ch : channels) {
 			if (testEmbed) {
