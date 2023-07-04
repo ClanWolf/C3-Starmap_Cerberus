@@ -32,7 +32,8 @@ import net.clanwolf.starmap.logging.C3LogUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
-import net.dv8tion.jda.api.entities.*;
+import net.dv8tion.jda.api.entities.Message;
+import net.dv8tion.jda.api.entities.MessageHistory;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
@@ -51,7 +52,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
 import java.util.*;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class DiscordBot extends ListenerAdapter {
 	private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
@@ -151,11 +151,12 @@ public class DiscordBot extends ListenerAdapter {
 
 	public static void sendMessageToChannel(String message) {
 		List<TextChannel> channels = jda.getTextChannelsByName("c3-status", true);
-		LocalDateTime date = LocalDate.now().atStartOfDay();
-		LocalDateTime date2 = LocalDateTime.now();
+		LocalDateTime dateStartOfDay = LocalDate.now().atStartOfDay();
+		LocalDateTime dateNow = LocalDateTime.now();
 
-		Instant threshhold = Instant.ofEpochSecond(date2.minusMinutes(1).toEpochSecond(ZoneOffset.UTC));
-		Instant threshhold2 = Instant.ofEpochSecond(date.minusDays(2).toEpochSecond(ZoneOffset.UTC));
+		Instant threshhold = Instant.ofEpochSecond(dateNow.minusMinutes(10).toEpochSecond(ZoneOffset.UTC));
+		Instant threshhold3 = Instant.ofEpochSecond(dateNow.minusHours(8).toEpochSecond(ZoneOffset.UTC));
+		Instant threshhold2 = Instant.ofEpochSecond(dateStartOfDay.minusDays(2).toEpochSecond(ZoneOffset.UTC));
 
 		for (TextChannel ch : channels) {
 			if (testEmbed) {
@@ -196,6 +197,9 @@ public class DiscordBot extends ListenerAdapter {
 			LinkedList<Message> messagesServerOnlineSinceAnnouncement = new LinkedList<>();
 			LinkedList<Message> messagesServerGoesDownAnnouncement = new LinkedList<>();
 			LinkedList<Message> messagesRoundFinalizedAnnouncement = new LinkedList<>();
+			LinkedList<Message> messagesLobbyOpenAnnouncement = new LinkedList<>();
+			LinkedList<Message> messagesWaitingForLobbyAnnouncement = new LinkedList<>();
+			LinkedList<Message> messagesLobbyLostDropleadAnnouncement = new LinkedList<>();
 
 			for (Message m : mess) {
 				Instant time = m.getTimeCreated().toInstant();
@@ -210,13 +214,13 @@ public class DiscordBot extends ListenerAdapter {
 //					m.delete().complete();
 //				}
 
-				if (time.isBefore(threshhold)) {
-					if ("Ulric".equals(m.getAuthor().getName())) {
+				if ("Ulric".equals(m.getAuthor().getName())) {
+					if (time.isBefore(threshhold)) {
 						if ((m.getContentDisplay().contains("Runde ") && m.getContentDisplay().contains("Offene Kämpfe:") && m.getContentDisplay().contains("Stunden und") && m.getContentDisplay().contains("Minuten in Runde"))
 								|| (m.getContentDisplay().contains("Round ") && m.getContentDisplay().contains("Open fights:") && m.getContentDisplay().contains("hours and") && m.getContentDisplay().contains("minutes left in round"))) {
 							messagesRoundAnnouncement.push(m);
 						}
-						if ((m.getContentDisplay().contains("C3-Server-") && m.getContentDisplay().contains("ist gestartet und bereit.") && m.getContentDisplay().contains("Download:")) || (m.getContentDisplay().contains("C3-Server-") && m.getContentDisplay().contains("is up and ready.") && m.getContentDisplay().contains("Download:"))) {
+						if ((m.getContentDisplay().contains("C3-Server-") && m.getContentDisplay().contains("ist gestartet und bereit.")) || (m.getContentDisplay().contains("C3-Server-") && m.getContentDisplay().contains("is up and ready."))) {
 							messagesServerStartedAnnouncement.push(m);
 						}
 						if ((m.getContentDisplay().contains("Runde beendet.") || m.getContentDisplay().contains("Round finalized."))) {
@@ -227,6 +231,18 @@ public class DiscordBot extends ListenerAdapter {
 						}
 						if ((m.getContentDisplay().contains("Server fährt herunter") || m.getContentDisplay().contains("Server is going down"))) {
 							messagesServerGoesDownAnnouncement.push(m);
+						}
+					}
+
+					if (time.isBefore(threshhold3)) {
+						if ((m.getContentDisplay().contains("wird vorbereitet, Lobby ist offen (") || m.getContentDisplay().contains("is in preparation, lobby open ("))) {
+							messagesLobbyOpenAnnouncement.push(m);
+						}
+						if ((m.getContentDisplay().contains("wartet auf die Lobby") || m.getContentDisplay().contains("is waiting for lobby to be opened"))) {
+							messagesWaitingForLobbyAnnouncement.push(m);
+						}
+						if ((m.getContentDisplay().contains("hat einen oder beide Dropleader verloren. Wartet...") || m.getContentDisplay().contains("is missing one of the dropleaders. Waiting..."))) {
+							messagesLobbyLostDropleadAnnouncement.push(m);
 						}
 					}
 				}
@@ -259,6 +275,24 @@ public class DiscordBot extends ListenerAdapter {
 			if (messagesServerGoesDownAnnouncement.size() > 1) {
 				messagesServerGoesDownAnnouncement.removeLast();          // remove the first (latest) entry of that type
 				for (Message m : messagesServerGoesDownAnnouncement) {    // delete all the others
+					m.delete().complete();
+				}
+			}
+			if (messagesLobbyOpenAnnouncement.size() > 1) {
+				messagesLobbyOpenAnnouncement.removeLast();               // remove the first (latest) entry of that type
+				for (Message m : messagesLobbyOpenAnnouncement) {         // delete all the others
+					m.delete().complete();
+				}
+			}
+			if (messagesWaitingForLobbyAnnouncement.size() > 1) {
+				messagesWaitingForLobbyAnnouncement.removeLast();          // remove the first (latest) entry of that type
+				for (Message m : messagesWaitingForLobbyAnnouncement) {    // delete all the others
+					m.delete().complete();
+				}
+			}
+			if (messagesLobbyLostDropleadAnnouncement.size() > 1) {
+				messagesLobbyLostDropleadAnnouncement.removeLast();         // remove the first (latest) entry of that type
+				for (Message m : messagesLobbyLostDropleadAnnouncement) {   // delete all the others
 					m.delete().complete();
 				}
 			}

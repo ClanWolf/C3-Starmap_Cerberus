@@ -83,8 +83,11 @@ public class SendInformationToBotsTimerTask extends TimerTask {
 			FactionPOJO defender = FactionDAO.getInstance().findById(ServerNexus.DUMMY_USERID, a.getFactionID_Defender());
 			FactionPOJO attacker = FactionDAO.getInstance().findById(ServerNexus.DUMMY_USERID, js.getJumpshipFactionID());
 
-			fs_de.append("- ").append(ss.getName()).append(" (").append(defender.getShortName()).append(") wird von ").append(attacker.getShortName()).append(" angegriffen (<").append(forumLink).append(">)\r\n");
-			fs_en.append("- ").append(ss.getName()).append(" (").append(defender.getShortName()).append(") is attacked by ").append(attacker.getShortName()).append(" (<").append(forumLink).append(">)\r\n");
+			// CW ⚔ Domain (CJF)
+			//fs_de.append("- ").append(ss.getName()).append(" (").append(defender.getShortName()).append(") wird von ").append(attacker.getShortName()).append(" angegriffen (<").append(forumLink).append(">)\r\n");
+			//fs_en.append("- ").append(ss.getName()).append(" (").append(defender.getShortName()).append(") is attacked by ").append(attacker.getShortName()).append(" (<").append(forumLink).append(">)\r\n");
+			fs_de.append("- ").append(attacker.getShortName()).append(" ⚔ ").append(ss.getName()).append(" (").append(defender.getShortName()).append(") - <").append(forumLink).append(">\r\n");
+			fs_en.append("- ").append(attacker.getShortName()).append(" ⚔ ").append(ss.getName()).append(" (").append(defender.getShortName()).append(") - <").append(forumLink).append(">\r\n");
 			co++;
 		}
 		if (co == 0) {
@@ -106,8 +109,11 @@ public class SendInformationToBotsTimerTask extends TimerTask {
 				FactionPOJO defender = FactionDAO.getInstance().findById(ServerNexus.DUMMY_USERID, a.getFactionID_Defender());
 				FactionPOJO attacker = FactionDAO.getInstance().findById(ServerNexus.DUMMY_USERID, js.getJumpshipFactionID());
 
-				fs_de.append("- ").append(ss.getName()).append(" (").append(defender.getShortName()).append(") wird von ").append(attacker.getShortName()).append(" angegriffen (<").append(forumLink).append(">)\r\n");
-				fs_en.append("- ").append(ss.getName()).append(" (").append(defender.getShortName()).append(") is attacked by ").append(attacker.getShortName()).append(" (<").append(forumLink).append(">)\r\n");
+				// CW ⚔ Domain (CJF)
+				//fs_de.append("- ").append(ss.getName()).append(" (").append(defender.getShortName()).append(") wird von ").append(attacker.getShortName()).append(" angegriffen (<").append(forumLink).append(">)\r\n");
+				//fs_en.append("- ").append(ss.getName()).append(" (").append(defender.getShortName()).append(") is attacked by ").append(attacker.getShortName()).append(" (<").append(forumLink).append(">)\r\n");
+				fs_de.append("- ").append(attacker.getShortName()).append(" ⚔ ").append(ss.getName()).append(" (").append(defender.getShortName()).append(") - <").append(forumLink).append(">\r\n");
+				fs_en.append("- ").append(attacker.getShortName()).append(" ⚔ ").append(ss.getName()).append(" (").append(defender.getShortName()).append(") - <").append(forumLink).append(">\r\n");
 			}
 		}
 

@@ -73,7 +73,11 @@ public class ExtcomIRCTimerTask extends TimerTask {
 				}
 				for (String s : msgscut) {
 					if (!"...".equalsIgnoreCase(s)) {
-						bot.send("" + s);
+						if (s.contains(" ⚔ ")) {
+							s = s.replace(" - <", " - ");
+							s = s.replace(">", "");
+						}
+						bot.send(s);
 					}
 				}
 			}

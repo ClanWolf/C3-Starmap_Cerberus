@@ -65,6 +65,7 @@ public class AnimatedGifCreator {
 
 			ArrayList<File> imagesList = new ArrayList<>();
 			ArrayList<File> imagesPreviewsList = new ArrayList<>();
+			File lastFile = null;
 			for (int i = 1; i < 500; i++) {
 				String fileName = path + "/" + "C3_S" + season + "_R" + i + "_map_history.png";
 				String fileNamePreview = path + "/" + "C3_S" + season + "_R" + i + "_map_history_preview.png";
@@ -77,7 +78,11 @@ public class AnimatedGifCreator {
 				if (fp.isFile() && fp.canRead()) {
 					logger.info("Found preview image: " + fp.getAbsolutePath());
 					imagesPreviewsList.add(fp);
+					lastFile = fp;
 				}
+			}
+			if (lastFile != null) {
+				imagesPreviewsList.add(lastFile); // add the last image again for a longer show at the end
 			}
 
 			ImageOptions options = new ImageOptions();

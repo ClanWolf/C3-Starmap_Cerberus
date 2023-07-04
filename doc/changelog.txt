@@ -50,6 +50,9 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
+Version 7.3.92 (04.07.2023)
+- FIXED: Bot output for IRC fixed links / clean up of old messages improved
+
 Version 7.3.90 (03.07.2023)
 - FIXED: Server log file does not display stack traces
 
