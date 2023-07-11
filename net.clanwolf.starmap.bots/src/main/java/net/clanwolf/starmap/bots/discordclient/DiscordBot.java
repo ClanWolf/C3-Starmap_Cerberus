@@ -234,7 +234,7 @@ public class DiscordBot extends ListenerAdapter {
 						}
 					}
 
-					if (time.isBefore(threshhold3)) {
+					if (time.isBefore(threshhold)) {
 						if ((m.getContentDisplay().contains("wird vorbereitet, Lobby ist offen (") || m.getContentDisplay().contains("is in preparation, lobby open ("))) {
 							messagesLobbyOpenAnnouncement.push(m);
 						}

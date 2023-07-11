@@ -679,8 +679,10 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 						ServerNexus.getEci().sendExtCom("Attack on " + starSystem.getName() + " is in preparation, lobby open (" + numberOfPilots + ").", "en", true, true, true);
 						ServerNexus.getEci().sendExtCom("Angriff auf " + starSystem.getName() + " wird vorbereitet, Lobby ist offen (" + numberOfPilots + ").", "de", true, true, true);
 					} else {
-						ServerNexus.getEci().sendExtCom("Attack on " + starSystem.getName() + " is waiting for lobby to be opened.", "en", true, true, true);
-						ServerNexus.getEci().sendExtCom("Angriff auf " + starSystem.getName() + " wartet auf die Lobby.", "de", true, true, true);
+						if (!invasionFinished) {
+							ServerNexus.getEci().sendExtCom("Attack on " + starSystem.getName() + " is waiting for lobby to be opened.", "en", true, true, true);
+							ServerNexus.getEci().sendExtCom("Angriff auf " + starSystem.getName() + " wartet auf die Lobby.", "de", true, true, true);
+						}
 					}
 				}
 			}
