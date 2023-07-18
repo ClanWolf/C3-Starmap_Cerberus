@@ -52,6 +52,7 @@ VERSIONS
 
 Version 7.3.93 (11.07.2023)
 - FIXED: Error while sending lobby information to the discord bot
+- FIXED: Display bug showing too many alliances in the map pane
 
 Version 7.3.92 (04.07.2023)
 - FIXED: Bot output for IRC fixed links / clean up of old messages improved
