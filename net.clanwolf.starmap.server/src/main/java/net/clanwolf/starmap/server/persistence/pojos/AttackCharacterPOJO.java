@@ -1,6 +1,5 @@
 package net.clanwolf.starmap.server.persistence.pojos;
 
-
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import net.clanwolf.starmap.server.persistence.Pojo;
@@ -41,6 +40,9 @@ public class AttackCharacterPOJO extends Pojo {
 
 	@Column(name = "selectedDefenderWon")
 	private Boolean selectedDefenderWon;
+
+	@Column(name = "UsedMechChassis")
+	private String usedMechChassis;
 
 	@SuppressWarnings("unused")
 	public Boolean getSelectedAttackerWon() {
@@ -100,6 +102,16 @@ public class AttackCharacterPOJO extends Pojo {
 	@SuppressWarnings("unused")
 	public void setCharacterID(Long characterID) {
 		this.characterID = characterID;
+	}
+
+	@SuppressWarnings("unused")
+	public String getUsedMechChassis() {
+		return usedMechChassis;
+	}
+
+	@SuppressWarnings("unused")
+	public void setUsedMechChassis(String usedMechChassis) {
+		this.usedMechChassis = usedMechChassis;
 	}
 
 	@SuppressWarnings("unused")

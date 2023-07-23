@@ -94,7 +94,7 @@ public class NSICreator {
 					line = line.replace("###DIRECTORYLISTTOREMOVE###", cl.getListDeleteFoldersDuringUninstall());
 				}
 				if (line.contains("###TIMESTAMP###")) {
-					line = line.replace("###TIMESTAMP###", System.currentTimeMillis() + "");
+					line = line.replace("###TIMESTAMP###", String.valueOf(System.currentTimeMillis()));
 				}
 				writeLine(bw, line);
 			}

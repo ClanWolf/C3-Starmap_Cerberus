@@ -11,6 +11,9 @@ CURRENTLY IN PROGRESS:
 - P3: Updating the manual (ongoing): https://www.clanwolf.net/apps/C3/C3_Manual_de.pdf
 
 TODO:
+- Diplomacy changes should take effect only next round
+- Add another Pane after the lobby where rules get handled out
+- Check if a player changed mech chassis in the middle of an invasion and set drop to be lost for that side
 - Error message for double login to correct error message
 - Rename Threads in Clan Wolf Forum and discord announcement to pattern: CGB ⚔ Odabasi (DC)
 - Insert discord thread for each attack automatically
@@ -50,7 +53,8 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
-Version 7.3.93 (11.07.2023)
+Version 7.3.93 (23.07.2023)
+- UPDATED: Several libraries
 - FIXED: Error while sending lobby information to the discord bot
 - FIXED: Display bug showing too many alliances in the map pane
 

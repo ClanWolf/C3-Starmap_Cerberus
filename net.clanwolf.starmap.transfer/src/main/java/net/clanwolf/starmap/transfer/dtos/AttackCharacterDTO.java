@@ -57,6 +57,9 @@ public class AttackCharacterDTO extends Dto {
 //	@Column(name = "selectedDefenderWon")
 	private Boolean selectedDefenderWon;
 
+//	@Column(name = "UsedMechChassis")
+	private String usedMechChassis;
+
 	@SuppressWarnings("unused")
 	public Boolean getSelectedAttackerWon() {
 		return selectedAttackerWon;
@@ -115,6 +118,16 @@ public class AttackCharacterDTO extends Dto {
 	@SuppressWarnings("unused")
 	public void setCharacterID(Long characterID) {
 		this.characterID = characterID;
+	}
+
+	@SuppressWarnings("unused")
+	public String getUsedMechChassis() {
+		return usedMechChassis;
+	}
+
+	@SuppressWarnings("unused")
+	public void setUsedMechChassis(String usedMechChassis) {
+		this.usedMechChassis = usedMechChassis;
 	}
 
 	@SuppressWarnings("unused")
