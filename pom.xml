@@ -26,7 +26,7 @@
 
 		<!-- C3 Revision -->
 		<!-- https://stackoverflow.com/questions/10582054/maven-project-version-inheritance-do-i-have-to-specify-the-parent-version -->
-		<revision>7.3.93</revision>
+		<revision>7.3.94</revision>
 
 		<!-- Versions -->
 		<version.java>20</version.java>
@@ -59,7 +59,7 @@
 		<version.hibernate-ehcache>6.0.0.Alpha7</version.hibernate-ehcache>
 		<version.hibernate-hikaricp>6.2.5.Final</version.hibernate-hikaricp>
 		<version.irc-api>1.0-0015-jitsi-1</version.irc-api>
-		<version.iText-core>8.0.0</version.iText-core>
+		<version.iText-core>8.0.1</version.iText-core>
 		<version.jackson-core>2.15.2</version.jackson-core>
 		<version.jackson-databind>2.15.2</version.jackson-databind>
 		<version.jackson-annotations>2.15.2</version.jackson-annotations>
@@ -134,7 +134,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
-				<version>4.0.0-M8</version>
+				<version>4.0.0-M9</version>
 			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>

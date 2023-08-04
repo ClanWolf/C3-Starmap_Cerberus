@@ -105,6 +105,8 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 	@FXML
 	TextField tfUserNameRegister, tfPasswordRegister, tfPasswordConfirmRegister,tfMailRegister;
 	@FXML
+	CheckBox cbDSGVO;
+	@FXML
 	Button btRegister;
 	@FXML
 	ComboBox<String> comboboxFactionRegister;
@@ -339,11 +341,13 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 			tfPasswordRegister.setVisible(true);
 			tfPasswordConfirmRegister.setVisible(true);
 			tfMailRegister.setVisible(true);
+			cbDSGVO.setVisible(true);
 			comboboxFactionRegister.setVisible(true);
 			ivFactionLogo.setVisible(true);
 
 			tfUserNameRegister.setText(tfUserName.getText());
 			tfPasswordRegister.setText(tfPassword.getText());
+			cbDSGVO.setSelected(false);
 
 			ivAlarmUsername.setVisible(false);
 			ivAlarmPW.setVisible(false);
@@ -351,6 +355,8 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 			ivAlarmMail.setVisible(false);
 			setAlarms();
 
+			cbDSGVO.setText(Internationalization.getString("app_accept_DSGVO"));
+			cbDSGVO.setTooltip(new Tooltip(Internationalization.getString("app_accept_DSGVO_DESC")));
 			btRegister.setText(Internationalization.getString("app_pane_login_RegisterButton_Login"));
 			buttonLogin.setText(Internationalization.getString("app_pane_login_LoginButton_Register"));
 		} else {
@@ -372,6 +378,7 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 			tfPasswordRegister.setVisible(false);
 			tfPasswordConfirmRegister.setVisible(false);
 			tfMailRegister.setVisible(false);
+			cbDSGVO.setVisible(false);
 			comboboxFactionRegister.setVisible(false);
 			ivFactionLogo.setVisible(false);
 
@@ -379,6 +386,7 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 			tfPassword.setText(tfPasswordRegister.getText());
 			tfUserNameRegister.setText("");
 			tfPasswordRegister.setText("");
+			cbDSGVO.setSelected(false);
 
 			ivAlarmUsername.setVisible(false);
 			ivAlarmPW.setVisible(false);
@@ -407,6 +415,9 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 				labelFactionKey.setText(Internationalization.getString("app_pane_login_FactionKey"));
 
 				buttonCancel.setText(Internationalization.getString("general_cancel"));
+
+				cbDSGVO.setText(Internationalization.getString("app_accept_DSGVO"));
+				cbDSGVO.setTooltip(new Tooltip(Internationalization.getString("app_accept_DSGVO_DESC")));
 
 				if (registerMode) {
 					buttonLogin.setText(Internationalization.getString("app_pane_login_RegisterButton_Register"));
@@ -589,6 +600,7 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 		tfPasswordRegister.setVisible(false);
 		tfPasswordConfirmRegister.setVisible(false);
 		tfMailRegister.setVisible(false);
+		cbDSGVO.setVisible(false);
 		comboboxFactionRegister.setVisible(false);
 		ivFactionLogo.setVisible(false);
 
@@ -615,8 +627,9 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 		comboboxFactionRegister.getItems().add("CW - Clan Wolf");
 		comboboxFactionRegister.getItems().add("CGB - Clan Ghostbear");
 
-		comboboxFactionRegister.setVisibleRowCount(5);
+		cbDSGVO.setSelected(false);
 
+		comboboxFactionRegister.setVisibleRowCount(5);
 		comboboxFactionRegister.getSelectionModel().select("CJF - Clan Jadefalcon");
 		Image imageFaction = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logos/factions/CJF.png")));
 		ivFactionLogo.setImage(imageFaction);
@@ -641,6 +654,10 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 		ivAlarmMail.setVisible("".equals(tfMailRegister.getText()) || !tfMailRegister.getText().contains("@") || !tfMailRegister.getText().contains(".") || tfMailRegister.getText().lastIndexOf(".") <= tfMailRegister.getText().indexOf("@") || tfMailRegister.getText().endsWith("."));
 	}
 
+	public void handleDSGVOCheckBox() {
+		buttonLogin.setDisable(!checkRegisterTextFieldsForContent());
+	}
+
 	private boolean checkRegisterTextFieldsForContent() {
 		setAlarms();
 
@@ -655,6 +672,7 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 			&& tfMailRegister.getText().contains(".")
 			&& tfMailRegister.getText().lastIndexOf(".") > tfMailRegister.getText().indexOf("@")
 			&& !tfMailRegister.getText().endsWith(".")
+			&& cbDSGVO.isSelected()
 		);
 	}
 

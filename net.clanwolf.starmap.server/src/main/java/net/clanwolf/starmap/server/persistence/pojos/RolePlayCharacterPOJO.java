@@ -31,6 +31,8 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import net.clanwolf.starmap.server.persistence.Pojo;
 
 import jakarta.persistence.*;
+import net.clanwolf.starmap.transfer.enums.GENDER;
+
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 /**
@@ -62,11 +64,15 @@ public class RolePlayCharacterPOJO extends Pojo {
 	@Column(name = "MWOUsername")
 	private String mwoUsername;
 
-	@Column(name = "LastName")
-	private String lastName;
-
 	@Column(name = "AgeAtCreation")
 	private Integer ageAtCreation;
+
+	@Column(name = "Gender")
+	@Enumerated(EnumType.STRING)
+	private GENDER gender;
+
+	@Column(name = "History")
+	private String history;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "UserID")
@@ -176,16 +182,6 @@ public class RolePlayCharacterPOJO extends Pojo {
 	}
 
 	@SuppressWarnings("unused")
-	public String getLastName() {
-		return lastName;
-	}
-
-	@SuppressWarnings("unused")
-	public void setLastName(String ln) {
-		this.lastName = ln;
-	}
-
-	@SuppressWarnings("unused")
 	public Integer getAgeAtCreation() {
 		return ageAtCreation;
 	}
@@ -225,6 +221,26 @@ public class RolePlayCharacterPOJO extends Pojo {
 	@SuppressWarnings("unused")
 	public RolePlayStoryPOJO getStory() {
 		return story;
+	}
+
+	@SuppressWarnings("unused")
+	public GENDER getGender() {
+		return gender;
+	}
+
+	@SuppressWarnings("unused")
+	public void setGender(GENDER gender) {
+		this.gender = gender;
+	}
+
+	@SuppressWarnings("unused")
+	public String getHistory() {
+		return history;
+	}
+
+	@SuppressWarnings("unused")
+	public void setHistory(String history) {
+		this.history = history;
 	}
 
 	/**

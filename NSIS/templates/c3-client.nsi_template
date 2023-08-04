@@ -71,14 +71,14 @@ Function un.onGuiInit
 FunctionEnd
 
 ; DSGVO request
-Function DSGVO
-  MessageBox MB_YESNO "DSGVO:$\nDo you agree to save and process account data$\n(synchronized with clanwolf.net)?$\n$\nRefer to the manual for details!" IDYES true IDNO false
-  true:
-    Goto next
-  false:
-    Quit
-  next:
-FunctionEnd
+;Function DSGVO
+;  MessageBox MB_YESNO "DSGVO:$\nDo you agree to save and process account data?$\n$\nRefer to the manual for details!" IDYES true IDNO false
+;  true:
+;    Goto next
+;  false:
+;    Quit
+;  next:
+;FunctionEnd
 
 ;--------------------------------
 
@@ -105,7 +105,7 @@ PageExEnd
 ;  LicenseData ../doc/changelog.txt
 ;PageExEnd
 
-Page Custom DSGVO
+;Page Custom DSGVO
 Page components
 Page directory
 Page instfiles

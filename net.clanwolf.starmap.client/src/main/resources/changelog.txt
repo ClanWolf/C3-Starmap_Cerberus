@@ -53,8 +53,10 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
-Version 7.3.93 (23.07.2023)
-- UPDATED: Several libraries
+Version 7.3.94 (04.08.2023)
+- UPDATED: Dependencies
+- UPDATED: NSIS version
+- UPDATED: Removed DSGVO approval from the installer process and added to registration pane
 - FIXED: Error while sending lobby information to the discord bot
 - FIXED: Display bug showing too many alliances in the map pane
 

@@ -29,6 +29,7 @@ package net.clanwolf.starmap.transfer.dtos;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import net.clanwolf.starmap.transfer.Dto;
+import net.clanwolf.starmap.transfer.enums.GENDER;
 
 /**
  * @author Undertaker
@@ -40,32 +41,21 @@ import net.clanwolf.starmap.transfer.Dto;
 		property = "id")
 public class RolePlayCharacterDTO extends Dto {
 
-    //@Column(name = "ID")
-    public Long id;
-    //@Column(name = "Rank")
-    private String rank;
-	//@Column(name = "CharName")
-	private String name;
-	//@Column(name = "CharImage")
-	private String charImage;
-	//@Column(name = "MWOUsername")
-	private String mwoUsername;
-	//@Column(name = "LastName")
-	private String lastName;
-	//@Column(name = "AgeAtCreation")
-	private Integer ageAtCreation;
-    //@JoinColumn(name = "UserID")
-    private UserDTO user;
-    //@JoinColumn(name = "StoryID")
-    private RolePlayStoryDTO story;
-	//@Column(name = "FactionID")
-	private Integer factionId;
-	private Integer factionTypeId;
-	private Integer starSystemId;
-	//@Column(name = "JumpshipID")
-	private Integer jumpshipId;
-	//@Column(name = "XP")
-	private Integer xp;
+    public Long id;                 //@Column(name = "ID")
+    private String rank;            //@Column(name = "Rank")
+	private String name;            //@Column(name = "CharName")
+	private String charImage;       //@Column(name = "CharImage")
+	private String mwoUsername;     //@Column(name = "MWOUsername")
+	private Integer ageAtCreation;  //@Column(name = "AgeAtCreation")
+	private GENDER gender;          //@Column(name = "Gender")
+	private String history;         //@Column(name = "History")
+	private UserDTO user;           //@JoinColumn(name = "UserID")
+    private RolePlayStoryDTO story; //@JoinColumn(name = "StoryID")
+	private Integer factionId;      //@Column(name = "FactionID")
+	private Integer factionTypeId;  //@Column(name = "FactionTypeID")
+	private Integer starSystemId;   //@Column(name = "StarsystemID")
+	private Integer jumpshipId;     //@Column(name = "JumpshipID")
+	private Integer xp;             //@Column(name = "XP")
 
 	public RolePlayCharacterDTO() {
 		//
@@ -122,13 +112,23 @@ public class RolePlayCharacterDTO extends Dto {
 	}
 
 	@SuppressWarnings("unused")
-	public String getLastName() {
-		return lastName;
+	public GENDER getGender() {
+		return gender;
 	}
 
 	@SuppressWarnings("unused")
-	public void setLastName(String ln) {
-		this.lastName = ln;
+	public void setGender(GENDER gender) {
+		this.gender = gender;
+	}
+
+	@SuppressWarnings("unused")
+	public String getHistory() {
+		return history;
+	}
+
+	@SuppressWarnings("unused")
+	public void setHistory(String history) {
+		this.history = history;
 	}
 
 	@SuppressWarnings("unused")
