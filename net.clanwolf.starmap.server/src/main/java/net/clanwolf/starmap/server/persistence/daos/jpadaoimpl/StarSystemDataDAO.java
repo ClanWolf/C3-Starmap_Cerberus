@@ -75,12 +75,24 @@ public class StarSystemDataDAO extends GenericDAO {
 	public StarSystemDataPOJO getMainSystemForFaction(Long factionId) {
 		CriteriaHelper crit = new CriteriaHelper(StarSystemDataPOJO.class);
 		crit.addCriteriaIsNotNull("id");
-		crit.addCriteria("factionId", factionId);
-		crit.addCriteria("capitalWorld", 1);
+		//crit.addCriteria("factionID", factionId);
+		crit.addCriteria("capitalWorld", true);
 
-		Object o = crit.getSingleResult();
+		List<Object> lRes = crit.getResultList();
 
-		return (StarSystemDataPOJO)o;
+		Iterator<Object> iter = lRes.iterator();
+		ArrayList<StarSystemDataPOJO> lRPS = new ArrayList<>();
+
+		StarSystemDataPOJO ret = null;
+
+		while (iter.hasNext()) {
+			StarSystemDataPOJO ssd = (StarSystemDataPOJO) iter.next();
+			if(ssd.getFactionID().getId().equals(factionId)) {
+				ret = ssd;
+				break;
+			}
+		}
+		return ret;
 	}
 
 	/*

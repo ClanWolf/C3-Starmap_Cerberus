@@ -150,7 +150,9 @@ public class C3LookupService extends SimpleLookupService {
 					rpChar.setAgeAtCreation(24);
 					rpChar.setXp(0);
 					rpChar.setHistory("-");
-					rpChar.setStarSystemId(ssd.getId().intValue());
+					if(ssd != null) {
+						rpChar.setStarSystemId(ssd.getStarSystemID().getId().intValue());
+					}
 					rpChar.setGender(GENDER.male);
 					rpChar.setUser(u);
 					rpChar.setFactionId(factionPOJO.getId().intValue());
