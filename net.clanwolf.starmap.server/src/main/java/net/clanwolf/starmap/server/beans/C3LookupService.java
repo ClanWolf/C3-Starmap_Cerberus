@@ -139,8 +139,8 @@ public class C3LookupService extends SimpleLookupService {
 
 					RolePlayCharacterDAO rpCharDAO = RolePlayCharacterDAO.getInstance();
 
-					StarSystemDAO ssDAO = StarSystemDAO.getInstance();
-					StarSystemPOJO ss = ssDAO.getSystemByName(factionPOJO.getMainSystem());
+					StarSystemDataDAO ssdDAO = StarSystemDataDAO.getInstance();
+					StarSystemDataPOJO ssd = ssdDAO.getMainSystemForFaction(factionPOJO.getId());
 
 					RolePlayCharacterPOJO rpChar = new RolePlayCharacterPOJO();
 					rpChar.setName(sUsername);
@@ -150,7 +150,7 @@ public class C3LookupService extends SimpleLookupService {
 					rpChar.setAgeAtCreation(24);
 					rpChar.setXp(0);
 					rpChar.setHistory("-");
-					rpChar.setStarSystemId(ss.getId().intValue());
+					rpChar.setStarSystemId(ssd.getId().intValue());
 					rpChar.setGender(GENDER.male);
 					rpChar.setUser(u);
 					rpChar.setFactionId(factionPOJO.getId().intValue());

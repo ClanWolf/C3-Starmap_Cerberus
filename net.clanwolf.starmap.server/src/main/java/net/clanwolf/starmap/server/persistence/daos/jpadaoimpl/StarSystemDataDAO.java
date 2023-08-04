@@ -29,6 +29,7 @@ package net.clanwolf.starmap.server.persistence.daos.jpadaoimpl;
 import net.clanwolf.starmap.server.persistence.CriteriaHelper;
 import net.clanwolf.starmap.server.persistence.daos.GenericDAO;
 import net.clanwolf.starmap.server.persistence.pojos.StarSystemDataPOJO;
+import net.clanwolf.starmap.server.persistence.pojos.StarSystemPOJO;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -69,6 +70,17 @@ public class StarSystemDataDAO extends GenericDAO {
 	@Override
 	public StarSystemDataPOJO findById(Long userID, Long id) {
 		return (StarSystemDataPOJO) super.findById(userID, StarSystemDataPOJO.class, id);
+	}
+
+	public StarSystemDataPOJO getMainSystemForFaction(Long factionId) {
+		CriteriaHelper crit = new CriteriaHelper(StarSystemDataPOJO.class);
+		crit.addCriteriaIsNotNull("id");
+		crit.addCriteria("factionId", factionId);
+		crit.addCriteria("capitalWorld", 1);
+
+		Object o = crit.getSingleResult();
+
+		return (StarSystemDataPOJO)o;
 	}
 
 	/*

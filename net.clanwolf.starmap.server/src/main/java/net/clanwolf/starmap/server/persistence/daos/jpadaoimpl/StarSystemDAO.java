@@ -75,7 +75,7 @@ public class StarSystemDAO extends GenericDAO {
 	public StarSystemPOJO getSystemByName(String name) {
 		CriteriaHelper crit = new CriteriaHelper(StarSystemPOJO.class);
 		crit.addCriteriaIsNotNull("id");
-		crit.addCriteria("Name", name);
+		crit.addCriteria("name", name);
 
 		Object o = crit.getSingleResult();
 
