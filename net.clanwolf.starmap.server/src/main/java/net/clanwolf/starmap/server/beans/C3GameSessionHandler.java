@@ -872,8 +872,15 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 					logger.info("No characters have changed factions, faction key wrong or missing!");
 				}
 			}
+
 			for (UserPOJO user : list) {
 				user.setLastModified(new Timestamp(System.currentTimeMillis()));
+
+				ArrayList<RolePlayCharacterPOJO> charList = rpDAO.getCharactersOfUser(user);
+				for (RolePlayCharacterPOJO ch : charList) {
+					ch.setMwoUsername(user.getMwoUsername());
+					rpDAO.update(getC3UserID(session), ch);
+				}
 				if (user.getUserId() == null) {
 					// logger.info("Saving: " + user.getUserName() + " - Privs: " + user.getPrivileges());
 					dao.save(getC3UserID(session), user);

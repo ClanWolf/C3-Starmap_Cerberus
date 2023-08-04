@@ -72,6 +72,16 @@ public class StarSystemDAO extends GenericDAO {
 		return (StarSystemPOJO) super.findById(userID, StarSystemPOJO.class, id);
 	}
 
+	public StarSystemPOJO getSystemByName(String name) {
+		CriteriaHelper crit = new CriteriaHelper(StarSystemPOJO.class);
+		crit.addCriteriaIsNotNull("id");
+		crit.addCriteria("Name", name);
+
+		Object o = crit.getSingleResult();
+
+		return (StarSystemPOJO)o;
+	}
+
 	/*
 	 * Give all open attacks of a season back
 	 */

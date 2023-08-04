@@ -36,6 +36,7 @@ import net.clanwolf.starmap.server.GameServer;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.*;
 import net.clanwolf.starmap.server.persistence.pojos.*;
 import net.clanwolf.starmap.server.servernexus.ServerNexus;
+import net.clanwolf.starmap.transfer.enums.GENDER;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
@@ -127,6 +128,7 @@ public class C3LookupService extends SimpleLookupService {
 					u.setActive(0);
 					u.setPrivileges(0);
 					u.setUserName(sUsername);
+					u.setMwoUsername(sUsername);
 					u.setUserEMail(sMail);
 					u.setUserPassword(pw1);
 					u.setUserPasswordWebsite(pw2);
@@ -137,10 +139,22 @@ public class C3LookupService extends SimpleLookupService {
 
 					RolePlayCharacterDAO rpCharDAO = RolePlayCharacterDAO.getInstance();
 
+					StarSystemDAO ssDAO = StarSystemDAO.getInstance();
+					StarSystemPOJO ss = ssDAO.getSystemByName(factionPOJO.getMainSystem());
+
 					RolePlayCharacterPOJO rpChar = new RolePlayCharacterPOJO();
 					rpChar.setName(sUsername);
+					rpChar.setMwoUsername(sUsername);
+					rpChar.setRank("MechWarrior");
+					rpChar.setCharImage("/images/chars/male/1032.png");
+					rpChar.setAgeAtCreation(24);
+					rpChar.setXp(0);
+					rpChar.setHistory("-");
+					rpChar.setStarSystemId(ss.getId().intValue());
+					rpChar.setGender(GENDER.male);
 					rpChar.setUser(u);
 					rpChar.setFactionId(factionPOJO.getId().intValue());
+					rpChar.setFactionTypeId(factionPOJO.getFactionTypeID().intValue());
 
 					JumpshipDAO jsDAO = JumpshipDAO.getInstance();
 					ArrayList<JumpshipPOJO> js = jsDAO.getJumpshipsForFaction(factionPOJO.getId());

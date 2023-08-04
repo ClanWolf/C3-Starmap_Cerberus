@@ -53,7 +53,7 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
-Version 7.3.94 (04.08.2023)
+Version 7.3.95 (04.08.2023)
 - UPDATED: Dependencies
 - UPDATED: NSIS version
 - UPDATED: Removed DSGVO approval from the installer process and added to registration pane

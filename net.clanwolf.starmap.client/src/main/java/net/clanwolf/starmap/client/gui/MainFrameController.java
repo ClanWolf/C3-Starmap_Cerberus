@@ -2474,7 +2474,10 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 								if (f1.getShortName().equals(f2c.getShortName())) {
 									logger.info("Alliance found: " + p.getKey() + " allied with " + p.getValue());
-									alliancesString += f1.getFactionDTO().getShortName() + " \uD83E\uDD1D " + f2.getFactionDTO().getShortName() + "\r\n";
+									if (!alliancesString.contains(f1.getFactionDTO().getShortName() + " \uD83E\uDD1D " + f2.getFactionDTO().getShortName())) {
+										alliancesString += f1.getFactionDTO().getShortName() + " \uD83E\uDD1D " + f2.getFactionDTO().getShortName() + "\r\n";
+									}
+									break;
 								}
 							}
 						}
