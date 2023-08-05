@@ -81,7 +81,7 @@
                         <Rectangle2D />
                      </viewport>
                   </ImageView>
-                  <Pane minWidth="0.0" snapToPixel="false" styleClass="gapPaneBottom" stylesheets="@../styles/MainFrameStyle.css" HBox.hgrow="ALWAYS" />
+                  <Pane maxHeight="113.0" minHeight="113.0" minWidth="0.0" prefHeight="113.0" snapToPixel="false" styleClass="gapPaneBottom" stylesheets="@../styles/MainFrameStyle.css" HBox.hgrow="ALWAYS" />
                   <ImageView fitHeight="113.0" fitWidth="237.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER">
                      <image>
                         <Image url="@../images/gui/tiles/southeast.png" />

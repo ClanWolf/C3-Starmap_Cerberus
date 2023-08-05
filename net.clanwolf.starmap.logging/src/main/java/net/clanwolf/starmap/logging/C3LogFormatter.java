@@ -37,12 +37,16 @@ public class C3LogFormatter extends Formatter {
 
 	private final SimpleDateFormat simpleDateFormat = new SimpleDateFormat("[yyMMdd HH:mm:ss]");
 
-	private String cutLen(String s, int maxLength) {
+	private String cutLen(String s, int maxLength, boolean left) {
 		if (s.length() > maxLength) {
-			s = s.replace("…", "");
-			s = "…" + s.substring(s.length() - maxLength + 1);
+			s = s.replace("...", "");
+			s = "..." + s.substring(s.length() - maxLength + 3);
 		} else {
-			s = " ".repeat(Math.max(0, (maxLength - s.length()))) + s;
+			if (left) {
+				s = s + " ".repeat(Math.max(0, (maxLength - s.length())));
+			} else {
+				s = " ".repeat(Math.max(0, (maxLength - s.length()))) + s;
+			}
 		}
 		return s;
 	}
@@ -54,11 +58,11 @@ public class C3LogFormatter extends Formatter {
 		message
 				.append(simpleDateFormat.format(new Date(record.getMillis())))
 				.append(" ")
-				.append(cutLen(record.getLevel().getName(), 7))
+				.append(cutLen(record.getLevel().getName(), 7, false))
 				.append(" ")
-				.append(cutLen(record.getSourceClassName().replace("net.clanwolf.starmap.", "…"), 40))
+				.append(cutLen(record.getSourceClassName().replace("net.clanwolf.starmap.", "..."), 40, false))
 				.append(" / ")
-				.append(cutLen(record.getSourceMethodName(), 35))
+				.append(cutLen(record.getSourceMethodName(), 35, true))
 				.append(" > ")
 				.append(record.getMessage())
 				.append(System.lineSeparator());

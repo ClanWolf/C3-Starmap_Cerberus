@@ -4,7 +4,7 @@ C3 version history
 
 CURRENTLY IN PROGRESS:
 - P2: Auto-delete not activated user
-- P2: Delete all un-needed columns in user table and in roleplaycharacter table (after registration)
+- P2: Delete all unneeded columns in table 'user'
 - P2: If user logs out and another logs in without closing the client, not all user related data is adapted to the new user
 - P3: Web-View of the Starmap (ongoing, ~45%)
 ---
@@ -53,12 +53,15 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
-Version 7.3.95 (04.08.2023)
+Version 7.3.97 (05.08.2023)
 - UPDATED: Dependencies
 - UPDATED: NSIS version
-- UPDATED: Removed DSGVO approval from the installer process and added to registration pane
+- UPDATED: Stored missing columns for a new char (MWO user name will be initialized to the username)
 - FIXED: Error while sending lobby information to the discord bot
 - FIXED: Display bug showing too many alliances in the map pane
+- CHANGED: Logging format
+- REMOVED: Unused columns in char table<
+- REMOVED: DSGVO approval from the installer process and added to registration pane
 
 Version 7.3.92 (04.07.2023)
 - FIXED: Bot output for IRC fixed links / clean up of old messages improved
