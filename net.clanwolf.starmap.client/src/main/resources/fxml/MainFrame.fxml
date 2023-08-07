@@ -49,12 +49,12 @@
          <left>
             <VBox fillWidth="false" snapToPixel="false" stylesheets="@../styles/MainFrameStyle.css" BorderPane.alignment="CENTER_LEFT">
                <children>
-                  <ImageView fitHeight="238.0" fitWidth="271.0" pickOnBounds="true" preserveRatio="true" smooth="false" VBox.vgrow="NEVER">
+                  <ImageView fitHeight="238.0" fitWidth="271.0" pickOnBounds="true" VBox.vgrow="NEVER">
                      <image>
                         <Image url="@../images/gui/tiles/west.png" />
                      </image>
                   </ImageView>
-                  <Pane maxWidth="271.0" minHeight="0.0" minWidth="271.0" prefWidth="271.0" styleClass="gapPaneLeft" stylesheets="@../styles/MainFrameStyle.css" VBox.vgrow="ALWAYS" />
+                  <Pane maxWidth="271.0" minHeight="0.0" minWidth="271.0" prefWidth="271.0" snapToPixel="false" styleClass="gapPaneLeft" stylesheets="@../styles/MainFrameStyle.css" VBox.vgrow="ALWAYS" />
                </children>
             </VBox>
          </left>
@@ -66,7 +66,7 @@
                         <Image url="@../images/gui/tiles/east.png" />
                      </image>
                   </ImageView>
-                  <Pane maxWidth="193.0" minHeight="0.0" minWidth="193.0" prefWidth="193.0" styleClass="gapPaneRight" stylesheets="@../styles/MainFrameStyle.css" VBox.vgrow="ALWAYS" />
+                  <Pane maxWidth="193.0" minHeight="0.0" minWidth="193.0" prefWidth="193.0" snapToPixel="false" styleClass="gapPaneRight" stylesheets="@../styles/MainFrameStyle.css" VBox.vgrow="ALWAYS" />
                </children>
             </VBox>
          </right>
@@ -91,7 +91,7 @@
             </HBox>
          </bottom>
          <center>
-            <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="0.0" prefWidth="0.0" BorderPane.alignment="CENTER" />
+            <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="0.0" prefWidth="0.0" snapToPixel="false" BorderPane.alignment="CENTER" />
          </center>
       </BorderPane>
         <Pane fx:id="mouseStopper" layoutX="63.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="1.0" prefHeight="630.0" prefWidth="941.0" snapToPixel="false" styleClass="AnchorPane" visible="true">

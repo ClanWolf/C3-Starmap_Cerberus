@@ -121,6 +121,7 @@ public class ResizeHelper {
 										if (newHeight > 630 && newHeight < 650) {
 											newHeight = 630;
 										}
+										newHeight = (int) Math.round(newHeight);
 										stage.setHeight(newHeight);
 //										logger.info("h: " + newHeight);
 									}
@@ -132,7 +133,8 @@ public class ResizeHelper {
 										if (newHeight > 630 && newHeight < 650) {
 											newHeight = 630;
 										}
-										stage.setHeight(newHeight);
+										newHeight = (int) Math.round(newHeight);
+										stage.setHeight((int) Math.round(newHeight));
 //										logger.info("h: " + newHeight);
 									}
 								}
@@ -147,6 +149,7 @@ public class ResizeHelper {
 										if (newWidth > 1030 && newWidth < 1050) {
 											newWidth = 1030;
 										}
+										newWidth = (int) Math.round(newWidth);
 										stage.setWidth(newWidth);
 //										logger.info("w: " + newWidth);
 									}
@@ -158,6 +161,7 @@ public class ResizeHelper {
 										if (newWidth > 1030 && newWidth < 1050) {
 											newWidth = 1030;
 										}
+										newWidth = (int) Math.round(newWidth);
 										stage.setWidth(newWidth);
 //										logger.info("w: " + newWidth);
 									}
