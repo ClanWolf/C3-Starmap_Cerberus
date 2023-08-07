@@ -32,13 +32,13 @@
          <top>
             <HBox alignment="BOTTOM_LEFT" maxHeight="279.0" minHeight="279.0" minWidth="1030.0" prefHeight="279.0" snapToPixel="false" BorderPane.alignment="CENTER">
                <children>
-                  <ImageView fitHeight="279.0" fitWidth="793.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER">
+                  <ImageView fitHeight="279.0" fitWidth="793.0" pickOnBounds="true" preserveRatio="true" smooth="false" HBox.hgrow="NEVER">
                      <image>
                         <Image url="@../images/gui/tiles/northwest.png" />
                      </image>
                   </ImageView>
-                  <Pane minWidth="0.0" snapToPixel="false" styleClass="gapPaneTop" stylesheets="@../styles/MainFrameStyle.css" HBox.hgrow="ALWAYS" />
-                  <ImageView fitHeight="279.0" fitWidth="237.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER">
+                  <Pane maxHeight="279.0" minHeight="279.0" minWidth="0.0" prefHeight="279.0" snapToPixel="false" styleClass="gapPaneTop" stylesheets="@../styles/MainFrameStyle.css" HBox.hgrow="ALWAYS" />
+                  <ImageView fitHeight="279.0" fitWidth="237.0" pickOnBounds="true" preserveRatio="true" smooth="false" HBox.hgrow="NEVER">
                      <image>
                         <Image url="@../images/gui/tiles/northeast.png" />
                      </image>
@@ -47,33 +47,33 @@
             </HBox>
          </top>
          <left>
-            <VBox snapToPixel="false" BorderPane.alignment="CENTER_LEFT">
+            <VBox snapToPixel="false" styleClass="gapPaneLeft" stylesheets="@../styles/MainFrameStyle.css" BorderPane.alignment="CENTER_LEFT">
                <children>
-                  <ImageView fitHeight="238.0" fitWidth="271.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="NEVER">
+                  <ImageView fitHeight="238.0" fitWidth="271.0" pickOnBounds="true" preserveRatio="true" smooth="false" VBox.vgrow="NEVER">
                      <image>
                         <Image url="@../images/gui/tiles/west.png" />
                      </image>
                   </ImageView>
-                  <Pane minWidth="0.0" snapToPixel="false" styleClass="gapPaneLeft" stylesheets="@../styles/MainFrameStyle.css" VBox.vgrow="ALWAYS" />
+                  <Pane maxWidth="271.0" minHeight="0.0" minWidth="271.0" prefWidth="271.0" snapToPixel="false" stylesheets="@../styles/MainFrameStyle.css" VBox.vgrow="ALWAYS" />
                </children>
             </VBox>
          </left>
          <right>
-            <VBox alignment="TOP_RIGHT" snapToPixel="false" BorderPane.alignment="CENTER_RIGHT">
+            <VBox alignment="TOP_RIGHT" snapToPixel="false" styleClass="gapPaneRight" stylesheets="@../styles/MainFrameStyle.css" BorderPane.alignment="CENTER_RIGHT">
                <children>
-                  <ImageView fitHeight="238.0" fitWidth="193.0" pickOnBounds="true" preserveRatio="true" VBox.vgrow="NEVER">
+                  <ImageView fitHeight="238.0" fitWidth="193.0" pickOnBounds="true" preserveRatio="true" smooth="false" VBox.vgrow="NEVER">
                      <image>
                         <Image url="@../images/gui/tiles/east.png" />
                      </image>
                   </ImageView>
-                  <Pane minWidth="0.0" snapToPixel="false" styleClass="gapPaneRight" stylesheets="@../styles/MainFrameStyle.css" VBox.vgrow="ALWAYS" />
+                  <Pane maxWidth="193.0" minHeight="0.0" minWidth="193.0" prefWidth="193.0" snapToPixel="false" stylesheets="@../styles/MainFrameStyle.css" VBox.vgrow="ALWAYS" />
                </children>
             </VBox>
          </right>
          <bottom>
             <HBox alignment="TOP_CENTER" maxHeight="113.0" minHeight="113.0" minWidth="1030.0" prefHeight="113.0" snapToPixel="false" BorderPane.alignment="CENTER">
                <children>
-                  <ImageView fitHeight="113.0" fitWidth="793.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER">
+                  <ImageView fitHeight="113.0" fitWidth="793.0" pickOnBounds="true" preserveRatio="true" smooth="false" HBox.hgrow="NEVER">
                      <image>
                         <Image url="@../images/gui/tiles/southwest.png" />
                      </image>
@@ -82,7 +82,7 @@
                      </viewport>
                   </ImageView>
                   <Pane maxHeight="113.0" minHeight="113.0" minWidth="0.0" prefHeight="113.0" snapToPixel="false" styleClass="gapPaneBottom" stylesheets="@../styles/MainFrameStyle.css" HBox.hgrow="ALWAYS" />
-                  <ImageView fitHeight="113.0" fitWidth="237.0" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER">
+                  <ImageView fitHeight="113.0" fitWidth="237.0" pickOnBounds="true" preserveRatio="true" smooth="false" HBox.hgrow="NEVER">
                      <image>
                         <Image url="@../images/gui/tiles/southeast.png" />
                      </image>

@@ -53,6 +53,9 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
+Version 7.3.98 (07.08.2023)
+- UPDATED: Window resize behaviour
+
 Version 7.3.97 (05.08.2023)
 - UPDATED: Dependencies
 - UPDATED: NSIS version

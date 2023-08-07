@@ -68,7 +68,7 @@ public class C3LogFormatter extends Formatter {
 				.append(System.lineSeparator());
 
 		if (record.getThrown() != null) {
-			if (message.length() > 0) {
+			if (!message.isEmpty()) {
 				message.append(" - ");
 			}
 			StringWriter stringWriter = new StringWriter();
