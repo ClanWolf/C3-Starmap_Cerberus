@@ -48,7 +48,7 @@ WATCH OUT FOR WHILE TESTING:
 - Join buttons (invasion lobby) is correctly disabled after the fights startet / Intro is running
 - Wrong tab order of buttons and controls (anywhere)
 - Wrong statements in the manual (things might have changed and the manual becomes outdated sometimes)
-- Any exceptions or error (ERROR or SEVERE) in the log. Warnings might be interesting, but probably not urgent
+- Any exceptions or errors (ERROR or SEVERE) in the log. Warnings might be interesting, but probably not urgent
 ----------------------------------------------------------------
 
 VERSIONS
