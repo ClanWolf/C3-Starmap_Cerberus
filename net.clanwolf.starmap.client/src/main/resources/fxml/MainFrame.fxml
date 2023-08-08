@@ -28,6 +28,9 @@
             <Insets />
          </opaqueInsets>
       </Pane>
+      <Pane fx:id="topGap" layoutX="10.0" layoutY="10.0" maxHeight="279.0" minHeight="279.0" minWidth="0.0" prefHeight="279.0" styleClass="gapPaneTop" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.leftAnchor="710.0" AnchorPane.rightAnchor="242.0" AnchorPane.topAnchor="0.0" />
+      <Pane fx:id="leftGap" maxWidth="271.0" minHeight="0.0" minWidth="271.0" prefWidth="271.0" snapToPixel="false" styleClass="gapPaneLeft" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="113.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="517.0" />
+      <Pane fx:id="rightGap" maxWidth="193.0" minHeight="0.0" minWidth="193.0" prefWidth="193.0" snapToPixel="false" styleClass="gapPaneRight" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="113.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="517.0" />
       <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mouseTransparent="true" snapToPixel="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
             <HBox alignment="BOTTOM_CENTER" fillHeight="false" maxHeight="279.0" minHeight="279.0" minWidth="1030.0" prefHeight="279.0" snapToPixel="false" BorderPane.alignment="CENTER">
@@ -37,7 +40,7 @@
                         <Image url="@../images/gui/tiles/northwest.png" />
                      </image>
                   </ImageView>
-                  <Pane maxHeight="279.0" minHeight="279.0" minWidth="0.0" prefHeight="279.0" styleClass="gapPaneTop" stylesheets="@../styles/MainFrameStyle.css" HBox.hgrow="ALWAYS" />
+                  <Pane maxHeight="279.0" minHeight="279.0" minWidth="0.0" prefHeight="279.0" stylesheets="@../styles/MainFrameStyle.css" HBox.hgrow="ALWAYS" />
                   <ImageView fitHeight="279.0" fitWidth="237.0" pickOnBounds="true" preserveRatio="true" smooth="false" HBox.hgrow="NEVER">
                      <image>
                         <Image url="@../images/gui/tiles/northeast.png" />
@@ -54,7 +57,6 @@
                         <Image url="@../images/gui/tiles/west.png" />
                      </image>
                   </ImageView>
-                  <Pane maxWidth="271.0" minHeight="0.0" minWidth="271.0" prefWidth="271.0" snapToPixel="false" styleClass="gapPaneLeft" stylesheets="@../styles/MainFrameStyle.css" VBox.vgrow="ALWAYS" />
                </children>
             </VBox>
          </left>
@@ -66,7 +68,6 @@
                         <Image url="@../images/gui/tiles/east.png" />
                      </image>
                   </ImageView>
-                  <Pane maxWidth="193.0" minHeight="0.0" minWidth="193.0" prefWidth="193.0" snapToPixel="false" styleClass="gapPaneRight" stylesheets="@../styles/MainFrameStyle.css" VBox.vgrow="ALWAYS" />
                </children>
             </VBox>
          </right>

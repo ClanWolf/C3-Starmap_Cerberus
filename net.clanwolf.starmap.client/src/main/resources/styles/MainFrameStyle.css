@@ -63,40 +63,40 @@
   -fx-background-color: transparent;
   -fx-background-repeat: repeat; /* repeat, stretch */
   -fx-background-image: url("../images/gui/tiles/gaptop.png");
-  -fx-background-insets: 0 -5 0 5;
+  -fx-background-insets: -2;
   -fx-padding: 0;
   -fx-border-width: 0;
-  -fx-border-insets: 0;
+  -fx-border-insets: -2;
 }
 
 .gapPaneBottom {
-  -fx-background-color: transparent;
+  -fx-background-color: blue;
   -fx-background-repeat: repeat; /* repeat, stretch */
   -fx-background-image: url("../images/gui/tiles/gapbottom.png");
-  -fx-background-insets: 0 -5 0 5;
+  -fx-background-insets: -2;
   -fx-padding: 0;
   -fx-border-width: 0;
-  -fx-border-insets: 0;
+  -fx-border-insets: -2;
 }
 
 .gapPaneLeft {
   -fx-background-color: transparent;
   -fx-background-repeat: repeat; /* repeat, stretch */
   -fx-background-image: url("../images/gui/tiles/gapleft.png");
-  -fx-background-insets: -5 0 5 0;
+  -fx-background-insets: -2;
   -fx-padding: 0;
   -fx-border-width: 0;
-  -fx-border-insets: 0;
+  -fx-border-insets: -2;
 }
 
 .gapPaneRight {
   -fx-background-color: transparent;
   -fx-background-repeat: repeat; /* repeat, stretch */
   -fx-background-image: url("../images/gui/tiles/gapright.png");
-  -fx-background-insets: -5 0 5 0;
+  -fx-background-insets: -2;
   -fx-padding: 0;
   -fx-border-width: 0;
-  -fx-border-insets: 0;
+  -fx-border-insets: -2;
 }
 
 .mouseStopper {
