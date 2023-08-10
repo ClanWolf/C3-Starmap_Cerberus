@@ -23,25 +23,39 @@
 
 <AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="AnchorPane" fx:id="rootAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="630.0" prefWidth="1030.0" snapToPixel="false" xmlns="http://javafx.com/javafx/20.0.1" fx:controller="net.clanwolf.starmap.client.gui.MainFrameController">
     <children>
-      <Pane snapToPixel="false" styleClass="backgroundTerminal" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="65.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="35.0">
+      <Pane fx:id="paneBackgroundTerminal" snapToPixel="false" styleClass="backgroundTerminal" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="65.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="35.0">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
       </Pane>
-      <Pane fx:id="topGap" layoutX="10.0" layoutY="10.0" maxHeight="279.0" minHeight="279.0" minWidth="0.0" prefHeight="279.0" styleClass="gapPaneTop" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.leftAnchor="710.0" AnchorPane.rightAnchor="242.0" AnchorPane.topAnchor="0.0" />
-      <Pane fx:id="leftGap" maxWidth="271.0" minHeight="0.0" minWidth="271.0" prefWidth="271.0" snapToPixel="false" styleClass="gapPaneLeft" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="113.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="517.0" />
-      <Pane fx:id="rightGap" maxWidth="193.0" minHeight="0.0" minWidth="193.0" prefWidth="193.0" snapToPixel="false" styleClass="gapPaneRight" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="113.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="517.0" />
+      <AnchorPane fx:id="paneBorderShadow" mouseTransparent="true" prefHeight="200.0" prefWidth="200.0" snapToPixel="false" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="65.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="35.0">
+         <children>
+            <Pane layoutX="59.0" layoutY="11.0" mouseTransparent="true" prefHeight="10.0" prefWidth="840.0" snapToPixel="false" style="-fx-background-color: #000000;" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="4.0">
+               <effect>
+                  <DropShadow blurType="TWO_PASS_BOX" height="87.21" offsetY="10.0" radius="52.135" spread="0.55" width="123.33" />
+               </effect>
+            </Pane>
+            <Pane layoutX="53.0" layoutY="20.0" mouseTransparent="true" prefHeight="535.0" prefWidth="20.0" snapToPixel="false" style="-fx-background-color: #000000;" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="30.0">
+               <effect>
+                  <DropShadow blurType="TWO_PASS_BOX" height="80.24" offsetX="5.0" radius="44.8075" spread="0.55" width="100.99" />
+               </effect>
+            </Pane>
+         </children>
+      </AnchorPane>
+      <Pane fx:id="topGap" layoutX="10.0" layoutY="10.0" maxHeight="279.0" minHeight="279.0" minWidth="0.0" mouseTransparent="true" prefHeight="279.0" snapToPixel="false" styleClass="gapPaneTop" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.leftAnchor="720.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="0.0" />
+      <Pane fx:id="leftGap" maxWidth="271.0" minHeight="0.0" minWidth="271.0" mouseTransparent="true" prefWidth="271.0" snapToPixel="false" styleClass="gapPaneLeft" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="500.0" />
+      <Pane fx:id="rightGap" maxWidth="193.0" minHeight="0.0" minWidth="193.0" mouseTransparent="true" prefWidth="193.0" snapToPixel="false" styleClass="gapPaneRight" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="100.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="500.0" />
       <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mouseTransparent="true" snapToPixel="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
-            <HBox alignment="BOTTOM_CENTER" fillHeight="false" maxHeight="279.0" minHeight="279.0" minWidth="1030.0" prefHeight="279.0" snapToPixel="false" BorderPane.alignment="CENTER">
+            <HBox alignment="BOTTOM_CENTER" fillHeight="false" maxHeight="279.0" minHeight="279.0" minWidth="1030.0" mouseTransparent="true" prefHeight="279.0" snapToPixel="false" BorderPane.alignment="CENTER">
                <children>
-                  <ImageView fitHeight="279.0" fitWidth="793.0" pickOnBounds="true" preserveRatio="true" smooth="false" HBox.hgrow="NEVER">
+                  <ImageView fitHeight="279.0" fitWidth="793.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" smooth="false" HBox.hgrow="NEVER">
                      <image>
                         <Image url="@../images/gui/tiles/northwest.png" />
                      </image>
                   </ImageView>
-                  <Pane maxHeight="279.0" minHeight="279.0" minWidth="0.0" prefHeight="279.0" stylesheets="@../styles/MainFrameStyle.css" HBox.hgrow="ALWAYS" />
-                  <ImageView fitHeight="279.0" fitWidth="237.0" pickOnBounds="true" preserveRatio="true" smooth="false" HBox.hgrow="NEVER">
+                  <Pane maxHeight="279.0" minHeight="279.0" minWidth="0.0" mouseTransparent="true" prefHeight="279.0" stylesheets="@../styles/MainFrameStyle.css" HBox.hgrow="ALWAYS" />
+                  <ImageView fitHeight="279.0" fitWidth="237.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" smooth="false" HBox.hgrow="NEVER">
                      <image>
                         <Image url="@../images/gui/tiles/northeast.png" />
                      </image>
@@ -50,9 +64,9 @@
             </HBox>
          </top>
          <left>
-            <VBox fillWidth="false" snapToPixel="false" stylesheets="@../styles/MainFrameStyle.css" BorderPane.alignment="CENTER_LEFT">
+            <VBox fillWidth="false" mouseTransparent="true" snapToPixel="false" stylesheets="@../styles/MainFrameStyle.css" BorderPane.alignment="CENTER_LEFT">
                <children>
-                  <ImageView fitHeight="238.0" fitWidth="271.0" pickOnBounds="true" VBox.vgrow="NEVER">
+                  <ImageView fitHeight="238.0" fitWidth="271.0" mouseTransparent="true" pickOnBounds="true" VBox.vgrow="NEVER">
                      <image>
                         <Image url="@../images/gui/tiles/west.png" />
                      </image>
@@ -61,9 +75,9 @@
             </VBox>
          </left>
          <right>
-            <VBox alignment="TOP_RIGHT" fillWidth="false" snapToPixel="false" stylesheets="@../styles/MainFrameStyle.css" BorderPane.alignment="CENTER_RIGHT">
+            <VBox alignment="TOP_RIGHT" fillWidth="false" mouseTransparent="true" snapToPixel="false" stylesheets="@../styles/MainFrameStyle.css" BorderPane.alignment="CENTER_RIGHT">
                <children>
-                  <ImageView fitHeight="238.0" fitWidth="193.0" pickOnBounds="true" preserveRatio="true" smooth="false" VBox.vgrow="NEVER">
+                  <ImageView fitHeight="238.0" fitWidth="193.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" smooth="false" VBox.vgrow="NEVER">
                      <image>
                         <Image url="@../images/gui/tiles/east.png" />
                      </image>
@@ -72,9 +86,9 @@
             </VBox>
          </right>
          <bottom>
-            <HBox alignment="TOP_CENTER" fillHeight="false" maxHeight="113.0" minHeight="113.0" minWidth="1030.0" prefHeight="113.0" snapToPixel="false" BorderPane.alignment="CENTER">
+            <HBox alignment="TOP_CENTER" fillHeight="false" maxHeight="113.0" minHeight="113.0" minWidth="1030.0" mouseTransparent="true" prefHeight="113.0" snapToPixel="false" BorderPane.alignment="CENTER">
                <children>
-                  <ImageView fitHeight="113.0" fitWidth="793.0" pickOnBounds="true" preserveRatio="true" smooth="false" HBox.hgrow="NEVER">
+                  <ImageView fitHeight="113.0" fitWidth="793.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" smooth="false" HBox.hgrow="NEVER">
                      <image>
                         <Image url="@../images/gui/tiles/southwest.png" />
                      </image>
@@ -82,8 +96,8 @@
                         <Rectangle2D />
                      </viewport>
                   </ImageView>
-                  <Pane maxHeight="113.0" minHeight="113.0" minWidth="0.0" prefHeight="113.0" styleClass="gapPaneBottom" stylesheets="@../styles/MainFrameStyle.css" HBox.hgrow="ALWAYS" />
-                  <ImageView fitHeight="113.0" fitWidth="237.0" pickOnBounds="true" preserveRatio="true" smooth="false" HBox.hgrow="NEVER">
+                  <Pane maxHeight="113.0" minHeight="113.0" minWidth="0.0" mouseTransparent="true" prefHeight="113.0" styleClass="gapPaneBottom" stylesheets="@../styles/MainFrameStyle.css" HBox.hgrow="ALWAYS" />
+                  <ImageView fitHeight="113.0" fitWidth="237.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" smooth="false" HBox.hgrow="NEVER">
                      <image>
                         <Image url="@../images/gui/tiles/southeast.png" />
                      </image>
@@ -92,7 +106,7 @@
             </HBox>
          </bottom>
          <center>
-            <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="0.0" prefWidth="0.0" snapToPixel="false" BorderPane.alignment="CENTER" />
+            <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" mouseTransparent="true" prefHeight="0.0" prefWidth="0.0" snapToPixel="false" BorderPane.alignment="CENTER" />
          </center>
       </BorderPane>
         <Pane fx:id="mouseStopper" layoutX="63.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" opacity="1.0" prefHeight="630.0" prefWidth="941.0" snapToPixel="false" styleClass="AnchorPane" visible="true">

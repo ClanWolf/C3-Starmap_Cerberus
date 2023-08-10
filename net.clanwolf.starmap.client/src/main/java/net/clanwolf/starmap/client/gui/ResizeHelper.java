@@ -32,7 +32,6 @@ import javafx.event.EventType;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -68,8 +67,7 @@ public class ResizeHelper {
 		node.addEventHandler(MouseEvent.MOUSE_DRAGGED, listener);
 		node.addEventHandler(MouseEvent.MOUSE_EXITED, listener);
 		node.addEventHandler(MouseEvent.MOUSE_EXITED_TARGET, listener);
-		if (node instanceof Parent) {
-			Parent parent = (Parent) node;
+		if (node instanceof Parent parent) {
 			ObservableList<Node> children = parent.getChildrenUnmodifiable();
 			for (Node child : children) {
 				addListenerDeeply(child, listener);
@@ -79,8 +77,7 @@ public class ResizeHelper {
 
 	static class ResizeListener implements EventHandler<MouseEvent> {
 		private final Stage stage;
-		private Cursor cursorEvent = Cursor.DEFAULT;
-		private int border = 0;
+		//private int border = 0;
 		private double startX = 0;
 		private double startY = 0;
 
@@ -91,14 +88,17 @@ public class ResizeHelper {
 		@Override
 		public void handle(MouseEvent mouseEvent) {
 			EventType<? extends MouseEvent> mouseEventType = mouseEvent.getEventType();
-			Scene scene = stage.getScene();
+			//Scene scene = stage.getScene();
 
-			double mouseEventX = mouseEvent.getSceneX(), mouseEventY = mouseEvent.getSceneY(), sceneWidth = scene.getWidth(), sceneHeight = scene.getHeight();
+			double mouseEventX = mouseEvent.getSceneX();
+			double mouseEventY = mouseEvent.getSceneY();
+			//double sceneWidth = scene.getWidth();
+			//double sceneHeight = scene.getHeight();
 
 			if (mouseEvent.getTarget() instanceof Label label && label.getId() != null && label.getId().equals("ResizerControl")) {
 
 				// We allow resize only on the resize area on the bottom right corner (South-East)
-				cursorEvent = Cursor.SE_RESIZE;
+				Cursor cursorEvent = Cursor.SE_RESIZE;
 
 				if (MouseEvent.MOUSE_PRESSED.equals(mouseEventType)) {
 					if (initialWidth == null) {
@@ -118,6 +118,7 @@ public class ResizeHelper {
 								if (stage.getHeight() > initialHeight || mouseEventY < 0) {
 									double newHeight = stage.getY() - mouseEvent.getScreenY() + stage.getHeight();
 									if (newHeight >= initialHeight) {
+										// Snap to min height
 										if (newHeight > 630 && newHeight < 650) {
 											newHeight = 630;
 										}
@@ -130,6 +131,7 @@ public class ResizeHelper {
 								if (stage.getHeight() > initialHeight || mouseEventY + startY - stage.getHeight() > 0) {
 									double newHeight = mouseEventY + startY;
 									if (newHeight >= initialHeight) {
+										// Snap to min height
 										if (newHeight > 630 && newHeight < 650) {
 											newHeight = 630;
 										}
@@ -146,6 +148,7 @@ public class ResizeHelper {
 								if (stage.getWidth() > initialWidth || mouseEventX < 0) {
 									double newWidth = stage.getX() - mouseEvent.getScreenX() + stage.getWidth();
 									if (newWidth >= initialWidth) {
+										// Snap to min width
 										if (newWidth > 1030 && newWidth < 1050) {
 											newWidth = 1030;
 										}
@@ -158,6 +161,7 @@ public class ResizeHelper {
 								if (stage.getWidth() > initialWidth || mouseEventX + startX - stage.getWidth() > 0) {
 									double newWidth = mouseEventX + startX;
 									if (newWidth > initialWidth) {
+										// Snap to min width
 										if (newWidth > 1030 && newWidth < 1050) {
 											newWidth = 1030;
 										}

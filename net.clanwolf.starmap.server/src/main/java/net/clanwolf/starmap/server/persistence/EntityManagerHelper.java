@@ -32,8 +32,6 @@ import jakarta.persistence.Query;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-//import javax.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityManagerFactory;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -62,7 +60,8 @@ public class EntityManagerHelper {
 				throw new FileNotFoundException("Auth-Property file '" + authFileName + "' not found in classpath.");
 			}
 		} catch (IOException ioe) {
-			ioe.printStackTrace();
+			//ioe.printStackTrace();
+			logger.error("Error in EntityManager.", ioe);
 		}
 
 		Map<String, String> properties = new HashMap<>();
@@ -92,8 +91,8 @@ public class EntityManagerHelper {
 			}
 			logger.info("Hibernate cache cleared succesfully.");
 		} catch (Exception e) {
-			e.printStackTrace();
-			logger.error("Hibernate cache NOT cleared.");
+			//e.printStackTrace();
+			logger.error("Hibernate cache NOT cleared.", e);
 		}
 	}
 
@@ -106,9 +105,10 @@ public class EntityManagerHelper {
 			manager = emf.createEntityManager();
 			emMap.put(userID, manager);
 
-		} else {
-//			logger.info("Found EntityManager for UserPOJO ID: " + userID);
 		}
+//		else {
+//			logger.info("Found EntityManager for UserPOJO ID: " + userID);
+//		}
 		return manager;
 	}
 
@@ -131,8 +131,8 @@ public class EntityManagerHelper {
 			}
 			logger.info("Refresh successful");
 		} catch (Exception re) {
-			logger.error("Refresh failed");
-			re.printStackTrace();
+			//re.printStackTrace();
+			logger.error("Refresh failed", re);
 			throw re;
 		}
 	}
