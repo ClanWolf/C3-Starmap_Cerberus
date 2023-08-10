@@ -28,21 +28,42 @@
             <Insets />
          </opaqueInsets>
       </Pane>
+      <Pane fx:id="paneNoise" mouseTransparent="true" opacity="0.4" snapToPixel="false" styleClass="backgroundNoise" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="65.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="35.0">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </Pane>
       <AnchorPane fx:id="paneBorderShadow" mouseTransparent="true" prefHeight="200.0" prefWidth="200.0" snapToPixel="false" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="65.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="35.0">
          <children>
-            <Pane layoutX="59.0" layoutY="11.0" mouseTransparent="true" prefHeight="10.0" prefWidth="840.0" snapToPixel="false" style="-fx-background-color: #000000;" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="4.0">
+            <Pane fx:id="topleft" layoutX="46.0" layoutY="12.0" mouseTransparent="true" prefHeight="86.0" prefWidth="40.0" snapToPixel="false" style="-fx-background-color: #000000;" stylesheets="@../styles/MainFrameStyle.css">
+               <effect>
+                  <DropShadow blurType="TWO_PASS_BOX" height="114.98" offsetX="5.0" offsetY="5.0" radius="63.0775" spread="0.55" width="139.33" />
+               </effect>
+            </Pane>
+            <Pane fx:id="top" layoutX="59.0" layoutY="11.0" mouseTransparent="true" prefHeight="10.0" prefWidth="840.0" snapToPixel="false" style="-fx-background-color: #000000;" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.leftAnchor="60.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="4.0">
                <effect>
                   <DropShadow blurType="TWO_PASS_BOX" height="87.21" offsetY="10.0" radius="52.135" spread="0.55" width="123.33" />
                </effect>
             </Pane>
-            <Pane layoutX="53.0" layoutY="20.0" mouseTransparent="true" prefHeight="535.0" prefWidth="20.0" snapToPixel="false" style="-fx-background-color: #000000;" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="30.0">
+            <Pane fx:id="left" layoutX="53.0" layoutY="20.0" mouseTransparent="true" prefHeight="535.0" prefWidth="20.0" snapToPixel="false" style="-fx-background-color: #000000;" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="30.0">
                <effect>
-                  <DropShadow blurType="TWO_PASS_BOX" height="80.24" offsetX="5.0" radius="44.8075" spread="0.55" width="100.99" />
+                  <DropShadow blurType="TWO_PASS_BOX" height="90.62" offsetX="5.0" radius="56.987500000000004" spread="0.55" width="139.33" />
+               </effect>
+            </Pane>
+            <Pane fx:id="bottom" mouseTransparent="true" prefHeight="10.0" prefWidth="840.0" snapToPixel="false" style="-fx-background-color: #000000;" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="20.0">
+               <effect>
+                  <DropShadow blurType="TWO_PASS_BOX" height="87.63" offsetY="-10.0" radius="44.739999999999995" spread="0.55" width="93.33" />
+               </effect>
+            </Pane>
+            <Pane fx:id="right" mouseTransparent="true" prefHeight="535.0" prefWidth="10.0" snapToPixel="false" style="-fx-background-color: #000000;" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="30.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="30.0">
+               <effect>
+                  <DropShadow blurType="TWO_PASS_BOX" height="127.16" offsetX="-10.0" radius="61.955" spread="0.65" width="122.66" />
                </effect>
             </Pane>
          </children>
       </AnchorPane>
       <Pane fx:id="topGap" layoutX="10.0" layoutY="10.0" maxHeight="279.0" minHeight="279.0" minWidth="0.0" mouseTransparent="true" prefHeight="279.0" snapToPixel="false" styleClass="gapPaneTop" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.leftAnchor="720.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="0.0" />
+      <Pane fx:id="bottomGap" layoutX="10.0" layoutY="10.0" maxHeight="113.0" minHeight="113.0" minWidth="0.0" mouseTransparent="true" prefHeight="113.0" snapToPixel="false" styleClass="gapPaneBottom" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="720.0" AnchorPane.rightAnchor="200.0" />
       <Pane fx:id="leftGap" maxWidth="271.0" minHeight="0.0" minWidth="271.0" mouseTransparent="true" prefWidth="271.0" snapToPixel="false" styleClass="gapPaneLeft" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="500.0" />
       <Pane fx:id="rightGap" maxWidth="193.0" minHeight="0.0" minWidth="193.0" mouseTransparent="true" prefWidth="193.0" snapToPixel="false" styleClass="gapPaneRight" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="100.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="500.0" />
       <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mouseTransparent="true" snapToPixel="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -96,7 +117,7 @@
                         <Rectangle2D />
                      </viewport>
                   </ImageView>
-                  <Pane maxHeight="113.0" minHeight="113.0" minWidth="0.0" mouseTransparent="true" prefHeight="113.0" styleClass="gapPaneBottom" stylesheets="@../styles/MainFrameStyle.css" HBox.hgrow="ALWAYS" />
+                  <Pane maxHeight="113.0" minHeight="113.0" minWidth="0.0" mouseTransparent="true" prefHeight="113.0" stylesheets="@../styles/MainFrameStyle.css" HBox.hgrow="ALWAYS" />
                   <ImageView fitHeight="113.0" fitWidth="237.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" smooth="false" HBox.hgrow="NEVER">
                      <image>
                         <Image url="@../images/gui/tiles/southeast.png" />

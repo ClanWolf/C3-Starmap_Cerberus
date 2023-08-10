@@ -55,6 +55,12 @@
   -fx-background-image: url("../images/gui/tiles/bg.png");
 }
 
+.backgroundNoise {
+  -fx-background-color: transparent;
+  -fx-background-repeat: repeat; /* repeat, stretch */
+  -fx-background-image: url("../images/noise/noise.gif");
+}
+
 .cornerBackgroundTile {
   -fx-background-color: yellow;
 }
@@ -70,7 +76,7 @@
 }
 
 .gapPaneBottom {
-  -fx-background-color: blue;
+  -fx-background-color: transparent;
   -fx-background-repeat: repeat; /* repeat, stretch */
   -fx-background-image: url("../images/gui/tiles/gapbottom.png");
   -fx-background-insets: -2;
