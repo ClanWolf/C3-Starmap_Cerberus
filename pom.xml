@@ -12,6 +12,29 @@
 		<url>https://www.clanwolf.net</url>
 	</organization>
 
+	<developers>
+		<developer>
+			<id>Werner</id>
+			<organization>ClanWolf.net</organization>
+			<organizationUrl>https://www.clanwolf.net/</organizationUrl>
+			<timezone>+0100</timezone>
+			<roles>
+				<role>Project owner</role>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>Meldric</id>
+			<organization>ClanWolf.net</organization>
+			<organizationUrl>https://www.clanwolf.net/</organizationUrl>
+			<timezone>+0100</timezone>
+			<roles>
+				<role>Project owner</role>
+				<role>Developer</role>
+			</roles>
+		</developer>
+	</developers>
+
 	<groupId>net.clanwolf.starmap</groupId>
 	<artifactId>C3-Starmap_Cerberus</artifactId>
 	<version>${revision}</version>

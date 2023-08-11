@@ -58,6 +58,7 @@ Version 7.3.98 (11.08.2023)
 - UPDATED: New gui level for border shadow
 - UPDATED: Noise image resize behaviour
 - UPDATED: Dependencies
+- ADDED: Buttons to maximize and minimize the window (not working yet)
 
 Version 7.3.97 (05.08.2023)
 - UPDATED: Dependencies

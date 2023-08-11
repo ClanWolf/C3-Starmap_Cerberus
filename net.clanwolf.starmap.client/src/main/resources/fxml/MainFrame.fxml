@@ -28,7 +28,7 @@
             <Insets />
          </opaqueInsets>
       </Pane>
-      <Pane fx:id="paneNoise" mouseTransparent="true" opacity="0.4" snapToPixel="false" styleClass="backgroundNoise" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="65.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="35.0">
+      <Pane fx:id="paneNoise" mouseTransparent="true" opacity="0.4" snapToPixel="false" styleClass="backgroundNoise" stylesheets="@../styles/MainFrameStyle.css" visible="false" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="65.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="35.0">
          <opaqueInsets>
             <Insets />
          </opaqueInsets>
@@ -197,7 +197,7 @@
       <Label fx:id="terminalLabel" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="567.0" layoutY="556.0" prefHeight="20.0" prefWidth="66.0" snapToPixel="false" text="Terminal:" AnchorPane.bottomAnchor="54.0" AnchorPane.rightAnchor="395.0" />
       <TextField fx:id="terminalPrompt" layoutX="639.0" layoutY="555.0" onKeyPressed="#handleTerminalEnterButton" prefHeight="20.0" prefWidth="305.0" snapToPixel="false" styleClass="text" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="55.0" AnchorPane.rightAnchor="86.0" />
       <Label fx:id="helpLabel" focusTraversable="false" layoutX="585.0" layoutY="581.0" onMouseClicked="#handleHelpMouseEventClick" onMouseEntered="#handleHelpButtonHoverEnter" onMouseExited="#handleHelpButtonHoverExit" prefHeight="20.0" prefWidth="12.0" snapToPixel="false" text="Help" AnchorPane.bottomAnchor="28.0" />
-        <ImageView fx:id="noiseImage" fitHeight="523.0" fitWidth="859.0" layoutX="494.0" layoutY="37.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="false" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="123.0" AnchorPane.rightAnchor="48.0" AnchorPane.topAnchor="37.0">
+        <ImageView fx:id="noiseImage" fitHeight="523.0" fitWidth="859.0" layoutX="494.0" layoutY="37.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="false" visible="false" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="123.0" AnchorPane.rightAnchor="48.0" AnchorPane.topAnchor="37.0">
             <image>
                 <Image url="@../images/noise/noisemap.png" />
             </image>

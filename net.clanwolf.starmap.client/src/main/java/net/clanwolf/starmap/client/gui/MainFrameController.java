@@ -288,7 +288,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	@FXML
 	private Pane paneVolumeControl;
 	@FXML
-	private Pane paneWindowMoverHandle;
+	private Pane paneWindowMoverHandle, paneNoise;
 	@FXML
 	private TableView<UserHistoryEntry> tblUserHistory;
 
@@ -1558,26 +1558,26 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		textTopRightThread.start();
 	}
 
-	private void setupNoiseAnimation() {
-		Platform.runLater(() -> {
-			int COLUMNS = 2;
-			int COUNT = 4;
-			int OFFSET_X = 0;
-			int OFFSET_Y = 0;
-			int WIDTH = 860;
-			int HEIGHT = 524;
-//			int WIDTH = (int) Math.round(noiseImage.getFitWidth());
-//			int HEIGHT = (int) Math.round(noiseImage.getFitHeight());
-
-			InputStream is = this.getClass().getResourceAsStream("/images/noise/noisemap.png");
-			noiseImage.setImage(new Image(is));
-			noiseImage.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
-			noiseImage.setCache(true);
-			noiseImage.setCacheHint(CacheHint.SPEED);
-			noiseAnimation = new SpriteAnimation(noiseImage, Duration.millis(200), COUNT, COLUMNS, OFFSET_X, OFFSET_Y, WIDTH, HEIGHT);
-			noiseAnimation.setCycleCount(Animation.INDEFINITE);
-		});
-	}
+//	private void setupNoiseAnimation() {
+//		Platform.runLater(() -> {
+//			int COLUMNS = 2;
+//			int COUNT = 4;
+//			int OFFSET_X = 0;
+//			int OFFSET_Y = 0;
+//			int WIDTH = 860;
+//			int HEIGHT = 524;
+////			int WIDTH = (int) Math.round(noiseImage.getFitWidth());
+////			int HEIGHT = (int) Math.round(noiseImage.getFitHeight());
+//
+//			InputStream is = this.getClass().getResourceAsStream("/images/noise/noisemap.png");
+//			noiseImage.setImage(new Image(is));
+//			noiseImage.setViewport(new Rectangle2D(OFFSET_X, OFFSET_Y, WIDTH, HEIGHT));
+//			noiseImage.setCache(true);
+//			noiseImage.setCacheHint(CacheHint.SPEED);
+//			noiseAnimation = new SpriteAnimation(noiseImage, Duration.millis(200), COUNT, COLUMNS, OFFSET_X, OFFSET_Y, WIDTH, HEIGHT);
+//			noiseAnimation.setCycleCount(Animation.INDEFINITE);
+//		});
+//	}
 
 	private void setupSpeechSpectrumAnimation() {
 		if (spectrumAnimation == null) {
@@ -1686,9 +1686,13 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		copyrightLabel.setText("©2000-" + year + " - clanwolf.net");
 		spectrumImage.setOpacity(0.1);
 		spectrumImage.setVisible(false);
+
 		noiseImage.setOpacity(0.0);
 		noiseImage.setVisible(false);
 		noiseImage.toFront();
+
+		paneNoise.setOpacity(0.0);
+		paneNoise.setVisible(false);
 
 		Image helpImg = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/help.png")));
 		ImageView view = new ImageView(helpImg);
@@ -2271,24 +2275,26 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 						duration = random.nextInt(1000 - 100) + 100;
 					}
 
-					noiseImage.toFront();
-					noiseImage.setVisible(true);
-					if (noiseAnimation != null) {
-						noiseAnimation.play();
-					}
+//					noiseImage.toFront();
+//					noiseImage.setVisible(true);
+//					if (noiseAnimation != null) {
+//						noiseAnimation.play();
+//					}
 
-					FadeTransition FadeOutTransition = new FadeTransition(Duration.millis(duration), noiseImage);
+					paneNoise.setVisible(true);
+
+					FadeTransition FadeOutTransition = new FadeTransition(Duration.millis(duration), paneNoise);
 					FadeOutTransition.setFromValue(0.4);
 					FadeOutTransition.setToValue(0.0);
 					FadeOutTransition.setCycleCount(1);
 					FadeOutTransition.setOnFinished(event -> {
-						if (noiseAnimation != null) {
-							noiseAnimation.stop();
-						}
-						noiseImage.setVisible(false);
+//						if (noiseAnimation != null) {
+//							noiseAnimation.stop();
+//						}
+						paneNoise.setVisible(false);
 					});
 
-					FadeTransition FadeInTransition = new FadeTransition(Duration.millis(duration), noiseImage);
+					FadeTransition FadeInTransition = new FadeTransition(Duration.millis(duration), paneNoise);
 					FadeInTransition.setFromValue(0.0);
 					FadeInTransition.setToValue(0.4);
 					FadeInTransition.setCycleCount(1);
@@ -2705,10 +2711,10 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	 */
 	private void startup() {
 		setupSpeechSpectrumAnimation();
-		setupNoiseAnimation();
+//		setupNoiseAnimation();
 
-		noiseImage.toFront();
-		noiseImage.setVisible(true);
+//		noiseImage.toFront();
+//		noiseImage.setVisible(true);
 		C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_welcome_message"));
 		C3SoundPlayer.play("/sound/fx/beep_02.mp3", false);
 		C3SoundPlayer.startMusic();
