@@ -69,7 +69,7 @@
 		<version.apache.commons-collections4>4.4</version.apache.commons-collections4>
 		<version.apache.commons-net>3.9.0</version.apache.commons-net>
 		<version.blazeds-core>3.2.0.3978</version.blazeds-core>
-		<version.byte-buddy>1.14.5</version.byte-buddy>
+		<version.byte-buddy>1.14.6</version.byte-buddy>
 		<version.collections-generic>4.01</version.collections-generic>
 		<version.discord-api>5.0.0-beta.13</version.discord-api>
 		<version.dom4j>2.1.4</version.dom4j>
