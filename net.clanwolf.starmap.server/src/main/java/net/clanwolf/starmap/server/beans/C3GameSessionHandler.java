@@ -401,7 +401,8 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			ArrayList<Long> factionsThePlayerIsNowFriendlyWithList = (ArrayList<Long>) state.getObject();
 			Long factionID = (Long)state.getObject2();
 
-			ArrayList<DiplomacyPOJO> entriesToDelete = DiplomacyDAO.getInstance().getAllRequestsForFactions(factionID);
+			RoundPOJO currentRound = RoundDAO.getInstance().findBySeasonId(GameServer.getCurrentSeason());
+			ArrayList<DiplomacyPOJO> entriesToDelete = DiplomacyDAO.getInstance().getAllRequestsForFactions(factionID, currentRound.getRound());
 
 			ArrayList<DiplomacyPOJO> newEntries = new ArrayList<>();
 
@@ -420,6 +421,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 					dipPojo.setFactionID_REQUEST(factionID);
 					dipPojo.setFactionID_ACCEPTED(l);
 					dipPojo.setSeasonID(ServerNexus.currentSeason);
+					dipPojo.setStartingInRound(currentRound.getRound().intValue() + 1);
 
 					DiplomacyDAO.getInstance().update(getC3UserID(session), dipPojo);
 				}
@@ -428,7 +430,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 				GameState response = new GameState(GAMESTATEMODES.DIPLOMACY_SAVE_RESPONSE);
 				response.setAction_successfully(Boolean.TRUE);
-				response.addObject(DiplomacyDAO.getInstance().getDiplomacyForSeason(ServerNexus.currentSeason));
+				response.addObject(DiplomacyDAO.getInstance().getDiplomacyForSeason(ServerNexus.currentSeason, currentRound.getRound()));
 
 
 				C3GameSessionHandler.sendBroadCast(room, response);

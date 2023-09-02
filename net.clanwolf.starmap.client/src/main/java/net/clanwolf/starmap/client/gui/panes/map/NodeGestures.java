@@ -141,6 +141,8 @@ public class NodeGestures {
 				js.getJumpshipLevelLabel().setTranslateX(js.getJumpshipImageView().getTranslateX() + 8);
 				js.getJumpshipLevelLabel().setTranslateY(js.getJumpshipImageView().getTranslateY() - 2);
 				js.getJumpshipLevelLabel().setVisible(true);
+				js.getJumpshipImageView().toFront();
+				js.getJumpshipLevelLabel().toFront();
 
 				if (moveJumpShipToDragStart) {
 					ImageView s = js.getJumpshipImageView();
@@ -191,6 +193,15 @@ public class NodeGestures {
 
 		logger.info(boUniverse.currentlyDraggedJumpship.getJumpshipName() + " : " + startSystem.getName() + " : " + hovered.getName());
 		List<BOStarSystem> route = RouteCalculator.calculateRoute(startSystem, hovered);
+
+
+
+
+		// TODO: Route
+//		Die Route geht nur bis einen Sprung VOR dem ersten feindlichen System (ohne Angriff?)
+//		wenn die route einen Angriff hat, geht die route danach nicht weiter (nur in grau?)
+
+
 
 		boUniverse.currentlyDraggedJumpship.setRouteSystems(route);
 		int currentRound = Nexus.getCurrentRound();
@@ -485,6 +496,8 @@ public class NodeGestures {
 				String name = node.getId();
 				BOJumpship ship = boUniverse.jumpshipBOs.get(name);
 				ship.getJumpshipLevelLabel().setVisible(false);
+				ship.getJumpshipLevelLabel().toFront();
+				ship.getJumpshipImageView().toFront();
 
 				// Is the dragged node a ship (?) and does it belong to my faction (?)
 				if (ship != null && ship.getJumpshipFaction() == Nexus.getCurrentUser().getCurrentCharacter().getFactionId()) {

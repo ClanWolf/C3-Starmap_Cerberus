@@ -46,7 +46,7 @@ public class DiplomacyDAO extends GenericDAO {
 		return (DiplomacyPOJO) crit.getSingleResult();
 	}
 
-	public ArrayList<DiplomacyPOJO> getDiplomacyForSeason(Long seasonID){
+	public ArrayList<DiplomacyPOJO> getDiplomacyForSeason(Long seasonID, Long roundId){
 
 		CriteriaHelper crit = new CriteriaHelper(DiplomacyPOJO.class);
 		crit.addCriteria("seasonID", seasonID);
@@ -57,13 +57,16 @@ public class DiplomacyDAO extends GenericDAO {
 		ArrayList<DiplomacyPOJO> lRPS = new ArrayList<>();
 
 		while (iter.hasNext()) {
-			lRPS.add((DiplomacyPOJO) iter.next());
+			DiplomacyPOJO pojo = (DiplomacyPOJO) iter.next();
+			if(pojo.getStartingInRound() <= roundId) {
+				lRPS.add(pojo);
+			}
 		}
 
 		return lRPS;
 	}
 
-	public ArrayList<DiplomacyPOJO> getAllRequestsForFactions(Long factionID){
+	public ArrayList<DiplomacyPOJO> getAllRequestsForFactions(Long factionID, Long roundId){
 
 		CriteriaHelper crit = new CriteriaHelper(DiplomacyPOJO.class);
 		crit.addCriteria("factionID_REQUEST", factionID);
@@ -74,7 +77,10 @@ public class DiplomacyDAO extends GenericDAO {
 		ArrayList<DiplomacyPOJO> lRPS = new ArrayList<>();
 
 		while (iter.hasNext()) {
-			lRPS.add((DiplomacyPOJO) iter.next());
+			DiplomacyPOJO pojo = (DiplomacyPOJO) iter.next();
+			if(pojo.getStartingInRound() <= roundId) {
+				lRPS.add(pojo);
+			}
 		}
 
 		return lRPS;

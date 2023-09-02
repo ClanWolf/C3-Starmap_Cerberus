@@ -187,6 +187,20 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 	@FXML
 	private void handleCenterJumpshipButtonClick() {
+		for (BOJumpship j : Nexus.getBoUniverse().jumpshipBOs.values()) {
+			long jsid = j.getJumpshipFaction();
+			if ((int) jsid == Nexus.getCurrentUser().getCurrentCharacter().getFactionId()) {
+				currentlyCenteredJumpship = j;
+				BOStarSystem s = currentlyCenteredJumpship.getCurrentSystem(currentlyCenteredJumpship.getCurrentSystemID());
+				moveMapToPosition(s);
+			}
+		}
+		currentlyCenteredJumpship.getJumpshipImageView().toFront();
+		currentlyCenteredJumpship.getJumpshipLevelLabel().toFront();
+		ActionManager.getAction(ACTIONS.SHOW_JUMPSHIP_DETAIL).execute(currentlyCenteredJumpship);
+	}
+
+	private void centerJumpship() {
 		if (currentlyCenteredJumpship == null) {
 			for (BOJumpship j : Nexus.getBoUniverse().jumpshipBOs.values()) {
 				long jsid = j.getJumpshipFaction();
@@ -200,6 +214,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			BOStarSystem s = currentlyCenteredJumpship.getCurrentSystem(currentlyCenteredJumpship.getCurrentSystemID());
 			moveMapToPosition(s);
 		}
+		currentlyCenteredJumpship.getJumpshipImageView().toFront();
+		currentlyCenteredJumpship.getJumpshipLevelLabel().toFront();
 		ActionManager.getAction(ACTIONS.SHOW_JUMPSHIP_DETAIL).execute(currentlyCenteredJumpship);
 	}
 
@@ -221,7 +237,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			}
 		}
 		if (found) {
-			handleCenterJumpshipButtonClick();
+			centerJumpship();
 		} else {
 			mapButton04.setDisable(true);
 			mapButton05.setDisable(false);
@@ -246,7 +262,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 			}
 		}
 		if (found) {
-			handleCenterJumpshipButtonClick();
+			centerJumpship();
 		} else {
 			mapButton04.setDisable(false);
 			mapButton05.setDisable(true);
@@ -622,7 +638,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				ArrayList<Shape> flashingBackgrounds = new ArrayList<>();
 
 				// Move the ships
-				for (BOJumpship js : boUniverse.jumpshipBOs.values()) {
+				for (BOJumpship js : boUniverse.getJumpshipList()) {
 					Long currentSystemID = js.getCurrentSystemID();
 					boolean myOwnShip = js.getJumpshipFaction() == Nexus.getCurrentUser().getCurrentCharacter().getFactionId();
 					ImageView jumpshipImage = js.getJumpshipImageView();
@@ -802,7 +818,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 							ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("10");
 						}
 						jumpshipImage.setMouseTransparent(false);
-						jumpshipImage.toFront();
+						js.getJumpshipImageView().toFront();
+						js.getJumpshipLevelLabel().toFront();
 
 						js.setCurrentSystemID(targetSystemId);
 						js.setRoute(boUniverse.routesList.get(js.getJumpshipId()));
@@ -1255,19 +1272,23 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				canvas.getChildren().add(attacksPane);
 				attacksPane.toBack();
 
-				for (BOJumpship js : boUniverse.jumpshipBOs.values()) {
+				HashMap<Long, Integer> numberOfJumpshipsOnSystem = new HashMap<>();
+
+				for (BOJumpship js : boUniverse.getJumpshipList()) {
 					Long currentSystemID = js.getCurrentSystemID();
 					boolean myOwnShip = js.getJumpshipFaction() == Nexus.getCurrentUser().getCurrentCharacter().getFactionId();
 
+					if (numberOfJumpshipsOnSystem.get(js.getCurrentSystemID()) == null) {
+						numberOfJumpshipsOnSystem.put(js.getCurrentSystemID(), 0);
+					} else {
+						Integer number = numberOfJumpshipsOnSystem.get(js.getCurrentSystemID());
+						number += 1;
+						numberOfJumpshipsOnSystem.remove(js.getCurrentSystemID());
+						numberOfJumpshipsOnSystem.put(js.getCurrentSystemID(), number);
+					}
+
 					BOStarSystem s3 = boUniverse.starSystemBOs.get(js.getCurrentSystemID());
 					s3.setLockedByJumpship(true);
-
-					if (Nexus.getCurrentChar().getJumpshipId().intValue() == js.getJumpshipId()) {
-						// This is my own personal unit, move map to this ship
-						currentlyCenteredJumpship = js;
-						moveMapToJumpship(currentlyCenteredJumpship);
-						mapCenteredOnJumpship = true;
-					}
 
 					if (js.getRoute() != null) {
 						for (RoutePointDTO rp : js.getRoute()) {
@@ -1340,9 +1361,12 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 							}
 						}
 
+						int number = numberOfJumpshipsOnSystem.get(js.getCurrentSystemID());
+						int offset = 7;
+
 						levelLabel.setId(js.getJumpshipName() + "LEVEL");
-						levelLabel.setTranslateX(boUniverse.starSystemBOs.get(currentSystemID).getScreenX() - 27);
-						levelLabel.setTranslateY(boUniverse.starSystemBOs.get(currentSystemID).getScreenY() - 10);
+						levelLabel.setTranslateX((boUniverse.starSystemBOs.get(currentSystemID).getScreenX() - 27 - offset * number));
+						levelLabel.setTranslateY((boUniverse.starSystemBOs.get(currentSystemID).getScreenY() - 10 + offset * number));
 						levelLabel.setMouseTransparent(false);
 						levelLabel.toFront();
 						levelLabel.setVisible(true);
@@ -1357,8 +1381,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 						jumpshipImage.setFitWidth(30);
 						jumpshipImage.setCacheHint(CacheHint.QUALITY);
 						jumpshipImage.setSmooth(false);
-						jumpshipImage.setTranslateX(boUniverse.starSystemBOs.get(currentSystemID).getScreenX() - 35);
-						jumpshipImage.setTranslateY(boUniverse.starSystemBOs.get(currentSystemID).getScreenY() - 8);
+						jumpshipImage.setTranslateX((boUniverse.starSystemBOs.get(currentSystemID).getScreenX() - 35) - offset * number);
+						jumpshipImage.setTranslateY((boUniverse.starSystemBOs.get(currentSystemID).getScreenY() - 8) + offset * number);
 						jumpshipImage.setMouseTransparent(false);
 						jumpshipImage.toFront();
 						jumpshipImage.setVisible(true);
@@ -1372,9 +1396,18 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 						logger.info(m);
 						Tools.sendMailToAdminGroup(m);
 					}
+					if (Nexus.getCurrentChar().getJumpshipId().intValue() == js.getJumpshipId()) {
+						// This is my own personal unit, move map to this ship
+						currentlyCenteredJumpship = js;
+						mapCenteredOnJumpship = true;
+					}
 				}
 
-				if (!mapCenteredOnJumpship) {
+				if (mapCenteredOnJumpship) {
+					if (currentlyCenteredJumpship != null) {
+						moveMapToJumpship(currentlyCenteredJumpship);
+					}
+				} else {
 					if (Nexus.getHomeworld() != null) {
 						moveMapToPosition(Nexus.getHomeworld());
 					}
@@ -1423,7 +1456,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					l.toBack();
 				}
 			} catch (Exception e) {
-				e.printStackTrace();
+				logger.error("Error while init universe", e);
 			}
 			setStrings();
 			logger.info("Finished to build the starmap.");
@@ -1658,6 +1691,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		BOStarSystem starsystem = jumpship.getCurrentSystem(jumpship.getCurrentSystemID());
 		logger.info("Travel to position of jumpship " + jumpship.getJumpshipName() + " --> " + starsystem.getName());
 		moveMapToPosition(starsystem);
+		jumpship.getJumpshipLevelLabel().toFront();
+		jumpship.getJumpshipImageView().toFront();
 	}
 
 	private void centerStarSystemGroups() {

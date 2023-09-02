@@ -195,8 +195,10 @@ public class WebDataInterface {
 	public static synchronized void loadDiplomacy(Long seasonId) {
 		universe.diplomacy.clear();
 
+		RoundPOJO currentRound = RoundDAO.getInstance().findBySeasonId(GameServer.getCurrentSeason());
+
 		DiplomacyDAO dao = DiplomacyDAO.getInstance();
-		ArrayList<DiplomacyPOJO> pojoList = dao.getDiplomacyForSeason(seasonId);
+		ArrayList<DiplomacyPOJO> pojoList = dao.getDiplomacyForSeason(seasonId, currentRound.getRound());
 
 		for (DiplomacyPOJO f : pojoList) {
 			DiplomacyDTO dto = EntityConverter.convertpojo2dto(f, DiplomacyDTO.class);

@@ -45,12 +45,17 @@
                   <DropShadow blurType="TWO_PASS_BOX" height="87.21" offsetY="10.0" radius="52.135" spread="0.55" width="123.33" />
                </effect>
             </Pane>
-            <Pane fx:id="left" layoutX="53.0" layoutY="20.0" mouseTransparent="true" prefHeight="535.0" prefWidth="20.0" snapToPixel="false" style="-fx-background-color: #000000;" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="30.0" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="30.0">
+            <Pane fx:id="left" layoutX="53.0" layoutY="20.0" mouseTransparent="true" prefHeight="535.0" prefWidth="20.0" snapToPixel="false" style="-fx-background-color: #000000;" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="30.0" AnchorPane.topAnchor="30.0">
                <effect>
                   <DropShadow blurType="TWO_PASS_BOX" height="90.62" offsetX="5.0" radius="56.987500000000004" spread="0.55" width="139.33" />
                </effect>
             </Pane>
             <Pane fx:id="bottom" mouseTransparent="true" prefHeight="10.0" prefWidth="840.0" snapToPixel="false" style="-fx-background-color: #000000;" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="40.0" AnchorPane.rightAnchor="20.0">
+               <effect>
+                  <DropShadow blurType="TWO_PASS_BOX" height="87.63" offsetY="-10.0" radius="44.739999999999995" spread="0.55" width="93.33" />
+               </effect>
+            </Pane>
+            <Pane fx:id="bottomTerminal" layoutX="578.0" layoutY="524.0" mouseTransparent="true" prefHeight="17.0" prefWidth="339.0" snapToPixel="false" style="-fx-background-color: #000000;" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="8.0" AnchorPane.rightAnchor="13.0">
                <effect>
                   <DropShadow blurType="TWO_PASS_BOX" height="87.63" offsetY="-10.0" radius="44.739999999999995" spread="0.55" width="93.33" />
                </effect>

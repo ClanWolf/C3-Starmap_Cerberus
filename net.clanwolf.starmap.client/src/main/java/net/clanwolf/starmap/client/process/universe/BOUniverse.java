@@ -113,15 +113,25 @@ public class BOUniverse {
 		ArrayList<Pair<BOFaction, BOFaction>> factionAlliencesList = new ArrayList<>();
 
 		for (DiplomacyDTO d1 : universeDTO.diplomacy) {
-			long factionIdRequester = d1.getFactionID_REQUEST();
+			BOFaction f1 = getFactionByID(d1.getFactionID_REQUEST());
+			BOFaction f2 = getFactionByID(d1.getFactionID_ACCEPTED());
+			Pair<BOFaction, BOFaction> checkPair = new Pair<>(f1, f2);
+
 			for (DiplomacyDTO d2 : universeDTO.diplomacy) {
-				long factionIdAccepter = d2.getFactionID_ACCEPTED();
-				if (factionIdRequester == factionIdAccepter) {
-					BOFaction f1 = getFactionByID(d1.getFactionID_REQUEST());
-					BOFaction f2 = getFactionByID(d1.getFactionID_ACCEPTED());
-					Pair<BOFaction, BOFaction> checkPair = new Pair<>(f2, f1);
-					if (!factionAlliencesList.contains(checkPair)) {
-						factionAlliencesList.add(new Pair<>(f1, f2));
+				BOFaction f3 = getFactionByID(d2.getFactionID_REQUEST());
+				BOFaction f4 = getFactionByID(d2.getFactionID_ACCEPTED());
+				Pair<BOFaction, BOFaction> finalPair = new Pair<>(f4, f3);
+
+				if (checkPair.toString().equals(finalPair.toString())) {
+					Pair<BOFaction, BOFaction> cPair = new Pair<>(finalPair.getValue(), finalPair.getKey());
+					boolean foundConfirmation = false;
+					for (Pair<BOFaction, BOFaction> p : factionAlliencesList) {
+						if (p.toString().equals(cPair.toString())) {
+							foundConfirmation = true;
+						}
+					}
+					if (!foundConfirmation) {
+						factionAlliencesList.add(finalPair);
 					}
 				}
 			}
@@ -294,7 +304,21 @@ public class BOUniverse {
 		return new ArrayList<>(factionBOs.values());
 	}
 
-	public ArrayList<BOJumpship> getJumpshipList() { return new ArrayList<>(jumpshipBOs.values()); }
+	public ArrayList<BOJumpship> getJumpshipList() {
+		Integer myJumpship = Nexus.getCurrentUser().getCurrentCharacter().getJumpshipId();
+		BOJumpship myJumpshipBO = null;
+
+		for (BOJumpship js : jumpshipBOs.values()) {
+			if (js.getJumpshipId().equals(myJumpship.longValue())) {
+				myJumpshipBO = js;
+			}
+		}
+
+		ArrayList<BOJumpship> r = new ArrayList<>(jumpshipBOs.values());
+		r.remove(myJumpshipBO);
+		r.add(myJumpshipBO);
+		return r;
+	}
 
 	public BOFaction getFactionByID(Long id){
 		for(BOFaction faction : Nexus.getBoUniverse().getFactionList()){

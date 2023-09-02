@@ -29,6 +29,9 @@ public class DiplomacyPOJO  extends Pojo {
 	@Column(name = "FactionID_ACCEPTED")
 	private Long factionID_ACCEPTED;
 
+	@Column(name = "StartingInRound")
+	private Integer startingInRound;
+
 	public Long getId() {
 		return id;
 	}
@@ -55,6 +58,14 @@ public class DiplomacyPOJO  extends Pojo {
 
 	public Long getFactionID_ACCEPTED() {
 		return factionID_ACCEPTED;
+	}
+
+	public Integer getStartingInRound() {
+		return startingInRound;
+	}
+
+	public void setStartingInRound(Integer startingInRound) {
+		this.startingInRound = startingInRound;
 	}
 
 	public void setFactionID_ACCEPTED(Long factionID_ACCEPTED) {

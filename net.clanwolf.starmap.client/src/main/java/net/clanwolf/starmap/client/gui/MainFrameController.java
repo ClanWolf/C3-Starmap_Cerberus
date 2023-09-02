@@ -2473,19 +2473,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 						for (Pair<BOFaction, BOFaction> p : factionAlliencesList) {
 							BOFaction f1 = p.getKey();
 							BOFaction f2 = p.getValue();
-
-							for (Pair<BOFaction, BOFaction> p1 : factionAlliencesList) {
-								BOFaction f1c = p1.getKey();
-								BOFaction f2c = p1.getValue();
-
-								if (f1.getShortName().equals(f2c.getShortName())) {
-									logger.info("Alliance found: " + p.getKey() + " allied with " + p.getValue());
-									if (!alliancesString.contains(f1.getFactionDTO().getShortName() + " \uD83E\uDD1D " + f2.getFactionDTO().getShortName())) {
-										alliancesString += f1.getFactionDTO().getShortName() + " \uD83E\uDD1D " + f2.getFactionDTO().getShortName() + "\r\n";
-									}
-									break;
-								}
-							}
+							alliancesString += f1.getFactionDTO().getShortName() + " \uD83E\uDD1D " + f2.getFactionDTO().getShortName() + "\r\n";
 						}
 						if (!"".equals(alliancesString)) {
 							ActionManager.getAction(ACTIONS.UPDATE_ALLIANCES_LIST).execute(Internationalization.getString("general_alliances") + ":\r\n" + alliancesString);

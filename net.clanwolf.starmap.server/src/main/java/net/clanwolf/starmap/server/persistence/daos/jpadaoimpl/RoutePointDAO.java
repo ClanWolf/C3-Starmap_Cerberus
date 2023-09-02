@@ -26,6 +26,7 @@
  */
 package net.clanwolf.starmap.server.persistence.daos.jpadaoimpl;
 
+import net.clanwolf.starmap.server.persistence.pojos.AttackPOJO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.server.persistence.CriteriaHelper;
@@ -33,6 +34,7 @@ import net.clanwolf.starmap.server.persistence.daos.GenericDAO;
 import net.clanwolf.starmap.server.persistence.pojos.RoutePointPOJO;
 
 import java.lang.invoke.MethodHandles;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -98,5 +100,24 @@ public class RoutePointDAO extends GenericDAO {
 	@Override
 	public RoutePointPOJO findById(Long userID, Long id) {
 		return (RoutePointPOJO) super.findById(userID, RoutePointPOJO.class, id);
+	}
+
+
+	/*
+	 * Give all attacks back of a season back and a round
+	 */
+	public ArrayList<RoutePointPOJO> getAllRoutePointsForSeasonForRound(Long season, int round){
+		CriteriaHelper crit = new CriteriaHelper(RoutePointPOJO.class);
+		crit.addCriteria("season", season );
+		crit.addCriteria("round", round);
+
+		List<Object> lRes = crit.getResultList();
+
+		Iterator<Object> iter = lRes.iterator();
+		ArrayList<RoutePointPOJO> lRPS = new ArrayList<>();
+
+		while (iter.hasNext()) lRPS.add((RoutePointPOJO) iter.next());
+
+		return lRPS;
 	}
 }

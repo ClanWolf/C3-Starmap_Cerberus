@@ -11,6 +11,7 @@ CURRENTLY IN PROGRESS:
 - P3: Updating the manual (ongoing): https://www.clanwolf.net/apps/C3/C3_Manual_de.pdf
 
 TODO:
+- Waiting circle animation is off-center
 - Diplomacy changes should take effect only next round
 - Add another Pane after the lobby where rules get handled out
 - Check if a player changed mech chassis in the middle of an invasion and set drop to be lost for that side
@@ -52,6 +53,19 @@ WATCH OUT FOR WHILE TESTING:
 ----------------------------------------------------------------
 
 VERSIONS
+
+Version 7.3.100 (02.09.2023)
+- UPDATED: Dependencies
+- FIXED: Multiple Jumpships on a system are visible now
+- FIXED: Unit button now selects and centers my own jumpship
+- FIXED: Label color of CNC matches the ship icon now
+- FIXED: Alliances are correctly listed
+- CHANGED: Own jumpship is always on the top of the pile
+- CHANGED: Diplomacy states will get into effect in the next round (not immediatly)
+
+Version 7.3.99 (26.08.2023)
+- UPDATED: Dependencies
+- FIXED: Server error while sending mail
 
 Version 7.3.98 (11.08.2023)
 - UPDATED: Window resize behaviour

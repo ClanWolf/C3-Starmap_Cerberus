@@ -18,6 +18,8 @@ public class DiplomacyDTO  extends Dto {
 	//@Column(name = "SeasonID")
 	private Long FactionID_ACCEPTED;
 
+	private Integer startingInRound;
+
 	public Long getId() {
 		return id;
 	}
@@ -44,6 +46,14 @@ public class DiplomacyDTO  extends Dto {
 
 	public Long getFactionID_ACCEPTED() {
 		return FactionID_ACCEPTED;
+	}
+
+	public Integer getStartingInRound() {
+		return startingInRound;
+	}
+
+	public void setStartingInRound(Integer startingInRound) {
+		this.startingInRound = startingInRound;
 	}
 
 	public void setFactionID_ACCEPTED(Long factionID_ACCEPTED) {

@@ -454,10 +454,6 @@ public class EndRound {
                     }
                 }
 
-                // move all jumpships to their next waypoint
-                logger.info("--- Moving all jumpships to their next waypoints.");
-                // Jumpships do not need to be moved, because the waypoints have a round indicator
-
                 // Count the round indicator up once
                 newRound = (long) (round + 1);
                 logger.info("--- Finally increase the round indicator to: " + newRound);
@@ -466,6 +462,14 @@ public class EndRound {
 
 				ServerNexus.getEci().sendExtCom("Round finalized.", "en", true, true, true);
 				ServerNexus.getEci().sendExtCom("Runde beendet.", "de", true, true, true);
+
+	            // Jumpships do not need to be moved, because the waypoints have a round indicator
+	            // But it needs to be checked if a jumpship would end up on a system where already a jumpship is
+	            // In this case, do not jump and abort the route (delete the waypoints?)
+	            logger.info("--- Processing jumpships.");
+//	            ArrayList<RoutePointPOJO> allRoutepoints = RoutePointDAO.getInstance().getAllRoutePointsForSeasonForRound(seasonId, newRound.intValue());
+//				for (RoutePointPOJO routePoint : allRoutepoints) { // all routepoints for this season and the new round
+//				}
 
 	            // Set all jumpships to attackReady again
                 // Add the next system (according to the new round) from the current route to StarSystemHistory column
