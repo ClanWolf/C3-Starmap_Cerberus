@@ -11,6 +11,7 @@ CURRENTLY IN PROGRESS:
 - P3: Updating the manual (ongoing): https://www.clanwolf.net/apps/C3/C3_Manual_de.pdf
 
 TODO:
+- Show indicator if I received a request for diplomacy (Flag on button)
 - Waiting circle animation is off-center
 - Diplomacy changes should take effect only next round
 - Add another Pane after the lobby where rules get handled out
