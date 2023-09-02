@@ -58,9 +58,9 @@ public class DiplomacyDAO extends GenericDAO {
 
 		while (iter.hasNext()) {
 			DiplomacyPOJO pojo = (DiplomacyPOJO) iter.next();
-			if(pojo.getStartingInRound() <= roundId) {
+			//if(pojo.getStartingInRound() != null && pojo.getStartingInRound() <= roundId.intValue()) {
 				lRPS.add(pojo);
-			}
+			//}
 		}
 
 		return lRPS;
@@ -78,9 +78,9 @@ public class DiplomacyDAO extends GenericDAO {
 
 		while (iter.hasNext()) {
 			DiplomacyPOJO pojo = (DiplomacyPOJO) iter.next();
-			if(pojo.getStartingInRound() <= roundId) {
+			//if(pojo.getStartingInRound() != null && pojo.getStartingInRound() <= roundId) {
 				lRPS.add(pojo);
-			}
+			//}
 		}
 
 		return lRPS;
