@@ -87,13 +87,15 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 	private final ArrayList<RadioButton> radioButtonsAllyList = new ArrayList<>();
 	private final ArrayList<ToggleGroup> toggleGroupsList = new ArrayList<>();
 	private final ArrayList<Boolean> allianceRequestedByThemList = new ArrayList<>();
+	private final ArrayList<Boolean> allianceWaitingForNextRoundList = new ArrayList<>();
 	private final ArrayList<Long> factionsWeAreFriendlyWithNowForSaving = new ArrayList<>();
 	private static DiplomacyPaneController instance = null;
 
-	private final Image diplomacyIconNone = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/attack.png")));
+	private final Image diplomacyIconNone = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/diplomacy_enemies.png")));
 	private final Image diplomacyIconLeft = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/diplomacy_left.png")));
 	private final Image diplomacyIconRight = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/diplomacy_right.png")));
-	private final Image diplomacyIconAllied = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/diplomacy_hover.png")));
+	private final Image diplomacyIconAllied = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/diplomacy_allies.png")));
+	private final Image diplomacyIconAlliedWaiting = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/diplomacy_allies_waiting.png")));
 
 
 	@Override
@@ -254,7 +256,11 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 				imageAlliedLogoList.get(i).setImage(diplomacyIconRight);
 			}
 			if (theyFriendly && weFriendly) {
-				imageAlliedLogoList.get(i).setImage(diplomacyIconAllied);
+				if (allianceWaitingForNextRoundList.get(i)) {
+					imageAlliedLogoList.get(i).setImage(diplomacyIconAlliedWaiting);
+				} else {
+					imageAlliedLogoList.get(i).setImage(diplomacyIconAllied);
+				}
 			}
 		}
 	}
@@ -368,6 +374,7 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 			toggleGroupsList.add(group08);
 
 			allianceRequestedByThemList.clear();
+			allianceWaitingForNextRoundList.clear();
 
 			for (int i = 0; i < labelShortNameList.size(); i++) {
 				BOFaction f = factions.get(i);
@@ -380,16 +387,22 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 
 				boolean weRequestedAlliance = false;
 				boolean allianceRequestedByThem = false;
+				boolean allianceWaitingForNextRound = false;
+
+				int weRequestedAllianceForRound = -1;
+				int allianceRequestedByThemForRound = -1;
 
 				for (DiplomacyDTO d : Nexus.getBoUniverse().getDiplomacy()) {
 					if (d.getFactionID_REQUEST().equals(f.getID()) && d.getFactionID_ACCEPTED().equals(Nexus.getCurrentChar().getFactionId().longValue())) {
 						allianceRequestedByThem = true;
+						allianceRequestedByThemForRound = d.getStartingInRound();
 						labelTheirStatusList.get(i).setText(Internationalization.getString("app_diplomacy_column_StatusFriendly"));
 					}
 					if (d.getFactionID_REQUEST().equals(Nexus.getCurrentChar().getFactionId().longValue()) && d.getFactionID_ACCEPTED().equals(f.getID())) {
 						radioButtonsAllyList.get(i).setSelected(true);
 						radioButtonsEnemyList.get(i).setSelected(false);
 						weRequestedAlliance = true;
+						weRequestedAllianceForRound = d.getStartingInRound();
 					}
 				}
 				if (!allianceRequestedByThem) {
@@ -405,10 +418,19 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 				if (!allianceRequestedByThem && weRequestedAlliance) {
 					imageAlliedLogoList.get(i).setImage(diplomacyIconRight);
 				}
+
+				int cRound = Nexus.getBoUniverse().currentRound;
 				if (allianceRequestedByThem && weRequestedAlliance) {
-					imageAlliedLogoList.get(i).setImage(diplomacyIconAllied);
+					if ((allianceRequestedByThemForRound >= cRound) && (weRequestedAllianceForRound >= cRound)) {
+						imageAlliedLogoList.get(i).setImage(diplomacyIconAllied);
+						allianceWaitingForNextRound = false;
+					} else {
+						imageAlliedLogoList.get(i).setImage(diplomacyIconAlliedWaiting);
+						allianceWaitingForNextRound = true;
+					}
 				}
 
+				allianceWaitingForNextRoundList.add(allianceWaitingForNextRound);
 				allianceRequestedByThemList.add(allianceRequestedByThem);
 
 				radioButtonsAllyList.get(i).setToggleGroup(toggleGroupsList.get(i));

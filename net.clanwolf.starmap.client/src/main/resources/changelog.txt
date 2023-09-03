@@ -11,6 +11,7 @@ CURRENTLY IN PROGRESS:
 - P3: Updating the manual (ongoing): https://www.clanwolf.net/apps/C3/C3_Manual_de.pdf
 
 TODO:
+- Show indicator if I received a request for diplomacy (Flag on button)
 - Waiting circle animation is off-center
 - Diplomacy changes should take effect only next round
 - Add another Pane after the lobby where rules get handled out
@@ -54,7 +55,7 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
-Version 7.3.100 (02.09.2023)
+Version 7.3.101 (03.09.2023)
 - UPDATED: Dependencies
 - FIXED: Multiple Jumpships on a system are visible now
 - FIXED: Unit button now selects and centers my own jumpship

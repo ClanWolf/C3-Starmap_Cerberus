@@ -55,7 +55,7 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
-Version 7.3.100 (02.09.2023)
+Version 7.3.101 (03.09.2023)
 - UPDATED: Dependencies
 - FIXED: Multiple Jumpships on a system are visible now
 - FIXED: Unit button now selects and centers my own jumpship

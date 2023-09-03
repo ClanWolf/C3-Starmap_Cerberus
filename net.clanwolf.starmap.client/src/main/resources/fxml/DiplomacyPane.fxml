@@ -15,7 +15,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="DiplomacyPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/19" fx:controller="net.clanwolf.starmap.client.gui.panes.diplomacy.DiplomacyPaneController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="DiplomacyPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/20.0.1" fx:controller="net.clanwolf.starmap.client.gui.panes.diplomacy.DiplomacyPaneController">
 	<children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2c506d" height="395.0" layoutX="228.0" layoutY="32.0" mouseTransparent="true" opacity="0.75" stroke="#779fc3" strokeType="INSIDE" strokeWidth="2.0" width="602.0" />
       <Label fx:id="panelHeadline" alignment="BASELINE_RIGHT" contentDisplay="CENTER" focusTraversable="false" layoutX="14.0" layoutY="375.0" opacity="0.12" prefWidth="794.0" text="DIPLOMACY">
@@ -55,7 +55,7 @@
                   <Image url="@../images/logos/factions/FS.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="ivAllied01" fitHeight="60.0" fitWidth="30.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="1">
+            <ImageView fx:id="ivAllied01" fitHeight="30.0" fitWidth="60.0" mouseTransparent="true" pickOnBounds="true" visible="false" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="1">
                <image>
                   <Image url="@../images/buttons/diplomacy_hover.png" />
                </image>
@@ -65,7 +65,7 @@
                   <Image url="@../images/logos/factions/FS.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="ivAllied02" fitHeight="60.0" fitWidth="30.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="2">
+            <ImageView fx:id="ivAllied02" fitHeight="30.0" fitWidth="60.0" mouseTransparent="true" pickOnBounds="true" visible="false" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="2">
                <image>
                   <Image url="@../images/buttons/diplomacy_hover.png" />
                </image>
@@ -75,7 +75,7 @@
                   <Image url="@../images/logos/factions/FS.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="ivAllied03" fitHeight="60.0" fitWidth="30.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="3">
+            <ImageView fx:id="ivAllied03" fitHeight="30.0" fitWidth="60.0" mouseTransparent="true" pickOnBounds="true" visible="false" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="3">
                <image>
                   <Image url="@../images/buttons/diplomacy_hover.png" />
                </image>
@@ -85,7 +85,7 @@
                   <Image url="@../images/logos/factions/FS.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="ivAllied04" fitHeight="60.0" fitWidth="30.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="4">
+            <ImageView fx:id="ivAllied04" fitHeight="30.0" fitWidth="60.0" mouseTransparent="true" pickOnBounds="true" visible="false" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="4">
                <image>
                   <Image url="@../images/buttons/diplomacy_hover.png" />
                </image>
@@ -95,7 +95,7 @@
                   <Image url="@../images/logos/factions/FS.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="ivAllied05" fitHeight="60.0" fitWidth="30.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="5">
+            <ImageView fx:id="ivAllied05" fitHeight="30.0" fitWidth="60.0" mouseTransparent="true" pickOnBounds="true" visible="false" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="5">
                <image>
                   <Image url="@../images/buttons/diplomacy_hover.png" />
                </image>
@@ -105,7 +105,7 @@
                   <Image url="@../images/logos/factions/FS.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="ivAllied06" fitHeight="60.0" fitWidth="30.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="6">
+            <ImageView fx:id="ivAllied06" fitHeight="30.0" fitWidth="60.0" mouseTransparent="true" pickOnBounds="true" visible="false" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="6">
                <image>
                   <Image url="@../images/buttons/diplomacy_hover.png" />
                </image>
@@ -115,7 +115,7 @@
                   <Image url="@../images/logos/factions/FS.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="ivAllied07" fitHeight="60.0" fitWidth="30.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="7">
+            <ImageView fx:id="ivAllied07" fitHeight="30.0" fitWidth="60.0" mouseTransparent="true" pickOnBounds="true" visible="false" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="7">
                <image>
                   <Image url="@../images/buttons/diplomacy_hover.png" />
                </image>
@@ -125,7 +125,7 @@
                   <Image url="@../images/logos/factions/FS.png" />
                </image>
             </ImageView>
-            <ImageView fx:id="ivAllied08" fitHeight="60.0" fitWidth="30.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true" visible="false" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="8">
+            <ImageView fx:id="ivAllied08" fitHeight="30.0" fitWidth="60.0" mouseTransparent="true" pickOnBounds="true" visible="false" GridPane.columnIndex="5" GridPane.halignment="CENTER" GridPane.hgrow="NEVER" GridPane.rowIndex="8">
                <image>
                   <Image url="@../images/buttons/diplomacy_hover.png" />
                </image>
