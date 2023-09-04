@@ -13,7 +13,7 @@
 
 			<property name="current_session_context_class" value="thread" />
 			<property name="hibernate.connection.handling_mode" value="DELAYED_ACQUISITION_AND_RELEASE_AFTER_TRANSACTION" />
-			<property name="hibernate.dialect" value="org.hibernate.dialect.MariaDBDialect" />
+			<!-- <property name="hibernate.dialect" value="org.hibernate.dialect.MariaDBDialect" /> THIS IS THE DEFAULT -->
 
 			<!-- Hikari connection pool -->
 			<property name="hibernate.hikari.dataSource.url" value="jdbc:mariadb://localhost:3306/C3?useUnicode=yes&amp;characterEncoding=UTF-8&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Berlin&amp;useSSL=false" />

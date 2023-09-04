@@ -55,6 +55,9 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
+Version 7.3.102 (04.09.2023)
+- FIXED: Already allied factions will be stored correctly on a status change
+
 Version 7.3.101 (03.09.2023)
 - UPDATED: Dependencies
 - FIXED: Multiple Jumpships on a system are visible now

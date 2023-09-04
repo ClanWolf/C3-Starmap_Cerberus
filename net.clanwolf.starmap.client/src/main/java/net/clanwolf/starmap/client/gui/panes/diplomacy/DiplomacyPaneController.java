@@ -421,7 +421,7 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 
 				int cRound = Nexus.getBoUniverse().currentRound;
 				if (allianceRequestedByThem && weRequestedAlliance) {
-					if ((allianceRequestedByThemForRound >= cRound) && (weRequestedAllianceForRound >= cRound)) {
+					if ((allianceRequestedByThemForRound <= cRound) && (weRequestedAllianceForRound <= cRound)) {
 						imageAlliedLogoList.get(i).setImage(diplomacyIconAllied);
 						allianceWaitingForNextRound = false;
 					} else {

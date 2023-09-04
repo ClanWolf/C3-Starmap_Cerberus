@@ -410,8 +410,23 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				EntityManagerHelper.beginTransaction(getC3UserID(session));
 
 				// remove all current entries for the player faction
+				// TODO: But keep all the entries the requesting faction was already allied with
 				for (DiplomacyPOJO dipPojo : entriesToDelete) {
-					DiplomacyDAO.getInstance().delete(getC3UserID(session), dipPojo);
+					if (!factionsThePlayerIsNowFriendlyWithList.contains(dipPojo.getFactionID_ACCEPTED())) {
+						DiplomacyDAO.getInstance().delete(getC3UserID(session), dipPojo);
+					} else {
+						ArrayList<Long> cleanedList = new ArrayList<>();
+						for (Long l : factionsThePlayerIsNowFriendlyWithList) {
+							if (l.equals(dipPojo.getFactionID_ACCEPTED())) {
+								// Do not add this one to be removed, because we were already allied
+								// So, this one will just stay in the list with the old round number
+								logger.info("Faction " + l + " was already allied. Leaving it alone.");
+							} else {
+								cleanedList.add(l);
+							}
+						}
+						factionsThePlayerIsNowFriendlyWithList = cleanedList;
+					}
 				}
 
 				for (Long l : factionsThePlayerIsNowFriendlyWithList) {
@@ -616,7 +631,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 			// remove old and set new attack character
 			daoAC.deleteByAttackId(getC3UserID(session));
-			if(newAttackCharacters.size() > 0) {
+			if(!newAttackCharacters.isEmpty()) {
 				attack.setAttackCharList(newAttackCharacters);
 			}
 			dao.update(getC3UserID(session), attack);
@@ -673,6 +688,13 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 							ServerNexus.getEci().sendExtCom("Angriff auf " + starSystem.getName() + " läuft (" +  attackerFaction.getShortName() + " " + attack.getScoreAttackerVictories() + " : " + attack.getScoreDefenderVictories() + " " + originalFaction.getShortName() + ")", "de", true, true, true);
 						}
 					} else {
+
+
+
+						// TODO: attackBroken ist hier manchmal true, obwohl der Kampf gerade gestartet wurde (Lobby)
+
+
+
 						ServerNexus.getEci().sendExtCom("Attack on " + starSystem.getName() + " is missing one of the dropleaders. Waiting...", "en", true, true, true);
 						ServerNexus.getEci().sendExtCom("Angriff auf " + starSystem.getName() + " hat einen oder beide Dropleader verloren. Wartet...", "de", true, true, true);
 					}
