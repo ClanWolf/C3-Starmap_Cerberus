@@ -88,6 +88,7 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 	private final ArrayList<ToggleGroup> toggleGroupsList = new ArrayList<>();
 	private final ArrayList<Boolean> allianceRequestedByThemList = new ArrayList<>();
 	private final ArrayList<Boolean> allianceWaitingForNextRoundList = new ArrayList<>();
+	private final ArrayList<Boolean> allianceWaitingToBreakNextRoundList = new ArrayList<>();
 	private final ArrayList<Long> factionsWeAreFriendlyWithNowForSaving = new ArrayList<>();
 	private static DiplomacyPaneController instance = null;
 
@@ -375,6 +376,7 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 
 			allianceRequestedByThemList.clear();
 			allianceWaitingForNextRoundList.clear();
+			allianceWaitingToBreakNextRoundList.clear();
 
 			for (int i = 0; i < labelShortNameList.size(); i++) {
 				BOFaction f = factions.get(i);
@@ -388,6 +390,7 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 				boolean weRequestedAlliance = false;
 				boolean allianceRequestedByThem = false;
 				boolean allianceWaitingForNextRound = false;
+				boolean allianceWaitingToBreakNextRound = false;
 
 				int weRequestedAllianceForRound = -1;
 				int allianceRequestedByThemForRound = -1;
@@ -430,6 +433,7 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 					}
 				}
 
+				allianceWaitingToBreakNextRoundList.add(allianceWaitingToBreakNextRound);
 				allianceWaitingForNextRoundList.add(allianceWaitingForNextRound);
 				allianceRequestedByThemList.add(allianceRequestedByThem);
 
