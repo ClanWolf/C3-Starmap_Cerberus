@@ -56,6 +56,7 @@ import org.slf4j.LoggerFactory;
 import java.lang.invoke.MethodHandles;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Timer;
 import java.util.concurrent.CountDownLatch;
@@ -404,10 +405,23 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			RoundPOJO currentRound = RoundDAO.getInstance().findBySeasonId(GameServer.getCurrentSeason());
 			ArrayList<DiplomacyPOJO> entriesToDelete = DiplomacyDAO.getInstance().getAllRequestsForFactions(factionID, currentRound.getRound());
 
-			ArrayList<DiplomacyPOJO> newEntries = new ArrayList<>();
-
 			try {
 				EntityManagerHelper.beginTransaction(getC3UserID(session));
+
+				for (DiplomacyPOJO d1 : entriesToDelete) {
+					boolean entryFound = false;
+					for (Long fid2 : factionsThePlayerIsNowFriendlyWithList) {
+						if (Objects.equals(d1.getFactionID_ACCEPTED(), fid2)) {
+							entryFound = true;
+							break;
+						}
+					}
+					if (!entryFound) {
+						// d1 needs to get a endRoundValue of cRound + 1
+						d1.setEndingInRound(currentRound.getRound().intValue() + 1);
+						DiplomacyDAO.getInstance().update(getC3UserID(session), d1);
+					}
+				}
 
 				// remove all current entries for the player faction
 				// TODO: But keep all the entries the requesting faction was already allied with

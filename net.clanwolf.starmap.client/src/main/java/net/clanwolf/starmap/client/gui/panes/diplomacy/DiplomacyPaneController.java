@@ -378,6 +378,8 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 			allianceWaitingForNextRoundList.clear();
 			allianceWaitingToBreakNextRoundList.clear();
 
+			int cRound = Nexus.getBoUniverse().currentRound;
+
 			for (int i = 0; i < labelShortNameList.size(); i++) {
 				BOFaction f = factions.get(i);
 
@@ -394,6 +396,7 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 
 				int weRequestedAllianceForRound = -1;
 				int allianceRequestedByThemForRound = -1;
+				int endOfAllianceRequestedByThemForRound = -1;
 
 				for (DiplomacyDTO d : Nexus.getBoUniverse().getDiplomacy()) {
 					if (d.getFactionID_REQUEST().equals(f.getID()) && d.getFactionID_ACCEPTED().equals(Nexus.getCurrentChar().getFactionId().longValue())) {
@@ -406,6 +409,9 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 						radioButtonsEnemyList.get(i).setSelected(false);
 						weRequestedAlliance = true;
 						weRequestedAllianceForRound = d.getStartingInRound();
+					}
+					if (d.getEndingInRound() != null && d.getEndingInRound() < cRound) {
+						allianceWaitingToBreakNextRound = true;
 					}
 				}
 				if (!allianceRequestedByThem) {
@@ -422,9 +428,8 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 					imageAlliedLogoList.get(i).setImage(diplomacyIconRight);
 				}
 
-				int cRound = Nexus.getBoUniverse().currentRound;
 				if (allianceRequestedByThem && weRequestedAlliance) {
-					if ((allianceRequestedByThemForRound <= cRound) && (weRequestedAllianceForRound <= cRound)) {
+					if ((allianceRequestedByThemForRound <= cRound) && (weRequestedAllianceForRound <= cRound) && !allianceWaitingToBreakNextRound) {
 						imageAlliedLogoList.get(i).setImage(diplomacyIconAllied);
 						allianceWaitingForNextRound = false;
 					} else {
