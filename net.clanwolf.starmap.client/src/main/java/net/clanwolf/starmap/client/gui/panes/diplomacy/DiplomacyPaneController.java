@@ -97,7 +97,7 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 	private final Image diplomacyIconRight = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/diplomacy_right.png")));
 	private final Image diplomacyIconAllied = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/diplomacy_allies.png")));
 	private final Image diplomacyIconAlliedWaiting = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/diplomacy_allies_waiting.png")));
-
+	private final Image diplomacyIconAlliedBrokenWaiting = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/diplomacy_enemies_waiting.png")));
 
 	@Override
 	public void setStrings() {
@@ -410,7 +410,7 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 						weRequestedAlliance = true;
 						weRequestedAllianceForRound = d.getStartingInRound();
 					}
-					if (d.getEndingInRound() != null && d.getEndingInRound() < cRound) {
+					if (d.getEndingInRound() != null && d.getEndingInRound() > cRound) {
 						allianceWaitingToBreakNextRound = true;
 					}
 				}
@@ -429,9 +429,14 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 				}
 
 				if (allianceRequestedByThem && weRequestedAlliance) {
-					if ((allianceRequestedByThemForRound <= cRound) && (weRequestedAllianceForRound <= cRound) && !allianceWaitingToBreakNextRound) {
-						imageAlliedLogoList.get(i).setImage(diplomacyIconAllied);
-						allianceWaitingForNextRound = false;
+					if ((allianceRequestedByThemForRound <= cRound) && (weRequestedAllianceForRound <= cRound)) {
+						if( !allianceWaitingToBreakNextRound) {
+							imageAlliedLogoList.get(i).setImage(diplomacyIconAllied);
+							allianceWaitingForNextRound = false;
+						} else{
+							imageAlliedLogoList.get(i).setImage(diplomacyIconAlliedBrokenWaiting);
+							allianceWaitingForNextRound = false;
+						}
 					} else {
 						imageAlliedLogoList.get(i).setImage(diplomacyIconAlliedWaiting);
 						allianceWaitingForNextRound = true;

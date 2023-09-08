@@ -85,4 +85,15 @@ public class DiplomacyDAO extends GenericDAO {
 
 		return lRPS;
 	}
+
+	public void deleteEntrieForRound(Long userID, Long seasonID, Long round){
+
+		ArrayList<DiplomacyPOJO> allEntries = getDiplomacyForSeason(seasonID, round);
+		for(DiplomacyPOJO dip1 : allEntries){
+			if(dip1.getEndingInRound() != null && dip1.getEndingInRound() == round.intValue()){
+				delete(userID, dip1);
+			}
+		}
+	}
+
 }

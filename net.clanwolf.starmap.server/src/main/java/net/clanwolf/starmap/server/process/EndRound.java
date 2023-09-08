@@ -471,6 +471,9 @@ public class EndRound {
 //				for (RoutePointPOJO routePoint : allRoutepoints) { // all routepoints for this season and the new round
 //				}
 
+                //remove not needed diplomacy entries
+                DiplomacyDAO.getInstance().deleteEntrieForRound(ServerNexus.END_ROUND_USERID,GameServer.getCurrentSeason(), roundPOJO.getRound());
+
 	            // Set all jumpships to attackReady again
                 // Add the next system (according to the new round) from the current route to StarSystemHistory column
                 logger.info("--- Setting all jumpships to attackReady again.");

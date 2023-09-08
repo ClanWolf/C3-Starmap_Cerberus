@@ -404,6 +404,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 			RoundPOJO currentRound = RoundDAO.getInstance().findBySeasonId(GameServer.getCurrentSeason());
 			ArrayList<DiplomacyPOJO> entriesToDelete = DiplomacyDAO.getInstance().getAllRequestsForFactions(factionID, currentRound.getRound());
+			ArrayList<DiplomacyPOJO> entriesToDeletedNextRound = new ArrayList<>();
 
 			try {
 				EntityManagerHelper.beginTransaction(getC3UserID(session));
@@ -420,8 +421,12 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 						// d1 needs to get a endRoundValue of cRound + 1
 						d1.setEndingInRound(currentRound.getRound().intValue() + 1);
 						DiplomacyDAO.getInstance().update(getC3UserID(session), d1);
+						entriesToDeletedNextRound.add(d1);
+
 					}
 				}
+
+				entriesToDelete.removeAll(entriesToDeletedNextRound);
 
 				// remove all current entries for the player faction
 				// TODO: But keep all the entries the requesting faction was already allied with
