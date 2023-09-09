@@ -55,8 +55,8 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
-Version 7.3.103 (08.09.2023)
-- CHANGED: Diplomacy
+Version 7.3.104 (08.09.2023)
+- CHANGED: If an alliance is broken up, this will activate in the next round
 
 Version 7.3.102 (04.09.2023)
 - FIXED: Already allied factions will be stored correctly on a status change

@@ -672,7 +672,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				boolean foundDropleadDefender = false;
 				int numberOfPilots = 0;
 				if (attack.getAttackCharList() != null) {
-					if (attack.getAttackCharList().size() > 0) {
+					if (!attack.getAttackCharList().isEmpty()) {
 						lobbyOpened = true;
 						numberOfPilots = attack.getAttackCharList().size();
 						for (AttackCharacterPOJO ac : attack.getAttackCharList()) {
