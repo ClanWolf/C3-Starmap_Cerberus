@@ -662,7 +662,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			dao.refresh(getC3UserID(session), attack);
 
 //			JumpshipPOJO jsHelp =daoJJ.findById(getC3UserID(session), attack.getJumpshipID());
-//			daoJJ.refresh(getC3UserID(session), jsHelp);
+//			daoJJ.refresh(getC3UserID(session), jsHelp );
 
 			RoundPOJO currentRound = RoundDAO.getInstance().findBySeasonId(GameServer.getCurrentSeason());
 			long currentRoundId = currentRound.getRound();
