@@ -659,9 +659,9 @@
   -fx-table-cell-border-color: transparent;
 }
 .table-row-cell {
-  -fx-max-height: 16;
-  -fx-pref-height: 16;
-  -fx-min-height: 16;
+  -fx-max-height: 19;
+  -fx-pref-height: 19;
+  -fx-min-height: 19;
 
   -fx-text-fill: #a3d4ef;
   -fx-background-color: transparent;

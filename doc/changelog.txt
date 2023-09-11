@@ -57,9 +57,12 @@ VERSIONS
 Version 7.3.105 (10.09.2023)
 - ADDED: First new planetary images (Lothan)
 - ADDED: Planet surface button (if planet has surface maps)
+- ADDED: Silent precaching of invasion videos on startup
+- FIXED: Chatpane scrolling and row height
 - CHANGED: Layout of diplomacy pane
+- CHANGED: Space char in IRC nick to "_"
 
-- Precache videos (Invasion)
+
 - If an invasion is started, Ulric announces that the attack is broken although it is not (C3GameSessionHandler, L.713)
 - If I am Allied and break up, save, and then ally again, this will not be saved
 

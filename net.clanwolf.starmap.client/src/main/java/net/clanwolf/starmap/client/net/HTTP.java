@@ -196,20 +196,24 @@ public abstract class HTTP {
 		}
 	}
 
+	public static void download(String address, String localFileName) throws Exception {
+		download(address, localFileName, true);
+	}
+
 	/**
 	 * Download
 	 *
 	 * @param address       The adress of the file to be loaded
 	 * @param localFileName The filename to store the file to
 	 */
-	public static void download(String address, String localFileName) throws Exception {
+	public static void download(String address, String localFileName, boolean wait) throws Exception {
 		Runnable runnable = () -> {
 			OutputStream out = null;
 			InputStream in = null;
 			URLConnection conn;
 
 			try {
-				logger.info("Downloading: " + address);
+				logger.info("Downloading: " + address + " to " + localFileName);
 
 				URI uri = new URI(address);
 				URL url = uri.toURL();
@@ -260,20 +264,26 @@ public abstract class HTTP {
 			}
 		};
 
-		try (ExecutorService es = Executors.newCachedThreadPool()) {
-			es.execute(runnable);
-			es.shutdown();
-			boolean finished = es.awaitTermination(1, TimeUnit.MINUTES);
-		} catch (Exception e) {
-			e.printStackTrace();
-			logger.error("Download error", e);
-		}
+		if (wait) {
+			try (ExecutorService es = Executors.newCachedThreadPool()) {
+				es.execute(runnable);
+				es.shutdown();
+				boolean finished = es.awaitTermination(1, TimeUnit.MINUTES);
+			} catch (Exception e) {
+				e.printStackTrace();
+				logger.error("Download error", e);
+			}
 
-		File f = new File(localFileName);
-		if (f.isFile() && f.canRead()) {
-			logger.info("Download ok: " + localFileName);
+			File f = new File(localFileName);
+			if (f.isFile() && f.canRead()) {
+				logger.info("Download ok: " + localFileName);
+			} else {
+				throw new RuntimeException("Download error");
+			}
 		} else {
-			throw new RuntimeException("Download error");
+			// Download in background
+			Thread t = new Thread(runnable);
+			t.start();
 		}
 	}
 
@@ -334,9 +344,10 @@ public abstract class HTTP {
 
 		String videoFileName = (cacheFolderName + File.separator + s).replace("/", "\\");
 		File f1 = new File(videoFileName);
-		logger.info("Looking for video file: " + f1.getAbsolutePath());
+		logger.info("Looking for video file in cache: " + f1.getAbsolutePath());
 
 		if (!f1.isFile()) {
+			logger.info("Video file " + f1.getAbsolutePath() + "NOT found. Downloading.");
 			String serverUrl = C3Properties.getProperty(C3PROPS.SERVER_URL);
 			if (!s.startsWith("/")) {
 				s = "/" + s;

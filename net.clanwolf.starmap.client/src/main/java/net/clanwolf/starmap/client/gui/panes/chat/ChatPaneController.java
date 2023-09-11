@@ -80,7 +80,6 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 					if (chatUser.equalsIgnoreCase("Ulric".toLowerCase())) {
 						c = "-fx-background-color:#1d374b;";
 					} else if (chatUser.contains("[" + Internationalization.getString("C3_IRC_Priv") + "]")) {
-						//						c = "-fx-background-color:#294d69;";
 						c = "-fx-background-color:#125a2f;";
 					}
 				}
@@ -327,6 +326,9 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 				} else {
 					setStyle("");
 				}
+//				setPrefHeight(24);
+//				setMinHeight(24);
+//				setMaxHeight(24);
 			}
 		});
 

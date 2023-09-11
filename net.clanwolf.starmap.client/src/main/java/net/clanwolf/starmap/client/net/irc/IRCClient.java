@@ -55,10 +55,10 @@ public class IRCClient implements ActionCallBackListener {
 	public static boolean connected = false;
 	private static IRCApi _api;
 	public static String myNick = "";
-	public String nick = "C3\\" + Nexus.getCurrentUser().getUserName() + "";
-	public String altNick1 = "C3\\" + Nexus.getCurrentUser().getUserName() + "_1";
-	public String altNick2 = "C3\\" + Nexus.getCurrentUser().getUserName() + "_2";
-	public String altNick3 = "C3\\" + Nexus.getCurrentUser().getUserName() + "_3";
+	public String nick = "C3\\" + Nexus.getCurrentUser().getUserName().replace(" ", "_") + "";
+	public String altNick1 = "C3\\" + Nexus.getCurrentUser().getUserName().replace(" ", "_") + "_1";
+	public String altNick2 = "C3\\" + Nexus.getCurrentUser().getUserName().replace(" ", "_") + "_2";
+	public String altNick3 = "C3\\" + Nexus.getCurrentUser().getUserName().replace(" ", "_") + "_3";
 
 	public IRCClient() {
 		ActionManager.addActionCallbackListener(ACTIONS.IRC_SEND_MESSAGE, this);

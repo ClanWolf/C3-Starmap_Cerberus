@@ -54,6 +54,7 @@ import net.clanwolf.starmap.client.enums.C3MESSAGES;
 import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
 import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
 //import net.clanwolf.starmap.client.gui.panes.logging.LogWatcher;
+import net.clanwolf.starmap.client.net.HTTP;
 import net.clanwolf.starmap.client.net.Server;
 import net.clanwolf.starmap.logging.C3LogUtil;
 import net.clanwolf.starmap.client.nexus.Nexus;
@@ -281,7 +282,7 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 	}
 
 	@Override
-	public void init() {
+	public void init() throws Exception {
 		notifyPreloader(new Preloader.ProgressNotification(10.0));
 
 		// Logging
@@ -499,7 +500,43 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 //		}
 	}
 
-	public void cleanCache() {
+	private void precacheVideos(String cacheFolderName) throws Exception {
+		logger.info("Triggering pre-caching of invasion videos:");
+
+		String f1n = cacheFolderName + File.separator + "video" + File.separator+ "rpg" + File.separator + "resources" + File.separator + "21" + File.separator + "Invasion_Intro.mp4";
+		File f1 = new File(f1n);
+		if (!f1.isFile()) {
+			logger.info(f1n + " NOT found in cache.");
+			HTTP.download("https://www.clanwolf.net/apps/C3/rpg/resources/21/Invasion_Intro.mp4", f1n, false);
+		} else {
+			logger.info(f1n + " found in cache.");
+		}
+		String f2n = cacheFolderName + File.separator + "video" + File.separator+ "rpg" + File.separator + "resources" + File.separator + "50" + File.separator + "Invasion_Intro.mp4";
+		File f2 = new File(f2n);
+		if (!f2.isFile()) {
+			logger.info(f2n + " NOT found in cache.");
+			HTTP.download("https://www.clanwolf.net/apps/C3/rpg/resources/50/Invasion_Intro.mp4", f2n, false);
+		} else {
+			logger.info(f2n + " found in cache.");
+		}
+		String f3n = cacheFolderName + File.separator + "video" + File.separator+ "rpg" + File.separator + "resources" + File.separator + "75" + File.separator + "Invasion_Intro.mp4";
+		File f3 = new File(f3n);
+		if (!f3.isFile()) {
+			logger.info(f3n + " NOT found in cache.");
+			HTTP.download("https://www.clanwolf.net/apps/C3/rpg/resources/75/Invasion_Intro.mp4", f3n, false);
+		} else {
+			logger.info(f3n + " found in cache.");
+		}
+		String f4n = cacheFolderName + File.separator + "video" + File.separator+ "rpg" + File.separator + "resources" + File.separator + "100" + File.separator + "Invasion_Intro.mp4";
+		File f4 = new File(f4n);
+		if (!f4.isFile()) {
+			logger.info(f4n + " NOT found in cache.");
+			HTTP.download("https://www.clanwolf.net/apps/C3/rpg/resources/100/Invasion_Intro.mp4", f4n, false);
+		} else {
+			logger.info(f4n + " found in cache.");
+		}
+	}
+	public void cleanCache() throws Exception {
 		long numberOfDays = 90;
 		logger.info("Cleaning cache (cleaning files older than " + numberOfDays + " days)!");
 		String cacheFolderName = System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "cache";
@@ -513,9 +550,11 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 		logger.info("--- [start]");
 		Tools.listDirectory(f);
 		logger.info("--- [end]");
+
+		precacheVideos(cacheFolderName);
 	}
 
-	public void clearCache() {
+	public void clearCache() throws Exception {
 		logger.info("Clearing cache!");
 		String cacheFolderName = System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "cache";
 		File f = new File(cacheFolderName);
@@ -541,6 +580,8 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 		logger.info("--- [start]");
 		Tools.listDirectory(u);
 		logger.info("--- [end]");
+
+		precacheVideos(cacheFolderName);
 	}
 
 	// Records relative x and y coordinates.
