@@ -204,6 +204,7 @@ public class BORolePlayStory {
 				return null;
 			}
 			// load rpg video
+			logger.info("+++++++++ Get Video: " + rp.getStoryIntro() + ", " + videoPath);
 			return HTTP.getCachedVideo(rp.getStoryIntro(), videoPath);
 		} catch (Exception e) {
 			logger.info("Error while loading RPG video! " + e.getMessage());

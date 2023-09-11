@@ -655,6 +655,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			}
 			dao.update(getC3UserID(session), attack);
 
+			logger.info("test");
 			EntityManagerHelper.commit(getC3UserID(session));
 
 			attack = dao.findById(getC3UserID(session), attack.getId());

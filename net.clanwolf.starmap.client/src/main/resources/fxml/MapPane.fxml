@@ -15,7 +15,7 @@
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="LoginPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/19" fx:controller="net.clanwolf.starmap.client.gui.panes.map.MapPaneController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="LoginPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/20.0.1" fx:controller="net.clanwolf.starmap.client.gui.panes.map.MapPaneController">
 	<children>
       <ImageView fx:id="templateBackground" fitHeight="567.0" fitWidth="944.0" layoutX="-70.0" layoutY="-22.0" mouseTransparent="true" opacity="0.74" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
@@ -106,9 +106,24 @@
             </AnchorPane>
             <TextArea fx:id="taAlliances" focusTraversable="false" layoutX="1.0" layoutY="33.0" mouseTransparent="true" prefHeight="244.0" prefWidth="490.0" styleClass="contentTextAreaEmpty" stylesheets="@../styles/MainFrameStyle.css" />
          </children></Pane>
-      <Pane fx:id="paneSystemDetail" layoutX="683.0" layoutY="22.0" mouseTransparent="true" prefHeight="253.0" prefWidth="149.0" styleClass="systemDetailPanelSolid" stylesheets="@../styles/MainFrameStyle.css">
+      <Pane fx:id="paneSystemDetail" layoutX="683.0" layoutY="22.0" prefHeight="253.0" prefWidth="149.0" styleClass="systemDetailPanelSolid" stylesheets="@../styles/MainFrameStyle.css">
          <children>
-            <Label fx:id="labelSystemName" alignment="CENTER" layoutX="15.0" layoutY="6.0" prefHeight="32.0" prefWidth="120.0" text="..." />
+            <HBox alignment="CENTER_LEFT" layoutX="5.0" layoutY="6.0">
+               <children>
+                  <ImageView fx:id="ivSurfaceMap" fitHeight="20.0" fitWidth="20.0" onMouseClicked="#handleSurfaceMapButtonClick" pickOnBounds="true" preserveRatio="true" HBox.hgrow="NEVER">
+                     <image>
+                        <Image url="@../images/map/union.png" />
+                     </image>
+                     <HBox.margin>
+                        <Insets right="5.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <Label fx:id="labelSystemName" alignment="CENTER_RIGHT" prefHeight="32.0" prefWidth="105.0" text="..." HBox.hgrow="ALWAYS" />
+               </children>
+               <padding>
+                  <Insets left="5.0" right="5.0" />
+               </padding>
+            </HBox>
             <ImageView fx:id="labelSystemImage" fitHeight="114.0" fitWidth="114.0" layoutX="18.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true" />
             <ImageView fx:id="labelFactionImage" fitHeight="68.0" fitWidth="68.0" layoutX="41.0" layoutY="172.0" pickOnBounds="true" preserveRatio="true" />
          </children>

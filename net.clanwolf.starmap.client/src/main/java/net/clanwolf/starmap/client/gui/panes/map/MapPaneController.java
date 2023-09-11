@@ -146,6 +146,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	@FXML
 	ImageView ivForbidden;
 	@FXML
+	ImageView ivSurfaceMap;
+	@FXML
 	Label labelMouseCoords;
 	@FXML
 	Button mapButton01; // confirm
@@ -1767,6 +1769,11 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		}
 	}
 
+	@FXML
+	public void handleSurfaceMapButtonClick() {
+		logger.info("clicked on surface map");
+	}
+
 	public void showSystemDetail(BOStarSystem sys) {
 		if (paneSystemDetail != null) {
 			// Set system information
@@ -1786,6 +1793,12 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				Double x = sys.getX();
 				Double y = sys.getY();
 				ActionManager.getAction(ACTIONS.UPDATE_COORD_INFO).execute(sys.getName() + " [X:" + String.format("%.2f", x) + "] - [Y:" + String.format("%.2f", y) + "]");
+
+				if (sys.systemHasSurfaceMap) {
+					ivSurfaceMap.setVisible(true);
+				} else {
+					ivSurfaceMap.setVisible(false);
+				}
 
 				// Fade in transition 06 (DetailPane)
 				FadeTransition fadeInTransition_06 = new FadeTransition(Duration.millis(200), paneSystemDetail);

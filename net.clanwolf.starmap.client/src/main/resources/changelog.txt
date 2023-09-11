@@ -13,7 +13,6 @@ CURRENTLY IN PROGRESS:
 TODO:
 - Show indicator if I received a request for diplomacy (Flag on button)
 - Waiting circle animation is off-center
-- Diplomacy changes should take effect only next round
 - Add another Pane after the lobby where rules get handled out
 - Check if a player changed mech chassis in the middle of an invasion and set drop to be lost for that side
 - Error message for double login to correct error message
@@ -54,6 +53,16 @@ WATCH OUT FOR WHILE TESTING:
 ----------------------------------------------------------------
 
 VERSIONS
+
+Version 7.3.105 (10.09.2023)
+- ADDED: First new planetary images (Lothan)
+- ADDED: Planet surface button (if planet has surface maps)
+- CHANGED: Layout of diplomacy pane
+
+- Precache videos (Invasion)
+- If an invasion is started, Ulric announces that the attack is broken although it is not (C3GameSessionHandler, L.713)
+- If I am Allied and break up, save, and then ally again, this will not be saved
+
 
 Version 7.3.104 (08.09.2023)
 - CHANGED: If an alliance is broken up, this will activate in the next round

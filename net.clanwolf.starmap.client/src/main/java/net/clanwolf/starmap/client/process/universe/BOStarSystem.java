@@ -58,6 +58,9 @@ public class BOStarSystem {
 	private ImageView marker = null;
 	private ImageView industryMarker = null;
 
+	public boolean systemHasSurfaceMap = false;
+	private Image imagePlanet;
+
 	private int blockReason = 0;
 
 	private boolean isLockedByJumpship = false;
@@ -262,14 +265,29 @@ public class BOStarSystem {
 	public String getSystemImageName() { return hh_starSystemDataDTO.getStarSystemID().getSystemImageName(); }
 
 	@SuppressWarnings("unused")
+	public boolean systemHasSurfaceMap() {
+		return systemHasSurfaceMap;
+	}
+
+	@SuppressWarnings("unused")
 	public Image getSystemImage() {
-		Image imagePlanet;
 		String systemImageName = String.format("%03d", Integer.parseInt(hh_starSystemDataDTO.getStarSystemID().getSystemImageName()));
+		String systemId = hh_starSystemDataDTO.getStarSystemID().getId().intValue() + "";
+
+		if (imagePlanet != null) {
+			return imagePlanet;
+		}
+
 		try {
-			imagePlanet = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/planets/" + systemImageName + ".png")));
-		} catch (Exception e) {
-			logger.info("Planet picture not found! Consider adding a fitting image for id: " + systemImageName);
-			imagePlanet = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/planets/000_default.png")));
+			imagePlanet = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/planets/" + systemId + "/" + systemId + "_globe_static.png")));
+			systemHasSurfaceMap = true;
+		} catch(Exception e) {
+			try {
+				imagePlanet = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/planets/" + systemImageName + ".png")));
+			} catch (Exception e1) {
+				logger.info("Planet picture not found! Consider adding a fitting image for id: " + systemImageName);
+				imagePlanet = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/planets/000_default.png")));
+			}
 		}
 		return imagePlanet;
 	}

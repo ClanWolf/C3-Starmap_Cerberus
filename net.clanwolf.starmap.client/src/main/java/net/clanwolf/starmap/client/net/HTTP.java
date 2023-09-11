@@ -323,7 +323,7 @@ public abstract class HTTP {
 	}
 
 	public static Media getCachedVideo(String s, String subPath) throws Exception {
-		logger.info("Looking for video for string: " + s);
+		logger.info("Looking for video for string " + s + " in " + subPath + ".");
 
 		String cacheFolderName = System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "cache" + File.separator + "video" + File.separator + subPath;
 		File cacheFolder = new File(cacheFolderName);
