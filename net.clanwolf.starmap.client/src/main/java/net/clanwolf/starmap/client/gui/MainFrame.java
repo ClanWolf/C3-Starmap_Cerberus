@@ -75,10 +75,7 @@ import java.net.PasswordAuthentication;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.Arrays;
-import java.util.Locale;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 import java.util.regex.Pattern;
 
 @SuppressWarnings("restriction")
@@ -501,39 +498,24 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 	}
 
 	private void precacheVideos(String cacheFolderName) throws Exception {
-		logger.info("Triggering pre-caching of invasion videos:");
+		logger.info("Triggering pre-caching of resources:");
 
-		String f1n = cacheFolderName + File.separator + "video" + File.separator+ "rpg" + File.separator + "resources" + File.separator + "21" + File.separator + "Invasion_Intro.mp4";
-		File f1 = new File(f1n);
-		if (!f1.isFile()) {
-			logger.info(f1n + " NOT found in cache.");
-			HTTP.download("https://www.clanwolf.net/apps/C3/rpg/resources/21/Invasion_Intro.mp4", f1n, false);
-		} else {
-			logger.info(f1n + " found in cache.");
-		}
-		String f2n = cacheFolderName + File.separator + "video" + File.separator+ "rpg" + File.separator + "resources" + File.separator + "50" + File.separator + "Invasion_Intro.mp4";
-		File f2 = new File(f2n);
-		if (!f2.isFile()) {
-			logger.info(f2n + " NOT found in cache.");
-			HTTP.download("https://www.clanwolf.net/apps/C3/rpg/resources/50/Invasion_Intro.mp4", f2n, false);
-		} else {
-			logger.info(f2n + " found in cache.");
-		}
-		String f3n = cacheFolderName + File.separator + "video" + File.separator+ "rpg" + File.separator + "resources" + File.separator + "75" + File.separator + "Invasion_Intro.mp4";
-		File f3 = new File(f3n);
-		if (!f3.isFile()) {
-			logger.info(f3n + " NOT found in cache.");
-			HTTP.download("https://www.clanwolf.net/apps/C3/rpg/resources/75/Invasion_Intro.mp4", f3n, false);
-		} else {
-			logger.info(f3n + " found in cache.");
-		}
-		String f4n = cacheFolderName + File.separator + "video" + File.separator+ "rpg" + File.separator + "resources" + File.separator + "100" + File.separator + "Invasion_Intro.mp4";
-		File f4 = new File(f4n);
-		if (!f4.isFile()) {
-			logger.info(f4n + " NOT found in cache.");
-			HTTP.download("https://www.clanwolf.net/apps/C3/rpg/resources/100/Invasion_Intro.mp4", f4n, false);
-		} else {
-			logger.info(f4n + " found in cache.");
+		HashMap<String, ArrayList<Integer>> resourcesToCache = new HashMap<String, ArrayList<Integer>>();
+		resourcesToCache.put("Invasion_Intro.mp4", new ArrayList<>( Arrays.asList(21, 50, 75, 100)));
+		//server_url=https://www.clanwolf.net/apps/C3
+		String serverUrl = C3Properties.getProperty(C3PROPS.SERVER_URL);
+
+		for (String res : resourcesToCache.keySet()) {
+			for (Integer folder : resourcesToCache.get(res)) {
+				String fn = cacheFolderName + File.separator + "video" + File.separator+ "rpg" + File.separator + "resources" + File.separator + folder + File.separator + res;
+				File f = new File(fn);
+				if (!f.isFile()) {
+					logger.info(fn + " NOT found in cache.");
+					HTTP.download(serverUrl +"/rpg/resources/" + folder + "/" + res, fn, false);
+				} else {
+					logger.info(fn + " found in cache.");
+				}
+			}
 		}
 	}
 	public void cleanCache() throws Exception {

@@ -343,12 +343,13 @@ public class C3SoundPlayer {
 				if ("true".equals(C3Properties.getProperty(C3PROPS.PLAY_SOUND))) {
 					final AudioClip soundClip;
 					if (audioClipCache.get(url.toString()) != null) {
-						//logger.info("Playing sound from cache...");
+						//String u = url.toString();
+						//logger.info("Playing sound from cache. Url:" + u);
 						soundClip = audioClipCache.get(url.toString());
 						soundClip.stop();
 					} else {
 						String u = url.toString();
-						logger.info("Caching sound. Url: " + u);
+						logger.info("Memory-caching sound object. Url: " + u);
 						soundClip = new AudioClip(u);
 						audioClipCache.put(url.toString(), soundClip);
 					}
