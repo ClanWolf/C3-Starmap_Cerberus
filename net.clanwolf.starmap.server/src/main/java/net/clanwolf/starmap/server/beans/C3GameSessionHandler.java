@@ -694,7 +694,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 					invasionFinished = true;
 				}
 
-				boolean attackBroken = foundDropleadAttacker && foundDropleadDefender;
+				boolean attackBroken = !foundDropleadAttacker || !foundDropleadDefender;
 				if (attack.getFightsStarted() && attack.getFactionID_Winner() == null) {
 					if (!attackBroken) {
 						if (attack.getScoreAttackerVictories() == null || attack.getScoreDefenderVictories() == null) {
