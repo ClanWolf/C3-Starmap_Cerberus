@@ -49,7 +49,7 @@
 
 		<!-- C3 Revision -->
 		<!-- https://stackoverflow.com/questions/10582054/maven-project-version-inheritance-do-i-have-to-specify-the-parent-version -->
-		<revision>7.3.105</revision>
+		<revision>7.3.108</revision>
 
 		<!-- Versions -->
 		<version.java>20</version.java>
@@ -69,7 +69,7 @@
 		<version.apache.commons-collections4>4.4</version.apache.commons-collections4>
 		<version.apache.commons-net>3.9.0</version.apache.commons-net>
 		<version.blazeds-core>3.2.0.3978</version.blazeds-core>
-		<version.byte-buddy>1.14.7</version.byte-buddy>
+		<version.byte-buddy>1.14.8</version.byte-buddy>
 		<version.collections-generic>4.01</version.collections-generic>
 		<version.discord-api>5.0.0-beta.13</version.discord-api>
 		<version.dom4j>2.1.4</version.dom4j>
@@ -89,7 +89,7 @@
 		<version.jackson-jsog>1.1.2</version.jackson-jsog>
 		<version.jakarta.activation>2.0.1</version.jakarta.activation>  <!-- net.clanwolf.starmap.mail -->
 		<version.jakarta.mail>2.0.1</version.jakarta.mail>              <!-- net.clanwolf.starmap.mail -->
-		<version.jakarta.xml.bind-api>4.0.0</version.jakarta.xml.bind-api>
+		<version.jakarta.xml.bind-api>4.0.1</version.jakarta.xml.bind-api>
 		<version.javassist>3.29.2-GA</version.javassist>
 		<version.jetbrains-annotations>24.0.1</version.jetbrains-annotations>
 		<version.jetlang>0.2.23</version.jetlang>
@@ -100,8 +100,8 @@
 		<version.persistence-api>3.1.0</version.persistence-api>
 		<version.pircbotx>2.3.1</version.pircbotx>
 		<version.slf4j>2.0.9</version.slf4j>
-		<version.springframework>6.0.11</version.springframework>
-		<version.springframework-spring-context>6.0.11</version.springframework-spring-context>
+		<version.springframework>6.0.12</version.springframework>
+		<version.springframework-spring-context>6.0.12</version.springframework-spring-context>
 		<version.springframework-security-config>6.1.3</version.springframework-security-config>
 		<version.teamspeak3-api>1.3.1</version.teamspeak3-api>
 		<version.tektosyne>6.2.0</version.tektosyne>

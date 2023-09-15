@@ -2,70 +2,78 @@ C3 version history
 [ https://www.clanwolf.net | https://github.com/ClanWolf ]
 ----------------------------------------------------------------
 
-CURRENTLY IN PROGRESS:
-- P2: Auto-delete not activated user
-- P2: Delete all unneeded columns in table 'user'
-- P2: If user logs out and another logs in without closing the client, not all user related data is adapted to the new user
-- P3: Web-View of the Starmap (ongoing, ~45%)
----
-- P3: Updating the manual (ongoing): https://www.clanwolf.net/apps/C3/C3_Manual_de.pdf
-
-TODO:
-- Show indicator if I received a request for diplomacy (Flag on button)
-- Waiting circle animation is off-center
-- Add another Pane after the lobby where rules get handled out
-- Check if a player changed mech chassis in the middle of an invasion and set drop to be lost for that side
-- Error message for double login to correct error message
-- Rename Threads in Clan Wolf Forum and discord announcement to pattern: CGB ⚔ Odabasi (DC)
-- Insert discord thread for each attack automatically
-- Finish sound samples on the radio buttons (R1-3) on Invasionpane
+TODO
+PRIO 1 - Immediate:
+- If an attack is lost, the jumpship is moved back to the system it came from
+- Check diplomacy on planet attacks and routepoints (already effective?)
 - Allow allied pilots to be droplead in fights for allied factions
 - Allied faction leader should see the jump route of allied jumpships
-- Add a function to leave game / delete account
-- If a jumpship attacks, the icon is moved back to the starting system on save... the jumpship level icon needs to be moved as well
-- Channel message (discord) if a user successfully changes faction
+- If user logs out and another logs in without closing the client, not all user related data is adapted to the new user
+- Check if a player changed mech chassis in the middle of an invasion and set drop to be lost for that side
 - If attack teams are invalid, kick everyone out of the attack and force a new lobby (ResultAnalyzer.java, L.195)
-- List of faction key, where each burns at usetime (one-time faction key)
-- Sometimes the hourglass in invasionpane does not disappear after confirming result
-- Make visible from the map if an attack is broken
-- After publish was clicked in MWO, remind to confirm winner in app (!)
+
+PRIO 2 - Medium:
+- Add keyboard shortcuts for language change and help and open attack forum post
 - Userlist needs one more column on what side the char fights
 - Userlist needs one more column to display what role (e.g. droplead) the char has
-- Create simple roleplay for "requesting diplomatic status" and "accept" or "decline"
-- Sound volume and Speech volume vs RP volume cleanup
-- Add global keys to the GUI
-- Add keyboard shortcuts for language change and help and open attack forum post
-- Delete user in admin pane (?)
+- Add global keys to the GUI (to control the client by hotkeys while there is no focus)
 - Check tab order and keyboard control for all panes
-- Video does not show sometimes
+- Delete user in admin pane (?)
+- Finish sound samples on the radio buttons (R1-3) on Invasionpane
+- Auto-delete not activated user
+- Sound volume and Speech volume vs RP volume cleanup
+- Insert discord thread for each attack automatically
+- Add a function to leave game / delete account
+- Channel message (discord) if a user successfully changes faction
+- MWO API Loop is still active after the end of an invasion
+
+PRIO 3 - Long term:
+- Updating the manual (ongoing): https://www.clanwolf.net/apps/C3/C3_Manual_de.pdf
+- Web-View of the Starmap
+- Waiting circle animation is off-center
+- Banner at the End of an invasion for each faction
+- Error message for double login to correct error message
+- Rename Threads in Clan Wolf Forum and discord announcement to pattern: CGB ⚔ Odabasi (DC)
+- List of faction key, where each burns at usetime (one-time faction key)
+- Sometimes the hourglass in invasionpane does not disappear after confirming result
+- After publish was clicked in MWO, remind to confirm winner in app (!)
+
 ----------------------------------------------------------------
 
-MAYBE FIXED (Needs testing):
-- Players can still join fights when video runs
-
 WATCH OUT FOR WHILE TESTING:
+- MAYBE FIXED: Players can still join fights when video runs
+- MAYBE FIXED: Video does not show sometimes
 - People in the Lobby can only be moved by the dropleads
 - Video is playing as intro of an invasion, stops as soon as lobby owner starts the invasion ('Next' button)
 - Join buttons (invasion lobby) is correctly disabled after the fights startet / Intro is running
 - Wrong tab order of buttons and controls (anywhere)
 - Wrong statements in the manual (things might have changed and the manual becomes outdated sometimes)
 - Any exceptions or errors (ERROR or SEVERE) in the log. Warnings might be interesting, but probably not urgent
+
 ----------------------------------------------------------------
 
 VERSIONS
 
+Version 7.3.108 (16.09.2023)
+- UPDATED: Dependencies
+- FIXED: Display bug in breaking an alliance (multiple alliances are shown as broken, although only one changed)-
+- FIXED: Map planetinfopanel needs to mouse transparent if invisible
+- FIXED: If a jumpship attacks, the icon is moved back to the starting system on save... the jumpship level icon needs to be moved as well
+- CHANGED: Delete all unneeded columns in table 'user'
+
+Version 7.3.106 (14.09.2023)
+- FIXED: Ulric falsely announces a broken attack on invasion start
+
 Version 7.3.105 (12.09.2023)
-- ADDED: First new planetary images (Lothan)
+- ADDED: First new planetary images (e.g. Lothan)
 - ADDED: Planet surface button (if planet has surface maps)
 - ADDED: Silent precaching of invasion videos on startup
+- ADDED: Indicator for unanswered diplomacy requests
 - FIXED: Chatpane scrolling and row height
 - CHANGED: Layout of diplomacy pane
-- CHANGED: Space char in IRC nick to "_"
-
-
-- If an invasion is started, Ulric falsely announces a broken attack (C3GameSessionHandler, L.713)
-- If I am Allied and break up, save, and then ally again, this will not be saved
-
+- CHANGED: Spaces in IRC nick to "_"
+- CHANGED: If an alliance is in waiting state, it cannot be changed again until next round
+- CHANGED: Show only effective alliances on the map list
 
 Version 7.3.104 (08.09.2023)
 - CHANGED: If an alliance is broken up, this will activate in the next round
@@ -1181,9 +1189,7 @@ Version: 5.3.0 (10.09.2021)
 
 ---
 
-Started changelog with version 5.3.0.
-
-P1-3: Priorities
+Started changelog with version 5.3.0
 
 01 CREATED
 02 UPDATED
@@ -1193,5 +1199,3 @@ P1-3: Priorities
 06 REMOVED
 07 STARTED
 08 PREPARED
-
---- PR#xx (user)  --> github Pullrequest number xx by user "user"

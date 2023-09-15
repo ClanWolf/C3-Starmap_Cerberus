@@ -30,6 +30,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.image.ImageView;
 import javafx.util.Pair;
+import net.clanwolf.starmap.client.action.ACTIONS;
+import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.gui.panes.map.tools.GraphManager;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.transfer.dtos.*;
@@ -113,25 +115,29 @@ public class BOUniverse {
 		ArrayList<Pair<BOFaction, BOFaction>> factionAlliencesList = new ArrayList<>();
 
 		for (DiplomacyDTO d1 : universeDTO.diplomacy) {
-			BOFaction f1 = getFactionByID(d1.getFactionID_REQUEST());
-			BOFaction f2 = getFactionByID(d1.getFactionID_ACCEPTED());
-			Pair<BOFaction, BOFaction> checkPair = new Pair<>(f1, f2);
+			if (d1.getStartingInRound() <= Nexus.getCurrentRound()) {
+				BOFaction f1 = getFactionByID(d1.getFactionID_REQUEST());
+				BOFaction f2 = getFactionByID(d1.getFactionID_ACCEPTED());
+				Pair<BOFaction, BOFaction> checkPair = new Pair<>(f1, f2);
 
-			for (DiplomacyDTO d2 : universeDTO.diplomacy) {
-				BOFaction f3 = getFactionByID(d2.getFactionID_REQUEST());
-				BOFaction f4 = getFactionByID(d2.getFactionID_ACCEPTED());
-				Pair<BOFaction, BOFaction> finalPair = new Pair<>(f4, f3);
+				for (DiplomacyDTO d2 : universeDTO.diplomacy) {
+					if (d2.getStartingInRound() <= Nexus.getCurrentRound()) {
+						BOFaction f3 = getFactionByID(d2.getFactionID_REQUEST());
+						BOFaction f4 = getFactionByID(d2.getFactionID_ACCEPTED());
+						Pair<BOFaction, BOFaction> finalPair = new Pair<>(f4, f3);
 
-				if (checkPair.toString().equals(finalPair.toString())) {
-					Pair<BOFaction, BOFaction> cPair = new Pair<>(finalPair.getValue(), finalPair.getKey());
-					boolean foundConfirmation = false;
-					for (Pair<BOFaction, BOFaction> p : factionAlliencesList) {
-						if (p.toString().equals(cPair.toString())) {
-							foundConfirmation = true;
+						if (checkPair.toString().equals(finalPair.toString())) {
+							Pair<BOFaction, BOFaction> cPair = new Pair<>(finalPair.getValue(), finalPair.getKey());
+							boolean foundConfirmation = false;
+							for (Pair<BOFaction, BOFaction> p : factionAlliencesList) {
+								if (p.toString().equals(cPair.toString())) {
+									foundConfirmation = true;
+								}
+							}
+							if (!foundConfirmation) {
+								factionAlliencesList.add(finalPair);
+							}
 						}
-					}
-					if (!foundConfirmation) {
-						factionAlliencesList.add(finalPair);
 					}
 				}
 			}

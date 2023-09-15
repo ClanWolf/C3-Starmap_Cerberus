@@ -240,6 +240,10 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 			boolean weFriendly = false;
 			boolean theyFriendly = false;
 
+			if (radioButtonsAllyList.get(i).isDisabled()) {
+				continue;
+			}
+
 			if (radioButtonsAllyList.get(i).isSelected()) {
 				weFriendly = true;
 			}
@@ -268,6 +272,8 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 
 	private void init() {
 		instance = this;
+
+		ActionManager.getAction(ACTIONS.DIPLOMACY_STATUS_PENDING_HIDE).execute();
 
 		factions.clear();
 		for (BOFaction fa : Nexus.getBoUniverse().getActiveFactions()) { // all factions that have a jumpship
@@ -396,7 +402,7 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 
 				int weRequestedAllianceForRound = -1;
 				int allianceRequestedByThemForRound = -1;
-				int endOfAllianceRequestedByThemForRound = -1;
+				//int endOfAllianceRequestedByThemForRound = -1;
 
 				for (DiplomacyDTO d : Nexus.getBoUniverse().getDiplomacy()) {
 					if (d.getFactionID_REQUEST().equals(f.getID()) && d.getFactionID_ACCEPTED().equals(Nexus.getCurrentChar().getFactionId().longValue())) {
@@ -410,8 +416,15 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 						weRequestedAlliance = true;
 						weRequestedAllianceForRound = d.getStartingInRound();
 					}
-					if (d.getEndingInRound() != null && d.getEndingInRound() > cRound) {
+					if (
+						(d.getFactionID_REQUEST().equals(Nexus.getCurrentChar().getFactionId().longValue()) && d.getFactionID_ACCEPTED().equals(f.getID()) && d.getEndingInRound() != null && d.getEndingInRound() > cRound)
+					||  (d.getFactionID_ACCEPTED().equals(Nexus.getCurrentChar().getFactionId().longValue()) && d.getFactionID_REQUEST().equals(f.getID()) && d.getEndingInRound() != null && d.getEndingInRound() > cRound)
+					) {
+						logger.info("----------------- Alliance " + i + " is waiting for next round to break up.");
+
 						allianceWaitingToBreakNextRound = true;
+						radioButtonsAllyList.get(i).setDisable(true);
+						radioButtonsEnemyList.get(i).setDisable(true);
 					}
 				}
 				if (!allianceRequestedByThem) {
@@ -423,14 +436,16 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 				}
 				if (allianceRequestedByThem && !weRequestedAlliance) {
 					imageAlliedLogoList.get(i).setImage(diplomacyIconLeft);
+					ActionManager.getAction(ACTIONS.DIPLOMACY_STATUS_PENDING).execute();
 				}
 				if (!allianceRequestedByThem && weRequestedAlliance) {
 					imageAlliedLogoList.get(i).setImage(diplomacyIconRight);
+					ActionManager.getAction(ACTIONS.DIPLOMACY_STATUS_PENDING).execute();
 				}
 
 				if (allianceRequestedByThem && weRequestedAlliance) {
 					if ((allianceRequestedByThemForRound <= cRound) && (weRequestedAllianceForRound <= cRound)) {
-						if( !allianceWaitingToBreakNextRound) {
+						if(!allianceWaitingToBreakNextRound) {
 							imageAlliedLogoList.get(i).setImage(diplomacyIconAllied);
 							allianceWaitingForNextRound = false;
 						} else{
@@ -440,6 +455,10 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 					} else {
 						imageAlliedLogoList.get(i).setImage(diplomacyIconAlliedWaiting);
 						allianceWaitingForNextRound = true;
+
+						logger.info("----------------- Alliance " + i + " is waiting for next round to get into effect.");
+						radioButtonsAllyList.get(i).setDisable(true);
+						radioButtonsEnemyList.get(i).setDisable(true);
 					}
 				}
 

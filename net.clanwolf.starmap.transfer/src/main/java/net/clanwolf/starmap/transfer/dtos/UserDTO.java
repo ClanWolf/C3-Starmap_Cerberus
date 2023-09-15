@@ -34,7 +34,7 @@ import java.sql.Timestamp;
 
 /**
  * UserPOJO entity.
- * 
+ *
  * @author MyEclipse Persistence Tools
  */
 @JsonIdentityInfo(
@@ -50,14 +50,7 @@ public class UserDTO extends Dto {
 	private String mwoUsername;
 	private String userPassword;
 	private String userEMail;
-	private String userAvatar;
-	private String firstName;
-	private String lastName;
-	private String location;
-	private int zipcode;
-	private String website;
 	private long privileges;
-	private Timestamp birthDate;
 	private Timestamp joinDate;
 	private Timestamp lastLogin;
 	private Timestamp bannedUntil;
@@ -116,68 +109,12 @@ public class UserDTO extends Dto {
 		this.userEMail = userEMail;
 	}
 
-	public String getAvatar() {
-		return this.userAvatar;
-	}
-
-	public void setAvatar(String userAvatar) {
-		this.userAvatar = userAvatar;
-	}
-
-	public String getFirstName() {
-		return this.firstName;
-	}
-
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	public String getLastName() {
-		return this.lastName;
-	}
-
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	public String getLocation() {
-		return this.location;
-	}
-
-	public void setLocation(String location) {
-		this.location = location;
-	}
-
-	public int getZipcode() {
-		return this.zipcode;
-	}
-
-	public void setZipcode(int zipcode) {
-		this.zipcode = zipcode;
-	}
-
-	public String getWebsite() {
-		return this.website;
-	}
-
-	public void setWebsite(String website) {
-		this.website = website;
-	}
-
 	public long getPrivileges() {
 		return privileges;
 	}
 
 	public void setPrivileges(long privileges) {
 		this.privileges = privileges;
-	}
-
-	public Timestamp getBirthDate() {
-		return this.birthDate;
-	}
-
-	public void setBirthDate(Timestamp birthDate) {
-		this.birthDate = birthDate;
 	}
 
 	public Timestamp getJoinDate() {
@@ -262,6 +199,6 @@ public class UserDTO extends Dto {
 
 	@Override
 	public String toString() {
-		return userName + " (" + lastName + ", " + firstName + ") | " + privileges;
+		return userName + " | " + privileges;
 	}
 }

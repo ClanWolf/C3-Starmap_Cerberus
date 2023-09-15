@@ -70,29 +70,8 @@ public class UserPOJO extends Pojo {
 	@Column(name = "UserEMail", nullable = false, length = 45)
 	private String userEMail;
 
-	@Column(name = "UserAvatar", nullable = true, length = 45)
-	private String userAvatar;
-
-	@Column(name = "FirstName", nullable = true, length = 45)
-	private String firstName;
-
-	@Column(name = "LastName", nullable = true, length = 45)
-	private String lastName;
-
-	@Column(name = "Location", nullable = true, length = 45)
-	private String location;
-
-	@Column(name = "Zipcode", nullable = true, length = 11)
-	private int zipcode;
-
-	@Column(name = "Website", nullable = true, length = 45)
-	private String website;
-
 	@Column(name = "Privileges", nullable = false, length = 64)
 	private long privileges;
-
-	@Column(name = "BirthDate", nullable = true, length = 19)
-	private Timestamp birthDate;
 
 	@Column(name = "JoinDate", nullable = false, length = 19)
 	private Timestamp joinDate;
@@ -209,66 +188,6 @@ public class UserPOJO extends Pojo {
 	}
 
 	@SuppressWarnings("unused")
-	public String getAvatar() {
-		return this.userAvatar;
-	}
-
-	@SuppressWarnings("unused")
-	public void setAvatar(String userAvatar) {
-		this.userAvatar = userAvatar;
-	}
-
-	@SuppressWarnings("unused")
-	public String getFirstName() {
-		return this.firstName;
-	}
-
-	@SuppressWarnings("unused")
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
-
-	@SuppressWarnings("unused")
-	public String getLastName() {
-		return this.lastName;
-	}
-
-	@SuppressWarnings("unused")
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-
-	@SuppressWarnings("unused")
-	public String getLocation() {
-		return this.location;
-	}
-
-	@SuppressWarnings("unused")
-	public void setLocation(String location) {
-		this.location = location;
-	}
-
-	@SuppressWarnings("unused")
-	public int getZipcode() {
-		return this.zipcode;
-	}
-
-	@SuppressWarnings("unused")
-	public void setZipcode(int zipcode) {
-		this.zipcode = zipcode;
-	}
-
-	@SuppressWarnings("unused")
-	public String getWebsite() {
-		return this.website;
-	}
-
-	@SuppressWarnings("unused")
-	public void setWebsite(String website) {
-		this.website = website;
-	}
-
-	@SuppressWarnings("unused")
 	public long getPrivileges() {
 		return privileges;
 	}
@@ -276,16 +195,6 @@ public class UserPOJO extends Pojo {
 	@SuppressWarnings("unused")
 	public void setPrivileges(long privileges) {
 		this.privileges = privileges;
-	}
-
-	@SuppressWarnings("unused")
-	public Timestamp getBirthDate() {
-		return this.birthDate;
-	}
-
-	@SuppressWarnings("unused")
-	public void setBirthDate(Timestamp birthDate) {
-		this.birthDate = birthDate;
 	}
 
 	@SuppressWarnings("unused")
@@ -388,6 +297,6 @@ public class UserPOJO extends Pojo {
 
 	@Override
 	public String toString() {
-		return userName + " (" + lastName + ", " + firstName + ") | " + privileges;
+		return userName + " | " + privileges;
 	}
 }

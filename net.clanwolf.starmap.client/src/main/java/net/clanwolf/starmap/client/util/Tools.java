@@ -471,9 +471,13 @@ public final class Tools {
 //			System.out.println("diff: " + diff);
 
 			if (numberOfDays * 24 * 60 * 60 * 1000 < diff) {
-				boolean success = file.delete();
-				if (!success) {
-					logger.info("File could not be deleted: " + file.getAbsolutePath());
+				if (!file.getName().endsWith(".mp4")) {
+					boolean success = file.delete();
+					if (!success) {
+						logger.info("File could not be deleted: " + file.getAbsolutePath());
+					}
+				} else {
+					logger.info("Video files are not deleted in cache to save traffic. To empty the cache use purge!");
 				}
 			} else {
 				// file will be left

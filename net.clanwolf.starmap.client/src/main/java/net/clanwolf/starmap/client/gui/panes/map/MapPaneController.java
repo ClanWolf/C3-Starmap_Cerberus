@@ -177,6 +177,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	private NodeGestures nodeGestures;
 	private Long currentPlayerRoleInInvasion = 0L;
 
+	private int number;
+	private int offset;
 	private final Image systemForbiddenIcon0 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/forbidden0.png")));
 	private final Image systemForbiddenIcon1 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/forbidden1.png")));
 	private final Image systemForbiddenIcon2 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/forbidden2.png")));
@@ -521,9 +523,14 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 					TranslateTransition transition = new TranslateTransition(Duration.millis(100), jsi);
 					transition.setFromX(jsi.getTranslateX());
 					transition.setFromY(jsi.getTranslateY());
-					transition.setToX(boUniverse.starSystemBOs.get(currentSystemID).getScreenX() - 35);
-					transition.setToY(boUniverse.starSystemBOs.get(currentSystemID).getScreenY() - 8);
-//					transition.setOnFinished(event -> ActionManager.getAction(ACTIONS.SHOW_POPUP).execute(POPUPS.Orders_Confirmed));
+					transition.setToX((boUniverse.starSystemBOs.get(currentSystemID).getScreenX() - 35) - offset * number);
+					transition.setToY((boUniverse.starSystemBOs.get(currentSystemID).getScreenY() - 8) + offset * number);
+					transition.setOnFinished(event -> {
+						// ActionManager.getAction(ACTIONS.SHOW_POPUP).execute(POPUPS.Orders_Confirmed);
+						Label levelLabel = js.getJumpshipLevelLabel();
+						levelLabel.setTranslateX((boUniverse.starSystemBOs.get(currentSystemID).getScreenX() - 27 - offset * number));
+						levelLabel.setTranslateY((boUniverse.starSystemBOs.get(currentSystemID).getScreenY() - 10 + offset * number));
+					});
 					transition.playFromStart();
 
 					ActionManager.getAction(ACTIONS.SHOW_POPUP).execute(POPUPS.Orders_Confirmed);
@@ -1363,8 +1370,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 							}
 						}
 
-						int number = numberOfJumpshipsOnSystem.get(js.getCurrentSystemID());
-						int offset = 7;
+						number = numberOfJumpshipsOnSystem.get(js.getCurrentSystemID());
+						offset = 7;
 
 						levelLabel.setId(js.getJumpshipName() + "LEVEL");
 						levelLabel.setTranslateX((boUniverse.starSystemBOs.get(currentSystemID).getScreenX() - 27 - offset * number));
@@ -1724,6 +1731,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				sequentialTransition.getChildren().addAll(fadeInTransition_06);
 				sequentialTransition.setCycleCount(1);
 				sequentialTransition.play();
+
+				paneSystemDetail.setMouseTransparent(true);
 			}
 		}
 	}
@@ -1811,6 +1820,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 				sequentialTransition.getChildren().addAll(fadeInTransition_06);
 				sequentialTransition.setCycleCount(1);
 				sequentialTransition.play();
+
+				paneSystemDetail.setMouseTransparent(false);
 			});
 		}
 	}

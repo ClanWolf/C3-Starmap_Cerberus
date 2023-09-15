@@ -419,17 +419,19 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 					}
 					if (!entryFound) {
 						// d1 needs to get a endRoundValue of cRound + 1
-						d1.setEndingInRound(currentRound.getRound().intValue() + 1);
-						DiplomacyDAO.getInstance().update(getC3UserID(session), d1);
-						entriesToDeletedNextRound.add(d1);
-
+						if (d1.getStartingInRound() < currentRound.getRound().intValue() + 1) {
+							// This is not stored if it has a starting roundnumber for next round
+							d1.setEndingInRound(currentRound.getRound().intValue() + 1);
+							DiplomacyDAO.getInstance().update(getC3UserID(session), d1);
+							entriesToDeletedNextRound.add(d1);
+						}
 					}
 				}
 
 				entriesToDelete.removeAll(entriesToDeletedNextRound);
 
 				// remove all current entries for the player faction
-				// TODO: But keep all the entries the requesting faction was already allied with
+				// but keep all the entries the requesting faction was already allied with
 				for (DiplomacyPOJO dipPojo : entriesToDelete) {
 					if (!factionsThePlayerIsNowFriendlyWithList.contains(dipPojo.getFactionID_ACCEPTED())) {
 						DiplomacyDAO.getInstance().delete(getC3UserID(session), dipPojo);
@@ -456,6 +458,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 					dipPojo.setFactionID_ACCEPTED(l);
 					dipPojo.setSeasonID(ServerNexus.currentSeason);
 					dipPojo.setStartingInRound(currentRound.getRound().intValue() + 1);
+					dipPojo.setEndingInRound(null);
 
 					DiplomacyDAO.getInstance().update(getC3UserID(session), dipPojo);
 				}
@@ -695,6 +698,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				}
 
 				boolean attackBroken = !foundDropleadAttacker || !foundDropleadDefender;
+
 				if (attack.getFightsStarted() && attack.getFactionID_Winner() == null) {
 					if (!attackBroken) {
 						if (attack.getScoreAttackerVictories() == null || attack.getScoreDefenderVictories() == null) {
@@ -708,13 +712,6 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 							ServerNexus.getEci().sendExtCom("Angriff auf " + starSystem.getName() + " läuft (" +  attackerFaction.getShortName() + " " + attack.getScoreAttackerVictories() + " : " + attack.getScoreDefenderVictories() + " " + originalFaction.getShortName() + ")", "de", true, true, true);
 						}
 					} else {
-
-
-
-						// TODO: attackBroken ist hier manchmal true, obwohl der Kampf gerade gestartet wurde (Lobby)
-
-
-
 						ServerNexus.getEci().sendExtCom("Attack on " + starSystem.getName() + " is missing one of the dropleaders. Waiting...", "en", true, true, true);
 						ServerNexus.getEci().sendExtCom("Angriff auf " + starSystem.getName() + " hat einen oder beide Dropleader verloren. Wartet...", "de", true, true, true);
 					}

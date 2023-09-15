@@ -369,6 +369,11 @@
             <Image url="@../icons/teal-circle.png" />
          </image>
       </ImageView>
+      <ImageView fx:id="ivDiplomacyIndicator" fitHeight="16.0" fitWidth="16.0" layoutX="67.0" layoutY="462.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../icons/teal-circle.png" />
+         </image>
+      </ImageView>
       <ImageView fx:id="ivFactionLogoShield" cache="true" cacheHint="QUALITY" fitHeight="110.0" fitWidth="110.0" layoutX="33.0" layoutY="55.0" mouseTransparent="true" pickOnBounds="true" visible="false">
          <effect>
             <DropShadow />

@@ -52,6 +52,7 @@ import net.clanwolf.starmap.client.action.*;
 import net.clanwolf.starmap.client.enums.C3MESSAGERESULTS;
 import net.clanwolf.starmap.client.enums.C3MESSAGES;
 import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
+import net.clanwolf.starmap.transfer.dtos.DiplomacyDTO;
 import net.clanwolf.starmap.transfer.dtos.FactionDTO;
 import net.clanwolf.starmap.transfer.enums.PRIVILEGES;
 import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
@@ -270,7 +271,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	@FXML
 	private TextField terminalPrompt;
 	@FXML
-	private ImageView ircIndicator;
+	private ImageView ircIndicator, ivDiplomacyIndicator;
 	@FXML
 	private ProgressBar TFSProgress;
 	@FXML
@@ -1047,6 +1048,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		ActionManager.addActionCallbackListener(ACTIONS.SERVER_CONNECTION_LOST, this);
 		ActionManager.addActionCallbackListener(ACTIONS.SET_FACTION_LOGO, this);
 		ActionManager.addActionCallbackListener(ACTIONS.SET_FACTION_LOGO_INVISIBLE, this);
+		ActionManager.addActionCallbackListener(ACTIONS.DIPLOMACY_STATUS_PENDING, this);
 	}
 
 	public static Date addDaysToDate(Date date, int daysToAdd) {
@@ -1897,6 +1899,16 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				}
 				break;
 
+			case DIPLOMACY_STATUS_PENDING:
+				ivDiplomacyIndicator.setVisible(true);
+				logger.info("Diplomacy status pending, reaction expected!");
+				break;
+
+			case DIPLOMACY_STATUS_PENDING_HIDE:
+				ivDiplomacyIndicator.setVisible(false);
+				logger.info("No Diplomacy requests pending deactivate warning!");
+				break;
+
 			case CHANGE_LANGUAGE:
 				if (currentlyDisplayedPane != null) {
 					ActionManager.getAction(ACTIONS.NOISE).execute();
@@ -2094,6 +2106,26 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					}
 
 					UserHistoryInfo.setVisible(false);
+
+					ActionManager.getAction(ACTIONS.DIPLOMACY_STATUS_PENDING_HIDE).execute();
+					for (DiplomacyDTO d : Nexus.getBoUniverse().getDiplomacy()) {
+						if (d.getStartingInRound() <= Nexus.getBoUniverse().currentRound) {
+							if (d.getFactionID_ACCEPTED().equals(Nexus.getCurrentChar().getFactionId().longValue())) {
+								Pair<Long, Long> dp = new Pair<>(d.getFactionID_REQUEST(), d.getFactionID_ACCEPTED());
+								boolean alreadyAnswered = false;
+								for (DiplomacyDTO d1 : Nexus.getBoUniverse().getDiplomacy()) {
+									Pair<Long, Long> dp1 = new Pair<>(d1.getFactionID_REQUEST(), d1.getFactionID_ACCEPTED());
+									if (dp.getKey().equals(dp1.getValue())) {
+										alreadyAnswered = true;
+									}
+								}
+								if (!alreadyAnswered) {
+									ActionManager.getAction(ACTIONS.DIPLOMACY_STATUS_PENDING).execute();
+								}
+							}
+						}
+					}
+
 					ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("5");
 				});
 				break;

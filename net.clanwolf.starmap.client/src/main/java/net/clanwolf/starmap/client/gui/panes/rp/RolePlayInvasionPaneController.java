@@ -758,7 +758,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 				}
 				break;
 			case UPDATE_USERS_FOR_ATTACK:
-				// Check why waiting icon does not disappear after confirming result
+				//TODO_C3: Check why waiting icon does not disappear after confirming result
 				statusUpdate();
 				break;
 			case ROLEPLAY_NEXT_STEP_CHANGE_PANE:
@@ -881,10 +881,12 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 								C3SoundPlayer.getRpPlayer().stop();
 								C3SoundPlayer.getRpPlayer().setVolume(volume);
 								C3SoundPlayer.play("sound/voice/" + Internationalization.getLanguage() + "/rp_invasion/" + finalSampleName, false);
+								logger.info("Playing motivational voice sample " + "sound/voice/" + Internationalization.getLanguage() + "/rp_invasion/" + finalSampleName);
 							});
 							timeline.play();
 						} else {
 							C3SoundPlayer.play("sound/voice/" + Internationalization.getLanguage() + "/rp_invasion/" + finalSampleName, false);
+							logger.info("Playing motivational voice sample " + "sound/voice/" + Internationalization.getLanguage() + "/rp_invasion/" + finalSampleName);
 						}
 					}
 					audioStartedOnce = false;
