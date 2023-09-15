@@ -4,6 +4,7 @@ C3 version history
 
 TODO
 PRIO 1 - Immediate:
+- Only one alliance is allowed for each faction at a time
 - If an attack is lost, the jumpship is moved back to the system it came from
 - Check diplomacy on planet attacks and routepoints (already effective?)
 - Allow allied pilots to be droplead in fights for allied factions

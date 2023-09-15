@@ -4,11 +4,11 @@ C3 version history
 
 TODO
 PRIO 1 - Immediate:
+- Only one alliance is allowed for each faction at a time
 - If an attack is lost, the jumpship is moved back to the system it came from
 - Check diplomacy on planet attacks and routepoints (already effective?)
 - Allow allied pilots to be droplead in fights for allied factions
 - Allied faction leader should see the jump route of allied jumpships
-- If a jumpship attacks, the icon is moved back to the starting system on save... the jumpship level icon needs to be moved as well
 - If user logs out and another logs in without closing the client, not all user related data is adapted to the new user
 - Check if a player changed mech chassis in the middle of an invasion and set drop to be lost for that side
 - If attack teams are invalid, kick everyone out of the attack and force a new lobby (ResultAnalyzer.java, L.195)
@@ -55,10 +55,11 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
-Version 7.3.107 (16.09.2023)
+Version 7.3.108 (16.09.2023)
 - UPDATED: Dependencies
 - FIXED: Display bug in breaking an alliance (multiple alliances are shown as broken, although only one changed)-
 - FIXED: Map planetinfopanel needs to mouse transparent if invisible
+- FIXED: If a jumpship attacks, the icon is moved back to the starting system on save... the jumpship level icon needs to be moved as well
 - CHANGED: Delete all unneeded columns in table 'user'
 
 Version 7.3.106 (14.09.2023)
