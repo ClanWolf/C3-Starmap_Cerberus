@@ -11,7 +11,8 @@ PRIO 1 - Immediate:
 - Allied faction leader should see the jump route of allied jumpships
 - If user logs out and another logs in without closing the client, not all user related data is adapted to the new user
 - Check if a player changed mech chassis in the middle of an invasion and set drop to be lost for that side
-- If attack teams are invalid, kick everyone out of the attack and force a new lobby (ResultAnalyzer.java, L.195)
+- If attack teams are invalid (e.g. one pilot switched sides,...), kick everyone out of the attack and force a new lobby (ResultAnalyzer.java, L.195)
+- Add a chosing mechanism for character images
 
 PRIO 2 - Medium:
 - Add keyboard shortcuts for language change and help and open attack forum post
@@ -57,9 +58,9 @@ VERSIONS
 
 Version 7.3.108 (16.09.2023)
 - UPDATED: Dependencies
-- FIXED: Display bug in breaking an alliance (multiple alliances are shown as broken, although only one changed)-
+- FIXED: Display bug in breaking an alliance (multiple alliances are shown as broken, although only one changed)
 - FIXED: Map planetinfopanel needs to mouse transparent if invisible
-- FIXED: If a jumpship attacks, the icon is moved back to the starting system on save... the jumpship level icon needs to be moved as well
+- FIXED: If a jumpship attacks, the icon is moved back to the starting system on save. The jumpship level icon needs to be moved as well
 - CHANGED: Delete all unneeded columns in table 'user'
 
 Version 7.3.106 (14.09.2023)
