@@ -12,7 +12,6 @@ PRIO 1 - Immediate:
 - If user logs out and another logs in without closing the client, not all user related data is adapted to the new user
 - Check if a player changed mech chassis in the middle of an invasion and set drop to be lost for that side
 - If attack teams are invalid (e.g. one pilot switched sides,...), kick everyone out of the attack and force a new lobby (ResultAnalyzer.java, L.195)
-- Add a chosing mechanism for character images
 
 PRIO 2 - Medium:
 - Add keyboard shortcuts for language change and help and open attack forum post
@@ -55,6 +54,9 @@ WATCH OUT FOR WHILE TESTING:
 ----------------------------------------------------------------
 
 VERSIONS
+
+Version 7.3.109 (18.09.2023)
+- ADDED: Selection for character avatars
 
 Version 7.3.108 (16.09.2023)
 - UPDATED: Dependencies

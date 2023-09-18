@@ -53,7 +53,9 @@ import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.lang.invoke.MethodHandles;
+import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.*;
 
@@ -74,7 +76,7 @@ public class AdminPaneController {
 	private final DecimalFormat nf = new DecimalFormat();
 
 	@FXML
-	Label labelUser, labelPrivCode, labelPrivCodeBinary;
+	Label labelUser, labelPrivCode, labelPrivCodeBinary, labelMaleCharImageList, labelFemaleCharImageList;
 
 	@FXML
 	Tab tabUser, tabCharacter, tabFaction, tabPrivileges, tabFinances;
@@ -90,7 +92,7 @@ public class AdminPaneController {
 	@FXML
 	TableColumn<FinancesInfo, String> TblCCost;
 	@FXML
-	ImageView btShowPassword, btShowPasswordConfirm;
+	ImageView btShowPassword, btShowPasswordConfirm, ivCharImage;
 	private ObservableList<FinancesInfo> financesInfos = FXCollections.observableArrayList();
 	Image eye, eyeClosed;
 
@@ -109,6 +111,8 @@ public class AdminPaneController {
 	Label lCurrentBalance, lblFactionKey, lblFactionKeyLead;
 
 	@FXML
+	ListView<String> lvImageSelectorMale, lvImageSelectorFemale;
+	@FXML
 	TableView<FinancesInfo> tableFinances;
 	private String originalUsername = "";
 	private String originalMail = "";
@@ -117,7 +121,19 @@ public class AdminPaneController {
 	private String originalMWOUser = "";
 	private boolean factionkeyOk = false;
 
+	@FXML
+	public void handleImageSelectedMale() {
+		String s = lvImageSelectorMale.getSelectionModel().getSelectedItem();
+		Image charImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/chars/male/" + s + ".png")));
+		ivCharImage.setImage(charImage);
+	}
 
+	@FXML
+	public void handleImageSelectedFemale() {
+		String s = lvImageSelectorFemale.getSelectionModel().getSelectedItem();
+		Image charImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/chars/female/" + s + ".png")));
+		ivCharImage.setImage(charImage);
+	}
 	@FXML
 	public void showPWButtonClick() {
 		if (showPW) {
@@ -649,8 +665,29 @@ public class AdminPaneController {
 		lblFacktionKeyHint.setDisable(true);
 		tfFactionKey.setText("");
 
+		// Character
+
+		labelMaleCharImageList.setText(Internationalization.getString("general_gender_male"));
+		labelFemaleCharImageList.setText(Internationalization.getString("general_gender_female"));
+
+		Image charImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/chars/male/1000.png")));
+		ivCharImage.setImage(charImage);
+
+		URL urlMale = Thread.currentThread().getContextClassLoader().getResource("images/chars/male/");
+		URL urlFemale = Thread.currentThread().getContextClassLoader().getResource("images/chars/female/");
+		String pathMale = urlMale.getPath();
+		String pathFemale = urlFemale.getPath();
+		File[] filesMale = new File(pathMale).listFiles();
+		File[] filesFemale = new File(pathFemale).listFiles();
+		for (File f : filesMale) {
+			lvImageSelectorMale.getItems().add(f.getName().substring(0, f.getName().lastIndexOf(".")));
+		}
+		for (File f : filesFemale) {
+			lvImageSelectorFemale.getItems().add(f.getName().substring(0, f.getName().lastIndexOf(".")));
+		}
+
 		tabUser.setDisable(false);
-		tabCharacter.setDisable(true);
+		tabCharacter.setDisable(false);
 		tabFaction.setDisable(!factionEdit);
 		tabFinances.setDisable(!finances);
 		tabPrivileges.setDisable(!privs);

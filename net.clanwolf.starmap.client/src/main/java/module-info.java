@@ -21,6 +21,7 @@ module net.clanwolf.starmap.client {
 	requires com.google.gson;
 	requires java.sql;
 	requires org.slf4j;
+//	requires org.apache.commons.io;
 
 	opens net.clanwolf.starmap.client.security to javafx.fxml;
 	opens net.clanwolf.starmap.client.gui to javafx.fxml;

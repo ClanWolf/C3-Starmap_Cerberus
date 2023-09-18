@@ -35,13 +35,16 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.transfer.dtos.UserDTO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
+import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.Locale;
 
 public class AdminPane extends Application {
-
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	private final static Locale GERMAN = Locale.GERMAN;
 	private final static Locale ENGLISH = Locale.ENGLISH;
 
@@ -78,6 +81,7 @@ public class AdminPane extends Application {
 
 			stage.showAndWait();
 		} catch (Exception e) {
+			logger.error("Error in adminPane", e);
 			e.printStackTrace();
 		}
 	}

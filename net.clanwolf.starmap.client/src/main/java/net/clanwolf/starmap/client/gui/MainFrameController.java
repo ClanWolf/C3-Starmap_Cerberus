@@ -1380,6 +1380,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			renameMeButton4.setVisible(true);
 			logButton.setVisible(true);
 			showMenuIndicator(false);
+			ivDiplomacyIndicator.setVisible(false);
+			ircIndicator.setVisible(false);
 		} else {
 			rolePlayButton.setVisible(true);
 			mapButton.setVisible(true);
