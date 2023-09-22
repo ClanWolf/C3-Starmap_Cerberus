@@ -55,6 +55,20 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
+
+
+
+
+Version 7.3.110 (23.09.2023)
+--> Speichern von Character-Avataren
+--> Konzept für Klassen, Controller,... Surfacemap
+--> Aufgeräumt Diplomatie (?)
+
+
+
+
+
+
 Version 7.3.109 (18.09.2023)
 - ADDED: Selection for character avatars
 

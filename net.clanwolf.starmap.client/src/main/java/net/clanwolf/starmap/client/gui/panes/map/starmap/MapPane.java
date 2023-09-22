@@ -24,11 +24,24 @@
  * Copyright (c) 2001-2023, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.client.gui.panes.map;
+package net.clanwolf.starmap.client.gui.panes.map.starmap;
 
-public class DragContext {
-	double mouseAnchorX;
-	double mouseAnchorY;
-	double translateAnchorX;
-	double translateAnchorY;
+import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
+
+/**
+ * Login scene to log into the database.
+ *
+ * @author Meldric
+ * @version 1.0
+ */
+public final class MapPane extends AbstractC3Pane {
+	public MapPane() {
+		super("/fxml/MapPane.fxml", false, false);
+		paneName = "MapPane";
+	}
+
+	@Override
+	public void setFocus() {
+		controller.setFocus();
+	}
 }

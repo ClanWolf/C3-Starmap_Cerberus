@@ -34,7 +34,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
-import net.clanwolf.starmap.client.gui.panes.map.Config;
+import net.clanwolf.starmap.client.gui.panes.map.starmap.Config;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

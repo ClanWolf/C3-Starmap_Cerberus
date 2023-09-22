@@ -24,9 +24,9 @@
  * Copyright (c) 2001-2023, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.client.gui.panes.map.tools;
+package net.clanwolf.starmap.client.gui.panes.map.starmap.tools;
 
-import net.clanwolf.starmap.client.gui.panes.map.Config;
+import net.clanwolf.starmap.client.gui.panes.map.starmap.Config;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.universe.BOStarSystem;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;

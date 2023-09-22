@@ -674,16 +674,25 @@ public class AdminPaneController {
 		ivCharImage.setImage(charImage);
 
 		URL urlMale = Thread.currentThread().getContextClassLoader().getResource("images/chars/male/");
-		URL urlFemale = Thread.currentThread().getContextClassLoader().getResource("images/chars/female/");
-		String pathMale = urlMale.getPath();
-		String pathFemale = urlFemale.getPath();
-		File[] filesMale = new File(pathMale).listFiles();
-		File[] filesFemale = new File(pathFemale).listFiles();
-		for (File f : filesMale) {
-			lvImageSelectorMale.getItems().add(f.getName().substring(0, f.getName().lastIndexOf(".")));
+		if (urlMale != null) {
+			String pathMale = urlMale.getPath();
+			File[] filesMale = new File(pathMale).listFiles();
+			if (filesMale != null) {
+				for (File f : filesMale) {
+					lvImageSelectorMale.getItems().add(f.getName().substring(0, f.getName().lastIndexOf(".")));
+				}
+			}
 		}
-		for (File f : filesFemale) {
-			lvImageSelectorFemale.getItems().add(f.getName().substring(0, f.getName().lastIndexOf(".")));
+
+		URL urlFemale = Thread.currentThread().getContextClassLoader().getResource("images/chars/female/");
+		if (urlFemale != null) {
+			String pathFemale = urlFemale.getPath();
+			File[] filesFemale = new File(pathFemale).listFiles();
+			if (filesFemale != null) {
+				for (File f : filesFemale) {
+					lvImageSelectorFemale.getItems().add(f.getName().substring(0, f.getName().lastIndexOf(".")));
+				}
+			}
 		}
 
 		tabUser.setDisable(false);

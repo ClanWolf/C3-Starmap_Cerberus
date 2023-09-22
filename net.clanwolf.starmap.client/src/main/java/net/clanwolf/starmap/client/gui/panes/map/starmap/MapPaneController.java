@@ -24,7 +24,7 @@
  * Copyright (c) 2001-2023, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.client.gui.panes.map;
+package net.clanwolf.starmap.client.gui.panes.map.starmap;
 
 import javafx.animation.*;
 import javafx.application.Platform;
@@ -65,7 +65,7 @@ import net.clanwolf.starmap.transfer.enums.PRIVILEGES;
 import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
-import net.clanwolf.starmap.client.gui.panes.map.tools.VoronoiDelaunay;
+import net.clanwolf.starmap.client.gui.panes.map.starmap.tools.VoronoiDelaunay;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.universe.*;
 import net.clanwolf.starmap.client.security.Security;

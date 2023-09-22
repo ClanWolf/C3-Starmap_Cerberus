@@ -28,8 +28,6 @@ package net.clanwolf.starmap.client.util;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.DialogPane;
@@ -39,7 +37,7 @@ import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.StatusTextEntryActionObject;
 import net.clanwolf.starmap.client.enums.C3FTPTYPES;
-import net.clanwolf.starmap.client.gui.panes.map.PannableCanvas;
+import net.clanwolf.starmap.client.gui.panes.map.starmap.PannableCanvas;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.universe.BOFaction;
 import org.slf4j.Logger;
