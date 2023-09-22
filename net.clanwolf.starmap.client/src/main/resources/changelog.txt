@@ -4,6 +4,9 @@ C3 version history
 
 TODO
 PRIO 1 - Immediate:
+- Change diplomacy pane, move icons to the middle
+- Admin pane save should use a transfer object to send data to server
+- Saving character information (character avatar and username)
 - Only one alliance is allowed for each faction at a time
 - If an attack is lost, the jumpship is moved back to the system it came from
 - Check diplomacy on planet attacks and routepoints (already effective?)
@@ -55,19 +58,9 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
-
-
-
-
 Version 7.3.110 (23.09.2023)
---> Speichern von Character-Avataren
---> Konzept für Klassen, Controller,... Surfacemap
---> Aufgeräumt Diplomatie (?)
-
-
-
-
-
+- CHANGED: Diplomacy layout
+- STARTED: Refactoring diplomacy (not visible yet)
 
 Version 7.3.109 (18.09.2023)
 - ADDED: Selection for character avatars

@@ -62,6 +62,9 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 	ImageView ivAllied01, ivAllied02, ivAllied03, ivAllied04, ivAllied05, ivAllied06, ivAllied07, ivAllied08;
 
 	@FXML
+	ImageView ivMyFactionIcon;
+
+	@FXML
 	Label labelFactionShort01, labelFactionShort02, labelFactionShort03, labelFactionShort04, labelFactionShort05, labelFactionShort06, labelFactionShort07, labelFactionShort08;
 
 	@FXML
@@ -273,6 +276,7 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 
 	private void init() {
 		instance = this;
+		ivMyFactionIcon.setImage(Nexus.getFactionLogo());
 
 		ActionManager.getAction(ACTIONS.DIPLOMACY_STATUS_PENDING_HIDE).execute();
 

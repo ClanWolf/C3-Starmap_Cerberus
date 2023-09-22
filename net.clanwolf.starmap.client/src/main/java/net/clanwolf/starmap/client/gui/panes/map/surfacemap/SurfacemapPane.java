@@ -26,5 +26,38 @@
  */
 package net.clanwolf.starmap.client.gui.panes.map.surfacemap;
 
+import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.layout.Pane;
+import net.clanwolf.starmap.client.gui.panes.AbstractC3RolePlayController;
+import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
+
 public class SurfacemapPane {
+
+//	private void changePaneAndController(ROLEPLAYENTRYTYPES type, String fxmlPane){
+//
+//		Pane myPane = storyPanes.get(myType);
+//
+//		if(myPane == null) {
+//			Platform.runLater(new Runnable() {
+//				@Override
+//				public void run() {
+//					try {
+//						FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPane));
+//
+//						Pane pane = loader.load();
+//
+//						//AbstractC3Controller controller = loader.getController();
+//						AbstractC3RolePlayController controller = loader.getController();
+//						// It is nessassary to make a difference to save a char RP or an attack rp in the controller
+//						controller.setIsCharRP(isCharacterPane);
+//						controller.addActionCallBackListeners();
+//
+//						anchorPane.getChildren().clear();
+//						anchorPane.getChildren().setAll(pane);
+//
+
+		// RoleplayBasicPaneController
+
+
 }
