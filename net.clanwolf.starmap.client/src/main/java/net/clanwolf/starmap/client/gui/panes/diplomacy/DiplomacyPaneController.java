@@ -37,6 +37,7 @@ import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
 import net.clanwolf.starmap.client.nexus.Nexus;
+import net.clanwolf.starmap.client.process.universe.BODiplomacy;
 import net.clanwolf.starmap.client.process.universe.BOFaction;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.transfer.GameState;
@@ -386,8 +387,13 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 
 			int cRound = Nexus.getBoUniverse().currentRound;
 
+			BODiplomacy boDiplomacy = new BODiplomacy(Nexus.getBoUniverse().currentRound, Nexus.getBoUniverse().getDiplomacy());
+
 			for (int i = 0; i < labelShortNameList.size(); i++) {
 				BOFaction f = factions.get(i);
+
+				boDiplomacy.getDiplomacyStateCurrentRound(f.getID());
+				boDiplomacy.getDiplomacyStateNextRound(f.getID());
 
 				labelTheirStatusList.get(i).setVisible(true);
 				radioButtonsEnemyList.get(i).setVisible(true);
