@@ -61,6 +61,8 @@ import javafx.util.Duration;
 import net.clanwolf.starmap.client.action.*;
 import net.clanwolf.starmap.client.enums.C3MESSAGES;
 import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
+import net.clanwolf.starmap.client.gui.panes.map.surfacemap.SurfacemapPane;
+import net.clanwolf.starmap.client.gui.panes.map.surfacemap.SurfacemapPaneController;
 import net.clanwolf.starmap.transfer.enums.PRIVILEGES;
 import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
@@ -164,6 +166,8 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 	@FXML
 	TextArea taAlliances;
+
+	SurfacemapPane surfaceMap;
 
 	private boolean universeMapGenerationStarted = false;
 	private BOUniverse boUniverse = null;
@@ -1781,6 +1785,10 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 	@FXML
 	public void handleSurfaceMapButtonClick() {
 		logger.info("clicked on surface map");
+		surfaceMap = new SurfacemapPane();
+		anchorPane.getChildren().add(surfaceMap);
+		surfaceMap.toFront();
+
 	}
 
 	public void showSystemDetail(BOStarSystem sys) {
@@ -2062,6 +2070,7 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 		ActionManager.addActionCallbackListener(ACTIONS.WATCHED_ATTACK_IS_BROKEN_KILLED, this);
 		ActionManager.addActionCallbackListener(ACTIONS.WATCHED_ATTACK_IS_HEALED, this);
 		ActionManager.addActionCallbackListener(ACTIONS.UPDATE_ALLIANCES_LIST, this);
+		ActionManager.addActionCallbackListener(ACTIONS.CLOSE_SURFACE_MAP, this);
 	}
 
 	/**
@@ -2088,6 +2097,13 @@ public class MapPaneController extends AbstractC3Controller implements ActionCal
 
 		switch (action) {
 			case UPDATE_UNIVERSE:
+				break;
+
+			case CLOSE_SURFACE_MAP:
+				logger.info("Closing surface map");
+
+				anchorPane.getChildren().remove(surfaceMap);
+				surfaceMap = null;
 				break;
 
 			case REPAINT_MAP:

@@ -222,6 +222,7 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 	@FXML
 	public void handleCancelButtonClick() {
 		init();
+		ActionManager.getAction(ACTIONS.PANE_DESTROY_CURRENT).execute();
 	}
 
 	/**

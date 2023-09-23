@@ -28,7 +28,7 @@ package net.clanwolf.starmap.client.gui.panes.map.surfacemap;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
+import javafx.scene.control.Button;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import net.clanwolf.starmap.client.action.ACTIONS;
@@ -36,31 +36,69 @@ import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
-import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3RolePlayController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
 import java.lang.invoke.MethodHandles;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.ResourceBundle;
 
-public class SurfacemapPane extends Pane {
+public class SurfacemapPaneController extends AbstractC3Controller implements ActionCallBackListener {
 
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	AbstractC3Controller controller = null;
+	@FXML
+	private AnchorPane anchorPane;
 
-	public SurfacemapPane() {
-		try {
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(this.getClass().getResource("/fxml/SurfacemapPane.fxml"));
-			Parent root = loader.load();
-			this.getChildren().add(root);
-			controller = loader.getController();
-			controller.addActionCallBackListeners();
-		} catch (IOException e) {
-			e.printStackTrace();
-			logger.error("IOException while reading FXML for surfacemap", e);
+	@FXML
+	private Button btClose;
+
+	@FXML
+	public void handleCloseButtonClick() {
+		ActionManager.getAction(ACTIONS.CLOSE_SURFACE_MAP).execute();
+	}
+
+	@Override
+	public void setStrings() {
+
+	}
+
+	@Override
+	public void setFocus() {
+
+	}
+
+	@Override
+	public void warningOnAction() {
+
+	}
+
+	@Override
+	public void warningOffAction() {
+
+	}
+
+	@Override
+	public void addActionCallBackListeners() {
+		ActionManager.addActionCallbackListener(ACTIONS.CHANGE_LANGUAGE, this);
+	}
+
+	@Override
+	public void initialize(URL url, ResourceBundle rb) {
+		super.initialize(url, rb);
+	}
+
+	@Override
+	public boolean handleAction(ACTIONS action, ActionObject o) {
+		switch (action) {
+			case CHANGE_LANGUAGE:
+				break;
+
+			default:
+				break;
 		}
+		return true;
 	}
 }

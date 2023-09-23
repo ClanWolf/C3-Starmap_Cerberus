@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane id="RolePlayStartPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.map.surfacemap.SurfacemapPaneController">
+    <stylesheets>
+        <URL value="@../styles/MainFrameStyle.css" />
+    </stylesheets>
+   <children>
+      <ImageView fitHeight="434.0" fitWidth="759.0" layoutX="70.0" layoutY="28.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/planets/1584/1584_map_big.png" />
+         </image>
+      </ImageView>
+      <Button fx:id="btClose" layoutX="716.0" layoutY="417.0" mnemonicParsing="false" onAction="#handleCloseButtonClick" text="CLOSE" />
+   </children>
+</AnchorPane>

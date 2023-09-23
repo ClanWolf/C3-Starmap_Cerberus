@@ -4,7 +4,6 @@ C3 version history
 
 TODO
 PRIO 1 - Immediate:
-- Change diplomacy pane, move icons to the middle
 - Admin pane save should use a transfer object to send data to server
 - Saving character information (character avatar and username)
 - Only one alliance is allowed for each faction at a time
@@ -57,6 +56,10 @@ WATCH OUT FOR WHILE TESTING:
 ----------------------------------------------------------------
 
 VERSIONS
+
+Version 7.3.111 (xx.xx.2023)
+- CHANGED: Diplomacy pane closes on cancel button
+- ADDED: Surface map controllers
 
 Version 7.3.110 (23.09.2023)
 - CHANGED: Diplomacy layout
