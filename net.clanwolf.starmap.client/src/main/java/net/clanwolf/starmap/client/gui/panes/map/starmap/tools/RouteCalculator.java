@@ -26,7 +26,7 @@
  */
 package net.clanwolf.starmap.client.gui.panes.map.starmap.tools;
 
-import net.clanwolf.starmap.client.gui.panes.map.starmap.Config;
+import net.clanwolf.starmap.client.gui.panes.map.starmap.StarmapConfig;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.universe.BOStarSystem;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
@@ -98,7 +98,7 @@ public class RouteCalculator {
 							logger.info("Starting from " + st1.getName());
 							for (int c = cc; c < routeList.size(); c++) {
 								PointD pt = routeList.get(c);
-								double distance = boUniverse.delaunaySubdivision.getDistance(pt1, pt) / Config.MAP_COORDINATES_MULTIPLICATOR;
+								double distance = boUniverse.delaunaySubdivision.getDistance(pt1, pt) / StarmapConfig.MAP_COORDINATES_MULTIPLICATOR;
 
 								logger.info("Considering: " + boUniverse.getStarSystemByPoint(pt).getName() + ". Distance to " + boUniverse.getStarSystemByPoint(pt1).getName() + ": " + distance);
 								if (distance <= 30) {

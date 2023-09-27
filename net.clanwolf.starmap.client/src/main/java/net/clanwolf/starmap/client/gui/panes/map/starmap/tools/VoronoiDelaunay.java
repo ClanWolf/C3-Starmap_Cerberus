@@ -29,8 +29,8 @@ package net.clanwolf.starmap.client.gui.panes.map.starmap.tools;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.*;
+import net.clanwolf.starmap.client.gui.panes.map.starmap.StarmapConfig;
 import net.clanwolf.starmap.client.nexus.Nexus;
-import net.clanwolf.starmap.client.gui.panes.map.starmap.Config;
 import net.clanwolf.starmap.client.process.universe.BOFaction;
 import net.clanwolf.starmap.client.process.universe.BOStarSystem;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
@@ -67,7 +67,7 @@ public class VoronoiDelaunay {
 			} else {
 				path = new Path();
 			}
-			Circle fc = new Circle(p.x, p.y, Config.MAP_BACKGROUND_AREA_RADIUS - Config.MAP_BACKGROUND_AREA_RADIUS_BORDER_WIDTH);
+			Circle fc = new Circle(p.x, p.y, StarmapConfig.MAP_BACKGROUND_AREA_RADIUS - StarmapConfig.MAP_BACKGROUND_AREA_RADIUS_BORDER_WIDTH);
 			path = (Path) Path.union(path, fc);
 			faction.setBackgroundPath(path);
 		}
@@ -91,9 +91,9 @@ public class VoronoiDelaunay {
 					String colorString = faction.getColor();
 					Color color = Color.web(colorString);
 					factionBackground.setFill(color.deriveColor(1,1,1,0.2));
-					factionBackground.setStrokeWidth(Config.MAP_BACKGROUND_AREA_RADIUS_BORDER_WIDTH);
+					factionBackground.setStrokeWidth(StarmapConfig.MAP_BACKGROUND_AREA_RADIUS_BORDER_WIDTH);
 					factionBackground.setStrokeLineJoin(StrokeLineJoin.ROUND);
-					factionBackground.setStroke(Config.MAP_BACKGROUND_AREA_BORDER_COLOR.deriveColor(.7, .7,.7, 1));
+					factionBackground.setStroke(StarmapConfig.MAP_BACKGROUND_AREA_BORDER_COLOR.deriveColor(.7, .7,.7, 1));
 					borderPane.getChildren().add(factionBackground);
 				}
 			}
@@ -122,12 +122,12 @@ public class VoronoiDelaunay {
 			} else {
 				path = new Path();
 			}
-			Circle fc = new Circle(p.x, p.y, Config.MAP_BACKGROUND_AREA_RADIUS - Config.MAP_BACKGROUND_AREA_RADIUS_BORDER_WIDTH);
+			Circle fc = new Circle(p.x, p.y, StarmapConfig.MAP_BACKGROUND_AREA_RADIUS - StarmapConfig.MAP_BACKGROUND_AREA_RADIUS_BORDER_WIDTH);
 			path = (Path) Path.union(path, fc);
 			faction.setBackgroundPath(path);
 		}
 
-		final RectD clip = new RectD(0, 0, Config.MAP_WIDTH, Config.MAP_HEIGHT);
+		final RectD clip = new RectD(0, 0, StarmapConfig.MAP_WIDTH, StarmapConfig.MAP_HEIGHT);
 		boUniverse.voronoiResults = Voronoi.findAll(points, clip);
 
 		// check what voronoi region contains the current star system
@@ -160,9 +160,9 @@ public class VoronoiDelaunay {
 					String colorString = faction.getColor();
 					Color color = Color.web(colorString);
 					factionBackground.setFill(color.deriveColor(1,1,1,0.2));
-					factionBackground.setStrokeWidth(Config.MAP_BACKGROUND_AREA_RADIUS_BORDER_WIDTH);
+					factionBackground.setStrokeWidth(StarmapConfig.MAP_BACKGROUND_AREA_RADIUS_BORDER_WIDTH);
 					factionBackground.setStrokeLineJoin(StrokeLineJoin.ROUND);
-					factionBackground.setStroke(Config.MAP_BACKGROUND_AREA_BORDER_COLOR.deriveColor(.7, .7,.7, 1));
+					factionBackground.setStroke(StarmapConfig.MAP_BACKGROUND_AREA_BORDER_COLOR.deriveColor(.7, .7,.7, 1));
 					borderPane.getChildren().add(factionBackground);
 				}
 			}

@@ -49,11 +49,11 @@
 
 		<!-- C3 Revision -->
 		<!-- https://stackoverflow.com/questions/10582054/maven-project-version-inheritance-do-i-have-to-specify-the-parent-version -->
-		<revision>7.3.111</revision>
+		<revision>7.3.112</revision>
 
 		<!-- Versions -->
-		<version.java>20</version.java>
-		<version.javafx>20.0.2</version.javafx>
+		<version.java>21</version.java>
+		<version.javafx>21</version.javafx>
 
 		<version.asm>9.5</version.asm>
 		<version.maven-antrun-plugin>3.1.0</version.maven-antrun-plugin>

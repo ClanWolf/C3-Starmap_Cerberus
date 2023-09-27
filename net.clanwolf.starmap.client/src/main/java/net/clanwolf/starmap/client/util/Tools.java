@@ -37,7 +37,7 @@ import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.StatusTextEntryActionObject;
 import net.clanwolf.starmap.client.enums.C3FTPTYPES;
-import net.clanwolf.starmap.client.gui.panes.map.starmap.PannableCanvas;
+import net.clanwolf.starmap.client.gui.panes.map.starmap.StarmapPannableCanvas;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.universe.BOFaction;
 import org.slf4j.Logger;
@@ -196,7 +196,7 @@ public final class Tools {
 		return RomanNumber.toRoman(n);
 	}
 
-	public static void saveMapScreenshot(int width, int height, PannableCanvas canvas) {
+	public static void saveMapScreenshot(int width, int height, StarmapPannableCanvas canvas) {
 		if(C3Properties.getBoolean(C3PROPS.GENERALS_SCREENSHOT_HISTORY)) {
 			if (!Nexus.isDevelopmentPC()) {
 				ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("14");

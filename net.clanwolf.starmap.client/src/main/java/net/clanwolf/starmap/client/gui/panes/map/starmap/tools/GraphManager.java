@@ -30,7 +30,7 @@ import javafx.scene.layout.Pane;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.StatusTextEntryActionObject;
-import net.clanwolf.starmap.client.gui.panes.map.starmap.Config;
+import net.clanwolf.starmap.client.gui.panes.map.starmap.StarmapConfig;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.universe.BOStarSystem;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
@@ -94,7 +94,7 @@ public class GraphManager<T> implements GraphAgent<T> {
 	}
 
 	Double getDistance(BOStarSystem sourceSystem, BOStarSystem targetSystem) {
-		return graph.getDistance(findNode(sourceSystem), findNode(targetSystem)) / Config.MAP_COORDINATES_MULTIPLICATOR;
+		return graph.getDistance(findNode(sourceSystem), findNode(targetSystem)) / StarmapConfig.MAP_COORDINATES_MULTIPLICATOR;
 	}
 
 	@SuppressWarnings("unused")
@@ -177,7 +177,7 @@ public class GraphManager<T> implements GraphAgent<T> {
 		Long currentJumpshipFactionId = boUniverse.currentlyDraggedJumpship.getJumpshipFaction();
 		Long currentlyHoveredSystemFactionId = hoveredSys.getFactionId();
 
-		double distance = graph.getDistance(source, target) / Config.MAP_COORDINATES_MULTIPLICATOR;
+		double distance = graph.getDistance(source, target) / StarmapConfig.MAP_COORDINATES_MULTIPLICATOR;
 		boolean inRange = distance <= 30;
 		boolean isAttacked = hoveredSys.isCurrentlyUnderAttack();
 		boolean isAttackedNextRound = hoveredSys.isNextRoundUnderAttack();

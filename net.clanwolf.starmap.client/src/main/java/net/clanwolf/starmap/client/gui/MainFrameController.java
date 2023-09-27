@@ -65,7 +65,7 @@ import net.clanwolf.starmap.client.gui.panes.dice.DicePane;
 import net.clanwolf.starmap.client.gui.panes.diplomacy.DiplomacyPane;
 import net.clanwolf.starmap.client.gui.panes.logging.LogPane;
 import net.clanwolf.starmap.client.gui.panes.login.LoginPane;
-import net.clanwolf.starmap.client.gui.panes.map.starmap.MapPane;
+import net.clanwolf.starmap.client.gui.panes.map.starmap.StarmapPane;
 import net.clanwolf.starmap.client.gui.panes.rp.RolePlayBasicPane;
 import net.clanwolf.starmap.client.gui.panes.rp.StoryEditorPane;
 import net.clanwolf.starmap.client.gui.panes.security.AdminPane;
@@ -128,7 +128,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private LoginPane loginPane = null;
 	private LogPane logPane = null;
 	private UserInfoPane userInfoPane = null;
-	private MapPane mapPane = null;
+	private StarmapPane mapPane = null;
 	private RolePlayBasicPane attackPane = null;
 	private ChatPane chatPane = null;
 	private DicePane dicePane = null;
@@ -1738,7 +1738,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		confirmAppClosePane.getController().addActionCallBackListeners();
 
 		//		createNewPaneObjects(); // re-create Map pane. This method is also used if user loggs off to create a new map pane (to avoid problems with user privs)
-		mapPane = new MapPane();
+		mapPane = new StarmapPane();
 		mapPane.setShowsMouseFollow(false);
 		mapPane.setShowsPlanetRotation(false);
 		mapPane.setCacheHint(CacheHint.SPEED);

@@ -9,7 +9,7 @@ Name "C3-Client_Installer"
 Caption "C3 Client Installer"
 Icon "c3.ico"
 UninstallIcon "c3.ico"
-OutFile "C3-Client-7.3.110_install.exe"
+OutFile "C3-Client-7.3.111_install.exe"
 BrandingText /TRIMRIGHT "ClanWolf.net"
 
 InstallDir $PROGRAMFILES64\C3-Client
@@ -25,7 +25,7 @@ Function .onInstSuccess
     ;                 SMPROGRAMS: $SMPROGRAMS  $\r$\n \
     ;                 Start Menu Folder: $STARTMENU_FOLDER $\r$\n \
     ;                 InstallDirectory: $INSTDIR "
-    ExecShell "" "https://www.clanwolf.net/apps/C3/changelog.txt?refresh=true&r=1695426155400"
+    ExecShell "" "https://www.clanwolf.net/apps/C3/changelog.txt?refresh=true&r=1695662671878"
     ExecShell "" "$INSTDIR\bin\C3-Starmap_Cerberus.exe"
 FunctionEnd
 
@@ -83,14 +83,14 @@ FunctionEnd
 ;--------------------------------
 
 LoadLanguageFile "${NSISDIR}\Contrib\Language files\English.nlf"
-VIProductVersion "7.3.110.0"
+VIProductVersion "7.3.111.0"
 VIAddVersionKey /LANG=0 "ProductName" "C3 Client"
 VIAddVersionKey /LANG=0 "Comments" "StarMap"
 VIAddVersionKey /LANG=0 "CompanyName" "ClanWolf.net [CWG]"
 VIAddVersionKey /LANG=0 "LegalTrademarks" "StarMap of the Inner Sphere and Clan Space."
 VIAddVersionKey /LANG=0 "LegalCopyright" "© ClanWolf.net"
 VIAddVersionKey /LANG=0 "FileDescription" "StarMap"
-VIAddVersionKey /LANG=0 "FileVersion" "7.3.110"
+VIAddVersionKey /LANG=0 "FileVersion" "7.3.111"
 
 ;--------------------------------
 
@@ -301,6 +301,7 @@ Section "C3-Client (required)"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\conf\sound.properties"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\conf\net.properties"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\conf\logging.properties"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\conf\jaxp.properties"
 
 	CreateDirectory $INSTDIR\conf\security
 	SetOutpath $INSTDIR\conf\security
@@ -409,7 +410,7 @@ Section "C3-Client (required)"
 	; Write the uninstall keys for Windows
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayName" "C3-Client"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayIcon" "$INSTDIR\c3.ico"
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayVersion" "7.3.110"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayVersion" "7.3.111"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "Publisher" "ClanWolf.net [CWG], Christian Bartel"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "InstallSource" "$EXEDIR\"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "UninstallString" '"$INSTDIR\uninstall.exe"'
@@ -545,6 +546,7 @@ Section "Uninstall"
 	Delete $INSTDIR\conf\sound.properties
 	Delete $INSTDIR\conf\net.properties
 	Delete $INSTDIR\conf\logging.properties
+	Delete $INSTDIR\conf\jaxp.properties
 	Delete $INSTDIR\conf\security\java.security
 	Delete $INSTDIR\conf\security\java.policy
 	Delete $INSTDIR\conf\security\policy\README.txt

@@ -1049,6 +1049,7 @@
 								<module>${moduleName}/${mainClass}</module>
 							</launcher>
 							<compression>2</compression>
+							<!-- <compression>zip9</compression>--> <!-- New in Java21 zip0 - zip9 -->
 
 							<!-- NONE, APP, APP_WITH_DEPENDENCIES -->
 							<jarInclusionPolicy>NONE</jarInclusionPolicy>

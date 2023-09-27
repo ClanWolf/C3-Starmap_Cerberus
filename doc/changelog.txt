@@ -2,8 +2,8 @@ C3 version history
 [ https://www.clanwolf.net | https://github.com/ClanWolf ]
 ----------------------------------------------------------------
 
-TODO
-PRIO 1 - Immediate:
+TODO PRIO 1 - Immediate:
+- Change compression level of jlink as soon as moditect supports the new param
 - Admin pane save should use a transfer object to send data to server
 - Saving character information (character avatar and username)
 - Only one alliance is allowed for each faction at a time
@@ -15,7 +15,7 @@ PRIO 1 - Immediate:
 - Check if a player changed mech chassis in the middle of an invasion and set drop to be lost for that side
 - If attack teams are invalid (e.g. one pilot switched sides,...), kick everyone out of the attack and force a new lobby (ResultAnalyzer.java, L.195)
 
-PRIO 2 - Medium:
+TODO PRIO 2 - Medium:
 - Add keyboard shortcuts for language change and help and open attack forum post
 - Userlist needs one more column on what side the char fights
 - Userlist needs one more column to display what role (e.g. droplead) the char has
@@ -30,7 +30,7 @@ PRIO 2 - Medium:
 - Channel message (discord) if a user successfully changes faction
 - MWO API Loop is still active after the end of an invasion
 
-PRIO 3 - Long term:
+TODO PRIO 3 - Long term:
 - Updating the manual (ongoing): https://www.clanwolf.net/apps/C3/C3_Manual_de.pdf
 - Web-View of the Starmap
 - Waiting circle animation is off-center
@@ -57,7 +57,11 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
-Version 7.3.111 (xx.xx.2023)
+Version 7.3.112 (27.09.2023)
+-
+
+Version 7.3.111 (25.09.2023)
+- UPDATED: Java version
 - CHANGED: Diplomacy pane closes on cancel button
 - ADDED: Surface map controllers
 

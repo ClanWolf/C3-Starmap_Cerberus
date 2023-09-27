@@ -34,7 +34,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.shape.Circle;
-import net.clanwolf.starmap.client.gui.panes.map.starmap.Config;
+import net.clanwolf.starmap.client.gui.panes.map.starmap.StarmapConfig;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,6 +60,9 @@ public class BOStarSystem {
 
 	public boolean systemHasSurfaceMap = false;
 	private Image imagePlanet;
+	private Image surfacemapBig;
+	private Image surfacemapSmall;
+	private Image surfacemapAnimated;
 
 	private int blockReason = 0;
 
@@ -148,15 +151,15 @@ public class BOStarSystem {
 
 	@SuppressWarnings("unused")
 	public double getScreenX() {
-		double screenX = (hh_starSystemDataDTO.getStarSystemID().getX().doubleValue()) * Config.MAP_COORDINATES_MULTIPLICATOR;
-		screenX = (Config.MAP_WIDTH / 2) + screenX;
+		double screenX = (hh_starSystemDataDTO.getStarSystemID().getX().doubleValue()) * StarmapConfig.MAP_COORDINATES_MULTIPLICATOR;
+		screenX = (StarmapConfig.MAP_WIDTH / 2) + screenX;
 		return screenX;
 	}
 
 	@SuppressWarnings("unused")
 	public double getScreenY() {
-		double screenY = (hh_starSystemDataDTO.getStarSystemID().getY().doubleValue()) * Config.MAP_COORDINATES_MULTIPLICATOR;
-		screenY = Config.MAP_HEIGHT - ((Config.MAP_HEIGHT /2) + screenY);
+		double screenY = (hh_starSystemDataDTO.getStarSystemID().getY().doubleValue()) * StarmapConfig.MAP_COORDINATES_MULTIPLICATOR;
+		screenY = StarmapConfig.MAP_HEIGHT - ((StarmapConfig.MAP_HEIGHT /2) + screenY);
 		return screenY;
 	}
 
@@ -290,6 +293,33 @@ public class BOStarSystem {
 			}
 		}
 		return imagePlanet;
+	}
+
+	@SuppressWarnings("unused")
+	public Image getSurfacemapBig() {
+		if (surfacemapBig == null) {
+			String systemId = hh_starSystemDataDTO.getStarSystemID().getId().intValue() + "";
+			surfacemapBig = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/planets/" + systemId + "/" + systemId + "_map_big.jpg")));
+		}
+		return surfacemapBig;
+	}
+
+	@SuppressWarnings("unused")
+	public Image getSurfacemapSmall() {
+		if (surfacemapSmall == null) {
+			String systemId = hh_starSystemDataDTO.getStarSystemID().getId().intValue() + "";
+			surfacemapSmall = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/planets/" + systemId + "/" + systemId + "_map_small.png")));
+		}
+		return surfacemapSmall;
+	}
+
+	@SuppressWarnings("unused")
+	public Image getSurfacemapAnimated() {
+		if (surfacemapAnimated == null) {
+			String systemId = hh_starSystemDataDTO.getStarSystemID().getId().intValue() + "";
+			surfacemapAnimated = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/planets/" + systemId + "/" + systemId + ".gif")));
+		}
+		return surfacemapAnimated;
 	}
 
 	@SuppressWarnings("unused")

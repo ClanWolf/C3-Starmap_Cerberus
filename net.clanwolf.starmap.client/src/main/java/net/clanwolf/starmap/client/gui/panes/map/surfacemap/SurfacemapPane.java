@@ -38,6 +38,7 @@ import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3RolePlayController;
+import net.clanwolf.starmap.client.process.universe.BOStarSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,10 +48,11 @@ import java.lang.invoke.MethodHandles;
 public class SurfacemapPane extends Pane {
 
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+	private static BOStarSystem starSystem;
+	SurfacemapPaneController controller = null;
 
-	AbstractC3Controller controller = null;
-
-	public SurfacemapPane() {
+	public SurfacemapPane(BOStarSystem sys) {
+		starSystem = sys;
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(this.getClass().getResource("/fxml/SurfacemapPane.fxml"));
@@ -58,6 +60,9 @@ public class SurfacemapPane extends Pane {
 			this.getChildren().add(root);
 			controller = loader.getController();
 			controller.addActionCallBackListeners();
+			controller.setStarSystem(starSystem);
+
+			controller.initializeSurfaceMap();
 		} catch (IOException e) {
 			e.printStackTrace();
 			logger.error("IOException while reading FXML for surfacemap", e);
