@@ -678,6 +678,7 @@ public class UsereditorPaneController {
 
 		// Character
 
+		lblCharacterName.setText(Internationalization.getString("general_charactername"));
 		labelMaleCharImageList.setText(Internationalization.getString("general_gender_male"));
 		labelFemaleCharImageList.setText(Internationalization.getString("general_gender_female"));
 
