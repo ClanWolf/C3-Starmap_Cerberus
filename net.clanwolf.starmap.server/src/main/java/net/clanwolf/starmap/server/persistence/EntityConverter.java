@@ -104,10 +104,10 @@ public class EntityConverter {
 			state.addObject(o);
 		}
 
-		if (state.getObject() instanceof UsereditorSaveObject) {
+//		if (state.getObject() instanceof UsereditorSaveObject) {
 //			UsereditorSaveObject so = (UsereditorSaveObject) state.getObject();
 //			getDto((Pojo)
-		}
+//		}
 
 		if(state.getObject2() instanceof Pojo){
 			Object o = getDto((Pojo) state.getObject2());
