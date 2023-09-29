@@ -55,8 +55,6 @@ WATCH OUT FOR WHILE TESTING:
 VERSIONS
 
 Version 7.3.112 (30.09.2023)
-.
-.
 - *** Finish refactoring of Diplomacy
 - *** Save object for admin editor pane
 - *** ?(Doubled) Admin pane save should use a transfer object to send data to server
@@ -64,9 +62,6 @@ Version 7.3.112 (30.09.2023)
 - *** Only one alliance is allowed for each faction at a time
 - CHANGED: Reduced size for system images
 - ADDED: Some more char images
-
-
-
 
 Version 7.3.111 (25.09.2023)
 - UPDATED: Java version

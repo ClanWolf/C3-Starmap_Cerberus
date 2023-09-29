@@ -931,7 +931,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			}
 			EntityManagerHelper.commit(getC3UserID(session));
 		} catch (RuntimeException re) {
-			logger.error("Error while user faction save", re);
+			logger.error("Error while user character save", re);
 			re.printStackTrace();
 			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
 		}
@@ -965,7 +965,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			}
 			EntityManagerHelper.commit(getC3UserID(session));
 		} catch (RuntimeException re) {
-			logger.error("Error while user faction save", re);
+			logger.error("Error while user save", re);
 			re.printStackTrace();
 			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
 		}

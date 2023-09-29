@@ -220,17 +220,13 @@ public class UsereditorPaneController {
 			}
 		}
 
-		UsereditorSaveObject saveObject = new UsereditorSaveObject();
-		saveObject.setUsersToSave(usersToSave);
-		saveObject.setRpCharacter(Nexus.getCurrentChar());
-		if (cbRequestFactionChange.isSelected()) {
-			saveObject.setFactionToChangeTo(cbRequestedFaction.getSelectionModel().getSelectedItem().getFactionDTO().getId()); // BO Faction
-			saveObject.setFactionKey(tfFactionKey.getText());
-		}
-
 		GameState saveUsersState = new GameState();
 		saveUsersState.setMode(GAMESTATEMODES.USERDATA_SAVE);
-		saveUsersState.addObject(saveObject);
+		saveUsersState.addObject(usersToSave);
+		if (cbRequestFactionChange.isSelected()) {
+			saveUsersState.addObject2(cbRequestedFaction.getSelectionModel().getSelectedItem().getFactionDTO().getId()); // BO Faction
+			saveUsersState.addObject3(tfFactionKey.getText());
+		}
 
 		Nexus.fireNetworkEvent(saveUsersState);
 
