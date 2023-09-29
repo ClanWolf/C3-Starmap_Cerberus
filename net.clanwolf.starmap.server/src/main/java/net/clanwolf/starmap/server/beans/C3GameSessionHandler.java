@@ -876,99 +876,99 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		}
 	}
 
-	private synchronized void saveUserChangesFactionChange(PlayerSession session, Long givenFactionId, String givenFactionKey) {
-		GameState response = new GameState(GAMESTATEMODES.USERDATA_SAVE);
+//	private synchronized void saveUserChangesFactionChange(PlayerSession session, Long givenFactionId, String givenFactionKey) {
+//		GameState response = new GameState(GAMESTATEMODES.USERDATA_SAVE);
+//
+//		try {
+//			EntityManagerHelper.beginTransaction(getC3UserID(session));
+//			FactionDAO factionDAO = FactionDAO.getInstance();
+//			JumpshipDAO jsDAO = JumpshipDAO.getInstance();
+//			RolePlayCharacterDAO rpDAO = RolePlayCharacterDAO.getInstance();
+//
+//			if (givenFactionId != null) {
+//				// The requested faction for the user who saved this
+//				UserPOJO userRequestingFactionChange = ((C3Player) session.getPlayer()).getUser();
+//				FactionPOJO newFaction = factionDAO.findById(getC3UserID(session), givenFactionId);
+//				JumpshipPOJO js = jsDAO.getJumpshipsForFaction(givenFactionId).get(0);
+//
+//				if (newFaction.getFactionKey() != null && newFaction.getFactionKey().equals(givenFactionKey)) {
+//					// Change faction for all chars of that user
+//					ArrayList<RolePlayCharacterPOJO> charList = rpDAO.getCharactersOfUser(userRequestingFactionChange);
+//					for (RolePlayCharacterPOJO ch : charList) {
+//						ch.setFactionId(newFaction.getId().intValue());
+//						ch.setFactionTypeId(newFaction.getFactionTypeID().intValue());
+//						ch.setJumpshipId(js.getId().intValue());
+//						rpDAO.update(getC3UserID(session), ch);
+//					}
+//					response = new GameState(GAMESTATEMODES.CLIENT_LOGOUT_AFTER_FACTION_CHANGE);
+//				} else {
+//					logger.info("No characters have changed factions, faction key wrong or missing!");
+//				}
+//			}
+//			EntityManagerHelper.commit(getC3UserID(session));
+//
+//			response.setAction_successfully(Boolean.TRUE);
+//			C3GameSessionHandler.sendNetworkEvent(session, response);
+//		} catch (RuntimeException re) {
+//			logger.error("Error while user faction save", re);
+//			re.printStackTrace();
+//			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
+//
+//			response.addObject(re.getMessage());
+//			response.setAction_successfully(Boolean.FALSE);
+//			C3GameSessionHandler.sendNetworkEvent(session, response);
+//		}
+//	}
 
-		try {
-			EntityManagerHelper.beginTransaction(getC3UserID(session));
-			FactionDAO factionDAO = FactionDAO.getInstance();
-			JumpshipDAO jsDAO = JumpshipDAO.getInstance();
-			RolePlayCharacterDAO rpDAO = RolePlayCharacterDAO.getInstance();
+//	private synchronized void saveUserChangesSaveCharacter(PlayerSession session, RolePlayCharacterPOJO characterToSavePOJO) {
+//		try {
+//			EntityManagerHelper.beginTransaction(getC3UserID(session));
+//			RolePlayCharacterDAO rpDAO = RolePlayCharacterDAO.getInstance();
+//			if (characterToSavePOJO != null) {
+//				// save character changes
+//				rpDAO.update(getC3UserID(session), characterToSavePOJO);
+//			}
+//			EntityManagerHelper.commit(getC3UserID(session));
+//		} catch (RuntimeException re) {
+//			logger.error("Error while user character save", re);
+//			re.printStackTrace();
+//			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
+//		}
+//	}
 
-			if (givenFactionId != null) {
-				// The requested faction for the user who saved this
-				UserPOJO userRequestingFactionChange = ((C3Player) session.getPlayer()).getUser();
-				FactionPOJO newFaction = factionDAO.findById(getC3UserID(session), givenFactionId);
-				JumpshipPOJO js = jsDAO.getJumpshipsForFaction(givenFactionId).get(0);
-
-				if (newFaction.getFactionKey() != null && newFaction.getFactionKey().equals(givenFactionKey)) {
-					// Change faction for all chars of that user
-					ArrayList<RolePlayCharacterPOJO> charList = rpDAO.getCharactersOfUser(userRequestingFactionChange);
-					for (RolePlayCharacterPOJO ch : charList) {
-						ch.setFactionId(newFaction.getId().intValue());
-						ch.setFactionTypeId(newFaction.getFactionTypeID().intValue());
-						ch.setJumpshipId(js.getId().intValue());
-						rpDAO.update(getC3UserID(session), ch);
-					}
-					response = new GameState(GAMESTATEMODES.CLIENT_LOGOUT_AFTER_FACTION_CHANGE);
-				} else {
-					logger.info("No characters have changed factions, faction key wrong or missing!");
-				}
-			}
-			EntityManagerHelper.commit(getC3UserID(session));
-
-			response.setAction_successfully(Boolean.TRUE);
-			C3GameSessionHandler.sendNetworkEvent(session, response);
-		} catch (RuntimeException re) {
-			logger.error("Error while user faction save", re);
-			re.printStackTrace();
-			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
-
-			response.addObject(re.getMessage());
-			response.setAction_successfully(Boolean.FALSE);
-			C3GameSessionHandler.sendNetworkEvent(session, response);
-		}
-	}
-
-	private synchronized void saveUserChangesSaveCharacter(PlayerSession session, RolePlayCharacterPOJO characterToSavePOJO) {
-		try {
-			EntityManagerHelper.beginTransaction(getC3UserID(session));
-			RolePlayCharacterDAO rpDAO = RolePlayCharacterDAO.getInstance();
-			if (characterToSavePOJO != null) {
-				// save character changes
-				rpDAO.update(getC3UserID(session), characterToSavePOJO);
-			}
-			EntityManagerHelper.commit(getC3UserID(session));
-		} catch (RuntimeException re) {
-			logger.error("Error while user character save", re);
-			re.printStackTrace();
-			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
-		}
-	}
-
-	private synchronized void saveUserChangesUser(PlayerSession session, ArrayList<UserDTO> usersToSave) {
-		try {
-			EntityManagerHelper.beginTransaction(getC3UserID(session));
-
-			UserDAO dao = UserDAO.getInstance();
-			RolePlayCharacterDAO rpDAO = RolePlayCharacterDAO.getInstance();
-
-			for (UserDTO userDTO : usersToSave) {
-				UserPOJO user = EntityConverter.convertdto2pojo(userDTO, UserPOJO.class);
-				if (user != null) {
-					user.setLastModified(new Timestamp(System.currentTimeMillis()));
-
-					ArrayList<RolePlayCharacterPOJO> charList = rpDAO.getCharactersOfUser(user);
-					for (RolePlayCharacterPOJO ch : charList) {
-						ch.setMwoUsername(user.getMwoUsername());
-						rpDAO.update(getC3UserID(session), ch);
-					}
-					if (user.getUserId() == null) {
-						// logger.info("Saving: " + user.getUserName() + " - Privs: " + user.getPrivileges());
-						dao.save(getC3UserID(session), user);
-					} else {
-						// logger.info("Updating: " + user.getUserName() + " - Privs: " + user.getPrivileges());
-						dao.update(getC3UserID(session), user);
-					}
-				}
-			}
-			EntityManagerHelper.commit(getC3UserID(session));
-		} catch (RuntimeException re) {
-			logger.error("Error while user save", re);
-			re.printStackTrace();
-			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
-		}
-	}
+//	private synchronized void saveUserChangesUser(PlayerSession session, ArrayList<UserDTO> usersToSave) {
+//		try {
+//			EntityManagerHelper.beginTransaction(getC3UserID(session));
+//
+//			UserDAO dao = UserDAO.getInstance();
+//			RolePlayCharacterDAO rpDAO = RolePlayCharacterDAO.getInstance();
+//
+//			for (UserDTO userDTO : usersToSave) {
+//				UserPOJO user = EntityConverter.convertdto2pojo(userDTO, UserPOJO.class);
+//				if (user != null) {
+//					user.setLastModified(new Timestamp(System.currentTimeMillis()));
+//
+//					ArrayList<RolePlayCharacterPOJO> charList = rpDAO.getCharactersOfUser(user);
+//					for (RolePlayCharacterPOJO ch : charList) {
+//						ch.setMwoUsername(user.getMwoUsername());
+//						rpDAO.update(getC3UserID(session), ch);
+//					}
+//					if (user.getUserId() == null) {
+//						// logger.info("Saving: " + user.getUserName() + " - Privs: " + user.getPrivileges());
+//						dao.save(getC3UserID(session), user);
+//					} else {
+//						// logger.info("Updating: " + user.getUserName() + " - Privs: " + user.getPrivileges());
+//						dao.update(getC3UserID(session), user);
+//					}
+//				}
+//			}
+//			EntityManagerHelper.commit(getC3UserID(session));
+//		} catch (RuntimeException re) {
+//			logger.error("Error while user save", re);
+//			re.printStackTrace();
+//			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
+//		}
+//	}
 
 //	private synchronized void saveUserChanges(PlayerSession session, GameState state) {
 //		if (state.getObject() instanceof UsereditorSaveObject incomingSaveObject) {
@@ -1022,9 +1022,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 						ch.setFactionId(newFaction.getId().intValue());
 						ch.setFactionTypeId(newFaction.getFactionTypeID().intValue());
 						ch.setJumpshipId(js.getId().intValue());
-						//TODO: Test
 						rpDAO.update(getC3UserID(session), ch);
-
 					}
 					response = new GameState(GAMESTATEMODES.CLIENT_LOGOUT_AFTER_FACTION_CHANGE);
 				} else {
@@ -1063,6 +1061,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			C3GameSessionHandler.sendNetworkEvent(session, response);
 		}
 	}
+
 	private synchronized void checkDoubleLogin(PlayerSession session, GameRoom gm) {
 		logger.info("C3Room.afterSessionConnect");
 

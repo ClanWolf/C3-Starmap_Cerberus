@@ -104,20 +104,22 @@ public class UsereditorPaneController {
 	private boolean currentUserWasChanged = false;
 	private boolean showPW = false;
 	private boolean usernameOk = true;
+	@FXML
+	Label lCurrentBalance, lblFactionKey, lblFactionKeyLead, lblCharacterName;
 	private boolean pwOk = true;
 	private boolean mailOk = true;
 	private boolean mwoUsernameOk = true;
 	@FXML
-	Label lCurrentBalance, lblFactionKey, lblFactionKeyLead;
+	TextField tfName, tfPassword, tfPasswordConfirm, tfMail, tfMWOUser, tfFactionKey, tfFactionKeyLead, tfCharacterName;
 
 	@FXML
 	ListView<String> lvImageSelectorMale, lvImageSelectorFemale;
 	@FXML
 	TableView<FinancesInfo> tableFinances;
 	private String originalUsername = "";
+	private boolean characterNameOk = true;
 	private String originalMail = "";
-	@FXML
-	TextField tfName, tfPassword, tfPasswordConfirm, tfMail, tfMWOUser, tfFactionKey, tfFactionKeyLead;
+	private String originalCharacterName = "";
 	private String originalMWOUser = "";
 	private boolean factionkeyOk = false;
 
@@ -197,10 +199,12 @@ public class UsereditorPaneController {
 			if (u.id.equals(Nexus.getCurrentUser().getUserId())) {
 				if (currentUserWasChanged) {
 					u.setUserName(tfName.getText());
+					u.getCurrentCharacter().setName(tfCharacterName.getText());
 					u.setUserEMail(tfMail.getText());
 					u.setMwoUsername(tfMWOUser.getText());
 
 					Nexus.getCurrentUser().setUserName(tfName.getText());
+					Nexus.getCurrentChar().setName(tfCharacterName.getText());
 					Nexus.getCurrentUser().setUserEMail(tfMail.getText());
 					Nexus.getCurrentUser().setMwoUsername(tfMWOUser.getText());
 
@@ -401,10 +405,14 @@ public class UsereditorPaneController {
 		if (!tabUser.getText().endsWith("*")) {
 			tabUser.setText(tabUser.getText() + " *");
 		}
+		if (!tabCharacter.getText().endsWith("*")) {
+			tabCharacter.setText(tabCharacter.getText() + " *");
+		}
 
 		if (Objects.equals(originalUsername, tfName.getText())
 			&& Objects.equals(originalMail, tfMail.getText())
 			&& Objects.equals(originalMWOUser, tfMWOUser.getText())
+			&& Objects.equals(originalCharacterName, tfCharacterName.getText())
 			&& tfPassword.getText().length() == 0
 			&& tfPasswordConfirm.getText().length() == 0
 			&& Objects.equals(tfPassword.getText(), tfPasswordConfirm.getText())
@@ -413,11 +421,12 @@ public class UsereditorPaneController {
 			// Nothing to save!
 			if (tabUser.getText().endsWith("*")) {
 				tabUser.setText(tabUser.getText().substring(0, tabUser.getText().length() - 2));
+				tabCharacter.setText(tabCharacter.getText().substring(0, tabCharacter.getText().length() - 2));
 			}
 			btnSave.setDisable(false);
 			currentUserWasChanged = false;
 		} else {
-			btnSave.setDisable(!usernameOk || !pwOk || !mailOk || !mwoUsernameOk);
+			btnSave.setDisable(!usernameOk || !characterNameOk || !pwOk || !mailOk || !mwoUsernameOk);
 		}
 	}
 
@@ -456,6 +465,7 @@ public class UsereditorPaneController {
 
 		if (Nexus.getCurrentUser() != null) {
 			tfName.setText(Nexus.getCurrentUser().getUserName());
+			tfCharacterName.setText(Nexus.getCurrentUser().getCurrentCharacter().getName());
 			tfPasswordConfirm.setText("");
 			tfMail.setText(Nexus.getCurrentUser().getUserEMail());
 			tfMWOUser.setText(Nexus.getCurrentUser().getMwoUsername());
@@ -464,6 +474,7 @@ public class UsereditorPaneController {
 		originalUsername = tfName.getText();
 		originalMail = tfMail.getText();
 		originalMWOUser = tfMWOUser.getText();
+		originalCharacterName = tfCharacterName.getText();
 
 		ResourceBundle sMessagesPrivileges = ResourceBundle.getBundle("MessagesPrivilegeBundle", locale);
 
@@ -530,100 +541,97 @@ public class UsereditorPaneController {
 
 		currentUserWasChanged = false;
 
-		ChangeListener<? super String> userNameFieldChangeListener = new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> ov, String old_val, String new_val) {
-				currentUserWasChanged = true;
-				usernameOk = tfName.getText().length() >= 3;
-				if (usernameOk) {
-					tfName.setStyle("-fx-text-fill:green;");
-					lblName.setStyle("-fx-text-fill:green;");
-				} else {
-					tfName.setStyle("-fx-text-fill:red;");
-					lblName.setStyle("-fx-text-fill:red;");
-				}
-				checkUserChanges();
+		ChangeListener<? super String> userNameFieldChangeListener = (ChangeListener<String>) (ov, old_val, new_val) -> {
+			currentUserWasChanged = true;
+			usernameOk = tfName.getText().length() >= 3;
+			if (usernameOk) {
+				tfName.setStyle("-fx-text-fill:green;");
+				lblName.setStyle("-fx-text-fill:green;");
+			} else {
+				tfName.setStyle("-fx-text-fill:red;");
+				lblName.setStyle("-fx-text-fill:red;");
 			}
+			checkUserChanges();
 		};
-		ChangeListener<? super String> userPasswordFieldChangeListener = new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> ov, String old_val, String new_val) {
-				currentUserWasChanged = true;
-				if ((tfPassword.getText().length() == 0 || tfPassword.getText().length() > 5) && tfPasswordConfirm.getText().equals(tfPassword.getText())) {
-					tfPassword.setStyle("-fx-text-fill:green;");
-					tfPasswordConfirm.setStyle("-fx-text-fill:green;");
-					lblPassword.setStyle("-fx-text-fill:green;");
-					lblPasswordConfirm.setStyle("-fx-text-fill:green;");
-					pwOk = true;
-				} else {
-					tfPassword.setStyle("-fx-text-fill:red;");
-					tfPasswordConfirm.setStyle("-fx-text-fill:red;");
-					lblPassword.setStyle("-fx-text-fill:red;");
-					lblPasswordConfirm.setStyle("-fx-text-fill:red;");
-					pwOk = false;
-				}
-				if (showPW) {
-					lblPasswordClear.setText(tfPassword.getText());
-					lblPasswordConfirmClear.setText(tfPasswordConfirm.getText());
-				}
+		ChangeListener<? super String> characterNameFieldChangeListener = (ChangeListener<String>) (ov, old_val, new_val) -> {
+			currentUserWasChanged = true;
+			characterNameOk = tfCharacterName.getText().length() >= 3;
+			if (characterNameOk) {
+				tfCharacterName.setStyle("-fx-text-fill:green;");
+				lblCharacterName.setStyle("-fx-text-fill:green;");
+			} else {
+				tfCharacterName.setStyle("-fx-text-fill:red;");
+				lblCharacterName.setStyle("-fx-text-fill:red;");
+			}
+			checkUserChanges();
+		};
+		ChangeListener<? super String> userPasswordFieldChangeListener = (ChangeListener<String>) (ov, old_val, new_val) -> {
+			currentUserWasChanged = true;
+			if ((tfPassword.getText().length() == 0 || tfPassword.getText().length() > 5) && tfPasswordConfirm.getText().equals(tfPassword.getText())) {
+				tfPassword.setStyle("-fx-text-fill:green;");
+				tfPasswordConfirm.setStyle("-fx-text-fill:green;");
+				lblPassword.setStyle("-fx-text-fill:green;");
+				lblPasswordConfirm.setStyle("-fx-text-fill:green;");
+				pwOk = true;
+			} else {
+				tfPassword.setStyle("-fx-text-fill:red;");
+				tfPasswordConfirm.setStyle("-fx-text-fill:red;");
+				lblPassword.setStyle("-fx-text-fill:red;");
+				lblPasswordConfirm.setStyle("-fx-text-fill:red;");
+				pwOk = false;
+			}
+			if (showPW) {
+				lblPasswordClear.setText(tfPassword.getText());
+				lblPasswordConfirmClear.setText(tfPasswordConfirm.getText());
+			}
 
-				checkUserChanges();
-			}
+			checkUserChanges();
 		};
-		ChangeListener<? super String> userPasswordConfirmFieldChangeListener = new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> ov, String old_val, String new_val) {
-				currentUserWasChanged = true;
-				if ((tfPassword.getText().length() == 0 || tfPassword.getText().length() > 5) && tfPasswordConfirm.getText().equals(tfPassword.getText())) {
-					tfPassword.setStyle("-fx-text-fill:green;");
-					tfPasswordConfirm.setStyle("-fx-text-fill:green;");
-					lblPassword.setStyle("-fx-text-fill:green;");
-					lblPasswordConfirm.setStyle("-fx-text-fill:green;");
-					pwOk = true;
-				} else {
-					tfPassword.setStyle("-fx-text-fill:red;");
-					tfPasswordConfirm.setStyle("-fx-text-fill:red;");
-					lblPassword.setStyle("-fx-text-fill:red;");
-					lblPasswordConfirm.setStyle("-fx-text-fill:red;");
-					pwOk = false;
-				}
-				if (showPW) {
-					lblPasswordClear.setText(tfPassword.getText());
-					lblPasswordConfirmClear.setText(tfPasswordConfirm.getText());
-				}
+		ChangeListener<? super String> userPasswordConfirmFieldChangeListener = (ChangeListener<String>) (ov, old_val, new_val) -> {
+			currentUserWasChanged = true;
+			if ((tfPassword.getText().length() == 0 || tfPassword.getText().length() > 5) && tfPasswordConfirm.getText().equals(tfPassword.getText())) {
+				tfPassword.setStyle("-fx-text-fill:green;");
+				tfPasswordConfirm.setStyle("-fx-text-fill:green;");
+				lblPassword.setStyle("-fx-text-fill:green;");
+				lblPasswordConfirm.setStyle("-fx-text-fill:green;");
+				pwOk = true;
+			} else {
+				tfPassword.setStyle("-fx-text-fill:red;");
+				tfPasswordConfirm.setStyle("-fx-text-fill:red;");
+				lblPassword.setStyle("-fx-text-fill:red;");
+				lblPasswordConfirm.setStyle("-fx-text-fill:red;");
+				pwOk = false;
+			}
+			if (showPW) {
+				lblPasswordClear.setText(tfPassword.getText());
+				lblPasswordConfirmClear.setText(tfPasswordConfirm.getText());
+			}
 
-				checkUserChanges();
-			}
+			checkUserChanges();
 		};
-		ChangeListener<? super String> userMailFieldChangeListener = new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> ov, String old_val, String new_val) {
-				currentUserWasChanged = true;
-				mailOk = !"".equals(tfMail.getText()) && tfMail.getText().length() > 5 && tfMail.getText().contains("@") && tfMail.getText().contains(".") && tfMail.getText().lastIndexOf(".") > tfMail.getText().indexOf("@") && !tfMail.getText().endsWith(".");
-				if (mailOk) {
-					tfMail.setStyle("-fx-text-fill:green;");
-					lblMail.setStyle("-fx-text-fill:green;");
-				} else {
-					tfMail.setStyle("-fx-text-fill:red;");
-					lblMail.setStyle("-fx-text-fill:red;");
-				}
-				checkUserChanges();
+		ChangeListener<? super String> userMailFieldChangeListener = (ChangeListener<String>) (ov, old_val, new_val) -> {
+			currentUserWasChanged = true;
+			mailOk = !"".equals(tfMail.getText()) && tfMail.getText().length() > 5 && tfMail.getText().contains("@") && tfMail.getText().contains(".") && tfMail.getText().lastIndexOf(".") > tfMail.getText().indexOf("@") && !tfMail.getText().endsWith(".");
+			if (mailOk) {
+				tfMail.setStyle("-fx-text-fill:green;");
+				lblMail.setStyle("-fx-text-fill:green;");
+			} else {
+				tfMail.setStyle("-fx-text-fill:red;");
+				lblMail.setStyle("-fx-text-fill:red;");
 			}
+			checkUserChanges();
 		};
-		ChangeListener<? super String> userMWONameFieldChangeListener = new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue<? extends String> ov, String old_val, String new_val) {
-				currentUserWasChanged = true;
-				mwoUsernameOk = tfMWOUser.getText().length() > 0;
-				if (mwoUsernameOk) {
-					tfMWOUser.setStyle("-fx-text-fill:green;");
-					lblMWOUser.setStyle("-fx-text-fill:green;");
-				} else {
-					tfMWOUser.setStyle("-fx-text-fill:red;");
-					lblMWOUser.setStyle("-fx-text-fill:red;");
-				}
-				checkUserChanges();
+		ChangeListener<? super String> userMWONameFieldChangeListener = (ChangeListener<String>) (ov, old_val, new_val) -> {
+			currentUserWasChanged = true;
+			mwoUsernameOk = tfMWOUser.getText().length() > 0;
+			if (mwoUsernameOk) {
+				tfMWOUser.setStyle("-fx-text-fill:green;");
+				lblMWOUser.setStyle("-fx-text-fill:green;");
+			} else {
+				tfMWOUser.setStyle("-fx-text-fill:red;");
+				lblMWOUser.setStyle("-fx-text-fill:red;");
 			}
+			checkUserChanges();
 		};
 
 		ChangeListener<? super String> factionkeyFieldChangeListener = (ChangeListener<String>) (ov, old_val, new_val) -> {
@@ -645,6 +653,7 @@ public class UsereditorPaneController {
 		tfMail.textProperty().addListener(userMailFieldChangeListener);
 		tfMWOUser.textProperty().addListener(userMWONameFieldChangeListener);
 		tfFactionKey.textProperty().addListener(factionkeyFieldChangeListener);
+		tfCharacterName.textProperty().addListener(characterNameFieldChangeListener);
 
 		if (showPW) {
 			lblPasswordClear.setText(tfPassword.getText());

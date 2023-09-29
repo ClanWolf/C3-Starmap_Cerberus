@@ -3,6 +3,11 @@ C3 version history
 ----------------------------------------------------------------
 
 TODO PRIO 1 - Immediate:
+
+- *** Finish refactoring of Diplomacy
+- *** Saving character information (character avatar and username)
+- *** Only one alliance is allowed for each faction at a time
+
 - Change compression level of jlink as soon as moditect supports the new param
 - If an attack is lost, the jumpship is moved back to the system it came from
 - Check diplomacy on planet attacks and routepoints (already effective?)
@@ -55,11 +60,6 @@ WATCH OUT FOR WHILE TESTING:
 VERSIONS
 
 Version 7.3.112 (30.09.2023)
-- *** Finish refactoring of Diplomacy
-- *** Save object for admin editor pane
-- *** ?(Doubled) Admin pane save should use a transfer object to send data to server
-- *** Saving character information (character avatar and username)
-- *** Only one alliance is allowed for each faction at a time
 - CHANGED: Reduced size for system images
 - ADDED: Some more char images
 

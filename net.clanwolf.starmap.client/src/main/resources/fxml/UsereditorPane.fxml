@@ -134,7 +134,7 @@
                            <children>
                               <GridPane layoutX="22.0" layoutY="24.0" prefHeight="149.0" prefWidth="754.0">
                                  <columnConstraints>
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="372.4285888671875" minWidth="10.0" prefWidth="169.71426827566964" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="656.857125418527" minWidth="10.0" prefWidth="585.1428745814732" />
                                  </columnConstraints>
                                  <rowConstraints>
@@ -172,7 +172,7 @@
                            <children>
                               <GridPane layoutX="22.0" layoutY="24.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" AnchorPane.leftAnchor="18.0" AnchorPane.rightAnchor="18.0">
                                  <columnConstraints>
-                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="372.4285888671875" minWidth="10.0" prefWidth="163.71429443359375" />
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" />
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="656.857125418527" minWidth="10.0" prefWidth="556.5714111328125" />
                                  </columnConstraints>
                                  <rowConstraints>
