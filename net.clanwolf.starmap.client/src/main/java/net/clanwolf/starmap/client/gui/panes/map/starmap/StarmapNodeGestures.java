@@ -71,14 +71,16 @@ public class StarmapNodeGestures {
 			Circle c = (Circle) node;
 			c.setRadius(8);
 
-			BOStarSystem hoveredStarSystem = boUniverse.starSystemBOs.get(Long.parseLong(node.getId()));
-			Double x = hoveredStarSystem.getX();
-			Double y = hoveredStarSystem.getY();
-			ActionManager.getAction(ACTIONS.UPDATE_COORD_INFO).execute(hoveredStarSystem.getName() + " [X:" + String.format("%.2f", x) + "] - [Y:" + String.format("%.2f", y) + "]");
+			if (Nexus.getBoUniverse() != null) {
+				BOStarSystem hoveredStarSystem = Nexus.getBoUniverse().starSystemBOs.get(Long.parseLong(node.getId()));
+				Double x = hoveredStarSystem.getX();
+				Double y = hoveredStarSystem.getY();
+				ActionManager.getAction(ACTIONS.UPDATE_COORD_INFO).execute(hoveredStarSystem.getName() + " [X:" + String.format("%.2f", x) + "] - [Y:" + String.format("%.2f", y) + "]");
 
-//			if (Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN)) {
-//				logger.info("Hovered System information: " + hoveredStarSystem.getName() + " (x: " + hoveredStarSystem.getX() + " | y: " + hoveredStarSystem.getY() + ") - " + "[StarSystemId / StarSystemDataId: " + hoveredStarSystem.getStarSystemId() + " / " + hoveredStarSystem.getStarSystemDataId() + "]");
-//			}
+				// if (Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN)) {
+				// logger.info("Hovered System information: " + hoveredStarSystem.getName() + " (x: " + hoveredStarSystem.getX() + " | y: " + hoveredStarSystem.getY() + ") - " + "[StarSystemId / StarSystemDataId: " + hoveredStarSystem.getStarSystemId() + " / " + hoveredStarSystem.getStarSystemDataId() + "]");
+				// }
+			}
 		}
 	};
 	private Image selectionMarker;
@@ -228,12 +230,12 @@ public class StarmapNodeGestures {
 
 		boUniverse.currentlyDraggedJumpship.setRouteSystems(route);
 		int currentRound = Nexus.getCurrentRound();
-
-		canvas.getChildren().remove(boUniverse.currentlyDraggedJumpship.routeLines);
-
-		routePointLabelsMap.computeIfAbsent(boUniverse.currentlyDraggedJumpship.getJumpshipId(), k -> new ArrayList<>());
-		canvas.getChildren().removeAll(routePointLabelsMap.get(boUniverse.currentlyDraggedJumpship.getJumpshipId()));
-		routePointLabelsMap.get(boUniverse.currentlyDraggedJumpship.getJumpshipId()).clear();
+		if (this.canvas != null) {
+			this.canvas.getChildren().remove(boUniverse.currentlyDraggedJumpship.routeLines);
+			routePointLabelsMap.computeIfAbsent(boUniverse.currentlyDraggedJumpship.getJumpshipId(), k -> new ArrayList<>());
+			this.canvas.getChildren().removeAll(routePointLabelsMap.get(boUniverse.currentlyDraggedJumpship.getJumpshipId()));
+			routePointLabelsMap.get(boUniverse.currentlyDraggedJumpship.getJumpshipId()).clear();
+		}
 
 		boUniverse.currentlyDraggedJumpship.routeLines = new Group();
 
@@ -371,7 +373,7 @@ public class StarmapNodeGestures {
 		boUniverse.currentlyDraggedJumpship.routeLines.toFront();
 		boUniverse.currentlyDraggedJumpship.getJumpshipImageView().toFront();
 
-		canvas.getChildren().add(boUniverse.currentlyDraggedJumpship.routeLines);
+		this.canvas.getChildren().add(boUniverse.currentlyDraggedJumpship.routeLines);
 		ActionManager.getAction(ACTIONS.ENABLE_JUMP_BUTTON).execute();
 	};
 
@@ -499,7 +501,7 @@ public class StarmapNodeGestures {
 
 				// Is the dragged node a ship (?) and does it belong to my faction (?)
 				if (ship != null && ship.getJumpshipFaction() == Nexus.getCurrentUser().getCurrentCharacter().getFactionId()) {
-//					if ((Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.FACTIONLEAD_HAS_ROLE) || Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.UNITLEAD_HAS_ROLE)) && Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.FACTIONLEAD_MOVE_JUMPSHIP)) {
+					// if ((Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.FACTIONLEAD_HAS_ROLE) || Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.UNITLEAD_HAS_ROLE)) && Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.FACTIONLEAD_MOVE_JUMPSHIP)) {
 					if (Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.FACTIONLEAD_MOVE_JUMPSHIP)) {
 						boUniverse.currentlyDraggedJumpship = boUniverse.jumpshipBOs.get(node.getId());
 						node.toBack();
@@ -521,7 +523,7 @@ public class StarmapNodeGestures {
 						}
 					} else {
 						// No privileges to move the jumpship
-						if (moveJumpShipToDragStart == false) {
+						if (!moveJumpShipToDragStart) {
 							String mes = Internationalization.getString("C3_Speech_app_starmap_moving_jumpship_not_allowed");
 							StatusTextEntryActionObject o = new StatusTextEntryActionObject(mes, true, "YELLOW");
 							ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(o);

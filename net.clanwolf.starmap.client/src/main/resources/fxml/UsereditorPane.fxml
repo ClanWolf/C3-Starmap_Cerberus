@@ -23,7 +23,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="600.0" minWidth="800.0" snapToPixel="false" style="-fx-background-color: ;" xmlns="http://javafx.com/javafx/20.0.1" fx:controller="net.clanwolf.starmap.client.gui.panes.security.AdminPaneController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="600.0" minWidth="800.0" snapToPixel="false" style="-fx-background-color: ;" xmlns="http://javafx.com/javafx/20.0.1" fx:controller="net.clanwolf.starmap.client.gui.panes.usereditor.UsereditorPaneController">
    <children>
       <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <center>
@@ -145,17 +145,15 @@
                                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                                  </rowConstraints>
                                  <children>
-                                    <Label fx:id="lblName1" text="Charaktername:" />
-                                    <TextField fx:id="tfName1" prefHeight="25.0" prefWidth="589.0" GridPane.columnIndex="1" />
-                                    <Label fx:id="lblPassword1" text="Passwort:" GridPane.rowIndex="1" />
-                                    <Label fx:id="lblPasswordConfirm1" text="Passwort (Confirm):" GridPane.rowIndex="2" />
-                                    <Label fx:id="lblMail1" text="Email-Adresse:" GridPane.rowIndex="3" />
-                                    <TextField fx:id="tfMail1" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                    <Label fx:id="lblMail11" text="Email-Adresse:" GridPane.rowIndex="4" />
-                                    <TextField fx:id="tfMail11" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                    <Label fx:id="lblCharacterName" text="Charaktername:" />
+                                    <TextField fx:id="tfCharacterName" prefHeight="25.0" prefWidth="589.0" GridPane.columnIndex="1" />
+                                    <Label fx:id="lblPassword1" GridPane.rowIndex="1" />
+                                    <Label fx:id="lblPasswordConfirm1" GridPane.rowIndex="2" />
+                                    <Label fx:id="lblMail1" GridPane.rowIndex="3" />
+                                    <Label fx:id="lblMail11" GridPane.rowIndex="4" />
                                  </children>
                               </GridPane>
-                              <ImageView fx:id="ivCharImage" fitHeight="120.0" fitWidth="120.0" layoutX="195.0" layoutY="203.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="ivCharImage" fitHeight="120.0" fitWidth="120.0" layoutX="195.0" layoutY="229.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../images/chars/no_avatar.png" />
                                  </image>

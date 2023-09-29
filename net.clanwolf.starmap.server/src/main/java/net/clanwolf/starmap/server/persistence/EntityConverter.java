@@ -32,14 +32,19 @@ import net.clanwolf.starmap.server.persistence.pojos.RolePlayStoryPOJO;
 import net.clanwolf.starmap.transfer.Dto;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.RolePlayStoryDTO;
+import net.clanwolf.starmap.transfer.saveObjects.UsereditorSaveObject;
 import net.clanwolf.starmap.transfer.util.Compressor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.Iterator;
 
 public class EntityConverter {
-	private static ObjectMapper objectMapper = new ObjectMapper();
+	private static final ObjectMapper objectMapper = new ObjectMapper();
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	private static String getJsonString(Object o) throws JsonProcessingException {
 		return objectMapper.writeValueAsString(o);
@@ -50,6 +55,7 @@ public class EntityConverter {
 			return (E)objectMapper.readValue(getJsonString(pojo), dto);
 		} catch (IOException e) {
 			e.printStackTrace();
+			logger.error("Error while converting pojo to dto.", e);
 			return null;
 		}
 	}
@@ -59,6 +65,7 @@ public class EntityConverter {
 			return (E)objectMapper.readValue(getJsonString(dto), pojo);
 		} catch (IOException e) {
 			e.printStackTrace();
+			logger.error("Error while converting dto to pojo.", e);
 			return null;
 		}
 	}
@@ -72,6 +79,7 @@ public class EntityConverter {
 			return convertpojo2dto(pojo, Class.forName("net.clanwolf.starmap.transfer.dtos." + nameDto));
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
+			logger.error("Error while getting dto from pojo.", e);
 		}
 		return null;
 	}
@@ -85,6 +93,7 @@ public class EntityConverter {
 			return convertdto2pojo(dto, Class.forName("net.clanwolf.starmap.server.persistence.pojos." + namePojo));
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
+			logger.error("Error while getting pojo from dto.", e);
 		}
 		return null;
 	}
@@ -94,6 +103,11 @@ public class EntityConverter {
 		if(state.getObject() instanceof Pojo){
 			Object o = getDto((Pojo) state.getObject());
 			state.addObject(o);
+		}
+
+		if (state.getObject() instanceof UsereditorSaveObject) {
+//			UsereditorSaveObject so = (UsereditorSaveObject) state.getObject();
+//			getDto((Pojo)
 		}
 
 		if(state.getObject2() instanceof Pojo){

@@ -4,9 +4,6 @@ C3 version history
 
 TODO PRIO 1 - Immediate:
 - Change compression level of jlink as soon as moditect supports the new param
-- Admin pane save should use a transfer object to send data to server
-- Saving character information (character avatar and username)
-- Only one alliance is allowed for each faction at a time
 - If an attack is lost, the jumpship is moved back to the system it came from
 - Check diplomacy on planet attacks and routepoints (already effective?)
 - Allow allied pilots to be droplead in fights for allied factions
@@ -57,8 +54,14 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
-Version 7.3.112 (27.09.2023)
--
+Version 7.3.112 (30.09.2023)
+- *** Finish refactoring of Diplomacy
+- *** Save object for admin editor pane
+- *** ?(Doubled) Admin pane save should use a transfer object to send data to server
+- *** Saving character information (character avatar and username)
+- *** Only one alliance is allowed for each faction at a time
+- CHANGED: Reduced size for system images
+- ADDED: Some more char images
 
 Version 7.3.111 (25.09.2023)
 - UPDATED: Java version

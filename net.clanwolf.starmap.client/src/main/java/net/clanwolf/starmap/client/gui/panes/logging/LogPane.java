@@ -33,13 +33,9 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-import net.clanwolf.starmap.client.gui.panes.security.AdminPaneController;
 import net.clanwolf.starmap.client.util.Internationalization;
-import net.clanwolf.starmap.transfer.dtos.UserDTO;
 
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Locale;
 
 public class LogPane extends Application {

@@ -24,7 +24,7 @@
  * Copyright (c) 2001-2023, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.client.gui.panes.security;
+package net.clanwolf.starmap.client.gui.panes.usereditor;
 
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -50,6 +50,7 @@ import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.UserDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
+import net.clanwolf.starmap.transfer.saveObjects.UsereditorSaveObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,7 +60,7 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.*;
 
-public class AdminPaneController {
+public class UsereditorPaneController {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	@FXML
@@ -219,13 +220,18 @@ public class AdminPaneController {
 			}
 		}
 
-		GameState saveUsersState = new GameState();
-		saveUsersState.setMode(GAMESTATEMODES.USERDATA_OR_PRIVILEGE_SAVE);
-		saveUsersState.addObject(usersToSave);
+		UsereditorSaveObject saveObject = new UsereditorSaveObject();
+		saveObject.setUsersToSave(usersToSave);
+		saveObject.setRpCharacter(Nexus.getCurrentChar());
 		if (cbRequestFactionChange.isSelected()) {
-			saveUsersState.addObject2(cbRequestedFaction.getSelectionModel().getSelectedItem().getFactionDTO().getId()); // BO Faction
-			saveUsersState.addObject3(tfFactionKey.getText());
+			saveObject.setFactionToChangeTo(cbRequestedFaction.getSelectionModel().getSelectedItem().getFactionDTO().getId()); // BO Faction
+			saveObject.setFactionKey(tfFactionKey.getText());
 		}
+
+		GameState saveUsersState = new GameState();
+		saveUsersState.setMode(GAMESTATEMODES.USERDATA_SAVE);
+		saveUsersState.addObject(saveObject);
+
 		Nexus.fireNetworkEvent(saveUsersState);
 
 		if (!"".equals(tfFactionKeyLead.getText())) {
@@ -367,6 +373,7 @@ public class AdminPaneController {
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
+				logger.error("Error while setting checkboxes.", e);
 			}
 		}
 

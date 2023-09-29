@@ -170,6 +170,16 @@
 	<!-- https://github.com/moditect/moditect#adding-module-descriptors-to-existing-jar-files -->
 
 	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>com.github.ferstl</groupId>
+					<artifactId>depgraph-maven-plugin</artifactId>
+					<version>4.0.2</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
@@ -298,6 +308,38 @@
 				<configuration>
 					<outputDirectory>${project.build.directory}/modules</outputDirectory>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.github.ferstl</groupId>
+				<artifactId>depgraph-maven-plugin</artifactId>
+				<version>4.0.2</version>
+				<configuration>
+					<showDuplicates>true</showDuplicates>
+					<showConflicts>true</showConflicts>
+					<graphFormat>puml</graphFormat>
+					<showGroupIds>true</showGroupIds>
+					<showVersions>true</showVersions>
+					<outputDirectory>.</outputDirectory>
+					<outputFileName>depgraph.puml</outputFileName>
+					<!--          <includes>-->
+					<!--            <include></include>-->
+					<!--          </includes>-->
+					<excludes>
+						<exclude>org.apache.logging.log4j</exclude>
+						<exclude>org.slf4j</exclude>
+						<exclude>org.hibernate</exclude>
+						<exclude>javax.persistence</exclude>
+					</excludes>
+				</configuration>
+				<executions>
+					<execution>
+						<id>depgraph</id>
+						<phase>install</phase>
+						<goals>
+							<goal>graph</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.moditect</groupId>

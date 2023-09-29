@@ -68,7 +68,7 @@ import net.clanwolf.starmap.client.gui.panes.login.LoginPane;
 import net.clanwolf.starmap.client.gui.panes.map.starmap.StarmapPane;
 import net.clanwolf.starmap.client.gui.panes.rp.RolePlayBasicPane;
 import net.clanwolf.starmap.client.gui.panes.rp.StoryEditorPane;
-import net.clanwolf.starmap.client.gui.panes.security.AdminPane;
+import net.clanwolf.starmap.client.gui.panes.usereditor.UsereditorPane;
 import net.clanwolf.starmap.client.gui.panes.settings.SettingsPane;
 import net.clanwolf.starmap.client.gui.panes.userinfo.UserInfoPane;
 import net.clanwolf.starmap.client.gui.popuppanes.C3MedalPane;
@@ -1280,7 +1280,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			ArrayList<UserDTO> userListFromNexus = Nexus.getUserList();
 
 			Stage stage = (Stage) rootAnchorPane.getScene().getWindow();
-			AdminPane ap = new AdminPane(userListFromNexus, stage, Internationalization.getLocale());
+			UsereditorPane ap = new UsereditorPane(userListFromNexus, stage, Internationalization.getLocale());
 			openAdministrationPane = false;
 		}
 

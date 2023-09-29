@@ -24,7 +24,7 @@
  * Copyright (c) 2001-2023, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.client.gui.panes.security;
+package net.clanwolf.starmap.client.gui.panes.usereditor;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -43,21 +43,21 @@ import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class AdminPane extends Application {
+public class UsereditorPane extends Application {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	private final static Locale GERMAN = Locale.GERMAN;
 	private final static Locale ENGLISH = Locale.ENGLISH;
 
-	private AdminPaneController controller;
+	private UsereditorPaneController controller;
 
-	public AdminPane(ArrayList<UserDTO> userListFromNexus, Stage parentStage, Locale locale) {
+	public UsereditorPane(ArrayList<UserDTO> userListFromNexus, Stage parentStage, Locale locale) {
 		ArrayList<UserDTO> userList = userListFromNexus;
 
 		Parent root;
 		Internationalization.setLocale(locale);
 		try {
 			FXMLLoader fxmlLoader = new FXMLLoader();
-			fxmlLoader.setLocation(this.getClass().getResource("/fxml/AdminPane.fxml"));
+			fxmlLoader.setLocation(this.getClass().getResource("/fxml/UsereditorPane.fxml"));
 
 			root = fxmlLoader.load();
 

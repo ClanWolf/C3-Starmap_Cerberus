@@ -36,7 +36,7 @@ module net.clanwolf.starmap.client {
 	opens net.clanwolf.starmap.client.gui.panes.map.surfacemap to javafx.fxml;
 	opens net.clanwolf.starmap.client.gui.panes.userinfo to javafx.fxml;
 	opens net.clanwolf.starmap.client.gui.panes.chat to javafx.fxml;
-	opens net.clanwolf.starmap.client.gui.panes.security to javafx.fxml;
+	opens net.clanwolf.starmap.client.gui.panes.usereditor to javafx.fxml;
 	opens net.clanwolf.starmap.client.mwo to com.google.gson;
 
 	exports net.clanwolf.starmap.client.util;
@@ -51,7 +51,7 @@ module net.clanwolf.starmap.client {
 	exports net.clanwolf.starmap.client.process.universe;
 	exports net.clanwolf.starmap.client.action;
 	exports net.clanwolf.starmap.client.security to javafx.fxml;
-	exports net.clanwolf.starmap.client.gui.panes.security to javafx.fxml;
+	exports net.clanwolf.starmap.client.gui.panes.usereditor to javafx.fxml;
 	exports net.clanwolf.starmap.client.gui.panes.chat to javafx.fxml;
 	exports net.clanwolf.starmap.client.gui.panes.dice to javafx.fxml;
 	exports net.clanwolf.starmap.client.gui.panes.diplomacy to javafx.fxml;
