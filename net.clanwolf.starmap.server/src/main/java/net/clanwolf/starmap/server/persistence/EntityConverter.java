@@ -32,7 +32,6 @@ import net.clanwolf.starmap.server.persistence.pojos.RolePlayStoryPOJO;
 import net.clanwolf.starmap.transfer.Dto;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.RolePlayStoryDTO;
-import net.clanwolf.starmap.transfer.saveObjects.UsereditorSaveObject;
 import net.clanwolf.starmap.transfer.util.Compressor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

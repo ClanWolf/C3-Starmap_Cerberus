@@ -50,7 +50,6 @@ import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.UserDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
-import net.clanwolf.starmap.transfer.saveObjects.UsereditorSaveObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
