@@ -130,25 +130,29 @@ public class UsereditorPaneController {
 	@FXML
 	public void handleImageSelectedMale() {
 		String s = lvImageSelectorMale.getSelectionModel().getSelectedItem();
-		String imageName = "/images/chars/male/" + s + ".png";
-		Image charImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(imageName)));
-		ivCharImage.setImage(charImage);
-		newSelectedCharacterImage = imageName;
-		currentUserWasChanged = true;
-		lblOldImageId.setText("(" + originalCharacterImage.substring(originalCharacterImage.length() - 8, originalCharacterImage.length() - 4) + ")");
-		checkUserChanges();
+		if (s != null) {
+			String imageName = "/images/chars/male/" + s + ".png";
+			Image charImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(imageName)));
+			ivCharImage.setImage(charImage);
+			newSelectedCharacterImage = imageName;
+			currentUserWasChanged = true;
+			lblOldImageId.setText("(" + originalCharacterImage.substring(originalCharacterImage.length() - 8, originalCharacterImage.length() - 4) + ")");
+			checkUserChanges();
+		}
 	}
 
 	@FXML
 	public void handleImageSelectedFemale() {
 		String s = lvImageSelectorFemale.getSelectionModel().getSelectedItem();
-		String imageName = "/images/chars/female/" + s + ".png";
-		Image charImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(imageName)));
-		ivCharImage.setImage(charImage);
-		newSelectedCharacterImage = imageName;
-		currentUserWasChanged = true;
-		lblOldImageId.setText("(" + originalCharacterImage.substring(originalCharacterImage.length() - 8, originalCharacterImage.length() - 4) + ")");
-		checkUserChanges();
+		if (s != null) {
+			String imageName = "/images/chars/female/" + s + ".png";
+			Image charImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(imageName)));
+			ivCharImage.setImage(charImage);
+			newSelectedCharacterImage = imageName;
+			currentUserWasChanged = true;
+			lblOldImageId.setText("(" + originalCharacterImage.substring(originalCharacterImage.length() - 8, originalCharacterImage.length() - 4) + ")");
+			checkUserChanges();
+		}
 	}
 	@FXML
 	public void showPWButtonClick() {
@@ -713,27 +717,42 @@ public class UsereditorPaneController {
 		Image charImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(imageName)));
 		ivCharImage.setImage(charImage);
 
-		URL urlMale = Thread.currentThread().getContextClassLoader().getResource("images/chars/male/");
-		if (urlMale != null) {
-			String pathMale = urlMale.getPath();
-			File[] filesMale = new File(pathMale).listFiles();
-			if (filesMale != null) {
-				for (File f : filesMale) {
-					lvImageSelectorMale.getItems().add(f.getName().substring(0, f.getName().lastIndexOf(".")));
-				}
+		for (int iii=1000; iii < 1200; iii++) {
+			URL urlMale = getClass().getResource("/images/chars/male/" + iii + ".png");
+			if (urlMale != null) {
+				lvImageSelectorMale.getItems().add(iii + "");
 			}
 		}
 
-		URL urlFemale = Thread.currentThread().getContextClassLoader().getResource("images/chars/female/");
-		if (urlFemale != null) {
-			String pathFemale = urlFemale.getPath();
-			File[] filesFemale = new File(pathFemale).listFiles();
-			if (filesFemale != null) {
-				for (File f : filesFemale) {
-					lvImageSelectorFemale.getItems().add(f.getName().substring(0, f.getName().lastIndexOf(".")));
-				}
+		for (int iii=1000; iii < 1200; iii++) {
+			URL urlMale = getClass().getResource("/images/chars/female/" + iii + ".png");
+			if (urlMale != null) {
+				lvImageSelectorFemale.getItems().add(iii + "");
 			}
 		}
+
+
+//		URL urlMale = Objects.requireNonNull(getClass().getResource("images/chars/male/"));
+//		if (urlMale != null) {
+//			String pathMale = urlMale.getPath();
+//			File[] filesMale = new File(pathMale).listFiles();
+//			if (filesMale != null) {
+//				for (File f : filesMale) {
+//					lvImageSelectorMale.getItems().add(f.getName().substring(0, f.getName().lastIndexOf(".")));
+//				}
+//			}
+//		}
+
+//		URL urlFemale = Objects.requireNonNull(getClass().getResource("images/chars/female/"));
+//		if (urlFemale != null) {
+//			String pathFemale = urlFemale.getPath();
+//			File[] filesFemale = new File(pathFemale).listFiles();
+//			if (filesFemale != null) {
+//				for (File f : filesFemale) {
+//					lvImageSelectorFemale.getItems().add(f.getName().substring(0, f.getName().lastIndexOf(".")));
+//				}
+//			}
+//		}
 
 		tabUser.setDisable(false);
 		tabCharacter.setDisable(false);

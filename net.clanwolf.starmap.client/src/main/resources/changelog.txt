@@ -56,7 +56,7 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
-Version 7.3.115 (30.09.2023)
+Version 7.3.116 (30.09.2023)
 - CHANGED: Removed a number of redundant files to reduce filesize
 - CHANGED: Saving character information (character avatar and username for now)
 - CHANGED: Reduced size for system images
