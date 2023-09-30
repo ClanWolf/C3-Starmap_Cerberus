@@ -30,6 +30,7 @@ import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -98,7 +99,8 @@ public class UsereditorPaneController {
 
 	// User Edit Tab
 	@FXML
-	Label lblName, lblPassword, lblPasswordConfirm, lblMail, lblMWOUser, lblPasswordConfirmClear, lblPasswordClear, lblFacktionKeyHint, lblCurrentFactionKey;
+	Label lblName, lblPassword, lblPasswordConfirm, lblMail, lblMWOUser, lblPasswordConfirmClear, lblPasswordClear, lblFacktionKeyHint, lblCurrentFactionKey,
+			lblOldImageId;
 	//	private HashMap<String, BOFaction> originalFaction = new HashMap<>();
 	private HashMap<String, Integer> originalActivatedStatus = new HashMap<>();
 	private boolean currentUserWasChanged = false;
@@ -120,21 +122,33 @@ public class UsereditorPaneController {
 	private boolean characterNameOk = true;
 	private String originalMail = "";
 	private String originalCharacterName = "";
+	private String originalCharacterImage = "";
+	private String newSelectedCharacterImage = "";
 	private String originalMWOUser = "";
 	private boolean factionkeyOk = false;
 
 	@FXML
 	public void handleImageSelectedMale() {
 		String s = lvImageSelectorMale.getSelectionModel().getSelectedItem();
-		Image charImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/chars/male/" + s + ".png")));
+		String imageName = "/images/chars/male/" + s + ".png";
+		Image charImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(imageName)));
 		ivCharImage.setImage(charImage);
+		newSelectedCharacterImage = imageName;
+		currentUserWasChanged = true;
+		lblOldImageId.setText("(" + originalCharacterImage.substring(originalCharacterImage.length() - 8, originalCharacterImage.length() - 4) + ")");
+		checkUserChanges();
 	}
 
 	@FXML
 	public void handleImageSelectedFemale() {
 		String s = lvImageSelectorFemale.getSelectionModel().getSelectedItem();
-		Image charImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/chars/female/" + s + ".png")));
+		String imageName = "/images/chars/female/" + s + ".png";
+		Image charImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(imageName)));
 		ivCharImage.setImage(charImage);
+		newSelectedCharacterImage = imageName;
+		currentUserWasChanged = true;
+		lblOldImageId.setText("(" + originalCharacterImage.substring(originalCharacterImage.length() - 8, originalCharacterImage.length() - 4) + ")");
+		checkUserChanges();
 	}
 	@FXML
 	public void showPWButtonClick() {
@@ -200,13 +214,19 @@ public class UsereditorPaneController {
 				if (currentUserWasChanged) {
 					u.setUserName(tfName.getText());
 					u.getCurrentCharacter().setName(tfCharacterName.getText());
+					if (!"".equals(newSelectedCharacterImage)) {
+						u.getCurrentCharacter().setCharImage(newSelectedCharacterImage);
+					}
 					u.setUserEMail(tfMail.getText());
 					u.setMwoUsername(tfMWOUser.getText());
 
 					Nexus.getCurrentUser().setUserName(tfName.getText());
-					Nexus.getCurrentChar().setName(tfCharacterName.getText());
 					Nexus.getCurrentUser().setUserEMail(tfMail.getText());
 					Nexus.getCurrentUser().setMwoUsername(tfMWOUser.getText());
+					Nexus.getCurrentChar().setName(tfCharacterName.getText());
+					if (!"".equals(newSelectedCharacterImage)) {
+						Nexus.getCurrentChar().setCharImage(newSelectedCharacterImage);
+					}
 
 					if (tfPassword.getText().length() > 5
 						&& tfPasswordConfirm.getText().length() > 5
@@ -243,6 +263,7 @@ public class UsereditorPaneController {
 			Nexus.fireNetworkEvent(saveFactionState);
 		}
 		currentUserWasChanged = false;
+		newSelectedCharacterImage = "";
 
 		Stage stage = (Stage) btnSave.getScene().getWindow();
 		stage.close();
@@ -409,10 +430,15 @@ public class UsereditorPaneController {
 			tabCharacter.setText(tabCharacter.getText() + " *");
 		}
 
+		if (Objects.equals(originalCharacterImage, newSelectedCharacterImage)) {
+			lblOldImageId.setText("");
+		}
+
 		if (Objects.equals(originalUsername, tfName.getText())
 			&& Objects.equals(originalMail, tfMail.getText())
 			&& Objects.equals(originalMWOUser, tfMWOUser.getText())
 			&& Objects.equals(originalCharacterName, tfCharacterName.getText())
+			&& Objects.equals(originalCharacterImage, newSelectedCharacterImage)
 			&& tfPassword.getText().length() == 0
 			&& tfPasswordConfirm.getText().length() == 0
 			&& Objects.equals(tfPassword.getText(), tfPasswordConfirm.getText())
@@ -682,7 +708,9 @@ public class UsereditorPaneController {
 		labelMaleCharImageList.setText(Internationalization.getString("general_gender_male"));
 		labelFemaleCharImageList.setText(Internationalization.getString("general_gender_female"));
 
-		Image charImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/chars/male/1000.png")));
+		String imageName = Nexus.getCurrentChar().getCharImage();
+		originalCharacterImage = imageName;
+		Image charImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(imageName)));
 		ivCharImage.setImage(charImage);
 
 		URL urlMale = Thread.currentThread().getContextClassLoader().getResource("images/chars/male/");

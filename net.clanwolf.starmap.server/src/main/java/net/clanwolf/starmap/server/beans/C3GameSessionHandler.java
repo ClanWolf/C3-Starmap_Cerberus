@@ -1033,10 +1033,20 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			for (UserPOJO user : list) {
 				user.setLastModified(new Timestamp(System.currentTimeMillis()));
 
+				RolePlayCharacterPOJO rpCharPojoFromGameState = user.getCurrentCharacter();
+
 				ArrayList<RolePlayCharacterPOJO> charList = rpDAO.getCharactersOfUser(user);
 				for (RolePlayCharacterPOJO ch : charList) {
-					ch.setMwoUsername(user.getMwoUsername());
-					rpDAO.update(getC3UserID(session), ch);
+					if (ch.getId().equals(rpCharPojoFromGameState.getId())) {
+						// This is the character that was sent in the gamestate... may have changed
+						rpCharPojoFromGameState.setMwoUsername(user.getMwoUsername());
+						logger.info("+++++++++++++++ Saving character (sent in as changed): " + rpCharPojoFromGameState.getName());
+						rpDAO.update(getC3UserID(session), rpCharPojoFromGameState);
+					} else {
+						ch.setMwoUsername(user.getMwoUsername());
+						logger.info("+++++++++++++++ Saving character (selected from db): " + ch.getName());
+						rpDAO.update(getC3UserID(session), ch);
+					}
 				}
 				if (user.getUserId() == null) {
 					// logger.info("Saving: " + user.getUserName() + " - Privs: " + user.getPrivileges());
