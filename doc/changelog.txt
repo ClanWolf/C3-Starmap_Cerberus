@@ -3,6 +3,7 @@ C3 version history
 ----------------------------------------------------------------
 
 TODO PRIO 1 - Immediate:
+- Sort out terminal command handling routines
 - Change compression level of jlink as soon as moditect supports the new param
 - If an attack is lost, the jumpship is moved back to the system it came from
 - Check diplomacy on planet attacks and routepoints (already effective?)
@@ -54,10 +55,11 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
-Version 7.3.117 (06.10.2023)
+Version 7.3.118 (06.10.2023)
+- ADDED: Admin command to restart server from client
 - UPDATED: Libraries, Compiler
 - UPDATED: Further reduced package size
-- *** Check missing images (resource exclude tag in maven)
+- *** Check missing images (in installed App!) (resource exclude tag in maven)
 - *** Finish refactoring of Diplomacy
 - *** Only one alliance is allowed for each faction at a time
 - *** Allow an alliance only if there is no open attack between the two factions
@@ -65,6 +67,8 @@ Version 7.3.117 (06.10.2023)
 - *** If an attack is started all diplomacy requests are deleted
 - *** If a jump is saved that would lead to an attack, but both sides agreed to an alliance in this next round, the attack is not created
 - *** Modal flag of RoleplayPane and DiplomacyPane to false (enable the changing of the pane)
+- *** 'Restart server' command (button?)
+- *** Hitting enter on Terminal triggers default key of dialog (e.g. Logout)
 - *** Reset a fight in case a pilot needs to leave in the middle of an invasion
   - Delete AttackCharacter for attackId
   - __HH_ATTACK: Set 'FightsStarted' = 0

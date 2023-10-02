@@ -2604,7 +2604,39 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 				C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
 				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
 			}
-//			Nexus.storeCommandHistory();
+		}
+
+		// ---------------------------------
+		// reset fight
+		// ---------------------------------
+		if (com.toLowerCase().startsWith("reset attack")) {
+			if (Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN)) {
+				String systemNameOfAttack = com.substring(com.lastIndexOf(" "));
+				boolean foundAttack = false;
+				for (BOAttack at : Nexus.getBoUniverse().attackBOsOpenInThisRound.values()) {
+					if (at.getStarSystemName().equals(systemNameOfAttack)) {
+						GameState s = new GameState();
+						s.setMode(GAMESTATEMODES.RESET_FIGHT);
+						s.addObject(at.getAttackDTO().getId());
+						Nexus.fireNetworkEvent(s);
+						Nexus.storeCommandHistory();
+
+						foundAttack = true;
+						ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_success"), false));
+						break;
+					}
+				}
+				if (!foundAttack) {
+					ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_failure"), true));
+				}
+			} else {
+				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_notallowed"), false));
+				C3Message message = new C3Message(C3MESSAGES.ERROR_NOT_ALLOWED);
+				message.setType(C3MESSAGETYPES.CLOSE);
+				message.setText(Internationalization.getString("general_notallowed"));
+				C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
+				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
+			}
 		}
 	}
 }

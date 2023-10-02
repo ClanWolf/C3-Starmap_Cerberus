@@ -52,6 +52,10 @@ import net.clanwolf.starmap.transfer.util.Compressor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
 import java.lang.invoke.MethodHandles;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -372,7 +376,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			RolePlayStoryDAO rpsdao = RolePlayStoryDAO.getInstance();
 
 			AttackDAO adao = AttackDAO.getInstance();
-			AttackPOJO ap = adao.findById(ServerNexus.DUMMY_USERID,attackId);
+			AttackPOJO ap = adao.findById(ServerNexus.DUMMY_USERID, attackId);
 
 			RolePlayStoryPOJO lobbyRPreset = rpsdao.getLobbyRPFromAttackRP(ap.getStoryID());
 
@@ -380,6 +384,16 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			//ap.setAttackCharList(emptyCharList);
 			ap.getAttackCharList().clear();
 			ap.setStoryID(lobbyRPreset.getId());
+
+
+
+
+			//ap.setLastStoryID(null); // ????????????????????
+
+
+
+
+
 			adao.update(ServerNexus.DUMMY_USERID, ap);
 
 			EntityManagerHelper.commit(ServerNexus.DUMMY_USERID);
@@ -1408,6 +1422,26 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			case FORCE_NEW_UNIVERSE:
 				serverHeartBeat = new Timer();
 				serverHeartBeat.schedule(new HeartBeatTimerTask(true, null), 0);
+				break;
+			case RESET_FIGHT:
+				// Reset a fight in case a pilot left and all needs to be restarted
+				Long attackId = null;
+				if (state.getObject() instanceof Long attackIdFromState) {
+					logger.info("A reset of attack " + attackIdFromState + " was requested by admin");
+					//resetAttack(attackIdFromState);
+					//throw anyone out if not already done in method
+				}
+				break;
+			case RESTART_SERVER:
+				// Trigger shutdown
+				File restartFlagFile = new File(ServerNexus.getServerBaseDir() + File.separator + "C3-Server_restart.flag");
+				try {
+					if (!restartFlagFile.createNewFile()) {
+						throw new Exception("Error creating shutdown flag file");
+					}
+				} catch (Exception e) {
+					logger.error("Could not create shutdown flag file", e);
+				}
 				break;
 			default:
 				break;

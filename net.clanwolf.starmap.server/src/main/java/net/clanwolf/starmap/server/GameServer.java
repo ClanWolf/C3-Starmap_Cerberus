@@ -76,6 +76,7 @@ public class GameServer {
             }
         }
         serverBaseDir = dir.getAbsolutePath();
+		ServerNexus.setServerBaseDir(serverBaseDir);
 
         boolean res = dir.mkdirs();
         if (res || dir.exists()) {

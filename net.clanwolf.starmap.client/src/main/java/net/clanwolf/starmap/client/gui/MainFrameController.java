@@ -52,7 +52,9 @@ import net.clanwolf.starmap.client.action.*;
 import net.clanwolf.starmap.client.enums.C3MESSAGERESULTS;
 import net.clanwolf.starmap.client.enums.C3MESSAGES;
 import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
+import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.DiplomacyDTO;
+import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.enums.PRIVILEGES;
 import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
 import net.clanwolf.starmap.client.gui.messagepanes.C3MessagePane;
@@ -2288,7 +2290,11 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			case TERMINAL_COMMAND:
 				String com = o.getText();
 				if (Nexus.isLoggedIn()) {
-					if (com.contains("find") || com.contains("finalize round") || com.contains("create universe")) {
+					if (com.contains("find")
+							|| com.contains("finalize round")
+							|| com.contains("create universe")
+							|| com.contains("restart server")
+							|| com.contains("reset attack")) {
 						handleCommand(com);
 					}
 				}
@@ -2705,6 +2711,37 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			if (!currentlyDisplayedPane.getPaneName().equals("MapPane")) {
 				StatusTextEntryActionObject ste = new StatusTextEntryActionObject(Internationalization.getString("general_only_works_on_map"), true);
 				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(ste);
+			}
+		}
+
+		// ---------------------------------
+		// reset fight
+		// ---------------------------------
+		if (com.toLowerCase().startsWith("reset attack")) {
+			// Needs to be used on map pane!
+			if (!currentlyDisplayedPane.getPaneName().equals("MapPane")) {
+				StatusTextEntryActionObject ste = new StatusTextEntryActionObject(Internationalization.getString("general_only_works_on_map"), true);
+				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(ste);
+			}
+		}
+
+		// ---------------------------------
+		// restart server
+		// ---------------------------------
+		if (com.toLowerCase().startsWith("restart server")) {
+			if (Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN)) {
+				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_success"), false));
+				GameState s = new GameState();
+				s.setMode(GAMESTATEMODES.RESTART_SERVER);
+				Nexus.fireNetworkEvent(s);
+				// Nexus.storeCommandHistory(); // do not store to prevent accidental sending of this
+			} else {
+				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_notallowed"), false));
+				C3Message message = new C3Message(C3MESSAGES.ERROR_NOT_ALLOWED);
+				message.setType(C3MESSAGETYPES.CLOSE);
+				message.setText(Internationalization.getString("general_notallowed"));
+				C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
+				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
 			}
 		}
 

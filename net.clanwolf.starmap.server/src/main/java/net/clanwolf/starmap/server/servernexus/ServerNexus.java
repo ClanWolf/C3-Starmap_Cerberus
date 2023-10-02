@@ -51,9 +51,18 @@ public class ServerNexus {
 	public static boolean isDevelopmentPC = false;
 	public static Timestamp serverStartTime;
 	public static HashMap<Long, Long> brokenAttackTimers = new HashMap<>();
+	public static String serverBaseDir = "";
 
 	public static ExternalCommunicationInterface getEci() {
 		return eci;
+	}
+
+	public static String getServerBaseDir() {
+		return serverBaseDir;
+	}
+
+	public static void setServerBaseDir(String serverBaseDir) {
+		ServerNexus.serverBaseDir = serverBaseDir;
 	}
 
 	public static String authProperties(String key){

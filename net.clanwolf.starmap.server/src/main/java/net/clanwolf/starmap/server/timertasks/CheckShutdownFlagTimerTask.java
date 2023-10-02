@@ -49,8 +49,13 @@ public class CheckShutdownFlagTimerTask extends TimerTask {
 
 	private void cleanupFlagFiles() {
 		File shutdownFlagFile = new File(dir + File.separator + "C3-Server_shutdown.flag");
+		File restartFlagFile = new File(dir + File.separator + "C3-Server_restart.flag");
+
 		if (shutdownFlagFile.isFile()) {
-			boolean deleted = shutdownFlagFile.delete();
+			boolean deletedShutdownFlagFile = shutdownFlagFile.delete();
+		}
+		if (restartFlagFile.isFile()) {
+			boolean deletedRestartFlagFile = restartFlagFile.delete();
 		}
 	}
 
@@ -63,12 +68,22 @@ public class CheckShutdownFlagTimerTask extends TimerTask {
 	@Override
 	public void run() {
 		File shutdownFlagFile = new File(dir + File.separator + "C3-Server_shutdown.flag");
-		if (shutdownFlagFile.exists() && shutdownFlagFile.isFile() && shutdownFlagFile.canRead()) {
+		File restartFlagFile = new File(dir + File.separator + "C3-Server_restart.flag");
+
+		boolean shutdownFlagFileFound = shutdownFlagFile.exists() && shutdownFlagFile.isFile() && shutdownFlagFile.canRead();
+		boolean restartFlagFileFound = restartFlagFile.exists() && restartFlagFile.isFile() && restartFlagFile.canRead();
+
+		if (shutdownFlagFileFound || restartFlagFileFound) {
 			// On the server, a script checks if the server is running every couple of minutes.
 			// If this methods shuts the server down, it will be going up by the script shortly after.
 			// This is used in case a new version of the jar file was uploaded.
-//			logger.info("Cleaning up flag files.");
-//			cleanupFlagFiles();
+			if (restartFlagFileFound) {
+				logger.info("Found restart flag, cleaning up flag files.");
+				cleanupFlagFiles();
+			}
+			if (shutdownFlagFileFound) {
+				logger.info("Found shutdown flag, leaving flag files alone until new version has been uploaded.");
+			}
 
 			if(!GameServer.isDevelopmentPC) {
 				ServerNexus.getEci().sendExtCom("Server is going down.", "en",true, true, true);
