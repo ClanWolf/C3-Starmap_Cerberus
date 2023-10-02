@@ -56,6 +56,11 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
+Version 7.3.117 (02.10.2023)
+- UPDATED: Libraries, Compiler
+- *** Check download size
+- *** Check missing images (resource tag maven)
+
 Version 7.3.116 (30.09.2023)
 - CHANGED: Removed a number of redundant files to reduce filesize
 - CHANGED: Saving character information (character avatar and username for now)

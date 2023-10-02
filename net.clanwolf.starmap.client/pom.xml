@@ -197,6 +197,14 @@
 					<exclude>**/c3.properties</exclude>
 				</excludes>
 			</resource>
+			<resource>
+				<directory>src/main/resources/images</directory>
+				<filtering>false</filtering>
+				<excludes>
+					<exclude>**/*.pspimage</exclude>
+					<exclude>**/*.rar</exclude>
+				</excludes>
+			</resource>
 		</resources>
 		<extensions>
 			<extension>

@@ -62,62 +62,84 @@ import java.util.*;
 
 public class UsereditorPaneController {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-
-	@FXML
-	CheckBox cbActiveUser, cbRequestFactionChange;
-	private UserDTO currentUser = null;
-	private HashMap<Integer, CheckBox> privilegeBoxes = new HashMap<>();
-	private ArrayList<UserDTO> userList = new ArrayList<>();
-	private HashMap<String, Long> originalPrivileges = new HashMap<>();
-	@FXML
-	ComboBox<String> cbUser;
-	@FXML
-	ComboBox<BOFaction> cbFaction, cbRequestedFaction;
 	private final ArrayList<BOJumpship> activeJumpships = Nexus.getBoUniverse().getJumpshipList();
 	private final DecimalFormat nf = new DecimalFormat();
-
+	private final HashMap<Integer, CheckBox> privilegeBoxes = new HashMap<>();
+	private final HashMap<String, Long> originalPrivileges = new HashMap<>();
 	@FXML
-	Label labelUser, labelPrivCode, labelPrivCodeBinary, labelMaleCharImageList, labelFemaleCharImageList;
-
+	ComboBox<String> cbUser;
+	private final ObservableList<FinancesInfo> financesInfos = FXCollections.observableArrayList();
+	private final HashMap<String, Integer> originalActivatedStatus = new HashMap<>();
 	@FXML
-	Tab tabUser, tabCharacter, tabFaction, tabPrivileges, tabFinances;
-
-	@FXML
-	Button btnSave, btnCancel;
-
+	Tab tabUser,
+			tabCharacter,
+			tabFaction,
+			tabPrivileges,
+			tabFinances;
 	@FXML
 	ScrollPane srollPane;
-
 	@FXML
-	TableColumn<FinancesInfo, String> tblCIncome, tblCIncomeDescription;
+	CheckBox cbActiveUser,
+			cbRequestFactionChange;
 	@FXML
-	TableColumn<FinancesInfo, String> TblCCost;
+	ComboBox<BOFaction> cbFaction,
+			cbRequestedFaction;
 	@FXML
-	ImageView btShowPassword, btShowPasswordConfirm, ivCharImage;
-	private ObservableList<FinancesInfo> financesInfos = FXCollections.observableArrayList();
-	Image eye, eyeClosed;
-
+	Label labelUser, labelPrivCode,
+			labelPrivCodeBinary,
+			labelMaleCharImageList,
+			labelFemaleCharImageList;
+	@FXML
+	Button btnSave,
+			btnCancel;
+	@FXML
+	TableColumn<FinancesInfo, String> tblCIncome,
+			tblCIncomeDescription,
+			TblCCost;
+	@FXML
+	ImageView btShowPassword,
+			btShowPasswordConfirm,
+			ivCharImage;
+	@FXML
+	TableView<FinancesInfo> tableFinances;
+	Image eye,
+			eyeClosed;
 	// User Edit Tab
 	@FXML
-	Label lblName, lblPassword, lblPasswordConfirm, lblMail, lblMWOUser, lblPasswordConfirmClear, lblPasswordClear, lblFacktionKeyHint, lblCurrentFactionKey,
-			lblOldImageId;
-	//	private HashMap<String, BOFaction> originalFaction = new HashMap<>();
-	private HashMap<String, Integer> originalActivatedStatus = new HashMap<>();
+	Label lblName,
+			lblPassword,
+			lblPasswordConfirm,
+			lblMail,
+			lblMWOUser,
+			lblPasswordConfirmClear,
+			lblPasswordClear,
+			lblFacktionKeyHint,
+			lblCurrentFactionKey,
+			lblOldImageId,
+			lCurrentBalance,
+			lblFactionKey,
+			lblFactionKeyLead,
+			lblCharacterName;
+	@FXML
+	TextField tfName,
+			tfPassword,
+			tfPasswordConfirm,
+			tfMail,
+			tfMWOUser,
+			tfFactionKey,
+			tfFactionKeyLead,
+			tfCharacterName;
+	@FXML
+	ListView<String> lvImageSelectorMale,
+			lvImageSelectorFemale;
+	private UserDTO currentUser = null;
+	private ArrayList<UserDTO> userList = new ArrayList<>();
 	private boolean currentUserWasChanged = false;
 	private boolean showPW = false;
 	private boolean usernameOk = true;
-	@FXML
-	Label lCurrentBalance, lblFactionKey, lblFactionKeyLead, lblCharacterName;
 	private boolean pwOk = true;
 	private boolean mailOk = true;
 	private boolean mwoUsernameOk = true;
-	@FXML
-	TextField tfName, tfPassword, tfPasswordConfirm, tfMail, tfMWOUser, tfFactionKey, tfFactionKeyLead, tfCharacterName;
-
-	@FXML
-	ListView<String> lvImageSelectorMale, lvImageSelectorFemale;
-	@FXML
-	TableView<FinancesInfo> tableFinances;
 	private String originalUsername = "";
 	private boolean characterNameOk = true;
 	private String originalMail = "";
@@ -154,6 +176,7 @@ public class UsereditorPaneController {
 			checkUserChanges();
 		}
 	}
+
 	@FXML
 	public void showPWButtonClick() {
 		if (showPW) {
@@ -233,8 +256,8 @@ public class UsereditorPaneController {
 					}
 
 					if (tfPassword.getText().length() > 5
-						&& tfPasswordConfirm.getText().length() > 5
-						&& tfPassword.getText().equals(tfPasswordConfirm.getText())
+							&& tfPasswordConfirm.getText().length() > 5
+							&& tfPassword.getText().equals(tfPasswordConfirm.getText())
 					) {
 						String pw = Encryptor.createSinglePassword(tfPassword.getText());
 						u.setUserPasswordWebsite(pw);
@@ -439,13 +462,13 @@ public class UsereditorPaneController {
 		}
 
 		if (Objects.equals(originalUsername, tfName.getText())
-			&& Objects.equals(originalMail, tfMail.getText())
-			&& Objects.equals(originalMWOUser, tfMWOUser.getText())
-			&& Objects.equals(originalCharacterName, tfCharacterName.getText())
-			&& Objects.equals(originalCharacterImage, newSelectedCharacterImage)
-			&& tfPassword.getText().length() == 0
-			&& tfPasswordConfirm.getText().length() == 0
-			&& Objects.equals(tfPassword.getText(), tfPasswordConfirm.getText())
+				&& Objects.equals(originalMail, tfMail.getText())
+				&& Objects.equals(originalMWOUser, tfMWOUser.getText())
+				&& Objects.equals(originalCharacterName, tfCharacterName.getText())
+				&& Objects.equals(originalCharacterImage, newSelectedCharacterImage)
+				&& tfPassword.getText().length() == 0
+				&& tfPasswordConfirm.getText().length() == 0
+				&& Objects.equals(tfPassword.getText(), tfPasswordConfirm.getText())
 		) {
 			// All fields are unchanged, pw fields are empty
 			// Nothing to save!
@@ -554,8 +577,8 @@ public class UsereditorPaneController {
 		ObservableList<BOFaction> factions = FXCollections.observableArrayList();
 		factions.addAll(Nexus.getBoUniverse().getActiveFactions());
 		Collections.sort(factions);
-//		cbUserFaction.setItems(factions);
-//		cbUserFaction.setDisable(!Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_CHANGE_FACTION_FOR_USER));
+		//		cbUserFaction.setItems(factions);
+		//		cbUserFaction.setDisable(!Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_CHANGE_FACTION_FOR_USER));
 
 		//Finances
 		cbActiveUser.setText(Internationalization.getString("general_user_is_active_checkbox"));
@@ -717,49 +740,24 @@ public class UsereditorPaneController {
 		Image charImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(imageName)));
 		ivCharImage.setImage(charImage);
 
-		for (int iii=1000; iii < 1200; iii++) {
+		for (int iii = 1000; iii < 1200; iii++) {
 			URL urlMale = getClass().getResource("/images/chars/male/" + iii + ".png");
 			if (urlMale != null) {
 				lvImageSelectorMale.getItems().add(iii + "");
 			}
 		}
 
-		for (int iii=1000; iii < 1200; iii++) {
+		for (int iii = 1000; iii < 1200; iii++) {
 			URL urlMale = getClass().getResource("/images/chars/female/" + iii + ".png");
 			if (urlMale != null) {
 				lvImageSelectorFemale.getItems().add(iii + "");
 			}
 		}
 
-
-//		URL urlMale = Objects.requireNonNull(getClass().getResource("images/chars/male/"));
-//		if (urlMale != null) {
-//			String pathMale = urlMale.getPath();
-//			File[] filesMale = new File(pathMale).listFiles();
-//			if (filesMale != null) {
-//				for (File f : filesMale) {
-//					lvImageSelectorMale.getItems().add(f.getName().substring(0, f.getName().lastIndexOf(".")));
-//				}
-//			}
-//		}
-
-//		URL urlFemale = Objects.requireNonNull(getClass().getResource("images/chars/female/"));
-//		if (urlFemale != null) {
-//			String pathFemale = urlFemale.getPath();
-//			File[] filesFemale = new File(pathFemale).listFiles();
-//			if (filesFemale != null) {
-//				for (File f : filesFemale) {
-//					lvImageSelectorFemale.getItems().add(f.getName().substring(0, f.getName().lastIndexOf(".")));
-//				}
-//			}
-//		}
-
 		tabUser.setDisable(false);
 		tabCharacter.setDisable(false);
 		tabFaction.setDisable(!factionEdit);
 		tabFinances.setDisable(!finances);
 		tabPrivileges.setDisable(!privs);
-
-		// btnSave.setDisable(false);
 	}
 }

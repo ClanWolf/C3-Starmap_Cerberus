@@ -392,7 +392,7 @@
             <Image url="@../images/chars/male/1045.png" />
          </image>
       </ImageView>
-      <Pane fx:id="paneWindowMoverHandle" layoutX="18.0" layoutY="21.0" prefHeight="546.0" prefWidth="40.0" snapToPixel="false" />
+      <Pane fx:id="paneWindowMoverHandle" layoutX="18.0" layoutY="21.0" prefHeight="546.0" prefWidth="40.0" snapToPixel="false" AnchorPane.bottomAnchor="63.0" AnchorPane.topAnchor="21.0" />
     </children>
     <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />

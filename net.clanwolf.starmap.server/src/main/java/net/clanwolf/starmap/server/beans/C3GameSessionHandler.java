@@ -45,9 +45,7 @@ import net.clanwolf.starmap.server.timertasks.HeartBeatTimerTask;
 import net.clanwolf.starmap.server.util.ForumDatabaseTools;
 import net.clanwolf.starmap.server.util.WebDataInterface;
 import net.clanwolf.starmap.transfer.GameState;
-import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
 import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
-import net.clanwolf.starmap.transfer.dtos.UserDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 import net.clanwolf.starmap.transfer.util.Compressor;
@@ -814,8 +812,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			EntityManagerHelper.beginTransaction(getC3UserID(session));
 			JumpshipPOJO js = (JumpshipPOJO)state.getObject();
 
-			ArrayList<RoutePointPOJO> newRoute = new ArrayList<RoutePointPOJO>();
-			newRoute.addAll(js.getRoutepointList());
+			ArrayList<RoutePointPOJO> newRoute = new ArrayList<RoutePointPOJO>(js.getRoutepointList());
 
 			js.getRoutepointList().clear();
 			js.setStarSystemHistory(newRoute.get(0).getSystemId() + "");
@@ -823,7 +820,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 			daoRP.deleteByJumpshipId(getC3UserID(session));
 
-			if(newRoute.size() > 0) {
+			if(!newRoute.isEmpty()) {
 				js.setRoutepointList(newRoute);
 				daoJS.update(C3GameSessionHandler.getC3UserID(session), js);
 			}

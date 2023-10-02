@@ -1901,8 +1901,10 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				break;
 
 			case DIPLOMACY_STATUS_PENDING:
-				ivDiplomacyIndicator.setVisible(true);
-				logger.info("Diplomacy status pending, reaction expected!");
+				if (!adminMenuActive) {
+					ivDiplomacyIndicator.setVisible(true);
+					logger.info("Diplomacy status pending, reaction expected!");
+				}
 				break;
 
 			case DIPLOMACY_STATUS_PENDING_HIDE:
