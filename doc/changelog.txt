@@ -3,8 +3,6 @@ C3 version history
 ----------------------------------------------------------------
 
 TODO PRIO 1 - Immediate:
-- *** Finish refactoring of Diplomacy
-- *** Only one alliance is allowed for each faction at a time
 - Change compression level of jlink as soon as moditect supports the new param
 - If an attack is lost, the jumpship is moved back to the system it came from
 - Check diplomacy on planet attacks and routepoints (already effective?)
@@ -56,10 +54,21 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
-Version 7.3.117 (02.10.2023)
+Version 7.3.117 (06.10.2023)
 - UPDATED: Libraries, Compiler
-- *** Check download size
-- *** Check missing images (resource tag maven)
+- UPDATED: Further reduced package size
+- *** Check missing images (resource exclude tag in maven)
+- *** Finish refactoring of Diplomacy
+- *** Only one alliance is allowed for each faction at a time
+- *** Allow an alliance only if there is no open attack between the two factions
+- *** Open requests for alliances are canceled after two rounds (if not accepted) --> Endround
+- *** If an attack is started all diplomacy requests are deleted
+- *** If a jump is saved that would lead to an attack, but both sides agreed to an alliance in this next round, the attack is not created
+- *** Bereits angefangene Kämpfe zurück setzen, falls einer wechseln muss
+  - AttackCharacter löschen
+  - __HH_ATTACK: FightsStarted = 0
+  - __HH_ATTACK: LastStoryId = NULL
+  - __HH_ATTACK: StoryId = --> Lobby für den aktuellen Kampftyp
 
 Version 7.3.116 (30.09.2023)
 - CHANGED: Removed a number of redundant files to reduce filesize
