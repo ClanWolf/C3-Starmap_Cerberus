@@ -474,6 +474,10 @@ public class SettingsPaneController extends AbstractC3Controller implements Acti
 		ActionManager.addActionCallbackListener(ACTIONS.CHANGE_LANGUAGE, this);
 		ActionManager.addActionCallbackListener(ACTIONS.DATABASECONNECTIONCHECK_FINISHED, this);
 		ActionManager.addActionCallbackListener(ACTIONS.ACTION_SUCCESSFULLY_EXECUTED, this);
+
+		// Added in AbstractC3Controller:
+		// ActionManager.addActionCallbackListener(ACTIONS.ENABLE_DEFAULT_BUTTON, this);
+		// ActionManager.addActionCallbackListener(ACTIONS.DISABLE_DEFAULT_BUTTON, this);
 	}
 
 	/**
@@ -856,6 +860,12 @@ public class SettingsPaneController extends AbstractC3Controller implements Acti
 		switch (action) {
 		case CHANGE_LANGUAGE:
 			setStrings();
+			break;
+		case ENABLE_DEFAULT_BUTTON:
+			enableDefaultButton(true);
+			break;
+		case DISABLE_DEFAULT_BUTTON:
+			enableDefaultButton(false);
 			break;
 		case DATABASECONNECTIONCHECK_FINISHED:
 			boolean r = (boolean) o.getObject();

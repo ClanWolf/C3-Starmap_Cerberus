@@ -36,6 +36,7 @@ import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
+import net.clanwolf.starmap.client.gui.panes.TerminalCommandHandler;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.universe.BODiplomacy;
 import net.clanwolf.starmap.client.process.universe.BOFaction;
@@ -132,8 +133,11 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 		ActionManager.addActionCallbackListener(ACTIONS.PANE_CREATION_BEGINS, this);
 		ActionManager.addActionCallbackListener(ACTIONS.PANE_CREATION_FINISHED, this);
 		ActionManager.addActionCallbackListener(ACTIONS.LOGON_FINISHED_SUCCESSFULL, this);
-		ActionManager.addActionCallbackListener(ACTIONS.TERMINAL_COMMAND, this);
 		ActionManager.addActionCallbackListener(ACTIONS.DIPLOMACY_SITUATION_CHANGED, this);
+
+		// Added in AbstractC3Controller:
+		// ActionManager.addActionCallbackListener(ACTIONS.ENABLE_DEFAULT_BUTTON, this);
+		// ActionManager.addActionCallbackListener(ACTIONS.DISABLE_DEFAULT_BUTTON, this);
 	}
 
 	/**
@@ -147,6 +151,14 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 	public boolean handleAction(ACTIONS action, ActionObject o) {
 		switch (action) {
 			case LOGON_FINISHED_SUCCESSFULL:
+				break;
+
+			case ENABLE_DEFAULT_BUTTON:
+				enableDefaultButton(true);
+				break;
+
+			case DISABLE_DEFAULT_BUTTON:
+				enableDefaultButton(false);
 				break;
 
 			case CHANGE_LANGUAGE:
@@ -169,17 +181,6 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 			case DIPLOMACY_SITUATION_CHANGED:
 				logger.info("Diplomacy status changed.");
 				init();
-				break;
-
-			case TERMINAL_COMMAND:
-				String com1 = o.getText();
-				if (Nexus.isLoggedIn()) {
-					if (Nexus.getCurrentlyOpenedPane() instanceof DiplomacyPane) {
-						if (!com1.startsWith("*!!!*")) {
-							handleCommand(com1);
-						}
-					}
-				}
 				break;
 
 			default:
@@ -494,48 +495,5 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 			}
 			buttonSave.setDisable(true);
 		});
-	}
-
-	private void handleCommand(String com) {
-		boolean sendingString = true;
-
-		if (!com.startsWith("*!!!*")) {
-			if (!"".equals(com)) {
-				logger.info("Received command: '" + com + "'");
-				String lastEntry = null;
-				if (Nexus.commandHistory.size() > 0) {
-					lastEntry = Nexus.commandHistory.getLast();
-				}
-				if (lastEntry == null) {
-					Nexus.commandHistory.add(com);
-				} else if (!Nexus.commandHistory.getLast().equals(com)) {
-					Nexus.commandHistory.add(com);
-				}
-				if (Nexus.commandHistory.size() > 50) {
-					Nexus.commandHistory.remove(0);
-				}
-				Nexus.commandHistoryIndex = Nexus.commandHistory.size();
-			}
-		}
-
-		if ("*!!!*historyBack".equals(com)) {
-			if (Nexus.commandHistoryIndex > 0) {
-				Nexus.commandHistoryIndex--;
-				logger.info("History back to index: " + Nexus.commandHistoryIndex);
-				String histCom = Nexus.commandHistory.get(Nexus.commandHistoryIndex);
-				ActionManager.getAction(ACTIONS.SET_TERMINAL_TEXT).execute(histCom);
-			}
-			sendingString = false;
-		}
-
-		if ("*!!!*historyForward".equals(com)) {
-			if (Nexus.commandHistoryIndex < Nexus.commandHistory.size() - 1) {
-				Nexus.commandHistoryIndex++;
-				logger.info("History forward to index: " + Nexus.commandHistoryIndex);
-				String histCom = Nexus.commandHistory.get(Nexus.commandHistoryIndex);
-				ActionManager.getAction(ACTIONS.SET_TERMINAL_TEXT).execute(histCom);
-			}
-			sendingString = false;
-		}
 	}
 }

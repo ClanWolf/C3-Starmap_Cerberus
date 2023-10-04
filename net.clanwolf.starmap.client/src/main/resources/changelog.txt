@@ -55,25 +55,26 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
-Version 7.3.118 (06.10.2023)
-- ADDED: Admin command to restart server from client
-- UPDATED: Libraries, Compiler
-- UPDATED: Further reduced package size
-- *** Check missing images (in installed App!) (resource exclude tag in maven)
+Version 7.3.119 (06.10.2023)
+- UPDATED: Libraries, Compiler (maven)
+- ADDED: 'restart server' terminal command (for admin)
+- CHANGED: Further reduced package size
+- CHANGED: Refactored the handling of terminal commands
+- FIXED: Hitting enter on Terminal triggers default key of dialog (e.g. Logout)
+
+- *** Reset a fight in case a pilot needs to leave in the middle of an invasion
+  - Delete AttackCharacter for attackId
+  - __HH_ATTACK: Set 'FightsStarted' = 0
+  - __HH_ATTACK: Set 'LastStoryId' = NULL ??? Wurde vorher nicht auf NULL gesetzt!
+  - __HH_ATTACK: Set 'StoryId' = StoryId of the lobby of the current attackType
+
 - *** Finish refactoring of Diplomacy
 - *** Only one alliance is allowed for each faction at a time
 - *** Allow an alliance only if there is no open attack between the two factions
 - *** Open requests for alliances are canceled after two rounds (if not accepted) --> Endround
 - *** If an attack is started all diplomacy requests are deleted
 - *** If a jump is saved that would lead to an attack, but both sides agreed to an alliance in this next round, the attack is not created
-- *** Modal flag of RoleplayPane and DiplomacyPane to false (enable the changing of the pane)
-- *** 'Restart server' command (button?)
-- *** Hitting enter on Terminal triggers default key of dialog (e.g. Logout)
-- *** Reset a fight in case a pilot needs to leave in the middle of an invasion
-  - Delete AttackCharacter for attackId
-  - __HH_ATTACK: Set 'FightsStarted' = 0
-  - __HH_ATTACK: Set 'LastStoryId' = NULL
-  - __HH_ATTACK: Set 'StoryId' = StoryId of the lobby of the current attackType
+- !!! Working? *** Modal flag of RoleplayPane and DiplomacyPane to false (enable the changing of the pane)
 
 Version 7.3.116 (30.09.2023)
 - CHANGED: Removed a number of redundant files to reduce filesize

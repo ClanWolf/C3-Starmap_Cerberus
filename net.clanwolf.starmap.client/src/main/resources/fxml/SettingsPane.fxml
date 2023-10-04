@@ -12,9 +12,10 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.paint.Color?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="SettingsPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/19" fx:controller="net.clanwolf.starmap.client.gui.panes.settings.SettingsPaneController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="SettingsPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/20.0.1" fx:controller="net.clanwolf.starmap.client.gui.panes.settings.SettingsPaneController">
   <children>
     <Label fx:id="panelHeadline" alignment="BASELINE_RIGHT" contentDisplay="CENTER" focusTraversable="false" layoutX="14.0" layoutY="375.0" mouseTransparent="true" opacity="0.12" prefWidth="794.0" text="SETTINGS">
       <font>
@@ -27,15 +28,16 @@
         <Color red="0.412" green="0.620" blue="0.804" fx:id="x1" />
       </textFill>
     </Label>
-    <TabPane layoutX="62.0" layoutY="14.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="426.0" prefWidth="777.0" style="-fx-border-width: 0;" tabClosingPolicy="UNAVAILABLE">
+    <TabPane layoutX="62.0" layoutY="14.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="413.0" prefWidth="766.0" style="-fx-border-width: 0;" tabClosingPolicy="UNAVAILABLE">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
       <tabs>
             <Tab fx:id="tab4" text="Tab4_General">
                <content>
-                  <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                  <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="376.0" prefWidth="749.0">
                      <children>
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2c506d" height="353.0" opacity="0.75" stroke="#779fc3" strokeType="INSIDE" strokeWidth="2.0" width="747.0" AnchorPane.bottomAnchor="13.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
                         <Label alignment="BOTTOM_LEFT" focusTraversable="false" mouseTransparent="true" opacity="0.2" prefHeight="382.0" prefWidth="252.0" styleClass="contentLabelSideImage">
                            <stylesheets>
                               <URL value="@../styles/MainFrameStyle.css" />
@@ -62,6 +64,7 @@
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="contentTabAnchorPane">
               <children>
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2c506d" height="353.0" opacity="0.75" stroke="#779fc3" strokeType="INSIDE" strokeWidth="2.0" width="747.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
                 <Label alignment="BOTTOM_LEFT" focusTraversable="false" mouseTransparent="true" opacity="0.2" prefHeight="382.0" prefWidth="252.0" styleClass="contentLabelSideImage">
                   <stylesheets>
                     <URL value="@../styles/MainFrameStyle.css" />
@@ -82,12 +85,12 @@
                     <URL value="@../styles/MainFrameStyle.css" />
                   </stylesheets>
                 </Label>
-                <TextField fx:id="edit_ServerURL" layoutX="252.0" layoutY="31.0" prefWidth="498.0">
+                <TextField fx:id="edit_ServerURL" layoutX="252.0" layoutY="31.0" prefHeight="23.0" prefWidth="485.0">
                   <stylesheets>
                     <URL value="@../styles/MainFrameStyle.css" />
                   </stylesheets>
                 </TextField>
-                <TextField fx:id="edit_DatabaseName" layoutX="252.0" layoutY="71.0" prefWidth="498.0">
+                <TextField fx:id="edit_DatabaseName" layoutX="252.0" layoutY="71.0" prefHeight="23.0" prefWidth="485.0">
                   <stylesheets>
                     <URL value="@../styles/MainFrameStyle.css" />
                   </stylesheets>
@@ -108,6 +111,7 @@
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="contentTabAnchorPane">
               <children>
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2c506d" height="353.0" opacity="0.75" stroke="#779fc3" strokeType="INSIDE" strokeWidth="2.0" width="747.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
                 <Label alignment="BOTTOM_LEFT" focusTraversable="false" mouseTransparent="true" opacity="0.2" prefHeight="382.0" prefWidth="252.0" styleClass="contentLabelSideImage">
                   <stylesheets>
                     <URL value="@../styles/MainFrameStyle.css" />
@@ -156,7 +160,7 @@
                     <URL value="@../styles/MainFrameStyle.css" />
                   </stylesheets>
                 </RadioButton>
-                <TextField fx:id="edit_ProxyServerURL" layoutX="238.0" layoutY="74.0" prefWidth="514.0">
+                <TextField fx:id="edit_ProxyServerURL" layoutX="238.0" layoutY="74.0" prefHeight="23.0" prefWidth="495.0">
                   <stylesheets>
                     <URL value="@../styles/MainFrameStyle.css" />
                   </stylesheets>
@@ -171,17 +175,17 @@
                     <URL value="@../styles/MainFrameStyle.css" />
                   </stylesheets>
                 </CheckBox>
-                <TextField fx:id="edit_ProxyServerUserName" layoutX="348.0" layoutY="191.0" prefWidth="404.0">
+                <TextField fx:id="edit_ProxyServerUserName" layoutX="348.0" layoutY="191.0" prefHeight="23.0" prefWidth="390.0">
                   <stylesheets>
                     <URL value="@../styles/MainFrameStyle.css" />
                   </stylesheets>
                 </TextField>
-                <PasswordField id="edit_ProxyServerUserName" fx:id="edit_ProxyServerPassword" layoutX="348.0" layoutY="230.0" prefWidth="404.0">
+                <PasswordField id="edit_ProxyServerUserName" fx:id="edit_ProxyServerPassword" layoutX="348.0" layoutY="230.0" prefHeight="23.0" prefWidth="390.0">
                   <stylesheets>
                     <URL value="@../styles/MainFrameStyle.css" />
                   </stylesheets>
                 </PasswordField>
-                <TextField id="edit_ProxyServerPassword" fx:id="edit_ProxyServerDomain" layoutX="348.0" layoutY="269.0" prefWidth="404.0">
+                <TextField id="edit_ProxyServerPassword" fx:id="edit_ProxyServerDomain" layoutX="348.0" layoutY="269.0" prefHeight="23.0" prefWidth="390.0">
                   <stylesheets>
                     <URL value="@../styles/MainFrameStyle.css" />
                   </stylesheets>
@@ -202,6 +206,7 @@
           <content>
             <AnchorPane id="Content" minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
               <children>
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2c506d" height="353.0" opacity="0.75" stroke="#779fc3" strokeType="INSIDE" strokeWidth="2.0" width="747.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
                 <Label alignment="BOTTOM_LEFT" focusTraversable="false" mouseTransparent="true" opacity="0.2" prefHeight="382.0" prefWidth="252.0" styleClass="contentLabelSideImage">
                   <stylesheets>
                     <URL value="@../styles/MainFrameStyle.css" />
@@ -227,7 +232,7 @@
                     <URL value="@../styles/MainFrameStyle.css" />
                   </stylesheets>
                 </CheckBox>
-                <Slider fx:id="slider_SpeechVolume" blockIncrement="1.0" layoutX="476.0" layoutY="64.0" majorTickUnit="1.0" minorTickCount="1" prefWidth="272.0">
+                <Slider fx:id="slider_SpeechVolume" blockIncrement="1.0" layoutX="476.0" layoutY="64.0" majorTickUnit="1.0" minorTickCount="1" prefHeight="17.0" prefWidth="240.0">
                   <stylesheets>
                     <URL value="@../styles/MainFrameStyle.css" />
                   </stylesheets>
@@ -237,7 +242,7 @@
                     <URL value="@../styles/MainFrameStyle.css" />
                   </stylesheets>
                 </CheckBox>
-                <Slider fx:id="slider_SoundVolume" blockIncrement="1.0" layoutX="476.0" layoutY="102.0" majorTickUnit="1.0" minorTickCount="1" prefWidth="272.0">
+                <Slider fx:id="slider_SoundVolume" blockIncrement="1.0" layoutX="476.0" layoutY="102.0" majorTickUnit="1.0" minorTickCount="1" prefHeight="17.0" prefWidth="240.0">
                   <stylesheets>
                     <URL value="@../styles/MainFrameStyle.css" />
                   </stylesheets>
@@ -247,7 +252,7 @@
                     <URL value="@../styles/MainFrameStyle.css" />
                   </stylesheets>
                 </CheckBox>
-                <Slider fx:id="slider_MusicVolume" blockIncrement="1.0" layoutX="476.0" layoutY="170.0" majorTickUnit="1.0" minorTickCount="1" prefWidth="272.0">
+                <Slider fx:id="slider_MusicVolume" blockIncrement="1.0" layoutX="476.0" layoutY="170.0" majorTickUnit="1.0" minorTickCount="1" prefHeight="17.0" prefWidth="240.0">
                   <stylesheets>
                     <URL value="@../styles/MainFrameStyle.css" />
                   </stylesheets>
@@ -258,12 +263,12 @@
         </Tab>
       </tabs>
     </TabPane>
-    <Button fx:id="buttonYes" alignment="CENTER_RIGHT" layoutX="547.0" layoutY="449.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#handleConfirmButtonClick" prefWidth="140.0" styleClass="contentButton" text="Button">
+    <Button fx:id="buttonYes" alignment="CENTER_RIGHT" layoutX="540.0" layoutY="439.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#handleConfirmButtonClick" prefWidth="140.0" styleClass="contentButton" text="Button">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
     </Button>
-    <Button fx:id="buttonNo" alignment="CENTER_RIGHT" layoutX="698.0" layoutY="449.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#handleCancelButtonClick" onMouseEntered="#handleCancelButtonHoverEnter" onMouseExited="#handleCancelButtonHoverExit" prefWidth="140.0" styleClass="contentButton" text="Button">
+    <Button fx:id="buttonNo" alignment="CENTER_RIGHT" layoutX="689.0" layoutY="439.0" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onMouseClicked="#handleCancelButtonClick" onMouseEntered="#handleCancelButtonHoverEnter" onMouseExited="#handleCancelButtonHoverExit" prefWidth="140.0" styleClass="contentButton" text="Button">
       <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>

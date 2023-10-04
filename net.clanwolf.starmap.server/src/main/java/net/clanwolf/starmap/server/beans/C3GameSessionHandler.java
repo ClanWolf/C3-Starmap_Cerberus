@@ -367,8 +367,6 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 	public synchronized void resetAttack(Long attackId) {
 		try {
-			//List<AttackCharacterPOJO> emptyCharList = new ArrayList<AttackCharacterPOJO>();
-
 			EntityManagerHelper.beginTransaction(ServerNexus.DUMMY_USERID);
 			EntityManagerHelper.clear(ServerNexus.DUMMY_USERID);
 
@@ -381,7 +379,6 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			RolePlayStoryPOJO lobbyRPreset = rpsdao.getLobbyRPFromAttackRP(ap.getStoryID());
 
 			ap.setFightsStarted(false);
-			//ap.setAttackCharList(emptyCharList);
 			ap.getAttackCharList().clear();
 			ap.setStoryID(lobbyRPreset.getId());
 

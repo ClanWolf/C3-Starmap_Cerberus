@@ -61,6 +61,7 @@ import javafx.util.Duration;
 import net.clanwolf.starmap.client.action.*;
 import net.clanwolf.starmap.client.enums.C3MESSAGES;
 import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
+import net.clanwolf.starmap.client.gui.panes.TerminalCommandHandler;
 import net.clanwolf.starmap.client.gui.panes.map.surfacemap.SurfacemapPane;
 import net.clanwolf.starmap.transfer.enums.PRIVILEGES;
 import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
@@ -1635,72 +1636,76 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 	}
 
 	private void moveMapToPosition(BOStarSystem sys) {
-		removeMouseFilters();
+		Platform.runLater(() -> {
+			removeMouseFilters();
 
-		mapButton01.setDisable(true);
-		mapButton02.setDisable(true);
-		mapButton03.setDisable(true);
-		mapButton04.setDisable(true);
-		mapButton05.setDisable(true);
-		mapButton06.setDisable(true);
+			mapButton01.setDisable(true);
+			mapButton02.setDisable(true);
+			mapButton03.setDisable(true);
+			mapButton04.setDisable(true);
+			mapButton05.setDisable(true);
+			mapButton06.setDisable(true);
 
-		logger.info("Travel to " + sys.getName());
-		logger.info("X: " + sys.getX());
-		logger.info("Y: " + sys.getY());
+			logger.info("Travel to " + sys.getName());
+			logger.info("X: " + sys.getX());
+			logger.info("Y: " + sys.getY());
 
-		for (int[] layer : StarmapConfig.BACKGROUND_STARS_LAYERS) {
-			int level = layer[0];
-			canvas.fadeoutStars(level);
-		}
-
-		TranslateTransition move01 = new TranslateTransition(Duration.millis(0), canvas);
-		move01.setCycleCount(1);
-		move01.setToX(StarmapConfig.MAP_INITIAL_TRANSLATE_X);
-		move01.setToY(StarmapConfig.MAP_INITIAL_TRANSLATE_Y);
-
-		TranslateTransition move02 = new TranslateTransition(Duration.millis(10), canvas);
-		move02.setCycleCount(1);
-		move02.setByX(-sys.getX() * StarmapConfig.MAP_COORDINATES_MULTIPLICATOR * canvas.getScale());
-		move02.setByY(sys.getY() * StarmapConfig.MAP_COORDINATES_MULTIPLICATOR * canvas.getScale());
-
-		SequentialTransition seq = new SequentialTransition();
-		seq.getChildren().addAll(move01, move02);
-		seq.setOnFinished(event -> {
-			addMouseFilters();
-			boolean mayMoveJumpships = Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.FACTIONLEAD_MOVE_JUMPSHIP);
-			if (mayMoveJumpships) {
-				mapButton01.setDisable(false);
-				checkForOrdersToSend();
-			}
-			mapButton02.setDisable(false);
-			mapButton03.setDisable(false);
-			mapButton04.setDisable(false);
-			mapButton05.setDisable(false);
-			mapButton06.setDisable(false);
 			for (int[] layer : StarmapConfig.BACKGROUND_STARS_LAYERS) {
 				int level = layer[0];
-				canvas.resetBackgroundStarPane(level);
-				canvas.showStarSystemMarker(sys);
-				Nexus.setCurrentlySelectedStarSystem(sys);
-				ActionManager.getAction(ACTIONS.SHOW_SYSTEM_DETAIL).execute(sys);
-
-//				Platform.runLater(() -> {
-//					for (double i = 0.2d; i < 3.0d; i = i + 0.001d) {
-//						canvas.setScale(i);
-//						canvas.setPivot(1, 1);
-//					}
-//				});
+				canvas.fadeoutStars(level);
 			}
+
+			TranslateTransition move01 = new TranslateTransition(Duration.millis(0), canvas);
+			move01.setCycleCount(1);
+			move01.setToX(StarmapConfig.MAP_INITIAL_TRANSLATE_X);
+			move01.setToY(StarmapConfig.MAP_INITIAL_TRANSLATE_Y);
+
+			TranslateTransition move02 = new TranslateTransition(Duration.millis(10), canvas);
+			move02.setCycleCount(1);
+			move02.setByX(-sys.getX() * StarmapConfig.MAP_COORDINATES_MULTIPLICATOR * canvas.getScale());
+			move02.setByY(sys.getY() * StarmapConfig.MAP_COORDINATES_MULTIPLICATOR * canvas.getScale());
+
+			SequentialTransition seq = new SequentialTransition();
+			seq.getChildren().addAll(move01, move02);
+			seq.setOnFinished(event -> {
+				addMouseFilters();
+				boolean mayMoveJumpships = Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.FACTIONLEAD_MOVE_JUMPSHIP);
+				if (mayMoveJumpships) {
+					mapButton01.setDisable(false);
+					checkForOrdersToSend();
+				}
+				mapButton02.setDisable(false);
+				mapButton03.setDisable(false);
+				mapButton04.setDisable(false);
+				mapButton05.setDisable(false);
+				mapButton06.setDisable(false);
+				for (int[] layer : StarmapConfig.BACKGROUND_STARS_LAYERS) {
+					int level = layer[0];
+					canvas.resetBackgroundStarPane(level);
+					canvas.showStarSystemMarker(sys);
+					Nexus.setCurrentlySelectedStarSystem(sys);
+					ActionManager.getAction(ACTIONS.SHOW_SYSTEM_DETAIL).execute(sys);
+
+					//				Platform.runLater(() -> {
+					//					for (double i = 0.2d; i < 3.0d; i = i + 0.001d) {
+					//						canvas.setScale(i);
+					//						canvas.setPivot(1, 1);
+					//					}
+					//				});
+				}
+			});
+			seq.play();
 		});
-		seq.play();
 	}
 
 	private void moveMapToJumpship(BOJumpship jumpship) {
-		BOStarSystem starsystem = jumpship.getCurrentSystem(jumpship.getCurrentSystemID());
-		logger.info("Travel to position of jumpship " + jumpship.getJumpshipName() + " --> " + starsystem.getName());
-		moveMapToPosition(starsystem);
-		jumpship.getJumpshipLevelLabel().toFront();
-		jumpship.getJumpshipImageView().toFront();
+		Platform.runLater(() -> {
+			BOStarSystem starsystem = jumpship.getCurrentSystem(jumpship.getCurrentSystemID());
+			logger.info("Travel to position of jumpship " + jumpship.getJumpshipName() + " --> " + starsystem.getName());
+			moveMapToPosition(starsystem);
+			jumpship.getJumpshipLevelLabel().toFront();
+			jumpship.getJumpshipImageView().toFront();
+		});
 	}
 
 	private void centerStarSystemGroups() {
@@ -2052,7 +2057,6 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 		ActionManager.addActionCallbackListener(ACTIONS.MAP_CREATION_FINISHED, this);
 		ActionManager.addActionCallbackListener(ACTIONS.SHOW_JUMPSHIP_DETAIL, this);
 		ActionManager.addActionCallbackListener(ACTIONS.HIDE_JUMPSHIP_DETAIL, this);
-		ActionManager.addActionCallbackListener(ACTIONS.TERMINAL_COMMAND, this);
 		ActionManager.addActionCallbackListener(ACTIONS.SYSTEM_WAS_SELECTED, this);
 		ActionManager.addActionCallbackListener(ACTIONS.REPAINT_MAP, this);
 		ActionManager.addActionCallbackListener(ACTIONS.FINALIZE_ROUND, this);
@@ -2067,6 +2071,12 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 		ActionManager.addActionCallbackListener(ACTIONS.WATCHED_ATTACK_IS_HEALED, this);
 		ActionManager.addActionCallbackListener(ACTIONS.UPDATE_ALLIANCES_LIST, this);
 		ActionManager.addActionCallbackListener(ACTIONS.CLOSE_SURFACE_MAP, this);
+		ActionManager.addActionCallbackListener(ACTIONS.MAP_MOVE_TO_STARSYSTEM, this);
+		ActionManager.addActionCallbackListener(ACTIONS.MAP_MOVE_TO_JUMPSHIP, this);
+
+		// Added in AbstractC3Controller:
+		// ActionManager.addActionCallbackListener(ACTIONS.ENABLE_DEFAULT_BUTTON, this);
+		// ActionManager.addActionCallbackListener(ACTIONS.DISABLE_DEFAULT_BUTTON, this);
 	}
 
 	/**
@@ -2100,6 +2110,18 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 
 				anchorPane.getChildren().remove(surfaceMap);
 				surfaceMap = null;
+				break;
+
+			case MAP_MOVE_TO_STARSYSTEM:
+				if (o.getObject() instanceof BOStarSystem) {
+					moveMapToPosition((BOStarSystem) o.getObject());
+				}
+				break;
+
+			case MAP_MOVE_TO_JUMPSHIP:
+				if (o.getObject() instanceof BOJumpship) {
+					moveMapToJumpship((BOJumpship) o.getObject());
+				}
 				break;
 
 			case REPAINT_MAP:
@@ -2404,15 +2426,12 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 				Platform.runLater(() -> labelMouseCoords.setText(v));
 				break;
 
-			case TERMINAL_COMMAND:
-				String com = o.getText();
-				if (Nexus.isLoggedIn()) {
-					if (Nexus.getCurrentlyOpenedPane() instanceof StarmapPane) {
-						if (!com.startsWith("*!!!*")) {
-							handleCommand(com);
-						}
-					}
-				}
+			case ENABLE_DEFAULT_BUTTON:
+				enableDefaultButton(true);
+				break;
+
+			case DISABLE_DEFAULT_BUTTON:
+				enableDefaultButton(false);
 				break;
 
 			case SHOW_FORBIDDEN_ICON_MAP:
@@ -2477,166 +2496,5 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 				break;
 		}
 		return true;
-	}
-
-	public void handleCommand(String com) {
-		if (!com.startsWith("*!!!*")) {
-			if (!"".equals(com)) {
-				logger.info("Received command: '" + com + "'");
-				String lastEntry = null;
-				if (Nexus.commandHistory.size() > 0) {
-					lastEntry = Nexus.commandHistory.getLast();
-				}
-				if (lastEntry == null) {
-					Nexus.commandHistory.add(com);
-				} else if (!Nexus.commandHistory.getLast().equals(com)) {
-					Nexus.commandHistory.add(com);
-				}
-				if (Nexus.commandHistory.size() > 50) {
-					Nexus.commandHistory.remove(0);
-				}
-				Nexus.commandHistoryIndex = Nexus.commandHistory.size();
-			}
-		}
-
-		if ("*!!!*historyBack".equals(com)) {
-			if (Nexus.commandHistoryIndex > 0) {
-				Nexus.commandHistoryIndex--;
-				logger.info("History back to index: " + Nexus.commandHistoryIndex);
-				String histCom = Nexus.commandHistory.get(Nexus.commandHistoryIndex);
-				ActionManager.getAction(ACTIONS.SET_TERMINAL_TEXT).execute(histCom);
-			}
-		}
-
-		if ("*!!!*historyForward".equals(com)) {
-			if (Nexus.commandHistoryIndex < Nexus.commandHistory.size() - 1) {
-				Nexus.commandHistoryIndex++;
-				logger.info("History forward to index: " + Nexus.commandHistoryIndex);
-				String histCom = Nexus.commandHistory.get(Nexus.commandHistoryIndex);
-				ActionManager.getAction(ACTIONS.SET_TERMINAL_TEXT).execute(histCom);
-			}
-		}
-
-		// ---------------------------------
-		// find
-		// ---------------------------------
-		if (com.toLowerCase().startsWith("find ")) {
-			String value = com.substring(5);
-			if (!"".equals(value)) {
-				logger.info("Searching for '" + value + "'");
-			}
-			logger.info("Searching starsystems...");
-			for (BOStarSystem ss : boUniverse.starSystemBOs.values()) {
-				if (ss.getName().equalsIgnoreCase(value)) {
-					logger.info("Found starsystem '" + value + "'");
-					moveMapToPosition(ss);
-				}
-			}
-			logger.info("Searching jumpships...");
-			for (BOJumpship js : boUniverse.jumpshipBOs.values()) {
-				if (js.getJumpshipName().equalsIgnoreCase(value)) {
-					logger.info("Found jumpship '" + value + "'");
-					moveMapToJumpship(js);
-				}
-			}
-			Nexus.storeCommandHistory();
-		}
-
-		// ---------------------------------
-		// force finalize round
-		// ---------------------------------
-		if (com.toLowerCase().startsWith("finalize round")) {
-			if (Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_FINALIZE_ROUND)) {
-
-				// Check if there are any routepoints that have not been saved yet!
-				boolean unsavedRoutesFound = false;
-				for (BOJumpship js : boUniverse.getJumpshipList()) {
-					if (js.getJumpshipFaction() == Nexus.getCurrentUser().getCurrentCharacter().getFactionId()) {
-						// My own jumpship. May have been moved and may have an unsaved route
-
-						if (js.routeLines != null) {
-							if (js.routeLines.getChildren().size() > 0) {
-								logger.info("There are routepoints to store.");
-								unsavedRoutesFound = true;
-							} else {
-								logger.info("NO routepoints.");
-							}
-						}
-					}
-				}
-
-				if (unsavedRoutesFound) {
-					// stop action here, save routes first!
-					ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_saveRoutesBeforeFinalizeRound"), true));
-				} else {
-					ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_success"), false));
-					GameState s = new GameState();
-					s.setMode(GAMESTATEMODES.FORCE_FINALIZE_ROUND);
-					Nexus.fireNetworkEvent(s);
-					Nexus.storeCommandHistory();
-				}
-			} else {
-				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_notallowed"), false));
-				C3Message message = new C3Message(C3MESSAGES.ERROR_NOT_ALLOWED);
-				message.setType(C3MESSAGETYPES.CLOSE);
-				message.setText(Internationalization.getString("general_notallowed"));
-				C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
-				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
-			}
-//			Nexus.storeCommandHistory();
-		}
-
-		// ---------------------------------
-		// re-create universe
-		// ---------------------------------
-		if (com.toLowerCase().startsWith("create universe")) {
-			if (Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN)) {
-				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_success"), false));
-				GameState s = new GameState();
-				s.setMode(GAMESTATEMODES.FORCE_NEW_UNIVERSE);
-				Nexus.fireNetworkEvent(s);
-				Nexus.storeCommandHistory();
-			} else {
-				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_notallowed"), false));
-				C3Message message = new C3Message(C3MESSAGES.ERROR_NOT_ALLOWED);
-				message.setType(C3MESSAGETYPES.CLOSE);
-				message.setText(Internationalization.getString("general_notallowed"));
-				C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
-				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
-			}
-		}
-
-		// ---------------------------------
-		// reset fight
-		// ---------------------------------
-		if (com.toLowerCase().startsWith("reset attack")) {
-			if (Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN)) {
-				String systemNameOfAttack = com.substring(com.lastIndexOf(" "));
-				boolean foundAttack = false;
-				for (BOAttack at : Nexus.getBoUniverse().attackBOsOpenInThisRound.values()) {
-					if (at.getStarSystemName().equals(systemNameOfAttack)) {
-						GameState s = new GameState();
-						s.setMode(GAMESTATEMODES.RESET_FIGHT);
-						s.addObject(at.getAttackDTO().getId());
-						Nexus.fireNetworkEvent(s);
-						Nexus.storeCommandHistory();
-
-						foundAttack = true;
-						ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_success"), false));
-						break;
-					}
-				}
-				if (!foundAttack) {
-					ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_failure"), true));
-				}
-			} else {
-				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_notallowed"), false));
-				C3Message message = new C3Message(C3MESSAGES.ERROR_NOT_ALLOWED);
-				message.setType(C3MESSAGETYPES.CLOSE);
-				message.setText(Internationalization.getString("general_notallowed"));
-				C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
-				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
-			}
-		}
 	}
 }

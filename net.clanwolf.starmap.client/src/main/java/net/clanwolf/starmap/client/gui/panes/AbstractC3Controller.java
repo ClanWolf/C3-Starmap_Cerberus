@@ -30,17 +30,22 @@ import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
+import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
+import java.lang.invoke.MethodHandles;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -51,6 +56,8 @@ import java.util.ResourceBundle;
  */
 public abstract class AbstractC3Controller implements Initializable, ActionCallBackListener {
 
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
 	/**
 	 * This flag is set if there is a warning in the dialog, e.g. "There is something to save!" or similar.
 	 */
@@ -58,6 +65,7 @@ public abstract class AbstractC3Controller implements Initializable, ActionCallB
 	protected Label labelWarningIcon;
 	protected Label labelWarningText;
 	protected String paneName = "";
+	protected Button defaultButton;
 
 	@FXML
 	private AnchorPane anchorPane;
@@ -102,7 +110,42 @@ public abstract class AbstractC3Controller implements Initializable, ActionCallB
 	 */
 	public abstract void setStrings();
 
+	/**
+	 * The default button is disabled as soon as the terminal textfield has focus
+	 * in order to prevent the default button to be triggered if a command is sent
+	 * by hitting enter in the terminal.
+	 *
+	 * @param v
+	 */
+	public void enableDefaultButton(boolean v) {
+		if (defaultButton == null) {
+			defaultButton = getDefaultButton();
+		}
+		if (defaultButton != null) {
+			defaultButton.setDefaultButton(v);
+			// logger.info("DefaultButton (" + defaultButton.getText() + ") enabled: " + v);
+		}
+		//else {
+			// logger.info("DefaultButton not found");
+		//}
+	}
+
 	public abstract void setFocus();
+
+	protected Button getDefaultButton() {
+		Button defaultButton = null;
+		if (anchorPane != null) {
+			for (int i = 0; i < anchorPane.getChildren().size(); i++) {
+				if (anchorPane.getChildren().get(i) instanceof Button) {
+					if (((Button) anchorPane.getChildren().get(i)).isDefaultButton()) {
+						defaultButton = (Button) anchorPane.getChildren().get(i);
+						break;
+					}
+				}
+			}
+		}
+		return defaultButton;
+	}
 
 	protected void setWarningOn(boolean setModal) {
 		if (!warningActive) {
@@ -135,6 +178,9 @@ public abstract class AbstractC3Controller implements Initializable, ActionCallB
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		createGeneralControls();
+
+		ActionManager.addActionCallbackListener(ACTIONS.ENABLE_DEFAULT_BUTTON, this);
+		ActionManager.addActionCallbackListener(ACTIONS.DISABLE_DEFAULT_BUTTON, this);
 	}
 
 	/**

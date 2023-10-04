@@ -172,7 +172,7 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 	@FXML
 	private void handleLogoutButtonClick() {
 		cancelWarning = true;
-		ActionManager.getAction(ACTIONS.SET_CONSOLE_OPACITY).execute(0.8);
+		ActionManager.getAction(ACTIONS.SET_CONSOLE_OPACITY).execute(0.2);
 		Logout.doLogout();
 	}
 
@@ -331,6 +331,10 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 		ActionManager.addActionCallbackListener(ACTIONS.PANE_CREATION_FINISHED, this);
 		ActionManager.addActionCallbackListener(ACTIONS.PANE_DESTRUCTION_FINISHED, this);
 		ActionManager.addActionCallbackListener(ACTIONS.NEW_UNIVERSE_RECEIVED, this);
+
+		// Added in AbstractC3Controller:
+		// ActionManager.addActionCallbackListener(ACTIONS.ENABLE_DEFAULT_BUTTON, this);
+		// ActionManager.addActionCallbackListener(ACTIONS.DISABLE_DEFAULT_BUTTON, this);
 	}
 
 	/**
@@ -498,6 +502,14 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 			case PANE_CREATION_BEGINS:
 				break;
 
+			case ENABLE_DEFAULT_BUTTON:
+				enableDefaultButton(true);
+				break;
+
+			case DISABLE_DEFAULT_BUTTON:
+				enableDefaultButton(false);
+				break;
+
 			case PANE_CREATION_FINISHED:
 				if (o.getObject() instanceof UserInfoPane) {
 					if (!cooledOff) {
@@ -514,8 +526,7 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 									Platform.runLater(() -> setLogoutButtonText(caption));
 									enableLogoutButton();
 								} catch (InterruptedException e) {
-									logger.info("UserInfoPanelException [1254]");
-									e.printStackTrace();
+									logger.error("UserInfoPanelException [1254]", e);
 								}
 							}
 						});
@@ -533,10 +544,6 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 
 			case LOGON_FINISHED_SUCCESSFULL:
 				break;
-
-			// case LOGON_FINISHED_WITH_ERROR:
-			// Log.info("Login Error");
-			// break;
 
 			default:
 				break;

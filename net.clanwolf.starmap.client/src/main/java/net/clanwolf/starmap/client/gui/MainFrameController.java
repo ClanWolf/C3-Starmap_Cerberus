@@ -52,6 +52,7 @@ import net.clanwolf.starmap.client.action.*;
 import net.clanwolf.starmap.client.enums.C3MESSAGERESULTS;
 import net.clanwolf.starmap.client.enums.C3MESSAGES;
 import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
+import net.clanwolf.starmap.client.gui.panes.TerminalCommandHandler;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.DiplomacyDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
@@ -1043,13 +1044,15 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		ActionManager.addActionCallbackListener(ACTIONS.ENABLE_MAIN_MENU_BUTTONS, this);
 		ActionManager.addActionCallbackListener(ACTIONS.SWITCH_TO_INVASION, this);
 		ActionManager.addActionCallbackListener(ACTIONS.SWITCH_TO_MAP, this);
-		ActionManager.addActionCallbackListener(ACTIONS.TERMINAL_COMMAND, this);
 		ActionManager.addActionCallbackListener(ACTIONS.FLASH_MWO_LOGO_ONCE, this);
 		ActionManager.addActionCallbackListener(ACTIONS.IRC_DISCONNECT_NOW, this);
 		ActionManager.addActionCallbackListener(ACTIONS.SERVER_CONNECTION_LOST, this);
 		ActionManager.addActionCallbackListener(ACTIONS.SET_FACTION_LOGO, this);
 		ActionManager.addActionCallbackListener(ACTIONS.SET_FACTION_LOGO_INVISIBLE, this);
 		ActionManager.addActionCallbackListener(ACTIONS.DIPLOMACY_STATUS_PENDING, this);
+		ActionManager.addActionCallbackListener(ACTIONS.ENABLE_DEFAULT_BUTTON, this);
+		ActionManager.addActionCallbackListener(ACTIONS.DISABLE_DEFAULT_BUTTON, this);
+		ActionManager.addActionCallbackListener(ACTIONS.TERMINAL_COMMAND, this);
 	}
 
 	public static Date addDaysToDate(Date date, int daysToAdd) {
@@ -1909,6 +1912,14 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				}
 				break;
 
+			case ENABLE_DEFAULT_BUTTON:
+				enableDefaultButton(true);
+				break;
+
+			case DISABLE_DEFAULT_BUTTON:
+				enableDefaultButton(false);
+				break;
+
 			case DIPLOMACY_STATUS_PENDING_HIDE:
 				ivDiplomacyIndicator.setVisible(false);
 				logger.info("No Diplomacy requests pending deactivate warning!");
@@ -2211,8 +2222,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			case PANE_CREATION_BEGINS:
 				Platform.runLater(() -> {
 					paneTransitionInProgress = true;
-					systemConsole.setOpacity(0.3);
-					systemConsoleCurrentLine.setOpacity(0.9);
+					systemConsole.setOpacity(0.2);
+					systemConsoleCurrentLine.setOpacity(0.4);
 					spectrumImage.setOpacity(0.8);
 				});
 				break;
@@ -2259,8 +2270,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 							createNextPane();
 						} else {
 							ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("7");
-							systemConsole.setOpacity(0.8);
-							systemConsoleCurrentLine.setOpacity(0.9);
+							systemConsole.setOpacity(0.2);
+							systemConsoleCurrentLine.setOpacity(0.4);
 							spectrumImage.setOpacity(0.1);
 
 							showMenuIndicator(false);
@@ -2288,22 +2299,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				break;
 
 			case TERMINAL_COMMAND:
-				String com = o.getText();
-				if (Nexus.isLoggedIn()) {
-					if (com.contains("find")
-							|| com.contains("finalize round")
-							|| com.contains("create universe")
-							|| com.contains("restart server")
-							|| com.contains("reset attack")) {
-						handleCommand(com);
-					}
-				}
-				if (com.startsWith("test ")) {
-					handleCommand(com);
-				}
-				if (com.startsWith("*!!!*")) {
-					handleCommand(com);
-				}
+				String commandline = o.getText();
+				TerminalCommandHandler.handleCommand(commandline);
 				break;
 
 			case NOISE:
@@ -2316,12 +2313,6 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 						duration = random.nextInt(1000 - 100) + 100;
 					}
 
-//					noiseImage.toFront();
-//					noiseImage.setVisible(true);
-//					if (noiseAnimation != null) {
-//						noiseAnimation.play();
-//					}
-
 					paneNoise.setVisible(true);
 
 					FadeTransition FadeOutTransition = new FadeTransition(Duration.millis(duration), paneNoise);
@@ -2329,9 +2320,6 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					FadeOutTransition.setToValue(0.0);
 					FadeOutTransition.setCycleCount(1);
 					FadeOutTransition.setOnFinished(event -> {
-//						if (noiseAnimation != null) {
-//							noiseAnimation.stop();
-//						}
 						paneNoise.setVisible(false);
 					});
 
@@ -2646,126 +2634,6 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		return true;
 	}
 
-	public void handleCommand(String com) {
-		if (!com.startsWith("*!!!*")) {
-			if (!"".equals(com)) {
-				logger.info("Received command: '" + com + "'");
-				String lastEntry = null;
-				if (Nexus.commandHistory.size() > 0) {
-					lastEntry = Nexus.commandHistory.getLast();
-				}
-				if (lastEntry == null) {
-					Nexus.commandHistory.add(com);
-				} else if (!Nexus.commandHistory.getLast().equals(com)) {
-					Nexus.commandHistory.add(com);
-				}
-				if (Nexus.commandHistory.size() > 50) {
-					Nexus.commandHistory.remove(0);
-				}
-				Nexus.commandHistoryIndex = Nexus.commandHistory.size();
-			}
-		}
-
-		if ("*!!!*historyBack".equals(com)) {
-			if (Nexus.commandHistoryIndex > 0) {
-				Nexus.commandHistoryIndex--;
-				logger.info("History back to index: " + Nexus.commandHistoryIndex);
-				String histCom = Nexus.commandHistory.get(Nexus.commandHistoryIndex);
-				ActionManager.getAction(ACTIONS.SET_TERMINAL_TEXT).execute(histCom);
-			}
-		}
-
-		if ("*!!!*historyForward".equals(com)) {
-			if (Nexus.commandHistoryIndex < Nexus.commandHistory.size() - 1) {
-				Nexus.commandHistoryIndex++;
-				logger.info("History forward to index: " + Nexus.commandHistoryIndex);
-				String histCom = Nexus.commandHistory.get(Nexus.commandHistoryIndex);
-				ActionManager.getAction(ACTIONS.SET_TERMINAL_TEXT).execute(histCom);
-			}
-		}
-
-		// ---------------------------------
-		// find
-		// ---------------------------------
-		if (com.toLowerCase().startsWith("find")) {
-			if (!currentlyDisplayedPane.getPaneName().equals("MapPane")) {
-				StatusTextEntryActionObject ste = new StatusTextEntryActionObject(Internationalization.getString("general_only_works_on_map"), true);
-				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(ste);
-			}
-		}
-
-		// ---------------------------------
-		// force finalize round
-		// ---------------------------------
-		if (com.toLowerCase().startsWith("finalize round")) {
-			if (!currentlyDisplayedPane.getPaneName().equals("MapPane")) {
-				StatusTextEntryActionObject ste = new StatusTextEntryActionObject(Internationalization.getString("general_only_works_on_map"), true);
-				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(ste);
-			}
-		}
-
-		// ---------------------------------
-		// re-create universe
-		// ---------------------------------
-		if (com.toLowerCase().startsWith("create universe")) {
-			if (!currentlyDisplayedPane.getPaneName().equals("MapPane")) {
-				StatusTextEntryActionObject ste = new StatusTextEntryActionObject(Internationalization.getString("general_only_works_on_map"), true);
-				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(ste);
-			}
-		}
-
-		// ---------------------------------
-		// reset fight
-		// ---------------------------------
-		if (com.toLowerCase().startsWith("reset attack")) {
-			// Needs to be used on map pane!
-			if (!currentlyDisplayedPane.getPaneName().equals("MapPane")) {
-				StatusTextEntryActionObject ste = new StatusTextEntryActionObject(Internationalization.getString("general_only_works_on_map"), true);
-				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(ste);
-			}
-		}
-
-		// ---------------------------------
-		// restart server
-		// ---------------------------------
-		if (com.toLowerCase().startsWith("restart server")) {
-			if (Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN)) {
-				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_success"), false));
-				GameState s = new GameState();
-				s.setMode(GAMESTATEMODES.RESTART_SERVER);
-				Nexus.fireNetworkEvent(s);
-				// Nexus.storeCommandHistory(); // do not store to prevent accidental sending of this
-			} else {
-				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_notallowed"), false));
-				C3Message message = new C3Message(C3MESSAGES.ERROR_NOT_ALLOWED);
-				message.setType(C3MESSAGETYPES.CLOSE);
-				message.setText(Internationalization.getString("general_notallowed"));
-				C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
-				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
-			}
-		}
-
-		// Terminal commands with "test (something)" end up here (if godadmin)
-		if (Security.isGodAdmin(Nexus.getCurrentUser())) {
-			if (com.toLowerCase().startsWith("test popup")) {
-				ActionManager.getAction(ACTIONS.SHOW_POPUP).execute(POPUPS.Orders_Confirmed);
-				Nexus.storeCommandHistory();
-			}
-
-			if (com.toLowerCase().startsWith("test medal")) {
-				ActionManager.getAction(ACTIONS.SHOW_MEDAL).execute(MEDALS.First_Blood);
-				Nexus.storeCommandHistory();
-			}
-
-			if (com.toLowerCase().startsWith("test error")) {
-				C3Message m = new C3Message(C3MESSAGES.WARNING_BLACKBOX_TEAMS_INVALID);
-				m.setType(C3MESSAGETYPES.CLOSE);
-				m.setText("Teams seem to be invalid!");
-				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(m);
-			}
-		}
-	}
-
 	/**
 	 * Here all the actions go in that need to be performed once the client is started up and showing
 	 */
@@ -2857,6 +2725,18 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			slVolumeControl.setMax(1.0d);
 			slVolumeControl.setValue(v);
 			Nexus.setMainFrameVolumeSlider(slVolumeControl);
+		});
+
+		// remove all default buttons to prevent unwanted action if a command is send by enter from terminal
+		terminalPrompt.focusedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) {
+				if (newPropertyValue) {
+					ActionManager.getAction(ACTIONS.DISABLE_DEFAULT_BUTTON).execute();
+				} else {
+					ActionManager.getAction(ACTIONS.ENABLE_DEFAULT_BUTTON).execute();
+				}
+			}
 		});
 
 //		C3Message m1 = new C3Message(C3MESSAGES.WARNING_BLACKBOX_TEAMS_INVALID);

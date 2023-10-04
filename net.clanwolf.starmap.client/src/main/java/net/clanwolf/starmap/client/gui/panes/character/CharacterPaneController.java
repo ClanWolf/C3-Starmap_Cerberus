@@ -98,6 +98,10 @@ public class CharacterPaneController extends AbstractC3Controller implements Act
 	public void addActionCallBackListeners() {
 		ActionManager.addActionCallbackListener(ACTIONS.CHANGE_LANGUAGE, this);
 		ActionManager.addActionCallbackListener(ACTIONS.PANE_CREATION_FINISHED, this);
+
+		// Added in AbstractC3Controller:
+		// ActionManager.addActionCallbackListener(ACTIONS.ENABLE_DEFAULT_BUTTON, this);
+		// ActionManager.addActionCallbackListener(ACTIONS.DISABLE_DEFAULT_BUTTON, this);
 	}
 
 	/**
@@ -122,6 +126,15 @@ public class CharacterPaneController extends AbstractC3Controller implements Act
 			case CHANGE_LANGUAGE:
 				setStrings();
 				break;
+
+			case ENABLE_DEFAULT_BUTTON:
+				enableDefaultButton(true);
+				break;
+
+			case DISABLE_DEFAULT_BUTTON:
+				enableDefaultButton(false);
+				break;
+
 			case PANE_CREATION_FINISHED:
 				if (object.getObject().getClass() == CharacterPane.class) {
 					logger.info(object.getObject().toString());

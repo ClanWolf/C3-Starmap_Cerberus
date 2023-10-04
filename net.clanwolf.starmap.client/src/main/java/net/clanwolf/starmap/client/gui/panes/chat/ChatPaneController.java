@@ -37,6 +37,7 @@ import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
+import net.clanwolf.starmap.client.gui.panes.TerminalCommandHandler;
 import net.clanwolf.starmap.client.net.irc.IRCClient;
 import net.clanwolf.starmap.client.net.irc.MessageActionObject;
 import net.clanwolf.starmap.client.net.irc.NickChangeObject;
@@ -62,18 +63,23 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 	private String selectedUser = "";
 	private boolean initStarted = false;
 
-	@FXML
-	TableView<ChatEntry> tableViewChat;
+	private static ListView<String> lvUsersExt;
 
 	@FXML
 	ListView<String> lvUsers;
+	@FXML
+	private TableView<ChatEntry> tableViewChat;
+
+	public static ListView<String> getLvUsers() {
+		return lvUsersExt;
+	}
 
 	public static void addChatLine(String chatUser, String chatText) {
 		if (instance != null) {
 			Platform.runLater(() -> {
 				DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
 				final long currentTime = System.currentTimeMillis();
-				final String chatTime = "" + timeFormat.format(currentTime);
+				final String chatTime = timeFormat.format(currentTime);
 
 				String c = "";
 				if (chatUser != null) {
@@ -103,7 +109,7 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 							firstLineDone = true;
 						}
 					}
-					if (!"".equals(line)) {
+					if (!line.isEmpty()) {
 						if (firstLineDone) {
 							entry = new ChatEntry(c, null, null, line);
 						} else {
@@ -140,7 +146,6 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 		ActionManager.addActionCallbackListener(ACTIONS.PANE_CREATION_BEGINS, this);
 		ActionManager.addActionCallbackListener(ACTIONS.PANE_CREATION_FINISHED, this);
 		ActionManager.addActionCallbackListener(ACTIONS.LOGON_FINISHED_SUCCESSFULL, this);
-		ActionManager.addActionCallbackListener(ACTIONS.TERMINAL_COMMAND, this);
 
 		ActionManager.addActionCallbackListener(ACTIONS.IRC_CONNECTED, this);
 		ActionManager.addActionCallbackListener(ACTIONS.IRC_USER_JOINED, this);
@@ -158,221 +163,13 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 		ActionManager.addActionCallbackListener(ACTIONS.IRC_SENDING_ACTION, this);
 		ActionManager.addActionCallbackListener(ACTIONS.IRC_UPDATED_USERLIST_RECEIVED, this);
 		ActionManager.addActionCallbackListener(ACTIONS.IRC_DISCONNECT_NOW, this);
+
+		// Added in AbstractC3Controller:
+		// ActionManager.addActionCallbackListener(ACTIONS.ENABLE_DEFAULT_BUTTON, this);
+		// ActionManager.addActionCallbackListener(ACTIONS.DISABLE_DEFAULT_BUTTON, this);
 	}
 
 	private static ChatPaneController instance = null;
-
-	@FXML
-	public void handleUserlistClick() {
-		Platform.runLater(() -> {
-			if (lvUsers.getSelectionModel().getSelectedItems().size() > 0) {
-				if (lvUsers.getSelectionModel().getSelectedItems().get(0).equals(selectedUser)) {
-					lvUsers.getSelectionModel().clearSelection();
-					selectedUser = "";
-				} else {
-					selectedUser = (String) lvUsers.getSelectionModel().getSelectedItems().get(0);
-				}
-				if (lvUsers.getSelectionModel().getSelectedItems().size() >= 1) {
-					if (lvUsers.getSelectionModel().getSelectedItems().get(0).equals("C3\\" + Nexus.getCurrentUser().getUserName()) || lvUsers.getSelectionModel().getSelectedItems().get(0).equals("-----")) {
-						lvUsers.getSelectionModel().clearSelection();
-						selectedUser = "";
-					}
-				}
-			}
-		});
-	}
-
-	private void handleCommand(String com) {
-		boolean sendingString = true;
-
-		if (!com.startsWith("*!!!*")) {
-			if (!"".equals(com)) {
-				logger.info("Received command: '" + com + "'");
-				String lastEntry = null;
-				if (Nexus.commandHistory.size() > 0) {
-					lastEntry = Nexus.commandHistory.getLast();
-				}
-				if (lastEntry == null) {
-					Nexus.commandHistory.add(com);
-				} else if (!Nexus.commandHistory.getLast().equals(com)) {
-					Nexus.commandHistory.add(com);
-				}
-				if (Nexus.commandHistory.size() > 50) {
-					Nexus.commandHistory.remove(0);
-				}
-				Nexus.commandHistoryIndex = Nexus.commandHistory.size();
-			}
-		}
-
-		if ("*!!!*historyBack".equals(com)) {
-			if (Nexus.commandHistoryIndex > 0) {
-				Nexus.commandHistoryIndex--;
-				logger.info("History back to index: " + Nexus.commandHistoryIndex);
-				String histCom = Nexus.commandHistory.get(Nexus.commandHistoryIndex);
-				ActionManager.getAction(ACTIONS.SET_TERMINAL_TEXT).execute(histCom);
-			}
-			sendingString = false;
-		}
-
-		if ("*!!!*historyForward".equals(com)) {
-			if (Nexus.commandHistoryIndex < Nexus.commandHistory.size() - 1) {
-				Nexus.commandHistoryIndex++;
-				logger.info("History forward to index: " + Nexus.commandHistoryIndex);
-				String histCom = Nexus.commandHistory.get(Nexus.commandHistoryIndex);
-				ActionManager.getAction(ACTIONS.SET_TERMINAL_TEXT).execute(histCom);
-			}
-			sendingString = false;
-		}
-
-		if (com.startsWith("/nick ")) {
-			com = com.substring(6);
-			if (!"".equals(com)) {
-				NickChangeObject nco = new NickChangeObject();
-				nco.setOldNick(IRCClient.myNick);
-				nco.setNewNick(com);
-				ActionManager.getAction(ACTIONS.IRC_CHANGE_NICK).execute(nco);
-			}
-			sendingString = false;
-			Nexus.storeCommandHistory();
-		}
-
-		//		if (com.startsWith("/names")) {
-		//			ActionManager.getAction(ACTIONS.IRC_GET_NAMELIST).execute();
-		//			sendingString = false;
-		//  		Nexus.storeCommandHistory();
-		//		}
-
-		if (com.startsWith("/me ")) {
-			com = com.substring(4);
-			if (!"".equals(com)) {
-				ActionManager.getAction(ACTIONS.IRC_SENDING_ACTION).execute(com);
-			}
-			sendingString = false;
-			Nexus.storeCommandHistory();
-		}
-
-		if (sendingString) {
-			if (!"".equals(com.trim())) {
-				String color = "";
-				logger.info("Sending to IRC: " + com);
-				MessageActionObject mo = new MessageActionObject();
-				if (lvUsers.getSelectionModel().getSelectedItems().size() > 0) {
-					String tar = lvUsers.getSelectionModel().getSelectedItems().get(0);
-					if (tar.startsWith("@") || tar.startsWith("+") || tar.startsWith("-") || tar.startsWith("!") || tar.startsWith("<")) {
-						tar = tar.substring(1);
-					}
-					mo.setTarget(tar);
-					logger.info("Private message to: " + lvUsers.getSelectionModel().getSelectedItems().get(0));
-					addChatLine(IRCClient.myNick + " [" + Internationalization.getString("C3_IRC_Priv") + "] ", "(-> " + tar + ") " + com);
-				} else {
-					addChatLine(IRCClient.myNick + " ", com);
-				}
-				mo.setSource("");
-				mo.setMessage(com);
-				ActionManager.getAction(ACTIONS.IRC_SEND_MESSAGE).execute(mo);
-				Nexus.storeCommandHistory();
-			}
-		}
-	}
-
-	public static void autoResizeColumns(TableView<?> table) {
-		TableColumn<?, ?> column = table.getColumns().get(1);
-		Text t;
-		double max = 5.0d;
-		for (int i = 0; i < table.getItems().size(); i++) {
-			if (column.getCellData(i) != null) {
-				t = new Text(column.getCellData(i).toString());
-				double calcwidth = t.getLayoutBounds().getWidth();
-				if (calcwidth > max) {
-					max = calcwidth;
-				}
-			}
-		}
-		column.setPrefWidth(max + 30.0d);
-		column.setMaxWidth(max + 30.0d);
-		column.setMinWidth(max + 30.0d);
-	}
-
-	private void init() {
-		initStarted = true;
-		tableViewChat.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
-		tableViewChat.getStyleClass().add("noheader");
-		TableColumn<ChatEntry, String> chatTimeColumn = new TableColumn<>("");
-		chatTimeColumn.setCellValueFactory(data -> data.getValue().getChatTime());
-		chatTimeColumn.setPrefWidth(62);
-		chatTimeColumn.setMaxWidth(65);
-		chatTimeColumn.setMinWidth(60);
-		TableColumn<ChatEntry, String> chatUserColumn = new TableColumn<>("");
-		chatUserColumn.setCellValueFactory(data -> data.getValue().getChatUser());
-		chatUserColumn.setPrefWidth(102);
-		chatUserColumn.setMaxWidth(105);
-		chatUserColumn.setMinWidth(100);
-		TableColumn<ChatEntry, String> chatTextColumn = new TableColumn<>("");
-		chatTextColumn.setCellValueFactory(data -> data.getValue().getChatText());
-		//		chatTextColumn.setPrefWidth(250);
-		tableViewChat.getColumns().addAll(chatTimeColumn, chatUserColumn, chatTextColumn);
-
-		tableViewChat.setRowFactory(tableViewChat -> new TableRow<ChatEntry>() {
-			@Override
-			protected void updateItem(ChatEntry item, boolean empty) {
-				super.updateItem(item, empty);
-				if (item != null) {
-					String color = item.getColor().get();
-					if (color != null && !"".equals(color)) {
-						setStyle(color);
-					} else {
-						setStyle("");
-					}
-				} else {
-					setStyle("");
-				}
-//				setPrefHeight(24);
-//				setMinHeight(24);
-//				setMaxHeight(24);
-			}
-		});
-
-		instance = this;
-		tableViewChat.setVisible(true);
-
-		// hide horizontal scrollbar
-
-		for (Node n : tableViewChat.lookupAll(".scroll-bar:horizontal")) {
-			if (n instanceof ScrollBar scrollBar) {
-				scrollBar.setPrefHeight(0);
-				scrollBar.setMaxHeight(0);
-				scrollBar.setVisible(false);
-				scrollBar.setOpacity(1);
-				scrollBar.setStyle("-fx-background-color: transparent !important;");
-			}
-		}
-
-		lvUsers.getSelectionModel().clearSelection();
-		if (!IRCClient.connected) {
-			addChatLine("", Internationalization.getString("C3_IRC_Connecting"));
-		}
-	}
-
-	private void removeUser(String userName) {
-		Platform.runLater(() -> {
-			Iterator<String> i = lvUsers.getItems().iterator();
-			int c = 0;
-			String s = null;
-			boolean found = false;
-			while (i.hasNext()) {
-				s = i.next();
-				//				if (s.endsWith(userName) || s.startsWith(userName)) {
-				if (s.replace("@", "").equals(userName)) {
-					found = true;
-					break;
-				}
-				c++;
-			}
-			if (s != null && found) {
-				lvUsers.getItems().remove(s);
-			}
-		});
-	}
 
 	/**
 	 * Handles actions.
@@ -395,6 +192,14 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 
 				case CHANGE_LANGUAGE:
 					setStrings();
+					break;
+
+				case ENABLE_DEFAULT_BUTTON:
+					enableDefaultButton(true);
+					break;
+
+				case DISABLE_DEFAULT_BUTTON:
+					enableDefaultButton(false);
 					break;
 
 				case PANE_DESTROY_CURRENT:
@@ -568,23 +373,132 @@ public class ChatPaneController extends AbstractC3Controller implements ActionCa
 					});
 					break;
 
-				case TERMINAL_COMMAND:
-					String com1 = o.getText();
-					if (Nexus.isLoggedIn()) {
-						if (Nexus.getCurrentlyOpenedPane() instanceof ChatPane) {
-							if (!com1.startsWith("*!!!*")) {
-								handleCommand(com1);
-							}
-						}
-					}
-					break;
-
 				default:
 					Collections.sort(lvUsers.getItems());
 					break;
 			}
 		}
 		return true;
+	}
+
+	public static void autoResizeColumns(TableView<?> table) {
+		TableColumn<?, ?> column = table.getColumns().get(1);
+		Text t;
+		double max = 5.0d;
+		for (int i = 0; i < table.getItems().size(); i++) {
+			if (column.getCellData(i) != null) {
+				t = new Text(column.getCellData(i).toString());
+				double calcwidth = t.getLayoutBounds().getWidth();
+				if (calcwidth > max) {
+					max = calcwidth;
+				}
+			}
+		}
+		column.setPrefWidth(max + 30.0d);
+		column.setMaxWidth(max + 30.0d);
+		column.setMinWidth(max + 30.0d);
+	}
+
+	@FXML
+	public void handleUserlistClick() {
+		Platform.runLater(() -> {
+			if (!lvUsers.getSelectionModel().getSelectedItems().isEmpty()) {
+				if (lvUsers.getSelectionModel().getSelectedItems().get(0).equals(selectedUser)) {
+					lvUsers.getSelectionModel().clearSelection();
+					selectedUser = "";
+				} else {
+					selectedUser = (String) lvUsers.getSelectionModel().getSelectedItems().get(0);
+				}
+				if (!lvUsers.getSelectionModel().getSelectedItems().isEmpty()) {
+					if (lvUsers.getSelectionModel().getSelectedItems().get(0).equals("C3\\" + Nexus.getCurrentUser().getUserName()) || lvUsers.getSelectionModel().getSelectedItems().get(0).equals("-----")) {
+						lvUsers.getSelectionModel().clearSelection();
+						selectedUser = "";
+					}
+				}
+			}
+		});
+	}
+
+	private void removeUser(String userName) {
+		Platform.runLater(() -> {
+			Iterator<String> i = lvUsers.getItems().iterator();
+			int c = 0;
+			String s = null;
+			boolean found = false;
+			while (i.hasNext()) {
+				s = i.next();
+				//				if (s.endsWith(userName) || s.startsWith(userName)) {
+				if (s.replace("@", "").equals(userName)) {
+					found = true;
+					break;
+				}
+				c++;
+			}
+			if (s != null && found) {
+				lvUsers.getItems().remove(s);
+			}
+		});
+	}
+
+	private void init() {
+		initStarted = true;
+		tableViewChat.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
+		tableViewChat.getStyleClass().add("noheader");
+		TableColumn<ChatEntry, String> chatTimeColumn = new TableColumn<>("");
+		chatTimeColumn.setCellValueFactory(data -> data.getValue().getChatTime());
+		chatTimeColumn.setPrefWidth(62);
+		chatTimeColumn.setMaxWidth(65);
+		chatTimeColumn.setMinWidth(60);
+		TableColumn<ChatEntry, String> chatUserColumn = new TableColumn<>("");
+		chatUserColumn.setCellValueFactory(data -> data.getValue().getChatUser());
+		chatUserColumn.setPrefWidth(102);
+		chatUserColumn.setMaxWidth(105);
+		chatUserColumn.setMinWidth(100);
+		TableColumn<ChatEntry, String> chatTextColumn = new TableColumn<>("");
+		chatTextColumn.setCellValueFactory(data -> data.getValue().getChatText());
+		//		chatTextColumn.setPrefWidth(250);
+		tableViewChat.getColumns().addAll(chatTimeColumn, chatUserColumn, chatTextColumn);
+
+		tableViewChat.setRowFactory(tableViewChat -> new TableRow<ChatEntry>() {
+			@Override
+			protected void updateItem(ChatEntry item, boolean empty) {
+				super.updateItem(item, empty);
+				if (item != null) {
+					String color = item.getColor().get();
+					if (color != null && !color.isEmpty()) {
+						setStyle(color);
+					} else {
+						setStyle("");
+					}
+				} else {
+					setStyle("");
+				}
+//				setPrefHeight(24);
+//				setMinHeight(24);
+//				setMaxHeight(24);
+			}
+		});
+
+		instance = this;
+		tableViewChat.setVisible(true);
+
+		// hide horizontal scrollbar
+
+		for (Node n : tableViewChat.lookupAll(".scroll-bar:horizontal")) {
+			if (n instanceof ScrollBar scrollBar) {
+				scrollBar.setPrefHeight(0);
+				scrollBar.setMaxHeight(0);
+				scrollBar.setVisible(false);
+				scrollBar.setOpacity(1);
+				scrollBar.setStyle("-fx-background-color: transparent !important;");
+			}
+		}
+
+		lvUsersExt = lvUsers;
+		lvUsers.getSelectionModel().clearSelection();
+		if (!IRCClient.connected) {
+			addChatLine("", Internationalization.getString("C3_IRC_Connecting"));
+		}
 	}
 
 	@Override

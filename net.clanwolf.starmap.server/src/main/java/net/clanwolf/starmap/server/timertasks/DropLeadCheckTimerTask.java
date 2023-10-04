@@ -136,7 +136,7 @@ public class DropLeadCheckTimerTask extends TimerTask {
 				}
 			}
 		}
-		if (brokenAttacks.size() > 0) {
+		if (!brokenAttacks.isEmpty()) {
 			logger.info("Found " + brokenAttacks.size() + " broken attacks (drops started but one or both dropleads are offline). Informing clients!");
 			for (AttackPOJO a : brokenAttacks) {
 				// check if there is a timer for this attack already

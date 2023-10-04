@@ -78,6 +78,10 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 		ActionManager.addActionCallbackListener(ACTIONS.ROLEPLAY_NEXT_STEP_CHANGE_PANE, this);
 		ActionManager.addActionCallbackListener(ACTIONS.FINALIZE_ROUND, this);
 		ActionManager.addActionCallbackListener(ACTIONS.RESET_STORY_PANES, this);
+
+		// Added in AbstractC3Controller:
+		// ActionManager.addActionCallbackListener(ACTIONS.ENABLE_DEFAULT_BUTTON, this);
+		// ActionManager.addActionCallbackListener(ACTIONS.DISABLE_DEFAULT_BUTTON, this);
 	}
 
 	@Override
@@ -99,6 +103,12 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 						loadScreen();
 					}
 				}
+				break;
+			case ENABLE_DEFAULT_BUTTON:
+				enableDefaultButton(true);
+				break;
+			case DISABLE_DEFAULT_BUTTON:
+				enableDefaultButton(false);
 				break;
 			case ROLEPLAY_NEXT_STEP_CHANGE_PANE:
 				logger.info("Choose now the next step of story!");

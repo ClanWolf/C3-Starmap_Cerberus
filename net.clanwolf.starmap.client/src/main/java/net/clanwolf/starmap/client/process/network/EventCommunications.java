@@ -237,7 +237,7 @@ public class EventCommunications {
 							messageUserIsInRegistration.setText(m);
 							messageUserIsInRegistration.setType(C3MESSAGETYPES.CLOSE);
 
-							ActionManager.getAction(ACTIONS.SET_CONSOLE_OPACITY).execute(0.8);
+							ActionManager.getAction(ACTIONS.SET_CONSOLE_OPACITY).execute(0.2);
 							Logout.doLogout();
 
 							ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(messageUserIsInRegistration);

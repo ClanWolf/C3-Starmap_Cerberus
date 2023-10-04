@@ -205,7 +205,7 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 			pass = tfPasswordRegister.getText();
 		}
 
-		ActionManager.getAction(ACTIONS.SET_CONSOLE_OPACITY).execute(0.8);
+		ActionManager.getAction(ACTIONS.SET_CONSOLE_OPACITY).execute(0.2);
 		//String username = tfUserName.getText();
 		username += registerModeString;
 
@@ -318,6 +318,10 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 		ActionManager.addActionCallbackListener(ACTIONS.LOGON_FINISHED_WITH_ERROR, this);
 		ActionManager.addActionCallbackListener(ACTIONS.CLEAR_PASSWORD_FIELD, this);
 		ActionManager.addActionCallbackListener(ACTIONS.DISABLE_REGISTRATION, this);
+
+		// Added in AbstractC3Controller:
+		// ActionManager.addActionCallbackListener(ACTIONS.ENABLE_DEFAULT_BUTTON, this);
+		// ActionManager.addActionCallbackListener(ACTIONS.DISABLE_DEFAULT_BUTTON, this);
 	}
 
 	@FXML
@@ -748,6 +752,14 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 		switch (action) {
 			case CHANGE_LANGUAGE:
 				setStrings();
+				break;
+
+			case ENABLE_DEFAULT_BUTTON:
+				enableDefaultButton(true);
+				break;
+
+			case DISABLE_DEFAULT_BUTTON:
+				enableDefaultButton(false);
 				break;
 
 			case PANE_CREATION_BEGINS:

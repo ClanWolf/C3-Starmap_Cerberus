@@ -72,6 +72,10 @@ public class ConfirmAppClosePaneController extends AbstractC3Controller implemen
 	@Override
 	public void addActionCallBackListeners() {
 		ActionManager.addActionCallbackListener(ACTIONS.CHANGE_LANGUAGE, this);
+
+		// Added in AbstractC3Controller:
+		// ActionManager.addActionCallbackListener(ACTIONS.ENABLE_DEFAULT_BUTTON, this);
+		// ActionManager.addActionCallbackListener(ACTIONS.DISABLE_DEFAULT_BUTTON, this);
 	}
 
 	/**
@@ -127,6 +131,15 @@ public class ConfirmAppClosePaneController extends AbstractC3Controller implemen
 		case CHANGE_LANGUAGE:
 			setStrings();
 			break;
+
+		case ENABLE_DEFAULT_BUTTON:
+			enableDefaultButton(true);
+			break;
+
+		case DISABLE_DEFAULT_BUTTON:
+			enableDefaultButton(false);
+			break;
+
 		default:
 			break;
 		}

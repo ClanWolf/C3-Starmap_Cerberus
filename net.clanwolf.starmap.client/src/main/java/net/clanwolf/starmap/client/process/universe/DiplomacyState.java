@@ -26,6 +26,7 @@ class DiplomacyState{
 	private final Image diplomacyIconAllied = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/diplomacy_allies.png")));
 	private final Image diplomacyIconAlliedWaiting = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/diplomacy_allies_waiting.png")));
 	private final Image diplomacyIconAlliedBrokenWaiting = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/diplomacy_enemies_waiting.png")));
+	private final Image diplomacyIconAtWar = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/attack2.png")));
 
 
 	Image diplomacyIcon;

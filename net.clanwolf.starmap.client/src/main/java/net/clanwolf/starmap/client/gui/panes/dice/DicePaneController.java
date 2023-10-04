@@ -32,6 +32,7 @@ import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
+import net.clanwolf.starmap.client.gui.panes.TerminalCommandHandler;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -72,7 +73,10 @@ public class DicePaneController extends AbstractC3Controller implements ActionCa
 		ActionManager.addActionCallbackListener(ACTIONS.PANE_CREATION_BEGINS, this);
 		ActionManager.addActionCallbackListener(ACTIONS.PANE_CREATION_FINISHED, this);
 		ActionManager.addActionCallbackListener(ACTIONS.LOGON_FINISHED_SUCCESSFULL, this);
-		ActionManager.addActionCallbackListener(ACTIONS.TERMINAL_COMMAND, this);
+
+		// Added in AbstractC3Controller:
+		// ActionManager.addActionCallbackListener(ACTIONS.ENABLE_DEFAULT_BUTTON, this);
+		// ActionManager.addActionCallbackListener(ACTIONS.DISABLE_DEFAULT_BUTTON, this);
 	}
 
 	/**
@@ -103,6 +107,14 @@ public class DicePaneController extends AbstractC3Controller implements ActionCa
 				setStrings();
 				break;
 
+			case ENABLE_DEFAULT_BUTTON:
+				enableDefaultButton(true);
+				break;
+
+			case DISABLE_DEFAULT_BUTTON:
+				enableDefaultButton(false);
+				break;
+
 			case PANE_DESTROY_CURRENT:
 				break;
 
@@ -116,17 +128,6 @@ public class DicePaneController extends AbstractC3Controller implements ActionCa
 				}
 				break;
 
-			case TERMINAL_COMMAND:
-				String com1 = o.getText();
-				if (Nexus.isLoggedIn()) {
-					if (Nexus.getCurrentlyOpenedPane() instanceof DicePane) {
-						if (!com1.startsWith("*!!!*")) {
-							handleCommand(com1);
-						}
-					}
-				}
-				break;
-
 			default:
 				break;
 		}
@@ -135,48 +136,5 @@ public class DicePaneController extends AbstractC3Controller implements ActionCa
 
 	private void init() {
 		instance = this;
-	}
-
-	private void handleCommand(String com) {
-		boolean sendingString = true;
-
-		if (!com.startsWith("*!!!*")) {
-			if (!"".equals(com)) {
-				logger.info("Received command: '" + com + "'");
-				String lastEntry = null;
-				if (Nexus.commandHistory.size() > 0) {
-					lastEntry = Nexus.commandHistory.getLast();
-				}
-				if (lastEntry == null) {
-					Nexus.commandHistory.add(com);
-				} else if (!Nexus.commandHistory.getLast().equals(com)) {
-					Nexus.commandHistory.add(com);
-				}
-				if (Nexus.commandHistory.size() > 50) {
-					Nexus.commandHistory.remove(0);
-				}
-				Nexus.commandHistoryIndex = Nexus.commandHistory.size();
-			}
-		}
-
-		if ("*!!!*historyBack".equals(com)) {
-			if (Nexus.commandHistoryIndex > 0) {
-				Nexus.commandHistoryIndex--;
-				logger.info("History back to index: " + Nexus.commandHistoryIndex);
-				String histCom = Nexus.commandHistory.get(Nexus.commandHistoryIndex);
-				ActionManager.getAction(ACTIONS.SET_TERMINAL_TEXT).execute(histCom);
-			}
-			sendingString = false;
-		}
-
-		if ("*!!!*historyForward".equals(com)) {
-			if (Nexus.commandHistoryIndex < Nexus.commandHistory.size() - 1) {
-				Nexus.commandHistoryIndex++;
-				logger.info("History forward to index: " + Nexus.commandHistoryIndex);
-				String histCom = Nexus.commandHistory.get(Nexus.commandHistoryIndex);
-				ActionManager.getAction(ACTIONS.SET_TERMINAL_TEXT).execute(histCom);
-			}
-			sendingString = false;
-		}
 	}
 }
