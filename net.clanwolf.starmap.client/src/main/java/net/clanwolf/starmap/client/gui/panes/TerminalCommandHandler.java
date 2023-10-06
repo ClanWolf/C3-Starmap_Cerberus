@@ -139,6 +139,10 @@ public class TerminalCommandHandler {
 				}
 			}
 
+			if (!com.startsWith("*!!!*") && !com.startsWith("/")) {
+				ActionManager.getAction(ACTIONS.ADD_CONSOLE_LINE).execute(com);
+			}
+
 			if (currentPane.equals("MapPane")) {
 				// ---------------------------------
 				// find

@@ -378,7 +378,7 @@ public class C3Properties {
 		try {
 			return Integer.parseInt(getProperty(key));
 		} catch (NumberFormatException nfe) {
-			logger.error(null, nfe);
+			logger.error("Property error for key: " + key, nfe);
 		}
 		return 0;
 	}

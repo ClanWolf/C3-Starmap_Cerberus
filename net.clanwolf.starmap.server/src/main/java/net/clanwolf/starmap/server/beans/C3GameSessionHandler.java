@@ -53,9 +53,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.PrintStream;
 import java.lang.invoke.MethodHandles;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -167,7 +164,6 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			response.setAction_successfully(Boolean.TRUE);
 		} catch (RuntimeException re) {
 			logger.error("User session save", re);
-			re.printStackTrace();
 			EntityManagerHelper.rollback(getC3UserID(session));
 
 			response.addObject(re.getMessage());
@@ -207,7 +203,6 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			response.setAction_successfully(Boolean.TRUE);
 		} catch (RuntimeException re) {
 			logger.error("User save", re);
-			re.printStackTrace();
 			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
 
 			response.addObject(re.getMessage());
@@ -249,7 +244,6 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			response.addObject(attackId);
 			C3GameSessionHandler.sendBroadCast(room, response);
 		} catch (RuntimeException re) {
-			re.printStackTrace();
 			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
 
 			GameState response = new GameState(GAMESTATEMODES.ERROR_MESSAGE);
@@ -289,7 +283,6 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			response.addObject(attackStats.getAttackId());
 			C3GameSessionHandler.sendBroadCast(room, response);
 		} catch (RuntimeException re) {
-			re.printStackTrace();
 			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
 
 			GameState response = new GameState(GAMESTATEMODES.ERROR_MESSAGE);
@@ -318,7 +311,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			}
 
 			EntityManagerHelper.beginTransaction(getC3UserID(session));
-			Boolean gameRepeated = false;
+			boolean gameRepeated = false;
 			StatsMwoPOJO checkStats2 = dao.findByAttackIdAndRoleplayID(statsMwo.getAttackId(), statsMwo.getRoleplayId());
 			if (checkStats2 != null) {
 				// The drop was repeated here, so we update the mwo stats entry, and DELETE both other statistics
@@ -353,7 +346,6 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			response.addObject2(gameRepeated);
 			C3GameSessionHandler.sendBroadCast(room, response);
 		} catch (RuntimeException re) {
-			re.printStackTrace();
 			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
 
 			GameState response = new GameState(GAMESTATEMODES.ERROR_MESSAGE);
@@ -483,7 +475,6 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				C3GameSessionHandler.sendBroadCast(room, response);
 
 			} catch (RuntimeException re) {
-				re.printStackTrace();
 				EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
 
 				GameState response = new GameState(GAMESTATEMODES.ERROR_MESSAGE);
@@ -614,25 +605,25 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				if (attackType.equals(-1L)) {
 					String ids = at.getCLAN_IS_StoryIds();
 					String[] s1 = ids.split(";");
-					Integer num = (int) (Math.random() * s1.length);
+					int num = (int) (Math.random() * s1.length);
 					if ("".equals(s1[num])) { logger.info("!!!!!!!!!!!!!!!!! Missing story-ID in _HH_ATTACK_TYPE for Attack Type CLAN vs IS"); }
 					rpID = Long.parseLong(s1[num]);
 				} else if (attackType.equals(-2L)) {
 					String ids = at.getCLAN_vs_CLAN_StoryIds();
 					String[] s1 = ids.split(";");
-					Integer num = (int) (Math.random() * s1.length);
+					int num = (int) (Math.random() * s1.length);
 					if ("".equals(s1[num])) { logger.info("!!!!!!!!!!!!!!!!! Missing story-ID in _HH_ATTACK_TYPE for Attack Type CLAN vs CLAN"); }
 					rpID = Long.parseLong(s1[num]);
 				} else if (attackType.equals(-3L)) {
 					String ids = at.getIS_vs_CLAN_StoryIds();
 					String[] s1 = ids.split(";");
-					Integer num = (int) (Math.random() * s1.length);
+					int num = (int) (Math.random() * s1.length);
 					if ("".equals(s1[num])) { logger.info("!!!!!!!!!!!!!!!!! Missing story-ID in _HH_ATTACK_TYPE for Attack Type IS vs CLAN"); }
 					rpID = Long.parseLong(s1[num]);
 				} else if (attackType.equals(-4L)) {
 					String ids = at.getIS_vs_IS_StoryIds();
 					String[] s1 = ids.split(";");
-					Integer num = (int) (Math.random() * s1.length);
+					int num = (int) (Math.random() * s1.length);
 					if ("".equals(s1[num])) { logger.info("!!!!!!!!!!!!!!!!! Missing story-ID in _HH_ATTACK_TYPE for Attack Type IS vs IS"); }
 					rpID = Long.parseLong(s1[num]);
 				}
@@ -802,7 +793,6 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			response.setAction_successfully(Boolean.TRUE);
 			C3GameSessionHandler.sendBroadCast(room, response);
 		} catch (RuntimeException re) {
-			re.printStackTrace();
 			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
 
 			GameState response = new GameState(GAMESTATEMODES.ERROR_MESSAGE);
@@ -850,7 +840,6 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 		} catch (RuntimeException re) {
 			logger.error("Jumpship save", re);
-			re.printStackTrace();
 			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
 			GameState errormessage = new GameState(GAMESTATEMODES.JUMPSHIP_SAVE);
 			response.addObject(re.getMessage());
@@ -875,7 +864,6 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			}
 		} catch (RuntimeException re) {
 			logger.error("Faction save", re);
-			re.printStackTrace();
 			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
 
 			response.addObject(re.getMessage());
@@ -1071,7 +1059,6 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 		} catch (RuntimeException re) {
 			logger.error("Privilege save", re);
-			re.printStackTrace();
 			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
 
 			response.addObject(re.getMessage());
@@ -1126,7 +1113,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		try {
 			latch.await();
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			logger.error("Error in getLoggedInUserData", e);
 		}
 		UniverseDTO uni = WebDataInterface.getUniverse();
 
@@ -1422,7 +1409,6 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				break;
 			case RESET_FIGHT:
 				// Reset a fight in case a pilot left and all needs to be restarted
-				Long attackId = null;
 				if (state.getObject() instanceof Long attackIdFromState) {
 					logger.info("A reset of attack " + attackIdFromState + " was requested by admin");
 					//resetAttack(attackIdFromState);
@@ -1498,12 +1484,12 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 				if(characterOnlineList.contains(character.getId())) {
 					if (dropLeadA == null && acp.getType().equals(ROLE_ATTACKER_WARRIOR) && !acp.getType().equals(ROLE_DROPLEAD_LEFT)) {
-						if (character.getFactionId().intValue() == attackerFaction.getId().intValue()) {
+						if (character.getFactionId() == attackerFaction.getId().intValue()) {
 							dropLeadCandidateA = acp;
 						}
 					}
 					if (dropLeadD == null && acp.getType().equals(ROLE_DEFENDER_WARRIOR) && !acp.getType().equals(ROLE_DROPLEAD_LEFT)) {
-						if (character.getFactionId().intValue() == attack.getFactionID_Defender().intValue()) {
+						if (character.getFactionId() == attack.getFactionID_Defender().intValue()) {
 							dropLeadCandidateD = acp;
 						}
 					}

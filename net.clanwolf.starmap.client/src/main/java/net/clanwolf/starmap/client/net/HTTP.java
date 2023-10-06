@@ -136,6 +136,11 @@ public abstract class HTTP {
 				//logger.warn("Using proxy.");
 				String proxyHost = C3Properties.getProperty(C3PROPS.PROXY_SERVER);
 				int proxyPort = C3Properties.getInt(C3PROPS.PROXY_PORT);
+
+				if ("".equals(proxyHost) || proxyPort == 0) {
+					throw new Exception("No proxy data defined");
+				}
+
 				Proxy p = new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost, proxyPort));
 				conn = (HttpsURLConnection) url.openConnection(p);
 			} else {
@@ -176,10 +181,10 @@ public abstract class HTTP {
 			return baos.toByteArray();
 
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error("Http get exception", e);
 			throw e;
 		} catch (Exception e) {
-			e.printStackTrace();
+			logger.error("Http get exception", e);
 			return null;
 		} finally {
 			if (conn != null) {

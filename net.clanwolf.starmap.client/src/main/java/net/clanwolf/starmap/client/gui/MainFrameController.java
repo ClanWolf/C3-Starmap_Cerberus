@@ -35,13 +35,16 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.CacheHint;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -243,7 +246,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	@FXML
 	private AnchorPane rootAnchorPane;
 	@FXML
-	private Pane mouseStopper;
+	BorderPane paneBorder;
 	@FXML
 	private Label systemConsole;
 	@FXML
@@ -294,6 +297,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private Pane paneWindowMoverHandle, paneNoise;
 	@FXML
 	private TableView<UserHistoryEntry> tblUserHistory;
+	@FXML
+	private Pane mouseStopper, paneBackgroundTerminal;
 
 	// -------------------------------------------------------------------------
 	//
@@ -1053,6 +1058,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		ActionManager.addActionCallbackListener(ACTIONS.ENABLE_DEFAULT_BUTTON, this);
 		ActionManager.addActionCallbackListener(ACTIONS.DISABLE_DEFAULT_BUTTON, this);
 		ActionManager.addActionCallbackListener(ACTIONS.TERMINAL_COMMAND, this);
+		ActionManager.addActionCallbackListener(ACTIONS.ADD_CONSOLE_LINE, this);
 	}
 
 	public static Date addDaysToDate(Date date, int daysToAdd) {
@@ -1878,6 +1884,13 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			}
 		});
 		toplabel.toFront();
+
+		terminalPrompt.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
+			@Override
+			public void handle(ContextMenuEvent event) {
+				event.consume();
+			}
+		});
 	}
 
 	/**
@@ -2228,6 +2241,14 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				});
 				break;
 
+			case ADD_CONSOLE_LINE:
+				Platform.runLater(() -> {
+					if (o.getText() != null && !"".equals(o.getText())) {
+						setConsoleEntry(o.getText());
+					}
+				});
+				break;
+
 			case PANE_CREATION_FINISHED:
 				currentlyDisplayedPane = (AbstractC3Pane) o.getObject();
 				ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("6");
@@ -2313,6 +2334,25 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 						duration = random.nextInt(1000 - 100) + 100;
 					}
 
+
+//					https://stackoverflow.com/questions/45258138/round-corners-in-java-fx-pane
+
+//					Rectangle rect = new Rectangle(1024,768);
+//					rect.setArcHeight(60.0);
+//					rect.setArcWidth(60.0);
+//					root.setClip(rect);
+
+					paneNoise.toFront();
+//					double order = paneNoise.getViewOrder();
+//					paneNoise.setViewOrder(0.1d);
+//					Nexus.getCurrentlyOpenedPane().toBack();
+//					paneBorder.toFront();
+//					for (Node node : rootAnchorPane.getChildren()) {
+//						if (node != paneBackgroundTerminal) {
+//							node.toFront();
+//						}
+//					}
+//					paneBackgroundTerminal.toBack();
 					paneNoise.setVisible(true);
 
 					FadeTransition FadeOutTransition = new FadeTransition(Duration.millis(duration), paneNoise);

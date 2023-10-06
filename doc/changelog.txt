@@ -56,7 +56,8 @@ WATCH OUT FOR WHILE TESTING:
 VERSIONS
 
 Version 7.3.119 (06.10.2023)
-- UPDATED: Libraries, Compiler (maven)
+- UPDATED: Libraries, Compiler (maven-plugin)
+- ADDED: Entered terminal strings are printed to the console
 - ADDED: 'restart server' terminal command (for admin)
 - ADDED: 'reset attack' terminal command (for admin)
 - *** Reset a fight in case a pilot needs to leave in the middle of an invasion
@@ -66,7 +67,7 @@ Version 7.3.119 (06.10.2023)
   - __HH_ATTACK: Set 'StoryId' = StoryId of the lobby of the current attackType
 
 - CHANGED: Further reduced package size
-- CHANGED: Minor optical things in settings pane
+- CHANGED: Minor optical issues in settings pane
 - CHANGED: Refactored the handling of terminal commands
 - FIXED: Hitting enter on Terminal triggers default key of dialog (e.g. Logout)
 
@@ -77,6 +78,8 @@ Version 7.3.119 (06.10.2023)
 - *** If an attack is started all diplomacy requests are deleted
 - *** If a jump is saved that would lead to an attack, but both sides agreed to an alliance in this next round, the attack is not created
 - !!! Working? *** Modal flag of RoleplayPane and DiplomacyPane to false (enable the changing of the pane)
+
+- STARTED: To remove all unnecessary context menus on textfields
 
 Version 7.3.116 (30.09.2023)
 - CHANGED: Removed a number of redundant files to reduce filesize

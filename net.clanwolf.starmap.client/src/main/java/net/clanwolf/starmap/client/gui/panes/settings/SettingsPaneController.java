@@ -30,8 +30,10 @@ import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.util.Duration;
 import net.clanwolf.starmap.client.action.*;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
@@ -601,17 +603,8 @@ public class SettingsPaneController extends AbstractC3Controller implements Acti
 		rb_SystemProxy.setToggleGroup(proxyToggleGroup);
 		rb_Proxy.setToggleGroup(proxyToggleGroup);
 
-		if (C3Properties.getBoolean(C3PROPS.PROXY_NEEDS_AUTHENTICATION)) {
-			cb_Authentication.setSelected(true);
-		} else {
-			cb_Authentication.setSelected(false);
-		}
-
-		if (C3Properties.getBoolean(C3PROPS.PROXY_SAVE_PASSWORD)) {
-			cb_SaveProxyPassword.setSelected(true);
-		} else {
-			cb_SaveProxyPassword.setSelected(false);
-		}
+		cb_Authentication.setSelected(C3Properties.getBoolean(C3PROPS.PROXY_NEEDS_AUTHENTICATION));
+		cb_SaveProxyPassword.setSelected(C3Properties.getBoolean(C3PROPS.PROXY_SAVE_PASSWORD));
 
 		// Default value: no proxy
 		// in case there are no settings yet
@@ -679,6 +672,50 @@ public class SettingsPaneController extends AbstractC3Controller implements Acti
 
 		createListeners();
 		enableListeners(true);
+		disableContextMenusForEditFields();
+
+		edit_DatabaseName.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
+			@Override
+			public void handle(ContextMenuEvent event) {
+				event.consume();
+			}
+		});
+		edit_ProxyServerDomain.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
+			@Override
+			public void handle(ContextMenuEvent event) {
+				event.consume();
+			}
+		});
+		edit_ProxyServerPassword.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
+			@Override
+			public void handle(ContextMenuEvent event) {
+				event.consume();
+			}
+		});
+		edit_ProxyServerPort.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
+			@Override
+			public void handle(ContextMenuEvent event) {
+				event.consume();
+			}
+		});
+		edit_ProxyServerURL.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
+			@Override
+			public void handle(ContextMenuEvent event) {
+				event.consume();
+			}
+		});
+		edit_DatabaseName.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
+			@Override
+			public void handle(ContextMenuEvent event) {
+				event.consume();
+			}
+		});
+		edit_ServerURL.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
+			@Override
+			public void handle(ContextMenuEvent event) {
+				event.consume();
+			}
+		});
 	}
 
 	private void createListeners() {

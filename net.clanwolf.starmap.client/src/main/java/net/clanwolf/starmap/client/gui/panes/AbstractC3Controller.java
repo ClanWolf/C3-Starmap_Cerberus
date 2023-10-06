@@ -28,13 +28,18 @@ package net.clanwolf.starmap.client.gui.panes;
 
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.nexus.Nexus;
@@ -47,6 +52,9 @@ import org.slf4j.LoggerFactory;
 import java.io.InputStream;
 import java.lang.invoke.MethodHandles;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.ResourceBundle;
 
 /**
@@ -147,6 +155,32 @@ public abstract class AbstractC3Controller implements Initializable, ActionCallB
 		return defaultButton;
 	}
 
+	private <T> List<T> getNodesOfType(Pane parent, Class<T> type) {
+		List<T> elements = new ArrayList<>();
+		for (Node node : parent.getChildren()) {
+			if (node instanceof Pane) {
+				elements.addAll(getNodesOfType((Pane) node, type));
+			} else if (type.isAssignableFrom(node.getClass())) {
+				//noinspection unchecked
+				elements.add((T) node);
+			}
+		}
+		return Collections.unmodifiableList(elements);
+	}
+
+	protected void disableContextMenusForEditFields() {
+		if (anchorPane != null) {
+			for (TextField tf : getNodesOfType(anchorPane, TextField.class)) {
+				tf.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
+					@Override
+					public void handle(ContextMenuEvent event) {
+						event.consume();
+					}
+				});
+			}
+		}
+	}
+
 	protected void setWarningOn(boolean setModal) {
 		if (!warningActive) {
 			Platform.runLater(() -> { labelWarningIcon.setVisible(true); });
@@ -181,6 +215,8 @@ public abstract class AbstractC3Controller implements Initializable, ActionCallB
 
 		ActionManager.addActionCallbackListener(ACTIONS.ENABLE_DEFAULT_BUTTON, this);
 		ActionManager.addActionCallbackListener(ACTIONS.DISABLE_DEFAULT_BUTTON, this);
+
+		disableContextMenusForEditFields();
 	}
 
 	/**

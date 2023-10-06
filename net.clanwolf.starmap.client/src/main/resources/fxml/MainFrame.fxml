@@ -28,11 +28,6 @@
             <Insets />
          </opaqueInsets>
       </Pane>
-      <Pane fx:id="paneNoise" mouseTransparent="true" opacity="0.4" snapToPixel="false" styleClass="backgroundNoise" stylesheets="@../styles/MainFrameStyle.css" visible="false" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="65.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="35.0">
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-      </Pane>
       <AnchorPane fx:id="paneBorderShadow" mouseTransparent="true" prefHeight="200.0" prefWidth="200.0" snapToPixel="false" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="65.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="35.0">
          <children>
             <Pane fx:id="topleft" layoutX="46.0" layoutY="12.0" mouseTransparent="true" prefHeight="86.0" prefWidth="40.0" snapToPixel="false" style="-fx-background-color: #000000;" stylesheets="@../styles/MainFrameStyle.css">
@@ -71,7 +66,12 @@
       <Pane fx:id="bottomGap" layoutX="10.0" layoutY="10.0" maxHeight="113.0" minHeight="113.0" minWidth="0.0" mouseTransparent="true" prefHeight="113.0" snapToPixel="false" styleClass="gapPaneBottom" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="720.0" AnchorPane.rightAnchor="200.0" />
       <Pane fx:id="leftGap" maxWidth="271.0" minHeight="0.0" minWidth="271.0" mouseTransparent="true" prefWidth="271.0" snapToPixel="false" styleClass="gapPaneLeft" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="500.0" />
       <Pane fx:id="rightGap" maxWidth="193.0" minHeight="0.0" minWidth="193.0" mouseTransparent="true" prefWidth="193.0" snapToPixel="false" styleClass="gapPaneRight" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="100.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="500.0" />
-      <BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mouseTransparent="true" snapToPixel="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <Pane fx:id="paneNoise" mouseTransparent="true" opacity="0.4" snapToPixel="false" styleClass="backgroundNoise" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="55.0" AnchorPane.leftAnchor="125.0" AnchorPane.rightAnchor="52.0" AnchorPane.topAnchor="57.0">
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+      </Pane>
+      <BorderPane fx:id="paneBorder" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mouseTransparent="true" snapToPixel="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
             <HBox alignment="BOTTOM_CENTER" fillHeight="false" maxHeight="279.0" minHeight="279.0" minWidth="1030.0" mouseTransparent="true" prefHeight="279.0" snapToPixel="false" BorderPane.alignment="CENTER">
                <children>
