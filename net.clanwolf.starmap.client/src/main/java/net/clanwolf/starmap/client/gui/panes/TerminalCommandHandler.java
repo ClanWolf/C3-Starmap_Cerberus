@@ -83,7 +83,7 @@ public class TerminalCommandHandler {
 		// - "!test medal"
 		// - "!test error"
 
-		if (com.toLowerCase().startsWith("!find")
+		if (com.toLowerCase().startsWith("!find ")
 				|| com.toLowerCase().startsWith("!create universe")
 				|| com.toLowerCase().startsWith("!finalize round")
 				|| com.toLowerCase().startsWith("!reset attack")
@@ -148,7 +148,7 @@ public class TerminalCommandHandler {
 				// find
 				// ---------------------------------
 				if (com.toLowerCase().startsWith("!find ")) {
-					String value = com.substring(5);
+					String value = com.substring(5).trim();
 					if (!value.isEmpty()) {
 						logger.info("Searching for '" + value + "'");
 					}

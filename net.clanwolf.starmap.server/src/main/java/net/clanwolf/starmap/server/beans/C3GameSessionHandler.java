@@ -373,15 +373,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			ap.setFightsStarted(false);
 			ap.getAttackCharList().clear();
 			ap.setStoryID(lobbyRPreset.getId());
-
-
-
-
-			//ap.setLastStoryID(null); // ????????????????????
-
-
-
-
+			ap.setLastStoryID(null);
 
 			adao.update(ServerNexus.DUMMY_USERID, ap);
 
@@ -1411,8 +1403,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				// Reset a fight in case a pilot left and all needs to be restarted
 				if (state.getObject() instanceof Long attackIdFromState) {
 					logger.info("A reset of attack " + attackIdFromState + " was requested by admin");
-					//resetAttack(attackIdFromState);
-					//throw anyone out if not already done in method
+					resetAttack(attackIdFromState);
 				}
 				break;
 			case RESTART_SERVER:

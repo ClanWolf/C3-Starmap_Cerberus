@@ -58,14 +58,8 @@ VERSIONS
 Version 7.4.0 (07.10.2023)
 - UPDATED: Libraries, Compiler (maven-plugin)
 - ADDED: Entered terminal strings are printed to the console
-- ADDED: 'restart server' terminal command (for admin)
-- ADDED: 'reset attack' terminal command (for admin)
-- *** Reset a fight in case a pilot needs to leave in the middle of an invasion
-  - Delete AttackCharacter for attackId
-  - __HH_ATTACK: Set 'FightsStarted' = 0
-  - __HH_ATTACK: Set 'LastStoryId' = NULL ??? Wurde vorher nicht auf NULL gesetzt!
-  - __HH_ATTACK: Set 'StoryId' = StoryId of the lobby of the current attackType
-
+- ADDED: '!restart server' terminal command (for admin)
+- ADDED: '!reset attack' terminal command (for admin)
 - CHANGED: Console controll commands prefix ('!')
 - CHANGED: Further reduced package size
 - CHANGED: Minor optical issues in settings pane
