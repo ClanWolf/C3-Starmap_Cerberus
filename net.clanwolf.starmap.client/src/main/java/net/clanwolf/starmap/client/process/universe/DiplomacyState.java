@@ -4,7 +4,7 @@ import javafx.scene.image.Image;
 
 import java.util.Objects;
 
-class DiplomacyState{
+public class DiplomacyState{
 
 	// int weRequestedAlliance = 1; allianceRequestedByThem = 2; allianceWaitingForNextRound = 3; allianceWaitingToBreakNextRound = 4;
 	final int diplomacyState = DiplomacyState.NO_ALLIANCE_FOUND;
@@ -70,7 +70,7 @@ class DiplomacyState{
 				diplomacyIcon = diplomacyIconAlliedBrokenWaiting;
 				break;
 			case DiplomacyState.FACTIONS_AT_WAR:
-				diplomacyIcon = diplomacyIconNone;
+				diplomacyIcon = diplomacyIconAtWar;
 				break;
 			default:
 				diplomacyIcon = diplomacyIconNone;

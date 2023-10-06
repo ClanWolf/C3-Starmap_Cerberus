@@ -53,16 +53,13 @@ public class BODiplomacy {
 	}
 
 	public boolean factionsAtWar(Long currentFactionID, Long otherFactionID){
-
 		boolean factionsAtWar = false;
-
-		ArrayList<BOAttack> attackList = new ArrayList(Nexus.getBoUniverse().attackBOsOpenInThisRound.values());
+		ArrayList<BOAttack> attackList = new ArrayList<>(Nexus.getBoUniverse().attackBOsOpenInThisRound.values());
 
 		for(BOAttack attack : attackList){
-			if(attack.getAttackDTO().getFactionID_Defender().equals(currentFactionID) ||
-					attack.getAttackDTO().getFactionID_Defender().equals(otherFactionID) ||
-					attack.getAttackerFactionId().longValue() == currentFactionID.longValue() ||
-					attack.getAttackerFactionId().longValue() == otherFactionID.longValue()	){
+			if((attack.getAttackerFactionId().longValue() == currentFactionID && attack.getAttackDTO().getFactionID_Defender().equals(otherFactionID))
+			|| (attack.getAttackerFactionId().longValue() == otherFactionID && attack.getAttackDTO().getFactionID_Defender().equals(currentFactionID))
+			){
 				factionsAtWar = true;
 				break;
 			}
