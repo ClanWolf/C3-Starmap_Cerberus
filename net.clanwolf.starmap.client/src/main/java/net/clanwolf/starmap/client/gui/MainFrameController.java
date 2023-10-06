@@ -30,6 +30,8 @@ import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -48,6 +50,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.util.Pair;
@@ -255,8 +259,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private Label systemConsoleCursor;
 	@FXML
 	private ImageView spectrumImage;
-	@FXML
-	private ImageView noiseImage;
+//	@FXML
+//	private ImageView noiseImage;
 	@FXML
 	private ImageView hudinfo1;
 	@FXML
@@ -294,11 +298,14 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	@FXML
 	private Pane paneVolumeControl;
 	@FXML
-	private Pane paneWindowMoverHandle, paneNoise;
+	private Pane paneWindowMoverHandle;
 	@FXML
 	private TableView<UserHistoryEntry> tblUserHistory;
 	@FXML
 	private Pane mouseStopper, paneBackgroundTerminal;
+
+	@FXML
+	private AnchorPane paneNoise;
 
 	// -------------------------------------------------------------------------
 	//
@@ -1701,9 +1708,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		spectrumImage.setOpacity(0.1);
 		spectrumImage.setVisible(false);
 
-		noiseImage.setOpacity(0.0);
-		noiseImage.setVisible(false);
-		noiseImage.toFront();
+//		noiseImage.setOpacity(0.0);
+//		noiseImage.setVisible(false);
+//		noiseImage.toFront();
 
 		paneNoise.setOpacity(0.0);
 		paneNoise.setVisible(false);
@@ -2331,32 +2338,32 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 						duration = (Integer) o.getObject();
 					} else {
 						Random random = new Random();
-						duration = random.nextInt(1000 - 100) + 100;
+						duration = random.nextInt(1000 - 100) + 250;
 					}
 
-
-//					https://stackoverflow.com/questions/45258138/round-corners-in-java-fx-pane
-
-//					Rectangle rect = new Rectangle(1024,768);
-//					rect.setArcHeight(60.0);
-//					rect.setArcWidth(60.0);
-//					root.setClip(rect);
-
-					paneNoise.toFront();
-//					double order = paneNoise.getViewOrder();
-//					paneNoise.setViewOrder(0.1d);
-//					Nexus.getCurrentlyOpenedPane().toBack();
-//					paneBorder.toFront();
-//					for (Node node : rootAnchorPane.getChildren()) {
-//						if (node != paneBackgroundTerminal) {
-//							node.toFront();
-//						}
-//					}
-//					paneBackgroundTerminal.toBack();
+					// Move the pane node back behind the noise pane, so that noise is infront of content
+					// The order in this list reflects the z-order of the nodes for display
+					boolean finished = false;
+					int cycleCounter = 0;
+					ObservableList<Node> workingCollection = FXCollections.observableArrayList(rootAnchorPane.getChildren());
+					do {
+						for (int ia = 1; ia < workingCollection.size(); ia++) {
+							if (workingCollection.get(ia) instanceof AbstractC3Pane) {
+								if (workingCollection.get(ia + 1).getId().equals("paneNoise")) {
+									finished = true;
+								} else {
+									Collections.swap(workingCollection, ia - 1, ia);
+								}
+								break;
+							}
+						}
+						cycleCounter++;
+					} while (!finished || cycleCounter < 5000); // Savety exit in case paneNoise is not found
+					rootAnchorPane.getChildren().setAll(workingCollection);
 					paneNoise.setVisible(true);
 
 					FadeTransition FadeOutTransition = new FadeTransition(Duration.millis(duration), paneNoise);
-					FadeOutTransition.setFromValue(0.4);
+					FadeOutTransition.setFromValue(0.75);
 					FadeOutTransition.setToValue(0.0);
 					FadeOutTransition.setCycleCount(1);
 					FadeOutTransition.setOnFinished(event -> {
@@ -2365,7 +2372,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 					FadeTransition FadeInTransition = new FadeTransition(Duration.millis(duration), paneNoise);
 					FadeInTransition.setFromValue(0.0);
-					FadeInTransition.setToValue(0.4);
+					FadeInTransition.setToValue(0.75);
 					FadeInTransition.setCycleCount(1);
 					FadeInTransition.setOnFinished(event -> FadeOutTransition.play());
 

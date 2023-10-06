@@ -55,7 +55,7 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
-Version 7.3.119 (06.10.2023)
+Version 7.4.0 (07.10.2023)
 - UPDATED: Libraries, Compiler (maven-plugin)
 - ADDED: Entered terminal strings are printed to the console
 - ADDED: 'restart server' terminal command (for admin)
@@ -66,10 +66,14 @@ Version 7.3.119 (06.10.2023)
   - __HH_ATTACK: Set 'LastStoryId' = NULL ??? Wurde vorher nicht auf NULL gesetzt!
   - __HH_ATTACK: Set 'StoryId' = StoryId of the lobby of the current attackType
 
+- CHANGED: Console controll commands prefix ('!')
 - CHANGED: Further reduced package size
-- CHANGED: Minor optical things in settings pane
+- CHANGED: Minor optical issues in settings pane
 - CHANGED: Refactored the handling of terminal commands
 - FIXED: Hitting enter on Terminal triggers default key of dialog (e.g. Logout)
+- FIXED: A number of format exception while finalizing the round (possibly introduced by new Java version)
+- FIXED: NPE while shutting down client (timertrigger, but user was already logged off)
+- FIXED: Visual noise effect z-order
 
 - *** Finish refactoring of Diplomacy
 - *** Only one alliance is allowed for each faction at a time

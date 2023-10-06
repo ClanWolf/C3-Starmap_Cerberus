@@ -72,21 +72,21 @@ public class TerminalCommandHandler {
 		boolean chatPaneSpecificCommand = false;
 
 		// ALL COMMANDS:
-		// find
-		// create universe
-		// finalize round
-		// reset attack
-		// /nick
-		// /me
-		// restart server
-		// test popup
-		// test medal
-		// test error
+		// - "!find "
+		// - "!create universe"
+		// - "!finalize round"
+		// - "!reset attack <planetname>"
+		// - "/nick <new nick>"
+		// - "/me <text>"
+		// - "!restart server"
+		// - "!test popup"
+		// - "!test medal"
+		// - "!test error"
 
-		if (com.toLowerCase().startsWith("find")
-				|| com.toLowerCase().startsWith("create universe")
-				|| com.toLowerCase().startsWith("finalize round")
-				|| com.toLowerCase().startsWith("reset attack")
+		if (com.toLowerCase().startsWith("!find")
+				|| com.toLowerCase().startsWith("!create universe")
+				|| com.toLowerCase().startsWith("!finalize round")
+				|| com.toLowerCase().startsWith("!reset attack")
 		) {
 			sendingString = false;
 			mapPaneSpecificCommand = true;
@@ -147,7 +147,7 @@ public class TerminalCommandHandler {
 				// ---------------------------------
 				// find
 				// ---------------------------------
-				if (com.toLowerCase().startsWith("find ")) {
+				if (com.toLowerCase().startsWith("!find ")) {
 					String value = com.substring(5);
 					if (!value.isEmpty()) {
 						logger.info("Searching for '" + value + "'");
@@ -171,9 +171,9 @@ public class TerminalCommandHandler {
 				}
 
 				// ---------------------------------
-				// re-create universe
+				// create universe
 				// ---------------------------------
-				if (com.toLowerCase().startsWith("create universe")) {
+				if (com.toLowerCase().startsWith("!create universe")) {
 					if (isGodAdmin) {
 						ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_success"), false));
 						GameState s = new GameState();
@@ -194,7 +194,7 @@ public class TerminalCommandHandler {
 				// ---------------------------------
 				// force finalize round
 				// ---------------------------------
-				if (com.toLowerCase().startsWith("finalize round")) {
+				if (com.toLowerCase().startsWith("!finalize round")) {
 					if (Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_FINALIZE_ROUND)) {
 
 						// Check if there are any routepoints that have not been saved yet!
@@ -240,7 +240,7 @@ public class TerminalCommandHandler {
 				// ---------------------------------
 				// reset attack
 				// ---------------------------------
-				if (com.toLowerCase().startsWith("reset attack")) {
+				if (com.toLowerCase().startsWith("!reset attack")) {
 					if (isGodAdmin) {
 						String systemNameOfAttack = com.substring(com.lastIndexOf(" "));
 						boolean foundAttack = false;
@@ -324,7 +324,7 @@ public class TerminalCommandHandler {
 			// ---------------------------------
 			// restart server
 			// ---------------------------------
-			if (com.toLowerCase().startsWith("restart server")) {
+			if (com.toLowerCase().startsWith("!restart server")) {
 				if (isGodAdmin) {
 //					ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_command_has_been_disabled"), true));
 					ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_success"), false));
@@ -347,17 +347,17 @@ public class TerminalCommandHandler {
 				// ---------------------------------
 				// tests
 				// ---------------------------------
-				if (com.toLowerCase().startsWith("test popup")) {
+				if (com.toLowerCase().startsWith("!test popup")) {
 					ActionManager.getAction(ACTIONS.SHOW_POPUP).execute(POPUPS.Orders_Confirmed);
 					Nexus.storeCommandHistory();
 				}
 
-				if (com.toLowerCase().startsWith("test medal")) {
+				if (com.toLowerCase().startsWith("!test medal")) {
 					ActionManager.getAction(ACTIONS.SHOW_MEDAL).execute(MEDALS.First_Blood);
 					Nexus.storeCommandHistory();
 				}
 
-				if (com.toLowerCase().startsWith("test error")) {
+				if (com.toLowerCase().startsWith("!test error")) {
 					C3Message m = new C3Message(C3MESSAGES.WARNING_BLACKBOX_TEAMS_INVALID);
 					m.setType(C3MESSAGETYPES.CLOSE);
 					m.setText("Teams seem to be invalid!");

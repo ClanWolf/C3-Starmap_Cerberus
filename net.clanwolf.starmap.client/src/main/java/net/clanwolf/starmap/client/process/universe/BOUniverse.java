@@ -309,19 +309,24 @@ public class BOUniverse {
 	}
 
 	public ArrayList<BOJumpship> getJumpshipList() {
-		Integer myJumpship = Nexus.getCurrentUser().getCurrentCharacter().getJumpshipId();
-		BOJumpship myJumpshipBO = null;
+		if (Nexus.isLoggedIn()) {
+			if (Nexus.getCurrentUser() != null) {
+				Integer myJumpship = Nexus.getCurrentUser().getCurrentCharacter().getJumpshipId();
+				BOJumpship myJumpshipBO = null;
 
-		for (BOJumpship js : jumpshipBOs.values()) {
-			if (js.getJumpshipId().equals(myJumpship.longValue())) {
-				myJumpshipBO = js;
+				for (BOJumpship js : jumpshipBOs.values()) {
+					if (js.getJumpshipId().equals(myJumpship.longValue())) {
+						myJumpshipBO = js;
+					}
+				}
+
+				ArrayList<BOJumpship> r = new ArrayList<>(jumpshipBOs.values());
+				r.remove(myJumpshipBO);
+				r.add(myJumpshipBO);
+				return r;
 			}
 		}
-
-		ArrayList<BOJumpship> r = new ArrayList<>(jumpshipBOs.values());
-		r.remove(myJumpshipBO);
-		r.add(myJumpshipBO);
-		return r;
+		return null;
 	}
 
 	public BOFaction getFactionByID(Long id){

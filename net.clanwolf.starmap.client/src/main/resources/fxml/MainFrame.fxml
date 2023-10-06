@@ -66,11 +66,34 @@
       <Pane fx:id="bottomGap" layoutX="10.0" layoutY="10.0" maxHeight="113.0" minHeight="113.0" minWidth="0.0" mouseTransparent="true" prefHeight="113.0" snapToPixel="false" styleClass="gapPaneBottom" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="720.0" AnchorPane.rightAnchor="200.0" />
       <Pane fx:id="leftGap" maxWidth="271.0" minHeight="0.0" minWidth="271.0" mouseTransparent="true" prefWidth="271.0" snapToPixel="false" styleClass="gapPaneLeft" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="500.0" />
       <Pane fx:id="rightGap" maxWidth="193.0" minHeight="0.0" minWidth="193.0" mouseTransparent="true" prefWidth="193.0" snapToPixel="false" styleClass="gapPaneRight" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="100.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="500.0" />
-      <Pane fx:id="paneNoise" mouseTransparent="true" opacity="0.4" snapToPixel="false" styleClass="backgroundNoise" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="55.0" AnchorPane.leftAnchor="125.0" AnchorPane.rightAnchor="52.0" AnchorPane.topAnchor="57.0">
-         <opaqueInsets>
-            <Insets />
-         </opaqueInsets>
-      </Pane>
+        <Label fx:id="systemConsole" alignment="BOTTOM_RIGHT" contentDisplay="RIGHT" disable="true" focusTraversable="false" layoutX="358.0" layoutY="82.0" maxHeight="404.0" maxWidth="593.0" minHeight="404.0" minWidth="593.0" mouseTransparent="true" prefHeight="404.0" prefWidth="593.0" snapToPixel="false" textAlignment="RIGHT" textFill="#8f9791" AnchorPane.bottomAnchor="144.0" AnchorPane.rightAnchor="80.0">
+            <font>
+                <Font size="12.0" />
+            </font>
+            <stylesheets>
+                <URL value="@../styles/MainFrameStyle.css" />
+            </stylesheets>
+        </Label>
+        <Label fx:id="systemConsoleCurrentLine" alignment="BOTTOM_RIGHT" contentDisplay="RIGHT" disable="true" focusTraversable="false" layoutX="358.0" layoutY="470.0" maxHeight="16.0" maxWidth="593.0" minHeight="16.0" minWidth="593.0" prefHeight="16.0" prefWidth="593.0" snapToPixel="false" stylesheets="@../styles/MainFrameStyle.css" textAlignment="RIGHT" textFill="#90ba90" AnchorPane.bottomAnchor="144.0" AnchorPane.rightAnchor="80.0" />
+      <ImageView fx:id="hudCircle" fitHeight="110.0" fitWidth="100.0" layoutX="145.0" layoutY="315.0" mouseTransparent="true" opacity="0.04" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../images/gui/hud_circle.gif" />
+         </image>
+      </ImageView>
+      <ImageView fx:id="hudinfo" fitHeight="250.0" fitWidth="280.0" layoutX="685.0" layoutY="60.0" mouseTransparent="true" opacity="0.15" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="65.0" AnchorPane.topAnchor="60.0">
+         <image>
+            <Image url="@../images/gui/hud.gif" />
+         </image>
+      </ImageView>
+      <AnchorPane fx:id="paneNoise" layoutX="125.0" layoutY="57.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="110.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="40.0">
+         <children>
+            <Pane mouseTransparent="true" opacity="0.75" snapToPixel="false" styleClass="backgroundNoise" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </Pane>
+         </children>
+      </AnchorPane>
       <BorderPane fx:id="paneBorder" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mouseTransparent="true" snapToPixel="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
             <HBox alignment="BOTTOM_CENTER" fillHeight="false" maxHeight="279.0" minHeight="279.0" minWidth="1030.0" mouseTransparent="true" prefHeight="279.0" snapToPixel="false" BorderPane.alignment="CENTER">
@@ -202,16 +225,6 @@
       <Label fx:id="terminalLabel" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="567.0" layoutY="556.0" prefHeight="20.0" prefWidth="66.0" snapToPixel="false" text="Terminal:" AnchorPane.bottomAnchor="54.0" AnchorPane.rightAnchor="395.0" />
       <TextField fx:id="terminalPrompt" layoutX="639.0" layoutY="555.0" onKeyPressed="#handleTerminalEnterButton" prefHeight="20.0" prefWidth="305.0" snapToPixel="false" styleClass="text" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="55.0" AnchorPane.rightAnchor="86.0" />
       <Label fx:id="helpLabel" focusTraversable="false" layoutX="585.0" layoutY="581.0" onMouseClicked="#handleHelpMouseEventClick" onMouseEntered="#handleHelpButtonHoverEnter" onMouseExited="#handleHelpButtonHoverExit" prefHeight="20.0" prefWidth="12.0" snapToPixel="false" text="Help" AnchorPane.bottomAnchor="28.0" />
-        <ImageView fx:id="noiseImage" fitHeight="523.0" fitWidth="859.0" layoutX="494.0" layoutY="37.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="false" visible="false" AnchorPane.bottomAnchor="70.0" AnchorPane.leftAnchor="123.0" AnchorPane.rightAnchor="48.0" AnchorPane.topAnchor="37.0">
-            <image>
-                <Image url="@../images/noise/noisemap.png" />
-            </image>
-        </ImageView>
-      <ImageView fx:id="hudCircle" fitHeight="110.0" fitWidth="100.0" layoutX="145.0" layoutY="315.0" mouseTransparent="true" opacity="0.04" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../images/gui/hud_circle.gif" />
-         </image>
-      </ImageView>
         <ImageView fx:id="spectrumImage" fitHeight="57.72469711303711" fitWidth="430.0" layoutX="-57.0" layoutY="318.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="false" rotate="90.0">
             <image>
                 <Image url="@../images/spectrum/spectrum.png" />
@@ -228,15 +241,6 @@
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>
       </Label>
-        <Label fx:id="systemConsoleCurrentLine" alignment="BOTTOM_RIGHT" contentDisplay="RIGHT" disable="true" focusTraversable="false" layoutX="358.0" layoutY="470.0" maxHeight="16.0" maxWidth="593.0" minHeight="16.0" minWidth="593.0" prefHeight="16.0" prefWidth="593.0" snapToPixel="false" stylesheets="@../styles/MainFrameStyle.css" textAlignment="RIGHT" textFill="#90ba90" AnchorPane.bottomAnchor="144.0" AnchorPane.rightAnchor="80.0" />
-        <Label fx:id="systemConsole" alignment="BOTTOM_RIGHT" contentDisplay="RIGHT" disable="true" focusTraversable="false" layoutX="358.0" layoutY="82.0" maxHeight="404.0" maxWidth="593.0" minHeight="404.0" minWidth="593.0" mouseTransparent="true" prefHeight="404.0" prefWidth="593.0" snapToPixel="false" textAlignment="RIGHT" textFill="#8f9791" AnchorPane.bottomAnchor="144.0" AnchorPane.rightAnchor="80.0">
-            <font>
-                <Font size="12.0" />
-            </font>
-            <stylesheets>
-                <URL value="@../styles/MainFrameStyle.css" />
-            </stylesheets>
-        </Label>
       <Label fx:id="systemConsoleCursor" alignment="BOTTOM_RIGHT" contentDisplay="RIGHT" disable="true" focusTraversable="false" layoutX="948.0" layoutY="470.0" maxHeight="16.0" maxWidth="593.0" minHeight="16.0" minWidth="12.0" prefHeight="16.0" prefWidth="12.0" snapToPixel="false" stylesheets="@../styles/MainFrameStyle.css" text="_" textAlignment="RIGHT" textFill="#8f9791" AnchorPane.bottomAnchor="144.0" AnchorPane.rightAnchor="75.0" />
         <Label id="" fx:id="versionLabel" focusTraversable="false" layoutX="124.0" layoutY="584.0" mouseTransparent="true" prefWidth="212.0" snapToPixel="false" styleClass="versionlabel" text="Version" AnchorPane.bottomAnchor="32.0">
             <font>
@@ -357,11 +361,6 @@
       <ImageView fx:id="hudinfo1" fitHeight="34.0" fitWidth="66.0" layoutX="55.0" layoutY="162.0" mouseTransparent="true" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@../images/gui/menuindicator.png" />
-         </image>
-      </ImageView>
-      <ImageView fx:id="hudinfo" fitHeight="250.0" fitWidth="280.0" layoutX="685.0" layoutY="60.0" mouseTransparent="true" opacity="0.15" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="65.0" AnchorPane.topAnchor="60.0">
-         <image>
-            <Image url="@../images/gui/hud.gif" />
          </image>
       </ImageView>
       <ImageView fx:id="ircIndicator" fitHeight="16.0" fitWidth="16.0" layoutX="67.0" layoutY="505.0" pickOnBounds="true" preserveRatio="true" visible="false">
