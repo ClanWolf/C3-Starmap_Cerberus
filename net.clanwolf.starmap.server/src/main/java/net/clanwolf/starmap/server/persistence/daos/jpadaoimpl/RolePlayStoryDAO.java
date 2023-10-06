@@ -196,7 +196,7 @@ public class RolePlayStoryDAO extends GenericDAO {
 
 		CriteriaHelper crit2 = new CriteriaHelper(RolePlayStoryPOJO.class);
 
-		crit2.addCriteria("story", rp1.getStory().getId());
+		crit2.addCriteria("story", rp1.getStory());
 		crit2.addCriteria("type", ROLEPLAYENTRYTYPES.C3_RP_STEP_V8);
 
 		return (RolePlayStoryPOJO)crit2.getSingleResult();

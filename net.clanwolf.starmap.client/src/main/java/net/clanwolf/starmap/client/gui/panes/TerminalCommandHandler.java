@@ -86,7 +86,6 @@ public class TerminalCommandHandler {
 		if (com.toLowerCase().startsWith("!find ")
 				|| com.toLowerCase().startsWith("!create universe")
 				|| com.toLowerCase().startsWith("!finalize round")
-				|| com.toLowerCase().startsWith("!reset attack")
 		) {
 			sendingString = false;
 			mapPaneSpecificCommand = true;
@@ -218,12 +217,15 @@ public class TerminalCommandHandler {
 							// stop action here, save routes first!
 							ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_saveRoutesBeforeFinalizeRound"), true));
 						} else {
-							ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_command_has_been_disabled"), true));
-//							ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_success"), false));
-//							GameState s = new GameState();
-//							s.setMode(GAMESTATEMODES.FORCE_FINALIZE_ROUND);
-//							Nexus.fireNetworkEvent(s);
-							Nexus.storeCommandHistory();
+							if( !Nexus.isDevelopmentPC()) {
+								ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_command_has_been_disabled"), true));
+							} else {
+								ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_success"), false));
+								GameState s = new GameState();
+								s.setMode(GAMESTATEMODES.FORCE_FINALIZE_ROUND);
+								Nexus.fireNetworkEvent(s);
+							}
+							//Nexus.storeCommandHistory();
 						}
 					} else {
 						ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_notallowed"), false));
@@ -234,40 +236,6 @@ public class TerminalCommandHandler {
 						ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
 					}
 					// Nexus.storeCommandHistory(); // do not store to prevent accidental sending of this
-					sendingString = false;
-				}
-
-				// ---------------------------------
-				// reset attack
-				// ---------------------------------
-				if (com.toLowerCase().startsWith("!reset attack")) {
-					if (isGodAdmin) {
-						String systemNameOfAttack = com.substring(com.lastIndexOf(" "));
-						boolean foundAttack = false;
-						for (BOAttack at : Nexus.getBoUniverse().attackBOsOpenInThisRound.values()) {
-							if (at.getStarSystemName().equals(systemNameOfAttack)) {
-								GameState s = new GameState();
-								s.setMode(GAMESTATEMODES.RESET_FIGHT);
-								s.addObject(at.getAttackDTO().getId());
-								Nexus.fireNetworkEvent(s);
-								Nexus.storeCommandHistory();
-
-								foundAttack = true;
-								ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_success"), false));
-								break;
-							}
-						}
-						if (!foundAttack) {
-							ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_failure"), true));
-						}
-					} else {
-						ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_notallowed"), false));
-						C3Message message = new C3Message(C3MESSAGES.ERROR_NOT_ALLOWED);
-						message.setType(C3MESSAGETYPES.CLOSE);
-						message.setText(Internationalization.getString("general_notallowed"));
-						C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
-						ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
-					}
 					sendingString = false;
 				}
 			}
@@ -320,6 +288,40 @@ public class TerminalCommandHandler {
 			}
 
 			// Not specific to any pane commands
+
+			// ---------------------------------
+			// reset attack
+			// ---------------------------------
+			if (com.toLowerCase().startsWith("!reset attack")) {
+				if (isGodAdmin) {
+					String systemNameOfAttack = com.substring(com.lastIndexOf(" ")).trim();
+					boolean foundAttack = false;
+					for (BOAttack at : Nexus.getBoUniverse().attackBOsOpenInThisRound.values()) {
+						if (at.getStarSystemName().equals(systemNameOfAttack)) {
+							GameState s = new GameState();
+							s.setMode(GAMESTATEMODES.RESET_FIGHT);
+							s.addObject(at.getAttackDTO().getId());
+							Nexus.fireNetworkEvent(s);
+							Nexus.storeCommandHistory();
+
+							foundAttack = true;
+							ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_success"), false));
+							break;
+						}
+					}
+					if (!foundAttack) {
+						ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_failure"), true));
+					}
+				} else {
+					ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_notallowed"), false));
+					C3Message message = new C3Message(C3MESSAGES.ERROR_NOT_ALLOWED);
+					message.setType(C3MESSAGETYPES.CLOSE);
+					message.setText(Internationalization.getString("general_notallowed"));
+					C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
+					ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
+				}
+				sendingString = false;
+			}
 
 			// ---------------------------------
 			// restart server
