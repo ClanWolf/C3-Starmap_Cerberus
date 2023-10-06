@@ -2338,7 +2338,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 						duration = (Integer) o.getObject();
 					} else {
 						Random random = new Random();
-						duration = random.nextInt(1000 - 100) + 250;
+						duration = random.nextInt(400) + 200;
 					}
 
 					// Move the pane node back behind the noise pane, so that noise is infront of content
@@ -2363,7 +2363,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					paneNoise.setVisible(true);
 
 					FadeTransition FadeOutTransition = new FadeTransition(Duration.millis(duration), paneNoise);
-					FadeOutTransition.setFromValue(0.75);
+					FadeOutTransition.setFromValue(0.60);
 					FadeOutTransition.setToValue(0.0);
 					FadeOutTransition.setCycleCount(1);
 					FadeOutTransition.setOnFinished(event -> {
@@ -2372,7 +2372,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 					FadeTransition FadeInTransition = new FadeTransition(Duration.millis(duration), paneNoise);
 					FadeInTransition.setFromValue(0.0);
-					FadeInTransition.setToValue(0.75);
+					FadeInTransition.setToValue(0.60);
 					FadeInTransition.setCycleCount(1);
 					FadeInTransition.setOnFinished(event -> FadeOutTransition.play());
 

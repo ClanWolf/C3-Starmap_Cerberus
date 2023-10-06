@@ -62,10 +62,6 @@
             </Pane>
          </children>
       </AnchorPane>
-      <Pane fx:id="topGap" layoutX="10.0" layoutY="10.0" maxHeight="279.0" minHeight="279.0" minWidth="0.0" mouseTransparent="true" prefHeight="279.0" snapToPixel="false" styleClass="gapPaneTop" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.leftAnchor="720.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="0.0" />
-      <Pane fx:id="bottomGap" layoutX="10.0" layoutY="10.0" maxHeight="113.0" minHeight="113.0" minWidth="0.0" mouseTransparent="true" prefHeight="113.0" snapToPixel="false" styleClass="gapPaneBottom" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="720.0" AnchorPane.rightAnchor="200.0" />
-      <Pane fx:id="leftGap" maxWidth="271.0" minHeight="0.0" minWidth="271.0" mouseTransparent="true" prefWidth="271.0" snapToPixel="false" styleClass="gapPaneLeft" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="500.0" />
-      <Pane fx:id="rightGap" maxWidth="193.0" minHeight="0.0" minWidth="193.0" mouseTransparent="true" prefWidth="193.0" snapToPixel="false" styleClass="gapPaneRight" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="100.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="500.0" />
         <Label fx:id="systemConsole" alignment="BOTTOM_RIGHT" contentDisplay="RIGHT" disable="true" focusTraversable="false" layoutX="358.0" layoutY="82.0" maxHeight="404.0" maxWidth="593.0" minHeight="404.0" minWidth="593.0" mouseTransparent="true" prefHeight="404.0" prefWidth="593.0" snapToPixel="false" textAlignment="RIGHT" textFill="#8f9791" AnchorPane.bottomAnchor="144.0" AnchorPane.rightAnchor="80.0">
             <font>
                 <Font size="12.0" />
@@ -94,6 +90,10 @@
             </Pane>
          </children>
       </AnchorPane>
+      <Pane fx:id="topGap" layoutX="10.0" layoutY="10.0" maxHeight="279.0" minHeight="279.0" minWidth="0.0" mouseTransparent="true" prefHeight="279.0" snapToPixel="false" styleClass="gapPaneTop" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.leftAnchor="720.0" AnchorPane.rightAnchor="200.0" AnchorPane.topAnchor="0.0" />
+      <Pane fx:id="bottomGap" layoutX="10.0" layoutY="10.0" maxHeight="113.0" minHeight="113.0" minWidth="0.0" mouseTransparent="true" prefHeight="113.0" snapToPixel="false" styleClass="gapPaneBottom" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="720.0" AnchorPane.rightAnchor="200.0" />
+      <Pane fx:id="rightGap" maxWidth="193.0" minHeight="0.0" minWidth="193.0" mouseTransparent="true" prefWidth="193.0" snapToPixel="false" styleClass="gapPaneRight" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="100.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="500.0" />
+      <Pane fx:id="leftGap" maxWidth="271.0" minHeight="0.0" minWidth="271.0" mouseTransparent="true" prefWidth="271.0" snapToPixel="false" styleClass="gapPaneLeft" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="100.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="500.0" />
       <BorderPane fx:id="paneBorder" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mouseTransparent="true" snapToPixel="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <top>
             <HBox alignment="BOTTOM_CENTER" fillHeight="false" maxHeight="279.0" minHeight="279.0" minWidth="1030.0" mouseTransparent="true" prefHeight="279.0" snapToPixel="false" BorderPane.alignment="CENTER">
