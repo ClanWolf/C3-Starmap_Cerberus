@@ -3,7 +3,10 @@ C3 version history
 ----------------------------------------------------------------
 
 TODO PRIO 1 - Immediate:
-- Sort out terminal command handling routines
+- *** Only one alliance is allowed for each faction at a time
+- *** Open requests for alliances are canceled after two rounds (if not accepted) --> Endround
+- *** If an attack is started all diplomacy requests are deleted
+- *** If a jump is saved that would lead to an attack, but both sides agreed to an alliance in this next round, the attack is not created
 - Change compression level of jlink as soon as moditect supports the new param
 - If an attack is lost, the jumpship is moved back to the system it came from
 - Check diplomacy on planet attacks and routepoints (already effective?)
@@ -64,18 +67,12 @@ Version 7.4.0 (07.10.2023)
 - CHANGED: Further reduced package size
 - CHANGED: Minor optical issues in settings pane
 - CHANGED: Refactored the handling of terminal commands
+- CHANGED: Finished refactoring of Diplomacy
+- CHANGED: Allow an alliance only if there is no open attack between the two factions
 - FIXED: Hitting enter on Terminal triggers default key of dialog (e.g. Logout)
 - FIXED: A number of format exception while finalizing the round (possibly introduced by new Java version)
 - FIXED: NPE while shutting down client (timertrigger, but user was already logged off)
 - FIXED: Visual noise effect z-order
-
-- *** Finish refactoring of Diplomacy
-- *** Only one alliance is allowed for each faction at a time
-- *** Allow an alliance only if there is no open attack between the two factions
-- *** Open requests for alliances are canceled after two rounds (if not accepted) --> Endround
-- *** If an attack is started all diplomacy requests are deleted
-- *** If a jump is saved that would lead to an attack, but both sides agreed to an alliance in this next round, the attack is not created
-
 - STARTED: To remove all unnecessary context menus on textfields
 
 Version 7.3.116 (30.09.2023)
