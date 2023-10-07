@@ -125,6 +125,8 @@ public class BODiplomacy {
 		boolean otherFactionAlliedNextRound = false;
 		boolean currentFactionBreakAlliedNextRound = false;
 		boolean otherFactionBreakAlliedNextRound = false;
+		boolean currentFactionAlliedCurrentRound = false;
+		boolean otherFactionAlliedCurrentRound = false;
 
 		String keyOtherFaction = getKeyForOtherFaction(otherFactionID);
 		String keyCurrentFaction = getKeyForCurrentFaction(otherFactionID);
@@ -132,8 +134,14 @@ public class BODiplomacy {
 		DiplomacyDTO otherFactionDTO = diplomacyMap.get(keyOtherFaction);
 		DiplomacyDTO currentFactionDTO = diplomacyMap.get(keyCurrentFaction);
 
-		if(currentFactionDTO != null && currentFactionDTO.getStartingInRound() >= nextRound){
+		if(currentFactionDTO != null && currentFactionDTO.getStartingInRound() >= nextRound ){
 			currentFactionAlliedNextRound = true;
+		}
+		if(currentFactionDTO != null &&  currentFactionDTO.getStartingInRound() < nextRound){
+			currentFactionAlliedCurrentRound = true;
+		}
+		if(otherFactionDTO != null && otherFactionDTO.getStartingInRound() < nextRound){
+			otherFactionAlliedCurrentRound = true;
 		}
 		if(currentFactionDTO != null && currentFactionDTO.getEndingInRound() != null && currentFactionDTO.getEndingInRound() != null && currentFactionDTO.getEndingInRound() >= nextRound){
 			currentFactionBreakAlliedNextRound = true;
@@ -148,15 +156,17 @@ public class BODiplomacy {
 
 		DiplomacyState ds = new DiplomacyState();
 
-		if(currentFactionAlliedNextRound && otherFactionAlliedNextRound) {
+		if((currentFactionAlliedNextRound && otherFactionAlliedCurrentRound) ||
+				(currentFactionAlliedCurrentRound  && otherFactionAlliedNextRound) ||
+				(currentFactionAlliedNextRound && otherFactionAlliedNextRound)) {
 			ds.setState(DiplomacyState.ALLIANCE_FOUND_FOR_NEXT_ROUND);
 			logger.info("Diplomacy state next round -> " + otherFactionID + " / CURRENT_ALLIANCE_FOUND_NEXT_ROUND");
 
-		} else if(currentFactionAlliedNextRound && !otherFactionAlliedNextRound) {
+		} else if(currentFactionAlliedNextRound && !otherFactionAlliedNextRound && !otherFactionAlliedCurrentRound) {
 			ds.setState(DiplomacyState.PLAYERS_FACTION_REQUEST_NEXT_ROUND);
 			logger.info("Diplomacy state  next round -> " + otherFactionID + " / CURRENT_FACTION_REQUEST_NEXT_ROUND");
 
-		} else if(!currentFactionAlliedNextRound && otherFactionAlliedNextRound) {
+		} else if(!currentFactionAlliedNextRound && !currentFactionAlliedCurrentRound && otherFactionAlliedNextRound) {
 			ds.setState(DiplomacyState.OTHER_FACTION_REQUEST_NEXT_ROUND);
 			logger.info("Diplomacy state next round -> " + otherFactionID + " / OTHER_FACTION_REQUEST_NEXT_ROUND");
 

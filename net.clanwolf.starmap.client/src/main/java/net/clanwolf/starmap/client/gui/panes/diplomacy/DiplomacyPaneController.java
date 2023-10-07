@@ -36,17 +36,13 @@ import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
-import net.clanwolf.starmap.client.gui.panes.TerminalCommandHandler;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.universe.BODiplomacy;
 import net.clanwolf.starmap.client.process.universe.BOFaction;
 import net.clanwolf.starmap.client.process.universe.DiplomacyState;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.transfer.GameState;
-import net.clanwolf.starmap.transfer.dtos.DiplomacyDTO;
-import net.clanwolf.starmap.transfer.dtos.FactionDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
-import net.clanwolf.starmap.transfer.util.Compressor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -96,6 +92,7 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 	private final ArrayList<Boolean> allianceWaitingForNextRoundList = new ArrayList<>();
 	private final ArrayList<Boolean> allianceWaitingToBreakNextRoundList = new ArrayList<>();
 	private final ArrayList<Long> factionsWeAreFriendlyWithNowForSaving = new ArrayList<>();
+	private final ArrayList<DiplomacyState> diplomacyStateList = new ArrayList<>();
 	private static DiplomacyPaneController instance = null;
 
 	private final Image diplomacyIconNone = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/diplomacy_enemies.png")));
@@ -114,11 +111,7 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 
 		try {
 			for (int i = 0; i < 8; i++) {
-				if (allianceRequestedByThemList.get(i)) {
-					labelTheirStatusList.get(i).setText(Internationalization.getString("app_diplomacy_column_StatusFriendly"));
-				} else {
-					labelTheirStatusList.get(i).setText(Internationalization.getString("app_diplomacy_column_StatusEnemy"));
-				}
+				labelTheirStatusList.get(i).setText(diplomacyStateList.get(i).getDiplomacyTheirStateText());
 			}
 		} catch (IndexOutOfBoundsException ignore) {
 		}
@@ -242,38 +235,15 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 	public void handleRadioButtonSelection() {
 		buttonSave.setDisable(false);
 		for (int i=0; i<8; i++) {
-			BOFaction f = factions.get(i);
-
 			boolean weFriendly = false;
-			boolean theyFriendly = false;
 
-			if (radioButtonsAllyList.get(i).isDisabled()) {
-				continue;
-			}
+			DiplomacyState state = diplomacyStateList.get(i);
 
 			if (radioButtonsAllyList.get(i).isSelected()) {
 				weFriendly = true;
 			}
 
-			if (labelTheirStatusList.get(i).getText().equals(Internationalization.getString("app_diplomacy_column_StatusFriendly"))) {
-				theyFriendly = true;
-			}
-
-			imageAlliedLogoList.get(i).setImage(diplomacyIconNone);
-
-			if (theyFriendly && !weFriendly) {
-				imageAlliedLogoList.get(i).setImage(diplomacyIconLeft);
-			}
-			if (!theyFriendly && weFriendly) {
-				imageAlliedLogoList.get(i).setImage(diplomacyIconRight);
-			}
-			if (theyFriendly && weFriendly) {
-				if (allianceWaitingForNextRoundList.get(i)) {
-					imageAlliedLogoList.get(i).setImage(diplomacyIconAlliedWaiting);
-				} else {
-					imageAlliedLogoList.get(i).setImage(diplomacyIconAllied);
-				}
-			}
+			imageAlliedLogoList.get(i).setImage(state.getFutureStateIcon(weFriendly));
 		}
 	}
 
@@ -391,6 +361,7 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 			allianceRequestedByThemList.clear();
 			allianceWaitingForNextRoundList.clear();
 			allianceWaitingToBreakNextRoundList.clear();
+			diplomacyStateList.clear();
 
 			int cRound = Nexus.getBoUniverse().currentRound;
 
@@ -398,6 +369,9 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 
 			for (int i = 0; i < labelShortNameList.size(); i++) {
 				BOFaction otherFaction = factions.get(i);
+
+				radioButtonsAllyList.get(i).setDisable(false);
+				radioButtonsEnemyList.get(i).setDisable(false);
 
 				labelTheirStatusList.get(i).setVisible(true);
 				radioButtonsEnemyList.get(i).setVisible(true);
@@ -409,8 +383,9 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 				radioButtonsEnemyList.get(i).setToggleGroup(toggleGroupsList.get(i));
 
 				DiplomacyState s = boDiplomacy.getDiplomacyState(Nexus.getCurrentFaction().getID(), otherFaction.getID());
+				diplomacyStateList.add(s);
 				imageAlliedLogoList.get(i).setImage(s.getDiplomacyIcon());
-				labelTheirStatusList.get(i).setText("Verfeindet");
+				labelTheirStatusList.get(i).setText(s.getDiplomacyTheirStateText());
 				switch(s.getState()) {
 					case DiplomacyState.NO_ALLIANCE_FOUND -> {
 						radioButtonsAllyList.get(i).setSelected(false);
@@ -419,7 +394,6 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 					case DiplomacyState.CURRENT_ALLIANCE_FOUND -> {
 						radioButtonsAllyList.get(i).setSelected(true);
 						radioButtonsEnemyList.get(i).setSelected(false);
-						labelTheirStatusList.get(i).setText("Freundlich");
 					}
 					case DiplomacyState.PLAYERS_FACTION_REQUEST_CURRENT_ROUND -> {
 						radioButtonsAllyList.get(i).setSelected(true);
@@ -428,13 +402,14 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 					case DiplomacyState.OTHER_FACTION_REQUEST_CURRENT_ROUND -> {
 						radioButtonsAllyList.get(i).setSelected(false);
 						radioButtonsEnemyList.get(i).setSelected(true);
-						labelTheirStatusList.get(i).setText("Freundlich");
 						allianceRequestedByThemList.add(true);
 					}
 					case DiplomacyState.ALLIANCE_FOUND_FOR_NEXT_ROUND -> {
 						radioButtonsAllyList.get(i).setSelected(true);
 						radioButtonsEnemyList.get(i).setSelected(false);
 						allianceWaitingForNextRoundList.add(true);
+						radioButtonsAllyList.get(i).setDisable(true);
+						radioButtonsEnemyList.get(i).setDisable(true);
 					}
 					case DiplomacyState.PLAYERS_FACTION_REQUEST_NEXT_ROUND -> {
 						radioButtonsAllyList.get(i).setSelected(true);
@@ -444,22 +419,26 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 					case DiplomacyState.OTHER_FACTION_REQUEST_NEXT_ROUND -> {
 						radioButtonsAllyList.get(i).setSelected(false);
 						radioButtonsEnemyList.get(i).setSelected(true);
-						labelTheirStatusList.get(i).setText("Freundlich");
 					}
 					case DiplomacyState.PLAYERS_FACTION_BREAK_ALLIANCE_NEXT_ROUND -> {
 						radioButtonsAllyList.get(i).setSelected(false);
 						radioButtonsEnemyList.get(i).setSelected(true);
 						allianceWaitingToBreakNextRoundList.add(true);
+						radioButtonsAllyList.get(i).setDisable(true);
+						radioButtonsEnemyList.get(i).setDisable(true);
 					}
 					case DiplomacyState.OTHER_FACTION_BREAK_ALLIANCE_NEXT_ROUND -> {
 						radioButtonsAllyList.get(i).setSelected(true);
 						radioButtonsEnemyList.get(i).setSelected(false);
 						allianceWaitingToBreakNextRoundList.add(true);
+						radioButtonsAllyList.get(i).setDisable(true);
+						radioButtonsEnemyList.get(i).setDisable(true);
 					}
 					case DiplomacyState.FACTIONS_AT_WAR -> {
 						radioButtonsAllyList.get(i).setSelected(false);
 						radioButtonsEnemyList.get(i).setSelected(true);
-						labelTheirStatusList.get(i).setText("Krieg erklärt");
+						radioButtonsAllyList.get(i).setDisable(true);
+						radioButtonsEnemyList.get(i).setDisable(true);
 					}
 				}
 
@@ -478,225 +457,4 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 			buttonSave.setDisable(true);
 		});
 	}
-
-//	private void init() {
-//		instance = this;
-//		ivMyFactionIcon.setImage(Nexus.getFactionLogo());
-//
-//		ActionManager.getAction(ACTIONS.DIPLOMACY_STATUS_PENDING_HIDE).execute();
-//
-//		factions.clear();
-//		for (BOFaction fa : Nexus.getBoUniverse().getActiveFactions()) { // all factions that have a jumpship
-//			if (!fa.getFactionDTO().getId().equals(Nexus.getCurrentChar().getFactionId().longValue())) {
-//				factions.add(fa);
-//			}
-//		}
-//		Collections.sort(factions);
-//		Platform.runLater(() -> {
-//			labelFactionShort01.setText("");
-//			labelFactionShort02.setText("");
-//			labelFactionShort03.setText("");
-//			labelFactionShort04.setText("");
-//			labelFactionShort05.setText("");
-//			labelFactionShort06.setText("");
-//			labelFactionShort07.setText("");
-//			labelFactionShort08.setText("");
-//
-//			LabelTheirStatus01.setText("");
-//			LabelTheirStatus02.setText("");
-//			LabelTheirStatus03.setText("");
-//			LabelTheirStatus04.setText("");
-//			LabelTheirStatus05.setText("");
-//			LabelTheirStatus06.setText("");
-//			LabelTheirStatus07.setText("");
-//			LabelTheirStatus08.setText("");
-//
-//			labelTheirStatusList.clear();
-//			labelTheirStatusList.add(LabelTheirStatus01);
-//			labelTheirStatusList.add(LabelTheirStatus02);
-//			labelTheirStatusList.add(LabelTheirStatus03);
-//			labelTheirStatusList.add(LabelTheirStatus04);
-//			labelTheirStatusList.add(LabelTheirStatus05);
-//			labelTheirStatusList.add(LabelTheirStatus06);
-//			labelTheirStatusList.add(LabelTheirStatus07);
-//			labelTheirStatusList.add(LabelTheirStatus08);
-//
-//			labelShortNameList.clear();
-//			labelShortNameList.add(labelFactionShort01);
-//			labelShortNameList.add(labelFactionShort02);
-//			labelShortNameList.add(labelFactionShort03);
-//			labelShortNameList.add(labelFactionShort04);
-//			labelShortNameList.add(labelFactionShort05);
-//			labelShortNameList.add(labelFactionShort06);
-//			labelShortNameList.add(labelFactionShort07);
-//			labelShortNameList.add(labelFactionShort08);
-//
-//			imageFactionLogoList.clear();
-//			imageFactionLogoList.add(ivFaction01);
-//			imageFactionLogoList.add(ivFaction02);
-//			imageFactionLogoList.add(ivFaction03);
-//			imageFactionLogoList.add(ivFaction04);
-//			imageFactionLogoList.add(ivFaction05);
-//			imageFactionLogoList.add(ivFaction06);
-//			imageFactionLogoList.add(ivFaction07);
-//			imageFactionLogoList.add(ivFaction08);
-//
-//			imageAlliedLogoList.clear();
-//			imageAlliedLogoList.add(ivAllied01);
-//			imageAlliedLogoList.add(ivAllied02);
-//			imageAlliedLogoList.add(ivAllied03);
-//			imageAlliedLogoList.add(ivAllied04);
-//			imageAlliedLogoList.add(ivAllied05);
-//			imageAlliedLogoList.add(ivAllied06);
-//			imageAlliedLogoList.add(ivAllied07);
-//			imageAlliedLogoList.add(ivAllied08);
-//
-//			radioButtonsEnemyList.clear();
-//			radioButtonsEnemyList.add(checkbEnemy01);
-//			radioButtonsEnemyList.add(checkbEnemy02);
-//			radioButtonsEnemyList.add(checkbEnemy03);
-//			radioButtonsEnemyList.add(checkbEnemy04);
-//			radioButtonsEnemyList.add(checkbEnemy05);
-//			radioButtonsEnemyList.add(checkbEnemy06);
-//			radioButtonsEnemyList.add(checkbEnemy07);
-//			radioButtonsEnemyList.add(checkbEnemy08);
-//
-//			radioButtonsAllyList.clear();
-//			radioButtonsAllyList.add(checkbAlly01);
-//			radioButtonsAllyList.add(checkbAlly02);
-//			radioButtonsAllyList.add(checkbAlly03);
-//			radioButtonsAllyList.add(checkbAlly04);
-//			radioButtonsAllyList.add(checkbAlly05);
-//			radioButtonsAllyList.add(checkbAlly06);
-//			radioButtonsAllyList.add(checkbAlly07);
-//			radioButtonsAllyList.add(checkbAlly08);
-//
-//			ToggleGroup group01 = new ToggleGroup();
-//			ToggleGroup group02 = new ToggleGroup();
-//			ToggleGroup group03 = new ToggleGroup();
-//			ToggleGroup group04 = new ToggleGroup();
-//			ToggleGroup group05 = new ToggleGroup();
-//			ToggleGroup group06 = new ToggleGroup();
-//			ToggleGroup group07 = new ToggleGroup();
-//			ToggleGroup group08 = new ToggleGroup();
-//
-//			toggleGroupsList.clear();
-//			toggleGroupsList.add(group01);
-//			toggleGroupsList.add(group02);
-//			toggleGroupsList.add(group03);
-//			toggleGroupsList.add(group04);
-//			toggleGroupsList.add(group05);
-//			toggleGroupsList.add(group06);
-//			toggleGroupsList.add(group07);
-//			toggleGroupsList.add(group08);
-//
-//			allianceRequestedByThemList.clear();
-//			allianceWaitingForNextRoundList.clear();
-//			allianceWaitingToBreakNextRoundList.clear();
-//
-//			int cRound = Nexus.getBoUniverse().currentRound;
-//
-//			BODiplomacy boDiplomacy = new BODiplomacy(Nexus.getBoUniverse().currentRound, Nexus.getBoUniverse().getDiplomacy());
-//
-//			for (int i = 0; i < labelShortNameList.size(); i++) {
-//				BOFaction f = factions.get(i);
-//
-//				boDiplomacy.getDiplomacyStateCurrentRound(f.getID());
-//				boDiplomacy.getDiplomacyStateNextRound(f.getID());
-//
-//				labelTheirStatusList.get(i).setVisible(true);
-//				radioButtonsEnemyList.get(i).setVisible(true);
-//				radioButtonsAllyList.get(i).setVisible(true);
-//				imageAlliedLogoList.get(i).setVisible(true);
-//				imageAlliedLogoList.get(i).setImage(diplomacyIconNone);
-//
-//				boolean weRequestedAlliance = false;
-//				boolean allianceRequestedByThem = false;
-//				boolean allianceWaitingForNextRound = false;
-//				boolean allianceWaitingToBreakNextRound = false;
-//
-//				int weRequestedAllianceForRound = -1;
-//				int allianceRequestedByThemForRound = -1;
-//				//int endOfAllianceRequestedByThemForRound = -1;
-//
-//				for (DiplomacyDTO d : Nexus.getBoUniverse().getDiplomacy()) {
-//					if (d.getFactionID_REQUEST().equals(f.getID()) && d.getFactionID_ACCEPTED().equals(Nexus.getCurrentChar().getFactionId().longValue())) {
-//						allianceRequestedByThem = true;
-//						allianceRequestedByThemForRound = d.getStartingInRound();
-//						labelTheirStatusList.get(i).setText(Internationalization.getString("app_diplomacy_column_StatusFriendly"));
-//					}
-//					if (d.getFactionID_REQUEST().equals(Nexus.getCurrentChar().getFactionId().longValue()) && d.getFactionID_ACCEPTED().equals(f.getID())) {
-//						radioButtonsAllyList.get(i).setSelected(true);
-//						radioButtonsEnemyList.get(i).setSelected(false);
-//						weRequestedAlliance = true;
-//						weRequestedAllianceForRound = d.getStartingInRound();
-//					}
-//					if (
-//							(d.getFactionID_REQUEST().equals(Nexus.getCurrentChar().getFactionId().longValue()) && d.getFactionID_ACCEPTED().equals(f.getID()) && d.getEndingInRound() != null && d.getEndingInRound() > cRound)
-//									||  (d.getFactionID_ACCEPTED().equals(Nexus.getCurrentChar().getFactionId().longValue()) && d.getFactionID_REQUEST().equals(f.getID()) && d.getEndingInRound() != null && d.getEndingInRound() > cRound)
-//					) {
-//						logger.info("----------------- Alliance " + i + " is waiting for next round to break up.");
-//
-//						allianceWaitingToBreakNextRound = true;
-//						radioButtonsAllyList.get(i).setDisable(true);
-//						radioButtonsEnemyList.get(i).setDisable(true);
-//					}
-//				}
-//				if (!allianceRequestedByThem) {
-//					labelTheirStatusList.get(i).setText(Internationalization.getString("app_diplomacy_column_StatusEnemy"));
-//				}
-//				if (!weRequestedAlliance) {
-//					radioButtonsAllyList.get(i).setSelected(false);
-//					radioButtonsEnemyList.get(i).setSelected(true);
-//				}
-//				if (allianceRequestedByThem && !weRequestedAlliance) {
-//					imageAlliedLogoList.get(i).setImage(diplomacyIconLeft);
-//					ActionManager.getAction(ACTIONS.DIPLOMACY_STATUS_PENDING).execute();
-//				}
-//				if (!allianceRequestedByThem && weRequestedAlliance) {
-//					imageAlliedLogoList.get(i).setImage(diplomacyIconRight);
-//					ActionManager.getAction(ACTIONS.DIPLOMACY_STATUS_PENDING).execute();
-//				}
-//
-//				if (allianceRequestedByThem && weRequestedAlliance) {
-//					if ((allianceRequestedByThemForRound <= cRound) && (weRequestedAllianceForRound <= cRound)) {
-//						if(!allianceWaitingToBreakNextRound) {
-//							imageAlliedLogoList.get(i).setImage(diplomacyIconAllied);
-//							allianceWaitingForNextRound = false;
-//						} else{
-//							imageAlliedLogoList.get(i).setImage(diplomacyIconAlliedBrokenWaiting);
-//							allianceWaitingForNextRound = false;
-//						}
-//					} else {
-//						imageAlliedLogoList.get(i).setImage(diplomacyIconAlliedWaiting);
-//						allianceWaitingForNextRound = true;
-//
-//						logger.info("----------------- Alliance " + i + " is waiting for next round to get into effect.");
-//						radioButtonsAllyList.get(i).setDisable(true);
-//						radioButtonsEnemyList.get(i).setDisable(true);
-//					}
-//				}
-//
-//				allianceWaitingToBreakNextRoundList.add(allianceWaitingToBreakNextRound);
-//				allianceWaitingForNextRoundList.add(allianceWaitingForNextRound);
-//				allianceRequestedByThemList.add(allianceRequestedByThem);
-//
-//				radioButtonsAllyList.get(i).setToggleGroup(toggleGroupsList.get(i));
-//				radioButtonsEnemyList.get(i).setToggleGroup(toggleGroupsList.get(i));
-//
-//				// Faction logo
-//				String logo = f.getLogo();
-//				Image imageFaction = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/logos/factions/" + logo)));
-//				ImageView iv = imageFactionLogoList.get(i);
-//				iv.setImage(imageFaction);
-//				iv.setVisible(true);
-//
-//				// Faction shortname
-//				Label l = labelShortNameList.get(i);
-//				l.setText(f.getShortName());
-//				l.setVisible(true);
-//			}
-//			buttonSave.setDisable(true);
-//		});
-//	}
 }
