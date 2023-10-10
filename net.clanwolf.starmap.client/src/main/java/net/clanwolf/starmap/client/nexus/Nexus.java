@@ -400,6 +400,9 @@ public class Nexus {
 
 	@SuppressWarnings("unused")
 	public static void userHasFinishedAttacksInCurrentRound() {
+		if (finishedAttacksOfUser == null) {
+			finishedAttacksOfUser = new ArrayList<BOAttack>();
+		}
 		finishedAttacksOfUser.clear();
 
 		if (Nexus.getBoUniverse() != null) {
@@ -407,7 +410,7 @@ public class Nexus {
 				if (a.getAttackCharList() != null) {
 					for (AttackCharacterDTO ac : a.getAttackCharList()) {
 						if (ac.getCharacterID().equals(Nexus.getCurrentUser().getCurrentCharacter().getId())) {
-							// The user currently logged in was part of an attck that is resolved
+							// The user currently logged in was part of an attack that is resolved
 							finishedAttacksOfUser.add(a);
 							break;
 						}

@@ -298,7 +298,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	@FXML
 	private Pane paneVolumeControl;
 	@FXML
-	private Pane paneWindowMoverHandle;
+	private Pane paneWindowMoverHandle, paneWindowMoverHandle_TOP;
 	@FXML
 	private TableView<UserHistoryEntry> tblUserHistory;
 	@FXML
@@ -1066,6 +1066,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		ActionManager.addActionCallbackListener(ACTIONS.DISABLE_DEFAULT_BUTTON, this);
 		ActionManager.addActionCallbackListener(ACTIONS.TERMINAL_COMMAND, this);
 		ActionManager.addActionCallbackListener(ACTIONS.ADD_CONSOLE_LINE, this);
+		ActionManager.addActionCallbackListener(ACTIONS.SET_USER_IMAGE, this);
 	}
 
 	public static Date addDaysToDate(Date date, int daysToAdd) {
@@ -2163,6 +2164,12 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					}
 
 					ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("5");
+				});
+				break;
+
+			case SET_USER_IMAGE:
+				Platform.runLater(() -> {
+					ivLoggedOnUserImage.setImage(Nexus.getCurrentCharImage());
 				});
 				break;
 

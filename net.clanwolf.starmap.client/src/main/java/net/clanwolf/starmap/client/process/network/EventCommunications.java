@@ -30,6 +30,7 @@ import io.nadron.client.app.Session;
 import io.nadron.client.event.Event;
 import io.nadron.client.event.Events;
 import io.nadron.client.event.NetworkEvent;
+import javafx.scene.image.Image;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.StatusTextEntryActionObject;
@@ -622,6 +623,7 @@ public class EventCommunications {
 						}
 						ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("13_33");
 						ActionManager.getAction(ACTIONS.NEW_UNIVERSE_RECEIVED).execute();
+						ActionManager.getAction(ACTIONS.SET_USER_IMAGE).execute(); // sets user icon in case it was changed
 					}
 					break;
 
@@ -631,10 +633,11 @@ public class EventCommunications {
 				case USER_REQUEST_LOGGED_IN_DATA:
 					break;
 
-				//				case USER_SAVE:
-				//					break;
+//				case USERDATA_SAVE:
+//					break;
 				case BROADCAST_SEND_NEW_PLAYERLIST:
 					break;
+
 				case ROLEPLAY_REQUEST_ALLSTORIES:
 					break;
 				case ROLEPLAY_GET_STORYANDCHAPTER:

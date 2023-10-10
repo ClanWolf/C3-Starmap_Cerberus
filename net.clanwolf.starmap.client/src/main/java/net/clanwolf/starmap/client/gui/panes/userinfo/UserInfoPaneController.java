@@ -331,6 +331,7 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 		ActionManager.addActionCallbackListener(ACTIONS.PANE_CREATION_FINISHED, this);
 		ActionManager.addActionCallbackListener(ACTIONS.PANE_DESTRUCTION_FINISHED, this);
 		ActionManager.addActionCallbackListener(ACTIONS.NEW_UNIVERSE_RECEIVED, this);
+		ActionManager.addActionCallbackListener(ACTIONS.SET_USER_IMAGE, this);
 
 		// Added in AbstractC3Controller:
 		// ActionManager.addActionCallbackListener(ACTIONS.ENABLE_DEFAULT_BUTTON, this);
@@ -493,6 +494,12 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 		switch (action) {
 			case CHANGE_LANGUAGE:
 				setStrings();
+				break;
+
+			case SET_USER_IMAGE:
+				Platform.runLater(() -> {
+					ivCharacterPortrait.setImage(Nexus.getCurrentCharImage());
+				});
 				break;
 
 			case NEW_UNIVERSE_RECEIVED:

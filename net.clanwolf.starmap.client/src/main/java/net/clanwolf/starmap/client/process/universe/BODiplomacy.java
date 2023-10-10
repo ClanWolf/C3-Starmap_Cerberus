@@ -153,7 +153,6 @@ public class BODiplomacy {
 			otherFactionBreakAlliedNextRound = true;
 		};
 
-
 		DiplomacyState ds = new DiplomacyState();
 
 		if((currentFactionAlliedNextRound && otherFactionAlliedCurrentRound) ||

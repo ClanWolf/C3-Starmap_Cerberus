@@ -422,7 +422,7 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 		});
 		scene.setOnMouseDragged((MouseEvent mouseEvent) -> {
 			//if (mouseEvent.getTarget().toString().equals("AnchorPane[id=AnchorPane, styleClass=root]")) {
-			if (mouseEvent.getTarget() instanceof Pane pane && pane.getId() != null && pane.getId().equals("paneWindowMoverHandle")) {
+			if (mouseEvent.getTarget() instanceof Pane pane && pane.getId() != null && pane.getId().startsWith("paneWindowMoverHandle")) {
 				stage.setX(mouseEvent.getScreenX() + dragDelta.x);
 				stage.setY(mouseEvent.getScreenY() + dragDelta.y);
 				posX = stage.getX();

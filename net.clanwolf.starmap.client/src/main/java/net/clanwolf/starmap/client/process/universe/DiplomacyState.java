@@ -95,7 +95,7 @@ public class DiplomacyState{
 				diplomanyTheirStateText = Internationalization.getString("app_diplomacy_column_StatusFriendly");
 				break;
 			case DiplomacyState.FACTIONS_AT_WAR:
-				diplomanyTheirStateText = "Krieg erklärt";
+				diplomanyTheirStateText = Internationalization.getString("app_diplomacy_column_StatusAtWar");
 				break;
 			default:
 				diplomanyTheirStateText = Internationalization.getString("app_diplomacy_column_StatusEnemy");

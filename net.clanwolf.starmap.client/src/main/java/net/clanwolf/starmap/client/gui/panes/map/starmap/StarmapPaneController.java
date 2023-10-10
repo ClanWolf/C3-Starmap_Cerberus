@@ -1444,6 +1444,7 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 				mapButton06.toFront();
 				paneSystemDetail.toFront();
 				paneSystemDetail.setOpacity(0.0f);
+				paneSystemDetail.setMouseTransparent(true);
 				paneAttackDetail.toFront();
 				paneAttackDetail.setOpacity(0.0f);
 				paneJumpshipDetail.toFront();
@@ -1736,6 +1737,8 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 				sequentialTransition.setCycleCount(1);
 				sequentialTransition.play();
 
+				paneSystemDetail.setMouseTransparent(true);
+			} else {
 				paneSystemDetail.setMouseTransparent(true);
 			}
 		}
@@ -2208,6 +2211,7 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 						//				mapButton05.setOpacity(0.0f);
 						mapButton06.setOpacity(0.0f);
 						paneSystemDetail.setOpacity(0.0f);
+						paneSystemDetail.setMouseTransparent(true);
 						paneJumpshipDetail.setOpacity(0.0f);
 						paneAttackDetail.setOpacity(0.0f);
 					});
@@ -2283,7 +2287,7 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 				if (o.getObject() instanceof BOStarSystem ss) {
 
 					boolean hasAttack = false;
-					boolean attackAlreadyStarted;
+					boolean attackAlreadyStarted = false;
 					boolean startAttackEnabled = false;
 
 					BOAttack attackOfSelectedSystem = null;
@@ -2390,7 +2394,12 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 							if (attackOfSelectedSystem != null) {
 								showAttackDetail(attackOfSelectedSystem);
 								hideJumpshipDetail();
-								hideSystemDetail();
+								showSystemDetail(Nexus.getCurrentlySelectedStarSystem());
+								if (attackAlreadyStarted) {
+									// disable attack button
+									mapButton06.setDisable(true);
+									mapButton06.setVisible(false);
+								}
 							}
 						}
 					} else {

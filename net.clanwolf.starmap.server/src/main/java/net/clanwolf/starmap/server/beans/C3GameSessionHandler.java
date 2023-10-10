@@ -1407,7 +1407,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				}
 				break;
 			case RESTART_SERVER:
-				// Trigger shutdown
+				// Trigger shutdown / restart of server
 				File restartFlagFile = new File(ServerNexus.getServerBaseDir() + File.separator + "C3-Server_restart.flag");
 				try {
 					if (!restartFlagFile.createNewFile()) {

@@ -81,6 +81,7 @@
             <Image url="@../images/gui/hud.gif" />
          </image>
       </ImageView>
+      <Label fx:id="systemConsoleCursor" alignment="BOTTOM_RIGHT" contentDisplay="RIGHT" disable="true" focusTraversable="false" layoutX="948.0" layoutY="470.0" maxHeight="16.0" maxWidth="593.0" minHeight="16.0" minWidth="12.0" prefHeight="16.0" prefWidth="12.0" snapToPixel="false" stylesheets="@../styles/MainFrameStyle.css" text="_" textAlignment="RIGHT" textFill="#8f9791" AnchorPane.bottomAnchor="144.0" AnchorPane.rightAnchor="75.0" />
       <AnchorPane fx:id="paneNoise" layoutX="125.0" layoutY="57.0" AnchorPane.bottomAnchor="40.0" AnchorPane.leftAnchor="110.0" AnchorPane.rightAnchor="40.0" AnchorPane.topAnchor="40.0">
          <children>
             <Pane mouseTransparent="true" opacity="0.75" snapToPixel="false" styleClass="backgroundNoise" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -221,7 +222,7 @@
          </effect></Slider>
       <Pane fx:id="paneVolumeControl" layoutX="137.0" layoutY="334.0" prefHeight="209.0" prefWidth="35.0" snapToPixel="false" styleClass="contentTextAreaBlock2" stylesheets="@../styles/MainFrameStyle.css" visible="false" />
       <ProgressBar fx:id="TFSProgress" focusTraversable="false" layoutX="173.0" layoutY="23.0" onMouseEntered="#handleTFSProgressEntered" onMouseExited="#handleTFSProgressExited" prefHeight="18.0" prefWidth="125.0" progress="0.56" snapToPixel="false" visible="false" />
-      <Label fx:id="gameInfoLabel" focusTraversable="false" layoutX="422.0" layoutY="30.0" mouseTransparent="true" prefHeight="20.0" prefWidth="206.0" snapToPixel="false" />
+      <Label fx:id="gameInfoLabel" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="405.0" layoutY="26.0" mouseTransparent="true" prefHeight="24.0" prefWidth="210.0" snapToPixel="false" />
       <Label fx:id="terminalLabel" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" layoutX="567.0" layoutY="556.0" prefHeight="20.0" prefWidth="66.0" snapToPixel="false" text="Terminal:" AnchorPane.bottomAnchor="54.0" AnchorPane.rightAnchor="395.0" />
       <TextField fx:id="terminalPrompt" layoutX="639.0" layoutY="555.0" onKeyPressed="#handleTerminalEnterButton" prefHeight="20.0" prefWidth="305.0" snapToPixel="false" styleClass="text" stylesheets="@../styles/MainFrameStyle.css" AnchorPane.bottomAnchor="55.0" AnchorPane.rightAnchor="86.0" />
       <Label fx:id="helpLabel" focusTraversable="false" layoutX="585.0" layoutY="581.0" onMouseClicked="#handleHelpMouseEventClick" onMouseEntered="#handleHelpButtonHoverEnter" onMouseExited="#handleHelpButtonHoverExit" prefHeight="20.0" prefWidth="12.0" snapToPixel="false" text="Help" AnchorPane.bottomAnchor="28.0" />
@@ -241,7 +242,6 @@
             <URL value="@../styles/MainFrameStyle.css" />
          </stylesheets>
       </Label>
-      <Label fx:id="systemConsoleCursor" alignment="BOTTOM_RIGHT" contentDisplay="RIGHT" disable="true" focusTraversable="false" layoutX="948.0" layoutY="470.0" maxHeight="16.0" maxWidth="593.0" minHeight="16.0" minWidth="12.0" prefHeight="16.0" prefWidth="12.0" snapToPixel="false" stylesheets="@../styles/MainFrameStyle.css" text="_" textAlignment="RIGHT" textFill="#8f9791" AnchorPane.bottomAnchor="144.0" AnchorPane.rightAnchor="75.0" />
         <Label id="" fx:id="versionLabel" focusTraversable="false" layoutX="124.0" layoutY="584.0" mouseTransparent="true" prefWidth="212.0" snapToPixel="false" styleClass="versionlabel" text="Version" AnchorPane.bottomAnchor="32.0">
             <font>
                 <Font name="System Italic" size="10.0" />
@@ -392,6 +392,7 @@
          </image>
       </ImageView>
       <Pane fx:id="paneWindowMoverHandle" layoutX="18.0" layoutY="21.0" prefHeight="546.0" prefWidth="40.0" snapToPixel="false" AnchorPane.bottomAnchor="63.0" AnchorPane.topAnchor="21.0" />
+      <Pane fx:id="paneWindowMoverHandle_TOP" layoutX="331.0" layoutY="22.0" prefHeight="34.0" prefWidth="361.0" snapToPixel="false" />
     </children>
     <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />

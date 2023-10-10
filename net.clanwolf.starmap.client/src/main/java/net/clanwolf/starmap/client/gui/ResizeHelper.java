@@ -26,6 +26,7 @@
  */
 package net.clanwolf.starmap.client.gui;
 
+import javafx.application.Platform;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
@@ -34,6 +35,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import org.slf4j.Logger;
@@ -95,8 +97,11 @@ public class ResizeHelper {
 			//double sceneWidth = scene.getWidth();
 			//double sceneHeight = scene.getHeight();
 
-			if (mouseEvent.getTarget() instanceof Label label && label.getId() != null && label.getId().equals("ResizerControl")) {
+			if (mouseEvent.getTarget() instanceof Pane pane && pane.getId() != null && pane.getId().startsWith("paneWindowMoverHandle")) {
+				stage.getScene().setCursor(Cursor.MOVE);
+			}
 
+			if (mouseEvent.getTarget() instanceof Label label && label.getId() != null && label.getId().equals("ResizerControl")) {
 				// We allow resize only on the resize area on the bottom right corner (South-East)
 				Cursor cursorEvent = Cursor.SE_RESIZE;
 

@@ -96,11 +96,6 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 	private static DiplomacyPaneController instance = null;
 
 	private final Image diplomacyIconNone = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/diplomacy_enemies.png")));
-	private final Image diplomacyIconLeft = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/diplomacy_left.png")));
-	private final Image diplomacyIconRight = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/diplomacy_right.png")));
-	private final Image diplomacyIconAllied = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/diplomacy_allies.png")));
-	private final Image diplomacyIconAlliedWaiting = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/diplomacy_allies_waiting.png")));
-	private final Image diplomacyIconAlliedBrokenWaiting = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/diplomacy_enemies_waiting.png")));
 
 	@Override
 	public void setStrings() {

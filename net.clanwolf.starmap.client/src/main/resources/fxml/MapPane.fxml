@@ -37,7 +37,7 @@
                   <Image url="@../images/map/forbidden0.png" />
                </image>
             </ImageView>
-            <AnchorPane fx:id="paneAttackDetail" layoutX="6.0" layoutY="297.0" mouseTransparent="true" prefHeight="110.0" prefWidth="763.0" styleClass="systemDetailPanelSolid" stylesheets="@../styles/MainFrameStyle.css">
+            <AnchorPane fx:id="paneAttackDetail" layoutX="6.0" layoutY="267.0" mouseTransparent="true" prefHeight="148.0" prefWidth="763.0" styleClass="systemDetailPanelSolid" stylesheets="@../styles/MainFrameStyle.css">
                <children>
                   <VBox alignment="CENTER" maxWidth="1.7976931348623157E308" mouseTransparent="true" prefHeight="94.0" prefWidth="519.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
@@ -95,7 +95,7 @@
                               </ImageView>
                            </children>
                         </HBox>
-                        <TextField fx:id="taAttackDescription" editable="false" focusTraversable="false" prefHeight="40.0" prefWidth="743.0" styleClass="text-area" stylesheets="@../styles/MainFrameStyle.css" VBox.vgrow="ALWAYS">
+                        <TextField fx:id="taAttackDescription" editable="false" focusTraversable="false" prefHeight="16.0" prefWidth="733.0" styleClass="text-area" stylesheets="@../styles/MainFrameStyle.css" VBox.vgrow="NEVER">
                            <VBox.margin>
                               <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                            </VBox.margin>

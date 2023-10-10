@@ -38,6 +38,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import net.clanwolf.starmap.client.action.ACTIONS;
+import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.transfer.enums.PRIVILEGES;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.universe.BOFaction;
@@ -153,10 +155,10 @@ public class UsereditorPaneController {
 	public void handleImageSelectedMale() {
 		String s = lvImageSelectorMale.getSelectionModel().getSelectedItem();
 		if (s != null) {
-			String imageName = "/images/chars/male/" + s + ".png";
-			Image charImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(imageName)));
+//			String imageName = "/images/chars/male/" + s + ".png";
+			Image charImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(s)));
 			ivCharImage.setImage(charImage);
-			newSelectedCharacterImage = imageName;
+			newSelectedCharacterImage = s;
 			currentUserWasChanged = true;
 			lblOldImageId.setText("(" + originalCharacterImage.substring(originalCharacterImage.length() - 8, originalCharacterImage.length() - 4) + ")");
 			checkUserChanges();
@@ -167,10 +169,10 @@ public class UsereditorPaneController {
 	public void handleImageSelectedFemale() {
 		String s = lvImageSelectorFemale.getSelectionModel().getSelectedItem();
 		if (s != null) {
-			String imageName = "/images/chars/female/" + s + ".png";
-			Image charImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(imageName)));
+//			String imageName = "/images/chars/female/" + s + ".png";
+			Image charImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(s)));
 			ivCharImage.setImage(charImage);
-			newSelectedCharacterImage = imageName;
+			newSelectedCharacterImage = s;
 			currentUserWasChanged = true;
 			lblOldImageId.setText("(" + originalCharacterImage.substring(originalCharacterImage.length() - 8, originalCharacterImage.length() - 4) + ")");
 			checkUserChanges();
@@ -253,6 +255,8 @@ public class UsereditorPaneController {
 					Nexus.getCurrentChar().setName(tfCharacterName.getText());
 					if (!"".equals(newSelectedCharacterImage)) {
 						Nexus.getCurrentChar().setCharImage(newSelectedCharacterImage);
+						Nexus.setLoggedOnUserImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(newSelectedCharacterImage))));
+						ActionManager.getAction(ACTIONS.SET_USER_IMAGE).execute();
 					}
 
 					if (tfPassword.getText().length() > 5
@@ -740,17 +744,59 @@ public class UsereditorPaneController {
 		Image charImage = new Image(Objects.requireNonNull(getClass().getResourceAsStream(imageName)));
 		ivCharImage.setImage(charImage);
 
+		lvImageSelectorFemale.setCellFactory(listView -> new ListCell<>() {
+			private final ImageView imageView = new ImageView();
+
+			@Override
+			public void updateItem(String item, boolean empty) {
+				super.updateItem(item, empty);
+
+				imageView.setFitWidth(80);
+				imageView.setFitHeight(80);
+
+				if (empty) {
+					setGraphic(null);
+				} else {
+					Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(item)));
+					imageView.setImage(image);
+					setGraphic(imageView);
+					setStyle("-fx-alignment: CENTER;");
+				}
+			}
+		});
+
+		lvImageSelectorMale.setCellFactory(listView -> new ListCell<>() {
+			private final ImageView imageView = new ImageView();
+
+			@Override
+			public void updateItem(String item, boolean empty) {
+				super.updateItem(item, empty);
+
+				imageView.setFitWidth(80);
+				imageView.setFitHeight(80);
+
+				if (empty) {
+					setGraphic(null);
+				} else {
+					Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream(item)));
+					imageView.setImage(image);
+					setGraphic(imageView);
+					setStyle("-fx-alignment: CENTER;");
+				}
+			}
+		});
+
 		for (int iii = 1000; iii < 1200; iii++) {
 			URL urlMale = getClass().getResource("/images/chars/male/" + iii + ".png");
 			if (urlMale != null) {
-				lvImageSelectorMale.getItems().add(iii + "");
+				lvImageSelectorMale.getItems().add("/images/chars/male/" + iii + ".png");
 			}
 		}
 
 		for (int iii = 1000; iii < 1200; iii++) {
 			URL urlMale = getClass().getResource("/images/chars/female/" + iii + ".png");
 			if (urlMale != null) {
-				lvImageSelectorFemale.getItems().add(iii + "");
+				lvImageSelectorFemale.getItems().add("/images/chars/female/" + iii + ".png");
 			}
 		}
 
