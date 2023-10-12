@@ -7,6 +7,9 @@ TODO PRIO 1 - Immediate:
 - *** Open requests for alliances are canceled after two rounds (if not accepted) --> Endround
 - *** If an attack is started all diplomacy requests are deleted (for those two factions)
 - *** If a jump is saved that would lead to an attack, but both sides agreed to an alliance in this next round, the attack is not created
+
+- *** Push-To-Talk geht nicht mehr in Discord, wenn der C3 Client im Vordergrund ist
+
 - Change compression level of jlink as soon as moditect supports the new param
 - If an attack is lost, the jumpship is moved back to the system it came from
 - Check diplomacy on planet attacks and routepoints (already effective?)
@@ -58,7 +61,7 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
-Version 7.4.1 (10.10.2023)
+Version 7.4.1 (12.10.2023)
 - UPDATED: One library
 - ADDED: A number of pilot images
 - CHANGED: Show system detail panel if attack details are displayed
@@ -69,6 +72,7 @@ Version 7.4.1 (10.10.2023)
 - CHANGED: Added another area that can be used to move the window
 - CHANGED: Areas that can be used to move the window now change the mouse cursor to a move cursor
 - CHANGED: Character icon refreshes on change
+- CHANGED: File format for avatar images to save space
 - FIXED: NPE when reseting an attack
 
 Version 7.4.0 (07.10.2023)

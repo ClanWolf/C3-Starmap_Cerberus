@@ -6,18 +6,18 @@ skinparam rectangle {
   BackgroundColor<<runtime>> lightBlue
   BackgroundColor<<provided>> lightGray
 }
-rectangle "net.clanwolf.starmap\nnet.clanwolf.starmap.transfer\n7.3.116" as net_clanwolf_starmap_net_clanwolf_starmap_transfer_jar
-rectangle "net.clanwolf.starmap\nnet.clanwolf.starmap.logging\n7.3.116" as net_clanwolf_starmap_net_clanwolf_starmap_logging_jar
+rectangle "net.clanwolf.starmap\nnet.clanwolf.starmap.transfer\n7.4.1" as net_clanwolf_starmap_net_clanwolf_starmap_transfer_jar
+rectangle "net.clanwolf.starmap\nnet.clanwolf.starmap.logging\n7.4.1" as net_clanwolf_starmap_net_clanwolf_starmap_logging_jar
 rectangle "com.fasterxml.jackson.core\njackson-core\n2.15.2" as com_fasterxml_jackson_core_jackson_core_jar
 rectangle "com.fasterxml.jackson.core\njackson-databind\n2.15.2" as com_fasterxml_jackson_core_jackson_databind_jar
 rectangle "com.fasterxml.jackson.core\njackson-annotations\n2.15.2" as com_fasterxml_jackson_core_jackson_annotations_jar
 rectangle "com.voodoodyne.jackson.jsog\njackson-jsog\n1.1.2" as com_voodoodyne_jackson_jsog_jackson_jsog_jar
 rectangle "com.google.code.gson\ngson\n2.10.1" as com_google_code_gson_gson_jar
-rectangle "net.clanwolf.starmap\nnet.clanwolf.starmap.client\n7.3.116" as net_clanwolf_starmap_net_clanwolf_starmap_client_jar
-rectangle "net.clanwolf.starmap\nnet.clanwolf.starmap.client.preloader\n7.3.116" as net_clanwolf_starmap_net_clanwolf_starmap_client_preloader_jar
+rectangle "net.clanwolf.starmap\nnet.clanwolf.starmap.client\n7.4.1" as net_clanwolf_starmap_net_clanwolf_starmap_client_jar
+rectangle "net.clanwolf.starmap\nnet.clanwolf.starmap.client.preloader\n7.4.1" as net_clanwolf_starmap_net_clanwolf_starmap_client_preloader_jar
 rectangle "org.openjfx\njavafx-graphics\n21" as org_openjfx_javafx_graphics_jar
 rectangle "org.openjfx\njavafx-controls\n21" as org_openjfx_javafx_controls_jar
-rectangle "net.clanwolf.starmap\nio.nadron.client\n7.3.116" as net_clanwolf_starmap_io_nadron_client_jar
+rectangle "net.clanwolf.starmap\nio.nadron.client\n7.4.1" as net_clanwolf_starmap_io_nadron_client_jar
 rectangle "io.netty\nnetty-common\n4.1.94.Final" as io_netty_netty_common_jar
 rectangle "io.netty\nnetty-transport\n4.1.94.Final" as io_netty_netty_transport_jar
 rectangle "io.netty\nnetty-buffer\n4.1.94.Final" as io_netty_netty_buffer_jar

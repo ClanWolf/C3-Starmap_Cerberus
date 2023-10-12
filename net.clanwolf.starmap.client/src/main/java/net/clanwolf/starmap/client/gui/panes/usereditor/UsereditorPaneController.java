@@ -787,16 +787,16 @@ public class UsereditorPaneController {
 		});
 
 		for (int iii = 1000; iii < 1200; iii++) {
-			URL urlMale = getClass().getResource("/images/chars/male/" + iii + ".png");
+			URL urlMale = getClass().getResource("/images/chars/male/" + iii + ".jpg");
 			if (urlMale != null) {
-				lvImageSelectorMale.getItems().add("/images/chars/male/" + iii + ".png");
+				lvImageSelectorMale.getItems().add("/images/chars/male/" + iii + ".jpg");
 			}
 		}
 
 		for (int iii = 1000; iii < 1200; iii++) {
-			URL urlMale = getClass().getResource("/images/chars/female/" + iii + ".png");
+			URL urlMale = getClass().getResource("/images/chars/female/" + iii + ".jpg");
 			if (urlMale != null) {
-				lvImageSelectorFemale.getItems().add("/images/chars/female/" + iii + ".png");
+				lvImageSelectorFemale.getItems().add("/images/chars/female/" + iii + ".jpg");
 			}
 		}
 

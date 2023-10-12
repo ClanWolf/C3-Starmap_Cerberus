@@ -316,6 +316,7 @@
 				<artifactId>depgraph-maven-plugin</artifactId>
 				<version>4.0.2</version>
 				<configuration>
+<!--					<scope>provided</scope>-->
 					<showDuplicates>true</showDuplicates>
 					<showConflicts>true</showConflicts>
 					<graphFormat>puml</graphFormat>
@@ -333,15 +334,15 @@
 						<exclude>javax.persistence</exclude>
 					</excludes>
 				</configuration>
-<!--				<executions>-->
-<!--					<execution>-->
-<!--						<id>depgraph</id>-->
-<!--						<phase>install</phase>-->
-<!--						<goals>-->
-<!--							<goal>graph</goal>-->
-<!--						</goals>-->
-<!--					</execution>-->
-<!--				</executions>-->
+				<executions>
+					<execution>
+						<id>depgraph</id>
+						<phase>install</phase>
+						<goals>
+							<goal>graph</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.moditect</groupId>
