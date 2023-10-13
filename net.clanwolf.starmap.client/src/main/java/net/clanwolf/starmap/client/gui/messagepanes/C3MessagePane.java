@@ -213,7 +213,6 @@ public class C3MessagePane extends Pane {
 	}
 
 	public void fadeIn() {
-
 		C3SoundPlayer.play("sound/fx/cursor_click_01.mp3", false);
 
 		// Fade in transition 01 (Background)
@@ -273,9 +272,9 @@ public class C3MessagePane extends Pane {
 
 		// Transition sequence
 		SequentialTransition sequentialTransition = new SequentialTransition();
-		sequentialTransition.setOnFinished(event -> rectBorder.toFront());
 		sequentialTransition.getChildren().addAll(fadeInTransition_02, timeline, fadeInTransition_01);
 		sequentialTransition.setCycleCount(1);
+		sequentialTransition.setOnFinished(event -> rectBorder.toFront());
 		sequentialTransition.play();
 	}
 

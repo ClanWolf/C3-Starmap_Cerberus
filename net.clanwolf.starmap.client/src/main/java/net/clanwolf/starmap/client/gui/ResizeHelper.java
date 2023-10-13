@@ -97,10 +97,6 @@ public class ResizeHelper {
 			//double sceneWidth = scene.getWidth();
 			//double sceneHeight = scene.getHeight();
 
-			if (mouseEvent.getTarget() instanceof Pane pane && pane.getId() != null && pane.getId().startsWith("paneWindowMoverHandle")) {
-				stage.getScene().setCursor(Cursor.MOVE);
-			}
-
 			if (mouseEvent.getTarget() instanceof Label label && label.getId() != null && label.getId().equals("ResizerControl")) {
 				// We allow resize only on the resize area on the bottom right corner (South-East)
 				Cursor cursorEvent = Cursor.SE_RESIZE;

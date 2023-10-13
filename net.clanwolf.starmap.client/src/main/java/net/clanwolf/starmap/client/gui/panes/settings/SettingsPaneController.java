@@ -437,7 +437,7 @@ public class SettingsPaneController extends AbstractC3Controller implements Acti
 		resultIcon.getStyleClass().remove("resultIconLabel_Failure");
 		resultIcon.getStyleClass().remove("resultIconLabel_Success");
 		resultIcon.getStyleClass().add("resultIconLabel_Undetermined");
-		Server.checkDatabaseConnectionTask();
+		Server.checkDatabaseConnection();
 		announce_check_result = true;
 	}
 

@@ -35,6 +35,7 @@ TODO PRIO 2 - Medium:
 - MWO API Loop is still active after the end of an invasion
 
 TODO PRIO 3 - Long term:
+- Datenbankname im DB online check script einbinden
 - Updating the manual (ongoing): https://www.clanwolf.net/apps/C3/C3_Manual_de.pdf
 - Web-View of the Starmap
 - Waiting circle animation is off-center

@@ -78,7 +78,7 @@
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2c506d" height="397.0" layoutX="617.0" layoutY="31.0" opacity="0.75" stroke="#779fc3" strokeType="INSIDE" strokeWidth="2.0" width="212.0" />
       <ImageView fx:id="ivCharacterPortrait" fitHeight="104.0" fitWidth="103.0" layoutX="90.0" layoutY="212.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../images/chars/male/1022.png" />
+            <Image url="@../images/chars/male/1022.jpg" />
          </image>
          <effect>
             <DropShadow height="20.0" radius="9.5" spread="0.24" width="20.0">

@@ -37,6 +37,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.CacheHint;
+import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
@@ -50,8 +51,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.util.Pair;
@@ -60,9 +59,7 @@ import net.clanwolf.starmap.client.enums.C3MESSAGERESULTS;
 import net.clanwolf.starmap.client.enums.C3MESSAGES;
 import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
 import net.clanwolf.starmap.client.gui.panes.TerminalCommandHandler;
-import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.DiplomacyDTO;
-import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.enums.PRIVILEGES;
 import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
 import net.clanwolf.starmap.client.gui.messagepanes.C3MessagePane;
@@ -306,6 +303,26 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 	@FXML
 	private AnchorPane paneNoise;
+
+	@FXML
+	private void handleEnterMouseMoverPane() {
+		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_MOVE).execute();
+	}
+
+	@FXML
+	private void handleExitMouseMoverPane() {
+		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute();
+	}
+
+	@FXML
+	private void handleEnterResizPane() {
+		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_RESIZE).execute();
+	}
+
+	@FXML
+	private void handleExitResizePane() {
+		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute();
+	}
 
 	// -------------------------------------------------------------------------
 	//
@@ -880,17 +897,17 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 	@FXML
 	private void handleOnlineIndicatorLabelMouseEventClick() {
-		Server.checkServerStatusTask();
-		switch (C3Properties.getProperty(C3PROPS.CHECK_ONLINE_STATUS)) {
-			case "ONLINE" -> C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Server_Status_Online"));
-			case "OFFLINE" ->
-					C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Server_Status_Offline"));
+		boolean serverOnline = Server.checkServerStatus();
+		if (serverOnline) {
+			C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Server_Status_Online"));
+		} else {
+			C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Server_Status_Offline"));
 		}
 	}
 
 	@FXML
 	private void handleDatabaseAccessibleIndicatorLabelMouseEventEnter() {
-		switch (C3Properties.getProperty(C3PROPS.CHECK_CONNECTION_STATUS)) {
+		switch (C3Properties.getProperty(C3PROPS.CHECK_DB_CONNECTION_STATUS)) {
 			case "NOT_STARTED" ->
 					setStatusText(Internationalization.getString("app_database_indicator_message_NOT_STARTED"), false);
 			case "RUNNING_CHECK" ->
@@ -1814,6 +1831,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		mouseStopper.getChildren().add(waitAnimationPane);
 		mouseStopper.setMouseTransparent(true);
 		mouseStopper.toFront();
+		paneWindowMoverHandle.toFront();
+		paneWindowMoverHandle_TOP.toFront();
 
 		rolePlayButton.setVisible(true);
 		mapButton.setVisible(true);
@@ -2008,7 +2027,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				} else {
 					ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("4");
 					Platform.runLater(() -> databaseAccessibleIndicatorLabel.setStyle("-fx-background-color: #808000;"));
-					C3Properties.setProperty(C3PROPS.CHECK_CONNECTION_STATUS, "RUNNING_CHECK", false);
+					C3Properties.setProperty(C3PROPS.CHECK_DB_CONNECTION_STATUS, "RUNNING_CHECK", false);
 				}
 				break;
 
@@ -2017,11 +2036,11 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				// Log.debug("ACTIONS.DATABASECONNECTIONCHECK_FINISHED catched. Online: " + result3);
 				if (result3) {
 					Platform.runLater(() -> databaseAccessibleIndicatorLabel.setStyle("-fx-background-color: #008000;"));
-					C3Properties.setProperty(C3PROPS.CHECK_CONNECTION_STATUS, "ONLINE", false);
+					C3Properties.setProperty(C3PROPS.CHECK_DB_CONNECTION_STATUS, "ONLINE", false);
 					ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("4");
 				} else {
 					Platform.runLater(() -> databaseAccessibleIndicatorLabel.setStyle("-fx-background-color: #c00000;"));
-					C3Properties.setProperty(C3PROPS.CHECK_CONNECTION_STATUS, "OFFLINE", false);
+					C3Properties.setProperty(C3PROPS.CHECK_DB_CONNECTION_STATUS, "OFFLINE", false);
 					C3Message message = new C3Message(C3MESSAGES.ERROR_DATABASE_OFFLINE);
 					message.setType(C3MESSAGETYPES.CLOSE);
 					message.setText(Internationalization.getString("app_database_indicator_message_OFFLINE"));
@@ -2365,7 +2384,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 							}
 						}
 						cycleCounter++;
-					} while (!finished || cycleCounter < 5000); // Savety exit in case paneNoise is not found
+						logger.info("Counter: " + cycleCounter);
+					} while (!finished && cycleCounter < 5000); // Savety exit in case paneNoise is not found
 					rootAnchorPane.getChildren().setAll(workingCollection);
 					paneNoise.setVisible(true);
 
@@ -2424,6 +2444,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					Platform.runLater(() -> {
 						Nexus.setMainFrameEnabled(true);
 						mouseStopper.toFront();
+						paneWindowMoverHandle.toFront();
+						paneWindowMoverHandle_TOP.toFront();
 						paneVolumeControl.toFront();
 						slVolumeControl.toFront();
 						ivMuteToggle.toFront();
@@ -2448,6 +2470,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					Nexus.setMainFrameEnabled(false);
 
 					mouseStopper.toFront();
+					paneWindowMoverHandle.toFront();
+					paneWindowMoverHandle_TOP.toFront();
 					paneVolumeControl.toFront();
 					slVolumeControl.toFront();
 					ivMuteToggle.toFront();
@@ -2711,11 +2735,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		setConsoleEntry("Initializing C3-Network");
 		setConsoleEntry("Connecting to " + tcphostname + ":" + tcpPort + "...");
 
-		Server.checkServerStatusTask();
-		Server.checkDatabaseConnectionTask();
-
 		setConsoleEntry("Setting control elements");
-
 		enableMainMenuButtons(Nexus.isLoggedIn(), Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN));
 
 		// Add values to the property file in case they are not present
@@ -2749,17 +2769,6 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		}
 
 		C3SoundPlayer.getSamples();
-
-		if (Nexus.promptNewVersionInstall) {
-			C3Message message = new C3Message(C3MESSAGES.DOWNLOAD_CLIENT);
-			String m = Internationalization.getString("app_new_version_available");
-			m = m.replace("{version}", Nexus.getLastAvailableClientVersion());
-			message.setText(m);
-			message.setType(C3MESSAGETYPES.YES_NO);
-			ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
-		} else {
-			openTargetPane(loginPane, "");
-		}
 
 		Platform.runLater(() -> {
 			Double v = 0.1d;
@@ -2807,6 +2816,27 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 //		m3.setType(C3MESSAGETYPES.CLOSE);
 //		m3.setText("Test 3");
 //		ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(m3);
+
+		boolean serverOnline = Server.checkServerStatus();
+		boolean databaseOnline = false;
+		if (serverOnline) {
+			databaseOnline = Server.checkDatabaseConnection();
+		}
+		if (serverOnline && databaseOnline) {
+			if (Nexus.promptNewVersionInstall) {
+				C3Message message = new C3Message(C3MESSAGES.DOWNLOAD_CLIENT);
+				String m = Internationalization.getString("app_new_version_available");
+				m = m.replace("{version}", Nexus.getLastAvailableClientVersion());
+				message.setText(m);
+				message.setType(C3MESSAGETYPES.YES_NO);
+				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
+			} else {
+				openTargetPane(loginPane, "");
+			}
+		} else {
+			// Error Message, not connected
+
+		}
 	}
 
 	private void showMessage(C3Message message) {

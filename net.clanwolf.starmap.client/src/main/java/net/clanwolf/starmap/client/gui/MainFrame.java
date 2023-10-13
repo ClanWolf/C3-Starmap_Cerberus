@@ -84,10 +84,14 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 
 	private Image imageNormalCursor = null;
 	private Image imageWaitCursor = null;
+	private Image imageResizeCursor = null;
+	private Image imageMoveCursor = null;
 	final Delta dragDelta = new Delta();
 	BooleanProperty ready = new SimpleBooleanProperty(false);
 	private ImageCursor imageCursorNormal = null;
 	private ImageCursor imageCursorWait = null;
+	private ImageCursor imageCursorResize = null;
+	private ImageCursor imageCursorMove = null;
 	private Stage stage = null;
 	private Scene scene = null;
 	private boolean waitcursor = false;
@@ -340,6 +344,7 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 						logger.info("Difference detected: Prompt to download new version.");
 						Nexus.promptNewVersionInstall = true;
 					}
+//					Nexus.promptNewVersionInstall = true;
 				}
 			} catch(Exception e) {
 				logger.warn("Could not check latest available client version online!");
@@ -432,14 +437,22 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 
 		InputStream isImageNormalCursor = this.getClass().getResourceAsStream("/images/C3_Mouse_Cursor.png");
 		InputStream isImageWaitCursor = this.getClass().getResourceAsStream("/images/C3_Mouse_Cursor_WAIT.png");
+		InputStream isImageResizeCursor = this.getClass().getResourceAsStream("/images/C3_Mouse_Cursor_RESIZE.png");
+		InputStream isImageMoveCursor = this.getClass().getResourceAsStream("/images/C3_Mouse_Cursor_MOVE.png");
 		assert isImageNormalCursor != null;
 		assert isImageWaitCursor != null;
+		assert isImageResizeCursor != null;
+		assert isImageMoveCursor != null;
 		imageNormalCursor = new Image(isImageNormalCursor);
 		imageWaitCursor = new Image(isImageWaitCursor);
+		imageResizeCursor = new Image(isImageResizeCursor);
+		imageMoveCursor = new Image(isImageMoveCursor);
 		imageCursorNormal = new ImageCursor(imageNormalCursor, 1, 1);
 		imageCursorWait = new ImageCursor(imageWaitCursor, 1, 1);
+		imageCursorResize = new ImageCursor(imageResizeCursor, 1, 1);
+		imageCursorMove = new ImageCursor(imageMoveCursor, 1, 1);
 
-		scene.setCursor(imageCursorNormal);
+		scene.getRoot().setCursor(imageCursorNormal);
 		scene.setFill(Color.TRANSPARENT);
 		scene.getRoot().setOpacity(0.0);
 
@@ -467,6 +480,8 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 		ActionManager.addActionCallbackListener(ACTIONS.APPLICATION_EXIT, this);
 		ActionManager.addActionCallbackListener(ACTIONS.CURSOR_REQUEST_NORMAL, this);
 		ActionManager.addActionCallbackListener(ACTIONS.CURSOR_REQUEST_WAIT, this);
+		ActionManager.addActionCallbackListener(ACTIONS.CURSOR_REQUEST_RESIZE, this);
+		ActionManager.addActionCallbackListener(ACTIONS.CURSOR_REQUEST_MOVE, this);
 		ActionManager.addActionCallbackListener(ACTIONS.CURSOR_REQUEST_NORMAL_MESSAGE, this);
 		ActionManager.addActionCallbackListener(ACTIONS.CURSOR_REQUEST_WAIT_MESSAGE, this);
 		ActionManager.addActionCallbackListener(ACTIONS.SHOW_MESSAGE, this);
@@ -619,18 +634,24 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 				break;
 
 			case CURSOR_REQUEST_WAIT:
-				scene.setCursor(imageCursorWait);
+				Platform.runLater(() -> scene.getRoot().setCursor(imageCursorWait));
 				waitcursor = true;
 				break;
 			case CURSOR_REQUEST_NORMAL:
-				scene.setCursor(imageCursorNormal);
+				Platform.runLater(() -> scene.getRoot().setCursor(imageCursorNormal));
 				waitcursor = false;
 				break;
+			case CURSOR_REQUEST_RESIZE:
+				Platform.runLater(() -> scene.getRoot().setCursor(imageCursorResize));
+				break;
+			case CURSOR_REQUEST_MOVE:
+				Platform.runLater(() -> scene.getRoot().setCursor(imageCursorMove));
+				break;
 			case CURSOR_REQUEST_WAIT_MESSAGE:
-				scene.setCursor(imageCursorWait);
+				Platform.runLater(() -> scene.getRoot().setCursor(imageCursorWait));
 				break;
 			case CURSOR_REQUEST_NORMAL_MESSAGE:
-				scene.setCursor(imageCursorNormal);
+				Platform.runLater(() -> scene.getRoot().setCursor(imageCursorNormal));
 				break;
 			case SHOW_MESSAGE:
 				messageactive = true;
