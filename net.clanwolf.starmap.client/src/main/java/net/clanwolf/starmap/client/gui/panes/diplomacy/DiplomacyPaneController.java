@@ -229,6 +229,7 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 	@FXML
 	public void handleRadioButtonSelection() {
 		buttonSave.setDisable(false);
+		boolean foundOneRequest = false;
 		for (int i=0; i<8; i++) {
 			boolean weFriendly = false;
 
@@ -236,9 +237,21 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 
 			if (radioButtonsAllyList.get(i).isSelected()) {
 				weFriendly = true;
+				foundOneRequest = true;
+				radioButtonsAllyList.get(i).setDisable(false);
+				radioButtonsEnemyList.get(i).setDisable(false);
+			} else {
+				radioButtonsAllyList.get(i).setDisable(true);
+				radioButtonsEnemyList.get(i).setDisable(true);
 			}
 
 			imageAlliedLogoList.get(i).setImage(state.getFutureStateIcon(weFriendly));
+		}
+		if(!foundOneRequest) {
+			for (int i = 0; i < 8; i++) {
+				radioButtonsAllyList.get(i).setDisable(false);
+				radioButtonsEnemyList.get(i).setDisable(false);
+			}
 		}
 	}
 
@@ -361,12 +374,18 @@ public class DiplomacyPaneController extends AbstractC3Controller implements Act
 			int cRound = Nexus.getBoUniverse().currentRound;
 
 			BODiplomacy boDiplomacy = new BODiplomacy(Nexus.getBoUniverse().currentRound, Nexus.getBoUniverse().getDiplomacy());
+			Long factionIDAllied = boDiplomacy.isFactionAllied(Nexus.getCurrentFaction().getID(), Nexus.getBoUniverse().factionBOs.values());
 
 			for (int i = 0; i < labelShortNameList.size(); i++) {
 				BOFaction otherFaction = factions.get(i);
 
 				radioButtonsAllyList.get(i).setDisable(false);
 				radioButtonsEnemyList.get(i).setDisable(false);
+
+				if(factionIDAllied != null && factionIDAllied.longValue() != otherFaction.getID().longValue()) {
+					radioButtonsAllyList.get(i).setDisable(true);
+					radioButtonsEnemyList.get(i).setDisable(true);
+				}
 
 				labelTheirStatusList.get(i).setVisible(true);
 				radioButtonsEnemyList.get(i).setVisible(true);

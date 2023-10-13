@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 public class BODiplomacy {
@@ -32,6 +33,22 @@ public class BODiplomacy {
 
 		} // for
 
+	}
+
+	public Long isFactionAllied(Long currentFactionID, Collection<BOFaction> factionList){
+
+		for(BOFaction faction : factionList){
+			DiplomacyState dpState = getDiplomacyState(currentFactionID, faction.getID());
+			if(dpState.stateValue == DiplomacyState.CURRENT_ALLIANCE_FOUND ||
+					dpState.stateValue == DiplomacyState.ALLIANCE_FOUND_FOR_NEXT_ROUND ||
+					dpState.stateValue == DiplomacyState.OTHER_FACTION_BREAK_ALLIANCE_NEXT_ROUND ||
+					dpState.stateValue == DiplomacyState.PLAYERS_FACTION_REQUEST_NEXT_ROUND ||
+					dpState.stateValue == DiplomacyState.PLAYERS_FACTION_REQUEST_CURRENT_ROUND){
+				return faction.getID();
+			}
+		}
+
+		return null;
 	}
 
 	public DiplomacyState getDiplomacyState(Long currentFactionID, Long otherFactionID){
@@ -98,20 +115,20 @@ public class BODiplomacy {
 
 		if(currentFactionAllied && otherFactionAllied) {
 			ds.setState(DiplomacyState.CURRENT_ALLIANCE_FOUND);
-			logger.info("Diplomacy state -> " + otherFactionID + " / CURRENT_ALLIANCE_FOUND");
+			//logger.info("Diplomacy state -> " + otherFactionID + " / CURRENT_ALLIANCE_FOUND");
 
 		} else if(currentFactionAllied && !otherFactionAllied) {
 			ds.setState(DiplomacyState.PLAYERS_FACTION_REQUEST_CURRENT_ROUND);
-			logger.info("Diplomacy state -> " + otherFactionID + " / CURRENT_FACTION_REQUEST_WITHOUT_ANSWER");
+			//logger.info("Diplomacy state -> " + otherFactionID + " / CURRENT_FACTION_REQUEST_WITHOUT_ANSWER");
 
 		} else if(!currentFactionAllied && otherFactionAllied) {
 			//request from own faction witout accept from the other one
 			ds.setState(DiplomacyState.OTHER_FACTION_REQUEST_CURRENT_ROUND);
-			logger.info("Diplomacy state -> " + otherFactionID + " / OTHER_FACTION_REQUEST");
+			//logger.info("Diplomacy state -> " + otherFactionID + " / OTHER_FACTION_REQUEST");
 
 		} else {
 			ds.setState(DiplomacyState.NO_ALLIANCE_FOUND);
-			logger.info("Diplomacy state -> " + otherFactionID + " / NO_ALLIANCE_FOUND");
+			//logger.info("Diplomacy state -> " + otherFactionID + " / NO_ALLIANCE_FOUND");
 		}
 
 		return ds;
@@ -127,6 +144,7 @@ public class BODiplomacy {
 		boolean otherFactionBreakAlliedNextRound = false;
 		boolean currentFactionAlliedCurrentRound = false;
 		boolean otherFactionAlliedCurrentRound = false;
+		boolean otherFactionNoValue = false;
 
 		String keyOtherFaction = getKeyForOtherFaction(otherFactionID);
 		String keyCurrentFaction = getKeyForCurrentFaction(otherFactionID);
@@ -143,7 +161,7 @@ public class BODiplomacy {
 		if(otherFactionDTO != null && otherFactionDTO.getStartingInRound() < nextRound){
 			otherFactionAlliedCurrentRound = true;
 		}
-		if(currentFactionDTO != null && currentFactionDTO.getEndingInRound() != null && currentFactionDTO.getEndingInRound() != null && currentFactionDTO.getEndingInRound() >= nextRound){
+		if(currentFactionDTO != null && currentFactionDTO.getEndingInRound() != null && currentFactionDTO.getEndingInRound() >= nextRound){
 			currentFactionBreakAlliedNextRound = true;
 		};
 		if(otherFactionDTO != null && otherFactionDTO.getStartingInRound() >= nextRound){
@@ -153,33 +171,37 @@ public class BODiplomacy {
 			otherFactionBreakAlliedNextRound = true;
 		};
 
+		if(otherFactionDTO == null){
+			otherFactionNoValue = true;
+		}
+
 		DiplomacyState ds = new DiplomacyState();
 
 		if((currentFactionAlliedNextRound && otherFactionAlliedCurrentRound) ||
 				(currentFactionAlliedCurrentRound  && otherFactionAlliedNextRound) ||
 				(currentFactionAlliedNextRound && otherFactionAlliedNextRound)) {
 			ds.setState(DiplomacyState.ALLIANCE_FOUND_FOR_NEXT_ROUND);
-			logger.info("Diplomacy state next round -> " + otherFactionID + " / CURRENT_ALLIANCE_FOUND_NEXT_ROUND");
+			//logger.info("Diplomacy state next round -> " + otherFactionID + " / CURRENT_ALLIANCE_FOUND_NEXT_ROUND");
 
 		} else if(currentFactionAlliedNextRound && !otherFactionAlliedNextRound && !otherFactionAlliedCurrentRound) {
 			ds.setState(DiplomacyState.PLAYERS_FACTION_REQUEST_NEXT_ROUND);
-			logger.info("Diplomacy state  next round -> " + otherFactionID + " / CURRENT_FACTION_REQUEST_NEXT_ROUND");
+			//logger.info("Diplomacy state  next round -> " + otherFactionID + " / CURRENT_FACTION_REQUEST_NEXT_ROUND");
 
 		} else if(!currentFactionAlliedNextRound && !currentFactionAlliedCurrentRound && otherFactionAlliedNextRound) {
 			ds.setState(DiplomacyState.OTHER_FACTION_REQUEST_NEXT_ROUND);
-			logger.info("Diplomacy state next round -> " + otherFactionID + " / OTHER_FACTION_REQUEST_NEXT_ROUND");
+			//logger.info("Diplomacy state next round -> " + otherFactionID + " / OTHER_FACTION_REQUEST_NEXT_ROUND");
 
-		} else if(currentFactionBreakAlliedNextRound) {
+		} else if(currentFactionBreakAlliedNextRound && !otherFactionNoValue) {
 			ds.setState(DiplomacyState.PLAYERS_FACTION_BREAK_ALLIANCE_NEXT_ROUND);
-			logger.info("Diplomacy state next round -> " + otherFactionID + " / CURRENT_FACTION_BREAK_ALLIANCE_NEXT_ROUND");
+			//logger.info("Diplomacy state next round -> " + otherFactionID + " / CURRENT_FACTION_BREAK_ALLIANCE_NEXT_ROUND");
 
 		} else if(otherFactionBreakAlliedNextRound) {
 			ds.setState(DiplomacyState.OTHER_FACTION_BREAK_ALLIANCE_NEXT_ROUND);
-			logger.info("Diplomacy state next round -> " + otherFactionID + " / OTHER_FACTION_BREAK_ALLIANCE_NEXT_ROUND");
+			//logger.info("Diplomacy state next round -> " + otherFactionID + " / OTHER_FACTION_BREAK_ALLIANCE_NEXT_ROUND");
 
 		} else {
 			ds.setState(DiplomacyState.NO_ALLIANCE_FOUND);
-			logger.info("Diplomacy state next round -> " + otherFactionID + " / NO_ALLIANCE_FOUND");
+			//logger.info("Diplomacy state next round -> " + otherFactionID + " / NO_ALLIANCE_FOUND");
 		}
 
 		return ds;
