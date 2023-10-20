@@ -3,7 +3,6 @@ C3 version history
 ----------------------------------------------------------------
 
 TODO PRIO 1 - Immediate:
-- *** Only one alliance is allowed for each faction at a time
 - *** Open requests for alliances are canceled after two rounds (if not accepted) --> Endround
 - *** If an attack is started all diplomacy requests are deleted (for those two factions)
 - *** If a jump is saved that would lead to an attack, but both sides agreed to an alliance in this next round, the attack is not created
@@ -61,6 +60,11 @@ WATCH OUT FOR WHILE TESTING:
 ----------------------------------------------------------------
 
 VERSIONS
+
+Version 7.4.3 (14.10.2023)
+- CHANGED: Only one alliance is allowed for each faction at a time
+- CHANGED: Mouse cursor general
+- FIXED: Crash on start if a new version is online
 
 Version 7.4.1 (12.10.2023)
 - UPDATED: One library
