@@ -397,7 +397,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			Long factionID = (Long)state.getObject2();
 
 			RoundPOJO currentRound = RoundDAO.getInstance().findBySeasonId(GameServer.getCurrentSeason());
-			ArrayList<DiplomacyPOJO> entriesToDelete = DiplomacyDAO.getInstance().getAllRequestsForFactions(factionID, currentRound.getRound());
+			ArrayList<DiplomacyPOJO> entriesToDelete = DiplomacyDAO.getInstance().getAllRequestsForFactions(GameServer.getCurrentSeason(), factionID);
 			ArrayList<DiplomacyPOJO> entriesToDeletedNextRound = new ArrayList<>();
 
 			try {
@@ -461,7 +461,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 				GameState response = new GameState(GAMESTATEMODES.DIPLOMACY_SAVE_RESPONSE);
 				response.setAction_successfully(Boolean.TRUE);
-				response.addObject(DiplomacyDAO.getInstance().getDiplomacyForSeason(ServerNexus.currentSeason, currentRound.getRound()));
+				response.addObject(DiplomacyDAO.getInstance().getDiplomacyForSeason(ServerNexus.currentSeason));
 
 
 				C3GameSessionHandler.sendBroadCast(room, response);
@@ -639,6 +639,8 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 					ServerNexus.getEci().sendExtCom(starSystem.getName() + " is attacked by '" + js.getJumpshipName() + "' (" + factionAttacker.getShortName() + ") in round " + attack.getRound() + "!", "en",true, true, true);
 					ServerNexus.getEci().sendExtCom(starSystem.getName() + " wird in Runde " + attack.getRound() + " von '" + js.getJumpshipName() + "' (" + factionAttacker.getShortName() + ") angegriffen!", "de",true, true, true);
 					dao.save(getC3UserID(session), attack);
+
+					DiplomacyDAO.getInstance().removeAllRequestAfterAttack(getC3UserID(session),GameServer.getCurrentSeason(),attack.getRound(),factionAttacker.getId(), starsystemData.getFactionID().getId());
 				} else {
 					attack = existingAttack;
 				}

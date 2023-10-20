@@ -1,5 +1,6 @@
 package net.clanwolf.starmap.server.persistence.daos.jpadaoimpl;
 
+import net.clanwolf.starmap.server.process.diplomacy.BODiplomacyTransfer;
 import net.clanwolf.starmap.server.persistence.CriteriaHelper;
 import net.clanwolf.starmap.server.persistence.daos.GenericDAO;
 import net.clanwolf.starmap.server.persistence.pojos.DiplomacyPOJO;
@@ -46,7 +47,7 @@ public class DiplomacyDAO extends GenericDAO {
 		return (DiplomacyPOJO) crit.getSingleResult();
 	}
 
-	public ArrayList<DiplomacyPOJO> getDiplomacyForSeason(Long seasonID, Long roundId){
+	public ArrayList<DiplomacyPOJO> getDiplomacyForSeason(Long seasonID){
 
 		CriteriaHelper crit = new CriteriaHelper(DiplomacyPOJO.class);
 		crit.addCriteria("seasonID", seasonID);
@@ -66,9 +67,10 @@ public class DiplomacyDAO extends GenericDAO {
 		return lRPS;
 	}
 
-	public ArrayList<DiplomacyPOJO> getAllRequestsForFactions(Long factionID, Long roundId){
+	public ArrayList<DiplomacyPOJO> getAllRequestsForFactions(Long seasonID, Long factionID){
 
 		CriteriaHelper crit = new CriteriaHelper(DiplomacyPOJO.class);
+		crit.addCriteria("seasonID", seasonID);
 		crit.addCriteria("factionID_REQUEST", factionID);
 
 		List<Object> lRes = crit.getResultList();
@@ -88,12 +90,50 @@ public class DiplomacyDAO extends GenericDAO {
 
 	public void deleteEntrieForRound(Long userID, Long seasonID, Long round){
 
-		ArrayList<DiplomacyPOJO> allEntries = getDiplomacyForSeason(seasonID, round);
+
+		ArrayList<DiplomacyPOJO> allEntries = getDiplomacyForSeason(seasonID);
+		BODiplomacyTransfer dipTransfer = new BODiplomacyTransfer(allEntries);
+
 		for(DiplomacyPOJO dip1 : allEntries){
 			if(dip1.getEndingInRound() != null && dip1.getEndingInRound() == round.intValue()){
 				delete(userID, dip1);
 			}
 		}
+	}
+
+	public void removeAllRequestAfterWaitingPeriod(Long userID, Long seasonID, Long round){
+
+		ArrayList<DiplomacyPOJO> allDiplomacyEntries = getDiplomacyForSeason(seasonID);
+
+		BODiplomacyTransfer boDipTransfer = new BODiplomacyTransfer(allDiplomacyEntries);
+
+		for(DiplomacyPOJO dip: allDiplomacyEntries){
+
+			if(dip.getStartingInRound() <= round - 2
+				&& dip.getEndingInRound() == null
+				&& !boDipTransfer.factionsAreAllied(dip.getFactionID_REQUEST(), dip.getFactionID_ACCEPTED(), round)){
+
+				DiplomacyDAO.getInstance().delete(userID, dip);
+			}
+
+		}
+	}
+
+	public void removeAllRequestAfterAttack(Long userID, Long seasonID, Long round, Long factionID1, Long factionID2){
+
+		ArrayList<DiplomacyPOJO> allDiplomacyEntries = getDiplomacyForSeason(seasonID);
+
+		BODiplomacyTransfer boDipTransfer = new BODiplomacyTransfer(allDiplomacyEntries);
+
+		if(!boDipTransfer.factionsAreAllied(factionID1, factionID2, round)) {
+			// delete all entries
+			for(DiplomacyPOJO pojo: boDipTransfer.getDiplomacyStateForFactions(factionID1,factionID2)) {
+				DiplomacyDAO.getInstance().delete(userID,pojo );
+			}
+		}
+
+
+
 	}
 
 }

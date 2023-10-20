@@ -472,7 +472,11 @@ public class EndRound {
 //				}
 
                 //remove not needed diplomacy entries
+                logger.info("--- Remove not needed diplomacy entries!");
                 DiplomacyDAO.getInstance().deleteEntrieForRound(ServerNexus.END_ROUND_USERID,GameServer.getCurrentSeason(), roundPOJO.getRound());
+
+                logger.info("--- Remove unanswered requests!");
+                DiplomacyDAO.getInstance().removeAllRequestAfterWaitingPeriod(ServerNexus.END_ROUND_USERID, GameServer.getCurrentSeason(), roundPOJO.getRound());
 
 	            // Set all jumpships to attackReady again
                 // Add the next system (according to the new round) from the current route to StarSystemHistory column
