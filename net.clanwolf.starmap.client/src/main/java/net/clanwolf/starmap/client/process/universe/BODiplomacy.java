@@ -9,6 +9,7 @@ import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class BODiplomacy {
 
@@ -85,13 +86,18 @@ public class BODiplomacy {
 	}
 
 	public DiplomacyState getDiplomacyStateCurrentRound(Long currentFactionID, Long otherFactionID){
-
 		this.currentFactionID = currentFactionID;
 
 		if(factionsAtWar(currentFactionID, otherFactionID)){
 			DiplomacyState dsAtWar = new DiplomacyState();
 			dsAtWar.setState(DiplomacyState.FACTIONS_AT_WAR);
 			return dsAtWar;
+		}
+
+		if (Objects.equals(currentFactionID, otherFactionID)) {
+			DiplomacyState stateSameFactions = new DiplomacyState();
+			stateSameFactions.setState(DiplomacyState.SAME_FACTIONS);
+			return stateSameFactions;
 		}
 
 		boolean currentFactionAllied = false;
@@ -134,7 +140,13 @@ public class BODiplomacy {
 		return ds;
 	}
 
-	public DiplomacyState getDiplomacyStateNextRound(Long cueentFactionID, Long otherFactionID){
+	public DiplomacyState getDiplomacyStateNextRound(Long cueentFactionID, Long otherFactionID) {
+
+		if (Objects.equals(currentFactionID, otherFactionID)) {
+			DiplomacyState stateSameFactions = new DiplomacyState();
+			stateSameFactions.setState(DiplomacyState.SAME_FACTIONS);
+			return stateSameFactions;
+		}
 
 		this.currentFactionID = currentFactionID;
 

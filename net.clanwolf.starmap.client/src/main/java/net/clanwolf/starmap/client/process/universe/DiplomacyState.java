@@ -19,6 +19,7 @@ public class DiplomacyState{
 	public static final int PLAYERS_FACTION_BREAK_ALLIANCE_NEXT_ROUND = 7;
 	public static final int OTHER_FACTION_BREAK_ALLIANCE_NEXT_ROUND = 8;
 	public static final int FACTIONS_AT_WAR = 9;
+	public static final int SAME_FACTIONS = 10;
 
 	private final Image diplomacyIconNone = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/diplomacy_enemies.png")));
 	private final Image diplomacyIconLeft = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/diplomacy_left.png")));

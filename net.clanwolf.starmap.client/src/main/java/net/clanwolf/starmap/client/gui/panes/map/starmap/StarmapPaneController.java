@@ -370,10 +370,22 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 
 				// Is the first coming jump (next round) to an enemy planet (?)
 				RoutePointDTO rp = route.get(1);
-				BOStarSystem s = Nexus.getBoUniverse().starSystemBOs.get(rp.getSystemId());
-				if (s.getFactionId() != js.getJumpshipFaction()
-						&& !(Nexus.getBoUniverse().getAlliedFactions().contains(s.getFactionId()))
+				BOStarSystem  s= Nexus.getBoUniverse().starSystemBOs.get(rp.getSystemId());
+
+				Long factionIdAttacker = js.getJumpshipFaction();
+				Long factionIdDefender = s.getFactionId();
+				BODiplomacy dipl = new BODiplomacy(Nexus.getCurrentRound(), Nexus.getBoUniverse().getDiplomacy());
+				DiplomacyState dState = dipl.getDiplomacyState(factionIdAttacker, factionIdDefender);
+
+				boolean createAttack = false;
+				if (dState.getState() == DiplomacyState.OTHER_FACTION_BREAK_ALLIANCE_NEXT_ROUND
+						|| dState.getState() == DiplomacyState.PLAYERS_FACTION_BREAK_ALLIANCE_NEXT_ROUND
+						|| dState.getState() == DiplomacyState.NO_ALLIANCE_FOUND
 				) {
+					createAttack = true;
+				}
+
+				if (s.getFactionId() != js.getJumpshipFaction() && createAttack) {
 					// This means there is an attack to be stored
 					AttackDTO attack = new AttackDTO();
 					attack.setAttackedFromStarSystemID((route.get(0)).getSystemId());
