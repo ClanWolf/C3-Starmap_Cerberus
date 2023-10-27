@@ -44,12 +44,10 @@ import javafx.scene.text.TextBoundsType;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.StatusTextEntryActionObject;
+import net.clanwolf.starmap.client.process.universe.*;
 import net.clanwolf.starmap.transfer.enums.PRIVILEGES;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.gui.panes.map.starmap.tools.RouteCalculator;
-import net.clanwolf.starmap.client.process.universe.BOJumpship;
-import net.clanwolf.starmap.client.process.universe.BOStarSystem;
-import net.clanwolf.starmap.client.process.universe.BOUniverse;
 import net.clanwolf.starmap.client.security.Security;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.Internationalization;
@@ -290,16 +288,41 @@ public class StarmapNodeGestures {
 			circleS2.setStrokeWidth(s2.getStarSystemCircle().getStrokeWidth());
 			circleS2.setStroke(Color.web(boUniverse.factionBOs.get(s2.getAffiliation()).getColor()));
 			circleS2.setFill(Color.web(boUniverse.factionBOs.get(s2.getAffiliation()).getColor()));
-			if (Nexus.getBoUniverse().getAlliedFactions().contains(s2.getFactionId())) {
+
+			BODiplomacy dipl = new BODiplomacy(Nexus.getCurrentRound(), Nexus.getBoUniverse().getDiplomacy());
+			DiplomacyState dState = dipl.getDiplomacyState(Nexus.getCurrentFaction().getID(), s2.getFactionId());
+
+			boolean createAttack = false;
+			boolean sameFaction = false;
+
+			if (dState.getState() == DiplomacyState.OTHER_FACTION_BREAK_ALLIANCE_NEXT_ROUND
+					|| dState.getState() == DiplomacyState.PLAYERS_FACTION_BREAK_ALLIANCE_NEXT_ROUND
+					|| dState.getState() == DiplomacyState.OTHER_FACTION_REQUEST_CURRENT_ROUND
+					|| dState.getState() == DiplomacyState.PLAYERS_FACTION_REQUEST_CURRENT_ROUND
+					|| dState.getState() == DiplomacyState.OTHER_FACTION_REQUEST_NEXT_ROUND
+					|| dState.getState() == DiplomacyState.PLAYERS_FACTION_REQUEST_NEXT_ROUND
+					|| dState.getState() == DiplomacyState.NO_ALLIANCE_FOUND
+			) {
+				createAttack = true;
+			}
+
+			if( dState.getState() == DiplomacyState.SAME_FACTIONS){
+				sameFaction = true;
+			}
+
+			if (!createAttack && !sameFaction) {
 				circleS2.setFill(Color.GREEN);
 				circleS2.setStroke(Color.WHITE);
-			} else if (y == 0 && !(String.valueOf(Nexus.getCurrentUser().getCurrentCharacter().getFactionId())).equals(String.valueOf(s2.getFactionId()))) {
-				circleS2.setFill(Color.RED);
-				circleS2.setStroke(Color.WHITE);
-			} else if (y == 0 && (String.valueOf(Nexus.getCurrentUser().getCurrentCharacter().getFactionId())).equals(String.valueOf(s2.getFactionId()))) {
+			} else if (y == 0 && sameFaction) {
 				circleS2.setFill(Color.WHITE);
 				circleS2.setStroke(Color.BLACK);
-			} else {
+			} else if (y > 0 && !sameFaction) {
+				circleS2.setFill(Color.ORANGE);
+				circleS2.setStroke(Color.BLACK);
+			} else if (y == 0) {
+				circleS2.setFill(Color.RED);
+				circleS2.setStroke(Color.WHITE);
+			}  else {
 				circleS2.setFill(Color.WHITE);
 				circleS2.setStroke(Color.BLACK);
 			}

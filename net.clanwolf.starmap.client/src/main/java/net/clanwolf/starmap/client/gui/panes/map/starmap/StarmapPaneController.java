@@ -380,6 +380,10 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 				boolean createAttack = false;
 				if (dState.getState() == DiplomacyState.OTHER_FACTION_BREAK_ALLIANCE_NEXT_ROUND
 						|| dState.getState() == DiplomacyState.PLAYERS_FACTION_BREAK_ALLIANCE_NEXT_ROUND
+						|| dState.getState() == DiplomacyState.OTHER_FACTION_REQUEST_CURRENT_ROUND
+						|| dState.getState() == DiplomacyState.PLAYERS_FACTION_REQUEST_CURRENT_ROUND
+						|| dState.getState() == DiplomacyState.OTHER_FACTION_REQUEST_NEXT_ROUND
+						|| dState.getState() == DiplomacyState.PLAYERS_FACTION_REQUEST_NEXT_ROUND
 						|| dState.getState() == DiplomacyState.NO_ALLIANCE_FOUND
 				) {
 					createAttack = true;
