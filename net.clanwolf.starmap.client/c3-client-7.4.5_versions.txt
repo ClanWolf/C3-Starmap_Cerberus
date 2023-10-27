@@ -1,0 +1,39 @@
+net.clanwolf.starmap:net.clanwolf.starmap.client:7.4.5:compile
++- net.clanwolf.starmap:net.clanwolf.starmap.transfer:7.4.5:compile
+|  +- com.fasterxml.jackson.core:jackson-core:2.15.3:compile
+|  +- com.fasterxml.jackson.core:jackson-databind:2.15.3:compile
+|  +- com.fasterxml.jackson.core:jackson-annotations:2.15.3:compile
+|  +- com.voodoodyne.jackson.jsog:jackson-jsog:1.1.2:compile
+|  \- com.google.code.gson:gson:2.10.1:compile
++- net.clanwolf.starmap:net.clanwolf.starmap.logging:7.4.5:compile
++- net.clanwolf.starmap:net.clanwolf.starmap.client.preloader:7.4.5:compile
++- net.clanwolf.starmap:io.nadron.client:7.4.5:compile
+|  +- io.netty:netty-common:4.1.94.Final:compile
+|  +- io.netty:netty-transport:4.1.94.Final:compile
+|  |  \- io.netty:netty-resolver:4.1.94.Final:compile
+|  +- io.netty:netty-buffer:4.1.94.Final:compile
+|  +- io.netty:netty-codec:4.1.94.Final:compile
+|  \- io.netty:netty-handler:4.1.94.Final:compile
+|     \- io.netty:netty-transport-native-unix-common:4.1.94.Final:compile
++- org.openjfx:javafx-controls:21:compile
+|  \- org.openjfx:javafx-controls:21:compile
++- org.openjfx:javafx-graphics:21:compile
+|  \- org.openjfx:javafx-graphics:21:compile
++- org.openjfx:javafx-base:21:compile
+|  \- org.openjfx:javafx-base:21:compile
++- org.openjfx:javafx-fxml:21:compile
+|  \- org.openjfx:javafx-fxml:21:compile
++- org.openjfx:javafx-web:21:compile
+|  \- org.openjfx:javafx-web:21:compile
++- org.openjfx:javafx-media:21:compile
+|  \- org.openjfx:javafx-media:21:compile
++- org.openjfx:javafx-swing:21:compile
+|  \- org.openjfx:javafx-swing:21:compile
++- org.kynosarges:tektosyne:6.2.0:compile
++- org.apache.commons:commons-collections4:4.4:compile
++- commons-net:commons-net:3.9.0:compile
++- org.jetbrains:annotations:24.0.1:compile
++- org.jitsi:irc-api:1.0-0015-jitsi-1:compile
+|  \- commons-codec:commons-codec:1.15:compile
++- net.coobird:thumbnailator:0.4.20:compile
+\- com.github.kwhat:jnativehook:2.2.2:compile

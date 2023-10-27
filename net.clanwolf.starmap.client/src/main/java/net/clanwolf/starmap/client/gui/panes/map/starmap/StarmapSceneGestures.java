@@ -27,6 +27,7 @@
 package net.clanwolf.starmap.client.gui.panes.map.starmap;
 
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -87,10 +88,17 @@ class StarmapSceneGestures {
 	};
 
 	private final EventHandler<MouseEvent> onMouseClickedEventHandler = event -> {
-		if (event.getTarget() instanceof Circle || event.getTarget() instanceof ImageView || event.getTarget() instanceof Button) {
-			// logger.info("No action.");
-			// nothing
-		} else {
+		boolean ignoreClick = false;
+		if (event.getTarget() != null && event.getTarget() instanceof Node node) {
+			Node parent = ((Node)event.getTarget()).getParent();
+			if (parent instanceof Button
+				|| node instanceof Circle
+				|| node instanceof ImageView
+				|| node instanceof Button) {
+				ignoreClick = true;
+			}
+		}
+		if (!ignoreClick) {
 			if (event.getButton() == MouseButton.PRIMARY) {
 				ActionManager.getAction(ACTIONS.HIDE_SYSTEM_DETAIL).execute();
 				ActionManager.getAction(ACTIONS.HIDE_JUMPSHIP_DETAIL).execute();

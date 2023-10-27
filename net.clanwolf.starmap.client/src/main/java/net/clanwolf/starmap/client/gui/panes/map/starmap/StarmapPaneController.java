@@ -199,13 +199,9 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 			long jsid = j.getJumpshipFaction();
 			if ((int) jsid == Nexus.getCurrentUser().getCurrentCharacter().getFactionId()) {
 				currentlyCenteredJumpship = j;
-				BOStarSystem s = currentlyCenteredJumpship.getCurrentSystem(currentlyCenteredJumpship.getCurrentSystemID());
-				moveMapToPosition(s);
+				centerJumpship();
 			}
 		}
-		currentlyCenteredJumpship.getJumpshipImageView().toFront();
-		currentlyCenteredJumpship.getJumpshipLevelLabel().toFront();
-		ActionManager.getAction(ACTIONS.SHOW_JUMPSHIP_DETAIL).execute(currentlyCenteredJumpship);
 	}
 
 	private void centerJumpship() {
@@ -214,17 +210,16 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 				long jsid = j.getJumpshipFaction();
 				if ((int) jsid == Nexus.getCurrentUser().getCurrentCharacter().getFactionId()) {
 					currentlyCenteredJumpship = j;
-					BOStarSystem s = currentlyCenteredJumpship.getCurrentSystem(currentlyCenteredJumpship.getCurrentSystemID());
-					moveMapToPosition(s);
 				}
 			}
-		} else {
+		}
+		if (currentlyCenteredJumpship != null) {
 			BOStarSystem s = currentlyCenteredJumpship.getCurrentSystem(currentlyCenteredJumpship.getCurrentSystemID());
 			moveMapToPosition(s);
+			currentlyCenteredJumpship.getJumpshipImageView().toFront();
+			currentlyCenteredJumpship.getJumpshipLevelLabel().toFront();
+			ActionManager.getAction(ACTIONS.SHOW_JUMPSHIP_DETAIL).execute(currentlyCenteredJumpship);
 		}
-		currentlyCenteredJumpship.getJumpshipImageView().toFront();
-		currentlyCenteredJumpship.getJumpshipLevelLabel().toFront();
-		ActionManager.getAction(ACTIONS.SHOW_JUMPSHIP_DETAIL).execute(currentlyCenteredJumpship);
 	}
 
 	@FXML
@@ -2287,7 +2282,8 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 				if (o.getObject() instanceof BOStarSystem ss) {
 
 					boolean hasAttack = false;
-					boolean attackAlreadyStarted = false;
+					boolean attackLobbyAlreadyStarted = false;
+					boolean fightsalreadystarted = false;
 					boolean startAttackEnabled = false;
 
 					BOAttack attackOfSelectedSystem = null;
@@ -2298,7 +2294,8 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 					if (!BOAttack.charHasAnActiveAttack()) {
 						for (BOAttack a : Nexus.getBoUniverse().attackBOsOpenInThisRound.values()) {
 							//attackAlreadyStarted = a.getStoryId() != null;
-							attackAlreadyStarted = a.attackLobbyHasBeenStarted();
+							attackLobbyAlreadyStarted = a.attackLobbyHasBeenStarted();
+							fightsalreadystarted = a.getAttackDTO().getFightsStarted();
 
 							// Correct season and round
 							if (Nexus.getCurrentSeason() == a.getSeason() && Nexus.getCurrentRound() == a.getRound()) {
@@ -2318,7 +2315,7 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 										mapButton06.getStyleClass().add("contentButtonRed");
 										mapButton06.setText(Internationalization.getString("starmap_attack_system"));
 
-										if (!attackAlreadyStarted) {
+										if (!attackLobbyAlreadyStarted) {
 											// The attack has not been started yet, I am from the attacking faction, so I can start it now
 											startAttackEnabled = true;
 											currentPlayerRoleInInvasion = Constants.ROLE_ATTACKER_COMMANDER; // Attacker commander
@@ -2335,7 +2332,7 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 										mapButton06.getStyleClass().add("contentButtonBlue");
 										mapButton06.setText(Internationalization.getString("starmap_defend_system"));
 
-										if (!attackAlreadyStarted) {
+										if (!attackLobbyAlreadyStarted) {
 											// I cannot join the defenders, the attackers did not attack yet
 											ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("attack_attackersDidNotAttackYet"), false));
 										} else {
@@ -2350,7 +2347,7 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 										mapButton06.getStyleClass().add("contentButtonYellow");
 										mapButton06.setText(Internationalization.getString("starmap_join_fight"));
 
-										if (!attackAlreadyStarted) {
+										if (!attackLobbyAlreadyStarted) {
 											// I cannot join the attack, the attackers did not attack yet
 											ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("attack_attackersDidNotAttackYet"), false));
 										} else {
@@ -2395,10 +2392,14 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 								showAttackDetail(attackOfSelectedSystem);
 								hideJumpshipDetail();
 								showSystemDetail(Nexus.getCurrentlySelectedStarSystem());
-								if (attackAlreadyStarted) {
-									// disable attack button
+//								if (attackLobbyAlreadyStarted) {
+//									// disable attack button
+//									mapButton06.setDisable(true);
+//								}
+								if (fightsalreadystarted) {
 									mapButton06.setDisable(true);
 									mapButton06.setVisible(false);
+									ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("attack_fightsHaveStartedAlready"), true));
 								}
 							}
 						}

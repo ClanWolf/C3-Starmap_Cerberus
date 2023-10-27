@@ -3,12 +3,10 @@ C3 version history
 ----------------------------------------------------------------
 
 TODO PRIO 1 - Immediate:
-- *** Open requests for alliances are canceled after two rounds (if not accepted) --> Endround
-- *** If an attack is started all diplomacy requests are deleted (for those two factions)
 - *** If a jump is saved that would lead to an attack, but both sides agreed to an alliance in this next round, the attack is not created
-
-- *** Push-To-Talk geht nicht mehr in Discord, wenn der C3 Client im Vordergrund ist
-
+- *** Clear game info on logout
+- *** Clear diplomacy and chat indicators on logout
+- *** Clear season progress on logout
 - Change compression level of jlink as soon as moditect supports the new param
 - If an attack is lost, the jumpship is moved back to the system it came from
 - Check diplomacy on planet attacks and routepoints (already effective?)
@@ -34,6 +32,7 @@ TODO PRIO 2 - Medium:
 - MWO API Loop is still active after the end of an invasion
 
 TODO PRIO 3 - Long term:
+- Push-To-Talk not working in Discord if C3 client is open
 - Datenbankname im DB online check script einbinden
 - Updating the manual (ongoing): https://www.clanwolf.net/apps/C3/C3_Manual_de.pdf
 - Web-View of the Starmap
@@ -60,6 +59,19 @@ WATCH OUT FOR WHILE TESTING:
 ----------------------------------------------------------------
 
 VERSIONS
+
+Version 7.4.5 (26.10.2023)
+- UPDATED: jakarta.mail -> eclipse.angus
+- UPDATED: Several dependencies
+- ADDED: Dependency map for used libraries (client)
+- FIXED: Click onto a text element of a button did not register as button click (starmap)
+
+Version 7.4.4 (20.10.2023)
+- UPDATED: Several libraries
+- ADDED: Open requests for alliances are canceled after two rounds (if not accepted) --> Endround
+- ADDED: If an attack is started all diplomacy requests are deleted (for those two factions)
+- FIXED: NPE on map after entering next round
+- FIXED: An Error where defender could not join an open lobby
 
 Version 7.4.3 (14.10.2023)
 - CHANGED: Only one alliance is allowed for each faction at a time

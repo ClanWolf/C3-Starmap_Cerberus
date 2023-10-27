@@ -36,7 +36,7 @@ import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
  */
 public final class StarmapPane extends AbstractC3Pane {
 	public StarmapPane() {
-		super("/fxml/MapPane.fxml", false, false);
+		super("/fxml/StarmapPane.fxml", false, false);
 		paneName = "MapPane";
 	}
 

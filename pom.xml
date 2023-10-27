@@ -49,7 +49,7 @@
 
 		<!-- C3 Revision -->
 		<!-- https://stackoverflow.com/questions/10582054/maven-project-version-inheritance-do-i-have-to-specify-the-parent-version -->
-		<revision>7.4.3</revision>
+		<revision>7.4.5</revision>
 
 		<!-- Versions -->
 		<version.java>21</version.java>
@@ -62,6 +62,7 @@
 		<version.maven-jar-plugin>3.3.0</version.maven-jar-plugin>
 		<version.maven-resources-plugin>3.3.1</version.maven-resources-plugin>
 		<version.maven-shade-plugin>3.5.0</version.maven-shade-plugin>
+		<version.depgraph-maven-plugin>4.0.2</version.depgraph-maven-plugin>
 		<version.exec-maven-plugin>3.0.0</version.exec-maven-plugin>
 		<version.flatten-maven-plugin>1.5.0</version.flatten-maven-plugin>
 		<version.moditect-maven-plugin>1.0.0.Final</version.moditect-maven-plugin>
@@ -71,7 +72,7 @@
 		<version.blazeds-core>3.2.0.3978</version.blazeds-core>
 		<version.byte-buddy>1.14.9</version.byte-buddy>
 		<version.collections-generic>4.01</version.collections-generic>
-		<version.discord-api>5.0.0-beta.15</version.discord-api>
+		<version.discord-api>5.0.0-beta.16</version.discord-api>
 		<version.dom4j>2.1.4</version.dom4j>
 		<version.el-api>5.0.1</version.el-api>
 		<version.gifencoder>0.10.1</version.gifencoder>
@@ -82,13 +83,13 @@
 		<version.hibernate-ehcache>6.0.0.Alpha7</version.hibernate-ehcache>
 		<version.hibernate-hikaricp>6.3.1.Final</version.hibernate-hikaricp>
 		<version.irc-api>1.0-0015-jitsi-1</version.irc-api>
-		<version.iText-core>8.0.1</version.iText-core>
-		<version.jackson-core>2.15.2</version.jackson-core>
-		<version.jackson-databind>2.15.2</version.jackson-databind>
-		<version.jackson-annotations>2.15.2</version.jackson-annotations>
+		<version.iText-core>8.0.2</version.iText-core>
+		<version.jackson-core>2.15.3</version.jackson-core>
+		<version.jackson-databind>2.15.3</version.jackson-databind>
+		<version.jackson-annotations>2.15.3</version.jackson-annotations>
 		<version.jackson-jsog>1.1.2</version.jackson-jsog>
 		<version.jakarta.activation>2.0.1</version.jakarta.activation>  <!-- net.clanwolf.starmap.mail -->
-		<version.jakarta.mail>2.0.1</version.jakarta.mail>              <!-- net.clanwolf.starmap.mail -->
+		<version.jakarta.mail>2.0.2</version.jakarta.mail>              <!-- net.clanwolf.starmap.mail -->
 		<version.jakarta.xml.bind-api>4.0.1</version.jakarta.xml.bind-api>
 		<version.javassist>3.29.2-GA</version.javassist>
 		<version.jetbrains-annotations>24.0.1</version.jetbrains-annotations>
@@ -100,9 +101,9 @@
 		<version.persistence-api>3.1.0</version.persistence-api>
 		<version.pircbotx>2.3.1</version.pircbotx>
 		<version.slf4j>2.0.9</version.slf4j>
-		<version.springframework>6.0.12</version.springframework>
-		<version.springframework-spring-context>6.0.12</version.springframework-spring-context>
-		<version.springframework-security-config>6.1.4</version.springframework-security-config>
+		<version.springframework>6.0.13</version.springframework>
+		<version.springframework-spring-context>6.0.13</version.springframework-spring-context>
+		<version.springframework-security-config>6.1.5</version.springframework-security-config>
 		<version.teamspeak3-api>1.3.1</version.teamspeak3-api>
 		<version.tektosyne>6.2.0</version.tektosyne>
 		<version.thumbnailator>0.4.20</version.thumbnailator>
@@ -144,6 +145,23 @@
 		<module>net.clanwolf.starmap.mail</module>
 	</modules>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.codehaus</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>${version.exec-maven-plugin}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>com.github.ferstl</groupId>
+				<artifactId>depgraph-maven-plugin</artifactId>
+				<version>${version.depgraph-maven-plugin}</version>
+				<scope>provided</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<!-- ########################################################################################################### -->
 	<!-- ##                                                                                                       ## -->
 	<!-- ##                                                                                                       ## -->
@@ -154,6 +172,11 @@
 
 	<build>
 		<plugins>
+<!--			<plugin>-->
+<!--				<groupId>org.apache.maven</groupId>-->
+<!--				<artifactId>maven-plugin-api</artifactId>-->
+<!--				<version>${version.maven-plugin-plugin}</version>-->
+<!--			</plugin>-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>

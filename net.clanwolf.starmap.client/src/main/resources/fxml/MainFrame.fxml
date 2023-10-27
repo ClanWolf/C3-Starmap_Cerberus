@@ -254,7 +254,7 @@
                 <URL value="@../styles/MainFrameStyle.css" />
             </stylesheets>
         </Label>
-        <Label id="statuslabel" fx:id="toplabel" contentDisplay="RIGHT" focusTraversable="false" layoutX="786.0" layoutY="8.0" minHeight="16.0" minWidth="69.0" onMouseEntered="#handleUserInfoEntered" onMouseExited="#handleUserInfoExited" prefHeight="60.0" prefWidth="189.0" snapToPixel="false" styleClass="toplabel" AnchorPane.rightAnchor="60.0">
+        <Label id="statuslabel" fx:id="toplabel" contentDisplay="RIGHT" focusTraversable="false" layoutX="786.0" layoutY="8.0" minHeight="16.0" minWidth="69.0" onMouseEntered="#handleUserInfoEntered" onMouseExited="#handleUserInfoExited" prefHeight="60.0" prefWidth="139.0" snapToPixel="false" styleClass="toplabel" AnchorPane.rightAnchor="110.0">
             <stylesheets>
                 <URL value="@../styles/MainFrameStyle.css" />
             </stylesheets>

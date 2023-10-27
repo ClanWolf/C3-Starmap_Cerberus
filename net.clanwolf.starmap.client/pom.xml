@@ -29,7 +29,6 @@
 	<!-- ##                                                                                                       ## -->
 	<!-- ##                                                                                                       ## -->
 	<!-- ########################################################################################################### -->
-
 	<dependencies>
 		<!-- C3 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 		<dependency>
@@ -176,10 +175,60 @@
 					<groupId>com.github.ferstl</groupId>
 					<artifactId>depgraph-maven-plugin</artifactId>
 					<version>4.0.2</version>
+					<executions>
+						<execution>
+							<id>depgraph-puml</id>
+							<phase>none</phase>
+							<goals>
+								<goal>graph</goal>
+							</goals>
+							<configuration>
+								<showDuplicates>false</showDuplicates>
+								<showConflicts>true</showConflicts>
+								<graphFormat>puml</graphFormat>
+								<showGroupIds>true</showGroupIds>
+								<showVersions>true</showVersions>
+								<outputDirectory>.</outputDirectory>
+								<outputFileName>c3-client-${revision}_versions.puml</outputFileName>
+								<includes>
+								</includes>
+								<excludes>
+									<exclude>org.apache.logging.log4j</exclude>
+									<exclude>org.slf4j</exclude>
+									<exclude>org.hibernate</exclude>
+									<exclude>javax.persistence</exclude>
+								</excludes>
+							</configuration>
+						</execution>
+						<execution>
+							<id>depgraph-text</id>
+							<phase>none</phase>
+							<goals>
+								<goal>graph</goal>
+							</goals>
+							<configuration>
+								<showDuplicates>false</showDuplicates>
+								<showConflicts>true</showConflicts>
+								<graphFormat>text</graphFormat>
+								<showGroupIds>true</showGroupIds>
+								<showVersions>true</showVersions>
+								<outputDirectory>.</outputDirectory>
+								<outputFileName>c3-client-${revision}_versions.txt</outputFileName>
+								<includes>
+								</includes>
+								<excludes>
+									<exclude>org.apache.logging.log4j</exclude>
+									<exclude>org.slf4j</exclude>
+									<exclude>org.hibernate</exclude>
+									<exclude>javax.persistence</exclude>
+									<exclude>org.jboss.logging</exclude>
+								</excludes>
+							</configuration>
+						</execution>
+					</executions>
 				</plugin>
 			</plugins>
 		</pluginManagement>
-
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
@@ -315,28 +364,16 @@
 				<groupId>com.github.ferstl</groupId>
 				<artifactId>depgraph-maven-plugin</artifactId>
 				<version>4.0.2</version>
-				<configuration>
-<!--					<scope>provided</scope>-->
-					<showDuplicates>true</showDuplicates>
-					<showConflicts>true</showConflicts>
-					<graphFormat>puml</graphFormat>
-					<showGroupIds>true</showGroupIds>
-					<showVersions>true</showVersions>
-					<outputDirectory>.</outputDirectory>
-					<outputFileName>depgraph.puml</outputFileName>
-					<!--          <includes>-->
-					<!--            <include></include>-->
-					<!--          </includes>-->
-					<excludes>
-						<exclude>org.apache.logging.log4j</exclude>
-						<exclude>org.slf4j</exclude>
-						<exclude>org.hibernate</exclude>
-						<exclude>javax.persistence</exclude>
-					</excludes>
-				</configuration>
 				<executions>
 					<execution>
-						<id>depgraph</id>
+						<id>depgraph-puml</id>
+						<phase>install</phase>
+						<goals>
+							<goal>graph</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>depgraph-text</id>
 						<phase>install</phase>
 						<goals>
 							<goal>graph</goal>

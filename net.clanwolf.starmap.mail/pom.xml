@@ -5,7 +5,6 @@
                              http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-
 	<parent>
 		<artifactId>C3-Starmap_Cerberus</artifactId>
 		<groupId>net.clanwolf.starmap</groupId>
@@ -37,16 +36,38 @@
 		</dependency>
 
 		<!-- Mail ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
+
 		<dependency>
-			<groupId>com.sun.mail</groupId>
+			<groupId>org.eclipse.angus</groupId>
+			<artifactId>angus-core</artifactId>
+			<version>${version.jakarta.mail}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.angus</groupId>
+			<artifactId>angus-mail</artifactId>
+			<version>${version.jakarta.mail}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.eclipse.angus</groupId>
 			<artifactId>jakarta.mail</artifactId>
 			<version>${version.jakarta.mail}</version>
 		</dependency>
 		<dependency>
-			<groupId>com.sun.activation</groupId>
-			<artifactId>jakarta.activation</artifactId>
+			<groupId>org.eclipse.angus</groupId>
+			<artifactId>angus-activation</artifactId>
 			<version>${version.jakarta.activation}</version>
 		</dependency>
+
+<!--		<dependency>-->
+<!--			<groupId>com.sun.mail</groupId>-->
+<!--			<artifactId>jakarta.mail</artifactId>-->
+<!--			<version>${version.jakarta.mail}</version>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>com.sun.activation</groupId>-->
+<!--			<artifactId>jakarta.activation</artifactId>-->
+<!--			<version>${version.jakarta.activation}</version>-->
+<!--		</dependency>-->
 	</dependencies>
 
 	<!-- ########################################################################################################### -->
