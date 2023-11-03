@@ -3,12 +3,12 @@ C3 version history
 ----------------------------------------------------------------
 
 TODO PRIO 1 - Immediate:
+- *** If plotting a route and hovering over the starting point (where my ship is at the moment), an error indicator shows up --> remove
+- *** If round ends and jumpship moves, the jumpship level label remains on previous system
 - *** Clear game info on logout
 - *** Clear diplomacy and chat indicators on logout
 - *** Clear season progress on logout
 - Change compression level of jlink as soon as moditect supports the new param
-- If an attack is lost, the jumpship is moved back to the system it came from
-- Check diplomacy on planet attacks and routepoints (already effective?)
 - Allow allied pilots to be droplead in fights for allied factions
 - Allied faction leader should see the jump route of allied jumpships
 - If user logs out and another logs in without closing the client, not all user related data is adapted to the new user
@@ -59,12 +59,19 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
+Version 7.4.6 ( *** .10.2023)
+- *** If an attack is lost, the jumpship is moved back to the system it came from
+- UPDATED: Several dependencies (discord api)
+- ADDED: Dependency listing is now uploaded with the client
+
 Version 7.4.5 (28.10.2023)
 - UPDATED: jakarta.mail -> eclipse.angus
 - UPDATED: Several dependencies
 - ADDED: Dependency map for used libraries (client)
+- ADDED: Check diplomacy on planet attacks and routepoints
 - ADDED: If a jump is saved that would lead to an attack, but both sides agreed to an alliance next round, no attack is created
 - FIXED: Click onto a text element of a button did not register as button click (starmap)
+- STARTED: If an attack is lost, the jumpship is moved back to the system it came from
 
 Version 7.4.4 (20.10.2023)
 - UPDATED: Several libraries

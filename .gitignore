@@ -16,6 +16,8 @@ net.clanwolf.starmap.mail/target/*
 .flattened-pom.xml
 dependency-reduced-pom.xml
 
+c3-client-*_versions.*
+
 # Compiled class file
 *.class
 

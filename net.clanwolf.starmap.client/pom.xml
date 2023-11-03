@@ -273,10 +273,18 @@
 								<echo>C3_Manual_de.pdf</echo>
 								<copy file="../doc/manual/C3_Manual_de.pdf"
 								      tofile="${basedir}/src/main/resources/C3_Manual_de.pdf"/>
-								<!--								<echo>C3_Manual_en.pdf</echo>-->
-								<!--								<copy file="../doc/manual/C3_Manual_en.pdf" tofile="${basedir}/src/main/resources/C3_Manual_en.pdf"/>-->
-								<echo>changelog.txt</echo>
+								<!-- <echo>C3_Manual_en.pdf</echo>-->
+								<!-- <copy file="../doc/manual/C3_Manual_en.pdf" tofile="${basedir}/src/main/resources/C3_Manual_en.pdf"/>-->
+								<echo>Copying changelog.txt...</echo>
 								<copy file="../doc/changelog.txt" tofile="${basedir}/src/main/resources/changelog.txt"/>
+
+								<echo>Deleting old dependency listing files...</echo>
+								<delete>
+									<fileset dir="${basedir}">
+										<include name="c3-client-*_versions.puml"/>
+										<include name="c3-client-*_versions.txt"/>
+									</fileset>
+								</delete>
 							</target>
 						</configuration>
 					</execution>

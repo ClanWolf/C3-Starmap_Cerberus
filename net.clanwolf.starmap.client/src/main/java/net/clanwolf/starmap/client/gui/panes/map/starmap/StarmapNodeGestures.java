@@ -294,6 +294,7 @@ public class StarmapNodeGestures {
 
 			boolean createAttack = false;
 			boolean sameFaction = false;
+			boolean atWar = false;
 
 			if (dState.getState() == DiplomacyState.OTHER_FACTION_BREAK_ALLIANCE_NEXT_ROUND
 					|| dState.getState() == DiplomacyState.PLAYERS_FACTION_BREAK_ALLIANCE_NEXT_ROUND
@@ -310,13 +311,20 @@ public class StarmapNodeGestures {
 				sameFaction = true;
 			}
 
-			if (!createAttack && !sameFaction) {
+			if (dState.getState() == DiplomacyState.FACTIONS_AT_WAR) {
+				atWar = true;
+			}
+
+			if (!createAttack && !sameFaction && !atWar) {
 				circleS2.setFill(Color.GREEN);
 				circleS2.setStroke(Color.WHITE);
 			} else if (y == 0 && sameFaction) {
 				circleS2.setFill(Color.WHITE);
 				circleS2.setStroke(Color.BLACK);
 			} else if (y > 0 && !sameFaction) {
+				circleS2.setFill(Color.ORANGE);
+				circleS2.setStroke(Color.BLACK);
+			} else if (y > 0 && atWar) {
 				circleS2.setFill(Color.ORANGE);
 				circleS2.setStroke(Color.BLACK);
 			} else if (y == 0) {
