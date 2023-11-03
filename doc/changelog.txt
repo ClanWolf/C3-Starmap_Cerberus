@@ -59,7 +59,10 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
-*** If an attack is lost, the jumpship is moved back to the system it came from
+Version 7.4.6 ( *** .10.2023)
+- *** If an attack is lost, the jumpship is moved back to the system it came from
+- UPDATED: Several dependencies (discord api)
+- ADDED: Dependency listing is now uploaded with the client
 
 Version 7.4.5 (28.10.2023)
 - UPDATED: jakarta.mail -> eclipse.angus

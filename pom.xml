@@ -49,7 +49,7 @@
 
 		<!-- C3 Revision -->
 		<!-- https://stackoverflow.com/questions/10582054/maven-project-version-inheritance-do-i-have-to-specify-the-parent-version -->
-		<revision>7.4.5</revision>
+		<revision>7.4.6</revision>
 
 		<!-- Versions -->
 		<version.java>21</version.java>
@@ -72,7 +72,7 @@
 		<version.blazeds-core>3.2.0.3978</version.blazeds-core>
 		<version.byte-buddy>1.14.9</version.byte-buddy>
 		<version.collections-generic>4.01</version.collections-generic>
-		<version.discord-api>5.0.0-beta.16</version.discord-api>
+		<version.discord-api>5.0.0-beta.17</version.discord-api>
 		<version.dom4j>2.1.4</version.dom4j>
 		<version.el-api>5.0.1</version.el-api>
 		<version.gifencoder>0.10.1</version.gifencoder>

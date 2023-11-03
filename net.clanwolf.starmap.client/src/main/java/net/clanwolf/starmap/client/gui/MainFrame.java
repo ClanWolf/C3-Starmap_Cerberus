@@ -344,7 +344,6 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 						logger.info("Difference detected: Prompt to download new version.");
 						Nexus.promptNewVersionInstall = true;
 					}
-//					Nexus.promptNewVersionInstall = true;
 				}
 			} catch(Exception e) {
 				logger.warn("Could not check latest available client version online!");

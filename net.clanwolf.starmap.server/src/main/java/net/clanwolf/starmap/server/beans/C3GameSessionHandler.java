@@ -1402,7 +1402,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				serverHeartBeat.schedule(new HeartBeatTimerTask(true, null), 0);
 				break;
 			case RESET_FIGHT:
-				// Reset a fight in case a pilot left and all needs to be restarted
+				// Manually reset a fight (by command in terminal) in case a pilot left and all needs to be restarted
 				if (state.getObject() instanceof Long attackIdFromState) {
 					logger.info("A reset of attack " + attackIdFromState + " was requested by admin");
 					resetAttack(attackIdFromState);
