@@ -134,6 +134,10 @@ public class StarmapPannableCanvas extends Pane {
 		attacksPane.setVisible(value);
 	}
 
+	public boolean is3DStarsShowing() {
+		return starPane.isVisible();
+	}
+
 	public void hideElementsForScreenshot(boolean value) {
 		grid_250.setVisible(!value);
 		grid_500.setVisible(!value);

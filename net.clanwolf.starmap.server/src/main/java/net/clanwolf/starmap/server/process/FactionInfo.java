@@ -99,7 +99,7 @@ public class FactionInfo {
         ArrayList<StarSystemDataPOJO> starSystemDataListHH = StarSystemDataDAO.getInstance().getAll_HH_StarSystemData();
 
         for (StarSystemDataPOJO starSystemData : starSystemDataListHH) {
-            if (starSystemData.getFactionID().getId().equals(myFactionId) && !Objects.equals(currentAttackedSystem, starSystemData.getStarSystemID().getId())) {
+            if (starSystemData.getFaction().getId().equals(myFactionId) && !Objects.equals(currentAttackedSystem, starSystemData.getStarSystemID().getId())) {
 
                 switch (starSystemData.getLevel().intValue()) {
                     case 1 -> // Regular
@@ -120,7 +120,7 @@ public class FactionInfo {
 
         ArrayList<StarSystemDataPOJO> starSystemDataListHH = StarSystemDataDAO.getInstance().getAll_HH_StarSystemData();
         for (StarSystemDataPOJO starSystemData : starSystemDataListHH) {
-            if (starSystemData.getFactionID().getId().equals(myFactionId) && !Objects.equals(currentAttackedSystem, starSystemData.getStarSystemID().getId())) {
+            if (starSystemData.getFaction().getId().equals(myFactionId) && !Objects.equals(currentAttackedSystem, starSystemData.getStarSystemID().getId())) {
 
                 switch (starSystemData.getLevel().intValue()) {
                     case 1 -> // Regular

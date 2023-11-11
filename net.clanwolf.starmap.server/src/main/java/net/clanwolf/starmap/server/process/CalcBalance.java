@@ -146,7 +146,7 @@ public class CalcBalance {
 
         ArrayList<StarSystemDataPOJO> starSystemDataListHH = StarSystemDataDAO.getInstance().getAll_HH_StarSystemData();
         for (StarSystemDataPOJO starSystemData : starSystemDataListHH) {
-            if (starSystemData.getFactionID().getId().equals(userFactionId) && currentStarSystemId != starSystemData.getStarSystemID().getId()) {
+            if (starSystemData.getFaction().getId().equals(userFactionId) && currentStarSystemId != starSystemData.getStarSystemID().getId()) {
 
                 switch (starSystemData.getLevel().intValue()) {
                     case 1 -> { // Regular

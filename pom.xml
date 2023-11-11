@@ -49,7 +49,7 @@
 
 		<!-- C3 Revision -->
 		<!-- https://stackoverflow.com/questions/10582054/maven-project-version-inheritance-do-i-have-to-specify-the-parent-version -->
-		<revision>7.4.6</revision>
+		<revision>7.4.15</revision>
 
 		<!-- Versions -->
 		<version.java>21</version.java>
@@ -95,7 +95,7 @@
 		<version.jetbrains-annotations>24.0.1</version.jetbrains-annotations>
 		<version.jetlang>0.2.23</version.jetlang>
 		<version.jnativehook>2.2.2</version.jnativehook>
-		<version.mariadb-connector>3.2.0</version.mariadb-connector>
+		<version.mariadb-connector>3.3.0</version.mariadb-connector>
 		<version.mchange-commons-java>0.2.20</version.mchange-commons-java>
 		<version.netty>4.1.94.Final</version.netty>
 		<version.persistence-api>3.1.0</version.persistence-api>

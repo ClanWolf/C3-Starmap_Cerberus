@@ -101,7 +101,7 @@ C:\C3\tools\Windows10-SignTool\signtool.exe sign /f C:\C3\certificate\c3_certifi
 
 REM Upload installer
 "C:\Program Files (x86)\WinSCP\winscp.com" /ini=nul /script=C:\C3\projects\C3-Starmap_Cerberus\NSIS\scripts\upload_installer.script
-START "" "https://www.clanwolf.net/apps/C3/server/php/insert_new_version.php"
+REM START "" "https://www.clanwolf.net/apps/C3/server/php/insert_new_version.php"
 
 :REQUEST_IRCBOT
 ECHO ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

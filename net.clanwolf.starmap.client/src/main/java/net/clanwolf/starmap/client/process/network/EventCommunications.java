@@ -44,6 +44,7 @@ import net.clanwolf.starmap.client.process.universe.BOStarSystem;
 import net.clanwolf.starmap.client.process.universe.BOUniverse;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.Internationalization;
+import net.clanwolf.starmap.client.util.Tools;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.*;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
@@ -441,6 +442,9 @@ public class EventCommunications {
 									ActionManager.getAction(ACTIONS.SWITCH_TO_MAP).execute();
 								}
 							}
+						}
+						if (Nexus.getLastSavedAttackStarSystemDataId() != null) {
+							ActionManager.getAction(ACTIONS.CREATE_ATTACK_SCREENSHOT).execute(attack);
 						}
 					}
 					break;

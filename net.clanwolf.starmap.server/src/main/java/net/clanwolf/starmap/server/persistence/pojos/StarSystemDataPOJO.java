@@ -46,7 +46,7 @@ public class StarSystemDataPOJO extends Pojo {
 
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "FactionID")
-	private FactionPOJO factionID;
+	private FactionPOJO faction;
 
 	@Column(name = "FactionID_Start")
 	private Long factionID_Start;
@@ -112,13 +112,13 @@ public class StarSystemDataPOJO extends Pojo {
 	}
 
 	@SuppressWarnings("unused")
-	public FactionPOJO getFactionID() {
-		return factionID;
+	public FactionPOJO getFaction() {
+		return faction;
 	}
 
 	@SuppressWarnings("unused")
-	public void setFactionID(FactionPOJO factionID) {
-		this.factionID = factionID;
+	public void setFaction(FactionPOJO faction) {
+		this.faction = faction;
 	}
 
 	@SuppressWarnings("unused")

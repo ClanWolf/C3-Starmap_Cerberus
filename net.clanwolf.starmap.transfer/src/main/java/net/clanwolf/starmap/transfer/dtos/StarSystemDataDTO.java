@@ -16,7 +16,7 @@ public class StarSystemDataDTO extends Dto {
 
 	//@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	//@Column(name = "FactionID")
-	private FactionDTO factionID;
+	private FactionDTO faction;
 
 	//@Column(name = "FactionID_Start")
 	private Long factionID_Start;
@@ -85,13 +85,13 @@ public class StarSystemDataDTO extends Dto {
 	}
 
 	@SuppressWarnings("unused")
-	public FactionDTO getFactionID() {
-		return factionID;
+	public FactionDTO getFaction() {
+		return faction;
 	}
 
 	@SuppressWarnings("unused")
-	public void setFactionID(FactionDTO factionID) {
-		this.factionID = factionID;
+	public void setFaction(FactionDTO faction) {
+		this.faction = faction;
 	}
 
 	@SuppressWarnings("unused")

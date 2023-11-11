@@ -189,7 +189,7 @@
 								<showGroupIds>true</showGroupIds>
 								<showVersions>true</showVersions>
 								<outputDirectory>.</outputDirectory>
-								<outputFileName>c3-client-${revision}_versions.puml</outputFileName>
+								<outputFileName>C3-Client-${revision}_versions.puml</outputFileName>
 								<includes>
 								</includes>
 								<excludes>
@@ -213,7 +213,7 @@
 								<showGroupIds>true</showGroupIds>
 								<showVersions>true</showVersions>
 								<outputDirectory>.</outputDirectory>
-								<outputFileName>c3-client-${revision}_versions.txt</outputFileName>
+								<outputFileName>C3-Client-${revision}_versions.txt</outputFileName>
 								<includes>
 								</includes>
 								<excludes>
@@ -281,8 +281,8 @@
 								<echo>Deleting old dependency listing files...</echo>
 								<delete>
 									<fileset dir="${basedir}">
-										<include name="c3-client-*_versions.puml"/>
-										<include name="c3-client-*_versions.txt"/>
+										<include name="C3-Client-*_versions.puml"/>
+										<include name="C3-Client-*_versions.txt"/>
 									</fileset>
 								</delete>
 							</target>

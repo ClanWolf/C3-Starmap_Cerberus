@@ -563,7 +563,7 @@ public class EndRound {
 
                     StarSystemDataPOJO ssdPojo = ssdDAO.findById(ServerNexus.END_ROUND_USERID, attackPOJO.getStarSystemDataID());
                     FactionPOJO fPojo = fDAO.findById(ServerNexus.END_ROUND_USERID, winnerId);
-                    ssdPojo.setFactionID(fPojo);
+                    ssdPojo.setFaction(fPojo);
                     logger.info("**** Storing winner for attack " + attackPOJO.getId() + " to be " + winnerId + ".");
 
                     ssdDAO.update(ServerNexus.END_ROUND_USERID, ssdPojo);
@@ -597,7 +597,7 @@ public class EndRound {
                         int countIndustrial = 0;
                         int countCapital = 0;
                         for (StarSystemDataPOJO starsystemdata : starsystemdataListHH) {
-                            if (starsystemdata.getFactionID().getId().equals(faction.getId())) {
+                            if (starsystemdata.getFaction().getId().equals(faction.getId())) {
                                 countAll++;
                                 switch (starsystemdata.getLevel().intValue()) {
                                     case 1 -> { // Regular

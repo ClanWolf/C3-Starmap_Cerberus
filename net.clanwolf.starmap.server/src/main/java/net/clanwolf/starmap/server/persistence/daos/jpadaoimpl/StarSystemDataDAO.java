@@ -29,7 +29,6 @@ package net.clanwolf.starmap.server.persistence.daos.jpadaoimpl;
 import net.clanwolf.starmap.server.persistence.CriteriaHelper;
 import net.clanwolf.starmap.server.persistence.daos.GenericDAO;
 import net.clanwolf.starmap.server.persistence.pojos.StarSystemDataPOJO;
-import net.clanwolf.starmap.server.persistence.pojos.StarSystemPOJO;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -87,7 +86,7 @@ public class StarSystemDataDAO extends GenericDAO {
 
 		while (iter.hasNext()) {
 			StarSystemDataPOJO ssd = (StarSystemDataPOJO) iter.next();
-			if(ssd.getFactionID().getId().equals(factionId)) {
+			if(ssd.getFaction().getId().equals(factionId)) {
 				ret = ssd;
 				break;
 			}
@@ -124,7 +123,7 @@ public class StarSystemDataDAO extends GenericDAO {
 		ArrayList<Long> lRPS = new ArrayList<>();
 
 		while (iter.hasNext()) {
-			lRPS.add(((StarSystemDataPOJO) iter.next()).getFactionID().getId());
+			lRPS.add(((StarSystemDataPOJO) iter.next()).getFaction().getId());
 		}
 
 		return lRPS;

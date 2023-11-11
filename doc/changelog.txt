@@ -8,6 +8,8 @@ TODO PRIO 1 - Immediate:
 - *** Clear game info on logout
 - *** Clear diplomacy and chat indicators on logout
 - *** Clear season progress on logout
+- *** Animatred gif on discord does not show all rounds
+- *** Edit discord post with animated gif to make it reload
 - Change compression level of jlink as soon as moditect supports the new param
 - Allow allied pilots to be droplead in fights for allied factions
 - Allied faction leader should see the jump route of allied jumpships
@@ -25,7 +27,6 @@ TODO PRIO 2 - Medium:
 - Finish sound samples on the radio buttons (R1-3) on Invasionpane
 - Auto-delete not activated user
 - Sound volume and Speech volume vs RP volume cleanup
-- Insert discord thread for each attack automatically
 - Add a function to leave game / delete account
 - Channel message (discord) if a user successfully changes faction
 - MWO API Loop is still active after the end of an invasion
@@ -59,8 +60,14 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
-Version 7.4.6 ( *** .10.2023)
-- *** If an attack is lost, the jumpship is moved back to the system it came from
+Version 7.4.15 (11.11.2023)
+- UPDATED: Libraries
+- ADDED: Automated screenshot creation if an attack is saved for the first time
+- ADDED: Upload of that screenshot for the discord bot to use in attack thread
+- ADDED: Insert discord thread for each attack automatically
+
+Version 7.4.6 (04.11.2023)
+- UPDATED: If an attack is lost, the jumpship is moved back to the system it came from
 - UPDATED: Several dependencies (discord api)
 - ADDED: Dependency listing is now uploaded with the client
 

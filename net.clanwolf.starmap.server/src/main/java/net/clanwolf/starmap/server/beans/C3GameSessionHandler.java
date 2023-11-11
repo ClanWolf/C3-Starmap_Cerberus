@@ -498,7 +498,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			starsystemData.setLockedUntilRound(attack.getRound() + Constants.ROUNDS_TO_LOCK_SYSTEM_AFTER_ATTACK);
 			daoSS.update(getC3UserID(session), starsystemData);
 
-			FactionPOJO originalFaction = starsystemData.getFactionID();
+			FactionPOJO originalFaction = starsystemData.getFaction();
 
 			logger.info("Saving attack: " + attack);
 			logger.info("-- Attacker (jumpshipID): " + attack.getJumpshipID());
@@ -636,11 +636,23 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				if(existingAttack == null) {
 					JumpshipPOJO js = daoJJ.findById(getC3UserID(session), attack.getJumpshipID());
 					FactionPOJO factionAttacker = FactionDAO.getInstance().findById(getC3UserID(session), js.getJumpshipFactionID());
+					FactionPOJO factionDefender = FactionDAO.getInstance().findById(getC3UserID(session), starsystemData.getFaction().getId());
 					ServerNexus.getEci().sendExtCom(starSystem.getName() + " is attacked by '" + js.getJumpshipName() + "' (" + factionAttacker.getShortName() + ") in round " + attack.getRound() + "!", "en",true, true, true);
 					ServerNexus.getEci().sendExtCom(starSystem.getName() + " wird in Runde " + attack.getRound() + " von '" + js.getJumpshipName() + "' (" + factionAttacker.getShortName() + ") angegriffen!", "de",true, true, true);
+
 					dao.save(getC3UserID(session), attack);
 
-					DiplomacyDAO.getInstance().removeAllRequestAfterAttack(getC3UserID(session),GameServer.getCurrentSeason(),attack.getRound(),factionAttacker.getId(), starsystemData.getFactionID().getId());
+					String command = "@@@DISCORD-CMD:CREATE_ATTACK_THREAD";
+					command += "@@@" + attack.getSeason();
+					command += "@@@" + attack.getRound();
+					command += "@@@" + starSystem.getName();
+					command += "@@@" + factionAttacker.getShortName();
+					command += "@@@" + factionDefender.getShortName();
+					command += "@@@" + attack.getId();
+					ServerNexus.getEci().sendExtCom(command, "en", false, false, true);
+					ServerNexus.getEci().sendExtCom(command, "de", false, false, true);
+
+					DiplomacyDAO.getInstance().removeAllRequestAfterAttack(getC3UserID(session),GameServer.getCurrentSeason(),attack.getRound(),factionAttacker.getId(), starsystemData.getFaction().getId());
 				} else {
 					attack = existingAttack;
 				}

@@ -28,18 +28,24 @@ package net.clanwolf.starmap.client.util;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Pos;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.DialogPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
+import javafx.scene.transform.Transform;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.StatusTextEntryActionObject;
 import net.clanwolf.starmap.client.enums.C3FTPTYPES;
+import net.clanwolf.starmap.client.gui.panes.map.starmap.StarmapConfig;
 import net.clanwolf.starmap.client.gui.panes.map.starmap.StarmapPannableCanvas;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.universe.BOFaction;
+import net.clanwolf.starmap.client.process.universe.BOStarSystem;
+import net.coobird.thumbnailator.geometry.Position;
+import net.coobird.thumbnailator.geometry.Positions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.client.net.FTP;
@@ -196,6 +202,90 @@ public final class Tools {
 		return RomanNumber.toRoman(n);
 	}
 
+	public static void getAttackScreenShot(StarmapPannableCanvas canvas, BOStarSystem attackedSystem, Long attackId) {
+		if (!Nexus.isDevelopmentPC()) {
+			ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("666");
+
+			String currentSeason = "" + Nexus.getCurrentSeason();
+			String currentRound = "" + Nexus.getCurrentRound();
+			int nextRound = Nexus.getCurrentRound() + 1;
+			double w = StarmapConfig.MAP_WIDTH;
+			double h = StarmapConfig.MAP_HEIGHT;
+			int attackSubImageWidth = 600;
+			int attackSubImageHeight = 400;
+
+			WritableImage wi = new WritableImage((int) w, (int) h);
+
+			StatusTextEntryActionObject o1 = new StatusTextEntryActionObject("Creating attack screenshot...", false);
+			ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(o1);
+
+			try {
+				File file1 = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3" + File.separator + "attacks" + File.separator + "C3_S" + Nexus.getCurrentSeason() + "_R" + nextRound + "_" + attackId + ".png");
+				if (!file1.mkdirs()) {
+					// logger.error("Could not create attack image folder or it already existed!");
+				}
+
+				BOStarSystem ss = Nexus.getBoUniverse().starSystemBOs.get(attackedSystem.getStarSystemId());
+				double startPositionX = (w / 2 + ss.getX() * StarmapConfig.MAP_COORDINATES_MULTIPLICATOR);
+				double startPositionY = (h / 2 - ss.getY() * StarmapConfig.MAP_COORDINATES_MULTIPLICATOR);
+
+				boolean starsShowing = canvas.is3DStarsShowing();
+				if (starsShowing) {
+					canvas.show3DStars(false);
+				}
+
+				SnapshotParameters snapshotParameters = new SnapshotParameters();
+				snapshotParameters.setFill(javafx.scene.paint.Color.TRANSPARENT);
+				BufferedImage tmp = SwingFXUtils.fromFXImage(canvas.snapshot(snapshotParameters, null), null);
+
+				double snapshotWidth = tmp.getWidth();
+				double snapshotHeight = tmp.getHeight();
+				double factorX = snapshotWidth / w;
+				double factorY = snapshotHeight / h;
+
+				int finalAttackSubImageWidth = (int) (attackSubImageWidth * factorX);
+				int finalAttackSubImageHeight = (int) (attackSubImageHeight * factorY);
+				int finalStartPositionX = (int) ((startPositionX * factorX) - (finalAttackSubImageWidth / 2));
+				int finalStartPositionY = (int) ((startPositionY * factorY) - (finalAttackSubImageHeight / 2) + 70 * factorY);
+
+				BufferedImage attackSubImage = Thumbnails.of(tmp).sourceRegion(finalStartPositionX, finalStartPositionY, finalAttackSubImageWidth, finalAttackSubImageHeight).size(attackSubImageWidth, attackSubImageHeight).asBufferedImage();
+
+				final BufferedImage finaleImage = new BufferedImage(attackSubImageWidth, attackSubImageHeight, BufferedImage.TYPE_INT_RGB);
+				Graphics g = finaleImage.getGraphics();
+				g.drawImage(attackSubImage, 0, 0, attackSubImageWidth, attackSubImageHeight, null);
+				g.dispose();
+
+				if (starsShowing) {
+					canvas.show3DStars(true);
+				}
+
+				ImageIO.write(finaleImage, "png", file1);
+
+				Runnable runnable = () -> {
+					StatusTextEntryActionObject o2 = new StatusTextEntryActionObject("Uploading attack images...", false);
+					ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(o2);
+
+					try {
+						FTP ftpClient = new FTP(C3FTPTYPES.FTP_HISTORYUPLOAD);
+						ftpClient.upload(file1.getAbsolutePath(), file1.getName(), "S" + currentSeason + "/" + "AttackImages");
+					} catch (Exception e) {
+						e.printStackTrace();
+						logger.error("Exception during ftp upload.", e);
+					}
+				};
+				Thread t = new Thread(runnable);
+				t.start();
+			} catch (IOException e) {
+				e.printStackTrace();
+				logger.error("Could not save attack screenshot!");
+			}
+
+			ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("666");
+		} else {
+			logger.error("Skipping attack screenshot because this is a dev machine.");
+		}
+	}
+
 	public static void saveMapScreenshot(int width, int height, StarmapPannableCanvas canvas) {
 		if(C3Properties.getBoolean(C3PROPS.GENERALS_SCREENSHOT_HISTORY)) {
 			if (!Nexus.isDevelopmentPC()) {
@@ -204,8 +294,6 @@ public final class Tools {
 
 				StatusTextEntryActionObject o1 = new StatusTextEntryActionObject("Creating history images...", false);
 				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(o1);
-
-//				logger.info("creating... 1");
 
 				try {
 					BOFaction faction = Nexus.getCurrentFaction();
@@ -219,8 +307,6 @@ public final class Tools {
 					}
 					BufferedImage bi = SwingFXUtils.fromFXImage(canvas.snapshot(null, wi), null);
 
-//					logger.info("creating... 2");
-
 					final int screenshotWidth = 2500;       // For map dimension of 4000 x 4000
 					final int screenshotHeight = 2000;      // For map dimension of 4000 x 4000
 					final BufferedImage finaleImage = new BufferedImage(screenshotWidth, screenshotHeight, BufferedImage.TYPE_INT_RGB);
@@ -228,8 +314,6 @@ public final class Tools {
 					g.drawImage(finaleImage, (bi.getWidth() - screenshotWidth) / 2, (bi.getHeight() - screenshotHeight) / 2, screenshotWidth, screenshotHeight, null);
 					g.drawImage(bi, -(bi.getWidth() - screenshotWidth) / 2, -200, bi.getWidth(), bi.getHeight(), null);
 					g.dispose();
-
-//					logger.info("creating... 3");
 
 					Image c3Icon = new Image(Objects.requireNonNull(Tools.class.getResourceAsStream("/icons/C3_Icon2.png")));
 					Image hhIcon = new Image(Objects.requireNonNull(Tools.class.getResourceAsStream("/icons/hammerhead.png")));
@@ -291,7 +375,8 @@ public final class Tools {
 					// https://github.com/coobird/thumbnailator
 					ImageIO.write(Thumbnails.of(finaleImage).scale(0.10).asBufferedImage(), "png", file3);
 
-//					logger.info("creating... 4");
+					// DO NOT use a thread here!
+					// Otherwise things like the nebula image end up on the screenshot (should not be there)
 
 					Runnable runnable = () -> {
 						StatusTextEntryActionObject o2 = new StatusTextEntryActionObject("Uploading history images...", false);
@@ -304,8 +389,7 @@ public final class Tools {
 							ftpClient.upload(file3.getAbsolutePath(), file3.getName(), "S" + sv2);
 						} catch (Exception e) {
 							e.printStackTrace();
-							logger.info("Exception during ftp upload: " + e.getMessage());
-							logger.info("--------- FTP credentials seem to be missing! ---------");
+							logger.info("Exception during ftp upload.", e);
 						}
 					};
 					Thread t = new Thread(runnable);
@@ -314,9 +398,6 @@ public final class Tools {
 					e.printStackTrace();
 					logger.error("Could not save map screenshot!");
 				}
-
-				// DO NOT use a thread here!
-				// Otherwise things like the nebula image end up on the screenshot (should not be there)
 				ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("14");
 			} else {
 				logger.error("Skipping map screenshot because this is a dev machine.");

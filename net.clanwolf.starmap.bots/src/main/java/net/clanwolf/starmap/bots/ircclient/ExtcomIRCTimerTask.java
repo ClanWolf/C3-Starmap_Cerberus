@@ -73,11 +73,13 @@ public class ExtcomIRCTimerTask extends TimerTask {
 				}
 				for (String s : msgscut) {
 					if (!"...".equalsIgnoreCase(s)) {
-						if (s.contains(" ⚔ ")) {
-							s = s.replace(" - <", " - ");
-							s = s.replace(">", "");
+						if (!s.startsWith("@@@DISCORD-CMD:")) {
+							if (s.contains(" ⚔ ")) {
+								s = s.replace(" - <", " - ");
+								s = s.replace(">", "");
+							}
+							bot.send(s);
 						}
-						bot.send(s);
 					}
 				}
 			}

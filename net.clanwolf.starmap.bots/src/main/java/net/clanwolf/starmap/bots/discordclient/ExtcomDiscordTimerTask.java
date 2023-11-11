@@ -70,7 +70,46 @@ public class ExtcomDiscordTimerTask extends TimerTask {
 				}
 				for (String s : msgscut) {
 					if (!"...".equalsIgnoreCase(s)) {
-						DiscordBot.sendMessageToChannel(s);
+						logger.info(s);
+
+						if (!s.startsWith("@@@DISCORD-CMD:")) {
+							DiscordBot.sendMessageToChannel(s);
+						} else {
+							if (s.startsWith("@@@DISCORD-CMD:CREATE_ATTACK_THREAD@@@")) {
+								// Message in Status:   "Carse wird in Runde 41 von "Steelserpent" (CSV) angegriffen!"
+								// Name of Thread:      "[R36] DC ⚔ Grumium (FRR)"
+								// Tags:                "Runde"
+								String[] commandParts = s.split("@@@");
+								if (commandParts.length == 8) {
+									String command = commandParts[1];
+									String season = commandParts[2];
+									String round = commandParts[3];
+									String systemName = commandParts[4];
+									String attackerShortname = commandParts[5];
+									String defenderShortname = commandParts[6];
+									String attackId = commandParts[7];
+
+									int randNum = (int)((Math.random()) * 324 + 100000);
+
+									String header =  "[S" + season + "R" + round + "] " + attackerShortname + " ⚔ " + systemName + " ("+ defenderShortname + ")";
+									String msg = "";
+									//msg += attackerShortname + " greift " + systemName + " ("+ defenderShortname + ") an.\n";
+									msg += "https://www.clanwolf.net/apps/C3/seasonhistory/S1/AttackImages/C3_S" + season + "_R" + round + "_" + attackId + ".png?" + randNum;
+									DiscordBot.createAttackThread(header, msg, season, round);
+								} else {
+									DiscordBot.sendMessageToChannel("Error while inserting attack thread! Check log!");
+									DiscordBot.sendMessageToChannel("Length: " + commandParts.length);
+									DiscordBot.sendMessageToChannel("0: " + commandParts[0]);
+									DiscordBot.sendMessageToChannel("1: " + commandParts[1]);
+									DiscordBot.sendMessageToChannel("2: " + commandParts[2]);
+									DiscordBot.sendMessageToChannel("3: " + commandParts[3]);
+									DiscordBot.sendMessageToChannel("4: " + commandParts[4]);
+									DiscordBot.sendMessageToChannel("5: " + commandParts[5]);
+									DiscordBot.sendMessageToChannel("6: " + commandParts[6]);
+									DiscordBot.sendMessageToChannel("7: " + commandParts[7]);
+								}
+							}
+						}
 					}
 				}
 			}

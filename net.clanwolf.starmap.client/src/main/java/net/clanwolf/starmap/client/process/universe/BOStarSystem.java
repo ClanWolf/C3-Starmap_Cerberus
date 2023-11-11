@@ -246,7 +246,7 @@ public class BOStarSystem {
 	public Double getY() { return hh_starSystemDataDTO.getStarSystemID().getY().doubleValue(); }
 
 	@SuppressWarnings("unused")
-	public String getAffiliation() { return hh_starSystemDataDTO.getFactionID().getShortName(); }
+	public String getAffiliation() { return hh_starSystemDataDTO.getFaction().getShortName(); }
 
 //	@SuppressWarnings("unused")
 //	public void setFactionId(Long factionId) {
@@ -262,7 +262,7 @@ public class BOStarSystem {
 //	}
 
 	@SuppressWarnings("unused")
-	public Long getFactionId() { return hh_starSystemDataDTO.getFactionID().getId(); }
+	public Long getFactionId() { return hh_starSystemDataDTO.getFaction().getId(); }
 
 	@SuppressWarnings("unused")
 	public String getSystemImageName() { return hh_starSystemDataDTO.getStarSystemID().getSystemImageName(); }

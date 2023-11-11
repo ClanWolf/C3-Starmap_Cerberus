@@ -43,7 +43,8 @@ import java.util.ArrayList;
 /**
  * Queries the database for starsystem data
  */
-public class WebDataInterface {
+public class
+WebDataInterface {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	//	private static Map<String, String> selects = new HashMap<>();
 	private static volatile UniverseDTO universe;

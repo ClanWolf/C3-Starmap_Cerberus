@@ -34,9 +34,17 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageHistory;
+import net.dv8tion.jda.api.entities.channel.concrete.ForumChannel;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.entities.channel.forums.BaseForumTag;
+import net.dv8tion.jda.api.entities.channel.forums.ForumTag;
+import net.dv8tion.jda.api.entities.channel.forums.ForumTagData;
+import net.dv8tion.jda.api.entities.channel.forums.ForumTagSnowflake;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.dv8tion.jda.api.requests.restaction.ForumPostAction;
+import net.dv8tion.jda.api.utils.cache.CacheFlag;
+import net.dv8tion.jda.api.utils.messages.MessageCreateData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,53 +79,111 @@ public class DiscordBot extends ListenerAdapter {
 			} else {
 				throw new FileNotFoundException("Auth-Property file '" + authFileName + "' not found in classpath.");
 			}
+
+			String token = auth.getProperty("discordbottoken");
+			jda = JDABuilder.createLight(token, EnumSet.noneOf(GatewayIntent.class)).addEventListeners(this).enableCache(CacheFlag.FORUM_TAGS).build();
+			jda.awaitReady();
+
+			Timer checkShutdownFlag = new Timer();
+			checkShutdownFlag.schedule(new CheckShutdownFlagTimerTask(serverBaseDir, "DiscordBot"), 1000, 1000 * 10);
+
+			Timer extcomDiscordTimer = new Timer();
+			ExtcomDiscordTimerTask extcomDiscordTimerTask = new ExtcomDiscordTimerTask();
+			extcomDiscordTimer.schedule(extcomDiscordTimerTask, 1000, 25000);
+			extcomDiscordTimerTask.setBot(this);
+
+			//		// These commands might take a few minutes to be active after creation/update/delete
+			//		CommandListUpdateAction commands = jda.updateCommands();
+
+			//		// Moderation commands with required options
+			//		commands.addCommands(Commands.slash("ban", "Ban a user from this server. Requires permission to ban users.").addOptions(new OptionData(USER, "user", "The user to ban") // USER type allows to include members of the server or other users by id
+			//						.setRequired(true)) // This command requires a parameter
+			//				.addOptions(new OptionData(INTEGER, "del_days", "Delete messages from the past days.") // This is optional
+			//						.setRequiredRange(0, 7)) // Only allow values between 0 and 7 (inclusive)
+			//				.addOptions(new OptionData(STRING, "reason", "The ban reason to use (default: Banned by <user>)")) // optional reason
+			//				.setGuildOnly(true) // This way the command can only be executed from a guild, and not the DMs
+			//				.setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.BAN_MEMBERS)) // Only members with the BAN_MEMBERS permission are going to see this command
+			//		);
+
+			//		// Simple reply commands
+			//		commands.addCommands(Commands.slash("say", "Makes the bot say what you tell it to").addOption(STRING, "content", "What the bot should say", true) // you can add required options like this too
+			//		);
+			//
+			//		// Commands without any inputs
+			//		commands.addCommands(Commands.slash("leave", "Make the bot leave the server").setGuildOnly(true) // this doesn't make sense in DMs
+			//				.setDefaultPermissions(DefaultMemberPermissions.DISABLED) // only admins should be able to use this command.
+			//		);
+			//
+			//		commands.addCommands(Commands.slash("prune", "Prune messages from this channel").addOption(INTEGER, "amount", "How many messages to prune (Default 100)") // simple optional argument
+			//				.setGuildOnly(true).setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.MESSAGE_MANAGE)));
+			//
+			//		// Send the new set of commands to discord, this will override any existing global commands with the new set provided here
+			//		commands.queue();
 		} catch (IOException ioe) {
 			ioe.printStackTrace();
+			logger.error("Error while creating jda instance.", ioe);
+		} catch (InterruptedException e) {
+			throw new RuntimeException(e);
 		}
-
-		String token = auth.getProperty("discordbottoken");
-		jda = JDABuilder.createLight(token, EnumSet.noneOf(GatewayIntent.class)).addEventListeners(this).build();
-
-		Timer checkShutdownFlag = new Timer();
-		checkShutdownFlag.schedule(new CheckShutdownFlagTimerTask(serverBaseDir, "DiscordBot"), 1000, 1000 * 10);
-
-		Timer extcomDiscordTimer = new Timer();
-		ExtcomDiscordTimerTask extcomDiscordTimerTask = new ExtcomDiscordTimerTask();
-		extcomDiscordTimer.schedule(extcomDiscordTimerTask, 1000, 25000);
-		extcomDiscordTimerTask.setBot(this);
-
-		//		// These commands might take a few minutes to be active after creation/update/delete
-		//		CommandListUpdateAction commands = jda.updateCommands();
-
-		//		// Moderation commands with required options
-		//		commands.addCommands(Commands.slash("ban", "Ban a user from this server. Requires permission to ban users.").addOptions(new OptionData(USER, "user", "The user to ban") // USER type allows to include members of the server or other users by id
-		//						.setRequired(true)) // This command requires a parameter
-		//				.addOptions(new OptionData(INTEGER, "del_days", "Delete messages from the past days.") // This is optional
-		//						.setRequiredRange(0, 7)) // Only allow values between 0 and 7 (inclusive)
-		//				.addOptions(new OptionData(STRING, "reason", "The ban reason to use (default: Banned by <user>)")) // optional reason
-		//				.setGuildOnly(true) // This way the command can only be executed from a guild, and not the DMs
-		//				.setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.BAN_MEMBERS)) // Only members with the BAN_MEMBERS permission are going to see this command
-		//		);
-
-		//		// Simple reply commands
-		//		commands.addCommands(Commands.slash("say", "Makes the bot say what you tell it to").addOption(STRING, "content", "What the bot should say", true) // you can add required options like this too
-		//		);
-		//
-		//		// Commands without any inputs
-		//		commands.addCommands(Commands.slash("leave", "Make the bot leave the server").setGuildOnly(true) // this doesn't make sense in DMs
-		//				.setDefaultPermissions(DefaultMemberPermissions.DISABLED) // only admins should be able to use this command.
-		//		);
-		//
-		//		commands.addCommands(Commands.slash("prune", "Prune messages from this channel").addOption(INTEGER, "amount", "How many messages to prune (Default 100)") // simple optional argument
-		//				.setGuildOnly(true).setDefaultPermissions(DefaultMemberPermissions.enabledFor(Permission.MESSAGE_MANAGE)));
-		//
-		//		// Send the new set of commands to discord, this will override any existing global commands with the new set provided here
-		//		commands.queue();
 	}
 
 	public static void prepareLogging() {
 		String logFileName = serverBaseDir + File.separator + "log" + File.separator + "DiscordBot.log";
 		C3LogUtil.loadConfigurationAndSetLogFile(logFileName);
+	}
+
+	static void createAttackThread(String header, String msg, String season, String round) {
+		logger.info("Text: " + msg);
+		List<ForumChannel> forumChannels = jda.getForumChannelsByName("c3-invasionen", true);
+		if (forumChannels.isEmpty()) {
+			logger.info("c3-invasionen not found.");
+			return;
+		}
+		logger.info("c3-invasionen found.");
+		for (ForumChannel fch : forumChannels) {
+			logger.info("Thread channel: " + fch.getName());
+
+			List<BaseForumTag> baseForumTags = new ArrayList<>(fch.getAvailableTags());
+			BaseForumTag bft = null;
+
+			for (BaseForumTag baseForumTag : baseForumTags) {
+				logger.info("Found base forum tag: " + baseForumTag.getName());
+				if (baseForumTag.getName().equals("S" + season + "R" + round)) {
+					bft = baseForumTag;
+					logger.info("Correct base forum tag found.");
+					break;
+				}
+			}
+			if (bft == null) {
+				logger.info("Correct base forum tag NOT found.");
+				logger.info("Adding: " + "S" + season + "R" + round);
+				baseForumTags.add(new ForumTagData("S" + season + "R" + round).setModerated(true));
+				//baseForumTags.set(0, ForumTagData.from(baseForumTags.get(0)).setName("bug report")); // update an existing tag
+				fch.getManager().setAvailableTags(baseForumTags).complete();
+			}
+
+			logger.info("---------------------------------------------------------------------");
+			logger.info("Looking for tag: " + "S" + season + "R" + round);
+
+			List<ForumTag> forumTags = fch.getAvailableTags();
+			Long tagId = null;
+			logger.info(forumTags.size() + " available tags found");
+			for (ForumTag ft : forumTags) {
+				logger.info("Found tag: " + ft.getName());
+				if (ft.getName().equals("S" + season + "R" + round)) {
+					logger.info("Match!");
+					tagId = ft.getIdLong();
+				}
+			}
+
+			if (tagId != null) {
+				logger.error("TagId for ForumTag found: " + tagId);
+				ForumPostAction action = fch.createForumPost(header, MessageCreateData.fromContent(msg)).setTags(ForumTagSnowflake.fromId(tagId));
+				action.complete();
+			} else {
+				logger.error("TagId for ForumTag not found.");
+			}
+		}
 	}
 
 	static void sendMessage(TextChannel ch, String msg) {
@@ -326,8 +392,9 @@ public class DiscordBot extends ListenerAdapter {
 	//		Role role = event.getGuild().getPublicRole();
 	//	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		Locale.setDefault(new Locale.Builder().setLanguage("en").setScript("Latn").setRegion("US").build());
 		DiscordBot bot = new DiscordBot();
+		// DiscordBot.createAttackThread("test");
 	}
 }

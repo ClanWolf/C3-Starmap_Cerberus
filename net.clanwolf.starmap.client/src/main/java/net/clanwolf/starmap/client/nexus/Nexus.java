@@ -104,6 +104,7 @@ public class Nexus {
 	public static boolean promptNewVersionInstall = false;
 
 	public static Long storyID_beforeSavingRespones;
+	public static Long lastSavedAttackStarSystemDataId;
 	public static Slider mainframeVolumeSlider = null;
 
 	public static java.sql.Timestamp lastServerHeartbeatTimestamp = null;
@@ -133,6 +134,14 @@ public class Nexus {
 	 */
 	private Nexus() {
 
+	}
+
+	public static Long getLastSavedAttackStarSystemDataId() {
+		return lastSavedAttackStarSystemDataId;
+	}
+
+	public static void setLastSavedAttackStarSystemDataId(Long id) {
+		lastSavedAttackStarSystemDataId = id;
 	}
 
 	public static Image getFactionLogo() {

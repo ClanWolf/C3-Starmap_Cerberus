@@ -6,7 +6,7 @@ C:
 CD \
 CD C:\C3\projects\C3-Starmap_Cerberus
 
-REM SET VERSION=7.4.5
+REM SET VERSION=7.4.15
 FOR /f "delims== tokens=1,2" %%G in (C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\target\classes\version.number) do set %%G=%%H
 ECHO Found version: %VERSION%
 REM PAUSE
@@ -101,7 +101,7 @@ C:\C3\tools\Windows10-SignTool\signtool.exe sign /f C:\C3\certificate\c3_certifi
 
 REM Upload installer
 "C:\Program Files (x86)\WinSCP\winscp.com" /ini=nul /script=C:\C3\projects\C3-Starmap_Cerberus\NSIS\scripts\upload_installer.script
-START "" "https://www.clanwolf.net/apps/C3/server/php/insert_new_version.php"
+REM START "" "https://www.clanwolf.net/apps/C3/server/php/insert_new_version.php"
 
 :REQUEST_IRCBOT
 ECHO ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++

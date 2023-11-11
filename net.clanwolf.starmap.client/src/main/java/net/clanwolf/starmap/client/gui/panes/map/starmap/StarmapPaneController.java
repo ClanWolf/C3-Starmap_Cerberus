@@ -405,6 +405,8 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 					attack.setScoreAttackerVictories(0L);
 					attack.setScoreDefenderVictories(0L);
 
+					Nexus.setLastSavedAttackStarSystemDataId(s.getStarSystemDataId());
+
 					BOAttack boAttack = new BOAttack(attack);
 					Nexus.getBoUniverse().attackBOsOpenInThisRound.put(boAttack.getAttackDTO().getId(), boAttack);
 					boAttack.storeAttack();
@@ -2087,6 +2089,7 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 		ActionManager.addActionCallbackListener(ACTIONS.CLOSE_SURFACE_MAP, this);
 		ActionManager.addActionCallbackListener(ACTIONS.MAP_MOVE_TO_STARSYSTEM, this);
 		ActionManager.addActionCallbackListener(ACTIONS.MAP_MOVE_TO_JUMPSHIP, this);
+		ActionManager.addActionCallbackListener(ACTIONS.CREATE_ATTACK_SCREENSHOT, this);
 
 		// Added in AbstractC3Controller:
 		// ActionManager.addActionCallbackListener(ACTIONS.ENABLE_DEFAULT_BUTTON, this);
@@ -2196,6 +2199,14 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 							break;
 						}
 					}
+				}
+				break;
+
+			case CREATE_ATTACK_SCREENSHOT:
+				if (o.getObject() instanceof AttackDTO attack) {
+					BOStarSystem ss = Nexus.getBoUniverse().starSystemBOs.get(attack.getStarSystemID());
+					Platform.runLater(() -> Tools.getAttackScreenShot(canvas, ss, attack.getId()));
+					Nexus.setLastSavedAttackStarSystemDataId(null);
 				}
 				break;
 
