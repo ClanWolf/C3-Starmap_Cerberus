@@ -207,11 +207,11 @@ public final class Tools {
 			ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("666");
 
 			String currentSeason = "" + Nexus.getCurrentSeason();
-			String currentRound = "" + Nexus.getCurrentRound();
-			int nextRound = Nexus.getCurrentRound() + 1;
+			int currentRound = Nexus.getCurrentRound();
+			int nextRound = currentRound + 1;
 			double w = StarmapConfig.MAP_WIDTH;
 			double h = StarmapConfig.MAP_HEIGHT;
-			int attackSubImageWidth = 600;
+			int attackSubImageWidth = 900;
 			int attackSubImageHeight = 400;
 
 			WritableImage wi = new WritableImage((int) w, (int) h);

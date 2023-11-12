@@ -2384,7 +2384,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 							}
 						}
 						cycleCounter++;
-						logger.info("Counter: " + cycleCounter);
+						// logger.info("Counter: " + cycleCounter);
 					} while (!finished && cycleCounter < 5000); // Savety exit in case paneNoise is not found
 					rootAnchorPane.getChildren().setAll(workingCollection);
 					paneNoise.setVisible(true);

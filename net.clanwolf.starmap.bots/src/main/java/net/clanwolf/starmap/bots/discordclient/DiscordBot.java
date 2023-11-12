@@ -255,8 +255,8 @@ public class DiscordBot extends ListenerAdapter {
 			sendMessage(ch, message);
 
 			MessageHistory history = MessageHistory.getHistoryFromBeginning(ch).complete();
-			List<Message> mess = history.getRetrievedHistory();
-			logger.info("Found " + mess.size() + " messages.");
+			List<Message> messageHistoryList = history.getRetrievedHistory();
+			logger.info("Found " + messageHistoryList.size() + " messages.");
 
 			LinkedList<Message> messagesRoundAnnouncement = new LinkedList<>();
 			LinkedList<Message> messagesServerStartedAnnouncement = new LinkedList<>();
@@ -267,7 +267,7 @@ public class DiscordBot extends ListenerAdapter {
 			LinkedList<Message> messagesWaitingForLobbyAnnouncement = new LinkedList<>();
 			LinkedList<Message> messagesLobbyLostDropleadAnnouncement = new LinkedList<>();
 
-			for (Message m : mess) {
+			for (Message m : messageHistoryList) {
 				Instant time = m.getTimeCreated().toInstant();
 
 //				// Delete test embed messages with this information
@@ -281,6 +281,18 @@ public class DiscordBot extends ListenerAdapter {
 //				}
 
 				if ("Ulric".equals(m.getAuthor().getName())) {
+					if (m.getContentRaw().startsWith("https://www.clanwolf.net/apps/C3/seasonhistory/S1/C3_S1_map_animated.gif?")) {
+						// Update timestamp to reload image
+						logger.info("Update reload parameter on the history image to make it reload");
+						String content = m.getContentDisplay();
+
+						int randNum = (int)((Math.random()) * 274 + 10000000);
+						String[] parts = content.split("\\?");
+						content = parts[0] + "?" + randNum;
+
+						m.editMessage(content).complete();
+					}
+
 					if (time.isBefore(threshhold)) {
 						if ((m.getContentDisplay().contains("Runde ") && m.getContentDisplay().contains("Offene Kämpfe:") && m.getContentDisplay().contains("Stunden und") && m.getContentDisplay().contains("Minuten in Runde"))
 								|| (m.getContentDisplay().contains("Round ") && m.getContentDisplay().contains("Open fights:") && m.getContentDisplay().contains("hours and") && m.getContentDisplay().contains("minutes left in round"))) {
@@ -397,4 +409,15 @@ public class DiscordBot extends ListenerAdapter {
 		DiscordBot bot = new DiscordBot();
 		// DiscordBot.createAttackThread("test");
 	}
+
+//	public static void main(String[] args) throws Exception {
+//
+//			String content = "https://www.clanwolf.net/apps/C3/seasonhistory/S1/C3_S1_map_animated.gif?43543321";
+//
+//			int randNum = (int)((Math.random()) * 274 + 10000000);
+//			String[] parts = content.split("\\?");
+//			content = parts[0] + "?" + randNum;
+//
+//			System.out.println(content);
+//	}
 }

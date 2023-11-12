@@ -15,7 +15,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="UserInfoPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/19" fx:controller="net.clanwolf.starmap.client.gui.panes.userinfo.UserInfoPaneController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="UserInfoPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/20.0.1" fx:controller="net.clanwolf.starmap.client.gui.panes.userinfo.UserInfoPaneController">
   <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#2c506d" height="104.0" layoutX="76.0" layoutY="31.0" opacity="0.75" stroke="#779fc3" strokeType="INSIDE" strokeWidth="2.0" width="533.0" />
     <Label fx:id="panelHeadline" alignment="BASELINE_RIGHT" contentDisplay="CENTER" focusTraversable="false" layoutX="14.0" layoutY="375.0" opacity="0.12" prefWidth="794.0" text="USERINFO">
@@ -242,7 +242,7 @@
 			         <URL value="@../styles/MainFrameStyle.css" />
 		         </stylesheets>
 	         </Label>
-          <Label fx:id="labelFaction" focusTraversable="false" prefHeight="16.0" prefWidth="76.0" styleClass="contentLabel" text="Faction:" GridPane.rowIndex="2">
+          <Label fx:id="labelFactionUserInfo" focusTraversable="false" prefHeight="16.0" prefWidth="76.0" styleClass="contentLabel" text="Faction:" GridPane.rowIndex="2">
             <stylesheets>
               <URL value="@../styles/MainFrameStyle.css" />
             </stylesheets>

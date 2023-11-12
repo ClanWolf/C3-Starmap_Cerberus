@@ -1604,85 +1604,88 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 
 	@SuppressWarnings("unused")
 	private void reCenterMap() {
-		removeMouseFilters();
-		mapButton01.setDisable(true);
-		mapButton02.setDisable(true);
-		mapButton03.setDisable(true);
-		mapButton04.setDisable(true);
-		mapButton05.setDisable(true);
-		mapButton06.setDisable(true);
-		mapButton06.setVisible(false);
-
-		logger.info("Travel to Homeworld");
-		logger.info("X: " + StarmapConfig.MAP_INITIAL_TRANSLATE_X);
-		logger.info("Y: " + StarmapConfig.MAP_INITIAL_TRANSLATE_Y);
-
-		for (int[] layer : StarmapConfig.BACKGROUND_STARS_LAYERS) {
-			int level = layer[0];
-			canvas.fadeoutStars(level);
-		}
-
-		TranslateTransition move = new TranslateTransition(Duration.millis(10), canvas);
-		move.setCycleCount(1);
-		move.setToX(StarmapConfig.MAP_INITIAL_TRANSLATE_X);
-		move.setToY(StarmapConfig.MAP_INITIAL_TRANSLATE_Y);
-		move.setOnFinished(event -> {
-			addMouseFilters();
-			boolean mayMoveJumpships = Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.FACTIONLEAD_MOVE_JUMPSHIP);
-			if (mayMoveJumpships) {
-				mapButton01.setDisable(false);
-				checkForOrdersToSend();
-			}
-			mapButton02.setDisable(false);
-			mapButton03.setDisable(false);
-			mapButton04.setDisable(false);
-			mapButton05.setDisable(false);
-			mapButton06.setDisable(false);
-			for (int[] layer : StarmapConfig.BACKGROUND_STARS_LAYERS) {
-				int level = layer[0];
-				canvas.resetBackgroundStarPane(level);
-				canvas.showStarSystemMarker(Nexus.getTerra());
-				Nexus.setCurrentlySelectedStarSystem(Nexus.getTerra());
-				ActionManager.getAction(ACTIONS.SHOW_SYSTEM_DETAIL).execute(Nexus.getTerra());
-			}
-		});
-		move.play();
-	}
-
-	private void moveMapToPosition(BOStarSystem sys) {
 		Platform.runLater(() -> {
 			removeMouseFilters();
-
 			mapButton01.setDisable(true);
 			mapButton02.setDisable(true);
 			mapButton03.setDisable(true);
 			mapButton04.setDisable(true);
 			mapButton05.setDisable(true);
 			mapButton06.setDisable(true);
+			mapButton06.setVisible(false);
 
-			logger.info("Travel to " + sys.getName());
-			logger.info("X: " + sys.getX());
-			logger.info("Y: " + sys.getY());
+			logger.info("Travel to Homeworld");
+			logger.info("X: " + StarmapConfig.MAP_INITIAL_TRANSLATE_X);
+			logger.info("Y: " + StarmapConfig.MAP_INITIAL_TRANSLATE_Y);
 
 			for (int[] layer : StarmapConfig.BACKGROUND_STARS_LAYERS) {
 				int level = layer[0];
 				canvas.fadeoutStars(level);
 			}
 
-			TranslateTransition move01 = new TranslateTransition(Duration.millis(0), canvas);
-			move01.setCycleCount(1);
-			move01.setToX(StarmapConfig.MAP_INITIAL_TRANSLATE_X);
-			move01.setToY(StarmapConfig.MAP_INITIAL_TRANSLATE_Y);
-
-			TranslateTransition move02 = new TranslateTransition(Duration.millis(10), canvas);
-			move02.setCycleCount(1);
-			move02.setByX(-sys.getX() * StarmapConfig.MAP_COORDINATES_MULTIPLICATOR * canvas.getScale());
-			move02.setByY(sys.getY() * StarmapConfig.MAP_COORDINATES_MULTIPLICATOR * canvas.getScale());
-
-			SequentialTransition seq = new SequentialTransition();
-			seq.getChildren().addAll(move01, move02);
-			seq.setOnFinished(event -> {
+			TranslateTransition move = new TranslateTransition(Duration.millis(10), canvas);
+			move.setCycleCount(1);
+			move.setToX(StarmapConfig.MAP_INITIAL_TRANSLATE_X);
+			move.setToY(StarmapConfig.MAP_INITIAL_TRANSLATE_Y);
+			move.setOnFinished(event -> {
 				addMouseFilters();
+				boolean mayMoveJumpships = Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.FACTIONLEAD_MOVE_JUMPSHIP);
+				if (mayMoveJumpships) {
+					mapButton01.setDisable(false);
+					checkForOrdersToSend();
+				}
+				mapButton02.setDisable(false);
+				mapButton03.setDisable(false);
+				mapButton04.setDisable(false);
+				mapButton05.setDisable(false);
+				mapButton06.setDisable(false);
+				for (int[] layer : StarmapConfig.BACKGROUND_STARS_LAYERS) {
+					int level = layer[0];
+					canvas.resetBackgroundStarPane(level);
+					canvas.showStarSystemMarker(Nexus.getTerra());
+					Nexus.setCurrentlySelectedStarSystem(Nexus.getTerra());
+					ActionManager.getAction(ACTIONS.SHOW_SYSTEM_DETAIL).execute(Nexus.getTerra());
+				}
+			});
+			move.play();
+		});
+	}
+
+	private void moveMapToPosition(BOStarSystem sys) {
+		removeMouseFilters();
+
+		mapButton01.setDisable(true);
+		mapButton02.setDisable(true);
+		mapButton03.setDisable(true);
+		mapButton04.setDisable(true);
+		mapButton05.setDisable(true);
+		mapButton06.setDisable(true);
+
+		setZoomToMax();
+
+		logger.info("Travel to " + sys.getName());
+		logger.info("X: " + sys.getX());
+		logger.info("Y: " + sys.getY());
+
+		for (int[] layer : StarmapConfig.BACKGROUND_STARS_LAYERS) {
+			int level = layer[0];
+			canvas.fadeoutStars(level);
+		}
+
+		TranslateTransition move01 = new TranslateTransition(Duration.millis(0), canvas);
+		move01.setCycleCount(1);
+		move01.setToX(StarmapConfig.MAP_INITIAL_TRANSLATE_X);
+		move01.setToY(StarmapConfig.MAP_INITIAL_TRANSLATE_Y);
+
+		TranslateTransition move02 = new TranslateTransition(Duration.millis(2000), canvas);
+		move02.setCycleCount(1);
+		move02.setByX(-sys.getX() * StarmapConfig.MAP_COORDINATES_MULTIPLICATOR * canvas.getScale());
+		move02.setByY(sys.getY() * StarmapConfig.MAP_COORDINATES_MULTIPLICATOR * canvas.getScale());
+
+		SequentialTransition seq = new SequentialTransition();
+		seq.getChildren().addAll(move01, move02);
+		seq.setOnFinished(event -> {
+			Platform.runLater(() -> {
 				boolean mayMoveJumpships = Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.FACTIONLEAD_MOVE_JUMPSHIP);
 				if (mayMoveJumpships) {
 					mapButton01.setDisable(false);
@@ -1699,17 +1702,11 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 					canvas.showStarSystemMarker(sys);
 					Nexus.setCurrentlySelectedStarSystem(sys);
 					ActionManager.getAction(ACTIONS.SHOW_SYSTEM_DETAIL).execute(sys);
-
-					//				Platform.runLater(() -> {
-					//					for (double i = 0.2d; i < 3.0d; i = i + 0.001d) {
-					//						canvas.setScale(i);
-					//						canvas.setPivot(1, 1);
-					//					}
-					//				});
 				}
+				addMouseFilters();
 			});
-			seq.play();
 		});
+		seq.play();
 	}
 
 	private void moveMapToJumpship(BOJumpship jumpship) {
@@ -2107,6 +2104,17 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 		super.initialize(url, rb);
 	}
 
+	public void setZoomToMax() {
+		double currentScale;
+		for (int i = 1; i < 10; i++) {
+			currentScale = sceneGestures.zoom(1d, 0, 0);
+			logger.info("Currentscale: " + currentScale);
+			if (currentScale >= 3.0d) {
+				break;
+			}
+		}
+	}
+
 	/**
 	 * Handles actions.
 	 *
@@ -2205,7 +2213,11 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 			case CREATE_ATTACK_SCREENSHOT:
 				if (o.getObject() instanceof AttackDTO attack) {
 					BOStarSystem ss = Nexus.getBoUniverse().starSystemBOs.get(attack.getStarSystemID());
-					Platform.runLater(() -> Tools.getAttackScreenShot(canvas, ss, attack.getId()));
+					Platform.runLater(() -> {
+						setZoomToMax();
+						ActionManager.getAction(ACTIONS.MAP_MOVE_TO_STARSYSTEM).execute(Nexus.getBoUniverse().starSystemBOs.get(attack.getStarSystemID()));
+						Tools.getAttackScreenShot(canvas, ss, attack.getId());
+					});
 					Nexus.setLastSavedAttackStarSystemDataId(null);
 				}
 				break;

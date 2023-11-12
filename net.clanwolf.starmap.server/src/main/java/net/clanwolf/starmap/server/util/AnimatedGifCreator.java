@@ -61,7 +61,7 @@ public class AnimatedGifCreator {
 			int imageheight = 1000;
 			int imagePreviewWidth = 250;
 			int imagePreviewHeight = 200;
-			int frameDuration = 1500;
+			int frameDuration = 750;
 
 			ArrayList<File> imagesList = new ArrayList<>();
 			ArrayList<File> imagesPreviewsList = new ArrayList<>();

@@ -89,7 +89,7 @@ public class ExtcomDiscordTimerTask extends TimerTask {
 									String defenderShortname = commandParts[6];
 									String attackId = commandParts[7];
 
-									int randNum = (int)((Math.random()) * 324 + 100000);
+									int randNum = (int)((Math.random()) * 324 + 10000000);
 
 									String header =  "[S" + season + "R" + round + "] " + attackerShortname + " ⚔ " + systemName + " ("+ defenderShortname + ")";
 									String msg = "";
