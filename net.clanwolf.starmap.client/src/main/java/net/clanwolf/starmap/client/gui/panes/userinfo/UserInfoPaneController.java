@@ -78,7 +78,7 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 	@FXML
 	private Label labelUsername;
 	@FXML
-	private Label labelFaction;
+	private Label labelFactionUserInfo;
 	@FXML
 	private Label labelCreated;
 	@FXML
@@ -271,7 +271,7 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 				ivFactionLogo.setImage(imageFaction);
 				Nexus.setFactionLogo(imageFaction);
 				ActionManager.getAction(ACTIONS.SET_FACTION_LOGO).execute();
-				labelFaction.setText(factionOfCurrentChar.getLocalizedName()); // left panel
+				labelFactionUserInfo.setText(Internationalization.getString("app_user_info_panel_faction")); // left panel
 				labelFactionName.setText(factionOfCurrentChar.getLocalizedName()); // right panel
 				valueSystems.setText("" + factionOfCurrentChar.getSystemCountAll());
 				valueAtWar.setText("" + factionOfCurrentChar.getSystemCountDefending());
@@ -353,7 +353,7 @@ public class UserInfoPaneController extends AbstractC3Controller implements Acti
 	public void setStrings() {
 		Platform.runLater(() -> {
 			labelUsername.setText(Internationalization.getString("app_user_info_panel_username"));
-			labelFaction.setText(Internationalization.getString("app_user_info_panel_faction"));
+			labelFactionUserInfo.setText(Internationalization.getString("app_user_info_panel_faction"));
 			labelCreated.setText(Internationalization.getString("app_user_info_panel_created"));
 			labelCharacterChooser.setText(Internationalization.getString("app_user_info_panel_characterchooser"));
 			labelCharName.setText(Internationalization.getString("app_user_info_panel_charname"));
