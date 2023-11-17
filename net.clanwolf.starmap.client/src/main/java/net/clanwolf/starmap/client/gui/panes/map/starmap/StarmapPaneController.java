@@ -59,12 +59,8 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextBoundsType;
 import javafx.util.Duration;
 import net.clanwolf.starmap.client.action.*;
-import net.clanwolf.starmap.client.enums.C3MESSAGES;
-import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
-import net.clanwolf.starmap.client.gui.panes.TerminalCommandHandler;
 import net.clanwolf.starmap.client.gui.panes.map.surfacemap.SurfacemapPane;
 import net.clanwolf.starmap.transfer.enums.PRIVILEGES;
-import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
 import net.clanwolf.starmap.client.gui.panes.map.starmap.tools.VoronoiDelaunay;
@@ -77,8 +73,6 @@ import net.clanwolf.starmap.client.util.C3Properties;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.client.util.Tools;
 import net.clanwolf.starmap.constants.Constants;
-import net.clanwolf.starmap.transfer.GameState;
-import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.transfer.dtos.*;
@@ -187,6 +181,8 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 	private final Image systemForbiddenIcon1 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/forbidden1.png")));
 	private final Image systemForbiddenIcon2 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/forbidden2.png")));
 	private final Image systemForbiddenIcon3 = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/forbidden3.png")));
+
+	private boolean screenshotHasBeenTaken = false;
 
 	@FXML
 	private void handleCenterHomeworldButtonClick() {
@@ -2105,12 +2101,14 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 	}
 
 	public void setZoomToMax() {
-		double currentScale;
-		for (int i = 1; i < 10; i++) {
-			currentScale = sceneGestures.zoom(1d, 0, 0);
-			logger.info("Currentscale: " + currentScale);
-			if (currentScale >= 3.0d) {
-				break;
+		if (screenshotHasBeenTaken) {
+			double currentScale;
+			for (int i = 1; i < 10; i++) {
+				currentScale = sceneGestures.zoom(1d, 0, 0);
+				logger.info("Currentscale: " + currentScale);
+				if (currentScale >= 3.0d) {
+					break;
+				}
 			}
 		}
 	}
@@ -2263,6 +2261,7 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 					canvas.hideElementsForScreenshot(true);
 					if (!Nexus.isDevelopmentPC() && C3Properties.getBoolean(C3PROPS.GENERALS_SCREENSHOT_HISTORY)) {
 						Tools.saveMapScreenshot((int) w, (int) h / 2 + 200, canvas);
+						screenshotHasBeenTaken = true;
 						logger.info("Saved history screenshot of the starmap.");
 					} else {
 						logger.info("Saved history screenshot has been disabled.");

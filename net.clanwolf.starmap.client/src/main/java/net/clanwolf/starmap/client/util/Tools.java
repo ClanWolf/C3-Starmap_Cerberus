@@ -34,7 +34,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.DialogPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.WritableImage;
-import javafx.scene.transform.Transform;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.StatusTextEntryActionObject;
@@ -44,8 +43,6 @@ import net.clanwolf.starmap.client.gui.panes.map.starmap.StarmapPannableCanvas;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.universe.BOFaction;
 import net.clanwolf.starmap.client.process.universe.BOStarSystem;
-import net.coobird.thumbnailator.geometry.Position;
-import net.coobird.thumbnailator.geometry.Positions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.client.net.FTP;
@@ -403,7 +400,7 @@ public final class Tools {
 				logger.error("Skipping map screenshot because this is a dev machine.");
 			}
 		} else {
-			logger.info(Internationalization.getString("app_CreateMapScreenshot"));
+			logger.info("Generating and uploading screenshot is not allowed by user.");
 		}
 	}
 

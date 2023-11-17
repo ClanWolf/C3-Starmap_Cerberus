@@ -66,6 +66,7 @@ public class DiscordBot extends ListenerAdapter {
 	private static final String serverBaseDir = new File("/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/server").getAbsolutePath();
 	public static JDA jda = null;
 	private static boolean testEmbed = false;
+	private static Long historyRefreshTimestamp = null;
 
 	public DiscordBot() {
 		prepareLogging();
@@ -81,7 +82,7 @@ public class DiscordBot extends ListenerAdapter {
 			}
 
 			String token = auth.getProperty("discordbottoken");
-			jda = JDABuilder.createLight(token, EnumSet.noneOf(GatewayIntent.class)).addEventListeners(this).enableCache(CacheFlag.FORUM_TAGS).build();
+			jda = JDABuilder.createLight(token, EnumSet.noneOf(GatewayIntent.class)).addEventListeners(this).enableCache(CacheFlag.FORUM_TAGS).enableIntents(GatewayIntent.MESSAGE_CONTENT).build();
 			jda.awaitReady();
 
 			Timer checkShutdownFlag = new Timer();
@@ -280,19 +281,48 @@ public class DiscordBot extends ListenerAdapter {
 //					m.delete().complete();
 //				}
 
-				if ("Ulric".equals(m.getAuthor().getName())) {
-					if (m.getContentRaw().startsWith("https://www.clanwolf.net/apps/C3/seasonhistory/S1/C3_S1_map_animated.gif?")) {
+				if (historyRefreshTimestamp == null) {
+					historyRefreshTimestamp = System.currentTimeMillis();
+				}
+
+				String log = "";
+				if (m.getContentDisplay().length() > 50) {
+					log = m.getContentDisplay().substring(0,46) + "...";
+				} else {
+					log = m.getContentDisplay();
+				}
+				logger.info("Message: " + m.getId() + " - " + log + " :: " + m.getContentRaw());
+
+				long historyDifference = System.currentTimeMillis() - historyRefreshTimestamp;
+				if (m.getContentDisplay().startsWith("https://www.clanwolf.net/apps/C3/seasonhistory/S1/C3_S1_map_animated.gif?")) {
+
+					logger.info("History difference: " + historyDifference);
+
+					if (historyRefreshTimestamp == null || historyDifference > 1000 * 60 * 10) {
 						// Update timestamp to reload image
 						logger.info("Update reload parameter on the history image to make it reload");
+						logger.info("History image message id: " + m.getId());
 						String content = m.getContentDisplay();
 
-						int randNum = (int)((Math.random()) * 274 + 10000000);
+						int randNum = (int) ((Math.random()) * 274 + 10000000);
 						String[] parts = content.split("\\?");
 						content = parts[0] + "?" + randNum;
 
 						m.editMessage(content).complete();
+					} else {
+						logger.info("Time diff not old enough to reload season history gif.");
 					}
+					historyRefreshTimestamp = System.currentTimeMillis();
+				}
 
+//				if ("Ulric".equals(m.getAuthor().getName())) {
+//					if ((m.getContentDisplay().contains("Runde beendet."))) {
+//						String content = "https://www.clanwolf.net/apps/C3/seasonhistory/S1/C3_S1_map_animated.gif?90185555";
+//						m.editMessage(content).complete();
+//					}
+//				}
+
+				if ("Ulric".equals(m.getAuthor().getName())) {
 					if (time.isBefore(threshhold)) {
 						if ((m.getContentDisplay().contains("Runde ") && m.getContentDisplay().contains("Offene Kämpfe:") && m.getContentDisplay().contains("Stunden und") && m.getContentDisplay().contains("Minuten in Runde"))
 								|| (m.getContentDisplay().contains("Round ") && m.getContentDisplay().contains("Open fights:") && m.getContentDisplay().contains("hours and") && m.getContentDisplay().contains("minutes left in round"))) {
@@ -384,7 +414,9 @@ public class DiscordBot extends ListenerAdapter {
 				Instant time = m.getTimeCreated().toInstant();
 				if (time.isBefore(threshhold2)) {
 					if ("Ulric".equals(m.getAuthor().getName())) {
-						m.delete().complete();
+						if (!m.getContentDisplay().startsWith("https://www.clanwolf.net/apps/C3/seasonhistory/S1/C3_S1_map_animated.gif?")) {
+							m.delete().complete();
+						}
 					}
 				}
 			}

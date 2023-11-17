@@ -6,7 +6,7 @@ C:
 CD \
 CD C:\C3\projects\C3-Starmap_Cerberus
 
-REM SET VERSION=7.4.15
+REM SET VERSION=7.4.18
 FOR /f "delims== tokens=1,2" %%G in (C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\target\classes\version.number) do set %%G=%%H
 ECHO Found version: %VERSION%
 REM PAUSE
@@ -79,12 +79,43 @@ GOTO REQUEST_SERVER
 REM Upload server
 "C:\Program Files (x86)\WinSCP\winscp.com" /ini=nul /script=C:\C3\projects\C3-Starmap_Cerberus\NSIS\scripts\upload_server.script
 
+:REQUEST_BOTS
+ECHO ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ECHO Upload Bots? (y/n)
+SET /p chcxx=
+IF '%chcxx%'=='y' GOTO UPLOADBOTS
+IF '%chcxx%'=='n' GOTO REQUEST_INSTALLER
+GOTO REQUEST_BOTS
+
+:UPLOADBOTS
+REM Upload Bots
+"C:\Program Files (x86)\WinSCP\winscp.com" /ini=nul /script=C:\C3\projects\C3-Starmap_Cerberus\NSIS\scripts\upload_ircbot.script
+"C:\Program Files (x86)\WinSCP\winscp.com" /ini=nul /script=C:\C3\projects\C3-Starmap_Cerberus\NSIS\scripts\upload_discordbot.script
+"C:\Program Files (x86)\WinSCP\winscp.com" /ini=nul /script=C:\C3\projects\C3-Starmap_Cerberus\NSIS\scripts\upload_ts3bot.script
+
+ECHO ...
+ECHO Waiting for some time before removing flags
+timeout /t 1 /nobreak >nul
+ECHO 5
+timeout /t 1 /nobreak >nul
+ECHO 4
+timeout /t 1 /nobreak >nul
+ECHO 3
+timeout /t 1 /nobreak >nul
+ECHO 2
+timeout /t 1 /nobreak >nul
+ECHO 1
+timeout /t 1 /nobreak >nul
+ECHO 0
+
+"C:\Program Files (x86)\WinSCP\winscp.com" /ini=nul /script=C:\C3\projects\C3-Starmap_Cerberus\NSIS\scripts\remove_bot_flags.script
+
 :REQUEST_INSTALLER
 ECHO ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-ECHO Upload Client installer? (y/n)
+ECHO Sign and upload Client installer? (y/n)
 SET /p chc2=
 IF '%chc2%'=='y' GOTO UPLOADINSTALLER
-IF '%chc2%'=='n' GOTO REQUEST_IRCBOT
+IF '%chc2%'=='n' GOTO END
 GOTO REQUEST_INSTALLER
 
 :UPLOADINSTALLER
@@ -102,6 +133,24 @@ C:\C3\tools\Windows10-SignTool\signtool.exe sign /f C:\C3\certificate\c3_certifi
 REM Upload installer
 "C:\Program Files (x86)\WinSCP\winscp.com" /ini=nul /script=C:\C3\projects\C3-Starmap_Cerberus\NSIS\scripts\upload_installer.script
 REM START "" "https://www.clanwolf.net/apps/C3/server/php/insert_new_version.php"
+curl https://www.clanwolf.net/apps/C3/server/php/insert_new_version.php
+
+GOTO END
+
+
+
+
+
+
+
+REM --------------------------------- OLD ---------------------------------
+
+
+
+
+
+
+
 
 :REQUEST_IRCBOT
 ECHO ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -160,7 +209,6 @@ timeout /t 1 /nobreak >nul
 ECHO 1
 timeout /t 1 /nobreak >nul
 ECHO 0
-
 
 :REQUEST_REMOVE_BOT_FLAGS
 ECHO ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
