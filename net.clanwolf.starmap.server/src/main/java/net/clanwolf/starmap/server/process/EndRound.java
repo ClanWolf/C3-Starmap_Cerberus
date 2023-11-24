@@ -549,7 +549,7 @@ public class EndRound {
                 for (AttackPOJO attackPOJO : allAttacksForRound) {
                     Long winnerId = attackPOJO.getFactionID_Winner();
 
-                    //TODO: set jumpship back to old system
+                    //set jumpship back to old system
                     Long jpID = attackPOJO.getJumpshipID();
                     JumpshipPOJO jpPojo = jumpshipDAO.findById(ServerNexus.END_ROUND_USERID, jpID);
                     if(winnerId != null && !jpPojo.getJumpshipFactionID().equals(winnerId)){
@@ -559,7 +559,6 @@ public class EndRound {
                             jumpshipDAO.update(ServerNexus.END_ROUND_USERID, jpPojo);
                         }
                     }
-
 
                     StarSystemDataPOJO ssdPojo = ssdDAO.findById(ServerNexus.END_ROUND_USERID, attackPOJO.getStarSystemDataID());
                     FactionPOJO fPojo = fDAO.findById(ServerNexus.END_ROUND_USERID, winnerId);
