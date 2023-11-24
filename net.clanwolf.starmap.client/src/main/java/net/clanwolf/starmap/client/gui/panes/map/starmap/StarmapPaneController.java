@@ -2347,9 +2347,14 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 									mapButton06.getStyleClass().remove("contentButtonBlue");
 									mapButton06.getStyleClass().remove("contentButtonYellow");
 
-									if (Nexus.getCurrentUser().getCurrentCharacter().getFactionId().equals(a.getAttackerFactionId())) {
+									BODiplomacy boDiplomacy = new BODiplomacy(Nexus.getCurrentRound(), Nexus.getBoUniverse().getDiplomacy());
+									DiplomacyState diplStateAttacker = boDiplomacy.getDiplomacyState(Nexus.getCurrentUser().getCurrentCharacter().getFactionId().longValue(), a.getAttackerFactionId().longValue());
+									DiplomacyState diplStateDefender = boDiplomacy.getDiplomacyState(Nexus.getCurrentUser().getCurrentCharacter().getFactionId().longValue(), a.getDefenderFactionId().longValue());
+
+									if (Nexus.getCurrentUser().getCurrentCharacter().getFactionId().equals(a.getAttackerFactionId()) || diplStateAttacker.getState() == DiplomacyState.CURRENT_ALLIANCE_FOUND) {
 										// I am from the attacker faction
-										logger.info("I am the attacker.");
+										// OR I am from an allied faction of the attacker (!): 24.11.2023
+										logger.info("I am the attacker or an ally of the attacker.");
 										mapButton06.getStyleClass().add("contentButtonRed");
 										mapButton06.setText(Internationalization.getString("starmap_attack_system"));
 
@@ -2364,9 +2369,10 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 											currentPlayerRoleInInvasion = Constants.ROLE_ATTACKER_WARRIOR; // Attacker warrior
 											ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("attack_youMayJoinTheAttack"), true));
 										}
-									} else if (Nexus.getCurrentUser().getCurrentCharacter().getFactionId().equals(a.getDefenderFactionId())) {
+									} else if (Nexus.getCurrentUser().getCurrentCharacter().getFactionId().equals(a.getDefenderFactionId()) || diplStateDefender.getState() == DiplomacyState.CURRENT_ALLIANCE_FOUND) {
 										// I am from the defender faction
-										logger.info("I am the defender.");
+										// OR I am from an allied faction of the defender (!): 24.11.2023
+										logger.info("I am the defender or an ally of the defender.");
 										mapButton06.getStyleClass().add("contentButtonBlue");
 										mapButton06.setText(Internationalization.getString("starmap_defend_system"));
 

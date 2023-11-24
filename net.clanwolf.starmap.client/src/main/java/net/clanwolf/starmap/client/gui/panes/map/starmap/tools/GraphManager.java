@@ -205,10 +205,14 @@ public class GraphManager<T> implements GraphAgent<T> {
 		//		logger.info("minJumpshipLevel: " + minJumpshipLevel + " currentJumpshipLevel: " + currentJumpshipLevel);
 
 		if (isLockedByJumpship) {
-			hoveredSys.setBlockReason(1);
-			StatusTextEntryActionObject seo = new StatusTextEntryActionObject(Internationalization.getString("starmap.systeminfo_cannotbeattacked_jumpshiplock"), true);
-			seo.setFlash(true);
-			ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(seo);
+			if (hoveredSys.getStarSystemId().equals(boUniverse.currentlyDraggedJumpship.getCurrentSystemID())) {
+				logger.info("Hovered same system we started from.");
+			} else {
+				hoveredSys.setBlockReason(1);
+				StatusTextEntryActionObject seo = new StatusTextEntryActionObject(Internationalization.getString("starmap.systeminfo_cannotbeattacked_jumpshiplock"), true);
+				seo.setFlash(true);
+				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(seo);
+			}
 		} else if (isLockedByPreviousAttackCooldown) {
 			hoveredSys.setBlockReason(2);
 			StatusTextEntryActionObject seo = new StatusTextEntryActionObject(Internationalization.getString("starmap.systeminfo_cannotbeattacked_cooldown"), true);
