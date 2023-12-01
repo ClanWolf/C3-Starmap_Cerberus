@@ -3,7 +3,6 @@ C3 version history
 ----------------------------------------------------------------
 
 TODO PRIO 1 - Immediate:
-- *** If round ends and jumpship moves, the jumpship level label remains on previous system
 - *** Clear game info on logout
 - *** Clear diplomacy and chat indicators on logout
 - *** Clear season progress on logout
@@ -55,6 +54,10 @@ WATCH OUT FOR WHILE TESTING:
 ----------------------------------------------------------------
 
 VERSIONS
+
+Version 7.4.20 ( xx .12.2023)
+- *** If round ends and jumpship moves, the jumpship level label remains on previous system
+- UPDATED: Libraries
 
 Version 7.4.19 (25.11.2023)
 - FIXED: If plotting a route and hovering over the starting point (where my ship is at the moment), an error indicator shows up

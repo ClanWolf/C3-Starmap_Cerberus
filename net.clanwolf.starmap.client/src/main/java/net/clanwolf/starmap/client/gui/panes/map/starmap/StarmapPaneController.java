@@ -817,11 +817,13 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 					}
 
 					if (currentSystemID != null && targetSystemId != null) {
-						// TODO_C3: Check if the attack succeeded or if the unit lost (then move backwards and delete route)
 						// TODO_C3: If the fallback system has been taken by the enemy, trigger a new event here. Scenario "Fighting retreat"?
 						// TODO_C3: Check what faction owns the target system
 						if (!currentSystemID.equals(targetSystemId)) {
 							ImageView jsi = js.getJumpshipImageView();
+							Label jsLevelLabel = js.getJumpshipLevelLabel();
+							jsLevelLabel.setVisible(false);
+
 							jsi.setMouseTransparent(true);
 							jsi.toFront();
 							jsi.setVisible(true);
@@ -831,7 +833,10 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 							transition.setFromY(jsi.getTranslateY());
 							transition.setToX(boUniverse.starSystemBOs.get(targetSystemId).getScreenX() - 35);
 							transition.setToY(boUniverse.starSystemBOs.get(targetSystemId).getScreenY() - 8);
+							jsLevelLabel.setTranslateX((boUniverse.starSystemBOs.get(targetSystemId).getScreenX() - 27 - offset * number));
+							jsLevelLabel.setTranslateY((boUniverse.starSystemBOs.get(targetSystemId).getScreenY() - 10 + offset * number));
 							transition.setOnFinished(event -> {
+								jsLevelLabel.setVisible(true);
 								jsi.setMouseTransparent(false);
 								ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("9");
 							});
