@@ -587,6 +587,8 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 		ActionManager.getAction(ACTIONS.NOISE).execute(200);
 		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("10");
 
+		ArrayList<Line> lines = new ArrayList<>();
+
 		Platform.runLater(() -> {
 			if (boUniverse != null) { // this is the same universe, but the objects have been updated to the returned, new universe
 				Nexus.setCurrentSeason(boUniverse.currentSeason);
@@ -600,6 +602,9 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 						nodesToRemove.add(n);
 					}
 					if (n.getId() != null && n.getId().startsWith("attackFinishedInThisRoundVisuals")) {
+						nodesToRemove.add(n);
+					}
+					if (n.getId() != null && n.getId().startsWith("existingRouteLine")) {
 						nodesToRemove.add(n);
 					}
 				}
@@ -662,7 +667,13 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 				// Move the ships
 				for (BOJumpship js : boUniverse.getJumpshipList()) {
 					Long currentSystemID = js.getCurrentSystemID();
+					ArrayList<Long> alliedFactionIds = Nexus.getBoUniverse().getAlliedFactions();
 					boolean myOwnShip = js.getJumpshipFaction() == Nexus.getCurrentUser().getCurrentCharacter().getFactionId();
+					boolean alliedShip = false;
+					if (!myOwnShip) {
+						alliedShip = alliedFactionIds.contains(js.getJumpshipFaction());
+					}
+
 					ImageView jumpshipImage = js.getJumpshipImageView();
 
 					BOStarSystem s3 = boUniverse.starSystemBOs.get(js.getCurrentSystemID());
@@ -682,7 +693,7 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 						}
 					}
 
-					if (myOwnShip) {
+					if (myOwnShip || alliedShip) {
 						if (js.isAttackReady()) {
 							//Image left_blue = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_left_blue_1.png")));
 							String imageName = "jumpship_Faction" + js.getJumpshipFaction() + ".png";
@@ -697,6 +708,37 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 							Image i = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/" + imageName)));
 
 							jumpshipImage.setImage(i);
+						}
+
+						// draw existing route points for my own ships
+						List<BOStarSystem> route = js.getStoredRoute();
+						if (route != null) {
+							for (int y = 0; y < route.size() - 1; y++) {
+								BOStarSystem s1 = route.get(y);
+								BOStarSystem s2 = route.get(y + 1);
+
+								// Dotted line to every stop on the route
+								Line line = new Line(s1.getScreenX(), s1.getScreenY(), s2.getScreenX(), s2.getScreenY());
+								line.setStrokeWidth(2.5);
+								line.getStrokeDashArray().setAll(2d, 10d, 8d, 10d);
+								line.setOpacity(0.8);
+								if (y == 0) {
+									if (alliedShip) {
+										line.setStroke(Color.GREEN);
+									} else {
+										line.setStroke(Color.LIGHTYELLOW);
+									}
+								} else {
+									if (alliedShip) {
+										line.setStroke(Color.GREEN);
+									} else {
+										line.setStroke(Color.LIGHTYELLOW);
+									}
+								}
+								line.setStrokeLineCap(StrokeLineCap.ROUND);
+								line.setId("existingRouteLine");
+								lines.add(line);
+							}
 						}
 					} else {
 						jumpshipImage.removeEventFilter(MouseEvent.MOUSE_DRAGGED, nodeGestures.getOnMouseDraggedEventHandler());
@@ -855,6 +897,8 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 						ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("11");
 					}
 				}
+
+				canvas.getChildren().addAll(lines);
 
 				for (BOAttack boAttack : boUniverse.attackBOsFinishedInThisRound.values()) {
 					BOStarSystem attackedSystem;
