@@ -27,7 +27,7 @@
 package net.clanwolf.starmap.client.process.roleplay;
 
 public class BORolePlayChooser {
-	// TODO_C3: Find a fitting story for the given attack (choose from a list)
+	// TODO_C3: Find a fitting story for the given attack (choose from a list )
 	public static long getStoryID() {
 		return 16L;
 	}
