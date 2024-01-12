@@ -55,8 +55,13 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
-Version 7.4.20 ( xx .12.2023)
-- *** If round ends and jumpship moves, the jumpship level label remains on previous system
+Version 7.4.20 (12.01.2024)
+  ***
+  *** FIRST VERSION TO BE SIGNED WITH THE CODE SIGNING CERTIFICATE (YUBIKEY) FROM SSL.COM ***
+  ***
+- FIXED: Jumpship level label moves with the jumpship on finalize round
+- CHANGED: Attack screenshots are now square-shaped
+- CHANGED: Disabled mouse zoom while saving screenshot of the starmap
 - UPDATED: Libraries
 
 Version 7.4.19 (25.11.2023)

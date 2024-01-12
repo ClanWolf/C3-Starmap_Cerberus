@@ -1299,7 +1299,13 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 
 				for (BOJumpship js : boUniverse.getJumpshipList()) {
 					Long currentSystemID = js.getCurrentSystemID();
+					ArrayList<Long> alliedFactionIds = Nexus.getBoUniverse().getAlliedFactions();
+
 					boolean myOwnShip = js.getJumpshipFaction() == Nexus.getCurrentUser().getCurrentCharacter().getFactionId();
+					boolean alliedShip = false;
+					if (!myOwnShip) {
+						alliedShip = alliedFactionIds.contains(js.getJumpshipFaction());
+					}
 
 					if (numberOfJumpshipsOnSystem.get(js.getCurrentSystemID()) == null) {
 						numberOfJumpshipsOnSystem.put(js.getCurrentSystemID(), 0);
@@ -1337,7 +1343,7 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 
 					if (currentSystemID != null) {
 						ImageView jumpshipImage;
-						if (myOwnShip) {
+						if (myOwnShip || alliedShip) {
 							if (js.isAttackReady()) {
 								String imageName = "jumpship_Faction" + js.getJumpshipFaction() + ".png";
 								Image i = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/" + imageName)));
@@ -1363,9 +1369,17 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 									line.getStrokeDashArray().setAll(2d, 10d, 8d, 10d);
 									line.setOpacity(0.8);
 									if (y == 0) {
-										line.setStroke(Color.LIGHTYELLOW);
+										if (alliedShip) {
+											line.setStroke(Color.GREEN);
+										} else {
+											line.setStroke(Color.LIGHTYELLOW);
+										}
 									} else {
-										line.setStroke(Color.LIGHTYELLOW);
+										if (alliedShip) {
+											line.setStroke(Color.GREEN);
+										} else {
+											line.setStroke(Color.LIGHTYELLOW);
+										}
 									}
 									line.setStrokeLineCap(StrokeLineCap.ROUND);
 									line.setId("existingRouteLine");
@@ -1653,6 +1667,7 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 	}
 
 	private void moveMapToPosition(BOStarSystem sys) {
+		sceneGestures.enableScrolling(false);
 		removeMouseFilters();
 
 		mapButton01.setDisable(true);
@@ -1705,6 +1720,7 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 					ActionManager.getAction(ACTIONS.SHOW_SYSTEM_DETAIL).execute(sys);
 				}
 				addMouseFilters();
+				sceneGestures.enableScrolling(true);
 			});
 		});
 		seq.play();
@@ -2217,9 +2233,13 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 				if (o.getObject() instanceof AttackDTO attack) {
 					BOStarSystem ss = Nexus.getBoUniverse().starSystemBOs.get(attack.getStarSystemID());
 					Platform.runLater(() -> {
-						setZoomToMax();
 						ActionManager.getAction(ACTIONS.MAP_MOVE_TO_STARSYSTEM).execute(Nexus.getBoUniverse().starSystemBOs.get(attack.getStarSystemID()));
+						removeMouseFilters();
+						sceneGestures.enableScrolling(false);
+						setZoomToMax();
 						Tools.getAttackScreenShot(canvas, ss, attack.getId());
+						sceneGestures.enableScrolling(true);
+						addMouseFilters();
 					});
 					Nexus.setLastSavedAttackStarSystemDataId(null);
 				}
@@ -2257,6 +2277,7 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 
 			case MAP_CREATION_FINISHED:
 				Platform.runLater(() -> {
+					sceneGestures.enableScrolling(false);
 					centerStarSystemGroups();
 
 					double w = StarmapConfig.MAP_WIDTH;
@@ -2276,6 +2297,7 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 					canvas.show3DStars(true);
 
 					buildGuiEffect();
+					sceneGestures.enableScrolling(true);
 				});
 				logger.info("Map is ready!");
 				break;

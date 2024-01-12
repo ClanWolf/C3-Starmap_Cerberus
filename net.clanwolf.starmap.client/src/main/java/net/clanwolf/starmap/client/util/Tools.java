@@ -208,10 +208,10 @@ public final class Tools {
 			int nextRound = currentRound + 1;
 			double w = StarmapConfig.MAP_WIDTH;
 			double h = StarmapConfig.MAP_HEIGHT;
-			int attackSubImageWidth = 900;
-			int attackSubImageHeight = 400;
+			int attackSubImageWidth = 500;
+			int attackSubImageHeight = 500;
 
-			WritableImage wi = new WritableImage((int) w, (int) h);
+//			WritableImage wi = new WritableImage((int) w, (int) h);
 
 			StatusTextEntryActionObject o1 = new StatusTextEntryActionObject("Creating attack screenshot...", false);
 			ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(o1);

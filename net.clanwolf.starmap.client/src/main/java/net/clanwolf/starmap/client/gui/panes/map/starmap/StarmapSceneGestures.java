@@ -106,6 +106,10 @@ class StarmapSceneGestures {
 		}
 	};
 
+	public void enableScrolling(boolean v) {
+		scrollingEnabled = v;
+	}
+
 	private final EventHandler<MouseEvent> onMousePressedEventHandler = new EventHandler<>() {
 		@Override
 		public void handle(MouseEvent event) {

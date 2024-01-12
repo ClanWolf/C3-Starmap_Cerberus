@@ -58,12 +58,14 @@
 		<version.asm>9.6</version.asm>
 		<version.maven-antrun-plugin>3.1.0</version.maven-antrun-plugin>
 		<version.maven-compiler-plugin>3.11.0</version.maven-compiler-plugin>
+		<version.maven-plugin-api>3.9.5</version.maven-plugin-api>
+		<version.maven-plugin-plugin>3.10.2</version.maven-plugin-plugin>
 		<version.maven-dependency-plugin>3.6.0</version.maven-dependency-plugin>
 		<version.maven-jar-plugin>3.3.0</version.maven-jar-plugin>
 		<version.maven-resources-plugin>3.3.1</version.maven-resources-plugin>
 		<version.maven-shade-plugin>3.5.0</version.maven-shade-plugin>
 		<version.depgraph-maven-plugin>4.0.2</version.depgraph-maven-plugin>
-		<version.exec-maven-plugin>3.0.0</version.exec-maven-plugin>
+		<version.exec-maven-plugin>3.1.1</version.exec-maven-plugin>
 		<version.flatten-maven-plugin>1.5.0</version.flatten-maven-plugin>
 		<version.moditect-maven-plugin>1.1.0</version.moditect-maven-plugin>
 
@@ -154,6 +156,18 @@
 				<scope>provided</scope>
 			</dependency>
 			<dependency>
+				<groupId>org.codehaus</groupId>
+				<artifactId>maven-plugin-api</artifactId>
+				<version>${version.maven-plugin-api}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.codehaus</groupId>
+				<artifactId>maven-plugin-plugin</artifactId>
+				<version>${version.maven-plugin-plugin}</version>
+				<scope>provided</scope>
+			</dependency>
+			<dependency>
 				<groupId>com.github.ferstl</groupId>
 				<artifactId>depgraph-maven-plugin</artifactId>
 				<version>${version.depgraph-maven-plugin}</version>
@@ -175,7 +189,7 @@
 <!--			<plugin>-->
 <!--				<groupId>org.apache.maven</groupId>-->
 <!--				<artifactId>maven-plugin-api</artifactId>-->
-<!--				<version>${version.maven-plugin-plugin}</version>-->
+<!--				<version>${version.maven-plugin-api}</version>-->
 <!--			</plugin>-->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
