@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2023, ClanWolf.net                            |
+ * Copyright (c) 2001-2024, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.server.persistence;
@@ -54,7 +54,7 @@ public class CriteriaHelper {
 		this.clazz = clazz;
 		init();
 	}
-	
+
 	private void init(){
 		cb = EntityManagerHelper.getNewEntityManager().getCriteriaBuilder();
 		query = cb.createQuery(clazz);
@@ -92,16 +92,16 @@ public class CriteriaHelper {
 
 		//return getSingleResult(null);
 		query.select(root);
-		
+
 		Predicate[] predicateArr = new Predicate[alPredicate.size()];
 		predicateArr = alPredicate.toArray(predicateArr);
-		
+
 		query.select(root).where(predicateArr);
 		Query q = EntityManagerHelper.getNewEntityManager().createQuery(query);
-		
+
 		try {
 			return q.getSingleResult();
-			
+
 		} catch (NoResultException e) {
 			// No resultset given back
 		}
@@ -140,20 +140,20 @@ public class CriteriaHelper {
 
 		return getResultList(null);
 		/*query.select(root);
-		
+
 		Predicate[] predicateArr = new Predicate[alPredicate.size()];
 		predicateArr = alPredicate.toArray(predicateArr);
-		
+
 		query.select(root).where(predicateArr);
 		Query q = EntityManagerHelper.getNewEntityManager().createQuery(query);
-		
+
 		try {
 			return q.getResultList();
-			
+
 		} catch (NoResultException e) {
 			// No resultset given back
 		}
-		
+
 		return null;*/
 	}
 

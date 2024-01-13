@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2023, ClanWolf.net                            |
+ * Copyright (c) 2001-2024, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.client.net;
@@ -37,7 +37,7 @@ public interface IFileTransfer {
 	public boolean delete(String remoteSourceFile) throws Exception;
 	public boolean makeDir(String pathname) throws Exception;
 	public boolean deleteAllFiles(String subDir, String filter) throws Exception;
-	
+
 	public boolean disconnect();
-	
+
 }

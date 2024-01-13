@@ -6,8 +6,10 @@ TODO PRIO 1 - Immediate:
 - *** Clear game info on logout
 - *** Clear diplomacy and chat indicators on logout
 - *** Clear season progress on logout
+- RP for character creation
+- Jumpship reaches enemy system by second jump, what happens? Minigame with character traits? Costs reductions?
+- What happens if two jumpships reach the same system?
 - Change compression level of jlink as soon as moditect supports the new param
-- Allied faction leader should see the jump route of allied jumpships
 - If user logs out and another logs in without closing the client, not all user related data is adapted to the new user
 - Check if a player changed mech chassis in the middle of an invasion and set drop to be lost for that side
 - If attack teams are invalid (e.g. one pilot switched sides,...), kick everyone out of the attack and force a new lobby (ResultAnalyzer.java, L.195)
@@ -55,10 +57,9 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
-Version 7.4.20 (12.01.2024)
-  ***
-  *** FIRST VERSION TO BE SIGNED WITH THE CODE SIGNING CERTIFICATE (YUBIKEY) FROM SSL.COM ***
-  ***
+Version 7.4.20 (13.01.2024)
+  *** FIRST VERSION TO BE SIGNED WITH NEW CODE SIGNING CERTIFICATE (YUBIKEY) FROM SSL.COM ***
+- ADDED: Allied faction leader now sees the jump route of allied jumpships
 - FIXED: Jumpship level label moves with the jumpship on finalize round
 - CHANGED: Attack screenshots are now square-shaped
 - CHANGED: Disabled mouse zoom while saving screenshot of the starmap

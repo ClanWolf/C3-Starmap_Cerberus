@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2023, ClanWolf.net                            |
+ * Copyright (c) 2001-2024, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.transfer.dtos;
@@ -295,7 +295,7 @@ public class RolePlayStoryDTO extends Dto {
 	public void setNewImageWithPath(String newImageWithPath) {
 		this.newImageWithPath = newImageWithPath;
 	}
-	
+
 	/**
 	 * @return the newVoiceWithPath
 	 */
@@ -326,7 +326,7 @@ public class RolePlayStoryDTO extends Dto {
 	public void setNewMovieWithPath(String newMovieWithPath) {
 		this.newMovieWithPath = newMovieWithPath;
 	}
-	
+
 	/**
 	 * @return the sortOrder
 	 */
@@ -504,5 +504,5 @@ public class RolePlayStoryDTO extends Dto {
 	public String toString() {
 		return this.getStoryName() + " (" + this.getSortOrder() + ")";
 	}
-   
+
  }
