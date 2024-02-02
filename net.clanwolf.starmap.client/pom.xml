@@ -184,7 +184,7 @@
 				<plugin>
 					<groupId>com.github.ferstl</groupId>
 					<artifactId>depgraph-maven-plugin</artifactId>
-					<version>4.0.2</version>
+					<version>${version.depgraph-maven-plugin}</version>
 					<executions>
 						<execution>
 							<id>depgraph-puml</id>
@@ -381,7 +381,7 @@
 			<plugin>
 				<groupId>com.github.ferstl</groupId>
 				<artifactId>depgraph-maven-plugin</artifactId>
-				<version>4.0.2</version>
+				<version>${version.depgraph-maven-plugin}</version>
 				<executions>
 					<execution>
 						<id>depgraph-puml</id>
@@ -747,37 +747,37 @@
 <!--										}-->
 <!--									</moduleInfoSource>-->
 <!--								</module>-->
-								<module>
-									<artifact>
-										<groupId>commons-net</groupId>
-										<artifactId>commons-net</artifactId>
-										<version>3.9.0</version>
-									</artifact>
-									<moduleInfoSource>
-										module org.apache.commons.net {
-											exports org.apache.commons.net;
-											exports org.apache.commons.net.bsd;
-											exports org.apache.commons.net.chargen;
-											exports org.apache.commons.net.daytime;
-											exports org.apache.commons.net.discard;
-											exports org.apache.commons.net.echo;
-											exports org.apache.commons.net.finger;
-											exports org.apache.commons.net.ftp;
-											exports org.apache.commons.net.ftp.parser;
-											exports org.apache.commons.net.imap;
-											exports org.apache.commons.net.io;
-											exports org.apache.commons.net.nntp;
-											exports org.apache.commons.net.ntp;
-											exports org.apache.commons.net.pop3;
-											exports org.apache.commons.net.smtp;
-											exports org.apache.commons.net.telnet;
-											exports org.apache.commons.net.tftp;
-											exports org.apache.commons.net.time;
-											exports org.apache.commons.net.util;
-											exports org.apache.commons.net.whois;
-										}
-									</moduleInfoSource>
-								</module>
+<!--								<module>-->
+<!--									<artifact>-->
+<!--										<groupId>commons-net</groupId>-->
+<!--										<artifactId>commons-net</artifactId>-->
+<!--										<version>3.10.0</version>-->
+<!--									</artifact>-->
+<!--									<moduleInfoSource>-->
+<!--										module org.apache.commons.net {-->
+<!--											exports org.apache.commons.net;-->
+<!--											exports org.apache.commons.net.bsd;-->
+<!--											exports org.apache.commons.net.chargen;-->
+<!--											exports org.apache.commons.net.daytime;-->
+<!--											exports org.apache.commons.net.discard;-->
+<!--											exports org.apache.commons.net.echo;-->
+<!--											exports org.apache.commons.net.finger;-->
+<!--											exports org.apache.commons.net.ftp;-->
+<!--											exports org.apache.commons.net.ftp.parser;-->
+<!--											exports org.apache.commons.net.imap;-->
+<!--											exports org.apache.commons.net.io;-->
+<!--											exports org.apache.commons.net.nntp;-->
+<!--											exports org.apache.commons.net.ntp;-->
+<!--											exports org.apache.commons.net.pop3;-->
+<!--											exports org.apache.commons.net.smtp;-->
+<!--											exports org.apache.commons.net.telnet;-->
+<!--											exports org.apache.commons.net.tftp;-->
+<!--											exports org.apache.commons.net.time;-->
+<!--											exports org.apache.commons.net.util;-->
+<!--											exports org.apache.commons.net.whois;-->
+<!--										}-->
+<!--									</moduleInfoSource>-->
+<!--								</module>-->
 								<module>
 									<artifact>
 										<groupId>org.apache.commons</groupId>
@@ -902,7 +902,7 @@
 									<artifact>
 										<groupId>io.netty</groupId>
 										<artifactId>netty-common</artifactId>
-										<version>4.1.94.Final</version>
+										<version>4.1.106.Final</version>
 									</artifact>
 									<!--									<moduleInfo>-->
 									<!--										<name>io.netty.common</name>-->
@@ -930,7 +930,7 @@
 									<artifact>
 										<groupId>io.netty</groupId>
 										<artifactId>netty-transport</artifactId>
-										<version>4.1.94.Final</version>
+										<version>4.1.106.Final</version>
 									</artifact>
 									<!--									<moduleInfo>-->
 									<!--										<name>io.netty.transport</name>-->
@@ -959,7 +959,7 @@
 									<artifact>
 										<groupId>io.netty</groupId>
 										<artifactId>netty-buffer</artifactId>
-										<version>4.1.94.Final</version>
+										<version>4.1.106.Final</version>
 									</artifact>
 									<moduleInfoSource>
 										module io.netty.buffer {
@@ -972,7 +972,7 @@
 									<artifact>
 										<groupId>io.netty</groupId>
 										<artifactId>netty-codec</artifactId>
-										<version>4.1.94.Final</version>
+										<version>4.1.106.Final</version>
 									</artifact>
 									<!--									<moduleInfo>-->
 									<!--										<name>io.netty.codec</name>-->
@@ -1006,7 +1006,7 @@
 									<artifact>
 										<groupId>io.netty</groupId>
 										<artifactId>netty-resolver</artifactId>
-										<version>4.1.94.Final</version>
+										<version>4.1.106.Final</version>
 									</artifact>
 									<moduleInfoSource>
 										module io.netty.resolver {
@@ -1019,7 +1019,7 @@
 									<artifact>
 										<groupId>io.netty</groupId>
 										<artifactId>netty-handler</artifactId>
-										<version>4.1.94.Final</version>
+										<version>4.1.106.Final</version>
 									</artifact>
 									<moduleInfoSource>
 										module io.netty.handler {
