@@ -1,6 +1,6 @@
 package net.clanwolf.starmap.transfer.enums;
 
-public enum GENDER {
-	male,
-	female
+public enum HERITAGE {
+	trueborn,
+	freeborn
 }

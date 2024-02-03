@@ -31,7 +31,7 @@ import net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes.ROLEPLAYINPUTD
 
 public class CatalogTest {
 	public static void main(String[] args) {
-		ROLEPLAYINPUTDATATYPES types = ROLEPLAYINPUTDATATYPES.BLOODHOUSE_MULTI;
+		ROLEPLAYINPUTDATATYPES types = ROLEPLAYINPUTDATATYPES.BLOODHOUSE_SINGLE;
 		ICatalogObject[] list = new ICatalogObject[0];
 		try {
 			list = types.getList();

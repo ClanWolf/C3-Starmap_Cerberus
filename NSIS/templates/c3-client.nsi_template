@@ -25,8 +25,8 @@ Function .onInstSuccess
     ;                 SMPROGRAMS: $SMPROGRAMS  $\r$\n \
     ;                 Start Menu Folder: $STARTMENU_FOLDER $\r$\n \
     ;                 InstallDirectory: $INSTDIR "
-    ExecShell "" "https://www.clanwolf.net/apps/C3/changelog.txt?refresh=true&r=###TIMESTAMP###"
-    ExecShell "" "$INSTDIR\bin\C3-Starmap_Cerberus_noWin.lnk"
+    ExecShell "open" "https://www.clanwolf.net/apps/C3/changelog.txt?refresh=true&r=###TIMESTAMP###"
+    ExecShell "open" "$INSTDIR\bin\C3-Starmap_Cerberus_noWin.cmd" "" SW_HIDE
 FunctionEnd
 
 ; uninstall before install
@@ -145,8 +145,8 @@ Section "Start Menu Shortcuts"
 	SetOutpath $INSTDIR ; this folder is used as working directory for the following links
 	CreateDirectory "$SMPROGRAMS\C3-Client"
 
-	CreateShortcut "$SMPROGRAMS\C3-Client\C3-Client.lnk" "$INSTDIR\bin\C3-Starmap_Cerberus_noWin.lnk" "" "$INSTDIR\c3.ico" 0
-	CreateShortcut "$SMPROGRAMS\C3-Client\C3-Client (Console).lnk" "$INSTDIR\bin\C3-Starmap_Cerberus_win.lnk" "" "$INSTDIR\c3.ico" 0
+	CreateShortcut "$SMPROGRAMS\C3-Client\C3-Client.lnk" "$INSTDIR\bin\C3-Starmap_Cerberus_noWin.cmd" "" "$INSTDIR\c3.ico" 0 SW_SHOWMINIMIZED
+	CreateShortcut "$SMPROGRAMS\C3-Client\C3-Client (Console).lnk" "$INSTDIR\bin\C3-Starmap_Cerberus_win.cmd" "" "$INSTDIR\c3.ico" 0 SW_SHOWNORMAL
 	CreateShortcut "$SMPROGRAMS\C3-Client\Changelog.lnk" "https://www.clanwolf.net/apps/C3/changelog.txt?refresh=true&r=###TIMESTAMP###" "" "" 0
 	; CreateShortCut "$SMPROGRAMS\C3-Client\Remove.lnk" "$INSTDIR\Uninstall.exe" "" "$INSTDIR\c3.ico" 0
 SectionEnd
@@ -162,15 +162,20 @@ Section "Uninstall"
 	DeleteRegKey HKLM SOFTWARE\C3-Client
 
 ###FILELISTTOREMOVE###
-	Delete $INSTDIR\c3.ico
-	Delete $INSTDIR\uninstall.exe
-	Delete $SMPROGRAMS\C3-Client\C3-Client.lnk
-	Delete $SMPROGRAMS\C3-Client\C3-Client_console.lnk
-	Delete $SMPROGRAMS\C3-Client\Changelog.lnk
-	; Delete $SMPROGRAMS\C3-Client\Remove.lnk
+	Delete "$INSTDIR\c3.ico"
+	Delete "$INSTDIR\uninstall.exe"
+	Delete "$INSTDIR\bin\C3-Starmap_Cerberus"
+	Delete "$INSTDIR\bin\C3-Starmap_Cerberus.lnk"
+	Delete "$SMPROGRAMS\C3-Client\C3-Client.lnk"
+	Delete "$SMPROGRAMS\C3-Client\C3-Client (Console).lnk"
+	Delete "$SMPROGRAMS\C3-Client\Changelog.lnk"
+	; Delete "$SMPROGRAMS\C3-Client\Remove.lnk"
 
 ###DIRECTORYLISTTOREMOVE###
-	RMDir "$INSTDIR"
-	RMDir "$SMPROGRAMS\C3-Client"
+
+	SetOutPath "$PROGRAMFILES"
+
+	RMDir /r "$INSTDIR"
+	RMDir /r "$SMPROGRAMS\C3-Client"
 
 SectionEnd

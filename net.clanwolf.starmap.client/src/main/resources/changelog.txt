@@ -7,6 +7,7 @@ TODO PRIO 1 - Immediate:
 - *** Clear diplomacy and chat indicators on logout
 - *** Clear season progress on logout
 - RP for character creation
+- Roleplay lobby with a number of players and a master, including soundboard and dice, a goal description and a picture
 - Jumpship reaches enemy system by second jump, what happens? Minigame with character traits? Costs reductions?
 - What happens if two jumpships reach the same system?
 - Change compression level of jlink as soon as moditect supports the new param
@@ -57,8 +58,9 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
-Version 7.4.20 (26.01.2024)
+Version 7.4.27 (03.02.2024)
   *** FIRST VERSION TO BE SIGNED WITH NEW CODE SIGNING CERTIFICATE (YUBIKEY) FROM SSL.COM ***
+- STARTED: Char generation RP
 - ADDED: Allied faction leader now sees the jump route of allied jumpships
 - FIXED: Jumpship level label moves with the jumpship on finalize round
 - CHANGED: Attack screenshots are now square-shaped

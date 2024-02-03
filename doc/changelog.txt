@@ -58,8 +58,9 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
-Version 7.4.20 (26.01.2024)
+Version 7.4.27 (03.02.2024)
   *** FIRST VERSION TO BE SIGNED WITH NEW CODE SIGNING CERTIFICATE (YUBIKEY) FROM SSL.COM ***
+- STARTED: Char generation RP
 - ADDED: Allied faction leader now sees the jump route of allied jumpships
 - FIXED: Jumpship level label moves with the jumpship on finalize round
 - CHANGED: Attack screenshots are now square-shaped

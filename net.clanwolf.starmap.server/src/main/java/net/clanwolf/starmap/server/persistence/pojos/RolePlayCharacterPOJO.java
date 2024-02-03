@@ -31,7 +31,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import net.clanwolf.starmap.server.persistence.Pojo;
 
 import jakarta.persistence.*;
-import net.clanwolf.starmap.transfer.enums.GENDER;
+import net.clanwolf.starmap.transfer.enums.GENDERS;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 
@@ -69,7 +69,7 @@ public class RolePlayCharacterPOJO extends Pojo {
 
 	@Column(name = "Gender")
 	@Enumerated(EnumType.STRING)
-	private GENDER gender;
+	private GENDERS gender;
 
 	@Column(name = "History")
 	private String history;
@@ -224,12 +224,12 @@ public class RolePlayCharacterPOJO extends Pojo {
 	}
 
 	@SuppressWarnings("unused")
-	public GENDER getGender() {
+	public GENDERS getGender() {
 		return gender;
 	}
 
 	@SuppressWarnings("unused")
-	public void setGender(GENDER gender) {
+	public void setGender(GENDERS gender) {
 		this.gender = gender;
 	}
 

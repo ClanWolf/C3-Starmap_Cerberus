@@ -11,16 +11,18 @@ FOR /f "delims== tokens=1,2" %%G in (C:\C3\projects\C3-Starmap_Cerberus\net.clan
 ECHO Found version: %VERSION%
 REM PAUSE
 
-ECHO Copying launcher exe
+ECHO Copying launcher shortcuts
 REM COPY C:\c3\projects\C3-Starmap_Cerberus\NSIS\client_launcher_executable\C3-Starmap_Cerberus.exe_ C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\target\jlink-image\bin\C3-Starmap_Cerberus.exe
 COPY C:\c3\projects\C3-Starmap_Cerberus\NSIS\client_launcher_executable\C3-Starmap_Cerberus_noWin.cmd C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\target\jlink-image\bin\C3-Starmap_Cerberus_noWin.cmd
 COPY C:\c3\projects\C3-Starmap_Cerberus\NSIS\client_launcher_executable\C3-Starmap_Cerberus_noWin.lnk C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\target\jlink-image\bin\C3-Starmap_Cerberus_noWin.lnk
-COPY C:\c3\projects\C3-Starmap_Cerberus\NSIS\client_launcher_executable\C3-Starmap_Cerberus.win.cmd C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\target\jlink-image\bin\C3-Starmap_Cerberus_win.cmd
-COPY C:\c3\projects\C3-Starmap_Cerberus\NSIS\client_launcher_executable\C3-Starmap_Cerberus.win.lnk C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\target\jlink-image\bin\C3-Starmap_Cerberus_win.lnk
+COPY C:\c3\projects\C3-Starmap_Cerberus\NSIS\client_launcher_executable\C3-Starmap_Cerberus_win.cmd C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\target\jlink-image\bin\C3-Starmap_Cerberus_win.cmd
+COPY C:\c3\projects\C3-Starmap_Cerberus\NSIS\client_launcher_executable\C3-Starmap_Cerberus_win.lnk C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\target\jlink-image\bin\C3-Starmap_Cerberus_win.lnk
 REM PAUSE
 
-ECHO Copying TTS samples from cache into project
+ECHO Copying newly downloaded TTS samples from cache into project
+ECHO FROM %UserProfile%\.ClanWolf.net_C3\cache\voice\de\
 COPY %UserProfile%\.ClanWolf.net_C3\cache\voice\de\*.* C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\src\main\resources\sound\voice\de /Y /V
+ECHO FROM %UserProfile%\.ClanWolf.net_C3\cache\voice\en\
 COPY %UserProfile%\.ClanWolf.net_C3\cache\voice\en\*.* C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\src\main\resources\sound\voice\en /Y /V
 REM PAUSE
 
@@ -130,10 +132,7 @@ ECHO # Signing the installer executable
 ECHO #
 ECHO ####################################################################################
 
-REM FOR /F "delims=" %%f IN (C:\c3\projects\C3-Starmap_Cerberus\NSIS\setstorepw.cmd) DO %%f
-REM ECHO C:\C3\tools\Windows10-SignTool\signtool.exe sign /f C:\C3\certificate\c3_certificate.pfx /p %STOREPW% /fd SHA256 C:\c3\projects\C3-Starmap_Cerberus\NSIS\C3-Client-%VERSION%_install.exe
-REM OLD (without Yubikey): C:\C3\tools\Windows10-SignTool\signtool.exe sign /f C:\C3\certificate\c3_certificate.pfx /p %STOREPW% /fd SHA256 C:\c3\projects\C3-Starmap_Cerberus\NSIS\C3-Client-%VERSION%_install.exe
-REM NEW (with Yubikey):
+FOR /F "delims=" %%f IN (C:\c3\projects\C3-Starmap_Cerberus\NSIS\setstorepw.cmd) DO %%f
 C:\C3\tools\Windows10-SignTool\signtool.exe sign /debug /fd sha256 /tr http://ts.ssl.com /td sha256 /sha1 "a899b3ceb337c387dc6c80ac33a33c66da179c96" "C:\c3\projects\C3-Starmap_Cerberus\NSIS\C3-Client-%VERSION%_install.exe"
 
 REM Upload installer

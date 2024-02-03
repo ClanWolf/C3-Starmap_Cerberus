@@ -36,7 +36,7 @@ import net.clanwolf.starmap.server.GameServer;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.*;
 import net.clanwolf.starmap.server.persistence.pojos.*;
 import net.clanwolf.starmap.server.servernexus.ServerNexus;
-import net.clanwolf.starmap.transfer.enums.GENDER;
+import net.clanwolf.starmap.transfer.enums.GENDERS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
@@ -153,7 +153,7 @@ public class C3LookupService extends SimpleLookupService {
 					if(ssd != null) {
 						rpChar.setStarSystemId(ssd.getStarSystemID().getId().intValue());
 					}
-					rpChar.setGender(GENDER.male);
+					rpChar.setGender(GENDERS.male);
 					rpChar.setUser(u);
 					rpChar.setFactionId(factionPOJO.getId().intValue());
 					rpChar.setFactionTypeId(factionPOJO.getFactionTypeID().intValue());

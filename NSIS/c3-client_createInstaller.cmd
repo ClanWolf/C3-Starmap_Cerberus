@@ -6,21 +6,23 @@ C:
 CD \
 CD C:\C3\projects\C3-Starmap_Cerberus
 
-REM SET VERSION=7.4.20
+REM SET VERSION=7.4.27
 FOR /f "delims== tokens=1,2" %%G in (C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\target\classes\version.number) do set %%G=%%H
 ECHO Found version: %VERSION%
 REM PAUSE
 
-ECHO Copying launcher exe
+ECHO Copying launcher shortcuts
 REM COPY C:\c3\projects\C3-Starmap_Cerberus\NSIS\client_launcher_executable\C3-Starmap_Cerberus.exe_ C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\target\jlink-image\bin\C3-Starmap_Cerberus.exe
 COPY C:\c3\projects\C3-Starmap_Cerberus\NSIS\client_launcher_executable\C3-Starmap_Cerberus_noWin.cmd C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\target\jlink-image\bin\C3-Starmap_Cerberus_noWin.cmd
 COPY C:\c3\projects\C3-Starmap_Cerberus\NSIS\client_launcher_executable\C3-Starmap_Cerberus_noWin.lnk C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\target\jlink-image\bin\C3-Starmap_Cerberus_noWin.lnk
-COPY C:\c3\projects\C3-Starmap_Cerberus\NSIS\client_launcher_executable\C3-Starmap_Cerberus.win.cmd C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\target\jlink-image\bin\C3-Starmap_Cerberus_win.cmd
-COPY C:\c3\projects\C3-Starmap_Cerberus\NSIS\client_launcher_executable\C3-Starmap_Cerberus.win.lnk C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\target\jlink-image\bin\C3-Starmap_Cerberus_win.lnk
+COPY C:\c3\projects\C3-Starmap_Cerberus\NSIS\client_launcher_executable\C3-Starmap_Cerberus_win.cmd C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\target\jlink-image\bin\C3-Starmap_Cerberus_win.cmd
+COPY C:\c3\projects\C3-Starmap_Cerberus\NSIS\client_launcher_executable\C3-Starmap_Cerberus_win.lnk C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\target\jlink-image\bin\C3-Starmap_Cerberus_win.lnk
 REM PAUSE
 
-ECHO Copying TTS samples from cache into project
+ECHO Copying newly downloaded TTS samples from cache into project
+ECHO FROM %UserProfile%\.ClanWolf.net_C3\cache\voice\de\
 COPY %UserProfile%\.ClanWolf.net_C3\cache\voice\de\*.* C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\src\main\resources\sound\voice\de /Y /V
+ECHO FROM %UserProfile%\.ClanWolf.net_C3\cache\voice\en\
 COPY %UserProfile%\.ClanWolf.net_C3\cache\voice\en\*.* C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\src\main\resources\sound\voice\en /Y /V
 REM PAUSE
 
@@ -130,106 +132,12 @@ ECHO # Signing the installer executable
 ECHO #
 ECHO ####################################################################################
 
-REM FOR /F "delims=" %%f IN (C:\c3\projects\C3-Starmap_Cerberus\NSIS\setstorepw.cmd) DO %%f
-REM ECHO C:\C3\tools\Windows10-SignTool\signtool.exe sign /f C:\C3\certificate\c3_certificate.pfx /p %STOREPW% /fd SHA256 C:\c3\projects\C3-Starmap_Cerberus\NSIS\C3-Client-%VERSION%_install.exe
-REM OLD (without Yubikey): C:\C3\tools\Windows10-SignTool\signtool.exe sign /f C:\C3\certificate\c3_certificate.pfx /p %STOREPW% /fd SHA256 C:\c3\projects\C3-Starmap_Cerberus\NSIS\C3-Client-%VERSION%_install.exe
-REM NEW (with Yubikey):
+FOR /F "delims=" %%f IN (C:\c3\projects\C3-Starmap_Cerberus\NSIS\setstorepw.cmd) DO %%f
 C:\C3\tools\Windows10-SignTool\signtool.exe sign /debug /fd sha256 /tr http://ts.ssl.com /td sha256 /sha1 "a899b3ceb337c387dc6c80ac33a33c66da179c96" "C:\c3\projects\C3-Starmap_Cerberus\NSIS\C3-Client-%VERSION%_install.exe"
 
 REM Upload installer
 "C:\Program Files (x86)\WinSCP\winscp.com" /ini=nul /script=C:\C3\projects\C3-Starmap_Cerberus\NSIS\scripts\upload_installer.script
 REM START "" "https://www.clanwolf.net/apps/C3/server/php/insert_new_version.php"
 curl https://www.clanwolf.net/apps/C3/server/php/insert_new_version.php
-
-GOTO END
-
-
-
-
-
-
-
-REM --------------------------------- OLD ---------------------------------
-
-
-
-
-
-
-
-
-:REQUEST_IRCBOT
-ECHO ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-ECHO Upload IRCBot? (y/n)
-SET /p chc3=
-IF '%chc3%'=='y' GOTO UPLOADIRCBOT
-IF '%chc3%'=='n' GOTO REQUEST_DISCORDBOT
-GOTO REQUEST_IRCBOT
-
-:UPLOADIRCBOT
-REM Upload IRCBot
-"C:\Program Files (x86)\WinSCP\winscp.com" /ini=nul /script=C:\C3\projects\C3-Starmap_Cerberus\NSIS\scripts\upload_ircbot.script
-
-:REQUEST_DISCORDBOT
-ECHO ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-ECHO Upload DiscordBot? (y/n)
-SET /p chc3=
-IF '%chc3%'=='y' GOTO UPLOADDISCORDBOT
-IF '%chc3%'=='n' GOTO REQUEST_TS3BOT
-GOTO REQUEST_DISCORDBOT
-
-:UPLOADDISCORDBOT
-REM Upload DiscordBot
-"C:\Program Files (x86)\WinSCP\winscp.com" /ini=nul /script=C:\C3\projects\C3-Starmap_Cerberus\NSIS\scripts\upload_discordbot.script
-
-:REQUEST_TS3BOT
-ECHO ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-ECHO Upload TS3Bot? (y/n)
-SET /p chc4=
-IF '%chc4%'=='y' GOTO UPLOADTS3BOT
-IF '%chc4%'=='n' GOTO END
-GOTO REQUEST_TS3BOT
-
-:UPLOADTS3BOT
-REM Upload TS3Bot
-"C:\Program Files (x86)\WinSCP\winscp.com" /ini=nul /script=C:\C3\projects\C3-Starmap_Cerberus\NSIS\scripts\upload_ts3bot.script
-
-
-ECHO .
-ECHO .
-ECHO .
-ECHO Waiting for some time before removing flag request
-timeout /t 1 /nobreak >nul
-ECHO 7
-timeout /t 1 /nobreak >nul
-ECHO 6
-timeout /t 1 /nobreak >nul
-ECHO 5
-timeout /t 1 /nobreak >nul
-ECHO 4
-timeout /t 1 /nobreak >nul
-ECHO 3
-timeout /t 1 /nobreak >nul
-ECHO 2
-timeout /t 1 /nobreak >nul
-ECHO 1
-timeout /t 1 /nobreak >nul
-ECHO 0
-
-:REQUEST_REMOVE_BOT_FLAGS
-ECHO ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-ECHO Remove flags to restart BOTs (did they have time enough to shut down)? (y/n)
-SET /p chc5=
-IF '%chc5%'=='y' GOTO REMOVE_BOT_FLAGS
-IF '%chc5%'=='n' GOTO END
-GOTO REQUEST_REMOVE_BOT_FLAGS
-
-:REMOVE_BOT_FLAGS
-REM Remove flags so that the bots can startup again
-"C:\Program Files (x86)\WinSCP\winscp.com" /ini=nul /script=C:\C3\projects\C3-Starmap_Cerberus\NSIS\scripts\remove_bot_flags.script
-
-REM ###############################################
-REM PAUSE
-REM ###############################################
 
 :END

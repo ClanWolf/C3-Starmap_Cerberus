@@ -29,7 +29,7 @@ package net.clanwolf.starmap.transfer.dtos;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import net.clanwolf.starmap.transfer.Dto;
-import net.clanwolf.starmap.transfer.enums.GENDER;
+import net.clanwolf.starmap.transfer.enums.GENDERS;
 
 /**
  * @author Undertaker
@@ -47,7 +47,7 @@ public class RolePlayCharacterDTO extends Dto {
 	private String charImage;       //@Column(name = "CharImage")
 	private String mwoUsername;     //@Column(name = "MWOUsername")
 	private Integer ageAtCreation;  //@Column(name = "AgeAtCreation")
-	private GENDER gender;          //@Column(name = "Gender")
+	private GENDERS gender;          //@Column(name = "Gender")
 	private String history;         //@Column(name = "History")
 	private UserDTO user;           //@JoinColumn(name = "UserID")
     private RolePlayStoryDTO story; //@JoinColumn(name = "StoryID")
@@ -112,12 +112,12 @@ public class RolePlayCharacterDTO extends Dto {
 	}
 
 	@SuppressWarnings("unused")
-	public GENDER getGender() {
+	public GENDERS getGender() {
 		return gender;
 	}
 
 	@SuppressWarnings("unused")
-	public void setGender(GENDER gender) {
+	public void setGender(GENDERS gender) {
 		this.gender = gender;
 	}
 

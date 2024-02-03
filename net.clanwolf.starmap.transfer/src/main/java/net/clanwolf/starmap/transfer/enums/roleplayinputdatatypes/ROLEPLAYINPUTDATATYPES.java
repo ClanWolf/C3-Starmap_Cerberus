@@ -26,27 +26,37 @@
  */
 package net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import net.clanwolf.starmap.transfer.enums.catalogObjects.CHAR_Bloodhouse;
 import net.clanwolf.starmap.transfer.enums.DATATYPES;
 import net.clanwolf.starmap.transfer.enums.catalogObjects.ICatalogObject;
 import net.clanwolf.starmap.transfer.util.CatalogLoader;
-
-import java.io.IOException;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 //	System.out.println(Internationalization.getString(CHARACTER.CHARNAME.labelkey));
 
 public enum ROLEPLAYINPUTDATATYPES {
 	// CHARACTER
-	CHARNAME("charname", DATATYPES.String, ROLEPLAYOBJECTTYPES.CHARACTER, null, false),
+	CHARNAME("charname", DATATYPES.String, ROLEPLAYOBJECTTYPES.CHARACTER, null, true),
 	LASTNAME("lastname", DATATYPES.String, ROLEPLAYOBJECTTYPES.CHARACTER, null, false),
-	BIRTHDATE("birthdate", DATATYPES.Date, ROLEPLAYOBJECTTYPES.CHARACTER, null, false),
+	HERITAGE("heritage", DATATYPES.SelectionSingle, ROLEPLAYOBJECTTYPES.CHARACTER, null, true),
 	BLOODHOUSE_SINGLE("bloodhouse", DATATYPES.SelectionSingle, ROLEPLAYOBJECTTYPES.CHARACTER, "CHAR_Bloodhouse", false),
-	BLOODHOUSE_MULTI("bloodhouse", DATATYPES.SelectionMulti, ROLEPLAYOBJECTTYPES.CHARACTER, "CHAR_Bloodhouse", false),
+	AGE("age", DATATYPES.Number, ROLEPLAYOBJECTTYPES.CHARACTER, null, true),
+	GENDER("gender", DATATYPES.SelectionSingle, ROLEPLAYOBJECTTYPES.CHARACTER, null, true),
+	CHARIMAGE("charimage", DATATYPES.String, ROLEPLAYOBJECTTYPES.CHARACTER, null, true),
+	PHENOTYPE("phenotype", DATATYPES.SelectionSingle, ROLEPLAYOBJECTTYPES.CHARACTER, null, false),
+	HAIRCOLOR("haircolor", DATATYPES.SelectionSingle, ROLEPLAYOBJECTTYPES.CHARACTER, null, false),
+	EYECOLOR("eyecolor", DATATYPES.SelectionSingle, ROLEPLAYOBJECTTYPES.CHARACTER, null, false),
+	CHARBODYSIZE("charsize", DATATYPES.Number, ROLEPLAYOBJECTTYPES.CHARACTER, null, false),
+	CHARBODYWEIGHT("charweight", DATATYPES.Number, ROLEPLAYOBJECTTYPES.CHARACTER, null, false),
+	CHARBODYTYPE("charbodytype", DATATYPES.SelectionSingle, ROLEPLAYOBJECTTYPES.CHARACTER, null, false),
+	STR("charstrength", DATATYPES.Number, ROLEPLAYOBJECTTYPES.CHARACTER, null, false),
+	BOD("charbody", DATATYPES.Number, ROLEPLAYOBJECTTYPES.CHARACTER, null, false),
+	DEX("chardexterity", DATATYPES.Number, ROLEPLAYOBJECTTYPES.CHARACTER, null, false),
+	RFL("charreflexes", DATATYPES.Number, ROLEPLAYOBJECTTYPES.CHARACTER, null, false),
+	INT("charintelligence", DATATYPES.Number, ROLEPLAYOBJECTTYPES.CHARACTER, null, false),
+	WIL("charwill", DATATYPES.Number, ROLEPLAYOBJECTTYPES.CHARACTER, null, false),
+	CHA("charcharisma", DATATYPES.Number, ROLEPLAYOBJECTTYPES.CHARACTER, null, false),
+	EDG("charedge", DATATYPES.Number, ROLEPLAYOBJECTTYPES.CHARACTER, null, false),
+
+	// ------------------------------------------------------------
 
 	// DROPSHIP
 	SHIPNAME("shipname", DATATYPES.String, ROLEPLAYOBJECTTYPES.DROPSHIP, null, false),
@@ -75,7 +85,7 @@ public enum ROLEPLAYINPUTDATATYPES {
 
 	@Override
 	public String toString() {
-		return "app_rp_storyeditor_roleplayinputdatatypes_" + ROLEPLAYOBJECTTYPES.CHARACTER + "_" + labelkey;
+		return types + "_" + labelkey;
 	}
 
 }
