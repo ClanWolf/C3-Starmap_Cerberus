@@ -29,10 +29,7 @@ package net.clanwolf.starmap.server.persistence;
 
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +46,7 @@ public class CriteriaHelper {
 	private Class clazz;
 	private ArrayList<Predicate> alPredicate;
 	private Root root;
+	private Order orderBy;
 
 	public CriteriaHelper(Class clazz){
 		this.clazz = clazz;
@@ -87,6 +85,10 @@ public class CriteriaHelper {
 		return cb.equal(root.get(columnName), value);
 	}
 
+	public void setOrderBy(String columnName){
+		orderBy = cb.asc(root.get(columnName));
+	};
+
 	@SuppressWarnings("unused")
 	public Object getSingleResult(){
 
@@ -111,51 +113,11 @@ public class CriteriaHelper {
 	@SuppressWarnings("unused")
 	public Object getSingleResult(Long userID){
 		return getSingleResult();
-		/*query.select(root);
-
-		Predicate[] predicateArr = new Predicate[alPredicate.size()];
-		predicateArr = alPredicate.toArray(predicateArr);
-
-		query.select(root).where(predicateArr);
-		Query q = null;
-		if (userID != null) {
-			q = EntityManagerHelper.getEntityManager(userID).createQuery(query);
-		} else {
-			q = EntityManagerHelper.getNewEntityManager().createQuery(query);
-		}
-
-
-		try {
-			return q.getSingleResult();
-
-		} catch (NoResultException e) {
-			// No resultset given back
-			//e.printStackTrace();
-		}
-		return null;*/
 	}
 
 	@SuppressWarnings("unused")
 	public List<Object> getResultList(){
-
-		return getResultList(null);
-		/*query.select(root);
-
-		Predicate[] predicateArr = new Predicate[alPredicate.size()];
-		predicateArr = alPredicate.toArray(predicateArr);
-
-		query.select(root).where(predicateArr);
-		Query q = EntityManagerHelper.getNewEntityManager().createQuery(query);
-
-		try {
-			return q.getResultList();
-
-		} catch (NoResultException e) {
-			// No resultset given back
-		}
-
-		return null;*/
-	}
+		return getResultList(null);	}
 
 	public List<Object> getResultList(Long userID){
 		query.select(root);
@@ -163,7 +125,37 @@ public class CriteriaHelper {
 		Predicate[] predicateArr = new Predicate[alPredicate.size()];
 		predicateArr = alPredicate.toArray(predicateArr);
 		Query q = null;
+
+		if(orderBy == null){
+			query.select(root).where(predicateArr);
+		} else {
+			query.select(root).where(predicateArr).orderBy(orderBy);
+		}
+
+		if (userID != null) {
+			q = EntityManagerHelper.getEntityManager(userID).createQuery(query);
+		} else {
+			q = EntityManagerHelper.getNewEntityManager().createQuery(query);
+		}
+
+		try {
+			return q.getResultList();
+
+		} catch (NoResultException e) {
+			// No resultset given back
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public List<Object> getResultList(Long userID, String sortColumn){
+		query.select(root);
+
+		Predicate[] predicateArr = new Predicate[alPredicate.size()];
+		predicateArr = alPredicate.toArray(predicateArr);
+		Query q = null;
 		query.select(root).where(predicateArr);
+		query.select(root).where(predicateArr).orderBy(orderBy);
 		if (userID != null) {
 			q = EntityManagerHelper.getEntityManager(userID).createQuery(query);
 		} else {

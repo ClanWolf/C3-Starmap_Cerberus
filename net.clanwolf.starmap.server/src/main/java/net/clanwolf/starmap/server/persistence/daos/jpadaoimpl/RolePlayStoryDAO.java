@@ -100,6 +100,7 @@ public class RolePlayStoryDAO extends GenericDAO {
 	public ArrayList<RolePlayStoryPOJO> getAllStoriesByStory(RolePlayStoryPOJO rp) {
 		CriteriaHelper crit = new CriteriaHelper(RolePlayStoryPOJO.class);
 		crit.addCriteriaOR(crit.createPredicate("story", rp));
+		crit.setOrderBy("sortOrder");
 
 		List<Object> lRes = crit.getResultList();
 
