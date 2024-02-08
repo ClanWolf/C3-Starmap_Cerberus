@@ -89,11 +89,7 @@ public class GameState implements Serializable {
 			ipAdress = uri.toURL();
 			BufferedReader in = new BufferedReader(new InputStreamReader(ipAdress.openStream()));
 			ip = in.readLine();
-		} catch (IOException e) {
-			ip = "noip";
-			e.printStackTrace();
-			logger.error("Error getting external ip: ", e);
-		} catch (URISyntaxException e) {
+		} catch (IOException | URISyntaxException e) {
 			ip = "noip";
 			e.printStackTrace();
 			logger.error("Error getting external ip: ", e);

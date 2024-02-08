@@ -58,6 +58,17 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
+Version 7.4.30 (07.02.2024)
+- ADDED: Warning if install location is not in expected folder
+- UPDATED: Libraries
+
+Version 7.4.29 (05.02.2024)
+- ADDED: Changelog shortcut to start menu
+- FIXED: Start menu shortcuts reorganized
+- FIXED: Order of story steps in story editor
+- CHANGED: Removed recursive calls from uninstaller
+- UPDATED: Libraries
+
 Version 7.4.27 (03.02.2024)
   *** FIRST VERSION TO BE SIGNED WITH NEW CODE SIGNING CERTIFICATE (YUBIKEY) FROM SSL.COM ***
 - STARTED: Char generation RP
