@@ -3,13 +3,64 @@
 ; c3-client.nsi
 ;--------------------------------
 
+!include LogicLib.nsh
+
 Unicode true
+
+Var STR_HAYSTACK
+Var STR_NEEDLE
+Var STR_CONTAINS_VAR_1
+Var STR_CONTAINS_VAR_2
+Var STR_CONTAINS_VAR_3
+Var STR_CONTAINS_VAR_4
+Var STR_RETURN_VAR
+
+; StrContains
+; This function does a case sensitive searches for an occurrence of a substring in a string.
+; It returns the substring if it is found.
+; Otherwise it returns null("").
+; Written by kenglish_hi
+; Adapted from StrReplace written by dandaman32
+Function StrContains
+  Exch $STR_NEEDLE
+  Exch 1
+  Exch $STR_HAYSTACK
+  ; Uncomment to debug
+  ;MessageBox MB_OK 'STR_NEEDLE = $STR_NEEDLE STR_HAYSTACK = $STR_HAYSTACK '
+    StrCpy $STR_RETURN_VAR ""
+    StrCpy $STR_CONTAINS_VAR_1 -1
+    StrLen $STR_CONTAINS_VAR_2 $STR_NEEDLE
+    StrLen $STR_CONTAINS_VAR_4 $STR_HAYSTACK
+    loop:
+      IntOp $STR_CONTAINS_VAR_1 $STR_CONTAINS_VAR_1 + 1
+      StrCpy $STR_CONTAINS_VAR_3 $STR_HAYSTACK $STR_CONTAINS_VAR_2 $STR_CONTAINS_VAR_1
+      StrCmp $STR_CONTAINS_VAR_3 $STR_NEEDLE found
+      StrCmp $STR_CONTAINS_VAR_1 $STR_CONTAINS_VAR_4 done
+      Goto loop
+    found:
+      StrCpy $STR_RETURN_VAR $STR_NEEDLE
+      Goto done
+    done:
+   Pop $STR_NEEDLE ;Prevent "invalid opcode" errors and keep the
+   Exch $STR_RETURN_VAR
+FunctionEnd
+
+!macro _StrContainsConstructor OUT NEEDLE HAYSTACK
+  Push `${HAYSTACK}`
+  Push `${NEEDLE}`
+  Call StrContains
+  Pop `${OUT}`
+!macroend
+
+!define StrContains '!insertmacro "_StrContainsConstructor"'
+
+; ------------------------------------------------------------------------------
 
 Name "C3-Client_Installer"
 Caption "C3 Client Installer"
 Icon "c3.ico"
 UninstallIcon "c3.ico"
-OutFile "C3-Client-7.4.27_install.exe"
+OutFile "C3-Client-7.4.30_install.exe"
 BrandingText /TRIMRIGHT "ClanWolf.net"
 
 InstallDir $PROGRAMFILES64\C3-Client
@@ -25,7 +76,7 @@ Function .onInstSuccess
     ;                 SMPROGRAMS: $SMPROGRAMS  $\r$\n \
     ;                 Start Menu Folder: $STARTMENU_FOLDER $\r$\n \
     ;                 InstallDirectory: $INSTDIR "
-    ExecShell "open" "https://www.clanwolf.net/apps/C3/changelog.txt?refresh=true&r=1706929087944"
+    ExecShell "open" "https://www.clanwolf.net/apps/C3/changelog.txt?refresh=true&r=1707300274600"
     ExecShell "open" "$INSTDIR\bin\C3-Starmap_Cerberus_noWin.cmd" "" SW_HIDE
 FunctionEnd
 
@@ -70,6 +121,35 @@ Function un.onGuiInit
 	SetBrandingImage /resizetofit "$PluginsDir\uninst.bmp"
 FunctionEnd
 
+; Needs !include LogicLib.nsh
+; Fires every time the instdir var is changed
+Function .onVerifyInstDir
+    ${If} ${FileExists} `$INSTDIR\*.*`
+        ; file is a directory
+        ;MessageBox MB_OK "Install directory already exists!"
+    ${ElseIf} ${FileExists} `$INSTDIR\`
+        ; file is a file
+        ;MessageBox MB_OK "Install directory name does already exist as a file!"
+    ${Else}
+        ; file is neither a file or a directory (i.e. it doesn't exist)
+        ;MessageBox MB_OK "Install directory does not exist, will be created!"
+    ${EndIf}
+FunctionEnd
+
+; Fires if instdir selection is finished (by clicking next)
+; https://nsis-dev.github.io/NSIS-Forums/html/t-196015.html
+Function DirectoryLeave
+	${StrContains} $0 $PROGRAMFILES64 $INSTDIR
+	StrCmp $0 "" notfound
+		;MessageBox MB_OK 'Path seems to be ok!'
+		;Quit
+		Goto done
+	notfound:
+        MessageBox MB_OK 'This will install the C3-Client outside the Programs folder!$\nProceed at your own risk!$\n$\nRecommended folder: $PROGRAMFILES64\C3-Client'
+        ;Quit
+	done:
+FunctionEnd
+
 ; DSGVO request
 ;Function DSGVO
 ;  MessageBox MB_YESNO "DSGVO:$\nDo you agree to save and process account data?$\n$\nRefer to the manual for details!" IDYES true IDNO false
@@ -83,14 +163,14 @@ FunctionEnd
 ;--------------------------------
 
 LoadLanguageFile "${NSISDIR}\Contrib\Language files\English.nlf"
-VIProductVersion "7.4.27.0"
+VIProductVersion "7.4.30.0"
 VIAddVersionKey /LANG=0 "ProductName" "C3 Client"
 VIAddVersionKey /LANG=0 "Comments" "StarMap"
 VIAddVersionKey /LANG=0 "CompanyName" "ClanWolf.net [CWG]"
 VIAddVersionKey /LANG=0 "LegalTrademarks" "StarMap of the Inner Sphere and Clan Space."
 VIAddVersionKey /LANG=0 "LegalCopyright" "© ClanWolf.net"
 VIAddVersionKey /LANG=0 "FileDescription" "StarMap"
-VIAddVersionKey /LANG=0 "FileVersion" "7.4.27"
+VIAddVersionKey /LANG=0 "FileVersion" "7.4.30"
 
 ;--------------------------------
 
@@ -107,7 +187,7 @@ PageExEnd
 
 ;Page Custom DSGVO
 Page components
-Page directory
+Page directory "" "" "DirectoryLeave"
 Page instfiles
 
 UninstPage uninstConfirm
@@ -413,7 +493,7 @@ Section "C3-Client (required)"
 	; Write the uninstall keys for Windows
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayName" "C3-Client"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayIcon" "$INSTDIR\c3.ico"
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayVersion" "7.4.27"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayVersion" "7.4.30"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "Publisher" "ClanWolf.net [CWG], Christian Bartel"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "InstallSource" "$EXEDIR\"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "UninstallString" '"$INSTDIR\uninstall.exe"'
@@ -431,7 +511,7 @@ Section "Start Menu Shortcuts"
 
 	CreateShortcut "$SMPROGRAMS\C3-Client\C3-Client.lnk" "$INSTDIR\bin\C3-Starmap_Cerberus_noWin.cmd" "" "$INSTDIR\c3.ico" 0 SW_SHOWMINIMIZED
 	CreateShortcut "$SMPROGRAMS\C3-Client\C3-Client (Console).lnk" "$INSTDIR\bin\C3-Starmap_Cerberus_win.cmd" "" "$INSTDIR\c3.ico" 0 SW_SHOWNORMAL
-	CreateShortcut "$SMPROGRAMS\C3-Client\Changelog.lnk" "https://www.clanwolf.net/apps/C3/changelog.txt?refresh=true&r=1706929088011" "" "" 0
+	CreateShortcut "$SMPROGRAMS\C3-Client\Changelog.lnk" "https://www.clanwolf.net/apps/C3/changelog.txt?refresh=true&r=1707300274673" "" "" 0
 	; CreateShortCut "$SMPROGRAMS\C3-Client\Remove.lnk" "$INSTDIR\Uninstall.exe" "" "$INSTDIR\c3.ico" 0
 SectionEnd
 
@@ -678,7 +758,14 @@ Section "Uninstall"
 	RMDir "$INSTDIR\lib\security"
 	RMDir "$INSTDIR\lib"
 
-	RMDir /r "$INSTDIR"
-	RMDir /r "$SMPROGRAMS\C3-Client"
+	SetOutPath "$PROGRAMFILES"
+	Delete "$INSTDIR\uninstall.exe"
+
+	; Do NOT use 'RMDir /r "$INSTDIR"' (recursive)!
+	; User might have installed in a wrong folder or
+	; var "$INSTDIR" might have been wiped clean.
+	; Resulting in the wrong folder being deleted!
+	RMDir "$INSTDIR"
+	RMDir "$SMPROGRAMS\C3-Client"
 
 SectionEnd
