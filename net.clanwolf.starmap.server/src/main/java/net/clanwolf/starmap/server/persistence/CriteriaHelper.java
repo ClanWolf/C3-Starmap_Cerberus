@@ -47,6 +47,7 @@ public class CriteriaHelper {
 	private ArrayList<Predicate> alPredicate;
 	private Root root;
 	private Order orderBy;
+	private ArrayList<Order> alOrderBy;
 
 	public CriteriaHelper(Class clazz){
 		this.clazz = clazz;
@@ -58,6 +59,7 @@ public class CriteriaHelper {
 		query = cb.createQuery(clazz);
 		root = query.from(clazz);
 		alPredicate = new ArrayList<Predicate>();
+		alOrderBy = new ArrayList<Order>();
 	}
 
 	@SuppressWarnings("unused")
@@ -85,8 +87,15 @@ public class CriteriaHelper {
 		return cb.equal(root.get(columnName), value);
 	}
 
-	public void setOrderBy(String columnName){
-		orderBy = cb.asc(root.get(columnName));
+	public void addOrderByAsc(String columnName){
+		//orderBy = cb.asc(root.get(columnName));
+		alOrderBy.add(cb.asc(root.get(columnName)));
+	};
+
+	public void addOrderByDesc(String columnName){
+		//orderBy = cb.desc(root.get(columnName));
+		alOrderBy.add(cb.desc(root.get(columnName)));
+
 	};
 
 	@SuppressWarnings("unused")
@@ -129,7 +138,7 @@ public class CriteriaHelper {
 		if(orderBy == null){
 			query.select(root).where(predicateArr);
 		} else {
-			query.select(root).where(predicateArr).orderBy(orderBy);
+			query.select(root).where(predicateArr).orderBy(alOrderBy);
 		}
 
 		if (userID != null) {
