@@ -95,7 +95,6 @@ public class CriteriaHelper {
 	public void addOrderByDesc(String columnName){
 		//orderBy = cb.desc(root.get(columnName));
 		alOrderBy.add(cb.desc(root.get(columnName)));
-
 	};
 
 	@SuppressWarnings("unused")
@@ -157,6 +156,7 @@ public class CriteriaHelper {
 		return null;
 	}
 
+	/*
 	public List<Object> getResultList(Long userID, String sortColumn){
 		query.select(root);
 
@@ -180,4 +180,5 @@ public class CriteriaHelper {
 		}
 		return null;
 	}
+	*/
 }
