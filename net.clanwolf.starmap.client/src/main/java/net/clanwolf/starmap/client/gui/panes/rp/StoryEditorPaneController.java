@@ -61,6 +61,7 @@ import java.lang.invoke.MethodHandles;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.Optional;
 
 /**
@@ -1167,11 +1168,11 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 		cbDatafield5.getItems().setAll(dataList);
 
 		if (selected != null && selected.getValue() != null && selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V3 && selected.getValue().getVar3ID() != null) {
-			cbDatafield1.getSelectionModel().select(selected.getValue().getVar3ID().getDataSet1());
-			cbDatafield2.getSelectionModel().select(selected.getValue().getVar3ID().getDataSet2());
-			cbDatafield3.getSelectionModel().select(selected.getValue().getVar3ID().getDataSet3());
-			cbDatafield4.getSelectionModel().select(selected.getValue().getVar3ID().getDataSet4());
-			cbDatafield5.getSelectionModel().select(selected.getValue().getVar3ID().getDataSet5());
+			cbDatafield1.getSelectionModel().select(ROLEPLAYINPUTDATATYPES.getEnumForName(selected.getValue().getVar3ID().getDataSet1()));
+			cbDatafield2.getSelectionModel().select(ROLEPLAYINPUTDATATYPES.getEnumForName(selected.getValue().getVar3ID().getDataSet2()));
+			cbDatafield3.getSelectionModel().select(ROLEPLAYINPUTDATATYPES.getEnumForName(selected.getValue().getVar3ID().getDataSet3()));
+			cbDatafield4.getSelectionModel().select(ROLEPLAYINPUTDATATYPES.getEnumForName(selected.getValue().getVar3ID().getDataSet4()));
+			cbDatafield5.getSelectionModel().select(ROLEPLAYINPUTDATATYPES.getEnumForName(selected.getValue().getVar3ID().getDataSet5()));
 		}
 	}
 
@@ -1553,15 +1554,15 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 				logger.info("setData");
 
 				if (selected.getValue().getVar3ID().getDataSet1() != null) {
-					cbroleplayinputdatatypes.getSelectionModel().select(selected.getValue().getVar3ID().getDataSet1().types);
+					cbroleplayinputdatatypes.getSelectionModel().select(Objects.requireNonNull(ROLEPLAYINPUTDATATYPES.getEnumForName(selected.getValue().getVar3ID().getDataSet1())).types);
 				} else if (selected.getValue().getVar3ID().getDataSet2() != null) {
-					cbroleplayinputdatatypes.getSelectionModel().select(selected.getValue().getVar3ID().getDataSet2().types);
+					cbroleplayinputdatatypes.getSelectionModel().select(Objects.requireNonNull(ROLEPLAYINPUTDATATYPES.getEnumForName(selected.getValue().getVar3ID().getDataSet2())).types);
 				} else if (selected.getValue().getVar3ID().getDataSet3() != null) {
-					cbroleplayinputdatatypes.getSelectionModel().select(selected.getValue().getVar3ID().getDataSet3().types);
+					cbroleplayinputdatatypes.getSelectionModel().select(Objects.requireNonNull(ROLEPLAYINPUTDATATYPES.getEnumForName(selected.getValue().getVar3ID().getDataSet3())).types);
 				} else if (selected.getValue().getVar3ID().getDataSet4() != null) {
-					cbroleplayinputdatatypes.getSelectionModel().select(selected.getValue().getVar3ID().getDataSet4().types);
+					cbroleplayinputdatatypes.getSelectionModel().select(Objects.requireNonNull(ROLEPLAYINPUTDATATYPES.getEnumForName(selected.getValue().getVar3ID().getDataSet4())).types);
 				} else if (selected.getValue().getVar3ID().getDataSet5() != null) {
-					cbroleplayinputdatatypes.getSelectionModel().select(selected.getValue().getVar3ID().getDataSet5().types);
+					cbroleplayinputdatatypes.getSelectionModel().select(Objects.requireNonNull(ROLEPLAYINPUTDATATYPES.getEnumForName(selected.getValue().getVar3ID().getDataSet5())).types);
 				}
 
 				cbNextStep_V3.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getVar3ID().getNextStoryID()));
@@ -1790,19 +1791,19 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 			}
 
 			if (cbDatafield1.getValue() != null) {
-				rpVar3.setDataSet1(cbDatafield1.getValue());
+				rpVar3.setDataSet1(cbDatafield1.getValue().name());
 			}
 			if (cbDatafield2.getValue() != null) {
-				rpVar3.setDataSet2(cbDatafield2.getValue());
+				rpVar3.setDataSet2(cbDatafield2.getValue().name());
 			}
 			if (cbDatafield3.getValue() != null) {
-				rpVar3.setDataSet3(cbDatafield3.getValue());
+				rpVar3.setDataSet3(cbDatafield3.getValue().name());
 			}
 			if (cbDatafield4.getValue() != null) {
-				rpVar3.setDataSet4(cbDatafield4.getValue());
+				rpVar3.setDataSet4(cbDatafield4.getValue().name());
 			}
 			if (cbDatafield5.getValue() != null) {
-				rpVar3.setDataSet5(cbDatafield5.getValue());
+				rpVar3.setDataSet5(cbDatafield5.getValue().name());
 			}
 			if (cbNextStep_V3.getValue() != null) {
 				rpVar3.setNextStoryID(cbNextStep_V3.getValue().getId());

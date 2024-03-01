@@ -213,11 +213,11 @@ public class RolePlayDataInputController extends AbstractC3RolePlayController im
 		if(!bInit && rpStory.getVar3ID() != null) {
 			RolePlayStoryVar3DTO rpVar3 = rpStory.getVar3ID();
 
-			setField(rpVar3.getDataSet1());
-			setField(rpVar3.getDataSet2());
-			setField(rpVar3.getDataSet3());
-			setField(rpVar3.getDataSet4());
-			setField(rpVar3.getDataSet5());
+			setField(ROLEPLAYINPUTDATATYPES.getEnumForName(rpVar3.getDataSet1()));
+			setField(ROLEPLAYINPUTDATATYPES.getEnumForName(rpVar3.getDataSet2()));
+			setField(ROLEPLAYINPUTDATATYPES.getEnumForName(rpVar3.getDataSet3()));
+			setField(ROLEPLAYINPUTDATATYPES.getEnumForName(rpVar3.getDataSet4()));
+			setField(ROLEPLAYINPUTDATATYPES.getEnumForName(rpVar3.getDataSet5()));
 
 			bInit = true;
 		}

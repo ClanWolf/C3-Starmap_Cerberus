@@ -45,15 +45,15 @@ public class RolePlayStoryVar3DTO extends Dto {
 	private Long nextStoryID;
 
 	//@Column(name = "DataSet1")
-	private ROLEPLAYINPUTDATATYPES DataSet1;
+	private String DataSet1;
 	//@Column(name = "DataSet2")
-	private ROLEPLAYINPUTDATATYPES DataSet2;
+	private String DataSet2;
 	//@Column(name = "DataSet3")
-	private ROLEPLAYINPUTDATATYPES DataSet3;
+	private String DataSet3;
 	//@Column(name = "DataSet4")
-	private ROLEPLAYINPUTDATATYPES DataSet4;
+	private String DataSet4;
 	//@Column(name = "DataSet5")
-	private ROLEPLAYINPUTDATATYPES DataSet5;
+	private String DataSet5;
 
 	/**
 	 * @return the id
@@ -97,43 +97,43 @@ public class RolePlayStoryVar3DTO extends Dto {
 		this.nextStoryID = nextStoryID;
 	}
 
-	public ROLEPLAYINPUTDATATYPES getDataSet1() {
+	public String getDataSet1() {
 		return DataSet1;
 	}
 
-	public void setDataSet1(ROLEPLAYINPUTDATATYPES dataSet1) {
+	public void setDataSet1(String dataSet1) {
 		DataSet1 = dataSet1;
 	}
 
-	public ROLEPLAYINPUTDATATYPES getDataSet2() {
+	public String getDataSet2() {
 		return DataSet2;
 	}
 
-	public void setDataSet2(ROLEPLAYINPUTDATATYPES dataSet2) {
+	public void setDataSet2(String dataSet2) {
 		DataSet2 = dataSet2;
 	}
 
-	public ROLEPLAYINPUTDATATYPES getDataSet3() {
+	public String getDataSet3() {
 		return DataSet3;
 	}
 
-	public void setDataSet3(ROLEPLAYINPUTDATATYPES dataSet3) {
+	public void setDataSet3(String dataSet3) {
 		DataSet3 = dataSet3;
 	}
 
-	public ROLEPLAYINPUTDATATYPES getDataSet4() {
+	public String getDataSet4() {
 		return DataSet4;
 	}
 
-	public void setDataSet4(ROLEPLAYINPUTDATATYPES dataSet4) {
+	public void setDataSet4(String dataSet4) {
 		DataSet4 = dataSet4;
 	}
 
-	public ROLEPLAYINPUTDATATYPES getDataSet5() {
+	public String getDataSet5() {
 		return DataSet5;
 	}
 
-	public void setDataSet5(ROLEPLAYINPUTDATATYPES dataSet5) {
+	public void setDataSet5(String dataSet5) {
 		DataSet5 = dataSet5;
 	}
 }

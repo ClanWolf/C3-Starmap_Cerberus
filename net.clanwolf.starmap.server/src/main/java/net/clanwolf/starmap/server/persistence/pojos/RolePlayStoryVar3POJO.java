@@ -55,24 +55,24 @@ public class RolePlayStoryVar3POJO extends Pojo {
 	private Long nextStoryID;
 
 	@Column(name = "DataSet1")
-	@Enumerated(EnumType.STRING)
-	private ROLEPLAYINPUTDATATYPES dataSet1;
+	//@Enumerated(EnumType.STRING)
+	private String dataSet1;
 
 	@Column(name = "DataSet2")
-	@Enumerated(EnumType.STRING)
-	private ROLEPLAYINPUTDATATYPES dataSet2;
+	//@Enumerated(EnumType.STRING)
+	private String dataSet2;
 
 	@Column(name = "DataSet3")
-	@Enumerated(EnumType.STRING)
-	private ROLEPLAYINPUTDATATYPES dataSet3;
+	//@Enumerated(EnumType.STRING)
+	private String dataSet3;
 
 	@Column(name = "DataSet4")
-	@Enumerated(EnumType.STRING)
-	private ROLEPLAYINPUTDATATYPES dataSet4;
+	//@Enumerated(EnumType.STRING)
+	private String dataSet4;
 
 	@Column(name = "DataSet5")
-	@Enumerated(EnumType.STRING)
-	private ROLEPLAYINPUTDATATYPES dataSet5;
+	//@Enumerated(EnumType.STRING)
+	private String dataSet5;
 
 	/**
 	 * @return the id
@@ -116,43 +116,43 @@ public class RolePlayStoryVar3POJO extends Pojo {
 		this.nextStoryID = nextStoryID;
 	}
 
-	public ROLEPLAYINPUTDATATYPES getDataSet1() {
+	public String getDataSet1() {
 		return dataSet1;
 	}
 
-	public void setDataSet1(ROLEPLAYINPUTDATATYPES dataSet1) {
+	public void setDataSet1(String dataSet1) {
 		this.dataSet1 = dataSet1;
 	}
 
-	public ROLEPLAYINPUTDATATYPES getDataSet2() {
+	public String getDataSet2() {
 		return dataSet2;
 	}
 
-	public void setDataSet2(ROLEPLAYINPUTDATATYPES dataSet2) {
+	public void setDataSet2(String dataSet2) {
 		this.dataSet2 = dataSet2;
 	}
 
-	public ROLEPLAYINPUTDATATYPES getDataSet3() {
+	public String getDataSet3() {
 		return dataSet3;
 	}
 
-	public void setDataSet3(ROLEPLAYINPUTDATATYPES dataSet3) {
+	public void setDataSet3(String dataSet3) {
 		this.dataSet3 = dataSet3;
 	}
 
-	public ROLEPLAYINPUTDATATYPES getDataSet4() {
+	public String getDataSet4() {
 		return dataSet4;
 	}
 
-	public void setDataSet4(ROLEPLAYINPUTDATATYPES dataSet4) {
+	public void setDataSet4(String dataSet4) {
 		this.dataSet4 = dataSet4;
 	}
 
-	public ROLEPLAYINPUTDATATYPES getDataSet5() {
+	public String getDataSet5() {
 		return dataSet5;
 	}
 
-	public void setDataSet5(ROLEPLAYINPUTDATATYPES dataSet5) {
+	public void setDataSet5(String dataSet5) {
 		this.dataSet5 = dataSet5;
 	}
 }

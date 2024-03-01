@@ -88,4 +88,12 @@ public enum ROLEPLAYINPUTDATATYPES {
 		return types + "_" + labelkey;
 	}
 
+	public static ROLEPLAYINPUTDATATYPES getEnumForName(String name) {
+		for (ROLEPLAYINPUTDATATYPES t : ROLEPLAYINPUTDATATYPES.values()) {
+			if (t.name().equals(name)) {
+				return t;
+			}
+		}
+		return null;
+	}
 }
