@@ -30,6 +30,7 @@
 			<property name="hibernate.hikari.MaxLifetime" value="500000" />
 
 			<!-- <property name="hibernate.show_sql" value="true" /> Done in logging.properties! -->
+			<property name="hibernate.show_sql" value="true" />
 			<property name="hibernate.format_sql" value="true" />
 			<property name="hibernate.use_sql_comments" value="false" />
 		</properties>

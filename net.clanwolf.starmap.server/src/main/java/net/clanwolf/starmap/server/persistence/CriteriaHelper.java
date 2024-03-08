@@ -46,7 +46,6 @@ public class CriteriaHelper {
 	private Class clazz;
 	private ArrayList<Predicate> alPredicate;
 	private Root root;
-	private Order orderBy;
 	private ArrayList<Order> alOrderBy;
 
 	public CriteriaHelper(Class clazz){
@@ -134,7 +133,7 @@ public class CriteriaHelper {
 		predicateArr = alPredicate.toArray(predicateArr);
 		Query q = null;
 
-		if(orderBy == null){
+		if(alOrderBy.size() == 0){
 			query.select(root).where(predicateArr);
 		} else {
 			query.select(root).where(predicateArr).orderBy(alOrderBy);
