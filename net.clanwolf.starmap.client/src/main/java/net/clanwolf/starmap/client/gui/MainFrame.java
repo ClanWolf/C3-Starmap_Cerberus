@@ -284,7 +284,17 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 
 	@Override
 	public void init() throws Exception {
-		notifyPreloader(new Preloader.ProgressNotification(10.0));
+		notifyPreloader(new Preloader.ProgressNotification(0.1));
+		Thread.sleep(50);
+
+		notifyPreloader(new Preloader.ProgressNotification(0.2));
+		Thread.sleep(50);
+
+		notifyPreloader(new Preloader.ProgressNotification(0.3));
+		Thread.sleep(50);
+
+		notifyPreloader(new Preloader.ProgressNotification(0.4));
+		Thread.sleep(50);
 
 		// Logging
 		File dir = new File(System.getProperty("user.home") + File.separator + ".ClanWolf.net_C3");
@@ -298,25 +308,36 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 //			LogWatcher logWatcher = new LogWatcher(logFileName);
 //			Nexus.setLogWatcher(logWatcher);
 
-			notifyPreloader(new Preloader.ProgressNotification(50.0));
+			notifyPreloader(new Preloader.ProgressNotification(0.5));
+			Thread.sleep(50);
 
 			logger.info("---------------------------------------------------------------------");
 			logger.info("STARTING C3 (" + Tools.getVersionNumber() + ")");
 			logger.info("---------------------------------------------------------------------");
 			logger.info("Logfile : " + logFileName);
 
-			notifyPreloader(new Preloader.ProgressNotification(70.0));
+			notifyPreloader(new Preloader.ProgressNotification(0.6));
+			Thread.sleep(50);
+
+			notifyPreloader(new Preloader.ProgressNotification(0.7));
+			Thread.sleep(50);
 
 			// prepare the properties
 			logger.info("Preparing user properties...");
 			prepareUserProperties();
 			prepareManual();
 
+			notifyPreloader(new Preloader.ProgressNotification(0.8));
+			Thread.sleep(50);
+
 			if (Nexus.isClearCacheOnStart()) {
 				clearCache();
 			} else {
 				cleanCache();
 			}
+
+			notifyPreloader(new Preloader.ProgressNotification(0.9));
+			Thread.sleep(50);
 
 			if (isDevelopmentPC) {
 				logger.warn("--------------------------------------------------------------");
@@ -325,7 +346,8 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 				C3Properties.setProperty(C3PROPS.DEV_PC, "true", false);
 			}
 
-			notifyPreloader(new Preloader.ProgressNotification(100.0));
+			notifyPreloader(new Preloader.ProgressNotification(1.0));
+			Thread.sleep(50);
 
 			try {
 				String availableClientVersion = Server.checkLastAvailableClientVersion();
@@ -754,6 +776,7 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 						}
 					}
 				} catch (IOException e) {
+					logger.error("IOException", e);
 					e.printStackTrace();
 				}
 				break;

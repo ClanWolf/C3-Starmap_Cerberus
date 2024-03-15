@@ -1148,8 +1148,7 @@
 								<name>C3-Starmap_Cerberus</name>
 								<module>${moduleName}/${mainClass}</module>
 							</launcher>
-							<compression>2</compression>
-<!--							 <compression>zip9</compression>  New in Java21 zip0 - zip9 -->
+							<compression>zip-5</compression>
 
 							<!-- NONE, APP, APP_WITH_DEPENDENCIES -->
 							<jarInclusionPolicy>NONE</jarInclusionPolicy>

@@ -212,32 +212,32 @@ public class C3Properties {
 				|| C3PROPS.FTP_PASSWORD_HISTORYUPLOAD.equals(key)
 				|| C3PROPS.FTP_PASSWORD_LOGUPLOAD.equals(key)
 				|| C3PROPS.FTP_PASSWORD.equals(key)) {
-			if ((value != null && value.length() > 0 && C3PROPS.PROXY_PASSWORD.equals(key))) {
+			if ((value != null && !value.isEmpty() && C3PROPS.PROXY_PASSWORD.equals(key))) {
 				if (encrypt) {
 					value = encrypt(value);
 				}
 			}
-			if ((value != null && value.length() > 0 && C3PROPS.LOGIN_PASSWORD.equals(key))) {
+			if ((value != null && !value.isEmpty() && C3PROPS.LOGIN_PASSWORD.equals(key))) {
 				if (encrypt) {
 					value = encrypt(value);
 				}
 			}
-			if ((value != null && value.length() > 0 && C3PROPS.FTP_PASSWORD_HISTORYUPLOAD.equals(key))) {
+			if ((value != null && !value.isEmpty() && C3PROPS.FTP_PASSWORD_HISTORYUPLOAD.equals(key))) {
 				if (encrypt) {
 					value = encrypt(value);
 				}
 			}
-			if ((value != null && value.length() > 0 && C3PROPS.FTP_PASSWORD_LOGUPLOAD.equals(key))) {
+			if ((value != null && !value.isEmpty() && C3PROPS.FTP_PASSWORD_LOGUPLOAD.equals(key))) {
 				if (encrypt) {
 					value = encrypt(value);
 				}
 			}
-			if ((value != null && value.length() > 0 && C3PROPS.FTP_PASSWORD.equals(key))) {
+			if ((value != null && !value.isEmpty() && C3PROPS.FTP_PASSWORD.equals(key))) {
 				if (encrypt) {
 					value = encrypt(value);
 				}
 			}
-			if (value == null || value.length() == 0) {
+			if (value == null || value.isEmpty()) {
 				sProperties.remove(strKey);
 			} else {
 				sProperties.setProperty(strKey, value);
@@ -253,7 +253,7 @@ public class C3Properties {
 					try (FileInputStream fIn = new FileInputStream(sUserPropertyFile)) {
 						props.load(fIn);
 					}
-					if (value == null || value.length() == 0) {
+					if (value == null || value.isEmpty()) {
 						props.remove(strKey);
 					} else {
 						props.setProperty(strKey, value);

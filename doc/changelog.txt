@@ -6,6 +6,7 @@ TODO PRIO 1 - Immediate:
 - *** Clear game info on logout
 - *** Clear diplomacy and chat indicators on logout
 - *** Clear season progress on logout
+- Internationalized texts for the story steps
 - RP for character creation
 - Roleplay lobby with a number of players and a master, including soundboard and dice, a goal description and a picture
 - Jumpship reaches enemy system by second jump, what happens? Minigame with character traits? Costs reductions?
@@ -57,6 +58,12 @@ WATCH OUT FOR WHILE TESTING:
 ----------------------------------------------------------------
 
 VERSIONS
+
+Version 7.4.34 (16.03.2024)
+- UPDATED: Libraries
+
+Version 7.4.32 (09.03.2024)
+- UPDATED: Libraries
 
 Version 7.4.30 (07.02.2024)
 - ADDED: Warning if install location is not in expected folder
