@@ -52,10 +52,10 @@
 		<revision>7.4.34</revision>
 
 		<!-- Versions -->
-		<version.java>21</version.java>
-		<version.javafx>21</version.javafx>
+		<version.java>22</version.java>
+		<version.javafx>22</version.javafx>
 
-		<version.asm>9.6</version.asm>
+		<version.asm>9.7</version.asm>
 		<version.maven-antrun-plugin>3.1.0</version.maven-antrun-plugin>
 		<version.maven-compiler-plugin>3.11.0</version.maven-compiler-plugin>
 		<version.maven-plugin-api>3.9.5</version.maven-plugin-api>
@@ -72,11 +72,11 @@
 		<version.apache.commons-collections4>4.4</version.apache.commons-collections4>
 		<version.apache.commons-net>3.10.0</version.apache.commons-net>
 		<version.blazeds-core>3.2.0.3978</version.blazeds-core>
-		<version.byte-buddy>1.14.12</version.byte-buddy>
+		<version.byte-buddy>1.14.13</version.byte-buddy>
 		<version.collections-generic>4.01</version.collections-generic>
-		<version.discord-api>5.0.0-beta.21</version.discord-api>
+		<version.discord-api>5.0.0-beta.22</version.discord-api>
 		<version.dom4j>2.1.4</version.dom4j>
-		<version.el-api>5.0.1</version.el-api>
+		<version.el-api>6.0.0</version.el-api>
 		<version.gifencoder>0.10.1</version.gifencoder>
 		<version.gson>2.10.1</version.gson>
 		<version.hikaricp>5.1.0</version.hikaricp>
@@ -102,10 +102,10 @@
 		<version.netty>4.1.106.Final</version.netty>
 		<version.persistence-api>3.1.0</version.persistence-api>
 		<version.pircbotx>2.3.1</version.pircbotx>
-		<version.slf4j>2.0.12</version.slf4j>
-		<version.springframework>6.1.5</version.springframework>
-		<version.springframework-spring-context>6.1.5</version.springframework-spring-context>
-		<version.springframework-security-config>6.2.2</version.springframework-security-config>
+		<version.slf4j>2.0.13</version.slf4j>
+		<version.springframework>6.1.6</version.springframework>
+		<version.springframework-spring-context>6.1.6</version.springframework-spring-context>
+		<version.springframework-security-config>6.2.4</version.springframework-security-config>
 		<version.teamspeak3-api>1.3.1</version.teamspeak3-api>
 		<version.tektosyne>6.2.0</version.tektosyne>
 		<version.thumbnailator>0.4.20</version.thumbnailator>
