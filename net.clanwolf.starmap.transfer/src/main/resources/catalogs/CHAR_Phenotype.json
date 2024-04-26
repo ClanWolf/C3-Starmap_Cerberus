@@ -1,0 +1,22 @@
+[
+  {
+    "id": "1",
+    "name": "Human"
+  },
+  {
+    "id": "2",
+    "name": "Mechwarrior"
+  },
+  {
+	"id": "3",
+	"name": "Pilot"
+  },
+  {
+	"id": "4",
+	"name": "Elemental"
+  },
+  {
+	"id": "5",
+	"name": "Proto"
+  }
+]

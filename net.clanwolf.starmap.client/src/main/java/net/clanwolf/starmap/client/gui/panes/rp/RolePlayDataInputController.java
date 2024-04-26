@@ -32,10 +32,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
@@ -45,6 +42,7 @@ import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.Internationalization;
+import net.clanwolf.starmap.transfer.enums.catalogObjects.ICatalogObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
@@ -86,7 +84,7 @@ public class RolePlayDataInputController extends AbstractC3RolePlayController im
 	private Button btContinue;
 
 	@FXML
-	private VBox buttonArea;
+	private GridPane gvDataInput;
 
 	private boolean bInit = false;
 
@@ -162,31 +160,40 @@ public class RolePlayDataInputController extends AbstractC3RolePlayController im
 	}
 
 	/******************************** THIS ********************************/
-	private void setField(ROLEPLAYINPUTDATATYPES t) {
+	private void setField(ROLEPLAYINPUTDATATYPES t, int row) {
 		if (t != null) {
-			HBox p = new HBox();
-			p.setPadding(new Insets(5, 2, 5, 2));
-			p.setSpacing(5);
+
 			Label l = new Label();
 			l.setPrefWidth(400);
-			p.getChildren().add(l);
-			buttonArea.getChildren().add(p);
+
+			gvDataInput.add(l, 1, row);
 
 			l.setText(Internationalization.getString(t.toString()));
 			switch (t.datatype) {
 				case String:
 					TextField tf = new TextField();
 					tf.setPrefWidth(400);
-					p.getChildren().add(tf);
+					gvDataInput.add(tf,2, row);
 					break;
 				case SelectionSingle:
 				case SelectionMulti:
 					try {
-						ComboBox cb = new ComboBox();
-						cb.getItems().add(CatalogLoader.getList(t.classname));
+						ComboBox<String> cb = new ComboBox<>();
+
+
+
+						//Hier kein String in die Combobox, sondern das Catalogobjekt... Internationalisierung wäre am besten im CHAR_Phenotype
+
+
+
+						ICatalogObject[] co = CatalogLoader.getList(t.classname);
+						for (ICatalogObject o : co) {
+							String n = Internationalization.getString("app_rp_storyeditor_roleplayobjecttypes_CHARACTER_phenotype_" + o.getName());
+							cb.getItems().add(n);
+						}
 
 						cb.setPrefWidth(400);
-						p.getChildren().add(cb);
+						gvDataInput.add(cb,2, row);
 					} catch (Exception e){
 						//nop
 					}
@@ -213,11 +220,11 @@ public class RolePlayDataInputController extends AbstractC3RolePlayController im
 		if(!bInit && rpStory.getVar3ID() != null) {
 			RolePlayStoryVar3DTO rpVar3 = rpStory.getVar3ID();
 
-			setField(ROLEPLAYINPUTDATATYPES.getEnumForName(rpVar3.getDataSet1()));
-			setField(ROLEPLAYINPUTDATATYPES.getEnumForName(rpVar3.getDataSet2()));
-			setField(ROLEPLAYINPUTDATATYPES.getEnumForName(rpVar3.getDataSet3()));
-			setField(ROLEPLAYINPUTDATATYPES.getEnumForName(rpVar3.getDataSet4()));
-			setField(ROLEPLAYINPUTDATATYPES.getEnumForName(rpVar3.getDataSet5()));
+			setField(ROLEPLAYINPUTDATATYPES.getEnumForName(rpVar3.getDataSet1()),1);
+			setField(ROLEPLAYINPUTDATATYPES.getEnumForName(rpVar3.getDataSet2()),2);
+			setField(ROLEPLAYINPUTDATATYPES.getEnumForName(rpVar3.getDataSet3()),3);
+			setField(ROLEPLAYINPUTDATATYPES.getEnumForName(rpVar3.getDataSet4()),4);
+			setField(ROLEPLAYINPUTDATATYPES.getEnumForName(rpVar3.getDataSet5()),5);
 
 			bInit = true;
 		}

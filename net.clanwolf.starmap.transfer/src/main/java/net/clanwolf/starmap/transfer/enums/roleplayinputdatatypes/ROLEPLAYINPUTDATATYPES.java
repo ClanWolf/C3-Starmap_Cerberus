@@ -41,7 +41,7 @@ public enum ROLEPLAYINPUTDATATYPES {
 	AGE("char_age", DATATYPES.Number, ROLEPLAYOBJECTTYPES.CHARACTER, null, true),
 	GENDER("char_gender", DATATYPES.SelectionSingle, ROLEPLAYOBJECTTYPES.CHARACTER, null, true),
 	CHARIMAGE("char_image", DATATYPES.String, ROLEPLAYOBJECTTYPES.CHARACTER, null, true),
-	PHENOTYPE("char_phenotype", DATATYPES.SelectionSingle, ROLEPLAYOBJECTTYPES.CHARACTER, null, false),
+	PHENOTYPE("char_phenotype", DATATYPES.SelectionSingle, ROLEPLAYOBJECTTYPES.CHARACTER, "CHAR_Phenotype", false),
 	HAIRCOLOR("char_haircolor", DATATYPES.SelectionSingle, ROLEPLAYOBJECTTYPES.CHARACTER, null, false),
 	EYECOLOR("char_eyecolor", DATATYPES.SelectionSingle, ROLEPLAYOBJECTTYPES.CHARACTER, null, false),
 	CHARBODYSIZE("char_bodysize", DATATYPES.Number, ROLEPLAYOBJECTTYPES.CHARACTER, null, false),

@@ -10,7 +10,7 @@ module net.clanwolf.starmap.transfer {
 	exports net.clanwolf.starmap.transfer.enums;
 	exports net.clanwolf.starmap.transfer.dtos;
 	exports net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes;
-	exports net.clanwolf.starmap.transfer.enums.catalogObjects to com.fasterxml.jackson.databind;
+	exports net.clanwolf.starmap.transfer.enums.catalogObjects to com.fasterxml.jackson.databind, net.clanwolf.starmap.client;
 	exports net.clanwolf.starmap.transfer.util;
 	exports net.clanwolf.starmap.constants;
     exports net.clanwolf.starmap.transfer.mwo;

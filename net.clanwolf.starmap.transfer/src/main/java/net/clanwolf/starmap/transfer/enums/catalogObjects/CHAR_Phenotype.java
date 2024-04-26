@@ -24,44 +24,37 @@
  * Copyright (c) 2001-2024, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.transfer.util;
+package net.clanwolf.starmap.transfer.enums.catalogObjects;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import net.clanwolf.starmap.transfer.enums.catalogObjects.CHAR_Bloodhouse;
-import net.clanwolf.starmap.transfer.enums.catalogObjects.CHAR_Phenotype;
-import net.clanwolf.starmap.transfer.enums.catalogObjects.ICatalogObject;
+import java.io.Serializable;
 
-import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+public class CHAR_Phenotype implements ICatalogObject, Serializable {
 
-public class CatalogLoader {
+	public Integer id = null;
+	public String name = "";
 
-	private static CatalogLoader instance = null;
+	public CHAR_Phenotype() {	}
 
-	public static CatalogLoader getInstance() {
-		if (instance == null) {
-			instance = new CatalogLoader();
-		}
-		return instance;
+	@Override
+	public Integer getId() {
+		return id;
 	}
 
-	public static ICatalogObject[] getList(String classname) throws Exception {
-		URI uri = ((CatalogLoader) getInstance()).getClass().getResource("/catalogs/" + classname + ".json").toURI();
-		byte[] data = Files.readAllBytes(Paths.get(uri));
+	@Override
+	public String getName() {
+		return name;
+	}
 
-		switch (classname) {
-			case "CHAR_Bloodhouse": {
-				ObjectMapper objectMapper = new ObjectMapper();
-				ICatalogObject[] l = objectMapper.readValue(data, CHAR_Bloodhouse[].class);
-				return l;
-			}
-			case "CHAR_Phenotype": {
-				ObjectMapper objectMapper = new ObjectMapper();
-				ICatalogObject[] l = objectMapper.readValue(data, CHAR_Phenotype[].class);
-				return l;
-			}
-		}
-		return null;
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	@Override
+	public String toString(){
+		return name;
 	}
 }
