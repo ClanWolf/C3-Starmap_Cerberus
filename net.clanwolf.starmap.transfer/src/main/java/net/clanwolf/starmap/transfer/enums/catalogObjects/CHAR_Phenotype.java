@@ -32,13 +32,9 @@ public class CHAR_Phenotype implements ICatalogObject, Serializable {
 
 	public Integer id = null;
 	public String name = "";
+	public String internationalName = "";
 
 	public CHAR_Phenotype() {	}
-
-	@Override
-	public Integer getId() {
-		return id;
-	}
 
 	@Override
 	public String getName() {
@@ -49,12 +45,26 @@ public class CHAR_Phenotype implements ICatalogObject, Serializable {
 		this.name = name;
 	}
 
+	@Override
+	public Integer getId() {
+		return id;
+	}
+
+	@Override
+	public void setInternationalName(String intName) {
+		this.internationalName = intName;
+	}
+
 	public void setId(Integer id) {
 		this.id = id;
 	}
 
 	@Override
 	public String toString(){
-		return name;
+		if (!"".equals(internationalName)) {
+			return internationalName;
+		} else {
+			return name;
+		}
 	}
 }

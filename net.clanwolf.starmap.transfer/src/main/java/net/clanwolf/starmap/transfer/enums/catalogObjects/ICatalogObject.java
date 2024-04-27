@@ -29,4 +29,6 @@ package net.clanwolf.starmap.transfer.enums.catalogObjects;
 public interface ICatalogObject {
 	public abstract Integer getId();
 	public abstract String getName();
+
+	public abstract void setInternationalName(String intName);
 }

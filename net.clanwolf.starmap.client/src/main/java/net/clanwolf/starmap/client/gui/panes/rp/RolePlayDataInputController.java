@@ -172,27 +172,24 @@ public class RolePlayDataInputController extends AbstractC3RolePlayController im
 			switch (t.datatype) {
 				case String:
 					TextField tf = new TextField();
-					tf.setPrefWidth(400);
+					//tf.setPrefWidth(400);
 					gvDataInput.add(tf,2, row);
 					break;
 				case SelectionSingle:
 				case SelectionMulti:
 					try {
-						ComboBox<String> cb = new ComboBox<>();
-
-
-
-						//Hier kein String in die Combobox, sondern das Catalogobjekt... Internationalisierung wäre am besten im CHAR_Phenotype
-
-
+						ComboBox<ICatalogObject> cb = new ComboBox<>();
 
 						ICatalogObject[] co = CatalogLoader.getList(t.classname);
-						for (ICatalogObject o : co) {
-							String n = Internationalization.getString("app_rp_storyeditor_roleplayobjecttypes_CHARACTER_phenotype_" + o.getName());
-							cb.getItems().add(n);
+						if (co != null) {
+							for (ICatalogObject o : co) {
+								String n = Internationalization.getString("app_rp_storyeditor_roleplayobjecttypes_CHARACTER_phenotype_" + o.getName());
+								o.setInternationalName(n);
+								cb.getItems().add(o);
+							}
 						}
 
-						cb.setPrefWidth(400);
+						//cb.setPrefWidth(400);
 						gvDataInput.add(cb,2, row);
 					} catch (Exception e){
 						//nop

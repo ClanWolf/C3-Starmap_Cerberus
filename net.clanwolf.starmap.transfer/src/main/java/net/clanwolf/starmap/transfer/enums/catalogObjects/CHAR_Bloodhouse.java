@@ -32,6 +32,7 @@ public class CHAR_Bloodhouse implements ICatalogObject, Serializable {
 
 	public Integer id = null;
 	public String name = "";
+	public String internationalName = "";
 
 	public CHAR_Bloodhouse() {	}
 
@@ -45,6 +46,11 @@ public class CHAR_Bloodhouse implements ICatalogObject, Serializable {
 	}
 
 	@Override
+	public void setInternationalName(String intName) {
+		this.internationalName = intName;
+	}
+
+	@Override
 	public Integer getId() {
 		return id;
 	}
@@ -55,6 +61,10 @@ public class CHAR_Bloodhouse implements ICatalogObject, Serializable {
 
 	@Override
 	public String toString(){
-		return name;
+		if (!"".equals(internationalName)) {
+			return internationalName;
+		} else {
+			return name;
+		}
 	}
 }
