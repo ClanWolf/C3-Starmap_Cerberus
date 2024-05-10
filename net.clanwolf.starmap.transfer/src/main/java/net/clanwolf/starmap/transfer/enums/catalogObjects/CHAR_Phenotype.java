@@ -46,13 +46,13 @@ public class CHAR_Phenotype implements ICatalogObject, Serializable {
 	}
 
 	@Override
-	public Integer getId() {
-		return id;
+	public void setInternationalName(String intName) {
+		this.internationalName = intName;
 	}
 
 	@Override
-	public void setInternationalName(String intName) {
-		this.internationalName = intName;
+	public Integer getId() {
+		return id;
 	}
 
 	public void setId(Integer id) {

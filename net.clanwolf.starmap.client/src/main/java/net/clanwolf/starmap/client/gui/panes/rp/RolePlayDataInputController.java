@@ -183,7 +183,7 @@ public class RolePlayDataInputController extends AbstractC3RolePlayController im
 						ICatalogObject[] co = CatalogLoader.getList(t.classname);
 						if (co != null) {
 							for (ICatalogObject o : co) {
-								String n = Internationalization.getString("app_rp_storyeditor_roleplayobjecttypes_CHARACTER_phenotype_" + o.getName());
+								String n = Internationalization.getString("app_rp_storyeditor_roleplayobjecttypes_" + t.classname + "_" + o.getName());
 								o.setInternationalName(n);
 								cb.getItems().add(o);
 							}
