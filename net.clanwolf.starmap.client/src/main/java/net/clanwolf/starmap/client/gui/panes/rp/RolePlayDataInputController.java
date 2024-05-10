@@ -84,6 +84,8 @@ public class RolePlayDataInputController extends AbstractC3RolePlayController im
 	private Button btContinue;
 
 	@FXML
+	private VBox vBoxDataInput;
+
 	private GridPane gvDataInput;
 
 	private boolean bInit = false;
@@ -110,7 +112,7 @@ public class RolePlayDataInputController extends AbstractC3RolePlayController im
 
 
 
-		btContinue.setVisible(false);
+//		btContinue.setVisible(true);
 	}
 
 	/**
@@ -164,11 +166,11 @@ public class RolePlayDataInputController extends AbstractC3RolePlayController im
 		if (t != null) {
 
 			Label l = new Label();
-			l.setPrefWidth(400);
+//			l.setPrefWidth(400);
 
 			gvDataInput.add(l, 1, row);
 
-			l.setText(Internationalization.getString(t.toString()));
+			l.setText(Internationalization.getString(t.toString()) + ": ");
 			switch (t.datatype) {
 				case String:
 					TextField tf = new TextField();
@@ -179,6 +181,7 @@ public class RolePlayDataInputController extends AbstractC3RolePlayController im
 				case SelectionMulti:
 					try {
 						ComboBox<ICatalogObject> cb = new ComboBox<>();
+						cb.setPadding(new Insets(2,2,8,2));
 
 						ICatalogObject[] co = CatalogLoader.getList(t.classname);
 						if (co != null) {
@@ -191,7 +194,7 @@ public class RolePlayDataInputController extends AbstractC3RolePlayController im
 
 						//cb.setPrefWidth(400);
 						gvDataInput.add(cb,2, row);
-					} catch (Exception e){
+					} catch (Exception ignored){
 						//nop
 					}
 					break;
@@ -204,6 +207,11 @@ public class RolePlayDataInputController extends AbstractC3RolePlayController im
 		// set story image
 		Image im = BORolePlayStory.getRPG_Image(rpStory);
 		backgroundImage.setImage(im);
+
+		gvDataInput = new GridPane();
+		gvDataInput.setHgap(5);
+		gvDataInput.setVgap(5);
+		gvDataInput.setPadding(new Insets(3,3,3,3));
 
 		// play sound
 		if (rpStory.getStoryMP3() != null) {
@@ -222,6 +230,8 @@ public class RolePlayDataInputController extends AbstractC3RolePlayController im
 			setField(ROLEPLAYINPUTDATATYPES.getEnumForName(rpVar3.getDataSet3()),3);
 			setField(ROLEPLAYINPUTDATATYPES.getEnumForName(rpVar3.getDataSet4()),4);
 			setField(ROLEPLAYINPUTDATATYPES.getEnumForName(rpVar3.getDataSet5()),5);
+
+			vBoxDataInput.getChildren().add(gvDataInput);
 
 			bInit = true;
 		}
