@@ -59,7 +59,10 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
-Version 7.4.34 ( XX .03.2024)
+Version 7.5.00 (xx.09.2024)
+-
+
+Version 7.4.34 (05.03.2024)
 - UPDATED: Java to JDK 22
 - UPDATED: JavaFx to 22
 - UPDATED: Libraries

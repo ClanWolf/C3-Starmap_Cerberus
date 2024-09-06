@@ -158,7 +158,6 @@ public class RolePlayDataInputController extends AbstractC3RolePlayController im
 	private void handleOnActionBtContinue(){
 		Long rp = getCurrentRP().getVar3ID().getNextStoryID();
 		saveNextStep(rp);
-
 	}
 
 	/******************************** THIS ********************************/
