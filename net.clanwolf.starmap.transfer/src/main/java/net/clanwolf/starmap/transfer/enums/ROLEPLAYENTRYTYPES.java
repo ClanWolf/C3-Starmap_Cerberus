@@ -34,23 +34,23 @@ public enum ROLEPLAYENTRYTYPES {
 
 	RP_CHAPTER("Chapter"),
 
-	RP_SECTION("Step (Normal Story step)"),
+	RP_SECTION("Section"),
 
-	RP_CHOICE("Step (Path selection) without Image"),
+	RP_CHOICE("Choice (without Image)"),
 
-	RP_DATA_INPUT("Step (Data input)"),
+	RP_DATA_INPUT("Data input"),
 
-	RP_DICE("Step (Dice)"),
+	RP_DICE("Dice"),
 
-	RP_CHOICE_IMAGE_LEFT("Step (Path selection) Image left"),
+	RP_CHOICE_IMAGE_LEFT("Choice (Image left)"),
 
-	RP_KEYPAD("Step Keypad"),
+	RP_KEYPAD("Keypad"),
 
-	RP_HPG_MESSAGE("Step Message"),
+	RP_HPG_MESSAGE("HPGMessage"),
 
-	RP_PREPARE_BATTLE("Step prepare battle"),
+	RP_PREPARE_BATTLE("Prepare battle"),
 
-	RP_INVASION("Step invasion drop");
+	RP_INVASION("Invasion (drop)");
 
 	private final String label;
 
