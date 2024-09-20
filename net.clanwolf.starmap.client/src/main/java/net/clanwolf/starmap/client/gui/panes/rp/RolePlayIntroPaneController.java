@@ -170,7 +170,7 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 				} else {
 					btPreview.setDisable(false);
 				}
-			} else if (getCurrentRP() != null && getCurrentRP().getNextStepID() == null) {
+			} else if (getCurrentRP() != null && getCurrentRP().getNextStepID() != null) {
 				btPreview.setDisable(false);
 			}
 		}
@@ -188,6 +188,12 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 					fadeInContent();
 				}
 				buttonPressed = false;
+				if (isCharRP) {
+					if (getCurrentRP() != null && getCurrentRP().getNextStepID() != null) {
+						audioStartedOnce = false;
+						btPreview.setDisable(false);
+					}
+				}
 			}
 			case FINALIZE_ROUND -> checkToCancelInvasion();
 
@@ -250,7 +256,6 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 
 	@Override
 	public void getStoryValues(RolePlayStoryDTO rpStory){
-
 		double xOffset = 62;
 		double yOffset = 14;
 
