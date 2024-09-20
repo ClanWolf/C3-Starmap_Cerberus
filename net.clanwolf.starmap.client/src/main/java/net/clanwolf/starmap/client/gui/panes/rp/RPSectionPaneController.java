@@ -70,7 +70,7 @@ import java.util.ResourceBundle;
 /**
  * @author Undertaker
  */
-public class RolePlayIntroPaneController extends AbstractC3RolePlayController implements ActionCallBackListener {
+public class RPSectionPaneController extends AbstractC3RolePlayController implements ActionCallBackListener {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	private HashMap<Long, Boolean> animationPlayedMap = new HashMap<>();
@@ -92,7 +92,7 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 
 	private boolean buttonPressed = false;
 
-	public RolePlayIntroPaneController() {
+	public RPSectionPaneController() {
 	}
 
 	@Override
@@ -145,7 +145,7 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 		if(anchorPane != null && !anchorPane.isVisible()) return true;
 
 		if (!buttonPressed) {
-			if (ROLEPLAYENTRYTYPES.C3_RP_STEP_V1 != o.getObject()) { // NOT a Normal story step (so likely intro or invasion pane, outro of an invasion)
+			if (ROLEPLAYENTRYTYPES.RP_SECTION != o.getObject()) { // NOT a Normal story step (so likely intro or invasion pane, outro of an invasion)
 				if (!isCharRP) {
 					BOAttack attack = Nexus.getCurrentAttackOfUser();
 					if (attack != null) {
@@ -177,12 +177,12 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 
 		switch (action) {
 			case START_ROLEPLAY -> {
-				if (ROLEPLAYENTRYTYPES.C3_RP_STORY == o.getObject() || ROLEPLAYENTRYTYPES.C3_RP_CHAPTER == o.getObject()) {
+				if (ROLEPLAYENTRYTYPES.RP_STORY == o.getObject() || ROLEPLAYENTRYTYPES.RP_CHAPTER == o.getObject()) {
 					logger.info("RolePlayIntroPaneController -> START_ROLEPLAY");
 					// set current step of story
 					getStoryValues(getCurrentRP());
 					fadeInContent();
-				} else if (ROLEPLAYENTRYTYPES.C3_RP_STEP_V1 == o.getObject()) {
+				} else if (ROLEPLAYENTRYTYPES.RP_SECTION == o.getObject()) {
 					// set current step of story
 					getStoryValues(getCurrentRP());
 					fadeInContent();
@@ -228,9 +228,9 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 		// TODO_C3: Change the methods for C3_RP_STORY and C3_RP_CHAPTER of attack, otherwise it dosen't work
 		RolePlayCharacterDTO currentChar = Nexus.getCurrentChar();
 		if (getCurrentRP() != null) {
-			if (getCurrentRP().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STORY) {
+			if (getCurrentRP().getVariante() == ROLEPLAYENTRYTYPES.RP_STORY) {
 				boRp.getNextChapterBySortOrder(currentChar, 1);
-			} else if (getCurrentRP().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_CHAPTER) {
+			} else if (getCurrentRP().getVariante() == ROLEPLAYENTRYTYPES.RP_CHAPTER) {
 				if (isCharRP) {
 					boRp.getNextStepBySortOrder(currentChar, 1);
 				} else {
@@ -284,7 +284,7 @@ public class RolePlayIntroPaneController extends AbstractC3RolePlayController im
 		}
 
 		// fade text from labHeader if step is story or chapter
-		if(rpStory.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1){
+		if(rpStory.getVariante() == ROLEPLAYENTRYTYPES.RP_SECTION){
 			taStoryText.setVisible(true);
 			labHeader.setVisible(false);
 

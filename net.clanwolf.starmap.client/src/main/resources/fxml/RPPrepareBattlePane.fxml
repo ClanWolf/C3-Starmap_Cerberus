@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="RolePlayStartPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.RolePlayPrepareBattlePaneController">
+<AnchorPane id="RolePlayStartPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.RPPrepareBattlePaneController">
     <children>
       <ImageView fx:id="backgroundImage" fitHeight="438.0" fitWidth="778.0" layoutX="62.0" layoutY="14.0" onMouseClicked="#handleOnMouseClicked" opacity="0.9" pickOnBounds="true">
          <image>

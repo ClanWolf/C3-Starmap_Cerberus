@@ -30,14 +30,12 @@ import io.nadron.app.PlayerSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
-import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.JumpshipDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.RolePlayCharacterDAO;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.RolePlayStoryDAO;
 import net.clanwolf.starmap.server.persistence.pojos.*;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
-import net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes.ROLEPLAYINPUTDATATYPES;
 
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
@@ -67,7 +65,7 @@ public class C3GameSessionHandlerRoleplay {
 			EntityManagerHelper.beginTransaction(C3GameSessionHandler.getC3UserID(session));
 
 			//TODO_C3: Save RolePlayCharacter
-			if(rp.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STORY) {
+			if(rp.getVariante() == ROLEPLAYENTRYTYPES.RP_STORY) {
 
 				for (Long aLong1 : rp.getNewCharIDs()) {
 					RolePlayCharacterPOJO pojo = daoChar.findById(C3GameSessionHandler.getC3UserID(session), aLong1);
@@ -334,7 +332,6 @@ public class C3GameSessionHandlerRoleplay {
 
 		try {
 
-			//TODO_C3: Save RolePlayCharacterPOJO
 			EntityManagerHelper.beginTransaction(C3GameSessionHandler.getC3UserID(session));
 			RolePlayStoryPOJO storyPojo = daoStory.findById(C3GameSessionHandler.getC3UserID(session), storyID);
 			rpChar.setStory(storyPojo);

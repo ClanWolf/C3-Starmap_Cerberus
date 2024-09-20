@@ -35,6 +35,7 @@ import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionObject;
+import net.clanwolf.starmap.client.process.roleplay.BOCharacter;
 import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
 import net.clanwolf.starmap.client.process.universe.BOAttack;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;

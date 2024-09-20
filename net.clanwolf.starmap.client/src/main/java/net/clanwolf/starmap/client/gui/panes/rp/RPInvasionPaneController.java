@@ -83,7 +83,7 @@ import java.util.concurrent.ThreadLocalRandom;
 /**
  * @author Undertaker
  */
-public class RolePlayInvasionPaneController extends AbstractC3RolePlayController implements ActionCallBackListener {
+public class RPInvasionPaneController extends AbstractC3RolePlayController implements ActionCallBackListener {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	@FXML
@@ -159,7 +159,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 	@FXML
 	private Pane paneMapDice, paneVetoMap;
 
-	public RolePlayInvasionPaneController() {
+	public RPInvasionPaneController() {
 	}
 
 	private void init() {
@@ -559,7 +559,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 						final Properties randomMWOMaps = new Properties();
 						try {
 							final String randomMWOMapsFileName = "random_mwo_maps.properties";
-							InputStream inputStream = RolePlayInvasionPaneController.class.getClassLoader().getResourceAsStream(randomMWOMapsFileName);
+							InputStream inputStream = RPInvasionPaneController.class.getClassLoader().getResourceAsStream(randomMWOMapsFileName);
 							if (inputStream != null) {
 								randomMWOMaps.load(inputStream);
 							} else {
@@ -740,7 +740,7 @@ public class RolePlayInvasionPaneController extends AbstractC3RolePlayController
 				break;
 
 			case START_ROLEPLAY:
-				if (ROLEPLAYENTRYTYPES.C3_RP_STEP_V9 == o.getObject()) {
+				if (ROLEPLAYENTRYTYPES.RP_INVASION == o.getObject()) {
 					logger.info("RolePlayChoicePaneController -> START_ROLEPLAY");
 
 					init();

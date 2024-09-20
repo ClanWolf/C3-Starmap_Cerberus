@@ -30,27 +30,27 @@ package net.clanwolf.starmap.transfer.enums;
  * @author Undertaker
  */
 public enum ROLEPLAYENTRYTYPES {
-	C3_RP_STORY("Story"),
+	RP_STORY("Story"),
 
-	C3_RP_CHAPTER("Chapter"),
+	RP_CHAPTER("Chapter"),
 
-	C3_RP_STEP_V1("Step (Normal Story step)"),
+	RP_SECTION("Step (Normal Story step)"),
 
-	C3_RP_STEP_V2("Step (Path selection) without Image"),
+	RP_CHOICE("Step (Path selection) without Image"),
 
-	C3_RP_STEP_V3("Step (Data input)"),
+	RP_DATA_INPUT("Step (Data input)"),
 
-	C3_RP_STEP_V4("Step (Dice)"),
+	RP_DICE("Step (Dice)"),
 
-	C3_RP_STEP_V5("Step (Path selection) Image left"),
+	RP_CHOICE_IMAGE_LEFT("Step (Path selection) Image left"),
 
-	C3_RP_STEP_V6("Step Keypad"),
+	RP_KEYPAD("Step Keypad"),
 
-	C3_RP_STEP_V7("Step Message"),
+	RP_HPG_MESSAGE("Step Message"),
 
-	C3_RP_STEP_V8("Step prepare battle"),
+	RP_PREPARE_BATTLE("Step prepare battle"),
 
-	C3_RP_STEP_V9("Step invasion drop");
+	RP_INVASION("Step invasion drop");
 
 	private final String label;
 

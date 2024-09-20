@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="RolePlayStartPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/19" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.RolePlayInvasionPaneController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="RolePlayStartPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/19" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.RPInvasionPaneController">
     <children>
       <VBox fx:id="VBoxError" alignment="CENTER" layoutX="87.0" layoutY="22.0" prefHeight="318.0" prefWidth="731.0" styleClass="contentTextAreaBlock3" stylesheets="@../styles/MainFrameStyle.css">
          <children>

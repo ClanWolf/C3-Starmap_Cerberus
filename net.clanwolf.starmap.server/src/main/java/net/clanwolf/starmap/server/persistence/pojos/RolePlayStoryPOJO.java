@@ -203,7 +203,7 @@ public class RolePlayStoryPOJO extends Pojo {
 
 
 	public RolePlayStoryPOJO getParentStory() {
-		if(type == ROLEPLAYENTRYTYPES.C3_RP_CHAPTER){
+		if(type == ROLEPLAYENTRYTYPES.RP_CHAPTER){
 			return story;
 		}
     	return parentStory;
@@ -211,7 +211,7 @@ public class RolePlayStoryPOJO extends Pojo {
 
 
 	public void setParentStory(RolePlayStoryPOJO parentStory) {
-		if(type == ROLEPLAYENTRYTYPES.C3_RP_CHAPTER){
+		if(type == ROLEPLAYENTRYTYPES.RP_CHAPTER){
 			this.parentStory = null;
 		} else {
 			this.parentStory = parentStory;

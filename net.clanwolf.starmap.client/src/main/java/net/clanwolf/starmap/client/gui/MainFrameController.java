@@ -37,7 +37,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.CacheHint;
-import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
@@ -73,7 +72,7 @@ import net.clanwolf.starmap.client.gui.panes.diplomacy.DiplomacyPane;
 import net.clanwolf.starmap.client.gui.panes.logging.LogPane;
 import net.clanwolf.starmap.client.gui.panes.login.LoginPane;
 import net.clanwolf.starmap.client.gui.panes.map.starmap.StarmapPane;
-import net.clanwolf.starmap.client.gui.panes.rp.RolePlayBasicPane;
+import net.clanwolf.starmap.client.gui.panes.rp.RPBasicPane;
 import net.clanwolf.starmap.client.gui.panes.rp.StoryEditorPane;
 import net.clanwolf.starmap.client.gui.panes.usereditor.UsereditorPane;
 import net.clanwolf.starmap.client.gui.panes.settings.SettingsPane;
@@ -136,12 +135,12 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	private LogPane logPane = null;
 	private UserInfoPane userInfoPane = null;
 	private StarmapPane mapPane = null;
-	private RolePlayBasicPane attackPane = null;
+	private RPBasicPane attackPane = null;
 	private ChatPane chatPane = null;
 	private DicePane dicePane = null;
 	private DiplomacyPane diplomacyPane = null;
 	private SettingsPane settingsPane = null;
-	private RolePlayBasicPane rolePlayPane = null;
+	private RPBasicPane rolePlayPane = null;
 	// private InfoPane infoPane = null;
 	private ConfirmAppClosePane confirmAppClosePane = null;
 	private WaitAnimationPane waitAnimationPane = new WaitAnimationPane();
@@ -1799,7 +1798,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		diplomacyPane.getController().addActionCallBackListeners();
 
 		String paneNameCharacter = "CharacterPane";
-		rolePlayPane = new RolePlayBasicPane(paneNameCharacter);
+		rolePlayPane = new RPBasicPane(paneNameCharacter);
 		rolePlayPane.setShowsMouseFollow(false);
 		rolePlayPane.setShowsPlanetRotation(false);
 		rolePlayPane.setCache(true);
@@ -1809,7 +1808,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		logger.info("RolePlayPane: " + rolePlayPane + " -> Controller: " + rolePlayPane.getController());
 
 		String paneNameAttack = "AttackPane";
-		attackPane = new RolePlayBasicPane(paneNameAttack);
+		attackPane = new RPBasicPane(paneNameAttack);
 		attackPane.setShowsMouseFollow(false);
 		attackPane.setShowsPlanetRotation(false);
 		attackPane.setCache(true);
@@ -2288,7 +2287,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				paneTransitionInProgress = false;
 
 				Platform.runLater(() -> {
-					if (currentlyDisplayedPane instanceof RolePlayBasicPane) {
+					if (currentlyDisplayedPane instanceof RPBasicPane) {
 						paneVolumeControl.setVisible(true);
 						slVolumeControl.setVisible(true);
 						ivMuteToggle.setVisible(true);

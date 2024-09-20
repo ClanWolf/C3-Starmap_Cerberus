@@ -27,14 +27,8 @@
 package net.clanwolf.starmap.client.gui.panes.rp;
 
 import javafx.animation.FadeTransition;
-import javafx.animation.KeyFrame;
 import javafx.animation.SequentialTransition;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
-import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
@@ -52,21 +46,18 @@ import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
 import net.clanwolf.starmap.transfer.dtos.RolePlayStoryDTO;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
-import java.io.InputStream;
 import java.lang.invoke.MethodHandles;
 import java.net.URL;
 import java.util.Objects;
 import java.util.ResourceBundle;
-import java.util.concurrent.TimeUnit;
 
 /**
  * @author Undertaker
  */
-public class RolePlayKeypadPaneController extends AbstractC3RolePlayController implements ActionCallBackListener {
+public class RPKeypadPaneController extends AbstractC3RolePlayController implements ActionCallBackListener {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	@FXML
@@ -97,7 +88,7 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 	private String sSecretCode;
 	private boolean codeOK;
 
-	public RolePlayKeypadPaneController() {
+	public RPKeypadPaneController() {
 	}
 
 	@Override
@@ -138,7 +129,7 @@ public class RolePlayKeypadPaneController extends AbstractC3RolePlayController i
 		if(anchorPane != null && !anchorPane.isVisible()) return true;
 		switch (action) {
 		case START_ROLEPLAY:
-			if(ROLEPLAYENTRYTYPES.C3_RP_STEP_V6 == o.getObject()) {
+			if(ROLEPLAYENTRYTYPES.RP_KEYPAD == o.getObject()) {
 				logger.info("RolePlayChoicePaneController -> START_ROLEPLAY");
 
 				init();

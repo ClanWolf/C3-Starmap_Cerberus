@@ -28,7 +28,9 @@ package net.clanwolf.starmap.client.gui.panes.rp;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -38,13 +40,14 @@ import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3RolePlayController;
+import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
+import net.clanwolf.starmap.client.process.universe.BOFaction;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
-import net.clanwolf.starmap.transfer.dtos.RolePlayStoryDTO;
-import net.clanwolf.starmap.transfer.dtos.RolePlayStoryVar2DTO;
-import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import net.clanwolf.starmap.transfer.dtos.RolePlayStoryDTO;
+import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
 import java.lang.invoke.MethodHandles;
 import java.net.URL;
@@ -54,63 +57,81 @@ import java.util.ResourceBundle;
 /**
  * @author Undertaker
  */
-public class RolePlayChoicePaneController extends AbstractC3RolePlayController implements ActionCallBackListener {
+public class RPMessagePaneController extends AbstractC3RolePlayController implements ActionCallBackListener {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	@FXML
 	private AnchorPane anchorPane;
 
-	//@FXML
-	//private ImageView rpIBackgroundImage;
+	@FXML
+	private Button btPreview;
 
 	@FXML
-	private ImageView rpImage;
+	private TextArea taStoryText;
 
 	@FXML
-	private TextArea taRpText;
+	private Label labHeader;
 
 	@FXML
-	private Button btChoice1;
+	private Label labDate;
 
 	@FXML
-	private Button btChoice2;
+	private Label labSender;
 
 	@FXML
-	private Button btChoice3;
+	private Label labSenderFaction;
 
 	@FXML
-	private Button btChoice4;
+	private Label labServiceName;
 
-	public RolePlayChoicePaneController() {
+	@FXML
+	private ImageView ivSenderLogo;
+
+	public RPMessagePaneController() {
 	}
 
 	@Override
 	public void addActionCallBackListeners() {
 		ActionManager.addActionCallbackListener(ACTIONS.START_ROLEPLAY, this);
+		ActionManager.addActionCallbackListener(ACTIONS.FINALIZE_ROUND, this);
 	}
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		super.initialize(url, rb);
-		init();
 	}
 
-	private void init() {
-		taRpText.setStyle("-fx-opacity: 1");
-		taRpText.setEditable(false);
+	/**
+	 * Handle Actions
+	 *
+	 * @param action
+	 *            Action
+	 * @param o
+	 *            Action object
+	 * @return true
+	 */
+	@Override
+	public boolean handleAction(ACTIONS action, ActionObject o) {
+		if(anchorPane != null && !anchorPane.isVisible()) return true;
+		switch (action) {
 
-		btChoice1.setVisible(false);
-		btChoice2.setVisible(false);
-		btChoice3.setVisible(false);
-		btChoice4.setVisible(false);
-	}
+		case FINALIZE_ROUND:
+			checkToCancelInvasion();
+			break;
 
-	/******************************** FXML ********************************/
+		case START_ROLEPLAY:
+			if(ROLEPLAYENTRYTYPES.RP_HPG_MESSAGE == o.getObject()) {
+				logger.info("RolePlayIntroPaneController -> START_ROLEPLAY");
 
-	@FXML
-	private void handleOnActionbtChoice1() {
-		Long rp = getCurrentRP().getVar2ID().getOption1StoryID();
-		saveNextStep(rp);
+				// set current step of story
+				getStoryValues(getCurrentRP());
+			}
+			break;
+		default:
+			break;
+
+		}
+		return true;
 	}
 
 	@Override
@@ -120,126 +141,48 @@ public class RolePlayChoicePaneController extends AbstractC3RolePlayController i
 		});
 	}
 
+	/******************************** FXML ********************************/
 	@FXML
-	private void handleOnActionbtChoice2() {
-		Long rp = getCurrentRP().getVar2ID().getOption2StoryID();
-		saveNextStep(rp);
+	private void handleOnMouseClicked(){
+		handleOnActionBtPreview();
 	}
 
 	@FXML
-	private void handleOnActionbtChoice3() {
-		Long rp = getCurrentRP().getVar2ID().getOption3StoryID();
-		saveNextStep(rp);
-	}
+	private void handleOnActionBtPreview(){
+		// TODO_C3: Get and save next step of the story
+		saveNextStep(getCurrentRP().getVar7ID().getNextStepID());
 
-	@FXML
-	private void handleOnActionbtChoice4() {
-		Long rp = getCurrentRP().getVar2ID().getOption4StoryID();
-		saveNextStep(rp);
 	}
 
 	/******************************** THIS ********************************/
-
 	@Override
-	public void getStoryValues(RolePlayStoryDTO rpStory) {
+	public void getStoryValues(RolePlayStoryDTO rpStory){
 
-		if (rpStory.getStoryIntro() == null) {
-			//set background image
-			Image im = BORolePlayStory.getRPG_Image(null);
-			backgroundImage.setImage(im);
+		// set story image
+		Image im = BORolePlayStory.getRPG_DefaultMessageImage();
+		backgroundImage.setImage(im);
 
-			//set story image
-			Image im2 = BORolePlayStory.getRPG_Image(rpStory);
-			rpImage.setImage(im2);
-		}
+		//Fonts
+		//labSenderFaction.setStyle("-fx-font-alignment:center;-fx-background-color:transparent;-fx-border-color:transparent;");
+		//labServiceName.setStyle("-fx-font-alignment:center;-fx-background-color:transparent;-fx-border-color:transparent;");
+		labSenderFaction.setAlignment(Pos.CENTER);
+		labServiceName.setAlignment(Pos.CENTER);
+
+		// set data
+		taStoryText.setText(rpStory.getStoryText());
+		labHeader.setText(rpStory.getVar7ID().getHeader());
+		labDate.setText(rpStory.getVar7ID().getDate());
+		labSender.setText(rpStory.getVar7ID().getSender());
+		labSenderFaction.setText(Nexus.getBoUniverse().getFactionByID(rpStory.getVar7ID().getFaction()).getName());
+		labServiceName.setText(rpStory.getVar7ID().getServiceName());
+
+		BOFaction f = Nexus.getBoUniverse().getFactionByID(rpStory.getVar7ID().getFaction());
+		ivSenderLogo.setImage(BORolePlayStory.getFactionImage(f));
 
 		// play sound
 		if (rpStory.getStoryMP3() != null) {
 			C3SoundPlayer.playRPSound(Objects.requireNonNull(BORolePlayStory.getRPG_Soundfile(rpStory)), audioStartedOnce);
 			audioStartedOnce = true;
 		}
-
-		// TODO_C3: append single chars step by step until the whole text is displaying
-		taRpText.setText(rpStory.getStoryText());
-
-		if (rpStory.getVar2ID() != null) {
-
-			RolePlayStoryVar2DTO rpVar2 = rpStory.getVar2ID();
-
-			double x = 59;
-			double y = 455;
-			double offset = 40;
-
-			// rpVar2
-			if (rpVar2.getOption4StoryID() != null) {
-				btChoice4.setVisible(true);
-
-				btChoice4.setLayoutX(x);
-				btChoice4.setLayoutY(y);
-
-				y = y - offset;
-
-				btChoice4.setText(rpVar2.getOption4Text());
-			}
-
-			if (rpVar2.getOption3StoryID() != null) {
-				btChoice3.setVisible(true);
-
-				btChoice3.setLayoutX(x);
-				btChoice3.setLayoutY(y);
-
-				y = y - offset;
-
-				btChoice3.setText(rpVar2.getOption3Text());
-			}
-
-			if (rpVar2.getOption2StoryID() != null) {
-				btChoice2.setVisible(true);
-
-				btChoice2.setLayoutX(x);
-				btChoice2.setLayoutY(y);
-
-				y = y - offset;
-
-				btChoice2.setText(rpVar2.getOption2Text());
-			}
-
-			if (rpVar2.getOption1StoryID() != null) {
-				btChoice1.setVisible(true);
-
-				btChoice1.setLayoutX(x);
-				btChoice1.setLayoutY(y);
-
-				btChoice1.setText(rpVar2.getOption1Text());
-			}
-		}
-	}
-
-	/**
-	 * Handle Actions
-	 *
-	 * @param action Action
-	 * @param o      Action object
-	 * @return true
-	 */
-	@Override
-	public boolean handleAction(ACTIONS action, ActionObject o) {
-		if (anchorPane != null && !anchorPane.isVisible()) return true;
-		logger.info("Flag for CharRP" + isCharRP);
-		switch (action) {
-			case START_ROLEPLAY:
-				if (ROLEPLAYENTRYTYPES.C3_RP_STEP_V2 == o.getObject() || ROLEPLAYENTRYTYPES.C3_RP_STEP_V5 == o.getObject()) {
-					logger.info("RolePlayChoicePaneController -> START_ROLEPLAY");
-
-					init();
-
-					// set current step of story
-					getStoryValues(getCurrentRP());
-				}
-				break;
-			default:
-				break;
-		}
-		return true;
-	}
+	} //getStoryValues
 }
