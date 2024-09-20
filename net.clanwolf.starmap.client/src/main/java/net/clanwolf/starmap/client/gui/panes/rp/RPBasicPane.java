@@ -34,14 +34,14 @@ import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
  * @author Meldric
  * @version 1.0
  */
-public final class RolePlayBasicPane extends AbstractC3Pane {
+public final class RPBasicPane extends AbstractC3Pane {
 
-	public RolePlayBasicPane() {
-		super("/fxml/RolePlayBasicPane.fxml", false, true);
+	public RPBasicPane() {
+		super("/fxml/RPBasicPane.fxml", false, true);
 		paneName = "RolePlayBasicPane";
 	}
-	public RolePlayBasicPane(String name) {
-		super("/fxml/RolePlayBasicPane.fxml", false, true);
+	public RPBasicPane(String name) {
+		super("/fxml/RPBasicPane.fxml", false, true);
 		paneName = name;
 	}
 

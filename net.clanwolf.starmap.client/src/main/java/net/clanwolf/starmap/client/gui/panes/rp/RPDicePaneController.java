@@ -28,79 +28,78 @@ package net.clanwolf.starmap.client.gui.panes.rp;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.text.TextAlignment;
+import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3RolePlayController;
-import net.clanwolf.starmap.client.nexus.Nexus;
-import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
-import net.clanwolf.starmap.client.process.universe.BOFaction;
-import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
+import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
+import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.transfer.dtos.RolePlayStoryDTO;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
 import java.lang.invoke.MethodHandles;
 import java.net.URL;
 import java.util.Objects;
+import java.util.Random;
 import java.util.ResourceBundle;
 
 /**
  * @author Undertaker
  */
-public class RolePlayMessagePaneController extends AbstractC3RolePlayController implements ActionCallBackListener {
+public class RPDicePaneController extends AbstractC3RolePlayController implements ActionCallBackListener {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	@FXML
 	private AnchorPane anchorPane;
 
-	@FXML
-	private Button btPreview;
+	//@FXML
+	//private ImageView rpImage;
 
 	@FXML
-	private TextArea taStoryText;
+	private ImageView ivDice1;
 
 	@FXML
-	private Label labHeader;
+	private ImageView ivDice2;
 
 	@FXML
-	private Label labDate;
+	private TextArea taRpText;
 
 	@FXML
-	private Label labSender;
+	private Button btRollDice;
 
 	@FXML
-	private Label labSenderFaction;
+	private Button btNextStep;
 
-	@FXML
-	private Label labServiceName;
+	private Random pointGeneratorDice1, pointGeneratorDice2;
 
-	@FXML
-	private ImageView ivSenderLogo;
+	private Image[] allDice;
 
-	public RolePlayMessagePaneController() {
+	private int diceResult;
+
+	public RPDicePaneController() {
 	}
 
 	@Override
 	public void addActionCallBackListeners() {
-		ActionManager.addActionCallbackListener(ACTIONS.START_ROLEPLAY, this);
 		ActionManager.addActionCallbackListener(ACTIONS.FINALIZE_ROUND, this);
+		ActionManager.addActionCallbackListener(ACTIONS.START_ROLEPLAY, this);
 	}
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		super.initialize(url, rb);
+
+		init();
+
 	}
 
 	/**
@@ -122,8 +121,10 @@ public class RolePlayMessagePaneController extends AbstractC3RolePlayController 
 			break;
 
 		case START_ROLEPLAY:
-			if(ROLEPLAYENTRYTYPES.C3_RP_STEP_V7 == o.getObject()) {
-				logger.info("RolePlayIntroPaneController -> START_ROLEPLAY");
+			if(ROLEPLAYENTRYTYPES.RP_DICE == o.getObject()) {
+				logger.info("RolePlayDicePaneController -> START_ROLEPLAY");
+
+				init();
 
 				// set current step of story
 				getStoryValues(getCurrentRP());
@@ -136,6 +137,27 @@ public class RolePlayMessagePaneController extends AbstractC3RolePlayController 
 		return true;
 	}
 
+	private void init(){
+		taRpText.setStyle("-fx-opacity: 1");
+		taRpText.setEditable(false);
+
+		btRollDice.setVisible(true);
+		btNextStep.setVisible(false);
+
+		pointGeneratorDice1 = new Random();
+		pointGeneratorDice2 = new Random();
+
+		Class<IconList> c = IconList.class;
+		allDice = new Image[6];
+
+		allDice[0] = new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("/images/dice/d6_1.png")));
+		allDice[1] = new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("/images/dice/d6_2.png")));
+		allDice[2] = new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("/images/dice/d6_3.png")));
+		allDice[3] = new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("/images/dice/d6_4.png")));
+		allDice[4] = new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("/images/dice/d6_5.png")));
+		allDice[5] = new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("/images/dice/d6_6.png")));
+	}
+
 	@Override
 	public void setStrings() {
 		Platform.runLater(() -> {
@@ -144,47 +166,56 @@ public class RolePlayMessagePaneController extends AbstractC3RolePlayController 
 	}
 
 	/******************************** FXML ********************************/
+
 	@FXML
-	private void handleOnMouseClicked(){
-		handleOnActionBtPreview();
+	private void handleOnActionRollDice(){
+
+		C3SoundPlayer.play("sound/fx/dice.mp3", false);
+
+		int dice1 = pointGeneratorDice1.nextInt(6);
+		int dice2 = pointGeneratorDice2.nextInt(6);
+
+		ivDice1.setImage(allDice[dice1]);
+		ivDice2.setImage(allDice[dice2]);
+
+		diceResult = dice1 + 1 + dice2 + 1;
+
+		btRollDice.setVisible(false);
+		btNextStep.setVisible(true);
 	}
 
 	@FXML
-	private void handleOnActionBtPreview(){
-		// TODO_C3: Get and save next step of the story
-		saveNextStep(getCurrentRP().getVar7ID().getNextStepID());
+	private void handleOnActionNextStep(){
 
+		Long rp = null;
+
+		if(Nexus.getCurrentChar().getStory().getVar4ID().getScore() == diceResult){
+			rp = getCurrentRP().getVar4ID().getStoryIDScoreEqual();
+
+		} else if(Nexus.getCurrentChar().getStory().getVar4ID().getScore() > diceResult){
+			rp = getCurrentRP().getVar4ID().getStoryIDScoreMore();
+
+		} else if(Nexus.getCurrentChar().getStory().getVar4ID().getScore() < diceResult){
+			rp = getCurrentRP().getVar4ID().getStoryIDScoreLess();
+
+		}
+		saveNextStep(rp);
 	}
 
 	/******************************** THIS ********************************/
+
 	@Override
-	public void getStoryValues(RolePlayStoryDTO rpStory){
-
+	public void getStoryValues(RolePlayStoryDTO rpStory) {
 		// set story image
-		Image im = BORolePlayStory.getRPG_DefaultMessageImage();
+		Image im = BORolePlayStory.getRPG_Image(rpStory);
 		backgroundImage.setImage(im);
-
-		//Fonts
-		//labSenderFaction.setStyle("-fx-font-alignment:center;-fx-background-color:transparent;-fx-border-color:transparent;");
-		//labServiceName.setStyle("-fx-font-alignment:center;-fx-background-color:transparent;-fx-border-color:transparent;");
-		labSenderFaction.setAlignment(Pos.CENTER);
-		labServiceName.setAlignment(Pos.CENTER);
-
-		// set data
-		taStoryText.setText(rpStory.getStoryText());
-		labHeader.setText(rpStory.getVar7ID().getHeader());
-		labDate.setText(rpStory.getVar7ID().getDate());
-		labSender.setText(rpStory.getVar7ID().getSender());
-		labSenderFaction.setText(Nexus.getBoUniverse().getFactionByID(rpStory.getVar7ID().getFaction()).getName());
-		labServiceName.setText(rpStory.getVar7ID().getServiceName());
-
-		BOFaction f = Nexus.getBoUniverse().getFactionByID(rpStory.getVar7ID().getFaction());
-		ivSenderLogo.setImage(BORolePlayStory.getFactionImage(f));
 
 		// play sound
 		if (rpStory.getStoryMP3() != null) {
 			C3SoundPlayer.playRPSound(Objects.requireNonNull(BORolePlayStory.getRPG_Soundfile(rpStory)), audioStartedOnce);
 			audioStartedOnce = true;
 		}
-	} //getStoryValues
+
+		taRpText.setText(rpStory.getStoryText());
+	}
 }

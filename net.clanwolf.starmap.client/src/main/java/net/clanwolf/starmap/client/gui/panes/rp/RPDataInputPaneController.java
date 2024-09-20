@@ -31,7 +31,6 @@ import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
@@ -39,33 +38,28 @@ import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3RolePlayController;
 import net.clanwolf.starmap.client.nexus.Nexus;
+import net.clanwolf.starmap.client.process.roleplay.BOCharacter;
 import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.transfer.enums.catalogObjects.ICatalogObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
 import net.clanwolf.starmap.transfer.dtos.RolePlayStoryDTO;
-import net.clanwolf.starmap.transfer.dtos.RolePlayStoryVar2DTO;
 import net.clanwolf.starmap.transfer.dtos.RolePlayStoryVar3DTO;
-import net.clanwolf.starmap.transfer.enums.DATATYPES;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 import net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes.ROLEPLAYINPUTDATATYPES;
-import net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes.ROLEPLAYOBJECTTYPES;
 import net.clanwolf.starmap.transfer.util.CatalogLoader;
 
-import java.io.InputStream;
 import java.lang.invoke.MethodHandles;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
 /**
  * @author Undertaker
  */
-public class RolePlayDataInputController extends AbstractC3RolePlayController implements ActionCallBackListener {
+public class RPDataInputPaneController extends AbstractC3RolePlayController implements ActionCallBackListener {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	@FXML
@@ -90,7 +84,7 @@ public class RolePlayDataInputController extends AbstractC3RolePlayController im
 
 	private boolean bInit = false;
 
-	public RolePlayDataInputController() {
+	public RPDataInputPaneController() {
 	}
 
 	@Override
@@ -129,7 +123,7 @@ public class RolePlayDataInputController extends AbstractC3RolePlayController im
 		if(anchorPane != null && !anchorPane.isVisible()) return true;
 		switch (action) {
 		case START_ROLEPLAY:
-			if(ROLEPLAYENTRYTYPES.C3_RP_STEP_V3 == o.getObject()) {
+			if(ROLEPLAYENTRYTYPES.RP_DATA_INPUT == o.getObject()) {
 				logger.info("RolePlayChoicePaneController -> START_ROLEPLAY");
 
 				init();
@@ -157,6 +151,12 @@ public class RolePlayDataInputController extends AbstractC3RolePlayController im
 	@FXML
 	private void handleOnActionBtContinue(){
 		Long rp = getCurrentRP().getVar3ID().getNextStoryID();
+		//hier waren wir dran!!!!!!!!
+		//Speicher des Datansatztypes in RPStory Var3
+		BOCharacter boChar = new BOCharacter(Nexus.getCurrentChar());
+		boChar.setVar3(getCurrentRP().getVar3ID());
+		//boChar.saveCharacter();
+		// hier werden jetzt alle Daten in BOCharacter geschrieben
 		saveNextStep(rp);
 	}
 

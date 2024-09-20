@@ -33,131 +33,84 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
-import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3RolePlayController;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
-import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
 import net.clanwolf.starmap.transfer.dtos.RolePlayStoryDTO;
+import net.clanwolf.starmap.transfer.dtos.RolePlayStoryVar2DTO;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.io.InputStream;
 import java.lang.invoke.MethodHandles;
 import java.net.URL;
 import java.util.Objects;
-import java.util.Random;
 import java.util.ResourceBundle;
 
 /**
  * @author Undertaker
  */
-public class RolePlayDicePaneController extends AbstractC3RolePlayController implements ActionCallBackListener {
+public class RPChoicePaneController extends AbstractC3RolePlayController implements ActionCallBackListener {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	@FXML
 	private AnchorPane anchorPane;
 
 	//@FXML
-	//private ImageView rpImage;
+	//private ImageView rpIBackgroundImage;
 
 	@FXML
-	private ImageView ivDice1;
-
-	@FXML
-	private ImageView ivDice2;
+	private ImageView rpImage;
 
 	@FXML
 	private TextArea taRpText;
 
 	@FXML
-	private Button btRollDice;
+	private Button btChoice1;
 
 	@FXML
-	private Button btNextStep;
+	private Button btChoice2;
 
-	private Random pointGeneratorDice1, pointGeneratorDice2;
+	@FXML
+	private Button btChoice3;
 
-	private Image[] allDice;
+	@FXML
+	private Button btChoice4;
 
-	private int diceResult;
-
-	public RolePlayDicePaneController() {
+	public RPChoicePaneController() {
 	}
 
 	@Override
 	public void addActionCallBackListeners() {
-		ActionManager.addActionCallbackListener(ACTIONS.FINALIZE_ROUND, this);
 		ActionManager.addActionCallbackListener(ACTIONS.START_ROLEPLAY, this);
 	}
 
 	@Override
 	public void initialize(URL url, ResourceBundle rb) {
 		super.initialize(url, rb);
-
 		init();
-
 	}
 
-	/**
-	 * Handle Actions
-	 *
-	 * @param action
-	 *            Action
-	 * @param o
-	 *            Action object
-	 * @return true
-	 */
-	@Override
-	public boolean handleAction(ACTIONS action, ActionObject o) {
-		if(anchorPane != null && !anchorPane.isVisible()) return true;
-		switch (action) {
-
-		case FINALIZE_ROUND:
-			checkToCancelInvasion();
-			break;
-
-		case START_ROLEPLAY:
-			if(ROLEPLAYENTRYTYPES.C3_RP_STEP_V4 == o.getObject()) {
-				logger.info("RolePlayDicePaneController -> START_ROLEPLAY");
-
-				init();
-
-				// set current step of story
-				getStoryValues(getCurrentRP());
-			}
-			break;
-		default:
-			break;
-
-		}
-		return true;
-	}
-
-	private void init(){
+	private void init() {
 		taRpText.setStyle("-fx-opacity: 1");
 		taRpText.setEditable(false);
 
-		btRollDice.setVisible(true);
-		btNextStep.setVisible(false);
+		btChoice1.setVisible(false);
+		btChoice2.setVisible(false);
+		btChoice3.setVisible(false);
+		btChoice4.setVisible(false);
+	}
 
-		pointGeneratorDice1 = new Random();
-		pointGeneratorDice2 = new Random();
+	/******************************** FXML ********************************/
 
-		Class<IconList> c = IconList.class;
-		allDice = new Image[6];
-
-		allDice[0] = new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("/images/dice/d6_1.png")));
-		allDice[1] = new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("/images/dice/d6_2.png")));
-		allDice[2] = new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("/images/dice/d6_3.png")));
-		allDice[3] = new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("/images/dice/d6_4.png")));
-		allDice[4] = new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("/images/dice/d6_5.png")));
-		allDice[5] = new Image(Objects.requireNonNull(this.getClass().getResourceAsStream("/images/dice/d6_6.png")));
+	@FXML
+	private void handleOnActionbtChoice1() {
+		Long rp = getCurrentRP().getVar2ID().getOption1StoryID();
+		saveNextStep(rp);
 	}
 
 	@Override
@@ -167,40 +120,21 @@ public class RolePlayDicePaneController extends AbstractC3RolePlayController imp
 		});
 	}
 
-	/******************************** FXML ********************************/
-
 	@FXML
-	private void handleOnActionRollDice(){
-
-		C3SoundPlayer.play("sound/fx/dice.mp3", false);
-
-		int dice1 = pointGeneratorDice1.nextInt(6);
-		int dice2 = pointGeneratorDice2.nextInt(6);
-
-		ivDice1.setImage(allDice[dice1]);
-		ivDice2.setImage(allDice[dice2]);
-
-		diceResult = dice1 + 1 + dice2 + 1;
-
-		btRollDice.setVisible(false);
-		btNextStep.setVisible(true);
+	private void handleOnActionbtChoice2() {
+		Long rp = getCurrentRP().getVar2ID().getOption2StoryID();
+		saveNextStep(rp);
 	}
 
 	@FXML
-	private void handleOnActionNextStep(){
+	private void handleOnActionbtChoice3() {
+		Long rp = getCurrentRP().getVar2ID().getOption3StoryID();
+		saveNextStep(rp);
+	}
 
-		Long rp = null;
-
-		if(Nexus.getCurrentChar().getStory().getVar4ID().getScore() == diceResult){
-			rp = getCurrentRP().getVar4ID().getStoryIDScoreEqual();
-
-		} else if(Nexus.getCurrentChar().getStory().getVar4ID().getScore() > diceResult){
-			rp = getCurrentRP().getVar4ID().getStoryIDScoreMore();
-
-		} else if(Nexus.getCurrentChar().getStory().getVar4ID().getScore() < diceResult){
-			rp = getCurrentRP().getVar4ID().getStoryIDScoreLess();
-
-		}
+	@FXML
+	private void handleOnActionbtChoice4() {
+		Long rp = getCurrentRP().getVar2ID().getOption4StoryID();
 		saveNextStep(rp);
 	}
 
@@ -208,9 +142,16 @@ public class RolePlayDicePaneController extends AbstractC3RolePlayController imp
 
 	@Override
 	public void getStoryValues(RolePlayStoryDTO rpStory) {
-		// set story image
-		Image im = BORolePlayStory.getRPG_Image(rpStory);
-		backgroundImage.setImage(im);
+
+		if (rpStory.getStoryIntro() == null) {
+			//set background image
+			Image im = BORolePlayStory.getRPG_Image(null);
+			backgroundImage.setImage(im);
+
+			//set story image
+			Image im2 = BORolePlayStory.getRPG_Image(rpStory);
+			rpImage.setImage(im2);
+		}
 
 		// play sound
 		if (rpStory.getStoryMP3() != null) {
@@ -218,6 +159,87 @@ public class RolePlayDicePaneController extends AbstractC3RolePlayController imp
 			audioStartedOnce = true;
 		}
 
+		// TODO_C3: append single chars step by step until the whole text is displaying
 		taRpText.setText(rpStory.getStoryText());
+
+		if (rpStory.getVar2ID() != null) {
+
+			RolePlayStoryVar2DTO rpVar2 = rpStory.getVar2ID();
+
+			double x = 59;
+			double y = 455;
+			double offset = 40;
+
+			// rpVar2
+			if (rpVar2.getOption4StoryID() != null) {
+				btChoice4.setVisible(true);
+
+				btChoice4.setLayoutX(x);
+				btChoice4.setLayoutY(y);
+
+				y = y - offset;
+
+				btChoice4.setText(rpVar2.getOption4Text());
+			}
+
+			if (rpVar2.getOption3StoryID() != null) {
+				btChoice3.setVisible(true);
+
+				btChoice3.setLayoutX(x);
+				btChoice3.setLayoutY(y);
+
+				y = y - offset;
+
+				btChoice3.setText(rpVar2.getOption3Text());
+			}
+
+			if (rpVar2.getOption2StoryID() != null) {
+				btChoice2.setVisible(true);
+
+				btChoice2.setLayoutX(x);
+				btChoice2.setLayoutY(y);
+
+				y = y - offset;
+
+				btChoice2.setText(rpVar2.getOption2Text());
+			}
+
+			if (rpVar2.getOption1StoryID() != null) {
+				btChoice1.setVisible(true);
+
+				btChoice1.setLayoutX(x);
+				btChoice1.setLayoutY(y);
+
+				btChoice1.setText(rpVar2.getOption1Text());
+			}
+		}
+	}
+
+	/**
+	 * Handle Actions
+	 *
+	 * @param action Action
+	 * @param o      Action object
+	 * @return true
+	 */
+	@Override
+	public boolean handleAction(ACTIONS action, ActionObject o) {
+		if (anchorPane != null && !anchorPane.isVisible()) return true;
+		logger.info("Flag for CharRP" + isCharRP);
+		switch (action) {
+			case START_ROLEPLAY:
+				if (ROLEPLAYENTRYTYPES.RP_CHOICE == o.getObject() || ROLEPLAYENTRYTYPES.RP_CHOICE_IMAGE_LEFT == o.getObject()) {
+					logger.info("RolePlayChoicePaneController -> START_ROLEPLAY");
+
+					init();
+
+					// set current step of story
+					getStoryValues(getCurrentRP());
+				}
+				break;
+			default:
+				break;
+		}
+		return true;
 	}
 }

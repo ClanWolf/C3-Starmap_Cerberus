@@ -153,7 +153,7 @@ public class RolePlayStoryDTO extends Dto {
 
 
 	public RolePlayStoryDTO getParentStory() {
-		if(type == ROLEPLAYENTRYTYPES.C3_RP_CHAPTER){
+		if(type == ROLEPLAYENTRYTYPES.RP_CHAPTER){
 			return story;
 		}
 		return parentStory;
@@ -161,7 +161,7 @@ public class RolePlayStoryDTO extends Dto {
 
 
 	public void setParentStory(RolePlayStoryDTO parentStory) {
-		if(type == ROLEPLAYENTRYTYPES.C3_RP_CHAPTER){
+		if(type == ROLEPLAYENTRYTYPES.RP_CHAPTER){
 			this.parentStory = null;
 		} else {
 			this.parentStory = parentStory;

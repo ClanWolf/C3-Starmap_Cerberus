@@ -65,28 +65,28 @@ public class IconList extends Pane {
 
 		}
 
-		if (rpTyp == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1) {
+		if (rpTyp == ROLEPLAYENTRYTYPES.RP_SECTION) {
 			// this.rpTypeImage = new ImageView(new Image(new FileInputStream(new File("D:/temp/icons/ok/RPEditIcon.png"))));
 			//this.rpTypeImage = new ImageView(new Image(new FileInputStream(new File(c.getClassLoader().getResource("icons/RPEditIcon.png").getFile()))));
 			//pane.getChildren().add(this.rpTypeImage);
 			InputStream is = this.getClass().getResourceAsStream("/icons/RPEditIcon.png");
 			pane.getChildren().add( new ImageView(new Image(is)));
 
-		} else if (rpTyp == ROLEPLAYENTRYTYPES.C3_RP_STEP_V2) {
+		} else if (rpTyp == ROLEPLAYENTRYTYPES.RP_CHOICE) {
 			// this.rpTypeImage = new ImageView(new Image(new FileInputStream(new File("D:/temp/icons/ok/RPTreeIcon.png"))));
 			//this.rpTypeImage = new ImageView(new Image(new FileInputStream(new File(c.getClassLoader().getResource("icons/RPTreeIcon.png").getFile()))));
 			//pane.getChildren().add(this.rpTypeImage);
 			InputStream is = this.getClass().getResourceAsStream("/icons/RPTreeIcon.png");
 			pane.getChildren().add( new ImageView(new Image(is)));
 
-		} else if (rpTyp == ROLEPLAYENTRYTYPES.C3_RP_STEP_V3) {
+		} else if (rpTyp == ROLEPLAYENTRYTYPES.RP_DATA_INPUT) {
 			// this.rpTypeImage = new ImageView(new Image(new FileInputStream(new File("D:/temp/icons/ok/RPInputIcon.png"))));
 			//this.rpTypeImage = new ImageView(new Image(new FileInputStream(new File(c.getClassLoader().getResource("icons/RPInputIcon.png").getFile()))));
 			//pane.getChildren().add(this.rpTypeImage);
 			InputStream is = this.getClass().getResourceAsStream("/icons/RPInputIcon.png");
 			pane.getChildren().add( new ImageView(new Image(is)));
 
-		} else if (rpTyp == ROLEPLAYENTRYTYPES.C3_RP_STEP_V4) {
+		} else if (rpTyp == ROLEPLAYENTRYTYPES.RP_DICE) {
 			// this.rpTypeImage = new ImageView(new Image(new FileInputStream(new File("D:/temp/icons/ok/RPDiceIcon.png"))));
 			//this.rpTypeImage = new ImageView(new Image(new FileInputStream(new File(c.getClassLoader().getResource("icons/RPDiceIcon.png").getFile()))));
 			//pane.getChildren().add(this.rpTypeImage);

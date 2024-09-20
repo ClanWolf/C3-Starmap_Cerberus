@@ -7,7 +7,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="RolePlayStartPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/17" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.RolePlayChoicePaneController">
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" id="RolePlayStartPane" fx:id="anchorPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="501.0" prefWidth="852.0" xmlns="http://javafx.com/javafx/17" fx:controller="net.clanwolf.starmap.client.gui.panes.rp.RPChoicePaneController">
     <children>
       <ImageView fx:id="templateBackground" fitHeight="567.0" fitWidth="944.0" layoutX="-70.0" layoutY="-22.0" mouseTransparent="true" opacity="0.74" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>

@@ -79,7 +79,7 @@ public class RolePlayStoryDAO extends GenericDAO {
 	 */
 	public ArrayList<RolePlayStoryPOJO> getAllStoriesAndChapters() {
 		CriteriaHelper crit = new CriteriaHelper(RolePlayStoryPOJO.class);
-		crit.addCriteriaOR(crit.createPredicate("type", ROLEPLAYENTRYTYPES.C3_RP_STORY), crit.createPredicate("type", ROLEPLAYENTRYTYPES.C3_RP_CHAPTER));
+		crit.addCriteriaOR(crit.createPredicate("type", ROLEPLAYENTRYTYPES.RP_STORY), crit.createPredicate("type", ROLEPLAYENTRYTYPES.RP_CHAPTER));
 
 		List<Object> lRes = crit.getResultList();
 
@@ -120,7 +120,7 @@ public class RolePlayStoryDAO extends GenericDAO {
 	 */
 	public ArrayList<RolePlayStoryPOJO> getAllMainStories() {
 		CriteriaHelper crit = new CriteriaHelper(RolePlayStoryPOJO.class);
-		crit.addCriteria("type", ROLEPLAYENTRYTYPES.C3_RP_STORY);
+		crit.addCriteria("type", ROLEPLAYENTRYTYPES.RP_STORY);
 
 		List<Object> lRes = crit.getResultList();
 
@@ -143,7 +143,7 @@ public class RolePlayStoryDAO extends GenericDAO {
 	 */
 	public RolePlayStoryPOJO getChapterFromStoryBySortOrder(RolePlayStoryPOJO rp, Integer sortOrder){
 		CriteriaHelper crit = getStepBySortOrder(rp, sortOrder);
-		crit.addCriteria("type", ROLEPLAYENTRYTYPES.C3_RP_CHAPTER);
+		crit.addCriteria("type", ROLEPLAYENTRYTYPES.RP_CHAPTER);
 
 		return (RolePlayStoryPOJO)crit.getSingleResult();
 	}
@@ -158,12 +158,12 @@ public class RolePlayStoryDAO extends GenericDAO {
 	 */
 	public RolePlayStoryPOJO getStepFromStoryBySortOrder(RolePlayStoryPOJO rp, Integer sortOrder){
 		CriteriaHelper crit = getStepBySortOrder(rp, sortOrder);
-		crit.addCriteriaOR(crit.createPredicate("type", ROLEPLAYENTRYTYPES.C3_RP_STEP_V1),
-				crit.createPredicate("type", ROLEPLAYENTRYTYPES.C3_RP_STEP_V2),
-				crit.createPredicate("type", ROLEPLAYENTRYTYPES.C3_RP_STEP_V3),
-				crit.createPredicate("type", ROLEPLAYENTRYTYPES.C3_RP_STEP_V4),
-				crit.createPredicate("type", ROLEPLAYENTRYTYPES.C3_RP_STEP_V5),
-				crit.createPredicate("type", ROLEPLAYENTRYTYPES.C3_RP_STEP_V6));
+		crit.addCriteriaOR(crit.createPredicate("type", ROLEPLAYENTRYTYPES.RP_SECTION),
+				crit.createPredicate("type", ROLEPLAYENTRYTYPES.RP_CHOICE),
+				crit.createPredicate("type", ROLEPLAYENTRYTYPES.RP_DATA_INPUT),
+				crit.createPredicate("type", ROLEPLAYENTRYTYPES.RP_DICE),
+				crit.createPredicate("type", ROLEPLAYENTRYTYPES.RP_CHOICE_IMAGE_LEFT),
+				crit.createPredicate("type", ROLEPLAYENTRYTYPES.RP_KEYPAD));
 
 		return (RolePlayStoryPOJO)crit.getSingleResult();
 	}
@@ -198,7 +198,7 @@ public class RolePlayStoryDAO extends GenericDAO {
 		CriteriaHelper crit2 = new CriteriaHelper(RolePlayStoryPOJO.class);
 
 		crit2.addCriteria("story", rp1.getStory());
-		crit2.addCriteria("type", ROLEPLAYENTRYTYPES.C3_RP_STEP_V8);
+		crit2.addCriteria("type", ROLEPLAYENTRYTYPES.RP_PREPARE_BATTLE);
 
 		return (RolePlayStoryPOJO)crit2.getSingleResult();
 	}

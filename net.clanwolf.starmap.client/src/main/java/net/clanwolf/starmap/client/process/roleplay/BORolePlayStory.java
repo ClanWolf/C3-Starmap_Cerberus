@@ -58,7 +58,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Set;
 
 /**
  * Business object for a roleplay story.
@@ -238,7 +237,7 @@ public class BORolePlayStory {
 	public RolePlayStoryDTO addNewStory() {
 		RolePlayStoryDTO story = new RolePlayStoryDTO();
 		story.setStoryName("New story");
-		story.setVariante(ROLEPLAYENTRYTYPES.C3_RP_STORY);
+		story.setVariante(ROLEPLAYENTRYTYPES.RP_STORY);
 		story.setAuthor(Nexus.getCurrentUser().getUserId());
 
 		// allStories.add(story);
@@ -259,7 +258,7 @@ public class BORolePlayStory {
 		chapter.setStoryName("New chapter");
 		chapter.setParentStory(parentStory);
 		chapter.setStory(parentStory);
-		chapter.setVariante(ROLEPLAYENTRYTYPES.C3_RP_CHAPTER);
+		chapter.setVariante(ROLEPLAYENTRYTYPES.RP_CHAPTER);
 		chapter.setAuthor(Nexus.getCurrentUser().getUserId());
 
 		// allStories.add(chapter);
@@ -280,7 +279,7 @@ public class BORolePlayStory {
 		story.setStoryName("New step");
 		story.setParentStory(parentChapter);
 		story.setStory(parentChapter.getStory());
-		story.setVariante(ROLEPLAYENTRYTYPES.C3_RP_STEP_V1);
+		story.setVariante(ROLEPLAYENTRYTYPES.RP_SECTION);
 		story.setAuthor(Nexus.getCurrentUser().getUserId());
 
 		// allStories.add(story);
@@ -397,9 +396,9 @@ public class BORolePlayStory {
 	 */
 	public ArrayList<RolePlayStoryDTO> getStoriesFromChapter(RolePlayStoryDTO chapter) {
 		ArrayList<RolePlayStoryDTO> stories = new ArrayList<>();
-		if (chapter != null && chapter.getVariante() != ROLEPLAYENTRYTYPES.C3_RP_STORY && chapter.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_CHAPTER) {
+		if (chapter != null && chapter.getVariante() != ROLEPLAYENTRYTYPES.RP_STORY && chapter.getVariante() == ROLEPLAYENTRYTYPES.RP_CHAPTER) {
 			for (RolePlayStoryDTO rp : allStories) {
-				if (rp.getParentStory() != null && rp.getVariante() != ROLEPLAYENTRYTYPES.C3_RP_CHAPTER && rp.getVariante() != ROLEPLAYENTRYTYPES.C3_RP_STORY && rp.getParentStory().getId().equals(chapter.getId())) {
+				if (rp.getParentStory() != null && rp.getVariante() != ROLEPLAYENTRYTYPES.RP_CHAPTER && rp.getVariante() != ROLEPLAYENTRYTYPES.RP_STORY && rp.getParentStory().getId().equals(chapter.getId())) {
 				//if (rp.getParentStory() != null && rp.getVariante() != ROLEPLAYENTRYTYPES.C3_RP_STORY && rp.getParentStory().getId().equals(chapter.getId())) {
 					stories.add(rp);
 				}
@@ -569,18 +568,18 @@ public class BORolePlayStory {
 		if (rpStory.getStoryName() == null || rpStory.getStoryName().isEmpty()) {
 			setErrorText(Internationalization.getString("app_rp_storyeditor_story_check_message1"));
 
-		} else if (rpStory.getVariante() != ROLEPLAYENTRYTYPES.C3_RP_STORY  &&
-				rpStory.getVariante() != ROLEPLAYENTRYTYPES.C3_RP_CHAPTER &&
+		} else if (rpStory.getVariante() != ROLEPLAYENTRYTYPES.RP_STORY &&
+				rpStory.getVariante() != ROLEPLAYENTRYTYPES.RP_CHAPTER &&
 				(rpStory.getStoryText() == null || rpStory.getStoryText().isEmpty())) {
 			setErrorText(Internationalization.getString("app_rp_storyeditor_story_check_message2"));
 
-		} else if (rpStory.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_CHAPTER && rpStory.getParentStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_CHAPTER) {
+		} else if (rpStory.getVariante() == ROLEPLAYENTRYTYPES.RP_CHAPTER && rpStory.getParentStory().getVariante() == ROLEPLAYENTRYTYPES.RP_CHAPTER) {
 			setErrorText(Internationalization.getString("app_rp_storyeditor_story_check_message3"));
 
-		} else if (rpStory.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STORY && rpStory.getParentStory() != null && rpStory.getParentStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STORY) {
+		} else if (rpStory.getVariante() == ROLEPLAYENTRYTYPES.RP_STORY && rpStory.getParentStory() != null && rpStory.getParentStory().getVariante() == ROLEPLAYENTRYTYPES.RP_STORY) {
 			setErrorText(Internationalization.getString("app_rp_storyeditor_story_check_message3"));
 
-		} else if (rpStory.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STORY && rpStory.getParentStory() != null && rpStory.getParentStory().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_CHAPTER) {
+		} else if (rpStory.getVariante() == ROLEPLAYENTRYTYPES.RP_STORY && rpStory.getParentStory() != null && rpStory.getParentStory().getVariante() == ROLEPLAYENTRYTYPES.RP_CHAPTER) {
 			setErrorText(Internationalization.getString("app_rp_storyeditor_story_check_message3"));
 
 		} else if (!checkImage(rpStory.getNewImageWithPath())) {
@@ -632,7 +631,7 @@ public class BORolePlayStory {
 		ArrayList<RolePlayStoryDTO> lsStories = new ArrayList<>();
 
 		for (RolePlayStoryDTO rps : allStories) {
-			if (rps.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STORY) {
+			if (rps.getVariante() == ROLEPLAYENTRYTYPES.RP_STORY) {
 				lsStories.add(rps);
 			}
 		}
@@ -757,39 +756,39 @@ public class BORolePlayStory {
 
 		boolean nextStepFound = false;
 
-		if(story != null && story.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1 &&
+		if(story != null && story.getVariante() == ROLEPLAYENTRYTYPES.RP_SECTION &&
 				story.getNextStepID() == null){
 			nextStepFound = true;
 
-		} else if(story != null  && story.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V2
+		} else if(story != null  && story.getVariante() == ROLEPLAYENTRYTYPES.RP_CHOICE
 				&& story.getVar2ID().getOption1StoryID() == null ) {
 			nextStepFound = true;
 
-		} else if(story != null  && story.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V3
+		} else if(story != null  && story.getVariante() == ROLEPLAYENTRYTYPES.RP_DATA_INPUT
 				&& story.getVar3ID().getNextStoryID() == null ) {
 			nextStepFound = true;
 
-		} else if(story != null  && story.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V4
+		} else if(story != null  && story.getVariante() == ROLEPLAYENTRYTYPES.RP_DICE
 				&& ( story.getVar4ID().getStoryIDScoreEqual() == null
 						|| story.getVar4ID().getStoryIDScoreLess() == null
 						|| story.getVar4ID().getStoryIDScoreMore() == null)) {
 			nextStepFound = true;
 
-		} else if(story != null  && story.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V5
+		} else if(story != null  && story.getVariante() == ROLEPLAYENTRYTYPES.RP_CHOICE_IMAGE_LEFT
 				&& story.getVar2ID().getOption1StoryID() == null ) {
 			nextStepFound = true;
 
-		} else if(story != null  && story.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V6 &&
+		} else if(story != null  && story.getVariante() == ROLEPLAYENTRYTYPES.RP_KEYPAD &&
 				story.getVar6ID() != null
 				&& (story.getVar6ID().getStoryIDSuccess() == null ||
 				story.getVar6ID().getStoryIDFailure() == null)) {
 			nextStepFound = true;
 
-		} else if(story != null  && story.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V7
+		} else if(story != null  && story.getVariante() == ROLEPLAYENTRYTYPES.RP_HPG_MESSAGE
 				&& (story.getVar7ID().getNextStepID() == null )) {
 			nextStepFound = true;
 
-		} else if(story != null  && story.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V9
+		} else if(story != null  && story.getVariante() == ROLEPLAYENTRYTYPES.RP_INVASION
 				&& story.getVar9ID().getOption1StoryID() == null ) {
 			nextStepFound = true;
 		}

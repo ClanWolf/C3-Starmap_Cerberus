@@ -44,7 +44,6 @@ import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
 import net.clanwolf.starmap.client.process.universe.BOFaction;
-import net.clanwolf.starmap.client.process.universe.BOJumpship;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
@@ -284,7 +283,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 				ArrayList<RolePlayCharacterDTO> rpcList = (ArrayList<RolePlayCharacterDTO>) gs.getObject2();
 
 
-				if(boRP.getStoryByID(rps.getId()) == null && rps.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STORY) {
+				if(boRP.getStoryByID(rps.getId()) == null && rps.getVariante() == ROLEPLAYENTRYTYPES.RP_STORY) {
 					cbStorySelection.getItems().add(rps);
 					cbStorySelection.getSelectionModel().select(rps);
 					boRP.getStoryList().add(rps);
@@ -471,7 +470,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 	private void handleNewStoryStepButtonClick() {
 		logger.info("handleNewStoryStepButtonClick");
 		// Can be only added if parent is a chapter
-		// or it is a step. In this case add it on the same level
+		// , or it is a step. In this case add it on the same level
 		if (treeStory.getTreeItemLevel(selected) == 2) {
 
 			TreeItem<RolePlayStoryDTO> rpTreeItem = new TreeItem<>(boRP.addNewStoryStep(selected.getValue()));
@@ -967,7 +966,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 		tabPaneStory.getTabs().remove(tabBasic9);
 
 		// Tab for character assignment
-		if (selected != null && selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STORY) {
+		if (selected != null && selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.RP_STORY) {
 			if (!tabPaneStory.getTabs().contains(tabBasic3)) {
 				tabPaneStory.getTabs().add(tabBasic3);
 			}
@@ -977,17 +976,17 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 			}
 		}
 
-		if (selected != null && selected.getValue().getVariante() != ROLEPLAYENTRYTYPES.C3_RP_STORY &&
-				selected.getValue().getVariante() != ROLEPLAYENTRYTYPES.C3_RP_CHAPTER &&
-				selected.getValue().getVariante() != ROLEPLAYENTRYTYPES.C3_RP_STEP_V8) {
+		if (selected != null && selected.getValue().getVariante() != ROLEPLAYENTRYTYPES.RP_STORY &&
+				selected.getValue().getVariante() != ROLEPLAYENTRYTYPES.RP_CHAPTER &&
+				selected.getValue().getVariante() != ROLEPLAYENTRYTYPES.RP_PREPARE_BATTLE) {
 			if (!tabPaneStory.getTabs().contains(tabBasic2)) {
 				tabPaneStory.getTabs().add(tabBasic2);
 			}
 		}
 
 		// Tab for simple step
-		if (selected != null && cbStoryVarianten.getSelectionModel().getSelectedItem() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1 ||
-				cbStoryVarianten.getSelectionModel().getSelectedItem() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V8) {
+		if (selected != null && cbStoryVarianten.getSelectionModel().getSelectedItem() == ROLEPLAYENTRYTYPES.RP_SECTION ||
+				cbStoryVarianten.getSelectionModel().getSelectedItem() == ROLEPLAYENTRYTYPES.RP_PREPARE_BATTLE) {
 			if (!tabPaneStory.getTabs().contains(tabBasic7)) {
 				tabPaneStory.getTabs().add(tabBasic7);
 			}
@@ -996,9 +995,9 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 		}
 
 		// Tab for story path selection
-		if (selected != null && ( cbStoryVarianten.getSelectionModel().getSelectedItem() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V2 ||
-				cbStoryVarianten.getSelectionModel().getSelectedItem() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V5 ||
-				cbStoryVarianten.getSelectionModel().getSelectedItem() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V9)) {
+		if (selected != null && ( cbStoryVarianten.getSelectionModel().getSelectedItem() == ROLEPLAYENTRYTYPES.RP_CHOICE ||
+				cbStoryVarianten.getSelectionModel().getSelectedItem() == ROLEPLAYENTRYTYPES.RP_CHOICE_IMAGE_LEFT ||
+				cbStoryVarianten.getSelectionModel().getSelectedItem() == ROLEPLAYENTRYTYPES.RP_INVASION)) {
 			if (!tabPaneStory.getTabs().contains(tabBasic4)) {
 				tabPaneStory.getTabs().add(tabBasic4);
 			}
@@ -1009,7 +1008,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 		}
 
 		// Tab for datainput
-		if (selected != null && cbStoryVarianten.getSelectionModel().getSelectedItem() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V3) {
+		if (selected != null && cbStoryVarianten.getSelectionModel().getSelectedItem() == ROLEPLAYENTRYTYPES.RP_DATA_INPUT) {
 			if (!tabPaneStory.getTabs().contains(tabBasic5)) {
 				tabPaneStory.getTabs().add(tabBasic5);
 			}
@@ -1022,7 +1021,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 		}
 
 		// Tab for keypad
-		if (selected != null && cbStoryVarianten.getSelectionModel().getSelectedItem() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V4) {
+		if (selected != null && cbStoryVarianten.getSelectionModel().getSelectedItem() == ROLEPLAYENTRYTYPES.RP_DICE) {
 			if (!tabPaneStory.getTabs().contains(tabBasic6)) {
 				tabPaneStory.getTabs().add(tabBasic6);
 			}
@@ -1033,7 +1032,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 		}
 
 		// Tab for keypad
-		if (selected != null && cbStoryVarianten.getSelectionModel().getSelectedItem() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V6) {
+		if (selected != null && cbStoryVarianten.getSelectionModel().getSelectedItem() == ROLEPLAYENTRYTYPES.RP_KEYPAD) {
 			if (!tabPaneStory.getTabs().contains(tabBasic8)) {
 				tabPaneStory.getTabs().add(tabBasic8);
 			}
@@ -1044,7 +1043,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 		}
 
 		// Tab for HPG-Message
-		if (selected != null && cbStoryVarianten.getSelectionModel().getSelectedItem() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V7) {
+		if (selected != null && cbStoryVarianten.getSelectionModel().getSelectedItem() == ROLEPLAYENTRYTYPES.RP_HPG_MESSAGE) {
 			if (!tabPaneStory.getTabs().contains(tabBasic9)) {
 				tabPaneStory.getTabs().add(tabBasic9);
 			}
@@ -1060,7 +1059,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 	 */
 	private void initTreeView() {
 
-		// storyRoot will be never stored in database
+		// storyRoot will never be stored in database
 		RolePlayStoryDTO storyRoot = new RolePlayStoryDTO();
 		storyRoot.setStoryName("All storys");
 
@@ -1167,7 +1166,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 		cbDatafield4.getItems().setAll(dataList);
 		cbDatafield5.getItems().setAll(dataList);
 
-		if (selected != null && selected.getValue() != null && selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V3 && selected.getValue().getVar3ID() != null) {
+		if (selected != null && selected.getValue() != null && selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.RP_DATA_INPUT && selected.getValue().getVar3ID() != null) {
 			cbDatafield1.getSelectionModel().select(ROLEPLAYINPUTDATATYPES.getEnumForName(selected.getValue().getVar3ID().getDataSet1()));
 			cbDatafield2.getSelectionModel().select(ROLEPLAYINPUTDATATYPES.getEnumForName(selected.getValue().getVar3ID().getDataSet2()));
 			cbDatafield3.getSelectionModel().select(ROLEPLAYINPUTDATATYPES.getEnumForName(selected.getValue().getVar3ID().getDataSet3()));
@@ -1288,7 +1287,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 			tfVoice.setDisable(false);
 			tfMovie.setDisable(false);
 
-			if (selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STORY || selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_CHAPTER) {
+			if (selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.RP_STORY || selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.RP_CHAPTER) {
 				cbStoryVarianten.setDisable(true);
 			} else {
 				cbStoryVarianten.setDisable(false);
@@ -1459,8 +1458,8 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 			doDeleteMovie = false;
 
 			// set data for story variante 1
-			if (selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1 ||
-					selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V8) {
+			if (selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.RP_SECTION ||
+					selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.RP_PREPARE_BATTLE) {
 				if(selected.getValue().getNextStepID() != null){
 					cbNextStep_V1.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getNextStepID()));
 				}
@@ -1508,8 +1507,8 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 			}
 
 			// set data for story variante 2 / variante 5 / variante 9
-			if ((selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V2 ||
-					selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V5) && selected.getValue().getVar2ID() != null) {
+			if ((selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.RP_CHOICE ||
+					selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.RP_CHOICE_IMAGE_LEFT) && selected.getValue().getVar2ID() != null) {
 				tfStoryPath1.setText(selected.getValue().getVar2ID().getOption1Text());
 				tfStoryPath2.setText(selected.getValue().getVar2ID().getOption2Text());
 				tfStoryPath3.setText(selected.getValue().getVar2ID().getOption3Text());
@@ -1520,7 +1519,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 				cbStoryPath3.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getVar2ID().getOption3StoryID()));
 				cbStoryPath4.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getVar2ID().getOption4StoryID()));
 
-			} else if ((selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V9) && selected.getValue().getVar9ID() != null) {
+			} else if ((selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.RP_INVASION) && selected.getValue().getVar9ID() != null) {
 				tfStoryPath1.setText(selected.getValue().getVar9ID().getOption1Text());
 				tfStoryPath2.setText(selected.getValue().getVar9ID().getOption2Text());
 				tfStoryPath3.setText(selected.getValue().getVar9ID().getOption3Text());
@@ -1550,7 +1549,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 				}
 
 			// set data for story variante 3
-			if (selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V3 && selected.getValue().getVar3ID() != null) {
+			if (selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.RP_DATA_INPUT && selected.getValue().getVar3ID() != null) {
 				logger.info("setData");
 
 				if (selected.getValue().getVar3ID().getDataSet1() != null) {
@@ -1577,7 +1576,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 			}
 
 			// set data for story variante 4
-			if (selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V4 && selected.getValue().getVar4ID() != null) {
+			if (selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.RP_DICE && selected.getValue().getVar4ID() != null) {
 
 				tfDiceScore.setText(selected.getValue().getVar4ID().getScore().toString());
 				cbDiceScoreEqual.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getVar4ID().getStoryIDScoreEqual()));
@@ -1593,7 +1592,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 			}
 
 			// set data for story variante 6
-			if (selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V6 && selected.getValue().getVar6ID() != null) {
+			if (selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.RP_KEYPAD && selected.getValue().getVar6ID() != null) {
 				tfCode.setText(selected.getValue().getVar6ID().getSecretCode());
 				tfAttempt.setText(selected.getValue().getVar6ID().getAttempts().toString());
 				cbNextStep_AttemptSuccess.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getVar6ID().getStoryIDSuccess()));
@@ -1606,7 +1605,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 			}
 
 			// set data for story variante 7
-			if (selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V7 && selected.getValue().getVar7ID() != null) {
+			if (selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.RP_HPG_MESSAGE && selected.getValue().getVar7ID() != null) {
 				cbNextStepV7.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getVar7ID().getNextStepID()));
 				tfSender.setText(selected.getValue().getVar7ID().getSender());
 				tfSenddate.setText(selected.getValue().getVar7ID().getDate());
@@ -1668,7 +1667,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 		}
 
 		//Save RolePlayCharacter
-		if (rp.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STORY) {
+		if (rp.getVariante() == ROLEPLAYENTRYTYPES.RP_STORY) {
 			ArrayList<Long> newCharIds = new ArrayList<>();
 			// find all new added chars
 			for (RolePlayCharacterDTO rpc : lvAssignedChar.getItems()) {
@@ -1696,8 +1695,8 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 		}
 
 		// set data for variante 1
-		if (rp.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1 ||
-				selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V8) {
+		if (rp.getVariante() == ROLEPLAYENTRYTYPES.RP_SECTION ||
+				selected.getValue().getVariante() == ROLEPLAYENTRYTYPES.RP_PREPARE_BATTLE) {
 
 
 			if (cbNextStep_V1.getValue() != null) {
@@ -1741,7 +1740,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 		}
 
 		// set data for variante 2
-		if (rp.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V2 || rp.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V5) {
+		if (rp.getVariante() == ROLEPLAYENTRYTYPES.RP_CHOICE || rp.getVariante() == ROLEPLAYENTRYTYPES.RP_CHOICE_IMAGE_LEFT) {
 
 			RolePlayStoryVar2DTO rpVar2 = rp.getVar2ID();
 			if (rpVar2 == null) {
@@ -1782,7 +1781,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 		}
 
 		// set data for variante 3
-		if (rp.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V3) {
+		if (rp.getVariante() == ROLEPLAYENTRYTYPES.RP_DATA_INPUT) {
 
 			RolePlayStoryVar3DTO rpVar3 = rp.getVar3ID();
 			if (rpVar3 == null) {
@@ -1816,7 +1815,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 		}
 
 		// set data for variante 4
-		if (rp.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V4) {
+		if (rp.getVariante() == ROLEPLAYENTRYTYPES.RP_DICE) {
 
 			RolePlayStoryVar4DTO rpVar4 = rp.getVar4ID();
 			if (rpVar4 == null) {
@@ -1846,7 +1845,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 		}
 
 		// set data for variante 6
-		if (rp.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V6) {
+		if (rp.getVariante() == ROLEPLAYENTRYTYPES.RP_KEYPAD) {
 			RolePlayStoryVar6DTO rpVar6 = rp.getVar6ID();
 			if (rpVar6 == null) {
 				rpVar6 = new RolePlayStoryVar6DTO();
@@ -1873,7 +1872,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 		}
 
 		// set data for variante 7
-		if (rp.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V7) {
+		if (rp.getVariante() == ROLEPLAYENTRYTYPES.RP_HPG_MESSAGE) {
 			RolePlayStoryVar7DTO rpVar7 = rp.getVar7ID();
 			if (rpVar7 == null) {
 				rpVar7 = new RolePlayStoryVar7DTO();
@@ -1903,7 +1902,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 		}
 
 		// set data for variante 9
-		if (rp.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V9) {
+		if (rp.getVariante() == ROLEPLAYENTRYTYPES.RP_INVASION) {
 
 			RolePlayStoryVar9DTO rpVar9 = rp.getVar9ID();
 			if (rpVar9 == null) {

@@ -38,12 +38,10 @@ import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3RolePlayController;
-import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
 import net.clanwolf.starmap.transfer.dtos.RolePlayStoryDTO;
 import net.clanwolf.starmap.transfer.dtos.RolePlayStoryVar3DTO;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
@@ -57,7 +55,7 @@ import java.util.ResourceBundle;
 /**
  * @author Undertaker
  */
-public class RolePlayChoice2PaneController extends AbstractC3RolePlayController implements ActionCallBackListener {
+public class RPChoice2PaneController extends AbstractC3RolePlayController implements ActionCallBackListener {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	@FXML
@@ -87,7 +85,7 @@ public class RolePlayChoice2PaneController extends AbstractC3RolePlayController 
 	@FXML
 	private Button buttonClose;
 
-	public RolePlayChoice2PaneController() {
+	public RPChoice2PaneController() {
 	}
 
 	@Override
@@ -129,7 +127,7 @@ public class RolePlayChoice2PaneController extends AbstractC3RolePlayController 
 		if(anchorPane != null && !anchorPane.isVisible()) return true;
 		switch (action) {
 		case START_ROLEPLAY:
-			if(ROLEPLAYENTRYTYPES.C3_RP_STEP_V3 == o.getObject()) {
+			if(ROLEPLAYENTRYTYPES.RP_DATA_INPUT == o.getObject()) {
 				logger.info("RolePlayChoice2PaneController -> START_ROLEPLAY");
 
 				init();

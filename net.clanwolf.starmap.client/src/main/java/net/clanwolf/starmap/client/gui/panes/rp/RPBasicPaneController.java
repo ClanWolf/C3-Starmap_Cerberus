@@ -42,7 +42,6 @@ import net.clanwolf.starmap.client.action.ActionObject;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3RolePlayController;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
-import net.clanwolf.starmap.transfer.dtos.AttackDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
@@ -56,7 +55,7 @@ import java.util.ResourceBundle;
 /**
  * @author Undertaker
  */
-public class RolePlayBasicPaneController extends AbstractC3Controller implements ActionCallBackListener {
+public class RPBasicPaneController extends AbstractC3Controller implements ActionCallBackListener {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	@FXML
@@ -68,7 +67,7 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 
 	private boolean isCharacterPane = true;
 
-	public RolePlayBasicPaneController() {
+	public RPBasicPaneController() {
 	}
 
 	@Override
@@ -96,8 +95,8 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 		switch (action) {
 			case PANE_CREATION_FINISHED:
 				// logger.info("PANE_CREATION_FINISHED Object: " + o.getObject().toString());
-				if(o.getObject() instanceof RolePlayBasicPane){
-					RolePlayBasicPane rpbp = (RolePlayBasicPane)o.getObject();
+				if(o.getObject() instanceof RPBasicPane){
+					RPBasicPane rpbp = (RPBasicPane)o.getObject();
 					// do this for the right pane
 					if(paneName.equals(rpbp.getPaneName())) {
 						loadScreen();
@@ -176,37 +175,37 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 
 		if( myType != null) {
 			switch (myType) {
-				case C3_RP_STORY:
-					changePaneAndController(ROLEPLAYENTRYTYPES.C3_RP_STORY, "/fxml/RolePlayIntroPane.fxml");
+				case RP_STORY:
+					changePaneAndController(ROLEPLAYENTRYTYPES.RP_STORY, "/fxml/RPSectionPane.fxml");
 					break;
-				case C3_RP_CHAPTER:
-					changePaneAndController(ROLEPLAYENTRYTYPES.C3_RP_CHAPTER, "/fxml/RolePlayIntroPane.fxml");
+				case RP_CHAPTER:
+					changePaneAndController(ROLEPLAYENTRYTYPES.RP_CHAPTER, "/fxml/RPSectionPane.fxml");
 					break;
-				case C3_RP_STEP_V1:
-					changePaneAndController(ROLEPLAYENTRYTYPES.C3_RP_STEP_V1, "/fxml/RolePlayIntroPane.fxml");
+				case RP_SECTION:
+					changePaneAndController(ROLEPLAYENTRYTYPES.RP_SECTION, "/fxml/RPSectionPane.fxml");
 					break;
-				case C3_RP_STEP_V2:
-					changePaneAndController(ROLEPLAYENTRYTYPES.C3_RP_STEP_V2, "/fxml/RolePlayChoicePane.fxml");
+				case RP_CHOICE: // C3_RP_STEP_V2 -> RP_CHOICE
+					changePaneAndController(ROLEPLAYENTRYTYPES.RP_CHOICE, "/fxml/RPChoicePane.fxml");
 					break;
-				case C3_RP_STEP_V3:
-					changePaneAndController(ROLEPLAYENTRYTYPES.C3_RP_STEP_V3, "/fxml/RolePlayDataInputPane.fxml");
+				case RP_DATA_INPUT: // C3_RP_STEP_V3 -> RP_DATA_INPUT
+					changePaneAndController(ROLEPLAYENTRYTYPES.RP_DATA_INPUT, "/fxml/RPDataInputPane.fxml");
 					break;
-				case C3_RP_STEP_V4:
-					changePaneAndController(ROLEPLAYENTRYTYPES.C3_RP_STEP_V4, "/fxml/RolePlayDicePane.fxml");
+				case RP_DICE: // C3_RP_STEP_V4 -> RP_DICE
+					changePaneAndController(ROLEPLAYENTRYTYPES.RP_DICE, "/fxml/RPDicePane.fxml");
 					break;
-				case C3_RP_STEP_V5:
-					changePaneAndController(ROLEPLAYENTRYTYPES.C3_RP_STEP_V5, "/fxml/RolePlayChoicePaneImageLeft.fxml");
+				case RP_CHOICE_IMAGE_LEFT: // C3_RP_STEP_V5 -> RP_CHOICE_IMAGE_LEFT
+					changePaneAndController(ROLEPLAYENTRYTYPES.RP_CHOICE_IMAGE_LEFT, "/fxml/RPChoiceImageLeftPane.fxml");
 					break;
-				case C3_RP_STEP_V6:
-					changePaneAndController(ROLEPLAYENTRYTYPES.C3_RP_STEP_V6, "/fxml/RolePlayKeypadPane.fxml");
+				case RP_KEYPAD: // C3_RP_STEP_V6 -> RP_KEYPAD
+					changePaneAndController(ROLEPLAYENTRYTYPES.RP_KEYPAD, "/fxml/RPKeypadPane.fxml");
 					break;
-				case C3_RP_STEP_V7:
-					changePaneAndController(ROLEPLAYENTRYTYPES.C3_RP_STEP_V7, "/fxml/RolePlayMessagePane.fxml");
+				case RP_HPG_MESSAGE: // C3_RP_STEP_V7 -> RP_HPG_MESSAGE
+					changePaneAndController(ROLEPLAYENTRYTYPES.RP_HPG_MESSAGE, "/fxml/RPMessagePane.fxml");
 					break;
-				case C3_RP_STEP_V8:
-					changePaneAndController(ROLEPLAYENTRYTYPES.C3_RP_STEP_V8, "/fxml/RolePlayPrepareBattlePane.fxml");
+				case RP_PREPARE_BATTLE: // C3_RP_STEP_V8 -> RP_PREPARE_BATTLE
+					changePaneAndController(ROLEPLAYENTRYTYPES.RP_PREPARE_BATTLE, "/fxml/RPPrepareBattlePane.fxml");
 					break;
-				case C3_RP_STEP_V9:
+				case RP_INVASION: // C3_RP_STEP_V9 -> RP_INVASION
 					Task<Void> sleeper = new Task<Void>() {
 						@Override
 						protected Void call() throws Exception {
@@ -220,7 +219,7 @@ public class RolePlayBasicPaneController extends AbstractC3Controller implements
 					sleeper.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
 						@Override
 						public void handle(WorkerStateEvent event) {
-							changePaneAndController(ROLEPLAYENTRYTYPES.C3_RP_STEP_V9, "/fxml/RolePlayInvasionPane.fxml");
+							changePaneAndController(ROLEPLAYENTRYTYPES.RP_INVASION, "/fxml/RPInvasionPane.fxml");
 						}
 					});
 					C3SoundPlayer.play("sound/fx/beep_03.mp3", false);

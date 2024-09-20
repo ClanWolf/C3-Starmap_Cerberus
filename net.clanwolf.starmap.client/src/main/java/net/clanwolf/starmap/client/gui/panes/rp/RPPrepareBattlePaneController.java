@@ -26,8 +26,6 @@
  */
 package net.clanwolf.starmap.client.gui.panes.rp;
 
-import io.nadron.client.event.Events;
-import io.nadron.client.event.NetworkEvent;
 import javafx.animation.FadeTransition;
 import javafx.animation.SequentialTransition;
 import javafx.application.Platform;
@@ -46,7 +44,6 @@ import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionCallBackListener;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.ActionObject;
-import net.clanwolf.starmap.client.gui.MainFrame;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3RolePlayController;
 import net.clanwolf.starmap.client.nexus.Nexus;
@@ -56,8 +53,6 @@ import net.clanwolf.starmap.client.process.universe.BOFaction;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.constants.Constants;
-import net.clanwolf.starmap.transfer.GameState;
-import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.transfer.dtos.*;
@@ -70,7 +65,7 @@ import java.util.*;
 /**
  * @author Undertaker
  */
-public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayController implements ActionCallBackListener {
+public class RPPrepareBattlePaneController extends AbstractC3RolePlayController implements ActionCallBackListener {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 //	private HashMap<Long, Boolean> animationPlayedMap = new HashMap<>();
@@ -579,7 +574,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 		}
 	}
 
-	public RolePlayPrepareBattlePaneController() {
+	public RPPrepareBattlePaneController() {
 	}
 
 	@Override
@@ -857,7 +852,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 				break;
 
 			case START_ROLEPLAY:
-				if(ROLEPLAYENTRYTYPES.C3_RP_STEP_V8 == o.getObject()) {
+				if(ROLEPLAYENTRYTYPES.RP_PREPARE_BATTLE == o.getObject()) {
 					logger.info("RolePlayIntroPaneController -> START_ROLEPLAY");
 					if(bOnlyOneSave) {
 						bOnlyOneSave = false;
@@ -880,7 +875,7 @@ public class RolePlayPrepareBattlePaneController extends AbstractC3RolePlayContr
 				break;
 
 			case PANE_CREATION_FINISHED:
-				if (o.getObject() instanceof RolePlayBasicPane) {
+				if (o.getObject() instanceof RPBasicPane) {
 					AbstractC3Pane p = (AbstractC3Pane) o.getObject();
 					if ("AttackPane".equals(p.getPaneName())) {
 //						if (!firstCreationDone) {

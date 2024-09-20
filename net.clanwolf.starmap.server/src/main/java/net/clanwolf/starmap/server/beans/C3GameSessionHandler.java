@@ -547,7 +547,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				if (attackerCommanderNextStoryId != null &&	attackerCommanderNextStoryId.equals(defenderCommanderNextStoryId)) {
 					rpPojo = RolePlayStoryDAO.getInstance().findById(getC3UserID(session), attackerCommanderNextStoryId);
 
-					if(rpPojo.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V1) {
+					if(rpPojo.getVariante() == ROLEPLAYENTRYTYPES.RP_SECTION) {
 
 						JumpshipPOJO jpWinner = JumpshipDAO.getInstance().findById(getC3UserID(session), attack.getJumpshipID());
 						long unitXP = 0;
@@ -583,10 +583,10 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				} else {
 					rpPojo = RolePlayStoryDAO.getInstance().findById(getC3UserID(session), attack.getStoryID());
 				}
-				if(rpPojo.getVariante() != ROLEPLAYENTRYTYPES.C3_RP_STEP_V8) {
+				if(rpPojo.getVariante() != ROLEPLAYENTRYTYPES.RP_PREPARE_BATTLE) {
 					attack.setLastStoryID(rpPojo.getId());
 				}
-				if(rpPojo.getVariante() == ROLEPLAYENTRYTYPES.C3_RP_STEP_V9) {
+				if(rpPojo.getVariante() == ROLEPLAYENTRYTYPES.RP_INVASION) {
 					attack.setScoreAttackerVictories(rpPojo.getVar9ID().getAttackerDropVictories().longValue());
 					attack.setScoreDefenderVictories(rpPojo.getVar9ID().getDefenderDropVictories().longValue());
 				}
@@ -622,7 +622,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 				rpPojo = RolePlayStoryDAO.getInstance().findById(getC3UserID(session), rpID);
 			}
-			if(rpPojo.getVariante() != ROLEPLAYENTRYTYPES.C3_RP_STEP_V8) {
+			if(rpPojo.getVariante() != ROLEPLAYENTRYTYPES.RP_PREPARE_BATTLE) {
 				attack.setLastStoryID(rpPojo.getId());
 			}
 			attack.setStoryID(rpPojo.getId());
