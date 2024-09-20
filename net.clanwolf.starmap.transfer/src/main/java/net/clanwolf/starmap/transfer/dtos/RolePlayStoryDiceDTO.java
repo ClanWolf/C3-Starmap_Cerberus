@@ -31,70 +31,107 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import net.clanwolf.starmap.transfer.Dto;
 
 @JsonIdentityInfo(
-		scope= RolePlayStoryVar6DTO.class,
+		scope= RolePlayStoryDiceDTO.class,
 		generator=ObjectIdGenerators.PropertyGenerator.class,
 		property = "id")
-public class RolePlayStoryVar6DTO extends Dto {
-
+public class RolePlayStoryDiceDTO extends Dto {
 
 	//@Column(name = "ID")
 	private Long id;
 	//@JoinColumn(name = "StoryID")
 	private Long story;
-	//@Column(name = "SecretCode")
-	private String secretCode;
-	//@Column(name = "Attempts")
-	private Integer attempts;
-	//@JoinColumn(name = "StoryIDSuccess")
-	private Long storyIDSuccess;
-	//@JoinColumn(name = "StoryIDFailure")
-	private Long storyIDFailure;
+	//@Column(name = "Score")
+	private Integer score;
+	//@JoinColumn(name = "StoryIDScoreLess")
+	private Long storyIDScoreLess;
+	//@JoinColumn(name = "StoryIDScoreEqual")
+	private Long storyIDScoreEqual;
+	//@JoinColumn(name = "StoryIDScoreMore")
+	private Long storyIDScoreMore;
 
+	/**
+	 * @return the id
+	 */
 	public Long getId() {
 		return id;
 	}
 
+	/**
+	 * @param id the id to set
+	 */
 	public void setId(Long id) {
 		this.id = id;
 	}
 
+	/**
+	 * @return the story
+	 */
 	public Long getStory() {
 		return story;
 	}
 
+	/**
+	 * @param story the story to set
+	 */
 	public void setStory(Long story) {
 		this.story = story;
 	}
 
-	public String getSecretCode() {
-		return secretCode;
+	/**
+	 * @return the storyIDScoreLess
+	 */
+	public Long getStoryIDScoreLess() {
+		return storyIDScoreLess;
 	}
 
-	public void setSecretCode(String secretCode) {
-		this.secretCode = secretCode;
+	/**
+	 * @param storyIDScoreLess the storyIDScoreLess to set
+	 */
+	public void setStoryIDScoreLess(Long storyIDScoreLess) {
+		this.storyIDScoreLess = storyIDScoreLess;
 	}
 
-	public Integer getAttempts() {
-		return attempts;
+	/**
+	 * @return the storyIDScoreEqual
+	 */
+	public Long getStoryIDScoreEqual() {
+		return storyIDScoreEqual;
 	}
 
-	public void setAttempts(Integer attempts) {
-		this.attempts = attempts;
+	/**
+	 * @param storyIDScoreEqual the storyIDScoreEqual to set
+	 */
+	public void setStoryIDScoreEqual(Long storyIDScoreEqual) {
+		this.storyIDScoreEqual = storyIDScoreEqual;
 	}
 
-	public Long getStoryIDSuccess() {
-		return storyIDSuccess;
+	/**
+	 * @return the storyIDScoreMore
+	 */
+	public Long getStoryIDScoreMore() {
+		return storyIDScoreMore;
 	}
 
-	public void setStoryIDSuccess(Long storyIDSuccess) {
-		this.storyIDSuccess = storyIDSuccess;
+	/**
+	 * @param storyIDScoreMore the storyIDScoreMore to set
+	 */
+	public void setStoryIDScoreMore(Long storyIDScoreMore) {
+		this.storyIDScoreMore = storyIDScoreMore;
 	}
 
-	public Long getStoryIDFailure() {
-		return storyIDFailure;
+	/**
+	 * @return the score
+	 */
+	public Integer getScore() {
+		return score;
 	}
 
-	public void setStoryIDFailure(Long storyIDFailure) {
-		this.storyIDFailure = storyIDFailure;
+	/**
+	 * @param score the score to set
+	 */
+	public void setScore(Integer score) {
+		this.score = score;
 	}
+
+
 }

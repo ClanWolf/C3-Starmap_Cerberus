@@ -24,90 +24,115 @@
  * Copyright (c) 2001-2024, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.server.persistence.pojos;
+package net.clanwolf.starmap.transfer.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import net.clanwolf.starmap.server.persistence.Pojo;
-
-import jakarta.persistence.*;
-import static jakarta.persistence.GenerationType.IDENTITY;
+import net.clanwolf.starmap.transfer.Dto;
 
 @JsonIdentityInfo(
-		scope= RolePlayStoryVar6POJO.class,
+		scope= RolePlayStoryDatainputDTO.class,
 		generator=ObjectIdGenerators.PropertyGenerator.class,
 		property = "id")
-@Entity
-@Table(name = "ROLEPLAY_STORY_VAR6", catalog = "C3")
-public class RolePlayStoryVar6POJO extends Pojo {
+public class RolePlayStoryDatainputDTO extends Dto {
 
-
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "ID")
+	//@Column(name = "ID")
 	private Long id;
+	//@JoinColumn(name = "StoryID")
+	private Long story;
+	//@JoinColumn(name = "NextStoryID")
+	private Long nextStoryID;
 
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "StoryID")
-	private RolePlayStoryPOJO story;
+	//@Column(name = "DataSet1")
+	private String DataSet1;
+	//@Column(name = "DataSet2")
+	private String DataSet2;
+	//@Column(name = "DataSet3")
+	private String DataSet3;
+	//@Column(name = "DataSet4")
+	private String DataSet4;
+	//@Column(name = "DataSet5")
+	private String DataSet5;
 
-	@Column(name = "SecretCode")
-	private String secretCode;
-
-	@Column(name = "Attempts")
-	private Integer attempts;
-
-	@JoinColumn(name = "StoryIDSuccess")
-	private Long storyIDSuccess;
-
-	@JoinColumn(name = "StoryIDFailure")
-	private Long storyIDFailure;
-
+	/**
+	 * @return the id
+	 */
 	public Long getId() {
 		return id;
 	}
 
+	/**
+	 * @param id the id to set
+	 */
 	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public RolePlayStoryPOJO getStory() {
+	/**
+	 * @return the story
+	 */
+	public Long getStory() {
 		return story;
 	}
 
-	public void setStory(RolePlayStoryPOJO story) {
+	/**
+	 * @param story the story to set
+	 */
+	public void setStory(Long story) {
 		this.story = story;
 	}
 
-	public String getSecretCode() {
-		return secretCode;
+	/**
+	 * @return the nextStoryID
+	 */
+	public Long getNextStoryID() {
+		return nextStoryID;
 	}
 
-	public void setSecretCode(String secretCode) {
-		this.secretCode = secretCode;
+	/**
+	 * @param nextStoryID the nextStoryID to set
+	 */
+	public void setNextStoryID(Long nextStoryID) {
+		this.nextStoryID = nextStoryID;
 	}
 
-	public Integer getAttempts() {
-		return attempts;
+	public String getDataSet1() {
+		return DataSet1;
 	}
 
-	public void setAttempts(Integer attempts) {
-		this.attempts = attempts;
+	public void setDataSet1(String dataSet1) {
+		DataSet1 = dataSet1;
 	}
 
-	public Long getStoryIDSuccess() {
-		return storyIDSuccess;
+	public String getDataSet2() {
+		return DataSet2;
 	}
 
-	public void setStoryIDSuccess(Long storyIDSuccess) {
-		this.storyIDSuccess = storyIDSuccess;
+	public void setDataSet2(String dataSet2) {
+		DataSet2 = dataSet2;
 	}
 
-	public Long getStoryIDFailure() {
-		return storyIDFailure;
+	public String getDataSet3() {
+		return DataSet3;
 	}
 
-	public void setStoryIDFailure(Long storyIDFailure) {
-		this.storyIDFailure = storyIDFailure;
+	public void setDataSet3(String dataSet3) {
+		DataSet3 = dataSet3;
+	}
+
+	public String getDataSet4() {
+		return DataSet4;
+	}
+
+	public void setDataSet4(String dataSet4) {
+		DataSet4 = dataSet4;
+	}
+
+	public String getDataSet5() {
+		return DataSet5;
+	}
+
+	public void setDataSet5(String dataSet5) {
+		DataSet5 = dataSet5;
 	}
 }

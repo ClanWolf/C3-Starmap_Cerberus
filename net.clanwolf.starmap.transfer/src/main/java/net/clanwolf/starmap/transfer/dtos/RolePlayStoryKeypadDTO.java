@@ -24,50 +24,31 @@
  * Copyright (c) 2001-2024, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.server.persistence.pojos;
+package net.clanwolf.starmap.transfer.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import net.clanwolf.starmap.server.persistence.Pojo;
-
-import jakarta.persistence.*;
-import static jakarta.persistence.GenerationType.IDENTITY;
+import net.clanwolf.starmap.transfer.Dto;
 
 @JsonIdentityInfo(
-		scope= RolePlayStoryVar7POJO.class,
+		scope= RolePlayStoryKeypadDTO.class,
 		generator=ObjectIdGenerators.PropertyGenerator.class,
 		property = "id")
-@Entity
-@Table(name = "ROLEPLAY_STORY_VAR7", catalog = "C3")
-public class RolePlayStoryVar7POJO extends Pojo {
+public class RolePlayStoryKeypadDTO extends Dto {
 
 
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "ID")
+	//@Column(name = "ID")
 	private Long id;
-
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "StoryID")
-	private RolePlayStoryPOJO story;
-
-	@Column(name = "FactionID")
-	private Long factionID;
-
-	@Column(name = "ServiceName")
-	private String serviceName;
-
-	@Column(name = "Header")
-	private String header;
-
-	@Column(name = "Sender")
-	private String sender;
-
-	@Column(name = "Date")
-	private String date;
-
-	@JoinColumn(name = "NextStepID")
-	private Long nextStepID;
+	//@JoinColumn(name = "StoryID")
+	private Long story;
+	//@Column(name = "SecretCode")
+	private String secretCode;
+	//@Column(name = "Attempts")
+	private Integer attempts;
+	//@JoinColumn(name = "StoryIDSuccess")
+	private Long storyIDSuccess;
+	//@JoinColumn(name = "StoryIDFailure")
+	private Long storyIDFailure;
 
 	public Long getId() {
 		return id;
@@ -77,59 +58,43 @@ public class RolePlayStoryVar7POJO extends Pojo {
 		this.id = id;
 	}
 
-	public RolePlayStoryPOJO getStory() {
+	public Long getStory() {
 		return story;
 	}
 
-	public void setStory(RolePlayStoryPOJO story) {
+	public void setStory(Long story) {
 		this.story = story;
 	}
 
-	public Long getFaction() {
-		return factionID;
+	public String getSecretCode() {
+		return secretCode;
 	}
 
-	public void setFaction(Long faction) {
-		this.factionID = faction;
+	public void setSecretCode(String secretCode) {
+		this.secretCode = secretCode;
 	}
 
-	public String getServiceName() {
-		return serviceName;
+	public Integer getAttempts() {
+		return attempts;
 	}
 
-	public void setServiceName(String serviceName) {
-		this.serviceName = serviceName;
+	public void setAttempts(Integer attempts) {
+		this.attempts = attempts;
 	}
 
-	public String getHeader() {
-		return header;
+	public Long getStoryIDSuccess() {
+		return storyIDSuccess;
 	}
 
-	public void setHeader(String header) {
-		this.header = header;
+	public void setStoryIDSuccess(Long storyIDSuccess) {
+		this.storyIDSuccess = storyIDSuccess;
 	}
 
-	public String getSender() {
-		return sender;
+	public Long getStoryIDFailure() {
+		return storyIDFailure;
 	}
 
-	public void setSender(String sender) {
-		this.sender = sender;
-	}
-
-	public String getDate() {
-		return date;
-	}
-
-	public void setDate(String date) {
-		this.date = date;
-	}
-
-	public Long getNextStepID() {
-		return nextStepID;
-	}
-
-	public void setNextStepID(Long nextStepID) {
-		this.nextStepID = nextStepID;
+	public void setStoryIDFailure(Long storyIDFailure) {
+		this.storyIDFailure = storyIDFailure;
 	}
 }

@@ -1,7 +1,7 @@
 package net.clanwolf.starmap.client.process.roleplay;
 
 import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
-import net.clanwolf.starmap.transfer.dtos.RolePlayStoryVar3DTO;
+import net.clanwolf.starmap.transfer.dtos.RolePlayStoryDatainputDTO;
 
 public class BOCharacter {
 
@@ -11,7 +11,7 @@ public class BOCharacter {
 		myCharacter = myChar;
 	}
 
-	public void setVar3(RolePlayStoryVar3DTO var3){
+	public void setVar3(RolePlayStoryDatainputDTO var3){
 
 	}
 

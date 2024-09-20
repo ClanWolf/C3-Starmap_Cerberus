@@ -46,7 +46,7 @@ import net.clanwolf.starmap.transfer.enums.catalogObjects.ICatalogObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.transfer.dtos.RolePlayStoryDTO;
-import net.clanwolf.starmap.transfer.dtos.RolePlayStoryVar3DTO;
+import net.clanwolf.starmap.transfer.dtos.RolePlayStoryDatainputDTO;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 import net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes.ROLEPLAYINPUTDATATYPES;
 import net.clanwolf.starmap.transfer.util.CatalogLoader;
@@ -222,7 +222,7 @@ public class RPDataInputPaneController extends AbstractC3RolePlayController impl
 		taStoryText.setText(rpStory.getStoryText());
 
 		if(!bInit && rpStory.getVar3ID() != null) {
-			RolePlayStoryVar3DTO rpVar3 = rpStory.getVar3ID();
+			RolePlayStoryDatainputDTO rpVar3 = rpStory.getVar3ID();
 
 			setField(ROLEPLAYINPUTDATATYPES.getEnumForName(rpVar3.getDataSet1()),1);
 			setField(ROLEPLAYINPUTDATATYPES.getEnumForName(rpVar3.getDataSet2()),2);

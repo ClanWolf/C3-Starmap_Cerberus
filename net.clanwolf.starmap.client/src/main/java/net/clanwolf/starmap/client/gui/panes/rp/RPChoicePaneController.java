@@ -41,7 +41,7 @@ import net.clanwolf.starmap.client.gui.panes.AbstractC3RolePlayController;
 import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.transfer.dtos.RolePlayStoryDTO;
-import net.clanwolf.starmap.transfer.dtos.RolePlayStoryVar2DTO;
+import net.clanwolf.starmap.transfer.dtos.RolePlayStoryChoiceDTO;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -164,7 +164,7 @@ public class RPChoicePaneController extends AbstractC3RolePlayController impleme
 
 		if (rpStory.getVar2ID() != null) {
 
-			RolePlayStoryVar2DTO rpVar2 = rpStory.getVar2ID();
+			RolePlayStoryChoiceDTO rpVar2 = rpStory.getVar2ID();
 
 			double x = 59;
 			double y = 455;

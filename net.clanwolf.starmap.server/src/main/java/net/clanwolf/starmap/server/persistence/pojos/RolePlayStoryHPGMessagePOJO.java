@@ -34,12 +34,12 @@ import jakarta.persistence.*;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @JsonIdentityInfo(
-		scope= RolePlayStoryVar4POJO.class,
+		scope= RolePlayStoryHPGMessagePOJO.class,
 		generator=ObjectIdGenerators.PropertyGenerator.class,
 		property = "id")
 @Entity
-@Table(name = "ROLEPLAY_STORY_VAR4", catalog = "C3")
-public class RolePlayStoryVar4POJO extends Pojo {
+@Table(name = "ROLEPLAY_STORY_HPGMESSAGE", catalog = "C3")
+public class RolePlayStoryHPGMessagePOJO extends Pojo {
 
 
 	@Id
@@ -51,100 +51,85 @@ public class RolePlayStoryVar4POJO extends Pojo {
 	@JoinColumn(name = "StoryID")
 	private RolePlayStoryPOJO story;
 
-	@Column(name = "Score")
-	private Integer score;
+	@Column(name = "FactionID")
+	private Long factionID;
 
-	@JoinColumn(name = "StoryIDScoreLess")
-	private Long storyIDScoreLess;
+	@Column(name = "ServiceName")
+	private String serviceName;
 
-	@JoinColumn(name = "StoryIDScoreEqual")
-	private Long storyIDScoreEqual;
+	@Column(name = "Header")
+	private String header;
 
-	@JoinColumn(name = "StoryIDScoreMore")
-	private Long storyIDScoreMore;
+	@Column(name = "Sender")
+	private String sender;
 
-	/**
-	 * @return the id
-	 */
+	@Column(name = "Date")
+	private String date;
+
+	@JoinColumn(name = "NextStepID")
+	private Long nextStepID;
+
 	public Long getId() {
 		return id;
 	}
 
-	/**
-	 * @param id the id to set
-	 */
 	public void setId(Long id) {
 		this.id = id;
 	}
 
-	/**
-	 * @return the story
-	 */
 	public RolePlayStoryPOJO getStory() {
 		return story;
 	}
 
-	/**
-	 * @param story the story to set
-	 */
 	public void setStory(RolePlayStoryPOJO story) {
 		this.story = story;
 	}
 
-	/**
-	 * @return the storyIDScoreLess
-	 */
-	public Long getStoryIDScoreLess() {
-		return storyIDScoreLess;
+	public Long getFaction() {
+		return factionID;
 	}
 
-	/**
-	 * @param storyIDScoreLess the storyIDScoreLess to set
-	 */
-	public void setStoryIDScoreLess(Long storyIDScoreLess) {
-		this.storyIDScoreLess = storyIDScoreLess;
+	public void setFaction(Long faction) {
+		this.factionID = faction;
 	}
 
-	/**
-	 * @return the storyIDScoreEqual
-	 */
-	public Long getStoryIDScoreEqual() {
-		return storyIDScoreEqual;
+	public String getServiceName() {
+		return serviceName;
 	}
 
-	/**
-	 * @param storyIDScoreEqual the storyIDScoreEqual to set
-	 */
-	public void setStoryIDScoreEqual(Long storyIDScoreEqual) {
-		this.storyIDScoreEqual = storyIDScoreEqual;
+	public void setServiceName(String serviceName) {
+		this.serviceName = serviceName;
 	}
 
-	/**
-	 * @return the storyIDScoreMore
-	 */
-	public Long getStoryIDScoreMore() {
-		return storyIDScoreMore;
+	public String getHeader() {
+		return header;
 	}
 
-	/**
-	 * @param storyIDScoreMore the storyIDScoreMore to set
-	 */
-	public void setStoryIDScoreMore(Long storyIDScoreMore) {
-		this.storyIDScoreMore = storyIDScoreMore;
+	public void setHeader(String header) {
+		this.header = header;
 	}
 
-	/**
-	 * @return the score
-	 */
-	public Integer getScore() {
-		return score;
+	public String getSender() {
+		return sender;
 	}
 
-	/**
-	 * @param score the score to set
-	 */
-	public void setScore(Integer score) {
-		this.score = score;
+	public void setSender(String sender) {
+		this.sender = sender;
 	}
 
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public Long getNextStepID() {
+		return nextStepID;
+	}
+
+	public void setNextStepID(Long nextStepID) {
+		this.nextStepID = nextStepID;
+	}
 }

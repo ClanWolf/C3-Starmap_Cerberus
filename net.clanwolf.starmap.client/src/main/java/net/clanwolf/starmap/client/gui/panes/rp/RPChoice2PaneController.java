@@ -43,7 +43,7 @@ import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.transfer.dtos.RolePlayStoryDTO;
-import net.clanwolf.starmap.transfer.dtos.RolePlayStoryVar3DTO;
+import net.clanwolf.starmap.transfer.dtos.RolePlayStoryDatainputDTO;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 
 import java.io.InputStream;
@@ -213,7 +213,7 @@ public class RPChoice2PaneController extends AbstractC3RolePlayController implem
 			double y = 455;
 			double offset = 40;
 
-			RolePlayStoryVar3DTO rpVar3 = rpStory.getVar3ID();
+			RolePlayStoryDatainputDTO rpVar3 = rpStory.getVar3ID();
 
 //			// rpVar3
 //			if(rpVar3.getNextStory4ID() != null){

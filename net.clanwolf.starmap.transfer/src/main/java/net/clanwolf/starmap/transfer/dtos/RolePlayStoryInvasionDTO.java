@@ -31,10 +31,10 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import net.clanwolf.starmap.transfer.Dto;
 
 @JsonIdentityInfo(
-		scope= RolePlayStoryVar9DTO.class,
+		scope= RolePlayStoryInvasionDTO.class,
 		generator=ObjectIdGenerators.PropertyGenerator.class,
 		property = "id")
-public class RolePlayStoryVar9DTO extends Dto {
+public class RolePlayStoryInvasionDTO extends Dto {
 
 	//@Column(name = "ID")
 	private Long id;

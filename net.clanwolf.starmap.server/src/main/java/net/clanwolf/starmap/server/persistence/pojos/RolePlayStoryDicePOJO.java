@@ -24,105 +24,127 @@
  * Copyright (c) 2001-2024, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.transfer.dtos;
+package net.clanwolf.starmap.server.persistence.pojos;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import net.clanwolf.starmap.transfer.Dto;
+import net.clanwolf.starmap.server.persistence.Pojo;
 
+import jakarta.persistence.*;
+import static jakarta.persistence.GenerationType.IDENTITY;
 
 @JsonIdentityInfo(
-		scope= RolePlayStoryVar7DTO.class,
+		scope= RolePlayStoryDicePOJO.class,
 		generator=ObjectIdGenerators.PropertyGenerator.class,
 		property = "id")
-public class RolePlayStoryVar7DTO extends Dto {
+@Entity
+@Table(name = "ROLEPLAY_STORY_DICE", catalog = "C3")
+public class RolePlayStoryDicePOJO extends Pojo {
 
 
-	//@Column(name = "ID")
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "ID")
 	private Long id;
 
-	//@JoinColumn(name = "StoryID")
-	private Long story;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "StoryID")
+	private RolePlayStoryPOJO story;
 
-	//@Column(name = "Faction")
-	private Long factionID;
+	@Column(name = "Score")
+	private Integer score;
 
-	//@Column(name = "ServiceName")
-	private String serviceName;
+	@JoinColumn(name = "StoryIDScoreLess")
+	private Long storyIDScoreLess;
 
-	//@Column(name = "Header")
-	private String header;
+	@JoinColumn(name = "StoryIDScoreEqual")
+	private Long storyIDScoreEqual;
 
-	//@Column(name = "Sender")
-	private String sender;
+	@JoinColumn(name = "StoryIDScoreMore")
+	private Long storyIDScoreMore;
 
-	//@Column(name = "Date")
-	private String date;
-
-	//@JoinColumn(name = "NextStepID")
-	private Long nextStepID;
-
+	/**
+	 * @return the id
+	 */
 	public Long getId() {
 		return id;
 	}
 
+	/**
+	 * @param id the id to set
+	 */
 	public void setId(Long id) {
 		this.id = id;
 	}
 
-	public Long getStory() {
+	/**
+	 * @return the story
+	 */
+	public RolePlayStoryPOJO getStory() {
 		return story;
 	}
 
-	public void setStory(Long story) {
+	/**
+	 * @param story the story to set
+	 */
+	public void setStory(RolePlayStoryPOJO story) {
 		this.story = story;
 	}
 
-	public Long getFaction() {
-		return factionID;
+	/**
+	 * @return the storyIDScoreLess
+	 */
+	public Long getStoryIDScoreLess() {
+		return storyIDScoreLess;
 	}
 
-	public void setFaction(Long faction) {
-		this.factionID = faction;
+	/**
+	 * @param storyIDScoreLess the storyIDScoreLess to set
+	 */
+	public void setStoryIDScoreLess(Long storyIDScoreLess) {
+		this.storyIDScoreLess = storyIDScoreLess;
 	}
 
-	public String getServiceName() {
-		return serviceName;
+	/**
+	 * @return the storyIDScoreEqual
+	 */
+	public Long getStoryIDScoreEqual() {
+		return storyIDScoreEqual;
 	}
 
-	public void setServiceName(String serviceName) {
-		this.serviceName = serviceName;
+	/**
+	 * @param storyIDScoreEqual the storyIDScoreEqual to set
+	 */
+	public void setStoryIDScoreEqual(Long storyIDScoreEqual) {
+		this.storyIDScoreEqual = storyIDScoreEqual;
 	}
 
-	public String getHeader() {
-		return header;
+	/**
+	 * @return the storyIDScoreMore
+	 */
+	public Long getStoryIDScoreMore() {
+		return storyIDScoreMore;
 	}
 
-	public void setHeader(String header) {
-		this.header = header;
+	/**
+	 * @param storyIDScoreMore the storyIDScoreMore to set
+	 */
+	public void setStoryIDScoreMore(Long storyIDScoreMore) {
+		this.storyIDScoreMore = storyIDScoreMore;
 	}
 
-	public String getSender() {
-		return sender;
+	/**
+	 * @return the score
+	 */
+	public Integer getScore() {
+		return score;
 	}
 
-	public void setSender(String sender) {
-		this.sender = sender;
+	/**
+	 * @param score the score to set
+	 */
+	public void setScore(Integer score) {
+		this.score = score;
 	}
 
-	public String getDate() {
-		return date;
-	}
-
-	public void setDate(String date) {
-		this.date = date;
-	}
-
-	public Long getNextStepID() {
-		return nextStepID;
-	}
-
-	public void setNextStepID(Long nextStepID) {
-		this.nextStepID = nextStepID;
-	}
 }

@@ -34,12 +34,12 @@ import jakarta.persistence.*;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @JsonIdentityInfo(
-		scope= RolePlayStoryVar9POJO.class,
+		scope= RolePlayStoryInvasionPOJO.class,
 		generator=ObjectIdGenerators.PropertyGenerator.class,
 		property = "id")
 @Entity
-@Table(name = "ROLEPLAY_STORY_VAR9", catalog = "C3")
-public class RolePlayStoryVar9POJO extends Pojo{
+@Table(name = "ROLEPLAY_STORY_INVASION", catalog = "C3")
+public class RolePlayStoryInvasionPOJO extends Pojo{
 
 
 	@Id

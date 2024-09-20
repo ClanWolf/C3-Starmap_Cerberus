@@ -29,18 +29,17 @@ package net.clanwolf.starmap.server.persistence.pojos;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import net.clanwolf.starmap.server.persistence.Pojo;
-import net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes.ROLEPLAYINPUTDATATYPES;
 
 import jakarta.persistence.*;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @JsonIdentityInfo(
-		scope= RolePlayStoryVar3POJO.class,
+		scope= RolePlayStoryDatainputPOJO.class,
 		generator=ObjectIdGenerators.PropertyGenerator.class,
 		property = "id")
 @Entity
-@Table(name = "ROLEPLAY_STORY_VAR3", catalog = "C3")
-public class RolePlayStoryVar3POJO extends Pojo {
+@Table(name = "ROLEPLAY_STORY_DATAINPUT", catalog = "C3")
+public class RolePlayStoryDatainputPOJO extends Pojo {
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)

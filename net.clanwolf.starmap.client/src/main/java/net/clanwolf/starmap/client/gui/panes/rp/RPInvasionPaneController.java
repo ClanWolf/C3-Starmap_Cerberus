@@ -367,7 +367,7 @@ public class RPInvasionPaneController extends AbstractC3RolePlayController imple
 		taRpText.setText(RPVarReplacer_DE.replaceVars(rpStory.getStoryText()));
 
 		if (rpStory.getVar9ID() != null) {
-			RolePlayStoryVar9DTO rpVar9 = rpStory.getVar9ID();
+			RolePlayStoryInvasionDTO rpVar9 = rpStory.getVar9ID();
 
 			double x = 59;
 			double y = 452;

@@ -74,17 +74,17 @@ public class RolePlayStoryDTO extends Dto {
 	//@Column(name = "widthText")
 	private Integer widthText;
 	//@JoinColumn(name = "Var2ID")
-    private RolePlayStoryVar2DTO var2ID;
+    private RolePlayStoryChoiceDTO rpid_choice;
 	//@JoinColumn(name = "Var3ID")
-    private RolePlayStoryVar3DTO var3ID;
+    private RolePlayStoryDatainputDTO rpid_datainput;
 	// @JoinColumn(name = "Var4ID")
-    private RolePlayStoryVar4DTO var4ID;
+    private RolePlayStoryDiceDTO rpid_dice;
 	//@JoinColumn(name = "Var6ID")
-	private RolePlayStoryVar6DTO var6ID;
+	private RolePlayStoryKeypadDTO rpid_keypad;
 	//@JoinColumn(name = "Var7ID")
-	private RolePlayStoryVar7DTO var7ID;
+	private RolePlayStoryHPGMessageDTO rpid_hpgmessage;
 	//@JoinColumn(name = "Var9ID")
-	private RolePlayStoryVar9DTO var9ID;
+	private RolePlayStoryInvasionDTO rpid_invasion;
 	//@JoinColumn(name = "StoryID")
 	//@JoinColumn(name = "NextStepID")
 	//@Column(name = "buttonText")
@@ -360,16 +360,16 @@ public class RolePlayStoryDTO extends Dto {
 	/**
 	 * @return the var2ID
 	 */
-	public RolePlayStoryVar2DTO getVar2ID() {
-		return var2ID;
+	public RolePlayStoryChoiceDTO getVar2ID() {
+		return rpid_choice;
 	}
 
 
 	/**
 	 * @param var2id the var2ID to set
 	 */
-	public void setVar2ID(RolePlayStoryVar2DTO var2id) {
-		var2ID = var2id;
+	public void setVar2ID(RolePlayStoryChoiceDTO var2id) {
+		rpid_choice = var2id;
 	}
 
 
@@ -392,32 +392,32 @@ public class RolePlayStoryDTO extends Dto {
 	/**
 	 * @return the var3ID
 	 */
-	public RolePlayStoryVar3DTO getVar3ID() {
-		return var3ID;
+	public RolePlayStoryDatainputDTO getVar3ID() {
+		return rpid_datainput;
 	}
 
 
 	/**
 	 * @param var3id the var3ID to set
 	 */
-	public void setVar3ID(RolePlayStoryVar3DTO var3id) {
-		var3ID = var3id;
+	public void setVar3ID(RolePlayStoryDatainputDTO var3id) {
+		rpid_datainput = var3id;
 	}
 
 
 	/**
 	 * @return the var4ID
 	 */
-	public RolePlayStoryVar4DTO getVar4ID() {
-		return var4ID;
+	public RolePlayStoryDiceDTO getVar4ID() {
+		return rpid_dice;
 	}
 
 
 	/**
 	 * @param var4id the var4ID to set
 	 */
-	public void setVar4ID(RolePlayStoryVar4DTO var4id) {
-		var4ID = var4id;
+	public void setVar4ID(RolePlayStoryDiceDTO var4id) {
+		rpid_dice = var4id;
 	}
 
 	public Long getNextStepID() {
@@ -444,12 +444,12 @@ public class RolePlayStoryDTO extends Dto {
 		this.removedCharIDs = removedCharIDs;
 	}
 
-	public RolePlayStoryVar6DTO getVar6ID() {
-		return var6ID;
+	public RolePlayStoryKeypadDTO getVar6ID() {
+		return rpid_keypad;
 	}
 
-	public void setVar6ID(RolePlayStoryVar6DTO var6ID) {
-		this.var6ID = var6ID;
+	public void setVar6ID(RolePlayStoryKeypadDTO var6ID) {
+		this.rpid_keypad = var6ID;
 	}
 
 	public Integer getxPosText() {
@@ -484,20 +484,20 @@ public class RolePlayStoryDTO extends Dto {
 		this.widthText = widthText;
 	}
 
-	public RolePlayStoryVar7DTO getVar7ID() {
-		return var7ID;
+	public RolePlayStoryHPGMessageDTO getVar7ID() {
+		return rpid_hpgmessage;
 	}
 
-	public void setVar7ID(RolePlayStoryVar7DTO var7ID) {
-		this.var7ID = var7ID;
+	public void setVar7ID(RolePlayStoryHPGMessageDTO var7ID) {
+		this.rpid_hpgmessage = var7ID;
 	}
 
-	public RolePlayStoryVar9DTO getVar9ID() {
-		return var9ID;
+	public RolePlayStoryInvasionDTO getVar9ID() {
+		return rpid_invasion;
 	}
 
-	public void setVar9ID(RolePlayStoryVar9DTO var9ID) {
-		this.var9ID = var9ID;
+	public void setVar9ID(RolePlayStoryInvasionDTO var9ID) {
+		this.rpid_invasion = var9ID;
 	}
 
 	@Override

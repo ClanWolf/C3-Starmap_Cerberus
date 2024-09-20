@@ -24,114 +24,90 @@
  * Copyright (c) 2001-2024, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.transfer.dtos;
+package net.clanwolf.starmap.server.persistence.pojos;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import net.clanwolf.starmap.transfer.Dto;
+import net.clanwolf.starmap.server.persistence.Pojo;
+
+import jakarta.persistence.*;
+import static jakarta.persistence.GenerationType.IDENTITY;
 
 @JsonIdentityInfo(
-		scope= RolePlayStoryVar4DTO.class,
+		scope= RolePlayStoryKeypadPOJO.class,
 		generator=ObjectIdGenerators.PropertyGenerator.class,
 		property = "id")
-public class RolePlayStoryVar4DTO extends Dto {
+@Entity
+@Table(name = "ROLEPLAY_STORY_KEYPAD", catalog = "C3")
+public class RolePlayStoryKeypadPOJO extends Pojo {
 
-	//@Column(name = "ID")
+
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "ID")
 	private Long id;
-	//@JoinColumn(name = "StoryID")
-	private Long story;
-	//@Column(name = "Score")
-	private Integer score;
-	//@JoinColumn(name = "StoryIDScoreLess")
-	private Long storyIDScoreLess;
-	//@JoinColumn(name = "StoryIDScoreEqual")
-	private Long storyIDScoreEqual;
-	//@JoinColumn(name = "StoryIDScoreMore")
-	private Long storyIDScoreMore;
 
-	/**
-	 * @return the id
-	 */
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "StoryID")
+	private RolePlayStoryPOJO story;
+
+	@Column(name = "SecretCode")
+	private String secretCode;
+
+	@Column(name = "Attempts")
+	private Integer attempts;
+
+	@JoinColumn(name = "StoryIDSuccess")
+	private Long storyIDSuccess;
+
+	@JoinColumn(name = "StoryIDFailure")
+	private Long storyIDFailure;
+
 	public Long getId() {
 		return id;
 	}
 
-	/**
-	 * @param id the id to set
-	 */
 	public void setId(Long id) {
 		this.id = id;
 	}
 
-	/**
-	 * @return the story
-	 */
-	public Long getStory() {
+	public RolePlayStoryPOJO getStory() {
 		return story;
 	}
 
-	/**
-	 * @param story the story to set
-	 */
-	public void setStory(Long story) {
+	public void setStory(RolePlayStoryPOJO story) {
 		this.story = story;
 	}
 
-	/**
-	 * @return the storyIDScoreLess
-	 */
-	public Long getStoryIDScoreLess() {
-		return storyIDScoreLess;
+	public String getSecretCode() {
+		return secretCode;
 	}
 
-	/**
-	 * @param storyIDScoreLess the storyIDScoreLess to set
-	 */
-	public void setStoryIDScoreLess(Long storyIDScoreLess) {
-		this.storyIDScoreLess = storyIDScoreLess;
+	public void setSecretCode(String secretCode) {
+		this.secretCode = secretCode;
 	}
 
-	/**
-	 * @return the storyIDScoreEqual
-	 */
-	public Long getStoryIDScoreEqual() {
-		return storyIDScoreEqual;
+	public Integer getAttempts() {
+		return attempts;
 	}
 
-	/**
-	 * @param storyIDScoreEqual the storyIDScoreEqual to set
-	 */
-	public void setStoryIDScoreEqual(Long storyIDScoreEqual) {
-		this.storyIDScoreEqual = storyIDScoreEqual;
+	public void setAttempts(Integer attempts) {
+		this.attempts = attempts;
 	}
 
-	/**
-	 * @return the storyIDScoreMore
-	 */
-	public Long getStoryIDScoreMore() {
-		return storyIDScoreMore;
+	public Long getStoryIDSuccess() {
+		return storyIDSuccess;
 	}
 
-	/**
-	 * @param storyIDScoreMore the storyIDScoreMore to set
-	 */
-	public void setStoryIDScoreMore(Long storyIDScoreMore) {
-		this.storyIDScoreMore = storyIDScoreMore;
+	public void setStoryIDSuccess(Long storyIDSuccess) {
+		this.storyIDSuccess = storyIDSuccess;
 	}
 
-	/**
-	 * @return the score
-	 */
-	public Integer getScore() {
-		return score;
+	public Long getStoryIDFailure() {
+		return storyIDFailure;
 	}
 
-	/**
-	 * @param score the score to set
-	 */
-	public void setScore(Integer score) {
-		this.score = score;
+	public void setStoryIDFailure(Long storyIDFailure) {
+		this.storyIDFailure = storyIDFailure;
 	}
-
-
 }

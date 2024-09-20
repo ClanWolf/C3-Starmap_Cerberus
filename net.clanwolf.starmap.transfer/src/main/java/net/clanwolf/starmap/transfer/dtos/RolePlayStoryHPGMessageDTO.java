@@ -29,111 +29,100 @@ package net.clanwolf.starmap.transfer.dtos;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import net.clanwolf.starmap.transfer.Dto;
-import net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes.ROLEPLAYINPUTDATATYPES;
+
 
 @JsonIdentityInfo(
-		scope= RolePlayStoryVar3DTO.class,
+		scope= RolePlayStoryHPGMessageDTO.class,
 		generator=ObjectIdGenerators.PropertyGenerator.class,
 		property = "id")
-public class RolePlayStoryVar3DTO extends Dto {
+public class RolePlayStoryHPGMessageDTO extends Dto {
+
 
 	//@Column(name = "ID")
 	private Long id;
+
 	//@JoinColumn(name = "StoryID")
 	private Long story;
-	//@JoinColumn(name = "NextStoryID")
-	private Long nextStoryID;
 
-	//@Column(name = "DataSet1")
-	private String DataSet1;
-	//@Column(name = "DataSet2")
-	private String DataSet2;
-	//@Column(name = "DataSet3")
-	private String DataSet3;
-	//@Column(name = "DataSet4")
-	private String DataSet4;
-	//@Column(name = "DataSet5")
-	private String DataSet5;
+	//@Column(name = "Faction")
+	private Long factionID;
 
-	/**
-	 * @return the id
-	 */
+	//@Column(name = "ServiceName")
+	private String serviceName;
+
+	//@Column(name = "Header")
+	private String header;
+
+	//@Column(name = "Sender")
+	private String sender;
+
+	//@Column(name = "Date")
+	private String date;
+
+	//@JoinColumn(name = "NextStepID")
+	private Long nextStepID;
+
 	public Long getId() {
 		return id;
 	}
 
-	/**
-	 * @param id the id to set
-	 */
 	public void setId(Long id) {
 		this.id = id;
 	}
 
-	/**
-	 * @return the story
-	 */
 	public Long getStory() {
 		return story;
 	}
 
-	/**
-	 * @param story the story to set
-	 */
 	public void setStory(Long story) {
 		this.story = story;
 	}
 
-	/**
-	 * @return the nextStoryID
-	 */
-	public Long getNextStoryID() {
-		return nextStoryID;
+	public Long getFaction() {
+		return factionID;
 	}
 
-	/**
-	 * @param nextStoryID the nextStoryID to set
-	 */
-	public void setNextStoryID(Long nextStoryID) {
-		this.nextStoryID = nextStoryID;
+	public void setFaction(Long faction) {
+		this.factionID = faction;
 	}
 
-	public String getDataSet1() {
-		return DataSet1;
+	public String getServiceName() {
+		return serviceName;
 	}
 
-	public void setDataSet1(String dataSet1) {
-		DataSet1 = dataSet1;
+	public void setServiceName(String serviceName) {
+		this.serviceName = serviceName;
 	}
 
-	public String getDataSet2() {
-		return DataSet2;
+	public String getHeader() {
+		return header;
 	}
 
-	public void setDataSet2(String dataSet2) {
-		DataSet2 = dataSet2;
+	public void setHeader(String header) {
+		this.header = header;
 	}
 
-	public String getDataSet3() {
-		return DataSet3;
+	public String getSender() {
+		return sender;
 	}
 
-	public void setDataSet3(String dataSet3) {
-		DataSet3 = dataSet3;
+	public void setSender(String sender) {
+		this.sender = sender;
 	}
 
-	public String getDataSet4() {
-		return DataSet4;
+	public String getDate() {
+		return date;
 	}
 
-	public void setDataSet4(String dataSet4) {
-		DataSet4 = dataSet4;
+	public void setDate(String date) {
+		this.date = date;
 	}
 
-	public String getDataSet5() {
-		return DataSet5;
+	public Long getNextStepID() {
+		return nextStepID;
 	}
 
-	public void setDataSet5(String dataSet5) {
-		DataSet5 = dataSet5;
+	public void setNextStepID(Long nextStepID) {
+		this.nextStepID = nextStepID;
 	}
 }

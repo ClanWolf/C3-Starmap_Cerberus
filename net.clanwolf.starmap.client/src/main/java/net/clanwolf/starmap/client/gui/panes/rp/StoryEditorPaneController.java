@@ -1742,9 +1742,9 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 		// set data for variante 2
 		if (rp.getVariante() == ROLEPLAYENTRYTYPES.RP_CHOICE || rp.getVariante() == ROLEPLAYENTRYTYPES.RP_CHOICE_IMAGE_LEFT) {
 
-			RolePlayStoryVar2DTO rpVar2 = rp.getVar2ID();
+			RolePlayStoryChoiceDTO rpVar2 = rp.getVar2ID();
 			if (rpVar2 == null) {
-				rpVar2 = new RolePlayStoryVar2DTO();
+				rpVar2 = new RolePlayStoryChoiceDTO();
 				rpVar2.setStory(rp.getId());
 			}
 
@@ -1783,9 +1783,9 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 		// set data for variante 3
 		if (rp.getVariante() == ROLEPLAYENTRYTYPES.RP_DATA_INPUT) {
 
-			RolePlayStoryVar3DTO rpVar3 = rp.getVar3ID();
+			RolePlayStoryDatainputDTO rpVar3 = rp.getVar3ID();
 			if (rpVar3 == null) {
-				rpVar3 = new RolePlayStoryVar3DTO();
+				rpVar3 = new RolePlayStoryDatainputDTO();
 				rpVar3.setStory(rp.getId());
 			}
 
@@ -1817,9 +1817,9 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 		// set data for variante 4
 		if (rp.getVariante() == ROLEPLAYENTRYTYPES.RP_DICE) {
 
-			RolePlayStoryVar4DTO rpVar4 = rp.getVar4ID();
+			RolePlayStoryDiceDTO rpVar4 = rp.getVar4ID();
 			if (rpVar4 == null) {
-				rpVar4 = new RolePlayStoryVar4DTO();
+				rpVar4 = new RolePlayStoryDiceDTO();
 				rpVar4.setStory(rp.getId());
 			}
 
@@ -1846,9 +1846,9 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 
 		// set data for variante 6
 		if (rp.getVariante() == ROLEPLAYENTRYTYPES.RP_KEYPAD) {
-			RolePlayStoryVar6DTO rpVar6 = rp.getVar6ID();
+			RolePlayStoryKeypadDTO rpVar6 = rp.getVar6ID();
 			if (rpVar6 == null) {
-				rpVar6 = new RolePlayStoryVar6DTO();
+				rpVar6 = new RolePlayStoryKeypadDTO();
 				rpVar6.setStory(rp.getId());
 			}
 			rpVar6.setSecretCode(tfCode.getText());
@@ -1873,9 +1873,9 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 
 		// set data for variante 7
 		if (rp.getVariante() == ROLEPLAYENTRYTYPES.RP_HPG_MESSAGE) {
-			RolePlayStoryVar7DTO rpVar7 = rp.getVar7ID();
+			RolePlayStoryHPGMessageDTO rpVar7 = rp.getVar7ID();
 			if (rpVar7 == null) {
-				rpVar7 = new RolePlayStoryVar7DTO();
+				rpVar7 = new RolePlayStoryHPGMessageDTO();
 				rpVar7.setStory(rp.getId());
 			}
 
@@ -1904,9 +1904,9 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 		// set data for variante 9
 		if (rp.getVariante() == ROLEPLAYENTRYTYPES.RP_INVASION) {
 
-			RolePlayStoryVar9DTO rpVar9 = rp.getVar9ID();
+			RolePlayStoryInvasionDTO rpVar9 = rp.getVar9ID();
 			if (rpVar9 == null) {
-				rpVar9 = new RolePlayStoryVar9DTO();
+				rpVar9 = new RolePlayStoryInvasionDTO();
 				rpVar9.setStory(rp.getId());
 			}
 

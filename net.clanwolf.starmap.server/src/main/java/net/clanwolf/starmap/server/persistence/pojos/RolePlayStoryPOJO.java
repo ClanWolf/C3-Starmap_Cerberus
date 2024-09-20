@@ -44,7 +44,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Table(name = "ROLEPLAY_STORY", catalog = "C3")
 public class RolePlayStoryPOJO extends Pojo {
 
-    
+
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "ID")
@@ -58,11 +58,11 @@ public class RolePlayStoryPOJO extends Pojo {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "ParentStoryID")
     private RolePlayStoryPOJO parentStory;
-    
+
    // @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "Author")
     private Long author;
-    
+
 	@Column(name = "StoryName")
     private String storyName;
 
@@ -72,22 +72,22 @@ public class RolePlayStoryPOJO extends Pojo {
 
     @Column(name = "SortOrder")
     private Integer sortOrder;
-    
+
     @Column(name = "StoryText")
     private String storyText;
 
     @Column(name = "StoryImage")
     private String storyImage;
-    
+
     @Column(name = "StoryMP3")
     private String storyMP3;
 
     @Column(name = "StoryIntro")
     private String StoryIntro;
-    
+
     @Column(name = "StoryDescription")
     private String storyDescription;
-    
+
     @Column(name = "RolePlayOff")
     private String rolePlayOff;
 
@@ -113,34 +113,34 @@ public class RolePlayStoryPOJO extends Pojo {
 	private Integer widthText;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "Var2ID")
-    private RolePlayStoryVar2POJO var2ID;
-    
+    @JoinColumn(name = "RPID_Choice")
+    private RolePlayStoryChoicePOJO rpid_choice;
+
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "Var3ID")
-    private RolePlayStoryVar3POJO var3ID;
-    
+    @JoinColumn(name = "RPID_Datainput")
+    private RolePlayStoryDatainputPOJO rpid_datainput;
+
     @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "Var4ID")
-    private RolePlayStoryVar4POJO var4ID;
+    @JoinColumn(name = "RPID_Dice")
+    private RolePlayStoryDicePOJO rpid_dice;
 
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "Var6ID")
-	private RolePlayStoryVar6POJO var6ID;
+	@JoinColumn(name = "RPID_Keypad")
+	private RolePlayStoryKeypadPOJO rpid_keypad;
 
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "Var7ID")
-	private RolePlayStoryVar7POJO Var7ID;
+	@JoinColumn(name = "RPID_HPGMessage")
+	private RolePlayStoryHPGMessagePOJO rpid_hpgmessage;
 
 	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-	@JoinColumn(name = "Var9ID")
-	private RolePlayStoryVar9POJO Var9ID;
+	@JoinColumn(name = "RPID_Invasion")
+	private RolePlayStoryInvasionPOJO rpid_invasion;
 
 //	@ManyToOne(fetch = FetchType.EAGER)
 //	@JoinColumn(name = "NextStepID")
 //	private RolePlayStoryPOJO nextStepID;
 	private Long nextStepID;
-    
+
     @Column(name = "URL")
     private String url;
 
@@ -156,7 +156,7 @@ public class RolePlayStoryPOJO extends Pojo {
 	private ArrayList<Long> newCharIDs;
 	@Transient
 	private ArrayList<Long> removedCharIDs;
-    
+
     public RolePlayStoryPOJO() {
         // do nothing
     } // BFUser
@@ -283,7 +283,7 @@ public class RolePlayStoryPOJO extends Pojo {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
+
 	/**
 	 * @return the storyDescription
 	 */
@@ -299,7 +299,7 @@ public class RolePlayStoryPOJO extends Pojo {
 		this.storyDescription = storyDescription;
 	}
 
-	
+
 
 	/**
 	 * @return the author
@@ -346,7 +346,7 @@ public class RolePlayStoryPOJO extends Pojo {
 	public void setNewImageWithPath(String newImageWithPath) {
 		this.newImageWithPath = newImageWithPath;
 	}
-	
+
 	/**
 	 * @return the newVoiceWithPath
 	 */
@@ -377,7 +377,7 @@ public class RolePlayStoryPOJO extends Pojo {
 	public void setNewMovieWithPath(String newMovieWithPath) {
 		this.newMovieWithPath = newMovieWithPath;
 	}
-	
+
 	/**
 	 * @return the sortOrder
 	 */
@@ -411,16 +411,16 @@ public class RolePlayStoryPOJO extends Pojo {
 	/**
 	 * @return the var2ID
 	 */
-	public RolePlayStoryVar2POJO getVar2ID() {
-		return var2ID;
+	public RolePlayStoryChoicePOJO getVar2ID() {
+		return rpid_choice;
 	}
 
 
 	/**
 	 * @param var2id the var2ID to set
 	 */
-	public void setVar2ID(RolePlayStoryVar2POJO var2id) {
-		var2ID = var2id;
+	public void setVar2ID(RolePlayStoryChoicePOJO var2id) {
+		rpid_choice = var2id;
 	}
 
 
@@ -443,32 +443,32 @@ public class RolePlayStoryPOJO extends Pojo {
 	/**
 	 * @return the var3ID
 	 */
-	public RolePlayStoryVar3POJO getVar3ID() {
-		return var3ID;
+	public RolePlayStoryDatainputPOJO getVar3ID() {
+		return rpid_datainput;
 	}
 
 
 	/**
 	 * @param var3id the var3ID to set
 	 */
-	public void setVar3ID(RolePlayStoryVar3POJO var3id) {
-		var3ID = var3id;
+	public void setVar3ID(RolePlayStoryDatainputPOJO var3id) {
+		rpid_datainput = var3id;
 	}
 
 
 	/**
 	 * @return the var4ID
 	 */
-	public RolePlayStoryVar4POJO getVar4ID() {
-		return var4ID;
+	public RolePlayStoryDicePOJO getVar4ID() {
+		return rpid_dice;
 	}
 
 
 	/**
 	 * @param var4id the var4ID to set
 	 */
-	public void setVar4ID(RolePlayStoryVar4POJO var4id) {
-		var4ID = var4id;
+	public void setVar4ID(RolePlayStoryDicePOJO var4id) {
+		rpid_dice = var4id;
 	}
 
 	public Long getNextStepID() {
@@ -495,12 +495,12 @@ public class RolePlayStoryPOJO extends Pojo {
 		this.removedCharIDs = removedCharIDs;
 	}
 
-	public RolePlayStoryVar6POJO getVar6ID() {
-		return var6ID;
+	public RolePlayStoryKeypadPOJO getVar6ID() {
+		return rpid_keypad;
 	}
 
-	public void setVar6ID(RolePlayStoryVar6POJO var6ID) {
-		this.var6ID = var6ID;
+	public void setVar6ID(RolePlayStoryKeypadPOJO var6ID) {
+		this.rpid_keypad = var6ID;
 	}
 
 	public Integer getxPosText() {
@@ -535,20 +535,20 @@ public class RolePlayStoryPOJO extends Pojo {
 		this.widthText = widthText;
 	}
 
-	public RolePlayStoryVar7POJO getVar7ID() {
-		return Var7ID;
+	public RolePlayStoryHPGMessagePOJO getVar7ID() {
+		return rpid_hpgmessage;
 	}
 
-	public void setVar7ID(RolePlayStoryVar7POJO var7ID) {
-		Var7ID = var7ID;
+	public void setVar7ID(RolePlayStoryHPGMessagePOJO var7ID) {
+		rpid_hpgmessage = var7ID;
 	}
 
-	public RolePlayStoryVar9POJO getVar9ID() {
-		return Var9ID;
+	public RolePlayStoryInvasionPOJO getVar9ID() {
+		return rpid_invasion;
 	}
 
-	public void setVar9ID(RolePlayStoryVar9POJO var9ID) {
-		Var9ID = var9ID;
+	public void setVar9ID(RolePlayStoryInvasionPOJO var9ID) {
+		rpid_invasion = var9ID;
 	}
 
 	@Override

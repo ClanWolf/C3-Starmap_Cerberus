@@ -24,55 +24,39 @@
  * Copyright (c) 2001-2024, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.server.persistence.pojos;
+package net.clanwolf.starmap.transfer.dtos;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
-import net.clanwolf.starmap.server.persistence.Pojo;
-
-import jakarta.persistence.*;
-import static jakarta.persistence.GenerationType.IDENTITY;
+import net.clanwolf.starmap.transfer.Dto;
 
 @JsonIdentityInfo(
-		scope= RolePlayStoryVar2POJO.class,
+		scope= RolePlayStoryChoiceDTO.class,
 		generator=ObjectIdGenerators.PropertyGenerator.class,
 		property = "id")
-@Entity
-@Table(name = "ROLEPLAY_STORY_VAR2", catalog = "C3")
-public class RolePlayStoryVar2POJO extends Pojo{
+public class RolePlayStoryChoiceDTO extends Dto {
 
-
-	@Id
-	@GeneratedValue(strategy = IDENTITY)
-	@Column(name = "ID")
+	//@Column(name = "ID")
 	private Long id;
-
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "StoryID")
-	private RolePlayStoryPOJO story;
-
-	@JoinColumn(name = "Option1StoryID")
+	//@JoinColumn(name = "StoryID")
+	//private RolePlayStoryDTO story;
+	private Long story;
+	//@JoinColumn(name = "Option1StoryID")
 	private Long option1StoryID;
-
-	@Column(name = "Option1Text")
+	//@Column(name = "Option1Text")
 	private String option1Text;
-
-	@JoinColumn(name = "Option2StoryID")
+	//@JoinColumn(name = "Option2StoryID")
 	private Long option2StoryID;
-
-	@Column(name = "Option2Text")
+	//@Column(name = "Option2Text")
 	private String option2Text;
-
-	@JoinColumn(name = "Option3StoryID")
+	//@JoinColumn(name = "Option3StoryID")
 	private Long option3StoryID;
-
-	@Column(name = "Option3Text")
+	//@Column(name = "Option3Text")
 	private String option3Text;
-
-	@JoinColumn(name = "Option4StoryID")
+	//@JoinColumn(name = "Option4StoryID")
 	private Long option4StoryID;
 
-	@Column(name = "Option4Text")
+	//@Column(name = "Option4Text")
 	private String option4Text;
 
 	/* -- Getter -- */
@@ -81,17 +65,21 @@ public class RolePlayStoryVar2POJO extends Pojo{
 
 	} // getId
 
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 	/**
 	 * @return the story
 	 */
-	public RolePlayStoryPOJO getStory() {
+	public Long getStory() {
 		return story;
 	}
 
 	/**
 	 * @param story the story to set
 	 */
-	public void setStory(RolePlayStoryPOJO story) {
+	public void setStory(Long story) {
 		this.story = story;
 	}
 
