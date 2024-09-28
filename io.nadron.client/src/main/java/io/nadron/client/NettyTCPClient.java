@@ -21,9 +21,9 @@ import java.util.concurrent.TimeUnit;
  * nadron server. Using one instance of this class, multiple tcp connections can be
  * made to a remote nadron server. For connection to multiple nadron server's use
  * multiple instances of this class.
- * 
+ *
  * @author Abraham Menacherry.
- * 
+ *
  */
 public class NettyTCPClient
 {
@@ -56,7 +56,7 @@ public class NettyTCPClient
 	 * {@link #NettyTCPClient(InetSocketAddress)} constructor after creating a
 	 * {@link InetSocketAddress} instance based on the host and port number
 	 * passed in.
-	 * 
+	 *
 	 * @param nadronHost
 	 *            The host name of the remote server on which nadron server is
 	 *            running.
@@ -78,7 +78,7 @@ public class NettyTCPClient
 	 * also registers a shutdown hook which will call close on
 	 * {@link #ALL_CHANNELS} and call bootstrap.releaseExternalResources() to
 	 * enable a graceful shutdown.
-	 * 
+	 *
 	 * @param serverAddress
 	 *            The remote servers address. This address will be used when any
 	 *            of the default write/connect methods are used.
@@ -89,7 +89,7 @@ public class NettyTCPClient
 	 *            all {@link Channel}s and shutdown gracefully.
 	 */
 	public NettyTCPClient(final InetSocketAddress serverAddress,
-			final EventLoopGroup boss, 
+			final EventLoopGroup boss,
 			final int maxShutdownWaitTime)
 	{
 		this.serverAddress = serverAddress;
@@ -122,7 +122,7 @@ public class NettyTCPClient
 	 * {@link #connect(ChannelInitializer, Event, int, TimeUnit)} method
 	 * internally. It will pass in a default of 5 seconds wait time to the
 	 * delegated method.
-	 * 
+	 *
 	 * @param pipelineFactory
 	 *            The factory used to create a pipeline of decoders and encoders
 	 *            for each {@link Channel} that it creates on connection.
@@ -136,7 +136,7 @@ public class NettyTCPClient
 	 * @throws InterruptedException
 	 */
 	public Channel connect(final ChannelInitializer<SocketChannel> pipelineFactory,
-			final Event loginEvent) throws InterruptedException
+			final Event loginEvent) throws Exception
 	{
 		return connect(pipelineFactory, loginEvent, 5, TimeUnit.SECONDS);
 	}
@@ -144,7 +144,7 @@ public class NettyTCPClient
 	/**
 	 * Method that is used to create the connection or {@link Channel} to
 	 * communicated with the remote nadron server.
-	 * 
+	 *
 	 * @param pipelineFactory
 	 *            The factory used to create a pipeline of decoders and encoders
 	 *            for each {@link Channel} that it creates on connection.
@@ -165,31 +165,35 @@ public class NettyTCPClient
 	 */
 	public Channel connect(final ChannelInitializer<SocketChannel> pipelineFactory,
 	                       final Event loginEvent, int timeout, TimeUnit unit)
-			throws InterruptedException
-	{
+			throws Exception {
 		ChannelFuture future;
-		synchronized (bootstrap)
-		{
+		synchronized (bootstrap) {
 			bootstrap.handler(pipelineFactory);
 			future = bootstrap.connect(serverAddress);
-			future.addListener(new ChannelFutureListener()
-			{
-				@Override
-				public void operationComplete(ChannelFuture future)
-						throws Exception
-				{
-					if (future.isSuccess())
-					{
-						future.channel().writeAndFlush(loginEvent);
-					}
-					else
-					{
-						future.cause().printStackTrace();
-						throw new RuntimeException(future.cause()
-								.getMessage());
-					}
-				}
-			});
+//			future.addListener((ChannelFutureListener) future1 -> {
+//				if (future1.isSuccess()) {
+//					future1.channel().writeAndFlush(loginEvent);
+//				} else {
+//					future1.cause().printStackTrace();
+//					throw new Exception(future1.cause().getMessage());
+//				}
+//			});
+
+			future.awaitUninterruptibly();
+
+			// Now we are sure the future is completed.
+			assert future.isDone();
+
+			if (future.isCancelled()) {
+				// Connection attempt cancelled by user
+			} else if (!future.isSuccess()) {
+				//future.cause().printStackTrace();
+				throw new Exception(future.cause().getMessage());
+			} else {
+				// Connection established successfully
+				future.channel().writeAndFlush(loginEvent);
+			}
+
 		}
 		return future.channel();
 	}
@@ -203,7 +207,6 @@ public class NettyTCPClient
 	{
 		return boss;
 	}
-
 
 	public Bootstrap getBootstrap()
 	{

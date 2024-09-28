@@ -388,6 +388,11 @@
       </ImageView>
       <Pane fx:id="paneWindowMoverHandle" layoutX="18.0" layoutY="21.0" onMouseEntered="#handleEnterMouseMoverPane" onMouseExited="#handleExitMouseMoverPane" prefHeight="546.0" prefWidth="40.0" snapToPixel="false" AnchorPane.bottomAnchor="63.0" AnchorPane.topAnchor="21.0" />
       <Pane fx:id="paneWindowMoverHandle_TOP" layoutX="331.0" layoutY="22.0" onMouseEntered="#handleEnterMouseMoverPane" onMouseExited="#handleExitMouseMoverPane" prefHeight="34.0" prefWidth="361.0" snapToPixel="false" />
+      <ImageView fx:id="ivFlagIconDEV" fitHeight="40.0" fitWidth="98.0" layoutX="57.0" layoutY="12.0" pickOnBounds="true" preserveRatio="true" visible="false">
+         <image>
+            <Image url="@../images/flagIcon_DEV.png" />
+         </image>
+      </ImageView>
     </children>
     <stylesheets>
         <URL value="@../styles/MainFrameStyle.css" />

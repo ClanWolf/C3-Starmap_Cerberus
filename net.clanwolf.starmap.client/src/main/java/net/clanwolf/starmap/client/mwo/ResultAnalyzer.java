@@ -26,11 +26,6 @@
  */
 package net.clanwolf.starmap.client.mwo;
 
-import net.clanwolf.starmap.client.action.ACTIONS;
-import net.clanwolf.starmap.client.action.ActionManager;
-import net.clanwolf.starmap.client.enums.C3MESSAGES;
-import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
-import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.universe.BOAttackStats;
 import net.clanwolf.starmap.client.process.universe.BORolePlayCharacterStats;

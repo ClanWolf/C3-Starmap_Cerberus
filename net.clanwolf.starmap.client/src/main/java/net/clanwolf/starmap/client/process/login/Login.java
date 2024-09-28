@@ -40,12 +40,13 @@ import io.nadron.client.util.LoginHelper.LoginBuilder;
 import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.enums.C3MESSAGES;
-import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
 import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
 import net.clanwolf.starmap.client.nexus.Nexus;
-import net.clanwolf.starmap.client.process.logout.Logout;
 import net.clanwolf.starmap.client.process.network.EventCommunications;
-import net.clanwolf.starmap.client.util.*;
+import net.clanwolf.starmap.client.util.C3PROPS;
+import net.clanwolf.starmap.client.util.C3Properties;
+import net.clanwolf.starmap.client.util.Encryptor;
+import net.clanwolf.starmap.client.util.Tools;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import org.slf4j.Logger;
@@ -101,86 +102,91 @@ public class Login {
 	 * @throws Exception
 	 */
 	public static void doLogin(boolean registerMode) throws Exception {
-		// Upon login, get the values from the textfields and set the
-		// properties. The database comes from the settings!
+		try {
+			// Upon login, get the values from the textfields and set the
+			// properties. The database comes from the settings!
 
-		logger.info("Login");
-		String used_username;
-		String used_password;
+			logger.info("Login");
+			String used_username;
+			String used_password;
 
-		if ("true".equals(C3Properties.getProperty(C3PROPS.USE_GUEST_ACCOUNT))) {
-			used_username = guest_user;
-			used_password = Encryptor.createPasswordPair(guest_pass);
-		} else {
-			used_username = username;
-			if (passwordEncrypted) {
-				used_password = password;
+			if ("true".equals(C3Properties.getProperty(C3PROPS.USE_GUEST_ACCOUNT))) {
+				used_username = guest_user;
+				used_password = Encryptor.createPasswordPair(guest_pass);
 			} else {
-				if (!registerMode) {
-					// Normal operation -> login
-					used_password = Encryptor.createPasswordPair(password);
+				used_username = username;
+				if (passwordEncrypted) {
+					used_password = password;
 				} else {
-					// This is registration process, send only 2nd pw
-					used_password = Encryptor.createSinglePassword(password);
+					if (!registerMode) {
+						// Normal operation -> login
+						used_password = Encryptor.createPasswordPair(password);
+					} else {
+						// This is registration process, send only 2nd pw
+						used_password = Encryptor.createSinglePassword(password);
+					}
 				}
 			}
-		}
 
-		logger.info("Used username: " + used_username + " (enable output in source to debug credentials).");
-		//		logger.info("Used password: " + password);
-		//		logger.info("Used (encrypted) password: " + used_password);
-		//		logger.info("PW1: " + Encryptor.getPasswordFromPair("first", used_password));
-		//		logger.info("PW2: " + Encryptor.getPasswordFromPair("second", used_password));
+			logger.info("Used username: " + used_username + " (enable output in source to debug credentials).");
+			//		logger.info("Used password: " + password);
+			//		logger.info("Used (encrypted) password: " + used_password);
+			//		logger.info("PW1: " + Encryptor.getPasswordFromPair("first", used_password));
+			//		logger.info("PW2: " + Encryptor.getPasswordFromPair("second", used_password));
 
-		/*
-		 * BEGIN Server Login
-		 */
-		String tcphostname = C3Properties.getProperty(C3PROPS.TCP_HOSTNAME);
-		int tcpPort = Integer.parseInt(C3Properties.getProperty(C3PROPS.TCP_PORT));
+			/*
+			 * BEGIN Server Login
+			 */
+			String tcphostname = C3Properties.getProperty(C3PROPS.TCP_HOSTNAME);
+			int tcpPort = Integer.parseInt(C3Properties.getProperty(C3PROPS.TCP_PORT));
 
-		LoginBuilder builder;
-		if (Nexus.isDevelopmentPC()) {
-			builder = new LoginHelper.LoginBuilder().username(used_username).password(used_password).connectionKey("C3GameRoomForNettyClient").nadronTcpHostName("localhost").tcpPort(18090);
-		} else {
-			// neu: 82.165.244.122 (alt: 217.160.60.129)
-			builder = new LoginHelper.LoginBuilder().username(used_username).password(used_password).connectionKey("C3GameRoomForNettyClient").nadronTcpHostName(tcphostname).tcpPort(tcpPort);
-		}
-		LoginHelper loginHelper = builder.build();
-		SessionFactory sessionFactory = new SessionFactory(loginHelper);
-		sessionFactory.setLoginHelper(loginHelper);
-
-		if (session != null) {
-			session.close();
-			session = null;
-		}
-
-		session = sessionFactory.createSession();
-		logger.info("Session created: " + session + " (Session-ID: " + session.getId() + ")");
-
-		StartEventHandler startEventHandler = new StartEventHandler(session) {
-			@Override
-			public void onEvent(Event event) {
-				// logger.info("Event: " + event.toString() + ". Change to Object Protocol.");
-				if (event.getSource() instanceof GameState) {
-					// 0x1a START Event
-					GameState state = (GameState) event.getSource();
-					// logger.info("Event gamestate mode: " + state.getMode());
-				} else {
-					// logger.info("Event source: " + event.getSource());
-				}
-
-				session.resetProtocol(NettyObjectProtocol.INSTANCE);
-				session.removeHandler(this); // Removing startEventHandler
-				addDefaultHandlerToSession();
+			LoginBuilder builder;
+			if (Nexus.isDevelopmentPC()) {
+				builder = new LoginHelper.LoginBuilder().username(used_username).password(used_password).connectionKey("C3GameRoomForNettyClient").nadronTcpHostName("localhost").tcpPort(18090);
+			} else {
+				// neu: 82.165.244.122 (alt: 217.160.60.129)
+				builder = new LoginHelper.LoginBuilder().username(used_username).password(used_password).connectionKey("C3GameRoomForNettyClient").nadronTcpHostName(tcphostname).tcpPort(tcpPort);
 			}
-		};
+			LoginHelper loginHelper = builder.build();
+			SessionFactory sessionFactory = new SessionFactory(loginHelper);
+			sessionFactory.setLoginHelper(loginHelper);
 
-		session.addHandler(startEventHandler);
+			if (session != null) {
+				session.close();
+				session = null;
+			}
 
-		session.setReconnectPolicy(new ReconnectPolicy.ReconnectNTimes(50, 5000, loginHelper));
-		Nexus.setSession(session);
+			session = sessionFactory.createSession();
+			logger.info("Session created: " + session + " (Session-ID: " + session.getId() + ")");
 
-		sessionFactory.connectSession(session);
+			StartEventHandler startEventHandler = new StartEventHandler(session) {
+				@Override
+				public void onEvent(Event event) {
+					//logger.info("Event: " + event.toString() + ". Change to Object Protocol.");
+					if (event.getSource() instanceof GameState) {
+						// 0x1a START Event
+						GameState state = (GameState) event.getSource();
+						// logger.info("Event gamestate mode: " + state.getMode());
+					} else {
+						// logger.info("Event source: " + event.getSource());
+					}
+
+					session.resetProtocol(NettyObjectProtocol.INSTANCE);
+					session.removeHandler(this); // Removing startEventHandler
+					addDefaultHandlerToSession();
+				}
+			};
+
+			session.addHandler(startEventHandler);
+
+			session.setReconnectPolicy(new ReconnectPolicy.ReconnectNTimes(50, 5000, loginHelper));
+			Nexus.setSession(session);
+
+			sessionFactory.connectSession(session);
+		} catch(Exception e) {
+			// logger.error("Unable to connect to the configured database!");
+			throw e;
+		}
 	}
 
 	/*
@@ -197,7 +203,7 @@ public class Login {
 			@Override
 			public void onNetworkMessage(NetworkEvent networkEvent) {
 				super.onNetworkMessage(networkEvent);
-				//				logger.info("Event: " + networkEvent.getType() + ". Source: " + ((GameState)networkEvent.getSource()).getModeString());
+				// logger.info("Event: " + networkEvent.getType() + ". Source: " + ((GameState)networkEvent.getSource()).getModeString());
 			}
 
 			@Override
@@ -274,12 +280,7 @@ public class Login {
 				super.onRegistrationFailedUserName(event);
 				loginInProgress = false;
 				// User is in registration, can not be logged in yet
-				C3Message messageUserIsInRegistration = new C3Message(C3MESSAGES.ERROR_USER_IS_IN_REGISTRATION);
-				String m = Internationalization.getString("general_user_registration_username_error");
-				messageUserIsInRegistration.setText(m);
-				messageUserIsInRegistration.setType(C3MESSAGETYPES.CLOSE);
-
-				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(messageUserIsInRegistration);
+				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(new C3Message(C3MESSAGES.ERROR_USER_IS_IN_REGISTRATION));
 			}
 
 			@Override
@@ -287,12 +288,7 @@ public class Login {
 				super.onRegistrationFailedUserMail(event);
 				loginInProgress = false;
 				// User is in registration, can not be logged in yet
-				C3Message messageUserIsInRegistration = new C3Message(C3MESSAGES.ERROR_USER_IS_IN_REGISTRATION);
-				String m = Internationalization.getString("general_user_registration_usermail_error");
-				messageUserIsInRegistration.setText(m);
-				messageUserIsInRegistration.setType(C3MESSAGETYPES.CLOSE);
-
-				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(messageUserIsInRegistration);
+				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(new C3Message(C3MESSAGES.ERROR_USER_IS_IN_REGISTRATION));
 			}
 		};
 		logger.info("Adding SessionEventHandler to session.");
@@ -323,5 +319,9 @@ public class Login {
 
 		savePassword(registerMode);
 		doLogin(registerMode);
+	}
+
+	public static void setLoginInProcess(boolean value) {
+		loginInProgress = value;
 	}
 }

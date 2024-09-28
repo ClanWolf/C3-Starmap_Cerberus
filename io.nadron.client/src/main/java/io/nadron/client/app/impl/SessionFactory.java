@@ -23,7 +23,10 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.socket.DatagramChannel;
 import io.netty.channel.socket.SocketChannel;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.lang.invoke.MethodHandles;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -33,12 +36,12 @@ import java.util.concurrent.atomic.AtomicInteger;
  * Class used to create a session in Nad client. SessionFactory will also create
  * the actual connection to the nadron server by initializing {@link NettyTCPClient}
  * and {@link NettyUDPClient} and using their connect methods.
- * 
+ *
  * @author Abraham Menacherry
- * 
+ *
  */
-public class SessionFactory
-{
+public class SessionFactory {
+	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
 	/**
 	 * This class holds a number of variables like username, password etc which
@@ -48,14 +51,14 @@ public class SessionFactory
 	private final NettyTCPClient tcpClient;
 	private final NettyUDPClient udpClient;
 	private static final AtomicInteger sessionId = new AtomicInteger(0);
-	
+
 	private ChannelInitializer<SocketChannel> channelInitializer;
-	
+
 	/**
 	 * This constructor will take a {@link LoginHelper} and initialize the
 	 * {@link NettyTCPClient} and {@link NettyUDPClient}s using the connection
 	 * parameters provided in this login helper class.
-	 * 
+	 *
 	 * @param theLoginHelper
 	 * @throws UnknownHostException
 	 * @throws Exception
@@ -80,7 +83,7 @@ public class SessionFactory
 
 	/**
 	 * Creates a {@link Session} and connects it to the remote nadron server.
-	 * 
+	 *
 	 * @return The session instance created and connected to remote nadron server.
 	 * @throws InterruptedException
 	 * @throws Exception
@@ -95,7 +98,7 @@ public class SessionFactory
 	 * Creates a {@link Session}, adds the event handlers to the session and
 	 * then connects it to the remote nadron server. This way events will not be
 	 * lost on connect.
-	 * 
+	 *
 	 * @param eventHandlers
 	 *            The handlers to be added to listen to session.
 	 * @return The session instance created and connected to remote nadron server.
@@ -125,7 +128,7 @@ public class SessionFactory
 	 * Connects the session to remote nadron server. Depending on the connection
 	 * parameters provided to LoginHelper, it can connect both TCP and UDP
 	 * transports.
-	 * 
+	 *
 	 * @param session
 	 *            The session to be connected to remote nadron server.
 	 * @throws InterruptedException
@@ -141,7 +144,7 @@ public class SessionFactory
 	 * Connects the session to remote nadron server. Depending on the connection
 	 * parameters provided to LoginHelper, it can connect both TCP and UDP
 	 * transports.
-	 * 
+	 *
 	 * @param session
 	 *            The session to be connected to remote nadron server.
 	 * @param eventHandlers
@@ -182,7 +185,7 @@ public class SessionFactory
 	 * due to some exception. It will first close existing tcp and udp
 	 * connections and then try re-connecting using the reconnect key from
 	 * server.
-	 * 
+	 *
 	 * @param session
 	 *            The session which needs to be re-connected.
 	 * @param reconnectKey
@@ -212,26 +215,27 @@ public class SessionFactory
 		doTcpConnection(session, reconnectEvent);
 	}
 
-	protected void doTcpConnection(final Session session, Event event)
-			throws Exception, InterruptedException
-	{
+	protected void doTcpConnection(final Session session, Event event) throws Exception {
 		// This will in turn invoke the startEventHandler when server sends
 		// Events.START event.
-		Channel channel = tcpClient.connect(getTCPPipelineFactory(session), event);
-		if (null != channel)
-		{
-			Reliable tcpMessageSender = new NettyTCPMessageSender(channel);
-			session.setTcpMessageSender(tcpMessageSender);
-		}
-		else
-		{
-			throw new Exception("Could not create TCP connection to server");
+		try {
+			Channel channel = tcpClient.connect(getTCPPipelineFactory(session), event);
+
+			if (null != channel) {
+				Reliable tcpMessageSender = new NettyTCPMessageSender(channel);
+				session.setTcpMessageSender(tcpMessageSender);
+			} else {
+				throw new Exception("Could not create TCP connection to server [1].");
+			}
+		} catch(Exception e) {
+			logger.info("Could not create TCP connection to server [2].");
+			throw e;
 		}
 	}
 
 	/**
 	 * Return the pipeline factory or create the default messagebufferprotocol.
-	 * 
+	 *
 	 * @param session
 	 *            The final handler in the protocol chain needs the session so
 	 *            that it can send messages to it.
@@ -244,7 +248,7 @@ public class SessionFactory
 		}
 		return channelInitializer;
 	}
-	
+
 	/**
 	 * Set the channel initializer. This will be used when connecting the session.
 	 * @param channelInitializer
@@ -253,7 +257,7 @@ public class SessionFactory
 			ChannelInitializer<SocketChannel> channelInitializer) {
 		this.channelInitializer = channelInitializer;
 	}
-	
+
 	protected InetSocketAddress doUdpConnection(final Session session)
 			throws UnknownHostException, InterruptedException
 	{

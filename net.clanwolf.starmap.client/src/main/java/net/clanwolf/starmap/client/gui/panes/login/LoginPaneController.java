@@ -39,7 +39,6 @@ import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
 import net.clanwolf.starmap.client.action.*;
 import net.clanwolf.starmap.client.enums.C3MESSAGES;
-import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
 import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
 import net.clanwolf.starmap.client.net.GameSessionHeartBeatTimer;
@@ -190,34 +189,44 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 
 	@FXML
 	private void handleLoginButtonClick() throws Exception {
-		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("666");
+		try {
+			ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("666");
 
-		String registerModeString = "";
-		String username = tfUserName.getText();
+			String registerModeString = "";
+			String username = tfUserName.getText();
 
-		if (registerMode) {
-			username = tfUserNameRegister.getText();
-			String faction = comboboxFactionRegister.getSelectionModel().getSelectedItem();
-			String[] sh = faction.split("-");
-			String fss = sh[0].trim();
-			registerModeString += "#" + tfMailRegister.getText() + "#" + username.length() + "#" + fss;
-			password_encrypted = false;
-			pass = tfPasswordRegister.getText();
-		}
+			if (registerMode) {
+				username = tfUserNameRegister.getText();
+				String faction = comboboxFactionRegister.getSelectionModel().getSelectedItem();
+				String[] sh = faction.split("-");
+				String fss = sh[0].trim();
+				registerModeString += "#" + tfMailRegister.getText() + "#" + username.length() + "#" + fss;
+				password_encrypted = false;
+				pass = tfPasswordRegister.getText();
+			}
 
-		ActionManager.getAction(ACTIONS.SET_CONSOLE_OPACITY).execute(0.2);
-		//String username = tfUserName.getText();
-		username += registerModeString;
+			ActionManager.getAction(ACTIONS.SET_CONSOLE_OPACITY).execute(0.2);
+			//String username = tfUserName.getText();
+			username += registerModeString;
 
-		if (Server.checkServerStatus()) {
-			Login.login(username, pass, tfFactionKey.getText(), password_encrypted, registerMode);
-		} else {
-			logger.error("Server seems to be offline, show error message!");
-			ActionManager.getAction(ACTIONS.ONLINECHECK_FINISHED).execute(false);
-		}
-		if (registerMode) {
-			handelEnableRegisterButtonClick();
-			registerMode = false;
+			if (!Nexus.isDevelopmentPC()) {
+				if (Server.checkServerStatus()) {
+					Login.login(username, pass, tfFactionKey.getText(), password_encrypted, registerMode);
+				} else {
+					logger.error("Server seems to be offline, show error message!");
+					ActionManager.getAction(ACTIONS.ONLINECHECK_FINISHED).execute(false);
+				}
+			} else {
+				// Connecting to the local database here, no check of the online server
+				Login.login(username, pass, tfFactionKey.getText(), password_encrypted, registerMode);
+			}
+			if (registerMode) {
+				handelEnableRegisterButtonClick();
+				registerMode = false;
+			}
+		} catch(Exception e) {
+			logger.error("Exception during login (probably netty connection failed).");
+			ActionManager.getAction(ACTIONS.LOGON_NETTY_FAILED).execute();
 		}
 	}
 
@@ -810,10 +819,7 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 				C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
 				logger.info("Login error");
 
-				C3Message m = new C3Message(C3MESSAGES.ERROR_WRONG_CREDENTIALS);
-				m.setText(Internationalization.getString("app_error_credentials_wrong"));
-				m.setType(C3MESSAGETYPES.CLOSE);
-				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(m);
+				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(new C3Message(C3MESSAGES.ERROR_WRONG_CREDENTIALS));
 
 				// int result = showMessage("Login ERROR!", 1);
 				// logger.info("Result of message (user interaction): " + result);
@@ -825,10 +831,7 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 
 //			case CLEAR_PASSWORD_FIELD:
 //				C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
-//				C3Message m1 = new C3Message(C3MESSAGES.ERROR_NO_EDITING_ALLOWED);
-//				m1.setText("Stored password cannot be edited. Reseting.");
-//				m1.setType(C3MESSAGETYPES.CLOSE);
-//				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(m1);
+//				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(new C3Message(C3MESSAGES.ERROR_NO_EDITING_ALLOWED));
 //
 //				enableListeners(false);
 //				Platform.runLater(() -> {

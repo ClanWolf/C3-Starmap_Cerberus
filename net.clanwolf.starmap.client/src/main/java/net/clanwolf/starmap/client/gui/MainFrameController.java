@@ -56,14 +56,11 @@ import javafx.util.Pair;
 import net.clanwolf.starmap.client.action.*;
 import net.clanwolf.starmap.client.enums.C3MESSAGERESULTS;
 import net.clanwolf.starmap.client.enums.C3MESSAGES;
-import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
-import net.clanwolf.starmap.client.gui.panes.TerminalCommandHandler;
-import net.clanwolf.starmap.transfer.dtos.DiplomacyDTO;
-import net.clanwolf.starmap.transfer.enums.PRIVILEGES;
 import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
 import net.clanwolf.starmap.client.gui.messagepanes.C3MessagePane;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Controller;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
+import net.clanwolf.starmap.client.gui.panes.TerminalCommandHandler;
 import net.clanwolf.starmap.client.gui.panes.WaitAnimationPane;
 import net.clanwolf.starmap.client.gui.panes.chat.ChatPane;
 import net.clanwolf.starmap.client.gui.panes.confirmAppClose.ConfirmAppClosePane;
@@ -74,13 +71,14 @@ import net.clanwolf.starmap.client.gui.panes.login.LoginPane;
 import net.clanwolf.starmap.client.gui.panes.map.starmap.StarmapPane;
 import net.clanwolf.starmap.client.gui.panes.rp.RPBasicPane;
 import net.clanwolf.starmap.client.gui.panes.rp.StoryEditorPane;
-import net.clanwolf.starmap.client.gui.panes.usereditor.UsereditorPane;
 import net.clanwolf.starmap.client.gui.panes.settings.SettingsPane;
+import net.clanwolf.starmap.client.gui.panes.usereditor.UsereditorPane;
 import net.clanwolf.starmap.client.gui.panes.userinfo.UserInfoPane;
 import net.clanwolf.starmap.client.gui.popuppanes.C3MedalPane;
 import net.clanwolf.starmap.client.gui.popuppanes.C3PopupPane;
 import net.clanwolf.starmap.client.net.Server;
 import net.clanwolf.starmap.client.nexus.Nexus;
+import net.clanwolf.starmap.client.process.login.Login;
 import net.clanwolf.starmap.client.process.logout.Logout;
 import net.clanwolf.starmap.client.process.universe.BOFaction;
 import net.clanwolf.starmap.client.process.universe.BOStarSystem;
@@ -89,9 +87,11 @@ import net.clanwolf.starmap.client.security.Security;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.*;
 import net.clanwolf.starmap.transfer.dtos.AttackDTO;
+import net.clanwolf.starmap.transfer.dtos.DiplomacyDTO;
 import net.clanwolf.starmap.transfer.dtos.UserDTO;
 import net.clanwolf.starmap.transfer.enums.MEDALS;
 import net.clanwolf.starmap.transfer.enums.POPUPS;
+import net.clanwolf.starmap.transfer.enums.PRIVILEGES;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -270,6 +270,8 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	@FXML
 	private ImageView ivSupportButton;
 	@FXML
+	private ImageView ivFlagIconDEV;
+	@FXML
 	private Label helpLabel;
 	@FXML
 	private Label gameInfoLabel;
@@ -357,6 +359,10 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		helpLabel.setGraphic(view);
 		helpLabel.setText("");
 		setStatusText("", false);
+	}
+
+	private void switchDEVLabel(boolean value) {
+		ivFlagIconDEV.setVisible(value);
 	}
 
 //	private static void resetCounter() {
@@ -1042,6 +1048,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		ActionManager.addActionCallbackListener(ACTIONS.LOGGED_ON, this);
 		ActionManager.addActionCallbackListener(ACTIONS.LOGON_RUNNING, this);
 		ActionManager.addActionCallbackListener(ACTIONS.LOGON_FINISHED_SUCCESSFULL, this);
+		ActionManager.addActionCallbackListener(ACTIONS.LOGON_NETTY_FAILED, this);
 		ActionManager.addActionCallbackListener(ACTIONS.PANE_CREATION_FINISHED, this);
 		ActionManager.addActionCallbackListener(ACTIONS.PANE_CREATION_BEGINS, this);
 		ActionManager.addActionCallbackListener(ACTIONS.PANE_DESTRUCTION_FINISHED, this);
@@ -1638,287 +1645,6 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		}
 	}
 
-	private void enableMainMenuButtons(boolean loggedOn, boolean admin) {
-		// always enabled
-		userButton.setDisable(false);
-		exitButton.setDisable(false);
-		settingsButton.setDisable(false);
-
-		if (loggedOn) {
-			// Column 1
-			rolePlayButton.setDisable(Nexus.getCurrentChar().getStory() == null);
-			mapButton.setDisable(false);
-			attackButton.setDisable(!Nexus.userHasAttack());
-			diplomacyButton.setDisable(!Security.hasPrivilege(PRIVILEGES.FACTIONLEAD_DIPLOMACY));
-			chatButton.setDisable(false);
-
-			// Column 2
-			if (admin) {
-				adminButton.setDisable(false);
-
-				storyEditorButton.setDisable(false);
-				//adminPaneButton.setDisable(false);
-				renameMeButton3.setDisable(true);
-				renameMeButton4.setDisable(true);
-				logButton.setDisable(false);
-			} else {
-				storyEditorButton.setDisable(true);
-				//adminPaneButton.setDisable(true);
-				renameMeButton3.setDisable(true);
-				renameMeButton4.setDisable(true);
-				logButton.setDisable(false);
-			}
-			adminPaneButton.setDisable(false);
-		} else {
-			adminButton.setDisable(false);
-
-			// Column 1
-			rolePlayButton.setDisable(true);
-			mapButton.setDisable(true);
-			attackButton.setDisable(true);
-			diplomacyButton.setDisable(true);
-			chatButton.setDisable(true);
-
-			// Column 2
-			storyEditorButton.setDisable(true);
-			adminPaneButton.setDisable(true);
-			renameMeButton3.setDisable(true);
-			renameMeButton4.setDisable(true);
-			logButton.setDisable(false);
-		}
-	}
-
-	/**
-	 * @param url url
-	 * @param rb  resource bundle
-	 */
-	@Override
-	public void initialize(URL url, ResourceBundle rb) {
-		setToLevelLoggedOutText();
-
-		Runnable rCursor = () -> {
-			//noinspection InfiniteLoopStatement
-			while (true) {
-				try {
-					TimeUnit.MILLISECONDS.sleep(200);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				Platform.runLater(() -> systemConsoleCursor.setText("▂"));
-				try {
-					TimeUnit.MILLISECONDS.sleep(200);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-				Platform.runLater(() -> systemConsoleCursor.setText(" "));
-			}
-		};
-		Thread t1 = new Thread(rCursor);
-		t1.start();
-
-		Platform.runLater(() -> adminButton.setGraphic(new ImageView(imageAdminButtonOff)));
-		adminButton.setDisable(false);
-
-		int year = Calendar.getInstance().get(Calendar.YEAR);
-		hudinfo1.setOpacity(0.7);
-		copyrightLabel.setText("©2000-" + year + " - clanwolf.net");
-		spectrumImage.setOpacity(0.1);
-		spectrumImage.setVisible(false);
-
-//		noiseImage.setOpacity(0.0);
-//		noiseImage.setVisible(false);
-//		noiseImage.toFront();
-
-		paneNoise.setOpacity(0.0);
-		paneNoise.setVisible(false);
-
-		Image helpImg = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/help.png")));
-		ImageView view = new ImageView(helpImg);
-		view.setFitHeight(16);
-		view.setPreserveRatio(true);
-		helpLabel.setGraphic(view);
-		helpLabel.setText("");
-
-		enableMainMenuButtons(Nexus.isLoggedIn(), Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN));
-
-		String versionString = "Version: " + Tools.getVersionNumber();
-		versionLabel.setText(versionString);
-
-		onlineIndicatorLabel.setStyle("-fx-background-color: #808000;");
-		loginIndicatorLabel.setStyle("-fx-background-color: #c00000;");
-		databaseAccessibleIndicatorLabel.setStyle("-fx-background-color: #808000;");
-
-		C3Properties.setProperty(C3PROPS.CHECK_ONLINE_STATUS, "NOT_STARTED", false);
-		C3Properties.setProperty(C3PROPS.CHECK_LOGIN_STATUS, "LOGGED_OFF", false);
-
-		languageButton.getStyleClass().add("languageButton_" + Internationalization.getLanguage());
-
-		// ------------------------------------------------------------------------------------------
-		// The ActionCallBackListeners are added here, because otherwise they get lost in the
-		// constructors
-
-		loginPane = new LoginPane();
-		loginPane.setCache(true);
-		loginPane.setCacheHint(CacheHint.SPEED);
-		loginPane.getController().addActionCallBackListeners();
-
-		settingsPane = new SettingsPane();
-		settingsPane.setCache(true);
-		settingsPane.setCacheHint(CacheHint.SPEED);
-		settingsPane.getController().addActionCallBackListeners();
-
-		confirmAppClosePane = new ConfirmAppClosePane();
-		confirmAppClosePane.setCache(true);
-		confirmAppClosePane.setCacheHint(CacheHint.SPEED);
-		confirmAppClosePane.getController().addActionCallBackListeners();
-
-		//		createNewPaneObjects(); // re-create Map pane. This method is also used if user loggs off to create a new map pane (to avoid problems with user privs)
-		mapPane = new StarmapPane();
-		mapPane.setShowsMouseFollow(false);
-		mapPane.setShowsPlanetRotation(false);
-		mapPane.setCacheHint(CacheHint.SPEED);
-		mapPane.getController().addActionCallBackListeners();
-
-		chatPane = new ChatPane();
-		chatPane.setShowsMouseFollow(false);
-		chatPane.setShowsPlanetRotation(false);
-		chatPane.setCacheHint(CacheHint.SPEED);
-		chatPane.getController().addActionCallBackListeners();
-
-		dicePane = new DicePane();
-		dicePane.setShowsMouseFollow(false);
-		dicePane.setShowsPlanetRotation(false);
-		dicePane.setCacheHint(CacheHint.SPEED);
-		dicePane.getController().addActionCallBackListeners();
-
-		diplomacyPane = new DiplomacyPane();
-		diplomacyPane.setShowsMouseFollow(false);
-		diplomacyPane.setShowsPlanetRotation(false);
-		diplomacyPane.setCacheHint(CacheHint.SPEED);
-		diplomacyPane.getController().addActionCallBackListeners();
-
-		String paneNameCharacter = "CharacterPane";
-		rolePlayPane = new RPBasicPane(paneNameCharacter);
-		rolePlayPane.setShowsMouseFollow(false);
-		rolePlayPane.setShowsPlanetRotation(false);
-		rolePlayPane.setCache(true);
-		rolePlayPane.setCacheHint(CacheHint.SPEED);
-		rolePlayPane.getController().addActionCallBackListeners();
-		rolePlayPane.getController().setPaneName(paneNameCharacter);
-		logger.info("RolePlayPane: " + rolePlayPane + " -> Controller: " + rolePlayPane.getController());
-
-		String paneNameAttack = "AttackPane";
-		attackPane = new RPBasicPane(paneNameAttack);
-		attackPane.setShowsMouseFollow(false);
-		attackPane.setShowsPlanetRotation(false);
-		attackPane.setCache(true);
-		attackPane.setCacheHint(CacheHint.SPEED);
-		attackPane.getController().addActionCallBackListeners();
-		attackPane.getController().setPaneName(paneNameAttack);
-		logger.info("AttackPane: " + attackPane + " -> Controller: " + attackPane.getController());
-
-		// infoPane = new InfoPane();
-		// infoPane.getController().addActionCallBackListener();
-
-		// ------------------------------------------------------------------------------------------
-
-		waitAnimationPane = new WaitAnimationPane();
-		waitAnimationPane.setMouseTransparent(true);
-		waitAnimationPane.showCircleAnimation(false);
-		waitAnimationPane.toFront();
-
-		mouseStopper.getChildren().add(waitAnimationPane);
-		mouseStopper.setMouseTransparent(true);
-		mouseStopper.toFront();
-		paneWindowMoverHandle.toFront();
-		paneWindowMoverHandle_TOP.toFront();
-
-		rolePlayButton.setVisible(true);
-		mapButton.setVisible(true);
-		attackButton.setVisible(true);
-		diplomacyButton.setVisible(true);
-		chatButton.setVisible(true);
-
-		storyEditorButton.setVisible(false);
-		adminPaneButton.setVisible(false);
-		renameMeButton3.setVisible(false);
-		renameMeButton4.setVisible(false);
-		logButton.setVisible(false);
-
-		showMenuIndicator(false);
-
-		terminalPrompt.toFront();
-		paneVolumeControl.toFront();
-		slVolumeControl.toFront();
-		ivMuteToggle.toFront();
-		addActionCallBackListeners();
-
-		tblUserHistory.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
-		tblUserHistory.getStyleClass().add("noheader");
-		tblUserHistory.setPlaceholder(new Label("..."));
-		TableColumn<UserHistoryEntry, String> userColumn = new TableColumn<>("");
-		userColumn.setCellValueFactory(data -> data.getValue().getUser());
-		userColumn.setPrefWidth(140);
-		TableColumn<UserHistoryEntry, String> factionColumn = new TableColumn<>("");
-		factionColumn.setCellValueFactory(data -> data.getValue().getFaction());
-		factionColumn.setPrefWidth(50);
-		//		TableColumn<UserHistoryEntry, String> versionColumn = new TableColumn<>("");
-		//		versionColumn.setCellValueFactory(data -> data.getValue().getVersion());
-		//		versionColumn.setPrefWidth(250);
-		//		TableColumn<UserHistoryEntry, String> timeColumn = new TableColumn<>("");
-		//		timeColumn.setCellValueFactory(data -> data.getValue().getTime());
-		//		timeColumn.setPrefWidth(102);
-		//		timeColumn.setMaxWidth(105);
-		//		timeColumn.setMinWidth(100);
-		TableColumn<UserHistoryEntry, String> attackColumn = new TableColumn<>("");
-		attackColumn.setCellValueFactory(data -> data.getValue().getInFightForPlanet());
-		attackColumn.setPrefWidth(170);
-		tblUserHistory.getColumns().addAll(userColumn, factionColumn,
-				//versionColumn
-				//timeColumn
-				attackColumn);
-		tblUserHistory.getSortOrder().add(attackColumn);
-		tblUserHistory.getSortOrder().add(userColumn);
-
-		tblUserHistory.setRowFactory(tblUserHistory -> new TableRow<UserHistoryEntry>() {
-			@Override
-			protected void updateItem(UserHistoryEntry item, boolean empty) {
-				super.updateItem(item, empty);
-			}
-		});
-
-		adminButton.focusedProperty().addListener(new ChangeListener<Boolean>() {
-			@Override
-			public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) {
-				if (newPropertyValue) {
-					// Change image on admin switcher to reflect that there is focus
-					adminButtonHasFocus = true;
-					if (adminMenuActive) {
-						Platform.runLater(() -> adminButton.setGraphic(new ImageView(imageAdminButtonOn_Focus)));
-					} else {
-						Platform.runLater(() -> adminButton.setGraphic(new ImageView(imageAdminButtonOff_Focus)));
-					}
-				} else {
-					// Change image on admin switcher to reflect that there is no focus
-					adminButtonHasFocus = false;
-					if (adminMenuActive) {
-						Platform.runLater(() -> adminButton.setGraphic(new ImageView(imageAdminButtonOn)));
-					} else {
-						Platform.runLater(() -> adminButton.setGraphic(new ImageView(imageAdminButtonOff)));
-					}
-				}
-			}
-		});
-		toplabel.toFront();
-
-		terminalPrompt.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
-			@Override
-			public void handle(ContextMenuEvent event) {
-				event.consume();
-			}
-		});
-	}
-
 	/**
 	 * Handle Actions
 	 *
@@ -1931,11 +1657,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		switch (action) {
 			case SERVER_CONNECTION_LOST:
 				// raise error message
-				C3Message messageServerConnectionLost = new C3Message(C3MESSAGES.ERROR_SERVER_CONNECTION_LOST);
-				String m = Internationalization.getString("general_server_connection_lost");
-				messageServerConnectionLost.setText(m);
-				messageServerConnectionLost.setType(C3MESSAGETYPES.CLOSE);
-				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(messageServerConnectionLost);
+				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(new C3Message(C3MESSAGES.ERROR_SERVER_CONNECTION_LOST));
 
 				// Stop heartbeat timer
 				if (Nexus.getServerHeartBeatTimer() != null) {
@@ -2010,12 +1732,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				} else {
 					Platform.runLater(() -> onlineIndicatorLabel.setStyle("-fx-background-color: #c00000;"));
 					C3Properties.setProperty(C3PROPS.CHECK_ONLINE_STATUS, "OFFLINE", false);
-					C3Message message = new C3Message(C3MESSAGES.ERROR_SERVER_OFFLINE);
-					message.setType(C3MESSAGETYPES.CLOSE);
-					message.setText("Server seems to be offline.");
 					C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
 					ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("app_online_indicator_message_OFFLINE"), true));
-					ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
+					ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(new C3Message(C3MESSAGES.ERROR_SERVER_OFFLINE));
 				}
 				break;
 
@@ -2040,12 +1759,9 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				} else {
 					Platform.runLater(() -> databaseAccessibleIndicatorLabel.setStyle("-fx-background-color: #c00000;"));
 					C3Properties.setProperty(C3PROPS.CHECK_DB_CONNECTION_STATUS, "OFFLINE", false);
-					C3Message message = new C3Message(C3MESSAGES.ERROR_DATABASE_OFFLINE);
-					message.setType(C3MESSAGETYPES.CLOSE);
-					message.setText(Internationalization.getString("app_database_indicator_message_OFFLINE"));
 					C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
 					ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("app_database_indicator_message_OFFLINE"), true));
-					ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
+					ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(new C3Message(C3MESSAGES.ERROR_DATABASE_OFFLINE));
 				}
 				break;
 
@@ -2096,6 +1812,13 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				Platform.runLater(() -> {
 					//
 				});
+				break;
+
+			case LOGON_NETTY_FAILED:
+				Login.setLoginInProcess(false);
+				C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
+				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("app_database_indicator_message_OFFLINE"), true));
+				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(new C3Message(C3MESSAGES.ERROR_DATABASE_CONNECTION_FAILED));
 				break;
 
 			case LOGON_FINISHED_SUCCESSFULL:
@@ -2712,6 +2435,291 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	}
 
 	/**
+	 * @param url url
+	 * @param rb  resource bundle
+	 */
+	@Override
+	public void initialize(URL url, ResourceBundle rb) {
+		setToLevelLoggedOutText();
+
+		Runnable rCursor = () -> {
+			//noinspection InfiniteLoopStatement
+			while (true) {
+				try {
+					TimeUnit.MILLISECONDS.sleep(200);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				Platform.runLater(() -> systemConsoleCursor.setText("▂"));
+				try {
+					TimeUnit.MILLISECONDS.sleep(200);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				Platform.runLater(() -> systemConsoleCursor.setText(" "));
+			}
+		};
+		Thread t1 = new Thread(rCursor);
+		t1.start();
+
+		Platform.runLater(() -> adminButton.setGraphic(new ImageView(imageAdminButtonOff)));
+		adminButton.setDisable(false);
+
+		int year = Calendar.getInstance().get(Calendar.YEAR);
+		hudinfo1.setOpacity(0.7);
+		copyrightLabel.setText("©2000-" + year + " - clanwolf.net");
+		spectrumImage.setOpacity(0.1);
+		spectrumImage.setVisible(false);
+
+//		noiseImage.setOpacity(0.0);
+//		noiseImage.setVisible(false);
+//		noiseImage.toFront();
+
+		paneNoise.setOpacity(0.0);
+		paneNoise.setVisible(false);
+
+		Image helpImg = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/buttons/help.png")));
+		ImageView view = new ImageView(helpImg);
+		view.setFitHeight(16);
+		view.setPreserveRatio(true);
+		helpLabel.setGraphic(view);
+		helpLabel.setText("");
+
+		enableMainMenuButtons(Nexus.isLoggedIn(), Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_IS_GOD_ADMIN));
+
+		String versionString = "Version: " + Tools.getVersionNumber();
+		versionLabel.setText(versionString);
+
+		onlineIndicatorLabel.setStyle("-fx-background-color: #808000;");
+		loginIndicatorLabel.setStyle("-fx-background-color: #c00000;");
+		databaseAccessibleIndicatorLabel.setStyle("-fx-background-color: #808000;");
+
+		C3Properties.setProperty(C3PROPS.CHECK_ONLINE_STATUS, "NOT_STARTED", false);
+		C3Properties.setProperty(C3PROPS.CHECK_LOGIN_STATUS, "LOGGED_OFF", false);
+
+		languageButton.getStyleClass().add("languageButton_" + Internationalization.getLanguage());
+
+		// ------------------------------------------------------------------------------------------
+		// The ActionCallBackListeners are added here, because otherwise they get lost in the
+		// constructors
+
+		loginPane = new LoginPane();
+		loginPane.setCache(true);
+		loginPane.setCacheHint(CacheHint.SPEED);
+		loginPane.getController().addActionCallBackListeners();
+
+		settingsPane = new SettingsPane();
+		settingsPane.setCache(true);
+		settingsPane.setCacheHint(CacheHint.SPEED);
+		settingsPane.getController().addActionCallBackListeners();
+
+		confirmAppClosePane = new ConfirmAppClosePane();
+		confirmAppClosePane.setCache(true);
+		confirmAppClosePane.setCacheHint(CacheHint.SPEED);
+		confirmAppClosePane.getController().addActionCallBackListeners();
+
+		//		createNewPaneObjects(); // re-create Map pane. This method is also used if user loggs off to create a new map pane (to avoid problems with user privs)
+		mapPane = new StarmapPane();
+		mapPane.setShowsMouseFollow(false);
+		mapPane.setShowsPlanetRotation(false);
+		mapPane.setCacheHint(CacheHint.SPEED);
+		mapPane.getController().addActionCallBackListeners();
+
+		chatPane = new ChatPane();
+		chatPane.setShowsMouseFollow(false);
+		chatPane.setShowsPlanetRotation(false);
+		chatPane.setCacheHint(CacheHint.SPEED);
+		chatPane.getController().addActionCallBackListeners();
+
+		dicePane = new DicePane();
+		dicePane.setShowsMouseFollow(false);
+		dicePane.setShowsPlanetRotation(false);
+		dicePane.setCacheHint(CacheHint.SPEED);
+		dicePane.getController().addActionCallBackListeners();
+
+		diplomacyPane = new DiplomacyPane();
+		diplomacyPane.setShowsMouseFollow(false);
+		diplomacyPane.setShowsPlanetRotation(false);
+		diplomacyPane.setCacheHint(CacheHint.SPEED);
+		diplomacyPane.getController().addActionCallBackListeners();
+
+		String paneNameCharacter = "CharacterPane";
+		rolePlayPane = new RPBasicPane(paneNameCharacter);
+		rolePlayPane.setShowsMouseFollow(false);
+		rolePlayPane.setShowsPlanetRotation(false);
+		rolePlayPane.setCache(true);
+		rolePlayPane.setCacheHint(CacheHint.SPEED);
+		rolePlayPane.getController().addActionCallBackListeners();
+		rolePlayPane.getController().setPaneName(paneNameCharacter);
+		logger.info("RolePlayPane: " + rolePlayPane + " -> Controller: " + rolePlayPane.getController());
+
+		String paneNameAttack = "AttackPane";
+		attackPane = new RPBasicPane(paneNameAttack);
+		attackPane.setShowsMouseFollow(false);
+		attackPane.setShowsPlanetRotation(false);
+		attackPane.setCache(true);
+		attackPane.setCacheHint(CacheHint.SPEED);
+		attackPane.getController().addActionCallBackListeners();
+		attackPane.getController().setPaneName(paneNameAttack);
+		logger.info("AttackPane: " + attackPane + " -> Controller: " + attackPane.getController());
+
+		// infoPane = new InfoPane();
+		// infoPane.getController().addActionCallBackListener();
+
+		// ------------------------------------------------------------------------------------------
+
+		waitAnimationPane = new WaitAnimationPane();
+		waitAnimationPane.setMouseTransparent(true);
+		waitAnimationPane.showCircleAnimation(false);
+		waitAnimationPane.toFront();
+
+		mouseStopper.getChildren().add(waitAnimationPane);
+		mouseStopper.setMouseTransparent(true);
+		mouseStopper.toFront();
+		paneWindowMoverHandle.toFront();
+		paneWindowMoverHandle_TOP.toFront();
+
+		rolePlayButton.setVisible(true);
+		mapButton.setVisible(true);
+		attackButton.setVisible(true);
+		diplomacyButton.setVisible(true);
+		chatButton.setVisible(true);
+
+		storyEditorButton.setVisible(false);
+		adminPaneButton.setVisible(false);
+		renameMeButton3.setVisible(false);
+		renameMeButton4.setVisible(false);
+		logButton.setVisible(false);
+
+		showMenuIndicator(false);
+
+		terminalPrompt.toFront();
+		paneVolumeControl.toFront();
+		slVolumeControl.toFront();
+		ivMuteToggle.toFront();
+		addActionCallBackListeners();
+
+		tblUserHistory.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_ALL_COLUMNS);
+		tblUserHistory.getStyleClass().add("noheader");
+		tblUserHistory.setPlaceholder(new Label("..."));
+		TableColumn<UserHistoryEntry, String> userColumn = new TableColumn<>("");
+		userColumn.setCellValueFactory(data -> data.getValue().getUser());
+		userColumn.setPrefWidth(140);
+		TableColumn<UserHistoryEntry, String> factionColumn = new TableColumn<>("");
+		factionColumn.setCellValueFactory(data -> data.getValue().getFaction());
+		factionColumn.setPrefWidth(50);
+		//		TableColumn<UserHistoryEntry, String> versionColumn = new TableColumn<>("");
+		//		versionColumn.setCellValueFactory(data -> data.getValue().getVersion());
+		//		versionColumn.setPrefWidth(250);
+		//		TableColumn<UserHistoryEntry, String> timeColumn = new TableColumn<>("");
+		//		timeColumn.setCellValueFactory(data -> data.getValue().getTime());
+		//		timeColumn.setPrefWidth(102);
+		//		timeColumn.setMaxWidth(105);
+		//		timeColumn.setMinWidth(100);
+		TableColumn<UserHistoryEntry, String> attackColumn = new TableColumn<>("");
+		attackColumn.setCellValueFactory(data -> data.getValue().getInFightForPlanet());
+		attackColumn.setPrefWidth(170);
+		tblUserHistory.getColumns().addAll(userColumn, factionColumn,
+				//versionColumn
+				//timeColumn
+				attackColumn);
+		tblUserHistory.getSortOrder().add(attackColumn);
+		tblUserHistory.getSortOrder().add(userColumn);
+
+		tblUserHistory.setRowFactory(tblUserHistory -> new TableRow<UserHistoryEntry>() {
+			@Override
+			protected void updateItem(UserHistoryEntry item, boolean empty) {
+				super.updateItem(item, empty);
+			}
+		});
+
+		adminButton.focusedProperty().addListener(new ChangeListener<Boolean>() {
+			@Override
+			public void changed(ObservableValue<? extends Boolean> arg0, Boolean oldPropertyValue, Boolean newPropertyValue) {
+				if (newPropertyValue) {
+					// Change image on admin switcher to reflect that there is focus
+					adminButtonHasFocus = true;
+					if (adminMenuActive) {
+						Platform.runLater(() -> adminButton.setGraphic(new ImageView(imageAdminButtonOn_Focus)));
+					} else {
+						Platform.runLater(() -> adminButton.setGraphic(new ImageView(imageAdminButtonOff_Focus)));
+					}
+				} else {
+					// Change image on admin switcher to reflect that there is no focus
+					adminButtonHasFocus = false;
+					if (adminMenuActive) {
+						Platform.runLater(() -> adminButton.setGraphic(new ImageView(imageAdminButtonOn)));
+					} else {
+						Platform.runLater(() -> adminButton.setGraphic(new ImageView(imageAdminButtonOff)));
+					}
+				}
+			}
+		});
+		toplabel.toFront();
+
+		terminalPrompt.setOnContextMenuRequested(new EventHandler<ContextMenuEvent>() {
+			@Override
+			public void handle(ContextMenuEvent event) {
+				event.consume();
+			}
+		});
+	}
+
+	private void enableMainMenuButtons(boolean loggedOn, boolean admin) {
+		// always enabled
+		userButton.setDisable(false);
+		exitButton.setDisable(false);
+		settingsButton.setDisable(false);
+
+		if (Nexus.isDevelopmentPC()) {
+			switchDEVLabel(true);
+		}
+
+		if (loggedOn) {
+			// Column 1
+			rolePlayButton.setDisable(Nexus.getCurrentChar().getStory() == null);
+			mapButton.setDisable(false);
+			attackButton.setDisable(!Nexus.userHasAttack());
+			diplomacyButton.setDisable(!Security.hasPrivilege(PRIVILEGES.FACTIONLEAD_DIPLOMACY));
+			chatButton.setDisable(false);
+
+			// Column 2
+			if (admin) {
+				adminButton.setDisable(false);
+
+				storyEditorButton.setDisable(false);
+				//adminPaneButton.setDisable(false);
+				renameMeButton3.setDisable(true);
+				renameMeButton4.setDisable(true);
+				logButton.setDisable(false);
+			} else {
+				storyEditorButton.setDisable(true);
+				//adminPaneButton.setDisable(true);
+				renameMeButton3.setDisable(true);
+				renameMeButton4.setDisable(true);
+				logButton.setDisable(false);
+			}
+			adminPaneButton.setDisable(false);
+		} else {
+			adminButton.setDisable(false);
+
+			// Column 1
+			rolePlayButton.setDisable(true);
+			mapButton.setDisable(true);
+			attackButton.setDisable(true);
+			diplomacyButton.setDisable(true);
+			chatButton.setDisable(true);
+
+			// Column 2
+			storyEditorButton.setDisable(true);
+			adminPaneButton.setDisable(true);
+			renameMeButton3.setDisable(true);
+			renameMeButton4.setDisable(true);
+			logButton.setDisable(false);
+		}
+	}
+
+	/**
 	 * Here all the actions go in that need to be performed once the client is started up and showing
 	 */
 	private void startup() {
@@ -2801,21 +2809,6 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			}
 		});
 
-//		C3Message m1 = new C3Message(C3MESSAGES.WARNING_BLACKBOX_TEAMS_INVALID);
-//		m1.setType(C3MESSAGETYPES.CLOSE);
-//		m1.setText("Test 1");
-//		ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(m1);
-//
-//		C3Message m2 = new C3Message(C3MESSAGES.WARNING_BLACKBOX_TEAMS_INVALID);
-//		m2.setType(C3MESSAGETYPES.CLOSE);
-//		m2.setText("Test 2");
-//		ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(m2);
-//
-//		C3Message m3 = new C3Message(C3MESSAGES.WARNING_BLACKBOX_TEAMS_INVALID);
-//		m3.setType(C3MESSAGETYPES.CLOSE);
-//		m3.setText("Test 3");
-//		ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(m3);
-
 		boolean serverOnline = Server.checkServerStatus();
 		boolean databaseOnline = false;
 		if (serverOnline) {
@@ -2823,12 +2816,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		}
 		if (serverOnline && databaseOnline) {
 			if (Nexus.promptNewVersionInstall) {
-				C3Message message = new C3Message(C3MESSAGES.DOWNLOAD_CLIENT);
-				String m = Internationalization.getString("app_new_version_available");
-				m = m.replace("{version}", Nexus.getLastAvailableClientVersion());
-				message.setText(m);
-				message.setType(C3MESSAGETYPES.YES_NO);
-				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
+				ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(new C3Message(C3MESSAGES.DOWNLOAD_CLIENT));
 			} else {
 				openTargetPane(loginPane, "");
 			}

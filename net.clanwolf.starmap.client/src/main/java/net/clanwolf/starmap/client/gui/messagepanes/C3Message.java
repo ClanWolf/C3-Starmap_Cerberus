@@ -35,7 +35,7 @@ import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
  *
  */
 public class C3Message {
-
+	private String textKey = "";
 	private String text = "";
 	private C3MESSAGETYPES type;
 	private C3MESSAGES message;
@@ -43,21 +43,31 @@ public class C3Message {
 
 	public C3Message(C3MESSAGES m) {
 		this.message = m;
+		this.textKey = m.getTextKey();
+		this.type = m.getType();
+		this.text = m.getText();
+	}
+
+	public C3Message(C3MESSAGES m, String additionalText) {
+		this.message = m;
+		this.textKey = m.getTextKey();
+		this.type = m.getType();
+		this.text = m.getText() + " [" + additionalText + "]";
 	}
 
 	/**
-	 * @return the text
+	 * @return the textKey
 	 */
-	public String getText() {
-		return text;
+	public String getTextKey() {
+		return textKey;
 	}
 
 	/**
-	 * @param text
-	 *            the text to set
+	 * @param textKey
+	 *            the textKey to set
 	 */
-	public void setText(String text) {
-		this.text = text;
+	public void setTextKey(String textKey) {
+		this.textKey = textKey;
 	}
 
 	/**
@@ -105,4 +115,11 @@ public class C3Message {
 		this.result = result;
 	}
 
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
 }

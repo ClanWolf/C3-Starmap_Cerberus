@@ -31,7 +31,6 @@ import net.clanwolf.starmap.client.action.ACTIONS;
 import net.clanwolf.starmap.client.action.ActionManager;
 import net.clanwolf.starmap.client.action.StatusTextEntryActionObject;
 import net.clanwolf.starmap.client.enums.C3MESSAGES;
-import net.clanwolf.starmap.client.enums.C3MESSAGETYPES;
 import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
 import net.clanwolf.starmap.client.gui.panes.chat.ChatPaneController;
 import net.clanwolf.starmap.client.net.irc.IRCClient;
@@ -181,11 +180,8 @@ public class TerminalCommandHandler {
 						Nexus.storeCommandHistory();
 					} else {
 						ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_notallowed"), false));
-						C3Message message = new C3Message(C3MESSAGES.ERROR_NOT_ALLOWED);
-						message.setType(C3MESSAGETYPES.CLOSE);
-						message.setText(Internationalization.getString("general_notallowed"));
 						C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
-						ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
+						ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(new C3Message(C3MESSAGES.ERROR_NOT_ALLOWED));
 					}
 					sendingString = false;
 				}
@@ -217,7 +213,14 @@ public class TerminalCommandHandler {
 							// stop action here, save routes first!
 							ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_saveRoutesBeforeFinalizeRound"), true));
 						} else {
-							if( !Nexus.isDevelopmentPC()) {
+
+
+
+
+							// Can only be done if the privilege ADMIN_FINALIZE_ROUND is present
+							// AND if we are on a development machine
+							// AND if the feature has not been disabled here
+							if(!Nexus.isDevelopmentPC()) {
 								ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_command_has_been_disabled"), true));
 							} else {
 								ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_success"), false));
@@ -226,14 +229,16 @@ public class TerminalCommandHandler {
 								Nexus.fireNetworkEvent(s);
 							}
 							//Nexus.storeCommandHistory();
+
+
+
+
+
 						}
 					} else {
 						ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_notallowed"), false));
-						C3Message message = new C3Message(C3MESSAGES.ERROR_NOT_ALLOWED);
-						message.setType(C3MESSAGETYPES.CLOSE);
-						message.setText(Internationalization.getString("general_notallowed"));
 						C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
-						ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
+						ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(new C3Message(C3MESSAGES.ERROR_NOT_ALLOWED));
 					}
 					// Nexus.storeCommandHistory(); // do not store to prevent accidental sending of this
 					sendingString = false;
@@ -314,11 +319,8 @@ public class TerminalCommandHandler {
 					}
 				} else {
 					ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_notallowed"), false));
-					C3Message message = new C3Message(C3MESSAGES.ERROR_NOT_ALLOWED);
-					message.setType(C3MESSAGETYPES.CLOSE);
-					message.setText(Internationalization.getString("general_notallowed"));
 					C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
-					ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
+					ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(new C3Message(C3MESSAGES.ERROR_NOT_ALLOWED));
 				}
 				sendingString = false;
 			}
@@ -336,11 +338,8 @@ public class TerminalCommandHandler {
 					// Nexus.storeCommandHistory(); // do not store to prevent accidental sending of this
 				} else {
 					ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_notallowed"), false));
-					C3Message message = new C3Message(C3MESSAGES.ERROR_NOT_ALLOWED);
-					message.setType(C3MESSAGETYPES.CLOSE);
-					message.setText(Internationalization.getString("general_notallowed"));
 					C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
-					ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
+					ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(new C3Message(C3MESSAGES.ERROR_NOT_ALLOWED));
 				}
 			}
 
@@ -360,10 +359,7 @@ public class TerminalCommandHandler {
 				}
 
 				if (com.toLowerCase().startsWith("!test error")) {
-					C3Message m = new C3Message(C3MESSAGES.WARNING_BLACKBOX_TEAMS_INVALID);
-					m.setType(C3MESSAGETYPES.CLOSE);
-					m.setText("Teams seem to be invalid!");
-					ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(m);
+					ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(new C3Message(C3MESSAGES.WARNING_BLACKBOX_TEAMS_INVALID));
 				}
 			}
 

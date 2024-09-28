@@ -205,10 +205,7 @@ public class EventCommunications {
 						logger.info("Users may not switch sides in the middle of an invasion!");
 						logger.info("----------------------------------------------");
 
-						C3Message m = new C3Message(C3MESSAGES.WARNING_BLACKBOX_TEAMS_INVALID);
-						m.setType(C3MESSAGETYPES.CLOSE);
-						m.setText(Internationalization.getString("C3_Lobby_Error_Teams_Invalid") + " [" + username + "]");
-						ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(m);
+						ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(new C3Message(C3MESSAGES.WARNING_BLACKBOX_TEAMS_INVALID, username));
 					}
 					break;
 
@@ -234,15 +231,10 @@ public class EventCommunications {
 						if (us.getActive() == 0) {
 							ActionManager.getAction(ACTIONS.DISABLE_REGISTRATION).execute();
 							// User is in registration, can not be logged in yet
-							C3Message messageUserIsInRegistration = new C3Message(C3MESSAGES.ERROR_USER_IS_IN_REGISTRATION);
-							String m = Internationalization.getString("general_user_is_in_registration");
-							messageUserIsInRegistration.setText(m);
-							messageUserIsInRegistration.setType(C3MESSAGETYPES.CLOSE);
-
 							ActionManager.getAction(ACTIONS.SET_CONSOLE_OPACITY).execute(0.2);
 							Logout.doLogout();
 
-							ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(messageUserIsInRegistration);
+							ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(new C3Message(C3MESSAGES.ERROR_USER_IS_IN_REGISTRATION));
 							break;
 						}
 					}
@@ -563,10 +555,7 @@ public class EventCommunications {
 
 					ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute();
 					ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("faction_change_logout_message"), false));
-					C3Message message = new C3Message(C3MESSAGES.WARNING_CLIENT_LOGOUT_AFTER_FACTION_CHANGE);
-					message.setType(C3MESSAGETYPES.CLOSE);
-					message.setText(Internationalization.getString("faction_change_logout_message"));
-					ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(message);
+					ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(new C3Message(C3MESSAGES.WARNING_CLIENT_LOGOUT_AFTER_FACTION_CHANGE));
 
 					break;
 				case ROLEPLAY_SAVE_STORY:

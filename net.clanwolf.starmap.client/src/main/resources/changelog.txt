@@ -59,9 +59,13 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
-Version 7.5.00 (xx.09.2024)
+Version 7.5.01 (__.10.2024)
+- ADDED: Dev Icon in client
+- ADDED: Exception handling and proper error message on failed connects (Netty)
+- CHANGED: How message objects are handled
+
+Version 7.5.00 (21.09.2024)
 - UPDATED: Java and JavaFX to 23
--
 
 Version 7.4.34 (05.03.2024)
 - UPDATED: Java to JDK 22
