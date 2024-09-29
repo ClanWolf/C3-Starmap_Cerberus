@@ -55,6 +55,8 @@ public class C3Message {
 		this.text = m.getText() + " [" + additionalText + "]";
 	}
 
+	// hg
+
 	/**
 	 * @return the textKey
 	 */
