@@ -63,6 +63,7 @@ Version 7.5.01 (__.10.2024)
 - ADDED: Dev Icon in client
 - ADDED: Exception handling and proper error message on failed connects (Netty)
 - CHANGED: How message objects are handled
+- CHANGED: Behaviour of the command history in case of finalizing rounds
 
 Version 7.5.00 (21.09.2024)
 - UPDATED: Java and JavaFX to 23

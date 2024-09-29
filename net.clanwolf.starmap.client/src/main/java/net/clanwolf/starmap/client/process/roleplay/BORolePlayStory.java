@@ -122,9 +122,14 @@ public class BORolePlayStory {
 	 *          the base url string for resources
 	 */
 	public static String getRPG_ResourceURL(){
-		if(Nexus.isDevelopmentPC()){
-			//return C3Properties.getProperty(C3PROPS.SERVER_URL) + "/" + BORolePlayStory.URL_RPG_RESOURSES_DEV;
-			return BORolePlayStory.URL_RPG_RESOURSES_DEV;
+		if (Nexus.isDevelopmentPC()){
+			if (Nexus.isDevelopmentOffline()) {
+				//return C3Properties.getProperty(C3PROPS.SERVER_URL) + "/" + BORolePlayStory.URL_RPG_RESOURSES_DEV;
+				return BORolePlayStory.URL_RPG_RESOURSES_DEV;
+			} else {
+				//return C3Properties.getProperty(C3PROPS.SERVER_URL) + "/" + BORolePlayStory.URL_RPG_RESOURSES;
+				return BORolePlayStory.URL_RPG_RESOURSES;
+			}
 		}
 		//return C3Properties.getProperty(C3PROPS.SERVER_URL) + "/" + BORolePlayStory.URL_RPG_RESOURSES;
 		return BORolePlayStory.URL_RPG_RESOURSES;

@@ -120,7 +120,9 @@ public class FTP implements IFileTransfer {
 	private String getFTPSubPath(){
 		String subPath = "resources/";
 		if(Nexus.isDevelopmentPC()) {
-			subPath = "dev/resources/";
+			if (Nexus.isDevelopmentOffline()) {
+				subPath = "dev/resources/";
+			}
 		}
 		return subPath;
 	}

@@ -93,6 +93,7 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 	private boolean waitcursor = false;
 	private boolean messageactive = false;
 	private static boolean isDevelopmentPC = false;
+	private static boolean isDevelopmentOffline = true;
 
 	/**
 	 * Horizontal position of the main window.
@@ -244,12 +245,16 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 		System.out.println("Class path:          " + System.getProperty("java.class.path"));
 		System.out.println("-----------------------------");
 		System.out.println("Command line help:");
-		System.out.println("- /IDE        : Running in the development environment.");
-		System.out.println("- /CLEARCACHE : Clear all cached files on startup.");
+		System.out.println("- /IDE        (same as IDEOFFLINE) : Running in the development environment (local database).");
+		System.out.println("- /IDEOFFLINE (same as IDE)        : Running in the development environment (local database).");
+		System.out.println("- /IDEONLINE                       : Running in the development environment (REMOTE PRODUCTION database).");
+		System.out.println("- /CLEARCACHE                      : Clear all cached files on startup.");
 		System.out.println("-----------------------------");
 
 		isDevelopmentPC = false;
+		isDevelopmentOffline = true;
 		boolean clearCache = false;
+
 		if(args.length > 0) {
 			for (String arg : args) {
 				arg = arg.replaceAll("-", "");
@@ -258,8 +263,12 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 				System.out.println("Starting C3 Client: " + arg);
 				System.out.println("Detected commandline arg: " + arg);
 
-				if (arg.equalsIgnoreCase("IDE")) {
+				if (arg.equalsIgnoreCase("IDE") || arg.equalsIgnoreCase("IDEOFFLINE")) {
 					isDevelopmentPC = true;
+					isDevelopmentOffline = true;
+				} else if (arg.equalsIgnoreCase("IDEONLINE")) {
+					isDevelopmentPC = true;
+					isDevelopmentOffline = false;
 				}
 				if (arg.equalsIgnoreCase("CLEARCACHE")) {
 					clearCache = true;
@@ -273,6 +282,7 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 			}
 		}
 		Nexus.setIsDevelopmentPC(isDevelopmentPC);
+		Nexus.setDevelopmentOffline(isDevelopmentOffline);
 		Nexus.setClearCacheOnStart(clearCache);
 
 		launch(MainFrame.class, args);
@@ -336,9 +346,14 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 			Thread.sleep(50);
 
 			if (isDevelopmentPC) {
-				logger.warn("--------------------------------------------------------------");
-				logger.warn("--------------- THIS IS A DEVELOPMENT MACHINE! ---------------");
-				logger.warn("--------------------------------------------------------------");
+				logger.warn("----------------------------------");
+				logger.warn("- THIS IS A DEVELOPMENT MACHINE! -");
+				if (isDevelopmentOffline) {
+					logger.warn("- MODE: OFFLINE                  -");
+				} else {
+					logger.warn("- MODE: ONLINE                   -");
+				}
+				logger.warn("----------------------------------");
 				C3Properties.setProperty(C3PROPS.DEV_PC, "true", false);
 			}
 

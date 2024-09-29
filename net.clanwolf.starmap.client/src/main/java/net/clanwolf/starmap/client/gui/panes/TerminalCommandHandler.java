@@ -107,11 +107,15 @@ public class TerminalCommandHandler {
 					}
 					if (lastEntry == null) {
 						Nexus.commandHistory.add(com);
-					} else if (!Nexus.commandHistory.getLast().equals(com)) {
-						Nexus.commandHistory.add(com);
+					} else if (!Nexus.commandHistory.getLast().equals(com) && !Nexus.commandHistory.getLast().equals("+++ " + com)) {
+						if (com.equals("!finalize round")) {
+							Nexus.commandHistory.add("+++ " + com);
+						} else {
+							Nexus.commandHistory.add(com);
+						}
 					}
 					if (Nexus.commandHistory.size() > 50) {
-						Nexus.commandHistory.remove(0);
+						Nexus.commandHistory.removeFirst();
 					}
 					Nexus.commandHistoryIndex = Nexus.commandHistory.size();
 				}
@@ -228,7 +232,6 @@ public class TerminalCommandHandler {
 								s.setMode(GAMESTATEMODES.FORCE_FINALIZE_ROUND);
 								Nexus.fireNetworkEvent(s);
 							}
-							//Nexus.storeCommandHistory();
 
 
 
@@ -240,7 +243,7 @@ public class TerminalCommandHandler {
 						C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
 						ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(new C3Message(C3MESSAGES.ERROR_NOT_ALLOWED));
 					}
-					// Nexus.storeCommandHistory(); // do not store to prevent accidental sending of this
+					Nexus.storeCommandHistory();
 					sendingString = false;
 				}
 			}

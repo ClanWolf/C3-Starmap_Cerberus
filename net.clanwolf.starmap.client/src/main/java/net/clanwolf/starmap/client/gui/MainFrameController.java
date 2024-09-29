@@ -97,6 +97,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.InputStream;
 import java.lang.invoke.MethodHandles;
+import java.net.InetAddress;
 import java.net.URL;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
@@ -2671,7 +2672,22 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		exitButton.setDisable(false);
 		settingsButton.setDisable(false);
 
+//		String computerName99 = "";
+//		String userName99 = "";
+//		try {
+//			computerName99 = InetAddress.getLocalHost().getHostName();
+//			userName99 = System.getProperty("user.name");
+//		} catch(Exception ignored) {
+//		}
+
 		if (Nexus.isDevelopmentPC()) {
+			Image image;
+			if (Nexus.isDevelopmentOffline()) {
+				image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/flagIcon_DEV_offline.png")));
+			} else {
+				image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/flagIcon_DEV_online.png")));
+			}
+			ivFlagIconDEV.setImage(image);
 			switchDEVLabel(true);
 		}
 

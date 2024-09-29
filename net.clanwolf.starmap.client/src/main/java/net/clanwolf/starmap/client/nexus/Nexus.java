@@ -91,6 +91,8 @@ public class Nexus {
 
 	private static AbstractC3Pane currentlyOpenedPane = null;
 	private static boolean isDevelopmentPC = false;
+
+	private static boolean isDevelopmentOffline = false;
 	private static boolean clearCacheOnStart = false;
 
 	private static BOStarSystem terra = null;
@@ -202,14 +204,16 @@ public class Nexus {
 			try (PrintWriter out = new PrintWriter(commandLogFile, StandardCharsets.UTF_8)) {
 				String oldCommand = "";
 				for (String l : commandHistory) {
-					if (!l.equals(oldCommand)) {
+					if (!l.equals(oldCommand) || !l.equals("+++ " + oldCommand)) {
+						if (l.equals("!finalize round")) {
+							l = "+++ " + l;
+						}
 						out.write(l + "\r\n");
 						oldCommand = l;
 					}
 				}
 			} catch (IOException e) {
-				e.printStackTrace();
-				logger.error("Could not save command history file!");
+				logger.error("Could not save command history file!", e);
 			}
 		}
 	}
@@ -565,6 +569,16 @@ public class Nexus {
 	@SuppressWarnings("unused")
 	public static boolean isDevelopmentPC(){
 		return isDevelopmentPC;
+	}
+
+	@SuppressWarnings("unused")
+	public static boolean isDevelopmentOffline(){
+		return isDevelopmentOffline;
+	}
+
+	@SuppressWarnings("unused")
+	public static void setDevelopmentOffline(boolean developmentOffline) {
+		Nexus.isDevelopmentOffline = developmentOffline;
 	}
 
 	@SuppressWarnings("unused")
