@@ -100,7 +100,7 @@ public class TerminalCommandHandler {
 		if (Nexus.isLoggedIn()) {
 			if (!com.startsWith("*!!!*")) {
 				if (!com.isEmpty()) {
-					logger.info("Received command: '" + com + "' (CurrentPane: " + currentPane + ")");
+					logger.info("Received command: '{}' (CurrentPane: {})", com, currentPane);
 					String lastEntry = null;
 					if (!Nexus.commandHistory.isEmpty()) {
 						lastEntry = Nexus.commandHistory.getLast();
@@ -152,19 +152,19 @@ public class TerminalCommandHandler {
 				if (com.toLowerCase().startsWith("!find ")) {
 					String value = com.substring(5).trim();
 					if (!value.isEmpty()) {
-						logger.info("Searching for '" + value + "'");
+						logger.info("Searching for '{}'", value);
 					}
 					logger.info("Searching starsystems...");
 					for (BOStarSystem ss : Nexus.getBoUniverse().starSystemBOs.values()) {
 						if (ss.getName().equalsIgnoreCase(value)) {
-							logger.info("Found starsystem '" + value + "'");
+							logger.info("Found starsystem '{}'", value);
 							ActionManager.getAction(ACTIONS.MAP_MOVE_TO_STARSYSTEM).execute(ss);
 						}
 					}
 					logger.info("Searching jumpships...");
 					for (BOJumpship js : Nexus.getBoUniverse().jumpshipBOs.values()) {
 						if (js.getJumpshipName().equalsIgnoreCase(value)) {
-							logger.info("Found jumpship '" + value + "'");
+							logger.info("Found jumpship '{}'", value);
 							ActionManager.getAction(ACTIONS.MAP_MOVE_TO_JUMPSHIP).execute(js);
 						}
 					}
@@ -265,15 +265,15 @@ public class TerminalCommandHandler {
 					if (!com.trim().isEmpty()) {
 						ListView<String> lvUsers = ChatPaneController.getLvUsers();
 
-						logger.info("Sending to IRC: " + com);
+						logger.info("Sending to IRC: {}", com);
 						MessageActionObject mo = new MessageActionObject();
 						if (!lvUsers.getSelectionModel().getSelectedItems().isEmpty()) {
-							String tar = lvUsers.getSelectionModel().getSelectedItems().get(0);
+							String tar = lvUsers.getSelectionModel().getSelectedItems().getFirst();
 							if (tar.startsWith("@") || tar.startsWith("+") || tar.startsWith("-") || tar.startsWith("!") || tar.startsWith("<")) {
 								tar = tar.substring(1);
 							}
 							mo.setTarget(tar);
-							logger.info("Private message to: " + lvUsers.getSelectionModel().getSelectedItems().get(0));
+							logger.info("Private message to: {}", lvUsers.getSelectionModel().getSelectedItems().getFirst());
 							addChatLine(IRCClient.myNick + " [" + Internationalization.getString("C3_IRC_Priv") + "] ", "(-> " + tar + ") " + com);
 						} else {
 							addChatLine(IRCClient.myNick + " ", com);
