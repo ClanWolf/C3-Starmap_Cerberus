@@ -217,10 +217,6 @@ public class TerminalCommandHandler {
 							// stop action here, save routes first!
 							ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_saveRoutesBeforeFinalizeRound"), true));
 						} else {
-
-
-
-
 							// Can only be done if the privilege ADMIN_FINALIZE_ROUND is present
 							// AND if we are on a development machine
 							// AND if the feature has not been disabled here
@@ -232,11 +228,6 @@ public class TerminalCommandHandler {
 								s.setMode(GAMESTATEMODES.FORCE_FINALIZE_ROUND);
 								Nexus.fireNetworkEvent(s);
 							}
-
-
-
-
-
 						}
 					} else {
 						ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_notallowed"), false));

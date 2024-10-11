@@ -60,7 +60,7 @@ WATCH OUT FOR WHILE TESTING:
 VERSIONS
 
 Version 7.5.01 (__.10.2024)
-- ADDED: Dev Icon in client
+- ADDED: Dev indicator icon in client
 - ADDED: Exception handling and proper error message on failed connects (Netty)
 - CHANGED: How message objects are handled
 - CHANGED: Behaviour of the command history in case of finalizing rounds

@@ -55,7 +55,7 @@
 		<version.java>23</version.java>
 		<version.javafx>23</version.javafx>
 
-		<version.asm>9.7</version.asm>
+		<version.asm>9.7.1</version.asm>
 		<version.maven-antrun-plugin>3.1.0</version.maven-antrun-plugin>
 		<version.maven-compiler-plugin>3.11.0</version.maven-compiler-plugin>
 		<version.maven-plugin-api>3.9.5</version.maven-plugin-api>
@@ -72,14 +72,14 @@
 		<version.apache.commons-collections4>4.5.0-M2</version.apache.commons-collections4>
 		<version.apache.commons-net>3.11.1</version.apache.commons-net>
 		<version.blazeds-core>3.2.0.3978</version.blazeds-core>
-		<version.byte-buddy>1.15.3</version.byte-buddy>
+		<version.byte-buddy>1.15.4</version.byte-buddy>
 		<version.collections-generic>4.01</version.collections-generic>
-		<version.discord-api>5.1.1</version.discord-api>
+		<version.discord-api>5.1.2</version.discord-api>
 		<version.dom4j>2.1.4</version.dom4j>
 		<version.el-api>6.0.1</version.el-api>
 		<version.gifencoder>0.10.1</version.gifencoder>
 		<version.gson>2.11.0</version.gson>
-		<version.hikaricp>5.1.0</version.hikaricp>
+		<version.hikaricp>6.0.0</version.hikaricp>
 		<version.hibernate-core>6.4.4.Final</version.hibernate-core>
 		<version.hibernate-commons-annotations>7.0.1.Final</version.hibernate-commons-annotations>
 		<version.hibernate-ehcache>6.0.0.Alpha7</version.hibernate-ehcache>
@@ -94,7 +94,7 @@
 		<version.jakarta.mail>2.0.3</version.jakarta.mail>              <!-- net.clanwolf.starmap.mail -->
 		<version.jakarta.xml.bind-api>4.0.2</version.jakarta.xml.bind-api>
 		<version.javassist>3.30.2-GA</version.javassist>
-		<version.jetbrains-annotations>25.0.0</version.jetbrains-annotations>
+		<version.jetbrains-annotations>26.0.0</version.jetbrains-annotations>
 		<version.jetlang>0.2.23</version.jetlang>
 		<version.jnativehook>2.2.2</version.jnativehook>
 		<version.mariadb-connector>3.4.1</version.mariadb-connector>
