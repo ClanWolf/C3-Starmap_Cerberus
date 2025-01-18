@@ -35,7 +35,9 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.web.WebView;
 import javafx.util.Duration;
 import net.clanwolf.starmap.client.action.*;
 import net.clanwolf.starmap.client.enums.C3MESSAGES;
@@ -65,7 +67,6 @@ import java.util.Timer;
  */
 public class LoginPaneController extends AbstractC3Controller implements ActionCallBackListener {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-
 	@FXML
 	private CheckBox cbGuestAccount;
 	@FXML

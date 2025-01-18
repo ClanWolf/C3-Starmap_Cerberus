@@ -240,7 +240,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	@FXML
 	private Button renameMeButton3;
 	@FXML
-	private Button renameMeButton4;
+	private Button finalizeRoundButton;
 	@FXML
 	private Button logButton;
 
@@ -1304,6 +1304,13 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				adminPaneOpen = true;
 				openAdministrationPane = true;
 			}
+			// FINALIZE ROUND PANE
+			if (bn.equals(finalizeRoundButton)) {
+				logger.info("Round will be finalized!");
+				setStatusText(Internationalization.getString("app_adminpane_finalizeround").replace("%20", " "), true);
+				adminPaneOpen = true;
+				Nexus.forceFinalizeRound();
+			}
 		}
 		if (targetPane != null) {
 			AtomicBoolean success = new AtomicBoolean(openTargetPane(targetPane, spokenMessage));
@@ -1419,7 +1426,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			storyEditorButton.setVisible(true);
 			adminPaneButton.setVisible(true);
 			renameMeButton3.setVisible(true);
-			renameMeButton4.setVisible(true);
+			finalizeRoundButton.setVisible(true);
 			logButton.setVisible(true);
 			showMenuIndicator(false);
 			ivDiplomacyIndicator.setVisible(false);
@@ -1476,7 +1483,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					storyEditorButton.setLayoutX(newX2);
 					adminPaneButton.setLayoutX(newX2);
 					renameMeButton3.setLayoutX(newX2);
-					renameMeButton4.setLayoutX(newX2);
+					finalizeRoundButton.setLayoutX(newX2);
 					logButton.setLayoutX(newX2);
 				});
 			}
@@ -1497,7 +1504,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					storyEditorButton.setFocusTraversable(true);
 					adminPaneButton.setFocusTraversable(true);
 					renameMeButton3.setFocusTraversable(true);
-					renameMeButton4.setFocusTraversable(true);
+					finalizeRoundButton.setFocusTraversable(true);
 					logButton.setFocusTraversable(true);
 				});
 			} else {
@@ -1505,7 +1512,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					storyEditorButton.setVisible(false);
 					adminPaneButton.setVisible(false);
 					renameMeButton3.setVisible(false);
-					renameMeButton4.setVisible(false);
+					finalizeRoundButton.setVisible(false);
 					logButton.setVisible(false);
 
 					rolePlayButton.setFocusTraversable(true);
@@ -1516,7 +1523,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 					storyEditorButton.setFocusTraversable(false);
 					adminPaneButton.setFocusTraversable(false);
 					renameMeButton3.setFocusTraversable(false);
-					renameMeButton4.setFocusTraversable(false);
+					finalizeRoundButton.setFocusTraversable(false);
 					logButton.setFocusTraversable(false);
 				});
 			}
@@ -2589,7 +2596,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		storyEditorButton.setVisible(false);
 		adminPaneButton.setVisible(false);
 		renameMeButton3.setVisible(false);
-		renameMeButton4.setVisible(false);
+		finalizeRoundButton.setVisible(false);
 		logButton.setVisible(false);
 
 		showMenuIndicator(false);
@@ -2706,14 +2713,18 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 				storyEditorButton.setDisable(false);
 				//adminPaneButton.setDisable(false);
 				renameMeButton3.setDisable(true);
-				renameMeButton4.setDisable(true);
 				logButton.setDisable(false);
 			} else {
 				storyEditorButton.setDisable(true);
 				//adminPaneButton.setDisable(true);
 				renameMeButton3.setDisable(true);
-				renameMeButton4.setDisable(true);
 				logButton.setDisable(false);
+			}
+
+			if (Security.hasPrivilege(PRIVILEGES.ADMIN_FINALIZE_ROUND)) {
+				finalizeRoundButton.setDisable(false);
+			} else {
+				finalizeRoundButton.setDisable(true);
 			}
 			adminPaneButton.setDisable(false);
 		} else {
@@ -2730,7 +2741,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			storyEditorButton.setDisable(true);
 			adminPaneButton.setDisable(true);
 			renameMeButton3.setDisable(true);
-			renameMeButton4.setDisable(true);
+			finalizeRoundButton.setDisable(true);
 			logButton.setDisable(false);
 		}
 	}

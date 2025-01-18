@@ -640,8 +640,9 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 						}
 					}
 
-					if (starSystem.isActive()) {
-						if (starSystem.isActiveInPhase(Nexus.getCurrentSeasonMetaPhase())) {
+					// TODO: Reactivate this if system should be activated according to meta phases again !!!
+//					if (starSystem.isActive()) {
+//						if (starSystem.isActiveInPhase(Nexus.getCurrentSeasonMetaPhase())) {
 							// logger.info("System is active in the current MetaPhase!");
 							starSystem.getStarSystemGroup().setOpacity(1.0d);
 							starSystem.getLevelLabel().setOpacity(1.0d);
@@ -649,16 +650,16 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 								starSystem.getIndustryImage().setOpacity(1.0d);
 							}
 							starSystem.getStarSystemGroup().setMouseTransparent(false);
-						} else {
-							// logger.info("System is NOT active in the current MetaPhase!");
-							starSystem.getStarSystemGroup().setOpacity(0.2d);
-							starSystem.getLevelLabel().setOpacity(0.2d);
-							if (starSystem.getIndustryImage() != null) {
-								starSystem.getIndustryImage().setOpacity(0.2d);
-							}
-							starSystem.getStarSystemGroup().setMouseTransparent(true);
-						}
-					}
+//						} else {
+//							// logger.info("System is NOT active in the current MetaPhase!");
+//							starSystem.getStarSystemGroup().setOpacity(0.2d);
+//							starSystem.getLevelLabel().setOpacity(0.2d);
+//							if (starSystem.getIndustryImage() != null) {
+//								starSystem.getIndustryImage().setOpacity(0.2d);
+//							}
+//							starSystem.getStarSystemGroup().setMouseTransparent(true);
+//						}
+//					}
 				}
 
 				ArrayList<Shape> dashedBackgrounds = new ArrayList<>();
@@ -1175,18 +1176,21 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 					starSystemGroup.setTranslateY(y);
 					starSystemGroup.addEventFilter(MouseEvent.MOUSE_PRESSED, nodeGestures.getOnMouseClickedEventHandler());
 
-					if (starSystem.isActive()) {
-						if (starSystem.isActiveInPhase(Nexus.getCurrentSeasonMetaPhase())) {
-							// logger.info("System is active in the current MetaPhase!");
-						} else {
-							starSystemGroup.setOpacity(0.2d);
-							levelLabel.setOpacity(0.2d);
-							if (industryImage != null) {
-								industryImage.setOpacity(0.2d);
-							}
-							starSystemGroup.setMouseTransparent(true);
-						}
-					}
+
+
+					// TODO: Reactivate this if system should be activated according to meta phases again !!!
+//					if (starSystem.isActive()) {
+//						if (starSystem.isActiveInPhase(Nexus.getCurrentSeasonMetaPhase())) {
+//							// logger.info("System is active in the current MetaPhase!");
+//						} else {
+//							starSystemGroup.setOpacity(0.2d);
+//							levelLabel.setOpacity(0.2d);
+//							if (industryImage != null) {
+//								industryImage.setOpacity(0.2d);
+//							}
+//							starSystemGroup.setMouseTransparent(true);
+//						}
+//					}
 
 					starSystem.setStarSystemStackPane(stackPane);
 					starSystem.setStarSystemGroup(starSystemGroup);

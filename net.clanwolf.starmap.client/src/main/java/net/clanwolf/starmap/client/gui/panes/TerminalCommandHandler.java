@@ -194,46 +194,7 @@ public class TerminalCommandHandler {
 				// force finalize round
 				// ---------------------------------
 				if (com.toLowerCase().startsWith("!finalize round")) {
-					if (Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_FINALIZE_ROUND)) {
-
-						// Check if there are any routepoints that have not been saved yet!
-						boolean unsavedRoutesFound = false;
-						for (BOJumpship js : Nexus.getBoUniverse().getJumpshipList()) {
-							if (js.getJumpshipFaction() == Nexus.getCurrentUser().getCurrentCharacter().getFactionId()) {
-								// My own jumpship. May have been moved and may have an unsaved route
-
-								if (js.routeLines != null) {
-									if (!js.routeLines.getChildren().isEmpty()) {
-										logger.info("There are routepoints to store.");
-										unsavedRoutesFound = true;
-									} else {
-										logger.info("NO routepoints.");
-									}
-								}
-							}
-						}
-
-						if (unsavedRoutesFound) {
-							// stop action here, save routes first!
-							ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_saveRoutesBeforeFinalizeRound"), true));
-						} else {
-							// Can only be done if the privilege ADMIN_FINALIZE_ROUND is present
-							// AND if we are on a development machine
-							// AND if the feature has not been disabled here
-							if(!Nexus.isDevelopmentPC()) {
-								ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_command_has_been_disabled"), true));
-							} else {
-								ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_success"), false));
-								GameState s = new GameState();
-								s.setMode(GAMESTATEMODES.FORCE_FINALIZE_ROUND);
-								Nexus.fireNetworkEvent(s);
-							}
-						}
-					} else {
-						ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_notallowed"), false));
-						C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
-						ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(new C3Message(C3MESSAGES.ERROR_NOT_ALLOWED));
-					}
+					Nexus.forceFinalizeRound();
 					Nexus.storeCommandHistory();
 					sendingString = false;
 				}

@@ -146,7 +146,7 @@ public class C3LookupService extends SimpleLookupService {
 					rpChar.setName(sUsername);
 					rpChar.setMwoUsername(sUsername);
 					rpChar.setRank("MechWarrior");
-					rpChar.setCharImage("/images/chars/male/1032.png");
+					rpChar.setCharImage("/images/chars/male/1032.jpg");
 					rpChar.setAgeAtCreation(24);
 					rpChar.setXp(0);
 					rpChar.setHistory("-");

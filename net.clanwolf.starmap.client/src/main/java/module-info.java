@@ -7,11 +7,7 @@ module net.clanwolf.starmap.client {
 	requires tektosyne;
 	requires org.apache.commons.net;
 	requires org.apache.commons.collections4;
-	requires java.desktop;
 	requires java.logging;
-	requires javafx.graphics;
-	requires javafx.controls;
-	requires javafx.media;
 	requires javafx.fxml;
 	requires javafx.swing;
 	requires irc.api;
@@ -20,7 +16,9 @@ module net.clanwolf.starmap.client {
 	requires com.google.gson;
 	requires java.sql;
 	requires org.slf4j;
-//	requires org.apache.commons.io;
+	requires javafx.web;
+	requires javafx.media;
+	//	requires org.apache.commons.io;
 
 	opens net.clanwolf.starmap.client.security to javafx.fxml;
 	opens net.clanwolf.starmap.client.gui to javafx.fxml;

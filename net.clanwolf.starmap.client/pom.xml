@@ -166,6 +166,26 @@
 <!--			<artifactId>httpclient</artifactId>-->
 <!--			<version>4.5.13</version>-->
 <!--		</dependency>-->
+
+
+<!--		<dependency>-->
+<!--			<groupId>com.teamdev</groupId>-->
+<!--			<artifactId>jxbrowser</artifactId>-->
+<!--			<version>6.24.3</version>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>com.teamdev</groupId>-->
+<!--			<artifactId>jxbrowser-win64</artifactId>-->
+<!--			<version>6.24.3</version>-->
+<!--		</dependency>-->
+<!--		<dependency>-->
+<!--			<groupId>com.teamdev</groupId>-->
+<!--			<artifactId>jxbrowser-license</artifactId>-->
+<!--			<version>6.24.3</version>-->
+<!--		</dependency>-->
+
+
+
 	</dependencies>
 
 	<!-- ########################################################################################################### -->
@@ -423,9 +443,9 @@
 <!--												<modules>-->
 <!--													<module>-->
 <!--														<artifact>-->
-<!--															<groupId>commons-io</groupId>-->
-<!--															<artifactId>commons-io</artifactId>-->
-<!--															<version>2.13.0</version>-->
+<!--															<groupId>com.teamdev</groupId>-->
+<!--															<artifactId>jxbrowser-license</artifactId>-->
+<!--															<version>6.24.3</version>-->
 <!--														</artifact>-->
 <!--					&lt;!&ndash;									<additionalDependencies>&ndash;&gt;-->
 <!--					&lt;!&ndash;										<dependency>&ndash;&gt;-->
@@ -458,6 +478,63 @@
 							<outputDirectory>${project.build.directory}/modules</outputDirectory>
 
 							<modules>
+<!--								<module>-->
+<!--									<artifact>-->
+<!--										<groupId>com.teamdev</groupId>-->
+<!--										<artifactId>jxbrowser</artifactId>-->
+<!--										<version>6.24.3</version>-->
+<!--									</artifact>-->
+<!--									<moduleInfoSource>-->
+<!--										module jxbrowser {-->
+<!--											requires java.prefs;-->
+<!--											requires transitive java.datatransfer;-->
+<!--											requires transitive java.desktop;-->
+<!--											requires transitive java.logging;-->
+<!--											exports com.teamdev.jxbrowser.chromium;-->
+<!--											exports com.teamdev.jxbrowser.chromium.dom;-->
+<!--											exports com.teamdev.jxbrowser.chromium.dom.events;-->
+<!--											exports com.teamdev.jxbrowser.chromium.dom.internal;-->
+<!--											exports com.teamdev.jxbrowser.chromium.events;-->
+<!--											exports com.teamdev.jxbrowser.chromium.internal;-->
+<!--											exports com.teamdev.jxbrowser.chromium.internal.geometry;-->
+<!--											exports com.teamdev.jxbrowser.chromium.internal.ipc;-->
+<!--											exports com.teamdev.jxbrowser.chromium.internal.ipc.events;-->
+<!--											exports com.teamdev.jxbrowser.chromium.internal.ipc.message;-->
+<!--											exports com.teamdev.jxbrowser.chromium.internal.xz;-->
+<!--											exports com.teamdev.jxbrowser.chromium.javafx;-->
+<!--											exports com.teamdev.jxbrowser.chromium.javafx.internal;-->
+<!--											exports com.teamdev.jxbrowser.chromium.javafx.internal.dialogs;-->
+<!--											exports com.teamdev.jxbrowser.chromium.swing;-->
+<!--											exports com.teamdev.jxbrowser.chromium.swing.internal;-->
+<!--										}-->
+<!--									</moduleInfoSource>-->
+<!--								</module>-->
+
+<!--								<module>-->
+<!--									<artifact>-->
+<!--										<groupId>com.teamdev</groupId>-->
+<!--										<artifactId>jxbrowser-win64</artifactId>-->
+<!--										<version>6.24.3</version>-->
+<!--									</artifact>-->
+<!--									<moduleInfoSource>-->
+<!--										module jxbrowser.win64 {-->
+<!--											exports com.teamdev.jxbrowser.chromium.internal.res;-->
+<!--										}-->
+<!--									</moduleInfoSource>-->
+<!--								</module>-->
+
+<!--								<module>-->
+<!--									<artifact>-->
+<!--										<groupId>com.teamdev</groupId>-->
+<!--										<artifactId>jxbrowser-license</artifactId>-->
+<!--										<version>6.24.3</version>-->
+<!--									</artifact>-->
+<!--									<moduleInfoSource>-->
+<!--										module jxbrowser.license {-->
+<!--										}-->
+<!--									</moduleInfoSource>-->
+<!--								</module>-->
+
 								<module>
 									<artifact>
 										<groupId>com.ning</groupId>

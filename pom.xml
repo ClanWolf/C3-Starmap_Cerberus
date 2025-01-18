@@ -49,7 +49,7 @@
 
 		<!-- C3 Revision -->
 		<!-- https://stackoverflow.com/questions/10582054/maven-project-version-inheritance-do-i-have-to-specify-the-parent-version -->
-		<revision>7.5.01</revision>
+		<revision>7.5.4</revision>
 
 		<!-- Versions -->
 		<version.java>23</version.java>
@@ -72,40 +72,40 @@
 		<version.apache.commons-collections4>4.5.0-M2</version.apache.commons-collections4>
 		<version.apache.commons-net>3.11.1</version.apache.commons-net>
 		<version.blazeds-core>3.2.0.3978</version.blazeds-core>
-		<version.byte-buddy>1.15.4</version.byte-buddy>
+		<version.byte-buddy>1.15.10</version.byte-buddy>
 		<version.collections-generic>4.01</version.collections-generic>
-		<version.discord-api>5.1.2</version.discord-api>
+		<version.discord-api>5.2.0</version.discord-api>
 		<version.dom4j>2.1.4</version.dom4j>
 		<version.el-api>6.0.1</version.el-api>
 		<version.gifencoder>0.10.1</version.gifencoder>
 		<version.gson>2.11.0</version.gson>
 		<version.hikaricp>6.0.0</version.hikaricp>
 		<version.hibernate-core>6.4.4.Final</version.hibernate-core>
-		<version.hibernate-commons-annotations>7.0.1.Final</version.hibernate-commons-annotations>
+		<version.hibernate-commons-annotations>7.0.3.Final</version.hibernate-commons-annotations>
 		<version.hibernate-ehcache>6.0.0.Alpha7</version.hibernate-ehcache>
 		<version.hibernate-hikaricp>6.4.4.Final</version.hibernate-hikaricp>
 		<version.irc-api>1.0-0015-jitsi-1</version.irc-api>
 		<version.iText-core>8.0.5</version.iText-core>
-		<version.jackson-core>2.18.0</version.jackson-core>
-		<version.jackson-databind>2.18.0</version.jackson-databind>
-		<version.jackson-annotations>2.18.0</version.jackson-annotations>
+		<version.jackson-core>2.18.1</version.jackson-core>
+		<version.jackson-databind>2.18.1</version.jackson-databind>
+		<version.jackson-annotations>2.18.1</version.jackson-annotations>
 		<version.jackson-jsog>1.1.2</version.jackson-jsog>
 		<version.jakarta.activation>2.0.2</version.jakarta.activation>  <!-- net.clanwolf.starmap.mail -->
 		<version.jakarta.mail>2.0.3</version.jakarta.mail>              <!-- net.clanwolf.starmap.mail -->
 		<version.jakarta.xml.bind-api>4.0.2</version.jakarta.xml.bind-api>
 		<version.javassist>3.30.2-GA</version.javassist>
-		<version.jetbrains-annotations>26.0.0</version.jetbrains-annotations>
+		<version.jetbrains-annotations>26.0.1</version.jetbrains-annotations>
 		<version.jetlang>0.2.23</version.jetlang>
 		<version.jnativehook>2.2.2</version.jnativehook>
-		<version.mariadb-connector>3.4.1</version.mariadb-connector>
+		<version.mariadb-connector>3.5.0</version.mariadb-connector>
 		<version.mchange-commons-java>0.3.1</version.mchange-commons-java>
 		<version.netty>4.1.106.Final</version.netty>
 		<version.persistence-api>3.2.0</version.persistence-api>
 		<version.pircbotx>2.3.1</version.pircbotx>
 		<version.slf4j>2.0.16</version.slf4j>
-		<version.springframework>6.1.13</version.springframework>
-		<version.springframework-spring-context>6.1.13</version.springframework-spring-context>
-		<version.springframework-security-config>6.3.3</version.springframework-security-config>
+		<version.springframework>6.1.14</version.springframework>
+		<version.springframework-spring-context>6.1.14</version.springframework-spring-context>
+		<version.springframework-security-config>6.3.4</version.springframework-security-config>
 		<version.teamspeak3-api>1.3.1</version.teamspeak3-api>
 		<version.tektosyne>6.2.0</version.tektosyne>
 		<version.thumbnailator>0.4.20</version.thumbnailator>

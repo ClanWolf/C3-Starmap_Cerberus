@@ -256,7 +256,17 @@ public class EndRound {
         // ---------------------------------------------------------------------------------
 
         logger.info("Checking if current round needs to be finalized.");
-        if ((jumpshipsLeftToMove || attacksLeftToResolveInRound) && !(timeForThisRoundIsOver(seasonId)) && !forceFinalize.get()) {
+        if ((jumpshipsLeftToMove || attacksLeftToResolveInRound)
+
+
+
+
+		        // && !(timeForThisRoundIsOver(seasonId))
+
+
+
+
+		        && !forceFinalize.get()) {
             // round is still active
             logger.info("Round is still active:");
 			logger.info("--- " + jsmovedcount + " jumpship(s) have moved.");

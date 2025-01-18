@@ -59,13 +59,20 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
-Version 7.5.01 (__.10.2024)
+Version 7.5.4 (18.01.2025)
+- ADDED: A button to finalize round manually
+- ADDED: A number of jumpships for DC and LA (test)
+- REMOVED: Automatic finalize round
+
+Version 7.5.3 (22.11.2024)
+- ADDED: Browser component to integrate ASCard
 - ADDED: Dev indicator icon in client
 - ADDED: Exception handling and proper error message on failed connects (Netty)
 - CHANGED: How message objects are handled
 - CHANGED: Behaviour of the command history in case of finalizing rounds
+- UPDATED: Libraries
 
-Version 7.5.00 (21.09.2024)
+Version 7.5.0 (21.09.2024)
 - UPDATED: Java and JavaFX to 23
 
 Version 7.4.34 (05.03.2024)

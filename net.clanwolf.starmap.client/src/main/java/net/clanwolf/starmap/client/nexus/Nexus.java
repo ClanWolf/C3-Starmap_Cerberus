@@ -31,11 +31,21 @@ import io.nadron.client.event.Events;
 import io.nadron.client.event.NetworkEvent;
 import javafx.scene.control.Slider;
 import javafx.scene.image.Image;
+import net.clanwolf.starmap.client.action.ACTIONS;
+import net.clanwolf.starmap.client.action.ActionManager;
+import net.clanwolf.starmap.client.action.StatusTextEntryActionObject;
+import net.clanwolf.starmap.client.enums.C3MESSAGES;
+import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
 import net.clanwolf.starmap.client.gui.panes.AbstractC3Pane;
 //import net.clanwolf.starmap.client.gui.panes.logging.LogWatcher;
 import net.clanwolf.starmap.client.process.login.Login;
 import net.clanwolf.starmap.client.process.universe.*;
+import net.clanwolf.starmap.client.security.Security;
+import net.clanwolf.starmap.client.sound.C3SoundPlayer;
+import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.transfer.dtos.*;
+import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
+import net.clanwolf.starmap.transfer.enums.PRIVILEGES;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.transfer.GameState;
@@ -414,7 +424,7 @@ public class Nexus {
 	@SuppressWarnings("unused")
 	public static void userHasFinishedAttacksInCurrentRound() {
 		if (finishedAttacksOfUser == null) {
-			finishedAttacksOfUser = new ArrayList<BOAttack>();
+			finishedAttacksOfUser = new ArrayList<>();
 		}
 		finishedAttacksOfUser.clear();
 
@@ -468,7 +478,7 @@ public class Nexus {
 				}
 			}
 		} else if (attackBOs.size() == 1) {
-			latestAttack = attackBOs.get(0);
+			latestAttack = attackBOs.getFirst();
 		}
 		return latestAttack;
 	}
@@ -519,6 +529,57 @@ public class Nexus {
 			}
 		}
 		return r;
+	}
+
+	public static void forceFinalizeRound() {
+		if (Security.hasPrivilege(Nexus.getCurrentUser(), PRIVILEGES.ADMIN_FINALIZE_ROUND)) {
+
+			// Check if there are any routepoints that have not been saved yet!
+			boolean unsavedRoutesFound = false;
+			for (BOJumpship js : Nexus.getBoUniverse().getJumpshipList()) {
+				if (js.getJumpshipFaction() == Nexus.getCurrentUser().getCurrentCharacter().getFactionId()) {
+					// My own jumpship. May have been moved and may have an unsaved route
+
+					if (js.routeLines != null) {
+						if (!js.routeLines.getChildren().isEmpty()) {
+							logger.info("There are routepoints to store.");
+							unsavedRoutesFound = true;
+						} else {
+							logger.info("NO routepoints.");
+						}
+					}
+				}
+			}
+
+			if (unsavedRoutesFound) {
+				// stop action here, save routes first!
+				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_saveRoutesBeforeFinalizeRound"), true));
+			} else {
+				// Can only be done if the privilege ADMIN_FINALIZE_ROUND is present
+				// AND if we are on a development machine
+				// AND if the feature has not been disabled here
+//				if (!Nexus.isDevelopmentPC()) {
+//					ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_command_has_been_disabled"), true));
+//				} else {
+
+
+
+
+//					ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_success"), false));
+//					GameState s = new GameState();
+//					s.setMode(GAMESTATEMODES.FORCE_FINALIZE_ROUND);
+//					Nexus.fireNetworkEvent(s);
+
+
+
+
+//				}
+			}
+		} else {
+			ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_notallowed"), false));
+			C3SoundPlayer.getTTSFile(Internationalization.getString("C3_Speech_Failure"));
+			ActionManager.getAction(ACTIONS.SHOW_MESSAGE).execute(new C3Message(C3MESSAGES.ERROR_NOT_ALLOWED));
+		}
 	}
 
 	@SuppressWarnings("unused")
