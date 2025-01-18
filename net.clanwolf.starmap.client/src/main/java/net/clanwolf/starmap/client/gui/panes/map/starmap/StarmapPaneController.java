@@ -381,6 +381,7 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 						|| dState.getState() == DiplomacyState.OTHER_FACTION_REQUEST_NEXT_ROUND
 						|| dState.getState() == DiplomacyState.PLAYERS_FACTION_REQUEST_NEXT_ROUND
 						|| dState.getState() == DiplomacyState.NO_ALLIANCE_FOUND
+						|| dState.getState() == DiplomacyState.FACTIONS_AT_WAR
 				) {
 					createAttack = true;
 				}

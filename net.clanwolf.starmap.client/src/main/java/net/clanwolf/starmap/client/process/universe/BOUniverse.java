@@ -247,7 +247,9 @@ public class BOUniverse {
 
 		for (BOJumpship jumpship: Nexus.getBoUniverse().getJumpshipList()) {
 			BOFaction f = Nexus.getBoUniverse().getFactionByID(jumpship.getJumpshipDTO().getJumpshipFactionID());
-			activeFactions.add(f);
+			if (!activeFactions.contains(f)) {
+				activeFactions.add(f);
+			}
 		}
 		return activeFactions;
 	}

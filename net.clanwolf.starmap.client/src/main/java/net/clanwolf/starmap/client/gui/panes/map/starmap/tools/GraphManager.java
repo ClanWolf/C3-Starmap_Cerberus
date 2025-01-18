@@ -181,7 +181,8 @@ public class GraphManager<T> implements GraphAgent<T> {
 		boolean inRange = distance <= 30;
 		boolean isAttacked = hoveredSys.isCurrentlyUnderAttack();
 		boolean isAttackedNextRound = hoveredSys.isNextRoundUnderAttack();
-		boolean isActiveInPhase = hoveredSys.isActiveInPhase(Nexus.getCurrentSeasonMetaPhase());
+		// TODO: boolean isActiveInPhase = hoveredSys.isActiveInPhase(Nexus.getCurrentSeasonMetaPhase());
+		boolean isActiveInPhase = true;
 		boolean isLockedByJumpship = hoveredSys.isLockedByJumpship();
 		boolean isLockedByPreviousAttackCooldown = hoveredSys.isLockedByPreviousAttackCooldown();
 		boolean isLevelAllowed = (minJumpshipLevel <= currentJumpshipLevel) || currentJumpshipFactionId.equals(currentlyHoveredSystemFactionId);
