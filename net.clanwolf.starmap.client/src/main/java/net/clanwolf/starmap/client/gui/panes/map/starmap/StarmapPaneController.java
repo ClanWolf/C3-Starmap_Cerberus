@@ -2334,7 +2334,10 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 
 					canvas.show3DStars(false);
 					canvas.hideElementsForScreenshot(true);
-					if (!Nexus.isDevelopmentPC() && C3Properties.getBoolean(C3PROPS.GENERALS_SCREENSHOT_HISTORY)) {
+					if (
+						//!Nexus.isDevelopmentPC() &&
+						C3Properties.getBoolean(C3PROPS.GENERALS_SCREENSHOT_HISTORY)
+					) {
 						Tools.saveMapScreenshot((int) w, (int) h / 2 + 200, canvas);
 						screenshotHasBeenTaken = true;
 						logger.info("Saved history screenshot of the starmap.");

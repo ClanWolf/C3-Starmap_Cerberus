@@ -59,6 +59,9 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
+Version 7.5.5 (19.01.2025)
+- CHANGED: Re-enabled attack images for DEV stations
+
 Version 7.5.4 (18.01.2025)
 - ADDED: A button to finalize round manually
 - ADDED: A number of jumpships for DC and LA (test)

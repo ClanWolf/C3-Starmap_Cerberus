@@ -200,7 +200,7 @@ public final class Tools {
 	}
 
 	public static void getAttackScreenShot(StarmapPannableCanvas canvas, BOStarSystem attackedSystem, Long attackId) {
-		if (!Nexus.isDevelopmentPC()) {
+		//if (!Nexus.isDevelopmentPC()) {
 			ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("666");
 
 			String currentSeason = "" + Nexus.getCurrentSeason();
@@ -278,14 +278,14 @@ public final class Tools {
 			}
 
 			ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("666");
-		} else {
-			logger.error("Skipping attack screenshot because this is a dev machine.");
-		}
+		//} else {
+		//	logger.error("Skipping attack screenshot because this is a dev machine.");
+		//}
 	}
 
 	public static void saveMapScreenshot(int width, int height, StarmapPannableCanvas canvas) {
 		if(C3Properties.getBoolean(C3PROPS.GENERALS_SCREENSHOT_HISTORY)) {
-			if (!Nexus.isDevelopmentPC()) {
+			//if (!Nexus.isDevelopmentPC()) {
 				ActionManager.getAction(ACTIONS.CURSOR_REQUEST_WAIT).execute("14");
 				WritableImage wi = new WritableImage(width, height);
 
@@ -396,9 +396,9 @@ public final class Tools {
 					logger.error("Could not save map screenshot!");
 				}
 				ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("14");
-			} else {
-				logger.error("Skipping map screenshot because this is a dev machine.");
-			}
+			//} else {
+			//	logger.error("Skipping map screenshot because this is a dev machine.");
+			//}
 		} else {
 			logger.info("Generating and uploading screenshot is not allowed by user.");
 		}

@@ -52,6 +52,10 @@ update ROLEPLAY_CHARACTER set XP = 0;
 
 update _HH_SEASON set StartDateRealYear = YEAR(CURDATE()) where ID = 1;
 
---commit;
+
+select * from `_HH_ATTACK`;
+
+
+commit;
 
 -- SERVER NEU STARTEN !!!
