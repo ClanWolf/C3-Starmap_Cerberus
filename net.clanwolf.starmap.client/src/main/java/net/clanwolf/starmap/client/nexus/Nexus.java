@@ -97,6 +97,7 @@ public class Nexus {
 	private static String currentDate;
 
 	private static long hoursLeftInThisRound;
+	private static long hoursAgeOfThisRound;
 	private static String lastAvailableClientVersion = "not checked yet";
 
 	private static AbstractC3Pane currentlyOpenedPane = null;
@@ -565,10 +566,10 @@ public class Nexus {
 
 
 
-//					ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_success"), false));
-//					GameState s = new GameState();
-//					s.setMode(GAMESTATEMODES.FORCE_FINALIZE_ROUND);
-//					Nexus.fireNetworkEvent(s);
+				ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("general_success"), false));
+				GameState s = new GameState();
+				s.setMode(GAMESTATEMODES.FORCE_FINALIZE_ROUND);
+				Nexus.fireNetworkEvent(s);
 
 
 
@@ -730,6 +731,11 @@ public class Nexus {
 	@SuppressWarnings("unused")
 	public static void setHoursLeftInThisRound(long hoursLeftInThisRoundV) {
 		hoursLeftInThisRound = hoursLeftInThisRoundV;
+	}
+
+	@SuppressWarnings("unused")
+	public static void setHoursAgeOfThisRound(long h) {
+		hoursAgeOfThisRound = h;
 	}
 
 	@SuppressWarnings("unused")

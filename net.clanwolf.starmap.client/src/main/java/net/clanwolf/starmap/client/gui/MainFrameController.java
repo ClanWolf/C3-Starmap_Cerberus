@@ -1561,36 +1561,64 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 						LocalDate translatedLocalDate = new java.util.Date(translatedNowDate.getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 						LocalTime nowLocalTime = LocalTime.now();
 						LocalDateTime now = LocalDateTime.of(translatedLocalDate, nowLocalTime);
+						LocalDateTime startTime = Nexus.getBoUniverse().currentRoundStartDateTime;
 						LocalDateTime endTime = Nexus.getBoUniverse().currentRoundEndDateTime;
 
+						Nexus.setHoursAgeOfThisRound(java.time.Duration.between(startTime, now).toHours());
 						Nexus.setHoursLeftInThisRound(java.time.Duration.between(now, endTime).toHours());
 
 //						logger.info("Now: " + now);
+//						logger.info("Start time for this round: " + startTime);
 //						logger.info("End time for this round: " + endTime);
+//						logger.info("Calculated hours age of this round: " + java.time.Duration.between(startTime, now).toHours());
 //						logger.info("Calculated hours left in this round: " + java.time.Duration.between(now, endTime).toHours());
 
-						long diff = java.time.Duration.between(now, endTime).toMinutes();
-						long days = diff / 24 / 60;
-						long hours = diff / 60 % 24;
-						long minutes = diff % 60;
+						String timeString = "";
+						if (false) { // Show time left in round
+							long diff = java.time.Duration.between(now, endTime).toMinutes();
+							long days = diff / 24 / 60;
+							long hours = diff / 60 % 24;
+							long minutes = diff % 60;
 
-						String daysString = days == 1 ? Internationalization.getString("general_day") : Internationalization.getString("general_days");
-						String hourString = hours == 1 ? Internationalization.getString("general_hour") : Internationalization.getString("general_hours");
-						String minuteString = minutes == 1 ? Internationalization.getString("general_minute") : Internationalization.getString("general_minutes");
+							String daysString = days == 1 ? Internationalization.getString("general_day") : Internationalization.getString("general_days");
+							String hourString = hours == 1 ? Internationalization.getString("general_hour") : Internationalization.getString("general_hours");
+							String minuteString = minutes == 1 ? Internationalization.getString("general_minute") : Internationalization.getString("general_minutes");
 
-						String timeString;
-						if (days != 0) {
-							if (hours != 0) {
-								timeString = days + " " + daysString + ", " + hours + " " + hourString + " " + Internationalization.getString("general_and") + " " + minutes + " " + minuteString + " " + Internationalization.getString("general_left_in_round") + " " + Nexus.getCurrentRound();
+							if (days != 0) {
+								if (hours != 0) {
+									timeString = days + " " + daysString + ", " + hours + " " + hourString + " " + Internationalization.getString("general_and") + " " + minutes + " " + minuteString + " " + Internationalization.getString("general_left_in_round") + " " + Nexus.getCurrentRound();
+								} else {
+									timeString = days + " " + daysString + " " + Internationalization.getString("general_and") + " " + minutes + " " + minuteString + " " + Internationalization.getString("general_left_in_round") + " " + Nexus.getCurrentRound();
+								}
+							} else if (hours != 0) {
+								timeString = hours + " " + hourString + " " + Internationalization.getString("general_and") + " " + minutes + " " + minuteString + " " + Internationalization.getString("general_left_in_round") + " " + Nexus.getCurrentRound();
 							} else {
-								timeString = days + " " + daysString + " " + Internationalization.getString("general_and") + " " + minutes + " " + minuteString + " " + Internationalization.getString("general_left_in_round") + " " + Nexus.getCurrentRound();
+								timeString = minutes + " " + minuteString + " " + Internationalization.getString("general_left_in_round") + " " + Nexus.getCurrentRound() + ".";
 							}
-						} else if (hours != 0) {
-							timeString = hours + " " + hourString + " " + Internationalization.getString("general_and") + " " + minutes + " " + minuteString + " " + Internationalization.getString("general_left_in_round") + " " + Nexus.getCurrentRound();
-						} else {
-							timeString = minutes + " " + minuteString + " " + Internationalization.getString("general_left_in_round") + " " + Nexus.getCurrentRound() + ".";
+							timeString = timeString + " (" + java.time.Duration.between(now, endTime).toHours() + "h).";
+						} else { // show age of the current round (in case of manual round progression)
+							long diff = java.time.Duration.between(startTime, now).toMinutes();
+							long days = diff / 24 / 60;
+							long hours = diff / 60 % 24;
+							long minutes = diff % 60;
+
+							String daysString = days == 1 ? Internationalization.getString("general_day") : Internationalization.getString("general_days");
+							String hourString = hours == 1 ? Internationalization.getString("general_hour") : Internationalization.getString("general_hours");
+							String minuteString = minutes == 1 ? Internationalization.getString("general_minute") : Internationalization.getString("general_minutes");
+
+							if (days != 0) {
+								if (hours != 0) {
+									timeString = days + " " + daysString + ", " + hours + " " + hourString + " " + Internationalization.getString("general_and") + " " + minutes + " " + minuteString + " " + Internationalization.getString("general_age_of_round") + " " + Nexus.getCurrentRound();
+								} else {
+									timeString = days + " " + daysString + " " + Internationalization.getString("general_and") + " " + minutes + " " + minuteString + " " + Internationalization.getString("general_age_of_round") + " " + Nexus.getCurrentRound();
+								}
+							} else if (hours != 0) {
+								timeString = hours + " " + hourString + " " + Internationalization.getString("general_and") + " " + minutes + " " + minuteString + " " + Internationalization.getString("general_age_of_round") + " " + Nexus.getCurrentRound();
+							} else {
+								timeString = minutes + " " + minuteString + " " + Internationalization.getString("general_left_in_round") + " " + Nexus.getCurrentRound() + ".";
+							}
+							timeString = timeString + " (" + java.time.Duration.between(startTime, now).toHours() + "h).";
 						}
-						timeString = timeString + " (" + java.time.Duration.between(now, endTime).toHours() + "h).";
 						ActionManager.getAction(ACTIONS.UPDATE_ROUND_COUNTDOWN).execute(timeString);
 					}
 				}

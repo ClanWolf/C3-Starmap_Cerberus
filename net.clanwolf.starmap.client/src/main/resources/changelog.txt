@@ -2,6 +2,40 @@ C3 version history
 [ https://www.clanwolf.net | https://github.com/ClanWolf ]
 ----------------------------------------------------------------
 
+
+Handling TableTop-Invasion
+
+- Angriff-Button wird Auswahl (ComboBox) für MWO bzw. AS (oder andere)
+- Bei Nicht-MWO kommt Auswahldialog Chapter X vs. Chapter Y (Chapter auf Faction einschränken?)
+- Bevorzugtes Spiel beim Registrieren angeben (MWO / TT / MM)
+- Dieses bevorzugte Spiel wird dann die Default-Auswahl des "Angriff"-ComboButton
+- Vielleicht kann die Vorauswahl umgestellt werden, wenn das Spiel gewechselt wird (?)
+- Angriff von Mitglied Fraktion A / Chapter A (?)
+- Nicht in eine Lobby, sondern in einen Dialog zur Regelvereinbarung
+- Während dieser Dialog offen ist, keine andere User-Angriff-Aktion (Button disabled, hidden)
+- Wenn die Vereinbarung fertig ist, ist der nächste Schritt der Report-Ergebnis-Schritt
+- Wenn der Angreifer in diesem Schritt und fertig (!) ist, dann kann der Verteidiger dort auch rein, sieht das eingetragene Ergebnis vom Angreifer und muss bestätigen
+- Erst dann ist der Kampf zu Ende.
+- Planet wechselt Farbe zum Rundenwechsel (wie gehabt)
+
+- Invasion "Landen"-Button ist manchmal aktiv, obwohl der Angriff noch nicht gestartet wurde!
+
+
+- Angreifer legt beim Start des Angriffs einen Pin fest, den der Verteidiger beim Bestätigen eingeben muss
+- Keine Chapterauswahl (wegen Pin)
+- Pin könnte beim Starten zufällig generiert werden und steht dem Angreifer irgendwo zur Verfügung, muss dem richtigen Verteidiger mitgeteilt werden
+
+
+
+- Neue Spalte beim Angriff für das Spiel (MWO / ...) und den Pin
+
+
+
+
+
+
+
+
 TODO PRIO 1 - Immediate:
 - *** Clear game info on logout
 - *** Clear diplomacy and chat indicators on logout
@@ -59,8 +93,16 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
+Version 7.5.7 (25.01.2025)
+- FIXED: Attack button was enabled even if attack was not started
+- FIXED: Showing the time since the round started instead the remaining time (manual round progression)
+
+Version 7.5.6 (20.01.2025)
+- CHANGED: Activated manual round progression
+
 Version 7.5.5 (19.01.2025)
 - CHANGED: Re-enabled attack images for DEV stations
+- CHANGED: Re-enabled starmap images for DEV stations
 
 Version 7.5.4 (18.01.2025)
 - ADDED: A button to finalize round manually

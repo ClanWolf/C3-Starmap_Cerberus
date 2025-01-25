@@ -2398,6 +2398,9 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 			case SYSTEM_WAS_SELECTED:
 				if (o.getObject() instanceof BOStarSystem ss) {
 
+					mapButton06.setDisable(true);
+					mapButton06.setVisible(false);
+
 					boolean hasAttack = false;
 					boolean attackLobbyAlreadyStarted = false;
 					boolean fightsalreadystarted = false;
