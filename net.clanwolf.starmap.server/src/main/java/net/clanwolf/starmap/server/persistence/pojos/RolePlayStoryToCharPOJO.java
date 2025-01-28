@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2024, ClanWolf.net                            |
+ * Copyright (c) 2001-2025, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.server.persistence.pojos;
@@ -46,23 +46,23 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 @Entity
 @Table(name = "ROLEPLAY_STORYTOCHAR", catalog = "C3")
 public class RolePlayStoryToCharPOJO extends Pojo {
-	 
+
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "ID")
     private Integer id;
-    
+
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="StoryID")
     private RolePlayStoryPOJO story;
-    
+
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "CharacterID")
     private RolePlayCharacterPOJO character;
-	 
+
 	public RolePlayStoryToCharPOJO(){
-		 
+
 	}
-	
-	
+
+
 }

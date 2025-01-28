@@ -88,8 +88,10 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
-Version 7.5.9 (27.01.2025)
+Version 7.5.10 (28.01.2025)
 - ADDED: Logs to discord thread creation to get necessary ids to create links
+- CHANGED: Discord output
+- UPDATED: Copyright notices
 
 Version 7.5.7 (25.01.2025)
 - FIXED: Attack button was enabled even if attack was not started

@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2024, ClanWolf.net                            |
+ * Copyright (c) 2001-2025, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.server.timertasks;
@@ -98,7 +98,7 @@ public class HeartBeatTimerTask extends TimerTask {
 				if (!heartbeatfile.exists()) {
 					// Wenn sie nicht existiert, erstelle sie
 					if (heartbeatfile.createNewFile()) {
-						logger.info("heartbeat file created: " + heartbeatfile.getAbsolutePath());
+						logger.info("heartbeat file created: {}", heartbeatfile.getAbsolutePath());
 					} else {
 						logger.error("The heartbeat file could not be created!");
 					}
@@ -113,7 +113,7 @@ public class HeartBeatTimerTask extends TimerTask {
 
 				if (diff > (1000 * 60)) { // every 60 seconds there is a heartbeat
 					try (BufferedWriter br = new BufferedWriter(new FileWriter(heartbeatfile))) {
-						logger.info("Writing heartbeat ping to " + heartBeatFileName);
+						logger.info("Writing heartbeat ping to {}", heartBeatFileName);
 						br.write("" + currentTimestamp.getTime());
 					} catch (IOException ioe) {
 						logger.error("Exception while writing heartbeat file [001].", ioe);
@@ -141,18 +141,18 @@ public class HeartBeatTimerTask extends TimerTask {
 			WebDataInterface.loadDiplomacy(seasonId);
 
 //			logger.info("Calling list creation methods...");
-////			logger.info("Calling list creation (Factions)...");
+// //			logger.info("Calling list creation (Factions)...");
 //			WebDataInterface.createSystemList(SystemListTypes.Factions);
-////			logger.info("Calling list creation (HH_StarSystems)...");
+// //			logger.info("Calling list creation (HH_StarSystems)...");
 //			WebDataInterface.createSystemList(SystemListTypes.HH_StarSystems);
-////			logger.info("Calling list creation (HH_Attacks)...");
+// //			logger.info("Calling list creation (HH_Attacks)...");
 //			WebDataInterface.createSystemList(SystemListTypes.HH_Attacks);
-////			logger.info("Calling list creation (HH_Jumpships)...");
+// //			logger.info("Calling list creation (HH_Jumpships)...");
 //			WebDataInterface.createSystemList(SystemListTypes.HH_Jumpships);
-////			logger.info("Calling list creation (HH_Routepoints)...");
+// //			logger.info("Calling list creation (HH_Routepoints)...");
 //			WebDataInterface.createSystemList(SystemListTypes.HH_Routepoints);
-////			logger.info("Calling list creation (CM_StarSystems)...");
-////			WebDataInterface.createSystemList(SystemListTypes.CM_StarSystems);
+// //			logger.info("Calling list creation (CM_StarSystems)...");
+// //			WebDataInterface.createSystemList(SystemListTypes.CM_StarSystems);
 
 			if (informClients || ServerNexus.sendUniverseToClients) {
 				// Broadcast new version of the universe to the clients
@@ -183,7 +183,7 @@ public class HeartBeatTimerTask extends TimerTask {
 		long seconds = (diffmilliseconds - hours * 1000 * 60 * 60 - minutes * 1000 * 60) / 10000;
 		long days = hours / 24;
 		String uptime = String.format("%02d", hours) + ":" + String.format("%02d", minutes) + ":" + String.format("%02d", seconds);
-		logger.info(uptime + " (" + days + " days)");
+		logger.info("{} ({} days)", uptime, days);
 
 		// Send uptime message to bots (irc, ts3 and discord), only once an hour
 		if (hours > lastReportedHour + 23) {

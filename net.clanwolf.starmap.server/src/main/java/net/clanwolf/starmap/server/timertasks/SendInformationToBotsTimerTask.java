@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2024, ClanWolf.net                            |
+ * Copyright (c) 2001-2025, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.server.timertasks;
@@ -63,6 +63,7 @@ public class SendInformationToBotsTimerTask extends TimerTask {
 		SeasonPOJO season = (SeasonPOJO) seasonDAO.findById(SeasonPOJO.class, seasonId);
 		Double daysInRound = season.getDaysInRound();
 		long hoursInRound = (long) (daysInRound * 24);
+		String seasonName = season.getName();
 
 		Timestamp d = Timestamp.valueOf(round.getCurrentRoundStartDateRealTime());
 		Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -160,7 +161,7 @@ public class SendInformationToBotsTimerTask extends TimerTask {
 		String ed_de = format_de.format(endOfRound);
 		String ed_en = format_en.format(endOfRound);
 
-		ServerNexus.getEci().sendExtCom("--------------------------------\r\n\r\n" + "Round " + roundId + " of season " + seasonId + "\r\n" + "Started: " + sd_en + "\r\n" + "Will end: " + ed_en+ " (latest)\r\n\r\n" + "Open fights:\r\n" + fs_en, "en", true, true, true);
-		ServerNexus.getEci().sendExtCom("--------------------------------\r\n\r\n" + "Runde " + roundId + " von Season " + seasonId + "\r\n" + "Gestartet: " + sd_de + "\r\n" + "Wird beendet: " + ed_de + " (spätestens)\r\n\r\n" + "Offene Kämpfe:\r\n" + fs_de, "de", true, true, true);
+		ServerNexus.getEci().sendExtCom("--------------------------------\r\n\r\n" + "Round " + roundId + " of season " + seasonId + " (" + seasonName + ")\r\n" + "Started: " + sd_en + "\r\n" + "Will end: " + ed_en+ " (latest)\r\n\r\n" + "Open fights:\r\n" + fs_en, "en", true, true, true);
+		ServerNexus.getEci().sendExtCom("--------------------------------\r\n\r\n" + "Runde " + roundId + " von Season " + seasonId + " (" + seasonName + ")\r\n" + "Gestartet: " + sd_de + "\r\n" + "Wird beendet: " + ed_de + " (spätestens)\r\n\r\n" + "Offene Kämpfe:\r\n" + fs_de, "de", true, true, true);
 	}
 }

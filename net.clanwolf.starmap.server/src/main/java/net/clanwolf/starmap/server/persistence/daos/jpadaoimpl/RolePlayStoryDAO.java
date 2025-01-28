@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2024, ClanWolf.net                            |
+ * Copyright (c) 2001-2025, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.server.persistence.daos.jpadaoimpl;
@@ -74,7 +74,7 @@ public class RolePlayStoryDAO extends GenericDAO {
 
 	/**
 	 * Returns all RolePlayStorys with the types C3_RP_STORY and C3_RP_CHAPTER
-	 * 
+	 *
 	 * @return ArrayList<RolePlayStoryPOJO> *
 	 */
 	public ArrayList<RolePlayStoryPOJO> getAllStoriesAndChapters() {
