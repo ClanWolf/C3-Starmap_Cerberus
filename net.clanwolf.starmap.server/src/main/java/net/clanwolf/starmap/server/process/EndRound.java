@@ -261,14 +261,14 @@ public class EndRound {
 
 
 
-		        // && !(timeForThisRoundIsOver(seasonId))
+			// && !(timeForThisRoundIsOver(seasonId))
 
 
 
 
-		        && !forceFinalize.get()) {
-            // round is still active
-            logger.info("Round is still active:");
+				&& !forceFinalize.get()) {
+			// round is still active
+			logger.info("Round is still active:");
 			logger.info("--- " + jsmovedcount + " jumpship(s) have moved.");
             logger.info("--- " + jscount + " jumpship(s) have not moved.");
             logger.info("--- " + openAttacksInRoundList.size() + " attacks still to be resolved.");

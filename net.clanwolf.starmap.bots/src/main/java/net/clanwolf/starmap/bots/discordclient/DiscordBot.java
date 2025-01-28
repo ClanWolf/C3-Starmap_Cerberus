@@ -36,10 +36,7 @@ import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageHistory;
 import net.dv8tion.jda.api.entities.channel.concrete.ForumChannel;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
-import net.dv8tion.jda.api.entities.channel.forums.BaseForumTag;
-import net.dv8tion.jda.api.entities.channel.forums.ForumTag;
-import net.dv8tion.jda.api.entities.channel.forums.ForumTagData;
-import net.dv8tion.jda.api.entities.channel.forums.ForumTagSnowflake;
+import net.dv8tion.jda.api.entities.channel.forums.*;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.requests.restaction.ForumPostAction;
@@ -178,9 +175,16 @@ public class DiscordBot extends ListenerAdapter {
 			}
 
 			if (tagId != null) {
-				logger.error("TagId for ForumTag found: " + tagId);
+				logger.info("TagId for ForumTag found: " + tagId);
 				ForumPostAction action = fch.createForumPost(header, MessageCreateData.fromContent(msg)).setTags(ForumTagSnowflake.fromId(tagId));
-				action.complete();
+				ForumPost post = action.complete();
+
+				String serverId = fch.getManager().getGuild().getId(); // ServerId
+				String channelId = fch.getId();                        // ForumId
+				String postId = post.getMessage().getId();             // postId
+
+				sendMessageToChannel("https://discord.com/channels/" + serverId + "/" + channelId + "/" + postId);
+				logger.info("Discord link to invasion post: https://discord.com/channels/" + serverId + "  /  " + channelId + "  /  " + postId);
 			} else {
 				logger.error("TagId for ForumTag not found.");
 			}

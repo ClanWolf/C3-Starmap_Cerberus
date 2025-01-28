@@ -38,6 +38,7 @@ import org.slf4j.LoggerFactory;
 import java.lang.invoke.MethodHandles;
 import java.sql.Date;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -58,14 +59,25 @@ public class SendInformationToBotsTimerTask extends TimerTask {
 		RoundPOJO round = RoundDAO.getInstance().findBySeasonId(seasonId);
 		Long roundId = round.getRound();
 
+		SeasonDAO seasonDAO = SeasonDAO.getInstance();
+		SeasonPOJO season = (SeasonPOJO) seasonDAO.findById(SeasonPOJO.class, seasonId);
+		Double daysInRound = season.getDaysInRound();
+		long hoursInRound = (long) (daysInRound * 24);
+
 		Timestamp d = Timestamp.valueOf(round.getCurrentRoundStartDateRealTime());
 		Timestamp now = new Timestamp(System.currentTimeMillis());
 
-		long maxRoundAgeMillis = 84 * 60 * 60 * 1000;
+		long maxRoundAgeMillis = hoursInRound * 60 * 60 * 1000;
 		long roundageMillis = now.getTime() - d.getTime();
 		long minutesLeft = ((maxRoundAgeMillis - roundageMillis) / 1000) / 60;
 		long finalHoursLeft = minutesLeft / 60;
 		long finalMinutesLeft = minutesLeft - finalHoursLeft * 60;
+
+		long roundAgeInMinutes = roundageMillis / 1000 / 60;
+		long finalHoursRoundAge = roundAgeInMinutes / 60;
+		long finalMinutesRoundAge = roundAgeInMinutes - finalHoursRoundAge * 60;
+
+		Timestamp endOfRound = new Timestamp(d.getTime() + maxRoundAgeMillis);
 
 		ArrayList<AttackPOJO> allAttacksForRound = AttackDAO.getInstance().getOpenAttacksOfASeasonForRound(seasonId, roundId.intValue());
 		ArrayList<AttackPOJO> allAttacksForNextRound = AttackDAO.getInstance().getOpenAttacksOfASeasonForRound(seasonId, roundId.intValue() + 1);
@@ -94,10 +106,17 @@ public class SendInformationToBotsTimerTask extends TimerTask {
 			fs_de.append("- keine...\r\n");
 			fs_en.append("- none...\r\n");
 		}
-		fs_de.append("\r\nNoch ").append(finalHoursLeft).append(" Stunden und ").append(finalMinutesLeft).append(" Minuten in Runde ").append(roundId).append(" der Season ").append(seasonId).append(".\r\n");
-		fs_en.append("\r\n").append(finalHoursLeft).append(" hours and ").append(finalMinutesLeft).append(" minutes left in round ").append(roundId).append(" of season ").append(seasonId).append(".\r\n");
 
-		if (allAttacksForNextRound.size() > 0) {
+		fs_de.append("\r\nRunde ").append(roundId).append(" ist ").append(finalHoursRoundAge).append(" Stunden und ").append(finalMinutesRoundAge).append(" Minuten alt").append(".\r\n");
+		fs_en.append("\r\nRound ").append(roundId).append(" is ").append(finalHoursRoundAge).append(" hours and ").append(finalMinutesRoundAge).append(" minutes old").append(".\r\n");
+
+		fs_de.append("Noch maximal ").append(finalHoursLeft).append(" Stunden und ").append(finalMinutesLeft).append(" Minuten in Runde ").append(roundId).append(" der Season ").append(seasonId).append(".\r\n");
+		fs_en.append("Up to ").append(finalHoursLeft).append(" hours and ").append(finalMinutesLeft).append(" minutes left in round ").append(roundId).append(" of season ").append(seasonId).append(".\r\n");
+
+		fs_de.append("Runde kann durch einen Admin beendet werden, wenn alle Kämpfe durchgeführt wurden!\r\n");
+		fs_en.append("Round may be finalized by an admin as soon as all fights have been finished!\r\n");
+
+		if (!allAttacksForNextRound.isEmpty()) {
 			int nextRound = roundId.intValue() + 1;
 			fs_de.append("\r\nAngriffe in der nächsten Runde (").append(nextRound).append("): \r\n");
 			fs_en.append("\r\nAttacks in the next round (").append(nextRound).append("): \r\n");
@@ -134,7 +153,14 @@ public class SendInformationToBotsTimerTask extends TimerTask {
 //			}
 //		}
 
-		ServerNexus.getEci().sendExtCom("Round " + roundId + "\r\n" + "Open fights:\r\n" + fs_en, "en", true, true, true);
-		ServerNexus.getEci().sendExtCom("Runde " + roundId + "\r\n" + "Offene Kämpfe:\r\n" + fs_de, "de", true, true, true);
+		SimpleDateFormat format_de = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+		SimpleDateFormat format_en = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		String sd_de = format_de.format(d);
+		String sd_en = format_en.format(d);
+		String ed_de = format_de.format(endOfRound);
+		String ed_en = format_en.format(endOfRound);
+
+		ServerNexus.getEci().sendExtCom("--------------------------------\r\n\r\n" + "Round " + roundId + " of season " + seasonId + "\r\n" + "Started: " + sd_en + "\r\n" + "Will end: " + ed_en+ " (latest)\r\n\r\n" + "Open fights:\r\n" + fs_en, "en", true, true, true);
+		ServerNexus.getEci().sendExtCom("--------------------------------\r\n\r\n" + "Runde " + roundId + " von Season " + seasonId + "\r\n" + "Gestartet: " + sd_de + "\r\n" + "Wird beendet: " + ed_de + " (spätestens)\r\n\r\n" + "Offene Kämpfe:\r\n" + fs_de, "de", true, true, true);
 	}
 }

@@ -340,6 +340,14 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 	@FXML
 	private void handleConfirmButtonClick() {
 
+
+		// TODO:
+		// ACHTUNG: NICHT BEIM BEENDEN DER RUNDE, SONDERN BEIM SPEICHERN DES ANGRIFFS!
+		// Beim Beenden der Runde werden nicht
+		// alle Schiffe auf Attackready gesetzt
+		// Musashi zweites Schiff kann nicht bewegt werden
+
+
 		boolean somethingToSend = false;
 
 		// Store jumproutes
