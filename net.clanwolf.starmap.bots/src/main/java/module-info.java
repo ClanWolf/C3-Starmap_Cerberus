@@ -11,4 +11,5 @@ module net.clanwolf.starmap.bots {
 	requires net.dv8tion.jda;
 	requires java.desktop;
 	requires com.google.common;
+	requires okio;
 }

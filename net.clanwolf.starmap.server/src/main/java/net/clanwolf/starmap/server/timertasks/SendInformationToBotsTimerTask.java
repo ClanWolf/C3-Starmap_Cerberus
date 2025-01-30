@@ -64,6 +64,7 @@ public class SendInformationToBotsTimerTask extends TimerTask {
 		Double daysInRound = season.getDaysInRound();
 		long hoursInRound = (long) (daysInRound * 24);
 		String seasonName = season.getName();
+		String seasonDescription = season.getDescription();
 
 		Timestamp d = Timestamp.valueOf(round.getCurrentRoundStartDateRealTime());
 		Timestamp now = new Timestamp(System.currentTimeMillis());
@@ -78,6 +79,7 @@ public class SendInformationToBotsTimerTask extends TimerTask {
 		long finalHoursRoundAge = roundAgeInMinutes / 60;
 		long finalMinutesRoundAge = roundAgeInMinutes - finalHoursRoundAge * 60;
 
+		Timestamp dateInGame = new Timestamp((Timestamp.valueOf(round.getCurrentRoundStartDate()).getTime()) + roundageMillis);
 		Timestamp endOfRound = new Timestamp(d.getTime() + maxRoundAgeMillis);
 
 		ArrayList<AttackPOJO> allAttacksForRound = AttackDAO.getInstance().getOpenAttacksOfASeasonForRound(seasonId, roundId.intValue());
@@ -96,11 +98,20 @@ public class SendInformationToBotsTimerTask extends TimerTask {
 			FactionPOJO defender = FactionDAO.getInstance().findById(ServerNexus.DUMMY_USERID, a.getFactionID_Defender());
 			FactionPOJO attacker = FactionDAO.getInstance().findById(ServerNexus.DUMMY_USERID, js.getJumpshipFactionID());
 
+			String discordthreadname = "[S" + seasonId + "R" + roundId + "] " + attacker.getShortName() + " ⚔ " + ss.getName() + " (" + defender.getShortName() + ")";
+
+			// Link example for discord: [test](<https://www.clanwolf.net/forum/viewthread.php?thread_id=5207>)
+			// Channel link with id: <#1333360940883640323>
+
+			//				Get the channel from the guild:
+			//				const channel = message.guild.channels.find(channel => channel.name === 'Name of the channel');
+			//				message.channel.send(`Please take a look at this Discord Server channel <#${channel.id}>`)
+
 			// CW ⚔ Domain (CJF)
 			//fs_de.append("- ").append(ss.getName()).append(" (").append(defender.getShortName()).append(") wird von ").append(attacker.getShortName()).append(" angegriffen (<").append(forumLink).append(">)\r\n");
 			//fs_en.append("- ").append(ss.getName()).append(" (").append(defender.getShortName()).append(") is attacked by ").append(attacker.getShortName()).append(" (<").append(forumLink).append(">)\r\n");
-			fs_de.append("- ").append(attacker.getShortName()).append(" ⚔ ").append(ss.getName()).append(" (").append(defender.getShortName()).append(") - <").append(forumLink).append(">\r\n");
-			fs_en.append("- ").append(attacker.getShortName()).append(" ⚔ ").append(ss.getName()).append(" (").append(defender.getShortName()).append(") - <").append(forumLink).append(">\r\n");
+			fs_de.append("- ").append("[CWG](<").append(forumLink).append(">)").append("{%%%").append(discordthreadname).append("%%%}").append("\r\n");
+			fs_en.append("- ").append("[CWG](<").append(forumLink).append(">)").append("{%%%").append(discordthreadname).append("%%%}").append("\r\n");
 			co++;
 		}
 		if (co == 0) {
@@ -114,13 +125,13 @@ public class SendInformationToBotsTimerTask extends TimerTask {
 		fs_de.append("Noch maximal ").append(finalHoursLeft).append(" Stunden und ").append(finalMinutesLeft).append(" Minuten in Runde ").append(roundId).append(" der Season ").append(seasonId).append(".\r\n");
 		fs_en.append("Up to ").append(finalHoursLeft).append(" hours and ").append(finalMinutesLeft).append(" minutes left in round ").append(roundId).append(" of season ").append(seasonId).append(".\r\n");
 
-		fs_de.append("Runde kann durch einen Admin beendet werden, wenn alle Kämpfe durchgeführt wurden!\r\n");
-		fs_en.append("Round may be finalized by an admin as soon as all fights have been finished!\r\n");
+		fs_de.append("Die Runde kann durch einen Admin beendet werden, wenn alle Kämpfe durchgeführt wurden!\r\n");
+		fs_en.append("The Round may be finalized by an admin as soon as all fights have been finished!\r\n");
 
 		if (!allAttacksForNextRound.isEmpty()) {
 			int nextRound = roundId.intValue() + 1;
-			fs_de.append("\r\nAngriffe in der nächsten Runde (").append(nextRound).append("): \r\n");
-			fs_en.append("\r\nAttacks in the next round (").append(nextRound).append("): \r\n");
+			fs_de.append("\r\n__Angriffe in der nächsten Runde (").append(nextRound).append("):__\r\n");
+			fs_en.append("\r\n__Attacks in the next round (").append(nextRound).append("):__\r\n");
 			for (AttackPOJO a : allAttacksForNextRound) {
 				String forumLink = a.getForumThreadLink();
 				StarSystemDataPOJO ssd = StarSystemDataDAO.getInstance().findById(ServerNexus.DUMMY_USERID, a.getStarSystemDataID());
@@ -129,11 +140,20 @@ public class SendInformationToBotsTimerTask extends TimerTask {
 				FactionPOJO defender = FactionDAO.getInstance().findById(ServerNexus.DUMMY_USERID, a.getFactionID_Defender());
 				FactionPOJO attacker = FactionDAO.getInstance().findById(ServerNexus.DUMMY_USERID, js.getJumpshipFactionID());
 
+				String discordthreadname = "[S" + seasonId + "R" + roundId + "] " + attacker.getShortName() + " ⚔ " + ss.getName() + " (" + defender.getShortName() + ")";
+
+				// Link example for discord: [test](<https://www.clanwolf.net/forum/viewthread.php?thread_id=5207>)
+				// Channel link with id: <#1333360940883640323>
+
+//				Get the channel from the guild:
+//				const channel = message.guild.channels.find(channel => channel.name === 'Name of the channel');
+//				message.channel.send(`Please take a look at this Discord Server channel <#${channel.id}>`)
+
 				// CW ⚔ Domain (CJF)
 				//fs_de.append("- ").append(ss.getName()).append(" (").append(defender.getShortName()).append(") wird von ").append(attacker.getShortName()).append(" angegriffen (<").append(forumLink).append(">)\r\n");
 				//fs_en.append("- ").append(ss.getName()).append(" (").append(defender.getShortName()).append(") is attacked by ").append(attacker.getShortName()).append(" (<").append(forumLink).append(">)\r\n");
-				fs_de.append("- ").append(attacker.getShortName()).append(" ⚔ ").append(ss.getName()).append(" (").append(defender.getShortName()).append(") - <").append(forumLink).append(">\r\n");
-				fs_en.append("- ").append(attacker.getShortName()).append(" ⚔ ").append(ss.getName()).append(" (").append(defender.getShortName()).append(") - <").append(forumLink).append(">\r\n");
+				fs_de.append("- ").append("[CWG](<").append(forumLink).append(">) | ").append("{%%%").append(discordthreadname).append("%%%}").append("\r\n");
+				fs_en.append("- ").append("[CWG](<").append(forumLink).append(">) | ").append("{%%%").append(discordthreadname).append("%%%}").append("\r\n");
 			}
 		}
 
@@ -156,12 +176,23 @@ public class SendInformationToBotsTimerTask extends TimerTask {
 
 		SimpleDateFormat format_de = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 		SimpleDateFormat format_en = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		SimpleDateFormat format_de_long = new SimpleDateFormat("dd.MM.yyyy");
+		SimpleDateFormat format_en_long = new SimpleDateFormat("MMMM dd, yyyy");
+
 		String sd_de = format_de.format(d);
 		String sd_en = format_en.format(d);
 		String ed_de = format_de.format(endOfRound);
 		String ed_en = format_en.format(endOfRound);
+		String dig_de = "_" + format_de_long.format(dateInGame) + "_";
+		String dig_en = "_" + format_en_long.format(dateInGame) + "_";
 
-		ServerNexus.getEci().sendExtCom("--------------------------------\r\n\r\n" + "Round " + roundId + " of season " + seasonId + " (" + seasonName + ")\r\n" + "Started: " + sd_en + "\r\n" + "Will end: " + ed_en+ " (latest)\r\n\r\n" + "Open fights:\r\n" + fs_en, "en", true, true, true);
-		ServerNexus.getEci().sendExtCom("--------------------------------\r\n\r\n" + "Runde " + roundId + " von Season " + seasonId + " (" + seasonName + ")\r\n" + "Gestartet: " + sd_de + "\r\n" + "Wird beendet: " + ed_de + " (spätestens)\r\n\r\n" + "Offene Kämpfe:\r\n" + fs_de, "de", true, true, true);
+		StringBuilder finalString_en = new StringBuilder();
+		StringBuilder finalString_de = new StringBuilder();
+
+		finalString_en.append("--------------------------------\r\n\r\n**Round ").append(roundId).append(" of season ").append(seasonId).append(" - ").append(seasonName).append("**\r\n").append(seasonDescription).append("\r\n").append(dig_en).append("\r\n\r\n").append("Started: ").append(sd_en).append("\r\n").append("Will end: ").append(ed_en).append(" (latest, ").append(daysInRound).append(" days in a round max)\r\n\r\n").append("__Open fights:__\r\n").append(fs_en);
+		finalString_de.append("--------------------------------\r\n\r\n**Runde ").append(roundId).append(" von Season ").append(seasonId).append(" - ").append(seasonName).append("**\r\n").append(seasonDescription).append("\r\n").append(dig_de).append("\r\n\r\n").append("Gestartet: ").append(sd_de).append("\r\n").append("Wird beendet: ").append(ed_de).append(" (spätestens, ").append(daysInRound).append(" Tage in einer Runde maximal)\r\n\r\n").append("__Offene Kämpfe:__\r\n").append(fs_de);
+
+		ServerNexus.getEci().sendExtCom(finalString_en.toString(), "en", true, true, true);
+		ServerNexus.getEci().sendExtCom(finalString_de.toString(), "de", true, true, true);
 	}
 }

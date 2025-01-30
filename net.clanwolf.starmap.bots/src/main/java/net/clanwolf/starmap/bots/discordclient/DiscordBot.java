@@ -34,8 +34,10 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.MessageHistory;
+import net.dv8tion.jda.api.entities.channel.Channel;
 import net.dv8tion.jda.api.entities.channel.concrete.ForumChannel;
 import net.dv8tion.jda.api.entities.channel.concrete.TextChannel;
+import net.dv8tion.jda.api.entities.channel.concrete.ThreadChannel;
 import net.dv8tion.jda.api.entities.channel.forums.*;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
@@ -256,7 +258,34 @@ public class DiscordBot extends ListenerAdapter {
 //				}
 //			});
 
-			//sendMessage(ch, "@1081654927635533834 " + message);
+			while (message.contains("{%%%") && message.contains("%%%}")) {
+				String invasionThreadName = message.substring(message.indexOf("{%%%") + 4, message.indexOf("%%%}"));
+				StringBuilder discordThreadChannelLink = new StringBuilder();
+
+				//List<ForumChannel> fcList = ch.getGuild().getForumChannelsByName("c3-invasionen", true);
+				List<ForumChannel> fcList = jda.getForumChannelsByName("c3-invasionen", true);
+				for (ForumChannel fc : fcList) {
+					// logger.info("List Forum channels: " + fc.getName() + " " + fc.getId());
+					for (ThreadChannel tc : fc.getThreadChannels()) {
+						// logger.info("List Thread channels: " + tc.getName() + " " + tc.getId());
+						if (tc.getName().equals(invasionThreadName)) {
+							// logger.info("Match!");
+							// logger.info("ch.getGuild: " + ch.getGuild());
+							// logger.info("tc.getGuild: " + tc.getGuild());
+							//if (tc.getGuild().getId().equals(ch.getGuild().getId())) {
+								discordThreadChannelLink.append(" | ").append("<#").append(tc.getId()).append(">");
+							//}
+						}
+					}
+				}
+
+				if (discordThreadChannelLink.isEmpty()) {
+					message = message.replace("{%%%" + invasionThreadName + "%%%}", invasionThreadName + " (!!!)");
+				} else {
+					message = message.replace("{%%%" + invasionThreadName + "%%%}", discordThreadChannelLink.toString());
+				}
+			}
+
 			sendMessage(ch, message);
 
 			MessageHistory history = MessageHistory.getHistoryFromBeginning(ch).complete();
