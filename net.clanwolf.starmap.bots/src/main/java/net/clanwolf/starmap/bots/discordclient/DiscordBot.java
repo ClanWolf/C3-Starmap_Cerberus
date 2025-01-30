@@ -269,12 +269,12 @@ public class DiscordBot extends ListenerAdapter {
 					for (ThreadChannel tc : fc.getThreadChannels()) {
 						// logger.info("List Thread channels: " + tc.getName() + " " + tc.getId());
 						if (tc.getName().equals(invasionThreadName)) {
-							// logger.info("Match!");
-							// logger.info("ch.getGuild: " + ch.getGuild());
-							// logger.info("tc.getGuild: " + tc.getGuild());
-							//if (tc.getGuild().getId().equals(ch.getGuild().getId())) {
+							logger.info("Match!");
+							logger.info("ch.getGuildId: " + ch.getGuild().getId());
+							logger.info("tc.getGuildId: " + tc.getGuild().getId());
+							if (tc.getGuild().getId().equals(ch.getGuild().getId())) {
 								discordThreadChannelLink.append(" | ").append("<#").append(tc.getId()).append(">");
-							//}
+							}
 						}
 					}
 				}
