@@ -237,6 +237,8 @@ public class DiscordBot extends ListenerAdapter {
 				testEmbed = false;
 			}
 
+			logger.info("+++++++++++++++++++++++++++ Channel: " + ch.getName() + " " + ch.getId() + " - Guild: " + ch.getGuild().getId());
+
 //			Guild guild = jda.getGuildById(753193674321690665L);
 //			if (guild != null) {
 //				List<Role> rl = guild.getRolesByName("C3", true);
@@ -268,19 +270,24 @@ public class DiscordBot extends ListenerAdapter {
 					// logger.info("List Forum channels: " + fc.getName() + " " + fc.getId());
 					for (ThreadChannel tc : fc.getThreadChannels()) {
 						// logger.info("List Thread channels: " + tc.getName() + " " + tc.getId());
+						// logger.info("Invasion thread name: " + invasionThreadName);
 						if (tc.getName().equals(invasionThreadName)) {
-							// logger.info("Match!");
-							// logger.info("ch.getGuild: " + ch.getGuild());
-							// logger.info("tc.getGuild: " + tc.getGuild());
-							//if (tc.getGuild().getId().equals(ch.getGuild().getId())) {
+							// logger.info("- Match!");
+							// logger.info("-- ch.getGuild.getId(): " + ch.getGuild().getId());
+							// logger.info("-- fc.getGuild.getId(): " + fc.getGuild().getId());
+							// if (fc.getGuild().getId().equals(ch.getGuild().getId())) {
+								// logger.info("--- Pushing!");
+								// logger.info("tc.getId: " + tc.getId());
 								discordThreadChannelLink.append(" | ").append("<#").append(tc.getId()).append(">");
-							//}
+							// } else {
+							//	logger.info("--- NOT Pushing!");
+							// }
 						}
 					}
 				}
 
 				if (discordThreadChannelLink.isEmpty()) {
-					message = message.replace("{%%%" + invasionThreadName + "%%%}", invasionThreadName + " (!!!)");
+					message = message.replace("{%%%" + invasionThreadName + "%%%}", " | " + invasionThreadName + " (!!!)");
 				} else {
 					message = message.replace("{%%%" + invasionThreadName + "%%%}", discordThreadChannelLink.toString());
 				}
