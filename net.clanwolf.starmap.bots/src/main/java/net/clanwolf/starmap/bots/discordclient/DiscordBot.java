@@ -278,7 +278,7 @@ public class DiscordBot extends ListenerAdapter {
 							// if (fc.getGuild().getId().equals(ch.getGuild().getId())) {
 								// logger.info("--- Pushing!");
 								// logger.info("tc.getId: " + tc.getId());
-								discordThreadChannelLink.append(" | ").append("<#").append(tc.getId()).append(">");
+								discordThreadChannelLink.append(" | ").append("<#").append(tc.getLatestMessageId()).append(">");
 							// } else {
 							//	logger.info("--- NOT Pushing!");
 							// }
