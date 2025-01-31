@@ -275,10 +275,17 @@ public class DiscordBot extends ListenerAdapter {
 							// logger.info("- Match!");
 							// logger.info("-- ch.getGuild.getId(): " + ch.getGuild().getId());
 							// logger.info("-- fc.getGuild.getId(): " + fc.getGuild().getId());
+
+							// Ein Versuch, die guildId zu vergleichen, damit jeder Server nur die Threads
+							// anzeigt, die auf diesem Server selbst liegen und nicht alle. Aber das geht
+							// nicht, weil alle ch (Channel in der Hauptschleife) immer die gleiche guildId
+							// haben und daher die Abfrage nicht funktioniert (vielleicht ein Bug)
+							// Es werden jetzt immer alle Channel angezeigt von allen Servern (Guilds)
+
 							// if (fc.getGuild().getId().equals(ch.getGuild().getId())) {
 								// logger.info("--- Pushing!");
 								// logger.info("tc.getId: " + tc.getId());
-								discordThreadChannelLink.append(" | ").append("<#").append(tc.getLatestMessageId()).append(">");
+								discordThreadChannelLink.append(" | ").append("<#").append(tc.getId()).append(">");
 							// } else {
 							//	logger.info("--- NOT Pushing!");
 							// }
