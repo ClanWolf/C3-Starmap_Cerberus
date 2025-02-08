@@ -592,40 +592,47 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				}
 				attack.setStoryID(rpPojo.getId());
 			} else {
-				AttackTypesPOJO at = AttackTypesDAO.getInstance().findByShortName(getC3UserID(session), "PA");
 				Long rpID = null;
-				if (attackType.equals(-1L)) {
-					String ids = at.getCLAN_IS_StoryIds();
-					String[] s1 = ids.split(";");
-					int num = (int) (Math.random() * s1.length);
-					if ("".equals(s1[num])) { logger.info("!!!!!!!!!!!!!!!!! Missing story-ID in _HH_ATTACK_TYPE for Attack Type CLAN vs IS"); }
-					rpID = Long.parseLong(s1[num]);
-				} else if (attackType.equals(-2L)) {
-					String ids = at.getCLAN_vs_CLAN_StoryIds();
-					String[] s1 = ids.split(";");
-					int num = (int) (Math.random() * s1.length);
-					if ("".equals(s1[num])) { logger.info("!!!!!!!!!!!!!!!!! Missing story-ID in _HH_ATTACK_TYPE for Attack Type CLAN vs CLAN"); }
-					rpID = Long.parseLong(s1[num]);
-				} else if (attackType.equals(-3L)) {
-					String ids = at.getIS_vs_CLAN_StoryIds();
-					String[] s1 = ids.split(";");
-					int num = (int) (Math.random() * s1.length);
-					if ("".equals(s1[num])) { logger.info("!!!!!!!!!!!!!!!!! Missing story-ID in _HH_ATTACK_TYPE for Attack Type IS vs CLAN"); }
-					rpID = Long.parseLong(s1[num]);
-				} else if (attackType.equals(-4L)) {
-					String ids = at.getIS_vs_IS_StoryIds();
-					String[] s1 = ids.split(";");
-					int num = (int) (Math.random() * s1.length);
-					if ("".equals(s1[num])) { logger.info("!!!!!!!!!!!!!!!!! Missing story-ID in _HH_ATTACK_TYPE for Attack Type IS vs IS"); }
-					rpID = Long.parseLong(s1[num]);
-				}
+				String[] storyIDs = new String[1];
+				String[] storyIdPartsGame = null;
+				String storyIdsString = "";
+				AttackTypesPOJO at = AttackTypesDAO.getInstance().findByShortName(getC3UserID(session), "PA");
 
-				rpPojo = RolePlayStoryDAO.getInstance().findById(getC3UserID(session), rpID);
+				storyIdsString = switch ((int) attackType.longValue()) {
+					case -1 -> at.getCLAN_IS_StoryIds();
+					case -2 -> at.getCLAN_vs_CLAN_StoryIds();
+					case -3 -> at.getIS_vs_CLAN_StoryIds();
+					case -4 -> at.getIS_vs_IS_StoryIds();
+					default -> storyIdsString;
+				};
+
+				storyIdPartsGame = storyIdsString.split("#");
+				for (String p : storyIdPartsGame) {
+					if (p.startsWith("MWO:") && (attack.getAttackGame() != null && attack.getAttackGame().equals("MWO"))) {
+						String c = p.replace("MWO:", "");
+						storyIDs = c.split(";");
+					} else if (p.startsWith("TT:") && (attack.getAttackGame() != null && attack.getAttackGame().equals("TT"))) {
+						String c = p.replace("TT:", "");
+						storyIDs  = c.split(";");
+					}
+				}
+				int num = (int) (Math.random() * storyIDs.length);
+				if ("".equals(storyIDs[num])) {
+					logger.info("!!!!!!!!!!!!!!!!! Missing story-ID in _HH_ATTACK_TYPE for Attack Type IS vs IS");
+				}
+				if (storyIDs[num] != null) {
+					rpID = Long.parseLong(storyIDs[num]);
+					logger.info("++++++++++++++++++++++++++++++++++++ TT StoryId: " + rpID + " (" + storyIdsString + ")");
+
+					rpPojo = RolePlayStoryDAO.getInstance().findById(getC3UserID(session), rpID);
+				}
 			}
-			if(rpPojo.getVariante() != ROLEPLAYENTRYTYPES.RP_PREPARE_BATTLE) {
-				attack.setLastStoryID(rpPojo.getId());
+			if (rpPojo != null) {
+				if (rpPojo.getVariante() != ROLEPLAYENTRYTYPES.RP_PREPARE_BATTLE) {
+					attack.setLastStoryID(rpPojo.getId());
+				}
+				attack.setStoryID(rpPojo.getId());
 			}
-			attack.setStoryID(rpPojo.getId());
 
 			if(attack.getId() != null) {
 				dao.update(getC3UserID(session), attack);

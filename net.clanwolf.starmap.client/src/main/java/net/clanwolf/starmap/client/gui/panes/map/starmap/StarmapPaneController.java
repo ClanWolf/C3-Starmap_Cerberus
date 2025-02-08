@@ -157,7 +157,8 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 	Button mapButton05; // next Jumpship
 	@FXML
 	Button mapButton06; // Attack / join battle
-
+	@FXML
+	Button mapButton07; // Attack / Confirm TT battle
 	@FXML
 	TextArea taAlliances;
 
@@ -269,12 +270,40 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 	}
 
 	@FXML
+	private void handleAttackTTButtonClick() {
+
+//		logger.info("Handle TT");
+//
+//		mapButton07.setDisable(true);
+//		mapButton07.setVisible(false);
+//		ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("attack_youAlreadyHaveAFight"), true));
+//
+//		BOAttack a = Nexus.getCurrentlySelectedStarSystem().getAttack();
+//		a.setAttackGame("TT");
+//
+//		logger.info("Starting or joining TT attack on " + a.getStarSystemName() + " with Character: " + Nexus.getCurrentChar().getName());
+//
+//		AttackCharacterDTO ac = new AttackCharacterDTO();
+//		ac.setAttackID(a.getAttackDTO().getId());
+//		ac.setCharacterID(Nexus.getCurrentChar().getId());
+//
+//		ac.setType(currentPlayerRoleInInvasion);
+//		a.getAttackDTO().getAttackCharList().add(ac);
+//
+//		if (a.getCharacterId() == null || a.getStoryId() == null) {
+//			a.getAttackDTO().setCharacterID(Nexus.getCurrentChar().getId());
+//		}
+//		a.storeAttack();
+	}
+
+	@FXML
 	private void handleAttackButtonClick() {
 		mapButton06.setDisable(true);
 		mapButton06.setVisible(false);
 		ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("attack_youAlreadyHaveAFight"), true));
 
 		BOAttack a = Nexus.getCurrentlySelectedStarSystem().getAttack();
+		a.setAttackGame("MWO");
 
 		logger.info("Starting or joining attack on " + a.getStarSystemName() + " with Character: " + Nexus.getCurrentChar().getName());
 
@@ -409,6 +438,7 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 					attack.setFightsStarted(false);
 					attack.setScoreAttackerVictories(0L);
 					attack.setScoreDefenderVictories(0L);
+					attack.setAttackGame("not_yet_selected");
 
 					Nexus.setLastSavedAttackStarSystemDataId(s.getStarSystemDataId());
 
@@ -1016,6 +1046,7 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 //			mapButton04.setOpacity(0.0f);
 //			mapButton05.setOpacity(0.0f);
 			mapButton06.setOpacity(0.0f);
+			mapButton07.setOpacity(0.0f);
 			paneSystemDetail.setOpacity(0.0f);
 			paneAttackDetail.setOpacity(0.0f);
 			paneJumpshipDetail.setOpacity(0.0f);
@@ -1527,6 +1558,7 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 				mapButton04.toFront();
 				mapButton05.toFront();
 				mapButton06.toFront();
+				mapButton07.toFront();
 				paneSystemDetail.toFront();
 				paneSystemDetail.setOpacity(0.0f);
 				paneSystemDetail.setMouseTransparent(true);
@@ -1639,17 +1671,11 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 		fadeInTransition_05.setToValue(1.0);
 		fadeInTransition_05.setCycleCount(3);
 
-		//		// Fade in transition 05 (DetailPane)
-		//		FadeTransition fadeInTransition_05 = new FadeTransition(Duration.millis(60), paneSystemDetail);
-		//		fadeInTransition_05.setFromValue(0.0);
-		//		fadeInTransition_05.setToValue(1.0);
-		//		fadeInTransition_05.setCycleCount(4);
-		//
-		//		// Fade in transition 06 (DetailPane)
-		//		FadeTransition fadeInTransition_06 = new FadeTransition(Duration.millis(470), paneSystemDetail);
-		//		fadeInTransition_06.setFromValue(1.0);
-		//		fadeInTransition_06.setToValue(0.0);
-		//		fadeInTransition_06.setCycleCount(1);
+		// Fade in transition 05 (Button)
+		FadeTransition fadeInTransition_06 = new FadeTransition(Duration.millis(40), mapButton07);
+		fadeInTransition_06.setFromValue(0.0);
+		fadeInTransition_06.setToValue(1.0);
+		fadeInTransition_06.setCycleCount(3);
 
 		// Transition sequence
 		SequentialTransition sequentialTransition = new SequentialTransition();
@@ -1659,8 +1685,8 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 														fadeInTransition_02,
 														fadeInTransition_03,
 														fadeInTransition_04,
-														fadeInTransition_05
-														// fadeInTransition_06
+														fadeInTransition_05,
+														fadeInTransition_06
 		);
 		sequentialTransition.setCycleCount(1);
 		sequentialTransition.setOnFinished(event -> {
@@ -1671,6 +1697,7 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 		});
 		sequentialTransition.play();
 		mapButton06.setVisible(false);
+		mapButton07.setVisible(false);
 		C3SoundPlayer.play("sound/fx/cursor_click_11.mp3", false);
 	}
 
@@ -1685,6 +1712,8 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 			mapButton05.setDisable(true);
 			mapButton06.setDisable(true);
 			mapButton06.setVisible(false);
+			mapButton07.setDisable(true);
+			mapButton07.setVisible(false);
 
 			logger.info("Travel to Homeworld");
 			logger.info("X: " + StarmapConfig.MAP_INITIAL_TRANSLATE_X);
@@ -1711,6 +1740,7 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 				mapButton04.setDisable(false);
 				mapButton05.setDisable(false);
 				mapButton06.setDisable(false);
+				mapButton07.setDisable(false);
 				for (int[] layer : StarmapConfig.BACKGROUND_STARS_LAYERS) {
 					int level = layer[0];
 					canvas.resetBackgroundStarPane(level);
@@ -1733,6 +1763,7 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 		mapButton04.setDisable(true);
 		mapButton05.setDisable(true);
 		mapButton06.setDisable(true);
+		mapButton07.setDisable(true);
 
 		setZoomToMax();
 
@@ -1769,6 +1800,7 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 				mapButton04.setDisable(false);
 				mapButton05.setDisable(false);
 				mapButton06.setDisable(false);
+				mapButton07.setDisable(false);
 				for (int[] layer : StarmapConfig.BACKGROUND_STARS_LAYERS) {
 					int level = layer[0];
 					canvas.resetBackgroundStarPane(level);
@@ -2097,6 +2129,7 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 			mapButton04.setText(Internationalization.getString("starmap_previous_jumpship"));
 			mapButton05.setText(Internationalization.getString("starmap_next_jumpship"));
 			mapButton06.setText("..."); // depends on the planet that is selected
+			mapButton07.setText("TT"); // depends on the planet that is selected
 		});
 	}
 
@@ -2324,6 +2357,7 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 						//				mapButton04.setOpacity(0.0f);
 						//				mapButton05.setOpacity(0.0f);
 						mapButton06.setOpacity(0.0f);
+						mapButton07.setOpacity(0.0f);
 						paneSystemDetail.setOpacity(0.0f);
 						paneSystemDetail.setMouseTransparent(true);
 						paneJumpshipDetail.setOpacity(0.0f);
@@ -2408,6 +2442,8 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 
 					mapButton06.setDisable(true);
 					mapButton06.setVisible(false);
+					mapButton07.setDisable(true);
+					mapButton07.setVisible(false);
 
 					boolean hasAttack = false;
 					boolean attackLobbyAlreadyStarted = false;
@@ -2436,6 +2472,10 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 									mapButton06.getStyleClass().remove("contentButtonRed");
 									mapButton06.getStyleClass().remove("contentButtonBlue");
 									mapButton06.getStyleClass().remove("contentButtonYellow");
+									mapButton07.getStyleClass().remove("contentButton");
+									mapButton07.getStyleClass().remove("contentButtonRed");
+									mapButton07.getStyleClass().remove("contentButtonBlue");
+									mapButton07.getStyleClass().remove("contentButtonYellow");
 
 									BODiplomacy boDiplomacy = new BODiplomacy(Nexus.getCurrentRound(), Nexus.getBoUniverse().getDiplomacy());
 									DiplomacyState diplStateAttacker = boDiplomacy.getDiplomacyState(Nexus.getCurrentUser().getCurrentCharacter().getFactionId().longValue(), a.getAttackerFactionId().longValue());
@@ -2447,6 +2487,8 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 										logger.info("I am the attacker or an ally of the attacker.");
 										mapButton06.getStyleClass().add("contentButtonRed");
 										mapButton06.setText(Internationalization.getString("starmap_attack_system"));
+										mapButton07.getStyleClass().add("contentButtonRed");
+										mapButton07.setText(Internationalization.getString("starmap_attack_system_TT"));
 
 										if (!attackLobbyAlreadyStarted) {
 											// The attack has not been started yet, I am from the attacking faction, so I can start it now
@@ -2465,6 +2507,8 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 										logger.info("I am the defender or an ally of the defender.");
 										mapButton06.getStyleClass().add("contentButtonBlue");
 										mapButton06.setText(Internationalization.getString("starmap_defend_system"));
+										mapButton07.getStyleClass().add("contentButtonBlue");
+										mapButton07.setText(Internationalization.getString("starmap_defend_system_TT"));
 
 										if (!attackLobbyAlreadyStarted) {
 											// I cannot join the defenders, the attackers did not attack yet
@@ -2480,6 +2524,8 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 										logger.info("I want to join the fight.");
 										mapButton06.getStyleClass().add("contentButtonYellow");
 										mapButton06.setText(Internationalization.getString("starmap_join_fight"));
+										mapButton07.getStyleClass().add("contentButtonYellow");
+										mapButton07.setText(Internationalization.getString("starmap_join_fight"));
 
 										if (!attackLobbyAlreadyStarted) {
 											// I cannot join the attack, the attackers did not attack yet
@@ -2494,6 +2540,8 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 									if (startAttackEnabled) {
 										mapButton06.setDisable(false);
 										mapButton06.setVisible(true);
+										mapButton07.setDisable(false);
+										mapButton07.setVisible(true);
 
 										FadeTransition fadeInTransition = new FadeTransition(Duration.millis(850), mapButton06);
 										fadeInTransition.setFromValue(0.2);
@@ -2501,8 +2549,14 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 										FadeTransition fadeOutTransition = new FadeTransition(Duration.millis(850), mapButton06);
 										fadeOutTransition.setFromValue(1.0);
 										fadeOutTransition.setToValue(0.2);
+										FadeTransition fadeInTransitionTT = new FadeTransition(Duration.millis(850), mapButton07);
+										fadeInTransitionTT.setFromValue(0.2);
+										fadeInTransitionTT.setToValue(1.0);
+										FadeTransition fadeOutTransitionTT = new FadeTransition(Duration.millis(850), mapButton07);
+										fadeOutTransitionTT.setFromValue(1.0);
+										fadeOutTransitionTT.setToValue(0.2);
 										SequentialTransition sequentialTransition = new SequentialTransition();
-										sequentialTransition.getChildren().addAll(fadeInTransition, fadeOutTransition);
+										sequentialTransition.getChildren().addAll(fadeInTransition, fadeOutTransition, fadeInTransitionTT, fadeOutTransitionTT);
 										sequentialTransition.setCycleCount(Animation.INDEFINITE);
 										sequentialTransition.play();
 									}
@@ -2511,6 +2565,7 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 										// Too late.
 										logger.info("Fights have started already. You can not get there in time!");
 										mapButton06.setDisable(true);
+										mapButton07.setDisable(true);
 										ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("attack_fightsHaveStartedAlready"), true));
 									}
 								}
@@ -2520,6 +2575,8 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 							// disable attack button
 							mapButton06.setDisable(true);
 							mapButton06.setVisible(false);
+							mapButton07.setDisable(true);
+							mapButton07.setVisible(false);
 							ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("attack_planetHasNoAttack"), false));
 						} else {
 							if (attackOfSelectedSystem != null) {
@@ -2533,6 +2590,8 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 								if (fightsalreadystarted) {
 									mapButton06.setDisable(true);
 									mapButton06.setVisible(false);
+									mapButton07.setDisable(true);
+									mapButton07.setVisible(false);
 									ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("attack_fightsHaveStartedAlready"), true));
 								}
 							}
@@ -2541,6 +2600,8 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 						// disable attack button
 						mapButton06.setDisable(true);
 						mapButton06.setVisible(false);
+						mapButton07.setDisable(true);
+						mapButton07.setVisible(false);
 						ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("attack_youAlreadyHaveAFight"), true));
 					}
 				}

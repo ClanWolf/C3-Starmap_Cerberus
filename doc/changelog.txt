@@ -18,6 +18,10 @@ Handling TableTop-Invasions
 - 6) If attacker reported the steps and closed the client, the defender can enter the fight and confirm all reports
 - 7) Fight is finished after confirmation, takes effect next round like usual
 
+Beim zweiten Mal ist der Angriffsbutton weg! Ansonsten ging es mal...
+Wenn einmal auf etwas gedrückt wurde, wird die RPId eingetragen und man kann nicht mehr wechseln (von MWO zu TT)
+handleAttackTTButtonClick auskommentiert
+
 ================================================================
 
 
@@ -87,6 +91,9 @@ WATCH OUT FOR WHILE TESTING:
 ----------------------------------------------------------------
 
 VERSIONS
+
+Version 7.5.11 (08.02.2025)
+- ADDED: Handling for TT in attacks
 
 Version 7.5.10 (28.01.2025)
 - ADDED: Logs to discord thread creation to get necessary ids to create links

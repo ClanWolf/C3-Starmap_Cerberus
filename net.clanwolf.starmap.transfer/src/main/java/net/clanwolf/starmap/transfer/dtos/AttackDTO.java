@@ -41,6 +41,7 @@ public class AttackDTO extends Dto {
 	private Long starSystemID;
 	private Long starSystemDataID;
 	private Long attackTypeID;
+	private String attackGame;
 	private Long attackedFromStarSystemID;
 	private Long factionID_Defender;
 	private Long jumpshipID;
@@ -303,6 +304,16 @@ public class AttackDTO extends Dto {
 
 	public AttackDTO() {
 		// empty constructor
+	}
+
+	@SuppressWarnings("unused")
+	public String getAttackGame() {
+		return attackGame;
+	}
+
+	@SuppressWarnings("unused")
+	public void setAttackGame(String attackGame) {
+		this.attackGame = attackGame;
 	}
 
 	public AttackDTO(long id) {

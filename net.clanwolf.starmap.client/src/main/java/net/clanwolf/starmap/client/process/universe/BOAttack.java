@@ -92,6 +92,16 @@ public class BOAttack {
 	}
 
 	@SuppressWarnings("unused")
+	public String getAttackGame() {
+		return attackDTO.getAttackGame();
+	}
+
+	@SuppressWarnings("unused")
+	public void setAttackGame(String game) {
+		attackDTO.setAttackGame(game);
+	}
+
+	@SuppressWarnings("unused")
 	public AttackDTO getAttackDTO() {
 		return attackDTO;
 	}

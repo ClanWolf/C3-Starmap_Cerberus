@@ -26,9 +26,10 @@
          <children>
             <Pane fx:id="buttonBackground" layoutX="-1.0" layoutY="421.0" mouseTransparent="true" prefHeight="51.0" prefWidth="778.0" styleClass="systemDetailPanelSolid" stylesheets="@../styles/MainFrameStyle.css">
                <children>
-                  <Label fx:id="labelMouseCoords" layoutX="232.0" layoutY="14.0" prefHeight="23.0" prefWidth="318.0" text="" />
+                  <Label fx:id="labelMouseCoords" layoutX="335.0" layoutY="7.0" prefHeight="37.0" prefWidth="215.0" text="" />
                </children></Pane>
             <Button fx:id="mapButton01" alignment="CENTER_RIGHT" disable="true" layoutX="7.0" layoutY="428.0" mnemonicParsing="false" onAction="#handleConfirmButtonClick" prefHeight="37.0" prefWidth="100.0" styleClass="contentButtonRed" stylesheets="@../styles/MainFrameStyle.css" text="Confirm" />
+            <Button fx:id="mapButton07" alignment="CENTER_RIGHT" disable="true" layoutX="219.0" layoutY="428.0" mnemonicParsing="false" onAction="#handleAttackTTButtonClick" prefHeight="37.0" prefWidth="100.0" styleClass="contentButtonRed" stylesheets="@../styles/MainFrameStyle.css" text="Attack TT" />
             <Button fx:id="mapButton06" alignment="CENTER_RIGHT" disable="true" layoutX="113.0" layoutY="428.0" mnemonicParsing="false" onAction="#handleAttackButtonClick" prefHeight="37.0" prefWidth="100.0" styleClass="contentButtonRed" stylesheets="@../styles/MainFrameStyle.css" text="Attack" />
             <Button fx:id="mapButton02" alignment="CENTER_RIGHT" layoutX="555.0" layoutY="428.0" mnemonicParsing="false" onAction="#handleCenterJumpshipButtonClick" prefHeight="37.0" prefWidth="105.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css" text="Jumpship" />
             <Button fx:id="mapButton03" alignment="CENTER_RIGHT" layoutX="666.0" layoutY="428.0" mnemonicParsing="false" onAction="#handleCenterHomeworldButtonClick" prefHeight="37.0" prefWidth="105.0" styleClass="contentButton" stylesheets="@../styles/MainFrameStyle.css" text="Homeworld" />

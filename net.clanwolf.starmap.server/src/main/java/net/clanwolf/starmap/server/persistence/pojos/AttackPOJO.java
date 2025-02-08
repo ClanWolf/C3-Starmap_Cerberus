@@ -69,6 +69,9 @@ public class AttackPOJO extends Pojo {
 	@Column(name = "AttackTypeID")
 	private Long attackTypeID;
 
+	@Column(name = "AttackGame")
+	private String attackGame;
+
 	@Column(name = "AttackedFromStarSystemID")
 	private Long attackedFromStarSystemID;
 
@@ -365,5 +368,15 @@ public class AttackPOJO extends Pojo {
 	@SuppressWarnings("unused")
 	public void setUpdated(Timestamp updated) {
 		this.updated = updated;
+	}
+
+	@SuppressWarnings("unused")
+	public String getAttackGame() {
+		return attackGame;
+	}
+
+	@SuppressWarnings("unused")
+	public void setAttackGame(String attackGame) {
+		this.attackGame = attackGame;
 	}
 }
