@@ -94,12 +94,12 @@ public class SpringConfig {
         return new SimpleGame(1, "C3Game");
     }
 
-    public @Bean(name = "C3GameRoom")
-    GameRoom C3GameRoom() {
-        GameRoomSessionBuilder sessionBuilder = new GameRoomSessionBuilder();
-        sessionBuilder.parentGame(C3Game()).gameRoomName("C3GameRoom").protocol(webSocketProtocol);
-	    return new C3Room(sessionBuilder);
-    }
+//    public @Bean(name = "C3GameRoom")
+//    GameRoom C3GameRoom() {
+//        GameRoomSessionBuilder sessionBuilder = new GameRoomSessionBuilder();
+//        sessionBuilder.parentGame(C3Game()).gameRoomName("C3GameRoom").protocol(webSocketProtocol);
+//	    return new C3Room(sessionBuilder);
+//    }
 
     public @Bean(name = "C3GameRoomForNettyClient")
     GameRoom c3GameRoomForNettyClient() {
@@ -111,7 +111,7 @@ public class SpringConfig {
     public @Bean(name = "lookupService")
     LookupService lookupService() {
         Map<String, GameRoom> refKeyGameRoomMap = new HashMap<>();
-        refKeyGameRoomMap.put("C3GameRoom", C3GameRoom());
+//        refKeyGameRoomMap.put("C3GameRoom", C3GameRoom());
         refKeyGameRoomMap.put("C3GameRoomForNettyClient", c3GameRoomForNettyClient());
 	    return new C3LookupService(refKeyGameRoomMap);
     }

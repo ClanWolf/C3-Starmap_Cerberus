@@ -188,7 +188,13 @@ public class GraphManager<T> implements GraphAgent<T> {
 		boolean isLevelAllowed = (minJumpshipLevel <= currentJumpshipLevel) || currentJumpshipFactionId.equals(currentlyHoveredSystemFactionId);
 		// boolean withinCosts = nodeCosts.get(target) < maxCost;
 
-		boolean r = inRange && isActiveInPhase && !isAttacked && !isAttackedNextRound && !isLockedByJumpship && !isLockedByPreviousAttackCooldown && isLevelAllowed;
+		boolean r = inRange
+				&& isActiveInPhase
+				&& !isAttacked
+				&& !isAttackedNextRound
+				//&& !isLockedByJumpship
+				//&& !isLockedByPreviousAttackCooldown
+				&& isLevelAllowed;
 
 		if (!r) {
 			logger.info(hoveredSys.getName() + " is in range: " + inRange

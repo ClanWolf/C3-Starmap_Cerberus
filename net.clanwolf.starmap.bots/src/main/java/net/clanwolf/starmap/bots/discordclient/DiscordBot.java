@@ -185,8 +185,8 @@ public class DiscordBot extends ListenerAdapter {
 				String channelId = fch.getId();                        // ForumId
 				String postId = post.getMessage().getId();             // postId
 
-				sendMessageToChannel("https://discord.com/channels/" + serverId + "/" + channelId + "/" + postId);
-				logger.info("Discord link to invasion post: https://discord.com/channels/" + serverId + "  /  " + channelId + "  /  " + postId);
+				// sendMessageToChannel("https://discord.com/channels/" + serverId + "/" + channelId + "/" + postId);
+				// logger.info("Discord link to invasion post: https://discord.com/channels/" + serverId + "  /  " + channelId + "  /  " + postId);
 			} else {
 				logger.error("TagId for ForumTag not found.");
 			}

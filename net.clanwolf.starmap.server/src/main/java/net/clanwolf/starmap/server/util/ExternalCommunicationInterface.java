@@ -128,12 +128,19 @@ public class ExternalCommunicationInterface {
 
 		if (!GameServer.isDevelopmentPC) {
 			try {
+				if (message.length() > 2000) {
+					message = message.substring(0, 1999);
+				}
+
 				// Insert message for IRC and TS3 Bots to process
 				String sql_insert = "";
 				sql_insert += "INSERT INTO EXT_COM ";
 				sql_insert += "(Text,lang,ServerVersion,ProcessedIRC,ProcessedTS3,ProcessedDiscord) ";
 				sql_insert += "VALUES ";
 				sql_insert += "('" + message + "','" + lang + "','" + ServerNexus.jarName + "'," + pvIRC + "," + pvTS3 + "," + pvDiscord + "); ";
+
+				logger.info("Message: " + message);
+
 				long extcomid = insert(sql_insert);
 				if ("de".equals(lang)) {
 					previousMessages_de.add(message);

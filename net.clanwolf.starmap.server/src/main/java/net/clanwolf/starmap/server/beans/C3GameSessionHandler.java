@@ -77,6 +77,9 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 	public C3GameSessionHandler(GameRoomSession session) {
 		super(session);
+
+		logger.info("Creating NEW C3GameSessionHandler. This should not happen, there should be only one at a time!");
+
 		staticRoom = session;
 		this.room = session;
 		this.roomSession = session;
@@ -479,6 +482,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		}
 	}
 
+	// https://stackoverflow.com/questions/27777254/synchronized-method-does-not-work-as-expected
 	public synchronized void saveAttack(PlayerSession session, GameState state) {
 		AttackDAO dao = AttackDAO.getInstance();
 		AttackCharacterDAO daoAC = AttackCharacterDAO.getInstance();
@@ -1371,6 +1375,9 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				serverHeartBeat.schedule(new HeartBeatTimerTask(true, null), 0);
 				break;
 			case ATTACK_SAVE:
+
+				logger.info("Calling saveAttack for C3GameSessionHamdler.");
+
 				saveAttack(session, state);
 				serverHeartBeat = new Timer();
 				serverHeartBeat.schedule(new HeartBeatTimerTask(true, null), 100);

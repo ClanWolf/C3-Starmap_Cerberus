@@ -92,6 +92,9 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
+Version 7.5.12 (21.02.2025)
+- FIXING ATTEMPT: Concurrency problem while storing attacks
+
 Version 7.5.11 (08.02.2025)
 - ADDED: Handling for TT in attacks
 
