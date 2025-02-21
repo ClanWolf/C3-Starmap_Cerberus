@@ -27,6 +27,7 @@
 package net.clanwolf.starmap.server.beans;
 
 import io.nadron.app.GameRoom;
+import io.nadron.app.Player;
 import io.nadron.app.PlayerSession;
 import io.nadron.app.impl.GameRoomSession;
 import io.nadron.event.Event;
@@ -484,6 +485,9 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 	// https://stackoverflow.com/questions/27777254/synchronized-method-does-not-work-as-expected
 	public synchronized void saveAttack(PlayerSession session, GameState state) {
+
+		logger.info("SaveAttack was called by: {}", session.getPlayer().getName());
+
 		AttackDAO dao = AttackDAO.getInstance();
 		AttackCharacterDAO daoAC = AttackCharacterDAO.getInstance();
 		FactionDAO daoFaction = FactionDAO.getInstance();
