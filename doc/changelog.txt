@@ -5,6 +5,11 @@ C3 version history
 Notes:
 Handling TableTop-Invasions
 
+
+- CharacterID beim Clonen nicht mitkopieren!
+- If a jumpship attacks, will all be set to attackready false ?
+
+
 - The "Attack"-Button on the starmap will become some sort of dropdown to choose: "AS", "MWO", "LivingLegends",...
 - The favorite game can be stored per user in settings
 - This favorite game will be preselected in the selection
@@ -91,6 +96,10 @@ WATCH OUT FOR WHILE TESTING:
 ----------------------------------------------------------------
 
 VERSIONS
+
+Version 7.5.13 (07.03.2025)
+- FIXING ATTEMPT 2: Concurrency problem while storing attacks
+- ADDED: Pojo clone functions
 
 Version 7.5.12 (21.02.2025)
 - FIXING ATTEMPT: Concurrency problem while storing attacks

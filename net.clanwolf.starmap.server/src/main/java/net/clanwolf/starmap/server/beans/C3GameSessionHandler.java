@@ -26,6 +26,11 @@
  */
 package net.clanwolf.starmap.server.beans;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectReader;
+import com.fasterxml.jackson.databind.ObjectWriter;
 import io.nadron.app.GameRoom;
 import io.nadron.app.Player;
 import io.nadron.app.PlayerSession;
@@ -50,6 +55,7 @@ import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 import net.clanwolf.starmap.transfer.util.Compressor;
+import org.checkerframework.checker.units.qual.A;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -487,6 +493,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 	public synchronized void saveAttack(PlayerSession session, GameState state) {
 
 		logger.info("SaveAttack was called by: {}", session.getPlayer().getName());
+		logger.info("GameSessionHandler-Instance: " + this.toString());
 
 		AttackDAO dao = AttackDAO.getInstance();
 		AttackCharacterDAO daoAC = AttackCharacterDAO.getInstance();
@@ -527,7 +534,8 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			if(attack.getAttackCharList() != null) {
 				for (AttackCharacterPOJO p : attack.getAttackCharList()) {
 					if (!p.getType().equals(ROLE_DROPLEAD_LEFT)) {
-						newAttackCharacters.add(p);
+						AttackCharacterPOJO pnew = EntityConverter.clonecopyPojo(p);
+						newAttackCharacters.add(pnew);
 					}
 				}
 				attack.getAttackCharList().clear();

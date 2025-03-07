@@ -27,7 +27,10 @@
 package net.clanwolf.starmap.server.persistence;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import net.clanwolf.starmap.server.persistence.pojos.AttackCharacterPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.RolePlayStoryPOJO;
 import net.clanwolf.starmap.transfer.Dto;
 import net.clanwolf.starmap.transfer.GameState;
@@ -45,8 +48,38 @@ public class EntityConverter {
 	private static final ObjectMapper objectMapper = new ObjectMapper();
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-	private static String getJsonString(Object o) throws JsonProcessingException {
+	public static String getJsonString(Object o) throws JsonProcessingException {
 		return objectMapper.writeValueAsString(o);
+	}
+
+//	public static AttackCharacterPOJO clonecopyPojo(AttackCharacterPOJO pojo) {
+//		AttackCharacterPOJO pnew = null;
+//
+//		try {
+//			ObjectMapper mapper = new ObjectMapper();
+//			String json = EntityConverter.getJsonString(pojo);
+//			pnew = mapper.readValue(json, AttackCharacterPOJO.class);
+//		} catch (JsonProcessingException e) {
+//			throw new RuntimeException(e);
+//		}
+//
+//		return pnew;
+//	}
+
+	public static <E extends Pojo> E clonecopyPojo(E pojo) {
+		E clone = null;
+
+		logger.info("ClassName: " + pojo.getClass().getName());
+
+		try {
+			ObjectMapper mapper = new ObjectMapper();
+			String json = EntityConverter.getJsonString(pojo);
+			clone = (E)mapper.readValue(json, Class.forName(pojo.getClass().getName()));
+		} catch (JsonProcessingException | ClassNotFoundException e) {
+			throw new RuntimeException(e);
+		}
+
+		return clone;
 	}
 
 	public static <E extends Dto> E convertpojo2dto(Pojo pojo, Class dto) {
