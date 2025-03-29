@@ -82,6 +82,12 @@ public class EntityConverter {
 		return clone;
 	}
 
+	public static Pojo cloneCopyPojoEmptyId(Pojo pojo) {
+		Pojo newp = clonecopyPojo(pojo);
+		newp.setId(null);
+		return newp;
+	}
+
 	public static <E extends Dto> E convertpojo2dto(Pojo pojo, Class dto) {
 		try {
 			return (E)objectMapper.readValue(getJsonString(pojo), dto);

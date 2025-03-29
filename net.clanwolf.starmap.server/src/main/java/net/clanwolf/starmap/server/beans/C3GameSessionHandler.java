@@ -39,6 +39,7 @@ import io.nadron.event.Event;
 import io.nadron.event.Events;
 import io.nadron.event.impl.SessionMessageHandler;
 import io.nadron.service.GameStateManagerService;
+import jakarta.persistence.EntityTransaction;
 import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.server.GameServer;
 import net.clanwolf.starmap.server.persistence.EntityConverter;
@@ -491,6 +492,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 	// https://stackoverflow.com/questions/27777254/synchronized-method-does-not-work-as-expected
 	public synchronized void saveAttack(PlayerSession session, GameState state) {
+		Long sessionId = getC3UserID(session);
 
 		logger.info("SaveAttack was called by: {}", session.getPlayer().getName());
 		logger.info("GameSessionHandler-Instance: " + this.toString());
@@ -503,15 +505,15 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		Long attackType = null;
 
 		try {
-			EntityManagerHelper.beginTransaction(getC3UserID(session));
+			EntityManagerHelper.beginTransaction(sessionId);
 
 			AttackPOJO existingAttack = null;
 			AttackPOJO attack = (AttackPOJO) state.getObject();
 
-			StarSystemDataPOJO starsystemData = StarSystemDataDAO.getInstance().findById(getC3UserID(session), attack.getStarSystemDataID());
-			StarSystemPOJO starSystem = StarSystemDAO.getInstance().findById(getC3UserID(session), attack.getStarSystemID());
+			StarSystemDataPOJO starsystemData = StarSystemDataDAO.getInstance().findById(sessionId, attack.getStarSystemDataID());
+			StarSystemPOJO starSystem = StarSystemDAO.getInstance().findById(sessionId, attack.getStarSystemID());
 			starsystemData.setLockedUntilRound(attack.getRound() + Constants.ROUNDS_TO_LOCK_SYSTEM_AFTER_ATTACK);
-			daoSS.update(getC3UserID(session), starsystemData);
+			daoSS.update(sessionId, starsystemData);
 
 			FactionPOJO originalFaction = starsystemData.getFaction();
 
@@ -534,7 +536,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			if(attack.getAttackCharList() != null) {
 				for (AttackCharacterPOJO p : attack.getAttackCharList()) {
 					if (!p.getType().equals(ROLE_DROPLEAD_LEFT)) {
-						AttackCharacterPOJO pnew = EntityConverter.clonecopyPojo(p);
+						AttackCharacterPOJO pnew = (AttackCharacterPOJO) EntityConverter.cloneCopyPojoEmptyId(p);
 						newAttackCharacters.add(pnew);
 					}
 				}
@@ -561,11 +563,11 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 					}
 				}
 				if (attackerCommanderNextStoryId != null &&	attackerCommanderNextStoryId.equals(defenderCommanderNextStoryId)) {
-					rpPojo = RolePlayStoryDAO.getInstance().findById(getC3UserID(session), attackerCommanderNextStoryId);
+					rpPojo = RolePlayStoryDAO.getInstance().findById(sessionId, attackerCommanderNextStoryId);
 
 					if(rpPojo.getVariante() == ROLEPLAYENTRYTYPES.RP_SECTION) {
 
-						JumpshipPOJO jpWinner = JumpshipDAO.getInstance().findById(getC3UserID(session), attack.getJumpshipID());
+						JumpshipPOJO jpWinner = JumpshipDAO.getInstance().findById(sessionId, attack.getJumpshipID());
 						long unitXP = 0;
 
 						if (rpPojo.getAttackerWins()) {
@@ -574,7 +576,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 							attack.setScoreAttackerVictories(3L);
 
 							String planet = starSystem.getName();
-							FactionPOJO winnerFaction = daoFaction.findById(getC3UserID(session), jpWinner.getJumpshipFactionID());
+							FactionPOJO winnerFaction = daoFaction.findById(sessionId, jpWinner.getJumpshipFactionID());
 							ServerNexus.getEci().sendExtCom("Invasion of " + planet + " has been decided. " + winnerFaction.getShortName() + " conquered the system!", "en", true, true, true);
 							ServerNexus.getEci().sendExtCom("Angriff auf " + planet + " wurde entschieden. " + winnerFaction.getShortName() + " hat das System erobert!", "de", true, true, true);
 
@@ -586,7 +588,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 							attack.setScoreDefenderVictories(3L);
 
 							String planet = starSystem.getName();
-							FactionPOJO winnerFaction = daoFaction.findById(getC3UserID(session), attack.getFactionID_Defender());
+							FactionPOJO winnerFaction = daoFaction.findById(sessionId, attack.getFactionID_Defender());
 							ServerNexus.getEci().sendExtCom("Invasion of " + planet + " has been decided. " + winnerFaction.getShortName() + " has defended the system!", "en", true, true, true);
 							ServerNexus.getEci().sendExtCom("Angriff auf " + planet + " wurde entschieden. " + winnerFaction.getShortName() + " hat das System verteidigt!", "de", true, true, true);
 
@@ -594,10 +596,10 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 						}
 
 						jpWinner.setUnitXP(jpWinner.getUnitXP() + unitXP);
-						daoJJ.save(getC3UserID(session), jpWinner);
+						daoJJ.save(sessionId, jpWinner);
 					}
 				} else {
-					rpPojo = RolePlayStoryDAO.getInstance().findById(getC3UserID(session), attack.getStoryID());
+					rpPojo = RolePlayStoryDAO.getInstance().findById(sessionId, attack.getStoryID());
 				}
 				if(rpPojo.getVariante() != ROLEPLAYENTRYTYPES.RP_PREPARE_BATTLE) {
 					attack.setLastStoryID(rpPojo.getId());
@@ -612,7 +614,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				String[] storyIDs = new String[1];
 				String[] storyIdPartsGame = null;
 				String storyIdsString = "";
-				AttackTypesPOJO at = AttackTypesDAO.getInstance().findByShortName(getC3UserID(session), "PA");
+				AttackTypesPOJO at = AttackTypesDAO.getInstance().findByShortName(sessionId, "PA");
 
 				storyIdsString = switch ((int) attackType.longValue()) {
 					case -1 -> at.getCLAN_IS_StoryIds();
@@ -640,7 +642,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 					rpID = Long.parseLong(storyIDs[num]);
 					logger.info("++++++++++++++++++++++++++++++++++++ TT StoryId: " + rpID + " (" + storyIdsString + ")");
 
-					rpPojo = RolePlayStoryDAO.getInstance().findById(getC3UserID(session), rpID);
+					rpPojo = RolePlayStoryDAO.getInstance().findById(sessionId, rpID);
 				}
 			}
 			if (rpPojo != null) {
@@ -651,19 +653,19 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			}
 
 			if(attack.getId() != null) {
-				dao.update(getC3UserID(session), attack);
+				dao.update(sessionId, attack);
 			} else {
 				// Check if attack exits
-				existingAttack = dao.findOpenAttackByRound(getC3UserID(session),attack.getJumpshipID(), attack.getSeason(), attack.getRound());
+				existingAttack = dao.findOpenAttackByRound(sessionId,attack.getJumpshipID(), attack.getSeason(), attack.getRound());
 
 				if(existingAttack == null) {
-					JumpshipPOJO js = daoJJ.findById(getC3UserID(session), attack.getJumpshipID());
-					FactionPOJO factionAttacker = FactionDAO.getInstance().findById(getC3UserID(session), js.getJumpshipFactionID());
-					FactionPOJO factionDefender = FactionDAO.getInstance().findById(getC3UserID(session), starsystemData.getFaction().getId());
+					JumpshipPOJO js = daoJJ.findById(sessionId, attack.getJumpshipID());
+					FactionPOJO factionAttacker = FactionDAO.getInstance().findById(sessionId, js.getJumpshipFactionID());
+					FactionPOJO factionDefender = FactionDAO.getInstance().findById(sessionId, starsystemData.getFaction().getId());
 					ServerNexus.getEci().sendExtCom(starSystem.getName() + " is attacked by '" + js.getJumpshipName() + "' (" + factionAttacker.getShortName() + ") in round " + attack.getRound() + "!", "en",true, true, true);
 					ServerNexus.getEci().sendExtCom(starSystem.getName() + " wird in Runde " + attack.getRound() + " von '" + js.getJumpshipName() + "' (" + factionAttacker.getShortName() + ") angegriffen!", "de",true, true, true);
 
-					dao.save(getC3UserID(session), attack);
+					dao.save(sessionId, attack);
 
 					String command = "@@@DISCORD-CMD:CREATE_ATTACK_THREAD";
 					command += "@@@" + attack.getSeason();
@@ -675,27 +677,27 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 					ServerNexus.getEci().sendExtCom(command, "en", false, false, true);
 					ServerNexus.getEci().sendExtCom(command, "de", false, false, true);
 
-					DiplomacyDAO.getInstance().removeAllRequestAfterAttack(getC3UserID(session),GameServer.getCurrentSeason(),attack.getRound(),factionAttacker.getId(), starsystemData.getFaction().getId());
+					DiplomacyDAO.getInstance().removeAllRequestAfterAttack(sessionId,GameServer.getCurrentSeason(),attack.getRound(),factionAttacker.getId(), starsystemData.getFaction().getId());
 				} else {
 					attack = existingAttack;
 				}
 			}
 
 			// remove old and set new attack character
-			daoAC.deleteByAttackId(getC3UserID(session));
+			daoAC.deleteByAttackId(sessionId);
 			if(!newAttackCharacters.isEmpty()) {
 				attack.setAttackCharList(newAttackCharacters);
 			}
-			dao.update(getC3UserID(session), attack);
+			dao.update(sessionId, attack);
 
 			logger.info("test");
-			EntityManagerHelper.commit(getC3UserID(session));
+			EntityManagerHelper.commit(sessionId);
 
-			attack = dao.findById(getC3UserID(session), attack.getId());
-			dao.refresh(getC3UserID(session), attack);
+			attack = dao.findById(sessionId, attack.getId());
+			dao.refresh(sessionId, attack);
 
-//			JumpshipPOJO jsHelp =daoJJ.findById(getC3UserID(session), attack.getJumpshipID());
-//			daoJJ.refresh(getC3UserID(session), jsHelp );
+//			JumpshipPOJO jsHelp =daoJJ.findById(sessionId, attack.getJumpshipID());
+//			daoJJ.refresh(sessionId, jsHelp );
 
 			RoundPOJO currentRound = RoundDAO.getInstance().findBySeasonId(GameServer.getCurrentSeason());
 			long currentRoundId = currentRound.getRound();
@@ -735,8 +737,8 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 							ServerNexus.getEci().sendExtCom("Attack on " + starSystem.getName() + " is rolling", "en", true, true, true);
 							ServerNexus.getEci().sendExtCom("Angriff auf " + starSystem.getName() + " läuft", "de", true, true, true);
 						} else {
-							JumpshipPOJO js = JumpshipDAO.getInstance().findById(getC3UserID(session), attack.getJumpshipID());
-							FactionPOJO attackerFaction = FactionDAO.getInstance().findById(getC3UserID(session), js.getJumpshipFactionID());
+							JumpshipPOJO js = JumpshipDAO.getInstance().findById(sessionId, attack.getJumpshipID());
+							FactionPOJO attackerFaction = FactionDAO.getInstance().findById(sessionId, js.getJumpshipFactionID());
 
 							ServerNexus.getEci().sendExtCom("Attack on " + starSystem.getName() + " is rolling (" + attackerFaction.getShortName() + " " + attack.getScoreAttackerVictories() + " : " + attack.getScoreDefenderVictories() + " " + originalFaction.getShortName() + ")", "en", true, true, true);
 							ServerNexus.getEci().sendExtCom("Angriff auf " + starSystem.getName() + " läuft (" +  attackerFaction.getShortName() + " " + attack.getScoreAttackerVictories() + " : " + attack.getScoreDefenderVictories() + " " + originalFaction.getShortName() + ")", "de", true, true, true);
@@ -767,10 +769,10 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			// -2L: Clan vs Clan
 			// -3L: IS vs Clan
 			// -4L: IS vs IS
-			JumpshipPOJO attackerJumpship = JumpshipDAO.getInstance().findById(getC3UserID(session), attack.getJumpshipID());
-			FactionPOJO defender = FactionDAO.getInstance().findById(getC3UserID(session), attack.getFactionID_Defender());
-			FactionPOJO attacker = FactionDAO.getInstance().findById(getC3UserID(session), attackerJumpship.getJumpshipFactionID());
-			RolePlayCharacterPOJO rpChar = RolePlayCharacterDAO.getInstance().findById(getC3UserID(session), attack.getCharacterID());
+			JumpshipPOJO attackerJumpship = JumpshipDAO.getInstance().findById(sessionId, attack.getJumpshipID());
+			FactionPOJO defender = FactionDAO.getInstance().findById(sessionId, attack.getFactionID_Defender());
+			FactionPOJO attacker = FactionDAO.getInstance().findById(sessionId, attackerJumpship.getJumpshipFactionID());
+			RolePlayCharacterPOJO rpChar = RolePlayCharacterDAO.getInstance().findById(sessionId, attack.getCharacterID());
 
 			String[] dropships = attackerJumpship.getDropshipNames().split(",");
 			int rnd = new Random().nextInt(dropships.length);
@@ -801,7 +803,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 					// Enter final post into attack thread in Forum
 					// Only if the RP thread is not closed yet
 					// and the close the thread
-					FactionPOJO winner = FactionDAO.getInstance().findById(getC3UserID(session), attack.getFactionID_Winner());
+					FactionPOJO winner = FactionDAO.getInstance().findById(sessionId, attack.getFactionID_Winner());
 					t.createFinalizingEntryForAttack(attack.getId(),
 							season,
 							round,
@@ -822,14 +824,14 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			response.setAction_successfully(Boolean.TRUE);
 			C3GameSessionHandler.sendBroadCast(room, response);
 		} catch (RuntimeException re) {
-			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
+			EntityManagerHelper.rollback(sessionId);
 
 			GameState response = new GameState(GAMESTATEMODES.ERROR_MESSAGE);
 			response.addObject(re.getMessage());
 			response.setAction_successfully(Boolean.FALSE);
 			C3GameSessionHandler.sendNetworkEvent(session, response);
 
-			logger.error("Attack save", re);
+			logger.error("Exception during Attack save", re);
 		}
 	}
 
@@ -1248,12 +1250,26 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		gm.sendBroadcast(Events.networkEvent(response));
 	}
 
+	public void continueCommands() {
+//		notify();
+	}
+
 	private void executeCommand(PlayerSession session, GameState state) {
 		logger.info("C3GameSessionHandler.executeCommand: " + state.getMode().toString());
 		EntityConverter.convertGameStateToPOJO(state);
 
 		Timer serverHeartBeat;
 		String ipAdressSender = state.getIpAdressSender();
+
+		if (ServerNexus.heartbeatCurrentlyRunning) {
+//			try {
+//				wait();
+//			} catch(InterruptedException ie) {
+//				logger.error("Waiting to execute command got an exception.", ie);
+//			}
+		}
+
+//		ServerNexus.executingCommand = true;
 
 		switch (state.getMode()) {
 			case ROLL_RANDOM_MAP:
@@ -1460,6 +1476,8 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			default:
 				break;
 		}
+
+//		ServerNexus.executingCommand = false;
 	}
 
 	static public void sendErrorMessageToClient(PlayerSession session, Exception re){

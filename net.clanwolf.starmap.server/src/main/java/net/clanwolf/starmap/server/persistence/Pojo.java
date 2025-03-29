@@ -28,4 +28,5 @@ package net.clanwolf.starmap.server.persistence;
 
 
 public abstract class Pojo {
+	abstract protected void setId(Long id);
 }

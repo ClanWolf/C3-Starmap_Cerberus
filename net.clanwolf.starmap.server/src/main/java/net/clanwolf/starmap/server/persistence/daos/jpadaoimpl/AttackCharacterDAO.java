@@ -106,6 +106,7 @@ public class AttackCharacterDAO extends GenericDAO {
 		while (i.hasNext()) {
 			AttackCharacterPOJO p = (AttackCharacterPOJO) i.next();
 			logger.info("Deleting: " + p.getId());
+
 			delete(userID, p);
 		}
 	}

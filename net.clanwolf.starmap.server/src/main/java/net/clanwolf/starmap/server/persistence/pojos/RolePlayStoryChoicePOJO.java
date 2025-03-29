@@ -39,7 +39,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 		property = "id")
 @Entity
 @Table(name = "ROLEPLAY_STORY_CHOICE", catalog = "C3")
-public class RolePlayStoryChoicePOJO extends Pojo{
+public class RolePlayStoryChoicePOJO extends Pojo {
 
 
 	@Id
@@ -80,6 +80,10 @@ public class RolePlayStoryChoicePOJO extends Pojo{
 		return id;
 
 	} // getId
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	/**
 	 * @return the story

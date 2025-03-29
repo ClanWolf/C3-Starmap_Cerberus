@@ -50,7 +50,7 @@ public class RolePlayStoryToCharPOJO extends Pojo {
     @Id
     @GeneratedValue(strategy = IDENTITY)
     @Column(name = "ID")
-    private Integer id;
+    private Long id;
 
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name="StoryID")
@@ -59,6 +59,16 @@ public class RolePlayStoryToCharPOJO extends Pojo {
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "CharacterID")
     private RolePlayCharacterPOJO character;
+
+	/* -- Getter -- */
+	public Long getId() {
+		return id;
+
+	} // getId
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public RolePlayStoryToCharPOJO(){
 

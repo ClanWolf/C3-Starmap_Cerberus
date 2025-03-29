@@ -107,6 +107,15 @@ public class UserPOJO extends Pojo {
 	public UserPOJO() {
 	}
 
+	/* -- Getter -- */
+	public Long getId() {
+		return id;
+
+	} // getId
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 	/**
 	 * Full Constructor
 	 *

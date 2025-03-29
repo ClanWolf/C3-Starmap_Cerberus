@@ -32,6 +32,8 @@ import net.clanwolf.starmap.server.persistence.Pojo;
 
 import jakarta.persistence.*;
 
+import static jakarta.persistence.GenerationType.IDENTITY;
+
 @JsonIdentityInfo(
 		scope= RolePlayCharacterLevelPOJO.class,
 		generator=ObjectIdGenerators.PropertyGenerator.class,
@@ -42,11 +44,25 @@ import jakarta.persistence.*;
 public class RolePlayCharacterLevelPOJO extends Pojo {
 
 	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "ID")
+	private Long id;
+
 	@Column(name = "Level")
 	private Long level;
 
 	@Column(name = "XP")
 	private Long xp;
+
+	/* -- Getter -- */
+	public Long getId() {
+		return id;
+
+	} // getId
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	@SuppressWarnings("unused")
 	public Long getLevel() {

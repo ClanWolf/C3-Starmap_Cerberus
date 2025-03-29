@@ -96,6 +96,16 @@ public class EntityManagerHelper {
 		}
 	}
 
+	public static boolean checkTransactions() {
+		boolean transactionsActive = false;
+		for (EntityManager em : emMap.values()) {
+			if (em.getTransaction().isActive()) {
+				transactionsActive = true;
+			}
+		}
+		return transactionsActive;
+	}
+
 	public static EntityManager getEntityManager(Long userID) {
 		EntityManager manager = emMap.get(userID);
 
