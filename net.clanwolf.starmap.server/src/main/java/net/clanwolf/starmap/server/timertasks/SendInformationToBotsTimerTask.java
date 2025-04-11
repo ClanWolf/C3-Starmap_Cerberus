@@ -140,7 +140,7 @@ public class SendInformationToBotsTimerTask extends TimerTask {
 				FactionPOJO defender = FactionDAO.getInstance().findById(ServerNexus.DUMMY_USERID, a.getFactionID_Defender());
 				FactionPOJO attacker = FactionDAO.getInstance().findById(ServerNexus.DUMMY_USERID, js.getJumpshipFactionID());
 
-				String discordthreadname = "[S" + seasonId + "R" + roundId + "] " + attacker.getShortName() + " ⚔ " + ss.getName() + " (" + defender.getShortName() + ")";
+				String discordthreadname = "[S" + seasonId + "R" + nextRound + "] " + attacker.getShortName() + " ⚔ " + ss.getName() + " (" + defender.getShortName() + ")";
 
 				// Link example for discord: [test](<https://www.clanwolf.net/forum/viewthread.php?thread_id=5207>)
 				// Channel link with id: <#1333360940883640323>

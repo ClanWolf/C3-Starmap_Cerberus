@@ -214,8 +214,7 @@ public class C3Room extends GameRoomSession {
 			}
 
 			if (savedChanges) {
-				Timer serverHeartBeat;
-				serverHeartBeat = new Timer();
+				Timer serverHeartBeat = new Timer();
 				serverHeartBeat.schedule(new HeartBeatTimerTask(false, null), 0);
 			}
 		}

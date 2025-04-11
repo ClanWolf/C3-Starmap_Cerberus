@@ -26,20 +26,13 @@
  */
 package net.clanwolf.starmap.server.beans;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.ObjectReader;
-import com.fasterxml.jackson.databind.ObjectWriter;
 import io.nadron.app.GameRoom;
-import io.nadron.app.Player;
 import io.nadron.app.PlayerSession;
 import io.nadron.app.impl.GameRoomSession;
 import io.nadron.event.Event;
 import io.nadron.event.Events;
 import io.nadron.event.impl.SessionMessageHandler;
 import io.nadron.service.GameStateManagerService;
-import jakarta.persistence.EntityTransaction;
 import net.clanwolf.starmap.constants.Constants;
 import net.clanwolf.starmap.server.GameServer;
 import net.clanwolf.starmap.server.persistence.EntityConverter;
@@ -56,7 +49,6 @@ import net.clanwolf.starmap.transfer.dtos.UniverseDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 import net.clanwolf.starmap.transfer.util.Compressor;
-import org.checkerframework.checker.units.qual.A;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -612,7 +604,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			} else {
 				Long rpID = null;
 				String[] storyIDs = new String[1];
-				String[] storyIdPartsGame = null;
+				String[] storyIdPartsGame;
 				String storyIdsString = "";
 				AttackTypesPOJO at = AttackTypesDAO.getInstance().findByShortName(sessionId, "PA");
 
@@ -1270,6 +1262,12 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		}
 
 //		ServerNexus.executingCommand = true;
+
+
+
+//		GameServer.pauseHeartBeatTimer();
+
+
 
 		switch (state.getMode()) {
 			case ROLL_RANDOM_MAP:

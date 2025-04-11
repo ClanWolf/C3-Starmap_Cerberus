@@ -58,6 +58,8 @@ public class GameServer {
     private static String serverBaseDir;
     private static Long currentSeason = 1L;
 
+	private static Timer serverHeartBeat = new Timer();
+
     // This needs to be done in the main class once at startup to set the file handler for the logger
     public static void prepareLogging() {
         File dir;
@@ -241,6 +243,15 @@ public class GameServer {
         return ctx;
     }
 
+	public static void pauseHeartBeatTimer() {
+		serverHeartBeat.cancel();
+		serverHeartBeat.purge();
+	}
+
+	public static void resumeHeartBeatTimer() {
+		serverHeartBeat.schedule(new HeartBeatTimerTask(true, null), 1000, 1000 * 60 * 3);
+	}
+
     public static void startGames(AbstractApplicationContext ctx) {
         try {
             // EntityManagerHelper.getEntityManager();
@@ -261,7 +272,6 @@ public class GameServer {
             checkOpenAttacksForDropleadsTimer.schedule(dropLeadCheckTimerTask, 15000, 5000);
 
             // write heartbeat file every some minutes
-            Timer serverHeartBeat = new Timer();
             serverHeartBeat.schedule(new HeartBeatTimerTask(true, null), 1000, 1000 * 60 * 3);
 
             // check shutdown flagfile every some seconds

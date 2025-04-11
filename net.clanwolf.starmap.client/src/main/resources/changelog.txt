@@ -6,7 +6,6 @@ Notes:
 Handling TableTop-Invasions
 
 
-- CharacterID beim Clonen nicht mitkopieren!
 - If a jumpship attacks, will all be set to attackready false ?
 
 
@@ -29,6 +28,9 @@ handleAttackTTButtonClick auskommentiert
 
 ================================================================
 
+
+
+If a ship is moved, other ships of the same user sometimes move as well. Check the loop!
 
 
 If in a lobby, every change needs to be sent immediatly
@@ -96,6 +98,12 @@ WATCH OUT FOR WHILE TESTING:
 ----------------------------------------------------------------
 
 VERSIONS
+
+Version 7.5.15 (11.04.2025)
+- FIXING ATTEMPT 4: Concurrency problem while storing attacks
+
+Version 7.5.14 (29.03.2025)
+- FIXING ATTEMPT 3: Concurrency problem while storing attacks
 
 Version 7.5.13 (07.03.2025)
 - FIXING ATTEMPT 2: Concurrency problem while storing attacks
