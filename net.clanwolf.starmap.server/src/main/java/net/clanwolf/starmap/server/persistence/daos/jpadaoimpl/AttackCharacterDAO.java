@@ -94,8 +94,6 @@ public class AttackCharacterDAO extends GenericDAO {
 		return lRPS;
 	}
 
-
-
 	public void deleteByAttackId(Long userID) {
 		CriteriaHelper crit = new CriteriaHelper(AttackCharacterPOJO.class);
 		crit.addCriteriaIsNull("attackID");
@@ -107,6 +105,7 @@ public class AttackCharacterDAO extends GenericDAO {
 			AttackCharacterPOJO p = (AttackCharacterPOJO) i.next();
 			logger.info("Deleting: " + p.getId());
 
+			refresh(userID, p);
 			delete(userID, p);
 		}
 	}

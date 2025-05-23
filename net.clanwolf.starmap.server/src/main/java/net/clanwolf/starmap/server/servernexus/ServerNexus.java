@@ -53,7 +53,6 @@ public class ServerNexus {
 	public static HashMap<Long, Long> brokenAttackTimers = new HashMap<>();
 	public static String serverBaseDir = "";
 	public static volatile boolean heartbeatCurrentlyRunning = false;
-	public static volatile boolean executingCommand = false;
 
 	public static ExternalCommunicationInterface getEci() {
 		return eci;

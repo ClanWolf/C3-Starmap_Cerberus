@@ -60,7 +60,7 @@ Name "C3-Client_Installer"
 Caption "C3 Client Installer"
 Icon "c3.ico"
 UninstallIcon "c3.ico"
-OutFile "C3-Client-7.5.15_install.exe"
+OutFile "C3-Client-7.5.16_install.exe"
 BrandingText /TRIMRIGHT "ClanWolf.net"
 
 InstallDir $PROGRAMFILES64\C3-Client
@@ -76,7 +76,7 @@ Function .onInstSuccess
     ;                 SMPROGRAMS: $SMPROGRAMS  $\r$\n \
     ;                 Start Menu Folder: $STARTMENU_FOLDER $\r$\n \
     ;                 InstallDirectory: $INSTDIR "
-    ExecShell "open" "https://www.clanwolf.net/apps/C3/changelog.txt?refresh=true&r=1744408104831"
+    ExecShell "open" "https://www.clanwolf.net/apps/C3/changelog.txt?refresh=true&r=1748031733784"
     ExecShell "open" "$INSTDIR\bin\C3-Starmap_Cerberus_noWin.cmd" "" SW_HIDE
 FunctionEnd
 
@@ -163,14 +163,14 @@ FunctionEnd
 ;--------------------------------
 
 LoadLanguageFile "${NSISDIR}\Contrib\Language files\English.nlf"
-VIProductVersion "7.5.15.0"
+VIProductVersion "7.5.16.0"
 VIAddVersionKey /LANG=0 "ProductName" "C3 Client"
 VIAddVersionKey /LANG=0 "Comments" "StarMap"
 VIAddVersionKey /LANG=0 "CompanyName" "ClanWolf.net [CWG]"
 VIAddVersionKey /LANG=0 "LegalTrademarks" "StarMap of the Inner Sphere and Clan Space."
 VIAddVersionKey /LANG=0 "LegalCopyright" "© ClanWolf.net"
 VIAddVersionKey /LANG=0 "FileDescription" "StarMap"
-VIAddVersionKey /LANG=0 "FileVersion" "7.5.15"
+VIAddVersionKey /LANG=0 "FileVersion" "7.5.16"
 
 ;--------------------------------
 
@@ -221,7 +221,6 @@ Section "C3-Client (required)"
 	CreateDirectory $INSTDIR\lib\security
 	SetOutpath $INSTDIR\lib\security
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\security\public_suffix_list.dat"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\security\default.policy"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\security\cacerts"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\lib\security\blocked.certs"
 
@@ -262,8 +261,16 @@ Section "C3-Client (required)"
 
 	CreateDirectory $INSTDIR\legal\java.xml
 	SetOutpath $INSTDIR\legal\java.xml
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.xml\xmlxsd.md"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.xml\xmlspec.md"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.xml\xhtml11schema.md"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.xml\xhtml11.md"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.xml\xhtml10schema.md"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.xml\xhtml10.md"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.xml\xerces.md"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.xml\xalan.md"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.xml\schema10part2.md"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.xml\schema10part1.md"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.xml\LICENSE"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.xml\jcup.md"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.xml\dom.md"
@@ -382,7 +389,6 @@ Section "C3-Client (required)"
 	CreateDirectory $INSTDIR\conf\security
 	SetOutpath $INSTDIR\conf\security
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\conf\security\java.security"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\conf\security\java.policy"
 
 	CreateDirectory $INSTDIR\conf\security\policy
 	SetOutpath $INSTDIR\conf\security\policy
@@ -490,7 +496,7 @@ Section "C3-Client (required)"
 	; Write the uninstall keys for Windows
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayName" "C3-Client"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayIcon" "$INSTDIR\c3.ico"
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayVersion" "7.5.15"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayVersion" "7.5.16"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "Publisher" "ClanWolf.net [CWG], Christian Bartel"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "InstallSource" "$EXEDIR\"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "UninstallString" '"$INSTDIR\uninstall.exe"'
@@ -508,7 +514,7 @@ Section "Start Menu Shortcuts"
 
 	CreateShortcut "$SMPROGRAMS\C3-Client\C3-Client.lnk" "$INSTDIR\bin\C3-Starmap_Cerberus_noWin.cmd" "" "$INSTDIR\c3.ico" 0 SW_SHOWMINIMIZED
 	CreateShortcut "$SMPROGRAMS\C3-Client\C3-Client (Console).lnk" "$INSTDIR\bin\C3-Starmap_Cerberus_win.cmd" "" "$INSTDIR\c3.ico" 0 SW_SHOWNORMAL
-	CreateShortcut "$SMPROGRAMS\C3-Client\Changelog.lnk" "https://www.clanwolf.net/apps/C3/changelog.txt?refresh=true&r=1744408104935" "" "" 0
+	CreateShortcut "$SMPROGRAMS\C3-Client\Changelog.lnk" "https://www.clanwolf.net/apps/C3/changelog.txt?refresh=true&r=1748031733864" "" "" 0
 	; CreateShortCut "$SMPROGRAMS\C3-Client\Remove.lnk" "$INSTDIR\Uninstall.exe" "" "$INSTDIR\c3.ico" 0
 SectionEnd
 
@@ -536,7 +542,6 @@ Section "Uninstall"
 	Delete $INSTDIR\lib\fontconfig.bfc
 	Delete $INSTDIR\lib\classlist
 	Delete $INSTDIR\lib\security\public_suffix_list.dat
-	Delete $INSTDIR\lib\security\default.policy
 	Delete $INSTDIR\lib\security\cacerts
 	Delete $INSTDIR\lib\security\blocked.certs
 	Delete $INSTDIR\legal\jdk.xml.dom\LICENSE
@@ -556,8 +561,16 @@ Section "Uninstall"
 	Delete $INSTDIR\legal\jdk.crypto.cryptoki\LICENSE
 	Delete $INSTDIR\legal\jdk.crypto.cryptoki\ASSEMBLY_EXCEPTION
 	Delete $INSTDIR\legal\jdk.crypto.cryptoki\ADDITIONAL_LICENSE_INFO
+	Delete $INSTDIR\legal\java.xml\xmlxsd.md
+	Delete $INSTDIR\legal\java.xml\xmlspec.md
+	Delete $INSTDIR\legal\java.xml\xhtml11schema.md
+	Delete $INSTDIR\legal\java.xml\xhtml11.md
+	Delete $INSTDIR\legal\java.xml\xhtml10schema.md
+	Delete $INSTDIR\legal\java.xml\xhtml10.md
 	Delete $INSTDIR\legal\java.xml\xerces.md
 	Delete $INSTDIR\legal\java.xml\xalan.md
+	Delete $INSTDIR\legal\java.xml\schema10part2.md
+	Delete $INSTDIR\legal\java.xml\schema10part1.md
 	Delete $INSTDIR\legal\java.xml\LICENSE
 	Delete $INSTDIR\legal\java.xml\jcup.md
 	Delete $INSTDIR\legal\java.xml\dom.md
@@ -628,7 +641,6 @@ Section "Uninstall"
 	Delete $INSTDIR\conf\jaxp.properties
 	Delete $INSTDIR\conf\jaxp-strict.properties.template
 	Delete $INSTDIR\conf\security\java.security
-	Delete $INSTDIR\conf\security\java.policy
 	Delete $INSTDIR\conf\security\policy\README.txt
 	Delete $INSTDIR\conf\security\policy\unlimited\default_US_export.policy
 	Delete $INSTDIR\conf\security\policy\unlimited\default_local.policy

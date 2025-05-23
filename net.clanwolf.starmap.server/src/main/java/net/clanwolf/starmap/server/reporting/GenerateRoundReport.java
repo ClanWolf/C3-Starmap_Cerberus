@@ -154,7 +154,7 @@ public class GenerateRoundReport {
         }
     }
 
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws IOException {
         File file = new File("C:/itextExamples/textAnnotation.pdf");
         file.getParentFile().mkdirs();
         // Creating a PdfWriter
@@ -300,12 +300,12 @@ public class GenerateRoundReport {
     public void finishXPReport() throws Exception {
         createC3Header("XP award for drop " + dropCounter);
         if (!(xpWarning == null)) {
-            doc.add(new Paragraph("The following players do not get XP:").setFontSize(8).setBold())
+            doc.add(new Paragraph("The following players do not get XP:").setFontSize(8))
                     .add(xpWarning)
                     .add(new Paragraph());
             xpWarning = null;
         }
-        doc.add(new Paragraph("Calculation for XP distribution:").setFontSize(8).setBold());
+        doc.add(new Paragraph("Calculation for XP distribution:").setFontSize(8));
 
         createCalcInfoXP();
 
@@ -819,14 +819,14 @@ public class GenerateRoundReport {
             logger.error(e.getMessage());
         }
 
-        doc.add(new Paragraph("Lobby setting:").setFontSize(8).setBold());
+        doc.add(new Paragraph("Lobby setting:").setFontSize(8));
         doc.add(tableGameInfo);
 
     }
 
     private void createFactionInfo(FactionPOJO factionAttacker, FactionPOJO factionDefender) throws Exception {
 
-        doc.add(new Paragraph("Information about the attacker and defender:").setFontSize(8).setBold());
+        doc.add(new Paragraph("Information about the attacker and defender:").setFontSize(8));
         Table tableFactionInfo = new Table(new float[3])
                 .addCell(addWhiteCell("Attacker").setFontSize(10))
                 .addCell(addWhiteCell(""))
@@ -915,7 +915,7 @@ public class GenerateRoundReport {
     }
 
     private void createPlanetInfo() throws Exception {
-        doc.add(new Paragraph("Information about the planet being attacked:").setFontSize(8).setBold());
+        doc.add(new Paragraph("Information about the planet being attacked:").setFontSize(8));
         StarSystemPOJO planet = StarSystemDAO.getInstance().findById(ServerNexus.DUMMY_USERID, starSystemID);
 
         List planetInfo = new List();
@@ -977,7 +977,6 @@ public class GenerateRoundReport {
         cell
                 .setBorder(whiteBorder)
                 .add(addWhiteCell("C3 invasion report")
-                        .setBold()
                         .setTextAlignment(TextAlignment.LEFT))
                 .add(addWhiteCell("Created with version: " + clientVersion.getValue())
                         .setTextAlignment(TextAlignment.LEFT));
@@ -1168,8 +1167,7 @@ public class GenerateRoundReport {
                 .add("No team damage: " + nf.format(C3GameConfigDAO.getInstance().findByKey(ServerNexus.END_ROUND_USERID, "C3_REWARD_NO_TEAM_DAMAGE").getValue()) + " C-Bills if the player does not cause team damage.");
 
         doc.add(new Paragraph("Cost calculation:")
-                        .setFontSize(8)
-                        .setBold())
+                        .setFontSize(8))
                 .add(calcInf);
     }
 }

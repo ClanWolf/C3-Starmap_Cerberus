@@ -25,7 +25,7 @@
 		<!-- iText +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ -->
 		<dependency>
 			<groupId>com.itextpdf</groupId>
-			<artifactId>itext7-core</artifactId>
+			<artifactId>itext-core</artifactId>
 			<version>${version.iText-core}</version>
 			<type>pom</type>
 		</dependency>

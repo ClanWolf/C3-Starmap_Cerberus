@@ -398,7 +398,14 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 				JumpshipDTO jsDto = js.getJumpshipDTO();
 				jsDto.setRoutepointList(route);
 				setJumpshipToAttackReady(js, false);
-				js.setAttackReady(false);
+
+				for (RoutePointDTO p : route) {
+					if (p.getRoundId() > Nexus.getCurrentRound()) {
+						js.setAttackReady(false);
+						break;
+					}
+				}
+
 				js.storeJumpship(jsDto);
 
 				// Is the first coming jump (next round) to an enemy planet (?)

@@ -63,8 +63,8 @@ import java.util.concurrent.CountDownLatch;
 public class HeartBeatTimerTask extends TimerTask {
 	private final static Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	private static volatile long lastReportedHour = 0;
-	private volatile boolean informClients = false;
-	private String tempDir = "";
+	private volatile boolean informClients;
+	private String tempDir;
 	private volatile CountDownLatch latch;
 
 	public HeartBeatTimerTask(boolean informClients, CountDownLatch latch) {
@@ -76,7 +76,7 @@ public class HeartBeatTimerTask extends TimerTask {
 
 	@Override
 	public synchronized void run() {
-		if (!EntityManagerHelper.checkTransactions() && !ServerNexus.executingCommand) { // Check if there are any active sessions
+		if (!EntityManagerHelper.checkTransactions()) { // Check if there are any active sessions
 			if (!ServerNexus.heartbeatCurrentlyRunning) {
 				ServerNexus.heartbeatCurrentlyRunning = true;
 

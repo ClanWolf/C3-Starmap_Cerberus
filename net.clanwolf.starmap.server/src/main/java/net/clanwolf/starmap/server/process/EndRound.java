@@ -215,6 +215,9 @@ public class EndRound {
 		ArrayList<AttackPOJO> openAttacksInRoundList = new ArrayList<>();
 		ArrayList<AttackPOJO> allAttacksForRound = AttackDAO.getInstance().getAllAttacksOfASeasonForRound(seasonId, round);
 
+		AttackCharacterDAO daoAC = AttackCharacterDAO.getInstance();
+		daoAC.deleteByAttackId(ServerNexus.END_ROUND_USERID);
+
 		for (AttackPOJO attackPojoDummy : allAttacksForRound) {
 			if (attackPojoDummy.getFactionID_Winner() == null) {
 				openAttacksInRoundList.add(attackPojoDummy);

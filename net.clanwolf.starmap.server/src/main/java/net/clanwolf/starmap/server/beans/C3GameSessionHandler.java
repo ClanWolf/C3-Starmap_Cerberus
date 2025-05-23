@@ -675,14 +675,14 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				}
 			}
 
-			// remove old and set new attack character
-			daoAC.deleteByAttackId(sessionId);
+			// and set new attack character
+			// remove old will be done in finalize round to avoid hibernate cache issues
+			// REMOVED and moved to finalize round: daoAC.deleteByAttackId(sessionId);
 			if(!newAttackCharacters.isEmpty()) {
 				attack.setAttackCharList(newAttackCharacters);
 			}
 			dao.update(sessionId, attack);
 
-			logger.info("test");
 			EntityManagerHelper.commit(sessionId);
 
 			attack = dao.findById(sessionId, attack.getId());
@@ -1253,22 +1253,6 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		Timer serverHeartBeat;
 		String ipAdressSender = state.getIpAdressSender();
 
-		if (ServerNexus.heartbeatCurrentlyRunning) {
-//			try {
-//				wait();
-//			} catch(InterruptedException ie) {
-//				logger.error("Waiting to execute command got an exception.", ie);
-//			}
-		}
-
-//		ServerNexus.executingCommand = true;
-
-
-
-//		GameServer.pauseHeartBeatTimer();
-
-
-
 		switch (state.getMode()) {
 			case ROLL_RANDOM_MAP:
 				if (state.getObject() instanceof Long) {
@@ -1474,8 +1458,6 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			default:
 				break;
 		}
-
-//		ServerNexus.executingCommand = false;
 	}
 
 	static public void sendErrorMessageToClient(PlayerSession session, Exception re){
