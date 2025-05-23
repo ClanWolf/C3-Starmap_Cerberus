@@ -74,6 +74,11 @@ public class BOStarSystem {
 	@SuppressWarnings("unused")
 	public void setStarSystemDataDTO(StarSystemDataDTO hh_starSystemDataDTO) {
 		this.hh_starSystemDataDTO = hh_starSystemDataDTO;
+
+		blockReason = 0;
+		this.setLockedByJumpship(false);
+		this.setCurrentlyUnderAttack(false);
+		this.setNextRoundUnderAttack(false);
 	}
 
 	@SuppressWarnings("unused")

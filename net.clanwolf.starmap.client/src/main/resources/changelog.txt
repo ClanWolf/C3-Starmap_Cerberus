@@ -103,6 +103,8 @@ Version 7.5.16 (24.05.2025)
 - UPDATED: Java and JavaFX to 24.0.1
 - UPDATED: Libraries
 - FIXED: Concurrency problem while storing attacks
+- FIXED: Only one jumpship could be moved per round and faction
+- FIXED: Sometimes a system could not be attacked because the attack status in the client was not reset after receiving a new universe
 
 Version 7.5.15 (11.04.2025)
 - FIXING ATTEMPT 4: Concurrency problem while storing attacks

@@ -397,15 +397,13 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 				ArrayList<RoutePointDTO> route = Nexus.getBoUniverse().routesList.get(js.getJumpshipId());
 				JumpshipDTO jsDto = js.getJumpshipDTO();
 				jsDto.setRoutepointList(route);
-				setJumpshipToAttackReady(js, false);
 
 				for (RoutePointDTO p : route) {
 					if (p.getRoundId() > Nexus.getCurrentRound()) {
-						js.setAttackReady(false);
+						setJumpshipToAttackReady(js, false);
 						break;
 					}
 				}
-
 				js.storeJumpship(jsDto);
 
 				// Is the first coming jump (next round) to an enemy planet (?)
@@ -427,7 +425,9 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 						|| dState.getState() == DiplomacyState.NO_ALLIANCE_FOUND
 						|| dState.getState() == DiplomacyState.FACTIONS_AT_WAR
 				) {
-					createAttack = true;
+					if (!js.isAttackReady()) { // Ship is NOT ATTACKREADY --> HAS BEEN MOVED -> Create attack
+						createAttack = true;
+					}
 				}
 
 				if (s.getFactionId() != js.getJumpshipFaction() && createAttack) {
