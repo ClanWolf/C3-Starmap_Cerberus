@@ -69,13 +69,13 @@ public class BOStarSystem {
 	private boolean isLockedByJumpship = false;
 	private boolean isCurrentlyUnderAttack = false;
 	private boolean isNextRoundUnderAttack = false;
-//	private boolean wasLastRoundUnderAttack = false;
 
 	@SuppressWarnings("unused")
 	public void setStarSystemDataDTO(StarSystemDataDTO hh_starSystemDataDTO) {
 		this.hh_starSystemDataDTO = hh_starSystemDataDTO;
 
 		blockReason = 0;
+
 		this.setLockedByJumpship(false);
 		this.setCurrentlyUnderAttack(false);
 		this.setNextRoundUnderAttack(false);
@@ -364,16 +364,6 @@ public class BOStarSystem {
 	public void setLockedByJumpship(boolean lockedByJumpship) {
 		this.isLockedByJumpship = lockedByJumpship;
 	}
-
-//	@SuppressWarnings("unused")
-//	public boolean wasLastRoundUnderAttack() {
-//		return wasLastRoundUnderAttack;
-//	}
-//
-//	@SuppressWarnings("unused")
-//	public void setLastRoundUnderAttack(boolean wasLastRoundUnderAttack) {
-//		this.wasLastRoundUnderAttack = wasLastRoundUnderAttack;
-//	}
 
 	@SuppressWarnings("unused")
 	public String getDescription() {

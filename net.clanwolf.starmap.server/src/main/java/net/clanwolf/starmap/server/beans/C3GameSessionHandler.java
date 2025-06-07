@@ -482,8 +482,12 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		}
 	}
 
-	// https://stackoverflow.com/questions/27777254/synchronized-method-does-not-work-as-expected
 	public synchronized void saveAttack(PlayerSession session, GameState state) {
+		saveAttack(session, state, false);
+	}
+
+	// https://stackoverflow.com/questions/27777254/synchronized-method-does-not-work-as-expected
+	public synchronized void saveAttack(PlayerSession session, GameState state, boolean storeAttackCharacters) {
 		Long sessionId = getC3UserID(session);
 
 		logger.info("SaveAttack was called by: {}", session.getPlayer().getName());
@@ -525,15 +529,20 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			}
 
 			ArrayList<AttackCharacterPOJO> newAttackCharacters = new ArrayList<>();
-			if(attack.getAttackCharList() != null) {
-				for (AttackCharacterPOJO p : attack.getAttackCharList()) {
-					if (!p.getType().equals(ROLE_DROPLEAD_LEFT)) {
-						AttackCharacterPOJO pnew = (AttackCharacterPOJO) EntityConverter.cloneCopyPojoEmptyId(p);
-						newAttackCharacters.add(pnew);
+//			if (storeAttackCharacters) {
+				if (attack.getAttackCharList() != null) {
+					for (AttackCharacterPOJO p : attack.getAttackCharList()) {
+						if (!p.getType().equals(ROLE_DROPLEAD_LEFT)) {
+							AttackCharacterPOJO pnew = (AttackCharacterPOJO) EntityConverter.cloneCopyPojoEmptyId(p);
+							newAttackCharacters.add(pnew);
+						}
 					}
+					attack.getAttackCharList().clear();
 				}
-				attack.getAttackCharList().clear();
-			}
+//			}
+//			else {
+//				newAttackCharacters = attack.getAttackCharList();
+//			}
 
 			// -1L: Clan vs IS
 			// -2L: Clan vs Clan
@@ -1389,6 +1398,14 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				logger.info("Calling saveAttack for C3GameSessionHamdler.");
 
 				saveAttack(session, state);
+				serverHeartBeat = new Timer();
+				serverHeartBeat.schedule(new HeartBeatTimerTask(true, null), 100);
+				break;
+			case ATTACK_SAVE_WITH_CHARACTERS:
+
+				logger.info("Calling saveAttack with AttackCharacters for C3GameSessionHamdler.");
+
+				saveAttack(session, state, true);
 				serverHeartBeat = new Timer();
 				serverHeartBeat.schedule(new HeartBeatTimerTask(true, null), 100);
 				break;

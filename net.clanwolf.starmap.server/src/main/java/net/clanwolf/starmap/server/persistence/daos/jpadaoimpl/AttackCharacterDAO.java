@@ -26,6 +26,8 @@
  */
 package net.clanwolf.starmap.server.persistence.daos.jpadaoimpl;
 
+import jakarta.persistence.Query;
+import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.server.persistence.CriteriaHelper;
@@ -107,6 +109,19 @@ public class AttackCharacterDAO extends GenericDAO {
 
 			refresh(userID, p);
 			delete(userID, p);
+		}
+	}
+
+	public void nativeDeleteByAttackId(Long userID) {
+		Query q = null;
+
+		String query = "DELETE FROM _HH_ATTACK_CHARACTER WHERE attackId is null";
+
+		if (userID != null) {
+			logger.info("Deleting attackCharacters without attackIds.");
+
+			q = EntityManagerHelper.getEntityManager(userID).createQuery(query);
+			q.executeUpdate();
 		}
 	}
 }

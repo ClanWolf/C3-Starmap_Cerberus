@@ -711,6 +711,8 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 				ArrayList<Shape> dashedBackgrounds = new ArrayList<>();
 				ArrayList<Shape> flashingBackgrounds = new ArrayList<>();
 
+				HashMap<Long, Integer> numberOfJumpshipsOnSystem = new HashMap<>();
+
 				// Move the ships
 				for (BOJumpship js : boUniverse.getJumpshipList()) {
 					Long currentSystemID = js.getCurrentSystemID();
@@ -719,6 +721,15 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 					boolean alliedShip = false;
 					if (!myOwnShip) {
 						alliedShip = alliedFactionIds.contains(js.getJumpshipFaction());
+					}
+
+					if (numberOfJumpshipsOnSystem.get(js.getCurrentSystemID()) == null) {
+						numberOfJumpshipsOnSystem.put(js.getCurrentSystemID(), 0);
+					} else {
+						Integer number = numberOfJumpshipsOnSystem.get(js.getCurrentSystemID());
+						number += 1;
+						numberOfJumpshipsOnSystem.remove(js.getCurrentSystemID());
+						numberOfJumpshipsOnSystem.put(js.getCurrentSystemID(), number);
 					}
 
 					ImageView jumpshipImage = js.getJumpshipImageView();
@@ -795,16 +806,17 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 							//Image right_red = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_right_red.png")));
 							String imageName = "jumpship_Faction" + js.getJumpshipFaction() + ".png";
 							Image i = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/" + imageName)));
-
 							jumpshipImage.setImage(i);
 						} else {
 							//Image right_red = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/jumpship_right_red.png")));
 							String imageName = "jumpship_Faction" + js.getJumpshipFaction() + ".png";
 							Image i = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/images/map/" + imageName)));
-
 							jumpshipImage.setImage(i);
 						}
 					}
+
+					number = numberOfJumpshipsOnSystem.get(js.getCurrentSystemID());
+					offset = 7;
 
 					// Remove old attack visuals
 					ArrayList<Node> lineElementsToRemove = new ArrayList<>();

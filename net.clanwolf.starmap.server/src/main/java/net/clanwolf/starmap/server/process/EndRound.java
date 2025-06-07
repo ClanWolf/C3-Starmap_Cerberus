@@ -215,9 +215,6 @@ public class EndRound {
 		ArrayList<AttackPOJO> openAttacksInRoundList = new ArrayList<>();
 		ArrayList<AttackPOJO> allAttacksForRound = AttackDAO.getInstance().getAllAttacksOfASeasonForRound(seasonId, round);
 
-		AttackCharacterDAO daoAC = AttackCharacterDAO.getInstance();
-		daoAC.deleteByAttackId(ServerNexus.END_ROUND_USERID);
-
 		for (AttackPOJO attackPojoDummy : allAttacksForRound) {
 			if (attackPojoDummy.getFactionID_Winner() == null) {
 				openAttacksInRoundList.add(attackPojoDummy);
@@ -574,6 +571,10 @@ public class EndRound {
 					ssdDAO.update(ServerNexus.END_ROUND_USERID, ssdPojo);
 					attackDAO.update(ServerNexus.END_ROUND_USERID, attackPOJO);
 				}
+
+				AttackCharacterDAO daoAC = AttackCharacterDAO.getInstance();
+				daoAC.nativeDeleteByAttackId(ServerNexus.END_ROUND_USERID);
+
 				transaction.commit();
 
 				// ---------------------------------------------------------------------------
@@ -678,6 +679,7 @@ public class EndRound {
 
 				endRoundInfo.addObject(null);
 				endRoundInfo.setAction_successfully(Boolean.TRUE);
+
 			} catch (RuntimeException re) {
 				logger.error("Finalize round", re);
 

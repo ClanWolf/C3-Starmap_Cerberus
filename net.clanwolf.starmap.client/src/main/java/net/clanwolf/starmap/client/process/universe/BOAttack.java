@@ -64,6 +64,17 @@ public class BOAttack {
 	}
 
 	@SuppressWarnings("unused")
+	public void storeAttackWithAttackCharacters() {
+		GameState saveAttackState = new GameState();
+		saveAttackState.setMode(GAMESTATEMODES.ATTACK_SAVE_WITH_CHARACTERS);
+		byte[] compressedAttackDTO = Compressor.compress(attackDTO);
+		logger.info("Compressed AttackDTO size: " + compressedAttackDTO.length);
+		saveAttackState.addObject(compressedAttackDTO);
+		saveAttackState.addObject2(getAttackType());
+		Nexus.fireNetworkEvent(saveAttackState);
+	}
+
+	@SuppressWarnings("unused")
 	@Deprecated
 	public void storeAttackCharacters(AttackCharacterDTO attackCharacterDTO, Boolean bRemoveAttackChar) {
 		GameState saveAttackCharacterState = new GameState();

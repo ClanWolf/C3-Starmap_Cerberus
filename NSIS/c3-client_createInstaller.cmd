@@ -6,7 +6,7 @@ C:
 CD \
 CD C:\C3\projects\C3-Starmap_Cerberus
 
-REM SET VERSION=7.5.16
+REM SET VERSION=7.5.17
 FOR /f "delims== tokens=1,2" %%G in (C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\target\classes\version.number) do set %%G=%%H
 ECHO Found version: %VERSION%
 REM PAUSE
@@ -26,15 +26,15 @@ ECHO FROM %UserProfile%\.ClanWolf.net_C3\cache\voice\en\
 COPY %UserProfile%\.ClanWolf.net_C3\cache\voice\en\*.* C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client\src\main\resources\sound\voice\en /Y /V
 REM PAUSE
 
-REM 23 is set in NRICreator.java
+REM 24 is set in NRICreator.java
 REM !!!
 REM ATTENTION:
 REM "c3_client_createInstaller.cmd" might need to be changed manually for the first run!
 REM !!!
 
-IF EXIST "C:\Program Files\Java\jdk-23\bin\java.exe" (
+IF EXIST "C:\Program Files\Java\jdk-24\bin\java.exe" (
   ECHO Java found
-  "C:\Program Files\Java\jdk-23\bin\java.exe" -jar C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client.packager\target\net.clanwolf.starmap.client.packager-%VERSION%.jar
+  "C:\Program Files\Java\jdk-24\bin\java.exe" -jar C:\C3\projects\C3-Starmap_Cerberus\net.clanwolf.starmap.client.packager\target\net.clanwolf.starmap.client.packager-%VERSION%.jar
 ) ELSE (
   ECHO Java NOT found
   GOTO END

@@ -99,6 +99,9 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
+Version 7.5.17 (07.06.2025)
+- FIXED: Deleting obsolete attackCharacters only if the round is finalized
+
 Version 7.5.16 (24.05.2025)
 - UPDATED: Java and JavaFX to 24.0.1
 - UPDATED: Libraries
