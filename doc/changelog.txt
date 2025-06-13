@@ -99,6 +99,9 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
+Version 7.5.18 (13.06.2025)
+- FIXED: Error while finalizing attacks
+
 Version 7.5.17 (07.06.2025)
 - FIXED: Deleting obsolete attackCharacters only if the round is finalized
 

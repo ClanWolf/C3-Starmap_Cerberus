@@ -533,8 +533,8 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				if (attack.getAttackCharList() != null) {
 					for (AttackCharacterPOJO p : attack.getAttackCharList()) {
 						if (!p.getType().equals(ROLE_DROPLEAD_LEFT)) {
-							AttackCharacterPOJO pnew = (AttackCharacterPOJO) EntityConverter.cloneCopyPojoEmptyId(p);
-							newAttackCharacters.add(pnew);
+							//AttackCharacterPOJO pnew = (AttackCharacterPOJO) EntityConverter.cloneCopyPojoEmptyId(p);
+							newAttackCharacters.add(p);
 						}
 					}
 					attack.getAttackCharList().clear();
