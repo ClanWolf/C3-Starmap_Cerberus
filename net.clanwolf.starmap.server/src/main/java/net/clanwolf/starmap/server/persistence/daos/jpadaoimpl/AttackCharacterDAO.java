@@ -33,7 +33,6 @@ import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.server.persistence.CriteriaHelper;
 import net.clanwolf.starmap.server.persistence.daos.GenericDAO;
 import net.clanwolf.starmap.server.persistence.pojos.AttackCharacterPOJO;
-import net.clanwolf.starmap.server.persistence.pojos.RoutePointPOJO;
 
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
@@ -102,9 +101,8 @@ public class AttackCharacterDAO extends GenericDAO {
 
 		List<Object> objectList = crit.getResultList(userID);
 
-		Iterator i = objectList.iterator();
-		while (i.hasNext()) {
-			AttackCharacterPOJO p = (AttackCharacterPOJO) i.next();
+		for (Object o : objectList) {
+			AttackCharacterPOJO p = (AttackCharacterPOJO) o;
 			logger.info("Deleting: " + p.getId());
 
 			refresh(userID, p);
@@ -113,14 +111,23 @@ public class AttackCharacterDAO extends GenericDAO {
 	}
 
 	public void nativeDeleteByAttackId(Long userID) {
-		Query q = null;
 
-		String query = "DELETE FROM _HH_ATTACK_CHARACTER WHERE attackId is null";
+//		String selectQuery = "SELECT * FROM _HH_ATTACK_CHARACTER WHERE attackId is null";
+//		CriteriaHelper crit = new CriteriaHelper(AttackCharacterPOJO.class);
+//		crit.addCriteriaIsNull("attackID");
+//		List<Object> objectList = crit.getResultList(userID);
+//		for (Object o : objectList) {
+//			AttackCharacterPOJO p = (AttackCharacterPOJO) o;
+//		}
+
+		// -------------------------------------------
+
+		String deleteQuery = "DELETE FROM _HH_ATTACK_CHARACTER WHERE attackId is null";
 
 		if (userID != null) {
 			logger.info("Deleting attackCharacters without attackIds.");
 
-			q = EntityManagerHelper.getEntityManager(userID).createQuery(query);
+			Query q = EntityManagerHelper.getEntityManager(userID).createNativeQuery(deleteQuery);
 			q.executeUpdate();
 		}
 	}

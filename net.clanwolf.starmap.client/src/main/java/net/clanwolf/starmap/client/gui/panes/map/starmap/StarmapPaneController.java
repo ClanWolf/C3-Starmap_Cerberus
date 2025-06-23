@@ -271,29 +271,28 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 
 	@FXML
 	private void handleAttackTTButtonClick() {
+		logger.info("Handle TT");
 
-//		logger.info("Handle TT");
-//
-//		mapButton07.setDisable(true);
-//		mapButton07.setVisible(false);
-//		ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("attack_youAlreadyHaveAFight"), true));
-//
-//		BOAttack a = Nexus.getCurrentlySelectedStarSystem().getAttack();
-//		a.setAttackGame("TT");
-//
-//		logger.info("Starting or joining TT attack on " + a.getStarSystemName() + " with Character: " + Nexus.getCurrentChar().getName());
-//
-//		AttackCharacterDTO ac = new AttackCharacterDTO();
-//		ac.setAttackID(a.getAttackDTO().getId());
-//		ac.setCharacterID(Nexus.getCurrentChar().getId());
-//
-//		ac.setType(currentPlayerRoleInInvasion);
-//		a.getAttackDTO().getAttackCharList().add(ac);
-//
-//		if (a.getCharacterId() == null || a.getStoryId() == null) {
-//			a.getAttackDTO().setCharacterID(Nexus.getCurrentChar().getId());
-//		}
-//		a.storeAttack();
+		mapButton07.setDisable(true);
+		mapButton07.setVisible(false);
+		ActionManager.getAction(ACTIONS.SET_STATUS_TEXT).execute(new StatusTextEntryActionObject(Internationalization.getString("attack_youAlreadyHaveAFight"), true));
+
+		BOAttack a = Nexus.getCurrentlySelectedStarSystem().getAttack();
+		a.setAttackGame("TT");
+
+		logger.info("Starting or joining TT attack on " + a.getStarSystemName() + " with Character: " + Nexus.getCurrentChar().getName());
+
+		AttackCharacterDTO ac = new AttackCharacterDTO();
+		ac.setAttackID(a.getAttackDTO().getId());
+		ac.setCharacterID(Nexus.getCurrentChar().getId());
+
+		ac.setType(currentPlayerRoleInInvasion);
+		a.getAttackDTO().getAttackCharList().add(ac);
+
+		if (a.getCharacterId() == null || a.getStoryId() == null) {
+			a.getAttackDTO().setCharacterID(Nexus.getCurrentChar().getId());
+		}
+		a.storeAttack();
 	}
 
 	@FXML
@@ -2557,27 +2556,40 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 										}
 									}
 									if (startAttackEnabled) {
+
 										mapButton06.setDisable(false);
 										mapButton06.setVisible(true);
 										mapButton07.setDisable(false);
 										mapButton07.setVisible(true);
 
-										FadeTransition fadeInTransition = new FadeTransition(Duration.millis(850), mapButton06);
-										fadeInTransition.setFromValue(0.2);
-										fadeInTransition.setToValue(1.0);
-										FadeTransition fadeOutTransition = new FadeTransition(Duration.millis(850), mapButton06);
-										fadeOutTransition.setFromValue(1.0);
-										fadeOutTransition.setToValue(0.2);
-										FadeTransition fadeInTransitionTT = new FadeTransition(Duration.millis(850), mapButton07);
-										fadeInTransitionTT.setFromValue(0.2);
-										fadeInTransitionTT.setToValue(1.0);
-										FadeTransition fadeOutTransitionTT = new FadeTransition(Duration.millis(850), mapButton07);
-										fadeOutTransitionTT.setFromValue(1.0);
-										fadeOutTransitionTT.setToValue(0.2);
-										SequentialTransition sequentialTransition = new SequentialTransition();
-										sequentialTransition.getChildren().addAll(fadeInTransition, fadeOutTransition, fadeInTransitionTT, fadeOutTransitionTT);
-										sequentialTransition.setCycleCount(Animation.INDEFINITE);
-										sequentialTransition.play();
+										if ("TT".equals(a.getAttackGame())) {
+											mapButton06.setDisable(true);
+											mapButton06.setVisible(true);
+											mapButton07.setDisable(false);
+											mapButton07.setVisible(true);
+										} else if ("MWO".equals(a.getAttackGame())) {
+											mapButton06.setDisable(false);
+											mapButton06.setVisible(true);
+											mapButton07.setDisable(true);
+											mapButton07.setVisible(true);
+										}
+
+//										FadeTransition fadeInTransition = new FadeTransition(Duration.millis(850), mapButton06);
+//										fadeInTransition.setFromValue(0.2);
+//										fadeInTransition.setToValue(1.0);
+//										FadeTransition fadeOutTransition = new FadeTransition(Duration.millis(850), mapButton06);
+//										fadeOutTransition.setFromValue(1.0);
+//										fadeOutTransition.setToValue(0.2);
+//										FadeTransition fadeInTransitionTT = new FadeTransition(Duration.millis(850), mapButton07);
+//										fadeInTransitionTT.setFromValue(0.2);
+//										fadeInTransitionTT.setToValue(1.0);
+//										FadeTransition fadeOutTransitionTT = new FadeTransition(Duration.millis(850), mapButton07);
+//										fadeOutTransitionTT.setFromValue(1.0);
+//										fadeOutTransitionTT.setToValue(0.2);
+//										SequentialTransition sequentialTransition = new SequentialTransition();
+//										sequentialTransition.getChildren().addAll(fadeInTransition, fadeOutTransition, fadeInTransitionTT, fadeOutTransitionTT);
+//										sequentialTransition.setCycleCount(Animation.INDEFINITE);
+//										sequentialTransition.play();
 									}
 									if (a.getAttackDTO().getFightsStarted()) {
 										// Drops for this fight have started already, joining now is not possible.

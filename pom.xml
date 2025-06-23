@@ -49,7 +49,7 @@
 
 		<!-- C3 Revision -->
 		<!-- https://stackoverflow.com/questions/10582054/maven-project-version-inheritance-do-i-have-to-specify-the-parent-version -->
-		<revision>7.5.18</revision>
+		<revision>7.5.19</revision>
 
 		<!-- Versions -->
 		<version.java>24</version.java>
@@ -72,7 +72,7 @@
 		<version.apache.commons-collections4>4.5.0</version.apache.commons-collections4>
 		<version.apache.commons-net>3.11.1</version.apache.commons-net>
 		<version.blazeds-core>3.2.0.3978</version.blazeds-core>
-		<version.byte-buddy>1.17.5</version.byte-buddy>
+		<version.byte-buddy>1.17.6</version.byte-buddy>
 		<version.collections-generic>4.01</version.collections-generic>
 		<version.discord-api>5.6.1</version.discord-api>
 		<version.dom4j>2.1.4</version.dom4j>
@@ -86,9 +86,9 @@
 		<version.hibernate-hikaricp>6.4.4.Final</version.hibernate-hikaricp>
 		<version.irc-api>1.0-0015-jitsi-1</version.irc-api>
 		<version.iText-core>9.2.0</version.iText-core>
-		<version.jackson-core>2.19.0</version.jackson-core>
-		<version.jackson-databind>2.19.0</version.jackson-databind>
-		<version.jackson-annotations>2.19.0</version.jackson-annotations>
+		<version.jackson-core>2.19.1</version.jackson-core>
+		<version.jackson-databind>2.19.1</version.jackson-databind>
+		<version.jackson-annotations>2.19.1</version.jackson-annotations>
 		<version.jackson-jsog>1.1.2</version.jackson-jsog>
 		<version.jakarta.activation>2.0.2</version.jakarta.activation>  <!-- net.clanwolf.starmap.mail -->
 		<version.jakarta.mail>2.0.3</version.jakarta.mail>              <!-- net.clanwolf.starmap.mail -->

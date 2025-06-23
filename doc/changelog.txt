@@ -99,6 +99,9 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
+Version 7.5.19 (20.06.2025)
+- ADDED: Button for TableTop result reporting (first version)
+
 Version 7.5.18 (13.06.2025)
 - FIXED: Error while finalizing attacks
 
