@@ -95,6 +95,7 @@ public class AttackCharacterDAO extends GenericDAO {
 		return lRPS;
 	}
 
+	@SuppressWarnings("unused")
 	public void deleteByAttackId(Long userID) {
 		CriteriaHelper crit = new CriteriaHelper(AttackCharacterPOJO.class);
 		crit.addCriteriaIsNull("attackID");
@@ -111,22 +112,20 @@ public class AttackCharacterDAO extends GenericDAO {
 	}
 
 	public void nativeDeleteByAttackId(Long userID) {
-
-		CriteriaHelper crit = new CriteriaHelper(AttackCharacterPOJO.class);
-		crit.addCriteriaIsNull("attackID");
-		List<Object> objectList = crit.getResultList(userID);
-		for (Object o : objectList) {
-			AttackCharacterPOJO p = (AttackCharacterPOJO) o;
-			EntityManagerHelper.evictObject(p, p.getId());
-		}
-
-		// -------------------------------------------
-
-		String deleteQuery = "DELETE FROM _HH_ATTACK_CHARACTER WHERE attackId is null";
-
 		if (userID != null) {
-			logger.info("Deleting attackCharacters without attackIds.");
+			logger.info("Evicting object in preparation for a native delete");
+			CriteriaHelper crit = new CriteriaHelper(AttackCharacterPOJO.class);
+			crit.addCriteriaIsNull("attackID");
+			List<Object> objectList = crit.getResultList(userID);
+			for (Object o : objectList) {
+				AttackCharacterPOJO p = (AttackCharacterPOJO) o;
+				EntityManagerHelper.evictObject(o, p.getId());
+			}
 
+			// -------------------------------------------
+
+			String deleteQuery = "DELETE FROM _HH_ATTACK_CHARACTER WHERE attackId is null";
+			logger.info("Deleting attackCharacters without attackIds.");
 			Query q = EntityManagerHelper.getEntityManager(userID).createNativeQuery(deleteQuery);
 			q.executeUpdate();
 		}

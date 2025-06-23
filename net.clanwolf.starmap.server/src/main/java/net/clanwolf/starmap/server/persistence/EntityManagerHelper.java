@@ -83,13 +83,12 @@ public class EntityManagerHelper {
 
 	public static void evictObject(Object entity, Long id) {
 		// Evict in preparation of a native delete
-		logger.info("Evicting instance (" + entity.getClass().getName() + ")");
+		//logger.info("Evicting instance (" + entity.getClass().getName() + ")");
 		try {
 			for (EntityManager em : emMap.values()) {
-				entity = em.getReference(entity.getClass(), id);
-				em.getEntityManagerFactory().getCache().evict((Class<?>) entity);
+				em.getEntityManagerFactory().getCache().evict(entity.getClass(), id);
 			}
-			logger.info("Evict successful");
+			//logger.info("Evict successful");
 		} catch (Exception re) {
 			logger.error("Evict failed", re);
 			throw re;
