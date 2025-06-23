@@ -112,13 +112,13 @@ public class AttackCharacterDAO extends GenericDAO {
 
 	public void nativeDeleteByAttackId(Long userID) {
 
-//		String selectQuery = "SELECT * FROM _HH_ATTACK_CHARACTER WHERE attackId is null";
-//		CriteriaHelper crit = new CriteriaHelper(AttackCharacterPOJO.class);
-//		crit.addCriteriaIsNull("attackID");
-//		List<Object> objectList = crit.getResultList(userID);
-//		for (Object o : objectList) {
-//			AttackCharacterPOJO p = (AttackCharacterPOJO) o;
-//		}
+		CriteriaHelper crit = new CriteriaHelper(AttackCharacterPOJO.class);
+		crit.addCriteriaIsNull("attackID");
+		List<Object> objectList = crit.getResultList(userID);
+		for (Object o : objectList) {
+			AttackCharacterPOJO p = (AttackCharacterPOJO) o;
+			EntityManagerHelper.evictObject(p, p.getId());
+		}
 
 		// -------------------------------------------
 

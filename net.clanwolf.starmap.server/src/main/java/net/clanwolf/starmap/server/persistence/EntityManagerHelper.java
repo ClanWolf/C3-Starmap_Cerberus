@@ -81,6 +81,21 @@ public class EntityManagerHelper {
 		return emf.createEntityManager();
 	}
 
+	public static void evictObject(Object entity, Long id) {
+		// Evict in preparation of a native delete
+		logger.info("Evicting instance (" + entity.getClass().getName() + ")");
+		try {
+			for (EntityManager em : emMap.values()) {
+				entity = em.getReference(entity.getClass(), id);
+				em.getEntityManagerFactory().getCache().evict((Class<?>) entity);
+			}
+			logger.info("Evict successful");
+		} catch (Exception re) {
+			logger.error("Evict failed", re);
+			throw re;
+		}
+	}
+
 	@SuppressWarnings("unused")
 	public static void clearCache() {
 		logger.info("Clearing hibernate cache.");
