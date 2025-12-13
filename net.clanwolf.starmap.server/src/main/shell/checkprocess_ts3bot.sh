@@ -1,3 +1,3 @@
 #!/bin/sh
-ps -fC java | grep C3-Bot-TS3.jar || /opt/jdk-24/bin/java -jar /var/www/vhosts/clanwolf.net/httpdocs/apps/C3/server/C3-Bot-TS3.jar ; exit
+ps -fC java | grep C3-Bot-TS3.jar || /opt/jdk-25/bin/java -jar /var/www/vhosts/clanwolf.net/httpdocs/apps/C3/server/C3-Bot-TS3.jar ; exit
 exit

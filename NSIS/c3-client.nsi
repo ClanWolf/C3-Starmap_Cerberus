@@ -60,7 +60,7 @@ Name "C3-Client_Installer"
 Caption "C3 Client Installer"
 Icon "c3.ico"
 UninstallIcon "c3.ico"
-OutFile "C3-Client-7.5.20_install.exe"
+OutFile "C3-Client-7.5.21_install.exe"
 BrandingText /TRIMRIGHT "ClanWolf.net"
 
 InstallDir $PROGRAMFILES64\C3-Client
@@ -76,7 +76,7 @@ Function .onInstSuccess
     ;                 SMPROGRAMS: $SMPROGRAMS  $\r$\n \
     ;                 Start Menu Folder: $STARTMENU_FOLDER $\r$\n \
     ;                 InstallDirectory: $INSTDIR "
-    ExecShell "open" "https://www.clanwolf.net/apps/C3/changelog.txt?refresh=true&r=1750689739055"
+    ExecShell "open" "https://www.clanwolf.net/apps/C3/changelog.txt?refresh=true&r=1765594348043"
     ExecShell "open" "$INSTDIR\bin\C3-Starmap_Cerberus_noWin.cmd" "" SW_HIDE
 FunctionEnd
 
@@ -163,14 +163,14 @@ FunctionEnd
 ;--------------------------------
 
 LoadLanguageFile "${NSISDIR}\Contrib\Language files\English.nlf"
-VIProductVersion "7.5.20.0"
+VIProductVersion "7.5.21.0"
 VIAddVersionKey /LANG=0 "ProductName" "C3 Client"
 VIAddVersionKey /LANG=0 "Comments" "StarMap"
 VIAddVersionKey /LANG=0 "CompanyName" "ClanWolf.net [CWG]"
 VIAddVersionKey /LANG=0 "LegalTrademarks" "StarMap of the Inner Sphere and Clan Space."
 VIAddVersionKey /LANG=0 "LegalCopyright" "© ClanWolf.net"
 VIAddVersionKey /LANG=0 "FileDescription" "StarMap"
-VIAddVersionKey /LANG=0 "FileVersion" "7.5.20"
+VIAddVersionKey /LANG=0 "FileVersion" "7.5.21"
 
 ;--------------------------------
 
@@ -244,12 +244,6 @@ Section "C3-Client (required)"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\jdk.unsupported\LICENSE"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\jdk.unsupported\ASSEMBLY_EXCEPTION"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\jdk.unsupported\ADDITIONAL_LICENSE_INFO"
-
-	CreateDirectory $INSTDIR\legal\jdk.jsobject
-	SetOutpath $INSTDIR\legal\jdk.jsobject
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\jdk.jsobject\LICENSE"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\jdk.jsobject\ASSEMBLY_EXCEPTION"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\jdk.jsobject\ADDITIONAL_LICENSE_INFO"
 
 	CreateDirectory $INSTDIR\legal\jdk.crypto.cryptoki
 	SetOutpath $INSTDIR\legal\jdk.crypto.cryptoki
@@ -358,7 +352,6 @@ Section "C3-Client (required)"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\cldr.md"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\c-libutl.md"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\ASSEMBLY_EXCEPTION"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\asm.md"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\aes.md"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\ADDITIONAL_LICENSE_INFO"
 
@@ -459,6 +452,7 @@ Section "C3-Client (required)"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-crt-conio-l1-1-0.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-util-l1-1-0.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-timezone-l1-1-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-sysinfo-l1-2-0.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-sysinfo-l1-1-0.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-synch-l1-2-0.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-synch-l1-1-0.dll"
@@ -472,12 +466,14 @@ Section "C3-Client (required)"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-memory-l1-1-0.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-localization-l1-2-0.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-libraryloader-l1-1-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-kernel32-legacy-l1-1-1.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-interlocked-l1-1-0.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-heap-l1-1-0.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-handle-l1-1-0.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-file-l2-1-0.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-file-l1-2-0.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-file-l1-1-0.dll"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-fibers-l1-1-1.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-fibers-l1-1-0.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-errorhandling-l1-1-0.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\api-ms-win-core-debug-l1-1-0.dll"
@@ -496,7 +492,7 @@ Section "C3-Client (required)"
 	; Write the uninstall keys for Windows
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayName" "C3-Client"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayIcon" "$INSTDIR\c3.ico"
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayVersion" "7.5.20"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayVersion" "7.5.21"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "Publisher" "ClanWolf.net [CWG], Christian Bartel"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "InstallSource" "$EXEDIR\"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "UninstallString" '"$INSTDIR\uninstall.exe"'
@@ -514,7 +510,7 @@ Section "Start Menu Shortcuts"
 
 	CreateShortcut "$SMPROGRAMS\C3-Client\C3-Client.lnk" "$INSTDIR\bin\C3-Starmap_Cerberus_noWin.cmd" "" "$INSTDIR\c3.ico" 0 SW_SHOWMINIMIZED
 	CreateShortcut "$SMPROGRAMS\C3-Client\C3-Client (Console).lnk" "$INSTDIR\bin\C3-Starmap_Cerberus_win.cmd" "" "$INSTDIR\c3.ico" 0 SW_SHOWNORMAL
-	CreateShortcut "$SMPROGRAMS\C3-Client\Changelog.lnk" "https://www.clanwolf.net/apps/C3/changelog.txt?refresh=true&r=1750689739152" "" "" 0
+	CreateShortcut "$SMPROGRAMS\C3-Client\Changelog.lnk" "https://www.clanwolf.net/apps/C3/changelog.txt?refresh=true&r=1765594348128" "" "" 0
 	; CreateShortCut "$SMPROGRAMS\C3-Client\Remove.lnk" "$INSTDIR\Uninstall.exe" "" "$INSTDIR\c3.ico" 0
 SectionEnd
 
@@ -553,9 +549,6 @@ Section "Uninstall"
 	Delete $INSTDIR\legal\jdk.unsupported\LICENSE
 	Delete $INSTDIR\legal\jdk.unsupported\ASSEMBLY_EXCEPTION
 	Delete $INSTDIR\legal\jdk.unsupported\ADDITIONAL_LICENSE_INFO
-	Delete $INSTDIR\legal\jdk.jsobject\LICENSE
-	Delete $INSTDIR\legal\jdk.jsobject\ASSEMBLY_EXCEPTION
-	Delete $INSTDIR\legal\jdk.jsobject\ADDITIONAL_LICENSE_INFO
 	Delete $INSTDIR\legal\jdk.crypto.cryptoki\pkcs11wrapper.md
 	Delete $INSTDIR\legal\jdk.crypto.cryptoki\pkcs11cryptotoken.md
 	Delete $INSTDIR\legal\jdk.crypto.cryptoki\LICENSE
@@ -625,7 +618,6 @@ Section "Uninstall"
 	Delete $INSTDIR\legal\java.base\cldr.md
 	Delete $INSTDIR\legal\java.base\c-libutl.md
 	Delete $INSTDIR\legal\java.base\ASSEMBLY_EXCEPTION
-	Delete $INSTDIR\legal\java.base\asm.md
 	Delete $INSTDIR\legal\java.base\aes.md
 	Delete $INSTDIR\legal\java.base\ADDITIONAL_LICENSE_INFO
 	Delete $INSTDIR\include\jvmticmlr.h
@@ -699,6 +691,7 @@ Section "Uninstall"
 	Delete $INSTDIR\bin\api-ms-win-crt-conio-l1-1-0.dll
 	Delete $INSTDIR\bin\api-ms-win-core-util-l1-1-0.dll
 	Delete $INSTDIR\bin\api-ms-win-core-timezone-l1-1-0.dll
+	Delete $INSTDIR\bin\api-ms-win-core-sysinfo-l1-2-0.dll
 	Delete $INSTDIR\bin\api-ms-win-core-sysinfo-l1-1-0.dll
 	Delete $INSTDIR\bin\api-ms-win-core-synch-l1-2-0.dll
 	Delete $INSTDIR\bin\api-ms-win-core-synch-l1-1-0.dll
@@ -712,12 +705,14 @@ Section "Uninstall"
 	Delete $INSTDIR\bin\api-ms-win-core-memory-l1-1-0.dll
 	Delete $INSTDIR\bin\api-ms-win-core-localization-l1-2-0.dll
 	Delete $INSTDIR\bin\api-ms-win-core-libraryloader-l1-1-0.dll
+	Delete $INSTDIR\bin\api-ms-win-core-kernel32-legacy-l1-1-1.dll
 	Delete $INSTDIR\bin\api-ms-win-core-interlocked-l1-1-0.dll
 	Delete $INSTDIR\bin\api-ms-win-core-heap-l1-1-0.dll
 	Delete $INSTDIR\bin\api-ms-win-core-handle-l1-1-0.dll
 	Delete $INSTDIR\bin\api-ms-win-core-file-l2-1-0.dll
 	Delete $INSTDIR\bin\api-ms-win-core-file-l1-2-0.dll
 	Delete $INSTDIR\bin\api-ms-win-core-file-l1-1-0.dll
+	Delete $INSTDIR\bin\api-ms-win-core-fibers-l1-1-1.dll
 	Delete $INSTDIR\bin\api-ms-win-core-fibers-l1-1-0.dll
 	Delete $INSTDIR\bin\api-ms-win-core-errorhandling-l1-1-0.dll
 	Delete $INSTDIR\bin\api-ms-win-core-debug-l1-1-0.dll
@@ -758,7 +753,6 @@ Section "Uninstall"
 	RMDir "$INSTDIR\legal\java.transaction.xa"
 	RMDir "$INSTDIR\legal\java.xml"
 	RMDir "$INSTDIR\legal\jdk.crypto.cryptoki"
-	RMDir "$INSTDIR\legal\jdk.jsobject"
 	RMDir "$INSTDIR\legal\jdk.unsupported"
 	RMDir "$INSTDIR\legal\jdk.unsupported.desktop"
 	RMDir "$INSTDIR\legal\jdk.xml.dom"

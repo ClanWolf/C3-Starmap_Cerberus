@@ -133,7 +133,7 @@ ECHO #
 ECHO ####################################################################################
 
 FOR /F "delims=" %%f IN (C:\c3\projects\C3-Starmap_Cerberus\NSIS\setstorepw.cmd) DO %%f
-C:\C3\tools\Windows10-SignTool\signtool.exe sign /debug /fd sha256 /tr http://ts.ssl.com /td sha256 /sha1 "a899b3ceb337c387dc6c80ac33a33c66da179c96" "C:\c3\projects\C3-Starmap_Cerberus\NSIS\C3-Client-%VERSION%_install.exe"
+C:\C3\tools\Windows10-SignTool\signtool.exe sign /debug /fd sha256 /tr http://ts.ssl.com /td sha256 /sha1 "2a3b181b46f52eee78373e8ef8cba5cfd3ca619f" "C:\c3\projects\C3-Starmap_Cerberus\NSIS\C3-Client-%VERSION%_install.exe"
 
 REM Upload installer
 "C:\Program Files (x86)\WinSCP\winscp.com" /ini=nul /script=C:\C3\projects\C3-Starmap_Cerberus\NSIS\scripts\upload_installer.script

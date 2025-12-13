@@ -99,6 +99,10 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
+Version 7.5.21 (13.12.2025)
+- UPDATED: Java and JavaFX to 25.0.1
+- UPDATED: Libraries
+
 Version 7.5.20 (23.06.2025)
 - FIXED: Hibernate problem during round finalization
 
