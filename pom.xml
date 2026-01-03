@@ -55,7 +55,7 @@
 		<version.java>25</version.java>
 		<version.javafx>25</version.javafx>
 
-		<version.asm>9.9</version.asm>
+		<version.asm>9.9.1</version.asm>
 		<version.maven-antrun-plugin>3.1.0</version.maven-antrun-plugin>
 		<version.maven-compiler-plugin>3.11.0</version.maven-compiler-plugin>
 		<version.maven-plugin-api>3.9.5</version.maven-plugin-api>
@@ -72,14 +72,14 @@
 		<version.apache.commons-collections4>4.5.0</version.apache.commons-collections4>
 		<version.apache.commons-net>3.12.0</version.apache.commons-net>
 		<version.blazeds-core>3.2.0.3978</version.blazeds-core>
-		<version.byte-buddy>1.18.2</version.byte-buddy>
+		<version.byte-buddy>1.18.3</version.byte-buddy>
 		<version.collections-generic>4.01</version.collections-generic>
-		<version.discord-api>6.1.3</version.discord-api>
+		<version.discord-api>6.2.1</version.discord-api>
 		<version.dom4j>2.2.0</version.dom4j>
-		<version.el-api>6.1.0-M1</version.el-api>
+		<version.el-api>6.0.1</version.el-api>
 		<version.gifencoder>0.10.1</version.gifencoder>
 		<version.gson>2.13.2</version.gson>
-		<version.hikaricp>6.3.0</version.hikaricp>
+		<version.hikaricp>7.0.2</version.hikaricp>
 		<version.hibernate-core>6.4.4.Final</version.hibernate-core>
 		<version.hibernate-commons-annotations>7.0.3.Final</version.hibernate-commons-annotations>
 		<version.hibernate-ehcache>6.0.0.Alpha7</version.hibernate-ehcache>
@@ -97,14 +97,14 @@
 		<version.jetbrains-annotations>26.0.2-1</version.jetbrains-annotations>
 		<version.jetlang>0.2.23</version.jetlang>
 		<version.jnativehook>2.2.2</version.jnativehook>
-		<version.mariadb-connector>3.5.6</version.mariadb-connector>
+		<version.mariadb-connector>3.5.7</version.mariadb-connector>
 		<version.mchange-commons-java>0.3.2</version.mchange-commons-java>
 		<version.netty>4.1.106.Final</version.netty>
 		<version.persistence-api>3.2.0</version.persistence-api>
 		<version.pircbotx>2.3.1</version.pircbotx>
 		<version.slf4j>2.0.17</version.slf4j>
 		<version.springframework>6.2.2</version.springframework>
-		<version.springframework-spring-context>6.2.2</version.springframework-spring-context>
+		<version.springframework-spring-context>7.0.2</version.springframework-spring-context>
 		<version.springframework-security-config>6.4.2</version.springframework-security-config>
 		<version.teamspeak3-api>1.3.1</version.teamspeak3-api>
 		<version.tektosyne>6.2.0</version.tektosyne>
