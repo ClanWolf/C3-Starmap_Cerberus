@@ -32,11 +32,26 @@ import net.clanwolf.starmap.transfer.util.CatalogLoader;
 
 //	System.out.println(Internationalization.getString(CHARACTER.CHARNAME.labelkey));
 
+
+
+
+
+/*
+	Wenn ein neuer Eintrag gebraucht wird:
+	1. json anlegen (resources/catalogs in transfer)
+	2. Werte eintragen
+	3. Klasse anlegen in catalogObjects (gleicher Dateiname wie der JSON Katalog!)
+	4. Eintrag anlegen in ROLEPLAYINPUTDATATYPES (unten)
+ */
+
+
+
+
 public enum ROLEPLAYINPUTDATATYPES {
 	// CHARACTER
 	CHARNAME("char_name", DATATYPES.String, ROLEPLAYOBJECTTYPES.CHARACTER, null, true),
 	LASTNAME("char_lastname", DATATYPES.String, ROLEPLAYOBJECTTYPES.CHARACTER, null, false),
-	HERITAGE("char_heritage", DATATYPES.SelectionSingle, ROLEPLAYOBJECTTYPES.CHARACTER, null, true),
+	HERITAGE("char_heritage", DATATYPES.SelectionSingle, ROLEPLAYOBJECTTYPES.CHARACTER, "CHAR_Heritage", true),
 	BLOODHOUSE_SINGLE("char_bloodhouse", DATATYPES.SelectionSingle, ROLEPLAYOBJECTTYPES.CHARACTER, "CHAR_Bloodhouse", false),
 	AGE("char_age", DATATYPES.Number, ROLEPLAYOBJECTTYPES.CHARACTER, null, true),
 	GENDER("char_gender", DATATYPES.SelectionSingle, ROLEPLAYOBJECTTYPES.CHARACTER, null, true),

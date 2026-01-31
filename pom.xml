@@ -67,12 +67,12 @@
 		<version.depgraph-maven-plugin>4.0.3</version.depgraph-maven-plugin>
 		<version.exec-maven-plugin>3.1.1</version.exec-maven-plugin>
 		<version.flatten-maven-plugin>1.5.0</version.flatten-maven-plugin>
-		<version.moditect-maven-plugin>1.2.2.Final</version.moditect-maven-plugin>
+		<version.moditect-maven-plugin>1.3.0.Final</version.moditect-maven-plugin>
 
 		<version.apache.commons-collections4>4.5.0</version.apache.commons-collections4>
 		<version.apache.commons-net>3.12.0</version.apache.commons-net>
 		<version.blazeds-core>3.2.0.3978</version.blazeds-core>
-		<version.byte-buddy>1.18.3</version.byte-buddy>
+		<version.byte-buddy>1.18.4</version.byte-buddy>
 		<version.collections-generic>4.01</version.collections-generic>
 		<version.discord-api>6.2.1</version.discord-api>
 		<version.dom4j>2.2.0</version.dom4j>
@@ -85,7 +85,7 @@
 		<version.hibernate-ehcache>6.0.0.Alpha7</version.hibernate-ehcache>
 		<version.hibernate-hikaricp>6.4.4.Final</version.hibernate-hikaricp>
 		<version.irc-api>1.0-0015-jitsi-1</version.irc-api>
-		<version.iText-core>9.4.0</version.iText-core>
+		<version.iText-core>9.5.0</version.iText-core>
 		<version.jackson-core>2.20.1</version.jackson-core>
 		<version.jackson-databind>2.20.1</version.jackson-databind>
 		<version.jackson-annotations>2.20</version.jackson-annotations>
@@ -102,7 +102,7 @@
 		<version.netty>4.1.106.Final</version.netty>
 		<version.persistence-api>3.2.0</version.persistence-api>
 		<version.pircbotx>2.3.1</version.pircbotx>
-		<version.slf4j>2.0.17</version.slf4j>
+		<version.slf4j>2.1.0-alpha1</version.slf4j>
 		<version.springframework>6.2.2</version.springframework>
 		<version.springframework-spring-context>7.0.2</version.springframework-spring-context>
 		<version.springframework-security-config>6.4.2</version.springframework-security-config>
@@ -128,10 +128,10 @@
 			<name>jcenter</name>
 			<url>https://jcenter.bintray.com</url>
 		</repository>
-		<repository>
-			<id>jitpack.io</id>
-			<url>https://jitpack.io</url>
-		</repository>
+<!--		<repository>-->
+<!--			<id>jitpack.io</id>-->
+<!--			<url>https://jitpack.io</url>-->
+<!--		</repository>-->
 	</repositories>
 
 	<modules>

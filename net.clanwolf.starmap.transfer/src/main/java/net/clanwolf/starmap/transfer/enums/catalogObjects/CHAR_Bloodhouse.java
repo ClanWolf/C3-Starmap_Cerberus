@@ -61,10 +61,13 @@ public class CHAR_Bloodhouse implements ICatalogObject, Serializable {
 
 	@Override
 	public String toString(){
-		if (!"".equals(internationalName)) {
-			return internationalName;
-		} else {
-			return name;
-		}
+//		if (!"".equals(internationalName)) {
+//			return internationalName;
+//		} else {
+//			return name;
+//		}
+
+		// In case of the bloodhouses it does not make sense to translate each of the names
+		return name;
 	}
 }

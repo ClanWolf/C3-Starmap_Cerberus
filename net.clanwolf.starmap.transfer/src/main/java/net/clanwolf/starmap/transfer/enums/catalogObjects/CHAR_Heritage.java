@@ -24,50 +24,47 @@
  * Copyright (c) 2001-2025, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.transfer.util;
+package net.clanwolf.starmap.transfer.enums.catalogObjects;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import net.clanwolf.starmap.transfer.enums.catalogObjects.CHAR_Bloodhouse;
-import net.clanwolf.starmap.transfer.enums.catalogObjects.CHAR_Heritage;
-import net.clanwolf.starmap.transfer.enums.catalogObjects.CHAR_Phenotype;
-import net.clanwolf.starmap.transfer.enums.catalogObjects.ICatalogObject;
+import java.io.Serializable;
 
-import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+public class CHAR_Heritage implements ICatalogObject, Serializable {
 
-public class CatalogLoader {
+	public Integer id = null;
+	public String name = "";
+	public String internationalName = "";
 
-	private static CatalogLoader instance = null;
+	public CHAR_Heritage() {	}
 
-	public static CatalogLoader getInstance() {
-		if (instance == null) {
-			instance = new CatalogLoader();
-		}
-		return instance;
+	@Override
+	public Integer getId() {
+		return id;
 	}
 
-	public static ICatalogObject[] getList(String classname) throws Exception {
-		URI uri = ((CatalogLoader) getInstance()).getClass().getResource("/catalogs/" + classname + ".json").toURI();
-		byte[] data = Files.readAllBytes(Paths.get(uri));
+	@Override
+	public String getName() {
+		return name;
+	}
 
-		switch (classname) {
-			case "CHAR_Heritage": {
-				ObjectMapper objectMapper = new ObjectMapper();
-				ICatalogObject[] l = objectMapper.readValue(data, CHAR_Heritage[].class);
-				return l;
-			}
-			case "CHAR_Bloodhouse": {
-				ObjectMapper objectMapper = new ObjectMapper();
-				ICatalogObject[] l = objectMapper.readValue(data, CHAR_Bloodhouse[].class);
-				return l;
-			}
-			case "CHAR_Phenotype": {
-				ObjectMapper objectMapper = new ObjectMapper();
-				ICatalogObject[] l = objectMapper.readValue(data, CHAR_Phenotype[].class);
-				return l;
-			}
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Override
+	public void setInternationalName(String intName) {
+		this.internationalName = intName;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
+
+	@Override
+	public String toString(){
+		if (!"".equals(internationalName)) {
+			return internationalName;
+		} else {
+			return name;
 		}
-		return null;
 	}
 }

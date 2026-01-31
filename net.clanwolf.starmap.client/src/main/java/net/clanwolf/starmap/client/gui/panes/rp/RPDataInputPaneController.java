@@ -27,6 +27,8 @@
 package net.clanwolf.starmap.client.gui.panes.rp;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
@@ -42,6 +44,7 @@ import net.clanwolf.starmap.client.process.roleplay.BOCharacter;
 import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.Internationalization;
+import net.clanwolf.starmap.transfer.enums.DATATYPES;
 import net.clanwolf.starmap.transfer.enums.catalogObjects.ICatalogObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -171,9 +174,21 @@ public class RPDataInputPaneController extends AbstractC3RolePlayController impl
 
 			l.setText(Internationalization.getString(t.toString()) + ": ");
 			switch (t.datatype) {
+				case Date:
 				case String:
+				case Number:
 					TextField tf = new TextField();
 					//tf.setPrefWidth(400);
+
+					if (t.datatype == DATATYPES.Number) {
+						// force the field to be numeric only
+						tf.textProperty().addListener((_, _, newValue) -> {
+							if (!newValue.matches("\\d*")) {
+								tf.setText(newValue.replaceAll("[^\\d]", ""));
+							}
+						});
+					}
+
 					gvDataInput.add(tf,2, row);
 					break;
 				case SelectionSingle:
@@ -181,6 +196,10 @@ public class RPDataInputPaneController extends AbstractC3RolePlayController impl
 					try {
 						ComboBox<ICatalogObject> cb = new ComboBox<>();
 						cb.setPadding(new Insets(2,2,8,2));
+
+						if (t == null) {
+							throw new RuntimeException("Classname is needed, but is missing in ROLEPLAYINPUTDATATYPES!");
+						}
 
 						ICatalogObject[] co = CatalogLoader.getList(t.classname);
 						if (co != null) {
@@ -196,6 +215,10 @@ public class RPDataInputPaneController extends AbstractC3RolePlayController impl
 					} catch (Exception ignored){
 						//nop
 					}
+					break;
+				case Boolean:
+					CheckBox cb = new CheckBox();
+					gvDataInput.add(cb,2, row);
 					break;
 			}
 		}
