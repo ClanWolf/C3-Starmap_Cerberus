@@ -30,6 +30,8 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import net.clanwolf.starmap.transfer.Dto;
 
+import java.util.ArrayList;
+
 @JsonIdentityInfo(
 		scope= RolePlayStoryDatainputDTO.class,
 		generator=ObjectIdGenerators.PropertyGenerator.class,

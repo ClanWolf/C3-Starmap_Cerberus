@@ -27,10 +27,9 @@
 package net.clanwolf.starmap.client.gui.panes.rp;
 
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
@@ -46,6 +45,7 @@ import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.Internationalization;
 import net.clanwolf.starmap.transfer.enums.DATATYPES;
 import net.clanwolf.starmap.transfer.enums.catalogObjects.ICatalogObject;
+import net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes.ROLEPLAYOBJECTTYPES;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.transfer.dtos.RolePlayStoryDTO;
@@ -54,8 +54,10 @@ import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 import net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes.ROLEPLAYINPUTDATATYPES;
 import net.clanwolf.starmap.transfer.util.CatalogLoader;
 
+import javax.swing.*;
 import java.lang.invoke.MethodHandles;
 import java.net.URL;
+import java.util.HashMap;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -86,6 +88,10 @@ public class RPDataInputPaneController extends AbstractC3RolePlayController impl
 	private GridPane gvDataInput;
 
 	private boolean bInit = false;
+
+
+	HashMap<String, Node> guiElements = new HashMap<>();
+	HashMap<String, ROLEPLAYINPUTDATATYPES> objectTypes = new HashMap<>();
 
 	public RPDataInputPaneController() {
 	}
@@ -156,11 +162,28 @@ public class RPDataInputPaneController extends AbstractC3RolePlayController impl
 		Long rp = getCurrentRP().getVar3ID().getNextStoryID();
 		//hier waren wir dran!!!!!!!!
 		//Speicher des Datansatztypes in RPStory Var3
-		BOCharacter boChar = new BOCharacter(Nexus.getCurrentChar());
-		boChar.setVar3(getCurrentRP().getVar3ID());
-		//boChar.saveCharacter();
-		// hier werden jetzt alle Daten in BOCharacter geschrieben
-		saveNextStep(rp);
+
+		ROLEPLAYOBJECTTYPES objectType = null;
+		for (String s : objectTypes.keySet()) {
+			ROLEPLAYINPUTDATATYPES dt = objectTypes.get(s);
+			objectType = dt.types;
+			break;
+		}
+
+		switch(objectType) {
+			case ROLEPLAYOBJECTTYPES.CHARACTER:
+				BOCharacter boChar = new BOCharacter(Nexus.getCurrentChar());
+				boChar.setValues(getCurrentRP().getVar3ID(), guiElements);
+				//boChar.saveCharacter();
+				break;
+			case ROLEPLAYOBJECTTYPES.DROPSHIP:
+
+				break;
+			case null:
+				break;
+		}
+
+		// saveNextStep(rp);
 	}
 
 	/******************************** THIS ********************************/
@@ -172,12 +195,16 @@ public class RPDataInputPaneController extends AbstractC3RolePlayController impl
 
 			gvDataInput.add(l, 1, row);
 
+			Node node = null;
+
 			l.setText(Internationalization.getString(t.toString()) + ": ");
 			switch (t.datatype) {
 				case Date:
 				case String:
 				case Number:
 					TextField tf = new TextField();
+					node = tf;
+
 					//tf.setPrefWidth(400);
 
 					if (t.datatype == DATATYPES.Number) {
@@ -196,6 +223,7 @@ public class RPDataInputPaneController extends AbstractC3RolePlayController impl
 					try {
 						ComboBox<ICatalogObject> cb = new ComboBox<>();
 						cb.setPadding(new Insets(2,2,8,2));
+						node = cb;
 
 						if (t == null) {
 							throw new RuntimeException("Classname is needed, but is missing in ROLEPLAYINPUTDATATYPES!");
@@ -219,8 +247,14 @@ public class RPDataInputPaneController extends AbstractC3RolePlayController impl
 				case Boolean:
 					CheckBox cb = new CheckBox();
 					gvDataInput.add(cb,2, row);
+					node = cb;
+
 					break;
 			}
+
+			node.setId(t.name());
+			guiElements.put(t.name(), node);
+			objectTypes.put(t.name(), t);
 		}
 	}
 
@@ -243,6 +277,8 @@ public class RPDataInputPaneController extends AbstractC3RolePlayController impl
 
 		// TODO_C3: append single chars step by step until the whole text is displaying
 		taStoryText.setText(rpStory.getStoryText());
+
+		guiElements.clear();
 
 		if(!bInit && rpStory.getVar3ID() != null) {
 			RolePlayStoryDatainputDTO rpVar3 = rpStory.getVar3ID();
