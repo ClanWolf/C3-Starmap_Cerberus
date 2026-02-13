@@ -160,8 +160,6 @@ public class RPDataInputPaneController extends AbstractC3RolePlayController impl
 	@FXML
 	private void handleOnActionBtContinue(){
 		Long rp = getCurrentRP().getVar3ID().getNextStoryID();
-		//hier waren wir dran!!!!!!!!
-		//Speicher des Datansatztypes in RPStory Var3
 
 		ROLEPLAYOBJECTTYPES objectType = null;
 		for (String s : objectTypes.keySet()) {
@@ -174,7 +172,7 @@ public class RPDataInputPaneController extends AbstractC3RolePlayController impl
 			case ROLEPLAYOBJECTTYPES.CHARACTER:
 				BOCharacter boChar = new BOCharacter(Nexus.getCurrentChar());
 				boChar.setValues(getCurrentRP().getVar3ID(), guiElements);
-				//boChar.saveCharacter();
+				boChar.saveCharacter();
 				break;
 			case ROLEPLAYOBJECTTYPES.DROPSHIP:
 

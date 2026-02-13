@@ -70,6 +70,7 @@ public enum ROLEPLAYINPUTDATATYPES {
 	WIL("char_will", DATATYPES.Number, ROLEPLAYOBJECTTYPES.CHARACTER, null, false),
 	CHA("char_charisma", DATATYPES.Number, ROLEPLAYOBJECTTYPES.CHARACTER, null, false),
 	EDG("char_edge", DATATYPES.Number, ROLEPLAYOBJECTTYPES.CHARACTER, null, false),
+	BOOLEANTEST("bool_test", DATATYPES.Boolean, ROLEPLAYOBJECTTYPES.CHARACTER, null, false),
 
 	// ------------------------------------------------------------
 
