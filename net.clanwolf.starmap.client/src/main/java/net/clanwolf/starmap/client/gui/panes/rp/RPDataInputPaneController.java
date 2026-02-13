@@ -43,6 +43,7 @@ import net.clanwolf.starmap.client.process.roleplay.BOCharacter;
 import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.Internationalization;
+import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
 import net.clanwolf.starmap.transfer.enums.DATATYPES;
 import net.clanwolf.starmap.transfer.enums.catalogObjects.ICatalogObject;
 import net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes.ROLEPLAYOBJECTTYPES;
@@ -172,7 +173,7 @@ public class RPDataInputPaneController extends AbstractC3RolePlayController impl
 			case ROLEPLAYOBJECTTYPES.CHARACTER:
 				BOCharacter boChar = new BOCharacter(Nexus.getCurrentChar());
 				boChar.setValues(getCurrentRP().getVar3ID(), guiElements);
-				boChar.saveCharacter();
+				boChar.saveCharacter(getCurrentRP().getVar3ID().getNextStoryID());
 				break;
 			case ROLEPLAYOBJECTTYPES.DROPSHIP:
 
@@ -181,7 +182,6 @@ public class RPDataInputPaneController extends AbstractC3RolePlayController impl
 				break;
 		}
 
-		// saveNextStep(rp);
 	}
 
 	/******************************** THIS ********************************/

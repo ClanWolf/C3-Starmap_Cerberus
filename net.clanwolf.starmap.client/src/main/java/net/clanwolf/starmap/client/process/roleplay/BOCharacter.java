@@ -22,9 +22,10 @@ public class BOCharacter {
 		myCharacter = myChar;
 	}
 
-	public void saveCharacter() {
-		GameState state = new GameState(GAMESTATEMODES.ROLEPLAY_SAVE_CHARACTER);
+	public void saveCharacter(Long nextStepID) {
+		GameState state = new GameState(GAMESTATEMODES.ROLEPLAY_SAVE_NEXT_STEP);
 		state.addObject(myCharacter);
+		state.addObject2(nextStepID);
 		Nexus.fireNetworkEvent(state);
 	}
 

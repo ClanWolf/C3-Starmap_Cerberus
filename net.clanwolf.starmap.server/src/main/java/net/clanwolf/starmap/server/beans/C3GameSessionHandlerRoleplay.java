@@ -353,12 +353,44 @@ public class C3GameSessionHandlerRoleplay {
 			logger.error("saveRolePlayStory",re);
 		} finally {
 			/* and now we send a message to the client */
-//			Event e = Events.networkEvent(response);
-//			session.onEvent(e);
-			// throw re;
 			C3GameSessionHandler.sendNetworkEvent(session, response);
 		}
 	}
+
+	static void saveRolePlayCharacter(PlayerSession session, GameState state) {
+		RolePlayCharacterDAO daoRPC = RolePlayCharacterDAO.getInstance();
+		RolePlayStoryDAO daoStory = RolePlayStoryDAO.getInstance();
+
+		RolePlayCharacterPOJO charPojo = (RolePlayCharacterPOJO)state.getObject();
+		Long storyID = (Long)state.getObject2();
+
+		GameState response = new GameState(GAMESTATEMODES.ROLEPLAY_SAVE_NEXT_STEP);
+		try {
+			EntityManagerHelper.beginTransaction(C3GameSessionHandler.getC3UserID(session));
+			RolePlayStoryPOJO storyPojo = daoStory.findById(C3GameSessionHandler.getC3UserID(session), storyID);
+			charPojo.setStory(storyPojo);
+
+			daoRPC.update(C3GameSessionHandler.getC3UserID(session), charPojo);
+			EntityManagerHelper.commit(C3GameSessionHandler.getC3UserID(session));
+
+			response.addObject(charPojo);
+			response.setAction_successfully(Boolean.TRUE);
+
+		} catch (RuntimeException re){
+
+			/* if a error occurs, we must do a rollback */
+			EntityManagerHelper.rollback(C3GameSessionHandler.getC3UserID(session));
+
+			response.addObject(re.getMessage());
+			response.setAction_successfully(Boolean.FALSE);
+
+			logger.error("saveRolePlayCharacter",re);
+		} finally {
+			/* and now we send a message to the client */
+			C3GameSessionHandler.sendNetworkEvent(session, response);
+		}
+	}
+
 
 	/*static void requestJumpshipTest(PlayerSession session, GameState state) {
 		JumpshipDAO dao = JumpshipDAO.getInstance();
