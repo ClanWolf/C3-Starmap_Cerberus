@@ -65,7 +65,7 @@
         <URL value="@../styles/MainFrameStyle.css" />
       </stylesheets>
     </CheckBox>
-      <Button fx:id="btRegister" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="693.0" layoutY="68.0" mnemonicParsing="false" onAction="#handelEnableRegisterButtonClick" prefHeight="37.0" prefWidth="140.0" styleClass="contentButtonYellow" stylesheets="@../styles/MainFrameStyle.css" text="Registrieren" />
+      <Button fx:id="btRegister" alignment="CENTER_RIGHT" contentDisplay="RIGHT" layoutX="693.0" layoutY="68.0" mnemonicParsing="false" onAction="#handleEnableRegisterButtonClick" prefHeight="37.0" prefWidth="140.0" styleClass="contentButtonYellow" stylesheets="@../styles/MainFrameStyle.css" text="Registrieren" />
     <TextField fx:id="tfFactionKey" disable="true" focusTraversable="false" layoutX="226.0" layoutY="347.0" prefHeight="20.0" prefWidth="99.0" visible="false" />
       <TextField fx:id="tfUserNameRegister" layoutX="483.0" layoutY="220.0" prefWidth="200.0">
          <stylesheets>

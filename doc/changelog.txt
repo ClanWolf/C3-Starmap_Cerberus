@@ -99,6 +99,9 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
+Version 7.5.30 (16.03.2026)
+- Updated deployment to reflect new server structure
+
 Version 7.5.22 (14.02.2026)
 - Storing values in data input pane during roleplay
 

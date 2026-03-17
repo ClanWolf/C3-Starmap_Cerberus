@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2025, ClanWolf.net                            |
+ * Copyright (c) 2001-2026, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.server.process;
@@ -729,19 +729,19 @@ public class EndRound {
 				message.append(s);
 			}
 
-			if (!GameServer.isDevelopmentPC) {
-				sent = MailManager.sendMail("c3@clanwolf.net", receivers, subject.toString(), message.toString(), false);
-
-				if (sent) {
-					// sent
-					logger.info("Mail sent. [5]");
-				} else {
-					// error during email sending
-					logger.info("Error during mail dispatch. [5]");
-				}
-			} else {
-				logger.info("Mail was not sent out because this is a dev computer.");
-			}
+//			if (!GameServer.isDevelopmentPC) {
+//				sent = MailManager.sendMail("c3@clanwolf.net", receivers, subject.toString(), message.toString(), false);
+//
+//				if (sent) {
+//					// sent
+//					logger.info("Mail sent. [5]");
+//				} else {
+//					// error during email sending
+//					logger.info("Error during mail dispatch. [5]");
+//				}
+//			} else {
+//				logger.info("Mail was not sent out because this is a dev computer.");
+//			}
 		}
 
 		// Create and send the new version of the universe to all clients that are currently open

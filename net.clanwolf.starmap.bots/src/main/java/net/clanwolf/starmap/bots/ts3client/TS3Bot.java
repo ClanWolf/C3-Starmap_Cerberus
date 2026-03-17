@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2025, ClanWolf.net                            |
+ * Copyright (c) 2001-2026, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.bots.ts3client;
@@ -52,7 +52,7 @@ public class TS3Bot {
 	//private static String serverBaseDir = new File("c:\\temp").getAbsolutePath();
 	private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 	private static final Random RANDOM = new Random();
-	private static final String serverBaseDir = new File("/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/server").getAbsolutePath();
+	private static final String serverBaseDir = new File("/var/www/vhosts/clanwolf.net/c3.clanwolf.net/server").getAbsolutePath();
 	private static TS3Api api = null;
 	final TS3Query query;
 
@@ -148,13 +148,13 @@ public class TS3Bot {
 	}
 
 	private void botJoinedMail() {
-		String sender = "c3@clanwolf.net";
-		String[] receivers = { "keshik@googlegroups.com" };
-		String subject = "Bot has joined TS3";
-		String content = "Ulric has joined TeamSpeak server.";
-		boolean success = MailManager.sendMail(sender, receivers, subject, content, false);
-		if (!success) {
-			api.sendServerMessage("Mail could not be sent to inform about Ulric logging into TeamSpeak!");
-		}
+//		String sender = "c3@clanwolf.net";
+//		String[] receivers = { "keshik@googlegroups.com" };
+//		String subject = "Bot has joined TS3";
+//		String content = "Ulric has joined TeamSpeak server.";
+//		boolean success = MailManager.sendMail(sender, receivers, subject, content, false);
+//		if (!success) {
+//			api.sendServerMessage("Mail could not be sent to inform about Ulric logging into TeamSpeak!");
+//		}
 	}
 }

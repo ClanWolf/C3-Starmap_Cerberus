@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2025, ClanWolf.net                            |
+ * Copyright (c) 2001-2026, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.server.reporting;
@@ -115,7 +115,7 @@ public class GenerateRoundReport {
 
         OSCheck.OSType osType = OSCheck.getOperatingSystemType();
         switch (osType) {
-            case Linux -> DEST = "/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/seasonhistory/S1/Reports/";
+            case Linux -> DEST = "/var/www/vhosts/clanwolf.net/c3.clanwolf.net/seasonhistory/S1/Reports/";
             case Windows -> DEST = "c:\\temp\\";
         }
 
@@ -283,15 +283,15 @@ public class GenerateRoundReport {
                     "File path to the report:" +
                     DEST;
 
-            sent = MailManager.sendMail("c3@clanwolf.net", receivers, subject, message, false);
-
-            if (sent) {
-                // sent
-                logger.info("Mail sent.");
-            } else {
-                // error during email sending
-                logger.info("Error during mail dispatch.");
-            }
+//            sent = MailManager.sendMail("c3@clanwolf.net", receivers, subject, message, false);
+//
+//            if (sent) {
+//                // sent
+//                logger.info("Mail sent.");
+//            } else {
+//                // error during email sending
+//                logger.info("Error during mail dispatch.");
+//            }
         } else {
             logger.info("Mail was not sent out because this is a dev computer.");
         }

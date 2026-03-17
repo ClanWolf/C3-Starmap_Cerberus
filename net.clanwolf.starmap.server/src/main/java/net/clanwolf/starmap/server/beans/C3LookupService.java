@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2025, ClanWolf.net                            |
+ * Copyright (c) 2001-2026, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.server.beans;
@@ -213,7 +213,7 @@ public class C3LookupService extends SimpleLookupService {
 	private void sendMail(UserPOJO u){
 		if(!GameServer.isDevelopmentPC) {
 			logger.info("Sending info mail.");
-			String[] receivers = {"keshik@googlegroups.com"};
+			String[] receivers = { "keshik@googlegroups.com" };
 			boolean sent = false;
 			sent = MailManager.sendMail("c3@clanwolf.net", receivers, "New C3 user ", u.getUserName() + " is waiting for activation.", false);
 			if (sent) {

@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2025, ClanWolf.net                            |
+ * Copyright (c) 2001-2026, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.client.gui.panes.login;
@@ -35,9 +35,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Pane;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.web.WebView;
 import javafx.util.Duration;
 import net.clanwolf.starmap.client.action.*;
 import net.clanwolf.starmap.client.enums.C3MESSAGES;
@@ -222,11 +220,11 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 				Login.login(username, pass, tfFactionKey.getText(), password_encrypted, registerMode);
 			}
 			if (registerMode) {
-				handelEnableRegisterButtonClick();
+				handleEnableRegisterButtonClick();
 				registerMode = false;
 			}
 		} catch(Exception e) {
-			logger.error("Exception during login (probably netty connection failed).");
+			logger.error("Exception during login (probably netty connection failed).", e);
 			ActionManager.getAction(ACTIONS.LOGON_NETTY_FAILED).execute();
 		}
 	}
@@ -335,7 +333,7 @@ public class LoginPaneController extends AbstractC3Controller implements ActionC
 	}
 
 	@FXML
-	public void handelEnableRegisterButtonClick() {
+	public void handleEnableRegisterButtonClick() {
 		if (!registerMode) {
 			registerMode = true;
 

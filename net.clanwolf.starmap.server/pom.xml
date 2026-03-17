@@ -29,7 +29,6 @@
 			<version>${version.iText-core}</version>
 			<type>pom</type>
 		</dependency>
-
 		<dependency>
 			<groupId>com.squareup</groupId>
 			<artifactId>gifencoder</artifactId>

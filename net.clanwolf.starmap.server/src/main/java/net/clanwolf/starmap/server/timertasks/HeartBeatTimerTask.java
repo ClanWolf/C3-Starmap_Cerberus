@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2025, ClanWolf.net                            |
+ * Copyright (c) 2001-2026, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.server.timertasks;
@@ -84,7 +84,7 @@ public class HeartBeatTimerTask extends TimerTask {
 				if (ServerNexus.isDevelopmentPC) {
 					heartBeatFileName = tempDir + File.separator + "c3.heartbeat";
 				} else {
-					heartBeatFileName = "/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/c3.heartbeat";
+					heartBeatFileName = "/var/www/vhosts/clanwolf.net/c3.clanwolf.net/c3.heartbeat";
 				}
 
 				Calendar calendar = Calendar.getInstance();

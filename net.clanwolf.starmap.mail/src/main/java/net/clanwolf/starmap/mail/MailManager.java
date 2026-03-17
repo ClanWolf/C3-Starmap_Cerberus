@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2025, ClanWolf.net                            |
+ * Copyright (c) 2001-2026, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.mail;
@@ -103,7 +103,7 @@ public class MailManager {
 			msg = new MimeMessage(session);
 			msg.setFrom(from);
 			msg.setHeader("X-Priority", Integer.toString(mail.priority()));
-			if (mail.replyTo() != null && mail.replyTo().trim().length() > 0) {
+			if (mail.replyTo() != null && !mail.replyTo().trim().isEmpty()) {
 				msg.setReplyTo(new Address[] { new InternetAddress(mail.replyTo()) });
 			}
 			String[] recs = mail.recipients().split(";");

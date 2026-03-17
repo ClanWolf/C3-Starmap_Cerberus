@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2025, ClanWolf.net                            |
+ * Copyright (c) 2001-2026, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.server.util;
@@ -53,7 +53,7 @@ public class AnimatedGifCreator {
 
 	public static void createSeasonHistoryAnimation(Long season) {
 		Runnable runnable = () -> {
-			String pathName = "/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/seasonhistory/S" + season;
+			String pathName = "/var/www/vhosts/clanwolf.net/c3.clanwolf.net/seasonhistory/S" + season;
 			//String pathName = "C:\\S" + season;
 			File path = new File(pathName);
 

@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2025, ClanWolf.net                            |
+ * Copyright (c) 2001-2026, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.server.util;
@@ -284,14 +284,14 @@ WebDataInterface {
 	//				case Windows:
 	//					// The server seems to be running on a local windows computer, so this is likely to be a
 	//					// debugging environment!
-	//					File dir = new File(System.getProperty("java.io.tmpdir") + File.separator + ".ClanWolf.net_C3" + File.separator + "httpdocs");
+	//					File dir = new File(System.getProperty("java.io.tmpdir") + File.separator + ".ClanWolf.net_C3" + File.separator + "httpdocs"); ??? Path correct on new server subomain ???
 	//					String dirpath = dir.getAbsolutePath();
 	//					pathHH = dirpath + File.separator + "starmap_HH";
 	//					pathCM = dirpath + File.separator + "starmap_CM";
 	//					break;
 	//				case Linux:
-	//					pathHH = "/var/www/vhosts/clanwolf.net/httpdocs/starmap_HH";
-	//					pathCM = "/var/www/vhosts/clanwolf.net/httpdocs/starmap_CM";
+	//					pathHH = "/var/www/vhosts/clanwolf.net/c3.clanwolf.net/starmap_HH";
+	//					pathCM = "/var/www/vhosts/clanwolf.net/c3.clanwolf.net/starmap_CM";
 	//					break;
 	//				case MacOS: break;
 	//				case Other: break;

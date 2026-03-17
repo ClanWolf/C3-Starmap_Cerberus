@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2025, ClanWolf.net                            |
+ * Copyright (c) 2001-2026, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.server;
@@ -73,7 +73,7 @@ public class GameServer {
             } catch (URISyntaxException e) {
                 logger.error("Server directory could not be found programmatically. Check this!");
                 e.printStackTrace();
-                dir = new File("/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/server");
+                dir = new File("/var/www/vhosts/clanwolf.net/c3.clanwolf.net/server");
                 logger.error("Server directory was set manually to: " + dir);
             }
         }

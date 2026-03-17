@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2025, ClanWolf.net                            |
+ * Copyright (c) 2001-2026, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.bots.discordclient;
@@ -62,7 +62,7 @@ import java.util.*;
 
 public class DiscordBot extends ListenerAdapter {
 	private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-	private static final String serverBaseDir = new File("/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/server").getAbsolutePath();
+	private static final String serverBaseDir = new File("/var/www/vhosts/clanwolf.net/c3.clanwolf.net/server").getAbsolutePath();
 	public static JDA jda = null;
 	private static boolean testEmbed = false;
 	private static Long historyRefreshTimestamp = null;

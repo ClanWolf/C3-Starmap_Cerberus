@@ -21,7 +21,7 @@
  * governing permissions and limitations under the License.         |
  *                                                                  |
  * C3 includes libraries and source code by various authors.        |
- * Copyright (c) 2001-2025, ClanWolf.net                            |
+ * Copyright (c) 2001-2026, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
 package net.clanwolf.starmap.bots.ircclient;
@@ -70,9 +70,9 @@ public class IRCBot extends ListenerAdapter {
 	//private static final String ircServerUrl = "port80a.se.quakenet.org";
 	private static final String ircServerUrl = "datapacket.hk.quakenet.org";
 	private static final String ircServerChannel = "#c3.clanwolf.net";
-	private static final String serverBaseDir = new File("/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/server").getAbsolutePath();
+	private static final String serverBaseDir = new File("/var/www/vhosts/clanwolf.net/c3.clanwolf.net/server").getAbsolutePath();
 	private static final String ircUserListFileName = serverBaseDir + "/ircUser.lst";
-	private static final String heartbeatFileName = "/var/www/vhosts/clanwolf.net/httpdocs/apps/C3/c3.heartbeat";
+	private static final String heartbeatFileName = "/var/www/vhosts/clanwolf.net/c3.clanwolf.net/c3.heartbeat";
 	private static StringBuilder userListString = null;
 	private static String lang = "de";
 
@@ -385,14 +385,14 @@ public class IRCBot extends ListenerAdapter {
 	}
 
 	private void botJoinedMail() {
-		String sender = "c3@clanwolf.net";
-		String[] receivers = { "keshik@googlegroups.com" };
-		String subject = "Bot has joined IRC";
-		String content = "Ulric has joined IRC channel.";
-		boolean success = MailManager.sendMail(sender, receivers, subject, content, false);
-		if (!success) {
-			send("Mail could not be sent to inform about new users!");
-		}
+//		String sender = "c3@clanwolf.net";
+//		String[] receivers = { "keshik@googlegroups.com" };
+//		String subject = "Bot has joined IRC";
+//		String content = "Ulric has joined IRC channel.";
+//		boolean success = MailManager.sendMail(sender, receivers, subject, content, false);
+//		if (!success) {
+//			send("Mail could not be sent to inform about new users!");
+//		}
 	}
 
 	@Override

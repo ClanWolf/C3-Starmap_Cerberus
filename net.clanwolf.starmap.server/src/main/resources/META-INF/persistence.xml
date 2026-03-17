@@ -17,7 +17,7 @@
 
 			<!-- Hikari connection pool -->
 			<property name="hibernate.hikari.dataSource.url" value="jdbc:mariadb://localhost:3306/C3?useUnicode=yes&amp;characterEncoding=UTF-8&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Berlin&amp;useSSL=false" />
-			<property name="hibernate.hikari.dataSource.user" value="C3_Workbench" />
+			<property name="hibernate.hikari.dataSource.user" value="admin_cwg" />
 			<property name="hibernate.hikari.dataSource.cachePrepStmts" value="true" />
 			<property name="hibernate.hikari.dataSource.prepStmtCacheSize" value="250" />
 			<property name="hibernate.hikari.dataSource.prepStmtCacheSqlLimit" value="2048" />
