@@ -42,7 +42,7 @@ import java.sql.Timestamp;
 //		generator=ObjectIdGenerators.PropertyGenerator.class,
 //		property = "id")
 //@Entity
-//@Table(name = "USER_SESSION", catalog = "C3")
+//@Table(name = "c3_USER_SESSION", catalog = "cwg")
 public class UserSessionDTO extends Dto {
 
 	// Fields

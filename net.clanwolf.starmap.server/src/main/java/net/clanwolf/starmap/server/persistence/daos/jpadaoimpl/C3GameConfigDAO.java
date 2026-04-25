@@ -28,9 +28,7 @@ package net.clanwolf.starmap.server.persistence.daos.jpadaoimpl;
 
 import net.clanwolf.starmap.server.persistence.CriteriaHelper;
 import net.clanwolf.starmap.server.persistence.daos.GenericDAO;
-import net.clanwolf.starmap.server.persistence.pojos.C3GameConfigPOJO;
-import net.clanwolf.starmap.server.persistence.pojos.JumpshipPOJO;
-import net.clanwolf.starmap.server.persistence.pojos.SysConfigPOJO;
+import net.clanwolf.starmap.server.persistence.pojos.GameConfigPOJO;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -60,37 +58,37 @@ public class C3GameConfigDAO extends GenericDAO {
 
 	@Override
 	public void delete(Long userID, Object entity) {
-		super.delete(userID, entity, ((C3GameConfigPOJO) entity).getId());
+		super.delete(userID, entity, ((GameConfigPOJO) entity).getId());
 	}
 
 	@Override
-	public C3GameConfigPOJO update(Long userID, Object entity) {
-		return (C3GameConfigPOJO) super.update(userID, entity);
+	public GameConfigPOJO findById(Long userID, Long id) {
+		return (GameConfigPOJO) super.findById(userID, GameConfigPOJO.class, id);
 	}
 
 	@Override
-	public C3GameConfigPOJO findById(Long userID, Long id) {
-		return (C3GameConfigPOJO) super.findById(userID, C3GameConfigPOJO.class, id);
+	public GameConfigPOJO update(Long userID, Object entity) {
+		return (GameConfigPOJO) super.update(userID, entity);
 	}
 
-	public C3GameConfigPOJO findByKey(Long userID, String key) {
-		CriteriaHelper crit = new CriteriaHelper(C3GameConfigPOJO.class);
+	public GameConfigPOJO findByKey(Long userID, String key) {
+		CriteriaHelper crit = new CriteriaHelper(GameConfigPOJO.class);
 		crit.addCriteria("key", key);
 
-		return (C3GameConfigPOJO) crit.getSingleResult();
+		return (GameConfigPOJO) crit.getSingleResult();
 	}
 
-	public ArrayList<C3GameConfigPOJO> getAllGameConfigValues(){
-		CriteriaHelper crit = new CriteriaHelper(C3GameConfigPOJO.class);
+	public ArrayList<GameConfigPOJO> getAllGameConfigValues(){
+		CriteriaHelper crit = new CriteriaHelper(GameConfigPOJO.class);
 		crit.addCriteriaIsNotNull("id");
 
 		List<Object> lRes = crit.getResultList();
 
 		Iterator<Object> iter = lRes.iterator();
-		ArrayList<C3GameConfigPOJO> lRPS = new ArrayList<>();
+		ArrayList<GameConfigPOJO> lRPS = new ArrayList<>();
 
 		while (iter.hasNext()) {
-			lRPS.add((C3GameConfigPOJO) iter.next());
+			lRPS.add((GameConfigPOJO) iter.next());
 		}
 
 		return lRPS;

@@ -124,7 +124,7 @@ public class AttackCharacterDAO extends GenericDAO {
 
 			// -------------------------------------------
 
-			String deleteQuery = "DELETE FROM _HH_ATTACK_CHARACTER WHERE attackId is null";
+			String deleteQuery = "DELETE FROM c3_ATTACK_CHARACTER WHERE attackId is null";
 			logger.info("Deleting attackCharacters without attackIds.");
 			Query q = EntityManagerHelper.getEntityManager(userID).createNativeQuery(deleteQuery);
 			q.executeUpdate();

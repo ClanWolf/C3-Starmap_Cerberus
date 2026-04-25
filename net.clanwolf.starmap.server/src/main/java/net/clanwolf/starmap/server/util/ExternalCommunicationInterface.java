@@ -70,7 +70,7 @@ public class ExternalCommunicationInterface {
 			String password = auth.getProperty("password");
 
 			Class.forName("org.mariadb.jdbc.Driver");
-			Connection con = DriverManager.getConnection("jdbc:mariadb://localhost:3306/C3", user, password);
+			Connection con = DriverManager.getConnection("jdbc:mariadb://localhost:3306/cwg", user, password);
 			Statement stmt = con.createStatement();
 			stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
 
@@ -95,7 +95,7 @@ public class ExternalCommunicationInterface {
 			String password = auth.getProperty("password");
 
 			Class.forName("org.mariadb.jdbc.Driver");
-			Connection con = DriverManager.getConnection("jdbc:mariadb://localhost:3306/C3", user, password);
+			Connection con = DriverManager.getConnection("jdbc:mariadb://localhost:3306/cwg", user, password);
 			Statement stmt = con.createStatement();
 			stmt.executeUpdate(sql);
 
@@ -134,7 +134,7 @@ public class ExternalCommunicationInterface {
 
 				// Insert message for IRC and TS3 Bots to process
 				String sql_insert = "";
-				sql_insert += "INSERT INTO EXT_COM ";
+				sql_insert += "INSERT INTO c3_EXT_COM ";
 				sql_insert += "(Text,lang,ServerVersion,ProcessedIRC,ProcessedTS3,ProcessedDiscord) ";
 				sql_insert += "VALUES ";
 				sql_insert += "('" + message + "','" + lang + "','" + ServerNexus.jarName + "'," + pvIRC + "," + pvTS3 + "," + pvDiscord + "); ";
@@ -156,7 +156,7 @@ public class ExternalCommunicationInterface {
 
 				// Delete all old entries, check if they have been processed
 				String sql_delete = "";
-				sql_delete += "DELETE from EXT_COM ";
+				sql_delete += "DELETE from c3_EXT_COM ";
 				sql_delete += "WHERE ProcessedIRC > 0 ";
 				sql_delete += "AND ProcessedTS3 > 0 ";
 				sql_delete += "AND ProcessedDiscord > 0 ";

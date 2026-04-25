@@ -34,13 +34,13 @@ import net.clanwolf.starmap.server.persistence.Pojo;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @JsonIdentityInfo(
-		scope= C3GameConfigPOJO.class,
+		scope= GameConfigPOJO.class,
 		generator= ObjectIdGenerators.PropertyGenerator.class,
 		property = "id")
 @Entity
-@Table(name = "C3GAMECONFIG", catalog = "C3")
+@Table(name = "c3_GAMECONFIG", catalog = "cwg")
 
-public class C3GameConfigPOJO extends Pojo {
+public class GameConfigPOJO extends Pojo {
 
 	@Id
 	@GeneratedValue(strategy = IDENTITY)
@@ -53,7 +53,7 @@ public class C3GameConfigPOJO extends Pojo {
 	@Column(name = "ConfigValue")
 	private Long value;
 
-	public C3GameConfigPOJO() {
+	public GameConfigPOJO() {
 		// do nothing
 	}
 

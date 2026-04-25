@@ -32,7 +32,7 @@ import jakarta.persistence.*;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
-@Table(name = "_HH_STARSYSTEMDATA", catalog = "C3")
+@Table(name = "c3_STARSYSTEMDATA", catalog = "cwg")
 public class StarSystemDataPOJO extends Pojo {
 
 	@Id

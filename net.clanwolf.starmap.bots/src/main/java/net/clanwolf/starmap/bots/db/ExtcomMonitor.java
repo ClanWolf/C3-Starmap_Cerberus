@@ -57,7 +57,7 @@ public class ExtcomMonitor {
 				case DiscordBot -> processedColumn = "ProcessedDiscord";
 			}
 
-			String sql_select = "SELECT Text, ProcessedIRC, Updated FROM EXT_COM WHERE " + processedColumn + " = 0 ";
+			String sql_select = "SELECT Text, ProcessedIRC, Updated FROM c3_EXT_COM WHERE " + processedColumn + " = 0 ";
 			if (lang != null && !"".equalsIgnoreCase(lang)) {
 				sql_select += "AND lang = '" + lang + "'";
 			}
@@ -76,8 +76,7 @@ public class ExtcomMonitor {
 
 			// Update to set processed to 1
 			stmt_update = dbc.getConnection().createStatement();
-			stmt_update.executeUpdate("UPDATE EXT_COM set " + processedColumn + " = 1; "); // Update all lines to be processed
-
+			stmt_update.executeUpdate("UPDATE c3_EXT_COM set %s = 1; ".formatted(processedColumn)); // Update all lines to be processed
 			stmt_update.close();
 		} catch (SQLException e) {
 			logger.error("Exception while extracting extcom messages from db.", e);

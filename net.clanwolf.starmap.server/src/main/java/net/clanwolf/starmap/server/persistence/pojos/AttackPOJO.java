@@ -47,7 +47,7 @@ import java.util.List;
 		generator= ObjectIdGenerators.PropertyGenerator.class,
 		property = "id")
 @Entity
-@Table(name = "_HH_ATTACK", catalog = "C3")
+@Table(name = "c3_ATTACK", catalog = "cwg")
 public class AttackPOJO extends Pojo {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)

@@ -40,7 +40,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 		property = "level")
 
 @Entity
-@Table(name = "ROLEPLAY_CHARACTER_LEVEL", catalog = "C3")
+@Table(name = "c3_ROLEPLAY_CHARACTER_LEVEL", catalog = "cwg")
 public class RolePlayCharacterLevelPOJO extends Pojo {
 
 	@Id

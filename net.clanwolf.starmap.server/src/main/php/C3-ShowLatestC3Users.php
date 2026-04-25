@@ -23,8 +23,8 @@ $currentRoundStartDateTimeStamp = 0;
 $tsNow = strtotime("now");
 
 $sql5 = "";
-// $sql5 = $sql5 . "SELECT r.Round, r.Season, r.CurrentRoundStartDate, r.Updated from C3._HH_ROUND r where r.Season = 1 ";
-$sql5 = $sql5 . "SELECT r.Round, r.Season, r.CurrentRoundStartDate, r.CurrentRoundStartDateRealTime from C3._HH_ROUND r where r.Season = 1 ";
+// $sql5 = $sql5 . "SELECT r.Round, r.Season, r.CurrentRoundStartDate, r.Updated from cwg.c3_ROUND r where r.Season = 1 ";
+$sql5 = $sql5 . "SELECT r.Round, r.Season, r.CurrentRoundStartDate, r.CurrentRoundStartDateRealTime from cwg.c3_ROUND r where r.Season = 1 ";
 $result5 = mysqli_query($conn_clanwolf_ro, $sql5);
 if (mysqli_num_rows($result5) > 0) {
 	while($row5 = mysqli_fetch_assoc($result5)) {
@@ -34,7 +34,7 @@ if (mysqli_num_rows($result5) > 0) {
 }
 
 //$sql6 = "";
-//$sql6 = $sql6 . "SELECT s.StartDateRealYear from C3._HH_SEASON s where s.ID = 1 ";
+//$sql6 = $sql6 . "SELECT s.StartDateRealYear from cwg.c3_SEASON s where s.ID = 1 ";
 //$result6 = mysqli_query($conn_clanwolf_ro, $sql6);
 //if (mysqli_num_rows($result6) > 0) {
 //	while($row6 = mysqli_fetch_assoc($result6)) {
@@ -47,7 +47,7 @@ echo "<center><div style='font-size:10px;'>S1 / R" . $round . " [~".$hoursLeft."
 
 $sql11 = "";
 $sql11 = $sql11 . "SELECT U.ID, U.UserName, US.IP, US.UserId, US.LoginTime, US.ClientVersion ";
-$sql11 = $sql11 . "FROM C3.USER U, C3.USER_SESSION US WHERE U.ID = US.UserId ";
+$sql11 = $sql11 . "FROM cwg.c3_USER U, cwg.c3_USER_SESSION US WHERE U.ID = US.UserId ";
 $sql11 = $sql11 . "ORDER BY LoginTime DESC ";
 // $sql11 = $sql11 . "LIMIT 5 ";
 

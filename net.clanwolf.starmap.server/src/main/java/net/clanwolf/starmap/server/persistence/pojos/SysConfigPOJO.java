@@ -32,7 +32,7 @@ import jakarta.persistence.*;
 import static jakarta.persistence.GenerationType.IDENTITY;
 
 @Entity
-@Table(name = "SYSCONFIG", catalog = "C3")
+@Table(name = "c3_SYSCONFIG", catalog = "cwg")
 
 public class SysConfigPOJO extends Pojo {
 

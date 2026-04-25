@@ -45,7 +45,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 		generator=ObjectIdGenerators.PropertyGenerator.class,
 		property = "id")
 @Entity
-@Table(name = "USER_SESSION", catalog = "C3")
+@Table(name = "c3_USER_SESSION", catalog = "cwg")
 public class UserSessionPOJO extends Pojo {
 
 	// Fields

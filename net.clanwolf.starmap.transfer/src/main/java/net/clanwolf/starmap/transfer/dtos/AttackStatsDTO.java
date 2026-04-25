@@ -37,7 +37,7 @@ import net.clanwolf.starmap.transfer.Dto;
 //		generator=ObjectIdGenerators.PropertyGenerator.class,
 //		property = "id")
 //@Entity
-//@Table(name = "_HH_ATTACK_STATS", catalog = "C3")
+//@Table(name = "c3_ATTACK_STATS", catalog = "cwg")
 public class AttackStatsDTO extends Dto {
 
 //	@Id

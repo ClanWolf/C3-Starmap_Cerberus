@@ -60,7 +60,7 @@ Name "C3-Client_Installer"
 Caption "C3 Client Installer"
 Icon "c3.ico"
 UninstallIcon "c3.ico"
-OutFile "C3-Client-7.5.30_install.exe"
+OutFile "C3-Client-7.5.31_install.exe"
 BrandingText /TRIMRIGHT "ClanWolf.net"
 
 InstallDir $PROGRAMFILES64\C3-Client
@@ -76,7 +76,7 @@ Function .onInstSuccess
     ;                 SMPROGRAMS: $SMPROGRAMS  $\r$\n \
     ;                 Start Menu Folder: $STARTMENU_FOLDER $\r$\n \
     ;                 InstallDirectory: $INSTDIR "
-    ExecShell "open" "https://c3.clanwolf.net/changelog.txt?refresh=true&r=1773782855466"
+    ExecShell "open" "https://c3.clanwolf.net/changelog.txt?refresh=true&r=1777070993473"
     ExecShell "open" "$INSTDIR\bin\C3-Starmap_Cerberus_noWin.cmd" "" SW_HIDE
 FunctionEnd
 
@@ -163,14 +163,14 @@ FunctionEnd
 ;--------------------------------
 
 LoadLanguageFile "${NSISDIR}\Contrib\Language files\English.nlf"
-VIProductVersion "7.5.30.0"
+VIProductVersion "7.5.31.0"
 VIAddVersionKey /LANG=0 "ProductName" "C3 Client"
 VIAddVersionKey /LANG=0 "Comments" "StarMap"
 VIAddVersionKey /LANG=0 "CompanyName" "ClanWolf.net [CWG]"
 VIAddVersionKey /LANG=0 "LegalTrademarks" "StarMap of the Inner Sphere and Clan Space."
 VIAddVersionKey /LANG=0 "LegalCopyright" "© ClanWolf.net"
 VIAddVersionKey /LANG=0 "FileDescription" "StarMap"
-VIAddVersionKey /LANG=0 "FileVersion" "7.5.30"
+VIAddVersionKey /LANG=0 "FileVersion" "7.5.31"
 
 ;--------------------------------
 
@@ -349,10 +349,10 @@ Section "C3-Client (required)"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\public_suffix.md"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\LICENSE"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\icu.md"
+	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\gcc.md"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\cldr.md"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\c-libutl.md"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\ASSEMBLY_EXCEPTION"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\aes.md"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\legal\java.base\ADDITIONAL_LICENSE_INFO"
 
 	CreateDirectory $INSTDIR\jars
@@ -416,7 +416,6 @@ Section "C3-Client (required)"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\lcms.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\keytool.exe"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\jsound.dll"
-	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\jrunscript.exe"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\jli.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\jimage.dll"
 	File /r "..\net.clanwolf.starmap.client\target\jlink-image\bin\jawt.dll"
@@ -492,7 +491,7 @@ Section "C3-Client (required)"
 	; Write the uninstall keys for Windows
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayName" "C3-Client"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayIcon" "$INSTDIR\c3.ico"
-	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayVersion" "7.5.30"
+	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "DisplayVersion" "7.5.31"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "Publisher" "ClanWolf.net [CWG], Christian Bartel"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "InstallSource" "$EXEDIR\"
 	WriteRegStr HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\C3-Client" "UninstallString" '"$INSTDIR\uninstall.exe"'
@@ -510,7 +509,7 @@ Section "Start Menu Shortcuts"
 
 	CreateShortcut "$SMPROGRAMS\C3-Client\C3-Client.lnk" "$INSTDIR\bin\C3-Starmap_Cerberus_noWin.cmd" "" "$INSTDIR\c3.ico" 0 SW_SHOWMINIMIZED
 	CreateShortcut "$SMPROGRAMS\C3-Client\C3-Client (Console).lnk" "$INSTDIR\bin\C3-Starmap_Cerberus_win.cmd" "" "$INSTDIR\c3.ico" 0 SW_SHOWNORMAL
-	CreateShortcut "$SMPROGRAMS\C3-Client\Changelog.lnk" "https://c3.clanwolf.net/changelog.txt?refresh=true&r=1773782855541" "" "" 0
+	CreateShortcut "$SMPROGRAMS\C3-Client\Changelog.lnk" "https://c3.clanwolf.net/changelog.txt?refresh=true&r=1777070993555" "" "" 0
 	; CreateShortCut "$SMPROGRAMS\C3-Client\Remove.lnk" "$INSTDIR\Uninstall.exe" "" "$INSTDIR\c3.ico" 0
 SectionEnd
 
@@ -615,10 +614,10 @@ Section "Uninstall"
 	Delete $INSTDIR\legal\java.base\public_suffix.md
 	Delete $INSTDIR\legal\java.base\LICENSE
 	Delete $INSTDIR\legal\java.base\icu.md
+	Delete $INSTDIR\legal\java.base\gcc.md
 	Delete $INSTDIR\legal\java.base\cldr.md
 	Delete $INSTDIR\legal\java.base\c-libutl.md
 	Delete $INSTDIR\legal\java.base\ASSEMBLY_EXCEPTION
-	Delete $INSTDIR\legal\java.base\aes.md
 	Delete $INSTDIR\legal\java.base\ADDITIONAL_LICENSE_INFO
 	Delete $INSTDIR\include\jvmticmlr.h
 	Delete $INSTDIR\include\jvmti.h
@@ -655,7 +654,6 @@ Section "Uninstall"
 	Delete $INSTDIR\bin\lcms.dll
 	Delete $INSTDIR\bin\keytool.exe
 	Delete $INSTDIR\bin\jsound.dll
-	Delete $INSTDIR\bin\jrunscript.exe
 	Delete $INSTDIR\bin\jli.dll
 	Delete $INSTDIR\bin\jimage.dll
 	Delete $INSTDIR\bin\jawt.dll

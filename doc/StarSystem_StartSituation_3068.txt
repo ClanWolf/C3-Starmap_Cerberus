@@ -3,7 +3,7 @@
 CLAN
 
 Clan Geisterbär FactionID 30
-SELECT id, name FROM `STARSYSTEM` WHERE Name in ('Mannedorf','Skandia','Maule','Nox','Utrecht','Altenmarkt','Rubigen','Toffen','Eguilles','Setubal','Ardoz','Halesowen','Sternwerde','Krenice');
+SELECT id, name FROM `cwg.c3_STARSYSTEM` WHERE Name in ('Mannedorf','Skandia','Maule','Nox','Utrecht','Altenmarkt','Rubigen','Toffen','Eguilles','Setubal','Ardoz','Halesowen','Sternwerde','Krenice');
 
 85 Altenmarkt 				- ok
 131 Ardoz 					- ok
@@ -25,10 +25,10 @@ SELECT id, name FROM `STARSYSTEM` WHERE Name in ('Mannedorf','Skandia','Maule','
 989 Kempten --> 1726 Sheliak
 1916 Tinaca
 
-INSERT INTO `_HH_STARSYSTEMDATA` (`ID`, `StarSystemID`, `FactionID`, `FactionID_Start`, `Infrastructure`, `Wealth`, `Veternacy`, `Class`, `Type`, `Description`, `CapitalWorld`, `Active`) VALUES (NULL, '131', '30', '30', '0', '0', '0', '0', '0', '', '0', '1');
+INSERT INTO `cwg.c3_STARSYSTEMDATA` (`ID`, `StarSystemID`, `FactionID`, `FactionID_Start`, `Infrastructure`, `Wealth`, `Veternacy`, `Class`, `Type`, `Description`, `CapitalWorld`, `Active`) VALUES (NULL, '131', '30', '30', '0', '0', '0', '0', '0', '', '0', '1');
 
 Clan Wolf FactionID 36
-SELECT id, name FROM `STARSYSTEM` WHERE Name in ('Heiligendreuz','Kobe','Karston','Hyperion','Shaula (Perrot 3025-)','Hainfeld','Thun','Galuzzo','Carse','Diosd','Ramsau','Lothan','Bessarabia','Satalice');
+SELECT id, name FROM `cwg.c3_STARSYSTEM` WHERE Name in ('Heiligendreuz','Kobe','Karston','Hyperion','Shaula (Perrot 3025-)','Hainfeld','Thun','Galuzzo','Carse','Diosd','Ramsau','Lothan','Bessarabia','Satalice');
 
 243 Bessarabia 				- ok
 370 Carse 					- ok
@@ -45,17 +45,17 @@ SELECT id, name FROM `STARSYSTEM` WHERE Name in ('Heiligendreuz','Kobe','Karston
 1723 Shaula (Perrot 3025-) 	- ok --> 773 Gunzburg
 1906 Thun 					- ok
 
-+ inactive: 
++ inactive:
 2047 Weingarten
 1243 Memmingen
 1093 Laurent
 
 + 1886 Terra (!) --> 4 Comstar
 
-INSERT INTO `_HH_STARSYSTEMDATA` (`ID`, `StarSystemID`, `FactionID`, `FactionID_Start`, `Infrastructure`, `Wealth`, `Veternacy`, `Class`, `Type`, `Description`, `CapitalWorld`, `Active`) VALUES (NULL, '243', '36', '36', '0', '0', '0', '0', '0', '', '0', '1');
+INSERT INTO `cwg.c3_STARSYSTEMDATA` (`ID`, `StarSystemID`, `FactionID`, `FactionID_Start`, `Infrastructure`, `Wealth`, `Veternacy`, `Class`, `Type`, `Description`, `CapitalWorld`, `Active`) VALUES (NULL, '243', '36', '36', '0', '0', '0', '0', '0', '', '0', '1');
 
 Clan Jadefalke FactionID 32
-SELECT id, name FROM `STARSYSTEM` WHERE Name in ('Biota','Montmarault','Quarell','Jabuka','Crimond','Orkney (LC)','Rastaban','Styk II','La Grave','Wheel','Domain','Graceland','Pandora','Ballynure');
+SELECT id, name FROM `cwg.c3_STARSYSTEM` WHERE Name in ('Biota','Montmarault','Quarell','Jabuka','Crimond','Orkney (LC)','Rastaban','Styk II','La Grave','Wheel','Domain','Graceland','Pandora','Ballynure');
 
 195 Ballynure 				- ok
 256 Biota 					- ok
@@ -72,18 +72,18 @@ SELECT id, name FROM `STARSYSTEM` WHERE Name in ('Biota','Montmarault','Quarell'
 1819 Styk 					- ok - falsch --> 1824 Suk II
 2057 Wheel 					- ok --> 490 Cusset				(Wheel war zu nah, konnte nicht ausgewählt werden)
 
-+ Inactive: 
++ Inactive:
 236 Benfled
 266 Blair Atholl
 448 Colmar
 
-INSERT INTO `_HH_STARSYSTEMDATA` (`ID`, `StarSystemID`, `FactionID`, `FactionID_Start`, `Infrastructure`, `Wealth`, `Veternacy`, `Class`, `Type`, `Description`, `CapitalWorld`, `Active`) VALUES (NULL, '256', '32', '32', '0', '0', '0', '0', '0', '', '0', '0');
+INSERT INTO `cwg.c3_STARSYSTEMDATA` (`ID`, `StarSystemID`, `FactionID`, `FactionID_Start`, `Infrastructure`, `Wealth`, `Veternacy`, `Class`, `Type`, `Description`, `CapitalWorld`, `Active`) VALUES (NULL, '256', '32', '32', '0', '0', '0', '0', '0', '', '0', '0');
 
 --------------------------------------------------
 
 IS
 Lyranisches Commonwealth FactionID 11
-SELECT id, name FROM `STARSYSTEM` WHERE Name in ('Karbala','Tomans','Borghese','Kelenfold','Rasalgethi','Fort Loudon','Meacham','Blue Diamond','Fatima','Morningside','Ganshoren','Apostica','Arcturus','Surcin');
+SELECT id, name FROM `cwg.c3_STARSYSTEM` WHERE Name in ('Karbala','Tomans','Borghese','Kelenfold','Rasalgethi','Fort Loudon','Meacham','Blue Diamond','Fatima','Morningside','Ganshoren','Apostica','Arcturus','Surcin');
 
 125 Apostica 				- ok
 130 Arcturus				- ok
@@ -100,7 +100,7 @@ SELECT id, name FROM `STARSYSTEM` WHERE Name in ('Karbala','Tomans','Borghese','
 1830 Surcin					- ok
 1926 Tomans					- ok
 
-+ inactive: 
++ inactive:
 564 Donegal
 1508 Pherkad
 832 Hillerod
@@ -110,10 +110,10 @@ SELECT id, name FROM `STARSYSTEM` WHERE Name in ('Karbala','Tomans','Borghese','
 
 Kockengen!!!
 
-INSERT INTO `_HH_STARSYSTEMDATA` (`ID`, `StarSystemID`, `FactionID`, `FactionID_Start`, `Infrastructure`, `Wealth`, `Veternacy`, `Class`, `Type`, `Description`, `CapitalWorld`, `Active`) VALUES (NULL, '130', '11', '11', '0', '0', '0', '0', '0', '', '0', '1');
+INSERT INTO `cwg.c3_STARSYSTEMDATA` (`ID`, `StarSystemID`, `FactionID`, `FactionID_Start`, `Infrastructure`, `Wealth`, `Veternacy`, `Class`, `Type`, `Description`, `CapitalWorld`, `Active`) VALUES (NULL, '130', '11', '11', '0', '0', '0', '0', '0', '', '0', '1');
 
 Freie Republik Rasalhague FactionID 7
-SELECT id, name FROM `STARSYSTEM` WHERE Name in ('Tukayyid','Ueda','Karbala','Dehgolan','Grumium','Al Hillah','Orestes','Camlann','Port Moseby','Sakhalin','Accrington','Phalan','Symington','Dalkeith');
+SELECT id, name FROM `cwg.c3_STARSYSTEM` WHERE Name in ('Tukayyid','Ueda','Karbala','Dehgolan','Grumium','Al Hillah','Orestes','Camlann','Port Moseby','Sakhalin','Accrington','Phalan','Symington','Dalkeith');
 
 13 Accrington				- ok
 37 Al Hillah				- ok
@@ -130,10 +130,10 @@ SELECT id, name FROM `STARSYSTEM` WHERE Name in ('Tukayyid','Ueda','Karbala','De
 1954 Tukayyid				- ok
 1962 Ueda					- ok
 
-INSERT INTO `_HH_STARSYSTEMDATA` (`ID`, `StarSystemID`, `FactionID`, `FactionID_Start`, `Infrastructure`, `Wealth`, `Veternacy`, `Class`, `Type`, `Description`, `CapitalWorld`, `Active`) VALUES (NULL, '1739', '7', '7', '0', '0', '0', '0', '0', '', '0', '1');
+INSERT INTO `cwg.c3_STARSYSTEMDATA` (`ID`, `StarSystemID`, `FactionID`, `FactionID_Start`, `Infrastructure`, `Wealth`, `Veternacy`, `Class`, `Type`, `Description`, `CapitalWorld`, `Active`) VALUES (NULL, '1739', '7', '7', '0', '0', '0', '0', '0', '', '0', '1');
 
 Draconiskombinat FactionID 5
-SELECT id, name FROM `STARSYSTEM` WHERE Name in ('Port Moseby','Meilen','Chandler','Numki','Suladat','Trolloc Prime','Buckminster','Shirotori','Najha','Kiesen','Darius','Odabas','Plikhua');
+SELECT id, name FROM `cwg.c3_STARSYSTEM` WHERE Name in ('Port Moseby','Meilen','Chandler','Numki','Suladat','Trolloc Prime','Buckminster','Shirotori','Najha','Kiesen','Darius','Odabas','Plikhua');
 
 165 Aubisson				- ok
 316 Buckminster				- ok
@@ -152,10 +152,10 @@ SELECT id, name FROM `STARSYSTEM` WHERE Name in ('Port Moseby','Meilen','Chandle
 
 + inactive:
 191 Baldur,
-34 Aix-la-Chapelle, 
-326 Cadiz, 
-237 Benjamin, 
+34 Aix-la-Chapelle,
+326 Cadiz,
+237 Benjamin,
 955 Kajkazawa,
 178 Awano
 
-INSERT INTO `_HH_STARSYSTEMDATA` (`ID`, `StarSystemID`, `FactionID`, `FactionID_Start`, `Infrastructure`, `Wealth`, `Veternacy`, `Class`, `Type`, `Description`, `CapitalWorld`, `Active`) VALUES (NULL, '399', '5', '5', '0', '0', '0', '0', '0', '', '0', '1');
+INSERT INTO `cwg.c3_STARSYSTEMDATA` (`ID`, `StarSystemID`, `FactionID`, `FactionID_Start`, `Infrastructure`, `Wealth`, `Veternacy`, `Class`, `Type`, `Description`, `CapitalWorld`, `Active`) VALUES (NULL, '399', '5', '5', '0', '0', '0', '0', '0', '', '0', '1');

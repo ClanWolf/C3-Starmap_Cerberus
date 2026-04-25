@@ -14,7 +14,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 		generator= ObjectIdGenerators.PropertyGenerator.class,
 		property = "id")
 @Entity
-@Table(name = "STARSYSTEM", catalog = "C3")
+@Table(name = "c3_STARSYSTEM", catalog = "cwg")
 public class StarSystemPOJO {
 
 	@Id

@@ -44,7 +44,7 @@ if ($conn->connect_error) {
 
     if ($_POST["key"] == "reset season") {
       echo "<p>Running...</p>";
-      // $sql = "UPDATE C3.SYSCONFIG SET VALUE='5.7.14' WHERE SYSCONFIG.KEY='VERSION CLIENT'";
+      // $sql = "UPDATE cwg.c3_SYSCONFIG SET VALUE='5.7.14' WHERE SYSCONFIG.KEY='VERSION CLIENT'";
 
       // if ($conn->query($sql) === TRUE) {
       //   echo "Updated successfully.";

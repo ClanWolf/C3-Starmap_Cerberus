@@ -12,7 +12,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 		generator= ObjectIdGenerators.PropertyGenerator.class,
 		property = "id")
 @Entity
-@Table(name = "FACTION", catalog = "C3")
+@Table(name = "c3_FACTION", catalog = "cwg")
 public class FactionPOJO extends Pojo {
 
 	@Id

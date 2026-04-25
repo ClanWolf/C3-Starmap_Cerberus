@@ -41,7 +41,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 		generator=ObjectIdGenerators.PropertyGenerator.class,
 		property="id")
 @Entity
-@Table(name = "_HH_JUMPSHIP", catalog = "C3")
+@Table(name = "c3_JUMPSHIP", catalog = "cwg")
 public class JumpshipPOJO extends Pojo {
 	@Id
 	@GeneratedValue(strategy = IDENTITY)

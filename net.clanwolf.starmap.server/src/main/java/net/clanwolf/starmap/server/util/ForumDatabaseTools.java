@@ -71,7 +71,7 @@ public class ForumDatabaseTools {
 			String password = auth.getProperty("password");
 
 			Class.forName("org.mariadb.jdbc.Driver");
-			Connection con = DriverManager.getConnection("jdbc:mariadb://localhost:3306/clanwolf", user, password);
+			Connection con = DriverManager.getConnection("jdbc:mariadb://localhost:3306/cwg", user, password);
 			Statement stmt = con.createStatement();
 			ResultSet resultSet = stmt.executeQuery(sql);
 
@@ -96,7 +96,7 @@ public class ForumDatabaseTools {
 			String password = auth.getProperty("password");
 
 			Class.forName("org.mariadb.jdbc.Driver");
-			Connection con = DriverManager.getConnection("jdbc:mariadb://localhost:3306/clanwolf", user, password);
+			Connection con = DriverManager.getConnection("jdbc:mariadb://localhost:3306/cwg", user, password);
 			Statement stmt = con.createStatement();
 			stmt.executeUpdate(sql, Statement.RETURN_GENERATED_KEYS);
 
@@ -121,7 +121,7 @@ public class ForumDatabaseTools {
 			String password = auth.getProperty("password");
 
 			Class.forName("org.mariadb.jdbc.Driver");
-			Connection con = DriverManager.getConnection("jdbc:mariadb://localhost:3306/clanwolf", user, password);
+			Connection con = DriverManager.getConnection("jdbc:mariadb://localhost:3306/cwg", user, password);
 			Statement stmt = con.createStatement();
 			stmt.executeUpdate(sql);
 
@@ -138,7 +138,7 @@ public class ForumDatabaseTools {
 			String password = auth.getProperty("password");
 
 			Class.forName("org.mariadb.jdbc.Driver");
-			Connection con = DriverManager.getConnection("jdbc:mariadb://localhost:3306/clanwolf", user, password);
+			Connection con = DriverManager.getConnection("jdbc:mariadb://localhost:3306/cwg", user, password);
 			Statement stmt = con.createStatement();
 			stmt.executeUpdate(sql);
 
@@ -416,7 +416,7 @@ public class ForumDatabaseTools {
 
 		// Update attack and add threadlink
 		sql = "";
-		sql += "UPDATE C3._HH_ATTACK ";
+		sql += "UPDATE cwg.c3_ATTACK ";
 		sql += "SET ForumThreadLink='" + attackThreadUrl + "', ForumThreadId=" + threadId + " ";
 		sql += "WHERE ID= " + attackId;
 		update(sql);

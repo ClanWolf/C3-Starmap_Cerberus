@@ -42,7 +42,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
 		generator=ObjectIdGenerators.PropertyGenerator.class,
 		property = "id")
 @Entity
-@Table(name = "_HH_ATTACK_TYPE", catalog = "C3")
+@Table(name = "c3_ATTACK_TYPE", catalog = "cwg")
 public class AttackTypesPOJO extends Pojo {
 
 	@Id

@@ -44,7 +44,7 @@ import static jakarta.persistence.GenerationType.IDENTITY;
         property = "id")
 @JsonIdentityReference(alwaysAsId = true)
 @Entity
-@Table(name = "ROLEPLAY_STORYTOCHAR", catalog = "C3")
+@Table(name = "c3_ROLEPLAY_STORYTOCHAR", catalog = "cwg")
 public class RolePlayStoryToCharPOJO extends Pojo {
 
     @Id

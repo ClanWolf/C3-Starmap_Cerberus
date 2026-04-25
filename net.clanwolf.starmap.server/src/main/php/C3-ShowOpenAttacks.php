@@ -21,7 +21,7 @@ if ($conn_clanwolf_ro->connect_error) {
 $round = 0;
 
 $sql5 = "";
-$sql5 = $sql5 . "SELECT r.Round, r.Season from C3._HH_ROUND r where r.Season = 1 ";
+$sql5 = $sql5 . "SELECT r.Round, r.Season from cwg.c3_ROUND r where r.Season = 1 ";
 
 $result5 = mysqli_query($conn_clanwolf_ro, $sql5);
 if (mysqli_num_rows($result5) > 0) {
@@ -32,7 +32,7 @@ if (mysqli_num_rows($result5) > 0) {
 
 $sql12 = "";
 $sql12 = $sql12 . "select ha.Season, ha.Round, ha.JumpshipID, ha.FactionID_Winner, ha.ForumThreadLink, hj.JumpshipName, hj.JumpshipFactionID, ss.Name, f.ShortName ";
-$sql12 = $sql12 . "from C3._HH_ATTACK ha, C3.STARSYSTEM ss, C3._HH_STARSYSTEMDATA ssd, C3.FACTION f, C3._HH_JUMPSHIP hj ";
+$sql12 = $sql12 . "from cwg.c3_ATTACK ha, C3.STARSYSTEM ss, cwg.c3_STARSYSTEMDATA ssd, cwg.c3_FACTION f, cwg.c3_JUMPSHIP hj ";
 $sql12 = $sql12 . "where ss.ID = ha.StarSystemID ";
 $sql12 = $sql12 . "and ssd.StarSystemID = ss.ID ";
 $sql12 = $sql12 . "and ha.FactionID_Defender = f.ID ";

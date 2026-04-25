@@ -31,7 +31,7 @@ import net.clanwolf.starmap.transfer.Dto;
 
 //@JsonIdentityInfo(scope = StatsEconomyPOJO.class, generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 //@Entity
-//@Table(name = "STATS_ECONOMY", catalog = "C3")
+//@Table(name = "c3_STATS_ECONOMY", catalog = "cwg")
 public class StatsEconomyDTO extends Dto {
 	//	@Id
 	//	@GeneratedValue(strategy = IDENTITY)

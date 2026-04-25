@@ -32,7 +32,7 @@ import net.clanwolf.starmap.logging.C3LogUtil;
 import net.clanwolf.starmap.mail.MailManager;
 import net.clanwolf.starmap.server.persistence.EntityManagerHelper;
 import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.C3GameConfigDAO;
-import net.clanwolf.starmap.server.persistence.pojos.C3GameConfigPOJO;
+import net.clanwolf.starmap.server.persistence.pojos.GameConfigPOJO;
 import net.clanwolf.starmap.server.servernexus.ServerNexus;
 import net.clanwolf.starmap.server.timertasks.CheckShutdownFlagTimerTask;
 import net.clanwolf.starmap.server.timertasks.DropLeadCheckTimerTask;
@@ -96,7 +96,7 @@ public class GameServer {
     }
 
     public static void checkDBConst() {
-        ArrayList<C3GameConfigPOJO> c3GameConfigPOJO = C3GameConfigDAO.getInstance().getAllGameConfigValues();
+        ArrayList<GameConfigPOJO> c3GameConfigPOJO = C3GameConfigDAO.getInstance().getAllGameConfigValues();
         Map<String, Long> constantValues = new HashMap<>();
 
         //XP rewards during an invasion
@@ -166,7 +166,7 @@ public class GameServer {
         for (Map.Entry<String, Long> entry : constantValues.entrySet()) {
             bFound = false;
             String constantName = entry.getKey();
-            for (C3GameConfigPOJO config : c3GameConfigPOJO) {
+            for (GameConfigPOJO config : c3GameConfigPOJO) {
                 if (Objects.equals(config.getKey(), constantName)) {
                     //constantValues.remove(entry.getKey(),entry.getValue());
                     bFound = true;
@@ -183,7 +183,7 @@ public class GameServer {
 
         //Fehlende Konstanzen werden in der DB eingetragen.
         for (Map.Entry<String, Long> entry : addConstantValues.entrySet()) {
-            C3GameConfigPOJO addC3ConfigPOJO = new C3GameConfigPOJO();
+            GameConfigPOJO addC3ConfigPOJO = new GameConfigPOJO();
             addC3ConfigPOJO.setKey(entry.getKey());
             addC3ConfigPOJO.setValue(entry.getValue());
             C3GameConfigDAO.getInstance().update(ServerNexus.END_ROUND_USERID, addC3ConfigPOJO);

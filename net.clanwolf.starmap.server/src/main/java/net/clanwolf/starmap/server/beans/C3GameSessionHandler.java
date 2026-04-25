@@ -637,7 +637,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				}
 				int num = (int) (Math.random() * storyIDs.length);
 				if ("".equals(storyIDs[num])) {
-					logger.info("!!!!!!!!!!!!!!!!! Missing story-ID in _HH_ATTACK_TYPE for Attack Type IS vs IS");
+					logger.info("!!!!!!!!!!!!!!!!! Missing story-ID in ATTACK_TYPE for Attack Type IS vs IS");
 				}
 				if (storyIDs[num] != null) {
 					rpID = Long.parseLong(storyIDs[num]);
