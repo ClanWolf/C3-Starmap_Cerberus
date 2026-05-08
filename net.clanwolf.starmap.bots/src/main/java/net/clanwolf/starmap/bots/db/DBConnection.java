@@ -70,7 +70,7 @@ public class DBConnection {
 			MariaDbDataSource dataSource = new MariaDbDataSource();
 			dataSource.setUser(auth.getProperty("user"));
 			dataSource.setPassword(auth.getProperty("password"));
-			dataSource.setUrl("jdbc:mariadb://localhost/C3?useUnicode=yes&amp;characterEncoding=UTF-8&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Berlin&amp;useSSL=false");
+			dataSource.setUrl("jdbc:mariadb://localhost/cwg?useUnicode=yes&amp;characterEncoding=UTF-8&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=Europe/Berlin&amp;useSSL=false");
 
 			conn = dataSource.getConnection();
 		} catch (NamingException | SQLException e) {

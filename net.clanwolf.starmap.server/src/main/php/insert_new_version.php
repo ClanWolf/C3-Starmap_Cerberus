@@ -23,10 +23,10 @@ if ($conn->connect_error) {
 	die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "UPDATE cwg.c3_SYSCONFIG SET VALUE='7.5.31' WHERE SYSCONFIG.KEY='VERSION CLIENT'";
+$sql = "UPDATE cwg.c3_SYSCONFIG SET VALUE='7.5.32' WHERE cwg.c3_SYSCONFIG.KEY='VERSION CLIENT'";
 
 if ($conn->query($sql) === TRUE) {
-  echo "Record updated successfully to 7.5.31.";
+  echo "Record updated successfully to 7.5.32.";
 } else {
   echo "Error updating record: " . $conn->error;
 }

@@ -99,8 +99,9 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
-Version 7.5.31 (25.04.2026)
+Version 7.5.32 (08.05.2026)
 - Moved tabled to central cwg database
+- Fixed NPE while drawing routes
 
 Version 7.5.30 (16.03.2026)
 - Updated deployment to reflect new server structure

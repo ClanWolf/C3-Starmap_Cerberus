@@ -566,11 +566,13 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 						l.toBack();
 					}
 
-					FadeTransition fadeOut = new FadeTransition(Duration.millis(8000), js.routeLines);
-					fadeOut.setFromValue(1.0);
-					fadeOut.setToValue(0.0);
-					fadeOut.setOnFinished(event -> js.routeLines.getChildren().clear());
-					fadeOut.play();
+					if(js.routeLines != null) {
+						FadeTransition fadeOut = new FadeTransition(Duration.millis(8000), js.routeLines);
+						fadeOut.setFromValue(1.0);
+						fadeOut.setToValue(0.0);
+						fadeOut.setOnFinished(event -> js.routeLines.getChildren().clear());
+						fadeOut.play();
+					}
 
 					Long currentSystemID = route.get(0).getSystemId();
 					ImageView jsi = js.getJumpshipImageView();

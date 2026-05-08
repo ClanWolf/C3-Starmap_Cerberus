@@ -70,7 +70,7 @@
 ////			echo "Found 0000-Lastvisit date for user: " . user_name . "<br>";
 ////		}
 //
-//		$sql2 = "SELECT * FROM C3.USER WHERE UserName = '" . $user_name . "'";
+//		$sql2 = "SELECT * FROM cwg.c3_USER WHERE UserName = '" . $user_name . "'";
 //		// echo "select: " . $sql2;
 //		$result2 = mysqli_query($conn, $sql2);
 //		if (mysqli_num_rows($result2) > 0) {
@@ -107,7 +107,7 @@
 //					$dt = new DateTime('@' . $user_joined);
 //					$dts = $dt->format('Y-m-d');
 //
-//					$sql2_update = "UPDATE C3.USER SET ";
+//					$sql2_update = "UPDATE cwg.c3_USER SET ";
 //					$sql2_update = $sql2_update . "UserPasswordWebsite='" . $user_password . "', ";
 //					$sql2_update = $sql2_update . "UserEMail='" . $user_email . "', ";
 //					if ($user_avatar != "") {
@@ -177,7 +177,7 @@
 //			// Insert "LastModified" here with the current date
 //			// Insert "LastModifiedByUserId" --> 26
 //
-//			$sql2_insert = "INSERT INTO C3.USER (";
+//			$sql2_insert = "INSERT INTO cwg.c3_USER (";
 //			$sql2_insert = $sql2_insert . "UserName, ";
 //			$sql2_insert = $sql2_insert . "UserPasswordWebsite, ";
 //			$sql2_insert = $sql2_insert . "UserEMail, ";
@@ -220,7 +220,7 @@
 //
 //				echo "Inserting character for user " . $user_name . ".";
 //
-//				$sql7_insert = "INSERT INTO C3.ROLEPLAY_CHARACTER (";
+//				$sql7_insert = "INSERT INTO cwg.c3_ROLEPLAY_CHARACTER (";
 //				$sql7_insert = $sql7_insert . "CharName, ";
 //				$sql7_insert = $sql7_insert . "Callsign, ";
 //				$sql7_insert = $sql7_insert . "LastName, ";
@@ -277,13 +277,13 @@
 //
 //				   echo "Updating char id in the created user.";
 //
-//				   $sql8_update = "UPDATE C3.USER SET ";
+//				   $sql8_update = "UPDATE cwg.c3_USER SET ";
 //				   $sql8_update = $sql8_update . "CurrentCharacterID = " . $last_char_id . " ";
 //				   $sql8_update = $sql8_update . "WHERE ID = " . $last_user_id;
 //
 //				   if(mysqli_query($conn, $sql8_update)) {
 //					   echo "... processed!<br>";
-//						$sql12 = "SELECT * FROM C3.USER WHERE ID = '" . $last_user_id . "' AND Birthdate is null";
+//						$sql12 = "SELECT * FROM cwg.c3_USER WHERE ID = '" . $last_user_id . "' AND Birthdate is null";
 //						// echo "select: " . $sql12;
 //						$result12 = mysqli_query($conn, $sql12);
 //						if (mysqli_num_rows($result12) > 0) {
@@ -294,7 +294,7 @@
 //								$date = new DateTime('1978-01-01');
 //								$user_birthdate = $date->format('Y-m-d');
 //
-//								$sql18_update = "UPDATE C3.USER SET ";
+//								$sql18_update = "UPDATE cwg.c3_USER SET ";
 //								$sql18_update = $sql18_update . "Birthdate = " . $user_birthdate . " ";
 //								$sql18_update = $sql18_update . "WHERE ID = " . $last_user_id;
 //

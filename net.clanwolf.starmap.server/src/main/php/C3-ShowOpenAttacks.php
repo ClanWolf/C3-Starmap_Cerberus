@@ -32,7 +32,7 @@ if (mysqli_num_rows($result5) > 0) {
 
 $sql12 = "";
 $sql12 = $sql12 . "select ha.Season, ha.Round, ha.JumpshipID, ha.FactionID_Winner, ha.ForumThreadLink, hj.JumpshipName, hj.JumpshipFactionID, ss.Name, f.ShortName ";
-$sql12 = $sql12 . "from cwg.c3_ATTACK ha, C3.STARSYSTEM ss, cwg.c3_STARSYSTEMDATA ssd, cwg.c3_FACTION f, cwg.c3_JUMPSHIP hj ";
+$sql12 = $sql12 . "from cwg.c3_ATTACK ha, cwg.c3_STARSYSTEM ss, cwg.c3_STARSYSTEMDATA ssd, cwg.c3_FACTION f, cwg.c3_JUMPSHIP hj ";
 $sql12 = $sql12 . "where ss.ID = ha.StarSystemID ";
 $sql12 = $sql12 . "and ssd.StarSystemID = ss.ID ";
 $sql12 = $sql12 . "and ha.FactionID_Defender = f.ID ";
@@ -56,7 +56,7 @@ if (mysqli_num_rows($result12) > 0) {
 		$attackingFaction = "?";
 		$threadLink = $row["ForumThreadLink"];
 
-		$sql14 = "select f.ShortName from C3.FACTION f where f.ID = " . $jumpshipFactionID;
+		$sql14 = "select f.ShortName from cwg.c3_FACTION f where f.ID = " . $jumpshipFactionID;
 		$result14 = mysqli_query($conn_clanwolf_ro, $sql14);
 		if (mysqli_num_rows($result14) > 0) {
 			while($row14 = mysqli_fetch_assoc($result14)) {
@@ -87,7 +87,7 @@ if (mysqli_num_rows($result12) > 0) {
 			$winnerFaction = "";
 			$sql45 = "";
 			$sql45 = $sql45 . "select f.ShortName ";
-			$sql45 = $sql45 . "from C3.FACTION f ";
+			$sql45 = $sql45 . "from cwg.c3_FACTION f ";
 			$sql45 = $sql45 . "where f.ID = " . $winner . " ";
 
 			$result45 = mysqli_query($conn_clanwolf_ro, $sql45);
