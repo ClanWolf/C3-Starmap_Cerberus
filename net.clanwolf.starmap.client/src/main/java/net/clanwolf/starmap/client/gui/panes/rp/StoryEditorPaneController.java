@@ -1155,7 +1155,7 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 		ArrayList<ROLEPLAYINPUTDATATYPES> dataList = new ArrayList<>();
 
 		for(ROLEPLAYINPUTDATATYPES t : ROLEPLAYINPUTDATATYPES.values()) {
-			if(t.types == cbroleplayinputdatatypes.getSelectionModel().getSelectedItem()){
+			if(t.objectType == cbroleplayinputdatatypes.getSelectionModel().getSelectedItem()){
 				dataList.add(t);
 			}
 		}
@@ -1553,15 +1553,15 @@ public class StoryEditorPaneController implements ActionCallBackListener {
 				logger.info("setData");
 
 				if (selected.getValue().getVar3ID().getDataSet1() != null) {
-					cbroleplayinputdatatypes.getSelectionModel().select(Objects.requireNonNull(ROLEPLAYINPUTDATATYPES.getEnumForName(selected.getValue().getVar3ID().getDataSet1())).types);
+					cbroleplayinputdatatypes.getSelectionModel().select(Objects.requireNonNull(ROLEPLAYINPUTDATATYPES.getEnumForName(selected.getValue().getVar3ID().getDataSet1())).objectType);
 				} else if (selected.getValue().getVar3ID().getDataSet2() != null) {
-					cbroleplayinputdatatypes.getSelectionModel().select(Objects.requireNonNull(ROLEPLAYINPUTDATATYPES.getEnumForName(selected.getValue().getVar3ID().getDataSet2())).types);
+					cbroleplayinputdatatypes.getSelectionModel().select(Objects.requireNonNull(ROLEPLAYINPUTDATATYPES.getEnumForName(selected.getValue().getVar3ID().getDataSet2())).objectType);
 				} else if (selected.getValue().getVar3ID().getDataSet3() != null) {
-					cbroleplayinputdatatypes.getSelectionModel().select(Objects.requireNonNull(ROLEPLAYINPUTDATATYPES.getEnumForName(selected.getValue().getVar3ID().getDataSet3())).types);
+					cbroleplayinputdatatypes.getSelectionModel().select(Objects.requireNonNull(ROLEPLAYINPUTDATATYPES.getEnumForName(selected.getValue().getVar3ID().getDataSet3())).objectType);
 				} else if (selected.getValue().getVar3ID().getDataSet4() != null) {
-					cbroleplayinputdatatypes.getSelectionModel().select(Objects.requireNonNull(ROLEPLAYINPUTDATATYPES.getEnumForName(selected.getValue().getVar3ID().getDataSet4())).types);
+					cbroleplayinputdatatypes.getSelectionModel().select(Objects.requireNonNull(ROLEPLAYINPUTDATATYPES.getEnumForName(selected.getValue().getVar3ID().getDataSet4())).objectType);
 				} else if (selected.getValue().getVar3ID().getDataSet5() != null) {
-					cbroleplayinputdatatypes.getSelectionModel().select(Objects.requireNonNull(ROLEPLAYINPUTDATATYPES.getEnumForName(selected.getValue().getVar3ID().getDataSet5())).types);
+					cbroleplayinputdatatypes.getSelectionModel().select(Objects.requireNonNull(ROLEPLAYINPUTDATATYPES.getEnumForName(selected.getValue().getVar3ID().getDataSet5())).objectType);
 				}
 
 				cbNextStep_V3.getSelectionModel().select(boRP.getStoryByID(selected.getValue().getVar3ID().getNextStoryID()));

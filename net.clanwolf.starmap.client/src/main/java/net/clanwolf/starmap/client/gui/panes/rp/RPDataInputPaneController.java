@@ -43,7 +43,6 @@ import net.clanwolf.starmap.client.process.roleplay.BOCharacter;
 import net.clanwolf.starmap.client.process.roleplay.BORolePlayStory;
 import net.clanwolf.starmap.client.sound.C3SoundPlayer;
 import net.clanwolf.starmap.client.util.Internationalization;
-import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
 import net.clanwolf.starmap.transfer.enums.DATATYPES;
 import net.clanwolf.starmap.transfer.enums.catalogObjects.ICatalogObject;
 import net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes.ROLEPLAYOBJECTTYPES;
@@ -55,7 +54,6 @@ import net.clanwolf.starmap.transfer.enums.ROLEPLAYENTRYTYPES;
 import net.clanwolf.starmap.transfer.enums.roleplayinputdatatypes.ROLEPLAYINPUTDATATYPES;
 import net.clanwolf.starmap.transfer.util.CatalogLoader;
 
-import javax.swing.*;
 import java.lang.invoke.MethodHandles;
 import java.net.URL;
 import java.util.HashMap;
@@ -165,14 +163,14 @@ public class RPDataInputPaneController extends AbstractC3RolePlayController impl
 		ROLEPLAYOBJECTTYPES objectType = null;
 		for (String s : objectTypes.keySet()) {
 			ROLEPLAYINPUTDATATYPES dt = objectTypes.get(s);
-			objectType = dt.types;
+			objectType = dt.objectType;
 			break;
 		}
 
 		switch(objectType) {
 			case ROLEPLAYOBJECTTYPES.CHARACTER:
 				BOCharacter boChar = new BOCharacter(Nexus.getCurrentChar());
-				boChar.setValues(getCurrentRP().getVar3ID(), guiElements);
+				boChar.handleValues(getCurrentRP().getVar3ID(), guiElements, "fillObjectWithData");
 				boChar.saveCharacter(getCurrentRP().getVar3ID().getNextStoryID());
 				break;
 			case ROLEPLAYOBJECTTYPES.DROPSHIP:
@@ -262,6 +260,8 @@ public class RPDataInputPaneController extends AbstractC3RolePlayController impl
 		Image im = BORolePlayStory.getRPG_Image(rpStory);
 		backgroundImage.setImage(im);
 
+		vBoxDataInput.getChildren().remove(gvDataInput);
+
 		gvDataInput = new GridPane();
 		gvDataInput.setHgap(5);
 		gvDataInput.setVgap(5);
@@ -278,7 +278,8 @@ public class RPDataInputPaneController extends AbstractC3RolePlayController impl
 
 		guiElements.clear();
 
-		if(!bInit && rpStory.getVar3ID() != null) {
+//		if(!bInit && rpStory.getVar3ID() != null) {
+		if(rpStory.getVar3ID() != null) {
 			RolePlayStoryDatainputDTO rpVar3 = rpStory.getVar3ID();
 
 			setField(ROLEPLAYINPUTDATATYPES.getEnumForName(rpVar3.getDataSet1()),1);
@@ -287,9 +288,18 @@ public class RPDataInputPaneController extends AbstractC3RolePlayController impl
 			setField(ROLEPLAYINPUTDATATYPES.getEnumForName(rpVar3.getDataSet4()),4);
 			setField(ROLEPLAYINPUTDATATYPES.getEnumForName(rpVar3.getDataSet5()),5);
 
+			switch(Objects.requireNonNull(ROLEPLAYINPUTDATATYPES.getEnumForName(rpVar3.getDataSet1())).objectType) {
+				case ROLEPLAYOBJECTTYPES.CHARACTER:
+					BOCharacter boChar = new BOCharacter(Nexus.getCurrentChar());
+					boChar.handleValues(getCurrentRP().getVar3ID(), guiElements, "fillGuiElementsWithData");
+					break;
+				case ROLEPLAYOBJECTTYPES.DROPSHIP:
+					break;
+			}
+
 			vBoxDataInput.getChildren().add(gvDataInput);
 
-			bInit = true;
+//			bInit = true;
 		}
 	}
 }

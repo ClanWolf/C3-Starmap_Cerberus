@@ -54,7 +54,7 @@ public enum ROLEPLAYINPUTDATATYPES {
 	HERITAGE("char_heritage", DATATYPES.SelectionSingle, ROLEPLAYOBJECTTYPES.CHARACTER, "CHAR_Heritage", true),
 	BLOODHOUSE_SINGLE("char_bloodhouse", DATATYPES.SelectionSingle, ROLEPLAYOBJECTTYPES.CHARACTER, "CHAR_Bloodhouse", false),
 	AGE("char_age", DATATYPES.Number, ROLEPLAYOBJECTTYPES.CHARACTER, null, true),
-	GENDER("char_gender", DATATYPES.SelectionSingle, ROLEPLAYOBJECTTYPES.CHARACTER, null, true),
+	GENDER("char_gender", DATATYPES.SelectionSingle, ROLEPLAYOBJECTTYPES.CHARACTER, "CHAR_Gender", true),
 	CHARIMAGE("char_image", DATATYPES.String, ROLEPLAYOBJECTTYPES.CHARACTER, null, true),
 	PHENOTYPE("char_phenotype", DATATYPES.SelectionSingle, ROLEPLAYOBJECTTYPES.CHARACTER, "CHAR_Phenotype", false),
 	HAIRCOLOR("char_haircolor", DATATYPES.SelectionSingle, ROLEPLAYOBJECTTYPES.CHARACTER, null, false),
@@ -80,14 +80,14 @@ public enum ROLEPLAYINPUTDATATYPES {
 
 	public final String labelkey;
 	public final DATATYPES datatype;
-	public final ROLEPLAYOBJECTTYPES types;
+	public final ROLEPLAYOBJECTTYPES objectType;
 	public final String classname;
 	public final boolean mandatory;
 
-	ROLEPLAYINPUTDATATYPES(String labelkey, DATATYPES datatype, ROLEPLAYOBJECTTYPES types, String classname, boolean mandatory) {
+	ROLEPLAYINPUTDATATYPES(String labelkey, DATATYPES datatype, ROLEPLAYOBJECTTYPES obejectType, String classname, boolean mandatory) {
 		this.labelkey = labelkey;
 		this.datatype = datatype;
-		this.types = types;
+		this.objectType = obejectType;
 		this.classname = classname;
 		this.mandatory = mandatory;
 	}
@@ -101,7 +101,7 @@ public enum ROLEPLAYINPUTDATATYPES {
 
 	@Override
 	public String toString() {
-		return types + "_" + labelkey;
+		return objectType + "_" + labelkey;
 	}
 
 	public static ROLEPLAYINPUTDATATYPES getEnumForName(String name) {

@@ -47,7 +47,7 @@ public class RolePlayCharacterDTO extends Dto {
 	private String charImage;       //@Column(name = "CharImage")
 	private String mwoUsername;     //@Column(name = "MWOUsername")
 	private Integer ageAtCreation;  //@Column(name = "AgeAtCreation")
-	private GENDERS gender;          //@Column(name = "Gender")
+	private GENDERS gender;         //@Column(name = "Gender")
 	private String history;         //@Column(name = "History")
 	private UserDTO user;           //@JoinColumn(name = "UserID")
     private RolePlayStoryDTO story; //@JoinColumn(name = "StoryID")

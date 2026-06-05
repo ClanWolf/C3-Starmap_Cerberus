@@ -257,8 +257,8 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 
 		if(args.length > 0) {
 			for (String arg : args) {
-				arg = arg.replaceAll("-", "");
-				arg = arg.replaceAll("/", "");
+				arg = arg.replace("-", "");
+				arg = arg.replace("/", "");
 
 				System.out.println("Starting C3 Client: " + arg);
 				System.out.println("Detected commandline arg: " + arg);

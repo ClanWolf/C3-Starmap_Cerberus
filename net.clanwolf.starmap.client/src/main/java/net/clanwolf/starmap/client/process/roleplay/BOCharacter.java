@@ -1,12 +1,15 @@
 package net.clanwolf.starmap.client.process.roleplay;
 
 import javafx.scene.Node;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.transfer.GameState;
 import net.clanwolf.starmap.transfer.dtos.RolePlayCharacterDTO;
 import net.clanwolf.starmap.transfer.dtos.RolePlayStoryDatainputDTO;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
+import net.clanwolf.starmap.transfer.enums.GENDERS;
+import net.clanwolf.starmap.transfer.enums.catalogObjects.ICatalogObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -39,18 +42,48 @@ public class BOCharacter {
 		return dataSets;
 	}
 
-	public void setValues(RolePlayStoryDatainputDTO di, HashMap<String, Node> guiElements) {
-		for (Node n : guiElements.values()) {
-			for (String d : getdataSetList(di)) {
-				if (n instanceof TextField tf) {
-					if ("CHARNAME".equals(d)) {
-						myCharacter.setName(tf.getText());
-					}
-					if ("LASTNAME".equals(d)) {
-						//
+	public void handleValues(RolePlayStoryDatainputDTO di, HashMap<String, Node> guiElements, String mode) {
+		for (String d : getdataSetList(di)) {
+			Node n = guiElements.get(d);
+			if (n instanceof TextField tf) {
+				if ("CHARNAME".equals(d)) {
+					switch (mode) {
+						case "fillObjectWithData":
+							myCharacter.setName(tf.getText());
+							break;
+						case "fillGuiElementsWithData":
+							tf.setText(myCharacter.getName());
+							break;
 					}
 				}
+			} else if (n instanceof ComboBox<?> && "GENDER".equals(d)) {
+				@SuppressWarnings("unchecked")
+				ComboBox<ICatalogObject> cb = (ComboBox<ICatalogObject>) n;
+				switch (mode) {
+					case "fillObjectWithData":
+						ICatalogObject selected = cb.getValue();
+						if (selected != null) {
+							try {
+								myCharacter.setGender(GENDERS.valueOf(selected.getName()));
+							} catch (IllegalArgumentException e) {
+								logger.warn("Could not parse gender from catalog: " + selected.getName());
+							}
+						}
+						break;
+					case "fillGuiElementsWithData":
+						GENDERS gender = myCharacter.getGender();
+						if (gender != null) {
+							for (ICatalogObject item : cb.getItems()) {
+								if (gender.name().equals(item.getName())) {
+									cb.setValue(item);
+									break;
+								}
+							}
+						}
+						break;
+				}
 			}
+			// ... weitere Felder wie LASTNAME
 		}
 	}
 }
