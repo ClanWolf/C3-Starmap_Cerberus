@@ -74,6 +74,7 @@ WebDataInterface {
 		String dateS = dateTimeformatter.format(currentRoundStartDateTime);
 		SeasonPOJO seasonPOJO = (SeasonPOJO) SeasonDAO.getInstance().findById(SeasonPOJO.class, season);
 		Long seasonMetaPhase = seasonPOJO.getMetaPhase();
+		String seasonName = seasonPOJO.getName();
 
 		if (universe == null) {
 			universe = new UniverseDTO();
@@ -81,6 +82,7 @@ WebDataInterface {
 
 		universe.currentDate = dateS;
 		universe.currentSeason = season.intValue();
+		universe.currentSeasonName = seasonName;
 		universe.currentSeasonMetaPhase = seasonMetaPhase.intValue();
 		universe.currentSeasonStartDate = seasonPOJO.getStartDate();
 		universe.currentSeasonStartDateRealYear = seasonPOJO.getStartDateRealYear();

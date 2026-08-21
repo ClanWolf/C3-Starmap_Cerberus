@@ -47,11 +47,11 @@
 			<artifactId>angus-mail</artifactId>
 			<version>${version.jakarta.mail}</version>
 		</dependency>
-		<dependency>
-			<groupId>org.eclipse.angus</groupId>
-			<artifactId>jakarta.mail</artifactId>
-			<version>${version.jakarta.mail}</version>
-		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.eclipse.angus</groupId>-->
+<!--			<artifactId>jakarta.mail</artifactId>-->
+<!--			<version>${version.jakarta.mail}</version>-->
+<!--		</dependency>-->
 		<dependency>
 			<groupId>org.eclipse.angus</groupId>
 			<artifactId>angus-activation</artifactId>

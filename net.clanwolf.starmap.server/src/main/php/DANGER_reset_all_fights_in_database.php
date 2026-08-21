@@ -11,7 +11,7 @@
   * @link     https://www.clanwolf.net
   */
 
-// https://www.clanwolf.net/apps/C3/server/php/dangerzone/DANGER_reset_all_fights_in_database.php
+// https://c3.clanwolf.net/server/php/dangerzone/DANGER_reset_all_fights_in_database.php
 
 error_reporting(E_ALL);
 ini_set("display_errors", 1);

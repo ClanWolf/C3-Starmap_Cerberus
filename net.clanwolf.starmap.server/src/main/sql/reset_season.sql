@@ -18,7 +18,7 @@
 
 set autocommit=0;
 -- --- Reset starting date to new value (in round / Season)
-UPDATE c3_ROUND set round = 1, roundphase = 1, CurrentRoundStartDate = ("3060-06-22 12:00:00"), CurrentRoundStartDateRealTime = ("2023-06-22 12:00:06") where season = 1;
+UPDATE c3_ROUND set round = 1, roundphase = 1, CurrentRoundStartDate = ("3052-05-30 12:00:00"), CurrentRoundStartDateRealTime = ("2026-08-21 12:00:05") where season = 1;
 -- CurrentRoundStartDate:         Das Startdate der Season ist heute (22.06.2023 --> 3060-06-22 12:00:00, also aktueller Kalendertag, nur 3060 mit 12:00:00)
 -- CurrentRoundStartDateRealtime: Das Startdate der Season heute (Realzeit)      --> 2023-06-22 12:00:06 (plus ein paar Sekunden wegen >= )
 
@@ -31,8 +31,8 @@ DELETE FROM c3_ATTACK_CHARACTER; -- where season = 1 over attack          -- TOD
 DELETE FROM c3_ATTACK_VARS; -- where season = 1 over attack               -- TODO_C3 check season
 
 DELETE FROM c3_ATTACK_STATS where seasonId = 1;                           -- Should stats be kept?
-delete from c3_ROLEPLAY_CHARACTER_STATS where seasonId = 1;                   -- Should stats be kept?
-delete from c3_STATS_MWO where seasonId = 1;                                  -- Should stats be kept?
+delete from c3_ROLEPLAY_CHARACTER_STATS where seasonId = 1;               -- Should stats be kept?
+delete from c3_STATS_MWO where seasonId = 1;                              -- Should stats be kept?
 
 delete from c3_DIPLOMACY where seasonId = 1;
 

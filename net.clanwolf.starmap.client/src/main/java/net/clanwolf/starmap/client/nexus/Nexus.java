@@ -95,6 +95,7 @@ public class Nexus {
 	private static int currentRound;
 	private static int currentSeasonMetaPhase;
 	private static String currentDate;
+	private static String currentSeasonName;
 
 	private static long hoursLeftInThisRound;
 	private static long hoursAgeOfThisRound;
@@ -323,6 +324,12 @@ public class Nexus {
 
 	@SuppressWarnings("unused")
 	public static int getCurrentSeason() { return currentSeason; }
+
+	@SuppressWarnings("unused")
+	public static String getCurrentSeasonName() { return currentSeasonName; }
+
+	@SuppressWarnings("unused")
+	public static void setCurrentSeasonName(String v) { currentSeasonName = v; }
 
 	@SuppressWarnings("unused")
 	public static void setCurrentSeasonMetaPhase(int v) { currentSeasonMetaPhase = v; }

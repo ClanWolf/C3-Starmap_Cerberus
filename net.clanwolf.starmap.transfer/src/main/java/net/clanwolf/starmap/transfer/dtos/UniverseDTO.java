@@ -49,6 +49,7 @@ public class UniverseDTO extends Dto {
 	public String lastRoundResultProtocol;
 
 	public Integer currentSeason;
+	public String currentSeasonName;
 	public Integer currentSeasonMetaPhase;
 	public Integer currentRound;
 	public Integer currentRoundPhase;

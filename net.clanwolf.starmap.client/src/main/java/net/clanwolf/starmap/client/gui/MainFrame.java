@@ -549,7 +549,7 @@ public class MainFrame extends Application implements EventHandler<WindowEvent>,
 
 		HashMap<String, ArrayList<Integer>> resourcesToCache = new HashMap<String, ArrayList<Integer>>();
 		resourcesToCache.put("Invasion_Intro.mp4", new ArrayList<>( Arrays.asList(21, 50, 75, 100)));
-		//server_url=https://www.clanwolf.net/apps/C3
+		//server_url=https://c3.clanwolf.net
 		String serverUrl = C3Properties.getProperty(C3PROPS.SERVER_URL);
 
 		for (String res : resourcesToCache.keySet()) {

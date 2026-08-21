@@ -73,7 +73,7 @@ TODO PRIO 2 - Medium:
 TODO PRIO 3 - Long term:
 - Push-To-Talk not working in Discord if C3 client is open
 - Datenbankname im DB online check script einbinden
-- Updating the manual (ongoing): https://www.clanwolf.net/apps/C3/C3_Manual_de.pdf
+- Updating the manual (ongoing): https://c3.clanwolf.net/C3_Manual_de.pdf
 - Web-View of the Starmap
 - Waiting circle animation is off-center
 - Banner at the End of an invasion for each faction
@@ -98,6 +98,10 @@ WATCH OUT FOR WHILE TESTING:
 ----------------------------------------------------------------
 
 VERSIONS
+
+Version 7.5.40 (21.08.2026)
+- Started preparations for PCon 2026
+- Updated dependencies
 
 Version 7.5.32 (08.05.2026)
 - Moved tabled to central cwg database

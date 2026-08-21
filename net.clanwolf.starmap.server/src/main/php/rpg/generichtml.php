@@ -20,7 +20,7 @@
   * localhost/test/generichtml.php?rpid=1&filename=test.png&audio=Decoherence.mp3
   * localhost/test/generichtml.php?rpid=1&video=01.mp4
   *
-  * http://www.clanwolf.net/apps/C3/rpg/genericHtml.php
+  * http://c3.clanwolf.net/rpg/genericHtml.php
   *
   * PHP version 7.2.10
   *

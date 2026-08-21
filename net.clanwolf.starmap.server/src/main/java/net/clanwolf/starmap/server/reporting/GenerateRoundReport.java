@@ -884,7 +884,7 @@ public class GenerateRoundReport {
     }
 
     private void createSeasonHistoryMap(Long seasonId, Long roundId) throws MalformedURLException, URISyntaxException {
-        String seasonHistoryURL = "https://www.clanwolf.net/apps/C3/seasonhistory/S" + seasonId +
+        String seasonHistoryURL = "https://c3.clanwolf.net/seasonhistory/S" + seasonId +
                 "/C3_S" + seasonId + "_R" + roundId + "_map_history.png";
 
         if (urlExists(seasonHistoryURL)) {
@@ -907,7 +907,7 @@ public class GenerateRoundReport {
     }
 
     private String getPlanetImg(StarSystemPOJO starSystemPOJO) {
-        String linkImgPlanet = "https://www.clanwolf.net/apps/C3/static/planets/";
+        String linkImgPlanet = "https://c3.clanwolf.net/static/planets/";
 
         String formatted = String.format("%03d", Integer.valueOf(starSystemPOJO.getSystemImageName()));
         return linkImgPlanet + formatted + ".png";

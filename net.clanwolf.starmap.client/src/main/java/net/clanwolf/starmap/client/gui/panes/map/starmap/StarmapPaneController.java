@@ -642,6 +642,7 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 				Nexus.setCurrentSeasonMetaPhase(boUniverse.currentSeasonMetaPhase);
 				Nexus.setCurrentRound(boUniverse.currentRound);
 				Nexus.setCurrentDate(boUniverse.currentDate);
+				Nexus.setCurrentSeasonName(boUniverse.currentSeasonName);
 
 				ArrayList<Node> nodesToRemove = new ArrayList<>();
 				for (Node n : canvas.getChildren()) {
@@ -1052,6 +1053,7 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 			Nexus.setCurrentSeasonMetaPhase(boUniverse.currentSeasonMetaPhase);
 			Nexus.setCurrentRound(boUniverse.currentRound);
 			Nexus.setCurrentDate(boUniverse.currentDate);
+			Nexus.setCurrentSeasonName(boUniverse.currentSeasonName);
 
 			ArrayList<Line> lines = new ArrayList<>();
 
@@ -1548,16 +1550,6 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 					}
 				}
 
-				if (mapCenteredOnJumpship) {
-					if (currentlyCenteredJumpship != null) {
-						moveMapToJumpship(currentlyCenteredJumpship);
-					}
-				} else {
-					if (Nexus.getHomeworld() != null) {
-						moveMapToPosition(Nexus.getHomeworld());
-					}
-				}
-
 				starMapPane.getChildren().add(canvas);
 
 				Rectangle clip = new Rectangle(StarmapConfig.CLIP_X, StarmapConfig.CLIP_Y);
@@ -1568,6 +1560,16 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 
 				sceneGestures = new StarmapSceneGestures(canvas);
 				addMouseFilters();
+
+				if (mapCenteredOnJumpship) {
+					if (currentlyCenteredJumpship != null) {
+						moveMapToJumpship(currentlyCenteredJumpship);
+					}
+				} else {
+					if (Nexus.getHomeworld() != null) {
+						moveMapToPosition(Nexus.getHomeworld());
+					}
+				}
 
 				canvas.setPaneSystemDetail(paneSystemDetail);
 

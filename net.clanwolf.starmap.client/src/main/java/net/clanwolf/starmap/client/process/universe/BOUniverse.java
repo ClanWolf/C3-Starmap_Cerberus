@@ -62,6 +62,7 @@ public class BOUniverse {
 	public TreeSet<BOJumpship> jumpshipListSorted = null;
 
 	public Integer currentSeason;
+	public String currentSeasonName;
 	public Integer currentSeasonMetaPhase;
 	public Integer currentRound;
 	public Date currentSeasonStartDate;
@@ -230,6 +231,7 @@ public class BOUniverse {
 
 		currentSeason = universeDTO.currentSeason;
 		currentSeasonMetaPhase = universeDTO.currentSeasonMetaPhase;
+		currentSeasonName = universeDTO.currentSeasonName;
 		currentRound = universeDTO.currentRound;
 		currentRoundPhase = universeDTO.currentRoundPhase;
 		currentRoundStartDateTime = universeDTO.currentRoundStartDateTime;
@@ -324,7 +326,9 @@ public class BOUniverse {
 
 				ArrayList<BOJumpship> r = new ArrayList<>(jumpshipBOs.values());
 				r.remove(myJumpshipBO);
-				r.add(myJumpshipBO);
+				if (myJumpshipBO != null) {
+					r.add(myJumpshipBO);
+				}
 				return r;
 			}
 		}

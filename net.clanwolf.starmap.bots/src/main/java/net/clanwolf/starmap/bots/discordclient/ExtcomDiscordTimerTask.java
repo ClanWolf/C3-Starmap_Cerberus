@@ -94,7 +94,7 @@ public class ExtcomDiscordTimerTask extends TimerTask {
 									String header =  "[S" + season + "R" + round + "] " + attackerShortname + " ⚔ " + systemName + " ("+ defenderShortname + ")";
 									String msg = "";
 									//msg += attackerShortname + " greift " + systemName + " ("+ defenderShortname + ") an.\n";
-									msg += "https://www.clanwolf.net/apps/C3/seasonhistory/S1/AttackImages/C3_S" + season + "_R" + round + "_" + attackId + ".png?" + randNum;
+									msg += "https://c3.clanwolf.net/seasonhistory/S1/AttackImages/C3_S" + season + "_R" + round + "_" + attackId + ".png?" + randNum;
 									DiscordBot.createAttackThread(header, msg, season, round);
 								} else {
 									DiscordBot.sendMessageToChannel("Error while inserting attack thread! Check log!");

@@ -48,7 +48,7 @@
 //	private int characters = 0;
 //	private int startLine = 0;
 //
-//	private static final String logURL = "https://www.clanwolf.net/apps/C3/server/log/C3-Server.log.0";
+//	private static final String logURL = "https://C3.clanwolf.net/server/log/C3-Server.log.0";
 //
 //	private Thread clientLogwatcherThread;
 //	private Thread serverLogwatcherThread;

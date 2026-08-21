@@ -176,7 +176,7 @@ public class ForumDatabaseTools {
 			sql += "WHERE threadid=" + threadId;
 			long threadClosed = selectLong(sql, "closed");
 			if (threadClosed == 0) { // thread has not been closed before
-				String logo = "https://www.clanwolf.net/apps/C3/static/logos/factions/banner/Banner_" + winner + ".png";
+				String logo = "https://c3.clanwolf.net/static/logos/factions/banner/Banner_" + winner + ".png";
 				String subject = "Der Kampf um " + system + " ist entschieden.";
 				String text = "";
 				if (winner.equalsIgnoreCase(attacker)) {
@@ -282,14 +282,14 @@ public class ForumDatabaseTools {
 
 		// -------------------------------------------------------------------------------------------------------------
 
-		String attackerLogoLink = "https://www.clanwolf.net/apps/C3/static/logos/factions/" + attacker + ".png";
-		String defenderLogoLink = "https://www.clanwolf.net/apps/C3/static/logos/factions/" + defender + ".png";
+		String attackerLogoLink = "https://c3.clanwolf.net/static/logos/factions/" + attacker + ".png";
+		String defenderLogoLink = "https://c3.clanwolf.net/static/logos/factions/" + defender + ".png";
 		if (systemImageName.length() == 2) {
 			systemImageName = "0" + systemImageName;
 		} else if (systemImageName.length() == 1) {
 			systemImageName = "00" + systemImageName;
 		}
-		String planetImage = "https://www.clanwolf.net/apps/C3/static/planets/" + systemImageName + ".png";
+		String planetImage = "https://c3.clanwolf.net/static/planets/" + systemImageName + ".png";
 
 		String subject = "[R" + round + "] " + attacker + " greift " + system + " (" + defender + ") an";
 		String tickerText = attacker + " greift " + system + " (" + defender + ") an";
@@ -320,10 +320,10 @@ public class ForumDatabaseTools {
 		// -4: IS vs IS
 		if (attackType != null) {
 			text += switch (attackType.intValue()) {
-				case -1 -> "<tr><td align=\"right\" valign=\"top\">[color=#ffffff]Typ:[/color]</td><td align=\"left\" valign=\"top\">[color=#ffffff]Planetare Invasion[/color]<br>(<a href=\"https://www.clanwolf.net/apps/C3/static/scenarios/CWG_S001_var01_v4-PlanetareInvasion_CLAN_vs_IS.png\" target=\"_BLANK\">Clan vs IS</a>)[/color]</td></tr>";
-				case -2 -> "<tr><td align=\"right\" valign=\"top\">[color=#ffffff]Typ:[/color]</td><td align=\"left\" valign=\"top\">[color=#ffffff]Planetare Invasion[/color]<br>(<a href=\"https://www.clanwolf.net/apps/C3/static/scenarios/CWG_S003_var01_v1-PlanetareInvasion_CLAN_vs_CLAN.png\" target=\"_BLANK\">Clan vs Clan)[/color]</td></tr>";
-				case -3 -> "<tr><td align=\"right\" valign=\"top\">[color=#ffffff]Typ:[/color]</td><td align=\"left\" valign=\"top\">[color=#ffffff]Planetare Invasion[/color]<br>(<a href=\"https://www.clanwolf.net/apps/C3/static/scenarios/CWG_S002_var01_v5-PlanetareInvasion_IS_vs_CLAN.png\" target=\"_BLANK\">IS vs Clan)[/color]</td></tr>";
-				case -4 -> "<tr><td align=\"right\" valign=\"top\">[color=#ffffff]Typ:[/color]</td><td align=\"left\" valign=\"top\">[color=#ffffff]Planetare Invasion[/color]<br>(<a href=\"https://www.clanwolf.net/apps/C3/static/scenarios/CWG_S004_var01_v1-PlanetareInvasion_IS_vs_IS.png\" target=\"_BLANK\">IS vs IS)[/color]</td></tr>";
+				case -1 -> "<tr><td align=\"right\" valign=\"top\">[color=#ffffff]Typ:[/color]</td><td align=\"left\" valign=\"top\">[color=#ffffff]Planetare Invasion[/color]<br>(<a href=\"https://c3.clanwolf.net/static/scenarios/CWG_S001_var01_v4-PlanetareInvasion_CLAN_vs_IS.png\" target=\"_BLANK\">Clan vs IS</a>)[/color]</td></tr>";
+				case -2 -> "<tr><td align=\"right\" valign=\"top\">[color=#ffffff]Typ:[/color]</td><td align=\"left\" valign=\"top\">[color=#ffffff]Planetare Invasion[/color]<br>(<a href=\"https://c3.clanwolf.net/static/scenarios/CWG_S003_var01_v1-PlanetareInvasion_CLAN_vs_CLAN.png\" target=\"_BLANK\">Clan vs Clan)[/color]</td></tr>";
+				case -3 -> "<tr><td align=\"right\" valign=\"top\">[color=#ffffff]Typ:[/color]</td><td align=\"left\" valign=\"top\">[color=#ffffff]Planetare Invasion[/color]<br>(<a href=\"https://c3.clanwolf.net/static/scenarios/CWG_S002_var01_v5-PlanetareInvasion_IS_vs_CLAN.png\" target=\"_BLANK\">IS vs Clan)[/color]</td></tr>";
+				case -4 -> "<tr><td align=\"right\" valign=\"top\">[color=#ffffff]Typ:[/color]</td><td align=\"left\" valign=\"top\">[color=#ffffff]Planetare Invasion[/color]<br>(<a href=\"https://c3.clanwolf.net/static/scenarios/CWG_S004_var01_v1-PlanetareInvasion_IS_vs_IS.png\" target=\"_BLANK\">IS vs IS)[/color]</td></tr>";
 				default -> "<tr><td align=\"right\" valign=\"top\">[color=#ffffff]Typ:[/color]</td><td align=\"left\" valign=\"top\">[color=#ffffff]Planetare Invasion[/color]</td></tr>";
 			};
 		} else {
@@ -354,12 +354,12 @@ public class ForumDatabaseTools {
 			text += "FEHLER: Angriffstyp ist leer!" + "<br>";
 		}
 
-		String image_url = "https://www.clanwolf.net/apps/C3/seasonhistory/S" + season + "/C3_S1_R" + round + "_map_history.png";
+		String image_url = "https://c3.clanwolf.net/seasonhistory/S" + season + "/C3_S1_R" + round + "_map_history.png";
 		String image_url_alternative = "https://www.clanwolf.net/images/map.png";
 
 		text += "[/color]<br><br></td><td></td></tr>";
 		text += "<tr><td colspan=\"3\" align=\"center\">";
-		text += "<a href=\"https://www.clanwolf.net/apps/C3/seasonhistory/S" + season + "/starmap.php\" target=\"_BLANK\">";
+		text += "<a href=\"https://c3.clanwolf.net/seasonhistory/S" + season + "/starmap.php\" target=\"_BLANK\">";
 		text += "<img src=\"" + image_url + "\" width=\"400px\" onError=\"this.src=&#39;" + image_url_alternative + "&#39;;this.style.width=&#39;35px&#39;;\">";
 		text += "</a>";
 		text += "</td></tr>";

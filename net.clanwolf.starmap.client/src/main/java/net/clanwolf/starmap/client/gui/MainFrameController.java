@@ -751,7 +751,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 	// setStatusText(Internationalization.getString("C3_Speech_HelpPage").replace("%20", " ") + ".", false);
 	// openTargetPane(infoPane, spokenMessage);
 	//
-	// // Tools.startBrowser("http://www.clanwolf.net/apps/C3/help/index.php");
+	// // Tools.startBrowser("http://c3.clanwolf.net/help/index.php");
 	// }
 
 	// @FXML
@@ -1615,7 +1615,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 							} else if (hours != 0) {
 								timeString = hours + " " + hourString + " " + Internationalization.getString("general_and") + " " + minutes + " " + minuteString + " " + Internationalization.getString("general_age_of_round") + " " + Nexus.getCurrentRound();
 							} else {
-								timeString = minutes + " " + minuteString + " " + Internationalization.getString("general_left_in_round") + " " + Nexus.getCurrentRound() + ".";
+								timeString = minutes + " " + minuteString + " " + Internationalization.getString("general_age_of_round") + " " + Nexus.getCurrentRound() + ".";
 							}
 							timeString = timeString + " (" + java.time.Duration.between(startTime, now).toHours() + "h).";
 						}

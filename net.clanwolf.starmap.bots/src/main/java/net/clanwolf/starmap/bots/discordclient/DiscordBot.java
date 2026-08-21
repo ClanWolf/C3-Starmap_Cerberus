@@ -214,8 +214,8 @@ public class DiscordBot extends ListenerAdapter {
 
 		embed.setColor(Color.RED);
 
-		embed.setImage("https://www.clanwolf.net/apps/C3/static/planets/039.png");
-		embed.setThumbnail("https://www.clanwolf.net/apps/C3/static/logos/factions/FRR.png");
+		embed.setImage("https://c3.clanwolf.net/static/planets/039.png");
+		embed.setThumbnail("https://c3.clanwolf.net/static/logos/factions/FRR.png");
 
 		embed.setFooter("Bot created by person");
 		ch.sendMessageEmbeds(embed.build()).queue();
@@ -341,7 +341,7 @@ public class DiscordBot extends ListenerAdapter {
 				logger.info("Message: " + m.getId() + " - " + log + " :: " + m.getContentRaw());
 
 				long historyDifference = System.currentTimeMillis() - historyRefreshTimestamp;
-				if (m.getContentDisplay().startsWith("https://www.clanwolf.net/apps/C3/seasonhistory/S1/C3_S1_map_animated.gif?")) {
+				if (m.getContentDisplay().startsWith("https://c3.clanwolf.net/seasonhistory/S1/C3_S1_map_animated.gif?")) {
 
 					logger.info("History difference: " + historyDifference);
 
@@ -364,7 +364,7 @@ public class DiscordBot extends ListenerAdapter {
 
 //				if ("Ulric".equals(m.getAuthor().getName())) {
 //					if ((m.getContentDisplay().contains("Runde beendet."))) {
-//						String content = "https://www.clanwolf.net/apps/C3/seasonhistory/S1/C3_S1_map_animated.gif?90185555";
+//						String content = "https://c3.clanwolf.net/seasonhistory/S1/C3_S1_map_animated.gif?90185555";
 //						m.editMessage(content).complete();
 //					}
 //				}
@@ -461,7 +461,7 @@ public class DiscordBot extends ListenerAdapter {
 				Instant time = m.getTimeCreated().toInstant();
 				if (time.isBefore(threshhold2)) {
 					if ("Ulric".equals(m.getAuthor().getName())) {
-						if (!m.getContentDisplay().startsWith("https://www.clanwolf.net/apps/C3/seasonhistory/S1/C3_S1_map_animated.gif?")) {
+						if (!m.getContentDisplay().startsWith("https://c3.clanwolf.net/seasonhistory/S1/C3_S1_map_animated.gif?")) {
 							m.delete().complete();
 						}
 					}
@@ -491,7 +491,7 @@ public class DiscordBot extends ListenerAdapter {
 
 //	public static void main(String[] args) throws Exception {
 //
-//			String content = "https://www.clanwolf.net/apps/C3/seasonhistory/S1/C3_S1_map_animated.gif?43543321";
+//			String content = "https://c3.clanwolf.net/seasonhistory/S1/C3_S1_map_animated.gif?43543321";
 //
 //			int randNum = (int)((Math.random()) * 274 + 10000000);
 //			String[] parts = content.split("\\?");

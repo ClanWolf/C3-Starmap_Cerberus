@@ -314,19 +314,23 @@ public final class Tools {
 
 					Image c3Icon = new Image(Objects.requireNonNull(Tools.class.getResourceAsStream("/icons/C3_Icon2.png")));
 					Image hhIcon = new Image(Objects.requireNonNull(Tools.class.getResourceAsStream("/icons/hammerhead.png")));
+					Image rwIcon = new Image(Objects.requireNonNull(Tools.class.getResourceAsStream("/icons/refusalwar.png")));
 					Graphics2D g2d = finaleImage.createGraphics();
 					g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 					g2d.drawImage(SwingFXUtils.fromFXImage(c3Icon, null), 50, 1850, 100, 100, null);
-					g2d.drawImage(SwingFXUtils.fromFXImage(hhIcon, null), 2350, 1850, 100, 100, null);
+					g2d.drawImage(SwingFXUtils.fromFXImage(rwIcon, null), 2350, 1850, 100, 100, null);
 					//g2d.drawImage(SwingFXUtils.fromFXImage(imageFaction, null), 50,350, 150,150, null);
 
-					String s1 = "C3 / Hammerhead - Season history map";
+					String s1 = "C3 // History map";
 					String s2 = "Season:";
 					String s3 = "Round:";
 					String s4 = "Metaphase:";
 					//String s5 = "User:";
 
-					String sv2 = "" + Nexus.getCurrentSeason();
+					int cSeasonId = Nexus.getCurrentSeason();
+					String cSeasonName = Nexus.getCurrentSeasonName();
+
+					String sv2 = "" + cSeasonName + " (" + cSeasonId + ")";
 					String sv3 = "" + Nexus.getCurrentRound();
 					String sv4 = "" + Nexus.getCurrentSeasonMetaPhase();
 					//String sv5 = Nexus.getCurrentChar().getName() + " (" + Nexus.getCurrentUser().getUserName() + ")";
