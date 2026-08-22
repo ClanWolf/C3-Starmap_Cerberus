@@ -330,7 +330,8 @@ public final class Tools {
 					int cSeasonId = Nexus.getCurrentSeason();
 					String cSeasonName = Nexus.getCurrentSeasonName();
 
-					String sv2 = "" + cSeasonName + " (" + cSeasonId + ")";
+					String sv2 = "" + cSeasonId;
+					String sv2n = "" + cSeasonName;
 					String sv3 = "" + Nexus.getCurrentRound();
 					String sv4 = "" + Nexus.getCurrentSeasonMetaPhase();
 					//String sv5 = Nexus.getCurrentChar().getName() + " (" + Nexus.getCurrentUser().getUserName() + ")";
@@ -352,7 +353,7 @@ public final class Tools {
 					g2d.drawString(sd, 2100, 130);
 
 					g2d.setPaint(Color.GREEN);
-					g2d.drawString(sv2, 200, 170);
+					g2d.drawString(sv2n, 200, 170);
 					g2d.drawString(sv3, 200, 200);
 					g2d.drawString(sv4, 200, 230);
 					//g2d.drawString(sv5, 200, 300);

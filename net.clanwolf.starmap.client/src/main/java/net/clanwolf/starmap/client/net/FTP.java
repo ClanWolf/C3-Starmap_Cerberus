@@ -97,6 +97,7 @@ public class FTP implements IFileTransfer {
 //				logger.info("Port     : " + ftp_port);
 //				logger.info("User     : " + user);
 //				logger.info("Password : " + "****" + password.substring(password.length() - 2));
+//				logger.info("Password : " + password);
 //				logger.info("#########################################################");
 
 				ftpClient.connect(C3Properties.getProperty(C3PROPS.FTP_SERVER), ftp_port);
@@ -247,6 +248,7 @@ public class FTP implements IFileTransfer {
 						ftpClient.makeDirectory(subfolder);
 						ftpClient.storeFile(subfolder + "/" + remoteResultFile, fis);
 					}
+					logger.info("TARGET: " + subfolder + "/" + remoteResultFile);
 				}
 
 				logger.info(ftpClient.getReplyString().trim().replaceAll("(\\r|\\n)", ""));
