@@ -18,6 +18,8 @@ module net.clanwolf.starmap.client {
 	requires org.slf4j;
 	requires javafx.web;
 	requires javafx.media;
+	requires java.net.http;
+	requires com.fasterxml.jackson.databind;
 	//	requires org.apache.commons.io;
 
 	opens net.clanwolf.starmap.client.security to javafx.fxml;

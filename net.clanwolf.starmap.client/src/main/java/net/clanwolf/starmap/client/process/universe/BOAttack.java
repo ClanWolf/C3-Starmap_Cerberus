@@ -26,6 +26,8 @@
  */
 package net.clanwolf.starmap.client.process.universe;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.constants.Constants;
 import org.slf4j.Logger;
@@ -35,7 +37,12 @@ import net.clanwolf.starmap.transfer.dtos.*;
 import net.clanwolf.starmap.transfer.enums.GAMESTATEMODES;
 import net.clanwolf.starmap.transfer.util.Compressor;
 
+import java.io.IOException;
 import java.lang.invoke.MethodHandles;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.List;
 
 public class BOAttack {
@@ -216,5 +223,29 @@ public class BOAttack {
 			return -4L; // IS vs IS
 		}
 		return -1L; // TODO_C3: Sollte nochmal überdacht werden
+	}
+
+	@SuppressWarnings("unused")
+	public String getPCPForFaction(Integer factionId, Integer seasonId, Long attackId) {
+		String pcp = "";
+
+		try {
+			String uri = "https://dg.clanwolf.net/score?seasonid=" + seasonId + "&attackid=" + attackId + "&factionid=" + factionId;
+			HttpClient client = HttpClient.newHttpClient();
+			HttpRequest request = HttpRequest.newBuilder().uri(URI.create(uri)).GET().build();
+			HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+			if (response.statusCode() == 200) {
+				ObjectMapper mapper = new ObjectMapper();
+				JsonNode node = mapper.readTree(response.body());
+				pcp = node.path("sum").asText();
+			} else {
+				logger.error("Error while getting PCP for faction " + factionId + " [" + response.statusCode() + "]");
+			}
+		} catch (Exception e) {
+			logger.error("Error: " + e.getMessage());
+		}
+
+		return pcp;
 	}
 }

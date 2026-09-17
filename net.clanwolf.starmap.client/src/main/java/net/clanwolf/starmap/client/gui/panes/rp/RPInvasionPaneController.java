@@ -453,7 +453,9 @@ public class RPInvasionPaneController extends AbstractC3RolePlayController imple
 
 				y = y - offset;
 
-				btChoice2.setText(rpVar9.getOption2Text());
+				BOAttack att = Nexus.getCurrentAttackOfUser();
+				String pcp_attacker_string = " (PCP " + att.getPCPForFaction(att.getAttackerFactionId(), Nexus.getCurrentSeason(), att.getAttackDTO().getId()) + ")";
+				btChoice2.setText(rpVar9.getOption2Text() + pcp_attacker_string);
 			}
 
 			if (rpVar9.getOption1StoryID() != null) {
@@ -470,7 +472,9 @@ public class RPInvasionPaneController extends AbstractC3RolePlayController imple
 				confirmDefender1.setLayoutX(x3);
 				confirmDefender1.setLayoutY(y);
 
-				btChoice1.setText(rpVar9.getOption1Text());
+				BOAttack att = Nexus.getCurrentAttackOfUser();
+				String pcp_defender_string = " (PCP " + att.getPCPForFaction(att.getDefenderFactionId(), Nexus.getCurrentSeason(), att.getAttackDTO().getId()) + ")";
+				btChoice1.setText(rpVar9.getOption1Text() + pcp_defender_string);
 
 				attackerButtonIcon.setLayoutY(y + 4);
 				//					attackerButtonIcon.setVisible(true);
