@@ -76,7 +76,7 @@ Function .onInstSuccess
     ;                 SMPROGRAMS: $SMPROGRAMS  $\r$\n \
     ;                 Start Menu Folder: $STARTMENU_FOLDER $\r$\n \
     ;                 InstallDirectory: $INSTDIR "
-    ExecShell "open" "https://c3.clanwolf.net/changelog.txt?refresh=true&r=1787354364409"
+    ExecShell "open" "https://c3.clanwolf.net/changelog.txt?refresh=true&r=1789768592545"
     ExecShell "open" "$INSTDIR\bin\C3-Starmap_Cerberus_noWin.cmd" "" SW_HIDE
 FunctionEnd
 
@@ -509,7 +509,7 @@ Section "Start Menu Shortcuts"
 
 	CreateShortcut "$SMPROGRAMS\C3-Client\C3-Client.lnk" "$INSTDIR\bin\C3-Starmap_Cerberus_noWin.cmd" "" "$INSTDIR\c3.ico" 0 SW_SHOWMINIMIZED
 	CreateShortcut "$SMPROGRAMS\C3-Client\C3-Client (Console).lnk" "$INSTDIR\bin\C3-Starmap_Cerberus_win.cmd" "" "$INSTDIR\c3.ico" 0 SW_SHOWNORMAL
-	CreateShortcut "$SMPROGRAMS\C3-Client\Changelog.lnk" "https://c3.clanwolf.net/changelog.txt?refresh=true&r=1787354364492" "" "" 0
+	CreateShortcut "$SMPROGRAMS\C3-Client\Changelog.lnk" "https://c3.clanwolf.net/changelog.txt?refresh=true&r=1789768592621" "" "" 0
 	; CreateShortCut "$SMPROGRAMS\C3-Client\Remove.lnk" "$INSTDIR\Uninstall.exe" "" "$INSTDIR\c3.ico" 0
 SectionEnd
 

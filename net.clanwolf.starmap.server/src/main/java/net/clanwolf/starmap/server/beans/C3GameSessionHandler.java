@@ -577,12 +577,26 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 							attack.setScoreAttackerVictories(3L);
 
 							String planet = starSystem.getName();
+
+							// Save VictoryPoints (initially for PCon2026)
+							ScorePOJO scorePOJO = new ScorePOJO();
+							scorePOJO.setAttackId(attack.getId());
+							scorePOJO.setFactionId(attack.getFactionID_Winner());
+							scorePOJO.setSeasonId(ServerNexus.currentSeason);
+							scorePOJO.setDescription("Attack on " + starSystem.getName() + ".");
+							if (starSystem.getMainPlanet()) {
+								scorePOJO.setVp(75L);
+							} else {
+								scorePOJO.setVp(25L);
+							}
+							ScoreDAO scoreDAO = ScoreDAO.getInstance();
+							scoreDAO.save(sessionId, scorePOJO);
+
 							FactionPOJO winnerFaction = daoFaction.findById(sessionId, jpWinner.getJumpshipFactionID());
 							ServerNexus.getEci().sendExtCom("Invasion of " + planet + " has been decided. " + winnerFaction.getShortName() + " conquered the system!", "en", true, true, true);
 							ServerNexus.getEci().sendExtCom("Angriff auf " + planet + " wurde entschieden. " + winnerFaction.getShortName() + " hat das System erobert!", "de", true, true, true);
 
 							unitXP = Constants.JUMPSHIP_XP_ATTACK_VICTORY;
-
 						} else if (rpPojo.getDefenderWins()) {
 							attack.setFactionID_Winner(attack.getFactionID_Defender());
 

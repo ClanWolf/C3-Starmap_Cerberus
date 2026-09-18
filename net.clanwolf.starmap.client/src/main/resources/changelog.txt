@@ -99,6 +99,8 @@ WATCH OUT FOR WHILE TESTING:
 
 VERSIONS
 
+SUCKit einbauen
+
 Version 7.5.40 (21.08.2026)
 - Started preparations for PCon 2026
 - Updated dependencies
