@@ -58,11 +58,16 @@ public class FTP implements IFileTransfer {
 		this.ftptype = type;
 	}
 
+	public FTP(C3FTPTYPES type, boolean testconnect) throws Exception {
+		this.ftptype = type;
+		connect(true);
+	}
+
 	public void connect() throws Exception {
 		connect(false);
 	}
 
-	public void connect(boolean test) throws Exception {
+	private void connect(boolean test) throws Exception {
 		ftpClient = new FTPClient();
 		ftpClient.setControlEncoding("UTF-8");
 

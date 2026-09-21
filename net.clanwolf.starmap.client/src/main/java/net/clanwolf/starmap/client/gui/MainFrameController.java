@@ -2828,48 +2828,22 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		// Add values to the property file in case they are not present
 		// Do not change them if they are present
 
-		// encrypted
-		//ftp_password=DJ9G4ix1bYTy/K5QmR8jdQ==
-		//ftp_password_logupload=AsdSqD58lmfkL7oyS+oenQ==
-		//ftp_password_historyupload=ipmMIwmjxlpI1s7JJ1Ei6g==
-
 		if (C3Properties.getProperty(C3PROPS.FTP_PORT).equals("unknown") || C3Properties.getProperty(C3PROPS.FTP_PORT).equals("")) {
 			C3Properties.setProperty(C3PROPS.FTP_PORT, "21", true);
 		}
-		if (C3Properties.getProperty(C3PROPS.FTP_USER).equals("unknown") || C3Properties.getProperty(C3PROPS.FTP_USER).equals("")) {
-			//C3Properties.setProperty(C3PROPS.FTP_USER, "c3_client", true);
-			C3Properties.setProperty(C3PROPS.FTP_USER, getFTPCredentials("ftp_user"), true);
-		}
-		if (C3Properties.getProperty(C3PROPS.FTP_USER_LOGUPLOAD).equals("unknown") || C3Properties.getProperty(C3PROPS.FTP_USER_LOGUPLOAD).equals("")) {
-			//C3Properties.setProperty(C3PROPS.FTP_USER_LOGUPLOAD, "c3_client_logupload", true);
-			C3Properties.setProperty(C3PROPS.FTP_USER_LOGUPLOAD, getFTPCredentials("ftp_user_logupload"), true);
-		}
-		if (C3Properties.getProperty(C3PROPS.FTP_USER_HISTORYUPLOAD).equals("unknown") || C3Properties.getProperty(C3PROPS.FTP_USER_HISTORYUPLOAD).equals("")) {
-			//C3Properties.setProperty(C3PROPS.FTP_USER_HISTORYUPLOAD, "c3_client_historyupload", true);
-			C3Properties.setProperty(C3PROPS.FTP_USER_HISTORYUPLOAD, getFTPCredentials("ftp_user_historyupload"), true);
-		}
-		if (C3Properties.getProperty(C3PROPS.FTP_PASSWORD).equals("unknown") || C3Properties.getProperty(C3PROPS.FTP_PASSWORD).equals("")) {
-			//C3Properties.setProperty(C3PROPS.FTP_PASSWORD, "DJ9G4ix1bYTy/K5QmR8jdQ==", true, false);
-			C3Properties.setProperty(C3PROPS.FTP_PASSWORD, getFTPCredentials("ftp_password"), true, false);
-		}
-		if (C3Properties.getProperty(C3PROPS.FTP_PASSWORD_LOGUPLOAD).equals("unknown") || C3Properties.getProperty(C3PROPS.FTP_PASSWORD_LOGUPLOAD).equals("")) {
-			//C3Properties.setProperty(C3PROPS.FTP_PASSWORD_LOGUPLOAD, "AsdSqD58lmfkL7oyS+oenQ==", true, false);
-			C3Properties.setProperty(C3PROPS.FTP_PASSWORD_LOGUPLOAD, getFTPCredentials("ftp_password_logupload"), true, false);
-		}
-		if (C3Properties.getProperty(C3PROPS.FTP_PASSWORD_HISTORYUPLOAD).equals("unknown") || C3Properties.getProperty(C3PROPS.FTP_PASSWORD_HISTORYUPLOAD).equals("")) {
-			//C3Properties.setProperty(C3PROPS.FTP_PASSWORD_HISTORYUPLOAD, "ipmMIwmjxlpI1s7JJ1Ei6g==", true, false);
-			C3Properties.setProperty(C3PROPS.FTP_PASSWORD_HISTORYUPLOAD, getFTPCredentials("ftp_password_historyupload"), true, false);
-		}
+		C3Properties.setProperty(C3PROPS.FTP_USER, getFTPCredentials("ftp_user"), true);
+		C3Properties.setProperty(C3PROPS.FTP_USER_LOGUPLOAD, getFTPCredentials("ftp_user_logupload"), true);
+		C3Properties.setProperty(C3PROPS.FTP_USER_HISTORYUPLOAD, getFTPCredentials("ftp_user_historyupload"), true);
+		C3Properties.setProperty(C3PROPS.FTP_PASSWORD, getFTPCredentials("ftp_password"), true, false);
+		C3Properties.setProperty(C3PROPS.FTP_PASSWORD_LOGUPLOAD, getFTPCredentials("ftp_password_logupload"), true, false);
+		C3Properties.setProperty(C3PROPS.FTP_PASSWORD_HISTORYUPLOAD, getFTPCredentials("ftp_password_historyupload"), true, false);
 
 		if (true) {
 			try {
 				FTP ftpClient = null;
-				ftpClient = new FTP(C3FTPTYPES.FTP_DEFAULT);
-				ftpClient.connect(true);
-				ftpClient = new FTP(C3FTPTYPES.FTP_LOGUPLOAD);
-				ftpClient.connect(true);
-				ftpClient = new FTP(C3FTPTYPES.FTP_HISTORYUPLOAD);
-				ftpClient.connect(true);
+				ftpClient = new FTP(C3FTPTYPES.FTP_DEFAULT, true);
+				ftpClient = new FTP(C3FTPTYPES.FTP_LOGUPLOAD, true);
+				ftpClient = new FTP(C3FTPTYPES.FTP_HISTORYUPLOAD, true);
 			} catch (Exception e) {
 				logger.error("Error connecting to FTP");
 			}

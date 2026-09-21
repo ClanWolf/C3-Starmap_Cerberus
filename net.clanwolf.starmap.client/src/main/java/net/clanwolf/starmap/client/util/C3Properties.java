@@ -269,6 +269,10 @@ public class C3Properties {
 		}
 	}
 
+	public static String encryptString(String v) {
+		return encrypt(v);
+	}
+
 	/**
 	 * Encrypts a string
 	 *

@@ -49,7 +49,7 @@ VERSIONS
 
 SUCKit einbauen
 
-Version 7.5.44 (21.09.2026)
+Version 7.5.46 (21.09.2026)
 - Added Score table (PCP, VP) [PCon 2026]
 - Updated dependencies
 

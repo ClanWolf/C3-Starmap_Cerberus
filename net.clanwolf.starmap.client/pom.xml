@@ -385,6 +385,10 @@
 								<argument>${project.build.directory}/modules</argument>
 								<argument>--module</argument>
 								<argument>${moduleName}/${mainClass}</argument>
+								<argument>--add-opens</argument>
+								<argument>java.base/java.lang=ALL-UNNAMED</argument>
+								<argument>--enable-native-access=ALL-UNNAMED,javafx.graphics,javafx.media,javafx.base</argument>
+								<argument>-Djavafx.media.log=OFF</argument>
 							</arguments>
 						</configuration>
 					</execution>
