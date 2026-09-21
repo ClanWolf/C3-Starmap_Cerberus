@@ -26,6 +26,7 @@
  */
 package net.clanwolf.starmap.client.gui;
 
+import com.google.gson.Gson;
 import javafx.animation.*;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -54,6 +55,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.util.Pair;
 import net.clanwolf.starmap.client.action.*;
+import net.clanwolf.starmap.client.enums.C3FTPTYPES;
 import net.clanwolf.starmap.client.enums.C3MESSAGERESULTS;
 import net.clanwolf.starmap.client.enums.C3MESSAGES;
 import net.clanwolf.starmap.client.gui.messagepanes.C3Message;
@@ -76,6 +78,9 @@ import net.clanwolf.starmap.client.gui.panes.usereditor.UsereditorPane;
 import net.clanwolf.starmap.client.gui.panes.userinfo.UserInfoPane;
 import net.clanwolf.starmap.client.gui.popuppanes.C3MedalPane;
 import net.clanwolf.starmap.client.gui.popuppanes.C3PopupPane;
+import net.clanwolf.starmap.client.mwo.CheckClipboardForMwoApi;
+import net.clanwolf.starmap.client.net.FTP;
+import net.clanwolf.starmap.client.net.HTTP;
 import net.clanwolf.starmap.client.net.Server;
 import net.clanwolf.starmap.client.nexus.Nexus;
 import net.clanwolf.starmap.client.process.login.Login;
@@ -92,13 +97,17 @@ import net.clanwolf.starmap.transfer.dtos.UserDTO;
 import net.clanwolf.starmap.transfer.enums.MEDALS;
 import net.clanwolf.starmap.transfer.enums.POPUPS;
 import net.clanwolf.starmap.transfer.enums.PRIVILEGES;
+import net.clanwolf.starmap.transfer.mwo.MWOMatchResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.invoke.MethodHandles;
 import java.net.InetAddress;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -2774,6 +2783,22 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		}
 	}
 
+	public static String getFTPCredentials(String key) {
+		final Properties auth = new Properties();
+		try {
+			final String authFileName = "auth.properties";
+			InputStream inputStream = MainFrameController.class.getClassLoader().getResourceAsStream(authFileName);
+			if (inputStream != null) {
+				auth.load(inputStream);
+			} else {
+				throw new FileNotFoundException("Auth-Property file '" + authFileName + "' not found in classpath.");
+			}
+		} catch (IOException ioe) {
+			ioe.printStackTrace();
+		}
+		return auth.getProperty(key);
+	}
+
 	/**
 	 * Here all the actions go in that need to be performed once the client is started up and showing
 	 */
@@ -2812,22 +2837,46 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 			C3Properties.setProperty(C3PROPS.FTP_PORT, "21", true);
 		}
 		if (C3Properties.getProperty(C3PROPS.FTP_USER).equals("unknown") || C3Properties.getProperty(C3PROPS.FTP_USER).equals("")) {
-			C3Properties.setProperty(C3PROPS.FTP_USER, "c3_client", true);
+			//C3Properties.setProperty(C3PROPS.FTP_USER, "c3_client", true);
+			C3Properties.setProperty(C3PROPS.FTP_USER, getFTPCredentials("ftp_user"), true);
 		}
 		if (C3Properties.getProperty(C3PROPS.FTP_USER_LOGUPLOAD).equals("unknown") || C3Properties.getProperty(C3PROPS.FTP_USER_LOGUPLOAD).equals("")) {
-			C3Properties.setProperty(C3PROPS.FTP_USER_LOGUPLOAD, "c3_client_logupload", true);
+			//C3Properties.setProperty(C3PROPS.FTP_USER_LOGUPLOAD, "c3_client_logupload", true);
+			C3Properties.setProperty(C3PROPS.FTP_USER_LOGUPLOAD, getFTPCredentials("ftp_user_logupload"), true);
 		}
 		if (C3Properties.getProperty(C3PROPS.FTP_USER_HISTORYUPLOAD).equals("unknown") || C3Properties.getProperty(C3PROPS.FTP_USER_HISTORYUPLOAD).equals("")) {
-			C3Properties.setProperty(C3PROPS.FTP_USER_HISTORYUPLOAD, "c3_client_historyupload", true);
+			//C3Properties.setProperty(C3PROPS.FTP_USER_HISTORYUPLOAD, "c3_client_historyupload", true);
+			C3Properties.setProperty(C3PROPS.FTP_USER_HISTORYUPLOAD, getFTPCredentials("ftp_user_historyupload"), true);
 		}
 		if (C3Properties.getProperty(C3PROPS.FTP_PASSWORD).equals("unknown") || C3Properties.getProperty(C3PROPS.FTP_PASSWORD).equals("")) {
-			C3Properties.setProperty(C3PROPS.FTP_PASSWORD, "DJ9G4ix1bYTy/K5QmR8jdQ==", true, false);
+			//C3Properties.setProperty(C3PROPS.FTP_PASSWORD, "DJ9G4ix1bYTy/K5QmR8jdQ==", true, false);
+			C3Properties.setProperty(C3PROPS.FTP_PASSWORD, getFTPCredentials("ftp_password"), true, false);
 		}
 		if (C3Properties.getProperty(C3PROPS.FTP_PASSWORD_LOGUPLOAD).equals("unknown") || C3Properties.getProperty(C3PROPS.FTP_PASSWORD_LOGUPLOAD).equals("")) {
-			C3Properties.setProperty(C3PROPS.FTP_PASSWORD_LOGUPLOAD, "AsdSqD58lmfkL7oyS+oenQ==", true, false);
+			//C3Properties.setProperty(C3PROPS.FTP_PASSWORD_LOGUPLOAD, "AsdSqD58lmfkL7oyS+oenQ==", true, false);
+			C3Properties.setProperty(C3PROPS.FTP_PASSWORD_LOGUPLOAD, getFTPCredentials("ftp_password_logupload"), true, false);
 		}
 		if (C3Properties.getProperty(C3PROPS.FTP_PASSWORD_HISTORYUPLOAD).equals("unknown") || C3Properties.getProperty(C3PROPS.FTP_PASSWORD_HISTORYUPLOAD).equals("")) {
-			C3Properties.setProperty(C3PROPS.FTP_PASSWORD_HISTORYUPLOAD, "ipmMIwmjxlpI1s7JJ1Ei6g==", true, false);
+			//C3Properties.setProperty(C3PROPS.FTP_PASSWORD_HISTORYUPLOAD, "ipmMIwmjxlpI1s7JJ1Ei6g==", true, false);
+			C3Properties.setProperty(C3PROPS.FTP_PASSWORD_HISTORYUPLOAD, getFTPCredentials("ftp_password_historyupload"), true, false);
+		}
+
+		if (true) {
+			try {
+				FTP ftpClient = null;
+				ftpClient = new FTP(C3FTPTYPES.FTP_DEFAULT);
+				ftpClient.connect(true);
+				ftpClient = new FTP(C3FTPTYPES.FTP_LOGUPLOAD);
+				ftpClient.connect(true);
+				ftpClient = new FTP(C3FTPTYPES.FTP_HISTORYUPLOAD);
+				ftpClient.connect(true);
+			} catch (Exception e) {
+				logger.error("Error connecting to FTP");
+			}
+
+			String directDownloadUrl = C3Properties.getProperty(C3PROPS.AUTOMATIC_DOWNLOAD_CLIENT_URL);
+			directDownloadUrl = directDownloadUrl.replace("##v##", Nexus.getLastAvailableClientVersion());
+			logger.info("DEBUG: Potential new version download url: " + directDownloadUrl);
 		}
 
 		C3SoundPlayer.getSamples();

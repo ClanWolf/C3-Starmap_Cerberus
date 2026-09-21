@@ -243,6 +243,8 @@
 											⏭
 										</td>
 									</tr>
+								</table>
+								<table width='100%'>
 									<tr>
 <?php
 	$dir = dirname(__FILE__);
@@ -286,9 +288,11 @@
 						</tr>
 					</table>
 				</td>
+				<!--
 				<td width='30%'rowspan='2' align='center'>
 					<div id='myContainer'></div>
 				</td>
+				-->
 			</tr>
 			<tr>
 				<td width='70%' align='center' valign='top'>

@@ -75,50 +75,62 @@ public class ScorePOJO extends Pojo {
 		this.id = id;
 	}
 
+	@SuppressWarnings("unused")
 	public Long getSeasonId() {
 		return seasonId;
 	}
 
+	@SuppressWarnings("unused")
 	public void setSeasonId(Long seasonId) {
 		this.seasonId = seasonId;
 	}
 
+	@SuppressWarnings("unused")
 	public Long getFactionId() {
 		return factionId;
 	}
 
+	@SuppressWarnings("unused")
 	public void setFactionId(Long factionId) {
 		this.factionId = factionId;
 	}
 
+	@SuppressWarnings("unused")
 	public Long getAttackId() {
 		return attackId;
 	}
 
+	@SuppressWarnings("unused")
 	public void setAttackId(Long attackId) {
 		this.attackId = attackId;
 	}
 
+	@SuppressWarnings("unused")
 	public String getDescription() {
 		return description;
 	}
 
+	@SuppressWarnings("unused")
 	public void setDescription(String description) {
 		this.description = description;
 	}
 
+	@SuppressWarnings("unused")
 	public Long getPcp() {
 		return pcp;
 	}
 
+	@SuppressWarnings("unused")
 	public void setPcp(Long pcp) {
 		this.pcp = pcp;
 	}
 
+	@SuppressWarnings("unused")
 	public Long getVp() {
 		return vp;
 	}
 
+	@SuppressWarnings("unused")
 	public void setVp(Long vp) {
 		this.vp = vp;
 	}

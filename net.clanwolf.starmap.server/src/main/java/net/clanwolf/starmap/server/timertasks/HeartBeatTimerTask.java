@@ -140,20 +140,7 @@ public class HeartBeatTimerTask extends TimerTask {
 				WebDataInterface.loadAttacks(seasonId);
 				WebDataInterface.loadJumpshipsAndRoutePoints();
 				WebDataInterface.loadDiplomacy(seasonId);
-
-	//			logger.info("Calling list creation methods...");
-	// //			logger.info("Calling list creation (Factions)...");
-	//			WebDataInterface.createSystemList(SystemListTypes.Factions);
-	// //			logger.info("Calling list creation (HH_StarSystems)...");
-	//			WebDataInterface.createSystemList(SystemListTypes.HH_StarSystems);
-	// //			logger.info("Calling list creation (HH_Attacks)...");
-	//			WebDataInterface.createSystemList(SystemListTypes.HH_Attacks);
-	// //			logger.info("Calling list creation (HH_Jumpships)...");
-	//			WebDataInterface.createSystemList(SystemListTypes.HH_Jumpships);
-	// //			logger.info("Calling list creation (HH_Routepoints)...");
-	//			WebDataInterface.createSystemList(SystemListTypes.HH_Routepoints);
-	// //			logger.info("Calling list creation (CM_StarSystems)...");
-	// //			WebDataInterface.createSystemList(SystemListTypes.CM_StarSystems);
+//				WebDataInterface.loadScoreReference(seasonId);
 
 				if (informClients || ServerNexus.sendUniverseToClients) {
 					// Broadcast new version of the universe to the clients

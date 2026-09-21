@@ -344,9 +344,11 @@ public class BOUniverse {
 	}
 
 	public BOJumpship getJumpshipByID(Long id){
-		for(BOJumpship ship : Nexus.getBoUniverse().getJumpshipList()){
-			if(ship.getJumpshipId().equals(id))
-				return ship;
+		if (Nexus.getBoUniverse().getJumpshipList() != null) {
+			for (BOJumpship ship : Nexus.getBoUniverse().getJumpshipList()) {
+				if (ship.getJumpshipId().equals(id))
+					return ship;
+			}
 		}
 		return null;
 	}

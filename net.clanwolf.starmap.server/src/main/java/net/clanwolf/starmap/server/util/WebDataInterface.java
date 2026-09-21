@@ -39,6 +39,7 @@ import java.lang.invoke.MethodHandles;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Queries the database for starsystem data
@@ -194,6 +195,19 @@ WebDataInterface {
 		}
 		//		return jsonString.toString();
 	}
+
+//	public static synchronized void loadScoreReference(Long seasonId) {
+//		universe.scoreReferenceMap.clear();
+//
+//		ScoreReferenceDAO dao = ScoreReferenceDAO.getInstance();
+//		ArrayList<ScoreReferencePOJO> pojoList = dao.getScoreReferencesForSeason(seasonId);
+//
+//		HashMap<String, String> scoreReferenceMap = new HashMap<>();
+//		for (ScoreReferencePOJO scoreReference : pojoList) {
+//			scoreReferenceMap.put(scoreReference.getKey(), scoreReference.getValue());
+//		}
+//		universe.scoreReferenceMap = scoreReferenceMap;
+//	}
 
 	public static synchronized void loadDiplomacy(Long seasonId) {
 		universe.diplomacy.clear();

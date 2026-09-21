@@ -24,37 +24,86 @@
  * Copyright (c) 2001-2026, ClanWolf.net                            |
  * ---------------------------------------------------------------- |
  */
-package net.clanwolf.starmap.transfer.dtos;
+package net.clanwolf.starmap.server.persistence.pojos;
 
-import net.clanwolf.starmap.transfer.Dto;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import jakarta.persistence.*;
+import net.clanwolf.starmap.server.persistence.Pojo;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
+import static jakarta.persistence.GenerationType.IDENTITY;
 
-public class UniverseDTO extends Dto {
-	public HashMap<Long, StarSystemDataDTO> starSystems = new HashMap<>();
-	public HashMap<String, FactionDTO> factions = new HashMap<>();
-	public ArrayList<DiplomacyDTO> diplomacy = new ArrayList<>();
-	public HashMap<String, JumpshipDTO> jumpships = new HashMap<>();
-	public ArrayList<AttackDTO> attacks = new ArrayList<>();
-	public ArrayList<RoutePointDTO> routepoints = new ArrayList<>();
-	public HashMap<Long, RolePlayStoryDTO> attackStorys = new HashMap<>();
-	//public HashMap<String, String> scoreReferenceMap = new HashMap<>();
+@JsonIdentityInfo(
+		scope= ScoreReferencePOJO.class,
+		generator= ObjectIdGenerators.PropertyGenerator.class,
+		property = "id")
+@Entity
+@Table(name = "c3_SCORE_REFERENCE", catalog = "cwg")
+public class ScoreReferencePOJO extends Pojo {
 
-	public Date currentSeasonStartDate;
-	public Long currentSeasonStartDateRealYear;
-	public LocalDateTime currentRoundStartDateTime;
-	public LocalDateTime currentRoundEndDateTime;
-	public String lastRoundResultProtocol;
+	@Id
+	@GeneratedValue(strategy = IDENTITY)
+	@Column(name = "ID")
+	private Long id;
 
-	public Integer currentSeason;
-	public String currentSeasonName;
-	public Integer currentSeasonMetaPhase;
-	public Integer currentRound;
-	public Integer currentRoundPhase;
-	public String currentDate;
-	public Double numberOfDaysInRound;
-	public Integer maxNumberOfRoundsForSeason;
+	@Column(name = "SeasonId")
+	private Long seasonId;
+
+	@Column(name = "Key")
+	private String key;
+
+	@Column(name = "Value")
+	private String value;
+
+	@Column(name = "Description")
+	private String description;
+
+	public Long getId() {
+		return id;
+	}
+
+	@Override
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	@SuppressWarnings("unused")
+	public Long getSeasonId() {
+		return seasonId;
+	}
+
+	@SuppressWarnings("unused")
+	public void setSeasonId(Long seasonId) {
+		this.seasonId = seasonId;
+	}
+
+	@SuppressWarnings("unused")
+	public String getKey() {
+		return key;
+	}
+
+	@SuppressWarnings("unused")
+	public void setKey(String key) {
+		this.key = key;
+	}
+
+	@SuppressWarnings("unused")
+	public String getValue() {
+		return value;
+	}
+
+	@SuppressWarnings("unused")
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	@SuppressWarnings("unused")
+	public String getDescription() {
+		return description;
+	}
+
+	@SuppressWarnings("unused")
+	public void setDescription(String description) {
+		this.description = description;
+	}
 }

@@ -28,33 +28,58 @@ package net.clanwolf.starmap.transfer.dtos;
 
 import net.clanwolf.starmap.transfer.Dto;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
+public class ScoreReferenceDTO extends Dto {
+	private Long id;
+	private Long seasonId;
+	private String key;
+	private String value;
+	private String description;
 
-public class UniverseDTO extends Dto {
-	public HashMap<Long, StarSystemDataDTO> starSystems = new HashMap<>();
-	public HashMap<String, FactionDTO> factions = new HashMap<>();
-	public ArrayList<DiplomacyDTO> diplomacy = new ArrayList<>();
-	public HashMap<String, JumpshipDTO> jumpships = new HashMap<>();
-	public ArrayList<AttackDTO> attacks = new ArrayList<>();
-	public ArrayList<RoutePointDTO> routepoints = new ArrayList<>();
-	public HashMap<Long, RolePlayStoryDTO> attackStorys = new HashMap<>();
-	//public HashMap<String, String> scoreReferenceMap = new HashMap<>();
+	public Long getId() {
+		return id;
+	}
 
-	public Date currentSeasonStartDate;
-	public Long currentSeasonStartDateRealYear;
-	public LocalDateTime currentRoundStartDateTime;
-	public LocalDateTime currentRoundEndDateTime;
-	public String lastRoundResultProtocol;
+	public void setId(Long id) {
+		this.id = id;
+	}
 
-	public Integer currentSeason;
-	public String currentSeasonName;
-	public Integer currentSeasonMetaPhase;
-	public Integer currentRound;
-	public Integer currentRoundPhase;
-	public String currentDate;
-	public Double numberOfDaysInRound;
-	public Integer maxNumberOfRoundsForSeason;
+	@SuppressWarnings("unused")
+	public Long getSeasonId() {
+		return seasonId;
+	}
+
+	@SuppressWarnings("unused")
+	public void setSeasonId(Long seasonId) {
+		this.seasonId = seasonId;
+	}
+
+	@SuppressWarnings("unused")
+	public String getKey() {
+		return key;
+	}
+
+	@SuppressWarnings("unused")
+	public void setKey(String key) {
+		this.key = key;
+	}
+
+	@SuppressWarnings("unused")
+	public String getValue() {
+		return value;
+	}
+
+	@SuppressWarnings("unused")
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	@SuppressWarnings("unused")
+	public String getDescription() {
+		return description;
+	}
+
+	@SuppressWarnings("unused")
+	public void setDescription(String description) {
+		this.description = description;
+	}
 }

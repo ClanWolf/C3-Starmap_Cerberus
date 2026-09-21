@@ -75,8 +75,8 @@ public class Server {
 			URI uri = new URI(serverURL + "server/php/C3-LatestClientVersion.php");
 			URL url = uri.toURL();
 			value = new String(HTTP.get(url));
-//			logger.info("Connection URL: " + url);
-//			logger.info("Connection Result: " + value);
+			logger.info("Version check connection URL: " + url);
+			logger.info("Version check connection Result: " + value);
 		} catch (IOException | URISyntaxException e) {
 			logger.error(null, e);
 		}

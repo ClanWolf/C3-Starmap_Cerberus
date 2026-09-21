@@ -80,6 +80,8 @@ import java.net.URL;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static java.lang.Thread.sleep;
+
 /**
  * @author Undertaker
  */
@@ -158,6 +160,9 @@ public class RPInvasionPaneController extends AbstractC3RolePlayController imple
 	private ImageView ivStatic, ivForumLink, ivDie1, ivDie2;
 	@FXML
 	private Pane paneMapDice, paneVetoMap;
+
+	Thread updatePCPValueAttacker = null;
+	Thread updatePCPValueDefender = null;
 
 	public RPInvasionPaneController() {
 	}
@@ -453,9 +458,26 @@ public class RPInvasionPaneController extends AbstractC3RolePlayController imple
 
 				y = y - offset;
 
-				BOAttack att = Nexus.getCurrentAttackOfUser();
-				String pcp_defender_string = " (PCP " + att.getPCPForFaction(att.getDefenderFactionId(), Nexus.getBoUniverse().currentSeason, att.getAttackDTO().getId()) + ")";
-				btChoice2.setText(rpVar9.getOption2Text() + pcp_defender_string);
+				if (updatePCPValueDefender == null) {
+					Thread updatePCPValueDefender = new Thread(() -> {
+						while(true) {
+							Platform.runLater(() -> {
+								BOAttack att = Nexus.getCurrentAttackOfUser();
+								String pcp_defender_string = " (PCP " + att.getPCPForFaction(att.getDefenderFactionId(), Nexus.getBoUniverse().currentSeason, att.getAttackDTO().getId()) + ")";
+								btChoice2.setText(rpVar9.getOption2Text() + pcp_defender_string);
+								btChoice2.setText(RPVarReplacer_DE.replaceVars(btChoice2.getText()));
+							});
+							try {
+								sleep(2000);
+							} catch (Exception ex) {
+								logger.error("Sleep exception in updating PCP (Attacker)", ex);
+							}
+						}
+					});
+					updatePCPValueDefender.setDaemon(true);
+					updatePCPValueDefender.start();
+				}
+
 			}
 
 			if (rpVar9.getOption1StoryID() != null) {
@@ -472,9 +494,25 @@ public class RPInvasionPaneController extends AbstractC3RolePlayController imple
 				confirmDefender1.setLayoutX(x3);
 				confirmDefender1.setLayoutY(y);
 
-				BOAttack att = Nexus.getCurrentAttackOfUser();
-				String pcp_attacker_string = " (PCP " + att.getPCPForFaction(att.getAttackerFactionId(), Nexus.getBoUniverse().currentSeason, att.getAttackDTO().getId()) + ")";
-				btChoice1.setText(rpVar9.getOption1Text() + pcp_attacker_string);
+				if (updatePCPValueAttacker == null) {
+					Thread updatePCPValueAttacker = new Thread(() -> {
+						while(true) {
+							Platform.runLater(() -> {
+								BOAttack att = Nexus.getCurrentAttackOfUser();
+								String pcp_attacker_string = " (PCP " + att.getPCPForFaction(att.getAttackerFactionId(), Nexus.getBoUniverse().currentSeason, att.getAttackDTO().getId()) + ")";
+								btChoice1.setText(rpVar9.getOption1Text() + pcp_attacker_string);
+								btChoice1.setText(RPVarReplacer_DE.replaceVars(btChoice1.getText()));
+							});
+							try {
+								sleep(2000);
+							} catch (Exception ex) {
+								logger.error("Sleep exception in updating PCP (Attacker)", ex);
+							}
+						}
+					});
+					updatePCPValueAttacker.setDaemon(true);
+					updatePCPValueAttacker.start();
+				}
 
 				attackerButtonIcon.setLayoutY(y + 4);
 				//					attackerButtonIcon.setVisible(true);

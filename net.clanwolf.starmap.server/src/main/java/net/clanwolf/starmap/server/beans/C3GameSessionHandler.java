@@ -55,10 +55,7 @@ import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.lang.invoke.MethodHandles;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Random;
-import java.util.Timer;
+import java.util.*;
 import java.util.concurrent.CountDownLatch;
 
 import static net.clanwolf.starmap.constants.Constants.*;
@@ -584,10 +581,21 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 							scorePOJO.setFactionId(attack.getFactionID_Winner());
 							scorePOJO.setSeasonId(ServerNexus.currentSeason);
 							scorePOJO.setDescription("Attack on " + starSystem.getName() + ".");
+
+							ScoreReferenceDAO scoreReferenceDAO = ScoreReferenceDAO.getInstance();
+							ArrayList<ScoreReferencePOJO> pojoList = scoreReferenceDAO.getScoreReferencesForSeason(ServerNexus.currentSeason);
+
+							HashMap<String, String> scoreReferenceMap = new HashMap<>();
+							for (ScoreReferencePOJO scoreReference : pojoList) {
+								scoreReferenceMap.put(scoreReference.getKey(), scoreReference.getValue());
+							}
+
 							if (starSystem.getMainPlanet()) {
-								scorePOJO.setVp(75L);
+								Long victoryPointsForRegularPlanet = Long.parseLong(scoreReferenceMap.get("VP_CW"));
+								scorePOJO.setVp(victoryPointsForRegularPlanet);
 							} else {
-								scorePOJO.setVp(25L);
+								Long victoryPointsForCapitalPlanet = Long.parseLong(scoreReferenceMap.get("VP"));
+								scorePOJO.setVp(victoryPointsForCapitalPlanet);
 							}
 							ScoreDAO scoreDAO = ScoreDAO.getInstance();
 							scoreDAO.save(sessionId, scorePOJO);

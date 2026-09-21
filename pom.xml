@@ -14,6 +14,16 @@
 
 	<developers>
 		<developer>
+			<id>Meldric</id>
+			<organization>ClanWolf.net</organization>
+			<organizationUrl>https://www.clanwolf.net/</organizationUrl>
+			<timezone>+0100</timezone>
+			<roles>
+				<role>Project owner</role>
+				<role>Developer</role>
+			</roles>
+		</developer>
+		<developer>
 			<id>Werner</id>
 			<organization>ClanWolf.net</organization>
 			<organizationUrl>https://www.clanwolf.net/</organizationUrl>
@@ -24,12 +34,11 @@
 			</roles>
 		</developer>
 		<developer>
-			<id>Meldric</id>
+			<id>Passy</id>
 			<organization>ClanWolf.net</organization>
 			<organizationUrl>https://www.clanwolf.net/</organizationUrl>
 			<timezone>+0100</timezone>
 			<roles>
-				<role>Project owner</role>
 				<role>Developer</role>
 			</roles>
 		</developer>
@@ -49,7 +58,7 @@
 
 		<!-- C3 Revision -->
 		<!-- https://stackoverflow.com/questions/10582054/maven-project-version-inheritance-do-i-have-to-specify-the-parent-version -->
-		<revision>7.5.40</revision>
+		<revision>7.5.44</revision>
 
 		<!-- Versions -->
 		<version.java>26</version.java>
@@ -93,7 +102,7 @@
 		<version.jakarta.activation>2.1.0-M1</version.jakarta.activation>  <!-- net.clanwolf.starmap.mail -->
 		<version.jakarta.mail>2.1.0-M1</version.jakarta.mail>              <!-- net.clanwolf.starmap.mail -->
 		<version.jakarta.xml.bind-api>4.0.5</version.jakarta.xml.bind-api>
-		<version.javassist>3.32.0-GA</version.javassist>
+		<version.javassist>3.33.0-GA</version.javassist>
 		<version.jetbrains-annotations>26.1.0</version.jetbrains-annotations>
 		<version.jetlang>0.2.23</version.jetlang>
 		<version.jnativehook>2.2.2</version.jnativehook>

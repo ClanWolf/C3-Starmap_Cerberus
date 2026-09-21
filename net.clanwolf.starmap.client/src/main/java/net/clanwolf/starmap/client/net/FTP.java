@@ -58,7 +58,11 @@ public class FTP implements IFileTransfer {
 		this.ftptype = type;
 	}
 
-	private void connect() throws Exception {
+	public void connect() throws Exception {
+		connect(false);
+	}
+
+	public void connect(boolean test) throws Exception {
 		ftpClient = new FTPClient();
 		ftpClient.setControlEncoding("UTF-8");
 
@@ -91,14 +95,16 @@ public class FTP implements IFileTransfer {
 
 		try {
 			if (!"".equals(user) && !"".equals(password)) {
-//				logger.info("#########################################################");
-//				logger.info("Trying to connect to FTP");
-//				logger.info("Server   : " + C3Properties.getProperty(C3PROPS.FTP_SERVER));
-//				logger.info("Port     : " + ftp_port);
-//				logger.info("User     : " + user);
-//				logger.info("Password : " + "****" + password.substring(password.length() - 2));
-//				logger.info("Password : " + password);
-//				logger.info("#########################################################");
+				if(test) {
+					logger.info("#########################################################");
+					logger.info("Trying to connect to FTP");
+					logger.info("Server   : " + C3Properties.getProperty(C3PROPS.FTP_SERVER));
+					logger.info("Port     : " + ftp_port);
+					logger.info("User     : " + user);
+					logger.info("Password : " + "****" + password.substring(password.length() - 2));
+					logger.info("Password : " + password);
+					logger.info("#########################################################");
+				}
 
 				ftpClient.connect(C3Properties.getProperty(C3PROPS.FTP_SERVER), ftp_port);
 				logger.info(ftpClient.getReplyString().trim().replaceAll("(\\r|\\n)", ""));
