@@ -139,6 +139,7 @@ public class StarmapPannableCanvas extends Pane {
 	}
 
 	public void hideElementsForScreenshot(boolean value) {
+		border.setVisible(!value);
 		grid_250.setVisible(!value);
 		grid_500.setVisible(!value);
 		grid_center.setVisible(!value);
@@ -195,15 +196,15 @@ public class StarmapPannableCanvas extends Pane {
 			ArrayList<Point2D> l2 = new ArrayList<>();
 
 			for (int i = 0; i < number; i++) {
-				double x = (((Math.random()) * w + 1));
-				double y = w - (((Math.random()) * h + 1));
+				double x = (((Math.random()) * (w * 2) + 1));
+				double y = w - (((Math.random()) * (h * 2) + 1));
 				int size = (int) ((Math.random()) * StarmapConfig.BACKGROUND_STARS_MAX_SIZE + 1);
 
-				Circle c = new Circle(x, y, size);
+				Circle c = new Circle(x - w / 2, y + h / 2, size);
 				c.setStrokeWidth(0);
-				c.setFill(Color.WHITESMOKE.deriveColor(1, 1, 1, 0.40));
+				c.setFill(Color.WHITESMOKE.deriveColor(1, 1, 1, 0.65));
 				l.add(c);
-				l2.add(new Point2D(x,y));
+				l2.add(new Point2D(x - w / 2, y + h / 2));
 				starPane.getChildren().add(c);
 			}
 
@@ -285,8 +286,8 @@ public class StarmapPannableCanvas extends Pane {
 			gc.strokeLine(i, 0, i, h);
 			gc.strokeLine(0, i, w, i);
 		}
-		getChildren().add(grid_500);
-		grid_500.toBack();
+//		getChildren().add(grid_500);
+//		grid_500.toBack();
 	}
 
 	private void setGrid_500_Visible() {
@@ -317,8 +318,8 @@ public class StarmapPannableCanvas extends Pane {
 		gc.strokeLine(w, 0, w, h);
 		gc.strokeLine(0, h, w, h);
 
-		getChildren().add(border);
-		border.toFront();
+//		getChildren().add(border);
+//		border.toFront();
 	}
 
 	public void addGrid_250() {
@@ -338,8 +339,8 @@ public class StarmapPannableCanvas extends Pane {
 			gc.strokeLine(i, 0, i, h);
 			gc.strokeLine(0, i, w, i);
 		}
-		getChildren().add(grid_250);
-		grid_250.toBack();
+//		getChildren().add(grid_250);
+//		grid_250.toBack();
 	}
 
 	private void setGrid_250_Visible() {
@@ -368,8 +369,8 @@ public class StarmapPannableCanvas extends Pane {
 		gc.strokeLine(w / 2, 0, w / 2, h);
 		gc.strokeLine(0, h / 2, h, h / 2);
 
-		getChildren().add(grid_center);
-		grid_center.toBack();
+//		getChildren().add(grid_center);
+//		grid_center.toBack();
 	}
 
 	public double getScale() {

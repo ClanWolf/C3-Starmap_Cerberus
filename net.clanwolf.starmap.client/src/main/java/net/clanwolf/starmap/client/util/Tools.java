@@ -309,7 +309,7 @@ public final class Tools {
 					final BufferedImage finaleImage = new BufferedImage(screenshotWidth, screenshotHeight, BufferedImage.TYPE_INT_RGB);
 					Graphics g = finaleImage.getGraphics();
 					g.drawImage(finaleImage, (bi.getWidth() - screenshotWidth) / 2, (bi.getHeight() - screenshotHeight) / 2, screenshotWidth, screenshotHeight, null);
-					g.drawImage(bi, -(bi.getWidth() - screenshotWidth) / 2, -200, bi.getWidth(), bi.getHeight(), null);
+					g.drawImage(bi, -(bi.getWidth() - screenshotWidth) / 2, + 200, bi.getWidth(), bi.getHeight(), null);
 					g.dispose();
 
 					Image c3Icon = new Image(Objects.requireNonNull(Tools.class.getResourceAsStream("/icons/C3_Icon2.png")));
