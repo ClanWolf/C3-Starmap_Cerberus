@@ -2838,7 +2838,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 		C3Properties.setProperty(C3PROPS.FTP_PASSWORD_LOGUPLOAD, getFTPCredentials("ftp_password_logupload"), true, false);
 		C3Properties.setProperty(C3PROPS.FTP_PASSWORD_HISTORYUPLOAD, getFTPCredentials("ftp_password_historyupload"), true, false);
 
-		if (true) {
+		if (false) {
 			try {
 				FTP ftpClient = null;
 				ftpClient = new FTP(C3FTPTYPES.FTP_DEFAULT, true);
@@ -2850,7 +2850,7 @@ public class MainFrameController extends AbstractC3Controller implements ActionC
 
 			String directDownloadUrl = C3Properties.getProperty(C3PROPS.AUTOMATIC_DOWNLOAD_CLIENT_URL);
 			directDownloadUrl = directDownloadUrl.replace("##v##", Nexus.getLastAvailableClientVersion());
-			logger.info("DEBUG: Potential new version download url: " + directDownloadUrl);
+			logger.debug("DEBUG: Potential new version download url: " + directDownloadUrl);
 		}
 
 		C3SoundPlayer.getSamples();

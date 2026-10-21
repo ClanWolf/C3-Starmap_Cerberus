@@ -125,8 +125,8 @@ public class SendInformationToBotsTimerTask extends TimerTask {
 		fs_de.append("Noch maximal ").append(finalHoursLeft).append(" Stunden und ").append(finalMinutesLeft).append(" Minuten in Runde ").append(roundId).append(" der Season ").append(seasonId).append(".\r\n");
 		fs_en.append("Up to ").append(finalHoursLeft).append(" hours and ").append(finalMinutesLeft).append(" minutes left in round ").append(roundId).append(" of season ").append(seasonId).append(".\r\n");
 
-		fs_de.append("Die Runde kann durch einen Admin beendet werden, wenn alle Kämpfe durchgeführt wurden!\r\n");
-		fs_en.append("The Round may be finalized by an admin as soon as all fights have been finished!\r\n");
+		fs_de.append("Die Runde kann durch einen Admin beendet werden, wenn alle Kämpfe durchgeführt wurden!\r\n.\r\n");
+		fs_en.append("The Round may be finalized by an admin as soon as all fights have been finished!\r\n.\r\n");
 
 		if (!allAttacksForNextRound.isEmpty()) {
 			int nextRound = roundId.intValue() + 1;
@@ -189,8 +189,11 @@ public class SendInformationToBotsTimerTask extends TimerTask {
 		StringBuilder finalString_en = new StringBuilder();
 		StringBuilder finalString_de = new StringBuilder();
 
-		finalString_en.append("--------------------------------\r\n\r\n# Status\r\n\r\n**Round ").append(roundId).append(" of season ").append(seasonId).append(" - ").append(seasonName).append("**\r\n").append(seasonDescription).append("\r\n").append(dig_en).append("\r\n\r\n").append("Started: ").append(sd_en).append("\r\n").append("Will end: ").append(ed_en).append(" (latest, ").append(daysInRound).append(" days in a round max)\r\n\r\n").append("__Open fights:__\r\n").append(fs_en);
-		finalString_de.append("--------------------------------\r\n\r\n# Status\r\n\r\n**Runde ").append(roundId).append(" von Season ").append(seasonId).append(" - ").append(seasonName).append("**\r\n").append(seasonDescription).append("\r\n").append(dig_de).append("\r\n\r\n").append("Gestartet: ").append(sd_de).append("\r\n").append("Wird beendet: ").append(ed_de).append(" (spätestens, ").append(daysInRound).append(" Tage in einer Runde maximal)\r\n\r\n").append("__Offene Kämpfe:__\r\n").append(fs_de);
+		finalString_en.append("----------- [History](https://c3.clanwolf.net/seasonhistory/S1/C3_S1_map_animated.gif) -----------\r\n");
+		finalString_de.append("----------- [Verlauf](https://c3.clanwolf.net/seasonhistory/S1/C3_S1_map_animated.gif) -----------\r\n");
+
+		finalString_en.append("# Status\r\n\r\n**Round ").append(roundId).append(" of season ").append(seasonId).append(" - ").append(seasonName).append("**\r\n").append(seasonDescription).append("\r\n").append(dig_en).append("\r\n\r\n").append("Started: ").append(sd_en).append("\r\n").append("Will end: ").append(ed_en).append(" (latest, ").append(daysInRound).append(" days in a round max)\r\n\r\n").append("__Open fights:__\r\n").append(fs_en);
+		finalString_de.append("# Status\r\n\r\n**Runde ").append(roundId).append(" von Season ").append(seasonId).append(" - ").append(seasonName).append("**\r\n").append(seasonDescription).append("\r\n").append(dig_de).append("\r\n\r\n").append("Gestartet: ").append(sd_de).append("\r\n").append("Wird beendet: ").append(ed_de).append(" (spätestens, ").append(daysInRound).append(" Tage in einer Runde maximal)\r\n\r\n").append("__Offene Kämpfe:__\r\n").append(fs_de);
 
 		ServerNexus.getEci().sendExtCom(finalString_en.toString(), "en", true, true, true);
 		ServerNexus.getEci().sendExtCom(finalString_de.toString(), "de", true, true, true);
