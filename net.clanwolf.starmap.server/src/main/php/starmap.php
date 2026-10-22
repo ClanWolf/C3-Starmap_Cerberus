@@ -60,7 +60,7 @@
 		}
 		.img-magnifier-glass {
 			position: absolute;
-			border: 3px solid #000;
+			border: 3px solid #0f0;
 			border-radius: 0%;
 			cursor: none;
 			width: 500px;
