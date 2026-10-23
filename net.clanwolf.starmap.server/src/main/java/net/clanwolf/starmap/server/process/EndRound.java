@@ -575,6 +575,8 @@ public class EndRound {
 				AttackCharacterDAO daoAC = AttackCharacterDAO.getInstance();
 				daoAC.nativeDeleteByAttackId(ServerNexus.END_ROUND_USERID);
 
+				// VictoryPoints für Kämpfe, die gewürfelt wurde?
+
 				transaction.commit();
 
 				// ---------------------------------------------------------------------------

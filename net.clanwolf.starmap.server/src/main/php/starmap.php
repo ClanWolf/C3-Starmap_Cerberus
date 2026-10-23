@@ -232,7 +232,7 @@
 				<td width='70%' height='150px'>
 					<table width='100%' height='100%' cellspacing='0' cellpadding='0' class='not-selectable'>
 						<tr height='150px'>
-							<td width='5%' height='150px' align='left'><img id='map_preview' src='C3_S1_R1_map_history_preview.png' height='150px'></td>
+							<td width='5%' height='150px' align='left'><img id='map_preview' src='C3_S1_R1_map_history_preview.png?t=<?= time(); ?>' height='150px'></td>
 							<td width='90%' height='150px' align='right' valign='top' rowspan='2'>
 								<table width='100%'>
 									<tr>
@@ -297,7 +297,7 @@
 			<tr>
 				<td width='70%' align='center' valign='top'>
 					<div id="magnifier" class="img-magnifier-container">
-						<img id="map" src='C3_S1_R1_map_history.png' width='100%'>
+						<img id="map" src='C3_S1_R1_map_history.png?t=<?= time(); ?>' width='100%'>
 					</div>
 				</td>
 			</tr>

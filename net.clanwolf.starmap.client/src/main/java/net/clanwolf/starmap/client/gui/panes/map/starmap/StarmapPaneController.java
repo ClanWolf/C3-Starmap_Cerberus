@@ -1028,6 +1028,38 @@ public class StarmapPaneController extends AbstractC3Controller implements Actio
 			}
 		});
 		ActionManager.getAction(ACTIONS.CURSOR_REQUEST_NORMAL).execute("10_33");
+
+
+
+
+//		Platform.runLater(() -> {
+//			sceneGestures.enableScrolling(false);
+//			centerStarSystemGroups();
+//
+//			double w = StarmapConfig.MAP_WIDTH;
+//			double h = StarmapConfig.MAP_HEIGHT;
+//
+//			canvas.show3DStars(false);
+//			canvas.hideElementsForScreenshot(true);
+//			if (
+//				//!Nexus.isDevelopmentPC() &&
+//					C3Properties.getBoolean(C3PROPS.GENERALS_SCREENSHOT_HISTORY)
+//			) {
+//				Tools.saveMapScreenshot((int) w, (int) h / 2 - 200, canvas);
+//				screenshotHasBeenTaken = true;
+//				logger.info("Saved history screenshot of the starmap.");
+//			} else {
+//				logger.info("Saved history screenshot has been disabled.");
+//			}
+//			canvas.hideElementsForScreenshot(false);
+//			canvas.setVisibility();
+//			canvas.show3DStars(true);
+//
+//			buildGuiEffect();
+//			sceneGestures.enableScrolling(true);
+//
+//			logger.info("Map is ready!");
+//		});
 	}
 
 	/**
