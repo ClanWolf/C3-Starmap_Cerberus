@@ -47,7 +47,7 @@ TODO PRIO 3 - Long term:
 
 VERSIONS
 
-Version 7.5.50 (21.10.2026)
+Version 7.5.51 (24.10.2026)
 - Added Systems, reset (Phoenix Con 2026, Refusal War)
 
 Version 7.5.47 (22.09.2026)
