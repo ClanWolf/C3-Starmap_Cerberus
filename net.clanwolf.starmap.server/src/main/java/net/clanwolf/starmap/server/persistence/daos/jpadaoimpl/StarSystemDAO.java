@@ -72,8 +72,8 @@ public class StarSystemDAO extends GenericDAO {
 		return (StarSystemPOJO) super.findById(userID, StarSystemPOJO.class, id);
 	}
 
-	public StarSystemPOJO getSystemByName(String name) {
-		CriteriaHelper crit = new CriteriaHelper(StarSystemPOJO.class);
+	public StarSystemPOJO getSystemByName(String name, Long userID) {
+		CriteriaHelper crit = new CriteriaHelper(StarSystemPOJO.class, userID);
 		crit.addCriteriaIsNotNull("id");
 		crit.addCriteria("name", name);
 
@@ -85,8 +85,8 @@ public class StarSystemDAO extends GenericDAO {
 	/*
 	 * Give all open attacks of a season back
 	 */
-	public ArrayList<StarSystemPOJO> getAllSystems(){
-		CriteriaHelper crit = new CriteriaHelper(StarSystemPOJO.class);
+	public ArrayList<StarSystemPOJO> getAllSystems(Long userID) {
+		CriteriaHelper crit = new CriteriaHelper(StarSystemPOJO.class, userID);
 		crit.addCriteriaIsNotNull("id");
 
 		List<Object> lRes = crit.getResultList();

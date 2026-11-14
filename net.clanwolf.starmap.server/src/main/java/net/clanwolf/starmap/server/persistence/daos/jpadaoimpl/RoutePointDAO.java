@@ -62,7 +62,7 @@ public class RoutePointDAO extends GenericDAO {
 	}
 
 	public void deleteByJumpshipId(Long userID, Long jumpshipId) {
-		CriteriaHelper crit = new CriteriaHelper(RoutePointPOJO.class);
+		CriteriaHelper crit = new CriteriaHelper(RoutePointPOJO.class, userID);
 		crit.addCriteria("jumpshipId", jumpshipId);
 
 		List<Object> objectList = crit.getResultList();
@@ -75,7 +75,7 @@ public class RoutePointDAO extends GenericDAO {
 	}
 
 	public void deleteByJumpshipId(Long userID) {
-		CriteriaHelper crit = new CriteriaHelper(RoutePointPOJO.class);
+		CriteriaHelper crit = new CriteriaHelper(RoutePointPOJO.class, userID);
 		crit.addCriteriaIsNull("jumpshipId");
 
 		List<Object> objectList = crit.getResultList();
@@ -106,8 +106,8 @@ public class RoutePointDAO extends GenericDAO {
 	/*
 	 * Give all attacks back of a season back and a round
 	 */
-	public ArrayList<RoutePointPOJO> getAllRoutePointsForSeasonForRound(Long season, int round){
-		CriteriaHelper crit = new CriteriaHelper(RoutePointPOJO.class);
+	public ArrayList<RoutePointPOJO> getAllRoutePointsForSeasonForRound(Long season, int round, Long userID) {
+		CriteriaHelper crit = new CriteriaHelper(RoutePointPOJO.class, userID);
 		crit.addCriteria("season", season );
 		crit.addCriteria("round", round);
 

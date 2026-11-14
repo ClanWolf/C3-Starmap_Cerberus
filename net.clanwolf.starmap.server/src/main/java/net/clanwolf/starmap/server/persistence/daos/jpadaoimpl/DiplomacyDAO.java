@@ -41,15 +41,15 @@ public class DiplomacyDAO extends GenericDAO {
 	}
 
 	public DiplomacyPOJO findByKey(Long userID, String key) {
-		CriteriaHelper crit = new CriteriaHelper(DiplomacyPOJO.class);
+		CriteriaHelper crit = new CriteriaHelper(DiplomacyPOJO.class, userID);
 		crit.addCriteria("key", key);
 
 		return (DiplomacyPOJO) crit.getSingleResult();
 	}
 
-	public ArrayList<DiplomacyPOJO> getDiplomacyForSeason(Long seasonID){
+	public ArrayList<DiplomacyPOJO> getDiplomacyForSeason(Long seasonID, Long userID) {
 
-		CriteriaHelper crit = new CriteriaHelper(DiplomacyPOJO.class);
+		CriteriaHelper crit = new CriteriaHelper(DiplomacyPOJO.class, userID);
 		crit.addCriteria("seasonID", seasonID);
 
 		List<Object> lRes = crit.getResultList();
@@ -67,9 +67,9 @@ public class DiplomacyDAO extends GenericDAO {
 		return lRPS;
 	}
 
-	public ArrayList<DiplomacyPOJO> getAllRequestsForFactions(Long seasonID, Long factionID){
+	public ArrayList<DiplomacyPOJO> getAllRequestsForFactions(Long seasonID, Long factionID, Long userID) {
 
-		CriteriaHelper crit = new CriteriaHelper(DiplomacyPOJO.class);
+		CriteriaHelper crit = new CriteriaHelper(DiplomacyPOJO.class, userID);
 		crit.addCriteria("seasonID", seasonID);
 		crit.addCriteria("factionID_REQUEST", factionID);
 
@@ -91,7 +91,7 @@ public class DiplomacyDAO extends GenericDAO {
 	public void deleteEntrieForRound(Long userID, Long seasonID, Long round){
 
 
-		ArrayList<DiplomacyPOJO> allEntries = getDiplomacyForSeason(seasonID);
+		ArrayList<DiplomacyPOJO> allEntries = getDiplomacyForSeason(seasonID, userID);
 		BODiplomacyTransfer dipTransfer = new BODiplomacyTransfer(allEntries);
 
 		for(DiplomacyPOJO dip1 : allEntries){
@@ -103,7 +103,7 @@ public class DiplomacyDAO extends GenericDAO {
 
 	public void removeAllRequestAfterWaitingPeriod(Long userID, Long seasonID, Long round){
 
-		ArrayList<DiplomacyPOJO> allDiplomacyEntries = getDiplomacyForSeason(seasonID);
+		ArrayList<DiplomacyPOJO> allDiplomacyEntries = getDiplomacyForSeason(seasonID, userID);
 
 		BODiplomacyTransfer boDipTransfer = new BODiplomacyTransfer(allDiplomacyEntries);
 
@@ -121,7 +121,7 @@ public class DiplomacyDAO extends GenericDAO {
 
 	public void removeAllRequestAfterAttack(Long userID, Long seasonID, Long round, Long factionID1, Long factionID2){
 
-		ArrayList<DiplomacyPOJO> allDiplomacyEntries = getDiplomacyForSeason(seasonID);
+		ArrayList<DiplomacyPOJO> allDiplomacyEntries = getDiplomacyForSeason(seasonID, userID);
 
 		BODiplomacyTransfer boDipTransfer = new BODiplomacyTransfer(allDiplomacyEntries);
 

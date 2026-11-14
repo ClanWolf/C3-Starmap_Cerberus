@@ -28,6 +28,7 @@ package net.clanwolf.starmap.server.persistence.daos.jpadaoimpl;
 
 import io.nadron.util.Credentials;
 import jakarta.persistence.EntityManager;
+import net.clanwolf.starmap.server.servernexus.ServerNexus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.clanwolf.starmap.server.persistence.CriteriaHelper;
@@ -83,8 +84,8 @@ public class UserDAO extends GenericDAO {
 		return (UserPOJO) super.findById(userID, UserPOJO.class, id);
 	}
 
-	public ArrayList<UserPOJO> getUserList() {
-		CriteriaHelper crit = new CriteriaHelper(UserPOJO.class);
+	public ArrayList<UserPOJO> getUserList(Long userId) {
+		CriteriaHelper crit = new CriteriaHelper(UserPOJO.class, userId);
 		crit.addCriteriaIsNotNull("id");
 		List<Object> lRes = crit.getResultList();
 
@@ -116,7 +117,7 @@ public class UserDAO extends GenericDAO {
 //		logger.info("---- PW1: " + pw1);
 //		logger.info("---- PW2: " + pw2);
 
-		CriteriaHelper crit1 = new CriteriaHelper(UserPOJO.class);
+		CriteriaHelper crit1 = new CriteriaHelper(UserPOJO.class, ServerNexus.DUMMY_USERID);
 		crit1.addCriteria("userName", c.getUsername());
 		crit1.addCriteria("userPassword", pw1);
 		//crit1.addCriteria("active",1);
@@ -124,7 +125,7 @@ public class UserDAO extends GenericDAO {
 		Object o = crit1.getSingleResult();
 
 		if (o == null) {
-			CriteriaHelper crit2 = new CriteriaHelper(UserPOJO.class);
+			CriteriaHelper crit2 = new CriteriaHelper(UserPOJO.class, ServerNexus.DUMMY_USERID);
 			crit2.addCriteria("userName", c.getUsername());
 			crit2.addCriteria("userPasswordWebsite", pw2);
 
@@ -135,7 +136,7 @@ public class UserDAO extends GenericDAO {
 	}
 
 	public boolean userNameExists(EntityManager em, String userName){
-		CriteriaHelper crit1 = new CriteriaHelper(UserPOJO.class);
+		CriteriaHelper crit1 = new CriteriaHelper(UserPOJO.class, ServerNexus.DUMMY_USERID);
 		crit1.addCriteria("userName", userName);
 
 		Object o = crit1.getSingleResult();
@@ -144,7 +145,7 @@ public class UserDAO extends GenericDAO {
 	}
 
 	public boolean userMailExists(EntityManager em, String userMail){
-		CriteriaHelper crit1 = new CriteriaHelper(UserPOJO.class);
+		CriteriaHelper crit1 = new CriteriaHelper(UserPOJO.class, ServerNexus.DUMMY_USERID);
 		crit1.addCriteria("userEMail", userMail);
 
 		Object o = crit1.getSingleResult();

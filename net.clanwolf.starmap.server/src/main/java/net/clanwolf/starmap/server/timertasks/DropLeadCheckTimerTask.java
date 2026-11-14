@@ -57,8 +57,8 @@ public class DropLeadCheckTimerTask extends TimerTask {
 	@Override
 	public void run() {
 		Long seasonId = GameServer.getCurrentSeason();
-		Long roundId = RoundDAO.getInstance().findBySeasonId(seasonId).getRound();
-		ArrayList<AttackPOJO> allAttacksForRound = AttackDAO.getInstance().getAllAttacksOfASeasonForRound(seasonId, roundId);
+		Long roundId = RoundDAO.getInstance().findBySeasonId(seasonId, ServerNexus.DUMMY_USERID).getRound();
+		ArrayList<AttackPOJO> allAttacksForRound = AttackDAO.getInstance().getAllAttacksOfASeasonForRound(seasonId, roundId, ServerNexus.DUMMY_USERID);
 
 		ArrayList<AttackPOJO> brokenAttacks = new ArrayList<>();
 		ArrayList<Long> attacksToReset = new ArrayList<>();

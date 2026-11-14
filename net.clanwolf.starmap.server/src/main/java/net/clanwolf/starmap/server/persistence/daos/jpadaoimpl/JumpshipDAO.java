@@ -81,8 +81,8 @@ public class JumpshipDAO extends GenericDAO {
 		}
 	}
 
-	public ArrayList<JumpshipPOJO> getAllJumpships(){
-		CriteriaHelper crit = new CriteriaHelper(JumpshipPOJO.class);
+	public ArrayList<JumpshipPOJO> getAllJumpships(Long userID) {
+		CriteriaHelper crit = new CriteriaHelper(JumpshipPOJO.class, userID);
 		crit.addCriteriaIsNotNull("id");
 
 		List<Object> lRes = crit.getResultList();
@@ -97,8 +97,8 @@ public class JumpshipDAO extends GenericDAO {
 		return lRPS;
 	}
 
-	public JumpshipPOJO getJumpshipForId(Long jumpshipID){
-		CriteriaHelper crit = new CriteriaHelper(JumpshipPOJO.class);
+	public JumpshipPOJO getJumpshipForId(Long jumpshipID, Long userID) {
+		CriteriaHelper crit = new CriteriaHelper(JumpshipPOJO.class, userID);
 		crit.addCriteria("id", jumpshipID);
 
 		Object o = crit.getSingleResult();
@@ -106,8 +106,8 @@ public class JumpshipDAO extends GenericDAO {
 		return (JumpshipPOJO) o;
 	}
 
-	public ArrayList<JumpshipPOJO> getJumpshipsForFaction(Long factionID){
-		CriteriaHelper crit = new CriteriaHelper(JumpshipPOJO.class);
+	public ArrayList<JumpshipPOJO> getJumpshipsForFaction(Long factionID, Long userID) {
+		CriteriaHelper crit = new CriteriaHelper(JumpshipPOJO.class, userID);
 		crit.addCriteria("jumpshipFactionID", factionID);
 
 		List<Object> lRes = crit.getResultList();

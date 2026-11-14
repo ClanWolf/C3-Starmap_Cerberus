@@ -73,16 +73,16 @@ public class RolePlayCharacterStatsDAO extends GenericDAO {
 		return (RolePlayCharacterStatsPOJO) super.update(roleplayCharacterStatsId, entity);
 	}
 
-	public RolePlayCharacterStatsPOJO findbyCharIdAndMatchId(Long charId, String matchId) {
-		CriteriaHelper crit = new CriteriaHelper(RolePlayCharacterStatsPOJO.class);
+	public RolePlayCharacterStatsPOJO findbyCharIdAndMatchId(Long charId, String matchId, Long userId) {
+		CriteriaHelper crit = new CriteriaHelper(RolePlayCharacterStatsPOJO.class, userId);
 
 		crit.addCriteria("roleplayCharacterId", charId);
 		crit.addCriteria("mwoMatchId", matchId);
 		return (RolePlayCharacterStatsPOJO) crit.getSingleResult();
 	}
 
-	public ArrayList<RolePlayCharacterStatsPOJO> findByMatchId(String matchId) {
-			CriteriaHelper crit = new CriteriaHelper(RolePlayCharacterStatsPOJO.class);
+	public ArrayList<RolePlayCharacterStatsPOJO> findByMatchId(String matchId, Long userId) {
+			CriteriaHelper crit = new CriteriaHelper(RolePlayCharacterStatsPOJO.class, userId);
 			crit.addCriteria("mwoMatchId",matchId);
 
 			List<Object> lRes = crit.getResultList();

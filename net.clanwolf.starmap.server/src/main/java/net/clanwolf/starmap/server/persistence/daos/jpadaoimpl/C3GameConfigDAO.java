@@ -72,14 +72,14 @@ public class C3GameConfigDAO extends GenericDAO {
 	}
 
 	public GameConfigPOJO findByKey(Long userID, String key) {
-		CriteriaHelper crit = new CriteriaHelper(GameConfigPOJO.class);
+		CriteriaHelper crit = new CriteriaHelper(GameConfigPOJO.class, userID);
 		crit.addCriteria("key", key);
 
 		return (GameConfigPOJO) crit.getSingleResult();
 	}
 
-	public ArrayList<GameConfigPOJO> getAllGameConfigValues(){
-		CriteriaHelper crit = new CriteriaHelper(GameConfigPOJO.class);
+	public ArrayList<GameConfigPOJO> getAllGameConfigValues(Long userID) {
+		CriteriaHelper crit = new CriteriaHelper(GameConfigPOJO.class, userID);
 		crit.addCriteriaIsNotNull("id");
 
 		List<Object> lRes = crit.getResultList();

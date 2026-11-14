@@ -81,8 +81,8 @@ public class AttackCharacterDAO extends GenericDAO {
 	/*
 	 * Give all open attacks of a season back
 	 */
-	public ArrayList<AttackCharacterPOJO> getCharactersFromAttack(Long attackID){
-		CriteriaHelper crit = new CriteriaHelper(AttackCharacterPOJO.class);
+	public ArrayList<AttackCharacterPOJO> getCharactersFromAttack(Long attackID, Long userID) {
+		CriteriaHelper crit = new CriteriaHelper(AttackCharacterPOJO.class, userID);
 		crit.addCriteria("attackID", attackID );
 
 		List<Object> lRes = crit.getResultList();
@@ -97,7 +97,7 @@ public class AttackCharacterDAO extends GenericDAO {
 
 	@SuppressWarnings("unused")
 	public void deleteByAttackId(Long userID) {
-		CriteriaHelper crit = new CriteriaHelper(AttackCharacterPOJO.class);
+		CriteriaHelper crit = new CriteriaHelper(AttackCharacterPOJO.class, userID);
 		crit.addCriteriaIsNull("attackID");
 
 		List<Object> objectList = crit.getResultList(userID);
@@ -114,7 +114,7 @@ public class AttackCharacterDAO extends GenericDAO {
 	public void nativeDeleteByAttackId(Long userID) {
 		if (userID != null) {
 			logger.info("Evicting object in preparation for a native delete");
-			CriteriaHelper crit = new CriteriaHelper(AttackCharacterPOJO.class);
+			CriteriaHelper crit = new CriteriaHelper(AttackCharacterPOJO.class, userID);
 			crit.addCriteriaIsNull("attackID");
 			List<Object> objectList = crit.getResultList(userID);
 			for (Object o : objectList) {

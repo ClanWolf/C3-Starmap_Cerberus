@@ -99,7 +99,7 @@ public class EndRound {
 		Date seasonStartDate = season.getStartDate();
 
 		RoundDAO roundDAO = RoundDAO.getInstance();
-		RoundPOJO roundPOJO = roundDAO.findBySeasonId(seasonId);
+		RoundPOJO roundPOJO = roundDAO.findBySeasonId(seasonId, ServerNexus.DUMMY_USERID);
 
 		LocalDateTime currentRoundStartDate = null;
 		String currentRoundStartDateString = roundPOJO.getCurrentRoundStartDate();
@@ -198,7 +198,7 @@ public class EndRound {
 
 	public static Long findAWinner(AttackPOJO attackPOJO) {
 		Long jumpshipId = attackPOJO.getJumpshipID();
-		JumpshipPOJO jumpship = JumpshipDAO.getInstance().getJumpshipForId(jumpshipId);
+		JumpshipPOJO jumpship = JumpshipDAO.getInstance().getJumpshipForId(jumpshipId, ServerNexus.DUMMY_USERID);
 		Long attackerFactionId = jumpship.getJumpshipFactionID();
 		Long defenderFactionId = attackPOJO.getFactionID_Defender();
 
@@ -211,9 +211,9 @@ public class EndRound {
 	public synchronized static String finalizeRound(Long seasonId, int round) {
 		logger.info("**********************************************************************************************");
 		logger.info("Checking on end of round.");
-		ArrayList<JumpshipPOJO> jumpshipList = JumpshipDAO.getInstance().getAllJumpships();
+		ArrayList<JumpshipPOJO> jumpshipList = JumpshipDAO.getInstance().getAllJumpships(ServerNexus.DUMMY_USERID);
 		ArrayList<AttackPOJO> openAttacksInRoundList = new ArrayList<>();
-		ArrayList<AttackPOJO> allAttacksForRound = AttackDAO.getInstance().getAllAttacksOfASeasonForRound(seasonId, round);
+		ArrayList<AttackPOJO> allAttacksForRound = AttackDAO.getInstance().getAllAttacksOfASeasonForRound(seasonId, round, ServerNexus.DUMMY_USERID);
 
 		for (AttackPOJO attackPojoDummy : allAttacksForRound) {
 			if (attackPojoDummy.getFactionID_Winner() == null) {
@@ -333,7 +333,7 @@ public class EndRound {
 
 					//				logger.info("1");
 					// Get statistics for this attack
-					ArrayList<AttackStatsPOJO> statisticsList = AttackStatsDAO.getInstance().getStatisticsForAttack(seasonId, attackPOJO.getId());
+					ArrayList<AttackStatsPOJO> statisticsList = AttackStatsDAO.getInstance().getStatisticsForAttack(seasonId, attackPOJO.getId(), ServerNexus.DUMMY_USERID);
 					//				logger.info("2");
 					if (!statisticsList.isEmpty()) {
 						// log stats
@@ -460,7 +460,7 @@ public class EndRound {
 				// Count the round indicator up once
 				newRound = (long) (round + 1);
 				logger.info("--- Finally increase the round indicator to: {}", newRound);
-				RoundPOJO roundPOJO = RoundDAO.getInstance().findBySeasonId(seasonId);
+				RoundPOJO roundPOJO = RoundDAO.getInstance().findBySeasonId(seasonId, ServerNexus.DUMMY_USERID);
 				roundPOJO.setRound(newRound);
 
 				ServerNexus.getEci().sendExtCom("Round finalized.", "en", true, true, true);
@@ -486,7 +486,7 @@ public class EndRound {
 				logger.info("--- Setting all jumpships to attackReady again.");
 				for (JumpshipPOJO js : jumpshipList) {
 					boolean jumpshipHasAnOpenAttack = false;
-					for (AttackPOJO a : AttackDAO.getInstance().getOpenAttacksOfASeasonForRound(GameServer.getCurrentSeason(), newRound.intValue())) {
+					for (AttackPOJO a : AttackDAO.getInstance().getOpenAttacksOfASeasonForRound(GameServer.getCurrentSeason(), newRound.intValue(), ServerNexus.DUMMY_USERID)) {
 						if (a.getJumpshipID().equals(js.getId())) {
 							jumpshipHasAnOpenAttack = true;
 							break;
@@ -584,8 +584,8 @@ public class EndRound {
 				// Generate faction statistic data
 				if( !GameServer.isDevelopmentPC ) {
 					logger.info("Start to generate statistics...");
-					ArrayList<FactionPOJO> factionListHH = FactionDAO.getInstance().getAll_HH_Factions();
-					ArrayList<StarSystemDataPOJO> starsystemdataListHH = StarSystemDataDAO.getInstance().getAll_HH_StarSystemData();
+					ArrayList<FactionPOJO> factionListHH = FactionDAO.getInstance().getAll_HH_Factions(ServerNexus.DUMMY_USERID);
+					ArrayList<StarSystemDataPOJO> starsystemdataListHH = StarSystemDataDAO.getInstance().getAll_HH_StarSystemData(ServerNexus.DUMMY_USERID);
 
 					HashMap<Long, Long> systemCostMap = new HashMap<>();
 					HashMap<Long, Long> systemIncomeMap = new HashMap<>();
@@ -625,7 +625,7 @@ public class EndRound {
 									}
 								}
 							}
-							for (AttackPOJO a : AttackDAO.getInstance().getAllAttacksOfASeasonForRound(seasonId, round)) {
+							for (AttackPOJO a : AttackDAO.getInstance().getAllAttacksOfASeasonForRound(seasonId, round, ServerNexus.DUMMY_USERID)) {
 								if (a.getFactionID_Defender().equals(faction.getId())) {
 									countDefending++;
 									switch (starsystemdata.getLevel().intValue()) {

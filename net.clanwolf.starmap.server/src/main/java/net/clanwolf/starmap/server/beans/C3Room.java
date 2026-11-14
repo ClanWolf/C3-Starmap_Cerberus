@@ -187,7 +187,7 @@ public class C3Room extends GameRoomSession {
 			ServerNexus.getEci().sendExtCom(p.getName() + " hat Verbindung zum C3-Client abgebrochen (disconnected)", "de", true, true, false);
 
 			AttackDAO attackDAO = AttackDAO.getInstance();
-			ArrayList<AttackPOJO> openAttacks = attackDAO.getOpenAttacksOfASeason(ServerNexus.currentSeason);
+			ArrayList<AttackPOJO> openAttacks = attackDAO.getOpenAttacksOfASeason(ServerNexus.currentSeason, ServerNexus.DUMMY_USERID);
 
 			boolean savedChanges = false;
 			for (AttackPOJO ap : openAttacks) {

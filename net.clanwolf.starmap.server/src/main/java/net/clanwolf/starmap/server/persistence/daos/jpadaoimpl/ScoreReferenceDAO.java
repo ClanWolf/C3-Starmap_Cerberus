@@ -80,8 +80,8 @@ public class ScoreReferenceDAO extends GenericDAO {
 	/*
 	 * Give back all score references of a season
 	 */
-	public ArrayList<ScoreReferencePOJO> getScoreReferencesForSeason(Long seasonId){
-		CriteriaHelper crit = new CriteriaHelper(ScoreReferencePOJO.class);
+	public ArrayList<ScoreReferencePOJO> getScoreReferencesForSeason(Long seasonId, Long userId) {
+		CriteriaHelper crit = new CriteriaHelper(ScoreReferencePOJO.class, userId);
 		crit.addCriteria("seasonId", seasonId);
 
 		List<Object> lRes = crit.getResultList();

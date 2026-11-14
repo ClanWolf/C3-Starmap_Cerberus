@@ -71,23 +71,23 @@ public class StatsMwoDAO extends GenericDAO {
 		return (StatsMwoPOJO) super.update(statsMwoId, entity);
 	}
 
-	public StatsMwoPOJO findByMWOGameId(String matchId) {
-		CriteriaHelper crit = new CriteriaHelper(StatsMwoPOJO.class);
+	public StatsMwoPOJO findByMWOGameId(String matchId, Long userId) {
+		CriteriaHelper crit = new CriteriaHelper(StatsMwoPOJO.class, userId);
 		crit.addCriteria("gameId", matchId);
 
 		return (StatsMwoPOJO) crit.getSingleResult();
 	}
 
-	public StatsMwoPOJO findByMWOGameIdAndRoleplayID(String matchId, Long roleplayId) {
-		CriteriaHelper crit = new CriteriaHelper(StatsMwoPOJO.class);
+	public StatsMwoPOJO findByMWOGameIdAndRoleplayID(String matchId, Long roleplayId, Long userId) {
+		CriteriaHelper crit = new CriteriaHelper(StatsMwoPOJO.class, userId);
 		crit.addCriteria("roleplayId", roleplayId);
 		crit.addCriteria("gameId", matchId);
 
 		return (StatsMwoPOJO) crit.getSingleResult();
 	}
 
-	public StatsMwoPOJO findByAttackIdAndRoleplayID(Long attackId, Long roleplayId) {
-		CriteriaHelper crit = new CriteriaHelper(StatsMwoPOJO.class);
+	public StatsMwoPOJO findByAttackIdAndRoleplayID(Long attackId, Long roleplayId, Long userId) {
+		CriteriaHelper crit = new CriteriaHelper(StatsMwoPOJO.class, userId);
 		crit.addCriteria("roleplayId", roleplayId);
 		crit.addCriteria("attackId", attackId);
 

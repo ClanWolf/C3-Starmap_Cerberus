@@ -81,8 +81,8 @@ public class RoundDAO extends GenericDAO {
 	}
 
 	// Find the round pojo that belongs to that season (there is only one per season)
-	public RoundPOJO findBySeasonId(Long seasonId) {
-		CriteriaHelper crit1 = new CriteriaHelper(RoundPOJO.class);
+	public RoundPOJO findBySeasonId(Long seasonId, Long userId) {
+		CriteriaHelper crit1 = new CriteriaHelper(RoundPOJO.class, userId);
 		crit1.addCriteria("season", seasonId);
 
 		Object o = crit1.getSingleResult();
@@ -93,8 +93,8 @@ public class RoundDAO extends GenericDAO {
 	/*
 	 * Give all rounds
 	 */
-	public ArrayList<RoundPOJO> getAllRounds(){
-		CriteriaHelper crit = new CriteriaHelper(RoundPOJO.class);
+	public ArrayList<RoundPOJO> getAllRounds(Long userId) {
+		CriteriaHelper crit = new CriteriaHelper(RoundPOJO.class, userId);
 		crit.addCriteriaIsNotNull("id");
 
 		List<Object> lRes = crit.getResultList();

@@ -66,8 +66,8 @@ public class RolePlayCharacterDAO extends GenericDAO {
 		return (RolePlayCharacterPOJO) super.findById(userID, RolePlayCharacterPOJO.class, id);
 	}
 
-	public ArrayList<RolePlayCharacterPOJO> getAllCharacter(){
-		CriteriaHelper crit = new CriteriaHelper(RolePlayCharacterPOJO.class);
+	public ArrayList<RolePlayCharacterPOJO> getAllCharacter(Long userID) {
+		CriteriaHelper crit = new CriteriaHelper(RolePlayCharacterPOJO.class, userID);
 		crit.addCriteriaIsNotNull("id");
 
 		List<Object> lRes = crit.getResultList();
@@ -82,8 +82,8 @@ public class RolePlayCharacterDAO extends GenericDAO {
 		return lRPS;
 	}
 
-	public ArrayList<RolePlayCharacterPOJO> getCharactersOfUser(UserPOJO user) {
-		CriteriaHelper crit = new CriteriaHelper(RolePlayCharacterPOJO.class);
+	public ArrayList<RolePlayCharacterPOJO> getCharactersOfUser(UserPOJO user, Long userID) {
+		CriteriaHelper crit = new CriteriaHelper(RolePlayCharacterPOJO.class, userID);
 		crit.addCriteria("user", user);
 
 		List<Object> lRes = crit.getResultList();

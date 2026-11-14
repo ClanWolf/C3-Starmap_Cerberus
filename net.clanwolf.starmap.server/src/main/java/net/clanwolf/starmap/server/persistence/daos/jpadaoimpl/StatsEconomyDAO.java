@@ -71,15 +71,15 @@ public class StatsEconomyDAO extends GenericDAO {
 		return (StatsEconomyPOJO) super.update(userID, entity);
 	}
 
-	public StatsEconomyPOJO findByMatchId(String matchId) {
-		CriteriaHelper crit = new CriteriaHelper(StatsEconomyPOJO.class);
+	public StatsEconomyPOJO findByMatchId(String matchId, Long userId) {
+		CriteriaHelper crit = new CriteriaHelper(StatsEconomyPOJO.class, userId);
 		crit.addCriteria("mwoMatchId", matchId);
 
 		return (StatsEconomyPOJO) crit.getSingleResult();
 	}
 
-	public ArrayList<StatsEconomyPOJO> getStatisticsForAttack(Long seasonId, Long attackId) {
-		CriteriaHelper crit = new CriteriaHelper(StatsEconomyPOJO.class);
+	public ArrayList<StatsEconomyPOJO> getStatisticsForAttack(Long seasonId, Long attackId, Long userId) {
+		CriteriaHelper crit = new CriteriaHelper(StatsEconomyPOJO.class, userId);
 		crit.addCriteria("seasonId", seasonId);
 		crit.addCriteria("attackId", attackId);
 

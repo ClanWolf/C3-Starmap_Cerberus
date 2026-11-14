@@ -71,8 +71,8 @@ public class StarSystemDataDAO extends GenericDAO {
 		return (StarSystemDataPOJO) super.findById(userID, StarSystemDataPOJO.class, id);
 	}
 
-	public StarSystemDataPOJO getMainSystemForFaction(Long factionId) {
-		CriteriaHelper crit = new CriteriaHelper(StarSystemDataPOJO.class);
+	public StarSystemDataPOJO getMainSystemForFaction(Long factionId, Long userID) {
+		CriteriaHelper crit = new CriteriaHelper(StarSystemDataPOJO.class, userID);
 		crit.addCriteriaIsNotNull("id");
 		//crit.addCriteria("factionID", factionId);
 		crit.addCriteria("capitalWorld", true);
@@ -97,8 +97,8 @@ public class StarSystemDataDAO extends GenericDAO {
 	/*
 	 * Give all open attacks of a season back
 	 */
-	public ArrayList<StarSystemDataPOJO> getAll_HH_StarSystemData(){
-		CriteriaHelper crit = new CriteriaHelper(StarSystemDataPOJO.class);
+	public ArrayList<StarSystemDataPOJO> getAll_HH_StarSystemData(Long userID) {
+		CriteriaHelper crit = new CriteriaHelper(StarSystemDataPOJO.class, userID);
 		crit.addCriteriaIsNotNull("id");
 
 		List<Object> lRes = crit.getResultList();
@@ -113,8 +113,8 @@ public class StarSystemDataDAO extends GenericDAO {
 		return lRPS;
 	}
 
-	public ArrayList<Long> getAll_HH_FactionIds(){
-		CriteriaHelper crit = new CriteriaHelper(StarSystemDataPOJO.class);
+	public ArrayList<Long> getAll_HH_FactionIds(Long userID) {
+		CriteriaHelper crit = new CriteriaHelper(StarSystemDataPOJO.class, userID);
 		crit.addCriteriaIsNotNull("id");
 
 		List<Object> lRes = crit.getResultList();

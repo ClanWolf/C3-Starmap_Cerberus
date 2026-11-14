@@ -127,7 +127,7 @@ public class HeartBeatTimerTask extends TimerTask {
 
 				Long seasonId = GameServer.getCurrentSeason();
 				RoundDAO roundDAO = RoundDAO.getInstance();
-				RoundPOJO r = roundDAO.findBySeasonId(seasonId);
+				RoundPOJO r = roundDAO.findBySeasonId(seasonId, ServerNexus.DUMMY_USERID);
 				int round = r.getRound().intValue();
 
 				String resultProtocol = EndRound.finalizeRound(seasonId, round);

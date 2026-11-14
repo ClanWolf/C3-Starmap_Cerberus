@@ -74,7 +74,7 @@ public class AttackDAO extends GenericDAO {
 	}
 
 	public AttackPOJO findOpenAttackByRound(Long userID, Long jumpShipID, Long season, Long round) {
-		CriteriaHelper crit = new CriteriaHelper(AttackPOJO.class);
+		CriteriaHelper crit = new CriteriaHelper(AttackPOJO.class, userID);
 		crit.addCriteria("jumpshipID",jumpShipID);
 		crit.addCriteria("round", round);
 		crit.addCriteria("season", season);
@@ -86,8 +86,8 @@ public class AttackDAO extends GenericDAO {
 	/*
 	 * Give all attacks back of a season back and a round
 	 */
-	public ArrayList<AttackPOJO> getAllAttacksOfASeasonForRound(Long season, int round){
-		CriteriaHelper crit = new CriteriaHelper(AttackPOJO.class);
+	public ArrayList<AttackPOJO> getAllAttacksOfASeasonForRound(Long season, int round, Long userID) {
+		CriteriaHelper crit = new CriteriaHelper(AttackPOJO.class, userID);
 		crit.addCriteria("season", season );
 		crit.addCriteria("round", round);
 
@@ -104,8 +104,8 @@ public class AttackDAO extends GenericDAO {
 	/*
 	 * Give all open attacks back of a season back and a round
 	 */
-	public ArrayList<AttackPOJO> getOpenAttacksOfASeasonForRound(Long season, int round){
-		CriteriaHelper crit = new CriteriaHelper(AttackPOJO.class);
+	public ArrayList<AttackPOJO> getOpenAttacksOfASeasonForRound(Long season, int round, Long userID) {
+		CriteriaHelper crit = new CriteriaHelper(AttackPOJO.class, userID);
 		crit.addCriteriaIsNull("factionID_Winner");
 		crit.addCriteria("season", season );
 		crit.addCriteria("round", round);
@@ -123,8 +123,8 @@ public class AttackDAO extends GenericDAO {
 	/*
 	 * Give all open attacks of a season back
 	 */
-	public ArrayList<AttackPOJO> getOpenAttacksOfASeason(Long season){
-		CriteriaHelper crit = new CriteriaHelper(AttackPOJO.class);
+	public ArrayList<AttackPOJO> getOpenAttacksOfASeason(Long season, Long userID) {
+		CriteriaHelper crit = new CriteriaHelper(AttackPOJO.class, userID);
 		crit.addCriteriaIsNull("factionID_Winner");
 		crit.addCriteria("season", season );
 
@@ -138,8 +138,8 @@ public class AttackDAO extends GenericDAO {
 		return lRPS;
 	}
 
-	public ArrayList<AttackPOJO> getAllAttacksOfASeasonForRound(Long season, Long round){
-		CriteriaHelper crit = new CriteriaHelper(AttackPOJO.class);
+	public ArrayList<AttackPOJO> getAllAttacksOfASeasonForRound(Long season, Long round, Long userID) {
+		CriteriaHelper crit = new CriteriaHelper(AttackPOJO.class, userID);
 		crit.addCriteria("season", season );
 		crit.addCriteria("round", round);
 
@@ -153,8 +153,8 @@ public class AttackDAO extends GenericDAO {
 		return lRPS;
 	}
 
-	public ArrayList<AttackPOJO> getAllAttacksOfASeasonForNextRound(Long season, Long round){
-		CriteriaHelper crit = new CriteriaHelper(AttackPOJO.class);
+	public ArrayList<AttackPOJO> getAllAttacksOfASeasonForNextRound(Long season, Long round, Long userID) {
+		CriteriaHelper crit = new CriteriaHelper(AttackPOJO.class, userID);
 		crit.addCriteria("season", season);
 		crit.addCriteria("round", round + 1);
 

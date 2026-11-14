@@ -79,8 +79,8 @@ public class SeasonDAO extends GenericDAO {
 	/*
 	 * Give all open seasons in the system
 	 */
-	public ArrayList<SeasonPOJO> getAllSeasons(){
-		CriteriaHelper crit = new CriteriaHelper(SeasonPOJO.class);
+	public ArrayList<SeasonPOJO> getAllSeasons(Long userId) {
+		CriteriaHelper crit = new CriteriaHelper(SeasonPOJO.class, userId);
 		crit.addCriteriaIsNotNull("id");
 
 		List<Object> lRes = crit.getResultList();

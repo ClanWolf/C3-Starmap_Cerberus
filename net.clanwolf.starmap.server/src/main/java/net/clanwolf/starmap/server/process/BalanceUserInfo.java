@@ -124,7 +124,7 @@ public class BalanceUserInfo {
     public BalanceUserInfo(MWOMatchResult mwomatchResult) {
 
         AttackStatsDAO attackStatsDAO = AttackStatsDAO.getInstance();
-        AttackStatsPOJO attackStatsPOJO = attackStatsDAO.findByMatchId(mwomatchResult.getGameID());
+        AttackStatsPOJO attackStatsPOJO = attackStatsDAO.findByMatchId(mwomatchResult.getGameID(), ServerNexus.DUMMY_USERID);
         defenderFactionID = attackStatsPOJO.getDefenderFactionId();
         attackerFactionID = attackStatsPOJO.getAttackerFactionId();
 
@@ -177,7 +177,7 @@ public class BalanceUserInfo {
     }
 
     public String getDefenderTeam() {
-        ArrayList<RolePlayCharacterStatsPOJO> rolePlayCharacterStatsPOJO = RolePlayCharacterStatsDAO.getInstance().findByMatchId(mwomatchResult.getGameID());
+        ArrayList<RolePlayCharacterStatsPOJO> rolePlayCharacterStatsPOJO = RolePlayCharacterStatsDAO.getInstance().findByMatchId(mwomatchResult.getGameID(), ServerNexus.DUMMY_USERID);
         String defTeam = null;
 
         for (RolePlayCharacterStatsPOJO rpChar : rolePlayCharacterStatsPOJO) {
@@ -192,7 +192,7 @@ public class BalanceUserInfo {
     }
 
     public String getAttackerTeam() {
-        ArrayList<RolePlayCharacterStatsPOJO> rolePlayCharacterStatsPOJO = RolePlayCharacterStatsDAO.getInstance().findByMatchId(mwomatchResult.getGameID());
+        ArrayList<RolePlayCharacterStatsPOJO> rolePlayCharacterStatsPOJO = RolePlayCharacterStatsDAO.getInstance().findByMatchId(mwomatchResult.getGameID(), ServerNexus.DUMMY_USERID);
         String attTeam = null;
 
         for (RolePlayCharacterStatsPOJO rpChar : rolePlayCharacterStatsPOJO) {

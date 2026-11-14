@@ -120,7 +120,7 @@ public class EntityManagerHelper {
 		return transactionsActive;
 	}
 
-	public static EntityManager getEntityManager(Long userID) {
+	public static synchronized EntityManager getEntityManager(Long userID) {
 		EntityManager manager = emMap.get(userID);
 
 		if (manager == null || !manager.isOpen()) {

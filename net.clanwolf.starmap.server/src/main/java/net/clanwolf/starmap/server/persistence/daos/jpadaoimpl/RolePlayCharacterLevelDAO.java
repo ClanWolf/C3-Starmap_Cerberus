@@ -74,8 +74,8 @@ public class RolePlayCharacterLevelDAO extends GenericDAO {
 	/*
 	 * Give all open attacks of a season back
 	 */
-	public ArrayList<RolePlayCharacterLevelPOJO> getAllLevel(){
-		CriteriaHelper crit = new CriteriaHelper(RolePlayCharacterLevelPOJO.class);
+	public ArrayList<RolePlayCharacterLevelPOJO> getAllLevel(Long userID) {
+		CriteriaHelper crit = new CriteriaHelper(RolePlayCharacterLevelPOJO.class, userID);
 		crit.addCriteriaIsNotNull("id");
 
 		List<Object> lRes = crit.getResultList();

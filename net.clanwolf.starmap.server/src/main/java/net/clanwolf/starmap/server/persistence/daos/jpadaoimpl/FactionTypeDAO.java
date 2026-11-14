@@ -76,8 +76,8 @@ public class FactionTypeDAO extends GenericDAO {
 	/*
 	 * Give all FactionTypes
 	 */
-	public ArrayList<FactionTypePOJO> getAllFactionTypes(){
-		CriteriaHelper crit = new CriteriaHelper(FactionTypePOJO.class);
+	public ArrayList<FactionTypePOJO> getAllFactionTypes(Long userID) {
+		CriteriaHelper crit = new CriteriaHelper(FactionTypePOJO.class, userID);
 		crit.addCriteriaIsNotNull("id");
 
 		List<Object> lRes = crit.getResultList();

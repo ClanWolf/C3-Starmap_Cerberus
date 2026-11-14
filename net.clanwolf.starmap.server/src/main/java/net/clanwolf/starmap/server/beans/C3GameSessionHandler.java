@@ -224,7 +224,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				logger.info("Saving character stats for game id: " + charStats.getMwoMatchId() + ", rpCharId: " + charStats.getRoleplayCharacterId());
 
 				attackId = charStats.getAttackId();
-				RolePlayCharacterStatsPOJO p = dao.findbyCharIdAndMatchId(charStats.getRoleplayCharacterId(), charStats.getMwoMatchId());
+				RolePlayCharacterStatsPOJO p = dao.findbyCharIdAndMatchId(charStats.getRoleplayCharacterId(), charStats.getMwoMatchId(), getC3UserID(session));
 				if (p != null) {
 					break;
 				}
@@ -262,7 +262,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			AttackStatsPOJO attackStats = (AttackStatsPOJO) state.getObject();
 			logger.info("Saving attack stats for game id: " + attackStats.getMwoMatchId());
 
-			AttackStatsPOJO checkStats = dao.findByMatchId(attackStats.getMwoMatchId());
+			AttackStatsPOJO checkStats = dao.findByMatchId(attackStats.getMwoMatchId(), getC3UserID(session));
 			if (checkStats != null) {
 				// already saved, do nothing
 				logger.info("Stats with the given MWO Match-ID have been detected, DO NOTHING!");
@@ -303,7 +303,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			StatsMwoPOJO statsMwo = (StatsMwoPOJO) state.getObject();
 			logger.info("Saving MWO stats for game id: " + statsMwo.getGameId());
 
-			StatsMwoPOJO checkStats = dao.findByMWOGameId(statsMwo.getGameId());
+			StatsMwoPOJO checkStats = dao.findByMWOGameId(statsMwo.getGameId(), getC3UserID(session));
 			if (checkStats != null) {
 				// already saved, do nothing
 				logger.info("Stats with the given MWO Match-ID have been detected, DO NOTHING!");
@@ -312,18 +312,18 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 			EntityManagerHelper.beginTransaction(getC3UserID(session));
 			boolean gameRepeated = false;
-			StatsMwoPOJO checkStats2 = dao.findByAttackIdAndRoleplayID(statsMwo.getAttackId(), statsMwo.getRoleplayId());
+			StatsMwoPOJO checkStats2 = dao.findByAttackIdAndRoleplayID(statsMwo.getAttackId(), statsMwo.getRoleplayId(), getC3UserID(session));
 			if (checkStats2 != null) {
 				// The drop was repeated here, so we update the mwo stats entry, and DELETE both other statistics
 				// They will be written again by the following methods
-				ArrayList<RolePlayCharacterStatsPOJO> rpcStatsList = daoRPCStats.findByMatchId(checkStats2.getGameId());
+				ArrayList<RolePlayCharacterStatsPOJO> rpcStatsList = daoRPCStats.findByMatchId(checkStats2.getGameId(), getC3UserID(session));
 				for (RolePlayCharacterStatsPOJO p : rpcStatsList) {
 					daoRPCStats.delete(getC3UserID(session), p);
 				}
 
 				// The drop was repeated here, so we update the mwo stats entry, and DELETE both other statistics
 				// They will be written again by the following methods
-				AttackStatsPOJO attackStats = daoAttackStats.findByMatchId(checkStats2.getGameId());
+				AttackStatsPOJO attackStats = daoAttackStats.findByMatchId(checkStats2.getGameId(), getC3UserID(session));
 				daoAttackStats.delete(getC3UserID(session), attackStats);
 
 				checkStats2.setGameId(statsMwo.getGameId());
@@ -368,7 +368,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			AttackDAO adao = AttackDAO.getInstance();
 			AttackPOJO ap = adao.findById(ServerNexus.DUMMY_USERID, attackId);
 
-			RolePlayStoryPOJO lobbyRPreset = rpsdao.getLobbyRPFromAttackRP(ap.getStoryID());
+			RolePlayStoryPOJO lobbyRPreset = rpsdao.getLobbyRPFromAttackRP(ap.getStoryID(), ServerNexus.DUMMY_USERID);
 
 			ap.setFightsStarted(false);
 			ap.getAttackCharList().clear();
@@ -396,8 +396,8 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 			ArrayList<Long> factionsThePlayerIsNowFriendlyWithList = (ArrayList<Long>) state.getObject();
 			Long factionID = (Long)state.getObject2();
 
-			RoundPOJO currentRound = RoundDAO.getInstance().findBySeasonId(GameServer.getCurrentSeason());
-			ArrayList<DiplomacyPOJO> entriesToDelete = DiplomacyDAO.getInstance().getAllRequestsForFactions(GameServer.getCurrentSeason(), factionID);
+			RoundPOJO currentRound = RoundDAO.getInstance().findBySeasonId(GameServer.getCurrentSeason(), getC3UserID(session));
+			ArrayList<DiplomacyPOJO> entriesToDelete = DiplomacyDAO.getInstance().getAllRequestsForFactions(GameServer.getCurrentSeason(), factionID, getC3UserID(session));
 			ArrayList<DiplomacyPOJO> entriesToDeletedNextRound = new ArrayList<>();
 
 			try {
@@ -461,7 +461,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 				GameState response = new GameState(GAMESTATEMODES.DIPLOMACY_SAVE_RESPONSE);
 				response.setAction_successfully(Boolean.TRUE);
-				response.addObject(DiplomacyDAO.getInstance().getDiplomacyForSeason(ServerNexus.currentSeason));
+				response.addObject(DiplomacyDAO.getInstance().getDiplomacyForSeason(ServerNexus.currentSeason, getC3UserID(session)));
 
 
 				C3GameSessionHandler.sendBroadCast(room, response);
@@ -583,7 +583,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 							scorePOJO.setDescription("Attack on " + starSystem.getName() + ".");
 
 							ScoreReferenceDAO scoreReferenceDAO = ScoreReferenceDAO.getInstance();
-							ArrayList<ScoreReferencePOJO> pojoList = scoreReferenceDAO.getScoreReferencesForSeason(ServerNexus.currentSeason);
+							ArrayList<ScoreReferencePOJO> pojoList = scoreReferenceDAO.getScoreReferencesForSeason(ServerNexus.currentSeason, sessionId);
 
 							HashMap<String, String> scoreReferenceMap = new HashMap<>();
 							for (ScoreReferencePOJO scoreReference : pojoList) {
@@ -722,7 +722,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 //			JumpshipPOJO jsHelp =daoJJ.findById(sessionId, attack.getJumpshipID());
 //			daoJJ.refresh(sessionId, jsHelp );
 
-			RoundPOJO currentRound = RoundDAO.getInstance().findBySeasonId(GameServer.getCurrentSeason());
+			RoundPOJO currentRound = RoundDAO.getInstance().findBySeasonId(GameServer.getCurrentSeason(), sessionId);
 			long currentRoundId = currentRound.getRound();
 			if (attack.getRound().equals(currentRoundId)) {
 				boolean lobbyOpened = false;
@@ -1063,11 +1063,11 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 				// The requested faction for the user who saved this
 				UserPOJO userRequestingFactionChange = ((C3Player) session.getPlayer()).getUser();
 				FactionPOJO newFaction = factionDAO.findById(getC3UserID(session), factionId);
-				JumpshipPOJO js = jsDAO.getJumpshipsForFaction(factionId).get(0);
+				JumpshipPOJO js = jsDAO.getJumpshipsForFaction(factionId, getC3UserID(session)).getFirst();
 
 				if (newFaction.getFactionKey() != null && newFaction.getFactionKey().equals(givenFactionKey)) {
 					// Change faction for all chars of that user
-					ArrayList<RolePlayCharacterPOJO> charList = rpDAO.getCharactersOfUser(userRequestingFactionChange);
+					ArrayList<RolePlayCharacterPOJO> charList = rpDAO.getCharactersOfUser(userRequestingFactionChange, getC3UserID(session));
 					for (RolePlayCharacterPOJO ch : charList) {
 						ch.setFactionId(newFaction.getId().intValue());
 						ch.setFactionTypeId(newFaction.getFactionTypeID().intValue());
@@ -1085,7 +1085,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 
 				RolePlayCharacterPOJO rpCharPojoFromGameState = user.getCurrentCharacter();
 
-				ArrayList<RolePlayCharacterPOJO> charList = rpDAO.getCharactersOfUser(user);
+				ArrayList<RolePlayCharacterPOJO> charList = rpDAO.getCharactersOfUser(user, getC3UserID(session));
 				for (RolePlayCharacterPOJO ch : charList) {
 					if (ch.getId().equals(rpCharPojoFromGameState.getId())) {
 						// This is the character that was sent in the gamestate... may have changed
@@ -1153,7 +1153,7 @@ public class C3GameSessionHandler extends SessionMessageHandler {
 		UserPOJO user = ((C3Player) session.getPlayer()).getUser();
 
 		logger.info("Sending userdata/universe back after login...");
-		ArrayList<UserPOJO> userlist = UserDAO.getInstance().getUserList();
+		ArrayList<UserPOJO> userlist = UserDAO.getInstance().getUserList(getC3UserID(session));
 
 		//		for (UserPOJO u : userlist) {
 		//			logger.info("+++++++++++++++ Found user: " + u.getUserName());

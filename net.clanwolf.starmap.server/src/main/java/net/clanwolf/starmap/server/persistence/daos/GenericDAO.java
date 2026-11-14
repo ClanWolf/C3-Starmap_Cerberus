@@ -56,7 +56,7 @@ public abstract class GenericDAO implements IDAO {
 	}
 
 	@Override
-	public synchronized void save(Long userID, Object entity) {
+	public void save(Long userID, Object entity) {
 		logger.info("Saving instance (" + entity.getClass().getName() + ")");
 		try {
 			getEntityManager(userID).persist(entity);
@@ -69,7 +69,7 @@ public abstract class GenericDAO implements IDAO {
 	}
 
 	@Override
-	public synchronized Object update(Long userID, Object entity) {
+	public Object update(Long userID, Object entity) {
 //		logger.info("Updating instance (" + entity.getClass().getName() + ")");
 		try {
 			Object result = null;
@@ -85,7 +85,7 @@ public abstract class GenericDAO implements IDAO {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public synchronized List<Object> findByProperty(Long userID, String propertyName, final Object value, final int... rowStartIdxAndCount) {
+	public List<Object> findByProperty(Long userID, String propertyName, final Object value, final int... rowStartIdxAndCount) {
 		logger.info("Finding instance (" + this.className + ") with property: " + propertyName + ", value: " + value);
 		try {
 			final String queryString = "select model from " + this.className + " model where model." + propertyName + "= :propertyValue order by sortOrder";
@@ -114,7 +114,7 @@ public abstract class GenericDAO implements IDAO {
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public synchronized List<Object> findAll(Long userID, final int... rowStartIdxAndCount) {
+	public List<Object> findAll(Long userID, final int... rowStartIdxAndCount) {
 		logger.info("Finding all instances (" + this.className + ")");
 		try {
 			final String queryString = "select model from " + this.className + " model";
@@ -140,11 +140,11 @@ public abstract class GenericDAO implements IDAO {
 		}
 	}
 
-	public synchronized Object findById(Class clazz, Long id) {
+	public Object findById(Class clazz, Long id) {
 		return findById(null, clazz, id);
 	}
 
-	public synchronized void delete(Long userID, Object entity, Long id) {
+	public void delete(Long userID, Object entity, Long id) {
 		logger.info("Deleting instance (" + entity.getClass().getName() + ")");
 		try {
 			entity = getEntityManager(userID).getReference(entity.getClass(), id);
@@ -157,7 +157,7 @@ public abstract class GenericDAO implements IDAO {
 		}
 	}
 
-	public synchronized void refresh(Long userID, Object entity) {
+	public void refresh(Long userID, Object entity) {
 		logger.info("Refreshing instance (" + entity.getClass().getName() + ")");
 		try {
 			getEntityManager(userID).refresh(entity);
@@ -169,7 +169,7 @@ public abstract class GenericDAO implements IDAO {
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public synchronized Object findById(Long userID, Class clazz, Long id) {
+	public Object findById(Long userID, Class clazz, Long id) {
 //		logger.info("Finding object instance with id: " + id);
 		try {
 			return getEntityManager(userID).find(clazz, id);

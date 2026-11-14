@@ -30,6 +30,7 @@ package net.clanwolf.starmap.server.persistence;
 import jakarta.persistence.NoResultException;
 import jakarta.persistence.Query;
 import jakarta.persistence.criteria.*;
+import net.clanwolf.starmap.server.servernexus.ServerNexus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -48,13 +49,26 @@ public class CriteriaHelper {
 	private Root root;
 	private ArrayList<Order> alOrderBy;
 
-	public CriteriaHelper(Class clazz){
+//	public CriteriaHelper(Class clazz){
+//		this.clazz = clazz;
+//		init(ServerNexus.DUMMY_USERID);
+//	}
+
+	public CriteriaHelper(Class clazz, long userID){
 		this.clazz = clazz;
-		init();
+		init(userID);
 	}
 
-	private void init(){
-		cb = EntityManagerHelper.getNewEntityManager().getCriteriaBuilder();
+//	private void init(){
+//		cb = EntityManagerHelper.getNewEntityManager().getCriteriaBuilder();
+//		query = cb.createQuery(clazz);
+//		root = query.from(clazz);
+//		alPredicate = new ArrayList<Predicate>();
+//		alOrderBy = new ArrayList<Order>();
+//	}
+
+	private void init(long userID){
+		cb = EntityManagerHelper.getEntityManager(userID).getCriteriaBuilder();
 		query = cb.createQuery(clazz);
 		root = query.from(clazz);
 		alPredicate = new ArrayList<Predicate>();
@@ -106,7 +120,7 @@ public class CriteriaHelper {
 		predicateArr = alPredicate.toArray(predicateArr);
 
 		query.select(root).where(predicateArr);
-		Query q = EntityManagerHelper.getNewEntityManager().createQuery(query);
+		Query q = EntityManagerHelper.getEntityManager(ServerNexus.DUMMY_USERID).createQuery(query);
 
 		try {
 			return q.getSingleResult();
@@ -142,7 +156,7 @@ public class CriteriaHelper {
 		if (userID != null) {
 			q = EntityManagerHelper.getEntityManager(userID).createQuery(query);
 		} else {
-			q = EntityManagerHelper.getNewEntityManager().createQuery(query);
+			q = EntityManagerHelper.getEntityManager(ServerNexus.DUMMY_USERID).createQuery(query);
 		}
 
 		try {

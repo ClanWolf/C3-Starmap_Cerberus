@@ -72,7 +72,7 @@ public class FactionInfo {
     public String getTeam(String MWOMatchID) {
 
         RolePlayCharacterStatsDAO rolePlayCharacterStatsDAO = RolePlayCharacterStatsDAO.getInstance();
-        ArrayList<RolePlayCharacterStatsPOJO> rolePlayCharacterStatsPOJO = rolePlayCharacterStatsDAO.findByMatchId(MWOMatchID);
+        ArrayList<RolePlayCharacterStatsPOJO> rolePlayCharacterStatsPOJO = rolePlayCharacterStatsDAO.findByMatchId(MWOMatchID, ServerNexus.DUMMY_USERID);
         String factionTeam = null;
 
         for (RolePlayCharacterStatsPOJO rpChar : rolePlayCharacterStatsPOJO) {
@@ -96,7 +96,7 @@ public class FactionInfo {
     public long getSystemIncome(Long currentAttackedSystem) {
 
         long income = 0L;
-        ArrayList<StarSystemDataPOJO> starSystemDataListHH = StarSystemDataDAO.getInstance().getAll_HH_StarSystemData();
+        ArrayList<StarSystemDataPOJO> starSystemDataListHH = StarSystemDataDAO.getInstance().getAll_HH_StarSystemData(ServerNexus.DUMMY_USERID);
 
         for (StarSystemDataPOJO starSystemData : starSystemDataListHH) {
             if (starSystemData.getFaction().getId().equals(myFactionId) && !Objects.equals(currentAttackedSystem, starSystemData.getStarSystemID().getId())) {
@@ -118,7 +118,7 @@ public class FactionInfo {
 
         long cost = 0L;
 
-        ArrayList<StarSystemDataPOJO> starSystemDataListHH = StarSystemDataDAO.getInstance().getAll_HH_StarSystemData();
+        ArrayList<StarSystemDataPOJO> starSystemDataListHH = StarSystemDataDAO.getInstance().getAll_HH_StarSystemData(ServerNexus.DUMMY_USERID);
         for (StarSystemDataPOJO starSystemData : starSystemDataListHH) {
             if (starSystemData.getFaction().getId().equals(myFactionId) && !Objects.equals(currentAttackedSystem, starSystemData.getStarSystemID().getId())) {
 

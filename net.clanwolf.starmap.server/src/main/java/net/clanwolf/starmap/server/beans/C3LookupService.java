@@ -92,7 +92,7 @@ public class C3LookupService extends SimpleLookupService {
 			String sFactionShort = p[3];
 
 			FactionDAO fDAO = FactionDAO.getInstance();
-			FactionPOJO factionPOJO = fDAO.getFactionByShortText(sFactionShort);
+			FactionPOJO factionPOJO = fDAO.getFactionByShortText(sFactionShort, ServerNexus.DUMMY_USERID);
 
 			int lengthUsernameReal = c.getUsername().indexOf("#");
 			int lengthUsernameTransmitted = Integer.parseInt(sLengthUsername);
@@ -140,7 +140,7 @@ public class C3LookupService extends SimpleLookupService {
 					RolePlayCharacterDAO rpCharDAO = RolePlayCharacterDAO.getInstance();
 
 					StarSystemDataDAO ssdDAO = StarSystemDataDAO.getInstance();
-					StarSystemDataPOJO ssd = ssdDAO.getMainSystemForFaction(factionPOJO.getId());
+					StarSystemDataPOJO ssd = ssdDAO.getMainSystemForFaction(factionPOJO.getId(), ServerNexus.DUMMY_USERID);
 
 					RolePlayCharacterPOJO rpChar = new RolePlayCharacterPOJO();
 					rpChar.setName(sUsername);
@@ -159,7 +159,7 @@ public class C3LookupService extends SimpleLookupService {
 					rpChar.setFactionTypeId(factionPOJO.getFactionTypeID().intValue());
 
 					JumpshipDAO jsDAO = JumpshipDAO.getInstance();
-					ArrayList<JumpshipPOJO> js = jsDAO.getJumpshipsForFaction(factionPOJO.getId());
+					ArrayList<JumpshipPOJO> js = jsDAO.getJumpshipsForFaction(factionPOJO.getId(), ServerNexus.DUMMY_USERID);
 
 					if (js.size() > 0) {
 						rpChar.setJumpshipId(js.get(0).getId().intValue());

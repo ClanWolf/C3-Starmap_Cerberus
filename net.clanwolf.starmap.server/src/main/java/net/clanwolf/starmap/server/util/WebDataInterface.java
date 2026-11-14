@@ -63,12 +63,12 @@ WebDataInterface {
 		DateTimeFormatter dateTimeformatter = DateTimeFormatter.ofPattern(pattern);
 
 		Long season = GameServer.getCurrentSeason();
-		Long round = RoundDAO.getInstance().findBySeasonId(season).getRound();
-		Long roundPhase = RoundDAO.getInstance().findBySeasonId(season).getRoundPhase();
+		Long round = RoundDAO.getInstance().findBySeasonId(season, ServerNexus.DUMMY_USERID).getRound();
+		Long roundPhase = RoundDAO.getInstance().findBySeasonId(season, ServerNexus.DUMMY_USERID).getRoundPhase();
 		//LocalDateTime currentRoundStartDateTime = RoundDAO.getInstance().findBySeasonId(season).getCurrentRoundStartDate().toLocalDateTime();
 
 		LocalDateTime currentRoundStartDateTime = null;
-		String currentRoundStartDateString = RoundDAO.getInstance().findBySeasonId(season).getCurrentRoundStartDate();
+		String currentRoundStartDateString = RoundDAO.getInstance().findBySeasonId(season, ServerNexus.DUMMY_USERID).getCurrentRoundStartDate();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(ServerNexus.patternTimestamp);
 		currentRoundStartDateTime = LocalDateTime.parse(currentRoundStartDateString, formatter);
 
@@ -102,13 +102,13 @@ WebDataInterface {
 		universe.attacks.clear();
 		universe.attackStorys.clear();
 
-		RoundPOJO roundPOJO = RoundDAO.getInstance().findBySeasonId(seasonId);
+		RoundPOJO roundPOJO = RoundDAO.getInstance().findBySeasonId(seasonId, ServerNexus.DUMMY_USERID);
 
 		AttackDAO dao = AttackDAO.getInstance();
 
 		//		ArrayList<AttackPOJO> pojoList = dao.getOpenAttacksOfASeason(seasonId);
-		ArrayList<AttackPOJO> pojoList = dao.getAllAttacksOfASeasonForRound(seasonId, roundPOJO.getRound());
-		ArrayList<AttackPOJO> pojoList2 = dao.getAllAttacksOfASeasonForNextRound(seasonId, roundPOJO.getRound());
+		ArrayList<AttackPOJO> pojoList = dao.getAllAttacksOfASeasonForRound(seasonId, roundPOJO.getRound(), ServerNexus.DUMMY_USERID);
+		ArrayList<AttackPOJO> pojoList2 = dao.getAllAttacksOfASeasonForNextRound(seasonId, roundPOJO.getRound(), ServerNexus.DUMMY_USERID);
 		pojoList.addAll(pojoList2);
 
 		//		StringBuilder jsonString = new StringBuilder();
@@ -122,7 +122,7 @@ WebDataInterface {
 			assert dto != null;
 			if (dto.getStoryID() != null) {
 				RolePlayStoryPOJO rpPojo = RolePlayStoryDAO.getInstance().findById(ServerNexus.DUMMY_USERID, dto.getStoryID());
-				ArrayList<RolePlayStoryPOJO> storyList = RolePlayStoryDAO.getInstance().getAllStoriesByStory(rpPojo.getStory());
+				ArrayList<RolePlayStoryPOJO> storyList = RolePlayStoryDAO.getInstance().getAllStoriesByStory(rpPojo.getStory(), ServerNexus.DUMMY_USERID);
 				for (RolePlayStoryPOJO p : storyList) {
 					RolePlayStoryDTO dtoStory = EntityConverter.convertpojo2dto(p, RolePlayStoryDTO.class);
 					universe.attackStorys.put(p.getId(), dtoStory);
@@ -148,7 +148,7 @@ WebDataInterface {
 		universe.routepoints.clear();
 
 		JumpshipDAO dao = JumpshipDAO.getInstance();
-		ArrayList<JumpshipPOJO> pojoList = dao.getAllJumpships();
+		ArrayList<JumpshipPOJO> pojoList = dao.getAllJumpships(ServerNexus.DUMMY_USERID);
 		//		StringBuilder jsonString = new StringBuilder();
 
 		for (JumpshipPOJO js : pojoList) {
@@ -170,7 +170,7 @@ WebDataInterface {
 		universe.factions.clear();
 
 		FactionDAO dao = FactionDAO.getInstance();
-		ArrayList<FactionPOJO> pojoList = dao.getAllFactions();
+		ArrayList<FactionPOJO> pojoList = dao.getAllFactions(ServerNexus.DUMMY_USERID);
 		//		StringBuilder jsonString = new StringBuilder();
 
 		for (FactionPOJO f : pojoList) {
@@ -185,7 +185,7 @@ WebDataInterface {
 		universe.starSystems.clear();
 
 		StarSystemDataDAO dao = StarSystemDataDAO.getInstance();
-		ArrayList<StarSystemDataPOJO> pojoList = dao.getAll_HH_StarSystemData();
+		ArrayList<StarSystemDataPOJO> pojoList = dao.getAll_HH_StarSystemData(ServerNexus.DUMMY_USERID);
 		//		StringBuilder jsonString = new StringBuilder();
 
 		for (StarSystemDataPOJO f : pojoList) {
@@ -212,10 +212,10 @@ WebDataInterface {
 	public static synchronized void loadDiplomacy(Long seasonId) {
 		universe.diplomacy.clear();
 
-		RoundPOJO currentRound = RoundDAO.getInstance().findBySeasonId(GameServer.getCurrentSeason());
+		RoundPOJO currentRound = RoundDAO.getInstance().findBySeasonId(GameServer.getCurrentSeason(), ServerNexus.DUMMY_USERID);
 
 		DiplomacyDAO dao = DiplomacyDAO.getInstance();
-		ArrayList<DiplomacyPOJO> pojoList = dao.getDiplomacyForSeason(seasonId);
+		ArrayList<DiplomacyPOJO> pojoList = dao.getDiplomacyForSeason(seasonId, ServerNexus.DUMMY_USERID);
 
 		for (DiplomacyPOJO f : pojoList) {
 			DiplomacyDTO dto = EntityConverter.convertpojo2dto(f, DiplomacyDTO.class);

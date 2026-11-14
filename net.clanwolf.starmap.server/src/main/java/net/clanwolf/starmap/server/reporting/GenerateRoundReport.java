@@ -203,7 +203,7 @@ public class GenerateRoundReport {
     }
 
     public String getDefenderTeam() {
-        ArrayList<RolePlayCharacterStatsPOJO> rolePlayCharacterStatsPOJO = RolePlayCharacterStatsDAO.getInstance().findByMatchId(MWOMatchID);
+        ArrayList<RolePlayCharacterStatsPOJO> rolePlayCharacterStatsPOJO = RolePlayCharacterStatsDAO.getInstance().findByMatchId(MWOMatchID, ServerNexus.DUMMY_USERID);
         String defTeam = null;
 
         for (RolePlayCharacterStatsPOJO rpChar : rolePlayCharacterStatsPOJO) {
@@ -218,7 +218,7 @@ public class GenerateRoundReport {
     }
 
     public String getAttackerTeam() {
-        ArrayList<RolePlayCharacterStatsPOJO> rolePlayCharacterStatsPOJO = RolePlayCharacterStatsDAO.getInstance().findByMatchId(MWOMatchID);
+        ArrayList<RolePlayCharacterStatsPOJO> rolePlayCharacterStatsPOJO = RolePlayCharacterStatsDAO.getInstance().findByMatchId(MWOMatchID, ServerNexus.DUMMY_USERID);
         String attTeam = null;
 
         for (RolePlayCharacterStatsPOJO rpChar : rolePlayCharacterStatsPOJO) {

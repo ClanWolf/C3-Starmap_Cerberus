@@ -34,6 +34,7 @@ import net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.StatsMwoDAO;
 import net.clanwolf.starmap.server.persistence.pojos.StarSystemDataPOJO;
 import net.clanwolf.starmap.server.persistence.pojos.StatsMwoPOJO;
 import net.clanwolf.starmap.server.reporting.GenerateRoundReport;
+import net.clanwolf.starmap.server.servernexus.ServerNexus;
 import net.clanwolf.starmap.transfer.mwo.MWOMatchResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -60,7 +61,7 @@ public class CalcBalance {
     public CalcBalance(String mwoMatchID, GenerateRoundReport report) throws Exception {
 
         StatsMwoDAO statsMwoDAO = net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.StatsMwoDAO.getInstance();
-        StatsMwoPOJO statsMwoPOJO = statsMwoDAO.findByMWOGameId(String.valueOf(mwoMatchID));
+        StatsMwoPOJO statsMwoPOJO = statsMwoDAO.findByMWOGameId(String.valueOf(mwoMatchID), ServerNexus.DUMMY_USERID);
         String rawJSONstatsData = statsMwoPOJO.getRawData();
         MWOMatchResult matchDetails = new Gson().fromJson(rawJSONstatsData, MWOMatchResult.class);
 
@@ -88,7 +89,7 @@ public class CalcBalance {
      */
     public long getDefendCost(long starSystemDataId) {
         long cost = 0L;
-        ArrayList<StarSystemDataPOJO> starSystemDataListHH = StarSystemDataDAO.getInstance().getAll_HH_StarSystemData();
+        ArrayList<StarSystemDataPOJO> starSystemDataListHH = StarSystemDataDAO.getInstance().getAll_HH_StarSystemData(ServerNexus.DUMMY_USERID);
 
         for (StarSystemDataPOJO starSystemData : starSystemDataListHH) {
             if (starSystemData.getStarSystemID().getId().equals(starSystemDataId)) {
@@ -115,7 +116,7 @@ public class CalcBalance {
     public long getAttackCost(long starSystemDataId) {
 
         long cost = 0L;
-        ArrayList<StarSystemDataPOJO> starSystemDataListHH = StarSystemDataDAO.getInstance().getAll_HH_StarSystemData();
+        ArrayList<StarSystemDataPOJO> starSystemDataListHH = StarSystemDataDAO.getInstance().getAll_HH_StarSystemData(ServerNexus.DUMMY_USERID);
 
         for (StarSystemDataPOJO starSystemData : starSystemDataListHH) {
             if (starSystemData.getStarSystemID().getId().equals(starSystemDataId)) {
@@ -144,7 +145,7 @@ public class CalcBalance {
         long income = 0L;
         long cost = 0L;
 
-        ArrayList<StarSystemDataPOJO> starSystemDataListHH = StarSystemDataDAO.getInstance().getAll_HH_StarSystemData();
+        ArrayList<StarSystemDataPOJO> starSystemDataListHH = StarSystemDataDAO.getInstance().getAll_HH_StarSystemData(ServerNexus.DUMMY_USERID);
         for (StarSystemDataPOJO starSystemData : starSystemDataListHH) {
             if (starSystemData.getFaction().getId().equals(userFactionId) && currentStarSystemId != starSystemData.getStarSystemID().getId()) {
 

@@ -71,15 +71,15 @@ public class AttackStatsDAO extends GenericDAO {
 		return (AttackStatsPOJO) super.update(attackStatsId, entity);
 	}
 
-	public AttackStatsPOJO findByMatchId(String matchId) {
-		CriteriaHelper crit = new CriteriaHelper(AttackStatsPOJO.class);
+	public AttackStatsPOJO findByMatchId(String matchId, Long userId) {
+		CriteriaHelper crit = new CriteriaHelper(AttackStatsPOJO.class, userId);
 		crit.addCriteria("mwoMatchId", matchId);
 
 		return (AttackStatsPOJO) crit.getSingleResult();
 	}
 
-	public ArrayList<AttackStatsPOJO> getStatisticsForAttack(Long seasonId, Long attackId) {
-		CriteriaHelper crit = new CriteriaHelper(AttackStatsPOJO.class);
+	public ArrayList<AttackStatsPOJO> getStatisticsForAttack(Long seasonId, Long attackId, Long userId) {
+		CriteriaHelper crit = new CriteriaHelper(AttackStatsPOJO.class, userId);
 		crit.addCriteria("seasonId", seasonId);
 		crit.addCriteria("attackId", attackId);
 

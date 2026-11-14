@@ -77,8 +77,8 @@ public class RolePlayStoryDAO extends GenericDAO {
 	 *
 	 * @return ArrayList<RolePlayStoryPOJO> *
 	 */
-	public ArrayList<RolePlayStoryPOJO> getAllStoriesAndChapters() {
-		CriteriaHelper crit = new CriteriaHelper(RolePlayStoryPOJO.class);
+	public ArrayList<RolePlayStoryPOJO> getAllStoriesAndChapters(Long userID) {
+		CriteriaHelper crit = new CriteriaHelper(RolePlayStoryPOJO.class, userID);
 		crit.addCriteriaOR(crit.createPredicate("type", ROLEPLAYENTRYTYPES.RP_STORY), crit.createPredicate("type", ROLEPLAYENTRYTYPES.RP_CHAPTER));
 
 		List<Object> lRes = crit.getResultList();
@@ -97,8 +97,8 @@ public class RolePlayStoryDAO extends GenericDAO {
 	 *
 	 * @return ArrayList<RolePlayStoryPOJO> *
 	 */
-	public ArrayList<RolePlayStoryPOJO> getAllStoriesByStory(RolePlayStoryPOJO rp) {
-		CriteriaHelper crit = new CriteriaHelper(RolePlayStoryPOJO.class);
+	public ArrayList<RolePlayStoryPOJO> getAllStoriesByStory(RolePlayStoryPOJO rp, Long userID) {
+		CriteriaHelper crit = new CriteriaHelper(RolePlayStoryPOJO.class, userID);
 		crit.addCriteriaOR(crit.createPredicate("story", rp));
 		crit.addOrderByAsc("sortOrder");
 
@@ -118,8 +118,8 @@ public class RolePlayStoryDAO extends GenericDAO {
 	 * Returns all top level stories
 	 * @return ArrayList<RolePlayStoryPOJO> *
 	 */
-	public ArrayList<RolePlayStoryPOJO> getAllMainStories() {
-		CriteriaHelper crit = new CriteriaHelper(RolePlayStoryPOJO.class);
+	public ArrayList<RolePlayStoryPOJO> getAllMainStories(Long userID) {
+		CriteriaHelper crit = new CriteriaHelper(RolePlayStoryPOJO.class, userID);
 		crit.addCriteria("type", ROLEPLAYENTRYTYPES.RP_STORY);
 
 		List<Object> lRes = crit.getResultList();
@@ -141,8 +141,8 @@ public class RolePlayStoryDAO extends GenericDAO {
 	 * @param sortOrder Integer
 	 * @return RolePlayStoryPOJO
 	 */
-	public RolePlayStoryPOJO getChapterFromStoryBySortOrder(RolePlayStoryPOJO rp, Integer sortOrder){
-		CriteriaHelper crit = getStepBySortOrder(rp, sortOrder);
+	public RolePlayStoryPOJO getChapterFromStoryBySortOrder(RolePlayStoryPOJO rp, Integer sortOrder, Long userID) {
+		CriteriaHelper crit = getStepBySortOrder(rp, sortOrder, userID);
 		crit.addCriteria("type", ROLEPLAYENTRYTYPES.RP_CHAPTER);
 
 		return (RolePlayStoryPOJO)crit.getSingleResult();
@@ -156,8 +156,8 @@ public class RolePlayStoryDAO extends GenericDAO {
 	 * @param sortOrder Integer
 	 * @return RolePlayStoryPOJO
 	 */
-	public RolePlayStoryPOJO getStepFromStoryBySortOrder(RolePlayStoryPOJO rp, Integer sortOrder){
-		CriteriaHelper crit = getStepBySortOrder(rp, sortOrder);
+	public RolePlayStoryPOJO getStepFromStoryBySortOrder(RolePlayStoryPOJO rp, Integer sortOrder, Long userID){
+		CriteriaHelper crit = getStepBySortOrder(rp, sortOrder, userID);
 		crit.addCriteriaOR(crit.createPredicate("type", ROLEPLAYENTRYTYPES.RP_SECTION),
 				crit.createPredicate("type", ROLEPLAYENTRYTYPES.RP_CHOICE),
 				crit.createPredicate("type", ROLEPLAYENTRYTYPES.RP_DATA_INPUT),
@@ -174,8 +174,8 @@ public class RolePlayStoryDAO extends GenericDAO {
 	 * @param sortOrder Integer
 	 * @return CriteriaHelper
 	 */
-	private CriteriaHelper getStepBySortOrder(RolePlayStoryPOJO rp, Integer sortOrder){
-		CriteriaHelper crit = new CriteriaHelper(RolePlayStoryPOJO.class);
+	private CriteriaHelper getStepBySortOrder(RolePlayStoryPOJO rp, Integer sortOrder, Long userID){
+		CriteriaHelper crit = new CriteriaHelper(RolePlayStoryPOJO.class, userID);
 
 //		crit.addCriteria("story",rp);
 		crit.addCriteriaOR(crit.createPredicate("story",rp),
@@ -185,9 +185,9 @@ public class RolePlayStoryDAO extends GenericDAO {
 		return crit;
 	}
 
-	public RolePlayStoryPOJO getLobbyRPFromAttackRP(Long rpID){
+	public RolePlayStoryPOJO getLobbyRPFromAttackRP(Long rpID, Long userID) {
 
-		CriteriaHelper crit = new CriteriaHelper(RolePlayStoryPOJO.class);
+		CriteriaHelper crit = new CriteriaHelper(RolePlayStoryPOJO.class, userID);
 
 		crit.addCriteria("id", rpID);
 		//crit.addCriteria("type", ROLEPLAYENTRYTYPES.C3_RP_STEP_V8);
@@ -195,7 +195,7 @@ public class RolePlayStoryDAO extends GenericDAO {
 
 		RolePlayStoryPOJO rp1 = (RolePlayStoryPOJO)crit.getSingleResult();
 
-		CriteriaHelper crit2 = new CriteriaHelper(RolePlayStoryPOJO.class);
+		CriteriaHelper crit2 = new CriteriaHelper(RolePlayStoryPOJO.class, userID);
 
 		crit2.addCriteria("story", rp1.getStory());
 		crit2.addCriteria("type", ROLEPLAYENTRYTYPES.RP_PREPARE_BATTLE);

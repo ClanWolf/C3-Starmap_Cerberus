@@ -195,11 +195,11 @@ public class C3GameSessionHandlerRoleplay {
 		GameState response = null;
 
 		if(rpMainStory == null){
-			mylist = dao.getAllMainStories();
+			mylist = dao.getAllMainStories(C3GameSessionHandler.getC3UserID(session));
 			response = new GameState(GAMESTATEMODES.ROLEPLAY_GET_ALLSTORIES);
 		}
 		else {
-			mylist = dao.getAllStoriesByStory(rpMainStory);
+			mylist = dao.getAllStoriesByStory(rpMainStory, C3GameSessionHandler.getC3UserID(session));
 			response = new GameState(GAMESTATEMODES.ROLEPLAY_GET_STEPSBYSTORY);
 		}
 
@@ -245,7 +245,7 @@ public class C3GameSessionHandlerRoleplay {
 		GameState response = new GameState(GAMESTATEMODES.ROLEPLAY_GET_CHAPTER_BYSORTORDER);
 
 		try {
-			RolePlayStoryPOJO newStep = dao.getChapterFromStoryBySortOrder(story, sortOrder);
+			RolePlayStoryPOJO newStep = dao.getChapterFromStoryBySortOrder(story, sortOrder, C3GameSessionHandler.getC3UserID(session));
 			rpChar.setStory(newStep);
 
 			// Save RolePlayCharacterPOJO
@@ -290,7 +290,7 @@ public class C3GameSessionHandlerRoleplay {
 		GameState response = new GameState(GAMESTATEMODES.ROLEPLAY_GET_STEP_BYSORTORDER);
 
 		try {
-			RolePlayStoryPOJO newStep = dao.getStepFromStoryBySortOrder(story, sortOrder);
+			RolePlayStoryPOJO newStep = dao.getStepFromStoryBySortOrder(story, sortOrder, C3GameSessionHandler.getC3UserID(session));
 			rpChar.setStory(newStep);
 
 			EntityManagerHelper.beginTransaction(C3GameSessionHandler.getC3UserID(session));

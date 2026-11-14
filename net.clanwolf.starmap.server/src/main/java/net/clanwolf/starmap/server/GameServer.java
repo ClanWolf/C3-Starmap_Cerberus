@@ -96,7 +96,7 @@ public class GameServer {
     }
 
     public static void checkDBConst() {
-        ArrayList<GameConfigPOJO> c3GameConfigPOJO = C3GameConfigDAO.getInstance().getAllGameConfigValues();
+        ArrayList<GameConfigPOJO> c3GameConfigPOJO = C3GameConfigDAO.getInstance().getAllGameConfigValues(ServerNexus.DUMMY_USERID);
         Map<String, Long> constantValues = new HashMap<>();
 
         //XP rewards during an invasion

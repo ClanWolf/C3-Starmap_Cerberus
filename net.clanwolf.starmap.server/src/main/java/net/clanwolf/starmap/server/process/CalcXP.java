@@ -78,12 +78,12 @@ public class CalcXP {
     public CalcXP(AttackStatsPOJO attackStats, GenerateRoundReport report) throws Exception {
         String mwoMatchID = attackStats.getMwoMatchId();
         StatsMwoDAO statsMwoDAO = net.clanwolf.starmap.server.persistence.daos.jpadaoimpl.StatsMwoDAO.getInstance();
-        StatsMwoPOJO statsMwoPOJO = statsMwoDAO.findByMWOGameId(mwoMatchID);
+        StatsMwoPOJO statsMwoPOJO = statsMwoDAO.findByMWOGameId(mwoMatchID, ServerNexus.DUMMY_USERID);
         String rawJSONstatsData = statsMwoPOJO.getRawData();
         MWOMatchResult matchDetails = new Gson().fromJson(rawJSONstatsData, MWOMatchResult.class);
 
         RolePlayCharacterDAO characterDAO = RolePlayCharacterDAO.getInstance();
-        ArrayList<RolePlayCharacterPOJO> allCharacter = characterDAO.getAllCharacter();
+        ArrayList<RolePlayCharacterPOJO> allCharacter = characterDAO.getAllCharacter(ServerNexus.DUMMY_USERID);
 
         FactionPOJO factionAttacker = FactionDAO.getInstance().findById(ServerNexus.DUMMY_USERID, attackStats.getAttackerFactionId());
         FactionPOJO factionDefender = FactionDAO.getInstance().findById(ServerNexus.DUMMY_USERID, attackStats.getDefenderFactionId());

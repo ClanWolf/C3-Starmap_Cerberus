@@ -77,8 +77,8 @@ public class FactionDAO extends GenericDAO {
 	/*
 	 * Give all open attacks of a season back
 	 */
-	public ArrayList<FactionPOJO> getAllFactions(){
-		CriteriaHelper crit = new CriteriaHelper(FactionPOJO.class);
+	public ArrayList<FactionPOJO> getAllFactions(Long userID) {
+		CriteriaHelper crit = new CriteriaHelper(FactionPOJO.class, userID);
 
 		crit.addCriteriaIsNotNull("id");
 		List<Object> lRes = crit.getResultList();
@@ -91,11 +91,11 @@ public class FactionDAO extends GenericDAO {
 		return lRPS;
 	}
 
-	public ArrayList<FactionPOJO> getAll_HH_Factions(){
-		CriteriaHelper crit = new CriteriaHelper(FactionPOJO.class);
+	public ArrayList<FactionPOJO> getAll_HH_Factions(Long userID) {
+		CriteriaHelper crit = new CriteriaHelper(FactionPOJO.class, userID);
 		crit.addCriteriaIsNotNull("id");
 
-		ArrayList<Long> factionIdsHH = StarSystemDataDAO.getInstance().getAll_HH_FactionIds();
+		ArrayList<Long> factionIdsHH = StarSystemDataDAO.getInstance().getAll_HH_FactionIds(userID);
 		List<Object> lRes = crit.getResultList();
 
 		Iterator<Object> iter = lRes.iterator();
@@ -111,9 +111,9 @@ public class FactionDAO extends GenericDAO {
 		return lRPS;
 	}
 
-	public FactionPOJO getFactionByShortText(String shortText){
+	public FactionPOJO getFactionByShortText(String shortText, Long userID) {
 
-		CriteriaHelper crit1 = new CriteriaHelper(FactionPOJO.class);
+		CriteriaHelper crit1 = new CriteriaHelper(FactionPOJO.class, userID);
 		crit1.addCriteria("shortName", shortText);
 
 		Object o = crit1.getSingleResult();

@@ -66,7 +66,7 @@ public class UserSessionDAO extends GenericDAO {
 	}
 
 	public UserSessionPOJO getUserSessionByUserId(Long userId) {
-		CriteriaHelper crit = new CriteriaHelper(UserSessionPOJO.class);
+		CriteriaHelper crit = new CriteriaHelper(UserSessionPOJO.class, userId);
 		crit.addCriteria("userId", userId);
 		return (UserSessionPOJO) crit.getSingleResult();
 	}
@@ -76,8 +76,8 @@ public class UserSessionDAO extends GenericDAO {
 		return (UserSessionPOJO) super.update(userID, entity);
 	}
 
-	public ArrayList<UserSessionPOJO> getUserSessionList() {
-		CriteriaHelper crit = new CriteriaHelper(UserSessionPOJO.class);
+	public ArrayList<UserSessionPOJO> getUserSessionList(Long userId) {
+		CriteriaHelper crit = new CriteriaHelper(UserSessionPOJO.class, userId);
 		crit.addCriteriaIsNotNull("id");
 
 		List<Object> lRes = crit.getResultList();

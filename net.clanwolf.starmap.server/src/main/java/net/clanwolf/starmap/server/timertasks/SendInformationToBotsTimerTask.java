@@ -56,7 +56,7 @@ public class SendInformationToBotsTimerTask extends TimerTask {
 	@Override
 	public void run() {
 		Long seasonId = GameServer.getCurrentSeason();
-		RoundPOJO round = RoundDAO.getInstance().findBySeasonId(seasonId);
+		RoundPOJO round = RoundDAO.getInstance().findBySeasonId(seasonId, ServerNexus.DUMMY_USERID);
 		Long roundId = round.getRound();
 
 		SeasonDAO seasonDAO = SeasonDAO.getInstance();
@@ -82,9 +82,9 @@ public class SendInformationToBotsTimerTask extends TimerTask {
 		Timestamp dateInGame = new Timestamp((Timestamp.valueOf(round.getCurrentRoundStartDate()).getTime()) + roundageMillis);
 		Timestamp endOfRound = new Timestamp(d.getTime() + maxRoundAgeMillis);
 
-		ArrayList<AttackPOJO> allAttacksForRound = AttackDAO.getInstance().getOpenAttacksOfASeasonForRound(seasonId, roundId.intValue());
-		ArrayList<AttackPOJO> allAttacksForNextRound = AttackDAO.getInstance().getOpenAttacksOfASeasonForRound(seasonId, roundId.intValue() + 1);
-		ArrayList<RolePlayCharacterPOJO> allCharacters = RolePlayCharacterDAO.getInstance().getAllCharacter();
+		ArrayList<AttackPOJO> allAttacksForRound = AttackDAO.getInstance().getOpenAttacksOfASeasonForRound(seasonId, roundId.intValue(), ServerNexus.DUMMY_USERID);
+		ArrayList<AttackPOJO> allAttacksForNextRound = AttackDAO.getInstance().getOpenAttacksOfASeasonForRound(seasonId, roundId.intValue() + 1, ServerNexus.DUMMY_USERID);
+		ArrayList<RolePlayCharacterPOJO> allCharacters = RolePlayCharacterDAO.getInstance().getAllCharacter(ServerNexus.DUMMY_USERID);
 
 		StringBuilder fs_de = new StringBuilder();
 		StringBuilder fs_en = new StringBuilder();
